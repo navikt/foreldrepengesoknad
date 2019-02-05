@@ -8,7 +8,8 @@ import {
     ForeldrepengerFørFødselUttaksperiode,
     Overføringsperiode,
     MorsAktivitet,
-    Oppholdsperiode
+    Oppholdsperiode,
+    isForeldrepengerFørFødselUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
@@ -44,6 +45,10 @@ import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
 import { isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import HvemSkalTaForeldrepengerSpørsmål from './partials/HvemSkalTaForeldrepengerSpørsmål';
+import {
+    getStønadskontoFromOppholdsårsak,
+    getOppholdsÅrsakFromStønadskonto
+} from 'app/util/uttaksplan/uttaksperiodeUtils';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -60,7 +65,6 @@ interface UttaksperiodeFormProps {
 
 interface ComponentStateProps {
     periodenGjelder: Forelder | undefined;
-    uttakvariant: Uttakvariant | undefined;
 }
 
 interface StateProps {
@@ -76,10 +80,6 @@ interface StateProps {
 
 type Props = UttaksperiodeFormProps & StateProps & InjectedIntlProps;
 
-enum Uttakvariant {
-    Opphold = 'opphold'
-}
-
 const periodenGjelderAnnenForelder = (søkerErFarEllerMedmor: boolean, forelder: Forelder): boolean => {
     if (
         (søkerErFarEllerMedmor && forelder === Forelder.FARMEDMOR) ||
@@ -91,8 +91,16 @@ const periodenGjelderAnnenForelder = (søkerErFarEllerMedmor: boolean, forelder:
     return true;
 };
 
-const getAnnenForeldersKvote = (søkerErFarEllerMedmor: boolean): StønadskontoType => {
-    return søkerErFarEllerMedmor ? StønadskontoType.Mødrekvote : StønadskontoType.Fedrekvote;
+const getPeriodeGjelder = (søkerErFarEllerMedmor: boolean, forelder: Forelder | undefined): Forelder | undefined => {
+    if (forelder === undefined) {
+        return undefined;
+    }
+
+    if (periodenGjelderAnnenForelder(søkerErFarEllerMedmor, forelder)) {
+        return søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR;
+    } else {
+        return søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR;
+    }
 };
 
 class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
@@ -106,13 +114,11 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
         super(props);
         this.updateStønadskontoType = this.updateStønadskontoType.bind(this);
         this.updateForeldrepengerFørFødselUttak = this.updateForeldrepengerFørFødselUttak.bind(this);
-        this.updateOverføringUttak = this.updateOverføringUttak.bind(this);
         this.updatePeriodenGjelder = this.updatePeriodenGjelder.bind(this);
         this.getVisibility = this.getVisibility.bind(this);
         this.onChange = this.onChange.bind(this);
         this.state = {
-            periodenGjelder: undefined,
-            uttakvariant: undefined
+            periodenGjelder: getPeriodeGjelder(this.props.søkerErFarEllerMedmor, this.props.periode.forelder)
         };
     }
 
@@ -128,8 +134,8 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
         }
     }
 
-    onChange(periode: UttakFormPeriodeType) {
-        this.props.onChange(periode, this.getVisibility());
+    onChange(periode: UttakFormPeriodeType, replace: boolean = false) {
+        this.props.onChange(periode, replace, this.getVisibility());
         if (this.context.validForm) {
             this.timeoutId = setTimeout(() => {
                 if (this.context.validForm) {
@@ -140,7 +146,40 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
     }
 
     updatePeriodenGjelder(forelder: Forelder) {
+        const { periode, søkerErFarEllerMedmor } = this.props;
+
         this.setState({ periodenGjelder: forelder });
+
+        if (periode.type !== undefined) {
+            if (periodenGjelderAnnenForelder(søkerErFarEllerMedmor, forelder)) {
+                const årsak = getOppholdsÅrsakFromStønadskonto((periode as Uttaksperiode).konto);
+
+                this.onChange({ tidsperiode: periode.tidsperiode, type: Periodetype.Opphold, forelder, årsak }, true);
+            } else {
+                const konto = getStønadskontoFromOppholdsårsak((periode as Oppholdsperiode).årsak);
+                const erOverføring = erUttakAvAnnenForeldersKvote(konto, søkerErFarEllerMedmor);
+
+                if (erOverføring) {
+                    const updatedPeriode: Partial<Overføringsperiode> = {
+                        tidsperiode: periode.tidsperiode as Tidsperiode,
+                        type: Periodetype.Overføring,
+                        forelder,
+                        konto
+                    };
+
+                    this.onChange({ ...updatedPeriode }, true);
+                } else {
+                    const updatedPeriode: Partial<Uttaksperiode> = {
+                        tidsperiode: periode.tidsperiode as Tidsperiode,
+                        type: Periodetype.Uttak,
+                        forelder,
+                        konto
+                    };
+
+                    this.onChange({ ...updatedPeriode }, true);
+                }
+            }
+        }
     }
 
     updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin: boolean) {
@@ -157,14 +196,6 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
         });
     }
 
-    updateOverføringUttak(periode: RecursivePartial<Overføringsperiode>) {
-        this.onChange({
-            type: Periodetype.Overføring,
-            ...periode,
-            forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR
-        });
-    }
-
     updateStønadskontoType(konto: StønadskontoType) {
         const { søkerErFarEllerMedmor } = this.props;
         if (erUttakAvAnnenForeldersKvote(konto, søkerErFarEllerMedmor)) {
@@ -173,7 +204,8 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
             if (periodenGjelderAnnenForelder(søkerErFarEllerMedmor, this.state.periodenGjelder!)) {
                 this.onChange({
                     type: Periodetype.Opphold,
-                    forelder: søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR
+                    forelder: this.state.periodenGjelder,
+                    årsak: getOppholdsÅrsakFromStønadskonto(konto)
                 });
             }
             // Dersom perioden ikke gjelder den andre forelderen og man velger den andre forelderen sin kvote så betyr det
@@ -182,7 +214,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                 this.onChange({
                     type: Periodetype.Overføring,
                     konto,
-                    forelder: søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR,
+                    forelder: this.state.periodenGjelder,
                     harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
                     ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined,
                     morsAktivitetIPerioden:
@@ -190,14 +222,23 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                 });
             }
         } else {
-            this.onChange({
-                type: Periodetype.Uttak,
-                konto,
-                forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR,
-                harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
-                ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined,
-                morsAktivitetIPerioden: konto === StønadskontoType.AktivitetsfriKvote ? MorsAktivitet.Uføre : undefined
-            });
+            if (periodenGjelderAnnenForelder(søkerErFarEllerMedmor, this.state.periodenGjelder!)) {
+                this.onChange({
+                    type: Periodetype.Opphold,
+                    forelder: this.state.periodenGjelder,
+                    årsak: getOppholdsÅrsakFromStønadskonto(konto)
+                });
+            } else {
+                this.onChange({
+                    type: Periodetype.Uttak,
+                    konto,
+                    forelder: this.state.periodenGjelder,
+                    harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
+                    ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined,
+                    morsAktivitetIPerioden:
+                        konto === StønadskontoType.AktivitetsfriKvote ? MorsAktivitet.Uføre : undefined
+                });
+            }
         }
     }
 
@@ -270,14 +311,15 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         feil={feil || periodeErNyOgFørFamiliehendelsesdatoFeil}
                     />
                 </Block>
-                <Block>
+                <Block visible={!isForeldrepengerFørFødselUttaksperiode(periode)}>
                     <HvemSkalTaForeldrepengerSpørsmål
                         navnPåForeldre={navnPåForeldre}
                         valgtForelder={this.state.periodenGjelder}
                         onChange={(forelder: Forelder) => this.updatePeriodenGjelder(forelder)}
                     />
                 </Block>
-                <Block visible={visibility.isVisible(UttakSpørsmålKeys.kvote)}>
+                <Block
+                    visible={visibility.isVisible(UttakSpørsmålKeys.kvote) && this.state.periodenGjelder !== undefined}>
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskontoType) => this.updateStønadskontoType(stønadskontoType)}
                         navnPåForeldre={navnPåForeldre}
@@ -285,7 +327,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         valgtKvote={
                             periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring
                                 ? periode.konto
-                                : getAnnenForeldersKvote(søkerErFarEllerMedmor)
+                                : getStønadskontoFromOppholdsårsak((periode as Oppholdsperiode).årsak)
                         }
                     />
                 </Block>
@@ -375,7 +417,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                             årsak={periode.årsak}
                             søkerErFarEllerMedmor={søkerErFarEllerMedmor}
                             vedlegg={periode.vedlegg as Attachment[]}
-                            onChange={(p) => this.updateOverføringUttak(p)}
+                            onChange={(p) => this.onChange(p)}
                         />
                     </Block>
                 )}

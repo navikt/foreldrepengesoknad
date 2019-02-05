@@ -17,6 +17,7 @@ import { erUttakEgenKvote } from '../../util/uttaksplan/uttakUtils';
 import { uttaksdatoer } from 'app/util/uttaksplan/uttaksdatoer';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import { Søkersituasjon } from 'app/types/søknad/Søknad';
+import { getStønadskontoFromOppholdsårsak } from 'app/util/uttaksplan/uttaksperiodeUtils';
 
 export enum UttakSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -29,7 +30,8 @@ export enum UttakSpørsmålKeys {
     'stillingsprosent' = 'stillingsprosent',
     'hvorSkalDuJobbe' = 'hvorSkalDuJobbe',
     'erMorForSyk' = 'erMorForSyk',
-    'samtidigUttakProsent' = 'samtidigUttakProsent'
+    'samtidigUttakProsent' = 'samtidigUttakProsent',
+    'hvemSkalTaUttak' = 'hvemSkalTaUttak'
 }
 
 export interface UttakFormPayload {
@@ -238,40 +240,45 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     [Sp.kvote]: {
         isAnswered: ({ periode }) =>
             ((isUttaksperiode(periode) || isOverføringsperiode(periode)) && questionValueIsOk(periode.konto)) ||
-            isOppholdsperiode(periode),
+            (isOppholdsperiode(periode) && questionValueIsOk(getStønadskontoFromOppholdsårsak(periode.årsak))),
         parentQuestion: Sp.tidsperiode,
         isRequired: (payload) => visKvote(payload)
     },
     [Sp.erMorForSyk]: {
         isAnswered: ({ periode }) =>
-            periode.type === Periodetype.Uttak &&
-            (periode.konto === StønadskontoType.Fedrekvote || periode.konto === StønadskontoType.Foreldrepenger) &&
-            periode.erMorForSyk !== undefined,
+            (periode.type === Periodetype.Uttak &&
+                (periode.konto === StønadskontoType.Fedrekvote || periode.konto === StønadskontoType.Foreldrepenger) &&
+                periode.erMorForSyk !== undefined) ||
+            isOppholdsperiode(periode),
         parentQuestion: Sp.kvote,
         isRequired: (payload) => visErMorForSyk(payload)
     },
     [Sp.aktivitetskravMor]: {
         isAnswered: ({ periode }) =>
-            periode.type === Periodetype.Uttak &&
-            periode.morsAktivitetIPerioden !== undefined &&
-            periode.morsAktivitetIPerioden.length > 0,
+            (periode.type === Periodetype.Uttak &&
+                periode.morsAktivitetIPerioden !== undefined &&
+                periode.morsAktivitetIPerioden.length > 0) ||
+            isOppholdsperiode(periode),
         parentQuestion: Sp.tidsperiode,
         isRequired: (payload) => visAktivitetskravMor(payload)
     },
     [Sp.samtidigUttak]: {
         isAnswered: ({ periode }) =>
-            periode.type === Periodetype.Uttak && questionValueIsOk(periode.ønskerSamtidigUttak),
+            (periode.type === Periodetype.Uttak && questionValueIsOk(periode.ønskerSamtidigUttak)) ||
+            isOppholdsperiode(periode),
         parentQuestion: Sp.tidsperiode,
         isRequired: (payload) => visSamtidigUttak(payload)
     },
     [Sp.samtidigUttakProsent]: {
         isAnswered: ({ periode }) =>
-            periode.type === Periodetype.Uttak && questionValueIsOk(periode.samtidigUttakProsent),
+            (periode.type === Periodetype.Uttak && questionValueIsOk(periode.samtidigUttakProsent)) ||
+            isOppholdsperiode(periode),
         parentQuestion: Sp.samtidigUttak,
         isRequired: ({ periode }) => periode.type === Periodetype.Uttak && periode.ønskerSamtidigUttak === true
     },
     [Sp.overføringsårsak]: {
-        isAnswered: ({ periode }) => periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak),
+        isAnswered: ({ periode }) =>
+            (periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak)) || isOppholdsperiode(periode),
         isRequired: (payload) =>
             visKvote(payload) &&
             payload.periode.type === Periodetype.Overføring &&
@@ -279,20 +286,24 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.overføringsdokumentasjon]: {
         isOptional: () => true,
-        isAnswered: ({ periode }) => periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak),
+        isAnswered: ({ periode }) =>
+            (periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak)) || isOppholdsperiode(periode),
         isRequired: (payload) => visOverføringsdokumentasjon(payload)
     },
     [Sp.skalHaGradering]: {
-        isAnswered: ({ periode }) => periode.type === Periodetype.Uttak && questionValueIsOk(periode.gradert),
+        isAnswered: ({ periode }) =>
+            (periode.type === Periodetype.Uttak && questionValueIsOk(periode.gradert)) || isOppholdsperiode(periode),
         isRequired: (payload) => visGradering(payload)
     },
     [Sp.stillingsprosent]: {
-        isAnswered: ({ periode }) => periode.type === Periodetype.Uttak && questionValueIsOk(periode.stillingsprosent),
+        isAnswered: ({ periode }) =>
+            (periode.type === Periodetype.Uttak && questionValueIsOk(periode.stillingsprosent)) ||
+            isOppholdsperiode(periode),
         parentQuestion: Sp.skalHaGradering,
         isRequired: ({ periode }) => periode.type === Periodetype.Uttak && periode.gradert === true
     },
     [Sp.hvorSkalDuJobbe]: {
-        isAnswered: (payload) => hvorSkalDuJobbeErBesvart(payload),
+        isAnswered: (payload) => hvorSkalDuJobbeErBesvart(payload) || isOppholdsperiode(payload.periode),
         parentQuestion: Sp.stillingsprosent
     }
 };

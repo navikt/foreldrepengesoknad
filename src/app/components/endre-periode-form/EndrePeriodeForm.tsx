@@ -30,6 +30,7 @@ import './endrePeriodeForm.less';
 
 export type EndrePeriodeChangeEvent = (
     periode: RecursivePartial<Periode>,
+    replace: boolean,
     visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
 ) => void;
 
@@ -65,6 +66,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
     }
     onChange(
         periodeChanges: RecursivePartial<Periode>,
+        replace: boolean = false,
         visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
     ) {
         const { periode, dispatch } = this.props;
@@ -120,7 +122,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
                         </AlertStripe>
                     </Block>
 
-                    {periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold ? (
+                    {periode.type === Periodetype.Utsettelse ? (
                         <UtsettelseForm
                             periode={periode}
                             onChange={this.onChange}

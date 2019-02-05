@@ -111,7 +111,11 @@ export const validerPeriodeForm = (
     if (periode.type === Periodetype.Hull) {
         return undefined;
     }
-    if (periode.type === Periodetype.Overføring || periode.type === Periodetype.Uttak) {
+    if (
+        periode.type === Periodetype.Overføring ||
+        periode.type === Periodetype.Uttak ||
+        periode.type === Periodetype.Opphold
+    ) {
         return validerUttakForm({
             periode,
             velgbareStønadskontotyper: getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer),

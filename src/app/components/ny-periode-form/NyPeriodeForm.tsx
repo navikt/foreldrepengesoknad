@@ -76,16 +76,21 @@ class NyPeriodeForm extends React.Component<Props, State> {
 
     updatePeriode(
         periode: RecursivePartial<Periode>,
+        replace: boolean,
         visibility?: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
     ) {
-        const updatedPeriode = {
-            ...this.state.periode,
-            ...periode
-        };
-        this.setState({
-            periode: updatedPeriode as RecursivePartial<Periode>,
-            visibility
-        });
+        if (replace) {
+            this.setState({ periode, visibility });
+        } else {
+            const updatedPeriode = {
+                ...this.state.periode,
+                ...periode
+            };
+            this.setState({
+                periode: updatedPeriode as RecursivePartial<Periode>,
+                visibility
+            });
+        }
     }
 
     handleOnSubmit(e: FormSubmitEvent) {
@@ -96,7 +101,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
         const { søker, annenForelder } = this.props.søknad;
         const cleanedPeriode = PeriodeCleanup.cleanupNyPeriode(periode as Periode, søker, annenForelder, visibility);
         onSubmit(cleanedPeriode as Periode);
-        this.updatePeriode({ tidsperiode: {} });
+        this.updatePeriode({ tidsperiode: {} }, false);
     }
 
     render() {
