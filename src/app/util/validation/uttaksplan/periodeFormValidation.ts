@@ -8,7 +8,8 @@ import {
     Periode,
     Periodetype,
     UtsettelseÅrsakType,
-    Utsettelsesperiode
+    Utsettelsesperiode,
+    isUttaksperiode
 } from '../../../types/uttaksplan/periodetyper';
 import AnnenForelder from '../../../types/søknad/AnnenForelder';
 import { PeriodeValideringsfeil, PeriodeValideringErrorKey } from '../../../redux/reducers/uttaksplanValideringReducer';
@@ -80,9 +81,9 @@ const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] |
     const visibility = getUttakFormVisibility(payload);
     const valideringsfeil: PeriodeValideringsfeil[] = [];
 
-    // if (payload.periode.konto === undefined) {
-    //     valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.STØNADSKONTO_MANGLER });
-    // }
+    if (isUttaksperiode(payload.periode) && payload.periode.konto === undefined) {
+        valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.STØNADSKONTO_MANGLER });
+    }
 
     if (uttakTidsperiodeErGyldig(payload.periode, payload.familiehendelsesdato) === false) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE });

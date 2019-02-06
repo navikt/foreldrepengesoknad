@@ -590,6 +590,7 @@
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Barnet er født {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin den {dato}",
     "uttaksplan.familiehendelsesdato.omsorgsovertakelse": "Omsorgsovertakselsedato den {dato}",
+    "uttaksplan.periodenGjelder": "Hvem skal ha foreldrepenger?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål": "Hva skal {navnMor} gjøre i denne perioden?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid":
         "Du må legge ved bekreftelse fra {navnMor} sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent. Dersom mor er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.",
