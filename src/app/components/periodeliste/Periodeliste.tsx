@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, isUttaksperiode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
@@ -41,6 +41,7 @@ class Periodeliste extends React.Component<Props> {
 
         this.checkPeriodeFocus = this.checkPeriodeFocus.bind(this);
         this.handleOnItemToggle = this.handleOnItemToggle.bind(this);
+        this.shouldRenderHull = this.shouldRenderHull.bind(this);
 
         const { perioder } = props;
         if (perioder.length === 1 && perioder[0].id === props.lastAddedPeriodeId) {
@@ -71,6 +72,15 @@ class Periodeliste extends React.Component<Props> {
         this.checkPeriodeFocus();
     }
 
+    shouldRenderHull(perioder: Periode[]) {
+        return perioder
+            .filter((p: Periode) => p.type !== Periodetype.Hull)
+            .some(
+                (p: Periode) =>
+                    (isUttaksperiode(p) && p.konto !== StønadskontoType.AktivitetsfriKvote) || !isUttaksperiode(p)
+            );
+    }
+
     checkPeriodeFocus() {
         if (this.periodeToBeFocused) {
             focusElement(getPeriodelisteElementId(this.periodeToBeFocused));
@@ -94,6 +104,11 @@ class Periodeliste extends React.Component<Props> {
             onLeggTilOpphold,
             onLeggTilPeriode
         } = this.props;
+
+        const filteredPerioder = this.shouldRenderHull(perioder)
+            ? perioder
+            : perioder.filter((p) => p.type !== Periodetype.Hull);
+
         return (
             <ToggleList
                 ref={(c) => (this.toggleList = c)}
@@ -113,7 +128,7 @@ class Periodeliste extends React.Component<Props> {
                                     onToggle={onToggle}
                                 />
                             ))}
-                        {perioder.map((periode, idx) => {
+                        {filteredPerioder.map((periode) => {
                             const itemId = getPeriodelisteElementId(periode.id);
                             const isExpanded = isOpen(itemId);
                             return periode.type === Periodetype.Hull ? (
