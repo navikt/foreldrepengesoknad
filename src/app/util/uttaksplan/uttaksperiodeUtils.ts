@@ -1,4 +1,4 @@
-import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
+import { StønadskontoType, OppholdÅrsakType } from '../../types/uttaksplan/periodetyper';
 import { DatoAvgrensninger } from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { Avgrensninger } from 'nav-datovelger';
 import { Tidsperiode } from 'common/types';
@@ -13,6 +13,34 @@ const standardAvgrensningerForUttakEtterFødsel = (familiehendelsesdato: Date): 
         minDato: Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
         maksDato: getSisteMuligeUttaksdag(familiehendelsesdato)
     };
+};
+
+export const getOppholdsÅrsakFromStønadskonto = (konto: StønadskontoType): OppholdÅrsakType | undefined => {
+    if (konto === StønadskontoType.Fedrekvote) {
+        return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
+    } else if (konto === StønadskontoType.Mødrekvote) {
+        return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+    } else if (konto === StønadskontoType.Fellesperiode) {
+        return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+    } else if (konto === StønadskontoType.Flerbarnsdager) {
+        return OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder;
+    } else {
+        return undefined;
+    }
+};
+
+export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): StønadskontoType | undefined => {
+    if (årsak === OppholdÅrsakType.UttakFedrekvoteAnnenForelder) {
+        return StønadskontoType.Fedrekvote;
+    } else if (årsak === OppholdÅrsakType.UttakMødrekvoteAnnenForelder) {
+        return StønadskontoType.Mødrekvote;
+    } else if (årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder) {
+        return StønadskontoType.Fellesperiode;
+    } else if (årsak === OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder) {
+        return StønadskontoType.Flerbarnsdager;
+    } else {
+        return undefined;
+    }
 };
 
 export function getDatoavgrensningerForStønadskonto(
