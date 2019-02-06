@@ -1,15 +1,9 @@
 import * as React from 'react';
-import {
-    Periode,
-    Periodetype,
-    isUttaksperiode,
-    StønadskontoType,
-    PeriodeHull
-} from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, isUttaksperiode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
-import ToggleList, { onToggleItemProp } from '../toggle-list/ToggleList';
+import ToggleList from '../toggle-list/ToggleList';
 import PeriodelisteHull from './items/PeriodelisteHull';
 import { focusElement } from '../../util/focusUtils';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
@@ -47,7 +41,6 @@ class Periodeliste extends React.Component<Props> {
 
         this.checkPeriodeFocus = this.checkPeriodeFocus.bind(this);
         this.handleOnItemToggle = this.handleOnItemToggle.bind(this);
-        this.renderHull = this.renderHull.bind(this);
         this.shouldRenderHull = this.shouldRenderHull.bind(this);
 
         const { perioder } = props;
@@ -77,28 +70,6 @@ class Periodeliste extends React.Component<Props> {
 
     componentDidMount() {
         this.checkPeriodeFocus();
-    }
-
-    renderHull(
-        shouldRenderHull: boolean,
-        periode: PeriodeHull,
-        itemId: string,
-        isExpanded: boolean,
-        onToggle: onToggleItemProp,
-        onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void,
-        onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void
-    ) {
-        return shouldRenderHull ? (
-            <PeriodelisteHull
-                key={itemId}
-                itemId={itemId}
-                isExpanded={isExpanded}
-                onToggle={onToggle}
-                periode={periode}
-                onLeggTilOpphold={onLeggTilOpphold}
-                onLeggTilPeriode={onLeggTilPeriode}
-            />
-        ) : null;
     }
 
     shouldRenderHull(perioder: Periode[]) {
@@ -134,7 +105,9 @@ class Periodeliste extends React.Component<Props> {
             onLeggTilPeriode
         } = this.props;
 
-        const shouldRenderHull = this.shouldRenderHull(perioder);
+        const filteredPerioder = this.shouldRenderHull(perioder)
+            ? perioder
+            : perioder.filter((p) => p.type !== Periodetype.Hull);
 
         return (
             <ToggleList
@@ -155,19 +128,19 @@ class Periodeliste extends React.Component<Props> {
                                     onToggle={onToggle}
                                 />
                             ))}
-                        {perioder.map((periode, idx) => {
+                        {filteredPerioder.map((periode) => {
                             const itemId = getPeriodelisteElementId(periode.id);
                             const isExpanded = isOpen(itemId);
                             return periode.type === Periodetype.Hull ? (
-                                this.renderHull(
-                                    shouldRenderHull,
-                                    periode,
-                                    itemId,
-                                    isExpanded,
-                                    onToggle,
-                                    onLeggTilOpphold,
-                                    onLeggTilPeriode
-                                )
+                                <PeriodelisteHull
+                                    key={itemId}
+                                    itemId={itemId}
+                                    isExpanded={isExpanded}
+                                    onToggle={onToggle}
+                                    periode={periode}
+                                    onLeggTilOpphold={onLeggTilOpphold}
+                                    onLeggTilPeriode={onLeggTilPeriode}
+                                />
                             ) : (
                                 <PeriodelistePeriode
                                     key={itemId}
