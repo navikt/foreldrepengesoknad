@@ -19,7 +19,14 @@ import { getUttaksstatus, skalBeregneAntallDagerBrukt } from '../../../util/utta
 import { HistoryProps } from '../../../types/common';
 import { hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar } from 'app/regler/uttaksplan/hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar';
 import { MissingAttachment } from '../../../types/MissingAttachment';
-import { Periode, TilgjengeligStønadskonto, SenEndringÅrsak } from '../../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    TilgjengeligStønadskonto,
+    SenEndringÅrsak,
+    Periodetype,
+    isUttaksperiode,
+    StønadskontoType
+} from '../../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../../util/uttaksplan/Periodene';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Søknadsinfo } from '../../../selectors/types';
@@ -240,6 +247,11 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         const planInneholderTapteDager =
             Periodene(søknad.uttaksplan).getHull().length > 0 ||
             infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor !== undefined;
+        const planInneholderAnnetEnnAktivitetsfriKvote = søknad.uttaksplan
+            .filter((p) => p.type !== Periodetype.Hull)
+            .some(
+                (p) => (isUttaksperiode(p) && p.konto !== StønadskontoType.AktivitetsfriKvote) || !isUttaksperiode(p)
+            );
 
         return (
             <Steg
@@ -316,7 +328,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             />
                         )}
 
-                        <Block margin="xs" visible={planInneholderTapteDager}>
+                        <Block
+                            margin="xs"
+                            visible={planInneholderTapteDager && planInneholderAnnetEnnAktivitetsfriKvote}>
                             <Veilederinfo type="advarsel">
                                 <FormattedMessage id="uttaksplan.veileder.planenInneholderHull" />
                             </Veilederinfo>
