@@ -76,16 +76,21 @@ class NyPeriodeForm extends React.Component<Props, State> {
 
     updatePeriode(
         periode: RecursivePartial<Periode>,
+        replace: boolean,
         visibility?: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
     ) {
-        const updatedPeriode = {
-            ...this.state.periode,
-            ...periode
-        };
-        this.setState({
-            periode: updatedPeriode as RecursivePartial<Periode>,
-            visibility
-        });
+        if (replace) {
+            this.setState({ periode, visibility });
+        } else {
+            const updatedPeriode = {
+                ...this.state.periode,
+                ...periode
+            };
+            this.setState({
+                periode: updatedPeriode as RecursivePartial<Periode>,
+                visibility
+            });
+        }
     }
 
     handleOnSubmit(e: FormSubmitEvent) {
@@ -96,7 +101,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
         const { søker, annenForelder } = this.props.søknad;
         const cleanedPeriode = PeriodeCleanup.cleanupNyPeriode(periode as Periode, søker, annenForelder, visibility);
         onSubmit(cleanedPeriode as Periode);
-        this.updatePeriode({ tidsperiode: {} });
+        this.updatePeriode({ tidsperiode: {} }, false);
     }
 
     render() {
@@ -110,7 +115,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                 <div className={bem.element('fargestrek')}>
                     <PeriodeFargestrek farge={getPeriodeFarge(periode as Periode, forelder)} />
                 </div>
-                {(periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold) && (
+                {periode.type === Periodetype.Utsettelse && (
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.utsettelse.tittel')} />
                         <UtsettelsesperiodeForm
@@ -121,7 +126,9 @@ class NyPeriodeForm extends React.Component<Props, State> {
                         />
                     </>
                 )}
-                {(periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring) && (
+                {(periode.type === Periodetype.Uttak ||
+                    periode.type === Periodetype.Overføring ||
+                    periode.type === Periodetype.Opphold) && (
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.uttak.tittel')} />
                         <UttakForm

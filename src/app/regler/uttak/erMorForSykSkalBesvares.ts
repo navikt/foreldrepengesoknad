@@ -1,5 +1,5 @@
 import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
-import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
+import { StønadskontoType, isUttaksperiode, isOverføringsperiode } from '../../types/uttaksplan/periodetyper';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { Uttaksdatoer } from '../../selectors/types';
 import { erInnenFørsteSeksUkerFødselFarMedmor } from '../periodeegenskaper/erInnenFørsteSeksUkerFødselFarMedmor';
@@ -12,19 +12,23 @@ const erMorForForSykSkalBesvares = (
     uttaksdatoer: Uttaksdatoer,
     erFlerbarnssøknad: boolean
 ): boolean => {
-    const { konto } = periode;
-    if (
-        konto === StønadskontoType.Fedrekvote &&
-        erInnenFørsteSeksUkerFødselFarMedmor(
-            periode.tidsperiode as Tidsperiode,
-            situasjon,
-            søkerErFarEllerMedmor,
-            uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker
-        ) &&
-        erFlerbarnssøknad === false
-    ) {
-        return true;
+    if (isUttaksperiode(periode) || isOverføringsperiode(periode)) {
+        const { konto } = periode;
+        if (
+            konto === StønadskontoType.Fedrekvote &&
+            erInnenFørsteSeksUkerFødselFarMedmor(
+                periode.tidsperiode as Tidsperiode,
+                situasjon,
+                søkerErFarEllerMedmor,
+                uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker
+            ) &&
+            erFlerbarnssøknad === false
+        ) {
+            return true;
+        }
+        return false;
     }
+
     return false;
 };
 

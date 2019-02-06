@@ -10,7 +10,6 @@ import {
     TilgjengeligStønadskonto
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
-import OppholdsårsakSpørsmål from './partials/OppholdsårsakSpørsmål';
 import UtsettelsePgaFerieInfo from './partials/UtsettelsePgaFerieInfo';
 import { Forelder, NavnPåForeldre, Tidsperiode } from 'common/types';
 import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
@@ -24,16 +23,15 @@ import getMessage from 'common/util/i18nUtils';
 import Søknad from '../../types/søknad/Søknad';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { InjectedIntlProps, injectIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import { RecursivePartial } from '../../types/Partial';
-import { getErSøkerFarEllerMedmor, formaterNavn } from '../../util/domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../../util/domain/personUtil';
 import { AppState } from '../../redux/reducers';
 import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksplan/utsettelseÅrsak';
-import lenker from '../../util/routing/lenker';
 import HvorSkalDuJobbeSpørsmålFlervalg from 'app/spørsmål/HvorSkalDuJobbeSpørsmålFlervalg';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
 import { Tidsperioden, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
@@ -67,26 +65,21 @@ interface State {
 export enum Utsettelsesvariant {
     Ferie = 'ferie',
     Arbeid = 'arbeid',
-    Sykdom = 'sykdom',
-    UttakAnnenForelder = 'uttakAnnenForelder'
+    Sykdom = 'sykdom'
 }
 
 export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utsettelsesvariant | undefined => {
-    if (periode.type === Periodetype.Opphold) {
-        return Utsettelsesvariant.UttakAnnenForelder;
-    } else {
-        switch (periode.årsak) {
-            case UtsettelseÅrsakType.Arbeid:
-                return Utsettelsesvariant.Arbeid;
-            case UtsettelseÅrsakType.Ferie:
-                return Utsettelsesvariant.Ferie;
-            case UtsettelseÅrsakType.Sykdom:
-            case UtsettelseÅrsakType.InstitusjonBarnet:
-            case UtsettelseÅrsakType.InstitusjonSøker:
-                return Utsettelsesvariant.Sykdom;
-            default:
-                return undefined;
-        }
+    switch (periode.årsak) {
+        case UtsettelseÅrsakType.Arbeid:
+            return Utsettelsesvariant.Arbeid;
+        case UtsettelseÅrsakType.Ferie:
+            return Utsettelsesvariant.Ferie;
+        case UtsettelseÅrsakType.Sykdom:
+        case UtsettelseÅrsakType.InstitusjonBarnet:
+        case UtsettelseÅrsakType.InstitusjonSøker:
+            return Utsettelsesvariant.Sykdom;
+        default:
+            return undefined;
     }
 };
 
@@ -123,8 +116,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         }
     }
 
-    onChange(periode: UtsettelseFormPeriodeType) {
-        this.props.onChange(periode, this.getVisibility());
+    onChange(periode: UtsettelseFormPeriodeType, replace: boolean = false) {
+        this.props.onChange(periode, replace, this.getVisibility());
         if (this.context.validForm) {
             this.context.validForm.validateAll();
         }
@@ -155,47 +148,33 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             return defaultRadios;
         }
 
-        return [
-            ...defaultRadios,
-            {
-                label: `${formaterNavn(annenForelder.fornavn, annenForelder.etternavn)} ${getMessage(
-                    intl,
-                    'skaltautforeldrepenger'
-                )}`,
-                value: Utsettelsesvariant.UttakAnnenForelder
-            }
-        ];
+        return [...defaultRadios];
     }
 
     onVariantChange(variant: Utsettelsesvariant) {
         if (variant !== this.state.variant) {
-            if (variant === Utsettelsesvariant.UttakAnnenForelder) {
-                const forelder = this.props.søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR;
-                this.onChange({ type: Periodetype.Opphold, årsak: undefined, forelder });
-            } else {
-                const forelder = this.props.søkerErFarEllerMedmor === false ? Forelder.MOR : Forelder.FARMEDMOR;
-                if (variant === Utsettelsesvariant.Arbeid) {
-                    this.onChange({
-                        type: Periodetype.Utsettelse,
-                        årsak: UtsettelseÅrsakType.Arbeid,
-                        forelder,
-                        erArbeidstaker: this.props.arbeidsforhold.length > 0
-                    });
-                } else if (variant === Utsettelsesvariant.Ferie) {
-                    this.onChange({
-                        type: Periodetype.Utsettelse,
-                        årsak: UtsettelseÅrsakType.Ferie,
-                        forelder,
-                        erArbeidstaker: this.props.arbeidsforhold.length > 0
-                    });
-                } else if (variant === Utsettelsesvariant.Sykdom) {
-                    this.onChange({
-                        type: Periodetype.Utsettelse,
-                        årsak: undefined,
-                        forelder,
-                        erArbeidstaker: this.props.arbeidsforhold.length > 0
-                    });
-                }
+            const forelder = this.props.søkerErFarEllerMedmor === false ? Forelder.MOR : Forelder.FARMEDMOR;
+            if (variant === Utsettelsesvariant.Arbeid) {
+                this.onChange({
+                    type: Periodetype.Utsettelse,
+                    årsak: UtsettelseÅrsakType.Arbeid,
+                    forelder,
+                    erArbeidstaker: this.props.arbeidsforhold.length > 0
+                });
+            } else if (variant === Utsettelsesvariant.Ferie) {
+                this.onChange({
+                    type: Periodetype.Utsettelse,
+                    årsak: UtsettelseÅrsakType.Ferie,
+                    forelder,
+                    erArbeidstaker: this.props.arbeidsforhold.length > 0
+                });
+            } else if (variant === Utsettelsesvariant.Sykdom) {
+                this.onChange({
+                    type: Periodetype.Utsettelse,
+                    årsak: undefined,
+                    forelder,
+                    erArbeidstaker: this.props.arbeidsforhold.length > 0
+                });
             }
         }
         this.setState({
@@ -247,7 +226,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             navnPåForeldre,
             harOverlappendePerioder,
             onCancel,
-            tilgjengeligeStønadskontoer,
             intl
         } = this.props;
         const { variant } = this.state;
@@ -356,27 +334,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                     onChange={(periodeData) => this.onChange(periodeData)}
                                 />
                             </Block>
-                        </>
-                    )}
-                    {periode.type === Periodetype.Opphold && (
-                        <>
-                            <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.oppholdsårsak)}>
-                                <OppholdsårsakSpørsmål
-                                    onChange={(oppholdsårsak) => this.onChange({ årsak: oppholdsårsak })}
-                                    oppholdsårsak={periode.årsak}
-                                    navnAnnenForelder={søknad.annenForelder.fornavn}
-                                    søkerErFarEllerMedmor={getErSøkerFarEllerMedmor(søknad.søker.rolle)}
-                                    tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                />
-                            </Block>
-                            {periode.årsak !== undefined && (
-                                <Veilederinfo>
-                                    <FormattedHTMLMessage
-                                        id="uttaksplan.infoVedOpphold"
-                                        values={{ navn: søknad.annenForelder.fornavn, link: lenker.viktigeFrister }}
-                                    />
-                                </Veilederinfo>
-                            )}
                         </>
                     )}
                 </Block>

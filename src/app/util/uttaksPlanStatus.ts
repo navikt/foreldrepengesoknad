@@ -5,14 +5,14 @@ import {
     StønadskontoType,
     isUttaksperiode,
     Periodetype,
-    Oppholdsperiode,
-    OppholdÅrsakType
+    Oppholdsperiode
 } from '../types/uttaksplan/periodetyper';
 import { Stønadskontouttak } from '../components/uttaksoppsummering/Uttaksoppsummering';
 import { Forelder } from 'common/types';
 import { Perioden } from './uttaksplan/Perioden';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { Periodene } from './uttaksplan/Periodene';
+import { getStønadskontoFromOppholdsårsak } from './uttaksplan/uttaksperiodeUtils';
 
 export const finnAntallDagerÅTrekke = (dager: number, p: Periode): number => {
     if (isUttaksperiode(p)) {
@@ -84,20 +84,7 @@ const getUttakFraOppholdsperioder = (oppholdsperioder: Oppholdsperiode[]): Uttak
         id: opphold.id,
         tidsperiode: opphold.tidsperiode,
         type: Periodetype.Uttak,
-        konto: getStønadskontotypeFromOppholdsårsak(opphold.årsak),
+        konto: getStønadskontoFromOppholdsårsak(opphold.årsak)!,
         forelder: opphold.forelder
     }));
-};
-
-const getStønadskontotypeFromOppholdsårsak = (årsak: OppholdÅrsakType): StønadskontoType => {
-    switch (årsak) {
-        case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
-            return StønadskontoType.Fedrekvote;
-        case OppholdÅrsakType.UttakFellesperiodeAnnenForelder:
-            return StønadskontoType.Fellesperiode;
-        case OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder:
-            return StønadskontoType.Flerbarnsdager;
-        case OppholdÅrsakType.UttakMødrekvoteAnnenForelder:
-            return StønadskontoType.Mødrekvote;
-    }
 };

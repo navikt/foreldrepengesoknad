@@ -2,12 +2,7 @@ import { QuestionConfig, Questions, QuestionVisibility, questionValueIsOk } from
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Utsettelsesvariant, UtsettelseFormPeriodeType } from './UtsettelseForm';
 import { Tidsperiode } from 'nav-datovelger';
-import {
-    UtsettelseÅrsakType,
-    Utsettelsesperiode,
-    Oppholdsperiode,
-    Periodetype
-} from '../../types/uttaksplan/periodetyper';
+import { UtsettelseÅrsakType, Utsettelsesperiode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from 'app/util/domain/aktivitetskravMor';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 
@@ -17,7 +12,6 @@ export enum UtsettelseSpørsmålKeys {
     'sykdomsårsak' = 'sykdomsårsak',
     'arbeidsplass' = 'arbeidsplass',
     'morsAktivitet' = 'morsAktivitet',
-    'oppholdsårsak' = 'oppholdsårsak',
     'ferieinfo' = 'ferieinfo'
 }
 
@@ -85,11 +79,6 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
                 : true,
         parentQuestion: Sp.variant,
         isRequired: ({ variant }) => variant === Utsettelsesvariant.Arbeid
-    },
-    [Sp.oppholdsårsak]: {
-        isAnswered: ({ periode }) => questionValueIsOk((periode as Oppholdsperiode).årsak),
-        parentQuestion: Sp.variant,
-        isRequired: ({ variant }) => variant === Utsettelsesvariant.UttakAnnenForelder
     },
     [Sp.morsAktivitet]: {
         isAnswered: ({ periode }) => questionValueIsOk((periode as Utsettelsesperiode).morsAktivitetIPerioden),
