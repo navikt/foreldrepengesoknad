@@ -1,9 +1,15 @@
 import * as React from 'react';
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    Periodetype,
+    isUttaksperiode,
+    StønadskontoType,
+    PeriodeHull
+} from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
-import ToggleList from '../toggle-list/ToggleList';
+import ToggleList, { onToggleItemProp } from '../toggle-list/ToggleList';
 import PeriodelisteHull from './items/PeriodelisteHull';
 import { focusElement } from '../../util/focusUtils';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
@@ -41,6 +47,8 @@ class Periodeliste extends React.Component<Props> {
 
         this.checkPeriodeFocus = this.checkPeriodeFocus.bind(this);
         this.handleOnItemToggle = this.handleOnItemToggle.bind(this);
+        this.renderHull = this.renderHull.bind(this);
+        this.shouldRenderHull = this.shouldRenderHull.bind(this);
 
         const { perioder } = props;
         if (perioder.length === 1 && perioder[0].id === props.lastAddedPeriodeId) {
@@ -71,6 +79,37 @@ class Periodeliste extends React.Component<Props> {
         this.checkPeriodeFocus();
     }
 
+    renderHull(
+        shouldRenderHull: boolean,
+        periode: PeriodeHull,
+        itemId: string,
+        isExpanded: boolean,
+        onToggle: onToggleItemProp,
+        onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void,
+        onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void
+    ) {
+        return shouldRenderHull ? (
+            <PeriodelisteHull
+                key={itemId}
+                itemId={itemId}
+                isExpanded={isExpanded}
+                onToggle={onToggle}
+                periode={periode}
+                onLeggTilOpphold={onLeggTilOpphold}
+                onLeggTilPeriode={onLeggTilPeriode}
+            />
+        ) : null;
+    }
+
+    shouldRenderHull(perioder: Periode[]) {
+        return perioder
+            .filter((p: Periode) => p.type !== Periodetype.Hull)
+            .some(
+                (p: Periode) =>
+                    (isUttaksperiode(p) && p.konto !== StønadskontoType.AktivitetsfriKvote) || !isUttaksperiode(p)
+            );
+    }
+
     checkPeriodeFocus() {
         if (this.periodeToBeFocused) {
             focusElement(getPeriodelisteElementId(this.periodeToBeFocused));
@@ -94,6 +133,9 @@ class Periodeliste extends React.Component<Props> {
             onLeggTilOpphold,
             onLeggTilPeriode
         } = this.props;
+
+        const shouldRenderHull = this.shouldRenderHull(perioder);
+
         return (
             <ToggleList
                 ref={(c) => (this.toggleList = c)}
@@ -117,15 +159,15 @@ class Periodeliste extends React.Component<Props> {
                             const itemId = getPeriodelisteElementId(periode.id);
                             const isExpanded = isOpen(itemId);
                             return periode.type === Periodetype.Hull ? (
-                                <PeriodelisteHull
-                                    key={itemId}
-                                    itemId={itemId}
-                                    isExpanded={isExpanded}
-                                    onToggle={onToggle}
-                                    periode={periode}
-                                    onLeggTilOpphold={onLeggTilOpphold}
-                                    onLeggTilPeriode={onLeggTilPeriode}
-                                />
+                                this.renderHull(
+                                    shouldRenderHull,
+                                    periode,
+                                    itemId,
+                                    isExpanded,
+                                    onToggle,
+                                    onLeggTilOpphold,
+                                    onLeggTilPeriode
+                                )
                             ) : (
                                 <PeriodelistePeriode
                                     key={itemId}
