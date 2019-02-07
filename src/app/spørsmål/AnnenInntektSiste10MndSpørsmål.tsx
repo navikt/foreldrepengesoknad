@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../components/ja-nei-spørsmål/JaNeiSpørsmål';
 
@@ -23,6 +23,7 @@ class AnnenInntektSiste10MndSpørsmål extends React.Component<Props> {
                     ja: getMessage(intl, 'annenInntekt.alternativ.hatt'),
                     nei: getMessage(intl, 'annenInntekt.alternativ.ikkeHatt')
                 }}
+                hjelpetekst={<AnnenInntektSiste10MndHjelpeTekst intl={intl}/>}
                 onChange={(verdi) => onChange(verdi)}
             />
         );
@@ -30,3 +31,18 @@ class AnnenInntektSiste10MndSpørsmål extends React.Component<Props> {
 }
 
 export default injectIntl(AnnenInntektSiste10MndSpørsmål);
+
+const AnnenInntektSiste10MndHjelpeTekst= ({ intl }: {intl: InjectedIntl}) => {
+    return (
+        <div>
+            <div>{getMessage(intl, 'annenInntekt.infoboksTekst.overskrift')}</div>
+            <ul>
+                <li>{getMessage(intl, 'annenInntekt.infoboksTekst.punktEn')}</li>
+                <li>{getMessage(intl, 'annenInntekt.infoboksTekst.punktTo')}</li>
+                <li>{getMessage(intl, 'annenInntekt.infoboksTekst.punktTre')}</li>
+                <li>{getMessage(intl, 'annenInntekt.infoboksTekst.punktFire')}</li>
+                <li>{getMessage(intl, 'annenInntekt.infoboksTekst.punktFem')}</li>
+            </ul>
+        </div>
+    );
+};

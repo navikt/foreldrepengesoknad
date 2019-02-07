@@ -4,12 +4,13 @@ import { Element } from 'nav-frontend-typografi';
 import BEMHelper from 'common/util/bem';
 
 import './tittel.less';
+import { Stil } from 'common/components/sirkelknapp/Sirkelknapp';
 
 export interface Props {
     tittel: string;
     info?: {
-        tekst: string;
-        rikTekst?: React.ReactNode;
+        tekst: string | React.ReactNode;
+        stil?: Stil;
     };
 }
 
@@ -23,7 +24,7 @@ const Tittel: React.StatelessComponent<Props> = ({ tittel, info }) => {
             </Element>
             {info && (
                 <div className={bem.element('infotekst')}>
-                    <Infoboks tekst={info.tekst}>{info.rikTekst || info.tekst}</Infoboks>
+                    <Infoboks tekst={info.tekst} stil={info.stil} />
                 </div>
             )}
         </div>

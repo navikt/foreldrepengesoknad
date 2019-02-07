@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedHTMLMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../components/ja-nei-spørsmål/JaNeiSpørsmål';
 
@@ -19,6 +19,7 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
             navn="harJobbetSomFrilansSiste10Mnd"
             valgtVerdi={harJobbetSomFrilansSiste10Mnd}
             onChange={(verdi) => onChange(verdi)}
+            hjelpetekst={<FormattedHTMLMessage id={'harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst'}/>}
         />
     );
 };
