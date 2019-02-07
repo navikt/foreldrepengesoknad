@@ -19,7 +19,7 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
             navn="harJobbetSomFrilansSiste10Mnd"
             valgtVerdi={harJobbetSomFrilansSiste10Mnd}
             onChange={(verdi) => onChange(verdi)}
-            hjelpetekst={<FormattedHTMLMessage id={'harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst'}/>}
+            hjelpetekst={<FormattedHTMLMessage id={'harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst'} />}
         />
     );
 };

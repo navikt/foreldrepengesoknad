@@ -23,7 +23,7 @@ class AnnenInntektSiste10MndSpørsmål extends React.Component<Props> {
                     ja: getMessage(intl, 'annenInntekt.alternativ.hatt'),
                     nei: getMessage(intl, 'annenInntekt.alternativ.ikkeHatt')
                 }}
-                hjelpetekst={<AnnenInntektSiste10MndHjelpeTekst intl={intl}/>}
+                hjelpetekst={<AnnenInntektSiste10MndHjelpeTekst intl={intl} />}
                 onChange={(verdi) => onChange(verdi)}
             />
         );
@@ -32,7 +32,7 @@ class AnnenInntektSiste10MndSpørsmål extends React.Component<Props> {
 
 export default injectIntl(AnnenInntektSiste10MndSpørsmål);
 
-const AnnenInntektSiste10MndHjelpeTekst= ({ intl }: {intl: InjectedIntl}) => {
+const AnnenInntektSiste10MndHjelpeTekst = ({ intl }: { intl: InjectedIntl }) => {
     return (
         <div>
             <div>{getMessage(intl, 'annenInntekt.infoboksTekst.overskrift')}</div>

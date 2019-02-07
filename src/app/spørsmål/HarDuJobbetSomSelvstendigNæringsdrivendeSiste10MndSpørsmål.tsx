@@ -19,7 +19,9 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (props: Pr
             navn="harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd"
             valgtVerdi={harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd}
             onChange={(verdi) => onChange(verdi)}
-            hjelpetekst={<FormattedHTMLMessage id={'harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst'} />}
+            hjelpetekst={
+                <FormattedHTMLMessage id={'harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst'} />
+            }
         />
     );
 };
