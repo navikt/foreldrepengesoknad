@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl';
+import { injectIntl, InjectedIntl } from 'react-intl';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
-import { Element } from 'nav-frontend-typografi';
 import { Validator } from 'common/lib/validation/types';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import ValiderbarUkerDagerTeller from 'common/lib/validation/elements/ValiderbarUkerDagerTeller';
+import Tittel from '../../../../components/tittel/Tittel';
 
 interface AntallUkerOgDagerFellesperiodeFarMedmorProps {
     antallUkerFellesperiode: number;
@@ -46,9 +46,12 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: React.StatelessComponen
             return (
                 <>
                     <Block margin="xxs">
-                        <Element>
-                            <FormattedMessage id="spørsmål.farFellesperiode.label" />
-                        </Element>
+                        <Tittel
+                            tittel={getMessage(intl, 'spørsmål.farFellesperiode.label')}
+                            info={{
+                                tekst: getMessage(intl, 'spørsmål.farFellesperiode.infoboksTekst')
+                            }}
+                        />
                     </Block>
                     <Block margin="xxs">
                         <ValiderbarUkerDagerTeller

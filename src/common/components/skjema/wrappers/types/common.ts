@@ -1,7 +1,7 @@
 import { ValiderbartSkjemaelementProps } from 'common/lib/validation/elements/ValiderbartSkjemaelement';
 
 export interface CommonSkjemaelementProps {
-    infotekst?: string;
+    infotekst?: string | React.ReactNode;
 }
 
 export type SkjemaelementProps = CommonSkjemaelementProps & ValiderbartSkjemaelementProps;

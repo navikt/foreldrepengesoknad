@@ -55,6 +55,12 @@
     "annenInntekt.modal.velgInntektstype": "Velg inntektstype",
     "annenInntekt.oppfølgingsspørsmål": "Perioder med annen inntekt",
     "annenInntekt.spørsmål": "Har du hatt andre inntektskilder de siste 10 månedene?",
+    "annenInntekt.infoboksTekst.overskrift": "Disse inntektene kan gi deg rett til foreldrepenger:",
+    "annenInntekt.infoboksTekst.punktEn": "Vernepliktig i militæret",
+    "annenInntekt.infoboksTekst.punktTo": "Jobbet i et annet EØS-land",
+    "annenInntekt.infoboksTekst.punktTre": "Ventelønn",
+    "annenInntekt.infoboksTekst.punktFire": "Sluttpakke",
+    "annenInntekt.infoboksTekst.punktFem": "Lønn fra arbeidsgiver under videre- eller etterutdanning",
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi navnet på arbeidsgiveren",
     "annenInntekt.spørsmål.næringsinntekt":
         "Hva har du hatt i næringsinntekt før skatt de siste tolv månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.",
@@ -197,6 +203,8 @@
     "gradering.prosent": "{stillingsprosent} prosent",
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepenger",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet som frilanser de siste ti månedene?",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
+        "<a href=\"https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/  class=\"lenke\" rel=\"noopener\" target=\"_blank\">Du kan lese mer om hva det betyr å være frilanser på skatteetaten sine hjemmesider.</a>",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie de siste ti månedene",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
@@ -205,6 +213,8 @@
         "Har du de siste 12 månedene jobbet for en nær venn eller familie?",
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
         "Har du jobbet som selvstendig næringsdrivende de siste ti månedene?",
+    "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst":
+        "Du kan lese mer om hva det betyr å være selvstendig næringsdrivende på skatteetaten sin <a href=\" https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/ class=\"lenke\" rel=\"noopener\" target=\"_blank\">hjemmesider</a>",
     "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
     "harRevisor.spørsmål": "Har du revisor?",
     "heltid": "Heltid",
@@ -462,6 +472,8 @@
     "selvstendigNæringsdrivende.oppfølgingsspørsmål": "Perioder som selvstendig næringsdrivende",
     "selvstendigNæringsdrivende.tidsperiode.fom": "Når startet du {navnPåNæringen}?",
     "selvstendigNæringsdrivende.tidsperiode.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
+    "selvstendigNæringsdrivende.modal.infoboks.forFisker":
+        "Hvis du ikke har organisasjonsnummer må du sende <a href=\"https://www.nav.no/no/Person/Skjemaer-for-privatpersoner/Skjemaer/Familie/foreldrepenger-og-engangsstonad/Foreldrepenger+og+engangsst%C3%B8nad?method=mail&veiledertype=privatperson\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">søknaden i posten</a>",
     "skalDereHaGradertUttakSamtidig.spørsmål": "Skal dere ha foreldrepenger samtidig?",
     "skaldujobbeheltidellerdeltid.spørsmål": "Skal du jobbe heltid eller deltid?",
     "skaltautforeldrepenger": "skal ta ut foreldrepenger",
@@ -486,6 +498,7 @@
     "spørsmål.farFellesperiode.label": "Hvor mye fellesperiode skal du ha?",
     "spørsmål.farFellesperiode.uker.label": "Antall uker",
     "spørsmål.farFellesperiode.dager.label": "Antall dager",
+    "spørsmål.farFellesperiode.infoboksTekst": "Fellesperioden er ukene med foreldrepenger som dere kan dele.",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe utsettelse i perioden med foreldrepenger?",
     "spørsmål.skalHaDelAvFellesperiodeSpørsmål.label": "Skal du ha noe av fellesperioden?",
     "spørsmål.skalStarteRettEtterMorSpørsmål.label":
