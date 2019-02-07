@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Input from 'common/components/skjema/wrappers/Input';
@@ -101,6 +101,14 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         this.updateNæring({ næringstyper: newNæringstyper });
     }
 
+    visInfoboksForFiskere(): boolean {
+        const avkryssetNæring = this.state.næring;
+        if (avkryssetNæring.næringstyper !== undefined) {
+            return avkryssetNæring.næringstyper.some(avkryssetNæring => avkryssetNæring === 'FISKE');
+        }
+        return false;
+    }
+
     render() {
         const { intl, isOpen, onCancel } = this.props;
         const { næring } = this.state;
@@ -172,6 +180,13 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     <Input
                         name="selvstendigNæringsdrivende-orgnr"
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.orgnr')}
+                        infotekst={
+                            this.visInfoboksForFiskere() ? (
+                                <FormattedHTMLMessage id="selvstendigNæringsdrivende.modal.infoboks.forFisker" />
+                            ) : (
+                                undefined
+                            )
+                        }
                         onChange={(v: string) =>
                             this.updateNæring({
                                 organisasjonsnummer: removeSpacesFromString(v)
