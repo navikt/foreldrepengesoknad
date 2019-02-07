@@ -104,7 +104,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
     visInfoboksForFiskere(): boolean {
         const avkryssetNæring = this.state.næring;
         if (avkryssetNæring.næringstyper !== undefined) {
-            return avkryssetNæring.næringstyper.some(avkryssetNæring => avkryssetNæring === 'FISKE');
+            return avkryssetNæring.næringstyper.some(næringstype => næringstype === 'FISKE');
         }
         return false;
     }
