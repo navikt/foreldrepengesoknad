@@ -23,12 +23,14 @@ import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/utta
 import { uttaksplanStarterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanStarterMedOpphold';
 import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
+import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 
 const stateSelector = (state: AppState) => state;
 
 const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode => {
     const { søker, annenForelder, barn, situasjon } = appState.søknad;
     const { tilgjengeligeStønadskontoer } = appState.api;
+    const søknadsinfo = getSøknadsinfo(appState);
     const familiehendelsesdato = getFamiliehendelsedato(barn, situasjon);
     const advarsler = [];
     if (hasPeriodeMissingAttachment(periode, søker.rolle, annenForelder)) {
@@ -43,7 +45,8 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
                 annenForelder,
                 tilgjengeligeStønadskontoer,
                 familiehendelsesdato,
-                situasjon
+                situasjon,
+                søknadsinfo!.søknaden.erDeltUttak
             ) || [],
         advarsler,
         overlappendePerioder: Periodene(appState.søknad.uttaksplan).finnOverlappendePerioder(periode)
