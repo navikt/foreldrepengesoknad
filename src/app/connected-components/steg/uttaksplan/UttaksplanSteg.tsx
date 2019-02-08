@@ -391,12 +391,18 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
     };
 
     let perioder = søknad.uttaksplan;
-    const { søknaden, søker } = søknadsinfo!;
+    if (søknadsinfo) {
+        const { søknaden, søker } = søknadsinfo;
 
-    if (søknaden.erFødsel && søknaden.erDeltUttak && søker.erFarEllerMedmor) {
-        const sisteUttaksdatoMor = state.søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag;
-        const førsteUttaksdatoFar = state.søknad.ekstrainfo.uttaksplanSkjema.farSinFørsteUttaksdag;
-        perioder = hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar(perioder, sisteUttaksdatoMor, førsteUttaksdatoFar);
+        if (søknaden.erFødsel && søknaden.erDeltUttak && søker.erFarEllerMedmor) {
+            const sisteUttaksdatoMor = state.søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag;
+            const førsteUttaksdatoFar = state.søknad.ekstrainfo.uttaksplanSkjema.farSinFørsteUttaksdag;
+            perioder = hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar(
+                perioder,
+                sisteUttaksdatoMor,
+                førsteUttaksdatoFar
+            );
+        }
     }
 
     return {
