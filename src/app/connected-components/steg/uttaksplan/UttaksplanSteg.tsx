@@ -25,7 +25,8 @@ import {
     SenEndringÅrsak,
     Periodetype,
     isUttaksperiode,
-    StønadskontoType
+    StønadskontoType,
+    isUtsettelsesperiode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../../util/uttaksplan/Periodene';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
@@ -48,6 +49,8 @@ import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/utta
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { formaterDato } from 'common/util/datoUtils';
+import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 
 interface StateProps {
     stegProps: StegProps;
@@ -129,6 +132,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.onBekreftSlettUttaksplan = this.onBekreftSlettUttaksplan.bind(this);
         this.delayedSetFocusOnFeiloppsummering = this.delayedSetFocusOnFeiloppsummering.bind(this);
         this.getOvertrukneKontoer = this.getOvertrukneKontoer.bind(this);
+        this.planErBareUtsettelser = this.planErBareUtsettelser.bind(this);
 
         this.state = {
             bekreftGåTilbakeDialogSynlig: false,
@@ -193,6 +197,10 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     getOvertrukneKontoer(uttaksstatusOvertrukneDager: Stønadskontouttak[]) {
         return uttaksstatusOvertrukneDager.filter((konto) => konto.antallDager < 0);
+    }
+
+    planErBareUtsettelser(perioder: Periode[]) {
+        return !perioder.some((p) => !isUtsettelsesperiode(p)) && perioder.length > 0;
     }
 
     delayedSetFocusOnFeiloppsummering() {
@@ -327,7 +335,20 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 onVedleggChange={this.handleBegrunnelseVedleggChange}
                             />
                         )}
-
+                        <Block margin="xs" visible={this.planErBareUtsettelser(søknad.uttaksplan)}>
+                            <Veilederinfo type="advarsel">
+                                <FormattedMessage
+                                    id="uttaksplan.veileder.planenInneholderKunUtsettelser"
+                                    values={{
+                                        sisteDag: formaterDato(
+                                            Uttaksdagen(
+                                                Periodene(søknad.uttaksplan).getFørsteUttaksdagEtterSistePeriode()!
+                                            ).forrige()
+                                        )
+                                    }}
+                                />
+                            </Veilederinfo>
+                        </Block>
                         <Block
                             margin="xs"
                             visible={planInneholderTapteDager && planInneholderAnnetEnnAktivitetsfriKvote}>
