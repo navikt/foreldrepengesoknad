@@ -39,6 +39,7 @@ export interface UttakFormPayload {
     velgbareStønadskontotyper: StønadskontoType[];
     kanEndreStønadskonto: boolean;
     søkerErAleneOmOmsorg: boolean;
+    erDeltUttak: boolean;
     søkerErFarEllerMedmor: boolean;
     annenForelderHarRett: boolean;
     morErUfør: boolean;
@@ -188,6 +189,11 @@ const visOverføringsdokumentasjon = (payload: UttakFormPayload): boolean => {
 
 const visGradering = (payload: UttakFormPayload): boolean => {
     const { periode } = payload;
+
+    if (getValidTidsperiode(periode.tidsperiode as Tidsperiode) === undefined) {
+        return false;
+    }
+
     if (isUttaksperiode(periode)) {
         if (
             periode.konto === undefined ||
@@ -220,6 +226,7 @@ const visErMorForSyk = (payload: UttakFormPayload) => {
             isValidTidsperiode(periode.tidsperiode) &&
             erUttakInnenFørsteSeksUkerFødselFarMedmor(payload) &&
             (periode.konto === StønadskontoType.Fedrekvote || periode.konto === StønadskontoType.Foreldrepenger) &&
+            payload.erDeltUttak &&
             !payload.velgbareStønadskontotyper.includes(StønadskontoType.Flerbarnsdager)
         ) {
             return true;
