@@ -10,7 +10,8 @@ import {
     MorsAktivitet,
     Oppholdsperiode,
     isForeldrepengerFørFødselUttaksperiode,
-    Periode
+    Periode,
+    isUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
@@ -139,6 +140,16 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
     }
 
     componentDidMount() {
+        const { søknadsinfo, periode } = this.props;
+        if (
+            !søknadsinfo.søknaden.erDeltUttak &&
+            !søknadsinfo.søknaden.erFlerbarnssøknad &&
+            isUttaksperiode(periode) &&
+            periode.konto === undefined
+        ) {
+            this.onChange({ konto: StønadskontoType.Foreldrepenger });
+        }
+
         if (this.context.validForm) {
             this.context.validForm.validateAll();
         }
@@ -275,6 +286,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
             velgbareStønadskontotyper,
             kanEndreStønadskonto,
             søkerErAleneOmOmsorg: søknadsinfo.søker.erAleneOmOmsorg,
+            erDeltUttak: søknadsinfo.søknaden.erDeltUttak,
             søkerErFarEllerMedmor,
             annenForelderHarRett,
             morErUfør,
@@ -336,7 +348,11 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                     />
                 </Block>
                 <Block
-                    visible={visibility.isVisible(UttakSpørsmålKeys.kvote) && this.state.periodenGjelder !== undefined}>
+                    visible={
+                        visibility.isVisible(UttakSpørsmålKeys.kvote) &&
+                        this.state.periodenGjelder !== undefined &&
+                        velgbareStønadskontotyper.length > 1
+                    }>
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskontoType) => this.updateStønadskontoType(stønadskontoType)}
                         navnPåForeldre={navnPåForeldre}
