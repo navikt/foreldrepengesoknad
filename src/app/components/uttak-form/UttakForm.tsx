@@ -359,6 +359,8 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskontoType) => this.updateStønadskontoType(stønadskontoType)}
                         navnPåForeldre={navnPåForeldre}
+                        navnAnnenForelder={søknadsinfo.navn.annenForelder.fornavn}
+                        erOppholdsperiode={periode.type === Periodetype.Opphold}
                         velgbareStønadskontoer={velgbareStønadskontotyper}
                         valgtKvote={
                             periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring

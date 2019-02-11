@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import { StønadskontoType } from '../types/uttaksplan/periodetyper';
@@ -11,13 +11,33 @@ interface HvilkenKvoteSkalBenyttesSpørsmålProps {
     onChange: (stønadskonto: StønadskontoType) => void;
     valgtKvote?: StønadskontoType;
     navnPåForeldre: NavnPåForeldre;
+    navnAnnenForelder: string;
+    erOppholdsperiode: boolean;
     velgbareStønadskontoer: StønadskontoType[];
 }
 
 type Props = HvilkenKvoteSkalBenyttesSpørsmålProps & InjectedIntlProps;
 
+const getSpørsmålsTekst = (erOppholdsperiode: boolean, intl: InjectedIntl, navnAnnenForelder: string): string => {
+    if (erOppholdsperiode) {
+        return getMessage(intl, 'hvilkenkvoteskalbenyttes.spørsmål.annenForelder', {
+            navnAnnenForelder
+        });
+    } else {
+        return getMessage(intl, 'hvilkenkvoteskalbenyttes.spørsmål');
+    }
+};
+
 const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
-    const { valgtKvote, navnPåForeldre, velgbareStønadskontoer, intl, onChange } = props;
+    const {
+        valgtKvote,
+        navnPåForeldre,
+        velgbareStønadskontoer,
+        erOppholdsperiode,
+        navnAnnenForelder,
+        intl,
+        onChange
+    } = props;
     const radios = velgbareStønadskontoer.map((konto): RadioProps => ({
         label: getStønadskontoNavn(intl, konto, navnPåForeldre),
         value: `${konto}`
@@ -29,7 +49,7 @@ const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
             alternativer={radios}
             navn="kvote"
             toKolonner={true}
-            spørsmål={getMessage(intl, 'hvilkenkvoteskalbenyttes.spørsmål')}
+            spørsmål={getSpørsmålsTekst(erOppholdsperiode, intl, navnAnnenForelder)}
             onChange={(v: StønadskontoType) => onChange(v)}
         />
     );
