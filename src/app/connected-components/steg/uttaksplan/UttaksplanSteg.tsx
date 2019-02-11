@@ -343,7 +343,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                         sisteDag: formaterDato(
                                             Uttaksdagen(
                                                 Periodene(søknad.uttaksplan).getFørsteUttaksdagEtterSistePeriode()!
-                                            ).forrige()
+                                            ).forrige(),
+                                            'D. MMMM YYYY'
                                         )
                                     }}
                                 />
