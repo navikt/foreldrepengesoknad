@@ -16,7 +16,7 @@ import {
 import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
 import { Skjemanummer } from '../../types/søknad/Søknad';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
@@ -53,6 +53,7 @@ import {
 } from 'app/util/uttaksplan/uttaksperiodeUtils';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
+import lenker from 'app/util/routing/lenker';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -454,6 +455,21 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                             onChange={(p) => this.onChange(p)}
                         />
                     </Block>
+                )}
+                {periode.type === Periodetype.Opphold && (
+                    <>
+                        {periode.årsak !== undefined && (
+                            <Veilederinfo>
+                                <FormattedHTMLMessage
+                                    id="uttaksplan.infoVedOpphold"
+                                    values={{
+                                        navn: søknadsinfo.navn.annenForelder.fornavn,
+                                        link: lenker.viktigeFrister
+                                    }}
+                                />
+                            </Veilederinfo>
+                        )}
+                    </>
                 )}
 
                 {periode.id === undefined && (
