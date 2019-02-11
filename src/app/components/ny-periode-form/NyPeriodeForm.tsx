@@ -107,7 +107,6 @@ class NyPeriodeForm extends React.Component<Props, State> {
     render() {
         const { intl, antallFeriedager, forelder, onCancel } = this.props;
         const { periode } = this.state;
-
         return (
             <form
                 className={classnames(bem.className, bem.modifier(periode.type!.toLowerCase()))}
