@@ -346,6 +346,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                     <HvemSkalTaForeldrepengerSpørsmål
                         navnPåForeldre={navnPåForeldre}
                         valgtForelder={this.state.periodenGjelder}
+                        søkerErFarEllerMedmor={søkerErFarEllerMedmor}
                         onChange={(forelder: Forelder) => this.updatePeriodenGjelder(forelder)}
                     />
                 </Block>
