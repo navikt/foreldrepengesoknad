@@ -636,7 +636,7 @@
     "uttaksplan.infoTilFrilansOgSelvstendig":
         "Når du stadfestar her kor mykje du skal jobbe, blir det rekna som ein avtale mellom deg og NAV dersom du får innvilga søknaden din.",
     "uttaksplan.infoVedOpphold":
-        "Her kan du leggje inn periodar der {navn} skal ha foreldrepengar. Hugs at {navn} må søkje sjølv, seinast dagen før foreldrepengane tek til for ikkje å miste dagar. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige fristar.</a>",
+        "Hugs at {navn} må søkje sjølv, seinast dagen før foreldrepengane tek til for ikkje å miste dagar. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige fristar.</a>",
     "uttaksplan.infoVedTapteUttaksdager":
         "Du vil mista {dager} {dager, plural, one{dag}other {dagar}} med foreldrepengar sidan du startar seinare enn seks veker etter fødsel. For å unngå tap av dagar kan du legge til en utsetjing i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
     "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapte foreldrepengar",
