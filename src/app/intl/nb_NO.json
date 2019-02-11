@@ -1,5 +1,6 @@
 {
     "Oppdater": "Oppdater",
+    "hjemmeside": "hjemmeside ",
     "adopsjonAvEktefellesBarn.spørsmål": "Gjelder søknaden din stebarnsadopsjon?",
     "adopsjonsdato.spørsmål": "Når overtok du omsorgen?",
     "adoptertIUtlandet.spørsmål": "Har du adoptert fra utlandet?",
@@ -204,7 +205,7 @@
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepenger",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet som frilanser de siste ti månedene?",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
-        "<a href=\"https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/  class=\"lenke\" rel=\"noopener\" target=\"_blank\">Du kan lese mer om hva det betyr å være frilanser på skatteetaten sine hjemmesider.</a>",
+        "Du kan lese mer om hva det betyr å være frilanser på skatteetaten sine",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie de siste ti månedene",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
@@ -214,7 +215,7 @@
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
         "Har du jobbet som selvstendig næringsdrivende de siste ti månedene?",
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst":
-        "Du kan lese mer om hva det betyr å være selvstendig næringsdrivende på skatteetaten sin <a href=\" https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/ class=\"lenke\" rel=\"noopener\" target=\"_blank\">hjemmesider</a>",
+        "Du kan lese mer om hva det betyr å være selvstendig næringsdrivende på skatteetaten sin",
     "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
     "harRevisor.spørsmål": "Har du revisor?",
     "heltid": "Heltid",

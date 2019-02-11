@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl, FormattedHTMLMessage } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../components/ja-nei-spørsmål/JaNeiSpørsmål';
+import EksternUrl from 'common/components/infoboks/EksternUrl';
 
 interface HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmålProps {
     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean | undefined;
@@ -20,7 +21,13 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (props: Pr
             valgtVerdi={harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd}
             onChange={(verdi) => onChange(verdi)}
             hjelpetekst={
-                <FormattedHTMLMessage id={'harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst'} />
+                <EksternUrl
+                    tekst={'harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst'}
+                    url={
+                        'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/'
+                    }
+                    lenkeTekst={'hjemmeside'}
+                />
             }
         />
     );
