@@ -649,7 +649,7 @@
     "uttaksplan.informasjon.farMedmor.aleneOmsorg":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
     "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan ha 15 uker med foreldrepenger uten aktivitetskrav til mor.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan ha {aktivitetsfriKvote} uker med foreldrepenger uten aktivitetskrav til mor.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} sin siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
