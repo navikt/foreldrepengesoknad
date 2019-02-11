@@ -580,7 +580,7 @@
     "utsettelseskjema.ferie.utenArbeidsforhold":
         "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold i valgt tidsperiode.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
-        "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha opphald lengre enn fire veker og én dag må du ha overført ferie frå i fjor eller ta ut ferie frå neste år. Arbeidsgivaren din må stadfeste når du skal ha ferie. Det gjer de i den digitale inntektsmeldinga til NAV.",
+        "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha utsetjing lengre enn fire veker og én dag må du ha overført ferie frå i fjor eller ta ut ferie frå neste år. Arbeidsgivaren din må stadfeste når du skal ha ferie. Det gjer de i den digitale inntektsmeldinga til NAV.",
     "utsettelseskjema.ferievarsel.ulovlig":
         "Du har lagt inn til saman {ukerOgDager} med ferie. Du kan maksimalt leggje inn ti veker og to dagar med ferie. Arbeidsgivaren din må stadfeste perioden du skal ha ferie. Det gjer de i den digitale inntektsmeldinga til NAV.",
     "utsettelseskjema.info.helligdagerIFerie":
@@ -646,7 +646,7 @@
     "uttaksplan.informasjon.farMedmor.aleneOmsorg":
         "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk.",
     "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
-        "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn opphald i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk. Du kan ha 15 veker med foreldrepengar utan aktivitetskrav til mor.",
+        "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk. Du kan ha 15 veker med foreldrepengar utan aktivitetskrav til mor.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
         "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk. Dersom du ikkje skal ta ut foreldrepengane dine rett etter den siste dagen til {navnAnnenForelder}, må du søkje om å utsetje.<br /><br /> Du kan lese meir om viktige fristar her: <a href={link} class=\"lenke\"rel=\"noopener\"target=\"_blank\">nav.no</a>",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} blir tekne av fellesperioden.",
@@ -745,9 +745,9 @@
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikkje gyldig",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
         " Du kan ikkje søke om utsetjing på grunn av ferie eller arbeid tilbake i tid.",
-    "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikkje ha ein uttaksplan med berre opphald.",
-    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikkje slutte med eit opphald.",
-    "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikkje starte med eit opphald.",
+    "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikkje ha ein uttaksplan med berre ein utsetjing.",
+    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikkje slutte med utsetjing.",
+    "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikkje starte med utsetjing.",
     "uttaksplan.validering.feiloppsummering.tittel": "Planen inneheld feil som du må rette opp i før du kan gå vidare",
     "uttaksplan.validering.før12UkerFørTermin":
         "Du kan tidlegast ta ut foreldrepengar 12 veker før termin eller fødsel",
@@ -755,7 +755,7 @@
     "uttaksplan.varighet.uttak.gradert": "{varighet}",
     "uttaksplan.veileder.planenInneholderHull":
         "Planen din inneheld periodar med tapte foreldrepengar. Du står i fare for å miste dagar om du ikkje legg inn ei utsetjing eller ein periode med foreldrepengar.",
-    "uttaksplan.veileder.planenInneholderKunUtsettelser": "Husk at du må søke om foreldrepenger senest {sisteDag}.",
+    "uttaksplan.veileder.planenInneholderKunUtsettelser": "Hugs at du må søkja om foreldrepengar seinast {sisteDag}.",
 
     "uttaksplan.senEndring.veileder.SYKDOM":
         "Når du søkjer om utsetjing tilbake i tid, må du fortelje kva som er årsaka til at du ikkje har søkt tidlegare. Du har også moglegheit til å lasta opp relevant dokumentasjon.",
