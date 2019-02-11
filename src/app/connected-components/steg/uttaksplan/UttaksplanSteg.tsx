@@ -67,6 +67,7 @@ interface StateProps {
     årsakTilSenEndring: SenEndringÅrsak;
     vedleggForSenEndring: Attachment[];
     tilleggsopplysninger: Tilleggsopplysninger;
+    aktivitetsfriKvote: number;
 }
 
 interface UttaksplanStegState {
@@ -78,7 +79,7 @@ interface UttaksplanStegState {
 
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
 
-const getVeilederInfoText = (søknad: Søknad) => {
+const getVeilederInfoText = (søknad: Søknad, aktivitetsfriKvote: number) => {
     const { annenForelder, søker } = søknad;
 
     if (getErSøkerFarEllerMedmor(søknad.søker.rolle)) {
@@ -89,7 +90,12 @@ const getVeilederInfoText = (søknad: Søknad) => {
         ) {
             return <FormattedMessage id="uttaksplan.informasjon.farMedmor.aleneOmsorg" />;
         } else if (annenForelder.erUfør) {
-            return <FormattedMessage id="uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør" />;
+            return (
+                <FormattedMessage
+                    id="uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør"
+                    values={{ aktivitetsfriKvote }}
+                />
+            );
         } else {
             return (
                 <FormattedHTMLMessage
@@ -228,7 +234,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             årsakTilSenEndring,
             vedleggForSenEndring,
             tilleggsopplysninger,
-            søknadsinfo
+            søknadsinfo,
+            aktivitetsfriKvote
         } = this.props;
 
         if (!søknadsinfo) {
@@ -289,7 +296,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
-                        <Veilederinfo>{getVeilederInfoText(søknad)}</Veilederinfo>
+                        <Veilederinfo>{getVeilederInfoText(søknad, aktivitetsfriKvote)}</Veilederinfo>
                         <Block>
                             <Uttaksplanlegger
                                 søknad={søknad}
@@ -427,6 +434,12 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         }
     }
 
+    const aktivitetsfriKvoteKonto = tilgjengeligeStønadskontoer.find(
+        ({ konto }) => konto === StønadskontoType.AktivitetsfriKvote
+    );
+
+    const aktivitetsfriKvote = aktivitetsfriKvoteKonto ? Math.round(aktivitetsfriKvoteKonto.dager / 5) : 0;
+
     return {
         søknad,
         tilgjengeligeStønadskontoer,
@@ -445,7 +458,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
             søknad.uttaksplan,
             søknad.søker.rolle,
             søknad.annenForelder
-        )
+        ),
+        aktivitetsfriKvote
     };
 };
 
