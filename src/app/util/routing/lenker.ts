@@ -8,5 +8,9 @@ export default {
     brukerstøtte:
         'https://www.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Teknisk+brukerstotte/hjelp-til-personbruker?kap=398749',
     innsyn: 'https://foreldrepenger.nav.no',
-    morsAktivitetskrav: 'https://familie.nav.no/om-foreldrepenger'
+    morsAktivitetskrav: 'https://familie.nav.no/om-foreldrepenger',
+    frilanserInfoBoks:
+        'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/',
+    NaringsdrivendeInfoBoks:
+        'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/'
 };

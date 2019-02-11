@@ -11,8 +11,7 @@ interface Props {
 const EksternUrl: React.StatelessComponent<Props & InjectedIntlProps> = ({ intl, tekst, url, lenkeTekst }) => (
     <span>
         {getMessage(intl, tekst)}
-        <a href={url} className="lenke" rel="noopener" target="_blank">
-            {' '}
+        <a href={url} className="lenke" rel="noopener" target="_blank" style={{ marginLeft: 3 }}>
             {getMessage(intl, lenkeTekst)}
             <EksternIkon />
         </a>
