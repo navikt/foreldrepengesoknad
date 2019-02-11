@@ -220,6 +220,7 @@
     "hvaergrunnentilatduskalutsettedittuttak.spørsmål": "Kvifor skal du utsetje?",
     "hvilkenkontoskalbrukesforannenforeldersuttak.spørsmål": "Kva del av foreldrepengane skal { navn } bruke?",
     "hvilkenkvoteskalbenyttes.spørsmål": "Kva del av foreldrepengane skal du ta ut?",
+    "hvilkenkvoteskalbenyttes.spørsmål.annenForelder": "Kva del av foreldrepengane skal {navnAnnenForelder} ta ut?",
     "hvorSkalDuJobbe.spørsmål": "Kvar skal du jobbe?",
     "iNorgeNeste12Mnd.alternativ.boINorge": "berre bu i Noreg",
     "iNorgeNeste12Mnd.alternativ.boIUtlandet": "bu i utlandet heilt eller delvis",
