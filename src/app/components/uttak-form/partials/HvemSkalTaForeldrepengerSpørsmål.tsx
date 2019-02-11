@@ -7,6 +7,7 @@ import getMessage from 'common/util/i18nUtils';
 interface HvemSkalTaForeldrepengerSpørsmålProps {
     navnPåForeldre: NavnPåForeldre;
     valgtForelder: Forelder | undefined;
+    søkerErFarEllerMedmor: boolean;
     onChange: (forelder: Forelder) => void;
     intl: InjectedIntl;
 }
@@ -15,6 +16,7 @@ const HvemSkalTaForeldrepengerSpørsmål: React.StatelessComponent<HvemSkalTaFor
     navnPåForeldre,
     valgtForelder,
     onChange,
+    søkerErFarEllerMedmor,
     intl
 }) => {
     return (
@@ -26,12 +28,12 @@ const HvemSkalTaForeldrepengerSpørsmål: React.StatelessComponent<HvemSkalTaFor
             onChange={(value: Forelder) => onChange(value)}
             alternativer={[
                 {
-                    label: navnPåForeldre.farMedmor,
-                    value: Forelder.FARMEDMOR
+                    label: søkerErFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor,
+                    value: søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR
                 },
                 {
-                    label: navnPåForeldre.mor,
-                    value: Forelder.MOR
+                    label: søkerErFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor,
+                    value: søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR
                 }
             ]}
         />
