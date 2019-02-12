@@ -16,7 +16,7 @@
     "annenForelder.label.kanIkkeOppgiNavn": "Eg kan ikkje gi opp namnet til den andre forelderen",
     "annenForelder.label.navn": "Kva heiter den andre forelderen?",
     "annenForelder.label.registrertForelder":
-        "Informasjon om den andre forelderen {antallBarn, plural, one {barnet} other {barna}}",
+        "Informasjon om den andre forelderen til {antallBarn, plural, one {barnet} other {barna}}",
     "annenForelder.label.utenlandskFødselsnummer": "Utanlandsk fødselsnummer",
     "annenForelder.morIkkeSyk": "Du må søkje etter at barnet er født.",
     "annenForelder.placeholder.fødselsnummer": "Fødselsnummer",
@@ -866,7 +866,8 @@
     "velkommen.bobletekst": "Eg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.dinePlikter": "dine plikter.<br /><br />",
-    "velkommen.foreldreansvar.veileder": "Du er vorten tildelt foreldreansvaret etter barnelova § 38 eller 64. Du må sende søknaden i posten. ",
+    "velkommen.foreldreansvar.veileder":
+        "Du er vorten tildelt foreldreansvaret etter barnelova § 38 eller 64. Du må sende søknaden i posten. ",
     "velkommen.ingress": "Foreldrepengar er noko du kan få for kvart barn du føder eller adopterer.",
     "velkommen.intro.harInfotrygdSak":
         "Her søkjer du om foreldrepengar når du skal være heime med barnet. Har du allereie foreldrepengar kan du utsetje eller gjere andre endringar.  ",

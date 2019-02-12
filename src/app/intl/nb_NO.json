@@ -16,7 +16,7 @@
     "annenForelder.label.kanIkkeOppgiNavn": "Jeg kan ikke oppgi navnet til andre forelderen",
     "annenForelder.label.navn": "Hva heter den andre forelderen?",
     "annenForelder.label.registrertForelder":
-        "Informasjon om den andre forelderen {antallBarn, plural, one {barnet} other {barna}}",
+        "Informasjon om den andre forelderen til {antallBarn, plural, one {barnet} other {barna}}",
     "annenForelder.label.utenlandskFødselsnummer": "Utenlandsk fødselsnummer",
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
     "annenForelder.placeholder.fødselsnummer": "Fødselsnummer",
@@ -863,7 +863,8 @@
     "velkommen.bobletekst": "Jeg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.dinePlikter": "dine plikter.<br /><br />",
-    "velkommen.foreldreansvar.veileder": "Du er blitt tildelt foreldreansvaret etter barneloven § 38 eller 64. Du må sende søknaden i posten.",
+    "velkommen.foreldreansvar.veileder":
+        "Du er blitt tildelt foreldreansvaret etter barneloven § 38 eller 64. Du må sende søknaden i posten.",
     "velkommen.ingress": "Foreldrepenger er noe du kan få for hvert barn du føder eller adopterer.",
     "velkommen.intro.harInfotrygdSak":
         "Her søker du om foreldrepenger når du skal være hjemme med barnet. Har du allerede foreldrepenger, kan du utsette eller gjøre andre endringer.",
