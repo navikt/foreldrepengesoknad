@@ -748,8 +748,10 @@
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
         " Du kan ikkje søke om utsetjing på grunn av ferie eller arbeid tilbake i tid.",
     "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikkje ha ein uttaksplan med berre ein utsetjing.",
-    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikkje slutte med utsetjing.",
-    "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikkje starte med utsetjing.",
+    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold":
+        "Uttaksplanen kan ikkje slutte med at den andre forelderen er heime.",
+    "uttaksplan.validering.feil.uttaksplanStarterMedOpphold":
+        "Uttaksplanen kan ikkje starte med at den andre forelderen er heime.",
     "uttaksplan.validering.feiloppsummering.tittel": "Planen inneheld feil som du må rette opp i før du kan gå vidare",
     "uttaksplan.validering.før12UkerFørTermin":
         "Du kan tidlegast ta ut foreldrepengar 12 veker før termin eller fødsel",
