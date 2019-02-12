@@ -39,5 +39,9 @@ export const harMorHarSøktUgyldigUttakFørsteSeksUker = (
         .getUttak()
         .filter((p) => p.forelder === Forelder.MOR && p.gradert === true);
 
-    return gradertePerioder.length + ugyldigeUtsettelser.length > 0;
+    const flernbarnsPerioder = Periodene(perioderInnenforSeksFørsteUker)
+        .getUttak()
+        .filter((p) => p.forelder === Forelder.MOR && p.ønskerFlerbarnsdager === true);
+
+    return flernbarnsPerioder.length + gradertePerioder.length + ugyldigeUtsettelser.length > 0;
 };
