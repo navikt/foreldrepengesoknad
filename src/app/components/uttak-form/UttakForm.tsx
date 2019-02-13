@@ -54,6 +54,8 @@ import {
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import lenker from 'app/util/routing/lenker';
+import { Element } from 'nav-frontend-typografi';
+import UtvidetInformasjon from '../utvidetinformasjon/UtvidetInformasjon';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -368,6 +370,11 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                 : getStønadskontoFromOppholdsårsak((periode as Oppholdsperiode).årsak)
                         }
                     />
+                    {søknadsinfo.annenForelder.harRett && (
+                        <UtvidetInformasjon apneLabel="Les om ulønnet permisjon">
+                            <Element>Test</Element>
+                        </UtvidetInformasjon>
+                    )}
                 </Block>
                 {periode.type === Periodetype.Uttak && (
                     <>
