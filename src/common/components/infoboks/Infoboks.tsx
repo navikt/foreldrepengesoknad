@@ -44,6 +44,9 @@ class Infoboks extends React.Component<Props, InfoboksState> {
         this.getComponentSize();
         window.addEventListener('resize', this.getComponentSize);
     }
+    componentWillUnmount(): void {
+        window.removeEventListener('resize', this.getComponentSize);
+    }
 
     getComponentSize = () => {
         const cls = this.props.fieldsetClsName ? this.props.fieldsetClsName : '';
