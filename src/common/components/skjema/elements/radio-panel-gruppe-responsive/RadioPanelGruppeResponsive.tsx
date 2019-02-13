@@ -7,6 +7,7 @@ import Infoboks from 'common/components/infoboks/Infoboks';
 
 interface ResponsiveProps {
     twoColumns?: boolean;
+    fieldsetClassname?: string;
     infoboksTekst?: string | React.ReactNode;
 }
 
@@ -14,16 +15,27 @@ export type RadioPanelGruppeResponsiveProps = ResponsiveProps & RadioPanelGruppe
 
 class RadioPanelGruppeResponsive extends React.Component<RadioPanelGruppeResponsiveProps> {
     render() {
-        const { feil, twoColumns = false, infoboksTekst, legend, checked, name, radios, onChange } = this.props;
+        const {
+            feil,
+            twoColumns = false,
+            infoboksTekst,
+            fieldsetClassname,
+            legend,
+            checked,
+            name,
+            radios,
+            onChange
+        } = this.props;
 
         const cls = classnames('radioPanelWrapper', {
             'radioPanelWrapper--twoColumns': twoColumns === true
         });
+
         return (
             <div className="radioPanelGruppe">
                 <SkjemaGruppe feil={feil}>
-                    <Fieldset legend={legend}>
-                        {infoboksTekst && <Infoboks tekst={infoboksTekst} />}
+                    <Fieldset className={fieldsetClassname} legend={legend}>
+                        {infoboksTekst && <Infoboks fieldsetClsName={fieldsetClassname} tekst={infoboksTekst} />}
                         <div className="radioPanelGruppe--responsive">
                             {radios.map((radio) => {
                                 return (

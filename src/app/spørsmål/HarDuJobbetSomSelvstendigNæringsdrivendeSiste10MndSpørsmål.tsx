@@ -21,6 +21,7 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (props: Pr
             navn="harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd"
             valgtVerdi={harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd}
             onChange={(verdi) => onChange(verdi)}
+            clsName={'jobbetSomSelvstendigNaringsdrivende'}
             hjelpetekst={
                 <EksternUrl
                     tekst={'harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst'}
