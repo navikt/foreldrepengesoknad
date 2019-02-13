@@ -15,13 +15,14 @@ interface FlervalgSpørsmålProps {
     valgtVerdi?: string;
     alternativer: FlervalgAlternativ[];
     toKolonner?: boolean;
+    clsName?: string;
     onChange: (verdi: string) => void;
 }
 
 type Props = FlervalgSpørsmålProps & InjectedIntlProps;
 
 const FlervalgSpørsmål = (props: Props) => {
-    const { onChange, navn, spørsmål, hjelpetekst, valgtVerdi, alternativer, toKolonner = false, intl } = props;
+    const { onChange, navn, spørsmål, hjelpetekst, valgtVerdi, alternativer, clsName , toKolonner = false, intl } = props;
 
     return (
         <RadioPanelGruppe
@@ -31,6 +32,7 @@ const FlervalgSpørsmål = (props: Props) => {
             legend={spørsmål}
             infoboksTekst={hjelpetekst}
             radios={alternativer}
+            fieldsetClassname={clsName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>, v: string) => onChange(v)}
             validators={[
                 {

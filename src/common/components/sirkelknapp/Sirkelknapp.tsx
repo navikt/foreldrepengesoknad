@@ -25,6 +25,7 @@ export interface SirkelknappProps {
     stil?: Stil;
     /** Størrelse - default normal */
     size?: 'normal' | 'stor';
+    posisjoneringFraHøyre?: number;
 }
 
 const Sirkelknapp: React.StatelessComponent<SirkelknappProps> = ({
@@ -34,11 +35,13 @@ const Sirkelknapp: React.StatelessComponent<SirkelknappProps> = ({
     toggle,
     disabled,
     stil = 'info',
-    size = 'normal'
+    size = 'normal',
+    posisjoneringFraHøyre
 }) => {
     const labelId = guid();
     return (
         <button
+            style={{ left: posisjoneringFraHøyre }}
             type="button"
             onClick={() => onClick()}
             onTouchStart={preventDoubleTapZoom}
