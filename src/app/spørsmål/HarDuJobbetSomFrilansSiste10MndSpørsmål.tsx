@@ -21,6 +21,7 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
             navn="harJobbetSomFrilansSiste10Mnd"
             valgtVerdi={harJobbetSomFrilansSiste10Mnd}
             onChange={(verdi) => onChange(verdi)}
+            clsName={'frilanseSiste10mnd'}
             hjelpetekst={
                 <EksternUrl
                     tekst={'harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst'}

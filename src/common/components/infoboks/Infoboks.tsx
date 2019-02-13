@@ -13,10 +13,12 @@ interface InfoboksProps {
     tekst: string | React.ReactNode;
     stil?: Stil;
     contentFullWidth?: boolean;
+    fieldsetClsName?: string;
 }
 
 interface InfoboksState {
     isExpanded: boolean;
+    windowPos: number;
 }
 
 type Props = InfoboksProps & InjectedIntlProps;
@@ -26,9 +28,9 @@ class Infoboks extends React.Component<Props, InfoboksState> {
         super(props);
 
         this.state = {
-            isExpanded: false
+            isExpanded: false,
+            windowPos: 0
         };
-
         this.toggleIsExpanded = this.toggleIsExpanded.bind(this);
     }
 
@@ -37,6 +39,22 @@ class Infoboks extends React.Component<Props, InfoboksState> {
             isExpanded: !this.state.isExpanded
         });
     }
+
+    componentDidMount(): void {
+        this.getComponentSize();
+        window.addEventListener('resize', this.getComponentSize);
+    }
+
+    getComponentSize = () => {
+        const cls = this.props.fieldsetClsName ? this.props.fieldsetClsName : '';
+        if (cls.length > 1) {
+            const overskriftTilblockElement = document.querySelector('.' + cls + ' > .skjema__legend');
+            const overskriftTilblockElementBredde = overskriftTilblockElement
+                ? overskriftTilblockElement.clientWidth + 16
+                : 0;
+            this.setState({ windowPos: overskriftTilblockElementBredde });
+        }
+    };
 
     render() {
         const { tekst, stil = 'info', contentFullWidth, intl } = this.props;
@@ -47,6 +65,7 @@ class Infoboks extends React.Component<Props, InfoboksState> {
             <React.Fragment>
                 <span className="infoboks__sirkel">
                     <Sirkelknapp
+                        posisjoneringFraHøyre={this.state.windowPos !== 0 ? this.state.windowPos : undefined}
                         stil={stil}
                         ariaLabel={getMessage(intl, 'infoboks.sirkeltekst')}
                         onClick={this.toggleIsExpanded}
