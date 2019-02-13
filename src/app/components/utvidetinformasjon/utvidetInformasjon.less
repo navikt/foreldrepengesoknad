@@ -1,0 +1,24 @@
+.utvidetInformasjon {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 100%;
+
+    /* Justere på grunn av animasjon */
+    &__innhold,
+    &__toggler {
+        width: 100%;
+    }
+    &__innhold {
+        order: 1;
+    }
+    &__toggler {
+        order: 2;
+    }
+
+    &--apen {
+        margin-top: 0.75rem;
+    }
+
+    margin-bottom: 1rem;
+}
