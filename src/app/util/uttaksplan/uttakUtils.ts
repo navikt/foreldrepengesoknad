@@ -46,6 +46,9 @@ const erUtsettelsePgaFerieEllerArbeid = (periode: Periode) =>
 export const erSenUtsettelsePgaFerieEllerArbeid = (periode: Periode) =>
     erUtsettelseTilbakeITid(periode) && erUtsettelsePgaFerieEllerArbeid(periode);
 
+export const erSentGradertUttak = (periode: Periode) =>
+    periode.type === Periodetype.Uttak && !dateIsTodayOrInFuture(periode.tidsperiode.fom) && periode.gradert;
+
 export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): SenEndringÅrsak => {
     const utsettelseKreverBegrunnelse = uttaksplan.filter(erUtsettelseTilbakeITid).some(erUtsettelsePgaSykdom);
     const uttakKreverBegrunnelse = uttaksplan.some(erUttakMerEnnTreMånederSiden);

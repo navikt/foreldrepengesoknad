@@ -2,12 +2,13 @@ import React from 'react';
 import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
 import moment from 'moment';
 
-import { Utsettelsesperiode } from 'app/types/uttaksplan/periodetyper';
+import { Utsettelsesperiode, Uttaksperiode } from 'app/types/uttaksplan/periodetyper';
 import getMessage from 'common/util/i18nUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 interface OwnProps {
     utsettelser: Utsettelsesperiode[];
+    uttak: Uttaksperiode[];
 }
 
 type Props = OwnProps & InjectedIntlProps;

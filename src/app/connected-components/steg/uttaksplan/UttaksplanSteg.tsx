@@ -11,7 +11,8 @@ import { DispatchProps } from 'common/redux/types';
 import { findMissingAttachmentsForPerioder } from '../../../util/attachments/missingAttachmentUtil';
 import {
     getSeneEndringerSomKreverBegrunnelse,
-    erSenUtsettelsePgaFerieEllerArbeid
+    erSenUtsettelsePgaFerieEllerArbeid,
+    erSentGradertUttak
 } from 'app/util/uttaksplan/uttakUtils';
 import { Forelder } from 'common/types';
 import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
@@ -30,7 +31,8 @@ import {
     isUttaksperiode,
     StønadskontoType,
     isUtsettelsesperiode,
-    Utsettelsesperiode
+    Utsettelsesperiode,
+    Uttaksperiode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../../util/uttaksplan/Periodene';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
@@ -74,6 +76,7 @@ interface StateProps {
     tilleggsopplysninger: Tilleggsopplysninger;
     aktivitetsfriKvote: number;
     seneUtsettelserPgaFerieEllerArbeid: Utsettelsesperiode[];
+    seneGraderteUttak: Uttaksperiode[];
 }
 
 interface UttaksplanStegState {
@@ -242,7 +245,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             tilleggsopplysninger,
             søknadsinfo,
             aktivitetsfriKvote,
-            seneUtsettelserPgaFerieEllerArbeid
+            seneUtsettelserPgaFerieEllerArbeid,
+            seneGraderteUttak
         } = this.props;
 
         if (!søknadsinfo) {
@@ -364,8 +368,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 />
                             </Veilederinfo>
                         </Block>
-                        <Block margin="xs" visible={seneUtsettelserPgaFerieEllerArbeid.length > 0}>
-                            <VeilederUtsettelseTilbakeITid utsettelser={seneUtsettelserPgaFerieEllerArbeid} />
+                        <Block
+                            margin="xs"
+                            visible={seneUtsettelserPgaFerieEllerArbeid.length > 0 || seneGraderteUttak.length > 0}>
+                            <VeilederUtsettelseTilbakeITid
+                                utsettelser={seneUtsettelserPgaFerieEllerArbeid}
+                                uttak={seneGraderteUttak}
+                            />
                         </Block>
                         <Block
                             margin="xs"
@@ -458,6 +467,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         .filter(erSenUtsettelsePgaFerieEllerArbeid)
         .filter(periodeInneholderValideringsfeil) as Utsettelsesperiode[];
 
+    const seneGraderteUttak = perioder.filter(erSentGradertUttak) as Uttaksperiode[];
+
     return {
         søknad,
         tilgjengeligeStønadskontoer,
@@ -478,7 +489,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
             søknad.annenForelder
         ),
         aktivitetsfriKvote,
-        seneUtsettelserPgaFerieEllerArbeid
+        seneUtsettelserPgaFerieEllerArbeid,
+        seneGraderteUttak
     };
 };
 
