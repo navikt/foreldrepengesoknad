@@ -10,6 +10,7 @@ export enum PeriodeValideringErrorKey {
     'SKJEMA_IKKE_KOMPLETT' = 'skjemaIkkeKomplett',
     'STØNADSKONTO_MANGLER' = 'stønadskontoMangler',
     'UGYLDIG_TIDSPERIODE' = 'ugyldigTidsperiode',
+    'UGYLDIG_ÅRSAK_OG_TIDSPERIODE' = 'ugyldigÅrsakOgTidsperiode',
     'DATO_IKKE_UTTAKSDAG' = 'datoErIkkeUttaksdag',
     'UGYLDIG_GRADERING_VERDI' = 'ugyldigGraderingVerdi',
     'UGYLDIG_SAMTIDIG_UTTAK_PROSENT' = 'ugyldigSamtidigUttakProsent',

@@ -751,10 +751,10 @@
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosent kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikke gyldig",
+    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
+        "Du kan ikke søke om utsettelse på grunn av arbeid eller ferie mindre enn seks uker før fødsel",
     "uttaksplan.validering.feil.stønadskontoMangler":
         "Perioden er ikke gyldig. Slett perioden og legg den inn på nytt.",
-    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
-        "Du kan ikke søke om utsettelse på grunn av ferie eller arbeid tilbake i tid.",
     "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikke ha en uttaksplan med kun en utsettelse.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold":
         "Uttaksplanen kan ikke slutte med at den andre forelderen skal være hjemme.",

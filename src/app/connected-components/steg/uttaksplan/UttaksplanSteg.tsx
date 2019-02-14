@@ -449,9 +449,14 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
     );
 
     const aktivitetsfriKvote = aktivitetsfriKvoteKonto ? Math.round(aktivitetsfriKvoteKonto.dager / 5) : 0;
-    const seneUtsettelserPgaFerieEllerArbeid = perioder.filter(
-        erSenUtsettelsePgaFerieEllerArbeid
-    ) as Utsettelsesperiode[];
+    const periodeInneholderValideringsfeil = (periode: Periode) => {
+        const validering = state.uttaksplanValidering.periodevalidering[periode.id];
+        return validering && validering.valideringsfeil.length === 0;
+    };
+
+    const seneUtsettelserPgaFerieEllerArbeid = perioder
+        .filter(erSenUtsettelsePgaFerieEllerArbeid)
+        .filter(periodeInneholderValideringsfeil) as Utsettelsesperiode[];
 
     return {
         søknad,

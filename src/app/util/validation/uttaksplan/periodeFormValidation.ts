@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { getVariantFromPeriode } from '../../../components/utsettelse-form/UtsettelseForm';
+import { getVariantFromPeriode, UtsettelseFormPeriodeType } from '../../../components/utsettelse-form/UtsettelseForm';
 import { getErSøkerFarEllerMedmor } from '../../domain/personUtil';
 import { getVelgbareStønadskontotyper } from '../../uttaksplan/stønadskontoer';
 import { Søker } from '../../../types/søknad/Søker';
@@ -7,6 +7,8 @@ import {
     TilgjengeligStønadskonto,
     Periode,
     Periodetype,
+    UtsettelseÅrsakType,
+    Utsettelsesperiode,
     isUttaksperiode
 } from '../../../types/uttaksplan/periodetyper';
 import AnnenForelder from '../../../types/søknad/AnnenForelder';
@@ -16,15 +18,22 @@ import {
     UtsettelseFormPayload
 } from '../../../components/utsettelse-form/utsettelseFormConfig';
 import { UttakFormPayload, getUttakFormVisibility } from '../../../components/uttak-form/uttakFormConfig';
-import { uttakTidsperiodeErGyldig } from './uttakTidsperiodeValidation';
+import { uttakTidsperiodeErGyldig, periodeErInnenDeFørsteSeksUkene } from './uttakTidsperiodeValidation';
 import { Søkersituasjon } from 'app/types/søknad/Søknad';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { gradertUttaksperiodeErUgyldig } from './uttakGraderingValidation';
 import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValidation';
 
+const erUtsettelsePgaArbeidEllerFerie = (periode: UtsettelseFormPeriodeType): periode is Utsettelsesperiode => {
+    return (
+        periode.type === Periodetype.Utsettelse &&
+        (periode.årsak === UtsettelseÅrsakType.Ferie || periode.årsak === UtsettelseÅrsakType.Arbeid)
+    );
+};
+
 const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValideringsfeil[] | undefined => {
     const { periode, familiehendelsesdato } = payload;
-    const { tidsperiode } = periode;
+    const { tidsperiode, årsak } = periode;
 
     let fom;
     if (tidsperiode) {
@@ -38,6 +47,16 @@ const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValiderin
                 feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE
             }
         ];
+    }
+
+    if (erUtsettelsePgaArbeidEllerFerie(periode) && fom && årsak) {
+        if (periodeErInnenDeFørsteSeksUkene(periode, familiehendelsesdato)) {
+            return [
+                {
+                    feilKey: PeriodeValideringErrorKey.UGYLDIG_ÅRSAK_OG_TIDSPERIODE
+                }
+            ];
+        }
     }
 
     if (moment(fom as Date).isBefore(moment(familiehendelsesdato))) {
