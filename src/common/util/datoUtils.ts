@@ -28,6 +28,10 @@ export function måned3bokstaver(dato: Moment): string {
     return dato.format('MMM').substr(0, 3);
 }
 
+export function dagOgMåned(dato: Date): string {
+    return moment(dato).format('DD.MM');
+}
+
 export function mnd(dato: Moment): string {
     return dato.format('MMM');
 }

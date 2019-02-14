@@ -8,7 +8,7 @@ import { PeriodeValideringErrorKey } from '../../../redux/reducers/uttaksplanVal
 import { Validator } from 'common/lib/validation/types';
 import { allValidatorsPass } from 'common/lib/validation/utils/runValidFormValidation';
 import { DateValue } from '../../../types/common';
-import { uttaksdatoer } from '../../uttaksplan/uttaksdatoer';
+import { uttaksdatoer, getUttaksdatoer } from '../../uttaksplan/uttaksdatoer';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { periodeErFørDato } from './uttakFarValidation';
 
@@ -86,8 +86,6 @@ export const uttakTidsperiodeErGyldig = (uttaksperiode: UttakFormPeriodeType, fa
 };
 
 export const periodeErInnenDeFørsteSeksUkene = (periode: Periode, familiehendelsesdato: Date) => {
-    const førsteUttaksdag = uttaksdatoer(familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
-    const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
-
+    const førsteUttaksdagEtterSeksUker = getUttaksdatoer(familiehendelsesdato).etterFødsel.førsteUttaksdagEtterSeksUker;
     return periodeErFørDato(periode, førsteUttaksdagEtterSeksUker);
 };
