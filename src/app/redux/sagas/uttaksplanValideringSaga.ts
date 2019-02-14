@@ -24,6 +24,7 @@ import { uttaksplanStarterMedOpphold } from 'app/util/validation/uttaksplan/utta
 import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { erSenUtsettelsePgaFerieEllerArbeid } from 'app/util/uttaksplan/uttakUtils';
 
 const stateSelector = (state: AppState) => state;
 
@@ -33,9 +34,14 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
     const søknadsinfo = getSøknadsinfo(appState);
     const familiehendelsesdato = getFamiliehendelsedato(barn, situasjon);
     const advarsler = [];
+
     if (hasPeriodeMissingAttachment(periode, søker.rolle, annenForelder)) {
         advarsler.push({ advarselKey: PeriodeAdvarselKey.MANGLENDE_VEDLEGG });
     }
+    if (erSenUtsettelsePgaFerieEllerArbeid(periode)) {
+        advarsler.push({ advarselKey: PeriodeAdvarselKey.SEN_ÅRSAK_OG_TIDSPERIODE });
+    }
+
     return {
         periodeId: periode.id,
         valideringsfeil:

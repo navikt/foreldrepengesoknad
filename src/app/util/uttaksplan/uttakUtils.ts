@@ -3,9 +3,11 @@ import {
     Periodetype,
     SenEndringÅrsak,
     StønadskontoType,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
+    Utsettelsesperiode
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
+import { dateIsTodayOrInFuture } from '../dates/dates';
 
 export const erUttakAvAnnenForeldersKvote = (
     konto: StønadskontoType | undefined,
@@ -21,12 +23,8 @@ export const erUttakEgenKvote = (konto: StønadskontoType | undefined, søkerErF
     return erUttakAvAnnenForeldersKvote(konto, søkerErFarEllerMedmor) === false;
 };
 
-const erUtsettelsePgaSykdomTilbakeITid = (periode: Periode) =>
-    periode.type === Periodetype.Utsettelse &&
-    (periode.årsak === UtsettelseÅrsakType.Sykdom ||
-        periode.årsak === UtsettelseÅrsakType.InstitusjonSøker ||
-        periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet) &&
-    moment(periode.tidsperiode.fom).isBefore(moment().startOf('day'));
+const erUtsettelseTilbakeITid = (periode: Periode) =>
+    periode.type === Periodetype.Utsettelse && !dateIsTodayOrInFuture(periode.tidsperiode.fom);
 
 const erUttakMerEnnTreMånederSiden = (periode: Periode) =>
     periode.type === Periodetype.Uttak &&
@@ -36,13 +34,25 @@ const erUttakMerEnnTreMånederSiden = (periode: Periode) =>
             .subtract(3, 'months')
     );
 
-export const finnÅrsakTilSenEndring = (uttaksplan: Periode[]): SenEndringÅrsak => {
-    const inneholderTidligereUtsettelserPgaSykdom = uttaksplan.some(erUtsettelsePgaSykdomTilbakeITid);
-    const inneholderUttakMerEnnTreMånederTilbakeITid = uttaksplan.some(erUttakMerEnnTreMånederSiden);
+const erUtsettelsePgaSykdom = (periode: Utsettelsesperiode) =>
+    periode.årsak === UtsettelseÅrsakType.Sykdom ||
+    periode.årsak === UtsettelseÅrsakType.InstitusjonSøker ||
+    periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet;
 
-    if (inneholderTidligereUtsettelserPgaSykdom) {
-        return inneholderUttakMerEnnTreMånederTilbakeITid ? SenEndringÅrsak.SykdomOgUttak : SenEndringÅrsak.Sykdom;
+const erUtsettelsePgaFerieEllerArbeid = (periode: Periode) =>
+    periode.type === Periodetype.Utsettelse &&
+    (periode.årsak === UtsettelseÅrsakType.Ferie || periode.årsak === UtsettelseÅrsakType.Arbeid);
+
+export const erSenUtsettelsePgaFerieEllerArbeid = (periode: Periode) =>
+    erUtsettelseTilbakeITid(periode) && erUtsettelsePgaFerieEllerArbeid(periode);
+
+export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): SenEndringÅrsak => {
+    const utsettelseKreverBegrunnelse = uttaksplan.filter(erUtsettelseTilbakeITid).some(erUtsettelsePgaSykdom);
+    const uttakKreverBegrunnelse = uttaksplan.some(erUttakMerEnnTreMånederSiden);
+
+    if (utsettelseKreverBegrunnelse) {
+        return uttakKreverBegrunnelse ? SenEndringÅrsak.SykdomOgUttak : SenEndringÅrsak.Sykdom;
     } else {
-        return inneholderUttakMerEnnTreMånederTilbakeITid ? SenEndringÅrsak.Uttak : SenEndringÅrsak.Ingen;
+        return uttakKreverBegrunnelse ? SenEndringÅrsak.Uttak : SenEndringÅrsak.Ingen;
     }
 };

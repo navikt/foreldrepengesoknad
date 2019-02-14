@@ -31,7 +31,6 @@ import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksplan/utsettelseÅrsak';
 import HvorSkalDuJobbeSpørsmålFlervalg from 'app/spørsmål/HvorSkalDuJobbeSpørsmålFlervalg';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
 import { Tidsperioden, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
@@ -268,11 +267,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             variant={variant}
                             radios={this.getUtsettelseÅrsakRadios()}
                             onChange={(v) => this.onVariantChange(v)}
-                            validatorer={
-                                periode.type === Periodetype.Utsettelse
-                                    ? getUtsettelseÅrsakTypeValidators(periode.årsak, tidsperiode.fom, intl)
-                                    : undefined
-                            }
                         />
                     </Block>
                     <Block visible={visInfoOmHelligdagerOgFerie}>
