@@ -64,7 +64,6 @@ interface UttaksperiodeFormProps {
     harOverlappendePerioder?: boolean;
     onChange: EndrePeriodeChangeEvent;
     onCancel?: () => void;
-    onIkonUpdate?: () => void;
 }
 
 interface ComponentStateProps {
@@ -165,7 +164,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
     updatePeriodenGjelder(forelder: Forelder) {
         const { periode, søkerErFarEllerMedmor } = this.props;
 
-        this.setState({ periodenGjelder: forelder }, () => this.oppdatereIkon());
+        this.setState({ periodenGjelder: forelder });
 
         if (periode.type !== undefined) {
             if (periodenGjelderAnnenForelder(søkerErFarEllerMedmor, forelder)) {
@@ -196,12 +195,6 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                     this.onChange({ ...updatedPeriode }, true);
                 }
             }
-        }
-    }
-
-    oppdatereIkon() {
-        if (this.props.onIkonUpdate !== undefined) {
-            this.props.onIkonUpdate();
         }
     }
 
