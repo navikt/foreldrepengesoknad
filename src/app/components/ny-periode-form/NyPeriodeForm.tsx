@@ -1,7 +1,10 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Periode, Periodetype, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
-import UtsettelsesperiodeForm, { UtsettelseFormPeriodeType } from '../utsettelse-form/UtsettelseForm';
+import { Periode, Periodetype, Uttaksperiode, UtsettelseÅrsakType } from '../../types/uttaksplan/periodetyper';
+import UtsettelsesperiodeForm, {
+    UtsettelseFormPeriodeType,
+    Utsettelsesvariant
+} from '../utsettelse-form/UtsettelseForm';
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { RecursivePartial } from '../../types/Partial';
 import './nyPeriodeForm.less';
@@ -34,6 +37,7 @@ interface OwnProps {
 
 interface State {
     periode: RecursivePartial<Periode>;
+    utsettelsesvariant?: Utsettelsesvariant;
     visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility | undefined;
 }
 
@@ -78,6 +82,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
 
         this.updatePeriode = this.updatePeriode.bind(this);
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
+        this.getUtsettelsePeriodeFormTittelIkon = this.getUtsettelsePeriodeFormTittelIkon.bind(this);
     }
 
     updatePeriode(
@@ -110,6 +115,19 @@ class NyPeriodeForm extends React.Component<Props, State> {
         this.updatePeriode({ tidsperiode: {} }, false);
     }
 
+    getUtsettelsePeriodeFormTittelIkon(periode: Periode | undefined) {
+        const { navnPåForeldre } = this.props;
+        const { utsettelsesvariant } = this.state;
+        if (periode && periode.type === Periodetype.Utsettelse && periode.årsak) {
+            return getPeriodeIkon(periode as Periode, navnPåForeldre);
+        } else if (periode && utsettelsesvariant) {
+            const sykdomsutsettelse = { ...periode, årsak: UtsettelseÅrsakType.Sykdom };
+            return getPeriodeIkon(sykdomsutsettelse as Periode, navnPåForeldre);
+        } else {
+            return undefined;
+        }
+    }
+
     render() {
         const { intl, antallFeriedager, forelder, navnPåForeldre, onCancel } = this.props;
         const { periode } = this.state;
@@ -125,13 +143,14 @@ class NyPeriodeForm extends React.Component<Props, State> {
                     <>
                         <PeriodeFormTittel
                             tittel={getMessage(intl, 'nyPeriodeForm.utsettelse.tittel')}
-                            ikon={periode.årsak ? getPeriodeIkon(periode as Periode, navnPåForeldre) : undefined}
+                            ikon={this.getUtsettelsePeriodeFormTittelIkon(periode as Periode)}
                         />
                         <UtsettelsesperiodeForm
                             antallFeriedager={antallFeriedager}
                             periode={periode as UtsettelseFormPeriodeType}
                             onChange={this.updatePeriode}
                             onCancel={onCancel}
+                            onUtsettelsesvariantChange={(utsettelsesvariant) => this.setState({ utsettelsesvariant })}
                         />
                     </>
                 )}
