@@ -148,9 +148,9 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     <Input
                         name="arbeidsgiverNavn"
                         label={getMessage(intl, 'annenInntekt.spørsmål.arbeidsgiver')}
-                        onChange={(e: InputChangeEvent) => {
+                        onChange={(arbeidsgiverNavn: string) => {
                             const utlandInntekt: JobbIUtlandetInntektPartial = {
-                                arbeidsgiverNavn: e.target.value
+                                arbeidsgiverNavn
                             };
                             this.updateAnnenInntekt(utlandInntekt);
                         }}
