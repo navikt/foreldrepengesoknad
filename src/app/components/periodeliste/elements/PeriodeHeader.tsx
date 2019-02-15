@@ -27,7 +27,7 @@ export interface Props {
 
 const BEM = BEMHelper('periodelisteItemHeader');
 
-const getPeriodeIkon = (periode: Periode, navnPåForeldre: NavnPåForeldre): JSX.Element | undefined => {
+export const getPeriodeIkon = (periode: Periode, navnPåForeldre: NavnPåForeldre): JSX.Element | undefined => {
     if (periode.type === Periodetype.Uttak) {
         return (
             <StønadskontoIkon

@@ -11,14 +11,14 @@ import BEMHelper from 'common/util/bem';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import UttakForm from '../uttak-form/UttakForm';
-import { Forelder, Tidsperiode } from 'common/types';
+import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
 import PeriodeFargestrek from '../periode-fargestrek/PeriodeFargestrek';
 import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
 import Søknad from '../../types/søknad/Søknad';
 import { UttakSpørsmålVisibility } from '../uttak-form/uttakFormConfig';
 import { UtsettelseSpørsmålVisibility } from '../utsettelse-form/utsettelseFormConfig';
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
-import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
+import { getPeriodeIkon } from '../periodeliste/elements/PeriodeHeader';
 
 interface OwnProps {
     antallFeriedager: number;
@@ -27,6 +27,7 @@ interface OwnProps {
     søknad: Søknad;
     periodetype: Periodetype;
     tidsperiode?: Partial<Tidsperiode>;
+    navnPåForeldre: NavnPåForeldre;
     onSubmit: (periode: Periode) => void;
     onCancel: () => void;
 }
@@ -34,9 +35,6 @@ interface OwnProps {
 interface State {
     periode: RecursivePartial<Periode>;
     visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility | undefined;
-    ikonType: UttaksplanIkonKeys;
-    ikonClass: string;
-    ikonTittel: string;
 }
 
 type Props = OwnProps & InjectedIntlProps;
@@ -45,17 +43,13 @@ const bem = BEMHelper('nyPeriodeForm');
 
 const PeriodeFormTittel: React.StatelessComponent<{
     tittel: string;
-    clsName: string;
-    ikonType: UttaksplanIkonKeys;
-    ikontittel: string;
-}> = ({ tittel, clsName, ikonType, ikontittel }) => {
+    ikon?: React.ReactNode;
+}> = ({ tittel, ikon }) => {
     return (
         <Block margin="s">
             <Undertittel tag="h1" className={bem.element('heading')}>
                 {tittel}
-                <span className={clsName}>
-                    <UttaksplanIkon ikon={ikonType} title={ikontittel} />
-                </span>
+                {ikon && <span className={bem.element('heading__ikon')}>{ikon}</span>}
             </Undertittel>
         </Block>
     );
@@ -79,52 +73,12 @@ class NyPeriodeForm extends React.Component<Props, State> {
         }
         this.state = {
             periode,
-            visibility: undefined,
-            ikonType: UttaksplanIkonKeys.uttak,
-            ikonClass: '',
-            ikonTittel: 'mor'
+            visibility: undefined
         };
 
         this.updatePeriode = this.updatePeriode.bind(this);
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
-        this.setIkonState = this.setIkonState.bind(this);
     }
-
-    setIkonState(cls: string, type: UttaksplanIkonKeys, tittel: string) {
-        this.setState({
-            ikonType: type,
-            ikonClass: cls,
-            ikonTittel: tittel
-        });
-    }
-
-    mapIkonState = () => {
-        const periode = this.state.periode;
-        if ((periode.type === 'uttak' || periode.type === 'opphold') && periode.forelder !== undefined) {
-            switch (periode.forelder) {
-                case 'mor':
-                    this.setIkonState('iconBox iconBox--purple', UttaksplanIkonKeys.uttak, 'mor');
-                    break;
-                case 'farMedmor':
-                    this.setIkonState('iconBox iconBox--blue', UttaksplanIkonKeys.uttak, 'farMedmor');
-                    break;
-                default:
-                    this.setIkonState('', UttaksplanIkonKeys.uttak, '');
-            }
-        } else if (periode.type === 'utsettelse') {
-            switch (periode.årsak) {
-                case 'LOVBESTEMT_FERIE':
-                    this.setIkonState('iconBox iconBox--green', UttaksplanIkonKeys.ferie, 'ferie');
-                    break;
-                case 'ARBEID':
-                    this.setIkonState('iconBox iconBox--green', UttaksplanIkonKeys.arbeid, 'arbeid');
-                    break;
-                default:
-                    this.setIkonState('iconBox iconBox--green', UttaksplanIkonKeys.sykdom, 'sykdom');
-                    break;
-            }
-        }
-    };
 
     updatePeriode(
         periode: RecursivePartial<Periode>,
@@ -157,7 +111,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
     }
 
     render() {
-        const { intl, antallFeriedager, forelder, onCancel } = this.props;
+        const { intl, antallFeriedager, forelder, navnPåForeldre, onCancel } = this.props;
         const { periode } = this.state;
 
         return (
@@ -171,16 +125,13 @@ class NyPeriodeForm extends React.Component<Props, State> {
                     <>
                         <PeriodeFormTittel
                             tittel={getMessage(intl, 'nyPeriodeForm.utsettelse.tittel')}
-                            clsName={this.state.ikonClass}
-                            ikonType={this.state.ikonType}
-                            ikontittel={this.state.ikonTittel}
+                            ikon={periode.årsak ? getPeriodeIkon(periode as Periode, navnPåForeldre) : undefined}
                         />
                         <UtsettelsesperiodeForm
                             antallFeriedager={antallFeriedager}
                             periode={periode as UtsettelseFormPeriodeType}
                             onChange={this.updatePeriode}
                             onCancel={onCancel}
-                            onIkonUpdate={this.mapIkonState}
                         />
                     </>
                 )}
@@ -190,16 +141,13 @@ class NyPeriodeForm extends React.Component<Props, State> {
                     <>
                         <PeriodeFormTittel
                             tittel={getMessage(intl, 'nyPeriodeForm.uttak.tittel')}
-                            clsName={this.state.ikonClass}
-                            ikonType={this.state.ikonType}
-                            ikontittel={this.state.ikonTittel}
+                            ikon={getPeriodeIkon(periode as Periode, navnPåForeldre)}
                         />
                         <UttakForm
                             periode={periode as Partial<Uttaksperiode>}
                             kanEndreStønadskonto={true}
                             onChange={this.updatePeriode}
                             onCancel={onCancel}
-                            onIkonUpdate={this.mapIkonState}
                         />
                     </>
                 )}
