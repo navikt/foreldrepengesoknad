@@ -15,7 +15,6 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import Landvelger from '../landvelger/Landvelger';
-import { InputChangeEvent } from '../../types/dom/Events';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
 import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
 import ModalForm from 'common/components/modalForm/ModalForm';
