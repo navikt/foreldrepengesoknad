@@ -278,6 +278,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                         onCancel={this.handleOnCancel}
                                         tidsperiode={this.state.tidsperiode}
                                         søknad={this.props.søknad}
+                                        navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                                     />
                                 </FocusContainer>
                             )}
