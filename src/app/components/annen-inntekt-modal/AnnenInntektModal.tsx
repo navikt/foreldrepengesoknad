@@ -10,7 +10,6 @@ import {
     JobbIUtlandetInntekt,
     JobbIUtlandetInntektPartial
 } from '../../types/søknad/AnnenInntekt';
-import { Input } from 'nav-frontend-skjema';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
@@ -26,6 +25,7 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getSkjemanummerForAndreInntekter } from 'common/storage/attachment/components/util';
 import { hasValueRule } from '../../util/validation/common';
 import InntektstypeSpørsmål from '../../spørsmål/InntektstypeSpørsmål';
+import Input from 'common/components/skjema/wrappers/Input';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
@@ -155,6 +155,12 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             this.updateAnnenInntekt(utlandInntekt);
                         }}
                         value={(annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn || ''}
+                        validators={[
+                            hasValueRule(
+                                annenInntekt && (annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn,
+                                'påkrevd'
+                            )
+                        ]}
                     />
                 </Block>
                 <Block>
