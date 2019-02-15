@@ -45,7 +45,7 @@ interface OwnProps {
     harOverlappendePerioder?: boolean;
     onChange: EndrePeriodeChangeEvent;
     onCancel?: () => void;
-    onIkonUpdate?: () => void;
+    onUtsettelsesvariantChange?: (utsettelsesvariant: Utsettelsesvariant | undefined) => void;
 }
 
 interface StateProps {
@@ -178,17 +178,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                 });
             }
         }
-        this.setState(
-            {
-                variant
-            },
-            () => this.oppdatereIkon()
-        );
-    }
-
-    oppdatereIkon() {
-        if (this.props.onIkonUpdate !== undefined) {
-            this.props.onIkonUpdate();
+        this.setState({
+            variant
+        });
+        if (this.props.onUtsettelsesvariantChange) {
+            this.props.onUtsettelsesvariantChange(variant);
         }
     }
 
@@ -238,6 +232,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             onCancel,
             intl
         } = this.props;
+
         const { variant } = this.state;
 
         const visibility = this.getVisibility();
