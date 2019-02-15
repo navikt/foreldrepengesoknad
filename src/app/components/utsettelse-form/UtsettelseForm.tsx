@@ -45,6 +45,7 @@ interface OwnProps {
     harOverlappendePerioder?: boolean;
     onChange: EndrePeriodeChangeEvent;
     onCancel?: () => void;
+    onIkonUpdate?: () => void;
 }
 
 interface StateProps {
@@ -177,9 +178,18 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                 });
             }
         }
-        this.setState({
-            variant
-        });
+        this.setState(
+            {
+                variant
+            },
+            () => this.oppdatereIkon()
+        );
+    }
+
+    oppdatereIkon() {
+        if (this.props.onIkonUpdate !== undefined) {
+            this.props.onIkonUpdate();
+        }
     }
 
     onSykdomÅrsakChange({ sykdomsårsak, vedlegg }: UtsettelsePgaSykdomChangePayload) {
