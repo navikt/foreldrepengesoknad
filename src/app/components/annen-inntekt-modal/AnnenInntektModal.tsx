@@ -138,6 +138,9 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             this.updateAnnenInntekt(utlandInntekt);
                         }}
                         visBareEuOgEftaLand={true}
+                        validators={[
+                            hasValueRule(annenInntekt && (annenInntekt as JobbIUtlandetInntekt).land, 'påkrevd')
+                        ]}
                     />
                 </Block>
 
