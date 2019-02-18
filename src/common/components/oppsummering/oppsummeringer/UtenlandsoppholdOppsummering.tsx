@@ -15,18 +15,12 @@ interface Props {
 }
 
 const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedIntlProps> = (props) => {
-    const { situasjon, intl, farEllerMedmor } = props;
-    const {
-        iNorgePåHendelsestidspunktet,
-        iNorgeNeste12Mnd,
-        iNorgeSiste12Mnd,
-        tidligereOpphold,
-        senereOpphold
-    } = props.informasjonOmUtenlandsopphold;
+    const { intl } = props;
+    const { tidligereOpphold, senereOpphold } = props.informasjonOmUtenlandsopphold;
 
     return (
         <Oppsummeringsseksjon>
-            {iNorgeSiste12Mnd ? (
+            {tidligereOpphold.length === 0 ? (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.iNorgeSiste12Mnd.label')}
                     verdi={getMessage(intl, 'oppsummering.iNorgeSiste12MndTrue')}
@@ -36,7 +30,7 @@ const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedInt
                     <UtenlandsoppholdOppsummeringsliste informasjonOmUtenlandsopphold={tidligereOpphold} />
                 </KompleksFeltoppsummering>
             )}
-            {iNorgeNeste12Mnd ? (
+            {senereOpphold.length === 0 ? (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.iNorgeNeste12Mnd.label')}
                     verdi={getMessage(intl, 'oppsummering.iNorgeNeste12MndTrue')}
@@ -46,25 +40,6 @@ const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedInt
                     <UtenlandsoppholdOppsummeringsliste informasjonOmUtenlandsopphold={senereOpphold} />
                 </KompleksFeltoppsummering>
             )}
-            {iNorgePåHendelsestidspunktet !== undefined &&
-                situasjon === Søkersituasjon.FØDSEL && (
-                    <Feltoppsummering
-                        feltnavn={
-                            farEllerMedmor
-                                ? getMessage(intl, 'oppsummering.iNorgePåFødselstidspunktet.label.farMedmor')
-                                : getMessage(intl, 'oppsummering.iNorgePåFødselstidspunktet.label')
-                        }
-                        verdi={iNorgePåHendelsestidspunktet ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
-                    />
-                )}
-
-            {iNorgePåHendelsestidspunktet !== undefined &&
-                situasjon === Søkersituasjon.ADOPSJON && (
-                    <Feltoppsummering
-                        feltnavn={getMessage(intl, 'oppsummering.iNorgePåDatoForOmsorgsovertakelse.label')}
-                        verdi={iNorgePåHendelsestidspunktet ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
-                    />
-                )}
         </Oppsummeringsseksjon>
     );
 };
