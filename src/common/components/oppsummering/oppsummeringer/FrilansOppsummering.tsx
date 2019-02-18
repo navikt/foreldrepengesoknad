@@ -46,7 +46,7 @@ const FrilansOppsummering = ({ søker, intl }: Props) => {
                         intl,
                         'oppsummering.frilans.frilansArbeidForNæreVennerEllerFamilieSiste10Mnd'
                     )}>
-                    <Block visible={!harJobbetForNærVennEllerFamilieSiste10Mnd} margin={'none'}>
+                    <Block visible={!harJobbetForNærVennEllerFamilieSiste10Mnd} margin="none">
                         <Element>
                             {getMessage(
                                 intl,
@@ -54,7 +54,7 @@ const FrilansOppsummering = ({ søker, intl }: Props) => {
                             )}
                         </Element>
                     </Block>
-                    <Block visible={harJobbetForNærVennEllerFamilieSiste10Mnd} margin={'none'}>
+                    <Block visible={harJobbetForNærVennEllerFamilieSiste10Mnd} margin="none">
                         <FrilansoppdragOppsummeringsliste frilansoppdrag={oppdragForNæreVennerEllerFamilieSiste10Mnd} />
                     </Block>
                 </KompleksFeltoppsummering>

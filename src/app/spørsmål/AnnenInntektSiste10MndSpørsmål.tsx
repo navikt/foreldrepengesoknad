@@ -23,7 +23,7 @@ class AnnenInntektSiste10MndSpørsmål extends React.Component<Props> {
                     ja: getMessage(intl, 'annenInntekt.alternativ.hatt'),
                     nei: getMessage(intl, 'annenInntekt.alternativ.ikkeHatt')
                 }}
-                clsName={'annenInntektSiste10mnd'}
+                clsName="annenInntektSiste10mnd"
                 hjelpetekst={<AnnenInntektSiste10MndHjelpeTekst intl={intl} />}
                 onChange={(verdi) => onChange(verdi)}
             />

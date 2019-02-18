@@ -39,7 +39,7 @@ class SøknadSendtSide extends React.Component<Props> {
         const { kvittering } = this.props;
         return (
             <FormattedMessage
-                id={'kvittering.saksNr'}
+                id="kvittering.saksNr"
                 values={{
                     id: kvittering.saksNr ? kvittering.saksNr : kvittering.referanseId,
                     timeOfDay: moment(kvittering.mottattDato).format('HH:mm'),
@@ -129,7 +129,7 @@ class SøknadSendtSide extends React.Component<Props> {
                     </Block>
                     <Block margin="s">
                         <Ingress>
-                            <FormattedMessage id={'kvittering.behandlingstid'} />
+                            <FormattedMessage id="kvittering.behandlingstid" />
                         </Ingress>
                     </Block>
 

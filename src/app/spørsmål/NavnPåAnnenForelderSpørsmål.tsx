@@ -28,7 +28,7 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
                         name="fornavn"
                         onChange={(v: string) => onChange({ fornavn: v })}
                         value={fornavn === undefined ? '' : fornavn}
-                        className={'skjemaelement--undersporsmal'}
+                        className="skjemaelement--undersporsmal"
                         throttled={false}
                     />
                 </Column>
@@ -39,7 +39,7 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
                         name="etternavn"
                         onChange={(v: string) => onChange({ etternavn: v })}
                         value={etternavn === undefined ? '' : etternavn}
-                        className={'skjemaelement--undersporsmal'}
+                        className="skjemaelement--undersporsmal"
                     />
                 </Column>
             </Row>
