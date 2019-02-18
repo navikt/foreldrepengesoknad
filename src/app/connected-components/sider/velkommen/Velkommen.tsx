@@ -38,6 +38,7 @@ interface StateProps {
     person?: Person;
     harGodkjentVilkår: boolean;
     sakForEndringssøknad?: Sak;
+    sakUnderBehandling?: Sak;
     oppslagSakerFeilet?: boolean;
 }
 
@@ -109,7 +110,15 @@ class Velkommen extends React.Component<Props, State> {
     }
 
     render() {
-        const { person, sakForEndringssøknad, oppslagSakerFeilet, harGodkjentVilkår, dispatch, intl } = this.props;
+        const {
+            person,
+            sakForEndringssøknad,
+            sakUnderBehandling,
+            oppslagSakerFeilet,
+            harGodkjentVilkår,
+            dispatch,
+            intl
+        } = this.props;
         if (person === undefined) {
             return null;
         }
@@ -185,6 +194,16 @@ class Velkommen extends React.Component<Props, State> {
                                 )}
                         </>
                     )}
+                    {sakUnderBehandling !== undefined && (
+                        <>
+                            <Block>
+                                <FormattedMessage id="velkommen.intro.harFørstegangssøknadUnderBehandling" />
+                            </Block>
+                            <Block>
+                                <SakInfo sak={sakUnderBehandling} />
+                            </Block>
+                        </>
+                    )}
                     <Block visible={visInfoOmEndringsøknadIkkeTilgjengelig}>
                         <Veilederinfo type="advarsel">
                             <FormattedMessage id="velkommen.endringssøknadIkkeTilgjengelig.veileder" />
@@ -243,6 +262,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     person: props.søkerinfo && props.søkerinfo.person,
     harGodkjentVilkår: state.søknad.harGodkjentVilkår,
     sakForEndringssøknad: state.api.sakForEndringssøknad,
+    sakUnderBehandling: state.api.sakUnderBehandling,
     oppslagSakerFeilet: state.api.oppslagSakerFeilet
 });
 

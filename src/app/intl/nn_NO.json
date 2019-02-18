@@ -265,7 +265,8 @@
     "kvittering.dinProfilLink": "Din profil",
     "kvittering.headline": "Takk for søknaden",
     "kvittering.innsyn.tittel": "Kvar finn eg status på søknaden min?",
-    "kvittering.innsyn.fpsak": "Du kan føljga med på statusen i saken din på {lenke}. Her har du også høve til å ettersende dokumentasjon",
+    "kvittering.innsyn.fpsak":
+        "Du kan føljga med på statusen i saken din på {lenke}. Her har du også høve til å ettersende dokumentasjon",
     "kvittering.innsyn.infotrygd":
         "Det kan ta inntil 3 veker før søknaden din er synlig på {lenke}. Når søknaden er synleg, har du også høve til å ettersende dokumentasjon.",
     "kvittering.innsyn.lenke": "dine foreldrepengar",
@@ -879,6 +880,8 @@
         "Her søker du om foreldrepengar når du skal ha barn eller skal vera heime i foreldrepermisjon. Har du allereie foreldrepengar, kan du utsetje eller endre ved å velje søk om endring.",
     "velkommen.intro.harSak.veileder":
         "Når du søkjer om foreldrepengar for eit nytt barn, mistar du dagar du har igjen frå den første foreldrepengeperioden din.",
+    "velkommen.intro.harFørstegangssøknadUnderBehandling":
+        "Du har en førstegangssøknad til behandling. Ønsker du å sende inn en ny søknad må du fylle ut hele søknaden på nytt.",
     "velkommen.endringssøknadIkkeTilgjengelig.veileder":
         "Endringssøknad er ikkje tilgjengeleg akkurat nå. Ver vennleg og prøv igjen seinare.",
     "velkommen.lesMerOmPersonopplysninger": "Les om korleis NAV behandlar personopplysningane dine",
