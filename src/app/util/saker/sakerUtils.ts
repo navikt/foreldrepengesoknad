@@ -38,6 +38,26 @@ export const harEnAvsluttetBehandling = (sak: Sak): boolean => {
         : false;
 };
 
+const harEnAktivBehandling = (nyesteSak: Sak): boolean => {
+    return nyesteSak.behandlinger
+        ? nyesteSak.behandlinger.some(
+              (behandling: Behandling) =>
+                  behandling.status === BehandlingStatus.OPPRETTET || behandling.status === BehandlingStatus.UTREDES
+          )
+        : false;
+};
+
+export const harSakUnderBehandling = (nyesteSak: Sak): boolean => {
+    if (!gjelderSakForeldrepengesøknad(nyesteSak)) {
+        return false;
+    }
+
+    return (
+        (nyesteSak.status === FagsakStatus.OPPRETTET || nyesteSak.status === FagsakStatus.UNDER_BEHANDLING) &&
+        harEnAktivBehandling(nyesteSak)
+    );
+};
+
 export const skalKunneSøkeOmEndring = (nyesteSak: Sak): boolean => {
     if (!gjelderSakForeldrepengesøknad(nyesteSak)) {
         return false;
