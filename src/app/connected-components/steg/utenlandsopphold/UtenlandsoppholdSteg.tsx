@@ -112,7 +112,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                             informasjonOmUtenlandsopphold
                         )}
                         opphold={søknad.informasjonOmUtenlandsopphold.tidligereOpphold}
-                        oppholdType={'tidligereOpphold'}
+                        oppholdType="tidligereOpphold"
                         onChange={(opphold: Utenlandsopphold[]) =>
                             this.updateUtenlandsopphold(opphold, 'tidligereOpphold')
                         }
@@ -138,7 +138,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                             informasjonOmUtenlandsopphold
                         )}
                         opphold={søknad.informasjonOmUtenlandsopphold.senereOpphold}
-                        oppholdType={'senereOpphold'}
+                        oppholdType="senereOpphold"
                         onChange={(opphold: Utenlandsopphold[]) =>
                             this.updateUtenlandsopphold(opphold, 'senereOpphold')
                         }

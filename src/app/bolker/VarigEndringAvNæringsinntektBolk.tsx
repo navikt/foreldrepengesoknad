@@ -76,7 +76,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                     </Block>
                     <Block>
                         <Input
-                            name={'inntektEtterEndring'}
+                            name="inntektEtterEndring"
                             label={getMessage(intl, 'varigEndringAvNæringsinntekt.inntektEtterEndring.label')}
                             value={
                                 info && info.næringsinntektEtterEndring !== undefined
@@ -98,7 +98,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                     </Block>
                     <Block>
                         <Textarea
-                            name={'forklaring'}
+                            name="forklaring"
                             value={(info && info.forklaring) || ''}
                             label={getMessage(intl, 'varigEndringAvNæringsinntekt.forklaring.label')}
                             onChange={(e: TextareaChangeEvent) => {

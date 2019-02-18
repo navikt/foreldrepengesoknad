@@ -58,7 +58,7 @@ const FødselsnummerBolk = (props: Props) => {
 
                     <Block visible={utenlandskFnr === true}>
                         <Landvelger
-                            label={<Labeltekst intlId={'annenForelder.bostedsland'} intlValue={{ navn }} />}
+                            label={<Labeltekst intlId="annenForelder.bostedsland" intlValue={{ navn }} />}
                             onChange={(land: string) => onChange({ bostedsland: land })}
                             defaultValue={bostedsland}
                         />

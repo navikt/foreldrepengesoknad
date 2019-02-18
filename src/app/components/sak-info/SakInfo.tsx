@@ -26,11 +26,11 @@ const SakInfo: React.StatelessComponent<Props> = ({ sak }) => {
             <div className={bem.className}>
                 <div className={bem.element('text')}>
                     <Element className="blokk-xxxs">
-                        <FormattedMessage id={'velkommen.sak.type'} />
+                        <FormattedMessage id="velkommen.sak.type" />
                     </Element>
                     <Normaltekst className="blokk-xxs">
                         <FormattedMessage
-                            id={'velkommen.sak.sistEndret'}
+                            id="velkommen.sak.sistEndret"
                             values={{
                                 date: moment(sak.opprettet).format('LL')
                             }}

@@ -21,14 +21,14 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (props: Pr
             navn="harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd"
             valgtVerdi={harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd}
             onChange={(verdi) => onChange(verdi)}
-            clsName={'jobbetSomSelvstendigNaringsdrivende'}
+            clsName="jobbetSomSelvstendigNaringsdrivende"
             hjelpetekst={
                 <EksternUrl
-                    tekst={'harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst'}
+                    tekst="harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst"
                     url={
                         lenker.NaringsdrivendeInfoBoks
                     }
-                    lenkeTekst={'hjemmeside'}
+                    lenkeTekst="hjemmeside"
                 />
             }
         />

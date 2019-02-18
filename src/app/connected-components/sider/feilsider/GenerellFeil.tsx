@@ -39,7 +39,7 @@ const GenerellFeil: React.StatelessComponent<Props> = (props: Props) => {
                         errorMessage
                     ) : (
                         <FormattedMessage
-                            id={'feilside.ingress'}
+                            id="feilside.ingress"
                             values={{
                                 lenke: (
                                     <Lenke href={lenker.brukerstøtte}>
