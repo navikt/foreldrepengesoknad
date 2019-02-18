@@ -26,7 +26,7 @@ const AlertstripeWithCloseButton = ({ lukknappProps, onClose, errorMessages }: A
                 {errorMessages.length > 1 && (
                     <div className={cls.element('error-list')}>
                         <Element className={cls.element('title')}>
-                            <FormattedMessage id={'vedlegg.feilmelding.tittel.flereFeil'} />
+                            <FormattedMessage id="vedlegg.feilmelding.tittel.flereFeil" />
                         </Element>
                         <ul>
                             {errorMessages.map((message: React.ReactNode) => (
