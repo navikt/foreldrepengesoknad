@@ -16,11 +16,11 @@ interface Props {
 
 const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedIntlProps> = (props) => {
     const { intl } = props;
-    const { tidligereOpphold, senereOpphold } = props.informasjonOmUtenlandsopphold;
+    const { tidligereOpphold, senereOpphold, iNorgeSiste12Mnd, iNorgeNeste12Mnd } = props.informasjonOmUtenlandsopphold;
 
     return (
         <Oppsummeringsseksjon>
-            {tidligereOpphold.length === 0 ? (
+            {iNorgeSiste12Mnd ? (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.iNorgeSiste12Mnd.label')}
                     verdi={getMessage(intl, 'oppsummering.iNorgeSiste12MndTrue')}
@@ -30,7 +30,7 @@ const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedInt
                     <UtenlandsoppholdOppsummeringsliste informasjonOmUtenlandsopphold={tidligereOpphold} />
                 </KompleksFeltoppsummering>
             )}
-            {senereOpphold.length === 0 ? (
+            {iNorgeNeste12Mnd ? (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.iNorgeNeste12Mnd.label')}
                     verdi={getMessage(intl, 'oppsummering.iNorgeNeste12MndTrue')}
