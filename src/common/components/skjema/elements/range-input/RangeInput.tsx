@@ -116,10 +116,10 @@ class RangeInput extends React.Component<Props, State> {
 
         return (
             <div className={bemWrapper.className}>
-                <Fieldset legend={label}>
+                <Fieldset legend={label} className={'uttakfordeler'}>
                     {hjelpetekst && (
                         <div className={bemWrapper.element('help')}>
-                            <Infoboks tekst={hjelpetekst} />
+                            <Infoboks tekst={hjelpetekst} fieldsetClsName={'uttakfordeler'} />
                         </div>
                     )}
                     <div aria-live="polite">

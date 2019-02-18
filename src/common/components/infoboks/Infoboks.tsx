@@ -51,7 +51,7 @@ class Infoboks extends React.Component<Props, InfoboksState> {
     getComponentSize = () => {
         const cls = this.props.fieldsetClsName ? this.props.fieldsetClsName : '';
         if (cls.length > 1) {
-            const overskriftTilblockElement = document.querySelector('.' + cls + ' > .skjema__legend');
+            const overskriftTilblockElement = document.querySelector('.' + cls + ' .skjema__legend');
             const overskriftTilblockElementBredde = overskriftTilblockElement
                 ? overskriftTilblockElement.clientWidth + 16
                 : 0;
