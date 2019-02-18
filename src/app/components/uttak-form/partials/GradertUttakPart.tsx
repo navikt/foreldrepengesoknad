@@ -59,7 +59,7 @@ class GradertUttakForm extends React.Component<Props> {
                             onChange({ gradert: ønskerGradering, erArbeidstaker: ønskerGradering ? false : undefined })
                         }
                         hjelpetekst={<FormattedHTMLMessage id="uttaksperiode.gradert.skalDuHarGradering.hjelpetekst" />}
-                        clsName={'onskerDuGradertuttak'}
+                        clsName="onskerDuGradertuttak"
                     />
                 </Block>
 
