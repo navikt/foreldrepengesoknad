@@ -756,6 +756,10 @@
     "uttaksplan.validering.før12UkerFørTermin": "Du kan tidligst ta ut foreldrepenger 12 uker før termin eller fødsel",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepenger",
     "uttaksplan.varighet.uttak.gradert": "{varighet}",
+    "uttaksplan.ulønnetPermisjonInfo.del1":
+        "Når en forelder planlegger å være hjemme i ulønnet permisjon må <b>den andre forelderen</b> søke om å utsette foreldrepengene på grunn av heltidsarbeid, sykdom eller ferie.",
+    "uttaksplan.ulønnetPermisjonInfo.del2":
+        "Ulønnet permisjon kan påvirke retten til andre NAV ytelser og opptjening av rett til foreldrepenger for nytt barn. <a href=\"https://www.nav.no/no/Person/Arbeid/Sykmeldt%2C+arbeidsavklaringspenger+og+yrkesskade/Sykepenger/Sykepenger+til+sarskilte+grupper#chapter-5\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">Her kan du lese mer om dine rettigheter.</a>",
     "uttaksplan.veileder.planenInneholderHull":
         "Planen din inneholder perioder med tapte foreldrepenger. Du står i fare for å miste dager om du ikke legger inn en utsettelse eller periode med foreldrepenger.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Husk at du må søke om foreldrepenger senest {sisteDag}.",

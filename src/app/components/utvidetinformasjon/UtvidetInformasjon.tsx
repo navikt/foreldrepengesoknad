@@ -1,5 +1,4 @@
 import * as React from 'react';
-import classnames from 'classnames';
 import { guid } from 'nav-frontend-js-utils';
 
 import InfoToggler from './InfoToggler';
@@ -33,14 +32,10 @@ class UtvidetInformasjon extends React.Component<Props, State> {
         };
     }
     render() {
-        const cls = classnames('utvidetInformasjon', {
-            'utvidetInformasjon--apen': this.state.apen
-        });
-
         const { lukkLabel = getMessage(this.props.intl, 'utvidetInformasjon.lukkTekst') } = this.props;
 
         return (
-            <div className={cls}>
+            <div className="utvidetInformasjon">
                 <div className="utvidetInformasjon__toggler no-print">
                     <InfoToggler onToggle={() => this.setState({ apen: !this.state.apen })} apen={this.state.apen}>
                         <Normaltekst tag="span">{this.state.apen ? lukkLabel : this.props.apneLabel}</Normaltekst>
