@@ -97,9 +97,17 @@ describe('søknadReducer', () => {
         expect(someAlteredState.søker.rolle).toBe(SøkerRolle.MOR);
     });
 
-    it('should update currentStegID in ekstrainfo with specified ID when SET_CURRENT_STEG-action is dispatched', () => {
-        const someAlteredState = reducer(defaultState, actions.setCurrentSteg(StegID.INNGANG));
+    it('should update currentStegID in ekstrainfo with specified ID when SET_CURRENT_STEG-action is dispatched and user has godkjentVilkår', () => {
+        const someAlteredState = reducer(
+            { ...defaultState, harGodkjentVilkår: true },
+            actions.setCurrentSteg(StegID.INNGANG)
+        );
         expect(someAlteredState.ekstrainfo.currentStegID).toBe(StegID.INNGANG);
+    });
+
+    it('should clear currentStegID in ekstrainfo when SET_CURRENT_STEG-action is dispatched and user has not godkjentVilkår', () => {
+        const someAlteredState = reducer(defaultState, actions.setCurrentSteg(StegID.INNGANG));
+        expect(someAlteredState.ekstrainfo.currentStegID).toBe(undefined);
     });
 
     it('should set attachment.pending to true and call addAttachmentToState when UPLOAD_ATTACHMENT-action is dispatched', () => {
