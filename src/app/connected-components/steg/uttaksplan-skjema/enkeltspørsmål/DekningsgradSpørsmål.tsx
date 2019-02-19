@@ -8,22 +8,19 @@ import { DispatchProps } from 'common/redux/types';
 import søknadActionCreators from '../../../../redux/actions/søknad/søknadActionCreators';
 import { AppState } from '../../../../redux/reducers';
 import Block from 'common/components/block/Block';
-import { SøkerRolle, Søkersituasjon } from '../../../../types/søknad/Søknad';
-import { getErSøkerFarEllerMedmor } from '../../../../util/domain/personUtil';
+import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getFamiliehendelsedato } from 'app/util/uttaksplan';
+import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { Søknadsinfo } from 'app/selectors/types';
 
 interface StateProps {
-    dekningsgrad?: Dekningsgrad;
-    erAleneomsorg: boolean;
     dekningsgrad100AntallUker: number | undefined;
     dekningsgrad80AntallUker: number | undefined;
-    rolle: SøkerRolle;
     harAnnenForelderSøktFP: boolean | undefined;
-    situasjon: Søkersituasjon;
     familiehendelseDato: Date;
     startdatoPermisjon: Date | undefined;
-    erEndringssøknad: boolean;
+    søknadsinfo: Søknadsinfo;
 }
 interface OwnProps {
     visible?: boolean;
@@ -37,20 +34,48 @@ const getInfoboxText = (intl: InjectedIntl, erAleneOmOmsorg: boolean): string | 
         : getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg');
 };
 
+const skalViseVeileder = (
+    erEndringssøknad: boolean,
+    situasjon: Søkersituasjon,
+    erFarEllerMedmor: boolean,
+    erAleneomsorg: boolean,
+    annenForelderHarRett: boolean,
+    harAnnenForelderSøktFP?: boolean,
+    dekningsgrad?: Dekningsgrad
+): boolean => {
+    if (dekningsgrad === '80' && erEndringssøknad === false) {
+        if (situasjon === Søkersituasjon.ADOPSJON && (harAnnenForelderSøktFP === false || erAleneomsorg)) {
+            return true;
+        }
+
+        if (situasjon === Søkersituasjon.FØDSEL) {
+            if (!erFarEllerMedmor) {
+                return true;
+            } else {
+                if (erAleneomsorg || !annenForelderHarRett) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+};
+
 const DekningsgradSpørsmål = (props: Props) => {
     const {
         visible = true,
         dispatch,
-        erAleneomsorg,
-        dekningsgrad,
         intl,
         dekningsgrad100AntallUker,
         dekningsgrad80AntallUker,
-        rolle,
         harAnnenForelderSøktFP,
-        situasjon,
-        erEndringssøknad
+        søknadsinfo
     } = props;
+
+    const { dekningsgrad, situasjon, erEndringssøknad, erDeltUttak } = søknadsinfo.søknaden;
+    const { erFarEllerMedmor, erAleneOmOmsorg } = søknadsinfo.søker;
+    const { harRett } = søknadsinfo.annenForelder;
 
     let checked;
     if (dekningsgrad === '100') {
@@ -62,26 +87,20 @@ const DekningsgradSpørsmål = (props: Props) => {
     let labelKey: string = '';
 
     if (erEndringssøknad) {
-        labelKey = erAleneomsorg
-            ? 'spørsmål.dekningsgrad.endringssøknad.label.ikkeDeltUttak'
-            : 'spørsmål.dekningsgrad.endringssøknad.label.deltUttak';
+        labelKey = erDeltUttak
+            ? 'spørsmål.dekningsgrad.endringssøknad.label.deltUttak'
+            : 'spørsmål.dekningsgrad.endringssøknad.label.ikkeDeltUttak';
     } else {
         if (harAnnenForelderSøktFP !== undefined && harAnnenForelderSøktFP === true) {
             labelKey = 'spørsmål.dekningsgrad.label.deltUttak';
         } else {
-            labelKey = erAleneomsorg
+            labelKey = !erDeltUttak
                 ? 'spørsmål.dekningsgrad.label.ikkeDeltUttak'
-                : getErSøkerFarEllerMedmor(rolle)
+                : erFarEllerMedmor
                     ? 'spørsmål.dekningsgrad.label.deltUttak'
                     : 'spørsmål.dekningsgrad.label.deltUttakMor';
         }
     }
-
-    const skalViseVeileder =
-        dekningsgrad === '80' &&
-        erEndringssøknad === false &&
-        ((situasjon === Søkersituasjon.ADOPSJON && harAnnenForelderSøktFP === false) ||
-            (situasjon === Søkersituasjon.FØDSEL && !getErSøkerFarEllerMedmor(rolle)));
 
     return (
         <>
@@ -105,28 +124,33 @@ const DekningsgradSpørsmål = (props: Props) => {
                         }
                     ]}
                     name="dekningsgrad"
-                    infoboksTekst={erEndringssøknad === false ? undefined : getInfoboxText(intl, erAleneomsorg)}
+                    infoboksTekst={erEndringssøknad === false ? undefined : getInfoboxText(intl, erAleneOmOmsorg)}
                     onChange={(e, v: Dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad: v }))}
                 />
             </Block>
-            <Block visible={skalViseVeileder}>
-                <Veilederinfo>{erEndringssøknad === false && getInfoboxText(intl, erAleneomsorg)}</Veilederinfo>
+            <Block
+                visible={skalViseVeileder(
+                    erEndringssøknad,
+                    situasjon,
+                    erFarEllerMedmor,
+                    erAleneOmOmsorg,
+                    harRett,
+                    harAnnenForelderSøktFP,
+                    dekningsgrad
+                )}>
+                <Veilederinfo>{erEndringssøknad === false && getInfoboxText(intl, erAleneOmOmsorg)}</Veilederinfo>
             </Block>
         </>
     );
 };
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    dekningsgrad: state.søknad.dekningsgrad,
-    erAleneomsorg: state.søknad.søker.erAleneOmOmsorg || !state.søknad.annenForelder.harRettPåForeldrepenger,
     dekningsgrad100AntallUker: state.api.dekningsgrad100AntallUker,
     dekningsgrad80AntallUker: state.api.dekningsgrad80AntallUker,
-    rolle: state.søknad.søker.rolle,
     harAnnenForelderSøktFP: state.søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP,
-    situasjon: state.søknad.situasjon,
+    søknadsinfo: getSøknadsinfo(state)!,
     familiehendelseDato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon),
-    startdatoPermisjon: state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon,
-    erEndringssøknad: state.søknad.erEndringssøknad
+    startdatoPermisjon: state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon
 });
 
 export default connect(mapStateToProps)(injectIntl(DekningsgradSpørsmål));
