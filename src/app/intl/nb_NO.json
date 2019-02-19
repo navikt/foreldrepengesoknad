@@ -705,10 +705,6 @@
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.alternativ.datoForAleneomsorg": "Omsorgsovertakelsen {dato}",
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.annenDato.spørsmål": "Velg annen dato",
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.spørsmål": "Når skal du starte foreldrepengene dine?",
-    "uttaksplan.skjema.aleneomsorgFarMedmor.navSaraVeileder":
-        "Foreldrepengeperioden din starter når <b>barnet er født</b>. Hvis {navn} har fått foreldrepenger før du blir alene om omsorgen, kan du få foreldrepenger for perioden som er igjen.",
-    "uttaksplan.skjema.adopsjon.navSaraVeileder":
-        "Foreldrepengeperioden din starter på adopsjonsdatoen. Hvis {navn} har fått foreldrepenger før du blir alene om omsorgen, kan du få foreldrepenger for perioden som er igjen.",
     "uttaksplan.skjema.validering.startdatoFarMedmor": "Du må oppgi når du skal starte",
     "uttaksplan.skjema.validering.startdatoFørTermin":
         "Du må oppgi når du skal starte foreldrepengene, eller krysse av for at du ikke skal ha foreldrepenger før termindato",
