@@ -15,7 +15,7 @@ import StartdatoUttakFarMedmorAleneomsorgSpørsmål from './enkeltspørsmål/Sta
 import { NavnPåForeldre } from 'common/types';
 import { getFamiliehendelsedato } from '../../../util/uttaksplan';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { findOldestDate, dateIsSameOrAfter } from '../../../util/dates/dates';
 import Block from 'common/components/block/Block';
 import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
@@ -192,10 +192,25 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
 
 const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
     const omsorgsDato = søknad.barn.datoForAleneomsorg || getFamiliehendelsedato(søknad.barn, søknad.situasjon);
-
     return (
         <>
             <DekningsgradSpørsmål />
+            <Block visible={søknad.dekningsgrad !== undefined && søknad.situasjon === 'fødsel'}>
+                <Veilederinfo>
+                    <FormattedHTMLMessage
+                        id="uttaksplan.skjema.aleneomsorgFarMedmor.navSaraVeileder"
+                        values={{ navn: søknad.annenForelder.fornavn }}
+                    />
+                </Veilederinfo>
+            </Block>
+            <Block visible={søknad.dekningsgrad !== undefined && søknad.situasjon === 'adopsjon'}>
+                <Veilederinfo>
+                    <FormattedHTMLMessage
+                        id="uttaksplan.skjema.adopsjon.navSaraVeileder"
+                        values={{ navn: søknad.annenForelder.fornavn }}
+                    />
+                </Veilederinfo>
+            </Block>
             <StartdatoUttakFarMedmorAleneomsorgSpørsmål
                 familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
                 datoForAleneomsorg={omsorgsDato}
