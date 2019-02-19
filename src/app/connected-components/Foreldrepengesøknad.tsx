@@ -33,7 +33,8 @@ const checkIfUserShouldJumpToSteg = (søknad: Partial<Søknad> | undefined, path
         return undefined;
     }
 
-    const skipToStegID = søknad && søknad.ekstrainfo ? søknad.ekstrainfo.currentStegID : undefined;
+    const skipToStegID =
+        søknad && søknad.harGodkjentVilkår && søknad.ekstrainfo ? søknad.ekstrainfo.currentStegID : undefined;
     if (skipToStegID !== undefined && skipToStegID !== getStegFromPathname(pathname)) {
         return skipToStegID;
     }
