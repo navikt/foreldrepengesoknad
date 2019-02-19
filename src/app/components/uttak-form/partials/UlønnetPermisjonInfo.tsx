@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, FormattedHTMLMessage } from 'react-intl';
+import { FormattedHTMLMessage } from 'react-intl';
 import UtvidetInformasjon from 'app/components/utvidetinformasjon/UtvidetInformasjon';
 
 import './ulønnetPermisjonInfo.less';
@@ -15,4 +15,4 @@ const UlønnetPermisjonInfo: React.SFC<{}> = () => {
     );
 };
 
-export default injectIntl(UlønnetPermisjonInfo);
+export default UlønnetPermisjonInfo;
