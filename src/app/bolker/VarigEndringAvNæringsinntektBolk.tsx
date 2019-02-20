@@ -106,8 +106,8 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                                     forklaring: e.target.value
                                 });
                             }}
-                            validators={getFritekstfeltRules({ maxLength: 100 }, intl, info && info.forklaring)}
-                            maxLength={100}
+                            validators={getFritekstfeltRules({ maxLength: 1000 }, intl, info && info.forklaring)}
+                            maxLength={1000}
                         />
                     </Block>
                 </Block>
