@@ -14,4 +14,5 @@ export interface Kvittering {
     leveranseStatus: LeveranseStatus;
     journalId: string;
     saksNr: string;
+    pdf: any;
 }
