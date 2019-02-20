@@ -12,7 +12,6 @@ interface UtenlandsoppholdSkjemadata {
 
 interface InformasjonOmUtenlandsopphold {
     jobbetINorgeSiste12Mnd: boolean;
-    iNorgePåHendelsestidspunktet: boolean;
     iNorgeSiste12Mnd: boolean;
     iNorgeNeste12Mnd: boolean;
     tidligereOpphold: Utenlandsopphold[];
