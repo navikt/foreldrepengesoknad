@@ -1,7 +1,6 @@
 import { Utsettelsesperiode, Periodetype, UtsettelseÅrsakType } from '../../../types/uttaksplan/periodetyper';
-import { Forelder } from 'common/types';
+import { Forelder, Tidsperiode } from 'common/types';
 import { splittPeriodeMedHelligdager, getFriperioderITidsperiode } from '../builder/UttaksplanBuilder';
-import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 
 describe('UttaksplanBuilder', () => {
     it('should split jul 2018 med periodehull correctly', () => {

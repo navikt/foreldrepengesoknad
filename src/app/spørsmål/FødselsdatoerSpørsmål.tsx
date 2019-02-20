@@ -4,8 +4,8 @@ import { DateValue } from '../types/common';
 import { fødselsdatoAvgrensninger, getFødselsdatoRegler } from '../util/validation/fødselsdato';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
-import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types';
+import { Avgrensninger } from 'common/types';
 
 export interface FødselsdatoerSpørsmålProps {
     fødselsdatoer: DateValue[];
@@ -68,7 +68,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                 dato={fødselsdatoer[0]}
                 onChange={(d: Date) => this.onDatoChange(d, 0)}
                 label={<Labeltekst intlId={intlId} />}
-                avgrensninger={this.getFødselsdatoAvgrensninger()}
+                datoAvgrensinger={this.getFødselsdatoAvgrensninger()}
                 validators={this.getValidatorer()}
             />
         );
@@ -86,7 +86,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                             dato={fødselsdatoer[idx]}
                             onChange={(d: Date) => this.onDatoChange(d, idx)}
                             label={<Labeltekst intlId={`fødselsdatoer.flere.${idx + 1}`} />}
-                            avgrensninger={this.getFødselsdatoAvgrensninger()}
+                            datoAvgrensinger={this.getFødselsdatoAvgrensninger()}
                             validators={this.getValidatorer()}
                         />
                     </div>

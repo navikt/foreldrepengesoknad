@@ -1,7 +1,6 @@
 import { StønadskontoType, OppholdÅrsakType } from '../../types/uttaksplan/periodetyper';
 import { DatoAvgrensninger } from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
-import { Avgrensninger } from 'nav-datovelger';
-import { Tidsperiode } from 'common/types';
+import { Avgrensninger, Tidsperiode } from 'common/types';
 import { uttaksplanDatoavgrensninger } from '../validation/uttaksplan/uttaksplanDatoavgrensninger';
 import { Tidsperioden, isValidTidsperiode } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';

@@ -3,10 +3,10 @@ import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import { InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor } from '../../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
 import LinkButton from '../../link-button/LinkButton';
-import { Tidsperiode } from 'nav-datovelger';
 import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import Block from 'common/components/block/Block';
+import { Tidsperiode } from 'common/types';
 
 interface Props {
     info: InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor;

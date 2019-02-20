@@ -2,7 +2,7 @@ import moment from 'moment';
 import { erInnenFørsteSeksUkerFødselFarMedmor } from '../erInnenFørsteSeksUkerFødselFarMedmor';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { getUttaksdatoer } from '../../../util/uttaksplan/uttaksdatoer';
-import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
+import { Tidsperiode } from 'common/types';
 
 const tidsperiode: Tidsperiode = {
     fom: new Date(2018, 11, 1),

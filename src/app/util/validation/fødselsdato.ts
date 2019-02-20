@@ -1,5 +1,4 @@
 import { InjectedIntl } from 'react-intl';
-import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
 import { DateValue } from '../../types/common';
 import getMessage from 'common/util/i18nUtils';
@@ -12,6 +11,7 @@ import {
     hasValueRule
 } from './common';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
+import { Avgrensninger } from 'common/types';
 
 export const fødselsdatoAvgrensninger: Avgrensninger = {
     minDato: date3YearsAgo.toDate(),

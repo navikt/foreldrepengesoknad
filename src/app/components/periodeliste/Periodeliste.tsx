@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { Periode, Periodetype, isUttaksperiode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
-import { NavnPåForeldre } from 'common/types';
+import { NavnPåForeldre, Tidsperiode } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import ToggleList from '../toggle-list/ToggleList';
 import PeriodelisteHull from './items/PeriodelisteHull';
 import { focusElement } from '../../util/focusUtils';
-import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import PeriodelistePeriode from './items/PeriodelistePeriode';
 import PeriodelisteInfo, { PeriodelisteInformasjon } from './items/PeriodelisteInfo';
 

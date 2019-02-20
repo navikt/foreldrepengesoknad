@@ -1,8 +1,7 @@
 import { Validator } from 'common/lib/validation/types/index';
 import { today } from './values';
-import { Avgrensninger } from 'nav-datovelger';
 import { DateValue } from '../../types/common';
-import { Tidsperiode } from 'common/types/index';
+import { Avgrensninger, Tidsperiode } from 'common/types/index';
 import {
     dateIs1YearAheadOrLess,
     dateIs1YearAgoOrLess,

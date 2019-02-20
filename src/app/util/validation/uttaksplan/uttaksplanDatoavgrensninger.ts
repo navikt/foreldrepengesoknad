@@ -1,7 +1,7 @@
-import { Avgrensninger } from 'nav-datovelger';
 import moment from 'moment';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 import { getPermisjonsregler } from '../../uttaksplan/permisjonsregler';
+import { Avgrensninger } from 'common/types';
 
 function sisteMuligePermisjonsdag(familiehendelsedato: Date): Date {
     const permisjonsregler = getPermisjonsregler();

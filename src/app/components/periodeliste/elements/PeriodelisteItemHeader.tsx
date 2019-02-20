@@ -7,6 +7,7 @@ import { Tidsperiode } from 'common/types';
 import AriaText from 'common/components/aria/AriaText';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../../uttaksplan-ikon/UttaksplanIkon';
 import { måned3bokstaver, måned, år } from 'common/util/datoUtils';
+import moment from 'moment';
 
 import './periodeheader.less';
 
@@ -38,19 +39,21 @@ const getIkonForAdvarsel = (advarsel: Advarsel): UttaksplanIkonKeys => {
     return UttaksplanIkonKeys.feil;
 };
 
-const renderDagMnd = (dato: Date): JSX.Element =>
-    dato ? (
+const renderDagMnd = (dato: Date): JSX.Element => {
+    const d = moment.utc(dato);
+    return dato ? (
         <div className={BEM.element('dagmnd')}>
             <span className={BEM.element('dagmnd__dato')}>
-                {dato.getDate()}. {måned3bokstaver(dato)}.
+                {d.get('date')}. {måned3bokstaver(d)}.
             </span>
             <EtikettLiten tag="span" className={BEM.element('dagmnd__mnd')}>
-                <abbr title={`${måned(dato)} ${år(dato)}`}>{år(dato)}</abbr>
+                <abbr title={`${måned(d)} ${år(d)}`}>{år(d)}</abbr>
             </EtikettLiten>
         </div>
     ) : (
         <div className={BEM.element('dagmnd')}>-</div>
     );
+};
 
 const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
     type,

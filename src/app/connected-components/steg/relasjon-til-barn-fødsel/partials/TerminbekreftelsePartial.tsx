@@ -61,7 +61,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                         );
                     }}
                     dato={barn.terminbekreftelseDato}
-                    avgrensninger={getTerminbekreftelsedatoAvgrensninger(barn.termindato)}
+                    datoAvgrensinger={getTerminbekreftelsedatoAvgrensninger(barn.termindato)}
                     validators={
                         validerDatofelt
                             ? getTerminbekreftelseDatoRegler(barn.terminbekreftelseDato, barn.termindato, intl)
