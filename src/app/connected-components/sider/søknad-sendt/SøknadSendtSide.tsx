@@ -15,9 +15,9 @@ import Applikasjonsside from '../Applikasjonsside';
 import lenker from '../../../util/routing/lenker';
 import Block from 'common/components/block/Block';
 import BEMHelper from 'common/util/bem';
+import { openPdfPreview } from 'common/util/pdfUtils';
 
 import './søknadSendtSide.less';
-import { base64ToArrayBuffer } from 'common/util/filesize';
 
 interface StateProps {
     person: Person;
@@ -106,17 +106,7 @@ class SøknadSendtSide extends React.Component<Props> {
                 id={'kvittering.pdf'}
                 values={{
                     lenke: (
-                        <Lenke
-                            href={'#'}
-                            onClick={() =>
-                                window.open(
-                                    URL.createObjectURL(
-                                        new Blob([base64ToArrayBuffer(kvittering.pdf)], {
-                                            type: 'application/pdf'
-                                        })
-                                    )
-                                )
-                            }>
+                        <Lenke href={'#'} onClick={() => openPdfPreview(kvittering.pdf)}>
                             <FormattedMessage id={'her'} />
                         </Lenke>
                     )
