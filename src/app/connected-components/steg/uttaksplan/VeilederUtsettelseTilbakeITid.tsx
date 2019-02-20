@@ -1,10 +1,8 @@
 import React from 'react';
-import { InjectedIntlProps, injectIntl, InjectedIntl, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 
-import { Utsettelsesperiode, Uttaksperiode } from 'app/types/uttaksplan/periodetyper';
-import getMessage from 'common/util/i18nUtils';
+import { Utsettelsesperiode, Uttaksperiode, UtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { dagOgMåned } from 'common/util/datoUtils';
 
 interface OwnProps {
     utsettelser: Utsettelsesperiode[];
@@ -13,51 +11,25 @@ interface OwnProps {
 
 type Props = OwnProps & InjectedIntlProps;
 
-const translateÅrsak = (utsettelse: Utsettelsesperiode, intl: InjectedIntl) =>
-    getMessage(intl, `utsettelsesårsak.${utsettelse.årsak}`).toLowerCase();
-
-const VeilederUtsettelseTilbakeITid = ({ utsettelser, intl }: Props) => {
-    let content;
-    if (utsettelser.length > 1) {
-        content = (
-            <>
-                <FormattedMessage id="uttaksplan.veileder.planenAdvarerOmUtsettelser.flereUtsettelser" />
-                {utsettelser
-                    .map((utsettelse) => (
-                        <FormattedMessage
-                            id="uttaksplan.veileder.planenAdvarerOmUtsettelser.enAvFlereUtsettelser"
-                            values={{
-                                fom: dagOgMåned(utsettelse.tidsperiode.fom),
-                                tom: dagOgMåned(utsettelse.tidsperiode.tom),
-                                årsak: utsettelse.årsak
-                            }}
-                        />
-                    ))
-                    .join(', ')
-                    .concat('.')}
-            </>
-        );
-    } else if (utsettelser.length === 1) {
-        content = (
-            <FormattedMessage
-                id="uttaksplan.veileder.planenAdvarerOmUtsettelser.enUtsettelse"
-                values={{
-                    fom: dagOgMåned(utsettelser[0].tidsperiode.fom),
-                    tom: dagOgMåned(utsettelser[0].tidsperiode.tom)
-                }}
-            />
-        );
-    }
+const VeilederUtsettelseTilbakeITid = ({ utsettelser, uttak, intl }: Props) => {
+    const inneholderUtsettelsePgaFerie = utsettelser.find(
+        (utsettelse) => utsettelse.årsak === UtsettelseÅrsakType.Ferie
+    );
+    const inneholderUtsettelsePgaArbeid = utsettelser.find(
+        (utsettelse) => utsettelse.årsak === UtsettelseÅrsakType.Arbeid
+    );
 
     return (
-        <Veilederinfo type="advarsel">
-            <FormattedMessage
-                id="uttaksplan.veileder.planenAdvarerOmUtsettelser"
-                values={{
-                    årsak: utsettelser.map((utsettelse) => translateÅrsak(utsettelse, intl)).join(', ')
-                }}
-            />
-            {content}
+        <Veilederinfo type="feil">
+            {inneholderUtsettelsePgaFerie && (
+                <FormattedMessage id="uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie" />
+            )}
+
+            {inneholderUtsettelsePgaArbeid && (
+                <FormattedMessage id="uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid" />
+            )}
+
+            {uttak.length > 0 && <FormattedMessage id="uttaksplan.veileder.planenAdvarerOmUttak" />}
         </Veilederinfo>
     );
 };

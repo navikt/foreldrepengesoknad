@@ -772,6 +772,10 @@
     "uttaksplan.veileder.planenInneholderHull":
         "Planen din inneheld periodar med tapte foreldrepengar. Du står i fare for å miste dagar om du ikkje legg inn ei utsetjing eller ein periode med foreldrepengar.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Hugs at du må søkja om foreldrepengar seinast {sisteDag}.",
+    "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie":
+        "Du har oppgitt at du var på ferie fra {fom} til {tom}. Du må søke om utsettelse på grunn av ferie senest dagen før du starter ferien din. Vi kan innvilge ferie tilbake i tid hvis arbeidsgiveren din bekreftet ferien din i inntektsmeldingen før ferien startet.",
+    "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid":
+        "Du må søke om utsettelse på grunn av arbeid senest dagen før du begynner å jobbe. Når du søker om utsettelse på grunn av arbeid tilbake i tid står du i fare for å  miste dager.",
 
     "uttaksplan.senEndring.veileder.SYKDOM":
         "Når du søkjer om utsetjing tilbake i tid, må du fortelje kva som er årsaka til at du ikkje har søkt tidlegare. Du har også moglegheit til å lasta opp relevant dokumentasjon.",
