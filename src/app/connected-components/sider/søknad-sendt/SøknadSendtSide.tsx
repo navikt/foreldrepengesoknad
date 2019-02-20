@@ -17,6 +17,7 @@ import Block from 'common/components/block/Block';
 import BEMHelper from 'common/util/bem';
 
 import './søknadSendtSide.less';
+import { base64ToArrayBuffer } from 'common/util/filesize';
 
 interface StateProps {
     person: Person;
@@ -98,8 +99,34 @@ class SøknadSendtSide extends React.Component<Props> {
         );
     }
 
+    buildPdfPreviewLink() {
+        const { kvittering } = this.props;
+        return (
+            <FormattedMessage
+                id={'kvittering.pdf'}
+                values={{
+                    lenke: (
+                        <Lenke
+                            href={'#'}
+                            onClick={() =>
+                                window.open(
+                                    URL.createObjectURL(
+                                        new Blob([base64ToArrayBuffer(kvittering.pdf)], {
+                                            type: 'application/pdf'
+                                        })
+                                    )
+                                )
+                            }>
+                            <FormattedMessage id={'her'} />
+                        </Lenke>
+                    )
+                }}
+            />
+        );
+    }
+
     render() {
-        const { intl, person } = this.props;
+        const { intl, person, kvittering } = this.props;
         const bem = BEMHelper('søknadSendt');
         return (
             <Applikasjonsside visSøknadstittel={true}>
@@ -155,6 +182,10 @@ class SøknadSendtSide extends React.Component<Props> {
                                 </Block>
                             </>
                         )}
+
+                    <Block margin="s" visible={kvittering.pdf !== undefined}>
+                        <Ingress>{this.buildPdfPreviewLink()}</Ingress>
+                    </Block>
 
                     <Hovedknapp
                         className={bem.element('avsluttKnapp')}
