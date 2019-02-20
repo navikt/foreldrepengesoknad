@@ -14,7 +14,7 @@ import UtenlandsoppholdOppsummering from 'common/components/oppsummering/oppsumm
 import InntektOppsummering from 'common/components/oppsummering/oppsummeringer/InntektOppsummering';
 import Oppsummeringspanel from 'common/components/oppsummeringspanel/Oppsummeringspanel';
 import UttaksplanOppsummering from 'common/components/oppsummering/oppsummeringer/UttaksplanOppsummering';
-import { getNavnPåForeldre } from '../../../app/util/uttaksplan';
+import { getFamiliehendelsedato, getNavnPåForeldre } from '../../../app/util/uttaksplan';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 
 import './oppsummering.less';
@@ -75,6 +75,7 @@ class Oppsummering extends React.Component<Props> {
                                 <UtenlandsoppholdOppsummering
                                     informasjonOmUtenlandsopphold={søknad.informasjonOmUtenlandsopphold}
                                     situasjon={søknad.situasjon}
+                                    familiehendelsedato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
                                     farEllerMedmor={getErSøkerFarEllerMedmor(søknad.søker.rolle)}
                                 />
                             </Oppsummeringspanel>
