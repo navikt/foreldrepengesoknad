@@ -3,19 +3,21 @@ import * as getMessage from 'common/util/i18nUtils';
 import { isSixteenOrOlder, getFødselsnummerRegler } from '../fødselsnummer';
 import moment from 'moment';
 
-const intl = {} as InjectedIntl;
+const intl: Partial<InjectedIntl> = {};
 
 const callFødselsnummerValidator = (
     fødselsnummer: string,
     utenlandskFødselsnummer: boolean,
     søkersFødselsnummer: string
-) => getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl)[1].test();
+) =>
+    getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl as InjectedIntl)[1].test();
 
 const callMatchingApplicantsFødselsnummerValidator = (
     fødselsnummer: string,
     utenlandskFødselsnummer: boolean,
     søkersFødselsnummer: string
-) => getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl)[2].test();
+) =>
+    getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl as InjectedIntl)[2].test();
 
 describe('Fødselsnummer validation', () => {
     const SØKER_FNR = '21079951436';
@@ -89,9 +91,9 @@ describe('Fødselsnummer validation', () => {
             });
 
             it('should throw exception if input is invalid', () => {
-                expect(() => isSixteenOrOlder('qwerty')).toThrowError();
-                expect(() => isSixteenOrOlder('')).toThrowError();
-                expect(() => isSixteenOrOlder('351399')).toThrowError();
+                expect(isSixteenOrOlder('qwerty')).toBeFalsy();
+                expect(isSixteenOrOlder('')).toBeFalsy();
+                expect(isSixteenOrOlder('351399')).toBeFalsy();
             });
         });
     });
