@@ -30,7 +30,7 @@ export const isSixteenOrOlder = (fnr: string): boolean => {
     }
 
     if (!fødselsdato.isValid()) {
-        throw new Error('Illegal argument');
+        return false;
     }
 
     return fødselsdato.isBefore(moment().subtract(16, 'year'));
