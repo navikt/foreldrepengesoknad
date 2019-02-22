@@ -765,9 +765,9 @@
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepengar",
     "uttaksplan.varighet.uttak.gradert": "{varighet}",
     "uttaksplan.ulønnetPermisjonInfo.del1":
-        "Når en forelder planlegger å være hjemme i ulønnet permisjon må <b>den andre forelderen</b> søke om å utsette foreldrepengene på grunn av heltidsarbeid, sykdom eller ferie.",
+        "Når ein forelder planleggar å vere heime i ulønt permisjon, må <b>den andre forelderen</b> søkje om å utsetje foreldrepengane på grunn av heiltidsarbeid, sjukdom eller ferie. Klikk her for å leggje til utsetjing.",
     "uttaksplan.ulønnetPermisjonInfo.del2":
-        "Ulønnet permisjon kan påvirke retten til andre NAV ytelser og opptjening av rett til foreldrepenger for nytt barn. <a href=\"https://www.nav.no/no/Person/Arbeid/Sykmeldt%2C+arbeidsavklaringspenger+og+yrkesskade/Sykepenger/Sykepenger+til+sarskilte+grupper#chapter-5\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">Her kan du lese mer om dine rettigheter.</a>",
+        "Ulønt permisjon kan påverke rett til andre NAV ytingar og opptening av rett til foreldrepengar for eit nytt barn. <a href=\"https://www.nav.no/no/Person/Arbeid/Sykmeldt%2C+arbeidsavklaringspenger+og+yrkesskade/Sykepenger/Sykepenger+til+sarskilte+grupper#chapter-5\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">Her kan du lese meir om dine rettar.</a>",
     "uttaksplan.veileder.planenInneholderHull":
         "Planen din inneheld periodar med tapte foreldrepengar. Du står i fare for å miste dagar om du ikkje legg inn ei utsetjing eller ein periode med foreldrepengar.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Hugs at du må søkja om foreldrepengar seinast {sisteDag}.",
