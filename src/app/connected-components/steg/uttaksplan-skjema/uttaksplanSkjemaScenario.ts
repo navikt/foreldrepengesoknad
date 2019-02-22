@@ -31,7 +31,8 @@ export const getUttaksplanSkjemaScenario = (søknad: Søknad): UttaksplanSkjemaS
     } else if (
         søknad.situasjon === Søkersituasjon.ADOPSJON &&
         ((søknad.annenForelder.kanIkkeOppgis !== true && søknad.annenForelder.harRettPåForeldrepenger !== undefined) ||
-            søknad.annenForelder.kanIkkeOppgis === true)
+            søknad.annenForelder.kanIkkeOppgis === true ||
+            søknad.søker.erAleneOmOmsorg)
     ) {
         scenario = UttaksplanSkjemaScenario.s4_morFarAdopsjon;
     } else if (
