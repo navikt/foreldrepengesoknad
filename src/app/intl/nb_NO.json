@@ -727,8 +727,6 @@
     "uttaksplan.tittel": "Din plan",
     "uttaksplan.tomPlan": "Du har ikke lagt til noen perioder ennå.",
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp",
-    "uttaksplan.validering.advarsel.senÅrsakOgTidsperiode":
-        "Du søker om utsettelse på grunn av ferie eller arbeid tilbake i tid",
     "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikke få foreldrepenger etter at barnet er fylt tre år",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag",
     "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
