@@ -3,12 +3,11 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import moment from 'moment';
 import { guid } from 'nav-frontend-js-utils';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { Avgrensninger } from 'nav-datovelger';
 import { Checkbox, SkjemaGruppe } from 'nav-frontend-skjema';
 
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
-import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'common/types';
+import { Avgrensninger, Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'common/types';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import BEMHelper from 'common/util/bem';
 import { getVarighetString } from 'common/util/intlUtils';
@@ -140,7 +139,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 kanVelgeUgyldigDato={kanVelgeUgyldigDato}
                                 disabled={startdatoDisabled}
                                 dato={tidsperiode.fom}
-                                avgrensninger={datoAvgrensninger && datoAvgrensninger.fra}
+                                datoAvgrensinger={datoAvgrensninger && datoAvgrensninger.fra}
                                 validators={validators.fra}
                                 dayPickerProps={{ initialMonth: defaultMånedFom }}
                                 kalender={{ plassering: kalenderplassering }}
@@ -163,7 +162,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 kanVelgeUgyldigDato={kanVelgeUgyldigDato}
                                 dato={tidsperiode.tom}
                                 disabled={pågående || false}
-                                avgrensninger={tilAvgrensninger}
+                                datoAvgrensinger={tilAvgrensninger}
                                 validators={validators.til}
                                 dayPickerProps={{
                                     initialMonth: defaultMånedTom || tidsperiode.fom

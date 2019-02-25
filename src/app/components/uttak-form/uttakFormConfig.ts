@@ -1,7 +1,6 @@
 import moment from 'moment';
 import { QuestionConfig, Questions, QuestionVisibility, questionValueIsOk } from '../../util/questions/Question';
 import { getValidTidsperiode, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
-import { Tidsperiode } from 'nav-datovelger';
 import {
     StønadskontoType,
     Periodetype,
@@ -18,6 +17,7 @@ import { uttaksdatoer } from 'app/util/uttaksplan/uttaksdatoer';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import { Søkersituasjon } from 'app/types/søknad/Søknad';
 import { getStønadskontoFromOppholdsårsak } from 'app/util/uttaksplan/uttaksperiodeUtils';
+import { Tidsperiode } from 'common/types';
 
 export enum UttakSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',

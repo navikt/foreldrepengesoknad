@@ -2,13 +2,16 @@ import * as React from 'react';
 
 import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
 import { Feil } from '../skjema-input-element/types';
-import NavDatovelger from 'nav-datovelger';
+import NavDatovelger, { DatovelgerAvgrensninger } from 'nav-datovelger';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { DatovelgerCommonProps } from 'nav-datovelger/dist/datovelger/Datovelger';
 import AriaText from 'common/components/aria/AriaText';
 import { getAvgrensningerDescriptionForInput } from 'common/components/skjema/elements/dato-input/datoInputDescription';
-
+import moment from 'moment';
+import { Avgrensninger, Tidsperiode } from 'common/types';
 import BEMHelper from 'common/util/bem';
+import { dateToISOFormattedDateString } from 'common/util/datoUtils';
+import './datoInput.less';
 
 export interface DatoInputProps extends DatovelgerCommonProps {
     name: string;
@@ -17,17 +20,42 @@ export interface DatoInputProps extends DatovelgerCommonProps {
     postfix?: string;
     feil?: Feil;
     onChange: (dato?: Date) => void;
+    datoAvgrensinger?: Avgrensninger;
 }
 
 export type Props = DatoInputProps & InjectedIntlProps;
 
-import './datoInput.less';
+const parseAvgrensinger = (avgrensinger: Avgrensninger): DatovelgerAvgrensninger => {
+    return {
+        maksDato: dateToISOFormattedDateString(avgrensinger.maksDato),
+        minDato: dateToISOFormattedDateString(avgrensinger.minDato),
+        helgedagerIkkeTillatt: avgrensinger.helgedagerIkkeTillatt,
+        ugyldigeTidsperioder:
+            avgrensinger.ugyldigeTidsperioder &&
+            avgrensinger.ugyldigeTidsperioder.map((t: Tidsperiode) => ({
+                fom: dateToISOFormattedDateString(t.fom)!,
+                tom: dateToISOFormattedDateString(t.tom)!
+            }))
+    };
+};
 
 const bem = BEMHelper('datoInput');
-
 class DatoInput extends React.Component<Props, {}> {
     render() {
-        const { id, label, postfix, feil, intl, onChange, kalender, name, ...rest } = this.props;
+        const {
+            id,
+            label,
+            postfix,
+            feil,
+            intl,
+            onChange,
+            kalender,
+            name,
+            avgrensninger,
+            dato,
+            datoAvgrensinger,
+            ...rest
+        } = this.props;
         const avgrensningerTekst = this.props.avgrensninger
             ? getAvgrensningerDescriptionForInput(intl, this.props.avgrensninger)
             : undefined;
@@ -39,6 +67,7 @@ class DatoInput extends React.Component<Props, {}> {
                     <div className={bem.element('datovelger')}>
                         <NavDatovelger.Datovelger
                             {...rest}
+                            valgtDato={dato ? moment.utc(dato).format('YYYY-MM-DD') : undefined}
                             id={id ? id : name}
                             locale={intl.locale}
                             kalender={kalender}
@@ -48,7 +77,10 @@ class DatoInput extends React.Component<Props, {}> {
                                 name,
                                 ariaDescribedby: ariaDescriptionId
                             }}
-                            onChange={(dato) => onChange(dato ? dato : undefined)}
+                            onChange={(datoString: string) =>
+                                onChange(datoString && datoString !== 'Invalid date' ? new Date(datoString) : undefined)
+                            }
+                            avgrensninger={datoAvgrensinger ? parseAvgrensinger(datoAvgrensinger) : undefined}
                         />
                         {ariaDescriptionId && (
                             <AriaText id={ariaDescriptionId} aria-role="presentation" aria-hidden="true">

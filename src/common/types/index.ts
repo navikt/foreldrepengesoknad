@@ -17,6 +17,13 @@ export interface Tidsperiode {
     tom: Date;
 }
 
+export interface Avgrensninger {
+    minDato?: Date;
+    maksDato?: Date;
+    ugyldigeTidsperioder?: Tidsperiode[];
+    helgedagerIkkeTillatt?: boolean;
+}
+
 export interface TidsperiodeMedValgfriSluttdato {
     fom: Date;
     tom?: Date;

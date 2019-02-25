@@ -1,9 +1,8 @@
-import { Avgrensninger } from 'nav-datovelger';
 import { date1YearAhead, today } from './values';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl } from 'react-intl';
-import { Tidsperiode } from 'common/types/index';
+import { Avgrensninger, Tidsperiode } from 'common/types/index';
 import {
     dateIs1YearAheadAtLatestRule,
     dateIsSameOrAfterRule,
