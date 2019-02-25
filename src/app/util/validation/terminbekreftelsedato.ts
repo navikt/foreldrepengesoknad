@@ -5,11 +5,11 @@ import { Validator } from 'common/lib/validation/types/index';
 import { date1YearAgo, fjortenUkerPluss3Number, today } from './values';
 import { dateIsNotInFutureRule, hasValueRule } from './common';
 import { DateValue } from '../../types/common';
-import { PeriodeAvgrensninger } from 'common/types';
+import { Avgrensninger } from 'common/types';
 
 export const fjortenUkerPluss3 = 14 * 7 + 3;
 
-export const getTerminbekreftelsedatoAvgrensninger = (termindato?: Date): PeriodeAvgrensninger => ({
+export const getTerminbekreftelsedatoAvgrensninger = (termindato?: Date): Avgrensninger => ({
     minDato: termindato
         ? moment(termindato)
               .subtract(fjortenUkerPluss3 * 24, 'hours')

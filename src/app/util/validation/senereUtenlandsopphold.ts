@@ -2,7 +2,7 @@ import { date1YearAhead, today } from './values';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl } from 'react-intl';
-import { PeriodeAvgrensninger, Tidsperiode } from 'common/types/index';
+import { Avgrensninger, Tidsperiode } from 'common/types/index';
 import {
     dateIs1YearAheadAtLatestRule,
     dateIsSameOrAfterRule,
@@ -12,7 +12,7 @@ import {
 } from './common';
 import { DateValue } from '../../types/common';
 
-export const getFraAvgrensninger = (tilDate?: Date): PeriodeAvgrensninger => {
+export const getFraAvgrensninger = (tilDate?: Date): Avgrensninger => {
     const maksDato = tilDate || date1YearAhead.toDate();
     return {
         minDato: today.toDate(),
@@ -20,7 +20,7 @@ export const getFraAvgrensninger = (tilDate?: Date): PeriodeAvgrensninger => {
     };
 };
 
-export const getTilAvgrensninger = (fraDate?: Date): PeriodeAvgrensninger => {
+export const getTilAvgrensninger = (fraDate?: Date): Avgrensninger => {
     const minDato = fraDate || today.toDate();
     return {
         minDato,

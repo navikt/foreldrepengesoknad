@@ -1,11 +1,11 @@
 import { formaterDatoTall } from 'common/util/datoUtils';
 import { InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { Avgrensninger } from 'nav-datovelger';
+import { DatovelgerAvgrensninger } from 'nav-datovelger';
 
 export const getAvgrensningerDescriptionForInput = (
     intl: InjectedIntl,
-    avgrensninger: Avgrensninger | undefined
+    avgrensninger: DatovelgerAvgrensninger | undefined
 ): string | undefined => {
     if (avgrensninger) {
         let str;

@@ -17,7 +17,7 @@ export interface Tidsperiode {
     tom: Date;
 }
 
-export interface PeriodeAvgrensninger {
+export interface Avgrensninger {
     minDato?: Date;
     maksDato?: Date;
     ugyldigeTidsperioder?: Tidsperiode[];
