@@ -5,14 +5,14 @@ import { fødselsdatoAvgrensninger, getFødselsdatoRegler } from '../util/valida
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { Validator } from 'common/lib/validation/types';
-import { Avgrensninger } from 'common/types';
+import { PeriodeAvgrensninger } from 'common/types';
 
 export interface FødselsdatoerSpørsmålProps {
     fødselsdatoer: DateValue[];
     antallBarn: number | undefined;
     onChange: (fødselsdatoer: DateValue[]) => void;
     collapsed?: boolean;
-    datoavgrensninger?: Avgrensninger;
+    datoavgrensninger?: PeriodeAvgrensninger;
     datovalidatorer?: Validator[];
     gjelderAdopsjon?: boolean;
 }

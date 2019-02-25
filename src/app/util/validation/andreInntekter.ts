@@ -1,5 +1,5 @@
 import DateValues from './values';
-import { Avgrensninger, Tidsperiode } from 'common/types';
+import { PeriodeAvgrensninger, Tidsperiode } from 'common/types';
 import { DatoAvgrensninger } from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 
 export const getAndreInntekterTidsperiodeAvgrensninger = (tidsperiode?: Partial<Tidsperiode>): DatoAvgrensninger => {
@@ -15,7 +15,7 @@ export const getAndreInntekterTidsperiodeAvgrensninger = (tidsperiode?: Partial<
     };
 };
 
-export const getTidsperiodeAvgrensningerSiste4år = (): Avgrensninger => {
+export const getTidsperiodeAvgrensningerSiste4år = (): PeriodeAvgrensninger => {
     return {
         minDato: DateValues.date4YearsAgo.toDate(),
         maksDato: DateValues.today.toDate()

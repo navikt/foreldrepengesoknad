@@ -1,12 +1,12 @@
 import { StønadskontoType, OppholdÅrsakType } from '../../types/uttaksplan/periodetyper';
 import { DatoAvgrensninger } from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
-import { Avgrensninger, Tidsperiode } from 'common/types';
+import { PeriodeAvgrensninger, Tidsperiode } from 'common/types';
 import { uttaksplanDatoavgrensninger } from '../validation/uttaksplan/uttaksplanDatoavgrensninger';
 import { Tidsperioden, isValidTidsperiode } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
 import { getSisteMuligeUttaksdag, getFørsteUttaksdagPåEllerEtterFødsel } from './uttaksdatoer';
 
-const standardAvgrensningerForUttakEtterFødsel = (familiehendelsesdato: Date): Avgrensninger => {
+const standardAvgrensningerForUttakEtterFødsel = (familiehendelsesdato: Date): PeriodeAvgrensninger => {
     return {
         helgedagerIkkeTillatt: true,
         minDato: Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
@@ -96,7 +96,7 @@ function getDatoavgrensningerForForeldrepengerFørFødsel(
     familiehendelsesdato: Date,
     ugyldigeTidsperioder: Tidsperiode[]
 ): DatoAvgrensninger {
-    const avgrensninger: Avgrensninger = {
+    const avgrensninger: PeriodeAvgrensninger = {
         ...standardAvgrensningerForUttakEtterFødsel,
         ...uttaksplanDatoavgrensninger.startdatoFørTerminForeldrepengerFørFødselKonto(familiehendelsesdato),
         ugyldigeTidsperioder
@@ -110,7 +110,7 @@ function getDatoavgrensningerForEkstrauttakFørTermin(
     familiehendelsesdato: Date,
     ugyldigeTidsperioder: Tidsperiode[]
 ): DatoAvgrensninger {
-    const avgrensninger: Avgrensninger = {
+    const avgrensninger: PeriodeAvgrensninger = {
         ...standardAvgrensningerForUttakEtterFødsel,
         ...uttaksplanDatoavgrensninger.ekstrauttakFørFødsel(familiehendelsesdato),
         ugyldigeTidsperioder

@@ -11,9 +11,9 @@ import {
     hasValueRule
 } from './common';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
-import { Avgrensninger } from 'common/types';
+import { PeriodeAvgrensninger } from 'common/types';
 
-export const fødselsdatoAvgrensninger: Avgrensninger = {
+export const fødselsdatoAvgrensninger: PeriodeAvgrensninger = {
     minDato: date3YearsAgo.toDate(),
     ...notInFutureAvgrensning
 };

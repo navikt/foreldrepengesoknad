@@ -47,3 +47,5 @@ export const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: n
         uker
     };
 };
+
+export const dateToISOFormattedDateString = (date?: Date) => (date ? moment.utc(date).format('YYYY-MM-DD') : undefined);

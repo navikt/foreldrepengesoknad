@@ -1,7 +1,7 @@
 import { Validator } from 'common/lib/validation/types/index';
 import { today } from './values';
 import { DateValue } from '../../types/common';
-import { Avgrensninger, Tidsperiode } from 'common/types/index';
+import { PeriodeAvgrensninger, Tidsperiode } from 'common/types/index';
 import {
     dateIs1YearAheadOrLess,
     dateIs1YearAgoOrLess,
@@ -72,6 +72,6 @@ export const timeintervalsDoNotOverlapRule = (
     failText
 });
 
-export const notInFutureAvgrensning: Avgrensninger = {
+export const notInFutureAvgrensning: PeriodeAvgrensninger = {
     maksDato: today.toDate()
 };

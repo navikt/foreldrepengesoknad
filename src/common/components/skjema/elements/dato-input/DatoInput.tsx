@@ -8,9 +8,9 @@ import { DatovelgerCommonProps } from 'nav-datovelger/dist/datovelger/Datovelger
 import AriaText from 'common/components/aria/AriaText';
 import { getAvgrensningerDescriptionForInput } from 'common/components/skjema/elements/dato-input/datoInputDescription';
 import moment from 'moment';
-import { Avgrensninger, Tidsperiode } from 'common/types';
+import { PeriodeAvgrensninger, Tidsperiode } from 'common/types';
 import BEMHelper from 'common/util/bem';
-
+import { dateToISOFormattedDateString } from 'common/util/datoUtils';
 import './datoInput.less';
 
 export interface DatoInputProps extends DatovelgerCommonProps {
@@ -20,21 +20,21 @@ export interface DatoInputProps extends DatovelgerCommonProps {
     postfix?: string;
     feil?: Feil;
     onChange: (dato?: Date) => void;
-    datoAvgrensinger?: Avgrensninger;
+    datoAvgrensinger?: PeriodeAvgrensninger;
 }
 
 export type Props = DatoInputProps & InjectedIntlProps;
 
-const parseAvgrensinger = (avgrensinger: Avgrensninger): DatovelgerAvgrensninger => {
+const parseAvgrensinger = (avgrensinger: PeriodeAvgrensninger): DatovelgerAvgrensninger => {
     return {
-        maksDato: avgrensinger.maksDato && moment.utc(avgrensinger.maksDato).format('YYYY-MM-DD'),
-        minDato: avgrensinger.minDato && moment.utc(avgrensinger.minDato).format('YYYY-MM-DD'),
-        helgedagerIkkeTillatt: avgrensinger.helgedagerIkkeTillatt && avgrensinger.helgedagerIkkeTillatt,
+        maksDato: dateToISOFormattedDateString(avgrensinger.maksDato),
+        minDato: dateToISOFormattedDateString(avgrensinger.minDato),
+        helgedagerIkkeTillatt: avgrensinger.helgedagerIkkeTillatt,
         ugyldigeTidsperioder:
             avgrensinger.ugyldigeTidsperioder &&
             avgrensinger.ugyldigeTidsperioder.map((t: Tidsperiode) => ({
-                fom: t.fom && moment.utc(t.fom).format('YYYY-MM-DD'),
-                tom: t.fom && moment.utc(t.tom).format('YYYY-MM-DD')
+                fom: dateToISOFormattedDateString(t.fom)!,
+                tom: dateToISOFormattedDateString(t.tom)!
             }))
     };
 };

@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 import { getPermisjonsregler } from '../../uttaksplan/permisjonsregler';
-import { Avgrensninger } from 'common/types';
+import { PeriodeAvgrensninger } from 'common/types';
 
 function sisteMuligePermisjonsdag(familiehendelsedato: Date): Date {
     const permisjonsregler = getPermisjonsregler();
@@ -13,7 +13,7 @@ function sisteMuligePermisjonsdag(familiehendelsedato: Date): Date {
     ).denneEllerNeste();
 }
 
-const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): Avgrensninger => {
+const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): PeriodeAvgrensninger => {
     const minDato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
     const maksDato = sisteMuligePermisjonsdag(familiehendelsesdato);
     return {
@@ -23,7 +23,7 @@ const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): Avgren
     };
 };
 
-const startdatoFørTermin = (familiehendelsesdato: Date): Avgrensninger => {
+const startdatoFørTermin = (familiehendelsesdato: Date): PeriodeAvgrensninger => {
     const permisjonsregler = getPermisjonsregler();
     const maksDato = Uttaksdagen(familiehendelsesdato).forrige();
     const minDato = Uttaksdagen(maksDato).trekkFra(permisjonsregler.maksAntallUkerForeldrepengerFørFødsel * 5 - 1);
@@ -34,7 +34,7 @@ const startdatoFørTermin = (familiehendelsesdato: Date): Avgrensninger => {
     };
 };
 
-const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato: Date): Avgrensninger => {
+const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato: Date): PeriodeAvgrensninger => {
     const permisjonsregler = getPermisjonsregler();
     const maksDato = Uttaksdagen(familiehendelsesdato).forrige();
     const minDato = Uttaksdagen(maksDato).trekkFra(permisjonsregler.antallUkerForeldrepengerFørFødsel * 5 - 1);
@@ -45,7 +45,7 @@ const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato:
     };
 };
 
-const ekstrauttakFørFødsel = (familiehendelsesdato: Date): Avgrensninger => {
+const ekstrauttakFørFødsel = (familiehendelsesdato: Date): PeriodeAvgrensninger => {
     const permisjonsregler = getPermisjonsregler();
     const sisteDagFørFødsel = Uttaksdagen(familiehendelsesdato).forrige();
     const minDato = Uttaksdagen(sisteDagFørFødsel).trekkFra(
@@ -64,7 +64,7 @@ const ekstrauttakFørFødsel = (familiehendelsesdato: Date): Avgrensninger => {
 const startdatoPermisjonAleneomsorgFarMedmor = (
     datoForAleneomsorg: Date,
     familiehendelsesdato: Date
-): Avgrensninger => {
+): PeriodeAvgrensninger => {
     return {
         helgedagerIkkeTillatt: true,
         minDato: Uttaksdagen(datoForAleneomsorg).denneEllerNeste(),
@@ -72,15 +72,15 @@ const startdatoPermisjonAleneomsorgFarMedmor = (
     };
 };
 
-const startdatoPermisjonAdopsjon = (familiehendelsesdato: Date): Avgrensninger => {
+const startdatoPermisjonAdopsjon = (familiehendelsesdato: Date): PeriodeAvgrensninger => {
     return defaultPermisjonsperiodeAvgrensning(familiehendelsesdato);
 };
 
-const morsSisteUttaksdag = (familiehendelsesdato: Date): Avgrensninger => {
+const morsSisteUttaksdag = (familiehendelsesdato: Date): PeriodeAvgrensninger => {
     return defaultPermisjonsperiodeAvgrensning(familiehendelsesdato);
 };
 
-const startdatoPermisjonFarMedmor = (familiehendelsesdato: Date): Avgrensninger => {
+const startdatoPermisjonFarMedmor = (familiehendelsesdato: Date): PeriodeAvgrensninger => {
     return defaultPermisjonsperiodeAvgrensning(familiehendelsesdato);
 };
 
