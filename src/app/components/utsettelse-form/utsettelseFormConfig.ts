@@ -1,10 +1,10 @@
 import { QuestionConfig, Questions, QuestionVisibility, questionValueIsOk } from '../../util/questions/Question';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Utsettelsesvariant, UtsettelseFormPeriodeType } from './UtsettelseForm';
-import { Tidsperiode } from 'nav-datovelger';
 import { UtsettelseÅrsakType, Utsettelsesperiode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from 'app/util/domain/aktivitetskravMor';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
+import { Tidsperiode } from 'common/types';
 
 export enum UtsettelseSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',

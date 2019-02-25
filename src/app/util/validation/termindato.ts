@@ -1,11 +1,11 @@
 import moment from 'moment';
 import { InjectedIntl } from 'react-intl';
-import { Avgrensninger } from 'nav-datovelger/src/datovelger/types/index';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
 import { date21DaysAgo, fjortenUkerPluss3, fjortenUkerPluss3Number, today } from './values';
 import { hasValueRule } from './common';
 import { DateValue } from '../../types/common';
+import { Avgrensninger } from 'common/types';
 
 export const termindatoAvgrensninger: Avgrensninger = {
     minDato: date21DaysAgo.toDate(),

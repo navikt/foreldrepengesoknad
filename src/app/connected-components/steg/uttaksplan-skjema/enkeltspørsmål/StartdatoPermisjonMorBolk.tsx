@@ -79,7 +79,7 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                         }}
                         dato={startdato}
                         disabled={data.skalIkkeHaUttakFørTermin}
-                        avgrensninger={{
+                        datoAvgrensinger={{
                             ...datoAvgrensninger,
                             minDato: undefined
                         }}
@@ -120,7 +120,9 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                         antallDager={antallDager}
                         skalIkkeHaUttakFørTermin={data.skalIkkeHaUttakFørTermin === true}
                         antallDagerFørFødselIhtRegler={antallDagerFørFødselIhtRegler}
-                        førsteMuligeStartdato={datoAvgrensninger.minDato}
+                        førsteMuligeStartdato={
+                            datoAvgrensninger.minDato ? new Date(datoAvgrensninger.minDato) : undefined
+                        }
                     />
                 </Block>
             </>

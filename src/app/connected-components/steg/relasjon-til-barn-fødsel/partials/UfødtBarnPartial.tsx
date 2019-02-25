@@ -85,7 +85,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                                     );
                                 }}
                                 dato={barn.termindato}
-                                avgrensninger={termindatoAvgrensninger}
+                                datoAvgrensinger={termindatoAvgrensninger}
                                 validators={getTermindatoRegler(barn.termindato, intl)}
                             />
                         </Block>

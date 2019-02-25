@@ -95,7 +95,7 @@ class FrilanserBolk extends React.Component<Props> {
                             })
                         }
                         dato={oppstartsdato}
-                        avgrensninger={notInFutureAvgrensning}
+                        datoAvgrensinger={notInFutureAvgrensning}
                         validators={getFrilansOppstartRules(oppstartsdato, intl)}
                     />
                 </Block>

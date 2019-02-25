@@ -11,8 +11,8 @@ import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { Perioden } from '../Perioden';
-import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
+import { Tidsperiode } from 'common/types';
 
 export const UttaksplanBuilder = (perioder: Periode[], familiehendelsesdato: Date) => {
     return new UttaksplanAutoBuilder(perioder, familiehendelsesdato);

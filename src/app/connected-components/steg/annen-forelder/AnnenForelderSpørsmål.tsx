@@ -114,10 +114,11 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         onChange={(erAleneOmOmsorg) => onSøkerChange({ erAleneOmOmsorg })}
                     />
                 </Block>
-                
+
                 <Block
                     visible={
-                        (visibility.isVisible(AnnenForelderSpørsmålKeys.deltOmsorg) && søker.rolle === 'MOR') &&
+                        visibility.isVisible(AnnenForelderSpørsmålKeys.deltOmsorg) &&
+                        søker.rolle === 'MOR' &&
                         søker.erAleneOmOmsorg !== undefined &&
                         søker.erAleneOmOmsorg
                     }>
@@ -180,7 +181,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         label={getMessage(intl, 'datoForAleneomsorg.spørsmål')}
                         onChange={(datoForAleneomsorg: DateValue) => onBarnChange({ datoForAleneomsorg })}
                         dato={barn.datoForAleneomsorg}
-                        avgrensninger={{
+                        datoAvgrensinger={{
                             minDato: getFamiliehendelsedato(barn, situasjon)
                         }}
                     />

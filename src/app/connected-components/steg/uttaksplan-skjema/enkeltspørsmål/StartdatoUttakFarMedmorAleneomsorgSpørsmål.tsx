@@ -95,7 +95,7 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
                             onChange={(startdatoPermisjon: DateValue) => onChange({ startdatoPermisjon })}
                             dato={data.startdatoPermisjon}
                             disabled={data.skalIkkeHaUttakFørTermin}
-                            avgrensninger={avgrensningerAnnenDato}
+                            datoAvgrensinger={avgrensningerAnnenDato}
                             validators={startdatoFarMedmorValidation(intl, data.startdatoPermisjon)}
                         />
                     </Block>

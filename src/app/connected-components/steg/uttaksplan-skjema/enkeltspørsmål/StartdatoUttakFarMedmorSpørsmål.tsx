@@ -27,7 +27,7 @@ const StartdatoPermisjonSpørsmål = (props: Props) => {
                     onChange={(startdatoPermisjon: DateValue) => onChange({ startdatoPermisjon })}
                     dato={data.startdatoPermisjon}
                     disabled={data.skalIkkeHaUttakFørTermin}
-                    avgrensninger={uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato)}
+                    datoAvgrensinger={uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato)}
                     validators={startdatoFarMedmorValidation(intl, data.startdatoPermisjon)}
                 />
             )}
