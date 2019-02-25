@@ -73,7 +73,8 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
         if (this.props.begrunnelseForSenEndring) {
             const begrunnelse = beskrivTilleggsopplysning(
                 Opplysning.BEGRUNNELSE_FOR_SEN_ENDRING,
-                this.props.begrunnelseForSenEndring
+                this.props.begrunnelseForSenEndring,
+                this.props.intl
             );
 
             return periodeliste.concat(
@@ -144,7 +145,13 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
             høyrestiltTekst: '',
             content: (
                 <>
-                    <Feltoppsummering feltnavn={begrunnelse.ekstraInformasjon} verdi={begrunnelse.tekst} />
+                    <Feltoppsummering
+                        feltnavn={
+                            begrunnelse.ekstraInformasjon ||
+                            getMessage(this.props.intl, 'oppsummering.uttak.begrunnelseForSenEndring.defaultLabel')
+                        }
+                        verdi={begrunnelse.tekst}
+                    />
                     {this.props.begrunnelseForSenEndringVedlegg && (
                         <OppsummeringAvDokumentasjon vedlegg={this.props.begrunnelseForSenEndringVedlegg || []} />
                     )}
