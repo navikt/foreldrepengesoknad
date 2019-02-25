@@ -7,7 +7,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { DatovelgerCommonProps } from 'nav-datovelger/dist/datovelger/Datovelger';
 import AriaText from 'common/components/aria/AriaText';
 import { getAvgrensningerDescriptionForInput } from 'common/components/skjema/elements/dato-input/datoInputDescription';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Avgrensninger, Tidsperiode } from 'common/types';
 import BEMHelper from 'common/util/bem';
 
@@ -67,7 +67,7 @@ class DatoInput extends React.Component<Props, {}> {
                     <div className={bem.element('datovelger')}>
                         <NavDatovelger.Datovelger
                             {...rest}
-                            selectedDate={dato ? moment.utc(dato).format('YYYY-MM-DD') : undefined}
+                            valgtDato={dato ? moment.utc(dato).format('YYYY-MM-DD') : undefined}
                             id={id ? id : name}
                             locale={intl.locale}
                             kalender={kalender}
