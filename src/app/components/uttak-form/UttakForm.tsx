@@ -150,7 +150,11 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
             velgbareStønadskontotyper.length === 1 &&
             periode.konto === undefined
         ) {
-            this.onChange({ konto: StønadskontoType.Foreldrepenger });
+            if (this.state.periodenGjelder !== undefined) {
+                this.onChange({ konto: StønadskontoType.Foreldrepenger, forelder: this.state.periodenGjelder });
+            } else {
+                this.onChange({ konto: StønadskontoType.Foreldrepenger });
+            }
         }
 
         if (this.context.validForm) {

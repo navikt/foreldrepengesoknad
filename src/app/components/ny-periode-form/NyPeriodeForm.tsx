@@ -52,12 +52,12 @@ const PeriodeFormTittel: React.StatelessComponent<{
     return (
         <Block margin="s">
             <Undertittel tag="h1" className={bem.element('heading')}>
-                {tittel}
                 {ikon && (
                     <span role="presentation" aria-hidden="true" className={bem.element('heading__ikon')}>
                         {ikon}
                     </span>
                 )}
+                {tittel}
             </Undertittel>
         </Block>
     );
