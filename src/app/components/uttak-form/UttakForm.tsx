@@ -347,7 +347,12 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         feil={feil || periodeErNyOgFørFamiliehendelsesdatoFeil}
                     />
                 </Block>
-                <Block visible={!isForeldrepengerFørFødselUttaksperiode(periode) && søknadsinfo.søknaden.erDeltUttak}>
+                <Block
+                    visible={
+                        !isForeldrepengerFørFødselUttaksperiode(periode) &&
+                        søknadsinfo.søknaden.erDeltUttak &&
+                        isValidTidsperiode(tidsperiode)
+                    }>
                     <HvemSkalTaForeldrepengerSpørsmål
                         navnPåForeldre={navnPåForeldre}
                         valgtForelder={this.state.periodenGjelder}
