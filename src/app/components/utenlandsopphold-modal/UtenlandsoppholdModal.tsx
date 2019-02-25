@@ -13,7 +13,7 @@ import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import Block from 'common/components/block/Block';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
-import { DatoAvgrensninger, Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'common/types';
+import { Avgrensninger, Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'common/types';
 import TidsperiodeBolk, { DatoAvgrensninger, DatoValidatorer } from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { Validator } from 'common/lib/validation/types/index';
 import { InjectedIntl, InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
@@ -22,8 +22,8 @@ import { DateValue } from '../../types/common';
 import { hasValueRule } from '../../util/validation/common';
 
 export interface AvgrensningGetters {
-    getFraAvgrensning?: (date?: Date) => DatoAvgrensninger;
-    getTilAvgrensning?: (date?: Date) => DatoAvgrensninger;
+    getFraAvgrensning?: (date?: Date) => Avgrensninger;
+    getTilAvgrensning?: (date?: Date) => Avgrensninger;
 }
 
 export interface ValidatorGetters {
