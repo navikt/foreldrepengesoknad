@@ -5,9 +5,9 @@ import getMessage from 'common/util/i18nUtils';
 import { date21DaysAgo, fjortenUkerPluss3, fjortenUkerPluss3Number, today } from './values';
 import { hasValueRule } from './common';
 import { DateValue } from '../../types/common';
-import { Avgrensninger } from 'common/types';
+import { DatoAvgrensninger } from 'common/types';
 
-export const termindatoAvgrensninger: Avgrensninger = {
+export const termindatoAvgrensninger: DatoAvgrensninger = {
     minDato: date21DaysAgo.toDate(),
     maksDato: fjortenUkerPluss3.toDate()
 };

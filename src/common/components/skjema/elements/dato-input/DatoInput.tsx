@@ -8,7 +8,7 @@ import { DatovelgerCommonProps } from 'nav-datovelger/dist/datovelger/Datovelger
 import AriaText from 'common/components/aria/AriaText';
 import { getAvgrensningerDescriptionForInput } from 'common/components/skjema/elements/dato-input/datoInputDescription';
 import moment from 'moment';
-import { Avgrensninger, Tidsperiode } from 'common/types';
+import { DatoAvgrensninger, Tidsperiode } from 'common/types';
 import BEMHelper from 'common/util/bem';
 
 import './datoInput.less';
@@ -20,12 +20,12 @@ export interface DatoInputProps extends DatovelgerCommonProps {
     postfix?: string;
     feil?: Feil;
     onChange: (dato?: Date) => void;
-    datoAvgrensinger?: Avgrensninger;
+    datoAvgrensinger?: DatoAvgrensninger;
 }
 
 export type Props = DatoInputProps & InjectedIntlProps;
 
-const parseAvgrensinger = (avgrensinger: Avgrensninger): DatovelgerAvgrensninger => {
+const parseAvgrensinger = (avgrensinger: DatoAvgrensninger): DatovelgerAvgrensninger => {
     return {
         maksDato: avgrensinger.maksDato && moment.utc(avgrensinger.maksDato).format('YYYY-MM-DD'),
         minDato: avgrensinger.minDato && moment.utc(avgrensinger.minDato).format('YYYY-MM-DD'),

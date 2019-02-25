@@ -7,7 +7,7 @@ import { Checkbox, SkjemaGruppe } from 'nav-frontend-skjema';
 
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
-import { Avgrensninger, Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'common/types';
+import { DatoAvgrensninger, Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'common/types';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import BEMHelper from 'common/util/bem';
 import { getVarighetString } from 'common/util/intlUtils';
@@ -24,8 +24,8 @@ import './tidsperiodeBolk.less';
 
 export interface DatoAvgrensninger {
     helgedagerIkkeTillatt?: boolean;
-    fra?: Avgrensninger;
-    til?: Avgrensninger;
+    fra?: DatoAvgrensninger;
+    til?: DatoAvgrensninger;
 }
 
 export interface DatoValidatorer {
@@ -110,7 +110,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                 ? Tidsperioden({ fom: tidsperiode.fom, tom: tidsperiode.tom }).getAntallUttaksdager()
                 : undefined;
 
-        let tilAvgrensninger: Avgrensninger = {};
+        let tilAvgrensninger: DatoAvgrensninger = {};
         if (datoAvgrensninger && datoAvgrensninger.til) {
             tilAvgrensninger = datoAvgrensninger.til;
         } else if (tidsperiode.fom) {
