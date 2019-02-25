@@ -22,7 +22,7 @@ function* getSaker() {
                 );
             }
 
-            if (harSakUnderBehandling(nyesteSak)) {
+            if (harSakUnderBehandling(nyesteSak) && !skalKunneSøkeOmEndring(nyesteSak)) {
                 yield put(
                     apiActions.updateApi({
                         sakUnderBehandling: nyesteSak
