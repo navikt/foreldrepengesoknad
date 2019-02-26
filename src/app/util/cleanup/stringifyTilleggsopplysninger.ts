@@ -1,5 +1,4 @@
 import { Tilleggsopplysninger, Tilleggsopplysning, Opplysning } from 'app/types/søknad/Søknad';
-import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl } from 'react-intl';
 
 const TIL_SAKSBEHANDLER = {
