@@ -1,14 +1,18 @@
 import * as React from 'react';
-import { Periode } from '../../../../app/types/uttaksplan/periodetyper';
-import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
-import UttaksplanOppsummeringsliste from 'common/components/oppsummering/oppsummeringer/lister/UttaksplanOppsummeringsliste';
-import { NavnPåForeldre, Dekningsgrad } from 'common/types';
-import Arbeidsforhold from '../../../../app/types/Arbeidsforhold';
-import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
-import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
+
+import { Dekningsgrad, NavnPåForeldre } from 'common/types';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+
 import AnnenForelder from '../../../../app/types/søknad/AnnenForelder';
+import Arbeidsforhold from '../../../../app/types/Arbeidsforhold';
+import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+import { Periode } from '../../../../app/types/uttaksplan/periodetyper';
+import { Tilleggsopplysning } from 'app/types/søknad/Søknad';
+import UttaksplanOppsummeringsliste from 'common/components/oppsummering/oppsummeringer/lister/UttaksplanOppsummeringsliste';
+import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
+import getMessage from 'common/util/i18nUtils';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface OwnProps {
     perioder: Periode[];
@@ -19,6 +23,8 @@ interface OwnProps {
     dekningsgrad: Dekningsgrad;
     antallUkerUttaksplan: number;
     annenForelder: AnnenForelder;
+    begrunnelseForSenEndring?: Tilleggsopplysning;
+    begrunnelseForSenEndringVedlegg?: Attachment[];
 }
 
 type Props = OwnProps & InjectedIntlProps;
@@ -26,6 +32,7 @@ type Props = OwnProps & InjectedIntlProps;
 class UttaksplanOppsummering extends React.Component<Props> {
     render() {
         const { dekningsgrad, antallUkerUttaksplan, intl, ...rest } = this.props;
+
         return (
             <Oppsummeringsseksjon>
                 <Feltoppsummering
