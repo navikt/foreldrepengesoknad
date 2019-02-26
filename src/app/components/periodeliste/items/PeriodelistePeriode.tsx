@@ -10,6 +10,7 @@ import EndrePeriodeForm from '../../endre-periode-form/EndrePeriodeForm';
 import PeriodelisteToggleItem from '../elements/PeriodelisteToggleItem';
 import PeriodelisteItemWrapper from '../elements/PeriodelisteItemWrapper';
 import { getPeriodeFarge } from '../../../util/uttaksplan/styleUtils';
+import { getAdvarselForPeriode } from 'app/util/validation/getAdvarselForPeriode';
 
 export interface Props {
     id: string;
@@ -32,6 +33,8 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
     intl
 }) => {
     const ariaLabel = getPeriodeTittel(intl, periode, navnPåForeldre);
+    const advarsel = getAdvarselForPeriode(validertPeriode, intl);
+
     return (
         <PeriodelisteItemWrapper key={id} farge={getPeriodeFarge(periode)} isExpanded={isExpanded}>
             <PeriodelisteToggleItem
@@ -44,6 +47,7 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
                         periode={periode}
                         navnPåForeldre={navnPåForeldre}
                         validertPeriode={validertPeriode}
+                        advarsel={advarsel}
                     />
                 )}
                 renderContent={() => (
@@ -51,6 +55,7 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
                         periode={periode}
                         antallFeriedager={antallFeriedager}
                         validertPeriode={validertPeriode}
+                        advarsel={advarsel}
                         onRequestClose={() => {
                             onToggle(periode.id);
                             if (isExpanded) {

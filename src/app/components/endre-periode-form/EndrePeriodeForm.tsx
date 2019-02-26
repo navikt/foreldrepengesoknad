@@ -27,6 +27,7 @@ import { shouldPeriodeHaveAttachment } from '../../util/attachments/missingAttac
 import { getErSøkerFarEllerMedmor } from '../../util/domain/personUtil';
 
 import './endrePeriodeForm.less';
+import { Advarsel } from '../periodeliste/elements/PeriodelisteItemHeader';
 
 export type EndrePeriodeChangeEvent = (
     periode: RecursivePartial<Periode>,
@@ -40,6 +41,7 @@ interface OwnProps {
     periode: Periode;
     antallFeriedager: number;
     validertPeriode: ValidertPeriode | undefined;
+    advarsel?: Advarsel;
     onRequestClose: () => void;
 }
 
@@ -100,7 +102,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
     }
 
     render() {
-        const { periode, intl, søknad } = this.props;
+        const { periode, advarsel, intl, søknad } = this.props;
         const { validertPeriode, antallFeriedager, onRequestClose } = this.props;
         const erForeldrepengerFørFødselPeriode =
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
@@ -108,6 +110,13 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
         return (
             <ValiderbarForm className={bem.className} validateBeforeSubmit={true}>
                 <>
+                    <Block visible={advarsel !== undefined}>
+                        {advarsel && (
+                            <AlertStripe type={advarsel.type === 'advarsel' ? 'info' : 'advarsel'}>
+                                {advarsel && advarsel.beskrivelse}
+                            </AlertStripe>
+                        )}
+                    </Block>
                     <Block
                         visible={
                             shouldPeriodeHaveAttachment(
@@ -121,7 +130,6 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
                             <FormattedMessage id="uttaksplanSkjema.info.manglerVedlegg" />
                         </AlertStripe>
                     </Block>
-
                     {periode.type === Periodetype.Utsettelse ? (
                         <UtsettelseForm
                             periode={periode}
