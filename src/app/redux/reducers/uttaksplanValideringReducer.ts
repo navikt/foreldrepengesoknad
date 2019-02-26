@@ -10,15 +10,17 @@ export enum PeriodeValideringErrorKey {
     'SKJEMA_IKKE_KOMPLETT' = 'skjemaIkkeKomplett',
     'STØNADSKONTO_MANGLER' = 'stønadskontoMangler',
     'UGYLDIG_TIDSPERIODE' = 'ugyldigTidsperiode',
+    'UGYLDIG_ÅRSAK_OG_TIDSPERIODE' = 'ugyldigÅrsakOgTidsperiode',
+    'UGYLDIG_ÅRSAK_OG_TIDSPERIODE_GAMMEL' = 'ugyldigÅrsakOgTidsperiodeGammel',
     'DATO_IKKE_UTTAKSDAG' = 'datoErIkkeUttaksdag',
     'UGYLDIG_GRADERING_VERDI' = 'ugyldigGraderingVerdi',
     'UGYLDIG_SAMTIDIG_UTTAK_PROSENT' = 'ugyldigSamtidigUttakProsent',
-    'UGYLDIG_ÅRSAK_OG_TIDSPERIODE' = 'ugyldigÅrsakOgTidsperiode',
     'UTSETTELSE_FØR_FORELDREPENGER_FØR_FØDSEL' = 'ikkeUtsettelseFørForeldrepengerFørFødsel'
 }
 
 export enum PeriodeAdvarselKey {
-    'MANGLENDE_VEDLEGG' = 'manglendeVedlegg'
+    'MANGLENDE_VEDLEGG' = 'manglendeVedlegg',
+    'SEN_ÅRSAK_OG_TIDSPERIODE' = 'senÅrsakOgTidsperiode'
 }
 
 export interface Periodevalidering {
