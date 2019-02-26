@@ -729,6 +729,7 @@
     "uttaksplan.tittel": "Planen din",
     "uttaksplan.tomPlan": "Du har ikkje lagt til nokon perioder enno.",
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikkje lasta opp",
+    "uttaksplan.validering.advarsel.senÅrsakOgTidsperiode": "Du søker om utsetjing tilbake i tid.",
     "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikkje få foreldrepengar etter at barnet er fylt tre år",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må vere ein vekedag",
     "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
@@ -753,8 +754,10 @@
     "uttaksplan.validering.feil.stønadskontoMangler":
         "Perioden er ikkje gyldig. Slett perioden og legg den inn på nytt.",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikkje gyldig",
-    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
+    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiodeGammel":
         " Du kan ikkje søke om utsetjing på grunn av ferie eller arbeid tilbake i tid.",
+    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
+        "Du kan ikkje søke om utsetjing på grunn av arbeid eller ferie mindre enn seks veker før fødsel",
     "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikkje ha ein uttaksplan med berre ein utsetjing.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold":
         "Uttaksplanen kan ikkje slutte med at den andre forelderen er heime.",
@@ -773,11 +776,11 @@
         "Planen din inneheld periodar med tapte foreldrepengar. Du står i fare for å miste dagar om du ikkje legg inn ei utsetjing eller ein periode med foreldrepengar.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Hugs at du må søkja om foreldrepengar seinast {sisteDag}.",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie":
-        "Du må søke om utsettelse på grunn av ferie senest dagen før du starter ferien din. Vi kan innvilge ferie tilbake i tid hvis arbeidsgiveren din bekreftet ferien din i inntektsmeldingen før ferien startet.",
+        "Du må søkje om å utsetje på grunn av ferie seinast dagen før du startar ferien din. Vi kan innvilge utsetjing på grunn av ferie tilbake i tid dersom arbeidsgivaren din stadfesta ferie i inntektsmeldinga før ferien starta, eller dersom du melde frå til NAV før ferien din starta.",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid":
-        "Du må søke om utsettelse på grunn av arbeid senest dagen før du begynner å jobbe. Når du søker om utsettelse på grunn av arbeid tilbake i tid står du i fare for å  miste dager.",
+        "Du må søkje om å utsetje på grunn av arbeid seinast dagen før du begynner å jobbe. Søkjer du om å utsetje etter at du har begynt å jobbe, mistar du dagar med foreldrepengar frå den dagen du starta å jobbe, og fram til dagen du søkjer om å utsetje. Dersom du melder frå til NAV før du begynner å jobbe, mistar du ikkje dagar med foreldrepengar.",
     "uttaksplan.veileder.planenAdvarerOmUttak":
-        "Du må søke om å kombinere foreldrepenger med arbeid senest dagen før du begynner å jobbe. Søker du om å kombinere foreldrepenger med arbeid etter at du har begynt å jobbe, mister du tilsvarende dager av stillingsprosent du skal fra den dagen du startet å jobbe og frem til dagen du søker om å kombinere foreldrepenger med arbeid.",
+        "Du må søkje om å kombinere foreldrepengane med delvis arbeid seinast dagen før du begynner å jobbe. Når du søkjer etter at du har begynt å jobbe, mistar du dagar med foreldrepengar ut frå stillingsprosenten du har jobba i, fram til vi får søknaden din. Dersom du melder frå til NAV før du begynner å jobbe, mistar du ikkje dagar med foreldrepengar.",
 
     "uttaksplan.senEndring.veileder.SYKDOM":
         "Når du søkjer om utsetjing tilbake i tid, må du fortelje kva som er årsaka til at du ikkje har søkt tidlegare. Du har også moglegheit til å lasta opp relevant dokumentasjon.",

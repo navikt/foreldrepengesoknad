@@ -58,6 +58,7 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { formaterDato } from 'common/util/datoUtils';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import VeilederUtsettelseTilbakeITid from './VeilederUtsettelseTilbakeITid';
+import { isFeatureEnabled, Feature } from 'app/Feature';
 
 interface StateProps {
     stegProps: StegProps;
@@ -370,7 +371,10 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         </Block>
                         <Block
                             margin="xs"
-                            visible={seneUtsettelserPgaFerieEllerArbeid.length > 0 || seneGraderteUttak.length > 0}>
+                            visible={
+                                isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) &&
+                                (seneUtsettelserPgaFerieEllerArbeid.length > 0 || seneGraderteUttak.length > 0)
+                            }>
                             <VeilederUtsettelseTilbakeITid
                                 utsettelser={seneUtsettelserPgaFerieEllerArbeid}
                                 uttak={seneGraderteUttak}

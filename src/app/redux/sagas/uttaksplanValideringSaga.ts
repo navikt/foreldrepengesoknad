@@ -25,6 +25,7 @@ import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/
 import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { erSenUtsettelsePgaFerieEllerArbeid } from 'app/util/uttaksplan/uttakUtils';
+import { Feature, isFeatureEnabled } from 'app/Feature';
 
 const stateSelector = (state: AppState) => state;
 
@@ -38,7 +39,7 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
     if (hasPeriodeMissingAttachment(periode, søker.rolle, annenForelder)) {
         advarsler.push({ advarselKey: PeriodeAdvarselKey.MANGLENDE_VEDLEGG });
     }
-    if (erSenUtsettelsePgaFerieEllerArbeid(periode)) {
+    if (isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) && erSenUtsettelsePgaFerieEllerArbeid(periode)) {
         advarsler.push({ advarselKey: PeriodeAdvarselKey.SEN_ÅRSAK_OG_TIDSPERIODE });
     }
 

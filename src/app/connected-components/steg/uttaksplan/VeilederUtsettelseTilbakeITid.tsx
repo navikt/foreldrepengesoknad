@@ -20,7 +20,7 @@ const VeilederUtsettelseTilbakeITid = ({ utsettelser, uttak, intl }: Props) => {
     );
 
     return (
-        <Veilederinfo type="feil">
+        <Veilederinfo type="advarsel">
             {inneholderUtsettelsePgaFerie && (
                 <FormattedMessage id="uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie" />
             )}
