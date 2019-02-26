@@ -1,39 +1,70 @@
-import { Tilleggsopplysninger } from 'app/types/søknad/Søknad';
+import { Tilleggsopplysninger, Tilleggsopplysning, Opplysning } from 'app/types/søknad/Søknad';
+import getMessage from 'common/util/i18nUtils';
+import { InjectedIntl } from 'react-intl';
 
-const tilSaksbehandling = {
-    begrunnelseForSenEndring: 'Begrunnelse for å søke om utsettelse',
-    'begrunnelseForSenEndring.SYKDOM': 'på grunn av sykdom tilbake i tid',
-    'begrunnelseForSenEndring.UTTAK': 'på grunn av uttak mer enn tre måneder tilbake i tid',
-    'begrunnelseForSenEndring.SYKDOM_OG_UTTAK':
+const TIL_SAKSBEHANDLER = {
+    'tilleggsopplysning.begrunnelseForSenEndring': 'Begrunnelse for å søke om utsettelse',
+    'tilleggsopplysning.begrunnelseForSenEndring.SYKDOM': 'på grunn av sykdom tilbake i tid',
+    'tilleggsopplysning.begrunnelseForSenEndring.UTTAK': 'på grunn av uttak mer enn tre måneder tilbake i tid',
+    'tilleggsopplysning.begrunnelseForSenEndring.SYKDOM_OG_UTTAK':
         'på grunn av sykdom tilbake i tid og uttak mer enn tre måneder tilbake i tid'
 };
 
+export interface TilleggsopplysningMedBeskrivelse {
+    beskrivelse: string;
+    tekst: string;
+    ekstraInformasjon?: string;
+}
+
+export const beskrivTilleggsopplysning = (
+    opplysning: Opplysning,
+    tilleggsopplysning: Tilleggsopplysning,
+    intl?: InjectedIntl
+): TilleggsopplysningMedBeskrivelse => {
+    const { tekst, ekstraInformasjon } = tilleggsopplysning;
+
+    const beskrivelseMessageId = `tilleggsopplysning.${opplysning}`;
+    let beskrivelseAvOpplysning = TIL_SAKSBEHANDLER[beskrivelseMessageId];
+    if (intl) {
+        beskrivelseAvOpplysning = intl.formatMessage({
+            id: beskrivelseMessageId
+        });
+    }
+
+    const ekstraMessageId = `tilleggsopplysning.${opplysning}.${ekstraInformasjon}`;
+    let ekstraInfoTilSaksbehandling = TIL_SAKSBEHANDLER[ekstraMessageId];
+    if (intl) {
+        ekstraInfoTilSaksbehandling = ekstraInformasjon
+            ? intl.formatMessage({
+                  id: ekstraMessageId
+              })
+            : undefined;
+    }
+
+    return {
+        beskrivelse: beskrivelseAvOpplysning,
+        ekstraInformasjon: ekstraInfoTilSaksbehandling,
+        tekst
+    };
+};
+
 const stringifyTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string => {
-    const opplysninger = Object.keys(tilleggsopplysninger);
+    const opplysninger = Object.keys(tilleggsopplysninger) as Opplysning[];
     if (opplysninger.length === 0) {
         return '';
     }
 
     return opplysninger
-        .map((opplysningKey) => {
-            const { tekst, ekstraInformasjon } = tilleggsopplysninger[opplysningKey];
+        .map((opplysningstype) => {
+            const opplysning = tilleggsopplysninger[opplysningstype] as Tilleggsopplysning;
+            const medBeskrivelse = beskrivTilleggsopplysning(opplysningstype, opplysning);
 
-            if (tekst.length === 0) {
-                return '';
+            let tilSaksbehandler = medBeskrivelse.beskrivelse;
+            if (medBeskrivelse.ekstraInformasjon) {
+                tilSaksbehandler += ` ${medBeskrivelse.ekstraInformasjon}`;
             }
 
-            const beskrivelseAvOpplysning = tilSaksbehandling[opplysningKey];
-
-            let beskrivelseTilSaksbehandling = 'Generell opplysning';
-            if (beskrivelseAvOpplysning) {
-                const ekstraInfoTilSaksbehandling = tilSaksbehandling[`${opplysningKey}.${ekstraInformasjon}`];
-
-                beskrivelseTilSaksbehandling = ekstraInfoTilSaksbehandling
-                    ? `${beskrivelseAvOpplysning}, ${ekstraInfoTilSaksbehandling}`
-                    : beskrivelseAvOpplysning;
-            }
-
-            return `${beskrivelseTilSaksbehandling}: ${tekst}`;
+            return `${tilSaksbehandler}: ${medBeskrivelse.tekst}`;
         })
         .join('\n\n');
 };

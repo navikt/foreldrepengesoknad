@@ -21,6 +21,14 @@ import { getStønadskontoNavn } from '../../../../../app/util/uttaksplan';
 import Arbeidsforhold from '../../../../../app/types/Arbeidsforhold';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 import AnnenForelder from '../../../../../app/types/søknad/AnnenForelder';
+import { Tilleggsopplysning, Opplysning } from 'app/types/søknad/Søknad';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
+import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import {
+    beskrivTilleggsopplysning,
+    TilleggsopplysningMedBeskrivelse
+} from 'app/util/cleanup/stringifyTilleggsopplysninger';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
@@ -29,6 +37,8 @@ interface UttaksplanOppsummeringslisteProps {
     registrerteArbeidsforhold: Arbeidsforhold[];
     uttaksplanValidering: UttaksplanValideringState;
     annenForelder: AnnenForelder;
+    begrunnelseForSenEndring?: Tilleggsopplysning;
+    begrunnelseForSenEndringVedlegg?: Attachment[];
 }
 
 type Props = UttaksplanOppsummeringslisteProps & InjectedIntlProps;
@@ -47,15 +57,32 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
         this.createOppsummeringslisteelementPropsForOverføringsperiode = this.createOppsummeringslisteelementPropsForOverføringsperiode.bind(
             this
         );
+        this.createOppsummeringslisteelementPropsForBegrunnelseForSenEndring = this.createOppsummeringslisteelementPropsForBegrunnelseForSenEndring.bind(
+            this
+        );
         this.formatTidsperiode = this.formatTidsperiode.bind(this);
         this.getStønadskontoNavnFromKonto = this.getStønadskontoNavnFromKonto.bind(this);
     }
 
     createOppsummeringslisteData(): OppsummeringslisteelementProps[] {
         const { perioder } = this.props;
-        return perioder
+        const periodeliste = perioder
             .map((periode) => this.createOppsummeringslisteelementProps(periode))
             .filter((v) => v !== null) as OppsummeringslisteelementProps[];
+
+        if (this.props.begrunnelseForSenEndring) {
+            const begrunnelse = beskrivTilleggsopplysning(
+                Opplysning.BEGRUNNELSE_FOR_SEN_ENDRING,
+                this.props.begrunnelseForSenEndring,
+                this.props.intl
+            );
+
+            return periodeliste.concat(
+                this.createOppsummeringslisteelementPropsForBegrunnelseForSenEndring(begrunnelse)
+            );
+        }
+
+        return periodeliste;
     }
 
     createOppsummeringslisteelementProps(periode: Periode) {
@@ -108,6 +135,27 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={erFarEllerMedmor}
                 />
+            )
+        };
+    }
+
+    createOppsummeringslisteelementPropsForBegrunnelseForSenEndring(begrunnelse: TilleggsopplysningMedBeskrivelse) {
+        return {
+            venstrestiltTekst: begrunnelse.beskrivelse,
+            høyrestiltTekst: '',
+            content: (
+                <>
+                    <Feltoppsummering
+                        feltnavn={
+                            begrunnelse.ekstraInformasjon ||
+                            getMessage(this.props.intl, 'oppsummering.uttak.begrunnelseForSenEndring.defaultLabel')
+                        }
+                        verdi={begrunnelse.tekst}
+                    />
+                    {this.props.begrunnelseForSenEndringVedlegg && (
+                        <OppsummeringAvDokumentasjon vedlegg={this.props.begrunnelseForSenEndringVedlegg || []} />
+                    )}
+                </>
             )
         };
     }
