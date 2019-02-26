@@ -106,7 +106,12 @@ class SøknadSendtSide extends React.Component<Props> {
                 id={'kvittering.pdf.lastNed.del1'}
                 values={{
                     lenke: (
-                        <Lenke href={'#'} onClick={() => openPdfPreview(kvittering.pdf)}>
+                        <Lenke
+                            href={'#'}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                openPdfPreview(kvittering.pdf);
+                            }}>
                             <FormattedMessage id={'kvittering.pdf.lastNed.del2'} />
                         </Lenke>
                     )
