@@ -4,7 +4,7 @@
         "fornavn": "Henrik",
         "etternavn": "Ibsen",
         "fødselsdato": "1994-01-28",
-        "kjønn": "M",
+        "kjønn": "K",
         "land": "NO",
         "ikkeNordiskEøsLand": false,
         "barn": [
@@ -23,24 +23,7 @@
             }
         ]
     },
-    "arbeidsforhold": [
-        {
-            "arbeidsgiverId": "973135678",
-            "arbeidsgiverIdType": "orgnr",
-            "arbeidsgiverNavn": "COLOR LINE CREW AS",
-            "stillingsprosent": 100.0,
-            "fom": "2016-01-01",
-            "tom": null
-        },
-        {
-            "arbeidsgiverId": "974716860",
-            "arbeidsgiverIdType": "orgnr",
-            "arbeidsgiverNavn": "UNIVERSITETET I OSLO",
-            "stillingsprosent": 69.0,
-            "fom": "2018-08-01",
-            "tom": null
-        }
-    ],
+    "arbeidsforhold": [],
     "søknadsinfo": {
         "deltUttaksplan": false
     }

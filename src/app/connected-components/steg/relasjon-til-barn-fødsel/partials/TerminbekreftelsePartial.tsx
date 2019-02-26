@@ -16,6 +16,7 @@ import Block from 'common/components/block/Block';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { isFeatureEnabled, Feature } from 'app/Feature';
 
 export interface OwnProps {
     barn: UfødtBarn;
@@ -28,10 +29,14 @@ export type Props = OwnProps & InjectedIntlProps & DispatchProps;
 const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
     const { barn, terminbekreftelse, intl, dispatch, vis } = props;
     const validerDatofelt = barn.terminbekreftelse && barn.terminbekreftelse.length > 0;
+    const replaceThis = isFeatureEnabled(Feature.uke22)
+        ? 'vedlegg.veileder.terminbekreftelsen.uke22'
+        : 'vedlegg.veileder.terminbekreftelsen';
+
     return (
         <React.Fragment>
             <Block margin="xs">
-                <Veilederinfo>{getMessage(intl, 'vedlegg.veileder.terminbekreftelsen')}</Veilederinfo>
+                <Veilederinfo>{getMessage(intl, replaceThis)}</Veilederinfo>
             </Block>
             <Block>
                 <AttachmentsUploaderPure

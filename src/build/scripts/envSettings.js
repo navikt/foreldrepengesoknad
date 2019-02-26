@@ -10,6 +10,7 @@ function createEnvSettingsFile(settingsFile) {
                 LOGIN_URL: '${process.env.LOGINSERVICE_URL}',
                 FEATURE_REGISTRERT_BARN: '${process.env.FEATURE_REGISTRERT_BARN}',
                 FEATURE_LOGGING:  '${process.env.FEATURE_LOGGING}',
+                FEATURE_UKE_22: '${process.env.FEATURE_UKE_22}'
             };`
         );
     });

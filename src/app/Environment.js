@@ -6,7 +6,8 @@ const Environment = () => {
         UTTAK_API_URL: window.appSettings.UTTAK_API_URL,
         LOGIN_URL: window.appSettings.LOGIN_URL,
         [Feature.registrertBarn]: window.appSettings[Feature.registrertBarn],
-        [Feature.logging]: window.appSettings[Feature.logging]
+        [Feature.logging]: window.appSettings[Feature.logging],
+        [Feature.uke22]: window.appSettings[Feature.uke22]
     };
 };
 
