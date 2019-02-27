@@ -5,11 +5,12 @@ import { Element, Normaltekst, EtikettLiten } from 'nav-frontend-typografi';
 
 import { Tidsperiode } from 'common/types';
 import AriaText from 'common/components/aria/AriaText';
-import UttaksplanIkon, { UttaksplanIkonKeys } from '../../uttaksplan-ikon/UttaksplanIkon';
+import UttaksplanIkon from '../../uttaksplan-ikon/UttaksplanIkon';
 import { måned3bokstaver, måned, år } from 'common/util/datoUtils';
 import moment from 'moment';
 
 import './periodeheader.less';
+import { getIkonForAdvarsel } from 'app/util/validation/getAdvarselForPeriode';
 
 type AdvarselType = 'advarsel' | 'feil';
 
@@ -31,13 +32,6 @@ interface Props {
 }
 
 const BEM = BEMHelper('periodelisteItemHeader');
-
-const getIkonForAdvarsel = (advarsel: Advarsel): UttaksplanIkonKeys => {
-    if (advarsel.type === 'advarsel') {
-        return UttaksplanIkonKeys.advarsel;
-    }
-    return UttaksplanIkonKeys.feil;
-};
 
 const renderDagMnd = (dato: Date): JSX.Element => {
     const d = moment.utc(dato);
@@ -91,7 +85,6 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
                 {tidsperiode && (
                     <div className={BEM.element('tidsrom')}>
                         {renderDagMnd(tidsperiode.fom)}
-                        -
                         {renderDagMnd(tidsperiode.tom)}
                     </div>
                 )}
