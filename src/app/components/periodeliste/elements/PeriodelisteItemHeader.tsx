@@ -85,7 +85,6 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
                 {tidsperiode && (
                     <div className={BEM.element('tidsrom')}>
                         {renderDagMnd(tidsperiode.fom)}
-                        -
                         {renderDagMnd(tidsperiode.tom)}
                     </div>
                 )}

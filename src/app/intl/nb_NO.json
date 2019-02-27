@@ -726,10 +726,10 @@
         "Startdato kan ikke være på en lørdag eller søndag, du må velge en ukedag.",
     "uttaksplan.tittel": "Din plan",
     "uttaksplan.tomPlan": "Du har ikke lagt til noen perioder ennå.",
-    "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp",
+    "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp.",
     "uttaksplan.validering.advarsel.senÅrsakOgTidsperiode": "Du søker om utsettelse tilbake i tid.",
-    "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikke få foreldrepenger etter at barnet er fylt tre år",
-    "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag",
+    "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikke få foreldrepenger etter at barnet er fylt tre år.",
+    "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag.",
     "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Unntaket er om mor er for syk eller innlagt i helseinstitusjon.",
     "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn flere dager enn du har tilgjengelig.",
@@ -742,9 +742,9 @@
         "Du kan ikke søke om utsettelse før foreldrepengeperioden din starter.",
     "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb, kombinere pengene med delvis arbeid eller benytte deg av flerbarnsukene de første seks ukene du tar ut foreldrepenger.",
-    "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
-    "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden",
-    "uttaksplan.validering.feil.skjemaIkkeKomplett": "Påkrevd informasjon om perioden mangler",
+    "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode.",
+    "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
+    "uttaksplan.validering.feil.skjemaIkkeKomplett": "Påkrevd informasjon om perioden mangler.",
     "uttaksplan.validering.feil.tomUttaksplan":
         "For å komme videre i søknaden må du legge til en periode med foreldrepenger eller en utsettelse",
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
