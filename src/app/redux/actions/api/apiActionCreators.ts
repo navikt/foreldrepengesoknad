@@ -88,7 +88,7 @@ export default {
     getSøkerinfo,
     getSaker,
     sendSøknad,
-    getStoredAppState: getStorageData,
+    getStorageData,
     deleteStoredAppState,
     storeAppState,
     getTilgjengeligeStønadskonter,
