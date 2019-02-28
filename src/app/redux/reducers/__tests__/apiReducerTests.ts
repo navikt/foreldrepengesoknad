@@ -36,7 +36,7 @@ describe('apiReducer', () => {
     });
 
     it('should set isLoadingStoredAppState to true when GET_STORED_APP_STATE-action is dispatched', () => {
-        const updatedApiState = reducer(defaultState, actions.getStoredAppState({} as any));
+        const updatedApiState = reducer(defaultState, actions.getStorageData({} as any));
         expect(updatedApiState.isLoadingStoredAppState).toBe(true);
     });
 
