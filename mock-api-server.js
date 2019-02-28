@@ -51,6 +51,10 @@ router.delete('/rest/storage', (req, res) => {
     return res.sendStatus(200);
 });
 
+router.get('/rest/storage/foreldrepengesoknad', (req, res) => {
+    res.send(MockStorage.getStorageKvittering());
+});
+
 router.post('/rest/soknad', (req, res) => {
     return res.send(MockStorage.getSoknadSendt());
 });

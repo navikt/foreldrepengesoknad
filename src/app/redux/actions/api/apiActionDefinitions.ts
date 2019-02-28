@@ -7,7 +7,7 @@ export enum ApiActionKeys {
     'GET_SØKERINFO' = 'getSøkerinfo',
     'GET_SAKER' = 'getSaker',
 
-    'GET_STORED_APP_STATE' = 'getStoredAppState',
+    'GET_STORAGE_DATA' = 'getStorageData',
     'DELETE_STORED_APP_STATE' = 'deleteStoredAppState',
     'STORE_APP_STATE' = 'storeAppState',
 
@@ -17,7 +17,9 @@ export enum ApiActionKeys {
 
     'GET_TILGJENGELIGE_STØNADSKONTOER' = 'getTilgjengeligeStønadskontoer',
     'GET_TILGJENGELIGE_STØNADSKONTOER_AND_LAG_UTTAKSPLAN_FORSLAG' = 'getTilgjengeligeStønadskontoerAndLagUttaksplanForslag',
-    'GET_TILGJENGELIGE_STØNADSUKER' = 'GET_TILGJENGELIGE_STØNADSUKER'
+    'GET_TILGJENGELIGE_STØNADSUKER' = 'GET_TILGJENGELIGE_STØNADSUKER',
+
+    'SEND_STORAGE_KVITTERING' = 'sendStorageKvittering'
 }
 
 interface UpdateApi {
@@ -56,8 +58,8 @@ export interface SendSøknad {
     history: History;
 }
 
-export interface GetStoredAppState {
-    type: ApiActionKeys.GET_STORED_APP_STATE;
+export interface GetStorageData {
+    type: ApiActionKeys.GET_STORAGE_DATA;
     history: History;
 }
 
@@ -69,14 +71,19 @@ export interface StoreAppState {
     type: ApiActionKeys.STORE_APP_STATE;
 }
 
+export interface SendStorageKvittering {
+    type: ApiActionKeys.SEND_STORAGE_KVITTERING;
+}
+
 export type ApiActionTypes =
     | DeleteStoredAppState
     | GetSøkerinfo
     | GetSaker
-    | GetStoredAppState
+    | GetStorageData
     | GetTilgjengeligeStønadskontoer
     | GetTilgjengeligeStønadskontoerAndLagUttaksplanForslag
     | GetTilgjengeligeStønadsuker
     | SendSøknad
     | StoreAppState
-    | UpdateApi;
+    | UpdateApi
+    | SendStorageKvittering;

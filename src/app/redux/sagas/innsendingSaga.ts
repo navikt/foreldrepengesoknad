@@ -8,6 +8,8 @@ import { cleanUpSøknad } from '../../util/cleanup/cleanupSøknad';
 import { AppState } from '../reducers';
 import { mapMissingAttachmentsOnSøknad } from '../../util/attachments/missingAttachmentUtil';
 import { extractUUID } from '../../api/utils/errorUtil';
+import { SøknadForInnsending } from '../../types/søknad/Søknad';
+import moment from 'moment';
 
 function* sendSøknad(action: SendSøknad) {
     try {
@@ -15,7 +17,8 @@ function* sendSøknad(action: SendSøknad) {
         const orignalSøknad = yield select((state: AppState) => state.søknad);
         const søknadCopy = JSON.parse(JSON.stringify(orignalSøknad));
         mapMissingAttachmentsOnSøknad(action.missingAttachments, søknadCopy);
-
+        const cleanSøknad: SøknadForInnsending = cleanUpSøknad(søknadCopy);
+        cleanSøknad.innsendingstidspunkt = moment().format('YYYY-MM-DD');
         const response = yield call(Api.sendSøknad, cleanUpSøknad(søknadCopy));
         const kvittering: Kvittering = response.data;
         if (kvittering) {

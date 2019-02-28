@@ -78,6 +78,7 @@ interface Søknad {
 }
 
 interface SøknadEndretForInnsending {
+    innsendingstidspunkt?: string;
     tilleggsopplysninger?: string;
 }
 

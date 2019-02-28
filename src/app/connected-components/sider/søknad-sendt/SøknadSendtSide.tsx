@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { connect, DispatchProp } from 'react-redux';
+import { connect } from 'react-redux';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import DocumentTitle from 'react-document-title';
 import Lenke from 'nav-frontend-lenker';
@@ -16,6 +16,8 @@ import lenker from '../../../util/routing/lenker';
 import Block from 'common/components/block/Block';
 import BEMHelper from 'common/util/bem';
 import { openPdfPreview } from 'common/util/pdfUtils';
+import { apiActionCreators as api } from '../../../redux/actions';
+import { DispatchProps } from 'common/redux/types';
 
 import './søknadSendtSide.less';
 
@@ -24,8 +26,12 @@ interface StateProps {
     kvittering: Kvittering;
 }
 
-type Props = StateProps & InjectedIntlProps & DispatchProp;
+type Props = StateProps & InjectedIntlProps & DispatchProps;
 class SøknadSendtSide extends React.Component<Props> {
+    componentDidMount(): void {
+        this.props.dispatch(api.sendStorageKvittering());
+    }
+
     buildHeadlineMessage() {
         const { intl, person } = this.props;
         return (
