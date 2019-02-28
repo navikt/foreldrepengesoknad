@@ -35,6 +35,7 @@ import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
 import './velkommen.less';
 import BEMHelper from 'common/util/bem';
 import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 interface StateProps {
     person?: Person;
@@ -155,7 +156,13 @@ class Velkommen extends React.Component<Props, State> {
                     <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
                         {getMessage(intl, 'velkommen.tittel')}
                     </Innholdstittel>
-                    <Veilederpanel svg={<Veileder />} fargetema="advarsel" />
+                    <Veilederpanel
+                        type="plakat"
+                        kompakt={true}
+                        svg={<Veileder stil="kompakt-uten-bakgrunn" />}
+                        fargetema="suksess">
+                        <VeilederpanelInnhold />
+                    </Veilederpanel>
                     {visValgForNySøknadEllerEndring && (
                         <>
                             <Block>

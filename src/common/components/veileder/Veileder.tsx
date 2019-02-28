@@ -5,13 +5,14 @@ import VeilederNormal from './VeilederNormalSvg';
 import VeilederKompakt from './VeilederKompaktSvg';
 
 import './veileder.less';
+import VeilederKompaktUtenBakgrunn from './VeilederKompaktUtenBakgrunnSVG';
 
 export type Ansiktstype = 'glad' | 'undrende' | 'skeptisk';
 
 export interface VeilederProps {
     ansikt?: 'glad' | 'undrende' | 'skeptisk';
     farge?: 'lilla' | 'gronn' | 'bla';
-    stil?: 'normal' | 'kompakt';
+    stil?: 'normal' | 'kompakt' | 'kompakt-uten-bakgrunn';
 }
 
 interface OwnProps {
@@ -35,7 +36,15 @@ const Veileder = (props: Props) => {
             props.className
         )
     };
-    return stil === 'normal' ? <VeilederNormal svgProps={svgProps} /> : <VeilederKompakt svgProps={svgProps} />;
+
+    switch (stil) {
+        case 'kompakt':
+            return <VeilederKompakt svgProps={svgProps} />;
+        case 'kompakt-uten-bakgrunn':
+            return <VeilederKompaktUtenBakgrunn svgProps={svgProps} />;
+        default:
+            return <VeilederNormal svgProps={svgProps} />;
+    }
 };
 
 export default Veileder;
