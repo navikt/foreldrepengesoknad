@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 import { Innholdstittel, Normaltekst, Ingress } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import Veilederpanel from 'nav-frontend-veilederpanel';
 
 import getMessage from 'common/util/i18nUtils';
 import VeilederMedSnakkeboble from 'common/components/veileder-med-snakkeboble/VeilederMedSnakkeboble';
@@ -33,6 +34,7 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
 import './velkommen.less';
 import BEMHelper from 'common/util/bem';
+import Veileder from 'common/components/veileder/Veileder';
 
 interface StateProps {
     person?: Person;
@@ -153,6 +155,7 @@ class Velkommen extends React.Component<Props, State> {
                     <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
                         {getMessage(intl, 'velkommen.tittel')}
                     </Innholdstittel>
+                    <Veilederpanel svg={<Veileder />} fargetema="advarsel" />
                     {visValgForNySøknadEllerEndring && (
                         <>
                             <Block>
