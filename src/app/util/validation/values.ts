@@ -57,9 +57,9 @@ export const date5DaysAhead = moment().add(5 * 24, 'hours');
 
 export const getDate10MonthsAgo = moment().subtract(10, 'months');
 
-export const fjortenUkerPluss3Number = 14 * 7 + 3;
-export const fjortenUkerPluss3 = moment().add(fjortenUkerPluss3Number * 24, 'hours');
-export const fjortenUkerPluss4 = moment().add((fjortenUkerPluss3Number + 1) * 24, 'hours');
+export const attenUkerPluss3Number = 18 * 7 + 3;
+export const attenUkerPluss3 = moment().add(attenUkerPluss3Number * 24, 'hours');
+export const attenUkerPluss4 = moment().add((attenUkerPluss3Number + 1) * 24, 'hours');
 
 const DateValues = {
     today,

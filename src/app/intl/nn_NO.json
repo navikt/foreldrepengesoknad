@@ -830,11 +830,11 @@
     "valideringsfeil.stillingsprosent.ugyldigTall": "Stillingsprosenten må vere eit gyldig tal opp til 100",
     "valideringsfeil.stillingsprosent.under1": "Stillingsprosenten må vere over 0",
     "valideringsfeil.terminbekreftelseDato.duMåOppgi": "Du må gi opp når terminstadfestinga er datert",
-    "valideringsfeil.terminbekreftelseDato.duMåVæreIUke26":
-        "Terminstadfestinga må vise at du er i 26. svangerskapsveke eller seinare",
+    "valideringsfeil.terminbekreftelseDato.duMåVæreIUke22":
+        "Terminstadfestinga må vise at du er i 22. svangerskapsveke eller seinare",
     "valideringsfeil.terminbekreftelseDato.forSen": "Datoen på terminstadfestinga kan ikkje vere fram i tid.",
     "valideringsfeil.termindato.duMåOppgi": "Du må gi opp termindatoen",
-    "valideringsfeil.termindato.duMåVæreIUke26": "Du kan tidlegast søkje når du er i 26. svangerskapsveke",
+    "valideringsfeil.termindato.duMåVæreIUke22": "Du kan tidlegast søkje når du er i 22. svangerskapsveke",
     "valideringsfeil.termindato.forTidlig": "Termindatoen kan ikkje vere tidlegare enn tre veker frå i dag",
     "valideringsfeil.utenlandsopphold.dagensEllerSenere": "Du må leggje inn dagens dato eller seinare.",
     "valideringsfeil.utenlandsopphold.etterFraDato": "Du må leggje inn ein dato som er etter frå-datoen.",
@@ -885,7 +885,7 @@
     "vedlegg.veileder.stebarnsadopsjon":
         "Du må laste opp dokumentasjon på stebarnsadopsjonen og stadfesting på dato for stebarnsadopsjonen.",
     "vedlegg.veileder.terminbekreftelsen":
-        "Du må leggje ved ei stadfesting på termin. Stadfestinga må vere datert og signert av lege eller jordmor når du er i 26. svangerskapsveke eller seinare.",
+        "Du må leggje ved ei stadfesting på termin. Stadfestinga må vere datert og signert av lege eller jordmor når du er i 22. svangerskapsveke eller seinare.",
     "velkommen.bobletekst": "Eg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.dinePlikter": "dine plikter.<br /><br />",
