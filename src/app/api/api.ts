@@ -4,6 +4,7 @@ import Environment from '../../app/Environment';
 import { AppState } from '../redux/reducers';
 import { storageParser } from '../util/storage/parser';
 import { formaterDato } from 'common/util/datoUtils';
+import { StorageKvittering } from '../types/StorageKvittering';
 
 export interface GetTilgjengeligeStønadskontoerParams {
     antallBarn: number;
@@ -98,6 +99,22 @@ function deleteStoredAppState() {
     return axios.delete(url, { withCredentials: true });
 }
 
+function sendStorageKvittering(storageKvittering: StorageKvittering) {
+    const url = `${apiBaseUrl}/storage/kvittering/foreldrepenger`;
+    return axios.post(url, storageKvittering, {
+        withCredentials: true,
+        timeout: 15 * 1000
+    });
+}
+
+function getStorageKvittering() {
+    const url = `${apiBaseUrl}/storage/kvittering/foreldrepenger`;
+    return axios.get(url, {
+        withCredentials: true,
+        timeout: 15 * 1000
+    });
+}
+
 const log = (error: any) => {
     return axios.post('/log', error, {
         timeout: 15 * 1000,
@@ -116,6 +133,8 @@ const Api = {
     getStoredAppState,
     storeAppState,
     deleteStoredAppState,
+    sendStorageKvittering,
+    getStorageKvittering,
     log
 };
 

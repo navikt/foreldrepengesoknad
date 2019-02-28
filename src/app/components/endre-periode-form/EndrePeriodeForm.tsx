@@ -4,27 +4,25 @@ import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { Knapp } from 'nav-frontend-knapper';
 
-import { Periode, Periodetype, StønadskontoType, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
-import BEMHelper from 'common/util/bem';
-import { RecursivePartial } from '../../types/Partial';
-import { DispatchProps } from 'common/redux/types';
-import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
-import BekreftDialog from 'common/components/dialog/BekreftDialog';
-import getMessage from 'common/util/i18nUtils';
-import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
-import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
-import Søknad from '../../types/søknad/Søknad';
+import { Advarsel } from '../periodeliste/elements/PeriodelisteItemHeader';
 import { AppState } from '../../redux/reducers';
+import { DispatchProps } from 'common/redux/types';
+import { Periode, Periodetype, StønadskontoType, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
+import { RecursivePartial } from '../../types/Partial';
 import { UtsettelseSpørsmålVisibility } from '../utsettelse-form/utsettelseFormConfig';
 import { UttakSpørsmålVisibility } from '../uttak-form/uttakFormConfig';
+import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReducer';
+import BekreftDialog from 'common/components/dialog/BekreftDialog';
+import BEMHelper from 'common/util/bem';
+import Block from 'common/components/block/Block';
+import getMessage from 'common/util/i18nUtils';
+import LinkButton from '../link-button/LinkButton';
+import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
+import Søknad from '../../types/søknad/Søknad';
+import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import UtsettelseForm from '../utsettelse-form/UtsettelseForm';
 import UttakForm from '../uttak-form/UttakForm';
-import Block from 'common/components/block/Block';
-import LinkButton from '../link-button/LinkButton';
-import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReducer';
-
-import { shouldPeriodeHaveAttachment } from '../../util/attachments/missingAttachmentUtil';
-import { getErSøkerFarEllerMedmor } from '../../util/domain/personUtil';
+import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
 
 import './endrePeriodeForm.less';
 
@@ -40,6 +38,7 @@ interface OwnProps {
     periode: Periode;
     antallFeriedager: number;
     validertPeriode: ValidertPeriode | undefined;
+    advarsel?: Advarsel;
     onRequestClose: () => void;
 }
 
@@ -100,7 +99,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
     }
 
     render() {
-        const { periode, intl, søknad } = this.props;
+        const { periode, advarsel, intl } = this.props;
         const { validertPeriode, antallFeriedager, onRequestClose } = this.props;
         const erForeldrepengerFørFødselPeriode =
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
@@ -108,20 +107,13 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
         return (
             <ValiderbarForm className={bem.className} validateBeforeSubmit={true}>
                 <>
-                    <Block
-                        visible={
-                            shouldPeriodeHaveAttachment(
-                                periode,
-                                getErSøkerFarEllerMedmor(søknad.søker.rolle),
-                                søknad.annenForelder
-                            ) &&
-                            (periode.vedlegg === undefined || (periode.vedlegg && periode.vedlegg.length === 0))
-                        }>
-                        <AlertStripe type="advarsel">
-                            <FormattedMessage id="uttaksplanSkjema.info.manglerVedlegg" />
-                        </AlertStripe>
+                    <Block visible={advarsel !== undefined}>
+                        {advarsel && (
+                            <AlertStripe type={advarsel.type === 'advarsel' ? 'info' : 'advarsel'}>
+                                {advarsel && advarsel.beskrivelse}
+                            </AlertStripe>
+                        )}
                     </Block>
-
                     {periode.type === Periodetype.Utsettelse ? (
                         <UtsettelseForm
                             periode={periode}

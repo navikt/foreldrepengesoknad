@@ -25,9 +25,9 @@ export function sendSøknad(missingAttachments: MissingAttachment[], history: Hi
     };
 }
 
-export function getStoredAppState(history: History): ApiActionTypes {
+export function getStorageData(history: History): ApiActionTypes {
     return {
-        type: ApiActionKeys.GET_STORED_APP_STATE,
+        type: ApiActionKeys.GET_STORAGE_DATA,
         history
     };
 }
@@ -78,15 +78,22 @@ export function updateApi(payload: ApiStatePartial): ApiActionTypes {
     };
 }
 
+export function sendStorageKvittering(): ApiActionTypes {
+    return {
+        type: ApiActionKeys.SEND_STORAGE_KVITTERING
+    };
+}
+
 export default {
     getSøkerinfo,
     getSaker,
     sendSøknad,
-    getStoredAppState,
+    getStorageData,
     deleteStoredAppState,
     storeAppState,
     getTilgjengeligeStønadskonter,
     getTilgjengeligeStønadskonterAndLagUttaksplanForslag,
     getTilgjengeligeStønadsuker,
-    updateApi
+    updateApi,
+    sendStorageKvittering
 };

@@ -31,11 +31,12 @@ import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksplan/utsettelseÅrsak';
 import HvorSkalDuJobbeSpørsmålFlervalg from 'app/spørsmål/HvorSkalDuJobbeSpørsmålFlervalg';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
 import { Tidsperioden, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import AlertStripe from 'nav-frontend-alertstriper';
+import { getUtsettelseÅrsakTypeValidators } from 'app/util/validation/uttaksplan/utsettelseÅrsak';
+import { isFeatureEnabled, Feature } from 'app/Feature';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -269,6 +270,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             radios={this.getUtsettelseÅrsakRadios()}
                             onChange={(v) => this.onVariantChange(v)}
                             validatorer={
+                                !isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) &&
                                 periode.type === Periodetype.Utsettelse
                                     ? getUtsettelseÅrsakTypeValidators(periode.årsak, tidsperiode.fom, intl)
                                     : undefined

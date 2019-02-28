@@ -32,7 +32,7 @@ function* getSøkerinfo(action: GetSøkerinfo) {
         );
 
         if (useStorage) {
-            yield put(apiActions.getStoredAppState(action.history));
+            yield put(apiActions.getStorageData(action.history));
         } else {
             yield put(apiActions.deleteStoredAppState());
         }

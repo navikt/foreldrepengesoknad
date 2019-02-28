@@ -3,13 +3,14 @@ import moment from 'moment';
 import { Tidsperiode } from 'common/types';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 import { UttakFormPeriodeType } from '../../../components/uttak-form/UttakForm';
-import { Periodetype, isForeldrepengerFørFødselUttaksperiode } from '../../../types/uttaksplan/periodetyper';
+import { Periodetype, isForeldrepengerFørFødselUttaksperiode, Periode } from '../../../types/uttaksplan/periodetyper';
 import { PeriodeValideringErrorKey } from '../../../redux/reducers/uttaksplanValideringReducer';
 import { Validator } from 'common/lib/validation/types';
 import { allValidatorsPass } from 'common/lib/validation/utils/runValidFormValidation';
 import { DateValue } from '../../../types/common';
-import { uttaksdatoer } from '../../uttaksplan/uttaksdatoer';
+import { uttaksdatoer, getUttaksdatoer } from '../../uttaksplan/uttaksdatoer';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
+import { periodeErFørDato } from './uttakFarValidation';
 
 const erUtfyltTest = (dato: DateValue): Validator => ({
     test: () => dato !== undefined,
@@ -82,4 +83,9 @@ export const uttakTidsperiodeErGyldig = (uttaksperiode: UttakFormPeriodeType, fa
         return fraDatoErGyldig && tilDatoErGyldig;
     }
     return true;
+};
+
+export const periodeErInnenDeFørsteSeksUkene = (periode: Periode, familiehendelsesdato: Date) => {
+    const førsteUttaksdagEtterSeksUker = getUttaksdatoer(familiehendelsesdato).etterFødsel.førsteUttaksdagEtterSeksUker;
+    return periodeErFørDato(periode, førsteUttaksdagEtterSeksUker);
 };

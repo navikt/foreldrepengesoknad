@@ -1,7 +1,7 @@
 import * as React from 'react';
 import BEMHelper from 'common/util/bem';
 import { getVarighetString } from 'common/util/intlUtils';
-import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
     Periode,
     Periodetype,
@@ -16,6 +16,7 @@ import { getPeriodeForelderNavn, getPeriodeTittel } from '../../../util/uttakspl
 import { NavnPåForeldre } from 'common/types';
 import { ValidertPeriode } from '../../../redux/reducers/uttaksplanValideringReducer';
 import PeriodelisteItemHeader, { Advarsel } from './../elements/PeriodelisteItemHeader';
+import { getAdvarselForPeriode } from 'app/util/validation/getAdvarselForPeriode';
 
 export interface Props {
     periode: Periode;
@@ -49,33 +50,6 @@ export const getPeriodeIkon = (periode: Periode, navnPåForeldre: NavnPåForeldr
                 navnPåForeldre={navnPåForeldre}
             />
         );
-    }
-    return undefined;
-};
-
-const getAdvarselForPeriode = (validertPeriode: ValidertPeriode, intl: InjectedIntl): Advarsel | undefined => {
-    if (validertPeriode === undefined) {
-        return;
-    }
-
-    if (validertPeriode.valideringsfeil.length > 0) {
-        return {
-            type: 'feil',
-            beskrivelse: getMessage(intl, `uttaksplan.validering.feil.${validertPeriode.valideringsfeil[0].feilKey}`)
-        };
-    }
-    if (validertPeriode.overlappendePerioder.length > 0) {
-        return {
-            type: 'feil',
-            beskrivelse: getMessage(intl, `periodeliste.overlappendePeriode`)
-        };
-    }
-    if (validertPeriode.advarsler.length > 0) {
-        const advarsel = validertPeriode.advarsler[0];
-        return {
-            type: 'advarsel',
-            beskrivelse: getMessage(intl, `uttaksplan.validering.advarsel.${advarsel.advarselKey}`)
-        };
     }
     return undefined;
 };
