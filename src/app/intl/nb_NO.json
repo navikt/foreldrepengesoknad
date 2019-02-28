@@ -726,9 +726,10 @@
         "Startdato kan ikke være på en lørdag eller søndag, du må velge en ukedag.",
     "uttaksplan.tittel": "Din plan",
     "uttaksplan.tomPlan": "Du har ikke lagt til noen perioder ennå.",
-    "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp",
-    "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikke få foreldrepenger etter at barnet er fylt tre år",
-    "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag",
+    "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp.",
+    "uttaksplan.validering.advarsel.senÅrsakOgTidsperiode": "Du søker om utsettelse tilbake i tid.",
+    "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikke få foreldrepenger etter at barnet er fylt tre år.",
+    "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag.",
     "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Unntaket er om mor er for syk eller innlagt i helseinstitusjon.",
     "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn flere dager enn du har tilgjengelig.",
@@ -741,18 +742,20 @@
         "Du kan ikke søke om utsettelse før foreldrepengeperioden din starter.",
     "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb, kombinere pengene med delvis arbeid eller benytte deg av flerbarnsukene de første seks ukene du tar ut foreldrepenger.",
-    "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
-    "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden",
-    "uttaksplan.validering.feil.skjemaIkkeKomplett": "Påkrevd informasjon om perioden mangler",
+    "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode.",
+    "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
+    "uttaksplan.validering.feil.skjemaIkkeKomplett": "Påkrevd informasjon om perioden mangler.",
     "uttaksplan.validering.feil.tomUttaksplan":
         "For å komme videre i søknaden må du legge til en periode med foreldrepenger eller en utsettelse",
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosent kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikke gyldig",
+    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiodeGammel":
+        "Du kan ikke søke om utsettelse på grunn av ferie eller arbeid tilbake i tid.",
+    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
+        "Du kan ikke søke om utsettelse på grunn av arbeid eller ferie mindre enn seks uker før fødsel",
     "uttaksplan.validering.feil.stønadskontoMangler":
         "Perioden er ikke gyldig. Slett perioden og legg den inn på nytt.",
-    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
-        "Du kan ikke søke om utsettelse på grunn av ferie eller arbeid tilbake i tid.",
     "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikke ha en uttaksplan med kun en utsettelse.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold":
         "Uttaksplanen kan ikke slutte med at den andre forelderen skal være hjemme.",
@@ -770,13 +773,19 @@
     "uttaksplan.veileder.planenInneholderHull":
         "Planen din inneholder perioder med tapte foreldrepenger. Du står i fare for å miste dager om du ikke legger inn en utsettelse eller periode med foreldrepenger.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Husk at du må søke om foreldrepenger senest {sisteDag}.",
+    "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie":
+        "Du må søke om utsettelse på grunn av ferie senest dagen før du starter ferien din. Vi kan innvilge utsettelse på grunn av ferie tilbake i tid hvis arbeidsgiveren din bekreftet ferien din i inntektsmeldingen før ferien startet, eller hvis du gav beskjed til NAV før ferien din startet.",
+    "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid":
+        "Du må søke om utsettelse på grunn av arbeid senest dagen før du begynner å jobbe. Hvis du søker om å utsette etter at du har begynt å jobbe, mister du dager med foreldrepenger fra den dagen du startet å jobbe, og frem til dagen du søker om å utsette. Hvis du gir beskjed til NAV før du begynner å jobbe, mister du ikke dager med foreldrepenger.",
+    "uttaksplan.veileder.planenAdvarerOmUttak":
+        "Du må søke om å kombinere foreldrepengene med delvis arbeid senest dagen før du begynner å jobbe. Når du søker etter at du har begynt å jobbe, mister du dager med foreldrepenger ut fra stillingsprosenten du har jobbet i, frem til vi får søknaden din. Hvis du gir beskjed til NAV før du begynner å jobbe, mister du ikke dager med foreldrepenger.",
 
     "uttaksplan.senEndring.veileder.SYKDOM":
-        "Når du søker om utsettelse tilbake tid, må du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+        "Du søker om å utsette på grunn av sykdom tilbake i tid. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
     "uttaksplan.senEndring.veileder.UTTAK":
-        "Når du søker om foreldrepenger tilbake tid, må du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+        "Du kan søke om foreldrepenger tre måneder tilbake i tid fra den dagen NAV mottar søknaden fra deg. Når du søker mer enn tre måneder tilbake i tid må vi vurdere rettighetene dine. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
     "uttaksplan.senEndring.veileder.SYKDOM_OG_UTTAK":
-        "Når du søker om foreldrepenger eller utsettelse tilbake tid, må du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+        "Du kan søke om foreldrepenger og om å utsette på grunn av sykdom tre måneder tilbake i tid. Når du søker mer enn tre måneder tilbake i tid må vi vurdere rettighetene dine. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
     "uttaksplan.senEndring.begrunnelse.SYKDOM": "Hva er grunnen til at du ikke har søkt om utsettelse tidligere?",
     "uttaksplan.senEndring.begrunnelse.UTTAK": "Hva er grunnen til at du ikke har søkt om foreldrepenger tidligere?",
     "uttaksplan.senEndring.begrunnelse.SYKDOM_OG_UTTAK":
@@ -921,6 +930,12 @@
     "sesjonUtløpt.fortsett": "Ja, jeg vil fortsette",
     "arbeidsgiver": "Arbeidsgiver",
     "utvidetInformasjon.lukkTekst": "Lukk informasjon",
+
+    "tilleggsopplysning.begrunnelseForSenEndring": "Begrunnelse for å søke om utsettelse",
+    "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM": "på grunn av sykdom tilbake i tid",
+    "tilleggsopplysning.begrunnelseForSenEndring.UTTAK": "på grunn av uttak mer enn tre måneder tilbake i tid",
+    "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM_OG_UTTAK":
+        "på grunn av sykdom tilbake i tid og uttak mer enn tre måneder tilbake i tid",
 
     "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikke tilgjengelig akkurat nå",
     "feilside.ikkeTilgjengelig.melding":

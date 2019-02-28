@@ -15,7 +15,7 @@ export const getUtsettelseÅrsakTypeValidators = (
     return [
         {
             test: () => erUtsettelseÅrsakTypeGyldigForStartdato(årsak, startdato),
-            failText: getMessage(intl, 'uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode')
+            failText: getMessage(intl, 'uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiodeGammel')
         }
     ];
 };

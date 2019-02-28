@@ -14,7 +14,7 @@ import { uttaksdatoer } from '../../uttaksplan/uttaksdatoer';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
-const periodeErFørDato = ({ tidsperiode }: Periode, dato: Date): boolean => {
+export const periodeErFørDato = ({ tidsperiode }: Periode, dato: Date): boolean => {
     return isValidTidsperiode(tidsperiode) && Tidsperioden(tidsperiode).erFørDato(dato);
 };
 

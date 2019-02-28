@@ -7,7 +7,7 @@ const Environment = () => {
         LOGIN_URL: window.appSettings.LOGIN_URL,
         [Feature.registrertBarn]: window.appSettings[Feature.registrertBarn],
         [Feature.logging]: window.appSettings[Feature.logging],
-        [Feature.uke22]: window.appSettings[Feature.uke22]
+        [Feature.ferieOgArbeidTilbakeITid]: window.appSettings[Feature.ferieOgArbeidTilbakeITid]
     };
 };
 

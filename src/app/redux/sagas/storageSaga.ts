@@ -1,7 +1,7 @@
 import { takeEvery, all, call, put, select, throttle } from 'redux-saga/effects';
 import _ from 'lodash';
 import Api from '../../api/api';
-import { ApiActionKeys, GetStoredAppState } from '../actions/api/apiActionDefinitions';
+import { ApiActionKeys, GetStorageData } from '../actions/api/apiActionDefinitions';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
 import { default as commonActions } from '../actions/common/commonActionCreators';
@@ -15,6 +15,8 @@ import { isFeatureEnabled, Feature } from '../../Feature';
 import { History } from 'history';
 import routeConfig from '../../util/routing/routeConfig';
 import StorageSagaUtils from '../../util/storageSagaUtils';
+import { StorageKvittering } from '../../types/StorageKvittering';
+import moment from 'moment';
 
 const stateSelector = (state: AppState) => state;
 
@@ -38,14 +40,20 @@ function* saveAppState(action: any) {
     }
 }
 
-function* getAppState(action: GetStoredAppState) {
+function* getStorageData(action: GetStorageData) {
     try {
         put(apiActions.updateApi({ isLoadingStoredAppState: true }));
-        const response: AxiosResponse = yield call(Api.getStoredAppState);
-        const state: AppState = response.data;
+        const appStateResponse: AxiosResponse = yield call(Api.getStoredAppState);
+        const storageKvitteringResponse = yield call(Api.getStorageKvittering);
+        const appState: AppState = appStateResponse.data;
+        const storageKvittering: StorageKvittering = storageKvitteringResponse.data;
 
-        if (state) {
-            yield applyStoredStateToApp(state, action.history);
+        if (appState) {
+            yield applyStoredStateToApp(appState, action.history);
+        }
+
+        if (storageKvittering) {
+            yield put(apiActions.updateApi({ storageKvittering }));
         }
     } catch {
         yield put(apiActions.updateApi({ isLoadingStoredAppState: false }));
@@ -121,18 +129,29 @@ function* deleteStoredAppState() {
     }
 }
 
+function* sendStorageKvittering() {
+    try {
+        yield call(Api.sendStorageKvittering, {
+            innsendingstidspunkt: moment().format('YYYY-MM-DD')
+        });
+    } catch (e) {
+        yield call(Api.log, { message: 'sendStorageKvittering kall feilet' });
+    }
+}
+
 const THROTTLE_INTERVAL_MS = 2500;
 const THROTTLE_INTERVAL_UTTAKSPLAN = 15000;
 
 export default function* storageSaga() {
     yield all([
-        takeEvery(ApiActionKeys.GET_STORED_APP_STATE, getAppState),
+        takeEvery(ApiActionKeys.GET_STORAGE_DATA, getStorageData),
         takeEvery(ApiActionKeys.DELETE_STORED_APP_STATE, deleteStoredAppState),
         throttle(THROTTLE_INTERVAL_MS, ApiActionKeys.STORE_APP_STATE, saveAppState),
         throttle(THROTTLE_INTERVAL_UTTAKSPLAN, SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, saveAppState),
         throttle(THROTTLE_INTERVAL_UTTAKSPLAN, SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, saveAppState),
         throttle(THROTTLE_INTERVAL_UTTAKSPLAN, SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, saveAppState),
         throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, saveAppState),
-        throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, saveAppState)
+        throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, saveAppState),
+        takeEvery(ApiActionKeys.SEND_STORAGE_KVITTERING, sendStorageKvittering)
     ]);
 }

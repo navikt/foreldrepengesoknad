@@ -98,6 +98,8 @@ class Oppsummering extends React.Component<Props> {
                             uttaksplanValidering={uttaksplanValidering}
                             dekningsgrad={søknad.dekningsgrad}
                             antallUkerUttaksplan={antallUkerUttaksplan}
+                            begrunnelseForSenEndring={søknad.tilleggsopplysninger.begrunnelseForSenEndring}
+                            begrunnelseForSenEndringVedlegg={søknad.vedleggForSenEndring}
                         />
                     </Oppsummeringspanel>
                 </div>

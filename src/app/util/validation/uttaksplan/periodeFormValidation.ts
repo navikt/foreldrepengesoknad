@@ -18,12 +18,13 @@ import {
     UtsettelseFormPayload
 } from '../../../components/utsettelse-form/utsettelseFormConfig';
 import { UttakFormPayload, getUttakFormVisibility } from '../../../components/uttak-form/uttakFormConfig';
-import { uttakTidsperiodeErGyldig } from './uttakTidsperiodeValidation';
+import { uttakTidsperiodeErGyldig, periodeErInnenDeFørsteSeksUkene } from './uttakTidsperiodeValidation';
 import { Søkersituasjon } from 'app/types/søknad/Søknad';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { gradertUttaksperiodeErUgyldig } from './uttakGraderingValidation';
 import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValidation';
-import { erUtsettelseÅrsakTypeGyldigForStartdato } from '../../uttaksplan/regler/erUtsettelseÅrsakGyldigForStartdato';
+import { isFeatureEnabled, Feature } from 'app/Feature';
+import { erUtsettelseÅrsakTypeGyldigForStartdato } from 'app/util/uttaksplan/regler/erUtsettelseÅrsakGyldigForStartdato';
 
 const erUtsettelsePgaArbeidEllerFerie = (periode: UtsettelseFormPeriodeType): periode is Utsettelsesperiode => {
     return (
@@ -49,11 +50,24 @@ const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValiderin
             }
         ];
     }
+
     if (erUtsettelsePgaArbeidEllerFerie(periode) && fom && årsak) {
-        if (!erUtsettelseÅrsakTypeGyldigForStartdato(periode.årsak, fom as Date)) {
+        if (
+            isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) &&
+            periodeErInnenDeFørsteSeksUkene(periode, familiehendelsesdato)
+        ) {
             return [
                 {
                     feilKey: PeriodeValideringErrorKey.UGYLDIG_ÅRSAK_OG_TIDSPERIODE
+                }
+            ];
+        } else if (
+            !isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) &&
+            !erUtsettelseÅrsakTypeGyldigForStartdato(periode.årsak, fom as Date)
+        ) {
+            return [
+                {
+                    feilKey: PeriodeValideringErrorKey.UGYLDIG_ÅRSAK_OG_TIDSPERIODE_GAMMEL
                 }
             ];
         }

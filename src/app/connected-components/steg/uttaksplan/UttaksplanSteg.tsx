@@ -9,7 +9,11 @@ import { beregnGjenståendeUttaksdager } from 'app/util/uttaksPlanStatus';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import { DispatchProps } from 'common/redux/types';
 import { findMissingAttachmentsForPerioder } from '../../../util/attachments/missingAttachmentUtil';
-import { finnÅrsakTilSenEndring } from 'app/util/uttaksplan/uttakUtils';
+import {
+    getSeneEndringerSomKreverBegrunnelse,
+    erSenUtsettelsePgaFerieEllerArbeid,
+    erSentGradertUttak
+} from 'app/util/uttaksplan/uttakUtils';
 import { Forelder } from 'common/types';
 import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 import { getPeriodelisteElementId } from '../../../components/periodeliste/Periodeliste';
@@ -26,7 +30,9 @@ import {
     Periodetype,
     isUttaksperiode,
     StønadskontoType,
-    isUtsettelsesperiode
+    isUtsettelsesperiode,
+    Utsettelsesperiode,
+    Uttaksperiode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../../util/uttaksplan/Periodene';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
@@ -51,6 +57,8 @@ import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanleg
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { formaterDato } from 'common/util/datoUtils';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
+import VeilederUtsettelseTilbakeITid from './VeilederUtsettelseTilbakeITid';
+import { isFeatureEnabled, Feature } from 'app/Feature';
 
 interface StateProps {
     stegProps: StegProps;
@@ -68,6 +76,8 @@ interface StateProps {
     vedleggForSenEndring: Attachment[];
     tilleggsopplysninger: Tilleggsopplysninger;
     aktivitetsfriKvote: number;
+    seneUtsettelserPgaFerieEllerArbeid: Utsettelsesperiode[];
+    seneGraderteUttak: Uttaksperiode[];
 }
 
 interface UttaksplanStegState {
@@ -235,7 +245,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             vedleggForSenEndring,
             tilleggsopplysninger,
             søknadsinfo,
-            aktivitetsfriKvote
+            aktivitetsfriKvote,
+            seneUtsettelserPgaFerieEllerArbeid,
+            seneGraderteUttak
         } = this.props;
 
         if (!søknadsinfo) {
@@ -359,6 +371,17 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         </Block>
                         <Block
                             margin="xs"
+                            visible={
+                                isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) &&
+                                (seneUtsettelserPgaFerieEllerArbeid.length > 0 || seneGraderteUttak.length > 0)
+                            }>
+                            <VeilederUtsettelseTilbakeITid
+                                utsettelser={seneUtsettelserPgaFerieEllerArbeid}
+                                uttak={seneGraderteUttak}
+                            />
+                        </Block>
+                        <Block
+                            margin="xs"
                             visible={planInneholderTapteDager && planInneholderAnnetEnnAktivitetsfriKvote}>
                             <Veilederinfo type="advarsel">
                                 <FormattedMessage id="uttaksplan.veileder.planenInneholderHull" />
@@ -409,7 +432,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         false
     );
 
-    const årsakTilSenEndring: SenEndringÅrsak = finnÅrsakTilSenEndring(søknad.uttaksplan);
+    const årsakTilSenEndring: SenEndringÅrsak = getSeneEndringerSomKreverBegrunnelse(søknad.uttaksplan);
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
@@ -439,6 +462,16 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
     );
 
     const aktivitetsfriKvote = aktivitetsfriKvoteKonto ? Math.round(aktivitetsfriKvoteKonto.dager / 5) : 0;
+    const periodeInneholderValideringsfeil = (periode: Periode) => {
+        const validering = state.uttaksplanValidering.periodevalidering[periode.id];
+        return validering && validering.valideringsfeil.length === 0;
+    };
+
+    const seneUtsettelserPgaFerieEllerArbeid = perioder
+        .filter(erSenUtsettelsePgaFerieEllerArbeid)
+        .filter(periodeInneholderValideringsfeil) as Utsettelsesperiode[];
+
+    const seneGraderteUttak = perioder.filter(erSentGradertUttak) as Uttaksperiode[];
 
     return {
         søknad,
@@ -459,7 +492,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
             søknad.søker.rolle,
             søknad.annenForelder
         ),
-        aktivitetsfriKvote
+        aktivitetsfriKvote,
+        seneUtsettelserPgaFerieEllerArbeid,
+        seneGraderteUttak
     };
 };
 
