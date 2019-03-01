@@ -131,8 +131,7 @@ class Velkommen extends React.Component<Props, State> {
         const erSakForEndringssøknadFraInfotrygd =
             sakForEndringssøknad !== undefined && erInfotrygdSak(sakForEndringssøknad);
 
-        const visValgForNySøknadEllerEndring =
-            sakForEndringssøknad !== undefined || oppslagSakerFeilet === true || storageKvittering;
+        const visValgForNySøknadEllerEndring = sakForEndringssøknad !== undefined || oppslagSakerFeilet === true;
 
         const visInfoOmEndringsøknadIkkeTilgjengelig = oppslagSakerFeilet === true && this.state.skalEndre === true;
 
@@ -172,13 +171,6 @@ class Velkommen extends React.Component<Props, State> {
                                     />
                                 </Ingress>
                             </Block>
-                            {storageKvittering &&
-                                storageKvittering.innsendingstidspunkt &&
-                                sakForEndringssøknad === undefined && (
-                                    <Block>
-                                        <SakInfoStorageKvittering storageKvittering={storageKvittering} />
-                                    </Block>
-                                )}
                             {sakForEndringssøknad !== undefined &&
                                 sakForEndringssøknad.type === SakType.FPSAK && (
                                     <Block>
@@ -217,6 +209,19 @@ class Velkommen extends React.Component<Props, State> {
                             </Block>
                         </>
                     )}
+                    {!erSakForEndringssøknadFraInfotrygd &&
+                        storageKvittering &&
+                        storageKvittering.innsendingstidspunkt &&
+                        sakUnderBehandling === undefined && (
+                            <>
+                                <Block>
+                                    <FormattedMessage id="velkommen.intro.harFørstegangssøknadUnderBehandling" />
+                                </Block>
+                                <Block>
+                                    <SakInfoStorageKvittering storageKvittering={storageKvittering} />
+                                </Block>
+                            </>
+                        )}
                     <Block visible={visInfoOmEndringsøknadIkkeTilgjengelig}>
                         <Veilederinfo type="advarsel">
                             <FormattedMessage id="velkommen.endringssøknadIkkeTilgjengelig.veileder" />
