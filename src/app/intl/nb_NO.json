@@ -276,7 +276,7 @@
     "kvittering.referanseId": "Vi mottok søknaden den {date} kl. {timeOfDay}.",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
     "kvittering.pdf.lastNed.del1": "Du kan {lenke}.",
-    "kvittering.pdf.lastNed.del2": "laste ned søknaden din her",
+    "kvittering.pdf.lastNed.del2": "se og laste ned søknaden din her",
     "leggtil": "Legg til",
     "morForSykSpørsmål.spørsmål": "Er mor for syk til å ta seg av barnet eller innlagt?",
     "morsAktivitet.Arbeid": "Arbeid",
