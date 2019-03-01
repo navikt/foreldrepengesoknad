@@ -3,6 +3,7 @@ import { Kvittering } from '../../types/Kvittering';
 import { Søkerinfo } from '../../types/søkerinfo';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import Sak from '../../types/søknad/Sak';
+import { StorageKvittering } from '../../types/StorageKvittering';
 
 export interface ApiState {
     søkerinfo?: Søkerinfo;
@@ -29,6 +30,7 @@ export interface ApiState {
     mødreKvoteUkerDekningsgrad80?: number;
     søkerinfoLastetCounter: number;
     systemerIkkeTilgjengelig: boolean;
+    storageKvittering?: StorageKvittering;
 }
 
 export type ApiStatePartial = Partial<ApiState>;
@@ -59,7 +61,7 @@ const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiSt
                 ...state,
                 isLoadingSøkerinfo: true
             };
-        case ApiActionKeys.GET_STORED_APP_STATE:
+        case ApiActionKeys.GET_STORAGE_DATA:
             return {
                 ...state,
                 isLoadingStoredAppState: true

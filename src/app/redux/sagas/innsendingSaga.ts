@@ -15,7 +15,6 @@ function* sendSøknad(action: SendSøknad) {
         const orignalSøknad = yield select((state: AppState) => state.søknad);
         const søknadCopy = JSON.parse(JSON.stringify(orignalSøknad));
         mapMissingAttachmentsOnSøknad(action.missingAttachments, søknadCopy);
-
         const response = yield call(Api.sendSøknad, cleanUpSøknad(søknadCopy));
         const kvittering: Kvittering = response.data;
         if (kvittering) {
