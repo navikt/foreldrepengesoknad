@@ -31,8 +31,11 @@ import SakInfo from '../../../components/sak-info/SakInfo';
 
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
-import './velkommen.less';
 import BEMHelper from 'common/util/bem';
+import { StorageKvittering } from '../../../types/StorageKvittering';
+
+import './velkommen.less';
+import SakInfoStorageKvittering from 'app/components/sak-info/SakInfoStorageKvittering';
 
 interface StateProps {
     person?: Person;
@@ -40,6 +43,7 @@ interface StateProps {
     sakForEndringssøknad?: Sak;
     sakUnderBehandling?: Sak;
     oppslagSakerFeilet?: boolean;
+    storageKvittering?: StorageKvittering;
 }
 
 interface State {
@@ -116,6 +120,7 @@ class Velkommen extends React.Component<Props, State> {
             sakUnderBehandling,
             oppslagSakerFeilet,
             harGodkjentVilkår,
+            storageKvittering,
             dispatch,
             intl
         } = this.props;
@@ -126,7 +131,8 @@ class Velkommen extends React.Component<Props, State> {
         const erSakForEndringssøknadFraInfotrygd =
             sakForEndringssøknad !== undefined && erInfotrygdSak(sakForEndringssøknad);
 
-        const visValgForNySøknadEllerEndring = sakForEndringssøknad !== undefined || oppslagSakerFeilet === true;
+        const visValgForNySøknadEllerEndring =
+            sakForEndringssøknad !== undefined || oppslagSakerFeilet === true || storageKvittering;
 
         const visInfoOmEndringsøknadIkkeTilgjengelig = oppslagSakerFeilet === true && this.state.skalEndre === true;
 
@@ -166,6 +172,13 @@ class Velkommen extends React.Component<Props, State> {
                                     />
                                 </Ingress>
                             </Block>
+                            {storageKvittering &&
+                                storageKvittering.innsendingstidspunkt &&
+                                sakForEndringssøknad === undefined && (
+                                    <Block>
+                                        <SakInfoStorageKvittering storageKvittering={storageKvittering} />
+                                    </Block>
+                                )}
                             {sakForEndringssøknad !== undefined &&
                                 sakForEndringssøknad.type === SakType.FPSAK && (
                                     <Block>
@@ -263,7 +276,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     harGodkjentVilkår: state.søknad.harGodkjentVilkår,
     sakForEndringssøknad: state.api.sakForEndringssøknad,
     sakUnderBehandling: state.api.sakUnderBehandling,
-    oppslagSakerFeilet: state.api.oppslagSakerFeilet
+    oppslagSakerFeilet: state.api.oppslagSakerFeilet,
+    storageKvittering: state.api.storageKvittering
 });
 
 export default connect<StateProps>(mapStateToProps)(injectIntl(Velkommen));
