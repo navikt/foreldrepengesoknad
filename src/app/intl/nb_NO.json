@@ -902,6 +902,7 @@
         "Endringssøknad er ikke tilgjengelig for øyeblikket. Vennligst prøv igjen litt senere.",
     "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
     "velkommen.sak.sistEndret": "Sist endret: {date}",
+    "velkommen.sak.mottatt": "Søknad mottatt: {date}",
     "velkommen.sak.status.ferdigBehandlet": "Ferdig behandlet",
     "velkommen.sak.status.underBehandling": "Under behandling",
     "velkommen.sak.type": "Foreldrepenger",

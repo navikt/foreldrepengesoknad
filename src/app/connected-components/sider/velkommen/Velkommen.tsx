@@ -31,10 +31,13 @@ import Sak, { SakType } from '../../../types/søknad/Sak';
 import SakInfo from '../../../components/sak-info/SakInfo';
 
 import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
-import './velkommen.less';
 import BEMHelper from 'common/util/bem';
 import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import { StorageKvittering } from '../../../types/StorageKvittering';
+import SakInfoStorageKvittering from 'app/components/sak-info/SakInfoStorageKvittering';
+
+import './velkommen.less';
 
 interface StateProps {
     person?: Person;
@@ -42,6 +45,7 @@ interface StateProps {
     sakForEndringssøknad?: Sak;
     sakUnderBehandling?: Sak;
     oppslagSakerFeilet?: boolean;
+    storageKvittering?: StorageKvittering;
 }
 
 interface State {
@@ -118,6 +122,7 @@ class Velkommen extends React.Component<Props, State> {
             sakUnderBehandling,
             oppslagSakerFeilet,
             harGodkjentVilkår,
+            storageKvittering,
             dispatch,
             intl
         } = this.props;
@@ -236,6 +241,19 @@ class Velkommen extends React.Component<Props, State> {
                             </Block>
                         </>
                     )}
+                    {!erSakForEndringssøknadFraInfotrygd &&
+                        storageKvittering &&
+                        storageKvittering.innsendingstidspunkt &&
+                        sakUnderBehandling === undefined && (
+                            <>
+                                <Block>
+                                    <FormattedMessage id="velkommen.intro.harFørstegangssøknadUnderBehandling" />
+                                </Block>
+                                <Block>
+                                    <SakInfoStorageKvittering storageKvittering={storageKvittering} />
+                                </Block>
+                            </>
+                        )}
                     <Block visible={visInfoOmEndringsøknadIkkeTilgjengelig}>
                         <Veilederpanel
                             kompakt={true}
@@ -305,7 +323,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     harGodkjentVilkår: state.søknad.harGodkjentVilkår,
     sakForEndringssøknad: state.api.sakForEndringssøknad,
     sakUnderBehandling: state.api.sakUnderBehandling,
-    oppslagSakerFeilet: state.api.oppslagSakerFeilet
+    oppslagSakerFeilet: state.api.oppslagSakerFeilet,
+    storageKvittering: state.api.storageKvittering
 });
 
 export default connect<StateProps>(mapStateToProps)(injectIntl(Velkommen));
