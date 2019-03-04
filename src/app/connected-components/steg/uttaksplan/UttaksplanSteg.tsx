@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import ReactDOM from 'react-dom';
 
 import { AppState } from '../../../redux/reducers';
@@ -47,7 +47,6 @@ import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
 import Block from 'common/components/block/Block';
 import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
 import isAvailable from '../util/isAvailable';
-import lenker from '../../../util/routing/lenker';
 import OvertrukneDager from './OvertrukneDager';
 import Søknad, { Tilleggsopplysninger, Opplysning } from '../../../types/søknad/Søknad';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
@@ -59,6 +58,7 @@ import { formaterDato } from 'common/util/datoUtils';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import VeilederUtsettelseTilbakeITid from './VeilederUtsettelseTilbakeITid';
 import { isFeatureEnabled, Feature } from 'app/Feature';
+import { getVeilederInfoText } from 'app/util/uttaksplan/steg/util';
 
 interface StateProps {
     stegProps: StegProps;
@@ -88,48 +88,6 @@ interface UttaksplanStegState {
 }
 
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
-
-const getVeilederInfoText = (søknad: Søknad, aktivitetsfriKvote: number) => {
-    const { annenForelder, søker } = søknad;
-
-    if (getErSøkerFarEllerMedmor(søknad.søker.rolle)) {
-        if (
-            annenForelder.kanIkkeOppgis ||
-            (!annenForelder.harRettPåForeldrepenger && !annenForelder.erUfør) ||
-            søker.erAleneOmOmsorg
-        ) {
-            return <FormattedMessage id="uttaksplan.informasjon.farMedmor.aleneOmsorg" />;
-        } else if (annenForelder.erUfør) {
-            return (
-                <FormattedMessage
-                    id="uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør"
-                    values={{ aktivitetsfriKvote }}
-                />
-            );
-        } else {
-            return (
-                <FormattedHTMLMessage
-                    id="uttaksplan.informasjon.farMedmor.deltUttak"
-                    values={{
-                        navnAnnenForelder: annenForelder.fornavn,
-                        link: lenker.viktigeFrister
-                    }}
-                />
-            );
-        }
-    } else {
-        if (annenForelder.kanIkkeOppgis || !annenForelder.harRettPåForeldrepenger || søker.erAleneOmOmsorg) {
-            return <FormattedMessage id="uttaksplan.informasjon.mor.aleneOmsorg" />;
-        } else {
-            return (
-                <FormattedMessage
-                    id="uttaksplan.informasjon.mor.deltOmsorg"
-                    values={{ navnAnnenForelder: annenForelder.fornavn }}
-                />
-            );
-        }
-    }
-};
 
 class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     feilOppsummering: React.Component | null;
