@@ -160,16 +160,6 @@ class Velkommen extends React.Component<Props, State> {
                     <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
                         {getMessage(intl, 'velkommen.tittel')}
                     </Innholdstittel>
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold
-                            messages={[
-                                {
-                                    content: 'velkommen.intro.harSak',
-                                    type: 'normal'
-                                }
-                            ]}
-                        />
-                    </Veilederpanel>
                     {visValgForNySøknadEllerEndring && (
                         <>
                             <Block>
