@@ -105,7 +105,7 @@ const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] |
     if (gradertUttaksperiodeErUgyldig(payload.periode)) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_GRADERING_VERDI });
     }
-    if (samtidigUttaksperiodeErUgyldig(payload.periode)) {
+    if (samtidigUttaksperiodeErUgyldig(payload.periode, payload.søkerErFarEllerMedmor)) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_SAMTIDIG_UTTAK_PROSENT });
     }
     if (visibility.areAllQuestionsAnswered() === false) {
