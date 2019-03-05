@@ -478,7 +478,7 @@
     "selvstendigNæringsdrivende.tidsperiode.fom": "Når startet du {navnPåNæringen}?",
     "selvstendigNæringsdrivende.tidsperiode.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
     "selvstendigNæringsdrivende.modal.infoboks.forFisker":
-        "Hvis du ikke har organisasjonsnummer må du sende <a href=\"https://www.nav.no/no/Person/Skjemaer-for-privatpersoner/Skjemaer/Familie/foreldrepenger-og-engangsstonad/Foreldrepenger+og+engangsst%C3%B8nad?method=mail&veiledertype=privatperson\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">søknaden i posten</a>",
+        "Hvis du ikke har organisasjonsnummer så svarer du nei på spørmålet om {navnPåNæringen} er registrert i Norge. Du velger så at næringen er registrert i Norge i nedtrekkslisten.",
     "skalDereHaGradertUttakSamtidig.spørsmål": "Skal dere ha foreldrepenger samtidig?",
     "skaldujobbeheltidellerdeltid.spørsmål": "Skal du jobbe heltid eller deltid?",
     "skaltautforeldrepenger": "skal ta ut foreldrepenger",
