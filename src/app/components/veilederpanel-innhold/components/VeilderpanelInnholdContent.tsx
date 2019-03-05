@@ -17,14 +17,18 @@ const renderAlert = (message: Message) => {
     if (type === 'info') {
         return (
             <AlertStripeInfo>
-                <Element>{message.title}</Element>
+                <Element>
+                    <FormattedMessage id={message.title!} />
+                </Element>
                 <FormattedMessage id={message.content} values={message.values} />
             </AlertStripeInfo>
         );
     } else {
         return (
             <AlertStripeAdvarsel>
-                <Element>{message.title}</Element>
+                <Element>
+                    <FormattedMessage id={message.title!} />
+                </Element>
                 <FormattedMessage id={message.content} values={message.values} />
             </AlertStripeAdvarsel>
         );
