@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage, FormattedHTMLMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Input from 'common/components/skjema/wrappers/Input';
@@ -32,6 +32,9 @@ import { hasValueRule } from '../../util/validation/common';
 import { getFritekstfeltRules } from '../../util/validation/fritekstfelt';
 import { trimNumberFromInput } from 'common/util/numberUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -101,14 +104,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         this.updateNæring({ næringstyper: newNæringstyper });
     }
 
-    visInfoboksForFiskere(): boolean {
-        const avkryssetNæring = this.state.næring;
-        if (avkryssetNæring.næringstyper !== undefined) {
-            return avkryssetNæring.næringstyper.some(næringstype => næringstype === 'FISKE');
-        }
-        return false;
-    }
-
     render() {
         const { intl, isOpen, onCancel } = this.props;
         const { næring } = this.state;
@@ -160,6 +155,22 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
+                <Block margin="xs" visible={navnPåNæringen !== undefined && navnPåNæringen !== ''}>
+                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                        <VeilederpanelInnhold
+                            messages={[
+                                {
+                                    content: 'selvstendigNæringsdrivende.modal.infoboks.forFisker',
+                                    type: 'normal',
+                                    values: {
+                                        navnPåNæringen
+                                    }
+                                }
+                            ]}
+                        />
+                    </Veilederpanel>
+                </Block>
+
                 <Block visible={visibility.næringRegistrertINorge(næring)}>
                     <ErNæringenRegistrertINorgeSpørsmål
                         navnPåNæringen={this.state.næring.navnPåNæringen || ''}
@@ -180,13 +191,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     <Input
                         name="selvstendigNæringsdrivende-orgnr"
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.orgnr')}
-                        infotekst={
-                            this.visInfoboksForFiskere() ? (
-                                <FormattedHTMLMessage id="selvstendigNæringsdrivende.modal.infoboks.forFisker" />
-                            ) : (
-                                undefined
-                            )
-                        }
                         onChange={(v: string) =>
                             this.updateNæring({
                                 organisasjonsnummer: removeSpacesFromString(v)
