@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 import { Innholdstittel, Normaltekst, Ingress } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import Veilederpanel from 'nav-frontend-veilederpanel';
 
 import getMessage from 'common/util/i18nUtils';
 import VeilederMedSnakkeboble from 'common/components/veileder-med-snakkeboble/VeilederMedSnakkeboble';
@@ -29,13 +30,14 @@ import Block from 'common/components/block/Block';
 import Sak, { SakType } from '../../../types/søknad/Sak';
 import SakInfo from '../../../components/sak-info/SakInfo';
 
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
 import BEMHelper from 'common/util/bem';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 import { StorageKvittering } from '../../../types/StorageKvittering';
+import SakInfoStorageKvittering from 'app/components/sak-info/SakInfoStorageKvittering';
 
 import './velkommen.less';
-import SakInfoStorageKvittering from 'app/components/sak-info/SakInfoStorageKvittering';
 
 interface StateProps {
     person?: Person;
@@ -158,6 +160,16 @@ class Velkommen extends React.Component<Props, State> {
                     <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
                         {getMessage(intl, 'velkommen.tittel')}
                     </Innholdstittel>
+                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                        <VeilederpanelInnhold
+                            messages={[
+                                {
+                                    content: 'velkommen.intro.harSak',
+                                    type: 'normal'
+                                }
+                            ]}
+                        />
+                    </Veilederpanel>
                     {visValgForNySøknadEllerEndring && (
                         <>
                             <Block>
@@ -187,15 +199,29 @@ class Velkommen extends React.Component<Props, State> {
                             </Block>
                             {this.state.skalEndre === false &&
                                 !erSakForEndringssøknadFraInfotrygd && (
-                                    <Veilederinfo>
-                                        <FormattedMessage id="velkommen.intro.harSak.veileder" />
-                                    </Veilederinfo>
+                                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                        <VeilederpanelInnhold
+                                            messages={[
+                                                {
+                                                    content: 'velkommen.intro.harSak.veileder',
+                                                    type: 'normal'
+                                                }
+                                            ]}
+                                        />
+                                    </Veilederpanel>
                                 )}
                             {this.state.skalEndre === true &&
                                 erSakForEndringssøknadFraInfotrygd && (
-                                    <Veilederinfo>
-                                        <FormattedMessage id="velkommen.intro.harInfotrygdSak.veileder" />
-                                    </Veilederinfo>
+                                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                        <VeilederpanelInnhold
+                                            messages={[
+                                                {
+                                                    content: 'velkommen.intro.harInfotrygdSak.veileder',
+                                                    type: 'normal'
+                                                }
+                                            ]}
+                                        />
+                                    </Veilederpanel>
                                 )}
                         </>
                     )}
@@ -223,9 +249,16 @@ class Velkommen extends React.Component<Props, State> {
                             </>
                         )}
                     <Block visible={visInfoOmEndringsøknadIkkeTilgjengelig}>
-                        <Veilederinfo type="advarsel">
-                            <FormattedMessage id="velkommen.endringssøknadIkkeTilgjengelig.veileder" />
-                        </Veilederinfo>
+                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                            <VeilederpanelInnhold
+                                messages={[
+                                    {
+                                        content: 'velkommen.endringssøknadIkkeTilgjengelig.veileder',
+                                        type: 'normal'
+                                    }
+                                ]}
+                            />
+                        </Veilederpanel>
                     </Block>
                     <Block visible={visBekreftSkjema}>
                         <BekreftCheckboksPanel

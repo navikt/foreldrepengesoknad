@@ -3,7 +3,6 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { getFritekstfeltRules } from 'app/util/validation/fritekstfelt';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { SenEndringÅrsak } from 'app/types/uttaksplan/periodetyper';
 import { Skjemanummer } from 'app/types/søknad/Søknad';
 import { TextareaChangeEvent } from 'app/types/dom/Events';
@@ -12,7 +11,6 @@ import getMessage from 'common/util/i18nUtils';
 import Textarea from 'common/components/skjema/wrappers/Textarea';
 import throttle from 'lodash.throttle';
 import VedleggSpørsmål from 'app/components/vedlegg-spørsmål/VedleggSpørsmål';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { begrunnelseSenEndringMaxLength } from 'app/util/validation/uttaksplan/begrunnelseForSenEndringValidation';
 
 interface OwnProps {
@@ -56,16 +54,11 @@ class BegrunnelseForSenEndring extends React.Component<Props, State> {
     render() {
         const { vedlegg, intl, årsak, onVedleggChange } = this.props;
 
-        const veilederMessage = `uttaksplan.senEndring.veileder.${årsak}`;
+        const infotekst = `uttaksplan.senEndring.veileder.${årsak}`;
         const begrunnelseLabel = `uttaksplan.senEndring.begrunnelse.${årsak}`;
 
         return (
             <div className="blokk-m">
-                <Block margin="xs">
-                    <Veilederinfo stil="normal" type="info">
-                        <Normaltekst>{getMessage(intl, veilederMessage)}</Normaltekst>
-                    </Veilederinfo>
-                </Block>
                 <Block margin="s">
                     <Textarea
                         value={this.state.begrunnelse}
@@ -78,6 +71,7 @@ class BegrunnelseForSenEndring extends React.Component<Props, State> {
                         name="begrunnelseForSenEndring"
                         label={getMessage(intl, begrunnelseLabel)}
                         onChange={this.handleBegrunnelseChange}
+                        infotekst={getMessage(intl, infotekst)}
                     />
                 </Block>
                 <VedleggSpørsmål
