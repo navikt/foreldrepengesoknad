@@ -425,6 +425,7 @@
     "oppsummering.valideringsfeil.uttaksplan.lenketekst": "Gå til planen",
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
+    "oppsummering.veileder.manglendeVedlegg.tittel": "Manglende vedlegg",
     "oppsummering.veileder.manglendeVedlegg":
         "Husk å sende oss dokumentasjonen som mangler innen 3 uker. Hvis vi mangler nødvendige opplysninger når vi skal behandle søknaden, kan du få avslag.",
     "orgnr": "Organisasjonsnummer",
@@ -770,13 +771,18 @@
         "Når en forelder planlegger å være hjemme i ulønnet permisjon må <b>den andre forelderen</b> søke om å utsette foreldrepengene på grunn av heltidsarbeid, sykdom eller ferie.",
     "uttaksplan.ulønnetPermisjonInfo.del2":
         "Ulønnet permisjon kan påvirke retten til andre NAV ytelser og opptjening av rett til foreldrepenger for nytt barn. <a href=\"https://www.nav.no/no/Person/Arbeid/Sykmeldt%2C+arbeidsavklaringspenger+og+yrkesskade/Sykepenger/Sykepenger+til+sarskilte+grupper#chapter-5\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">Her kan du lese mer om dine rettigheter.</a>",
+    "uttaksplan.veileder.planenInneholderHull.tittel": "Hull i planen",
     "uttaksplan.veileder.planenInneholderHull":
         "Planen din inneholder perioder med tapte foreldrepenger. Du står i fare for å miste dager om du ikke legger inn en utsettelse eller periode med foreldrepenger.",
+    "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Plan inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Husk at du må søke om foreldrepenger senest {sisteDag}.",
+    "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie.tittel": "Søke om ferie tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie":
         "Du må søke om utsettelse på grunn av ferie senest dagen før du starter ferien din. Vi kan innvilge utsettelse på grunn av ferie tilbake i tid hvis arbeidsgiveren din bekreftet ferien din i inntektsmeldingen før ferien startet, eller hvis du gav beskjed til NAV før ferien din startet.",
+    "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid.tittel": "Søke om arbeid tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid":
         "Du må søke om utsettelse på grunn av arbeid senest dagen før du begynner å jobbe. Hvis du søker om å utsette etter at du har begynt å jobbe, mister du dager med foreldrepenger fra den dagen du startet å jobbe, og frem til dagen du søker om å utsette. Hvis du gir beskjed til NAV før du begynner å jobbe, mister du ikke dager med foreldrepenger.",
+    "uttaksplan.veileder.planenAdvarerOmUttak.tittel": "Søke om å kombinere foreldrepenger med arbeid tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUttak":
         "Du må søke om å kombinere foreldrepengene med delvis arbeid senest dagen før du begynner å jobbe. Når du søker etter at du har begynt å jobbe, mister du dager med foreldrepenger ut fra stillingsprosenten du har jobbet i, frem til vi får søknaden din. Hvis du gir beskjed til NAV før du begynner å jobbe, mister du ikke dager med foreldrepenger.",
 
@@ -800,6 +806,7 @@
     "uttaksplanSkjema.info.reservertMor":
         "Dersom du starter ditt uttak i de første seks ukene etter fødsel må du kunne dokumentere at mor er for syk til å ta seg av barnet eller innlagt på sykehus eller helseinstitusjon.",
     "uttaksplanSkjema.info.manglerVedlegg": "Du har ikke lastet opp påkrevd dokumentasjon.",
+    "uttaksteg.overtruknedager.info.tittel": "Lagt inn for mange dager i planen",
     "uttaksteg.overtruknedager.info": "Du har tatt {varighet} for mye av {konto}",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig",
     "validering.oppsummeringstittel": "Du må rette opp i følgende feil:",
