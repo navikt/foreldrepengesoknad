@@ -155,7 +155,14 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block margin="xs" visible={navnPåNæringen !== undefined && navnPåNæringen !== ''}>
+                <Block
+                    margin="xs"
+                    visible={
+                        navnPåNæringen !== undefined &&
+                        navnPåNæringen !== '' &&
+                        næring.næringstyper !== undefined &&
+                        næring.næringstyper.some((n) => n === Næringstype.FISKER)
+                    }>
                     <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
                         <VeilederpanelInnhold
                             messages={[
