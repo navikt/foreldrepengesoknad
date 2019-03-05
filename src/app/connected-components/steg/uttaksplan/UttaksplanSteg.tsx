@@ -244,11 +244,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 </Block>
                             )}
                         <Block margin="xs" visible={uttaksplanVeilederinfo.length > 0}>
-                            <Veilederpanel
-                                kompakt={true}
-                                type="plakat"
-                                svg={<Veileder stil="kompakt-uten-bakgrunn" />}
-                                fargetema="normal">
+                            <Veilederpanel kompakt={true} type="plakat" svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
                                 <VeilederpanelInnhold messages={uttaksplanVeilederinfo} />
                             </Veilederpanel>
                         </Block>

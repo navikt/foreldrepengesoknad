@@ -160,7 +160,7 @@ class Velkommen extends React.Component<Props, State> {
                     <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
                         {getMessage(intl, 'velkommen.tittel')}
                     </Innholdstittel>
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />} fargetema="normal">
+                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
                         <VeilederpanelInnhold
                             messages={[
                                 {
@@ -199,10 +199,7 @@ class Velkommen extends React.Component<Props, State> {
                             </Block>
                             {this.state.skalEndre === false &&
                                 !erSakForEndringssøknadFraInfotrygd && (
-                                    <Veilederpanel
-                                        kompakt={true}
-                                        svg={<Veileder stil="kompakt-uten-bakgrunn" />}
-                                        fargetema="normal">
+                                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
                                         <VeilederpanelInnhold
                                             messages={[
                                                 {
@@ -215,10 +212,7 @@ class Velkommen extends React.Component<Props, State> {
                                 )}
                             {this.state.skalEndre === true &&
                                 erSakForEndringssøknadFraInfotrygd && (
-                                    <Veilederpanel
-                                        kompakt={true}
-                                        svg={<Veileder stil="kompakt-uten-bakgrunn" />}
-                                        fargetema="normal">
+                                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
                                         <VeilederpanelInnhold
                                             messages={[
                                                 {
@@ -255,10 +249,7 @@ class Velkommen extends React.Component<Props, State> {
                             </>
                         )}
                     <Block visible={visInfoOmEndringsøknadIkkeTilgjengelig}>
-                        <Veilederpanel
-                            kompakt={true}
-                            svg={<Veileder stil="kompakt-uten-bakgrunn" />}
-                            fargetema="normal">
+                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
                             <VeilederpanelInnhold
                                 messages={[
                                     {
