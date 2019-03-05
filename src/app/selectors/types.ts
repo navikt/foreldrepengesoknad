@@ -1,6 +1,6 @@
 import { Navn } from '../types/common';
 import { NavnPåForeldre, Dekningsgrad } from 'common/types';
-import { Søkersituasjon } from '../types/søknad/Søknad';
+import { Søkersituasjon, SøkerRolle } from '../types/søknad/Søknad';
 
 export interface Søknadsinfo {
     søknaden: OmSøknaden;
@@ -49,6 +49,7 @@ export interface OmSøker {
     erMor: boolean;
     erFarEllerMedmor: boolean;
     erAleneOmOmsorg: boolean;
+    rolle: SøkerRolle;
 }
 
 export interface OmAnnenForelder {
