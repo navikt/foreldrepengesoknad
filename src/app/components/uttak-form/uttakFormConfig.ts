@@ -277,9 +277,10 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
         isRequired: (payload) => visSamtidigUttak(payload)
     },
     [Sp.samtidigUttakProsent]: {
-        isAnswered: ({ periode }) =>
+        isAnswered: ({ periode, søkerErFarEllerMedmor }) =>
             (periode.type === Periodetype.Uttak && questionValueIsOk(periode.samtidigUttakProsent)) ||
-            isOppholdsperiode(periode),
+            isOppholdsperiode(periode) ||
+            !søkerErFarEllerMedmor,
         parentQuestion: Sp.samtidigUttak,
         isRequired: ({ periode, søkerErFarEllerMedmor }) =>
             periode.type === Periodetype.Uttak && periode.ønskerSamtidigUttak === true && søkerErFarEllerMedmor
