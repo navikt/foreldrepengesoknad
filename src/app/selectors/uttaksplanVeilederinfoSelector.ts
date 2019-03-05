@@ -66,7 +66,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
             if (overtrukneKontoer.length > 0) {
                 overtrukneKontoer.map((konto) =>
                     messages.push({
-                        title: 'Overtrukken konto',
+                        title: 'uttaksteg.overtruknedager.info.tittel',
                         type: 'feil',
                         content: 'uttaksteg.overtruknedager.info',
                         values: {
@@ -91,7 +91,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
 
                 if (inneholderUtsettelsePgaFerie) {
                     messages.push({
-                        title: 'Sen ferie',
+                        title: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie.tittel',
                         type: 'info',
                         content: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie'
                     });
@@ -99,7 +99,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
 
                 if (inneholderUtsettelsePgaArbeid) {
                     messages.push({
-                        title: 'Sent arbeid',
+                        title: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid.tittel',
                         type: 'info',
                         content: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid'
                     });
@@ -107,7 +107,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
 
                 if (inneholderSeneGraderteUttak) {
                     messages.push({
-                        title: 'Sen gradering',
+                        title: 'uttaksplan.veileder.planenAdvarerOmUttak.tittel',
                         type: 'info',
                         content: 'uttaksplan.veileder.planenAdvarerOmUttak'
                     });
@@ -116,7 +116,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
 
             if (planInneholderTapteDager && planInneholderAnnetEnnAktivitetsfriKvote) {
                 messages.push({
-                    title: 'Hull i planen',
+                    title: 'uttaksplan.veileder.planenInneholderHull.tittel',
                     type: 'info',
                     content: 'uttaksplan.veileder.planenInneholderHull'
                 });
@@ -124,7 +124,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
 
             if (missingAttachments.length > 0) {
                 messages.push({
-                    title: 'Manglende vedlegg',
+                    title: 'oppsummering.veileder.manglendeVedlegg.tittel',
                     type: 'info',
                     content: 'oppsummering.veileder.manglendeVedlegg'
                 });
@@ -132,7 +132,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
 
             if (planErBareUtsettelser) {
                 messages.push({
-                    title: 'Plan inneholder kun utsettelser',
+                    title: 'uttaksplan.veileder.planenInneholderKunUtsettelser.tittel',
                     type: 'info',
                     content: 'uttaksplan.veileder.planenInneholderKunUtsettelser',
                     values: {
