@@ -5,7 +5,8 @@ import {
     selectSøkerErAleneOmOmsorg,
     selectAnnenForelder,
     selectSøker,
-    selectErEndringssøknad
+    selectErEndringssøknad,
+    selectSøkerrolle
 } from './søknadSelector';
 
 import {
@@ -87,12 +88,13 @@ const getNavn = ({ fornavn, etternavn }: { fornavn: string | undefined; etternav
 };
 
 const selectOmSøker = createSelector(
-    [selectSøkerErAleneOmOmsorg, selectSøkerErFarEllerMedmor, selectSøkerErMor],
-    (erAleneOmOmsorg, erFarEllerMedmor, erMor): OmSøker => {
+    [selectSøkerErAleneOmOmsorg, selectSøkerErFarEllerMedmor, selectSøkerErMor, selectSøkerrolle],
+    (erAleneOmOmsorg, erFarEllerMedmor, erMor, rolle): OmSøker => {
         return {
             erAleneOmOmsorg,
             erFarEllerMedmor,
-            erMor
+            erMor,
+            rolle: rolle!
         };
     }
 );
