@@ -1,19 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import ReactDOM from 'react-dom';
 
 import { AppState } from '../../../redux/reducers';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { beregnGjenståendeUttaksdager } from 'app/util/uttaksPlanStatus';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import { DispatchProps } from 'common/redux/types';
-import { findMissingAttachmentsForPerioder } from '../../../util/attachments/missingAttachmentUtil';
-import {
-    getSeneEndringerSomKreverBegrunnelse,
-    erSenUtsettelsePgaFerieEllerArbeid,
-    erSentGradertUttak
-} from 'app/util/uttaksplan/uttakUtils';
+import { getSeneEndringerSomKreverBegrunnelse } from 'app/util/uttaksplan/uttakUtils';
 import { Forelder } from 'common/types';
 import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 import { getPeriodelisteElementId } from '../../../components/periodeliste/Periodeliste';
@@ -22,19 +15,12 @@ import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoPa
 import { getUttaksstatus, skalBeregneAntallDagerBrukt } from '../../../util/uttaksplan/uttaksstatus';
 import { HistoryProps } from '../../../types/common';
 import { hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar } from 'app/regler/uttaksplan/hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar';
-import { MissingAttachment } from '../../../types/MissingAttachment';
 import {
     Periode,
     TilgjengeligStønadskonto,
     SenEndringÅrsak,
-    Periodetype,
-    isUttaksperiode,
-    StønadskontoType,
-    isUtsettelsesperiode,
-    Utsettelsesperiode,
-    Uttaksperiode
+    StønadskontoType
 } from '../../../types/uttaksplan/periodetyper';
-import { Periodene } from '../../../util/uttaksplan/Periodene';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Søknadsinfo } from '../../../selectors/types';
 import { StegID } from '../../../util/routing/stegConfig';
@@ -45,20 +31,19 @@ import BegrunnelseForSenEndring from './BegrunnelseForSenEndring';
 import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjemaDialog';
 import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
 import Block from 'common/components/block/Block';
-import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
 import isAvailable from '../util/isAvailable';
-import OvertrukneDager from './OvertrukneDager';
 import Søknad, { Tilleggsopplysninger, Opplysning } from '../../../types/søknad/Søknad';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { formaterDato } from 'common/util/datoUtils';
-import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
-import VeilederUtsettelseTilbakeITid from './VeilederUtsettelseTilbakeITid';
-import { isFeatureEnabled, Feature } from 'app/Feature';
 import { getVeilederInfoText } from 'app/util/uttaksplan/steg/util';
+import { selectUttaksplanVeilederinfo } from 'app/selectors/uttaksplanVeilederinfoSelector';
+import VeilederpanelInnhold, { Message } from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 interface StateProps {
     stegProps: StegProps;
@@ -66,18 +51,15 @@ interface StateProps {
     søknadsinfo?: Søknadsinfo;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksstatus: Stønadskontouttak[];
-    uttaksstatusOvertrukneDager: Stønadskontouttak[];
     perioder: Periode[];
     lastAddedPeriodeId: string | undefined;
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
-    missingAttachments: MissingAttachment[];
     årsakTilSenEndring: SenEndringÅrsak;
     vedleggForSenEndring: Attachment[];
     tilleggsopplysninger: Tilleggsopplysninger;
     aktivitetsfriKvote: number;
-    seneUtsettelserPgaFerieEllerArbeid: Utsettelsesperiode[];
-    seneGraderteUttak: Uttaksperiode[];
+    uttaksplanVeilederinfo: Message[];
 }
 
 interface UttaksplanStegState {
@@ -87,7 +69,7 @@ interface UttaksplanStegState {
     harKlikketFortsett: boolean;
 }
 
-type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
+type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps & InjectedIntlProps;
 
 class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     feilOppsummering: React.Component | null;
@@ -105,8 +87,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.showBekreftSlettUttaksplanDialog = this.showBekreftSlettUttaksplanDialog.bind(this);
         this.onBekreftSlettUttaksplan = this.onBekreftSlettUttaksplan.bind(this);
         this.delayedSetFocusOnFeiloppsummering = this.delayedSetFocusOnFeiloppsummering.bind(this);
-        this.getOvertrukneKontoer = this.getOvertrukneKontoer.bind(this);
-        this.planErBareUtsettelser = this.planErBareUtsettelser.bind(this);
 
         this.state = {
             bekreftGåTilbakeDialogSynlig: false,
@@ -169,14 +149,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.props.dispatch(søknadActions.setVedleggForSenEndring(vedlegg));
     };
 
-    getOvertrukneKontoer(uttaksstatusOvertrukneDager: Stønadskontouttak[]) {
-        return uttaksstatusOvertrukneDager.filter((konto) => konto.antallDager < 0);
-    }
-
-    planErBareUtsettelser(perioder: Periode[]) {
-        return !perioder.some((p) => !isUtsettelsesperiode(p)) && perioder.length > 0;
-    }
-
     delayedSetFocusOnFeiloppsummering() {
         setTimeout(() => {
             if (this.feilOppsummering) {
@@ -194,18 +166,15 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             uttaksplanValidering,
             isLoadingTilgjengeligeStønadskontoer,
             uttaksstatus,
-            uttaksstatusOvertrukneDager,
             tilgjengeligeStønadskontoer,
             lastAddedPeriodeId,
             dispatch,
-            missingAttachments,
             årsakTilSenEndring,
             vedleggForSenEndring,
             tilleggsopplysninger,
             søknadsinfo,
             aktivitetsfriKvote,
-            seneUtsettelserPgaFerieEllerArbeid,
-            seneGraderteUttak
+            uttaksplanVeilederinfo
         } = this.props;
 
         if (!søknadsinfo) {
@@ -219,24 +188,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             søknadsinfo.søker.erFarEllerMedmor,
             søknadsinfo.søknaden.erEndringssøknad
         );
-        const overtrukneKontoer = this.getOvertrukneKontoer(uttaksstatusOvertrukneDager);
-
-        const infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor = getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor(
-            søknad.uttaksplan,
-            søknadsinfo.søknaden.familiehendelsesdato,
-            søknadsinfo.søker.erFarEllerMedmor,
-            søknadsinfo.mor.harRett === false,
-            søknadsinfo.mor.erUfør
-        );
-
-        const planInneholderTapteDager =
-            Periodene(søknad.uttaksplan).getHull().length > 0 ||
-            infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor !== undefined;
-        const planInneholderAnnetEnnAktivitetsfriKvote = søknad.uttaksplan
-            .filter((p) => p.type !== Periodetype.Hull)
-            .some(
-                (p) => (isUttaksperiode(p) && p.konto !== StønadskontoType.AktivitetsfriKvote) || !isUttaksperiode(p)
-            );
 
         return (
             <Steg
@@ -292,13 +243,15 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                     />
                                 </Block>
                             )}
-                        {overtrukneKontoer.length > 0 && (
-                            <OvertrukneDager
-                                overtrukneKontoer={overtrukneKontoer}
-                                navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
-                            />
-                        )}
-                        {søknad.erEndringssøknad}
+                        <Block margin="xs" visible={uttaksplanVeilederinfo.length > 0}>
+                            <Veilederpanel
+                                kompakt={true}
+                                type="plakat"
+                                svg={<Veileder stil="kompakt-uten-bakgrunn" />}
+                                fargetema="normal">
+                                <VeilederpanelInnhold messages={uttaksplanVeilederinfo} />
+                            </Veilederpanel>
+                        </Block>
                         {årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
                             <BegrunnelseForSenEndring
                                 årsak={årsakTilSenEndring}
@@ -312,44 +265,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 onVedleggChange={this.handleBegrunnelseVedleggChange}
                             />
                         )}
-                        <Block margin="xs" visible={this.planErBareUtsettelser(søknad.uttaksplan)}>
-                            <Veilederinfo type="advarsel">
-                                <FormattedMessage
-                                    id="uttaksplan.veileder.planenInneholderKunUtsettelser"
-                                    values={{
-                                        sisteDag: formaterDato(
-                                            Uttaksdagen(
-                                                Periodene(søknad.uttaksplan).getFørsteUttaksdagEtterSistePeriode()!
-                                            ).forrige(),
-                                            'D. MMMM YYYY'
-                                        )
-                                    }}
-                                />
-                            </Veilederinfo>
-                        </Block>
-                        <Block
-                            margin="xs"
-                            visible={
-                                isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) &&
-                                (seneUtsettelserPgaFerieEllerArbeid.length > 0 || seneGraderteUttak.length > 0)
-                            }>
-                            <VeilederUtsettelseTilbakeITid
-                                utsettelser={seneUtsettelserPgaFerieEllerArbeid}
-                                uttak={seneGraderteUttak}
-                            />
-                        </Block>
-                        <Block
-                            margin="xs"
-                            visible={planInneholderTapteDager && planInneholderAnnetEnnAktivitetsfriKvote}>
-                            <Veilederinfo type="advarsel">
-                                <FormattedMessage id="uttaksplan.veileder.planenInneholderHull" />
-                            </Veilederinfo>
-                        </Block>
-                        <Block margin="xs" visible={uttaksplanValidering.erGyldig && missingAttachments.length > 0}>
-                            <Veilederinfo type="advarsel">
-                                <FormattedMessage id="oppsummering.veileder.manglendeVedlegg" />
-                            </Veilederinfo>
-                        </Block>
                     </React.Fragment>
                 )}
 
@@ -368,7 +283,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 }
 
-const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps): StateProps => {
+const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps & InjectedIntlProps): StateProps => {
     const {
         søknad,
         api: { tilgjengeligeStønadskontoer, isLoadingTilgjengeligeStønadskontoer }
@@ -382,12 +297,6 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         søknad.uttaksplan,
         søknad.søker.rolle,
         søknad.erEndringssøknad
-    );
-
-    const uttaksstatusOvertrukneDager = beregnGjenståendeUttaksdager(
-        tilgjengeligeStønadskontoer,
-        søknad.uttaksplan,
-        false
     );
 
     const årsakTilSenEndring: SenEndringÅrsak = getSeneEndringerSomKreverBegrunnelse(søknad.uttaksplan);
@@ -420,23 +329,12 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
     );
 
     const aktivitetsfriKvote = aktivitetsfriKvoteKonto ? Math.round(aktivitetsfriKvoteKonto.dager / 5) : 0;
-    const periodeInneholderValideringsfeil = (periode: Periode) => {
-        const validering = state.uttaksplanValidering.periodevalidering[periode.id];
-        return validering && validering.valideringsfeil.length === 0;
-    };
-
-    const seneUtsettelserPgaFerieEllerArbeid = perioder
-        .filter(erSenUtsettelsePgaFerieEllerArbeid)
-        .filter(periodeInneholderValideringsfeil) as Utsettelsesperiode[];
-
-    const seneGraderteUttak = perioder.filter(erSentGradertUttak) as Uttaksperiode[];
 
     return {
         søknad,
         tilgjengeligeStønadskontoer,
         stegProps,
         uttaksstatus,
-        uttaksstatusOvertrukneDager,
         søknadsinfo,
         lastAddedPeriodeId: søknad.ekstrainfo.lastAddedPeriodeId,
         uttaksplanValidering: state.uttaksplanValidering,
@@ -445,15 +343,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         årsakTilSenEndring,
         vedleggForSenEndring: søknad.vedleggForSenEndring,
         tilleggsopplysninger: søknad.tilleggsopplysninger,
-        missingAttachments: findMissingAttachmentsForPerioder(
-            søknad.uttaksplan,
-            søknad.søker.rolle,
-            søknad.annenForelder
-        ),
-        aktivitetsfriKvote,
-        seneUtsettelserPgaFerieEllerArbeid,
-        seneGraderteUttak
+        uttaksplanVeilederinfo: selectUttaksplanVeilederinfo(props.intl)(state),
+        aktivitetsfriKvote
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(UttaksplanSteg);
+export default injectIntl(connect<StateProps, {}, {}>(mapStateToProps)(UttaksplanSteg));

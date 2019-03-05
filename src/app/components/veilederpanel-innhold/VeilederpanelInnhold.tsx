@@ -7,6 +7,7 @@ export interface Message {
     content: string;
     type: VeilederMessageType;
     title?: string;
+    values?: any;
 }
 
 interface VeilederpanelInnholdProps {
@@ -16,8 +17,8 @@ interface VeilederpanelInnholdProps {
 const VeilederpanelInnhold: React.SFC<VeilederpanelInnholdProps> = ({ messages }) => {
     return (
         <>
-            {messages.map((message: Message) => (
-                <VeilederpanelInnholdContent key={message.content} message={message} />
+            {messages.map((message: Message, index: number) => (
+                <VeilederpanelInnholdContent key={message.content + index} message={message} />
             ))}
         </>
     );
