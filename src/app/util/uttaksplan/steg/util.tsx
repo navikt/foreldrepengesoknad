@@ -7,6 +7,10 @@ import lenker from 'app/util/routing/lenker';
 export const getVeilederInfoText = (søknad: Søknad, aktivitetsfriKvote: number) => {
     const { annenForelder, søker } = søknad;
 
+    if (søknad.erEndringssøknad) {
+        return <FormattedMessage id="uttaksplan.informasjon.endringssøknad" />;
+    }
+
     if (getErSøkerFarEllerMedmor(søknad.søker.rolle)) {
         if (
             annenForelder.kanIkkeOppgis ||

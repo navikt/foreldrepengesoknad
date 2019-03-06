@@ -651,6 +651,8 @@
     "uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse": "Legg til utsettelse",
     "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan":
         "Perioden med foreldrepenger starter {dato}. Starter du senere, får du færre dager med foreldrepenger.",
+    "uttaksplan.informasjon.endringssøknad":
+        "Her legger du inn når du vil ha foreldrepenger eller utsette fordi du skal ha ferie, jobbe eller er blitt syk. Denne endringssøknaden erstatter din opprinnelige plan.",
     "uttaksplan.informasjon.farMedmor.aleneOmsorg":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
     "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
@@ -776,6 +778,8 @@
         "Planen din inneholder perioder med tapte foreldrepenger. Du står i fare for å miste dager om du ikke legger inn en utsettelse eller periode med foreldrepenger.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Plan inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Husk at du må søke om foreldrepenger senest {sisteDag}.",
+    "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad":
+        "Husk at du må legge inn alle perioder med uttak etter {sisteDag} på nytt siden denne endringssøknaden erstatter din opprinnelige plan.",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie.tittel": "Søke om ferie tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie":
         "Du må søke om utsettelse på grunn av ferie senest dagen før du starter ferien din. Vi kan innvilge utsettelse på grunn av ferie tilbake i tid hvis arbeidsgiveren din bekreftet ferien din i inntektsmeldingen før ferien startet, eller hvis du gav beskjed til NAV før ferien din startet.",
