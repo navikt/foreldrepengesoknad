@@ -131,10 +131,14 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
             }
 
             if (planErBareUtsettelser) {
+                const messageContent = søknad.erEndringssøknad
+                    ? 'uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad'
+                    : 'uttaksplan.veileder.planenInneholderKunUtsettelser';
+
                 messages.push({
                     title: 'uttaksplan.veileder.planenInneholderKunUtsettelser.tittel',
                     type: 'info',
-                    content: 'uttaksplan.veileder.planenInneholderKunUtsettelser',
+                    content: messageContent,
                     values: {
                         sisteDag: formaterDato(
                             Uttaksdagen(Periodene(uttaksplan).getFørsteUttaksdagEtterSistePeriode()!).forrige(),
