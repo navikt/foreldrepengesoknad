@@ -1,4 +1,4 @@
-import { Periode, UtsettelseÅrsakType } from '../../../types/uttaksplan/periodetyper';
+import { Periode, UtsettelseÅrsakType, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../uttaksplan/Periodene';
 import { isValidTidsperiode, Tidsperioden } from '../../uttaksplan/Tidsperioden';
 import { Forelder } from 'common/types';
@@ -43,5 +43,9 @@ export const harMorHarSøktUgyldigUttakFørsteSeksUker = (
         .getUttak()
         .filter((p) => p.forelder === Forelder.MOR && p.ønskerFlerbarnsdager === true);
 
-    return flernbarnsPerioder.length + gradertePerioder.length + ugyldigeUtsettelser.length > 0;
+    const fellesPerioder = Periodene(perioderInnenforSeksFørsteUker)
+        .getUttak()
+        .filter((p) => p.forelder === Forelder.MOR && p.konto === StønadskontoType.Fellesperiode);
+
+    return flernbarnsPerioder.length + gradertePerioder.length + ugyldigeUtsettelser.length + fellesPerioder.length > 0;
 };
