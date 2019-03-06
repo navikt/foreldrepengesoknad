@@ -425,7 +425,7 @@
     "oppsummering.valideringsfeil.uttaksplan.lenketekst": "Gå til planen",
     "oppsummering.veileder":
         "Les gjennom oppsummeringa før du sender inn søknaden. Dersom du treng å gjere endringar, kan du gå tilbake.",
-    "oppsummering.veileder.manglendeVedlegg.tittel": "Manglende vedlegg",
+    "oppsummering.veileder.manglendeVedlegg.tittel": "Manglande vedlegg",
     "oppsummering.veileder.manglendeVedlegg":
         "Du må sende inn manglande vedlegg innan 3 veker. Dersom vi ikkje får vedlegga innan fristen, manglar vi nødvendige opplysningar for å behandle saka di. Vi kan då avgjere saka di med dei opplysningane vi har tilgjengeleg, og du kan risikere å få avslag.",
     "orgnr": "Organisasjonsnummer",
@@ -778,13 +778,13 @@
         "Planen din inneheld periodar med tapte foreldrepengar. Du står i fare for å miste dagar om du ikkje legg inn ei utsetjing eller ein periode med foreldrepengar.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Plan inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Hugs at du må søkja om foreldrepengar seinast {sisteDag}.",
-    "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie.tittel": "Søke om ferie tilbake i tid",
+    "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie.tittel": "Søkja om ferie tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie":
         "Du må søkje om å utsetje på grunn av ferie seinast dagen før du startar ferien din. Vi kan innvilge utsetjing på grunn av ferie tilbake i tid dersom arbeidsgivaren din stadfesta ferie i inntektsmeldinga før ferien starta, eller dersom du melde frå til NAV før ferien din starta.",
-    "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid.tittel": "Søke om arbeid tilbake i tid",
+    "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid.tittel": "Søkja om arbeid tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid":
         "Du må søkje om å utsetje på grunn av arbeid seinast dagen før du begynner å jobbe. Søkjer du om å utsetje etter at du har begynt å jobbe, mistar du dagar med foreldrepengar frå den dagen du starta å jobbe, og fram til dagen du søkjer om å utsetje. Dersom du melder frå til NAV før du begynner å jobbe, mistar du ikkje dagar med foreldrepengar.",
-    "uttaksplan.veileder.planenAdvarerOmUttak.tittel": "Søke om å kombinere foreldrepenger med arbeid tilbake i tid",
+    "uttaksplan.veileder.planenAdvarerOmUttak.tittel": "Søkja om å kombinere foreldrepengar med arbeid tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUttak":
         "Du må søkje om å kombinere foreldrepengane med delvis arbeid seinast dagen før du begynner å jobbe. Når du søkjer etter at du har begynt å jobbe, mistar du dagar med foreldrepengar ut frå stillingsprosenten du har jobba i, fram til vi får søknaden din. Dersom du melder frå til NAV før du begynner å jobbe, mistar du ikkje dagar med foreldrepengar.",
 
@@ -821,7 +821,7 @@
     "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere": "Fødselsdatoen må vere i dag eller tidlegare",
     "valideringsfeil.frilansOppstart.duMåOppgi": "Du må gi opp oppstartsdatoen",
     "valideringsfeil.frilansOppstart.måVæreIdagEllerTidligere": "Oppstartsdatoen må vere i dag eller tidlegare",
-    "valideringsfeil.fritekst.kanIkkeVæreLengreEnn": "Svaret kan ikke være lengre enn {maxLength} tegn.",
+    "valideringsfeil.fritekst.kanIkkeVæreLengreEnn": "Svaret kan ikkje være lengre enn {maxLength} tegn.",
     "valideringsfeil.fødselsnummer.required": "Fødselsnummer må fyllast ut",
     "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikkje gi opp ditt eige fødselsnummer",
     "valideringsfeil.fødselsnummer.ugyldigFødselsnummer": "Du må skrive eit gyldig fødselsnummer, elleve siffer",
@@ -949,7 +949,7 @@
     "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM_OG_UTTAK":
         "på grunn av sykdom tilbake i tid og uttak meir enn tre månader tilbake i tid",
 
-    "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikke tilgjengelig akkurat nå",
+    "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikkje tilgjengeleg akkurat nå",
     "feilside.ikkeTilgjengelig.melding":
         "Huffda, det ser ut til at eit av systema våre er nede akkurat no. Vi jobbar med å ordna feilen. Forsøk igjen litt seinare, vi beklagar ulempa for deg."
 }
