@@ -167,7 +167,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         <VeilederpanelInnhold
                             messages={[
                                 {
-                                    content: 'selvstendigNæringsdrivende.modal.infoboks.forFisker',
+                                    contentIntlKey: 'selvstendigNæringsdrivende.modal.infoboks.forFisker',
                                     type: 'normal',
                                     values: {
                                         navnPåNæringen
