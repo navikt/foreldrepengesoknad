@@ -193,7 +193,7 @@ class Velkommen extends React.Component<Props, State> {
                                         <VeilederpanelInnhold
                                             messages={[
                                                 {
-                                                    content: 'velkommen.intro.harSak.veileder',
+                                                    contentIntlKey: 'velkommen.intro.harSak.veileder',
                                                     type: 'normal'
                                                 }
                                             ]}
@@ -206,7 +206,7 @@ class Velkommen extends React.Component<Props, State> {
                                         <VeilederpanelInnhold
                                             messages={[
                                                 {
-                                                    content: 'velkommen.intro.harInfotrygdSak.veileder',
+                                                    contentIntlKey: 'velkommen.intro.harInfotrygdSak.veileder',
                                                     type: 'normal'
                                                 }
                                             ]}
@@ -243,7 +243,7 @@ class Velkommen extends React.Component<Props, State> {
                             <VeilederpanelInnhold
                                 messages={[
                                     {
-                                        content: 'velkommen.endringssøknadIkkeTilgjengelig.veileder',
+                                        contentIntlKey: 'velkommen.endringssøknadIkkeTilgjengelig.veileder',
                                         type: 'normal'
                                     }
                                 ]}
