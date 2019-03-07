@@ -1,6 +1,5 @@
 import React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import getMessage from 'common/util/i18nUtils';
 import Søknad from '../../../app/types/søknad/Søknad';
 import SøkerPersonalia from 'common/components/søker-personalia/SøkerPersonalia';
@@ -18,6 +17,9 @@ import { getFamiliehendelsedato, getNavnPåForeldre } from '../../../app/util/ut
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 
 import './oppsummering.less';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from '../veileder/Veileder';
+import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 interface OppsummeringProps {
     søkerinfo: Søkerinfo;
@@ -34,7 +36,16 @@ class Oppsummering extends React.Component<Props> {
         return (
             <Block margin="m">
                 {uttaksplanValidering.erGyldig && (
-                    <Veilederinfo>{getMessage(intl, 'oppsummering.veileder')}</Veilederinfo>
+                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                        <VeilederpanelInnhold
+                            messages={[
+                                {
+                                    type: 'normal',
+                                    contentIntlKey: 'oppsummering.veileder'
+                                }
+                            ]}
+                        />
+                    </Veilederpanel>
                 )}
                 <div className="oppsummering">
                     <Block margin="s">

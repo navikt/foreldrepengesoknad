@@ -16,7 +16,7 @@ import {
 import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
 import { Skjemanummer } from '../../types/søknad/Søknad';
-import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
@@ -40,7 +40,6 @@ import { erUttakAvAnnenForeldersKvote } from '../../util/uttaksplan/uttakUtils';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import { getDefaultPermisjonStartdato } from '../../util/uttaksplan/permisjonUtils';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
@@ -55,6 +54,9 @@ import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import lenker from 'app/util/routing/lenker';
 import UlønnetPermisjonInfo from './partials/UlønnetPermisjonInfo';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -401,12 +403,17 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
                             periode.erMorForSyk === true && (
                                 <>
-                                    <Veilederinfo>
-                                        <FormattedMessage
-                                            id="uttaksplan.informasjon.morErForSyk"
-                                            values={{ navnMor: navnPåForeldre.mor }}
+                                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                        <VeilederpanelInnhold
+                                            messages={[
+                                                {
+                                                    type: 'normal',
+                                                    contentIntlKey: 'uttaksplan.informasjon.morErForSyk',
+                                                    values: { navnMor: navnPåForeldre.mor }
+                                                }
+                                            ]}
                                         />
-                                    </Veilederinfo>
+                                    </Veilederpanel>
                                     <Block>
                                         <VedleggSpørsmål
                                             attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
@@ -420,9 +427,16 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
                             periode.erMorForSyk === false && (
                                 <>
-                                    <Veilederinfo>
-                                        <FormattedMessage id="uttaksplan.informasjon.morErForSykNeiSvar" />
-                                    </Veilederinfo>
+                                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                        <VeilederpanelInnhold
+                                            messages={[
+                                                {
+                                                    type: 'normal',
+                                                    contentIntlKey: 'uttaksplan.informasjon.morErForSykNeiSvar'
+                                                }
+                                            ]}
+                                        />
+                                    </Veilederpanel>
                                 </>
                             )}
                         <Block
@@ -473,15 +487,21 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                 {periode.type === Periodetype.Opphold && (
                     <>
                         {periode.årsak !== undefined && (
-                            <Veilederinfo>
-                                <FormattedHTMLMessage
-                                    id="uttaksplan.infoVedOpphold"
-                                    values={{
-                                        navn: søknadsinfo.navn.annenForelder.fornavn,
-                                        link: lenker.viktigeFrister
-                                    }}
+                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                <VeilederpanelInnhold
+                                    messages={[
+                                        {
+                                            type: 'normal',
+                                            contentIntlKey: 'uttaksplan.infoVedOpphold',
+                                            formatContentAsHTML: true,
+                                            values: {
+                                                navn: søknadsinfo.navn.annenForelder.fornavn,
+                                                link: lenker.viktigeFrister
+                                            }
+                                        }
+                                    ]}
                                 />
-                            </Veilederinfo>
+                            </Veilederpanel>
                         )}
                     </>
                 )}

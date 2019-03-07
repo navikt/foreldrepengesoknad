@@ -1,25 +1,33 @@
 import * as React from 'react';
 import { AnnenInntektType } from '../../types/søknad/AnnenInntekt';
-import getMessage from 'common/util/i18nUtils';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
+import Veileder from 'common/components/veileder/Veileder';
 
 interface OwnProps {
     type?: AnnenInntektType;
 }
 
-export type Props = OwnProps & InjectedIntlProps;
+export type Props = OwnProps;
 
-const AnnenInntektVedleggInfo: React.StatelessComponent<Props> = ({ intl, type }) => {
+const AnnenInntektVedleggInfo: React.StatelessComponent<Props> = ({ type }) => {
     if (type === undefined) {
         return null;
     }
     const textKey = `inntektstype.${type.toLowerCase()}_info`;
-    const info = getMessage(intl, textKey);
-    if (info === textKey) {
-        return null;
-    }
-    return <Veilederinfo>{info}</Veilederinfo>;
+
+    return (
+        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+            <VeilederpanelInnhold
+                messages={[
+                    {
+                        type: 'normal',
+                        contentIntlKey: textKey
+                    }
+                ]}
+            />
+        </Veilederpanel>
+    );
 };
 
-export default injectIntl(AnnenInntektVedleggInfo);
+export default AnnenInntektVedleggInfo;
