@@ -2,7 +2,6 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål from '../../../spørsmål/SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål';
 import Block from 'common/components/block/Block';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Lenke from 'nav-frontend-lenker';
 import lenker from '../../../util/routing/lenker';
 import { UttakSpørsmålKeys, UttakSpørsmålVisibility } from '../uttakFormConfig';
@@ -15,6 +14,9 @@ import { getVarighetString } from 'common/util/intlUtils';
 import { finnAntallDagerÅTrekke } from 'app/util/uttaksPlanStatus';
 import Input from 'common/components/skjema/wrappers/Input';
 import { getStillingsprosentRegler } from 'app/util/validation/stillingsprosent';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 export interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
@@ -58,23 +60,26 @@ class SamtidigUttakPart extends React.Component<Props> {
                     />
                 </Block>
                 <Block visible={ønskerSamtidigUttak === true} margin="none">
-                    <Veilederinfo>
-                        <FormattedMessage
-                            id={
-                                erFlerbarnsUker
-                                    ? 'egenDelUttakForm.samtidigUttak.flernBarnsuker.veiledertekst'
-                                    : 'egenDelUttakForm.samtidigUttak.veiledertekst'
-                            }
-                            values={{
-                                link: (
-                                    <Lenke href={lenker.fleksibeltuttak}>
-                                        <FormattedMessage id="egenDelUttakForm.samtidigUttak.veiledertekst.lenke" />
-                                    </Lenke>
-                                ),
-                                navn: navnAnnenForelder
-                            }}
+                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                        <VeilederpanelInnhold
+                            messages={[
+                                {
+                                    type: 'normal',
+                                    contentIntlKey: erFlerbarnsUker
+                                        ? 'egenDelUttakForm.samtidigUttak.flernBarnsuker.veiledertekst'
+                                        : 'egenDelUttakForm.samtidigUttak.veiledertekst',
+                                    values: {
+                                        link: (
+                                            <Lenke href={lenker.fleksibeltuttak}>
+                                                <FormattedMessage id="egenDelUttakForm.samtidigUttak.veiledertekst.lenke" />
+                                            </Lenke>
+                                        ),
+                                        navn: navnAnnenForelder
+                                    }
+                                }
+                            ]}
                         />
-                    </Veilederinfo>
+                    </Veilederpanel>
                 </Block>
                 <Block visible={visibility.isVisible(UttakSpørsmålKeys.samtidigUttakProsent)}>
                     <Block margin={varighet ? 'xxs' : 'none'}>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import moment from 'moment';
 import Block from 'common/components/block/Block';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { StegID } from '../../../util/routing/stegConfig';
 import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
@@ -24,9 +24,11 @@ import cleanupAndreInntekterSteg from '../../../util/cleanup/cleanupAndreInntekt
 import { HistoryProps } from '../../../types/common';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import YtelseInfoWrapper from 'common/components/ytelser-infobox/InformasjonOmYtelserWrapper';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { formatDate } from 'app/util/dates/dates';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 interface StateProps {
     stegProps: StegProps;
@@ -82,12 +84,17 @@ class AndreInntekterSteg extends React.Component<Props> {
                     <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} />
                     {harArbeidsforhold && (
                         <>
-                            <Veilederinfo>
-                                <FormattedMessage
-                                    id="annenInntekt.arbeidsforhold.veileder"
-                                    values={{ dato: fireUkerFørFørsteUttaksdag }}
+                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                <VeilederpanelInnhold
+                                    messages={[
+                                        {
+                                            type: 'normal',
+                                            contentIntlKey: 'annenInntekt.arbeidsforhold.veileder',
+                                            values: { dato: fireUkerFørFørsteUttaksdag }
+                                        }
+                                    ]}
                                 />
-                            </Veilederinfo>
+                            </Veilederpanel>
                         </>
                     )}
                 </Block>

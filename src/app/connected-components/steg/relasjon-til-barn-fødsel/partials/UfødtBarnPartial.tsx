@@ -3,7 +3,6 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { UfødtBarn } from '../../../../types/søknad/Barn';
 import MorForSykSpørsmål from '../../../../spørsmål/MorForSykSpørsmål';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import AntallBarnBolk from '../../../../bolker/AntallBarnBolk';
 import { DispatchProps } from 'common/redux/types/index';
 import getMessage from 'common/util/i18nUtils';
@@ -16,6 +15,9 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
 import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
@@ -51,7 +53,16 @@ class UfødtBarnPartial extends React.Component<Props> {
                 </Block>
 
                 {annenForelder.erForSyk === false && (
-                    <Veilederinfo type="feil">{getMessage(intl, 'annenForelder.morIkkeSyk')}</Veilederinfo>
+                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                        <VeilederpanelInnhold
+                            messages={[
+                                {
+                                    type: 'feil',
+                                    contentIntlKey: 'annenForelder.morIkkeSyk'
+                                }
+                            ]}
+                        />
+                    </Veilederpanel>
                 )}
 
                 {erMorEllerMorErForSyk && (

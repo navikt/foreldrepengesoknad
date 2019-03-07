@@ -2,13 +2,14 @@ import * as React from 'react';
 import { OverføringÅrsakType, Overføringsperiode } from '../../../types/uttaksplan/periodetyper';
 import OverføringsårsakSpørsmål from '../../../spørsmål/OverføringsårsakSpørsmål';
 import Block from 'common/components/block/Block';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { FormattedMessage } from 'react-intl';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { getOverføringÅrsakSkjemanummer } from '../../../util/skjemanummer/overføringÅrsakSkjemanummer';
 import { RecursivePartial } from '../../../types/Partial';
 import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
+import VeilederpanelInnhold, { Message } from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
 
 interface Props {
     årsak?: OverføringÅrsakType;
@@ -27,23 +28,24 @@ export const visVedlegg = (søkerErFarEllerMedmor: boolean, årsak: Overføring�
     }
 };
 
-const getVeilederInfotekst = (årsak: OverføringÅrsakType, navnAnnenForelder: string) => {
+const getVeilederInfotekst = (årsak: OverføringÅrsakType, navnAnnenForelder: string): Message => {
     if (årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder) {
-        return (
-            <FormattedMessage
-                id="uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder"
-                values={{ navnAnnenForelder }}
-            />
-        );
+        return {
+            type: 'normal',
+            contentIntlKey: 'uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder',
+            values: { navnAnnenForelder }
+        };
     } else if (årsak === OverføringÅrsakType.sykdomAnnenForelder) {
-        return (
-            <FormattedMessage
-                id="uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder"
-                values={{ navnAnnenForelder }}
-            />
-        );
+        return {
+            type: 'normal',
+            contentIntlKey: 'uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder',
+            values: { navnAnnenForelder }
+        };
     } else {
-        return <FormattedMessage id="uttaksplan.overføring.vedlegg.info" />;
+        return {
+            type: 'normal',
+            contentIntlKey: 'uttaksplan.overføring.vedlegg.info'
+        };
     }
 };
 
@@ -63,7 +65,9 @@ class OverføringUttakPart extends React.Component<Props> {
                     />
                 </Block>
                 <Block visible={visVedlegg(søkerErFarEllerMedmor, årsak)}>
-                    <Veilederinfo>{getVeilederInfotekst(årsak!, navnAnnenForelder)}</Veilederinfo>
+                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                        <VeilederpanelInnhold messages={[getVeilederInfotekst(årsak!, navnAnnenForelder)]} />
+                    </Veilederpanel>
                     <VedleggSpørsmål
                         vedlegg={vedleggList}
                         attachmentType={AttachmentType.OVERFØRING_KVOTE}

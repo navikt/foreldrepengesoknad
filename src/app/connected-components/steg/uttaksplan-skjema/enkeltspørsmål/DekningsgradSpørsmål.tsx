@@ -9,10 +9,12 @@ import søknadActionCreators from '../../../../redux/actions/søknad/søknadActi
 import { AppState } from '../../../../redux/reducers';
 import Block from 'common/components/block/Block';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getFamiliehendelsedato } from 'app/util/uttaksplan';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 interface StateProps {
     dekningsgrad100AntallUker: number | undefined;
@@ -138,7 +140,18 @@ const DekningsgradSpørsmål = (props: Props) => {
                     harAnnenForelderSøktFP,
                     dekningsgrad
                 )}>
-                <Veilederinfo>{erEndringssøknad === false && getInfoboxText(intl, erAleneOmOmsorg)}</Veilederinfo>
+                <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                    <VeilederpanelInnhold
+                        messages={[
+                            {
+                                type: 'normal',
+                                contentIntlKey: erAleneOmOmsorg
+                                    ? 'spørsmål.dekningsgrad.hjelpetekst'
+                                    : 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg'
+                            }
+                        ]}
+                    />
+                </Veilederpanel>
             </Block>
         </>
     );

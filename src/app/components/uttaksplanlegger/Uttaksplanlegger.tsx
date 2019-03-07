@@ -20,7 +20,6 @@ import HjerteIkon from '../uttaksplan-ikon/ikoner/HjerteIkon';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Søknadsinfo } from '../../selectors/types';
 import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import TapteUttaksdagerFarMedmor from './meldinger/TapteUttaksdagerFarMedmor';
@@ -29,6 +28,9 @@ import './uttaksplanlegger.less';
 import AdvarselIkon from '../uttaksplan-ikon/ikoner/AdvarselIkon';
 import { PeriodelisteInformasjon } from '../periodeliste/items/PeriodelisteInfo';
 import getMessage from 'common/util/i18nUtils';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
 
 interface OwnProps {
     søknad: Søknad;
@@ -251,18 +253,24 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 <TomUttaksplanInfo />
                             </Block>
                             <Block visible={informerOmNårPeriodenBegynnerÅLøpe} margin="none">
-                                <Veilederinfo>
-                                    <FormattedMessage
-                                        id="uttaksplan.infoVedTapteUttaksdager.tomUttaksplan"
-                                        values={{
-                                            dato: formaterDatoUtenDag(
-                                                Uttaksdagen(
-                                                    søknadsinfo.uttaksdatoer.etterFødsel.sisteUttaksdagInnenforSeksUker
-                                                ).neste()
-                                            )
-                                        }}
+                                <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                    <VeilederpanelInnhold
+                                        messages={[
+                                            {
+                                                type: 'normal',
+                                                contentIntlKey: 'uttaksplan.infoVedTapteUttaksdager.tomUttaksplan',
+                                                values: {
+                                                    dato: formaterDatoUtenDag(
+                                                        Uttaksdagen(
+                                                            søknadsinfo.uttaksdatoer.etterFødsel
+                                                                .sisteUttaksdagInnenforSeksUker
+                                                        ).neste()
+                                                    )
+                                                }
+                                            }
+                                        ]}
                                     />
-                                </Veilederinfo>
+                                </Veilederpanel>
                             </Block>
                         </Block>
                         <Block visible={formIsOpen}>

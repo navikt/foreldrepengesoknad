@@ -4,9 +4,8 @@ import { Checkbox } from 'nav-frontend-skjema';
 import FødselsnummerBolk from '../../../bolker/FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import Søknad, { Skjemanummer, Søkersituasjon } from '../../../types/søknad/Søknad';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import ErMorUførSpørsmål from '../../../spørsmål/ErMorUførSpørsmål';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import ErAnnenForelderInformertSpørsmål from '../../../spørsmål/ErAnnenForelderInformertSpørsmål';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
@@ -21,6 +20,9 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AnnenForelderSpørsmålKeys, AnnenForelderStegVisibility } from './visibility/annenForelderStegVisibility';
 import { DateValue } from '../../../types/common';
 import { getFamiliehendelsedato } from '../../../util/uttaksplan';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 export interface OwnProps {
     annenForelder: AnnenForelder;
@@ -122,11 +124,19 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         søker.erAleneOmOmsorg !== undefined &&
                         søker.erAleneOmOmsorg
                     }>
-                    <Veilederinfo>
-                        {getMessage(intl, 'annenForelder.veileder.aleneOmsorg.forBarnet', {
-                            navn: annenForelder.fornavn
-                        })}
-                    </Veilederinfo>
+                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                        <VeilederpanelInnhold
+                            messages={[
+                                {
+                                    type: 'normal',
+                                    contentIntlKey: 'annenForelder.veileder.aleneOmsorg.forBarnet',
+                                    values: {
+                                        navn: annenForelder.fornavn
+                                    }
+                                }
+                            ]}
+                        />
+                    </Veilederpanel>
                 </Block>
 
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger)}>
@@ -150,11 +160,19 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger) &&
                         annenForelder.harRettPåForeldrepenger === true
                     }>
-                    <Veilederinfo>
-                        {getMessage(intl, 'annenForelder.veileder.rettigheterOgDelingAvUttaksplan', {
-                            navn: annenForelder.fornavn
-                        })}
-                    </Veilederinfo>
+                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                        <VeilederpanelInnhold
+                            messages={[
+                                {
+                                    type: 'normal',
+                                    contentIntlKey: 'annenForelder.veileder.rettigheterOgDelingAvUttaksplan',
+                                    values: {
+                                        navn: annenForelder.fornavn
+                                    }
+                                }
+                            ]}
+                        />
+                    </Veilederpanel>
                 </Block>
 
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)} margin="none">
@@ -166,12 +184,17 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         />
                     </Block>
                     {annenForelder.erInformertOmSøknaden === false && (
-                        <Veilederinfo type="advarsel">
-                            <FormattedMessage
-                                id="erAnnenForelderInformert.veilederIkkeInformert"
-                                values={{ navn: annenForelder.fornavn }}
+                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                            <VeilederpanelInnhold
+                                messages={[
+                                    {
+                                        type: 'normal',
+                                        contentIntlKey: 'erAnnenForelderInformert.veilederIkkeInformert',
+                                        values: { navn: annenForelder.fornavn }
+                                    }
+                                ]}
                             />
-                        </Veilederinfo>
+                        </Veilederpanel>
                     )}
                 </Block>
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.datoForAleneomsorg)}>
@@ -192,9 +215,16 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         barn.datoForAleneomsorg !== undefined
                     }>
                     <Block margin="xs">
-                        <Veilederinfo>
-                            <FormattedMessage id="far.dokumantasjonAvAleneomsorg.vedlegg.veileder" />
-                        </Veilederinfo>
+                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                            <VeilederpanelInnhold
+                                messages={[
+                                    {
+                                        type: 'normal',
+                                        contentIntlKey: 'far.dokumantasjonAvAleneomsorg.vedlegg.veileder'
+                                    }
+                                ]}
+                            />
+                        </Veilederpanel>
                     </Block>
 
                     <AttachmentsUploaderPure

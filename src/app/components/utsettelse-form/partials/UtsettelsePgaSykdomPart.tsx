@@ -4,12 +4,14 @@ import { Forelder } from 'common/types';
 import Block from 'common/components/block/Block';
 import FlervalgSpørsmål, { FlervalgAlternativ } from '../../flervalg-spørsmål/FlervalgSpørsmål';
 import getMessage from 'common/util/i18nUtils';
-import { InjectedIntl, injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { InjectedIntl, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Skjemanummer } from '../../../types/søknad/Søknad';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 export interface UtsettelsePgaSykdomChangePayload {
     sykdomsårsak: UtsettelseÅrsakType;
@@ -34,11 +36,11 @@ const getSykdomAlternativ = (intl: InjectedIntl, årsak: UtsettelseÅrsakType): 
 
 const getSykdomVeilederInfo = (sykdomsårsak: UtsettelseÅrsakType) => {
     if (sykdomsårsak === UtsettelseÅrsakType.Sykdom) {
-        return <FormattedMessage id="utsettelse.sykdom.vedlegg.info.sykdom" />;
+        return 'utsettelse.sykdom.vedlegg.info.sykdom';
     } else if (sykdomsårsak === UtsettelseÅrsakType.InstitusjonBarnet) {
-        return <FormattedMessage id="utsettelse.sykdom.vedlegg.info.barnInnlagt" />;
+        return 'utsettelse.sykdom.vedlegg.info.barnInnlagt';
     } else {
-        return <FormattedMessage id="utsettelse.sykdom.vedlegg.info.innlagt" />;
+        return 'utsettelse.sykdom.vedlegg.info.innlagt';
     }
 };
 
@@ -81,7 +83,16 @@ class UtsettelsePgaSykdomPart extends React.Component<Props> {
                 </Block>
                 {visVedlegg(sykdomsårsak) && (
                     <Block>
-                        <Veilederinfo>{getSykdomVeilederInfo(sykdomsårsak!)}</Veilederinfo>
+                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                            <VeilederpanelInnhold
+                                messages={[
+                                    {
+                                        type: 'normal',
+                                        contentIntlKey: getSykdomVeilederInfo(sykdomsårsak!)
+                                    }
+                                ]}
+                            />
+                        </Veilederpanel>
                         <VedleggSpørsmål
                             vedlegg={vedleggList}
                             attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
