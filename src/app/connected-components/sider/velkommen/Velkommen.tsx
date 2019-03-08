@@ -228,7 +228,8 @@ class Velkommen extends React.Component<Props, State> {
                     {!erSakForEndringssøknadFraInfotrygd &&
                         storageKvittering &&
                         storageKvittering.innsendingstidspunkt &&
-                        sakUnderBehandling === undefined && (
+                        sakUnderBehandling === undefined &&
+                        sakForEndringssøknad === undefined && (
                             <>
                                 <Block>
                                     <FormattedMessage id="velkommen.intro.harFørstegangssøknadUnderBehandling" />
