@@ -779,7 +779,7 @@
     "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Plan inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Husk at du må søke om foreldrepenger senest {sisteDag}.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad":
-        "Husk at du må legge inn alle perioder med foreldrepenger etter {sisteDag} på nytt siden denne endringssøknaden erstatter din opprinnelige plan.",
+        "Husk at du må legge inn alle perioder med foreldrepenger etter {sisteDag} på nytt, da endringssøknaden erstatter den  opprinnelige planen din.",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie.tittel": "Søke om ferie tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie":
         "Du må søke om utsettelse på grunn av ferie senest dagen før du starter ferien din. Vi kan innvilge utsettelse på grunn av ferie tilbake i tid hvis arbeidsgiveren din bekreftet ferien din i inntektsmeldingen før ferien startet, eller hvis du gav beskjed til NAV før ferien din startet.",
