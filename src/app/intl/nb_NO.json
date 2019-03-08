@@ -240,7 +240,7 @@
         "Siden du har jobbet i {land} må vi innhente dokumentasjon derfra. Derfor kan det ta litt lenger tid før du får svar på søknaden din.",
     "inntektstype.lønn_under_utdanning": "Lønn fra arbeidsgiver under videre- eller etterutdanning",
     "inntektstype.lønn_under_utdanning_info": "Trenger vi noe tekst her?",
-    "inntektstype.militær_eller_siviltjeneste": "Militærtjeneste eller obligatorisk sivilforsvarstjeneste",
+    "inntektstype.militær_eller_siviltjeneste": "Førstegangstjenesten i forsvaret",
     "inntektstype.militær_eller_siviltjeneste_info":
         "Du må legge ved dokumentasjon på perioden fra tjenestestedet ditt.",
     "inntektstype.selvstendigNæringsdrivende": "Selvstendig næringsdrivende",
