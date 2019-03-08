@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import * as countries from 'i18n-iso-countries';
@@ -20,11 +20,13 @@ import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
 import ModalForm from 'common/components/modalForm/ModalForm';
 import visibility from './visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getSkjemanummerForAndreInntekter } from 'common/storage/attachment/components/util';
 import { hasValueRule } from '../../util/validation/common';
 import InntektstypeSpørsmål from '../../spørsmål/InntektstypeSpørsmål';
 import Input from 'common/components/skjema/wrappers/Input';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
+import Veileder from 'common/components/veileder/Veileder';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
@@ -205,17 +207,25 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     />
                 </Block>
                 <Block visible={annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET}>
-                    <Veilederinfo>
-                        <FormattedMessage
-                            id="inntektstype.jobb_i_utlandet_info"
-                            values={{
-                                land:
-                                    (annenInntekt as JobbIUtlandetInntekt).land !== undefined
-                                        ? countries.getName((annenInntekt as JobbIUtlandetInntekt).land, intl.locale)
-                                        : 'annet land'
-                            }}
+                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                        <VeilederpanelInnhold
+                            messages={[
+                                {
+                                    type: 'normal',
+                                    contentIntlKey: 'inntektstype.jobb_i_utlandet_info',
+                                    values: {
+                                        land:
+                                            (annenInntekt as JobbIUtlandetInntekt).land !== undefined
+                                                ? countries.getName(
+                                                      (annenInntekt as JobbIUtlandetInntekt).land,
+                                                      intl.locale
+                                                  )
+                                                : 'annet land'
+                                    }
+                                }
+                            ]}
                         />
-                    </Veilederinfo>
+                    </Veilederpanel>
                 </Block>
             </ModalForm>
         );

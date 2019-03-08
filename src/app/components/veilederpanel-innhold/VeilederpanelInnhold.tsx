@@ -4,8 +4,9 @@ import VeilederpanelInnholdContent from './components/VeilderpanelInnholdContent
 type VeilederMessageType = 'normal' | 'info' | 'feil';
 
 export interface Message {
-    content: string;
+    contentIntlKey: string;
     type: VeilederMessageType;
+    formatContentAsHTML?: boolean;
     title?: string;
     values?: any;
 }
@@ -18,7 +19,7 @@ const VeilederpanelInnhold: React.SFC<VeilederpanelInnholdProps> = ({ messages }
     return (
         <>
             {messages.map((message: Message, index: number) => (
-                <VeilederpanelInnholdContent key={message.content + index} message={message} />
+                <VeilederpanelInnholdContent key={message.contentIntlKey + index} message={message} />
             ))}
         </>
     );

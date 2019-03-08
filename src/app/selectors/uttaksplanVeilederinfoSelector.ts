@@ -68,7 +68,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
                     messages.push({
                         title: 'uttaksteg.overtruknedager.info.tittel',
                         type: 'feil',
-                        content: 'uttaksteg.overtruknedager.info',
+                        contentIntlKey: 'uttaksteg.overtruknedager.info',
                         values: {
                             varighet: getVarighetString(Math.abs(konto.antallDager), intl),
                             konto: getStønadskontoNavn(intl, konto.konto, navn.navnPåForeldre)
@@ -93,7 +93,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
                     messages.push({
                         title: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie.tittel',
                         type: 'info',
-                        content: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie'
+                        contentIntlKey: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie'
                     });
                 }
 
@@ -101,7 +101,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
                     messages.push({
                         title: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid.tittel',
                         type: 'info',
-                        content: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid'
+                        contentIntlKey: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid'
                     });
                 }
 
@@ -109,7 +109,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
                     messages.push({
                         title: 'uttaksplan.veileder.planenAdvarerOmUttak.tittel',
                         type: 'info',
-                        content: 'uttaksplan.veileder.planenAdvarerOmUttak'
+                        contentIntlKey: 'uttaksplan.veileder.planenAdvarerOmUttak'
                     });
                 }
             }
@@ -118,7 +118,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
                 messages.push({
                     title: 'uttaksplan.veileder.planenInneholderHull.tittel',
                     type: 'info',
-                    content: 'uttaksplan.veileder.planenInneholderHull'
+                    contentIntlKey: 'uttaksplan.veileder.planenInneholderHull'
                 });
             }
 
@@ -126,7 +126,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
                 messages.push({
                     title: 'oppsummering.veileder.manglendeVedlegg.tittel',
                     type: 'info',
-                    content: 'oppsummering.veileder.manglendeVedlegg'
+                    contentIntlKey: 'oppsummering.veileder.manglendeVedlegg'
                 });
             }
 
@@ -138,7 +138,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
                 messages.push({
                     title: 'uttaksplan.veileder.planenInneholderKunUtsettelser.tittel',
                     type: 'info',
-                    content: messageContent,
+                    contentIntlKey: messageContent,
                     values: {
                         sisteDag: formaterDato(
                             Uttaksdagen(Periodene(uttaksplan).getFørsteUttaksdagEtterSistePeriode()!).forrige(),

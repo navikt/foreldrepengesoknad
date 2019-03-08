@@ -11,10 +11,12 @@ import { RecursivePartial } from '../../../types/Partial';
 import HvorSkalDuJobbeSpørsmål from '../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import { UttakSpørsmålKeys, UttakSpørsmålVisibility } from '../uttakFormConfig';
 import { getStillingsprosentRegler } from '../../../util/validation/stillingsprosent';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getVarighetString } from 'common/util/intlUtils';
 import { finnAntallDagerÅTrekke } from '../../../util/uttaksPlanStatus';
 import { Perioden } from '../../../util/uttaksplan/Perioden';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
@@ -100,15 +102,19 @@ class GradertUttakForm extends React.Component<Props> {
                     />
                 </Block>
                 <Block visible={periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0}>
-                    <Veilederinfo>
-                        <FormattedHTMLMessage
-                            id={
-                                periode.erArbeidstaker
-                                    ? 'vedlegg.veileder.dokumentasjonAvArbeidVedGradering'
-                                    : 'uttaksplan.infoTilFrilansOgSelvstendig'
-                            }
+                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                        <VeilederpanelInnhold
+                            messages={[
+                                {
+                                    type: 'normal',
+                                    contentIntlKey: periode.erArbeidstaker
+                                        ? 'vedlegg.veileder.dokumentasjonAvArbeidVedGradering'
+                                        : 'uttaksplan.infoTilFrilansOgSelvstendig',
+                                    formatContentAsHTML: true
+                                }
+                            ]}
                         />
-                    </Veilederinfo>
+                    </Veilederpanel>
                 </Block>
             </>
         );
