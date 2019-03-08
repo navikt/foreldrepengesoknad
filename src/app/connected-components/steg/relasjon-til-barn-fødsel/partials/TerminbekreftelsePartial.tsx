@@ -13,9 +13,11 @@ import AttachmentsUploaderPure from 'common/storage/attachment/components/Attach
 import { DispatchProps } from 'common/redux/types/index';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 export interface OwnProps {
     barn: UfødtBarn;
@@ -32,7 +34,16 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
     return (
         <React.Fragment>
             <Block margin="xs">
-                <Veilederinfo>{getMessage(intl, 'vedlegg.veileder.terminbekreftelsen')}</Veilederinfo>
+                <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                    <VeilederpanelInnhold
+                        messages={[
+                            {
+                                type: 'normal',
+                                contentIntlKey: 'vedlegg.veileder.terminbekreftelsen'
+                            }
+                        ]}
+                    />
+                </Veilederpanel>
             </Block>
             <Block>
                 <AttachmentsUploaderPure

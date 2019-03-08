@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import { StegID } from '../../../util/routing/stegConfig';
 import Steg from 'app/components/steg/Steg';
@@ -15,7 +15,6 @@ import Labeltekst from 'common/components/labeltekst/Labeltekst';
 
 import utils from '../../../util/domain/fødselsdato';
 import { ForeldreansvarBarnPartial } from '../../../types/søknad/Barn';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { HistoryProps } from '../../../types/common';
 import { StegProps } from '../../../components/steg/Steg';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
@@ -29,6 +28,9 @@ import { fødselsdatoerErFyltUt } from '../../../util/validation/fødselsdato';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import visibility from './visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;
@@ -101,13 +103,29 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                 </Block>
 
                 <Block visible={visibility.harBarnOver15ÅrMelding(barn)} margin="s">
-                    <Veilederinfo type="advarsel">Barn over 15 år er registrert.</Veilederinfo>
+                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                        <VeilederpanelInnhold
+                            messages={[
+                                {
+                                    type: 'info',
+                                    contentIntlKey: 'Barn over 15 år er registrert.'
+                                }
+                            ]}
+                        />
+                    </Veilederpanel>
                 </Block>
 
                 <Block visible={visibility.vedlegg(barn)}>
-                    <Veilederinfo>
-                        <FormattedMessage id="vedlegg.veileder.omsorgsovertakelse" />
-                    </Veilederinfo>
+                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                        <VeilederpanelInnhold
+                            messages={[
+                                {
+                                    type: 'normal',
+                                    contentIntlKey: 'vedlegg.veileder.omsorgsovertakelse'
+                                }
+                            ]}
+                        />
+                    </Veilederpanel>
                     <AttachmentsUploaderPure
                         attachments={barn.adopsjonsvedtak || []}
                         attachmentType={AttachmentType.ADOPSJONSVEDTAK}

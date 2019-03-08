@@ -37,7 +37,6 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getVeilederInfoText } from 'app/util/uttaksplan/steg/util';
 import { selectUttaksplanVeilederinfo } from 'app/selectors/uttaksplanVeilederinfoSelector';
 import VeilederpanelInnhold, { Message } from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
@@ -217,7 +216,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
-                        <Veilederinfo>{getVeilederInfoText(søknad, aktivitetsfriKvote)}</Veilederinfo>
+                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                            <VeilederpanelInnhold messages={[getVeilederInfoText(søknad, aktivitetsfriKvote)]} />
+                        </Veilederpanel>
                         <Block>
                             <Uttaksplanlegger
                                 søknad={søknad}

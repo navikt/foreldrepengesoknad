@@ -30,13 +30,15 @@ import { AppState } from '../../redux/reducers';
 import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import HvorSkalDuJobbeSpørsmålFlervalg from 'app/spørsmål/HvorSkalDuJobbeSpørsmålFlervalg';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
 import { Tidsperioden, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { getUtsettelseÅrsakTypeValidators } from 'app/util/validation/uttaksplan/utsettelseÅrsak';
 import { isFeatureEnabled, Feature } from 'app/Feature';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -309,14 +311,29 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                         />
                                     </Block>
                                     <Block visible={periode.erArbeidstaker === true}>
-                                        <Veilederinfo>
-                                            {getMessage(intl, 'vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse')}
-                                        </Veilederinfo>
+                                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                            <VeilederpanelInnhold
+                                                messages={[
+                                                    {
+                                                        type: 'normal',
+                                                        contentIntlKey:
+                                                            'vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse'
+                                                    }
+                                                ]}
+                                            />
+                                        </Veilederpanel>
                                     </Block>
                                     <Block visible={getVeilederForFrilansOgSNVisible(periode)}>
-                                        <Veilederinfo>
-                                            <FormattedMessage id="uttaksplan.infoTilFrilansOgSelvstendig" />
-                                        </Veilederinfo>
+                                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                            <VeilederpanelInnhold
+                                                messages={[
+                                                    {
+                                                        type: 'normal',
+                                                        contentIntlKey: 'uttaksplan.infoTilFrilansOgSelvstendig'
+                                                    }
+                                                ]}
+                                            />
+                                        </Veilederpanel>
                                     </Block>
                                 </>
                             )}

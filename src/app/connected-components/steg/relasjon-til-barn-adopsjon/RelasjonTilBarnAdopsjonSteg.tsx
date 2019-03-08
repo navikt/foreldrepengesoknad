@@ -21,12 +21,14 @@ import { Skjemanummer, Søkersituasjon } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 import AdopsjonAvEktefellesBarnSpørsmål from '../../../spørsmål/AdopsjonAvEktefellesBarnSpørsmål';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
 import visibility from './visibility';
 import cleanupAdopsjonsSteg from '../../../util/cleanup/cleanupAdopsjonsSteg';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
+import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -164,14 +166,18 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
                 <Block visible={visibility.spørsmålOmVedlegg(barn, erEndringssøknad)}>
                     <Block margin="xs">
-                        <Veilederinfo>
-                            {getMessage(
-                                intl,
-                                barn.adopsjonAvEktefellesBarn
-                                    ? 'vedlegg.veileder.stebarnsadopsjon'
-                                    : 'vedlegg.veileder.adopsjon'
-                            )}
-                        </Veilederinfo>
+                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                            <VeilederpanelInnhold
+                                messages={[
+                                    {
+                                        type: 'normal',
+                                        contentIntlKey: barn.adopsjonAvEktefellesBarn
+                                            ? 'vedlegg.veileder.stebarnsadopsjon'
+                                            : 'vedlegg.veileder.adopsjon'
+                                    }
+                                ]}
+                            />
+                        </Veilederpanel>
                     </Block>
                     <AttachmentsUploaderPure
                         attachments={(barn as Adopsjonsbarn).omsorgsovertakelse || []}
