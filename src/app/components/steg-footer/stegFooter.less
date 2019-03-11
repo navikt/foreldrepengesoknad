@@ -1,4 +1,5 @@
 @import '../../styles/variables.less';
+@import './../../../../node_modules/nav-frontend-core/less/_variabler.less';
 
 .stegFooter {
     align-items: center;
@@ -12,5 +13,22 @@
         padding: @paddingSmall;
         margin-left: 0;
         margin-right: 0;
+    }
+
+    &__links {
+        display: flex;
+        align-items: center;
+
+        #avbrytSøknadLenke {
+            color: @navRodLighten20;
+        }
+    }
+
+    &__dot:after {
+        content: ' \00b7';
+        font-size: 25px;
+        display: inline-block;
+        color: #c6c2bf;
+        margin: 0.2rem 0.5rem 0;
     }
 }
