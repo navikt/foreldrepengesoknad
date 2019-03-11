@@ -8,22 +8,34 @@ import { Normaltekst } from 'nav-frontend-typografi';
 
 interface Props {
     onAvbryt: () => void;
+    onFortsettSenere: () => void;
 }
 
-const StegFooter: React.StatelessComponent<Props> = ({ onAvbryt }) => {
+const StegFooter: React.StatelessComponent<Props> = ({ onAvbryt, onFortsettSenere }) => {
     const bem = BEMHelper('stegFooter');
 
     return (
         <Normaltekst tag="div" className={bem.className}>
             <div className={bem.element('divider')} />
-            <LinkButton
-                id="avbrytSøknadLenke"
-                onClick={(e) => {
-                    e.preventDefault();
-                    onAvbryt();
-                }}>
-                <FormattedMessage id="steg.footer.avbryt" />
-            </LinkButton>
+            <div className={bem.element('links')}>
+                <LinkButton
+                    id="fortsettSøknadLenke"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        onFortsettSenere();
+                    }}>
+                    <FormattedMessage id="steg.footer.fortsettSenere" />
+                </LinkButton>
+                <span className={bem.element('dot')} />
+                <LinkButton
+                    id="avbrytSøknadLenke"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        onAvbryt();
+                    }}>
+                    <FormattedMessage id="steg.footer.avbryt" />
+                </LinkButton>
+            </div>
         </Normaltekst>
     );
 };

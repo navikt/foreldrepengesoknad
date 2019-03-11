@@ -21,6 +21,7 @@ import søknadActionCreators from '../../redux/actions/søknad/søknadActionCrea
 
 import './steg.less';
 import DocumentTitle from 'react-document-title';
+import FortsettSøknadSenereDialog from '../fortsett-søknad-senere-dialog/FortsettSøknadSenereDialog';
 
 export interface StegProps {
     id: StegID;
@@ -44,6 +45,7 @@ interface StateProps {
 
 interface State {
     visAvbrytDialog: boolean;
+    visFortsettSenereDialog: boolean;
 }
 
 type Props = StateProps & StegProps & InjectedIntlProps;
@@ -59,7 +61,8 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         }
 
         this.state = {
-            visAvbrytDialog: false
+            visAvbrytDialog: false,
+            visFortsettSenereDialog: false
         };
 
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
@@ -69,6 +72,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         this.handleNavigateToPreviousStepClick = this.handleNavigateToPreviousStepClick.bind(this);
         this.updateCurrentSteg = this.updateCurrentSteg.bind(this);
         this.getStegConfig = this.getStegConfig.bind(this);
+        this.handleAvsluttOgFortsettSenere = this.handleAvsluttOgFortsettSenere.bind(this);
     }
 
     updateCurrentSteg(currentSteg: StegID) {
@@ -78,6 +82,10 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     handleAvbrytSøknad() {
         this.props.dispatch(søknadActionCreators.avbrytSøknad());
         this.props.history.push(routeConfig.APP_ROUTE_PREFIX);
+    }
+
+    handleAvsluttOgFortsettSenere() {
+        (window as any).location = 'https://familie.nav.no';
     }
 
     handleOnSubmit(event?: FormSubmitEvent) {
@@ -197,7 +205,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 
     render() {
         const { renderFormTag, intl } = this.props;
-        const { visAvbrytDialog } = this.state;
+        const { visAvbrytDialog, visFortsettSenereDialog } = this.state;
 
         const bem = BEMHelper('steg');
         const formProps: ValiderbarFormProps = {
@@ -215,7 +223,15 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                         {this.renderContent()}
                     </div>
                 )}
-                <StegFooter onAvbryt={() => this.setState({ visAvbrytDialog: true })} />
+                <StegFooter
+                    onAvbryt={() => this.setState({ visAvbrytDialog: true })}
+                    onFortsettSenere={() => this.setState({ visFortsettSenereDialog: true })}
+                />
+                <FortsettSøknadSenereDialog
+                    synlig={visFortsettSenereDialog}
+                    onFortsettSøknadSenere={() => this.handleAvsluttOgFortsettSenere()}
+                    onFortsettSøknad={() => this.setState({ visFortsettSenereDialog: false })}
+                />
                 <AvbrytSøknadDialog
                     synlig={visAvbrytDialog}
                     onAvbrytSøknad={() => this.handleAvbrytSøknad()}
