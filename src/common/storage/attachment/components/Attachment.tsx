@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
-const Icon = require('nav-frontend-ikoner-assets').default;
 
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import SlettKnapp from '../../../components/slett-knapp/SlettKnapp';
@@ -11,6 +10,7 @@ import Lenke from 'nav-frontend-lenker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { bytesString } from 'common/util/filesize';
 import BEMHelper from 'common/util/bem';
+import VedleggIkon from 'common/components/ikoner/VedleggIkon';
 
 interface OwnProps {
     attachment: Attachment;
@@ -33,7 +33,7 @@ const Attachment: React.StatelessComponent<Props> = ({ attachment, showFileSize,
                     <NavFrontendSpinner type="S" />
                 </div>
             )}
-            <Icon className={BEM.element('icon')} kind="vedlegg" size={20} />
+            <VedleggIkon className={BEM.element('icon')} width={20} height={20} />
             <div className={BEM.element('filename')}>
                 {attachment.url ? (
                     <Lenke href={attachment.url} target="_blank">
