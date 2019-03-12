@@ -528,7 +528,8 @@
     "steg.config.tittel.infoOmUtenlandsopphold": "Opphold i utland",
     "steg.config.tittel.infoOmUttaket": "Om perioden din med foreldrepenger",
     "steg.config.tittel.inngang": "Din situasjon",
-    "steg.config.tittel.opplysningerOmInntekt": " Arbeidsforhold og inntekt",
+    "steg.config.tittel.opplysningerOmInntekt": "Arbeidsforhold og inntekt",
+    "steg.config.tittel.manglendeVedlegg": "Påkrevd dokumentasjon",
     "steg.config.tittel.oppsummering": "Oppsummering",
     "steg.config.tittel.relasjonBarnForeldreansvar": "Relasjon til barn overtakelse av foreldreansvar",
     "steg.config.tittel.relasjonBarnFødsel": "Om barnet",
@@ -967,5 +968,6 @@
         "på grunn av sykdom tilbake i tid og uttak mer enn tre måneder tilbake i tid",
     "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikke tilgjengelig akkurat nå",
     "feilside.ikkeTilgjengelig.melding":
-        "Huffda, det virker som om et av våre systemer er nede akkurat nå. Vi jobber iherdig med å rette opp feilen. Prøv igjen litt senere, vi beklager ulempen for deg."
+        "Huffda, det virker som om et av våre systemer er nede akkurat nå. Vi jobber iherdig med å rette opp feilen. Prøv igjen litt senere, vi beklager ulempen for deg.",
+    "manglendeVedlegg.info": "Før du kan sende inn søknaden så må du laste opp vedleggene som er listet nedenfor."
 }

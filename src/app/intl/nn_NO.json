@@ -528,6 +528,7 @@
     "steg.config.tittel.infoOmUttaket": "Perioden din med foreldrepengar",
     "steg.config.tittel.inngang": "Situasjonen din",
     "steg.config.tittel.opplysningerOmInntekt": "Arbeidsforhold og inntekt",
+    "steg.config.tittel.manglendeVedlegg": "Påkrevd dokumentasjon",
     "steg.config.tittel.oppsummering": "Oppsummering",
     "steg.config.tittel.relasjonBarnForeldreansvar": "Relasjonen til barnet ved overtaking av foreldreansvar",
     "steg.config.tittel.relasjonBarnFødsel": "Om barnet",
@@ -972,5 +973,6 @@
         "på grunn av sykdom tilbake i tid og uttak meir enn tre månader tilbake i tid",
     "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikkje tilgjengeleg akkurat nå",
     "feilside.ikkeTilgjengelig.melding":
-        "Huffda, det ser ut til at eit av systema våre er nede akkurat no. Vi jobbar med å ordna feilen. Forsøk igjen litt seinare, vi beklagar ulempa for deg."
+        "Huffda, det ser ut til at eit av systema våre er nede akkurat no. Vi jobbar med å ordna feilen. Forsøk igjen litt seinare, vi beklagar ulempa for deg.",
+    "manglendeVedlegg.info": "Før du kan sende inn søknaden så må du laste opp vedleggene som er listet nedenfor."
 }

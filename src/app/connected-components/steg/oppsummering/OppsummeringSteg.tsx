@@ -73,6 +73,7 @@ class OppsummeringSteg extends React.Component<Props> {
         const { missingAttachments, dispatch } = this.props;
         dispatch(apiActionCreators.sendSøknad(missingAttachments, this.props.history));
     }
+
     gotoUttaksplan() {
         const { history } = this.props;
         const path = søknadStegPath(StegID.UTTAKSPLAN);
