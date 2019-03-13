@@ -611,6 +611,7 @@
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
     "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst":
         "Skal du jobbe hos flere arbeidsgivere samtidig må du sende inn søknaden på papir. Du kan lese mer om dette på <a href=\"https://www.nav.no/fleksibeltuttak\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>,  og her finner du <a href=\"https://www.nav.no/no/Person/Skjemaer-for-privatpersoner/skjemaveileder/vedlegg?key=248825&veiledertype=privatperson&method=mail\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirskjemaet</a>.",
+    "uttaksplan.ønskerFlerbarnsdager": "Ønsker du å benytte deg av flerbarnsdagene?",
     "uttaksplan.familiehendelsesdato.adopsjon": "Barnet er adoptert {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Barnet er født {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin den {dato}",
@@ -770,6 +771,7 @@
         "Uttaksplanen kan ikke slutte med at den andre forelderen skal være hjemme.",
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold":
         "Uttaksplanen kan ikke starte med at den andre forelderen skal være hjemme.",
+    "uttaksplan.validering.feil.uttaksplanHarForMangeFlerbarnsdager": "Du har for mye uttak av flerbarnsdager",
     "uttaksplan.validering.feiloppsummering.tittel":
         "Planen inneholder feil som du må rette opp i før du kan gå videre",
     "uttaksplan.validering.før12UkerFørTermin": "Du kan tidligst ta ut foreldrepenger 12 uker før termin eller fødsel",
