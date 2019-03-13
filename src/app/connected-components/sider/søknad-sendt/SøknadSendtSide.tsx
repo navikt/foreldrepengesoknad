@@ -24,12 +24,15 @@ import './søknadSendtSide.less';
 interface StateProps {
     person: Person;
     kvittering: Kvittering;
+    erEndringssøknad: boolean;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
 class SøknadSendtSide extends React.Component<Props> {
-    componentDidMount(): void {
-        this.props.dispatch(api.sendStorageKvittering());
+    componentWillMount(): void {
+        if (!this.props.erEndringssøknad) {
+            this.props.dispatch(api.sendStorageKvittering());
+        }
     }
 
     buildHeadlineMessage() {
@@ -201,7 +204,8 @@ class SøknadSendtSide extends React.Component<Props> {
 
 const mapStateToProps = (state: any) => ({
     person: state.api.søkerinfo.person,
-    kvittering: state.api.kvittering
+    kvittering: state.api.kvittering,
+    erEndringssøknad: state.søknad.erEndringssøknad
 });
 
 export default connect<StateProps>(mapStateToProps)(injectIntl(SøknadSendtSide));
