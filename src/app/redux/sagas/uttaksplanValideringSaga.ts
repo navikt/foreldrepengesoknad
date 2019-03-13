@@ -26,6 +26,7 @@ import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeForm
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { erSenUtsettelsePgaFerieEllerArbeid } from 'app/util/uttaksplan/uttakUtils';
 import { Feature, isFeatureEnabled } from 'app/Feature';
+import { uttaksplanHarForMangeFlerbarnsdager } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 
 const stateSelector = (state: AppState) => state;
 
@@ -53,7 +54,8 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
                 tilgjengeligeStønadskontoer,
                 familiehendelsesdato,
                 situasjon,
-                søknadsinfo!.søknaden.erDeltUttak
+                søknadsinfo!.søknaden.erDeltUttak,
+                søknadsinfo!.søknaden.erFlerbarnssøknad
             ) || [],
         advarsler,
         overlappendePerioder: Periodene(appState.søknad.uttaksplan).finnOverlappendePerioder(periode)
@@ -66,7 +68,7 @@ const getStønadskontoerMedForMyeUttak = (uttak: Stønadskontouttak[]) => {
 
 function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
-    const { uttaksplan, barn, situasjon, søker, erEndringssøknad } = appState.søknad;
+    const { uttaksplan, barn, situasjon, søker, erEndringssøknad, dekningsgrad } = appState.søknad;
     const validertePerioder: Periodevalidering = {};
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
     const søkerErMor = søkerErFarEllerMedmor === false;
@@ -116,7 +118,8 @@ function* validerUttaksplanSaga() {
             uttaksplanGraderingStørreEnnSamtidigUttak(uttaksplan),
             begrunnelseForSenEndringErGyldig(
                 get(appState, 'søknad.tilleggsopplysninger.begrunnelseForSenEndring.tekst')
-            )
+            ),
+            uttaksplanHarForMangeFlerbarnsdager(uttaksplan, dekningsgrad, barn.antallBarn)
         )
     );
 }

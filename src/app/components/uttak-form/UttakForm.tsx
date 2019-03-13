@@ -57,6 +57,7 @@ import UlønnetPermisjonInfo from './partials/UlønnetPermisjonInfo';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
+import FlernbarnsdagerSpørsmål from './partials/FlerbarnsdagerSpørsmål';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -300,7 +301,8 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
             annenForelderHarRett,
             morErUfør,
             familiehendelsesdato,
-            situasjon: søknadsinfo.søknaden.situasjon
+            situasjon: søknadsinfo.søknaden.situasjon,
+            erFlerbarnssøknad: søknadsinfo.søknaden.erFlerbarnssøknad
         });
     }
     render() {
@@ -439,6 +441,9 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                     </Veilederpanel>
                                 </>
                             )}
+                        <Block visible={visibility.isVisible(UttakSpørsmålKeys.ønskerFlerbarnsdager)}>
+                            <FlernbarnsdagerSpørsmål periode={periode} onChange={this.onChange} />
+                        </Block>
                         <Block
                             visible={visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)}
                             hasChildBlocks={true}>
