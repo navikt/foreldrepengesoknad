@@ -615,6 +615,7 @@
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Barnet er født {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin {dato}",
     "uttaksplan.familiehendelsesdato.omsorgsovertakelse": "Omsorgsovertakingsdato {dato}",
+    "uttaksplan.ønskerFlerbarnsdager": "Ønsker du å benytte deg av flerbarnsdagene?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål": "Kva skal {navnMor} gjere i denne perioden?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid":
         "Du må leggje ved stadfesting frå arbeidsgivaren til {navnMor} som viser kva periode ho skal jobbe, og i kva stillingsprosent. Dersom mor er sjølvstendig næringsdrivande, frilansar eller er tilsett i eige AS, skriv ho denne stadfestinga sjølv.",

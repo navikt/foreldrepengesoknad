@@ -2,18 +2,21 @@ import * as React from 'react';
 import JaNeiSpørsmål from 'app/components/ja-nei-spørsmål/JaNeiSpørsmål';
 import { Uttaksperiode, UttaksperiodeBase } from 'app/types/uttaksplan/periodetyper';
 import { RecursivePartial } from 'app/types/Partial';
+import { injectIntl, InjectedIntl } from 'react-intl';
+import getMessage from 'common/util/i18nUtils';
 
 interface Props {
     periode: RecursivePartial<UttaksperiodeBase>;
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
+    intl: InjectedIntl;
 }
 
-const FlernbarnsdagerSpørsmål: React.SFC<Props> = ({ periode, onChange }) => {
+const FlernbarnsdagerSpørsmål: React.SFC<Props> = ({ periode, onChange, intl }) => {
     return (
         <>
             <JaNeiSpørsmål
                 navn="ønskerFlerbarnsuker"
-                spørsmål="Ønsker du å benytte deg av flerbarnsdagene?"
+                spørsmål={getMessage(intl, 'uttaksplan.ønskerFlerbarnsdager')}
                 valgtVerdi={periode.ønskerFlerbarnsdager}
                 onChange={(ønskerFlerbarnsdager) => onChange({ ønskerFlerbarnsdager })}
             />
@@ -21,4 +24,4 @@ const FlernbarnsdagerSpørsmål: React.SFC<Props> = ({ periode, onChange }) => {
     );
 };
 
-export default FlernbarnsdagerSpørsmål;
+export default injectIntl(FlernbarnsdagerSpørsmål);
