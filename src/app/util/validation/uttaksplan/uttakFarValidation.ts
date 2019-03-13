@@ -34,10 +34,7 @@ export const unntakFarFørsteSeksUker = (periode: Uttaksperiode) => ({
         return false;
     },
     erFlerbarnsukerOgUttakAvFlerbarnsdagerEllerFedrekvote: (antallBarn: number): boolean => {
-        return (
-            antallBarn > 1 &&
-            (periode.konto === StønadskontoType.Flerbarnsdager || periode.konto === StønadskontoType.Fedrekvote)
-        );
+        return antallBarn > 1 && periode.ønskerFlerbarnsdager === true;
     }
 });
 
