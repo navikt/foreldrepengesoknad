@@ -45,7 +45,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                 </Veilederpanel>
                 {missingAttachments.map((ma) => (
                     <>
-                        <Block margin="xs" header={{ title: 'test', info: 'Waaaaaaaaaaaat' }}>
+                        <Block margin="xs" header={{ title: ma.type, info: `${ma.skjemanummer} + ${ma.index}` }}>
                             <VedleggSpørsmål
                                 attachmentType={ma.type}
                                 skjemanummer={ma.skjemanummer}
@@ -65,7 +65,7 @@ const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
 
     const stegProps: StegProps = {
         id: StegID.MANGLENDE_VEDLEGG,
-        renderFortsettKnapp: missingAttachments.length === 0,
+        renderFortsettKnapp: true,
         history: props.history,
         renderFormTag: true,
         isAvailable: isAvailable(StegID.MANGLENDE_VEDLEGG, søknad, props.søkerinfo)

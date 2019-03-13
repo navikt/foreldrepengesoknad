@@ -138,6 +138,25 @@ export const findMissingAttachmentsForAndreInntekter = (søknad: Søknad): Missi
     return missingAttachments;
 };
 
+export const findUploadedAttachmentsForAndreInntekter = (søknad: Søknad): MissingAttachment[] => {
+    if (!søknad.søker.andreInntekterSiste10Mnd) {
+        return [];
+    }
+
+    const missingAttachments = [];
+    for (const andreInntekterSiste10MndItem of søknad.søker.andreInntekterSiste10Mnd) {
+        const annenInntektVedlegg = visibility.vedlegg(andreInntekterSiste10MndItem);
+        if (annenInntektVedlegg && isAttachmentMissing(andreInntekterSiste10MndItem.vedlegg)) {
+            missingAttachments.push({
+                index: søknad.søker.andreInntekterSiste10Mnd.indexOf(andreInntekterSiste10MndItem),
+                skjemanummer: getSkjemanummerForAndreInntekter(andreInntekterSiste10MndItem.type),
+                type: AttachmentType.ANNEN_INNTEKT
+            });
+        }
+    }
+    return missingAttachments;
+};
+
 export const findMissingAttachments = (
     søknad: Søknad,
     api: ApiState,
@@ -164,7 +183,7 @@ export const mapMissingAttachmentsOnSøknad = (missingAttachments: MissingAttach
         } else if (isAttachmentForAnnenInntekt(attachment.type)) {
             søknad.søker.andreInntekterSiste10Mnd![missingAttachment.index!].vedlegg = [attachment];
         } else if (isAttachmentForPeriode(attachment.type)) {
-            søknad.uttaksplan![missingAttachment.index!].vedlegg = [attachment];
+            søknad.uttaksplan[missingAttachment.index!].vedlegg = [attachment];
         }
     });
 };
