@@ -22,8 +22,6 @@ import søknadActionCreators from '../../redux/actions/søknad/søknadActionCrea
 import './steg.less';
 import DocumentTitle from 'react-document-title';
 import FortsettSøknadSenereDialog from '../fortsett-søknad-senere-dialog/FortsettSøknadSenereDialog';
-import { findMissingAttachments } from 'app/util/attachments/missingAttachmentUtil';
-import { MissingAttachment } from 'app/types/MissingAttachment';
 
 export interface StegProps {
     id: StegID;
@@ -43,7 +41,6 @@ export interface StegProps {
 
 interface StateProps {
     erEndringssøknad: boolean;
-    missingAttachments: MissingAttachment[];
 }
 
 interface State {
@@ -164,7 +161,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 
     getStegConfig() {
-        return getStegConfig(this.props.erEndringssøknad, this.props.missingAttachments);
+        return getStegConfig(this.props.erEndringssøknad);
     }
 
     renderContent() {
@@ -174,7 +171,6 @@ class Steg extends React.Component<Props & DispatchProps, State> {
             fortsettKnappLabel,
             errorSummaryRenderer,
             erEndringssøknad,
-            missingAttachments,
             intl
         } = this.props;
 
@@ -193,11 +189,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                     />
                 </Block>
                 <Block>
-                    <Stegindikator
-                        id={id}
-                        erEndringssøknad={erEndringssøknad}
-                        missingAttachments={missingAttachments}
-                    />
+                    <Stegindikator id={id} erEndringssøknad={erEndringssøknad} />
                 </Block>
                 {this.props.children}
                 {renderFortsettKnapp === true && (
@@ -251,8 +243,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    erEndringssøknad: state.søknad.erEndringssøknad,
-    missingAttachments: findMissingAttachments(state.søknad, state.api, state.søknad.annenForelder)
+    erEndringssøknad: state.søknad.erEndringssøknad
 });
 
 export default connect(mapStateToProps)(injectIntl(Steg));

@@ -1,5 +1,4 @@
 import Søknad from '../../types/søknad/Søknad';
-import { MissingAttachment } from 'app/types/MissingAttachment';
 
 export enum StegID {
     'INNGANG' = 'inngang',
@@ -27,7 +26,7 @@ export interface StegConfigItem {
     index: number;
 }
 
-export const getStegConfig = (erEndringssøknad: boolean, missingAttachments: MissingAttachment[]): StegConfig => {
+export const getStegConfig = (erEndringssøknad: boolean): StegConfig => {
     let stegConfig: StegConfig = {
         [StegID.INNGANG]: {
             tittel: 'steg.config.tittel.inngang',
@@ -81,67 +80,38 @@ export const getStegConfig = (erEndringssøknad: boolean, missingAttachments: Mi
             }
         };
     } else {
-        if (missingAttachments.length === 0) {
-            stegConfig = {
-                ...stegConfig,
-                [StegID.UTTAKSPLAN]: {
-                    tittel: 'steg.config.tittel.uttak',
-                    fortsettKnappLabel: 'Fortsett',
-                    nesteSteg: StegID.UTENLANDSOPPHOLD,
-                    index: 4
-                },
-                [StegID.UTENLANDSOPPHOLD]: {
-                    tittel: 'steg.config.tittel.infoOmUtenlandsopphold',
-                    fortsettKnappLabel: 'Fortsett',
-                    nesteSteg: StegID.ANDRE_INNTEKTER,
-                    index: 5
-                },
-                [StegID.ANDRE_INNTEKTER]: {
-                    tittel: 'steg.config.tittel.opplysningerOmInntekt',
-                    fortsettKnappLabel: 'Gå til oppsummering',
-                    nesteSteg: StegID.OPPSUMMERING,
-                    index: 6
-                },
-                [StegID.OPPSUMMERING]: {
-                    tittel: 'steg.config.tittel.oppsummering',
-                    fortsettKnappLabel: 'Send søknad',
-                    index: 7
-                }
-            };
-        } else {
-            stegConfig = {
-                ...stegConfig,
-                [StegID.UTTAKSPLAN]: {
-                    tittel: 'steg.config.tittel.uttak',
-                    fortsettKnappLabel: 'Fortsett',
-                    nesteSteg: StegID.UTENLANDSOPPHOLD,
-                    index: 4
-                },
-                [StegID.UTENLANDSOPPHOLD]: {
-                    tittel: 'steg.config.tittel.infoOmUtenlandsopphold',
-                    fortsettKnappLabel: 'Fortsett',
-                    nesteSteg: StegID.ANDRE_INNTEKTER,
-                    index: 5
-                },
-                [StegID.ANDRE_INNTEKTER]: {
-                    tittel: 'steg.config.tittel.opplysningerOmInntekt',
-                    fortsettKnappLabel: 'Fortsett',
-                    nesteSteg: StegID.MANGLENDE_VEDLEGG,
-                    index: 6
-                },
-                [StegID.MANGLENDE_VEDLEGG]: {
-                    tittel: 'steg.config.tittel.manglendeVedlegg',
-                    fortsettKnappLabel: 'Gå til oppsummering',
-                    nesteSteg: StegID.OPPSUMMERING,
-                    index: 7
-                },
-                [StegID.OPPSUMMERING]: {
-                    tittel: 'steg.config.tittel.oppsummering',
-                    fortsettKnappLabel: 'Send søknad',
-                    index: 8
-                }
-            };
-        }
+        stegConfig = {
+            ...stegConfig,
+            [StegID.UTTAKSPLAN]: {
+                tittel: 'steg.config.tittel.uttak',
+                fortsettKnappLabel: 'Fortsett',
+                nesteSteg: StegID.UTENLANDSOPPHOLD,
+                index: 4
+            },
+            [StegID.UTENLANDSOPPHOLD]: {
+                tittel: 'steg.config.tittel.infoOmUtenlandsopphold',
+                fortsettKnappLabel: 'Fortsett',
+                nesteSteg: StegID.ANDRE_INNTEKTER,
+                index: 5
+            },
+            [StegID.ANDRE_INNTEKTER]: {
+                tittel: 'steg.config.tittel.opplysningerOmInntekt',
+                fortsettKnappLabel: 'Fortsett',
+                nesteSteg: StegID.MANGLENDE_VEDLEGG,
+                index: 6
+            },
+            [StegID.MANGLENDE_VEDLEGG]: {
+                tittel: 'steg.config.tittel.manglendeVedlegg',
+                fortsettKnappLabel: 'Gå til oppsummering',
+                nesteSteg: StegID.OPPSUMMERING,
+                index: 7
+            },
+            [StegID.OPPSUMMERING]: {
+                tittel: 'steg.config.tittel.oppsummering',
+                fortsettKnappLabel: 'Send søknad',
+                index: 8
+            }
+        };
     }
 
     return stegConfig;
