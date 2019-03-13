@@ -102,7 +102,7 @@ describe('Validering av fars uttak første 6 uker', () => {
     });
     it('skal godta uttak av flerbarnsuker', () => {
         const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
-            [{ ...uttak, konto: StønadskontoType.Flerbarnsdager }],
+            [{ ...uttak, ønskerFlerbarnsdager: true }],
             familiehendelsesdato,
             2,
             Søkersituasjon.FØDSEL
@@ -111,7 +111,7 @@ describe('Validering av fars uttak første 6 uker', () => {
     });
     it('skal godta uttak av egen kvote dersom flere barn ', () => {
         const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
-            [{ ...uttak, konto: StønadskontoType.Fedrekvote }],
+            [{ ...uttak, ønskerFlerbarnsdager: true }],
             familiehendelsesdato,
             2,
             Søkersituasjon.FØDSEL
