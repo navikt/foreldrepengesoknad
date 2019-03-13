@@ -40,6 +40,7 @@ export interface UttaksplanValideringState {
     uttaksplanSlutterMedOpphold: boolean;
     uttaksplanGraderingStørreEnnSamtidigUttak: boolean;
     begrunnelseForSenEndringErGyldig: boolean;
+    uttaksplanHarForMangeFlerbarnsdager: boolean;
 }
 
 export interface PeriodeValideringsfeil {
@@ -70,7 +71,8 @@ const getDefaultState = (): UttaksplanValideringState => {
         uttaksplanStarterMedOpphold: false,
         uttaksplanSlutterMedOpphold: false,
         uttaksplanGraderingStørreEnnSamtidigUttak: false,
-        begrunnelseForSenEndringErGyldig: true
+        begrunnelseForSenEndringErGyldig: true,
+        uttaksplanHarForMangeFlerbarnsdager: false
     };
 };
 
@@ -97,7 +99,8 @@ const uttaksplanValideringReducer = (
                 action.uttaksplanStarterMedOpphold === false &&
                 action.uttaksplanSlutterMedOpphold === false &&
                 action.uttaksplanGraderingStørreEnnSamtidigUttak === false &&
-                action.begrunnelseForSenEndringErGyldig === true;
+                action.begrunnelseForSenEndringErGyldig === true &&
+                action.uttaksplanHarForMangeFlerbarnsdager === false;
             return {
                 ...state,
                 periodevalidering: action.validertePerioder,
@@ -111,7 +114,8 @@ const uttaksplanValideringReducer = (
                 uttaksplanStarterMedOpphold: action.uttaksplanStarterMedOpphold === true,
                 uttaksplanSlutterMedOpphold: action.uttaksplanSlutterMedOpphold === true,
                 uttaksplanGraderingStørreEnnSamtidigUttak: action.uttaksplanGraderingStørreEnnSamtidigUttak === true,
-                begrunnelseForSenEndringErGyldig: action.begrunnelseForSenEndringErGyldig === true
+                begrunnelseForSenEndringErGyldig: action.begrunnelseForSenEndringErGyldig === true,
+                uttaksplanHarForMangeFlerbarnsdager: action.uttaksplanHarForMangeFlerbarnsdager === true
             };
     }
     return state;

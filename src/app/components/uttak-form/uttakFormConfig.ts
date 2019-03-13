@@ -31,7 +31,8 @@ export enum UttakSpørsmålKeys {
     'hvorSkalDuJobbe' = 'hvorSkalDuJobbe',
     'erMorForSyk' = 'erMorForSyk',
     'samtidigUttakProsent' = 'samtidigUttakProsent',
-    'hvemSkalTaUttak' = 'hvemSkalTaUttak'
+    'hvemSkalTaUttak' = 'hvemSkalTaUttak',
+    'ønskerFlerbarnsdager' = 'ønskerFlerbarnsdager'
 }
 
 export interface UttakFormPayload {
@@ -45,6 +46,7 @@ export interface UttakFormPayload {
     morErUfør: boolean;
     familiehendelsesdato: Date;
     situasjon: Søkersituasjon;
+    erFlerbarnssøknad: boolean;
 }
 
 export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
@@ -84,7 +86,11 @@ const visKvote = (payload: UttakFormPayload): boolean => {
 const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
     const { periode, søkerErFarEllerMedmor, annenForelderHarRett, søkerErAleneOmOmsorg } = payload;
     if (isUttaksperiode(periode) || isOverføringsperiode(periode)) {
-        if (søkerErFarEllerMedmor === false || periode.konto === undefined) {
+        if (
+            søkerErFarEllerMedmor === false ||
+            periode.konto === undefined ||
+            (visØnskerFlerbarnsdager(payload) && isUttaksperiode(periode) && periode.ønskerFlerbarnsdager !== false)
+        ) {
             return false;
         }
         const erDeltUttak = søkerErAleneOmOmsorg === false && annenForelderHarRett === true;
@@ -120,7 +126,8 @@ const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
             periode.konto === undefined ||
             periode.type === Periodetype.Overføring ||
             erUttakFørFødsel(payload) ||
-            (periode.type === Periodetype.Uttak && visErMorForSyk(payload) && periode.erMorForSyk === false)
+            (periode.type === Periodetype.Uttak && visErMorForSyk(payload) && periode.erMorForSyk === false) ||
+            (visØnskerFlerbarnsdager(payload) && isUttaksperiode(periode) && periode.ønskerFlerbarnsdager === undefined)
         ) {
             return false;
         } else if (periode.type === Periodetype.Uttak && periode.konto !== undefined) {
@@ -199,6 +206,7 @@ const visGradering = (payload: UttakFormPayload): boolean => {
             periode.konto === undefined ||
             erUttakFørFødsel(payload) ||
             (visSamtidigUttak(payload) && periode.ønskerSamtidigUttak === undefined) ||
+            (visØnskerFlerbarnsdager(payload) && periode.ønskerFlerbarnsdager === undefined) ||
             (visAktivitetskravMor(payload) && periode.morsAktivitetIPerioden === undefined) ||
             (visErMorForSyk(payload) && periode.erMorForSyk !== true)
         ) {
@@ -238,6 +246,19 @@ const visErMorForSyk = (payload: UttakFormPayload) => {
     return false;
 };
 
+const visØnskerFlerbarnsdager = (payload: UttakFormPayload) => {
+    const { periode, erFlerbarnssøknad, søkerErFarEllerMedmor } = payload;
+
+    return (
+        isUttaksperiode(periode) &&
+        erFlerbarnssøknad &&
+        søkerErFarEllerMedmor &&
+        (periode.konto === StønadskontoType.Fellesperiode ||
+            periode.konto === StønadskontoType.Fedrekvote ||
+            periode.konto === StønadskontoType.Foreldrepenger)
+    );
+};
+
 export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpørsmålKeys> = {
     [Sp.tidsperiode]: {
         isAnswered: ({ periode }) =>
@@ -259,6 +280,11 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
             isOppholdsperiode(periode),
         parentQuestion: Sp.kvote,
         isRequired: (payload) => visErMorForSyk(payload)
+    },
+    [Sp.ønskerFlerbarnsdager]: {
+        isAnswered: ({ periode }) =>
+            (isUttaksperiode(periode) && questionValueIsOk(periode.ønskerFlerbarnsdager)) || isOppholdsperiode(periode),
+        isRequired: (payload) => visØnskerFlerbarnsdager(payload)
     },
     [Sp.aktivitetskravMor]: {
         isAnswered: ({ periode }) =>

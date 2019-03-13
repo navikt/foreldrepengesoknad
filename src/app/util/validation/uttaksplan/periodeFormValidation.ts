@@ -121,7 +121,8 @@ export const validerPeriodeForm = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     familiehendelsesdato: Date,
     situasjon: Søkersituasjon,
-    erDeltUttak: boolean
+    erDeltUttak: boolean,
+    erFlerbarnssøknad: boolean
 ): PeriodeValideringsfeil[] | undefined => {
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
     if (periode.type === Periodetype.Hull) {
@@ -142,7 +143,8 @@ export const validerPeriodeForm = (
             morErUfør: søkerErFarEllerMedmor === false && annenForelder.erUfør,
             familiehendelsesdato,
             situasjon,
-            erDeltUttak
+            erDeltUttak,
+            erFlerbarnssøknad
         });
     }
     return validerUtsettelseForm({
