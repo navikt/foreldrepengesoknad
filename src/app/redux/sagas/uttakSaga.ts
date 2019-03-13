@@ -28,21 +28,21 @@ const getAktivitetsFrieUkerForeldrepenger = (dekningsgrad: Dekningsgrad, startda
     }
 };
 
-const getFlerbarnsuker = (dekningsgrad: Dekningsgrad, antallBarn: number): number => {
-    if (antallBarn === 2) {
-        if (dekningsgrad === '100') {
-            return 17;
-        } else {
-            return 21;
-        }
-    } else {
-        if (dekningsgrad === '100') {
-            return 46;
-        } else {
-            return 56;
-        }
-    }
-};
+// const getFlerbarnsuker = (dekningsgrad: Dekningsgrad, antallBarn: number): number => {
+//     if (antallBarn === 2) {
+//         if (dekningsgrad === '100') {
+//             return 17;
+//         } else {
+//             return 21;
+//         }
+//     } else {
+//         if (dekningsgrad === '100') {
+//             return 46;
+//         } else {
+//             return 56;
+//         }
+//     }
+// };
 
 const opprettAktivitetsFriKonto = (
     kontoer: TilgjengeligStønadskonto[],
@@ -53,42 +53,28 @@ const opprettAktivitetsFriKonto = (
     const nyeKontoer: TilgjengeligStønadskonto[] = [];
     const aktivitetskravFrieDagerForeldrepenger = getAktivitetsFrieUkerForeldrepenger(dekningsgrad, startdatoUttak) * 5;
 
-    if (antallBarn >= 2) {
-        const flerbarnsuker = getFlerbarnsuker(dekningsgrad, antallBarn) * 5;
-
-        nyeKontoer.push({
-            ...kontoer[0],
-            dager: kontoer[0].dager - aktivitetskravFrieDagerForeldrepenger - flerbarnsuker
-        });
-        nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: aktivitetskravFrieDagerForeldrepenger });
-        nyeKontoer.push({
-            konto: StønadskontoType.Flerbarnsdager,
-            dager: flerbarnsuker
-        });
-    } else {
-        nyeKontoer.push({ ...kontoer[0], dager: kontoer[0].dager - aktivitetskravFrieDagerForeldrepenger });
-        nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: aktivitetskravFrieDagerForeldrepenger });
-    }
+    nyeKontoer.push({ ...kontoer[0], dager: kontoer[0].dager - aktivitetskravFrieDagerForeldrepenger });
+    nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: aktivitetskravFrieDagerForeldrepenger });
 
     return nyeKontoer;
 };
 
-const fjernFlerbarnsdagerFraFellesperiode = (kontoer: TilgjengeligStønadskonto[]): TilgjengeligStønadskonto[] => {
-    const flerbarnsdagerIndex = kontoer.findIndex((konto) => konto.konto === StønadskontoType.Flerbarnsdager);
-    const fellesperiodeIndex = kontoer.findIndex((konto) => konto.konto === StønadskontoType.Fellesperiode);
+// const fjernFlerbarnsdagerFraFellesperiode = (kontoer: TilgjengeligStønadskonto[]): TilgjengeligStønadskonto[] => {
+//     const flerbarnsdagerIndex = kontoer.findIndex((konto) => konto.konto === StønadskontoType.Flerbarnsdager);
+//     const fellesperiodeIndex = kontoer.findIndex((konto) => konto.konto === StønadskontoType.Fellesperiode);
 
-    if (flerbarnsdagerIndex > 0 && fellesperiodeIndex > 0) {
-        return kontoer.map((konto) => {
-            if (konto.konto === StønadskontoType.Fellesperiode) {
-                konto.dager = konto.dager - kontoer[flerbarnsdagerIndex].dager;
-            }
+//     if (flerbarnsdagerIndex > 0 && fellesperiodeIndex > 0) {
+//         return kontoer.map((konto) => {
+//             if (konto.konto === StønadskontoType.Fellesperiode) {
+//                 konto.dager = konto.dager - kontoer[flerbarnsdagerIndex].dager;
+//             }
 
-            return konto;
-        });
-    }
+//             return konto;
+//         });
+//     }
 
-    return kontoer;
-};
+//     return kontoer;
+// };
 
 function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     try {
@@ -102,14 +88,16 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
         const response = yield call(Api.getUttakskontoer, action.params);
         const stønadskontoer: StønadskontoerDTO = response.data;
         let tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
-        Object.keys(stønadskontoer.kontoer).map((konto) => {
-            tilgjengeligeStønadskontoer.push({
-                konto: konto as StønadskontoType,
-                dager: stønadskontoer.kontoer[konto]
+        Object.keys(stønadskontoer.kontoer)
+            .filter((konto: StønadskontoType) => konto !== StønadskontoType.Flerbarnsdager)
+            .map((konto) => {
+                tilgjengeligeStønadskontoer.push({
+                    konto: konto as StønadskontoType,
+                    dager: stønadskontoer.kontoer[konto]
+                });
             });
-        });
 
-        tilgjengeligeStønadskontoer = fjernFlerbarnsdagerFraFellesperiode(tilgjengeligeStønadskontoer);
+        // tilgjengeligeStønadskontoer = fjernFlerbarnsdagerFraFellesperiode(tilgjengeligeStønadskontoer);
 
         if (morHarIkkeRett && !annenForelderErUkjent && !erAleneOmsorg) {
             tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(
@@ -181,15 +169,10 @@ function* getStønadskontoUker(action: GetTilgjengeligeStønadskontoer) {
             .filter((konto: StønadskontoType) => konto !== StønadskontoType.Flerbarnsdager)
             .reduce((sum: number, konto: StønadskontoType) => sum + stønadskontoer.kontoer[konto] / 5, 0);
         const antallFellesperiodeUker: number = Object.keys(stønadskontoer.kontoer)
-            .filter(
-                (konto: StønadskontoType) =>
-                    konto === StønadskontoType.Fellesperiode || konto === StønadskontoType.Flerbarnsdager
-            )
+            .filter((konto: StønadskontoType) => konto === StønadskontoType.Fellesperiode)
             .reduce((sum: number, konto: StønadskontoType) => {
                 if (konto === StønadskontoType.Fellesperiode) {
                     return sum + stønadskontoer.kontoer[konto] / 5;
-                } else if (konto === StønadskontoType.Flerbarnsdager) {
-                    return sum - stønadskontoer.kontoer[konto] / 5;
                 } else {
                     return 0;
                 }

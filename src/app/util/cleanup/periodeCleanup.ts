@@ -104,7 +104,9 @@ const cleanupUttak = (
         tidsperiode: periode.tidsperiode,
         gradert: periode.gradert,
         morsAktivitetIPerioden:
-            periodeKontotypeHasAktivitetskrav(periode) && periode.morsAktivitetIPerioden
+            periodeKontotypeHasAktivitetskrav(periode) &&
+            periode.morsAktivitetIPerioden &&
+            periode.ønskerFlerbarnsdager === false
                 ? periode.morsAktivitetIPerioden
                 : undefined,
         ønskerSamtidigUttak: periode.ønskerSamtidigUttak,
