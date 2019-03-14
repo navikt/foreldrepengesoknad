@@ -31,6 +31,9 @@ const OverføringsårsakSpørsmål = (props: Props) => {
 
     if (visAleneomsorgSomMuligÅrsak) {
         alternativer.push(getOverføringsårsakAlternativ(OverføringÅrsakType.aleneomsorg, annenForelderNavn, intl));
+        alternativer.push(
+            getOverføringsårsakAlternativ(OverføringÅrsakType.ikkeRettAnnenForelder, annenForelderNavn, intl)
+        );
     }
 
     return (
