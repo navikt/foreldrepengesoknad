@@ -147,8 +147,8 @@
     "dokumentasjon.mangler": "Dokumentasjon manglar",
     "dokumentasjon.vedlagt": "Dokumentasjon er lagd ved",
     "driverFosterhjem.spørsmål": "Har du inntekt som fosterforelder?",
-    "egenDelUttakForm.samtidigUttak.flernBarnsuker.veiledertekst":
-        "De kan begge ta ut 100 prosent foreldrepengar samstundes når de får fleire barn. De vel sjølv om de tek ut fleirbarnsvekene som fellesperiode eller kvote. Det er ikkje krav til kva du gjer når {navn} tek ut flerbarnsveker eller kvote. {link}.",
+    "egenDelUttakForm.samtidigUttak.flerBarnsuker.veiledertekst":
+        "De kan begge ta ut 100 prosent foreldrepengar samstundes når de får fleire barn. De vel sjølv om de tek ut fleirbarnsvekene som fellesperiode eller kvote. Det er ikkje krav til kva {navnMor} gjer når {navnFar} tek ut flerbarnsveker eller kvote. {link}.",
     "egenDelUttakForm.samtidigUttak.veiledertekst":
         "De kan ta ut opptil 100 prosent foreldrepengar til saman, til dømes hvis de tek ut 50 prosent kvar. De kan også ta ut opptil 150 prosent til saman, om ein av dykk er i opptil 50 prosent jobb samstundes som den andre tek ut kvote. {link}.",
     "egenDelUttakForm.samtidigUttak.veiledertekst.lenke": "Les meir om å vere heime samtidig her",
@@ -658,7 +658,7 @@
     "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan":
         "Perioden med foreldrepengar starter {dato}. Starter du seinare, får du færre dagar med foreldrepengar.",
     "uttaksplan.informasjon.flerbarnssøknad":
-        "Dere har {uker} uker med flerbarnsuker som dere kan dele. Disse ukene kan dere ta ut når som helst i foreldrepengeperioden. Dere kan ta de ut samtidig, eller hver for dere. Det er ikke krav til hva {navnMor} gjør når du tar ut dager med flerbarnsuker.",
+        "De har {uker} veker med fleirbarnsveker som de kan dele. Disse vekene kan de ta ut når som helt i foreldrepengeperioden. De kan ta de ut samtidig, eller kvar for dere. Det er ikkje krav til kva {navnMor} gjer når du tek ut dager med flerbarnsveker.",
     "uttaksplan.informasjon.endringssøknad":
         "Her legg du inn kva tidsrom du vil ha foreldrepengar eller utsetje når du skal ha ferie, jobbe er har blitt sjuk. Denne endringssøknaden erstattar din tidlegare plan.",
     "uttaksplan.informasjon.farMedmor.aleneOmsorg":
