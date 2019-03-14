@@ -6,7 +6,9 @@ import {
     isUttaksperiode,
     StønadskontoType,
     Periodetype,
-    OppholdÅrsakType
+    OppholdÅrsakType,
+    Uttaksperiode,
+    Arbeidsform
 } from '../../types/uttaksplan/periodetyper';
 import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
 import stringifyTilleggsopplysninger from './stringifyTilleggsopplysninger';
@@ -90,6 +92,25 @@ export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
     });
 };
 
+const getArbeidstakerFrilansSN = (arbeidsformer: Arbeidsform[] | undefined) => {
+    if (arbeidsformer !== undefined && arbeidsformer.length > 0) {
+        const arbeidsform = arbeidsformer[0];
+        return {
+            erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker,
+            erFrilans: arbeidsform === Arbeidsform.frilans,
+            erSelvstendig: arbeidsform === Arbeidsform.selvstendignæringsdrivende
+        };
+    } else {
+        return {};
+    }
+};
+
+const changeGradertePerioder = (uttaksplan: Periode[]) => {
+    return uttaksplan
+        .filter((periode) => isUttaksperiode(periode) && periode.gradert)
+        .map((periode: Uttaksperiode) => ({ ...periode, ...getArbeidstakerFrilansSN(periode.arbeidsformer) }));
+};
+
 export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
     const { ekstrainfo, sensitivInfoIkkeLagre, vedleggForSenEndring, tilleggsopplysninger, ...rest } = søknad;
     const cleanedSøknad: SøknadForInnsending = { ...rest };
@@ -105,6 +126,7 @@ export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
         søknad.annenForelder.harRettPåForeldrepenger
     );
 
+    cleanedSøknad.uttaksplan = changeGradertePerioder(cleanedSøknad.uttaksplan);
     cleanedSøknad.uttaksplan = changeClientonlyOppholdsÅrsaker(cleanedSøknad.uttaksplan);
     cleanedSøknad.uttaksplan = removePeriodetypeHullFromUttaksplan(cleanedSøknad.uttaksplan);
 
