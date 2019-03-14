@@ -17,13 +17,14 @@ import { getStillingsprosentRegler } from 'app/util/validation/stillingsprosent'
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import { NavnISøknaden } from 'app/selectors/types';
 
 export interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
     ønskerSamtidigUttak: boolean | undefined;
     periode: RecursivePartial<Uttaksperiode>;
     visibility: UttakSpørsmålVisibility;
-    navnAnnenForelder: string;
+    navn: NavnISøknaden;
 }
 
 type Props = OwnProps & InjectedIntlProps;
@@ -38,7 +39,7 @@ class SamtidigUttakPart extends React.Component<Props> {
     }
 
     render() {
-        const { onChange, ønskerSamtidigUttak, intl, visibility, periode, navnAnnenForelder } = this.props;
+        const { onChange, ønskerSamtidigUttak, intl, visibility, periode, navn } = this.props;
 
         const erFlerbarnsUker = periode.ønskerFlerbarnsdager;
         const pst = getFloatFromString(periode.samtidigUttakProsent || '');
@@ -56,7 +57,7 @@ class SamtidigUttakPart extends React.Component<Props> {
                     <SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål
                         onChange={(øs) => onChange({ ønskerSamtidigUttak: øs })}
                         ønskerSamtidigUttak={ønskerSamtidigUttak}
-                        navnAnnenForelder={navnAnnenForelder}
+                        navnAnnenForelder={navn.annenForelder.fornavn}
                     />
                 </Block>
                 <Block visible={ønskerSamtidigUttak === true} margin="none">
@@ -66,7 +67,7 @@ class SamtidigUttakPart extends React.Component<Props> {
                                 {
                                     type: 'normal',
                                     contentIntlKey: erFlerbarnsUker
-                                        ? 'egenDelUttakForm.samtidigUttak.flernBarnsuker.veiledertekst'
+                                        ? 'egenDelUttakForm.samtidigUttak.flerBarnsuker.veiledertekst'
                                         : 'egenDelUttakForm.samtidigUttak.veiledertekst',
                                     values: {
                                         link: (
@@ -74,7 +75,9 @@ class SamtidigUttakPart extends React.Component<Props> {
                                                 <FormattedMessage id="egenDelUttakForm.samtidigUttak.veiledertekst.lenke" />
                                             </Lenke>
                                         ),
-                                        navn: navnAnnenForelder
+                                        navn: navn.annenForelder.fornavn,
+                                        navnMor: navn.mor.fornavn,
+                                        navnFar: navn.farMedmor.fornavn
                                     }
                                 }
                             ]}
