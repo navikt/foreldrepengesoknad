@@ -249,6 +249,10 @@ const visErMorForSyk = (payload: UttakFormPayload) => {
 const visØnskerFlerbarnsdager = (payload: UttakFormPayload) => {
     const { periode, erFlerbarnssøknad, søkerErFarEllerMedmor } = payload;
 
+    if (isUttaksperiode(periode) && visErMorForSyk(payload) && periode.erMorForSyk !== true) {
+        return false;
+    }
+
     return (
         isUttaksperiode(periode) &&
         erFlerbarnssøknad &&
