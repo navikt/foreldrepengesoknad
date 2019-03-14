@@ -43,6 +43,7 @@ export interface OmSøknaden {
     erDeltUttak: boolean;
     erFlerbarnssøknad: boolean;
     erEndringssøknad: boolean;
+    antallBarn: number;
 }
 
 export interface OmSøker {

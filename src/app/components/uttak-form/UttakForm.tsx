@@ -58,6 +58,7 @@ import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
 import FlernbarnsdagerSpørsmål from './partials/FlerbarnsdagerSpørsmål';
+import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -442,6 +443,23 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                 </>
                             )}
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.ønskerFlerbarnsdager)}>
+                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                <VeilederpanelInnhold
+                                    messages={[
+                                        {
+                                            type: 'normal',
+                                            contentIntlKey: 'uttaksplan.informasjon.flerbarnssøknad',
+                                            values: {
+                                                navnMor: søknadsinfo.navn.mor.fornavn,
+                                                uker: getFlerbarnsuker(
+                                                    søknadsinfo.søknaden.dekningsgrad!,
+                                                    søknadsinfo.søknaden.antallBarn
+                                                )
+                                            }
+                                        }
+                                    ]}
+                                />
+                            </Veilederpanel>
                             <FlernbarnsdagerSpørsmål periode={periode} onChange={this.onChange} />
                         </Block>
                         <Block
