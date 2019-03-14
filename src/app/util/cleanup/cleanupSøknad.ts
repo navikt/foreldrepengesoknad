@@ -7,7 +7,6 @@ import {
     StønadskontoType,
     Periodetype,
     OppholdÅrsakType,
-    Uttaksperiode,
     Arbeidsform
 } from '../../types/uttaksplan/periodetyper';
 import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
@@ -106,9 +105,13 @@ const getArbeidstakerFrilansSN = (arbeidsformer: Arbeidsform[] | undefined) => {
 };
 
 const changeGradertePerioder = (uttaksplan: Periode[]) => {
-    return uttaksplan
-        .filter((periode) => isUttaksperiode(periode) && periode.gradert)
-        .map((periode: Uttaksperiode) => ({ ...periode, ...getArbeidstakerFrilansSN(periode.arbeidsformer) }));
+    return uttaksplan.map((periode: Periode) => {
+        if (isUttaksperiode(periode) && periode.gradert) {
+            return { ...periode, ...getArbeidstakerFrilansSN(periode.arbeidsformer) };
+        }
+
+        return periode;
+    });
 };
 
 export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
