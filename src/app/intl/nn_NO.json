@@ -33,7 +33,7 @@
     "annenForelder.ugyldigEgetFødselsnummer": "Du kan ikkje gi opp ditt eige fødselsnummer",
     "annenForelder.ugyldigFødselsnummer": "Du må skrive eit gyldig nummer, elleve siffer",
     "annenForelder.ugyldigNavn": "Du må skrive namnet på den andre forelderen ",
-    "annenForelder.veileder.aleneOmsorg.forBarnet": "De kan avtala at {navn} tek ut foreldrepengar",
+    "annenForelder.veileder.aleneOmsorg.forBarnet": "De kan avtala at {navn} tek ut foreldrepengar.",
     "annenForelder.veileder.rettigheterOgDelingAvUttaksplan":
         "Dersom de starta foreldrepengeperioden 1. januar 2019 eller seinare, vil {navn} sjå i søknaden sin når du skal ha foreldrepengar og eventuelle opphald.",
     "annenForelderRettPåForeldrepenger.spørsmål": "Har {navn} rett til foreldrepengar?",
@@ -658,7 +658,7 @@
     "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan":
         "Perioden med foreldrepengar starter {dato}. Starter du seinare, får du færre dagar med foreldrepengar.",
     "uttaksplan.informasjon.flerbarnssøknad":
-        "De har {uker} veker med fleirbarnsveker som de kan dele. Disse vekene kan de ta ut når som helt i foreldrepengeperioden. De kan ta de ut samtidig, eller kvar for dere. Det er ikkje krav til kva {navnMor} gjer når du tek ut dager med flerbarnsveker.",
+        "De har {uker} veker med fleirbarnsveker som dykk kan dele. Disse vekene kan de ta ut når som helt i foreldrepengeperioden. De kan ta de ut samtidig, eller kvar for dere. Det er ikkje krav til kva {navnMor} gjer når du tek ut dager med flerbarnsveker.",
     "uttaksplan.informasjon.endringssøknad":
         "Her legg du inn kva tidsrom du vil ha foreldrepengar eller utsetje når du skal ha ferie, jobbe er har blitt sjuk. Denne endringssøknaden erstattar din tidlegare plan.",
     "uttaksplan.informasjon.farMedmor.aleneOmsorg":
