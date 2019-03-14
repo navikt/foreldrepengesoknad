@@ -658,6 +658,8 @@
     "uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse": "Legg til utsettelse",
     "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan":
         "Perioden med foreldrepenger starter {dato}. Starter du senere, får du færre dager med foreldrepenger.",
+    "uttaksplan.informasjon.flerbarnssøknad":
+        "Dere har {uker} uker med flerbarnsuker som dere kan dele. Disse ukene kan dere ta ut når som helst i foreldrepengeperioden. Dere kan ta de ut samtidig, eller hver for dere. Det er ikke krav til hva {navnMor} gjør når du tar ut dager med flerbarnsuker.",
     "uttaksplan.informasjon.endringssøknad":
         "Her legger du inn når du vil ha foreldrepenger eller utsette fordi du skal ha ferie, jobbe eller er blitt syk. Denne endringssøknaden erstatter din opprinnelige plan.",
     "uttaksplan.informasjon.farMedmor.aleneOmsorg":

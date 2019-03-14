@@ -2,7 +2,7 @@ import { Periode, isUttaksperiode } from 'app/types/uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';
 import { Perioden } from 'app/util/uttaksplan/Perioden';
 
-const getFlerbarnsuker = (dekningsgrad: Dekningsgrad, antallBarn: number): number => {
+export const getFlerbarnsuker = (dekningsgrad: Dekningsgrad, antallBarn: number): number => {
     if (antallBarn === 2) {
         if (dekningsgrad === '100') {
             return 17;
