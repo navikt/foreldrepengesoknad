@@ -650,7 +650,7 @@
     "uttaksplan.infoTilFrilansOgSelvstendig":
         "Når du stadfestar her kor mykje du skal jobbe, blir det rekna som ein avtale mellom deg og NAV dersom du får innvilga søknaden din.",
     "uttaksplan.infoVedOpphold":
-        "Hugs at {navn} må søkje sjølv, seinast dagen før foreldrepengane tek til for ikkje å miste dagar. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige fristar.</a>",
+        "Du kan planlegge når {navn} skal ha foreldrepengar, men {navn} må søkje sjølv. Søknaden må sendes inn seinast dagen før foreldrepengane tek til for ikkje å miste dagar. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige fristar.</a>",
     "uttaksplan.infoVedTapteUttaksdager":
         "Du vil mista {dager} {dager, plural, one{dag}other {dagar}} med foreldrepengar sidan du startar seinare enn seks veker etter fødsel. For å unngå tap av dagar kan du legge til en utsetjing i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
     "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapte foreldrepengar",
@@ -666,7 +666,7 @@
     "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
         "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk. Du kan ha {aktivitetsfriKvote} veker med foreldrepengar utan aktivitetskrav til mor.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
-        "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk. Dersom du ikkje skal ta ut foreldrepengane dine rett etter den siste dagen til {navnAnnenForelder}, må du søkje om å utsetje.<br /><br /> Du kan lese meir om viktige fristar her: <a href={link} class=\"lenke\"rel=\"noopener\"target=\"_blank\">nav.no</a>",
+        "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk. Du kan leggje inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søkje sjølv. Dersom du ikkje skal ta ut foreldrepengane dine rett etter den siste dagen til {navnAnnenForelder}, må du søkje om å utsetje.<br /><br /> Du kan lese meir om viktige fristar her: <a href={link} class=\"lenke\"rel=\"noopener\"target=\"_blank\">nav.no</a>",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} blir tekne av fellesperioden.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMindreEnnTreUker":
         "{varighet} du ikkje bruker før termin, fell bort",
