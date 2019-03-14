@@ -106,7 +106,7 @@ const cleanupUttak = (
         morsAktivitetIPerioden:
             periodeKontotypeHasAktivitetskrav(periode) &&
             periode.morsAktivitetIPerioden &&
-            periode.ønskerFlerbarnsdager !== false
+            periode.ønskerFlerbarnsdager !== true
                 ? periode.morsAktivitetIPerioden
                 : undefined,
         ønskerSamtidigUttak: periode.ønskerSamtidigUttak,
