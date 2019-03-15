@@ -651,7 +651,7 @@
     "uttaksplan.infoTilFrilansOgSelvstendig":
         "Når du bekrefter her hvor mye du skal jobbe, regnes det som en avtale mellom deg og NAV hvis du får innvilget søknaden din.",
     "uttaksplan.infoVedOpphold":
-        "Du kan planlegge når {navn} skal ha foreldrepenger, men  må sende inn en egen søknad. Søknaden må sendes inn senest dagen før foreldrepengene skal tas ut for ikke å miste dager. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige frister.</a>",
+        "Du kan planlegge når {navn} skal ha foreldrepenger, men {navn} må sende inn sin egen søknad. Søknaden må sendes inn senest dagen før foreldrepengene skal tas ut for ikke å miste dager. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige frister.</a>",
     "uttaksplan.infoVedTapteUttaksdager":
         "Du vil miste {dager} {dager, plural, one{dag} other {dager}} med foreldrepenger siden du starter senere enn seks uker etter fødsel. For å unngå tap av dager kan du legge til en utsettelse i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
     "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapt foreldrepenger",
@@ -684,7 +684,7 @@
     "uttaksplan.informasjonTilSøker":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navn}, men {navn} må søke selv.",
     "uttaksplan.leggTil.opphold": "Legg til utsettelse",
-    "uttaksplan.leggTil.uttak": "Legg til periode",
+    "uttaksplan.leggTil.uttak": "Legg til ny periode",
     "uttaksplan.nyperiode.avbrytAriaLabel": "Avbryt legg til ny periode",
     "uttaksplan.nyperiode.leggTilAriaLabel": "Ok, legg til ny periode",
     "uttaksplan.nyttopphold.avbrytAriaLabel": "Avbryt, legg til ny utsettelse",
