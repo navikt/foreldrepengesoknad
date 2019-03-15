@@ -249,7 +249,10 @@ const visErMorForSyk = (payload: UttakFormPayload) => {
 const visØnskerFlerbarnsdager = (payload: UttakFormPayload) => {
     const { periode, erFlerbarnssøknad, søkerErFarEllerMedmor } = payload;
 
-    if (isUttaksperiode(periode) && visErMorForSyk(payload) && periode.erMorForSyk !== true) {
+    if (
+        (isUttaksperiode(periode) && visErMorForSyk(payload) && periode.erMorForSyk !== true) ||
+        !isValidTidsperiode(periode.tidsperiode)
+    ) {
         return false;
     }
 
