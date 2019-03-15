@@ -149,7 +149,6 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
         const { søknadsinfo, periode, velgbareStønadskontotyper } = this.props;
         if (
             !søknadsinfo.søknaden.erDeltUttak &&
-            !søknadsinfo.søknaden.erFlerbarnssøknad &&
             isUttaksperiode(periode) &&
             velgbareStønadskontotyper.length === 1 &&
             periode.konto === undefined
