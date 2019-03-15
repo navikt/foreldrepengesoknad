@@ -29,7 +29,9 @@ export const dokumentasjonBehøvesForUtsettelsesperiode = (
 export const dokumentasjonBehøvesForOverføringsperiode = (
     erFarEllerMedmor: boolean,
     periode: Overføringsperiode
-): boolean => erFarEllerMedmor || periode.årsak !== OverføringÅrsakType.aleneomsorg;
+): boolean =>
+    (erFarEllerMedmor || periode.årsak !== OverføringÅrsakType.aleneomsorg) &&
+    periode.årsak !== OverføringÅrsakType.ikkeRettAnnenForelder;
 
 export const dokumentasjonBehøvesForUttaksperiode = (periode: Uttaksperiode): boolean => {
     return (

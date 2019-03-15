@@ -21,6 +21,10 @@ interface Props {
 }
 
 export const visVedlegg = (søkerErFarEllerMedmor: boolean, årsak: OverføringÅrsakType | undefined): boolean => {
+    if (årsak !== undefined && årsak === OverføringÅrsakType.ikkeRettAnnenForelder) {
+        return false;
+    }
+
     if (søkerErFarEllerMedmor) {
         return årsak !== undefined;
     } else {
