@@ -22,6 +22,7 @@ import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from './enkeltspørsmå
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -92,14 +93,33 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
             {søknad.søker.erAleneOmOmsorg === false &&
                 søknad.annenForelder.harRettPåForeldrepenger &&
                 søknad.dekningsgrad !== undefined && (
-                    <FordelingFellesperiodeSpørsmål
-                        visible={harSvartPåStartdato}
-                        ukerFellesperiode={antallUkerFellesperiode}
-                        navnPåForeldre={navnPåForeldre}
-                        annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
-                        antallUkerFedreKvote={antallUkerFedreKvote!}
-                        antallUkerMødreKvote={antallUkerMødreKvote!}
-                    />
+                    <>
+                        <Block visible={søknad.barn.antallBarn > 1 && harSvartPåStartdato}>
+                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                <VeilederpanelInnhold
+                                    messages={[
+                                        {
+                                            type: 'normal',
+                                            contentIntlKey: 'uttaksplan.skjema.flerbarnsInformasjon',
+                                            values: {
+                                                uker: getFlerbarnsuker(søknad.dekningsgrad!, søknad.barn.antallBarn),
+                                                navnFar: navnPåForeldre.farMedmor,
+                                                navnMor: navnPåForeldre.mor
+                                            }
+                                        }
+                                    ]}
+                                />
+                            </Veilederpanel>
+                        </Block>
+                        <FordelingFellesperiodeSpørsmål
+                            visible={harSvartPåStartdato}
+                            ukerFellesperiode={antallUkerFellesperiode}
+                            navnPåForeldre={navnPåForeldre}
+                            annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
+                            antallUkerFedreKvote={antallUkerFedreKvote!}
+                            antallUkerMødreKvote={antallUkerMødreKvote!}
+                        />
+                    </>
                 )}
         </>
     );
@@ -192,14 +212,38 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
             </Block>
             {søknad.søker.erAleneOmOmsorg === false &&
                 søknad.annenForelder.harRettPåForeldrepenger && (
-                    <FordelingFellesperiodeSpørsmål
-                        visible={skjema.startdatoPermisjon !== undefined && skjema.harAnnenForelderSøktFP !== true}
-                        ukerFellesperiode={antallUkerFellesperiode}
-                        navnPåForeldre={navnPåForeldre}
-                        annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
-                        antallUkerMødreKvote={antallUkerMødreKvote!}
-                        antallUkerFedreKvote={antallUkerFedreKvote!}
-                    />
+                    <>
+                        <Block
+                            visible={
+                                søknad.barn.antallBarn > 1 &&
+                                skjema.startdatoPermisjon !== undefined &&
+                                skjema.harAnnenForelderSøktFP !== true
+                            }>
+                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                <VeilederpanelInnhold
+                                    messages={[
+                                        {
+                                            type: 'normal',
+                                            contentIntlKey: 'uttaksplan.skjema.flerbarnsInformasjon',
+                                            values: {
+                                                uker: getFlerbarnsuker(søknad.dekningsgrad!, søknad.barn.antallBarn),
+                                                navnFar: navnPåForeldre.farMedmor,
+                                                navnMor: navnPåForeldre.mor
+                                            }
+                                        }
+                                    ]}
+                                />
+                            </Veilederpanel>
+                        </Block>
+                        <FordelingFellesperiodeSpørsmål
+                            visible={skjema.startdatoPermisjon !== undefined && skjema.harAnnenForelderSøktFP !== true}
+                            ukerFellesperiode={antallUkerFellesperiode}
+                            navnPåForeldre={navnPåForeldre}
+                            annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
+                            antallUkerMødreKvote={antallUkerMødreKvote!}
+                            antallUkerFedreKvote={antallUkerFedreKvote!}
+                        />
+                    </>
                 )}
         </>
     );
