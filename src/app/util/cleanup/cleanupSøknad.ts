@@ -96,7 +96,7 @@ const getArbeidstakerFrilansSN = (arbeidsformer: Arbeidsform[] | undefined) => {
         const arbeidsform = arbeidsformer[0];
         return {
             erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker,
-            erFrilans: arbeidsform === Arbeidsform.frilans,
+            erFrilanser: arbeidsform === Arbeidsform.frilans,
             erSelvstendig: arbeidsform === Arbeidsform.selvstendignæringsdrivende
         };
     } else {
