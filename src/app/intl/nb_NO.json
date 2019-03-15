@@ -695,6 +695,8 @@
     "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder":
         "Du må legge ved bekreftelse som {navnAnnenForelder} får fra sin lege. Den må beskrive hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "uttaksplan.overføring.årsak.spørsmål": "Hvorfor skal du overta {annenForelderNavn} sin kvote?",
+    "uttaksplan.skjema.flerbarnsInformasjon":
+        "Dere har {uker} uker med flerbarnsuker som dere kan dele. Disse ukene kan dere ta ut når som helst i foreldrepengeperioden. Dere kan ta de ut samtidig, eller hver for dere. Det er ikke krav til hva {navnMor} gjør når {navnFar} tar ut dager med flerbarnsuker.",
     "uttaksplan.skjema.fordeling.annenForeldersFellesperiode":
         "{annenForeldersNavn} kan ta ut {antallUker} uker av fellesperioden",
     "uttaksplan.skjema.fordeling.aria.fordeling":
