@@ -1,1 +1,3 @@
-export enum RegelKey {}
+export enum RegelKey {
+    'uttaksplanInneholderPerioder' = 'uttaksplanInneholderPerioder'
+}

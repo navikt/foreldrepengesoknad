@@ -28,8 +28,12 @@ import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { erSenUtsettelsePgaFerieEllerArbeid } from 'app/util/uttaksplan/uttakUtils';
 import { Feature, isFeatureEnabled } from 'app/Feature';
 import { uttaksplanHarForMangeFlerbarnsdager } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
-import { UttaksplanRegelTestresultat, RegelTestresultat } from '../../regler/uttaksplanValidering/types';
-import { sjekkUttaksplanOppMotRegler, getRegelbrudd } from '../../regler/uttaksplanValidering/regelUtils';
+import {
+    UttaksplanRegelTestresultat,
+    RegelTestresultat,
+    RegelAlvorlighet
+} from '../../regler/uttaksplanValidering/types';
+import { sjekkUttaksplanOppMotRegler, getRegelAvvik } from '../../regler/uttaksplanValidering/regelUtils';
 
 const stateSelector = (state: AppState) => state;
 
@@ -74,15 +78,23 @@ const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat 
     const perioder = appState.søknad.uttaksplan;
     const resultat = søknadsinfo && perioder ? sjekkUttaksplanOppMotRegler({ søknadsinfo, perioder }) : undefined;
     if (resultat) {
-        const feil = resultat.filter(
-            (r) => r.passerer === false && r.regelbrudd && r.regelbrudd.periodeId !== undefined
+        const perioderesultater = resultat.filter(
+            (r) => r.passerer === false && r.regelAvvik && r.regelAvvik.periodeId !== undefined
         );
-        const resultatPerPeriode = groupBy(feil, (r: RegelTestresultat) => r.regelbrudd!.periodeId);
-        const regelbrudd = getRegelbrudd(resultat);
+        const resultatPerPeriode = groupBy(
+            perioderesultater.filter((pr) => pr.regelAvvik && pr.regelAvvik.periodeId !== undefined),
+            (r: RegelTestresultat) => r.regelAvvik!.periodeId
+        );
+        const avvik = getRegelAvvik(resultat);
         return {
+            avvik,
             resultat,
-            regelbrudd,
-            resultatPerPeriode
+            resultatPerPeriode,
+            antallAvvik: {
+                info: avvik.filter((a) => a.alvorlighet === RegelAlvorlighet.INFO).length,
+                viktig: avvik.filter((a) => a.alvorlighet === RegelAlvorlighet.VIKTIG).length,
+                ulovlig: avvik.filter((a) => a.alvorlighet === RegelAlvorlighet.ULOVLIG).length
+            }
         };
     }
     return undefined;

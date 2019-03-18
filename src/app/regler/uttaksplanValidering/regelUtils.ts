@@ -1,5 +1,5 @@
-import { Regelgrunnlag, RegelTestresultat, UttaksplanRegelTestresultat, Regelbrudd } from './types';
-import uttaksplanRegler from './uttaksplanRegler';
+import { Regelgrunnlag, RegelTestresultat, UttaksplanRegelTestresultat, RegelAvvik } from './types';
+import uttaksplanRegler from '.';
 
 export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelTestresultat[] => {
     return uttaksplanRegler
@@ -7,43 +7,43 @@ export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): Regel
         .map((regel) => regel.test(regel, regelgrunnlag));
 };
 
-export const getRegelbruddForPeriode = (
+export const getRegelAvvikForPeriode = (
     resultat: UttaksplanRegelTestresultat,
     periodeId: string
-): Regelbrudd[] | undefined => {
+): RegelAvvik[] | undefined => {
     if (resultat && resultat.resultatPerPeriode[periodeId]) {
         return resultat.resultatPerPeriode[periodeId]
-            .filter((r) => r.passerer === false && r.regelbrudd !== undefined)
-            .map((r) => r.regelbrudd!);
+            .filter((r) => r.passerer === false && r.regelAvvik !== undefined)
+            .map((r) => r.regelAvvik!);
     }
     return undefined;
 };
 
-export const getRegelbrudd = (resultat: RegelTestresultat[]): Regelbrudd[] => {
+export const getRegelAvvik = (resultat: RegelTestresultat[]): RegelAvvik[] => {
     if (resultat) {
-        return resultat.filter((r) => r.passerer === false && r.regelbrudd !== undefined).map((r) => r.regelbrudd!);
+        return resultat.filter((r) => r.passerer === false && r.regelAvvik !== undefined).map((r) => r.regelAvvik!);
     }
     return [];
 };
 
-const overstyresAvFilter = (brudd: Regelbrudd, idx: number, regelbrudd: Regelbrudd[]): boolean => {
+const overstyresAvFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelAvvik[]): boolean => {
     return (
-        brudd.overstyresAvRegel === undefined && regelbrudd.some((b2) => b2.key === brudd.overstyresAvRegel) === false
+        avvik.overstyresAvRegel === undefined && alleAvvik.some((b2) => b2.key === avvik.overstyresAvRegel) === false
     );
 };
 
-const overstyrerAndreFilter = (brudd: Regelbrudd, idx: number, regelbrudd: Regelbrudd[]): boolean => {
-    const overstyresAvAndre = regelbrudd.some(
+const overstyrerAndreFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelAvvik[]): boolean => {
+    const overstyresAvAndre = alleAvvik.some(
         (rb) =>
             rb.overstyrerRegler
                 ? rb.overstyrerRegler.some((rbo) => {
-                      return rbo === brudd.key;
+                      return rbo === avvik.key;
                   })
                 : false
     );
     return overstyresAvAndre === false;
 };
 
-export const trimRelaterteRegelbrudd = (brudd: Regelbrudd[]): Regelbrudd[] => {
-    return brudd.filter(overstyresAvFilter).filter(overstyrerAndreFilter);
+export const trimRelaterteRegelAvvik = (avvik: RegelAvvik[]): RegelAvvik[] => {
+    return avvik.filter(overstyresAvFilter).filter(overstyrerAndreFilter);
 };
