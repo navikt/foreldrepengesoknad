@@ -4,6 +4,7 @@ import {
 } from './uttaksplanValideringActionDefinitions';
 import { Periodevalidering } from '../../reducers/uttaksplanValideringReducer';
 import { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
+import { UttaksplanRegelTestresultat } from '../../../regler/uttaksplanValidering/types';
 
 export function setUttaksplanValidering(
     validertePerioder: Periodevalidering,
@@ -17,7 +18,8 @@ export function setUttaksplanValidering(
     uttaksplanSlutterMedOpphold: boolean,
     uttaksplanGraderingStørreEnnSamtidigUttak: boolean,
     begrunnelseForSenEndringErGyldig: boolean,
-    uttaksplanHarForMangeFlerbarnsdager: boolean
+    uttaksplanHarForMangeFlerbarnsdager: boolean,
+    regelTestResultat?: UttaksplanRegelTestresultat | undefined
 ): UttaksplanValideringActionTypes {
     return {
         type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING,
@@ -32,7 +34,8 @@ export function setUttaksplanValidering(
         uttaksplanSlutterMedOpphold,
         uttaksplanGraderingStørreEnnSamtidigUttak,
         begrunnelseForSenEndringErGyldig,
-        uttaksplanHarForMangeFlerbarnsdager
+        uttaksplanHarForMangeFlerbarnsdager,
+        regelTestResultat
     };
 }
 
