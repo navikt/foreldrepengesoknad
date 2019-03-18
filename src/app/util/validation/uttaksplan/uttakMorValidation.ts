@@ -10,7 +10,7 @@ const periodeErFørDato = ({ tidsperiode }: Periode, dato: Date): boolean => {
     return isValidTidsperiode(tidsperiode) && Tidsperioden(tidsperiode).erFørDato(dato);
 };
 
-export const harMorHarSøktUgyldigUttakFørsteSeksUker = (
+export const harMorSøktUgyldigUttakFørsteSeksUker = (
     perioder: Periode[],
     familiehendelsesdato: Date,
     situasjon: Søkersituasjon

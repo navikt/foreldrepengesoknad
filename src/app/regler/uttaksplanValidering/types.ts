@@ -31,6 +31,7 @@ export interface Regelgrunnlag {
 export interface Regel {
     key: RegelKey;
     test: RegelTest;
+    alvorlighet: RegelAlvorlighet;
     erRelevant?: (grunnlag: Regelgrunnlag) => boolean;
     overstyresAvRegel?: RegelKey;
     overstyrerRegler?: RegelKey[];
