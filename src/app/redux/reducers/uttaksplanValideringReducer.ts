@@ -4,6 +4,7 @@ import {
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
+import { UttaksplanRegelTestresultat } from '../../regler/uttaksplanValidering/types';
 
 export enum PeriodeValideringErrorKey {
     'PÅKREVD_VERDI_MANGLER' = 'påkrevd',
@@ -28,6 +29,7 @@ export interface Periodevalidering {
 }
 
 export interface UttaksplanValideringState {
+    resultat: UttaksplanRegelTestresultat;
     periodevalidering: Periodevalidering;
     inneholderPerioder: boolean;
     stønadskontoerMedForMyeUttak: Stønadskontouttak[];
@@ -60,6 +62,11 @@ export interface ValidertPeriode {
 
 const getDefaultState = (): UttaksplanValideringState => {
     return {
+        resultat: {
+            regelbrudd: [],
+            resultat: [],
+            resultatPerPeriode: {}
+        },
         periodevalidering: {},
         inneholderPerioder: false,
         stønadskontoerMedForMyeUttak: [],

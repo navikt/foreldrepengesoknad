@@ -1,5 +1,6 @@
 import get from 'lodash/get';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
+import groupBy from 'lodash.groupby';
 
 import { AppState } from '../reducers';
 import { begrunnelseForSenEndringErGyldig } from 'app/util/validation/uttaksplan/begrunnelseForSenEndringValidation';
@@ -27,6 +28,8 @@ import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { erSenUtsettelsePgaFerieEllerArbeid } from 'app/util/uttaksplan/uttakUtils';
 import { Feature, isFeatureEnabled } from 'app/Feature';
 import { uttaksplanHarForMangeFlerbarnsdager } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
+import { UttaksplanRegelTestresultat, RegelTestresultat } from '../../regler/uttaksplanValidering/types';
+import { sjekkUttaksplanOppMotRegler, getRegelbrudd } from '../../regler/uttaksplanValidering/regelUtils';
 
 const stateSelector = (state: AppState) => state;
 
@@ -66,6 +69,24 @@ const getStønadskontoerMedForMyeUttak = (uttak: Stønadskontouttak[]) => {
     return uttak.filter((u) => u.antallDager < 0);
 };
 
+const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat | undefined => {
+    const søknadsinfo = getSøknadsinfo(appState);
+    const perioder = appState.søknad.uttaksplan;
+    const resultat = søknadsinfo && perioder ? sjekkUttaksplanOppMotRegler({ søknadsinfo, perioder }) : undefined;
+    if (resultat) {
+        const feil = resultat.filter(
+            (r) => r.passerer === false && r.regelbrudd && r.regelbrudd.periodeId !== undefined
+        );
+        const resultatPerPeriode = groupBy(feil, (r: RegelTestresultat) => r.regelbrudd!.periodeId);
+        const regelbrudd = getRegelbrudd(resultat);
+        return {
+            resultat,
+            regelbrudd,
+            resultatPerPeriode
+        };
+    }
+    return undefined;
+};
 function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
     const { uttaksplan, barn, situasjon, søker, erEndringssøknad, dekningsgrad } = appState.søknad;
@@ -119,7 +140,8 @@ function* validerUttaksplanSaga() {
             begrunnelseForSenEndringErGyldig(
                 get(appState, 'søknad.tilleggsopplysninger.begrunnelseForSenEndring.tekst')
             ),
-            uttaksplanHarForMangeFlerbarnsdager(uttaksplan, dekningsgrad, barn.antallBarn)
+            uttaksplanHarForMangeFlerbarnsdager(uttaksplan, dekningsgrad, barn.antallBarn),
+            kjørUttaksplanRegler(appState)
         )
     );
 }
