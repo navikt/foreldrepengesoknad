@@ -6,7 +6,7 @@ import {
 } from '../../../types/uttaksplan/periodetyper';
 import { getTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
-import { harMorHarSøktUgyldigUttakFørsteSeksUker } from '../uttaksplan/uttakMorValidation';
+import { harMorSøktUgyldigUttakFørsteSeksUker } from '../uttaksplan/uttakMorValidation';
 import { Forelder } from 'common/types';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
@@ -32,7 +32,7 @@ const utsettelse = utsettelseBase as Utsettelsesperiode;
 
 describe('Validering av mors uttak første 6 uker', () => {
     it('skal godta utsettelse på grunn av sykdom', () => {
-        const result = harMorHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harMorSøktUgyldigUttakFørsteSeksUker(
             [{ ...utsettelse, årsak: UtsettelseÅrsakType.Sykdom }],
             familiehendelsesdato,
             Søkersituasjon.FØDSEL
@@ -40,7 +40,7 @@ describe('Validering av mors uttak første 6 uker', () => {
         expect(result).toBeFalsy();
     });
     it('skal godta utsettelse på grunn av institusjon', () => {
-        const result = harMorHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harMorSøktUgyldigUttakFørsteSeksUker(
             [{ ...utsettelse, årsak: UtsettelseÅrsakType.InstitusjonSøker }],
             familiehendelsesdato,
             Søkersituasjon.FØDSEL
@@ -48,7 +48,7 @@ describe('Validering av mors uttak første 6 uker', () => {
         expect(result).toBeFalsy();
     });
     it('skal IKKE godta utsettelse av andre grunner', () => {
-        const result = harMorHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harMorSøktUgyldigUttakFørsteSeksUker(
             [{ ...utsettelse, årsak: UtsettelseÅrsakType.Arbeid }],
             familiehendelsesdato,
             Søkersituasjon.FØDSEL
@@ -56,7 +56,7 @@ describe('Validering av mors uttak første 6 uker', () => {
         expect(result).toBeTruthy();
     });
     it('skal godta ikke gradert uttak', () => {
-        const result = harMorHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harMorSøktUgyldigUttakFørsteSeksUker(
             [{ ...uttak, gradert: false }],
             familiehendelsesdato,
             Søkersituasjon.FØDSEL
@@ -64,7 +64,7 @@ describe('Validering av mors uttak første 6 uker', () => {
         expect(result).toBeFalsy();
     });
     it('skal IKKE godta gradert uttak', () => {
-        const result = harMorHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harMorSøktUgyldigUttakFørsteSeksUker(
             [{ ...uttak, gradert: true }],
             familiehendelsesdato,
             Søkersituasjon.FØDSEL
@@ -77,7 +77,7 @@ describe('Validering av mors uttak første 6 uker', () => {
             årsak: UtsettelseÅrsakType.Arbeid,
             tidsperiode: getTidsperiode(Uttaksdagen(førsteUttaksdag).leggTil(30), 5)
         };
-        const result = harMorHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harMorSøktUgyldigUttakFørsteSeksUker(
             [utsettelseEtter6uker],
             familiehendelsesdato,
             Søkersituasjon.FØDSEL

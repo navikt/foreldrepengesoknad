@@ -1,5 +1,34 @@
-import { Regelgrunnlag, RegelTestresultat, UttaksplanRegelTestresultat, RegelAvvik } from './types';
+import {
+    Regelgrunnlag,
+    RegelTestresultat,
+    UttaksplanRegelTestresultat,
+    RegelAvvik,
+    Regel,
+    RegelAvvikIntlFeilmelding
+} from './types';
 import uttaksplanRegler from '.';
+
+export const regelHarAvvik = (
+    regel: Regel,
+    feilmelding?: RegelAvvikIntlFeilmelding,
+    periodeId?: string
+): RegelTestresultat => ({
+    key: regel.key,
+    passerer: false,
+    regelAvvik: {
+        key: regel.key,
+        alvorlighet: regel.alvorlighet,
+        feilmelding: feilmelding || { intlKey: `uttaksplan.validering.${regel.key}` },
+        overstyrerRegler: regel.overstyrerRegler,
+        overstyresAvRegel: regel.overstyresAvRegel,
+        periodeId
+    }
+});
+
+export const regelPasserer = (regel: Regel): RegelTestresultat => ({
+    key: regel.key,
+    passerer: true
+});
 
 export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelTestresultat[] => {
     return uttaksplanRegler

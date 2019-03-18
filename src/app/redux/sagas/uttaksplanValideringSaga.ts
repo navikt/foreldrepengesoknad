@@ -10,7 +10,7 @@ import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { harFarHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakFarValidation';
-import { harMorHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakMorValidation';
+import { harMorSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakMorValidation';
 import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../util/uttaksplan/Periodene';
@@ -125,11 +125,7 @@ function* validerUttaksplanSaga() {
             antallAktivePerioder > 0,
             getStønadskontoerMedForMyeUttak(uttaksstatus),
             søkerErMor
-                ? harMorHarSøktUgyldigUttakFørsteSeksUker(
-                      uttaksplan,
-                      getFamiliehendelsedato(barn, situasjon),
-                      situasjon
-                  )
+                ? harMorSøktUgyldigUttakFørsteSeksUker(uttaksplan, getFamiliehendelsedato(barn, situasjon), situasjon)
                 : false,
             søkerErFarEllerMedmor
                 ? erDeltUttak &&
