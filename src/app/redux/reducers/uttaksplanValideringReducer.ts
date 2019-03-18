@@ -29,7 +29,7 @@ export interface Periodevalidering {
 }
 
 export interface UttaksplanValideringState {
-    resultat: UttaksplanRegelTestresultat;
+    resultat: UttaksplanRegelTestresultat | undefined;
     periodevalidering: Periodevalidering;
     inneholderPerioder: boolean;
     stønadskontoerMedForMyeUttak: Stønadskontouttak[];
@@ -63,9 +63,14 @@ export interface ValidertPeriode {
 const getDefaultState = (): UttaksplanValideringState => {
     return {
         resultat: {
-            regelbrudd: [],
+            avvik: [],
             resultat: [],
-            resultatPerPeriode: {}
+            resultatPerPeriode: {},
+            antallAvvik: {
+                info: 0,
+                ulovlig: 0,
+                viktig: 0
+            }
         },
         periodevalidering: {},
         inneholderPerioder: false,
@@ -122,7 +127,8 @@ const uttaksplanValideringReducer = (
                 uttaksplanSlutterMedOpphold: action.uttaksplanSlutterMedOpphold === true,
                 uttaksplanGraderingStørreEnnSamtidigUttak: action.uttaksplanGraderingStørreEnnSamtidigUttak === true,
                 begrunnelseForSenEndringErGyldig: action.begrunnelseForSenEndringErGyldig === true,
-                uttaksplanHarForMangeFlerbarnsdager: action.uttaksplanHarForMangeFlerbarnsdager === true
+                uttaksplanHarForMangeFlerbarnsdager: action.uttaksplanHarForMangeFlerbarnsdager === true,
+                resultat: action.regelTestResultat
             };
     }
     return state;
