@@ -3,7 +3,7 @@ import { InjectedIntl } from 'react-intl';
 import { Søknadsinfo } from '../../selectors/types';
 import { Periode, Stønadskontouttak, TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import { RegelKey } from '.';
-import { Tilleggsopplysninger } from '../../types/s\u00F8knad/S\u00F8knad';
+import { Tilleggsopplysninger } from '../../types/søknad/Søknad';
 
 type FeilIntlMessage = (intl: InjectedIntl) => string;
 
