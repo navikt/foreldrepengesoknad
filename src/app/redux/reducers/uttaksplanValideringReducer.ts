@@ -34,7 +34,6 @@ export interface UttaksplanValideringState {
     stønadskontoerMedForMyeUttak: Stønadskontouttak[];
     erGyldig: boolean;
     morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
-    farHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     uttaksmengdeForFarMedmorForHøy: boolean;
     uttakErBareOpphold: boolean;
     uttaksplanStarterMedOpphold: boolean;
@@ -71,7 +70,6 @@ const getDefaultState = (): UttaksplanValideringState => {
         stønadskontoerMedForMyeUttak: [],
         erGyldig: true,
         morHarSøktUgyldigUtsettelseFørsteSeksUker: false,
-        farHarSøktUgyldigUtsettelseFørsteSeksUker: false,
         uttaksmengdeForFarMedmorForHøy: false,
         uttakErBareOpphold: false,
         uttaksplanStarterMedOpphold: false,
@@ -113,7 +111,6 @@ const uttaksplanValideringReducer = (
                 inneholderPerioder: action.inneholderPerioder,
                 stønadskontoerMedForMyeUttak: action.stønadskontoerMedForMyeUttak,
                 morHarSøktUgyldigUtsettelseFørsteSeksUker: action.morHarSøktUgyldigUtsettelseFørsteSeksUker,
-                farHarSøktUgyldigUtsettelseFørsteSeksUker: action.farHarSøktUgyldigUtsettelseFørsteSeksUker,
                 erGyldig,
                 uttaksmengdeForFarMedmorForHøy: action.uttaksmengdeForFarMedmorForHøy === true,
                 uttakErBareOpphold: action.uttakErBareOpphold === true,

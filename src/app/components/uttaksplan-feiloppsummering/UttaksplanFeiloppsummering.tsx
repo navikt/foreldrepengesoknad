@@ -97,13 +97,6 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
             });
         }
 
-        if (uttaksplanValidering.farHarSøktUgyldigUtsettelseFørsteSeksUker) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør')
-            });
-        }
-
         if (uttaksplanValidering.uttaksmengdeForFarMedmorForHøy === true) {
             feil.push({
                 name: uttaksplanleggerDomId,
