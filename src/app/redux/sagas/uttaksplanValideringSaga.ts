@@ -108,8 +108,8 @@ const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat 
             resultatPerPeriode,
             antallAvvik: {
                 info: avvik.filter((a) => a.alvorlighet === RegelAlvorlighet.INFO).length,
-                viktig: avvik.filter((a) => a.alvorlighet === RegelAlvorlighet.VIKTIG).length,
-                ulovlig: avvik.filter((a) => a.alvorlighet === RegelAlvorlighet.ULOVLIG).length
+                advarsel: avvik.filter((a) => a.alvorlighet === RegelAlvorlighet.ADVARSEL).length,
+                feil: avvik.filter((a) => a.alvorlighet === RegelAlvorlighet.FEIL).length
             }
         };
     }

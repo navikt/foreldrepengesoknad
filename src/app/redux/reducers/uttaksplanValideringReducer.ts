@@ -67,8 +67,8 @@ const getDefaultState = (): UttaksplanValideringState => {
             resultatPerPeriode: {},
             antallAvvik: {
                 info: 0,
-                ulovlig: 0,
-                viktig: 0
+                feil: 0,
+                advarsel: 0
             }
         },
         periodevalidering: {},
