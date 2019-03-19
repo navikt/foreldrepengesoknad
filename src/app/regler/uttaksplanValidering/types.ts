@@ -3,6 +3,7 @@ import { InjectedIntl } from 'react-intl';
 import { Søknadsinfo } from '../../selectors/types';
 import { Periode, Stønadskontouttak, TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import { RegelKey } from '.';
+import { Tilleggsopplysninger } from '../../types/s\u00F8knad/S\u00F8knad';
 
 type FeilIntlMessage = (intl: InjectedIntl) => string;
 
@@ -28,6 +29,7 @@ export interface Regelgrunnlag {
     søknadsinfo: Søknadsinfo;
     uttaksstatusStønadskontoer: Stønadskontouttak[];
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    tilleggsopplysninger: Tilleggsopplysninger;
 }
 
 export interface Regel {
