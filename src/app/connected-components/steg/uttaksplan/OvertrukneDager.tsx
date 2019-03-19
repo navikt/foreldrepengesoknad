@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Stønadskontouttak } from 'app/components/uttaksoppsummering/Uttaksoppsummering';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getVarighetString } from 'common/util/intlUtils';
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl';
@@ -7,6 +6,7 @@ import { guid } from 'nav-frontend-js-utils';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { NavnPåForeldre } from 'common/types';
 import { getStønadskontoNavn } from 'app/util/uttaksplan';
+import { Stønadskontouttak } from '../../../types/uttaksplan/periodetyper';
 
 interface OvertrukneDagerProps {
     overtrukneKontoer: Stønadskontouttak[];

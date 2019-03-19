@@ -1,6 +1,10 @@
-import { TilgjengeligStønadskonto, Periode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
+import {
+    TilgjengeligStønadskonto,
+    Periode,
+    StønadskontoType,
+    Stønadskontouttak
+} from '../../types/uttaksplan/periodetyper';
 import { SøkerRolle } from '../../types/søknad/Søknad';
-import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
 import { beregnGjenståendeUttaksdager } from '../uttaksPlanStatus';
 import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
 import { getErDeltUttak } from './forslag/util';
@@ -10,7 +14,7 @@ export const getUttaksstatus = (
     uttaksplan: Periode[],
     søkerrolle: SøkerRolle,
     erEndringssøknad: boolean
-) => {
+): Stønadskontouttak[] => {
     const erDeltUttak = getErDeltUttak(tilgjengeligeStønadskontoer);
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkerrolle);
     const uttaksstatus: Stønadskontouttak[] = beregnGjenståendeUttaksdager(

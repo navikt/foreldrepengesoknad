@@ -10,7 +10,7 @@ import {
 } from '../../../types/uttaksplan/periodetyper';
 import { getTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
-import { harFarHarSøktUgyldigUttakFørsteSeksUker } from '../uttaksplan/uttakFarValidation';
+import { harFarMedmorSøktUgyldigUttakFørsteSeksUker } from '../uttaksplan/uttakFarValidation';
 import { Forelder, Tidsperiode } from 'common/types';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
@@ -47,7 +47,7 @@ const overføring = overføringBase as Overføringsperiode;
 
 describe('Validering av fars uttak første 6 uker', () => {
     it('skal godta overføring på grunn av insititusjonsoppholdAnnenForelder', () => {
-        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
             [{ ...overføring, årsak: OverføringÅrsakType.insititusjonsoppholdAnnenForelder }],
             familiehendelsesdato,
             1,
@@ -56,7 +56,7 @@ describe('Validering av fars uttak første 6 uker', () => {
         expect(result).toBeFalsy();
     });
     it('skal godta overføring på grunn av sykdomAnnenForelder', () => {
-        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
             [{ ...overføring, årsak: OverføringÅrsakType.sykdomAnnenForelder }],
             familiehendelsesdato,
             1,
@@ -65,7 +65,7 @@ describe('Validering av fars uttak første 6 uker', () => {
         expect(result).toBeFalsy();
     });
     it('skal IKKE godta overføring på grunn av annet enn sykdom annen forelder', () => {
-        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
             [{ ...overføring, årsak: OverføringÅrsakType.aleneomsorg }],
             familiehendelsesdato,
             1,
@@ -74,7 +74,7 @@ describe('Validering av fars uttak første 6 uker', () => {
         expect(result).toBeTruthy();
     });
     it('skal IKKE godta utsettelser', () => {
-        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
             [{ ...utsettelse }],
             familiehendelsesdato,
             1,
@@ -83,7 +83,7 @@ describe('Validering av fars uttak første 6 uker', () => {
         expect(result).toBeTruthy();
     });
     it('skal IKKE godta gradert uttak', () => {
-        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
             [{ ...uttak, gradert: true }],
             familiehendelsesdato,
             1,
@@ -92,7 +92,7 @@ describe('Validering av fars uttak første 6 uker', () => {
         expect(result).toBeTruthy();
     });
     it('skal ikke godta noe uttak vanlig uttak dersom det bare er ett barn', () => {
-        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
             [{ ...uttak }],
             familiehendelsesdato,
             1,
@@ -101,7 +101,7 @@ describe('Validering av fars uttak første 6 uker', () => {
         expect(result).toBeTruthy();
     });
     it('skal godta uttak av flerbarnsuker', () => {
-        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
             [{ ...uttak, ønskerFlerbarnsdager: true }],
             familiehendelsesdato,
             2,
@@ -110,7 +110,7 @@ describe('Validering av fars uttak første 6 uker', () => {
         expect(result).toBeFalsy();
     });
     it('skal godta uttak av egen kvote dersom flere barn ', () => {
-        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
             [{ ...uttak, ønskerFlerbarnsdager: true }],
             familiehendelsesdato,
             2,
@@ -119,7 +119,7 @@ describe('Validering av fars uttak første 6 uker', () => {
         expect(result).toBeFalsy();
     });
     it('skal godta uttak dersom mors aktivitet er innlagt ', () => {
-        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
             [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Innlagt }],
             familiehendelsesdato,
             1,
@@ -128,7 +128,7 @@ describe('Validering av fars uttak første 6 uker', () => {
         expect(result).toBeFalsy();
     });
     it('skal godta uttak dersom mors aktivitet er sykdom ', () => {
-        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
             [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.TrengerHjelp }],
             familiehendelsesdato,
             1,
@@ -137,7 +137,7 @@ describe('Validering av fars uttak første 6 uker', () => {
         expect(result).toBeFalsy();
     });
     it('skal IKKE godta uttak dersom mors aktivitet er annet enn sykdom eller innlagt ', () => {
-        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
             [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Arbeid }],
             familiehendelsesdato,
             1,
@@ -146,7 +146,7 @@ describe('Validering av fars uttak første 6 uker', () => {
         expect(result).toBeTruthy();
     });
     it('skal godta uttak dersom mors aktivitet er annet enn sykdom eller innlagt ETTER seks uker ', () => {
-        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+        const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
             [
                 {
                     ...uttak,

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Stønadskontouttak } from './Uttaksoppsummering';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import BEMHelper from 'common/util/bem';
 
@@ -10,6 +9,7 @@ import { getStønadskontoNavn } from '../../util/uttaksplan';
 import StønadskontoIkon from '../uttaksplan-ikon/StønadskontoIkon';
 import { NavnPåForeldre } from 'common/types';
 import './kontostatus.less';
+import { Stønadskontouttak } from '../../types/uttaksplan/periodetyper';
 
 export interface Props {
     uttak: Stønadskontouttak;
