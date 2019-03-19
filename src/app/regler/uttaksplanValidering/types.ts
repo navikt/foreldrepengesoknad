@@ -40,7 +40,7 @@ export type RegelTest = (grunnlag: Regelgrunnlag) => RegelTestresultat;
 
 export interface RegelTestresultat {
     passerer: boolean;
-    info?: RegelAvvikIntlInfo;
+    info?: RegelAvvikIntlInfo | RegelAvvikIntlInfo[];
     periodeId?: string;
 }
 
@@ -53,7 +53,7 @@ export interface RegelStatus {
 export interface RegelAvvik {
     key: RegelKey;
     periodeId?: string;
-    info: RegelAvvikIntlInfo;
+    info: RegelAvvikIntlInfo | RegelAvvikIntlInfo[];
     alvorlighet: RegelAlvorlighet;
     overstyresAvRegel?: RegelKey;
     overstyrerRegler?: RegelKey[];

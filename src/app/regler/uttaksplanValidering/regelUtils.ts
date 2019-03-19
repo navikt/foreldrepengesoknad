@@ -16,13 +16,17 @@ export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): Regel
     });
 };
 
-export const regelHarAvvik = (regel: Regel, feilmelding?: RegelAvvikIntlInfo, periodeId?: string): RegelStatus => ({
+export const regelHarAvvik = (
+    regel: Regel,
+    info?: RegelAvvikIntlInfo | RegelAvvikIntlInfo[],
+    periodeId?: string
+): RegelStatus => ({
     key: regel.key,
     passerer: false,
     regelAvvik: {
         key: regel.key,
         alvorlighet: regel.alvorlighet,
-        info: feilmelding || { intlKey: `uttaksplan.validering.${regel.key}` },
+        info: info || { intlKey: `uttaksplan.validering.${regel.key}` },
         overstyrerRegler: regel.overstyrerRegler,
         overstyresAvRegel: regel.overstyresAvRegel,
         periodeId
