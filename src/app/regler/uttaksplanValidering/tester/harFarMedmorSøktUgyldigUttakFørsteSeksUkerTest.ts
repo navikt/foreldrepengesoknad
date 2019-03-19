@@ -1,8 +1,11 @@
-import { Regel, Regelgrunnlag, RegelTest } from '../types';
+import { Regel, Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
 import { regelHarAvvik, regelPasserer } from '../regelUtils';
 import { harFarMedmorSøktUgyldigUttakFørsteSeksUker } from '../../../util/validation/uttaksplan/uttakFarValidation';
 
-export const harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (regel: Regel, grunnlag: Regelgrunnlag) => {
+export const harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (
+    regel: Regel,
+    grunnlag: Regelgrunnlag
+): RegelTestresultat => {
     const {
         søknadsinfo: { søker, søknaden },
         perioder

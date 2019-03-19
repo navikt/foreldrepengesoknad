@@ -1,8 +1,11 @@
-import { Regel, Regelgrunnlag, RegelTest } from '../types';
+import { Regel, Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
 import { regelPasserer, regelHarAvvik } from '../regelUtils';
 import { erUttaksmengdeForFarMedmorForHøy } from '../../../util/validation/uttaksplan/erUttaksmengdeForFarMedmorForHøy';
 
-export const erUttaksmengdeForFarMedmorForHøyTestTestTest: RegelTest = (regel: Regel, grunnlag: Regelgrunnlag) => {
+export const erUttaksmengdeForFarMedmorForHøyTestTestTest: RegelTest = (
+    regel: Regel,
+    grunnlag: Regelgrunnlag
+): RegelTestresultat => {
     return erUttaksmengdeForFarMedmorForHøy(
         grunnlag.perioder,
         grunnlag.tilgjengeligeStønadskontoer,
