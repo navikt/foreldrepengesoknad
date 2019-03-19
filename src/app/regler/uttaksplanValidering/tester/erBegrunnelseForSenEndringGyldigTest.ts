@@ -1,17 +1,13 @@
-import { Regel, Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
-import { regelPasserer, regelHarAvvik } from '../regelUtils';
+import { Regelgrunnlag, RegelTestresultat } from '../types';
 import { begrunnelseForSenEndringErGyldig } from '../../../util/validation/uttaksplan/begrunnelseForSenEndringValidation';
 import { getSeneEndringerSomKreverBegrunnelse } from '../../../util/uttaksplan/uttakUtils';
 
-export const erBegrunnelseForSenEndringGyldigTest: RegelTest = (
-    regel: Regel,
-    grunnlag: Regelgrunnlag
-): RegelTestresultat => {
+export function erBegrunnelseForSenEndringGyldigTest(grunnlag: Regelgrunnlag): RegelTestresultat {
     const { begrunnelseForSenEndring } = grunnlag.tilleggsopplysninger;
     const harPerioderSomErSeneEndringer = getSeneEndringerSomKreverBegrunnelse(grunnlag.perioder).length > 0;
 
     return harPerioderSomErSeneEndringer &&
         (begrunnelseForSenEndring === undefined || !begrunnelseForSenEndringErGyldig(begrunnelseForSenEndring.tekst))
-        ? regelHarAvvik(regel)
-        : regelPasserer(regel);
-};
+        ? { passerer: false }
+        : { passerer: true };
+}

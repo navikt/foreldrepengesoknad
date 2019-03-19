@@ -1,10 +1,6 @@
-import { Regel, Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
-import { regelPasserer, regelHarAvvik } from '../regelUtils';
+import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
 import { uttaksplanSlutterMedOpphold } from '../../../util/validation/uttaksplan/uttaksplanSlutterMedOpphold';
 
-export const slutterUttaksplanMedOppholdTest: RegelTest = (
-    regel: Regel,
-    grunnlag: Regelgrunnlag
-): RegelTestresultat => {
-    return uttaksplanSlutterMedOpphold(grunnlag.perioder) ? regelHarAvvik(regel) : regelPasserer(regel);
+export const slutterUttaksplanMedOppholdTest: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+    return { passerer: uttaksplanSlutterMedOpphold(grunnlag.perioder) === false };
 };

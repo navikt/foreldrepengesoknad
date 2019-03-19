@@ -1,22 +1,27 @@
 import {
     Regelgrunnlag,
-    RegelTestresultat,
     UttaksplanRegelTestresultat,
     RegelAvvik,
     Regel,
-    RegelAvvikIntlFeilmelding
+    RegelAvvikIntlFeilmelding,
+    RegelStatus
 } from './types';
 import uttaksplanRegler from '.';
 
-export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelTestresultat[] => {
-    return uttaksplanRegler.map((regel) => regel.test(regel, regelgrunnlag));
+export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelStatus[] => {
+    return uttaksplanRegler.map((regel) => {
+        const resultat = regel.test(regelgrunnlag);
+        return resultat.passerer
+            ? regelPasserer(regel)
+            : regelHarAvvik(regel, resultat.feilmelding, resultat.periodeId);
+    });
 };
 
 export const regelHarAvvik = (
     regel: Regel,
     feilmelding?: RegelAvvikIntlFeilmelding,
     periodeId?: string
-): RegelTestresultat => ({
+): RegelStatus => ({
     key: regel.key,
     passerer: false,
     regelAvvik: {
@@ -29,7 +34,7 @@ export const regelHarAvvik = (
     }
 });
 
-export const regelPasserer = (regel: Regel): RegelTestresultat => ({
+export const regelPasserer = (regel: Regel): RegelStatus => ({
     key: regel.key,
     passerer: true
 });
@@ -46,7 +51,7 @@ export const getRegelAvvikForPeriode = (
     return undefined;
 };
 
-export const getRegelAvvik = (resultat: RegelTestresultat[]): RegelAvvik[] => {
+export const getRegelAvvik = (resultat: RegelStatus[]): RegelAvvik[] => {
     if (resultat) {
         return resultat.filter((r) => r.passerer === false && r.regelAvvik !== undefined).map((r) => r.regelAvvik!);
     }

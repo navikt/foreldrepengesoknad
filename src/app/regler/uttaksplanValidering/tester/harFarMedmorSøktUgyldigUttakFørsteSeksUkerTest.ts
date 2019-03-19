@@ -1,9 +1,8 @@
-import { Regel, Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
-import { regelHarAvvik, regelPasserer } from '../regelUtils';
+import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
+
 import { harFarMedmorSøktUgyldigUttakFørsteSeksUker } from '../../../util/validation/uttaksplan/uttakFarValidation';
 
 export const harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (
-    regel: Regel,
     grunnlag: Regelgrunnlag
 ): RegelTestresultat => {
     const {
@@ -12,15 +11,16 @@ export const harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (
     } = grunnlag;
 
     if (søker.erFarEllerMedmor && søknaden.erDeltUttak) {
-        return harFarMedmorSøktUgyldigUttakFørsteSeksUker(
-            perioder,
-            søknaden.familiehendelsesdato,
-            søknaden.antallBarn,
-            søknaden.situasjon
-        )
-            ? regelHarAvvik(regel)
-            : regelPasserer(regel);
+        return {
+            passerer:
+                harFarMedmorSøktUgyldigUttakFørsteSeksUker(
+                    perioder,
+                    søknaden.familiehendelsesdato,
+                    søknaden.antallBarn,
+                    søknaden.situasjon
+                ) === false
+        };
     }
 
-    return regelPasserer(regel);
+    return { passerer: true };
 };

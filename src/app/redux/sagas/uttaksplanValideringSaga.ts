@@ -27,11 +27,7 @@ import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { erSenUtsettelsePgaFerieEllerArbeid } from 'app/util/uttaksplan/uttakUtils';
 import { Feature, isFeatureEnabled } from 'app/Feature';
 import { uttaksplanHarForMangeFlerbarnsdager } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
-import {
-    UttaksplanRegelTestresultat,
-    RegelTestresultat,
-    RegelAlvorlighet
-} from '../../regler/uttaksplanValidering/types';
+import { UttaksplanRegelTestresultat, RegelStatus, RegelAlvorlighet } from '../../regler/uttaksplanValidering/types';
 import { sjekkUttaksplanOppMotRegler, getRegelAvvik } from '../../regler/uttaksplanValidering/regelUtils';
 
 const stateSelector = (state: AppState) => state;
@@ -103,7 +99,7 @@ const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat 
         );
         const resultatPerPeriode = groupBy(
             perioderesultater.filter((pr) => pr.regelAvvik && pr.regelAvvik.periodeId !== undefined),
-            (r: RegelTestresultat) => r.regelAvvik!.periodeId
+            (r: RegelStatus) => r.regelAvvik!.periodeId
         );
         const avvik = getRegelAvvik(resultat);
         return {
