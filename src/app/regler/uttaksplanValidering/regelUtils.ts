@@ -26,7 +26,7 @@ export const regelHarAvvik = (
     regelAvvik: {
         key: regel.key,
         alvorlighet: regel.alvorlighet,
-        info: info || { intlKey: `uttaksplan.validering.${regel.key}` },
+        info: info || { intlKey: `uttaksplan.validering.${regel.alvorlighet}.${regel.key}` },
         overstyrerRegler: regel.overstyrerRegler,
         overstyresAvRegel: regel.overstyresAvRegel,
         periodeId
