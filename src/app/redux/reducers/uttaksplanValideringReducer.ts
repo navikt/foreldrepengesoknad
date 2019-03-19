@@ -127,7 +127,7 @@ const uttaksplanValideringReducer = (
                 uttaksplanGraderingStørreEnnSamtidigUttak: action.uttaksplanGraderingStørreEnnSamtidigUttak === true,
                 begrunnelseForSenEndringErGyldig: action.begrunnelseForSenEndringErGyldig === true,
                 uttaksplanHarForMangeFlerbarnsdager: action.uttaksplanHarForMangeFlerbarnsdager === true,
-                resultat: action.regelTestResultat
+                resultat: action.regelTestresultat
             };
     }
     return state;

@@ -12,7 +12,7 @@ export interface ValiderUttaksplanAction {
 }
 export interface SetUttaksplanValidering {
     type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING;
-    regelTestResultat: UttaksplanRegelTestresultat | undefined;
+    regelTestresultat: UttaksplanRegelTestresultat | undefined;
     validertePerioder: { [periodeId: string]: ValidertPeriode };
     inneholderPerioder: boolean;
     stønadskontoerMedForMyeUttak: Stønadskontouttak[];
