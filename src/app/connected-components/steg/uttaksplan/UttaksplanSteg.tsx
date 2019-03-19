@@ -19,7 +19,8 @@ import {
     Periode,
     TilgjengeligStønadskonto,
     SenEndringÅrsak,
-    StønadskontoType
+    StønadskontoType,
+    Stønadskontouttak
 } from '../../../types/uttaksplan/periodetyper';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Søknadsinfo } from '../../../selectors/types';
@@ -34,7 +35,7 @@ import Block from 'common/components/block/Block';
 import isAvailable from '../util/isAvailable';
 import Søknad, { Tilleggsopplysninger, Opplysning } from '../../../types/søknad/Søknad';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
-import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
+import Uttaksoppsummering from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
 import { getVeilederInfoText } from 'app/util/uttaksplan/steg/util';

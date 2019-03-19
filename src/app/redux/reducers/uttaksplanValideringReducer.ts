@@ -2,8 +2,7 @@ import {
     UttaksplanValideringActionTypes,
     UttaksplanValideringActionKeys
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
-import { Periode } from '../../types/uttaksplan/periodetyper';
-import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
+import { Periode, Stønadskontouttak } from '../../types/uttaksplan/periodetyper';
 import { UttaksplanRegelTestresultat } from '../../regler/uttaksplanValidering/types';
 
 export enum PeriodeValideringErrorKey {

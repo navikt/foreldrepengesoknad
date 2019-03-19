@@ -12,12 +12,11 @@ import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { harFarHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakFarValidation';
 import { harMorSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakMorValidation';
 import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
-import { Periode } from '../../types/uttaksplan/periodetyper';
+import { Periode, Stønadskontouttak } from '../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Periodevalidering, ValidertPeriode, PeriodeAdvarselKey } from '../reducers/uttaksplanValideringReducer';
 import { setUttaksplanValidering } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
-import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
 import { uttaksplanErBareOpphold } from 'app/util/validation/uttaksplan/uttaksplanErBareOpphold';
 import { uttaksplanGraderingStørreEnnSamtidigUttak } from 'app/util/validation/uttaksplan/uttaksplanGraderingStørreEnnSamtidigUttak';
 import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanSlutterMedOpphold';
@@ -76,7 +75,19 @@ const getStønadskontoerMedForMyeUttak = (uttak: Stønadskontouttak[]) => {
 const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat | undefined => {
     const søknadsinfo = getSøknadsinfo(appState);
     const perioder = appState.søknad.uttaksplan;
-    const resultat = søknadsinfo && perioder ? sjekkUttaksplanOppMotRegler({ søknadsinfo, perioder }) : undefined;
+
+    if (!søknadsinfo) {
+        return undefined;
+    }
+
+    const uttaksstatusStønadskontoer = getUttaksstatus(
+        appState.api.tilgjengeligeStønadskontoer,
+        perioder,
+        søknadsinfo.søker.rolle,
+        søknadsinfo.søknaden.erEndringssøknad
+    );
+
+    const resultat = sjekkUttaksplanOppMotRegler({ søknadsinfo, perioder, uttaksstatusStønadskontoer });
     if (resultat) {
         const perioderesultater = resultat.filter(
             (r) => r.passerer === false && r.regelAvvik && r.regelAvvik.periodeId !== undefined

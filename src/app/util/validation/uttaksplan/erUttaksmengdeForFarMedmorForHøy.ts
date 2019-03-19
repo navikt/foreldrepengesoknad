@@ -1,6 +1,5 @@
-import { Periode, TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto, Stønadskontouttak } from 'app/types/uttaksplan/periodetyper';
 import { beregnGjenståendeUttaksdager } from 'app/util/uttaksPlanStatus';
-import { Stønadskontouttak } from 'app/components/uttaksoppsummering/Uttaksoppsummering';
 
 export const erUttaksmengdeForFarMedmorForHøy = (
     uttaksplan: Periode[],
