@@ -1,9 +1,8 @@
-import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
-import { StønadskontoType, isUttaksperiode, isOverføringsperiode } from '../../types/uttaksplan/periodetyper';
-import { Søkersituasjon } from '../../types/søknad/Søknad';
-import { Uttaksdatoer } from '../../selectors/types';
-import { erInnenFørsteSeksUkerFødselFarMedmor } from '../periodeegenskaper/erInnenFørsteSeksUkerFødselFarMedmor';
-import { Tidsperiode } from 'common/types';
+import { UttakFormPeriodeType } from '../../../components/uttak-form/UttakForm';
+import { StønadskontoType, isUttaksperiode } from '../../../types/uttaksplan/periodetyper';
+import { Søkersituasjon } from '../../../types/søknad/Søknad';
+import { Uttaksdatoer } from '../../../selectors/types';
+import { erInnenFørsteSeksUkerFødselFarMedmor } from '../../periodeegenskaper/erInnenFørsteSeksUkerFødselFarMedmor';
 
 const erMorForForSykSkalBesvares = (
     periode: UttakFormPeriodeType,
@@ -12,12 +11,12 @@ const erMorForForSykSkalBesvares = (
     uttaksdatoer: Uttaksdatoer,
     erFlerbarnssøknad: boolean
 ): boolean => {
-    if (isUttaksperiode(periode) || isOverføringsperiode(periode)) {
+    if (isUttaksperiode(periode) && søkerErFarEllerMedmor) {
         const { konto } = periode;
         if (
-            konto === StønadskontoType.Fedrekvote &&
+            (konto === StønadskontoType.Fedrekvote || konto === StønadskontoType.Foreldrepenger) &&
             erInnenFørsteSeksUkerFødselFarMedmor(
-                periode.tidsperiode as Tidsperiode,
+                periode.tidsperiode,
                 situasjon,
                 søkerErFarEllerMedmor,
                 uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker

@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { QuestionConfig, Questions, QuestionVisibility, questionValueIsOk } from '../../util/questions/Question';
 import { getValidTidsperiode, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import {
@@ -12,12 +11,11 @@ import {
     isOppholdsperiode
 } from '../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
-import { erUttakEgenKvote } from '../../util/uttaksplan/uttakUtils';
-import { uttaksdatoer } from 'app/util/uttaksplan/uttaksdatoer';
-import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
-import { Søkersituasjon } from 'app/types/søknad/Søknad';
 import { getStønadskontoFromOppholdsårsak } from 'app/util/uttaksplan/uttaksperiodeUtils';
 import { Tidsperiode } from 'common/types';
+import { Søknadsinfo } from 'app/selectors/types';
+import { Søknadsperiode } from 'app/regler/søknadsperioden/Søknadsperioden';
+import { UttakSkjemaregler } from 'app/regler/uttak/uttaksskjema/uttakSkjemaregler';
 
 export enum UttakSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -39,172 +37,68 @@ export interface UttakFormPayload {
     periode: UttakFormPeriodeType;
     velgbareStønadskontotyper: StønadskontoType[];
     kanEndreStønadskonto: boolean;
-    søkerErAleneOmOmsorg: boolean;
-    erDeltUttak: boolean;
-    søkerErFarEllerMedmor: boolean;
-    annenForelderHarRett: boolean;
-    morErUfør: boolean;
-    familiehendelsesdato: Date;
-    situasjon: Søkersituasjon;
-    erFlerbarnssøknad: boolean;
+    søknadsinfo: Søknadsinfo;
+    søknadsperiode: Søknadsperiode;
+    skjemaregler: UttakSkjemaregler;
 }
 
 export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
 
 const Sp = UttakSpørsmålKeys;
 
-const erUttakFørFødsel = (payload: UttakFormPayload): boolean => {
-    const { periode, familiehendelsesdato } = payload;
-    return (
-        (periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel) ||
-        moment(periode.tidsperiode && (periode.tidsperiode.tom as Date)).isBefore(familiehendelsesdato, 'day')
-    );
-};
-
-const erUttakInnenFørsteSeksUkerFødselFarMedmor = (payload: UttakFormPayload): boolean => {
-    if (payload.situasjon === Søkersituasjon.ADOPSJON || !payload.søkerErFarEllerMedmor) {
-        return false;
-    }
-
-    if (isValidTidsperiode(payload.periode.tidsperiode)) {
-        const førsteUttaksdag = uttaksdatoer(payload.familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
-        const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
-
-        if (moment(payload.periode.tidsperiode.fom).isBefore(moment(førsteUttaksdagEtterSeksUker))) {
-            return true;
-        }
-    }
-
-    return false;
-};
-
 const visKvote = (payload: UttakFormPayload): boolean => {
-    const { kanEndreStønadskonto, velgbareStønadskontotyper } = payload;
-    return erUttakFørFødsel(payload) === false && kanEndreStønadskonto === true && velgbareStønadskontotyper.length > 0;
+    const { kanEndreStønadskonto, velgbareStønadskontotyper, søknadsperiode } = payload;
+    return kanEndreStønadskonto === true && velgbareStønadskontotyper.length > 0 && søknadsperiode.erUttakEtterFødsel();
 };
 
 const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
-    const { periode, søkerErFarEllerMedmor, annenForelderHarRett, søkerErAleneOmOmsorg } = payload;
-    if (isUttaksperiode(periode) || isOverføringsperiode(periode)) {
-        if (
-            søkerErFarEllerMedmor === false ||
-            periode.konto === undefined ||
-            (visØnskerFlerbarnsdager(payload) && isUttaksperiode(periode) && periode.ønskerFlerbarnsdager !== false)
-        ) {
-            return false;
-        }
-        const erDeltUttak = søkerErAleneOmOmsorg === false && annenForelderHarRett === true;
-        if (
-            erDeltUttak &&
-            (periode.konto === StønadskontoType.Fellesperiode || periode.konto === StønadskontoType.Foreldrepenger)
-        ) {
-            return true;
-        } else if (erDeltUttak === false && annenForelderHarRett === false) {
-            if (
-                (isUttaksperiode(periode) && periode.harIkkeAktivitetskrav === true) ||
-                isUttaksperiode(periode) === false ||
-                (isUttaksperiode(periode) &&
-                    periode.konto === StønadskontoType.Foreldrepenger &&
-                    ((periode.erMorForSyk !== true && visErMorForSyk(payload)) ||
-                        (periode.erMorForSyk !== undefined && !visErMorForSyk(payload)))) ||
-                periode.konto === StønadskontoType.Flerbarnsdager
-            ) {
-                return false;
-            }
-            return true;
-        }
+    const { periode, søknadsinfo } = payload;
+
+    if (isUttaksperiode(periode) && søknadsinfo.søker.erFarEllerMedmor) {
+        return visØnskerFlerbarnsdager(payload)
+            ? periode.ønskerFlerbarnsdager !== undefined
+            : periode.konto !== undefined;
+    } else {
         return false;
     }
-
-    return false;
 };
 
 const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
-    const { periode, søkerErFarEllerMedmor, annenForelderHarRett, søkerErAleneOmOmsorg } = payload;
-    if (isUttaksperiode(periode) || isOverføringsperiode(periode)) {
-        if (
-            periode.konto === undefined ||
-            periode.type === Periodetype.Overføring ||
-            erUttakFørFødsel(payload) ||
-            (periode.type === Periodetype.Uttak && visErMorForSyk(payload) && periode.erMorForSyk === false) ||
-            (visØnskerFlerbarnsdager(payload) && isUttaksperiode(periode) && periode.ønskerFlerbarnsdager === undefined)
-        ) {
+    const { periode } = payload;
+    if (isUttaksperiode(periode)) {
+        if (visErMorForSyk(payload) && periode.erMorForSyk === false) {
             return false;
-        } else if (periode.type === Periodetype.Uttak && periode.konto !== undefined) {
-            const erEgenKonto = erUttakEgenKvote(periode.konto, payload.søkerErFarEllerMedmor);
-            const aktivitetskravMor = visAktivitetskravMor(payload);
-            const aktivitetskravMorOk =
-                (aktivitetskravMor && questionValueIsOk(periode.morsAktivitetIPerioden)) || aktivitetskravMor === false;
-            const erDeltUttak = !søkerErAleneOmOmsorg && annenForelderHarRett;
-
-            if (
-                periode.konto === StønadskontoType.Fellesperiode &&
-                søkerErFarEllerMedmor === true &&
-                aktivitetskravMorOk &&
-                erDeltUttak
-            ) {
-                return true;
-            }
-
-            if (periode.konto === StønadskontoType.Fellesperiode && søkerErFarEllerMedmor === false && erDeltUttak) {
-                return true;
-            }
-
-            if (erEgenKonto && aktivitetskravMorOk && erDeltUttak) {
-                if (
-                    erUttakInnenFørsteSeksUkerFødselFarMedmor(payload) &&
-                    periode.type === Periodetype.Uttak &&
-                    periode.konto === StønadskontoType.Fedrekvote &&
-                    periode.erMorForSyk === undefined &&
-                    !payload.velgbareStønadskontotyper.includes(StønadskontoType.Flerbarnsdager)
-                ) {
-                    return false;
-                }
-
-                return true;
-            }
-
-            if (
-                søkerErFarEllerMedmor &&
-                periode.konto === StønadskontoType.Fellesperiode &&
-                aktivitetskravMorOk &&
-                erDeltUttak
-            ) {
-                return true;
-            }
-
-            if (periode.konto === StønadskontoType.Flerbarnsdager && aktivitetskravMorOk && erDeltUttak) {
-                return true;
-            }
         }
-        return false;
+
+        if (visAktivitetskravMor(payload) && questionValueIsOk(periode.morsAktivitetIPerioden)) {
+            return false;
+        }
     }
 
     return false;
 };
 
 const visOverføringsdokumentasjon = (payload: UttakFormPayload): boolean => {
-    const { periode } = payload;
+    const { periode, søknadsinfo } = payload;
     if (periode.type !== Periodetype.Overføring || periode.årsak === undefined) {
         return false;
     }
     return (
         periode.årsak !== OverføringÅrsakType.aleneomsorg ||
-        (periode.årsak === OverføringÅrsakType.aleneomsorg && payload.søkerErFarEllerMedmor === true)
+        (periode.årsak === OverføringÅrsakType.aleneomsorg && søknadsinfo.søker.erFarEllerMedmor === true)
     );
 };
 
 const visGradering = (payload: UttakFormPayload): boolean => {
     const { periode } = payload;
 
-    if (getValidTidsperiode(periode.tidsperiode as Tidsperiode) === undefined) {
-        return false;
-    }
-
     if (isUttaksperiode(periode)) {
+        if (getValidTidsperiode(periode.tidsperiode) === undefined) {
+            return false;
+        }
+
         if (
             periode.konto === undefined ||
-            erUttakFørFødsel(payload) ||
             (visSamtidigUttak(payload) && periode.ønskerSamtidigUttak === undefined) ||
             (visØnskerFlerbarnsdager(payload) && periode.ønskerFlerbarnsdager === undefined) ||
             (visAktivitetskravMor(payload) && periode.morsAktivitetIPerioden === undefined) ||
@@ -228,42 +122,25 @@ const hvorSkalDuJobbeErBesvart = (payload: UttakFormPayload): boolean => {
 };
 
 const visErMorForSyk = (payload: UttakFormPayload) => {
-    const { periode } = payload;
-    if (isUttaksperiode(periode) || isOverføringsperiode(periode)) {
-        if (
-            isValidTidsperiode(periode.tidsperiode) &&
-            erUttakInnenFørsteSeksUkerFødselFarMedmor(payload) &&
-            (periode.konto === StønadskontoType.Fedrekvote || periode.konto === StønadskontoType.Foreldrepenger) &&
-            payload.erDeltUttak &&
-            !payload.velgbareStønadskontotyper.includes(StønadskontoType.Flerbarnsdager)
-        ) {
-            return true;
-        }
-
-        return false;
-    }
-
     return false;
 };
 
 const visØnskerFlerbarnsdager = (payload: UttakFormPayload) => {
-    const { periode, erFlerbarnssøknad, søkerErFarEllerMedmor } = payload;
+    const { periode, søknadsinfo } = payload;
 
-    if (
-        (isUttaksperiode(periode) && visErMorForSyk(payload) && periode.erMorForSyk !== true) ||
-        !isValidTidsperiode(periode.tidsperiode)
-    ) {
-        return false;
+    if (isUttaksperiode(periode) && søknadsinfo.søknaden.erFlerbarnssøknad) {
+        if ((visErMorForSyk(payload) && periode.erMorForSyk !== true) || !isValidTidsperiode(periode.tidsperiode)) {
+            return false;
+        }
+
+        return (
+            periode.konto === StønadskontoType.Fellesperiode ||
+            periode.konto === StønadskontoType.Fedrekvote ||
+            periode.konto === StønadskontoType.Foreldrepenger
+        );
     }
 
-    return (
-        isUttaksperiode(periode) &&
-        erFlerbarnssøknad &&
-        søkerErFarEllerMedmor &&
-        (periode.konto === StønadskontoType.Fellesperiode ||
-            periode.konto === StønadskontoType.Fedrekvote ||
-            periode.konto === StønadskontoType.Foreldrepenger)
-    );
+    return false;
 };
 
 export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpørsmålKeys> = {
@@ -277,21 +154,21 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
             ((isUttaksperiode(periode) || isOverføringsperiode(periode)) && questionValueIsOk(periode.konto)) ||
             (isOppholdsperiode(periode) && questionValueIsOk(getStønadskontoFromOppholdsårsak(periode.årsak))),
         parentQuestion: Sp.tidsperiode,
-        isRequired: (payload) => visKvote(payload)
+        isIncluded: (payload) => visKvote(payload)
     },
     [Sp.erMorForSyk]: {
         isAnswered: ({ periode }) =>
-            (periode.type === Periodetype.Uttak &&
+            (isUttaksperiode(periode) &&
                 (periode.konto === StønadskontoType.Fedrekvote || periode.konto === StønadskontoType.Foreldrepenger) &&
                 periode.erMorForSyk !== undefined) ||
             isOppholdsperiode(periode),
         parentQuestion: Sp.kvote,
-        isRequired: (payload) => visErMorForSyk(payload)
+        isIncluded: ({ skjemaregler }) => skjemaregler.erMorForSykSkalBesvares()
     },
     [Sp.ønskerFlerbarnsdager]: {
         isAnswered: ({ periode }) =>
             (isUttaksperiode(periode) && questionValueIsOk(periode.ønskerFlerbarnsdager)) || isOppholdsperiode(periode),
-        isRequired: (payload) => visØnskerFlerbarnsdager(payload)
+        isIncluded: ({ skjemaregler }) => skjemaregler.ønskerFlerbarnsdagerSkalBesvares()
     },
     [Sp.aktivitetskravMor]: {
         isAnswered: ({ periode }) =>
@@ -300,49 +177,50 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
                 periode.morsAktivitetIPerioden.length > 0) ||
             isOppholdsperiode(periode),
         parentQuestion: Sp.tidsperiode,
-        isRequired: (payload) => visAktivitetskravMor(payload)
+        isIncluded: ({ skjemaregler }) => skjemaregler.aktivitetskravMorSkalBesvares(),
+        visibilityFilter: (payload) => visAktivitetskravMor(payload)
     },
     [Sp.samtidigUttak]: {
         isAnswered: ({ periode }) =>
             (periode.type === Periodetype.Uttak && questionValueIsOk(periode.ønskerSamtidigUttak)) ||
             isOppholdsperiode(periode),
         parentQuestion: Sp.tidsperiode,
-        isRequired: (payload) => visSamtidigUttak(payload)
+        isIncluded: ({ skjemaregler }) => skjemaregler.samtidigUttakSkalBesvares()
     },
     [Sp.samtidigUttakProsent]: {
-        isAnswered: ({ periode, søkerErFarEllerMedmor }) =>
+        isAnswered: ({ periode, søknadsinfo }) =>
             (periode.type === Periodetype.Uttak && questionValueIsOk(periode.samtidigUttakProsent)) ||
             isOppholdsperiode(periode) ||
-            !søkerErFarEllerMedmor,
+            !søknadsinfo.søker.erFarEllerMedmor,
         parentQuestion: Sp.samtidigUttak,
-        isRequired: ({ periode, søkerErFarEllerMedmor }) =>
-            periode.type === Periodetype.Uttak && periode.ønskerSamtidigUttak === true && søkerErFarEllerMedmor
+        isIncluded: ({ periode, søknadsinfo }) =>
+            periode.type === Periodetype.Uttak &&
+            periode.ønskerSamtidigUttak === true &&
+            søknadsinfo.søker.erFarEllerMedmor
     },
     [Sp.overføringsårsak]: {
         isAnswered: ({ periode }) =>
             (periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak)) || isOppholdsperiode(periode),
-        isRequired: (payload) =>
-            visKvote(payload) &&
-            payload.periode.type === Periodetype.Overføring &&
-            erUttakEgenKvote(payload.periode.konto, payload.søkerErFarEllerMedmor) === false
+        isIncluded: (payload) => visKvote(payload) && payload.skjemaregler.overføringsårsakSkalBesvares()
     },
     [Sp.overføringsdokumentasjon]: {
         isOptional: () => true,
         isAnswered: ({ periode }) =>
             (periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak)) || isOppholdsperiode(periode),
-        isRequired: (payload) => visOverføringsdokumentasjon(payload)
+        isIncluded: (payload) => visOverføringsdokumentasjon(payload)
     },
     [Sp.skalHaGradering]: {
         isAnswered: ({ periode }) =>
             (periode.type === Periodetype.Uttak && questionValueIsOk(periode.gradert)) || isOppholdsperiode(periode),
-        isRequired: (payload) => visGradering(payload)
+        isIncluded: ({ skjemaregler }) => skjemaregler.graderingSkalBesvares(),
+        visibilityFilter: (payload) => visGradering(payload)
     },
     [Sp.stillingsprosent]: {
         isAnswered: ({ periode }) =>
             (periode.type === Periodetype.Uttak && questionValueIsOk(periode.stillingsprosent)) ||
             isOppholdsperiode(periode),
         parentQuestion: Sp.skalHaGradering,
-        isRequired: ({ periode }) => periode.type === Periodetype.Uttak && periode.gradert === true
+        isIncluded: ({ periode }) => periode.type === Periodetype.Uttak && periode.gradert === true
     },
     [Sp.hvorSkalDuJobbe]: {
         isAnswered: (payload) => hvorSkalDuJobbeErBesvart(payload) || isOppholdsperiode(payload.periode),

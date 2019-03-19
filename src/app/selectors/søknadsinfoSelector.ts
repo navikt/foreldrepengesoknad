@@ -131,7 +131,8 @@ const selectOmAnnenForelder = createSelector(
         return {
             harRett: annenForelder.harRettPåForeldrepenger === true,
             erFarEllerMedmor: søkerErFarEllerMedmor === false,
-            erMor: søkerErFarEllerMedmor === true
+            erMor: søkerErFarEllerMedmor === true,
+            erUfør: annenForelder.erUfør === true
         };
     }
 );

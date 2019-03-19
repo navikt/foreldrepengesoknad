@@ -4,14 +4,14 @@ import { MorsAktivitet } from '../types/uttaksplan/periodetyper';
 import Select from 'common/components/skjema/wrappers/Select';
 import getMessage from 'common/util/i18nUtils';
 import { SelectChangeEvent } from '../types/dom/Events';
-import { NavnPåForeldre } from 'common/types';
 import Block from 'common/components/block/Block';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import lenker from '../util/routing/lenker';
+import { NavnISøknaden } from 'app/selectors/types';
 
 interface HvaSkalMorGjøreSpørsmålProps {
     morsAktivitetIPerioden?: MorsAktivitet;
-    navnPåForeldre: NavnPåForeldre;
+    navnPåForeldre: NavnISøknaden;
     onChange: (morsAktivitetIPerioden: MorsAktivitet) => void;
 }
 
@@ -30,7 +30,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
             return (
                 <FormattedMessage
                     id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid"
-                    values={{ navnMor: navnPåForeldre.mor }}
+                    values={{ navnMor: navnPåForeldre.mor.fornavn }}
                 />
             );
         } else if (morsAktivitetIPerioden === MorsAktivitet.ArbeidOgUtdanning) {
@@ -45,7 +45,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                 <>
                     <FormattedMessage
                         id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning"
-                        values={{ navnMor: navnPåForeldre.mor }}
+                        values={{ navnMor: navnPåForeldre.mor.fornavn }}
                     />
                     <ul>{listData.map((listItem, index) => <li key={`arbeidOgUtdanning${index}`}>{listItem}</li>)}</ul>
                 </>
@@ -54,28 +54,28 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
             return (
                 <FormattedMessage
                     id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt"
-                    values={{ navnMor: navnPåForeldre.mor }}
+                    values={{ navnMor: navnPåForeldre.mor.fornavn }}
                 />
             );
         } else if (morsAktivitetIPerioden === MorsAktivitet.Introduksjonsprogrammet) {
             return (
                 <FormattedMessage
                     id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.introduksjonsprogrammet"
-                    values={{ navnMor: navnPåForeldre.mor }}
+                    values={{ navnMor: navnPåForeldre.mor.fornavn }}
                 />
             );
         } else if (morsAktivitetIPerioden === MorsAktivitet.Kvalifiseringsprogrammet) {
             return (
                 <FormattedMessage
                     id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.kvalifiseringsprogrammet"
-                    values={{ navnMor: navnPåForeldre.mor }}
+                    values={{ navnMor: navnPåForeldre.mor.fornavn }}
                 />
             );
         } else if (morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp) {
             return (
                 <FormattedMessage
                     id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.trengerhjelp"
-                    values={{ navnMor: navnPåForeldre.mor }}
+                    values={{ navnMor: navnPåForeldre.mor.fornavn }}
                 />
             );
         } else if (morsAktivitetIPerioden === MorsAktivitet.Utdanning) {
@@ -90,7 +90,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                 <>
                     <FormattedMessage
                         id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning"
-                        values={{ navnMor: navnPåForeldre.mor }}
+                        values={{ navnMor: navnPåForeldre.mor.fornavn }}
                     />
                     <ul>{listData.map((listItem, index) => <li key={`trengerhjelp${index}`}>{listItem}</li>)}</ul>
                 </>
@@ -120,7 +120,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                         value={morsAktivitetIPerioden}
                         name="hvaSkalMorGjøre.spørsmål"
                         label={getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål', {
-                            navnMor: navnPåForeldre.mor
+                            navnMor: navnPåForeldre.mor.fornavn
                         })}
                         onChange={(e: SelectChangeEvent) => onChange(e.target.value as MorsAktivitet)}
                         validators={[

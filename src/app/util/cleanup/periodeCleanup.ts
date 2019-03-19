@@ -62,7 +62,11 @@ const cleanupUtsettelse = (
     annenForelder: AnnenForelder
 ): Utsettelsesperiode => {
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
-    const morsAktivitetIPerioden = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(erSøkerFarEllerMedmor, annenForelder)
+    const morsAktivitetIPerioden = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
+        erSøkerFarEllerMedmor,
+        annenForelder.harRettPåForeldrepenger,
+        annenForelder.erUfør
+    )
         ? periode.morsAktivitetIPerioden
         : undefined;
 

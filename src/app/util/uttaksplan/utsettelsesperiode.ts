@@ -21,8 +21,11 @@ export const dokumentasjonBehøvesForUtsettelsesperiode = (
     annenForelder: AnnenForelder
 ): boolean => {
     return (
-        aktivitetskravMorUtil.skalBesvaresVedUtsettelse(erFarEllerMedmor, annenForelder) ||
-        erÅrsakSykdomEllerInstitusjonsopphold(årsak)
+        aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
+            erFarEllerMedmor,
+            annenForelder.harRettPåForeldrepenger,
+            annenForelder.erUfør
+        ) || erÅrsakSykdomEllerInstitusjonsopphold(årsak)
     );
 };
 
