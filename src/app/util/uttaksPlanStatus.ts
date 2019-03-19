@@ -5,9 +5,9 @@ import {
     StønadskontoType,
     isUttaksperiode,
     Periodetype,
-    Oppholdsperiode
+    Oppholdsperiode,
+    Stønadskontouttak
 } from '../types/uttaksplan/periodetyper';
-import { Stønadskontouttak } from '../components/uttaksoppsummering/Uttaksoppsummering';
 import { Forelder } from 'common/types';
 import { Perioden } from './uttaksplan/Perioden';
 import { getFloatFromString } from 'common/util/numberUtils';

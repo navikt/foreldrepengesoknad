@@ -1,5 +1,6 @@
 import get from 'lodash/get';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
+import groupBy from 'lodash.groupby';
 
 import { AppState } from '../reducers';
 import { begrunnelseForSenEndringErGyldig } from 'app/util/validation/uttaksplan/begrunnelseForSenEndringValidation';
@@ -8,15 +9,14 @@ import { getErDeltUttak } from '../../util/uttaksplan/forslag/util';
 import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
-import { harFarHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakFarValidation';
-import { harMorHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakMorValidation';
+import { harFarMedmorSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakFarValidation';
+import { harMorSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakMorValidation';
 import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
-import { Periode } from '../../types/uttaksplan/periodetyper';
+import { Periode, Stønadskontouttak } from '../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Periodevalidering, ValidertPeriode, PeriodeAdvarselKey } from '../reducers/uttaksplanValideringReducer';
 import { setUttaksplanValidering } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
-import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
 import { uttaksplanErBareOpphold } from 'app/util/validation/uttaksplan/uttaksplanErBareOpphold';
 import { uttaksplanGraderingStørreEnnSamtidigUttak } from 'app/util/validation/uttaksplan/uttaksplanGraderingStørreEnnSamtidigUttak';
 import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanSlutterMedOpphold';
@@ -27,6 +27,12 @@ import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { erSenUtsettelsePgaFerieEllerArbeid } from 'app/util/uttaksplan/uttakUtils';
 import { Feature, isFeatureEnabled } from 'app/Feature';
 import { uttaksplanHarForMangeFlerbarnsdager } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
+import {
+    UttaksplanRegelTestresultat,
+    RegelTestresultat,
+    RegelAlvorlighet
+} from '../../regler/uttaksplanValidering/types';
+import { sjekkUttaksplanOppMotRegler, getRegelAvvik } from '../../regler/uttaksplanValidering/regelUtils';
 
 const stateSelector = (state: AppState) => state;
 
@@ -66,6 +72,46 @@ const getStønadskontoerMedForMyeUttak = (uttak: Stønadskontouttak[]) => {
     return uttak.filter((u) => u.antallDager < 0);
 };
 
+const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat | undefined => {
+    const søknadsinfo = getSøknadsinfo(appState);
+    const perioder = appState.søknad.uttaksplan;
+
+    if (!søknadsinfo) {
+        return undefined;
+    }
+
+    const uttaksstatusStønadskontoer = getUttaksstatus(
+        appState.api.tilgjengeligeStønadskontoer,
+        perioder,
+        søknadsinfo.søker.rolle,
+        søknadsinfo.søknaden.erEndringssøknad
+    );
+
+    const resultat = isFeatureEnabled(Feature.uttaksplanValidering)
+        ? sjekkUttaksplanOppMotRegler({ søknadsinfo, perioder, uttaksstatusStønadskontoer })
+        : undefined;
+    if (resultat) {
+        const perioderesultater = resultat.filter(
+            (r) => r.passerer === false && r.regelAvvik && r.regelAvvik.periodeId !== undefined
+        );
+        const resultatPerPeriode = groupBy(
+            perioderesultater.filter((pr) => pr.regelAvvik && pr.regelAvvik.periodeId !== undefined),
+            (r: RegelTestresultat) => r.regelAvvik!.periodeId
+        );
+        const avvik = getRegelAvvik(resultat);
+        return {
+            avvik,
+            resultat,
+            resultatPerPeriode,
+            antallAvvik: {
+                info: avvik.filter((a) => a.alvorlighet === RegelAlvorlighet.INFO).length,
+                viktig: avvik.filter((a) => a.alvorlighet === RegelAlvorlighet.VIKTIG).length,
+                ulovlig: avvik.filter((a) => a.alvorlighet === RegelAlvorlighet.ULOVLIG).length
+            }
+        };
+    }
+    return undefined;
+};
 function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
     const { uttaksplan, barn, situasjon, søker, erEndringssøknad, dekningsgrad } = appState.søknad;
@@ -92,15 +138,11 @@ function* validerUttaksplanSaga() {
             antallAktivePerioder > 0,
             getStønadskontoerMedForMyeUttak(uttaksstatus),
             søkerErMor
-                ? harMorHarSøktUgyldigUttakFørsteSeksUker(
-                      uttaksplan,
-                      getFamiliehendelsedato(barn, situasjon),
-                      situasjon
-                  )
+                ? harMorSøktUgyldigUttakFørsteSeksUker(uttaksplan, getFamiliehendelsedato(barn, situasjon), situasjon)
                 : false,
             søkerErFarEllerMedmor
                 ? erDeltUttak &&
-                  harFarHarSøktUgyldigUttakFørsteSeksUker(
+                  harFarMedmorSøktUgyldigUttakFørsteSeksUker(
                       uttaksplan,
                       getFamiliehendelsedato(barn, situasjon),
                       barn.antallBarn,
@@ -119,7 +161,8 @@ function* validerUttaksplanSaga() {
             begrunnelseForSenEndringErGyldig(
                 get(appState, 'søknad.tilleggsopplysninger.begrunnelseForSenEndring.tekst')
             ),
-            uttaksplanHarForMangeFlerbarnsdager(uttaksplan, dekningsgrad, barn.antallBarn)
+            uttaksplanHarForMangeFlerbarnsdager(uttaksplan, dekningsgrad, barn.antallBarn),
+            kjørUttaksplanRegler(appState)
         )
     );
 }
