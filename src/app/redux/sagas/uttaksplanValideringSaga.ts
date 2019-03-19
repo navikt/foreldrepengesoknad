@@ -4,10 +4,8 @@ import groupBy from 'lodash.groupby';
 
 import { AppState } from '../reducers';
 import { begrunnelseForSenEndringErGyldig } from 'app/util/validation/uttaksplan/begrunnelseForSenEndringValidation';
-import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
-import { harMorSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakMorValidation';
 import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../util/uttaksplan/Periodene';
@@ -105,10 +103,8 @@ const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat 
 };
 function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
-    const { uttaksplan, barn, situasjon, søker } = appState.søknad;
+    const { uttaksplan } = appState.søknad;
     const validertePerioder: Periodevalidering = {};
-    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
-    const søkerErMor = søkerErFarEllerMedmor === false;
     let antallAktivePerioder = 0;
     uttaksplan.forEach((periode) => {
         validertePerioder[periode.id] = validerPeriode(appState, periode);
@@ -121,9 +117,6 @@ function* validerUttaksplanSaga() {
         setUttaksplanValidering(
             validertePerioder,
             antallAktivePerioder > 0,
-            søkerErMor
-                ? harMorSøktUgyldigUttakFørsteSeksUker(uttaksplan, getFamiliehendelsedato(barn, situasjon), situasjon)
-                : false,
             uttaksplanErBareOpphold(uttaksplan),
             uttaksplanStarterMedOpphold(uttaksplan),
             uttaksplanSlutterMedOpphold(uttaksplan),

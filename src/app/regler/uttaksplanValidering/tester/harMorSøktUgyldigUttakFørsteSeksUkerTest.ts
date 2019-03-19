@@ -5,6 +5,7 @@ import { harMorSøktUgyldigUttakFørsteSeksUker } from '../../../util/validation
 export const harMorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
     return {
         passerer:
+            grunnlag.søknadsinfo.søker.erMor &&
             harMorSøktUgyldigUttakFørsteSeksUker(
                 grunnlag.perioder,
                 grunnlag.søknadsinfo.søknaden.familiehendelsesdato,

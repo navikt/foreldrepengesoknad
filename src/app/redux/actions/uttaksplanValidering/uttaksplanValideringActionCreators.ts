@@ -8,7 +8,6 @@ import { UttaksplanRegelTestresultat } from '../../../regler/uttaksplanValiderin
 export function setUttaksplanValidering(
     validertePerioder: Periodevalidering,
     inneholderPerioder: boolean,
-    morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean,
     uttakErBareOpphold: boolean,
     uttaksplanStarterMedOpphold: boolean,
     uttaksplanSlutterMedOpphold: boolean,
@@ -20,7 +19,6 @@ export function setUttaksplanValidering(
         type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING,
         validertePerioder,
         inneholderPerioder,
-        morHarSøktUgyldigUtsettelseFørsteSeksUker,
         uttakErBareOpphold,
         uttaksplanStarterMedOpphold,
         uttaksplanSlutterMedOpphold,

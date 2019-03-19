@@ -32,7 +32,6 @@ export interface UttaksplanValideringState {
     periodevalidering: Periodevalidering;
     inneholderPerioder: boolean;
     erGyldig: boolean;
-    morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     uttakErBareOpphold: boolean;
     uttaksplanStarterMedOpphold: boolean;
     uttaksplanSlutterMedOpphold: boolean;
@@ -66,7 +65,6 @@ const getDefaultState = (): UttaksplanValideringState => {
         periodevalidering: {},
         inneholderPerioder: false,
         erGyldig: true,
-        morHarSøktUgyldigUtsettelseFørsteSeksUker: false,
         uttakErBareOpphold: false,
         uttaksplanStarterMedOpphold: false,
         uttaksplanSlutterMedOpphold: false,
@@ -90,7 +88,6 @@ const uttaksplanValideringReducer = (
             const erGyldig =
                 periodeneErGyldige(action.validertePerioder) &&
                 action.inneholderPerioder &&
-                action.morHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
                 action.uttakErBareOpphold === false &&
                 action.uttaksplanStarterMedOpphold === false &&
                 action.uttaksplanSlutterMedOpphold === false &&
@@ -102,7 +99,6 @@ const uttaksplanValideringReducer = (
                 ...state,
                 periodevalidering: action.validertePerioder,
                 inneholderPerioder: action.inneholderPerioder,
-                morHarSøktUgyldigUtsettelseFørsteSeksUker: action.morHarSøktUgyldigUtsettelseFørsteSeksUker,
                 erGyldig,
                 uttakErBareOpphold: action.uttakErBareOpphold === true,
                 uttaksplanStarterMedOpphold: action.uttaksplanStarterMedOpphold === true,
