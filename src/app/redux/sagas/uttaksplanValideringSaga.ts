@@ -75,20 +75,26 @@ const getStønadskontoerMedForMyeUttak = (uttak: Stønadskontouttak[]) => {
 const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat | undefined => {
     const søknadsinfo = getSøknadsinfo(appState);
     const perioder = appState.søknad.uttaksplan;
+    const { tilgjengeligeStønadskontoer } = appState.api;
 
     if (!søknadsinfo) {
         return undefined;
     }
 
     const uttaksstatusStønadskontoer = getUttaksstatus(
-        appState.api.tilgjengeligeStønadskontoer,
+        tilgjengeligeStønadskontoer,
         perioder,
         søknadsinfo.søker.rolle,
         søknadsinfo.søknaden.erEndringssøknad
     );
 
     const resultat = isFeatureEnabled(Feature.uttaksplanValidering)
-        ? sjekkUttaksplanOppMotRegler({ søknadsinfo, perioder, uttaksstatusStønadskontoer })
+        ? sjekkUttaksplanOppMotRegler({
+              søknadsinfo,
+              perioder,
+              uttaksstatusStønadskontoer,
+              tilgjengeligeStønadskontoer
+          })
         : undefined;
     if (resultat) {
         const perioderesultater = resultat.filter(
