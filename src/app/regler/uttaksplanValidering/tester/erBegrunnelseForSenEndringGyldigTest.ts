@@ -1,9 +1,12 @@
-import { Regel, Regelgrunnlag, RegelTest } from '../types';
+import { Regel, Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
 import { regelPasserer, regelHarAvvik } from '../regelUtils';
 import { begrunnelseForSenEndringErGyldig } from '../../../util/validation/uttaksplan/begrunnelseForSenEndringValidation';
 import { getSeneEndringerSomKreverBegrunnelse } from '../../../util/uttaksplan/uttakUtils';
 
-export const erBegrunnelseForSenEndringGyldigTest: RegelTest = (regel: Regel, grunnlag: Regelgrunnlag) => {
+export const erBegrunnelseForSenEndringGyldigTest: RegelTest = (
+    regel: Regel,
+    grunnlag: Regelgrunnlag
+): RegelTestresultat => {
     const { begrunnelseForSenEndring } = grunnlag.tilleggsopplysninger;
     const harPerioderSomErSeneEndringer = getSeneEndringerSomKreverBegrunnelse(grunnlag.perioder).length > 0;
 

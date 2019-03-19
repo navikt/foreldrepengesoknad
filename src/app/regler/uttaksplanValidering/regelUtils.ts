@@ -8,6 +8,10 @@ import {
 } from './types';
 import uttaksplanRegler from '.';
 
+export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelTestresultat[] => {
+    return uttaksplanRegler.map((regel) => regel.test(regel, regelgrunnlag));
+};
+
 export const regelHarAvvik = (
     regel: Regel,
     feilmelding?: RegelAvvikIntlFeilmelding,
@@ -29,10 +33,6 @@ export const regelPasserer = (regel: Regel): RegelTestresultat => ({
     key: regel.key,
     passerer: true
 });
-
-export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelTestresultat[] => {
-    return uttaksplanRegler.map((regel) => regel.test(regel, regelgrunnlag));
-};
 
 export const getRegelAvvikForPeriode = (
     resultat: UttaksplanRegelTestresultat,
