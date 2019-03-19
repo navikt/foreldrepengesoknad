@@ -28,7 +28,7 @@ export interface Periodevalidering {
 }
 
 export interface UttaksplanValideringState {
-    resultat: UttaksplanRegelTestresultat | undefined;
+    regelTestResultat: UttaksplanRegelTestresultat | undefined;
     periodevalidering: Periodevalidering;
     inneholderPerioder: boolean;
     stønadskontoerMedForMyeUttak: Stønadskontouttak[];
@@ -41,7 +41,6 @@ export interface UttaksplanValideringState {
     uttaksplanSlutterMedOpphold: boolean;
     uttaksplanGraderingStørreEnnSamtidigUttak: boolean;
     begrunnelseForSenEndringErGyldig: boolean;
-    uttaksplanHarForMangeFlerbarnsdager: boolean;
 }
 
 export interface PeriodeValideringsfeil {
@@ -61,15 +60,11 @@ export interface ValidertPeriode {
 
 const getDefaultState = (): UttaksplanValideringState => {
     return {
-        resultat: {
+        regelTestResultat: {
             avvik: [],
             resultat: [],
             resultatPerPeriode: {},
-            antallAvvik: {
-                info: 0,
-                feil: 0,
-                advarsel: 0
-            }
+            harFeil: false
         },
         periodevalidering: {},
         inneholderPerioder: false,
@@ -82,8 +77,7 @@ const getDefaultState = (): UttaksplanValideringState => {
         uttaksplanStarterMedOpphold: false,
         uttaksplanSlutterMedOpphold: false,
         uttaksplanGraderingStørreEnnSamtidigUttak: false,
-        begrunnelseForSenEndringErGyldig: true,
-        uttaksplanHarForMangeFlerbarnsdager: false
+        begrunnelseForSenEndringErGyldig: true
     };
 };
 
@@ -111,7 +105,8 @@ const uttaksplanValideringReducer = (
                 action.uttaksplanSlutterMedOpphold === false &&
                 action.uttaksplanGraderingStørreEnnSamtidigUttak === false &&
                 action.begrunnelseForSenEndringErGyldig === true &&
-                action.uttaksplanHarForMangeFlerbarnsdager === false;
+                action.regelTestresultat !== undefined &&
+                action.regelTestresultat.harFeil === false;
             return {
                 ...state,
                 periodevalidering: action.validertePerioder,
@@ -126,8 +121,7 @@ const uttaksplanValideringReducer = (
                 uttaksplanSlutterMedOpphold: action.uttaksplanSlutterMedOpphold === true,
                 uttaksplanGraderingStørreEnnSamtidigUttak: action.uttaksplanGraderingStørreEnnSamtidigUttak === true,
                 begrunnelseForSenEndringErGyldig: action.begrunnelseForSenEndringErGyldig === true,
-                uttaksplanHarForMangeFlerbarnsdager: action.uttaksplanHarForMangeFlerbarnsdager === true,
-                resultat: action.regelTestresultat
+                regelTestResultat: action.regelTestresultat
             };
     }
     return state;

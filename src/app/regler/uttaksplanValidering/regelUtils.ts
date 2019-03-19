@@ -7,6 +7,7 @@ import {
     RegelStatus
 } from './types';
 import uttaksplanRegler from '.';
+import { InjectedIntl } from 'react-intl';
 
 export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelStatus[] => {
     return uttaksplanRegler.map((regel) => {
@@ -72,4 +73,22 @@ const overstyrerAndreFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelA
 
 export const trimRelaterteRegelAvvik = (avvik: RegelAvvik[]): RegelAvvik[] => {
     return avvik.filter(overstyresAvFilter).filter(overstyrerAndreFilter);
+};
+
+export const getRegelIntlValues = (
+    intl: InjectedIntl,
+    info: RegelAvvikIntlInfo
+): { [key: string]: string } | undefined => {
+    const { values } = info;
+    if (values === undefined) {
+        return undefined;
+    }
+    const newValues: { [key: string]: string } = {};
+    Object.keys(values).forEach((key) => {
+        const valueOrFunc = values[key];
+        if (valueOrFunc) {
+            newValues[key] = typeof valueOrFunc === 'function' ? valueOrFunc(intl) : `${valueOrFunc}`;
+        }
+    });
+    return newValues;
 };
