@@ -11,67 +11,67 @@ import { erBegrunnelseForSenEndringGyldigTest } from './tester/erBegrunnelseForS
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 
 export enum RegelKey {
-    'inneholderUttaksplanPerioder' = 'inneholderUttaksplanPerioder',
-    'harMorSøktUgyldigUttakFørsteSeksUker' = 'harMorSøktUgyldigUttakFørsteSeksUker',
-    'harFarMedmorSøktUgyldigUttakFørsteSeksUker' = 'harFarMedmorSøktUgyldigUttakFørsteSeksUker',
-    'inneholderStønadskontoForMyeUttak' = 'inneholderStønadskontoForMyeUttak',
-    'erUttaksplanBareOpphold' = 'erUttaksplanBareOpphold',
-    'starterUttaksplanMedOpphold' = 'starterUttaksplanMedOpphold',
-    'slutterUttaksplanMedOpphold' = 'slutterUttaksplanMedOpphold',
-    'erUttaksplanGraderingStørreEnnSamtidigUttak' = 'erUttaksplanGraderingStørreEnnSamtidigUttak',
-    'erBegrunnelseForSenEndringGyldig' = 'erBegrunnelseForSenEndringGyldig',
-    'harUttaksplanForMangeFlerbarnsdager' = 'harUttaksplanForMangeFlerbarnsdager'
+    'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
+    'morHarSøktUgyldigUttakFørsteSeksUker' = 'morHarSøktUgyldigUttakFørsteSeksUker',
+    'farMedmorHarSøktUgyldigUttakFørsteSeksUker' = 'farMedmorHarSøktUgyldigUttakFørsteSeksUker',
+    'stønadskontoInneholderForMyeUttak' = 'stønadskontoInneholderForMyeUttak',
+    'uttaksplanErBareOpphold' = 'uttaksplanErBareOpphold',
+    'uttaksplanStarterMedOpphold' = 'uttaksplanStarterMedOpphold',
+    'uttaksplanSluttetMedOpphold' = 'uttaksplanSluttetMedOpphold',
+    'uttaksplangraderingStørreEnnSamtidigUttak' = 'uttaksplangraderingStørreEnnSamtidigUttak',
+    'begrunnelseVedForSenEndringErUgyldig' = 'begrunnelseVedForSenEndringErUgyldig',
+    'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager'
 }
 
 const uttaksplanRegler: Regel[] = [
     {
-        key: RegelKey.inneholderUttaksplanPerioder,
-        alvorlighet: RegelAlvorlighet.ULOVLIG,
+        key: RegelKey.planenInneholderIngenPerioder,
+        alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderUttaksplanPerioderTest
     },
     {
-        key: RegelKey.inneholderStønadskontoForMyeUttak,
-        alvorlighet: RegelAlvorlighet.ULOVLIG,
+        key: RegelKey.stønadskontoInneholderForMyeUttak,
+        alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderStønadskontoForMyeUttakTest
     },
     {
-        key: RegelKey.harMorSøktUgyldigUttakFørsteSeksUker,
-        alvorlighet: RegelAlvorlighet.ULOVLIG,
+        key: RegelKey.morHarSøktUgyldigUttakFørsteSeksUker,
+        alvorlighet: RegelAlvorlighet.FEIL,
         test: harMorSøktUgyldigUttakFørsteSeksUkerTest
     },
     {
-        key: RegelKey.harFarMedmorSøktUgyldigUttakFørsteSeksUker,
-        alvorlighet: RegelAlvorlighet.ULOVLIG,
+        key: RegelKey.farMedmorHarSøktUgyldigUttakFørsteSeksUker,
+        alvorlighet: RegelAlvorlighet.FEIL,
         test: harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest
     },
     {
-        key: RegelKey.erUttaksplanBareOpphold,
-        alvorlighet: RegelAlvorlighet.ULOVLIG,
+        key: RegelKey.uttaksplanErBareOpphold,
+        alvorlighet: RegelAlvorlighet.FEIL,
         test: erUttaksplanBanreOppholdTest
     },
     {
-        key: RegelKey.starterUttaksplanMedOpphold,
-        alvorlighet: RegelAlvorlighet.ULOVLIG,
+        key: RegelKey.uttaksplanStarterMedOpphold,
+        alvorlighet: RegelAlvorlighet.FEIL,
         test: starterUttaksplanMedOppholdTest
     },
     {
-        key: RegelKey.slutterUttaksplanMedOpphold,
-        alvorlighet: RegelAlvorlighet.ULOVLIG,
+        key: RegelKey.uttaksplanSluttetMedOpphold,
+        alvorlighet: RegelAlvorlighet.FEIL,
         test: slutterUttaksplanMedOppholdTest
     },
     {
-        key: RegelKey.erUttaksplanGraderingStørreEnnSamtidigUttak,
-        alvorlighet: RegelAlvorlighet.ULOVLIG,
+        key: RegelKey.uttaksplangraderingStørreEnnSamtidigUttak,
+        alvorlighet: RegelAlvorlighet.FEIL,
         test: erUttaksplanGraderingStørreEnnSamtidigUttakTest
     },
     {
-        key: RegelKey.erBegrunnelseForSenEndringGyldig,
-        alvorlighet: RegelAlvorlighet.ULOVLIG,
+        key: RegelKey.begrunnelseVedForSenEndringErUgyldig,
+        alvorlighet: RegelAlvorlighet.FEIL,
         test: erBegrunnelseForSenEndringGyldigTest
     },
     {
-        key: RegelKey.harUttaksplanForMangeFlerbarnsdager,
-        alvorlighet: RegelAlvorlighet.ULOVLIG,
+        key: RegelKey.uttaksplanHarForMangeFlerbarnsdager,
+        alvorlighet: RegelAlvorlighet.FEIL,
         test: harUttaksplanForMangeFlerbarnsdagerTest
     }
 ];

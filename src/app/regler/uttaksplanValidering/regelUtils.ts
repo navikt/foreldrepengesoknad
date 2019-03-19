@@ -3,7 +3,7 @@ import {
     UttaksplanRegelTestresultat,
     RegelAvvik,
     Regel,
-    RegelAvvikIntlFeilmelding,
+    RegelAvvikIntlInfo,
     RegelStatus
 } from './types';
 import uttaksplanRegler from '.';
@@ -11,23 +11,17 @@ import uttaksplanRegler from '.';
 export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelStatus[] => {
     return uttaksplanRegler.map((regel) => {
         const resultat = regel.test(regelgrunnlag);
-        return resultat.passerer
-            ? regelPasserer(regel)
-            : regelHarAvvik(regel, resultat.feilmelding, resultat.periodeId);
+        return resultat.passerer ? regelPasserer(regel) : regelHarAvvik(regel, resultat.info, resultat.periodeId);
     });
 };
 
-export const regelHarAvvik = (
-    regel: Regel,
-    feilmelding?: RegelAvvikIntlFeilmelding,
-    periodeId?: string
-): RegelStatus => ({
+export const regelHarAvvik = (regel: Regel, feilmelding?: RegelAvvikIntlInfo, periodeId?: string): RegelStatus => ({
     key: regel.key,
     passerer: false,
     regelAvvik: {
         key: regel.key,
         alvorlighet: regel.alvorlighet,
-        feilmelding: feilmelding || { intlKey: `uttaksplan.validering.${regel.key}` },
+        info: feilmelding || { intlKey: `uttaksplan.validering.${regel.key}` },
         overstyrerRegler: regel.overstyrerRegler,
         overstyresAvRegel: regel.overstyresAvRegel,
         periodeId

@@ -8,8 +8,8 @@ import { Tilleggsopplysninger } from '../../types/s\u00F8knad/S\u00F8knad';
 type FeilIntlMessage = (intl: InjectedIntl) => string;
 
 export enum RegelAlvorlighet {
-    'ULOVLIG' = 'ulovlig',
-    'VIKTIG' = 'viktig',
+    'FEIL' = 'feil',
+    'ADVARSEL' = 'advarsel',
     'INFO' = 'info'
 }
 
@@ -18,8 +18,8 @@ export interface UttaksplanRegelTestresultat {
     resultatPerPeriode: Dictionary<RegelStatus[]>;
     avvik: RegelAvvik[];
     antallAvvik: {
-        ulovlig: number;
-        viktig: number;
+        feil: number;
+        advarsel: number;
         info: number;
     };
 }
@@ -44,7 +44,7 @@ export type RegelTest = (grunnlag: Regelgrunnlag) => RegelTestresultat;
 
 export interface RegelTestresultat {
     passerer: boolean;
-    feilmelding?: RegelAvvikIntlFeilmelding;
+    info?: RegelAvvikIntlInfo;
     periodeId?: string;
 }
 
@@ -57,13 +57,13 @@ export interface RegelStatus {
 export interface RegelAvvik {
     key: RegelKey;
     periodeId?: string;
-    feilmelding: RegelAvvikIntlFeilmelding;
+    info: RegelAvvikIntlInfo;
     alvorlighet: RegelAlvorlighet;
     overstyresAvRegel?: RegelKey;
     overstyrerRegler?: RegelKey[];
 }
 
-export interface RegelAvvikIntlFeilmelding {
+export interface RegelAvvikIntlInfo {
     intlKey: string;
     values?: { [key: string]: string | number | Date | FeilIntlMessage | undefined };
 }
