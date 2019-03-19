@@ -17,8 +17,6 @@ export interface SetUttaksplanValidering {
     inneholderPerioder: boolean;
     stønadskontoerMedForMyeUttak: Stønadskontouttak[];
     morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
-    farHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
-    uttaksmengdeForFarMedmorForHøy: boolean;
     uttakErBareOpphold: boolean;
     uttaksplanStarterMedOpphold: boolean;
     uttaksplanSlutterMedOpphold: boolean;

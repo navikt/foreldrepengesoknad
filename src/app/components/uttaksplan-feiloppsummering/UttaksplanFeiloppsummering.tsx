@@ -97,13 +97,6 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
             });
         }
 
-        if (uttaksplanValidering.uttaksmengdeForFarMedmorForHøy === true) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.farMedmorForHøytUttak')
-            });
-        }
-
         if (uttaksplanValidering.uttakErBareOpphold === true) {
             feil.push({
                 name: uttaksplanleggerDomId,

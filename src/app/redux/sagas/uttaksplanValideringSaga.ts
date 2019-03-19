@@ -4,12 +4,9 @@ import groupBy from 'lodash.groupby';
 
 import { AppState } from '../reducers';
 import { begrunnelseForSenEndringErGyldig } from 'app/util/validation/uttaksplan/begrunnelseForSenEndringValidation';
-import { erUttaksmengdeForFarMedmorForHøy } from 'app/util/validation/uttaksplan/erUttaksmengdeForFarMedmorForHøy';
-import { getErDeltUttak } from '../../util/uttaksplan/forslag/util';
 import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
-import { harFarMedmorSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakFarValidation';
 import { harMorSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakMorValidation';
 import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
 import { Periode, Stønadskontouttak } from '../../types/uttaksplan/periodetyper';
@@ -123,7 +120,6 @@ function* validerUttaksplanSaga() {
             antallAktivePerioder++;
         }
     });
-    const erDeltUttak = getErDeltUttak(appState.api.tilgjengeligeStønadskontoer);
     const uttaksstatus = getUttaksstatus(
         appState.api.tilgjengeligeStønadskontoer,
         uttaksplan,
@@ -139,20 +135,6 @@ function* validerUttaksplanSaga() {
             søkerErMor
                 ? harMorSøktUgyldigUttakFørsteSeksUker(uttaksplan, getFamiliehendelsedato(barn, situasjon), situasjon)
                 : false,
-            søkerErFarEllerMedmor
-                ? erDeltUttak &&
-                  harFarMedmorSøktUgyldigUttakFørsteSeksUker(
-                      uttaksplan,
-                      getFamiliehendelsedato(barn, situasjon),
-                      barn.antallBarn,
-                      situasjon
-                  )
-                : false,
-            erUttaksmengdeForFarMedmorForHøy(
-                uttaksplan,
-                appState.api.tilgjengeligeStønadskontoer,
-                getErSøkerFarEllerMedmor(appState.søknad.søker.rolle)
-            ),
             uttaksplanErBareOpphold(uttaksplan),
             uttaksplanStarterMedOpphold(uttaksplan),
             uttaksplanSlutterMedOpphold(uttaksplan),
