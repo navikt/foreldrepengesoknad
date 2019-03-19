@@ -45,7 +45,7 @@ const erFarsUttakFørsteSeksUkerGyldig = (periode: Uttaksperiode, antallBarn: nu
     );
 };
 
-export const harFarHarSøktUgyldigUttakFørsteSeksUker = (
+export const harFarMedmorSøktUgyldigUttakFørsteSeksUker = (
     perioder: Periode[],
     familiehendelsesdato: Date,
     antallBarn: number,
