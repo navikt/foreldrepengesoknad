@@ -2,7 +2,7 @@ import {
     UttaksplanValideringActionTypes,
     UttaksplanValideringActionKeys
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
-import { Periode, Stønadskontouttak } from '../../types/uttaksplan/periodetyper';
+import { Periode } from '../../types/uttaksplan/periodetyper';
 import { UttaksplanRegelTestresultat } from '../../regler/uttaksplanValidering/types';
 
 export enum PeriodeValideringErrorKey {
@@ -31,7 +31,6 @@ export interface UttaksplanValideringState {
     regelTestResultat: UttaksplanRegelTestresultat | undefined;
     periodevalidering: Periodevalidering;
     inneholderPerioder: boolean;
-    stønadskontoerMedForMyeUttak: Stønadskontouttak[];
     erGyldig: boolean;
     morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     uttakErBareOpphold: boolean;
@@ -66,7 +65,6 @@ const getDefaultState = (): UttaksplanValideringState => {
         },
         periodevalidering: {},
         inneholderPerioder: false,
-        stønadskontoerMedForMyeUttak: [],
         erGyldig: true,
         morHarSøktUgyldigUtsettelseFørsteSeksUker: false,
         uttakErBareOpphold: false,
@@ -92,7 +90,6 @@ const uttaksplanValideringReducer = (
             const erGyldig =
                 periodeneErGyldige(action.validertePerioder) &&
                 action.inneholderPerioder &&
-                action.stønadskontoerMedForMyeUttak.length === 0 &&
                 action.morHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
                 action.uttakErBareOpphold === false &&
                 action.uttaksplanStarterMedOpphold === false &&
@@ -105,7 +102,6 @@ const uttaksplanValideringReducer = (
                 ...state,
                 periodevalidering: action.validertePerioder,
                 inneholderPerioder: action.inneholderPerioder,
-                stønadskontoerMedForMyeUttak: action.stønadskontoerMedForMyeUttak,
                 morHarSøktUgyldigUtsettelseFørsteSeksUker: action.morHarSøktUgyldigUtsettelseFørsteSeksUker,
                 erGyldig,
                 uttakErBareOpphold: action.uttakErBareOpphold === true,

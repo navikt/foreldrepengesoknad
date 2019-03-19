@@ -9,7 +9,7 @@ import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { harMorSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakMorValidation';
 import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
-import { Periode, Stønadskontouttak } from '../../types/uttaksplan/periodetyper';
+import { Periode } from '../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Periodevalidering, ValidertPeriode, PeriodeAdvarselKey } from '../reducers/uttaksplanValideringReducer';
 import { setUttaksplanValidering } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
@@ -60,10 +60,6 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
     };
 };
 
-const getStønadskontoerMedForMyeUttak = (uttak: Stønadskontouttak[]) => {
-    return uttak.filter((u) => u.antallDager < 0);
-};
-
 const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat | undefined => {
     const søknadsinfo = getSøknadsinfo(appState);
     const perioder = appState.søknad.uttaksplan;
@@ -109,7 +105,7 @@ const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat 
 };
 function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
-    const { uttaksplan, barn, situasjon, søker, erEndringssøknad } = appState.søknad;
+    const { uttaksplan, barn, situasjon, søker } = appState.søknad;
     const validertePerioder: Periodevalidering = {};
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
     const søkerErMor = søkerErFarEllerMedmor === false;
@@ -120,18 +116,11 @@ function* validerUttaksplanSaga() {
             antallAktivePerioder++;
         }
     });
-    const uttaksstatus = getUttaksstatus(
-        appState.api.tilgjengeligeStønadskontoer,
-        uttaksplan,
-        appState.søknad.søker.rolle,
-        erEndringssøknad
-    );
     const regelTestresultat = kjørUttaksplanRegler(appState);
     yield put(
         setUttaksplanValidering(
             validertePerioder,
             antallAktivePerioder > 0,
-            getStønadskontoerMedForMyeUttak(uttaksstatus),
             søkerErMor
                 ? harMorSøktUgyldigUttakFørsteSeksUker(uttaksplan, getFamiliehendelsedato(barn, situasjon), situasjon)
                 : false,

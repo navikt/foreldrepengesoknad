@@ -1,6 +1,5 @@
 import { ValidertPeriode } from '../../reducers/uttaksplanValideringReducer';
 import { UttaksplanRegelTestresultat } from '../../../regler/uttaksplanValidering/types';
-import { Stønadskontouttak } from '../../../types/uttaksplan/periodetyper';
 
 export enum UttaksplanValideringActionKeys {
     'SET_UTTAKSPLAN_VALIDERING' = 'setUttaksplanValidering',
@@ -15,7 +14,6 @@ export interface SetUttaksplanValidering {
     regelTestresultat: UttaksplanRegelTestresultat | undefined;
     validertePerioder: { [periodeId: string]: ValidertPeriode };
     inneholderPerioder: boolean;
-    stønadskontoerMedForMyeUttak: Stønadskontouttak[];
     morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     uttakErBareOpphold: boolean;
     uttaksplanStarterMedOpphold: boolean;
