@@ -746,7 +746,7 @@
     "uttaksplan.validering.advarsel.senÅrsakOgTidsperiode": "Du søker om utsetjing tilbake i tid.",
     "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikkje få foreldrepengar etter at barnet er fylt tre år.",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må vere ein vekedag.",
-    "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
+    "uttaksplan.validering.feil.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker":
         "Du kan ta ut eller utsetje foreldrepengane dine tidlegast frå veke sju etter fødselen. Dersom du skal ta ut foreldrepengar tidlegare fordi mor er sjuk eller innlagd, må du søkje på papir.",
     "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn fleire dagar enn du har tilgjengeleg",
     "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mykje uttak av {konto}",

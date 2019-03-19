@@ -2,7 +2,7 @@ import { Regel, RegelAlvorlighet } from './types';
 import { inneholderUttaksplanPerioderTest } from './tester/inneholderUttaksplanPerioderTest';
 import { harMorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harMorSøktUgyldigUttakFørsteSeksUkerTest';
 import { inneholderStønadskontoForMyeUttakTest } from './tester/inneholderStønadskontoForMyeUttakTest';
-import { harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest';
+import { harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest } from './tester/harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest';
 import { erUttaksplanBareOppholdTest } from './tester/erUttaksplanBareOppholdTest';
 import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOppholdTest';
 import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOppholdTest';
@@ -13,7 +13,7 @@ import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanF
 export enum RegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
     'morHarSøktUgyldigUttakFørsteSeksUker' = 'morHarSøktUgyldigUttakFørsteSeksUker',
-    'farMedmorHarSøktUgyldigUttakFørsteSeksUker' = 'farMedmorHarSøktUgyldigUttakFørsteSeksUker',
+    'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker' = 'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker',
     'stønadskontoInneholderForMyeUttak' = 'stønadskontoInneholderForMyeUttak',
     'uttaksplanErBareOpphold' = 'uttaksplanErBareOpphold',
     'uttaksplanStarterMedOpphold' = 'uttaksplanStarterMedOpphold',
@@ -40,9 +40,9 @@ const uttaksplanRegler: Regel[] = [
         test: harMorSøktUgyldigUttakFørsteSeksUkerTest
     },
     {
-        key: RegelKey.farMedmorHarSøktUgyldigUttakFørsteSeksUker,
+        key: RegelKey.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest
+        test: harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest
     },
     {
         key: RegelKey.uttaksplanErBareOpphold,

@@ -2,7 +2,7 @@ import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
 
 import { harFarMedmorSøktUgyldigUttakFørsteSeksUker } from '../../../util/validation/uttaksplan/uttakFarValidation';
 
-export const harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (
+export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: RegelTest = (
     grunnlag: Regelgrunnlag
 ): RegelTestresultat => {
     const {
