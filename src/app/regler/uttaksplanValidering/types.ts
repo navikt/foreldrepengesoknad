@@ -14,8 +14,8 @@ export enum RegelAlvorlighet {
 }
 
 export interface UttaksplanRegelTestresultat {
-    resultat: RegelTestresultat[];
-    resultatPerPeriode: Dictionary<RegelTestresultat[]>;
+    resultat: RegelStatus[];
+    resultatPerPeriode: Dictionary<RegelStatus[]>;
     avvik: RegelAvvik[];
     antallAvvik: {
         ulovlig: number;
@@ -40,9 +40,15 @@ export interface Regel {
     overstyrerRegler?: RegelKey[];
 }
 
-export type RegelTest = (regel: Regel, grunnlag: Regelgrunnlag) => RegelTestresultat;
+export type RegelTest = (grunnlag: Regelgrunnlag) => RegelTestresultat;
 
 export interface RegelTestresultat {
+    passerer: boolean;
+    feilmelding?: RegelAvvikIntlFeilmelding;
+    periodeId?: string;
+}
+
+export interface RegelStatus {
     key: RegelKey;
     passerer: boolean;
     regelAvvik?: RegelAvvik;

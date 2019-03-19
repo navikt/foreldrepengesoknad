@@ -1,7 +1,6 @@
-import { Regel, Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
-import { regelPasserer, regelHarAvvik } from '../regelUtils';
+import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
 import { uttaksplanErBareOpphold } from '../../../util/validation/uttaksplan/uttaksplanErBareOpphold';
 
-export const erUttaksplanBanreOppholdTest: RegelTest = (regel: Regel, grunnlag: Regelgrunnlag): RegelTestresultat => {
-    return uttaksplanErBareOpphold(grunnlag.perioder) ? regelHarAvvik(regel) : regelPasserer(regel);
+export const erUttaksplanBanreOppholdTest: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+    return { passerer: uttaksplanErBareOpphold(grunnlag.perioder) === false };
 };
