@@ -14,6 +14,8 @@ import { ValidertPeriode, UttaksplanValideringState } from '../../redux/reducers
 import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
 import getMessage from 'common/util/i18nUtils';
 import { getRegelIntlValues } from '../../regler/uttaksplanValidering/regelUtils';
+import { isArray } from 'util';
+import { RegelAvvikIntlInfo } from '../../regler/uttaksplanValidering/types';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -146,10 +148,17 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
 
         if (uttaksplanValidering.regelTestResultat && uttaksplanValidering.regelTestResultat.harFeil) {
             uttaksplanValidering.regelTestResultat.avvik.forEach((avvik) => {
-                feil.push({
-                    name: uttaksplanleggerDomId,
-                    text: getMessage(intl, avvik.info.intlKey, getRegelIntlValues(intl, avvik.info))
-                });
+                const addFeilInfo = (info: RegelAvvikIntlInfo) => {
+                    feil.push({
+                        name: uttaksplanleggerDomId,
+                        text: getMessage(intl, info.intlKey, getRegelIntlValues(intl, info))
+                    });
+                };
+                if (isArray(avvik.info)) {
+                    avvik.info.forEach((info) => addFeilInfo(info));
+                } else {
+                    addFeilInfo(avvik.info);
+                }
             });
         }
 
