@@ -1,5 +1,5 @@
-import { Regel, RegelAlvorlighet } from './types';
 import { RegelKey } from './regelKeys';
+import { Regel, RegelAlvorlighet } from './types';
 import { inneholderUttaksplanPerioderTest } from './tester/inneholderUttaksplanPerioderTest';
 import { harMorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harMorHarSøktUgyldigUttakFørsteSeksUkerTest';
 import { inneholderStønadskontoForMyeUttakTest } from './tester/inneholderStønadskontoForMyeUttakTest';
