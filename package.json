@@ -32,6 +32,7 @@
         "@types/history": "4.6.2",
         "@types/jest": "22.2.3",
         "@types/lodash": "4.14.116",
+        "@types/lodash.groupby": "4.6.6",
         "@types/lodash.throttle": "4.1.4",
         "@types/prop-types": "15.5.2",
         "@types/react": "16.3.12",
@@ -100,7 +101,6 @@
         "webpack-dev-server": "3.1.14"
     },
     "dependencies": {
-        "@types/lodash.groupby": "^4.6.6",
         "axios": "0.18.0",
         "bytes": "3.0.0",
         "classnames": "2.2.6",
@@ -114,7 +114,7 @@
         "is-valid-fodselsnummer": "3.0.3",
         "jsdom": "11.9.0",
         "lodash": "4.17.11",
-        "lodash.groupby": "^4.6.0",
+        "lodash.groupby": "4.6.0",
         "lodash.throttle": "4.1.1",
         "moment": "2.22.1",
         "mustache-express": "1.2.5",
