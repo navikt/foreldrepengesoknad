@@ -93,7 +93,8 @@ const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat 
               søknadsinfo,
               perioder,
               uttaksstatusStønadskontoer,
-              tilgjengeligeStønadskontoer
+              tilgjengeligeStønadskontoer,
+              tilleggsopplysninger: appState.søknad.tilleggsopplysninger
           })
         : undefined;
     if (resultat) {
