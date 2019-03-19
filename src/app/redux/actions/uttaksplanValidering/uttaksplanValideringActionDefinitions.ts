@@ -1,6 +1,6 @@
 import { ValidertPeriode } from '../../reducers/uttaksplanValideringReducer';
-import { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 import { UttaksplanRegelTestresultat } from '../../../regler/uttaksplanValidering/types';
+import { Stønadskontouttak } from '../../../types/uttaksplan/periodetyper';
 
 export enum UttaksplanValideringActionKeys {
     'SET_UTTAKSPLAN_VALIDERING' = 'setUttaksplanValidering',

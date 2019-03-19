@@ -2,8 +2,7 @@ import { Permisjonsregler } from '../../../types/uttaksplan/permisjonsregler';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { getTidsperiode } from '../Tidsperioden';
 import { getDefaultPermisjonStartdato } from '../permisjonUtils';
-import { TilgjengeligStønadskonto, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
-import { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
+import { TilgjengeligStønadskonto, StønadskontoType, Stønadskontouttak } from '../../../types/uttaksplan/periodetyper';
 import { Tidsperiode } from 'common/types';
 
 const UTTAKSDAGER_I_UKE = 5;

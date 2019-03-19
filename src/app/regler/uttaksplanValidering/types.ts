@@ -2,7 +2,7 @@ import { Dictionary } from 'lodash';
 import { RegelKey } from './regelKeys';
 import { InjectedIntl } from 'react-intl';
 import { Søknadsinfo } from '../../selectors/types';
-import { Periode } from '../../types/uttaksplan/periodetyper';
+import { Periode, Stønadskontouttak } from '../../types/uttaksplan/periodetyper';
 
 type FeilIntlMessage = (intl: InjectedIntl) => string;
 
@@ -26,13 +26,13 @@ export interface UttaksplanRegelTestresultat {
 export interface Regelgrunnlag {
     perioder: Periode[];
     søknadsinfo: Søknadsinfo;
+    uttaksstatusStønadskontoer: Stønadskontouttak[];
 }
 
 export interface Regel {
     key: RegelKey;
     test: RegelTest;
     alvorlighet: RegelAlvorlighet;
-    erRelevant?: (grunnlag: Regelgrunnlag) => boolean;
     overstyresAvRegel?: RegelKey;
     overstyrerRegler?: RegelKey[];
 }

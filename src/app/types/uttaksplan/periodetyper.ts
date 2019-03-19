@@ -173,3 +173,9 @@ export function isForeldrepengerFørFødselUttaksperiode(
 ): periode is ForeldrepengerFørFødselUttaksperiode {
     return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
 }
+
+export interface Stønadskontouttak {
+    konto: StønadskontoType;
+    antallDager: number;
+    forelder?: Forelder;
+}

@@ -31,9 +31,7 @@ export const regelPasserer = (regel: Regel): RegelTestresultat => ({
 });
 
 export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelTestresultat[] => {
-    return uttaksplanRegler
-        .filter((regel) => (regel.erRelevant ? regel.erRelevant(regelgrunnlag) : true))
-        .map((regel) => regel.test(regel, regelgrunnlag));
+    return uttaksplanRegler.map((regel) => regel.test(regel, regelgrunnlag));
 };
 
 export const getRegelAvvikForPeriode = (

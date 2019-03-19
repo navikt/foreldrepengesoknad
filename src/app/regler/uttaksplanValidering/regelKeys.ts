@@ -1,4 +1,6 @@
 export enum RegelKey {
     'inneholderUttaksplanPerioder' = 'inneholderUttaksplanPerioder',
-    'harMorSøktUgyldigUttakFørsteSeksUker' = 'harMorSøktUgyldigUttakFørsteSeksUker'
+    'harMorSøktUgyldigUttakFørsteSeksUker' = 'harMorSøktUgyldigUttakFørsteSeksUker',
+    'harFarMedmorSøktUgyldigUttakFørsteSeksUker' = 'harFarMedmorSøktUgyldigUttakFørsteSeksUker',
+    'inneholderStønadskontoForMyeUttak' = 'inneholderStønadskontoForMyeUttak'
 }

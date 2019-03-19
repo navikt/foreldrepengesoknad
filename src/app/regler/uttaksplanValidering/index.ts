@@ -1,7 +1,12 @@
 import { Regel } from './types';
-import { uttaksplanInneholderPerioderRegel } from '../uttaksplan/inneholderUttaksplanPerioderRegel';
-import { harMorSøktUgyldigUttakFørsteSeksUkerRegel } from '../uttaksplan/harMorHarSøktUgyldigUttakFørsteSeksUkerRegel';
+import { inneholderUttaksplanPerioderRegel } from './ulovlig/inneholderUttaksplanPerioderRegel';
+import { harMorSøktUgyldigUttakFørsteSeksUkerRegel } from './ulovlig/harMorHarSøktUgyldigUttakFørsteSeksUkerRegel';
+import { inneholderStønadskontoForMyeUttakRegel } from './ulovlig/inneholderStønadskontoForMyeUttak';
 
-const uttaksplanRegler: Regel[] = [uttaksplanInneholderPerioderRegel, harMorSøktUgyldigUttakFørsteSeksUkerRegel];
+const uttaksplanRegler: Regel[] = [
+    inneholderUttaksplanPerioderRegel,
+    harMorSøktUgyldigUttakFørsteSeksUkerRegel,
+    inneholderStønadskontoForMyeUttakRegel
+];
 
 export default uttaksplanRegler;
