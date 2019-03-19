@@ -27,10 +27,10 @@ class Feiloppsummering extends React.Component<Props, {}> {
     render() {
         const { className, show, errors, title, onErrorClick, ...other } = this.props;
 
-        const listItems = errors.map((error) => {
+        const listItems = errors.map((error, index) => {
             const link = '#' + error.name;
             return (
-                <li key={error.name}>
+                <li key={`${error.name}_${index}`}>
                     <a
                         className="feil-oppsummering-boks__lenke"
                         href={link}

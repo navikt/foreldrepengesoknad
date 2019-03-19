@@ -24,7 +24,6 @@ export interface SetUttaksplanValidering {
     uttaksplanSlutterMedOpphold: boolean;
     uttaksplanGraderingStørreEnnSamtidigUttak: boolean;
     begrunnelseForSenEndringErGyldig: boolean;
-    uttaksplanHarForMangeFlerbarnsdager: boolean;
 }
 
 export type UttaksplanValideringActionTypes = SetUttaksplanValidering | ValiderUttaksplanAction;

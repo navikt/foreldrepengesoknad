@@ -17,11 +17,7 @@ export interface UttaksplanRegelTestresultat {
     resultat: RegelStatus[];
     resultatPerPeriode: Dictionary<RegelStatus[]>;
     avvik: RegelAvvik[];
-    antallAvvik: {
-        feil: number;
-        advarsel: number;
-        info: number;
-    };
+    harFeil: boolean;
 }
 
 export interface Regelgrunnlag {

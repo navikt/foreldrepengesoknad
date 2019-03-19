@@ -13,6 +13,7 @@ import { uttaksplanleggerDomId } from '../uttaksplanlegger/Uttaksplanlegger';
 import { ValidertPeriode, UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
 import getMessage from 'common/util/i18nUtils';
+import { getRegelIntlValues } from '../../regler/uttaksplanValidering/regelUtils';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -143,10 +144,12 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
             });
         }
 
-        if (uttaksplanValidering.uttaksplanHarForMangeFlerbarnsdager === true) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.uttaksplanHarForMangeFlerbarnsdager')
+        if (uttaksplanValidering.regelTestResultat && uttaksplanValidering.regelTestResultat.harFeil) {
+            uttaksplanValidering.regelTestResultat.avvik.forEach((avvik) => {
+                feil.push({
+                    name: uttaksplanleggerDomId,
+                    text: getMessage(intl, avvik.info.intlKey, getRegelIntlValues(intl, avvik.info))
+                });
             });
         }
 

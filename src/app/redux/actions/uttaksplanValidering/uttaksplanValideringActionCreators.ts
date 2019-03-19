@@ -18,7 +18,6 @@ export function setUttaksplanValidering(
     uttaksplanSlutterMedOpphold: boolean,
     uttaksplanGraderingStørreEnnSamtidigUttak: boolean,
     begrunnelseForSenEndringErGyldig: boolean,
-    uttaksplanHarForMangeFlerbarnsdager: boolean,
     regelTestresultat?: UttaksplanRegelTestresultat | undefined
 ): UttaksplanValideringActionTypes {
     return {
@@ -34,7 +33,6 @@ export function setUttaksplanValidering(
         uttaksplanSlutterMedOpphold,
         uttaksplanGraderingStørreEnnSamtidigUttak,
         begrunnelseForSenEndringErGyldig,
-        uttaksplanHarForMangeFlerbarnsdager,
         regelTestresultat
     };
 }
