@@ -1,9 +1,9 @@
 import { RegelKey } from './regelKeys';
 import { Regel, RegelAlvorlighet } from './types';
 import { inneholderUttaksplanPerioderTest } from './tester/inneholderUttaksplanPerioderTest';
-import { harMorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harMorHarSøktUgyldigUttakFørsteSeksUkerTest';
+import { harMorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harMorSøktUgyldigUttakFørsteSeksUkerTest';
 import { inneholderStønadskontoForMyeUttakTest } from './tester/inneholderStønadskontoForMyeUttakTest';
-import { harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harFarMedmorHarSøktUgyldigUttakFørsteSeksUkerTest';
+import { harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest';
 
 const uttaksplanRegler: Regel[] = [
     {
