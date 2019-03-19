@@ -757,7 +757,7 @@
         "Prosenten du skal jobbe kan ikkje vere høgare enn prosenten du skal vere heime med foreldrepengar.",
     "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
         "Du kan ikkje søke om å utsetje før perioden din med foreldrepengar startar.",
-    "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
+    "uttaksplan.validering.feil.morHarSøktUgyldigUttakFørsteSeksUker":
         "Du kan ikkje leggje inn utsetjing på grunn av ferie eller jobb, kombinere foreldrepengane med delvis arbeid eller nytta deg av flerbarnsukene eller fellesperioden dei første seks vekene du tek ut foreldrepengar.",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlappar ein annan periode.",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå vidare i søknaden.",
