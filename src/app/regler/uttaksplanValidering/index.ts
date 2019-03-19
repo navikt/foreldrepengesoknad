@@ -1,9 +1,15 @@
-import { RegelKey } from './regelKeys';
 import { Regel, RegelAlvorlighet } from './types';
 import { inneholderUttaksplanPerioderTest } from './tester/inneholderUttaksplanPerioderTest';
 import { harMorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harMorSøktUgyldigUttakFørsteSeksUkerTest';
 import { inneholderStønadskontoForMyeUttakTest } from './tester/inneholderStønadskontoForMyeUttakTest';
 import { harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harFarMedmorSøktUgyldigUttakFørsteSeksUkerTest';
+
+export enum RegelKey {
+    'inneholderUttaksplanPerioder' = 'inneholderUttaksplanPerioder',
+    'harMorSøktUgyldigUttakFørsteSeksUker' = 'harMorSøktUgyldigUttakFørsteSeksUker',
+    'harFarMedmorSøktUgyldigUttakFørsteSeksUker' = 'harFarMedmorSøktUgyldigUttakFørsteSeksUker',
+    'inneholderStønadskontoForMyeUttak' = 'inneholderStønadskontoForMyeUttak'
+}
 
 const uttaksplanRegler: Regel[] = [
     {

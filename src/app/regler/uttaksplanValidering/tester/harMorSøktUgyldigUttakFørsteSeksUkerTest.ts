@@ -8,6 +8,6 @@ export const harMorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (regel: Reg
         grunnlag.søknadsinfo.søknaden.familiehendelsesdato,
         grunnlag.søknadsinfo.søknaden.situasjon
     )
-        ? regelPasserer(regel)
-        : regelHarAvvik(regel);
+        ? regelHarAvvik(regel)
+        : regelPasserer(regel);
 };
