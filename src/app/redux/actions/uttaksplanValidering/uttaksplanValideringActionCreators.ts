@@ -7,14 +7,12 @@ import { UttaksplanRegelTestresultat } from '../../../regler/uttaksplanValiderin
 
 export function setUttaksplanValidering(
     validertePerioder: Periodevalidering,
-    uttaksplanGraderingStørreEnnSamtidigUttak: boolean,
     begrunnelseForSenEndringErGyldig: boolean,
     regelTestresultat?: UttaksplanRegelTestresultat | undefined
 ): UttaksplanValideringActionTypes {
     return {
         type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING,
         validertePerioder,
-        uttaksplanGraderingStørreEnnSamtidigUttak,
         begrunnelseForSenEndringErGyldig,
         regelTestresultat
     };

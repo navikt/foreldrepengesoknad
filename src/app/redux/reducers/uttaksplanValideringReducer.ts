@@ -31,7 +31,6 @@ export interface UttaksplanValideringState {
     regelTestResultat: UttaksplanRegelTestresultat | undefined;
     periodevalidering: Periodevalidering;
     erGyldig: boolean;
-    uttaksplanGraderingStørreEnnSamtidigUttak: boolean;
     begrunnelseForSenEndringErGyldig: boolean;
 }
 
@@ -60,7 +59,6 @@ const getDefaultState = (): UttaksplanValideringState => {
         },
         periodevalidering: {},
         erGyldig: true,
-        uttaksplanGraderingStørreEnnSamtidigUttak: false,
         begrunnelseForSenEndringErGyldig: true
     };
 };
@@ -79,7 +77,6 @@ const uttaksplanValideringReducer = (
         case UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING:
             const erGyldig =
                 periodeneErGyldige(action.validertePerioder) &&
-                action.uttaksplanGraderingStørreEnnSamtidigUttak === false &&
                 action.begrunnelseForSenEndringErGyldig === true &&
                 action.regelTestresultat !== undefined &&
                 action.regelTestresultat.harFeil === false;
@@ -87,7 +84,6 @@ const uttaksplanValideringReducer = (
                 ...state,
                 periodevalidering: action.validertePerioder,
                 erGyldig,
-                uttaksplanGraderingStørreEnnSamtidigUttak: action.uttaksplanGraderingStørreEnnSamtidigUttak === true,
                 begrunnelseForSenEndringErGyldig: action.begrunnelseForSenEndringErGyldig === true,
                 regelTestResultat: action.regelTestresultat
             };

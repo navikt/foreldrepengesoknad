@@ -751,7 +751,7 @@
     "uttaksplan.validering.feil.forMyeUttak": "Du har lagt inn for mange dager av {konto}",
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
         "Du er for tidlig ute. Du kan tidligst søke seks uker før du skal ha foreldrepenger. Du må vente med å sende søknaden din til {dato}.",
-    "uttaksplan.validering.feil.graderingsProsentErHøyereEnnSamtidigUttak":
+    "uttaksplan.validering.feil.uttaksplanGraderingStørreEnnSamtidigUttak":
         "Samtidig uttaksprosent og foreldrepenger kombinert med arbeid kan ikke være høyere enn 100 prosent til sammen.",
     "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
         "Du kan ikke søke om utsettelse før foreldrepengeperioden din starter.",
