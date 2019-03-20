@@ -1,4 +1,4 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat, RegelAvvikIntlInfo } from '../types';
+import { Regelgrunnlag, RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../types';
 import { erUttaksdag } from '../../../util/uttaksplan/Uttaksdagen';
 
 export const inneholderUttaksplanDatoSomIkkeErUttaksdag: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
@@ -7,7 +7,7 @@ export const inneholderUttaksplanDatoSomIkkeErUttaksdag: RegelTest = (grunnlag: 
     );
     return {
         passerer: ugyldigePerioder.length === 0,
-        info: ugyldigePerioder.map((periode): RegelAvvikIntlInfo => {
+        info: ugyldigePerioder.map((periode): RegelTestresultatInfo => {
             return {
                 intlKey: `uttaksplan.validering.feil.${
                     erUttaksdag(periode.tidsperiode.fom)

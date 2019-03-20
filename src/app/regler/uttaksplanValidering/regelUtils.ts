@@ -3,35 +3,55 @@ import {
     UttaksplanRegelTestresultat,
     RegelAvvik,
     Regel,
-    RegelAvvikIntlInfo,
-    RegelStatus
+    RegelTestresultatInfo,
+    RegelStatus,
+    RegelTestresultatInfoObject
 } from './types';
 import uttaksplanRegler from '.';
 import { InjectedIntl } from 'react-intl';
+import { isArray } from 'util';
+import { guid } from 'nav-frontend-js-utils';
+import { flatten } from 'lodash';
 
 export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelStatus[] => {
     return uttaksplanRegler.map((regel) => {
         const resultat = regel.test(regelgrunnlag);
-        return resultat.passerer ? regelPasserer(regel) : regelHarAvvik(regel, resultat.info, resultat.periodeId);
+        return resultat.passerer ? regelPasserer(regel) : regelHarAvvik(regel, resultat.info);
     });
 };
 
-export const regelHarAvvik = (
+const getRegelIntlKey = (regel: Regel): string => `regel.${regel.alvorlighet}.${regel.key}`;
+
+const ensureRegelTestresultatIntlKey = (
     regel: Regel,
-    info?: RegelAvvikIntlInfo | RegelAvvikIntlInfo[],
-    periodeId?: string
-): RegelStatus => ({
-    key: regel.key,
-    passerer: false,
-    regelAvvik: {
+    info?: Partial<RegelTestresultatInfo>
+): RegelTestresultatInfo => ({
+    ...info,
+    intlKey: info ? info.intlKey || getRegelIntlKey(regel) : getRegelIntlKey(regel)
+});
+
+export const regelHarAvvik = (regel: Regel, info?: RegelTestresultatInfoObject, periodeId?: string): RegelStatus => {
+    const mapInfoToRegelAvvik = (i?: Partial<RegelTestresultatInfo>): RegelAvvik => ({
+        id: guid(),
         key: regel.key,
         alvorlighet: regel.alvorlighet,
-        info: info || { intlKey: `uttaksplan.validering.${regel.alvorlighet}.${regel.key}` },
+        info: ensureRegelTestresultatIntlKey(regel, i),
         overstyrerRegler: regel.overstyrerRegler,
         overstyresAvRegel: regel.overstyresAvRegel,
         periodeId
+    });
+    const regelAvvik: RegelAvvik[] = [];
+    if (isArray(info)) {
+        info.forEach((i) => regelAvvik.push(mapInfoToRegelAvvik(i)));
+    } else {
+        regelAvvik.push(mapInfoToRegelAvvik(info));
     }
-});
+    return {
+        key: regel.key,
+        passerer: false,
+        regelAvvik
+    };
+};
 
 export const regelPasserer = (regel: Regel): RegelStatus => ({
     key: regel.key,
@@ -42,17 +62,14 @@ export const getRegelAvvikForPeriode = (
     resultat: UttaksplanRegelTestresultat,
     periodeId: string
 ): RegelAvvik[] | undefined => {
-    if (resultat && resultat.resultatPerPeriode[periodeId]) {
-        return resultat.resultatPerPeriode[periodeId]
-            .filter((r) => r.passerer === false && r.regelAvvik !== undefined)
-            .map((r) => r.regelAvvik!);
-    }
-    return undefined;
+    return resultat && resultat.avvikPerPeriode[periodeId];
 };
 
 export const getRegelAvvik = (resultat: RegelStatus[]): RegelAvvik[] => {
     if (resultat) {
-        return resultat.filter((r) => r.passerer === false && r.regelAvvik !== undefined).map((r) => r.regelAvvik!);
+        return flatten(
+            resultat.filter((r) => r.passerer === false && r.regelAvvik !== undefined).map((r) => r.regelAvvik!)
+        );
     }
     return [];
 };
@@ -81,7 +98,7 @@ export const trimRelaterteRegelAvvik = (avvik: RegelAvvik[]): RegelAvvik[] => {
 
 export const getRegelIntlValues = (
     intl: InjectedIntl,
-    info: RegelAvvikIntlInfo
+    info: RegelTestresultatInfo
 ): { [key: string]: string } | undefined => {
     const { values } = info;
     if (values === undefined) {
