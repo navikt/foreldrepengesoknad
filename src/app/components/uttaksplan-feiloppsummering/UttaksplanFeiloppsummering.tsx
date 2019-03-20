@@ -21,7 +21,11 @@ interface OwnProps {
     onErrorClick: (periodeId: string) => void;
 }
 
-type UttaksplanValideringFeil = SummaryError<ValidertPeriode>;
+interface PeriodeRelatertFeil {
+    periodeId: string;
+}
+
+type UttaksplanValideringFeil = SummaryError<ValidertPeriode | PeriodeRelatertFeil>;
 
 export type Props = OwnProps & InjectedIntlProps;
 
@@ -73,7 +77,8 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
                 const addFeilInfo = (info: RegelAvvikIntlInfo) => {
                     feil.push({
                         name: uttaksplanleggerDomId,
-                        text: getMessage(intl, info.intlKey, getRegelIntlValues(intl, info))
+                        text: getMessage(intl, info.intlKey, getRegelIntlValues(intl, info)),
+                        payload: info.periodeId ? { periodeId: info.periodeId } : undefined
                     });
                 };
                 if (isArray(avvik.info)) {
