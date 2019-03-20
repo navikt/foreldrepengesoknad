@@ -13,7 +13,6 @@ export interface SetUttaksplanValidering {
     type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING;
     regelTestresultat: UttaksplanRegelTestresultat | undefined;
     validertePerioder: { [periodeId: string]: ValidertPeriode };
-    begrunnelseForSenEndringErGyldig: boolean;
 }
 
 export type UttaksplanValideringActionTypes = SetUttaksplanValidering | ValiderUttaksplanAction;

@@ -1,9 +1,6 @@
-import get from 'lodash/get';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
 import groupBy from 'lodash.groupby';
-
 import { AppState } from '../reducers';
-import { begrunnelseForSenEndringErGyldig } from 'app/util/validation/uttaksplan/begrunnelseForSenEndringValidation';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
@@ -105,15 +102,7 @@ function* validerUttaksplanSaga() {
         validertePerioder[periode.id] = validerPeriode(appState, periode);
     });
     const regelTestresultat = kjørUttaksplanRegler(appState);
-    yield put(
-        setUttaksplanValidering(
-            validertePerioder,
-            begrunnelseForSenEndringErGyldig(
-                get(appState, 'søknad.tilleggsopplysninger.begrunnelseForSenEndring.tekst')
-            ),
-            regelTestresultat
-        )
-    );
+    yield put(setUttaksplanValidering(validertePerioder, regelTestresultat));
 }
 
 export default function* uttaksplanValideringSaga() {

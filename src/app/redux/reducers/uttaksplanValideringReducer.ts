@@ -31,7 +31,6 @@ export interface UttaksplanValideringState {
     regelTestResultat: UttaksplanRegelTestresultat | undefined;
     periodevalidering: Periodevalidering;
     erGyldig: boolean;
-    begrunnelseForSenEndringErGyldig: boolean;
 }
 
 export interface PeriodeValideringsfeil {
@@ -58,8 +57,7 @@ const getDefaultState = (): UttaksplanValideringState => {
             harFeil: false
         },
         periodevalidering: {},
-        erGyldig: true,
-        begrunnelseForSenEndringErGyldig: true
+        erGyldig: true
     };
 };
 
@@ -77,14 +75,12 @@ const uttaksplanValideringReducer = (
         case UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING:
             const erGyldig =
                 periodeneErGyldige(action.validertePerioder) &&
-                action.begrunnelseForSenEndringErGyldig === true &&
                 action.regelTestresultat !== undefined &&
                 action.regelTestresultat.harFeil === false;
             return {
                 ...state,
                 periodevalidering: action.validertePerioder,
                 erGyldig,
-                begrunnelseForSenEndringErGyldig: action.begrunnelseForSenEndringErGyldig === true,
                 regelTestResultat: action.regelTestresultat
             };
     }
