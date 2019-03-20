@@ -1,8 +1,5 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-
-import { begrunnelseSenEndringMaxLength } from 'app/util/validation/uttaksplan/begrunnelseForSenEndringValidation';
-import { getFritekstErrorMessage } from 'app/util/validation/fritekstfelt';
 import { getPeriodelisteElementId } from '../periodeliste/Periodeliste';
 import { NavnPåForeldre } from 'common/types';
 import { Periode } from '../../types/uttaksplan/periodetyper';
@@ -70,13 +67,6 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
                 text: feilmelding
             };
         });
-
-        if (uttaksplanValidering.begrunnelseForSenEndringErGyldig === false) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getFritekstErrorMessage(intl, begrunnelseSenEndringMaxLength)
-            });
-        }
 
         if (uttaksplanValidering.regelTestResultat && uttaksplanValidering.regelTestResultat.harFeil) {
             uttaksplanValidering.regelTestResultat.avvik.forEach((avvik) => {
