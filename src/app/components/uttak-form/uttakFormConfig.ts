@@ -102,7 +102,7 @@ const visGradering = (payload: UttakFormPayload): boolean => {
 
         if (
             periode.konto === undefined ||
-            (skjemaregler.aktivitetskravMorSkalBesvares() && periode.ønskerSamtidigUttak === undefined) ||
+            (skjemaregler.samtidigUttakSkalBesvares() && periode.ønskerSamtidigUttak === undefined) ||
             (skjemaregler.ønskerFlerbarnsdagerSkalBesvares() && periode.ønskerFlerbarnsdager === undefined) ||
             (skjemaregler.aktivitetskravMorSkalBesvares() && periode.morsAktivitetIPerioden === undefined) ||
             (skjemaregler.erMorForSykSkalBesvares() && periode.erMorForSyk !== true)
