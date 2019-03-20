@@ -1,8 +1,6 @@
 import moment from 'moment';
 import { getVariantFromPeriode, UtsettelseFormPeriodeType } from '../../../components/utsettelse-form/UtsettelseForm';
-import { getErSøkerFarEllerMedmor } from '../../domain/personUtil';
 import { getVelgbareStønadskontotyper } from '../../uttaksplan/stønadskontoer';
-import { Søker } from '../../../types/søknad/Søker';
 import {
     TilgjengeligStønadskonto,
     Periode,
@@ -11,7 +9,6 @@ import {
     Utsettelsesperiode,
     isUttaksperiode
 } from '../../../types/uttaksplan/periodetyper';
-import AnnenForelder from '../../../types/søknad/AnnenForelder';
 import { PeriodeValideringsfeil, PeriodeValideringErrorKey } from '../../../redux/reducers/uttaksplanValideringReducer';
 import {
     getUtsettelseFormVisibility,
@@ -19,12 +16,14 @@ import {
 } from '../../../components/utsettelse-form/utsettelseFormConfig';
 import { UttakFormPayload, getUttakFormVisibility } from '../../../components/uttak-form/uttakFormConfig';
 import { uttakTidsperiodeErGyldig, periodeErInnenDeFørsteSeksUkene } from './uttakTidsperiodeValidation';
-import { Søkersituasjon } from 'app/types/søknad/Søknad';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { gradertUttaksperiodeErUgyldig } from './uttakGraderingValidation';
 import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValidation';
 import { isFeatureEnabled, Feature } from 'app/Feature';
 import { erUtsettelseÅrsakTypeGyldigForStartdato } from 'app/util/uttaksplan/regler/erUtsettelseÅrsakGyldigForStartdato';
+import { Søknadsinfo } from 'app/selectors/types';
+import getUttakSkjemaregler from 'app/regler/uttak/uttaksskjema/uttakSkjemaregler';
+import getSøknadsperiode from 'app/regler/søknadsperioden/Søknadsperioden';
 
 const erUtsettelsePgaArbeidEllerFerie = (periode: UtsettelseFormPeriodeType): periode is Utsettelsesperiode => {
     return (
@@ -94,18 +93,19 @@ const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValiderin
 const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] | undefined => {
     const visibility = getUttakFormVisibility(payload);
     const valideringsfeil: PeriodeValideringsfeil[] = [];
+    const { periode, søknadsinfo } = payload;
 
-    if (isUttaksperiode(payload.periode) && payload.periode.konto === undefined) {
+    if (isUttaksperiode(periode) && periode.konto === undefined) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.STØNADSKONTO_MANGLER });
     }
 
-    if (uttakTidsperiodeErGyldig(payload.periode, payload.familiehendelsesdato) === false) {
+    if (uttakTidsperiodeErGyldig(periode, søknadsinfo.søknaden.familiehendelsesdato) === false) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE });
     }
-    if (gradertUttaksperiodeErUgyldig(payload.periode)) {
+    if (gradertUttaksperiodeErUgyldig(periode)) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_GRADERING_VERDI });
     }
-    if (samtidigUttaksperiodeErUgyldig(payload.periode, payload.søkerErFarEllerMedmor)) {
+    if (samtidigUttaksperiodeErUgyldig(periode, søknadsinfo.søker.erFarEllerMedmor)) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_SAMTIDIG_UTTAK_PROSENT });
     }
     if (visibility.areAllQuestionsAnswered() === false) {
@@ -116,15 +116,10 @@ const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] |
 
 export const validerPeriodeForm = (
     periode: Periode,
-    søker: Søker,
-    annenForelder: AnnenForelder,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    familiehendelsesdato: Date,
-    situasjon: Søkersituasjon,
-    erDeltUttak: boolean,
-    erFlerbarnssøknad: boolean
+    søknadsinfo: Søknadsinfo
 ): PeriodeValideringsfeil[] | undefined => {
-    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
+    const velgbareStønadskontotyper = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
     if (periode.type === Periodetype.Hull) {
         return undefined;
     }
@@ -137,22 +132,18 @@ export const validerPeriodeForm = (
             periode,
             velgbareStønadskontotyper: getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer),
             kanEndreStønadskonto: true,
-            annenForelderHarRett: annenForelder.harRettPåForeldrepenger,
-            søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
-            søkerErFarEllerMedmor,
-            morErUfør: søkerErFarEllerMedmor === false && annenForelder.erUfør,
-            familiehendelsesdato,
-            situasjon,
-            erDeltUttak,
-            erFlerbarnssøknad
+            søknadsinfo,
+            skjemaregler: getUttakSkjemaregler(søknadsinfo, periode, velgbareStønadskontotyper),
+            søknadsperiode: getSøknadsperiode(søknadsinfo, periode)
         });
     }
     return validerUtsettelseForm({
         periode,
         variant: getVariantFromPeriode(periode),
-        søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
-        søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(søker.rolle),
-        annenForelder,
-        familiehendelsesdato
+        søkerErAleneOmOmsorg: søknadsinfo.søker.erAleneOmOmsorg,
+        søkerErFarEllerMedmor: søknadsinfo.søker.erFarEllerMedmor,
+        annenForelderHarRettPåForeldrepenger: søknadsinfo.annenForelder.harRett,
+        annenForelderErUfør: søknadsinfo.annenForelder.erUfør,
+        familiehendelsesdato: søknadsinfo.søknaden.familiehendelsesdato
     });
 };

@@ -57,6 +57,7 @@ export interface OmAnnenForelder {
     harRett: boolean;
     erMor: boolean;
     erFarEllerMedmor: boolean;
+    erUfør: boolean;
 }
 
 export interface OmMor {

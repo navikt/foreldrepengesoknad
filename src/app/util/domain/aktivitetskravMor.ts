@@ -1,11 +1,13 @@
-import AnnenForelder from '../../types/søknad/AnnenForelder';
-
 const aktivitetskravMorUtil = {
-    skalBesvaresVedUtsettelse(søkerErFarEllerMedmor: boolean, annenForelder: AnnenForelder): boolean {
+    skalBesvaresVedUtsettelse(
+        søkerErFarEllerMedmor: boolean,
+        annenForelderHarRettPåForeldrepenger: boolean,
+        annenForelderErUfør: boolean
+    ): boolean {
         return !søkerErFarEllerMedmor ||
-            (annenForelder.harRettPåForeldrepenger === false && annenForelder.erUfør === true)
+            (annenForelderHarRettPåForeldrepenger === false && annenForelderErUfør === true)
             ? false
-            : annenForelder.harRettPåForeldrepenger === false;
+            : annenForelderHarRettPåForeldrepenger === false;
     }
 };
 

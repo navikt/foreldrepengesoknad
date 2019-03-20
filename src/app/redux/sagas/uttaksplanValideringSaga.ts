@@ -20,10 +20,9 @@ import { sjekkUttaksplanOppMotRegler, getRegelAvvik } from '../../regler/uttaksp
 const stateSelector = (state: AppState) => state;
 
 const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode => {
-    const { søker, annenForelder, barn, situasjon } = appState.søknad;
+    const { søker, annenForelder } = appState.søknad;
     const { tilgjengeligeStønadskontoer } = appState.api;
     const søknadsinfo = getSøknadsinfo(appState);
-    const familiehendelsesdato = getFamiliehendelsedato(barn, situasjon);
     const advarsler = [];
 
     if (hasPeriodeMissingAttachment(periode, søker.rolle, annenForelder)) {
@@ -35,17 +34,7 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
 
     return {
         periodeId: periode.id,
-        valideringsfeil:
-            validerPeriodeForm(
-                periode,
-                søker,
-                annenForelder,
-                tilgjengeligeStønadskontoer,
-                familiehendelsesdato,
-                situasjon,
-                søknadsinfo!.søknaden.erDeltUttak,
-                søknadsinfo!.søknaden.erFlerbarnssøknad
-            ) || [],
+        valideringsfeil: validerPeriodeForm(periode, tilgjengeligeStønadskontoer, søknadsinfo!) || [],
         advarsler,
         overlappendePerioder: Periodene(appState.søknad.uttaksplan).finnOverlappendePerioder(periode)
     };

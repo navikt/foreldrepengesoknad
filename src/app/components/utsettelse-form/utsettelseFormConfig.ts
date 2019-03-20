@@ -3,7 +3,6 @@ import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Utsettelsesvariant, UtsettelseFormPeriodeType } from './UtsettelseForm';
 import { UtsettelseÅrsakType, Utsettelsesperiode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from 'app/util/domain/aktivitetskravMor';
-import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Tidsperiode } from 'common/types';
 
 export enum UtsettelseSpørsmålKeys {
@@ -20,7 +19,8 @@ export interface UtsettelseFormPayload {
     periode: UtsettelseFormPeriodeType;
     søkerErAleneOmOmsorg: boolean;
     søkerErFarEllerMedmor: boolean;
-    annenForelder: AnnenForelder;
+    annenForelderHarRettPåForeldrepenger: boolean;
+    annenForelderErUfør: boolean;
     familiehendelsesdato: Date;
 }
 
@@ -29,8 +29,18 @@ export type UtsettelseSpørsmålVisibility = QuestionVisibility<UtsettelseSpørs
 const Sp = UtsettelseSpørsmålKeys;
 
 const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): boolean => {
-    const { variant, søkerErFarEllerMedmor, annenForelder, periode } = payload;
-    const erRelevant = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(søkerErFarEllerMedmor, annenForelder);
+    const {
+        variant,
+        søkerErFarEllerMedmor,
+        annenForelderHarRettPåForeldrepenger,
+        annenForelderErUfør,
+        periode
+    } = payload;
+    const erRelevant = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
+        søkerErFarEllerMedmor,
+        annenForelderHarRettPåForeldrepenger,
+        annenForelderErUfør
+    );
 
     if (variant === undefined || erRelevant === false) {
         return false;
@@ -66,11 +76,11 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
     [Sp.sykdomsårsak]: {
         isAnswered: ({ periode }) => questionValueIsOk(periode.årsak),
         parentQuestion: Sp.variant,
-        isRequired: ({ variant }) => variant === Utsettelsesvariant.Sykdom
+        isIncluded: ({ variant }) => variant === Utsettelsesvariant.Sykdom
     },
     [Sp.ferieinfo]: {
         isAnswered: () => true,
-        isRequired: ({ variant }) => variant === Utsettelsesvariant.Ferie
+        isIncluded: ({ variant }) => variant === Utsettelsesvariant.Ferie
     },
     [Sp.arbeidsplass]: {
         isAnswered: ({ variant, periode }) =>
@@ -78,11 +88,11 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
                 ? harRegistrertArbeidOk(variant, periode as Utsettelsesperiode)
                 : true,
         parentQuestion: Sp.variant,
-        isRequired: ({ variant }) => variant === Utsettelsesvariant.Arbeid
+        isIncluded: ({ variant }) => variant === Utsettelsesvariant.Arbeid
     },
     [Sp.morsAktivitet]: {
         isAnswered: ({ periode }) => questionValueIsOk((periode as Utsettelsesperiode).morsAktivitetIPerioden),
-        isRequired: (payload) => skalViseSpørsmålOmMorsAktivitet(payload)
+        isIncluded: (payload) => skalViseSpørsmålOmMorsAktivitet(payload)
     }
 };
 

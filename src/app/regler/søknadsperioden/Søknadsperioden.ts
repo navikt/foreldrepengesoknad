@@ -1,12 +1,12 @@
 import { Periode, Periodetype, isUttaksperiode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import { erUttakEgenKvote } from '../../util/uttaksplan/uttakUtils';
-import { erInnenFørsteSeksUkerFødselFarMedmor } from './erInnenFørsteSeksUkerFødselFarMedmor';
-import { erUttakFørFødsel } from './erUttakFørFødsel';
-import { harAktivitetskrav } from './harAktivitetskrav';
 import { isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Søknadsinfo } from '../../selectors/types';
+import { harAktivitetskrav } from '../periodeegenskaper/harAktivitetskrav';
+import { erInnenFørsteSeksUkerFødselFarMedmor } from '../periodeegenskaper/erInnenF\u00F8rsteSeksUkerF\u00F8dselFarMedmor';
+import { erUttakFørFødsel } from '../periodeegenskaper/erUttakF\u00F8rF\u00F8dsel';
 
-export interface Periodeegenskaper {
+export interface Søknadsperiode {
     erUttaksperiode: () => boolean;
     erOverføringsperiode: () => boolean;
     erUttakFørFødsel: () => boolean;
@@ -14,20 +14,22 @@ export interface Periodeegenskaper {
     erUttakEgenKvote: () => boolean;
     erUttakAnnenForeldersKvote: () => boolean;
     erUttakFedrekvote: () => boolean;
+    erUttakForeldrepenger: () => boolean;
     erInnenFørsteSeksUkerFødselFarMedmor: () => boolean;
     harAktivitetskrav: () => boolean;
     harGyldigTidsperiode: () => boolean;
 }
 
-export const getPeriodeegenskaper = (søknadsinfo: Søknadsinfo, periode: Periode): Periodeegenskaper => ({
+export const getSøknadsperiode = (søknadsinfo: Søknadsinfo, periode: Periode): Søknadsperiode => ({
     erUttaksperiode: () => periode.type === Periodetype.Uttak,
     erOverføringsperiode: () => periode.type === Periodetype.Overføring,
     erUttakFørFødsel: () => erUttakFørFødsel(periode, søknadsinfo.søknaden.familiehendelsesdato),
-    erUttakEtterFødsel: () => getPeriodeegenskaper(søknadsinfo, periode).erUttakFørFødsel() === false,
+    erUttakEtterFødsel: () => getSøknadsperiode(søknadsinfo, periode).erUttakFørFødsel() === false,
     erUttakEgenKvote: () =>
         isUttaksperiode(periode) && erUttakEgenKvote(periode.konto, søknadsinfo.søker.erFarEllerMedmor),
-    erUttakAnnenForeldersKvote: () => getPeriodeegenskaper(søknadsinfo, periode).erUttakEgenKvote() === false,
+    erUttakAnnenForeldersKvote: () => getSøknadsperiode(søknadsinfo, periode).erUttakEgenKvote() === false,
     erUttakFedrekvote: () => isUttaksperiode(periode) && periode.konto === StønadskontoType.Fedrekvote,
+    erUttakForeldrepenger: () => isUttaksperiode(periode) && periode.konto === StønadskontoType.Foreldrepenger,
     erInnenFørsteSeksUkerFødselFarMedmor: () =>
         erInnenFørsteSeksUkerFødselFarMedmor(
             periode.tidsperiode,
@@ -39,4 +41,4 @@ export const getPeriodeegenskaper = (søknadsinfo: Søknadsinfo, periode: Period
     harGyldigTidsperiode: () => isValidTidsperiode(periode.tidsperiode)
 });
 
-export default getPeriodeegenskaper;
+export default getSøknadsperiode;
