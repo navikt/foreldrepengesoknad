@@ -12,7 +12,6 @@ import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Periodevalidering, ValidertPeriode, PeriodeAdvarselKey } from '../reducers/uttaksplanValideringReducer';
 import { setUttaksplanValidering } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
-import { uttaksplanErBareOpphold } from 'app/util/validation/uttaksplan/uttaksplanErBareOpphold';
 import { uttaksplanGraderingStørreEnnSamtidigUttak } from 'app/util/validation/uttaksplan/uttaksplanGraderingStørreEnnSamtidigUttak';
 import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanSlutterMedOpphold';
 import { uttaksplanStarterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanStarterMedOpphold';
@@ -117,7 +116,6 @@ function* validerUttaksplanSaga() {
         setUttaksplanValidering(
             validertePerioder,
             antallAktivePerioder > 0,
-            uttaksplanErBareOpphold(uttaksplan),
             uttaksplanStarterMedOpphold(uttaksplan),
             uttaksplanSlutterMedOpphold(uttaksplan),
             uttaksplanGraderingStørreEnnSamtidigUttak(uttaksplan),
