@@ -78,20 +78,6 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
             });
         }
 
-        if (uttaksplanValidering.uttaksplanStarterMedOpphold === true) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.uttaksplanStarterMedOpphold')
-            });
-        }
-
-        if (uttaksplanValidering.uttaksplanSlutterMedOpphold === true) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.uttaksplanSlutterMedOpphold')
-            });
-        }
-
         if (uttaksplanValidering.uttaksplanGraderingStørreEnnSamtidigUttak === true) {
             feil.push({
                 name: uttaksplanleggerDomId,

@@ -14,8 +14,6 @@ export interface SetUttaksplanValidering {
     regelTestresultat: UttaksplanRegelTestresultat | undefined;
     validertePerioder: { [periodeId: string]: ValidertPeriode };
     inneholderPerioder: boolean;
-    uttaksplanStarterMedOpphold: boolean;
-    uttaksplanSlutterMedOpphold: boolean;
     uttaksplanGraderingStørreEnnSamtidigUttak: boolean;
     begrunnelseForSenEndringErGyldig: boolean;
 }

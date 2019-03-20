@@ -13,8 +13,6 @@ import { Periodevalidering, ValidertPeriode, PeriodeAdvarselKey } from '../reduc
 import { setUttaksplanValidering } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { uttaksplanGraderingStørreEnnSamtidigUttak } from 'app/util/validation/uttaksplan/uttaksplanGraderingStørreEnnSamtidigUttak';
-import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanSlutterMedOpphold';
-import { uttaksplanStarterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanStarterMedOpphold';
 import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
@@ -116,8 +114,6 @@ function* validerUttaksplanSaga() {
         setUttaksplanValidering(
             validertePerioder,
             antallAktivePerioder > 0,
-            uttaksplanStarterMedOpphold(uttaksplan),
-            uttaksplanSlutterMedOpphold(uttaksplan),
             uttaksplanGraderingStørreEnnSamtidigUttak(uttaksplan),
             begrunnelseForSenEndringErGyldig(
                 get(appState, 'søknad.tilleggsopplysninger.begrunnelseForSenEndring.tekst')
