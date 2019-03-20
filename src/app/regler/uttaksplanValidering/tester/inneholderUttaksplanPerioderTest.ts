@@ -1,6 +1,6 @@
-import { Regel, Regelgrunnlag, RegelTest } from '../types';
-import { regelHarAvvik, regelPasserer } from '../regelUtils';
+import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
+import { isValidTidsperiode } from '../../../util/uttaksplan/Tidsperioden';
 
-export const inneholderUttaksplanPerioderTest: RegelTest = (regel: Regel, grunnlag: Regelgrunnlag) => {
-    return grunnlag.perioder.length > 0 ? regelPasserer(regel) : regelHarAvvik(regel);
+export const inneholderUttaksplanPerioderTest: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+    return { passerer: grunnlag.perioder.filter((periode) => isValidTidsperiode(periode.tidsperiode)).length > 0 };
 };

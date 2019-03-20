@@ -1,13 +1,15 @@
-import { Regel, Regelgrunnlag, RegelTest } from '../types';
-import { regelHarAvvik, regelPasserer } from '../regelUtils';
+import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
+
 import { harMorSøktUgyldigUttakFørsteSeksUker } from '../../../util/validation/uttaksplan/uttakMorValidation';
 
-export const harMorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (regel: Regel, grunnlag: Regelgrunnlag) => {
-    return harMorSøktUgyldigUttakFørsteSeksUker(
-        grunnlag.perioder,
-        grunnlag.søknadsinfo.søknaden.familiehendelsesdato,
-        grunnlag.søknadsinfo.søknaden.situasjon
-    )
-        ? regelPasserer(regel)
-        : regelHarAvvik(regel);
+export const harMorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+    return {
+        passerer:
+            grunnlag.søknadsinfo.søker.erMor &&
+            harMorSøktUgyldigUttakFørsteSeksUker(
+                grunnlag.perioder,
+                grunnlag.søknadsinfo.søknaden.familiehendelsesdato,
+                grunnlag.søknadsinfo.søknaden.situasjon
+            ) === false
+    };
 };

@@ -1,18 +1,17 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-
-import { begrunnelseSenEndringMaxLength } from 'app/util/validation/uttaksplan/begrunnelseForSenEndringValidation';
-import { getFritekstErrorMessage } from 'app/util/validation/fritekstfelt';
 import { getPeriodelisteElementId } from '../periodeliste/Periodeliste';
-import { getStønadskontoNavn } from '../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
-import { Periode, Stønadskontouttak } from '../../types/uttaksplan/periodetyper';
+import { Periode } from '../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { SummaryError } from 'common/lib/validation/types';
 import { uttaksplanleggerDomId } from '../uttaksplanlegger/Uttaksplanlegger';
 import { ValidertPeriode, UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
 import getMessage from 'common/util/i18nUtils';
+import { getRegelIntlValues } from '../../regler/uttaksplanValidering/regelUtils';
+import { isArray } from 'util';
+import { RegelAvvikIntlInfo } from '../../regler/uttaksplanValidering/types';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -40,7 +39,7 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
         }
     }
     render() {
-        const { uttaksplanValidering, erSynlig, uttaksplan, navnPåForeldre, intl } = this.props;
+        const { uttaksplanValidering, erSynlig, uttaksplan, intl } = this.props;
         if (erSynlig === false) {
             return null;
         }
@@ -69,84 +68,19 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
             };
         });
 
-        if (uttaksplanValidering.inneholderPerioder === false) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.tomUttaksplan')
-            });
-        }
-
-        if (uttaksplanValidering.stønadskontoerMedForMyeUttak.length > 0) {
-            uttaksplanValidering.stønadskontoerMedForMyeUttak.forEach((uttak: Stønadskontouttak) => {
-                feil.push({
-                    name: uttaksplanleggerDomId,
-                    text: getMessage(intl, 'uttaksplan.validering.feil.forMyeUttak', {
-                        konto: getStønadskontoNavn(intl, uttak.konto, navnPåForeldre).toLowerCase()
-                    })
-                });
-            });
-        }
-
-        if (uttaksplanValidering.morHarSøktUgyldigUtsettelseFørsteSeksUker) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør')
-            });
-        }
-
-        if (uttaksplanValidering.farHarSøktUgyldigUtsettelseFørsteSeksUker) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør')
-            });
-        }
-
-        if (uttaksplanValidering.uttaksmengdeForFarMedmorForHøy === true) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.farMedmorForHøytUttak')
-            });
-        }
-
-        if (uttaksplanValidering.uttakErBareOpphold === true) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.uttaksplanKunOpphold')
-            });
-        }
-
-        if (uttaksplanValidering.uttaksplanStarterMedOpphold === true) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.uttaksplanStarterMedOpphold')
-            });
-        }
-
-        if (uttaksplanValidering.uttaksplanSlutterMedOpphold === true) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.uttaksplanSlutterMedOpphold')
-            });
-        }
-
-        if (uttaksplanValidering.uttaksplanGraderingStørreEnnSamtidigUttak === true) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.graderingsProsentErHøyereEnnSamtidigUttak')
-            });
-        }
-
-        if (uttaksplanValidering.begrunnelseForSenEndringErGyldig === false) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getFritekstErrorMessage(intl, begrunnelseSenEndringMaxLength)
-            });
-        }
-
-        if (uttaksplanValidering.uttaksplanHarForMangeFlerbarnsdager === true) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.uttaksplanHarForMangeFlerbarnsdager')
+        if (uttaksplanValidering.regelTestResultat && uttaksplanValidering.regelTestResultat.harFeil) {
+            uttaksplanValidering.regelTestResultat.avvik.forEach((avvik) => {
+                const addFeilInfo = (info: RegelAvvikIntlInfo) => {
+                    feil.push({
+                        name: uttaksplanleggerDomId,
+                        text: getMessage(intl, info.intlKey, getRegelIntlValues(intl, info))
+                    });
+                };
+                if (isArray(avvik.info)) {
+                    avvik.info.forEach((info) => addFeilInfo(info));
+                } else {
+                    addFeilInfo(avvik.info);
+                }
             });
         }
 

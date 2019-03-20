@@ -1,38 +1,42 @@
 import {
     Regelgrunnlag,
-    RegelTestresultat,
     UttaksplanRegelTestresultat,
     RegelAvvik,
     Regel,
-    RegelAvvikIntlFeilmelding
+    RegelAvvikIntlInfo,
+    RegelStatus
 } from './types';
 import uttaksplanRegler from '.';
+import { InjectedIntl } from 'react-intl';
+
+export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelStatus[] => {
+    return uttaksplanRegler.map((regel) => {
+        const resultat = regel.test(regelgrunnlag);
+        return resultat.passerer ? regelPasserer(regel) : regelHarAvvik(regel, resultat.info, resultat.periodeId);
+    });
+};
 
 export const regelHarAvvik = (
     regel: Regel,
-    feilmelding?: RegelAvvikIntlFeilmelding,
+    info?: RegelAvvikIntlInfo | RegelAvvikIntlInfo[],
     periodeId?: string
-): RegelTestresultat => ({
+): RegelStatus => ({
     key: regel.key,
     passerer: false,
     regelAvvik: {
         key: regel.key,
         alvorlighet: regel.alvorlighet,
-        feilmelding: feilmelding || { intlKey: `uttaksplan.validering.${regel.key}` },
+        info: info || { intlKey: `uttaksplan.validering.${regel.alvorlighet}.${regel.key}` },
         overstyrerRegler: regel.overstyrerRegler,
         overstyresAvRegel: regel.overstyresAvRegel,
         periodeId
     }
 });
 
-export const regelPasserer = (regel: Regel): RegelTestresultat => ({
+export const regelPasserer = (regel: Regel): RegelStatus => ({
     key: regel.key,
     passerer: true
 });
-
-export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelTestresultat[] => {
-    return uttaksplanRegler.map((regel) => regel.test(regel, regelgrunnlag));
-};
 
 export const getRegelAvvikForPeriode = (
     resultat: UttaksplanRegelTestresultat,
@@ -46,7 +50,7 @@ export const getRegelAvvikForPeriode = (
     return undefined;
 };
 
-export const getRegelAvvik = (resultat: RegelTestresultat[]): RegelAvvik[] => {
+export const getRegelAvvik = (resultat: RegelStatus[]): RegelAvvik[] => {
     if (resultat) {
         return resultat.filter((r) => r.passerer === false && r.regelAvvik !== undefined).map((r) => r.regelAvvik!);
     }
@@ -73,4 +77,22 @@ const overstyrerAndreFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelA
 
 export const trimRelaterteRegelAvvik = (avvik: RegelAvvik[]): RegelAvvik[] => {
     return avvik.filter(overstyresAvFilter).filter(overstyrerAndreFilter);
+};
+
+export const getRegelIntlValues = (
+    intl: InjectedIntl,
+    info: RegelAvvikIntlInfo
+): { [key: string]: string } | undefined => {
+    const { values } = info;
+    if (values === undefined) {
+        return undefined;
+    }
+    const newValues: { [key: string]: string } = {};
+    Object.keys(values).forEach((key) => {
+        const valueOrFunc = values[key];
+        if (valueOrFunc) {
+            newValues[key] = typeof valueOrFunc === 'function' ? valueOrFunc(intl) : `${valueOrFunc}`;
+        }
+    });
+    return newValues;
 };
