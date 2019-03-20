@@ -744,22 +744,23 @@
     "uttaksplan.validering.advarsel.senÅrsakOgTidsperiode": "Du søker om utsettelse tilbake i tid.",
     "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikke få foreldrepenger etter at barnet er fylt tre år.",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag.",
-    "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
+    "uttaksplan.validering.feil.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker":
         "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Unntaket er om mor er for syk eller innlagt i helseinstitusjon.",
-    "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn flere dager enn du har tilgjengelig.",
+    "uttaksplan.validering.feil.uttaksmengdeForFarMedmorErForHøy":
+        "Du har lagt inn flere dager enn du har tilgjengelig.",
     "uttaksplan.validering.feil.forMyeUttak": "Du har lagt inn for mange dager av {konto}",
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
         "Du er for tidlig ute. Du kan tidligst søke seks uker før du skal ha foreldrepenger. Du må vente med å sende søknaden din til {dato}.",
-    "uttaksplan.validering.feil.graderingsProsentErHøyereEnnSamtidigUttak":
+    "uttaksplan.validering.feil.uttaksplanGraderingStørreEnnSamtidigUttak":
         "Samtidig uttaksprosent og foreldrepenger kombinert med arbeid kan ikke være høyere enn 100 prosent til sammen.",
     "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
         "Du kan ikke søke om utsettelse før foreldrepengeperioden din starter.",
-    "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
+    "uttaksplan.validering.feil.morHarSøktUgyldigUttakFørsteSeksUker":
         "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb, kombinere pengene med delvis arbeid eller benytte deg av flerbarnsukene eller fellesperioden de første seks ukene du tar ut foreldrepenger.",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode.",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Påkrevd informasjon om perioden mangler.",
-    "uttaksplan.validering.feil.tomUttaksplan":
+    "uttaksplan.validering.feil.planenInneholderIngenPerioder":
         "For å komme videre i søknaden må du legge til en periode med foreldrepenger eller en utsettelse",
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosent kan bare inneholde tall",
@@ -770,7 +771,7 @@
         "Du kan ikke søke om utsettelse på grunn av arbeid eller ferie mindre enn seks uker etter fødsel",
     "uttaksplan.validering.feil.stønadskontoMangler":
         "Perioden er ikke gyldig. Slett perioden og legg den inn på nytt.",
-    "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikke ha en uttaksplan med kun en utsettelse.",
+    "uttaksplan.validering.feil.uttaksplanErBareOpphold": "Du kan ikke ha en uttaksplan med kun en utsettelse.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold":
         "Uttaksplanen kan ikke slutte med at den andre forelderen skal være hjemme.",
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold":

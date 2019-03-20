@@ -2,7 +2,7 @@ import {
     UttaksplanValideringActionTypes,
     UttaksplanValideringActionKeys
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
-import { Periode, Stønadskontouttak } from '../../types/uttaksplan/periodetyper';
+import { Periode } from '../../types/uttaksplan/periodetyper';
 import { UttaksplanRegelTestresultat } from '../../regler/uttaksplanValidering/types';
 
 export enum PeriodeValideringErrorKey {
@@ -28,20 +28,9 @@ export interface Periodevalidering {
 }
 
 export interface UttaksplanValideringState {
-    resultat: UttaksplanRegelTestresultat | undefined;
+    regelTestResultat: UttaksplanRegelTestresultat | undefined;
     periodevalidering: Periodevalidering;
-    inneholderPerioder: boolean;
-    stønadskontoerMedForMyeUttak: Stønadskontouttak[];
     erGyldig: boolean;
-    morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
-    farHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
-    uttaksmengdeForFarMedmorForHøy: boolean;
-    uttakErBareOpphold: boolean;
-    uttaksplanStarterMedOpphold: boolean;
-    uttaksplanSlutterMedOpphold: boolean;
-    uttaksplanGraderingStørreEnnSamtidigUttak: boolean;
-    begrunnelseForSenEndringErGyldig: boolean;
-    uttaksplanHarForMangeFlerbarnsdager: boolean;
 }
 
 export interface PeriodeValideringsfeil {
@@ -61,29 +50,14 @@ export interface ValidertPeriode {
 
 const getDefaultState = (): UttaksplanValideringState => {
     return {
-        resultat: {
+        regelTestResultat: {
             avvik: [],
             resultat: [],
             resultatPerPeriode: {},
-            antallAvvik: {
-                info: 0,
-                ulovlig: 0,
-                viktig: 0
-            }
+            harFeil: false
         },
         periodevalidering: {},
-        inneholderPerioder: false,
-        stønadskontoerMedForMyeUttak: [],
-        erGyldig: true,
-        morHarSøktUgyldigUtsettelseFørsteSeksUker: false,
-        farHarSøktUgyldigUtsettelseFørsteSeksUker: false,
-        uttaksmengdeForFarMedmorForHøy: false,
-        uttakErBareOpphold: false,
-        uttaksplanStarterMedOpphold: false,
-        uttaksplanSlutterMedOpphold: false,
-        uttaksplanGraderingStørreEnnSamtidigUttak: false,
-        begrunnelseForSenEndringErGyldig: true,
-        uttaksplanHarForMangeFlerbarnsdager: false
+        erGyldig: true
     };
 };
 
@@ -101,33 +75,13 @@ const uttaksplanValideringReducer = (
         case UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING:
             const erGyldig =
                 periodeneErGyldige(action.validertePerioder) &&
-                action.inneholderPerioder &&
-                action.stønadskontoerMedForMyeUttak.length === 0 &&
-                action.morHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
-                action.farHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
-                action.uttaksmengdeForFarMedmorForHøy === false &&
-                action.uttakErBareOpphold === false &&
-                action.uttaksplanStarterMedOpphold === false &&
-                action.uttaksplanSlutterMedOpphold === false &&
-                action.uttaksplanGraderingStørreEnnSamtidigUttak === false &&
-                action.begrunnelseForSenEndringErGyldig === true &&
-                action.uttaksplanHarForMangeFlerbarnsdager === false;
+                action.regelTestresultat !== undefined &&
+                action.regelTestresultat.harFeil === false;
             return {
                 ...state,
                 periodevalidering: action.validertePerioder,
-                inneholderPerioder: action.inneholderPerioder,
-                stønadskontoerMedForMyeUttak: action.stønadskontoerMedForMyeUttak,
-                morHarSøktUgyldigUtsettelseFørsteSeksUker: action.morHarSøktUgyldigUtsettelseFørsteSeksUker,
-                farHarSøktUgyldigUtsettelseFørsteSeksUker: action.farHarSøktUgyldigUtsettelseFørsteSeksUker,
                 erGyldig,
-                uttaksmengdeForFarMedmorForHøy: action.uttaksmengdeForFarMedmorForHøy === true,
-                uttakErBareOpphold: action.uttakErBareOpphold === true,
-                uttaksplanStarterMedOpphold: action.uttaksplanStarterMedOpphold === true,
-                uttaksplanSlutterMedOpphold: action.uttaksplanSlutterMedOpphold === true,
-                uttaksplanGraderingStørreEnnSamtidigUttak: action.uttaksplanGraderingStørreEnnSamtidigUttak === true,
-                begrunnelseForSenEndringErGyldig: action.begrunnelseForSenEndringErGyldig === true,
-                uttaksplanHarForMangeFlerbarnsdager: action.uttaksplanHarForMangeFlerbarnsdager === true,
-                resultat: action.regelTestresultat
+                regelTestResultat: action.regelTestresultat
             };
     }
     return state;
