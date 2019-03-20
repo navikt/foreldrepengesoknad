@@ -14,7 +14,7 @@ import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeForm
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { erSenUtsettelsePgaFerieEllerArbeid } from 'app/util/uttaksplan/uttakUtils';
 import { Feature, isFeatureEnabled } from 'app/Feature';
-import { UttaksplanRegelTestresultat, RegelStatus, RegelAlvorlighet } from '../../regler/uttaksplanValidering/types';
+import { UttaksplanRegelTestresultat, RegelAlvorlighet } from '../../regler/uttaksplanValidering/types';
 import { sjekkUttaksplanOppMotRegler, getRegelAvvik } from '../../regler/uttaksplanValidering/regelUtils';
 
 const stateSelector = (state: AppState) => state;
@@ -76,18 +76,12 @@ const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat 
     });
 
     if (resultat) {
-        const perioderesultater = resultat.filter(
-            (r) => r.passerer === false && r.regelAvvik && r.regelAvvik.periodeId !== undefined
-        );
-        const resultatPerPeriode = groupBy(
-            perioderesultater.filter((pr) => pr.regelAvvik && pr.regelAvvik.periodeId !== undefined),
-            (r: RegelStatus) => r.regelAvvik!.periodeId
-        );
         const avvik = getRegelAvvik(resultat);
+        const avvikPerPeriode = groupBy(avvik.filter((a) => a.periodeId !== undefined), (r) => r.periodeId);
         return {
-            avvik,
             resultat,
-            resultatPerPeriode,
+            avvik,
+            avvikPerPeriode,
             harFeil: avvik.filter((a) => a.alvorlighet === RegelAlvorlighet.FEIL).length > 0
         };
     }

@@ -10,6 +10,7 @@ import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUtt
 import { erBegrunnelseForSenEndringGyldigTest } from './tester/erBegrunnelseForSenEndringGyldigTest';
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './tester/erUttaksmengdeForFarMedmorForH\u00F8yTest';
+import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
 
 export enum RegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -22,7 +23,8 @@ export enum RegelKey {
     'uttaksplanGraderingStørreEnnSamtidigUttak' = 'uttaksplanGraderingStørreEnnSamtidigUttak',
     'begrunnelseVedForSenEndringErUgyldig' = 'begrunnelseVedForSenEndringErUgyldig',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
-    'uttaksmengdeForFarMedmorErForHøy' = 'uttaksmengdeForFarMedmorErForHøy'
+    'uttaksmengdeForFarMedmorErForHøy' = 'uttaksmengdeForFarMedmorErForHøy',
+    'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag'
 }
 
 const uttaksplanRegler: Regel[] = [
@@ -80,6 +82,11 @@ const uttaksplanRegler: Regel[] = [
         key: RegelKey.uttaksmengdeForFarMedmorErForHøy,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erUttaksmengdeForFarMedmorForHøyTest
+    },
+    {
+        key: RegelKey.uttaksplanInneholderDatoSomIkkeErUttaksdag,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: inneholderUttaksplanDatoSomIkkeErUttaksdag
     }
 ];
 
