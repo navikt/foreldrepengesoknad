@@ -11,7 +11,7 @@ import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
 import getMessage from 'common/util/i18nUtils';
 import { getRegelIntlValues } from '../../regler/uttaksplanValidering/regelUtils';
 import { isArray } from 'util';
-import { RegelAvvikIntlInfo } from '../../regler/uttaksplanValidering/types';
+import { RegelTestresultatInfo } from '../../regler/uttaksplanValidering/types';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -21,7 +21,11 @@ interface OwnProps {
     onErrorClick: (periodeId: string) => void;
 }
 
-type UttaksplanValideringFeil = SummaryError<ValidertPeriode>;
+interface PeriodeRelatertFeil {
+    periodeId: string;
+}
+
+type UttaksplanValideringFeil = SummaryError<ValidertPeriode | PeriodeRelatertFeil>;
 
 export type Props = OwnProps & InjectedIntlProps;
 
@@ -70,10 +74,11 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
 
         if (uttaksplanValidering.regelTestResultat && uttaksplanValidering.regelTestResultat.harFeil) {
             uttaksplanValidering.regelTestResultat.avvik.forEach((avvik) => {
-                const addFeilInfo = (info: RegelAvvikIntlInfo) => {
+                const addFeilInfo = (info: RegelTestresultatInfo) => {
                     feil.push({
                         name: uttaksplanleggerDomId,
-                        text: getMessage(intl, info.intlKey, getRegelIntlValues(intl, info))
+                        text: getMessage(intl, info.intlKey, getRegelIntlValues(intl, info)),
+                        payload: info.periodeId ? { periodeId: info.periodeId } : undefined
                     });
                 };
                 if (isArray(avvik.info)) {
