@@ -53,7 +53,7 @@ const getDefaultState = (): UttaksplanValideringState => {
         regelTestResultat: {
             avvik: [],
             resultat: [],
-            resultatPerPeriode: {},
+            avvikPerPeriode: {},
             harFeil: false
         },
         periodevalidering: {},
