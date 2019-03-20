@@ -1,7 +1,6 @@
 import { takeEvery, all, put, select } from 'redux-saga/effects';
 import groupBy from 'lodash.groupby';
 import { AppState } from '../reducers';
-import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
 import { Periode } from '../../types/uttaksplan/periodetyper';
