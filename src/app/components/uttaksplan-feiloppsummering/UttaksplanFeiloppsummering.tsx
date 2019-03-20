@@ -71,13 +71,6 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
             };
         });
 
-        if (uttaksplanValidering.inneholderPerioder === false) {
-            feil.push({
-                name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'uttaksplan.validering.feil.tomUttaksplan')
-            });
-        }
-
         if (uttaksplanValidering.uttaksplanGraderingStørreEnnSamtidigUttak === true) {
             feil.push({
                 name: uttaksplanleggerDomId,

@@ -102,18 +102,13 @@ function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
     const { uttaksplan } = appState.søknad;
     const validertePerioder: Periodevalidering = {};
-    let antallAktivePerioder = 0;
     uttaksplan.forEach((periode) => {
         validertePerioder[periode.id] = validerPeriode(appState, periode);
-        if (periode.tidsperiode.fom !== undefined && periode.tidsperiode.tom !== undefined) {
-            antallAktivePerioder++;
-        }
     });
     const regelTestresultat = kjørUttaksplanRegler(appState);
     yield put(
         setUttaksplanValidering(
             validertePerioder,
-            antallAktivePerioder > 0,
             uttaksplanGraderingStørreEnnSamtidigUttak(uttaksplan),
             begrunnelseForSenEndringErGyldig(
                 get(appState, 'søknad.tilleggsopplysninger.begrunnelseForSenEndring.tekst')
