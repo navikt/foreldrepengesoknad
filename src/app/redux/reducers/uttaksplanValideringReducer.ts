@@ -32,8 +32,6 @@ export interface UttaksplanValideringState {
     periodevalidering: Periodevalidering;
     inneholderPerioder: boolean;
     erGyldig: boolean;
-    uttaksplanStarterMedOpphold: boolean;
-    uttaksplanSlutterMedOpphold: boolean;
     uttaksplanGraderingStørreEnnSamtidigUttak: boolean;
     begrunnelseForSenEndringErGyldig: boolean;
 }
@@ -64,8 +62,6 @@ const getDefaultState = (): UttaksplanValideringState => {
         periodevalidering: {},
         inneholderPerioder: false,
         erGyldig: true,
-        uttaksplanStarterMedOpphold: false,
-        uttaksplanSlutterMedOpphold: false,
         uttaksplanGraderingStørreEnnSamtidigUttak: false,
         begrunnelseForSenEndringErGyldig: true
     };
@@ -86,8 +82,6 @@ const uttaksplanValideringReducer = (
             const erGyldig =
                 periodeneErGyldige(action.validertePerioder) &&
                 action.inneholderPerioder &&
-                action.uttaksplanStarterMedOpphold === false &&
-                action.uttaksplanSlutterMedOpphold === false &&
                 action.uttaksplanGraderingStørreEnnSamtidigUttak === false &&
                 action.begrunnelseForSenEndringErGyldig === true &&
                 action.regelTestresultat !== undefined &&
@@ -97,8 +91,6 @@ const uttaksplanValideringReducer = (
                 periodevalidering: action.validertePerioder,
                 inneholderPerioder: action.inneholderPerioder,
                 erGyldig,
-                uttaksplanStarterMedOpphold: action.uttaksplanStarterMedOpphold === true,
-                uttaksplanSlutterMedOpphold: action.uttaksplanSlutterMedOpphold === true,
                 uttaksplanGraderingStørreEnnSamtidigUttak: action.uttaksplanGraderingStørreEnnSamtidigUttak === true,
                 begrunnelseForSenEndringErGyldig: action.begrunnelseForSenEndringErGyldig === true,
                 regelTestResultat: action.regelTestresultat
