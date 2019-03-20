@@ -762,7 +762,7 @@
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlappar ein annan periode.",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå vidare i søknaden.",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det manglar informasjon om perioden.",
-    "uttaksplan.validering.feil.tomUttaksplan":
+    "uttaksplan.validering.feil.planenInneholderIngenPerioder":
         "For å kome vidare i søknaden må du leggje til en periode med foreldrepengar eller en utsetjing",
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosenten kan bare inneholde tall",
