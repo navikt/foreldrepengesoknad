@@ -67,15 +67,14 @@ const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat 
         søknadsinfo.søknaden.erEndringssøknad
     );
 
-    const resultat = isFeatureEnabled(Feature.uttaksplanValidering)
-        ? sjekkUttaksplanOppMotRegler({
-              søknadsinfo,
-              perioder,
-              uttaksstatusStønadskontoer,
-              tilgjengeligeStønadskontoer,
-              tilleggsopplysninger: appState.søknad.tilleggsopplysninger
-          })
-        : undefined;
+    const resultat = sjekkUttaksplanOppMotRegler({
+        søknadsinfo,
+        perioder,
+        uttaksstatusStønadskontoer,
+        tilgjengeligeStønadskontoer,
+        tilleggsopplysninger: appState.søknad.tilleggsopplysninger
+    });
+
     if (resultat) {
         const perioderesultater = resultat.filter(
             (r) => r.passerer === false && r.regelAvvik && r.regelAvvik.periodeId !== undefined
