@@ -384,6 +384,26 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                 }
                             />
                         )}
+                        <Block visible={visibility.isVisible(UttakSpørsmålKeys.ønskerFlerbarnsdager)}>
+                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                <VeilederpanelInnhold
+                                    messages={[
+                                        {
+                                            type: 'normal',
+                                            contentIntlKey: 'uttaksplan.informasjon.flerbarnssøknad',
+                                            values: {
+                                                navnMor: søknadsinfo.navn.mor.fornavn,
+                                                uker: getFlerbarnsuker(
+                                                    søknadsinfo.søknaden.dekningsgrad!,
+                                                    søknadsinfo.søknaden.antallBarn
+                                                )
+                                            }
+                                        }
+                                    ]}
+                                />
+                            </Veilederpanel>
+                            <FlernbarnsdagerSpørsmål periode={periode} onChange={this.onChange} />
+                        </Block>
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.erMorForSyk)}>
                             <ErMorForSykSpørsmål
                                 onChange={(v) => this.onChange({ erMorForSyk: v })}
@@ -429,26 +449,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                     </Veilederpanel>
                                 </>
                             )}
-                        <Block visible={visibility.isVisible(UttakSpørsmålKeys.ønskerFlerbarnsdager)}>
-                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                                <VeilederpanelInnhold
-                                    messages={[
-                                        {
-                                            type: 'normal',
-                                            contentIntlKey: 'uttaksplan.informasjon.flerbarnssøknad',
-                                            values: {
-                                                navnMor: søknadsinfo.navn.mor.fornavn,
-                                                uker: getFlerbarnsuker(
-                                                    søknadsinfo.søknaden.dekningsgrad!,
-                                                    søknadsinfo.søknaden.antallBarn
-                                                )
-                                            }
-                                        }
-                                    ]}
-                                />
-                            </Veilederpanel>
-                            <FlernbarnsdagerSpørsmål periode={periode} onChange={this.onChange} />
-                        </Block>
+
                         <Block
                             visible={visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)}
                             hasChildBlocks={true}>

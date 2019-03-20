@@ -20,9 +20,12 @@ const erMorForForSykSkalBesvares = (
                 situasjon,
                 søkerErFarEllerMedmor,
                 uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker
-            ) &&
-            erFlerbarnssøknad === false
+            )
         ) {
+            if (erFlerbarnssøknad) {
+                return periode.ønskerFlerbarnsdager !== undefined && periode.ønskerFlerbarnsdager === false;
+            }
+
             return true;
         }
         return false;

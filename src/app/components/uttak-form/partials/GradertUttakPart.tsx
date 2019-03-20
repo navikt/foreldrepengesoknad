@@ -101,7 +101,10 @@ class GradertUttakForm extends React.Component<Props> {
                         orgnumre={periode.orgnumre || []}
                     />
                 </Block>
-                <Block visible={periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0}>
+                <Block
+                    visible={
+                        periode.gradert && periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0
+                    }>
                     <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
                         <VeilederpanelInnhold
                             messages={[

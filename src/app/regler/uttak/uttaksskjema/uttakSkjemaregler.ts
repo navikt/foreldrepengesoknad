@@ -41,7 +41,8 @@ export const getUttakSkjemaregler = (
             periode,
             søknadsperiode.erInnenFørsteSeksUkerFødselFarMedmor(),
             søknadsperiode.erUttakFørFødsel(),
-            søknadsinfo.søker.erAleneOmOmsorg
+            søknadsinfo.søker.erAleneOmOmsorg,
+            søknadsinfo.søknaden.erDeltUttak
         );
     },
     ønskerFlerbarnsdagerSkalBesvares: (): boolean => {

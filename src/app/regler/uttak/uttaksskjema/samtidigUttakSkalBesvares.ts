@@ -5,15 +5,16 @@ const samtidigUttakSkalBesvares = (
     periode: UttakFormPeriodeType,
     erUttakInnenFørsteSeksUkerFødselFarMedmor: boolean,
     erUttakFørFødsel: boolean,
-    erAleneOmsorg: boolean
+    erAleneOmsorg: boolean,
+    erDeltUttak: boolean
 ): boolean => {
-    if (erAleneOmsorg) {
+    if (erAleneOmsorg || !erDeltUttak) {
         return false;
     }
 
     if (isUttaksperiode(periode)) {
         if (periode.erMorForSyk) {
-            return true;
+            return false;
         }
 
         const erUttakEgenKvoteFarMedmorFørsteSeksUkerUtenFlerbarnsdager =
