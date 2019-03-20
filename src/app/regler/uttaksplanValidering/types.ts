@@ -62,4 +62,5 @@ export interface RegelAvvik {
 export interface RegelAvvikIntlInfo {
     intlKey: string;
     values?: { [key: string]: string | number | Date | FeilIntlMessage | undefined };
+    periodeId?: string;
 }

@@ -35,7 +35,7 @@ function getUkedag(dato: Date) {
  * Returnerer om en dato er en uttaksdag
  * @param dato
  */
-function erUttaksdag(dato: Date): boolean {
+export function erUttaksdag(dato: Date): boolean {
     return getUkedag(dato) !== 6 && getUkedag(dato) !== 7;
 }
 
