@@ -13,7 +13,7 @@ import {
     Periode,
     isUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
-import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
+import { Forelder, Tidsperiode } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
 import { Skjemanummer } from '../../types/søknad/Søknad';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -21,12 +21,10 @@ import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
 import Block from 'common/components/block/Block';
-import { getErSøkerFarEllerMedmor } from '../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
-import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
 import { getUttakFormVisibility, UttakSpørsmålKeys } from './uttakFormConfig';
-import { getNavnPåForeldre, getTidsperioderIUttaksplan, getFamiliehendelsedato } from '../../util/uttaksplan';
+import { getTidsperioderIUttaksplan } from '../../util/uttaksplan';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import SamtidigUttakPart from './partials/SamtidigUttakPart';
@@ -59,13 +57,17 @@ import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
 import FlernbarnsdagerSpørsmål from './partials/FlerbarnsdagerSpørsmål';
 import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
+import { selectArbeidsforhold, selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
+import { getVelgbareStønadskontotyper } from 'app/util/uttaksplan/stønadskontoer';
+import getSøknadsperiode from 'app/regler/søknadsperioden/Søknadsperioden';
+import getUttakSkjemaregler from 'app/regler/uttak/uttaksskjema/uttakSkjemaregler';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
     | RecursivePartial<Overføringsperiode>
     | RecursivePartial<Oppholdsperiode>;
 
-interface UttaksperiodeFormProps {
+interface OwnProps {
     periode: UttakFormPeriodeType;
     kanEndreStønadskonto: boolean;
     harOverlappendePerioder?: boolean;
@@ -80,16 +82,11 @@ interface ComponentStateProps {
 interface StateProps {
     uttaksplan: Periode[];
     arbeidsforhold?: Arbeidsforhold[];
-    velgbareStønadskontotyper: StønadskontoType[];
-    søkerErFarEllerMedmor: boolean;
-    morErUfør: boolean;
-    navnPåForeldre: NavnPåForeldre;
-    familiehendelsesdato: Date;
-    annenForelderHarRett: boolean;
     søknadsinfo: Søknadsinfo;
+    velgbareStønadskontotyper: StønadskontoType[];
 }
 
-type Props = UttaksperiodeFormProps & StateProps & InjectedIntlProps;
+type Props = OwnProps & StateProps & InjectedIntlProps;
 
 const periodenGjelderAnnenForelder = (søkerErFarEllerMedmor: boolean, forelder: Forelder): boolean => {
     if (
@@ -138,7 +135,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
         this.onChange = this.onChange.bind(this);
         this.state = {
             periodenGjelder: getPeriodeGjelder(
-                this.props.søkerErFarEllerMedmor,
+                this.props.søknadsinfo.søker.erFarEllerMedmor,
                 this.props.periode.forelder,
                 this.props.søknadsinfo
             )
@@ -183,7 +180,8 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
     }
 
     updatePeriodenGjelder(forelder: Forelder) {
-        const { periode, søkerErFarEllerMedmor } = this.props;
+        const { periode, søknadsinfo } = this.props;
+        const søkerErFarEllerMedmor = søknadsinfo.søker.erFarEllerMedmor;
 
         this.setState({ periodenGjelder: forelder });
 
@@ -220,21 +218,25 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
     }
 
     updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin: boolean) {
+        const { familiehendelsesdato } = this.props.søknadsinfo.søknaden;
+
         this.onChange({
             type: Periodetype.Uttak,
             skalIkkeHaUttakFørTermin,
             tidsperiode: {
                 fom:
                     skalIkkeHaUttakFørTermin === false
-                        ? getDefaultPermisjonStartdato(this.props.familiehendelsesdato, getPermisjonsregler())
+                        ? getDefaultPermisjonStartdato(familiehendelsesdato, getPermisjonsregler())
                         : undefined,
-                tom: skalIkkeHaUttakFørTermin ? undefined : Uttaksdagen(this.props.familiehendelsesdato).forrige()
+                tom: skalIkkeHaUttakFørTermin ? undefined : Uttaksdagen(familiehendelsesdato).forrige()
             }
         });
     }
 
     updateStønadskontoType(konto: StønadskontoType) {
-        const { søkerErFarEllerMedmor } = this.props;
+        const { søknadsinfo } = this.props;
+        const søkerErFarEllerMedmor = søknadsinfo.søker.erFarEllerMedmor;
+
         if (erUttakAvAnnenForeldersKvote(konto, søkerErFarEllerMedmor)) {
             // Dersom perioden gjelder den andre forelderen og man velger den andre forelderen sin kvote betyr det
             // at man legger inn i planen at "Her tar den andre forelderen uttak, så det blir et opphold i min plan"
@@ -280,29 +282,15 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
     }
 
     getVisibility() {
-        const {
-            periode,
-            søknadsinfo,
-            kanEndreStønadskonto,
-            velgbareStønadskontotyper,
-            søkerErFarEllerMedmor,
-            morErUfør,
-            familiehendelsesdato,
-            annenForelderHarRett
-        } = this.props;
+        const { periode, kanEndreStønadskonto, velgbareStønadskontotyper, søknadsinfo } = this.props;
 
         return getUttakFormVisibility({
             periode,
             velgbareStønadskontotyper,
             kanEndreStønadskonto,
-            søkerErAleneOmOmsorg: søknadsinfo.søker.erAleneOmOmsorg,
-            erDeltUttak: søknadsinfo.søknaden.erDeltUttak,
-            søkerErFarEllerMedmor,
-            annenForelderHarRett,
-            morErUfør,
-            familiehendelsesdato,
-            situasjon: søknadsinfo.søknaden.situasjon,
-            erFlerbarnssøknad: søknadsinfo.søknaden.erFlerbarnssøknad
+            søknadsinfo,
+            skjemaregler: getUttakSkjemaregler(søknadsinfo, periode, velgbareStønadskontotyper),
+            søknadsperiode: getSøknadsperiode(søknadsinfo, periode as Periode)
         });
     }
     render() {
@@ -311,9 +299,6 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
             søknadsinfo,
             uttaksplan,
             velgbareStønadskontotyper,
-            søkerErFarEllerMedmor,
-            navnPåForeldre,
-            familiehendelsesdato,
             arbeidsforhold,
             harOverlappendePerioder,
             onCancel,
@@ -321,6 +306,9 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
         } = this.props;
 
         const visibility = this.getVisibility();
+        const { familiehendelsesdato } = søknadsinfo.søknaden;
+        const { søker } = søknadsinfo;
+        const { navnPåForeldre } = søknadsinfo.navn;
 
         if (visibility === undefined) {
             return null;
@@ -360,7 +348,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                     <HvemSkalTaForeldrepengerSpørsmål
                         navnPåForeldre={navnPåForeldre}
                         valgtForelder={this.state.periodenGjelder}
-                        søkerErFarEllerMedmor={søkerErFarEllerMedmor}
+                        søkerErFarEllerMedmor={søker.erFarEllerMedmor}
                         onChange={(forelder: Forelder) => this.updatePeriodenGjelder(forelder)}
                     />
                 </Block>
@@ -396,6 +384,26 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                 }
                             />
                         )}
+                        <Block visible={visibility.isVisible(UttakSpørsmålKeys.ønskerFlerbarnsdager)}>
+                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
+                                <VeilederpanelInnhold
+                                    messages={[
+                                        {
+                                            type: 'normal',
+                                            contentIntlKey: 'uttaksplan.informasjon.flerbarnssøknad',
+                                            values: {
+                                                navnMor: søknadsinfo.navn.mor.fornavn,
+                                                uker: getFlerbarnsuker(
+                                                    søknadsinfo.søknaden.dekningsgrad!,
+                                                    søknadsinfo.søknaden.antallBarn
+                                                )
+                                            }
+                                        }
+                                    ]}
+                                />
+                            </Veilederpanel>
+                            <FlernbarnsdagerSpørsmål periode={periode} onChange={this.onChange} />
+                        </Block>
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.erMorForSyk)}>
                             <ErMorForSykSpørsmål
                                 onChange={(v) => this.onChange({ erMorForSyk: v })}
@@ -441,33 +449,14 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                     </Veilederpanel>
                                 </>
                             )}
-                        <Block visible={visibility.isVisible(UttakSpørsmålKeys.ønskerFlerbarnsdager)}>
-                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                                <VeilederpanelInnhold
-                                    messages={[
-                                        {
-                                            type: 'normal',
-                                            contentIntlKey: 'uttaksplan.informasjon.flerbarnssøknad',
-                                            values: {
-                                                navnMor: søknadsinfo.navn.mor.fornavn,
-                                                uker: getFlerbarnsuker(
-                                                    søknadsinfo.søknaden.dekningsgrad!,
-                                                    søknadsinfo.søknaden.antallBarn
-                                                )
-                                            }
-                                        }
-                                    ]}
-                                />
-                            </Veilederpanel>
-                            <FlernbarnsdagerSpørsmål periode={periode} onChange={this.onChange} />
-                        </Block>
+
                         <Block
                             visible={visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)}
                             hasChildBlocks={true}>
                             <AktivitetskravMorBolk
                                 vedlegg={periode.vedlegg as Attachment[]}
                                 morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
-                                navnPåForeldre={navnPåForeldre}
+                                navnPåForeldre={søknadsinfo.navn}
                                 onChange={(periodeData) => this.onChange(periodeData)}
                             />
                         </Block>
@@ -500,7 +489,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                             erEndringssøknad={søknadsinfo.søknaden.erEndringssøknad}
                             navnAnnenForelder={søknadsinfo.navn.annenForelder.fornavn}
                             årsak={periode.årsak}
-                            søkerErFarEllerMedmor={søkerErFarEllerMedmor}
+                            søkerErFarEllerMedmor={søker.erFarEllerMedmor}
                             vedlegg={periode.vedlegg as Attachment[]}
                             onChange={(p) => this.onChange(p)}
                         />
@@ -545,19 +534,15 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => {
-    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(state.søknad.søker.rolle);
     const søknadsinfo = getSøknadsinfo(state);
+    const arbeidsforhold = selectArbeidsforhold(state);
+    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
 
     return {
         uttaksplan: state.søknad.uttaksplan,
-        arbeidsforhold: state.api.søkerinfo!.arbeidsforhold,
-        velgbareStønadskontotyper: getVelgbareStønadskontotyper(state.api.tilgjengeligeStønadskontoer),
-        søkerErFarEllerMedmor,
-        morErUfør: søkerErFarEllerMedmor && state.søknad.annenForelder.erUfør,
-        navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!),
-        familiehendelsesdato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon),
-        annenForelderHarRett: state.søknad.annenForelder.harRettPåForeldrepenger,
-        søknadsinfo: søknadsinfo!
+        arbeidsforhold,
+        søknadsinfo: søknadsinfo!,
+        velgbareStønadskontotyper: getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer)
     };
 };
 

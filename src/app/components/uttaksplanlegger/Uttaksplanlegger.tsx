@@ -236,6 +236,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         </header>
                         <Block visible={uttaksplan.length > 0}>
                             <Periodeliste
+                                søknadsinfo={søknadsinfo}
                                 ref={(c) => (this.periodeliste = c)}
                                 perioder={uttaksplan}
                                 informasjon={infoItems}

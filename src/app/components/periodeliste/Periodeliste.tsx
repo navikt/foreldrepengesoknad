@@ -10,8 +10,10 @@ import PeriodelistePeriode from './items/PeriodelistePeriode';
 import PeriodelisteInfo, { PeriodelisteInformasjon } from './items/PeriodelisteInfo';
 
 import './periodeliste.less';
+import { Søknadsinfo } from 'app/selectors/types';
 
 interface OwnProps {
+    søknadsinfo: Søknadsinfo;
     perioder: Periode[];
     informasjon?: PeriodelisteInformasjon[];
     antallFeriedager: number;

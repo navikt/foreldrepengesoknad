@@ -11,13 +11,13 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import UtsettelsePgaFerieInfo from './partials/UtsettelsePgaFerieInfo';
-import { Forelder, NavnPåForeldre, Tidsperiode } from 'common/types';
+import { Forelder, Tidsperiode } from 'common/types';
 import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
 import { getUtsettelseFormVisibility, UtsettelseSpørsmålKeys } from './utsettelseFormConfig';
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import Block from 'common/components/block/Block';
 import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
-import { getFamiliehendelsedato, getNavnPåForeldre } from '../../util/uttaksplan';
+import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import Søknad from '../../types/søknad/Søknad';
@@ -25,7 +25,6 @@ import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import { RecursivePartial } from '../../types/Partial';
-import { getErSøkerFarEllerMedmor } from '../../util/domain/personUtil';
 import { AppState } from '../../redux/reducers';
 import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
@@ -39,6 +38,8 @@ import { isFeatureEnabled, Feature } from 'app/Feature';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
+import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { Søknadsinfo } from 'app/selectors/types';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -54,10 +55,8 @@ interface OwnProps {
 interface StateProps {
     søknad: Søknad;
     arbeidsforhold: Arbeidsforhold[];
-    søkerErFarEllerMedmor: boolean;
-    navnPåForeldre: NavnPåForeldre;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    familiehendelsesdato: Date;
+    søknadsinfo: Søknadsinfo;
 }
 
 type Props = OwnProps & StateProps & InjectedIntlProps;
@@ -157,7 +156,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
     onVariantChange(variant: Utsettelsesvariant) {
         if (variant !== this.state.variant) {
-            const forelder = this.props.søkerErFarEllerMedmor === false ? Forelder.MOR : Forelder.FARMEDMOR;
+            const forelder =
+                this.props.søknadsinfo.søker.erFarEllerMedmor === false ? Forelder.MOR : Forelder.FARMEDMOR;
             if (variant === Utsettelsesvariant.Arbeid) {
                 this.onChange({
                     type: Periodetype.Utsettelse,
@@ -211,16 +211,17 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     getVisibility() {
-        const { periode, søknad, søkerErFarEllerMedmor, familiehendelsesdato } = this.props;
+        const { periode, søknad, søknadsinfo } = this.props;
         const { variant } = this.state;
 
         return getUtsettelseFormVisibility({
             variant,
             periode,
             søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
-            søkerErFarEllerMedmor,
-            familiehendelsesdato,
-            annenForelder: søknad.annenForelder
+            søkerErFarEllerMedmor: søknadsinfo.søker.erFarEllerMedmor,
+            familiehendelsesdato: søknadsinfo.søknaden.familiehendelsesdato,
+            annenForelderHarRettPåForeldrepenger: søknadsinfo.annenForelder.harRett,
+            annenForelderErUfør: søknadsinfo.annenForelder.erUfør
         });
     }
 
@@ -230,9 +231,9 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             antallFeriedager,
             arbeidsforhold,
             søknad,
-            navnPåForeldre,
             harOverlappendePerioder,
             onCancel,
+            søknadsinfo,
             intl
         } = this.props;
 
@@ -352,7 +353,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                 visible={visibility.isVisible(UtsettelseSpørsmålKeys.morsAktivitet)}
                                 hasChildBlocks={true}>
                                 <AktivitetskravMorBolk
-                                    navnPåForeldre={navnPåForeldre}
+                                    navnPåForeldre={søknadsinfo.navn}
                                     morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
                                     vedlegg={periode.vedlegg as Attachment[]}
                                     onChange={(periodeData) => this.onChange(periodeData)}
@@ -378,10 +379,8 @@ const mapStateToProps = (state: AppState): StateProps => {
     return {
         søknad: state.søknad,
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
-        søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(state.søknad.søker.rolle),
-        navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!),
         tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer,
-        familiehendelsesdato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon)
+        søknadsinfo: getSøknadsinfo(state)!
     };
 };
 
