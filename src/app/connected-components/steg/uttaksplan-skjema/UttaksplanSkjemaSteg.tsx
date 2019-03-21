@@ -7,7 +7,6 @@ import Steg, { StegProps } from '../../../components/steg/Steg';
 import { StegID } from '../../../util/routing/stegConfig';
 import { HistoryProps } from '../../../types/common';
 import isAvailable from '../util/isAvailable';
-
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { uttaksplanSkjemaErGyldig } from '../../../util/validation/steg/uttaksplanSkjema';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
@@ -26,7 +25,7 @@ import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
-    søknadsinfo?: Søknadsinfo;
+    søknadsinfo: Søknadsinfo;
     antallUkerFellesperiode: number | undefined;
     scenario: UttaksplanSkjemaScenario;
     isLoadingTilgjengeligeStønadskontoer: boolean;
@@ -51,7 +50,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             søknadsinfo
         } = props;
 
-        if (stegProps.isAvailable && søknadsinfo) {
+        if (stegProps.isAvailable) {
             const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(søknadsinfo, startdatoPermisjon);
             dispatch(apiActionCreators.getTilgjengeligeStønadsuker({ ...params, dekningsgrad: '100' }));
             dispatch(apiActionCreators.getTilgjengeligeStønadsuker({ ...params, dekningsgrad: '80' }));
@@ -81,21 +80,16 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             søknadsinfo
         } = this.props;
         const søknad = this.props.søknad as Søknad;
-        const navnPåForeldre = søknadsinfo!.navn.navnPåForeldre;
+        const navnPåForeldre = søknadsinfo.navn.navnPåForeldre;
         return (
             <Steg
                 {...stegProps}
                 onPreSubmit={() => {
-                    if (søknadsinfo) {
-                        dispatch(
-                            apiActionCreators.getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
-                                getStønadskontoParams(
-                                    søknadsinfo,
-                                    søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon
-                                )
-                            )
-                        );
-                    }
+                    dispatch(
+                        apiActionCreators.getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
+                            getStønadskontoParams(søknadsinfo, søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon)
+                        )
+                    );
                 }}>
                 {isLoadingTilgjengeligeStønadskontoer === true ? (
                     <ApplicationSpinner />
