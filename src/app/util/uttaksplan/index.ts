@@ -1,11 +1,10 @@
 import { Forelder, NavnPåForeldre, Tidsperiode } from 'common/types';
 import { Periode, Periodetype, StønadskontoType, OppholdÅrsakType } from '../../types/uttaksplan/periodetyper';
 import { InjectedIntl } from 'react-intl';
-import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
+import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { findOldestDate } from '../dates/dates';
 import { UfødtBarn, FødtBarn, Adopsjonsbarn, ForeldreansvarBarn, Barn } from '../../types/søknad/Barn';
-import { getErSøkerFarEllerMedmor, formaterNavn } from '../domain/personUtil';
-import Person from '../../types/Person';
+import { formaterNavn } from '../domain/personUtil';
 import getMessage from 'common/util/i18nUtils';
 import { Navn } from '../../types/common';
 
@@ -94,14 +93,6 @@ export const getFamiliehendelsedato = (barn: Barn, situasjon: Søkersituasjon): 
         case Søkersituasjon.FORELDREANSVAR:
             return (barn as ForeldreansvarBarn).foreldreansvarsdato;
     }
-};
-
-export const getNavnPåForeldre = (søknad: Søknad, søker: Person): NavnPåForeldre => {
-    const erFarMedmor = getErSøkerFarEllerMedmor(søknad.søker.rolle);
-    return {
-        mor: erFarMedmor ? søknad.annenForelder.fornavn : søker.fornavn,
-        farMedmor: erFarMedmor ? søker.fornavn : søknad.annenForelder.fornavn
-    };
 };
 
 export const getUttaksprosentFromStillingsprosent = (

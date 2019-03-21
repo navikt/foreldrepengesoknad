@@ -44,6 +44,10 @@ export const selectErFødsel = createSelector([selectSituasjon], (situasjon): bo
     return situasjon ? situasjon === Søkersituasjon.FØDSEL : undefined;
 });
 
+export const selectErAdopsjon = createSelector([selectSituasjon], (situasjon): boolean | undefined => {
+    return situasjon ? situasjon === Søkersituasjon.ADOPSJON : undefined;
+});
+
 export const selectErDeltUttak = createSelector([selectTilgjengeligeStønadskontoer], (tilgjengeligeStønadskontoer):
     | boolean
     | undefined => {

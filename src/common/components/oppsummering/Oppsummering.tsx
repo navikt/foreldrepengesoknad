@@ -3,7 +3,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Søknad from '../../../app/types/søknad/Søknad';
 import SøkerPersonalia from 'common/components/søker-personalia/SøkerPersonalia';
-import { getErSøkerFarEllerMedmor, formaterNavn } from 'app/util/domain/personUtil';
+import { formaterNavn } from 'app/util/domain/personUtil';
 import { Søkerinfo } from '../../../app/types/søkerinfo';
 import { skalSøkerLasteOppTerminbekreftelse } from '../../../app/util/validation/steg/barn';
 import Block from 'common/components/block/Block';
@@ -13,7 +13,6 @@ import UtenlandsoppholdOppsummering from 'common/components/oppsummering/oppsumm
 import InntektOppsummering from 'common/components/oppsummering/oppsummeringer/InntektOppsummering';
 import Oppsummeringspanel from 'common/components/oppsummeringspanel/Oppsummeringspanel';
 import UttaksplanOppsummering from 'common/components/oppsummering/oppsummeringer/UttaksplanOppsummering';
-import { getFamiliehendelsedato, getNavnPåForeldre } from '../../../app/util/uttaksplan';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 
 import './oppsummering.less';
@@ -23,11 +22,11 @@ import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/Veilederp
 import { Søknadsinfo } from 'app/selectors/types';
 
 interface OppsummeringProps {
+    søknadsinfo: Søknadsinfo;
     søkerinfo: Søkerinfo;
     søknad: Søknad;
     uttaksplanValidering: UttaksplanValideringState;
     antallUkerUttaksplan: number;
-    søknadsinfo: Søknadsinfo;
 }
 
 type Props = OppsummeringProps & InjectedIntlProps;
@@ -64,7 +63,7 @@ class Oppsummering extends React.Component<Props> {
                         <RelasjonTilBarnOppsummering
                             barn={søknad.barn}
                             annenForelder={søknad.annenForelder}
-                            situasjon={this.props.søknad.situasjon}
+                            situasjon={søknad.situasjon}
                             skalLasteOppTerminbekreftelse={skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo)}
                         />
                     </Oppsummeringspanel>
@@ -76,7 +75,7 @@ class Oppsummering extends React.Component<Props> {
                             annenForelder={søknad.annenForelder}
                             erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
                             barn={søknad.barn}
-                            erFarEllerMedmor={getErSøkerFarEllerMedmor(søknad.søker.rolle)}
+                            erFarEllerMedmor={søknadsinfo.søker.erFarEllerMedmor}
                         />
                     </Oppsummeringspanel>
 
@@ -88,8 +87,8 @@ class Oppsummering extends React.Component<Props> {
                                 <UtenlandsoppholdOppsummering
                                     informasjonOmUtenlandsopphold={søknad.informasjonOmUtenlandsopphold}
                                     situasjon={søknad.situasjon}
-                                    familiehendelsedato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
-                                    farEllerMedmor={getErSøkerFarEllerMedmor(søknad.søker.rolle)}
+                                    familiehendelsedato={søknadsinfo.søknaden.familiehendelsesdato}
+                                    farEllerMedmor={søknadsinfo.søker.erFarEllerMedmor}
                                 />
                             </Oppsummeringspanel>
 
@@ -104,9 +103,9 @@ class Oppsummering extends React.Component<Props> {
                     <Oppsummeringspanel tittel={getMessage(intl, 'oppsummering.uttak')} tittelProps="undertittel">
                         <UttaksplanOppsummering
                             perioder={søknad.uttaksplan}
-                            navnPåForeldre={getNavnPåForeldre(søknad, søkerinfo.person)}
+                            navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                             annenForelder={søknad.annenForelder}
-                            erFarEllerMedmor={getErSøkerFarEllerMedmor(søknad.søker.rolle)}
+                            erFarEllerMedmor={søknadsinfo.søker.erFarEllerMedmor}
                             registrerteArbeidsforhold={søkerinfo.arbeidsforhold}
                             uttaksplanValidering={uttaksplanValidering}
                             dekningsgrad={søknad.dekningsgrad}
