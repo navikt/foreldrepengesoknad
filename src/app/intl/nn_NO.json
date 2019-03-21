@@ -495,9 +495,9 @@
     "spørsmål.dekningsgrad.80": "{antallUker} veker med 80 prosent foreldrepengar",
     "spørsmål.dekningsgrad.endringssøknad.label.deltUttak": "Hvor lang periode med foreldrepengar har dykk valt?",
     "spørsmål.dekningsgrad.endringssøknad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepengar har du valt?",
-    "spørsmål.dekningsgrad.hjelpetekst":
-        "Den totale utbetalinga blir noko høgare ved å velje 100 prosent. Du kan ikkje gjere om dette valet seinare.",
     "spørsmål.dekningsgrad.hjelpetekst.aleneomsorg":
+        "Den totale utbetalinga blir noko høgare ved å velje 100 prosent. Du kan ikkje gjere om dette valet seinare.",
+    "spørsmål.dekningsgrad.hjelpetekst":
         "Den totale utbetalinga blir høgare dersom de vel 100 prosent. Valet gjeld dykk begge, og de kan ikkje endre det seinare.",
     "spørsmål.dekningsgrad.label.deltUttak": "Kor lang periode med foreldrepengar har de valt?",
     "spørsmål.dekningsgrad.label.deltUttakMor": "Kor lang periode med foreldrepengar ønskjer de?",

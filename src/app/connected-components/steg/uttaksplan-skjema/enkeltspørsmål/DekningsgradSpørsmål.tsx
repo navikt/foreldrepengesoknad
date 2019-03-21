@@ -32,8 +32,8 @@ type Props = OwnProps & StateProps & InjectedIntlProps & DispatchProps;
 
 const getInfoboxText = (intl: InjectedIntl, erAleneOmOmsorg: boolean): string | undefined => {
     return erAleneOmOmsorg
-        ? getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst')
-        : getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg');
+        ? getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg')
+        : getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst');
 };
 
 const skalViseVeileder = (
@@ -126,7 +126,7 @@ const DekningsgradSpørsmål = (props: Props) => {
                         }
                     ]}
                     name="dekningsgrad"
-                    infoboksTekst={erEndringssøknad === false ? undefined : getInfoboxText(intl, erAleneOmOmsorg)}
+                    infoboksTekst={erEndringssøknad ? undefined : getInfoboxText(intl, erAleneOmOmsorg)}
                     onChange={(e, v: Dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad: v }))}
                 />
             </Block>
