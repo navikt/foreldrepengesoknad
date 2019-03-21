@@ -19,12 +19,11 @@ import { sjekkUttaksplanOppMotRegler, getRegelAvvik } from '../../regler/uttaksp
 const stateSelector = (state: AppState) => state;
 
 const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode => {
-    const { søker, annenForelder } = appState.søknad;
     const { tilgjengeligeStønadskontoer } = appState.api;
     const søknadsinfo = getSøknadsinfo(appState);
     const advarsler = [];
 
-    if (hasPeriodeMissingAttachment(periode, søker.rolle, annenForelder)) {
+    if (hasPeriodeMissingAttachment(periode, søknadsinfo!)) {
         advarsler.push({ advarselKey: PeriodeAdvarselKey.MANGLENDE_VEDLEGG });
     }
     if (isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) && erSenUtsettelsePgaFerieEllerArbeid(periode)) {

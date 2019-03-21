@@ -1,13 +1,10 @@
+import { OmAnnenForelder } from 'app/selectors/types';
+
 const aktivitetskravMorUtil = {
-    skalBesvaresVedUtsettelse(
-        søkerErFarEllerMedmor: boolean,
-        annenForelderHarRettPåForeldrepenger: boolean,
-        annenForelderErUfør: boolean
-    ): boolean {
-        return !søkerErFarEllerMedmor ||
-            (annenForelderHarRettPåForeldrepenger === false && annenForelderErUfør === true)
+    skalBesvaresVedUtsettelse(søkerErFarEllerMedmor: boolean, annenForelder: OmAnnenForelder): boolean {
+        return !søkerErFarEllerMedmor || (annenForelder.harRett === false && annenForelder.erUfør === true)
             ? false
-            : annenForelderHarRettPåForeldrepenger === false;
+            : annenForelder.harRett === false;
     }
 };
 

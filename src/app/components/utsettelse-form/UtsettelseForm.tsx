@@ -17,10 +17,8 @@ import { getUtsettelseFormVisibility, UtsettelseSpørsmålKeys } from './utsette
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import Block from 'common/components/block/Block';
 import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
-import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
-import Søknad from '../../types/søknad/Søknad';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
@@ -53,7 +51,6 @@ interface OwnProps {
 }
 
 interface StateProps {
-    søknad: Søknad;
     arbeidsforhold: Arbeidsforhold[];
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     søknadsinfo: Søknadsinfo;
@@ -127,10 +124,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     getUtsettelseÅrsakRadios(): RadioProps[] {
-        const { søknad, intl } = this.props;
-        const { annenForelder, søker } = søknad;
-        const { kanIkkeOppgis, harRettPåForeldrepenger } = annenForelder;
-        const { erAleneOmOmsorg } = søker;
+        const { søknadsinfo, intl } = this.props;
 
         const defaultRadios: RadioProps[] = [
             {
@@ -147,7 +141,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             }
         ];
 
-        if (erAleneOmOmsorg || !harRettPåForeldrepenger || kanIkkeOppgis) {
+        if (
+            søknadsinfo.søker.erAleneOmOmsorg ||
+            !søknadsinfo.annenForelder.harRett ||
+            søknadsinfo.annenForelder.kanIkkeOppgis
+        ) {
             return defaultRadios;
         }
 
@@ -211,17 +209,13 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     getVisibility() {
-        const { periode, søknad, søknadsinfo } = this.props;
+        const { periode, søknadsinfo } = this.props;
         const { variant } = this.state;
 
         return getUtsettelseFormVisibility({
             variant,
             periode,
-            søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
-            søkerErFarEllerMedmor: søknadsinfo.søker.erFarEllerMedmor,
-            familiehendelsesdato: søknadsinfo.søknaden.familiehendelsesdato,
-            annenForelderHarRettPåForeldrepenger: søknadsinfo.annenForelder.harRett,
-            annenForelderErUfør: søknadsinfo.annenForelder.erUfør
+            søknadsinfo
         });
     }
 
@@ -230,7 +224,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             periode,
             antallFeriedager,
             arbeidsforhold,
-            søknad,
             harOverlappendePerioder,
             onCancel,
             søknadsinfo,
@@ -256,7 +249,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     <Block>
                         <UtsettelseTidsperiodeSpørsmål
                             tidsperiode={tidsperiode}
-                            familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+                            familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
                             onChange={(p) => this.onChange({ tidsperiode: p })}
                             feil={
                                 harOverlappendePerioder
@@ -377,7 +370,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
 const mapStateToProps = (state: AppState): StateProps => {
     return {
-        søknad: state.søknad,
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
         tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer,
         søknadsinfo: getSøknadsinfo(state)!

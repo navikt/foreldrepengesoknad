@@ -6,7 +6,6 @@ export const harMorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (grunnlag: 
     if (grunnlag.søknadsinfo.søker.erMor) {
         return {
             passerer:
-                grunnlag.søknadsinfo.søker.erMor &&
                 harMorSøktUgyldigUttakFørsteSeksUker(
                     grunnlag.perioder,
                     grunnlag.søknadsinfo.søknaden.familiehendelsesdato,

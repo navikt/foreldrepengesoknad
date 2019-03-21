@@ -20,18 +20,20 @@ import './oppsummering.less';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from '../veileder/Veileder';
 import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import { Søknadsinfo } from 'app/selectors/types';
 
 interface OppsummeringProps {
     søkerinfo: Søkerinfo;
     søknad: Søknad;
     uttaksplanValidering: UttaksplanValideringState;
     antallUkerUttaksplan: number;
+    søknadsinfo: Søknadsinfo;
 }
 
 type Props = OppsummeringProps & InjectedIntlProps;
 class Oppsummering extends React.Component<Props> {
     render() {
-        const { søkerinfo, søknad, uttaksplanValidering, antallUkerUttaksplan, intl } = this.props;
+        const { søkerinfo, søknad, uttaksplanValidering, antallUkerUttaksplan, søknadsinfo, intl } = this.props;
         const { person } = søkerinfo;
         return (
             <Block margin="m">
@@ -111,6 +113,7 @@ class Oppsummering extends React.Component<Props> {
                             antallUkerUttaksplan={antallUkerUttaksplan}
                             begrunnelseForSenEndring={søknad.tilleggsopplysninger.begrunnelseForSenEndring}
                             begrunnelseForSenEndringVedlegg={søknad.vedleggForSenEndring}
+                            søknadsinfo={søknadsinfo}
                         />
                     </Oppsummeringspanel>
                 </div>
