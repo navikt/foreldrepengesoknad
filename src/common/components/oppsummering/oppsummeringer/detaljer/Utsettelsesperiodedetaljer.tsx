@@ -9,13 +9,12 @@ import { dokumentasjonBehøvesForUtsettelsesperiode } from '../../../../../app/u
 import { getArbeidsformTekst, getÅrsakTekst } from 'common/util/oppsummeringUtils';
 import getMessage from 'common/util/i18nUtils';
 import Arbeidsforhold from '../../../../../app/types/Arbeidsforhold';
-import AnnenForelder from '../../../../../app/types/søknad/AnnenForelder';
+import { Søknadsinfo } from 'app/selectors/types';
 
 interface UtsettelsesperiodedetaljerProps {
     periode: Utsettelsesperiode;
     registrerteArbeidsforhold: Arbeidsforhold[];
-    erFarEllerMedmor: boolean;
-    annenForelder: AnnenForelder;
+    søknadsinfo: Søknadsinfo;
 }
 
 type Props = UtsettelsesperiodedetaljerProps & InjectedIntlProps;
@@ -23,8 +22,7 @@ type Props = UtsettelsesperiodedetaljerProps & InjectedIntlProps;
 const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({
     periode,
     registrerteArbeidsforhold,
-    annenForelder,
-    erFarEllerMedmor,
+    søknadsinfo,
     intl
 }: Props) => {
     const { årsak, morsAktivitetIPerioden, orgnumre, arbeidsformer, vedlegg } = periode;
@@ -40,7 +38,7 @@ const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({
                 feltnavn={getMessage(intl, 'oppsummering.uttak.årsak')}
                 verdi={getÅrsakTekst(intl, periode)}
             />
-            {dokumentasjonBehøvesForUtsettelsesperiode(periode, erFarEllerMedmor, annenForelder) && (
+            {dokumentasjonBehøvesForUtsettelsesperiode(periode, søknadsinfo) && (
                 <OppsummeringAvDokumentasjon
                     vedlegg={(vedlegg || []).filter(
                         (currentVedlegg) => currentVedlegg.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON

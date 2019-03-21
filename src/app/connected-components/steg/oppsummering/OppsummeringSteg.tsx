@@ -30,6 +30,8 @@ import Block from 'common/components/block/Block';
 import LinkButton from '../../../components/link-button/LinkButton';
 import { MissingAttachment } from '../../../types/MissingAttachment';
 import { findMissingAttachments } from '../../../util/attachments/missingAttachmentUtil';
+import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { Søknadsinfo } from 'app/selectors/types';
 
 interface StateProps {
     person: Person;
@@ -42,6 +44,7 @@ interface StateProps {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     isLoadingTilgjengeligeStønadskontoer: boolean;
     antallUkerUttaksplan: number;
+    søknadsinfo: Søknadsinfo;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -86,6 +89,7 @@ class OppsummeringSteg extends React.Component<Props> {
             isLoadingTilgjengeligeStønadskontoer,
             antallUkerUttaksplan,
             dispatch,
+            søknadsinfo,
             intl
         } = this.props;
         const { person } = søkerinfo;
@@ -116,6 +120,7 @@ class OppsummeringSteg extends React.Component<Props> {
                             søknad={søknad}
                             uttaksplanValidering={uttaksplanValidering}
                             antallUkerUttaksplan={antallUkerUttaksplan}
+                            søknadsinfo={søknadsinfo}
                         />
                         {uttaksplanValidering.erGyldig &&
                             missingAttachments.length > 0 && (
@@ -157,8 +162,9 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         history: props.history,
         isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, state.uttaksplanValidering.erGyldig)
     };
+    const søknadsinfo = getSøknadsinfo(state)!;
 
-    const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, state.api, søknad.annenForelder);
+    const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, state.api, søknadsinfo);
     const antallUkerUttaksplan =
         state.søknad.dekningsgrad === '100'
             ? state.api.dekningsgrad100AntallUker!
@@ -174,7 +180,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         stegProps,
         tilgjengeligeStønadskontoer,
         isLoadingTilgjengeligeStønadskontoer,
-        antallUkerUttaksplan
+        antallUkerUttaksplan,
+        søknadsinfo
     };
 };
 

@@ -33,7 +33,7 @@ const erUtsettelsePgaArbeidEllerFerie = (periode: UtsettelseFormPeriodeType): pe
 };
 
 const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValideringsfeil[] | undefined => {
-    const { periode, familiehendelsesdato } = payload;
+    const { periode, søknadsinfo } = payload;
     const { tidsperiode, årsak } = periode;
 
     let fom;
@@ -53,7 +53,7 @@ const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValiderin
     if (erUtsettelsePgaArbeidEllerFerie(periode) && fom && årsak) {
         if (
             isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) &&
-            periodeErInnenDeFørsteSeksUkene(periode, familiehendelsesdato)
+            periodeErInnenDeFørsteSeksUkene(periode, søknadsinfo.søknaden.familiehendelsesdato)
         ) {
             return [
                 {
@@ -72,7 +72,7 @@ const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValiderin
         }
     }
 
-    if (moment(fom as Date).isBefore(moment(familiehendelsesdato))) {
+    if (moment(fom as Date).isBefore(moment(søknadsinfo.søknaden.familiehendelsesdato))) {
         return [
             {
                 feilKey: PeriodeValideringErrorKey.UTSETTELSE_FØR_FORELDREPENGER_FØR_FØDSEL
@@ -140,10 +140,6 @@ export const validerPeriodeForm = (
     return validerUtsettelseForm({
         periode,
         variant: getVariantFromPeriode(periode),
-        søkerErAleneOmOmsorg: søknadsinfo.søker.erAleneOmOmsorg,
-        søkerErFarEllerMedmor: søknadsinfo.søker.erFarEllerMedmor,
-        annenForelderHarRettPåForeldrepenger: søknadsinfo.annenForelder.harRett,
-        annenForelderErUfør: søknadsinfo.annenForelder.erUfør,
-        familiehendelsesdato: søknadsinfo.søknaden.familiehendelsesdato
+        søknadsinfo
     });
 };

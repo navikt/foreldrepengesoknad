@@ -58,6 +58,7 @@ export interface OmAnnenForelder {
     erMor: boolean;
     erFarEllerMedmor: boolean;
     erUfør: boolean;
+    kanIkkeOppgis: boolean;
 }
 
 export interface OmMor {

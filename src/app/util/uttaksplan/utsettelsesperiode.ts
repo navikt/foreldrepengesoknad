@@ -7,8 +7,8 @@ import {
     StønadskontoType,
     MorsAktivitet
 } from '../../types/uttaksplan/periodetyper';
-import AnnenForelder from '../../types/søknad/AnnenForelder';
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
+import { Søknadsinfo } from 'app/selectors/types';
 
 export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakType) =>
     årsak === UtsettelseÅrsakType.Sykdom ||
@@ -17,14 +17,12 @@ export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakT
 
 export const dokumentasjonBehøvesForUtsettelsesperiode = (
     { årsak }: Utsettelsesperiode,
-    erFarEllerMedmor: boolean,
-    annenForelder: AnnenForelder
+    søknadsinfo: Søknadsinfo
 ): boolean => {
     return (
         aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-            erFarEllerMedmor,
-            annenForelder.harRettPåForeldrepenger,
-            annenForelder.erUfør
+            søknadsinfo.søker.erFarEllerMedmor,
+            søknadsinfo.annenForelder
         ) || erÅrsakSykdomEllerInstitusjonsopphold(årsak)
     );
 };
