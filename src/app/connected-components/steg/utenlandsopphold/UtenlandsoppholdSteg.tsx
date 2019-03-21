@@ -30,6 +30,7 @@ import {
 import { default as visibility } from './visibility';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import cleanupUtenlandsOppholdSteg from '../../../util/cleanup/cleanupUtenlandsoppholdSteg';
+import { getSøknadsinfo } from '../../../selectors/s\u00F8knadsinfoSelector';
 
 interface StateProps {
     søknad: Søknad;
@@ -166,12 +167,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         renderFortsettKnapp: utenlandsoppholdErGyldig(søknad),
         renderFormTag: true,
         history,
-        isAvailable: isAvailable(
-            StegID.UTENLANDSOPPHOLD,
-            state.søknad,
-            props.søkerinfo,
-            state.uttaksplanValidering.erGyldig
-        )
+        isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state.søknad, props.søkerinfo, getSøknadsinfo(state))
     };
 
     return {

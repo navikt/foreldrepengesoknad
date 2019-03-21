@@ -21,7 +21,8 @@ import {
     selectFarEllerMedmorHarAleneomsorg,
     selectMorHarRett,
     selectErFødsel,
-    selectMorErUfør
+    selectMorErUfør,
+    selectErAdopsjon
 } from './utledetSøknadsinfoSelectors';
 import { selectSøkerinfo } from './apiSelector';
 import { Søker } from '../types/søknad/Søker';
@@ -40,6 +41,7 @@ const selectOmSøknaden = createSelector(
         selectErDeltUttak,
         selectErFlerbarnssøknad,
         selectErFødsel,
+        selectErAdopsjon,
         selectErEndringssøknad,
         selectAntallBarn
     ],
@@ -50,6 +52,7 @@ const selectOmSøknaden = createSelector(
         erDeltUttak,
         erFlerbarnssøknad,
         erFødsel,
+        erAdopsjon,
         erEndringssøknad,
         antallBarn
     ): OmSøknaden | undefined => {
@@ -59,6 +62,7 @@ const selectOmSøknaden = createSelector(
             erDeltUttak !== undefined &&
             erFlerbarnssøknad !== undefined &&
             erFødsel !== undefined &&
+            erAdopsjon !== undefined &&
             erEndringssøknad !== undefined &&
             antallBarn !== undefined
         ) {
@@ -69,6 +73,7 @@ const selectOmSøknaden = createSelector(
                 erDeltUttak,
                 erFlerbarnssøknad,
                 erFødsel,
+                erAdopsjon,
                 erEndringssøknad,
                 antallBarn
             };
@@ -132,7 +137,8 @@ const selectOmAnnenForelder = createSelector(
             harRett: annenForelder.harRettPåForeldrepenger === true,
             erFarEllerMedmor: søkerErFarEllerMedmor === false,
             erMor: søkerErFarEllerMedmor === true,
-            erUfør: annenForelder.erUfør === true
+            erUfør: annenForelder.erUfør === true,
+            kanIkkeOppgis: annenForelder.kanIkkeOppgis === true
         };
     }
 );

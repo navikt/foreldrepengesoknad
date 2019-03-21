@@ -305,7 +305,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true,
         renderFormTag: false,
         history,
-        isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo)
+        isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo, søknadsinfo)
     };
 
     let perioder = søknad.uttaksplan;

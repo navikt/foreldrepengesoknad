@@ -44,6 +44,7 @@ export interface OmSøknaden {
     erFlerbarnssøknad: boolean;
     erEndringssøknad: boolean;
     antallBarn: number;
+    erAdopsjon: boolean;
 }
 
 export interface OmSøker {
@@ -58,6 +59,7 @@ export interface OmAnnenForelder {
     erMor: boolean;
     erFarEllerMedmor: boolean;
     erUfør: boolean;
+    kanIkkeOppgis: boolean;
 }
 
 export interface OmMor {

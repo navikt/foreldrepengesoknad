@@ -23,6 +23,8 @@ import søknadActionCreators from '../../redux/actions/søknad/søknadActionCrea
 import UtsettelseForm from '../utsettelse-form/UtsettelseForm';
 import UttakForm from '../uttak-form/UttakForm';
 import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
+import { Søknadsinfo } from 'app/selectors/types';
+import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 
 import './endrePeriodeForm.less';
 
@@ -44,6 +46,7 @@ interface OwnProps {
 
 interface StateProps {
     søknad: Søknad;
+    søknadsinfo: Søknadsinfo;
 }
 
 interface State {
@@ -68,11 +71,11 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
         replace: boolean = false,
         visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
     ) {
-        const { periode, dispatch } = this.props;
+        const { periode, dispatch, søknadsinfo } = this.props;
         const updatedPeriode = PeriodeCleanup.applyChangesAndCleanPeriode(
             periode,
             periodeChanges,
-            this.props.søknad,
+            søknadsinfo,
             visibility
         );
         if (updatedPeriode !== undefined) {
@@ -163,7 +166,8 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    søknad: state.søknad
+    søknad: state.søknad,
+    søknadsinfo: getSøknadsinfo(state)!
 });
 
 export default connect(mapStateToProps)(injectIntl(EndrePeriodeFormRenderer));

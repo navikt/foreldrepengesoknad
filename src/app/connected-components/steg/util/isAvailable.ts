@@ -11,10 +11,11 @@ import { utenlandsoppholdErGyldig } from '../../../util/validation/steg/utenland
 import { Søkerinfo } from '../../../types/søkerinfo';
 import { uttaksplanSkjemaErGyldig } from '../../../util/validation/steg/uttaksplanSkjema';
 import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt';
+import { Søknadsinfo } from '../../../selectors/types';
 
 const harGodkjentVilkår = (søknad: Søknad) => søknad.harGodkjentVilkår === true;
 
-const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo, uttaksplanErGyldig?: boolean): boolean => {
+const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo, søknadsinfo?: Søknadsinfo): boolean => {
     switch (stegId) {
         case StegID.INNGANG:
             return harGodkjentVilkår(søknad);
@@ -35,21 +36,21 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo, u
                 harGodkjentVilkår(søknad) &&
                 barnErGyldig(søknad, søkerinfo) &&
                 annenForelderErGyldig(søknad, søkerinfo) &&
-                uttaksplanSkjemaErGyldig(søknad)
+                uttaksplanSkjemaErGyldig(søknad, søknadsinfo)
             );
         case StegID.UTENLANDSOPPHOLD:
             return (
                 harGodkjentVilkår(søknad) &&
                 barnErGyldig(søknad, søkerinfo) &&
                 annenForelderErGyldig(søknad, søkerinfo) &&
-                uttaksplanSkjemaErGyldig(søknad)
+                uttaksplanSkjemaErGyldig(søknad, søknadsinfo)
             );
         case StegID.ANDRE_INNTEKTER:
             return (
                 harGodkjentVilkår(søknad) &&
                 barnErGyldig(søknad, søkerinfo) &&
                 annenForelderErGyldig(søknad, søkerinfo) &&
-                uttaksplanSkjemaErGyldig(søknad) &&
+                uttaksplanSkjemaErGyldig(søknad, søknadsinfo) &&
                 utenlandsoppholdErGyldig(søknad)
             );
         case StegID.OPPSUMMERING:
@@ -57,7 +58,7 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo, u
                 harGodkjentVilkår(søknad) &&
                 barnErGyldig(søknad, søkerinfo) &&
                 annenForelderErGyldig(søknad, søkerinfo) &&
-                uttaksplanSkjemaErGyldig(søknad) &&
+                uttaksplanSkjemaErGyldig(søknad, søknadsinfo) &&
                 (søknad.erEndringssøknad === false ? utenlandsoppholdErGyldig(søknad) : true) &&
                 (søknad.erEndringssøknad === false ? annenInntektErGyldig(søknad.søker) : true)
             );

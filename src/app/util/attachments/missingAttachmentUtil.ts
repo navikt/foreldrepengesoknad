@@ -1,5 +1,5 @@
 import { getRelasjonTilBarnFødselVisibility } from '../../connected-components/steg/relasjon-til-barn-fødsel/visibility/relasjonTilBarnFødselVisibility';
-import Søknad, { Skjemanummer, SøkerRolle } from '../../types/søknad/Søknad';
+import Søknad, { Skjemanummer } from '../../types/søknad/Søknad';
 import { ApiState } from '../../redux/reducers/apiReducer';
 import {
     AnnenForelderSpørsmålKeys,
@@ -33,24 +33,18 @@ import {
     dokumentasjonBehøvesForUttaksperiode
 } from '../uttaksplan/utsettelsesperiode';
 import { MissingAttachment } from '../../types/MissingAttachment';
-import AnnenForelder from '../../types/søknad/AnnenForelder';
-import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
+import { Søknadsinfo } from 'app/selectors/types';
 
 const isAttachmentMissing = (attachments?: Attachment[]) => attachments === undefined || attachments.length === 0;
 
-export function shouldPeriodeHaveAttachment(
-    periode: Periode,
-    søkerErFarEllerMedmor: boolean,
-    annenForelder: AnnenForelder
-): boolean {
+export function shouldPeriodeHaveAttachment(periode: Periode, søknadsinfo: Søknadsinfo): boolean {
     if (periode.type === Periodetype.Overføring) {
-        return dokumentasjonBehøvesForOverføringsperiode(søkerErFarEllerMedmor, periode as Overføringsperiode);
-    } else if (periode.type === Periodetype.Utsettelse) {
-        return dokumentasjonBehøvesForUtsettelsesperiode(
-            periode as Utsettelsesperiode,
-            søkerErFarEllerMedmor,
-            annenForelder
+        return dokumentasjonBehøvesForOverføringsperiode(
+            søknadsinfo.søker.erFarEllerMedmor,
+            periode as Overføringsperiode
         );
+    } else if (periode.type === Periodetype.Utsettelse) {
+        return dokumentasjonBehøvesForUtsettelsesperiode(periode as Utsettelsesperiode, søknadsinfo);
     } else if (periode.type === Periodetype.Uttak) {
         return dokumentasjonBehøvesForUttaksperiode(periode as Uttaksperiode);
     } else {
@@ -94,21 +88,13 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
     return missingAttachments;
 };
 
-export const hasPeriodeMissingAttachment = (
-    periode: Periode,
-    søkerRolle: SøkerRolle,
-    annenForelder: AnnenForelder
-): boolean => {
-    return (
-        shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søkerRolle), annenForelder) &&
-        isAttachmentMissing(periode.vedlegg)
-    );
+export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
+    return shouldPeriodeHaveAttachment(periode, søknadsinfo) && isAttachmentMissing(periode.vedlegg);
 };
 
 export const findMissingAttachmentsForPerioder = (
     perioder: Periode[],
-    søkerRolle: SøkerRolle,
-    annenForelder: AnnenForelder
+    søknadsinfo: Søknadsinfo
 ): MissingAttachment[] => {
     if (!perioder) {
         return [];
@@ -116,7 +102,7 @@ export const findMissingAttachmentsForPerioder = (
 
     const missingAttachments = [];
     for (const periode of perioder) {
-        if (hasPeriodeMissingAttachment(periode, søkerRolle, annenForelder)) {
+        if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
             missingAttachments.push({
                 index: perioder.indexOf(periode),
                 skjemanummer: getSkjemanummerForPeriode(periode),
@@ -149,11 +135,11 @@ export const findMissingAttachmentsForAndreInntekter = (søknad: Søknad): Missi
 export const findMissingAttachments = (
     søknad: Søknad,
     api: ApiState,
-    annenForelder: AnnenForelder
+    søknadsinfo: Søknadsinfo
 ): MissingAttachment[] => {
     const missingAttachments = [];
     missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api));
-    missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknad.søker.rolle, annenForelder));
+    missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknadsinfo));
     missingAttachments.push(...findMissingAttachmentsForAndreInntekter(søknad));
     return missingAttachments;
 };

@@ -116,19 +116,18 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps): StateProps => {
     const { history } = props;
-
+    const søknadsinfo = getSøknadsinfo(state)!;
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN_SKJEMA,
-        renderFortsettKnapp: uttaksplanSkjemaErGyldig(state.søknad),
+        renderFortsettKnapp: uttaksplanSkjemaErGyldig(state.søknad, søknadsinfo),
         fortsettKnappLabel: 'Fortsett',
         renderFormTag: true,
         history,
-        isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo)
+        isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo, søknadsinfo)
     };
-    const søknadsinfo = getSøknadsinfo(state)!;
     const permisjonsregler = getPermisjonsregler();
     const { familiehendelsesdato } = søknadsinfo.søknaden;
-    const scenario = getUttaksplanSkjemaScenario(state.søknad);
+    const scenario = getUttaksplanSkjemaScenario(søknadsinfo);
     const {
         api: {
             isLoadingTilgjengeligeStønadskontoer,

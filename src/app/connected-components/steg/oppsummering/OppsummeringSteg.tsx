@@ -28,9 +28,9 @@ import Block from 'common/components/block/Block';
 import LinkButton from '../../../components/link-button/LinkButton';
 import { MissingAttachment } from '../../../types/MissingAttachment';
 import { findMissingAttachments } from '../../../util/attachments/missingAttachmentUtil';
-import { getSøknadsinfo } from '../../../selectors/s\u00F8knadsinfoSelector';
-import { Søknadsinfo } from '../../../selectors/types';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
+import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { Søknadsinfo } from 'app/selectors/types';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -155,22 +155,23 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const {
         api: { tilgjengeligeStønadskontoer, isLoadingTilgjengeligeStønadskontoer }
     } = state;
+
+    const søknadsinfo = getSøknadsinfo(state)!;
     const stegProps: StegProps = {
         id: StegID.OPPSUMMERING,
         renderFortsettKnapp: søknad.harGodkjentOppsummering,
         renderFormTag: true,
         history: props.history,
-        isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, state.uttaksplanValidering.erGyldig)
+        isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, søknadsinfo)
     };
 
-    const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, state.api, søknad.annenForelder);
+    const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, state.api, søknadsinfo);
     const antallUkerUttaksplan =
         state.søknad.dekningsgrad === '100'
             ? state.api.dekningsgrad100AntallUker!
             : state.api.dekningsgrad80AntallUker!;
 
     return {
-        søknadsinfo: getSøknadsinfo(state)!,
         person,
         søknad,
         uttaksplanValidering: state.uttaksplanValidering,
@@ -179,7 +180,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         stegProps,
         tilgjengeligeStønadskontoer,
         isLoadingTilgjengeligeStønadskontoer,
-        antallUkerUttaksplan
+        antallUkerUttaksplan,
+        søknadsinfo
     };
 };
 
