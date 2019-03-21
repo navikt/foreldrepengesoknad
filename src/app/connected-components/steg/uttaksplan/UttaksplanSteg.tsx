@@ -8,7 +8,6 @@ import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import { DispatchProps } from 'common/redux/types';
 import { getSeneEndringerSomKreverBegrunnelse } from 'app/util/uttaksplan/uttakUtils';
 import { Forelder } from 'common/types';
-import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 import { getPeriodelisteElementId } from '../../../components/periodeliste/Periodeliste';
 import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
@@ -77,7 +76,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     constructor(props: Props) {
         super(props);
 
-        const { søknad, tilgjengeligeStønadskontoer, stegProps, dispatch } = this.props;
+        const { søknad, tilgjengeligeStønadskontoer, stegProps, søknadsinfo, dispatch } = this.props;
 
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftGåTilbakeDialog = this.showBekreftGåTilbakeDialog.bind(this);
@@ -94,13 +93,17 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             visFeiloppsummering: false,
             harKlikketFortsett: false
         };
-        if (stegProps.isAvailable) {
-            if (søknad.ekstrainfo.uttaksplanSkjema.forslagLaget === false) {
+        if (stegProps.isAvailable && søknadsinfo !== undefined) {
+            const { forslagLaget, startdatoPermisjon } = søknad.ekstrainfo.uttaksplanSkjema;
+            if (forslagLaget === false) {
                 dispatch(søknadActions.uttaksplanLagForslag(tilgjengeligeStønadskontoer));
             }
             if (tilgjengeligeStønadskontoer.length === 0) {
                 dispatch(
-                    apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad), this.props.history)
+                    apiActionCreators.getTilgjengeligeStønadskonter(
+                        getStønadskontoParams(søknadsinfo, startdatoPermisjon),
+                        this.props.history
+                    )
                 );
             }
         }
@@ -229,9 +232,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestReset={() => this.showBekreftSlettUttaksplanDialog()}
                                 onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
-                                forelder={
-                                    getErSøkerFarEllerMedmor(søknad.søker.rolle) ? Forelder.FARMEDMOR : Forelder.MOR
-                                }
+                                forelder={søknadsinfo.søker.erFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR}
                             />
                         </Block>
 
