@@ -22,6 +22,7 @@ import { UttakSpørsmålVisibility } from '../uttak-form/uttakFormConfig';
 import { UtsettelseSpørsmålVisibility } from '../utsettelse-form/utsettelseFormConfig';
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 import { getPeriodeIkon } from '../periodeliste/elements/PeriodeHeader';
+import { Søknadsinfo } from 'app/selectors/types';
 
 interface OwnProps {
     antallFeriedager: number;
@@ -31,6 +32,7 @@ interface OwnProps {
     periodetype: Periodetype;
     tidsperiode?: Partial<Tidsperiode>;
     navnPåForeldre: NavnPåForeldre;
+    søknadsinfo: Søknadsinfo;
     onSubmit: (periode: Periode) => void;
     onCancel: () => void;
 }
@@ -111,10 +113,9 @@ class NyPeriodeForm extends React.Component<Props, State> {
     handleOnSubmit(e: FormSubmitEvent) {
         e.preventDefault();
         e.stopPropagation();
-        const { onSubmit } = this.props;
+        const { onSubmit, søknadsinfo } = this.props;
         const { periode, visibility } = this.state;
-        const { søker, annenForelder } = this.props.søknad;
-        const cleanedPeriode = PeriodeCleanup.cleanupNyPeriode(periode as Periode, søker, annenForelder, visibility);
+        const cleanedPeriode = PeriodeCleanup.cleanupNyPeriode(periode as Periode, søknadsinfo, visibility);
         onSubmit(cleanedPeriode as Periode);
         this.updatePeriode({ tidsperiode: {} }, false);
     }

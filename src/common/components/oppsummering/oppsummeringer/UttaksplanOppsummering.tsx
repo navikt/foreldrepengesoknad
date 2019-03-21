@@ -13,6 +13,7 @@ import UttaksplanOppsummeringsliste from 'common/components/oppsummering/oppsumm
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 import getMessage from 'common/util/i18nUtils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Søknadsinfo } from 'app/selectors/types';
 
 interface OwnProps {
     perioder: Periode[];
@@ -25,6 +26,7 @@ interface OwnProps {
     annenForelder: AnnenForelder;
     begrunnelseForSenEndring?: Tilleggsopplysning;
     begrunnelseForSenEndringVedlegg?: Attachment[];
+    søknadsinfo: Søknadsinfo;
 }
 
 type Props = OwnProps & InjectedIntlProps;
