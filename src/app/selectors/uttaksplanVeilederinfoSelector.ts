@@ -30,7 +30,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
         [getSøknadsinfo, søknadSelector, selectTilgjengeligeStønadskontoer],
         (søknadsinfo, søknad, tilgjengeligeStønadskontoer) => {
             const messages: Message[] = [];
-            const { uttaksplan, annenForelder } = søknad as Søknad;
+            const { uttaksplan } = søknad as Søknad;
             const { søknaden, søker, mor, navn } = søknadsinfo!;
 
             const infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor = getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor(
@@ -40,7 +40,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
                 mor.harRett === false,
                 mor.erUfør
             );
-            const missingAttachments = findMissingAttachmentsForPerioder(uttaksplan, søker.rolle, annenForelder);
+            const missingAttachments = findMissingAttachmentsForPerioder(uttaksplan, søknadsinfo!);
             const planInneholderTapteDager =
                 Periodene(uttaksplan).getHull().length > 0 ||
                 infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor !== undefined;

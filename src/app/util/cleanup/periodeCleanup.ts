@@ -12,19 +12,16 @@ import {
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
-import AnnenForelder from '../../types/søknad/AnnenForelder';
-import { Søker } from '../../types/søknad/Søker';
-import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
 import { UttakSpørsmålVisibility } from '../../components/uttak-form/uttakFormConfig';
 import { UtsettelseFormPeriodeType } from '../../components/utsettelse-form/UtsettelseForm';
 import { UtsettelseSpørsmålVisibility } from '../../components/utsettelse-form/utsettelseFormConfig';
 import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import { RecursivePartial } from '../../types/Partial';
-import Søknad from '../../types/søknad/Søknad';
 import { shouldPeriodeHaveAttachment } from '../attachments/missingAttachmentUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { erÅrsakSykdomEllerInstitusjonsopphold } from '../uttaksplan/utsettelsesperiode';
+import { Søknadsinfo } from 'app/selectors/types';
 
 const periodeKontotypeHasAktivitetskrav = (periode: Periode) => {
     if (isUttaksperiode(periode)) {
@@ -56,16 +53,10 @@ const fjernIrrelevanteVedleggForUtsettelse = (
     return attachments;
 };
 
-const cleanupUtsettelse = (
-    periode: Utsettelsesperiode,
-    søker: Søker,
-    annenForelder: AnnenForelder
-): Utsettelsesperiode => {
-    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
+const cleanupUtsettelse = (periode: Utsettelsesperiode, søknadsinfo: Søknadsinfo): Utsettelsesperiode => {
     const morsAktivitetIPerioden = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-        erSøkerFarEllerMedmor,
-        annenForelder.harRettPåForeldrepenger,
-        annenForelder.erUfør
+        søknadsinfo.søker.erFarEllerMedmor,
+        søknadsinfo.annenForelder
     )
         ? periode.morsAktivitetIPerioden
         : undefined;
@@ -80,7 +71,7 @@ const cleanupUtsettelse = (
         orgnumre: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnumre : undefined,
         arbeidsformer: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.arbeidsformer : undefined,
         erArbeidstaker: periode.erArbeidstaker,
-        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle), annenForelder)
+        vedlegg: shouldPeriodeHaveAttachment(periode, søknadsinfo)
             ? periode.vedlegg &&
               fjernIrrelevanteVedleggForUtsettelse(
                   periode.vedlegg,
@@ -93,17 +84,14 @@ const cleanupUtsettelse = (
 
 const cleanupUttak = (
     periode: Uttaksperiode,
-    søker: Søker,
-    annenForelder: AnnenForelder,
+    søknadsinfo: Søknadsinfo,
     visibility?: UttakSpørsmålVisibility
 ): Uttaksperiode => {
     const uttaksperiode: Uttaksperiode = {
         type: Periodetype.Uttak,
         id: periode.id,
         konto: periode.konto,
-        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle), annenForelder)
-            ? periode.vedlegg
-            : undefined,
+        vedlegg: shouldPeriodeHaveAttachment(periode, søknadsinfo) ? periode.vedlegg : undefined,
         forelder: periode.forelder,
         tidsperiode: periode.tidsperiode,
         gradert: periode.gradert,
@@ -155,17 +143,16 @@ const cleanupOpphold = (periode: Oppholdsperiode): Oppholdsperiode => {
 
 export const cleanupNyPeriode = (
     periode: UtsettelseFormPeriodeType | UttakFormPeriodeType | Periode,
-    søker: Søker,
-    annenForelder: AnnenForelder,
+    søknadsinfo: Søknadsinfo,
     visibility?: UttakSpørsmålVisibility | UtsettelseSpørsmålVisibility
 ): RecursivePartial<UtsettelseFormPeriodeType | UttakFormPeriodeType> | Periode => {
     switch (periode.type) {
         case Periodetype.Overføring:
             return cleanupOverføring(periode as Overføringsperiode);
         case Periodetype.Utsettelse:
-            return cleanupUtsettelse(periode as Utsettelsesperiode, søker, annenForelder);
+            return cleanupUtsettelse(periode as Utsettelsesperiode, søknadsinfo);
         case Periodetype.Uttak:
-            return cleanupUttak(periode as Uttaksperiode, søker, annenForelder, visibility as UttakSpørsmålVisibility);
+            return cleanupUttak(periode as Uttaksperiode, søknadsinfo, visibility as UttakSpørsmålVisibility);
         case Periodetype.Opphold:
             return cleanupOpphold(periode as Oppholdsperiode);
     }
@@ -175,10 +162,9 @@ export const cleanupNyPeriode = (
 function applyChangesAndCleanPeriode(
     periode: Periode,
     periodeChanges: RecursivePartial<Periode>,
-    søknad: Søknad,
+    søknadsinfo: Søknadsinfo,
     visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
 ): Periode {
-    const { søker, annenForelder } = søknad;
     let updatedPeriode = { ...periode };
     const type = periodeChanges.type || periode.type;
     if (type === Periodetype.Utsettelse) {
@@ -186,7 +172,7 @@ function applyChangesAndCleanPeriode(
             ...periode,
             ...(periodeChanges as Utsettelsesperiode)
         };
-        updatedPeriode = PeriodeCleanup.cleanupUtsettelse(updatedPeriode, søker, annenForelder);
+        updatedPeriode = PeriodeCleanup.cleanupUtsettelse(updatedPeriode, søknadsinfo);
     } else if (type === Periodetype.Uttak) {
         updatedPeriode = {
             ...periode,
@@ -194,8 +180,7 @@ function applyChangesAndCleanPeriode(
         };
         updatedPeriode = PeriodeCleanup.cleanupUttak(
             updatedPeriode,
-            søker,
-            søknad.annenForelder,
+            søknadsinfo,
             visibility as UttakSpørsmålVisibility
         );
     } else if (type === Periodetype.Overføring) {

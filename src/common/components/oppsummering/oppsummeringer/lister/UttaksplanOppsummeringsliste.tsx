@@ -29,6 +29,7 @@ import {
     beskrivTilleggsopplysning,
     TilleggsopplysningMedBeskrivelse
 } from 'app/util/cleanup/stringifyTilleggsopplysninger';
+import { Søknadsinfo } from 'app/selectors/types';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
@@ -39,6 +40,7 @@ interface UttaksplanOppsummeringslisteProps {
     annenForelder: AnnenForelder;
     begrunnelseForSenEndring?: Tilleggsopplysning;
     begrunnelseForSenEndringVedlegg?: Attachment[];
+    søknadsinfo: Søknadsinfo;
 }
 
 type Props = UttaksplanOppsummeringslisteProps & InjectedIntlProps;
@@ -106,7 +108,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
     }
 
     createOppsummeringslisteelementPropsForUtsettelsesperiode(periode: Utsettelsesperiode) {
-        const { registrerteArbeidsforhold, erFarEllerMedmor, annenForelder, intl } = this.props;
+        const { registrerteArbeidsforhold, søknadsinfo, intl } = this.props;
         return {
             venstrestiltTekst: getMessage(intl, 'oppsummering.utsettelse.pga'),
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
@@ -114,8 +116,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
                 <Utsettelsesperiodedetaljer
                     periode={periode}
                     registrerteArbeidsforhold={registrerteArbeidsforhold}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                    annenForelder={annenForelder}
+                    søknadsinfo={søknadsinfo}
                 />
             )
         };
