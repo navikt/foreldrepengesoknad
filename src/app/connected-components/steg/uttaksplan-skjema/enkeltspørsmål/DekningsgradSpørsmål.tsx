@@ -146,8 +146,8 @@ const DekningsgradSpørsmål = (props: Props) => {
                             {
                                 type: 'normal',
                                 contentIntlKey: erAleneOmOmsorg
-                                    ? 'spørsmål.dekningsgrad.hjelpetekst'
-                                    : 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg'
+                                    ? 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg'
+                                    : 'spørsmål.dekningsgrad.hjelpetekst'
                             }
                         ]}
                     />
