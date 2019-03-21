@@ -44,6 +44,7 @@ export interface OmSøknaden {
     erFlerbarnssøknad: boolean;
     erEndringssøknad: boolean;
     antallBarn: number;
+    erBarnFødt: boolean;
     erAdopsjon: boolean;
 }
 
