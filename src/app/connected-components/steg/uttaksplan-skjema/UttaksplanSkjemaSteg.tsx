@@ -7,25 +7,25 @@ import Steg, { StegProps } from '../../../components/steg/Steg';
 import { StegID } from '../../../util/routing/stegConfig';
 import { HistoryProps } from '../../../types/common';
 import isAvailable from '../util/isAvailable';
-
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { uttaksplanSkjemaErGyldig } from '../../../util/validation/steg/uttaksplanSkjema';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Søknad from '../../../types/søknad/Søknad';
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
-import { getFamiliehendelsedato, getNavnPåForeldre } from '../../../util/uttaksplan';
 import { getUttaksplanSkjemaScenario, UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
 import { apiActionCreators } from '../../../redux/actions';
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
-import { NavnPåForeldre } from 'common/types';
 import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
+import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
+import { Søknadsinfo } from '../../../selectors/types';
+import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
-    navnPåForeldre: NavnPåForeldre;
+    søknadsinfo: Søknadsinfo;
     antallUkerFellesperiode: number | undefined;
     scenario: UttaksplanSkjemaScenario;
     isLoadingTilgjengeligeStønadskontoer: boolean;
@@ -39,15 +39,21 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
 
-        const { dispatch, stegProps, søknad } = props;
+        const {
+            dispatch,
+            stegProps,
+            søknad: {
+                ekstrainfo: {
+                    uttaksplanSkjema: { startdatoPermisjon }
+                }
+            },
+            søknadsinfo
+        } = props;
 
         if (stegProps.isAvailable) {
-            dispatch(
-                apiActionCreators.getTilgjengeligeStønadsuker(getStønadskontoParams({ ...søknad, dekningsgrad: '100' }))
-            );
-            dispatch(
-                apiActionCreators.getTilgjengeligeStønadsuker(getStønadskontoParams({ ...søknad, dekningsgrad: '80' }))
-            );
+            const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(søknadsinfo, startdatoPermisjon);
+            dispatch(apiActionCreators.getTilgjengeligeStønadsuker({ ...params, dekningsgrad: '100' }));
+            dispatch(apiActionCreators.getTilgjengeligeStønadsuker({ ...params, dekningsgrad: '80' }));
         }
     }
 
@@ -67,23 +73,24 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             stegProps,
             dispatch,
             antallUkerFellesperiode,
-            navnPåForeldre,
             scenario,
             isLoadingTilgjengeligeStønadskontoer,
             antallUkerFedreKvote,
-            antallUkerMødreKvote
+            antallUkerMødreKvote,
+            søknadsinfo
         } = this.props;
         const søknad = this.props.søknad as Søknad;
+        const navnPåForeldre = søknadsinfo.navn.navnPåForeldre;
         return (
             <Steg
                 {...stegProps}
-                onPreSubmit={() =>
+                onPreSubmit={() => {
                     dispatch(
                         apiActionCreators.getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
-                            getStønadskontoParams(søknad)
+                            getStønadskontoParams(søknadsinfo, søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon)
                         )
-                    )
-                }>
+                    );
+                }}>
                 {isLoadingTilgjengeligeStønadskontoer === true ? (
                     <ApplicationSpinner />
                 ) : (
@@ -103,19 +110,18 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps): StateProps => {
     const { history } = props;
-
+    const søknadsinfo = getSøknadsinfo(state)!;
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN_SKJEMA,
-        renderFortsettKnapp: uttaksplanSkjemaErGyldig(state.søknad),
+        renderFortsettKnapp: uttaksplanSkjemaErGyldig(state.søknad, søknadsinfo),
         fortsettKnappLabel: 'Fortsett',
         renderFormTag: true,
         history,
-        isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo)
+        isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo, søknadsinfo)
     };
-
     const permisjonsregler = getPermisjonsregler();
-    const familiehendelsesdato = getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon);
-    const scenario = getUttaksplanSkjemaScenario(state.søknad);
+    const { familiehendelsesdato } = søknadsinfo.søknaden;
+    const scenario = getUttaksplanSkjemaScenario(søknadsinfo);
     const {
         api: {
             isLoadingTilgjengeligeStønadskontoer,
@@ -141,9 +147,9 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon = defaultStartdato;
     }
     return {
+        søknadsinfo,
         stegProps,
         søknad,
-        navnPåForeldre: getNavnPåForeldre(state.søknad, props.søkerinfo.person),
         antallUkerFellesperiode:
             søknad.dekningsgrad === '100' ? fellesPeriodeUkerDekningsgrad100 : fellesPeriodeUkerDekningsgrad80,
         antallUkerFedreKvote:

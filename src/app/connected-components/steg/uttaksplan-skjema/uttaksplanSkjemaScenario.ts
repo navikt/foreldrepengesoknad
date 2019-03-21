@@ -1,5 +1,5 @@
-import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
-import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
+import { Søkersituasjon } from '../../../types/søknad/Søknad';
+import { Søknadsinfo } from '../../../selectors/types';
 
 export enum UttaksplanSkjemaScenario {
     's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan' = 's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan',
@@ -13,42 +13,30 @@ export enum UttaksplanSkjemaScenario {
     'sX_ukjent_x' = 'ukjent'
 }
 
-export const getUttaksplanSkjemaScenario = (søknad: Søknad): UttaksplanSkjemaScenario => {
-    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søknad.søker.rolle);
-    const søkerErMor = !søkerErFarEllerMedmor;
-
+export const getUttaksplanSkjemaScenario = (søknadsinfo: Søknadsinfo): UttaksplanSkjemaScenario => {
+    const { søker, søknaden, annenForelder } = søknadsinfo;
     let scenario = UttaksplanSkjemaScenario.sX_ukjent_x;
-    if (søknad.erEndringssøknad) {
+    if (søknaden.erEndringssøknad) {
         scenario = UttaksplanSkjemaScenario.s8_endringssøknad;
-    } else if (
-        søkerErFarEllerMedmor &&
-        søknad.situasjon === Søkersituasjon.FØDSEL &&
-        søknad.annenForelder.harRettPåForeldrepenger
-    ) {
+    } else if (søker.erFarEllerMedmor && søknaden.erFødsel && annenForelder.harRett) {
         scenario = UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan;
-    } else if (søkerErMor && søknad.situasjon === Søkersituasjon.FØDSEL) {
+    } else if (søker.erMor && søknaden.erFødsel) {
         scenario = UttaksplanSkjemaScenario.s3_morFødsel;
     } else if (
-        søknad.situasjon === Søkersituasjon.ADOPSJON &&
-        ((søknad.annenForelder.kanIkkeOppgis !== true && søknad.annenForelder.harRettPåForeldrepenger !== undefined) ||
-            søknad.annenForelder.kanIkkeOppgis === true ||
-            søknad.søker.erAleneOmOmsorg)
+        søknaden.situasjon === Søkersituasjon.ADOPSJON &&
+        ((annenForelder.kanIkkeOppgis !== true && annenForelder.harRett !== undefined) ||
+            annenForelder.kanIkkeOppgis === true ||
+            søker.erAleneOmOmsorg)
     ) {
         scenario = UttaksplanSkjemaScenario.s4_morFarAdopsjon;
     } else if (
-        ((søknad.situasjon === Søkersituasjon.FØDSEL || søknad.situasjon === Søkersituasjon.ADOPSJON) &&
-            søkerErFarEllerMedmor &&
-            søknad.søker.erAleneOmOmsorg === true) ||
-        (søkerErFarEllerMedmor && søknad.annenForelder.kanIkkeOppgis === true)
+        ((søknaden.erFødsel || søknaden.erAdopsjon) && søker.erFarEllerMedmor && søker.erAleneOmOmsorg === true) ||
+        (søker.erFarEllerMedmor && annenForelder.kanIkkeOppgis === true)
     ) {
         scenario = UttaksplanSkjemaScenario.s5_farMedmorAleneomsorgFødselAdopsjon;
-    } else if (
-        søknad.situasjon === Søkersituasjon.FØDSEL &&
-        søkerErFarEllerMedmor &&
-        søknad.annenForelder.harRettPåForeldrepenger === false
-    ) {
+    } else if (søknaden.erFødsel && søker.erFarEllerMedmor && annenForelder.harRett === false) {
         scenario = UttaksplanSkjemaScenario.s6_bareFarMedmorRettTilFpFødsel;
-    } else if (søknad.situasjon === Søkersituasjon.ADOPSJON) {
+    } else if (søknaden.erAdopsjon) {
         scenario = UttaksplanSkjemaScenario.s7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan;
     }
 

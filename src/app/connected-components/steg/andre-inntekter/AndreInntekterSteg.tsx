@@ -29,6 +29,7 @@ import { formatDate } from 'app/util/dates/dates';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 
 interface StateProps {
     stegProps: StegProps;
@@ -158,12 +159,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFortsettKnapp: annenInntektErGyldig(søker),
         renderFormTag: true,
         history,
-        isAvailable: isAvailable(
-            StegID.ANDRE_INNTEKTER,
-            state.søknad,
-            props.søkerinfo,
-            state.uttaksplanValidering.erGyldig
-        )
+        isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo, getSøknadsinfo(state))
     };
 
     return {

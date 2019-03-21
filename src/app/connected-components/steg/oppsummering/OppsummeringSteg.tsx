@@ -18,8 +18,6 @@ import isAvailable from '../util/isAvailable';
 import Oppsummering from 'common/components/oppsummering/Oppsummering';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { UttaksplanValideringState } from '../../../redux/reducers/uttaksplanValideringReducer';
-import { NavnPåForeldre } from 'common/types';
-import { getNavnPåForeldre } from '../../../util/uttaksplan';
 import { validerUttaksplanAction } from '../../../redux/actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
@@ -30,37 +28,39 @@ import Block from 'common/components/block/Block';
 import LinkButton from '../../../components/link-button/LinkButton';
 import { MissingAttachment } from '../../../types/MissingAttachment';
 import { findMissingAttachments } from '../../../util/attachments/missingAttachmentUtil';
+import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 
 interface StateProps {
+    søknadsinfo: Søknadsinfo;
     person: Person;
     søknad: Søknad;
     kvittering?: Kvittering;
     stegProps: StegProps;
     uttaksplanValidering: UttaksplanValideringState;
-    navnPåForeldre: NavnPåForeldre;
     missingAttachments: MissingAttachment[];
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     isLoadingTilgjengeligeStønadskontoer: boolean;
     antallUkerUttaksplan: number;
-    søknadsinfo: Søknadsinfo;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 class OppsummeringSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-        const { tilgjengeligeStønadskontoer, søknad, stegProps, dispatch } = this.props;
+        const { tilgjengeligeStønadskontoer, søknad, stegProps, søknadsinfo, dispatch } = this.props;
 
         this.sendSøknad = this.sendSøknad.bind(this);
         this.gotoUttaksplan = this.gotoUttaksplan.bind(this);
 
         if (tilgjengeligeStønadskontoer.length === 0 && stegProps.isAvailable) {
-            dispatch(
-                apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad), this.props.history)
+            const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
+                søknadsinfo,
+                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon
             );
-            dispatch(apiActionCreators.getTilgjengeligeStønadsuker(getStønadskontoParams(søknad)));
+            dispatch(apiActionCreators.getTilgjengeligeStønadskonter(params, this.props.history));
+            dispatch(apiActionCreators.getTilgjengeligeStønadsuker(params));
         }
     }
 
@@ -83,13 +83,13 @@ class OppsummeringSteg extends React.Component<Props> {
         const {
             søknad,
             søkerinfo,
+            søknadsinfo,
             uttaksplanValidering,
             stegProps,
             missingAttachments,
             isLoadingTilgjengeligeStønadskontoer,
             antallUkerUttaksplan,
             dispatch,
-            søknadsinfo,
             intl
         } = this.props;
         const { person } = søkerinfo;
@@ -116,11 +116,11 @@ class OppsummeringSteg extends React.Component<Props> {
                             </Block>
                         )}
                         <Oppsummering
+                            søknadsinfo={søknadsinfo}
                             søkerinfo={søkerinfo}
                             søknad={søknad}
                             uttaksplanValidering={uttaksplanValidering}
                             antallUkerUttaksplan={antallUkerUttaksplan}
-                            søknadsinfo={søknadsinfo}
                         />
                         {uttaksplanValidering.erGyldig &&
                             missingAttachments.length > 0 && (
@@ -155,14 +155,15 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const {
         api: { tilgjengeligeStønadskontoer, isLoadingTilgjengeligeStønadskontoer }
     } = state;
+
+    const søknadsinfo = getSøknadsinfo(state)!;
     const stegProps: StegProps = {
         id: StegID.OPPSUMMERING,
         renderFortsettKnapp: søknad.harGodkjentOppsummering,
         renderFormTag: true,
         history: props.history,
-        isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, state.uttaksplanValidering.erGyldig)
+        isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, søknadsinfo)
     };
-    const søknadsinfo = getSøknadsinfo(state)!;
 
     const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, state.api, søknadsinfo);
     const antallUkerUttaksplan =
@@ -174,7 +175,6 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         person,
         søknad,
         uttaksplanValidering: state.uttaksplanValidering,
-        navnPåForeldre: getNavnPåForeldre(søknad, person),
         kvittering: state.api.kvittering,
         missingAttachments,
         stegProps,

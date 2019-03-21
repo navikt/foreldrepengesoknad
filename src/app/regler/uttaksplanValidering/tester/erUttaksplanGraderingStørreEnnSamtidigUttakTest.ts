@@ -1,6 +1,6 @@
 import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
 
-import { uttaksplanGraderingStørreEnnSamtidigUttak } from '../../../util/validation/uttaksplan/uttaksplanGraderingSt\u00F8rreEnnSamtidigUttak';
+import { uttaksplanGraderingStørreEnnSamtidigUttak } from '../../../util/validation/uttaksplan/uttaksplanGraderingStørreEnnSamtidigUttak';
 
 export const erUttaksplanGraderingStørreEnnSamtidigUttakTest: RegelTest = (
     grunnlag: Regelgrunnlag

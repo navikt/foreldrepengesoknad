@@ -1,15 +1,19 @@
 import Søknad from '../../../types/søknad/Søknad';
 import {
-    getUttaksplanSkjemaScenario,
-    UttaksplanSkjemaScenario
+    UttaksplanSkjemaScenario,
+    getUttaksplanSkjemaScenario
 } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemaScenario';
+import { Søknadsinfo } from '../../../selectors/types';
 
-export const uttaksplanSkjemaErGyldig = (søknad: Søknad): boolean => {
+export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søknadsinfo?: Søknadsinfo): boolean => {
     if (søknad.dekningsgrad === undefined) {
         return false;
     }
-    const scenario = getUttaksplanSkjemaScenario(søknad);
+    if (søknadsinfo === undefined) {
+        return false;
+    }
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
+    const scenario = getUttaksplanSkjemaScenario(søknadsinfo);
     switch (scenario) {
         case UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan:
             return skjema.skalStarteRettEtterMor === false ? skjema.utsettelseEtterMorSkjemaValid === true : true;

@@ -23,10 +23,10 @@ import søknadActionCreators from '../../redux/actions/søknad/søknadActionCrea
 import UtsettelseForm from '../utsettelse-form/UtsettelseForm';
 import UttakForm from '../uttak-form/UttakForm';
 import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
-
-import './endrePeriodeForm.less';
 import { Søknadsinfo } from 'app/selectors/types';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+
+import './endrePeriodeForm.less';
 
 export type EndrePeriodeChangeEvent = (
     periode: RecursivePartial<Periode>,
