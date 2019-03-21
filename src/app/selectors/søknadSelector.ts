@@ -33,6 +33,7 @@ export const selectSøkerrolle = createSelector([selectSøker], (søker): Søker
 
 // Barn
 export const selectAntallBarn = createSelector([selectBarn], (barn = {}) => barn.antallBarn);
+export const selectErBarnFødt = createSelector([selectBarn], (barn = {}) => barn.erBarnetFødt);
 
 // Annen forelder
 export const selectAnnenForelderHarRettPåForeldrepenger = createSelector(
