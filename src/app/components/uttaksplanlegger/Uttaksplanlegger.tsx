@@ -278,6 +278,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             {periodetype !== undefined && (
                                 <FocusContainer ref={(c) => (this.nyPeriodeForm = c)}>
                                     <NyPeriodeForm
+                                        søknadsinfo={søknadsinfo}
                                         antallFeriedager={antallFeriedager}
                                         erMorUfør={søknadsinfo.mor.erUfør}
                                         periodetype={periodetype}
