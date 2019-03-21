@@ -21,7 +21,7 @@ import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { Søknadsinfo } from '../../../selectors/types';
-import { getSøknadsinfo } from '../../../selectors/s\u00F8knadsinfoSelector';
+import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 
 interface StateProps {
     stegProps: StegProps;

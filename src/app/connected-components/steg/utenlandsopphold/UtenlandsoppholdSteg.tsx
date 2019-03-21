@@ -30,7 +30,7 @@ import {
 import { default as visibility } from './visibility';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import cleanupUtenlandsOppholdSteg from '../../../util/cleanup/cleanupUtenlandsoppholdSteg';
-import { getSøknadsinfo } from '../../../selectors/s\u00F8knadsinfoSelector';
+import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 
 interface StateProps {
     søknad: Søknad;

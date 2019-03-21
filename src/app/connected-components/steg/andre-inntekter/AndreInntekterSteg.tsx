@@ -29,7 +29,7 @@ import { formatDate } from 'app/util/dates/dates';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
-import { getSøknadsinfo } from '../../../selectors/s\u00F8knadsinfoSelector';
+import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 
 interface StateProps {
     stegProps: StegProps;
