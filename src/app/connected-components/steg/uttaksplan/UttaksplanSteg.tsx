@@ -221,11 +221,11 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                 ) : (
                     <React.Fragment>
                         <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                            <VeilederpanelInnhold messages={[getVeilederInfoText(søknad, aktivitetsfriKvote)]} />
+                            <VeilederpanelInnhold messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote)]} />
                         </Veilederpanel>
                         <Block>
                             <Uttaksplanlegger
-                                søknad={søknad}
+                                uttaksplan={søknad.uttaksplan}
                                 søknadsinfo={søknadsinfo}
                                 uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}

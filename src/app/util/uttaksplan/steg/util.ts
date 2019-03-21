@@ -1,21 +1,20 @@
-import Søknad from 'app/types/søknad/Søknad';
-import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
 import lenker from 'app/util/routing/lenker';
 import { Message } from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import { Søknadsinfo } from '../../../selectors/types';
 
-export const getVeilederInfoText = (søknad: Søknad, aktivitetsfriKvote: number): Message => {
-    const { annenForelder, søker } = søknad;
+export const getVeilederInfoText = (søknadsinfo: Søknadsinfo, aktivitetsfriKvote: number): Message => {
+    const { søknaden, søker, annenForelder, navn } = søknadsinfo;
 
-    if (søknad.erEndringssøknad) {
+    if (søknaden.erEndringssøknad) {
         return {
             type: 'normal',
             contentIntlKey: 'uttaksplan.informasjon.endringssøknad'
         };
     } else {
-        if (getErSøkerFarEllerMedmor(søknad.søker.rolle)) {
+        if (søker.erFarEllerMedmor) {
             if (
                 annenForelder.kanIkkeOppgis ||
-                (!annenForelder.harRettPåForeldrepenger && !annenForelder.erUfør) ||
+                (!annenForelder.harRett && !annenForelder.erUfør) ||
                 søker.erAleneOmOmsorg
             ) {
                 return {
@@ -34,13 +33,13 @@ export const getVeilederInfoText = (søknad: Søknad, aktivitetsfriKvote: number
                     contentIntlKey: 'uttaksplan.informasjon.farMedmor.deltUttak',
                     formatContentAsHTML: true,
                     values: {
-                        navnAnnenForelder: annenForelder.fornavn,
+                        navnAnnenForelder: navn.annenForelder.fornavn,
                         link: lenker.viktigeFrister
                     }
                 };
             }
         } else {
-            if (annenForelder.kanIkkeOppgis || !annenForelder.harRettPåForeldrepenger || søker.erAleneOmOmsorg) {
+            if (annenForelder.kanIkkeOppgis || !annenForelder.harRett || søker.erAleneOmOmsorg) {
                 return {
                     type: 'normal',
                     contentIntlKey: 'uttaksplan.informasjon.mor.aleneOmsorg'
@@ -49,7 +48,7 @@ export const getVeilederInfoText = (søknad: Søknad, aktivitetsfriKvote: number
                 return {
                     type: 'normal',
                     contentIntlKey: 'uttaksplan.informasjon.mor.deltOmsorg',
-                    values: { navnAnnenForelder: annenForelder.fornavn }
+                    values: { navnAnnenForelder: navn.annenForelder.fornavn }
                 };
             }
         }

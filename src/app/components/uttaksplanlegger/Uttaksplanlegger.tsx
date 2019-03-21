@@ -7,7 +7,6 @@ import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import LinkButton from '../link-button/LinkButton';
 import FamiliehendelsedatoInfo from './FamiliehendelsedatoInfo';
-import Søknad from '../../types/søknad/Søknad';
 import { Forelder, Tidsperiode } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -33,7 +32,7 @@ import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
 
 interface OwnProps {
-    søknad: Søknad;
+    uttaksplan: Periode[];
     søknadsinfo: Søknadsinfo;
     uttaksplanValidering: UttaksplanValideringState;
     lastAddedPeriodeId: string | undefined;
@@ -121,9 +120,9 @@ class Uttaksplanlegger extends React.Component<Props, State> {
     openNyUttaksperiodeForm() {
         this.lukkPeriodeliste();
         const tidsperiode: Partial<Tidsperiode> | undefined =
-            this.props.søknad.uttaksplan.length > 0
+            this.props.uttaksplan.length > 0
                 ? {
-                      fom: Periodene(this.props.søknad.uttaksplan).getFørsteUttaksdagEtterSistePeriode()
+                      fom: Periodene(this.props.uttaksplan).getFørsteUttaksdagEtterSistePeriode()
                   }
                 : undefined;
 
@@ -160,15 +159,14 @@ class Uttaksplanlegger extends React.Component<Props, State> {
 
     render() {
         const {
-            søknad,
             uttaksplanValidering,
             søknadsinfo,
             onRequestReset,
             lastAddedPeriodeId,
             forelder,
+            uttaksplan,
             intl
         } = this.props;
-        const { barn, uttaksplan } = søknad;
         const { formIsOpen, periodetype } = this.state;
         const antallFeriedager = Periodene(uttaksplan).getAntallFeriedager(forelder);
 
@@ -231,7 +229,11 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                     aria-hidden={true}>
                                     <HjerteIkon fylt={true} title="Hjerte" />
                                 </span>
-                                <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søknadsinfo.søknaden.situasjon} />
+                                <FamiliehendelsedatoInfo
+                                    familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
+                                    søkersituasjon={søknadsinfo.søknaden.situasjon}
+                                    erBarnetFødt={søknadsinfo.søknaden.erBarnFødt}
+                                />
                             </span>
                         </header>
                         <Block visible={uttaksplan.length > 0}>
@@ -286,7 +288,6 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                         onSubmit={this.handleOnSubmit}
                                         onCancel={this.handleOnCancel}
                                         tidsperiode={this.state.tidsperiode}
-                                        søknad={this.props.søknad}
                                         navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                                     />
                                 </FocusContainer>
