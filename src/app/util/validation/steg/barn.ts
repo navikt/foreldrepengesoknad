@@ -1,6 +1,16 @@
 import moment from 'moment';
-import { Adopsjonsbarn, ForeldreansvarBarn, FødtBarn, UfødtBarn, Barn } from '../../../types/søknad/Barn';
-import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
+import {
+    Adopsjonsbarn,
+    ForeldreansvarBarn,
+    FødtBarn,
+    UfødtBarn,
+    Barn,
+    isUfødtBarn,
+    isFødtBarn,
+    isAdopsjonsbarn,
+    isForeldreansvarsbarn
+} from '../../../types/søknad/Barn';
+import Søknad from '../../../types/søknad/Søknad';
 import { fødselsdatoerErFyltUt } from '../fødselsdato';
 import { Søkerinfo } from '../../../types/søkerinfo';
 import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
@@ -62,22 +72,21 @@ const harValgtRegistrertBarn = (søknad: Søknad): boolean => {
 export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
     const { situasjon, barn } = søknad;
     const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo);
-    switch (situasjon) {
-        case Søkersituasjon.FØDSEL:
-            if (harValgtRegistrertBarn(søknad)) {
-                return true;
-            }
-            return barn.erBarnetFødt
-                ? fødtBarnErGyldig(barn as FødtBarn)
-                : ufødtBarnErGyldig(barn as UfødtBarn, skalLasteOppTerminbekreftelse || false);
-
-        case Søkersituasjon.ADOPSJON:
-            return adopsjonsbarnErGyldig(barn as Adopsjonsbarn);
-        case Søkersituasjon.FORELDREANSVAR:
-            return foreldreansvarBarnErGyldig(barn as ForeldreansvarBarn);
-        default:
-            return false;
+    if (isFødtBarn(barn, situasjon) || isUfødtBarn(barn, situasjon)) {
+        if (harValgtRegistrertBarn(søknad)) {
+            return true;
+        }
+        return isFødtBarn(barn, situasjon)
+            ? fødtBarnErGyldig(barn)
+            : ufødtBarnErGyldig(barn, skalLasteOppTerminbekreftelse || false);
     }
+    if (isAdopsjonsbarn(barn, situasjon)) {
+        return adopsjonsbarnErGyldig(barn);
+    }
+    if (isForeldreansvarsbarn(barn, situasjon)) {
+        return foreldreansvarBarnErGyldig(barn);
+    }
+    return false;
 };
 
 export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
@@ -89,14 +98,19 @@ export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, søkerinfo
     if (søkerinfo.arbeidsforhold.length < 1) {
         trengerLasteOppterminbekreftelse = true;
     }
-    if ((søknad.barn as UfødtBarn).termindato !== undefined && !harAktivtArbeidsforhold(søkerinfo.arbeidsforhold)) {
+    const { barn } = søknad;
+    if (
+        isUfødtBarn(barn, søknad.situasjon) &&
+        barn.termindato !== undefined &&
+        !harAktivtArbeidsforhold(søkerinfo.arbeidsforhold)
+    ) {
         søkerinfo.arbeidsforhold.forEach((a: Arbeidsforhold) => {
             const sluttdato = a.tom;
             if (sluttdato) {
-                if ((søknad.barn as UfødtBarn).termindato > sluttdato) {
+                if (barn.termindato > sluttdato) {
                     trengerLasteOppterminbekreftelse = true;
                 }
-                if ((søknad.barn as UfødtBarn).termindato < sluttdato) {
+                if (barn.termindato < sluttdato) {
                     trengerLasteOppterminbekreftelse = false;
                 }
             }

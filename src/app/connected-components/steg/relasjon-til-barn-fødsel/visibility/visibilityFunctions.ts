@@ -43,10 +43,10 @@ const termindatoVisible = (ufødtBarnPartial: boolean, barn: Partial<Barn>): boo
 
 const terminbekreftelsePartialVisible = (
     termindatoVisibleResult: boolean,
-    barn: Partial<Barn>,
+    barn: Partial<UfødtBarn>,
     skalLasteOppTerminbekreftelse: boolean
 ): boolean => {
-    return termindatoVisibleResult && skalLasteOppTerminbekreftelse && (barn as UfødtBarn).termindato !== undefined;
+    return termindatoVisibleResult && skalLasteOppTerminbekreftelse && barn.termindato !== undefined;
 };
 
 const terminbekreftelseDatoVisible = (
@@ -83,6 +83,6 @@ export const RelasjonTilBarFødselVisibilityFunctions = {
     fødselsattestUploaderVisible,
     morForSykSpørsmålVisible,
     termindatoVisible,
-    temrinbekreftelsePartialVisible: terminbekreftelsePartialVisible,
+    terminbekreftelsePartialVisible,
     terminbekreftelseDatoVisible
 };

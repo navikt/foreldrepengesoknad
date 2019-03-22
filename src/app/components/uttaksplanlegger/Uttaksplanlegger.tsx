@@ -231,7 +231,11 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                     aria-hidden={true}>
                                     <HjerteIkon fylt={true} title="Hjerte" />
                                 </span>
-                                <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søknadsinfo.søknaden.situasjon} />
+                                <FamiliehendelsedatoInfo
+                                    barn={barn}
+                                    søkersituasjon={søknadsinfo.søknaden.situasjon}
+                                    familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
+                                />
                             </span>
                         </header>
                         <Block visible={uttaksplan.length > 0}>

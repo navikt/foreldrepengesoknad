@@ -3,7 +3,7 @@ import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
+import { Periode } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { StegID } from '../../../util/routing/stegConfig';
 import { Barn } from '../../../types/søknad/Barn';
@@ -32,6 +32,7 @@ export enum SøknadActionKeys {
     'UTTAKSPLAN_UPDATE_PERIODE' = 'uttaksplanUpdatePeriode',
     'UTTAKSPLAN_UPDATE_SKJEMADATA' = 'uttaksplanUpdateSkjemadata',
     'UTTAKSPLAN_LAG_FORSLAG' = 'uttaksplanLagForslag',
+    'UTTAKSPLAN_SET_FORSLAG' = 'uttaksplanSetForslag',
     'SET_VEDLEGG_FOR_SEN_ENDRING' = 'setVedleggForSenEndring',
     'SET_TILLEGGSOPPLYSNING' = 'setTilleggsopplysning',
     'SET_CURRENT_STEG' = 'setCurrentSteg'
@@ -94,7 +95,11 @@ export interface UttaksplanAddPeriode {
 
 export interface UttaksplanLagForslag {
     type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG;
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+}
+
+export interface UttaksplanSetForslag {
+    type: SøknadActionKeys.UTTAKSPLAN_SET_FORSLAG;
+    uttaksplan: Periode[];
 }
 
 export interface UttaksplanDeletePeriode {
@@ -187,6 +192,7 @@ export type SøknadAction =
     | UttaksplanUpdatePeriode
     | UttaksplanUpdateSkjemadata
     | UttaksplanLagForslag
+    | UttaksplanSetForslag
     | SetCurrentSteg
     | SetVedleggForSenEndring
     | SetTilleggsopplysning;

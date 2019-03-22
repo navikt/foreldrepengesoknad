@@ -96,7 +96,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         if (stegProps.isAvailable && søknadsinfo !== undefined) {
             const { forslagLaget, startdatoPermisjon } = søknad.ekstrainfo.uttaksplanSkjema;
             if (forslagLaget === false) {
-                dispatch(søknadActions.uttaksplanLagForslag(tilgjengeligeStønadskontoer));
+                dispatch(søknadActions.uttaksplanLagForslag());
             }
             if (tilgjengeligeStønadskontoer.length === 0) {
                 dispatch(

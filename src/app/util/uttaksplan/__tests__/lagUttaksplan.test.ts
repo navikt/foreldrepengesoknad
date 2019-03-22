@@ -1,9 +1,10 @@
-import { lagUttaksplan } from '../forslag/lagUttaksplan';
+import { lagUttaksplan, LagUttaksplanParams } from '../forslag/lagUttaksplan';
 import { TilgjengeligStønadskonto, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
-import Søknad, { SøkerRolle } from '../../../types/søknad/Søknad';
-import mockSøknad from '../../testdata/soknad.data';
+import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
+import mockSøknad from '../../../testdata/soknad.data';
 import { finnHullIPerioder } from '../builder/UttaksplanBuilder';
 import { Periodene } from '../Periodene';
+import { FødtBarn } from '../../../types/søknad/Barn';
 
 const tilgjengeligeKontoerDeltUttak: TilgjengeligStønadskonto[] = [
     {
@@ -37,28 +38,36 @@ const tilgjengeligeKontoerIkkeDeltUttak: TilgjengeligStønadskonto[] = [
 
 const søknad: Søknad = { ...(mockSøknad as Søknad) };
 
+const lagUttaksplanProps: LagUttaksplanParams = {
+    annenForelderErUfør: false,
+    erDeltUttak: true,
+    erEndringssøknad: false,
+    familiehendelsesdato: (søknad.barn as FødtBarn).fødselsdatoer[0],
+    situasjon: Søkersituasjon.FØDSEL,
+    søkerErFarEllerMedmor: false,
+    tilgjengeligeStønadskontoer: tilgjengeligeKontoerDeltUttak,
+    uttaksplanSkjema: søknad.ekstrainfo.uttaksplanSkjema
+};
+
 describe('Forslag til uttaksplan', () => {
     describe('Delt uttaksplan', () => {
         it('mor: skal bestå av 3 perioder', () => {
-            const uttaksplan = lagUttaksplan(søknad, tilgjengeligeKontoerDeltUttak);
+            const uttaksplan = lagUttaksplan(lagUttaksplanProps);
             expect(uttaksplan.length).toBe(3);
         });
         it('mor: skal ikke ha hull', () => {
-            const uttaksplan = lagUttaksplan(søknad, tilgjengeligeKontoerDeltUttak);
+            const uttaksplan = lagUttaksplan(lagUttaksplanProps);
             expect(finnHullIPerioder(uttaksplan).length).toBe(0);
         });
         it('mor: skal ikke ha overlappende perioder', () => {
-            const uttaksplan = lagUttaksplan(søknad, tilgjengeligeKontoerDeltUttak);
+            const uttaksplan = lagUttaksplan(lagUttaksplanProps);
             const overlappendePerioder = uttaksplan.find(
                 (periode) => Periodene(uttaksplan).finnOverlappendePerioder(periode).length > 0
             );
             expect(overlappendePerioder).toBeUndefined();
         });
         it('far/medmor: skal ikke få foreslått plan gitt ikke valgt fellesperiode', () => {
-            const uttaksplan = lagUttaksplan(
-                { ...søknad, søker: { ...søknad.søker, rolle: SøkerRolle.FAR } },
-                tilgjengeligeKontoerDeltUttak
-            );
+            const uttaksplan = lagUttaksplan({ ...lagUttaksplanProps, søkerErFarEllerMedmor: true });
             expect(uttaksplan.length).toBe(0);
         });
         it('far/medmor: skal få foreslått plan gitt valgt fellesperiode', () => {
@@ -68,32 +77,40 @@ describe('Forslag til uttaksplan', () => {
                 morSinSisteUttaksdag: new Date(2019, 0, 1),
                 farSinFørsteUttaksdag: new Date(2019, 0, 2)
             };
-
-            const uttaksplan = lagUttaksplan(
-                {
-                    ...søknad,
-                    søker: { ...søknad.søker, rolle: SøkerRolle.FAR },
-                    ekstrainfo: {
-                        ...søknad.ekstrainfo,
-                        uttaksplanSkjema: { ...søknad.ekstrainfo.uttaksplanSkjema, ...farSøknad }
-                    }
-                },
-                tilgjengeligeKontoerDeltUttak
-            );
+            const uttaksplan = lagUttaksplan({
+                ...lagUttaksplanProps,
+                søkerErFarEllerMedmor: true,
+                uttaksplanSkjema: {
+                    ...lagUttaksplanProps.uttaksplanSkjema,
+                    ...farSøknad
+                }
+            });
             expect(uttaksplan.length).toBe(2);
         });
     });
     describe('Ikke delt uttaksplan', () => {
         it('mor: skal bestå av 2 perioder', () => {
-            const uttaksplan = lagUttaksplan(søknad, tilgjengeligeKontoerIkkeDeltUttak);
+            const uttaksplan = lagUttaksplan({
+                ...lagUttaksplanProps,
+                erDeltUttak: false,
+                tilgjengeligeStønadskontoer: tilgjengeligeKontoerIkkeDeltUttak
+            });
             expect(uttaksplan.length).toBe(2);
         });
         it('mor: skal ikke ha hull', () => {
-            const uttaksplan = lagUttaksplan(søknad, tilgjengeligeKontoerIkkeDeltUttak);
+            const uttaksplan = lagUttaksplan({
+                ...lagUttaksplanProps,
+                erDeltUttak: false,
+                tilgjengeligeStønadskontoer: tilgjengeligeKontoerIkkeDeltUttak
+            });
             expect(finnHullIPerioder(uttaksplan).length).toBe(0);
         });
         it('mor: skal ikke ha overlappende perioder', () => {
-            const uttaksplan = lagUttaksplan(søknad, tilgjengeligeKontoerIkkeDeltUttak);
+            const uttaksplan = lagUttaksplan({
+                ...lagUttaksplanProps,
+                erDeltUttak: false,
+                tilgjengeligeStønadskontoer: tilgjengeligeKontoerIkkeDeltUttak
+            });
             const overlappendePerioder = uttaksplan.find(
                 (periode) => Periodene(uttaksplan).finnOverlappendePerioder(periode).length > 0
             );

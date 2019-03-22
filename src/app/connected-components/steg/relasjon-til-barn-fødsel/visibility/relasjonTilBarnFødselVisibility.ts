@@ -1,9 +1,9 @@
 import { RelasjonTilBarFødselVisibilityFunctions as f } from './visibilityFunctions';
 import { skalSøkerLasteOppTerminbekreftelse } from '../../../../util/validation/steg/barn';
-import { FødtBarn, UfødtBarn } from '../../../../types/søknad/Barn';
 import { getErSøkerFarEllerMedmor } from '../../../../util/domain/personUtil';
 import { ApiState } from '../../../../redux/reducers/apiReducer';
 import Søknad from '../../../../types/søknad/Søknad';
+import { isUfødtBarn } from '../../../../types/søknad/Barn';
 
 export interface RelasjonTilBarnFødtVisibility {
     fødselsdatoer: boolean;
@@ -34,6 +34,7 @@ export const getRelasjonTilBarnFødselVisibility = (
     const {
         søker,
         barn,
+        situasjon,
         ekstrainfo: { søknadenGjelderBarnValg }
     } = søknad;
 
@@ -51,12 +52,14 @@ export const getRelasjonTilBarnFødselVisibility = (
     const fødtBarnPart = f.fødtBarnPartialVisible(erBarnetFødt, barn);
 
     const fødselsdatoer = f.fødeslsdatoerSpørsmålVisible(fødtBarnPart, barn);
-    const fødselsattest = f.fødselsattestUploaderVisible(fødselsdatoer, barn as FødtBarn);
+    const fødselsattest = f.fødselsattestUploaderVisible(fødselsdatoer, barn);
 
     const erMorForSyk = f.morForSykSpørsmålVisible(ufødtBarnPart, søkerErFarEllerMedmor);
     const termindato = f.termindatoVisible(ufødtBarnPart, barn);
-    const terminbekreftelse = f.temrinbekreftelsePartialVisible(termindato, barn, skalLasteOppTerminbekreftelse);
-    const terminbekreftelseDato = f.terminbekreftelseDatoVisible(terminbekreftelse, barn as UfødtBarn);
+    const terminbekreftelse =
+        isUfødtBarn(barn, situasjon) &&
+        f.terminbekreftelsePartialVisible(termindato, barn, skalLasteOppTerminbekreftelse);
+    const terminbekreftelseDato = f.terminbekreftelseDatoVisible(terminbekreftelse, barn);
 
     return {
         hvilketBarnGjelderSøknadenBolk,
