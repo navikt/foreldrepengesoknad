@@ -34,6 +34,7 @@ import {
 } from '../uttaksplan/utsettelsesperiode';
 import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
+import { isUfødtBarn, isForeldreansvarsbarn } from '../../types/s\u00F8knad/Barn';
 
 const isAttachmentMissing = (attachments?: Attachment[]) => attachments === undefined || attachments.length === 0;
 
@@ -54,9 +55,12 @@ export function shouldPeriodeHaveAttachment(periode: Periode, søknadsinfo: Søk
 
 export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): MissingAttachment[] => {
     const missingAttachments = [];
-
     const shouldUploadTerminbekreftelse = getRelasjonTilBarnFødselVisibility(søknad, api).ufødt.terminbekreftelse;
-    if (shouldUploadTerminbekreftelse && isAttachmentMissing((søknad.barn as any).terminbekreftelse)) {
+    if (
+        shouldUploadTerminbekreftelse &&
+        isUfødtBarn(søknad.barn, søknad.situasjon) &&
+        isAttachmentMissing(søknad.barn.terminbekreftelse)
+    ) {
         missingAttachments.push({
             skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
             type: AttachmentType.TERMINBEKREFTELSE
@@ -65,7 +69,8 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
 
     if (
         spørsmålOmVedleggVisible(søknad.barn, søknad.erEndringssøknad) &&
-        isAttachmentMissing((søknad.barn as any).omsorgsovertakelse)
+        isForeldreansvarsbarn(søknad.barn, søknad.situasjon) &&
+        isAttachmentMissing(søknad.barn.omsorgsovertakelse)
     ) {
         missingAttachments.push({
             skjemanummer: Skjemanummer.OMSORGSOVERTAKELSESDATO,

@@ -18,9 +18,9 @@ import { sjekkUttaksplanOppMotRegler, getRegelAvvik } from '../../regler/uttaksp
 
 const stateSelector = (state: AppState) => state;
 
-const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode => {
-    const { tilgjengeligeStønadskontoer } = appState.api;
-    const søknadsinfo = getSøknadsinfo(appState);
+const validerPeriode = (state: AppState, periode: Periode): ValidertPeriode => {
+    const { tilgjengeligeStønadskontoer } = state.api;
+    const søknadsinfo = getSøknadsinfo(state);
     const advarsler = [];
 
     if (hasPeriodeMissingAttachment(periode, søknadsinfo!)) {
@@ -34,14 +34,14 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
         periodeId: periode.id,
         valideringsfeil: validerPeriodeForm(periode, tilgjengeligeStønadskontoer, søknadsinfo!) || [],
         advarsler,
-        overlappendePerioder: Periodene(appState.søknad.uttaksplan).finnOverlappendePerioder(periode)
+        overlappendePerioder: Periodene(state.søknad.uttaksplan).finnOverlappendePerioder(periode)
     };
 };
 
-const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat | undefined => {
-    const søknadsinfo = getSøknadsinfo(appState);
-    const perioder = appState.søknad.uttaksplan;
-    const { tilgjengeligeStønadskontoer } = appState.api;
+const kjørUttaksplanRegler = (state: AppState): UttaksplanRegelTestresultat | undefined => {
+    const søknadsinfo = getSøknadsinfo(state);
+    const perioder = state.søknad.uttaksplan;
+    const { tilgjengeligeStønadskontoer } = state.api;
 
     if (!søknadsinfo) {
         return undefined;
@@ -59,7 +59,7 @@ const kjørUttaksplanRegler = (appState: AppState): UttaksplanRegelTestresultat 
         perioder,
         uttaksstatusStønadskontoer,
         tilgjengeligeStønadskontoer,
-        tilleggsopplysninger: appState.søknad.tilleggsopplysninger
+        tilleggsopplysninger: state.søknad.tilleggsopplysninger
     });
 
     if (resultat) {
