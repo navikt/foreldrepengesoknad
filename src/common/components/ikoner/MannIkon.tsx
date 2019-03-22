@@ -5,6 +5,7 @@ const MannIkon = (props: any) => (
         width={40}
         height={40}
         viewBox="0 0 32 32"
+        display="block"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink">
