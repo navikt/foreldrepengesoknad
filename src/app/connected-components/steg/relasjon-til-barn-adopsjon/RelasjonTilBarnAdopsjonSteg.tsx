@@ -180,7 +180,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         </Veilederpanel>
                     </Block>
                     <AttachmentsUploaderPure
-                        attachments={(barn as Adopsjonsbarn).omsorgsovertakelse || []}
+                        attachments={barn.omsorgsovertakelse || []}
                         attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
                         skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
                         onFilesSelect={(attachments: Attachment[]) => {

@@ -1,7 +1,7 @@
-import { BarnPartial } from '../../../../types/søknad/Barn';
 import cleanupRelasjonTilBarnFødselSteg from '../cleanupRelasjonTilBarnFødselSteg';
+import { Barn } from '../../../../types/søknad/Barn';
 
-let dirtyBarn: BarnPartial;
+let dirtyBarn: Partial<Barn>;
 describe('cleanupRelasjonTIlBarnFødselSteg', () => {
     beforeEach(() => {
         dirtyBarn = {

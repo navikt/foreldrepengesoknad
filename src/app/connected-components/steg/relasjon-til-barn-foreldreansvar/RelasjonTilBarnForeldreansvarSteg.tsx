@@ -14,7 +14,7 @@ import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsm�
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 
 import utils from '../../../util/domain/fødselsdato';
-import { ForeldreansvarBarnPartial } from '../../../types/søknad/Barn';
+import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { HistoryProps } from '../../../types/common';
 import { StegProps } from '../../../components/steg/Steg';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
@@ -33,7 +33,7 @@ import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 export interface StateProps {
-    barn: ForeldreansvarBarnPartial;
+    barn: Partial<ForeldreansvarBarn>;
     stegProps: StegProps;
 }
 
@@ -144,7 +144,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const barn = state.søknad.barn as ForeldreansvarBarnPartial;
+    const barn = state.søknad.barn as Partial<ForeldreansvarBarn>;
     const fødselsdatoerOk = fødselsdatoerErFyltUt(barn.fødselsdatoer);
 
     const stegProps: StegProps = {

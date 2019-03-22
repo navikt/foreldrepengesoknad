@@ -23,12 +23,6 @@ import {
     SetVedleggForSenEndring,
     SetTilleggsopplysning
 } from './søknadActionDefinitions';
-import {
-    FødtBarnPartial,
-    UfødtBarnPartial,
-    AdopsjonsbarnPartial,
-    ForeldreansvarBarnPartial
-} from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
@@ -37,15 +31,14 @@ import { SøknadenGjelderBarnValg, Opplysning } from '../../../types/søknad/Sø
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { StegID } from '../../../util/routing/stegConfig';
+import { Barn } from '../../../types/søknad/Barn';
 
 const setSøknad = (payload: UpdateSøknadActionPayload) => ({
     type: SøknadActionKeys.SET_SØKNAD,
     payload
 });
 
-const updateBarn = (
-    payload: FødtBarnPartial | UfødtBarnPartial | AdopsjonsbarnPartial | ForeldreansvarBarnPartial
-): UpdateBarn => ({
+const updateBarn = (payload: Partial<Barn>): UpdateBarn => ({
     type: SøknadActionKeys.UPDATE_BARN,
     payload
 });

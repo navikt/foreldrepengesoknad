@@ -1,19 +1,19 @@
 import VisibilityFunction from '../../../types/dom/Visibility';
-import { ForeldreansvarBarnPartial } from '../../../types/søknad/Barn';
+import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { getAlderFraDato } from '../../../util/dates/dates';
 
-const antallBarnVisible: VisibilityFunction<ForeldreansvarBarnPartial> = (barn: ForeldreansvarBarnPartial) => {
+const antallBarnVisible: VisibilityFunction<Partial<ForeldreansvarBarn>> = (barn: Partial<ForeldreansvarBarn>) => {
     const { foreldreansvarsdato } = barn;
     return foreldreansvarsdato !== undefined;
 };
 
-const fødselsdatoerVisible: VisibilityFunction<ForeldreansvarBarnPartial> = (barn: ForeldreansvarBarnPartial) => {
+const fødselsdatoerVisible: VisibilityFunction<Partial<ForeldreansvarBarn>> = (barn: Partial<ForeldreansvarBarn>) => {
     const { antallBarn } = barn;
     return module.antallBarn(barn) && antallBarn !== undefined;
 };
 
-const harBarnOver15ÅrMeldingVisible: VisibilityFunction<ForeldreansvarBarnPartial> = (
-    barn: ForeldreansvarBarnPartial
+const harBarnOver15ÅrMeldingVisible: VisibilityFunction<Partial<ForeldreansvarBarn>> = (
+    barn: Partial<ForeldreansvarBarn>
 ) => {
     const { fødselsdatoer } = barn;
     const harBarnOver15År = (fødselsdatoer || []).some((dato) => {
@@ -25,7 +25,7 @@ const harBarnOver15ÅrMeldingVisible: VisibilityFunction<ForeldreansvarBarnParti
     return module.fødselsdatoer(barn) && harBarnOver15År && fødselsdatoer !== undefined && fødselsdatoer.length > 0;
 };
 
-const vedleggVisible: VisibilityFunction<ForeldreansvarBarnPartial> = (barn: ForeldreansvarBarnPartial) => {
+const vedleggVisible: VisibilityFunction<Partial<ForeldreansvarBarn>> = (barn: Partial<ForeldreansvarBarn>) => {
     const { fødselsdatoer } = barn;
     const manglerFødselsdatoer =
         (fødselsdatoer || []).some((dato) => dato === undefined) || (fødselsdatoer || []).length === 0;
