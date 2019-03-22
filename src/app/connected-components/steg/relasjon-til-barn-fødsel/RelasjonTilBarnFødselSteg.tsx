@@ -13,7 +13,7 @@ import { AppState } from '../../../redux/reducers';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { DispatchProps } from 'common/redux/types';
 import { RegistrertBarn } from '../../../types/Person';
-import Barn, { FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
+import Barn, { isFødtBarn, isUfødtBarn } from '../../../types/søknad/Barn';
 import Søker from '../../../types/søknad/Søker';
 
 import { StegID } from '../../../util/routing/stegConfig';
@@ -56,10 +56,8 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
     }
 
     cleanupSteg() {
-        const { barn, søknadenGjelderBarnValg, dispatch } = this.props;
-        dispatch(
-            søknadActions.updateBarn(cleanupRelasjonTilBarnFødselSteg(barn, søknadenGjelderBarnValg.gjelderAnnetBarn))
-        );
+        const { barn, dispatch } = this.props;
+        dispatch(søknadActions.updateBarn(cleanupRelasjonTilBarnFødselSteg(barn)));
     }
 
     render() {
@@ -102,16 +100,17 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                             }
                         />
                     </Block>
-                    {vis.fødtBarnPart && (
-                        <FødtBarnPartial
-                            situasjon={situasjon}
-                            dispatch={dispatch}
-                            barn={barn as FødtBarn}
-                            gjelderAnnetBarn={gjelderAnnetBarn}
-                            registrerteBarn={registrerteBarn}
-                            vis={vis.født}
-                        />
-                    )}
+                    {vis.fødtBarnPart &&
+                        isFødtBarn(barn, situasjon) && (
+                            <FødtBarnPartial
+                                situasjon={situasjon}
+                                dispatch={dispatch}
+                                barn={barn}
+                                gjelderAnnetBarn={gjelderAnnetBarn}
+                                registrerteBarn={registrerteBarn}
+                                vis={vis.født}
+                            />
+                        )}
                     {barn.erBarnetFødt === false &&
                         getErSøkerFarEllerMedmor(søker.rolle) && (
                             <Veilederinfo>
@@ -128,11 +127,12 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                             </Veilederinfo>
                         )}
                     {vis.ufødtBarnPart &&
+                        isUfødtBarn(barn, situasjon) &&
                         !getErSøkerFarEllerMedmor(søker.rolle) && (
                             <UfødtBarnPartial
                                 situasjon={situasjon}
                                 dispatch={dispatch}
-                                barn={barn as UfødtBarn}
+                                barn={barn}
                                 annenForelder={annenForelder}
                                 søker={søker}
                                 erFarEllerMedmor={getErSøkerFarEllerMedmor(søker.rolle)}
@@ -154,7 +154,6 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
         annenForelder,
         ekstrainfo: { søknadenGjelderBarnValg }
     } = state.søknad;
-    const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse || [];
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
@@ -174,7 +173,7 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
             ? søknadenGjelderBarnValg
             : { gjelderAnnetBarn: undefined, valgteBarn: [] },
         barn,
-        terminbekreftelse,
+        terminbekreftelse: isUfødtBarn(barn, state.søknad.situasjon) ? barn.terminbekreftelse : [],
         stegProps,
         vis,
         situasjon: state.søknad.situasjon

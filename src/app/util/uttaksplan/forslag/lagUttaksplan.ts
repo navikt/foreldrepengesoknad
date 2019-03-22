@@ -1,18 +1,35 @@
-import Søknad from '../../../types/søknad/Søknad';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
 import { deltUttak } from './deltUttak';
-import { getErSøkerFarEllerMedmor } from '../../domain/personUtil';
-import { getErDeltUttak } from './util';
-import { getFamiliehendelsedato } from '..';
+import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
+import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
-export const lagUttaksplan = (søknad: Søknad, tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]): Periode[] => {
-    if (søknad.erEndringssøknad) {
+export interface LagUttaksplanParams {
+    situasjon: Søkersituasjon;
+    familiehendelsesdato: Date;
+    erDeltUttak: boolean;
+    erEndringssøknad: boolean;
+    søkerErFarEllerMedmor: boolean;
+    annenForelderErUfør: boolean;
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    uttaksplanSkjema: UttaksplanSkjemadata;
+}
+export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
+    const {
+        situasjon,
+        familiehendelsesdato,
+        erDeltUttak,
+        erEndringssøknad,
+        søkerErFarEllerMedmor,
+        annenForelderErUfør,
+        tilgjengeligeStønadskontoer,
+        uttaksplanSkjema
+    } = params;
+
+    if (erEndringssøknad) {
         return [];
     }
-    const { barn, situasjon, ekstrainfo, annenForelder } = søknad;
-    const { erUfør } = annenForelder;
-    const { uttaksplanSkjema } = ekstrainfo;
+
     const {
         harAnnenForelderSøktFP,
         startdatoPermisjon,
@@ -22,15 +39,13 @@ export const lagUttaksplan = (søknad: Søknad, tilgjengeligeStønadskontoer: Ti
         morSinSisteUttaksdag,
         farSinFørsteUttaksdag
     } = uttaksplanSkjema;
-    const famDato = getFamiliehendelsedato(barn, situasjon);
-    const erDeltUttak: boolean = getErDeltUttak(tilgjengeligeStønadskontoer);
 
-    if (famDato) {
+    if (familiehendelsesdato) {
         if (erDeltUttak) {
             return deltUttak(
                 situasjon,
-                famDato,
-                getErSøkerFarEllerMedmor(søknad.søker.rolle),
+                familiehendelsesdato,
+                søkerErFarEllerMedmor,
                 tilgjengeligeStønadskontoer,
                 startdatoPermisjon,
                 fellesperiodeukerMor,
@@ -43,11 +58,11 @@ export const lagUttaksplan = (søknad: Søknad, tilgjengeligeStønadskontoer: Ti
         } else {
             return ikkeDeltUttak(
                 situasjon,
-                famDato,
-                getErSøkerFarEllerMedmor(søknad.søker.rolle),
+                familiehendelsesdato,
+                søkerErFarEllerMedmor,
                 tilgjengeligeStønadskontoer,
                 startdatoPermisjon,
-                erUfør
+                annenForelderErUfør
             );
         }
     }
