@@ -1,6 +1,6 @@
-import { BarnPartial, FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
+import { FødtBarn, UfødtBarn, Barn } from '../../../types/søknad/Barn';
 
-const cleanupRelasjonTilBarnFødselSteg = (barn: BarnPartial, gjelderAnnentBarn?: boolean): BarnPartial => {
+const cleanupRelasjonTilBarnFødselSteg = (barn: Partial<Barn>, gjelderAnnentBarn?: boolean): Partial<Barn> => {
     const { termindato, terminbekreftelse, terminbekreftelseDato } = barn as UfødtBarn;
     const { fødselsdatoer, fødselsattest } = barn as FødtBarn;
 

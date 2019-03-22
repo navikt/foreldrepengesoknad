@@ -1,5 +1,4 @@
 import Søknad, { SøknadenGjelderBarnValg, SøknadPartial, Tilleggsopplysning } from '../../../types/søknad/Søknad';
-import { BarnPartial } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
@@ -7,6 +6,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { StegID } from '../../../util/routing/stegConfig';
+import { Barn } from '../../../types/søknad/Barn';
 
 export type UpdateSøknadActionPayload = Partial<Søknad>;
 
@@ -49,7 +49,7 @@ export interface UpdateSøknadenGjelder {
 
 export interface UpdateBarn {
     type: SøknadActionKeys.UPDATE_BARN;
-    payload: BarnPartial;
+    payload: Partial<Barn>;
 }
 
 export interface UpdateAnnenForelder {

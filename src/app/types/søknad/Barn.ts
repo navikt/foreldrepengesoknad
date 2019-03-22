@@ -1,4 +1,5 @@
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Søkersituasjon } from './Søknad';
 
 abstract class BarnBase {
     antallBarn: number;
@@ -36,10 +37,13 @@ export interface ForeldreansvarBarn extends BarnBase {
 
 export type Barn = UfødtBarn | FødtBarn | Adopsjonsbarn | ForeldreansvarBarn;
 
-export type BarnPartial = Partial<Barn>;
-export type FødtBarnPartial = Partial<FødtBarn>;
-export type UfødtBarnPartial = Partial<UfødtBarn>;
-export type AdopsjonsbarnPartial = Partial<Adopsjonsbarn>;
-export type ForeldreansvarBarnPartial = Partial<ForeldreansvarBarn>;
+export const isUfødtBarn = (barn: Barn, situasjon: Søkersituasjon): barn is UfødtBarn =>
+    situasjon === Søkersituasjon.FØDSEL && barn.erBarnetFødt === false;
+export const isFødtBarn = (barn: Barn, situasjon: Søkersituasjon): barn is FødtBarn =>
+    situasjon === Søkersituasjon.FØDSEL && barn.erBarnetFødt === true;
+export const isAdopsjonsbarn = (barn: Barn, situasjon: Søkersituasjon): barn is Adopsjonsbarn =>
+    situasjon === Søkersituasjon.ADOPSJON;
+export const isForeldreansvarsbarn = (barn: Barn, situasjon: Søkersituasjon): barn is ForeldreansvarBarn =>
+    situasjon === Søkersituasjon.FORELDREANSVAR;
 
 export default Barn;
