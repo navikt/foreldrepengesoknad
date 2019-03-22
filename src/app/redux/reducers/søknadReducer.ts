@@ -70,10 +70,7 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
     const getBuilder = (perioder?: Periode[]) => {
         const familiehendelsesdato = getFamiliehendelsedato(state.barn, state.situasjon);
         if (familiehendelsesdato) {
-            return UttaksplanBuilder(
-                perioder || state.uttaksplan,
-                getFamiliehendelsedato(state.barn, state.situasjon!)!
-            );
+            return UttaksplanBuilder(perioder || state.uttaksplan, familiehendelsesdato);
         }
         throw new Error('getBuilder: Familiehendelsesdato kunne ikke utledes');
     };
