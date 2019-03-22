@@ -75,7 +75,7 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 getFamiliehendelsedato(state.barn, state.situasjon!)!
             );
         }
-        throw new Error('Could not create UttaksplanBuilder');
+        throw new Error('getBuilder: Familiehendelsesdato kunne ikke utledes');
     };
     switch (action.type) {
         case SøknadActionKeys.AVBRYT_SØKNAD:
