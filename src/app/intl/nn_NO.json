@@ -766,8 +766,7 @@
         "For å kome vidare i søknaden må du leggje til en periode med foreldrepengar eller en utsetjing",
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosenten kan bare inneholde tall",
-    "uttaksplan.validering.feil.stønadskontoMangler":
-        "Perioden er ikkje gyldig. Slett perioden og legg den inn på nytt.",
+    "uttaksplan.validering.feil.stønadskontoMangler": "Perioden er ikkje gyldig.",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikkje gyldig",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiodeGammel":
         " Du kan ikkje søke om utsetjing på grunn av ferie eller arbeid tilbake i tid.",
