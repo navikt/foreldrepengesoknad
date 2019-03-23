@@ -2,7 +2,16 @@ import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { formatDate } from '../../../../app/util/dates/dates';
-import Barn, { Adopsjonsbarn, ForeldreansvarBarn, FødtBarn, UfødtBarn } from '../../../../app/types/søknad/Barn';
+import Barn, {
+    Adopsjonsbarn,
+    ForeldreansvarBarn,
+    FødtBarn,
+    UfødtBarn,
+    isFødtBarn,
+    isAdopsjonsbarn,
+    isForeldreansvarsbarn,
+    isUfødtBarn
+} from '../../../../app/types/søknad/Barn';
 import { Søkersituasjon } from '../../../../app/types/søknad/Søknad';
 import AnnenForelder from '../../../../app/types/søknad/AnnenForelder';
 import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
@@ -31,12 +40,12 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
         }
     }
 
-    renderOppsummeringForeldreansvar() {
-        const { barn, intl } = this.props;
-        const { antallBarn, fødselsdatoer, foreldreansvarsdato, adopsjonsvedtak } = barn as ForeldreansvarBarn;
+    renderOppsummeringForeldreansvar(barn: ForeldreansvarBarn) {
+        const { intl } = this.props;
+        const { antallBarn, fødselsdatoer, foreldreansvarsdato, adopsjonsvedtak } = barn;
 
         return (
-            <React.Fragment>
+            <>
                 {foreldreansvarsdato && (
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.foreldreansvarsdato.label')}
@@ -59,12 +68,12 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                     ledetekst={getMessage(intl, 'oppsummering.adopsjonsvedtak.label')}
                     vedlegg={adopsjonsvedtak || []}
                 />
-            </React.Fragment>
+            </>
         );
     }
 
-    renderOppsummeringAdopsjon() {
-        const { barn, intl } = this.props;
+    renderOppsummeringAdopsjon(barn: Adopsjonsbarn) {
+        const { intl } = this.props;
         const {
             antallBarn,
             fødselsdatoer,
@@ -73,10 +82,10 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
             adopsjonAvEktefellesBarn,
             adoptertIUtlandet,
             omsorgsovertakelse
-        } = barn as Adopsjonsbarn;
+        } = barn;
 
         return (
-            <React.Fragment>
+            <>
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.fødselsdato.label')}
                     verdi={formatDate(fødselsdatoer[0]) || ''}
@@ -111,32 +120,22 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                     ledetekst={getMessage(intl, 'oppsummering.omsorgsovertakelse.label')}
                     vedlegg={omsorgsovertakelse || []}
                 />
-            </React.Fragment>
+            </>
         );
     }
 
-    renderOppsummeringFødsel() {
-        const { barn, intl } = this.props;
-        const { antallBarn } = barn;
+    renderOppsummeringFødtBarn(barn: FødtBarn) {
+        const { intl } = this.props;
+        const { fødselsdatoer, antallBarn } = barn;
+
         return (
-            <React.Fragment>
+            <>
                 {antallBarn && (
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.antallBarn.label')}
                         verdi={this.getAntallBarnSummaryText(antallBarn)}
                     />
                 )}
-                {this.props.barn.erBarnetFødt ? this.renderOppsummeringFødtBarn() : this.renderOppsummeringUfødtBarn()}
-            </React.Fragment>
-        );
-    }
-
-    renderOppsummeringFødtBarn() {
-        const { barn, intl } = this.props;
-        const { fødselsdatoer } = barn as FødtBarn;
-
-        return (
-            <>
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.fødselsdato.label')}
                     verdi={formatDate(fødselsdatoer[0]) || ''}
@@ -163,12 +162,18 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
         );
     }
 
-    renderOppsummeringUfødtBarn() {
-        const { barn, skalLasteOppTerminbekreftelse, annenForelder, intl } = this.props;
-        const { terminbekreftelseDato, termindato, terminbekreftelse } = barn as UfødtBarn;
+    renderOppsummeringUfødtBarn(barn: UfødtBarn) {
+        const { skalLasteOppTerminbekreftelse, annenForelder, intl } = this.props;
+        const { terminbekreftelseDato, termindato, terminbekreftelse, antallBarn } = barn;
 
         return (
-            <React.Fragment>
+            <>
+                {antallBarn && (
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.antallBarn.label')}
+                        verdi={this.getAntallBarnSummaryText(antallBarn)}
+                    />
+                )}
                 {annenForelder.erForSyk !== undefined && (
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'annenForelder.erForSyk.label')}
@@ -186,21 +191,25 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                         verdi={formatDate(terminbekreftelseDato) || ''}
                     />
                 )}
-            </React.Fragment>
+            </>
         );
     }
 
     renderPartial() {
-        switch (this.props.situasjon) {
-            case Søkersituasjon.FØDSEL:
-                return this.renderOppsummeringFødsel();
-            case Søkersituasjon.ADOPSJON:
-                return this.renderOppsummeringAdopsjon();
-            case Søkersituasjon.FORELDREANSVAR:
-                return this.renderOppsummeringForeldreansvar();
-            default:
-                return null;
+        const { situasjon, barn } = this.props;
+        if (isUfødtBarn(barn, situasjon)) {
+            return this.renderOppsummeringUfødtBarn(barn);
         }
+        if (isFødtBarn(barn, situasjon)) {
+            return this.renderOppsummeringFødtBarn(barn);
+        }
+        if (isAdopsjonsbarn(barn, situasjon)) {
+            return this.renderOppsummeringAdopsjon(barn);
+        }
+        if (isForeldreansvarsbarn(barn, situasjon)) {
+            return this.renderOppsummeringForeldreansvar(barn);
+        }
+        return null;
     }
 
     render() {

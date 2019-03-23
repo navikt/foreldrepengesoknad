@@ -3,7 +3,7 @@ import { Periode, Periodetype, StønadskontoType, OppholdÅrsakType } from '../.
 import { InjectedIntl } from 'react-intl';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { findOldestDate } from '../dates/dates';
-import { UfødtBarn, FødtBarn, Adopsjonsbarn, ForeldreansvarBarn, Barn } from '../../types/søknad/Barn';
+import { Barn, isFødtBarn, isUfødtBarn, isAdopsjonsbarn, isForeldreansvarsbarn } from '../../types/søknad/Barn';
 import { formaterNavn } from '../domain/personUtil';
 import getMessage from 'common/util/i18nUtils';
 import { Navn } from '../../types/common';
@@ -80,19 +80,23 @@ export const getOppholdskontoNavn = (intl: InjectedIntl, årsak: OppholdÅrsakTy
     return getMessage(intl, `oppholdsårsaktype.foreldernavn.${årsak}`, { foreldernavn });
 };
 
-export const getFamiliehendelsedato = (barn: Barn, situasjon: Søkersituasjon): Date => {
-    switch (situasjon) {
-        case Søkersituasjon.FØDSEL:
-            if (barn.erBarnetFødt) {
-                const datoer: Date[] = (barn as FødtBarn).fødselsdatoer.filter((d) => d !== undefined);
-                return findOldestDate(datoer)!;
-            }
-            return (barn as UfødtBarn).termindato;
-        case Søkersituasjon.ADOPSJON:
-            return (barn as Adopsjonsbarn).adopsjonsdato;
-        case Søkersituasjon.FORELDREANSVAR:
-            return (barn as ForeldreansvarBarn).foreldreansvarsdato;
+export const getFamiliehendelsedato = (barn: Partial<Barn>, situasjon?: Søkersituasjon): Date | undefined => {
+    if (!situasjon) {
+        return undefined;
     }
+    if (isFødtBarn(barn, situasjon)) {
+        return findOldestDate(barn.fødselsdatoer.filter((d) => d !== undefined));
+    }
+    if (isUfødtBarn(barn, situasjon)) {
+        return barn.termindato;
+    }
+    if (isAdopsjonsbarn(barn, situasjon)) {
+        return barn.adopsjonsdato;
+    }
+    if (isForeldreansvarsbarn(barn, situasjon)) {
+        return barn.foreldreansvarsdato;
+    }
+    return undefined;
 };
 
 export const getUttaksprosentFromStillingsprosent = (

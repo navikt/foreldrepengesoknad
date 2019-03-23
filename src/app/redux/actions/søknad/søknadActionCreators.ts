@@ -21,31 +21,25 @@ import {
     SetCurrentSteg,
     AvbrytSøknad,
     SetVedleggForSenEndring,
-    SetTilleggsopplysning
+    SetTilleggsopplysning,
+    UttaksplanSetForslag
 } from './søknadActionDefinitions';
-import {
-    FødtBarnPartial,
-    UfødtBarnPartial,
-    AdopsjonsbarnPartial,
-    ForeldreansvarBarnPartial
-} from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { SøknadenGjelderBarnValg, Opplysning } from '../../../types/søknad/Søknad';
-import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
+import { Periode } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { StegID } from '../../../util/routing/stegConfig';
+import { Barn } from '../../../types/søknad/Barn';
 
 const setSøknad = (payload: UpdateSøknadActionPayload) => ({
     type: SøknadActionKeys.SET_SØKNAD,
     payload
 });
 
-const updateBarn = (
-    payload: FødtBarnPartial | UfødtBarnPartial | AdopsjonsbarnPartial | ForeldreansvarBarnPartial
-): UpdateBarn => ({
+const updateBarn = (payload: Partial<Barn>): UpdateBarn => ({
     type: SøknadActionKeys.UPDATE_BARN,
     payload
 });
@@ -137,9 +131,13 @@ const uttaksplanUpdatePeriode = (periode: Periode): UttaksplanUpdatePeriode => (
     periode
 });
 
-const uttaksplanLagForslag = (tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]): UttaksplanLagForslag => ({
-    type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG,
-    tilgjengeligeStønadskontoer
+const uttaksplanLagForslag = (): UttaksplanLagForslag => ({
+    type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG
+});
+
+const uttaksplanSetForslag = (uttaksplan: Periode[]): UttaksplanSetForslag => ({
+    type: SøknadActionKeys.UTTAKSPLAN_SET_FORSLAG,
+    uttaksplan
 });
 
 const avbrytSøknad = (): AvbrytSøknad => ({
@@ -189,5 +187,6 @@ export default {
     setSøknad,
     setCurrentSteg,
     setVedleggForSenEndring,
-    setTilleggsopplysning
+    setTilleggsopplysning,
+    uttaksplanSetForslag
 };

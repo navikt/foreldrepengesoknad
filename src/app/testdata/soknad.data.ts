@@ -1,5 +1,5 @@
-import { RecursivePartial } from '../../types/Partial';
-import Søknad, { SøkerRolle, Søkersituasjon } from '../../types/søknad/Søknad';
+import { RecursivePartial } from '../types/Partial';
+import Søknad, { SøkerRolle, Søkersituasjon } from '../types/søknad/Søknad';
 
 const mockSøknad: RecursivePartial<Søknad> = {
     type: 'foreldrepenger',

@@ -1,13 +1,10 @@
 import moment from 'moment';
 import { SøknadAction, SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
-import Søknad, { SøknadPartial } from '../../types/søknad/Søknad';
+import { SøknadPartial } from '../../types/søknad/Søknad';
 import { addAttachmentToState, editAttachmentInState, removeAttachmentFromState } from '../util/attachmentStateUpdates';
-import { lagUttaksplan } from '../../util/uttaksplan/forslag/lagUttaksplan';
-import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { UttaksplanBuilder } from '../../util/uttaksplan/builder/UttaksplanBuilder';
 import { isForeldrepengerFørFødselUttaksperiode, Periode } from '../../types/uttaksplan/periodetyper';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
-import { Barn } from '../../types/søknad/Barn';
 import { guid } from 'nav-frontend-js-utils';
 import {
     getBarnInfoFraRegistrertBarnValg,
@@ -55,7 +52,7 @@ const removeEkstrauttakFørTermin = (state: SøknadPartial) => {
     return state.uttaksplan.filter(
         (periode) =>
             moment(periode.tidsperiode.fom).isSameOrAfter(
-                getFamiliehendelsedato(state.barn as Barn, state.situasjon!),
+                getFamiliehendelsedato(state.barn, state.situasjon!),
                 'day'
             ) || isForeldrepengerFørFødselUttaksperiode(periode)
     );
@@ -71,10 +68,11 @@ const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnn
 
 const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction): SøknadPartial => {
     const getBuilder = (perioder?: Periode[]) => {
-        return UttaksplanBuilder(
-            perioder || state.uttaksplan,
-            getFamiliehendelsedato(state.barn as Barn, state.situasjon!)
-        );
+        const familiehendelsesdato = getFamiliehendelsedato(state.barn, state.situasjon);
+        if (familiehendelsesdato) {
+            return UttaksplanBuilder(perioder || state.uttaksplan, familiehendelsesdato);
+        }
+        throw new Error('getBuilder: Familiehendelsesdato kunne ikke utledes');
     };
     switch (action.type) {
         case SøknadActionKeys.AVBRYT_SØKNAD:
@@ -150,10 +148,10 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 uttaksplan: action.perioder
             };
 
-        case SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG:
+        case SøknadActionKeys.UTTAKSPLAN_SET_FORSLAG:
             return {
                 ...state,
-                uttaksplan: lagUttaksplan(state as Søknad, action.tilgjengeligeStønadskontoer).sort(sorterPerioder),
+                uttaksplan: action.uttaksplan,
                 ekstrainfo: {
                     ...state.ekstrainfo,
                     uttaksplanSkjema: {
@@ -165,12 +163,15 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
 
         case SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE: {
             const id = guid();
+            const addBuilder = getBuilder();
             return {
                 ...state,
-                uttaksplan: getBuilder().leggTilPeriodeOgBuild({
-                    ...action.periode,
-                    id
-                }).perioder,
+                uttaksplan: addBuilder
+                    ? addBuilder.leggTilPeriodeOgBuild({
+                          ...action.periode,
+                          id
+                      }).perioder
+                    : state.uttaksplan,
                 ekstrainfo: {
                     ...state.ekstrainfo,
                     lastAddedPeriodeId: id
@@ -179,9 +180,12 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
         }
 
         case SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE: {
+            const builderForDelete = getBuilder();
             return {
                 ...state,
-                uttaksplan: getBuilder().slettPeriodeOgBuild(action.periode).perioder
+                uttaksplan: builderForDelete
+                    ? builderForDelete.slettPeriodeOgBuild(action.periode).perioder
+                    : state.uttaksplan
             };
         }
 
@@ -193,9 +197,12 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             const filteredPerioder = removeOtherPerioderFørTermin
                 ? removeEkstrauttakFørTermin(state)
                 : state.uttaksplan;
+            const updateBuilder = getBuilder(filteredPerioder);
             return {
                 ...state,
-                uttaksplan: getBuilder(filteredPerioder).oppdaterPeriodeOgBuild(action.periode).perioder
+                uttaksplan: updateBuilder
+                    ? updateBuilder.oppdaterPeriodeOgBuild(action.periode).perioder
+                    : state.uttaksplan
             };
         }
 
