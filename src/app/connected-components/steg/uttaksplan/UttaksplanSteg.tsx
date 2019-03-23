@@ -96,7 +96,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         if (stegProps.isAvailable && søknadsinfo !== undefined) {
             const { forslagLaget, startdatoPermisjon } = søknad.ekstrainfo.uttaksplanSkjema;
             if (forslagLaget === false) {
-                dispatch(søknadActions.uttaksplanLagForslag(tilgjengeligeStønadskontoer));
+                dispatch(søknadActions.uttaksplanLagForslag());
             }
             if (tilgjengeligeStønadskontoer.length === 0) {
                 dispatch(
@@ -291,13 +291,6 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
 
     const søknadsinfo = getSøknadsinfo(state);
 
-    const uttaksstatus: Stønadskontouttak[] = getUttaksstatus(
-        tilgjengeligeStønadskontoer,
-        søknad.uttaksplan,
-        søknad.søker.rolle,
-        søknad.erEndringssøknad
-    );
-
     const årsakTilSenEndring: SenEndringÅrsak = getSeneEndringerSomKreverBegrunnelse(søknad.uttaksplan);
 
     const stegProps: StegProps = {
@@ -322,6 +315,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
             );
         }
     }
+    const uttaksstatus: Stønadskontouttak[] = søknadsinfo
+        ? getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan)
+        : [];
 
     const aktivitetsfriKvoteKonto = tilgjengeligeStønadskontoer.find(
         ({ konto }) => konto === StønadskontoType.AktivitetsfriKvote

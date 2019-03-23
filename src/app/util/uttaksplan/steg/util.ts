@@ -3,7 +3,7 @@ import { Message } from 'app/components/veilederpanel-innhold/VeilederpanelInnho
 import { Søknadsinfo } from '../../../selectors/types';
 
 export const getVeilederInfoText = (søknadsinfo: Søknadsinfo, aktivitetsfriKvote: number): Message => {
-    const { søknaden, søker, annenForelder, navn } = søknadsinfo;
+    const { søknaden, annenForelder, søker, navn } = søknadsinfo;
 
     if (søknaden.erEndringssøknad) {
         return {

@@ -9,11 +9,10 @@ import { UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import StartdatoPermisjonMorBolk from './enkeltspørsmål/StartdatoPermisjonMorBolk';
 import FordelingFellesperiodeSpørsmål from './enkeltspørsmål/FordelingFellesperiodeSpørsmål';
 import StartdatoAdopsjonBolk from './enkeltspørsmål/StartdatoAdopsjonBolk';
-import { Adopsjonsbarn } from '../../../types/søknad/Barn';
+import { isAdopsjonsbarn } from '../../../types/søknad/Barn';
 import StartdatoUttakFarMedmorSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorSpørsmål';
 import StartdatoUttakFarMedmorAleneomsorgSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorAleneomsorgSpørsmål';
 import { NavnPåForeldre } from 'common/types';
-import { getFamiliehendelsedato } from '../../../util/uttaksplan';
 import { findOldestDate, dateIsSameOrAfter } from '../../../util/dates/dates';
 import Block from 'common/components/block/Block';
 import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
@@ -30,12 +29,17 @@ export interface ScenarioProps {
     antallUkerFellesperiode: number;
     antallUkerMødreKvote: number | undefined;
     antallUkerFedreKvote: number | undefined;
+    familiehendelsesdato: Date;
 }
 export interface Props extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
 }
 
-const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUkerFellesperiode }) => {
+const Scenario1: React.StatelessComponent<ScenarioProps> = ({
+    søknad,
+    antallUkerFellesperiode,
+    familiehendelsesdato
+}) => {
     const harSvartPåDekningsgradSpørsmål = søknad.dekningsgrad !== undefined;
     const { farSinFørsteUttaksdag, morSinSisteUttaksdag } = søknad.ekstrainfo.uttaksplanSkjema;
     return (
@@ -55,11 +59,11 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
             <MorSinSisteUttaksdagSpørsmål
                 visible={harSvartPåDekningsgradSpørsmål}
                 navnMor={søknad.annenForelder.fornavn}
-                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+                familiehendelsesdato={familiehendelsesdato}
             />
             <FarSinFørsteUttaksdagSpørsmål
                 visible={morSinSisteUttaksdag !== undefined}
-                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+                familiehendelsesdato={familiehendelsesdato}
             />
             <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
                 visible={
@@ -77,7 +81,8 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
     antallUkerFellesperiode,
     navnPåForeldre,
     antallUkerFedreKvote,
-    antallUkerMødreKvote
+    antallUkerMødreKvote,
+    familiehendelsesdato
 }) => {
     const harSvartPåStartdato =
         søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon !== undefined ||
@@ -87,7 +92,7 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
             <DekningsgradSpørsmål />
             <StartdatoPermisjonMorBolk
                 visible={søknad.dekningsgrad !== undefined}
-                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+                familiehendelsesdato={familiehendelsesdato}
                 barnetErFødt={søknad.barn.erBarnetFødt}
             />
             {søknad.søker.erAleneOmOmsorg === false &&
@@ -130,20 +135,20 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
     antallUkerFellesperiode,
     navnPåForeldre,
     antallUkerFedreKvote,
-    antallUkerMødreKvote
+    antallUkerMødreKvote,
+    familiehendelsesdato
 }) => {
     /** Mor og far, adopsjon, begge har rett, adopterer alene, bare en har rett */
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
+    const { barn } = søknad;
+    if (!isAdopsjonsbarn(barn, søknad.situasjon)) {
+        throw new Error('Barn er ikke adopsjonsbarn');
+    }
     const latestDate =
-        (søknad.barn as Adopsjonsbarn).ankomstdato !== undefined
-            ? findOldestDate([
-                  (søknad.barn as Adopsjonsbarn).adopsjonsdato!,
-                  (søknad.barn as Adopsjonsbarn).ankomstdato!
-              ])
-            : (søknad.barn as Adopsjonsbarn).adopsjonsdato;
+        barn.ankomstdato !== undefined ? findOldestDate([barn.adopsjonsdato!, barn.ankomstdato!]) : barn.adopsjonsdato;
     const startdatoPermisjon = søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon;
-    const stebarnsadopsjon = (søknad.barn as Adopsjonsbarn).adopsjonAvEktefellesBarn;
-    const adoptertIUtlandet = (søknad.barn as Adopsjonsbarn).adoptertIUtlandet;
+    const stebarnsadopsjon = barn.adopsjonAvEktefellesBarn;
+    const adoptertIUtlandet = barn.adoptertIUtlandet;
     const { farSinFørsteUttaksdag, morSinSisteUttaksdag } = skjema;
 
     return (
@@ -169,18 +174,18 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
                 visible={skjema.harAnnenForelderSøktFP !== undefined || !søknad.annenForelder.harRettPåForeldrepenger}
             />
             <StartdatoAdopsjonBolk
-                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+                familiehendelsesdato={familiehendelsesdato}
                 visible={søknad.dekningsgrad !== undefined && skjema.harAnnenForelderSøktFP !== true}
-                barn={søknad.barn as Adopsjonsbarn}
+                barn={barn}
             />
             <MorSinSisteUttaksdagSpørsmål
                 visible={søknad.dekningsgrad !== undefined && skjema.harAnnenForelderSøktFP === true}
                 navnMor={søknad.annenForelder.fornavn}
-                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+                familiehendelsesdato={familiehendelsesdato}
             />
             <FarSinFørsteUttaksdagSpørsmål
                 visible={morSinSisteUttaksdag !== undefined && skjema.harAnnenForelderSøktFP === true}
-                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+                familiehendelsesdato={familiehendelsesdato}
             />
             <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
                 visible={
@@ -249,8 +254,8 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
     );
 };
 
-const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
-    const omsorgsDato = søknad.barn.datoForAleneomsorg || getFamiliehendelsedato(søknad.barn, søknad.situasjon);
+const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehendelsesdato }) => {
+    const omsorgsDato = søknad.barn.datoForAleneomsorg || familiehendelsesdato;
     return (
         <>
             <DekningsgradSpørsmål />
@@ -283,7 +288,7 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
                 </Veilederpanel>
             </Block>
             <StartdatoUttakFarMedmorAleneomsorgSpørsmål
-                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+                familiehendelsesdato={familiehendelsesdato}
                 datoForAleneomsorg={omsorgsDato}
                 visible={søknad.dekningsgrad !== undefined}
             />
@@ -291,8 +296,7 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
     );
 };
 
-const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
-    const familiehendelsesdato = getFamiliehendelsedato(søknad.barn, søknad.situasjon);
+const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehendelsesdato }) => {
     const startdatoPermisjon = søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon;
     const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
     const reservertMorFørDenneDatoen = Uttaksdagen(førsteUttaksdag).leggTil(30);
@@ -321,7 +325,7 @@ const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
     );
 };
 
-const Scenario7: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåForeldre }) => (
+const Scenario7: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåForeldre, familiehendelsesdato }) => (
     <>
         <HarAnnenForelderSøktForeldrepengerSpørsmål navnAnnenForelder={søknad.annenForelder.fornavn} visible={true} />
         <DekningsgradSpørsmål visible={søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP !== undefined} />
@@ -331,7 +335,7 @@ const Scenario7: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåFo
                 søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP !== undefined
             }
             navnMor={navnPåForeldre.mor}
-            familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+            familiehendelsesdato={familiehendelsesdato}
         />
         <SkalHaDelAvFellesperiodeSpørsmål
             visible={søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag !== undefined}

@@ -9,7 +9,6 @@ import søknadActionCreators from '../../../../redux/actions/søknad/søknadActi
 import { AppState } from '../../../../redux/reducers';
 import Block from 'common/components/block/Block';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
-import { getFamiliehendelsedato } from 'app/util/uttaksplan';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import Veilederpanel from 'nav-frontend-veilederpanel';
@@ -20,7 +19,6 @@ interface StateProps {
     dekningsgrad100AntallUker: number | undefined;
     dekningsgrad80AntallUker: number | undefined;
     harAnnenForelderSøktFP: boolean | undefined;
-    familiehendelseDato: Date;
     startdatoPermisjon: Date | undefined;
     søknadsinfo: Søknadsinfo;
 }
@@ -146,8 +144,8 @@ const DekningsgradSpørsmål = (props: Props) => {
                             {
                                 type: 'normal',
                                 contentIntlKey: erAleneOmOmsorg
-                                    ? 'spørsmål.dekningsgrad.hjelpetekst'
-                                    : 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg'
+                                    ? 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg'
+                                    : 'spørsmål.dekningsgrad.hjelpetekst'
                             }
                         ]}
                     />
@@ -162,7 +160,6 @@ const mapStateToProps = (state: AppState): StateProps => ({
     dekningsgrad80AntallUker: state.api.dekningsgrad80AntallUker,
     harAnnenForelderSøktFP: state.søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP,
     søknadsinfo: getSøknadsinfo(state)!,
-    familiehendelseDato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon),
     startdatoPermisjon: state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon
 });
 

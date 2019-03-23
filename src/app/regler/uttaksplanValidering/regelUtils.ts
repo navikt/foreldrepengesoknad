@@ -20,7 +20,7 @@ export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): Regel
     });
 };
 
-const getRegelIntlKey = (regel: Regel): string => `regel.${regel.alvorlighet}.${regel.key}`;
+const getRegelIntlKey = (regel: Regel): string => `uttaksplan.validering.${regel.alvorlighet}.${regel.key}`;
 
 const ensureRegelTestresultatIntlKey = (
     regel: Regel,

@@ -2,7 +2,7 @@ import Søknad, { SøkerRolle, Søkersituasjon } from '../../../../types/søknad
 import { Søkerinfo } from '../../../../types/søkerinfo';
 import AnnenForelder from '../../../../types/søknad/AnnenForelder';
 import { Søker } from '../../../../types/søknad/Søker';
-import { Barn, Adopsjonsbarn } from '../../../../types/søknad/Barn';
+import { Barn, isAdopsjonsbarn } from '../../../../types/søknad/Barn';
 import Person from '../../../../types/Person';
 import { QuestionConfig, Questions, questionValueIsOk, QuestionVisibility } from '../../../../util/questions/Question';
 import { getErSøkerFarEllerMedmor } from '../../../../util/domain/personUtil';
@@ -42,8 +42,8 @@ export const skalBrukerStoppesPgaAnnenForelderIkkeInformert = (
 };
 
 const gjelderSøknadenStebarnsadopsjon = (barn: Barn, situasjon: Søkersituasjon): boolean => {
-    if (situasjon === Søkersituasjon.ADOPSJON) {
-        return (barn as Adopsjonsbarn).adopsjonAvEktefellesBarn === true;
+    if (situasjon === Søkersituasjon.ADOPSJON && isAdopsjonsbarn(barn, situasjon)) {
+        return barn.adopsjonAvEktefellesBarn === true;
     }
     return false;
 };

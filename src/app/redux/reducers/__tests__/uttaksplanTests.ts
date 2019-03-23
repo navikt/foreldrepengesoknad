@@ -1,9 +1,10 @@
 import søknadReducer from '../søknadReducer';
 import actions from '../../actions/søknad/søknadActionCreators';
 import { Periodetype, Uttaksperiode, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
-import { SøknadPartial } from '../../../types/søknad/Søknad';
+import Søknad, { SøknadPartial } from '../../../types/søknad/Søknad';
 import { Periodene } from '../../../util/uttaksplan/Periodene';
 import { Forelder } from 'common/types';
+import mockSøknad from '../../../testdata/soknad.data';
 
 let nyPeriode: Uttaksperiode = {
     id: '',
@@ -29,9 +30,8 @@ const nyPeriode2: Uttaksperiode = {
 };
 
 describe('Søknad - Uttaksplan reducer', () => {
-    let state: SøknadPartial;
+    let state: SøknadPartial = { ...(mockSøknad as Søknad) };
     it('should get initial state no perioder', () => {
-        state = søknadReducer(undefined, {} as any);
         expect(state.uttaksplan!.length).toBe(0);
     });
     it('should add a new periode with new id to uttaksplan', () => {

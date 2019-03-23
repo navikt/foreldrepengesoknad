@@ -184,10 +184,7 @@ function* getStønadskontoUker(action: GetTilgjengeligeStønadskontoer) {
 function* getStønadskontoerAndLagUttaksplan(action: GetTilgjengeligeStønadskontoer) {
     yield put(søknadActionCreators.uttaksplanSetPerioder([]));
     yield all([getStønadskontoer(action)]);
-    const tilgjengeligeKontoer: TilgjengeligStønadskonto[] = yield select(
-        (state: AppState) => state.api.tilgjengeligeStønadskontoer
-    );
-    yield put(søknadActionCreators.uttaksplanLagForslag(tilgjengeligeKontoer));
+    yield put(søknadActionCreators.uttaksplanLagForslag());
     yield put(apiActions.storeAppState());
 }
 

@@ -1,5 +1,5 @@
 import { RegistrertBarn } from '../../../../types/Person';
-import Barn, { BarnPartial, FødtBarn, UfødtBarn } from '../../../../types/søknad/Barn';
+import Barn, { FødtBarn, UfødtBarn } from '../../../../types/søknad/Barn';
 
 const hvilkeBarnGjelderSøknadenBolkVisible = (registrerteBarn: RegistrertBarn[]): boolean => {
     return registrerteBarn.length > 0;
@@ -9,11 +9,11 @@ const erBarnetFødtSpørsmålVisible = (hvilketBarnGjelderSøknadenBolk: boolean
     return gjelderAnnetBarn || !hvilketBarnGjelderSøknadenBolk;
 };
 
-const fødtBarnPartialVisible = (erBarnetFødtSpørsmål: boolean, barn: BarnPartial): boolean => {
+const fødtBarnPartialVisible = (erBarnetFødtSpørsmål: boolean, barn: Partial<Barn>): boolean => {
     return erBarnetFødtSpørsmål ? barn.erBarnetFødt === true : false;
 };
 
-const ufødtBarnPartialVisible = (erBarnetFødtSpørsmål: boolean, barn: BarnPartial): boolean => {
+const ufødtBarnPartialVisible = (erBarnetFødtSpørsmål: boolean, barn: Partial<Barn>): boolean => {
     return erBarnetFødtSpørsmål ? barn.erBarnetFødt === false : false;
 };
 
@@ -37,16 +37,16 @@ const morForSykSpørsmålVisible = (ufødtBarnPartial: boolean, erFarEllerMedmor
     return ufødtBarnPartial && erFarEllerMedmor;
 };
 
-const termindatoVisible = (ufødtBarnPartial: boolean, barn: BarnPartial): boolean => {
+const termindatoVisible = (ufødtBarnPartial: boolean, barn: Partial<Barn>): boolean => {
     return ufødtBarnPartial && barn.antallBarn !== undefined;
 };
 
 const terminbekreftelsePartialVisible = (
     termindatoVisibleResult: boolean,
-    barn: BarnPartial,
+    barn: Partial<UfødtBarn>,
     skalLasteOppTerminbekreftelse: boolean
 ): boolean => {
-    return termindatoVisibleResult && skalLasteOppTerminbekreftelse && (barn as UfødtBarn).termindato !== undefined;
+    return termindatoVisibleResult && skalLasteOppTerminbekreftelse && barn.termindato !== undefined;
 };
 
 const terminbekreftelseDatoVisible = (
@@ -83,6 +83,6 @@ export const RelasjonTilBarFødselVisibilityFunctions = {
     fødselsattestUploaderVisible,
     morForSykSpørsmålVisible,
     termindatoVisible,
-    temrinbekreftelsePartialVisible: terminbekreftelsePartialVisible,
+    terminbekreftelsePartialVisible,
     terminbekreftelseDatoVisible
 };

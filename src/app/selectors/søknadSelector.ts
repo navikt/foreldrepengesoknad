@@ -1,8 +1,8 @@
 import { createSelector } from 'reselect';
-import { AppState } from '../redux/reducers';
 import Søknad, { SøkerRolle } from '../types/søknad/Søknad';
 import { RecursivePartial } from '../types/Partial';
 import { Dekningsgrad } from 'common/types';
+import { AppState } from '../redux/reducers';
 
 export const søknadSelector = (state: AppState): RecursivePartial<Søknad> => state.søknad;
 

@@ -1,7 +1,7 @@
 import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
 
 import InformasjonOmUtenlandsopphold, { InformasjonOmUtenlandsoppholdPartial } from './InformasjonOmUtenlandsopphold';
-import { Barn, BarnPartial } from './Barn';
+import { Barn } from './Barn';
 import Søker, { SøkerPartial } from './Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { RegistrertAnnenForelder, RegistrertBarn } from '../Person';
@@ -95,7 +95,7 @@ export interface SøknadPartial {
     harGodkjentOppsummering: boolean;
     annenForelder: AnnenForelderPartial;
     situasjon?: Søkersituasjon;
-    barn: BarnPartial;
+    barn: Partial<Barn>;
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdPartial;
     uttaksplan: Periode[];
     søker: SøkerPartial;
