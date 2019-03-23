@@ -17,7 +17,6 @@ import UttakForm from '../uttak-form/UttakForm';
 import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
 import PeriodeFargestrek from '../periode-fargestrek/PeriodeFargestrek';
 import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
-import Søknad from '../../types/søknad/Søknad';
 import { UttakSpørsmålVisibility } from '../uttak-form/uttakFormConfig';
 import { UtsettelseSpørsmålVisibility } from '../utsettelse-form/utsettelseFormConfig';
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
@@ -28,7 +27,6 @@ interface OwnProps {
     antallFeriedager: number;
     erMorUfør: boolean | undefined;
     forelder: Forelder;
-    søknad: Søknad;
     periodetype: Periodetype;
     tidsperiode?: Partial<Tidsperiode>;
     navnPåForeldre: NavnPåForeldre;
