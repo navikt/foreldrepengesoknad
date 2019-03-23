@@ -47,12 +47,7 @@ const kjørUttaksplanRegler = (state: AppState): UttaksplanRegelTestresultat | u
         return undefined;
     }
 
-    const uttaksstatusStønadskontoer = getUttaksstatus(
-        tilgjengeligeStønadskontoer,
-        perioder,
-        søknadsinfo.søker.rolle,
-        søknadsinfo.søknaden.erEndringssøknad
-    );
+    const uttaksstatusStønadskontoer = getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, perioder);
 
     const resultat = sjekkUttaksplanOppMotRegler({
         søknadsinfo,
