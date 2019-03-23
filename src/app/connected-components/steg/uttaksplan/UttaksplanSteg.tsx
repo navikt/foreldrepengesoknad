@@ -225,7 +225,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         </Veilederpanel>
                         <Block>
                             <Uttaksplanlegger
-                                søknad={søknad}
+                                uttaksplan={søknad.uttaksplan}
                                 søknadsinfo={søknadsinfo}
                                 uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}

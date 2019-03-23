@@ -18,7 +18,6 @@ import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import LinkButton from '../link-button/LinkButton';
 import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
-import Søknad from '../../types/søknad/Søknad';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import UtsettelseForm from '../utsettelse-form/UtsettelseForm';
 import UttakForm from '../uttak-form/UttakForm';
@@ -45,7 +44,6 @@ interface OwnProps {
 }
 
 interface StateProps {
-    søknad: Søknad;
     søknadsinfo: Søknadsinfo;
 }
 
@@ -166,7 +164,6 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    søknad: state.søknad,
     søknadsinfo: getSøknadsinfo(state)!
 });
 
