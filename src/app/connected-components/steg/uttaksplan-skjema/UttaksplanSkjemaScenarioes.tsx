@@ -297,10 +297,7 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehe
 };
 
 const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehendelsesdato }) => {
-    const startdatoPermisjon = søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon;
     const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
-    const reservertMorFørDenneDatoen = Uttaksdagen(førsteUttaksdag).leggTil(30);
-    const dagensDatoFørReservertMorDato = moment(startdatoPermisjon).isBefore(reservertMorFørDenneDatoen);
 
     return (
         <>
@@ -309,18 +306,6 @@ const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehe
                 visible={søknad.dekningsgrad !== undefined && søknad.annenForelder.erUfør === true}
                 familiehendelsesdato={førsteUttaksdag}
             />
-            <Block visible={dagensDatoFørReservertMorDato}>
-                <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                    <VeilederpanelInnhold
-                        messages={[
-                            {
-                                type: 'normal',
-                                contentIntlKey: 'uttaksplanSkjema.info.reservertMor'
-                            }
-                        ]}
-                    />
-                </Veilederpanel>
-            </Block>
         </>
     );
 };

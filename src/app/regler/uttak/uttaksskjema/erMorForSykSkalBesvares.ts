@@ -9,8 +9,14 @@ const erMorForForSykSkalBesvares = (
     situasjon: Søkersituasjon,
     søkerErFarEllerMedmor: boolean,
     uttaksdatoer: Uttaksdatoer,
-    erFlerbarnssøknad: boolean
+    erFlerbarnssøknad: boolean,
+    erAleneOmOmsorg: boolean,
+    annenForelderKanIkkeOppgis: boolean
 ): boolean => {
+    if (erAleneOmOmsorg || annenForelderKanIkkeOppgis) {
+        return false;
+    }
+
     if (isUttaksperiode(periode) && søkerErFarEllerMedmor) {
         const { konto } = periode;
         if (
