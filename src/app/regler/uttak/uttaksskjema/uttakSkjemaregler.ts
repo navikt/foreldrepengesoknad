@@ -24,7 +24,12 @@ export const getUttakSkjemaregler = (
     velgbareStønadskontotyper: StønadskontoType[]
 ): UttakSkjemaregler => ({
     aktivitetskravMorSkalBesvares: () =>
-        aktivitetskravMorSkalBesvares(periode as Periode, søknadsinfo.søker.erMor, søknadsinfo.søker.erAleneOmOmsorg),
+        aktivitetskravMorSkalBesvares(
+            periode as Periode,
+            søknadsinfo.søker.erMor,
+            søknadsinfo.søker.erAleneOmOmsorg,
+            søknadsinfo.annenForelder.kanIkkeOppgis
+        ),
 
     erMorForSykSkalBesvares: (): boolean =>
         erMorForForSykSkalBesvares(

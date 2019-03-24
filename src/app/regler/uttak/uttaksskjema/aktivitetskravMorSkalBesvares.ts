@@ -3,9 +3,10 @@ import { Periode, isUttaksperiode, StønadskontoType } from 'app/types/uttakspla
 export const aktivitetskravMorSkalBesvares = (
     periode: Periode,
     søkerErMor: boolean,
-    erAleneOmOmsorg: boolean
+    erAleneOmOmsorg: boolean,
+    annenForelderKanIkkeOppgis: boolean
 ): boolean => {
-    if (søkerErMor || erAleneOmOmsorg || !isUttaksperiode(periode)) {
+    if (søkerErMor || erAleneOmOmsorg || !isUttaksperiode(periode) || annenForelderKanIkkeOppgis) {
         return false;
     }
 
