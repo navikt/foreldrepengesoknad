@@ -37,7 +37,9 @@ export const getUttakSkjemaregler = (
             søknadsinfo.søknaden.situasjon,
             søknadsinfo.søker.erFarEllerMedmor,
             søknadsinfo.uttaksdatoer,
-            søknadsinfo.søknaden.erFlerbarnssøknad
+            søknadsinfo.søknaden.erFlerbarnssøknad,
+            søknadsinfo.søker.erAleneOmOmsorg,
+            søknadsinfo.annenForelder.kanIkkeOppgis
         ),
 
     samtidigUttakSkalBesvares: (): boolean => {
