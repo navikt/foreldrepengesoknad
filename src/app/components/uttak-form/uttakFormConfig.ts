@@ -65,7 +65,12 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
 
 const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
     const { periode, skjemaregler } = payload;
+
     if (isUttaksperiode(periode) && periode.konto !== StønadskontoType.Foreldrepenger) {
+        if (periode.konto === undefined) {
+            return false;
+        }
+
         if (skjemaregler.erMorForSykSkalBesvares() && periode.erMorForSyk === false) {
             return false;
         }
