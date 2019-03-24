@@ -6,7 +6,7 @@ import { formaterDato } from 'common/util/datoUtils';
 export interface Props {
     søkersituasjon: Søkersituasjon;
     familiehendelsesdato: Date;
-    erBarnetFødt: boolean;
+    erBarnetFødt?: boolean;
 }
 
 const FamiliehendelsedatoInfo: React.StatelessComponent<Props> = ({
