@@ -221,7 +221,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                 ) : (
                     <React.Fragment>
                         <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                            <VeilederpanelInnhold messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote)]} />
+                            <VeilederpanelInnhold messages={[getVeilederInfoText(søknad, aktivitetsfriKvote)]} />
                         </Veilederpanel>
                         <Block>
                             <Uttaksplanlegger
@@ -291,6 +291,13 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
 
     const søknadsinfo = getSøknadsinfo(state);
 
+    const uttaksstatus: Stønadskontouttak[] = getUttaksstatus(
+        tilgjengeligeStønadskontoer,
+        søknad.uttaksplan,
+        søknad.søker.rolle,
+        søknad.erEndringssøknad
+    );
+
     const årsakTilSenEndring: SenEndringÅrsak = getSeneEndringerSomKreverBegrunnelse(søknad.uttaksplan);
 
     const stegProps: StegProps = {
@@ -315,9 +322,6 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
             );
         }
     }
-    const uttaksstatus: Stønadskontouttak[] = søknadsinfo
-        ? getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan)
-        : [];
 
     const aktivitetsfriKvoteKonto = tilgjengeligeStønadskontoer.find(
         ({ konto }) => konto === StønadskontoType.AktivitetsfriKvote
