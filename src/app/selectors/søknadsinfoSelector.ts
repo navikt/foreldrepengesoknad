@@ -67,8 +67,7 @@ const selectOmSøknaden = createSelector(
             erFødsel !== undefined &&
             erAdopsjon !== undefined &&
             erEndringssøknad !== undefined &&
-            antallBarn !== undefined &&
-            erBarnFødt !== undefined
+            antallBarn !== undefined
         ) {
             return {
                 situasjon,
