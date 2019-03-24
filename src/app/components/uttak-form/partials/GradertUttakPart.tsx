@@ -103,7 +103,7 @@ class GradertUttakForm extends React.Component<Props> {
                 </Block>
                 <Block
                     visible={
-                        periode.gradert && periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0
+                        !!periode.gradert && periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0
                     }>
                     <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
                         <VeilederpanelInnhold
