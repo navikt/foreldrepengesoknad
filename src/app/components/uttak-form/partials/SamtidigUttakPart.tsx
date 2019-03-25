@@ -25,6 +25,8 @@ export interface OwnProps {
     periode: RecursivePartial<Uttaksperiode>;
     visibility: UttakSpørsmålVisibility;
     navn: NavnISøknaden;
+    erFlerbarnssøknad: boolean;
+    søkerErMor: boolean;
 }
 
 type Props = OwnProps & InjectedIntlProps;
@@ -39,9 +41,19 @@ class SamtidigUttakPart extends React.Component<Props> {
     }
 
     render() {
-        const { onChange, ønskerSamtidigUttak, intl, visibility, periode, navn } = this.props;
+        const {
+            onChange,
+            ønskerSamtidigUttak,
+            intl,
+            visibility,
+            periode,
+            navn,
+            erFlerbarnssøknad,
+            søkerErMor
+        } = this.props;
 
-        const erFlerbarnsUker = periode.ønskerFlerbarnsdager;
+        const ønskerFlerbarnsuker = periode.ønskerFlerbarnsdager;
+        const morFlerbarnssøknad = søkerErMor && erFlerbarnssøknad;
         const pst = getFloatFromString(periode.samtidigUttakProsent || '');
         const uttaksdager = Perioden(periode as Periode).getAntallUttaksdager();
         const varighet =
@@ -66,9 +78,10 @@ class SamtidigUttakPart extends React.Component<Props> {
                             messages={[
                                 {
                                     type: 'normal',
-                                    contentIntlKey: erFlerbarnsUker
-                                        ? 'egenDelUttakForm.samtidigUttak.flerBarnsuker.veiledertekst'
-                                        : 'egenDelUttakForm.samtidigUttak.veiledertekst',
+                                    contentIntlKey:
+                                        ønskerFlerbarnsuker || morFlerbarnssøknad
+                                            ? 'egenDelUttakForm.samtidigUttak.flerBarnsuker.veiledertekst'
+                                            : 'egenDelUttakForm.samtidigUttak.veiledertekst',
                                     values: {
                                         link: (
                                             <Lenke href={lenker.fleksibeltuttak}>
