@@ -1,4 +1,4 @@
-import Søknad, { SøknadForInnsending } from '../../types/søknad/Søknad';
+import Søknad, { SøknadForInnsending, Søkersituasjon } from '../../types/søknad/Søknad';
 import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
 import { isAttachmentWithError } from 'common/storage/attachment/components/util';
 import {
@@ -11,10 +11,13 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
 import stringifyTilleggsopplysninger from './stringifyTilleggsopplysninger';
+import { Barn } from '../../types/søknad/Barn';
+import { cleanupBarn } from '../barnUtils';
 
 const isArrayOfAttachments = (object: object) => {
     return (
         Array.isArray(object) &&
+        object[0] !== null &&
         object.some((element) => element.filename || element.innsendingsType === InnsendingsType.SEND_SENERE)
     );
 };
@@ -114,11 +117,17 @@ const changeGradertePerioder = (uttaksplan: Periode[]) => {
     });
 };
 
+const ensureNoNullItemsInFødselsdatoer = (barn: Barn, situasjon: Søkersituasjon): Barn => {
+    const cleanedBarn = cleanupBarn(barn, situasjon);
+    return (cleanedBarn as Barn) || barn;
+};
+
 export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
     const { ekstrainfo, sensitivInfoIkkeLagre, vedleggForSenEndring, tilleggsopplysninger, ...rest } = søknad;
     const cleanedSøknad: SøknadForInnsending = { ...rest };
 
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
+    cleanedSøknad.barn = ensureNoNullItemsInFødselsdatoer(cleanedSøknad.barn, søknad.situasjon);
     cleanedSøknad.vedlegg = cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring });
     cleanedSøknad.uttaksplan = cleanedSøknad.uttaksplan.filter((periode: Periode) =>
         isValidTidsperiode(periode.tidsperiode)
