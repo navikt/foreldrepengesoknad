@@ -1,4 +1,16 @@
-import { UfødtBarn, Adopsjonsbarn, ForeldreansvarBarn, Barn, FødtBarn, BarnCommonProps } from '../types/søknad/Barn';
+import {
+    UfødtBarn,
+    Adopsjonsbarn,
+    ForeldreansvarBarn,
+    Barn,
+    FødtBarn,
+    BarnCommonProps,
+    isFødtBarn,
+    isUfødtBarn,
+    isAdopsjonsbarn,
+    isForeldreansvarsbarn
+} from '../types/søknad/Barn';
+import { Søkersituasjon } from '../types/søknad/Søknad';
 
 const getBarnProps = (barn: Partial<Barn | UfødtBarn | Adopsjonsbarn | ForeldreansvarBarn>): Partial<BarnCommonProps> =>
     removeUndefinedProps({
@@ -42,6 +54,22 @@ export const getForeldreansvarsbarnProps = (barn: Partial<ForeldreansvarBarn>): 
         fødselsdatoer: barn.fødselsdatoer,
         omsorgsovertakelse: barn.omsorgsovertakelse
     });
+
+export const cleanupBarn = (barn: Partial<Barn>, situasjon: Søkersituasjon): Partial<Barn> | undefined => {
+    if (isFødtBarn(barn, situasjon)) {
+        return getFødtBarnProps(barn);
+    }
+    if (isUfødtBarn(barn, situasjon)) {
+        return getUfødtBarnProps(barn);
+    }
+    if (isAdopsjonsbarn(barn, situasjon)) {
+        return getAdopsjonsbarnProps(barn);
+    }
+    if (isForeldreansvarsbarn(barn, situasjon)) {
+        return getForeldreansvarsbarnProps(barn);
+    }
+    return undefined;
+};
 
 const removeUndefinedProps = (barn: any): any => {
     const obj = {};
