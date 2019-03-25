@@ -466,7 +466,9 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                 ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
                                 visibility={visibility}
                                 navn={søknadsinfo.navn}
+                                erFlerbarnssøknad={søknadsinfo.søknaden.erFlerbarnssøknad}
                                 periode={periode}
+                                søkerErMor={søknadsinfo.søker.erMor}
                             />
                         </Block>
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.skalHaGradering)} margin="none">
