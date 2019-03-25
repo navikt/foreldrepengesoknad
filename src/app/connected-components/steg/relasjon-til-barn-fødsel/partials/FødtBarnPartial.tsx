@@ -23,13 +23,17 @@ interface StateProps {
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
 
+const getFødselsdatoer = (fødselsdatoer?: Date[]): Date[] => {
+    return fødselsdatoer !== undefined && fødselsdatoer.length > 0 ? [fødselsdatoer[0]] : [];
+};
+
 class FødtBarnPartial extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
         props.dispatch(
             søknadActions.updateBarn({
-                fødselsdatoer: props.barn.fødselsdatoer !== undefined ? [props.barn.fødselsdatoer[0]] : new Array(1)
+                fødselsdatoer: getFødselsdatoer(props.barn.fødselsdatoer)
             })
         );
     }
@@ -40,7 +44,7 @@ class FødtBarnPartial extends React.Component<Props> {
             søknadActions.updateBarn({
                 ...barn,
                 antallBarn: antall,
-                fødselsdatoer: barn.fødselsdatoer !== undefined ? [barn.fødselsdatoer[0]] : new Array(1)
+                fødselsdatoer: getFødselsdatoer(barn.fødselsdatoer)
             })
         );
     }
