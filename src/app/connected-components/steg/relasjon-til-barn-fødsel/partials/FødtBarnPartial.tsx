@@ -24,7 +24,9 @@ interface StateProps {
 type Props = StateProps & InjectedIntlProps & DispatchProps;
 
 const getFødselsdatoer = (fødselsdatoer?: Date[]): Date[] => {
-    return fødselsdatoer !== undefined && fødselsdatoer.length > 0 ? [fødselsdatoer[0]] : [];
+    return fødselsdatoer !== undefined && fødselsdatoer.length > 0 && fødselsdatoer[0] instanceof Date
+        ? [fødselsdatoer[0]]
+        : [];
 };
 
 class FødtBarnPartial extends React.Component<Props> {
