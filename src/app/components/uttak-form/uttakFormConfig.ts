@@ -182,7 +182,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.aktivitetskravMor]: {
         isAnswered: ({ periode }) =>
-            (periode.type === Periodetype.Uttak &&
+            (isUttaksperiode(periode) &&
                 periode.morsAktivitetIPerioden !== undefined &&
                 periode.morsAktivitetIPerioden.length > 0) ||
             isOppholdsperiode(periode),
@@ -192,22 +192,16 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.samtidigUttak]: {
         isAnswered: ({ periode }) =>
-            (periode.type === Periodetype.Uttak && questionValueIsOk(periode.ønskerSamtidigUttak)) ||
-            isOppholdsperiode(periode),
+            (isUttaksperiode(periode) && questionValueIsOk(periode.ønskerSamtidigUttak)) || isOppholdsperiode(periode),
         parentQuestion: Sp.tidsperiode,
         isIncluded: ({ skjemaregler }) => skjemaregler.samtidigUttakSkalBesvares(),
         visibilityFilter: (payload) => visSamtidigUttak(payload)
     },
     [Sp.samtidigUttakProsent]: {
-        isAnswered: ({ periode, søknadsinfo }) =>
-            (periode.type === Periodetype.Uttak && questionValueIsOk(periode.samtidigUttakProsent)) ||
-            isOppholdsperiode(periode) ||
-            !søknadsinfo.søker.erFarEllerMedmor,
+        isAnswered: ({ periode }) =>
+            (isUttaksperiode(periode) && questionValueIsOk(periode.samtidigUttakProsent)) || isOppholdsperiode(periode),
         parentQuestion: Sp.samtidigUttak,
-        isIncluded: ({ periode, søknadsinfo }) =>
-            periode.type === Periodetype.Uttak &&
-            periode.ønskerSamtidigUttak === true &&
-            søknadsinfo.søker.erFarEllerMedmor
+        isIncluded: ({ periode }) => isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true
     },
     [Sp.overføringsårsak]: {
         isAnswered: ({ periode }) =>
@@ -222,16 +216,15 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.skalHaGradering]: {
         isAnswered: ({ periode }) =>
-            (periode.type === Periodetype.Uttak && questionValueIsOk(periode.gradert)) || isOppholdsperiode(periode),
+            (isUttaksperiode(periode) && questionValueIsOk(periode.gradert)) || isOppholdsperiode(periode),
         isIncluded: ({ skjemaregler }) => skjemaregler.graderingSkalBesvares(),
         visibilityFilter: (payload) => visGradering(payload)
     },
     [Sp.stillingsprosent]: {
         isAnswered: ({ periode }) =>
-            (periode.type === Periodetype.Uttak && questionValueIsOk(periode.stillingsprosent)) ||
-            isOppholdsperiode(periode),
+            (isUttaksperiode(periode) && questionValueIsOk(periode.stillingsprosent)) || isOppholdsperiode(periode),
         parentQuestion: Sp.skalHaGradering,
-        isIncluded: ({ periode }) => periode.type === Periodetype.Uttak && periode.gradert === true
+        isIncluded: ({ periode }) => isUttaksperiode(periode) && periode.gradert === true
     },
     [Sp.hvorSkalDuJobbe]: {
         isAnswered: (payload) => hvorSkalDuJobbeErBesvart(payload) || isOppholdsperiode(payload.periode),
