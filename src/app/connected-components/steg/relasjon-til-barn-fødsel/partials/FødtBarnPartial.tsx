@@ -24,7 +24,10 @@ interface StateProps {
 type Props = StateProps & InjectedIntlProps & DispatchProps;
 
 const getFødselsdatoer = (fødselsdatoer?: Date[]): Date[] => {
-    return fødselsdatoer !== undefined && fødselsdatoer.length > 0 && fødselsdatoer[0] instanceof Date
+    return fødselsdatoer !== undefined &&
+        fødselsdatoer.length > 0 &&
+        fødselsdatoer[0] !== null &&
+        fødselsdatoer[0] !== undefined
         ? [fødselsdatoer[0]]
         : [];
 };
