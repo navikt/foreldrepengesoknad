@@ -34,7 +34,7 @@ import {
 } from '../uttaksplan/utsettelsesperiode';
 import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
-import { isUfødtBarn, isForeldreansvarsbarn } from '../../types/s\u00F8knad/Barn';
+import { isUfødtBarn, isForeldreansvarsbarn } from '../../types/søknad/Barn';
 
 const isAttachmentMissing = (attachments?: Attachment[]) => attachments === undefined || attachments.length === 0;
 
