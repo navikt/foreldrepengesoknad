@@ -10,7 +10,7 @@ export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: Re
         perioder
     } = grunnlag;
 
-    if (søker.erFarEllerMedmor && søknaden.erDeltUttak) {
+    if (søker.erFarEllerMedmor) {
         return {
             passerer:
                 harFarMedmorSøktUgyldigUttakFørsteSeksUker(
