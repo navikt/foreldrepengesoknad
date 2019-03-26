@@ -437,7 +437,7 @@
     "overføringsårsaktype.ALENEOMSORG": "Jeg har blitt alene om omsorgen",
     "overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER": "{annenForelderNavn} har ikke rett til foreldrepenger",
     "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{annenForelderNavn} er innlagt på helseinstitusjon",
-    "overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "For syk til å ta seg av barnet",
+    "overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "{annenForelderNavn} er for syk til å ta seg av barnet",
     "papirsøknad.lenke": "Her finner du papirsøknaden",
     "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
