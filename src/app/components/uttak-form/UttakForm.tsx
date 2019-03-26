@@ -390,7 +390,9 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                     messages={[
                                         {
                                             type: 'normal',
-                                            contentIntlKey: 'uttaksplan.informasjon.flerbarnssøknad',
+                                            contentIntlKey: søknadsinfo.søknaden.erDeltUttak
+                                                ? 'uttaksplan.informasjon.flerbarnssøknad'
+                                                : 'uttaksplan.informasjon.flerbarnssøknad.ikkeDeltUttak',
                                             values: {
                                                 navnMor: søknadsinfo.navn.mor.fornavn,
                                                 uker: getFlerbarnsuker(
