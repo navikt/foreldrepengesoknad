@@ -18,6 +18,7 @@ interface FrilanserBolkProps {
     søker: Søker;
     onChangeSøker: (v: SøkerPartial) => void;
     onChangeFrilansinformasjon: (v: FrilansInformasjonPartial) => void;
+    planInneholderFrilansaktivitet: boolean;
 }
 
 type Props = FrilanserBolkProps & InjectedIntlProps;
@@ -62,7 +63,7 @@ class FrilanserBolk extends React.Component<Props> {
     }
 
     render() {
-        const { søker, intl } = this.props;
+        const { søker, planInneholderFrilansaktivitet, intl } = this.props;
         const { frilansInformasjon } = søker;
 
         const driverFosterhjem = frilansInformasjon && frilansInformasjon.driverFosterhjem;
@@ -81,6 +82,7 @@ class FrilanserBolk extends React.Component<Props> {
                             })
                         }
                         harJobbetSomFrilansSiste10Mnd={søker.harJobbetSomFrilansSiste10Mnd}
+                        planInneholderFrilansaktivitet={planInneholderFrilansaktivitet}
                     />
                 </Block>
 

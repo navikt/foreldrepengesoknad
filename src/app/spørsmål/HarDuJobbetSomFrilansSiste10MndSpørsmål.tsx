@@ -4,16 +4,26 @@ import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../components/ja-nei-spørsmål/JaNeiSpørsmål';
 import EksternUrl from 'common/components/infoboks/EksternUrl';
 import lenker from '../util/routing/lenker';
+import { Validator } from 'common/lib/validation/types';
 
 interface HarDuJobbetSomFrilansSiste10MndSpørsmålProps {
     harJobbetSomFrilansSiste10Mnd: boolean;
     onChange: (erFrilanser: boolean) => void;
+    planInneholderFrilansaktivitet: boolean;
+    validators?: Validator[];
 }
 
 type Props = HarDuJobbetSomFrilansSiste10MndSpørsmålProps & InjectedIntlProps;
 
 const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
-    const { onChange, harJobbetSomFrilansSiste10Mnd, intl } = props;
+    const { onChange, harJobbetSomFrilansSiste10Mnd, planInneholderFrilansaktivitet, intl } = props;
+
+    const validerFrilans = [
+        {
+            test: () => (planInneholderFrilansaktivitet ? harJobbetSomFrilansSiste10Mnd === true : false),
+            failText: getMessage(intl, 'valideringsfeil.frilans.måBesvares')
+        }
+    ];
 
     return (
         <JaNeiSpørsmål
@@ -29,6 +39,7 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
                     lenkeTekst="hjemmeside"
                 />
             }
+            validators={validerFrilans}
         />
     );
 };
