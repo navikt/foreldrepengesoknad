@@ -3,7 +3,7 @@ import moment from 'moment';
 import { Tidsperiode } from 'common/types';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 import { UttakFormPeriodeType } from '../../../components/uttak-form/UttakForm';
-import { Periodetype, isForeldrepengerFørFødselUttaksperiode, Periode } from '../../../types/uttaksplan/periodetyper';
+import { isForeldrepengerFørFødselUttaksperiode, Periode } from '../../../types/uttaksplan/periodetyper';
 import { PeriodeValideringErrorKey } from '../../../redux/reducers/uttaksplanValideringReducer';
 import { Validator } from 'common/lib/validation/types';
 import { allValidatorsPass } from 'common/lib/validation/utils/runValidFormValidation';
@@ -11,6 +11,7 @@ import { DateValue } from '../../../types/common';
 import { uttaksdatoer, getUttaksdatoer } from '../../uttaksplan/uttaksdatoer';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { periodeErFørDato } from './uttakFarValidation';
+import { UtsettelseFormPeriodeType } from '../../../components/utsettelse-form/UtsettelseForm';
 
 const erUtfyltTest = (dato: DateValue): Validator => ({
     test: () => dato !== undefined,
@@ -60,32 +61,60 @@ export const getUttakTidsperiodeValidatorer = (
 
 export const uttakTidsperiodeErGyldig = (uttaksperiode: UttakFormPeriodeType, familiehendelsesdato: Date): boolean => {
     const { tidsperiode } = uttaksperiode;
-    if (tidsperiode !== undefined && uttaksperiode.type === Periodetype.Uttak) {
-        const skalIkkeHaUttak = isForeldrepengerFørFødselUttaksperiode(uttaksperiode)
-            ? uttaksperiode.skalIkkeHaUttakFørTermin
-            : false;
-
-        if (isValidTidsperiode(tidsperiode) === false && !skalIkkeHaUttak) {
-            return false;
-        }
-
-        const validators = getUttakTidsperiodeValidatorer(
-            skalIkkeHaUttak,
-            tidsperiode as Tidsperiode,
-            familiehendelsesdato
-        );
-        if (validators === undefined) {
-            return true;
-        }
-        const fraDatoErGyldig = allValidatorsPass(validators.fra);
-        const tilDatoErGyldig = allValidatorsPass(validators.til);
-
-        return fraDatoErGyldig && tilDatoErGyldig;
+    if (!tidsperiode) {
+        return false;
     }
-    return true;
+    const skalIkkeHaUttak = isForeldrepengerFørFødselUttaksperiode(uttaksperiode)
+        ? uttaksperiode.skalIkkeHaUttakFørTermin
+        : false;
+
+    if (isValidTidsperiode(tidsperiode) === false && !skalIkkeHaUttak) {
+        return false;
+    }
+    const validators = getUttakTidsperiodeValidatorer(
+        skalIkkeHaUttak,
+        tidsperiode as Tidsperiode,
+        familiehendelsesdato
+    );
+    if (validators === undefined) {
+        return true;
+    }
+    const fraDatoErGyldig = allValidatorsPass(validators.fra);
+    const tilDatoErGyldig = allValidatorsPass(validators.til);
+
+    return fraDatoErGyldig && tilDatoErGyldig;
 };
 
 export const periodeErInnenDeFørsteSeksUkene = (periode: Periode, familiehendelsesdato: Date) => {
     const førsteUttaksdagEtterSeksUker = getUttaksdatoer(familiehendelsesdato).etterFødsel.førsteUttaksdagEtterSeksUker;
     return periodeErFørDato(periode, førsteUttaksdagEtterSeksUker);
+};
+
+export const getUtsettelseTidsperiodeValidatorer = (
+    tidsperiode: Partial<Tidsperiode>,
+    familiehendelsesdato: Date
+): DatoValidatorer | undefined => {
+    return {
+        fra: [erUtfyltTest(tidsperiode.fom), erUttaksdagTest(tidsperiode.fom)],
+        til: [
+            erUtfyltTest(tidsperiode.tom),
+            erUttaksdagTest(tidsperiode.tom),
+            slutterInnenforGyldigPermisjonsperiode(tidsperiode.tom, familiehendelsesdato)
+        ]
+    };
+};
+
+export const utsettelseTidsperiodeErGyldig = (
+    utsettelesperiode: UtsettelseFormPeriodeType,
+    familiehendelsesdato: Date
+): boolean => {
+    const { tidsperiode } = utsettelesperiode;
+    const validators = getUtsettelseTidsperiodeValidatorer(tidsperiode as Tidsperiode, familiehendelsesdato);
+    if (validators === undefined) {
+        return true;
+    }
+    const fraDatoErGyldig = allValidatorsPass(validators.fra);
+    const tilDatoErGyldig = allValidatorsPass(validators.til);
+
+    return fraDatoErGyldig && tilDatoErGyldig;
 };
