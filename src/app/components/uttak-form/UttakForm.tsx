@@ -157,7 +157,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
             }
         }
 
-        if (this.context.validForm) {
+        if (this.context.validForm && this.props.periode.id) {
             this.context.validForm.validateAll();
         }
     }
@@ -172,7 +172,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
         this.props.onChange(periode, replace, this.getVisibility());
         if (this.context.validForm) {
             this.timeoutId = setTimeout(() => {
-                if (this.context.validForm) {
+                if (this.context.validForm && this.props.periode.id) {
                     this.context.validForm.validateAll();
                 }
             });
