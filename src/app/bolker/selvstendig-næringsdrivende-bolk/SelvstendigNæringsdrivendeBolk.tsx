@@ -14,6 +14,7 @@ interface SelvstendigNæringsdrivendeBolkProps {
     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean | undefined;
     onChangeSøker: (v: Partial<Søker>) => void;
     onChange: (næring: Næring[]) => void;
+    planInneholderSelvstendignæringaktivitet: boolean;
 }
 
 interface SelvstendigNæringsdrivendeBolkState {
@@ -92,7 +93,12 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
     }
 
     render() {
-        const { næringListe, harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd, onChangeSøker } = this.props;
+        const {
+            næringListe,
+            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
+            planInneholderSelvstendignæringaktivitet,
+            onChangeSøker
+        } = this.props;
 
         const { næringToEdit } = this.state;
 
@@ -106,6 +112,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                         onChange={(harJobbet) =>
                             onChangeSøker({ harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: harJobbet })
                         }
+                        planInneholderSelvstendignæringaktivitet={planInneholderSelvstendignæringaktivitet}
                     />
                 </Block>
                 {harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true && (

@@ -1,5 +1,12 @@
 import { Forelder, NavnPåForeldre, Tidsperiode } from 'common/types';
-import { Periode, Periodetype, StønadskontoType, OppholdÅrsakType } from '../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    Periodetype,
+    StønadskontoType,
+    OppholdÅrsakType,
+    isUttaksperiode,
+    Arbeidsform
+} from '../../types/uttaksplan/periodetyper';
 import { InjectedIntl } from 'react-intl';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { findOldestDate } from '../dates/dates';
@@ -148,3 +155,25 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
 
 export const getTidsperioderIUttaksplan = (uttaksplan: Periode[], periodeId: string | undefined): Tidsperiode[] =>
     uttaksplan.filter((p) => p.type !== Periodetype.Hull && p.id !== periodeId).map((p) => p.tidsperiode);
+
+export const uttaksplanInneholderFrilansaktivitet = (uttaksplan: Periode[]): boolean => {
+    return uttaksplan.some(
+        (periode: Periode) =>
+            isUttaksperiode(periode) &&
+            periode.arbeidsformer !== undefined &&
+            periode.arbeidsformer.length > 0 &&
+            periode.arbeidsformer.some((arbeidsform: Arbeidsform) => arbeidsform === Arbeidsform.frilans)
+    );
+};
+
+export const uttaksplanInneholderSelvstendignæringaktivitet = (uttaksplan: Periode[]): boolean => {
+    return uttaksplan.some(
+        (periode: Periode) =>
+            isUttaksperiode(periode) &&
+            periode.arbeidsformer !== undefined &&
+            periode.arbeidsformer.length > 0 &&
+            periode.arbeidsformer.some(
+                (arbeidsform: Arbeidsform) => arbeidsform === Arbeidsform.selvstendignæringsdrivende
+            )
+    );
+};
