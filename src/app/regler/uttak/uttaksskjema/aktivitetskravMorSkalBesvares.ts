@@ -14,7 +14,10 @@ export const aktivitetskravMorSkalBesvares = (
         !erAleneOmOmsorg &&
         (periode.konto === StønadskontoType.Fellesperiode || periode.konto === StønadskontoType.Foreldrepenger)
     ) {
-        if (isUttaksperiode(periode) && periode.ønskerFlerbarnsdager) {
+        if (
+            (isUttaksperiode(periode) && periode.ønskerFlerbarnsdager) ||
+            (isUttaksperiode(periode) && periode.erMorForSyk)
+        ) {
             return false;
         }
 
