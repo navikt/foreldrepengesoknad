@@ -77,9 +77,13 @@ class DatoInput extends React.Component<Props, {}> {
                                 name,
                                 ariaDescribedby: ariaDescriptionId
                             }}
-                            onChange={(datoString: string) =>
-                                onChange(datoString && datoString !== 'Invalid date' ? new Date(datoString) : undefined)
-                            }
+                            onChange={(datoString: string) => {
+                                const nyDato =
+                                    datoString && datoString !== 'Invalid date' ? new Date(datoString) : undefined;
+                                if (dato !== nyDato) {
+                                    onChange(nyDato);
+                                }
+                            }}
                             avgrensninger={datoAvgrensinger ? parseAvgrensinger(datoAvgrensinger) : undefined}
                         />
                         {ariaDescriptionId && (
