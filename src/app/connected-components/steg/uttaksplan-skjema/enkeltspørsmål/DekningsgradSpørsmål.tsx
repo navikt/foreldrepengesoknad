@@ -143,7 +143,7 @@ const DekningsgradSpørsmål = (props: Props) => {
                         messages={[
                             {
                                 type: 'normal',
-                                contentIntlKey: erAleneOmOmsorg
+                                contentIntlKey: !erDeltUttak
                                     ? 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg'
                                     : 'spørsmål.dekningsgrad.hjelpetekst'
                             }
