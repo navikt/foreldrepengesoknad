@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import RadioPanelGruppe from 'common/components/skjema/wrappers/RadioPanelGruppe';
 import getMessage from 'common/util/i18nUtils';
+import { Validator } from 'common/lib/validation/types';
 
 export interface FlervalgAlternativ {
     label: string;
@@ -16,13 +17,34 @@ interface FlervalgSpørsmålProps {
     alternativer: FlervalgAlternativ[];
     toKolonner?: boolean;
     clsName?: string;
+    validators?: Validator[];
     onChange: (verdi: string) => void;
 }
 
 type Props = FlervalgSpørsmålProps & InjectedIntlProps;
 
+const getDefaultValidator = (intl: InjectedIntl, valgtVerdi?: string): Validator[] => {
+    return [
+        {
+            test: () => valgtVerdi !== undefined,
+            failText: getMessage(intl, 'radiopanelgruppe.required.feilmelding')
+        }
+    ];
+};
+
 const FlervalgSpørsmål = (props: Props) => {
-    const { onChange, navn, spørsmål, hjelpetekst, valgtVerdi, alternativer, clsName , toKolonner = false, intl } = props;
+    const {
+        onChange,
+        navn,
+        spørsmål,
+        hjelpetekst,
+        valgtVerdi,
+        alternativer,
+        clsName,
+        toKolonner = false,
+        validators,
+        intl
+    } = props;
 
     return (
         <RadioPanelGruppe
@@ -34,12 +56,7 @@ const FlervalgSpørsmål = (props: Props) => {
             radios={alternativer}
             fieldsetClassname={clsName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>, v: string) => onChange(v)}
-            validators={[
-                {
-                    test: () => valgtVerdi !== undefined,
-                    failText: getMessage(intl, 'radiopanelgruppe.required.feilmelding')
-                }
-            ]}
+            validators={validators !== undefined ? validators : getDefaultValidator(intl, valgtVerdi)}
         />
     );
 };
