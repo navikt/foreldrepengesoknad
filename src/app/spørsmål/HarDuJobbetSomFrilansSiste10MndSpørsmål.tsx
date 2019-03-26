@@ -20,7 +20,7 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
 
     const validerFrilans = [
         {
-            test: () => (planInneholderFrilansaktivitet ? harJobbetSomFrilansSiste10Mnd === true : false),
+            test: () => (planInneholderFrilansaktivitet ? harJobbetSomFrilansSiste10Mnd === true : true),
             failText: getMessage(intl, 'valideringsfeil.frilans.måBesvares')
         }
     ];
