@@ -35,7 +35,7 @@ interface ValiderbarFormState {
 
 type Props = ValiderbarFormProps & InjectedIntlProps;
 
-export class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
+class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
     static childContextTypes = {
         validForm: PT.object
     };

@@ -136,7 +136,6 @@ class NyPeriodeForm extends React.Component<Props, State> {
         const { periode } = this.state;
         return (
             <ValiderbarForm
-                intl={intl}
                 runValidationOnRegister={false}
                 validateBeforeSubmit={true}
                 className={classnames(bem.className, bem.modifier(periode.type!.toLowerCase()))}
