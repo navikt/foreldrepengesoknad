@@ -841,6 +841,8 @@
     "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere": "Fødselsdatoen må vere i dag eller tidlegare",
     "valideringsfeil.frilansOppstart.duMåOppgi": "Du må gi opp oppstartsdatoen",
     "valideringsfeil.frilansOppstart.måVæreIdagEllerTidligere": "Oppstartsdatoen må vere i dag eller tidlegare",
+    "valideringsfeil.frilans.måBesvares":
+        "Du har planlagt at du skal kombinere foreldrepenger med at du skal jobbe som frilanser. Du må derfor oppgi informasjon om frilansforholdet ditt.",
     "valideringsfeil.fritekst.kanIkkeVæreLengreEnn": "Svaret kan ikkje være lengre enn {maxLength} tegn.",
     "valideringsfeil.fødselsnummer.required": "Fødselsnummer må fyllast ut",
     "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikkje gi opp ditt eige fødselsnummer",
@@ -852,6 +854,8 @@
     "valideringsfeil.organisasjonsnummer.required": "Organisasjonsnummeret må fyllast ut",
     "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt":
         "Du kan ikkje gi opp summen med øre. Du kan runde av til næraste heile krone.",
+    "valideringsfeil.selvstendigNæringsdrivende.måBesvares":
+        "Du har planlagt at du skal kombinere foreldrepenger med at du skal jobbe som selvstending næringsdrivende. Du må derfor oppgi informasjon om næringen din.",
     "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosenten må vere under 100",
     "valideringsfeil.stillingsprosent.required": "Du må gi opp stillingsprosent",
     "valideringsfeil.stillingsprosent.ugyldigTall": "Stillingsprosenten må vere eit gyldig tal opp til 100",

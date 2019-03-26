@@ -2,6 +2,7 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import FlervalgSpørsmål from '../flervalg-spørsmål/FlervalgSpørsmål';
+import { Validator } from 'common/lib/validation/types';
 
 enum ValgAlternativer {
     'JA' = 'ja',
@@ -19,13 +20,25 @@ interface JaNeiSpørsmålProps {
         ja: string;
         nei: string;
     };
+    validators?: Validator[];
     onChange: (valgt: boolean) => void;
 }
 
 type Props = JaNeiSpørsmålProps & InjectedIntlProps;
 
 const JaNeiSpørsmål = (props: Props) => {
-    const { onChange, spørsmål, hjelpetekst, navn, valgtVerdi, clsName, toKolonner = true, labels, intl } = props;
+    const {
+        onChange,
+        spørsmål,
+        hjelpetekst,
+        navn,
+        valgtVerdi,
+        clsName,
+        toKolonner = true,
+        labels,
+        validators,
+        intl
+    } = props;
 
     let checked;
     if (valgtVerdi === true) {
@@ -53,6 +66,7 @@ const JaNeiSpørsmål = (props: Props) => {
                 }
             ]}
             onChange={(v: ValgAlternativer) => onChange(v === ValgAlternativer.JA)}
+            validators={validators}
         />
     );
 };

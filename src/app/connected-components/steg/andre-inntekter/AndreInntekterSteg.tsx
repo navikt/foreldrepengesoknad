@@ -30,12 +30,18 @@ import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
+import {
+    uttaksplanInneholderFrilansaktivitet,
+    uttaksplanInneholderSelvstendignæringaktivitet
+} from 'app/util/uttaksplan';
 
 interface StateProps {
     stegProps: StegProps;
     arbeidsforhold: Arbeidsforhold[];
     søker: Søker;
     uttaksplan: Periode[];
+    planInneholderFrilansaktivitet: boolean;
+    planInneholderSelvstendignæringaktivitet: boolean;
 }
 
 type Props = SøkerinfoProps & HistoryProps & StateProps & InjectedIntlProps & DispatchProps;
@@ -60,7 +66,16 @@ class AndreInntekterSteg extends React.Component<Props> {
     }
 
     render() {
-        const { stegProps, søker, arbeidsforhold, uttaksplan, dispatch, intl } = this.props;
+        const {
+            stegProps,
+            søker,
+            arbeidsforhold,
+            uttaksplan,
+            planInneholderFrilansaktivitet,
+            planInneholderSelvstendignæringaktivitet,
+            dispatch,
+            intl
+        } = this.props;
         const fireUkerFørFørsteUttaksdag = formatDate(
             moment(uttaksplan[0].tidsperiode.fom)
                 .subtract(4, 'weeks')
@@ -111,6 +126,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                                 })
                             )
                         }
+                        planInneholderFrilansaktivitet={planInneholderFrilansaktivitet}
                     />
                 </Block>
 
@@ -126,6 +142,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                                 selvstendigNæringsdrivendeInformasjon: updatedNæringer
                             })
                         }
+                        planInneholderSelvstendignæringaktivitet={planInneholderSelvstendignæringaktivitet}
                     />
                 </Block>
 
@@ -153,6 +170,10 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const { history } = props;
     const { søker, uttaksplan } = søknad;
     const { arbeidsforhold } = props.søkerinfo;
+    const planInneholderFrilansaktivitet: boolean = uttaksplanInneholderFrilansaktivitet(uttaksplan);
+    const planInneholderSelvstendignæringaktivitet: boolean = uttaksplanInneholderSelvstendignæringaktivitet(
+        uttaksplan
+    );
 
     const stegProps: StegProps = {
         id: StegID.ANDRE_INNTEKTER,
@@ -166,7 +187,9 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         søker,
         arbeidsforhold,
         stegProps,
-        uttaksplan
+        uttaksplan,
+        planInneholderFrilansaktivitet,
+        planInneholderSelvstendignæringaktivitet
     };
 };
 
