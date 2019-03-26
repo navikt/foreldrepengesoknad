@@ -5,7 +5,7 @@ import UtsettelsesperiodeForm, {
     UtsettelseFormPeriodeType,
     Utsettelsesvariant
 } from '../utsettelse-form/UtsettelseForm';
-import { FormSubmitEvent, ValiderbarForm } from 'common/lib/validation/elements/ValiderbarForm';
+import ValiderbarForm, { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { RecursivePartial } from '../../types/Partial';
 import './nyPeriodeForm.less';
 import Block from 'common/components/block/Block';
