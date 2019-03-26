@@ -13,7 +13,7 @@ import {
 import { getDatoavgrensningerForStønadskonto } from '../../../util/uttaksplan/uttaksperiodeUtils';
 import { UttakFormPeriodeType } from '../UttakForm';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
-import { getUttakTidsperiodeValidatorer } from '../../../util/validation/uttaksplan/uttakTidsperiodeValidation';
+import { getUttakTidsperiodeValidatorer } from '../../../util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
 import { getVarighetString } from 'common/util/intlUtils';
 import {
     Tidsperioden,
