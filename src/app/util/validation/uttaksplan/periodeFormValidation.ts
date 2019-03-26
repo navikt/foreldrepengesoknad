@@ -15,7 +15,11 @@ import {
     UtsettelseFormPayload
 } from '../../../components/utsettelse-form/utsettelseFormConfig';
 import { UttakFormPayload, getUttakFormVisibility } from '../../../components/uttak-form/uttakFormConfig';
-import { uttakTidsperiodeErGyldig, periodeErInnenDeFørsteSeksUkene } from './uttakTidsperiodeValidation';
+import {
+    uttakTidsperiodeErGyldig,
+    periodeErInnenDeFørsteSeksUkene,
+    utsettelseTidsperiodeErGyldig
+} from './uttaksplanTidsperiodeValidation';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { gradertUttaksperiodeErUgyldig } from './uttakGraderingValidation';
 import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValidation';
@@ -48,6 +52,9 @@ const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValiderin
                 feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE
             }
         ];
+    }
+    if (utsettelseTidsperiodeErGyldig(periode, søknadsinfo.søknaden.familiehendelsesdato) === false) {
+        return [{ feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE }];
     }
 
     if (erUtsettelsePgaArbeidEllerFerie(periode) && fom && årsak) {
@@ -98,7 +105,6 @@ const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] |
     if (isUttaksperiode(periode) && periode.konto === undefined) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.STØNADSKONTO_MANGLER });
     }
-
     if (uttakTidsperiodeErGyldig(periode, søknadsinfo.søknaden.familiehendelsesdato) === false) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE });
     }

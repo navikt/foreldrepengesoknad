@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Tidsperiode } from 'common/types';
 import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
+import { getUtsettelseTidsperiodeValidatorer } from '../../../util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
 
 export interface Props {
     tidsperiode: Partial<Tidsperiode>;
@@ -13,37 +12,36 @@ export interface Props {
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
 }
 
-const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     onChange,
     familiehendelsesdato,
     tidsperiode,
     feil,
-    ugyldigeTidsperioder,
-    intl
-}) => (
-    <TidsperiodeBolk
-        onChange={(t: Partial<Tidsperiode>) => onChange(t)}
-        tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
-        datoAvgrensninger={{
-            fra: {
-                minDato: familiehendelsesdato,
-                maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined,
-                ugyldigeTidsperioder,
-                helgedagerIkkeTillatt: true
-            },
-            til: {
-                minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined,
-                ugyldigeTidsperioder,
-                helgedagerIkkeTillatt: true
-            }
-        }}
-        datoValidatorer={{
-            fra: [{ test: () => tidsperiode.fom !== undefined, failText: getMessage(intl, 'påkrevd') }],
-            til: [{ test: () => tidsperiode.tom !== undefined, failText: getMessage(intl, 'påkrevd') }]
-        }}
-        feil={feil}
-        visVarighet={true}
-    />
-);
+    ugyldigeTidsperioder
+}) => {
+    const datoValidatorer = getUtsettelseTidsperiodeValidatorer(tidsperiode, familiehendelsesdato);
+    return (
+        <TidsperiodeBolk
+            onChange={(t: Partial<Tidsperiode>) => onChange(t)}
+            tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
+            datoAvgrensninger={{
+                fra: {
+                    minDato: familiehendelsesdato,
+                    maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined,
+                    ugyldigeTidsperioder,
+                    helgedagerIkkeTillatt: true
+                },
+                til: {
+                    minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined,
+                    ugyldigeTidsperioder,
+                    helgedagerIkkeTillatt: true
+                }
+            }}
+            datoValidatorer={datoValidatorer}
+            feil={feil}
+            visVarighet={true}
+        />
+    );
+};
 
-export default injectIntl(UtsettelseTidsperiodeSpørsmål);
+export default UtsettelseTidsperiodeSpørsmål;
