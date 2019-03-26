@@ -99,18 +99,21 @@ const filteredListEØSCountries = (countryOptionValue: string, shouldFilter?: bo
                 return false;
         }
     } else {
-        return true;
+        // Filter ut Antarktis
+        return countryOptionValue !== 'AQ';
     }
 };
 
-const createCountryOptions = (filter: boolean, intl: InjectedIntl): React.ReactNode[] => {
+const createCountryOptions = (visBareEuOgEftaLand: boolean, intl: InjectedIntl): React.ReactNode[] => {
     const språk = intl.locale;
     const isoCodeIndex = 0;
     const countryNameIndex = 1;
 
     return Object.entries(countries.getNames(språk))
         .sort((a: string[], b: string[]) => a[1].localeCompare(b[1], språk))
-        .filter((countryOptionValue: string[]) => filteredListEØSCountries(countryOptionValue[isoCodeIndex], filter))
+        .filter((countryOptionValue: string[]) =>
+            filteredListEØSCountries(countryOptionValue[isoCodeIndex], visBareEuOgEftaLand)
+        )
         .map((countryOptionValue: string[]) => (
             <option key={countryOptionValue[isoCodeIndex]} value={countryOptionValue[isoCodeIndex]}>
                 {countryOptionValue[countryNameIndex]}
