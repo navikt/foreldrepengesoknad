@@ -8,7 +8,6 @@ import {
     selectAntallBarn
 } from './søknadSelector';
 import { createSelector } from 'reselect';
-import { getErDeltUttak } from 'app/util/uttaksplan/forslag/util';
 import { RecursivePartial } from '../types/Partial';
 import { Barn } from '../types/søknad/Barn';
 import { Søkersituasjon } from '../types/søknad/Søknad';
@@ -19,7 +18,7 @@ import { getMorHarAleneomsorg } from '../regler/søknad/morHarAleneomsorg';
 import { getMorHarRettPåForeldrepenger } from '../regler/søknad/morHarRettPåForeldrepenger';
 import { getFarEllerMedmorHarAleneomsorg } from '../regler/søknad/farEllerMedmorHarAleneomsorg';
 import { getErFlerbarnssøknad } from '../regler/søknad/erFlerbarnssøknad';
-import { selectTilgjengeligeStønadskontoer } from './apiSelector';
+import AnnenForelder from 'app/types/søknad/AnnenForelder';
 
 const barnHasRequiredValues = (barn: RecursivePartial<Barn> | undefined): barn is Barn =>
     barn !== undefined && barn.antallBarn !== undefined;
@@ -48,10 +47,8 @@ export const selectErAdopsjon = createSelector([selectSituasjon], (situasjon): b
     return situasjon ? situasjon === Søkersituasjon.ADOPSJON : undefined;
 });
 
-export const selectErDeltUttak = createSelector([selectTilgjengeligeStønadskontoer], (tilgjengeligeStønadskontoer):
-    | boolean
-    | undefined => {
-    return getErDeltUttak(tilgjengeligeStønadskontoer);
+export const selectErDeltUttak = createSelector([selectAnnenForelder], (annenForelder): boolean | undefined => {
+    return (annenForelder as AnnenForelder).harRettPåForeldrepenger === true;
 });
 
 export const selectSøkerErFarEllerMedmor = createSelector([selectSøkerrolle], (søkerrolle): boolean => {
