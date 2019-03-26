@@ -111,14 +111,14 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        if (this.context.validForm) {
+        if (this.context.validForm && this.props.periode.id) {
             this.context.validForm.validateAll();
         }
     }
 
     onChange(periode: UtsettelseFormPeriodeType, replace: boolean = false) {
         this.props.onChange(periode, replace, this.getVisibility());
-        if (this.context.validForm) {
+        if (this.context.validForm && this.props.periode.id) {
             this.context.validForm.validateAll();
         }
     }

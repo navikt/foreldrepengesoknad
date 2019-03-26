@@ -5,7 +5,7 @@ import UtsettelsesperiodeForm, {
     UtsettelseFormPeriodeType,
     Utsettelsesvariant
 } from '../utsettelse-form/UtsettelseForm';
-import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
+import ValiderbarForm, { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { RecursivePartial } from '../../types/Partial';
 import './nyPeriodeForm.less';
 import Block from 'common/components/block/Block';
@@ -135,7 +135,9 @@ class NyPeriodeForm extends React.Component<Props, State> {
         const { intl, antallFeriedager, forelder, navnPåForeldre, onCancel } = this.props;
         const { periode } = this.state;
         return (
-            <form
+            <ValiderbarForm
+                runValidationOnRegister={false}
+                validateBeforeSubmit={true}
                 className={classnames(bem.className, bem.modifier(periode.type!.toLowerCase()))}
                 onSubmit={this.handleOnSubmit}>
                 <div className={bem.element('fargestrek')}>
@@ -172,7 +174,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                         />
                     </>
                 )}
-            </form>
+            </ValiderbarForm>
         );
     }
 }
