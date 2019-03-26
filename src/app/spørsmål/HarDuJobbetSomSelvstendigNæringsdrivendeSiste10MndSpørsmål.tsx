@@ -26,7 +26,7 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (props: Pr
             test: () =>
                 planInneholderSelvstendignæringaktivitet
                     ? harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true
-                    : false,
+                    : true,
             failText: getMessage(intl, 'valideringsfeil.selvstendigNæringsdrivende.måBesvares')
         }
     ];
