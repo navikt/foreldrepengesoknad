@@ -49,18 +49,19 @@ import {
     getOppholdsÅrsakFromStønadskonto
 } from 'app/util/uttaksplan/uttaksperiodeUtils';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
-import { Søknadsinfo } from 'app/selectors/types';
+import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
 import lenker from 'app/util/routing/lenker';
 import UlønnetPermisjonInfo from './partials/UlønnetPermisjonInfo';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
-import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederpanelInnhold, { Message } from '../veilederpanel-innhold/VeilederpanelInnhold';
 import FlernbarnsdagerSpørsmål from './partials/FlerbarnsdagerSpørsmål';
 import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 import { selectArbeidsforhold, selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { getVelgbareStønadskontotyper } from 'app/util/uttaksplan/stønadskontoer';
 import getSøknadsperiode from 'app/regler/søknadsperioden/Søknadsperioden';
 import getUttakSkjemaregler from 'app/regler/uttak/uttaksskjema/uttakSkjemaregler';
+import { periodeErInnenDeFørsteSeksUkene } from 'app/util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -117,6 +118,35 @@ const getPeriodeGjelder = (
     } else {
         return søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR;
     }
+};
+
+const getOppholdsInfotekst = (
+    periode: Periode,
+    familiehendelsesdato: Date,
+    søkerErMor: boolean,
+    navn: NavnISøknaden
+): Message[] => {
+    return periodeErInnenDeFørsteSeksUkene(periode as Periode, familiehendelsesdato) && søkerErMor
+        ? [
+              {
+                  type: 'normal',
+                  contentIntlKey: 'uttaksplan.infoVedOpphold.førsteSeksUker',
+                  values: {
+                      navnFar: navn.farMedmor.fornavn
+                  }
+              }
+          ]
+        : [
+              {
+                  type: 'normal',
+                  contentIntlKey: 'uttaksplan.infoVedOpphold',
+                  formatContentAsHTML: true,
+                  values: {
+                      navn: navn.annenForelder.fornavn,
+                      link: lenker.viktigeFrister
+                  }
+              }
+          ];
 };
 
 class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
@@ -504,17 +534,12 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         {periode.årsak !== undefined && (
                             <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
                                 <VeilederpanelInnhold
-                                    messages={[
-                                        {
-                                            type: 'normal',
-                                            contentIntlKey: 'uttaksplan.infoVedOpphold',
-                                            formatContentAsHTML: true,
-                                            values: {
-                                                navn: søknadsinfo.navn.annenForelder.fornavn,
-                                                link: lenker.viktigeFrister
-                                            }
-                                        }
-                                    ]}
+                                    messages={getOppholdsInfotekst(
+                                        periode as Periode,
+                                        søknadsinfo.søknaden.familiehendelsesdato,
+                                        søknadsinfo.søker.erMor,
+                                        søknadsinfo.navn
+                                    )}
                                 />
                             </Veilederpanel>
                         )}

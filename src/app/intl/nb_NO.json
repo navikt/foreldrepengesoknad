@@ -652,6 +652,8 @@
         "Når du bekrefter her hvor mye du skal jobbe, regnes det som en avtale mellom deg og NAV hvis du får innvilget søknaden din.",
     "uttaksplan.infoVedOpphold":
         "Du kan planlegge når {navn} skal ha foreldrepenger, men {navn} må sende inn sin egen søknad. Søknaden må sendes inn senest dagen før foreldrepengene skal tas ut for ikke å miste dager. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige frister.</a>",
+    "uttaksplan.infoVedOpphold.førsteSeksUker":
+        "{navnFar} kan kun ta ut fellesperiode/fedrekvote om du er så syk at du er helt avhengig av hjelp til å ta deg av barnet eller innlagt i helseinstitusjon.",
     "uttaksplan.infoVedTapteUttaksdager":
         "Du vil miste {dager} {dager, plural, one{dag} other {dager}} med foreldrepenger siden du starter senere enn seks uker etter fødsel. For å unngå tap av dager kan du legge til en utsettelse i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
     "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapt foreldrepenger",
@@ -805,7 +807,6 @@
     "uttaksplan.veileder.planenAdvarerOmUttak.tittel": "Søke om å kombinere foreldrepenger med arbeid tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUttak":
         "Du må søke om å kombinere foreldrepengene med delvis arbeid senest dagen før du begynner å jobbe. Når du søker etter at du har begynt å jobbe, mister du dager med foreldrepenger ut fra stillingsprosenten du har jobbet i, frem til vi får søknaden din. Hvis du gir beskjed til NAV før du begynner å jobbe, mister du ikke dager med foreldrepenger.",
-
     "uttaksplan.senEndring.veileder.SYKDOM":
         "Du søker om å utsette på grunn av sykdom tilbake i tid. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
     "uttaksplan.senEndring.veileder.UTTAK":
@@ -816,7 +817,6 @@
     "uttaksplan.senEndring.begrunnelse.UTTAK": "Hva er grunnen til at du ikke har søkt om foreldrepenger tidligere?",
     "uttaksplan.senEndring.begrunnelse.SYKDOM_OG_UTTAK":
         "Hva er grunnen til at du ikke har søkt om foreldrepenger og utsettelse tidligere?",
-
     "uttaksplanSkjema.info.adoptertIUtlandet":
         "Starter du foreldrepengene senere enn omsorgsovertakelsen eller når dere kommer til Norge vil du miste dager.",
     "uttaksplanSkjema.info.dekningsgrad80":
@@ -954,7 +954,6 @@
     "velkommen.tittel": "Velkommen til foreldrepengesøknaden",
     "vi": "vi",
     "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge når barnet blir født?",
-
     "sesjonUtløpt.tittel": "Du er nå logget ut",
     "sesjonUtløpt.ingress":
         "Du har vært innlogget i en time, derfor må du logge inn på nytt for å fortsette med søknaden.<br />Ønsker du å fortsette?",
@@ -962,13 +961,11 @@
     "sesjonUtløpt.fortsett": "Ja, jeg vil fortsette",
     "arbeidsgiver": "Arbeidsgiver",
     "utvidetInformasjon.lukkTekst": "Lukk informasjon",
-
     "tilleggsopplysning.begrunnelseForSenEndring": "Begrunnelse for å søke om utsettelse",
     "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM": "på grunn av sykdom tilbake i tid",
     "tilleggsopplysning.begrunnelseForSenEndring.UTTAK": "på grunn av uttak mer enn tre måneder tilbake i tid",
     "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM_OG_UTTAK":
         "på grunn av sykdom tilbake i tid og uttak mer enn tre måneder tilbake i tid",
-
     "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikke tilgjengelig akkurat nå",
     "feilside.ikkeTilgjengelig.melding":
         "Huffda, det virker som om et av våre systemer er nede akkurat nå. Vi jobber iherdig med å rette opp feilen. Prøv igjen litt senere, vi beklager ulempen for deg."
