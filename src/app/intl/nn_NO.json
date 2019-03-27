@@ -454,6 +454,7 @@
     "periodeliste.overlappendePeriode": "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "periodeliste.nyPeriodeErFørFamiliehendelsesdato":
         "For å legge inn ein periode før fødselsdato, må du gå tilbake til  førre steg og gjere dette der.",
+
     "periodeliste.utsettelsesårsak": "Utsetjing - {årsak}",
     "periodeliste.utsettelsesårsak.ukjent": "Utsetjing - årsak ikkje vald",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
@@ -650,8 +651,6 @@
         "Når du stadfestar her kor mykje du skal jobbe, blir det rekna som ein avtale mellom deg og NAV dersom du får innvilga søknaden din.",
     "uttaksplan.infoVedOpphold":
         "Du kan planlegge når {navn} skal ha foreldrepengar, men {navn} må søkje sjølv. Søknaden må sendes inn seinast dagen før foreldrepengane tek til for ikkje å miste dagar. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige fristar.</a>",
-    "uttaksplan.infoVedOpphold.førsteSeksUker":
-        "{navnFar} kan kun ta ut fellesperiode/fedrekvote om du er så sjuk at du er heilt avhengig av hjelp til å ta deg av barnet eller innlagt i helseinstitusjon",
     "uttaksplan.infoVedTapteUttaksdager":
         "Du vil mista {dager} {dager, plural, one{dag}other {dagar}} med foreldrepengar sidan du startar seinare enn seks veker etter fødsel. For å unngå tap av dagar kan du legge til en utsetjing i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
     "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapte foreldrepengar",
@@ -810,6 +809,7 @@
     "uttaksplan.veileder.planenAdvarerOmUttak.tittel": "Søkja om å kombinere foreldrepengar med arbeid tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUttak":
         "Du må søkje om å kombinere foreldrepengane med delvis arbeid seinast dagen før du begynner å jobbe. Når du søkjer etter at du har begynt å jobbe, mistar du dagar med foreldrepengar ut frå stillingsprosenten du har jobba i, fram til vi får søknaden din. Dersom du melder frå til NAV før du begynner å jobbe, mistar du ikkje dagar med foreldrepengar.",
+
     "uttaksplan.senEndring.veileder.SYKDOM":
         "Du søkjer om å utsetje på grunn av sjukdom tilbake i tid. Her kan du fortelje kva som er grunnen til at du ikkje har søkt tidlegare. Det er også mogleg for deg å laste opp relevant dokumentasjon.",
     "uttaksplan.senEndring.veileder.UTTAK":
@@ -820,6 +820,7 @@
     "uttaksplan.senEndring.begrunnelse.UTTAK": "Kva er årsaka til at du ikkje har søkt om foreldrepengar tidlegare?",
     "uttaksplan.senEndring.begrunnelse.SYKDOM_OG_UTTAK":
         "Kva er årsaka til at du ikkje har søkt om foreldrepengar og utsetjing tidlegare?",
+
     "uttaksplanSkjema.info.adoptertIUtlandet":
         "Startar du foreldrepengane seinare enn omsorgsovertakinga eller når de kjem til Noreg, mistar du dagar.",
     "uttaksplanSkjema.info.dekningsgrad80":
@@ -959,6 +960,7 @@
     "velkommen.tittel": "Velkomen til søknad om foreldrepengar",
     "vi": "vi",
     "væreINorgeVedFødsel.spørsmål": "Skal du vere i Noreg når barnet blir født?",
+
     "sesjonUtløpt.tittel": "Du er no logga ut",
     "sesjonUtløpt.ingress":
         "Du har vore innlogga i ein time, difor må du logge inn på nytt for å fortsetje med søknaden.<br />Ønskjer du å fortsetje?",
@@ -966,11 +968,13 @@
     "sesjonUtløpt.fortsett": "Ja, eg vil fortsetje",
     "arbeidsgiver": "Arbeidsgjevar",
     "utvidetInformasjon.lukkTekst": "Lukk informasjon",
+
     "tilleggsopplysning.begrunnelseForSenEndring": "Grunngiving for å søke om utsetjing",
     "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM": "på grunn av sykdom tilbake i tid",
     "tilleggsopplysning.begrunnelseForSenEndring.UTTAK": "på grunn av uttak meir enn tre månader tilbake i tid",
     "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM_OG_UTTAK":
         "på grunn av sykdom tilbake i tid og uttak meir enn tre månader tilbake i tid",
+
     "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikkje tilgjengeleg akkurat nå",
     "feilside.ikkeTilgjengelig.melding":
         "Huffda, det ser ut til at eit av systema våre er nede akkurat no. Vi jobbar med å ordna feilen. Forsøk igjen litt seinare, vi beklagar ulempa for deg."
