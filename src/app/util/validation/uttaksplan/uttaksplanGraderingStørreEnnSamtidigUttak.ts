@@ -1,5 +1,4 @@
 import { Periode, isUttaksperiode } from 'app/types/uttaksplan/periodetyper';
-import { getFloatFromString } from 'common/util/numberUtils';
 
 export const uttaksplanGraderingStørreEnnSamtidigUttak = (uttaksplan: Periode[]) => {
     const result = uttaksplan
@@ -10,8 +9,8 @@ export const uttaksplanGraderingStørreEnnSamtidigUttak = (uttaksplan: Periode[]
         .filter(
             (periode) =>
                 isUttaksperiode(periode) &&
-                getFloatFromString(periode.stillingsprosent)! + getFloatFromString(periode.samtidigUttakProsent)! >
-                    100.0
+                periode.stillingsprosent! + periode.samtidigUttakProsent! >
+                100
         );
 
     return result.length > 0;
