@@ -34,6 +34,7 @@ export interface Regel {
     alvorlighet: RegelAlvorlighet;
     overstyresAvRegel?: RegelKey;
     overstyrerRegler?: RegelKey[];
+    slåsSammenVedOppsummering?: boolean;
 }
 
 export type RegelTest = (grunnlag: Regelgrunnlag) => RegelTestresultat;
@@ -60,10 +61,15 @@ export interface RegelAvvik {
     alvorlighet: RegelAlvorlighet;
     overstyresAvRegel?: RegelKey;
     overstyrerRegler?: RegelKey[];
+    slåsSammenVedOppsummering?: boolean;
 }
 
-export interface RegelTestresultatInfo {
+export interface RegelAvvikInfo {
     intlKey: string;
     values?: { [key: string]: string | number | Date | FeilIntlMessage | undefined };
+    renderAsHtml?: boolean;
+}
+
+export interface RegelTestresultatInfo extends RegelAvvikInfo {
     periodeId?: string;
 }
