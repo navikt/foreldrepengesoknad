@@ -6,7 +6,7 @@ export const gradertUttaksperiodeErUgyldig = (periode: UttakFormPeriodeType) => 
     if (periode.type === Periodetype.Uttak) {
         const { gradert, stillingsprosent } = periode;
         if (gradert === true) {
-            const regler = getStillingsprosentRegler(false, stillingsprosent || '');
+            const regler = getStillingsprosentRegler(false, stillingsprosent || 0);
             const results = regler.map((regel) => regel.test() === true);
             return results.some((erGyldig) => erGyldig === false);
         }
