@@ -9,15 +9,11 @@ import {
     Periodetype,
     isUttaksperiode,
     StønadskontoType,
-    isUtsettelsesperiode,
-    Utsettelsesperiode,
-    Uttaksperiode,
-    UtsettelseÅrsakType
+    isUtsettelsesperiode
 } from 'app/types/uttaksplan/periodetyper';
 import { formaterDato } from 'common/util/datoUtils';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import { InjectedIntl } from 'react-intl';
-import { erSenUtsettelsePgaFerieEllerArbeid, erSentGradertUttak } from 'app/util/uttaksplan/uttakUtils';
 
 export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
     createSelector([getSøknadsinfo, søknadSelector], (søknadsinfo, søknad) => {
@@ -40,46 +36,6 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
                 (p) => (isUttaksperiode(p) && p.konto !== StønadskontoType.AktivitetsfriKvote) || !isUttaksperiode(p)
             );
         const planErBareUtsettelser = !uttaksplan.some((p) => !isUtsettelsesperiode(p)) && uttaksplan.length > 0;
-        const seneUtsettelserPgaFerieEllerArbeid = uttaksplan.filter(
-            erSenUtsettelsePgaFerieEllerArbeid
-        ) as Utsettelsesperiode[];
-
-        const seneGraderteUttak = uttaksplan.filter(erSentGradertUttak) as Uttaksperiode[];
-
-        if (seneUtsettelserPgaFerieEllerArbeid.length > 0 || seneGraderteUttak.length > 0) {
-            const inneholderUtsettelsePgaFerie = seneUtsettelserPgaFerieEllerArbeid.some(
-                (utsettelse) => utsettelse.årsak === UtsettelseÅrsakType.Ferie
-            );
-            const inneholderUtsettelsePgaArbeid = seneUtsettelserPgaFerieEllerArbeid.some(
-                (utsettelse) => utsettelse.årsak === UtsettelseÅrsakType.Arbeid
-            );
-            const inneholderSeneGraderteUttak = seneGraderteUttak.length > 0;
-
-            if (inneholderUtsettelsePgaFerie) {
-                messages.push({
-                    title: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie.tittel',
-                    type: 'info',
-                    contentIntlKey: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie'
-                });
-            }
-
-            if (inneholderUtsettelsePgaArbeid) {
-                messages.push({
-                    title: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid.tittel',
-                    type: 'info',
-                    contentIntlKey: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid'
-                });
-            }
-
-            if (inneholderSeneGraderteUttak) {
-                messages.push({
-                    title: 'uttaksplan.veileder.planenAdvarerOmUttak.tittel',
-                    type: 'info',
-                    contentIntlKey: 'uttaksplan.veileder.planenAdvarerOmUttak'
-                });
-            }
-        }
-
         if (planInneholderTapteDager && planInneholderAnnetEnnAktivitetsfriKvote) {
             messages.push({
                 title: 'uttaksplan.veileder.planenInneholderHull.tittel',
