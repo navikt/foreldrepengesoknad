@@ -753,7 +753,8 @@
         "Du kan ta ut eller utsetje foreldrepengane dine tidlegast frå veke sju etter fødselen. Dersom du skal ta ut foreldrepengar tidlegare fordi mor er sjuk eller innlagd, må du søkje på papir.",
     "uttaksplan.validering.feil.uttaksmengdeForFarMedmorErForHøy":
         "Du har lagt inn fleire dagar enn du har tilgjengeleg",
-    "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mykje uttak av {konto}",
+    "uttaksplan.validering.feil.forMyeUttak.tittel": "Lagt inn for mange dager i planen",
+    "uttaksplan.validering.feil.forMyeUttak": "Det er registrert {dager} for mykje uttak av {konto}",
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
         "Du er for tidleg ute. Du kan tidlegast søkje seks veker før du skal ha foreldrepengar. Du må vente med å sende søknaden din til {dato}",
     "uttaksplan.validering.feil.uttaksplanGraderingStørreEnnSamtidigUttak":

@@ -752,7 +752,8 @@
         "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Unntaket er om mor er for syk eller innlagt i helseinstitusjon.",
     "uttaksplan.validering.feil.uttaksmengdeForFarMedmorErForHøy":
         "Du har lagt inn flere dager enn du har tilgjengelig.",
-    "uttaksplan.validering.feil.forMyeUttak": "Du har lagt inn for mange dager av {konto}",
+    "uttaksplan.validering.feil.forMyeUttak.tittel": "Lagt inn for mange dager i planen",
+    "uttaksplan.validering.feil.forMyeUttak": "Du har tatt {dager } for mye av {konto}",
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
         "Du er for tidlig ute. Du kan tidligst søke seks uker før du skal ha foreldrepenger. Du må vente med å sende søknaden din til {dato}.",
     "uttaksplan.validering.feil.uttaksplanGraderingStørreEnnSamtidigUttak":
