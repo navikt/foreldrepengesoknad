@@ -5,7 +5,8 @@ import {
     Regel,
     RegelTestresultatInfo,
     RegelStatus,
-    RegelTestresultatInfoObject
+    RegelTestresultatInfoObject,
+    RegelAvvikInfo
 } from './types';
 import uttaksplanRegler from '.';
 import { InjectedIntl } from 'react-intl';
@@ -22,10 +23,7 @@ export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): Regel
 
 const getRegelIntlKey = (regel: Regel): string => `uttaksplan.validering.${regel.alvorlighet}.${regel.key}`;
 
-const ensureRegelTestresultatIntlKey = (
-    regel: Regel,
-    info?: Partial<RegelTestresultatInfo>
-): RegelTestresultatInfo => ({
+const ensureRegelAvvikIntlKey = (regel: Regel, info?: Partial<RegelTestresultatInfo>): RegelAvvikInfo => ({
     ...info,
     intlKey: info ? info.intlKey || getRegelIntlKey(regel) : getRegelIntlKey(regel)
 });
@@ -35,7 +33,7 @@ export const regelHarAvvik = (regel: Regel, info?: RegelTestresultatInfoObject, 
         id: guid(),
         key: regel.key,
         alvorlighet: regel.alvorlighet,
-        info: ensureRegelTestresultatIntlKey(regel, i),
+        info: ensureRegelAvvikIntlKey(regel, i),
         overstyrerRegler: regel.overstyrerRegler,
         overstyresAvRegel: regel.overstyresAvRegel,
         slåsSammenVedOppsummering: regel.slåsSammenVedOppsummering,

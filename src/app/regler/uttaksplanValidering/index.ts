@@ -11,6 +11,7 @@ import { erBegrunnelseForSenEndringGyldigTest } from './tester/erBegrunnelseForS
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './tester/erUttaksmengdeForFarMedmorForHøyTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
+import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
 
 export enum RegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -24,7 +25,8 @@ export enum RegelKey {
     'begrunnelseVedForSenEndringErUgyldig' = 'begrunnelseVedForSenEndringErUgyldig',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksmengdeForFarMedmorErForHøy' = 'uttaksmengdeForFarMedmorErForHøy',
-    'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag'
+    'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
+    'perioderManglerVedlegg' = 'manglendeVedlegg'
 }
 
 const uttaksplanRegler: Regel[] = [
@@ -87,6 +89,12 @@ const uttaksplanRegler: Regel[] = [
         key: RegelKey.uttaksplanInneholderDatoSomIkkeErUttaksdag,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderUttaksplanDatoSomIkkeErUttaksdag
+    },
+    {
+        key: RegelKey.perioderManglerVedlegg,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: harPerioderManglendeVedleggTest,
+        slåsSammenVedOppsummering: true
     }
 ];
 
