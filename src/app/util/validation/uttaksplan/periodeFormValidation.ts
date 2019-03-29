@@ -23,8 +23,6 @@ import {
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { gradertUttaksperiodeErUgyldig } from './uttakGraderingValidation';
 import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValidation';
-import { isFeatureEnabled, Feature } from 'app/Feature';
-import { erUtsettelseÅrsakTypeGyldigForStartdato } from 'app/util/uttaksplan/regler/erUtsettelseÅrsakGyldigForStartdato';
 import { Søknadsinfo } from 'app/selectors/types';
 import getUttakSkjemaregler from 'app/regler/uttak/uttaksskjema/uttakSkjemaregler';
 import getSøknadsperiode from 'app/regler/søknadsperioden/Søknadsperioden';
@@ -57,26 +55,17 @@ const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValiderin
         return [{ feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE }];
     }
 
-    if (erUtsettelsePgaArbeidEllerFerie(periode) && fom && årsak) {
-        if (
-            isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) &&
-            periodeErInnenDeFørsteSeksUkene(periode, søknadsinfo.søknaden.familiehendelsesdato)
-        ) {
-            return [
-                {
-                    feilKey: PeriodeValideringErrorKey.UGYLDIG_ÅRSAK_OG_TIDSPERIODE
-                }
-            ];
-        } else if (
-            !isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) &&
-            !erUtsettelseÅrsakTypeGyldigForStartdato(periode.årsak, fom as Date)
-        ) {
-            return [
-                {
-                    feilKey: PeriodeValideringErrorKey.UGYLDIG_ÅRSAK_OG_TIDSPERIODE_GAMMEL
-                }
-            ];
-        }
+    if (
+        erUtsettelsePgaArbeidEllerFerie(periode) &&
+        fom &&
+        årsak &&
+        periodeErInnenDeFørsteSeksUkene(periode, søknadsinfo.søknaden.familiehendelsesdato)
+    ) {
+        return [
+            {
+                feilKey: PeriodeValideringErrorKey.UGYLDIG_ÅRSAK_OG_TIDSPERIODE
+            }
+        ];
     }
 
     if (moment(fom as Date).isBefore(moment(søknadsinfo.søknaden.familiehendelsesdato))) {

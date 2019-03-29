@@ -31,8 +31,6 @@ import HvorSkalDuJobbeSpørsmålFlervalg from 'app/spørsmål/HvorSkalDuJobbeSp�
 import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
 import { Tidsperioden, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import AlertStripe from 'nav-frontend-alertstriper';
-import { getUtsettelseÅrsakTypeValidators } from 'app/util/validation/uttaksplan/utsettelseÅrsak';
-import { isFeatureEnabled, Feature } from 'app/Feature';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
@@ -266,12 +264,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             variant={variant}
                             radios={this.getUtsettelseÅrsakRadios()}
                             onChange={(v) => this.onVariantChange(v)}
-                            validatorer={
-                                !isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) &&
-                                periode.type === Periodetype.Utsettelse
-                                    ? getUtsettelseÅrsakTypeValidators(periode.årsak, tidsperiode.fom, intl)
-                                    : undefined
-                            }
                         />
                     </Block>
                     <Block visible={visInfoOmHelligdagerOgFerie}>

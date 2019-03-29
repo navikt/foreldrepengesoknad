@@ -23,7 +23,6 @@ import { getVarighetString } from 'common/util/intlUtils';
 import { getStønadskontoNavn } from 'app/util/uttaksplan';
 import { InjectedIntl } from 'react-intl';
 import { erSenUtsettelsePgaFerieEllerArbeid, erSentGradertUttak } from 'app/util/uttaksplan/uttakUtils';
-import { isFeatureEnabled, Feature } from 'app/Feature';
 
 export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
     createSelector(
@@ -77,10 +76,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
                 );
             }
 
-            if (
-                isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) &&
-                (seneUtsettelserPgaFerieEllerArbeid.length > 0 || seneGraderteUttak.length > 0)
-            ) {
+            if (seneUtsettelserPgaFerieEllerArbeid.length > 0 || seneGraderteUttak.length > 0) {
                 const inneholderUtsettelsePgaFerie = seneUtsettelserPgaFerieEllerArbeid.some(
                     (utsettelse) => utsettelse.årsak === UtsettelseÅrsakType.Ferie
                 );
