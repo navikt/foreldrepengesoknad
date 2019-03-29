@@ -32,7 +32,7 @@ export function getStorageData(history: History): ApiActionTypes {
     };
 }
 
-export function getTilgjengeligeStønadskonter(
+export function getTilgjengeligeStønadskontoer(
     params: GetTilgjengeligeStønadskontoerParams,
     history: History
 ): ApiActionTypes {
@@ -91,7 +91,7 @@ export default {
     getStorageData,
     deleteStoredAppState,
     storeAppState,
-    getTilgjengeligeStønadskonter,
+    getTilgjengeligeStønadskontoer,
     getTilgjengeligeStønadskonterAndLagUttaksplanForslag,
     getTilgjengeligeStønadsuker,
     updateApi,

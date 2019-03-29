@@ -31,6 +31,8 @@ import { findMissingAttachments } from '../../../util/attachments/missingAttachm
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
+import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
+import { getAntallUker } from 'common/util/kontoUtil';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -59,8 +61,7 @@ class OppsummeringSteg extends React.Component<Props> {
                 søknadsinfo,
                 søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon
             );
-            dispatch(apiActionCreators.getTilgjengeligeStønadskonter(params, this.props.history));
-            dispatch(apiActionCreators.getTilgjengeligeStønadsuker(params));
+            dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
         }
     }
 
@@ -153,7 +154,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const søknad = state.søknad;
     const { person } = props.søkerinfo;
     const {
-        api: { tilgjengeligeStønadskontoer, isLoadingTilgjengeligeStønadskontoer }
+        api: { isLoadingTilgjengeligeStønadskontoer }
     } = state;
 
     const søknadsinfo = getSøknadsinfo(state)!;
@@ -165,11 +166,9 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, søknadsinfo)
     };
 
+    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
     const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, state.api, søknadsinfo);
-    const antallUkerUttaksplan =
-        state.søknad.dekningsgrad === '100'
-            ? state.api.dekningsgrad100AntallUker!
-            : state.api.dekningsgrad80AntallUker!;
+    const antallUkerUttaksplan = getAntallUker(tilgjengeligeStønadskontoer);
 
     return {
         person,
