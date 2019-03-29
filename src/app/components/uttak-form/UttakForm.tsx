@@ -37,7 +37,6 @@ import { Feil } from 'common/components/skjema/elements/skjema-input-element/typ
 import { erUttakAvAnnenForeldersKvote } from '../../util/uttaksplan/uttakUtils';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import { getDefaultPermisjonStartdato } from '../../util/uttaksplan/permisjonUtils';
-import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
@@ -253,9 +252,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
             skalIkkeHaUttakFørTermin,
             tidsperiode: {
                 fom:
-                    skalIkkeHaUttakFørTermin === false
-                        ? getDefaultPermisjonStartdato(familiehendelsesdato, getPermisjonsregler())
-                        : undefined,
+                    skalIkkeHaUttakFørTermin === false ? getDefaultPermisjonStartdato(familiehendelsesdato) : undefined,
                 tom: skalIkkeHaUttakFørTermin ? undefined : Uttaksdagen(familiehendelsesdato).forrige()
             }
         });

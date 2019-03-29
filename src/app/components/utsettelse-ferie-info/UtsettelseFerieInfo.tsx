@@ -1,16 +1,15 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { Permisjonsregler } from '../../types/uttaksplan/permisjonsregler';
 import { getVarighetString } from 'common/util/intlUtils';
+import uttaksConstants from 'app/constants';
 import VeilederInfo from '../veileder-info/VeilederInfo';
 
 export interface Props {
     feriedager: number;
-    permisjonsregler: Permisjonsregler;
 }
 
-const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({ feriedager, permisjonsregler, intl }) => {
-    if (feriedager <= permisjonsregler.maksFeriedagerEttÅr) {
+const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({ feriedager, intl }) => {
+    if (feriedager <= uttaksConstants.MAKS_FERIEDAGER_ETT_ÅR) {
         return (
             <VeilederInfo
                 messages={[
@@ -24,7 +23,7 @@ const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({ feried
         );
     }
     const ukerOgDager = getVarighetString(feriedager, intl);
-    if (feriedager > permisjonsregler.maksFeriedagerMedOverføring) {
+    if (feriedager > uttaksConstants.MAKS_FERIEDAGER_MED_OVERFØRING) {
         return (
             <VeilederInfo
                 messages={[
@@ -36,7 +35,7 @@ const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({ feried
                 ]}
             />
         );
-    } else if (feriedager > permisjonsregler.maksFeriedagerEttÅr) {
+    } else if (feriedager > uttaksConstants.MAKS_FERIEDAGER_ETT_ÅR) {
         return (
             <VeilederInfo
                 messages={[
