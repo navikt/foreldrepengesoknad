@@ -653,7 +653,7 @@
     "uttaksplan.infoVedOpphold":
         "Du kan planlegge når {navn} skal ha foreldrepenger, men {navn} må sende inn sin egen søknad. Søknaden må sendes inn senest dagen før foreldrepengene skal tas ut for ikke å miste dager. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige frister.</a>",
     "uttaksplan.infoVedOpphold.førsteSeksUker":
-        "{navnFar} kan kun ta ut fellesperiode eller fedrekvote om du er så syk at du er helt avhengig av hjelp til å ta deg av barnet eller innlagt i helseinstitusjon.",
+        "{navnFar} kan kun ta ut fellesperiode eller kvote om du er så syk at du er helt avhengig av hjelp til å ta deg av barnet eller innlagt i helseinstitusjon.",
     "uttaksplan.infoVedTapteUttaksdager":
         "Du vil miste {dager} {dager, plural, one{dag} other {dager}} med foreldrepenger siden du starter senere enn seks uker etter fødsel. For å unngå tap av dager kan du legge til en utsettelse i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
     "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapt foreldrepenger",
