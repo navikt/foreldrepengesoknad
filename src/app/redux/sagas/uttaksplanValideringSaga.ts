@@ -15,12 +15,13 @@ import { erSenUtsettelsePgaFerieEllerArbeid } from 'app/util/uttaksplan/uttakUti
 import { Feature, isFeatureEnabled } from 'app/Feature';
 import { UttaksplanRegelTestresultat, RegelAlvorlighet } from '../../regler/uttaksplanValidering/types';
 import { sjekkUttaksplanOppMotRegler, getRegelAvvik } from '../../regler/uttaksplanValidering/regelUtils';
+import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 
 const stateSelector = (state: AppState) => state;
 
 const validerPeriode = (state: AppState, periode: Periode): ValidertPeriode => {
-    const { tilgjengeligeStønadskontoer } = state.api;
     const søknadsinfo = getSøknadsinfo(state);
+    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
     const advarsler = [];
 
     if (hasPeriodeMissingAttachment(periode, søknadsinfo!)) {
@@ -41,7 +42,7 @@ const validerPeriode = (state: AppState, periode: Periode): ValidertPeriode => {
 const kjørUttaksplanRegler = (state: AppState): UttaksplanRegelTestresultat | undefined => {
     const søknadsinfo = getSøknadsinfo(state);
     const perioder = state.søknad.uttaksplan;
-    const { tilgjengeligeStønadskontoer } = state.api;
+    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
 
     if (!søknadsinfo) {
         return undefined;
