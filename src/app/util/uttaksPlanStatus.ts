@@ -10,7 +10,6 @@ import {
 } from '../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import { Perioden } from './uttaksplan/Perioden';
-import { getFloatFromString } from 'common/util/numberUtils';
 import { Periodene } from './uttaksplan/Periodene';
 import { getStønadskontoFromOppholdsårsak } from './uttaksplan/uttaksperiodeUtils';
 
@@ -20,9 +19,9 @@ export const finnAntallDagerÅTrekke = (dager: number, p: Periode): number => {
         const periodeErSamtidigUttak = p.samtidigUttakProsent !== undefined;
 
         if (periodeErSamtidigUttak) {
-            return Math.floor(dager * (getFloatFromString(p.samtidigUttakProsent)! / 100));
+            return Math.floor(dager * (p.samtidigUttakProsent! / 100));
         } else if (periodeErGradert) {
-            const graderingsProsent = (100 - getFloatFromString(p.stillingsprosent)!) / 100;
+            const graderingsProsent = (100 - p.stillingsprosent!) / 100;
 
             return Math.floor(dager * graderingsProsent);
         } else {
