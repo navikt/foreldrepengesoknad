@@ -31,9 +31,7 @@ import { removeSpacesFromString } from '../../util/stringUtils';
 import { hasValueRule } from '../../util/validation/common';
 import { getFritekstfeltRules } from '../../util/validation/fritekstfelt';
 import { trimNumberFromInput } from 'common/util/numberUtils';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
-import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederMeldinger from '../veilederpanel-innhold/VeilederpanelInnhold';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -162,19 +160,17 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         næring.næringstyper !== undefined &&
                         næring.næringstyper.some((n) => n === Næringstype.FISKER)
                     }>
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold
-                            messages={[
-                                {
-                                    contentIntlKey: 'selvstendigNæringsdrivende.modal.infoboks.forFisker',
-                                    type: 'normal',
-                                    values: {
-                                        navnPåNæringen
-                                    }
+                    <VeilederMeldinger
+                        messages={[
+                            {
+                                contentIntlKey: 'selvstendigNæringsdrivende.modal.infoboks.forFisker',
+                                type: 'normal',
+                                values: {
+                                    navnPåNæringen
                                 }
-                            ]}
-                        />
-                    </Veilederpanel>
+                            }
+                        ]}
+                    />
                 </Block>
 
                 <Block visible={visibility.næringRegistrertINorge(næring)}>
@@ -335,16 +331,14 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 </Block>
 
                 <Block visible={visibility.formButtons(næring)} margin="none">
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold
-                            messages={[
-                                {
-                                    type: 'normal',
-                                    contentIntlKey: 'selvstendigNæringsdrivende.modal.veileder.blikontaktet'
-                                }
-                            ]}
-                        />
-                    </Veilederpanel>
+                    <VeilederMeldinger
+                        messages={[
+                            {
+                                type: 'normal',
+                                contentIntlKey: 'selvstendigNæringsdrivende.modal.veileder.blikontaktet'
+                            }
+                        ]}
+                    />
                 </Block>
             </ModalForm>
         );

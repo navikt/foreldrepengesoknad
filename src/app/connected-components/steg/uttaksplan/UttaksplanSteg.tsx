@@ -39,9 +39,7 @@ import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsu
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
 import { getVeilederInfoText } from 'app/util/uttaksplan/steg/util';
 import { selectUttaksplanVeilederinfo } from 'app/selectors/uttaksplanVeilederinfoSelector';
-import VeilederpanelInnhold, { Message } from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
+import VeilederMeldinger, { Message } from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import UttaksplanRegelAvvikVeileder from '../../../components/uttaksplan-regelavvik-veileder/UttaksplanRegelAvvikVeileder';
 import { RegelAvvik } from '../../../regler/uttaksplanValidering/types';
@@ -226,9 +224,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
-                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                            <VeilederpanelInnhold messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote)]} />
-                        </Veilederpanel>
+                        <VeilederMeldinger messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote)]} />
                         <Block>
                             <Uttaksplanlegger
                                 uttaksplan={søknad.uttaksplan}

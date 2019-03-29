@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 import { Innholdstittel, Normaltekst, Ingress } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 
 import getMessage from 'common/util/i18nUtils';
 import VeilederMedSnakkeboble from 'common/components/veileder-med-snakkeboble/VeilederMedSnakkeboble';
@@ -32,8 +31,7 @@ import SakInfo from '../../../components/sak-info/SakInfo';
 
 import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
 import BEMHelper from 'common/util/bem';
-import Veileder from 'common/components/veileder/Veileder';
-import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 import { StorageKvittering } from '../../../types/StorageKvittering';
 import SakInfoStorageKvittering from 'app/components/sak-info/SakInfoStorageKvittering';
 
@@ -189,29 +187,25 @@ class Velkommen extends React.Component<Props, State> {
                             </Block>
                             {this.state.skalEndre === false &&
                                 !erSakForEndringssøknadFraInfotrygd && (
-                                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                                        <VeilederpanelInnhold
-                                            messages={[
-                                                {
-                                                    contentIntlKey: 'velkommen.intro.harSak.veileder',
-                                                    type: 'normal'
-                                                }
-                                            ]}
-                                        />
-                                    </Veilederpanel>
+                                    <VeilederMeldinger
+                                        messages={[
+                                            {
+                                                contentIntlKey: 'velkommen.intro.harSak.veileder',
+                                                type: 'normal'
+                                            }
+                                        ]}
+                                    />
                                 )}
                             {this.state.skalEndre === true &&
                                 erSakForEndringssøknadFraInfotrygd && (
-                                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                                        <VeilederpanelInnhold
-                                            messages={[
-                                                {
-                                                    contentIntlKey: 'velkommen.intro.harInfotrygdSak.veileder',
-                                                    type: 'normal'
-                                                }
-                                            ]}
-                                        />
-                                    </Veilederpanel>
+                                    <VeilederMeldinger
+                                        messages={[
+                                            {
+                                                contentIntlKey: 'velkommen.intro.harInfotrygdSak.veileder',
+                                                type: 'normal'
+                                            }
+                                        ]}
+                                    />
                                 )}
                         </>
                     )}
@@ -240,16 +234,14 @@ class Velkommen extends React.Component<Props, State> {
                             </>
                         )}
                     <Block visible={visInfoOmEndringsøknadIkkeTilgjengelig}>
-                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                            <VeilederpanelInnhold
-                                messages={[
-                                    {
-                                        contentIntlKey: 'velkommen.endringssøknadIkkeTilgjengelig.veileder',
-                                        type: 'normal'
-                                    }
-                                ]}
-                            />
-                        </Veilederpanel>
+                        <VeilederMeldinger
+                            messages={[
+                                {
+                                    contentIntlKey: 'velkommen.endringssøknadIkkeTilgjengelig.veileder',
+                                    type: 'normal'
+                                }
+                            ]}
+                        />
                     </Block>
                     <Block visible={visBekreftSkjema}>
                         <BekreftCheckboksPanel

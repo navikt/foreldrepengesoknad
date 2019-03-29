@@ -11,9 +11,7 @@ import Block from 'common/components/block/Block';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
-import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
 
 interface StateProps {
@@ -139,18 +137,16 @@ const DekningsgradSpørsmål = (props: Props) => {
                     harAnnenForelderSøktFP,
                     dekningsgrad
                 )}>
-                <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                    <VeilederpanelInnhold
-                        messages={[
-                            {
-                                type: 'normal',
-                                contentIntlKey: !erDeltUttak
-                                    ? 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg'
-                                    : 'spørsmål.dekningsgrad.hjelpetekst'
-                            }
-                        ]}
-                    />
-                </Veilederpanel>
+                <VeilederMeldinger
+                    messages={[
+                        {
+                            type: 'normal',
+                            contentIntlKey: !erDeltUttak
+                                ? 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg'
+                                : 'spørsmål.dekningsgrad.hjelpetekst'
+                        }
+                    ]}
+                />
             </Block>
         </>
     );

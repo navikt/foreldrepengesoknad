@@ -26,9 +26,7 @@ import { HistoryProps } from '../../../types/common';
 import visibility from './visibility';
 import cleanupAdopsjonsSteg from '../../../util/cleanup/cleanupAdopsjonsSteg';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
-import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -166,18 +164,16 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
                 <Block visible={visibility.spørsmålOmVedlegg(barn, erEndringssøknad)}>
                     <Block margin="xs">
-                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                            <VeilederpanelInnhold
-                                messages={[
-                                    {
-                                        type: 'normal',
-                                        contentIntlKey: barn.adopsjonAvEktefellesBarn
-                                            ? 'vedlegg.veileder.stebarnsadopsjon'
-                                            : 'vedlegg.veileder.adopsjon'
-                                    }
-                                ]}
-                            />
-                        </Veilederpanel>
+                        <VeilederMeldinger
+                            messages={[
+                                {
+                                    type: 'normal',
+                                    contentIntlKey: barn.adopsjonAvEktefellesBarn
+                                        ? 'vedlegg.veileder.stebarnsadopsjon'
+                                        : 'vedlegg.veileder.adopsjon'
+                                }
+                            ]}
+                        />
                     </Block>
                     <AttachmentsUploaderPure
                         attachments={barn.omsorgsovertakelse || []}

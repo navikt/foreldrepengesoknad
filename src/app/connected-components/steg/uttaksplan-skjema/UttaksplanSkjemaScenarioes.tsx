@@ -18,9 +18,7 @@ import Block from 'common/components/block/Block';
 import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 import FarSinFørsteUttaksdagSpørsmål from './enkeltspørsmål/FarSinFørsteUttaksdagSpørsmål';
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from './enkeltspørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
-import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 
 export interface ScenarioProps {
@@ -44,17 +42,16 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({
     const { farSinFørsteUttaksdag, morSinSisteUttaksdag } = søknad.ekstrainfo.uttaksplanSkjema;
     return (
         <>
-            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                <VeilederpanelInnhold
-                    messages={[
-                        {
-                            type: 'normal',
-                            contentIntlKey: 'uttaksplan.skjema.informasjonTilAnnenForelder',
-                            values: { navn: søknad.annenForelder.fornavn }
-                        }
-                    ]}
-                />
-            </Veilederpanel>
+            <VeilederMeldinger
+                messages={[
+                    {
+                        type: 'normal',
+                        contentIntlKey: 'uttaksplan.skjema.informasjonTilAnnenForelder',
+                        values: { navn: søknad.annenForelder.fornavn }
+                    }
+                ]}
+            />
+
             <DekningsgradSpørsmål />
             <MorSinSisteUttaksdagSpørsmål
                 visible={harSvartPåDekningsgradSpørsmål}
@@ -100,21 +97,19 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
                 søknad.dekningsgrad !== undefined && (
                     <>
                         <Block visible={søknad.barn.antallBarn > 1 && harSvartPåStartdato}>
-                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                                <VeilederpanelInnhold
-                                    messages={[
-                                        {
-                                            type: 'normal',
-                                            contentIntlKey: 'uttaksplan.skjema.flerbarnsInformasjon',
-                                            values: {
-                                                uker: getFlerbarnsuker(søknad.dekningsgrad!, søknad.barn.antallBarn),
-                                                navnFar: navnPåForeldre.farMedmor,
-                                                navnMor: navnPåForeldre.mor
-                                            }
+                            <VeilederMeldinger
+                                messages={[
+                                    {
+                                        type: 'normal',
+                                        contentIntlKey: 'uttaksplan.skjema.flerbarnsInformasjon',
+                                        values: {
+                                            uker: getFlerbarnsuker(søknad.dekningsgrad!, søknad.barn.antallBarn),
+                                            navnFar: navnPåForeldre.farMedmor,
+                                            navnMor: navnPåForeldre.mor
                                         }
-                                    ]}
-                                />
-                            </Veilederpanel>
+                                    }
+                                ]}
+                            />
                         </Block>
                         <FordelingFellesperiodeSpørsmål
                             visible={harSvartPåStartdato}
@@ -158,17 +153,15 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
                 navnAnnenForelder={søknad.annenForelder.fornavn}
             />
             {skjema.harAnnenForelderSøktFP === true && (
-                <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                    <VeilederpanelInnhold
-                        messages={[
-                            {
-                                type: 'normal',
-                                contentIntlKey: 'uttaksplan.skjema.informasjonTilAnnenForelder',
-                                values: { navn: søknad.annenForelder.fornavn }
-                            }
-                        ]}
-                    />
-                </Veilederpanel>
+                <VeilederMeldinger
+                    messages={[
+                        {
+                            type: 'normal',
+                            contentIntlKey: 'uttaksplan.skjema.informasjonTilAnnenForelder',
+                            values: { navn: søknad.annenForelder.fornavn }
+                        }
+                    ]}
+                />
             )}
             <DekningsgradSpørsmål
                 visible={skjema.harAnnenForelderSøktFP !== undefined || !søknad.annenForelder.harRettPåForeldrepenger}
@@ -201,19 +194,17 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
                     moment(latestDate).isBefore(moment(startdatoPermisjon)) &&
                     stebarnsadopsjon !== true
                 }>
-                <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                    <VeilederpanelInnhold
-                        messages={[
-                            {
-                                type: 'normal',
-                                contentIntlKey:
-                                    adoptertIUtlandet !== undefined && adoptertIUtlandet === true
-                                        ? 'uttaksplanSkjema.info.adoptertIUtlandet'
-                                        : 'uttaksplanSkjema.info.ikkeAdoptertIUtlandet'
-                            }
-                        ]}
-                    />
-                </Veilederpanel>
+                <VeilederMeldinger
+                    messages={[
+                        {
+                            type: 'normal',
+                            contentIntlKey:
+                                adoptertIUtlandet !== undefined && adoptertIUtlandet === true
+                                    ? 'uttaksplanSkjema.info.adoptertIUtlandet'
+                                    : 'uttaksplanSkjema.info.ikkeAdoptertIUtlandet'
+                        }
+                    ]}
+                />
             </Block>
             {søknad.søker.erAleneOmOmsorg === false &&
                 søknad.annenForelder.harRettPåForeldrepenger && (
@@ -224,21 +215,19 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
                                 skjema.startdatoPermisjon !== undefined &&
                                 skjema.harAnnenForelderSøktFP !== true
                             }>
-                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                                <VeilederpanelInnhold
-                                    messages={[
-                                        {
-                                            type: 'normal',
-                                            contentIntlKey: 'uttaksplan.skjema.flerbarnsInformasjon',
-                                            values: {
-                                                uker: getFlerbarnsuker(søknad.dekningsgrad!, søknad.barn.antallBarn),
-                                                navnFar: navnPåForeldre.farMedmor,
-                                                navnMor: navnPåForeldre.mor
-                                            }
+                            <VeilederMeldinger
+                                messages={[
+                                    {
+                                        type: 'normal',
+                                        contentIntlKey: 'uttaksplan.skjema.flerbarnsInformasjon',
+                                        values: {
+                                            uker: getFlerbarnsuker(søknad.dekningsgrad!, søknad.barn.antallBarn),
+                                            navnFar: navnPåForeldre.farMedmor,
+                                            navnMor: navnPåForeldre.mor
                                         }
-                                    ]}
-                                />
-                            </Veilederpanel>
+                                    }
+                                ]}
+                            />
                         </Block>
                         <FordelingFellesperiodeSpørsmål
                             visible={skjema.startdatoPermisjon !== undefined && skjema.harAnnenForelderSøktFP !== true}
@@ -260,32 +249,28 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehe
         <>
             <DekningsgradSpørsmål />
             <Block visible={søknad.dekningsgrad !== undefined && søknad.situasjon === 'fødsel'}>
-                <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                    <VeilederpanelInnhold
-                        messages={[
-                            {
-                                type: 'normal',
-                                contentIntlKey: 'uttaksplan.skjema.aleneomsorgFarMedmor.navSaraVeileder',
-                                values: { navn: søknad.annenForelder.fornavn },
-                                formatContentAsHTML: true
-                            }
-                        ]}
-                    />
-                </Veilederpanel>
+                <VeilederMeldinger
+                    messages={[
+                        {
+                            type: 'normal',
+                            contentIntlKey: 'uttaksplan.skjema.aleneomsorgFarMedmor.navSaraVeileder',
+                            values: { navn: søknad.annenForelder.fornavn },
+                            formatContentAsHTML: true
+                        }
+                    ]}
+                />
             </Block>
             <Block visible={søknad.dekningsgrad !== undefined && søknad.situasjon === 'adopsjon'}>
-                <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                    <VeilederpanelInnhold
-                        messages={[
-                            {
-                                type: 'normal',
-                                contentIntlKey: 'uttaksplan.skjema.adopsjon.navSaraVeileder',
-                                values: { navn: søknad.annenForelder.fornavn },
-                                formatContentAsHTML: true
-                            }
-                        ]}
-                    />
-                </Veilederpanel>
+                <VeilederMeldinger
+                    messages={[
+                        {
+                            type: 'normal',
+                            contentIntlKey: 'uttaksplan.skjema.adopsjon.navSaraVeileder',
+                            values: { navn: søknad.annenForelder.fornavn },
+                            formatContentAsHTML: true
+                        }
+                    ]}
+                />
             </Block>
             <StartdatoUttakFarMedmorAleneomsorgSpørsmål
                 familiehendelsesdato={familiehendelsesdato}

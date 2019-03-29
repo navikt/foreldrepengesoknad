@@ -14,12 +14,10 @@ import InntektOppsummering from 'common/components/oppsummering/oppsummeringer/I
 import Oppsummeringspanel from 'common/components/oppsummeringspanel/Oppsummeringspanel';
 import UttaksplanOppsummering from 'common/components/oppsummering/oppsummeringer/UttaksplanOppsummering';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
+import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import { Søknadsinfo } from 'app/selectors/types';
 
 import './oppsummering.less';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from '../veileder/Veileder';
-import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
-import { Søknadsinfo } from 'app/selectors/types';
 
 interface OppsummeringProps {
     søknadsinfo: Søknadsinfo;
@@ -37,16 +35,14 @@ class Oppsummering extends React.Component<Props> {
         return (
             <Block margin="m">
                 {uttaksplanValidering.erGyldig && (
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold
-                            messages={[
-                                {
-                                    type: 'normal',
-                                    contentIntlKey: 'oppsummering.veileder'
-                                }
-                            ]}
-                        />
-                    </Veilederpanel>
+                    <VeilederMeldinger
+                        messages={[
+                            {
+                                type: 'normal',
+                                contentIntlKey: 'oppsummering.veileder'
+                            }
+                        ]}
+                    />
                 )}
                 <div className="oppsummering">
                     <Block margin="s">

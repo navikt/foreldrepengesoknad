@@ -28,9 +28,7 @@ import { fødselsdatoerErFyltUt } from '../../../util/validation/fødselsdato';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import visibility from './visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
-import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 export interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
@@ -103,29 +101,25 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                 </Block>
 
                 <Block visible={visibility.harBarnOver15ÅrMelding(barn)} margin="s">
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold
-                            messages={[
-                                {
-                                    type: 'info',
-                                    contentIntlKey: 'Barn over 15 år er registrert.'
-                                }
-                            ]}
-                        />
-                    </Veilederpanel>
+                    <VeilederMeldinger
+                        messages={[
+                            {
+                                type: 'info',
+                                contentIntlKey: 'Barn over 15 år er registrert.'
+                            }
+                        ]}
+                    />
                 </Block>
 
                 <Block visible={visibility.vedlegg(barn)}>
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold
-                            messages={[
-                                {
-                                    type: 'normal',
-                                    contentIntlKey: 'vedlegg.veileder.omsorgsovertakelse'
-                                }
-                            ]}
-                        />
-                    </Veilederpanel>
+                    <VeilederMeldinger
+                        messages={[
+                            {
+                                type: 'normal',
+                                contentIntlKey: 'vedlegg.veileder.omsorgsovertakelse'
+                            }
+                        ]}
+                    />
                     <AttachmentsUploaderPure
                         attachments={barn.adopsjonsvedtak || []}
                         attachmentType={AttachmentType.ADOPSJONSVEDTAK}

@@ -7,9 +7,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { getOverføringÅrsakSkjemanummer } from '../../../util/skjemanummer/overføringÅrsakSkjemanummer';
 import { RecursivePartial } from '../../../types/Partial';
 import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
-import VeilederpanelInnhold, { Message } from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
+import VeilederMeldinger, { Message } from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 
 interface Props {
     årsak?: OverføringÅrsakType;
@@ -69,9 +67,7 @@ class OverføringUttakPart extends React.Component<Props> {
                     />
                 </Block>
                 <Block visible={visVedlegg(søkerErFarEllerMedmor, årsak)}>
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold messages={[getVeilederInfotekst(årsak!, navnAnnenForelder)]} />
-                    </Veilederpanel>
+                    <VeilederMeldinger messages={[getVeilederInfotekst(årsak!, navnAnnenForelder)]} />
                     <VedleggSpørsmål
                         vedlegg={vedleggList}
                         attachmentType={AttachmentType.OVERFØRING_KVOTE}
