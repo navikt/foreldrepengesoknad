@@ -24,9 +24,7 @@ import { getSkjemanummerForAndreInntekter } from 'common/storage/attachment/comp
 import { hasValueRule } from '../../util/validation/common';
 import InntektstypeSpørsmål from '../../spørsmål/InntektstypeSpørsmål';
 import Input from 'common/components/skjema/wrappers/Input';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
-import Veileder from 'common/components/veileder/Veileder';
+import VeilederMeldinger from '../veilederpanel-innhold/VeilederpanelInnhold';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
@@ -207,25 +205,23 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     />
                 </Block>
                 <Block visible={annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET}>
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold
-                            messages={[
-                                {
-                                    type: 'normal',
-                                    contentIntlKey: 'inntektstype.jobb_i_utlandet_info',
-                                    values: {
-                                        land:
-                                            (annenInntekt as JobbIUtlandetInntekt).land !== undefined
-                                                ? countries.getName(
-                                                      (annenInntekt as JobbIUtlandetInntekt).land,
-                                                      intl.locale
-                                                  )
-                                                : 'annet land'
-                                    }
+                    <VeilederMeldinger
+                        messages={[
+                            {
+                                type: 'normal',
+                                contentIntlKey: 'inntektstype.jobb_i_utlandet_info',
+                                values: {
+                                    land:
+                                        (annenInntekt as JobbIUtlandetInntekt).land !== undefined
+                                            ? countries.getName(
+                                                  (annenInntekt as JobbIUtlandetInntekt).land,
+                                                  intl.locale
+                                              )
+                                            : 'annet land'
                                 }
-                            ]}
-                        />
-                    </Veilederpanel>
+                            }
+                        ]}
+                    />
                 </Block>
             </ModalForm>
         );

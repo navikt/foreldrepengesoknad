@@ -14,9 +14,7 @@ import { getVarighetString } from 'common/util/intlUtils';
 import { finnAntallDagerÅTrekke } from 'app/util/uttaksPlanStatus';
 import Input from 'common/components/skjema/wrappers/Input';
 import { getStillingsprosentRegler } from 'app/util/validation/stillingsprosent';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
-import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
 import { NavnISøknaden } from 'app/selectors/types';
 
 export interface OwnProps {
@@ -72,29 +70,27 @@ class SamtidigUttakPart extends React.Component<Props> {
                     />
                 </Block>
                 <Block visible={ønskerSamtidigUttak === true} margin="none">
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold
-                            messages={[
-                                {
-                                    type: 'normal',
-                                    contentIntlKey:
-                                        ønskerFlerbarnsuker || morFlerbarnssøknad
-                                            ? 'egenDelUttakForm.samtidigUttak.flerBarnsuker.veiledertekst'
-                                            : 'egenDelUttakForm.samtidigUttak.veiledertekst',
-                                    values: {
-                                        link: (
-                                            <Lenke href={lenker.fleksibeltuttak}>
-                                                <FormattedMessage id="egenDelUttakForm.samtidigUttak.veiledertekst.lenke" />
-                                            </Lenke>
-                                        ),
-                                        navn: navn.annenForelder.fornavn,
-                                        navnMor: navn.mor.fornavn,
-                                        navnFar: navn.farMedmor.fornavn
-                                    }
+                    <VeilederMeldinger
+                        messages={[
+                            {
+                                type: 'normal',
+                                contentIntlKey:
+                                    ønskerFlerbarnsuker || morFlerbarnssøknad
+                                        ? 'egenDelUttakForm.samtidigUttak.flerBarnsuker.veiledertekst'
+                                        : 'egenDelUttakForm.samtidigUttak.veiledertekst',
+                                values: {
+                                    link: (
+                                        <Lenke href={lenker.fleksibeltuttak}>
+                                            <FormattedMessage id="egenDelUttakForm.samtidigUttak.veiledertekst.lenke" />
+                                        </Lenke>
+                                    ),
+                                    navn: navn.annenForelder.fornavn,
+                                    navnMor: navn.mor.fornavn,
+                                    navnFar: navn.farMedmor.fornavn
                                 }
-                            ]}
-                        />
-                    </Veilederpanel>
+                            }
+                        ]}
+                    />
                 </Block>
                 <Block visible={visibility.isVisible(UttakSpørsmålKeys.samtidigUttakProsent)}>
                     <Block margin={varighet ? 'xxs' : 'none'}>
