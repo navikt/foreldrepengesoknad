@@ -12,6 +12,7 @@ import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanF
 import { erUttaksmengdeForFarMedmorForHøyTest } from './tester/erUttaksmengdeForFarMedmorForHøyTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
 import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
+import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtsettelsePgaFerieTest';
 
 export enum RegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -26,7 +27,8 @@ export enum RegelKey {
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksmengdeForFarMedmorErForHøy' = 'uttaksmengdeForFarMedmorErForHøy',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
-    'perioderManglerVedlegg' = 'manglendeVedlegg'
+    'perioderManglerVedlegg' = 'manglendeVedlegg',
+    'inneholderSenUtsettelsePgaFerie' = 'inneholderSenUtsettelsePgaFerieTest'
 }
 
 const uttaksplanRegler: Regel[] = [
@@ -95,6 +97,11 @@ const uttaksplanRegler: Regel[] = [
         alvorlighet: RegelAlvorlighet.INFO,
         test: harPerioderManglendeVedleggTest,
         slåsSammenVedOppsummering: true
+    },
+    {
+        key: RegelKey.inneholderSenUtsettelsePgaFerie,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: inneholderSenUtsettelsePgaFerieTest
     }
 ];
 
