@@ -14,7 +14,7 @@ import { Søknadsinfo } from 'app/selectors/types';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
-import { getAntallUker } from 'common/util/kontoUtil';
+import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
 
 interface StateProps {
     dekningsgrad100AntallUker: number | undefined;

@@ -23,7 +23,11 @@ import { Søknadsinfo } from '../../../selectors/types';
 import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
-import { getAntallUkerFellesperiode, getAntallUkerFedrekvote, getAntallUkerMødrekvote } from 'common/util/kontoUtil';
+import {
+    getAntallUkerFellesperiode,
+    getAntallUkerFedrekvote,
+    getAntallUkerMødrekvote
+} from 'app/util/uttaksplan/stønadskontoer';
 
 interface StateProps {
     stegProps: StegProps;

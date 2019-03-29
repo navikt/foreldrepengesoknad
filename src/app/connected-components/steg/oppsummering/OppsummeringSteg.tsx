@@ -32,7 +32,7 @@ import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
-import { getAntallUker } from 'common/util/kontoUtil';
+import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
