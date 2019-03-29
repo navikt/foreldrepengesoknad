@@ -1,14 +1,13 @@
 import moment from 'moment';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
-import { getPermisjonsregler } from '../../uttaksplan/permisjonsregler';
 import { Avgrensninger } from 'common/types';
+import uttaksConstants from 'app/constants';
 
 function sisteMuligePermisjonsdag(familiehendelsedato: Date): Date {
-    const permisjonsregler = getPermisjonsregler();
     const startDato = Uttaksdagen(familiehendelsedato).denneEllerNeste();
     return Uttaksdagen(
         moment(startDato)
-            .add(permisjonsregler.maksPermisjonslengdeIÅr, 'years')
+            .add(uttaksConstants.MAKS_PERMISJONSLENGDE_I_ÅR, 'years')
             .toDate()
     ).denneEllerNeste();
 }
@@ -24,9 +23,8 @@ const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): Avgren
 };
 
 const startdatoFørTermin = (familiehendelsesdato: Date): Avgrensninger => {
-    const permisjonsregler = getPermisjonsregler();
     const maksDato = Uttaksdagen(familiehendelsesdato).forrige();
-    const minDato = Uttaksdagen(maksDato).trekkFra(permisjonsregler.maksAntallUkerForeldrepengerFørFødsel * 5 - 1);
+    const minDato = Uttaksdagen(maksDato).trekkFra(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1);
     return {
         minDato,
         maksDato,
@@ -35,9 +33,8 @@ const startdatoFørTermin = (familiehendelsesdato: Date): Avgrensninger => {
 };
 
 const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato: Date): Avgrensninger => {
-    const permisjonsregler = getPermisjonsregler();
     const maksDato = Uttaksdagen(familiehendelsesdato).forrige();
-    const minDato = Uttaksdagen(maksDato).trekkFra(permisjonsregler.antallUkerForeldrepengerFørFødsel * 5 - 1);
+    const minDato = Uttaksdagen(maksDato).trekkFra(uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1);
     return {
         minDato,
         maksDato,
@@ -46,13 +43,12 @@ const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato:
 };
 
 const ekstrauttakFørFødsel = (familiehendelsesdato: Date): Avgrensninger => {
-    const permisjonsregler = getPermisjonsregler();
     const sisteDagFørFødsel = Uttaksdagen(familiehendelsesdato).forrige();
     const minDato = Uttaksdagen(sisteDagFørFødsel).trekkFra(
-        permisjonsregler.maksAntallUkerForeldrepengerFørFødsel * 5 - 1
+        uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1
     );
     const maksDato = Uttaksdagen(sisteDagFørFødsel).trekkFra(
-        permisjonsregler.antallUkerForeldrepengerFørFødsel * 5 - 1
+        uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1
     );
     return {
         minDato,
