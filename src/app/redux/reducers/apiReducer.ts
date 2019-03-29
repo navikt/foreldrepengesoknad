@@ -18,16 +18,9 @@ export interface ApiState {
     oppslagSakerFeilet?: boolean;
     søknadSendingInProgress: boolean;
     søknadHasBeenReceived: boolean;
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    stønadskontoer100: TilgjengeligStønadskonto[];
+    stønadskontoer80: TilgjengeligStønadskonto[];
     kvittering?: Kvittering;
-    dekningsgrad100AntallUker?: number;
-    dekningsgrad80AntallUker?: number;
-    fellesPeriodeUkerDekningsgrad100?: number;
-    fellesPeriodeUkerDekningsgrad80?: number;
-    fedreKvoteUkerDekningsgrad100?: number;
-    fedreKvoteUkerDekningsgrad80?: number;
-    mødreKvoteUkerDekningsgrad100?: number;
-    mødreKvoteUkerDekningsgrad80?: number;
     søkerinfoLastetCounter: number;
     systemerIkkeTilgjengelig: boolean;
     storageKvittering?: StorageKvittering;
@@ -44,7 +37,8 @@ export const getDefaultApiState = (): ApiState => ({
     sessionHasExpired: false,
     søknadSendingInProgress: false,
     søknadHasBeenReceived: false,
-    tilgjengeligeStønadskontoer: [],
+    stønadskontoer100: [],
+    stønadskontoer80: [],
     systemerIkkeTilgjengelig: false,
     søkerinfoLastetCounter: 0
 });
