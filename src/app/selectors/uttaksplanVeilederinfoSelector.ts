@@ -18,7 +18,6 @@ import { formaterDato } from 'common/util/datoUtils';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import { InjectedIntl } from 'react-intl';
 import { erSenUtsettelsePgaFerieEllerArbeid, erSentGradertUttak } from 'app/util/uttaksplan/uttakUtils';
-import { isFeatureEnabled, Feature } from 'app/Feature';
 
 export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
     createSelector([getSøknadsinfo, søknadSelector], (søknadsinfo, søknad) => {
@@ -47,10 +46,7 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
 
         const seneGraderteUttak = uttaksplan.filter(erSentGradertUttak) as Uttaksperiode[];
 
-        if (
-            isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) &&
-            (seneUtsettelserPgaFerieEllerArbeid.length > 0 || seneGraderteUttak.length > 0)
-        ) {
+        if (seneUtsettelserPgaFerieEllerArbeid.length > 0 || seneGraderteUttak.length > 0) {
             const inneholderUtsettelsePgaFerie = seneUtsettelserPgaFerieEllerArbeid.some(
                 (utsettelse) => utsettelse.årsak === UtsettelseÅrsakType.Ferie
             );

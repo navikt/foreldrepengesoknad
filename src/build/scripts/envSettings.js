@@ -9,8 +9,7 @@ function createEnvSettingsFile(settingsFile) {
                 UTTAK_API_URL: '${process.env.FP_UTTAK_SERVICE_URL}',
                 LOGIN_URL: '${process.env.LOGINSERVICE_URL}',
                 FEATURE_REGISTRERT_BARN: '${process.env.FEATURE_REGISTRERT_BARN}',
-                FEATURE_LOGGING:  '${process.env.FEATURE_LOGGING}',
-                FEATURE_FERIE_OG_ARBEID_TILBAKE_I_TID: '${process.env.FEATURE_FERIE_OG_ARBEID_TILBAKE_I_TID}'
+                FEATURE_LOGGING:  '${process.env.FEATURE_LOGGING}'
             };`
         );
     });

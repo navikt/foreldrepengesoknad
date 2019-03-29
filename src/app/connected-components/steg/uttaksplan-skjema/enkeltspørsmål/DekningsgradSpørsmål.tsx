@@ -14,6 +14,7 @@ import { Søknadsinfo } from 'app/selectors/types';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
 
 interface StateProps {
     dekningsgrad100AntallUker: number | undefined;
@@ -156,8 +157,8 @@ const DekningsgradSpørsmål = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    dekningsgrad100AntallUker: state.api.dekningsgrad100AntallUker,
-    dekningsgrad80AntallUker: state.api.dekningsgrad80AntallUker,
+    dekningsgrad100AntallUker: getAntallUker(state.api.stønadskontoer100),
+    dekningsgrad80AntallUker: getAntallUker(state.api.stønadskontoer80),
     harAnnenForelderSøktFP: state.søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP,
     søknadsinfo: getSøknadsinfo(state)!,
     startdatoPermisjon: state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon

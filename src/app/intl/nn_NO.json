@@ -772,8 +772,6 @@
     "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosenten kan bare inneholde tall",
     "uttaksplan.validering.feil.stønadskontoMangler": "Perioden er ikkje gyldig.",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikkje gyldig",
-    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiodeGammel":
-        " Du kan ikkje søke om utsetjing på grunn av ferie eller arbeid tilbake i tid.",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
         "Du kan ikkje søke om utsetjing på grunn av arbeid eller ferie mindre enn seks veker etter fødsel",
     "uttaksplan.validering.feil.uttaksplanErBareOpphold": "Du kan ikkje ha ein uttaksplan med berre ein utsetjing.",

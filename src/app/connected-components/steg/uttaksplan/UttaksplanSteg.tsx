@@ -45,6 +45,8 @@ import Veileder from 'common/components/veileder/Veileder';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import UttaksplanRegelAvvikVeileder from '../../../components/uttaksplan-regelavvik-veileder/UttaksplanRegelAvvikVeileder';
 import { RegelAvvik } from '../../../regler/uttaksplanValidering/types';
+import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
+import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 
 interface StateProps {
     stegProps: StegProps;
@@ -101,12 +103,11 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                 dispatch(søknadActions.uttaksplanLagForslag());
             }
             if (tilgjengeligeStønadskontoer.length === 0) {
-                dispatch(
-                    apiActionCreators.getTilgjengeligeStønadskonter(
-                        getStønadskontoParams(søknadsinfo, startdatoPermisjon),
-                        this.props.history
-                    )
+                const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
+                    søknadsinfo,
+                    startdatoPermisjon
                 );
+                dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
             }
         }
     }
@@ -296,11 +297,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps & InjectedIntlProps): StateProps => {
     const {
         søknad,
-        api: { tilgjengeligeStønadskontoer, isLoadingTilgjengeligeStønadskontoer }
+        api: { isLoadingTilgjengeligeStønadskontoer }
     } = state;
     const { søkerinfo, history } = props;
 
     const søknadsinfo = getSøknadsinfo(state);
+    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
 
     const årsakTilSenEndring: SenEndringÅrsak = getSeneEndringerSomKreverBegrunnelse(søknad.uttaksplan);
 
