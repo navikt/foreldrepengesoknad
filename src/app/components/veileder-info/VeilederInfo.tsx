@@ -2,6 +2,8 @@ import * as React from 'react';
 import VeilederMelding from './components/VeilederMelding';
 import Veileder, { VeilederAnsiktstype, VeilederStil } from 'common/components/veileder/Veileder';
 import Veilederpanel from 'nav-frontend-veilederpanel';
+import AriaText from 'common/components/aria/AriaText';
+import { FormattedMessage } from 'react-intl';
 
 export type VeilederMessageType = 'normal' | 'info' | 'advarsel' | 'feil';
 
@@ -18,13 +20,15 @@ interface Props {
     paneltype?: 'normal' | 'plakat';
     kompakt?: boolean;
     veilederStil?: VeilederStil;
+    ariaTittel?: string;
 }
 
 const VeilederInfo: React.SFC<Props> = ({
     messages,
     kompakt = true,
     paneltype = 'normal',
-    veilederStil = 'kompakt'
+    veilederStil = 'kompakt',
+    ariaTittel
 }) => {
     const harFeil = messages.some((m) => m.type === 'feil');
     const harAdvarsler = messages.some((m) => m.type === 'advarsel');
@@ -44,6 +48,11 @@ const VeilederInfo: React.SFC<Props> = ({
             kompakt={kompakt}
             svg={<Veileder stil={veilederStil} ansikt={ansikt} farge="transparent" />}
             fargetema={harFeil ? 'feilmelding' : 'normal'}>
+            {ariaTittel && (
+                <AriaText tag="h2">
+                    <FormattedMessage id="uttaksplan.regelAvvik.ariaTittel" />
+                </AriaText>
+            )}
             {messages.map((message: VeilederMessage, index: number) => (
                 <VeilederMelding key={message.contentIntlKey + index} message={message} />
             ))}
