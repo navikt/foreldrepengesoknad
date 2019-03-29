@@ -45,16 +45,20 @@ const opprettAktivitetsFriKonto = (
 
 function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     try {
+        const { params } = action;
         yield put(updateApi({ isLoadingTilgjengeligeStønadskontoer: true }));
+
         const appState: AppState = yield select(stateSelector);
         const annenForelderErUkjent = appState.søknad.annenForelder.kanIkkeOppgis;
         const erMorUfør = appState.søknad.annenForelder.erUfør;
         const erAleneOmsorg = appState.søknad.søker.erAleneOmOmsorg;
         const søkerErFarEllerMedmor = selectSøkerErFarEllerMedmor(appState);
         const morHarIkkeRett = !appState.søknad.annenForelder.harRettPåForeldrepenger && søkerErFarEllerMedmor;
-        const response = yield call(Api.getUttakskontoer, action.params);
+
+        const response = yield call(Api.getUttakskontoer, params);
         const stønadskontoer: StønadskontoerDTO = response.data;
         let tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
+
         Object.keys(stønadskontoer.kontoer)
             .filter((konto: StønadskontoType) => konto !== StønadskontoType.Flerbarnsdager)
             .map((konto) => {
@@ -69,7 +73,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 tilgjengeligeStønadskontoer,
                 appState.søknad.dekningsgrad,
                 appState.søknad.barn.antallBarn,
-                action.params.startdatoUttak
+                params.startdatoUttak
             );
 
             if (erMorUfør === false) {
@@ -91,9 +95,10 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                     .filter((konto) => konto.dager !== 0);
             }
         }
+
         if (
             skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018(
-                action.params.familiehendelsesdato,
+                params.familiehendelsesdato,
                 tilgjengeligeStønadskontoer
             )
         ) {
@@ -101,83 +106,40 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 tilgjengeligeStønadskontoer
             );
         }
-        yield put(
-            apiActions.updateApi({
-                isLoadingTilgjengeligeStønadskontoer: false,
-                tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer.sort(
-                    (a: TilgjengeligStønadskonto, b: TilgjengeligStønadskonto) =>
-                        getStønadskontoSortOrder(a.konto) > getStønadskontoSortOrder(b.konto) ? 1 : -1
-                )
-            })
+
+        tilgjengeligeStønadskontoer = tilgjengeligeStønadskontoer.sort(
+            (a: TilgjengeligStønadskonto, b: TilgjengeligStønadskonto) =>
+                getStønadskontoSortOrder(a.konto) > getStønadskontoSortOrder(b.konto) ? 1 : -1
         );
+
+        if (params.dekningsgrad === '100') {
+            yield put(
+                apiActions.updateApi({
+                    isLoadingTilgjengeligeStønadskontoer: false,
+                    stønadskontoer100: tilgjengeligeStønadskontoer
+                })
+            );
+        } else {
+            yield put(
+                apiActions.updateApi({
+                    isLoadingTilgjengeligeStønadskontoer: false,
+                    stønadskontoer80: tilgjengeligeStønadskontoer
+                })
+            );
+        }
+
         yield put(uttaksplanValideringActions.validerUttaksplanAction());
     } catch (error) {
         yield put(
             apiActions.updateApi({
-                tilgjengeligeStønadskontoer: [],
+                stønadskontoer100: [],
+                stønadskontoer80: [],
                 isLoadingTilgjengeligeStønadskontoer: false
             })
         );
         action.history.push(routeConfig.GENERELL_FEIL_URL, {
             uuid: extractUUID(error)
         });
-    }
-}
-
-function* getStønadskontoUker(action: GetTilgjengeligeStønadskontoer) {
-    try {
-        yield put(updateApi({ isLoadingTilgjengeligeStønadskontoer: true }));
-        const response = yield call(Api.getUttakskontoer, action.params);
-        const stønadskontoer: StønadskontoerDTO = response.data;
-        const dekningsgrad: string = action.params.dekningsgrad;
-        const antallUker: number = Object.keys(stønadskontoer.kontoer)
-            .filter((konto: StønadskontoType) => konto !== StønadskontoType.Flerbarnsdager)
-            .reduce((sum: number, konto: StønadskontoType) => sum + stønadskontoer.kontoer[konto] / 5, 0);
-        const antallFellesperiodeUker: number = Object.keys(stønadskontoer.kontoer)
-            .filter((konto: StønadskontoType) => konto === StønadskontoType.Fellesperiode)
-            .reduce((sum: number, konto: StønadskontoType) => {
-                if (konto === StønadskontoType.Fellesperiode) {
-                    return sum + stønadskontoer.kontoer[konto] / 5;
-                } else {
-                    return 0;
-                }
-            }, 0);
-        const fedreKvote = Object.keys(stønadskontoer.kontoer).find(
-            (konto: StønadskontoType) => konto === StønadskontoType.Fedrekvote
-        );
-        const mødreKvote = Object.keys(stønadskontoer.kontoer).find(
-            (konto: StønadskontoType) => konto === StønadskontoType.Mødrekvote
-        );
-        const fedreKvoteUker = fedreKvote !== undefined ? stønadskontoer.kontoer[fedreKvote] / 5 : undefined;
-        const mødreKvoteUker = mødreKvote !== undefined ? stønadskontoer.kontoer[mødreKvote] / 5 : undefined;
-
-        if (dekningsgrad === '100') {
-            yield put(
-                apiActions.updateApi({
-                    dekningsgrad100AntallUker: antallUker,
-                    isLoadingTilgjengeligeStønadskontoer: false,
-                    fellesPeriodeUkerDekningsgrad100: antallFellesperiodeUker,
-                    fedreKvoteUkerDekningsgrad100: fedreKvoteUker,
-                    mødreKvoteUkerDekningsgrad100: mødreKvoteUker
-                })
-            );
-        } else {
-            yield put(
-                apiActions.updateApi({
-                    dekningsgrad80AntallUker: antallUker,
-                    isLoadingTilgjengeligeStønadskontoer: false,
-                    fellesPeriodeUkerDekningsgrad80: antallFellesperiodeUker,
-                    fedreKvoteUkerDekningsgrad80: fedreKvoteUker,
-                    mødreKvoteUkerDekningsgrad80: mødreKvoteUker
-                })
-            );
-        }
-    } catch (error) {
-        yield put(
-            apiActions.updateApi({
-                isLoadingTilgjengeligeStønadskontoer: false
-            })
-        );
     }
 }
 
@@ -194,7 +156,6 @@ export default function* søknadskontoerSaga() {
         takeEvery(
             ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER_AND_LAG_UTTAKSPLAN_FORSLAG,
             getStønadskontoerAndLagUttaksplan
-        ),
-        takeEvery(ApiActionKeys.GET_TILGJENGELIGE_STØNADSUKER, getStønadskontoUker)
+        )
     ]);
 }

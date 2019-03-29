@@ -21,16 +21,21 @@ import ApplicationSpinner from 'common/components/application-spinner/Applicatio
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { Søknadsinfo } from '../../../selectors/types';
 import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
+import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
+import { TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
+import {
+    getAntallUkerFellesperiode,
+    getAntallUkerFedrekvote,
+    getAntallUkerMødrekvote
+} from 'app/util/uttaksplan/stønadskontoer';
 
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
     søknadsinfo: Søknadsinfo;
-    antallUkerFellesperiode: number | undefined;
     scenario: UttaksplanSkjemaScenario;
     isLoadingTilgjengeligeStønadskontoer: boolean;
-    antallUkerFedreKvote: number | undefined;
-    antallUkerMødreKvote: number | undefined;
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -52,8 +57,12 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
 
         if (stegProps.isAvailable) {
             const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(søknadsinfo, startdatoPermisjon);
-            dispatch(apiActionCreators.getTilgjengeligeStønadsuker({ ...params, dekningsgrad: '100' }));
-            dispatch(apiActionCreators.getTilgjengeligeStønadsuker({ ...params, dekningsgrad: '80' }));
+            dispatch(
+                apiActionCreators.getTilgjengeligeStønadskontoer({ ...params, dekningsgrad: '100' }, this.props.history)
+            );
+            dispatch(
+                apiActionCreators.getTilgjengeligeStønadskontoer({ ...params, dekningsgrad: '80' }, this.props.history)
+            );
         }
     }
 
@@ -62,7 +71,9 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
         if (dekningsgrad !== nextProps.søknad.dekningsgrad) {
             this.props.dispatch(
                 søknadActions.uttaksplanUpdateSkjemdata({
-                    fellesperiodeukerMor: Math.round((nextProps.antallUkerFellesperiode || 0) / 2)
+                    fellesperiodeukerMor: Math.round(
+                        (getAntallUkerFellesperiode(nextProps.tilgjengeligeStønadskontoer) || 0) / 2
+                    )
                 })
             );
         }
@@ -72,11 +83,9 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
         const {
             stegProps,
             dispatch,
-            antallUkerFellesperiode,
             scenario,
             isLoadingTilgjengeligeStønadskontoer,
-            antallUkerFedreKvote,
-            antallUkerMødreKvote,
+            tilgjengeligeStønadskontoer,
             søknadsinfo
         } = this.props;
         const søknad = this.props.søknad as Søknad;
@@ -98,9 +107,9 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         scenario={scenario}
                         søknad={søknad}
                         navnPåForeldre={navnPåForeldre}
-                        antallUkerFellesperiode={antallUkerFellesperiode || 0}
-                        antallUkerFedreKvote={antallUkerFedreKvote}
-                        antallUkerMødreKvote={antallUkerMødreKvote}
+                        antallUkerFellesperiode={getAntallUkerFellesperiode(tilgjengeligeStønadskontoer)}
+                        antallUkerFedreKvote={getAntallUkerFedrekvote(tilgjengeligeStønadskontoer)}
+                        antallUkerMødreKvote={getAntallUkerMødrekvote(tilgjengeligeStønadskontoer)}
                         familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
                     />
                 )}
@@ -124,18 +133,11 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     const { familiehendelsesdato } = søknadsinfo.søknaden;
     const scenario = getUttaksplanSkjemaScenario(søknadsinfo);
     const {
-        api: {
-            isLoadingTilgjengeligeStønadskontoer,
-            fellesPeriodeUkerDekningsgrad100,
-            fellesPeriodeUkerDekningsgrad80,
-            fedreKvoteUkerDekningsgrad100,
-            fedreKvoteUkerDekningsgrad80,
-            mødreKvoteUkerDekningsgrad100,
-            mødreKvoteUkerDekningsgrad80
-        }
+        api: { isLoadingTilgjengeligeStønadskontoer }
     } = state;
     const søknad = { ...state.søknad };
     const skjemadata = søknad.ekstrainfo.uttaksplanSkjema;
+    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
     const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
     if (
         scenario === UttaksplanSkjemaScenario.s3_morFødsel &&
@@ -151,13 +153,8 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         søknadsinfo,
         stegProps,
         søknad,
-        antallUkerFellesperiode:
-            søknad.dekningsgrad === '100' ? fellesPeriodeUkerDekningsgrad100 : fellesPeriodeUkerDekningsgrad80,
-        antallUkerFedreKvote:
-            søknad.dekningsgrad === '100' ? fedreKvoteUkerDekningsgrad100 : fedreKvoteUkerDekningsgrad80,
-        antallUkerMødreKvote:
-            søknad.dekningsgrad === '100' ? mødreKvoteUkerDekningsgrad100 : mødreKvoteUkerDekningsgrad80,
         scenario,
+        tilgjengeligeStønadskontoer,
         isLoadingTilgjengeligeStønadskontoer
     };
 };

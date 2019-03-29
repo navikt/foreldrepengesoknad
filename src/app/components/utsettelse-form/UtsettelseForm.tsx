@@ -38,6 +38,7 @@ import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
+import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -371,7 +372,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 const mapStateToProps = (state: AppState): StateProps => {
     return {
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
-        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer,
+        tilgjengeligeStønadskontoer: selectTilgjengeligeStønadskontoer(state),
         søknadsinfo: getSøknadsinfo(state)!
     };
 };
