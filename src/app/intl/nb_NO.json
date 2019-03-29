@@ -828,8 +828,6 @@
     "uttaksplanSkjema.info.reservertMor":
         "Dersom du starter ditt uttak i de første seks ukene etter fødsel må du kunne dokumentere at mor er for syk til å ta seg av barnet eller innlagt på sykehus eller helseinstitusjon.",
     "uttaksplanSkjema.info.manglerVedlegg": "Du har ikke lastet opp påkrevd dokumentasjon.",
-    "uttaksteg.overtruknedager.info.tittel": "Lagt inn for mange dager i planen",
-    "uttaksteg.overtruknedager.info": "Du har tatt {varighet} for mye av {konto}",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig",
     "validering.oppsummeringstittel": "Du må rette opp i følgende feil:",
     "valideringsfeil.fodselsdato.duMåOppgi": "Du må oppgi fødselsdato",

@@ -831,8 +831,6 @@
     "uttaksplanSkjema.info.reservertMor":
         "Dersom du startar uttaket ditt i dei første seks vekene etter fødselen, må du kunne dokumentere at mor er for sjuk til å ta seg av barnet, eller at ho er innlagd på sjukehus eller helseinstitusjon.",
     "uttaksplanSkjema.info.manglerVedlegg": "Du har ikkje lasta opp påkrevd dokumentasjon.",
-    "uttaksteg.overtruknedager.info.tittel": "Lagt inn for mange dager i planen",
-    "uttaksteg.overtruknedager.info": "Du har tatt {varighet} for mykje av {konto}",
     "validerbarForm.ukjentFeil": "Verdien er ikkje gyldig",
     "validering.oppsummeringstittel": "Du må rette opp i følgjande feil:",
     "valideringsfeil.fodselsdato.duMåOppgi": "Du må gi opp fødselsdatoen",
