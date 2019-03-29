@@ -14,7 +14,6 @@ import {
     Uttaksperiode,
     UtsettelseÅrsakType
 } from 'app/types/uttaksplan/periodetyper';
-import { findMissingAttachmentsForPerioder } from 'app/util/attachments/missingAttachmentUtil';
 import { formaterDato } from 'common/util/datoUtils';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import { InjectedIntl } from 'react-intl';
@@ -34,7 +33,6 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
             mor.harRett === false,
             mor.erUfør
         );
-        const missingAttachments = findMissingAttachmentsForPerioder(uttaksplan, søknadsinfo!);
         const planInneholderTapteDager =
             Periodene(uttaksplan).getHull().length > 0 || infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor !== undefined;
         const planInneholderAnnetEnnAktivitetsfriKvote = uttaksplan
@@ -91,14 +89,6 @@ export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
                 title: 'uttaksplan.veileder.planenInneholderHull.tittel',
                 type: 'info',
                 contentIntlKey: 'uttaksplan.veileder.planenInneholderHull'
-            });
-        }
-
-        if (missingAttachments.length > 0) {
-            messages.push({
-                title: 'oppsummering.veileder.manglendeVedlegg.tittel',
-                type: 'info',
-                contentIntlKey: 'oppsummering.veileder.manglendeVedlegg'
             });
         }
 
