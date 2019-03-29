@@ -22,7 +22,7 @@ import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { Søknadsinfo } from '../../../selectors/types';
 import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
-import { TilgjengeligStønadskonto, StønadskontoType } from 'app/types/uttaksplan/periodetyper';
+import { TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
 import { getAntallUkerFellesperiode, getAntallUkerFedrekvote, getAntallUkerMødrekvote } from 'common/util/kontoUtil';
 
 interface StateProps {
@@ -68,7 +68,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             this.props.dispatch(
                 søknadActions.uttaksplanUpdateSkjemdata({
                     fellesperiodeukerMor: Math.round(
-                        (nextProps.tilgjengeligeStønadskontoer[StønadskontoType.Fellesperiode] || 0) / 2
+                        (getAntallUkerFellesperiode(nextProps.tilgjengeligeStønadskontoer) || 0) / 2
                     )
                 })
             );
