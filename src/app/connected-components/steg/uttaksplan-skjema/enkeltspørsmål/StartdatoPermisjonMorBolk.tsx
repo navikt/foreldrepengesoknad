@@ -11,12 +11,12 @@ import { uttaksplanDatoavgrensninger } from '../../../../util/validation/uttaksp
 import { Tidsperioden, getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 import { getVarighetString } from 'common/util/intlUtils';
 import { UttaksplanSkjemadata } from '../uttaksplanSkjemadata';
-import { getPermisjonsregler } from '../../../../util/uttaksplan/permisjonsregler';
 import { getDefaultPermisjonStartdato } from '../../../../util/uttaksplan/permisjonUtils';
 import { ValidFormContext } from 'common/lib/validation/elements/ValiderbarForm';
 import { DateValue } from '../../../../types/common';
 import { Uttaksdagen } from '../../../../util/uttaksplan/Uttaksdagen';
 import VeilederStartdatoPermisjon from '../../../../components/veilederStartdatoPermisjon/VeilederStartdatoPermisjon';
+import uttaksConstants from 'app/constants';
 
 interface OwnProps {
     barnetErFødt: boolean;
@@ -53,14 +53,13 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
             ? getMessage(intl, 'spørsmål.startdatoPermisjon.skalIkkeHaUttak.barnetErFødt.label')
             : getMessage(intl, 'spørsmål.startdatoPermisjon.skalIkkeHaUttak.label');
 
-        const permisjonsregler = getPermisjonsregler();
         const sisteUttaksdagFørTermin = Uttaksdagen(familiehendelsesdato).forrige();
         const tidsperiode = getValidTidsperiode({
             fom: data.startdatoPermisjon,
             tom: sisteUttaksdagFørTermin
         });
         const antallDager = tidsperiode ? Tidsperioden(tidsperiode).getAntallUttaksdager() : 0;
-        const antallDagerFørFødselIhtRegler = permisjonsregler.antallUkerForeldrepengerFørFødsel * 5;
+        const antallDagerFørFødselIhtRegler = uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5;
 
         const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato);
         const startdato = data.skalIkkeHaUttakFørTermin !== true ? data.startdatoPermisjon : undefined;
@@ -106,7 +105,7 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                                 skalIkkeHaUttakFørTermin: e.target.checked,
                                 startdatoPermisjon: e.target.checked
                                     ? undefined
-                                    : getDefaultPermisjonStartdato(familiehendelsesdato, permisjonsregler)
+                                    : getDefaultPermisjonStartdato(familiehendelsesdato)
                             });
                             if (this.context.validForm) {
                                 this.context.validForm.validateField('permisjonStartdato');

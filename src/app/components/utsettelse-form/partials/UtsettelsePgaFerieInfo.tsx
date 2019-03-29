@@ -1,6 +1,5 @@
 import * as React from 'react';
 import UtsettelseFerieInfo from '../../utsettelse-ferie-info/UtsettelseFerieInfo';
-import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
 import { Forelder } from 'common/types';
 import Block from 'common/components/block/Block';
 import Veilederpanel from 'nav-frontend-veilederpanel';
@@ -34,7 +33,7 @@ class UtsettelsePgaFerieInfo extends React.Component<Props, {}> {
 
         return antallFeriedager !== undefined ? (
             <Block margin="s">
-                <UtsettelseFerieInfo feriedager={antallFeriedager} permisjonsregler={getPermisjonsregler()} />
+                <UtsettelseFerieInfo feriedager={antallFeriedager} />
             </Block>
         ) : null;
     }
