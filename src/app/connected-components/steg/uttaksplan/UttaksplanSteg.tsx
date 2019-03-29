@@ -179,8 +179,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             vedleggForSenEndring,
             tilleggsopplysninger,
             søknadsinfo,
-            aktivitetsfriKvote,
-            uttaksplanVeilederinfo
+            aktivitetsfriKvote
         } = this.props;
 
         if (!søknadsinfo) {
@@ -258,11 +257,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             {avvik !== undefined && <UttaksplanRegelAvvikVeileder avvik={avvik} />}
                         </Block>
 
-                        <Block margin="xs" visible={uttaksplanVeilederinfo.length > 0}>
-                            <Veilederpanel kompakt={true} type="plakat" svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                                <VeilederpanelInnhold messages={uttaksplanVeilederinfo} />
-                            </Veilederpanel>
-                        </Block>
                         {årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
                             <BegrunnelseForSenEndring
                                 årsak={årsakTilSenEndring}

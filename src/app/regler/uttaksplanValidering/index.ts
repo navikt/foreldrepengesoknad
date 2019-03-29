@@ -13,7 +13,8 @@ import { erUttaksmengdeForFarMedmorForHøyTest } from './tester/erUttaksmengdeFo
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
 import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
 import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtsettelsePgaFerieTest';
-import { inneholderTapteDagerTest } from './tester/inneholderTapteDager';
+import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
+import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
 
 export enum RegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -30,7 +31,8 @@ export enum RegelKey {
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
     'perioderManglerVedlegg' = 'manglendeVedlegg',
     'inneholderSenUtsettelsePgaFerie' = 'inneholderSenUtsettelsePgaFerieTest',
-    'inneholderTapteDager' = 'inneholderTapteDager'
+    'inneholderTapteDager' = 'inneholderTapteDager',
+    'inneholderBareUtsettelser' = 'inneholderBareUtsettelser'
 }
 
 const uttaksplanRegler: Regel[] = [
@@ -109,6 +111,11 @@ const uttaksplanRegler: Regel[] = [
         key: RegelKey.inneholderTapteDager,
         alvorlighet: RegelAlvorlighet.INFO,
         test: inneholderTapteDagerTest
+    },
+    {
+        key: RegelKey.inneholderBareUtsettelser,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: inneholderBareUtsettelserTest
     }
 ];
 
