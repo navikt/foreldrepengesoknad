@@ -3,16 +3,16 @@ import * as classnames from 'classnames';
 
 import VeilederNormal from './VeilederNormalSvg';
 import VeilederKompakt from './VeilederKompaktSvg';
-
-import './veileder.less';
 import VeilederKompaktUtenBakgrunn from './VeilederKompaktUtenBakgrunnSVG';
 
-export type Ansiktstype = 'glad' | 'undrende' | 'skeptisk';
+import './veileder.less';
+
+export type VeilederAnsiktstype = 'glad' | 'undrende' | 'skeptisk';
 
 export interface VeilederProps {
     ansikt?: 'glad' | 'undrende' | 'skeptisk';
-    farge?: 'lilla' | 'gronn' | 'bla';
-    stil?: 'normal' | 'kompakt' | 'kompakt-uten-bakgrunn';
+    farge?: 'lilla' | 'gronn' | 'bla' | 'transparent';
+    stil?: 'normal' | 'kompakt' | 'kompakt-uten-bakgrunn' | 'iNavVeilederPanel';
 }
 
 interface OwnProps {
@@ -32,7 +32,7 @@ const Veileder = (props: Props) => {
             'veileder',
             `veileder--tema-${farge}`,
             `veileder--${ansikt}`,
-            `veileder--${stil}`,
+            `veileder--stil-${stil}`,
             props.className
         )
     };

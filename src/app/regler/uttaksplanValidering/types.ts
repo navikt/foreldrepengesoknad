@@ -45,7 +45,7 @@ export interface RegelTestresultat {
     periodeId?: string;
 }
 
-export type RegelTestresultatInfoObject = Partial<RegelTestresultatInfo> | Array<Partial<RegelTestresultatInfo>>;
+export type RegelTestresultatInfoObject = RegelTestresultatInfo | RegelTestresultatInfo[];
 
 export interface RegelStatus {
     key: RegelKey;
@@ -57,19 +57,23 @@ export interface RegelAvvik {
     id: string;
     key: RegelKey;
     periodeId?: string;
-    info: RegelTestresultatInfo;
+    info: RegelAvvikInfo;
     alvorlighet: RegelAlvorlighet;
     overstyresAvRegel?: RegelKey;
     overstyrerRegler?: RegelKey[];
     slåsSammenVedOppsummering?: boolean;
 }
 
-export interface RegelAvvikInfo {
-    intlKey: string;
+interface AvvikInfo {
+    periodeId?: string;
     values?: { [key: string]: string | number | Date | FeilIntlMessage | undefined };
     renderAsHtml?: boolean;
 }
 
-export interface RegelTestresultatInfo extends RegelAvvikInfo {
-    periodeId?: string;
+export interface RegelAvvikInfo extends AvvikInfo {
+    intlKey: string;
+}
+
+export interface RegelTestresultatInfo extends AvvikInfo {
+    intlKey?: string;
 }

@@ -43,6 +43,8 @@ import VeilederpanelInnhold, { Message } from 'app/components/veilederpanel-innh
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import UttaksplanRegelAvvikVeileder from '../../../components/uttaksplan-regelavvik-veileder/UttaksplanRegelAvvikVeileder';
+import { RegelAvvik } from '../../../regler/uttaksplanValidering/types';
 
 interface StateProps {
     stegProps: StegProps;
@@ -192,6 +194,10 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             søknadsinfo.søknaden.erEndringssøknad
         );
 
+        const avvik: RegelAvvik[] | undefined = uttaksplanValidering.regelTestResultat
+            ? uttaksplanValidering.regelTestResultat.avvik
+            : undefined;
+
         return (
             <Steg
                 {...this.props.stegProps}
@@ -246,6 +252,11 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                     />
                                 </Block>
                             )}
+
+                        <Block visible={!!avvik}>
+                            {avvik !== undefined && <UttaksplanRegelAvvikVeileder avvik={avvik} />}
+                        </Block>
+
                         <Block margin="xs" visible={uttaksplanVeilederinfo.length > 0}>
                             <Veilederpanel kompakt={true} type="plakat" svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
                                 <VeilederpanelInnhold messages={uttaksplanVeilederinfo} />

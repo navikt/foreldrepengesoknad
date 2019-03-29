@@ -10,7 +10,7 @@ export const inneholderStønadskontoForMyeUttakTest: RegelTest = (grunnlag: Rege
             intlKey: 'uttaksplan.validering.feil.forMyeUttak',
             values: {
                 konto: (intl: InjectedIntl) =>
-                    getStønadskontoNavn(intl, uttak.konto, grunnlag.søknadsinfo.navn.navnPåForeldre).toLowerCase()
+                    getStønadskontoNavn(intl, uttak.konto, grunnlag.søknadsinfo.navn.navnPåForeldre)
             }
         }))
     };

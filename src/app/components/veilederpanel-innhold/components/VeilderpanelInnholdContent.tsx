@@ -3,7 +3,7 @@ import { Message } from '../VeilederpanelInnhold';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import BEMHelper from 'common/util/bem';
 
-import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
+import { AlertStripeInfo, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import './veilederpanelInnholdContent.less';
 import { Element } from 'nav-frontend-typografi';
 
@@ -25,12 +25,12 @@ const renderAlert = (message: Message, FormatComponent: any) => {
         );
     } else {
         return (
-            <AlertStripeAdvarsel>
+            <AlertStripeFeil>
                 <Element>
                     <FormatComponent id={message.title!} />
                 </Element>
                 <FormatComponent id={message.contentIntlKey} values={message.values} />
-            </AlertStripeAdvarsel>
+            </AlertStripeFeil>
         );
     }
 };
