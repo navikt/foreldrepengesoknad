@@ -15,19 +15,7 @@ import { formaterNavn } from '../domain/personUtil';
 import getMessage from 'common/util/i18nUtils';
 import { Navn } from '../../types/common';
 
-const isValidStillingsprosent = (pst: string | undefined): boolean =>
-    pst !== undefined && isNaN(parseFloat(pst)) === false;
-
-const prettifyProsent = (pst: string): number | undefined => {
-    const nbr = parseFloat(pst);
-    if (isNaN(nbr)) {
-        return undefined;
-    }
-    if (Math.round(nbr) === nbr) {
-        return Math.round(nbr);
-    }
-    return nbr;
-};
+const isValidStillingsprosent = (pst: number | undefined): boolean => pst !== undefined && isNaN(pst) === false;
 
 export const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåForeldre): string => {
     if (navnPåForeldre.farMedmor) {
@@ -130,8 +118,8 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
             ) {
                 return `${tittel} ${getMessage(intl, 'gradering.prosent', {
                     stillingsprosent: getUttaksprosentFromStillingsprosent(
-                        prettifyProsent(periode.stillingsprosent),
-                        periode.samtidigUttakProsent ? prettifyProsent(periode.samtidigUttakProsent) : undefined
+                        periode.stillingsprosent,
+                        periode.samtidigUttakProsent ? periode.samtidigUttakProsent : undefined
                     )
                 })}`;
             }

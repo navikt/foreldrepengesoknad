@@ -6,6 +6,7 @@ import { lagUttaksplan } from '../../util/uttaksplan/forslag/lagUttaksplan';
 import { AppState } from '../reducers';
 import { getSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
+import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 
 const stateSelector = (state: AppState) => state;
 
@@ -21,7 +22,7 @@ function* avbrytSøknadSaga(action: AvbrytSøknad) {
 function* lagUttaksplanForslag() {
     const appState: AppState = yield select(stateSelector);
     const søknadsinfo = getSøknadsinfo(appState);
-    const { tilgjengeligeStønadskontoer } = appState.api;
+    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
     const { uttaksplanSkjema } = appState.søknad.ekstrainfo;
     if (søknadsinfo) {
         const {

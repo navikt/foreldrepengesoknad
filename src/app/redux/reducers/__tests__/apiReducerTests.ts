@@ -12,7 +12,8 @@ describe('apiReducer', () => {
             isLoadingTilgjengeligeStønadskontoer,
             søknadSendingInProgress,
             søknadHasBeenReceived,
-            tilgjengeligeStønadskontoer
+            stønadskontoer100,
+            stønadskontoer80
         } = defaultState;
 
         expect(isLoadingSøkerinfo).toBe(false);
@@ -21,8 +22,10 @@ describe('apiReducer', () => {
         expect(isLoadingTilgjengeligeStønadskontoer).toBe(false);
         expect(søknadSendingInProgress).toBe(false);
         expect(søknadHasBeenReceived).toBe(false);
-        expect(tilgjengeligeStønadskontoer).toBeInstanceOf(Array);
-        expect(tilgjengeligeStønadskontoer).toHaveLength(0);
+        expect(stønadskontoer100).toBeInstanceOf(Array);
+        expect(stønadskontoer100).toHaveLength(0);
+        expect(stønadskontoer80).toBeInstanceOf(Array);
+        expect(stønadskontoer80).toHaveLength(0);
     });
 
     it('should update specified props of api state when UPDATE_API-action is dispatched', () => {
