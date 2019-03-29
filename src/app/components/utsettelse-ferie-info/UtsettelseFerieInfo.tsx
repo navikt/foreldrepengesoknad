@@ -1,18 +1,17 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { Permisjonsregler } from '../../types/uttaksplan/permisjonsregler';
 import { getVarighetString } from 'common/util/intlUtils';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
 import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
+import uttaksConstants from 'app/constants';
 
 export interface Props {
     feriedager: number;
-    permisjonsregler: Permisjonsregler;
 }
 
-const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({ feriedager, permisjonsregler, intl }) => {
-    if (feriedager <= permisjonsregler.maksFeriedagerEttÅr) {
+const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({ feriedager, intl }) => {
+    if (feriedager <= uttaksConstants.MAKS_FERIEDAGER_ETT_ÅR) {
         return (
             <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
                 <VeilederpanelInnhold
@@ -28,7 +27,7 @@ const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({ feried
         );
     }
     const ukerOgDager = getVarighetString(feriedager, intl);
-    if (feriedager > permisjonsregler.maksFeriedagerMedOverføring) {
+    if (feriedager > uttaksConstants.MAKS_FERIEDAGER_MED_OVERFØRING) {
         return (
             <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
                 <VeilederpanelInnhold
@@ -42,7 +41,7 @@ const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({ feried
                 />
             </Veilederpanel>
         );
-    } else if (feriedager > permisjonsregler.maksFeriedagerEttÅr) {
+    } else if (feriedager > uttaksConstants.MAKS_FERIEDAGER_ETT_ÅR) {
         return (
             <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
                 <VeilederpanelInnhold

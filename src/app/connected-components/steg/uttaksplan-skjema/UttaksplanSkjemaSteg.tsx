@@ -11,7 +11,6 @@ import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { uttaksplanSkjemaErGyldig } from '../../../util/validation/steg/uttaksplanSkjema';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Søknad from '../../../types/søknad/Søknad';
-import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
 import { getUttaksplanSkjemaScenario, UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
 import { apiActionCreators } from '../../../redux/actions';
@@ -21,6 +20,7 @@ import ApplicationSpinner from 'common/components/application-spinner/Applicatio
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { Søknadsinfo } from '../../../selectors/types';
 import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
+import uttaksConstants from 'app/constants';
 
 interface StateProps {
     stegProps: StegProps;
@@ -120,7 +120,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo, søknadsinfo)
     };
-    const permisjonsregler = getPermisjonsregler();
+
     const { familiehendelsesdato } = søknadsinfo.søknaden;
     const scenario = getUttaksplanSkjemaScenario(søknadsinfo);
     const {
@@ -143,7 +143,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         skjemadata.startdatoPermisjon === undefined
     ) {
         const defaultStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
-            permisjonsregler.antallUkerForeldrepengerFørFødsel * 5
+            uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
         );
         søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon = defaultStartdato;
     }
