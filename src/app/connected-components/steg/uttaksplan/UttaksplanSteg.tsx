@@ -44,6 +44,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { RegelAvvik } from '../../../regler/uttaksplanValidering/types';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
+import getMessage from 'common/util/i18nUtils';
 
 interface StateProps {
     stegProps: StegProps;
@@ -177,7 +178,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             tilleggsopplysninger,
             søknadsinfo,
             aktivitetsfriKvote,
-            uttaksplanVeilederInfo
+            uttaksplanVeilederInfo,
+            intl
         } = this.props;
 
         if (!søknadsinfo) {
@@ -255,6 +257,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 paneltype="plakat"
                                 kompakt={true}
                                 veilederStil={'normal'}
+                                ariaTittel={getMessage(intl, 'uttaksplan.regelAvvik.ariaTittel')}
                             />
                         </Block>
 
