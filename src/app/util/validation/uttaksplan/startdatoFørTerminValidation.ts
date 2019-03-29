@@ -2,10 +2,10 @@ import { InjectedIntl } from 'react-intl';
 import moment from 'moment';
 import { Validator } from 'common/lib/validation/types';
 import getMessage from 'common/util/i18nUtils';
-import { getPermisjonsregler } from '../../uttaksplan/permisjonsregler';
 import { uttaksplanDatoavgrensninger } from './uttaksplanDatoavgrensninger';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 import { DateValue } from '../../../types/common';
+import uttaksConstants from 'app/constants';
 
 const startdatoFørTerminValidators = (
     intl: InjectedIntl,
@@ -30,7 +30,7 @@ const startdatoFørTerminValidators = (
                 moment(dato).isSameOrAfter(avgrensninger.minDato, 'day') &&
                 moment(dato).isSameOrBefore(avgrensninger.maksDato, 'day'),
             failText: getMessage(intl, 'uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom', {
-                uker: getPermisjonsregler().maksAntallUkerForeldrepengerFørFødsel
+                uker: uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL
             })
         });
     }
