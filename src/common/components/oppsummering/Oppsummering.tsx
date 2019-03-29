@@ -14,7 +14,7 @@ import InntektOppsummering from 'common/components/oppsummering/oppsummeringer/I
 import Oppsummeringspanel from 'common/components/oppsummeringspanel/Oppsummeringspanel';
 import UttaksplanOppsummering from 'common/components/oppsummering/oppsummeringer/UttaksplanOppsummering';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
-import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from 'app/components/veileder-info/VeilederInfo';
 import { Søknadsinfo } from 'app/selectors/types';
 
 import './oppsummering.less';
@@ -35,7 +35,7 @@ class Oppsummering extends React.Component<Props> {
         return (
             <Block margin="m">
                 {uttaksplanValidering.erGyldig && (
-                    <VeilederMeldinger
+                    <VeilederInfo
                         messages={[
                             {
                                 type: 'normal',

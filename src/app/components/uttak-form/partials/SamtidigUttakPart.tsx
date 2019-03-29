@@ -14,7 +14,7 @@ import { getVarighetString } from 'common/util/intlUtils';
 import { finnAntallDagerÅTrekke } from 'app/util/uttaksPlanStatus';
 import Input from 'common/components/skjema/wrappers/Input';
 import { getStillingsprosentRegler } from 'app/util/validation/stillingsprosent';
-import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../veileder-info/VeilederInfo';
 import { NavnISøknaden } from 'app/selectors/types';
 
 export interface OwnProps {
@@ -70,7 +70,7 @@ class SamtidigUttakPart extends React.Component<Props> {
                     />
                 </Block>
                 <Block visible={ønskerSamtidigUttak === true} margin="none">
-                    <VeilederMeldinger
+                    <VeilederInfo
                         messages={[
                             {
                                 type: 'normal',

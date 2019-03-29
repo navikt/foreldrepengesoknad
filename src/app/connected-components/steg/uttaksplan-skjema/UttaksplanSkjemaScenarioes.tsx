@@ -18,7 +18,7 @@ import Block from 'common/components/block/Block';
 import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 import FarSinFørsteUttaksdagSpørsmål from './enkeltspørsmål/FarSinFørsteUttaksdagSpørsmål';
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from './enkeltspørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
-import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
 import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 
 export interface ScenarioProps {
@@ -42,7 +42,7 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({
     const { farSinFørsteUttaksdag, morSinSisteUttaksdag } = søknad.ekstrainfo.uttaksplanSkjema;
     return (
         <>
-            <VeilederMeldinger
+            <VeilederInfo
                 messages={[
                     {
                         type: 'normal',
@@ -97,7 +97,7 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
                 søknad.dekningsgrad !== undefined && (
                     <>
                         <Block visible={søknad.barn.antallBarn > 1 && harSvartPåStartdato}>
-                            <VeilederMeldinger
+                            <VeilederInfo
                                 messages={[
                                     {
                                         type: 'normal',
@@ -153,7 +153,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
                 navnAnnenForelder={søknad.annenForelder.fornavn}
             />
             {skjema.harAnnenForelderSøktFP === true && (
-                <VeilederMeldinger
+                <VeilederInfo
                     messages={[
                         {
                             type: 'normal',
@@ -194,7 +194,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
                     moment(latestDate).isBefore(moment(startdatoPermisjon)) &&
                     stebarnsadopsjon !== true
                 }>
-                <VeilederMeldinger
+                <VeilederInfo
                     messages={[
                         {
                             type: 'normal',
@@ -215,7 +215,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
                                 skjema.startdatoPermisjon !== undefined &&
                                 skjema.harAnnenForelderSøktFP !== true
                             }>
-                            <VeilederMeldinger
+                            <VeilederInfo
                                 messages={[
                                     {
                                         type: 'normal',
@@ -249,7 +249,7 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehe
         <>
             <DekningsgradSpørsmål />
             <Block visible={søknad.dekningsgrad !== undefined && søknad.situasjon === 'fødsel'}>
-                <VeilederMeldinger
+                <VeilederInfo
                     messages={[
                         {
                             type: 'normal',
@@ -261,7 +261,7 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehe
                 />
             </Block>
             <Block visible={søknad.dekningsgrad !== undefined && søknad.situasjon === 'adopsjon'}>
-                <VeilederMeldinger
+                <VeilederInfo
                     messages={[
                         {
                             type: 'normal',

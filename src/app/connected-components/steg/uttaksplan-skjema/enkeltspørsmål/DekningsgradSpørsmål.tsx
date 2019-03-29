@@ -11,7 +11,7 @@ import Block from 'common/components/block/Block';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
-import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../../../components/veileder-info/VeilederInfo';
 import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
 
 interface StateProps {
@@ -137,7 +137,7 @@ const DekningsgradSpørsmål = (props: Props) => {
                     harAnnenForelderSøktFP,
                     dekningsgrad
                 )}>
-                <VeilederMeldinger
+                <VeilederInfo
                     messages={[
                         {
                             type: 'normal',

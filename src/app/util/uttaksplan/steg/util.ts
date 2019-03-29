@@ -1,8 +1,8 @@
 import lenker from 'app/util/routing/lenker';
-import { Message } from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import { VeilederMessage } from '../../../components/veileder-info/VeilederInfo';
 import { Søknadsinfo } from '../../../selectors/types';
 
-export const getVeilederInfoText = (søknadsinfo: Søknadsinfo, aktivitetsfriKvote: number): Message => {
+export const getVeilederInfoText = (søknadsinfo: Søknadsinfo, aktivitetsfriKvote: number): VeilederMessage => {
     const { søknaden, annenForelder, søker, navn } = søknadsinfo;
 
     if (søknaden.erEndringssøknad) {

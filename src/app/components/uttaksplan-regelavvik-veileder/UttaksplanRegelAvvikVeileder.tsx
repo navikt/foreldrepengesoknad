@@ -38,7 +38,7 @@ const UttaksplanRegelAvvikVeileder: React.StatelessComponent<Props> = ({ avvik }
             <Veilederpanel
                 kompakt={true}
                 fargetema={harFeil ? 'feilmelding' : 'normal'}
-                svg={<Veileder farge="transparent" stil="iNavVeilederPanel" ansikt={ansikt} />}
+                svg={<Veileder farge="transparent" stil="normal" ansikt={ansikt} />}
                 type="plakat">
                 <div className={bem.className}>
                     {ulovlig.length > 0 && (

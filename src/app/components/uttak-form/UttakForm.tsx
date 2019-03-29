@@ -52,7 +52,7 @@ import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
 import lenker from 'app/util/routing/lenker';
 import UlønnetPermisjonInfo from './partials/UlønnetPermisjonInfo';
-import VeilederMeldinger, { Message } from '../veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo, { VeilederMessage } from '../veileder-info/VeilederInfo';
 import FlernbarnsdagerSpørsmål from './partials/FlerbarnsdagerSpørsmål';
 import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 import { selectArbeidsforhold, selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
@@ -123,7 +123,7 @@ const getOppholdsInfotekst = (
     familiehendelsesdato: Date,
     søkerErMor: boolean,
     navn: NavnISøknaden
-): Message[] => {
+): VeilederMessage[] => {
     return periodeErInnenDeFørsteSeksUkene(periode as Periode, familiehendelsesdato) && søkerErMor
         ? [
               {
@@ -413,7 +413,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                             />
                         )}
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.ønskerFlerbarnsdager)}>
-                            <VeilederMeldinger
+                            <VeilederInfo
                                 messages={[
                                     {
                                         type: 'normal',
@@ -441,7 +441,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
                             periode.erMorForSyk === true && (
                                 <>
-                                    <VeilederMeldinger
+                                    <VeilederInfo
                                         messages={[
                                             {
                                                 type: 'normal',
@@ -464,7 +464,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
                             periode.erMorForSyk === false && (
                                 <>
-                                    <VeilederMeldinger
+                                    <VeilederInfo
                                         messages={[
                                             {
                                                 type: 'normal',
@@ -525,7 +525,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                 {periode.type === Periodetype.Opphold && (
                     <>
                         {periode.årsak !== undefined && (
-                            <VeilederMeldinger
+                            <VeilederInfo
                                 messages={getOppholdsInfotekst(
                                     periode as Periode,
                                     søknadsinfo.søknaden.familiehendelsesdato,

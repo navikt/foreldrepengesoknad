@@ -1,38 +1,35 @@
 import { createSelector } from 'reselect';
-import { getSøknadsinfo } from './søknadsinfoSelector';
-import { Message } from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
-import { Periodene } from 'app/util/uttaksplan/Periodene';
-import { søknadSelector } from './søknadSelector';
-import Søknad from 'app/types/søknad/Søknad';
-import { isUtsettelsesperiode } from 'app/types/uttaksplan/periodetyper';
-import { formaterDato } from 'common/util/datoUtils';
-import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
+import { VeilederMessage, VeilederMessageType } from '../components/veileder-info/VeilederInfo';
 import { InjectedIntl } from 'react-intl';
+import { selectUttaksplanAvvik } from './uttaksplanValideringSelector';
+import { RegelAlvorlighet, RegelAvvik } from '../regler/uttaksplanValidering/types';
+import { intlHasKey } from 'common/util/intlUtils';
+import { getRegelIntlValues, trimRelaterteRegelAvvik } from '../regler/uttaksplanValidering/regelUtils';
 
+const getMessageTypeFromAvvik = (avvik: RegelAvvik): VeilederMessageType => {
+    switch (avvik.alvorlighet) {
+        case RegelAlvorlighet.FEIL:
+            return 'feil';
+        case RegelAlvorlighet.ADVARSEL:
+            return 'advarsel';
+        case RegelAlvorlighet.INFO:
+            return 'info';
+    }
+};
+
+const mapAvvikTilMessage = (avvik: RegelAvvik, intl: InjectedIntl): VeilederMessage => {
+    const { info } = avvik;
+    const tittelIntlKey = `${info.intlKey}.tittel`;
+    const harTittel = intlHasKey(intl, tittelIntlKey);
+    return {
+        type: getMessageTypeFromAvvik(avvik),
+        contentIntlKey: info.intlKey,
+        titleIntlKey: harTittel ? tittelIntlKey : undefined,
+        formatContentAsHTML: info.renderAsHtml,
+        values: getRegelIntlValues(intl, info)
+    };
+};
 export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
-    createSelector([getSøknadsinfo, søknadSelector], (søknadsinfo, søknad) => {
-        const messages: Message[] = [];
-        const { uttaksplan } = søknad as Søknad;
-
-        const planErBareUtsettelser = !uttaksplan.some((p) => !isUtsettelsesperiode(p)) && uttaksplan.length > 0;
-
-        if (planErBareUtsettelser) {
-            const messageContent = søknad.erEndringssøknad
-                ? 'uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad'
-                : 'uttaksplan.veileder.planenInneholderKunUtsettelser';
-
-            messages.push({
-                title: 'uttaksplan.veileder.planenInneholderKunUtsettelser.tittel',
-                type: 'info',
-                contentIntlKey: messageContent,
-                values: {
-                    sisteDag: formaterDato(
-                        Uttaksdagen(Periodene(uttaksplan).getFørsteUttaksdagEtterSistePeriode()!).forrige(),
-                        'D. MMMM YYYY'
-                    )
-                }
-            });
-        }
-
-        return messages;
+    createSelector([selectUttaksplanAvvik], (avvik) => {
+        return trimRelaterteRegelAvvik(avvik).map((a) => mapAvvikTilMessage(a, intl));
     });

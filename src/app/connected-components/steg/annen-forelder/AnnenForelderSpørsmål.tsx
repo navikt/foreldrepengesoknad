@@ -20,7 +20,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AnnenForelderSpørsmålKeys, AnnenForelderStegVisibility } from './visibility/annenForelderStegVisibility';
 import { DateValue } from '../../../types/common';
 import { getFamiliehendelsedato } from '../../../util/uttaksplan';
-import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
 
 export interface OwnProps {
     annenForelder: AnnenForelder;
@@ -122,7 +122,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         søker.erAleneOmOmsorg !== undefined &&
                         søker.erAleneOmOmsorg
                     }>
-                    <VeilederMeldinger
+                    <VeilederInfo
                         messages={[
                             {
                                 type: 'normal',
@@ -156,7 +156,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger) &&
                         annenForelder.harRettPåForeldrepenger === true
                     }>
-                    <VeilederMeldinger
+                    <VeilederInfo
                         messages={[
                             {
                                 type: 'normal',
@@ -178,7 +178,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         />
                     </Block>
                     {annenForelder.erInformertOmSøknaden === false && (
-                        <VeilederMeldinger
+                        <VeilederInfo
                             messages={[
                                 {
                                     type: 'normal',
@@ -207,7 +207,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         barn.datoForAleneomsorg !== undefined
                     }>
                     <Block margin="xs">
-                        <VeilederMeldinger
+                        <VeilederInfo
                             messages={[
                                 {
                                     type: 'normal',

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AnnenInntektType } from '../../types/søknad/AnnenInntekt';
-import VeilederMeldinger from '../veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../veileder-info/VeilederInfo';
 
 interface OwnProps {
     type?: AnnenInntektType;
@@ -15,7 +15,7 @@ const AnnenInntektVedleggInfo: React.StatelessComponent<Props> = ({ type }) => {
     const textKey = `inntektstype.${type.toLowerCase()}_info`;
 
     return (
-        <VeilederMeldinger
+        <VeilederInfo
             messages={[
                 {
                     type: 'normal',

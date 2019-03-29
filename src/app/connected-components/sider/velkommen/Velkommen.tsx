@@ -31,7 +31,7 @@ import SakInfo from '../../../components/sak-info/SakInfo';
 
 import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
 import BEMHelper from 'common/util/bem';
-import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
 import { StorageKvittering } from '../../../types/StorageKvittering';
 import SakInfoStorageKvittering from 'app/components/sak-info/SakInfoStorageKvittering';
 
@@ -187,7 +187,7 @@ class Velkommen extends React.Component<Props, State> {
                             </Block>
                             {this.state.skalEndre === false &&
                                 !erSakForEndringssøknadFraInfotrygd && (
-                                    <VeilederMeldinger
+                                    <VeilederInfo
                                         messages={[
                                             {
                                                 contentIntlKey: 'velkommen.intro.harSak.veileder',
@@ -198,7 +198,7 @@ class Velkommen extends React.Component<Props, State> {
                                 )}
                             {this.state.skalEndre === true &&
                                 erSakForEndringssøknadFraInfotrygd && (
-                                    <VeilederMeldinger
+                                    <VeilederInfo
                                         messages={[
                                             {
                                                 contentIntlKey: 'velkommen.intro.harInfotrygdSak.veileder',
@@ -234,7 +234,7 @@ class Velkommen extends React.Component<Props, State> {
                             </>
                         )}
                     <Block visible={visInfoOmEndringsøknadIkkeTilgjengelig}>
-                        <VeilederMeldinger
+                        <VeilederInfo
                             messages={[
                                 {
                                     contentIntlKey: 'velkommen.endringssøknadIkkeTilgjengelig.veileder',

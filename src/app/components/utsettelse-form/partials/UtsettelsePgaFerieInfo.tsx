@@ -3,9 +3,7 @@ import UtsettelseFerieInfo from '../../utsettelse-ferie-info/UtsettelseFerieInfo
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
 import { Forelder } from 'common/types';
 import Block from 'common/components/block/Block';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
-import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../veileder-info/VeilederInfo';
 
 export interface Props {
     antallFeriedager: number;
@@ -19,16 +17,14 @@ class UtsettelsePgaFerieInfo extends React.Component<Props, {}> {
 
         if (!aktivtArbeidsforhold) {
             return (
-                <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                    <VeilederMeldinger
-                        messages={[
-                            {
-                                type: 'normal',
-                                contentIntlKey: 'utsettelseskjema.ferie.utenArbeidsforhold'
-                            }
-                        ]}
-                    />
-                </Veilederpanel>
+                <VeilederInfo
+                    messages={[
+                        {
+                            type: 'normal',
+                            contentIntlKey: 'utsettelseskjema.ferie.utenArbeidsforhold'
+                        }
+                    ]}
+                />
             );
         }
 

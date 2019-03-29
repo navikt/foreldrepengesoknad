@@ -15,7 +15,7 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
 import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
-import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../../../components/veileder-info/VeilederInfo';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
@@ -51,7 +51,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                 </Block>
 
                 {annenForelder.erForSyk === false && (
-                    <VeilederMeldinger
+                    <VeilederInfo
                         messages={[
                             {
                                 type: 'feil',

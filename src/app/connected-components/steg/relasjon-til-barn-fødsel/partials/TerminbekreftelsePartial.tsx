@@ -15,7 +15,7 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
 import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../../../components/veileder-info/VeilederInfo';
 
 export interface OwnProps {
     barn: UfødtBarn;
@@ -32,7 +32,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
     return (
         <React.Fragment>
             <Block margin="xs">
-                <VeilederMeldinger
+                <VeilederInfo
                     messages={[
                         {
                             type: 'normal',

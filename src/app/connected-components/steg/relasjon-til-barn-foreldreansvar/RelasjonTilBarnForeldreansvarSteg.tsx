@@ -28,7 +28,7 @@ import { fødselsdatoerErFyltUt } from '../../../util/validation/fødselsdato';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import visibility from './visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
 
 export interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
@@ -101,7 +101,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                 </Block>
 
                 <Block visible={visibility.harBarnOver15ÅrMelding(barn)} margin="s">
-                    <VeilederMeldinger
+                    <VeilederInfo
                         messages={[
                             {
                                 type: 'info',
@@ -112,7 +112,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                 </Block>
 
                 <Block visible={visibility.vedlegg(barn)}>
-                    <VeilederMeldinger
+                    <VeilederInfo
                         messages={[
                             {
                                 type: 'normal',

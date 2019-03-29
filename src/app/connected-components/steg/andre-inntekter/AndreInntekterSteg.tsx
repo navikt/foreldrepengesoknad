@@ -26,7 +26,7 @@ import { SøkerinfoProps } from '../../../types/søkerinfo';
 import YtelseInfoWrapper from 'common/components/ytelser-infobox/InformasjonOmYtelserWrapper';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { formatDate } from 'app/util/dates/dates';
-import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
 import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import {
     uttaksplanInneholderFrilansaktivitet,
@@ -98,7 +98,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                     <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} />
                     {harArbeidsforhold && (
                         <>
-                            <VeilederMeldinger
+                            <VeilederInfo
                                 messages={[
                                     {
                                         type: 'normal',

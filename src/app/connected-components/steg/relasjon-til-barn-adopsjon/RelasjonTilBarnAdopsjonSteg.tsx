@@ -26,7 +26,7 @@ import { HistoryProps } from '../../../types/common';
 import visibility from './visibility';
 import cleanupAdopsjonsSteg from '../../../util/cleanup/cleanupAdopsjonsSteg';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -164,7 +164,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
                 <Block visible={visibility.spørsmålOmVedlegg(barn, erEndringssøknad)}>
                     <Block margin="xs">
-                        <VeilederMeldinger
+                        <VeilederInfo
                             messages={[
                                 {
                                     type: 'normal',

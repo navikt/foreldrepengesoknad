@@ -17,7 +17,6 @@
     width: 100%;
     @noseColor: #d1bfa3;
     @mouthColor: #d19e9c;
-    transform: translate3d();
 
     .nose {
         stroke: @noseColor;
@@ -30,10 +29,6 @@
     .eye {
         animation: eyeBlink @blinkDuration infinite;
         animation-timing-function: ease;
-    }
-
-    &--stil-iNavVeilederPanel {
-        height: 100% !important;
     }
 
     #Mouth-happy {
@@ -72,19 +67,26 @@
         transition: fill 0.5s ease;
     }
 
-    &--tema-lilla #bakgrunn {
+    &--stil-normal-uten-bakgrunn {
+        height: 100% !important;
+    }
+
+    &--farge-lilla #bakgrunn {
         fill: #c1b5d0;
     }
 
-    &--tema-gronn #bakgrunn {
+    &--farge-gronn #bakgrunn {
         fill: #9bd0b0;
     }
 
-    &--tema-transparent #Background-veileder {
-        fill: none;
+    &--farge-transparent {
+        #Background-veileder,
+        #Background {
+            fill: none;
+        }
     }
 
-    &--tema-bla #bakgrunn {
+    &--farge-bla #bakgrunn {
         fill: #c2eaf7;
     }
 }
