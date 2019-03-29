@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Message } from '../VeilederpanelInnhold';
+import { Message } from '../VeilederInfo';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import BEMHelper from 'common/util/bem';
 

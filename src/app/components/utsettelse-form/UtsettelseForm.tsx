@@ -31,7 +31,7 @@ import HvorSkalDuJobbeSpørsmålFlervalg from 'app/spørsmål/HvorSkalDuJobbeSp�
 import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
 import { Tidsperioden, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import AlertStripe from 'nav-frontend-alertstriper';
-import VeilederMeldinger from '../veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../veileder-info/VeilederInfo';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
@@ -296,7 +296,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                         />
                                     </Block>
                                     <Block visible={periode.erArbeidstaker === true}>
-                                        <VeilederMeldinger
+                                        <VeilederInfo
                                             messages={[
                                                 {
                                                     type: 'normal',
@@ -307,7 +307,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                         />
                                     </Block>
                                     <Block visible={getVeilederForFrilansOgSNVisible(periode)}>
-                                        <VeilederMeldinger
+                                        <VeilederInfo
                                             messages={[
                                                 {
                                                     type: 'normal',

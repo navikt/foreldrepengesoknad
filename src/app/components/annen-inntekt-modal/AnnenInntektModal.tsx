@@ -24,7 +24,7 @@ import { getSkjemanummerForAndreInntekter } from 'common/storage/attachment/comp
 import { hasValueRule } from '../../util/validation/common';
 import InntektstypeSpørsmål from '../../spørsmål/InntektstypeSpørsmål';
 import Input from 'common/components/skjema/wrappers/Input';
-import VeilederMeldinger from '../veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../veileder-info/VeilederInfo';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
@@ -205,7 +205,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     />
                 </Block>
                 <Block visible={annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET}>
-                    <VeilederMeldinger
+                    <VeilederInfo
                         messages={[
                             {
                                 type: 'normal',

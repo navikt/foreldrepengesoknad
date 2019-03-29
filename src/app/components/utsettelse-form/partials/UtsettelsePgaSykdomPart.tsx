@@ -9,7 +9,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Skjemanummer } from '../../../types/søknad/Søknad';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
-import VeilederMeldinger from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../veileder-info/VeilederInfo';
 
 export interface UtsettelsePgaSykdomChangePayload {
     sykdomsårsak: UtsettelseÅrsakType;
@@ -81,7 +81,7 @@ class UtsettelsePgaSykdomPart extends React.Component<Props> {
                 </Block>
                 {visVedlegg(sykdomsårsak) && (
                     <Block>
-                        <VeilederMeldinger
+                        <VeilederInfo
                             messages={[
                                 {
                                     type: 'normal',

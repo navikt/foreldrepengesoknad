@@ -25,7 +25,7 @@ import TapteUttaksdagerFarMedmor from './meldinger/TapteUttaksdagerFarMedmor';
 import AdvarselIkon from '../uttaksplan-ikon/ikoner/AdvarselIkon';
 import { PeriodelisteInformasjon } from '../periodeliste/items/PeriodelisteInfo';
 import getMessage from 'common/util/i18nUtils';
-import VeilederMeldinger from '../veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../veileder-info/VeilederInfo';
 
 import './uttaksplanlegger.less';
 
@@ -254,7 +254,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 <TomUttaksplanInfo />
                             </Block>
                             <Block visible={informerOmNårPeriodenBegynnerÅLøpe} margin="none">
-                                <VeilederMeldinger
+                                <VeilederInfo
                                     messages={[
                                         {
                                             type: 'normal',

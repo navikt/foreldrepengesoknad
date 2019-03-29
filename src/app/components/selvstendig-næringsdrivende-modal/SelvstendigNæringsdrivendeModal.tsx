@@ -31,7 +31,7 @@ import { removeSpacesFromString } from '../../util/stringUtils';
 import { hasValueRule } from '../../util/validation/common';
 import { getFritekstfeltRules } from '../../util/validation/fritekstfelt';
 import { trimNumberFromInput } from 'common/util/numberUtils';
-import VeilederMeldinger from '../veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../veileder-info/VeilederInfo';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -160,7 +160,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         næring.næringstyper !== undefined &&
                         næring.næringstyper.some((n) => n === Næringstype.FISKER)
                     }>
-                    <VeilederMeldinger
+                    <VeilederInfo
                         messages={[
                             {
                                 contentIntlKey: 'selvstendigNæringsdrivende.modal.infoboks.forFisker',
@@ -331,7 +331,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 </Block>
 
                 <Block visible={visibility.formButtons(næring)} margin="none">
-                    <VeilederMeldinger
+                    <VeilederInfo
                         messages={[
                             {
                                 type: 'normal',
