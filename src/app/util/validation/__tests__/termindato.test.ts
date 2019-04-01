@@ -8,7 +8,7 @@ const intl: Partial<InjectedIntl> = {};
 const callIkkeMerEnn3UkerSiden = (termindato: Date) => {
     return getTermindatoRegler(termindato, intl as InjectedIntl)[1].test();
 };
-const callIUke22Pluss3 = (termindato: Date) => {
+const callIUke22 = (termindato: Date) => {
     return getTermindatoRegler(termindato, intl as InjectedIntl)[2].test();
 };
 
@@ -31,13 +31,13 @@ describe('Termindato validation', () => {
             expect(callIkkeMerEnn3UkerSiden(date22DaysAgo.toDate())).toBe(false);
         });
 
-        it('should be invalid if it is too late for applicant to be in uke22+3', () => {
-            expect(callIUke22Pluss3(attenUkerPluss4.toDate())).toEqual(false);
+        it('should be invalid if it is too late for applicant to be in uke22', () => {
+            expect(callIUke22(attenUkerPluss4.toDate())).toEqual(false);
         });
 
         it('should return true if date is valid', () => {
             expect(callIkkeMerEnn3UkerSiden(date21DaysAgo.toDate())).toEqual(true);
-            expect(callIUke22Pluss3(attenUkerPluss3.toDate())).toEqual(true);
+            expect(callIUke22(attenUkerPluss3.toDate())).toEqual(true);
         });
     });
 });
