@@ -24,7 +24,7 @@ export const getTermindatoRegler = (dato: DateValue, intl: InjectedIntl): Valida
         },
         {
             test: () => {
-                const uke22 = termindato.subtract(attenUkerPluss3Number * 24, 'hours');
+                const uke22 = termindato.subtract((attenUkerPluss3Number - 1) * 24, 'hours');
                 return moment.max(today, uke22).isSame(today, 'day');
             },
             failText: getMessage(intl, `${intlKey}.duMåVæreIUke22`)
