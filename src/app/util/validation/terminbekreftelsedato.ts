@@ -10,7 +10,7 @@ import { Avgrensninger } from 'common/types';
 export const getTerminbekreftelsedatoAvgrensninger = (termindato?: Date): Avgrensninger => ({
     minDato: termindato
         ? moment(termindato)
-              .subtract(attenUkerPluss3Number * 24, 'hours')
+              .subtract((attenUkerPluss3Number - 1) * 24, 'hours')
               .toDate()
         : date1YearAgo.toDate(),
     maksDato: today.toDate()
@@ -31,7 +31,7 @@ export const getTerminbekreftelseDatoRegler = (
         {
             test: () =>
                 moment
-                    .max(termindatoM.subtract(attenUkerPluss3Number * 24, 'hours'), terminbekreftelsedatoM)
+                    .max(termindatoM.subtract((attenUkerPluss3Number - 1) * 24, 'hours'), terminbekreftelsedatoM)
                     .isSame(terminbekreftelsedatoM, 'day'),
             failText: getMessage(intl, `${intlKey}.duMåVæreIUke22`)
         }
