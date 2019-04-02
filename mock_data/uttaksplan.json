@@ -1,0 +1,44 @@
+{
+    "grunnlag": {
+        "familieHendelseType": "ADPSJN",
+        "familieHendelseDato": "2019-02-06",
+        "dekningsgrad": 1,
+        "antallBarn": 1,
+        "søkerErFarEllerMedmor": false,
+        "morErAleneOmOmsorg": false,
+        "morHarRett": true,
+        "morErUfør": false,
+        "farMedmorErAleneOmOmsorg": false,
+        "farMedmorHarRett": true
+    },
+    "perioder": [
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FELLESPERIODE",
+            "trekkDager": null,
+            "arbeidstidprosent": 0.0,
+            "utbetalingprosent": null,
+            "gjelderAnnenPart": false,
+            "periode": {
+                "fom": "2019-05-01",
+                "tom": "2019-07-02"
+            }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": null,
+            "arbeidstidprosent": 0.0,
+            "utbetalingprosent": null,
+            "gjelderAnnenPart": false,
+            "periode": {
+                "fom": "2019-02-06",
+                "tom": "2019-04-30"
+            }
+        }
+    ]
+}
