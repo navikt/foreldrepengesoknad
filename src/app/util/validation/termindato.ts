@@ -9,7 +9,7 @@ import { Avgrensninger } from 'common/types';
 
 export const termindatoAvgrensninger: Avgrensninger = {
     minDato: date21DaysAgo.toDate(),
-    maksDato: attenUkerPluss3.toDate()
+    maksDato: attenUkerPluss3.subtract(24, 'hours').toDate()
 };
 
 export const getTermindatoRegler = (dato: DateValue, intl: InjectedIntl): Validator[] => {
@@ -24,8 +24,8 @@ export const getTermindatoRegler = (dato: DateValue, intl: InjectedIntl): Valida
         },
         {
             test: () => {
-                const uke22pluss3 = termindato.subtract(attenUkerPluss3Number * 24, 'hours');
-                return moment.max(today, uke22pluss3).isSame(today, 'day');
+                const uke22 = termindato.subtract((attenUkerPluss3Number - 1) * 24, 'hours');
+                return moment.max(today, uke22).isSame(today, 'day');
             },
             failText: getMessage(intl, `${intlKey}.duMåVæreIUke22`)
         }
