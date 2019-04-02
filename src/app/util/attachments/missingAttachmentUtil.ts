@@ -111,7 +111,8 @@ export const findMissingAttachmentsForPerioder = (
             missingAttachments.push({
                 index: perioder.indexOf(periode),
                 skjemanummer: getSkjemanummerForPeriode(periode),
-                type: getAttachmentTypeForPeriode(periode)
+                type: getAttachmentTypeForPeriode(periode),
+                periodeId: periode.id
             });
         }
     }

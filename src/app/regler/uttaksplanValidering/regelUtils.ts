@@ -5,27 +5,25 @@ import {
     Regel,
     RegelTestresultatInfo,
     RegelStatus,
-    RegelTestresultatInfoObject
+    RegelTestresultatInfoObject,
+    RegelAvvikInfo
 } from './types';
 import uttaksplanRegler from '.';
 import { InjectedIntl } from 'react-intl';
 import { isArray } from 'util';
+import { flatten, uniqBy } from 'lodash';
 import { guid } from 'nav-frontend-js-utils';
-import { flatten } from 'lodash';
 
 export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelStatus[] => {
     return uttaksplanRegler.map((regel) => {
         const resultat = regel.test(regelgrunnlag);
-        return resultat.passerer ? regelPasserer(regel) : regelHarAvvik(regel, resultat.info);
+        return resultat.passerer ? regelPasserer(regel) : regelHarAvvik(regel, resultat.info, resultat.periodeId);
     });
 };
 
 const getRegelIntlKey = (regel: Regel): string => `uttaksplan.validering.${regel.alvorlighet}.${regel.key}`;
 
-const ensureRegelTestresultatIntlKey = (
-    regel: Regel,
-    info?: Partial<RegelTestresultatInfo>
-): RegelTestresultatInfo => ({
+const ensureRegelAvvikIntlKey = (regel: Regel, info?: Partial<RegelTestresultatInfo>): RegelAvvikInfo => ({
     ...info,
     intlKey: info ? info.intlKey || getRegelIntlKey(regel) : getRegelIntlKey(regel)
 });
@@ -35,10 +33,11 @@ export const regelHarAvvik = (regel: Regel, info?: RegelTestresultatInfoObject, 
         id: guid(),
         key: regel.key,
         alvorlighet: regel.alvorlighet,
-        info: ensureRegelTestresultatIntlKey(regel, i),
+        info: ensureRegelAvvikIntlKey(regel, i),
         overstyrerRegler: regel.overstyrerRegler,
         overstyresAvRegel: regel.overstyresAvRegel,
-        periodeId
+        slåsSammenVedOppsummering: regel.slåsSammenVedOppsummering,
+        periodeId: i ? i.periodeId : periodeId
     });
     const regelAvvik: RegelAvvik[] = [];
     if (isArray(info)) {
@@ -93,7 +92,7 @@ const overstyrerAndreFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelA
 };
 
 export const trimRelaterteRegelAvvik = (avvik: RegelAvvik[]): RegelAvvik[] => {
-    return avvik.filter(overstyresAvFilter).filter(overstyrerAndreFilter);
+    return uniqBy(avvik.filter(overstyresAvFilter).filter(overstyrerAndreFilter), (a) => a.key);
 };
 
 export const getRegelIntlValues = (

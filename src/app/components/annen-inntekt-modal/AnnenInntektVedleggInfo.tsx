@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { AnnenInntektType } from '../../types/søknad/AnnenInntekt';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import VeilederpanelInnhold from '../veilederpanel-innhold/VeilederpanelInnhold';
-import Veileder from 'common/components/veileder/Veileder';
+import VeilederInfo from '../veileder-info/VeilederInfo';
 
 interface OwnProps {
     type?: AnnenInntektType;
@@ -17,16 +15,14 @@ const AnnenInntektVedleggInfo: React.StatelessComponent<Props> = ({ type }) => {
     const textKey = `inntektstype.${type.toLowerCase()}_info`;
 
     return (
-        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-            <VeilederpanelInnhold
-                messages={[
-                    {
-                        type: 'normal',
-                        contentIntlKey: textKey
-                    }
-                ]}
-            />
-        </Veilederpanel>
+        <VeilederInfo
+            messages={[
+                {
+                    type: 'normal',
+                    contentIntlKey: textKey
+                }
+            ]}
+        />
     );
 };
 

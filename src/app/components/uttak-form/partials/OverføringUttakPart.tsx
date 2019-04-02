@@ -7,9 +7,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { getOverføringÅrsakSkjemanummer } from '../../../util/skjemanummer/overføringÅrsakSkjemanummer';
 import { RecursivePartial } from '../../../types/Partial';
 import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
-import VeilederpanelInnhold, { Message } from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
+import VeilederInfo, { VeilederMessage } from '../../veileder-info/VeilederInfo';
 
 interface Props {
     årsak?: OverføringÅrsakType;
@@ -32,7 +30,7 @@ export const visVedlegg = (søkerErFarEllerMedmor: boolean, årsak: Overføring�
     }
 };
 
-const getVeilederInfotekst = (årsak: OverføringÅrsakType, navnAnnenForelder: string): Message => {
+const getVeilederInfotekst = (årsak: OverføringÅrsakType, navnAnnenForelder: string): VeilederMessage => {
     if (årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder) {
         return {
             type: 'normal',
@@ -69,9 +67,7 @@ class OverføringUttakPart extends React.Component<Props> {
                     />
                 </Block>
                 <Block visible={visVedlegg(søkerErFarEllerMedmor, årsak)}>
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold messages={[getVeilederInfotekst(årsak!, navnAnnenForelder)]} />
-                    </Veilederpanel>
+                    <VeilederInfo messages={[getVeilederInfotekst(årsak!, navnAnnenForelder)]} />
                     <VedleggSpørsmål
                         vedlegg={vedleggList}
                         attachmentType={AttachmentType.OVERFØRING_KVOTE}

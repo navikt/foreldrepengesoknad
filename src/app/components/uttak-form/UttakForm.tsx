@@ -51,9 +51,7 @@ import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
 import lenker from 'app/util/routing/lenker';
 import UlønnetPermisjonInfo from './partials/UlønnetPermisjonInfo';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
-import VeilederpanelInnhold, { Message } from '../veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo, { VeilederMessage } from '../veileder-info/VeilederInfo';
 import FlernbarnsdagerSpørsmål from './partials/FlerbarnsdagerSpørsmål';
 import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 import { selectArbeidsforhold, selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
@@ -124,7 +122,7 @@ const getOppholdsInfotekst = (
     familiehendelsesdato: Date,
     søkerErMor: boolean,
     navn: NavnISøknaden
-): Message[] => {
+): VeilederMessage[] => {
     return periodeErInnenDeFørsteSeksUkene(periode as Periode, familiehendelsesdato) && søkerErMor
         ? [
               {
@@ -412,25 +410,23 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                             />
                         )}
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.ønskerFlerbarnsdager)}>
-                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                                <VeilederpanelInnhold
-                                    messages={[
-                                        {
-                                            type: 'normal',
-                                            contentIntlKey: søknadsinfo.søknaden.erDeltUttak
-                                                ? 'uttaksplan.informasjon.flerbarnssøknad'
-                                                : 'uttaksplan.informasjon.flerbarnssøknad.ikkeDeltUttak',
-                                            values: {
-                                                navnMor: søknadsinfo.navn.mor.fornavn,
-                                                uker: getFlerbarnsuker(
-                                                    søknadsinfo.søknaden.dekningsgrad!,
-                                                    søknadsinfo.søknaden.antallBarn
-                                                )
-                                            }
+                            <VeilederInfo
+                                messages={[
+                                    {
+                                        type: 'normal',
+                                        contentIntlKey: søknadsinfo.søknaden.erDeltUttak
+                                            ? 'uttaksplan.informasjon.flerbarnssøknad'
+                                            : 'uttaksplan.informasjon.flerbarnssøknad.ikkeDeltUttak',
+                                        values: {
+                                            navnMor: søknadsinfo.navn.mor.fornavn,
+                                            uker: getFlerbarnsuker(
+                                                søknadsinfo.søknaden.dekningsgrad!,
+                                                søknadsinfo.søknaden.antallBarn
+                                            )
                                         }
-                                    ]}
-                                />
-                            </Veilederpanel>
+                                    }
+                                ]}
+                            />
                             <FlernbarnsdagerSpørsmål periode={periode} onChange={this.onChange} />
                         </Block>
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.erMorForSyk)}>
@@ -442,17 +438,16 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
                             periode.erMorForSyk === true && (
                                 <>
-                                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                                        <VeilederpanelInnhold
-                                            messages={[
-                                                {
-                                                    type: 'normal',
-                                                    contentIntlKey: 'uttaksplan.informasjon.morErForSyk',
-                                                    values: { navnMor: navnPåForeldre.mor }
-                                                }
-                                            ]}
-                                        />
-                                    </Veilederpanel>
+                                    <VeilederInfo
+                                        messages={[
+                                            {
+                                                type: 'normal',
+                                                contentIntlKey: 'uttaksplan.informasjon.morErForSyk',
+                                                values: { navnMor: navnPåForeldre.mor }
+                                            }
+                                        ]}
+                                    />
+
                                     <Block>
                                         <VedleggSpørsmål
                                             attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
@@ -466,16 +461,14 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
                             periode.erMorForSyk === false && (
                                 <>
-                                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                                        <VeilederpanelInnhold
-                                            messages={[
-                                                {
-                                                    type: 'normal',
-                                                    contentIntlKey: 'uttaksplan.informasjon.morErForSykNeiSvar'
-                                                }
-                                            ]}
-                                        />
-                                    </Veilederpanel>
+                                    <VeilederInfo
+                                        messages={[
+                                            {
+                                                type: 'normal',
+                                                contentIntlKey: 'uttaksplan.informasjon.morErForSykNeiSvar'
+                                            }
+                                        ]}
+                                    />
                                 </>
                             )}
 
@@ -529,16 +522,14 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                 {periode.type === Periodetype.Opphold && (
                     <>
                         {periode.årsak !== undefined && (
-                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                                <VeilederpanelInnhold
-                                    messages={getOppholdsInfotekst(
-                                        periode as Periode,
-                                        søknadsinfo.søknaden.familiehendelsesdato,
-                                        søknadsinfo.søker.erMor,
-                                        søknadsinfo.navn
-                                    )}
-                                />
-                            </Veilederpanel>
+                            <VeilederInfo
+                                messages={getOppholdsInfotekst(
+                                    periode as Periode,
+                                    søknadsinfo.søknaden.familiehendelsesdato,
+                                    søknadsinfo.søker.erMor,
+                                    søknadsinfo.navn
+                                )}
+                            />
                         )}
                     </>
                 )}
