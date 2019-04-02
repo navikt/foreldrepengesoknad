@@ -41,7 +41,6 @@ import { getVeilederInfoText } from 'app/util/uttaksplan/steg/util';
 import { selectUttaksplanVeilederinfo } from 'app/selectors/uttaksplanVeilederinfoSelector';
 import VeilederInfo, { VeilederMessage } from '../../../components/veileder-info/VeilederInfo';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { RegelAvvik } from '../../../regler/uttaksplanValidering/types';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
@@ -194,10 +193,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             søknadsinfo.søknaden.erEndringssøknad
         );
 
-        const avvik: RegelAvvik[] | undefined = uttaksplanValidering.regelTestResultat
-            ? uttaksplanValidering.regelTestResultat.avvik
-            : undefined;
-
         return (
             <Steg
                 {...this.props.stegProps}
@@ -251,7 +246,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 </Block>
                             )}
 
-                        <Block visible={!!avvik}>
+                        <Block visible={uttaksplanVeilederInfo.length > 0}>
                             <VeilederInfo
                                 messages={uttaksplanVeilederInfo}
                                 paneltype="plakat"
