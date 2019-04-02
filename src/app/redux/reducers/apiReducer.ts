@@ -4,6 +4,7 @@ import { Søkerinfo } from '../../types/søkerinfo';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import Sak from '../../types/søknad/Sak';
 import { StorageKvittering } from '../../types/StorageKvittering';
+import { SakForEndring } from '../../types/s\u00F8knad/SakForEndring';
 
 export interface ApiState {
     søkerinfo?: Søkerinfo;
@@ -14,8 +15,10 @@ export interface ApiState {
     isLoadingStoredAppState: boolean;
     isLoadingTilgjengeligeStønadskontoer: boolean;
     isLoadingSaker: boolean;
+    isLoadingSakForEndring: boolean;
     sessionHasExpired: boolean;
     oppslagSakerFeilet?: boolean;
+    oppslagSakFeilet?: boolean;
     søknadSendingInProgress: boolean;
     søknadHasBeenReceived: boolean;
     stønadskontoer100: TilgjengeligStønadskonto[];
@@ -24,6 +27,7 @@ export interface ApiState {
     søkerinfoLastetCounter: number;
     systemerIkkeTilgjengelig: boolean;
     storageKvittering?: StorageKvittering;
+    sakForEndring?: SakForEndring;
 }
 
 export type ApiStatePartial = Partial<ApiState>;
@@ -34,6 +38,7 @@ export const getDefaultApiState = (): ApiState => ({
     isLoadingStoredAppState: false,
     isLoadingTilgjengeligeStønadskontoer: false,
     isLoadingSaker: false,
+    isLoadingSakForEndring: false,
     sessionHasExpired: false,
     søknadSendingInProgress: false,
     søknadHasBeenReceived: false,

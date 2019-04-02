@@ -37,6 +37,14 @@ const getSaker = () => {
     });
 };
 
+const getSakForEndring = (saksnummer: string) => {
+    return axios.get(`${apiBaseUrl}/innsyn/uttaksplan`, {
+        timeout: 60 * 1000,
+        withCredentials: true,
+        params: { saksnummer }
+    });
+};
+
 function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
     const {
         antallBarn,
@@ -135,6 +143,7 @@ const Api = {
     deleteStoredAppState,
     sendStorageKvittering,
     getStorageKvittering,
+    getSakForEndring,
     log
 };
 
