@@ -2,7 +2,7 @@
     "grunnlag": {
         "familieHendelseType": "ADPSJN",
         "familieHendelseDato": "2019-02-06",
-        "dekningsgrad": 1,
+        "dekningsgrad": 100,
         "antallBarn": 1,
         "søkerErFarEllerMedmor": false,
         "morErAleneOmOmsorg": false,

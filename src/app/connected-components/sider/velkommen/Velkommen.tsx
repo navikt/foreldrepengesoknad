@@ -91,16 +91,20 @@ class Velkommen extends React.Component<Props, State> {
 
     startSøknad(erEndringssøknad: boolean | undefined) {
         const { sakForEndringssøknad, history, dispatch } = this.props;
+        const saksnummer =
+            erEndringssøknad === true && sakForEndringssøknad && sakForEndringssøknad.saksnummer
+                ? sakForEndringssøknad.saksnummer
+                : undefined;
         dispatch(
             søknadActions.updateSøknad({
                 erEndringssøknad: erEndringssøknad === true,
-                saksnummer:
-                    erEndringssøknad === true && sakForEndringssøknad && sakForEndringssøknad.saksnummer
-                        ? sakForEndringssøknad.saksnummer
-                        : undefined
+                saksnummer
             })
         );
         dispatch(apiActionCreators.storeAppState());
+        if (saksnummer && erEndringssøknad) {
+            dispatch(apiActionCreators.getSakForEndring(saksnummer));
+        }
         history.push('soknad/inngang');
     }
 
