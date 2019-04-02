@@ -1,22 +1,27 @@
 .skjemaelement {
     margin-bottom: 0;
+
     .skjemaelement__label {
         font-weight: bold;
     }
+
     .skjemaelement__label {
         font-weight: bold;
     }
+
     &--horisontal {
         .skjemaelement__label {
             font-weight: normal;
         }
     }
+
     &--undersporsmal {
         .skjemaelement__label {
             font-weight: normal;
         }
     }
 }
+
 .skjema {
     &__legend {
         font-size: 1rem;
@@ -27,4 +32,19 @@
 
 .nav-veilederpanel {
     margin-bottom: 1rem;
+}
+
+.alertstripe--noBorder {
+    border: none;
+}
+
+.nav-veilederpanel--kompakt.nav-veilederpanel--plakat {
+    @media (max-width: @mobile-breakpoint) {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    svg {
+        height: 100%;
+    }
 }

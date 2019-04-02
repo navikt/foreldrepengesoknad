@@ -26,9 +26,7 @@ import { SøkerinfoProps } from '../../../types/søkerinfo';
 import YtelseInfoWrapper from 'common/components/ytelser-infobox/InformasjonOmYtelserWrapper';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { formatDate } from 'app/util/dates/dates';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
-import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
 import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import {
     uttaksplanInneholderFrilansaktivitet,
@@ -100,17 +98,15 @@ class AndreInntekterSteg extends React.Component<Props> {
                     <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} />
                     {harArbeidsforhold && (
                         <>
-                            <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                                <VeilederpanelInnhold
-                                    messages={[
-                                        {
-                                            type: 'normal',
-                                            contentIntlKey: 'annenInntekt.arbeidsforhold.veileder',
-                                            values: { dato: fireUkerFørFørsteUttaksdag }
-                                        }
-                                    ]}
-                                />
-                            </Veilederpanel>
+                            <VeilederInfo
+                                messages={[
+                                    {
+                                        type: 'normal',
+                                        contentIntlKey: 'annenInntekt.arbeidsforhold.veileder',
+                                        values: { dato: fireUkerFørFørsteUttaksdag }
+                                    }
+                                ]}
+                            />
                         </>
                     )}
                 </Block>

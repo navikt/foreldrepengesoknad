@@ -5,14 +5,15 @@ import VeilederNormal from './VeilederNormalSvg';
 import VeilederKompakt from './VeilederKompaktSvg';
 
 import './veileder.less';
-import VeilederKompaktUtenBakgrunn from './VeilederKompaktUtenBakgrunnSVG';
 
-export type Ansiktstype = 'glad' | 'undrende' | 'skeptisk';
+export type VeilederAnsiktstype = 'glad' | 'undrende' | 'skeptisk';
+export type VeilederStil = 'normal' | 'kompakt';
 
 export interface VeilederProps {
-    ansikt?: 'glad' | 'undrende' | 'skeptisk';
-    farge?: 'lilla' | 'gronn' | 'bla';
-    stil?: 'normal' | 'kompakt' | 'kompakt-uten-bakgrunn';
+    ansikt?: VeilederAnsiktstype;
+    farge?: 'lilla' | 'gronn' | 'bla' | 'transparent';
+    stil?: VeilederStil;
+    height?: string;
 }
 
 interface OwnProps {
@@ -22,28 +23,26 @@ interface OwnProps {
 type Props = VeilederProps & OwnProps;
 
 const Veileder = (props: Props) => {
-    const { className, farge = 'lilla', ansikt = 'glad', stil = 'normal', ...rest } = props;
+    const { className, farge = 'lilla', ansikt = 'glad', stil = 'normal', height = '184', ...rest } = props;
 
     const svgProps = {
         ...rest,
         width: '184',
-        height: '184',
+        height,
         className: classnames(
             'veileder',
-            `veileder--tema-${farge}`,
             `veileder--${ansikt}`,
-            `veileder--${stil}`,
+            `veileder--farge-${farge}`,
+            `veileder--stil-${stil}`,
             props.className
         )
     };
 
     switch (stil) {
         case 'kompakt':
-            return <VeilederKompakt svgProps={svgProps} />;
-        case 'kompakt-uten-bakgrunn':
-            return <VeilederKompaktUtenBakgrunn svgProps={svgProps} />;
+            return <VeilederKompakt svgProps={svgProps} transparentBackground={farge === 'transparent'} />;
         default:
-            return <VeilederNormal svgProps={svgProps} />;
+            return <VeilederNormal svgProps={svgProps} transparentBackground={farge === 'transparent'} />;
     }
 };
 

@@ -39,12 +39,11 @@ import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsu
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
 import { getVeilederInfoText } from 'app/util/uttaksplan/steg/util';
 import { selectUttaksplanVeilederinfo } from 'app/selectors/uttaksplanVeilederinfoSelector';
-import VeilederpanelInnhold, { Message } from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
+import VeilederInfo, { VeilederMessage } from '../../../components/veileder-info/VeilederInfo';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
+import getMessage from 'common/util/i18nUtils';
 
 interface StateProps {
     stegProps: StegProps;
@@ -60,7 +59,7 @@ interface StateProps {
     vedleggForSenEndring: Attachment[];
     tilleggsopplysninger: Tilleggsopplysninger;
     aktivitetsfriKvote: number;
-    uttaksplanVeilederinfo: Message[];
+    uttaksplanVeilederInfo: VeilederMessage[];
 }
 
 interface UttaksplanStegState {
@@ -178,7 +177,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             tilleggsopplysninger,
             søknadsinfo,
             aktivitetsfriKvote,
-            uttaksplanVeilederinfo
+            uttaksplanVeilederInfo,
+            intl
         } = this.props;
 
         if (!søknadsinfo) {
@@ -221,9 +221,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
-                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                            <VeilederpanelInnhold messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote)]} />
-                        </Veilederpanel>
+                        <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote)]} />
                         <Block>
                             <Uttaksplanlegger
                                 uttaksplan={søknad.uttaksplan}
@@ -247,11 +245,17 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                     />
                                 </Block>
                             )}
-                        <Block margin="xs" visible={uttaksplanVeilederinfo.length > 0}>
-                            <Veilederpanel kompakt={true} type="plakat" svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                                <VeilederpanelInnhold messages={uttaksplanVeilederinfo} />
-                            </Veilederpanel>
+
+                        <Block visible={uttaksplanVeilederInfo.length > 0}>
+                            <VeilederInfo
+                                messages={uttaksplanVeilederInfo}
+                                paneltype="plakat"
+                                kompakt={true}
+                                veilederStil={'normal'}
+                                ariaTittel={getMessage(intl, 'uttaksplan.regelAvvik.ariaTittel')}
+                            />
                         </Block>
+
                         {årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
                             <BegrunnelseForSenEndring
                                 årsak={årsakTilSenEndring}
@@ -340,7 +344,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         årsakTilSenEndring,
         vedleggForSenEndring: søknad.vedleggForSenEndring,
         tilleggsopplysninger: søknad.tilleggsopplysninger,
-        uttaksplanVeilederinfo: selectUttaksplanVeilederinfo(props.intl)(state),
+        uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl)(state),
         aktivitetsfriKvote
     };
 };

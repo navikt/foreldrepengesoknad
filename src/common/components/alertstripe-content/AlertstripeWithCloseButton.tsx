@@ -18,7 +18,7 @@ interface AlertstripeContentProps {
 const AlertstripeWithCloseButton = ({ lukknappProps, onClose, errorMessages }: AlertstripeContentProps) => {
     const cls = BEMHelper('alertStripeContent');
     return (
-        <AlertStripe type="advarsel" solid={true}>
+        <AlertStripe type="feil" solid={true}>
             <div className={cls.className}>
                 {errorMessages.length === 1 && (
                     <Normaltekst className={cls.element('title')}>{errorMessages[0]}</Normaltekst>

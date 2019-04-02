@@ -15,9 +15,7 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
 import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
-import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../../../components/veileder-info/VeilederInfo';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
@@ -53,16 +51,14 @@ class UfødtBarnPartial extends React.Component<Props> {
                 </Block>
 
                 {annenForelder.erForSyk === false && (
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold
-                            messages={[
-                                {
-                                    type: 'feil',
-                                    contentIntlKey: 'annenForelder.morIkkeSyk'
-                                }
-                            ]}
-                        />
-                    </Veilederpanel>
+                    <VeilederInfo
+                        messages={[
+                            {
+                                type: 'feil',
+                                contentIntlKey: 'annenForelder.morIkkeSyk'
+                            }
+                        ]}
+                    />
                 )}
 
                 {erMorEllerMorErForSyk && (

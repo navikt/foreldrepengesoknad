@@ -753,7 +753,8 @@
         "Du kan ta ut eller utsetje foreldrepengane dine tidlegast frå veke sju etter fødselen. Dersom du skal ta ut foreldrepengar tidlegare fordi mor er sjuk eller innlagd, må du søkje på papir.",
     "uttaksplan.validering.feil.uttaksmengdeForFarMedmorErForHøy":
         "Du har lagt inn fleire dagar enn du har tilgjengeleg",
-    "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mykje uttak av {konto}",
+    "uttaksplan.validering.feil.forMyeUttak.tittel": "Lagt inn for mange dager i planen",
+    "uttaksplan.validering.feil.forMyeUttak": "Det er registrert {dager} for mykje uttak av {konto}",
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
         "Du er for tidleg ute. Du kan tidlegast søkje seks veker før du skal ha foreldrepengar. Du må vente med å sende søknaden din til {dato}",
     "uttaksplan.validering.feil.uttaksplanGraderingStørreEnnSamtidigUttak":
@@ -797,6 +798,7 @@
         "Planen din inneheld periodar med tapte foreldrepengar. Du står i fare for å miste dagar om du ikkje legg inn ei utsetjing eller ein periode med foreldrepengar.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Plan inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Hugs at du må søkja om foreldrepengar seinast {sisteDag}.",
+    "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad.tittel": "Plan inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad":
         "Hugs at du må legge inn alle nye periodar du skal ha foreldrepenger eller utsetje etter {sisteDag}, då denne endringssøknaden erstattar den tidlegare planen din.",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie.tittel": "Søkja om ferie tilbake i tid",
@@ -808,6 +810,7 @@
     "uttaksplan.veileder.planenAdvarerOmUttak.tittel": "Søkja om å kombinere foreldrepengar med arbeid tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUttak":
         "Du må søkje om å kombinere foreldrepengane med delvis arbeid seinast dagen før du begynner å jobbe. Når du søkjer etter at du har begynt å jobbe, mistar du dagar med foreldrepengar ut frå stillingsprosenten du har jobba i, fram til vi får søknaden din. Dersom du melder frå til NAV før du begynner å jobbe, mistar du ikkje dagar med foreldrepengar.",
+    "uttaksplan.regelAvvik.ariaTittel": "Detaljer om planen",
     "uttaksplan.senEndring.veileder.SYKDOM":
         "Du søkjer om å utsetje på grunn av sjukdom tilbake i tid. Her kan du fortelje kva som er grunnen til at du ikkje har søkt tidlegare. Det er også mogleg for deg å laste opp relevant dokumentasjon.",
     "uttaksplan.senEndring.veileder.UTTAK":
@@ -827,8 +830,6 @@
     "uttaksplanSkjema.info.reservertMor":
         "Dersom du startar uttaket ditt i dei første seks vekene etter fødselen, må du kunne dokumentere at mor er for sjuk til å ta seg av barnet, eller at ho er innlagd på sjukehus eller helseinstitusjon.",
     "uttaksplanSkjema.info.manglerVedlegg": "Du har ikkje lasta opp påkrevd dokumentasjon.",
-    "uttaksteg.overtruknedager.info.tittel": "Lagt inn for mange dager i planen",
-    "uttaksteg.overtruknedager.info": "Du har tatt {varighet} for mykje av {konto}",
     "validerbarForm.ukjentFeil": "Verdien er ikkje gyldig",
     "validering.oppsummeringstittel": "Du må rette opp i følgjande feil:",
     "valideringsfeil.fodselsdato.duMåOppgi": "Du må gi opp fødselsdatoen",

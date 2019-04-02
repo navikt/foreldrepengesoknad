@@ -14,9 +14,7 @@ import { getStillingsprosentRegler } from '../../../util/validation/stillingspro
 import { getVarighetString } from 'common/util/intlUtils';
 import { finnAntallDagerÅTrekke } from '../../../util/uttaksPlanStatus';
 import { Perioden } from '../../../util/uttaksplan/Perioden';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
-import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../veileder-info/VeilederInfo';
 
 interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
@@ -104,19 +102,17 @@ class GradertUttakForm extends React.Component<Props> {
                     visible={
                         !!periode.gradert && periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0
                     }>
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold
-                            messages={[
-                                {
-                                    type: 'normal',
-                                    contentIntlKey: periode.erArbeidstaker
-                                        ? 'vedlegg.veileder.dokumentasjonAvArbeidVedGradering'
-                                        : 'uttaksplan.infoTilFrilansOgSelvstendig',
-                                    formatContentAsHTML: true
-                                }
-                            ]}
-                        />
-                    </Veilederpanel>
+                    <VeilederInfo
+                        messages={[
+                            {
+                                type: 'normal',
+                                contentIntlKey: periode.erArbeidstaker
+                                    ? 'vedlegg.veileder.dokumentasjonAvArbeidVedGradering'
+                                    : 'uttaksplan.infoTilFrilansOgSelvstendig',
+                                formatContentAsHTML: true
+                            }
+                        ]}
+                    />
                 </Block>
             </>
         );

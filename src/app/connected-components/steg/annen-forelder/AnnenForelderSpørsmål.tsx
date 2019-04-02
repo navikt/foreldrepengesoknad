@@ -20,9 +20,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AnnenForelderSpørsmålKeys, AnnenForelderStegVisibility } from './visibility/annenForelderStegVisibility';
 import { DateValue } from '../../../types/common';
 import { getFamiliehendelsedato } from '../../../util/uttaksplan';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
-import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
+import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
 
 export interface OwnProps {
     annenForelder: AnnenForelder;
@@ -124,19 +122,17 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         søker.erAleneOmOmsorg !== undefined &&
                         søker.erAleneOmOmsorg
                     }>
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold
-                            messages={[
-                                {
-                                    type: 'normal',
-                                    contentIntlKey: 'annenForelder.veileder.aleneOmsorg.forBarnet',
-                                    values: {
-                                        navn: annenForelder.fornavn
-                                    }
+                    <VeilederInfo
+                        messages={[
+                            {
+                                type: 'normal',
+                                contentIntlKey: 'annenForelder.veileder.aleneOmsorg.forBarnet',
+                                values: {
+                                    navn: annenForelder.fornavn
                                 }
-                            ]}
-                        />
-                    </Veilederpanel>
+                            }
+                        ]}
+                    />
                 </Block>
 
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger)}>
@@ -160,19 +156,17 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger) &&
                         annenForelder.harRettPåForeldrepenger === true
                     }>
-                    <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                        <VeilederpanelInnhold
-                            messages={[
-                                {
-                                    type: 'normal',
-                                    contentIntlKey: 'annenForelder.veileder.rettigheterOgDelingAvUttaksplan',
-                                    values: {
-                                        navn: annenForelder.fornavn
-                                    }
+                    <VeilederInfo
+                        messages={[
+                            {
+                                type: 'normal',
+                                contentIntlKey: 'annenForelder.veileder.rettigheterOgDelingAvUttaksplan',
+                                values: {
+                                    navn: annenForelder.fornavn
                                 }
-                            ]}
-                        />
-                    </Veilederpanel>
+                            }
+                        ]}
+                    />
                 </Block>
 
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)} margin="none">
@@ -184,17 +178,15 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         />
                     </Block>
                     {annenForelder.erInformertOmSøknaden === false && (
-                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                            <VeilederpanelInnhold
-                                messages={[
-                                    {
-                                        type: 'normal',
-                                        contentIntlKey: 'erAnnenForelderInformert.veilederIkkeInformert',
-                                        values: { navn: annenForelder.fornavn }
-                                    }
-                                ]}
-                            />
-                        </Veilederpanel>
+                        <VeilederInfo
+                            messages={[
+                                {
+                                    type: 'normal',
+                                    contentIntlKey: 'erAnnenForelderInformert.veilederIkkeInformert',
+                                    values: { navn: annenForelder.fornavn }
+                                }
+                            ]}
+                        />
                     )}
                 </Block>
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.datoForAleneomsorg)}>
@@ -215,16 +207,14 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         barn.datoForAleneomsorg !== undefined
                     }>
                     <Block margin="xs">
-                        <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                            <VeilederpanelInnhold
-                                messages={[
-                                    {
-                                        type: 'normal',
-                                        contentIntlKey: 'far.dokumantasjonAvAleneomsorg.vedlegg.veileder'
-                                    }
-                                ]}
-                            />
-                        </Veilederpanel>
+                        <VeilederInfo
+                            messages={[
+                                {
+                                    type: 'normal',
+                                    contentIntlKey: 'far.dokumantasjonAvAleneomsorg.vedlegg.veileder'
+                                }
+                            ]}
+                        />
                     </Block>
 
                     <AttachmentsUploaderPure

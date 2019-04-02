@@ -1,6 +1,10 @@
 import { InjectedIntl } from 'react-intl';
 import { getUkerOgDagerFromDager } from 'common/util/datoUtils';
 
+export function intlHasKey(intl: InjectedIntl, key: string) {
+    return intl.messages[key] !== undefined;
+}
+
 export const getVarighetString = (antallDager: number, intl: InjectedIntl): string => {
     const { uker, dager } = getUkerOgDagerFromDager(Math.abs(antallDager));
     const dagerStr = intl.formatMessage(
