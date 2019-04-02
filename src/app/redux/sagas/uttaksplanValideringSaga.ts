@@ -12,7 +12,6 @@ import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/
 import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { erSenUtsettelsePgaFerieEllerArbeid } from 'app/util/uttaksplan/uttakUtils';
-import { Feature, isFeatureEnabled } from 'app/Feature';
 import { UttaksplanRegelTestresultat, RegelAlvorlighet } from '../../regler/uttaksplanValidering/types';
 import { sjekkUttaksplanOppMotRegler, getRegelAvvik } from '../../regler/uttaksplanValidering/regelUtils';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
@@ -27,7 +26,7 @@ const validerPeriode = (state: AppState, periode: Periode): ValidertPeriode => {
     if (hasPeriodeMissingAttachment(periode, søknadsinfo!)) {
         advarsler.push({ advarselKey: PeriodeAdvarselKey.MANGLENDE_VEDLEGG });
     }
-    if (isFeatureEnabled(Feature.ferieOgArbeidTilbakeITid) && erSenUtsettelsePgaFerieEllerArbeid(periode)) {
+    if (erSenUtsettelsePgaFerieEllerArbeid(periode)) {
         advarsler.push({ advarselKey: PeriodeAdvarselKey.SEN_ÅRSAK_OG_TIDSPERIODE });
     }
 
