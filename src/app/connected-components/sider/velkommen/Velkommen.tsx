@@ -23,7 +23,6 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import Knapperad from 'common/components/knapperad/Knapperad';
-import { apiActionCreators } from '../../../redux/actions';
 import SøknadstypeSpørsmål from '../../../spørsmål/SøknadstypeSpørsmål';
 import Block from 'common/components/block/Block';
 import Sak, { SakType } from '../../../types/søknad/Sak';
@@ -89,23 +88,13 @@ class Velkommen extends React.Component<Props, State> {
         );
     }
 
-    startSøknad(erEndringssøknad: boolean | undefined) {
-        const { sakForEndringssøknad, history, dispatch } = this.props;
+    handleStartSøknad(erEndringssøknad: boolean | undefined) {
+        const { søkerinfo, sakForEndringssøknad, history, dispatch } = this.props;
         const saksnummer =
             erEndringssøknad === true && sakForEndringssøknad && sakForEndringssøknad.saksnummer
                 ? sakForEndringssøknad.saksnummer
                 : undefined;
-        dispatch(
-            søknadActions.updateSøknad({
-                erEndringssøknad: erEndringssøknad === true,
-                saksnummer
-            })
-        );
-        dispatch(apiActionCreators.storeAppState());
-        if (saksnummer && erEndringssøknad) {
-            dispatch(apiActionCreators.getSakForEndring(saksnummer));
-        }
-        history.push('soknad/inngang');
+        dispatch(søknadActions.startSøknad(søkerinfo, erEndringssøknad === true, saksnummer, history));
     }
 
     getStartSøknadKnappLabel(): string {
@@ -261,7 +250,7 @@ class Velkommen extends React.Component<Props, State> {
                             <Hovedknapp
                                 className={`${bem.element('startSøknadKnapp')} blokk-m`}
                                 disabled={!harGodkjentVilkår}
-                                onClick={() => this.startSøknad(this.state.skalEndre)}>
+                                onClick={() => this.handleStartSøknad(this.state.skalEndre)}>
                                 {this.getStartSøknadKnappLabel()}
                             </Hovedknapp>
                         </Knapperad>

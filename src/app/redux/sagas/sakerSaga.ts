@@ -1,10 +1,10 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
-import { ApiActionKeys, GetSakForEndring } from '../actions/api/apiActionDefinitions';
+import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import Sak from '../../types/søknad/Sak';
 import { skalKunneSøkeOmEndring, harSakUnderBehandling } from '../../util/saker/sakerUtils';
-import { getSakForEndringFromDTO } from '../../api/utils/sakForEndringUtil';
+import { getSakForEndringFromDTO } from '../../api/utils/sakForEndringApiUtil';
 
 function* getSaker() {
     try {
@@ -46,20 +46,11 @@ function* getSaker() {
     }
 }
 
-function* getSakForEndring(getSakAction: GetSakForEndring) {
+export function* fetchSakForEndring(saksnummer: string) {
     try {
         yield put(apiActions.updateApi({ isLoadingSakForEndring: true }));
-
-        const response = yield call(Api.getSakForEndring, getSakAction.saksnummer);
-        const sakForEndring = getSakForEndringFromDTO(response.data);
-
-        if (sakForEndring !== undefined) {
-            yield put(
-                apiActions.updateApi({
-                    sakForEndring
-                })
-            );
-        }
+        const response = yield call(Api.getSakForEndring, saksnummer);
+        return getSakForEndringFromDTO(response.data);
     } catch (error) {
         yield put(
             apiActions.updateApi({
@@ -77,5 +68,4 @@ function* getSakForEndring(getSakAction: GetSakForEndring) {
 
 export default function* sakerSaga() {
     yield all([takeLatest(ApiActionKeys.GET_SAKER, getSaker)]);
-    yield all([takeLatest(ApiActionKeys.GET_SAK_FOR_ENDRING, getSakForEndring)]);
 }

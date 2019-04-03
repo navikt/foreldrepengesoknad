@@ -1,6 +1,6 @@
 {
     "grunnlag": {
-        "familieHendelseType": "ADPSJN",
+        "familieHendelseType": "FODSL",
         "familieHendelseDato": "2019-02-06",
         "dekningsgrad": 100,
         "antallBarn": 1,
@@ -9,7 +9,9 @@
         "morHarRett": true,
         "morErUfør": false,
         "farMedmorErAleneOmOmsorg": false,
-        "farMedmorHarRett": true
+        "farMedmorHarRett": true,
+        "søkerKjønn": "K",
+        "erBarnetFødt": false
     },
     "perioder": [
         {
