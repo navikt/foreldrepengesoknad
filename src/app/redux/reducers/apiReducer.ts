@@ -4,7 +4,7 @@ import { Søkerinfo } from '../../types/søkerinfo';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import Sak from '../../types/søknad/Sak';
 import { StorageKvittering } from '../../types/StorageKvittering';
-import { SakForEndring } from '../../types/s\u00F8knad/SakForEndring';
+import { SakForEndring } from '../../types/søknad/SakForEndring';
 
 export interface ApiState {
     søkerinfo?: Søkerinfo;
