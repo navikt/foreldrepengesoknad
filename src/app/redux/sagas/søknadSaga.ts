@@ -30,20 +30,26 @@ function* avbrytSøknadSaga(action: AvbrytSøknad) {
 
 function* startSøknad(action: StartSøknad) {
     const { erEndringssøknad, saksnummer, søkerinfo, history } = action;
-    if (erEndringssøknad && saksnummer) {
+    const appState: AppState = yield select(stateSelector);
+    if (erEndringssøknad && saksnummer && appState.api.sakForEndringssøknad) {
         const sakForEndring = yield call(fetchSakForEndring, saksnummer);
         const søknad = opprettSøknadFraSakForEndring(søkerinfo, sakForEndring);
         yield put(
             søknadActions.updateSøknad({
                 ...søknad,
                 erEndringssøknad,
-                saksnummer
+                saksnummer,
+                ekstrainfo: {
+                    ...appState.søknad.ekstrainfo,
+                    sakForEndring
+                }
             })
         );
+        history.push(søknadStegPath(StegID.UTTAKSPLAN));
     } else {
         yield put(søknadActions.updateSøknad({ erEndringssøknad: false }));
+        history.push(søknadStegPath(StegID.INNGANG));
     }
-    history.push(søknadStegPath(StegID.RELASJON_TIL_BARN_FØDSEL));
 }
 
 function* lagUttaksplanForslag() {

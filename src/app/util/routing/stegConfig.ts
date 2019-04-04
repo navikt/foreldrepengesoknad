@@ -25,8 +25,9 @@ export interface StegConfigItem {
     index: number;
 }
 
-export const getStegConfig = (erEndringssøknad: boolean): StegConfig => {
-    let stegConfig: StegConfig = {
+export const getStegConfig = (erEndringssøknad: boolean, harSakForEndring?: boolean): StegConfig => {
+    let stegConfig: StegConfig = {};
+    const initielleSteg: StegConfig = {
         [StegID.INNGANG]: {
             tittel: 'steg.config.tittel.inngang',
             fortsettKnappLabel: 'Fortsett',
@@ -65,7 +66,7 @@ export const getStegConfig = (erEndringssøknad: boolean): StegConfig => {
     };
     if (erEndringssøknad) {
         stegConfig = {
-            ...stegConfig,
+            ...(harSakForEndring ? {} : initielleSteg),
             [StegID.UTTAKSPLAN]: {
                 tittel: 'steg.config.tittel.uttak',
                 fortsettKnappLabel: 'Fortsett',
@@ -80,7 +81,7 @@ export const getStegConfig = (erEndringssøknad: boolean): StegConfig => {
         };
     } else {
         stegConfig = {
-            ...stegConfig,
+            ...initielleSteg,
             [StegID.UTTAKSPLAN]: {
                 tittel: 'steg.config.tittel.uttak',
                 fortsettKnappLabel: 'Fortsett',

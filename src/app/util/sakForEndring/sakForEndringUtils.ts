@@ -9,6 +9,7 @@ import { Kjønn } from '../../types/common';
 import { Periode, Periodetype, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import { guid } from 'nav-frontend-js-utils';
+import { sorterPerioder } from '../uttaksplan/Periodene';
 
 const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
     switch (grunnlag.familieHendelseType) {
@@ -78,11 +79,15 @@ const getAnnenForelderFromSaksgrunnlag = (
         case Søkersituasjon.FØDSEL:
             if (søkerErFarEllerMedmor) {
                 return {
+                    fornavn: 'mor',
+                    etternavn: '',
                     erUfør: sak.morErUfør,
                     harRettPåForeldrepenger: sak.morHarRett
                 };
             }
             return {
+                fornavn: 'far eller medmor',
+                etternavn: '',
                 harRettPåForeldrepenger: sak.farMedmorHarRett
             };
     }
@@ -97,12 +102,16 @@ const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor:
 };
 
 const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
+    const gradert = saksperiode.arbeidstidprosent !== 0;
     const uttaksperiode: Uttaksperiode = {
         id: guid(),
         type: Periodetype.Uttak,
         konto: saksperiode.stønadskontotype,
         tidsperiode: { ...saksperiode.tidsperiode },
-        forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor)
+        forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
+        ønskerSamtidigUttak: saksperiode.samtidigUttak,
+        gradert,
+        stillingsprosent: gradert ? saksperiode.arbeidstidprosent : undefined
     };
     return uttaksperiode;
 };
@@ -119,7 +128,7 @@ export const opprettSøknadFraSakForEndring = (
     const søker = getSøkerFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
     const annenForelder = getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag);
-    const uttaksplan = perioder.map((periode) => getPeriodeFromSaksperiode(periode, grunnlag));
+    const uttaksplan = perioder.map((periode) => getPeriodeFromSaksperiode(periode, grunnlag)).sort(sorterPerioder);
 
     if (!søker || !barn || !annenForelder) {
         return undefined;
