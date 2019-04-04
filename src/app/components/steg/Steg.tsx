@@ -41,6 +41,7 @@ export interface StegProps {
 
 interface StateProps {
     erEndringssøknad: boolean;
+    harSakForEndring?: boolean;
 }
 
 interface State {
@@ -161,7 +162,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 
     getStegConfig() {
-        return getStegConfig(this.props.erEndringssøknad);
+        return getStegConfig(this.props.erEndringssøknad, this.props.harSakForEndring);
     }
 
     renderContent() {
@@ -171,6 +172,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
             fortsettKnappLabel,
             errorSummaryRenderer,
             erEndringssøknad,
+            harSakForEndring,
             intl
         } = this.props;
 
@@ -189,7 +191,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                     />
                 </Block>
                 <Block>
-                    <Stegindikator id={id} erEndringssøknad={erEndringssøknad} />
+                    <Stegindikator id={id} erEndringssøknad={erEndringssøknad} harSakForEndring={harSakForEndring} />
                 </Block>
                 {this.props.children}
                 {renderFortsettKnapp === true && (
@@ -242,6 +244,9 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({ erEndringssøknad: state.søknad.erEndringssøknad });
+const mapStateToProps = (state: AppState): StateProps => ({
+    erEndringssøknad: state.søknad.erEndringssøknad,
+    harSakForEndring: state.søknad.ekstrainfo.sakForEndring !== undefined
+});
 
 export default connect(mapStateToProps)(injectIntl(Steg));
