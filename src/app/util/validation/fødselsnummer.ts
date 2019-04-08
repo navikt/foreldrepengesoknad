@@ -7,9 +7,9 @@ const isValidFødselsnummer = require('is-valid-fodselsnummer');
 
 const MAKS_FNR_LENGTH = 30;
 
-const isFødselsnummerFormatValid = (fnr: string): boolean => {
+const isFødselsnummerFormatValid = (fnr: string): false | 'F' | 'D' => {
     try {
-        return isValidFødselsnummer(fnr);
+        return isValidFødselsnummer(fnr, true);
     } catch (e) {
         return false;
     }
@@ -43,11 +43,12 @@ export const getFødselsnummerRegler = (
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.fødselsnummer';
+    const isFødselsnummerValid: false | 'F' | 'D' = isFødselsnummerFormatValid(fnr);
     return [
         hasValueRule(fnr, getMessage(intl, `${intlKey}.required`)),
         {
             test: () =>
-                (!utenlandskFnr && isFødselsnummerFormatValid(fnr)) ||
+                (!utenlandskFnr && isFødselsnummerValid !== false) ||
                 (utenlandskFnr === true && isUtenlandskFødselsnummerValid(fnr)),
             failText: getMessage(intl, `${intlKey}.ugyldigFødselsnummer`)
         },
@@ -56,7 +57,8 @@ export const getFødselsnummerRegler = (
             failText: getMessage(intl, `${intlKey}.ugyldigEgetFødselsnummer`)
         },
         {
-            test: () => (!utenlandskFnr && isSixteenOrOlder(fnr)) || utenlandskFnr === true,
+            test: () =>
+                (!utenlandskFnr && isSixteenOrOlder(fnr)) || utenlandskFnr === true || isFødselsnummerValid === 'D',
             failText: getMessage(intl, `${intlKey}.underSeksten`)
         }
     ];
