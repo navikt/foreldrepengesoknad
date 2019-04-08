@@ -1,5 +1,5 @@
 import { takeEvery, all, put, call, select } from 'redux-saga/effects';
-import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
+import søknadActionCreators, { default as søknadActions } from '../actions/søknad/søknadActionCreators';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import {
     SøknadActionKeys,
@@ -45,6 +45,8 @@ function* startSøknad(action: StartSøknad) {
                 }
             })
         );
+        yield put(søknadActionCreators.setCurrentSteg(StegID.UTTAKSPLAN));
+        yield put(apiActions.storeAppState());
         history.push(søknadStegPath(StegID.UTTAKSPLAN));
     } else {
         yield put(søknadActions.updateSøknad({ erEndringssøknad: false }));

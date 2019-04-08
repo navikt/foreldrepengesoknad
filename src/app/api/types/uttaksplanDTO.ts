@@ -10,8 +10,8 @@ export interface UttaksplanDTO {
         morErUfør: boolean;
         farMedmorErAleneOmOmsorg: boolean;
         farMedmorHarRett: boolean;
-        /** Mangler */
         søkerKjønn: string;
+        /** Mangler */
         annenForelderKjønn: string | undefined;
         /** Utledet */
         erBarnetFødt: boolean;
