@@ -9,16 +9,21 @@ import { HistoryProps } from 'app/types/common';
 import isAvailable from '../util/isAvailable';
 import { SøkerinfoProps } from 'app/types/søkerinfo';
 import { connect } from 'react-redux';
-import VeilederpanelInnhold from 'app/components/veilederpanel-innhold/VeilederpanelInnhold';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
 import { MissingAttachment } from 'app/types/MissingAttachment';
 import Block from 'common/components/block/Block';
 import VedleggSpørsmål from 'app/components/vedlegg-spørsmål/VedleggSpørsmål';
+import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { findAllAttachments } from 'app/util/attachments/attachmentUtil';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
+import Søknad from 'app/types/søknad/Søknad';
+import { soknadActionCreators } from 'app/redux/actions';
+import { guid } from 'nav-frontend-js-utils';
 
 interface ReduxProps {
     stegProps: StegProps;
-    missingAttachments: MissingAttachment[];
+    søknad: Søknad;
+    missingAttachments: Map<string, MissingAttachment[]>;
+    alleVedlegg: Map<string, Attachment[]>;
 }
 
 type Props = SøkerinfoProps & ReduxProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -26,34 +31,34 @@ type Props = SøkerinfoProps & ReduxProps & InjectedIntlProps & DispatchProps & 
 class ManglendeVedleggsteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
+        this.handleVedleggSpørsmålOnChange = this.handleVedleggSpørsmålOnChange.bind(this);
+    }
+
+    handleVedleggSpørsmålOnChange(attachments: Attachment[], key: string, index?: number) {
+        const { søknad, dispatch } = this.props;
+        søknad[key] = attachments;
+        dispatch(soknadActionCreators.updateSøknad(søknad));
     }
 
     render() {
-        const { stegProps, missingAttachments } = this.props;
-
+        const { søknad, stegProps, alleVedlegg, missingAttachments } = this.props;
         return (
             <Steg {...stegProps}>
-                <Veilederpanel kompakt={true} svg={<Veileder stil="kompakt-uten-bakgrunn" />}>
-                    <VeilederpanelInnhold
-                        messages={[
-                            {
-                                type: 'normal',
-                                contentIntlKey: 'manglendeVedlegg.info'
-                            }
-                        ]}
-                    />
-                </Veilederpanel>
-                {missingAttachments.map((ma) => (
-                    <>
-                        <Block margin="xs" header={{ title: ma.type, info: `${ma.skjemanummer} + ${ma.index}` }}>
+                {[...Array.from(alleVedlegg.entries()), ...Array.from(missingAttachments.entries())].map((ma: any) => {
+                    console.log(ma);
+                    return (
+                        <Block key={guid()} margin="xs" header={{ title: ma.type, info: `${ma.skjemanummer}` }}>
                             <VedleggSpørsmål
+                                vedlegg={søknad[ma.key]}
                                 attachmentType={ma.type}
                                 skjemanummer={ma.skjemanummer}
-                                onChange={() => null}
+                                onChange={(attachments: Attachment[]) =>
+                                    this.handleVedleggSpørsmålOnChange(attachments, ma.key, ma.index)
+                                }
                             />
                         </Block>
-                    </>
-                ))}
+                    );
+                })}
             </Steg>
         );
     }
@@ -61,7 +66,8 @@ class ManglendeVedleggsteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
     const { søknad, api } = state;
-    const missingAttachments = findMissingAttachments(søknad, api, søknad.annenForelder);
+    const missingAttachments = findMissingAttachments(søknad, api, getSøknadsinfo(state)!);
+    const alleVedlegg = findAllAttachments(søknad);
 
     const stegProps: StegProps = {
         id: StegID.MANGLENDE_VEDLEGG,
@@ -72,8 +78,10 @@ const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
     };
 
     return {
+        søknad,
         stegProps,
-        missingAttachments
+        missingAttachments,
+        alleVedlegg
     };
 };
 

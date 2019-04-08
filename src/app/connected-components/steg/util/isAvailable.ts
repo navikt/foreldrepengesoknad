@@ -54,14 +54,7 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo, s
                 utenlandsoppholdErGyldig(søknad)
             );
         case StegID.MANGLENDE_VEDLEGG:
-            return (
-                harGodkjentVilkår(søknad) &&
-                barnErGyldig(søknad, søkerinfo) &&
-                annenForelderErGyldig(søknad, søkerinfo) &&
-                uttaksplanSkjemaErGyldig(søknad) &&
-                utenlandsoppholdErGyldig(søknad) &&
-                annenInntektErGyldig(søknad.søker)
-            );
+            return true;
         case StegID.OPPSUMMERING:
             return (
                 harGodkjentVilkår(søknad) &&
