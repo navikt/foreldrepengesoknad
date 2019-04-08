@@ -737,7 +737,7 @@
     "uttaksplan.skjema.validering.startdatoHelg":
         "Startdato kan ikkje vere på ein laurdag eller søndag, du må velje ein vekedag",
     "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom":
-        "Startdato må vere innan dei {uker} første vekene etter termin/fødsel",
+        "Startdato må vere innan dei {uker} første vekene etter termin eller fødsel",
     "uttaksplan.slettPlan": "Slett planen",
     "uttaksplan.startdato.veileder.forTidligStartdato":
         "Startdato må vera innan dei 12 første vekene før termin eller fødsel. Første moglege startdato er",
@@ -921,7 +921,7 @@
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.dinePlikter": "dine plikter.<br /><br />",
     "velkommen.foreldreansvar.veileder":
-        "Du er vorten tildelt foreldreansvaret etter barnelova § 38 eller 64. Du må sende søknaden i posten. ",
+        "Du er vorten tildelt foreldreansvaret etter barnelova § 38 eller 64. Du må sende søknaden i posten.",
     "velkommen.ingress": "Foreldrepengar er noko du kan få for kvart barn du føder eller adopterer.",
     "velkommen.intro.harInfotrygdSak":
         "Her søkjer du om foreldrepengar når du skal være heime med barnet. Har du allereie foreldrepengar kan du utsetje eller gjere andre endringar.  ",
