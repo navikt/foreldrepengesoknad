@@ -49,6 +49,7 @@ export const getSakForEndringFromDTO = (dto: UttaksplanDTO): SakForEndring | und
                 };
             })
         };
+
         return sak;
     } catch (e) {
         return undefined;

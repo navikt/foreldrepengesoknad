@@ -1,0 +1,8 @@
+På vedtak:
+- hvordan skal vi vise perioder med ulike statuser (innvilget/avslått +?)
+- utsettelser ser ikke ut til å komme i resultatsettet
+- hva med opphold?
+
+Data som mangler i grunnlaget:
+- annenForelderKjønn
+- annenForelderNavn
