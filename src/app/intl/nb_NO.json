@@ -734,12 +734,12 @@
     "uttaksplan.skjema.validering.startdatoFørTermin":
         "Du må oppgi når du skal starte foreldrepengene, eller krysse av for at du ikke skal ha foreldrepenger før termindato",
     "uttaksplan.skjema.validering.startdatoHelg":
-        "Startdato kan ikke være på en lørdag eller søndag, du må velge en ukedag",
+        "Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag",
     "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom":
-        "Startdato må være innen de {uker} første ukene før termin/fødsel",
+        "Startdatoen må være innen de {uker} første ukene før termin eller fødsel",
     "uttaksplan.slettPlan": "Slett plan",
     "uttaksplan.startdato.veileder.forTidligStartdato":
-        "Startdatoen av foreldrepengene dine  må være innen de 12 første ukene før termin eller fødsel. Den første mulige startdato er {dato}.",
+        "Startdatoen av foreldrepengene dine må være innen de 12 første ukene før termin eller fødsel. Den første mulige startdato er {dato}.",
     "uttaksplan.startdato.veileder.helgedag":
         "Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag.",
     "uttaksplan.tittel": "Din plan",
