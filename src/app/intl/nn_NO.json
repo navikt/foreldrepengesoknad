@@ -730,7 +730,7 @@
     "uttaksplan.skjema.aleneomsorgFarMedmor.navSaraVeileder":
         "Foreldrepengeperioden din startar når <b>barnet er født</b>. Dersom {navn} har hatt foreldrepengar før du vart åleine om omsorga, kan du få foreldrepengar for perioden som er igjen.",
     "uttaksplan.skjema.adopsjon.navSaraVeileder":
-        "Foreldrepengeperioden din startar ved dato for omorsgsovertakinga. Derosm {navn} har hatt foreldrepengar før du vart åleiene om omsorga, kan du få foreldrepengar for perioden som er igjen",
+        "Foreldrepengeperioden din startar ved dato for omorsgsovertakinga. Dersom {navn} har hatt foreldrepengar før du vart åleiene om omsorga, kan du få foreldrepengar for perioden som er igjen",
     "uttaksplan.skjema.validering.startdatoFarMedmor": "Du må gi opp når du skal starte",
     "uttaksplan.skjema.validering.startdatoFørTermin":
         "Du må gi opp når du skal starte foreldrepengane, eller krysse av for at du ikkje skal ha foreldrepengar før termindato ",
