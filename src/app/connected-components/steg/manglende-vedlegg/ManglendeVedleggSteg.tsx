@@ -34,7 +34,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
         this.handleVedleggSpørsmålOnChange = this.handleVedleggSpørsmålOnChange.bind(this);
     }
 
-    handleVedleggSpørsmålOnChange(attachments: Attachment[], key: string, index?: number) {
+    handleVedleggSpørsmålOnChange(attachments: Attachment[], key: string) {
         const { søknad, dispatch } = this.props;
         søknad[key] = attachments;
         dispatch(soknadActionCreators.updateSøknad(søknad));
@@ -42,10 +42,12 @@ class ManglendeVedleggsteg extends React.Component<Props> {
 
     render() {
         const { søknad, stegProps, alleVedlegg, missingAttachments } = this.props;
+        console.log('alleVedlegg', alleVedlegg);
+        console.log('missingAttachments', missingAttachments);
+
         return (
             <Steg {...stegProps}>
                 {[...Array.from(alleVedlegg.entries()), ...Array.from(missingAttachments.entries())].map((ma: any) => {
-                    console.log(ma);
                     return (
                         <Block key={guid()} margin="xs" header={{ title: ma.type, info: `${ma.skjemanummer}` }}>
                             <VedleggSpørsmål
@@ -53,7 +55,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                 attachmentType={ma.type}
                                 skjemanummer={ma.skjemanummer}
                                 onChange={(attachments: Attachment[]) =>
-                                    this.handleVedleggSpørsmålOnChange(attachments, ma.key, ma.index)
+                                    this.handleVedleggSpørsmålOnChange(attachments, ma.key)
                                 }
                             />
                         </Block>

@@ -142,7 +142,7 @@ export const findMissingAttachments = (
     søknad: Søknad,
     api: ApiState,
     søknadsinfo: Søknadsinfo
-): MissingAttachment[] => {
+): Map<string, MissingAttachment[]> => {
     const missingAttachments = [];
     missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api));
     missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknadsinfo));
