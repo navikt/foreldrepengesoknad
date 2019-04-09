@@ -114,10 +114,11 @@ const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
     const { søknad, api } = state;
     const missingAttachments = findMissingAttachments(søknad, api, getSøknadsinfo(state)!);
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
+
     const stegProps: StegProps = {
         id: StegID.MANGLENDE_VEDLEGG,
         renderFortsettKnapp:
-            moment(Periodene(søknad.uttaksplan).getFørsteUttaksdag()).isAfter(moment().subtract(4, 'weeks')) ||
+            moment(Periodene(søknad.uttaksplan).getFørsteUttaksdag()).isAfter(moment().add(4, 'weeks')) ||
             missingAttachments.length === 0,
         history: props.history,
         renderFormTag: true,
