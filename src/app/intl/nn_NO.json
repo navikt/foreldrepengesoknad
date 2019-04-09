@@ -285,14 +285,16 @@
     "leggtil": "Legg til",
     "manglendeVedlegg.periode.tidsperiode": "Gjelder perioden med { type } fra { fom } til { tom }",
     "manglendeVedlegg.veileder":
-        "Før du kan sende inn søknaden så trenger vi at du laster opp de vedleggen som er listet opp nedenfor. Uten dem har vi ikke mulighet at behandle din søknad.",
-    "manglendeVedlegg.title.terminbekreftelse": "Bekreftelse på termin",
+        "Før du kan senda inn søknaden så treng vi at du lastar opp dei vedleggen som er lista opp nedanfor. Utan dei har vi ikkje moglegheit at behandla søknaden din.",
+    "manglendeVedlegg.title.terminbekreftelse": "Stadfesting på termin",
     "manglendeVedlegg.info.terminbekreftelse":
-        "Terminbekreftelsen må være datert og signert av lege eller jordmor når du er i 22. svangerskapsuke eller senere.",
-    "manglendeVedlegg.title.utsettelseSykdomUttaksplan": "Dokumentasjon på sykdom",
-    "manglendeVedlegg.info.utsettelseSykdomUttaksplan": "Dokumentasjon på sykdom info",
-    "manglendeVedlegg.title.anneninntektDokumentasjon": "Dokumentasjon av annen inntekt",
-    "manglendeVedlegg.info.anneninntektDokumentasjon": "Dokumentasjon av annen inntekt info",
+        "Du må leggja ved terminstadfestinga må vise at du er i 22. svangerskapsveke eller seinare.",
+    "manglendeVedlegg.title.utsettelseSykdomUttaksplan": "Dokumentasjon på sjukdom",
+    "manglendeVedlegg.info.utsettelseSykdomUttaksplan": "Du må leggja ved dokumentasjon på sykdom info",
+    "manglendeVedlegg.title.anneninntektDokumentasjon": "Dokumentasjon av annen inntektskjelder",
+    "manglendeVedlegg.info.anneninntektDokumentasjon": "Du må leggja ved dokumentasjon på inntektskelden du har.",
+        "manglendeVedlegg.title.morsaktivitetdokumentasjon": "Du må leggja ved dokumentasjon av kva {navn} skal gjere i perioden"
+    "manglendeVedlegg.info.morsaktivitetdokumentasjon": "Du må legge ved dokumentasjon på aktivitetskravet til {navn} når du skal vere heime i fellesperioden eller ha foreldrepengar."    
     "morForSykSpørsmål.spørsmål": "Er mor for sjuk til å ta seg av barnet, eller er ho innlagd?",
     "morsAktivitet.Arbeid": "Arbeid",
     "morsAktivitet.ArbeidOgUtdanning": "Arbeid og utdanning",
