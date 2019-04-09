@@ -14,7 +14,7 @@ import stringifyTilleggsopplysninger from './stringifyTilleggsopplysninger';
 import { Barn } from '../../types/søknad/Barn';
 import { cleanupBarn } from '../barnUtils';
 
-const isArrayOfAttachments = (object: object) => {
+export const isArrayOfAttachments = (object: object) => {
     return (
         Array.isArray(object) &&
         object[0] !== null &&
@@ -22,7 +22,7 @@ const isArrayOfAttachments = (object: object) => {
     );
 };
 
-const removeAttachmentsWithUploadError = (attachments: Attachment[]) =>
+export const removeAttachmentsWithUploadError = (attachments: Attachment[]) =>
     attachments.filter((a: Attachment) => !isAttachmentWithError(a));
 
 export const cleanUpAttachments = (object: object): Attachment[] => {

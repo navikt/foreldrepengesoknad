@@ -150,7 +150,7 @@ export const findMissingAttachments = (
     return missingAttachments;
 };
 
-export const mapMissingAttachmentsOnSøknad = (missingAttachments: MissingAttachment[], søknad: Søknad): void => {
+export const mapMissingAttachmentsOnSøknad = (missingAttachments: MissingAttachment[], søknad: Søknad): Søknad => {
     missingAttachments.forEach((missingAttachment: MissingAttachment) => {
         const attachment = mapFileToAttachment(
             { name: '', size: '' } as any,
@@ -164,7 +164,9 @@ export const mapMissingAttachmentsOnSøknad = (missingAttachments: MissingAttach
         } else if (isAttachmentForAnnenInntekt(attachment.type)) {
             søknad.søker.andreInntekterSiste10Mnd![missingAttachment.index!].vedlegg = [attachment];
         } else if (isAttachmentForPeriode(attachment.type)) {
-            søknad.uttaksplan![missingAttachment.index!].vedlegg = [attachment];
+            søknad.uttaksplan[missingAttachment.index!].vedlegg = [attachment];
         }
     });
+
+    return søknad;
 };
