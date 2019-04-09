@@ -23,7 +23,24 @@
             }
         ]
     },
-    "arbeidsforhold": [],
+    "arbeidsforhold": [
+        {
+            "arbeidsgiverId": "973135678",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "COLOR LINE CREW AS",
+            "stillingsprosent": 100.0,
+            "fom": "2016-01-01",
+            "tom": null
+        },
+        {
+            "arbeidsgiverId": "974716860",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "UNIVERSITETET I OSLO",
+            "stillingsprosent": 69.0,
+            "fom": "2018-08-01",
+            "tom": null
+        }
+    ],
     "søknadsinfo": {
         "deltUttaksplan": false
     }
