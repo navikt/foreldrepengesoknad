@@ -142,7 +142,7 @@ export const findMissingAttachments = (
     søknad: Søknad,
     api: ApiState,
     søknadsinfo: Søknadsinfo
-): Map<string, MissingAttachment[]> => {
+): MissingAttachment[] => {
     const missingAttachments = [];
     missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api));
     missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknadsinfo));
@@ -150,7 +150,7 @@ export const findMissingAttachments = (
     return missingAttachments;
 };
 
-export const mapMissingAttachmentsOnSøknad = (missingAttachments: MissingAttachment[], søknad: Søknad): void => {
+export const mapMissingAttachmentsOnSøknad = (missingAttachments: MissingAttachment[], søknad: Søknad): Søknad => {
     missingAttachments.forEach((missingAttachment: MissingAttachment) => {
         const attachment = mapFileToAttachment(
             { name: '', size: '' } as any,
@@ -167,4 +167,6 @@ export const mapMissingAttachmentsOnSøknad = (missingAttachments: MissingAttach
             søknad.uttaksplan[missingAttachment.index!].vedlegg = [attachment];
         }
     });
+
+    return søknad;
 };

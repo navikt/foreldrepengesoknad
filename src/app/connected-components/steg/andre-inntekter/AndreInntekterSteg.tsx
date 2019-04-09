@@ -32,6 +32,7 @@ import {
     uttaksplanInneholderFrilansaktivitet,
     uttaksplanInneholderSelvstendignæringaktivitet
 } from 'app/util/uttaksplan';
+import { findMissingAttachments } from 'app/util/attachments/missingAttachmentUtil';
 
 interface StateProps {
     stegProps: StegProps;
@@ -162,7 +163,7 @@ class AndreInntekterSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const { søknad } = state;
+    const { søknad, api } = state;
     const { history } = props;
     const { søker, uttaksplan } = søknad;
     const { arbeidsforhold } = props.søkerinfo;
@@ -174,6 +175,10 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const stegProps: StegProps = {
         id: StegID.ANDRE_INNTEKTER,
         renderFortsettKnapp: annenInntektErGyldig(søker),
+        nesteStegID:
+            findMissingAttachments(søknad, api, getSøknadsinfo(state)!).length > 0
+                ? StegID.MANGLENDE_VEDLEGG
+                : StegID.OPPSUMMERING,
         renderFormTag: true,
         history,
         isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo, getSøknadsinfo(state))

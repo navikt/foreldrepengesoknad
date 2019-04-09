@@ -283,6 +283,16 @@
     "kvittering.pdf.lastNed.del1": "Du kan {lenke}.",
     "kvittering.pdf.lastNed.del2": "sjå og laste ned søknaden din her",
     "leggtil": "Legg til",
+    "manglendeVedlegg.tidsperiode": "Gjelder perioden med { type } fra { fom } til { tom }",
+    "manglendeVedlegg.veileder":
+        "Før du kan sende inn søknaden så trenger vi at du laster opp de vedleggen som er listet opp nedenfor. Uten dem har vi ikke mulighet at behandle din søknad.",
+    "manglendeVedlegg.title.terminbekreftelse": "Bekreftelse på termin",
+    "manglendeVedlegg.info.terminbekreftelse":
+        "Terminbekreftelsen må være datert og signert av lege eller jordmor når du er i 22. svangerskapsuke eller senere.",
+    "manglendeVedlegg.title.utsettelseSykdomUttaksplan": "Dokumentasjon på sykdom",
+    "manglendeVedlegg.info.utsettelseSykdomUttaksplan": "Dokumentasjon på sykdom info",
+    "manglendeVedlegg.title.anneninntektDokumentasjon": "Dokumentasjon av annen inntekt",
+    "manglendeVedlegg.info.anneninntektDokumentasjon": "Dokumentasjon av annen inntekt info",
     "morForSykSpørsmål.spørsmål": "Er mor for sjuk til å ta seg av barnet, eller er ho innlagd?",
     "morsAktivitet.Arbeid": "Arbeid",
     "morsAktivitet.ArbeidOgUtdanning": "Arbeid og utdanning",
