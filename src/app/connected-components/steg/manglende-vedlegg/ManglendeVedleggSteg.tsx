@@ -51,7 +51,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
         return (
             <Block margin="xxs">
                 <Normaltekst>
-                    {getMessage(intl, 'manglendeVedlegg.tidsperiode', {
+                    {getMessage(intl, 'manglendeVedlegg.periode.tidsperiode', {
                         type: periode.type,
                         fom: formatDate(periode.tidsperiode.fom),
                         tom: formatDate(periode.tidsperiode.tom)

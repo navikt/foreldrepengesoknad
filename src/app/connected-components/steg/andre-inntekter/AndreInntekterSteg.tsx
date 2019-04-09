@@ -32,7 +32,9 @@ import {
     uttaksplanInneholderFrilansaktivitet,
     uttaksplanInneholderSelvstendignæringaktivitet
 } from 'app/util/uttaksplan';
-import { findMissingAttachments } from 'app/util/attachments/missingAttachmentUtil';
+import { findMissingAttachments, mapMissingAttachmentsOnSøknad } from 'app/util/attachments/missingAttachmentUtil';
+import { findAllAttachments } from '../manglende-vedlegg/manglendeVedleggUtil';
+import _ from 'lodash';
 
 interface StateProps {
     stegProps: StegProps;
@@ -172,16 +174,15 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         uttaksplan
     );
 
+    const missingAttachments = findMissingAttachments(søknad, api, getSøknadsinfo(state)!);
+    const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
     const stegProps: StegProps = {
         id: StegID.ANDRE_INNTEKTER,
         renderFortsettKnapp: annenInntektErGyldig(søker),
-        nesteStegID:
-            findMissingAttachments(søknad, api, getSøknadsinfo(state)!).length > 0
-                ? StegID.MANGLENDE_VEDLEGG
-                : StegID.OPPSUMMERING,
         renderFormTag: true,
         history,
-        isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo, getSøknadsinfo(state))
+        isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo, getSøknadsinfo(state)),
+        nesteStegID: Array.from(attachmentMap.entries()).length > 0 ? StegID.MANGLENDE_VEDLEGG : StegID.OPPSUMMERING
     };
 
     return {

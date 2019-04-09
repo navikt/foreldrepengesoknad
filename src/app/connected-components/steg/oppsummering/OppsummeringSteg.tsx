@@ -27,12 +27,14 @@ import { AlertStripeFeilSolid } from 'nav-frontend-alertstriper';
 import Block from 'common/components/block/Block';
 import LinkButton from '../../../components/link-button/LinkButton';
 import { MissingAttachment } from '../../../types/MissingAttachment';
-import { findMissingAttachments } from '../../../util/attachments/missingAttachmentUtil';
+import { findMissingAttachments, mapMissingAttachmentsOnSøknad } from '../../../util/attachments/missingAttachmentUtil';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
+import { findAllAttachments } from '../manglende-vedlegg/manglendeVedleggUtil';
+import _ from 'lodash';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -152,11 +154,16 @@ class OppsummeringSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const søknad = state.søknad;
+    const { søknad, api } = state;
     const { person } = props.søkerinfo;
     const {
         api: { isLoadingTilgjengeligeStønadskontoer }
     } = state;
+
+    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
+    const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, api, getSøknadsinfo(state)!);
+    const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
+    const antallUkerUttaksplan = getAntallUker(tilgjengeligeStønadskontoer);
 
     const søknadsinfo = getSøknadsinfo(state)!;
     const stegProps: StegProps = {
@@ -164,12 +171,10 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFortsettKnapp: søknad.harGodkjentOppsummering,
         renderFormTag: true,
         history: props.history,
-        isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, søknadsinfo)
+        isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, søknadsinfo),
+        previousStegID:
+            Array.from(attachmentMap.entries()).length > 0 ? StegID.MANGLENDE_VEDLEGG : StegID.ANDRE_INNTEKTER
     };
-
-    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
-    const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, state.api, søknadsinfo);
-    const antallUkerUttaksplan = getAntallUker(tilgjengeligeStønadskontoer);
 
     return {
         person,
