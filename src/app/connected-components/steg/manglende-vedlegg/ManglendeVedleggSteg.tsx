@@ -121,7 +121,7 @@ const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
             missingAttachments.length === 0,
         history: props.history,
         renderFormTag: true,
-        isAvailable: isAvailable(StegID.MANGLENDE_VEDLEGG, søknad, props.søkerinfo)
+        isAvailable: isAvailable(StegID.MANGLENDE_VEDLEGG, søknad, props.søkerinfo, getSøknadsinfo(state))
     };
 
     return {
