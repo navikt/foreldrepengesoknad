@@ -16,7 +16,7 @@ export const aktivitetskravMorSkalBesvares = (
     ) {
         if (
             (isUttaksperiode(periode) && periode.ønskerFlerbarnsdager) ||
-            (isUttaksperiode(periode) && periode.erMorForSyk)
+            (isUttaksperiode(periode) && periode.erMorForSyk && periode.konto === StønadskontoType.Fellesperiode)
         ) {
             return false;
         }
