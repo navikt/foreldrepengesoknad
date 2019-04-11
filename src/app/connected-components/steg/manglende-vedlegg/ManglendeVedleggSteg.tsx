@@ -114,7 +114,11 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                 />
                             </Block>
 
-                            <Block visible={attachmentMapValue[0].type === AttachmentType.TERMINBEKREFTELSE}>
+                            <Block
+                                visible={
+                                    attachmentMapValue[0].type === AttachmentType.TERMINBEKREFTELSE &&
+                                    attachmentsToRender.length > 0
+                                }>
                                 <DatoInput
                                     id="terminbekreftelseDato"
                                     name="terminbekreftelseDato"
@@ -130,11 +134,15 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                     datoAvgrensinger={getTerminbekreftelsedatoAvgrensninger(
                                         (søknad.barn as UfødtBarn).termindato
                                     )}
-                                    validators={getTerminbekreftelseDatoRegler(
-                                        (søknad.barn as UfødtBarn).terminbekreftelseDato,
-                                        (søknad.barn as UfødtBarn).termindato,
-                                        intl
-                                    )}
+                                    validators={
+                                        attachmentsToRender.length > 0
+                                            ? getTerminbekreftelseDatoRegler(
+                                                  (søknad.barn as UfødtBarn).terminbekreftelseDato,
+                                                  (søknad.barn as UfødtBarn).termindato,
+                                                  intl
+                                              )
+                                            : []
+                                    }
                                 />
                             </Block>
                         </>
