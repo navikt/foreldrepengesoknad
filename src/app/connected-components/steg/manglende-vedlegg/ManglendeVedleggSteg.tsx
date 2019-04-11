@@ -25,6 +25,14 @@ import { isAttachmentForPeriode } from 'common/storage/attachment/components/uti
 import { Normaltekst } from 'nav-frontend-typografi';
 import { formatDate } from 'app/util/dates/dates';
 import { Periodetype } from 'app/types/uttaksplan/periodetyper';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
+import {
+    getTerminbekreftelsedatoAvgrensninger,
+    getTerminbekreftelseDatoRegler
+} from 'app/util/validation/terminbekreftelsedato';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import søknadActions from 'app/redux/actions/søknad/søknadActionCreators';
+import { UfødtBarn } from 'app/types/søknad/Barn';
 
 interface ReduxProps {
     stegProps: StegProps;
@@ -63,7 +71,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
     }
 
     render() {
-        const { søknad, stegProps, attachmentMap, intl } = this.props;
+        const { søknad, stegProps, attachmentMap, intl, dispatch } = this.props;
 
         return (
             <Steg {...stegProps}>
@@ -88,22 +96,48 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                     const attachmentMapValue = am[1];
 
                     return (
-                        <Block
-                            key={index}
-                            header={{
-                                title: getMessage(intl, `manglendeVedlegg.title.${attachmentMapValue[0].type}`),
-                                info: getMessage(intl, `manglendeVedlegg.info.${attachmentMapValue[0].type}`)
-                            }}>
-                            {isAttachmentForPeriode(attachmentMapValue[0].type) && this.renderPeriodeinfo(key)}
-                            <VedleggSpørsmål
-                                vedlegg={attachmentsToRender}
-                                attachmentType={attachmentMapValue[0].type}
-                                skjemanummer={attachmentMapValue[0].skjemanummer}
-                                onChange={(updatedAttachments: Attachment[]) =>
-                                    this.handleVedleggSpørsmålOnChange(updatedAttachments, key)
-                                }
-                            />
-                        </Block>
+                        <>
+                            <Block
+                                key={index}
+                                header={{
+                                    title: getMessage(intl, `manglendeVedlegg.title.${attachmentMapValue[0].type}`),
+                                    info: getMessage(intl, `manglendeVedlegg.info.${attachmentMapValue[0].type}`)
+                                }}>
+                                {isAttachmentForPeriode(attachmentMapValue[0].type) && this.renderPeriodeinfo(key)}
+                                <VedleggSpørsmål
+                                    vedlegg={attachmentsToRender}
+                                    attachmentType={attachmentMapValue[0].type}
+                                    skjemanummer={attachmentMapValue[0].skjemanummer}
+                                    onChange={(updatedAttachments: Attachment[]) =>
+                                        this.handleVedleggSpørsmålOnChange(updatedAttachments, key)
+                                    }
+                                />
+                            </Block>
+
+                            <Block visible={attachmentMapValue[0].type === AttachmentType.TERMINBEKREFTELSE}>
+                                <DatoInput
+                                    id="terminbekreftelseDato"
+                                    name="terminbekreftelseDato"
+                                    label={getMessage(intl, 'terminbekreftelseDato.spørsmål')}
+                                    onChange={(terminbekreftelseDato: Date) => {
+                                        dispatch(
+                                            søknadActions.updateBarn({
+                                                terminbekreftelseDato
+                                            })
+                                        );
+                                    }}
+                                    dato={(søknad.barn as UfødtBarn).terminbekreftelseDato}
+                                    datoAvgrensinger={getTerminbekreftelsedatoAvgrensninger(
+                                        (søknad.barn as UfødtBarn).termindato
+                                    )}
+                                    validators={getTerminbekreftelseDatoRegler(
+                                        (søknad.barn as UfødtBarn).terminbekreftelseDato,
+                                        (søknad.barn as UfødtBarn).termindato,
+                                        intl
+                                    )}
+                                />
+                            </Block>
+                        </>
                     );
                 })}
             </Steg>
