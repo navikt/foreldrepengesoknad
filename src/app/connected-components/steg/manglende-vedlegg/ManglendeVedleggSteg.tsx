@@ -16,7 +16,7 @@ import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Att
 import Søknad from 'app/types/søknad/Søknad';
 import { soknadActionCreators } from 'app/redux/actions';
 import _ from 'lodash';
-import { Periodene } from 'app/util/uttaksplan/Periodene';
+import { sorterPerioder } from 'app/util/uttaksplan/Periodene';
 import moment from 'moment';
 import { findAllAttachments } from './manglendeVedleggUtil';
 import getMessage from 'common/util/i18nUtils';
@@ -24,6 +24,7 @@ import VeilederInfo from 'app/components/veileder-info/VeilederInfo';
 import { isAttachmentForPeriode } from 'common/storage/attachment/components/util';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { formatDate } from 'app/util/dates/dates';
+import { Periodetype } from 'app/types/uttaksplan/periodetyper';
 
 interface ReduxProps {
     stegProps: StegProps;
@@ -115,10 +116,19 @@ const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
     const missingAttachments = findMissingAttachments(søknad, api, getSøknadsinfo(state)!);
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
 
+    const førsteUttaksdagEllerUttsettelsesdag = søknad.uttaksplan
+        .filter(
+            (p) =>
+                p.tidsperiode.fom !== undefined && (p.type === Periodetype.Utsettelse || p.type === Periodetype.Uttak)
+        )
+        .sort(sorterPerioder)
+        .shift();
+
     const stegProps: StegProps = {
         id: StegID.MANGLENDE_VEDLEGG,
         renderFortsettKnapp:
-            moment(Periodene(søknad.uttaksplan).getFørsteUttaksdag()).isAfter(moment().add(4, 'weeks')) ||
+            (førsteUttaksdagEllerUttsettelsesdag &&
+                moment(førsteUttaksdagEllerUttsettelsesdag.tidsperiode.fom).isSameOrBefore(moment().add(4, 'weeks'))) ||
             missingAttachments.length === 0,
         history: props.history,
         renderFormTag: true,
