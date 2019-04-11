@@ -116,7 +116,7 @@
     "datoForAleneomsorg.spørsmål": "Dato du ble alene om omsorgen",
     "deltid": "Deltid",
     "dinePersonopplysninger.avsnitt.automatiskBehandling.html":
-        "<p>Nav vil behandle søknaden automatisk hvis vi har tilstrekkelige opplysninger. Den automatiske behandlingen baserer seg på opplysninger</p><ul><li>du gir i søknaden</li><li>fra Folkeregisteret</li><li>om arbeidsforholdene dine fra Arbeidstaker- og arbeidsgiverregisteret</li><li>om inntekten din fra A-meldingen</li><li>om inntekt og avtalt permisjon fra arbeidsgiveren din</li></ul>",
+        "<p>Nav vil behandle søknaden automatisk hvis vi har tilstrekkelige opplysninger. Den automatiske behandlingen baserer seg på opplysninger</p><ul><li>du gir i søknaden</li><li>fra Folkeregisteret og enhetsregisteret</li><li>om arbeidsforholdene dine fra Arbeidstaker- og arbeidsgiverregisteret</li><li>om inntekten din fra A-meldingen</li><li>om inntekt og avtalt permisjon fra arbeidsgiveren din</li></ul>",
     "dinePersonopplysninger.avsnitt.automatiskBehandling.tittel": "Automatisk behandling av søknaden",
     "dinePersonopplysninger.avsnitt.innhenting.html":
         "<p>For å behandle søknaden din henter vi inn opplysninger om</p><ul><li>tilknytningen din til Norge, arbeidsforholdene dine og inntekten din</li><li>ytelser du mottar fra NAV</li><li>barn og den andre forelderen</li><li>trygdeordninger du kan ha rett til i andre land</li></ul><p>Vi kan også sende opplysninger om deg til trygdeordninger i andre land.</p>",
