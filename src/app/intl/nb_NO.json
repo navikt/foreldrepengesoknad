@@ -47,7 +47,7 @@
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
     "annenInntekt.arbeidsforhold.veileder":
-        "Husk å be arbeidsgiveren din sende inntektsmelding til NAV. Vi trenger den for å kunne behandle søknaden din. Arbeidsgiver kan sende den tidligst {dato}. Vi vil i noen tilfeller kontakte arbeidsgiver i forbindelse med behandling av søknaden.",
+        "Husk å be arbeidsgiveren din sende inntektsmelding til NAV. Vi trenger den for å kunne behandle søknaden din. Arbeidsgiver kan sende den tidligst {dato}.",
     "annenInntekt.fom": "Når startet du {navnPåNæringen}?",
     "annenInntekt.leggTilInntekt": "Legg til inntektskilde",
     "annenInntekt.modal.land": "Hvilket land har du jobbet i?",
