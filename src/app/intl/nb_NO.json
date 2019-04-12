@@ -293,8 +293,8 @@
     "manglendeVedlegg.info.utsettelseSykdomUttaksplan": "Du må legge ved bekreftelse fra legen din. Den må beskrive hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta deg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding. Er du eller barnet innlagt i helseinstitusjon må du legge ved dokumentasjon på innleggelsen.",
     "manglendeVedlegg.title.anneninntektDokumentasjon": "Dokumentasjon av annen inntektskilde",
     "manglendeVedlegg.info.anneninntektDokumentasjon": "Du må legge ved dokumentasjon av inntektskilden.",
-    "manglendeVedlegg.title.morsaktivitetdokumentasjon": "Du må legge ved dokumentasjon av hva {navn} skal gjøre i perioden"
-    "manglendeVedlegg.info.morsaktivitetdokumentasjon": "Du må legge ved dokumentasjon på aktivitetskravet til {navn} når du skal være hjemme i fellesperioden eller ha foreldrepenger."
+    "manglendeVedlegg.title.morsaktivitetdokumentasjon": "Du må legge ved dokumentasjon av hva {navn} skal gjøre i perioden",
+    "manglendeVedlegg.info.morsaktivitetdokumentasjon": "Du må legge ved dokumentasjon på aktivitetskravet til {navn} når du skal være hjemme i fellesperioden eller ha foreldrepenger.",
     "morForSykSpørsmål.spørsmål": "Er mor for syk til å ta seg av barnet eller innlagt?",
     "morsAktivitet.Arbeid": "Arbeid",
     "morsAktivitet.ArbeidOgUtdanning": "Arbeid og utdanning",
