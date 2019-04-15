@@ -6,7 +6,7 @@ import {
     getAnnenForelderStegVisibility
 } from '../../connected-components/steg/annen-forelder/visibility/annenForelderStegVisibility';
 
-import visibility from '../../components/annen-inntekt-modal/visibility';
+import annenInntektVisibility from '../../components/annen-inntekt-modal/visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
 import {
@@ -30,13 +30,24 @@ import {
 import {
     dokumentasjonBehøvesForOverføringsperiode,
     dokumentasjonBehøvesForUtsettelsesperiode,
-    dokumentasjonBehøvesForUttaksperiode
+    dokumentasjonBehøvesForUttaksperiode,
+    erÅrsakSykdomEllerInstitusjonsopphold
 } from '../uttaksplan/utsettelsesperiode';
 import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
 import { isUfødtBarn, isAdopsjonsbarn } from '../../types/søknad/Barn';
+import {
+    getUtsettelseFormVisibility,
+    UtsettelseSpørsmålKeys
+} from 'app/components/utsettelse-form/utsettelseFormConfig';
+import { getVariantFromPeriode } from 'app/components/utsettelse-form/UtsettelseForm';
+import { getMorsAktivitetSkjemanummer } from '../skjemanummer/morsAktivitetSkjemanummer';
+import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 
-const isAttachmentMissing = (attachments?: Attachment[]) => attachments === undefined || attachments.length === 0;
+const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType): boolean =>
+    attachments === undefined ||
+    attachments.length === 0 ||
+    (type !== undefined && attachments.find((a) => a.type === type) === undefined);
 
 export function shouldPeriodeHaveAttachment(periode: Periode, søknadsinfo: Søknadsinfo): boolean {
     if (periode.type === Periodetype.Overføring) {
@@ -94,7 +105,16 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
 };
 
 export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
-    return shouldPeriodeHaveAttachment(periode, søknadsinfo) && isAttachmentMissing(periode.vedlegg);
+    return (
+        (shouldPeriodeHaveAttachment(periode, søknadsinfo) &&
+            (aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
+                søknadsinfo.søker.erFarEllerMedmor,
+                søknadsinfo.annenForelder
+            ) &&
+                isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON))) ||
+        (erÅrsakSykdomEllerInstitusjonsopphold((periode as Utsettelsesperiode).årsak) &&
+            isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM))
+    );
 };
 
 export const findMissingAttachmentsForPerioder = (
@@ -108,12 +128,37 @@ export const findMissingAttachmentsForPerioder = (
     const missingAttachments = [];
     for (const periode of perioder) {
         if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
-            missingAttachments.push({
-                index: perioder.indexOf(periode),
-                skjemanummer: getSkjemanummerForPeriode(periode),
-                type: getAttachmentTypeForPeriode(periode),
-                periodeId: periode.id
-            });
+            if (
+                erÅrsakSykdomEllerInstitusjonsopphold((periode as Utsettelsesperiode).årsak) &&
+                isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
+            ) {
+                missingAttachments.push({
+                    index: perioder.indexOf(periode),
+                    skjemanummer: getSkjemanummerForPeriode(periode),
+                    type: getAttachmentTypeForPeriode(periode),
+                    periodeId: periode.id
+                });
+            }
+
+            if (
+                periode.type === Periodetype.Utsettelse &&
+                aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
+                    søknadsinfo.søker.erFarEllerMedmor,
+                    søknadsinfo.annenForelder
+                ) &&
+                isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON)
+            ) {
+                const variant = getVariantFromPeriode(periode);
+                const visibility = getUtsettelseFormVisibility({ variant, periode, søknadsinfo });
+                if (visibility.isVisible(UtsettelseSpørsmålKeys.morsAktivitet)) {
+                    missingAttachments.push({
+                        index: perioder.indexOf(periode),
+                        skjemanummer: getMorsAktivitetSkjemanummer(periode.morsAktivitetIPerioden),
+                        type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                        periodeId: periode.id
+                    });
+                }
+            }
         }
     }
     return missingAttachments;
@@ -126,7 +171,7 @@ export const findMissingAttachmentsForAndreInntekter = (søknad: Søknad): Missi
 
     const missingAttachments = [];
     for (const andreInntekterSiste10MndItem of søknad.søker.andreInntekterSiste10Mnd) {
-        const annenInntektVedlegg = visibility.vedlegg(andreInntekterSiste10MndItem);
+        const annenInntektVedlegg = annenInntektVisibility.vedlegg(andreInntekterSiste10MndItem);
         if (annenInntektVedlegg && isAttachmentMissing(andreInntekterSiste10MndItem.vedlegg)) {
             missingAttachments.push({
                 index: søknad.søker.andreInntekterSiste10Mnd.indexOf(andreInntekterSiste10MndItem),
@@ -164,7 +209,11 @@ export const mapMissingAttachmentsOnSøknad = (missingAttachments: MissingAttach
         } else if (isAttachmentForAnnenInntekt(attachment.type)) {
             søknad.søker.andreInntekterSiste10Mnd![missingAttachment.index!].vedlegg = [attachment];
         } else if (isAttachmentForPeriode(attachment.type)) {
-            søknad.uttaksplan[missingAttachment.index!].vedlegg = [attachment];
+            søknad.uttaksplan[missingAttachment.index!].vedlegg! =
+                Array.isArray(søknad.uttaksplan[missingAttachment.index!].vedlegg) &&
+                søknad.uttaksplan[missingAttachment.index!].vedlegg!.length > 0
+                    ? søknad.uttaksplan[missingAttachment.index!].vedlegg!.concat(attachment)
+                    : [attachment];
         }
     });
 

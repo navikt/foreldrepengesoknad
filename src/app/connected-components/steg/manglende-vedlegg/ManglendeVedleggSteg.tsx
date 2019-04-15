@@ -33,6 +33,7 @@ import {
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import søknadActions from 'app/redux/actions/søknad/søknadActionCreators';
 import { UfødtBarn } from 'app/types/søknad/Barn';
+import { guid } from 'nav-frontend-js-utils';
 
 interface ReduxProps {
     stegProps: StegProps;
@@ -84,7 +85,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                     ]}
                 />
 
-                {[...Array.from(attachmentMap.entries())].map((am: [string, Attachment[]], index: number) => {
+                {[...Array.from(attachmentMap.entries())].map((am: [string, Attachment[]]) => {
                     const key = am[0].replace('søknad.', '');
                     const attachments = _.get(søknad, key.split('.'));
                     const attachmentsToRender = Array.isArray(attachments)
@@ -94,20 +95,24 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                         : [];
 
                     const attachmentMapValue = am[1];
-
-                    return (
-                        <>
+                    return attachmentMapValue.map((a) => (
+                        <div key={guid()}>
                             <Block
-                                key={index}
                                 header={{
-                                    title: getMessage(intl, `manglendeVedlegg.title.${attachmentMapValue[0].type}`),
-                                    info: getMessage(intl, `manglendeVedlegg.info.${attachmentMapValue[0].type}`)
+                                    title: getMessage(
+                                        intl,
+                                        `manglendeVedlegg.title.${a.type}`,
+                                        a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                                            ? { navn: søknad.annenForelder.fornavn }
+                                            : undefined
+                                    ),
+                                    info: getMessage(intl, `manglendeVedlegg.info.${a.type}`)
                                 }}>
-                                {isAttachmentForPeriode(attachmentMapValue[0].type) && this.renderPeriodeinfo(key)}
+                                {isAttachmentForPeriode(a.type) && this.renderPeriodeinfo(key)}
                                 <VedleggSpørsmål
                                     vedlegg={attachmentsToRender}
-                                    attachmentType={attachmentMapValue[0].type}
-                                    skjemanummer={attachmentMapValue[0].skjemanummer}
+                                    attachmentType={a.type}
+                                    skjemanummer={a.skjemanummer}
                                     onChange={(updatedAttachments: Attachment[]) =>
                                         this.handleVedleggSpørsmålOnChange(updatedAttachments, key)
                                     }
@@ -115,10 +120,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                             </Block>
 
                             <Block
-                                visible={
-                                    attachmentMapValue[0].type === AttachmentType.TERMINBEKREFTELSE &&
-                                    attachmentsToRender.length > 0
-                                }>
+                                visible={a.type === AttachmentType.TERMINBEKREFTELSE && attachmentsToRender.length > 0}>
                                 <DatoInput
                                     id="terminbekreftelseDato"
                                     name="terminbekreftelseDato"
@@ -145,8 +147,8 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                     }
                                 />
                             </Block>
-                        </>
-                    );
+                        </div>
+                    ));
                 })}
             </Steg>
         );
