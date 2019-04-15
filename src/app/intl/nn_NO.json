@@ -799,12 +799,12 @@
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikkje gyldig",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
         "Du kan ikkje søke om utsetjing på grunn av arbeid eller ferie mindre enn seks veker etter fødsel",
-    "uttaksplan.validering.feil.uttaksplanErBareOpphold": "Du kan ikkje ha ein uttaksplan med berre ein utsetjing.",
+    "uttaksplan.validering.feil.uttaksplanErBareOpphold": "Du kan ikkje ha ein plan med berre ein utsetjing.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold":
-        "Uttaksplanen kan ikkje slutte med at den andre forelderen er heime.",
+        "Planen din kan ikkje slutte med at den andre forelderen er heime.",
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold":
-        "Uttaksplanen kan ikkje starte med at den andre forelderen er heime.",
-    "uttaksplan.validering.feiloppsummering.tittel": "Planen inneheld feil som du må rette opp i før du kan gå vidare",
+        "Planen din kan ikkje starte med at den andre forelderen er heime.",
+    "uttaksplan.validering.feiloppsummering.tittel": "Planen din inneheld feil som du må rette opp i før du kan gå vidare",
     "uttaksplan.validering.før12UkerFørTermin":
         "Du kan tidlegast ta ut foreldrepengar 12 veker før termin eller fødsel",
     "uttaksplan.validering.feil.uttaksplanHarForMangeFlerbarnsdager": "Du har for mye uttak av flerbarnsdager",
@@ -821,9 +821,9 @@
     "uttaksplan.veileder.planenInneholderHull.tittel": "Hull i planen",
     "uttaksplan.veileder.planenInneholderHull":
         "Planen din inneheld periodar med tapte foreldrepengar. Du står i fare for å miste dagar om du ikkje legg inn ei utsetjing eller ein periode med foreldrepengar.",
-    "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Plan inneholder kun utsettelser",
+    "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Planen din inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Hugs at du må søkja om foreldrepengar seinast {sisteDag}.",
-    "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad.tittel": "Plan inneholder kun utsettelser",
+    "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad.tittel": "Planen din inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad":
         "Hugs at du må legge inn alle nye periodar du skal ha foreldrepenger eller utsetje etter {sisteDag}, då denne endringssøknaden erstattar den tidlegare planen din.",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie.tittel": "Søkja om ferie tilbake i tid",
