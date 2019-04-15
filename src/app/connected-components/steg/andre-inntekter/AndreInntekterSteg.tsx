@@ -176,6 +176,10 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     const missingAttachments = findMissingAttachments(søknad, api, getSøknadsinfo(state)!);
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
+
+    console.log(missingAttachments);
+    console.log(attachmentMap.entries());
+
     const stegProps: StegProps = {
         id: StegID.ANDRE_INNTEKTER,
         renderFortsettKnapp: annenInntektErGyldig(søker),
