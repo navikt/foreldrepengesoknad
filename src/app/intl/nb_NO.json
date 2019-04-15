@@ -497,7 +497,7 @@
     "selvstendigNæringsdrivende.modal.navn": "Hva heter virksomheten din?",
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Oppgi dato for når du ble yrkesaktiv",
     "selvstendigNæringsdrivende.modal.orgnr": "Hva er organisasjonsnummeret?",
-    "selvstendigNæringsdrivende.modal.registrertILand": "Hvilket land er virksomheten din registrert i?",
+    "selvstendigNæringsdrivende.modal.registrertILand": "I hvilket land er virksomheten din registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Hva er stillingsprosenten din?",
     "selvstendigNæringsdrivende.modal.tittel": "Opplysninger om virksomheten din",
     "selvstendigNæringsdrivende.modal.veileder.blikontaktet":
@@ -506,7 +506,7 @@
     "selvstendigNæringsdrivende.tidsperiode.fom": "Når startet du {navnPåNæringen}?",
     "selvstendigNæringsdrivende.tidsperiode.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
     "selvstendigNæringsdrivende.modal.infoboks.forFisker":
-        "Hvis du ikke har organisasjonsnummer så svarer du nei på spørmålet \"Er {navnPåNæringen} er registrert i Norge?\" Du velger så at næringen er registrert i Norge i nedtrekkslisten.",
+        "Hvis du ikke har organisasjonsnummer, svarer du nei på spørsmålet \"Er {navnPåNæringen} er registrert i Norge?\" I nedtrekkslisten velger du at virksomheten er registrert i Norge.",
     "skalDereHaGradertUttakSamtidig.spørsmål": "Skal dere ha foreldrepenger samtidig?",
     "skaldujobbeheltidellerdeltid.spørsmål": "Skal du jobbe heltid eller deltid?",
     "skaltautforeldrepenger": "skal ta ut foreldrepenger",
