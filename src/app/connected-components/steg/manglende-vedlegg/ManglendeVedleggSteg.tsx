@@ -103,10 +103,20 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                         intl,
                                         `manglendeVedlegg.title.${a.type}`,
                                         a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
-                                            ? { navn: søknad.annenForelder.fornavn }
+                                            ? {
+                                                  navn: søknad.annenForelder.fornavn
+                                              }
                                             : undefined
                                     ),
-                                    info: getMessage(intl, `manglendeVedlegg.info.${a.type}`)
+                                    info: getMessage(
+                                        intl,
+                                        `manglendeVedlegg.info.${a.type}`,
+                                        a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                                            ? {
+                                                  navn: søknad.annenForelder.fornavn
+                                              }
+                                            : undefined
+                                    )
                                 }}>
                                 {isAttachmentForPeriode(a.type) && this.renderPeriodeinfo(key)}
                                 <VedleggSpørsmål
