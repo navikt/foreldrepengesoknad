@@ -77,6 +77,7 @@ class AnnenForelderSteg extends React.Component<Props> {
 
     onFilesSelect(attachments: Attachment[]) {
         attachments.forEach((attachment: Attachment) => {
+            attachment.beskrivelse = getMessage(this.props.intl, 'vedlegg.beskrivelse.dokumentasjonAvAleneomsorg');
             this.props.dispatch(søknadActions.uploadAttachment(attachment));
         });
     }

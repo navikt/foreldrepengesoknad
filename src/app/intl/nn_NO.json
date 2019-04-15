@@ -290,16 +290,23 @@
     "manglendeVedlegg.info.terminbekreftelse":
         "Du må leggja ved terminstadfestinga må vise at du er i 22. svangerskapsveke eller seinare.",
     "manglendeVedlegg.title.utsettelseSykdomUttaksplan": "Stadfesting av sjukdom eller innleggelse",
-    "manglendeVedlegg.info.utsettelseSykdomUttaksplan": "Du må leggja ved stadfesting frå legen din eller frå sjukehuset eller helseinstitusjonen.",
+    "manglendeVedlegg.info.utsettelseSykdomUttaksplan":
+        "Du må leggja ved stadfesting frå legen din eller frå sjukehuset eller helseinstitusjonen.",
     "manglendeVedlegg.title.anneninntektDokumentasjon": "Dokumentasjon av annen inntektskjelder",
     "manglendeVedlegg.info.anneninntektDokumentasjon": "Du må leggja ved dokumentasjon på inntektskelden du har.",
-        "manglendeVedlegg.title.morsaktivitetdokumentasjon": "Du må leggje ved dokumentasjon av kva { navn } skal gjere i perioden",
-    "manglendeVedlegg.info.morsaktivitetdokumentasjon": "Du må leggje ved dokumentasjon på aktivitetskravet til { navn } når du skal vere heime i fellesperioden eller ha foreldrepengar.",
     "manglendeVedlegg.title.omsorgsovertakelse": "Adopsjonsbevillinga og stadfesting på datoen då du tok over omsorga",
-    "manglendeVedlegg.info.omsorgsovertakelse": "Du må leggje ved adopsjonsbevillinga og stadfesting på datoen då du tok over omsorga.",
-    "manglendeVedlegg.title.dokumentasjonAvAleneomsorg": "Stadfesting på datoen då du blei åleine om omsorga for barnet",
-    "manglendeVedlegg.title.dokumentasjonOverføringAvKvote": "Dokumentasjon av overtakelse av kvoten til den andre forelderen",
-    "manglendeVedlegg.info.dokumentasjonOverføringAvKvote": "Du må legge ved dokumentasjon av kvifor du søkjar om å overta kvoten til den andre forelderen.",
+    "manglendeVedlegg.info.omsorgsovertakelse":
+        "Du må leggje ved adopsjonsbevillinga og stadfesting på datoen då du tok over omsorga.",
+    "manglendeVedlegg.title.dokumentasjonAvAleneomsorg":
+        "Stadfesting på datoen då du blei åleine om omsorga for barnet",
+    "manglendeVedlegg.title.dokumentasjonOverføringAvKvote":
+        "Dokumentasjon av overtakelse av kvoten til den andre forelderen",
+    "manglendeVedlegg.info.dokumentasjonOverføringAvKvote":
+        "Du må legge ved dokumentasjon av kvifor du søkjar om å overta kvoten til den andre forelderen.",
+    "manglendeVedlegg.title.morsaktivitetdokumentasjon":
+        "Du må leggja ved dokumentasjon av kva {navn} skal gjere i perioden",
+    "manglendeVedlegg.info.morsaktivitetdokumentasjon":
+        "Du må legge ved dokumentasjon på aktivitetskravet til {navn} når du skal vere heime i fellesperioden eller ha foreldrepengar.",
     "morForSykSpørsmål.spørsmål": "Er mor for sjuk til å ta seg av barnet, eller er ho innlagd?",
     "morsAktivitet.Arbeid": "Arbeid",
     "morsAktivitet.ArbeidOgUtdanning": "Arbeid og utdanning",
@@ -935,6 +942,8 @@
         "Du må laste opp dokumentasjon på stebarnsadopsjonen og stadfesting på dato for stebarnsadopsjonen.",
     "vedlegg.veileder.terminbekreftelsen":
         "Du må leggje ved ei stadfesting på termin. Stadfestinga må vere datert og signert av lege eller jordmor når du er i 22. svangerskapsveke eller seinare.",
+    "vedlegg.beskrivelse.begrunnelseForSenEndring": "Dokumentasjon av sen endring",
+    "vedlegg.beskrivelse.dokumentasjonAvAleneomsorg": "Dokumentasjon av aleneomsorg",
     "velkommen.bobletekst": "Eg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.dinePlikter": "dine plikter.<br /><br />",
