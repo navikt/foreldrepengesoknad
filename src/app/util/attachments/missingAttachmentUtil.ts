@@ -6,7 +6,7 @@ import {
     getAnnenForelderStegVisibility
 } from '../../connected-components/steg/annen-forelder/visibility/annenForelderStegVisibility';
 
-import visibility from '../../components/annen-inntekt-modal/visibility';
+import annenInntektVisibility from '../../components/annen-inntekt-modal/visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
 import {
@@ -35,6 +35,12 @@ import {
 import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
 import { isUfødtBarn, isAdopsjonsbarn } from '../../types/søknad/Barn';
+import {
+    getUtsettelseFormVisibility,
+    UtsettelseSpørsmålKeys
+} from 'app/components/utsettelse-form/utsettelseFormConfig';
+import { getVariantFromPeriode } from 'app/components/utsettelse-form/UtsettelseForm';
+import { getMorsAktivitetSkjemanummer } from '../skjemanummer/morsAktivitetSkjemanummer';
 
 const isAttachmentMissing = (attachments?: Attachment[]) => attachments === undefined || attachments.length === 0;
 
@@ -114,6 +120,19 @@ export const findMissingAttachmentsForPerioder = (
                 type: getAttachmentTypeForPeriode(periode),
                 periodeId: periode.id
             });
+
+            if (periode.type === Periodetype.Utsettelse) {
+                const variant = getVariantFromPeriode(periode);
+                const visibility = getUtsettelseFormVisibility({ variant, periode, søknadsinfo });
+                if (visibility.isVisible(UtsettelseSpørsmålKeys.morsAktivitet)) {
+                    missingAttachments.push({
+                        index: perioder.indexOf(periode),
+                        skjemanummer: getMorsAktivitetSkjemanummer(periode.morsAktivitetIPerioden),
+                        type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                        periodeId: periode.id
+                    });
+                }
+            }
         }
     }
     return missingAttachments;
@@ -126,7 +145,7 @@ export const findMissingAttachmentsForAndreInntekter = (søknad: Søknad): Missi
 
     const missingAttachments = [];
     for (const andreInntekterSiste10MndItem of søknad.søker.andreInntekterSiste10Mnd) {
-        const annenInntektVedlegg = visibility.vedlegg(andreInntekterSiste10MndItem);
+        const annenInntektVedlegg = annenInntektVisibility.vedlegg(andreInntekterSiste10MndItem);
         if (annenInntektVedlegg && isAttachmentMissing(andreInntekterSiste10MndItem.vedlegg)) {
             missingAttachments.push({
                 index: søknad.søker.andreInntekterSiste10Mnd.indexOf(andreInntekterSiste10MndItem),
@@ -164,7 +183,11 @@ export const mapMissingAttachmentsOnSøknad = (missingAttachments: MissingAttach
         } else if (isAttachmentForAnnenInntekt(attachment.type)) {
             søknad.søker.andreInntekterSiste10Mnd![missingAttachment.index!].vedlegg = [attachment];
         } else if (isAttachmentForPeriode(attachment.type)) {
-            søknad.uttaksplan[missingAttachment.index!].vedlegg = [attachment];
+            søknad.uttaksplan[missingAttachment.index!].vedlegg! =
+                Array.isArray(søknad.uttaksplan[missingAttachment.index!].vedlegg) &&
+                søknad.uttaksplan[missingAttachment.index!].vedlegg!.length > 0
+                    ? søknad.uttaksplan[missingAttachment.index!].vedlegg!.concat(attachment)
+                    : [attachment];
         }
     });
 
