@@ -289,12 +289,12 @@
     "manglendeVedlegg.title.terminbekreftelse": "Bekreftelse på termindato",
     "manglendeVedlegg.info.terminbekreftelse":
         "Du må legge ved en terminbekreftelsen må være datert og signert av lege eller jordmor når du er i 22. svangerskapsuke eller senere.",
-    "manglendeVedlegg.title.utsettelseSykdomUttaksplan": "Dokumentasjon på sykdom eller innleggelse",
+    "manglendeVedlegg.title.utsettelseSykdomUttaksplan": "Dokumentasjon på sykdom eller innleggelse i helseinstitusjon",
     "manglendeVedlegg.info.utsettelseSykdomUttaksplan":
         "Du må legge ved bekreftelse fra legen din. Den må beskrive hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta deg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding. Er du eller barnet innlagt i helseinstitusjon må du legge ved dokumentasjon på innleggelsen.",
     "manglendeVedlegg.title.anneninntektDokumentasjon": "Dokumentasjon av annen inntektskilde",
     "manglendeVedlegg.info.anneninntektDokumentasjon": "Du må legge ved dokumentasjon av inntektskilden.",
-    "manglendeVedlegg.title.omsorgsovertakelse": "Adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
+    "manglendeVedlegg.title.omsorgsovertakelse": "Adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen",
     "manglendeVedlegg.info.omsorgsovertakelse":
         "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
     "manglendeVedlegg.title.dokumentasjonOverføringAvKvote":
