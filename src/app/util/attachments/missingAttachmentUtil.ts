@@ -34,7 +34,7 @@ import {
 } from '../uttaksplan/utsettelsesperiode';
 import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
-import { isUfødtBarn, isForeldreansvarsbarn } from '../../types/søknad/Barn';
+import { isUfødtBarn, isForeldreansvarsbarn, isAdopsjonsbarn } from '../../types/søknad/Barn';
 
 const isAttachmentMissing = (attachments?: Attachment[]) => attachments === undefined || attachments.length === 0;
 
@@ -69,7 +69,7 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
 
     if (
         spørsmålOmVedleggVisible(søknad.barn, søknad.erEndringssøknad) &&
-        isForeldreansvarsbarn(søknad.barn, søknad.situasjon) &&
+        isAdopsjonsbarn(søknad.barn, søknad.situasjon) &&
         isAttachmentMissing(søknad.barn.omsorgsovertakelse)
     ) {
         missingAttachments.push({
