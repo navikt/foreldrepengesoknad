@@ -36,11 +36,6 @@ import {
 import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
 import { isUfødtBarn, isAdopsjonsbarn } from '../../types/søknad/Barn';
-import {
-    getUtsettelseFormVisibility,
-    UtsettelseSpørsmålKeys
-} from 'app/components/utsettelse-form/utsettelseFormConfig';
-import { getVariantFromPeriode } from 'app/components/utsettelse-form/UtsettelseForm';
 import { getMorsAktivitetSkjemanummer } from '../skjemanummer/morsAktivitetSkjemanummer';
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 
@@ -104,16 +99,33 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
     return missingAttachments;
 };
 
+const missingAttachmentForAktivitetskrav = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
+    console.log(
+        aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
+            søknadsinfo.søker.erFarEllerMedmor,
+            søknadsinfo.annenForelder
+        ) && isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON)
+    );
+    return (
+        aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
+            søknadsinfo.søker.erFarEllerMedmor,
+            søknadsinfo.annenForelder
+        ) && isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON)
+    );
+};
+
+const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): boolean => {
+    return (
+        erÅrsakSykdomEllerInstitusjonsopphold((periode as Utsettelsesperiode).årsak) &&
+        isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
+    );
+};
+
 export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
     return (
-        (shouldPeriodeHaveAttachment(periode, søknadsinfo) &&
-            (aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-                søknadsinfo.søker.erFarEllerMedmor,
-                søknadsinfo.annenForelder
-            ) &&
-                isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON))) ||
-        (erÅrsakSykdomEllerInstitusjonsopphold((periode as Utsettelsesperiode).årsak) &&
-            isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM))
+        shouldPeriodeHaveAttachment(periode, søknadsinfo) &&
+        (missingAttachmentForAktivitetskrav(periode, søknadsinfo) ||
+            missingAttachmentForSykdomEllerInstitusjonsopphold(periode))
     );
 };
 
@@ -128,10 +140,7 @@ export const findMissingAttachmentsForPerioder = (
     const missingAttachments = [];
     for (const periode of perioder) {
         if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
-            if (
-                erÅrsakSykdomEllerInstitusjonsopphold((periode as Utsettelsesperiode).årsak) &&
-                isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
-            ) {
+            if (missingAttachmentForSykdomEllerInstitusjonsopphold(periode)) {
                 missingAttachments.push({
                     index: perioder.indexOf(periode),
                     skjemanummer: getSkjemanummerForPeriode(periode),
@@ -141,23 +150,15 @@ export const findMissingAttachmentsForPerioder = (
             }
 
             if (
-                periode.type === Periodetype.Utsettelse &&
-                aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-                    søknadsinfo.søker.erFarEllerMedmor,
-                    søknadsinfo.annenForelder
-                ) &&
-                isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON)
+                (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Uttak) &&
+                missingAttachmentForAktivitetskrav(periode, søknadsinfo)
             ) {
-                const variant = getVariantFromPeriode(periode);
-                const visibility = getUtsettelseFormVisibility({ variant, periode, søknadsinfo });
-                if (visibility.isVisible(UtsettelseSpørsmålKeys.morsAktivitet)) {
-                    missingAttachments.push({
-                        index: perioder.indexOf(periode),
-                        skjemanummer: getMorsAktivitetSkjemanummer(periode.morsAktivitetIPerioden),
-                        type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-                        periodeId: periode.id
-                    });
-                }
+                missingAttachments.push({
+                    index: perioder.indexOf(periode),
+                    skjemanummer: getMorsAktivitetSkjemanummer(periode.morsAktivitetIPerioden),
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    periodeId: periode.id
+                });
             }
         }
     }
