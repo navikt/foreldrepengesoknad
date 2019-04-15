@@ -2,11 +2,11 @@
     "Oppdater": "Oppdater",
     "hjemmeside": "hjemmeside ",
     "adopsjonAvEktefellesBarn.spørsmål": "Gjelder søknaden din stebarnsadopsjon?",
-    "adopsjonsdato.spørsmål": "Når overtok du omsorgen?",
-    "adoptertIUtlandet.spørsmål": "Har du adoptert fra utlandet?",
+    "adopsjonsdato.spørsmål": "Når overtar du omsorgen?",
+    "adoptertIUtlandet.spørsmål": "Adopterer du fra utlandet?",
     "aktivitetskrav.lesmer":
         " <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les mer om aktivitetskravet til mor her.</a>",
-    "ankomstdato.spørsmål": "Når kom barnet til Norge?",
+    "ankomstdato.spørsmål": "Når kommer barnet til Norge?",
     "annenForelder.aleneOmOmsorg": "Er du alene om omsorgen av barnet?",
     "annenForelder.aleneOmOmsorg.veileder":
         "Du har omsorgen for barnet alene, og du bor ikke sammen med den andre forelderen.",
@@ -76,7 +76,7 @@
     "antallBarn.select.tekst.fødsel": "Hvor mange barn fikk du?",
     "antallBarn.select.tekst.termin": "Hvor mange barn venter du?",
     "antallBarn.select.velg": "Velg",
-    "antallBarn.spørsmål.adoptert": "Hvor mange barn adopterte du?",
+    "antallBarn.spørsmål.adoptert": "Hvor mange barn adopterer du?",
     "antallBarn.spørsmål.fått": "Hvor mange barn har du fått?",
     "antallBarn.spørsmål.venter": "Hvor mange barn venter du?",
     "attachments.tittel.foreldreansvar": "Overtakelse av foreldreansvar",
@@ -294,9 +294,9 @@
         "Du må legge ved bekreftelse fra legen din. Den må beskrive hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta deg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding. Er du eller barnet innlagt i helseinstitusjon må du legge ved dokumentasjon på innleggelsen.",
     "manglendeVedlegg.title.anneninntektDokumentasjon": "Dokumentasjon av annen inntektskilde",
     "manglendeVedlegg.info.anneninntektDokumentasjon": "Du må legge ved dokumentasjon av inntektskilden.",
-    "manglendeVedlegg.title.omsorgsovertakelse": "Adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen",
+    "manglendeVedlegg.title.omsorgsovertakelse": "Adopsjonsbevillingen og bekreftelse på datoen du overtar omsorgen",
     "manglendeVedlegg.info.omsorgsovertakelse":
-        "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
+        "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtar omsorgen.",
     "manglendeVedlegg.title.dokumentasjonOverføringAvKvote":
         "Dokumentasjon av overtakelse av kvoten til den andre forelderen",
     "manglendeVedlegg.info.dokumentasjonOverføringAvKvote":
