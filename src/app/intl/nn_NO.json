@@ -676,7 +676,7 @@
     "uttaksplan.infoVedOpphold":
         "Du kan planlegge når {navn} skal ha foreldrepengar, men {navn} må søkje sjølv. Søknaden må sendes inn seinast dagen før foreldrepengane tek til for ikkje å miste dagar. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige fristar.</a>",
     "uttaksplan.infoVedOpphold.førsteSeksUker":
-        "{navnFar} kan kun ta ut fellesperiode eller kvote om du er så sjuk at du er heilt avhengig av hjelp til å ta deg av barnet eller innlagt i helseinstitusjon.",
+        "{navnFar} kan kun ta ut fellesperiode eller kvote om du er så sjuk at du er heilt avhengig av hjelp til å ta deg av barnet eller innlagt i helseinstitusjon. Du kan planlegge når {navn} skal ha foreldrepengar, men {navn} må søkje sjølv.",
     "uttaksplan.infoVedTapteUttaksdager":
         "Du vil mista {dager} {dager, plural, one{dag}other {dagar}} med foreldrepengar sidan du startar seinare enn seks veker etter fødsel. For å unngå tap av dagar kan du legge til en utsetjing i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
     "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapte foreldrepengar",
