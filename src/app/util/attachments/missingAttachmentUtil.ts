@@ -100,12 +100,6 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
 };
 
 const missingAttachmentForAktivitetskrav = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
-    console.log(
-        aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-            søknadsinfo.søker.erFarEllerMedmor,
-            søknadsinfo.annenForelder
-        ) && isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON)
-    );
     return (
         aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
             søknadsinfo.søker.erFarEllerMedmor,

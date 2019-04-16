@@ -95,7 +95,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                         : [];
 
                     const attachmentMapValue = am[1];
-                    return attachmentMapValue.map((a) => (
+                    return attachmentMapValue.filter((v) => v.type !== AttachmentType.SEN_ENDRING).map((a) => (
                         <div key={guid()}>
                             <Block
                                 header={{

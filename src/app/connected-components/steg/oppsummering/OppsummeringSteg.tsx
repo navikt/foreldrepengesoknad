@@ -35,6 +35,7 @@ import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
 import { findAllAttachments } from '../manglende-vedlegg/manglendeVedleggUtil';
 import _ from 'lodash';
+import { skalViseManglendeVedleggSteg } from '../util/navigation';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -172,8 +173,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFormTag: true,
         history: props.history,
         isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, søknadsinfo),
-        previousStegID:
-            Array.from(attachmentMap.entries()).length > 0 ? StegID.MANGLENDE_VEDLEGG : StegID.ANDRE_INNTEKTER
+        previousStegID: skalViseManglendeVedleggSteg(attachmentMap) ? StegID.MANGLENDE_VEDLEGG : StegID.ANDRE_INNTEKTER
     };
 
     return {
