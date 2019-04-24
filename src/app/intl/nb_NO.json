@@ -285,7 +285,7 @@
     "leggtil": "Legg til",
     "manglendeVedlegg.periode.tidsperiode": "Gjelder perioden med { type } fra { fom } til { tom }",
     "manglendeVedlegg.veileder":
-        "Før du kan sende inn søknaden så trenger vi at du laster opp de vedleggen som er listet opp nedenfor. Uten dem har vi ikke mulighet at behandle din søknad.",
+        "Før du kan sende søknaden må du laste opp dokumentasjon som vi trenger for å kunne behandle søknaden din.",
     "manglendeVedlegg.title.terminbekreftelse": "Bekreftelse på termindato",
     "manglendeVedlegg.info.terminbekreftelse":
         "Du må legge ved en terminbekreftelsen må være datert og signert av lege eller jordmor når du er i 22. svangerskapsuke eller senere.",
