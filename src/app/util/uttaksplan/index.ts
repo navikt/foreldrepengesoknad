@@ -71,8 +71,15 @@ export const getStønadskontoNavn = (intl: InjectedIntl, konto: StønadskontoTyp
     return intl.formatMessage({ id: `stønadskontotype.${konto}` });
 };
 
-export const getOppholdskontoNavn = (intl: InjectedIntl, årsak: OppholdÅrsakType, foreldernavn: string) => {
-    return getMessage(intl, `oppholdsårsaktype.foreldernavn.${årsak}`, { foreldernavn });
+export const getOppholdskontoNavn = (
+    intl: InjectedIntl,
+    årsak: OppholdÅrsakType,
+    foreldernavn: string,
+    erMor: boolean
+) => {
+    return erMor
+        ? getMessage(intl, `oppholdsårsaktype.foreldernavn.far.${årsak}`, { foreldernavn })
+        : getMessage(intl, `oppholdsårsaktype.foreldernavn.mor.${årsak}`);
 };
 
 export const getFamiliehendelsedato = (barn: Partial<Barn>, situasjon?: Søkersituasjon): Date | undefined => {
@@ -135,7 +142,12 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
             }
             return getMessage(intl, `periodeliste.utsettelsesårsak.ukjent`);
         case Periodetype.Opphold:
-            return getOppholdskontoNavn(intl, periode.årsak, getForelderNavn(periode.forelder, navnPåForeldre));
+            return getOppholdskontoNavn(
+                intl,
+                periode.årsak,
+                getForelderNavn(periode.forelder, navnPåForeldre),
+                periode.forelder === Forelder.MOR
+            );
         case Periodetype.Hull:
             return getMessage(intl, `periodetype.hull.tittel`);
     }
