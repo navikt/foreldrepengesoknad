@@ -6,7 +6,7 @@ import { isUttaksperiode, Periodetype, StønadskontoType } from '../../../types/
 export function inneholderTapteDagerTest(grunnlag: Regelgrunnlag): RegelTestresultat {
     const {
         perioder,
-        søknadsinfo: { søknaden, søker, mor }
+        søknadsinfo: { søknaden, søker, mor, annenForelder }
     } = grunnlag;
     const infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor = getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor(
         perioder,
@@ -14,8 +14,8 @@ export function inneholderTapteDagerTest(grunnlag: Regelgrunnlag): RegelTestresu
         søker.erFarEllerMedmor,
         mor.harRett === false,
         mor.erUfør,
-        false,
-        false
+        !!(søker.erFarEllerMedmor && annenForelder.kanIkkeOppgis),
+        !!(søker.erFarEllerMedmor && søker.erAleneOmOmsorg)
     );
 
     const planInneholderTapteDager =
