@@ -13,6 +13,7 @@ import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 import { harFarMedmorSøktUgyldigUttakFørsteSeksUker } from '../uttaksplan/uttakFarValidation';
 import { Forelder, Tidsperiode } from 'common/types';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
+import { OmAnnenForelder } from 'app/selectors/types';
 
 const familiehendelsesdato = new Date();
 const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
@@ -44,6 +45,9 @@ const utsettelseBase: Partial<Utsettelsesperiode> = {
 const uttak = uttakBase as Uttaksperiode;
 const utsettelse = utsettelseBase as Utsettelsesperiode;
 const overføring = overføringBase as Overføringsperiode;
+const omAnnenForelder: Partial<OmAnnenForelder> = {
+    kanIkkeOppgis: false
+};
 
 describe('Validering av fars uttak første 6 uker', () => {
     it('skal godta overføring på grunn av insititusjonsoppholdAnnenForelder', () => {
@@ -51,7 +55,9 @@ describe('Validering av fars uttak første 6 uker', () => {
             [{ ...overføring, årsak: OverføringÅrsakType.insititusjonsoppholdAnnenForelder }],
             familiehendelsesdato,
             1,
-            Søkersituasjon.FØDSEL
+            Søkersituasjon.FØDSEL,
+            omAnnenForelder as OmAnnenForelder,
+            false
         );
         expect(result).toBeFalsy();
     });
@@ -60,7 +66,9 @@ describe('Validering av fars uttak første 6 uker', () => {
             [{ ...overføring, årsak: OverføringÅrsakType.sykdomAnnenForelder }],
             familiehendelsesdato,
             1,
-            Søkersituasjon.FØDSEL
+            Søkersituasjon.FØDSEL,
+            omAnnenForelder as OmAnnenForelder,
+            false
         );
         expect(result).toBeFalsy();
     });
@@ -69,7 +77,9 @@ describe('Validering av fars uttak første 6 uker', () => {
             [{ ...overføring, årsak: OverføringÅrsakType.aleneomsorg }],
             familiehendelsesdato,
             1,
-            Søkersituasjon.FØDSEL
+            Søkersituasjon.FØDSEL,
+            omAnnenForelder as OmAnnenForelder,
+            false
         );
         expect(result).toBeTruthy();
     });
@@ -78,7 +88,9 @@ describe('Validering av fars uttak første 6 uker', () => {
             [{ ...utsettelse }],
             familiehendelsesdato,
             1,
-            Søkersituasjon.FØDSEL
+            Søkersituasjon.FØDSEL,
+            omAnnenForelder as OmAnnenForelder,
+            false
         );
         expect(result).toBeTruthy();
     });
@@ -87,7 +99,9 @@ describe('Validering av fars uttak første 6 uker', () => {
             [{ ...uttak, gradert: true }],
             familiehendelsesdato,
             1,
-            Søkersituasjon.FØDSEL
+            Søkersituasjon.FØDSEL,
+            omAnnenForelder as OmAnnenForelder,
+            false
         );
         expect(result).toBeTruthy();
     });
@@ -96,7 +110,9 @@ describe('Validering av fars uttak første 6 uker', () => {
             [{ ...uttak }],
             familiehendelsesdato,
             1,
-            Søkersituasjon.FØDSEL
+            Søkersituasjon.FØDSEL,
+            omAnnenForelder as OmAnnenForelder,
+            false
         );
         expect(result).toBeTruthy();
     });
@@ -105,7 +121,9 @@ describe('Validering av fars uttak første 6 uker', () => {
             [{ ...uttak, ønskerFlerbarnsdager: true }],
             familiehendelsesdato,
             2,
-            Søkersituasjon.FØDSEL
+            Søkersituasjon.FØDSEL,
+            omAnnenForelder as OmAnnenForelder,
+            false
         );
         expect(result).toBeFalsy();
     });
@@ -114,7 +132,9 @@ describe('Validering av fars uttak første 6 uker', () => {
             [{ ...uttak, ønskerFlerbarnsdager: true }],
             familiehendelsesdato,
             2,
-            Søkersituasjon.FØDSEL
+            Søkersituasjon.FØDSEL,
+            omAnnenForelder as OmAnnenForelder,
+            false
         );
         expect(result).toBeFalsy();
     });
@@ -123,7 +143,9 @@ describe('Validering av fars uttak første 6 uker', () => {
             [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Innlagt }],
             familiehendelsesdato,
             1,
-            Søkersituasjon.FØDSEL
+            Søkersituasjon.FØDSEL,
+            omAnnenForelder as OmAnnenForelder,
+            false
         );
         expect(result).toBeFalsy();
     });
@@ -132,7 +154,9 @@ describe('Validering av fars uttak første 6 uker', () => {
             [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.TrengerHjelp }],
             familiehendelsesdato,
             1,
-            Søkersituasjon.FØDSEL
+            Søkersituasjon.FØDSEL,
+            omAnnenForelder as OmAnnenForelder,
+            false
         );
         expect(result).toBeFalsy();
     });
@@ -141,7 +165,9 @@ describe('Validering av fars uttak første 6 uker', () => {
             [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Arbeid }],
             familiehendelsesdato,
             1,
-            Søkersituasjon.FØDSEL
+            Søkersituasjon.FØDSEL,
+            omAnnenForelder as OmAnnenForelder,
+            false
         );
         expect(result).toBeTruthy();
     });
@@ -157,7 +183,9 @@ describe('Validering av fars uttak første 6 uker', () => {
             ],
             familiehendelsesdato,
             1,
-            Søkersituasjon.FØDSEL
+            Søkersituasjon.FØDSEL,
+            omAnnenForelder as OmAnnenForelder,
+            false
         );
         expect(result).toBeFalsy();
     });
