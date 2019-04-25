@@ -7,9 +7,10 @@ const isValidFødselsnummer = require('is-valid-fodselsnummer');
 
 const MAKS_FNR_LENGTH = 30;
 
-const isFødselsnummerFormatValid = (fnr: string): boolean => {
+type FødselsnummerValidationResult = false | 'F' | 'D';
+const isFødselsnummerFormatValid = (fnr: string): FødselsnummerValidationResult => {
     try {
-        return isValidFødselsnummer(fnr);
+        return isValidFødselsnummer(fnr, true);
     } catch (e) {
         return false;
     }
@@ -19,10 +20,11 @@ const isUtenlandskFødselsnummerValid = (fnr: string): boolean => {
     return fnr === undefined || fnr === '' || fnr.length <= MAKS_FNR_LENGTH;
 };
 
-export const isSixteenOrOlder = (fnr: string): boolean => {
-    const dato = fnr.substr(0, 2);
+export const isSixteenOrOlder = (fnr: string, isFødselsnummerValid: FødselsnummerValidationResult): boolean => {
+    const dato = isFødselsnummerValid === 'D' ? `${Number(fnr.substr(0, 1)) - 4}${fnr.substr(1, 1)}` : fnr.substr(0, 2);
     const mnd = fnr.substr(2, 2);
     const år = fnr.substr(4, 2);
+
     const fødselsdato = moment(`${dato}-${mnd}-${år}`, 'DD-MM-YY');
 
     if (fødselsdato.get('year') > moment().get('year')) {
@@ -43,11 +45,12 @@ export const getFødselsnummerRegler = (
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.fødselsnummer';
+    const isFødselsnummerValid = isFødselsnummerFormatValid(fnr);
     return [
         hasValueRule(fnr, getMessage(intl, `${intlKey}.required`)),
         {
             test: () =>
-                (!utenlandskFnr && isFødselsnummerFormatValid(fnr)) ||
+                (!utenlandskFnr && isFødselsnummerValid !== false) ||
                 (utenlandskFnr === true && isUtenlandskFødselsnummerValid(fnr)),
             failText: getMessage(intl, `${intlKey}.ugyldigFødselsnummer`)
         },
@@ -56,7 +59,7 @@ export const getFødselsnummerRegler = (
             failText: getMessage(intl, `${intlKey}.ugyldigEgetFødselsnummer`)
         },
         {
-            test: () => (!utenlandskFnr && isSixteenOrOlder(fnr)) || utenlandskFnr === true,
+            test: () => (!utenlandskFnr && isSixteenOrOlder(fnr, isFødselsnummerValid)) || utenlandskFnr === true,
             failText: getMessage(intl, `${intlKey}.underSeksten`)
         }
     ];
