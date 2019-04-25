@@ -21,6 +21,7 @@ import { AppState } from '../../redux/reducers';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import { apiActionCreators } from '../../redux/actions';
 import { Redirect } from 'react-router';
+import ManglendeVedleggSteg from './manglende-vedlegg/ManglendeVedleggSteg';
 
 export const søknadStegPath = (stegPath?: string): string => `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
 
@@ -130,6 +131,11 @@ class StegRoutes extends React.Component<Props> {
                         path={søknadStegPath(StegID.UTTAKSPLAN_SKJEMA)}
                         render={(props) => <UttaksplanSkjemaSteg {...props} søkerinfo={søkerinfo} />}
                         key={StegID.UTTAKSPLAN_SKJEMA}
+                    />
+                    <Route
+                        path={søknadStegPath(StegID.MANGLENDE_VEDLEGG)}
+                        render={(props) => <ManglendeVedleggSteg {...props} søkerinfo={søkerinfo} />}
+                        key={StegID.MANGLENDE_VEDLEGG}
                     />
                     <Redirect
                         from={`${routeConfig.SOKNAD_ROUTE_PREFIX}/uttaksplanSkjema`}

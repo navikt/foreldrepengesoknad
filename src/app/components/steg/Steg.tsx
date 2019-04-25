@@ -245,8 +245,8 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    erEndringssøknad: state.søknad.erEndringssøknad,
-    harSakForEndring: state.søknad.ekstrainfo.sakForEndring !== undefined
+    harSakForEndring: state.søknad.ekstrainfo.sakForEndring !== undefined,
+    erEndringssøknad: state.søknad.erEndringssøknad
 });
 
 export default connect(mapStateToProps)(injectIntl(Steg));

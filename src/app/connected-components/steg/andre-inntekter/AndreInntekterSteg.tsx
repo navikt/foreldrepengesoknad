@@ -32,6 +32,10 @@ import {
     uttaksplanInneholderFrilansaktivitet,
     uttaksplanInneholderSelvstendignæringaktivitet
 } from 'app/util/uttaksplan';
+import { findMissingAttachments, mapMissingAttachmentsOnSøknad } from 'app/util/attachments/missingAttachmentUtil';
+import { findAllAttachments } from '../manglende-vedlegg/manglendeVedleggUtil';
+import _ from 'lodash';
+import { skalViseManglendeVedleggSteg } from '../util/navigation';
 
 interface StateProps {
     stegProps: StegProps;
@@ -162,7 +166,7 @@ class AndreInntekterSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const { søknad } = state;
+    const { søknad, api } = state;
     const { history } = props;
     const { søker, uttaksplan } = søknad;
     const { arbeidsforhold } = props.søkerinfo;
@@ -171,12 +175,16 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         uttaksplan
     );
 
+    const missingAttachments = findMissingAttachments(søknad, api, getSøknadsinfo(state)!);
+    const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
+
     const stegProps: StegProps = {
         id: StegID.ANDRE_INNTEKTER,
         renderFortsettKnapp: annenInntektErGyldig(søker),
         renderFormTag: true,
         history,
-        isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo, getSøknadsinfo(state))
+        isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo, getSøknadsinfo(state)),
+        nesteStegID: skalViseManglendeVedleggSteg(attachmentMap) ? StegID.MANGLENDE_VEDLEGG : StegID.OPPSUMMERING
     };
 
     return {

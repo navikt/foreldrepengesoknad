@@ -27,12 +27,15 @@ import { AlertStripeFeilSolid } from 'nav-frontend-alertstriper';
 import Block from 'common/components/block/Block';
 import LinkButton from '../../../components/link-button/LinkButton';
 import { MissingAttachment } from '../../../types/MissingAttachment';
-import { findMissingAttachments } from '../../../util/attachments/missingAttachmentUtil';
+import { findMissingAttachments, mapMissingAttachmentsOnSøknad } from '../../../util/attachments/missingAttachmentUtil';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
+import { findAllAttachments } from '../manglende-vedlegg/manglendeVedleggUtil';
+import _ from 'lodash';
+import { skalViseManglendeVedleggSteg } from '../util/navigation';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -73,6 +76,7 @@ class OppsummeringSteg extends React.Component<Props> {
         const { missingAttachments, dispatch } = this.props;
         dispatch(apiActionCreators.sendSøknad(missingAttachments, this.props.history));
     }
+
     gotoUttaksplan() {
         const { history } = this.props;
         const path = søknadStegPath(StegID.UTTAKSPLAN);
@@ -151,24 +155,26 @@ class OppsummeringSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const søknad = state.søknad;
+    const { søknad, api } = state;
     const { person } = props.søkerinfo;
     const {
         api: { isLoadingTilgjengeligeStønadskontoer }
     } = state;
 
     const søknadsinfo = getSøknadsinfo(state)!;
+    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
+    const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, api, søknadsinfo);
+    const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
+    const antallUkerUttaksplan = getAntallUker(tilgjengeligeStønadskontoer);
+
     const stegProps: StegProps = {
         id: StegID.OPPSUMMERING,
         renderFortsettKnapp: søknad.harGodkjentOppsummering,
         renderFormTag: true,
         history: props.history,
-        isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, søknadsinfo)
+        isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, søknadsinfo),
+        previousStegID: skalViseManglendeVedleggSteg(attachmentMap) ? StegID.MANGLENDE_VEDLEGG : StegID.ANDRE_INNTEKTER
     };
-
-    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
-    const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, state.api, søknadsinfo);
-    const antallUkerUttaksplan = getAntallUker(tilgjengeligeStønadskontoer);
 
     return {
         person,

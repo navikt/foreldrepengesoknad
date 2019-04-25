@@ -10,7 +10,8 @@ export enum StegID {
     'ANDRE_INNTEKTER' = 'andre-inntekter',
     'UTTAKSPLAN_SKJEMA' = 'uttaksplan-skjema',
     'UTTAKSPLAN' = 'uttaksplan',
-    'OPPSUMMERING' = 'oppsummering'
+    'OPPSUMMERING' = 'oppsummering',
+    'MANGLENDE_VEDLEGG' = 'manglende-vedlegg'
 }
 
 export interface StegConfig {
@@ -96,14 +97,20 @@ export const getStegConfig = (erEndringssøknad: boolean, harSakForEndring?: boo
             },
             [StegID.ANDRE_INNTEKTER]: {
                 tittel: 'steg.config.tittel.opplysningerOmInntekt',
+                fortsettKnappLabel: 'Fortsett',
+                nesteSteg: StegID.MANGLENDE_VEDLEGG,
+                index: 6
+            },
+            [StegID.MANGLENDE_VEDLEGG]: {
+                tittel: 'steg.config.tittel.manglendeVedlegg',
                 fortsettKnappLabel: 'Gå til oppsummering',
                 nesteSteg: StegID.OPPSUMMERING,
-                index: 6
+                index: 7
             },
             [StegID.OPPSUMMERING]: {
                 tittel: 'steg.config.tittel.oppsummering',
                 fortsettKnappLabel: 'Send søknad',
-                index: 7
+                index: 8
             }
         };
     }

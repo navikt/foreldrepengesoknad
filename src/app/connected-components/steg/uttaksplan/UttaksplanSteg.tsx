@@ -150,6 +150,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     };
 
     handleBegrunnelseVedleggChange = (vedlegg: Attachment[]) => {
+        vedlegg.forEach((v) => {
+            v.beskrivelse = getMessage(this.props.intl, 'vedlegg.beskrivelse.begrunnelseForSenEndring');
+        });
         this.props.dispatch(søknadActions.setVedleggForSenEndring(vedlegg));
     };
 
