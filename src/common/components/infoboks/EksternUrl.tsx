@@ -3,14 +3,14 @@ import getMessage from 'common/util/i18nUtils';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 interface Props {
-    tekst: string;
+    tekst?: string;
     url: string;
     lenkeTekst: string;
 }
 
 const EksternUrl: React.StatelessComponent<Props & InjectedIntlProps> = ({ intl, tekst, url, lenkeTekst }) => (
     <span>
-        {getMessage(intl, tekst)}
+        {tekst && getMessage(intl, tekst)}
         <a href={url} className="lenke" rel="noopener" target="_blank" style={{ marginLeft: 3 }}>
             {getMessage(intl, lenkeTekst)}
             <EksternIkon />
