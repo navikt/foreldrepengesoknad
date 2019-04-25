@@ -13,7 +13,9 @@ export function inneholderTapteDagerTest(grunnlag: Regelgrunnlag): RegelTestresu
         søknaden.familiehendelsesdato,
         søker.erFarEllerMedmor,
         mor.harRett === false,
-        mor.erUfør
+        mor.erUfør,
+        false,
+        false
     );
 
     const planInneholderTapteDager =
