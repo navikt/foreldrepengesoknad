@@ -13,6 +13,7 @@ import { Forelder } from 'common/types';
 import { uttaksdatoer } from '../../uttaksplan/uttaksdatoer';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
+import { OmAnnenForelder } from 'app/selectors/types';
 
 export const periodeErFørDato = ({ tidsperiode }: Periode, dato: Date): boolean => {
     return isValidTidsperiode(tidsperiode) && Tidsperioden(tidsperiode).erFørDato(dato);
@@ -49,9 +50,11 @@ export const harFarMedmorSøktUgyldigUttakFørsteSeksUker = (
     perioder: Periode[],
     familiehendelsesdato: Date,
     antallBarn: number,
-    situasjon: Søkersituasjon
+    situasjon: Søkersituasjon,
+    annenForelder: OmAnnenForelder,
+    erAleneOmOmsorg: boolean
 ): boolean => {
-    if (situasjon === Søkersituasjon.ADOPSJON) {
+    if (situasjon === Søkersituasjon.ADOPSJON || annenForelder.kanIkkeOppgis || erAleneOmOmsorg) {
         return false;
     }
 

@@ -210,7 +210,7 @@
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepenger",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet som frilanser de siste ti månedene?",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
-        "Du kan lese mer om hva det betyr å være frilanser på skatteetaten sin",
+        "Eksempel på hvem som kan være frilansere er<br/><ul><li>Musikere</li><li>Tekstforfattere</li><li>Skuespillere</li><li>Journalister</li><li>Oversettere</li><li> Folkevalgt, politikere i kommuner, fylkeskommuner og på Stortinget som får godtgjørelse for politisk arbeid.</li><li>Fosterforeldre, og personer med omsorgslønn</li></ul>Hvis du er usikker på om du er frilanser kan du lese mer om hva det betyr å være frilanser på skatteetaten sin",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie de siste ti månedene",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
@@ -220,7 +220,7 @@
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
         "Har du jobbet som selvstendig næringsdrivende de siste ti månedene?",
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst":
-        "Du kan lese mer om hva det betyr å være selvstendig næringsdrivende på skatteetaten sin",
+        "Du kan lese mer om hva det betyr å være selvstendig næringsdrivende på skatteetatens",
     "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
     "harRevisor.spørsmål": "Har du revisor?",
     "heltid": "Heltid",
@@ -326,11 +326,16 @@
     "næringstype.fiske": "Fiske",
     "næringstype.jordbruk_skogbruk": "Jordbruk",
     "næringstype.spørsmål": "Hvilken type virksomhet har du?",
-    "oppholdsårsaktype.foreldernavn.UTTAK_FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin",
-    "oppholdsårsaktype.foreldernavn.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperioden",
-    "oppholdsårsaktype.foreldernavn.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flernbarnsperioden",
-    "oppholdsårsaktype.foreldernavn.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten din",
-    "oppholdsårsaktype.foreldernavn.undefined": "{foreldernavn} tar ut",
+    "oppholdsårsaktype.foreldernavn.mor.UTTAK_FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin",
+    "oppholdsårsaktype.foreldernavn.mor.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperioden",
+    "oppholdsårsaktype.foreldernavn.mor.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flernbarnsperioden",
+    "oppholdsårsaktype.foreldernavn.mor.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten din",
+    "oppholdsårsaktype.foreldernavn.mor.undefined": "{foreldernavn} tar ut",
+    "oppholdsårsaktype.foreldernavn.far.UTTAK_FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten din",
+    "oppholdsårsaktype.foreldernavn.far.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperioden",
+    "oppholdsårsaktype.foreldernavn.far.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flernbarnsperioden",
+    "oppholdsårsaktype.foreldernavn.far.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin",
+    "oppholdsårsaktype.foreldernavn.far.undefined": "{foreldernavn} tar ut",
     "oppsummering.adopsjonAvEktefellesBarn.label": "Gjelder søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
     "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
@@ -526,7 +531,7 @@
     "spørsmål.dekningsgrad.label.deltUttakMor": "Hvor lang periode med foreldrepenger ønsker dere?",
     "spørsmål.dekningsgrad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger ønsker du?",
     "spørsmål.harAnnenForelderSøktFP.label": "Har {navnAnnenForelder} foreldrepenger?",
-    "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} sin siste dag med foreldrepenger?",
+    "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} siste dag med foreldrepenger?",
     "spørsmål.farSinFørsteUttaksdagSpørsmål.label": "Når er din første dag med foreldrepenger?",
     "spørsmål.farFellesperiode.label": "Hvor mye fellesperiode skal du ha?",
     "spørsmål.farFellesperiode.uker.label": "Antall uker",
@@ -562,14 +567,14 @@
     "stillingsprosent": "Oppgi stillingsprosenten du skal jobbe",
     "stønadskontotype.AKTIVITETSFRI_FLERBARNSDAGER": "Flerbarnsuker uten aktivitetskrav",
     "stønadskontotype.AKTIVITETSFRI_KVOTE": "Foreldrepenger uten aktivitetskrav",
-    "stønadskontotype.FEDREKVOTE": "Far sin kvote",
+    "stønadskontotype.FEDREKVOTE": "Fars kvote",
     "stønadskontotype.FELLESPERIODE": "Fellesperiode",
     "stønadskontotype.FLERBARNSDAGER": "Flerbarnsuker",
     "stønadskontotype.FLERBARNSUKER": "Flerbarnsuker",
     "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
     "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
-    "stønadskontotype.MØDREKVOTE": "Mor sin kvote",
-    "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
+    "stønadskontotype.MØDREKVOTE": "Mors kvote",
+    "stønadskontotype.foreldernavn.kvote": "{navn} kvote",
     "stønadskontotype.undefined": "Ny periode uten kvote",
     "søkerrolle.rolle.FAR": "Far",
     "søkerrolle.rolle.FAR2": "Far 2",
@@ -643,7 +648,7 @@
     "uttaksplan.periodenGjelder": "Hvem skal ha foreldrepenger?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål": "Hva skal {navnMor} gjøre i denne perioden?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid":
-        "Du må legge ved bekreftelse fra {navnMor} sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent. Dersom mor er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.",
+        "Du må legge ved bekreftelse fra {navnMor} arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent. Dersom mor er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning":
         "Du må legge ved dokumentasjon på {navnMor} sitt arbeidsforhold og studier. Dokumentasjon fra studiestedet må vise",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt1": "navn og fødselsnummer",
@@ -695,7 +700,7 @@
     "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan ha {aktivitetsfriKvote} uker med foreldrepenger uten aktivitetskrav til mor.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn periode med foreldrepenger for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} sin siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn periode med foreldrepenger for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMindreEnnTreUker":
         "{varighet} du ikke bruker før termin faller bort",
@@ -722,7 +727,7 @@
         "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
     "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder":
         "Du må legge ved bekreftelse som {navnAnnenForelder} får fra sin lege. Den må beskrive hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
-    "uttaksplan.overføring.årsak.spørsmål": "Hvorfor skal du overta {annenForelderNavn} sin kvote?",
+    "uttaksplan.overføring.årsak.spørsmål": "Hvorfor skal du overta {annenForelderNavn} kvote?",
     "uttaksplan.skjema.flerbarnsInformasjon":
         "Dere har {uker} uker med flerbarnsuker som dere kan dele. Disse ukene kan dere ta ut når som helst i foreldrepengeperioden. Dere kan ta de ut samtidig, eller hver for dere. Det er ikke krav til hva {navnMor} gjør når {navnFar} tar ut dager med flerbarnsuker.",
     "uttaksplan.skjema.fordeling.annenForeldersFellesperiode":
@@ -739,7 +744,7 @@
     "uttaksplan.skjema.fordeling.veiledning.lenketekst": "Les mer om aktivitetskravet her.",
     "uttaksplan.skjema.fordeling.øk.tooltip": "En uke mer",
     "uttaksplan.skjema.informasjonTilAnnenForelder":
-        "Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i {navn} sin søknad.",
+        "Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i {navn} søknad.",
     "uttaksplan.skjema.opphold.årsak.spørsmål": "Hvilken del av foreldrepengene skal {navn} ta ut?",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.ankomst": "Ankomst til Norge {dato}",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.annen": "Annen dato",

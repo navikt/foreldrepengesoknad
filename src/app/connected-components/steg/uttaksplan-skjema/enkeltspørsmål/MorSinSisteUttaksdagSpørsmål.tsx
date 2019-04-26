@@ -4,6 +4,7 @@ import getMessage from 'common/util/i18nUtils';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import { uttaksplanDatoavgrensninger } from '../../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
+import { getNavnGenitivEierform } from '../../../../util/tekstUtils';
 
 interface OwnProps {
     navnMor: string;
@@ -24,7 +25,9 @@ const MorSinSisteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
             <DatoInput
                 name="morSinSisteUttaksdag"
                 id="morSinSisteUttaksdag"
-                label={getMessage(intl, 'spørsmål.morSinSisteUttaksdag.label', { navnMor })}
+                label={getMessage(intl, 'spørsmål.morSinSisteUttaksdag.label', {
+                    navnMor: getNavnGenitivEierform(navnMor, intl.locale)
+                })}
                 onChange={(morSinSisteUttaksdag: Date) => onChange({ morSinSisteUttaksdag })}
                 dato={data.morSinSisteUttaksdag}
                 datoAvgrensinger={uttaksplanDatoavgrensninger.morsSisteUttaksdag(familiehendelsesdato)}

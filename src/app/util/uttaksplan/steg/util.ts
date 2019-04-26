@@ -1,8 +1,14 @@
 import lenker from 'app/util/routing/lenker';
 import { VeilederMessage } from '../../../components/veileder-info/VeilederInfo';
 import { Søknadsinfo } from '../../../selectors/types';
+import { getNavnGenitivEierform } from '../../tekstUtils';
+import { InjectedIntl } from 'react-intl';
 
-export const getVeilederInfoText = (søknadsinfo: Søknadsinfo, aktivitetsfriKvote: number): VeilederMessage => {
+export const getVeilederInfoText = (
+    søknadsinfo: Søknadsinfo,
+    aktivitetsfriKvote: number,
+    intl: InjectedIntl
+): VeilederMessage => {
     const { søknaden, annenForelder, søker, navn } = søknadsinfo;
 
     if (søknaden.erEndringssøknad) {
@@ -33,7 +39,7 @@ export const getVeilederInfoText = (søknadsinfo: Søknadsinfo, aktivitetsfriKvo
                     contentIntlKey: 'uttaksplan.informasjon.farMedmor.deltUttak',
                     formatContentAsHTML: true,
                     values: {
-                        navnAnnenForelder: navn.annenForelder.fornavn,
+                        navnAnnenForelder: getNavnGenitivEierform(navn.annenForelder.fornavn, intl.locale),
                         link: lenker.viktigeFrister
                     }
                 };

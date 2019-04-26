@@ -226,14 +226,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
-                        <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote)]} />
-
                         {sakForEndring && (
                             <Block>
                                 <PeriodelisteSakForEndring sak={sakForEndring} />
                             </Block>
                         )}
 
+                        <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
                         <Block>
                             <Uttaksplanlegger
                                 uttaksplan={søknad.uttaksplan}
