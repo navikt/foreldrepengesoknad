@@ -8,6 +8,7 @@ import Block from 'common/components/block/Block';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import lenker from '../util/routing/lenker';
 import { NavnISøknaden } from 'app/selectors/types';
+import { getNavnGenitivEierform } from '../util/tekstUtils';
 
 interface HvaSkalMorGjøreSpørsmålProps {
     morsAktivitetIPerioden?: MorsAktivitet;
@@ -30,7 +31,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
             return (
                 <FormattedMessage
                     id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid"
-                    values={{ navnMor: navnPåForeldre.mor.fornavn }}
+                    values={{ navnMor: getNavnGenitivEierform(navnPåForeldre.mor.fornavn, intl.locale) }}
                 />
             );
         } else if (morsAktivitetIPerioden === MorsAktivitet.ArbeidOgUtdanning) {
