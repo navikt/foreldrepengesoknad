@@ -1,7 +1,7 @@
 {
     "grunnlag": {
         "familieHendelseType": "FODSL",
-        "familieHendelseDato": "2019-02-06",
+        "familieHendelseDato": "2019-02-01",
         "dekningsgrad": 100,
         "antallBarn": 1,
         "søkerErFarEllerMedmor": false,
@@ -9,624 +9,125 @@
         "morHarRett": true,
         "morErUfør": false,
         "farMedmorErAleneOmOmsorg": false,
-        "farMedmorHarRett": true,
-        "søkerKjønn": "K",
-        "erBarnetFødt": false
+        "farMedmorHarRett": true
     },
     "perioder": [
         {
-            "utsettelsePeriodeType": null,
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": null,
+            "stønadskontotype": "FEDREKVOTE",
             "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-02-01",
-                "tom": "2019-03-14"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FORELDREPENGER_FØR_FØDSEL",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-01-11",
-                "tom": "2019-01-31"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "samtidigUttaksprosent": 0,
+            "flerbarnsdager": false,
             "periode": {
                 "fom": "2019-04-12",
                 "tom": "2019-04-17"
             }
         },
         {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-04-23",
-                "tom": "2019-04-25"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-03-15",
-                "tom": "2019-04-11"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
             "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
             "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-01-01",
-                "tom": "2019-01-10"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "AVSLÅTT",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-04-12",
-                "tom": "2019-04-17"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": true,
-            "samtidigUttak": true,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
-            "arbeidstidprosent": 50,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-07-31",
-                "tom": "2019-07-31"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-04-26",
-                "tom": "2019-05-09"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": true,
-            "samtidigUttak": false,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
-            "arbeidstidprosent": 50,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-05-31",
-                "tom": "2019-06-19"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 100,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-05-10",
-                "tom": "2019-05-30"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": true,
-            "samtidigUttak": true,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
-            "arbeidstidprosent": 50,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-07-18",
-                "tom": "2019-07-31"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-01-01",
-                "tom": "2019-01-10"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-02-01",
-                "tom": "2019-03-14"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-04-18",
-                "tom": "2019-04-22"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-04-26",
-                "tom": "2019-05-09"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-03-15",
-                "tom": "2019-04-11"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 100,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-05-10",
-                "tom": "2019-05-30"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": true,
-            "samtidigUttak": false,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
-            "arbeidstidprosent": 50,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-05-31",
-                "tom": "2019-06-19"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "AVSLÅTT",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-07-01",
-                "tom": "2019-07-03"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": true,
-            "samtidigUttak": true,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
-            "arbeidstidprosent": 50,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-07-18",
-                "tom": "2019-07-30"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-04-18",
-                "tom": "2019-04-22"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "AVSLÅTT",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-06-20",
-                "tom": "2019-07-03"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FORELDREPENGER_FØR_FØDSEL",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-01-11",
-                "tom": "2019-01-31"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": false,
-            "periode": {
-                "fom": "2019-04-23",
-                "tom": "2019-04-25"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FEDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
             "gjelderAnnenPart": true,
-            "periode": {
-                "fom": "2019-12-02",
-                "tom": "2019-12-13"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": true,
-            "samtidigUttak": false,
-            "stønadskontotype": "FEDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 80,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": true,
-            "periode": {
-                "fom": "2019-08-01",
-                "tom": "2019-08-28"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "AVSLÅTT",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FEDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": true,
-            "periode": {
-                "fom": "2019-11-04",
-                "tom": "2019-11-29"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FEDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": true,
-            "periode": {
-                "fom": "2019-07-04",
-                "tom": "2019-07-17"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FEDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": true,
-            "periode": {
-                "fom": "2019-04-12",
-                "tom": "2019-04-17"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FEDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": true,
-            "periode": {
-                "fom": "2019-12-02",
-                "tom": "2019-12-13"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FEDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": true,
-            "periode": {
-                "fom": "2019-04-12",
-                "tom": "2019-04-17"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": true,
-            "samtidigUttak": true,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
-            "arbeidstidprosent": 50,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": true,
-            "periode": {
-                "fom": "2019-07-18",
-                "tom": "2019-07-30"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FEDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 100,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": true,
-            "periode": {
-                "fom": "2019-08-29",
-                "tom": "2019-11-01"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": true,
-            "samtidigUttak": false,
-            "stønadskontotype": "FEDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 80,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": true,
-            "periode": {
-                "fom": "2019-08-01",
-                "tom": "2019-08-28"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": true,
+            "manueltBehandlet": true,
+            "samtidigUttaksprosent": 0,
+            "flerbarnsdager": false,
             "periode": {
                 "fom": "2019-06-20",
                 "tom": "2019-06-28"
             }
         },
         {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": true,
-            "periode": {
-                "fom": "2019-06-20",
-                "tom": "2019-06-28"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
-            "periodeResultatType": "AVSLÅTT",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FEDREKVOTE",
-            "trekkDager": null,
-            "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
-            "gjelderAnnenPart": true,
-            "periode": {
-                "fom": "2019-11-04",
-                "tom": "2019-11-29"
-            }
-        },
-        {
-            "utsettelsePeriodeType": null,
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
             "stønadskontotype": "FEDREKVOTE",
-            "trekkDager": null,
             "arbeidstidprosent": 0,
-            "utbetalingprosent": null,
             "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "samtidigUttaksprosent": 0,
+            "flerbarnsdager": false,
             "periode": {
                 "fom": "2019-07-04",
                 "tom": "2019-07-17"
             }
         },
         {
-            "utsettelsePeriodeType": null,
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": true,
             "samtidigUttak": true,
             "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": null,
             "arbeidstidprosent": 50,
-            "utbetalingprosent": null,
             "gjelderAnnenPart": true,
+            "manueltBehandlet": true,
+            "samtidigUttaksprosent": 50,
+            "flerbarnsdager": false,
             "periode": {
                 "fom": "2019-07-18",
                 "tom": "2019-07-30"
             }
         },
         {
-            "utsettelsePeriodeType": null,
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": true,
+            "samtidigUttak": false,
+            "stønadskontotype": "FEDREKVOTE",
+            "arbeidstidprosent": 80,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "periode": {
+                "fom": "2019-08-01",
+                "tom": "2019-08-28"
+            }
+        },
+        {
+            "utsettelsePeriodeType": "ARBEID",
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
             "stønadskontotype": "FEDREKVOTE",
-            "trekkDager": null,
             "arbeidstidprosent": 100,
-            "utbetalingprosent": null,
             "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
             "periode": {
                 "fom": "2019-08-29",
                 "tom": "2019-11-01"
+            }
+        },
+        {
+            "periodeResultatType": "AVSLÅTT",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FEDREKVOTE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": true,
+            "flerbarnsdager": false,
+            "periode": {
+                "fom": "2019-11-04",
+                "tom": "2019-11-29"
+            }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FEDREKVOTE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "samtidigUttaksprosent": 0,
+            "flerbarnsdager": false,
+            "periode": {
+                "fom": "2019-12-02",
+                "tom": "2019-12-13"
             }
         }
     ]
