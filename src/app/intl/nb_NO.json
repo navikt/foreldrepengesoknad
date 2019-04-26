@@ -531,7 +531,7 @@
     "spørsmål.dekningsgrad.label.deltUttakMor": "Hvor lang periode med foreldrepenger ønsker dere?",
     "spørsmål.dekningsgrad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger ønsker du?",
     "spørsmål.harAnnenForelderSøktFP.label": "Har {navnAnnenForelder} foreldrepenger?",
-    "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMorEierform} siste dag med foreldrepenger?",
+    "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} siste dag med foreldrepenger?",
     "spørsmål.farSinFørsteUttaksdagSpørsmål.label": "Når er din første dag med foreldrepenger?",
     "spørsmål.farFellesperiode.label": "Hvor mye fellesperiode skal du ha?",
     "spørsmål.farFellesperiode.uker.label": "Antall uker",
