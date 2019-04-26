@@ -21,12 +21,9 @@ createEnvSettingsFile(path.resolve(`${__dirname}/dist/js/settings.js`));
 const prometheus = require('prom-client');
 const collectDefaultMetrics = prometheus.collectDefaultMetrics;
 collectDefaultMetrics({ timeout: 5000 });
-const httpRequestDurationMicroseconds = new prometheus.Histogram({
-    name: 'http_request_duration_ms',
-    help: 'Duration of HTTP requests in ms',
-    labelNames: ['route'],
-    // buckets for response time from 0.1ms to 500ms
-    buckets: [0.1, 5, 15, 50, 100, 200, 300, 400, 500]
+const logEndpointCounter = new client.Counter({
+    name: 'log_endpoint_counter',
+    help: 'Numbers of request to /log endpoint'
 });
 
 server.use((req, res, next) => {
@@ -73,12 +70,11 @@ const startServer = (html) => {
         const { message, ...rest } = req.body;
         logger.warn(message, { ...rest });
         res.sendStatus(200);
-        httpRequestDurationMicroseconds.labels(req.route.path).observe(10);
+        logEndpointCounter.inc();
     });
 
     server.get(/^\/(?!.*dist).*$/, (req, res) => {
         res.send(html);
-        httpRequestDurationMicroseconds.labels(req.route.path).observe(10);
     });
 
     const port = process.env.PORT || 8080;
