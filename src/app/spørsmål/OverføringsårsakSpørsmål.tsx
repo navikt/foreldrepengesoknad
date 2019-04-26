@@ -2,6 +2,7 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import { OverføringÅrsakType } from '../types/uttaksplan/periodetyper';
 import FlervalgSpørsmål, { FlervalgAlternativ } from '../components/flervalg-spørsmål/FlervalgSpørsmål';
+import { getNavnGenitivEierform } from '../util/tekstUtils';
 
 interface OverføringsårsakSpørsmålProps {
     årsak: OverføringÅrsakType | undefined;
@@ -40,7 +41,10 @@ const OverføringsårsakSpørsmål = (props: Props) => {
         <FlervalgSpørsmål
             navn="overføringsårsak"
             toKolonner={true}
-            spørsmål={intl.formatMessage({ id: 'uttaksplan.overføring.årsak.spørsmål' }, { annenForelderNavn })}
+            spørsmål={intl.formatMessage(
+                { id: 'uttaksplan.overføring.årsak.spørsmål' },
+                { annenForelderNavn: getNavnGenitivEierform(annenForelderNavn, intl.locale) }
+            )}
             alternativer={alternativer}
             valgtVerdi={årsak}
             onChange={(valgtÅrsak) => onChange(valgtÅrsak as OverføringÅrsakType)}
