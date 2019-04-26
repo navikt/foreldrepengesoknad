@@ -16,9 +16,15 @@ const getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor = (
     familiehendelsesdato: Date,
     søkerErFarEllerMedmor: boolean,
     bareFarMedmorHarRett: boolean,
-    morErUfør: boolean
+    morErUfør: boolean,
+    søkerErFarEllerMedmorOgAnnenForelderKanIkkeOppgis: boolean,
+    søkerErFarEllerMedmorOgErAleneOmOmsorgen: boolean
 ): InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor | undefined => {
     if (søkerErFarEllerMedmor === false || bareFarMedmorHarRett === false || morErUfør === true) {
+        return undefined;
+    }
+
+    if (søkerErFarEllerMedmorOgAnnenForelderKanIkkeOppgis || søkerErFarEllerMedmorOgErAleneOmOmsorgen) {
         return undefined;
     }
 

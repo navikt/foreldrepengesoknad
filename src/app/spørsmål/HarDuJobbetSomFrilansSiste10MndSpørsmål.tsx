@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedHTMLMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../components/ja-nei-spørsmål/JaNeiSpørsmål';
 import EksternUrl from 'common/components/infoboks/EksternUrl';
@@ -33,11 +33,10 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
             onChange={(verdi) => onChange(verdi)}
             clsName="frilanseSiste10mnd"
             hjelpetekst={
-                <EksternUrl
-                    tekst="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst"
-                    url={lenker.frilanserInfoBoks}
-                    lenkeTekst="hjemmeside"
-                />
+                <>
+                    <FormattedHTMLMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst" />
+                    <EksternUrl url={lenker.frilanserInfoBoks} lenkeTekst={getMessage(intl, 'hjemmeside')} />
+                </>
             }
             validators={validerFrilans}
         />
