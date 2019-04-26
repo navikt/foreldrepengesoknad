@@ -14,6 +14,7 @@ import { Barn, isFødtBarn, isUfødtBarn, isAdopsjonsbarn, isForeldreansvarsbarn
 import { formaterNavn } from '../domain/personUtil';
 import getMessage from 'common/util/i18nUtils';
 import { Navn } from '../../types/common';
+import { getNavnGenitivEierform } from '../tekstUtils';
 
 const isValidStillingsprosent = (pst: number | undefined): boolean => pst !== undefined && isNaN(pst) === false;
 
@@ -66,7 +67,10 @@ export const getStønadskontoNavn = (intl: InjectedIntl, konto: StønadskontoTyp
             navn = undefined;
     }
     if (navn) {
-        return intl.formatMessage({ id: `stønadskontotype.foreldernavn.kvote` }, { navn });
+        return intl.formatMessage(
+            { id: `stønadskontotype.foreldernavn.kvote` },
+            { navn: getNavnGenitivEierform(navn, intl.locale) }
+        );
     }
     return intl.formatMessage({ id: `stønadskontotype.${konto}` });
 };
