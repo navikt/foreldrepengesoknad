@@ -18,10 +18,10 @@ server.engine('html', mustacheExpress());
 createEnvSettingsFile(path.resolve(`${__dirname}/dist/js/settings.js`));
 
 // Prometheus metrics
-const prometheus = require('prom-client');
-const collectDefaultMetrics = prometheus.collectDefaultMetrics;
+const prometheusClient = require('prom-client');
+const collectDefaultMetrics = prometheusClient.collectDefaultMetrics;
 collectDefaultMetrics({ timeout: 5000 });
-const logEndpointCounter = new client.Counter({
+const logEndpointCounter = new prometheus.Counter({
     name: 'log_endpoint_counter',
     help: 'Numbers of request to /log endpoint'
 });
@@ -59,7 +59,7 @@ const startServer = (html) => {
         res.sendFile(path.resolve(`../../dist/js/settings.js`));
     });
 
-    server.get('/internal/metrics', (req, res) => {
+    server.get('/actuator/prometheus', (req, res) => {
         res.set('Content-Type', prometheus.register.contentType);
         res.end(prometheus.register.metrics());
     });
