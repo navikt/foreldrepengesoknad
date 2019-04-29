@@ -54,7 +54,7 @@ export function* fetchSakForEndring(saksnummer: string) {
     } catch (error) {
         yield put(
             apiActions.updateApi({
-                oppslagSakFeilet: true
+                oppslagSakForEndringFeilet: true
             })
         );
     } finally {

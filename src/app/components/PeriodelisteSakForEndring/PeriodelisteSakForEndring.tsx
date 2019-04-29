@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SakForEndring, Saksperiode } from '../../types/s\u00F8knad/SakForEndring';
+import { SakForEndring, Saksperiode } from '../../types/søknad/SakForEndring';
 
 import './periodelisteSakForEndring.less';
 import BEMHelper from 'common/util/bem';
