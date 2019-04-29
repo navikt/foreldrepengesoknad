@@ -111,6 +111,7 @@ const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunn
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
         ønskerSamtidigUttak: saksperiode.samtidigUttak,
         gradert,
+        samtidigUttakProsent: saksperiode.samtidigUttaksprosent,
         stillingsprosent: gradert ? saksperiode.arbeidstidprosent : undefined
     };
     return uttaksperiode;
