@@ -17,6 +17,7 @@ import { opprettSøknadFraSakForEndring } from '../../util/sakForEndring/sakForE
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
 import { StegID } from '../../util/routing/stegConfig';
 import { isFeatureEnabled, Feature } from '../../Feature';
+import { SakForEndring } from '../../types/søknad/SakForEndring';
 
 const stateSelector = (state: AppState) => state;
 
@@ -33,8 +34,11 @@ function* startSøknad(action: StartSøknad) {
     const { erEndringssøknad, saksnummer, søkerinfo, history } = action;
     const appState: AppState = yield select(stateSelector);
     if (erEndringssøknad && saksnummer && appState.api.sakForEndringssøknad) {
+        let sakForEndring: SakForEndring | undefined;
         if (isFeatureEnabled(Feature.visMorsUttaksplanForFarMedmor)) {
-            const sakForEndring = yield call(fetchSakForEndring, saksnummer);
+            sakForEndring = yield call(fetchSakForEndring, saksnummer);
+        }
+        if (sakForEndring !== undefined) {
             const søknad = opprettSøknadFraSakForEndring(søkerinfo, sakForEndring);
             yield put(
                 søknadActions.updateSøknad({

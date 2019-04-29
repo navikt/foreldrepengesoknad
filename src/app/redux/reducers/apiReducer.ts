@@ -18,7 +18,7 @@ export interface ApiState {
     isLoadingSakForEndring: boolean;
     sessionHasExpired: boolean;
     oppslagSakerFeilet?: boolean;
-    oppslagSakFeilet?: boolean;
+    oppslagSakForEndringFeilet?: boolean;
     søknadSendingInProgress: boolean;
     søknadHasBeenReceived: boolean;
     stønadskontoer100: TilgjengeligStønadskonto[];
