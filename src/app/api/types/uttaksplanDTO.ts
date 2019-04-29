@@ -21,6 +21,7 @@ export interface UttaksplanDTO {
             periodeResultatType: string;
             graderingInnvilget: boolean;
             samtidigUttak: boolean;
+            samtidigUttaksprosent: number;
             stønadskontotype: string;
             trekkDager: number;
             arbeidstidprosent: number;

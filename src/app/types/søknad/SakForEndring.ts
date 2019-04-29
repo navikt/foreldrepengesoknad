@@ -37,6 +37,7 @@ export interface Saksperiode {
     periodeResultatType: PeriodeResultatType;
     graderingInnvilget: boolean;
     samtidigUttak: boolean;
+    samtidigUttaksprosent: number;
     stønadskontotype: StønadskontoType;
     trekkDager: number;
     arbeidstidprosent: number;
