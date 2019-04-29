@@ -2,7 +2,7 @@ import Environment from './Environment';
 
 export enum Feature {
     registrertBarn = 'FEATURE_REGISTRERT_BARN',
-    visMorsUttaksplanForVarMedmor = 'FEATURE_VIS_MORS_UTTAKSPLAN_FOR_FARMEDMOR',
+    visMorsUttaksplanForFarMedmor = 'FEATURE_VIS_MORS_UTTAKSPLAN_FOR_FARMEDMOR',
     logging = 'FEATURE_LOGGING'
 }
 
