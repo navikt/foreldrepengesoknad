@@ -166,6 +166,11 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, api, søknadsinfo);
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
     const antallUkerUttaksplan = getAntallUker(tilgjengeligeStønadskontoer);
+    const previousStegID = søknadsinfo.søknaden.erEndringssøknad
+        ? StegID.UTTAKSPLAN
+        : skalViseManglendeVedleggSteg(attachmentMap)
+            ? StegID.MANGLENDE_VEDLEGG
+            : StegID.ANDRE_INNTEKTER;
 
     const stegProps: StegProps = {
         id: StegID.OPPSUMMERING,
@@ -173,7 +178,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFormTag: true,
         history: props.history,
         isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, søknadsinfo),
-        previousStegID: skalViseManglendeVedleggSteg(attachmentMap) ? StegID.MANGLENDE_VEDLEGG : StegID.ANDRE_INNTEKTER
+        previousStegID
     };
 
     return {
