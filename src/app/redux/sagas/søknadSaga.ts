@@ -16,6 +16,7 @@ import { fetchSakForEndring } from './sakerSaga';
 import { opprettSøknadFraSakForEndring } from '../../util/sakForEndring/sakForEndringUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
 import { StegID } from '../../util/routing/stegConfig';
+import { isFeatureEnabled, Feature } from '../../Feature';
 
 const stateSelector = (state: AppState) => state;
 
@@ -32,22 +33,31 @@ function* startSøknad(action: StartSøknad) {
     const { erEndringssøknad, saksnummer, søkerinfo, history } = action;
     const appState: AppState = yield select(stateSelector);
     if (erEndringssøknad && saksnummer && appState.api.sakForEndringssøknad) {
-        const sakForEndring = yield call(fetchSakForEndring, saksnummer);
-        const søknad = opprettSøknadFraSakForEndring(søkerinfo, sakForEndring);
-        yield put(
-            søknadActions.updateSøknad({
-                ...søknad,
-                erEndringssøknad,
-                saksnummer,
-                ekstrainfo: {
-                    ...appState.søknad.ekstrainfo,
-                    sakForEndring
-                }
-            })
-        );
-        yield put(søknadActionCreators.setCurrentSteg(StegID.UTTAKSPLAN));
+        if (isFeatureEnabled(Feature.visMorsUttaksplanForFarMedmor)) {
+            const sakForEndring = yield call(fetchSakForEndring, saksnummer);
+            const søknad = opprettSøknadFraSakForEndring(søkerinfo, sakForEndring);
+            yield put(
+                søknadActions.updateSøknad({
+                    ...søknad,
+                    erEndringssøknad,
+                    saksnummer,
+                    ekstrainfo: {
+                        ...appState.søknad.ekstrainfo,
+                        sakForEndring
+                    }
+                })
+            );
+            yield put(søknadActionCreators.setCurrentSteg(StegID.UTTAKSPLAN));
+        } else {
+            yield put(
+                søknadActions.updateSøknad({
+                    erEndringssøknad,
+                    saksnummer
+                })
+            );
+            yield put(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+        }
         yield put(apiActions.storeAppState());
-        history.push(søknadStegPath(StegID.UTTAKSPLAN));
     } else {
         yield put(søknadActions.updateSøknad({ erEndringssøknad: false }));
         history.push(søknadStegPath(StegID.INNGANG));
