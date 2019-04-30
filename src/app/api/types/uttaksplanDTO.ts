@@ -19,6 +19,7 @@ export interface UttaksplanDTO {
     perioder: [
         {
             periodeResultatType: string;
+            utsettelsePeriodeType: string;
             graderingInnvilget: boolean;
             samtidigUttak: boolean;
             samtidigUttaksprosent: number;
