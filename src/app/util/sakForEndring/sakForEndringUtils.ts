@@ -1,3 +1,4 @@
+import moment from 'moment';
 import Søknad, { Søkersituasjon, SøkerRolle } from '../../types/søknad/Søknad';
 import { SakForEndring, FamiliehendelsesType, Saksgrunnlag, Saksperiode } from '../../types/søknad/SakForEndring';
 import { Barn } from '../../types/søknad/Barn';
@@ -10,14 +11,16 @@ import { Periode, Periodetype, Uttaksperiode } from '../../types/uttaksplan/peri
 import { Forelder } from 'common/types';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
+import { Perioden } from '../uttaksplan/Perioden';
+import { Uttaksdagen } from '../uttaksplan/Uttaksdagen';
 
 const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
     switch (grunnlag.familieHendelseType) {
         case FamiliehendelsesType.FØDSEL:
+        case FamiliehendelsesType.TERM:
             return Søkersituasjon.FØDSEL;
         case FamiliehendelsesType.ADOPSJON:
         case FamiliehendelsesType.OMSORGSOVERTAKELSE:
-        case FamiliehendelsesType.TERM:
             return undefined;
     }
 };
@@ -101,8 +104,25 @@ const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor:
     return søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR;
 };
 
+// const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
+
+// };
+
+// const mapOppholdsperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
+
+// };
+
+// const mapOverføringsperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
+
+// };
+
+// const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
+
+// };
+
 const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
     const gradert = saksperiode.arbeidstidprosent !== 0;
+
     const uttaksperiode: Uttaksperiode = {
         id: guid(),
         type: Periodetype.Uttak,
@@ -114,7 +134,62 @@ const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunn
         samtidigUttakProsent: saksperiode.samtidigUttaksprosent,
         stillingsprosent: gradert ? saksperiode.arbeidstidprosent : undefined
     };
+
     return uttaksperiode;
+};
+
+const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
+    if (perioder.length <= 1) {
+        return perioder;
+    }
+
+    const nyePerioder: Periode[] = [];
+    let forrigePeriode: Periode | undefined = { ...perioder[0] };
+
+    perioder.forEach((periode, index) => {
+        if (index === 0) {
+            return;
+        }
+
+        if (forrigePeriode === undefined) {
+            forrigePeriode = periode;
+            return;
+        }
+
+        if (Perioden(forrigePeriode).erLik(periode) && Perioden(forrigePeriode).erSammenhengende(periode)) {
+            forrigePeriode.tidsperiode.tom = periode.tidsperiode.tom;
+            return;
+        } else {
+            nyePerioder.push(forrigePeriode);
+            forrigePeriode = undefined;
+        }
+
+        forrigePeriode = periode;
+    });
+
+    nyePerioder.push(forrigePeriode);
+
+    return nyePerioder;
+};
+
+const fjernHelgeperioder = (perioder: Periode[]): Periode[] => {
+    const filteredPerioder = perioder.filter((periode: Periode) => {
+        const { tidsperiode } = periode;
+        if (
+            !Uttaksdagen(tidsperiode.fom).erUttaksdag() &&
+            !Uttaksdagen(tidsperiode.tom).erUttaksdag() &&
+            (moment(tidsperiode.fom)
+                .add(24, 'hours')
+                .isSame(tidsperiode.tom) ||
+                moment(tidsperiode.fom).isSame(tidsperiode.tom))
+        ) {
+            return false;
+        }
+
+        return true;
+    });
+
+    return filteredPerioder;
 };
 
 export const opprettSøknadFraSakForEndring = (
@@ -129,7 +204,9 @@ export const opprettSøknadFraSakForEndring = (
     const søker = getSøkerFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
     const annenForelder = getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag);
-    const uttaksplan = perioder.map((periode) => getPeriodeFromSaksperiode(periode, grunnlag)).sort(sorterPerioder);
+    let uttaksplan = perioder.map((periode) => getPeriodeFromSaksperiode(periode, grunnlag)).sort(sorterPerioder);
+    uttaksplan = slåSammenLikePerioder(uttaksplan);
+    uttaksplan = fjernHelgeperioder(uttaksplan);
 
     if (!søker || !barn || !annenForelder) {
         return undefined;
