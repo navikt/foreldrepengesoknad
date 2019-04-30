@@ -21,7 +21,7 @@ createEnvSettingsFile(path.resolve(`${__dirname}/dist/js/settings.js`));
 const prometheusClient = require('prom-client');
 const collectDefaultMetrics = prometheusClient.collectDefaultMetrics;
 collectDefaultMetrics({ timeout: 5000 });
-const logEndpointCounter = new prometheus.Counter({
+const logEndpointCounter = new prometheusClient.Counter({
     name: 'log_endpoint_counter',
     help: 'Numbers of request to /log endpoint'
 });
