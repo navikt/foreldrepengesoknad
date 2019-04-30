@@ -18,6 +18,7 @@ import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
 import { StegID } from '../../util/routing/stegConfig';
 import { isFeatureEnabled, Feature } from '../../Feature';
 import { SakForEndring } from '../../types/søknad/SakForEndring';
+import mapSaksperioderTilUttaksperioder from 'app/util/sakForEndring/mapSaksperioderTilUttaksperioder';
 
 const stateSelector = (state: AppState) => state;
 
@@ -47,7 +48,11 @@ function* startSøknad(action: StartSøknad) {
                     saksnummer,
                     ekstrainfo: {
                         ...appState.søknad.ekstrainfo,
-                        sakForEndring
+                        sakForEndring,
+                        uttakFraEksisterendeSak: mapSaksperioderTilUttaksperioder(
+                            sakForEndring.perioder,
+                            sakForEndring.grunnlag
+                        )
                     }
                 })
             );
