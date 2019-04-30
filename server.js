@@ -60,8 +60,8 @@ const startServer = (html) => {
     });
 
     server.get('/actuator/prometheus', (req, res) => {
-        res.set('Content-Type', prometheus.register.contentType);
-        res.end(prometheus.register.metrics());
+        res.set('Content-Type', prometheusClient.register.contentType);
+        res.end(prometheusClient.register.metrics());
     });
 
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
