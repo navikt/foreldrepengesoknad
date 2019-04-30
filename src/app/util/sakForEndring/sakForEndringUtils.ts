@@ -9,6 +9,7 @@ import { Kjønn } from '../../types/common';
 
 const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
     switch (grunnlag.familieHendelseType) {
+        case FamiliehendelsesType.TERM:
         case FamiliehendelsesType.FØDSEL:
         case FamiliehendelsesType.TERM:
             return Søkersituasjon.FØDSEL;
