@@ -1,5 +1,5 @@
 import { Dekningsgrad, Tidsperiode } from 'common/types';
-import { StønadskontoType, UtsettelseÅrsakType } from '../uttaksplan/periodetyper';
+import { StønadskontoType, SaksperiodeUtsettelseÅrsakType } from '../uttaksplan/periodetyper';
 import { Kjønn } from '../common';
 
 export enum FamiliehendelsesType {
@@ -35,7 +35,7 @@ export interface Saksgrunnlag {
 
 export interface Saksperiode {
     periodeResultatType: PeriodeResultatType;
-    utsettelsePeriodeType: UtsettelseÅrsakType;
+    utsettelsePeriodeType?: SaksperiodeUtsettelseÅrsakType;
     graderingInnvilget: boolean;
     samtidigUttak: boolean;
     samtidigUttaksprosent: number;

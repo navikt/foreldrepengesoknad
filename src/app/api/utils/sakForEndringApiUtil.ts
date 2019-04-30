@@ -5,7 +5,7 @@ import {
     PeriodeResultatType
 } from '../../types/søknad/SakForEndring';
 import { UttaksplanDTO } from '../types/uttaksplanDTO';
-import { StønadskontoType, UtsettelseÅrsakType } from '../../types/uttaksplan/periodetyper';
+import { StønadskontoType, SaksperiodeUtsettelseÅrsakType } from '../../types/uttaksplan/periodetyper';
 import { Kjønn } from '../../types/common';
 
 const getKjønn = (kjønn: string): Kjønn => {
@@ -42,7 +42,7 @@ export const getSakForEndringFromDTO = (dto: UttaksplanDTO): SakForEndring | und
                     ...periodeRest,
                     periodeResultatType: periodeResultatType as PeriodeResultatType,
                     stønadskontotype: stønadskontotype as StønadskontoType,
-                    utsettelsePeriodeType: UtsettelseÅrsakType.Ferie,
+                    utsettelsePeriodeType: utsettelsePeriodeType as SaksperiodeUtsettelseÅrsakType,
                     tidsperiode: {
                         fom: new Date(periode.fom),
                         tom: new Date(periode.tom)

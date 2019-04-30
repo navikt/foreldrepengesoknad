@@ -1,18 +1,11 @@
-import moment from 'moment';
 import Søknad, { Søkersituasjon, SøkerRolle } from '../../types/søknad/Søknad';
-import { SakForEndring, FamiliehendelsesType, Saksgrunnlag, Saksperiode } from '../../types/søknad/SakForEndring';
+import { SakForEndring, FamiliehendelsesType, Saksgrunnlag } from '../../types/søknad/SakForEndring';
 import { Barn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
 import { Søkerinfo } from '../../types/søkerinfo';
 import Person from '../../types/Person';
 import { Kjønn } from '../../types/common';
-import { Periode, Periodetype, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
-import { Forelder } from 'common/types';
-import { guid } from 'nav-frontend-js-utils';
-import { sorterPerioder } from '../uttaksplan/Periodene';
-import { Perioden } from '../uttaksplan/Perioden';
-import { Uttaksdagen } from '../uttaksplan/Uttaksdagen';
 
 const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
     switch (grunnlag.familieHendelseType) {
@@ -97,116 +90,20 @@ const getAnnenForelderFromSaksgrunnlag = (
     return undefined;
 };
 
-const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor: boolean): Forelder => {
-    if (saksperiode.gjelderAnnenPart) {
-        return søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR;
-    }
-    return søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR;
-};
-
-// const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
-
-// };
-
-// const mapOppholdsperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
-
-// };
-
-// const mapOverføringsperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
-
-// };
-
-// const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
-
-// };
-
-const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
-    const gradert = saksperiode.arbeidstidprosent !== 0;
-
-    const uttaksperiode: Uttaksperiode = {
-        id: guid(),
-        type: Periodetype.Uttak,
-        konto: saksperiode.stønadskontotype,
-        tidsperiode: { ...saksperiode.tidsperiode },
-        forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
-        ønskerSamtidigUttak: saksperiode.samtidigUttak,
-        gradert,
-        samtidigUttakProsent: saksperiode.samtidigUttaksprosent,
-        stillingsprosent: gradert ? saksperiode.arbeidstidprosent : undefined
-    };
-
-    return uttaksperiode;
-};
-
-const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
-    if (perioder.length <= 1) {
-        return perioder;
-    }
-
-    const nyePerioder: Periode[] = [];
-    let forrigePeriode: Periode | undefined = { ...perioder[0] };
-
-    perioder.forEach((periode, index) => {
-        if (index === 0) {
-            return;
-        }
-
-        if (forrigePeriode === undefined) {
-            forrigePeriode = periode;
-            return;
-        }
-
-        if (Perioden(forrigePeriode).erLik(periode) && Perioden(forrigePeriode).erSammenhengende(periode)) {
-            forrigePeriode.tidsperiode.tom = periode.tidsperiode.tom;
-            return;
-        } else {
-            nyePerioder.push(forrigePeriode);
-            forrigePeriode = undefined;
-        }
-
-        forrigePeriode = periode;
-    });
-
-    nyePerioder.push(forrigePeriode);
-
-    return nyePerioder;
-};
-
-const fjernHelgeperioder = (perioder: Periode[]): Periode[] => {
-    const filteredPerioder = perioder.filter((periode: Periode) => {
-        const { tidsperiode } = periode;
-        if (
-            !Uttaksdagen(tidsperiode.fom).erUttaksdag() &&
-            !Uttaksdagen(tidsperiode.tom).erUttaksdag() &&
-            (moment(tidsperiode.fom)
-                .add(24, 'hours')
-                .isSame(tidsperiode.tom) ||
-                moment(tidsperiode.fom).isSame(tidsperiode.tom))
-        ) {
-            return false;
-        }
-
-        return true;
-    });
-
-    return filteredPerioder;
-};
-
 export const opprettSøknadFraSakForEndring = (
     søkerinfo: Søkerinfo,
     sak: SakForEndring
 ): Partial<Søknad> | undefined => {
-    const { grunnlag, perioder } = sak;
+    const { grunnlag } = sak;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(grunnlag);
+
     if (!situasjon) {
         return undefined;
     }
+
     const søker = getSøkerFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
     const annenForelder = getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag);
-    let uttaksplan = perioder.map((periode) => getPeriodeFromSaksperiode(periode, grunnlag)).sort(sorterPerioder);
-    uttaksplan = slåSammenLikePerioder(uttaksplan);
-    uttaksplan = fjernHelgeperioder(uttaksplan);
 
     if (!søker || !barn || !annenForelder) {
         return undefined;
@@ -218,8 +115,7 @@ export const opprettSøknadFraSakForEndring = (
         barn: barn as Barn,
         annenForelder: annenForelder as AnnenForelder,
         erEndringssøknad: true,
-        dekningsgrad: grunnlag.dekningsgrad,
-        uttaksplan
+        dekningsgrad: grunnlag.dekningsgrad
     };
     return søknad;
 };
