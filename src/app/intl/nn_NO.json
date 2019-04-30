@@ -208,7 +208,8 @@
     "gradering.prosent": "{stillingsprosent} prosent",
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepengar",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobba som frilansar dei siste ti månadene?",
-    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst": "Eksempel på kven som kan være frilansar er<br/><ul><li>Musikar</li><li>Tekstforfattar</li><li>Skodespelare</li><li>Journalistar</li><li>Oversetter</li><li> Folkevald, politikar i kommunar, fylkeskommunar og på Stortinget som får godtgjersle for politisk arbeid.</li><li>Fosterforeldre, og personar med omsorgslønn</li></ul>Hvis du er usikker på om du er frilanser kan du lese mer om hva det betyr å være frilansar på skatteetaten sin",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
+        "Eksempel på kven som kan være frilansar er<br/><ul><li>Musikar</li><li>Tekstforfattar</li><li>Skodespelare</li><li>Journalistar</li><li>Oversetter</li><li> Folkevald, politikar i kommunar, fylkeskommunar og på Stortinget som får godtgjersle for politisk arbeid.</li><li>Fosterforeldre, og personar med omsorgslønn</li></ul>Hvis du er usikker på om du er frilanser kan du lese mer om hva det betyr å være frilansar på skatteetaten sin",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie dei siste ti månadene",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":

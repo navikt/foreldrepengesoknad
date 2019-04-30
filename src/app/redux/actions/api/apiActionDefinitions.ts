@@ -6,6 +6,7 @@ import { MissingAttachment } from '../../../types/MissingAttachment';
 export enum ApiActionKeys {
     'GET_SØKERINFO' = 'getSøkerinfo',
     'GET_SAKER' = 'getSaker',
+    'GET_SAK_FOR_ENDRING' = 'getSakForEndring',
 
     'GET_STORAGE_DATA' = 'getStorageData',
     'DELETE_STORED_APP_STATE' = 'deleteStoredAppState',
@@ -34,6 +35,11 @@ export interface GetSøkerinfo {
 
 export interface GetSaker {
     type: ApiActionKeys.GET_SAKER;
+}
+
+export interface GetSakForEndring {
+    type: ApiActionKeys.GET_SAK_FOR_ENDRING;
+    saksnummer: string;
 }
 
 export interface GetTilgjengeligeStønadskontoer {
@@ -79,6 +85,7 @@ export type ApiActionTypes =
     | DeleteStoredAppState
     | GetSøkerinfo
     | GetSaker
+    | GetSakForEndring
     | GetStorageData
     | GetTilgjengeligeStønadskontoer
     | GetTilgjengeligeStønadskontoerAndLagUttaksplanForslag

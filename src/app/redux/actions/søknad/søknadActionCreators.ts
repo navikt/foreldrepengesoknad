@@ -22,7 +22,8 @@ import {
     AvbrytSøknad,
     SetVedleggForSenEndring,
     SetTilleggsopplysning,
-    UttaksplanSetForslag
+    UttaksplanSetForslag,
+    StartSøknad
 } from './søknadActionDefinitions';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
@@ -33,6 +34,21 @@ import { Periode } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { StegID } from '../../../util/routing/stegConfig';
 import { Barn } from '../../../types/søknad/Barn';
+import { History } from 'history';
+import { Søkerinfo } from '../../../types/søkerinfo';
+
+const startSøknad = (
+    søkerinfo: Søkerinfo,
+    erEndringssøknad: boolean,
+    saksnummer: string | undefined,
+    history: History
+): StartSøknad => ({
+    type: SøknadActionKeys.START_SØKNAD,
+    søkerinfo,
+    erEndringssøknad,
+    saksnummer,
+    history
+});
 
 const setSøknad = (payload: UpdateSøknadActionPayload) => ({
     type: SøknadActionKeys.SET_SØKNAD,
@@ -164,6 +180,7 @@ const setVedleggForSenEndring = (payload: Attachment[]): SetVedleggForSenEndring
 });
 
 export default {
+    startSøknad,
     updateAnnenForelder,
     updateBarn,
     updateSøknadenGjelderBarn,

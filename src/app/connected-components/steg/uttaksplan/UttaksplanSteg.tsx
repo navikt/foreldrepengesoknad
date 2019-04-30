@@ -44,6 +44,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
+import PeriodelisteSakForEndring from '../../../components/PeriodelisteSakForEndring/PeriodelisteSakForEndring';
 
 interface StateProps {
     stegProps: StegProps;
@@ -188,6 +189,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             return null;
         }
 
+        const { sakForEndring } = søknad.ekstrainfo;
         const { visFeiloppsummering } = this.state;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
         const gjelderDagerBrukt = skalBeregneAntallDagerBrukt(
@@ -224,6 +226,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
+                        {sakForEndring && (
+                            <Block>
+                                <PeriodelisteSakForEndring sak={sakForEndring} />
+                            </Block>
+                        )}
+
                         <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
                         <Block>
                             <Uttaksplanlegger

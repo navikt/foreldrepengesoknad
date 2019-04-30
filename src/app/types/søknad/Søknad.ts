@@ -10,6 +10,7 @@ import { Dekningsgrad } from 'common/types';
 import { UttaksplanSkjemadata } from '../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { StegID } from '../../util/routing/stegConfig';
 import { Omit } from 'react-redux';
+import { SakForEndring } from './SakForEndring';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -50,11 +51,12 @@ export interface Tilleggsopplysninger {
     begrunnelseForSenEndring?: Tilleggsopplysning;
 }
 
-interface SkjemaEkstrainfo {
+interface SøknadEkstrainfo {
     currentStegID: StegID | undefined;
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
     lastAddedPeriodeId?: string;
     søknadenGjelderBarnValg?: SøknadenGjelderBarnValg;
+    sakForEndring?: SakForEndring;
 }
 
 interface Søknad {
@@ -71,7 +73,7 @@ interface Søknad {
     søker: Søker;
     vedlegg?: Attachment[];
     dekningsgrad: Dekningsgrad;
-    ekstrainfo: SkjemaEkstrainfo;
+    ekstrainfo: SøknadEkstrainfo;
     vedleggForSenEndring: Attachment[];
     sensitivInfoIkkeLagre: SensitivSkjemaInfo;
     tilleggsopplysninger: Tilleggsopplysninger;
@@ -101,7 +103,7 @@ export interface SøknadPartial {
     søker: SøkerPartial;
     vedlegg?: Attachment[];
     dekningsgrad?: Dekningsgrad;
-    ekstrainfo: SkjemaEkstrainfo;
+    ekstrainfo: SøknadEkstrainfo;
     vedleggForSenEndring?: Attachment[];
     sensitivInfoIkkeLagre: SensitivSkjemaInfo;
     tilleggsopplysninger: Tilleggsopplysninger;
