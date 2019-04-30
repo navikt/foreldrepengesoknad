@@ -1,12 +1,23 @@
-import { takeEvery, all, put, select } from 'redux-saga/effects';
-import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
+import { takeEvery, all, put, call, select } from 'redux-saga/effects';
+import søknadActionCreators, { default as søknadActions } from '../actions/søknad/søknadActionCreators';
 import { default as apiActions } from '../actions/api/apiActionCreators';
-import { SøknadActionKeys, UpdateSøkerAndStorage, AvbrytSøknad } from '../actions/søknad/søknadActionDefinitions';
+import {
+    SøknadActionKeys,
+    UpdateSøkerAndStorage,
+    AvbrytSøknad,
+    StartSøknad
+} from '../actions/søknad/søknadActionDefinitions';
 import { lagUttaksplan } from '../../util/uttaksplan/forslag/lagUttaksplan';
 import { AppState } from '../reducers';
 import { getSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
+import { fetchSakForEndring } from './sakerSaga';
+import { opprettSøknadFraSakForEndring } from '../../util/sakForEndring/sakForEndringUtils';
+import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
+import { StegID } from '../../util/routing/stegConfig';
+import { isFeatureEnabled, Feature } from '../../Feature';
+import { SakForEndring } from '../../types/søknad/SakForEndring';
 
 const stateSelector = (state: AppState) => state;
 
@@ -17,6 +28,44 @@ function* updateSøkerAndStorage(action: UpdateSøkerAndStorage) {
 
 function* avbrytSøknadSaga(action: AvbrytSøknad) {
     yield put(apiActions.storeAppState());
+}
+
+function* startSøknad(action: StartSøknad) {
+    const { erEndringssøknad, saksnummer, søkerinfo, history } = action;
+    const appState: AppState = yield select(stateSelector);
+    if (erEndringssøknad && saksnummer && appState.api.sakForEndringssøknad) {
+        let sakForEndring: SakForEndring | undefined;
+        if (isFeatureEnabled(Feature.visMorsUttaksplanForFarMedmor)) {
+            sakForEndring = yield call(fetchSakForEndring, saksnummer);
+        }
+        if (sakForEndring !== undefined) {
+            const søknad = opprettSøknadFraSakForEndring(søkerinfo, sakForEndring);
+            yield put(
+                søknadActions.updateSøknad({
+                    ...søknad,
+                    erEndringssøknad,
+                    saksnummer,
+                    ekstrainfo: {
+                        ...appState.søknad.ekstrainfo,
+                        sakForEndring
+                    }
+                })
+            );
+            yield put(søknadActionCreators.setCurrentSteg(StegID.UTTAKSPLAN));
+        } else {
+            yield put(
+                søknadActions.updateSøknad({
+                    erEndringssøknad,
+                    saksnummer
+                })
+            );
+            yield put(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+        }
+        yield put(apiActions.storeAppState());
+    } else {
+        yield put(søknadActions.updateSøknad({ erEndringssøknad: false }));
+        history.push(søknadStegPath(StegID.INNGANG));
+    }
 }
 
 function* lagUttaksplanForslag() {
@@ -48,6 +97,7 @@ export default function* søknadSaga() {
     yield all([
         takeEvery(SøknadActionKeys.UPDATE_SØKER_AND_STORAGE, updateSøkerAndStorage),
         takeEvery(SøknadActionKeys.AVBRYT_SØKNAD, avbrytSøknadSaga),
-        takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, lagUttaksplanForslag)
+        takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, lagUttaksplanForslag),
+        takeEvery(SøknadActionKeys.START_SØKNAD, startSøknad)
     ]);
 }

@@ -39,7 +39,8 @@ export const getDefaultSøknadState = (): SøknadPartial => {
             søknadenGjelderBarnValg: {
                 valgteBarn: [],
                 gjelderAnnetBarn: undefined
-            }
+            },
+            sakForEndring: undefined
         },
         vedleggForSenEndring: undefined,
         tilleggsopplysninger: {},
