@@ -38,8 +38,8 @@ function* startSøknad(action: StartSøknad) {
         if (isFeatureEnabled(Feature.visMorsUttaksplanForFarMedmor)) {
             sakForEndring = yield call(fetchSakForEndring, saksnummer);
         }
-        if (sakForEndring !== undefined) {
-            const søknad = opprettSøknadFraSakForEndring(søkerinfo, sakForEndring);
+        const søknad = sakForEndring ? opprettSøknadFraSakForEndring(søkerinfo, sakForEndring) : undefined;
+        if (søknad !== undefined) {
             yield put(
                 søknadActions.updateSøknad({
                     ...søknad,

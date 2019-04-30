@@ -13,11 +13,11 @@ import { sorterPerioder } from '../uttaksplan/Periodene';
 
 const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
     switch (grunnlag.familieHendelseType) {
+        case FamiliehendelsesType.TERM:
         case FamiliehendelsesType.FØDSEL:
             return Søkersituasjon.FØDSEL;
         case FamiliehendelsesType.ADOPSJON:
         case FamiliehendelsesType.OMSORGSOVERTAKELSE:
-        case FamiliehendelsesType.TERM:
             return undefined;
     }
 };

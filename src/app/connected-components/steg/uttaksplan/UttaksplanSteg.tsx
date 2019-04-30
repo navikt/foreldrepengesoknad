@@ -186,7 +186,11 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         } = this.props;
 
         if (!søknadsinfo) {
-            return null;
+            return (
+                <Steg {...this.props.stegProps} renderFortsettKnapp={false}>
+                    Det oppstod en feil, vennligst prøv på nytt
+                </Steg>
+            );
         }
 
         const { sakForEndring } = søknad.ekstrainfo;
