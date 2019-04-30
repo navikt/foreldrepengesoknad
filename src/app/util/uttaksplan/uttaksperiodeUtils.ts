@@ -1,4 +1,9 @@
-import { StønadskontoType, OppholdÅrsakType } from '../../types/uttaksplan/periodetyper';
+import {
+    StønadskontoType,
+    OppholdÅrsakType,
+    SaksperiodeUtsettelseÅrsakType,
+    UtsettelseÅrsakType
+} from '../../types/uttaksplan/periodetyper';
 import { DatoAvgrensninger } from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { Avgrensninger, Tidsperiode } from 'common/types';
 import { uttaksplanDatoavgrensninger } from '../validation/uttaksplan/uttaksplanDatoavgrensninger';
@@ -12,6 +17,25 @@ const standardAvgrensningerForUttakEtterFødsel = (familiehendelsesdato: Date): 
         minDato: Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
         maksDato: getSisteMuligeUttaksdag(familiehendelsesdato)
     };
+};
+
+export const getUtsettelseÅrsakFromSaksperiode = (
+    årsak: SaksperiodeUtsettelseÅrsakType | undefined
+): UtsettelseÅrsakType | undefined => {
+    switch (årsak) {
+        case SaksperiodeUtsettelseÅrsakType.Arbeid:
+            return UtsettelseÅrsakType.Arbeid;
+        case SaksperiodeUtsettelseÅrsakType.Ferie:
+            return UtsettelseÅrsakType.Ferie;
+        case SaksperiodeUtsettelseÅrsakType.InstitusjonBarnet:
+            return UtsettelseÅrsakType.InstitusjonBarnet;
+        case SaksperiodeUtsettelseÅrsakType.InstitusjonSøker:
+            return UtsettelseÅrsakType.InstitusjonSøker;
+        case SaksperiodeUtsettelseÅrsakType.Sykdom:
+            return UtsettelseÅrsakType.Sykdom;
+        default:
+            return undefined;
+    }
 };
 
 export const getOppholdsÅrsakFromStønadskonto = (konto: StønadskontoType): OppholdÅrsakType | undefined => {
