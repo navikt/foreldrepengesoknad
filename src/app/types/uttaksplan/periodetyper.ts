@@ -35,6 +35,14 @@ export enum UtsettelseÅrsakType {
     'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET'
 }
 
+export enum SaksperiodeUtsettelseÅrsakType {
+    'Ferie' = 'FERIE',
+    'Arbeid' = 'ARBEID',
+    'Sykdom' = 'SYKDOM',
+    'InstitusjonSøker' = 'INSTITUSJONSOPPHOLD_SØKER',
+    'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET'
+}
+
 export enum Arbeidsform {
     'arbeidstaker' = 'ARBEIDSTAKER',
     'frilans' = 'FRILANS',
