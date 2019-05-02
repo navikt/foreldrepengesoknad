@@ -50,8 +50,8 @@ function* startSøknad(action: StartSøknad) {
                         ...appState.søknad.ekstrainfo,
                         sakForEndring,
                         uttakFraEksisterendeSak: mapSaksperioderTilUttaksperioder(
-                            sakForEndring.perioder,
-                            sakForEndring.grunnlag
+                            sakForEndring!.perioder,
+                            sakForEndring!.grunnlag
                         )
                     }
                 })

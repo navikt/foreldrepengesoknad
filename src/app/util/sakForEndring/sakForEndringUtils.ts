@@ -11,7 +11,6 @@ const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersitua
     switch (grunnlag.familieHendelseType) {
         case FamiliehendelsesType.TERM:
         case FamiliehendelsesType.FØDSEL:
-        case FamiliehendelsesType.TERM:
             return Søkersituasjon.FØDSEL;
         case FamiliehendelsesType.ADOPSJON:
         case FamiliehendelsesType.OMSORGSOVERTAKELSE:
