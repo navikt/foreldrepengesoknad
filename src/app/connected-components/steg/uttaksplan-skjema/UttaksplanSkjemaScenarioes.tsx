@@ -30,6 +30,7 @@ export interface ScenarioProps {
     antallUkerMødreKvote: number | undefined;
     antallUkerFedreKvote: number | undefined;
     familiehendelsesdato: Date;
+    erFarEllerMedmor: boolean;
 }
 export interface OwnProps extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
@@ -319,7 +320,18 @@ const Scenario7: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåFo
     </>
 );
 
-const Scenario8: React.StatelessComponent<ScenarioProps> = ({ søknad }) => <DekningsgradSpørsmål />;
+const Scenario8: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehendelsesdato, erFarEllerMedmor }) => {
+    return (
+        <>
+            <DekningsgradSpørsmål />
+            <StartdatoPermisjonMorBolk
+                visible={søknad.dekningsgrad !== undefined && !erFarEllerMedmor}
+                familiehendelsesdato={familiehendelsesdato}
+                barnetErFødt={søknad.barn.erBarnetFødt}
+            />
+        </>
+    );
+};
 
 const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
     const { scenario, ...scenarioProps } = props;
