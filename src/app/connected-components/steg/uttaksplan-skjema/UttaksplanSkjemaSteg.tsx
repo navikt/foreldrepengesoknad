@@ -111,6 +111,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         antallUkerFedreKvote={getAntallUkerFedrekvote(tilgjengeligeStønadskontoer)}
                         antallUkerMødreKvote={getAntallUkerMødrekvote(tilgjengeligeStønadskontoer)}
                         familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
+                        erFarEllerMedmor={søknadsinfo.søker.erFarEllerMedmor}
                     />
                 )}
             </Steg>
