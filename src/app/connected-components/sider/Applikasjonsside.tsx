@@ -7,11 +7,11 @@ import { DispatchProps } from 'common/redux/types';
 import { setSpråk } from '../../redux/actions/common/commonActionCreators';
 import { AppState } from '../../redux/reducers';
 import { Språkkode } from 'common/intl/types';
-import Språkvelger from 'common/components/språkvelger/Språkvelger';
 import BEMHelper from 'common/util/bem';
 import getMessage from 'common/util/i18nUtils';
 import Søknadstittel from 'common/components/søknadstittel/Søknadstittel';
 import UtløptSesjonModal from 'app/components/utløpt-sesjon-modal/UtløptSesjonModal';
+import LanguageToggle from 'common/components/language-toggle/LanguageToggle';
 
 export interface OwnProps {
     visSøknadstittel?: boolean;
@@ -51,7 +51,10 @@ class Sidemal extends React.Component<Props> {
         return (
             <React.Fragment>
                 {visSpråkvelger && (
-                    <Språkvelger kode={språkkode} setSpråkkode={(kode: Språkkode) => dispatch(setSpråk(kode))} />
+                    <LanguageToggle
+                        language={språkkode}
+                        toggleLanguage={(languageCode: Språkkode) => dispatch(setSpråk(languageCode))}
+                    />
                 )}
                 {visSøknadstittel && (
                     <Søknadstittel>
