@@ -1,4 +1,7 @@
 import { StønadskontoType, TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
+import { SakForEndring, Saksperiode, PeriodeResultatType } from 'app/types/søknad/SakForEndring';
+import { Tidsperioden } from './Tidsperioden';
+import * as moment from 'moment';
 
 export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligStønadskonto[]): StønadskontoType[] =>
     stønadskontoTyper
@@ -48,4 +51,30 @@ export const getAntallUkerFellesperiode = (kontoer: TilgjengeligStønadskonto[])
     return kontoer
         .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Fellesperiode)
         .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+};
+
+export const getResterendeStønadskontoer = (
+    sakForEndring: SakForEndring,
+    tilgjengeligStønadskonto: TilgjengeligStønadskonto[]
+): TilgjengeligStønadskonto[] => {
+    return tilgjengeligStønadskonto.map((k) => ({
+        ...k,
+        dager: k.dager - getBrukteUttaksdager(sakForEndring.perioder, k.konto)
+    }));
+};
+
+const getBrukteUttaksdager = (perioder: Saksperiode[], kontoType: StønadskontoType): number => {
+    return perioder
+        .filter(
+            (p) =>
+                p.stønadskontotype === kontoType &&
+                p.periodeResultatType !== PeriodeResultatType.INNVILGET &&
+                moment(p.tidsperiode.fom).isBefore(moment(), 'day')
+        )
+        .map((p) => {
+            return moment().isBefore(p.tidsperiode.tom)
+                ? Tidsperioden({ fom: p.tidsperiode.fom, tom: moment().toDate() }).getAntallUttaksdager()
+                : Tidsperioden(p.tidsperiode).getAntallUttaksdager();
+        })
+        .reduce((uttaksdager, total) => total + uttaksdager, 0);
 };
