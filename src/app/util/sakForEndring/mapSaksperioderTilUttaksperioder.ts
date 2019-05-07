@@ -5,7 +5,7 @@ import { sorterPerioder } from '../uttaksplan/Periodene';
 import { Perioden } from '../uttaksplan/Perioden';
 import { Uttaksdagen } from '../uttaksplan/Uttaksdagen';
 import { getUtsettelseÅrsakFromSaksperiode } from '../uttaksplan/uttaksperiodeUtils';
-import { Saksperiode, Saksgrunnlag } from '../../types/søknad/SakForEndring';
+import { Saksperiode, Saksgrunnlag, PeriodeResultatType } from '../../types/søknad/SakForEndring';
 import { Forelder } from 'common/types';
 
 const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor: boolean): Forelder => {
@@ -33,8 +33,8 @@ const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Sak
     return uttaksperiode;
 };
 
-const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
-    const uttaksperiode: Utsettelsesperiode = {
+const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Utsettelsesperiode => {
+    const utsettelsesperiode: Utsettelsesperiode = {
         id: guid(),
         type: Periodetype.Utsettelse,
         årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelsePeriodeType)!,
@@ -42,8 +42,7 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag:
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
         erArbeidstaker: false
     };
-
-    return uttaksperiode;
+    return utsettelsesperiode;
 };
 
 // const mapOppholdsperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
@@ -55,7 +54,10 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag:
 // };
 
 const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
-    if (saksperiode.utsettelsePeriodeType !== undefined) {
+    if (
+        saksperiode.utsettelsePeriodeType !== undefined &&
+        saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET
+    ) {
         return mapUtsettelseperiodeFromSaksperiode(saksperiode, grunnlag);
     }
 

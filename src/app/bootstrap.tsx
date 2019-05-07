@@ -13,12 +13,15 @@ import * as countries from 'i18n-iso-countries';
 import { Normaltekst } from 'nav-frontend-typografi';
 import ApplicationInfo from './components/applicationInfo/ApplicationInfo';
 import ErrorBoundary from './components/error-boundary/ErrorBoundary';
+import { registerDevUtils } from 'common/dev/devUtils';
 
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
 
 Modal.setAppElement('#appContainer');
 const root = document.getElementById('app');
+
+registerDevUtils();
 
 render(
     <ErrorBoundary>

@@ -1,6 +1,6 @@
 import { takeEvery, all, put, call, select } from 'redux-saga/effects';
 import søknadActionCreators, { default as søknadActions } from '../actions/søknad/søknadActionCreators';
-import { default as apiActions } from '../actions/api/apiActionCreators';
+import { default as apiActions, getTilgjengeligeStønadskontoer } from '../actions/api/apiActionCreators';
 import {
     SøknadActionKeys,
     UpdateSøkerAndStorage,
@@ -19,6 +19,8 @@ import { StegID } from '../../util/routing/stegConfig';
 import { isFeatureEnabled, Feature } from '../../Feature';
 import { SakForEndring } from '../../types/søknad/SakForEndring';
 import mapSaksperioderTilUttaksperioder from 'app/util/sakForEndring/mapSaksperioderTilUttaksperioder';
+import { getStønadskontoParams } from '../../util/uttaksplan/st\u00F8nadskontoParams';
+import { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
 
 const stateSelector = (state: AppState) => state;
 
@@ -36,11 +38,11 @@ function* startSøknad(action: StartSøknad) {
     const appState: AppState = yield select(stateSelector);
     if (erEndringssøknad && saksnummer && appState.api.sakForEndringssøknad) {
         let sakForEndring: SakForEndring | undefined;
-        if (isFeatureEnabled(Feature.visMorsUttaksplanForFarMedmor)) {
+        if (isFeatureEnabled(Feature.hentSakForEndring)) {
             sakForEndring = yield call(fetchSakForEndring, saksnummer);
         }
         const søknad = sakForEndring ? opprettSøknadFraSakForEndring(søkerinfo, sakForEndring) : undefined;
-        if (søknad !== undefined) {
+        if (sakForEndring && søknad !== undefined) {
             yield put(
                 søknadActions.updateSøknad({
                     ...søknad,
@@ -50,12 +52,22 @@ function* startSøknad(action: StartSøknad) {
                         ...appState.søknad.ekstrainfo,
                         sakForEndring,
                         uttakFraEksisterendeSak: mapSaksperioderTilUttaksperioder(
-                            sakForEndring!.perioder,
+                            sakForEndring!.saksperioder,
                             sakForEndring!.grunnlag
                         )
                     }
                 })
             );
+            const updatedAppState = yield select(stateSelector);
+            const søknadsinfo = getSøknadsinfo(updatedAppState);
+
+            if (søknadsinfo) {
+                const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
+                    søknadsinfo,
+                    sakForEndring.grunnlag.familieHendelseDato
+                );
+                yield call(getTilgjengeligeStønadskontoer, params, history);
+            }
             yield put(søknadActionCreators.setCurrentSteg(StegID.UTTAKSPLAN));
         } else {
             yield put(

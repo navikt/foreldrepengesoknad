@@ -28,6 +28,7 @@ export interface UttaksplanDTO {
             arbeidstidprosent: number;
             utbetalingprosent: number;
             gjelderAnnenPart: boolean;
+            flerbarnsdager: boolean;
             periode: {
                 fom: string;
                 tom: string;
