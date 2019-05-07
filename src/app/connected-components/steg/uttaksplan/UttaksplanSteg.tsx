@@ -231,16 +231,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                 {isLoadingTilgjengeligeStønadskontoer === true ? (
                     <ApplicationSpinner />
                 ) : (
-                    <React.Fragment>
-                        {sakForEndring && (
-                            <Block>
-                                <PeriodelisteSakForEndring sak={sakForEndring} />
-                            </Block>
-                        )}
+                    <>
                         <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
                         {isFeatureEnabled(Feature.hentSakForEndring) &&
                             sakForEndring && (
                                 <Block>
+                                    <PeriodelisteSakForEndring sak={sakForEndring} />
                                     <InformasjonEgenSak
                                         sak={sakForEndring}
                                         tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
@@ -295,7 +291,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 onVedleggChange={this.handleBegrunnelseVedleggChange}
                             />
                         )}
-                    </React.Fragment>
+                    </>
                 )}
 
                 <BekreftGåTilUttaksplanSkjemaDialog
