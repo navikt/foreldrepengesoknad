@@ -278,7 +278,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestClear={() => this.showBekreftSlettUttaksplanDialog()}
-                                onRequestRevert={() => this.showBekreftTilbakestillUttaksplanDialog()}
+                                onRequestRevert={
+                                    sakForEndring ? () => this.showBekreftTilbakestillUttaksplanDialog() : undefined
+                                }
                                 onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
                                 forelder={søknadsinfo.søker.erFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR}
                             />
