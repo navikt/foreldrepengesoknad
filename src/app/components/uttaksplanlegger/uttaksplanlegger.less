@@ -19,18 +19,23 @@
         margin-bottom: 1rem;
         display: flex;
         align-items: baseline;
+
         &__title {
             padding-right: 1rem;
             flex-grow: 0;
         }
+
         &__reset {
-            flex-grow: 1;
+            flex-grow: 0;
+            padding-right: 1rem;
         }
+
         &__details {
             align-self: flex-end;
             white-space: nowrap;
             text-align: right;
             flex-grow: 2;
+
             &__icon {
                 display: inline-block;
                 position: relative;
@@ -41,15 +46,18 @@
 
         @media (max-width: @mobile-breakpoint) {
             flex-wrap: wrap;
+
             &__details {
                 margin-top: 0.5rem;
                 text-align: left;
                 align-self: flex-start;
                 width: 100%;
             }
+
             &__title {
                 flex-grow: 2;
             }
+
             &__reset {
                 align-self: flex-end;
                 flex-grow: 1;
@@ -57,6 +65,7 @@
             }
         }
     }
+
     &__resetLink {
         flex-grow: 1;
         .deleteButton();

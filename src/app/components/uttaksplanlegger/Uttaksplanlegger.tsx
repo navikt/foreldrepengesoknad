@@ -31,6 +31,7 @@ import './uttaksplanlegger.less';
 
 interface OwnProps {
     uttaksplan: Periode[];
+    uttaksplanForEndring: Periode[] | undefined;
     søknadsinfo: Søknadsinfo;
     uttaksplanValidering: UttaksplanValideringState;
     lastAddedPeriodeId: string | undefined;
@@ -38,7 +39,8 @@ interface OwnProps {
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
-    onRequestReset?: () => void;
+    onRequestClear?: () => void;
+    onRequestRevert?: () => void;
 }
 
 type Props = OwnProps & InjectedIntlProps;
@@ -159,7 +161,9 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         const {
             uttaksplanValidering,
             søknadsinfo,
-            onRequestReset,
+            onRequestClear,
+            onRequestRevert,
+            uttaksplanForEndring,
             lastAddedPeriodeId,
             forelder,
             uttaksplan,
@@ -212,13 +216,23 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             <Systemtittel tag="h1" className={BEM.element('header__title')}>
                                 <FormattedMessage id="uttaksplan.tittel" />
                             </Systemtittel>
-                            {onRequestReset &&
+                            {onRequestClear &&
                                 uttaksplan.length > 0 && (
                                     <div className={BEM.element('header__reset')}>
                                         <LinkButton
                                             className={BEM.element('resetLink')}
-                                            onClick={() => onRequestReset()}>
+                                            onClick={() => onRequestClear()}>
                                             <FormattedMessage id="uttaksplan.slettPlan" />
+                                        </LinkButton>
+                                    </div>
+                                )}
+                            {onRequestRevert &&
+                                uttaksplanForEndring && (
+                                    <div className={BEM.element('header__reset')}>
+                                        <LinkButton
+                                            className={BEM.element('resetLink')}
+                                            onClick={() => onRequestRevert()}>
+                                            <FormattedMessage id="uttaksplan.tilbakestillPlan" />
                                         </LinkButton>
                                     </div>
                                 )}

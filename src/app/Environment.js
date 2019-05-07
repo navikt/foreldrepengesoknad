@@ -7,7 +7,7 @@ const Environment = () => {
         LOGIN_URL: window.appSettings.LOGIN_URL,
         [Feature.registrertBarn]: window.appSettings[Feature.registrertBarn],
         [Feature.logging]: window.appSettings[Feature.logging],
-        [Feature.visMorsUttaksplanForFarMedmor]: window.appSettings[Feature.visMorsUttaksplanForFarMedmor]
+        [Feature.hentSakForEndring]: window.appSettings[Feature.hentSakForEndring]
     };
 };
 

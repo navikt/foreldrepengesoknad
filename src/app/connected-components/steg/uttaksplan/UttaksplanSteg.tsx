@@ -30,6 +30,7 @@ import ApplicationSpinner from 'common/components/application-spinner/Applicatio
 import BegrunnelseForSenEndring from './BegrunnelseForSenEndring';
 import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjemaDialog';
 import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
+import BekreftTilbakestillUttaksplanDialog from './BekreftTilbakestillUttaksplanDialog';
 import Block from 'common/components/block/Block';
 import isAvailable from '../util/isAvailable';
 import Søknad, { Tilleggsopplysninger, Opplysning } from '../../../types/søknad/Søknad';
@@ -45,6 +46,9 @@ import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
 import PeriodelisteSakForEndring from '../../../components/PeriodelisteSakForEndring/PeriodelisteSakForEndring';
+import { Feature, isFeatureEnabled } from '../../../Feature';
+import InformasjonEgenSak from '../../../components/informasjon-egen-sak/InformasjonEgenSak';
+import DevBlock from 'common/dev/DevBlock';
 
 interface StateProps {
     stegProps: StegProps;
@@ -66,6 +70,7 @@ interface StateProps {
 interface UttaksplanStegState {
     bekreftGåTilbakeDialogSynlig: boolean;
     bekreftSlettUttaksplanDialogSynlig: boolean;
+    bekreftTilbakestillUttaksplanDialogSynlig: boolean;
     visFeiloppsummering: boolean;
     harKlikketFortsett: boolean;
 }
@@ -86,12 +91,16 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.handleOnPeriodeErrorClick = this.handleOnPeriodeErrorClick.bind(this);
         this.hideBekreftSlettUttaksplanDialog = this.hideBekreftSlettUttaksplanDialog.bind(this);
         this.showBekreftSlettUttaksplanDialog = this.showBekreftSlettUttaksplanDialog.bind(this);
+        this.showBekreftTilbakestillUttaksplanDialog = this.showBekreftTilbakestillUttaksplanDialog.bind(this);
+        this.hideBekreftTilbakestillUttaksplanDialog = this.hideBekreftTilbakestillUttaksplanDialog.bind(this);
         this.onBekreftSlettUttaksplan = this.onBekreftSlettUttaksplan.bind(this);
         this.delayedSetFocusOnFeiloppsummering = this.delayedSetFocusOnFeiloppsummering.bind(this);
+        this.onBekreftTilbakestillUttaksplan = this.onBekreftTilbakestillUttaksplan.bind(this);
 
         this.state = {
             bekreftGåTilbakeDialogSynlig: false,
             bekreftSlettUttaksplanDialogSynlig: false,
+            bekreftTilbakestillUttaksplanDialogSynlig: false,
             visFeiloppsummering: false,
             harKlikketFortsett: false
         };
@@ -117,13 +126,20 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     hideBekreftGåTilbakeDialog() {
         this.setState({ bekreftGåTilbakeDialogSynlig: false });
     }
-
     showBekreftSlettUttaksplanDialog() {
         this.setState({ bekreftSlettUttaksplanDialogSynlig: true });
     }
 
+    showBekreftTilbakestillUttaksplanDialog() {
+        this.setState({ bekreftTilbakestillUttaksplanDialogSynlig: true });
+    }
+
     hideBekreftSlettUttaksplanDialog() {
         this.setState({ bekreftSlettUttaksplanDialogSynlig: false });
+    }
+
+    hideBekreftTilbakestillUttaksplanDialog() {
+        this.setState({ bekreftTilbakestillUttaksplanDialogSynlig: false });
     }
 
     onBekreftGåTilbake() {
@@ -134,6 +150,16 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     onBekreftSlettUttaksplan() {
         this.setState({ bekreftSlettUttaksplanDialogSynlig: false });
         this.props.dispatch(søknadActions.uttaksplanSetPerioder([]));
+    }
+
+    onBekreftTilbakestillUttaksplan() {
+        this.setState({ bekreftTilbakestillUttaksplanDialogSynlig: false });
+        const {
+            søknad: {
+                ekstrainfo: { sakForEndring }
+            }
+        } = this.props;
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder((sakForEndring && sakForEndring.uttaksplan) || []));
     }
 
     handleOnPeriodeErrorClick(periodeId: string) {
@@ -229,22 +255,32 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                 {isLoadingTilgjengeligeStønadskontoer === true ? (
                     <ApplicationSpinner />
                 ) : (
-                    <React.Fragment>
-                        {sakForEndring && (
-                            <Block>
-                                <PeriodelisteSakForEndring sak={sakForEndring} />
-                            </Block>
-                        )}
-
+                    <>
                         <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
+                        {isFeatureEnabled(Feature.hentSakForEndring) &&
+                            sakForEndring && (
+                                <Block>
+                                    <DevBlock>
+                                        <PeriodelisteSakForEndring sak={sakForEndring} />
+                                    </DevBlock>
+                                    <InformasjonEgenSak
+                                        sak={sakForEndring}
+                                        tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                    />
+                                </Block>
+                            )}
                         <Block>
                             <Uttaksplanlegger
+                                uttaksplanForEndring={sakForEndring && sakForEndring.uttaksplan}
                                 uttaksplan={søknad.uttaksplan}
                                 søknadsinfo={søknadsinfo}
                                 uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
-                                onRequestReset={() => this.showBekreftSlettUttaksplanDialog()}
+                                onRequestClear={() => this.showBekreftSlettUttaksplanDialog()}
+                                onRequestRevert={
+                                    sakForEndring ? () => this.showBekreftTilbakestillUttaksplanDialog() : undefined
+                                }
                                 onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
                                 forelder={søknadsinfo.søker.erFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR}
                             />
@@ -284,7 +320,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 onVedleggChange={this.handleBegrunnelseVedleggChange}
                             />
                         )}
-                    </React.Fragment>
+                    </>
                 )}
 
                 <BekreftGåTilUttaksplanSkjemaDialog
@@ -296,6 +332,11 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     synlig={this.state.bekreftSlettUttaksplanDialogSynlig}
                     onSlett={this.onBekreftSlettUttaksplan}
                     onAngre={this.hideBekreftSlettUttaksplanDialog}
+                />
+                <BekreftTilbakestillUttaksplanDialog
+                    synlig={this.state.bekreftTilbakestillUttaksplanDialogSynlig}
+                    onSlett={this.onBekreftTilbakestillUttaksplan}
+                    onAngre={this.hideBekreftTilbakestillUttaksplanDialog}
                 />
             </Steg>
         );
