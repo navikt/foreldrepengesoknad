@@ -107,6 +107,10 @@
     "bekreftSlettUttaksplanDialog.okLabel": "Ja, slett",
     "bekreftSlettUttaksplanDialog.tekst": "Ønsker du å slette planen?",
     "bekreftSlettUttaksplanDialog.tittel": "Slett plan",
+    "bekreftTilbakestillUttaksplanDialog.avbrytLabel": "Nei, avbryt",
+    "bekreftTilbakestillUttaksplanDialog.okLabel": "Ja, tilbakestill",
+    "bekreftTilbakestillUttaksplanDialog.tekst": "Ønsker du å tilbakestille planen til opprinnelig plan?",
+    "bekreftTilbakestillUttaksplanDialog.tittel": "Tilbakestill plan",
     "blittYrkesaktivSiste3År.hjelpetekst":
         "Du har ikke hatt fast jobb, jobbet som frilanser eller hatt annen inntekt før du startet virksomheten din.",
     "blittYrkesaktivSiste3År.spørsmål": "Har du blitt yrkesaktiv i løpet av de tre siste ferdigliknede årene?",
@@ -766,6 +770,7 @@
     "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom":
         "Startdatoen må være innen de {uker} første ukene før termin eller fødsel",
     "uttaksplan.slettPlan": "Slett plan",
+    "uttaksplan.tilbakestillPlan": "Tilbakestill endringer",
     "uttaksplan.startdato.veileder.forTidligStartdato":
         "Startdatoen av foreldrepengene dine må være innen de 12 første ukene før termin eller fødsel. Den første mulige startdato er {dato}.",
     "uttaksplan.startdato.veileder.helgedag":

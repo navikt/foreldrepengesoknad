@@ -106,6 +106,10 @@
     "bekreftSlettUttaksplanDialog.okLabel": "Ja, slett",
     "bekreftSlettUttaksplanDialog.tekst": "Ønskjer du å slette planen?",
     "bekreftSlettUttaksplanDialog.tittel": "Slett plan",
+    "bekreftTilbakestillUttaksplanDialog.avbrytLabel": "Nei, avbryt",
+    "bekreftTilbakestillUttaksplanDialog.okLabel": "Ja, tilbakestill",
+    "bekreftTilbakestillUttaksplanDialog.tekst": "Ønskjer du å tilbakestille planen til opprinnelig plan?",
+    "bekreftTilbakestillUttaksplanDialog.tittel": "Tilbakestill plan",
     "blittYrkesaktivSiste3År.hjelpetekst":
         "Du har ikkje hatt fast jobb, jobba som frilansar eller hatt anna inntekt før du starta verksemda di.",
     "blittYrkesaktivSiste3År.spørsmål": "Er du blitt yrkesaktiv i løpet av dei tre siste ferdiglikna åra?",
@@ -767,7 +771,8 @@
         "Startdato kan ikkje vere på ein laurdag eller søndag, du må velje ein vekedag",
     "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom":
         "Startdato må vere innan dei {uker} første vekene etter termin eller fødsel",
-    "uttaksplan.slettPlan": "Slett planen",
+    "uttaksplan.slettPlan": "Slett plan",
+    "uttaksplan.tilbakestillPlan": "Tilbakestill plan",
     "uttaksplan.startdato.veileder.forTidligStartdato":
         "Startdato må vera innan dei 12 første vekene før termin eller fødsel. Første moglege startdato er",
     "uttaksplan.startdato.veileder.helgedag":
