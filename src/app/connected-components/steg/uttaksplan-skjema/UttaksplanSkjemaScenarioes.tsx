@@ -20,6 +20,8 @@ import FarSinFørsteUttaksdagSpørsmål from './enkeltspørsmål/FarSinFørsteUt
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from './enkeltspørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
 import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
 import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
+import { getNavnGenitivEierform } from '../../../util/tekstUtils';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -28,15 +30,19 @@ export interface ScenarioProps {
     antallUkerMødreKvote: number | undefined;
     antallUkerFedreKvote: number | undefined;
     familiehendelsesdato: Date;
+    erFarEllerMedmor: boolean;
 }
-export interface Props extends ScenarioProps {
+export interface OwnProps extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
 }
 
-const Scenario1: React.StatelessComponent<ScenarioProps> = ({
+type Props = OwnProps & InjectedIntlProps;
+
+const Scenario1: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = ({
     søknad,
     antallUkerFellesperiode,
-    familiehendelsesdato
+    familiehendelsesdato,
+    intl
 }) => {
     const harSvartPåDekningsgradSpørsmål = søknad.dekningsgrad !== undefined;
     const { farSinFørsteUttaksdag, morSinSisteUttaksdag } = søknad.ekstrainfo.uttaksplanSkjema;
@@ -47,7 +53,7 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({
                     {
                         type: 'normal',
                         contentIntlKey: 'uttaksplan.skjema.informasjonTilAnnenForelder',
-                        values: { navn: søknad.annenForelder.fornavn }
+                        values: { navn: getNavnGenitivEierform(søknad.annenForelder.fornavn, intl.locale) }
                     }
                 ]}
             />
@@ -125,13 +131,14 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
     );
 };
 
-const Scenario4: React.StatelessComponent<ScenarioProps> = ({
+const Scenario4: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = ({
     søknad,
     antallUkerFellesperiode,
     navnPåForeldre,
     antallUkerFedreKvote,
     antallUkerMødreKvote,
-    familiehendelsesdato
+    familiehendelsesdato,
+    intl
 }) => {
     /** Mor og far, adopsjon, begge har rett, adopterer alene, bare en har rett */
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
@@ -158,7 +165,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
                         {
                             type: 'normal',
                             contentIntlKey: 'uttaksplan.skjema.informasjonTilAnnenForelder',
-                            values: { navn: søknad.annenForelder.fornavn }
+                            values: { navn: getNavnGenitivEierform(søknad.annenForelder.fornavn, intl.locale) }
                         }
                     ]}
                 />
@@ -313,7 +320,18 @@ const Scenario7: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåFo
     </>
 );
 
-const Scenario8: React.StatelessComponent<ScenarioProps> = ({ søknad }) => <DekningsgradSpørsmål />;
+const Scenario8: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehendelsesdato, erFarEllerMedmor }) => {
+    return (
+        <>
+            <DekningsgradSpørsmål />
+            <StartdatoPermisjonMorBolk
+                visible={søknad.dekningsgrad !== undefined && !erFarEllerMedmor}
+                familiehendelsesdato={familiehendelsesdato}
+                barnetErFødt={søknad.barn.erBarnetFødt}
+            />
+        </>
+    );
+};
 
 const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
     const { scenario, ...scenarioProps } = props;
@@ -337,4 +355,4 @@ const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
     }
 };
 
-export default UttaksplanSkjemaScenarioes;
+export default injectIntl(UttaksplanSkjemaScenarioes);

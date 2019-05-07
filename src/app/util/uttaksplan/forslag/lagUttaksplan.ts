@@ -3,6 +3,7 @@ import { ikkeDeltUttak } from './ikkeDeltUttak';
 import { deltUttak } from './deltUttak';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
+import uttakEndringssøknad from './uttakEndringssøknad';
 
 export interface LagUttaksplanParams {
     situasjon: Søkersituasjon;
@@ -27,7 +28,11 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
     } = params;
 
     if (erEndringssøknad) {
-        return [];
+        if (søkerErFarEllerMedmor) {
+            return [];
+        } else {
+            return uttakEndringssøknad(uttaksplanSkjema.startdatoPermisjon, familiehendelsesdato);
+        }
     }
 
     const {

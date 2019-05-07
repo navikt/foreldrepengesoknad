@@ -35,6 +35,7 @@ import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
 import { findAllAttachments } from '../manglende-vedlegg/manglendeVedleggUtil';
 import _ from 'lodash';
+import { skalViseManglendeVedleggSteg } from '../util/navigation';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -165,6 +166,11 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, api, søknadsinfo);
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
     const antallUkerUttaksplan = getAntallUker(tilgjengeligeStønadskontoer);
+    const previousStegID = søknadsinfo.søknaden.erEndringssøknad
+        ? StegID.UTTAKSPLAN
+        : skalViseManglendeVedleggSteg(attachmentMap)
+            ? StegID.MANGLENDE_VEDLEGG
+            : StegID.ANDRE_INNTEKTER;
 
     const stegProps: StegProps = {
         id: StegID.OPPSUMMERING,
@@ -172,8 +178,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFormTag: true,
         history: props.history,
         isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, søknadsinfo),
-        previousStegID:
-            Array.from(attachmentMap.entries()).length > 0 ? StegID.MANGLENDE_VEDLEGG : StegID.ANDRE_INNTEKTER
+        previousStegID
     };
 
     return {

@@ -17,6 +17,15 @@ server.engine('html', mustacheExpress());
 
 createEnvSettingsFile(path.resolve(`${__dirname}/dist/js/settings.js`));
 
+// Prometheus metrics
+const prometheusClient = require('prom-client');
+const collectDefaultMetrics = prometheusClient.collectDefaultMetrics;
+collectDefaultMetrics({ timeout: 5000 });
+const logEndpointCounter = new prometheusClient.Counter({
+    name: 'log_endpoint_counter',
+    help: 'Numbers of request to /log endpoint'
+});
+
 server.use((req, res, next) => {
     res.removeHeader('X-Powered-By');
     res.set('X-Frame-Options', 'SAMEORIGIN');
@@ -50,12 +59,18 @@ const startServer = (html) => {
         res.sendFile(path.resolve(`../../dist/js/settings.js`));
     });
 
+    server.get('/actuator/prometheus', (req, res) => {
+        res.set('Content-Type', prometheusClient.register.contentType);
+        res.end(prometheusClient.register.metrics());
+    });
+
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
     server.post('/log', (req, res) => {
         const { message, ...rest } = req.body;
         logger.warn(message, { ...rest });
         res.sendStatus(200);
+        logEndpointCounter.inc();
     });
 
     server.get(/^\/(?!.*dist).*$/, (req, res) => {

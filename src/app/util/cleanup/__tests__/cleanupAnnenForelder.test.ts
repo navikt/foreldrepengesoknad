@@ -65,7 +65,8 @@ const søknad: SøknadPartial = {
         søknadenGjelderBarnValg: {
             valgteBarn: [],
             gjelderAnnetBarn: undefined
-        }
+        },
+        uttakFraEksisterendeSak: []
     }
 };
 

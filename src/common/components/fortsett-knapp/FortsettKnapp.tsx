@@ -2,8 +2,9 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import getMessage from 'common/util/i18nUtils';
-import './fortsettKnapp.less';
 import { SubmitEvent } from '../../../app/types/dom/Events';
+
+import './fortsettKnapp.less';
 
 interface FortsettKnappProps {
     location?: string;

@@ -44,6 +44,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
+import PeriodelisteSakForEndring from '../../../components/PeriodelisteSakForEndring/PeriodelisteSakForEndring';
 
 interface StateProps {
     stegProps: StegProps;
@@ -149,6 +150,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     };
 
     handleBegrunnelseVedleggChange = (vedlegg: Attachment[]) => {
+        vedlegg.forEach((v) => {
+            v.beskrivelse = getMessage(this.props.intl, 'vedlegg.beskrivelse.begrunnelseForSenEndring');
+        });
         this.props.dispatch(søknadActions.setVedleggForSenEndring(vedlegg));
     };
 
@@ -182,9 +186,14 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         } = this.props;
 
         if (!søknadsinfo) {
-            return null;
+            return (
+                <Steg {...this.props.stegProps} renderFortsettKnapp={false}>
+                    Det oppstod en feil, vennligst prøv på nytt
+                </Steg>
+            );
         }
 
+        const { sakForEndring } = søknad.ekstrainfo;
         const { visFeiloppsummering } = this.state;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
         const gjelderDagerBrukt = skalBeregneAntallDagerBrukt(
@@ -221,7 +230,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
-                        <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote)]} />
+                        {sakForEndring && (
+                            <Block>
+                                <PeriodelisteSakForEndring sak={sakForEndring} />
+                            </Block>
+                        )}
+
+                        <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
                         <Block>
                             <Uttaksplanlegger
                                 uttaksplan={søknad.uttaksplan}

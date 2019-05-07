@@ -38,6 +38,10 @@ router.get('/rest/innsyn/saker', (req, res) => {
     res.send(MockStorage.getSaker());
 });
 
+router.get('/rest/innsyn/uttaksplan', (req, res) => {
+    res.send(MockStorage.getUttaksplan());
+});
+
 router.get('/rest/konto', (req, res) => {
     res.send(MockStorage.getStønadskontoer());
 });
@@ -67,7 +71,9 @@ router.delete('/rest/storage', (req, res) => {
     res.sendStatus(204);
 });
 
-const vedleggUpload = multer({ dest: './dist/vedlegg/' });
+const vedleggUpload = multer({
+    dest: './dist/vedlegg/'
+});
 router.post('/rest/storage/vedlegg', vedleggUpload.single('vedlegg'), (req, res) => {
     res.setHeader('Location', `http://localhost:8080/foreldrepengesoknad/dist/vedlegg/${req.body.id}`);
     res.sendStatus(201);

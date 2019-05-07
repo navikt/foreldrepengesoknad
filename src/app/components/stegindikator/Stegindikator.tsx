@@ -9,6 +9,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 interface StegProps {
     id: StegID;
     erEndringssøknad: boolean;
+    harSakForEndring?: boolean;
 }
 
 type Props = StegProps & InjectedIntlProps;
@@ -36,8 +37,8 @@ class Stegindikator extends React.Component<Props> {
     }
 
     render() {
-        const { id, erEndringssøknad, intl } = this.props;
-        const stegConfig = getStegConfig(erEndringssøknad);
+        const { id, erEndringssøknad, harSakForEndring, intl } = this.props;
+        const stegConfig = getStegConfig(erEndringssøknad, harSakForEndring);
         const steg = this.buildStegindikatorSteg(stegConfig);
         const aktivtSteg = stegConfig[id].index;
         const bem = BEMHelper('stegindikator');

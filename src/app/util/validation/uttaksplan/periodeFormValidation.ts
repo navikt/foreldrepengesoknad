@@ -26,6 +26,7 @@ import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValid
 import { Søknadsinfo } from 'app/selectors/types';
 import getUttakSkjemaregler from 'app/regler/uttak/uttaksskjema/uttakSkjemaregler';
 import getSøknadsperiode from 'app/regler/søknadsperioden/Søknadsperioden';
+import { Søkersituasjon } from 'app/types/søknad/Søknad';
 
 const erUtsettelsePgaArbeidEllerFerie = (periode: UtsettelseFormPeriodeType): periode is Utsettelsesperiode => {
     return (
@@ -59,6 +60,7 @@ const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValiderin
         erUtsettelsePgaArbeidEllerFerie(periode) &&
         fom &&
         årsak &&
+        søknadsinfo.søknaden.situasjon !== Søkersituasjon.ADOPSJON &&
         periodeErInnenDeFørsteSeksUkene(periode, søknadsinfo.søknaden.familiehendelsesdato)
     ) {
         return [
