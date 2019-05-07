@@ -46,7 +46,7 @@ import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
 import PeriodelisteSakForEndring from '../../../components/PeriodelisteSakForEndring/PeriodelisteSakForEndring';
 import { Feature, isFeatureEnabled } from '../../../Feature';
-import InfoSakAnnenForelder from '../../../components/info-sak-annen-forelder/InfoSakAnnenForelder';
+import InformasjonEgenSak from '../../../components/informasjon-egen-sak/InformasjonEgenSak';
 
 interface StateProps {
     stegProps: StegProps;
@@ -241,7 +241,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         {isFeatureEnabled(Feature.hentSakForEndring) &&
                             sakForEndring && (
                                 <Block>
-                                    <InfoSakAnnenForelder
+                                    <InformasjonEgenSak
                                         sak={sakForEndring}
                                         tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                         søknadsinfo={søknadsinfo}
