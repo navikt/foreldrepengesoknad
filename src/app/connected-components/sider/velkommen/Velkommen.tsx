@@ -155,7 +155,7 @@ class Velkommen extends React.Component<Props, State> {
                         <>
                             <Block>
                                 <Ingress>
-                                    <FormattedMessage
+                                    <FormattedHtmlMessage
                                         id={
                                             erSakForEndringssøknadFraInfotrygd
                                                 ? 'velkommen.intro.harInfotrygdSak'
