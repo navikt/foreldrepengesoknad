@@ -40,6 +40,7 @@ export interface Saksperiode {
     samtidigUttak: boolean;
     samtidigUttaksprosent: number;
     stønadskontotype: StønadskontoType;
+    flerbarnsdager: boolean;
     trekkDager: number;
     arbeidstidprosent: number;
     utbetalingprosent: number;
