@@ -1,17 +1,16 @@
 import * as React from 'react';
 import BEMHelper from 'common/util/bem';
-import { SakForEndring } from '../../types/søknad/SakForEndring';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { formaterDato } from 'common/util/datoUtils';
-import mapSaksperioderTilUttaksperioder from '../../util/sakForEndring/mapSaksperioderTilUttaksperioder';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { getPeriodeTittel } from '../../util/uttaksplan';
 import { Søknadsinfo } from '../../selectors/types';
 
 import './uttaksplanEgenSak.less';
+import { Periode } from '../../types/uttaksplan/periodetyper';
 
 interface OwnProps {
-    sak: SakForEndring;
+    uttaksplan: Periode[];
     søknadsinfo: Søknadsinfo;
 }
 
@@ -20,11 +19,10 @@ type Props = OwnProps & InjectedIntlProps;
 const bem = BEMHelper('uttaksplanEgenSak');
 const datoformat = 'DD. MMM YYYY';
 
-const UttaksplanEgenSak: React.StatelessComponent<Props> = ({ sak, søknadsinfo, intl }) => {
-    const perioder = mapSaksperioderTilUttaksperioder(sak.saksperioder, sak.grunnlag);
+const UttaksplanEgenSak: React.StatelessComponent<Props> = ({ uttaksplan, søknadsinfo, intl }) => {
     return (
         <ol className={bem.className}>
-            {perioder.sort(sorterPerioder).map((periode, index) => (
+            {uttaksplan.sort(sorterPerioder).map((periode, index) => (
                 <li key={index}>
                     <div className={bem.element('periode')}>
                         <strong className={bem.element('tidsperiode')}>

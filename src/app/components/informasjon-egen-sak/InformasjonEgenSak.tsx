@@ -41,10 +41,13 @@ const InformasjonEgenSak: React.StatelessComponent<Props> = ({
                         <strong>{sak.grunnlag.dekningsgrad} prosent utbetaling</strong>.
                     </InnholdMedIllustrasjon>
                 </Block>
-                <Block margin="xs">
-                    <Undertittel>Planen</Undertittel>
-                    <UttaksplanEgenSak sak={sak} søknadsinfo={søknadsinfo} />
-                </Block>
+                {sak.uttaksplan &&
+                    sak.uttaksplan.length > 0 && (
+                        <Block margin="xs">
+                            <Undertittel>Planen</Undertittel>
+                            <UttaksplanEgenSak uttaksplan={sak.uttaksplan} søknadsinfo={søknadsinfo} />
+                        </Block>
+                    )}
             </div>
         </InfoBlock>
     );
