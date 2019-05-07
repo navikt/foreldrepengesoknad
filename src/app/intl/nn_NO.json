@@ -57,7 +57,7 @@
     "annenInntekt.oppfølgingsspørsmål": "Periodar med anna inntekt",
     "annenInntekt.spørsmål": "Har du hatt andre inntektskjelder dei siste ti månadene?",
     "annenInntekt.infoboksTekst.overskrift": "Har du andre inntektskjelder, kan du ha rett til foreldrepengar:",
-    "annenInntekt.infoboksTekst.punktEn": "Vernepliktig i militæret",
+    "annenInntekt.infoboksTekst.punktEn": "Førstegongsteneste i forsvaret",
     "annenInntekt.infoboksTekst.punktTo": "Jobba i et anna EØS-land",
     "annenInntekt.infoboksTekst.punktTre": "Ventelønn",
     "annenInntekt.infoboksTekst.punktFire": "Sluttpakke",
@@ -209,7 +209,7 @@
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepengar",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobba som frilansar dei siste ti månadene?",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
-        "Eksempel på kven som kan være frilansar er<br/><ul><li>Musikar</li><li>Tekstforfattar</li><li>Skodespelare</li><li>Journalistar</li><li>Oversetter</li><li> Folkevald, politikar i kommunar, fylkeskommunar og på Stortinget som får godtgjersle for politisk arbeid.</li><li>Fosterforeldre, og personar med omsorgslønn</li></ul>Hvis du er usikker på om du er frilanser kan du lese mer om hva det betyr å være frilansar på skatteetaten sin",
+        "Eksempel på kven som kan vere frilansar er<br/><ul><li>Musikar</li><li>Tekstforfattarar</li><li>Skodespelarar</li><li>Journalistar</li><li>Omsetjararr</li><li> Folkevalde, politikarar i kommunar, fylkeskommunar og på Stortinget som får godtgjering for politisk arbeid.</li><li>Fosterforeldre, og personar med omsorgslønn</li></ul>Dersom du er usikker på om du er frilansar, kan du lese mer om kva det vil seie å være frilansar på skatteetaten sin",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie dei siste ti månadene",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
@@ -244,7 +244,7 @@
         "Sidan du har jobba i {land}, må vi hente inn dokumentasjon derfrå. Derfor kan det ta litt lenger tid før du får svar på søknaden din.",
     "inntektstype.lønn_under_utdanning": "Lønn frå arbeidsgivaren under vidare- eller etterutdanning",
     "inntektstype.lønn_under_utdanning_info": "Trenger vi noe tekst her?",
-    "inntektstype.militær_eller_siviltjeneste": "Fyrstegongsteneste i forsvaret",
+    "inntektstype.militær_eller_siviltjeneste": "Førstegongsteneste i forsvaret",
     "inntektstype.militær_eller_siviltjeneste_info":
         "Du må leggje ved dokumentasjon på perioden frå tenestestaden din.",
     "inntektstype.selvstendigNæringsdrivende": "Sjølvstendig næringsdrivande",
