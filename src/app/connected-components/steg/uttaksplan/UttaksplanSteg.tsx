@@ -47,6 +47,7 @@ import getMessage from 'common/util/i18nUtils';
 import PeriodelisteSakForEndring from '../../../components/PeriodelisteSakForEndring/PeriodelisteSakForEndring';
 import { Feature, isFeatureEnabled } from '../../../Feature';
 import InformasjonEgenSak from '../../../components/informasjon-egen-sak/InformasjonEgenSak';
+import DevBlock from 'common/dev/DevBlock';
 
 interface StateProps {
     stegProps: StegProps;
@@ -236,11 +237,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         {isFeatureEnabled(Feature.hentSakForEndring) &&
                             sakForEndring && (
                                 <Block>
-                                    <PeriodelisteSakForEndring sak={sakForEndring} />
+                                    <DevBlock>
+                                        <PeriodelisteSakForEndring sak={sakForEndring} />
+                                    </DevBlock>
                                     <InformasjonEgenSak
                                         sak={sakForEndring}
                                         tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                        søknadsinfo={søknadsinfo}
                                     />
                                 </Block>
                             )}
