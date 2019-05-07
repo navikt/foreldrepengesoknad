@@ -8,6 +8,9 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
 import { dateIsTodayOrInFuture } from '../dates/dates';
+import { Saksgrunnlag } from 'app/types/søknad/SakForEndring';
+import Søknad from 'app/types/søknad/Søknad';
+import { getFamiliehendelsedato } from '.';
 
 export const erUttakAvAnnenForeldersKvote = (
     konto: StønadskontoType | undefined,
@@ -58,4 +61,17 @@ export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): Sen
     } else {
         return uttakKreverBegrunnelse ? SenEndringÅrsak.Uttak : SenEndringÅrsak.Ingen;
     }
+};
+
+export const skalKunneViseMorsUttaksplanForFarEllerMedmor = (grunnlag: Saksgrunnlag, søknad: Søknad): boolean => {
+    return (
+        moment(grunnlag.familieHendelseDato).isSame(getFamiliehendelsedato(søknad.barn, søknad.situasjon), 'day') &&
+        grunnlag.dekningsgrad === søknad.dekningsgrad &&
+        grunnlag.antallBarn === søknad.barn.antallBarn &&
+        grunnlag.farMedmorErAleneOmOmsorg === søknad.søker.erAleneOmOmsorg &&
+        ((søknad.annenForelder.harRettPåForeldrepenger === false &&
+            grunnlag.morErUfør &&
+            søknad.annenForelder.erUfør) ||
+            (grunnlag.morHarRett && søknad.annenForelder.harRettPåForeldrepenger))
+    );
 };
