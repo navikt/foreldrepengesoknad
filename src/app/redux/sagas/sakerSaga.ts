@@ -4,6 +4,7 @@ import Api from '../../api/api';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import Sak from '../../types/søknad/Sak';
 import { skalKunneSøkeOmEndring, harSakUnderBehandling } from '../../util/saker/sakerUtils';
+import { getSakForEndringFromDTO } from '../../api/utils/sakForEndringApiUtil';
 
 function* getSaker() {
     try {
@@ -40,6 +41,26 @@ function* getSaker() {
         yield put(
             apiActions.updateApi({
                 isLoadingSaker: false
+            })
+        );
+    }
+}
+
+export function* fetchSakForEndring(saksnummer: string) {
+    try {
+        yield put(apiActions.updateApi({ isLoadingSakForEndring: true }));
+        const response = yield call(Api.getSakForEndring, saksnummer);
+        return getSakForEndringFromDTO(response.data);
+    } catch (error) {
+        yield put(
+            apiActions.updateApi({
+                oppslagSakForEndringFeilet: true
+            })
+        );
+    } finally {
+        yield put(
+            apiActions.updateApi({
+                isLoadingSakForEndring: false
             })
         );
     }

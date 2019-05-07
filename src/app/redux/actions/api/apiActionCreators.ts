@@ -17,6 +17,13 @@ export function getSaker(): ApiActionTypes {
     };
 }
 
+export function getSakForEndring(saksnummer: string): ApiActionTypes {
+    return {
+        type: ApiActionKeys.GET_SAK_FOR_ENDRING,
+        saksnummer
+    };
+}
+
 export function sendSøknad(missingAttachments: MissingAttachment[], history: History): ApiActionTypes {
     return {
         type: ApiActionKeys.SEND_SØKNAD,
@@ -87,6 +94,7 @@ export function sendStorageKvittering(): ApiActionTypes {
 export default {
     getSøkerinfo,
     getSaker,
+    getSakForEndring,
     sendSøknad,
     getStorageData,
     deleteStoredAppState,

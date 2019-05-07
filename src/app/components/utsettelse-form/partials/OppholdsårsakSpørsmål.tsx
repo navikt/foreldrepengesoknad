@@ -3,6 +3,7 @@ import FlervalgSpørsmål, { FlervalgAlternativ } from '../../flervalg-spørsmå
 import { OppholdÅrsakType, TilgjengeligStønadskonto, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
 import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
+import { getNavnGenitivEierform } from '../../../util/tekstUtils';
 
 export interface OwnProps {
     oppholdsårsak: OppholdÅrsakType | undefined;
@@ -28,7 +29,9 @@ const createAlternative = (
 ): FlervalgAlternativ => {
     if (konto.konto === StønadskontoType.Fedrekvote || konto.konto === StønadskontoType.Mødrekvote) {
         return {
-            label: getMessage(intl, 'stønadskontotype.foreldernavn.kvote', { navn: navnAnnenForelder }),
+            label: getMessage(intl, 'stønadskontotype.foreldernavn.kvote', {
+                navn: getNavnGenitivEierform(navnAnnenForelder, intl.locale)
+            }),
             value: søkerErFarEllerMedmor
                 ? OppholdÅrsakType.UttakMødrekvoteAnnenForelder
                 : OppholdÅrsakType.UttakFedrekvoteAnnenForelder

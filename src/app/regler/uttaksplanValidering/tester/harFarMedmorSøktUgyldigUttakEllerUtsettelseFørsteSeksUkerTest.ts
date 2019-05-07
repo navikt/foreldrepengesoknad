@@ -17,7 +17,9 @@ export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: Re
                     perioder,
                     søknaden.familiehendelsesdato,
                     søknaden.antallBarn,
-                    søknaden.situasjon
+                    søknaden.situasjon,
+                    grunnlag.søknadsinfo.annenForelder,
+                    grunnlag.søknadsinfo.søker.erAleneOmOmsorg
                 ) === false
         };
     }
