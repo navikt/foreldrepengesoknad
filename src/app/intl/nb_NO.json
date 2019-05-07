@@ -264,7 +264,6 @@
         "Gir du NAV fullmakt til å innhente opplysninger direkte fra revisor?",
     "komponent.bekreftDialog.avbrytLabel": "Avbryt",
     "komponent.bekreftDialog.bekreftLabel": "Ok",
-    "komponent.språkvelger.endreMålform": "Endre målform til nynorsk",
     "kvittering.behandlingstid.tittel": "Når kan jeg få svar?",
     "kvittering.behandlingstid":
         "NAV trenger oppdaterte opplysninger for å behandle søknaden din. Derfor kan du tidligst få svar på søknaden din fire uker før foreldrepengeperioden din starter.",
@@ -999,5 +998,7 @@
     "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikke tilgjengelig akkurat nå",
     "feilside.ikkeTilgjengelig.melding":
         "Huffda, det virker som om et av våre systemer er nede akkurat nå. Vi jobber iherdig med å rette opp feilen. Prøv igjen litt senere, vi beklager ulempen for deg.",
-    "manglendeVedlegg.info": "Før du kan sende inn søknaden så må du laste opp vedleggene som er listet nedenfor."
+    "manglendeVedlegg.info": "Før du kan sende inn søknaden så må du laste opp vedleggene som er listet nedenfor.",
+    "languageToggle.bokmål": "Bokmål - Norsk",
+    "languageToggle.nynorsk": "Nynorsk - Norsk"
 }
