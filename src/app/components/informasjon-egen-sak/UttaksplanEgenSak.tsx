@@ -21,7 +21,7 @@ const bem = BEMHelper('uttaksplanEgenSak');
 const datoformat = 'DD. MMM YYYY';
 
 const UttaksplanEgenSak: React.StatelessComponent<Props> = ({ sak, søknadsinfo, intl }) => {
-    const perioder = mapSaksperioderTilUttaksperioder(sak.perioder, sak.grunnlag);
+    const perioder = mapSaksperioderTilUttaksperioder(sak.saksperioder, sak.grunnlag);
     return (
         <ol className={bem.className}>
             {perioder.sort(sorterPerioder).map((periode, index) => (

@@ -12,7 +12,6 @@ import { Søker } from '../../types/søknad/Søker';
 import { Søkerinfo } from '../../types/søkerinfo';
 import Person from '../../types/Person';
 import { Kjønn } from '../../types/common';
-import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 
 const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
     switch (grunnlag.familieHendelseType) {
@@ -118,7 +117,7 @@ export const opprettSøknadFraSakForEndring = (
     søkerinfo: Søkerinfo,
     sak: SakForEndring
 ): Partial<Søknad> | undefined => {
-    const { grunnlag } = sak;
+    const { grunnlag, uttaksplan } = sak;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(grunnlag);
 
     if (!situasjon) {
@@ -128,10 +127,6 @@ export const opprettSøknadFraSakForEndring = (
     const søker = getSøkerFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
     const annenForelder = getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag);
-
-    const uttaksplan = kanUttaksplanGjennskapesFraSak(sak.perioder)
-        ? mapSaksperioderTilUttaksperioder(sak.perioder, sak.grunnlag)
-        : undefined;
 
     if (!søker || !barn || !annenForelder) {
         return undefined;
@@ -144,7 +139,7 @@ export const opprettSøknadFraSakForEndring = (
         annenForelder: annenForelder as AnnenForelder,
         erEndringssøknad: true,
         dekningsgrad: grunnlag.dekningsgrad,
-        uttaksplan
+        uttaksplan: uttaksplan || []
     };
     return søknad;
 };
