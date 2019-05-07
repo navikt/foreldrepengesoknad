@@ -36,7 +36,7 @@ function* startSøknad(action: StartSøknad) {
     const appState: AppState = yield select(stateSelector);
     if (erEndringssøknad && saksnummer && appState.api.sakForEndringssøknad) {
         let sakForEndring: SakForEndring | undefined;
-        if (isFeatureEnabled(Feature.visMorsUttaksplanForFarMedmor)) {
+        if (isFeatureEnabled(Feature.hentSakForEndring)) {
             sakForEndring = yield call(fetchSakForEndring, saksnummer);
         }
         const søknad = sakForEndring ? opprettSøknadFraSakForEndring(søkerinfo, sakForEndring) : undefined;

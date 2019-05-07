@@ -238,7 +238,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             </Block>
                         )}
                         <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
-                        {isFeatureEnabled(Feature.visMorsUttaksplanForFarMedmor) &&
+                        {isFeatureEnabled(Feature.hentSakForEndring) &&
                             sakForEndring && (
                                 <Block>
                                     <InfoSakAnnenForelder
