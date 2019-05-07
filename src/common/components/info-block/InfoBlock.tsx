@@ -1,9 +1,9 @@
 import * as React from 'react';
 import classnames from 'classnames';
-
-import './infoBlock.less';
 import { BlockPadding } from 'common/components/block/Block';
 import BEMHelper from 'common/util/bem';
+
+import './infoBlock.less';
 
 export interface Props {
     children: React.ReactNode;
