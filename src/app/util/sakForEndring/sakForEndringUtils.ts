@@ -1,11 +1,18 @@
 import Søknad, { Søkersituasjon, SøkerRolle } from '../../types/søknad/Søknad';
-import { SakForEndring, FamiliehendelsesType, Saksgrunnlag } from '../../types/søknad/SakForEndring';
+import {
+    SakForEndring,
+    FamiliehendelsesType,
+    Saksgrunnlag,
+    Saksperiode,
+    PeriodeResultatType
+} from '../../types/søknad/SakForEndring';
 import { Barn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
 import { Søkerinfo } from '../../types/søkerinfo';
 import Person from '../../types/Person';
 import { Kjønn } from '../../types/common';
+import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 
 const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
     switch (grunnlag.familieHendelseType) {
@@ -90,6 +97,23 @@ const getAnnenForelderFromSaksgrunnlag = (
     return undefined;
 };
 
+const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
+    if (
+        periode.arbeidstidprosent === 0 &&
+        periode.flerbarnsdager === false &&
+        periode.gjelderAnnenPart === false &&
+        periode.periodeResultatType === PeriodeResultatType.INNVILGET &&
+        periode.samtidigUttak === false
+    ) {
+        return true;
+    }
+    return false;
+};
+
+export const kanUttaksplanGjennskapesFraSak = (perioder: Saksperiode[]): boolean => {
+    return perioder.some((periode) => saksperiodeKanKonverteresTilPeriode(periode) === false);
+};
+
 export const opprettSøknadFraSakForEndring = (
     søkerinfo: Søkerinfo,
     sak: SakForEndring
@@ -105,6 +129,10 @@ export const opprettSøknadFraSakForEndring = (
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
     const annenForelder = getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag);
 
+    const uttaksplan = kanUttaksplanGjennskapesFraSak(sak.perioder)
+        ? mapSaksperioderTilUttaksperioder(sak.perioder, sak.grunnlag)
+        : undefined;
+
     if (!søker || !barn || !annenForelder) {
         return undefined;
     }
@@ -115,7 +143,8 @@ export const opprettSøknadFraSakForEndring = (
         barn: barn as Barn,
         annenForelder: annenForelder as AnnenForelder,
         erEndringssøknad: true,
-        dekningsgrad: grunnlag.dekningsgrad
+        dekningsgrad: grunnlag.dekningsgrad,
+        uttaksplan
     };
     return søknad;
 };
