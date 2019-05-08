@@ -8,14 +8,21 @@ import { cleanUpSøknad } from '../../util/cleanup/cleanupSøknad';
 import { AppState } from '../reducers';
 import { mapMissingAttachmentsOnSøknad } from '../../util/attachments/missingAttachmentUtil';
 import { extractUUID } from '../../api/utils/errorUtil';
+import Søknad from 'app/types/søknad/Søknad';
+import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 function* sendSøknad(action: SendSøknad) {
     try {
         yield put(apiActions.updateApi({ søknadSendingInProgress: true }));
-        const orignalSøknad = yield select((state: AppState) => state.søknad);
-        const søknadCopy = JSON.parse(JSON.stringify(orignalSøknad));
-        mapMissingAttachmentsOnSøknad(action.missingAttachments, søknadCopy);
-        const response = yield call(Api.sendSøknad, cleanUpSøknad(søknadCopy));
+        const originalSøknad: Søknad = yield select((state: AppState) => state.søknad);
+        const søknad = JSON.parse(JSON.stringify(originalSøknad));
+        const { sakForEndring } = søknad.ekstrainfo;
+        if (sakForEndring !== undefined && sakForEndring.uttaksplan) {
+            const endringer = getEndretUttaksplanForInnsending(sakForEndring.uttaksplan, søknad.uttaksplan);
+            søknad.uttaksplan = endringer || søknad.uttaksplan;
+        }
+        mapMissingAttachmentsOnSøknad(action.missingAttachments, søknad);
+        const response = yield call(Api.sendSøknad, cleanUpSøknad(søknad));
         const kvittering: Kvittering = response.data;
         if (kvittering) {
             action.history.push(`${routeConfig.APP_ROUTE_PREFIX}soknad-sendt`);
