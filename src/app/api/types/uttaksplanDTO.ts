@@ -2,7 +2,7 @@ export interface UttaksplanDTO {
     grunnlag: {
         familieHendelseType: string;
         familieHendelseDato: string;
-        dekningsgrad: string;
+        dekningsgrad: number;
         antallBarn: number;
         søkerErFarEllerMedmor: boolean;
         morErAleneOmOmsorg: boolean;
