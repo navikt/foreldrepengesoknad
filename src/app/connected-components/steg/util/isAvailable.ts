@@ -66,11 +66,15 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo, s
                 annenInntektErGyldig(søknad.søker)
             );
         case StegID.OPPSUMMERING:
+            const harSakForEndring = søknad.ekstrainfo.sakForEndring !== undefined;
+            const barnStegGyldig = harSakForEndring || barnErGyldig(søknad, søkerinfo);
+            const annenForelderStegGyldig = harSakForEndring || annenForelderErGyldig(søknad, søkerinfo);
+            const uttaksplanStegGyldig = harSakForEndring || uttaksplanSkjemaErGyldig(søknad, søknadsinfo);
             return (
                 harGodkjentVilkår(søknad) &&
-                barnErGyldig(søknad, søkerinfo) &&
-                annenForelderErGyldig(søknad, søkerinfo) &&
-                uttaksplanSkjemaErGyldig(søknad, søknadsinfo) &&
+                barnStegGyldig &&
+                annenForelderStegGyldig &&
+                uttaksplanStegGyldig &&
                 (søknad.erEndringssøknad === false ? utenlandsoppholdErGyldig(søknad) : true) &&
                 (søknad.erEndringssøknad === false ? annenInntektErGyldig(søknad.søker) : true)
             );
