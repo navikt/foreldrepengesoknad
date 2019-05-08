@@ -26,8 +26,10 @@ import AdvarselIkon from '../uttaksplan-ikon/ikoner/AdvarselIkon';
 import { PeriodelisteInformasjon } from '../periodeliste/items/PeriodelisteInfo';
 import getMessage from 'common/util/i18nUtils';
 import VeilederInfo from '../veileder-info/VeilederInfo';
+import { finnEndringerIUttaksplan, getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 import './uttaksplanlegger.less';
+import DevBlock from 'common/dev/DevBlock';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -184,6 +186,9 @@ class Uttaksplanlegger extends React.Component<Props, State> {
 
         const infoItems: PeriodelisteInformasjon[] = [];
 
+        const planErEndret =
+            uttaksplanForEndring && finnEndringerIUttaksplan(uttaksplanForEndring, uttaksplan).length > 0;
+
         if (infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor) {
             infoItems.push({
                 id: 'infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor',
@@ -217,6 +222,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 <FormattedMessage id="uttaksplan.tittel" />
                             </Systemtittel>
                             {onRequestClear &&
+                                onRequestRevert === undefined &&
                                 uttaksplan.length > 0 && (
                                     <div className={BEM.element('header__reset')}>
                                         <LinkButton
@@ -227,7 +233,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                     </div>
                                 )}
                             {onRequestRevert &&
-                                uttaksplanForEndring && (
+                                planErEndret && (
                                     <div className={BEM.element('header__reset')}>
                                         <LinkButton
                                             className={BEM.element('resetLink')}
@@ -264,6 +270,28 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 onFjernPeriode={this.props.onDelete}
                                 antallFeriedager={antallFeriedager}
                             />
+                            {uttaksplanForEndring && (
+                                <DevBlock>
+                                    <br />
+                                    <Block header={{ title: 'Endringer som sendes inn' }}>
+                                        <Periodeliste
+                                            søknadsinfo={søknadsinfo}
+                                            ref={(c) => (this.periodeliste = c)}
+                                            perioder={
+                                                getEndretUttaksplanForInnsending(uttaksplanForEndring, uttaksplan) || []
+                                            }
+                                            informasjon={infoItems}
+                                            navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
+                                            uttaksplanValidering={uttaksplanValidering}
+                                            lastAddedPeriodeId={lastAddedPeriodeId}
+                                            onLeggTilOpphold={this.settInnNyttOpphold}
+                                            onLeggTilPeriode={this.settInnNyPeriode}
+                                            onFjernPeriode={this.props.onDelete}
+                                            antallFeriedager={antallFeriedager}
+                                        />
+                                    </Block>
+                                </DevBlock>
+                            )}
                         </Block>
                         <Block visible={uttaksplan.length === 0}>
                             <Block margin="l">
