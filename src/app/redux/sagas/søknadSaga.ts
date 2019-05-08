@@ -17,12 +17,16 @@ import { opprettSøknadFraSakForEndring } from '../../util/sakForEndring/sakForE
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
 import { StegID } from '../../util/routing/stegConfig';
 import { isFeatureEnabled, Feature } from '../../Feature';
-import { SakForEndring } from '../../types/søknad/SakForEndring';
+import { SakForEndring, Saksgrunnlag } from '../../types/søknad/SakForEndring';
 import mapSaksperioderTilUttaksperioder from 'app/util/sakForEndring/mapSaksperioderTilUttaksperioder';
 import { getStønadskontoParams } from '../../util/uttaksplan/st\u00F8nadskontoParams';
 import { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
 
 const stateSelector = (state: AppState) => state;
+
+const søkerKanFåEnkelEndringssøknad = (grunnlag: Saksgrunnlag): boolean => {
+    return grunnlag.erBarnetFødt === true;
+};
 
 function* updateSøkerAndStorage(action: UpdateSøkerAndStorage) {
     yield put(søknadActions.updateSøker(action.payload));
@@ -41,7 +45,10 @@ function* startSøknad(action: StartSøknad) {
         if (isFeatureEnabled(Feature.hentSakForEndring)) {
             sakForEndring = yield call(fetchSakForEndring, saksnummer);
         }
-        const søknad = sakForEndring ? opprettSøknadFraSakForEndring(søkerinfo, sakForEndring) : undefined;
+        const søknad =
+            sakForEndring && søkerKanFåEnkelEndringssøknad(sakForEndring.grunnlag)
+                ? opprettSøknadFraSakForEndring(søkerinfo, sakForEndring, appState.api.sakForEndringssøknad)
+                : undefined;
         if (sakForEndring && søknad !== undefined) {
             yield put(
                 søknadActions.updateSøknad({

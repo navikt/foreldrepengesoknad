@@ -3,6 +3,7 @@ import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import { getTidsperiode, Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
 import { Tidsperiode } from 'common/types';
+import { formaterDatoKompakt } from 'common/util/datoUtils';
 
 export const Perioden = (periode: Periode) => ({
     erUttak: () => erUttak(periode),
@@ -12,7 +13,8 @@ export const Perioden = (periode: Periode) => ({
     setUttaksdager: (uttaksdager: number) =>
         (periode.tidsperiode = getTidsperiode(periode.tidsperiode.fom, uttaksdager)),
     getAntallUttaksdager: () => Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
-    erLik: (periode2: Periode) => erPerioderLike(periode, periode2),
+    erLik: (periode2: Periode, inkluderTidsperiode: boolean = false) =>
+        erPerioderLike(periode, periode2, inkluderTidsperiode),
     erSammenhengende: (periode2: Periode) => erPerioderSammenhengende(periode, periode2)
 });
 
@@ -34,26 +36,32 @@ function erPerioderSammenhengende(p1: Periode, p2: Periode) {
     return moment(p1NesteUttaksdato).isSame(p2Startdato, 'day');
 }
 
-function erPerioderLike(p1: Periode, p2: Periode) {
+function erPerioderLike(p1: Periode, p2: Periode, inkluderTidsperiode: boolean = false) {
     if (p1.type !== p2.type || p1.type === Periodetype.Utsettelse || p2.type === Periodetype.Utsettelse) {
         return false;
     }
     if (p1.type === Periodetype.Hull && p2.type === Periodetype.Hull) {
         return true;
     }
-    const k1 = getPeriodeFootprint(p1);
-    const k2 = getPeriodeFootprint(p2);
+    const k1 = getPeriodeFootprint(p1, inkluderTidsperiode);
+    const k2 = getPeriodeFootprint(p2, inkluderTidsperiode);
     return k1 === k2;
 }
 
-function getPeriodeFootprint(periode: Periode) {
+function getPeriodeFootprint(periode: Periode, inkluderTidsperiode: boolean = false) {
     const { tidsperiode, id, ...rest } = periode;
-    const sortedPeriode = {};
+    const sortedPeriode: any = {};
     Object.keys(rest)
         .sort()
         .forEach((key) => {
             sortedPeriode[key] = rest[key];
         });
+    if (inkluderTidsperiode && tidsperiode) {
+        sortedPeriode.tidsperiode = {
+            fom: tidsperiode.fom ? formaterDatoKompakt(tidsperiode.fom) : undefined,
+            tom: tidsperiode.tom ? formaterDatoKompakt(tidsperiode.tom) : undefined
+        };
+    }
     return JSON.stringify({ ...sortedPeriode });
 }
 

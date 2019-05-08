@@ -49,6 +49,7 @@ import PeriodelisteSakForEndring from '../../../components/PeriodelisteSakForEnd
 import { Feature, isFeatureEnabled } from '../../../Feature';
 import InformasjonEgenSak from '../../../components/informasjon-egen-sak/InformasjonEgenSak';
 import DevBlock from 'common/dev/DevBlock';
+import { finnEndringerIUttaksplan } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 interface StateProps {
     stegProps: StegProps;
@@ -65,6 +66,7 @@ interface StateProps {
     tilleggsopplysninger: Tilleggsopplysninger;
     aktivitetsfriKvote: number;
     uttaksplanVeilederInfo: VeilederMessage[];
+    planErEndret: boolean;
 }
 
 interface UttaksplanStegState {
@@ -208,6 +210,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             søknadsinfo,
             aktivitetsfriKvote,
             uttaksplanVeilederInfo,
+            planErEndret,
             intl
         } = this.props;
 
@@ -271,6 +274,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             )}
                         <Block>
                             <Uttaksplanlegger
+                                planErEndret={planErEndret}
                                 uttaksplanForEndring={sakForEndring && sakForEndring.uttaksplan}
                                 uttaksplan={søknad.uttaksplan}
                                 søknadsinfo={søknadsinfo}
@@ -355,6 +359,14 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
 
     const årsakTilSenEndring: SenEndringÅrsak = getSeneEndringerSomKreverBegrunnelse(søknad.uttaksplan);
 
+    const uttaksplanForEndring = søknad.ekstrainfo.sakForEndring
+        ? søknad.ekstrainfo.sakForEndring.uttaksplan
+        : undefined;
+
+    const planErEndret =
+        uttaksplanForEndring !== undefined &&
+        finnEndringerIUttaksplan(uttaksplanForEndring, søknad.uttaksplan).length > 0;
+
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
         renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true,
@@ -401,7 +413,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         vedleggForSenEndring: søknad.vedleggForSenEndring,
         tilleggsopplysninger: søknad.tilleggsopplysninger,
         uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl)(state),
-        aktivitetsfriKvote
+        aktivitetsfriKvote,
+        planErEndret
     };
 };
 

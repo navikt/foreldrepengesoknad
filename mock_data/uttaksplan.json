@@ -1,6 +1,6 @@
 {
     "grunnlag": {
-        "familieHendelseType": "TERM",
+        "familieHendelseType": "FODSL",
         "familieHendelseDato": "2019-05-02",
         "dekningsgrad": 100,
         "antallBarn": 1,

@@ -6,6 +6,7 @@ export interface Props {
     tittel: string;
     tittelProps: string;
     children: React.ReactNode;
+    apen?: boolean;
 }
 
 class Oppsummeringspanel extends React.Component<Props> {
@@ -13,10 +14,10 @@ class Oppsummeringspanel extends React.Component<Props> {
         super(props);
     }
     render() {
-        const { tittel, tittelProps, children } = this.props;
+        const { tittel, tittelProps, apen, children } = this.props;
         return (
             <div className="oppsummeringPanel">
-                <Ekspanderbartpanel tittel={tittel} tittelProps={tittelProps}>
+                <Ekspanderbartpanel tittel={tittel} tittelProps={tittelProps} apen={apen}>
                     <div className="oppsummeringspanel">{children}</div>
                 </Ekspanderbartpanel>
             </div>
