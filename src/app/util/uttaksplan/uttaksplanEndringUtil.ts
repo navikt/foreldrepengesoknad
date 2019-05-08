@@ -72,7 +72,7 @@ export const getEndretUttaksplanForInnsending = (
     nyPlan: Periode[]
 ): Periode[] | undefined => {
     const endringer = finnEndringerIUttaksplan(opprinneligPlan, nyPlan);
-    if (endringer) {
+    if (endringer && endringer.length > 0) {
         if (endringer.length === 1) {
             const endretPeriode = endringer[0];
             const perioder = getLikePerioder(endretPeriode, opprinneligPlan);
@@ -96,7 +96,6 @@ export const getEndretUttaksplanForInnsending = (
                 return [endretPeriode, ...endringer.slice(1)];
             }
         }
-
         return endringer;
     }
     return undefined;
