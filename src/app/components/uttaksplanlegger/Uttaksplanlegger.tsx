@@ -36,6 +36,7 @@ interface OwnProps {
     uttaksplanValidering: UttaksplanValideringState;
     lastAddedPeriodeId: string | undefined;
     forelder: Forelder;
+    planErEndret: boolean;
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
@@ -163,10 +164,10 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             søknadsinfo,
             onRequestClear,
             onRequestRevert,
-            uttaksplanForEndring,
             lastAddedPeriodeId,
             forelder,
             uttaksplan,
+            planErEndret,
             intl
         } = this.props;
         const { formIsOpen, periodetype } = this.state;
@@ -217,6 +218,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 <FormattedMessage id="uttaksplan.tittel" />
                             </Systemtittel>
                             {onRequestClear &&
+                                onRequestRevert === undefined &&
                                 uttaksplan.length > 0 && (
                                     <div className={BEM.element('header__reset')}>
                                         <LinkButton
@@ -227,7 +229,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                     </div>
                                 )}
                             {onRequestRevert &&
-                                uttaksplanForEndring && (
+                                planErEndret && (
                                     <div className={BEM.element('header__reset')}>
                                         <LinkButton
                                             className={BEM.element('resetLink')}

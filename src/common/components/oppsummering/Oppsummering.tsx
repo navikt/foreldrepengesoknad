@@ -32,6 +32,12 @@ class Oppsummering extends React.Component<Props> {
     render() {
         const { søkerinfo, søknad, uttaksplanValidering, antallUkerUttaksplan, søknadsinfo, intl } = this.props;
         const { person } = søkerinfo;
+
+        const harSakForEndring = søknad.ekstrainfo.sakForEndring !== undefined;
+        const visBarn = harSakForEndring === false;
+        const visAnnenForelder = harSakForEndring === false;
+        const visUtenlandsopphold = søknad.erEndringssøknad === false;
+
         return (
             <Block margin="m">
                 {uttaksplanValidering.erGyldig && (
@@ -53,29 +59,33 @@ class Oppsummering extends React.Component<Props> {
                         />
                     </Block>
 
-                    <Oppsummeringspanel
-                        tittel={getMessage(intl, 'oppsummering.relasjonTilBarn')}
-                        tittelProps="undertittel">
-                        <RelasjonTilBarnOppsummering
-                            barn={søknad.barn}
-                            annenForelder={søknad.annenForelder}
-                            situasjon={søknad.situasjon}
-                            skalLasteOppTerminbekreftelse={skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo)}
-                        />
-                    </Oppsummeringspanel>
+                    {visBarn && (
+                        <Oppsummeringspanel
+                            tittel={getMessage(intl, 'oppsummering.relasjonTilBarn')}
+                            tittelProps="undertittel">
+                            <RelasjonTilBarnOppsummering
+                                barn={søknad.barn}
+                                annenForelder={søknad.annenForelder}
+                                situasjon={søknad.situasjon}
+                                skalLasteOppTerminbekreftelse={skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo)}
+                            />
+                        </Oppsummeringspanel>
+                    )}
 
-                    <Oppsummeringspanel
-                        tittel={getMessage(intl, 'oppsummering.annenForelder')}
-                        tittelProps="undertittel">
-                        <AnnenForelderOppsummering
-                            annenForelder={søknad.annenForelder}
-                            erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
-                            barn={søknad.barn}
-                            erFarEllerMedmor={søknadsinfo.søker.erFarEllerMedmor}
-                        />
-                    </Oppsummeringspanel>
+                    {visAnnenForelder && (
+                        <Oppsummeringspanel
+                            tittel={getMessage(intl, 'oppsummering.annenForelder')}
+                            tittelProps="undertittel">
+                            <AnnenForelderOppsummering
+                                annenForelder={søknad.annenForelder}
+                                erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
+                                barn={søknad.barn}
+                                erFarEllerMedmor={søknadsinfo.søker.erFarEllerMedmor}
+                            />
+                        </Oppsummeringspanel>
+                    )}
 
-                    {søknad.erEndringssøknad === false && (
+                    {visUtenlandsopphold && (
                         <>
                             <Oppsummeringspanel
                                 tittel={getMessage(intl, 'oppsummering.utenlandsopphold')}
@@ -96,7 +106,10 @@ class Oppsummering extends React.Component<Props> {
                         </>
                     )}
 
-                    <Oppsummeringspanel tittel={getMessage(intl, 'oppsummering.uttak')} tittelProps="undertittel">
+                    <Oppsummeringspanel
+                        tittel={getMessage(intl, 'oppsummering.uttak')}
+                        tittelProps="undertittel"
+                        apen={harSakForEndring}>
                         <UttaksplanOppsummering
                             perioder={søknad.uttaksplan}
                             navnPåForeldre={søknadsinfo.navn.navnPåForeldre}

@@ -12,6 +12,7 @@ import { Søker } from '../../types/søknad/Søker';
 import { Søkerinfo } from '../../types/søkerinfo';
 import Person from '../../types/Person';
 import { Kjønn } from '../../types/common';
+import Sak, { AnnenPart } from 'app/types/søknad/Sak';
 
 const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
     switch (grunnlag.familieHendelseType) {
@@ -74,23 +75,28 @@ const getBarnFromSaksgrunnlag = (situasjon: Søkersituasjon, sak: Saksgrunnlag):
 
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Søkersituasjon,
-    sak: Saksgrunnlag
+    sak: Saksgrunnlag,
+    annenPart?: AnnenPart
 ): Partial<AnnenForelder> | undefined => {
     const { søkerErFarEllerMedmor } = sak;
     switch (situasjon) {
         case Søkersituasjon.FØDSEL:
             if (søkerErFarEllerMedmor) {
                 return {
-                    fornavn: 'mor',
-                    etternavn: '',
+                    fornavn: annenPart ? annenPart.navn.fornavn : 'mor',
+                    etternavn: annenPart ? annenPart.navn.etternavn : '',
                     erUfør: sak.morErUfør,
-                    harRettPåForeldrepenger: sak.morHarRett
+                    harRettPåForeldrepenger: sak.morHarRett,
+                    fnr: annenPart ? annenPart.fnr : undefined,
+                    kanIkkeOppgis: annenPart === undefined
                 };
             }
             return {
-                fornavn: 'far eller medmor',
-                etternavn: '',
-                harRettPåForeldrepenger: sak.farMedmorHarRett
+                fornavn: annenPart ? annenPart.navn.fornavn : 'Far eller medmor',
+                etternavn: annenPart ? annenPart.navn.etternavn : '',
+                harRettPåForeldrepenger: sak.farMedmorHarRett,
+                fnr: annenPart ? annenPart.fnr : undefined,
+                kanIkkeOppgis: annenPart === undefined
             };
     }
     return undefined;
@@ -115,9 +121,10 @@ export const kanUttaksplanGjennskapesFraSak = (perioder: Saksperiode[]): boolean
 
 export const opprettSøknadFraSakForEndring = (
     søkerinfo: Søkerinfo,
-    sak: SakForEndring
+    sakForEndring: SakForEndring,
+    sak: Sak
 ): Partial<Søknad> | undefined => {
-    const { grunnlag, uttaksplan } = sak;
+    const { grunnlag, uttaksplan } = sakForEndring;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(grunnlag);
 
     if (!situasjon) {
@@ -126,7 +133,7 @@ export const opprettSøknadFraSakForEndring = (
 
     const søker = getSøkerFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
-    const annenForelder = getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag);
+    const annenForelder = getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, sak.annenPart);
 
     if (!søker || !barn || !annenForelder) {
         return undefined;
