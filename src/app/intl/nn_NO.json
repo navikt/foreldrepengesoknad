@@ -283,8 +283,9 @@
         "Dersom søknaden din blir innvilga, blir foreldrepengane dine anten betalte ut av arbeidsgivar eller av NAV til kontonummeret ditt (kontonummer). Du kan endre kontonummeret på (link).",
     "kvittering.referanseId": "Vi fekk søknaden {date} kl. {timeOfDay}.",
     "kvittering.saksNr": "Vi fekk søknaden med saksnummer {id} {date} kl. {timeOfDay}.",
-    "kvittering.pdf.lastNed.del1": "Du kan {lenke}.",
-    "kvittering.pdf.lastNed.del2": "sjå og laste ned søknaden din her",
+    "kvittering.søknadPdf.lastNed.del1": "Du kan {lenke}.",
+    "kvittering.søknadPdf.lastNed.del2": "sjå og laste ned søknaden din her",
+    "kvittering.infoskrivPdf.": "Viktig informasjon for din arbeidsgiver",
     "leggtil": "Legg til",
     "manglendeVedlegg.periode.tidsperiode": "Gjelder perioden med { type } fra { fom } til { tom }",
     "manglendeVedlegg.veileder":
