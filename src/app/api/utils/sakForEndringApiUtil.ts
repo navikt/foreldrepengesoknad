@@ -32,7 +32,7 @@ export const getSakForEndringFromDTO = (dto: UttaksplanDTO): SakForEndring | und
         const grunnlag: Saksgrunnlag = {
             ...restGrunnlag,
             erBarnetFødt: familieHendelseType !== FamiliehendelsesType.TERM,
-            dekningsgrad: dekningsgrad === '100' ? '100' : '80',
+            dekningsgrad: dekningsgrad === 100 ? '100' : '80',
             familieHendelseDato: new Date(familieHendelseDato),
             familieHendelseType: familieHendelseType as FamiliehendelsesType,
             søkerKjønn: getKjønn(søkerKjønn),
