@@ -116,7 +116,10 @@ const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
 };
 
 export const kanUttaksplanGjennskapesFraSak = (perioder: Saksperiode[]): boolean => {
-    return perioder.some((periode) => saksperiodeKanKonverteresTilPeriode(periode) === false);
+    const noenPerioderKanIkkeGjennskapes = perioder.some(
+        (periode) => saksperiodeKanKonverteresTilPeriode(periode) === false
+    );
+    return noenPerioderKanIkkeGjennskapes === false;
 };
 
 export const opprettSøknadFraSakForEndring = (
