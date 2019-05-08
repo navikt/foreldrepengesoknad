@@ -10,7 +10,7 @@ export enum FamiliehendelsesType {
 }
 
 export enum PeriodeResultatType {
-    'INNVILGET' = 'innvilget',
+    'INNVILGET' = 'INNVILGET',
     'AVSLÅTT' = 'AVSLÅTT',
     'IKKE_FASTSATT' = 'IKKE_FASTSATT',
     'MANUELL_BEHANDLING' = 'MANUELL_BEHANDLING'
