@@ -1,18 +1,25 @@
 [
     {
-        "saksnummer": "135737372",
-        "status": "LOP",
-        "opprettet": "2018-11-07",
         "type": "FPSAK",
+        "saksnummer": "137662764",
+        "status": "LOP",
+        "opprettet": "2019-02-26",
+        "annenPart": {
+            "fnr": "09093635350",
+            "aktørId": "1795096877635",
+            "navn": { "fornavn": "SEDAT", "etternavn": "PENN" }
+        },
         "behandlinger": [
             {
-                "id": null,
+                "opprettetTidspunkt": "2019-02-26T15:16:49.47",
+                "endretTidspunkt": "2019-04-10T07:06:03.597",
                 "status": "AVSLU",
-                "type": "ES",
+                "type": "FP",
                 "tema": "FORP",
-                "årsak": null,
-                "behandlendeEnhet": "4833",
-                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Oslo 1"
+                "behandlingResultat": "INNVILGET",
+                "behandlendeEnhet": "4849",
+                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Tromsø",
+                "inntektsmeldinger": []
             }
         ]
     }
