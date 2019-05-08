@@ -4,7 +4,7 @@ import moment from 'moment';
 import DateValues from '../validation/values';
 
 export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan: Periode[]): boolean =>
-    opprinneligPlan.some((op) => Perioden(periode).erLik(op, true));
+    opprinneligPlan.some((op) => Perioden(periode).erLik(op, true, true));
 
 export const finnEndringerIUttaksplan = (opprinneligPlan: Periode[], nyPlan: Periode[]): Periode[] => {
     const idxFørsteEndredePeriode = nyPlan.findIndex(
