@@ -49,6 +49,13 @@ class AttachmentOverview extends React.Component<Props, State> {
                         values={{ filename: a.filename }}
                     />
                 );
+            } else if (error && error.response !== undefined && error.response.status === 422) {
+                errorMessages.push(
+                    <FormattedMessage
+                        id={multipleErrors ? 'vedlegg.virus.flereFeil' : 'vedlegg.virus'}
+                        values={{ filename: a.filename }}
+                    />
+                );
             } else {
                 errorMessages.push(
                     <FormattedMessage
