@@ -283,8 +283,10 @@
         "Hvis søknaden din blir innvilget, blir foreldrepengene dine enten utbetalt av arbeidsgiver eller av NAV til  kontonummeret ditt {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
     "kvittering.referanseId": "Vi mottok søknaden den {date} kl. {timeOfDay}.",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
-    "kvittering.pdf.lastNed.del1": "Du kan {lenke}.",
-    "kvittering.pdf.lastNed.del2": "se og laste ned søknaden din her",
+    "kvittering.søknadPdf.lastNed.del1": "Du kan {lenke}.",
+    "kvittering.søknadPdf.lastNed.del2": "se og laste ned søknaden din her",
+    "kvittering.infoskrivPdf.": "Viktig informasjon for din arbeidsgiver",
+
     "leggtil": "Legg til",
     "manglendeVedlegg.periode.tidsperiode": "Gjelder perioden med { type } fra { fom } til { tom }",
     "manglendeVedlegg.veileder":
@@ -919,6 +921,8 @@
     "vedlegg.feilmelding.tittel.flereFeil": "Opplasting av vedlegg feilet for:",
     "vedlegg.forStort": "Vedlegget må være mindre enn 9MB",
     "vedlegg.forStort.flereFeil": "{filename} - Vedlegget må være mindre enn 9MB",
+    "vedlegg.virus": "Vedlegget inneholder noe vi ikke vil ha",
+    "vedlegg.virus.flereFeil": "{filename} - Vedlegget inneholder noe vi ikke vil ha",
     "vedlegg.lastoppknapp.anneninntektDokumentasjon": "Last opp dokumentasjon her",
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
     "vedlegg.lastoppknapp.dokumentasjonAvAleneomsorg": "Last opp dokumentasjon her",

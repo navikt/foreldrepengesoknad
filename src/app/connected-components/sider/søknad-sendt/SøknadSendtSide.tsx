@@ -20,6 +20,7 @@ import { apiActionCreators as api } from '../../../redux/actions';
 import { DispatchProps } from 'common/redux/types';
 
 import './søknadSendtSide.less';
+import { Feature, isFeatureEnabled } from 'app/Feature';
 
 interface StateProps {
     person: Person;
@@ -108,11 +109,11 @@ class SøknadSendtSide extends React.Component<Props> {
         );
     }
 
-    buildPdfPreviewLink() {
+    buildSøknadPdfPreviewLink() {
         const { kvittering } = this.props;
         return (
             <FormattedMessage
-                id={'kvittering.pdf.lastNed.del1'}
+                id={'kvittering.søknadPdf.lastNed.del1'}
                 values={{
                     lenke: (
                         <Lenke
@@ -121,11 +122,25 @@ class SøknadSendtSide extends React.Component<Props> {
                                 e.preventDefault();
                                 openPdfPreview(kvittering.pdf);
                             }}>
-                            <FormattedMessage id={'kvittering.pdf.lastNed.del2'} />
+                            <FormattedMessage id={'kvittering.søknadPdf.lastNed.del2'} />
                         </Lenke>
                     )
                 }}
             />
+        );
+    }
+
+    buildInfoskrivPdfLink() {
+        const { kvittering } = this.props;
+        return (
+            <Lenke
+                href={'#'}
+                onClick={(e) => {
+                    e.preventDefault();
+                    openPdfPreview(kvittering.infoskrivPdf);
+                }}>
+                <FormattedMessage id={'kvittering.infoskrivPdf'} />
+            </Lenke>
         );
     }
 
@@ -188,8 +203,14 @@ class SøknadSendtSide extends React.Component<Props> {
                         )}
 
                     <Block margin="s" visible={kvittering.pdf !== undefined}>
-                        <Ingress>{this.buildPdfPreviewLink()}</Ingress>
+                        <Ingress>{this.buildSøknadPdfPreviewLink()}</Ingress>
                     </Block>
+
+                    {isFeatureEnabled(Feature.visInfoskriv) && (
+                        <Block margin="s" visible={kvittering.infoskrivPdf !== undefined}>
+                            <Ingress>{this.buildInfoskrivPdfLink()}</Ingress>
+                        </Block>
+                    )}
 
                     <Hovedknapp
                         className={bem.element('avsluttKnapp')}
