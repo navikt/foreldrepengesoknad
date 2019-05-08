@@ -28,6 +28,8 @@ import getMessage from 'common/util/i18nUtils';
 import VeilederInfo from '../veileder-info/VeilederInfo';
 
 import './uttaksplanlegger.less';
+import DevBlock from 'common/dev/DevBlock';
+import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -168,6 +170,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             forelder,
             uttaksplan,
             planErEndret,
+            uttaksplanForEndring,
             intl
         } = this.props;
         const { formIsOpen, periodetype } = this.state;
@@ -267,6 +270,26 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 antallFeriedager={antallFeriedager}
                             />
                         </Block>
+                        {uttaksplanForEndring &&
+                            planErEndret && (
+                                <DevBlock>
+                                    <Periodeliste
+                                        søknadsinfo={søknadsinfo}
+                                        ref={(c) => (this.periodeliste = c)}
+                                        perioder={
+                                            getEndretUttaksplanForInnsending(uttaksplanForEndring, uttaksplan) || []
+                                        }
+                                        informasjon={infoItems}
+                                        navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
+                                        uttaksplanValidering={uttaksplanValidering}
+                                        lastAddedPeriodeId={lastAddedPeriodeId}
+                                        onLeggTilOpphold={this.settInnNyttOpphold}
+                                        onLeggTilPeriode={this.settInnNyPeriode}
+                                        onFjernPeriode={this.props.onDelete}
+                                        antallFeriedager={antallFeriedager}
+                                    />
+                                </DevBlock>
+                            )}
                         <Block visible={uttaksplan.length === 0}>
                             <Block margin="l">
                                 <TomUttaksplanInfo />

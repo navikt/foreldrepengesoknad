@@ -13,8 +13,8 @@ export const Perioden = (periode: Periode) => ({
     setUttaksdager: (uttaksdager: number) =>
         (periode.tidsperiode = getTidsperiode(periode.tidsperiode.fom, uttaksdager)),
     getAntallUttaksdager: () => Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
-    erLik: (periode2: Periode, inkluderTidsperiode: boolean = false) =>
-        erPerioderLike(periode, periode2, inkluderTidsperiode),
+    erLik: (periode2: Periode, inkluderTidsperiode: boolean = false, inkluderUtsettelser: boolean = false) =>
+        erPerioderLike(periode, periode2, inkluderTidsperiode, inkluderUtsettelser),
     erSammenhengende: (periode2: Periode) => erPerioderSammenhengende(periode, periode2)
 });
 
@@ -36,8 +36,16 @@ function erPerioderSammenhengende(p1: Periode, p2: Periode) {
     return moment(p1NesteUttaksdato).isSame(p2Startdato, 'day');
 }
 
-function erPerioderLike(p1: Periode, p2: Periode, inkluderTidsperiode: boolean = false) {
-    if (p1.type !== p2.type || p1.type === Periodetype.Utsettelse || p2.type === Periodetype.Utsettelse) {
+function erPerioderLike(
+    p1: Periode,
+    p2: Periode,
+    inkluderTidsperiode: boolean = false,
+    inkluderUtsettelser: boolean = false
+) {
+    if (p1.type !== p2.type) {
+        return false;
+    }
+    if (inkluderUtsettelser === false && (p1.type === Periodetype.Utsettelse || p2.type === Periodetype.Utsettelse)) {
         return false;
     }
     if (p1.type === Periodetype.Hull && p2.type === Periodetype.Hull) {
@@ -53,6 +61,7 @@ function getPeriodeFootprint(periode: Periode, inkluderTidsperiode: boolean = fa
     const sortedPeriode: any = {};
     Object.keys(rest)
         .sort()
+        .filter((key) => rest[key] !== undefined)
         .forEach((key) => {
             sortedPeriode[key] = rest[key];
         });
