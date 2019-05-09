@@ -2,6 +2,7 @@ import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from './Perioden';
 import moment from 'moment';
 import DateValues from '../validation/values';
+import { Periodene } from './Periodene';
 
 export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan: Periode[]): boolean =>
     opprinneligPlan.some((op) => Perioden(periode).erLik(op, true, true));
@@ -38,7 +39,7 @@ const getDagensDatoEllerFom = (fom: Date): Date => {
 };
 
 const getLikePerioder = (periode: Periode, opprinneligPlan: Periode[]): Periode[] => {
-    return opprinneligPlan.filter((p) => Perioden(p).erLik(periode));
+    return opprinneligPlan.filter((p) => Perioden(p).erLik(periode, false, true));
 };
 
 const justerKunEndretSisteperiode = (periode: Periode, opprinneligPeriode: Periode): Periode => {
@@ -67,6 +68,54 @@ const justerKunEndretSisteperiode = (periode: Periode, opprinneligPeriode: Perio
     return periode;
 };
 
+const erKunSluttdatoFlyttetTilbakeITid = (periode: Periode, opprinneligPeriode: Periode): boolean => {
+    return moment(periode.tidsperiode.tom).isBefore(opprinneligPeriode.tidsperiode.tom, 'day');
+};
+
+const justerStartdatoFørsteEndring = (endringer: Periode[], opprinneligPlan: Periode[]): Periode[] => {
+    const førsteEndredePeriode = endringer[0];
+    const opprinneligPeriodeSammeFomDato = Periodene(opprinneligPlan).finnPeriodeMedDato(
+        førsteEndredePeriode.tidsperiode.fom
+    );
+    if (opprinneligPeriodeSammeFomDato) {
+        if (Perioden(førsteEndredePeriode).erLik(opprinneligPeriodeSammeFomDato) === false) {
+            return endringer;
+        } else if (
+            moment(førsteEndredePeriode.tidsperiode.tom).isAfter(opprinneligPeriodeSammeFomDato.tidsperiode.tom, 'day')
+        ) {
+            return [
+                {
+                    ...førsteEndredePeriode,
+                    tidsperiode: {
+                        fom: opprinneligPeriodeSammeFomDato.tidsperiode.tom,
+                        tom: førsteEndredePeriode.tidsperiode.tom
+                    }
+                },
+                ...endringer.slice(1)
+            ];
+        }
+    }
+    const opprinneligPeriode = Periodene(opprinneligPlan).finnFørstePeriodeEtterDato(
+        førsteEndredePeriode.tidsperiode.fom
+    );
+    if (opprinneligPeriode && opprinneligPeriode.tidsperiode.fom) {
+        if (erKunSluttdatoFlyttetTilbakeITid(førsteEndredePeriode, opprinneligPeriode)) {
+            return endringer.slice(1);
+        }
+        return [
+            {
+                ...førsteEndredePeriode,
+                tidsperiode: {
+                    fom: opprinneligPeriode.tidsperiode.fom,
+                    tom: førsteEndredePeriode.tidsperiode.tom
+                }
+            },
+            ...endringer.slice(1)
+        ];
+    }
+    return endringer;
+};
+
 export const getEndretUttaksplanForInnsending = (
     opprinneligPlan: Periode[],
     nyPlan: Periode[]
@@ -80,23 +129,8 @@ export const getEndretUttaksplanForInnsending = (
             if (opprinneligPeriode) {
                 return [justerKunEndretSisteperiode(endretPeriode, opprinneligPeriode)];
             }
-        } else if (endringer.length > 1) {
-            const førsteEndredePeriode = endringer[0];
-            const perioder = getLikePerioder(førsteEndredePeriode, opprinneligPlan);
-            const opprinneligPeriode = perioder.length === 1 ? perioder[0] : undefined;
-            if (opprinneligPeriode) {
-                const { fom, tom } = førsteEndredePeriode.tidsperiode;
-                const endretPeriode: Periode = {
-                    ...førsteEndredePeriode,
-                    tidsperiode: {
-                        fom: getDagensDatoEllerFom(fom),
-                        tom
-                    }
-                };
-                return [endretPeriode, ...endringer.slice(1)];
-            }
         }
-        return endringer;
+        return justerStartdatoFørsteEndring(endringer, opprinneligPlan);
     }
     return undefined;
 };
