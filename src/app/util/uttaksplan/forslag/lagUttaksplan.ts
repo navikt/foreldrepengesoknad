@@ -30,8 +30,10 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
     if (erEndringssøknad) {
         if (søkerErFarEllerMedmor) {
             return [];
-        } else {
+        } else if (!søkerErFarEllerMedmor && situasjon !== Søkersituasjon.ADOPSJON) {
             return uttakEndringssøknad(uttaksplanSkjema.startdatoPermisjon, familiehendelsesdato);
+        } else {
+            return [];
         }
     }
 
