@@ -59,7 +59,7 @@ export const getResterendeStønadskontoer = (
 ): TilgjengeligStønadskonto[] => {
     return tilgjengeligStønadskonto.map((k) => ({
         ...k,
-        dager: k.dager - getBrukteUttaksdager(sakForEndring.perioder, k.konto)
+        dager: k.dager - getBrukteUttaksdager(sakForEndring.saksperioder, k.konto)
     }));
 };
 

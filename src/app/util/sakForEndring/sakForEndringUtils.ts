@@ -1,11 +1,18 @@
 import Søknad, { Søkersituasjon, SøkerRolle } from '../../types/søknad/Søknad';
-import { SakForEndring, FamiliehendelsesType, Saksgrunnlag } from '../../types/søknad/SakForEndring';
+import {
+    SakForEndring,
+    FamiliehendelsesType,
+    Saksgrunnlag,
+    Saksperiode,
+    PeriodeResultatType
+} from '../../types/søknad/SakForEndring';
 import { Barn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
 import { Søkerinfo } from '../../types/søkerinfo';
 import Person from '../../types/Person';
 import { Kjønn } from '../../types/common';
+import Sak, { AnnenPart } from 'app/types/søknad/Sak';
 
 const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
     switch (grunnlag.familieHendelseType) {
@@ -68,33 +75,59 @@ const getBarnFromSaksgrunnlag = (situasjon: Søkersituasjon, sak: Saksgrunnlag):
 
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Søkersituasjon,
-    sak: Saksgrunnlag
+    sak: Saksgrunnlag,
+    annenPart?: AnnenPart
 ): Partial<AnnenForelder> | undefined => {
     const { søkerErFarEllerMedmor } = sak;
     switch (situasjon) {
         case Søkersituasjon.FØDSEL:
             if (søkerErFarEllerMedmor) {
                 return {
-                    fornavn: 'mor',
-                    etternavn: '',
+                    fornavn: annenPart ? annenPart.navn.fornavn : 'mor',
+                    etternavn: annenPart ? annenPart.navn.etternavn : '',
                     erUfør: sak.morErUfør,
-                    harRettPåForeldrepenger: sak.morHarRett
+                    harRettPåForeldrepenger: sak.morHarRett,
+                    fnr: annenPart ? annenPart.fnr : undefined,
+                    kanIkkeOppgis: annenPart === undefined
                 };
             }
             return {
-                fornavn: 'far eller medmor',
-                etternavn: '',
-                harRettPåForeldrepenger: sak.farMedmorHarRett
+                fornavn: annenPart ? annenPart.navn.fornavn : 'Far eller medmor',
+                etternavn: annenPart ? annenPart.navn.etternavn : '',
+                harRettPåForeldrepenger: sak.farMedmorHarRett,
+                fnr: annenPart ? annenPart.fnr : undefined,
+                kanIkkeOppgis: annenPart === undefined
             };
     }
     return undefined;
 };
 
+const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
+    if (
+        periode.arbeidstidprosent === 0 &&
+        periode.flerbarnsdager === false &&
+        periode.gjelderAnnenPart === false &&
+        periode.periodeResultatType === PeriodeResultatType.INNVILGET &&
+        periode.samtidigUttak === false
+    ) {
+        return true;
+    }
+    return false;
+};
+
+export const kanUttaksplanGjennskapesFraSak = (perioder: Saksperiode[]): boolean => {
+    const noenPerioderKanIkkeGjennskapes = perioder.some(
+        (periode) => saksperiodeKanKonverteresTilPeriode(periode) === false
+    );
+    return noenPerioderKanIkkeGjennskapes === false;
+};
+
 export const opprettSøknadFraSakForEndring = (
     søkerinfo: Søkerinfo,
-    sak: SakForEndring
+    sakForEndring: SakForEndring,
+    sak: Sak
 ): Partial<Søknad> | undefined => {
-    const { grunnlag } = sak;
+    const { grunnlag, uttaksplan } = sakForEndring;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(grunnlag);
 
     if (!situasjon) {
@@ -103,7 +136,7 @@ export const opprettSøknadFraSakForEndring = (
 
     const søker = getSøkerFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
-    const annenForelder = getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag);
+    const annenForelder = getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, sak.annenPart);
 
     if (!søker || !barn || !annenForelder) {
         return undefined;
@@ -115,7 +148,8 @@ export const opprettSøknadFraSakForEndring = (
         barn: barn as Barn,
         annenForelder: annenForelder as AnnenForelder,
         erEndringssøknad: true,
-        dekningsgrad: grunnlag.dekningsgrad
+        dekningsgrad: grunnlag.dekningsgrad,
+        uttaksplan: uttaksplan || []
     };
     return søknad;
 };

@@ -31,11 +31,14 @@ const sorterPeriodePåStartdato = (p1: Saksperiode, p2: Saksperiode): number => 
 };
 
 const PeriodelisteSakForEndring: React.StatelessComponent<Props> = ({ sak }) => {
-    const { perioder } = sak;
+    const { saksperioder } = sak;
+    if (!saksperioder) {
+        return null;
+    }
     const bem = BEMHelper('periodelisteSakForEndring');
     return (
         <div className={bem.className}>
-            {perioder.sort(sorterPeriodePåStartdato).map((periode, idx) => (
+            {saksperioder.sort(sorterPeriodePåStartdato).map((periode, idx) => (
                 <div key={idx} className={bem.element('periode')}>
                     <EkspanderbartpanelBase
                         ariaTittel="Whoa"
