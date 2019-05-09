@@ -1,12 +1,12 @@
-import moment from 'moment';
 import { Periode, Periodetype, Uttaksperiode, Utsettelsesperiode } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
 import { Perioden } from '../uttaksplan/Perioden';
-import { Uttaksdagen } from '../uttaksplan/Uttaksdagen';
+import { Uttaksdagen, erUttaksdag } from '../uttaksplan/Uttaksdagen';
 import { getUtsettelseÅrsakFromSaksperiode } from '../uttaksplan/uttaksperiodeUtils';
 import { Saksperiode, Saksgrunnlag, PeriodeResultatType } from '../../types/søknad/SakForEndring';
 import { Forelder } from 'common/types';
+import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
 
 const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor: boolean): Forelder => {
     if (saksperiode.gjelderAnnenPart) {
@@ -98,32 +98,48 @@ const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
     return nyePerioder;
 };
 
-const fjernHelgeperioder = (perioder: Periode[]): Periode[] => {
-    const filteredPerioder = perioder.filter((periode: Periode) => {
-        const { tidsperiode } = periode;
-        if (
-            !Uttaksdagen(tidsperiode.fom).erUttaksdag() &&
-            !Uttaksdagen(tidsperiode.tom).erUttaksdag() &&
-            (moment(tidsperiode.fom)
-                .add(24, 'hours')
-                .isSame(tidsperiode.tom) ||
-                moment(tidsperiode.fom).isSame(tidsperiode.tom))
-        ) {
-            return false;
-        }
+const harUttaksdager = (periode: Periode): boolean => {
+    return Perioden(periode).getAntallUttaksdager() > 0;
+};
 
-        return true;
-    });
+const harGyldigTidsperiode = (periode: Periode): boolean => {
+    return isValidTidsperiode(periode.tidsperiode);
+};
 
-    return filteredPerioder;
+const korrigerTidsperiode = (periode: Periode): Periode => {
+    const { fom, tom } = periode.tidsperiode;
+    const fomOk = erUttaksdag(fom);
+    const tomOk = erUttaksdag(tom);
+    if (fomOk && tomOk) {
+        return periode;
+    } else if (!fomOk && tomOk) {
+        return {
+            ...periode,
+            tidsperiode: {
+                fom: Uttaksdagen(fom).neste(),
+                tom
+            }
+        };
+    } else {
+        return {
+            ...periode,
+            tidsperiode: {
+                fom,
+                tom: Uttaksdagen(tom).forrige()
+            }
+        };
+    }
 };
 
 const mapSaksperioderTilUttaksperioder = (perioder: Saksperiode[], grunnlag: Saksgrunnlag): Periode[] => {
     let uttakFraEksisterendeSak = perioder
         .map((periode) => getPeriodeFromSaksperiode(periode, grunnlag))
-        .sort(sorterPerioder);
+        .sort(sorterPerioder)
+        .filter(harUttaksdager)
+        .map(korrigerTidsperiode)
+        .filter(harGyldigTidsperiode)
+        .filter(harUttaksdager);
     uttakFraEksisterendeSak = slåSammenLikePerioder(uttakFraEksisterendeSak);
-    uttakFraEksisterendeSak = fjernHelgeperioder(uttakFraEksisterendeSak);
 
     return uttakFraEksisterendeSak;
 };
