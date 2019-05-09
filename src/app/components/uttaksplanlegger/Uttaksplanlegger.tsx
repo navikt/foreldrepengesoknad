@@ -1,6 +1,12 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { Periode, Periodetype, Uttaksperiode, Utsettelsesperiode } from '../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    Periodetype,
+    Uttaksperiode,
+    Utsettelsesperiode,
+    StønadskontoType
+} from '../../types/uttaksplan/periodetyper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import Periodeliste from '../periodeliste/Periodeliste';
 import BEMHelper from 'common/util/bem';
@@ -26,10 +32,10 @@ import AdvarselIkon from '../uttaksplan-ikon/ikoner/AdvarselIkon';
 import { PeriodelisteInformasjon } from '../periodeliste/items/PeriodelisteInfo';
 import getMessage from 'common/util/i18nUtils';
 import VeilederInfo from '../veileder-info/VeilederInfo';
-
-import './uttaksplanlegger.less';
 import DevBlock from 'common/dev/DevBlock';
 import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
+
+import './uttaksplanlegger.less';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -39,6 +45,7 @@ interface OwnProps {
     lastAddedPeriodeId: string | undefined;
     forelder: Forelder;
     planErEndret: boolean;
+    defaultStønadskontoType?: StønadskontoType;
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
@@ -110,7 +117,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         const periode: Partial<Uttaksperiode> = {
             type: Periodetype.Uttak,
             tidsperiode,
-            forelder: this.props.forelder
+            forelder: this.props.forelder,
+            konto: this.props.defaultStønadskontoType
         };
         this.props.onAdd(periode as Periode);
     }
