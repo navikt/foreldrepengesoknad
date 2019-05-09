@@ -4,6 +4,14 @@
         "saksnummer": "137665720",
         "status": "LOP",
         "opprettet": "2019-04-03",
+        "annenPart": {
+            "fnr": "10088349534",
+            "aktørId": "1215123634190",
+            "navn": {
+                "fornavn": "KORRUPT",
+                "etternavn": "KAFFI"
+            }
+        },
         "behandlinger": [
             {
                 "opprettetTidspunkt": "2019-04-03T15:08:01.573",

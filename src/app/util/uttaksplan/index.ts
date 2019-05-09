@@ -83,7 +83,7 @@ export const getOppholdskontoNavn = (
 ) => {
     return erMor
         ? getMessage(intl, `oppholdsårsaktype.foreldernavn.far.${årsak}`, { foreldernavn })
-        : getMessage(intl, `oppholdsårsaktype.foreldernavn.mor.${årsak}`);
+        : getMessage(intl, `oppholdsårsaktype.foreldernavn.mor.${årsak}`, { foreldernavn });
 };
 
 export const getFamiliehendelsedato = (barn: Partial<Barn>, situasjon?: Søkersituasjon): Date | undefined => {
