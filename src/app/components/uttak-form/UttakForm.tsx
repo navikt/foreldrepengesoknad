@@ -352,9 +352,12 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                 ? { feilmelding: getMessage(intl, 'periodeliste.nyPeriodeErFørFamiliehendelsesdato') }
                 : undefined;
 
+        const erForeldrepengerFørFødselOgSkalIkkeHaUttakFørTermin =
+            isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true;
+
         return (
             <React.Fragment>
-                <Block>
+                <Block visible={erForeldrepengerFørFødselOgSkalIkkeHaUttakFørTermin === false}>
                     <UttakTidsperiodeSpørsmål
                         periode={periode}
                         ugyldigeTidsperioder={ugyldigeTidsperioder}
