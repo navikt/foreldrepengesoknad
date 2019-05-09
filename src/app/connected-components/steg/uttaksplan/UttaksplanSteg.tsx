@@ -231,6 +231,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             søknadsinfo.søknaden.erEndringssøknad
         );
 
+        const defaultStønadskontoType =
+            tilgjengeligeStønadskontoer.length === 1 ? tilgjengeligeStønadskontoer[0].konto : undefined;
+
         return (
             <Steg
                 {...this.props.stegProps}
@@ -280,6 +283,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 søknadsinfo={søknadsinfo}
                                 uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
+                                defaultStønadskontoType={defaultStønadskontoType}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestClear={() => this.showBekreftSlettUttaksplanDialog()}
                                 onRequestRevert={
