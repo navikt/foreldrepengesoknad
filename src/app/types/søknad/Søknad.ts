@@ -84,6 +84,12 @@ interface SøknadEndretForInnsending {
     tilleggsopplysninger?: string;
 }
 
+export type EnkelEndringssøknadForInnsending = Pick<
+    Søknad,
+    'type' | 'saksnummer' | 'erEndringssøknad' | 'uttaksplan' | 'vedlegg'
+> &
+    SøknadEndretForInnsending;
+
 export type SøknadForInnsending = Omit<
     Søknad,
     'ekstrainfo' | 'sensitivInfoIkkeLagre' | 'vedleggForSenEndring' | 'tilleggsopplysninger'
