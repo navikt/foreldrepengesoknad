@@ -2,6 +2,7 @@ import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from './Perioden';
 import moment from 'moment';
 import DateValues from '../validation/values';
+import { Periodene } from './Periodene';
 
 export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan: Periode[]): boolean =>
     opprinneligPlan.some((op) => Perioden(periode).erLik(op, true, true));
@@ -67,6 +68,30 @@ const justerKunEndretSisteperiode = (periode: Periode, opprinneligPeriode: Perio
     return periode;
 };
 
+const erKunSluttdatoFlyttetTilbakeITid = (periode: Periode, opprinneligPeriode: Periode): boolean => {
+    return moment(periode.tidsperiode.tom).isBefore(opprinneligPeriode.tidsperiode.tom, 'day');
+};
+
+const justerStartdatoFørsteEndring = (endringer: Periode[], opprinneligPlan: Periode[]): Periode[] => {
+    const førsteEndredePeriode = endringer[0];
+    const opprinneligPeriode = Periodene(opprinneligPlan).finnFørstePeriodeEtterDato(
+        førsteEndredePeriode.tidsperiode.fom
+    );
+    if (opprinneligPeriode && opprinneligPeriode.tidsperiode.fom) {
+        return [
+            {
+                ...førsteEndredePeriode,
+                tidsperiode: {
+                    fom: opprinneligPeriode.tidsperiode.fom,
+                    tom: førsteEndredePeriode.tidsperiode.tom
+                }
+            },
+            ...endringer.slice(1)
+        ];
+    }
+    return endringer;
+};
+
 export const getEndretUttaksplanForInnsending = (
     opprinneligPlan: Periode[],
     nyPlan: Periode[]
@@ -85,6 +110,9 @@ export const getEndretUttaksplanForInnsending = (
             const perioder = getLikePerioder(førsteEndredePeriode, opprinneligPlan);
             const opprinneligPeriode = perioder.length === 1 ? perioder[0] : undefined;
             if (opprinneligPeriode) {
+                if (erKunSluttdatoFlyttetTilbakeITid(førsteEndredePeriode, opprinneligPeriode)) {
+                    return endringer.slice(1);
+                }
                 const { fom, tom } = førsteEndredePeriode.tidsperiode;
                 const endretPeriode: Periode = {
                     ...førsteEndredePeriode,
@@ -96,7 +124,7 @@ export const getEndretUttaksplanForInnsending = (
                 return [endretPeriode, ...endringer.slice(1)];
             }
         }
-        return endringer;
+        return justerStartdatoFørsteEndring(endringer, opprinneligPlan);
     }
     return undefined;
 };
