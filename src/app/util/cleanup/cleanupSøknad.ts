@@ -160,12 +160,12 @@ export const cleanEnkelEndringssøknad = (
     søknad: Søknad,
     opprinneligUttaksplan: Periode[]
 ): EnkelEndringssøknadForInnsending => {
-    const endingerIUttaksplan = getEndretUttaksplanForInnsending(opprinneligUttaksplan, søknad.uttaksplan);
+    const endringerIUttaksplan = getEndretUttaksplanForInnsending(opprinneligUttaksplan, søknad.uttaksplan);
     const cleanedSøknad: EnkelEndringssøknadForInnsending = {
         erEndringssøknad: true,
         saksnummer: søknad.saksnummer,
         type: søknad.type,
-        uttaksplan: endingerIUttaksplan || søknad.uttaksplan,
+        uttaksplan: endringerIUttaksplan || søknad.uttaksplan,
         vedlegg: søknad.vedlegg
     };
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
