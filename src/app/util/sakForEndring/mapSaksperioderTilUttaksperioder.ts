@@ -1,12 +1,12 @@
-import moment from 'moment';
 import { Periode, Periodetype, Uttaksperiode, Utsettelsesperiode } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
 import { Perioden } from '../uttaksplan/Perioden';
-import { Uttaksdagen } from '../uttaksplan/Uttaksdagen';
+import { Uttaksdagen, erUttaksdag } from '../uttaksplan/Uttaksdagen';
 import { getUtsettelseÅrsakFromSaksperiode } from '../uttaksplan/uttaksperiodeUtils';
-import { Saksperiode, Saksgrunnlag } from '../../types/søknad/SakForEndring';
+import { Saksperiode, Saksgrunnlag, PeriodeResultatType } from '../../types/søknad/SakForEndring';
 import { Forelder } from 'common/types';
+import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
 
 const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor: boolean): Forelder => {
     if (saksperiode.gjelderAnnenPart) {
@@ -33,8 +33,8 @@ const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Sak
     return uttaksperiode;
 };
 
-const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
-    const uttaksperiode: Utsettelsesperiode = {
+const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Utsettelsesperiode => {
+    const utsettelsesperiode: Utsettelsesperiode = {
         id: guid(),
         type: Periodetype.Utsettelse,
         årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelsePeriodeType)!,
@@ -42,8 +42,7 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag:
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
         erArbeidstaker: false
     };
-
-    return uttaksperiode;
+    return utsettelsesperiode;
 };
 
 // const mapOppholdsperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
@@ -55,7 +54,10 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag:
 // };
 
 const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
-    if (saksperiode.utsettelsePeriodeType !== undefined) {
+    if (
+        saksperiode.utsettelsePeriodeType !== undefined &&
+        saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET
+    ) {
         return mapUtsettelseperiodeFromSaksperiode(saksperiode, grunnlag);
     }
 
@@ -96,32 +98,48 @@ const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
     return nyePerioder;
 };
 
-const fjernHelgeperioder = (perioder: Periode[]): Periode[] => {
-    const filteredPerioder = perioder.filter((periode: Periode) => {
-        const { tidsperiode } = periode;
-        if (
-            !Uttaksdagen(tidsperiode.fom).erUttaksdag() &&
-            !Uttaksdagen(tidsperiode.tom).erUttaksdag() &&
-            (moment(tidsperiode.fom)
-                .add(24, 'hours')
-                .isSame(tidsperiode.tom) ||
-                moment(tidsperiode.fom).isSame(tidsperiode.tom))
-        ) {
-            return false;
-        }
+const harUttaksdager = (periode: Periode): boolean => {
+    return Perioden(periode).getAntallUttaksdager() > 0;
+};
 
-        return true;
-    });
+const harGyldigTidsperiode = (periode: Periode): boolean => {
+    return isValidTidsperiode(periode.tidsperiode);
+};
 
-    return filteredPerioder;
+const korrigerTidsperiode = (periode: Periode): Periode => {
+    const { fom, tom } = periode.tidsperiode;
+    const fomOk = erUttaksdag(fom);
+    const tomOk = erUttaksdag(tom);
+    if (fomOk && tomOk) {
+        return periode;
+    } else if (!fomOk && tomOk) {
+        return {
+            ...periode,
+            tidsperiode: {
+                fom: Uttaksdagen(fom).neste(),
+                tom
+            }
+        };
+    } else {
+        return {
+            ...periode,
+            tidsperiode: {
+                fom,
+                tom: Uttaksdagen(tom).forrige()
+            }
+        };
+    }
 };
 
 const mapSaksperioderTilUttaksperioder = (perioder: Saksperiode[], grunnlag: Saksgrunnlag): Periode[] => {
     let uttakFraEksisterendeSak = perioder
         .map((periode) => getPeriodeFromSaksperiode(periode, grunnlag))
-        .sort(sorterPerioder);
+        .sort(sorterPerioder)
+        .filter(harUttaksdager)
+        .map(korrigerTidsperiode)
+        .filter(harGyldigTidsperiode)
+        .filter(harUttaksdager);
     uttakFraEksisterendeSak = slåSammenLikePerioder(uttakFraEksisterendeSak);
-    uttakFraEksisterendeSak = fjernHelgeperioder(uttakFraEksisterendeSak);
 
     return uttakFraEksisterendeSak;
 };

@@ -2,7 +2,7 @@ export interface UttaksplanDTO {
     grunnlag: {
         familieHendelseType: string;
         familieHendelseDato: string;
-        dekningsgrad: string;
+        dekningsgrad: number;
         antallBarn: number;
         søkerErFarEllerMedmor: boolean;
         morErAleneOmOmsorg: boolean;
@@ -28,6 +28,7 @@ export interface UttaksplanDTO {
             arbeidstidprosent: number;
             utbetalingprosent: number;
             gjelderAnnenPart: boolean;
+            flerbarnsdager: boolean;
             periode: {
                 fom: string;
                 tom: string;

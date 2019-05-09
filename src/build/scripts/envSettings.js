@@ -10,7 +10,8 @@ function createEnvSettingsFile(settingsFile) {
                 LOGIN_URL: '${process.env.LOGINSERVICE_URL}',
                 FEATURE_REGISTRERT_BARN: '${process.env.FEATURE_REGISTRERT_BARN}',
                 FEATURE_LOGGING:  '${process.env.FEATURE_LOGGING}',
-                FEATURE_VIS_MORS_UTTAKSPLAN_FOR_FARMEDMOR:  '${process.env.FEATURE_VIS_MORS_UTTAKSPLAN_FOR_FARMEDMOR}'
+                FEATURE_HENT_SAK_FOR_ENDRING:  '${process.env.FEATURE_HENT_SAK_FOR_ENDRING}',
+                FEATURE_VIS_INFOSKRIV:  '${process.env.FEATURE_VIS_INFOSKRIV}'
             };`
         );
     });

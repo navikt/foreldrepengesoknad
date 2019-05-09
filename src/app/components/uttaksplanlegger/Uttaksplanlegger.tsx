@@ -1,6 +1,12 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { Periode, Periodetype, Uttaksperiode, Utsettelsesperiode } from '../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    Periodetype,
+    Uttaksperiode,
+    Utsettelsesperiode,
+    StønadskontoType
+} from '../../types/uttaksplan/periodetyper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import Periodeliste from '../periodeliste/Periodeliste';
 import BEMHelper from 'common/util/bem';
@@ -26,19 +32,25 @@ import AdvarselIkon from '../uttaksplan-ikon/ikoner/AdvarselIkon';
 import { PeriodelisteInformasjon } from '../periodeliste/items/PeriodelisteInfo';
 import getMessage from 'common/util/i18nUtils';
 import VeilederInfo from '../veileder-info/VeilederInfo';
+import DevBlock from 'common/dev/DevBlock';
+import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 import './uttaksplanlegger.less';
 
 interface OwnProps {
     uttaksplan: Periode[];
+    uttaksplanForEndring: Periode[] | undefined;
     søknadsinfo: Søknadsinfo;
     uttaksplanValidering: UttaksplanValideringState;
     lastAddedPeriodeId: string | undefined;
     forelder: Forelder;
+    planErEndret: boolean;
+    defaultStønadskontoType?: StønadskontoType;
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
-    onRequestReset?: () => void;
+    onRequestClear?: () => void;
+    onRequestRevert?: () => void;
 }
 
 type Props = OwnProps & InjectedIntlProps;
@@ -105,7 +117,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         const periode: Partial<Uttaksperiode> = {
             type: Periodetype.Uttak,
             tidsperiode,
-            forelder: this.props.forelder
+            forelder: this.props.forelder,
+            konto: this.props.defaultStønadskontoType
         };
         this.props.onAdd(periode as Periode);
     }
@@ -159,10 +172,13 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         const {
             uttaksplanValidering,
             søknadsinfo,
-            onRequestReset,
+            onRequestClear,
+            onRequestRevert,
             lastAddedPeriodeId,
             forelder,
             uttaksplan,
+            planErEndret,
+            uttaksplanForEndring,
             intl
         } = this.props;
         const { formIsOpen, periodetype } = this.state;
@@ -212,13 +228,24 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             <Systemtittel tag="h1" className={BEM.element('header__title')}>
                                 <FormattedMessage id="uttaksplan.tittel" />
                             </Systemtittel>
-                            {onRequestReset &&
+                            {onRequestClear &&
+                                onRequestRevert === undefined &&
                                 uttaksplan.length > 0 && (
                                     <div className={BEM.element('header__reset')}>
                                         <LinkButton
                                             className={BEM.element('resetLink')}
-                                            onClick={() => onRequestReset()}>
+                                            onClick={() => onRequestClear()}>
                                             <FormattedMessage id="uttaksplan.slettPlan" />
+                                        </LinkButton>
+                                    </div>
+                                )}
+                            {onRequestRevert &&
+                                planErEndret && (
+                                    <div className={BEM.element('header__reset')}>
+                                        <LinkButton
+                                            className={BEM.element('resetLink')}
+                                            onClick={() => onRequestRevert()}>
+                                            <FormattedMessage id="uttaksplan.tilbakestillPlan" />
                                         </LinkButton>
                                     </div>
                                 )}
@@ -251,6 +278,26 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 antallFeriedager={antallFeriedager}
                             />
                         </Block>
+                        {uttaksplanForEndring &&
+                            planErEndret && (
+                                <DevBlock>
+                                    <Periodeliste
+                                        søknadsinfo={søknadsinfo}
+                                        ref={(c) => (this.periodeliste = c)}
+                                        perioder={
+                                            getEndretUttaksplanForInnsending(uttaksplanForEndring, uttaksplan) || []
+                                        }
+                                        informasjon={infoItems}
+                                        navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
+                                        uttaksplanValidering={uttaksplanValidering}
+                                        lastAddedPeriodeId={lastAddedPeriodeId}
+                                        onLeggTilOpphold={this.settInnNyttOpphold}
+                                        onLeggTilPeriode={this.settInnNyPeriode}
+                                        onFjernPeriode={this.props.onDelete}
+                                        antallFeriedager={antallFeriedager}
+                                    />
+                                </DevBlock>
+                            )}
                         <Block visible={uttaksplan.length === 0}>
                             <Block margin="l">
                                 <TomUttaksplanInfo />

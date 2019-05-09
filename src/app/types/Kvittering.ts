@@ -15,4 +15,5 @@ export interface Kvittering {
     journalId: string;
     saksNr: string;
     pdf: any;
+    infoskrivPdf: any;
 }

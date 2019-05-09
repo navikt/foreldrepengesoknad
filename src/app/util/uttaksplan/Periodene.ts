@@ -35,6 +35,7 @@ export const Periodene = (perioder: Periode[]) => ({
     getAntallFeriedager: (forelder?: Forelder) => getAntallFeriedager(perioder, forelder),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
+    finnFørstePeriodeEtterDato: (dato: Date) => finnFørstePeriodeEtterDato(perioder, dato),
     finnAlleForegåendePerioder: (periode: Periode) => finnPerioderFørPeriode(perioder, periode),
     finnAllePåfølgendePerioder: (periode: Periode) => finnPerioderEtterPeriode(perioder, periode),
     finnDenForegåendePerioden: (periode: Periode) => finnForrigePeriode(perioder, periode),
@@ -109,6 +110,12 @@ function datoErInnenforTidsperiode(dato: Date, tidsperiode: Tidsperiode): boolea
 function finnPeriodeMedDato(perioder: Periode[], dato: Date): Periode | undefined {
     return perioder.find((periode) => {
         return moment(dato).isBetween(periode.tidsperiode.fom, periode.tidsperiode.tom, 'day', '[]');
+    });
+}
+
+function finnFørstePeriodeEtterDato(perioder: Periode[], dato: Date): Periode | undefined {
+    return perioder.find((periode) => {
+        return moment(periode.tidsperiode.fom).isAfter(dato, 'day');
     });
 }
 
