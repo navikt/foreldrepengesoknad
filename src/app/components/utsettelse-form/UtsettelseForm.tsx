@@ -7,7 +7,8 @@ import {
     Periodetype,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    TilgjengeligStønadskonto
+    TilgjengeligStønadskonto,
+    Periode
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import UtsettelsePgaFerieInfo from './partials/UtsettelsePgaFerieInfo';
@@ -35,6 +36,8 @@ import VeilederInfo from '../veileder-info/VeilederInfo';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
+import { Periodene } from 'app/util/uttaksplan/Periodene';
+import { getTidsperioderIUttaksplan } from 'app/util/uttaksplan';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -51,12 +54,14 @@ interface StateProps {
     arbeidsforhold: Arbeidsforhold[];
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     søknadsinfo: Søknadsinfo;
+    uttaksplan: Periode[];
 }
 
 type Props = OwnProps & StateProps & InjectedIntlProps;
 
 interface State {
     variant?: Utsettelsesvariant;
+    tidsperiodeOverlapperMelding: string | undefined;
 }
 
 export enum Utsettelsesvariant {
@@ -91,6 +96,13 @@ const getVeilederForFrilansOgSNVisible = (periode: UtsettelseFormPeriodeType) =>
     );
 };
 
+const overlapperUtsettelseAndreUtsettelser = (periode: Partial<Periode>, uttaksplan: Periode[]): boolean => {
+    const utsettelser = Periodene(uttaksplan).getUtsettelser();
+    return isValidTidsperiode(periode.tidsperiode)
+        ? Periodene(utsettelser).finnOverlappendePerioder(periode as Periode).length > 0
+        : false;
+};
+
 class UtsettelsesperiodeForm extends React.Component<Props, State> {
     static contextTypes = {
         validForm: PT.object
@@ -102,8 +114,10 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         this.onVariantChange = this.onVariantChange.bind(this);
         this.onSykdomÅrsakChange = this.onSykdomÅrsakChange.bind(this);
         this.getVisibility = this.getVisibility.bind(this);
+        this.oppdaterTidsperiode = this.oppdaterTidsperiode.bind(this);
         this.state = {
-            variant: getVariantFromPeriode(props.periode)
+            variant: getVariantFromPeriode(props.periode),
+            tidsperiodeOverlapperMelding: undefined
         };
     }
 
@@ -216,6 +230,19 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         });
     }
 
+    oppdaterTidsperiode(tidsperiode: Partial<Tidsperiode>) {
+        const { periode, uttaksplan } = this.props;
+        if (isValidTidsperiode(tidsperiode)) {
+            const p = { ...periode, tidsperiode };
+            const overlapperAndreUtsettelser = overlapperUtsettelseAndreUtsettelser(p as Periode, uttaksplan);
+            if (overlapperAndreUtsettelser === false) {
+                this.onChange({ tidsperiode });
+            }
+        } else {
+            this.onChange({ tidsperiode });
+        }
+    }
+
     render() {
         const {
             periode,
@@ -224,6 +251,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             harOverlappendePerioder,
             onCancel,
             søknadsinfo,
+            uttaksplan,
             intl
         } = this.props;
 
@@ -240,6 +268,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             antallHelligdager > 0 &&
             periode.type === Periodetype.Utsettelse &&
             periode.årsak === UtsettelseÅrsakType.Ferie;
+
+        const utsettelser = Periodene(uttaksplan).getUtsettelser();
+        const ugyldigeTidsperioder = getTidsperioderIUttaksplan(utsettelser, periode.id);
+        const overlapperAndreUtsettelser = overlapperUtsettelseAndreUtsettelser(periode as Periode, uttaksplan);
+
         return (
             <>
                 <Block hasChildBlocks={true}>
@@ -247,13 +280,19 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         <UtsettelseTidsperiodeSpørsmål
                             tidsperiode={tidsperiode}
                             familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
-                            onChange={(p) => this.onChange({ tidsperiode: p })}
+                            onChange={this.oppdaterTidsperiode}
+                            ugyldigeTidsperioder={ugyldigeTidsperioder}
                             feil={
                                 harOverlappendePerioder
                                     ? { feilmelding: getMessage(intl, 'periodeliste.overlappendePeriode') }
                                     : undefined
                             }
                         />
+                    </Block>
+                    <Block visible={overlapperAndreUtsettelser}>
+                        <AlertStripe type="feil">
+                            Det er allerede registrert en annen utsettelse i dette tidsrommet. Du må fjerne disse først.
+                        </AlertStripe>
                     </Block>
                     <Block
                         visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}
@@ -344,7 +383,9 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                 </Block>
                 {periode.id === undefined && (
                     <NyPeriodeKnapperad
-                        periodeKanLeggesTil={visibility.areAllQuestionsAnswered()}
+                        periodeKanLeggesTil={
+                            visibility.areAllQuestionsAnswered() && overlapperAndreUtsettelser === false
+                        }
                         onCancel={onCancel}
                         ariaLabelAvbryt={getMessage(intl, 'uttaksplan.nyttopphold.avbrytAriaLabel')}
                         ariaLabelLeggTil={getMessage(intl, 'uttaksplan.nyttopphold.leggTilAriaLabel')}
@@ -359,7 +400,8 @@ const mapStateToProps = (state: AppState): StateProps => {
     return {
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
         tilgjengeligeStønadskontoer: selectTilgjengeligeStønadskontoer(state),
-        søknadsinfo: getSøknadsinfo(state)!
+        søknadsinfo: getSøknadsinfo(state)!,
+        uttaksplan: state.søknad.uttaksplan
     };
 };
 
