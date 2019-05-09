@@ -1,4 +1,9 @@
-import Søknad, { SøknadForInnsending, Søkersituasjon } from '../../types/søknad/Søknad';
+import Søknad, {
+    SøknadForInnsending,
+    Søkersituasjon,
+    EnkelEndringssøknadForInnsending,
+    Tilleggsopplysninger
+} from '../../types/søknad/Søknad';
 import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
 import { isAttachmentWithError } from 'common/storage/attachment/components/util';
 import {
@@ -13,6 +18,8 @@ import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
 import stringifyTilleggsopplysninger from './stringifyTilleggsopplysninger';
 import { Barn } from '../../types/søknad/Barn';
 import { cleanupBarn } from '../barnUtils';
+import AnnenForelder from 'app/types/søknad/AnnenForelder';
+import { getEndretUttaksplanForInnsending } from '../uttaksplan/uttaksplanEndringUtil';
 
 export const isArrayOfAttachments = (object: object) => {
     return (
@@ -43,38 +50,36 @@ export const cleanUpAttachments = (object: object): Attachment[] => {
     return foundAttachments;
 };
 
-const changeClientonlyKontotypes = (uttaksplan: Periode[], andreForelderHarRettPåForeldrepenger: boolean) => {
-    return uttaksplan.map((periode) => {
-        if (isUttaksperiode(periode)) {
-            if (periode.konto === StønadskontoType.Flerbarnsdager) {
-                periode.konto = !andreForelderHarRettPåForeldrepenger
-                    ? StønadskontoType.Foreldrepenger
-                    : StønadskontoType.Fellesperiode;
-            }
-
-            if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
-                periode.konto = StønadskontoType.Foreldrepenger;
-            }
+const changeClientonlyKontotype = (periode: Periode, andreForelderHarRettPåForeldrepenger: boolean) => {
+    if (isUttaksperiode(periode)) {
+        if (periode.konto === StønadskontoType.Flerbarnsdager) {
+            periode.konto = !andreForelderHarRettPåForeldrepenger
+                ? StønadskontoType.Foreldrepenger
+                : StønadskontoType.Fellesperiode;
         }
 
-        return periode;
-    });
+        if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
+            periode.konto = StønadskontoType.Foreldrepenger;
+        }
+    }
+
+    return periode;
 };
-
-const changeClientonlyOppholdsÅrsaker = (uttaksplan: Periode[]) => {
-    return uttaksplan.map((periode) => {
-        if (periode.type === Periodetype.Opphold) {
-            if (periode.årsak === OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder) {
-                periode.årsak = OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
-            }
+const changeClientonlyOppholdsÅrsak = (periode: Periode) => {
+    if (periode.type === Periodetype.Opphold) {
+        if (periode.årsak === OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder) {
+            periode.årsak = OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
         }
-
-        return periode;
-    });
+    }
+    return periode;
 };
 
 export const removePeriodetypeHullFromUttaksplan = (uttaksplan: Periode[]): Periode[] => {
-    return uttaksplan.filter((p) => p.type !== Periodetype.Hull);
+    return uttaksplan.filter(isNotPeriodetypeHull);
+};
+
+export const isNotPeriodetypeHull = (periode: Periode): boolean => {
+    return periode.type !== Periodetype.Hull;
 };
 
 export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
@@ -107,19 +112,35 @@ const getArbeidstakerFrilansSN = (arbeidsformer: Arbeidsform[] | undefined) => {
     }
 };
 
-const changeGradertePerioder = (uttaksplan: Periode[]) => {
-    return uttaksplan.map((periode: Periode) => {
-        if (isUttaksperiode(periode) && periode.gradert) {
-            return { ...periode, ...getArbeidstakerFrilansSN(periode.arbeidsformer) };
-        }
-
-        return periode;
-    });
+const changeGradertPeriode = (periode: Periode) => {
+    if (isUttaksperiode(periode) && periode.gradert) {
+        return { ...periode, ...getArbeidstakerFrilansSN(periode.arbeidsformer) };
+    }
+    return periode;
 };
-
 const ensureNoNullItemsInFødselsdatoer = (barn: Barn, situasjon: Søkersituasjon): Barn => {
     const cleanedBarn = cleanupBarn(barn, situasjon);
     return (cleanedBarn as Barn) || barn;
+};
+
+const cleanupUttaksplan = (uttaksplan: Periode[], annenForelder?: AnnenForelder): Periode[] => {
+    return uttaksplan
+        .filter((periode: Periode) => isValidTidsperiode(periode.tidsperiode))
+        .filter(isNotPeriodetypeHull)
+        .map(
+            (periode) =>
+                annenForelder ? changeClientonlyKontotype(periode, annenForelder.harRettPåForeldrepenger) : periode
+        )
+        .map(changeGradertPeriode)
+        .map(changeClientonlyOppholdsÅrsak);
+};
+
+const cleanupTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string | undefined => {
+    const tilleggsopplysningerTilSaksbehandler = stringifyTilleggsopplysninger(tilleggsopplysninger);
+    if (tilleggsopplysningerTilSaksbehandler.length > 0) {
+        return tilleggsopplysningerTilSaksbehandler;
+    }
+    return undefined;
 };
 
 export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
@@ -129,23 +150,28 @@ export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
     cleanedSøknad.barn = ensureNoNullItemsInFødselsdatoer(cleanedSøknad.barn, søknad.situasjon);
     cleanedSøknad.vedlegg = cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring });
-    cleanedSøknad.uttaksplan = cleanedSøknad.uttaksplan.filter((periode: Periode) =>
-        isValidTidsperiode(periode.tidsperiode)
-    );
+    cleanedSøknad.uttaksplan = cleanupUttaksplan(cleanedSøknad.uttaksplan, søknad.annenForelder);
+    cleanedSøknad.tilleggsopplysninger = cleanupTilleggsopplysninger(søknad.tilleggsopplysninger);
 
-    cleanedSøknad.uttaksplan = changeClientonlyKontotypes(
-        cleanedSøknad.uttaksplan,
-        søknad.annenForelder.harRettPåForeldrepenger
-    );
+    return cleanedSøknad;
+};
 
-    cleanedSøknad.uttaksplan = changeGradertePerioder(cleanedSøknad.uttaksplan);
-    cleanedSøknad.uttaksplan = changeClientonlyOppholdsÅrsaker(cleanedSøknad.uttaksplan);
-    cleanedSøknad.uttaksplan = removePeriodetypeHullFromUttaksplan(cleanedSøknad.uttaksplan);
-
-    const tilleggsopplysningerTilSaksbehandler = stringifyTilleggsopplysninger(tilleggsopplysninger);
-    if (tilleggsopplysningerTilSaksbehandler.length > 0) {
-        cleanedSøknad.tilleggsopplysninger = tilleggsopplysningerTilSaksbehandler;
-    }
+export const cleanEnkelEndringssøknad = (
+    søknad: Søknad,
+    opprinneligUttaksplan: Periode[]
+): EnkelEndringssøknadForInnsending => {
+    const endingerIUttaksplan = getEndretUttaksplanForInnsending(opprinneligUttaksplan, søknad.uttaksplan);
+    const cleanedSøknad: EnkelEndringssøknadForInnsending = {
+        erEndringssøknad: true,
+        saksnummer: søknad.saksnummer,
+        type: søknad.type,
+        uttaksplan: endingerIUttaksplan || søknad.uttaksplan,
+        vedlegg: søknad.vedlegg
+    };
+    removeDuplicateAttachments(cleanedSøknad.uttaksplan);
+    cleanedSøknad.vedlegg = cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring: søknad.vedleggForSenEndring });
+    cleanedSøknad.uttaksplan = cleanupUttaksplan(cleanedSøknad.uttaksplan, søknad.annenForelder);
+    cleanedSøknad.tilleggsopplysninger = cleanupTilleggsopplysninger(søknad.tilleggsopplysninger);
 
     return cleanedSøknad;
 };
