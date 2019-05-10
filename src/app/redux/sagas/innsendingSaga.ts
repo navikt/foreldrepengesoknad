@@ -4,25 +4,34 @@ import { ApiActionKeys, SendSøknad } from '../actions/api/apiActionDefinitions'
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import { Kvittering } from '../../types/Kvittering';
 import routeConfig from '../../util/routing/routeConfig';
-import { cleanUpSøknad } from '../../util/cleanup/cleanupSøknad';
+import { cleanUpSøknad, cleanEnkelEndringssøknad } from '../../util/cleanup/cleanupSøknad';
 import { AppState } from '../reducers';
 import { mapMissingAttachmentsOnSøknad } from '../../util/attachments/missingAttachmentUtil';
 import { extractUUID } from '../../api/utils/errorUtil';
-import Søknad from 'app/types/søknad/Søknad';
-import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
+import Søknad, { SøknadForInnsending, EnkelEndringssøknadForInnsending } from 'app/types/søknad/Søknad';
+import { MissingAttachment } from 'app/types/MissingAttachment';
+
+const getSøknadsdataForInnsending = (
+    originalSøknad: Søknad,
+    missingAttachments: MissingAttachment[]
+): SøknadForInnsending | EnkelEndringssøknadForInnsending => {
+    const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
+    mapMissingAttachmentsOnSøknad(missingAttachments, søknad);
+    if (søknad.ekstrainfo.sakForEndring !== undefined && søknad.ekstrainfo.sakForEndring.uttaksplan) {
+        return cleanEnkelEndringssøknad(søknad, søknad.ekstrainfo.sakForEndring.uttaksplan);
+    } else {
+        return cleanUpSøknad(søknad);
+    }
+};
 
 function* sendSøknad(action: SendSøknad) {
     try {
         yield put(apiActions.updateApi({ søknadSendingInProgress: true }));
         const originalSøknad: Søknad = yield select((state: AppState) => state.søknad);
-        const søknad = JSON.parse(JSON.stringify(originalSøknad));
-        const { sakForEndring } = søknad.ekstrainfo;
-        if (sakForEndring !== undefined && sakForEndring.uttaksplan) {
-            const endringer = getEndretUttaksplanForInnsending(sakForEndring.uttaksplan, søknad.uttaksplan);
-            søknad.uttaksplan = endringer || søknad.uttaksplan;
-        }
-        mapMissingAttachmentsOnSøknad(action.missingAttachments, søknad);
-        const response = yield call(Api.sendSøknad, cleanUpSøknad(søknad));
+        const response = yield call(
+            Api.sendSøknad,
+            getSøknadsdataForInnsending(originalSøknad, action.missingAttachments)
+        );
         const kvittering: Kvittering = response.data;
         if (kvittering) {
             action.history.push(`${routeConfig.APP_ROUTE_PREFIX}soknad-sendt`);
