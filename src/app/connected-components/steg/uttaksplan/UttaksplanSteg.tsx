@@ -225,10 +225,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         const { sakForEndring } = søknad.ekstrainfo;
         const { visFeiloppsummering } = this.state;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
+
         const gjelderDagerBrukt = skalBeregneAntallDagerBrukt(
             søknadsinfo.søknaden.erDeltUttak,
             søknadsinfo.søker.erFarEllerMedmor,
-            søknadsinfo.søknaden.erEndringssøknad
+            søknadsinfo.søknaden.erEndringssøknad,
+            søknadsinfo.søknaden.erEnkelEndringssøknadMedUttaksplan
         );
 
         const defaultStønadskontoType =

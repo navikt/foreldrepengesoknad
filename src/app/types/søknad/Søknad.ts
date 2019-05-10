@@ -53,6 +53,7 @@ export interface Tilleggsopplysninger {
 
 interface SøknadEkstrainfo {
     erEnkelEndringssøknad: boolean;
+    erEnkelEndringssøknadMedUttaksplan: boolean;
     currentStegID: StegID | undefined;
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
     lastAddedPeriodeId?: string;
