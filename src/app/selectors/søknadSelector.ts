@@ -20,6 +20,14 @@ export const selectErEnkelEndringssøknad = createSelector(
         søknad.ekstrainfo !== undefined &&
         søknad.ekstrainfo.erEnkelEndringssøknad === true
 );
+export const selectErEndringssøknadMedUttaksplan = createSelector(
+    [søknadSelector],
+    (søknad = {}): boolean =>
+        søknad.erEndringssøknad === true &&
+        søknad.ekstrainfo !== undefined &&
+        søknad.ekstrainfo.erEnkelEndringssøknad === true &&
+        søknad.ekstrainfo.erEnkelEndringssøknadMedUttaksplan === true
+);
 export const selectDekningsgrad = createSelector(
     [søknadSelector],
     (søknad = {}): Dekningsgrad | undefined => søknad.dekningsgrad

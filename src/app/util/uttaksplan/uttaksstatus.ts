@@ -16,7 +16,12 @@ export const getUttaksstatus = (
     const uttaksstatus: Stønadskontouttak[] = beregnGjenståendeUttaksdager(
         tilgjengeligeStønadskontoer,
         uttaksplan,
-        skalBeregneAntallDagerBrukt(søknaden.erDeltUttak, søker.erFarEllerMedmor, søknaden.erEndringssøknad)
+        skalBeregneAntallDagerBrukt(
+            søknaden.erDeltUttak,
+            søker.erFarEllerMedmor,
+            søknaden.erEndringssøknad,
+            søknaden.erEnkelEndringssøknadMedUttaksplan
+        )
     );
     if (søker.erFarEllerMedmor) {
         return uttaksstatus.filter((kontouttak) => kontouttak.konto !== StønadskontoType.ForeldrepengerFørFødsel);
@@ -27,5 +32,6 @@ export const getUttaksstatus = (
 export const skalBeregneAntallDagerBrukt = (
     erDeltUttak: boolean,
     erFarEllerMedmor: boolean,
-    erEndringssøknad: boolean
-): boolean => erEndringssøknad || (erDeltUttak && erFarEllerMedmor);
+    erEndringssøknad: boolean,
+    erEnkelEndringssøknadMedUttaksplan: boolean
+): boolean => (erEndringssøknad && erEnkelEndringssøknadMedUttaksplan !== true) || (erDeltUttak && erFarEllerMedmor);
