@@ -490,6 +490,10 @@
         "For å legge inn en periode før fødselsdato, må du gå tilbake til forrige steg og gjøre det der.",
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
     "periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
+    "periodeliste.utsettelse.overlappendeTidsperiode.endre":
+        "Du kan ikke endre datoen slik at den går over en annen periode med utsettelse.",
+    "periodeliste.utsettelse.overlappendeTidsperiode.ny":
+        "Det er allerede registrert utsettelse i denne perioden. Du må fjerne perioden med utsettelse før du kan legge inn en ny.",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
     "personalia.år": "{år} år",
     "pgasykdom": "På grunn av sykdom",

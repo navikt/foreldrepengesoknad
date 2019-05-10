@@ -61,7 +61,7 @@ type Props = OwnProps & StateProps & InjectedIntlProps;
 
 interface State {
     variant?: Utsettelsesvariant;
-    tidsperiodeOverlapperMelding: string | undefined;
+    ugyldigTidsperiode?: Tidsperiode;
 }
 
 export enum Utsettelsesvariant {
@@ -83,6 +83,20 @@ export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utset
         default:
             return undefined;
     }
+};
+
+const getTidsperiodeFeilmeldingKey = (
+    harOverlappendePerioder: boolean,
+    overlapperAndreUtsettelser: boolean,
+    erNyPeriode: boolean
+): string | undefined => {
+    if (harOverlappendePerioder) {
+        return 'periodeliste.overlappendePeriode';
+    }
+    if (overlapperAndreUtsettelser) {
+        return `periodeliste.utsettelse.overlappendeTidsperiode.${erNyPeriode ? 'ny' : 'endre'}`;
+    }
+    return undefined;
 };
 
 const getVeilederForFrilansOgSNVisible = (periode: UtsettelseFormPeriodeType) => {
@@ -116,8 +130,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         this.getVisibility = this.getVisibility.bind(this);
         this.oppdaterTidsperiode = this.oppdaterTidsperiode.bind(this);
         this.state = {
-            variant: getVariantFromPeriode(props.periode),
-            tidsperiodeOverlapperMelding: undefined
+            variant: getVariantFromPeriode(props.periode)
         };
     }
 
@@ -236,9 +249,13 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             const p = { ...periode, tidsperiode };
             const overlapperAndreUtsettelser = overlapperUtsettelseAndreUtsettelser(p as Periode, uttaksplan);
             if (overlapperAndreUtsettelser === false) {
+                this.setState({ ugyldigTidsperiode: undefined });
                 this.onChange({ tidsperiode });
+            } else {
+                this.setState({ ugyldigTidsperiode: tidsperiode });
             }
         } else {
+            this.setState({ ugyldigTidsperiode: undefined });
             this.onChange({ tidsperiode });
         }
     }
@@ -255,7 +272,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             intl
         } = this.props;
 
-        const { variant } = this.state;
+        const { variant, ugyldigTidsperiode } = this.state;
 
         const visibility = this.getVisibility();
 
@@ -273,26 +290,27 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         const ugyldigeTidsperioder = getTidsperioderIUttaksplan(utsettelser, periode.id);
         const overlapperAndreUtsettelser = overlapperUtsettelseAndreUtsettelser(periode as Periode, uttaksplan);
 
+        const tidsperiodeFeilmeldingKey = getTidsperiodeFeilmeldingKey(
+            harOverlappendePerioder === true,
+            ugyldigTidsperiode !== undefined,
+            periode.id === undefined
+        );
+
         return (
             <>
                 <Block hasChildBlocks={true}>
                     <Block>
                         <UtsettelseTidsperiodeSpørsmål
-                            tidsperiode={tidsperiode}
+                            tidsperiode={this.state.ugyldigTidsperiode || tidsperiode}
                             familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
                             onChange={this.oppdaterTidsperiode}
                             ugyldigeTidsperioder={ugyldigeTidsperioder}
                             feil={
-                                harOverlappendePerioder
-                                    ? { feilmelding: getMessage(intl, 'periodeliste.overlappendePeriode') }
+                                tidsperiodeFeilmeldingKey
+                                    ? { feilmelding: getMessage(intl, tidsperiodeFeilmeldingKey) }
                                     : undefined
                             }
                         />
-                    </Block>
-                    <Block visible={overlapperAndreUtsettelser}>
-                        <AlertStripe type="feil">
-                            Det er allerede registrert en annen utsettelse i dette tidsrommet. Du må fjerne disse først.
-                        </AlertStripe>
                     </Block>
                     <Block
                         visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}
