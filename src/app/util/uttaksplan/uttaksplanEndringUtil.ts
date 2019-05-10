@@ -3,6 +3,7 @@ import { Perioden } from './Perioden';
 import moment from 'moment';
 import DateValues from '../validation/values';
 import { Periodene } from './Periodene';
+import { Uttaksdagen } from './Uttaksdagen';
 
 export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan: Periode[]): boolean =>
     opprinneligPlan.some((op) => Perioden(periode).erLik(op, true, true));
@@ -25,7 +26,7 @@ export const finnEndringerIUttaksplan = (opprinneligPlan: Periode[], nyPlan: Per
             {
                 ...periode,
                 tidsperiode: {
-                    fom: getDagensDatoEllerFom(fom),
+                    fom: getSisteAvDagensDatoOgDato(fom),
                     tom
                 }
             }
@@ -34,8 +35,9 @@ export const finnEndringerIUttaksplan = (opprinneligPlan: Periode[], nyPlan: Per
     return [];
 };
 
-const getDagensDatoEllerFom = (fom: Date): Date => {
-    return moment.max(moment(fom), DateValues.today).toDate();
+const getSisteAvDagensDatoOgDato = (dato: Date): Date => {
+    const uttaksdagDagensDato = Uttaksdagen(DateValues.today.toDate()).denneEllerNeste();
+    return moment.max(moment(dato), moment(uttaksdagDagensDato)).toDate();
 };
 
 const getLikePerioder = (periode: Periode, opprinneligPlan: Periode[]): Periode[] => {
@@ -59,7 +61,7 @@ const justerKunEndretSisteperiode = (periode: Periode, opprinneligPeriode: Perio
             return {
                 ...periode,
                 tidsperiode: {
-                    fom: getDagensDatoEllerFom(opprinneligPeriode.tidsperiode.fom),
+                    fom: getSisteAvDagensDatoOgDato(opprinneligPeriode.tidsperiode.fom),
                     tom: periode.tidsperiode.tom
                 }
             };
@@ -88,6 +90,19 @@ const justerStartdatoFørsteEndring = (endringer: Periode[], opprinneligPlan: Pe
                     ...førsteEndredePeriode,
                     tidsperiode: {
                         fom: opprinneligPeriodeSammeFomDato.tidsperiode.tom,
+                        tom: førsteEndredePeriode.tidsperiode.tom
+                    }
+                },
+                ...endringer.slice(1)
+            ];
+        } else if (
+            moment(førsteEndredePeriode.tidsperiode.tom).isBefore(opprinneligPeriodeSammeFomDato.tidsperiode.tom, 'day')
+        ) {
+            return [
+                {
+                    ...førsteEndredePeriode,
+                    tidsperiode: {
+                        fom: getSisteAvDagensDatoOgDato(opprinneligPeriodeSammeFomDato.tidsperiode.fom),
                         tom: førsteEndredePeriode.tidsperiode.tom
                     }
                 },
