@@ -90,6 +90,7 @@ function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
                     ...appState.søknad.ekstrainfo,
                     sakForEndring,
                     erEnkelEndringssøknad: true,
+                    erEnkelEndringssøknadMedUttaksplan: sakForEndring.uttaksplan !== undefined,
                     uttakFraEksisterendeSak: mapSaksperioderTilUttaksperioder(
                         sakForEndring.saksperioder,
                         sakForEndring.grunnlag
