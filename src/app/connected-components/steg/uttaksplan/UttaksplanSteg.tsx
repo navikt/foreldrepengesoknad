@@ -234,6 +234,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         const defaultStønadskontoType =
             tilgjengeligeStønadskontoer.length === 1 ? tilgjengeligeStønadskontoer[0].konto : undefined;
 
+        const visVeileder = søknad.ekstrainfo.erEnkelEndringssøknad !== true;
+
         return (
             <Steg
                 {...this.props.stegProps}
@@ -262,7 +264,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <>
-                        <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
+                        {visVeileder && (
+                            <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
+                        )}
                         {isFeatureEnabled(Feature.hentSakForEndring) &&
                             sakForEndring && (
                                 <Block>
