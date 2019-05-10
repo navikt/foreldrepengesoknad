@@ -8,7 +8,8 @@ import {
     selectErEndringssøknad,
     selectSøkerrolle,
     selectAntallBarn,
-    selectErBarnFødt
+    selectErBarnFødt,
+    selectErEnkelEndringssøknad
 } from './søknadSelector';
 
 import {
@@ -44,6 +45,7 @@ const selectOmSøknaden = createSelector(
         selectErFødsel,
         selectErAdopsjon,
         selectErEndringssøknad,
+        selectErEnkelEndringssøknad,
         selectAntallBarn,
         selectErBarnFødt
     ],
@@ -56,6 +58,7 @@ const selectOmSøknaden = createSelector(
         erFødsel,
         erAdopsjon,
         erEndringssøknad,
+        erEnkelEndringssøknad,
         antallBarn,
         erBarnFødt
     ): OmSøknaden | undefined => {
@@ -67,7 +70,8 @@ const selectOmSøknaden = createSelector(
             erFødsel !== undefined &&
             erAdopsjon !== undefined &&
             erEndringssøknad !== undefined &&
-            antallBarn !== undefined
+            antallBarn !== undefined &&
+            erEnkelEndringssøknad !== undefined
         ) {
             return {
                 situasjon,
@@ -78,6 +82,7 @@ const selectOmSøknaden = createSelector(
                 erFødsel,
                 erAdopsjon,
                 erEndringssøknad,
+                erEnkelEndringssøknad,
                 antallBarn,
                 erBarnFødt
             };

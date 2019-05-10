@@ -18,10 +18,10 @@ import BackButton from 'common/components/back-button/BackButton';
 import Block from 'common/components/block/Block';
 import AvbrytSøknadDialog from '../avbryt-søknad-dialog/AvbrytSøknadDialog';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
-
-import './steg.less';
 import DocumentTitle from 'react-document-title';
 import FortsettSøknadSenereDialog from '../fortsett-søknad-senere-dialog/FortsettSøknadSenereDialog';
+
+import './steg.less';
 
 export interface StegProps {
     id: StegID;
@@ -41,7 +41,7 @@ export interface StegProps {
 
 interface StateProps {
     erEndringssøknad: boolean;
-    harSakForEndring?: boolean;
+    erEnkelEndringssøknad?: boolean;
 }
 
 interface State {
@@ -162,7 +162,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 
     getStegConfig() {
-        return getStegConfig(this.props.erEndringssøknad, this.props.harSakForEndring);
+        return getStegConfig(this.props.erEndringssøknad, this.props.erEnkelEndringssøknad);
     }
 
     renderContent() {
@@ -172,7 +172,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
             fortsettKnappLabel,
             errorSummaryRenderer,
             erEndringssøknad,
-            harSakForEndring,
+            erEnkelEndringssøknad,
             intl
         } = this.props;
 
@@ -191,7 +191,11 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                     />
                 </Block>
                 <Block>
-                    <Stegindikator id={id} erEndringssøknad={erEndringssøknad} harSakForEndring={harSakForEndring} />
+                    <Stegindikator
+                        id={id}
+                        erEndringssøknad={erEndringssøknad}
+                        erEnkelEndringssøknad={erEnkelEndringssøknad}
+                    />
                 </Block>
                 {this.props.children}
                 {renderFortsettKnapp === true && (
@@ -245,7 +249,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    harSakForEndring: state.søknad.ekstrainfo.sakForEndring !== undefined,
+    erEnkelEndringssøknad: state.søknad.ekstrainfo.erEnkelEndringssøknad === true,
     erEndringssøknad: state.søknad.erEndringssøknad
 });
 
