@@ -26,7 +26,7 @@ export interface StegConfigItem {
     index: number;
 }
 
-export const getStegConfig = (erEndringssøknad: boolean, harSakForEndring?: boolean): StegConfig => {
+export const getStegConfig = (erEndringssøknad: boolean, erEnkelEndringssøknad?: boolean): StegConfig => {
     let stegConfig: StegConfig = {};
     const initielleSteg: StegConfig = {
         [StegID.INNGANG]: {
@@ -67,7 +67,7 @@ export const getStegConfig = (erEndringssøknad: boolean, harSakForEndring?: boo
     };
     if (erEndringssøknad) {
         stegConfig = {
-            ...(harSakForEndring ? {} : initielleSteg),
+            ...(erEnkelEndringssøknad ? {} : initielleSteg),
             [StegID.UTTAKSPLAN]: {
                 tittel: 'steg.config.tittel.uttak',
                 fortsettKnappLabel: 'Fortsett',
