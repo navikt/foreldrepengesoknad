@@ -32,6 +32,7 @@ export const getDefaultSøknadState = (): SøknadPartial => {
         harGodkjentVilkår: false,
         harGodkjentOppsummering: false,
         ekstrainfo: {
+            erEnkelEndringssøknad: false,
             uttaksplanSkjema: {
                 startdatoPermisjon: undefined
             },

@@ -20,7 +20,7 @@ import { isFeatureEnabled, Feature } from '../../Feature';
 import { SakForEndring, Saksgrunnlag } from '../../types/søknad/SakForEndring';
 import mapSaksperioderTilUttaksperioder from 'app/util/sakForEndring/mapSaksperioderTilUttaksperioder';
 import { getStønadskontoParams } from '../../util/uttaksplan/st\u00F8nadskontoParams';
-import { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
+import Sak from 'app/types/søknad/Sak';
 
 const stateSelector = (state: AppState) => state;
 
@@ -38,57 +38,75 @@ function* avbrytSøknadSaga(action: AvbrytSøknad) {
 }
 
 function* startSøknad(action: StartSøknad) {
-    const { erEndringssøknad, saksnummer, søkerinfo, history } = action;
+    const { erEndringssøknad, saksnummer } = action;
     const appState: AppState = yield select(stateSelector);
-    if (erEndringssøknad && saksnummer && appState.api.sakForEndringssøknad) {
-        let sakForEndring: SakForEndring | undefined;
-        if (isFeatureEnabled(Feature.hentSakForEndring)) {
-            sakForEndring = yield call(fetchSakForEndring, saksnummer);
-        }
-        const søknad =
-            sakForEndring && søkerKanFåEnkelEndringssøknad(sakForEndring.grunnlag)
-                ? opprettSøknadFraSakForEndring(søkerinfo, sakForEndring, appState.api.sakForEndringssøknad)
-                : undefined;
-        if (sakForEndring && søknad !== undefined) {
-            yield put(
-                søknadActions.updateSøknad({
-                    ...søknad,
-                    erEndringssøknad,
-                    saksnummer,
-                    ekstrainfo: {
-                        ...appState.søknad.ekstrainfo,
-                        sakForEndring,
-                        uttakFraEksisterendeSak: mapSaksperioderTilUttaksperioder(
-                            sakForEndring!.saksperioder,
-                            sakForEndring!.grunnlag
-                        )
-                    }
-                })
-            );
-            const updatedAppState = yield select(stateSelector);
-            const søknadsinfo = getSøknadsinfo(updatedAppState);
 
-            if (søknadsinfo) {
-                const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
-                    søknadsinfo,
-                    sakForEndring.grunnlag.familieHendelseDato
-                );
-                yield call(getTilgjengeligeStønadskontoer, params, history);
-            }
-            yield put(søknadActionCreators.setCurrentSteg(StegID.UTTAKSPLAN));
+    if (erEndringssøknad && saksnummer && appState.api.sakForEndringssøknad) {
+        if (isFeatureEnabled(Feature.hentSakForEndring)) {
+            yield call(startEnkelEndringssøknad, action, appState.api.sakForEndringssøknad);
         } else {
-            yield put(
-                søknadActions.updateSøknad({
-                    erEndringssøknad,
-                    saksnummer
-                })
-            );
-            yield put(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+            yield call(startVanligEndringssøknad, action);
         }
         yield put(apiActions.storeAppState());
     } else {
-        yield put(søknadActions.updateSøknad({ erEndringssøknad: false }));
-        history.push(søknadStegPath(StegID.INNGANG));
+        yield call(startFørstegangssøknad, action);
+    }
+}
+
+function* startFørstegangssøknad(action: StartSøknad) {
+    yield put(søknadActions.updateSøknad({ erEndringssøknad: false }));
+    action.history.push(søknadStegPath(StegID.INNGANG));
+}
+
+function* startVanligEndringssøknad(action: StartSøknad) {
+    yield put(
+        søknadActions.updateSøknad({
+            erEndringssøknad: true,
+            saksnummer: action.saksnummer
+        })
+    );
+    yield put(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+}
+
+function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
+    const { saksnummer, søkerinfo, history } = action;
+    const appState: AppState = yield select(stateSelector);
+    const sakForEndring: SakForEndring | undefined = yield call(fetchSakForEndring, saksnummer);
+    const søknad = sakForEndring ? opprettSøknadFraSakForEndring(søkerinfo, sakForEndring, sak) : undefined;
+
+    if (
+        sakForEndring === undefined ||
+        søkerKanFåEnkelEndringssøknad(sakForEndring.grunnlag) === false ||
+        søknad === undefined
+    ) {
+        yield call(startVanligEndringssøknad, action);
+    } else {
+        yield put(
+            søknadActions.updateSøknad({
+                ...søknad,
+                erEndringssøknad: true,
+                saksnummer,
+                ekstrainfo: {
+                    ...appState.søknad.ekstrainfo,
+                    sakForEndring,
+                    erEnkelEndringssøknad: true,
+                    uttakFraEksisterendeSak: mapSaksperioderTilUttaksperioder(
+                        sakForEndring.saksperioder,
+                        sakForEndring.grunnlag
+                    )
+                }
+            })
+        );
+        const updatedAppState = yield select(stateSelector);
+        const søknadsinfo = getSøknadsinfo(updatedAppState);
+        if (søknadsinfo) {
+            yield call(
+                getTilgjengeligeStønadskontoer,
+                getStønadskontoParams(søknadsinfo, sakForEndring.grunnlag.familieHendelseDato),
+                history
+            );
+        }
+        yield put(søknadActionCreators.setCurrentSteg(StegID.UTTAKSPLAN));
     }
 }
 
