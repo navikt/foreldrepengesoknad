@@ -13,6 +13,13 @@ export const selectErEndringssøknad = createSelector(
     [søknadSelector],
     (søknad = {}): boolean => søknad.erEndringssøknad === true
 );
+export const selectErEnkelEndringssøknad = createSelector(
+    [søknadSelector],
+    (søknad = {}): boolean =>
+        søknad.erEndringssøknad === true &&
+        søknad.ekstrainfo !== undefined &&
+        søknad.ekstrainfo.erEnkelEndringssøknad === true
+);
 export const selectDekningsgrad = createSelector(
     [søknadSelector],
     (søknad = {}): Dekningsgrad | undefined => søknad.dekningsgrad

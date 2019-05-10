@@ -33,9 +33,9 @@ class Oppsummering extends React.Component<Props> {
         const { søkerinfo, søknad, uttaksplanValidering, antallUkerUttaksplan, søknadsinfo, intl } = this.props;
         const { person } = søkerinfo;
 
-        const harSakForEndring = søknad.ekstrainfo.sakForEndring !== undefined;
-        const visBarn = harSakForEndring === false;
-        const visAnnenForelder = harSakForEndring === false;
+        const erEnkelEndringssøknad = søknad.ekstrainfo.erEnkelEndringssøknad === true;
+        const visBarn = erEnkelEndringssøknad === false;
+        const visAnnenForelder = erEnkelEndringssøknad === false;
         const visUtenlandsopphold = søknad.erEndringssøknad === false;
 
         return (
@@ -109,7 +109,7 @@ class Oppsummering extends React.Component<Props> {
                     <Oppsummeringspanel
                         tittel={getMessage(intl, 'oppsummering.uttak')}
                         tittelProps="undertittel"
-                        apen={harSakForEndring}>
+                        apen={erEnkelEndringssøknad}>
                         <UttaksplanOppsummering
                             perioder={søknad.uttaksplan}
                             navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
