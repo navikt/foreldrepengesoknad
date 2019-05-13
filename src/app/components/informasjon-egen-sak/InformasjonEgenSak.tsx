@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SakForEndring } from '../../types/søknad/SakForEndring';
+import { EksisterendeSak } from '../../types/EksisterendeSak';
 import InfoBlock from 'common/components/info-block/InfoBlock';
 import { getVarighetString } from 'common/util/intlUtils';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
@@ -15,14 +15,14 @@ import { Kjønn } from 'app/types/common';
 
 interface OwnProps {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    sakForEndring: SakForEndring;
+    eksisterendeSak: EksisterendeSak;
     sak: Sak;
     søkerinfo: Søkerinfo;
 }
 
 type Props = InjectedIntlProps & OwnProps;
 
-const getSituasjon = (søkerinfo: Søkerinfo, sakForEndring: SakForEndring, sak: Sak): Situasjon | undefined => {
+const getSituasjon = (søkerinfo: Søkerinfo, eksisterendeSak: EksisterendeSak, sak: Sak): Situasjon | undefined => {
     const kjønnSøker: Kjønn = søkerinfo.person.kjønn;
     const kjønnAnnenForelder: Kjønn | undefined = sak.annenPart
         ? sak.annenPart.kjønn || Kjønn.MANN /** todo */
@@ -35,7 +35,7 @@ const getSituasjon = (søkerinfo: Søkerinfo, sakForEndring: SakForEndring, sak:
     } else {
         const {
             grunnlag: { farMedmorErAleneOmOmsorg, morErAleneOmOmsorg }
-        } = sakForEndring;
+        } = eksisterendeSak;
 
         if (kjønnSøker === Kjønn.KVINNE) {
             return morErAleneOmOmsorg ? Situasjon.aleneomsorg : Situasjon.bareMor;
@@ -46,14 +46,14 @@ const getSituasjon = (søkerinfo: Søkerinfo, sakForEndring: SakForEndring, sak:
 };
 
 const InformasjonEgenSak: React.StatelessComponent<Props> = ({
-    sakForEndring,
+    eksisterendeSak,
     tilgjengeligeStønadskontoer,
     sak,
     søkerinfo,
     intl
 }) => {
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
-    const situasjon = getSituasjon(søkerinfo, sakForEndring, sak);
+    const situasjon = getSituasjon(søkerinfo, eksisterendeSak, sak);
     if (situasjon === undefined) {
         return null;
     }
@@ -66,7 +66,7 @@ const InformasjonEgenSak: React.StatelessComponent<Props> = ({
                     <UkerSirkel key="uker" uker={uker} />
                 ]}>
                 <strong>{getVarighetString(uker * 5, intl)}</strong> med{' '}
-                <strong>{sakForEndring.grunnlag.dekningsgrad} prosent utbetaling</strong>.
+                <strong>{eksisterendeSak.grunnlag.dekningsgrad} prosent utbetaling</strong>.
             </InnholdMedIllustrasjon>
         </InfoBlock>
     );

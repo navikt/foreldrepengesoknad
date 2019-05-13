@@ -1,5 +1,5 @@
 import { Dekningsgrad, Tidsperiode } from 'common/types';
-import { StønadskontoType, SaksperiodeUtsettelseÅrsakType, Periode } from '../uttaksplan/periodetyper';
+import { StønadskontoType, SaksperiodeUtsettelseÅrsakType, Periode } from './uttaksplan/periodetyper';
 
 export enum FamiliehendelsesType {
     'ADOPSJON' = 'ADPSJN',
@@ -26,7 +26,7 @@ export interface Saksgrunnlag {
     morHarRett: boolean;
     farMedmorErAleneOmOmsorg: boolean;
     farMedmorHarRett: boolean;
-    erBarnetFødt: boolean;
+    erBarnetFødt: boolean; // Utledet fra familieHendelseType
 }
 
 export interface Saksperiode {
@@ -44,7 +44,7 @@ export interface Saksperiode {
     tidsperiode: Tidsperiode;
 }
 
-export interface SakForEndring {
+export interface EksisterendeSak {
     grunnlag: Saksgrunnlag;
     saksperioder: Saksperiode[];
     uttaksplan: Periode[] | undefined;
