@@ -45,10 +45,8 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
-import PeriodelisteSakForEndring from '../../../components/PeriodelisteSakForEndring/PeriodelisteSakForEndring';
 import { Feature, isFeatureEnabled } from '../../../Feature';
 import InformasjonEgenSak from '../../../components/informasjon-egen-sak/InformasjonEgenSak';
-import DevBlock from 'common/dev/DevBlock';
 import { finnEndringerIUttaksplan } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 interface StateProps {
@@ -158,10 +156,10 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.setState({ bekreftTilbakestillUttaksplanDialogSynlig: false });
         const {
             søknad: {
-                ekstrainfo: { sakForEndring }
+                ekstrainfo: { eksisterendeSak }
             }
         } = this.props;
-        this.props.dispatch(søknadActions.uttaksplanSetPerioder((sakForEndring && sakForEndring.uttaksplan) || []));
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder((eksisterendeSak && eksisterendeSak.uttaksplan) || []));
     }
 
     handleOnPeriodeErrorClick(periodeId: string) {
@@ -222,7 +220,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             );
         }
 
-        const { sakForEndring } = søknad.ekstrainfo;
+        const { eksisterendeSak } = søknad.ekstrainfo;
         const { visFeiloppsummering } = this.state;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
@@ -269,14 +267,11 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         {visVeileder && (
                             <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
                         )}
-                        {isFeatureEnabled(Feature.hentSakForEndring) &&
-                            sakForEndring && (
+                        {isFeatureEnabled(Feature.hentEksisterendeSak) &&
+                            eksisterendeSak && (
                                 <Block>
-                                    <DevBlock>
-                                        <PeriodelisteSakForEndring sak={sakForEndring} />
-                                    </DevBlock>
                                     <InformasjonEgenSak
-                                        sak={sakForEndring}
+                                        sak={eksisterendeSak}
                                         tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                     />
                                 </Block>
@@ -284,7 +279,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         <Block>
                             <Uttaksplanlegger
                                 planErEndret={planErEndret}
-                                uttaksplanForEndring={sakForEndring && sakForEndring.uttaksplan}
+                                eksisterendeUttaksplan={eksisterendeSak && eksisterendeSak.uttaksplan}
                                 uttaksplan={søknad.uttaksplan}
                                 søknadsinfo={søknadsinfo}
                                 uttaksplanValidering={uttaksplanValidering}
@@ -293,7 +288,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestClear={() => this.showBekreftSlettUttaksplanDialog()}
                                 onRequestRevert={
-                                    sakForEndring ? () => this.showBekreftTilbakestillUttaksplanDialog() : undefined
+                                    eksisterendeSak ? () => this.showBekreftTilbakestillUttaksplanDialog() : undefined
                                 }
                                 onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
                                 forelder={søknadsinfo.søker.erFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR}
@@ -369,8 +364,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
 
     const årsakTilSenEndring: SenEndringÅrsak = getSeneEndringerSomKreverBegrunnelse(søknad.uttaksplan);
 
-    const uttaksplanForEndring = søknad.ekstrainfo.sakForEndring
-        ? søknad.ekstrainfo.sakForEndring.uttaksplan
+    const uttaksplanForEndring = søknad.ekstrainfo.eksisterendeSak
+        ? søknad.ekstrainfo.eksisterendeSak.uttaksplan
         : undefined;
 
     const planErEndret =

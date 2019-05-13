@@ -8,7 +8,7 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
 import { dateIsTodayOrInFuture } from '../dates/dates';
-import { Saksgrunnlag } from 'app/types/søknad/SakForEndring';
+import { Saksgrunnlag } from 'app/types/EksisterendeSak';
 import Søknad from 'app/types/søknad/Søknad';
 import { getFamiliehendelsedato } from '.';
 

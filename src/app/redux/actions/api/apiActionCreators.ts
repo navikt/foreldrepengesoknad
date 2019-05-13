@@ -17,9 +17,9 @@ export function getSaker(): ApiActionTypes {
     };
 }
 
-export function getSakForEndring(saksnummer: string): ApiActionTypes {
+export function getEksisterendeSak(saksnummer: string): ApiActionTypes {
     return {
-        type: ApiActionKeys.GET_SAK_FOR_ENDRING,
+        type: ApiActionKeys.GET_EKSISTERENDE_SAK,
         saksnummer
     };
 }
@@ -94,7 +94,7 @@ export function sendStorageKvittering(): ApiActionTypes {
 export default {
     getSøkerinfo,
     getSaker,
-    getSakForEndring,
+    getEksisterendeSak,
     sendSøknad,
     getStorageData,
     deleteStoredAppState,

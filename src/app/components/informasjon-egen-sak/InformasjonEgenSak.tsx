@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SakForEndring } from '../../types/søknad/SakForEndring';
+import { EksisterendeSak } from '../../types/EksisterendeSak';
 import InfoBlock from 'common/components/info-block/InfoBlock';
 import { getVarighetString } from 'common/util/intlUtils';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
@@ -10,7 +10,7 @@ import InnholdMedIllustrasjon from 'common/components/innhold-med-illustrasjon/I
 
 interface OwnProps {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    sak: SakForEndring;
+    sak: EksisterendeSak;
 }
 
 type Props = InjectedIntlProps & OwnProps;

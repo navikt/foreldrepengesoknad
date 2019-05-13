@@ -39,7 +39,7 @@ import './uttaksplanlegger.less';
 
 interface OwnProps {
     uttaksplan: Periode[];
-    uttaksplanForEndring: Periode[] | undefined;
+    eksisterendeUttaksplan: Periode[] | undefined;
     søknadsinfo: Søknadsinfo;
     uttaksplanValidering: UttaksplanValideringState;
     lastAddedPeriodeId: string | undefined;
@@ -178,7 +178,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             forelder,
             uttaksplan,
             planErEndret,
-            uttaksplanForEndring,
+            eksisterendeUttaksplan: uttaksplanForEndring,
             intl
         } = this.props;
         const { formIsOpen, periodetype } = this.state;
