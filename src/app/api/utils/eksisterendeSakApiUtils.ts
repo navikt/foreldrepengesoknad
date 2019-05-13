@@ -1,21 +1,16 @@
 import {
-    SakForEndring,
+    EksisterendeSak,
     FamiliehendelsesType,
     Saksperiode,
     PeriodeResultatType,
     Saksgrunnlag
-} from '../../types/søknad/SakForEndring';
+} from '../../types/EksisterendeSak';
 import { UttaksplanDTO } from '../types/uttaksplanDTO';
 import { StønadskontoType, SaksperiodeUtsettelseÅrsakType } from '../../types/uttaksplan/periodetyper';
-import { Kjønn } from '../../types/common';
-import mapSaksperioderTilUttaksperioder from '../../util/sakForEndring/mapSaksperioderTilUttaksperioder';
-import { kanUttaksplanGjennskapesFraSak } from '../../util/sakForEndring/sakForEndringUtils';
+import mapSaksperioderTilUttaksperioder from '../../util/eksisterendeSak/mapSaksperioderTilUttaksperioder';
+import { kanUttaksplanGjennskapesFraSak } from '../../util/eksisterendeSak/eksisterendeSakUtils';
 
-const getKjønn = (kjønn: string): Kjønn => {
-    return kjønn === 'M' ? Kjønn.MANN : Kjønn.KVINNE;
-};
-
-export const getSakForEndringFromDTO = (dto: UttaksplanDTO): SakForEndring | undefined => {
+export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak | undefined => {
     const {
         grunnlag: {
             dekningsgrad,
@@ -34,9 +29,7 @@ export const getSakForEndringFromDTO = (dto: UttaksplanDTO): SakForEndring | und
             erBarnetFødt: familieHendelseType !== FamiliehendelsesType.TERM,
             dekningsgrad: dekningsgrad === 100 ? '100' : '80',
             familieHendelseDato: new Date(familieHendelseDato),
-            familieHendelseType: familieHendelseType as FamiliehendelsesType,
-            søkerKjønn: getKjønn(søkerKjønn),
-            annenForelderKjønn: annenForelderKjønn !== undefined ? getKjønn(annenForelderKjønn) : undefined
+            familieHendelseType: familieHendelseType as FamiliehendelsesType
         };
 
         const saksperioder = perioder.map((p): Saksperiode => {
@@ -57,7 +50,7 @@ export const getSakForEndringFromDTO = (dto: UttaksplanDTO): SakForEndring | und
             ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag)
             : undefined;
 
-        const sak: SakForEndring = {
+        const sak: EksisterendeSak = {
             grunnlag,
             saksperioder,
             uttaksplan
