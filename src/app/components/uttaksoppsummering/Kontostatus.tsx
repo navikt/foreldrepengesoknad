@@ -23,7 +23,7 @@ const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({ utta
     const kontoErOvertrukket = uttak.antallDager < 0;
 
     return (
-        <Normaltekst className={BEM.className} tag="div">
+        <Normaltekst className={BEM.block} tag="div">
             <div className={BEM.element('ikon')} aria-hidden={true} role="presentation">
                 <StønadskontoIkon konto={uttak.konto} navnPåForeldre={navnPåForeldre} />
             </div>

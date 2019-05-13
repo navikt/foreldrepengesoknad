@@ -22,7 +22,7 @@ type Props = OwnProps & InjectedIntlProps;
 
 const Attachment: React.StatelessComponent<Props> = ({ attachment, showFileSize, onDelete, intl }) => {
     const BEM = BEMHelper('attachment');
-    const cls = classnames(BEM.className, {
+    const cls = classnames(BEM.block, {
         [BEM.modifier('pending')]: attachment.pending
     });
 

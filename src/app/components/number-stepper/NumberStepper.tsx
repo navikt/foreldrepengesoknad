@@ -19,7 +19,7 @@ const NumberStepper: React.StatelessComponent<Props> = ({ value, min, max, stepS
     const canDecrease = min === undefined || value > min;
     const canIncrease = max === undefined || value < max;
     return (
-        <div className={bem.className}>
+        <div className={bem.block}>
             <div className={bem.element('decrease')}>
                 <StepperKnapp
                     direction="previous"

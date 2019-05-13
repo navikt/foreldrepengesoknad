@@ -23,7 +23,7 @@ const SakInfo: React.StatelessComponent<Props> = ({ sak }) => {
     const statusTextKey = sak.status ? getIntlKeyForStatus(sak.status) : undefined;
     return (
         <InfoBlock padding="none">
-            <div className={bem.className}>
+            <div className={bem.block}>
                 <div className={bem.element('text')}>
                     <Element className="blokk-xxxs">
                         <FormattedMessage id="velkommen.sak.type" />

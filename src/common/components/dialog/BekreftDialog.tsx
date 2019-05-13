@@ -42,7 +42,7 @@ class BekreftDialog extends React.Component<Props & InjectedIntlProps, {}> {
         return (
             <Modal
                 {...modalProps}
-                className={classnames(bem.className, størrelse ? bem.modifier(`size-${størrelse}`) : undefined)}>
+                className={classnames(bem.block, størrelse ? bem.modifier(`size-${størrelse}`) : undefined)}>
                 {this.props.isOpen && (
                     <>
                         {tittel && <Systemtittel className="blokk-s">{tittel}</Systemtittel>}

@@ -17,7 +17,7 @@ type Props = InformasjonOmArbeidsforholdProps & InjectedIntlProps;
 const InformasjonOmArbeidsforhold: React.StatelessComponent<Props> = ({ arbeidsforhold, intl }: Props) => {
     const cls = BEMHelper('arbeidsforholdInfoBox');
     return (
-        <div className={cls.className}>
+        <div className={cls.block}>
             <div className={cls.element('topRow')}>
                 {arbeidsforhold.arbeidsgiverIdType === 'orgnr' && (
                     <EtikettLiten>

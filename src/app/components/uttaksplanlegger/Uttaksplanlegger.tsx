@@ -223,7 +223,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         return (
             <section>
                 <Block>
-                    <div className={BEM.className} id={uttaksplanleggerDomId} tabIndex={-1}>
+                    <div className={BEM.block} id={uttaksplanleggerDomId} tabIndex={-1}>
                         <header className={BEM.element('header')}>
                             <Systemtittel tag="h1" className={BEM.element('header__title')}>
                                 <FormattedMessage id="uttaksplan.tittel" />
