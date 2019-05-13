@@ -45,10 +45,8 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
-import PeriodelisteSakForEndring from '../../../components/PeriodelisteSakForEndring/PeriodelisteSakForEndring';
 import { Feature, isFeatureEnabled } from '../../../Feature';
 import InformasjonEgenSak from '../../../components/informasjon-egen-sak/InformasjonEgenSak';
-import DevBlock from 'common/dev/DevBlock';
 import { finnEndringerIUttaksplan } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 interface StateProps {
@@ -272,9 +270,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         {isFeatureEnabled(Feature.hentSakForEndring) &&
                             sakForEndring && (
                                 <Block>
-                                    <DevBlock>
-                                        <PeriodelisteSakForEndring sak={sakForEndring} />
-                                    </DevBlock>
                                     <InformasjonEgenSak
                                         sak={sakForEndring}
                                         tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
