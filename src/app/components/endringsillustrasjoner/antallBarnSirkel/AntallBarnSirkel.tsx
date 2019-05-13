@@ -21,7 +21,7 @@ const renderBarn = (antall: number) => {
 
 const AntallBarnSirkel: React.StatelessComponent<Props> = ({ antallBarn }) => {
     return (
-        <div className={bem.className}>
+        <div className={bem.block}>
             <div className={bem.element('ikon', `antall-${antallBarn}`)}>
                 <Sirkelmaske diameter="5rem">
                     <div className={bem.element('svgs', `antall-${antallBarn}`)}>{renderBarn(antallBarn)}</div>
