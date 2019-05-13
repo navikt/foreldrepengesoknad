@@ -1,6 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
-import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
+import Søknad from '../../../types/søknad/Søknad';
 import HarAnnenForelderSøktForeldrepengerSpørsmål from './enkeltspørsmål/HarAnnenForelderSøktForeldrepengerSpørsmål';
 import DekningsgradSpørsmål from './enkeltspørsmål/DekningsgradSpørsmål';
 import MorSinSisteUttaksdagSpørsmål from './enkeltspørsmål/MorSinSisteUttaksdagSpørsmål';
@@ -320,19 +320,10 @@ const Scenario7: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåFo
     </>
 );
 
-const Scenario8: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehendelsesdato, erFarEllerMedmor }) => {
+const Scenario8: React.StatelessComponent<ScenarioProps> = () => {
     return (
         <>
             <DekningsgradSpørsmål />
-            <StartdatoPermisjonMorBolk
-                visible={
-                    søknad.dekningsgrad !== undefined &&
-                    !erFarEllerMedmor &&
-                    søknad.situasjon !== Søkersituasjon.ADOPSJON
-                }
-                familiehendelsesdato={familiehendelsesdato}
-                barnetErFødt={søknad.barn.erBarnetFødt}
-            />
         </>
     );
 };
