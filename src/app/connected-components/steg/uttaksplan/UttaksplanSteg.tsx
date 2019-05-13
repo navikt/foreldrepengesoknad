@@ -46,7 +46,7 @@ import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
 import { Feature, isFeatureEnabled } from '../../../Feature';
-import InformasjonEgenSak from '../../../components/informasjon-egen-sak/InformasjonEgenSak';
+import EksisterendeSak from '../../../components/eksisterendeSak/EksisterendeSak';
 import { finnEndringerIUttaksplan } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 import Sak from 'app/types/søknad/Sak';
 
@@ -275,7 +275,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             eksisterendeSak &&
                             sak && (
                                 <Block>
-                                    <InformasjonEgenSak
+                                    <EksisterendeSak
                                         eksisterendeSak={eksisterendeSak}
                                         sak={sak}
                                         søkerinfo={søkerinfo}
