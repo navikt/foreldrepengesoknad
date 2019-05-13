@@ -212,7 +212,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             uttaksplanVeilederInfo,
             planErEndret,
             sak,
-            søkerinfo,
             intl
         } = this.props;
 
@@ -276,9 +275,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             sak && (
                                 <Block>
                                     <EksisterendeSak
-                                        eksisterendeSak={eksisterendeSak}
-                                        sak={sak}
-                                        søkerinfo={søkerinfo}
+                                        søknadsinfo={søknadsinfo}
                                         tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                     />
                                 </Block>
