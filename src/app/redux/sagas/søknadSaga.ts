@@ -12,13 +12,13 @@ import { AppState } from '../reducers';
 import { getSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
-import { fetchSakForEndring } from './sakerSaga';
-import { opprettSøknadFraSakForEndring } from '../../util/sakForEndring/sakForEndringUtils';
+import { fetchEksisterendeSak } from './sakerSaga';
+import { opprettSøknadFraEksisterendeSak } from '../../util/eksisterendeSak/eksisterendeSakUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
 import { StegID } from '../../util/routing/stegConfig';
 import { isFeatureEnabled, Feature } from '../../Feature';
-import { SakForEndring, Saksgrunnlag } from '../../types/søknad/SakForEndring';
-import mapSaksperioderTilUttaksperioder from 'app/util/sakForEndring/mapSaksperioderTilUttaksperioder';
+import { EksisterendeSak, Saksgrunnlag } from '../../types/EksisterendeSak';
+import mapSaksperioderTilUttaksperioder from 'app/util/eksisterendeSak/mapSaksperioderTilUttaksperioder';
 import { getStønadskontoParams } from '../../util/uttaksplan/st\u00F8nadskontoParams';
 import Sak from 'app/types/søknad/Sak';
 
@@ -42,7 +42,7 @@ function* startSøknad(action: StartSøknad) {
     const appState: AppState = yield select(stateSelector);
 
     if (erEndringssøknad && saksnummer && appState.api.sakForEndringssøknad) {
-        if (isFeatureEnabled(Feature.hentSakForEndring)) {
+        if (isFeatureEnabled(Feature.hentEksisterendeSak)) {
             yield call(startEnkelEndringssøknad, action, appState.api.sakForEndringssøknad);
         } else {
             yield call(startVanligEndringssøknad, action);
@@ -71,12 +71,12 @@ function* startVanligEndringssøknad(action: StartSøknad) {
 function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
     const { saksnummer, søkerinfo, history } = action;
     const appState: AppState = yield select(stateSelector);
-    const sakForEndring: SakForEndring | undefined = yield call(fetchSakForEndring, saksnummer, sak);
-    const søknad = sakForEndring ? opprettSøknadFraSakForEndring(søkerinfo, sakForEndring, sak) : undefined;
+    const eksisterendeSak: EksisterendeSak | undefined = yield call(fetchEksisterendeSak, saksnummer);
+    const søknad = eksisterendeSak ? opprettSøknadFraEksisterendeSak(søkerinfo, eksisterendeSak, sak) : undefined;
 
     if (
-        sakForEndring === undefined ||
-        søkerKanFåEnkelEndringssøknad(sakForEndring.grunnlag) === false ||
+        eksisterendeSak === undefined ||
+        søkerKanFåEnkelEndringssøknad(eksisterendeSak.grunnlag) === false ||
         søknad === undefined
     ) {
         yield call(startVanligEndringssøknad, action);
@@ -88,12 +88,12 @@ function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
                 saksnummer,
                 ekstrainfo: {
                     ...appState.søknad.ekstrainfo,
-                    sakForEndring,
+                    eksisterendeSak,
                     erEnkelEndringssøknad: true,
-                    erEnkelEndringssøknadMedUttaksplan: sakForEndring.uttaksplan !== undefined,
+                    erEnkelEndringssøknadMedUttaksplan: eksisterendeSak.uttaksplan !== undefined,
                     uttakFraEksisterendeSak: mapSaksperioderTilUttaksperioder(
-                        sakForEndring.saksperioder,
-                        sakForEndring.grunnlag
+                        eksisterendeSak.saksperioder,
+                        eksisterendeSak.grunnlag
                     )
                 }
             })
@@ -103,7 +103,7 @@ function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
         if (søknadsinfo) {
             yield call(
                 getTilgjengeligeStønadskontoer,
-                getStønadskontoParams(søknadsinfo, sakForEndring.grunnlag.familieHendelseDato),
+                getStønadskontoParams(søknadsinfo, eksisterendeSak.grunnlag.familieHendelseDato),
                 history
             );
         }

@@ -1,5 +1,5 @@
 import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from '../uttakUtils';
-import { Saksgrunnlag, FamiliehendelsesType } from '../../../../app/types/søknad/SakForEndring';
+import { Saksgrunnlag, FamiliehendelsesType } from '../../../types/EksisterendeSak';
 import Søknad from '../../../../app/types/søknad/Søknad';
 import { DeepPartial } from 'redux';
 

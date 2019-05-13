@@ -37,7 +37,7 @@ const getSaker = () => {
     });
 };
 
-const getSakForEndring = (saksnummer: string) => {
+const getEksisterendeSak = (saksnummer: string) => {
     return axios.get(`${apiBaseUrl}/innsyn/uttaksplan`, {
         timeout: 60 * 1000,
         withCredentials: true,
@@ -143,7 +143,7 @@ const Api = {
     deleteStoredAppState,
     sendStorageKvittering,
     getStorageKvittering,
-    getSakForEndring,
+    getEksisterendeSak,
     log
 };
 

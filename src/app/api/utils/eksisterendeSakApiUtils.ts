@@ -1,22 +1,16 @@
 import {
-    SakForEndring,
+    EksisterendeSak,
     FamiliehendelsesType,
     Saksperiode,
     PeriodeResultatType,
     Saksgrunnlag
-} from '../../types/søknad/SakForEndring';
+} from '../../types/EksisterendeSak';
 import { UttaksplanDTO } from '../types/uttaksplanDTO';
 import { StønadskontoType, SaksperiodeUtsettelseÅrsakType } from '../../types/uttaksplan/periodetyper';
-// import { Kjønn } from '../../types/common';
-import mapSaksperioderTilUttaksperioder from '../../util/sakForEndring/mapSaksperioderTilUttaksperioder';
-import { kanUttaksplanGjennskapesFraSak } from '../../util/sakForEndring/sakForEndringUtils';
-import Sak from 'app/types/søknad/Sak';
+import mapSaksperioderTilUttaksperioder from '../../util/eksisterendeSak/mapSaksperioderTilUttaksperioder';
+import { kanUttaksplanGjennskapesFraSak } from '../../util/eksisterendeSak/eksisterendeSakUtils';
 
-// const getKjønn = (kjønn: string): Kjønn => {
-//     return kjønn === 'M' ? Kjønn.MANN : Kjønn.KVINNE;
-// };
-
-export const getSakForEndringFromDTO = (dto: UttaksplanDTO, sak: Sak): SakForEndring | undefined => {
+export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak | undefined => {
     const {
         grunnlag: {
             dekningsgrad,
@@ -56,7 +50,7 @@ export const getSakForEndringFromDTO = (dto: UttaksplanDTO, sak: Sak): SakForEnd
             ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag)
             : undefined;
 
-        const sak: SakForEndring = {
+        const sak: EksisterendeSak = {
             grunnlag,
             saksperioder,
             uttaksplan
