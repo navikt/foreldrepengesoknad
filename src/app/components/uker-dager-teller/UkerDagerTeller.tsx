@@ -20,7 +20,7 @@ const UkerDagerTeller: React.StatelessComponent<Props> = (props) => {
     const bem = BEMHelper('ukerDagerTeller');
     return (
         <SkjemaGruppe feil={feil}>
-            <div className={bem.className}>
+            <div className={bem.block}>
                 <div className={bem.element('ukerFelt')}>
                     <Block margin="xxs">
                         <Fieldset legend={ukeLegend}>

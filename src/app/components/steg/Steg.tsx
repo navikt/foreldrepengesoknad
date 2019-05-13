@@ -215,7 +215,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 
         const bem = BEMHelper('steg');
         const formProps: ValiderbarFormProps = {
-            className: bem.className,
+            className: bem.block,
             summaryTitle: getMessage(intl, 'validering.oppsummeringstittel'),
             onSubmit: this.handleOnSubmit
         };
@@ -225,7 +225,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                 {renderFormTag ? (
                     <ValiderbarForm {...formProps}>{this.renderContent()}</ValiderbarForm>
                 ) : (
-                    <div className={bem.className} aria-live="assertive">
+                    <div className={bem.block} aria-live="assertive">
                         {this.renderContent()}
                     </div>
                 )}

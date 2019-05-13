@@ -18,7 +18,7 @@ const bem = BEMHelper('tekstMedInfotekst');
 
 const Tittel: React.StatelessComponent<Props> = ({ tittel, info }) => {
     return (
-        <div className={bem.className}>
+        <div className={bem.block}>
             <Element tag="div" className={bem.element('tekst')}>
                 {tittel}
             </Element>

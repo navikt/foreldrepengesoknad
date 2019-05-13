@@ -19,7 +19,7 @@ const ChildSVG: React.StatelessComponent<Props> = (props) => {
             viewBox="0 0 120 120"
             xmlnsXlink="http://www.w3.org/1999/xlink"
             {...svgProps}
-            className={classnames(bem.className, bem.modifier(face))}>
+            className={classnames(bem.block, bem.modifier(face))}>
             <title>Kid</title>
             <g id="Page-1" stroke="none" strokeWidth={1} fill="none" fillRule="evenodd">
                 <g id="child-2-">

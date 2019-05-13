@@ -16,7 +16,7 @@ const LinkButton: React.StatelessComponent<LinkButtonProps> = (props) => {
     return (
         <button
             type="button"
-            className={classNames(bem.className, className, color ? `linkButton--${color}` : undefined)}
+            className={classNames(bem.block, className, color ? `linkButton--${color}` : undefined)}
             {...rest}
         />
     );

@@ -138,7 +138,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
             <ValiderbarForm
                 runValidationOnRegister={false}
                 validateBeforeSubmit={true}
-                className={classnames(bem.className, bem.modifier(periode.type!.toLowerCase()))}
+                className={classnames(bem.block, bem.modifier(periode.type!.toLowerCase()))}
                 onSubmit={this.handleOnSubmit}>
                 <div className={bem.element('fargestrek')}>
                     <PeriodeFargestrek farge={getPeriodeFarge(periode as Periode, forelder)} />

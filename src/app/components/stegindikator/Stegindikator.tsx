@@ -44,7 +44,7 @@ class Stegindikator extends React.Component<Props> {
         const bem = BEMHelper('stegindikator');
         return (
             <div
-                className={bem.className}
+                className={bem.block}
                 role="progressbar"
                 aria-valuenow={aktivtSteg + 1}
                 aria-valuemin={1}

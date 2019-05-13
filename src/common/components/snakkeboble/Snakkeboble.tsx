@@ -13,7 +13,7 @@ interface Props {
 const bem = BEMHelper('snakkeboble');
 
 const Snakkeboble: React.StatelessComponent<Props> = ({ tittel, tekst }) => (
-    <div className={classnames(bem.className, bem.modifier('hvit'))}>
+    <div className={classnames(bem.block, bem.modifier('hvit'))}>
         <div className={bem.element('innhold')}>
             {tittel && (
                 <div className={classnames(bem.element('tittel'), 'capitalizeName')}>

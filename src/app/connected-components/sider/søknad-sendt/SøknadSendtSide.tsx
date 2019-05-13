@@ -151,7 +151,7 @@ class SøknadSendtSide extends React.Component<Props> {
             <Applikasjonsside visSøknadstittel={true}>
                 <DocumentTitle title={getMessage(intl, 'dokument.tittel.søknadSendt')} />
 
-                <div className={bem.className}>
+                <div className={bem.block}>
                     <Block margin="m">
                         <SpotlightLetter className={bem.element('spotlightLetter')} />
                     </Block>

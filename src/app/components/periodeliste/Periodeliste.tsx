@@ -115,7 +115,7 @@ class Periodeliste extends React.Component<Props> {
                 ref={(c) => (this.toggleList = c)}
                 onItemToggle={this.handleOnItemToggle}
                 render={(onToggle, isOpen) => (
-                    <div className={periodelisteBem.className}>
+                    <div className={periodelisteBem.block}>
                         {informasjon &&
                             informasjon.map((item) => (
                                 <PeriodelisteInfo

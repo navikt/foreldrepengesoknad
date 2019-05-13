@@ -39,7 +39,7 @@ class InteractiveListElement extends React.Component<AllListElementProps & Injec
             intl
         } = this.props;
         return (
-            <li className={bem.className}>
+            <li className={bem.block}>
                 <div className={bem.element('top')}>
                     <Normaltekst className="title">{title}</Normaltekst>
                     <button

@@ -37,7 +37,7 @@ const PeriodelisteSakForEndring: React.StatelessComponent<Props> = ({ sak }) => 
     }
     const bem = BEMHelper('periodelisteSakForEndring');
     return (
-        <div className={bem.className}>
+        <div className={bem.block}>
             {saksperioder.sort(sorterPeriodePåStartdato).map((periode, idx) => (
                 <div key={idx} className={bem.element('periode')}>
                     <EkspanderbartpanelBase
