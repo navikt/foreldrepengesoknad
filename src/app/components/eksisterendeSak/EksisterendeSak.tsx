@@ -4,69 +4,74 @@ import InfoBlock from 'common/components/info-block/InfoBlock';
 import { getVarighetString } from 'common/util/intlUtils';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import { getAntallUker } from '../../util/uttaksplan/stønadskontoer';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedHTMLMessage } from 'react-intl';
 import InnholdMedIllustrasjon from 'common/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
 import SituasjonSirkel from '../endringsillustrasjoner/situasjonSirkel/SituasjonSirkel';
 import UkerSirkel from '../endringsillustrasjoner/ukerSirkel/UkerSirkel';
 import { Situasjon } from '../foreldrepar/foreldreparTypes';
-import Sak from 'app/types/søknad/Sak';
-import { Søkerinfo } from 'app/types/søkerinfo';
 import { Kjønn } from 'app/types/common';
+import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
+import getMessage from 'common/util/i18nUtils';
 
 interface OwnProps {
+    søknadsinfo: Søknadsinfo;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    eksisterendeSak: EksisterendeSak;
-    sak: Sak;
-    søkerinfo: Søkerinfo;
 }
 
 type Props = InjectedIntlProps & OwnProps;
 
-const getSituasjon = (søkerinfo: Søkerinfo, eksisterendeSak: EksisterendeSak, sak: Sak): Situasjon | undefined => {
-    const kjønnSøker: Kjønn = søkerinfo.person.kjønn;
-    const kjønnAnnenForelder: Kjønn | undefined = sak.annenPart
-        ? sak.annenPart.kjønn || Kjønn.MANN /** todo */
-        : undefined;
-    if (kjønnSøker && kjønnAnnenForelder) {
+const getSituasjon = (info: Søknadsinfo): Situasjon | undefined => {
+    const { søker, annenForelder, mor, farMedmor } = info;
+    const kjønnSøker = søker.kjønn;
+    const kjønnAnnenForelder = annenForelder.kjønn;
+    if (info.søknaden.erDeltUttak) {
         if (kjønnSøker !== kjønnAnnenForelder) {
             return Situasjon.farOgMor;
         }
         return kjønnSøker === Kjønn.MANN ? Situasjon.farOgFar : Situasjon.morOgMedmor;
     } else {
-        const {
-            grunnlag: { farMedmorErAleneOmOmsorg, morErAleneOmOmsorg }
-        } = eksisterendeSak;
-
         if (kjønnSøker === Kjønn.KVINNE) {
-            return morErAleneOmOmsorg ? Situasjon.aleneomsorg : Situasjon.bareMor;
+            return mor.erAleneOmOmsorg ? Situasjon.aleneomsorg : Situasjon.bareMor;
         } else {
-            return farMedmorErAleneOmOmsorg ? Situasjon.aleneomsorg : Situasjon.bareFar;
+            return farMedmor.erAleneOmOmsorg ? Situasjon.aleneomsorg : Situasjon.bareFar;
         }
     }
 };
 
-const EksisterendeSak: React.StatelessComponent<Props> = ({
-    eksisterendeSak,
-    tilgjengeligeStønadskontoer,
-    sak,
-    søkerinfo,
-    intl
-}) => {
+const getHvem = (intl: InjectedIntl, erDeltUttak: boolean, navn?: NavnISøknaden): string => {
+    if (erDeltUttak && navn && navn.annenForelder) {
+        return getMessage(intl, 'eksisterendeSak.tekst.benevning.deltOmsorg', { navn: navn.annenForelder.fornavn });
+    }
+    return getMessage(intl, 'eksisterendeSak.tekst.benevning.aleneomsorg');
+};
+
+const EksisterendeSak: React.StatelessComponent<Props> = ({ søknadsinfo, tilgjengeligeStønadskontoer, intl }) => {
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
-    const situasjon = getSituasjon(søkerinfo, eksisterendeSak, sak);
+    const situasjon = getSituasjon(søknadsinfo);
     if (situasjon === undefined) {
         return null;
     }
+    const {
+        søknaden: { erDeltUttak, dekningsgrad },
+        navn
+    } = søknadsinfo;
+
     return (
         <InfoBlock padding="m">
             <InnholdMedIllustrasjon
-                tittel="Opprinnelig sak"
+                tittel={getMessage(intl, `eksisterendeSak.tittel.${erDeltUttak ? 'deltUttak' : 'aleneomsorg'}`)}
                 illustrasjoner={[
                     <SituasjonSirkel key="situasjon" situasjon={situasjon} />,
                     <UkerSirkel key="uker" uker={uker} />
                 ]}>
-                <strong>{getVarighetString(uker * 5, intl)}</strong> med{' '}
-                <strong>{eksisterendeSak.grunnlag.dekningsgrad} prosent utbetaling</strong>.
+                <FormattedHTMLMessage
+                    id="eksisterendeSak.tekst.html"
+                    values={{
+                        uker: getVarighetString(uker * 5, intl),
+                        dekningsgrad,
+                        navn: getHvem(intl, erDeltUttak, navn)
+                    }}
+                />
             </InnholdMedIllustrasjon>
         </InfoBlock>
     );
