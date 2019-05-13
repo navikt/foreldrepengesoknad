@@ -45,7 +45,7 @@ const getSituasjon = (søkerinfo: Søkerinfo, eksisterendeSak: EksisterendeSak, 
     }
 };
 
-const InformasjonEgenSak: React.StatelessComponent<Props> = ({
+const EksisterendeSak: React.StatelessComponent<Props> = ({
     eksisterendeSak,
     tilgjengeligeStønadskontoer,
     sak,
@@ -72,4 +72,4 @@ const InformasjonEgenSak: React.StatelessComponent<Props> = ({
     );
 };
 
-export default injectIntl(InformasjonEgenSak);
+export default injectIntl(EksisterendeSak);
