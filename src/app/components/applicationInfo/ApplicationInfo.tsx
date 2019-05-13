@@ -15,7 +15,7 @@ const bem = BEMHelper('applicationInfo');
 const ApplicationInfo: React.StatelessComponent<Props> = (props) => {
     try {
         return (
-            <div className={bem.className} role="presentation" aria-hidden={true}>
+            <div className={bem.block} role="presentation" aria-hidden={true}>
                 {BUILD.VERSION}
             </div>
         );

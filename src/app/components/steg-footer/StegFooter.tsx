@@ -15,7 +15,7 @@ const StegFooter: React.StatelessComponent<Props> = ({ onAvbryt, onFortsettSener
     const bem = BEMHelper('stegFooter');
 
     return (
-        <Normaltekst tag="div" className={bem.className}>
+        <Normaltekst tag="div" className={bem.block}>
             <div className={bem.element('divider')} />
             <div className={bem.element('links')}>
                 <LinkButton

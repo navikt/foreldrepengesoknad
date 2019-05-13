@@ -161,7 +161,7 @@ class UtenlandsoppholdModal extends React.Component<UtenlandsoppholdModalProps, 
         const cls = BEMHelper('utenlandsoppholdModal');
 
         return (
-            <Modal className={cls.className} onRequestClose={this.onRequestClose} {...modalProps}>
+            <Modal className={cls.block} onRequestClose={this.onRequestClose} {...modalProps}>
                 <ValiderbarForm onSubmit={this.onSubmit} noSummary={true}>
                     <Undertittel className={cls.element('title')}>
                         <FormattedMessage id={editMode ? 'utenlandsopphold.tittel.endre' : 'utenlandsopphold.tittel'} />

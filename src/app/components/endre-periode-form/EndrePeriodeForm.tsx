@@ -106,7 +106,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
         const harOverlappendePerioder = validertPeriode && validertPeriode.overlappendePerioder.length > 0;
         return (
-            <ValiderbarForm className={bem.className} validateBeforeSubmit={true}>
+            <ValiderbarForm className={bem.block} validateBeforeSubmit={true}>
                 <>
                     <Block visible={advarsel !== undefined}>
                         {advarsel && (

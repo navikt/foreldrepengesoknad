@@ -44,7 +44,7 @@ class Sidemal extends React.Component<Props> {
         } = this.props;
 
         const BEM = BEMHelper('content');
-        const cls = classnames(BEM.className, {
+        const cls = classnames(BEM.block, {
             [`${BEM.modifier('withoutMargin')}`]: margin === false
         });
 

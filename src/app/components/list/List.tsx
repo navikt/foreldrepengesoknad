@@ -14,7 +14,7 @@ export default class List<T> extends React.Component<ListProps<T>> {
     render() {
         const { data, renderElement, className } = this.props;
         return (
-            <ul className={`${bem.className} ${className}`}>
+            <ul className={`${bem.block} ${className}`}>
                 {data.map((dataObject: T, i: number) => renderElement(dataObject, i))}
             </ul>
         );

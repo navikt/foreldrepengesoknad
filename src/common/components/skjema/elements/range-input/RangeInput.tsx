@@ -115,7 +115,7 @@ class RangeInput extends React.Component<Props, State> {
         const bemStepper = BEMHelper('rangeInput__stepper');
 
         return (
-            <div className={bemWrapper.className}>
+            <div className={bemWrapper.block}>
                 <Fieldset legend={label} className={'uttakfordeler'}>
                     {hjelpetekst && (
                         <div className={bemWrapper.element('help')}>
@@ -126,14 +126,14 @@ class RangeInput extends React.Component<Props, State> {
                         {valueLabelPlacement === 'above' && labelRenderer({ value, min, max })}
                     </div>
                     <div
-                        className={classnames(bemRangeInput.className, {
+                        className={classnames(bemRangeInput.block, {
                             [bemRangeInput.modifier('withSteppers')]: steppers !== undefined
                         })}
                         ref={(c) => (this.container = c)}
                         onBlur={this.handleBlur}
                         onFocus={this.handleFocus}>
                         {steppers && (
-                            <div className={`${bemStepper.className} ${bemStepper.modifier('previous')}`}>
+                            <div className={`${bemStepper.block} ${bemStepper.modifier('previous')}`}>
                                 <RangeStepper
                                     direction="previous"
                                     onClick={() => (value > min ? onChange(value - 1) : null)}
@@ -158,7 +158,7 @@ class RangeInput extends React.Component<Props, State> {
                             </div>
                         </div>
                         {steppers && (
-                            <div className={`${bemStepper.className} ${bemStepper.modifier('next')}`}>
+                            <div className={`${bemStepper.block} ${bemStepper.modifier('next')}`}>
                                 <RangeStepper
                                     direction="next"
                                     onClick={() => (value < max ? onChange(value + 1) : null)}
