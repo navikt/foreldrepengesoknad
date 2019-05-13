@@ -63,7 +63,7 @@ class DatoInput extends React.Component<Props, {}> {
 
         return (
             <SkjemaInputElement id={this.props.id} feil={feil} label={label}>
-                <div className={bem.className}>
+                <div className={bem.block}>
                     <div className={bem.element('datovelger')}>
                         <NavDatovelger.Datovelger
                             {...rest}

@@ -39,7 +39,7 @@ class ToggleItem extends React.Component<Props, State> {
         return (
             <div
                 className={classnames(
-                    bem.className,
+                    bem.block,
                     expanded && expandedHeaderClassName ? expandedHeaderClassName : undefined
                 )}>
                 <a

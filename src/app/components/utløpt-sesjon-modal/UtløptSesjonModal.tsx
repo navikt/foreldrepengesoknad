@@ -22,7 +22,7 @@ type Props = OwnProps & InjectedIntlProps;
 const UtløptSesjonModal = ({ erÅpen, intl }: Props) => {
     return (
         <Modal
-            className={cls.className}
+            className={cls.block}
             contentLabel={getMessage(intl, 'sesjonUtløpt.tittel')}
             closeButton={false}
             isOpen={erÅpen}
