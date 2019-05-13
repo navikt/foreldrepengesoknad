@@ -1,11 +1,11 @@
 import Søknad, { Søkersituasjon, SøkerRolle } from '../../types/søknad/Søknad';
 import {
-    SakForEndring,
+    EksisterendeSak,
     FamiliehendelsesType,
     Saksgrunnlag,
     Saksperiode,
     PeriodeResultatType
-} from '../../types/søknad/SakForEndring';
+} from '../../types/EksisterendeSak';
 import { Barn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
@@ -122,12 +122,12 @@ export const kanUttaksplanGjennskapesFraSak = (perioder: Saksperiode[]): boolean
     return noenPerioderKanIkkeGjennskapes === false;
 };
 
-export const opprettSøknadFraSakForEndring = (
+export const opprettSøknadFraEksisterendeSak = (
     søkerinfo: Søkerinfo,
-    sakForEndring: SakForEndring,
+    eksisterendeSak: EksisterendeSak,
     sak: Sak
 ): Partial<Søknad> | undefined => {
-    const { grunnlag, uttaksplan } = sakForEndring;
+    const { grunnlag, uttaksplan } = eksisterendeSak;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(grunnlag);
 
     if (!situasjon) {
