@@ -19,7 +19,7 @@ const Foreldrepar: React.StatelessComponent<Props> = ({ forelder1, forelder2, va
     const secondSvg = forelder2 ? require(`./assets/${forelder2}.svg`).default : undefined;
 
     return (
-        <div role="presentation" className={bem.classNames(bem.className, bem.modifierConditional('kompakt', kompakt))}>
+        <div role="presentation" className={bem.classNames(bem.block, bem.modifierConditional('kompakt', kompakt))}>
             <Forelder
                 className={bem.element('firstParent')}
                 svg={firstSvg}

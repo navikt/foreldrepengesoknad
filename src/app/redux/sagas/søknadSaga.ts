@@ -71,7 +71,7 @@ function* startVanligEndringssøknad(action: StartSøknad) {
 function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
     const { saksnummer, søkerinfo, history } = action;
     const appState: AppState = yield select(stateSelector);
-    const sakForEndring: SakForEndring | undefined = yield call(fetchSakForEndring, saksnummer);
+    const sakForEndring: SakForEndring | undefined = yield call(fetchSakForEndring, saksnummer, sak);
     const søknad = sakForEndring ? opprettSøknadFraSakForEndring(søkerinfo, sakForEndring, sak) : undefined;
 
     if (

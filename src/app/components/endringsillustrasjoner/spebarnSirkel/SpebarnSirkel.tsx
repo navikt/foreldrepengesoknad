@@ -12,7 +12,7 @@ interface Props {
 const SpebarnSirkel: React.StatelessComponent<Props> = (props) => {
     const bem = BEMHelper('spebarnSirkel');
     return (
-        <div className={bem.className}>
+        <div className={bem.block}>
             <div className={bem.element('ikon')}>
                 <Sirkelmaske diameter="5rem">
                     <div className={bem.element('svg')}>

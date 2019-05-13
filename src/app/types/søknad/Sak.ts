@@ -1,4 +1,5 @@
 import Behandling from './Behandling';
+import { Kjønn } from '../common';
 
 export default interface Sak {
     type: SakType;
@@ -24,6 +25,7 @@ export enum FagsakStatus {
 export interface AnnenPart {
     aktørid: string;
     fnr: string;
+    kjønn: Kjønn;
     navn: {
         fornavn: string;
         etternavn: string;

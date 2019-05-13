@@ -13,7 +13,7 @@ interface Props {
 const DekningsgradSirkel: React.StatelessComponent<Props> = ({ dekningsgrad }) => {
     const bem = BEMHelper('dekningsgradSirkel');
     return (
-        <div className={bem.className}>
+        <div className={bem.block}>
             <div className={bem.element('ikon')}>
                 <Sirkelmaske diameter="5rem">
                     <div className={bem.element('svg')}>

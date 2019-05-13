@@ -46,11 +46,11 @@ function* getSaker() {
     }
 }
 
-export function* fetchSakForEndring(saksnummer: string) {
+export function* fetchSakForEndring(saksnummer: string, sak: Sak) {
     try {
         yield put(apiActions.updateApi({ isLoadingSakForEndring: true }));
         const response = yield call(Api.getSakForEndring, saksnummer);
-        return getSakForEndringFromDTO(response.data);
+        return getSakForEndringFromDTO(response.data, sak);
     } catch (error) {
         yield put(
             apiActions.updateApi({

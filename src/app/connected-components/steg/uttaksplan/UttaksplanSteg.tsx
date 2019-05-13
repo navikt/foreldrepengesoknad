@@ -48,6 +48,7 @@ import getMessage from 'common/util/i18nUtils';
 import { Feature, isFeatureEnabled } from '../../../Feature';
 import InformasjonEgenSak from '../../../components/informasjon-egen-sak/InformasjonEgenSak';
 import { finnEndringerIUttaksplan } from 'app/util/uttaksplan/uttaksplanEndringUtil';
+import Sak from 'app/types/søknad/Sak';
 
 interface StateProps {
     stegProps: StegProps;
@@ -65,6 +66,7 @@ interface StateProps {
     aktivitetsfriKvote: number;
     uttaksplanVeilederInfo: VeilederMessage[];
     planErEndret: boolean;
+    sak?: Sak;
 }
 
 interface UttaksplanStegState {
@@ -209,6 +211,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             aktivitetsfriKvote,
             uttaksplanVeilederInfo,
             planErEndret,
+            sak,
+            søkerinfo,
             intl
         } = this.props;
 
@@ -268,10 +272,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
                         )}
                         {isFeatureEnabled(Feature.hentSakForEndring) &&
-                            sakForEndring && (
+                            sakForEndring &&
+                            sak && (
                                 <Block>
                                     <InformasjonEgenSak
-                                        sak={sakForEndring}
+                                        sakForEndring={sakForEndring}
+                                        sak={sak}
+                                        søkerinfo={søkerinfo}
                                         tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                     />
                                 </Block>
@@ -355,7 +362,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps & InjectedIntlProps): StateProps => {
     const {
         søknad,
-        api: { isLoadingTilgjengeligeStønadskontoer }
+        api: { isLoadingTilgjengeligeStønadskontoer, sakForEndringssøknad }
     } = state;
     const { søkerinfo, history } = props;
 
@@ -419,7 +426,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         tilleggsopplysninger: søknad.tilleggsopplysninger,
         uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl)(state),
         aktivitetsfriKvote,
-        planErEndret
+        planErEndret,
+        sak: sakForEndringssøknad
     };
 };
 
