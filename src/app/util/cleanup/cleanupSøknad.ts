@@ -166,7 +166,8 @@ export const cleanEnkelEndringssøknad = (
         saksnummer: søknad.saksnummer,
         type: søknad.type,
         uttaksplan: endringerIUttaksplan || søknad.uttaksplan,
-        vedlegg: søknad.vedlegg
+        vedlegg: søknad.vedlegg,
+        søker: søknad.søker
     };
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
     cleanedSøknad.vedlegg = cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring: søknad.vedleggForSenEndring });

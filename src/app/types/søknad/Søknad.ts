@@ -88,7 +88,7 @@ interface SøknadEndretForInnsending {
 
 export type EnkelEndringssøknadForInnsending = Pick<
     Søknad,
-    'type' | 'saksnummer' | 'erEndringssøknad' | 'uttaksplan' | 'vedlegg'
+    'type' | 'saksnummer' | 'erEndringssøknad' | 'uttaksplan' | 'vedlegg' | 'søker'
 > &
     SøknadEndretForInnsending;
 
