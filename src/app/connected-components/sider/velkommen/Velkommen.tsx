@@ -147,7 +147,7 @@ class Velkommen extends React.Component<Props, State> {
                         text: getMessage(intl, 'velkommen.bobletekst')
                     }}
                 />
-                <div className={bem.className}>
+                <div className={bem.block}>
                     <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
                         {getMessage(intl, 'velkommen.tittel')}
                     </Innholdstittel>

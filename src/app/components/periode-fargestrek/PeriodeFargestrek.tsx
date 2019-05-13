@@ -16,7 +16,7 @@ const PeriodeFargestrek: React.StatelessComponent<Props> = ({ farge, gradert }) 
     return (
         <div
             className={classnames(
-                bem.className,
+                bem.block,
                 bem.modifier(farge),
                 gradert ? `${bem.modifier(farge)}--gradert` : undefined
             )}

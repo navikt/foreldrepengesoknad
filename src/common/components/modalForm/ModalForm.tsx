@@ -67,7 +67,7 @@ class ModalForm extends React.Component<Props, {}> {
                 onRequestClose={this.handleOnRequestClose}
                 closeButton={true}
                 shouldCloseOnOverlayClick={false}
-                className={classnames(cls.className, cls.modifier(dialogSize))}>
+                className={classnames(cls.block, cls.modifier(dialogSize))}>
                 <div className={cls.element('content')}>
                     <ValiderbarForm
                         onSubmit={this.handleOnSubmit}

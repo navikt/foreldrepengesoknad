@@ -21,7 +21,7 @@ const datoformat = 'DD. MMM YYYY';
 
 const UttaksplanEgenSak: React.StatelessComponent<Props> = ({ uttaksplan, søknadsinfo, intl }) => {
     return (
-        <ol className={bem.className}>
+        <ol className={bem.block}>
             {uttaksplan.sort(sorterPerioder).map((periode, index) => (
                 <li key={index}>
                     <div className={bem.element('periode')}>

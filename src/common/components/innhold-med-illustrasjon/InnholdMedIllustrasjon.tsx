@@ -14,7 +14,7 @@ const bem = BEMHelper('innholdMedIllustrasjon');
 const InnholdMedIllustrasjon: React.StatelessComponent<Props> = ({ tittel, illustrasjoner, children }) => (
     <div
         className={bem.classNames(
-            bem.className,
+            bem.block,
             bem.modifierConditional('medIllustrasjoner', illustrasjoner !== undefined)
         )}>
         <div className={bem.element('contentWrapper')}>

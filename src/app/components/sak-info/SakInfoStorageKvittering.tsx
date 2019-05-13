@@ -18,7 +18,7 @@ const SakInfoStorageKvittering: React.StatelessComponent<Props> = ({ storageKvit
     const bem = BEMHelper('sak-info');
     return (
         <InfoBlock padding="none">
-            <div className={bem.className}>
+            <div className={bem.block}>
                 <div className={bem.element('text')}>
                     <Element className="blokk-xxxs">
                         <FormattedMessage id="velkommen.sak.type" />

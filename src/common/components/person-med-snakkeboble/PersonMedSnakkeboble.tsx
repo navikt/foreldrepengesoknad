@@ -29,7 +29,7 @@ const PersonMedSnakkeboble: React.StatelessComponent<Props> = ({
     return (
         <div
             className={classnames(
-                bem.className,
+                bem.block,
                 fyltBakgrunn ? bem.modifier('fyltBakgrunn') : undefined,
                 stil ? bem.modifier(stil) : undefined
             )}>

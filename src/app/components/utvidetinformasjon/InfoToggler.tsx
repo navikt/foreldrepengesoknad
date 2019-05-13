@@ -16,7 +16,7 @@ const InfoToggler = (props: Props) => {
     const { apen = false, children, onToggle } = props;
     return (
         <button
-            className={cls.className}
+            className={cls.block}
             onClick={(evt: React.MouseEvent<HTMLButtonElement>) => {
                 evt.stopPropagation();
                 evt.preventDefault();

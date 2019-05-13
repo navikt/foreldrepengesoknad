@@ -40,7 +40,7 @@ const VeilederMelding: React.SFC<VeilederpanelInnholdContentProps> = ({ message 
     const bem = BEMHelper('veilederMelding');
     const FormatComponent = message.formatContentAsHTML === true ? FormattedHTMLMessage : FormattedMessage;
     return (
-        <div className={bem.className}>
+        <div className={bem.block}>
             {message.type !== 'normal' ? (
                 renderAlert(message, FormatComponent)
             ) : (

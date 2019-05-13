@@ -11,7 +11,7 @@ const bem = BEMHelper('toggleArrow');
 const expandedStyle = bem.modifier('expanded');
 
 const ToggleArrow: React.StatelessComponent<Props> = ({ expanded }) => (
-    <span className={classnames(`${bem.className}`, { [expandedStyle]: expanded })} />
+    <span className={classnames(`${bem.block}`, { [expandedStyle]: expanded })} />
 );
 
 export default ToggleArrow;
