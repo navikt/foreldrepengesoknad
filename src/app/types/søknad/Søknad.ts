@@ -1,5 +1,4 @@
 import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
-
 import InformasjonOmUtenlandsopphold, { InformasjonOmUtenlandsoppholdPartial } from './InformasjonOmUtenlandsopphold';
 import { Barn } from './Barn';
 import Søker, { SøkerPartial } from './Søker';
@@ -10,7 +9,7 @@ import { Dekningsgrad } from 'common/types';
 import { UttaksplanSkjemadata } from '../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { StegID } from '../../util/routing/stegConfig';
 import { Omit } from 'react-redux';
-import { SakForEndring } from './SakForEndring';
+import { EksisterendeSak } from '../EksisterendeSak';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -58,7 +57,7 @@ interface SøknadEkstrainfo {
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
     lastAddedPeriodeId?: string;
     søknadenGjelderBarnValg?: SøknadenGjelderBarnValg;
-    sakForEndring?: SakForEndring;
+    eksisterendeSak?: EksisterendeSak;
     uttakFraEksisterendeSak: Periode[];
 }
 
