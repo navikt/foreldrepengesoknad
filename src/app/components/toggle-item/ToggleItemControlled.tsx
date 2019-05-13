@@ -43,7 +43,7 @@ class ToggleItemControlled extends React.Component<Props> {
         return (
             <div
                 className={classnames(
-                    BEM.className,
+                    BEM.block,
                     isExpanded && expandedHeaderClassName ? expandedHeaderClassName : undefined
                 )}>
                 <a

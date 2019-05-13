@@ -65,7 +65,7 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
             <div
                 role={ariaTekst ? 'presentation' : undefined}
                 aria-hidden={true}
-                className={classnames(BEM.className, 'typo-normal', {
+                className={classnames(BEM.block, 'typo-normal', {
                     [BEM.modifier('apnet')]: isOpen
                 })}>
                 <div className={BEM.element('ikon')} role="presentation" aria-hidden={true}>

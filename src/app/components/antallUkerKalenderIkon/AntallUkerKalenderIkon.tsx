@@ -11,7 +11,7 @@ interface Props {
 const bem = BEMHelper('antallUkerKalenderIkon');
 
 const AntallUkerKalenderIkon: React.StatelessComponent<Props> = ({ uker }) => (
-    <div className={bem.classNames(bem.className, bem.modifierConditional('over99', uker > 99))}>
+    <div className={bem.classNames(bem.block, bem.modifierConditional('over99', uker > 99))}>
         <div className={bem.element('ikon')}>
             <KalenderBakgrunnIkon />
         </div>

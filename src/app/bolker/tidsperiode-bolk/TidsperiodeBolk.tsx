@@ -123,7 +123,7 @@ class TidsperiodeBolk extends React.Component<Props> {
 
         return (
             <SkjemaGruppe feil={feil}>
-                <div className={bem.className}>
+                <div className={bem.block}>
                     <div className={bem.element('fra')}>
                         <Block margin="none">
                             <DatoInput

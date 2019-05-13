@@ -37,7 +37,7 @@ const Block: React.StatelessComponent<BlockProps> = ({
     if (children === undefined || (animated !== true && visible === false)) {
         return null;
     }
-    const contentClass = classNames(cls.className, !hasChildBlocks ? cls.modifier(margin) : cls.modifier('none'));
+    const contentClass = classNames(cls.block, !hasChildBlocks ? cls.modifier(margin) : cls.modifier('none'));
     const content =
         header !== undefined ? (
             <section className={contentClass}>
