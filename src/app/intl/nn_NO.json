@@ -485,6 +485,8 @@
     "periodeliste.hull.tittel": "Mista foreldrepengar",
     "periodeliste.hull.ikkeInvilgetPeriode.tittel": "Tapte foreldrepenger - ikke invilget {type}",
     "periodeliste.hull.ikkeInvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
+    "periodeliste.hull.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Uttaksperioden er ikke innvilget",
+    "periodeliste.hull.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsesperioden er ikke innvilget",
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode": "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "periodeliste.nyPeriodeErFørFamiliehendelsesdato":

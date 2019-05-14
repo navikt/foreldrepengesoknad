@@ -93,7 +93,13 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
             renderContent={() => (
                 <div>
                     {isAvslåttPeriode(periode) ? (
-                        <>Avslått {periode.avslåttPeriodeType}.</>
+                        <Block>
+                            <FormattedMessage
+                                id={`periodeliste.hull.ikkeInvilgetPeriode.expanded.beskrivelse.${
+                                    periode.avslåttPeriodeType
+                                }`}
+                            />
+                        </Block>
                     ) : (
                         <>
                             <Block margin="xs" visible={kunHelligdager}>
