@@ -7,8 +7,6 @@ import {
 } from '../../types/EksisterendeUttak';
 import { UttaksplanDTO } from '../types/uttaksplanDTO';
 import { StønadskontoType, SaksperiodeUtsettelseÅrsakType } from '../../types/uttaksplan/periodetyper';
-// import mapSaksperioderTilUttaksperioder from '../../util/eksisterendeSak/mapSaksperioderTilUttaksperioder';
-// import { kanUttaksplanGjennskapesFraSak } from '../../util/eksisterendeSak/eksisterendeSakUtils';
 
 export const getEksisterendeUttakFromDTO = (dto: UttaksplanDTO): EksisterendeUttak | undefined => {
     const {
