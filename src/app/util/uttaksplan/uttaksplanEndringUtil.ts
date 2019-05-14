@@ -98,6 +98,9 @@ const justerStartdatoFørsteEndring = (endringer: Periode[], opprinneligPlan: Pe
         } else if (
             moment(førsteEndredePeriode.tidsperiode.tom).isBefore(opprinneligPeriodeSammeFomDato.tidsperiode.tom, 'day')
         ) {
+            if (endringer.length > 0) {
+                return endringer.slice(1);
+            }
             return [
                 {
                     ...førsteEndredePeriode,
