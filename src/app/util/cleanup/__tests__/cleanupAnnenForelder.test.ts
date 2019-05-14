@@ -65,10 +65,7 @@ const søknad: SøknadPartial = {
         søknadenGjelderBarnValg: {
             valgteBarn: [],
             gjelderAnnetBarn: undefined
-        },
-        erEnkelEndringssøknad: false,
-        erEnkelEndringssøknadMedUttaksplan: false,
-        uttakFraEksisterendeSak: []
+        }
     }
 };
 

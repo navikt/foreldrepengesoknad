@@ -4,7 +4,7 @@ import Api from '../../api/api';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import Sak from '../../types/søknad/Sak';
 import { skalKunneSøkeOmEndring, harSakUnderBehandling } from '../../util/saker/sakerUtils';
-import { getEksisterendeSakFromDTO } from '../../api/utils/eksisterendeSakApiUtils';
+import { getEksisterendeUttakFromDTO } from '../../api/utils/eksisterendeUttakApiUtils';
 
 function* getSaker() {
     try {
@@ -46,11 +46,11 @@ function* getSaker() {
     }
 }
 
-export function* fetchEksisterendeSak(saksnummer: string) {
+export function* fetchEksisterendeUttak(saksnummer: string) {
     try {
         yield put(apiActions.updateApi({ isLoadingEksisterendeSak: true }));
         const response = yield call(Api.getEksisterendeSak, saksnummer);
-        return getEksisterendeSakFromDTO(response.data);
+        return getEksisterendeUttakFromDTO(response.data);
     } catch (error) {
         yield put(
             apiActions.updateApi({

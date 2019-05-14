@@ -8,7 +8,7 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
 import { dateIsTodayOrInFuture } from '../dates/dates';
-import { Saksgrunnlag } from 'app/types/EksisterendeSak';
+import { Uttaksgrunnlag } from 'app/types/EksisterendeUttak';
 import Søknad from 'app/types/søknad/Søknad';
 import { getFamiliehendelsedato } from '.';
 
@@ -63,7 +63,7 @@ export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): Sen
     }
 };
 
-export const skalKunneViseMorsUttaksplanForFarEllerMedmor = (grunnlag: Saksgrunnlag, søknad: Søknad): boolean => {
+export const skalKunneViseMorsUttaksplanForFarEllerMedmor = (grunnlag: Uttaksgrunnlag, søknad: Søknad): boolean => {
     return (
         moment(grunnlag.familieHendelseDato).isSame(getFamiliehendelsedato(søknad.barn, søknad.situasjon), 'day') &&
         grunnlag.dekningsgrad === søknad.dekningsgrad &&

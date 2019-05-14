@@ -4,7 +4,7 @@ import { Søkerinfo } from '../../types/søkerinfo';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import Sak from '../../types/søknad/Sak';
 import { StorageKvittering } from '../../types/StorageKvittering';
-import { EksisterendeSak } from '../../types/EksisterendeSak';
+import { EksisterendeUttak } from '../../types/EksisterendeUttak';
 
 export interface ApiState {
     søkerinfo?: Søkerinfo;
@@ -27,7 +27,7 @@ export interface ApiState {
     søkerinfoLastetCounter: number;
     systemerIkkeTilgjengelig: boolean;
     storageKvittering?: StorageKvittering;
-    eksisterendeSak?: EksisterendeSak;
+    eksisterendeSak?: EksisterendeUttak;
 }
 
 export type ApiStatePartial = Partial<ApiState>;

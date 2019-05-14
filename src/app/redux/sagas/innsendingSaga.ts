@@ -8,7 +8,11 @@ import { cleanUpSøknad, cleanEnkelEndringssøknad } from '../../util/cleanup/cl
 import { AppState } from '../reducers';
 import { mapMissingAttachmentsOnSøknad } from '../../util/attachments/missingAttachmentUtil';
 import { extractUUID } from '../../api/utils/errorUtil';
-import Søknad, { SøknadForInnsending, EnkelEndringssøknadForInnsending } from 'app/types/søknad/Søknad';
+import Søknad, {
+    SøknadForInnsending,
+    EnkelEndringssøknadForInnsending,
+    isEnkelEndringssøknad
+} from 'app/types/søknad/Søknad';
 import { MissingAttachment } from 'app/types/MissingAttachment';
 
 const getSøknadsdataForInnsending = (
@@ -17,8 +21,8 @@ const getSøknadsdataForInnsending = (
 ): SøknadForInnsending | EnkelEndringssøknadForInnsending => {
     const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
     mapMissingAttachmentsOnSøknad(missingAttachments, søknad);
-    if (søknad.ekstrainfo.eksisterendeSak !== undefined && søknad.ekstrainfo.eksisterendeSak.uttaksplan) {
-        return cleanEnkelEndringssøknad(søknad, søknad.ekstrainfo.eksisterendeSak.uttaksplan);
+    if (isEnkelEndringssøknad(søknad)) {
+        return cleanEnkelEndringssøknad(søknad, søknad.ekstrainfo.eksisterendeSak.uttaksplan || []);
     } else {
         return cleanUpSøknad(søknad);
     }

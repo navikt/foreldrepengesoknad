@@ -4,18 +4,18 @@ import { sorterPerioder } from '../uttaksplan/Periodene';
 import { Perioden } from '../uttaksplan/Perioden';
 import { Uttaksdagen, erUttaksdag } from '../uttaksplan/Uttaksdagen';
 import { getUtsettelseÅrsakFromSaksperiode } from '../uttaksplan/uttaksperiodeUtils';
-import { Saksperiode, Saksgrunnlag, PeriodeResultatType } from '../../types/EksisterendeSak';
+import { EksisterendePeriode, Uttaksgrunnlag, PeriodeResultatType } from '../../types/EksisterendeUttak';
 import { Forelder } from 'common/types';
 import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
 
-const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor: boolean): Forelder => {
+const getForelderForPeriode = (saksperiode: EksisterendePeriode, søkerErFarEllerMedmor: boolean): Forelder => {
     if (saksperiode.gjelderAnnenPart) {
         return søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR;
     }
     return søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR;
 };
 
-const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
+const mapUttaksperiodeFromSaksperiode = (saksperiode: EksisterendePeriode, grunnlag: Uttaksgrunnlag): Periode => {
     const gradert = saksperiode.arbeidstidprosent !== 0;
 
     const uttaksperiode: Uttaksperiode = {
@@ -33,7 +33,10 @@ const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Sak
     return uttaksperiode;
 };
 
-const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Utsettelsesperiode => {
+const mapUtsettelseperiodeFromSaksperiode = (
+    saksperiode: EksisterendePeriode,
+    grunnlag: Uttaksgrunnlag
+): Utsettelsesperiode => {
     const utsettelsesperiode: Utsettelsesperiode = {
         id: guid(),
         type: Periodetype.Utsettelse,
@@ -53,7 +56,7 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag:
 
 // };
 
-const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
+const getPeriodeFromSaksperiode = (saksperiode: EksisterendePeriode, grunnlag: Uttaksgrunnlag): Periode => {
     if (
         saksperiode.utsettelsePeriodeType !== undefined &&
         saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET
@@ -131,7 +134,7 @@ const korrigerTidsperiode = (periode: Periode): Periode => {
     }
 };
 
-const mapSaksperioderTilUttaksperioder = (perioder: Saksperiode[], grunnlag: Saksgrunnlag): Periode[] => {
+const mapSaksperioderTilUttaksperioder = (perioder: EksisterendePeriode[], grunnlag: Uttaksgrunnlag): Periode[] => {
     let uttakFraEksisterendeSak = perioder
         .map((periode) => getPeriodeFromSaksperiode(periode, grunnlag))
         .sort(sorterPerioder)

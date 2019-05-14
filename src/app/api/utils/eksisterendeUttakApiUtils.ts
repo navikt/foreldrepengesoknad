@@ -1,16 +1,16 @@
 import {
-    EksisterendeSak,
+    EksisterendeUttak,
     FamiliehendelsesType,
-    Saksperiode,
+    EksisterendePeriode,
     PeriodeResultatType,
-    Saksgrunnlag
-} from '../../types/EksisterendeSak';
+    Uttaksgrunnlag
+} from '../../types/EksisterendeUttak';
 import { UttaksplanDTO } from '../types/uttaksplanDTO';
 import { StønadskontoType, SaksperiodeUtsettelseÅrsakType } from '../../types/uttaksplan/periodetyper';
-import mapSaksperioderTilUttaksperioder from '../../util/eksisterendeSak/mapSaksperioderTilUttaksperioder';
-import { kanUttaksplanGjennskapesFraSak } from '../../util/eksisterendeSak/eksisterendeSakUtils';
+// import mapSaksperioderTilUttaksperioder from '../../util/eksisterendeSak/mapSaksperioderTilUttaksperioder';
+// import { kanUttaksplanGjennskapesFraSak } from '../../util/eksisterendeSak/eksisterendeSakUtils';
 
-export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak | undefined => {
+export const getEksisterendeUttakFromDTO = (dto: UttaksplanDTO): EksisterendeUttak | undefined => {
     const {
         grunnlag: {
             dekningsgrad,
@@ -24,7 +24,7 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
     } = dto;
 
     try {
-        const grunnlag: Saksgrunnlag = {
+        const grunnlag: Uttaksgrunnlag = {
             ...restGrunnlag,
             erBarnetFødt: familieHendelseType !== FamiliehendelsesType.TERM,
             dekningsgrad: dekningsgrad === 100 ? '100' : '80',
@@ -32,7 +32,7 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
             familieHendelseType: familieHendelseType as FamiliehendelsesType
         };
 
-        const saksperioder = perioder.map((p): Saksperiode => {
+        const uttak = perioder.map((p): EksisterendePeriode => {
             const { periodeResultatType, periode, stønadskontotype, utsettelsePeriodeType, ...periodeRest } = p;
             return {
                 ...periodeRest,
@@ -46,14 +46,9 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
             };
         });
 
-        const uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioder)
-            ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag)
-            : undefined;
-
-        const sak: EksisterendeSak = {
+        const sak: EksisterendeUttak = {
             grunnlag,
-            saksperioder,
-            uttaksplan
+            uttak
         };
 
         return sak;

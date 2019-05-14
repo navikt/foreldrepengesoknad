@@ -32,8 +32,6 @@ export const getDefaultSøknadState = (): SøknadPartial => {
         harGodkjentVilkår: false,
         harGodkjentOppsummering: false,
         ekstrainfo: {
-            erEnkelEndringssøknad: false,
-            erEnkelEndringssøknadMedUttaksplan: false,
             uttaksplanSkjema: {
                 startdatoPermisjon: undefined
             },
@@ -41,9 +39,7 @@ export const getDefaultSøknadState = (): SøknadPartial => {
             søknadenGjelderBarnValg: {
                 valgteBarn: [],
                 gjelderAnnetBarn: undefined
-            },
-            eksisterendeSak: undefined,
-            uttakFraEksisterendeSak: []
+            }
         },
         vedleggForSenEndring: undefined,
         tilleggsopplysninger: {},

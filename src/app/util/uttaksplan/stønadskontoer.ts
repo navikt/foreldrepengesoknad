@@ -1,5 +1,5 @@
 import { StønadskontoType, TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
-import { EksisterendeSak, Saksperiode, PeriodeResultatType } from 'app/types/EksisterendeSak';
+import { EksisterendeUttak, EksisterendePeriode, PeriodeResultatType } from 'app/types/EksisterendeUttak';
 import { Tidsperioden } from './Tidsperioden';
 import * as moment from 'moment';
 
@@ -54,16 +54,16 @@ export const getAntallUkerFellesperiode = (kontoer: TilgjengeligStønadskonto[])
 };
 
 export const getResterendeStønadskontoer = (
-    eksisterendeSak: EksisterendeSak,
+    eksisterendeSak: EksisterendeUttak,
     tilgjengeligStønadskonto: TilgjengeligStønadskonto[]
 ): TilgjengeligStønadskonto[] => {
     return tilgjengeligStønadskonto.map((k) => ({
         ...k,
-        dager: k.dager - getBrukteUttaksdager(eksisterendeSak.saksperioder, k.konto)
+        dager: k.dager - getBrukteUttaksdager(eksisterendeSak.uttak, k.konto)
     }));
 };
 
-const getBrukteUttaksdager = (perioder: Saksperiode[], kontoType: StønadskontoType): number => {
+const getBrukteUttaksdager = (perioder: EksisterendePeriode[], kontoType: StønadskontoType): number => {
     return perioder
         .filter(
             (p) =>

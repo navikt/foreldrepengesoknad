@@ -9,7 +9,8 @@ import { Dekningsgrad } from 'common/types';
 import { UttaksplanSkjemadata } from '../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { StegID } from '../../util/routing/stegConfig';
 import { Omit } from 'react-redux';
-import { EksisterendeSak } from '../EksisterendeSak';
+import { EksisterendeUttak } from '../EksisterendeUttak';
+import Sak from './Sak';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -51,14 +52,19 @@ export interface Tilleggsopplysninger {
 }
 
 interface SøknadEkstrainfo {
-    erEnkelEndringssøknad: boolean;
-    erEnkelEndringssøknadMedUttaksplan: boolean;
     currentStegID: StegID | undefined;
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
     lastAddedPeriodeId?: string;
     søknadenGjelderBarnValg?: SøknadenGjelderBarnValg;
     eksisterendeSak?: EksisterendeSak;
-    uttakFraEksisterendeSak: Periode[];
+}
+
+interface EksisterendeSak {
+    sak: Sak;
+    uttak: EksisterendeUttak;
+    uttaksplan?: Periode[];
+    grunnlagErDefinert: boolean;
+    uttaksplanErDefinert: boolean;
 }
 
 interface Søknad {
@@ -81,6 +87,21 @@ interface Søknad {
     tilleggsopplysninger: Tilleggsopplysninger;
 }
 
+interface EndringssøknadEkstrainfo extends SøknadEkstrainfo {
+    eksisterendeSak: EksisterendeSak;
+}
+export type Endringssøknad = Omit<Søknad, 'ekstrainfo' | 'erEndringssøknad'> & {
+    erEndringssøknad: true;
+    ekstrainfo: EndringssøknadEkstrainfo;
+};
+
+export function isEndringssøknad(søknad: Søknad): søknad is Endringssøknad {
+    return søknad.erEndringssøknad === true;
+}
+
+export function isEnkelEndringssøknad(søknad: Søknad): søknad is Endringssøknad {
+    return isEndringssøknad(søknad) && søknad.ekstrainfo.eksisterendeSak.grunnlagErDefinert;
+}
 interface SøknadEndretForInnsending {
     tilleggsopplysninger?: string;
 }

@@ -1,5 +1,5 @@
 import { StegID } from '../../../util/routing/stegConfig';
-import Søknad from '../../../types/søknad/Søknad';
+import Søknad, { isEndringssøknad, isEnkelEndringssøknad } from '../../../types/søknad/Søknad';
 import {
     søknadGjelderAdopsjon,
     søknadGjelderForeldreansvar,
@@ -32,7 +32,7 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo, s
                 harGodkjentVilkår(søknad) && barnErGyldig(søknad, søkerinfo) && annenForelderErGyldig(søknad, søkerinfo)
             );
         case StegID.UTTAKSPLAN:
-            if (søknad.erEndringssøknad && søknad.ekstrainfo.eksisterendeSak) {
+            if (isEndringssøknad(søknad)) {
                 return true;
             }
             return (
@@ -66,15 +66,14 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo, s
                 annenInntektErGyldig(søknad.søker)
             );
         case StegID.OPPSUMMERING:
-            const erEnkelEndringssøknad = søknad.ekstrainfo.erEnkelEndringssøknad === true;
-            const barnStegGyldig = erEnkelEndringssøknad || barnErGyldig(søknad, søkerinfo);
-            const annenForelderStegGyldig = erEnkelEndringssøknad || annenForelderErGyldig(søknad, søkerinfo);
-            const uttaksplanStegGyldig = erEnkelEndringssøknad || uttaksplanSkjemaErGyldig(søknad, søknadsinfo);
+            const grunnlagOk = isEnkelEndringssøknad(søknad)
+                ? true
+                : barnErGyldig(søknad, søkerinfo) &&
+                  annenForelderErGyldig(søknad, søkerinfo) &&
+                  uttaksplanSkjemaErGyldig(søknad, søknadsinfo);
             return (
                 harGodkjentVilkår(søknad) &&
-                barnStegGyldig &&
-                annenForelderStegGyldig &&
-                uttaksplanStegGyldig &&
+                grunnlagOk &&
                 (søknad.erEndringssøknad === false ? utenlandsoppholdErGyldig(søknad) : true) &&
                 (søknad.erEndringssøknad === false ? annenInntektErGyldig(søknad.søker) : true)
             );

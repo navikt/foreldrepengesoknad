@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { EksisterendeSak } from '../../types/EksisterendeSak';
 import InfoBlock from 'common/components/info-block/InfoBlock';
 import { getVarighetString } from 'common/util/intlUtils';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';

@@ -33,7 +33,7 @@ import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
 import BekreftTilbakestillUttaksplanDialog from './BekreftTilbakestillUttaksplanDialog';
 import Block from 'common/components/block/Block';
 import isAvailable from '../util/isAvailable';
-import Søknad, { Tilleggsopplysninger, Opplysning } from '../../../types/søknad/Søknad';
+import Søknad, { Tilleggsopplysninger, Opplysning, isEnkelEndringssøknad } from '../../../types/søknad/Søknad';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Uttaksoppsummering from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
@@ -237,7 +237,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         const defaultStønadskontoType =
             tilgjengeligeStønadskontoer.length === 1 ? tilgjengeligeStønadskontoer[0].konto : undefined;
 
-        const visVeileder = søknad.ekstrainfo.erEnkelEndringssøknad !== true;
+        const visVeileder = isEnkelEndringssøknad(søknad) !== true;
 
         return (
             <Steg

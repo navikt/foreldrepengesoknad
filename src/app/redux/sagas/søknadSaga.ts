@@ -12,19 +12,18 @@ import { AppState } from '../reducers';
 import { getSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
-import { fetchEksisterendeSak } from './sakerSaga';
-import { opprettSøknadFraEksisterendeSak } from '../../util/eksisterendeSak/eksisterendeSakUtils';
+import { fetchEksisterendeUttak } from './sakerSaga';
+import { opprettSøknadFraEksisterendeUttak } from '../../util/eksisterendeSak/eksisterendeSakUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
 import { StegID } from '../../util/routing/stegConfig';
 import { isFeatureEnabled, Feature } from '../../Feature';
-import { EksisterendeSak, Saksgrunnlag } from '../../types/EksisterendeSak';
-import mapSaksperioderTilUttaksperioder from 'app/util/eksisterendeSak/mapSaksperioderTilUttaksperioder';
+import { EksisterendeUttak, Uttaksgrunnlag } from '../../types/EksisterendeUttak';
 import { getStønadskontoParams } from '../../util/uttaksplan/st\u00F8nadskontoParams';
 import Sak from 'app/types/søknad/Sak';
 
 const stateSelector = (state: AppState) => state;
 
-const søkerKanFåEnkelEndringssøknad = (grunnlag: Saksgrunnlag): boolean => {
+const søkerKanFåEnkelEndringssøknad = (grunnlag: Uttaksgrunnlag): boolean => {
     return grunnlag.erBarnetFødt === true;
 };
 
@@ -71,39 +70,26 @@ function* startVanligEndringssøknad(action: StartSøknad) {
 function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
     const { saksnummer, søkerinfo, history } = action;
     const appState: AppState = yield select(stateSelector);
-    const eksisterendeSak: EksisterendeSak | undefined = yield call(fetchEksisterendeSak, saksnummer);
-    const søknad = eksisterendeSak ? opprettSøknadFraEksisterendeSak(søkerinfo, eksisterendeSak, sak) : undefined;
+
+    const eksisterendeUttak: EksisterendeUttak | undefined = yield call(fetchEksisterendeUttak, saksnummer);
+    const søknad = eksisterendeUttak
+        ? opprettSøknadFraEksisterendeUttak(søkerinfo, eksisterendeUttak, sak, appState.søknad)
+        : undefined;
 
     if (
-        eksisterendeSak === undefined ||
-        søkerKanFåEnkelEndringssøknad(eksisterendeSak.grunnlag) === false ||
+        eksisterendeUttak === undefined ||
+        søkerKanFåEnkelEndringssøknad(eksisterendeUttak.grunnlag) === false ||
         søknad === undefined
     ) {
         yield call(startVanligEndringssøknad, action);
     } else {
-        yield put(
-            søknadActions.updateSøknad({
-                ...søknad,
-                erEndringssøknad: true,
-                saksnummer,
-                ekstrainfo: {
-                    ...appState.søknad.ekstrainfo,
-                    eksisterendeSak,
-                    erEnkelEndringssøknad: true,
-                    erEnkelEndringssøknadMedUttaksplan: eksisterendeSak.uttaksplan !== undefined,
-                    uttakFraEksisterendeSak: mapSaksperioderTilUttaksperioder(
-                        eksisterendeSak.saksperioder,
-                        eksisterendeSak.grunnlag
-                    )
-                }
-            })
-        );
+        yield put(søknadActions.updateSøknad(søknad));
         const updatedAppState = yield select(stateSelector);
         const søknadsinfo = getSøknadsinfo(updatedAppState);
         if (søknadsinfo) {
             yield call(
                 getTilgjengeligeStønadskontoer,
-                getStønadskontoParams(søknadsinfo, eksisterendeSak.grunnlag.familieHendelseDato),
+                getStønadskontoParams(søknadsinfo, eksisterendeUttak.grunnlag.familieHendelseDato),
                 history
             );
         }

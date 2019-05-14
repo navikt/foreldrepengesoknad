@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import Søknad, { SøkerRolle } from '../types/søknad/Søknad';
+import Søknad, { SøkerRolle, isEnkelEndringssøknad, Endringssøknad } from '../types/søknad/Søknad';
 import { RecursivePartial } from '../types/Partial';
 import { Dekningsgrad } from 'common/types';
 import { AppState } from '../redux/reducers';
@@ -13,27 +13,26 @@ export const selectErEndringssøknad = createSelector(
     [søknadSelector],
     (søknad = {}): boolean => søknad.erEndringssøknad === true
 );
-export const selectErEnkelEndringssøknad = createSelector(
-    [søknadSelector],
-    (søknad = {}): boolean =>
-        søknad.erEndringssøknad === true &&
-        søknad.ekstrainfo !== undefined &&
-        søknad.ekstrainfo.erEnkelEndringssøknad === true
+export const selectErEnkelEndringssøknad = createSelector([søknadSelector], (søknad = {}): boolean =>
+    isEnkelEndringssøknad(søknad as Søknad)
 );
-export const selectErEndringssøknadMedUttaksplan = createSelector(
-    [søknadSelector],
-    (søknad = {}): boolean =>
-        søknad.erEndringssøknad === true &&
-        søknad.ekstrainfo !== undefined &&
-        søknad.ekstrainfo.erEnkelEndringssøknad === true &&
-        søknad.ekstrainfo.erEnkelEndringssøknadMedUttaksplan === true
-);
+export const selectErEndringssøknadMedUttaksplan = createSelector([søknadSelector], (søknad = {}): boolean => {
+    if (isEnkelEndringssøknad(søknad as Søknad)) {
+        const { ekstrainfo } = søknad as Endringssøknad;
+        return ekstrainfo.eksisterendeSak.uttaksplanErDefinert;
+    }
+    return false;
+});
 export const selectDekningsgrad = createSelector(
     [søknadSelector],
     (søknad = {}): Dekningsgrad | undefined => søknad.dekningsgrad
 );
 export const selectSøker = createSelector([søknadSelector], (søknad = {}) => søknad.søker);
 export const selectAnnenForelder = createSelector([søknadSelector], (søknad = {}) => søknad.annenForelder);
+export const selectEksisterendeSak = createSelector(
+    [søknadSelector],
+    (søknad = {}) => (søknad.ekstrainfo ? søknad.ekstrainfo.eksisterendeSak : undefined)
+);
 
 // Søker
 export const selectSøkerErAleneOmOmsorg = createSelector([selectSøker], (søker = {}): boolean => {

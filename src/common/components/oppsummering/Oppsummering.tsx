@@ -1,7 +1,7 @@
 import React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import Søknad from '../../../app/types/søknad/Søknad';
+import Søknad, { isEnkelEndringssøknad } from '../../../app/types/søknad/Søknad';
 import SøkerPersonalia from 'common/components/søker-personalia/SøkerPersonalia';
 import { formaterNavn } from 'app/util/domain/personUtil';
 import { Søkerinfo } from '../../../app/types/søkerinfo';
@@ -33,7 +33,7 @@ class Oppsummering extends React.Component<Props> {
         const { søkerinfo, søknad, uttaksplanValidering, antallUkerUttaksplan, søknadsinfo, intl } = this.props;
         const { person } = søkerinfo;
 
-        const erEnkelEndringssøknad = søknad.ekstrainfo.erEnkelEndringssøknad === true;
+        const erEnkelEndringssøknad = isEnkelEndringssøknad(søknad);
         const visBarn = erEnkelEndringssøknad === false;
         const visAnnenForelder = erEnkelEndringssøknad === false;
         const visUtenlandsopphold = søknad.erEndringssøknad === false;

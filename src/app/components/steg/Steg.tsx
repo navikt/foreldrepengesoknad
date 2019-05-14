@@ -22,6 +22,7 @@ import DocumentTitle from 'react-document-title';
 import FortsettSøknadSenereDialog from '../fortsett-søknad-senere-dialog/FortsettSøknadSenereDialog';
 
 import './steg.less';
+import { isEnkelEndringssøknad } from 'app/types/søknad/Søknad';
 
 export interface StegProps {
     id: StegID;
@@ -249,7 +250,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    erEnkelEndringssøknad: state.søknad.ekstrainfo.erEnkelEndringssøknad === true,
+    erEnkelEndringssøknad: isEnkelEndringssøknad(state.søknad),
     erEndringssøknad: state.søknad.erEndringssøknad
 });
 

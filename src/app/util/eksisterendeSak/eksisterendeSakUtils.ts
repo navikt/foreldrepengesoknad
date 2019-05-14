@@ -1,11 +1,11 @@
 import Søknad, { Søkersituasjon, SøkerRolle } from '../../types/søknad/Søknad';
 import {
-    EksisterendeSak,
+    EksisterendeUttak,
     FamiliehendelsesType,
-    Saksgrunnlag,
-    Saksperiode,
+    Uttaksgrunnlag,
+    EksisterendePeriode,
     PeriodeResultatType
-} from '../../types/EksisterendeSak';
+} from '../../types/EksisterendeUttak';
 import { Barn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
@@ -13,8 +13,9 @@ import { Søkerinfo } from '../../types/søkerinfo';
 import Person from '../../types/Person';
 import { Kjønn } from '../../types/common';
 import Sak, { AnnenPart } from 'app/types/søknad/Sak';
+import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 
-const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
+const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Uttaksgrunnlag): Søkersituasjon | undefined => {
     switch (grunnlag.familieHendelseType) {
         case FamiliehendelsesType.TERM:
         case FamiliehendelsesType.FØDSEL:
@@ -28,7 +29,7 @@ const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersitua
 const getSøkerrolleFromSaksgrunnlag = (
     person: Person,
     situasjon: Søkersituasjon,
-    grunnlag: Saksgrunnlag
+    grunnlag: Uttaksgrunnlag
 ): SøkerRolle | undefined => {
     const { søkerErFarEllerMedmor } = grunnlag;
     const søkerErKvinne = person.kjønn === Kjønn.KVINNE;
@@ -45,7 +46,7 @@ const getSøkerrolleFromSaksgrunnlag = (
 const getSøkerFromSaksgrunnlag = (
     person: Person,
     situasjon: Søkersituasjon,
-    grunnlag: Saksgrunnlag
+    grunnlag: Uttaksgrunnlag
 ): Partial<Søker> | undefined => {
     return {
         erAleneOmOmsorg: grunnlag.søkerErFarEllerMedmor
@@ -55,7 +56,7 @@ const getSøkerFromSaksgrunnlag = (
     };
 };
 
-const getBarnFromSaksgrunnlag = (situasjon: Søkersituasjon, sak: Saksgrunnlag): Partial<Barn> | undefined => {
+const getBarnFromSaksgrunnlag = (situasjon: Søkersituasjon, sak: Uttaksgrunnlag): Partial<Barn> | undefined => {
     switch (situasjon) {
         case Søkersituasjon.FØDSEL:
             return {
@@ -75,7 +76,7 @@ const getBarnFromSaksgrunnlag = (situasjon: Søkersituasjon, sak: Saksgrunnlag):
 
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Søkersituasjon,
-    sak: Saksgrunnlag,
+    sak: Uttaksgrunnlag,
     annenPart?: AnnenPart
 ): Partial<AnnenForelder> | undefined => {
     const { søkerErFarEllerMedmor } = sak;
@@ -102,7 +103,7 @@ const getAnnenForelderFromSaksgrunnlag = (
     return undefined;
 };
 
-const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
+const saksperiodeKanKonverteresTilPeriode = (periode: EksisterendePeriode) => {
     if (
         periode.arbeidstidprosent === 0 &&
         periode.flerbarnsdager === false &&
@@ -115,19 +116,20 @@ const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
     return false;
 };
 
-export const kanUttaksplanGjennskapesFraSak = (perioder: Saksperiode[]): boolean => {
+export const kanUttaksplanGjennskapesFraSak = (perioder: EksisterendePeriode[]): boolean => {
     const noenPerioderKanIkkeGjennskapes = perioder.some(
         (periode) => saksperiodeKanKonverteresTilPeriode(periode) === false
     );
     return noenPerioderKanIkkeGjennskapes === false;
 };
 
-export const opprettSøknadFraEksisterendeSak = (
+export const opprettSøknadFraEksisterendeUttak = (
     søkerinfo: Søkerinfo,
-    eksisterendeSak: EksisterendeSak,
-    sak: Sak
+    eksisterendeUttak: EksisterendeUttak,
+    sak: Sak,
+    stateSøknad: Søknad
 ): Partial<Søknad> | undefined => {
-    const { grunnlag, uttaksplan } = eksisterendeSak;
+    const { grunnlag, uttak: eksisterendePerioder } = eksisterendeUttak;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(grunnlag);
 
     if (!situasjon) {
@@ -142,13 +144,28 @@ export const opprettSøknadFraEksisterendeSak = (
         return undefined;
     }
 
+    const uttaksplan = kanUttaksplanGjennskapesFraSak(eksisterendePerioder)
+        ? mapSaksperioderTilUttaksperioder(eksisterendePerioder, grunnlag)
+        : undefined;
+
     const søknad: Partial<Søknad> = {
+        saksnummer: sak.saksnummer,
+        erEndringssøknad: true,
         situasjon,
         søker: søker as Søker,
         barn: barn as Barn,
         annenForelder: annenForelder as AnnenForelder,
-        erEndringssøknad: true,
         dekningsgrad: grunnlag.dekningsgrad,
+        ekstrainfo: {
+            ...stateSøknad.ekstrainfo,
+            eksisterendeSak: {
+                sak,
+                uttak: eksisterendeUttak,
+                uttaksplan,
+                grunnlagErDefinert: true,
+                uttaksplanErDefinert: uttaksplan !== undefined
+            }
+        },
         uttaksplan: uttaksplan || []
     };
     return søknad;
