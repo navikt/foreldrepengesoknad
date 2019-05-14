@@ -5,9 +5,9 @@ import { formaterDato } from 'common/util/datoUtils';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { getPeriodeTittel } from '../../util/uttaksplan';
 import { Søknadsinfo } from '../../selectors/types';
-
-import './uttaksplanEgenSak.less';
 import { Periode } from '../../types/uttaksplan/periodetyper';
+
+import './uttaksplanEksisterendeSak.less';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -16,7 +16,7 @@ interface OwnProps {
 
 type Props = OwnProps & InjectedIntlProps;
 
-const bem = BEMHelper('uttaksplanEgenSak');
+const bem = BEMHelper('uttaksplanEksisterendeSak');
 const datoformat = 'DD. MMM YYYY';
 
 const UttaksplanEgenSak: React.StatelessComponent<Props> = ({ uttaksplan, søknadsinfo, intl }) => {
