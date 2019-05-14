@@ -4,7 +4,7 @@ import Api from '../../api/api';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import Sak from '../../types/søknad/Sak';
 import { skalKunneSøkeOmEndring, harSakUnderBehandling } from '../../util/saker/sakerUtils';
-import { getEksisterendeSakFromDTO } from '../../api/utils/eksisterendeSakApiUtils';
+import { getEksisterendeSakFromDTO } from 'app/util/eksisterendeSak/eksisterendeSakUtils';
 
 function* getSaker() {
     try {
