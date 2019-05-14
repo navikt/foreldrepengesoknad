@@ -2,9 +2,7 @@ import {
     StønadskontoType,
     OppholdÅrsakType,
     SaksperiodeUtsettelseÅrsakType,
-    UtsettelseÅrsakType,
-    PeriodeHullAvslåttPeriode,
-    Periodetype
+    UtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
 import { DatoAvgrensninger } from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { Avgrensninger, Tidsperiode } from 'common/types';
@@ -12,7 +10,6 @@ import { uttaksplanDatoavgrensninger } from '../validation/uttaksplan/uttaksplan
 import { Tidsperioden, isValidTidsperiode } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
 import { getSisteMuligeUttaksdag, getFørsteUttaksdagPåEllerEtterFødsel } from './uttaksdatoer';
-import { Perioden } from './Perioden';
 
 const standardAvgrensningerForUttakEtterFødsel = (familiehendelsesdato: Date): Avgrensninger => {
     return {
@@ -147,22 +144,3 @@ function getDatoavgrensningerForEkstrauttakFørTermin(
         til: avgrensninger
     };
 }
-
-export interface PeriodeHullUttaksinfo {
-    uttaksdager: number;
-    konto: StønadskontoType;
-    gjelderAnnenPart: boolean;
-}
-
-export const getUttaksinfoForPeriodeHullAvslåttPeriode = (
-    periode: PeriodeHullAvslåttPeriode
-): PeriodeHullUttaksinfo | undefined => {
-    if (periode.avslåttPeriodeType === Periodetype.Utsettelse) {
-        return {
-            gjelderAnnenPart: periode.gjelderAnnenPart,
-            konto: periode.konto,
-            uttaksdager: Perioden(periode).getAntallUttaksdager()
-        };
-    }
-    return undefined;
-};
