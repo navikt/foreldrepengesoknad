@@ -95,18 +95,18 @@ interface PeriodeHullBase extends PeriodeBase {
     årsak?: PeriodeHullÅrsak;
 }
 
-export interface PeriodeHullAvslåttPeriode extends PeriodeBase {
+export interface AvslåttPeriode extends PeriodeBase {
     type: Periodetype.Hull;
     årsak?: PeriodeHullÅrsak.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
     konto: StønadskontoType;
     gjelderAnnenPart: boolean;
 }
-export const isPeriodeHullAvslåttPeriode = (periode: Periode): periode is PeriodeHullAvslåttPeriode => {
+export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode => {
     return periode.type === Periodetype.Hull && periode.årsak === PeriodeHullÅrsak.avslåttPeriode;
 };
 
-export type PeriodeHull = PeriodeHullBase | PeriodeHullAvslåttPeriode;
+export type PeriodeHull = PeriodeHullBase | AvslåttPeriode;
 
 export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;

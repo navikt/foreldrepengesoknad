@@ -3,7 +3,7 @@ import { onToggleItemProp } from '../../toggle-list/ToggleList';
 import { injectIntl, InjectedIntlProps, FormattedMessage, InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import LinkButton from '../../link-button/LinkButton';
-import { PeriodeHull, Periode, isPeriodeHullAvslåttPeriode } from '../../../types/uttaksplan/periodetyper';
+import { PeriodeHull, Periode, isAvslåttPeriode } from '../../../types/uttaksplan/periodetyper';
 import { Tidsperiode, NavnPåForeldre } from 'common/types';
 import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
 import Knapperad from 'common/components/knapperad/Knapperad';
@@ -30,7 +30,7 @@ const getTittelOgBeskrivelseForHull = (
     navnPåForeldre: NavnPåForeldre,
     intl: InjectedIntl
 ): { tittel: string; beskrivelse: string } => {
-    if (isPeriodeHullAvslåttPeriode(periode)) {
+    if (isAvslåttPeriode(periode)) {
         return {
             tittel: getMessage(intl, 'periodeliste.hull.ikkeInvilgetPeriode.tittel', {
                 type: getMessage(intl, `periodetype.${periode.avslåttPeriodeType}`)
@@ -92,7 +92,7 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
             ikon={<AdvarselIkon />}
             renderContent={() => (
                 <div>
-                    {isPeriodeHullAvslåttPeriode(periode) ? (
+                    {isAvslåttPeriode(periode) ? (
                         <>Avslått {periode.avslåttPeriodeType}.</>
                     ) : (
                         <>
