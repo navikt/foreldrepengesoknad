@@ -483,6 +483,8 @@
     "periodeliste.hull.info.uttaksdager":
         "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar",
     "periodeliste.hull.tittel": "Mista foreldrepengar",
+    "periodeliste.hull.ikkeInvilgetPeriode.tittel": "Tapte foreldrepenger - ikke invilget {type}",
+    "periodeliste.hull.ikkeInvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode": "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "periodeliste.nyPeriodeErFørFamiliehendelsesdato":
@@ -1025,5 +1027,7 @@
     "eksisterendeSak.tekst.html":
         "{navn} har valgt <strong>{uker}</strong> med <strong>{dekningsgrad} prosent utbetaling</strong>.",
     "eksisterendeSak.tekst.benevning.deltOmsorg": "Du og {navn}",
-    "eksisterendeSak.tekst.benevning.aleneomsorg": "Du"
+    "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
+    "periodetype.utsettelse": "utsettelse",
+    "periodetype.uttak": "uttak"
 }
