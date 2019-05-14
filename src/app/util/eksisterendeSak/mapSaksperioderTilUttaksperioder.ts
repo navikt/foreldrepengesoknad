@@ -5,7 +5,7 @@ import {
     Utsettelsesperiode,
     PeriodeHull,
     PeriodeHullÅrsak,
-    PeriodeHullAvslåttPeriode
+    AvslåttPeriode
 } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
@@ -54,7 +54,7 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag:
 };
 
 const mapPeriodehullFromAvslåttSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): PeriodeHull => {
-    const hull: PeriodeHullAvslåttPeriode = {
+    const hull: AvslåttPeriode = {
         id: guid(),
         type: Periodetype.Hull,
         tidsperiode: { ...saksperiode.tidsperiode },
