@@ -64,7 +64,6 @@ interface EksisterendeSak {
     uttak: EksisterendeUttak;
     uttaksplan?: Periode[];
     grunnlagErDefinert: boolean;
-    uttaksplanErDefinert: boolean;
 }
 
 interface Søknad {

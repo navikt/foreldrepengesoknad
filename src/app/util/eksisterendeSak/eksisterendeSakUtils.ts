@@ -162,8 +162,7 @@ export const opprettSøknadFraEksisterendeUttak = (
                 sak,
                 uttak: eksisterendeUttak,
                 uttaksplan,
-                grunnlagErDefinert: true,
-                uttaksplanErDefinert: uttaksplan !== undefined
+                grunnlagErDefinert: true
             }
         },
         uttaksplan: uttaksplan || []

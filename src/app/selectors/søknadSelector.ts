@@ -19,7 +19,7 @@ export const selectErEnkelEndringssøknad = createSelector([søknadSelector], (s
 export const selectErEndringssøknadMedUttaksplan = createSelector([søknadSelector], (søknad = {}): boolean => {
     if (isEnkelEndringssøknad(søknad as Søknad)) {
         const { ekstrainfo } = søknad as Endringssøknad;
-        return ekstrainfo.eksisterendeSak.uttaksplanErDefinert;
+        return ekstrainfo.eksisterendeSak.uttaksplan !== undefined;
     }
     return false;
 });
