@@ -45,13 +45,6 @@ const getTittelOgBeskrivelseForHull = (
         tittel: getMessage(intl, 'periodeliste.hull.tittel'),
         beskrivelse: getMessage(intl, 'periodeliste.hull.beskrivelse', { dager })
     };
-
-    //     const avslåttPeriode: PeriodeHullAvslåttPeriode | undefined = isPeriodeHullAvslåttPeriode(periode)
-    //     ? periode
-    //     : undefined;
-
-    // const tittel = avslåttPeriode ? 'Ikke invilget periode' : getMessage(intl, 'periodeliste.hull.tittel');
-    // const beskrivelse = getMessage(intl, 'periodeliste.hull.beskrivelse', { dager: antallDager });
 };
 
 const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> = ({
