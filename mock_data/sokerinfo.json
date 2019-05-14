@@ -1,31 +1,24 @@
 {
     "søker": {
-        "fnr": "14096827653",
-        "fornavn": "SLAPP",
-        "etternavn": "KONSOLL",
+        "fnr": "20089811415",
+        "fornavn": "ARTIG",
+        "etternavn": "BÆREPOSE",
         "kjønn": "K",
-        "fødselsdato": "1968-09-14",
+        "fødselsdato": "1998-08-20",
         "land": "NO",
         "ikkeNordiskEøsLand": false,
         "barn": [
             {
-                "fornavn": "ARTIG",
-                "etternavn": "BLYANT",
-                "fnr": "20021973891",
-                "kjønn": "K",
-                "fødselsdato": "2019-02-20"
-            },
-            {
-                "fornavn": "BLÅ",
-                "etternavn": "BUSK",
-                "fnr": "11011976745",
+                "fornavn": "SLAPP",
+                "etternavn": "ERT",
+                "fnr": "01011980704",
                 "kjønn": "M",
-                "fødselsdato": "2019-01-11",
+                "fødselsdato": "2019-01-01",
                 "annenForelder": {
-                    "fnr": "12054125702",
-                    "fornavn": "KREATIV",
-                    "etternavn": "MYGG",
-                    "fødselsdato": "1941-05-12"
+                    "fnr": "23039013940",
+                    "fornavn": "TALENTFULL",
+                    "etternavn": "KNOTT",
+                    "fødselsdato": "1990-03-23"
                 }
             }
         ]
