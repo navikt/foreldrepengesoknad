@@ -49,6 +49,7 @@ import { Feature, isFeatureEnabled } from '../../../Feature';
 import EksisterendeSak from '../../../components/eksisterendeSak/EksisterendeSak';
 import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 import Sak from 'app/types/søknad/Sak';
+import { Saksgrunnlag } from 'app/types/EksisterendeSak';
 
 interface StateProps {
     stegProps: StegProps;
@@ -67,6 +68,7 @@ interface StateProps {
     uttaksplanVeilederInfo: VeilederMessage[];
     planErEndret: boolean;
     sak?: Sak;
+    grunnlag: Saksgrunnlag | undefined;
 }
 
 interface UttaksplanStegState {
@@ -85,7 +87,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     constructor(props: Props) {
         super(props);
 
-        const { søknad, tilgjengeligeStønadskontoer, stegProps, søknadsinfo, dispatch } = this.props;
+        const { søknad, tilgjengeligeStønadskontoer, stegProps, søknadsinfo, dispatch, grunnlag } = this.props;
 
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftGåTilbakeDialog = this.showBekreftGåTilbakeDialog.bind(this);
@@ -112,11 +114,22 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                 dispatch(søknadActions.uttaksplanLagForslag());
             }
             if (tilgjengeligeStønadskontoer.length === 0) {
-                const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
-                    søknadsinfo,
-                    startdatoPermisjon
-                );
-                dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
+                if (grunnlag) {
+                    const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
+                        søknadsinfo,
+                        startdatoPermisjon,
+                        grunnlag
+                    );
+
+                    dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
+                } else {
+                    const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
+                        søknadsinfo,
+                        startdatoPermisjon
+                    );
+
+                    dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
+                }
             }
         }
     }
@@ -381,6 +394,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
     const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderDetSøkesOm);
     const planErEndret = søknad.erEndringssøknad && perioderDetSøkesOm.length > 0;
 
+    const grunnlag = søknad.ekstrainfo.eksisterendeSak ? søknad.ekstrainfo.eksisterendeSak.grunnlag : undefined;
+
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
         renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true,
@@ -429,7 +444,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl)(state),
         aktivitetsfriKvote,
         planErEndret,
-        sak: sakForEndringssøknad
+        sak: sakForEndringssøknad,
+        grunnlag
     };
 };
 
