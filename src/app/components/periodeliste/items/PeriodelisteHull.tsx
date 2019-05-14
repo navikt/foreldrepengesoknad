@@ -24,7 +24,7 @@ export interface Props {
     onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void;
 }
 
-const getTittelOgBeskrivelse = (
+const getTittelOgBeskrivelseForHull = (
     periode: PeriodeHull,
     dager: number,
     navnPåForeldre: NavnPåForeldre,
@@ -87,7 +87,7 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
         );
     }
 
-    const { tittel, beskrivelse } = getTittelOgBeskrivelse(periode, antallDager, navnPåForeldre, intl);
+    const { tittel, beskrivelse } = getTittelOgBeskrivelseForHull(periode, antallDager, navnPåForeldre, intl);
 
     return (
         <PeriodelisteInfo
