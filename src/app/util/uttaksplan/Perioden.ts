@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, isForeldrepengerFørFødselUttaksperiode } from '../../types/uttaksplan/periodetyper';
 import { getTidsperiode, Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
 import { Tidsperiode } from 'common/types';
@@ -50,6 +50,17 @@ function erPerioderLike(
     }
     if (p1.type === Periodetype.Hull && p2.type === Periodetype.Hull) {
         return true;
+    }
+    if (isForeldrepengerFørFødselUttaksperiode(p1) && isForeldrepengerFørFødselUttaksperiode(p2)) {
+        const fff1 = getPeriodeFootprint(
+            { ...p1, skalIkkeHaUttakFørTermin: p1.skalIkkeHaUttakFørTermin || false },
+            inkluderTidsperiode
+        );
+        const fff2 = getPeriodeFootprint(
+            { ...p2, skalIkkeHaUttakFørTermin: p2.skalIkkeHaUttakFørTermin || false },
+            inkluderTidsperiode
+        );
+        return fff1 === fff2;
     }
     const k1 = getPeriodeFootprint(p1, inkluderTidsperiode);
     const k2 = getPeriodeFootprint(p2, inkluderTidsperiode);
