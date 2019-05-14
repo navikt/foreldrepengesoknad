@@ -19,7 +19,15 @@ import { getMorHarRettPåForeldrepenger } from '../regler/søknad/morHarRettPåF
 import { getFarEllerMedmorHarAleneomsorg } from '../regler/søknad/farEllerMedmorHarAleneomsorg';
 import { getErFlerbarnssøknad } from '../regler/søknad/erFlerbarnssøknad';
 import AnnenForelder from 'app/types/søknad/AnnenForelder';
+import { selectSøkerinfo } from './apiSelector';
+import { Kjønn } from 'app/types/common';
 
+const getKjønnFromFnr = (fnr: string): Kjønn | undefined => {
+    if (fnr.length !== 11) {
+        return undefined;
+    }
+    return parseInt(fnr.charAt(8), 10) % 2 === 0 ? Kjønn.KVINNE : Kjønn.MANN;
+};
 const barnHasRequiredValues = (barn: RecursivePartial<Barn> | undefined): barn is Barn =>
     barn !== undefined && barn.antallBarn !== undefined;
 
@@ -115,3 +123,14 @@ export const selectFarEllerMedmorHarAleneomsorg = createSelector(
         return undefined;
     }
 );
+
+export const selectSøkerKjønn = createSelector([selectSøkerinfo], (søkerinfo): Kjønn | undefined => {
+    return søkerinfo ? søkerinfo.person.kjønn : undefined;
+});
+
+export const selectAnnenForelderKjønn = createSelector([selectAnnenForelder], (annenForelder): Kjønn | undefined => {
+    if (annenForelder && annenForelder.utenlandskFnr === false && annenForelder.fnr) {
+        return getKjønnFromFnr(annenForelder.fnr);
+    }
+    return undefined;
+});

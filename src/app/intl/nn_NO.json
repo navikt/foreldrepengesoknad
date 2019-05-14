@@ -1019,5 +1019,11 @@
         "Huffda, det ser ut til at eit av systema våre er nede akkurat no. Vi jobbar med å ordna feilen. Forsøk igjen litt seinare, vi beklagar ulempa for deg.",
     "manglendeVedlegg.info": "Før du kan sende inn søknaden så må du laste opp vedleggene som er listet nedenfor.",
     "languageToggle.bokmål": "Bokmål - Norsk",
-    "languageToggle.nynorsk": "Nynorsk - Norsk"
+    "languageToggle.nynorsk": "Nynorsk - Norsk",
+    "eksisterendeSak.tittel.deltUttak": "Deres foreldrepengeperiode",
+    "eksisterendeSak.tittel.aleneomsorg": "Din foreldrepengeperiode",
+    "eksisterendeSak.tekst.html":
+        "{navn} har valgt <strong>{uker}</strong> med <strong>{dekningsgrad} prosent utbetaling</strong>.",
+    "eksisterendeSak.tekst.benevning.deltOmsorg": "Du og {navn}",
+    "eksisterendeSak.tekst.benevning.aleneomsorg": "Du"
 }
