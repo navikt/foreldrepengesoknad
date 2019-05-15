@@ -25,6 +25,9 @@ import { MissingAttachment } from 'app/types/MissingAttachment';
 import { isFeatureEnabled, Feature } from 'app/Feature';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 
+import { findMissingAttachments } from 'app/util/attachments/missingAttachmentUtil';
+import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+
 import './søknadSendtSide.less';
 
 interface StateProps {
@@ -131,24 +134,10 @@ class SøknadSendtSide extends React.Component<Props> {
 const mapStateToProps = (state: any) => {
     const førsteUttaksdag = Periodene(state.søknad.uttaksplan).getFørsteUttaksdag();
     return {
-        person: {
-            fnr: '28019400133',
-            fornavn: 'Henriette',
-            etternavn: 'Ibsen',
-            fødselsdato: '1994-01-28',
-            kjønn: 'K',
-            land: 'NO',
-            ikkeNordiskEøsLand: false
-        },
-        kvittering: {
-            saksNr: '1234',
-            mottattDato: '2019-02-20T20:39:42.757',
-            referanseId: 'bddfa0bb-e00c-4982-b0cc-4a09654803c2',
-            leveranseStatus: 'GOSYS',
-            journalId: '439775108'
-        },
+        person: state.api.søkerinfo.person,
+        kvittering: state.api.kvittering,
         erEndringssøknad: state.søknad.erEndringssøknad,
-        missingAttachments: [],
+        missingAttachments: findMissingAttachments(state.søknad, state.api, getSøknadsinfo(state)!),
         behandlingsFrist: moment(førsteUttaksdag)
             .subtract(4, 'weeks')
             .format('dddd Do MMM YYYY')
