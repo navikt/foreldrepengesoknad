@@ -1,5 +1,3 @@
-@import './../../../common/styles/variables.less';
-
 .labelMedInfobox {
     &__title {
         padding-bottom: 0.5rem;
@@ -13,6 +11,7 @@
         &--stil-seksjon {
             border-bottom: 1px solid #979797;
             margin-bottom: 1rem;
+
             .labelMedInfobox__title {
                 font-size: 1.25rem;
             }
@@ -20,20 +19,6 @@
 
         .sirkelknapp {
             margin-left: 1rem;
-        }
-    }
-
-    @media (max-width: @mobile-breakpoint) {
-        &__title {
-            margin-right: 1.5rem;
-        }
-        &__heading {
-            position: relative;
-            .sirkelknapp {
-                position: absolute;
-                top: 0;
-                right: 0;
-            }
         }
     }
 }

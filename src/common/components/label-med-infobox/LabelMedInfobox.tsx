@@ -16,16 +16,10 @@ const LabelMedInfobox: React.StatelessComponent<LabelMedInfoboxProps> = ({ title
     const cls = BEMHelper('labelMedInfobox');
     return (
         <div className={cls.element('heading', `stil-${stil || 'normal'}`)}>
-            <div>
-                <Element className={`typo-element ${cls.element('title')}`} tag={tag}>
-                    {title}
-                </Element>
-            </div>
-            {info && (
-                <div>
-                    <Infoboks tekst={info} contentFullWidth={true} />
-                </div>
-            )}
+            <Element className={`typo-element ${cls.element('title')}`} tag={tag}>
+                {title}
+            </Element>
+            {info && <Infoboks tekst={info} contentFullWidth={true} />}
         </div>
     );
 };
