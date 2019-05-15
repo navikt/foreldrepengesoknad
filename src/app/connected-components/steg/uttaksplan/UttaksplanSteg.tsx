@@ -114,22 +114,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                 dispatch(søknadActions.uttaksplanLagForslag());
             }
             if (tilgjengeligeStønadskontoer.length === 0) {
-                if (grunnlag) {
-                    const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
-                        søknadsinfo,
-                        startdatoPermisjon,
-                        grunnlag
-                    );
+                const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
+                    søknadsinfo,
+                    startdatoPermisjon,
+                    grunnlag
+                );
 
-                    dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
-                } else {
-                    const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
-                        søknadsinfo,
-                        startdatoPermisjon
-                    );
-
-                    dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
-                }
+                dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
             }
         }
     }
