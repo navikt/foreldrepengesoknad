@@ -17,6 +17,7 @@ import Sak, { AnnenPart } from 'app/types/søknad/Sak';
 import { StønadskontoType, SaksperiodeUtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
+import { isFeatureEnabled, Feature } from 'app/Feature';
 
 export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak | undefined => {
     const {
@@ -163,8 +164,9 @@ const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
         periode.arbeidstidprosent === 0 &&
         periode.flerbarnsdager === false &&
         periode.gjelderAnnenPart === false &&
-        // periode.periodeResultatType === PeriodeResultatType.INNVILGET &&
-        periode.samtidigUttak === false
+        isFeatureEnabled(Feature.visAvslåttPeriode)
+            ? true
+            : periode.periodeResultatType === PeriodeResultatType.INNVILGET && periode.samtidigUttak === false
     ) {
         return true;
     }
