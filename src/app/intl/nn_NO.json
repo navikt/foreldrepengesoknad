@@ -1017,31 +1017,31 @@
     "søknadSendt.tittel": "Takk for søknaden { name }!",
     "søknadSendt.sendtInn": "sendt inn:",
     "søknadSendt.info.tittel": "Nå er resten vårt ansvar",
-    "søknadSendt.info.tittel.isMissingAttachments": "Ettersend manglende dokumentasjon innen 3 uker",
-    "søknadSendt.info.innhold": "Du trenger ikke gjøre noe mer, vi tar kontakt med deg hvis det er noe vi lurer på.",
+    "søknadSendt.info.tittel.isMissingAttachments": "Ettersend manglande dokumentasjon innen 3 uker",
+    "søknadSendt.info.innhold": "Du trenger ikkje gjere noke meir, vi tek kontakt med deg hvis det er noko vi lurer på.",
     "søknadSendt.info.innhold.isMissingAttachments":
-        "Vi har mottatt søknaden din, og den mangler følgende dokumentasjon:",
-    "søknadSendt.når.tittel": "Når kan jeg tidligast forvente få svar på min søknad?",
+        "Vi har mottatt søknaden din, og den manglar følgjande dokumentasjon:",
+    "søknadSendt.når.tittel": "Når kan eg tidligast forvente få svar på min søknad?", 
     "søknadSendt.når.infoBox":
-        "Du kan tidligst få svar på søknaden din fire uker før foreldrepengeperioden din starter. Dette er fordi vi bruker de nyeste opplysningene om inntekten din når vi skal beregne hva du skal få i foreldrepenger.",
+        "Du får tidlegast svar på søknaden din fire veker før foreldrepengeperioden din startar. Dette er fordi vi bruker dei nyaste opplysningane om inntekta di når vi skal berekne kva du skal få i foreldrepengar.",
     "søknadSendt.infoFraArbeidsgiver.tittel": "Hvilken informasjon trenger min arbeidsgiver?",
     "søknadSendt.infoFraArbeidsgiver": "Viktig informasjon for din arbeidsgiver",
     "søknadSendt.pengene.tittel": "Hvor blir pengene utbetalt?",
     "søknadSendt.pengene.infoBox":
-        "Hvis søknaden din blir innvilget, blir foreldrepengene dine enten utbetalt av arbeidsgiver eller av NAV. Sjekk at du har registrert riktig kontonummer hos oss.",
+        "Dersom søknaden din blir innvilga, blir foreldrepengane dine anten betalte ut av arbeidsgivar eller av NAV. Sjekk at du har registrert riktig kontonummer hos oss.",
     "søknadSendt.pengene.kontonummer": "Registrert kontonummer",
-    "søknadSendt.pengene.ingenKontonummer": "Du har ikke regirstrert et kontonummer",
+    "søknadSendt.pengene.ingenKontonummer": "Du har ikkje registrert eit kontonummer",
     "søknadSendt.pengene.kontonummer.endre": "Endre kontonummer",
     "søknadSendt.pengene.kontonummer.leggTil": "Legg til kontonummer",
-    "søknadSendt.status.tittel": "Følg med på saken din på ditt NAV",
-    "søknadSendt.status.undertittel": "Din sak om foreldrepenger",
+    "søknadSendt.status.tittel": "Følg med på saka di",
+    "søknadSendt.status.undertittel": "Sak om foreldrepengar",
     "søknadSendt.status.status": "Under behandling",
     "søknadSendt.status.saksnummer": "Saksnummer",
 
     "søknadSendt.info.missingAttachment.I000039": "Dokumentasjon på inntekstkilde i militær eller siviltjeneste",
-    "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikke blir ettersendt?",
+    "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikkje blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
-        "Hvis du ikke ettersender dokumentene innen tre uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig. Det kan føre til at du får avslag på søknaden din.",
+        "Viss du ikkje ettersender dokumenta innan tre veker behandlar vi søknaden din utor dei opplysningane som vi har tilgjengelege. Det kan føre til at du får avslag på søknaden din.",
 
     "periodetype.utsettelse": "utsettelse",
     "periodetype.uttak": "uttak"
