@@ -61,7 +61,8 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
         isAnswered: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined
     },
     [Sp.variant]: {
-        isAnswered: ({ variant }) => questionValueIsOk(variant)
+        isAnswered: ({ variant }) => questionValueIsOk(variant),
+        isIncluded: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined
     },
     [Sp.sykdomsårsak]: {
         isAnswered: ({ periode }) => questionValueIsOk(periode.årsak),
