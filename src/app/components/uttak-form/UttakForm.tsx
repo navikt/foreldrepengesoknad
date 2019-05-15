@@ -280,7 +280,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                     konto,
                     forelder: this.state.periodenGjelder,
                     harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
-                    ønskerFlerbarnsdager: undefined,
+                    ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined,
                     morsAktivitetIPerioden:
                         konto === StønadskontoType.AktivitetsfriKvote ? MorsAktivitet.Uføre : undefined
                 });
@@ -298,7 +298,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                     konto,
                     forelder: this.state.periodenGjelder,
                     harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
-                    ønskerFlerbarnsdager: undefined,
+                    ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined,
                     morsAktivitetIPerioden:
                         konto === StønadskontoType.AktivitetsfriKvote ? MorsAktivitet.Uføre : undefined
                 });
