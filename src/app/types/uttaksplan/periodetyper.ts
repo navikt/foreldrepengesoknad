@@ -106,6 +106,10 @@ export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode 
     return periode.type === Periodetype.Hull && periode.årsak === PeriodeHullÅrsak.avslåttPeriode;
 };
 
+export const isVanligHull = (periode: Periode): boolean => {
+    return periode.type === Periodetype.Hull && periode.årsak !== PeriodeHullÅrsak.avslåttPeriode;
+};
+
 export type PeriodeHull = PeriodeHullBase | AvslåttPeriode;
 
 export interface UttaksperiodeBase extends PeriodeBase {
