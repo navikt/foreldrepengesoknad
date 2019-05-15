@@ -50,14 +50,8 @@ export const cleanUpAttachments = (object: object): Attachment[] => {
     return foundAttachments;
 };
 
-const changeClientonlyKontotype = (periode: Periode, andreForelderHarRettPåForeldrepenger: boolean) => {
+const changeClientonlyKontotype = (periode: Periode) => {
     if (isUttaksperiode(periode)) {
-        if (periode.konto === StønadskontoType.Flerbarnsdager) {
-            periode.konto = !andreForelderHarRettPåForeldrepenger
-                ? StønadskontoType.Foreldrepenger
-                : StønadskontoType.Fellesperiode;
-        }
-
         if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
             periode.konto = StønadskontoType.Foreldrepenger;
         }
@@ -127,10 +121,7 @@ const cleanupUttaksplan = (uttaksplan: Periode[], annenForelder?: AnnenForelder)
     return uttaksplan
         .filter((periode: Periode) => isValidTidsperiode(periode.tidsperiode))
         .filter(isNotPeriodetypeHull)
-        .map(
-            (periode) =>
-                annenForelder ? changeClientonlyKontotype(periode, annenForelder.harRettPåForeldrepenger) : periode
-        )
+        .map((periode) => (annenForelder ? changeClientonlyKontotype(periode) : periode))
         .map(changeGradertPeriode)
         .map(changeClientonlyOppholdsÅrsak);
 };
