@@ -9,18 +9,18 @@ import lenker from 'app/util/routing/lenker';
 import { History } from 'history';
 
 interface GenerellFeilProps {
-    history: History;
+    history?: History;
 }
 
 type Props = GenerellFeilProps & InjectedIntlProps;
 const GenerellFeil: React.StatelessComponent<Props> = (props: Props) => {
     const errorMessage =
-        props.history.location.state && props.history.location.state.errorMessage
+        props.history && props.history.location.state && props.history.location.state.errorMessage
             ? props.history.location.state.errorMessage
             : undefined;
 
     const uuid =
-        props.history.location.state && props.history.location.state.uuid
+        props.history && props.history.location.state && props.history.location.state.uuid
             ? props.history.location.state.uuid
             : undefined;
 
