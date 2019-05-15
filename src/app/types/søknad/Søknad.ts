@@ -58,7 +58,6 @@ interface SøknadEkstrainfo {
     lastAddedPeriodeId?: string;
     søknadenGjelderBarnValg?: SøknadenGjelderBarnValg;
     eksisterendeSak?: EksisterendeSak;
-    uttakFraEksisterendeSak: Periode[];
 }
 
 interface Søknad {
