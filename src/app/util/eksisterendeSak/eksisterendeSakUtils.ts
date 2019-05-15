@@ -76,6 +76,7 @@ const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersitua
         case FamiliehendelsesType.FØDSEL:
             return Søkersituasjon.FØDSEL;
         case FamiliehendelsesType.ADOPSJON:
+            return Søkersituasjon.ADOPSJON;
         case FamiliehendelsesType.OMSORGSOVERTAKELSE:
             return undefined;
     }
@@ -90,6 +91,7 @@ const getSøkerrolleFromSaksgrunnlag = (
     const søkerErKvinne = person.kjønn === Kjønn.KVINNE;
     switch (situasjon) {
         case Søkersituasjon.FØDSEL:
+        case Søkersituasjon.ADOPSJON:
             if (søkerErKvinne) {
                 return søkerErFarEllerMedmor ? SøkerRolle.MEDMOR : SøkerRolle.MOR;
             }
@@ -125,6 +127,13 @@ const getBarnFromSaksgrunnlag = (situasjon: Søkersituasjon, sak: Saksgrunnlag):
                           termindato: sak.familieHendelseDato
                       })
             };
+        case Søkersituasjon.ADOPSJON:
+            return {
+                antallBarn: sak.antallBarn,
+                erBarnetFødt: sak.erBarnetFødt,
+                adopsjonsdato: sak.familieHendelseDato,
+                fødselsdatoer: [sak.familieHendelseDato]
+            };
     }
     return undefined;
 };
@@ -137,6 +146,7 @@ const getAnnenForelderFromSaksgrunnlag = (
     const { søkerErFarEllerMedmor } = sak;
     switch (situasjon) {
         case Søkersituasjon.FØDSEL:
+        case Søkersituasjon.ADOPSJON:
             if (søkerErFarEllerMedmor) {
                 return {
                     fornavn: annenPart ? annenPart.navn.fornavn : 'mor',
