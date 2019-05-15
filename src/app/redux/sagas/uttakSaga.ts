@@ -59,12 +59,14 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
         const stønadskontoer: StønadskontoerDTO = response.data;
         let tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
 
-        Object.keys(stønadskontoer.kontoer).map((konto) => {
-            tilgjengeligeStønadskontoer.push({
-                konto: konto as StønadskontoType,
-                dager: stønadskontoer.kontoer[konto]
+        Object.keys(stønadskontoer.kontoer)
+            .filter((konto: StønadskontoType) => konto !== StønadskontoType.Flerbarnsdager)
+            .map((konto) => {
+                tilgjengeligeStønadskontoer.push({
+                    konto: konto as StønadskontoType,
+                    dager: stønadskontoer.kontoer[konto]
+                });
             });
-        });
 
         if (morHarIkkeRett && !annenForelderErUkjent && !erAleneOmsorg) {
             tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(

@@ -45,6 +45,8 @@ export const getOppholdsÅrsakFromStønadskonto = (konto: StønadskontoType): Op
         return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
     } else if (konto === StønadskontoType.Fellesperiode) {
         return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+    } else if (konto === StønadskontoType.Flerbarnsdager) {
+        return OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder;
     } else {
         return undefined;
     }
@@ -57,6 +59,8 @@ export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): S
         return StønadskontoType.Mødrekvote;
     } else if (årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder) {
         return StønadskontoType.Fellesperiode;
+    } else if (årsak === OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder) {
+        return StønadskontoType.Flerbarnsdager;
     } else {
         return undefined;
     }
