@@ -13,6 +13,62 @@ import { Søkerinfo } from '../../types/søkerinfo';
 import Person from '../../types/Person';
 import { Kjønn } from '../../types/common';
 import Sak, { AnnenPart } from 'app/types/søknad/Sak';
+import { StønadskontoType, SaksperiodeUtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
+import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
+import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
+import { isFeatureEnabled, Feature } from 'app/Feature';
+
+export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak | undefined => {
+    const {
+        grunnlag: {
+            dekningsgrad,
+            familieHendelseDato,
+            familieHendelseType,
+            søkerKjønn,
+            annenForelderKjønn,
+            ...restGrunnlag
+        },
+        perioder
+    } = dto;
+
+    try {
+        const grunnlag: Saksgrunnlag = {
+            ...restGrunnlag,
+            erBarnetFødt: familieHendelseType !== FamiliehendelsesType.TERM,
+            dekningsgrad: dekningsgrad === 100 ? '100' : '80',
+            familieHendelseDato: new Date(familieHendelseDato),
+            familieHendelseType: familieHendelseType as FamiliehendelsesType
+        };
+
+        const saksperioder = perioder.map((p): Saksperiode => {
+            const { periodeResultatType, periode, stønadskontotype, utsettelsePeriodeType, ...periodeRest } = p;
+            return {
+                ...periodeRest,
+                periodeResultatType: periodeResultatType as PeriodeResultatType,
+                stønadskontotype: stønadskontotype as StønadskontoType,
+                utsettelsePeriodeType: utsettelsePeriodeType as SaksperiodeUtsettelseÅrsakType,
+                tidsperiode: {
+                    fom: new Date(periode.fom),
+                    tom: new Date(periode.tom)
+                }
+            };
+        });
+
+        const uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioder)
+            ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag)
+            : undefined;
+
+        const sak: EksisterendeSak = {
+            grunnlag,
+            saksperioder,
+            uttaksplan
+        };
+
+        return sak;
+    } catch (e) {
+        return undefined;
+    }
+};
 
 const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
     switch (grunnlag.familieHendelseType) {
@@ -107,7 +163,9 @@ const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
         periode.arbeidstidprosent === 0 &&
         periode.flerbarnsdager === false &&
         periode.gjelderAnnenPart === false &&
-        periode.periodeResultatType === PeriodeResultatType.INNVILGET &&
+        (isFeatureEnabled(Feature.visAvslåttPeriode)
+            ? true
+            : periode.periodeResultatType === PeriodeResultatType.INNVILGET) &&
         periode.samtidigUttak === false
     ) {
         return true;
