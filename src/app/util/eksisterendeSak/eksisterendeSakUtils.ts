@@ -5,7 +5,6 @@ import {
     Saksgrunnlag,
     Saksperiode,
     PeriodeResultatType
-    // PeriodeResultatType
 } from '../../types/EksisterendeSak';
 import { Barn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
@@ -164,9 +163,10 @@ const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
         periode.arbeidstidprosent === 0 &&
         periode.flerbarnsdager === false &&
         periode.gjelderAnnenPart === false &&
-        isFeatureEnabled(Feature.visAvslåttPeriode)
+        (isFeatureEnabled(Feature.visAvslåttPeriode)
             ? true
-            : periode.periodeResultatType === PeriodeResultatType.INNVILGET && periode.samtidigUttak === false
+            : periode.periodeResultatType === PeriodeResultatType.INNVILGET) &&
+        periode.samtidigUttak === false
     ) {
         return true;
     }
