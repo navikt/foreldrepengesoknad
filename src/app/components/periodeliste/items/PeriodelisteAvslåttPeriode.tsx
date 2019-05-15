@@ -36,6 +36,7 @@ const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntl
 }) => {
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
     const knapper: React.ReactNode[] = [];
+
     if (onLeggTilPeriode) {
         knapper.unshift(
             <LinkButton key="periode" onClick={() => onLeggTilPeriode(periode.tidsperiode)}>
@@ -52,10 +53,11 @@ const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntl
         );
     }
 
-    const tittel = getMessage(intl, 'periodeliste.hull.ikkeInvilgetPeriode.tittel', {
+    const tittel = getMessage(intl, 'periodeliste.ikkeInvilgetPeriode.tittel', {
         type: getMessage(intl, `periodetype.${periode.avslåttPeriodeType}`)
     });
-    const beskrivelse = getMessage(intl, 'periodeliste.hull.ikkeInvilgetPeriode.beskrivelse', {
+
+    const beskrivelse = getMessage(intl, 'periodeliste.ikkeInvilgetPeriode.beskrivelse', {
         varighet: getVarighetString(antallDager, intl),
         konto: getStønadskontoNavn(intl, periode.konto, navnPåForeldre)
     });
@@ -72,9 +74,7 @@ const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntl
                 <div>
                     <Block>
                         <FormattedMessage
-                            id={`periodeliste.hull.ikkeInvilgetPeriode.expanded.beskrivelse.${
-                                periode.avslåttPeriodeType
-                            }`}
+                            id={`periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.${periode.avslåttPeriodeType}`}
                         />
                     </Block>
                     <Knapperad align="left">{knapper}</Knapperad>
