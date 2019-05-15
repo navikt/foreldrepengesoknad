@@ -154,6 +154,8 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
             );
         case Periodetype.Hull:
             return getMessage(intl, `periodetype.hull.tittel`);
+        case Periodetype.Info:
+            return getMessage(intl, `periodetype.info.${periode.infotype}`);
     }
 };
 

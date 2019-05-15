@@ -1,10 +1,5 @@
 import moment from 'moment';
-import {
-    Periode,
-    Periodetype,
-    isForeldrepengerFørFødselUttaksperiode,
-    isVanligHull
-} from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, isForeldrepengerFørFødselUttaksperiode } from '../../types/uttaksplan/periodetyper';
 import { getTidsperiode, Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
 import { Tidsperiode } from 'common/types';
@@ -53,7 +48,7 @@ function erPerioderLike(
     if (inkluderUtsettelser === false && (p1.type === Periodetype.Utsettelse || p2.type === Periodetype.Utsettelse)) {
         return false;
     }
-    if (isVanligHull(p1) && isVanligHull(p2)) {
+    if (p1.type === Periodetype.Hull && p2.type === Periodetype.Hull) {
         return true;
     }
     if (isForeldrepengerFørFødselUttaksperiode(p1) && isForeldrepengerFørFødselUttaksperiode(p2)) {

@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    Periode,
-    Periodetype,
-    isUttaksperiode,
-    StønadskontoType,
-    isVanligHull
-} from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, isUttaksperiode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
@@ -17,6 +11,7 @@ import PeriodelisteInfo, { PeriodelisteInformasjon } from './items/PeriodelisteI
 
 import './periodeliste.less';
 import { Søknadsinfo } from 'app/selectors/types';
+import PeriodelisteAvslåttPeriode from './items/PeriodelisteAvslåttPeriode';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -81,7 +76,7 @@ class Periodeliste extends React.Component<Props> {
 
     shouldRenderHull(perioder: Periode[]) {
         return perioder
-            .filter((p: Periode) => !isVanligHull(p))
+            .filter((p: Periode) => p.type !== Periodetype.Hull)
             .some(
                 (p: Periode) =>
                     (isUttaksperiode(p) && p.konto !== StønadskontoType.AktivitetsfriKvote) || !isUttaksperiode(p)
@@ -112,7 +107,9 @@ class Periodeliste extends React.Component<Props> {
             onLeggTilPeriode
         } = this.props;
 
-        const filteredPerioder = this.shouldRenderHull(perioder) ? perioder : perioder.filter((p) => !isVanligHull(p));
+        const filteredPerioder = this.shouldRenderHull(perioder)
+            ? perioder
+            : perioder.filter((p) => p.type !== Periodetype.Hull);
 
         return (
             <ToggleList
@@ -136,29 +133,47 @@ class Periodeliste extends React.Component<Props> {
                         {filteredPerioder.map((periode) => {
                             const itemId = getPeriodelisteElementId(periode.id);
                             const isExpanded = isOpen(itemId);
-                            return periode.type === Periodetype.Hull ? (
-                                <PeriodelisteHull
-                                    key={itemId}
-                                    itemId={itemId}
-                                    isExpanded={isExpanded}
-                                    onToggle={onToggle}
-                                    periode={periode}
-                                    onLeggTilOpphold={onLeggTilOpphold}
-                                    onLeggTilPeriode={onLeggTilPeriode}
-                                    navnPåForeldre={navnPåForeldre}
-                                />
-                            ) : (
-                                <PeriodelistePeriode
-                                    key={itemId}
-                                    id={itemId}
-                                    periode={periode}
-                                    antallFeriedager={antallFeriedager}
-                                    navnPåForeldre={navnPåForeldre}
-                                    validertPeriode={uttaksplanValidering.periodevalidering[periode.id]}
-                                    isExpanded={isExpanded}
-                                    onToggle={onToggle}
-                                />
-                            );
+                            switch (periode.type) {
+                                case Periodetype.Hull:
+                                    return (
+                                        <PeriodelisteHull
+                                            key={itemId}
+                                            itemId={itemId}
+                                            isExpanded={isExpanded}
+                                            onToggle={onToggle}
+                                            periode={periode}
+                                            onLeggTilOpphold={onLeggTilOpphold}
+                                            onLeggTilPeriode={onLeggTilPeriode}
+                                            navnPåForeldre={navnPåForeldre}
+                                        />
+                                    );
+                                case Periodetype.Info:
+                                    return (
+                                        <PeriodelisteAvslåttPeriode
+                                            key={itemId}
+                                            itemId={itemId}
+                                            isExpanded={isExpanded}
+                                            onToggle={onToggle}
+                                            periode={periode}
+                                            onLeggTilOpphold={onLeggTilOpphold}
+                                            onLeggTilPeriode={onLeggTilPeriode}
+                                            navnPåForeldre={navnPåForeldre}
+                                        />
+                                    );
+                                default:
+                                    return (
+                                        <PeriodelistePeriode
+                                            key={itemId}
+                                            id={itemId}
+                                            periode={periode}
+                                            antallFeriedager={antallFeriedager}
+                                            navnPåForeldre={navnPåForeldre}
+                                            validertPeriode={uttaksplanValidering.periodevalidering[periode.id]}
+                                            isExpanded={isExpanded}
+                                            onToggle={onToggle}
+                                        />
+                                    );
+                            }
                         })}
                     </div>
                 )}
