@@ -267,25 +267,6 @@
         "Gir du NAV fullmakt til å hente inn opplysningar direkte frå revisor?",
     "komponent.bekreftDialog.avbrytLabel": "Avbryt",
     "komponent.bekreftDialog.bekreftLabel": "Ok",
-    "kvittering.behandlingstid.tittel": "Når kan eg få svar?",
-    "kvittering.behandlingstid":
-        "NAV treng oppdaterte opplysningar for å behandle søknaden din. Derfor kan du tidlegast få svar på søknaden din fire veker før foreldrepengeperioden din startar.",
-    "kvittering.dinProfilLink": "Din profil",
-    "kvittering.headline": "Takk for søknaden",
-    "kvittering.innsyn.tittel": "Kvar finn eg status på søknaden min?",
-    "kvittering.innsyn.fpsak":
-        "Du kan føljga med på statusen i saken din på {lenke}. Her har du også høve til å ettersende dokumentasjon",
-    "kvittering.innsyn.infotrygd":
-        "Det kan ta inntil 3 veker før søknaden din er synlig på {lenke}. Når søknaden er synleg, har du også høve til å ettersende dokumentasjon.",
-    "kvittering.innsyn.lenke": "dine foreldrepengar",
-    "kvittering.kontonummer.tittel": "Kvar blir pengane betalte ut?",
-    "kvittering.kontonummer":
-        "Dersom søknaden din blir innvilga, blir foreldrepengane dine anten betalte ut av arbeidsgivar eller av NAV til kontonummeret ditt (kontonummer). Du kan endre kontonummeret på (link).",
-    "kvittering.referanseId": "Vi fekk søknaden {date} kl. {timeOfDay}.",
-    "kvittering.saksNr": "Vi fekk søknaden med saksnummer {id} {date} kl. {timeOfDay}.",
-    "kvittering.søknadPdf.lastNed.del1": "Du kan {lenke}.",
-    "kvittering.søknadPdf.lastNed.del2": "sjå og laste ned søknaden din her",
-    "kvittering.infoskrivPdf.": "Viktig informasjon for din arbeidsgiver",
     "leggtil": "Legg til",
     "manglendeVedlegg.periode.tidsperiode": "Gjelder perioden med { type } fra { fom } til { tom }",
     "manglendeVedlegg.veileder":
@@ -1025,5 +1006,26 @@
     "eksisterendeSak.tekst.html":
         "{navn} har valgt <strong>{uker}</strong> med <strong>{dekningsgrad} prosent utbetaling</strong>.",
     "eksisterendeSak.tekst.benevning.deltOmsorg": "Du og {navn}",
-    "eksisterendeSak.tekst.benevning.aleneomsorg": "Du"
+    "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
+
+    "søknadSendt.tittel": "Takk for søknaden { name }!",
+    "søknadSendt.sendtInn": "sendt inn:",
+    "søknadSendt.info.tittel": "Nå er resten vårt ansvar",
+    "søknadSendt.info.innhold": "Nå er resten vårt ansvar",
+    "søknadSendt.når.tittel": "Når kan jeg tidligast forvente få svar på min søknad?",
+    "søknadSendt.når.infoBox":
+        "Du kan tidligst få svar på søknaden din fire uker før foreldrepengeperioden din starter. Dette er fordi vi bruker de nyeste opplysningene om inntekten din når vi skal beregne hva du skal få i foreldrepenger.",
+    "søknadSendt.infoFraArbeidsgiver.tittel": "Hvilken informasjon trenger min arbeidsgiver?",
+    "søknadSendt.infoFraArbeidsgiver": "Viktig informasjon for din arbeidsgiver",
+    "søknadSendt.pengene.tittel": "Hvor blir pengene utbetalt?",
+    "søknadSendt.pengene.infoBox":
+        "Hvis søknaden din blir innvilget, blir foreldrepengene dine enten utbetalt av arbeidsgiver eller av NAV. Sjekk at du har registrert riktig kontonummer hos oss.",
+    "søknadSendt.pengene.kontonummer": "Registrert kontonummer",
+    "søknadSendt.pengene.ingenKontonummer": "Du har ikke regirstrert et kontonummer",
+    "søknadSendt.pengene.kontonummer.endre": "Endre kontonummer",
+    "søknadSendt.pengene.kontonummer.leggTil": "Legg til kontonummer",
+    "søknadSendt.status.tittel": "Følg med på saken din på ditt NAV",
+    "søknadSendt.status.undertittel": "Din sak om foreldrepenger",
+    "søknadSendt.status.status": "Under behandling",
+    "søknadSendt.status.saksnummer": "Saksnummer"
 }

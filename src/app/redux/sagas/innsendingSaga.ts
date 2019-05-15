@@ -40,9 +40,6 @@ function* sendSøknad(action: SendSøknad) {
         yield put(apiActions.updateApi({ kvittering, søknadHasBeenReceived: true }));
         yield put(apiActions.deleteStoredAppState());
     } catch (error) {
-        // tslint:disable-next-line: no-console
-        console.log(error);
-
         action.history.push(`${routeConfig.GENERELL_FEIL_URL}`, {
             errorMessage:
                 error && error.response && error.response.status === 413 ? error.response.data.message : undefined,
