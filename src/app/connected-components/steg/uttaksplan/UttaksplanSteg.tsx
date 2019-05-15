@@ -47,8 +47,9 @@ import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
 import { Feature, isFeatureEnabled } from '../../../Feature';
 import EksisterendeSak from '../../../components/eksisterendeSak/EksisterendeSak';
-import { finnEndringerIUttaksplan } from 'app/util/uttaksplan/uttaksplanEndringUtil';
+import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 import Sak from 'app/types/søknad/Sak';
+import { Uttaksgrunnlag } from 'app/types/EksisterendeUttak';
 
 interface StateProps {
     stegProps: StegProps;
@@ -60,13 +61,14 @@ interface StateProps {
     lastAddedPeriodeId: string | undefined;
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
-    årsakTilSenEndring: SenEndringÅrsak;
+    årsakTilSenEndring?: SenEndringÅrsak;
     vedleggForSenEndring: Attachment[];
     tilleggsopplysninger: Tilleggsopplysninger;
     aktivitetsfriKvote: number;
     uttaksplanVeilederInfo: VeilederMessage[];
     planErEndret: boolean;
     sak?: Sak;
+    grunnlag: Uttaksgrunnlag | undefined;
 }
 
 interface UttaksplanStegState {
@@ -85,7 +87,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     constructor(props: Props) {
         super(props);
 
-        const { søknad, tilgjengeligeStønadskontoer, stegProps, søknadsinfo, dispatch } = this.props;
+        const { søknad, tilgjengeligeStønadskontoer, stegProps, søknadsinfo, dispatch, grunnlag } = this.props;
 
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftGåTilbakeDialog = this.showBekreftGåTilbakeDialog.bind(this);
@@ -112,11 +114,22 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                 dispatch(søknadActions.uttaksplanLagForslag());
             }
             if (tilgjengeligeStønadskontoer.length === 0) {
-                const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
-                    søknadsinfo,
-                    startdatoPermisjon
-                );
-                dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
+                if (grunnlag) {
+                    const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
+                        søknadsinfo,
+                        startdatoPermisjon,
+                        grunnlag
+                    );
+
+                    dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
+                } else {
+                    const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
+                        søknadsinfo,
+                        startdatoPermisjon
+                    );
+
+                    dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
+                }
             }
         }
     }
@@ -320,19 +333,20 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             />
                         </Block>
 
-                        {årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
-                            <BegrunnelseForSenEndring
-                                årsak={årsakTilSenEndring}
-                                begrunnelse={
-                                    tilleggsopplysninger.begrunnelseForSenEndring
-                                        ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
-                                        : ''
-                                }
-                                vedlegg={vedleggForSenEndring}
-                                onBegrunnelseChange={this.handleBegrunnelseChange(årsakTilSenEndring)}
-                                onVedleggChange={this.handleBegrunnelseVedleggChange}
-                            />
-                        )}
+                        {årsakTilSenEndring &&
+                            årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
+                                <BegrunnelseForSenEndring
+                                    årsak={årsakTilSenEndring}
+                                    begrunnelse={
+                                        tilleggsopplysninger.begrunnelseForSenEndring
+                                            ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
+                                            : ''
+                                    }
+                                    vedlegg={vedleggForSenEndring}
+                                    onBegrunnelseChange={this.handleBegrunnelseChange(årsakTilSenEndring)}
+                                    onVedleggChange={this.handleBegrunnelseVedleggChange}
+                                />
+                            )}
                     </>
                 )}
 
@@ -356,6 +370,16 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 }
 
+const getEndringssøknadEndretPlan = (søknad: Søknad): Periode[] => {
+    const uttaksplanForEndring = søknad.ekstrainfo.eksisterendeSak
+        ? søknad.ekstrainfo.eksisterendeSak.uttaksplan
+        : undefined;
+    const endringer = uttaksplanForEndring
+        ? getEndretUttaksplanForInnsending(uttaksplanForEndring, søknad.uttaksplan)
+        : undefined;
+    return endringer || [];
+};
+
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps & InjectedIntlProps): StateProps => {
     const {
         søknad,
@@ -366,15 +390,11 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
     const søknadsinfo = getSøknadsinfo(state);
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
 
-    const årsakTilSenEndring: SenEndringÅrsak = getSeneEndringerSomKreverBegrunnelse(søknad.uttaksplan);
+    const perioderDetSøkesOm = søknad.erEndringssøknad ? getEndringssøknadEndretPlan(søknad) : søknad.uttaksplan;
+    const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderDetSøkesOm);
+    const planErEndret = søknad.erEndringssøknad && perioderDetSøkesOm.length > 0;
 
-    const uttaksplanForEndring = søknad.ekstrainfo.eksisterendeSak
-        ? søknad.ekstrainfo.eksisterendeSak.uttaksplan
-        : undefined;
-
-    const planErEndret =
-        uttaksplanForEndring !== undefined &&
-        finnEndringerIUttaksplan(uttaksplanForEndring, søknad.uttaksplan).length > 0;
+    const grunnlag = søknad.ekstrainfo.eksisterendeSak ? søknad.ekstrainfo.eksisterendeSak.uttak.grunnlag : undefined;
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
@@ -424,7 +444,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl)(state),
         aktivitetsfriKvote,
         planErEndret,
-        sak: sakForEndringssøknad
+        sak: sakForEndringssøknad,
+        grunnlag
     };
 };
 

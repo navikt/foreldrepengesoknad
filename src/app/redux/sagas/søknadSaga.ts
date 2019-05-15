@@ -89,7 +89,11 @@ function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
         if (søknadsinfo) {
             yield call(
                 getTilgjengeligeStønadskontoer,
-                getStønadskontoParams(søknadsinfo, eksisterendeUttak.grunnlag.familieHendelseDato),
+                getStønadskontoParams(
+                    søknadsinfo,
+                    eksisterendeUttak.grunnlag.familieHendelseDato,
+                    eksisterendeUttak.grunnlag
+                ),
                 history
             );
         }
