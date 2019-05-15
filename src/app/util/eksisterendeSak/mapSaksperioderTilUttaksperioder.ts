@@ -179,14 +179,6 @@ const mapPeriodehullFromAvslåttSaksperiode = (saksperiode: Saksperiode, grunnla
     return hull;
 };
 
-// const mapOppholdsperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
-
-// };
-
-// const mapOverføringsperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode => {
-
-// };
-
 const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode | undefined => {
     if (
         saksperiode.utsettelsePeriodeType !== undefined &&
