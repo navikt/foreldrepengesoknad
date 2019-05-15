@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import BEMHelper from 'common/util/bem';
-import TestIkon, { OppsummeringIkonType } from './SendSøknadIkon';
+import SendSøknadIkon, { OppsummeringIkonType } from './SendSøknadIkon';
 import LabelMedInfobox from 'common/components/label-med-infobox/LabelMedInfobox';
 
 import './sendSøknadSectionHeader.less';
@@ -20,7 +20,7 @@ const SendSøknadSectionHeader: React.StatelessComponent<Props> = ({ title, info
         <section className={cls.block}>
             <div className={cls.element('punkt')}>
                 <div className={cls.element('ikon')}>
-                    <TestIkon type={type} />
+                    <SendSøknadIkon type={type} />
                 </div>
                 <div className={cls.element('content')}>
                     <LabelMedInfobox title={title} info={info} tag="h2" />

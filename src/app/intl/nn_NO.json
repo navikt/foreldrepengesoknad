@@ -1030,5 +1030,10 @@
     "søknadSendt.status.tittel": "Følg med på saken din på ditt NAV",
     "søknadSendt.status.undertittel": "Din sak om foreldrepenger",
     "søknadSendt.status.status": "Under behandling",
-    "søknadSendt.status.saksnummer": "Saksnummer"
+    "søknadSendt.status.saksnummer": "Saksnummer",
+
+    "søknadSendt.info.missingAttachment.I000039": "Dokumentasjon på inntekstkilde i militær eller siviltjeneste",
+    "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikke blir ettersendt?",
+    "søknadSendt.info.missingAttachment.lesMer.content":
+        "Hvis du ikke ettersender dokumentene innen tre uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig. Det kan føre til at du får avslag på søknaden din."
 }

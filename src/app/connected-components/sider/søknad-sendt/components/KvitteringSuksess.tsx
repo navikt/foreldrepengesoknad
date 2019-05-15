@@ -1,20 +1,25 @@
 import * as React from 'react';
-import { Undertittel } from 'nav-frontend-typografi';
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { Undertittel, Normaltekst } from 'nav-frontend-typografi';
+import { FormattedMessage, FormattedHTMLMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import BEMHelper from 'common/util/bem';
 import CheckmarkIkon from 'app/components/uttaksplan-ikon/ikoner/CheckmarkIkon';
 import Block from 'common/components/block/Block';
 import { MissingAttachment } from 'app/types/MissingAttachment';
 import AdvarselIkon from 'app/components/advarsel-ikon/AdvarselIkon';
 
-import './kvitteringSuksess.less';
+import getMessage from 'common/util/i18nUtils';
+import UtvidetInformasjon from 'app/components/utvidetinformasjon/UtvidetInformasjon';
 
-interface Props {
+import './kvitteringSuksess.less';
+import { guid } from 'nav-frontend-js-utils';
+
+interface KvitteringSuksessProps {
     missingAttachments: MissingAttachment[];
 }
 
+type Props = KvitteringSuksessProps & InjectedIntlProps;
 const cls = BEMHelper('kvittering');
-const KvitteringSuksess: React.StatelessComponent<Props> = ({ missingAttachments }) => {
+const KvitteringSuksess: React.StatelessComponent<Props> = ({ missingAttachments, intl }) => {
     const isMissingAttachments = missingAttachments.length > 0;
     return (
         <div className={cls.block}>
@@ -39,21 +44,34 @@ const KvitteringSuksess: React.StatelessComponent<Props> = ({ missingAttachments
                         </Undertittel>
                     </Block>
                     <div>
-                        <FormattedHTMLMessage
-                            id={
-                                isMissingAttachments
-                                    ? 'søknadSendt.info.innhold.isMissingAttachments'
-                                    : 'søknadSendt.info.innhold'
-                            }
-                        />
+                        <Normaltekst>
+                            <FormattedHTMLMessage
+                                id={
+                                    isMissingAttachments
+                                        ? 'søknadSendt.info.innhold.isMissingAttachments'
+                                        : 'søknadSendt.info.innhold'
+                                }
+                            />
+                        </Normaltekst>
                         {isMissingAttachments && (
-                            <ul>
-                                {missingAttachments.map((a) => (
-                                    <li>
-                                        <FormattedHTMLMessage id={`søknadSendt.info.missingAttachmen.${a.type}`} />
-                                    </li>
-                                ))}
-                            </ul>
+                            <>
+                                <ul>
+                                    {missingAttachments.map((a) => (
+                                        <li key={guid()}>
+                                            <Normaltekst>
+                                                <FormattedHTMLMessage
+                                                    id={`søknadSendt.info.missingAttachment.${a.skjemanummer}`}
+                                                />
+                                            </Normaltekst>
+                                        </li>
+                                    ))}
+                                </ul>
+
+                                <UtvidetInformasjon
+                                    apneLabel={getMessage(intl, 'søknadSendt.info.missingAttachment.lesMer')}>
+                                    <FormattedHTMLMessage id="søknadSendt.info.missingAttachment.lesMer.content" />
+                                </UtvidetInformasjon>
+                            </>
                         )}
                     </div>
                 </div>
@@ -62,4 +80,4 @@ const KvitteringSuksess: React.StatelessComponent<Props> = ({ missingAttachments
     );
 };
 
-export default KvitteringSuksess;
+export default injectIntl(KvitteringSuksess);

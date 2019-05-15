@@ -62,7 +62,7 @@ class SøknadSendtSide extends React.Component<Props> {
                     <Block>
                         <SendSøknadSectionHeader
                             title={getMessage(intl, 'søknadSendt.når.tittel')}
-                            type={'kalender'}
+                            type="kalender"
                             info={getMessage(intl, 'søknadSendt.når.infoBox')}>
                             {this.props.behandlingsFrist}
                         </SendSøknadSectionHeader>
@@ -73,7 +73,7 @@ class SøknadSendtSide extends React.Component<Props> {
                             <Block>
                                 <SendSøknadSectionHeader
                                     title={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.tittel')}
-                                    type={'koffert'}>
+                                    type="koffert">
                                     <Lenke
                                         href={'#'}
                                         onClick={(e) => {
@@ -89,7 +89,7 @@ class SøknadSendtSide extends React.Component<Props> {
                     <Block>
                         <SendSøknadSectionHeader
                             title={getMessage(intl, 'søknadSendt.pengene.tittel')}
-                            type={'cash'}
+                            type="cash"
                             info={getMessage(intl, 'søknadSendt.pengene.infoBox')}>
                             {person.bankkonto && person.bankkonto.kontonummer ? (
                                 <>
