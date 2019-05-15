@@ -37,12 +37,14 @@ const StatusBoks: React.StatelessComponent<Props> = ({ saksNr }) => {
                             <FormattedMessage id="søknadSendt.status.status" />
                         </EtikettBase>
                     </div>
-                    <div className={cls.element('right')}>
-                        <EtikettLiten>
-                            <FormattedMessage id="søknadSendt.status.saksnummer" />
-                        </EtikettLiten>
-                        <Ingress>{saksNr}</Ingress>
-                    </div>
+                    {saksNr && (
+                        <div className={cls.element('right')}>
+                            <EtikettLiten>
+                                <FormattedMessage id="søknadSendt.status.saksnummer" />
+                            </EtikettLiten>
+                            <Ingress>{saksNr}</Ingress>
+                        </div>
+                    )}
                 </div>
             </LenkepanelBase>
         </Block>

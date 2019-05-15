@@ -56,7 +56,7 @@ class SøknadSendtSide extends React.Component<Props> {
                     <KvitteringHeader søker={person} kvittering={kvittering} />
 
                     <Block>
-                        <KvitteringSuksess />
+                        <KvitteringSuksess missingAttachments={this.props.missingAttachments} />
                     </Block>
 
                     <Block>
