@@ -172,7 +172,7 @@ const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
     if (
         periode.arbeidstidprosent === 0 &&
         periode.flerbarnsdager === false &&
-        periode.gjelderAnnenPart === false &&
+        (isFeatureEnabled(Feature.mapOpphold) ? true : periode.gjelderAnnenPart === false) &&
         (isFeatureEnabled(Feature.visAvslåttPeriode)
             ? true
             : periode.periodeResultatType === PeriodeResultatType.INNVILGET) &&

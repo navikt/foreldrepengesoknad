@@ -5,7 +5,8 @@ import {
     Periodetype,
     PeriodeHull,
     UtsettelseÅrsakType,
-    PeriodeHullÅrsak
+    PeriodeHullÅrsak,
+    isAvslåttPeriode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -149,7 +150,7 @@ class UttaksplanAutoBuilder {
     }
 
     private fjernHullPåStarten() {
-        while (this.perioder.findIndex((p) => p.type === Periodetype.Hull) === 0) {
+        while (this.perioder.findIndex((p) => p.type === Periodetype.Hull && isAvslåttPeriode(p) === false) === 0) {
             this.perioder.shift();
         }
         return this;

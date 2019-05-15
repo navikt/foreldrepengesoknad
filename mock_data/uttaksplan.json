@@ -4,7 +4,7 @@
         "familieHendelseDato": "2019-01-01",
         "dekningsgrad": 100,
         "antallBarn": 1,
-        "søkerErFarEllerMedmor": false,
+        "søkerErFarEllerMedmor": true,
         "morErAleneOmOmsorg": false,
         "morHarRett": true,
         "morErUfør": false,
@@ -18,7 +18,7 @@
             "samtidigUttak": false,
             "stønadskontotype": "MØDREKVOTE",
             "arbeidstidprosent": 0,
-            "gjelderAnnenPart": false,
+            "gjelderAnnenPart": true,
             "manueltBehandlet": true,
             "flerbarnsdager": false,
             "periode": { "fom": "2019-01-01", "tom": "2019-01-31" }
@@ -29,7 +29,7 @@
             "samtidigUttak": false,
             "stønadskontotype": "MØDREKVOTE",
             "arbeidstidprosent": 0,
-            "gjelderAnnenPart": false,
+            "gjelderAnnenPart": true,
             "manueltBehandlet": false,
             "flerbarnsdager": false,
             "periode": { "fom": "2019-02-01", "tom": "2019-02-11" }
@@ -40,7 +40,7 @@
             "samtidigUttak": false,
             "stønadskontotype": "MØDREKVOTE",
             "arbeidstidprosent": 0,
-            "gjelderAnnenPart": false,
+            "gjelderAnnenPart": true,
             "manueltBehandlet": false,
             "flerbarnsdager": false,
             "periode": { "fom": "2019-02-12", "tom": "2019-04-15" }
@@ -51,10 +51,32 @@
             "samtidigUttak": false,
             "stønadskontotype": "FELLESPERIODE",
             "arbeidstidprosent": 0,
-            "gjelderAnnenPart": false,
+            "gjelderAnnenPart": true,
             "manueltBehandlet": false,
             "flerbarnsdager": false,
             "periode": { "fom": "2019-04-16", "tom": "2019-06-03" }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FELLESPERIODE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": false,
+            "manueltBehandlet": true,
+            "flerbarnsdager": false,
+            "periode": { "fom": "2019-06-04", "tom": "2019-07-01" }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FEDREKVOTE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": false,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "periode": { "fom": "2019-07-02", "tom": "2019-10-14" }
         }
     ]
 }

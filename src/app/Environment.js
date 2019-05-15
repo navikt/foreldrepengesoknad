@@ -9,6 +9,7 @@ const Environment = () => {
         [Feature.logging]: window.appSettings[Feature.logging],
         [Feature.hentEksisterendeSak]: window.appSettings[Feature.hentEksisterendeSak],
         [Feature.visAvslåttPeriode]: window.appSettings[Feature.visAvslåttPeriode],
+        [Feature.mapOpphold]: window.appSettings[Feature.mapOpphold],
         [Feature.visInfoskriv]: window.appSettings[Feature.visInfoskriv]
     };
 };
