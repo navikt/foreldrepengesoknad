@@ -6,7 +6,8 @@ import {
     isUttaksperiode,
     Periodetype,
     Oppholdsperiode,
-    Stønadskontouttak
+    Stønadskontouttak,
+    isAvslåttPeriode
 } from '../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import { Perioden } from './uttaksplan/Perioden';
@@ -55,11 +56,7 @@ export const beregnGjenståendeUttaksdager = (
 
         if (uttaksplanPerioder) {
             uttaksplanPerioder.forEach((p: Periode) => {
-                if (
-                    p.type !== Periodetype.Utsettelse &&
-                    p.type !== Periodetype.Opphold &&
-                    p.type !== Periodetype.Hull
-                ) {
+                if (p.type === Periodetype.Uttak || p.type === Periodetype.Overføring || isAvslåttPeriode(p)) {
                     antallDager = beregnDagerBrukt
                         ? antallDager + finnAntallDagerÅTrekke(Perioden(p).getAntallUttaksdager(), p)
                         : antallDager - finnAntallDagerÅTrekke(Perioden(p).getAntallUttaksdager(), p);

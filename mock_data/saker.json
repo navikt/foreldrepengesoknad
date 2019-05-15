@@ -1,9 +1,9 @@
 [
     {
         "type": "FPSAK",
-        "saksnummer": "137665720",
+        "saksnummer": "137669631",
         "status": "LOP",
-        "opprettet": "2019-04-03",
+        "opprettet": "2019-05-10",
         "annenPart": {
             "fnr": "10088349534",
             "aktørId": "1215123634190",
@@ -14,39 +14,16 @@
         },
         "behandlinger": [
             {
-                "opprettetTidspunkt": "2019-04-03T15:08:01.573",
-                "endretTidspunkt": "2019-04-03T15:20:30.217",
+                "opprettetTidspunkt": "2019-05-08T11:57:47.052",
+                "endretTidspunkt": "2019-05-08T12:01:49.015",
                 "status": "AVSLU",
                 "type": "FP",
                 "tema": "FORP_FODS",
-                "årsak": "RE-FRDLING",
-                "behandlingResultat": "FORELDREPENGER_ENDRET",
-                "behandlendeEnhet": "4849",
-                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Tromsø",
-                "inntektsmeldinger": []
-            },
-            {
-                "opprettetTidspunkt": "2019-04-02T15:39:16.685",
-                "endretTidspunkt": "2019-04-02T15:43:42.557",
-                "status": "AVSLU",
-                "type": "FP",
-                "tema": "FORP_FODS",
-                "årsak": "RE-FRDLING",
-                "behandlingResultat": "FORELDREPENGER_ENDRET",
-                "behandlendeEnhet": "4849",
-                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Tromsø",
-                "inntektsmeldinger": []
-            },
-            {
-                "opprettetTidspunkt": "2019-03-14T10:03:24.723",
-                "endretTidspunkt": "2019-03-14T10:07:27.185",
-                "status": "AVSLU",
-                "type": "FP",
-                "tema": "FORP_FODS",
+                "årsak": "RE-END-INNTEKTSMELD",
                 "behandlingResultat": "INNVILGET",
-                "behandlendeEnhet": "4849",
-                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Tromsø",
-                "inntektsmeldinger": ["439781992"]
+                "behandlendeEnhet": "4833",
+                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Oslo 1",
+                "inntektsmeldinger": ["439824915"]
             }
         ]
     }
