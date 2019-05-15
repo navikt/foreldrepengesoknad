@@ -1018,15 +1018,18 @@
     "søknadSendt.sendtInn": "sendt inn:",
     "søknadSendt.info.tittel": "Nå er resten vårt ansvar",
     "søknadSendt.info.tittel.isMissingAttachments": "Ettersend manglande dokumentasjon innen 3 uker",
-    "søknadSendt.info.innhold": "Du trenger ikkje gjere noke meir, vi tek kontakt med deg hvis det er noko vi lurer på.",
+    "søknadSendt.info.innhold":
+        "Du trenger ikkje gjere noke meir, vi tek kontakt med deg hvis det er noko vi lurer på.",
     "søknadSendt.info.innhold.isMissingAttachments":
         "Vi har mottatt søknaden din, og den manglar følgjande dokumentasjon:",
-    "søknadSendt.når.tittel": "Når kan eg tidligast forvente få svar på min søknad?", 
+    "søknadSendt.når.tittel": "Når kan eg tidligast forvente få svar på min søknad?",
     "søknadSendt.når.infoBox":
         "Du får tidlegast svar på søknaden din fire veker før foreldrepengeperioden din startar. Dette er fordi vi bruker dei nyaste opplysningane om inntekta di når vi skal berekne kva du skal få i foreldrepengar.",
-    "søknadSendt.infoFraArbeidsgiver.tittel": "Hvilken informasjon trenger min arbeidsgiver?",
-    "søknadSendt.infoFraArbeidsgiver": "Viktig informasjon for din arbeidsgiver",
-    "søknadSendt.pengene.tittel": "Hvor blir pengene utbetalt?",
+    "søknadSendt.infoFraArbeidsgiver.tittel": "Kva for ei informasjon treng arbeidsgivaren min?",
+    "søknadSendt.infoFraArbeidsgiver": "Viktig informasjon til din arbeidsgivar",
+    "søknadSendt.infoFraArbeidsgiver.infoBox":
+        "Dette er eit informasjonsbrev du kan gi til arbeidsgivaren din. Informasjonsbrevet er ei rettleiing til arbeidsgivaren din når inntekstmeldingen skal sendast inn og kva for ein informasjon vi treng for å behandlast søknaden din.",
+    "søknadSendt.pengene.tittel": "Kvar blir pengene utbetalt?",
     "søknadSendt.pengene.infoBox":
         "Dersom søknaden din blir innvilga, blir foreldrepengane dine anten betalte ut av arbeidsgivar eller av NAV. Sjekk at du har registrert riktig kontonummer hos oss.",
     "søknadSendt.pengene.kontonummer": "Registrert kontonummer",

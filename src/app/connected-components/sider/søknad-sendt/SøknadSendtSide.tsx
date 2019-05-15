@@ -75,7 +75,8 @@ class SøknadSendtSide extends React.Component<Props> {
                                     <Block>
                                         <SøknadSendtSectionHeader
                                             title={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.tittel')}
-                                            type="koffert">
+                                            type="koffert"
+                                            info={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.infoBox')}>
                                             <Lenke
                                                 href={'#'}
                                                 onClick={(e) => {

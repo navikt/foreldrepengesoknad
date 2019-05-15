@@ -1019,15 +1019,17 @@
     "søknadSendt.når.infoBox":
         "Du kan tidligst få svar på søknaden din fire uker før foreldrepengeperioden din starter. Dette er fordi vi bruker de nyeste opplysningene om inntekten din når vi skal beregne hva du skal få i foreldrepenger.",
     "søknadSendt.infoFraArbeidsgiver.tittel": "Hvilken informasjon trenger min arbeidsgiver?",
-    "søknadSendt.infoFraArbeidsgiver": "Viktig informasjon for din arbeidsgiver",
+    "søknadSendt.infoFraArbeidsgiver": "Viktig informasjon til arbeidsgiveren din",
+    "søknadSendt.infoFraArbeidsgiver.infoBox":
+        "Dette er et informasjonsbrev du kan gi til din arbeidsgiver. Informasjonsbrevet er en veiledning til arbeidsgiveren din når inntekstmeldingen skal sendes inn og hvilken informasjon vi trenger for å behandles søknaden din. ",
     "søknadSendt.pengene.tittel": "Hvor blir pengene utbetalt?",
     "søknadSendt.pengene.infoBox":
-        "Hvis søknaden din blir innvilget, blir foreldrepengene dine enten utbetalt av arbeidsgiver eller av NAV. Sjekk at du har registrert riktig kontonummer hos oss.",
+        "Hvis søknaden din blir innvilget, blir foreldrepengene dine enten utbetalt av arbeidsgiveren din eller av NAV. Sjekk at du har registrert riktig kontonummer hos oss.",
     "søknadSendt.pengene.kontonummer": "Registrert kontonummer",
     "søknadSendt.pengene.ingenKontonummer": "Du har ikke regirstrert et kontonummer",
     "søknadSendt.pengene.kontonummer.endre": "Endre kontonummer",
     "søknadSendt.pengene.kontonummer.leggTil": "Legg til kontonummer",
-    "søknadSendt.status.tittel": "Følg med på saken din på ditt NAV",
+    "søknadSendt.status.tittel": "Følg med på saken din",
     "søknadSendt.status.undertittel": "Din sak om foreldrepenger",
     "søknadSendt.status.status": "Under behandling",
     "søknadSendt.status.saksnummer": "Saksnummer",
