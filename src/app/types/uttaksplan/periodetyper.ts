@@ -64,7 +64,8 @@ export enum OverføringÅrsakType {
 }
 
 export enum PeriodeHullÅrsak {
-    'Fridag' = 'Fridag'
+    'Fridag' = 'Fridag',
+    'avslåttPeriode' = 'avslåttPeriode'
 }
 
 export enum SenEndringÅrsak {
@@ -88,11 +89,24 @@ export interface PeriodeBase {
     vedlegg?: Attachment[];
 }
 
-export interface PeriodeHull extends PeriodeBase {
+interface PeriodeHullBase extends PeriodeBase {
     type: Periodetype.Hull;
     tidsperiode: Tidsperiode;
     årsak?: PeriodeHullÅrsak;
 }
+
+export interface AvslåttPeriode extends PeriodeBase {
+    type: Periodetype.Hull;
+    årsak?: PeriodeHullÅrsak.avslåttPeriode;
+    avslåttPeriodeType?: Periodetype;
+    konto: StønadskontoType;
+    gjelderAnnenPart: boolean;
+}
+export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode => {
+    return periode.type === Periodetype.Hull && periode.årsak === PeriodeHullÅrsak.avslåttPeriode;
+};
+
+export type PeriodeHull = PeriodeHullBase | AvslåttPeriode;
 
 export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;

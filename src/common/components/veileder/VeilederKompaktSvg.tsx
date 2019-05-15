@@ -12,17 +12,17 @@ const VeilederKompakt: React.StatelessComponent<Props> = ({ svgProps, transparen
         <defs>
             <path
                 d="M67.557 34.114h-.059c0-18.7-13.188-33.859-29.46-33.859-16.269 0-29.457 15.16-29.457 33.86v.016c-.006 15.97-8.058 25.1-8.058 25.1s7.952 9.976 37.516 9.976H38.097c29.567 0 37.519-9.975 37.519-9.975s-8.06-9.137-8.06-25.118"
-                id="a"
+                id="veileder-kompakt-a"
             />
             <path
                 d="M20.143 87.094v-2.77c0-7.466 8.327-15.476 14.514-19.14 1.135 1.985 4.132 9.894 13.25 9.894 9.053 0 13.375-8.363 13.56-10.328 6.311 3.43 15.504 11.796 15.504 19.573v1.951A47.789 47.789 0 0 1 48 96a47.781 47.781 0 0 1-27.857-8.906z"
-                id="b"
+                id="veileder-kompakt-b"
             />
         </defs>
         <g id="Icons/employee/medium-animation" fill="none" fillRule="evenodd">
             {transparentBackground !== true && <circle id="Background" fill="#C1B5D0" cx={48} cy={48} r={48} />}
             <g id="Head" transform="translate(10 5)">
-                <use id="Hair" fill="#D2654C" xlinkHref="#a" />
+                <use id="Hair" fill="#D2654C" xlinkHref="#veileder-kompakt-a" />
                 <path
                     d="M44.017 90.627c-1.971.246-3.98.373-6.017.373-1.966 0-3.904-.118-5.808-.348-5.426-8.936-7.576-28.387-8.476-29.804 0 0 13.547-9.003 28.665-.476 0 1.322-2.642 21.184-8.364 30.255z"
                     id="Neck"
@@ -71,7 +71,7 @@ const VeilederKompakt: React.StatelessComponent<Props> = ({ svgProps, transparen
                     strokeLinecap="round"
                 />
             </g>
-            <use id="Body" fill="#5C4378" xlinkHref="#b" />
+            <use id="Body" fill="#5C4378" xlinkHref="#veileder-kompakt-b" />
             <g id="ID" transform="translate(52.457 80.5)">
                 <path
                     d="M11.677 12.721H1.317c-.728 0-1.317-.59-1.317-1.32V2.619c0-.729.59-1.32 1.317-1.32h16.308a1.32 1.32 0 0 1 1.318 1.32V9.42a47.753 47.753 0 0 1-7.266 3.301z"

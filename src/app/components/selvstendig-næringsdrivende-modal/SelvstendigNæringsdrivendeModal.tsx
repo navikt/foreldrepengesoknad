@@ -224,6 +224,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 <Block visible={visibility.næringsinntekt(næring)}>
                     <Input
                         name="selvstendigNæringsdrivende-næringsinntekt"
+                        infotekst={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt.info')}
                         label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
                         onChange={(v: string) => {
                             const næringPartial: NæringPartial = {
