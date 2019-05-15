@@ -64,7 +64,9 @@
     "annenInntekt.infoboksTekst.punktFem": "Lønn fra arbeidsgiver under videre- eller etterutdanning",
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi navnet på arbeidsgiveren",
     "annenInntekt.spørsmål.næringsinntekt":
-        "Hva har du hatt i næringsinntekt før skatt de siste tolv månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.",
+        "Hva har du hatt i næringsresultat før skatt de siste tolv månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.        ",
+    "annenInntekt.spørsmål.næringsinntekt.info":
+        "Næringsresultatet er inntekter du har i næringen din, minus utgifter og avskrivninger.",
     "annenInntekt.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
     "annenInntekt.ytelser.label": "Utbetalinger fra NAV",
     "annenInntekt.ytelser.tekst": "Hvis du får penger fra NAV, trenger du ikke opplyse om det i søknaden din.",
