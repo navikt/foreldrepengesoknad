@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Periode, Periodetype, isUttaksperiode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    Periodetype,
+    isUttaksperiode,
+    StønadskontoType,
+    isVanligHull
+} from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
@@ -75,7 +81,7 @@ class Periodeliste extends React.Component<Props> {
 
     shouldRenderHull(perioder: Periode[]) {
         return perioder
-            .filter((p: Periode) => p.type !== Periodetype.Hull)
+            .filter((p: Periode) => !isVanligHull(p))
             .some(
                 (p: Periode) =>
                     (isUttaksperiode(p) && p.konto !== StønadskontoType.AktivitetsfriKvote) || !isUttaksperiode(p)
@@ -106,9 +112,7 @@ class Periodeliste extends React.Component<Props> {
             onLeggTilPeriode
         } = this.props;
 
-        const filteredPerioder = this.shouldRenderHull(perioder)
-            ? perioder
-            : perioder.filter((p) => p.type !== Periodetype.Hull);
+        const filteredPerioder = this.shouldRenderHull(perioder) ? perioder : perioder.filter((p) => !isVanligHull(p));
 
         return (
             <ToggleList
