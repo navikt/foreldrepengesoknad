@@ -3,12 +3,11 @@ import {
     Periodetype,
     Uttaksperiode,
     Utsettelsesperiode,
-    PeriodeHull,
-    PeriodeHullÅrsak,
     AvslåttPeriode,
     Oppholdsperiode,
     OppholdÅrsakType,
-    StønadskontoType
+    StønadskontoType,
+    PeriodeInfoType
 } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
@@ -166,17 +165,17 @@ const mapUtsettelseperiodeFromSaksperiode = (
     return utsettelsesperiode;
 };
 
-const mapPeriodehullFromAvslåttSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): PeriodeHull => {
-    const hull: AvslåttPeriode = {
+const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): AvslåttPeriode => {
+    const avslåttPeriode: AvslåttPeriode = {
         id: guid(),
-        type: Periodetype.Hull,
+        type: Periodetype.Info,
+        infotype: PeriodeInfoType.avslåttPeriode,
         tidsperiode: { ...saksperiode.tidsperiode },
-        årsak: PeriodeHullÅrsak.avslåttPeriode,
         avslåttPeriodeType: saksperiode.utsettelsePeriodeType ? Periodetype.Utsettelse : Periodetype.Uttak,
         konto: saksperiode.stønadskontotype,
-        gjelderAnnenPart: saksperiode.gjelderAnnenPart
+        forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor)
     };
-    return hull;
+    return avslåttPeriode;
 };
 
 const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode | undefined => {
@@ -189,7 +188,7 @@ const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunn
         return mapUtsettelseperiodeFromSaksperiode(saksperiode, grunnlag);
     }
     if (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT) {
-        return mapPeriodehullFromAvslåttSaksperiode(saksperiode, grunnlag);
+        return mapInfoPeriodeFromAvslåttSaksperiode(saksperiode, grunnlag);
     }
 
     return mapUttaksperiodeFromSaksperiode(saksperiode, grunnlag);
