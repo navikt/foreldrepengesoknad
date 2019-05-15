@@ -64,7 +64,9 @@
     "annenInntekt.infoboksTekst.punktFem": "Lønn frå arbeidsgivar under vidare- eller etterutdanning",
     "annenInntekt.spørsmål.arbeidsgiver": "Gi opp namnet på arbeidsgivaren",
     "annenInntekt.spørsmål.næringsinntekt":
-        "Kva har du hatt i næringsinntekt før skatt dei siste tolv månadene? Dersom verksemda har vart i kortare tid, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.",
+        "Kva har du hatt i næringsresultat før skatt dei siste tolv månadene? Dersom verksemda har vart i kortare tid, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.",
+    "annenInntekt.spørsmål.næringsinntekt.info":
+        "Næringsresultatet er inntekter du har i næringa di, minus utgifter og avskrivingar.",
     "annenInntekt.tom": "Dersom du har avslutta {navnPåNæringen} gi opp sluttdato",
     "annenInntekt.ytelser.label": "Utbetalingar frå NAV",
     "annenInntekt.ytelser.tekst": "Dersom du får pengar frå NAV, treng du ikkje opplyse om det i søknaden din.",
@@ -464,6 +466,10 @@
     "periodeliste.hull.info.uttaksdager":
         "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar",
     "periodeliste.hull.tittel": "Mista foreldrepengar",
+    "periodeliste.hull.ikkeInvilgetPeriode.tittel": "Tapte foreldrepenger - ikke invilget {type}",
+    "periodeliste.hull.ikkeInvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
+    "periodeliste.hull.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Uttaksperioden er ikke innvilget",
+    "periodeliste.hull.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsesperioden er ikke innvilget",
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode": "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "periodeliste.nyPeriodeErFørFamiliehendelsesdato":
@@ -1035,5 +1041,8 @@
     "søknadSendt.info.missingAttachment.I000039": "Dokumentasjon på inntekstkilde i militær eller siviltjeneste",
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikke blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
-        "Hvis du ikke ettersender dokumentene innen tre uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig. Det kan føre til at du får avslag på søknaden din."
+        "Hvis du ikke ettersender dokumentene innen tre uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig. Det kan føre til at du får avslag på søknaden din.",
+
+    "periodetype.utsettelse": "utsettelse",
+    "periodetype.uttak": "uttak"
 }

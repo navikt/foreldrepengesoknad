@@ -81,6 +81,11 @@ function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
     ) {
         yield call(startVanligEndringssøknad, action);
     } else {
+        const uttakFraEksisterendeSak = mapSaksperioderTilUttaksperioder(
+            eksisterendeSak.saksperioder,
+            eksisterendeSak.grunnlag
+        );
+
         yield put(
             søknadActions.updateSøknad({
                 ...søknad,
@@ -91,10 +96,7 @@ function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
                     eksisterendeSak,
                     erEnkelEndringssøknad: true,
                     erEnkelEndringssøknadMedUttaksplan: eksisterendeSak.uttaksplan !== undefined,
-                    uttakFraEksisterendeSak: mapSaksperioderTilUttaksperioder(
-                        eksisterendeSak.saksperioder,
-                        eksisterendeSak.grunnlag
-                    )
+                    uttakFraEksisterendeSak
                 }
             })
         );
@@ -103,7 +105,11 @@ function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
         if (søknadsinfo) {
             yield call(
                 getTilgjengeligeStønadskontoer,
-                getStønadskontoParams(søknadsinfo, eksisterendeSak.grunnlag.familieHendelseDato),
+                getStønadskontoParams(
+                    søknadsinfo,
+                    eksisterendeSak.grunnlag.familieHendelseDato,
+                    eksisterendeSak.grunnlag
+                ),
                 history
             );
         }

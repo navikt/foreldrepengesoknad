@@ -141,6 +141,7 @@ class Periodeliste extends React.Component<Props> {
                                     periode={periode}
                                     onLeggTilOpphold={onLeggTilOpphold}
                                     onLeggTilPeriode={onLeggTilPeriode}
+                                    navnPåForeldre={navnPåForeldre}
                                 />
                             ) : (
                                 <PeriodelistePeriode
