@@ -1,15 +1,15 @@
 import * as React from 'react';
-
-import BEMHelper from 'common/util/bem';
+import { FormattedMessage } from 'react-intl';
+import EtikettBase from 'nav-frontend-etiketter';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import { Undertittel, EtikettLiten, Ingress, Systemtittel } from 'nav-frontend-typografi';
-import EtikettBase from 'nav-frontend-etiketter';
-import { FormattedMessage } from 'react-intl';
+
+import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
+
 import './statusBoks.less';
 
 const cls = BEMHelper('statusBoks');
-
 interface Props {
     saksNr: string;
 }
