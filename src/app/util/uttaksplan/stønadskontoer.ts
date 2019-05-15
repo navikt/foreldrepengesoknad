@@ -23,8 +23,7 @@ export const stønadskontoSortOrder = {
     [StønadskontoType.Fedrekvote]: 3,
     [StønadskontoType.Fellesperiode]: 4,
     [StønadskontoType.Foreldrepenger]: 5,
-    [StønadskontoType.SamtidigUttak]: 6,
-    [StønadskontoType.AktivitetsfriKvote]: 7
+    [StønadskontoType.AktivitetsfriKvote]: 6
 };
 
 export const getAntallUker = (kontoer: TilgjengeligStønadskonto[]): number => {
