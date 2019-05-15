@@ -4,9 +4,9 @@ import BEMHelper from 'common/util/bem';
 import SendSøknadIkon, { OppsummeringIkonType } from './SendSøknadIkon';
 import LabelMedInfobox from 'common/components/label-med-infobox/LabelMedInfobox';
 
-import './sendSøknadSectionHeader.less';
+import './søknadSendtSectionHeader.less';
 
-const cls = BEMHelper('sendSøknadSectionHeader');
+const cls = BEMHelper('søknadSendtSectionHeader');
 
 interface Props {
     title: string | React.ReactNode;
@@ -15,7 +15,7 @@ interface Props {
     children?: React.ReactNode;
 }
 
-const SendSøknadSectionHeader: React.StatelessComponent<Props> = ({ title, info, type, children }) => {
+const SøknadSendtSectionHeader: React.StatelessComponent<Props> = ({ title, info, type, children }) => {
     return (
         <section className={cls.block}>
             <div className={cls.element('punkt')}>
@@ -31,4 +31,4 @@ const SendSøknadSectionHeader: React.StatelessComponent<Props> = ({ title, info
     );
 };
 
-export default SendSøknadSectionHeader;
+export default SøknadSendtSectionHeader;

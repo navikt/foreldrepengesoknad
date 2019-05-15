@@ -13,7 +13,7 @@ import { apiActionCreators as api } from '../../../redux/actions';
 import KvitteringHeader from './components/KvitteringHeader';
 import KvitteringSuksess from './components/KvitteringSuksess';
 import StatusBoks from './components/StatusBoks';
-import SendSøknadSectionHeader from './components/SendSøknadSectionHeader';
+import SøknadSendtSectionHeader from './components/SøknadSendtSectionHeader';
 
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
@@ -47,7 +47,7 @@ class SøknadSendtSide extends React.Component<Props> {
     }
 
     render() {
-        const { person, kvittering, intl } = this.props;
+        const { person, kvittering, erEndringssøknad, intl } = this.props;
         const cls = BEMHelper('søknadSendt');
         return (
             <Applikasjonsside visSøknadstittel={true}>
@@ -59,70 +59,74 @@ class SøknadSendtSide extends React.Component<Props> {
                         <KvitteringSuksess missingAttachments={this.props.missingAttachments} />
                     </Block>
 
-                    <Block>
-                        <SendSøknadSectionHeader
-                            title={getMessage(intl, 'søknadSendt.når.tittel')}
-                            type="kalender"
-                            info={getMessage(intl, 'søknadSendt.når.infoBox')}>
-                            {this.props.behandlingsFrist}
-                        </SendSøknadSectionHeader>
-                    </Block>
-
-                    {isFeatureEnabled(Feature.visInfoskriv) &&
-                        kvittering.infoskrivPdf && (
+                    {!erEndringssøknad && (
+                        <>
                             <Block>
-                                <SendSøknadSectionHeader
-                                    title={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.tittel')}
-                                    type="koffert">
-                                    <Lenke
-                                        href={'#'}
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            openPdfPreview(kvittering.infoskrivPdf);
-                                        }}>
-                                        <FormattedMessage id={'søknadSendt.infoFraArbeidsgiver'} />
-                                    </Lenke>
-                                </SendSøknadSectionHeader>
+                                <SøknadSendtSectionHeader
+                                    title={getMessage(intl, 'søknadSendt.når.tittel')}
+                                    type="kalender"
+                                    info={getMessage(intl, 'søknadSendt.når.infoBox')}>
+                                    {this.props.behandlingsFrist}
+                                </SøknadSendtSectionHeader>
                             </Block>
-                        )}
 
-                    <Block>
-                        <SendSøknadSectionHeader
-                            title={getMessage(intl, 'søknadSendt.pengene.tittel')}
-                            type="cash"
-                            info={getMessage(intl, 'søknadSendt.pengene.infoBox')}>
-                            {person.bankkonto && person.bankkonto.kontonummer ? (
-                                <>
-                                    <Block margin="none">
-                                        <EtikettLiten>
-                                            <FormattedMessage id="søknadSendt.pengene.kontonummer" />
-                                        </EtikettLiten>
+                            {isFeatureEnabled(Feature.visInfoskriv) &&
+                                kvittering.infoskrivPdf && (
+                                    <Block>
+                                        <SøknadSendtSectionHeader
+                                            title={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.tittel')}
+                                            type="koffert">
+                                            <Lenke
+                                                href={'#'}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    openPdfPreview(kvittering.infoskrivPdf);
+                                                }}>
+                                                <FormattedMessage id={'søknadSendt.infoFraArbeidsgiver'} />
+                                            </Lenke>
+                                        </SøknadSendtSectionHeader>
                                     </Block>
-                                    <Block margin="xxs">
-                                        <Ingress>{person.bankkonto && person.bankkonto.kontonummer}</Ingress>
-                                    </Block>
-                                    <Block margin="none">
-                                        <Lenke href="#">
-                                            <FormattedMessage id="søknadSendt.pengene.kontonummer.endre" />
-                                        </Lenke>
-                                    </Block>
-                                </>
-                            ) : (
-                                <>
-                                    <Block margin="xxs">
-                                        <Normaltekst>
-                                            <FormattedMessage id="søknadSendt.pengene.ingenKontonummer" />
-                                        </Normaltekst>
-                                    </Block>
-                                    <Block margin="none">
-                                        <Lenke href="#">
-                                            <FormattedMessage id="søknadSendt.pengene.kontonummer.leggTil" />
-                                        </Lenke>
-                                    </Block>
-                                </>
-                            )}
-                        </SendSøknadSectionHeader>
-                    </Block>
+                                )}
+
+                            <Block>
+                                <SøknadSendtSectionHeader
+                                    title={getMessage(intl, 'søknadSendt.pengene.tittel')}
+                                    type="cash"
+                                    info={getMessage(intl, 'søknadSendt.pengene.infoBox')}>
+                                    {person.bankkonto && person.bankkonto.kontonummer ? (
+                                        <>
+                                            <Block margin="none">
+                                                <EtikettLiten>
+                                                    <FormattedMessage id="søknadSendt.pengene.kontonummer" />
+                                                </EtikettLiten>
+                                            </Block>
+                                            <Block margin="xxs">
+                                                <Ingress>{person.bankkonto && person.bankkonto.kontonummer}</Ingress>
+                                            </Block>
+                                            <Block margin="none">
+                                                <Lenke href="#">
+                                                    <FormattedMessage id="søknadSendt.pengene.kontonummer.endre" />
+                                                </Lenke>
+                                            </Block>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Block margin="xxs">
+                                                <Normaltekst>
+                                                    <FormattedMessage id="søknadSendt.pengene.ingenKontonummer" />
+                                                </Normaltekst>
+                                            </Block>
+                                            <Block margin="none">
+                                                <Lenke href="#">
+                                                    <FormattedMessage id="søknadSendt.pengene.kontonummer.leggTil" />
+                                                </Lenke>
+                                            </Block>
+                                        </>
+                                    )}
+                                </SøknadSendtSectionHeader>
+                            </Block>
+                        </>
+                    )}
 
                     <StatusBoks saksNr={kvittering.saksNr} />
                 </div>
