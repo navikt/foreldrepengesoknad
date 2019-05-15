@@ -32,10 +32,10 @@ const getTittelOgBeskrivelseForHull = (
 ): { tittel: string; beskrivelse: string } => {
     if (isAvslåttPeriode(periode)) {
         return {
-            tittel: getMessage(intl, 'periodeliste.hull.ikkeInvilgetPeriode.tittel', {
+            tittel: getMessage(intl, 'periodeliste.ikkeInvilgetPeriode.tittel', {
                 type: getMessage(intl, `periodetype.${periode.avslåttPeriodeType}`)
             }),
-            beskrivelse: getMessage(intl, 'periodeliste.hull.ikkeInvilgetPeriode.beskrivelse', {
+            beskrivelse: getMessage(intl, 'periodeliste.ikkeInvilgetPeriode.beskrivelse', {
                 varighet: getVarighetString(dager, intl),
                 konto: getStønadskontoNavn(intl, periode.konto, navnPåForeldre)
             })
@@ -95,7 +95,7 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
                     {isAvslåttPeriode(periode) ? (
                         <Block>
                             <FormattedMessage
-                                id={`periodeliste.hull.ikkeInvilgetPeriode.expanded.beskrivelse.${
+                                id={`periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.${
                                     periode.avslåttPeriodeType
                                 }`}
                             />
