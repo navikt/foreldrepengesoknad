@@ -5,7 +5,8 @@ import {
     StønadskontoType,
     OppholdÅrsakType,
     isUttaksperiode,
-    Arbeidsform
+    Arbeidsform,
+    isOverskrivbarPeriode
 } from '../../types/uttaksplan/periodetyper';
 import { InjectedIntl } from 'react-intl';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
@@ -160,7 +161,7 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
 };
 
 export const getTidsperioderIUttaksplan = (uttaksplan: Periode[], periodeId: string | undefined): Tidsperiode[] =>
-    uttaksplan.filter((p) => p.type !== Periodetype.Hull && p.id !== periodeId).map((p) => p.tidsperiode);
+    uttaksplan.filter((p) => !isOverskrivbarPeriode(p) && p.id !== periodeId).map((p) => p.tidsperiode);
 
 export const uttaksplanInneholderFrilansaktivitet = (uttaksplan: Periode[]): boolean => {
     return uttaksplan.some(

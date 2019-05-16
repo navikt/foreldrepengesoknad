@@ -173,7 +173,8 @@ const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, grunnla
         tidsperiode: { ...saksperiode.tidsperiode },
         avslåttPeriodeType: saksperiode.utsettelsePeriodeType ? Periodetype.Utsettelse : Periodetype.Uttak,
         konto: saksperiode.stønadskontotype,
-        forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor)
+        forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
+        overskrives: true
     };
     return avslåttPeriode;
 };

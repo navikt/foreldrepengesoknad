@@ -26,6 +26,7 @@ export interface Saksgrunnlag {
     morHarRett: boolean;
     farMedmorErAleneOmOmsorg: boolean;
     farMedmorHarRett: boolean;
+    erDeltUttak: boolean;
     erBarnetFødt: boolean; // Utledet fra familieHendelseType
 }
 

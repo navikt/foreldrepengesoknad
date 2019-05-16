@@ -10,7 +10,10 @@ import {
     Overføringsperiode,
     UtsettelseÅrsakType,
     StønadskontoType,
-    ForeldrepengerFørFødselUttaksperiode
+    ForeldrepengerFørFødselUttaksperiode,
+    InfoPeriode,
+    isHull,
+    isInfoPeriode
 } from '../../types/uttaksplan/periodetyper';
 import { Tidsperiode, Forelder } from 'common/types';
 import { Perioden } from './Perioden';
@@ -23,6 +26,7 @@ export const Periodene = (perioder: Periode[]) => ({
     getUttak: () => getUttaksperioder(perioder),
     getOverføringer: () => getOverføringer(perioder),
     getHull: () => getHull(perioder),
+    getHullOgInfo: () => getHullOgInfo(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
     getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
     getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
@@ -77,7 +81,11 @@ function getOverføringer(perioder: Periode[]): Overføringsperiode[] {
 }
 
 function getHull(perioder: Periode[]): PeriodeHull[] {
-    return perioder.filter((periode) => periode.type === Periodetype.Hull) as PeriodeHull[];
+    return perioder.filter((periode) => isHull(periode)) as PeriodeHull[];
+}
+
+function getHullOgInfo(perioder: Periode[]): Array<PeriodeHull | InfoPeriode> {
+    return perioder.filter((periode) => isHull(periode) || isInfoPeriode(periode)) as Array<PeriodeHull | InfoPeriode>;
 }
 
 function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
