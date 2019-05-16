@@ -96,6 +96,7 @@ export interface PeriodeBase {
 interface InfoPeriodeBase extends PeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType;
+    overskrives: boolean;
 }
 
 export interface AvslåttPeriode extends InfoPeriodeBase {
@@ -104,6 +105,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     avslåttPeriodeType?: Periodetype;
     konto: StønadskontoType;
     forelder: Forelder;
+    overskrives: true;
 }
 
 export type InfoPeriode = AvslåttPeriode;
@@ -112,11 +114,19 @@ export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode 
     return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.avslåttPeriode;
 };
 
+export const isInfoPeriode = (periode: Periode): periode is InfoPeriode => {
+    return periode.type === Periodetype.Info && periode.overskrives === true;
+};
+
 export interface PeriodeHull extends PeriodeBase {
     type: Periodetype.Hull;
     tidsperiode: Tidsperiode;
     årsak?: PeriodeHullÅrsak;
 }
+
+export const isHull = (periode: Periode): periode is PeriodeHull => {
+    return periode.type === Periodetype.Hull;
+};
 
 export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
