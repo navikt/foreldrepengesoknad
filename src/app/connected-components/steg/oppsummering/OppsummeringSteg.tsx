@@ -36,6 +36,8 @@ import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
 import { findAllAttachments } from '../manglende-vedlegg/manglendeVedleggUtil';
 import _ from 'lodash';
 import { skalViseManglendeVedleggSteg } from '../util/navigation';
+import ErAnnenForelderInformertSpørsmål from 'app/spørsmål/ErAnnenForelderInformertSpørsmål';
+import VeilederInfo from 'app/components/veileder-info/VeilederInfo';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -43,6 +45,7 @@ interface StateProps {
     søknad: Søknad;
     kvittering?: Kvittering;
     stegProps: StegProps;
+    skalSpørreOmAnnenForelderErInformert: boolean;
     uttaksplanValidering: UttaksplanValideringState;
     missingAttachments: MissingAttachment[];
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
@@ -51,6 +54,15 @@ interface StateProps {
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
+
+export const getSkalSpørreOmAnnenForelderErInformert = (søknad: Søknad): boolean => {
+    return (
+        søknad.erEndringssøknad &&
+        søknad.ekstrainfo.erEnkelEndringssøknad &&
+        søknad.ekstrainfo.eksisterendeSak !== undefined &&
+        søknad.ekstrainfo.eksisterendeSak.grunnlag.erDeltUttak
+    );
+};
 class OppsummeringSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
@@ -94,6 +106,7 @@ class OppsummeringSteg extends React.Component<Props> {
             missingAttachments,
             isLoadingTilgjengeligeStønadskontoer,
             antallUkerUttaksplan,
+            skalSpørreOmAnnenForelderErInformert,
             dispatch,
             intl
         } = this.props;
@@ -133,20 +146,48 @@ class OppsummeringSteg extends React.Component<Props> {
                                     {getMessage(intl, 'oppsummering.veileder.manglendeVedlegg')}
                                 </Veilederinfo>
                             )}
-                        {uttaksplanValidering.erGyldig && (
-                            <BekreftCheckboksPanel
-                                className="blokk-m"
-                                checked={søknad.harGodkjentOppsummering}
-                                label={getMessage(intl, 'oppsummering.samtykke')}
-                                onChange={() => {
-                                    dispatch(
-                                        søknadActions.updateSøknad({
-                                            harGodkjentOppsummering: !søknad.harGodkjentOppsummering
-                                        })
-                                    );
-                                }}
-                            />
+                        {skalSpørreOmAnnenForelderErInformert && (
+                            <>
+                                <Block>
+                                    <ErAnnenForelderInformertSpørsmål
+                                        navn={søknadsinfo.navn.annenForelder.fornavn}
+                                        erAnnenForelderInformert={søknad.annenForelder.erInformertOmSøknaden}
+                                        onChange={(erInformertOmSøknaden) =>
+                                            dispatch(søknadActions.updateAnnenForelder({ erInformertOmSøknaden }))
+                                        }
+                                    />
+                                </Block>
+                                <Block visible={søknad.annenForelder.erInformertOmSøknaden === false}>
+                                    <VeilederInfo
+                                        messages={[
+                                            {
+                                                type: 'normal',
+                                                contentIntlKey:
+                                                    'erAnnenForelderInformert.veilederIkkeInformert.oppsummeringsside',
+                                                values: { navn: søknadsinfo.navn.annenForelder.fornavn }
+                                            }
+                                        ]}
+                                    />
+                                </Block>
+                            </>
                         )}
+                        {uttaksplanValidering.erGyldig &&
+                            (skalSpørreOmAnnenForelderErInformert
+                                ? søknad.annenForelder.erInformertOmSøknaden === true
+                                : true) && (
+                                <BekreftCheckboksPanel
+                                    className="blokk-m"
+                                    checked={søknad.harGodkjentOppsummering}
+                                    label={getMessage(intl, 'oppsummering.samtykke')}
+                                    onChange={() => {
+                                        dispatch(
+                                            søknadActions.updateSøknad({
+                                                harGodkjentOppsummering: !søknad.harGodkjentOppsummering
+                                            })
+                                        );
+                                    }}
+                                />
+                            )}
                     </>
                 )}
             </Steg>
@@ -172,9 +213,13 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
             ? StegID.MANGLENDE_VEDLEGG
             : StegID.ANDRE_INNTEKTER;
 
+    const skalSpørreOmAnnenForelderErInformert = getSkalSpørreOmAnnenForelderErInformert(søknad);
+
     const stegProps: StegProps = {
         id: StegID.OPPSUMMERING,
-        renderFortsettKnapp: søknad.harGodkjentOppsummering,
+        renderFortsettKnapp:
+            søknad.harGodkjentOppsummering &&
+            (skalSpørreOmAnnenForelderErInformert ? søknad.annenForelder.erInformertOmSøknaden === true : true),
         renderFormTag: true,
         history: props.history,
         isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, søknadsinfo),
@@ -191,7 +236,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         tilgjengeligeStønadskontoer,
         isLoadingTilgjengeligeStønadskontoer,
         antallUkerUttaksplan,
-        søknadsinfo
+        søknadsinfo,
+        skalSpørreOmAnnenForelderErInformert: getSkalSpørreOmAnnenForelderErInformert(søknad)
     };
 };
 
