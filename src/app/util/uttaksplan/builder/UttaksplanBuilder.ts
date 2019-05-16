@@ -68,7 +68,7 @@ class UttaksplanAutoBuilder {
 
     leggTilPeriodeOgBuild(periode: Periode) {
         this.slåSammenLikePerioder();
-        this.justerOverskrivbarePeriodeRundtPeriode(periode);
+        this.justerOverskrivbarePerioderRundtPeriode(periode);
         if (
             periode.type === Periodetype.Utsettelse &&
             periode.årsak === UtsettelseÅrsakType.Ferie &&
@@ -129,7 +129,7 @@ class UttaksplanAutoBuilder {
         if (Tidsperioden(periode.tidsperiode).erLik(oldPeriode.tidsperiode)) {
             return this;
         }
-        this.justerOverskrivbarePeriodeRundtPeriode(periode);
+        this.justerOverskrivbarePerioderRundtPeriode(periode);
         const nyePeriodehull = periodeHasValidTidsrom(periode)
             ? finnHullVedEndretTidsperiode(oldPeriode, periode)
             : undefined;
@@ -140,7 +140,7 @@ class UttaksplanAutoBuilder {
         return this;
     }
 
-    private justerOverskrivbarePeriodeRundtPeriode(periode: Periode) {
+    private justerOverskrivbarePerioderRundtPeriode(periode: Periode) {
         this.perioder = fjernOverskrivbarePerioderIPeriodetidsrom(this.perioder, periode);
         return this;
     }
