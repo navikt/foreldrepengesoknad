@@ -1041,7 +1041,23 @@
     "søknadSendt.status.status": "Under behandling",
     "søknadSendt.status.saksnummer": "Saksnummer",
 
+    "søknadSendt.info.missingAttachment.I000065": "Bekreftelse fra arbeidsgiver",
+    "søknadSendt.info.missingAttachment.I000026": "Inntektsopplysninger fra arbeidsgiver",
+    "søknadSendt.info.missingAttachment.I000044": "Etterlønn",
+    "søknadSendt.info.missingAttachment.I000042": "Dokumentasjon av dato for overtakelse av omsorg",
+    "søknadSendt.info.missingAttachment.I000060": "Annet",
+    "søknadSendt.info.missingAttachment.I000063": "Fødselsattest",
+    "søknadSendt.info.missingAttachment.I000062": "Terminbekreftelse",
     "søknadSendt.info.missingAttachment.I000039": "Dokumentasjon på inntekstkilde i militær eller siviltjeneste",
+    "søknadSendt.info.missingAttachment.I000007": "Inntektsopplysninger for selvstendig næringsdrivende",
+    "søknadSendt.info.missingAttachment.I000038": "Dokumentasjon av mors utdanning, arbeid eller sykdom",
+    "søknadSendt.info.missingAttachment.I000037": "Dokumentasjon av innleggelse i helseinstitusjon",
+    "søknadSendt.info.missingAttachment.I000045": "Dokumentasjon av sykdom",
+    "søknadSendt.info.missingAttachment.I000061": "Dokumentasjon av mors utdanning på heltid",
+    "søknadSendt.info.missingAttachment.I000051": "Dokumentasjon av at mor deltar i kvalifiseringsprogrammet",
+    "søknadSendt.info.missingAttachment.I000036": "Bekreftelse på avtalt ferie",
+    "søknadSendt.info.missingAttachment.I000049": "Annen dokumentasjon",
+
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikkje blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
         "Viss du ikkje ettersender dokumenta innan tre veker behandlar vi søknaden din utor dei opplysningane som vi har tilgjengelege. Det kan føre til at du får avslag på søknaden din.",

@@ -1012,9 +1012,9 @@
     "søknadSendt.sendtInn": "sendt inn:",
     "søknadSendt.info.tittel": "Nå er resten vårt ansvar",
     "søknadSendt.info.tittel.isMissingAttachments": "Ettersend manglende dokumentasjon innen 3 uker",
-    "søknadSendt.info.innhold": "Du trenger ikke gjøre noe mer, vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg.",
-    "søknadSendt.info.innhold.isMissingAttachments":
-        "Vi har mottatt søknaden din, og den mangler disse dokumentene:",
+    "søknadSendt.info.innhold":
+        "Du trenger ikke gjøre noe mer, vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg.",
+    "søknadSendt.info.innhold.isMissingAttachments": "Vi har mottatt søknaden din, og den mangler disse dokumentene:",
     "søknadSendt.når.tittel": "Når kan jeg tidligest forvente få svar på min søknad?",
     "søknadSendt.når.infoBox":
         "Du kan tidligst få svar på søknaden din fire uker før foreldrepengeperioden din starter. Dette er fordi vi bruker de nyeste opplysningene om inntekten din når vi skal beregne hva du skal få i foreldrepenger.",
@@ -1033,8 +1033,22 @@
     "søknadSendt.status.undertittel": "Din sak om foreldrepenger",
     "søknadSendt.status.status": "Under behandling",
     "søknadSendt.status.saksnummer": "Saksnummer",
-
+    "søknadSendt.info.missingAttachment.I000065": "Bekreftelse fra arbeidsgiver",
+    "søknadSendt.info.missingAttachment.I000026": "Inntektsopplysninger fra arbeidsgiver",
+    "søknadSendt.info.missingAttachment.I000044": "Etterlønn",
+    "søknadSendt.info.missingAttachment.I000042": "Dokumentasjon av dato for overtakelse av omsorg",
+    "søknadSendt.info.missingAttachment.I000060": "Annet",
+    "søknadSendt.info.missingAttachment.I000063": "Fødselsattest",
+    "søknadSendt.info.missingAttachment.I000062": "Terminbekreftelse",
     "søknadSendt.info.missingAttachment.I000039": "Dokumentasjon på inntekstkilde i militær eller siviltjeneste",
+    "søknadSendt.info.missingAttachment.I000007": "Inntektsopplysninger for selvstendig næringsdrivende",
+    "søknadSendt.info.missingAttachment.I000038": "Dokumentasjon av mors utdanning, arbeid eller sykdom",
+    "søknadSendt.info.missingAttachment.I000037": "Dokumentasjon av innleggelse i helseinstitusjon",
+    "søknadSendt.info.missingAttachment.I000045": "Dokumentasjon av sykdom",
+    "søknadSendt.info.missingAttachment.I000061": "Dokumentasjon av mors utdanning på heltid",
+    "søknadSendt.info.missingAttachment.I000051": "Dokumentasjon av at mor deltar i kvalifiseringsprogrammet",
+    "søknadSendt.info.missingAttachment.I000036": "Bekreftelse på avtalt ferie",
+    "søknadSendt.info.missingAttachment.I000049": "Annen dokumentasjon",
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikke blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
         "Hvis du ikke ettersender dokumentene innen tre uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig. Det kan føre til at du får avslag på søknaden din.",
