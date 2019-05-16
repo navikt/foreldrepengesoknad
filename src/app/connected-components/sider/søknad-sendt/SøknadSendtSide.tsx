@@ -29,6 +29,7 @@ import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søkerinfo } from 'app/types/søkerinfo';
 
 import './søknadSendtSide.less';
+import lenker from 'app/util/routing/lenker';
 
 interface StateProps {
     søkerinfo: Søkerinfo;
@@ -121,7 +122,7 @@ class SøknadSendtSide extends React.Component<Props> {
                                                 </Normaltekst>
                                             </Block>
                                             <Block margin="none">
-                                                <Lenke href="#">
+                                                <Lenke href={lenker.brukerprofil}>
                                                     <FormattedMessage id="søknadSendt.pengene.kontonummer.leggTil" />
                                                 </Lenke>
                                             </Block>
