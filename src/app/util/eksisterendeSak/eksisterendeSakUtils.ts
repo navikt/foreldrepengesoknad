@@ -19,6 +19,8 @@ import { StønadskontoType, SaksperiodeUtsettelseÅrsakType, Arbeidsform } from 
 import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { isFeatureEnabled, Feature } from 'app/Feature';
+import { datoErInnenforTidsperiode } from '../uttaksplan/Tidsperioden';
+import { guid } from 'nav-frontend-js-utils';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -66,6 +68,7 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
             } = p;
             return {
                 ...periodeRest,
+                guid: guid(),
                 periodeResultatType: periodeResultatType as PeriodeResultatType,
                 stønadskontotype: stønadskontotype as StønadskontoType,
                 utsettelsePeriodeType: utsettelsePeriodeType as SaksperiodeUtsettelseÅrsakType,
@@ -191,6 +194,21 @@ const getAnnenForelderFromSaksgrunnlag = (
     return undefined;
 };
 
+const finnOverlappendeSaksperioder = (perioder: Saksperiode[], periode: Saksperiode): Saksperiode[] => {
+    return perioder.filter((p) => {
+        if (p.guid === periode.guid) {
+            return false;
+        }
+        const { fom, tom } = p.tidsperiode;
+        if (!fom || !tom) {
+            return false;
+        }
+        return (
+            datoErInnenforTidsperiode(fom, periode.tidsperiode) || datoErInnenforTidsperiode(tom, periode.tidsperiode)
+        );
+    });
+};
+
 const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
     if (
         periode.flerbarnsdager === false &&
@@ -206,9 +224,14 @@ const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
 };
 
 export const kanUttaksplanGjennskapesFraSak = (perioder: Saksperiode[]): boolean => {
+    if (perioder.some((periode) => finnOverlappendeSaksperioder(perioder, periode).length > 0)) {
+        return false;
+    }
+
     const noenPerioderKanIkkeGjennskapes = perioder.some(
         (periode) => saksperiodeKanKonverteresTilPeriode(periode) === false
     );
+
     return noenPerioderKanIkkeGjennskapes === false;
 };
 

@@ -49,6 +49,7 @@ export interface Saksgrunnlag {
 }
 
 export interface Saksperiode {
+    guid: string;
     periodeResultatType: PeriodeResultatType;
     utsettelsePeriodeType?: SaksperiodeUtsettelseÅrsakType;
     graderingInnvilget: boolean;
