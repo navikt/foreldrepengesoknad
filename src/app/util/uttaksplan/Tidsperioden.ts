@@ -61,6 +61,14 @@ export function getTidsperiode(fom: Date, uttaksdager: number): Tidsperiode {
     };
 }
 
+export function datoErInnenforTidsperiode(dato: Date, tidsperiode: Tidsperiode): boolean {
+    const { fom, tom } = tidsperiode;
+    if (!fom || !tom) {
+        return false;
+    }
+    return moment(dato).isBetween(fom, tom, 'days', '[]');
+}
+
 function getAntallUttaksdagerITidsperiode(tidsperiode: Partial<Tidsperiode>, taBortFridager?: boolean): number {
     if (isValidTidsperiode(tidsperiode) === false) {
         return 0;
