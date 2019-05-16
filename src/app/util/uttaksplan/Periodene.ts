@@ -15,10 +15,10 @@ import {
     isHull,
     isInfoPeriode
 } from '../../types/uttaksplan/periodetyper';
-import { Tidsperiode, Forelder } from 'common/types';
+import { Forelder } from 'common/types';
 import { Perioden } from './Perioden';
 import { Uttaksdagen } from './Uttaksdagen';
-import { isValidTidsperiode, Tidsperioden } from './Tidsperioden';
+import { isValidTidsperiode, Tidsperioden, datoErInnenforTidsperiode } from './Tidsperioden';
 
 export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),
@@ -105,14 +105,6 @@ function finnOverlappendePerioder(perioder: Periode[], periode: Periode): Period
             datoErInnenforTidsperiode(fom, periode.tidsperiode) || datoErInnenforTidsperiode(tom, periode.tidsperiode)
         );
     });
-}
-
-function datoErInnenforTidsperiode(dato: Date, tidsperiode: Tidsperiode): boolean {
-    const { fom, tom } = tidsperiode;
-    if (!fom || !tom) {
-        return false;
-    }
-    return moment(dato).isBetween(fom, tom, 'days', '[]');
 }
 
 function finnPeriodeMedDato(perioder: Periode[], dato: Date): Periode | undefined {
