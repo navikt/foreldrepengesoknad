@@ -4,7 +4,9 @@ import {
     FamiliehendelsesType,
     Saksgrunnlag,
     Saksperiode,
-    PeriodeResultatType
+    PeriodeResultatType,
+    UttakArbeidType,
+    ArbeidsgiverInfo
 } from '../../types/EksisterendeSak';
 import { Barn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
@@ -13,10 +15,21 @@ import { Søkerinfo } from '../../types/søkerinfo';
 import Person from '../../types/Person';
 import { Kjønn } from '../../types/common';
 import Sak, { AnnenPart } from 'app/types/søknad/Sak';
-import { StønadskontoType, SaksperiodeUtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
+import { StønadskontoType, SaksperiodeUtsettelseÅrsakType, Arbeidsform } from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { isFeatureEnabled, Feature } from 'app/Feature';
+
+export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
+    switch (arbeidstype) {
+        case UttakArbeidType.SELVSTENDIG_NÆRINGSDRIVENDE:
+            return Arbeidsform.selvstendignæringsdrivende;
+        case UttakArbeidType.FRILANS:
+            return Arbeidsform.frilans;
+        default:
+            return Arbeidsform.arbeidstaker;
+    }
+};
 
 export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak | undefined => {
     const {
@@ -41,12 +54,22 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
         };
 
         const saksperioder = perioder.map((p): Saksperiode => {
-            const { periodeResultatType, periode, stønadskontotype, utsettelsePeriodeType, ...periodeRest } = p;
+            const {
+                periodeResultatType,
+                periode,
+                stønadskontotype,
+                utsettelsePeriodeType,
+                arbeidsgiverInfo,
+                uttakArbeidType,
+                ...periodeRest
+            } = p;
             return {
                 ...periodeRest,
                 periodeResultatType: periodeResultatType as PeriodeResultatType,
                 stønadskontotype: stønadskontotype as StønadskontoType,
                 utsettelsePeriodeType: utsettelsePeriodeType as SaksperiodeUtsettelseÅrsakType,
+                arbeidsgiverInfo: arbeidsgiverInfo as ArbeidsgiverInfo,
+                uttakArbeidType: uttakArbeidType as UttakArbeidType,
                 tidsperiode: {
                     fom: new Date(periode.fom),
                     tom: new Date(periode.tom)
@@ -130,7 +153,6 @@ const getBarnFromSaksgrunnlag = (situasjon: Søkersituasjon, sak: Saksgrunnlag):
         case Søkersituasjon.ADOPSJON:
             return {
                 antallBarn: sak.antallBarn,
-                erBarnetFødt: sak.erBarnetFødt,
                 adopsjonsdato: sak.familieHendelseDato,
                 fødselsdatoer: [sak.familieHendelseDato]
             };
@@ -170,7 +192,6 @@ const getAnnenForelderFromSaksgrunnlag = (
 
 const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
     if (
-        periode.arbeidstidprosent === 0 &&
         periode.flerbarnsdager === false &&
         (isFeatureEnabled(Feature.mapOpphold) ? true : periode.gjelderAnnenPart === false) &&
         (isFeatureEnabled(Feature.visAvslåttPeriode)

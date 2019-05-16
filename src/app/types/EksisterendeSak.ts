@@ -15,6 +15,24 @@ export enum PeriodeResultatType {
     'MANUELL_BEHANDLING' = 'MANUELL_BEHANDLING'
 }
 
+export enum ArbeidsgiverInfoType {
+    'ORGANISASJON' = 'ORGANISASJON',
+    'PRIVAT' = 'PRIVAT'
+}
+
+export enum UttakArbeidType {
+    'ORDINÆRT_ARBEID' = 'ORDINÆRT_ARBEID',
+    'SELVSTENDIG_NÆRINGSDRIVENDE' = 'SELVSTENDIG_NÆRINGSDRIVENDE',
+    'FRILANS' = 'FRILANS',
+    'ANNET' = 'ANNET'
+}
+
+export interface ArbeidsgiverInfo {
+    id: string;
+    type: ArbeidsgiverInfoType;
+    navn: string;
+}
+
 export interface Saksgrunnlag {
     familieHendelseType: FamiliehendelsesType;
     familieHendelseDato: Date;
@@ -42,6 +60,8 @@ export interface Saksperiode {
     utbetalingprosent: number;
     gjelderAnnenPart: boolean;
     tidsperiode: Tidsperiode;
+    uttakArbeidType: UttakArbeidType;
+    arbeidsgiverInfo: ArbeidsgiverInfo;
 }
 
 export interface EksisterendeSak {
