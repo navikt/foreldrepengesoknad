@@ -95,6 +95,7 @@ export type EnkelEndringssøknadForInnsending = Pick<
     | 'annenForelder'
     | 'barn'
     | 'dekningsgrad'
+    | 'situasjon'
 > &
     SøknadEndretForInnsending;
 
