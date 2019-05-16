@@ -361,14 +361,14 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 }
 
-const getEndringssøknadEndretPlan = (søknad: Søknad): Periode[] => {
-    const uttaksplanForEndring = søknad.ekstrainfo.eksisterendeSak
-        ? søknad.ekstrainfo.eksisterendeSak.uttaksplan
-        : undefined;
-    const endringer = uttaksplanForEndring
-        ? getEndretUttaksplanForInnsending(uttaksplanForEndring, søknad.uttaksplan)
-        : undefined;
-    return endringer || [];
+const getPerioderDetSøkesOm = (søknad: Søknad): Periode[] => {
+    if (søknad.erEndringssøknad) {
+        const { eksisterendeSak } = søknad.ekstrainfo;
+        if (eksisterendeSak && eksisterendeSak.uttaksplan) {
+            return getEndretUttaksplanForInnsending(eksisterendeSak.uttaksplan, søknad.uttaksplan) || [];
+        }
+    }
+    return søknad.uttaksplan;
 };
 
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps & InjectedIntlProps): StateProps => {
@@ -381,15 +381,14 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
     const søknadsinfo = getSøknadsinfo(state);
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
 
-    const perioderDetSøkesOm = søknad.erEndringssøknad ? getEndringssøknadEndretPlan(søknad) : søknad.uttaksplan;
+    const perioderDetSøkesOm = getPerioderDetSøkesOm(søknad);
     const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderDetSøkesOm);
-    const planErEndret = søknad.erEndringssøknad && perioderDetSøkesOm.length > 0;
 
     const grunnlag = søknad.ekstrainfo.eksisterendeSak ? søknad.ekstrainfo.eksisterendeSak.grunnlag : undefined;
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
-        renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true,
+        renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true && perioderDetSøkesOm.length > 0,
         renderFormTag: false,
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo, søknadsinfo)
@@ -434,7 +433,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         tilleggsopplysninger: søknad.tilleggsopplysninger,
         uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl)(state),
         aktivitetsfriKvote,
-        planErEndret,
+        planErEndret: søknad.erEndringssøknad && perioderDetSøkesOm.length > 0,
         sak: sakForEndringssøknad,
         grunnlag
     };
