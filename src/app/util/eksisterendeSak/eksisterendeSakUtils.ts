@@ -34,6 +34,7 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
     try {
         const grunnlag: Saksgrunnlag = {
             ...restGrunnlag,
+            erDeltUttak: restGrunnlag.morErAleneOmOmsorg !== true && restGrunnlag.farMedmorErAleneOmOmsorg !== true,
             erBarnetFødt: familieHendelseType !== FamiliehendelsesType.TERM,
             dekningsgrad: dekningsgrad === 100 ? '100' : '80',
             familieHendelseDato: new Date(familieHendelseDato),
@@ -196,7 +197,7 @@ export const opprettSøknadFraEksisterendeSak = (
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
     const annenForelder = getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, sak.annenPart);
 
-    if (!søker || !barn || !annenForelder) {
+    if ((!søker || !barn) && (grunnlag.erDeltUttak && !annenForelder)) {
         return undefined;
     }
 
