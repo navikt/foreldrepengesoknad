@@ -12,6 +12,7 @@ import { Situasjon } from '../foreldrepar/foreldreparTypes';
 import { Kjønn } from 'app/types/common';
 import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
 import getMessage from 'common/util/i18nUtils';
+import { Forelder } from 'common/types';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -56,12 +57,18 @@ const EksisterendeSak: React.StatelessComponent<Props> = ({ søknadsinfo, tilgje
         navn
     } = søknadsinfo;
 
+    const forelderVedAleneomsorg = erDeltUttak
+        ? undefined
+        : søknadsinfo.søker.erMor
+            ? Forelder.MOR
+            : Forelder.FARMEDMOR;
+
     return (
         <InfoBlock padding="m">
             <InnholdMedIllustrasjon
                 tittel={getMessage(intl, `eksisterendeSak.tittel.${erDeltUttak ? 'deltUttak' : 'aleneomsorg'}`)}
                 illustrasjoner={[
-                    <SituasjonSirkel key="situasjon" situasjon={situasjon} />,
+                    <SituasjonSirkel key="situasjon" situasjon={situasjon} valgtForelder={forelderVedAleneomsorg} />,
                     <UkerSirkel key="uker" uker={uker} />
                 ]}>
                 <FormattedHTMLMessage
