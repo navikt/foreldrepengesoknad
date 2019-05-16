@@ -1009,6 +1009,7 @@
     "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
 
     "søknadSendt.tittel": "Takk for søknaden { name }!",
+    "søknadSendt.pdf": "Se og last ned søknaden din",
     "søknadSendt.sendtInn": "sendt inn:",
     "søknadSendt.info.tittel": "Nå er resten vårt ansvar",
     "søknadSendt.info.tittel.isMissingAttachments": "Ettersend manglende dokumentasjon innen 3 uker",

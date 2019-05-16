@@ -1015,6 +1015,7 @@
     "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
 
     "søknadSendt.tittel": "Takk for søknaden { name }!",
+    "søknadSendt.pdf": "Sjå og last ned søknaden din her",
     "søknadSendt.sendtInn": "sendt inn:",
     "søknadSendt.info.tittel": "Nå er resten vårt ansvar",
     "søknadSendt.info.tittel.isMissingAttachments": "Ettersend manglande dokumentasjon innen 3 uker",
@@ -1040,7 +1041,6 @@
     "søknadSendt.status.undertittel": "Sak om foreldrepengar",
     "søknadSendt.status.status": "Under behandling",
     "søknadSendt.status.saksnummer": "Saksnummer",
-
     "søknadSendt.info.missingAttachment.I000065": "Bekreftelse fra arbeidsgiver",
     "søknadSendt.info.missingAttachment.I000026": "Inntektsopplysninger fra arbeidsgiver",
     "søknadSendt.info.missingAttachment.I000044": "Etterlønn",
@@ -1057,7 +1057,6 @@
     "søknadSendt.info.missingAttachment.I000051": "Dokumentasjon av at mor deltar i kvalifiseringsprogrammet",
     "søknadSendt.info.missingAttachment.I000036": "Bekreftelse på avtalt ferie",
     "søknadSendt.info.missingAttachment.I000049": "Annen dokumentasjon",
-
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikkje blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
         "Viss du ikkje ettersender dokumenta innan tre veker behandlar vi søknaden din utor dei opplysningane som vi har tilgjengelege. Det kan føre til at du får avslag på søknaden din.",
