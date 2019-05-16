@@ -170,7 +170,8 @@ export const cleanEnkelEndringssøknad = (
         søker: søknad.søker,
         annenForelder: søknad.annenForelder,
         barn: søknad.barn,
-        dekningsgrad: søknad.dekningsgrad
+        dekningsgrad: søknad.dekningsgrad,
+        situasjon: søknad.situasjon
     };
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
     cleanedSøknad.vedlegg = cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring: søknad.vedleggForSenEndring });
