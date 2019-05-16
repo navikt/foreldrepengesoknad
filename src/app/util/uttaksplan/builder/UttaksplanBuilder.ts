@@ -6,7 +6,8 @@ import {
     PeriodeHull,
     UtsettelseÅrsakType,
     PeriodeHullÅrsak,
-    isAvslåttPeriode
+    isAvslåttPeriode,
+    isOverskrivbarPeriode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -539,7 +540,3 @@ export function getFriperioderITidsperiode(tidsperiode: Tidsperiode): Tidsperiod
 
     return friperioder;
 }
-
-const isOverskrivbarPeriode = (periode: Periode): boolean => {
-    return (periode.type === Periodetype.Info && periode.overskrives === true) || periode.type === Periodetype.Hull;
-};

@@ -222,6 +222,10 @@ export function isForeldrepengerFørFødselUttaksperiode(
     return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
 }
 
+export const isOverskrivbarPeriode = (periode: Periode): boolean => {
+    return (periode.type === Periodetype.Info && periode.overskrives === true) || periode.type === Periodetype.Hull;
+};
+
 export interface Stønadskontouttak {
     konto: StønadskontoType;
     antallDager: number;
