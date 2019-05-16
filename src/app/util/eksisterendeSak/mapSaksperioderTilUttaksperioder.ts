@@ -7,7 +7,9 @@ import {
     Oppholdsperiode,
     OppholdÅrsakType,
     StønadskontoType,
-    PeriodeInfoType
+    PeriodeInfoType,
+    UtsettelseÅrsakType,
+    Arbeidsform
 } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
@@ -18,6 +20,7 @@ import { Saksperiode, Saksgrunnlag, PeriodeResultatType } from '../../types/Eksi
 import { Forelder } from 'common/types';
 import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
 import { isFeatureEnabled, Feature } from 'app/Feature';
+import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
 
 const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
     if (perioder.length <= 1) {
@@ -162,6 +165,18 @@ const mapUtsettelseperiodeFromSaksperiode = (
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
         erArbeidstaker: false
     };
+
+    if (utsettelsesperiode.årsak === UtsettelseÅrsakType.Arbeid) {
+        const arbeidsform = getArbeidsformFromUttakArbeidstype(saksperiode.uttakArbeidType);
+        const orgnummer = saksperiode.arbeidsgiverInfo.id;
+
+        return {
+            ...utsettelsesperiode,
+            arbeidsformer: [arbeidsform],
+            orgnumre: arbeidsform === Arbeidsform.arbeidstaker ? [orgnummer] : undefined
+        };
+    }
+
     return utsettelsesperiode;
 };
 
