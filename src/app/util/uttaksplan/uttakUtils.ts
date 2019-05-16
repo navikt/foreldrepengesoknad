@@ -29,8 +29,8 @@ export const erUttakEgenKvote = (konto: StønadskontoType | undefined, søkerErF
 const erUtsettelseTilbakeITid = (periode: Periode) =>
     periode.type === Periodetype.Utsettelse && !dateIsTodayOrInFuture(periode.tidsperiode.fom);
 
-const erUttakMerEnnTreMånederSiden = (periode: Periode) =>
-    periode.type === Periodetype.Uttak &&
+const erUttakEllerOppholdMerEnnTreMånederSiden = (periode: Periode) =>
+    (periode.type === Periodetype.Uttak || periode.type === Periodetype.Opphold) &&
     moment(periode.tidsperiode.fom).isBefore(
         moment()
             .startOf('day')
@@ -54,7 +54,7 @@ export const erSentGradertUttak = (periode: Periode) =>
 
 export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): SenEndringÅrsak => {
     const utsettelseKreverBegrunnelse = uttaksplan.filter(erUtsettelseTilbakeITid).some(erUtsettelsePgaSykdom);
-    const uttakKreverBegrunnelse = uttaksplan.some(erUttakMerEnnTreMånederSiden);
+    const uttakKreverBegrunnelse = uttaksplan.some(erUttakEllerOppholdMerEnnTreMånederSiden);
 
     if (utsettelseKreverBegrunnelse) {
         return uttakKreverBegrunnelse ? SenEndringÅrsak.SykdomOgUttak : SenEndringÅrsak.Sykdom;
