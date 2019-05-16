@@ -29,6 +29,12 @@ export interface UttaksplanDTO {
             utbetalingprosent: number;
             gjelderAnnenPart: boolean;
             flerbarnsdager: boolean;
+            uttakArbeidType: string;
+            arbeidsgiverInfo: {
+                id: string;
+                type: string;
+                navn: string;
+            };
             periode: {
                 fom: string;
                 tom: string;
