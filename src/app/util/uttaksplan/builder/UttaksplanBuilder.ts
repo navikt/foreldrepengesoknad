@@ -16,8 +16,8 @@ import { Perioden } from '../Perioden';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { Tidsperiode } from 'common/types';
 
-export const UttaksplanBuilder = (perioder: Periode[], familiehendelsesdato: Date) => {
-    return new UttaksplanAutoBuilder(perioder, familiehendelsesdato);
+export const UttaksplanBuilder = (perioder: Periode[], familiehendelsesdato: Date, erEndringssøknad: boolean) => {
+    return new UttaksplanAutoBuilder(perioder, familiehendelsesdato, erEndringssøknad);
 };
 
 const periodeHasValidTidsrom = (periode: Periode): boolean =>
@@ -25,10 +25,12 @@ const periodeHasValidTidsrom = (periode: Periode): boolean =>
 
 class UttaksplanAutoBuilder {
     protected familiehendelsesdato: Date;
+    protected erEndringssøknad: boolean;
 
-    public constructor(public perioder: Periode[], familiehendelsesdato: Date) {
+    public constructor(public perioder: Periode[], familiehendelsesdato: Date, erEndringssøknad: boolean) {
         this.perioder = perioder;
         this.familiehendelsesdato = familiehendelsesdato;
+        this.erEndringssøknad = erEndringssøknad;
     }
 
     buildUttaksplan() {
@@ -56,7 +58,7 @@ class UttaksplanAutoBuilder {
 
         this.finnOgSettInnHull();
         this.slåSammenLikePerioder();
-        if (foreldrepengerFørTermin === undefined) {
+        if (foreldrepengerFørTermin === undefined && this.erEndringssøknad !== true) {
             this.fjernHullPåStarten();
         }
         this.fjernHullPåSlutten();
