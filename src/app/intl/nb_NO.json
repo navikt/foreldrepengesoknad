@@ -173,6 +173,8 @@
     "endrePeriodeForm.slett.uttak": "Slett periode",
     "erAnnenForelderInformert.spørsmål": "Har du orientert {navn} om søknaden din?",
     "erAnnenForelderInformert.veilederIkkeInformert": "Du må orientere {navn} om søknaden, før du kan gå videre.",
+    "erAnnenForelderInformert.veilederIkkeInformert.oppsummeringsside":
+        "Du må orientere {navn} om søknaden, før du kan sende inn søknaden.",
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er dere nære venner eller i familie?",
     "erBarnetFødt.spørsmål": "Er barnet født?",
     "erBarnetFødt.spørsmål.veileder.medMorEllerFar":

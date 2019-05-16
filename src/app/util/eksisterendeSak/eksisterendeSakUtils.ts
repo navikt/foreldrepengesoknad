@@ -31,6 +31,16 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType)
     }
 };
 
+export const erEksisterendeSakErDeltUttak = (dto: UttaksplanDTO): boolean => {
+    const {
+        grunnlag: { farMedmorErAleneOmOmsorg, farMedmorHarRett, morErAleneOmOmsorg, morHarRett }
+    } = dto;
+    if (farMedmorErAleneOmOmsorg || morErAleneOmOmsorg || farMedmorHarRett === false || morHarRett === false) {
+        return false;
+    }
+    return true;
+};
+
 export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak | undefined => {
     const {
         grunnlag: {
@@ -44,10 +54,12 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
         perioder
     } = dto;
 
+    const erDeltUttak = erEksisterendeSakErDeltUttak(dto);
+
     try {
         const grunnlag: Saksgrunnlag = {
             ...restGrunnlag,
-            erDeltUttak: restGrunnlag.morErAleneOmOmsorg !== true && restGrunnlag.farMedmorErAleneOmOmsorg !== true,
+            erDeltUttak,
             erBarnetFødt: familieHendelseType !== FamiliehendelsesType.TERM,
             dekningsgrad: dekningsgrad === 100 ? '100' : '80',
             familieHendelseDato: new Date(familieHendelseDato),
