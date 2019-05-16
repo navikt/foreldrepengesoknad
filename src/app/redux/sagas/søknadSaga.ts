@@ -17,16 +17,12 @@ import { opprettSøknadFraEksisterendeSak } from '../../util/eksisterendeSak/eks
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
 import { StegID } from '../../util/routing/stegConfig';
 import { isFeatureEnabled, Feature } from '../../Feature';
-import { EksisterendeSak, Saksgrunnlag } from '../../types/EksisterendeSak';
+import { EksisterendeSak } from '../../types/EksisterendeSak';
 import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
 import Sak from 'app/types/søknad/Sak';
 import { validerUttaksplanAction } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 
 const stateSelector = (state: AppState) => state;
-
-const søkerKanFåEnkelEndringssøknad = (grunnlag: Saksgrunnlag): boolean => {
-    return grunnlag.erBarnetFødt === true;
-};
 
 function* updateSøkerAndStorage(action: UpdateSøkerAndStorage) {
     yield put(søknadActions.updateSøker(action.payload));
@@ -74,11 +70,7 @@ function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
     const eksisterendeSak: EksisterendeSak | undefined = yield call(fetchEksisterendeSak, saksnummer);
     const søknad = eksisterendeSak ? opprettSøknadFraEksisterendeSak(søkerinfo, eksisterendeSak, sak) : undefined;
 
-    if (
-        eksisterendeSak === undefined ||
-        søkerKanFåEnkelEndringssøknad(eksisterendeSak.grunnlag) === false ||
-        søknad === undefined
-    ) {
+    if (eksisterendeSak === undefined || søknad === undefined) {
         yield call(startVanligEndringssøknad, action);
     } else {
         yield put(
