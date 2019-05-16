@@ -225,7 +225,6 @@ const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
 
 export const kanUttaksplanGjennskapesFraSak = (perioder: Saksperiode[]): boolean => {
     if (perioder.some((periode) => finnOverlappendeSaksperioder(perioder, periode).length > 0)) {
-        console.log('Overlappende perioder');
         return false;
     }
 
