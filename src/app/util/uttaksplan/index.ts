@@ -9,13 +9,14 @@ import {
     isOverskrivbarPeriode
 } from '../../types/uttaksplan/periodetyper';
 import { InjectedIntl } from 'react-intl';
-import { Søkersituasjon } from '../../types/søknad/Søknad';
+import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
 import { findOldestDate } from '../dates/dates';
 import { Barn, isFødtBarn, isUfødtBarn, isAdopsjonsbarn, isForeldreansvarsbarn } from '../../types/søknad/Barn';
 import { formaterNavn } from '../domain/personUtil';
 import getMessage from 'common/util/i18nUtils';
 import { Navn } from '../../types/common';
 import { getNavnGenitivEierform } from '../tekstUtils';
+import { getEndretUttaksplanForInnsending } from './uttaksplanEndringUtil';
 
 const isValidStillingsprosent = (pst: number | undefined): boolean => pst !== undefined && isNaN(pst) === false;
 
@@ -183,4 +184,14 @@ export const uttaksplanInneholderSelvstendignæringaktivitet = (uttaksplan: Peri
                 (arbeidsform: Arbeidsform) => arbeidsform === Arbeidsform.selvstendignæringsdrivende
             )
     );
+};
+
+export const getPerioderDetSøkesOm = (søknad: Søknad): Periode[] => {
+    if (søknad.erEndringssøknad) {
+        const { eksisterendeSak } = søknad.ekstrainfo;
+        if (eksisterendeSak && eksisterendeSak.uttaksplan) {
+            return getEndretUttaksplanForInnsending(eksisterendeSak.uttaksplan, søknad.uttaksplan) || [];
+        }
+    }
+    return søknad.uttaksplan;
 };

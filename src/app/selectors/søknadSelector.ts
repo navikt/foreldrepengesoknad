@@ -3,6 +3,7 @@ import Søknad, { SøkerRolle } from '../types/søknad/Søknad';
 import { RecursivePartial } from '../types/Partial';
 import { Dekningsgrad } from 'common/types';
 import { AppState } from '../redux/reducers';
+import { Periode } from 'app/types/uttaksplan/periodetyper';
 
 export const søknadSelector = (state: AppState): RecursivePartial<Søknad> => state.søknad;
 
@@ -20,6 +21,7 @@ export const selectErEnkelEndringssøknad = createSelector(
         søknad.ekstrainfo !== undefined &&
         søknad.ekstrainfo.erEnkelEndringssøknad === true
 );
+
 export const selectErEndringssøknadMedUttaksplan = createSelector(
     [søknadSelector],
     (søknad = {}): boolean =>
@@ -28,6 +30,18 @@ export const selectErEndringssøknadMedUttaksplan = createSelector(
         søknad.ekstrainfo.erEnkelEndringssøknad === true &&
         søknad.ekstrainfo.erEnkelEndringssøknadMedUttaksplan === true
 );
+
+export const selectOpprinneligUttaksplan = createSelector(
+    [søknadSelector],
+    (søknad = {}): Periode[] | undefined =>
+        søknad.erEndringssøknad === true &&
+        søknad.ekstrainfo !== undefined &&
+        søknad.ekstrainfo.eksisterendeSak === true &&
+        søknad.ekstrainfo.eksisterendeSak.uttaksplan !== undefined
+            ? (søknad.ekstrainfo.eksisterendeSak.uttaksplan as Periode[])
+            : undefined
+);
+
 export const selectDekningsgrad = createSelector(
     [søknadSelector],
     (søknad = {}): Dekningsgrad | undefined => søknad.dekningsgrad
