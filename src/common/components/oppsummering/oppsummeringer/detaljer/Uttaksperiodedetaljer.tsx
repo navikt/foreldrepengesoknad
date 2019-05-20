@@ -10,11 +10,17 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 interface UttaksperiodedetaljerProps {
     periode: UttaksperiodeBase;
     registrerteArbeidsforhold: Arbeidsforhold[] | undefined;
+    periodeErNyEllerEndret: boolean;
 }
 
 type Props = UttaksperiodedetaljerProps & InjectedIntlProps;
 
-const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, registrerteArbeidsforhold, intl }) => {
+const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({
+    periode,
+    registrerteArbeidsforhold,
+    periodeErNyEllerEndret,
+    intl
+}) => {
     const {
         konto,
         morsAktivitetIPerioden,
@@ -64,6 +70,7 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, regis
                 <MorsAktivitetDetaljer
                     morsAktivitet={morsAktivitetIPerioden!}
                     dokumentasjonAvMorsAktivitet={vedlegg || []}
+                    visOppsummeringAvDokumentasjon={periodeErNyEllerEndret}
                 />
             )}
         </>
