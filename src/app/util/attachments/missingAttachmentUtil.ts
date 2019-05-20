@@ -38,6 +38,7 @@ import { Søknadsinfo } from 'app/selectors/types';
 import { isUfødtBarn, isAdopsjonsbarn } from '../../types/søknad/Barn';
 import { getMorsAktivitetSkjemanummer } from '../skjemanummer/morsAktivitetSkjemanummer';
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
+import { finnesPeriodeIOpprinneligPlan } from '../uttaksplan/uttaksplanEndringUtil';
 
 const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType): boolean =>
     attachments === undefined ||
@@ -116,16 +117,16 @@ const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): b
 };
 
 export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
-    return (
-        shouldPeriodeHaveAttachment(periode, søknadsinfo) &&
-        (missingAttachmentForAktivitetskrav(periode, søknadsinfo) ||
-            missingAttachmentForSykdomEllerInstitusjonsopphold(periode))
-    );
+    const shouldHave = shouldPeriodeHaveAttachment(periode, søknadsinfo);
+    const missingForAktivitetskrav = missingAttachmentForAktivitetskrav(periode, søknadsinfo);
+    const missingForSykdomEllerInst = missingAttachmentForSykdomEllerInstitusjonsopphold(periode);
+    return shouldHave && (missingForAktivitetskrav || missingForSykdomEllerInst);
 };
 
 export const findMissingAttachmentsForPerioder = (
     perioder: Periode[],
-    søknadsinfo: Søknadsinfo
+    søknadsinfo: Søknadsinfo,
+    eksisterendeUttaksplan?: Periode[]
 ): MissingAttachment[] => {
     if (!perioder) {
         return [];
@@ -133,26 +134,31 @@ export const findMissingAttachmentsForPerioder = (
 
     const missingAttachments = [];
     for (const periode of perioder) {
-        if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
-            if (missingAttachmentForSykdomEllerInstitusjonsopphold(periode)) {
-                missingAttachments.push({
-                    index: perioder.indexOf(periode),
-                    skjemanummer: getSkjemanummerForPeriode(periode),
-                    type: getAttachmentTypeForPeriode(periode),
-                    periodeId: periode.id
-                });
-            }
+        const periodeErNyEllerEndret = eksisterendeUttaksplan
+            ? finnesPeriodeIOpprinneligPlan(periode, eksisterendeUttaksplan) === false
+            : true;
+        if (periodeErNyEllerEndret) {
+            if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
+                if (missingAttachmentForSykdomEllerInstitusjonsopphold(periode)) {
+                    missingAttachments.push({
+                        index: perioder.indexOf(periode),
+                        skjemanummer: getSkjemanummerForPeriode(periode),
+                        type: getAttachmentTypeForPeriode(periode),
+                        periodeId: periode.id
+                    });
+                }
 
-            if (
-                (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Uttak) &&
-                missingAttachmentForAktivitetskrav(periode, søknadsinfo)
-            ) {
-                missingAttachments.push({
-                    index: perioder.indexOf(periode),
-                    skjemanummer: getMorsAktivitetSkjemanummer(periode.morsAktivitetIPerioden),
-                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-                    periodeId: periode.id
-                });
+                if (
+                    (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Uttak) &&
+                    missingAttachmentForAktivitetskrav(periode, søknadsinfo)
+                ) {
+                    missingAttachments.push({
+                        index: perioder.indexOf(periode),
+                        skjemanummer: getMorsAktivitetSkjemanummer(periode.morsAktivitetIPerioden),
+                        type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                        periodeId: periode.id
+                    });
+                }
             }
         }
     }
@@ -185,7 +191,13 @@ export const findMissingAttachments = (
 ): MissingAttachment[] => {
     const missingAttachments = [];
     missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api));
-    missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknadsinfo));
+    missingAttachments.push(
+        ...findMissingAttachmentsForPerioder(
+            søknad.uttaksplan,
+            søknadsinfo,
+            søknad.ekstrainfo.eksisterendeSak ? søknad.ekstrainfo.eksisterendeSak.uttaksplan : undefined
+        )
+    );
     missingAttachments.push(...findMissingAttachmentsForAndreInntekter(søknad));
     return missingAttachments;
 };

@@ -179,7 +179,7 @@ const getBarnFromSaksgrunnlag = (situasjon: Søkersituasjon, sak: Saksgrunnlag):
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Søkersituasjon,
     sak: Saksgrunnlag,
-    annenPart?: AnnenPart
+    annenPart: AnnenPart
 ): Partial<AnnenForelder> | undefined => {
     const { søkerErFarEllerMedmor } = sak;
     switch (situasjon) {
@@ -187,20 +187,20 @@ const getAnnenForelderFromSaksgrunnlag = (
         case Søkersituasjon.ADOPSJON:
             if (søkerErFarEllerMedmor) {
                 return {
-                    fornavn: annenPart ? annenPart.navn.fornavn : 'mor',
-                    etternavn: annenPart ? annenPart.navn.etternavn : '',
+                    fornavn: annenPart.navn.fornavn,
+                    etternavn: annenPart.navn.etternavn,
                     erUfør: sak.morErUfør,
                     harRettPåForeldrepenger: sak.morHarRett,
-                    fnr: annenPart ? annenPart.fnr : undefined,
-                    kanIkkeOppgis: annenPart === undefined
+                    fnr: annenPart.fnr,
+                    kanIkkeOppgis: false
                 };
             }
             return {
-                fornavn: annenPart ? annenPart.navn.fornavn : 'Far eller medmor',
-                etternavn: annenPart ? annenPart.navn.etternavn : '',
+                fornavn: annenPart.navn.fornavn,
+                etternavn: annenPart.navn.etternavn,
                 harRettPåForeldrepenger: sak.farMedmorHarRett,
-                fnr: annenPart ? annenPart.fnr : undefined,
-                kanIkkeOppgis: annenPart === undefined
+                fnr: annenPart.fnr,
+                kanIkkeOppgis: false
             };
     }
     return undefined;
@@ -261,9 +261,11 @@ export const opprettSøknadFraEksisterendeSak = (
 
     const søker = getSøkerFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
-    const annenForelder = getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, sak.annenPart);
+    const annenForelder = sak.annenPart
+        ? getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, sak.annenPart)
+        : undefined;
 
-    if ((!søker || !barn) && (grunnlag.erDeltUttak && !annenForelder)) {
+    if (!søker || !barn || (grunnlag.erDeltUttak && !annenForelder)) {
         return undefined;
     }
 

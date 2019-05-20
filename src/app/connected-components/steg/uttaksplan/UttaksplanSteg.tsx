@@ -47,9 +47,9 @@ import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
 import { Feature, isFeatureEnabled } from '../../../Feature';
 import EksisterendeSak from '../../../components/eksisterendeSak/EksisterendeSak';
-import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 import Sak from 'app/types/søknad/Sak';
 import { Saksgrunnlag } from 'app/types/EksisterendeSak';
+import { getPerioderDetSøkesOm } from 'app/util/uttaksplan';
 
 interface StateProps {
     stegProps: StegProps;
@@ -361,16 +361,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 }
 
-const getPerioderDetSøkesOm = (søknad: Søknad): Periode[] => {
-    if (søknad.erEndringssøknad) {
-        const { eksisterendeSak } = søknad.ekstrainfo;
-        if (eksisterendeSak && eksisterendeSak.uttaksplan) {
-            return getEndretUttaksplanForInnsending(eksisterendeSak.uttaksplan, søknad.uttaksplan) || [];
-        }
-    }
-    return søknad.uttaksplan;
-};
-
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps & InjectedIntlProps): StateProps => {
     const {
         søknad,
@@ -408,6 +398,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
             );
         }
     }
+
     const uttaksstatus: Stønadskontouttak[] = søknadsinfo
         ? getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan)
         : [];
