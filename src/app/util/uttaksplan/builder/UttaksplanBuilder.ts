@@ -6,7 +6,6 @@ import {
     PeriodeHull,
     UtsettelseÅrsakType,
     PeriodeHullÅrsak,
-    isAvslåttPeriode,
     isOverskrivbarPeriode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
@@ -58,7 +57,7 @@ class UttaksplanAutoBuilder {
 
         this.finnOgSettInnHull();
         this.slåSammenLikePerioder();
-        if (foreldrepengerFørTermin === undefined && this.erEndringssøknad !== true) {
+        if (foreldrepengerFørTermin === undefined) {
             this.fjernHullPåStarten();
         }
         this.fjernHullPåSlutten();
@@ -153,7 +152,7 @@ class UttaksplanAutoBuilder {
     }
 
     private fjernHullPåStarten() {
-        while (this.perioder.findIndex((p) => p.type === Periodetype.Hull && isAvslåttPeriode(p) === false) === 0) {
+        while (this.perioder.findIndex((p) => p.type === Periodetype.Hull) === 0) {
             this.perioder.shift();
         }
         return this;
