@@ -3,7 +3,7 @@ import groupBy from 'lodash.groupby';
 import { AppState } from '../reducers';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
-import { Periode } from '../../types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Periodevalidering, ValidertPeriode, PeriodeAdvarselKey } from '../reducers/uttaksplanValideringReducer';
 import {
@@ -18,16 +18,27 @@ import { erSenUtsettelsePgaFerieEllerArbeid } from 'app/util/uttaksplan/uttakUti
 import { UttaksplanRegelTestresultat, RegelAlvorlighet } from '../../regler/uttaksplanValidering/types';
 import { sjekkUttaksplanOppMotRegler, getRegelAvvik } from '../../regler/uttaksplanValidering/regelUtils';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
+import { Søknadsinfo } from 'app/selectors/types';
+import { finnesPeriodeIOpprinneligPlan } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 const stateSelector = (state: AppState) => state;
 
-const validerPeriode = (state: AppState, periode: Periode): ValidertPeriode => {
-    const søknadsinfo = getSøknadsinfo(state);
-    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
+const validerPeriode = (
+    søknadsinfo: Søknadsinfo,
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    periode: Periode,
+    uttaksplan: Periode[],
+    eksisterendeUttaksplan?: Periode[]
+): ValidertPeriode => {
     const advarsler = [];
 
-    if (hasPeriodeMissingAttachment(periode, søknadsinfo!)) {
-        advarsler.push({ advarselKey: PeriodeAdvarselKey.MANGLENDE_VEDLEGG });
+    if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
+        const periodeErNyEllerEndret = eksisterendeUttaksplan
+            ? finnesPeriodeIOpprinneligPlan(periode, eksisterendeUttaksplan) === false
+            : true;
+        if (periodeErNyEllerEndret) {
+            advarsler.push({ advarselKey: PeriodeAdvarselKey.MANGLENDE_VEDLEGG });
+        }
     }
     if (erSenUtsettelsePgaFerieEllerArbeid(periode)) {
         advarsler.push({ advarselKey: PeriodeAdvarselKey.SEN_ÅRSAK_OG_TIDSPERIODE });
@@ -35,9 +46,9 @@ const validerPeriode = (state: AppState, periode: Periode): ValidertPeriode => {
 
     return {
         periodeId: periode.id,
-        valideringsfeil: validerPeriodeForm(periode, tilgjengeligeStønadskontoer, søknadsinfo!) || [],
+        valideringsfeil: validerPeriodeForm(periode, tilgjengeligeStønadskontoer, søknadsinfo) || [],
         advarsler,
-        overlappendePerioder: Periodene(state.søknad.uttaksplan).finnOverlappendePerioder(periode)
+        overlappendePerioder: Periodene(uttaksplan).finnOverlappendePerioder(periode)
     };
 };
 
@@ -78,11 +89,21 @@ const kjørUttaksplanRegler = (state: AppState): UttaksplanRegelTestresultat | u
 };
 function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
-    const { uttaksplan } = appState.søknad;
+    const { uttaksplan, ekstrainfo } = appState.søknad;
     const validertePerioder: Periodevalidering = {};
-    uttaksplan.forEach((periode) => {
-        validertePerioder[periode.id] = validerPeriode(appState, periode);
-    });
+    const søknadsinfo = getSøknadsinfo(appState);
+    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
+    if (søknadsinfo) {
+        uttaksplan.forEach((periode) => {
+            validertePerioder[periode.id] = validerPeriode(
+                søknadsinfo,
+                tilgjengeligeStønadskontoer,
+                periode,
+                uttaksplan,
+                ekstrainfo.eksisterendeSak ? ekstrainfo.eksisterendeSak.uttaksplan : undefined
+            );
+        });
+    }
     const regelTestresultat = kjørUttaksplanRegler(appState);
     yield put(setUttaksplanValidering(validertePerioder, regelTestresultat));
 }
