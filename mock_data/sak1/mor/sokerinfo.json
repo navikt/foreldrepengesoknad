@@ -1,0 +1,35 @@
+{
+    "søker": {
+        "fnr": "20089811415",
+        "fornavn": "ARTIG",
+        "etternavn": "BÆREPOSE",
+        "kjønn": "K",
+        "fødselsdato": "1998-08-20",
+        "land": "NO",
+        "ikkeNordiskEøsLand": false,
+        "barn": [
+            {
+                "fornavn": "SLAPP",
+                "etternavn": "ERT",
+                "fnr": "01011980704",
+                "kjønn": "M",
+                "fødselsdato": "2019-01-01",
+                "annenForelder": {
+                    "fnr": "23039013940",
+                    "fornavn": "TALENTFULL",
+                    "etternavn": "KNOTT",
+                    "fødselsdato": "1990-03-23"
+                }
+            }
+        ]
+    },
+    "arbeidsforhold": [
+        {
+            "arbeidsgiverId": "973861778",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET",
+            "stillingsprosent": 100.0,
+            "fom": "2017-01-01"
+        }
+    ]
+}

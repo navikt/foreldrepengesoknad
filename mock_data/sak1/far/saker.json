@@ -1,0 +1,39 @@
+[
+    {
+        "type": "FPSAK",
+        "saksnummer": "137669633",
+        "status": "LOP",
+        "opprettet": "2019-05-10",
+        "annenPart": {
+            "fnr": "20089811415",
+            "aktørId": "1033452066787",
+            "navn": { "fornavn": "ARTIG", "etternavn": "BÆREPOSE", "kjønn": "K" }
+        },
+        "behandlinger": [
+            {
+                "opprettetTidspunkt": "2019-05-10T14:34:39.551",
+                "endretTidspunkt": "2019-05-10T15:01:19.183",
+                "status": "AVSLU",
+                "type": "FP",
+                "tema": "FORP_FODS",
+                "årsak": "RE-REGISTEROPPL",
+                "behandlingResultat": "INGEN_ENDRING",
+                "behandlendeEnhet": "4833",
+                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Oslo 1",
+                "inntektsmeldinger": ["439825827"]
+            },
+            {
+                "opprettetTidspunkt": "2019-05-08T12:06:44.969",
+                "endretTidspunkt": "2019-05-08T12:09:10.048",
+                "status": "AVSLU",
+                "type": "FP",
+                "tema": "FORP_FODS",
+                "årsak": "RE-END-INNTEKTSMELD",
+                "behandlingResultat": "INNVILGET",
+                "behandlendeEnhet": "4833",
+                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Oslo 1",
+                "inntektsmeldinger": ["439824950"]
+            }
+        ]
+    }
+]
