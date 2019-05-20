@@ -36,7 +36,7 @@ import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
 import { findAllAttachments } from '../manglende-vedlegg/manglendeVedleggUtil';
 import _ from 'lodash';
 import { skalViseManglendeVedleggSteg } from '../util/navigation';
-import ErAnnenForelderInformertSpørsmål from 'app/spørsmål/ErAnnenForelderInformertSpørsmål';
+import ErAnnenForelderInformertSpørsmål from 'app/spørsmål/ErAnnenForelderInformertSpørsmål';
 import VeilederInfo from 'app/components/veileder-info/VeilederInfo';
 
 interface StateProps {
@@ -149,7 +149,7 @@ class OppsummeringSteg extends React.Component<Props> {
                         {skalSpørreOmAnnenForelderErInformert && (
                             <>
                                 <Block>
-                                    <ErAnnenForelderInformertSpørsmål
+                                    <ErAnnenForelderInformertSpørsmål
                                         navn={søknadsinfo.navn.annenForelder.fornavn}
                                         erAnnenForelderInformert={søknad.annenForelder.erInformertOmSøknaden}
                                         onChange={(erInformertOmSøknaden) =>
