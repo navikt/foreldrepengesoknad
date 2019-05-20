@@ -1,24 +1,24 @@
 {
     "søker": {
-        "fnr": "20089811415",
-        "fornavn": "ARTIG",
-        "etternavn": "BÆREPOSE",
+        "fnr": "23039013940",
+        "fornavn": "TALENTFULL",
+        "etternavn": "KNOTT",
         "kjønn": "M",
-        "fødselsdato": "1998-08-20",
+        "fødselsdato": "1990-03-23",
         "land": "NO",
         "ikkeNordiskEøsLand": false,
         "barn": [
             {
-                "fornavn": "FornavnBarn",
-                "etternavn": "EtternavnBarn",
+                "fornavn": "SLAPP",
+                "etternavn": "ERT",
                 "fnr": "01011980704",
                 "kjønn": "M",
                 "fødselsdato": "2019-01-01",
                 "annenForelder": {
-                    "fnr": "23039013940",
-                    "fornavn": "fMor",
-                    "etternavn": "eMor",
-                    "fødselsdato": "1990-03-23"
+                    "fnr": "20089811415",
+                    "fornavn": "ARTIG",
+                    "etternavn": "BÆREPOSE",
+                    "fødselsdato": "1998-08-20"
                 }
             }
         ]
