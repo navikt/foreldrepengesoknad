@@ -1054,7 +1054,7 @@
     "søknadSendt.info.missingAttachment.I000049": "Annen dokumentasjon",
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikke blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
-        "Hvis du ikke ettersender dokumentene innen tre uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig. Det kan føre til at du får avslag på søknaden din.",
+        "Hvis du ikke ettersender dokumentene innen tre uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig.",
 
     "periodetype.utsettelse": "utsettelse",
     "periodetype.uttak": "uttak"
