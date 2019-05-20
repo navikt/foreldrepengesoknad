@@ -15,12 +15,18 @@ import { Søkerinfo } from '../../types/søkerinfo';
 import Person from '../../types/Person';
 import { Kjønn } from '../../types/common';
 import Sak, { AnnenPart } from 'app/types/søknad/Sak';
-import { StønadskontoType, SaksperiodeUtsettelseÅrsakType, Arbeidsform } from 'app/types/uttaksplan/periodetyper';
+import {
+    StønadskontoType,
+    SaksperiodeUtsettelseÅrsakType,
+    Arbeidsform,
+    MorsAktivitet
+} from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { isFeatureEnabled, Feature } from 'app/Feature';
 import { datoErInnenforTidsperiode } from '../uttaksplan/Tidsperioden';
 import { guid } from 'nav-frontend-js-utils';
+import { cloneDeep } from 'lodash';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -76,6 +82,7 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
                 utsettelsePeriodeType,
                 arbeidsgiverInfo,
                 uttakArbeidType,
+                morsAktivitetIPerioden,
                 ...periodeRest
             } = p;
             return {
@@ -89,7 +96,8 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
                 tidsperiode: {
                     fom: new Date(periode.fom),
                     tom: new Date(periode.tom)
-                }
+                },
+                morsAktivitetIPerioden: morsAktivitetIPerioden ? (morsAktivitetIPerioden as MorsAktivitet) : undefined
             };
         });
 
@@ -179,7 +187,7 @@ const getBarnFromSaksgrunnlag = (situasjon: Søkersituasjon, sak: Saksgrunnlag):
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Søkersituasjon,
     sak: Saksgrunnlag,
-    annenPart?: AnnenPart
+    annenPart: AnnenPart
 ): Partial<AnnenForelder> | undefined => {
     const { søkerErFarEllerMedmor } = sak;
     switch (situasjon) {
@@ -187,20 +195,20 @@ const getAnnenForelderFromSaksgrunnlag = (
         case Søkersituasjon.ADOPSJON:
             if (søkerErFarEllerMedmor) {
                 return {
-                    fornavn: annenPart ? annenPart.navn.fornavn : 'mor',
-                    etternavn: annenPart ? annenPart.navn.etternavn : '',
+                    fornavn: annenPart.navn.fornavn,
+                    etternavn: annenPart.navn.etternavn,
                     erUfør: sak.morErUfør,
                     harRettPåForeldrepenger: sak.morHarRett,
-                    fnr: annenPart ? annenPart.fnr : undefined,
-                    kanIkkeOppgis: annenPart === undefined
+                    fnr: annenPart.fnr,
+                    kanIkkeOppgis: false
                 };
             }
             return {
-                fornavn: annenPart ? annenPart.navn.fornavn : 'Far eller medmor',
-                etternavn: annenPart ? annenPart.navn.etternavn : '',
+                fornavn: annenPart.navn.fornavn,
+                etternavn: annenPart.navn.etternavn,
                 harRettPåForeldrepenger: sak.farMedmorHarRett,
-                fnr: annenPart ? annenPart.fnr : undefined,
-                kanIkkeOppgis: annenPart === undefined
+                fnr: annenPart.fnr,
+                kanIkkeOppgis: false
             };
     }
     return undefined;
@@ -261,9 +269,11 @@ export const opprettSøknadFraEksisterendeSak = (
 
     const søker = getSøkerFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
-    const annenForelder = getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, sak.annenPart);
+    const annenForelder = sak.annenPart
+        ? getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, sak.annenPart)
+        : undefined;
 
-    if ((!søker || !barn) && (grunnlag.erDeltUttak && !annenForelder)) {
+    if (!søker || !barn || (grunnlag.erDeltUttak && !annenForelder)) {
         return undefined;
     }
 
@@ -274,7 +284,7 @@ export const opprettSøknadFraEksisterendeSak = (
         annenForelder: annenForelder as AnnenForelder,
         erEndringssøknad: true,
         dekningsgrad: grunnlag.dekningsgrad,
-        uttaksplan: uttaksplan || []
+        uttaksplan: uttaksplan ? cloneDeep(uttaksplan) : []
     };
     return søknad;
 };

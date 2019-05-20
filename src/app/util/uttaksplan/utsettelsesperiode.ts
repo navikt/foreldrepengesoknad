@@ -10,10 +10,12 @@ import {
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 import { Søknadsinfo } from 'app/selectors/types';
 
-export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakType) =>
+export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakType | OverføringÅrsakType) =>
     årsak === UtsettelseÅrsakType.Sykdom ||
     årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
-    årsak === UtsettelseÅrsakType.InstitusjonSøker;
+    årsak === UtsettelseÅrsakType.InstitusjonSøker ||
+    årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder ||
+    årsak === OverføringÅrsakType.sykdomAnnenForelder;
 
 export const dokumentasjonBehøvesForUtsettelsesperiode = (
     { årsak }: Utsettelsesperiode,

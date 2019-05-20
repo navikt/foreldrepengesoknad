@@ -179,6 +179,10 @@ const setVedleggForSenEndring = (payload: Attachment[]): SetVedleggForSenEndring
     payload
 });
 
+const resetUttaksplanEndringer = () => ({
+    type: SøknadActionKeys.UTTAKSPLAN_RESET_ENDRINGER
+});
+
 export default {
     startSøknad,
     updateAnnenForelder,
@@ -205,5 +209,6 @@ export default {
     setCurrentSteg,
     setVedleggForSenEndring,
     setTilleggsopplysning,
-    uttaksplanSetForslag
+    uttaksplanSetForslag,
+    resetUttaksplanEndringer
 };

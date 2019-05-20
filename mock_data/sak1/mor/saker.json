@@ -1,0 +1,22 @@
+[
+    {
+        "type": "FPSAK",
+        "saksnummer": "137669631",
+        "status": "LOP",
+        "opprettet": "2019-05-10",
+        "behandlinger": [
+            {
+                "opprettetTidspunkt": "2019-05-08T11:57:47.052",
+                "endretTidspunkt": "2019-05-08T12:01:49.015",
+                "status": "AVSLU",
+                "type": "FP",
+                "tema": "FORP_FODS",
+                "årsak": "RE-END-INNTEKTSMELD",
+                "behandlingResultat": "INNVILGET",
+                "behandlendeEnhet": "4833",
+                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Oslo 1",
+                "inntektsmeldinger": ["439824915"]
+            }
+        ]
+    }
+]
