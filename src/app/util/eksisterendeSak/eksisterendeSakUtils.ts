@@ -21,6 +21,7 @@ import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder
 import { isFeatureEnabled, Feature } from 'app/Feature';
 import { datoErInnenforTidsperiode } from '../uttaksplan/Tidsperioden';
 import { guid } from 'nav-frontend-js-utils';
+import { cloneDeep } from 'lodash';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -276,7 +277,7 @@ export const opprettSøknadFraEksisterendeSak = (
         annenForelder: annenForelder as AnnenForelder,
         erEndringssøknad: true,
         dekningsgrad: grunnlag.dekningsgrad,
-        uttaksplan: uttaksplan || []
+        uttaksplan: uttaksplan ? cloneDeep(uttaksplan) : []
     };
     return søknad;
 };
