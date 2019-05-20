@@ -110,10 +110,13 @@ const missingAttachmentForAktivitetskrav = (periode: Periode, søknadsinfo: Søk
 };
 
 const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): boolean => {
-    return (
-        erÅrsakSykdomEllerInstitusjonsopphold((periode as Utsettelsesperiode).årsak) &&
-        isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
-    );
+    if (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Overføring) {
+        return (
+            erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
+            isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
+        );
+    }
+    return false;
 };
 
 export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
