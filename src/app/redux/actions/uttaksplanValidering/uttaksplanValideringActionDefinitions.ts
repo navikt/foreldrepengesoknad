@@ -3,7 +3,8 @@ import { UttaksplanRegelTestresultat } from '../../../regler/uttaksplanValiderin
 
 export enum UttaksplanValideringActionKeys {
     'SET_UTTAKSPLAN_VALIDERING' = 'setUttaksplanValidering',
-    'VALIDER_UTTAKSPLAN' = 'validerUttaksplan'
+    'VALIDER_UTTAKSPLAN' = 'validerUttaksplan',
+    'RESET_UTTAKSPLANVALIDERING' = 'resetUttaksplanvalidering'
 }
 
 export interface ValiderUttaksplanAction {
@@ -15,4 +16,11 @@ export interface SetUttaksplanValidering {
     validertePerioder: { [periodeId: string]: ValidertPeriode };
 }
 
-export type UttaksplanValideringActionTypes = SetUttaksplanValidering | ValiderUttaksplanAction;
+export interface ResetUttaksplanValidering {
+    type: UttaksplanValideringActionKeys.RESET_UTTAKSPLANVALIDERING;
+}
+
+export type UttaksplanValideringActionTypes =
+    | SetUttaksplanValidering
+    | ValiderUttaksplanAction
+    | ResetUttaksplanValidering;
