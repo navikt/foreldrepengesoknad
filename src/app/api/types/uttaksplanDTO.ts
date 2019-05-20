@@ -39,6 +39,7 @@ export interface UttaksplanDTO {
                 fom: string;
                 tom: string;
             };
+            morsAktivitetIPerioden: string;
         }
     ];
 }

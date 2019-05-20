@@ -37,8 +37,8 @@ import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
 import { isUfødtBarn, isAdopsjonsbarn } from '../../types/søknad/Barn';
 import { getMorsAktivitetSkjemanummer } from '../skjemanummer/morsAktivitetSkjemanummer';
-import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 import { finnesPeriodeIOpprinneligPlan } from '../uttaksplan/uttaksplanEndringUtil';
+import { aktivitetskravMorSkalBesvares } from 'app/regler/uttak/uttaksskjema/aktivitetskravMorSkalBesvares';
 
 const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType): boolean =>
     attachments === undefined ||
@@ -101,12 +101,13 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
 };
 
 const missingAttachmentForAktivitetskrav = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
-    return (
-        aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-            søknadsinfo.søker.erFarEllerMedmor,
-            søknadsinfo.annenForelder
-        ) && isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON)
+    const skalBesvares = aktivitetskravMorSkalBesvares(
+        periode,
+        søknadsinfo.søker.erMor,
+        søknadsinfo.søker.erAleneOmOmsorg,
+        søknadsinfo.annenForelder.kanIkkeOppgis
     );
+    return skalBesvares ? isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON) : false;
 };
 
 const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): boolean => {

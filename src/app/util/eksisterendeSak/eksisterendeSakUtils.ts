@@ -15,7 +15,12 @@ import { Søkerinfo } from '../../types/søkerinfo';
 import Person from '../../types/Person';
 import { Kjønn } from '../../types/common';
 import Sak, { AnnenPart } from 'app/types/søknad/Sak';
-import { StønadskontoType, SaksperiodeUtsettelseÅrsakType, Arbeidsform } from 'app/types/uttaksplan/periodetyper';
+import {
+    StønadskontoType,
+    SaksperiodeUtsettelseÅrsakType,
+    Arbeidsform,
+    MorsAktivitet
+} from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { isFeatureEnabled, Feature } from 'app/Feature';
@@ -77,6 +82,7 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
                 utsettelsePeriodeType,
                 arbeidsgiverInfo,
                 uttakArbeidType,
+                morsAktivitetIPerioden,
                 ...periodeRest
             } = p;
             return {
@@ -90,7 +96,8 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
                 tidsperiode: {
                     fom: new Date(periode.fom),
                     tom: new Date(periode.tom)
-                }
+                },
+                morsAktivitetIPerioden: morsAktivitetIPerioden ? (morsAktivitetIPerioden as MorsAktivitet) : undefined
             };
         });
 
