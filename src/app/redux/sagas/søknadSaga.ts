@@ -99,7 +99,7 @@ function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
                 history
             );
         }
-        yield call(validerUttaksplanAction);
+        yield put(validerUttaksplanAction());
         yield put(søknadActionCreators.setCurrentSteg(StegID.UTTAKSPLAN));
     }
 }
