@@ -149,7 +149,8 @@ const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Sak
         samtidigUttakProsent: saksperiode.samtidigUttaksprosent,
         stillingsprosent: gradert ? saksperiode.arbeidstidprosent : undefined,
         arbeidsformer: gradert ? [getArbeidsformFromUttakArbeidstype(saksperiode.uttakArbeidType)] : undefined,
-        orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined
+        orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
+        morsAktivitetIPerioden: saksperiode.morsAktivitetIPerioden
     };
 
     return uttaksperiode;

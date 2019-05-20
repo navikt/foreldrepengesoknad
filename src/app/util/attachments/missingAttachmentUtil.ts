@@ -37,7 +37,8 @@ import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
 import { isUfødtBarn, isAdopsjonsbarn } from '../../types/søknad/Barn';
 import { getMorsAktivitetSkjemanummer } from '../skjemanummer/morsAktivitetSkjemanummer';
-import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
+import { finnesPeriodeIOpprinneligPlan } from '../uttaksplan/uttaksplanEndringUtil';
+import { aktivitetskravMorSkalBesvares } from 'app/regler/uttak/uttaksskjema/aktivitetskravMorSkalBesvares';
 
 const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType): boolean =>
     attachments === undefined ||
@@ -100,32 +101,36 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
 };
 
 const missingAttachmentForAktivitetskrav = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
-    return (
-        aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-            søknadsinfo.søker.erFarEllerMedmor,
-            søknadsinfo.annenForelder
-        ) && isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON)
+    const skalBesvares = aktivitetskravMorSkalBesvares(
+        periode,
+        søknadsinfo.søker.erMor,
+        søknadsinfo.søker.erAleneOmOmsorg,
+        søknadsinfo.annenForelder.kanIkkeOppgis
     );
+    return skalBesvares ? isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON) : false;
 };
 
 const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): boolean => {
-    return (
-        erÅrsakSykdomEllerInstitusjonsopphold((periode as Utsettelsesperiode).årsak) &&
-        isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
-    );
+    if (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Overføring) {
+        return (
+            erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
+            isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
+        );
+    }
+    return false;
 };
 
 export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
-    return (
-        shouldPeriodeHaveAttachment(periode, søknadsinfo) &&
-        (missingAttachmentForAktivitetskrav(periode, søknadsinfo) ||
-            missingAttachmentForSykdomEllerInstitusjonsopphold(periode))
-    );
+    const shouldHave = shouldPeriodeHaveAttachment(periode, søknadsinfo);
+    const missingForAktivitetskrav = missingAttachmentForAktivitetskrav(periode, søknadsinfo);
+    const missingForSykdomEllerInst = missingAttachmentForSykdomEllerInstitusjonsopphold(periode);
+    return shouldHave && (missingForAktivitetskrav || missingForSykdomEllerInst);
 };
 
 export const findMissingAttachmentsForPerioder = (
     perioder: Periode[],
-    søknadsinfo: Søknadsinfo
+    søknadsinfo: Søknadsinfo,
+    eksisterendeUttaksplan?: Periode[]
 ): MissingAttachment[] => {
     if (!perioder) {
         return [];
@@ -133,26 +138,31 @@ export const findMissingAttachmentsForPerioder = (
 
     const missingAttachments = [];
     for (const periode of perioder) {
-        if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
-            if (missingAttachmentForSykdomEllerInstitusjonsopphold(periode)) {
-                missingAttachments.push({
-                    index: perioder.indexOf(periode),
-                    skjemanummer: getSkjemanummerForPeriode(periode),
-                    type: getAttachmentTypeForPeriode(periode),
-                    periodeId: periode.id
-                });
-            }
+        const periodeErNyEllerEndret = eksisterendeUttaksplan
+            ? finnesPeriodeIOpprinneligPlan(periode, eksisterendeUttaksplan) === false
+            : true;
+        if (periodeErNyEllerEndret) {
+            if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
+                if (missingAttachmentForSykdomEllerInstitusjonsopphold(periode)) {
+                    missingAttachments.push({
+                        index: perioder.indexOf(periode),
+                        skjemanummer: getSkjemanummerForPeriode(periode),
+                        type: getAttachmentTypeForPeriode(periode),
+                        periodeId: periode.id
+                    });
+                }
 
-            if (
-                (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Uttak) &&
-                missingAttachmentForAktivitetskrav(periode, søknadsinfo)
-            ) {
-                missingAttachments.push({
-                    index: perioder.indexOf(periode),
-                    skjemanummer: getMorsAktivitetSkjemanummer(periode.morsAktivitetIPerioden),
-                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-                    periodeId: periode.id
-                });
+                if (
+                    (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Uttak) &&
+                    missingAttachmentForAktivitetskrav(periode, søknadsinfo)
+                ) {
+                    missingAttachments.push({
+                        index: perioder.indexOf(periode),
+                        skjemanummer: getMorsAktivitetSkjemanummer(periode.morsAktivitetIPerioden),
+                        type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                        periodeId: periode.id
+                    });
+                }
             }
         }
     }
@@ -185,7 +195,13 @@ export const findMissingAttachments = (
 ): MissingAttachment[] => {
     const missingAttachments = [];
     missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api));
-    missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknadsinfo));
+    missingAttachments.push(
+        ...findMissingAttachmentsForPerioder(
+            søknad.uttaksplan,
+            søknadsinfo,
+            søknad.ekstrainfo.eksisterendeSak ? søknad.ekstrainfo.eksisterendeSak.uttaksplan : undefined
+        )
+    );
     missingAttachments.push(...findMissingAttachmentsForAndreInntekter(søknad));
     return missingAttachments;
 };

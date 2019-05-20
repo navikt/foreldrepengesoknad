@@ -35,6 +35,7 @@ export enum SøknadActionKeys {
     'UTTAKSPLAN_UPDATE_SKJEMADATA' = 'uttaksplanUpdateSkjemadata',
     'UTTAKSPLAN_LAG_FORSLAG' = 'uttaksplanLagForslag',
     'UTTAKSPLAN_SET_FORSLAG' = 'uttaksplanSetForslag',
+    'UTTAKSPLAN_RESET_ENDRINGER' = 'uttaksplanResetEndringer',
     'SET_VEDLEGG_FOR_SEN_ENDRING' = 'setVedleggForSenEndring',
     'SET_TILLEGGSOPPLYSNING' = 'setTilleggsopplysning',
     'SET_CURRENT_STEG' = 'setCurrentSteg',
@@ -181,6 +182,10 @@ export interface SetTilleggsopplysning {
     };
 }
 
+export interface ResetUttaksplanEndringer {
+    type: SøknadActionKeys.UTTAKSPLAN_RESET_ENDRINGER;
+}
+
 export type SøknadAction =
     | SetSøknad
     | AvbrytSøknad
@@ -206,4 +211,5 @@ export type SøknadAction =
     | UttaksplanSetForslag
     | SetCurrentSteg
     | SetVedleggForSenEndring
-    | SetTilleggsopplysning;
+    | SetTilleggsopplysning
+    | ResetUttaksplanEndringer;

@@ -12,6 +12,7 @@ import {
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
+import { cloneDeep } from 'lodash';
 
 export const getDefaultSøknadState = (): SøknadPartial => {
     return {
@@ -152,7 +153,16 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
         case SøknadActionKeys.UTTAKSPLAN_SET_PERIODER:
             return {
                 ...state,
-                uttaksplan: action.perioder
+                uttaksplan: cloneDeep(action.perioder)
+            };
+
+        case SøknadActionKeys.UTTAKSPLAN_RESET_ENDRINGER:
+            return {
+                ...state,
+                uttaksplan:
+                    state.ekstrainfo.eksisterendeSak !== undefined
+                        ? cloneDeep(state.ekstrainfo.eksisterendeSak.uttaksplan || [])
+                        : []
             };
 
         case SøknadActionKeys.UTTAKSPLAN_SET_FORSLAG:

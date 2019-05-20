@@ -22,7 +22,14 @@ export function validerUttaksplanAction() {
     };
 }
 
+export function resetUttaksplanvalideringAction() {
+    return {
+        type: UttaksplanValideringActionKeys.RESET_UTTAKSPLANVALIDERING
+    };
+}
+
 export default {
     setUttaksplanValidering,
-    validerUttaksplanAction
+    validerUttaksplanAction,
+    resetUttaksplanvalideringAction
 };
