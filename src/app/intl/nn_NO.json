@@ -1061,7 +1061,7 @@
     "søknadSendt.info.missingAttachment.I000049": "Annan stadfesting",
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumenta ikkje blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
-        "Viss du ikkje ettersender dokumenta innan tre veker behandlar vi søknaden din utor dei opplysningane som vi har tilgjengelege. Det kan føre til at du får avslag på søknaden din.",
+        "Viss du ikkje ettersender dokumenta innan tre veker behandlar vi søknaden din utor dei opplysningane som vi har tilgjengelege.",
 
     "periodetype.utsettelse": "utsettelse",
     "periodetype.uttak": "uttak"
