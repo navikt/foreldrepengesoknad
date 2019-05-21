@@ -14,7 +14,6 @@
         "no-var-requires": false,
         "no-implicit-dependencies": false,
         "no-empty-interface": false,
-        "switch-default": true,
         "no-switch-case-fall-through": true,
         "ordered-imports": false,
         "prefer-object-spread": true,
