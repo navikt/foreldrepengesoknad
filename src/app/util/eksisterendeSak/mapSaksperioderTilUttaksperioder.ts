@@ -100,9 +100,6 @@ const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsa
     if (saksperiode.flerbarnsdager) {
         return OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder;
     }
-    if (saksperiode.oppholdsårsak) {
-        return saksperiode.oppholdsårsak;
-    }
     switch (saksperiode.stønadskontotype) {
         case StønadskontoType.Fedrekvote:
             return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
