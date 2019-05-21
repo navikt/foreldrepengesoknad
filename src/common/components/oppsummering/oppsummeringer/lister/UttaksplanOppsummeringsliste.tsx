@@ -9,7 +9,8 @@ import {
     Periodetype,
     StønadskontoType,
     Utsettelsesperiode,
-    Uttaksperiode
+    Uttaksperiode,
+    Oppholdsperiode
 } from '../../../../../app/types/uttaksplan/periodetyper';
 import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../../../../../app/util/dates/dates';
@@ -31,6 +32,7 @@ import {
 } from 'app/util/cleanup/stringifyTilleggsopplysninger';
 import { Søknadsinfo } from 'app/selectors/types';
 import { finnesPeriodeIOpprinneligPlan } from 'app/util/uttaksplan/uttaksplanEndringUtil';
+import { getStønadskontoFromOppholdsårsak } from 'app/util/uttaksplan/uttaksperiodeUtils';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
@@ -100,6 +102,8 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
                 return this.createOppsummeringslisteelementPropsForUtsettelsesperiode(periode, periodeErNyEllerEndret);
             case Periodetype.Overføring:
                 return this.createOppsummeringslisteelementPropsForOverføringsperiode(periode, periodeErNyEllerEndret);
+            case Periodetype.Opphold:
+                return this.createOppsummeringslisteelementPropsForOppholdsperiode(periode, periodeErNyEllerEndret);
             default:
                 return null;
         }
@@ -120,6 +124,18 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
                     periodeErNyEllerEndret={periodeErNyEllerEndret}
                 />
             )
+        };
+    }
+
+    createOppsummeringslisteelementPropsForOppholdsperiode(
+        periode: Oppholdsperiode,
+        periodeErNyEllerEndret: boolean = true
+    ) {
+        const stønadskonto = getStønadskontoFromOppholdsårsak(periode.årsak);
+        return {
+            venstrestiltTekst: this.getStønadskontoNavnFromKonto(stønadskonto),
+            høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
+            content: <div />
         };
     }
 

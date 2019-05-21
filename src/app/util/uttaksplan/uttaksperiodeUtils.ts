@@ -52,17 +52,16 @@ export const getOppholdsÅrsakFromStønadskonto = (konto: StønadskontoType): Op
     }
 };
 
-export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): StønadskontoType | undefined => {
-    if (årsak === OppholdÅrsakType.UttakFedrekvoteAnnenForelder) {
-        return StønadskontoType.Fedrekvote;
-    } else if (årsak === OppholdÅrsakType.UttakMødrekvoteAnnenForelder) {
-        return StønadskontoType.Mødrekvote;
-    } else if (årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder) {
-        return StønadskontoType.Fellesperiode;
-    } else if (årsak === OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder) {
-        return StønadskontoType.Flerbarnsdager;
-    } else {
-        return undefined;
+export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): StønadskontoType => {
+    switch (årsak) {
+        case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
+            return StønadskontoType.Fedrekvote;
+        case OppholdÅrsakType.UttakMødrekvoteAnnenForelder:
+            return StønadskontoType.Mødrekvote;
+        case OppholdÅrsakType.UttakFellesperiodeAnnenForelder:
+            return StønadskontoType.Fellesperiode;
+        case OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder:
+            return StønadskontoType.Flerbarnsdager;
     }
 };
 
