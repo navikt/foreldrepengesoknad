@@ -302,8 +302,9 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
         case SøknadActionKeys.DELETE_ATTACHMENT_FAILED:
             const attachmentFailedToDelete = action.attachment;
             return removeAttachmentFromState(attachmentFailedToDelete, state);
+        default:
+            return state;
     }
-    return state;
 };
 
 export default søknadReducer;

@@ -70,8 +70,9 @@ const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiSt
                 ...state,
                 isLoadingStoredAppState: true
             };
+        default:
+            return state;
     }
-    return state;
 };
 
 export default apiReducer;

@@ -93,14 +93,16 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
         const periodeErNyEllerEndret = eksisterendeUttaksplan
             ? finnesPeriodeIOpprinneligPlan(periode, eksisterendeUttaksplan) === false
             : true;
-        if (periode.type === Periodetype.Uttak) {
-            return this.createOppsummeringslisteelementPropsForUttaksperiode(periode, periodeErNyEllerEndret);
-        } else if (periode.type === Periodetype.Utsettelse) {
-            return this.createOppsummeringslisteelementPropsForUtsettelsesperiode(periode, periodeErNyEllerEndret);
-        } else if (periode.type === Periodetype.Overføring) {
-            return this.createOppsummeringslisteelementPropsForOverføringsperiode(periode, periodeErNyEllerEndret);
+        switch (periode.type) {
+            case Periodetype.Uttak:
+                return this.createOppsummeringslisteelementPropsForUttaksperiode(periode, periodeErNyEllerEndret);
+            case Periodetype.Utsettelse:
+                return this.createOppsummeringslisteelementPropsForUtsettelsesperiode(periode, periodeErNyEllerEndret);
+            case Periodetype.Overføring:
+                return this.createOppsummeringslisteelementPropsForOverføringsperiode(periode, periodeErNyEllerEndret);
+            default:
+                return null;
         }
-        return null;
     }
 
     createOppsummeringslisteelementPropsForUttaksperiode(
