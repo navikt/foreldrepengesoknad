@@ -18,7 +18,7 @@ import Uttaksperiodedetaljer from 'common/components/oppsummering/oppsummeringer
 import Utsettelsesperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Utsettelsesperiodedetaljer';
 import Overføringsperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Overføringsperiodedetaljer';
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
-import { getStønadskontoNavn } from '../../../../../app/util/uttaksplan';
+import { getStønadskontoNavn, getPeriodeTittel } from '../../../../../app/util/uttaksplan';
 import Arbeidsforhold from '../../../../../app/types/Arbeidsforhold';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 import AnnenForelder from '../../../../../app/types/søknad/AnnenForelder';
@@ -32,7 +32,6 @@ import {
 } from 'app/util/cleanup/stringifyTilleggsopplysninger';
 import { Søknadsinfo } from 'app/selectors/types';
 import { finnesPeriodeIOpprinneligPlan } from 'app/util/uttaksplan/uttaksplanEndringUtil';
-import { getStønadskontoFromOppholdsårsak } from 'app/util/uttaksplan/uttaksperiodeUtils';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
@@ -103,7 +102,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
             case Periodetype.Overføring:
                 return this.createOppsummeringslisteelementPropsForOverføringsperiode(periode, periodeErNyEllerEndret);
             case Periodetype.Opphold:
-                return this.createOppsummeringslisteelementPropsForOppholdsperiode(periode, periodeErNyEllerEndret);
+                return this.createOppsummeringslisteelementPropsForOppholdsperiode(periode);
             default:
                 return null;
         }
@@ -127,15 +126,10 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
         };
     }
 
-    createOppsummeringslisteelementPropsForOppholdsperiode(
-        periode: Oppholdsperiode,
-        periodeErNyEllerEndret: boolean = true
-    ) {
-        const stønadskonto = getStønadskontoFromOppholdsårsak(periode.årsak);
+    createOppsummeringslisteelementPropsForOppholdsperiode(periode: Oppholdsperiode) {
         return {
-            venstrestiltTekst: this.getStønadskontoNavnFromKonto(stønadskonto),
-            høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
-            content: <div />
+            venstrestiltTekst: getPeriodeTittel(this.props.intl, periode, this.props.søknadsinfo.navn.navnPåForeldre),
+            høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode)
         };
     }
 
