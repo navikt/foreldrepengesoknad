@@ -5,7 +5,7 @@ import getMessage from 'common/util/i18nUtils';
 import { Validator } from 'common/lib/validation/types';
 
 export interface FlervalgAlternativ {
-    label: string;
+    label: React.ReactNode;
     value: string;
 }
 
