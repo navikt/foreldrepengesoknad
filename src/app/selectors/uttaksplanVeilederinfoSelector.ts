@@ -14,6 +14,8 @@ const getMessageTypeFromAvvik = (avvik: RegelAvvik): VeilederMessageType => {
             return 'advarsel';
         case RegelAlvorlighet.INFO:
             return 'info';
+        default:
+            return 'normal';
     }
 };
 
