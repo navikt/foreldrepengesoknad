@@ -294,11 +294,18 @@ export const opprettSøknadFraEksisterendeSak = (
         return undefined;
     }
 
+    const mockForelder: Partial<AnnenForelder> = {
+        fornavn: '',
+        etternavn: '',
+        fnr: '',
+        harRettPåForeldrepenger: false,
+        kanIkkeOppgis: false
+    };
     const søker = getSøkerFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
     const annenForelder = sak.annenPart
         ? getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, sak.annenPart)
-        : undefined;
+        : mockForelder;
 
     if (!søker || !barn || (grunnlag.erDeltUttak && !annenForelder)) {
         return undefined;

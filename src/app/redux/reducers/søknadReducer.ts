@@ -8,7 +8,7 @@ import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { guid } from 'nav-frontend-js-utils';
 import {
     getBarnInfoFraRegistrertBarnValg,
-    getUniqeRegistrertAnnenForelderFromBarn
+    getUniqueRegistrertAnnenForelderFromBarn
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
@@ -126,7 +126,7 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
             const { gjelderAnnetBarn, valgteBarn } = action.payload;
             const barn = getBarnInfoFraRegistrertBarnValg(gjelderAnnetBarn, valgteBarn);
-            const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(valgteBarn);
+            const registrertAnnenForelder = getUniqueRegistrertAnnenForelderFromBarn(valgteBarn);
 
             return {
                 ...state,
