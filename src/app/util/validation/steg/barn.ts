@@ -119,7 +119,7 @@ export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, søkerinfo
     return trengerLasteOppterminbekreftelse;
 };
 
-export const getUniqeRegistrertAnnenForelderFromBarn = (
+export const getUniqueRegistrertAnnenForelderFromBarn = (
     barn?: RegistrertBarn[]
 ): RegistrertAnnenForelder | undefined => {
     if (!barn || barn.length === 0) {
