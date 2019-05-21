@@ -122,19 +122,18 @@ class OppsummeringSteg extends React.Component<Props> {
                     <ApplicationSpinner />
                 ) : (
                     <>
-                        {uttaksplanValidering.erGyldig === false ||
-                            (1 + 1 === 2 && (
-                                <Block>
-                                    <AlertStripe type="feil">
-                                        <Block margin="xxs">
-                                            <FormattedMessage id="oppsummering.valideringsfeil.uttaksplan.intro" />
-                                        </Block>
-                                        <LinkButton onClick={() => this.gotoUttaksplan()}>
-                                            <FormattedMessage id="oppsummering.valideringsfeil.uttaksplan.lenketekst" />
-                                        </LinkButton>
-                                    </AlertStripe>
-                                </Block>
-                            ))}
+                        {uttaksplanValidering.erGyldig === false && (
+                            <Block>
+                                <AlertStripe type="feil">
+                                    <Block margin="xxs">
+                                        <FormattedMessage id="oppsummering.valideringsfeil.uttaksplan.intro" />
+                                    </Block>
+                                    <LinkButton onClick={() => this.gotoUttaksplan()}>
+                                        <FormattedMessage id="oppsummering.valideringsfeil.uttaksplan.lenketekst" />
+                                    </LinkButton>
+                                </AlertStripe>
+                            </Block>
+                        )}
                         <Oppsummering
                             søknadsinfo={søknadsinfo}
                             søkerinfo={søkerinfo}
