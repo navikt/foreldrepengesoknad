@@ -112,7 +112,7 @@ const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsa
     }
 };
 
-const mapOppholdFromSakesperiodeAnnenPart = (
+const mapOppholdFromSaksperiodeAnnenPart = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag
 ): Oppholdsperiode | undefined => {
@@ -134,7 +134,7 @@ const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Sak
 
     if (saksperiode.gjelderAnnenPart) {
         if (isFeatureEnabled(Feature.mapOpphold)) {
-            return mapOppholdFromSakesperiodeAnnenPart(saksperiode, grunnlag);
+            return mapOppholdFromSaksperiodeAnnenPart(saksperiode, grunnlag);
         }
         return undefined;
     }
