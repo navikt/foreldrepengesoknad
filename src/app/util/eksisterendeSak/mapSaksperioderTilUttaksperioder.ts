@@ -107,8 +107,9 @@ const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsa
             return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
         case StønadskontoType.Mødrekvote:
             return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+        default:
+            return undefined;
     }
-    return undefined;
 };
 
 const mapOppholdFromSakesperiodeAnnenPart = (
@@ -129,7 +130,7 @@ const mapOppholdFromSakesperiodeAnnenPart = (
 };
 
 const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode | undefined => {
-    const gradert = saksperiode.arbeidstidprosent !== 0;
+    const gradert = saksperiode.arbeidstidprosent !== undefined && saksperiode.arbeidstidprosent !== 0;
 
     if (saksperiode.gjelderAnnenPart) {
         if (isFeatureEnabled(Feature.mapOpphold)) {
