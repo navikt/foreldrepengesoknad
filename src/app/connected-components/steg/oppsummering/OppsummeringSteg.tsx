@@ -23,7 +23,7 @@ import { TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetype
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import { søknadStegPath } from '../StegRoutes';
-import { AlertStripeFeilSolid } from 'nav-frontend-alertstriper';
+
 import Block from 'common/components/block/Block';
 import LinkButton from '../../../components/link-button/LinkButton';
 import { MissingAttachment } from '../../../types/MissingAttachment';
@@ -38,6 +38,7 @@ import _ from 'lodash';
 import { skalViseManglendeVedleggSteg } from '../util/navigation';
 import ErAnnenForelderInformertSpørsmål from 'app/spørsmål/ErAnnenForelderInformertSpørsmål';
 import VeilederInfo from 'app/components/veileder-info/VeilederInfo';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -121,18 +122,19 @@ class OppsummeringSteg extends React.Component<Props> {
                     <ApplicationSpinner />
                 ) : (
                     <>
-                        {uttaksplanValidering.erGyldig === false && (
-                            <Block>
-                                <AlertStripeFeilSolid>
-                                    <Block margin="xxs">
-                                        <FormattedMessage id="oppsummering.valideringsfeil.uttaksplan.intro" />
-                                    </Block>
-                                    <LinkButton color="white" onClick={() => this.gotoUttaksplan()}>
-                                        <FormattedMessage id="oppsummering.valideringsfeil.uttaksplan.lenketekst" />
-                                    </LinkButton>
-                                </AlertStripeFeilSolid>
-                            </Block>
-                        )}
+                        {uttaksplanValidering.erGyldig === false ||
+                            (1 + 1 === 2 && (
+                                <Block>
+                                    <AlertStripe type="feil">
+                                        <Block margin="xxs">
+                                            <FormattedMessage id="oppsummering.valideringsfeil.uttaksplan.intro" />
+                                        </Block>
+                                        <LinkButton onClick={() => this.gotoUttaksplan()}>
+                                            <FormattedMessage id="oppsummering.valideringsfeil.uttaksplan.lenketekst" />
+                                        </LinkButton>
+                                    </AlertStripe>
+                                </Block>
+                            ))}
                         <Oppsummering
                             søknadsinfo={søknadsinfo}
                             søkerinfo={søkerinfo}
