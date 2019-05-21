@@ -19,7 +19,8 @@ import {
     StønadskontoType,
     SaksperiodeUtsettelseÅrsakType,
     Arbeidsform,
-    MorsAktivitet
+    MorsAktivitet,
+    OppholdÅrsakType
 } from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
@@ -36,6 +37,19 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType)
             return Arbeidsform.frilans;
         default:
             return Arbeidsform.arbeidstaker;
+    }
+};
+
+const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): StønadskontoType => {
+    switch (årsak) {
+        case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
+            return StønadskontoType.Fedrekvote;
+        case OppholdÅrsakType.UttakFellesperiodeAnnenForelder:
+            return StønadskontoType.Fellesperiode;
+        case OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder:
+            return StønadskontoType.Flerbarnsdager;
+        case OppholdÅrsakType.UttakMødrekvoteAnnenForelder:
+            return StønadskontoType.Mødrekvote;
     }
 };
 
@@ -64,57 +78,66 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
 
     const erDeltUttak = erEksisterendeSakErDeltUttak(dto);
 
-    try {
-        const grunnlag: Saksgrunnlag = {
-            ...restGrunnlag,
-            erDeltUttak,
-            erBarnetFødt: familieHendelseType !== FamiliehendelsesType.TERM,
-            dekningsgrad: dekningsgrad === 100 ? '100' : '80',
-            familieHendelseDato: new Date(familieHendelseDato),
-            familieHendelseType: familieHendelseType as FamiliehendelsesType
+    const grunnlag: Saksgrunnlag = {
+        ...restGrunnlag,
+        erDeltUttak,
+        erBarnetFødt: familieHendelseType !== FamiliehendelsesType.TERM,
+        dekningsgrad: dekningsgrad === 100 ? '100' : '80',
+        familieHendelseDato: new Date(familieHendelseDato),
+        familieHendelseType: familieHendelseType as FamiliehendelsesType
+    };
+
+    const saksperioder = perioder.map((p): Saksperiode => {
+        const {
+            periodeResultatType,
+            periode,
+            stønadskontotype,
+            utsettelsePeriodeType,
+            arbeidsgiverInfo,
+            uttakArbeidType,
+            morsAktivitetIPerioden,
+            oppholdAarsak,
+            gjelderAnnenPart,
+            ...periodeRest
+        } = p;
+
+        const returnPeriode = {
+            ...periodeRest,
+            guid: guid(),
+            periodeResultatType: periodeResultatType as PeriodeResultatType,
+            stønadskontotype: stønadskontotype as StønadskontoType,
+            utsettelsePeriodeType: utsettelsePeriodeType as SaksperiodeUtsettelseÅrsakType,
+            arbeidsgiverInfo: arbeidsgiverInfo as ArbeidsgiverInfo,
+            uttakArbeidType: uttakArbeidType as UttakArbeidType,
+            tidsperiode: {
+                fom: new Date(periode.fom),
+                tom: new Date(periode.tom)
+            },
+            gjelderAnnenPart,
+            morsAktivitetIPerioden: morsAktivitetIPerioden as MorsAktivitet
         };
 
-        const saksperioder = perioder.map((p): Saksperiode => {
-            const {
-                periodeResultatType,
-                periode,
-                stønadskontotype,
-                utsettelsePeriodeType,
-                arbeidsgiverInfo,
-                uttakArbeidType,
-                morsAktivitetIPerioden,
-                ...periodeRest
-            } = p;
-            return {
-                ...periodeRest,
-                guid: guid(),
-                periodeResultatType: periodeResultatType as PeriodeResultatType,
-                stønadskontotype: stønadskontotype as StønadskontoType,
-                utsettelsePeriodeType: utsettelsePeriodeType as SaksperiodeUtsettelseÅrsakType,
-                arbeidsgiverInfo: arbeidsgiverInfo as ArbeidsgiverInfo,
-                uttakArbeidType: uttakArbeidType as UttakArbeidType,
-                tidsperiode: {
-                    fom: new Date(periode.fom),
-                    tom: new Date(periode.tom)
-                },
-                morsAktivitetIPerioden: morsAktivitetIPerioden ? (morsAktivitetIPerioden as MorsAktivitet) : undefined
-            };
-        });
+        if (oppholdAarsak !== undefined && gjelderAnnenPart === false) {
+            returnPeriode.gjelderAnnenPart = true;
+            returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdÅrsakType(oppholdAarsak as OppholdÅrsakType);
+            returnPeriode.flerbarnsdager =
+                (oppholdAarsak as OppholdÅrsakType) === OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder;
+        }
 
-        const uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioder)
-            ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag)
-            : undefined;
+        return returnPeriode;
+    });
 
-        const sak: EksisterendeSak = {
-            grunnlag,
-            saksperioder,
-            uttaksplan
-        };
+    const uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioder)
+        ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag)
+        : undefined;
 
-        return sak;
-    } catch (e) {
-        return undefined;
-    }
+    const sak: EksisterendeSak = {
+        grunnlag,
+        saksperioder,
+        uttaksplan
+    };
+
+    return sak;
 };
 
 const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
