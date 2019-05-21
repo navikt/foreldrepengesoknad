@@ -125,6 +125,7 @@ const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersitua
         case FamiliehendelsesType.ADOPSJON:
             return Søkersituasjon.ADOPSJON;
         case FamiliehendelsesType.OMSORGSOVERTAKELSE:
+        default:
             return undefined;
     }
 };
@@ -143,8 +144,9 @@ const getSøkerrolleFromSaksgrunnlag = (
                 return søkerErFarEllerMedmor ? SøkerRolle.MEDMOR : SøkerRolle.MOR;
             }
             return SøkerRolle.FAR;
+        default:
+            return undefined;
     }
-    return undefined;
 };
 
 const getSøkerFromSaksgrunnlag = (
@@ -180,8 +182,9 @@ const getBarnFromSaksgrunnlag = (situasjon: Søkersituasjon, sak: Saksgrunnlag):
                 adopsjonsdato: sak.familieHendelseDato,
                 fødselsdatoer: [sak.familieHendelseDato]
             };
+        default:
+            return undefined;
     }
-    return undefined;
 };
 
 const getAnnenForelderFromSaksgrunnlag = (
@@ -210,8 +213,9 @@ const getAnnenForelderFromSaksgrunnlag = (
                 fnr: annenPart.fnr,
                 kanIkkeOppgis: false
             };
+        default:
+            return undefined;
     }
-    return undefined;
 };
 
 const finnOverlappendeSaksperioder = (perioder: Saksperiode[], periode: Saksperiode): Saksperiode[] => {
