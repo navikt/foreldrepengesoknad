@@ -40,6 +40,7 @@ export interface UttaksplanDTO {
                 tom: string;
             };
             morsAktivitetIPerioden: string;
+            oppholdAarsak: string;
         }
     ];
 }
