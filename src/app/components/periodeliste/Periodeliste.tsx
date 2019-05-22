@@ -18,6 +18,7 @@ import PeriodelisteInfo, { PeriodelisteInformasjon } from './items/PeriodelisteI
 import './periodeliste.less';
 import { Søknadsinfo } from 'app/selectors/types';
 import PeriodelisteAvslåttPeriode from './items/PeriodelisteAvslåttPeriode';
+import PeriodelisteOppholdAnnenPart from './items/PeriodelisteOppholdAnnenPart';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -166,7 +167,16 @@ class Periodeliste extends React.Component<Props> {
                                             navnPåForeldre={navnPåForeldre}
                                         />
                                     ) : (
-                                        <div />
+                                        <PeriodelisteOppholdAnnenPart
+                                            key={itemId}
+                                            itemId={itemId}
+                                            isExpanded={isExpanded}
+                                            onToggle={onToggle}
+                                            periode={periode}
+                                            onLeggTilOpphold={onLeggTilOpphold}
+                                            onLeggTilPeriode={onLeggTilPeriode}
+                                            navnPåForeldre={navnPåForeldre}
+                                        />
                                     );
                                 default:
                                     return (

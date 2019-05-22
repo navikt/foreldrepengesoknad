@@ -113,12 +113,10 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
 export interface OppholdAnnenPartPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.oppholdAnnenPart;
+    årsak: OppholdÅrsakType;
     forelder: Forelder;
     overskrives: true;
     resultatType: PeriodeResultatType;
-    avslåttPeriodeType?: Periodetype;
-    stønadskonto?: StønadskontoType;
-    utsettelsesårsak?: UtsettelseÅrsakType;
 }
 
 export type InfoPeriode = AvslåttPeriode | OppholdAnnenPartPeriode;
