@@ -470,11 +470,11 @@
     "periodeliste.hull.tittel": "Tapte foreldrepenger",
     "periodeliste.ikkeInvilgetPeriode.tittel": "Tapte foreldrepenger - ikke invilget {type}",
     "periodeliste.ikkeInvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
-    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Uttaksperioden er ikke innvilget",
-    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsesperioden er ikke innvilget",
+    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Perioden er ikke innvilget",
+    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsen er ikke innvilget",
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode":
-        "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
+        "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",
     "periodeliste.nyPeriodeErFørFamiliehendelsesdato":
         "For å legge inn en periode før fødselsdato, må du gå tilbake til forrige steg og gjøre det der.",
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
@@ -482,7 +482,7 @@
     "periodeliste.utsettelse.overlappendeTidsperiode.endre":
         "Du kan ikke endre datoen slik at den går over en annen periode med utsettelse.",
     "periodeliste.utsettelse.overlappendeTidsperiode.ny":
-        "Det er allerede registrert utsettelse i denne perioden. Du må fjerne perioden med utsettelse før du kan legge inn en ny.",
+        "Det er allerede registrerten  utsettelse i denne perioden. Du må slette perioden med utsettelse før du kan legge inn en ny utsettelse.",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
     "personalia.år": "{år} år",
     "pgasykdom": "På grunn av sykdom",
@@ -902,7 +902,7 @@
     "varDuINorgeDaBarnetBleFødt.spørsmål": "Var du i Norge da barnet ble født?",
     "varigEndringAvNæringsinntekt.dato.label": "Oppgi dato for endringen",
     "varigEndringAvNæringsinntekt.forklaring.label":
-        "Her kan du skrive kort hva som har endret seg i virksomheten eller arbeidssituasjonen din",
+        "Her kan du skrive kort hva som har endret seg i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din",
     "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
         "Oppgi næringsinntekten din etter endringen. Oppgi årsinntekten i hele kroner.",
     "varigEndringAvNæringsinntekt.spørsmål":
