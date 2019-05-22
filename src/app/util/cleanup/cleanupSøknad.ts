@@ -82,6 +82,10 @@ export const isNotPeriodetypeHull = (periode: Periode): boolean => {
     return periode.type !== Periodetype.Hull;
 };
 
+export const isNotPeriodetypeInfo = (periode: Periode): boolean => {
+    return periode.type !== Periodetype.Info;
+};
+
 export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
     uttaksplan.forEach((p1: Periode) => {
         if (p1.vedlegg) {
@@ -97,6 +101,10 @@ export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
             });
         }
     });
+};
+
+const skalPeriodeSendesInn = (periode: Periode) => {
+    return isNotPeriodetypeHull(periode) && isNotPeriodetypeInfo(periode);
 };
 
 const getArbeidstakerFrilansSN = (arbeidsformer: Arbeidsform[] | undefined) => {
@@ -126,7 +134,7 @@ const ensureNoNullItemsInFødselsdatoer = (barn: Barn, situasjon: Søkersituasjo
 const cleanupUttaksplan = (uttaksplan: Periode[], annenForelder?: AnnenForelder): Periode[] => {
     return uttaksplan
         .filter((periode: Periode) => isValidTidsperiode(periode.tidsperiode))
-        .filter(isNotPeriodetypeHull)
+        .filter(skalPeriodeSendesInn)
         .map(
             (periode) =>
                 annenForelder ? changeClientonlyKontotype(periode, annenForelder.harRettPåForeldrepenger) : periode
