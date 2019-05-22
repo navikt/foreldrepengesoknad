@@ -9,7 +9,8 @@ import {
     Periodetype,
     StønadskontoType,
     Utsettelsesperiode,
-    Uttaksperiode
+    Uttaksperiode,
+    Oppholdsperiode
 } from '../../../../../app/types/uttaksplan/periodetyper';
 import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../../../../../app/util/dates/dates';
@@ -17,7 +18,7 @@ import Uttaksperiodedetaljer from 'common/components/oppsummering/oppsummeringer
 import Utsettelsesperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Utsettelsesperiodedetaljer';
 import Overføringsperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Overføringsperiodedetaljer';
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
-import { getStønadskontoNavn } from '../../../../../app/util/uttaksplan';
+import { getStønadskontoNavn, getPeriodeTittel } from '../../../../../app/util/uttaksplan';
 import Arbeidsforhold from '../../../../../app/types/Arbeidsforhold';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 import AnnenForelder from '../../../../../app/types/søknad/AnnenForelder';
@@ -100,6 +101,8 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
                 return this.createOppsummeringslisteelementPropsForUtsettelsesperiode(periode, periodeErNyEllerEndret);
             case Periodetype.Overføring:
                 return this.createOppsummeringslisteelementPropsForOverføringsperiode(periode, periodeErNyEllerEndret);
+            case Periodetype.Opphold:
+                return this.createOppsummeringslisteelementPropsForOppholdsperiode(periode);
             default:
                 return null;
         }
@@ -120,6 +123,13 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
                     periodeErNyEllerEndret={periodeErNyEllerEndret}
                 />
             )
+        };
+    }
+
+    createOppsummeringslisteelementPropsForOppholdsperiode(periode: Oppholdsperiode) {
+        return {
+            venstrestiltTekst: getPeriodeTittel(this.props.intl, periode, this.props.søknadsinfo.navn.navnPåForeldre),
+            høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode)
         };
     }
 
