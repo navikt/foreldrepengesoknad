@@ -1,6 +1,7 @@
 import { Tidsperiode, Forelder } from 'common/types';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { RecursivePartial } from '../Partial';
+import { PeriodeResultatType } from '../EksisterendeSak';
 
 export enum Periodetype {
     'Uttak' = 'uttak',
@@ -79,7 +80,8 @@ export enum SenEndringÅrsak {
 }
 
 export enum PeriodeInfoType {
-    'avslåttPeriode' = 'avslåttPeriode'
+    'avslåttPeriode' = 'avslåttPeriode',
+    'oppholdAnnenPart' = 'oppholdAnnenPart'
 }
 
 export interface Helligdag {
@@ -103,12 +105,23 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
-    konto: StønadskontoType;
+    stønadskonto: StønadskontoType;
     forelder: Forelder;
     overskrives: true;
 }
 
-export type InfoPeriode = AvslåttPeriode;
+export interface OppholdAnnenPartPeriode extends InfoPeriodeBase {
+    type: Periodetype.Info;
+    infotype: PeriodeInfoType.oppholdAnnenPart;
+    forelder: Forelder;
+    overskrives: true;
+    resultatType: PeriodeResultatType;
+    avslåttPeriodeType?: Periodetype;
+    stønadskonto?: StønadskontoType;
+    utsettelsesårsak?: UtsettelseÅrsakType;
+}
+
+export type InfoPeriode = AvslåttPeriode | OppholdAnnenPartPeriode;
 
 export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode => {
     return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.avslåttPeriode;
