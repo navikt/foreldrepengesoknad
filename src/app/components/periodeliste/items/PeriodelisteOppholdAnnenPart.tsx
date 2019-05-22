@@ -52,8 +52,8 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
         );
     }
 
-    const tittel = getMessage(intl, 'periodeliste.ikkeInvilgetPeriode.tittel', {
-        type: getMessage(intl, `periodetype.${periode.avslåttPeriodeType}`)
+    const tittel = getMessage(intl, 'periodeliste.oppholdAnnenPart.tittel', {
+        type: getMessage(intl, `periodetype.${periode.type}`)
     });
 
     return (
@@ -67,9 +67,7 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
             renderContent={() => (
                 <div>
                     <Block>
-                        <FormattedMessage
-                            id={`periodeliste.oppholdAnnenPart.expanded.beskrivelse.${periode.avslåttPeriodeType}`}
-                        />
+                        <FormattedMessage id={`periodeliste.oppholdAnnenPart.expanded.beskrivelse.${periode.type}`} />
                     </Block>
                     <Knapperad align="left">{knapper}</Knapperad>
                 </div>

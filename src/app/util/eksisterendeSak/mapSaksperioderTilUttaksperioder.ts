@@ -9,7 +9,8 @@ import {
     StønadskontoType,
     PeriodeInfoType,
     UtsettelseÅrsakType,
-    Arbeidsform
+    Arbeidsform,
+    OppholdAnnenPartPeriode
 } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
@@ -112,7 +113,7 @@ const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsa
     }
 };
 
-const mapOppholdFromSaksperiodeAnnenPart = (
+export const mapOppholdFromSaksperiodeAnnenPart = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag
 ): Oppholdsperiode | undefined => {
@@ -134,7 +135,8 @@ const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Sak
 
     if (saksperiode.gjelderAnnenPart) {
         if (isFeatureEnabled(Feature.mapOpphold)) {
-            return mapOppholdFromSaksperiodeAnnenPart(saksperiode, grunnlag);
+            return mapOppholdAnnenPartPeriodeFromSaksperiode(saksperiode, grunnlag);
+            //mapOppholdFromSaksperiodeAnnenPart(saksperiode, grunnlag);
         }
         return undefined;
     }
@@ -198,6 +200,26 @@ const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, grunnla
     return avslåttPeriode;
 };
 
+const mapOppholdAnnenPartPeriodeFromSaksperiode = (
+    saksperiode: Saksperiode,
+    grunnlag: Saksgrunnlag
+): OppholdAnnenPartPeriode | undefined => {
+    const årsak = getOppholdÅrsakFromSaksperiode(saksperiode);
+    if (årsak) {
+        return {
+            type: Periodetype.Info,
+            infotype: PeriodeInfoType.oppholdAnnenPart,
+            id: guid(),
+            årsak,
+            tidsperiode: { ...saksperiode.tidsperiode },
+            forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
+            overskrives: true,
+            resultatType: saksperiode.periodeResultatType
+        };
+    }
+    return undefined;
+};
+
 const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode | undefined => {
     if (
         saksperiode.utsettelsePeriodeType !== undefined &&
@@ -208,7 +230,9 @@ const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunn
         return mapUtsettelseperiodeFromSaksperiode(saksperiode, grunnlag);
     }
     if (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT) {
-        return mapInfoPeriodeFromAvslåttSaksperiode(saksperiode, grunnlag);
+        return saksperiode.gjelderAnnenPart
+            ? mapOppholdAnnenPartPeriodeFromSaksperiode(saksperiode, grunnlag)
+            : mapInfoPeriodeFromAvslåttSaksperiode(saksperiode, grunnlag);
     }
 
     return mapUttaksperiodeFromSaksperiode(saksperiode, grunnlag);
