@@ -1,7 +1,7 @@
 import { all, put, call, takeLatest, select } from 'redux-saga/effects';
 import { ApiActionKeys, GetSøkerinfo } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
-import { redirectToLogin } from '../../util/routing/login';
+import { redirectToLogin, getAuthenticationCookieHash } from '../../util/routing/login';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
 import { Søkerinfo } from '../../types/søkerinfo';
@@ -27,7 +27,8 @@ function* getSøkerinfo(action: GetSøkerinfo) {
 
         yield put(
             apiActions.updateApi({
-                søkerinfo
+                søkerinfo,
+                cookieHash: getAuthenticationCookieHash()
             })
         );
 

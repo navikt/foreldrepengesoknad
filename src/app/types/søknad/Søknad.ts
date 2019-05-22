@@ -35,6 +35,7 @@ export interface SøknadenGjelderBarnValg {
 
 interface SensitivSkjemaInfo {
     registrertAnnenForelder?: RegistrertAnnenForelder;
+    cookieHash?: string;
 }
 
 export enum Opplysning {

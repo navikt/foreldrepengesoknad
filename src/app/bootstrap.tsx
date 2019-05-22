@@ -14,6 +14,8 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import ApplicationInfo from './components/applicationInfo/ApplicationInfo';
 import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 import { registerDevUtils } from 'common/dev/devUtils';
+import { getAuthenticationCookieHash } from './util/routing/login';
+import UtløptSesjonModal from './components/utløpt-sesjon-modal/UtløptSesjonModal';
 
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
@@ -29,6 +31,9 @@ render(
             <IntlProvider>
                 <Router>
                     <Normaltekst tag="div">
+                        {store.getState().api.cookieHash !== getAuthenticationCookieHash() && (
+                            <UtløptSesjonModal erÅpen={true} />
+                        )}
                         <Foreldrepengesøknad />
                         <ApplicationInfo />
                     </Normaltekst>

@@ -28,6 +28,7 @@ export interface ApiState {
     systemerIkkeTilgjengelig: boolean;
     storageKvittering?: StorageKvittering;
     eksisterendeSak?: EksisterendeSak;
+    cookieHash?: string;
 }
 
 export type ApiStatePartial = Partial<ApiState>;

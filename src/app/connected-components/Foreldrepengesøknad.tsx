@@ -15,6 +15,7 @@ import LoadingScreen from '../components/loading-screen/LoadingScreen';
 import Søknad from '../types/søknad/Søknad';
 import { StegID } from '../util/routing/stegConfig';
 import IkkeTilgjengelig from './sider/feilsider/ikke-tilgjengelig/IkkeTilgjengelig';
+import { getAuthenticationCookieHash } from 'app/util/routing/login';
 
 interface StateProps {
     søknad: Partial<Søknad>;
@@ -24,6 +25,7 @@ interface StateProps {
     isSendSøknadInProgress: boolean;
     søknadHasBeenReceived: boolean;
     systemerIkkeTilgjengelig: boolean;
+    innloggetSomAnnenBruker: boolean;
 }
 
 type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
@@ -111,7 +113,8 @@ const mapStateToProps = (state: AppState): StateProps => ({
     isLoadingSaker: state.api.isLoadingSaker,
     isSendSøknadInProgress: state.api.søknadSendingInProgress,
     søknadHasBeenReceived: state.api.søknadHasBeenReceived,
-    systemerIkkeTilgjengelig: state.api.systemerIkkeTilgjengelig
+    systemerIkkeTilgjengelig: state.api.systemerIkkeTilgjengelig,
+    innloggetSomAnnenBruker: state.api.cookieHash !== getAuthenticationCookieHash()
 });
 
 export default withRouter(connect<StateProps, {}, {}>(mapStateToProps)(Foreldrepengesøknad));
