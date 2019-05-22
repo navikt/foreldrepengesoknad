@@ -145,7 +145,6 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                     søknadenGjelderBarnValg: action.payload
                 },
                 sensitivInfoIkkeLagre: {
-                    ...state.sensitivInfoIkkeLagre,
                     registrertAnnenForelder
                 }
             };
