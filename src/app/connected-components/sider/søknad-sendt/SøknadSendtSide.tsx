@@ -6,7 +6,6 @@ import Lenke from 'nav-frontend-lenker';
 import { EtikettLiten, Ingress, Normaltekst } from 'nav-frontend-typografi';
 import moment from 'moment';
 
-import Person from '../../../types/Person';
 import { Kvittering } from '../../../types/Kvittering';
 import Applikasjonsside from '../Applikasjonsside';
 import { apiActionCreators as api } from '../../../redux/actions';
@@ -27,11 +26,13 @@ import { Periodene } from 'app/util/uttaksplan/Periodene';
 
 import { findMissingAttachments } from 'app/util/attachments/missingAttachmentUtil';
 import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { Søkerinfo } from 'app/types/søkerinfo';
 
 import './søknadSendtSide.less';
+import lenker from 'app/util/routing/lenker';
 
 interface StateProps {
-    person: Person;
+    søkerinfo: Søkerinfo;
     kvittering: Kvittering;
     erEndringssøknad: boolean;
     missingAttachments: MissingAttachment[];
@@ -47,7 +48,8 @@ class SøknadSendtSide extends React.Component<Props> {
     }
 
     render() {
-        const { person, kvittering, erEndringssøknad, intl } = this.props;
+        const { søkerinfo, kvittering, erEndringssøknad, intl } = this.props;
+        const { person, arbeidsforhold } = søkerinfo;
         const cls = BEMHelper('søknadSendt');
         return (
             <Applikasjonsside visSøknadstittel={true}>
@@ -71,7 +73,9 @@ class SøknadSendtSide extends React.Component<Props> {
                             </Block>
 
                             {isFeatureEnabled(Feature.visInfoskriv) &&
-                                kvittering.infoskrivPdf && (
+                                kvittering.infoskrivPdf &&
+                                arbeidsforhold &&
+                                arbeidsforhold.length > 0 && (
                                     <Block>
                                         <SøknadSendtSectionHeader
                                             title={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.tittel')}
@@ -118,7 +122,7 @@ class SøknadSendtSide extends React.Component<Props> {
                                                 </Normaltekst>
                                             </Block>
                                             <Block margin="none">
-                                                <Lenke href="#">
+                                                <Lenke href={lenker.brukerprofil}>
                                                     <FormattedMessage id="søknadSendt.pengene.kontonummer.leggTil" />
                                                 </Lenke>
                                             </Block>
@@ -139,7 +143,7 @@ class SøknadSendtSide extends React.Component<Props> {
 const mapStateToProps = (state: any) => {
     const førsteUttaksdag = Periodene(state.søknad.uttaksplan).getFørsteUttaksdag();
     return {
-        person: state.api.søkerinfo.person,
+        søkerinfo: state.api.søkerinfo,
         kvittering: state.api.kvittering,
         erEndringssøknad: state.søknad.erEndringssøknad,
         missingAttachments: findMissingAttachments(state.søknad, state.api, getSøknadsinfo(state)!),

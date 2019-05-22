@@ -7,7 +7,8 @@ export enum Periodetype {
     'Utsettelse' = 'utsettelse',
     'Opphold' = 'opphold',
     'Overføring' = 'overføring',
-    'Hull' = 'ubegrunnetOpphold'
+    'Hull' = 'ubegrunnetOpphold',
+    'Info' = 'info'
 }
 
 export enum StønadskontoType {
@@ -77,6 +78,10 @@ export enum SenEndringÅrsak {
     'Ingen' = 'INGEN'
 }
 
+export enum PeriodeInfoType {
+    'avslåttPeriode' = 'avslåttPeriode'
+}
+
 export interface Helligdag {
     dato: Date;
     navn: string;
@@ -88,25 +93,40 @@ export interface PeriodeBase {
     tidsperiode: Tidsperiode;
     vedlegg?: Attachment[];
 }
+interface InfoPeriodeBase extends PeriodeBase {
+    type: Periodetype.Info;
+    infotype: PeriodeInfoType;
+    overskrives: boolean;
+}
 
-interface PeriodeHullBase extends PeriodeBase {
+export interface AvslåttPeriode extends InfoPeriodeBase {
+    type: Periodetype.Info;
+    infotype: PeriodeInfoType.avslåttPeriode;
+    avslåttPeriodeType?: Periodetype;
+    konto: StønadskontoType;
+    forelder: Forelder;
+    overskrives: true;
+}
+
+export type InfoPeriode = AvslåttPeriode;
+
+export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode => {
+    return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.avslåttPeriode;
+};
+
+export const isInfoPeriode = (periode: Periode): periode is InfoPeriode => {
+    return periode.type === Periodetype.Info && periode.overskrives === true;
+};
+
+export interface PeriodeHull extends PeriodeBase {
     type: Periodetype.Hull;
     tidsperiode: Tidsperiode;
     årsak?: PeriodeHullÅrsak;
 }
 
-export interface AvslåttPeriode extends PeriodeBase {
-    type: Periodetype.Hull;
-    årsak?: PeriodeHullÅrsak.avslåttPeriode;
-    avslåttPeriodeType?: Periodetype;
-    konto: StønadskontoType;
-    gjelderAnnenPart: boolean;
-}
-export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode => {
-    return periode.type === Periodetype.Hull && periode.årsak === PeriodeHullÅrsak.avslåttPeriode;
+export const isHull = (periode: Periode): periode is PeriodeHull => {
+    return periode.type === Periodetype.Hull;
 };
-
-export type PeriodeHull = PeriodeHullBase | AvslåttPeriode;
 
 export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
@@ -156,7 +176,13 @@ export interface Overføringsperiode extends PeriodeBase {
     årsak: OverføringÅrsakType;
 }
 
-export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode | Overføringsperiode | PeriodeHull;
+export type Periode =
+    | Uttaksperiode
+    | Utsettelsesperiode
+    | Oppholdsperiode
+    | Overføringsperiode
+    | PeriodeHull
+    | InfoPeriode;
 
 export interface TilgjengeligStønadskonto {
     konto: StønadskontoType;
@@ -195,6 +221,10 @@ export function isForeldrepengerFørFødselUttaksperiode(
 ): periode is ForeldrepengerFørFødselUttaksperiode {
     return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
 }
+
+export const isOverskrivbarPeriode = (periode: Periode): boolean => {
+    return (periode.type === Periodetype.Info && periode.overskrives === true) || periode.type === Periodetype.Hull;
+};
 
 export interface Stønadskontouttak {
     konto: StønadskontoType;

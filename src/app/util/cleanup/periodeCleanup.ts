@@ -155,8 +155,9 @@ export const cleanupNyPeriode = (
             return cleanupUttak(periode as Uttaksperiode, søknadsinfo, visibility as UttakSpørsmålVisibility);
         case Periodetype.Opphold:
             return cleanupOpphold(periode as Oppholdsperiode);
+        default:
+            return periode;
     }
-    return periode;
 };
 
 function applyChangesAndCleanPeriode(

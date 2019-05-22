@@ -9,7 +9,8 @@ import {
     Periodetype,
     StønadskontoType,
     Utsettelsesperiode,
-    Uttaksperiode
+    Uttaksperiode,
+    Oppholdsperiode
 } from '../../../../../app/types/uttaksplan/periodetyper';
 import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../../../../../app/util/dates/dates';
@@ -17,7 +18,7 @@ import Uttaksperiodedetaljer from 'common/components/oppsummering/oppsummeringer
 import Utsettelsesperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Utsettelsesperiodedetaljer';
 import Overføringsperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Overføringsperiodedetaljer';
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
-import { getStønadskontoNavn } from '../../../../../app/util/uttaksplan';
+import { getStønadskontoNavn, getPeriodeTittel } from '../../../../../app/util/uttaksplan';
 import Arbeidsforhold from '../../../../../app/types/Arbeidsforhold';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 import AnnenForelder from '../../../../../app/types/søknad/AnnenForelder';
@@ -30,6 +31,7 @@ import {
     TilleggsopplysningMedBeskrivelse
 } from 'app/util/cleanup/stringifyTilleggsopplysninger';
 import { Søknadsinfo } from 'app/selectors/types';
+import { finnesPeriodeIOpprinneligPlan } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
@@ -41,6 +43,7 @@ interface UttaksplanOppsummeringslisteProps {
     begrunnelseForSenEndring?: Tilleggsopplysning;
     begrunnelseForSenEndringVedlegg?: Attachment[];
     søknadsinfo: Søknadsinfo;
+    eksisterendeUttaksplan?: Periode[];
 }
 
 type Props = UttaksplanOppsummeringslisteProps & InjectedIntlProps;
@@ -67,9 +70,9 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
     }
 
     createOppsummeringslisteData(): OppsummeringslisteelementProps[] {
-        const { perioder } = this.props;
+        const { perioder, eksisterendeUttaksplan } = this.props;
         const periodeliste = perioder
-            .map((periode) => this.createOppsummeringslisteelementProps(periode))
+            .map((periode) => this.createOppsummeringslisteelementProps(periode, eksisterendeUttaksplan))
             .filter((v) => v !== null) as OppsummeringslisteelementProps[];
 
         if (this.props.begrunnelseForSenEndring) {
@@ -87,27 +90,53 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
         return periodeliste;
     }
 
-    createOppsummeringslisteelementProps(periode: Periode) {
-        if (periode.type === Periodetype.Uttak) {
-            return this.createOppsummeringslisteelementPropsForUttaksperiode(periode);
-        } else if (periode.type === Periodetype.Utsettelse) {
-            return this.createOppsummeringslisteelementPropsForUtsettelsesperiode(periode);
-        } else if (periode.type === Periodetype.Overføring) {
-            return this.createOppsummeringslisteelementPropsForOverføringsperiode(periode);
+    createOppsummeringslisteelementProps(periode: Periode, eksisterendeUttaksplan?: Periode[]) {
+        const periodeErNyEllerEndret = eksisterendeUttaksplan
+            ? finnesPeriodeIOpprinneligPlan(periode, eksisterendeUttaksplan) === false
+            : true;
+        switch (periode.type) {
+            case Periodetype.Uttak:
+                return this.createOppsummeringslisteelementPropsForUttaksperiode(periode, periodeErNyEllerEndret);
+            case Periodetype.Utsettelse:
+                return this.createOppsummeringslisteelementPropsForUtsettelsesperiode(periode, periodeErNyEllerEndret);
+            case Periodetype.Overføring:
+                return this.createOppsummeringslisteelementPropsForOverføringsperiode(periode, periodeErNyEllerEndret);
+            case Periodetype.Opphold:
+                return this.createOppsummeringslisteelementPropsForOppholdsperiode(periode);
+            default:
+                return null;
         }
-        return null;
     }
 
-    createOppsummeringslisteelementPropsForUttaksperiode(periode: Uttaksperiode) {
+    createOppsummeringslisteelementPropsForUttaksperiode(
+        periode: Uttaksperiode,
+        periodeErNyEllerEndret: boolean = true
+    ) {
         const { registrerteArbeidsforhold } = this.props;
         return {
             venstrestiltTekst: this.getStønadskontoNavnFromKonto(periode.konto),
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
-            content: <Uttaksperiodedetaljer periode={periode} registrerteArbeidsforhold={registrerteArbeidsforhold} />
+            content: (
+                <Uttaksperiodedetaljer
+                    periode={periode}
+                    registrerteArbeidsforhold={registrerteArbeidsforhold}
+                    periodeErNyEllerEndret={periodeErNyEllerEndret}
+                />
+            )
         };
     }
 
-    createOppsummeringslisteelementPropsForUtsettelsesperiode(periode: Utsettelsesperiode) {
+    createOppsummeringslisteelementPropsForOppholdsperiode(periode: Oppholdsperiode) {
+        return {
+            venstrestiltTekst: getPeriodeTittel(this.props.intl, periode, this.props.søknadsinfo.navn.navnPåForeldre),
+            høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode)
+        };
+    }
+
+    createOppsummeringslisteelementPropsForUtsettelsesperiode(
+        periode: Utsettelsesperiode,
+        periodeErNyEllerEndret: boolean
+    ) {
         const { registrerteArbeidsforhold, søknadsinfo, intl } = this.props;
         return {
             venstrestiltTekst: getMessage(intl, 'oppsummering.utsettelse.pga'),
@@ -117,12 +146,16 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
                     periode={periode}
                     registrerteArbeidsforhold={registrerteArbeidsforhold}
                     søknadsinfo={søknadsinfo}
+                    periodeErNyEllerEndret={periodeErNyEllerEndret}
                 />
             )
         };
     }
 
-    createOppsummeringslisteelementPropsForOverføringsperiode(periode: Overføringsperiode) {
+    createOppsummeringslisteelementPropsForOverføringsperiode(
+        periode: Overføringsperiode,
+        periodeErNyEllerEndret: boolean
+    ) {
         const { navnPåForeldre, erFarEllerMedmor, intl } = this.props;
         const kontonavn = this.getStønadskontoNavnFromKonto(periode.konto);
         return {
@@ -135,6 +168,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
                     periode={periode}
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={erFarEllerMedmor}
+                    periodeErNyEllerEndret={periodeErNyEllerEndret}
                 />
             )
         };

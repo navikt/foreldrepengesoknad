@@ -29,8 +29,7 @@ const mockSøknad: RecursivePartial<Søknad> = {
             startdatoPermisjon: '2018-03-12T01:00:00.000Z',
             fellesperiodeukerMor: 8,
             forslagLaget: true
-        },
-        uttakFraEksisterendeSak: []
+        }
     },
     harGodkjentVilkår: true,
     harGodkjentOppsummering: false,

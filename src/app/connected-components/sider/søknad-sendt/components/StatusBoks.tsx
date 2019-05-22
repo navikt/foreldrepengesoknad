@@ -6,6 +6,7 @@ import { Undertittel, EtikettLiten, Ingress, Systemtittel } from 'nav-frontend-t
 
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
+import lenker from 'app/util/routing/lenker';
 
 import './statusBoks.less';
 
@@ -22,10 +23,7 @@ const StatusBoks: React.StatelessComponent<Props> = ({ saksNr }) => {
                     <FormattedMessage id="søknadSendt.status.tittel" />
                 </Systemtittel>
             </Block>
-            <LenkepanelBase
-                href="https://tjenester.nav.no/saksoversikt/tema/FOR"
-                border={true}
-                className="statusBoks__lenkepanel">
+            <LenkepanelBase href={lenker.innsyn} border={true} className="statusBoks__lenkepanel">
                 <div className={cls.block}>
                     <div className={cls.element('left')}>
                         <Block margin="xs">

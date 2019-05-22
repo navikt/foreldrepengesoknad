@@ -172,6 +172,8 @@
     "endrePeriodeForm.slett.uttak": "Slett periode",
     "erAnnenForelderInformert.spørsmål": "Har du orientert {navn} om søknaden din?",
     "erAnnenForelderInformert.veilederIkkeInformert": "Du må orientere {navn} om søknaden, før du kan gå vidare.",
+    "erAnnenForelderInformert.veilederIkkeInformert.oppsummeringsside":
+        "Du må orientere {navn} om søknaden, før du kan sende inn søknaden.",
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er de nære venner eller i familie?",
     "erBarnetFødt.spørsmål": "Er barnet født?",
     "erBarnetFødt.spørsmål.veileder.medMorEllerFar":
@@ -466,10 +468,10 @@
     "periodeliste.hull.info.uttaksdager":
         "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar",
     "periodeliste.hull.tittel": "Mista foreldrepengar",
-    "periodeliste.hull.ikkeInvilgetPeriode.tittel": "Tapte foreldrepenger - ikke invilget {type}",
-    "periodeliste.hull.ikkeInvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
-    "periodeliste.hull.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Uttaksperioden er ikke innvilget",
-    "periodeliste.hull.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsesperioden er ikke innvilget",
+    "periodeliste.ikkeInvilgetPeriode.tittel": "Tapte foreldrepenger - ikke invilget {type}",
+    "periodeliste.ikkeInvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
+    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Uttaksperioden er ikke innvilget",
+    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsesperioden er ikke innvilget",
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode": "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "periodeliste.nyPeriodeErFørFamiliehendelsesdato":
@@ -1015,6 +1017,7 @@
     "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
 
     "søknadSendt.tittel": "Takk for søknaden { name }!",
+    "søknadSendt.pdf": "Sjå og last ned søknaden din her",
     "søknadSendt.sendtInn": "sendt inn:",
     "søknadSendt.info.tittel": "Nå er resten vårt ansvar",
     "søknadSendt.info.tittel.isMissingAttachments": "Ettersend manglande dokumentasjon innen 3 uker",
@@ -1028,7 +1031,7 @@
     "søknadSendt.infoFraArbeidsgiver.tittel": "Kva for ei informasjon treng arbeidsgivaren min?",
     "søknadSendt.infoFraArbeidsgiver": "Viktig informasjon til din arbeidsgivar",
     "søknadSendt.infoFraArbeidsgiver.infoBox":
-        "Dette er eit informasjonsbrev du kan gi til arbeidsgivaren din. Informasjonsbrevet er ei rettleiing til arbeidsgivaren din når inntekstmeldingen skal sendast inn og kva for ein informasjon vi treng for å behandlast søknaden din.",
+        "Informasjonsbrevet er ei rettleiing som arbeidsgivaren din kan bruke for å fylle ut den riktige informasjonen i inntektsmeldinga, sånn at vi kan behandle søknaden din.",
     "søknadSendt.pengene.tittel": "Kvar blir pengene utbetalt?",
     "søknadSendt.pengene.infoBox":
         "Dersom søknaden din blir innvilga, blir foreldrepengane dine anten betalte ut av arbeidsgivar eller av NAV. Sjekk at du har registrert riktig kontonummer hos oss.",
@@ -1040,11 +1043,25 @@
     "søknadSendt.status.undertittel": "Sak om foreldrepengar",
     "søknadSendt.status.status": "Under behandling",
     "søknadSendt.status.saksnummer": "Saksnummer",
-
-    "søknadSendt.info.missingAttachment.I000039": "Dokumentasjon på inntekstkilde i militær eller siviltjeneste",
-    "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikkje blir ettersendt?",
+    "søknadSendt.info.missingAttachment.I000065": "Stadfesting fra arbeidsgiver",
+    "søknadSendt.info.missingAttachment.I000026": "Inntektsopplysninger fra arbeidsgivar",
+    "søknadSendt.info.missingAttachment.I000044": "Etterløn",
+    "søknadSendt.info.missingAttachment.I000042": "Stadfesting av dato for omsorgsovertakelse",
+    "søknadSendt.info.missingAttachment.I000060": "Annet",
+    "søknadSendt.info.missingAttachment.I000063": "Fødselsattest",
+    "søknadSendt.info.missingAttachment.I000062": "Terminstadfesting",
+    "søknadSendt.info.missingAttachment.I000039": "Stadfesting av militær- eller siviltjeneste",
+    "søknadSendt.info.missingAttachment.I000007": "Inntektsopplysninger for selvstendig næringsdrivende",
+    "søknadSendt.info.missingAttachment.I000038": "Stadfesting av mors utdanning, arbeid eller sykdom",
+    "søknadSendt.info.missingAttachment.I000037": "Stadfesting av innleggelse på sjukehus eller helseinstitusjon,",
+    "søknadSendt.info.missingAttachment.I000045": "Stadfesting av sjukdom",
+    "søknadSendt.info.missingAttachment.I000061": "Stadfesting av mors utdanning på heltid",
+    "søknadSendt.info.missingAttachment.I000051": "Stadfesting av at mor deltar i kvalifiseringsprogrammet",
+    "søknadSendt.info.missingAttachment.I000036": "Stadfesting av avtalt ferie",
+    "søknadSendt.info.missingAttachment.I000049": "Annan stadfesting",
+    "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumenta ikkje blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
-        "Viss du ikkje ettersender dokumenta innan tre veker behandlar vi søknaden din utor dei opplysningane som vi har tilgjengelege. Det kan føre til at du får avslag på søknaden din.",
+        "Viss du ikkje ettersender dokumenta innan tre veker behandlar vi søknaden din utor dei opplysningane som vi har tilgjengelege.",
 
     "periodetype.utsettelse": "utsettelse",
     "periodetype.uttak": "uttak"

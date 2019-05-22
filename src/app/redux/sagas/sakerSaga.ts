@@ -2,7 +2,7 @@ import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { default as apiActions } from '../actions/api/apiActionCreators';
-import Sak from '../../types/søknad/Sak';
+import Sak, { FagsakStatus } from '../../types/søknad/Sak';
 import { skalKunneSøkeOmEndring, harSakUnderBehandling } from '../../util/saker/sakerUtils';
 import { getEksisterendeSakFromDTO } from 'app/util/eksisterendeSak/eksisterendeSakUtils';
 
@@ -12,7 +12,8 @@ function* getSaker() {
 
         const response = yield call(Api.getSaker);
         const saker: Sak[] = response.data;
-        const nyesteSak = saker.sort((a, b) => b.opprettet.localeCompare(a.opprettet))[0];
+        const nyesteSakArray = saker.sort((a, b) => b.opprettet.localeCompare(a.opprettet));
+        const nyesteSak = nyesteSakArray.find((sak) => sak.status === FagsakStatus.LOPENDE);
 
         if (nyesteSak !== undefined) {
             if (skalKunneSøkeOmEndring(nyesteSak)) {

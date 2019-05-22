@@ -8,10 +8,11 @@ import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { guid } from 'nav-frontend-js-utils';
 import {
     getBarnInfoFraRegistrertBarnValg,
-    getUniqeRegistrertAnnenForelderFromBarn
+    getUniqueRegistrertAnnenForelderFromBarn
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
+import { cloneDeep } from 'lodash';
 
 export const getDefaultSøknadState = (): SøknadPartial => {
     return {
@@ -42,8 +43,7 @@ export const getDefaultSøknadState = (): SøknadPartial => {
                 valgteBarn: [],
                 gjelderAnnetBarn: undefined
             },
-            eksisterendeSak: undefined,
-            uttakFraEksisterendeSak: []
+            eksisterendeSak: undefined
         },
         vedleggForSenEndring: undefined,
         tilleggsopplysninger: {},
@@ -74,7 +74,11 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
     const getBuilder = (perioder?: Periode[]) => {
         const familiehendelsesdato = getFamiliehendelsedato(state.barn, state.situasjon);
         if (familiehendelsesdato) {
-            return UttaksplanBuilder(perioder || state.uttaksplan, familiehendelsesdato);
+            return UttaksplanBuilder(
+                perioder || state.uttaksplan,
+                familiehendelsesdato,
+                state.erEndringssøknad === true
+            );
         }
         throw new Error('getBuilder: Familiehendelsesdato kunne ikke utledes');
     };
@@ -122,7 +126,7 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
             const { gjelderAnnetBarn, valgteBarn } = action.payload;
             const barn = getBarnInfoFraRegistrertBarnValg(gjelderAnnetBarn, valgteBarn);
-            const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(valgteBarn);
+            const registrertAnnenForelder = getUniqueRegistrertAnnenForelderFromBarn(valgteBarn);
 
             return {
                 ...state,
@@ -149,7 +153,16 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
         case SøknadActionKeys.UTTAKSPLAN_SET_PERIODER:
             return {
                 ...state,
-                uttaksplan: action.perioder
+                uttaksplan: cloneDeep(action.perioder)
+            };
+
+        case SøknadActionKeys.UTTAKSPLAN_RESET_ENDRINGER:
+            return {
+                ...state,
+                uttaksplan:
+                    state.ekstrainfo.eksisterendeSak !== undefined
+                        ? cloneDeep(state.ekstrainfo.eksisterendeSak.uttaksplan || [])
+                        : []
             };
 
         case SøknadActionKeys.UTTAKSPLAN_SET_FORSLAG:
@@ -289,8 +302,9 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
         case SøknadActionKeys.DELETE_ATTACHMENT_FAILED:
             const attachmentFailedToDelete = action.attachment;
             return removeAttachmentFromState(attachmentFailedToDelete, state);
+        default:
+            return state;
     }
-    return state;
 };
 
 export default søknadReducer;

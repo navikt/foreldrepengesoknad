@@ -173,6 +173,8 @@
     "endrePeriodeForm.slett.uttak": "Slett periode",
     "erAnnenForelderInformert.spørsmål": "Har du orientert {navn} om søknaden din?",
     "erAnnenForelderInformert.veilederIkkeInformert": "Du må orientere {navn} om søknaden, før du kan gå videre.",
+    "erAnnenForelderInformert.veilederIkkeInformert.oppsummeringsside":
+        "Du må orientere {navn} om søknaden, før du kan sende inn søknaden.",
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er dere nære venner eller i familie?",
     "erBarnetFødt.spørsmål": "Er barnet født?",
     "erBarnetFødt.spørsmål.veileder.medMorEllerFar":
@@ -466,10 +468,10 @@
     "periodeliste.hull.info.uttaksdager":
         "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger",
     "periodeliste.hull.tittel": "Tapte foreldrepenger",
-    "periodeliste.hull.ikkeInvilgetPeriode.tittel": "Tapte foreldrepenger - ikke invilget {type}",
-    "periodeliste.hull.ikkeInvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
-    "periodeliste.hull.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Uttaksperioden er ikke innvilget",
-    "periodeliste.hull.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsesperioden er ikke innvilget",
+    "periodeliste.ikkeInvilgetPeriode.tittel": "Tapte foreldrepenger - ikke invilget {type}",
+    "periodeliste.ikkeInvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
+    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Uttaksperioden er ikke innvilget",
+    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsesperioden er ikke innvilget",
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
@@ -1009,19 +1011,20 @@
     "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
 
     "søknadSendt.tittel": "Takk for søknaden { name }!",
+    "søknadSendt.pdf": "Se og last ned søknaden din",
     "søknadSendt.sendtInn": "sendt inn:",
     "søknadSendt.info.tittel": "Nå er resten vårt ansvar",
     "søknadSendt.info.tittel.isMissingAttachments": "Ettersend manglende dokumentasjon innen 3 uker",
-    "søknadSendt.info.innhold": "Du trenger ikke gjøre noe mer, vi tar kontakt med deg hvis det er noe vi lurer på.",
-    "søknadSendt.info.innhold.isMissingAttachments":
-        "Vi har mottatt søknaden din, og den mangler følgende dokumentasjon:",
-    "søknadSendt.når.tittel": "Når kan jeg tidligast forvente få svar på min søknad?",
+    "søknadSendt.info.innhold":
+        "Du trenger ikke gjøre noe mer, vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg.",
+    "søknadSendt.info.innhold.isMissingAttachments": "Vi har mottatt søknaden din, og den mangler disse dokumentene:",
+    "søknadSendt.når.tittel": "Når kan jeg tidligest forvente få svar på min søknad?",
     "søknadSendt.når.infoBox":
         "Du kan tidligst få svar på søknaden din fire uker før foreldrepengeperioden din starter. Dette er fordi vi bruker de nyeste opplysningene om inntekten din når vi skal beregne hva du skal få i foreldrepenger.",
     "søknadSendt.infoFraArbeidsgiver.tittel": "Hvilken informasjon trenger min arbeidsgiver?",
     "søknadSendt.infoFraArbeidsgiver": "Viktig informasjon til arbeidsgiveren din",
     "søknadSendt.infoFraArbeidsgiver.infoBox":
-        "Dette er et informasjonsbrev du kan gi til din arbeidsgiver. Informasjonsbrevet er en veiledning til arbeidsgiveren din når inntekstmeldingen skal sendes inn og hvilken informasjon vi trenger for å behandles søknaden din. ",
+        "Informasjonsbrevet er en veiledning som arbeidsgiveren din kan bruke for å fylle ut den riktige informasjonen i inntektsmeldingen, sånn at vi kan behandle søknaden din. Hvis du har flere arbeidsgivere trenger hver arbeidsgiver kun å legge inn perioder med arbeid eller ferie du skal ha hos dem.",
     "søknadSendt.pengene.tittel": "Hvor blir pengene utbetalt?",
     "søknadSendt.pengene.infoBox":
         "Hvis søknaden din blir innvilget, blir foreldrepengene dine enten utbetalt av arbeidsgiveren din eller av NAV. Sjekk at du har registrert riktig kontonummer hos oss.",
@@ -1033,11 +1036,25 @@
     "søknadSendt.status.undertittel": "Din sak om foreldrepenger",
     "søknadSendt.status.status": "Under behandling",
     "søknadSendt.status.saksnummer": "Saksnummer",
-
-    "søknadSendt.info.missingAttachment.I000039": "Dokumentasjon på inntekstkilde i militær eller siviltjeneste",
+    "søknadSendt.info.missingAttachment.I000065": "Bekreftelse fra arbeidsgiver",
+    "søknadSendt.info.missingAttachment.I000026": "Inntektsopplysninger fra arbeidsgiver",
+    "søknadSendt.info.missingAttachment.I000044": "Etterlønn",
+    "søknadSendt.info.missingAttachment.I000042": "Dokumentasjon av dato for overtakelse av omsorg",
+    "søknadSendt.info.missingAttachment.I000060": "Annet",
+    "søknadSendt.info.missingAttachment.I000063": "Fødselsattest",
+    "søknadSendt.info.missingAttachment.I000062": "Terminbekreftelse",
+    "søknadSendt.info.missingAttachment.I000039": "Dokumentasjon av førstegangstjeneste i forsvaret",
+    "søknadSendt.info.missingAttachment.I000007": "Inntektsopplysninger for selvstendig næringsdrivende",
+    "søknadSendt.info.missingAttachment.I000038": "Dokumentasjon av mors utdanning, arbeid eller sykdom",
+    "søknadSendt.info.missingAttachment.I000037": "Dokumentasjon av innleggelse i sykehus eller helseinstitusjon",
+    "søknadSendt.info.missingAttachment.I000045": "Dokumentasjon av sykdom",
+    "søknadSendt.info.missingAttachment.I000061": "Dokumentasjon av mors utdanning på heltid",
+    "søknadSendt.info.missingAttachment.I000051": "Dokumentasjon av at mor deltar i kvalifiseringsprogrammet",
+    "søknadSendt.info.missingAttachment.I000036": "Bekreftelse på avtalt ferie",
+    "søknadSendt.info.missingAttachment.I000049": "Annen dokumentasjon",
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikke blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
-        "Hvis du ikke ettersender dokumentene innen tre uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig. Det kan føre til at du får avslag på søknaden din.",
+        "Hvis du ikke ettersender dokumentene innen tre uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig.",
 
     "periodetype.utsettelse": "utsettelse",
     "periodetype.uttak": "uttak"

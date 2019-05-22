@@ -1,5 +1,5 @@
 import { Dekningsgrad, Tidsperiode } from 'common/types';
-import { StønadskontoType, SaksperiodeUtsettelseÅrsakType, Periode } from './uttaksplan/periodetyper';
+import { StønadskontoType, SaksperiodeUtsettelseÅrsakType, Periode, MorsAktivitet } from './uttaksplan/periodetyper';
 
 export enum FamiliehendelsesType {
     'ADOPSJON' = 'ADPSJN',
@@ -15,6 +15,24 @@ export enum PeriodeResultatType {
     'MANUELL_BEHANDLING' = 'MANUELL_BEHANDLING'
 }
 
+export enum ArbeidsgiverInfoType {
+    'ORGANISASJON' = 'ORGANISASJON',
+    'PRIVAT' = 'PRIVAT'
+}
+
+export enum UttakArbeidType {
+    'ORDINÆRT_ARBEID' = 'ORDINÆRT_ARBEID',
+    'SELVSTENDIG_NÆRINGSDRIVENDE' = 'SELVSTENDIG_NÆRINGSDRIVENDE',
+    'FRILANS' = 'FRILANS',
+    'ANNET' = 'ANNET'
+}
+
+export interface ArbeidsgiverInfo {
+    id: string;
+    type: ArbeidsgiverInfoType;
+    navn: string;
+}
+
 export interface Saksgrunnlag {
     familieHendelseType: FamiliehendelsesType;
     familieHendelseDato: Date;
@@ -26,10 +44,12 @@ export interface Saksgrunnlag {
     morHarRett: boolean;
     farMedmorErAleneOmOmsorg: boolean;
     farMedmorHarRett: boolean;
+    erDeltUttak: boolean;
     erBarnetFødt: boolean; // Utledet fra familieHendelseType
 }
 
 export interface Saksperiode {
+    guid: string;
     periodeResultatType: PeriodeResultatType;
     utsettelsePeriodeType?: SaksperiodeUtsettelseÅrsakType;
     graderingInnvilget: boolean;
@@ -42,6 +62,9 @@ export interface Saksperiode {
     utbetalingprosent: number;
     gjelderAnnenPart: boolean;
     tidsperiode: Tidsperiode;
+    uttakArbeidType: UttakArbeidType;
+    arbeidsgiverInfo: ArbeidsgiverInfo;
+    morsAktivitetIPerioden?: MorsAktivitet;
 }
 
 export interface EksisterendeSak {

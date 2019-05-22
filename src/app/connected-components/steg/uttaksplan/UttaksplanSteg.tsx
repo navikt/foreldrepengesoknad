@@ -47,9 +47,9 @@ import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
 import { Feature, isFeatureEnabled } from '../../../Feature';
 import EksisterendeSak from '../../../components/eksisterendeSak/EksisterendeSak';
-import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 import Sak from 'app/types/søknad/Sak';
 import { Saksgrunnlag } from 'app/types/EksisterendeSak';
+import { getPerioderDetSøkesOm } from 'app/util/uttaksplan';
 
 interface StateProps {
     stegProps: StegProps;
@@ -160,12 +160,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     onBekreftTilbakestillUttaksplan() {
         this.setState({ bekreftTilbakestillUttaksplanDialogSynlig: false });
-        const {
-            søknad: {
-                ekstrainfo: { eksisterendeSak }
-            }
-        } = this.props;
-        this.props.dispatch(søknadActions.uttaksplanSetPerioder((eksisterendeSak && eksisterendeSak.uttaksplan) || []));
+        this.props.dispatch(søknadActions.resetUttaksplanEndringer());
     }
 
     handleOnPeriodeErrorClick(periodeId: string) {
@@ -361,16 +356,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 }
 
-const getEndringssøknadEndretPlan = (søknad: Søknad): Periode[] => {
-    const uttaksplanForEndring = søknad.ekstrainfo.eksisterendeSak
-        ? søknad.ekstrainfo.eksisterendeSak.uttaksplan
-        : undefined;
-    const endringer = uttaksplanForEndring
-        ? getEndretUttaksplanForInnsending(uttaksplanForEndring, søknad.uttaksplan)
-        : undefined;
-    return endringer || [];
-};
-
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps & InjectedIntlProps): StateProps => {
     const {
         søknad,
@@ -381,15 +366,14 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
     const søknadsinfo = getSøknadsinfo(state);
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
 
-    const perioderDetSøkesOm = søknad.erEndringssøknad ? getEndringssøknadEndretPlan(søknad) : søknad.uttaksplan;
+    const perioderDetSøkesOm = getPerioderDetSøkesOm(søknad);
     const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderDetSøkesOm);
-    const planErEndret = søknad.erEndringssøknad && perioderDetSøkesOm.length > 0;
 
     const grunnlag = søknad.ekstrainfo.eksisterendeSak ? søknad.ekstrainfo.eksisterendeSak.grunnlag : undefined;
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
-        renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true,
+        renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true && perioderDetSøkesOm.length > 0,
         renderFormTag: false,
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo, søknadsinfo)
@@ -409,6 +393,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
             );
         }
     }
+
     const uttaksstatus: Stønadskontouttak[] = søknadsinfo
         ? getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan)
         : [];
@@ -434,7 +419,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         tilleggsopplysninger: søknad.tilleggsopplysninger,
         uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl)(state),
         aktivitetsfriKvote,
-        planErEndret,
+        planErEndret: søknad.erEndringssøknad && perioderDetSøkesOm.length > 0,
         sak: sakForEndringssøknad,
         grunnlag
     };

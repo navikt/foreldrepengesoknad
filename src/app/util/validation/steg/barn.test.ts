@@ -1,5 +1,5 @@
 import { RegistrertAnnenForelder, RegistrertBarn } from '../../../types/Person';
-import { getUniqeRegistrertAnnenForelderFromBarn } from './barn';
+import { getUniqueRegistrertAnnenForelderFromBarn } from './barn';
 import { Kjønn } from '../../../types/common';
 
 const mor: RegistrertAnnenForelder = {
@@ -39,23 +39,23 @@ const barnMedUlikForelder: RegistrertBarn = {
 describe('barn.steg.validation', () => {
     describe('getUniqeRegistrertAnnenForelderFromBarn', () => {
         it('registrertAnnenForelder er undefined ved ingen barn', () => {
-            const forelder = getUniqeRegistrertAnnenForelderFromBarn([]);
+            const forelder = getUniqueRegistrertAnnenForelderFromBarn([]);
             expect(forelder).toBeUndefined();
         });
         it('barn uten annen forelder har ikke registrertAnnenForelder', () => {
-            const forelder = getUniqeRegistrertAnnenForelderFromBarn([barn]);
+            const forelder = getUniqueRegistrertAnnenForelderFromBarn([barn]);
             expect(forelder).toBeUndefined();
         });
         it('barn med annen forelder har registrertAnnenForelder', () => {
-            const forelder = getUniqeRegistrertAnnenForelderFromBarn([barnMedForelder]);
+            const forelder = getUniqueRegistrertAnnenForelderFromBarn([barnMedForelder]);
             expect(forelder).toBeDefined();
         });
         it('registrertAnnenForelder er defined ved flere barn med samme forelder', () => {
-            const forelder = getUniqeRegistrertAnnenForelderFromBarn([barnMedForelder, barnMedForelder]);
+            const forelder = getUniqueRegistrertAnnenForelderFromBarn([barnMedForelder, barnMedForelder]);
             expect(forelder).toBeDefined();
         });
         it('annenForelder er defined ved flere barn med samme forelder', () => {
-            const forelder = getUniqeRegistrertAnnenForelderFromBarn([barnMedForelder, barnMedUlikForelder]);
+            const forelder = getUniqueRegistrertAnnenForelderFromBarn([barnMedForelder, barnMedUlikForelder]);
             expect(forelder).toBeUndefined();
         });
     });

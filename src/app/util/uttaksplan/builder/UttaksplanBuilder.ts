@@ -5,7 +5,8 @@ import {
     Periodetype,
     PeriodeHull,
     UtsettelseÅrsakType,
-    PeriodeHullÅrsak
+    PeriodeHullÅrsak,
+    isOverskrivbarPeriode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -14,8 +15,8 @@ import { Perioden } from '../Perioden';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { Tidsperiode } from 'common/types';
 
-export const UttaksplanBuilder = (perioder: Periode[], familiehendelsesdato: Date) => {
-    return new UttaksplanAutoBuilder(perioder, familiehendelsesdato);
+export const UttaksplanBuilder = (perioder: Periode[], familiehendelsesdato: Date, erEndringssøknad: boolean) => {
+    return new UttaksplanAutoBuilder(perioder, familiehendelsesdato, erEndringssøknad);
 };
 
 const periodeHasValidTidsrom = (periode: Periode): boolean =>
@@ -23,10 +24,12 @@ const periodeHasValidTidsrom = (periode: Periode): boolean =>
 
 class UttaksplanAutoBuilder {
     protected familiehendelsesdato: Date;
+    protected erEndringssøknad: boolean;
 
-    public constructor(public perioder: Periode[], familiehendelsesdato: Date) {
+    public constructor(public perioder: Periode[], familiehendelsesdato: Date, erEndringssøknad: boolean) {
         this.perioder = perioder;
         this.familiehendelsesdato = familiehendelsesdato;
+        this.erEndringssøknad = erEndringssøknad;
     }
 
     buildUttaksplan() {
@@ -42,14 +45,14 @@ class UttaksplanAutoBuilder {
 
         const utsettelser = Periodene(perioderEtterFamDato).getUtsettelser();
         const opphold = Periodene(perioderEtterFamDato).getOpphold();
-        const hull = Periodene(perioderEtterFamDato).getHull();
+        const hullOgInfo = Periodene(perioderEtterFamDato).getHullOgInfo();
         const uttaksperioder = Periodene(perioderEtterFamDato).getUttak();
         const overføringer = Periodene(perioderEtterFamDato).getOverføringer();
         const foreldrepengerFørTermin = Periodene(perioderFørFamDato).getForeldrepengerFørTermin();
 
         this.perioder = resetTidsperioder([...uttaksperioder, ...overføringer]);
 
-        const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hull].sort(sorterPerioder);
+        const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hullOgInfo].sort(sorterPerioder);
         this.perioder = [...settInnPerioder(this.perioder, fastePerioder)];
 
         this.finnOgSettInnHull();
@@ -66,7 +69,7 @@ class UttaksplanAutoBuilder {
 
     leggTilPeriodeOgBuild(periode: Periode) {
         this.slåSammenLikePerioder();
-        this.justerHullRundtPeriode(periode);
+        this.justerOverskrivbarePerioderRundtPeriode(periode);
         if (
             periode.type === Periodetype.Utsettelse &&
             periode.årsak === UtsettelseÅrsakType.Ferie &&
@@ -127,7 +130,7 @@ class UttaksplanAutoBuilder {
         if (Tidsperioden(periode.tidsperiode).erLik(oldPeriode.tidsperiode)) {
             return this;
         }
-        this.justerHullRundtPeriode(periode);
+        this.justerOverskrivbarePerioderRundtPeriode(periode);
         const nyePeriodehull = periodeHasValidTidsrom(periode)
             ? finnHullVedEndretTidsperiode(oldPeriode, periode)
             : undefined;
@@ -138,8 +141,8 @@ class UttaksplanAutoBuilder {
         return this;
     }
 
-    private justerHullRundtPeriode(periode: Periode) {
-        this.perioder = fjernPeriodehullIPeriodetidsrom(this.perioder, periode);
+    private justerOverskrivbarePerioderRundtPeriode(periode: Periode) {
+        this.perioder = fjernOverskrivbarePerioderIPeriodetidsrom(this.perioder, periode);
         return this;
     }
 
@@ -173,10 +176,10 @@ class UttaksplanAutoBuilder {
     }
 }
 
-function fjernPeriodehullIPeriodetidsrom(perioder: Periode[], periode: Periode): Periode[] {
-    const nyePerioder: Periode[] = perioder.filter((p) => p.type !== Periodetype.Hull);
-    const periodehull = perioder.filter((p) => p.type === Periodetype.Hull);
-    periodehull.forEach((o) => {
+function fjernOverskrivbarePerioderIPeriodetidsrom(perioder: Periode[], periode: Periode): Periode[] {
+    const nyePerioder: Periode[] = perioder.filter((p) => isOverskrivbarPeriode(p) === false);
+    const overskrivbarePerioder = perioder.filter((p) => isOverskrivbarPeriode(p));
+    overskrivbarePerioder.forEach((o) => {
         if (Tidsperioden(o.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
             return;
         } else if (Tidsperioden(o.tidsperiode).erUtenfor(periode.tidsperiode)) {

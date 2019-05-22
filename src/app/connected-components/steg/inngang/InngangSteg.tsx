@@ -111,8 +111,9 @@ class InngangSteg extends React.Component<Props, {}> {
                 return StegID.RELASJON_TIL_BARN_FORELDREANSVAR;
             case Søkersituasjon.ADOPSJON:
                 return StegID.RELASJON_TIL_BARN_ADOPSJON;
+            default:
+                return undefined;
         }
-        return undefined;
     }
 
     render() {
