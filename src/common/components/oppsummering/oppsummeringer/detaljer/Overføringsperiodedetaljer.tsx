@@ -12,6 +12,7 @@ interface OverføringsperiodedetaljerProps {
     periode: Overføringsperiode;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
+    periodeErNyEllerEndret: boolean;
 }
 
 type Props = OverføringsperiodedetaljerProps & InjectedIntlProps;
@@ -29,6 +30,7 @@ const Overføringsperiodedetaljer: React.StatelessComponent<Props> = ({
     periode,
     navnPåForeldre,
     erFarEllerMedmor,
+    periodeErNyEllerEndret,
     intl
 }) => {
     const { vedlegg } = periode;
@@ -40,9 +42,8 @@ const Overføringsperiodedetaljer: React.StatelessComponent<Props> = ({
                 verdi={getÅrsakTekst(intl, periode, { annenForelderNavn })}
             />
 
-            {dokumentasjonBehøvesForOverføringsperiode(erFarEllerMedmor, periode) && (
-                <OppsummeringAvDokumentasjon vedlegg={vedlegg || []} />
-            )}
+            {dokumentasjonBehøvesForOverføringsperiode(erFarEllerMedmor, periode) &&
+                periodeErNyEllerEndret && <OppsummeringAvDokumentasjon vedlegg={vedlegg || []} />}
         </>
     );
 };

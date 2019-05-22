@@ -15,6 +15,7 @@ interface UtsettelsesperiodedetaljerProps {
     periode: Utsettelsesperiode;
     registrerteArbeidsforhold: Arbeidsforhold[];
     søknadsinfo: Søknadsinfo;
+    periodeErNyEllerEndret: boolean;
 }
 
 type Props = UtsettelsesperiodedetaljerProps & InjectedIntlProps;
@@ -23,6 +24,7 @@ const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({
     periode,
     registrerteArbeidsforhold,
     søknadsinfo,
+    periodeErNyEllerEndret,
     intl
 }: Props) => {
     const { årsak, morsAktivitetIPerioden, orgnumre, arbeidsformer, vedlegg } = periode;
@@ -38,13 +40,14 @@ const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({
                 feltnavn={getMessage(intl, 'oppsummering.uttak.årsak')}
                 verdi={getÅrsakTekst(intl, periode)}
             />
-            {dokumentasjonBehøvesForUtsettelsesperiode(periode, søknadsinfo) && (
-                <OppsummeringAvDokumentasjon
-                    vedlegg={(vedlegg || []).filter(
-                        (currentVedlegg) => currentVedlegg.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
-                    )}
-                />
-            )}
+            {dokumentasjonBehøvesForUtsettelsesperiode(periode, søknadsinfo) &&
+                periodeErNyEllerEndret && (
+                    <OppsummeringAvDokumentasjon
+                        vedlegg={(vedlegg || []).filter(
+                            (currentVedlegg) => currentVedlegg.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                        )}
+                    />
+                )}
             {årsak === UtsettelseÅrsakType.Arbeid && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.uttak.arbeidstaker.label')}
@@ -57,6 +60,7 @@ const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({
                     dokumentasjonAvMorsAktivitet={(vedlegg || []).filter(
                         (currentVedlegg) => currentVedlegg.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
                     )}
+                    visOppsummeringAvDokumentasjon={periodeErNyEllerEndret}
                 />
             )}
         </>

@@ -10,12 +10,15 @@ import {
     Overføringsperiode,
     UtsettelseÅrsakType,
     StønadskontoType,
-    ForeldrepengerFørFødselUttaksperiode
+    ForeldrepengerFørFødselUttaksperiode,
+    InfoPeriode,
+    isHull,
+    isInfoPeriode
 } from '../../types/uttaksplan/periodetyper';
-import { Tidsperiode, Forelder } from 'common/types';
+import { Forelder } from 'common/types';
 import { Perioden } from './Perioden';
 import { Uttaksdagen } from './Uttaksdagen';
-import { isValidTidsperiode, Tidsperioden } from './Tidsperioden';
+import { isValidTidsperiode, Tidsperioden, datoErInnenforTidsperiode } from './Tidsperioden';
 
 export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),
@@ -23,6 +26,7 @@ export const Periodene = (perioder: Periode[]) => ({
     getUttak: () => getUttaksperioder(perioder),
     getOverføringer: () => getOverføringer(perioder),
     getHull: () => getHull(perioder),
+    getHullOgInfo: () => getHullOgInfo(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
     getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
     getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
@@ -77,7 +81,11 @@ function getOverføringer(perioder: Periode[]): Overføringsperiode[] {
 }
 
 function getHull(perioder: Periode[]): PeriodeHull[] {
-    return perioder.filter((periode) => periode.type === Periodetype.Hull) as PeriodeHull[];
+    return perioder.filter((periode) => isHull(periode)) as PeriodeHull[];
+}
+
+function getHullOgInfo(perioder: Periode[]): Array<PeriodeHull | InfoPeriode> {
+    return perioder.filter((periode) => isHull(periode) || isInfoPeriode(periode)) as Array<PeriodeHull | InfoPeriode>;
 }
 
 function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
@@ -97,14 +105,6 @@ function finnOverlappendePerioder(perioder: Periode[], periode: Periode): Period
             datoErInnenforTidsperiode(fom, periode.tidsperiode) || datoErInnenforTidsperiode(tom, periode.tidsperiode)
         );
     });
-}
-
-function datoErInnenforTidsperiode(dato: Date, tidsperiode: Tidsperiode): boolean {
-    const { fom, tom } = tidsperiode;
-    if (!fom || !tom) {
-        return false;
-    }
-    return moment(dato).isBetween(fom, tom, 'days', '[]');
 }
 
 function finnPeriodeMedDato(perioder: Periode[], dato: Date): Periode | undefined {

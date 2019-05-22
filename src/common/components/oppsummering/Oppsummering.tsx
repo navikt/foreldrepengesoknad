@@ -122,6 +122,11 @@ class Oppsummering extends React.Component<Props> {
                             begrunnelseForSenEndring={søknad.tilleggsopplysninger.begrunnelseForSenEndring}
                             begrunnelseForSenEndringVedlegg={søknad.vedleggForSenEndring}
                             søknadsinfo={søknadsinfo}
+                            eksisterendeUttaksplan={
+                                søknad.ekstrainfo.eksisterendeSak
+                                    ? søknad.ekstrainfo.eksisterendeSak.uttaksplan
+                                    : undefined
+                            }
                         />
                     </Oppsummeringspanel>
                 </div>

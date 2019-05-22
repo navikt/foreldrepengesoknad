@@ -38,6 +38,7 @@ const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
         intl,
         onChange
     } = props;
+
     const radios = velgbareStønadskontoer.map((konto): RadioProps => ({
         label: getStønadskontoNavn(intl, konto, navnPåForeldre),
         value: `${konto}`

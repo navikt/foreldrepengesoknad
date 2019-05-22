@@ -27,6 +27,7 @@ interface OwnProps {
     begrunnelseForSenEndring?: Tilleggsopplysning;
     begrunnelseForSenEndringVedlegg?: Attachment[];
     søknadsinfo: Søknadsinfo;
+    eksisterendeUttaksplan?: Periode[];
 }
 
 type Props = OwnProps & InjectedIntlProps;

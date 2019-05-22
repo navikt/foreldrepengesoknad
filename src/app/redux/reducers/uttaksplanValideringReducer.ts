@@ -82,8 +82,11 @@ const uttaksplanValideringReducer = (
                 erGyldig,
                 regelTestResultat: action.regelTestresultat
             };
+        case UttaksplanValideringActionKeys.RESET_UTTAKSPLANVALIDERING:
+            return getDefaultState();
+        default:
+            return state;
     }
-    return state;
 };
 
 export default uttaksplanValideringReducer;

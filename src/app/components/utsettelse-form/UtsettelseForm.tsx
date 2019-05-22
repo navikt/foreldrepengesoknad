@@ -322,7 +322,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         />
                     </Block>
                     <Block visible={visInfoOmHelligdagerOgFerie}>
-                        <AlertStripe type="info" solid={true}>
+                        <AlertStripe type="info">
                             <FormattedMessage id="utsettelse.helligdager" />
                         </AlertStripe>
                     </Block>

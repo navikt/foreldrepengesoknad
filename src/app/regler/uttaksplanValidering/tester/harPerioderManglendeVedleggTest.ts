@@ -5,7 +5,8 @@ import { MissingAttachment } from '../../../types/MissingAttachment';
 export const harPerioderManglendeVedleggTest: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
     const manglendeVedlegg: MissingAttachment[] = findMissingAttachmentsForPerioder(
         grunnlag.perioder,
-        grunnlag.søknadsinfo
+        grunnlag.søknadsinfo,
+        grunnlag.eksisterendeUttaksplan
     );
 
     const passerer = manglendeVedlegg.length === 0;

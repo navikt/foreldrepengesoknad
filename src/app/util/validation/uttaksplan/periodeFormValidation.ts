@@ -117,7 +117,7 @@ export const validerPeriodeForm = (
     søknadsinfo: Søknadsinfo
 ): PeriodeValideringsfeil[] | undefined => {
     const velgbareStønadskontotyper = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
-    if (periode.type === Periodetype.Hull) {
+    if (periode.type === Periodetype.Hull || periode.type === Periodetype.Info) {
         return undefined;
     }
     if (

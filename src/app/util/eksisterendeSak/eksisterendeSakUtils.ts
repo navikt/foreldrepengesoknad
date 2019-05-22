@@ -4,7 +4,9 @@ import {
     FamiliehendelsesType,
     Saksgrunnlag,
     Saksperiode,
-    PeriodeResultatType
+    PeriodeResultatType,
+    UttakArbeidType,
+    ArbeidsgiverInfo
 } from '../../types/EksisterendeSak';
 import { Barn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
@@ -13,10 +15,53 @@ import { Søkerinfo } from '../../types/søkerinfo';
 import Person from '../../types/Person';
 import { Kjønn } from '../../types/common';
 import Sak, { AnnenPart } from 'app/types/søknad/Sak';
-import { StønadskontoType, SaksperiodeUtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
+import {
+    StønadskontoType,
+    SaksperiodeUtsettelseÅrsakType,
+    Arbeidsform,
+    MorsAktivitet,
+    OppholdÅrsakType
+} from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { isFeatureEnabled, Feature } from 'app/Feature';
+import { datoErInnenforTidsperiode } from '../uttaksplan/Tidsperioden';
+import { guid } from 'nav-frontend-js-utils';
+import { cloneDeep } from 'lodash';
+
+export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
+    switch (arbeidstype) {
+        case UttakArbeidType.SELVSTENDIG_NÆRINGSDRIVENDE:
+            return Arbeidsform.selvstendignæringsdrivende;
+        case UttakArbeidType.FRILANS:
+            return Arbeidsform.frilans;
+        default:
+            return Arbeidsform.arbeidstaker;
+    }
+};
+
+const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): StønadskontoType => {
+    switch (årsak) {
+        case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
+            return StønadskontoType.Fedrekvote;
+        case OppholdÅrsakType.UttakFellesperiodeAnnenForelder:
+            return StønadskontoType.Fellesperiode;
+        case OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder:
+            return StønadskontoType.Flerbarnsdager;
+        case OppholdÅrsakType.UttakMødrekvoteAnnenForelder:
+            return StønadskontoType.Mødrekvote;
+    }
+};
+
+export const erEksisterendeSakErDeltUttak = (dto: UttaksplanDTO): boolean => {
+    const {
+        grunnlag: { farMedmorErAleneOmOmsorg, farMedmorHarRett, morErAleneOmOmsorg, morHarRett }
+    } = dto;
+    if (farMedmorErAleneOmOmsorg || morErAleneOmOmsorg || farMedmorHarRett === false || morHarRett === false) {
+        return false;
+    }
+    return true;
+};
 
 export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak | undefined => {
     const {
@@ -31,43 +76,68 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
         perioder
     } = dto;
 
-    try {
-        const grunnlag: Saksgrunnlag = {
-            ...restGrunnlag,
-            erBarnetFødt: familieHendelseType !== FamiliehendelsesType.TERM,
-            dekningsgrad: dekningsgrad === 100 ? '100' : '80',
-            familieHendelseDato: new Date(familieHendelseDato),
-            familieHendelseType: familieHendelseType as FamiliehendelsesType
+    const erDeltUttak = erEksisterendeSakErDeltUttak(dto);
+
+    const grunnlag: Saksgrunnlag = {
+        ...restGrunnlag,
+        erDeltUttak,
+        erBarnetFødt: familieHendelseType !== FamiliehendelsesType.TERM,
+        dekningsgrad: dekningsgrad === 100 ? '100' : '80',
+        familieHendelseDato: new Date(familieHendelseDato),
+        familieHendelseType: familieHendelseType as FamiliehendelsesType
+    };
+
+    const saksperioder = perioder.map((p): Saksperiode => {
+        const {
+            periodeResultatType,
+            periode,
+            stønadskontotype,
+            utsettelsePeriodeType,
+            arbeidsgiverInfo,
+            uttakArbeidType,
+            morsAktivitetIPerioden,
+            oppholdAarsak,
+            gjelderAnnenPart,
+            ...periodeRest
+        } = p;
+
+        const returnPeriode = {
+            ...periodeRest,
+            guid: guid(),
+            periodeResultatType: periodeResultatType as PeriodeResultatType,
+            stønadskontotype: stønadskontotype as StønadskontoType,
+            utsettelsePeriodeType: utsettelsePeriodeType as SaksperiodeUtsettelseÅrsakType,
+            arbeidsgiverInfo: arbeidsgiverInfo as ArbeidsgiverInfo,
+            uttakArbeidType: uttakArbeidType as UttakArbeidType,
+            tidsperiode: {
+                fom: new Date(periode.fom),
+                tom: new Date(periode.tom)
+            },
+            gjelderAnnenPart,
+            morsAktivitetIPerioden: morsAktivitetIPerioden as MorsAktivitet
         };
 
-        const saksperioder = perioder.map((p): Saksperiode => {
-            const { periodeResultatType, periode, stønadskontotype, utsettelsePeriodeType, ...periodeRest } = p;
-            return {
-                ...periodeRest,
-                periodeResultatType: periodeResultatType as PeriodeResultatType,
-                stønadskontotype: stønadskontotype as StønadskontoType,
-                utsettelsePeriodeType: utsettelsePeriodeType as SaksperiodeUtsettelseÅrsakType,
-                tidsperiode: {
-                    fom: new Date(periode.fom),
-                    tom: new Date(periode.tom)
-                }
-            };
-        });
+        if (oppholdAarsak !== undefined && gjelderAnnenPart === false) {
+            returnPeriode.gjelderAnnenPart = true;
+            returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdÅrsakType(oppholdAarsak as OppholdÅrsakType);
+            returnPeriode.flerbarnsdager =
+                (oppholdAarsak as OppholdÅrsakType) === OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder;
+        }
 
-        const uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioder)
-            ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag)
-            : undefined;
+        return returnPeriode;
+    });
 
-        const sak: EksisterendeSak = {
-            grunnlag,
-            saksperioder,
-            uttaksplan
-        };
+    const uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioder)
+        ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag)
+        : undefined;
 
-        return sak;
-    } catch (e) {
-        return undefined;
-    }
+    const sak: EksisterendeSak = {
+        grunnlag,
+        saksperioder,
+        uttaksplan
+    };
+
+    return sak;
 };
 
 const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
@@ -78,6 +148,7 @@ const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersitua
         case FamiliehendelsesType.ADOPSJON:
             return Søkersituasjon.ADOPSJON;
         case FamiliehendelsesType.OMSORGSOVERTAKELSE:
+        default:
             return undefined;
     }
 };
@@ -96,8 +167,9 @@ const getSøkerrolleFromSaksgrunnlag = (
                 return søkerErFarEllerMedmor ? SøkerRolle.MEDMOR : SøkerRolle.MOR;
             }
             return SøkerRolle.FAR;
+        default:
+            return undefined;
     }
-    return undefined;
 };
 
 const getSøkerFromSaksgrunnlag = (
@@ -130,18 +202,18 @@ const getBarnFromSaksgrunnlag = (situasjon: Søkersituasjon, sak: Saksgrunnlag):
         case Søkersituasjon.ADOPSJON:
             return {
                 antallBarn: sak.antallBarn,
-                erBarnetFødt: sak.erBarnetFødt,
                 adopsjonsdato: sak.familieHendelseDato,
                 fødselsdatoer: [sak.familieHendelseDato]
             };
+        default:
+            return undefined;
     }
-    return undefined;
 };
 
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Søkersituasjon,
     sak: Saksgrunnlag,
-    annenPart?: AnnenPart
+    annenPart: AnnenPart
 ): Partial<AnnenForelder> | undefined => {
     const { søkerErFarEllerMedmor } = sak;
     switch (situasjon) {
@@ -149,30 +221,45 @@ const getAnnenForelderFromSaksgrunnlag = (
         case Søkersituasjon.ADOPSJON:
             if (søkerErFarEllerMedmor) {
                 return {
-                    fornavn: annenPart ? annenPart.navn.fornavn : 'mor',
-                    etternavn: annenPart ? annenPart.navn.etternavn : '',
+                    fornavn: annenPart.navn.fornavn,
+                    etternavn: annenPart.navn.etternavn,
                     erUfør: sak.morErUfør,
                     harRettPåForeldrepenger: sak.morHarRett,
-                    fnr: annenPart ? annenPart.fnr : undefined,
-                    kanIkkeOppgis: annenPart === undefined
+                    fnr: annenPart.fnr,
+                    kanIkkeOppgis: false
                 };
             }
             return {
-                fornavn: annenPart ? annenPart.navn.fornavn : 'Far eller medmor',
-                etternavn: annenPart ? annenPart.navn.etternavn : '',
+                fornavn: annenPart.navn.fornavn,
+                etternavn: annenPart.navn.etternavn,
                 harRettPåForeldrepenger: sak.farMedmorHarRett,
-                fnr: annenPart ? annenPart.fnr : undefined,
-                kanIkkeOppgis: annenPart === undefined
+                fnr: annenPart.fnr,
+                kanIkkeOppgis: false
             };
+        default:
+            return undefined;
     }
-    return undefined;
+};
+
+const finnOverlappendeSaksperioder = (perioder: Saksperiode[], periode: Saksperiode): Saksperiode[] => {
+    return perioder.filter((p) => {
+        if (p.guid === periode.guid) {
+            return false;
+        }
+        const { fom, tom } = p.tidsperiode;
+        if (!fom || !tom) {
+            return false;
+        }
+        return (
+            datoErInnenforTidsperiode(fom, periode.tidsperiode) || datoErInnenforTidsperiode(tom, periode.tidsperiode)
+        );
+    });
 };
 
 const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
     if (
-        periode.arbeidstidprosent === 0 &&
         periode.flerbarnsdager === false &&
-        periode.gjelderAnnenPart === false &&
+        (isFeatureEnabled(Feature.mapOpphold) ? true : periode.gjelderAnnenPart === false) &&
         (isFeatureEnabled(Feature.visAvslåttPeriode)
             ? true
             : periode.periodeResultatType === PeriodeResultatType.INNVILGET) &&
@@ -184,9 +271,14 @@ const saksperiodeKanKonverteresTilPeriode = (periode: Saksperiode) => {
 };
 
 export const kanUttaksplanGjennskapesFraSak = (perioder: Saksperiode[]): boolean => {
+    if (perioder.some((periode) => finnOverlappendeSaksperioder(perioder, periode).length > 0)) {
+        return false;
+    }
+
     const noenPerioderKanIkkeGjennskapes = perioder.some(
         (periode) => saksperiodeKanKonverteresTilPeriode(periode) === false
     );
+
     return noenPerioderKanIkkeGjennskapes === false;
 };
 
@@ -202,11 +294,20 @@ export const opprettSøknadFraEksisterendeSak = (
         return undefined;
     }
 
+    const mockForelder: Partial<AnnenForelder> = {
+        fornavn: '',
+        etternavn: '',
+        fnr: '',
+        harRettPåForeldrepenger: false,
+        kanIkkeOppgis: false
+    };
     const søker = getSøkerFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
-    const annenForelder = getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, sak.annenPart);
+    const annenForelder = sak.annenPart
+        ? getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, sak.annenPart)
+        : mockForelder;
 
-    if (!søker || !barn || !annenForelder) {
+    if (!søker || !barn || (grunnlag.erDeltUttak && !annenForelder)) {
         return undefined;
     }
 
@@ -217,7 +318,7 @@ export const opprettSøknadFraEksisterendeSak = (
         annenForelder: annenForelder as AnnenForelder,
         erEndringssøknad: true,
         dekningsgrad: grunnlag.dekningsgrad,
-        uttaksplan: uttaksplan || []
+        uttaksplan: uttaksplan ? cloneDeep(uttaksplan) : []
     };
     return søknad;
 };

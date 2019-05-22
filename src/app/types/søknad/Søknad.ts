@@ -58,7 +58,6 @@ interface SøknadEkstrainfo {
     lastAddedPeriodeId?: string;
     søknadenGjelderBarnValg?: SøknadenGjelderBarnValg;
     eksisterendeSak?: EksisterendeSak;
-    uttakFraEksisterendeSak: Periode[];
 }
 
 interface Søknad {
@@ -96,6 +95,7 @@ export type EnkelEndringssøknadForInnsending = Pick<
     | 'annenForelder'
     | 'barn'
     | 'dekningsgrad'
+    | 'situasjon'
 > &
     SøknadEndretForInnsending;
 

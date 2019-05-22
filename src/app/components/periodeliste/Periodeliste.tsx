@@ -11,6 +11,7 @@ import PeriodelisteInfo, { PeriodelisteInformasjon } from './items/PeriodelisteI
 
 import './periodeliste.less';
 import { Søknadsinfo } from 'app/selectors/types';
+import PeriodelisteAvslåttPeriode from './items/PeriodelisteAvslåttPeriode';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -132,29 +133,47 @@ class Periodeliste extends React.Component<Props> {
                         {filteredPerioder.map((periode) => {
                             const itemId = getPeriodelisteElementId(periode.id);
                             const isExpanded = isOpen(itemId);
-                            return periode.type === Periodetype.Hull ? (
-                                <PeriodelisteHull
-                                    key={itemId}
-                                    itemId={itemId}
-                                    isExpanded={isExpanded}
-                                    onToggle={onToggle}
-                                    periode={periode}
-                                    onLeggTilOpphold={onLeggTilOpphold}
-                                    onLeggTilPeriode={onLeggTilPeriode}
-                                    navnPåForeldre={navnPåForeldre}
-                                />
-                            ) : (
-                                <PeriodelistePeriode
-                                    key={itemId}
-                                    id={itemId}
-                                    periode={periode}
-                                    antallFeriedager={antallFeriedager}
-                                    navnPåForeldre={navnPåForeldre}
-                                    validertPeriode={uttaksplanValidering.periodevalidering[periode.id]}
-                                    isExpanded={isExpanded}
-                                    onToggle={onToggle}
-                                />
-                            );
+                            switch (periode.type) {
+                                case Periodetype.Hull:
+                                    return (
+                                        <PeriodelisteHull
+                                            key={itemId}
+                                            itemId={itemId}
+                                            isExpanded={isExpanded}
+                                            onToggle={onToggle}
+                                            periode={periode}
+                                            onLeggTilOpphold={onLeggTilOpphold}
+                                            onLeggTilPeriode={onLeggTilPeriode}
+                                            navnPåForeldre={navnPåForeldre}
+                                        />
+                                    );
+                                case Periodetype.Info:
+                                    return (
+                                        <PeriodelisteAvslåttPeriode
+                                            key={itemId}
+                                            itemId={itemId}
+                                            isExpanded={isExpanded}
+                                            onToggle={onToggle}
+                                            periode={periode}
+                                            onLeggTilOpphold={onLeggTilOpphold}
+                                            onLeggTilPeriode={onLeggTilPeriode}
+                                            navnPåForeldre={navnPåForeldre}
+                                        />
+                                    );
+                                default:
+                                    return (
+                                        <PeriodelistePeriode
+                                            key={itemId}
+                                            id={itemId}
+                                            periode={periode}
+                                            antallFeriedager={antallFeriedager}
+                                            navnPåForeldre={navnPåForeldre}
+                                            validertPeriode={uttaksplanValidering.periodevalidering[periode.id]}
+                                            isExpanded={isExpanded}
+                                            onToggle={onToggle}
+                                        />
+                                    );
+                            }
                         })}
                     </div>
                 )}

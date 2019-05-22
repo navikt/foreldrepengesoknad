@@ -9,6 +9,7 @@ import getMessage from 'common/util/i18nUtils';
 interface MorsAktivitetDetaljerProps {
     morsAktivitet: MorsAktivitet;
     dokumentasjonAvMorsAktivitet: Attachment[];
+    visOppsummeringAvDokumentasjon: boolean;
 }
 
 type Props = MorsAktivitetDetaljerProps & InjectedIntlProps;
@@ -16,14 +17,17 @@ type Props = MorsAktivitetDetaljerProps & InjectedIntlProps;
 const MorsAktivitetDetaljer: React.StatelessComponent<Props> = ({
     morsAktivitet,
     dokumentasjonAvMorsAktivitet,
+    visOppsummeringAvDokumentasjon,
     intl
 }) => (
     <>
         <Feltoppsummering feltnavn={getMessage(intl, 'oppsummering.morsAktivitet')} verdi={morsAktivitet} />
-        <OppsummeringAvDokumentasjon
-            ledetekst={getMessage(intl, 'oppsummering.morsAktivitet.dokumentasjon')}
-            vedlegg={dokumentasjonAvMorsAktivitet}
-        />
+        {visOppsummeringAvDokumentasjon && (
+            <OppsummeringAvDokumentasjon
+                ledetekst={getMessage(intl, 'oppsummering.morsAktivitet.dokumentasjon')}
+                vedlegg={dokumentasjonAvMorsAktivitet}
+            />
+        )}
     </>
 );
 
