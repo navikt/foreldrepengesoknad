@@ -37,7 +37,7 @@ const getTittelOgBeskrivelseForHull = (
             }),
             beskrivelse: getMessage(intl, 'periodeliste.ikkeInvilgetPeriode.beskrivelse', {
                 varighet: getVarighetString(dager, intl),
-                konto: getStønadskontoNavn(intl, periode.konto, navnPåForeldre)
+                konto: getStønadskontoNavn(intl, periode.stønadskonto, navnPåForeldre)
             })
         };
     }

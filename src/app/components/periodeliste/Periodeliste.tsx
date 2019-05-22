@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Periode, Periodetype, isUttaksperiode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    Periodetype,
+    isUttaksperiode,
+    StønadskontoType,
+    PeriodeInfoType
+} from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
@@ -148,7 +154,7 @@ class Periodeliste extends React.Component<Props> {
                                         />
                                     );
                                 case Periodetype.Info:
-                                    return (
+                                    return periode.infotype === PeriodeInfoType.avslåttPeriode ? (
                                         <PeriodelisteAvslåttPeriode
                                             key={itemId}
                                             itemId={itemId}
@@ -159,6 +165,8 @@ class Periodeliste extends React.Component<Props> {
                                             onLeggTilPeriode={onLeggTilPeriode}
                                             navnPåForeldre={navnPåForeldre}
                                         />
+                                    ) : (
+                                        <div />
                                     );
                                 default:
                                     return (
