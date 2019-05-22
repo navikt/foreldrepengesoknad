@@ -31,9 +31,10 @@ render(
             <IntlProvider>
                 <Router>
                     <Normaltekst tag="div">
-                        {store.getState().api.cookieHash !== getAuthenticationCookieHash() && (
-                            <UtløptSesjonModal erÅpen={true} />
-                        )}
+                        {store.getState().api.cookieHash !== undefined &&
+                            store.getState().api.cookieHash !== getAuthenticationCookieHash() && (
+                                <UtløptSesjonModal erÅpen={true} />
+                            )}
                         <Foreldrepengesøknad />
                         <ApplicationInfo />
                     </Normaltekst>
