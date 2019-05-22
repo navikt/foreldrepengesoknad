@@ -10,7 +10,9 @@ import {
     PeriodeInfoType,
     UtsettelseÅrsakType,
     Arbeidsform,
-    OppholdAnnenPartPeriode
+    OppholdAnnenPartPeriode,
+    GruppertInfoPeriode,
+    isOppholdAnnenPartPeriode
 } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
@@ -238,6 +240,41 @@ const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunn
     return mapUttaksperiodeFromSaksperiode(saksperiode, grunnlag);
 };
 
+const grupperOppholdAnnenPartPerioder = (perioder: Periode[]): Periode[] => {
+    if (perioder.length <= 1) {
+        return perioder;
+    }
+
+    const nyePerioder: Periode[] = [];
+    let gruppertPeriode: GruppertInfoPeriode | undefined;
+
+    perioder.forEach((periode, index) => {
+        if (index === 0) {
+            return;
+        }
+
+        if (isOppholdAnnenPartPeriode(periode)) {
+            if (!gruppertPeriode) {
+                gruppertPeriode = {
+                    ...periode,
+                    infotype: PeriodeInfoType.gruppertInfo,
+                    perioder: [periode]
+                };
+            } else {
+                gruppertPeriode.perioder.push(periode);
+            }
+            return;
+        }
+        if (gruppertPeriode) {
+            nyePerioder.push(gruppertPeriode);
+            gruppertPeriode = undefined;
+        }
+
+        nyePerioder.push(periode);
+    });
+    return nyePerioder;
+};
+
 const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag
@@ -248,7 +285,7 @@ const mapSaksperioderTilUttaksperioder = (
         return undefined;
     }
 
-    return slåSammenLikePerioder(
+    const sammenslåddePerioder: Periode[] = slåSammenLikePerioder(
         perioder
             .sort(sorterPerioder)
             .filter(harUttaksdager)
@@ -256,6 +293,8 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harGyldigTidsperiode)
             .filter(harUttaksdager)
     );
+
+    return grupperOppholdAnnenPartPerioder(sammenslåddePerioder);
 };
 
 export default mapSaksperioderTilUttaksperioder;

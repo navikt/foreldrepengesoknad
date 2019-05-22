@@ -19,6 +19,7 @@ import './periodeliste.less';
 import { Søknadsinfo } from 'app/selectors/types';
 import PeriodelisteAvslåttPeriode from './items/PeriodelisteAvslåttPeriode';
 import PeriodelisteOppholdAnnenPart from './items/PeriodelisteOppholdAnnenPart';
+import PeriodelisteGruppertInfoPart from './items/PeriodelisteGruppertInfoPart';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -155,29 +156,48 @@ class Periodeliste extends React.Component<Props> {
                                         />
                                     );
                                 case Periodetype.Info:
-                                    return periode.infotype === PeriodeInfoType.avslåttPeriode ? (
-                                        <PeriodelisteAvslåttPeriode
-                                            key={itemId}
-                                            itemId={itemId}
-                                            isExpanded={isExpanded}
-                                            onToggle={onToggle}
-                                            periode={periode}
-                                            onLeggTilOpphold={onLeggTilOpphold}
-                                            onLeggTilPeriode={onLeggTilPeriode}
-                                            navnPåForeldre={navnPåForeldre}
-                                        />
-                                    ) : (
-                                        <PeriodelisteOppholdAnnenPart
-                                            key={itemId}
-                                            itemId={itemId}
-                                            isExpanded={isExpanded}
-                                            onToggle={onToggle}
-                                            periode={periode}
-                                            onLeggTilOpphold={onLeggTilOpphold}
-                                            onLeggTilPeriode={onLeggTilPeriode}
-                                            navnPåForeldre={navnPåForeldre}
-                                        />
-                                    );
+                                    switch (periode.infotype) {
+                                        case PeriodeInfoType.avslåttPeriode:
+                                            return (
+                                                <PeriodelisteAvslåttPeriode
+                                                    key={itemId}
+                                                    itemId={itemId}
+                                                    isExpanded={isExpanded}
+                                                    onToggle={onToggle}
+                                                    periode={periode}
+                                                    onLeggTilOpphold={onLeggTilOpphold}
+                                                    onLeggTilPeriode={onLeggTilPeriode}
+                                                    navnPåForeldre={navnPåForeldre}
+                                                />
+                                            );
+                                        case PeriodeInfoType.oppholdAnnenPart:
+                                            return (
+                                                <PeriodelisteOppholdAnnenPart
+                                                    key={itemId}
+                                                    itemId={itemId}
+                                                    isExpanded={isExpanded}
+                                                    onToggle={onToggle}
+                                                    periode={periode}
+                                                    onLeggTilOpphold={onLeggTilOpphold}
+                                                    onLeggTilPeriode={onLeggTilPeriode}
+                                                    navnPåForeldre={navnPåForeldre}
+                                                />
+                                            );
+                                        case PeriodeInfoType.gruppertInfo:
+                                            return (
+                                                <PeriodelisteGruppertInfoPart
+                                                    key={itemId}
+                                                    itemId={itemId}
+                                                    isExpanded={isExpanded}
+                                                    onToggle={onToggle}
+                                                    periode={periode}
+                                                    onLeggTilOpphold={onLeggTilOpphold}
+                                                    onLeggTilPeriode={onLeggTilPeriode}
+                                                    navnPåForeldre={navnPåForeldre}
+                                                />
+                                            );
+                                    }
+                                    return;
                                 default:
                                     return (
                                         <PeriodelistePeriode
