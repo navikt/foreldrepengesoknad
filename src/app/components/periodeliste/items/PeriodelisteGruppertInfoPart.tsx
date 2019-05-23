@@ -7,10 +7,11 @@ import { Tidsperiode, NavnPåForeldre } from 'common/types';
 import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
 import PeriodelisteInfo from './PeriodelisteInfo';
 import { getVarighetString } from 'common/util/intlUtils';
-import { getPeriodeForelderNavn } from 'app/util/uttaksplan';
+import { getPeriodeForelderNavn, getForelderNavn } from 'app/util/uttaksplan';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import EnkelPeriodeliste from 'app/components/enkelPeriodeliste/EnkelPeriodeliste';
 import UttaksplanIkon, { UttaksplanIkonKeys } from 'app/components/uttaksplan-ikon/UttaksplanIkon';
+import Block from 'common/components/block/Block';
 
 export interface Props {
     itemId: string;
@@ -50,7 +51,18 @@ const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedInt
             farge="transparent"
             periodeFargestrek={'infoBlue'}
             renderContent={() => (
-                <EnkelPeriodeliste perioder={periode.perioder} navnPåForeldre={navnPåForeldre} visTidsperiode={true} />
+                <div>
+                    <Block margin="xs">
+                        <strong>{getForelderNavn(periode.forelder, navnPåForeldre)}</strong> har registrert{' '}
+                        {periode.perioder.length} periode{periode.perioder.length > 1 ? 'r' : ''}:
+                    </Block>
+                    <EnkelPeriodeliste
+                        perioder={periode.perioder}
+                        navnPåForeldre={navnPåForeldre}
+                        visTidsperiode={true}
+                        visStatus={true}
+                    />
+                </div>
             )}
         />
     );

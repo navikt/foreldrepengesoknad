@@ -160,10 +160,14 @@ const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Sak
     return uttaksperiode;
 };
 
-const mapUtsettelseperiodeFromSaksperiode = (
-    saksperiode: Saksperiode,
-    grunnlag: Saksgrunnlag
-): Utsettelsesperiode | undefined => {
+const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode | undefined => {
+    if (saksperiode.gjelderAnnenPart) {
+        if (isFeatureEnabled(Feature.mapOpphold)) {
+            return mapOppholdAnnenPartPeriodeFromSaksperiode(saksperiode, grunnlag);
+        }
+        return undefined;
+    }
+
     const utsettelsesperiode: Utsettelsesperiode = {
         id: guid(),
         type: Periodetype.Utsettelse,
@@ -248,10 +252,6 @@ const grupperOppholdAnnenPartPerioder = (perioder: Periode[]): Periode[] => {
     let gruppertPeriode: GruppertInfoPeriode | undefined;
 
     perioder.forEach((periode, index) => {
-        if (index === 0) {
-            return;
-        }
-
         if (isOppholdAnnenPartPeriode(periode)) {
             if (!gruppertPeriode) {
                 gruppertPeriode = {
