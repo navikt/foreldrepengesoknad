@@ -16,6 +16,8 @@ import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtset
 import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
 import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
 import { innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode } from './tester/innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode';
+import { inneholderSenUtsettelsePgaArbeidTest } from './tester/inneholderSenUtsettelsePgaArbeidTest';
+import { inneholderSeneGraderteUttakTest } from './tester/inneholderSeneGraderteUttakTest';
 
 export enum RegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -32,6 +34,8 @@ export enum RegelKey {
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
     'perioderManglerVedlegg' = 'manglendeVedlegg',
     'inneholderSenUtsettelsePgaFerie' = 'inneholderSenUtsettelsePgaFerieTest',
+    'inneholderSenUtsettelsePgaArbeid' = 'inneholderSenUtsettelsePgaArbeidTest',
+    'inneholderSeneGraderteUttak' = 'inneholderSeneGraderteUttakTest',
     'inneholderTapteDager' = 'inneholderTapteDager',
     'inneholderBareUtsettelser' = 'inneholderBareUtsettelser',
     'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode' = 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode'
@@ -108,6 +112,16 @@ const uttaksplanRegler: Regel[] = [
         key: RegelKey.inneholderSenUtsettelsePgaFerie,
         alvorlighet: RegelAlvorlighet.INFO,
         test: inneholderSenUtsettelsePgaFerieTest
+    },
+    {
+        key: RegelKey.inneholderSenUtsettelsePgaArbeid,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: inneholderSenUtsettelsePgaArbeidTest
+    },
+    {
+        key: RegelKey.inneholderSeneGraderteUttak,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: inneholderSeneGraderteUttakTest
     },
     {
         key: RegelKey.inneholderTapteDager,
