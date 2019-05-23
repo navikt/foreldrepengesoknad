@@ -4,7 +4,6 @@ import {
     Uttaksperiode,
     Utsettelsesperiode,
     AvslåttPeriode,
-    Oppholdsperiode,
     OppholdÅrsakType,
     StønadskontoType,
     PeriodeInfoType,
@@ -113,23 +112,6 @@ const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsa
         default:
             return undefined;
     }
-};
-
-export const mapOppholdFromSaksperiodeAnnenPart = (
-    saksperiode: Saksperiode,
-    grunnlag: Saksgrunnlag
-): Oppholdsperiode | undefined => {
-    const årsak = getOppholdÅrsakFromSaksperiode(saksperiode);
-    if (årsak) {
-        return {
-            type: Periodetype.Opphold,
-            id: guid(),
-            årsak,
-            tidsperiode: { ...saksperiode.tidsperiode },
-            forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor)
-        };
-    }
-    return undefined;
 };
 
 const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode | undefined => {
