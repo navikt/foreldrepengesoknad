@@ -7,10 +7,10 @@ import { Tidsperiode, NavnPåForeldre } from 'common/types';
 import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
 import PeriodelisteInfo from './PeriodelisteInfo';
 import { getVarighetString } from 'common/util/intlUtils';
-import { getPeriodeTittel, getPeriodeForelderNavn } from 'app/util/uttaksplan';
-import InfoIkon from 'common/components/ikoner/InfoIkon';
-import LayoutRow from 'common/components/layoutRow/LayoutRow';
+import { getPeriodeForelderNavn } from 'app/util/uttaksplan';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
+import EnkelPeriodeliste from 'app/components/enkelPeriodeliste/EnkelPeriodeliste';
+import UttaksplanIkon, { UttaksplanIkonKeys } from 'app/components/uttaksplan-ikon/UttaksplanIkon';
 
 export interface Props {
     itemId: string;
@@ -46,21 +46,11 @@ const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedInt
             onToggle={onToggle}
             beskrivelse={getVarighetString(antallDager, intl)}
             tidsperiode={periode.tidsperiode}
-            ikon={<InfoIkon />}
+            ikon={<UttaksplanIkon ikon={UttaksplanIkonKeys.advarsel} title={'sadf'} />}
             farge="transparent"
+            periodeFargestrek={'infoBlue'}
             renderContent={() => (
-                <div>
-                    <ol style={{ padding: 'none' }}>
-                        {periode.perioder.map((p) => (
-                            <li key={p.id}>
-                                <LayoutRow
-                                    left={getPeriodeTittel(intl, p, navnPåForeldre)}
-                                    right={[Tidsperioden(p.tidsperiode).formaterStringKort(intl)]}
-                                />
-                            </li>
-                        ))}
-                    </ol>
-                </div>
+                <EnkelPeriodeliste perioder={periode.perioder} navnPåForeldre={navnPåForeldre} visTidsperiode={true} />
             )}
         />
     );
