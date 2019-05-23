@@ -95,16 +95,6 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     return (
         <PeriodelisteItemHeader
             type="periode"
-            ariaTekst={getMessage(intl, 'periodeliste.header.ariaBeskrivelse', {
-                periodetittel,
-                foreldernavn,
-                tidOgVarighet: visDatoer
-                    ? erFpFørTerminUtenUttak
-                        ? varighetString
-                        : `${Tidsperioden(periode.tidsperiode).formaterString(intl)} (${varighetString})`
-                    : varighetString,
-                advarsel: advarsel ? `${advarsel.beskrivelse}.` : ''
-            })}
             isOpen={isOpen}
             advarsel={advarsel}
             tittel={periodetittel}
