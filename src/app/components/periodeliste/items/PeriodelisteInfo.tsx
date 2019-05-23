@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { onToggleItemProp } from '../../toggle-list/ToggleList';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
 import PeriodelisteToggleItem from '../elements/PeriodelisteToggleItem';
 import PeriodelisteItemHeader from '../elements/PeriodelisteItemHeader';
 import PeriodelisteItemWrapper from '../elements/PeriodelisteItemWrapper';
@@ -20,9 +19,10 @@ export interface PeriodelisteInformasjon {
     ikon: React.ReactNode;
     renderContent: () => JSX.Element;
     farge?: UttaksplanColor;
+    periodeFargestrek?: UttaksplanColor;
 }
 
-const PeriodelisteInfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const PeriodelisteInfo: React.StatelessComponent<Props> = ({
     id,
     isExpanded,
     onToggle,
@@ -32,10 +32,10 @@ const PeriodelisteInfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
     beskrivelse,
     tidsperiode,
     farge = 'yellow',
-    intl
+    periodeFargestrek
 }) => {
     return (
-        <PeriodelisteItemWrapper key={id} farge={farge} isExpanded={isExpanded}>
+        <PeriodelisteItemWrapper key={id} farge={farge} periodeFargestrek={periodeFargestrek} isExpanded={isExpanded}>
             <PeriodelisteToggleItem
                 id={id}
                 isExpanded={isExpanded}
@@ -55,4 +55,4 @@ const PeriodelisteInfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
     );
 };
 
-export default injectIntl(PeriodelisteInfo);
+export default PeriodelisteInfo;
