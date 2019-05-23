@@ -1,3 +1,4 @@
+import moment from 'moment';
 import Søknad, { Søkersituasjon, SøkerRolle } from '../../types/søknad/Søknad';
 import {
     EksisterendeSak,
@@ -185,15 +186,30 @@ const getSøkerFromSaksgrunnlag = (
     };
 };
 
-const getBarnFromSaksgrunnlag = (situasjon: Søkersituasjon, sak: Saksgrunnlag): Partial<Barn> | undefined => {
+const getBarnFromSaksgrunnlag = (
+    situasjon: Søkersituasjon,
+    sak: Saksgrunnlag,
+    søkerinfo: Søkerinfo
+): Partial<Barn> | undefined => {
+    const nyesteBarn = søkerinfo.registrerteBarn.sort((a, b) =>
+        moment(b.fødselsdato)
+            .format('YYYY-MM-DD')
+            .localeCompare(moment(a.fødselsdato).format('YYYY-MM-DD'))
+    )[0];
+
+    const erBarnetFødt = moment(nyesteBarn.fødselsdato).isBetween(
+        moment(sak.familieHendelseDato).subtract(20, 'weeks'),
+        moment(sak.familieHendelseDato).add(6, 'weeks')
+    );
+
     switch (situasjon) {
         case Søkersituasjon.FØDSEL:
             return {
                 antallBarn: sak.antallBarn,
-                erBarnetFødt: sak.erBarnetFødt,
-                ...(sak.erBarnetFødt
+                erBarnetFødt,
+                ...(erBarnetFødt
                     ? {
-                          fødselsdatoer: [sak.familieHendelseDato]
+                          fødselsdatoer: [nyesteBarn.fødselsdato]
                       }
                     : {
                           termindato: sak.familieHendelseDato
@@ -302,7 +318,7 @@ export const opprettSøknadFraEksisterendeSak = (
         kanIkkeOppgis: false
     };
     const søker = getSøkerFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
-    const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
+    const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, søkerinfo);
     const annenForelder = sak.annenPart
         ? getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, sak.annenPart)
         : mockForelder;
