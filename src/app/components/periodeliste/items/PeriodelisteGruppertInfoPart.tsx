@@ -11,7 +11,7 @@ import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import EnkelPeriodeliste from 'app/components/enkelPeriodeliste/EnkelPeriodeliste';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { getPeriodeIkon } from '../elements/PeriodeHeader';
-import { getForelderFarge } from 'app/util/uttaksplan/styleUtils';
+// import { getForelderFarge } from 'app/util/uttaksplan/styleUtils';
 
 export interface Props {
     itemId: string;
@@ -58,7 +58,7 @@ const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedInt
             ikon={getPeriodeIkon(periode, navnPåForeldre)}
             farge="transparent"
             border={stil === 'medRammeOgStrek'}
-            periodeFargestrek={stil === 'medRammeOgStrek' ? getForelderFarge(periode.forelder) : undefined}
+            // periodeFargestrek={stil === 'medRammeOgStrek' ? getForelderFarge(periode.forelder) : undefined}
             renderContent={() => (
                 <div>
                     <EnkelPeriodeliste perioder={perioderITidsperiode} navnPåForeldre={navnPåForeldre} />
