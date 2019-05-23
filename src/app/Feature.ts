@@ -5,6 +5,7 @@ export enum Feature {
     hentEksisterendeSak = 'FEATURE_HENT_EKSISTERENDE_SAK',
     visAvslåttPeriode = 'FEATURE_VIS_AVSLATT_PERIODE',
     mapOpphold = 'FEATURE_MAP_OPPHOLD',
+    grupperOppholdAnnenPart = 'FEATURE_GRUPPER_OPPHOLD_ANNEN_PART',
     logging = 'FEATURE_LOGGING',
     visInfoskriv = 'FEATURE_VIS_INFOSKRIV'
     /** Nye features må også registreres i ./Environment */
