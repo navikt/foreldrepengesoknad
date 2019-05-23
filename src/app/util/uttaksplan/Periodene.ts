@@ -101,9 +101,14 @@ function finnOverlappendePerioder(perioder: Periode[], periode: Periode): Period
         if (!fom || !tom) {
             return false;
         }
-        return (
-            datoErInnenforTidsperiode(fom, periode.tidsperiode) || datoErInnenforTidsperiode(tom, periode.tidsperiode)
-        );
+        const fomEllerTomErInnenforTidsperiode =
+            datoErInnenforTidsperiode(fom, periode.tidsperiode) || datoErInnenforTidsperiode(tom, periode.tidsperiode);
+
+        const fomTomOmkranserTidsperiode =
+            moment(periode.tidsperiode.fom).isSameOrAfter(fom, 'day') &&
+            moment(periode.tidsperiode.tom).isSameOrBefore(tom, 'day');
+
+        return fomEllerTomErInnenforTidsperiode || fomTomOmkranserTidsperiode;
     });
 }
 

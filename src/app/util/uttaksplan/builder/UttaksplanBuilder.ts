@@ -6,7 +6,8 @@ import {
     PeriodeHull,
     UtsettelseÅrsakType,
     PeriodeHullÅrsak,
-    isOverskrivbarPeriode
+    isOverskrivbarPeriode,
+    isHull
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -15,8 +16,13 @@ import { Perioden } from '../Perioden';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { Tidsperiode } from 'common/types';
 
-export const UttaksplanBuilder = (perioder: Periode[], familiehendelsesdato: Date, erEndringssøknad: boolean) => {
-    return new UttaksplanAutoBuilder(perioder, familiehendelsesdato, erEndringssøknad);
+export const UttaksplanBuilder = (
+    perioder: Periode[],
+    familiehendelsesdato: Date,
+    erEndringssøknad: boolean,
+    opprinneligPlan?: Periode[]
+) => {
+    return new UttaksplanAutoBuilder(perioder, familiehendelsesdato, erEndringssøknad, opprinneligPlan);
 };
 
 const periodeHasValidTidsrom = (periode: Periode): boolean =>
@@ -25,11 +31,18 @@ const periodeHasValidTidsrom = (periode: Periode): boolean =>
 class UttaksplanAutoBuilder {
     protected familiehendelsesdato: Date;
     protected erEndringssøknad: boolean;
+    protected opprinneligPlan: Periode[] | undefined;
 
-    public constructor(public perioder: Periode[], familiehendelsesdato: Date, erEndringssøknad: boolean) {
+    public constructor(
+        public perioder: Periode[],
+        familiehendelsesdato: Date,
+        erEndringssøknad: boolean,
+        opprinneligPlan?: Periode[]
+    ) {
         this.perioder = perioder;
         this.familiehendelsesdato = familiehendelsesdato;
         this.erEndringssøknad = erEndringssøknad;
+        this.opprinneligPlan = opprinneligPlan;
     }
 
     buildUttaksplan() {
@@ -56,6 +69,9 @@ class UttaksplanAutoBuilder {
         this.perioder = [...settInnPerioder(this.perioder, fastePerioder)];
 
         this.finnOgSettInnHull();
+        if (this.erEndringssøknad && this.opprinneligPlan) {
+            this.finnOgErstattHullMedOpprinneligPlan();
+        }
         this.slåSammenLikePerioder();
         if (foreldrepengerFørTermin === undefined) {
             this.fjernHullPåStarten();
@@ -106,6 +122,32 @@ class UttaksplanAutoBuilder {
 
     slettPeriodeOgBuild(periode: Periode) {
         this.slettPeriode(periode, skalSlettetPeriodeErstattesMedHull(periode, this.perioder)).buildUttaksplan();
+        return this;
+    }
+
+    finnOgErstattHullMedOpprinneligPlan() {
+        const perioder = this.perioder;
+        const opprinneligPlan = this.opprinneligPlan;
+        const opprinneligePerioderSomSkalLeggesInnIPlan: Periode[] = [];
+        if (perioder && opprinneligPlan) {
+            this.perioder.filter(isHull).forEach((hull) => {
+                const opprinneligePerioder = Periodene(opprinneligPlan).finnOverlappendePerioder(hull);
+                opprinneligePerioder.forEach((periode) => {
+                    const op: Periode = {
+                        ...periode,
+                        id: guid(),
+                        tidsperiode: {
+                            fom: moment.max([moment(hull.tidsperiode.fom), moment(periode.tidsperiode.fom)]).toDate(),
+                            tom: moment.min([moment(hull.tidsperiode.tom), moment(periode.tidsperiode.tom)]).toDate()
+                        }
+                    };
+                    opprinneligePerioderSomSkalLeggesInnIPlan.push(op);
+                });
+            });
+            const nyPlan: Periode[] = [...perioder].filter((p) => !isHull(p));
+            this.perioder = finnOgSettInnHull(settInnPerioder(nyPlan, opprinneligePerioderSomSkalLeggesInnIPlan));
+        }
+
         return this;
     }
 
