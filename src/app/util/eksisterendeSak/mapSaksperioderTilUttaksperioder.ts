@@ -298,7 +298,9 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harUttaksdager)
     );
 
-    return grupperOppholdAnnenPartPerioder(sammenslåddePerioder);
+    return isFeatureEnabled(Feature.grupperOppholdAnnenPart)
+        ? grupperOppholdAnnenPartPerioder(sammenslåddePerioder)
+        : sammenslåddePerioder;
 };
 
 export default mapSaksperioderTilUttaksperioder;
