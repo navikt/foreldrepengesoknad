@@ -619,13 +619,13 @@
     "utsettelseskjema.ferie.utenArbeidsforhold":
         "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold i valgt tidsperiode.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
-        "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha utsetjing lengre enn fire veker og én dag må du ha overført ferie frå i fjor eller ta ut ferie frå neste år. Arbeidsgivaren din må stadfeste når du skal ha ferie. Det gjer de i den digitale inntektsmeldinga til NAV.",
+        "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha utsetjing lengre enn fire veker og én dag må du ha overført ferie frå i fjor eller ta ut ferie frå neste år. Du må avtale med arbiedgjevaren din at du skal ha ferie.",
     "utsettelseskjema.ferievarsel.ulovlig":
-        "Du har lagt inn til saman {ukerOgDager} med ferie. Du kan maksimalt leggje inn ti veker og to dagar med ferie. Arbeidsgivaren din må stadfeste perioden du skal ha ferie. Det gjer de i den digitale inntektsmeldinga til NAV.",
+        "Du har lagt inn til saman {ukerOgDager} med ferie. Du kan maksimalt leggje inn ti veker og to dagar med ferie. Du må avtale med arbiedgjevaren din at du skal ha ferie.",
     "utsettelseskjema.info.helligdagerIFerie":
         "Ferien du har lagt inn går over ein periode med helgedagar. Du kan ikkje ha ferie på helgedagar. Desse dagane vert lagt til som foreldrepengar i planen din, du må velge kva del av foreldrepengane du ynskjer å bruke.",
     "utsettelseskjema.veiledning.ferie":
-        "Du kan utsetje foreldrepengane med ferie i inntil fire veker og éin dag for kvart kalenderår, i tillegg til overført ferie frå i fjor og ti feriedagar frå neste år. Du kan ikkje utsetje på helgedagar. Arbeidsgivaren din må stadfeste perioden du skal ha ferie. Det gjer de i den digitale inntektsmeldinga til NAV.",
+        "Du kan utsetje foreldrepengane med ferie i inntil fire veker og éin dag for kvart kalenderår, i tillegg til overført ferie frå i fjor og ti feriedagar frå neste år. Du kan ikkje utsetje på helgedagar.  Du må avtale med arbiedgjevaren din at du skal ha ferie.",
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagd søkjar",
@@ -832,7 +832,7 @@
         "Hugs at du må legge inn alle nye periodar du skal ha foreldrepenger eller utsetje etter {sisteDag}, då denne endringssøknaden erstattar den tidlegare planen din.",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie.tittel": "Søkja om ferie tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie":
-        "Du må søkje om å utsetje på grunn av ferie seinast dagen før du startar ferien din. Vi kan innvilge utsetjing på grunn av ferie tilbake i tid dersom arbeidsgivaren din stadfesta ferie i inntektsmeldinga før ferien starta, eller dersom du melde frå til NAV før ferien din starta.",
+        "Du må søkje om å utsetje på grunn av ferie seinast dagen før du startar ferien din.",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid.tittel": "Søkja om arbeid tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid":
         "Du må søkje om å utsetje på grunn av arbeid seinast dagen før du begynner å jobbe. Søkjer du om å utsetje etter at du har begynt å jobbe, mistar du dagar med foreldrepengar frå den dagen du starta å jobbe, og fram til dagen du søkjer om å utsetje. Dersom du melder frå til NAV før du begynner å jobbe, mistar du ikkje dagar med foreldrepengar.",
@@ -938,9 +938,9 @@
     "vedlegg.veileder.adopsjon":
         "Du må leggje ved adopsjonsbevillinga og stadfesting på datoen då du tok over omsorga.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
-        "Arbeidsgivaren din må stadfeste at du skal jobbe i denne perioden, og i kva stillingsprosent. Arbeidsgivaren gir stadfestinga i digital inntektsmelding.",
+        "Du må ha ein skriftleg avtale med arbeidsgivaren din om at du skal jobbe i den stillingsprosenten du oppgir. Ved å søke om dette stadfestar du at de har ein skriftleg avtale. Du treng ikkje å sende den til NAV.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
-        "Arbeidsgivaren din må stadfeste at du skal jobbe i denne perioden og i kva stillingsprosent. Arbeidsgivaren gir stadfestinga i digital inntektsmelding.",
+        "Du må ha ein skriftleg avtale med arbeidsgivaren din om at du skal jobbe i den stillingsprosenten du oppgir. Ved å søke om dette stadfestar du at de har ein skriftleg avtale. Du treng ikkje å sende den til NAV.",
     "vedlegg.veileder.fødselsattest":
         "Barnet ditt er ikkje registrert i folkeregisteret. Derfor må du leggje ved fødselsattesten til barnet.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakinga av omsorga.",
