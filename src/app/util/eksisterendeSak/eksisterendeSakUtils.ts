@@ -197,10 +197,13 @@ const getBarnFromSaksgrunnlag = (
             .localeCompare(moment(a.fødselsdato).format('YYYY-MM-DD'))
     )[0];
 
-    const erBarnetFødt = moment(nyesteBarn.fødselsdato).isBetween(
-        moment(sak.familieHendelseDato).subtract(20, 'weeks'),
-        moment(sak.familieHendelseDato).add(6, 'weeks')
-    );
+    const erBarnetFødt =
+        nyesteBarn !== undefined
+            ? moment(nyesteBarn.fødselsdato).isBetween(
+                  moment(sak.familieHendelseDato).subtract(20, 'weeks'),
+                  moment(sak.familieHendelseDato).add(6, 'weeks')
+              )
+            : false;
 
     switch (situasjon) {
         case Søkersituasjon.FØDSEL:
