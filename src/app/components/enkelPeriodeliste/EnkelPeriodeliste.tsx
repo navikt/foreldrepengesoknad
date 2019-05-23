@@ -1,7 +1,7 @@
 import React from 'react';
 import { getPeriodeForelderNavn, getOppholdskontoNavn, getForelderNavn } from 'app/util/uttaksplan';
 import { NavnPåForeldre, Forelder } from 'common/types';
-import { Periode, isOppholdAnnenPartPeriode } from 'app/types/uttaksplan/periodetyper';
+import { Periode, isAnnenPartInfoPeriode } from 'app/types/uttaksplan/periodetyper';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { formaterDatoKompakt } from 'common/util/datoUtils';
 import BEMHelper from 'common/util/bem';
@@ -27,7 +27,7 @@ const EnkelPeriodeliste: React.StatelessComponent<Props> = ({ perioder, navnPåF
                     <span className={bem.element('tom')}>{formaterDatoKompakt(periode.tidsperiode.tom)}:</span>
                 </strong>{' '}
                 <span className={bem.element('tittel')}>
-                    {isOppholdAnnenPartPeriode(periode)
+                    {isAnnenPartInfoPeriode(periode)
                         ? getOppholdskontoNavn(
                               intl,
                               periode.årsak,
