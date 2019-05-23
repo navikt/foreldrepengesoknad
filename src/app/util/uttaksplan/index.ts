@@ -161,7 +161,7 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
             return getMessage(intl, `periodetype.hull.tittel`);
         case Periodetype.Info:
             switch (periode.infotype) {
-                case PeriodeInfoType.oppholdAnnenPart:
+                case PeriodeInfoType.annenPart:
                     const stønadskontotype = getStønadskontoFromOppholdsårsak(periode.årsak);
                     return getStønadskontoNavn(intl, stønadskontotype, navnPåForeldre);
                 default:
