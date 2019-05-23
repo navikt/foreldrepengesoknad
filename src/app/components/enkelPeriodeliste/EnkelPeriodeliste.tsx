@@ -1,44 +1,41 @@
 import React from 'react';
-import { getPeriodeTittel } from 'app/util/uttaksplan';
-import { NavnPåForeldre } from 'common/types';
+import { getPeriodeForelderNavn, getOppholdskontoNavn, getForelderNavn } from 'app/util/uttaksplan';
+import { NavnPåForeldre, Forelder } from 'common/types';
 import { Periode, isOppholdAnnenPartPeriode } from 'app/types/uttaksplan/periodetyper';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { formaterDatoKompakt } from 'common/util/datoUtils';
+import BEMHelper from 'common/util/bem';
 
 import './enkelPeriodeliste.less';
-import LayoutRow from 'common/components/layoutRow/LayoutRow';
-import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
-import { PeriodeResultatType } from 'app/types/EksisterendeSak';
 
 interface OwnProps {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
-    visTidsperiode?: boolean;
-    visStatus?: boolean;
 }
 
 type Props = OwnProps & InjectedIntlProps;
 
-const EnkelPeriodeliste: React.StatelessComponent<Props> = ({
-    perioder,
-    navnPåForeldre,
-    visTidsperiode,
-    visStatus,
-    intl
-}) => (
-    <ol className="enkelPeriodeliste">
+const bem = BEMHelper('enkelPeriodeliste');
+
+const EnkelPeriodeliste: React.StatelessComponent<Props> = ({ perioder, navnPåForeldre, intl }) => (
+    <ol className={bem.block}>
         {perioder.map((periode) => (
             <li key={periode.id}>
-                <LayoutRow
-                    left={getPeriodeTittel(intl, periode, navnPåForeldre)}
-                    right={[
-                        ...(visTidsperiode ? [Tidsperioden(periode.tidsperiode).formaterStringKort(intl)] : []),
-                        ...(visStatus &&
-                        isOppholdAnnenPartPeriode(periode) &&
-                        periode.resultatType === PeriodeResultatType.AVSLÅTT
-                            ? ['Avslått']
-                            : [])
-                    ]}
-                />
+                <strong>
+                    <span className={bem.element('fom')}>{formaterDatoKompakt(periode.tidsperiode.fom)}</span>
+                    <span className={bem.element('sep')}>&mdash;</span>
+                    <span className={bem.element('tom')}>{formaterDatoKompakt(periode.tidsperiode.tom)}:</span>
+                </strong>{' '}
+                <span className={bem.element('tittel')}>
+                    {isOppholdAnnenPartPeriode(periode)
+                        ? getOppholdskontoNavn(
+                              intl,
+                              periode.årsak,
+                              getForelderNavn(periode.forelder, navnPåForeldre),
+                              periode.forelder === Forelder.MOR
+                          )
+                        : getPeriodeForelderNavn(periode, navnPåForeldre)}
+                </span>
             </li>
         ))}
     </ol>

@@ -1,4 +1,4 @@
-import { Periode } from 'app/types/uttaksplan/periodetyper';
+import { Periode, isInfoPeriode } from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from './Perioden';
 import moment from 'moment';
 import DateValues from '../validation/values';
@@ -150,7 +150,7 @@ export const getEndretUttaksplanForInnsending = (
                 return [justerKunEndretSisteperiode(endretPeriode, opprinneligPeriode)];
             }
         }
-        return justerStartdatoFørsteEndring(endringer, opprinneligPlan);
+        return justerStartdatoFørsteEndring(endringer, opprinneligPlan).filter((p) => isInfoPeriode(p) === false);
     }
     return undefined;
 };
