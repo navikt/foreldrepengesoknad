@@ -113,8 +113,8 @@
     "bekreftTilbakestillUttaksplanDialog.tekst": "Ønskjer du å tilbakestille planen til opprinnelig plan?",
     "bekreftTilbakestillUttaksplanDialog.tittel": "Tilbakestill plan",
     "blittYrkesaktivSiste3År.hjelpetekst":
-        "Du har ikkje hatt fast jobb, jobba som frilansar eller hatt anna inntekt før du starta verksemda di.",
-    "blittYrkesaktivSiste3År.spørsmål": "Er du blitt yrkesaktiv i løpet av dei tre siste ferdiglikna åra?",
+        "Du skal svare ja på spørsmålet viss du ha hatt jobb med låg eller ingen inntekt før du starta verksemda di.",
+    "blittYrkesaktivSiste3År.spørsmål": "Har du begynt å jobbe i løpet av dei tre siste ferdiglikna åra?",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "berre budd i Noreg",
     "boddINorgeSiste12Mnd.alternativ.boddIUtlandet": "budd i utlandet heilt eller delvis",
     "boddINorgeSiste12Mnd.spørsmål": "Kvar har du budd dei siste tolv månadene?",
@@ -468,10 +468,10 @@
     "periodeliste.hull.info.uttaksdager":
         "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar",
     "periodeliste.hull.tittel": "Mista foreldrepengar",
-    "periodeliste.ikkeInvilgetPeriode.tittel": "Tapte foreldrepenger - ikke invilget {type}",
+    "periodeliste.ikkeInvilgetPeriode.tittel": "Tapte foreldrepengar - ikkje innvilga {type}",
     "periodeliste.ikkeInvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
-    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Uttaksperioden er ikke innvilget",
-    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsesperioden er ikke innvilget",
+    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Perioden med foreldrepengar er ikkje innvilga.",
+    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsetjinga er ikkje innvilga",
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode": "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "periodeliste.nyPeriodeErFørFamiliehendelsesdato":

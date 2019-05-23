@@ -114,8 +114,8 @@
     "bekreftTilbakestillUttaksplanDialog.tekst": "Ønsker du å tilbakestille planen til opprinnelig plan?",
     "bekreftTilbakestillUttaksplanDialog.tittel": "Tilbakestill plan",
     "blittYrkesaktivSiste3År.hjelpetekst":
-        "Du har ikke hatt fast jobb, jobbet som frilanser eller hatt annen inntekt før du startet virksomheten din.",
-    "blittYrkesaktivSiste3År.spørsmål": "Har du blitt yrkesaktiv i løpet av de tre siste ferdigliknede årene?",
+        "Du skal svare ja på spørsmålet hvis du har hatt jobb med lav eller ingen inntekt før du starter virksomheten din.",
+    "blittYrkesaktivSiste3År.spørsmål": "Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",
     "boddINorgeSiste12Mnd.alternativ.boddIUtlandet": "bodd i utlandet helt eller delvis",
     "boddINorgeSiste12Mnd.spørsmål": "Hvor har du bodd de siste 12 månedene?",
@@ -470,11 +470,11 @@
     "periodeliste.hull.tittel": "Tapte foreldrepenger",
     "periodeliste.ikkeInvilgetPeriode.tittel": "Tapte foreldrepenger - ikke invilget {type}",
     "periodeliste.ikkeInvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
-    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Uttaksperioden er ikke innvilget",
-    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsesperioden er ikke innvilget",
+    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Perioden er ikke innvilget",
+    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsen er ikke innvilget",
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode":
-        "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
+        "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",
     "periodeliste.nyPeriodeErFørFamiliehendelsesdato":
         "For å legge inn en periode før fødselsdato, må du gå tilbake til forrige steg og gjøre det der.",
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
@@ -482,7 +482,7 @@
     "periodeliste.utsettelse.overlappendeTidsperiode.endre":
         "Du kan ikke endre datoen slik at den går over en annen periode med utsettelse.",
     "periodeliste.utsettelse.overlappendeTidsperiode.ny":
-        "Det er allerede registrert utsettelse i denne perioden. Du må fjerne perioden med utsettelse før du kan legge inn en ny.",
+        "Det er allerede registrerten  utsettelse i denne perioden. Du må slette perioden med utsettelse før du kan legge inn en ny utsettelse.",
     "periodeliste.gruppertInfo.tittel": "{navn} {antallPerioder, plural, one{periode} other {perioder}}",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
     "personalia.år": "{år} år",
@@ -903,7 +903,7 @@
     "varDuINorgeDaBarnetBleFødt.spørsmål": "Var du i Norge da barnet ble født?",
     "varigEndringAvNæringsinntekt.dato.label": "Oppgi dato for endringen",
     "varigEndringAvNæringsinntekt.forklaring.label":
-        "Her kan du skrive kort hva som har endret seg i virksomheten eller arbeidssituasjonen din",
+        "Her kan du skrive kort hva som har endret seg i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din",
     "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
         "Oppgi næringsinntekten din etter endringen. Oppgi årsinntekten i hele kroner.",
     "varigEndringAvNæringsinntekt.spørsmål":
@@ -956,7 +956,7 @@
     "velkommen.intro.harInfotrygdSak.veileder":
         "Du må tidligere ha søkt og fått innvilget foreldrepenger for det samme barnet for å sende inn en søknad om endring.",
     "velkommen.intro.harSak":
-        "Her kan du endre perioden du skal være hjemme eller utsette hvis du skal på ferie eller om du ønsker å jobbe, eller på grunn av sykdom. <br /> Skal du søke om foreldrepenger for et nytt barn, velger du det nedenfor.",
+        "Her kan du endre perioden du skal være hjemme eller utsette hvis du skal på ferie eller om du ønsker å jobbe, eller på grunn av sykdom. <br />  <br /> Skal du søke om foreldrepenger for et nytt barn, velger du det nedenfor.",
     "velkommen.intro.harSak.veileder":
         "Når du søker om foreldrepenger for et nytt barn,  mister du dager du har igjen fra den første foreldrepengeperioden din.",
     "velkommen.intro.harFørstegangssøknadUnderBehandling":
