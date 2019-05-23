@@ -1,0 +1,39 @@
+[
+    {
+        "type": "FPSAK",
+        "saksnummer": "137666582",
+        "status": "LOP",
+        "opprettet": "2019-03-23",
+        "annenPart": {
+            "fnr": "24086512722",
+            "aktørId": "1556487799718",
+            "navn": { "fornavn": "FRODIG", "etternavn": "KONSOLL", "kjønn": "M" }
+        },
+        "behandlinger": [
+            {
+                "opprettetTidspunkt": "2019-03-23T16:16:52.662",
+                "endretTidspunkt": "2019-03-23T16:25:31.86",
+                "status": "AVSLU",
+                "type": "FP",
+                "tema": "FORP_FODS",
+                "årsak": "RE-END-INNTEKTSMELD",
+                "behandlingResultat": "FORELDREPENGER_ENDRET",
+                "behandlendeEnhet": "4833",
+                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Oslo 1",
+                "inntektsmeldinger": ["439806519"]
+            },
+            {
+                "opprettetTidspunkt": "2019-03-23T16:07:58.73",
+                "endretTidspunkt": "2019-03-23T16:13:05.422",
+                "status": "AVSLU",
+                "type": "FP",
+                "tema": "FORP_FODS",
+                "årsak": "RE-END-INNTEKTSMELD",
+                "behandlingResultat": "INNVILGET",
+                "behandlendeEnhet": "4833",
+                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Oslo 1",
+                "inntektsmeldinger": ["439806518"]
+            }
+        ]
+    }
+]
