@@ -49,7 +49,7 @@ import { Feature, isFeatureEnabled } from '../../../Feature';
 import EksisterendeSak from '../../../components/eksisterendeSak/EksisterendeSak';
 import Sak from 'app/types/søknad/Sak';
 import { Saksgrunnlag } from 'app/types/EksisterendeSak';
-import { getPerioderDetSøkesOm } from 'app/util/uttaksplan';
+import { selectPerioderSomSkalSøkesOm } from 'app/selectors/søknadSelector';
 
 interface StateProps {
     stegProps: StegProps;
@@ -365,10 +365,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
 
     const søknadsinfo = getSøknadsinfo(state);
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
-
-    const perioderDetSøkesOm = getPerioderDetSøkesOm(søknad);
+    const perioderDetSøkesOm = selectPerioderSomSkalSøkesOm(state);
     const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderDetSøkesOm);
-
     const grunnlag = søknad.ekstrainfo.eksisterendeSak ? søknad.ekstrainfo.eksisterendeSak.grunnlag : undefined;
 
     const stegProps: StegProps = {
