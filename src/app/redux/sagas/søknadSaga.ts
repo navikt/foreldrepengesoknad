@@ -21,6 +21,7 @@ import { EksisterendeSak } from '../../types/EksisterendeSak';
 import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
 import Sak from 'app/types/søknad/Sak';
 import { validerUttaksplanAction } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
+import { ApiState } from '../reducers/apiReducer';
 
 const stateSelector = (state: AppState) => state;
 
@@ -30,6 +31,9 @@ function* updateSøkerAndStorage(action: UpdateSøkerAndStorage) {
 }
 
 function* avbrytSøknadSaga(action: AvbrytSøknad) {
+    const appState: AppState = yield select(stateSelector);
+    const newApiState: ApiState = { ...appState.api, stønadskontoer100: [], stønadskontoer80: [] };
+    yield put(apiActions.updateApi(newApiState));
     yield put(apiActions.storeAppState());
 }
 
