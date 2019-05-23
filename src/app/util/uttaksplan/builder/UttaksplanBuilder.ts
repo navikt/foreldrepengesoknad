@@ -7,7 +7,8 @@ import {
     UtsettelseÅrsakType,
     PeriodeHullÅrsak,
     isOverskrivbarPeriode,
-    isHull
+    isHull,
+    isInfoPeriode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -131,7 +132,9 @@ class UttaksplanAutoBuilder {
         const opprinneligePerioderSomSkalLeggesInnIPlan: Periode[] = [];
         if (perioder && opprinneligPlan) {
             this.perioder.filter(isHull).forEach((hull) => {
-                const opprinneligePerioder = Periodene(opprinneligPlan).finnOverlappendePerioder(hull);
+                const opprinneligePerioder = Periodene(
+                    opprinneligPlan.filter((p) => isInfoPeriode(p) === true)
+                ).finnOverlappendePerioder(hull);
                 opprinneligePerioder.forEach((periode) => {
                     const op: Periode = {
                         ...periode,
