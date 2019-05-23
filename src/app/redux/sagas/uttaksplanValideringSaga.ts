@@ -120,5 +120,6 @@ export default function* uttaksplanValideringSaga() {
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_SET_FORSLAG, validerUttaksplanSaga)]);
     yield all([takeEvery(UttaksplanValideringActionKeys.VALIDER_UTTAKSPLAN, validerUttaksplanSaga)]);
     yield all([takeEvery(SøknadActionKeys.SET_TILLEGGSOPPLYSNING, validerUttaksplanSaga)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_RESET_ENDRINGER, validerUttaksplanSaga)]);
     yield all([takeEvery(SøknadActionKeys.AVBRYT_SØKNAD, resetValideringSaga)]);
 }
