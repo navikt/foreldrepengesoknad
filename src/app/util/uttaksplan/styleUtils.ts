@@ -28,7 +28,7 @@ export const getStønadskontoFarge = (
             case StønadskontoType.Flerbarnsdager:
                 return 'purpleBlue';
             default:
-                return '';
+                return 'transparent';
         }
     }
     return getForelderFarge(forelder);
