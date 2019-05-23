@@ -138,7 +138,6 @@ const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Sak
     if (saksperiode.gjelderAnnenPart) {
         if (isFeatureEnabled(Feature.mapOpphold)) {
             return mapOppholdAnnenPartPeriodeFromSaksperiode(saksperiode, grunnlag);
-            //mapOppholdFromSaksperiodeAnnenPart(saksperiode, grunnlag);
         }
         return undefined;
     }
@@ -256,11 +255,16 @@ const grupperOppholdAnnenPartPerioder = (perioder: Periode[]): Periode[] => {
         if (isOppholdAnnenPartPeriode(periode)) {
             if (!gruppertPeriode) {
                 gruppertPeriode = {
-                    ...periode,
+                    id: guid(),
+                    type: Periodetype.Info,
                     infotype: PeriodeInfoType.gruppertInfo,
+                    tidsperiode: { ...periode.tidsperiode },
+                    forelder: periode.forelder,
+                    overskrives: true,
                     perioder: [periode]
                 };
             } else {
+                gruppertPeriode.tidsperiode.tom = periode.tidsperiode.tom;
                 gruppertPeriode.perioder.push(periode);
             }
             return;

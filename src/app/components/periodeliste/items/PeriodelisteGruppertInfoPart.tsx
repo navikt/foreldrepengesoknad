@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { onToggleItemProp } from '../../toggle-list/ToggleList';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { Periode, GruppertInfoPeriode } from '../../../types/uttaksplan/periodetyper';
 import { Tidsperiode, NavnPåForeldre } from 'common/types';
 import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
-import AdvarselIkon from '../../uttaksplan-ikon/ikoner/AdvarselIkon';
 import PeriodelisteInfo from './PeriodelisteInfo';
-import Block from 'common/components/block/Block';
 import { getVarighetString } from 'common/util/intlUtils';
-import { getPeriodeForelderNavn } from 'app/util/uttaksplan';
+import { getPeriodeTittel, getPeriodeForelderNavn } from 'app/util/uttaksplan';
+import InfoIkon from 'common/components/ikoner/InfoIkon';
+import LayoutRow from 'common/components/layoutRow/LayoutRow';
+import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 
 export interface Props {
     itemId: string;
@@ -33,7 +34,8 @@ const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedInt
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
 
     const tittel = getMessage(intl, 'periodeliste.gruppertInfo.tittel', {
-        type: getMessage(intl, `periodetype.${periode.type}`)
+        navn: getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale),
+        antallPerioder: periode.perioder.length
     });
 
     return (
@@ -43,13 +45,21 @@ const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedInt
             isExpanded={isExpanded}
             onToggle={onToggle}
             beskrivelse={getVarighetString(antallDager, intl)}
-            ikon={<AdvarselIkon />}
+            tidsperiode={periode.tidsperiode}
+            ikon={<InfoIkon />}
+            farge="transparent"
             renderContent={() => (
                 <div>
-                    <Block>
-                        {getPeriodeForelderNavn(periode, navnPåForeldre)}
-                        <FormattedMessage id={`periodeliste.gruppertInfo.expanded.beskrivelse.${periode.type}`} />
-                    </Block>
+                    <ol style={{ padding: 'none' }}>
+                        {periode.perioder.map((p) => (
+                            <li key={p.id}>
+                                <LayoutRow
+                                    left={getPeriodeTittel(intl, p, navnPåForeldre)}
+                                    right={[Tidsperioden(p.tidsperiode).formaterStringKort(intl)]}
+                                />
+                            </li>
+                        ))}
+                    </ol>
                 </div>
             )}
         />

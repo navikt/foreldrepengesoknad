@@ -6,7 +6,8 @@ import {
     OppholdÅrsakType,
     isUttaksperiode,
     Arbeidsform,
-    isOverskrivbarPeriode
+    isOverskrivbarPeriode,
+    PeriodeInfoType
 } from '../../types/uttaksplan/periodetyper';
 import { InjectedIntl } from 'react-intl';
 import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
@@ -17,6 +18,7 @@ import getMessage from 'common/util/i18nUtils';
 import { Navn } from '../../types/common';
 import { getNavnGenitivEierform } from '../tekstUtils';
 import { getEndretUttaksplanForInnsending } from './uttaksplanEndringUtil';
+import { getStønadskontoFromOppholdsårsak } from './uttaksperiodeUtils';
 
 const isValidStillingsprosent = (pst: number | undefined): boolean => pst !== undefined && isNaN(pst) === false;
 
@@ -49,7 +51,8 @@ export const getPeriodeForelderNavn = (periode: Periode, navnPåForeldre: NavnP�
         periode.type === Periodetype.Utsettelse ||
         periode.type === Periodetype.Uttak ||
         periode.type === Periodetype.Overføring ||
-        periode.type === Periodetype.Opphold
+        periode.type === Periodetype.Opphold ||
+        periode.type === Periodetype.Info
     ) {
         return getForelderNavn(periode.forelder, navnPåForeldre);
     }
@@ -157,7 +160,13 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
         case Periodetype.Hull:
             return getMessage(intl, `periodetype.hull.tittel`);
         case Periodetype.Info:
-            return getMessage(intl, `periodetype.info.${periode.infotype}`);
+            switch (periode.infotype) {
+                case PeriodeInfoType.oppholdAnnenPart:
+                    const stønadskontotype = getStønadskontoFromOppholdsårsak(periode.årsak);
+                    return getStønadskontoNavn(intl, stønadskontotype, navnPåForeldre);
+                default:
+                    return getMessage(intl, `periodetype.info.${periode.infotype}`);
+            }
     }
 };
 
