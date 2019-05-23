@@ -5,15 +5,13 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { Periode, GruppertInfoPeriode } from '../../../types/uttaksplan/periodetyper';
 import { Tidsperiode, NavnPåForeldre } from 'common/types';
-import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
 import PeriodelisteInfo from './PeriodelisteInfo';
-import { getVarighetString } from 'common/util/intlUtils';
-import { getPeriodeForelderNavn, getForelderNavn } from 'app/util/uttaksplan';
+import { getPeriodeForelderNavn } from 'app/util/uttaksplan';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import EnkelPeriodeliste from 'app/components/enkelPeriodeliste/EnkelPeriodeliste';
-import UttaksplanIkon, { UttaksplanIkonKeys } from 'app/components/uttaksplan-ikon/UttaksplanIkon';
-import Block from 'common/components/block/Block';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
+import { getPeriodeIkon } from '../elements/PeriodeHeader';
+import { getForelderFarge } from 'app/util/uttaksplan/styleUtils';
 
 export interface Props {
     itemId: string;
@@ -22,6 +20,7 @@ export interface Props {
     periode: GruppertInfoPeriode;
     navnPåForeldre: NavnPåForeldre;
     nesteUttaksperiode?: Periode;
+    stil?: undefined | 'medRammeOgStrek';
     onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void;
     onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void;
 }
@@ -32,16 +31,10 @@ const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedInt
     onToggle,
     periode,
     navnPåForeldre,
+    stil = 'medRammeOgStrek',
     intl
 }) => {
-    const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
-
-    const tittel = getMessage(intl, 'periodeliste.gruppertInfo.tittel', {
-        navn: getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale),
-        antallPerioder: periode.perioder.length
-    });
-
-    const underperioder: Periode[] = Periodene(periode.perioder)
+    const perioderITidsperiode: Periode[] = Periodene(periode.perioder)
         .finnOverlappendePerioder(periode)
         .map((p) => ({
             ...p,
@@ -51,29 +44,24 @@ const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedInt
             }
         }));
 
+    const tittel = getMessage(intl, 'periodeliste.gruppertInfo.tittel', {
+        navn: getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale),
+        antallPerioder: perioderITidsperiode.length
+    });
+
     return (
         <PeriodelisteInfo
             id={itemId}
             tittel={tittel}
             isExpanded={isExpanded}
             onToggle={onToggle}
-            beskrivelse={getVarighetString(antallDager, intl)}
-            tidsperiode={periode.tidsperiode}
-            ikon={<UttaksplanIkon ikon={UttaksplanIkonKeys.advarsel} title={'sadf'} />}
+            ikon={getPeriodeIkon(periode, navnPåForeldre)}
             farge="transparent"
-            periodeFargestrek={'infoBlue'}
+            border={stil === 'medRammeOgStrek'}
+            periodeFargestrek={stil === 'medRammeOgStrek' ? getForelderFarge(periode.forelder) : undefined}
             renderContent={() => (
                 <div>
-                    <Block margin="xs">
-                        <strong>{getForelderNavn(periode.forelder, navnPåForeldre)}</strong> har registrert{' '}
-                        {underperioder.length} periode{underperioder.length > 1 ? 'r' : ''}:
-                    </Block>
-                    <EnkelPeriodeliste
-                        perioder={underperioder}
-                        navnPåForeldre={navnPåForeldre}
-                        visTidsperiode={true}
-                        visStatus={true}
-                    />
+                    <EnkelPeriodeliste perioder={perioderITidsperiode} navnPåForeldre={navnPåForeldre} />
                 </div>
             )}
         />

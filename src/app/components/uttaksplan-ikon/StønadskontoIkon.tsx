@@ -12,16 +12,18 @@ export interface Props {
     forelder?: Forelder;
     gradert?: boolean;
     navnPåForeldre: NavnPåForeldre;
+    outline?: boolean;
 }
 
 const StønadskontoIkon: React.StatelessComponent<Props & InjectedIntlProps> = ({
     konto,
     forelder,
     gradert,
+    outline,
     intl,
     navnPåForeldre
 }) => (
-    <IconBox color={getStønadskontoFarge(konto, forelder, true)} stripes={gradert}>
+    <IconBox color={getStønadskontoFarge(konto, forelder, true)} stripes={gradert} outline={outline}>
         <UttaksplanIkon ikon={UttaksplanIkonKeys.uttak} title={getStønadskontoNavn(intl, konto, navnPåForeldre)} />
     </IconBox>
 );

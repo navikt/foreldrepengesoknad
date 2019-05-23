@@ -20,6 +20,7 @@ export interface PeriodelisteInformasjon {
     renderContent: () => JSX.Element;
     farge?: UttaksplanColor;
     periodeFargestrek?: UttaksplanColor;
+    border?: boolean;
 }
 
 const PeriodelisteInfo: React.StatelessComponent<Props> = ({
@@ -32,10 +33,16 @@ const PeriodelisteInfo: React.StatelessComponent<Props> = ({
     beskrivelse,
     tidsperiode,
     farge = 'yellow',
+    border,
     periodeFargestrek
 }) => {
     return (
-        <PeriodelisteItemWrapper key={id} farge={farge} periodeFargestrek={periodeFargestrek} isExpanded={isExpanded}>
+        <PeriodelisteItemWrapper
+            key={id}
+            farge={farge}
+            periodeFargestrek={periodeFargestrek}
+            isExpanded={isExpanded}
+            border={border}>
             <PeriodelisteToggleItem
                 id={id}
                 isExpanded={isExpanded}

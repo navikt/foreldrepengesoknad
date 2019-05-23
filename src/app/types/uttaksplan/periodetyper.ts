@@ -142,6 +142,10 @@ export const isInfoPeriode = (periode: Periode): periode is InfoPeriode => {
     return periode.type === Periodetype.Info && periode.overskrives === true;
 };
 
+export const isGruppertInfoPeriode = (periode: Periode): periode is GruppertInfoPeriode => {
+    return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.gruppertInfo;
+};
+
 export interface PeriodeHull extends PeriodeBase {
     type: Periodetype.Hull;
     tidsperiode: Tidsperiode;
