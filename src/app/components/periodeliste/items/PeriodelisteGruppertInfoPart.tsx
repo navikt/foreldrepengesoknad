@@ -1,4 +1,5 @@
 import * as React from 'react';
+import moment from 'moment';
 import { onToggleItemProp } from '../../toggle-list/ToggleList';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
@@ -12,6 +13,7 @@ import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import EnkelPeriodeliste from 'app/components/enkelPeriodeliste/EnkelPeriodeliste';
 import UttaksplanIkon, { UttaksplanIkonKeys } from 'app/components/uttaksplan-ikon/UttaksplanIkon';
 import Block from 'common/components/block/Block';
+import { Periodene } from 'app/util/uttaksplan/Periodene';
 
 export interface Props {
     itemId: string;
@@ -39,6 +41,16 @@ const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedInt
         antallPerioder: periode.perioder.length
     });
 
+    const underperioder: Periode[] = Periodene(periode.perioder)
+        .finnOverlappendePerioder(periode)
+        .map((p) => ({
+            ...p,
+            tidsperiode: {
+                fom: moment.max([moment(periode.tidsperiode.fom), moment(p.tidsperiode.fom)]).toDate(),
+                tom: moment.min([moment(periode.tidsperiode.tom), moment(p.tidsperiode.tom)]).toDate()
+            }
+        }));
+
     return (
         <PeriodelisteInfo
             id={itemId}
@@ -54,10 +66,10 @@ const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedInt
                 <div>
                     <Block margin="xs">
                         <strong>{getForelderNavn(periode.forelder, navnPåForeldre)}</strong> har registrert{' '}
-                        {periode.perioder.length} periode{periode.perioder.length > 1 ? 'r' : ''}:
+                        {underperioder.length} periode{underperioder.length > 1 ? 'r' : ''}:
                     </Block>
                     <EnkelPeriodeliste
-                        perioder={periode.perioder}
+                        perioder={underperioder}
                         navnPåForeldre={navnPåForeldre}
                         visTidsperiode={true}
                         visStatus={true}
