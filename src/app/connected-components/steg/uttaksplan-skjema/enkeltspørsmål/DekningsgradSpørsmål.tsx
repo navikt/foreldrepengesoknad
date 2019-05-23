@@ -9,7 +9,7 @@ import søknadActionCreators from '../../../../redux/actions/søknad/søknadActi
 import { AppState } from '../../../../redux/reducers';
 import Block from 'common/components/block/Block';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
-import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import VeilederInfo from '../../../../components/veileder-info/VeilederInfo';
 import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
@@ -156,7 +156,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
     dekningsgrad100AntallUker: getAntallUker(state.api.stønadskontoer100),
     dekningsgrad80AntallUker: getAntallUker(state.api.stønadskontoer80),
     harAnnenForelderSøktFP: state.søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP,
-    søknadsinfo: getSøknadsinfo(state)!,
+    søknadsinfo: selectSøknadsinfo(state)!,
     startdatoPermisjon: state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon
 });
 

@@ -13,13 +13,14 @@ import {
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
-import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { erSenUtsettelsePgaFerieEllerArbeid } from 'app/util/uttaksplan/uttakUtils';
 import { UttaksplanRegelTestresultat, RegelAlvorlighet } from '../../regler/uttaksplanValidering/types';
 import { sjekkUttaksplanOppMotRegler, getRegelAvvik } from '../../regler/uttaksplanValidering/regelUtils';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import { finnesPeriodeIOpprinneligPlan } from 'app/util/uttaksplan/uttaksplanEndringUtil';
+import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
 
 const stateSelector = (state: AppState) => state;
 
@@ -53,18 +54,19 @@ const validerPeriode = (
 };
 
 const kjørUttaksplanRegler = (state: AppState): UttaksplanRegelTestresultat | undefined => {
-    const søknadsinfo = getSøknadsinfo(state);
+    const søknadsinfo = selectSøknadsinfo(state);
     const perioder = state.søknad.uttaksplan;
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
-    const eksisterendeUttaksplan = state.søknad.ekstrainfo.eksisterendeSak
-        ? state.søknad.ekstrainfo.eksisterendeSak.uttaksplan
-        : undefined;
+    // const eksisterendeUttaksplan = state.søknad.ekstrainfo.eksisterendeSak
+    //     ? state.søknad.ekstrainfo.eksisterendeSak.uttaksplan
+    //     : undefined;
 
     if (!søknadsinfo) {
         return undefined;
     }
 
     const uttaksstatusStønadskontoer = getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, perioder);
+    const endringerIUttaksplan = selectPerioderSomSkalSendesInn(state);
 
     const resultat = sjekkUttaksplanOppMotRegler({
         søknadsinfo,
@@ -72,7 +74,8 @@ const kjørUttaksplanRegler = (state: AppState): UttaksplanRegelTestresultat | u
         uttaksstatusStønadskontoer,
         tilgjengeligeStønadskontoer,
         tilleggsopplysninger: state.søknad.tilleggsopplysninger,
-        eksisterendeUttaksplan
+        // eksisterendeUttaksplan,
+        perioderSomSkalSendesInn: endringerIUttaksplan
     });
 
     if (resultat) {
@@ -91,7 +94,7 @@ function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
     const { uttaksplan, ekstrainfo } = appState.søknad;
     const validertePerioder: Periodevalidering = {};
-    const søknadsinfo = getSøknadsinfo(appState);
+    const søknadsinfo = selectSøknadsinfo(appState);
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
     if (søknadsinfo) {
         uttaksplan.forEach((periode) => {

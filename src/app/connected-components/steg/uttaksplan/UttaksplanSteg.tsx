@@ -9,7 +9,7 @@ import { DispatchProps } from 'common/redux/types';
 import { getSeneEndringerSomKreverBegrunnelse } from 'app/util/uttaksplan/uttakUtils';
 import { Forelder } from 'common/types';
 import { getPeriodelisteElementId } from '../../../components/periodeliste/Periodeliste';
-import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
+import { selectSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
 import { getUttaksstatus, skalBeregneAntallDagerBrukt } from '../../../util/uttaksplan/uttaksstatus';
 import { HistoryProps } from '../../../types/common';
@@ -49,7 +49,7 @@ import { Feature, isFeatureEnabled } from '../../../Feature';
 import EksisterendeSak from '../../../components/eksisterendeSak/EksisterendeSak';
 import Sak from 'app/types/søknad/Sak';
 import { Saksgrunnlag } from 'app/types/EksisterendeSak';
-import { selectPerioderSomSkalSøkesOm } from 'app/selectors/søknadSelector';
+import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
 
 interface StateProps {
     stegProps: StegProps;
@@ -363,9 +363,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
     } = state;
     const { søkerinfo, history } = props;
 
-    const søknadsinfo = getSøknadsinfo(state);
+    const søknadsinfo = selectSøknadsinfo(state);
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
-    const perioderDetSøkesOm = selectPerioderSomSkalSøkesOm(state);
+    const perioderDetSøkesOm = selectPerioderSomSkalSendesInn(state);
     const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderDetSøkesOm);
     const grunnlag = søknad.ekstrainfo.eksisterendeSak ? søknad.ekstrainfo.eksisterendeSak.grunnlag : undefined;
 

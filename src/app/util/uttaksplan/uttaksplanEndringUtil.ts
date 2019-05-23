@@ -136,10 +136,7 @@ const justerStartdatoFørsteEndring = (endringer: Periode[], opprinneligPlan: Pe
     return endringer;
 };
 
-export const getEndretUttaksplanForInnsending = (
-    opprinneligPlan: Periode[],
-    nyPlan: Periode[]
-): Periode[] | undefined => {
+export const getEndretUttaksplanForInnsending = (opprinneligPlan: Periode[], nyPlan: Periode[]): Periode[] => {
     const endringer = finnEndringerIUttaksplan(opprinneligPlan, nyPlan);
     if (endringer && endringer.length > 0) {
         if (endringer.length === 1) {
@@ -152,5 +149,5 @@ export const getEndretUttaksplanForInnsending = (
         }
         return justerStartdatoFørsteEndring(endringer, opprinneligPlan).filter((p) => isInfoPeriode(p) === false);
     }
-    return undefined;
+    return [];
 };
