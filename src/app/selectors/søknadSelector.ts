@@ -92,9 +92,9 @@ export const selectEksisterendeUttaksplan = createSelector(
         eksisterendeSak ? (eksisterendeSak.uttaksplan as Periode[]) : undefined
 );
 
-export const selectPerioderSomSkalSøkesOm = createSelector(
+export const selectPerioderSomSkalSendesInn = createSelector(
     [selectUttaksplan, selectEksisterendeUttaksplan],
     (nyPlan, opprinneligPlan): Periode[] => {
-        return opprinneligPlan ? getEndretUttaksplanForInnsending(opprinneligPlan, nyPlan) || nyPlan : nyPlan;
+        return opprinneligPlan ? getEndretUttaksplanForInnsending(opprinneligPlan, nyPlan) || [] : nyPlan;
     }
 );

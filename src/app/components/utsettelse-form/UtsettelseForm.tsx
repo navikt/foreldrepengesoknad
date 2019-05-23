@@ -33,7 +33,7 @@ import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm'
 import { Tidsperioden, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import AlertStripe from 'nav-frontend-alertstriper';
 import VeilederInfo from '../veileder-info/VeilederInfo';
-import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
@@ -418,7 +418,7 @@ const mapStateToProps = (state: AppState): StateProps => {
     return {
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
         tilgjengeligeStønadskontoer: selectTilgjengeligeStønadskontoer(state),
-        søknadsinfo: getSøknadsinfo(state)!,
+        søknadsinfo: selectSøknadsinfo(state)!,
         uttaksplan: state.søknad.uttaksplan
     };
 };

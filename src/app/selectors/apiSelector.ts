@@ -6,7 +6,7 @@ import { ApiState } from '../redux/reducers/apiReducer';
 import { Søkerinfo } from '../types/søkerinfo';
 import { selectDekningsgrad } from './søknadSelector';
 
-const apiSelector = (state: AppState): ApiState => state.api;
+export const apiSelector = (state: AppState): ApiState => state.api;
 
 // API
 export const selectTilgjengeligeStønadskontoer = createSelector(

@@ -193,7 +193,7 @@ const getNavnISøknaden = (søkerpersonalia: Person, søker: Søker, annenForeld
     };
 };
 
-export const getSøknadsinfo = createSelector(
+export const selectSøknadsinfo = createSelector(
     [selectOmSøknaden, selectOmSøker, selectOmMor, selectOmFarMedmor, selectOmAnnenForelder, selectNavnISøknaden],
     (omSøknaden, omSøker, omMor, omFarMedmor, omAnnenForelder, navn): Søknadsinfo | undefined => {
         if (omSøknaden !== undefined && navn !== undefined && omSøker !== undefined) {

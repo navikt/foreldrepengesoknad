@@ -9,7 +9,7 @@ import {
 } from '../actions/søknad/søknadActionDefinitions';
 import { lagUttaksplan } from '../../util/uttaksplan/forslag/lagUttaksplan';
 import { AppState } from '../reducers';
-import { getSøknadsinfo } from '../../selectors/søknadsinfoSelector';
+import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { fetchEksisterendeSak } from './sakerSaga';
@@ -91,7 +91,7 @@ function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
             })
         );
         const updatedAppState = yield select(stateSelector);
-        const søknadsinfo = getSøknadsinfo(updatedAppState);
+        const søknadsinfo = selectSøknadsinfo(updatedAppState);
         if (søknadsinfo) {
             yield call(
                 getTilgjengeligeStønadskontoer,
@@ -110,7 +110,7 @@ function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
 
 function* lagUttaksplanForslag() {
     const appState: AppState = yield select(stateSelector);
-    const søknadsinfo = getSøknadsinfo(appState);
+    const søknadsinfo = selectSøknadsinfo(appState);
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
     const { uttaksplanSkjema } = appState.søknad.ekstrainfo;
     if (søknadsinfo) {

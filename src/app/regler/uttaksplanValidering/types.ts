@@ -26,7 +26,8 @@ export interface Regelgrunnlag {
     uttaksstatusStønadskontoer: Stønadskontouttak[];
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     tilleggsopplysninger: Tilleggsopplysninger;
-    eksisterendeUttaksplan?: Periode[];
+    // eksisterendeUttaksplan?: Periode[];
+    perioderSomSkalSendesInn: Periode[];
 }
 
 export interface Regel {

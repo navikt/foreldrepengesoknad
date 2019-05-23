@@ -10,15 +10,20 @@ import { mapMissingAttachmentsOnSøknad } from '../../util/attachments/missingAt
 import { extractUUID } from '../../api/utils/errorUtil';
 import Søknad, { SøknadForInnsending, EnkelEndringssøknadForInnsending } from 'app/types/søknad/Søknad';
 import { MissingAttachment } from 'app/types/MissingAttachment';
+import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
+import { Periode } from 'app/types/uttaksplan/periodetyper';
+
+const stateSelector = (state: AppState) => state;
 
 const getSøknadsdataForInnsending = (
     originalSøknad: Søknad,
-    missingAttachments: MissingAttachment[]
+    missingAttachments: MissingAttachment[],
+    endringerIUttaksplan: Periode[]
 ): SøknadForInnsending | EnkelEndringssøknadForInnsending => {
     const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
     mapMissingAttachmentsOnSøknad(missingAttachments, søknad);
     if (søknad.ekstrainfo.eksisterendeSak !== undefined && søknad.ekstrainfo.eksisterendeSak.uttaksplan) {
-        return cleanEnkelEndringssøknad(søknad, søknad.ekstrainfo.eksisterendeSak.uttaksplan);
+        return cleanEnkelEndringssøknad(søknad, endringerIUttaksplan);
     } else {
         return cleanUpSøknad(søknad);
     }
@@ -27,10 +32,15 @@ const getSøknadsdataForInnsending = (
 function* sendSøknad(action: SendSøknad) {
     try {
         yield put(apiActions.updateApi({ søknadSendingInProgress: true }));
-        const originalSøknad: Søknad = yield select((state: AppState) => state.søknad);
+        const state: AppState = yield select(stateSelector);
+        const originalSøknad: Søknad = state.søknad;
         const response = yield call(
             Api.sendSøknad,
-            getSøknadsdataForInnsending(originalSøknad, action.missingAttachments)
+            getSøknadsdataForInnsending(
+                originalSøknad,
+                action.missingAttachments,
+                selectPerioderSomSkalSendesInn(state)
+            )
         );
         const kvittering: Kvittering = response.data;
         if (kvittering) {

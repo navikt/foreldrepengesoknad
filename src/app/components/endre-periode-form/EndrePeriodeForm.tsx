@@ -23,7 +23,7 @@ import UtsettelseForm from '../utsettelse-form/UtsettelseForm';
 import UttakForm from '../uttak-form/UttakForm';
 import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
 import { Søknadsinfo } from 'app/selectors/types';
-import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 
 import './endrePeriodeForm.less';
 
@@ -164,7 +164,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    søknadsinfo: getSøknadsinfo(state)!
+    søknadsinfo: selectSøknadsinfo(state)!
 });
 
 export default connect(mapStateToProps)(injectIntl(EndrePeriodeFormRenderer));
