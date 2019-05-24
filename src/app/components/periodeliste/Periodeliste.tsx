@@ -178,8 +178,6 @@ class Periodeliste extends React.Component<Props> {
                                                     isExpanded={isExpanded}
                                                     onToggle={onToggle}
                                                     periode={periode}
-                                                    onLeggTilOpphold={onLeggTilOpphold}
-                                                    onLeggTilPeriode={onLeggTilPeriode}
                                                     navnPåForeldre={navnPåForeldre}
                                                 />
                                             );
@@ -191,8 +189,6 @@ class Periodeliste extends React.Component<Props> {
                                                     isExpanded={isExpanded}
                                                     onToggle={onToggle}
                                                     periode={periode}
-                                                    onLeggTilOpphold={onLeggTilOpphold}
-                                                    onLeggTilPeriode={onLeggTilPeriode}
                                                     navnPåForeldre={navnPåForeldre}
                                                 />
                                             );
