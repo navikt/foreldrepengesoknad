@@ -314,7 +314,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
             velgbareStønadskontotyper,
             kanEndreStønadskonto,
             søknadsinfo,
-            skjemaregler: getUttakSkjemaregler(søknadsinfo, periode, velgbareStønadskontotyper),
+            skjemaregler: getUttakSkjemaregler(søknadsinfo, periode),
             søknadsperiode: getSøknadsperiode(søknadsinfo, periode as Periode)
         });
     }
