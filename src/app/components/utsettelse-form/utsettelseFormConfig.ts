@@ -32,9 +32,10 @@ const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): bool
         søknadsinfo.annenForelder
     );
 
-    if (variant === undefined || erRelevant === false) {
+    if (variant === undefined || erRelevant === false || søknadsinfo.søker.erAleneOmOmsorg) {
         return false;
     }
+
     if (periode.type === Periodetype.Utsettelse) {
         if (
             variant === Utsettelsesvariant.Ferie ||
