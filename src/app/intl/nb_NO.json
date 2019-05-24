@@ -626,7 +626,7 @@
     "utsettelseskjema.info.helligdagerIFerie":
         "Ferien du har lagt inn går over en periode med helligdager. Du kan ikke ha ferie på helligdager. Disse dagene vil bli lagt til som foreldrepenger i planen din, du må velge hvilken del av foreldrepengene du ønsker å bruke.",
     "utsettelseskjema.veiledning.ferie":
-        "<p>Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.</p>. Ferien må avtales med din arbeidsgiver.",
+        "<p>Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.</p> Ferien må avtales med din arbeidsgiver.",
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt",
