@@ -116,7 +116,6 @@ export const validerPeriodeForm = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     søknadsinfo: Søknadsinfo
 ): PeriodeValideringsfeil[] | undefined => {
-    const velgbareStønadskontotyper = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
     if (periode.type === Periodetype.Hull || periode.type === Periodetype.Info) {
         return undefined;
     }
@@ -130,7 +129,7 @@ export const validerPeriodeForm = (
             velgbareStønadskontotyper: getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer),
             kanEndreStønadskonto: true,
             søknadsinfo,
-            skjemaregler: getUttakSkjemaregler(søknadsinfo, periode, velgbareStønadskontotyper),
+            skjemaregler: getUttakSkjemaregler(søknadsinfo, periode),
             søknadsperiode: getSøknadsperiode(søknadsinfo, periode)
         });
     }
