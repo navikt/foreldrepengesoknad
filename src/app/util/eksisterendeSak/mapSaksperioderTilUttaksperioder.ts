@@ -205,6 +205,10 @@ const getPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunn
             ? true
             : saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET)
     ) {
+        if (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT) {
+            return mapInfoPeriodeFromAvslåttSaksperiode(saksperiode, grunnlag);
+        }
+
         return mapUtsettelseperiodeFromSaksperiode(saksperiode, grunnlag);
     }
     if (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT) {
