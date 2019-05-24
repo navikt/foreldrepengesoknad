@@ -619,13 +619,13 @@
     "utsettelseskjema.ferie.utenArbeidsforhold":
         "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold i valgt tidsperiode.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
-        "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha utsetjing lengre enn fire veker og én dag må du ha overført ferie frå i fjor eller ta ut ferie frå neste år. Du må avtale med arbiedgjevaren din at du skal ha ferie.",
+        "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha utsetjing lengre enn fire veker og én dag må du ha overført lovfesta ferie frå i fjor eller ta ut lovfesta ferie frå neste år. Du må avtale med arbiedgjevaren din at du skal ha ferie.",
     "utsettelseskjema.ferievarsel.ulovlig":
-        "Du har lagt inn til saman {ukerOgDager} med ferie. Du kan maksimalt leggje inn ti veker og to dagar med ferie. Du må avtale med arbiedgjevaren din at du skal ha ferie.",
+        "Du har lagt inn til saman {ukerOgDager} med ferie. Du kan maksimalt leggje inn ti veker og to dagar med lovfesta ferie. Du må avtale med arbiedgjevaren din at du skal ha ferie.",
     "utsettelseskjema.info.helligdagerIFerie":
         "Ferien du har lagt inn går over ein periode med helgedagar. Du kan ikkje ha ferie på helgedagar. Desse dagane vert lagt til som foreldrepengar i planen din, du må velge kva del av foreldrepengane du ynskjer å bruke.",
     "utsettelseskjema.veiledning.ferie":
-        "Du kan utsetje foreldrepengane med ferie i inntil fire veker og éin dag for kvart kalenderår, i tillegg til overført ferie frå i fjor og ti feriedagar frå neste år. Du kan ikkje utsetje på helgedagar.  Du må avtale med arbiedgjevaren din at du skal ha ferie.",
+        "Du kan utsetje foreldrepengane med lovfesta ferie i inntil fire veker og éin dag for kvart kalenderår, i tillegg til overført lovfesta ferie frå i fjor og ti feriedagar frå neste år. Du kan ikkje utsetje på helgedagar.  Du må avtale med arbiedgjevaren din at du skal ha ferie.",
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagd søkjar",
@@ -942,7 +942,7 @@
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
         "Du må ha ein skriftleg avtale med arbeidsgivaren din om at du skal jobbe i den stillingsprosenten du oppgir. Ved å søke om dette stadfestar du at de har ein skriftleg avtale. Du treng ikkje å sende den til NAV.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
-        "Du må ha ein skriftleg avtale med arbeidsgivaren din om at du skal jobbe i den stillingsprosenten du oppgir. Ved å søke om dette stadfestar du at de har ein skriftleg avtale. Du treng ikkje å sende den til NAV.",
+        "Du må ha ein skriftleg avtale med arbeidsgivaren din om at du skal jobbe i den heiltid i den perioden du oppgir. Ved å søke om dette stadfestar du at de har ein skriftleg avtale. Du treng ikkje å sende den til NAV.",
     "vedlegg.veileder.fødselsattest":
         "Barnet ditt er ikkje registrert i folkeregisteret. Derfor må du leggje ved fødselsattesten til barnet.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakinga av omsorga.",

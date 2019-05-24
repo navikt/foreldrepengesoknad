@@ -618,15 +618,15 @@
     "utsettelse.sykdom.vedlegg.info.sykdom":
         "Du må legge ved bekreftelse fra legen din. Den må beskrive hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta deg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "utsettelseskjema.ferie.utenArbeidsforhold":
-        "Du kan dessverre ikke legge inn utsettelse på grunn av ferie fordi du ikke er registrert med et arbeidsforhold i valgt tidsperiode.",
+        "Du kan dessverre ikke legge inn utsettelse på grunn av lovbestemt ferie fordi du ikke er registrert med et arbeidsforhold i valgt tidsperiode.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
-        "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha utsettelse lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år. Ferien må avtales med din arbeidsgiver.",
+        "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha utsettelse lengre enn fire uker og én dag må du ha overført lovbestemt ferie fra i fjor eller ta ut lovbestemt ferie fra neste år. Ferien må avtales med din arbeidsgiver.",
     "utsettelseskjema.ferievarsel.ulovlig":
         "Du har lagt inn til sammen {ukerOgDager} med ferie. Du kan maksimalt legge inn ti uker og to dager med ferie. Ferien må avtales med din arbeidsgiver.",
     "utsettelseskjema.info.helligdagerIFerie":
         "Ferien du har lagt inn går over en periode med helligdager. Du kan ikke ha ferie på helligdager. Disse dagene vil bli lagt til som foreldrepenger i planen din, du må velge hvilken del av foreldrepengene du ønsker å bruke.",
     "utsettelseskjema.veiledning.ferie":
-        "<p>Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.</p> Ferien må avtales med din arbeidsgiver.",
+        "<p>Du kan utsette foreldrepengene med lovbestemt ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.</p> Ferien må avtales med din arbeidsgiver.",
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt",
@@ -830,7 +830,7 @@
         "Husk at du må legge inn alle perioder med foreldrepenger etter {sisteDag} på nytt, da endringssøknaden erstatter den  opprinnelige planen din.",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie.tittel": "Søke om ferie tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie":
-        "Du må søke om utsettelse på grunn av ferie senest dagen før du starter ferien din.",
+        "Du må søke om utsettelse på grunn av ferie senest dagen før du starter ferien din. Vi kan innvilge utsettelse tilbake i tid hvis du gav beskjed til NAV før ferien din startet.",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid.tittel": "Søke om arbeid tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid":
         "Du må søke om utsettelse på grunn av arbeid senest dagen før du begynner å jobbe. Hvis du søker om å utsette etter at du har begynt å jobbe, mister du dager med foreldrepenger fra den dagen du startet å jobbe, og frem til dagen du søker om å utsette. Hvis du gir beskjed til NAV før du begynner å jobbe, mister du ikke dager med foreldrepenger.",
@@ -936,7 +936,7 @@
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
         "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe i den stillingsprosenten du oppgir. Ved å søke om dette bekrefter du at dere har en skriftlig avtale. Du trenger ikke å sende denne til NAV.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
-        "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe i den stillingsprosenten du oppgir. Ved å søke om dette bekrefter du at dere har en skriftlig avtale. Du trenger ikke å sende denne til NAV.",
+        "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe i 100 prosent i perioden du oppgir. Ved å søke om dette bekrefter du at dere har en skriftlig avtale. Du trenger ikke å sende denne til NAV.",
     "vedlegg.veileder.fødselsattest":
         "Barnet ditt er ikke registrert i folkeregisteret. Derfor må du legge ved fødselsattesten til barnet.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",
