@@ -144,10 +144,6 @@ export const findMissingAttachmentsForPerioder = (
 
     const missingAttachments = [];
     for (const periode of perioder) {
-        // const periodeErNyEllerEndret = eksisterendeUttaksplan
-        //     ? finnesPeriodeIOpprinneligPlan(periode, eksisterendeUttaksplan) === false
-        //     : true;
-        // if (periodeErNyEllerEndret) {
         if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
             if (missingAttachmentForSykdomEllerInstitusjonsopphold(periode)) {
                 missingAttachments.push({
@@ -170,7 +166,6 @@ export const findMissingAttachmentsForPerioder = (
                 });
             }
         }
-        // }
     }
     return missingAttachments;
 };
