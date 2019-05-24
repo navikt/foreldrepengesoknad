@@ -57,9 +57,6 @@ const kjørUttaksplanRegler = (state: AppState): UttaksplanRegelTestresultat | u
     const søknadsinfo = selectSøknadsinfo(state);
     const perioder = state.søknad.uttaksplan;
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
-    // const eksisterendeUttaksplan = state.søknad.ekstrainfo.eksisterendeSak
-    //     ? state.søknad.ekstrainfo.eksisterendeSak.uttaksplan
-    //     : undefined;
 
     if (!søknadsinfo) {
         return undefined;
@@ -74,7 +71,6 @@ const kjørUttaksplanRegler = (state: AppState): UttaksplanRegelTestresultat | u
         uttaksstatusStønadskontoer,
         tilgjengeligeStønadskontoer,
         tilleggsopplysninger: state.søknad.tilleggsopplysninger,
-        // eksisterendeUttaksplan,
         perioderSomSkalSendesInn: endringerIUttaksplan
     });
 
