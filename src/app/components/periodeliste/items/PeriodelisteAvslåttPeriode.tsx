@@ -3,7 +3,7 @@ import { onToggleItemProp } from '../../toggle-list/ToggleList';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import LinkButton from '../../link-button/LinkButton';
-import { Periode, AvslåttPeriode } from '../../../types/uttaksplan/periodetyper';
+import { AvslåttPeriode } from '../../../types/uttaksplan/periodetyper';
 import { Tidsperiode, NavnPåForeldre } from 'common/types';
 import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
 import Knapperad from 'common/components/knapperad/Knapperad';
@@ -19,7 +19,6 @@ export interface Props {
     onToggle: onToggleItemProp;
     periode: AvslåttPeriode;
     navnPåForeldre: NavnPåForeldre;
-    nesteUttaksperiode?: Periode;
     onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void;
     onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void;
 }

@@ -61,7 +61,6 @@ export const getPeriodeIkon = (periode: Periode, navnPåForeldre: NavnPåForeldr
                         konto={StønadskontoType.Foreldrepenger}
                         forelder={periode.forelder}
                         navnPåForeldre={navnPåForeldre}
-                        outline={true}
                     />
                 );
             }

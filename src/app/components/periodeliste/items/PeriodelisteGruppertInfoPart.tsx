@@ -4,14 +4,13 @@ import { onToggleItemProp } from '../../toggle-list/ToggleList';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { Periode, GruppertInfoPeriode } from '../../../types/uttaksplan/periodetyper';
-import { Tidsperiode, NavnPåForeldre } from 'common/types';
+import { NavnPåForeldre } from 'common/types';
 import PeriodelisteInfo from './PeriodelisteInfo';
 import { getPeriodeForelderNavn } from 'app/util/uttaksplan';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import EnkelPeriodeliste from 'app/components/enkelPeriodeliste/EnkelPeriodeliste';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { getPeriodeIkon } from '../elements/PeriodeHeader';
-// import { getForelderFarge } from 'app/util/uttaksplan/styleUtils';
 
 export interface Props {
     itemId: string;
@@ -19,10 +18,7 @@ export interface Props {
     onToggle: onToggleItemProp;
     periode: GruppertInfoPeriode;
     navnPåForeldre: NavnPåForeldre;
-    nesteUttaksperiode?: Periode;
     stil?: undefined | 'medRammeOgStrek';
-    onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void;
-    onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void;
 }
 
 const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedIntlProps> = ({
@@ -58,7 +54,6 @@ const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedInt
             ikon={getPeriodeIkon(periode, navnPåForeldre)}
             farge="transparent"
             border={stil === 'medRammeOgStrek'}
-            // periodeFargestrek={stil === 'medRammeOgStrek' ? getForelderFarge(periode.forelder) : undefined}
             renderContent={() => (
                 <div>
                     <EnkelPeriodeliste perioder={perioderITidsperiode} navnPåForeldre={navnPåForeldre} />
