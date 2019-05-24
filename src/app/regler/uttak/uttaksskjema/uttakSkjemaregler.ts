@@ -1,6 +1,6 @@
 import { Søknadsinfo } from 'app/selectors/types';
 import { UttakFormPeriodeType } from 'app/components/uttak-form/UttakForm';
-import { StønadskontoType, Periode } from 'app/types/uttaksplan/periodetyper';
+import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';
 import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
@@ -18,11 +18,7 @@ export interface UttakSkjemaregler {
     graderingSkalBesvares: () => boolean;
 }
 
-export const getUttakSkjemaregler = (
-    søknadsinfo: Søknadsinfo,
-    periode: UttakFormPeriodeType,
-    velgbareStønadskontotyper: StønadskontoType[]
-): UttakSkjemaregler => ({
+export const getUttakSkjemaregler = (søknadsinfo: Søknadsinfo, periode: UttakFormPeriodeType): UttakSkjemaregler => ({
     aktivitetskravMorSkalBesvares: () =>
         aktivitetskravMorSkalBesvares(
             periode as Periode,
