@@ -25,7 +25,7 @@ AxiosInstance.interceptors.response.use(
         if (store && response.response && response.response.status === 409) {
             store.dispatch(apiActionCreators.updateApi({ innloggetSomAnnenForelder: true }));
         }
-        return response;
+        return Promise.reject(response);
     }
 );
 
