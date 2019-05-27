@@ -29,7 +29,11 @@
         &:focus {
             z-index: 2;
         }
-        &--hideArrow  {
+        &:focus,
+        &:active {
+            background: inherit;
+        }
+        &--hideArrow {
             @media (max-width: @mobile-breakpoint) {
                 &__arrow {
                     display: none;
