@@ -171,8 +171,8 @@ const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Sak
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
         ønskerSamtidigUttak: saksperiode.samtidigUttak,
         gradert,
-        samtidigUttakProsent: saksperiode.samtidigUttaksprosent,
-        stillingsprosent: gradert ? saksperiode.arbeidstidprosent : undefined,
+        samtidigUttakProsent: saksperiode.samtidigUttaksprosent.toString(),
+        stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
         arbeidsformer: gradert ? [getArbeidsformFromUttakArbeidstype(saksperiode.uttakArbeidType)] : undefined,
         orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
         morsAktivitetIPerioden: saksperiode.morsAktivitetIPerioden
