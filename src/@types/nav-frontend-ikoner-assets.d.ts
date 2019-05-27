@@ -6,6 +6,7 @@ declare module 'nav-frontend-ikoner-assets' {
         | 'help-circle'
         | 'help-circle_hover'
         | 'info-sirkel-fyll'
+        | 'advarsel-sirkel-fyll'
         | 'ok-sirkel-fyll'
         | 'spinner'
         | 'spinner-negativ'
