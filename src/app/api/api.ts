@@ -86,34 +86,29 @@ function sendSøknad(søknad: SøknadForInnsending) {
 }
 
 function getStoredAppState() {
-    const url = '/storage';
-    return AxiosInstance.get(url, {
+    return AxiosInstance.get('/storage', {
         transformResponse: storageParser
     });
 }
 
 function storeAppState(state: Partial<AppState>) {
-    const url = '/storage';
     const { søknad, common } = state;
-    return AxiosInstance.post(url, { søknad, common }, { withCredentials: true });
+    return AxiosInstance.post('/storage', { søknad, common }, { withCredentials: true });
 }
 
 function deleteStoredAppState() {
-    const url = '/storage';
-    return AxiosInstance.delete(url, { withCredentials: true });
+    return AxiosInstance.delete('/storage', { withCredentials: true });
 }
 
 function sendStorageKvittering(storageKvittering: StorageKvittering) {
-    const url = '/storage/kvittering/foreldrepenger';
-    return AxiosInstance.post(url, storageKvittering, {
+    return AxiosInstance.post('/storage/kvittering/foreldrepenger', storageKvittering, {
         withCredentials: true,
         timeout: 15 * 1000
     });
 }
 
 function getStorageKvittering() {
-    const url = '/storage/kvittering/foreldrepenger';
-    return AxiosInstance.get(url, {
+    return AxiosInstance.get('/storage/kvittering/foreldrepenger', {
         withCredentials: true,
         timeout: 15 * 1000
     });
