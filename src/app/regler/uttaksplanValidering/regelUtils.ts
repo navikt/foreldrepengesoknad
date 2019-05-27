@@ -92,7 +92,9 @@ const overstyrerAndreFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelA
 };
 
 export const trimRelaterteRegelAvvik = (avvik: RegelAvvik[]): RegelAvvik[] => {
-    return uniqBy(avvik.filter(overstyresAvFilter).filter(overstyrerAndreFilter), (a) => a.key);
+    return uniqBy(avvik.filter(overstyresAvFilter).filter(overstyrerAndreFilter), (a) => {
+        return a.slåsSammenVedOppsummering ? a.key : guid();
+    });
 };
 
 export const getRegelIntlValues = (
