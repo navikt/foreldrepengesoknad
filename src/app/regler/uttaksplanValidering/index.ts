@@ -106,7 +106,7 @@ const uttaksplanRegler: Regel[] = [
     },
     {
         key: RegelKey.perioderManglerVedlegg,
-        alvorlighet: RegelAlvorlighet.INFO,
+        alvorlighet: RegelAlvorlighet.ADVARSEL,
         test: harPerioderManglendeVedleggTest,
         slåsSammenVedOppsummering: true
     },
