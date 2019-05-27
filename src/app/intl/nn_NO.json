@@ -775,6 +775,9 @@
     "uttaksplan.tomPlan": "Du har ikkje lagt til nokon perioder enno.",
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikkje lasta opp.",
     "uttaksplan.validering.advarsel.senÅrsakOgTidsperiode": "Du søker om utsetjing tilbake i tid.",
+    "uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode":
+        "<strong>{periode} ({tidsperiode})</strong> går over dagar som {forelder} allereie har fått godkjent.",
+
     "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikkje få foreldrepengar etter at barnet er fylt tre år.",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må vere ein vekedag.",
     "uttaksplan.validering.feil.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker":
