@@ -3,7 +3,7 @@ import { FormattedHTMLMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import getMessage from 'common/util/i18nUtils';
 import Input from 'common/components/skjema/wrappers/Input';
 import Block from 'common/components/block/Block';
-import { trimNumberFromInput } from 'common/util/numberUtils';
+import { getFloatFromString } from 'common/util/numberUtils';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import JaNeiSpørsmål from '../../ja-nei-spørsmål/JaNeiSpørsmål';
 import { Arbeidsform, Uttaksperiode, Periode } from '../../../types/uttaksplan/periodetyper';
@@ -29,18 +29,19 @@ type Props = OwnProps & InjectedIntlProps;
 class GradertUttakForm extends React.Component<Props> {
     handleStillingsprosentChange(stillingsprosent: string) {
         const { onChange } = this.props;
-
+        const pst = getFloatFromString(stillingsprosent);
         onChange({
-            stillingsprosent: trimNumberFromInput(stillingsprosent)
+            stillingsprosent: pst ? pst.toFixed(1) : stillingsprosent
         });
     }
 
     render() {
         const { periode, arbeidsforhold, visibility, intl, onChange, visAntallDagerUttak } = this.props;
 
+        const pst = getFloatFromString(periode.stillingsprosent || '');
         const uttaksdager = Perioden(periode as Periode).getAntallUttaksdager();
         const varighet =
-            periode.stillingsprosent && uttaksdager
+            pst && uttaksdager
                 ? getMessage(intl, 'gradert.uttak.varighet', {
                       varighet: getVarighetString(finnAntallDagerÅTrekke(uttaksdager, periode as Periode), intl)
                   })
@@ -70,15 +71,15 @@ class GradertUttakForm extends React.Component<Props> {
                             label={getMessage(intl, 'stillingsprosent')}
                             onChange={(v: string) =>
                                 onChange({
-                                    stillingsprosent: trimNumberFromInput(v)
+                                    stillingsprosent: v
                                 })
                             }
                             onBlur={(e: React.FocusEvent<HTMLInputElement>) =>
                                 this.handleStillingsprosentChange(e.target.value)
                             }
                             value={periode.stillingsprosent || ''}
-                            maxLength={3}
-                            validators={getStillingsprosentRegler(false, periode.stillingsprosent || 0, intl)}
+                            maxLength={4}
+                            validators={getStillingsprosentRegler(false, periode.stillingsprosent || '', intl)}
                         />
                     </Block>
                     {visAntallDagerUttakInfo && <div className="comment">{varighet}</div>}
