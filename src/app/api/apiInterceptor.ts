@@ -12,7 +12,7 @@ AxiosInstance.interceptors.request.use((config: AxiosRequestConfig): AxiosReques
 
     const søkerinfo = store.getState().api.søkerinfo;
     if (process.env.NODE_ENV !== 'development' && store && søkerinfo) {
-        config.headers['fnr'] = søkerinfo.person.fnr;
+        config.headers.fnr = søkerinfo.person.fnr;
     }
     return config;
 });
