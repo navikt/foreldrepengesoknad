@@ -12,7 +12,7 @@ import moment from 'moment';
 import './periodeheader.less';
 import { getIkonForAdvarsel } from 'app/util/validation/getAdvarselForPeriode';
 
-type AdvarselType = 'advarsel' | 'feil';
+type AdvarselType = 'info' | 'advarsel' | 'feil';
 
 export interface Advarsel {
     tittel?: string;
