@@ -1,5 +1,4 @@
 import * as React from 'react';
-import classnames from 'classnames';
 import { periodelisteBem } from '../Periodeliste';
 import PeriodeFargestrek from '../../periode-fargestrek/PeriodeFargestrek';
 import { UttaksplanColor } from '../../../types/uttaksplan/colors';
@@ -7,12 +6,27 @@ import { UttaksplanColor } from '../../../types/uttaksplan/colors';
 export interface Props {
     isExpanded?: boolean;
     farge: UttaksplanColor | undefined;
+    periodeFargestrek?: UttaksplanColor;
+    border?: boolean;
 }
 
-const PeriodelisteItemWrapper: React.StatelessComponent<Props> = ({ isExpanded, farge, children }) => {
+const PeriodelisteItemWrapper: React.StatelessComponent<Props> = ({
+    isExpanded,
+    farge,
+    periodeFargestrek,
+    border,
+    children
+}) => {
+    const bem = periodelisteBem.child('item');
     return (
-        <div className={classnames(periodelisteBem.element('item', isExpanded ? 'expanded' : undefined))}>
-            <PeriodeFargestrek farge={farge} />
+        <div
+            className={bem.classNames(
+                bem.block,
+                bem.modifierConditional('expanded', isExpanded),
+                bem.modifierConditional(farge, farge !== undefined),
+                bem.modifierConditional('border', border)
+            )}>
+            <PeriodeFargestrek farge={periodeFargestrek || farge} />
             {children}
         </div>
     );

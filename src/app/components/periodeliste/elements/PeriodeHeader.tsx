@@ -6,7 +6,8 @@ import {
     Periode,
     Periodetype,
     StønadskontoType,
-    isForeldrepengerFørFødselUttaksperiode
+    isForeldrepengerFørFødselUttaksperiode,
+    isGruppertInfoPeriode
 } from '../../../types/uttaksplan/periodetyper';
 import { Tidsperioden, getValidTidsperiode } from '../../../util/uttaksplan/Tidsperioden';
 import StønadskontoIkon from '../../uttaksplan-ikon/StønadskontoIkon';
@@ -29,27 +30,40 @@ export interface Props {
 const BEM = BEMHelper('periodelisteItemHeader');
 
 export const getPeriodeIkon = (periode: Periode, navnPåForeldre: NavnPåForeldre): JSX.Element | undefined => {
-    if (periode.type === Periodetype.Uttak) {
-        return (
-            <StønadskontoIkon
-                konto={periode.konto}
-                forelder={periode.forelder}
-                gradert={periode.gradert}
-                navnPåForeldre={navnPåForeldre}
-            />
-        );
-    } else if (periode.type === Periodetype.Overføring) {
-        return <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} navnPåForeldre={navnPåForeldre} />;
-    } else if (periode.type === Periodetype.Utsettelse) {
-        return <UtsettelseIkon årsak={periode.årsak} />;
-    } else if (periode.type === Periodetype.Opphold) {
-        return (
-            <StønadskontoIkon
-                konto={StønadskontoType.Foreldrepenger}
-                forelder={periode.forelder}
-                navnPåForeldre={navnPåForeldre}
-            />
-        );
+    switch (periode.type) {
+        case Periodetype.Uttak:
+            return (
+                <StønadskontoIkon
+                    konto={periode.konto}
+                    forelder={periode.forelder}
+                    gradert={periode.gradert}
+                    navnPåForeldre={navnPåForeldre}
+                />
+            );
+        case Periodetype.Overføring:
+            return (
+                <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} navnPåForeldre={navnPåForeldre} />
+            );
+        case Periodetype.Utsettelse:
+            return <UtsettelseIkon årsak={periode.årsak} />;
+        case Periodetype.Opphold:
+            return (
+                <StønadskontoIkon
+                    konto={StønadskontoType.Foreldrepenger}
+                    forelder={periode.forelder}
+                    navnPåForeldre={navnPåForeldre}
+                />
+            );
+        case Periodetype.Info:
+            if (isGruppertInfoPeriode(periode)) {
+                return (
+                    <StønadskontoIkon
+                        konto={StønadskontoType.Foreldrepenger}
+                        forelder={periode.forelder}
+                        navnPåForeldre={navnPåForeldre}
+                    />
+                );
+            }
     }
     return undefined;
 };
@@ -80,16 +94,6 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     return (
         <PeriodelisteItemHeader
             type="periode"
-            ariaTekst={getMessage(intl, 'periodeliste.header.ariaBeskrivelse', {
-                periodetittel,
-                foreldernavn,
-                tidOgVarighet: visDatoer
-                    ? erFpFørTerminUtenUttak
-                        ? varighetString
-                        : `${Tidsperioden(periode.tidsperiode).formaterString(intl)} (${varighetString})`
-                    : varighetString,
-                advarsel: advarsel ? `${advarsel.beskrivelse}.` : ''
-            })}
             isOpen={isOpen}
             advarsel={advarsel}
             tittel={periodetittel}

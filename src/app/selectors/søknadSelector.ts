@@ -4,6 +4,8 @@ import { RecursivePartial } from '../types/Partial';
 import { Dekningsgrad } from 'common/types';
 import { AppState } from '../redux/reducers';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 export const søknadSelector = (state: AppState): RecursivePartial<Søknad> => state.søknad;
 
@@ -72,4 +74,27 @@ export const selectAnnenForelderHarRettPåForeldrepenger = createSelector(
 export const getAnnenForelderKanIkkeOppgis = createSelector(
     [selectAnnenForelder],
     (annenForelder = {}) => annenForelder.kanIkkeOppgis
+);
+
+export const selectUttaksplan = createSelector([søknadSelector], (søknad): Periode[] => søknad.uttaksplan as Periode[]);
+
+export const selectEksisterendeSak = createSelector(
+    [søknadSelector],
+    (søknad): EksisterendeSak | undefined =>
+        søknad.erEndringssøknad && søknad.ekstrainfo
+            ? (søknad.ekstrainfo.eksisterendeSak as EksisterendeSak)
+            : undefined
+);
+
+export const selectEksisterendeUttaksplan = createSelector(
+    [selectEksisterendeSak],
+    (eksisterendeSak): Periode[] | undefined =>
+        eksisterendeSak ? (eksisterendeSak.uttaksplan as Periode[]) : undefined
+);
+
+export const selectPerioderSomSkalSendesInn = createSelector(
+    [selectUttaksplan, selectEksisterendeUttaksplan],
+    (nyPlan, opprinneligPlan): Periode[] => {
+        return opprinneligPlan ? getEndretUttaksplanForInnsending(opprinneligPlan, nyPlan) || [] : nyPlan;
+    }
 );

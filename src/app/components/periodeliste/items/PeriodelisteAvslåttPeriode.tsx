@@ -3,7 +3,7 @@ import { onToggleItemProp } from '../../toggle-list/ToggleList';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import LinkButton from '../../link-button/LinkButton';
-import { Periode, InfoPeriode } from '../../../types/uttaksplan/periodetyper';
+import { AvslåttPeriode } from '../../../types/uttaksplan/periodetyper';
 import { Tidsperiode, NavnPåForeldre } from 'common/types';
 import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
 import Knapperad from 'common/components/knapperad/Knapperad';
@@ -17,9 +17,8 @@ export interface Props {
     itemId: string;
     isExpanded: boolean;
     onToggle: onToggleItemProp;
-    periode: InfoPeriode;
+    periode: AvslåttPeriode;
     navnPåForeldre: NavnPåForeldre;
-    nesteUttaksperiode?: Periode;
     onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void;
     onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void;
 }
@@ -59,7 +58,7 @@ const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntl
 
     const beskrivelse = getMessage(intl, 'periodeliste.ikkeInvilgetPeriode.beskrivelse', {
         varighet: getVarighetString(antallDager, intl),
-        konto: getStønadskontoNavn(intl, periode.konto, navnPåForeldre)
+        konto: getStønadskontoNavn(intl, periode.stønadskonto, navnPåForeldre)
     });
 
     return (
