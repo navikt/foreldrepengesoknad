@@ -15,13 +15,10 @@ import UtsettelseIkon from '../../uttaksplan-ikon/UtsettelseIkon';
 import getMessage from 'common/util/i18nUtils';
 import { getPeriodeForelderNavn, getPeriodeTittel } from '../../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
-import { ValidertPeriode } from '../../../redux/reducers/uttaksplanValideringReducer';
 import PeriodelisteItemHeader, { Advarsel } from './../elements/PeriodelisteItemHeader';
-import { getAdvarselForPeriode } from 'app/util/validation/getAdvarselForPeriode';
 
 export interface Props {
     periode: Periode;
-    validertPeriode: ValidertPeriode;
     navnPåForeldre: NavnPåForeldre;
     advarsel?: Advarsel;
     isOpen?: boolean;
@@ -71,8 +68,8 @@ export const getPeriodeIkon = (periode: Periode, navnPåForeldre: NavnPåForeldr
 const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     periode,
     navnPåForeldre,
-    validertPeriode,
     isOpen,
+    advarsel,
     intl
 }) => {
     const gyldigTidsperiode = getValidTidsperiode(periode.tidsperiode);
@@ -90,7 +87,6 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     }
     const foreldernavn = getPeriodeForelderNavn(periode, navnPåForeldre);
     const periodetittel = getPeriodeTittel(intl, periode, navnPåForeldre);
-    const advarsel = getAdvarselForPeriode(validertPeriode, intl);
     return (
         <PeriodelisteItemHeader
             type="periode"
