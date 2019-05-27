@@ -789,7 +789,7 @@
     "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
         "Du kan ikke søke om utsettelse før foreldrepengeperioden din starter.",
     "uttaksplan.validering.feil.morHarSøktUgyldigUttakFørsteSeksUker":
-        "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb, kombinere pengene med delvis arbeid eller benytte deg av flerbarnsukene eller fellesperioden de første seks ukene du tar ut foreldrepenger.",
+        "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb, kombinere foreldrepenger med delvis arbeid eller bruke fellesperioden de første seks ukene du tar ut foreldrepenger.",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode.",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det mangler informasjon om perioden.",
