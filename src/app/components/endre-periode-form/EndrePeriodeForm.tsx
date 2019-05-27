@@ -110,7 +110,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
                 <>
                     <Block visible={advarsel !== undefined}>
                         {advarsel && (
-                            <AlertStripe type={advarsel.type === 'advarsel' ? 'info' : 'advarsel'}>
+                            <AlertStripe type={advarsel.type === 'advarsel' ? 'info' : 'feil'}>
                                 {advarsel && advarsel.beskrivelse}
                             </AlertStripe>
                         )}
