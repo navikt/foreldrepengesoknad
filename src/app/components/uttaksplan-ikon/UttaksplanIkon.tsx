@@ -32,7 +32,7 @@ const UttaksplanIkon: React.StatelessComponent<Props> = ({ ikon, title }) => {
         case 'termin':
             return <TerminIkon title={title} />;
         case 'advarsel':
-            return <Ikon kind="info-sirkel-fyll" size="1.5rem" />;
+            return <Ikon kind="advarsel-sirkel-fyll" size="1.5rem" />;
         case 'feil':
             return <Ikon kind="feil-sirkel-fyll" size="1.5rem" />;
         default:

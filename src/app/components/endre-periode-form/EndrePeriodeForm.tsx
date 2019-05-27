@@ -109,11 +109,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
             <ValiderbarForm className={bem.block} validateBeforeSubmit={true}>
                 <>
                     <Block visible={advarsel !== undefined}>
-                        {advarsel && (
-                            <AlertStripe type={advarsel.type === 'advarsel' ? 'info' : 'feil'}>
-                                {advarsel && advarsel.beskrivelse}
-                            </AlertStripe>
-                        )}
+                        {advarsel && <AlertStripe type={advarsel.type}>{advarsel && advarsel.beskrivelse}</AlertStripe>}
                     </Block>
                     {periode.type === Periodetype.Utsettelse ? (
                         <UtsettelseForm
