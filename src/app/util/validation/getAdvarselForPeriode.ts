@@ -36,5 +36,9 @@ export const getIkonForAdvarsel = (advarsel: Advarsel): UttaksplanIkonKeys => {
         return UttaksplanIkonKeys.advarsel;
     }
 
+    if (advarsel.type === 'info') {
+        return UttaksplanIkonKeys.info;
+    }
+
     return UttaksplanIkonKeys.feil;
 };
