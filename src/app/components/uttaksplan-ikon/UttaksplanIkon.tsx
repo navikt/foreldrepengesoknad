@@ -12,6 +12,7 @@ export enum UttaksplanIkonKeys {
     'sykdom' = 'sykdom',
     'termin' = 'termin',
     'uttak' = 'uttak',
+    'info' = 'info',
     'advarsel' = 'advarsel',
     'feil' = 'feil'
 }
@@ -31,6 +32,8 @@ const UttaksplanIkon: React.StatelessComponent<Props> = ({ ikon, title }) => {
             return <SykdomIkon title={title} />;
         case 'termin':
             return <TerminIkon title={title} />;
+        case 'info':
+            return <Ikon kind="info-sirkel-fyll" size="1.5rem" />;
         case 'advarsel':
             return <Ikon kind="advarsel-sirkel-fyll" size="1.5rem" />;
         case 'feil':
