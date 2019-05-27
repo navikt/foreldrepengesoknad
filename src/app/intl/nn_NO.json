@@ -795,6 +795,8 @@
     "uttaksplan.validering.feil.morHarSøktUgyldigUttakFørsteSeksUker":
         "Du kan ikkje leggje inn utsetjing på grunn av ferie eller jobb, kombinere foreldrepengane med delvis arbeid eller nytta deg av fellesperioden dei første seks vekene du tek ut foreldrepengar.",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlappar ein annan periode.",
+    "uttaksplan.validering.feil.periodeoverlapp.oppsummering":
+        "<strong>{periode} ({tidsperiode})</strong> overlappar med ein eller fleire andre periodar.",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå vidare i søknaden.",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det manglar informasjon om perioden.",
     "uttaksplan.validering.feil.planenInneholderIngenPerioder":

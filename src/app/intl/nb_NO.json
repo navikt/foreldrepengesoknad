@@ -775,7 +775,7 @@
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp.",
     "uttaksplan.validering.advarsel.senÅrsakOgTidsperiode": "Du søker om utsettelse tilbake i tid.",
     "uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode":
-        "<strong>{periode} ({tidsperiode})</strong> gåt over dagar som {forelder} allerede har fått innvilget.",
+        "<strong>{periode} ({tidsperiode})</strong> går over dagar som {forelder} allerede har fått innvilget.",
     "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikke få foreldrepenger etter at barnet er fylt tre år.",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag.",
     "uttaksplan.validering.feil.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker":
@@ -793,6 +793,8 @@
     "uttaksplan.validering.feil.morHarSøktUgyldigUttakFørsteSeksUker":
         "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb, kombinere foreldrepenger med delvis arbeid eller bruke fellesperioden de første seks ukene du tar ut foreldrepenger.",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode.",
+    "uttaksplan.validering.feil.periodeoverlapp.oppsummering":
+        "<strong>{periode} ({tidsperiode})</strong> overlapper med en eller flere andre perioder.",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det mangler informasjon om perioden.",
     "uttaksplan.validering.feil.planenInneholderIngenPerioder":
