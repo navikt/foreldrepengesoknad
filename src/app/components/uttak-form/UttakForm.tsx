@@ -47,7 +47,7 @@ import {
     getStønadskontoFromOppholdsårsak,
     getOppholdsÅrsakFromStønadskonto
 } from 'app/util/uttaksplan/uttaksperiodeUtils';
-import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
 import lenker from 'app/util/routing/lenker';
 import UlønnetPermisjonInfo from './partials/UlønnetPermisjonInfo';
@@ -554,7 +554,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => {
-    const søknadsinfo = getSøknadsinfo(state);
+    const søknadsinfo = selectSøknadsinfo(state);
     const arbeidsforhold = selectArbeidsforhold(state);
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
 

@@ -27,15 +27,16 @@ import YtelseInfoWrapper from 'common/components/ytelser-infobox/InformasjonOmYt
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { formatDate } from 'app/util/dates/dates';
 import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
-import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
+import { selectSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import {
     uttaksplanInneholderFrilansaktivitet,
     uttaksplanInneholderSelvstendignæringaktivitet
 } from 'app/util/uttaksplan';
-import { findMissingAttachments, mapMissingAttachmentsOnSøknad } from 'app/util/attachments/missingAttachmentUtil';
+import { mapMissingAttachmentsOnSøknad } from 'app/util/attachments/missingAttachmentUtil';
 import { findAllAttachments } from '../manglende-vedlegg/manglendeVedleggUtil';
 import _ from 'lodash';
 import { skalViseManglendeVedleggSteg } from '../util/navigation';
+import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
 
 interface StateProps {
     stegProps: StegProps;
@@ -166,7 +167,7 @@ class AndreInntekterSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const { søknad, api } = state;
+    const { søknad } = state;
     const { history } = props;
     const { søker, uttaksplan } = søknad;
     const { arbeidsforhold } = props.søkerinfo;
@@ -174,8 +175,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const planInneholderSelvstendignæringaktivitet: boolean = uttaksplanInneholderSelvstendignæringaktivitet(
         uttaksplan
     );
-
-    const missingAttachments = findMissingAttachments(søknad, api, getSøknadsinfo(state)!);
+    const missingAttachments = selectMissingAttachments(state);
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
 
     const stegProps: StegProps = {
@@ -183,7 +183,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFortsettKnapp: annenInntektErGyldig(søker),
         renderFormTag: true,
         history,
-        isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo, getSøknadsinfo(state)),
+        isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo, selectSøknadsinfo(state)),
         nesteStegID: skalViseManglendeVedleggSteg(attachmentMap) ? StegID.MANGLENDE_VEDLEGG : StegID.OPPSUMMERING
     };
 

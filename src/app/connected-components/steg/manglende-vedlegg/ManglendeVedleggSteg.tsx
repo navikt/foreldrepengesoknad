@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StegID } from 'app/util/routing/stegConfig';
 import { AppState } from 'app/redux/reducers';
-import { findMissingAttachments, mapMissingAttachmentsOnSøknad } from 'app/util/attachments/missingAttachmentUtil';
+import { mapMissingAttachmentsOnSøknad } from 'app/util/attachments/missingAttachmentUtil';
 import Steg, { StegProps } from 'app/components/steg/Steg';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { DispatchProps } from 'common/redux/types';
@@ -11,7 +11,7 @@ import { SøkerinfoProps } from 'app/types/søkerinfo';
 import { connect } from 'react-redux';
 import Block from 'common/components/block/Block';
 import VedleggSpørsmål from 'app/components/vedlegg-spørsmål/VedleggSpørsmål';
-import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
 import Søknad from 'app/types/søknad/Søknad';
 import { soknadActionCreators } from 'app/redux/actions';
@@ -34,6 +34,7 @@ import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import søknadActions from 'app/redux/actions/søknad/søknadActionCreators';
 import { UfødtBarn } from 'app/types/søknad/Barn';
 import { guid } from 'nav-frontend-js-utils';
+import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
 
 interface ReduxProps {
     stegProps: StegProps;
@@ -166,8 +167,8 @@ class ManglendeVedleggsteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
-    const { søknad, api } = state;
-    const missingAttachments = findMissingAttachments(søknad, api, getSøknadsinfo(state)!);
+    const { søknad } = state;
+    const missingAttachments = selectMissingAttachments(state);
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
 
     const førsteUttaksdagEllerUttsettelsesdag = søknad.uttaksplan
@@ -186,7 +187,7 @@ const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
             missingAttachments.length === 0,
         history: props.history,
         renderFormTag: true,
-        isAvailable: isAvailable(StegID.MANGLENDE_VEDLEGG, søknad, props.søkerinfo, getSøknadsinfo(state))
+        isAvailable: isAvailable(StegID.MANGLENDE_VEDLEGG, søknad, props.søkerinfo, selectSøknadsinfo(state))
     };
 
     return {

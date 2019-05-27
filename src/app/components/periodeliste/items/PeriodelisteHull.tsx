@@ -3,7 +3,7 @@ import { onToggleItemProp } from '../../toggle-list/ToggleList';
 import { injectIntl, InjectedIntlProps, FormattedMessage, InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import LinkButton from '../../link-button/LinkButton';
-import { PeriodeHull, Periode, isAvslåttPeriode } from '../../../types/uttaksplan/periodetyper';
+import { PeriodeHull, isAvslåttPeriode } from '../../../types/uttaksplan/periodetyper';
 import { Tidsperiode, NavnPåForeldre } from 'common/types';
 import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
 import Knapperad from 'common/components/knapperad/Knapperad';
@@ -19,7 +19,6 @@ export interface Props {
     onToggle: onToggleItemProp;
     periode: PeriodeHull;
     navnPåForeldre: NavnPåForeldre;
-    nesteUttaksperiode?: Periode;
     onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void;
     onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void;
 }
@@ -37,7 +36,7 @@ const getTittelOgBeskrivelseForHull = (
             }),
             beskrivelse: getMessage(intl, 'periodeliste.ikkeInvilgetPeriode.beskrivelse', {
                 varighet: getVarighetString(dager, intl),
-                konto: getStønadskontoNavn(intl, periode.konto, navnPåForeldre)
+                konto: getStønadskontoNavn(intl, periode.stønadskonto, navnPåForeldre)
             })
         };
     }

@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { onToggleItemProp } from '../../toggle-list/ToggleList';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
 import PeriodelisteToggleItem from '../elements/PeriodelisteToggleItem';
 import PeriodelisteItemHeader from '../elements/PeriodelisteItemHeader';
 import PeriodelisteItemWrapper from '../elements/PeriodelisteItemWrapper';
+import { UttaksplanColor } from 'app/types/uttaksplan/colors';
+import { Tidsperiode } from 'common/types';
 
 interface Props extends PeriodelisteInformasjon {
     isExpanded: boolean;
@@ -14,11 +15,15 @@ export interface PeriodelisteInformasjon {
     id: string;
     tittel: string;
     beskrivelse?: React.ReactNode;
+    tidsperiode?: Tidsperiode;
     ikon: React.ReactNode;
     renderContent: () => JSX.Element;
+    farge?: UttaksplanColor;
+    periodeFargestrek?: UttaksplanColor;
+    border?: boolean;
 }
 
-const PeriodelisteInfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const PeriodelisteInfo: React.StatelessComponent<Props> = ({
     id,
     isExpanded,
     onToggle,
@@ -26,16 +31,30 @@ const PeriodelisteInfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
     ikon,
     tittel,
     beskrivelse,
-    intl
+    tidsperiode,
+    farge = 'yellow',
+    border,
+    periodeFargestrek
 }) => {
     return (
-        <PeriodelisteItemWrapper key={id} farge="yellow" isExpanded={isExpanded}>
+        <PeriodelisteItemWrapper
+            key={id}
+            farge={farge}
+            periodeFargestrek={periodeFargestrek}
+            isExpanded={isExpanded}
+            border={border}>
             <PeriodelisteToggleItem
                 id={id}
                 isExpanded={isExpanded}
                 onToggle={onToggle}
                 renderHeader={() => (
-                    <PeriodelisteItemHeader type="info" ikon={ikon} tittel={tittel} beskrivelse={beskrivelse} />
+                    <PeriodelisteItemHeader
+                        type="info"
+                        ikon={ikon}
+                        tittel={tittel}
+                        beskrivelse={beskrivelse}
+                        tidsperiode={tidsperiode}
+                    />
                 )}
                 renderContent={renderContent}
             />
@@ -43,4 +62,4 @@ const PeriodelisteInfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
     );
 };
 
-export default injectIntl(PeriodelisteInfo);
+export default PeriodelisteInfo;

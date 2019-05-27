@@ -1,4 +1,4 @@
-import { Periode } from 'app/types/uttaksplan/periodetyper';
+import { Periode, isInfoPeriode } from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from './Perioden';
 import moment from 'moment';
 import DateValues from '../validation/values';
@@ -136,10 +136,7 @@ const justerStartdatoFørsteEndring = (endringer: Periode[], opprinneligPlan: Pe
     return endringer;
 };
 
-export const getEndretUttaksplanForInnsending = (
-    opprinneligPlan: Periode[],
-    nyPlan: Periode[]
-): Periode[] | undefined => {
+export const getEndretUttaksplanForInnsending = (opprinneligPlan: Periode[], nyPlan: Periode[]): Periode[] => {
     const endringer = finnEndringerIUttaksplan(opprinneligPlan, nyPlan);
     if (endringer && endringer.length > 0) {
         if (endringer.length === 1) {
@@ -150,7 +147,7 @@ export const getEndretUttaksplanForInnsending = (
                 return [justerKunEndretSisteperiode(endretPeriode, opprinneligPeriode)];
             }
         }
-        return justerStartdatoFørsteEndring(endringer, opprinneligPlan);
+        return justerStartdatoFørsteEndring(endringer, opprinneligPlan).filter((p) => isInfoPeriode(p) === false);
     }
-    return undefined;
+    return [];
 };

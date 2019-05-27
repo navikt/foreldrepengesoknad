@@ -27,9 +27,9 @@ import { søknadStegPath } from '../StegRoutes';
 import Block from 'common/components/block/Block';
 import LinkButton from '../../../components/link-button/LinkButton';
 import { MissingAttachment } from '../../../types/MissingAttachment';
-import { findMissingAttachments, mapMissingAttachmentsOnSøknad } from '../../../util/attachments/missingAttachmentUtil';
+import { mapMissingAttachmentsOnSøknad } from '../../../util/attachments/missingAttachmentUtil';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
-import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
@@ -39,6 +39,7 @@ import { skalViseManglendeVedleggSteg } from '../util/navigation';
 import ErAnnenForelderInformertSpørsmål from 'app/spørsmål/ErAnnenForelderInformertSpørsmål';
 import VeilederInfo from 'app/components/veileder-info/VeilederInfo';
 import AlertStripe from 'nav-frontend-alertstriper';
+import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -197,15 +198,15 @@ class OppsummeringSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const { søknad, api } = state;
+    const { søknad } = state;
     const { person } = props.søkerinfo;
     const {
         api: { isLoadingTilgjengeligeStønadskontoer }
     } = state;
 
-    const søknadsinfo = getSøknadsinfo(state)!;
+    const søknadsinfo = selectSøknadsinfo(state)!;
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
-    const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, api, søknadsinfo);
+    const missingAttachments: MissingAttachment[] = selectMissingAttachments(state);
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
     const antallUkerUttaksplan = getAntallUker(tilgjengeligeStønadskontoer);
     const previousStegID = søknadsinfo.søknaden.erEndringssøknad

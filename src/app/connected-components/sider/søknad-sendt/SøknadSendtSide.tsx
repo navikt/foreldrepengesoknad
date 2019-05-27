@@ -24,12 +24,12 @@ import { MissingAttachment } from 'app/types/MissingAttachment';
 import { isFeatureEnabled, Feature } from 'app/Feature';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 
-import { findMissingAttachments } from 'app/util/attachments/missingAttachmentUtil';
-import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søkerinfo } from 'app/types/søkerinfo';
 
-import './søknadSendtSide.less';
 import lenker from 'app/util/routing/lenker';
+import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
+
+import './søknadSendtSide.less';
 
 interface StateProps {
     søkerinfo: Søkerinfo;
@@ -146,7 +146,7 @@ const mapStateToProps = (state: any) => {
         søkerinfo: state.api.søkerinfo,
         kvittering: state.api.kvittering,
         erEndringssøknad: state.søknad.erEndringssøknad,
-        missingAttachments: findMissingAttachments(state.søknad, state.api, getSøknadsinfo(state)!),
+        missingAttachments: selectMissingAttachments(state),
         behandlingsFrist: moment(førsteUttaksdag)
             .subtract(4, 'weeks')
             .format('dddd Do MMM YYYY')

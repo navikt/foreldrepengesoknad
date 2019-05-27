@@ -457,7 +457,6 @@
     "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{annenForelderNavn} er innlagd på helseinstitusjon",
     "overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "For sjuk til å ta seg av barnet",
     "papirsøknad.lenke": "Her finn du papirsøknaden",
-    "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.hull.beskrivelse":
@@ -482,6 +481,7 @@
         "Du kan ikke endre datoen slik at den går over en annen periode med utsettelse.",
     "periodeliste.utsettelse.overlappendeTidsperiode.ny":
         "Det er allerede registrert utsettelse i denne perioden. Du må fjerne perioden med utsettelse før du kan legge inn en ny.",
+    "periodeliste.gruppertInfo.tittel": "{navn} {antallPerioder, plural, one{periode} other {perioder}}",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
     "personalia.år": "{år} år",
     "pgasykdom": "På grunn av sjukdom",

@@ -13,6 +13,7 @@ function createEnvSettingsFile(settingsFile) {
                 FEATURE_HENT_EKSISTERENDE_SAK:  '${process.env.FEATURE_HENT_EKSISTERENDE_SAK}',
                 FEATURE_VIS_AVSLATT_PERIODE:  '${process.env.FEATURE_VIS_AVSLATT_PERIODE}',
                 FEATURE_MAP_OPPHOLD:  '${process.env.FEATURE_MAP_OPPHOLD}',
+                FEATURE_MAP_ANNEN_PART_TIL_INFO:  '${process.env.FEATURE_MAP_ANNEN_PART_TIL_INFO}',
                 FEATURE_VIS_INFOSKRIV:  '${process.env.FEATURE_VIS_INFOSKRIV}'
             };`
         );

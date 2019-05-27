@@ -19,7 +19,7 @@ import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { Søknadsinfo } from '../../../selectors/types';
-import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
+import { selectSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import uttaksConstants from 'app/constants';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
@@ -121,7 +121,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps): StateProps => {
     const { history } = props;
-    const søknadsinfo = getSøknadsinfo(state)!;
+    const søknadsinfo = selectSøknadsinfo(state)!;
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN_SKJEMA,
         renderFortsettKnapp: uttaksplanSkjemaErGyldig(state.søknad, søknadsinfo),
