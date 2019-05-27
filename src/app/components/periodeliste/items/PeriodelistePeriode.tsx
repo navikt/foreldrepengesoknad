@@ -43,12 +43,7 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
                 isExpanded={isExpanded}
                 onToggle={onToggle}
                 renderHeader={() => (
-                    <PeriodeHeader
-                        periode={periode}
-                        navnPåForeldre={navnPåForeldre}
-                        validertPeriode={validertPeriode}
-                        advarsel={advarsel}
-                    />
+                    <PeriodeHeader periode={periode} navnPåForeldre={navnPåForeldre} advarsel={advarsel} />
                 )}
                 renderContent={() => (
                     <EndrePeriodeForm
