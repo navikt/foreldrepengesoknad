@@ -94,8 +94,8 @@ function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
 
 function finnOverlappendePerioder(perioder: Periode[], periode: Periode): Periode[] {
     return perioder.filter((p) => {
-        if (p.id === periode.id) {
-            return;
+        if (p.id === periode.id || !isValidTidsperiode(periode.tidsperiode)) {
+            return false;
         }
         const { fom, tom } = p.tidsperiode;
         if (!fom || !tom) {
