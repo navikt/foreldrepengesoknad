@@ -5,7 +5,7 @@ import Block from 'common/components/block/Block';
 import Lenke from 'nav-frontend-lenker';
 import lenker from '../../../util/routing/lenker';
 import { UttakSpørsmålKeys, UttakSpørsmålVisibility } from '../uttakFormConfig';
-import { trimNumberFromInput } from 'common/util/numberUtils';
+import { getFloatFromString } from 'common/util/numberUtils';
 import { Perioden } from 'app/util/uttaksplan/Perioden';
 import { Periode, Uttaksperiode } from 'app/types/uttaksplan/periodetyper';
 import { RecursivePartial } from 'app/types/Partial';
@@ -32,9 +32,9 @@ type Props = OwnProps & InjectedIntlProps;
 class SamtidigUttakPart extends React.Component<Props> {
     handleSamtidigUttakProsentChange(samtidigUttakProsent: string) {
         const { onChange } = this.props;
-
+        const pst = getFloatFromString(samtidigUttakProsent);
         onChange({
-            samtidigUttakProsent: trimNumberFromInput(samtidigUttakProsent)
+            samtidigUttakProsent: pst ? pst.toFixed(1) : samtidigUttakProsent
         });
     }
 
@@ -52,9 +52,10 @@ class SamtidigUttakPart extends React.Component<Props> {
 
         const ønskerFlerbarnsuker = periode.ønskerFlerbarnsdager;
         const morFlerbarnssøknad = søkerErMor && erFlerbarnssøknad;
+        const pst = getFloatFromString(periode.samtidigUttakProsent || '');
         const uttaksdager = Perioden(periode as Periode).getAntallUttaksdager();
         const varighet =
-            periode.samtidigUttakProsent && uttaksdager
+            pst && uttaksdager
                 ? getMessage(intl, 'samtidig.uttak.varighet', {
                       varighet: getVarighetString(finnAntallDagerÅTrekke(uttaksdager, periode as Periode), intl)
                   })
@@ -100,15 +101,15 @@ class SamtidigUttakPart extends React.Component<Props> {
                             label={getMessage(intl, 'samtidigUttakProsent')}
                             onChange={(v: string) =>
                                 onChange({
-                                    samtidigUttakProsent: trimNumberFromInput(v)
+                                    samtidigUttakProsent: v
                                 })
                             }
                             onBlur={(e: React.FocusEvent<HTMLInputElement>) =>
                                 this.handleSamtidigUttakProsentChange(e.target.value)
                             }
                             value={periode.samtidigUttakProsent || ''}
-                            maxLength={3}
-                            validators={getStillingsprosentRegler(true, periode.samtidigUttakProsent || 0, intl)}
+                            maxLength={4}
+                            validators={getStillingsprosentRegler(true, periode.samtidigUttakProsent || '', intl)}
                         />
                     </Block>
                 </Block>
