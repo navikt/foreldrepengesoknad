@@ -23,6 +23,7 @@ interface StateProps {
     språkkode: Språkkode;
     erEndringssøknad: boolean;
     sessionHasExpired: boolean;
+    innloggetSomAnnenBruker: boolean;
 }
 
 type Props = OwnProps & StateProps & DispatchProps & InjectedIntlProps;
@@ -39,6 +40,7 @@ class Sidemal extends React.Component<Props> {
             children,
             erEndringssøknad,
             sessionHasExpired,
+            innloggetSomAnnenBruker,
             margin = true,
             dispatch
         } = this.props;
@@ -63,6 +65,7 @@ class Sidemal extends React.Component<Props> {
                 )}
                 <div className={cls}>{children}</div>
                 <UtløptSesjonModal erÅpen={sessionHasExpired} />
+                {innloggetSomAnnenBruker && <UtløptSesjonModal erÅpen={true} />}
             </React.Fragment>
         );
     }
@@ -71,7 +74,8 @@ class Sidemal extends React.Component<Props> {
 const mapStateToProps = (state: AppState): StateProps => ({
     språkkode: state.common.språkkode,
     erEndringssøknad: state.søknad.erEndringssøknad,
-    sessionHasExpired: state.api.sessionHasExpired
+    sessionHasExpired: state.api.sessionHasExpired,
+    innloggetSomAnnenBruker: state.api.innloggetSomAnnenForelder
 });
 
 export default connect(mapStateToProps)(injectIntl(Sidemal));
