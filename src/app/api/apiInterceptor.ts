@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosError } from 'axios';
+import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
 import Environment from 'app/Environment';
 import store from 'app/redux';
 import { apiActionCreators } from 'app/redux/actions';
@@ -17,10 +17,15 @@ AxiosInstance.interceptors.request.use((config: AxiosRequestConfig): AxiosReques
     return config;
 });
 
-AxiosInstance.interceptors.response.use(undefined, (response: AxiosError) => {
-    if (store && response.response && response.response.status === 409) {
-        store.dispatch(apiActionCreators.updateApi({ innloggetSomAnnenForelder: true }));
+AxiosInstance.interceptors.response.use(
+    (response: AxiosResponse) => {
+        return response;
+    },
+    (response: AxiosError) => {
+        if (store && response.response && response.response.status === 409) {
+            store.dispatch(apiActionCreators.updateApi({ innloggetSomAnnenForelder: true }));
+        }
     }
-});
+);
 
 export default AxiosInstance;
