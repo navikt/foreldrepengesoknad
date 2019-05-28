@@ -1,6 +1,5 @@
 import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
-
-import { harFarMedmorSøktUgyldigUttakFørsteSeksUker } from '../../../util/validation/uttaksplan/uttakFarValidation';
+import { getUgyldigUttakFørsteSeksUkerForFarMedmor } from '../../../util/validation/uttaksplan/uttakFarValidation';
 
 export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: RegelTest = (
     grunnlag: Regelgrunnlag
@@ -11,16 +10,20 @@ export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: Re
     } = grunnlag;
 
     if (søker.erFarEllerMedmor) {
+        const ugyldigePerioder = getUgyldigUttakFørsteSeksUkerForFarMedmor(
+            perioder,
+            søknaden.familiehendelsesdato,
+            søknaden.antallBarn,
+            søknaden.situasjon,
+            grunnlag.søknadsinfo.annenForelder,
+            grunnlag.søknadsinfo.søker.erAleneOmOmsorg
+        );
+        const passerer = ugyldigePerioder.length === 0;
         return {
-            passerer:
-                harFarMedmorSøktUgyldigUttakFørsteSeksUker(
-                    perioder,
-                    søknaden.familiehendelsesdato,
-                    søknaden.antallBarn,
-                    søknaden.situasjon,
-                    grunnlag.søknadsinfo.annenForelder,
-                    grunnlag.søknadsinfo.søker.erAleneOmOmsorg
-                ) === false
+            passerer,
+            info: ugyldigePerioder.map((periode) => ({
+                periodeId: periode.id
+            }))
         };
     }
 

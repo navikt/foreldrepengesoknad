@@ -54,8 +54,28 @@ export const harFarMedmorSøktUgyldigUttakFørsteSeksUker = (
     annenForelder: OmAnnenForelder,
     erAleneOmOmsorg: boolean
 ): boolean => {
+    return (
+        getUgyldigUttakFørsteSeksUkerForFarMedmor(
+            perioder,
+            familiehendelsesdato,
+            antallBarn,
+            situasjon,
+            annenForelder,
+            erAleneOmOmsorg
+        ).length > 0
+    );
+};
+
+export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
+    perioder: Periode[],
+    familiehendelsesdato: Date,
+    antallBarn: number,
+    situasjon: Søkersituasjon,
+    annenForelder: OmAnnenForelder,
+    erAleneOmOmsorg: boolean
+): Periode[] => {
     if (situasjon === Søkersituasjon.ADOPSJON || annenForelder.kanIkkeOppgis || erAleneOmOmsorg) {
-        return false;
+        return [];
     }
 
     const førsteUttaksdag = uttaksdatoer(familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
@@ -82,5 +102,5 @@ export const harFarMedmorSøktUgyldigUttakFørsteSeksUker = (
         .getUtsettelser()
         .filter((utsettelse) => utsettelse.årsak !== UtsettelseÅrsakType.InstitusjonBarnet);
 
-    return ugyldigeUttak.length + ugyldigeOverføringer.length + ugyldigeUtsettelser.length > 0;
+    return [...ugyldigeUttak, ...ugyldigeOverføringer, ...ugyldigeUtsettelser];
 };
