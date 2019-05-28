@@ -27,6 +27,7 @@ export interface Regelgrunnlag {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     tilleggsopplysninger: Tilleggsopplysninger;
     perioderSomSkalSendesInn: Periode[];
+    eksisterendeUttaksplan: Periode[] | undefined;
 }
 
 export interface Regel {
@@ -65,9 +66,11 @@ export interface RegelAvvik {
     slåsSammenVedOppsummering?: boolean;
 }
 
+type avikValueFunk = (intl: InjectedIntl) => string;
+
 interface AvvikInfo {
     periodeId?: string;
-    values?: { [key: string]: string | number | Date | FeilIntlMessage | undefined };
+    values?: { [key: string]: string | number | Date | FeilIntlMessage | avikValueFunk | undefined };
     renderAsHtml?: boolean;
 }
 

@@ -3,7 +3,7 @@ const navnSlutterPåSLyd = (navn: string): boolean => {
     return sisteBokstav === 's' || sisteBokstav === 'x' || sisteBokstav === 'z';
 };
 
-export const getNavnGenitivEierform = (navn: string, locale: string): string | undefined => {
+export const getNavnGenitivEierform = (navn: string, locale: string): string => {
     if (locale !== 'nb') {
         return navn;
     }
