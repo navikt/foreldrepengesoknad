@@ -6,7 +6,8 @@ import {
     RegelTestresultatInfo,
     RegelStatus,
     RegelTestresultatInfoObject,
-    RegelAvvikInfo
+    RegelAvvikInfo,
+    RegelAlvorlighet
 } from './types';
 import uttaksplanRegler from '.';
 import { InjectedIntl } from 'react-intl';
@@ -72,6 +73,10 @@ export const getRegelAvvik = (resultat: RegelStatus[]): RegelAvvik[] => {
     }
     return [];
 };
+
+export const isRegelFeil = (regelAvvik: RegelAvvik): boolean => regelAvvik.alvorlighet === RegelAlvorlighet.FEIL;
+
+export const hasRegelAvvikFeil = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelFeil(a));
 
 const overstyresAvFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelAvvik[]): boolean => {
     return (
