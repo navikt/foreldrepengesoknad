@@ -165,7 +165,7 @@ const fjernDuplikateSaksperioderGrunnetArbeidsforhold = (saksperioder: Saksperio
                 return resultatPerioder;
             }
 
-            if (!inneholderDuplikatSaksperiode(resultatPerioder, periode)) {
+            if (!periode.graderingInnvilget && !inneholderDuplikatSaksperiode(resultatPerioder, periode)) {
                 resultatPerioder.push(periode);
 
                 return resultatPerioder;
