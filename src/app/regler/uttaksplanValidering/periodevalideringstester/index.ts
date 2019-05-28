@@ -16,6 +16,7 @@ export enum PeriodeValiderRegelKey {
 }
 
 /** Meldingene skal default kun vises inne i skjema */
+
 const skjulIOppsummering: boolean = true;
 
 const periodevalideringsregler: Regel[] = [
@@ -26,7 +27,7 @@ const periodevalideringsregler: Regel[] = [
         skjulIOppsummering
     },
     {
-        key: PeriodeValiderRegelKey.uttaksperiodeHarGyldigGradering,
+        key: PeriodeValiderRegelKey.periodeHarGyldigTidsperiode,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harPeriodeGyldigTidsperiode,
         skjulIOppsummering

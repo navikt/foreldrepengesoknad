@@ -421,7 +421,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         årsakTilSenEndring,
         vedleggForSenEndring: søknad.vedleggForSenEndring,
         tilleggsopplysninger: søknad.tilleggsopplysninger,
-        uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl)(state),
+        uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl)(state).filter(
+            (melding) => melding.skjulesIOppsummering !== true
+        ),
         meldingerPerPeriode: selectPeriodelisteMeldinger(props.intl)(state),
         aktivitetsfriKvote,
         planErEndret: søknad.erEndringssøknad && perioderDetSøkesOm.length > 0,
