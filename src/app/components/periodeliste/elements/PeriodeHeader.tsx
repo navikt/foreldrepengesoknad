@@ -15,12 +15,13 @@ import UtsettelseIkon from '../../uttaksplan-ikon/UtsettelseIkon';
 import getMessage from 'common/util/i18nUtils';
 import { getPeriodeForelderNavn, getPeriodeTittel } from '../../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
-import PeriodelisteItemHeader, { Advarsel } from './../elements/PeriodelisteItemHeader';
+import PeriodelisteItemHeader from './../elements/PeriodelisteItemHeader';
+import { VeilederMessage } from 'app/components/veileder-info/types';
 
 export interface Props {
     periode: Periode;
     navnPåForeldre: NavnPåForeldre;
-    advarsel?: Advarsel;
+    melding?: VeilederMessage;
     isOpen?: boolean;
 }
 
@@ -69,7 +70,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     periode,
     navnPåForeldre,
     isOpen,
-    advarsel,
+    melding,
     intl
 }) => {
     const gyldigTidsperiode = getValidTidsperiode(periode.tidsperiode);
@@ -91,7 +92,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
         <PeriodelisteItemHeader
             type="periode"
             isOpen={isOpen}
-            advarsel={advarsel}
+            melding={melding}
             tittel={periodetittel}
             beskrivelse={
                 <>

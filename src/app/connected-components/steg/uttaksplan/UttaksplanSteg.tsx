@@ -39,8 +39,11 @@ import Uttaksoppsummering from '../../../components/uttaksoppsummering/Uttaksopp
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
 import { getVeilederInfoText } from 'app/util/uttaksplan/steg/util';
-import { selectUttaksplanVeilederinfo } from 'app/selectors/uttaksplanVeilederinfoSelector';
-import VeilederInfo, { VeilederMessage } from '../../../components/veileder-info/VeilederInfo';
+import {
+    selectUttaksplanVeilederinfo,
+    selectPeriodelisteMeldinger
+} from 'app/selectors/uttaksplanVeilederinfoSelector';
+import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
@@ -50,6 +53,7 @@ import EksisterendeSak from '../../../components/eksisterendeSak/EksisterendeSak
 import Sak from 'app/types/søknad/Sak';
 import { Saksgrunnlag } from 'app/types/EksisterendeSak';
 import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
+import { VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/veileder-info/types';
 
 interface StateProps {
     stegProps: StegProps;
@@ -66,6 +70,7 @@ interface StateProps {
     tilleggsopplysninger: Tilleggsopplysninger;
     aktivitetsfriKvote: number;
     uttaksplanVeilederInfo: VeilederMessage[];
+    meldingerPerPeriode: VeiledermeldingerPerPeriode;
     planErEndret: boolean;
     sak?: Sak;
     grunnlag: Saksgrunnlag | undefined;
@@ -210,6 +215,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             aktivitetsfriKvote,
             uttaksplanVeilederInfo,
             planErEndret,
+            meldingerPerPeriode,
             sak,
             intl
         } = this.props;
@@ -285,7 +291,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 eksisterendeUttaksplan={eksisterendeSak && eksisterendeSak.uttaksplan}
                                 uttaksplan={søknad.uttaksplan}
                                 søknadsinfo={søknadsinfo}
-                                uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 defaultStønadskontoType={defaultStønadskontoType}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
@@ -293,6 +298,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 onRequestRevert={
                                     eksisterendeSak ? () => this.showBekreftTilbakestillUttaksplanDialog() : undefined
                                 }
+                                meldingerPerPeriode={meldingerPerPeriode}
                                 onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
                                 forelder={søknadsinfo.søker.erFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR}
                             />
@@ -359,7 +365,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps & InjectedIntlProps): StateProps => {
     const {
         søknad,
-        api: { isLoadingTilgjengeligeStønadskontoer, sakForEndringssøknad }
+        api: { isLoadingTilgjengeligeStønadskontoer, sakForEndringssøknad: sak }
     } = state;
     const { søkerinfo, history } = props;
 
@@ -416,9 +422,10 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         vedleggForSenEndring: søknad.vedleggForSenEndring,
         tilleggsopplysninger: søknad.tilleggsopplysninger,
         uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl)(state),
+        meldingerPerPeriode: selectPeriodelisteMeldinger(props.intl)(state),
         aktivitetsfriKvote,
         planErEndret: søknad.erEndringssøknad && perioderDetSøkesOm.length > 0,
-        sak: sakForEndringssøknad,
+        sak,
         grunnlag
     };
 };

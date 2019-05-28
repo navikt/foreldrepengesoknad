@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 import PeriodeHeader from '../elements/PeriodeHeader';
 import { NavnPåForeldre } from 'common/types';
-import { ValidertPeriode } from '../../../redux/reducers/uttaksplanValideringReducer';
 import { onToggleItemProp } from '../../toggle-list/ToggleList';
 import { getPeriodeTittel } from '../../../util/uttaksplan';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -10,7 +9,7 @@ import EndrePeriodeForm from '../../endre-periode-form/EndrePeriodeForm';
 import PeriodelisteToggleItem from '../elements/PeriodelisteToggleItem';
 import PeriodelisteItemWrapper from '../elements/PeriodelisteItemWrapper';
 import { getPeriodeFarge } from '../../../util/uttaksplan/styleUtils';
-import { getAdvarselForPeriode } from 'app/util/validation/getAdvarselForPeriode';
+import { VeilederMessage } from 'app/components/veileder-info/types';
 
 export interface Props {
     id: string;
@@ -18,7 +17,7 @@ export interface Props {
     isExpanded: boolean;
     antallFeriedager: number;
     navnPåForeldre: NavnPåForeldre;
-    validertPeriode: ValidertPeriode;
+    meldinger: VeilederMessage[];
     onToggle: onToggleItemProp;
 }
 
@@ -27,13 +26,13 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
     periode,
     navnPåForeldre,
     antallFeriedager,
-    validertPeriode,
+    meldinger,
     isExpanded,
     onToggle,
     intl
 }) => {
     const ariaLabel = getPeriodeTittel(intl, periode, navnPåForeldre);
-    const advarsel = getAdvarselForPeriode(validertPeriode, intl);
+    const melding = meldinger && meldinger.length > 0 ? meldinger[0] : undefined;
 
     return (
         <PeriodelisteItemWrapper key={id} farge={getPeriodeFarge(periode)} isExpanded={isExpanded}>
@@ -43,14 +42,13 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
                 isExpanded={isExpanded}
                 onToggle={onToggle}
                 renderHeader={() => (
-                    <PeriodeHeader periode={periode} navnPåForeldre={navnPåForeldre} advarsel={advarsel} />
+                    <PeriodeHeader periode={periode} navnPåForeldre={navnPåForeldre} melding={melding} />
                 )}
                 renderContent={() => (
                     <EndrePeriodeForm
                         periode={periode}
                         antallFeriedager={antallFeriedager}
-                        validertPeriode={validertPeriode}
-                        advarsel={advarsel}
+                        meldinger={meldinger}
                         onRequestClose={() => {
                             onToggle(periode.id);
                             if (isExpanded) {

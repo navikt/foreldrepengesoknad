@@ -14,7 +14,6 @@ import Block from 'common/components/block/Block';
 import LinkButton from '../link-button/LinkButton';
 import FamiliehendelsedatoInfo from './FamiliehendelsedatoInfo';
 import { Forelder, Tidsperiode } from 'common/types';
-import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Knapp } from 'nav-frontend-knapper';
@@ -36,16 +35,17 @@ import DevBlock from 'common/dev/DevBlock';
 import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 import './uttaksplanlegger.less';
+import { VeiledermeldingerPerPeriode } from '../veileder-info/types';
 
 interface OwnProps {
     uttaksplan: Periode[];
     eksisterendeUttaksplan: Periode[] | undefined;
     søknadsinfo: Søknadsinfo;
-    uttaksplanValidering: UttaksplanValideringState;
     lastAddedPeriodeId: string | undefined;
     forelder: Forelder;
     planErEndret: boolean;
     defaultStønadskontoType?: StønadskontoType;
+    meldingerPerPeriode: VeiledermeldingerPerPeriode;
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
@@ -170,7 +170,6 @@ class Uttaksplanlegger extends React.Component<Props, State> {
 
     render() {
         const {
-            uttaksplanValidering,
             søknadsinfo,
             onRequestClear,
             onRequestRevert,
@@ -178,7 +177,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             forelder,
             uttaksplan,
             planErEndret,
-            eksisterendeUttaksplan: uttaksplanForEndring,
+            eksisterendeUttaksplan,
+            meldingerPerPeriode,
             intl
         } = this.props;
         const { formIsOpen, periodetype } = this.state;
@@ -269,8 +269,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 ref={(c) => (this.periodeliste = c)}
                                 perioder={uttaksplan}
                                 informasjon={infoItems}
+                                meldingerPerPeriode={meldingerPerPeriode}
                                 navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
-                                uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 onLeggTilOpphold={this.settInnNyttOpphold}
                                 onLeggTilPeriode={this.settInnNyPeriode}
@@ -278,18 +278,18 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 antallFeriedager={antallFeriedager}
                             />
                         </Block>
-                        {uttaksplanForEndring &&
+                        {eksisterendeUttaksplan &&
                             planErEndret && (
                                 <DevBlock>
                                     <Periodeliste
                                         søknadsinfo={søknadsinfo}
                                         ref={(c) => (this.periodeliste = c)}
                                         perioder={
-                                            getEndretUttaksplanForInnsending(uttaksplanForEndring, uttaksplan) || []
+                                            getEndretUttaksplanForInnsending(eksisterendeUttaksplan, uttaksplan) || []
                                         }
+                                        meldingerPerPeriode={meldingerPerPeriode}
                                         informasjon={infoItems}
                                         navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
-                                        uttaksplanValidering={uttaksplanValidering}
                                         lastAddedPeriodeId={lastAddedPeriodeId}
                                         onLeggTilOpphold={this.settInnNyttOpphold}
                                         onLeggTilPeriode={this.settInnNyPeriode}

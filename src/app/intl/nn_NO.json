@@ -1071,5 +1071,11 @@
         "Viss du ikkje ettersender dokumenta innan tre veker behandlar vi søknaden din utor dei opplysningane som vi har tilgjengelege.",
 
     "periodetype.utsettelse": "utsettelse",
-    "periodetype.uttak": "uttak"
+    "periodetype.uttak": "uttak",
+
+    "uttaksplan.validering.feil.erAllePeriodeSkjemaspørsmålBesvart": "Nokon av spørsmåla for perioden manglar svar",
+    "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering":
+        "Stillingsprosenten du skal jobbe kan bare inneholde tall, over vera mellom 1 og 99",
+    "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden er ikkje gyldig",
+    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden er ikkje gyldig"
 }

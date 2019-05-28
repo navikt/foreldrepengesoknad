@@ -8,24 +8,17 @@ import AriaText from 'common/components/aria/AriaText';
 import UttaksplanIkon from '../../uttaksplan-ikon/UttaksplanIkon';
 import { måned3bokstaver, måned, år } from 'common/util/datoUtils';
 import moment from 'moment';
+import { getIkonForVeilederMelding } from 'app/util/validation/getAdvarselForPeriode';
+import { VeilederMessage } from 'app/components/veileder-info/types';
 
 import './periodeheader.less';
-import { getIkonForAdvarsel } from 'app/util/validation/getAdvarselForPeriode';
-
-type AdvarselType = 'info' | 'advarsel' | 'feil';
-
-export interface Advarsel {
-    tittel?: string;
-    beskrivelse: string;
-    type: AdvarselType;
-}
 
 interface Props {
     isOpen?: boolean;
     tittel: string;
     ikon: React.ReactNode | undefined;
     beskrivelse?: React.ReactNode;
-    advarsel?: Advarsel;
+    melding?: VeilederMessage;
     tidsperiode?: Tidsperiode;
     ariaTekst?: string;
     type: 'periode' | 'info';
@@ -56,7 +49,7 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
     ikon,
     tittel,
     beskrivelse,
-    advarsel,
+    melding,
     tidsperiode
 }) => {
     return (
@@ -75,10 +68,10 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
                     <Element tag="h1">{tittel}</Element>
                     {beskrivelse && <Normaltekst>{beskrivelse}</Normaltekst>}
                 </div>
-                {advarsel && (
+                {melding && (
                     <div className={BEM.element('advarsel')}>
                         <span role="presentation">
-                            <UttaksplanIkon ikon={getIkonForAdvarsel(advarsel)} title={advarsel.beskrivelse} />
+                            <UttaksplanIkon ikon={getIkonForVeilederMelding(melding)} title={melding.contentIntlKey} />
                         </span>
                     </div>
                 )}

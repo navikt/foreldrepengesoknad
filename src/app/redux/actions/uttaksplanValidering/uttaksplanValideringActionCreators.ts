@@ -2,17 +2,12 @@ import {
     UttaksplanValideringActionKeys,
     UttaksplanValideringActionTypes
 } from './uttaksplanValideringActionDefinitions';
-import { Periodevalidering } from '../../reducers/uttaksplanValideringReducer';
 import { UttaksplanRegelTestresultat } from '../../../regler/uttaksplanValidering/types';
 
-export function setUttaksplanValidering(
-    validertePerioder: Periodevalidering,
-    regelTestresultat?: UttaksplanRegelTestresultat | undefined
-): UttaksplanValideringActionTypes {
+export function setUttaksplanValidering(resultat: UttaksplanRegelTestresultat): UttaksplanValideringActionTypes {
     return {
         type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING,
-        validertePerioder,
-        regelTestresultat
+        resultat
     };
 }
 

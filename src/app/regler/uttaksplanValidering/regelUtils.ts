@@ -14,6 +14,7 @@ import { InjectedIntl } from 'react-intl';
 import { isArray } from 'util';
 import { flatten, uniqBy } from 'lodash';
 import { guid } from 'nav-frontend-js-utils';
+import { sorterAvvik } from 'app/redux/sagas/uttaksplanValideringSaga';
 
 export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelStatus[] => {
     return uttaksplanRegler.map((regel) => {
@@ -38,7 +39,9 @@ export const regelHarAvvik = (regel: Regel, info?: RegelTestresultatInfoObject, 
         overstyrerRegler: regel.overstyrerRegler,
         overstyresAvRegel: regel.overstyresAvRegel,
         slåsSammenVedOppsummering: regel.slåsSammenVedOppsummering,
-        periodeId: i ? i.periodeId : periodeId
+        periodeId: i ? i.periodeId : periodeId,
+        skjulesIOppsummering: regel.skjulIOppsummering,
+        skjulesIPeriode: regel.skjulIPeriode
     });
     const regelAvvik: RegelAvvik[] = [];
     if (isArray(info)) {
@@ -58,23 +61,27 @@ export const regelPasserer = (regel: Regel): RegelStatus => ({
     passerer: true
 });
 
-export const getRegelAvvikForPeriode = (
-    resultat: UttaksplanRegelTestresultat,
-    periodeId: string
-): RegelAvvik[] | undefined => {
-    return resultat && resultat.avvikPerPeriode[periodeId];
+export const getRegelAvvikForPeriode = (resultat: UttaksplanRegelTestresultat, periodeId: string): RegelAvvik[] => {
+    return resultat && resultat.avvikPerPeriode[periodeId] ? resultat.avvikPerPeriode[periodeId] : [];
 };
 
 export const getRegelAvvik = (resultat: RegelStatus[]): RegelAvvik[] => {
     if (resultat) {
         return flatten(
             resultat.filter((r) => r.passerer === false && r.regelAvvik !== undefined).map((r) => r.regelAvvik!)
-        );
+        ).sort(sorterAvvik);
     }
     return [];
 };
 
 export const isRegelFeil = (regelAvvik: RegelAvvik): boolean => regelAvvik.alvorlighet === RegelAlvorlighet.FEIL;
+export const isRegelAdvarsel = (regelAvvik: RegelAvvik): boolean =>
+    regelAvvik.alvorlighet === RegelAlvorlighet.ADVARSEL;
+export const isRegelInfo = (regelAvvik: RegelAvvik): boolean => regelAvvik.alvorlighet === RegelAlvorlighet.INFO;
+
+export const hasRegelFeil = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelFeil(a));
+export const hasRegelAdvarsler = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelAdvarsel(a));
+export const hasRegelInfo = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelInfo(a));
 
 export const hasRegelAvvikFeil = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelFeil(a));
 

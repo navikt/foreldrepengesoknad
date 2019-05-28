@@ -796,6 +796,7 @@
     "uttaksplan.validering.feil.periodeoverlapp.oppsummering":
         "<strong>{periode} ({tidsperiode})</strong> overlapper med en eller flere andre perioder.",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
+
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det mangler informasjon om perioden.",
     "uttaksplan.validering.feil.planenInneholderIngenPerioder":
         "For å komme videre i søknaden må du legge til en periode med foreldrepenger eller en utsettelse",
@@ -1063,5 +1064,11 @@
         "Hvis du ikke ettersender dokumentene innen tre uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig.",
 
     "periodetype.utsettelse": "utsettelse",
-    "periodetype.uttak": "uttak"
+    "periodetype.uttak": "uttak",
+
+    "uttaksplan.validering.feil.erAllePeriodeSkjemaspørsmålBesvart": "Noen av spørsmålene for perioden er ikke besvart",
+    "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering":
+        "Stillingsprosenten du skal jobbe kan bare inneholde tall, og være mellom 1 og 99",
+    "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden er ikke gyldig",
+    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden er ikke gyldig"
 }
