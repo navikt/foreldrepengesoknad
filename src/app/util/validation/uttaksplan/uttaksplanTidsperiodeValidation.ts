@@ -2,9 +2,7 @@ import { DatoValidatorer } from '../../../bolker/tidsperiode-bolk/TidsperiodeBol
 import moment from 'moment';
 import { Tidsperiode } from 'common/types';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
-import { UttakFormPeriodeType } from '../../../components/uttak-form/UttakForm';
 import { isForeldrepengerFørFødselUttaksperiode, Periode } from '../../../types/uttaksplan/periodetyper';
-import { PeriodeValideringErrorKey } from '../../../redux/reducers/uttaksplanValideringReducer';
 import { Validator } from 'common/lib/validation/types';
 import { allValidatorsPass } from 'common/lib/validation/utils/runValidFormValidation';
 import { DateValue } from '../../../types/common';
@@ -15,12 +13,12 @@ import { UtsettelseFormPeriodeType } from '../../../components/utsettelse-form/U
 
 const erUtfyltTest = (dato: DateValue): Validator => ({
     test: () => dato !== undefined,
-    failText: { intlKey: `uttaksplan.validering.feil.${PeriodeValideringErrorKey.PÅKREVD_VERDI_MANGLER}` }
+    failText: { intlKey: `uttaksplan.validering.feil.påkrevd` }
 });
 
 const erUttaksdagTest = (dato: DateValue) => ({
     test: () => dato !== undefined && Uttaksdagen(dato).erUttaksdag(),
-    failText: { intlKey: `uttaksplan.validering.feil.${PeriodeValideringErrorKey.DATO_IKKE_UTTAKSDAG}` }
+    failText: { intlKey: `uttaksplan.validering.feil.datoErIkkeUttaksdag` }
 });
 
 const starterInnenfor12UkerFørTermin = (dato: DateValue, familiehendelsesdato: Date) => ({
@@ -59,7 +57,7 @@ export const getUttakTidsperiodeValidatorer = (
     };
 };
 
-export const uttakTidsperiodeErGyldig = (uttaksperiode: UttakFormPeriodeType, familiehendelsesdato: Date): boolean => {
+export const uttakTidsperiodeErGyldig = (uttaksperiode: Periode, familiehendelsesdato: Date): boolean => {
     const { tidsperiode } = uttaksperiode;
     if (!tidsperiode) {
         return false;

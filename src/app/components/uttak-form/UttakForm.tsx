@@ -51,7 +51,7 @@ import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
 import lenker from 'app/util/routing/lenker';
 import UlønnetPermisjonInfo from './partials/UlønnetPermisjonInfo';
-import VeilederInfo, { VeilederMessage } from '../veileder-info/VeilederInfo';
+import VeilederInfo from '../veileder-info/VeilederInfo';
 import FlernbarnsdagerSpørsmål from './partials/FlerbarnsdagerSpørsmål';
 import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 import { selectArbeidsforhold, selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
@@ -59,6 +59,7 @@ import { getVelgbareStønadskontotyper } from 'app/util/uttaksplan/stønadskonto
 import getSøknadsperiode from 'app/regler/søknadsperioden/Søknadsperioden';
 import getUttakSkjemaregler from 'app/regler/uttak/uttaksskjema/uttakSkjemaregler';
 import { periodeErInnenDeFørsteSeksUkene } from 'app/util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
+import { VeilederMessage } from '../veileder-info/types';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -68,7 +69,6 @@ export type UttakFormPeriodeType =
 interface OwnProps {
     periode: UttakFormPeriodeType;
     kanEndreStønadskonto: boolean;
-    harOverlappendePerioder?: boolean;
     onChange: EndrePeriodeChangeEvent;
     onCancel?: () => void;
 }
@@ -325,7 +325,6 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
             uttaksplan,
             velgbareStønadskontotyper,
             arbeidsforhold,
-            harOverlappendePerioder,
             onCancel,
             intl
         } = this.props;
@@ -341,9 +340,6 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
         const ugyldigeTidsperioder = getTidsperioderIUttaksplan(uttaksplan, periode.id);
 
         const tidsperiode = periode.tidsperiode as Partial<Tidsperiode>;
-        const feil: Feil | undefined = harOverlappendePerioder
-            ? { feilmelding: getMessage(intl, 'periodeliste.overlappendePeriode') }
-            : undefined;
 
         const periodeErNyOgFørFamiliehendelsesdatoFeil: Feil | undefined =
             periode.id === undefined &&
@@ -364,7 +360,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         familiehendelsesdato={familiehendelsesdato}
                         onChange={(v: Partial<Tidsperiode>) => this.onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode}
-                        feil={feil || periodeErNyOgFørFamiliehendelsesdatoFeil}
+                        feil={periodeErNyOgFørFamiliehendelsesdatoFeil}
                     />
                 </Block>
                 <Block

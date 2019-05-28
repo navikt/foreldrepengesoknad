@@ -38,6 +38,7 @@ export interface Regel {
     overstyrerRegler?: RegelKey[];
     slåsSammenVedOppsummering?: boolean;
     skjulIOppsummering?: boolean;
+    skjulIPeriode?: boolean;
 }
 
 export type RegelTest = (grunnlag: Regelgrunnlag) => RegelTestresultat;
@@ -65,6 +66,8 @@ export interface RegelAvvik {
     overstyresAvRegel?: RegelKey;
     overstyrerRegler?: RegelKey[];
     slåsSammenVedOppsummering?: boolean;
+    skjulesIOppsummering?: boolean;
+    skjulesIPeriode?: boolean;
 }
 
 type avikValueFunk = (intl: InjectedIntl) => string;

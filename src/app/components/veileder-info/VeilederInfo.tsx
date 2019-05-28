@@ -1,19 +1,10 @@
 import * as React from 'react';
-import VeilederMelding from './components/VeilederMelding';
 import Veileder, { VeilederAnsiktstype, VeilederStil } from 'common/components/veileder/Veileder';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import AriaText from 'common/components/aria/AriaText';
 import { FormattedMessage } from 'react-intl';
-
-export type VeilederMessageType = 'normal' | 'info' | 'advarsel' | 'feil';
-
-export interface VeilederMessage {
-    contentIntlKey: string;
-    type: VeilederMessageType;
-    formatContentAsHTML?: boolean;
-    titleIntlKey?: string;
-    values?: any;
-}
+import { VeilederMessage } from './types';
+import VeilederMeldinger from './VeilederMeldinger';
 
 interface Props {
     messages: VeilederMessage[];
@@ -53,9 +44,7 @@ const VeilederInfo: React.SFC<Props> = ({
                     <FormattedMessage id="uttaksplan.regelAvvik.ariaTittel" />
                 </AriaText>
             )}
-            {messages.map((message: VeilederMessage, index: number) => (
-                <VeilederMelding key={message.contentIntlKey + index} message={message} />
-            ))}
+            <VeilederMeldinger meldinger={messages} stil="transparent" />
         </Veilederpanel>
     );
 };

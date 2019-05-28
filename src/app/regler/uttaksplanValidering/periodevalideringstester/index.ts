@@ -4,13 +4,15 @@ import { harPeriodeGyldigTidsperiode } from './harPeriodeGyldigTidsperiode';
 import { harUttaksperiodeStønadskonto } from './harUttaksperiodeStønadskonto';
 import { erSamtidigUttakGyldig } from './erSamtidigUttakGyldig';
 import { erUtsettelseEtterFamiliehendelsesdato } from './erUtsettelseEtterFamiliehendelsesdato';
+import { erAllePeriodeSkjemaspørsmålBesvart } from './erAllePeriodeSkjemaspørsmålBesvart';
 
 export enum PeriodeValiderRegelKey {
     'uttaksperiodeHarGyldigGradering' = 'uttaksperiodeHarGyldigGradering',
     'periodeHarGyldigTidsperiode' = 'periodeHarGyldigTidsperiode',
     'uttaksperiodeHarStønadskonto' = 'uttaksperiodeHarStønadskonto',
     'erSamtidigUttakGyldig' = 'erSamtidigUttakGyldig',
-    'erUtsettelseEtterFamiliehendelsesdato' = 'erUtsettelseEtterFamiliehendelsesdato'
+    'erUtsettelseEtterFamiliehendelsesdato' = 'erUtsettelseEtterFamiliehendelsesdato',
+    'erAllePeriodeSkjemaspørsmålBesvart' = 'erAllePeriodeSkjemaspørsmålBesvart'
 }
 
 /** Meldingene skal default kun vises inne i skjema */
@@ -45,6 +47,12 @@ const periodevalideringsregler: Regel[] = [
         key: PeriodeValiderRegelKey.erUtsettelseEtterFamiliehendelsesdato,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erUtsettelseEtterFamiliehendelsesdato,
+        skjulIOppsummering
+    },
+    {
+        key: PeriodeValiderRegelKey.erAllePeriodeSkjemaspørsmålBesvart,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: erAllePeriodeSkjemaspørsmålBesvart,
         skjulIOppsummering
     }
 ];

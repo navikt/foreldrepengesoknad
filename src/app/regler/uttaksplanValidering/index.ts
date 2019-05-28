@@ -118,17 +118,20 @@ const uttaksplanRegler: Regel[] = [
     {
         key: UttaksplanRegelKey.inneholderSenUtsettelsePgaFerie,
         alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderSenUtsettelsePgaFerieTest
+        test: inneholderSenUtsettelsePgaFerieTest,
+        slåsSammenVedOppsummering: true
     },
     {
         key: UttaksplanRegelKey.inneholderSenUtsettelsePgaArbeid,
         alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderSenUtsettelsePgaArbeidTest
+        test: inneholderSenUtsettelsePgaArbeidTest,
+        slåsSammenVedOppsummering: true
     },
     {
         key: UttaksplanRegelKey.inneholderSeneGraderteUttak,
         alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderSeneGraderteUttakTest
+        test: inneholderSeneGraderteUttakTest,
+        skjulIPeriode: true
     },
     {
         key: UttaksplanRegelKey.inneholderTapteDager,
