@@ -21,7 +21,7 @@ export interface GetTilgjengeligeStønadskontoerParams {
 
 const uttakBaseUrl = Environment.UTTAK_API_URL;
 const sendSøknadUrl = '/soknad';
-const sendEndringssøknadUrl = '/endre';
+const sendEndringssøknadUrl = '/soknad/endre';
 
 function getSøkerinfo() {
     return AxiosInstance.get('/sokerinfo', {
