@@ -17,7 +17,7 @@ export interface Props {
     isExpanded: boolean;
     antallFeriedager: number;
     navnPåForeldre: NavnPåForeldre;
-    meldinger: VeilederMessage[];
+    meldinger?: VeilederMessage[];
     onToggle: onToggleItemProp;
 }
 
@@ -26,13 +26,13 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
     periode,
     navnPåForeldre,
     antallFeriedager,
-    meldinger,
+    meldinger = [],
     isExpanded,
     onToggle,
     intl
 }) => {
     const ariaLabel = getPeriodeTittel(intl, periode, navnPåForeldre);
-    const melding = meldinger && meldinger.length > 0 ? meldinger[0] : undefined;
+    const melding = meldinger.length > 0 ? meldinger[0] : undefined;
 
     return (
         <PeriodelisteItemWrapper key={id} farge={getPeriodeFarge(periode)} isExpanded={isExpanded}>
