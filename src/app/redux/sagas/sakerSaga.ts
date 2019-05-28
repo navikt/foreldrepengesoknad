@@ -3,7 +3,12 @@ import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import Sak, { FagsakStatus } from '../../types/søknad/Sak';
-import { skalKunneSøkeOmEndring, harSakUnderBehandling, harEnAvsluttetBehandling } from '../../util/saker/sakerUtils';
+import {
+    skalKunneSøkeOmEndring,
+    harSakUnderBehandling,
+    harEnAvsluttetBehandling,
+    erInfotrygdSak
+} from '../../util/saker/sakerUtils';
 import { getEksisterendeSakFromDTO } from 'app/util/eksisterendeSak/eksisterendeSakUtils';
 
 function* getSaker() {
@@ -15,7 +20,8 @@ function* getSaker() {
         const nyesteSakArray = saker.sort((a, b) => b.opprettet.localeCompare(a.opprettet));
         const nyesteRelevanteSak = nyesteSakArray.find(
             (sak) =>
-                sak.status === FagsakStatus.LOPENDE || (harSakUnderBehandling(sak) && harEnAvsluttetBehandling(sak))
+                sak.status === FagsakStatus.LOPENDE ||
+                ((harSakUnderBehandling(sak) && harEnAvsluttetBehandling(sak)) || erInfotrygdSak(sak))
         );
 
         if (nyesteRelevanteSak !== undefined) {
