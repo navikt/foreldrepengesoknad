@@ -24,7 +24,8 @@ const periodevalideringsregler: Regel[] = [
         key: PeriodeValiderRegelKey.uttaksperiodeHarGyldigGradering,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harUttaksperiodeGyldigGradering,
-        skjulIOppsummering
+        skjulIOppsummering,
+        avvikType: 'skjema'
     },
     {
         key: PeriodeValiderRegelKey.periodeHarGyldigTidsperiode,
@@ -54,7 +55,8 @@ const periodevalideringsregler: Regel[] = [
         key: PeriodeValiderRegelKey.erAllePeriodeSkjemaspørsmålBesvart,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erAllePeriodeSkjemaspørsmålBesvart,
-        skjulIOppsummering
+        skjulIOppsummering,
+        avvikType: 'skjema'
     }
 ];
 

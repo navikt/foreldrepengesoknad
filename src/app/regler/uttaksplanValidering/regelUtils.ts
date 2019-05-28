@@ -41,7 +41,8 @@ export const regelHarAvvik = (regel: Regel, info?: RegelTestresultatInfoObject, 
         slåsSammenVedOppsummering: regel.slåsSammenVedOppsummering,
         periodeId: i ? i.periodeId : periodeId,
         skjulesIOppsummering: regel.skjulIOppsummering,
-        skjulesIPeriode: regel.skjulIPeriode
+        skjulesIPeriode: regel.skjulIPeriode,
+        avvikType: regel.avvikType
     });
     const regelAvvik: RegelAvvik[] = [];
     if (isArray(info)) {

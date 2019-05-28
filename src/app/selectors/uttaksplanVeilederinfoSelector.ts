@@ -31,7 +31,8 @@ export const mapAvvikTilMessage = (avvik: RegelAvvik, intl: InjectedIntl): Veile
         formatContentAsHTML: info.renderAsHtml,
         values: getRegelIntlValues(intl, info),
         periodeId: avvik.skjulesIPeriode !== true ? avvik.periodeId : undefined,
-        skjulesIOppsummering: avvik.skjulesIOppsummering
+        skjulesIOppsummering: avvik.skjulesIOppsummering,
+        avvikType: avvik.avvikType
     };
 };
 export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>

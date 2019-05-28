@@ -48,7 +48,7 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
                     <EndrePeriodeForm
                         periode={periode}
                         antallFeriedager={antallFeriedager}
-                        meldinger={meldinger}
+                        meldinger={meldinger.filter((m) => m.avvikType !== 'skjema')}
                         onRequestClose={() => {
                             onToggle(periode.id);
                             if (isExpanded) {

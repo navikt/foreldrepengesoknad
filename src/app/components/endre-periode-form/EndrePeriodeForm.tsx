@@ -104,7 +104,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
         return (
             <ValiderbarForm className={bem.block} validateBeforeSubmit={true}>
                 <>
-                    <Block visible={meldinger !== undefined}>
+                    <Block visible={meldinger.length > 0}>
                         <VeilederMeldinger meldinger={meldinger} />
                     </Block>
                     {periode.type === Periodetype.Utsettelse ? (
