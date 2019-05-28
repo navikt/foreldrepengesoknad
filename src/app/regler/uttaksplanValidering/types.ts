@@ -37,6 +37,7 @@ export interface Regel {
     overstyresAvRegel?: RegelKey;
     overstyrerRegler?: RegelKey[];
     slåsSammenVedOppsummering?: boolean;
+    skjulIOppsummering?: boolean;
 }
 
 export type RegelTest = (grunnlag: Regelgrunnlag) => RegelTestresultat;
