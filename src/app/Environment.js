@@ -11,7 +11,8 @@ const Environment = () => {
         [Feature.visAvslåttPeriode]: window.appSettings[Feature.visAvslåttPeriode],
         [Feature.mapOpphold]: window.appSettings[Feature.mapOpphold],
         [Feature.visInfoskriv]: window.appSettings[Feature.visInfoskriv],
-        [Feature.mapAnnenPartTilInfo]: window.appSettings[Feature.mapAnnenPartTilInfo]
+        [Feature.mapAnnenPartTilInfo]: window.appSettings[Feature.mapAnnenPartTilInfo],
+        [Feature.mapFlereArbeidsforhold]: window.appSettings[Feature.mapFlereArbeidsforhold]
     };
 };
 

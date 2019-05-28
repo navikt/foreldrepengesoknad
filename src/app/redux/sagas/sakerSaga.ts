@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest, select } from 'redux-saga/effects';
 import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { default as apiActions } from '../actions/api/apiActionCreators';
@@ -10,6 +10,9 @@ import {
     erInfotrygdSak
 } from '../../util/saker/sakerUtils';
 import { getEksisterendeSakFromDTO } from 'app/util/eksisterendeSak/eksisterendeSakUtils';
+import { AppState } from '../reducers';
+
+const stateSelector = (state: AppState) => state;
 
 function* getSaker() {
     try {
@@ -58,9 +61,10 @@ function* getSaker() {
 
 export function* fetchEksisterendeSak(saksnummer: string) {
     try {
+        const appState: AppState = yield select(stateSelector);
         yield put(apiActions.updateApi({ isLoadingEksisterendeSak: true }));
         const response = yield call(Api.getEksisterendeSak, saksnummer);
-        return getEksisterendeSakFromDTO(response.data);
+        return getEksisterendeSakFromDTO(response.data, appState.api.søkerinfo!.arbeidsforhold);
     } catch (error) {
         yield put(
             apiActions.updateApi({

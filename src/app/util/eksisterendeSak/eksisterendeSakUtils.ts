@@ -21,7 +21,8 @@ import {
     SaksperiodeUtsettelseÅrsakType,
     Arbeidsform,
     MorsAktivitet,
-    OppholdÅrsakType
+    OppholdÅrsakType,
+    Periode
 } from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
@@ -29,6 +30,7 @@ import { isFeatureEnabled, Feature } from 'app/Feature';
 import { datoErInnenforTidsperiode } from '../uttaksplan/Tidsperioden';
 import { guid } from 'nav-frontend-js-utils';
 import { cloneDeep } from 'lodash';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -64,7 +66,10 @@ export const erEksisterendeSakErDeltUttak = (dto: UttaksplanDTO): boolean => {
     return true;
 };
 
-export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak | undefined => {
+export const getEksisterendeSakFromDTO = (
+    dto: UttaksplanDTO,
+    arbeidsforhold: Arbeidsforhold[]
+): EksisterendeSak | undefined => {
     const {
         grunnlag: {
             dekningsgrad,
@@ -128,9 +133,19 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
         return returnPeriode;
     });
 
-    const uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioder)
-        ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag)
-        : undefined;
+    let uttaksplan: Periode[] | undefined = [];
+
+    if (arbeidsforhold.length > 1 && isFeatureEnabled(Feature.mapFlereArbeidsforhold)) {
+        const saksperioderUtenDuplikater = fjernDuplikateSaksperioderGrunnetArbeidsforhold(saksperioder);
+
+        uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioderUtenDuplikater)
+            ? mapSaksperioderTilUttaksperioder(saksperioderUtenDuplikater, grunnlag)
+            : undefined;
+    } else {
+        uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioder)
+            ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag)
+            : undefined;
+    }
 
     const sak: EksisterendeSak = {
         grunnlag,
@@ -139,6 +154,52 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
     };
 
     return sak;
+};
+
+const fjernDuplikateSaksperioderGrunnetArbeidsforhold = (saksperioder: Saksperiode[]): Saksperiode[] => {
+    const nyePerioder: Saksperiode[] = saksperioder.reduce((resultatPerioder: Saksperiode[], periode: Saksperiode) => {
+        if (inneholderDuplikatSaksperiode(saksperioder, periode)) {
+            if (periode.graderingInnvilget && periode.arbeidstidprosent > 0) {
+                resultatPerioder.push(periode);
+
+                return resultatPerioder;
+            }
+
+            if (!inneholderDuplikatSaksperiode(resultatPerioder, periode)) {
+                resultatPerioder.push(periode);
+
+                return resultatPerioder;
+            }
+
+            return resultatPerioder;
+        }
+
+        resultatPerioder.push(periode);
+
+        return resultatPerioder;
+    }, []);
+
+    return nyePerioder;
+};
+
+const inneholderDuplikatSaksperiode = (saksperioder: Saksperiode[], saksperiode: Saksperiode): boolean => {
+    if (saksperioder.length === 0) {
+        return false;
+    }
+
+    return saksperioder.some(
+        (s) =>
+            saksperiodeneGårOverSammeTidsperiode(s, saksperiode) &&
+            s.gjelderAnnenPart === saksperiode.gjelderAnnenPart &&
+            s.guid !== saksperiode.guid
+    );
+};
+
+const saksperiodeneGårOverSammeTidsperiode = (a: Saksperiode, b: Saksperiode): boolean => {
+    return (
+        moment(a.tidsperiode.tom).isSame(moment(b.tidsperiode.tom)) &&
+        moment(a.tidsperiode.fom).isSame(moment(b.tidsperiode.fom))
+    );
 };
 
 const getSøkersituasjonFromSaksgrunnlag = (grunnlag: Saksgrunnlag): Søkersituasjon | undefined => {
