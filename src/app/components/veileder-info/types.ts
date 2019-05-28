@@ -9,6 +9,7 @@ export interface VeilederMessage {
     titleIntlKey?: string;
     values?: any;
     periodeId?: string;
+    skjulesIOppsummering?: boolean;
 }
 
 export type VeiledermeldingerPerPeriode = Dictionary<VeilederMessage[]>;

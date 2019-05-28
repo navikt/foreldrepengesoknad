@@ -13,7 +13,9 @@ export const harPeriodeGyldigTidsperiode: RegelTest = (grunnlag: Regelgrunnlag):
             case Periodetype.Opphold:
                 return uttakTidsperiodeErGyldig(periode, grunnlag.søknadsinfo.søknaden.familiehendelsesdato) === false;
             case Periodetype.Utsettelse:
-                return utsettelseTidsperiodeErGyldig(periode, grunnlag.søknadsinfo.søknaden.familiehendelsesdato);
+                return (
+                    utsettelseTidsperiodeErGyldig(periode, grunnlag.søknadsinfo.søknaden.familiehendelsesdato) === false
+                );
         }
         return false;
     });
