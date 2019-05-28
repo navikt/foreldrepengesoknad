@@ -1070,5 +1070,7 @@
     "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering":
         "Stillingsprosenten du skal jobbe kan bare inneholde tall, og være mellom 1 og 99",
     "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden er ikke gyldig",
-    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden er ikke gyldig"
+    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden er ikke gyldig",
+    "uttaksplan.validering.feil.periodeOverlapperAndrePerioder":
+        "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper."
 }

@@ -7,15 +7,13 @@ import { Periodetype } from 'app/types/uttaksplan/periodetyper';
 
 export const harPeriodeGyldigTidsperiode: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
     const perioderMedUgyldigTidsperiode = grunnlag.perioder.filter((periode) => {
-        if (
-            periode.type === Periodetype.Overføring ||
-            periode.type === Periodetype.Uttak ||
-            periode.type === Periodetype.Opphold
-        ) {
-            return uttakTidsperiodeErGyldig(periode, grunnlag.søknadsinfo.søknaden.familiehendelsesdato) === false;
-        }
-        if (periode.type === Periodetype.Utsettelse) {
-            utsettelseTidsperiodeErGyldig(periode, grunnlag.søknadsinfo.søknaden.familiehendelsesdato);
+        switch (periode.type) {
+            case Periodetype.Overføring:
+            case Periodetype.Uttak:
+            case Periodetype.Opphold:
+                return uttakTidsperiodeErGyldig(periode, grunnlag.søknadsinfo.søknaden.familiehendelsesdato) === false;
+            case Periodetype.Utsettelse:
+                return utsettelseTidsperiodeErGyldig(periode, grunnlag.søknadsinfo.søknaden.familiehendelsesdato);
         }
         return false;
     });
