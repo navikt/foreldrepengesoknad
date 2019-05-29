@@ -144,7 +144,7 @@ export const getEksisterendeSakFromDTO = (
     return sak;
 };
 
-const saksperiodeErInnviget = (saksperiode: Saksperiode) =>
+const saksperiodeErInnvilget = (saksperiode: Saksperiode) =>
     saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET;
 
 const fjernAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
@@ -160,8 +160,8 @@ const fjernAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
         return true;
     }
 
-    const innvilgedePerioder = likePerioder.filter(saksperiodeErInnviget);
-    if (saksperiodeErInnviget(periode) === false && innvilgedePerioder.length > 0) {
+    const innvilgedePerioder = likePerioder.filter(saksperiodeErInnvilget);
+    if (saksperiodeErInnvilget(periode) === false && innvilgedePerioder.length > 0) {
         return false;
     }
     return true;
