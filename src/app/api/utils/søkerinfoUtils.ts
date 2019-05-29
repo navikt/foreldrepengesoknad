@@ -4,7 +4,6 @@ import { SøkerinfoDTO, SøkerinfoDTOBarn } from '../types/sokerinfoDTO';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { erMyndig } from '../../util/domain/personUtil';
 import { Søkerinfo } from '../../types/søkerinfo';
-import { Feature, isFeatureEnabled } from '../../Feature';
 
 const getPerson = (søkerinfo: SøkerinfoDTO): Person => {
     const { barn, ...person } = søkerinfo.søker;
@@ -52,10 +51,9 @@ const getArbeidsforhold = (søkerinfo: SøkerinfoDTO): Arbeidsforhold[] => {
 };
 
 export const getSøkerinfoFromDTO = (søkerinfo: SøkerinfoDTO): Søkerinfo => {
-    const useRegistrertBarn = isFeatureEnabled(Feature.registrertBarn);
     return {
         person: getPerson(søkerinfo),
-        registrerteBarn: useRegistrertBarn ? getRegistrerteBarn(søkerinfo) : [],
+        registrerteBarn: getRegistrerteBarn(søkerinfo),
         arbeidsforhold: getArbeidsforhold(søkerinfo),
         søknadsinfo: søkerinfo.søknadsinfo || {}
     };
