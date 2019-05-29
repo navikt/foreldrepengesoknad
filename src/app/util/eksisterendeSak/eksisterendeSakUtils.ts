@@ -9,6 +9,8 @@ import {
     UttakArbeidType,
     ArbeidsgiverInfo
 } from '../../types/EksisterendeSak';
+import { guid } from 'nav-frontend-js-utils';
+import { cloneDeep } from 'lodash';
 import { Barn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
@@ -25,10 +27,7 @@ import {
 } from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanDTO, UttaksplanPeriodeDTO } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
-import { isFeatureEnabled, Feature } from 'app/Feature';
 import { datoErInnenforTidsperiode, Tidsperioden } from '../uttaksplan/Tidsperioden';
-import { guid } from 'nav-frontend-js-utils';
-import { cloneDeep } from 'lodash';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
@@ -127,7 +126,7 @@ export const getEksisterendeSakFromDTO = (
         .map(mapSaksperiodeFromDTO)
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
 
-    if (arbeidsforhold.length > 1 && isFeatureEnabled(Feature.mapFlereArbeidsforhold)) {
+    if (arbeidsforhold.length > 1) {
         saksperioder = saksperioder.reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
     }
 
@@ -343,14 +342,7 @@ const finnOverlappendeSaksperioder = (perioder: Saksperiode[], periode: Saksperi
 };
 
 const kanSaksperiodeKonverteresTilPeriode = (periode: Saksperiode) => {
-    if (
-        periode.flerbarnsdager === false &&
-        (isFeatureEnabled(Feature.mapOpphold) ? true : periode.gjelderAnnenPart === false) &&
-        (isFeatureEnabled(Feature.visAvslåttPeriode)
-            ? true
-            : periode.periodeResultatType === PeriodeResultatType.INNVILGET) &&
-        periode.samtidigUttak === false
-    ) {
+    if (periode.flerbarnsdager === false && periode.samtidigUttak === false) {
         return true;
     }
     return false;
