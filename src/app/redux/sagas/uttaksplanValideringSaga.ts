@@ -11,11 +11,12 @@ import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/
 import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { UttaksplanRegelTestresultat, RegelAvvik, RegelAlvorlighet } from '../../regler/uttaksplanValidering/types';
 import { sjekkUttaksplanOppMotRegler, getRegelAvvik, hasRegelFeil } from '../../regler/uttaksplanValidering/regelUtils';
-import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
+import { selectTilgjengeligeStønadskontoer, selectArbeidsforhold } from 'app/selectors/apiSelector';
 import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import { Periode, TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
 import Søknad from 'app/types/søknad/Søknad';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 const stateSelector = (state: AppState) => state;
 
@@ -35,7 +36,8 @@ const kjørUttaksplanRegler = (
     søknad: Søknad,
     søknadsinfo: Søknadsinfo,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    perioderSomSkalSendesInn: Periode[]
+    perioderSomSkalSendesInn: Periode[],
+    arbeidsforhold: Arbeidsforhold[]
 ): UttaksplanRegelTestresultat => {
     const { eksisterendeSak } = søknad.ekstrainfo;
     const uttaksstatusStønadskontoer = getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan);
@@ -47,7 +49,8 @@ const kjørUttaksplanRegler = (
         tilgjengeligeStønadskontoer,
         tilleggsopplysninger: søknad.tilleggsopplysninger,
         perioderSomSkalSendesInn,
-        eksisterendeUttaksplan: eksisterendeSak ? eksisterendeSak.uttaksplan : undefined
+        eksisterendeUttaksplan: eksisterendeSak ? eksisterendeSak.uttaksplan : undefined,
+        arbeidsforhold
     });
 
     const avvik = getRegelAvvik(resultat);
@@ -66,10 +69,17 @@ function* validerUttaksplanSaga() {
     const søknadsinfo = selectSøknadsinfo(state);
     const perioderSomSkalSendesInn = selectPerioderSomSkalSendesInn(state);
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
+    const arbeidsforhold = selectArbeidsforhold(state);
     if (søknadsinfo) {
         yield put(
             setUttaksplanValidering(
-                kjørUttaksplanRegler(state.søknad, søknadsinfo, tilgjengeligeStønadskontoer, perioderSomSkalSendesInn)
+                kjørUttaksplanRegler(
+                    state.søknad,
+                    søknadsinfo,
+                    tilgjengeligeStønadskontoer,
+                    perioderSomSkalSendesInn,
+                    arbeidsforhold
+                )
             )
         );
     }

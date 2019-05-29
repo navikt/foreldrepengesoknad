@@ -4,6 +4,7 @@ import { Søknadsinfo } from '../../selectors/types';
 import { Periode, Stønadskontouttak, TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import { RegelKey } from '.';
 import { Tilleggsopplysninger } from '../../types/søknad/Søknad';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 type FeilIntlMessage = (intl: InjectedIntl) => string;
 
@@ -28,6 +29,7 @@ export interface Regelgrunnlag {
     tilleggsopplysninger: Tilleggsopplysninger;
     perioderSomSkalSendesInn: Periode[];
     eksisterendeUttaksplan: Periode[] | undefined;
+    arbeidsforhold: Arbeidsforhold[];
 }
 
 export interface Regel {
