@@ -150,7 +150,7 @@ const uttaksplanRegler: Regel[] = [
     },
     {
         key: UttaksplanRegelKey.endringerOverskriverAnnenPartsPerioder,
-        alvorlighet: RegelAlvorlighet.ADVARSEL,
+        alvorlighet: RegelAlvorlighet.INFO,
         test: overskriverEndringerAnnenPartsPerioder,
         slåsSammenVedOppsummering: false
     },
