@@ -8,7 +8,7 @@ export const uttaksplanValideringSelector = (state: AppState): UttaksplanValider
 export const selectValideringTestResultat = createSelector([uttaksplanValideringSelector], (uttaksplanValidering):
     | UttaksplanRegelTestresultat
     | undefined => {
-    return uttaksplanValidering.regelTestResultat;
+    return uttaksplanValidering.resultat;
 });
 
 export const selectUttaksplanAvvik = createSelector([selectValideringTestResultat], (testResultat): RegelAvvik[] => {

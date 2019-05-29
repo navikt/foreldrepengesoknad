@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { VeilederMessage } from '../VeilederInfo';
+import { VeilederMessage } from '../types';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import BEMHelper from 'common/util/bem';
 import AlertStripe, { AlertStripeType } from 'nav-frontend-alertstriper';
@@ -7,8 +7,11 @@ import { Element } from 'nav-frontend-typografi';
 
 import './veilederMelding.less';
 
+export type VeilederMeldingStil = 'transparent' | 'default';
+
 interface VeilederpanelInnholdContentProps {
     message: VeilederMessage;
+    stil?: VeilederMeldingStil;
 }
 
 const getAlertStripeTypeFromMessageType = (message: VeilederMessage): AlertStripeType => {
@@ -36,11 +39,11 @@ const renderAlert = (message: VeilederMessage, FormatComponent: any) => {
     );
 };
 
-const VeilederMelding: React.SFC<VeilederpanelInnholdContentProps> = ({ message }) => {
+const VeilederMelding: React.SFC<VeilederpanelInnholdContentProps> = ({ message, stil = 'default' }) => {
     const bem = BEMHelper('veilederMelding');
     const FormatComponent = message.formatContentAsHTML === true ? FormattedHTMLMessage : FormattedMessage;
     return (
-        <div className={bem.block}>
+        <div className={bem.classNames(bem.block, bem.modifier(stil))}>
             {message.type !== 'normal' ? (
                 renderAlert(message, FormatComponent)
             ) : (

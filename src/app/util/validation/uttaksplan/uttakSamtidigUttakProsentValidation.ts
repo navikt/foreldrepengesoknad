@@ -1,8 +1,7 @@
-import { UttakFormPeriodeType } from '../../../components/uttak-form/UttakForm';
-import { Periodetype } from '../../../types/uttaksplan/periodetyper';
+import { Periodetype, Periode } from '../../../types/uttaksplan/periodetyper';
 import { getStillingsprosentRegler } from '../stillingsprosent';
 
-export const samtidigUttaksperiodeErUgyldig = (periode: UttakFormPeriodeType, søkerErFarEllerMedmor: boolean) => {
+export const samtidigUttaksperiodeErUgyldig = (periode: Periode, søkerErFarEllerMedmor: boolean) => {
     if (periode.type === Periodetype.Uttak) {
         const { ønskerSamtidigUttak, samtidigUttakProsent } = periode;
         if (ønskerSamtidigUttak === true && søkerErFarEllerMedmor) {

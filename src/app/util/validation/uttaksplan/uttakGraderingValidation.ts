@@ -1,8 +1,7 @@
-import { UttakFormPeriodeType } from '../../../components/uttak-form/UttakForm';
-import { Periodetype } from '../../../types/uttaksplan/periodetyper';
+import { Periodetype, Periode } from '../../../types/uttaksplan/periodetyper';
 import { getStillingsprosentRegler } from '../stillingsprosent';
 
-export const gradertUttaksperiodeErUgyldig = (periode: UttakFormPeriodeType) => {
+export const gradertUttaksperiodeErUgyldig = (periode: Periode) => {
     if (periode.type === Periodetype.Uttak) {
         const { gradert, stillingsprosent } = periode;
         if (gradert === true) {
