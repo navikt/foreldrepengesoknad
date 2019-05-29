@@ -5,11 +5,7 @@ const Environment = () => {
         REST_API_URL: window.appSettings.REST_API_URL,
         UTTAK_API_URL: window.appSettings.UTTAK_API_URL,
         LOGIN_URL: window.appSettings.LOGIN_URL,
-        [Feature.logging]: window.appSettings[Feature.logging],
-        [Feature.mapOpphold]: window.appSettings[Feature.mapOpphold],
-        [Feature.visInfoskriv]: window.appSettings[Feature.visInfoskriv],
-        [Feature.mapAnnenPartTilInfo]: window.appSettings[Feature.mapAnnenPartTilInfo],
-        [Feature.mapFlereArbeidsforhold]: window.appSettings[Feature.mapFlereArbeidsforhold]
+        [Feature.logging]: window.appSettings[Feature.logging]
     };
 };
 

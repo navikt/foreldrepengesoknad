@@ -21,7 +21,6 @@ import Block from 'common/components/block/Block';
 import { openPdfPreview } from 'common/util/pdfUtils';
 
 import { MissingAttachment } from 'app/types/MissingAttachment';
-import { isFeatureEnabled, Feature } from 'app/Feature';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 
 import { Søkerinfo } from 'app/types/søkerinfo';
@@ -72,8 +71,7 @@ class SøknadSendtSide extends React.Component<Props> {
                                 </SøknadSendtSectionHeader>
                             </Block>
 
-                            {isFeatureEnabled(Feature.visInfoskriv) &&
-                                kvittering.infoskrivPdf &&
+                            {kvittering.infoskrivPdf &&
                                 arbeidsforhold &&
                                 arbeidsforhold.length > 0 && (
                                     <Block>

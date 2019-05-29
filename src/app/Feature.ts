@@ -1,8 +1,7 @@
 import Environment from './Environment';
 
 export enum Feature {
-    logging = 'FEATURE_LOGGING',
-    visInfoskriv = 'FEATURE_VIS_INFOSKRIV'
+    logging = 'FEATURE_LOGGING'
     /** Nye features må også registreres i ./Environment */
 }
 
