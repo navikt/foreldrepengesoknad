@@ -780,7 +780,7 @@
 
     "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikkje få foreldrepengar etter at barnet er fylt tre år.",
     "uttaksplan.validering.feil.harSøktOmFerieUtenArbeidsforhold":
-        "Du kan ikkje søke om utsetjing på grunn av ferie, då du ikkje er registrert med noko arbeidsforhold.",
+        "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold i valgt tidsperiode.",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må vere ein vekedag.",
     "uttaksplan.validering.feil.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker":
         "Du kan ta ut eller utsetje foreldrepengane dine tidlegast frå veke sju etter fødselen. Dersom du skal ta ut foreldrepengar tidlegare fordi mor er sjuk eller innlagd, må du søkje på papir.",

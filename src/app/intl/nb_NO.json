@@ -778,7 +778,7 @@
         "Du har lagt inn <strong>{periode} ({tidsperiode})</strong> som vil erstatte dager som {forelder} allerede har fått innvilget.",
     "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikke få foreldrepenger etter at barnet er fylt tre år.",
     "uttaksplan.validering.feil.harSøktOmFerieUtenArbeidsforhold":
-        "Du kan ikke søke om utsettelse på grunn av ferie, da du ikke er registrert med noe arbeidsforhold.",
+        "Du kan dessverre ikke legge inn utsettelse på grunn av lovbestemt ferie fordi du ikke er registrert med et arbeidsforhold i valgt tidsperiode.",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag.",
     "uttaksplan.validering.feil.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker":
         "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Unntaket er om mor er for syk eller innlagt i helseinstitusjon.",
