@@ -155,7 +155,7 @@ const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Sak
         saksperiode.samtidigUttaksprosent !== undefined && saksperiode.samtidigUttaksprosent !== 0;
 
     if (saksperiode.gjelderAnnenPart) {
-        mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag);
+        return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag);
     }
 
     const uttaksperiode: Uttaksperiode = {
@@ -178,7 +178,7 @@ const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Sak
 
 const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode | undefined => {
     if (saksperiode.gjelderAnnenPart) {
-        mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag);
+        return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag);
     }
 
     const utsettelsesperiode: Utsettelsesperiode = {
@@ -240,7 +240,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
 
 const mapPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode | undefined => {
     if (saksperiode.gjelderAnnenPart) {
-        mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag);
+        return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag);
     }
     if (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT) {
         return mapInfoPeriodeFromAvslåttSaksperiode(saksperiode, grunnlag);
