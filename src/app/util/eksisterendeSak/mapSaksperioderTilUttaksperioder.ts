@@ -276,11 +276,7 @@ const mapPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunn
         }
         return undefined;
     }
-    const erAvslått = saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT;
-    if (erAvslått && isFeatureEnabled(Feature.visAvslåttPeriode) === false) {
-        return undefined;
-    }
-    if (erAvslått) {
+    if (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT) {
         return mapInfoPeriodeFromAvslåttSaksperiode(saksperiode, grunnlag);
     }
     if (saksperiode.utsettelsePeriodeType !== undefined) {

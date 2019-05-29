@@ -346,9 +346,6 @@ const kanSaksperiodeKonverteresTilPeriode = (periode: Saksperiode) => {
     if (
         periode.flerbarnsdager === false &&
         (isFeatureEnabled(Feature.mapOpphold) ? true : periode.gjelderAnnenPart === false) &&
-        (isFeatureEnabled(Feature.visAvslåttPeriode)
-            ? true
-            : periode.periodeResultatType === PeriodeResultatType.INNVILGET) &&
         periode.samtidigUttak === false
     ) {
         return true;
