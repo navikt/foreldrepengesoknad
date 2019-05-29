@@ -125,10 +125,10 @@ export const getEksisterendeSakFromDTO = (
 
     let saksperioder = perioder
         .map(mapSaksperiodeFromDTO)
-        .filter(fjernAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
+        .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
 
     if (arbeidsforhold.length > 1 && isFeatureEnabled(Feature.mapFlereArbeidsforhold)) {
-        saksperioder = saksperioder.reduce(fjernDuplikateSaksperioderGrunnetArbeidsforhold, []);
+        saksperioder = saksperioder.reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
     }
 
     const uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioder)
@@ -147,7 +147,7 @@ export const getEksisterendeSakFromDTO = (
 const saksperiodeErInnvilget = (saksperiode: Saksperiode) =>
     saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET;
 
-const fjernAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
+const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     periode: Saksperiode,
     index: number,
     saksperioder: Saksperiode[]
@@ -167,7 +167,7 @@ const fjernAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     return true;
 };
 
-const fjernDuplikateSaksperioderGrunnetArbeidsforhold = (
+const reduceDuplikateSaksperioderGrunnetArbeidsforhold = (
     resultatPerioder: Saksperiode[],
     periode: Saksperiode,
     index: number,
@@ -193,32 +193,6 @@ const fjernDuplikateSaksperioderGrunnetArbeidsforhold = (
 
     return resultatPerioder;
 };
-
-// const fjernDuplikateSaksperioderGrunnetArbeidsforhold = (saksperioder: Saksperiode[]): Saksperiode[] => {
-//     const nyePerioder: Saksperiode[] = saksperioder.reduce((resultatPerioder: Saksperiode[], periode: Saksperiode) => {
-//         if (inneholderDuplikatSaksperiode(saksperioder, periode)) {
-//             if (periode.graderingInnvilget && periode.arbeidstidprosent > 0) {
-//                 resultatPerioder.push(periode);
-
-//                 return resultatPerioder;
-//             }
-
-//             if (!periode.graderingInnvilget && !inneholderDuplikatSaksperiode(resultatPerioder, periode)) {
-//                 resultatPerioder.push(periode);
-
-//                 return resultatPerioder;
-//             }
-
-//             return resultatPerioder;
-//         }
-
-//         resultatPerioder.push(periode);
-
-//         return resultatPerioder;
-//     }, []);
-
-//     return nyePerioder;
-// };
 
 const inneholderDuplikatSaksperiode = (saksperioder: Saksperiode[], saksperiode: Saksperiode): boolean => {
     if (saksperioder.length === 0) {
