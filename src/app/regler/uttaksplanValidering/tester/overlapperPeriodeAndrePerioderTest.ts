@@ -19,22 +19,19 @@ export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: Regelgrunnla
     const passerer = perioderSomHarOverlapp.length === 0;
     return {
         passerer,
-        info: passerer
-            ? undefined
-            : perioderSomHarOverlapp.map((periode) => {
-                  const info: RegelTestresultatInfo = {
-                      periodeId: periode.id,
-                      intlKey: 'uttaksplan.validering.feil.periodeoverlapp.oppsummering',
-                      renderAsHtml: true,
-                      values: {
-                          periode: (intl: InjectedIntl) => getPeriodeTittel(intl, periode, navnPåForeldre),
-                          tidsperiode: (intl: InjectedIntl) =>
-                              Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
-                          forelder: (intl: InjectedIntl) =>
-                              getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale)
-                      }
-                  };
-                  return info;
-              })
+        info: perioderSomHarOverlapp.map((periode) => {
+            const info: RegelTestresultatInfo = {
+                periodeId: periode.id,
+                intlKey: 'uttaksplan.validering.feil.periodeoverlapp.oppsummering',
+                renderAsHtml: true,
+                values: {
+                    periode: (intl: InjectedIntl) => getPeriodeTittel(intl, periode, navnPåForeldre),
+                    tidsperiode: (intl: InjectedIntl) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
+                    forelder: (intl: InjectedIntl) =>
+                        getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale)
+                }
+            };
+            return info;
+        })
     };
 };

@@ -8,25 +8,25 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
-import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import ToggleList from '../toggle-list/ToggleList';
 import PeriodelisteHull from './items/PeriodelisteHull';
 import { focusElement } from '../../util/focusUtils';
 import PeriodelistePeriode from './items/PeriodelistePeriode';
 import PeriodelisteInfo, { PeriodelisteInformasjon } from './items/PeriodelisteInfo';
-
-import './periodeliste.less';
 import { Søknadsinfo } from 'app/selectors/types';
 import PeriodelisteAvslåttPeriode from './items/PeriodelisteAvslåttPeriode';
 import PeriodelisteOppholdAnnenPart from './items/PeriodelisteOppholdAnnenPart';
 import PeriodelisteGruppertInfoPart from './items/PeriodelisteGruppertInfoPart';
+import { VeiledermeldingerPerPeriode } from '../veileder-info/types';
+
+import './periodeliste.less';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
     perioder: Periode[];
     informasjon?: PeriodelisteInformasjon[];
     antallFeriedager: number;
-    uttaksplanValidering: UttaksplanValideringState;
+    meldingerPerPeriode: VeiledermeldingerPerPeriode;
     navnPåForeldre: NavnPåForeldre;
     lastAddedPeriodeId: string | undefined;
     onPeriodeLukk?: (id: string) => void;
@@ -108,9 +108,9 @@ class Periodeliste extends React.Component<Props> {
         const {
             perioder,
             informasjon,
-            uttaksplanValidering,
             navnPåForeldre,
             antallFeriedager,
+            meldingerPerPeriode,
             onLeggTilOpphold,
             onLeggTilPeriode
         } = this.props;
@@ -202,7 +202,7 @@ class Periodeliste extends React.Component<Props> {
                                             periode={periode}
                                             antallFeriedager={antallFeriedager}
                                             navnPåForeldre={navnPåForeldre}
-                                            validertPeriode={uttaksplanValidering.periodevalidering[periode.id]}
+                                            meldinger={meldingerPerPeriode[periode.id]}
                                             isExpanded={isExpanded}
                                             onToggle={onToggle}
                                         />

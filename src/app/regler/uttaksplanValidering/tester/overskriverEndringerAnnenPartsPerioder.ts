@@ -27,23 +27,20 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Rege
         const passerer = perioderSomOverlapper.length === 0;
         return {
             passerer,
-            info: passerer
-                ? undefined
-                : perioderSomOverlapper.map((periode) => {
-                      const regelInfo: RegelTestresultatInfo = {
-                          periodeId: periode.id,
-                          intlKey: 'uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode',
-                          renderAsHtml: true,
-                          values: {
-                              periode: (intl: InjectedIntl) => getPeriodeTittel(intl, periode, navnPåForeldre),
-                              tidsperiode: (intl: InjectedIntl) =>
-                                  Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
-                              forelder: (intl: InjectedIntl) =>
-                                  getNavnGenitivEierform(grunnlag.søknadsinfo.navn.annenForelder.fornavn, intl.locale)
-                          }
-                      };
-                      return regelInfo;
-                  })
+            info: perioderSomOverlapper.map((periode) => {
+                const regelInfo: RegelTestresultatInfo = {
+                    periodeId: periode.id,
+                    intlKey: 'uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode',
+                    renderAsHtml: true,
+                    values: {
+                        periode: (intl: InjectedIntl) => getPeriodeTittel(intl, periode, navnPåForeldre),
+                        tidsperiode: (intl: InjectedIntl) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
+                        forelder: (intl: InjectedIntl) =>
+                            getNavnGenitivEierform(grunnlag.søknadsinfo.navn.annenForelder.fornavn, intl.locale)
+                    }
+                };
+                return regelInfo;
+            })
         };
     }
 

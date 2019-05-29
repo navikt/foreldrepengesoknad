@@ -7,7 +7,8 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { getOverføringÅrsakSkjemanummer } from '../../../util/skjemanummer/overføringÅrsakSkjemanummer';
 import { RecursivePartial } from '../../../types/Partial';
 import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
-import VeilederInfo, { VeilederMessage } from '../../veileder-info/VeilederInfo';
+import VeilederInfo from '../../veileder-info/VeilederInfo';
+import { VeilederMessage } from 'app/components/veileder-info/types';
 
 interface Props {
     årsak?: OverføringÅrsakType;
