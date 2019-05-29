@@ -48,7 +48,6 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
-import { Feature, isFeatureEnabled } from '../../../Feature';
 import EksisterendeSak from '../../../components/eksisterendeSak/EksisterendeSak';
 import Sak from 'app/types/søknad/Sak';
 import { Saksgrunnlag } from 'app/types/EksisterendeSak';
@@ -275,8 +274,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         {visVeileder && (
                             <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
                         )}
-                        {isFeatureEnabled(Feature.hentEksisterendeSak) &&
-                            eksisterendeSak &&
+                        {eksisterendeSak &&
                             sak && (
                                 <Block>
                                     <EksisterendeSak
