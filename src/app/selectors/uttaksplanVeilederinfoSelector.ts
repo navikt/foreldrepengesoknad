@@ -8,7 +8,7 @@ import groupBy from 'lodash.groupby';
 import { VeilederMessageType, VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/veileder-info/types';
 
 const getMessageTypeFromAvvik = (avvik: RegelAvvik): VeilederMessageType => {
-    switch (avvik.alvorlighet) {
+    switch (avvik.regel.alvorlighet) {
         case RegelAlvorlighet.FEIL:
             return 'feil';
         case RegelAlvorlighet.ADVARSEL:
@@ -30,9 +30,9 @@ export const mapAvvikTilMessage = (avvik: RegelAvvik, intl: InjectedIntl): Veile
         titleIntlKey: harTittel ? tittelIntlKey : undefined,
         formatContentAsHTML: info.renderAsHtml,
         values: getRegelIntlValues(intl, info),
-        periodeId: avvik.skjulesIPeriode !== true ? avvik.periodeId : undefined,
-        skjulesIOppsummering: avvik.skjulesIOppsummering,
-        avvikType: avvik.avvikType
+        periodeId: avvik.regel.skjulesIPeriode !== true ? avvik.periodeId : undefined,
+        skjulesIOppsummering: avvik.regel.skjulesIOppsummering,
+        avvikType: avvik.regel.avvikType
     };
 };
 export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>

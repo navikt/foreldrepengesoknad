@@ -26,10 +26,10 @@ const alvorlighetSortOrder = {
 };
 
 export const sorterAvvik = (a1: RegelAvvik, a2: RegelAvvik): number => {
-    if (a1.alvorlighet === a2.alvorlighet) {
+    if (a1.regel.alvorlighet === a2.regel.alvorlighet) {
         return 0;
     }
-    return alvorlighetSortOrder[a1.alvorlighet] < alvorlighetSortOrder[a2.alvorlighet] ? -1 : 1;
+    return alvorlighetSortOrder[a1.regel.alvorlighet] < alvorlighetSortOrder[a2.regel.alvorlighet] ? -1 : 1;
 };
 const kjørUttaksplanRegler = (
     søknad: Søknad,

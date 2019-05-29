@@ -37,8 +37,8 @@ export interface Regel {
     overstyresAvRegel?: RegelKey;
     overstyrerRegler?: RegelKey[];
     slåsSammenVedOppsummering?: boolean;
-    skjulIOppsummering?: boolean;
-    skjulIPeriode?: boolean;
+    skjulesIOppsummering?: boolean;
+    skjulesIPeriode?: boolean;
     avvikType?: AvvikType;
 }
 
@@ -62,16 +62,17 @@ export type AvvikType = 'forretning' | 'skjema';
 
 export interface RegelAvvik {
     id: string;
-    key: RegelKey;
+    regel: Regel;
+    // key: RegelKey;
     periodeId?: string;
     info: RegelAvvikInfo;
-    alvorlighet: RegelAlvorlighet;
-    overstyresAvRegel?: RegelKey;
-    overstyrerRegler?: RegelKey[];
-    slåsSammenVedOppsummering?: boolean;
-    skjulesIOppsummering?: boolean;
-    skjulesIPeriode?: boolean;
-    avvikType?: AvvikType;
+    // alvorlighet: RegelAlvorlighet;
+    // overstyresAvRegel?: RegelKey;
+    // overstyrerRegler?: RegelKey[];
+    // slåsSammenVedOppsummering?: boolean;
+    // skjulesIOppsummering?: boolean;
+    // skjulesIPeriode?: boolean;
+    // avvikType?: AvvikType;
 }
 
 type avikValueFunk = (intl: InjectedIntl) => string;
