@@ -48,7 +48,7 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
         const feil: UttaksplanValideringFeil[] = [];
         if (uttaksplanValidering.resultat && uttaksplanValidering.resultat.harFeil) {
             uttaksplanValidering.resultat.avvik
-                .filter((a) => a.alvorlighet === RegelAlvorlighet.FEIL)
+                .filter((a) => a.regel.alvorlighet === RegelAlvorlighet.FEIL)
                 .forEach((avvik) => {
                     const addFeilInfo = (info: RegelAvvikInfo) => {
                         feil.push({

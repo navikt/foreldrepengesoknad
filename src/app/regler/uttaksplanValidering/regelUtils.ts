@@ -33,16 +33,9 @@ const ensureRegelAvvikIntlKey = (regel: Regel, info?: Partial<RegelTestresultatI
 export const regelHarAvvik = (regel: Regel, info?: RegelTestresultatInfoObject, periodeId?: string): RegelStatus => {
     const mapInfoToRegelAvvik = (i?: Partial<RegelTestresultatInfo>): RegelAvvik => ({
         id: guid(),
-        key: regel.key,
-        alvorlighet: regel.alvorlighet,
+        regel,
         info: ensureRegelAvvikIntlKey(regel, i),
-        overstyrerRegler: regel.overstyrerRegler,
-        overstyresAvRegel: regel.overstyresAvRegel,
-        slåsSammenVedOppsummering: regel.slåsSammenVedOppsummering,
-        periodeId: i ? i.periodeId : periodeId,
-        skjulesIOppsummering: regel.skjulIOppsummering,
-        skjulesIPeriode: regel.skjulIPeriode,
-        avvikType: regel.avvikType
+        periodeId: i ? i.periodeId : periodeId
     });
     const regelAvvik: RegelAvvik[] = [];
     if (isArray(info)) {
@@ -75,10 +68,10 @@ export const getRegelAvvik = (resultat: RegelStatus[]): RegelAvvik[] => {
     return [];
 };
 
-export const isRegelFeil = (regelAvvik: RegelAvvik): boolean => regelAvvik.alvorlighet === RegelAlvorlighet.FEIL;
+export const isRegelFeil = (regelAvvik: RegelAvvik): boolean => regelAvvik.regel.alvorlighet === RegelAlvorlighet.FEIL;
 export const isRegelAdvarsel = (regelAvvik: RegelAvvik): boolean =>
-    regelAvvik.alvorlighet === RegelAlvorlighet.ADVARSEL;
-export const isRegelInfo = (regelAvvik: RegelAvvik): boolean => regelAvvik.alvorlighet === RegelAlvorlighet.INFO;
+    regelAvvik.regel.alvorlighet === RegelAlvorlighet.ADVARSEL;
+export const isRegelInfo = (regelAvvik: RegelAvvik): boolean => regelAvvik.regel.alvorlighet === RegelAlvorlighet.INFO;
 
 export const hasRegelFeil = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelFeil(a));
 export const hasRegelAdvarsler = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelAdvarsel(a));
@@ -88,16 +81,17 @@ export const hasRegelAvvikFeil = (avvik: RegelAvvik[] = []) => avvik.some((a) =>
 
 const overstyresAvFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelAvvik[]): boolean => {
     return (
-        avvik.overstyresAvRegel === undefined && alleAvvik.some((b2) => b2.key === avvik.overstyresAvRegel) === false
+        avvik.regel.overstyresAvRegel === undefined &&
+        alleAvvik.some((b2) => b2.regel.key === avvik.regel.overstyresAvRegel) === false
     );
 };
 
 const overstyrerAndreFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelAvvik[]): boolean => {
     const overstyresAvAndre = alleAvvik.some(
         (rb) =>
-            rb.overstyrerRegler
-                ? rb.overstyrerRegler.some((rbo) => {
-                      return rbo === avvik.key;
+            rb.regel.overstyrerRegler
+                ? rb.regel.overstyrerRegler.some((rbo) => {
+                      return rbo === avvik.regel.key;
                   })
                 : false
     );
@@ -106,7 +100,7 @@ const overstyrerAndreFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelA
 
 export const trimRelaterteRegelAvvik = (avvik: RegelAvvik[]): RegelAvvik[] => {
     return uniqBy(avvik.filter(overstyresAvFilter).filter(overstyrerAndreFilter), (a) => {
-        return a.slåsSammenVedOppsummering ? a.key : guid();
+        return a.regel.slåsSammenVedOppsummering ? a.regel.key : guid();
     });
 };
 

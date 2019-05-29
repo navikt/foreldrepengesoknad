@@ -24,38 +24,38 @@ const periodevalideringsregler: Regel[] = [
         key: PeriodeValiderRegelKey.uttaksperiodeHarGyldigGradering,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harUttaksperiodeGyldigGradering,
-        skjulIOppsummering,
+        skjulesIOppsummering: skjulIOppsummering,
         avvikType: 'skjema'
     },
     {
         key: PeriodeValiderRegelKey.periodeHarGyldigTidsperiode,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harPeriodeGyldigTidsperiode,
-        skjulIOppsummering
+        skjulesIOppsummering: skjulIOppsummering
     },
     {
         key: PeriodeValiderRegelKey.uttaksperiodeHarStønadskonto,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harUttaksperiodeStønadskonto,
-        skjulIOppsummering
+        skjulesIOppsummering: skjulIOppsummering
     },
     {
         key: PeriodeValiderRegelKey.erSamtidigUttakGyldig,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erSamtidigUttakGyldig,
-        skjulIOppsummering
+        skjulesIOppsummering: skjulIOppsummering
     },
     {
         key: PeriodeValiderRegelKey.erUtsettelseEtterFamiliehendelsesdato,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erUtsettelseEtterFamiliehendelsesdato,
-        skjulIOppsummering
+        skjulesIOppsummering: skjulIOppsummering
     },
     {
         key: PeriodeValiderRegelKey.erAllePeriodeSkjemaspørsmålBesvart,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erAllePeriodeSkjemaspørsmålBesvart,
-        skjulIOppsummering,
+        skjulesIOppsummering: skjulIOppsummering,
         avvikType: 'skjema'
     }
 ];

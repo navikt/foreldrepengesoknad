@@ -131,7 +131,7 @@ const uttaksplanRegler: Regel[] = [
         key: UttaksplanRegelKey.inneholderSeneGraderteUttak,
         alvorlighet: RegelAlvorlighet.INFO,
         test: inneholderSeneGraderteUttakTest,
-        skjulIPeriode: true
+        skjulesIPeriode: true
     },
     {
         key: UttaksplanRegelKey.inneholderTapteDager,
@@ -159,7 +159,7 @@ const uttaksplanRegler: Regel[] = [
         alvorlighet: RegelAlvorlighet.FEIL,
         test: overlapperPeriodeAndrePerioder,
         slåsSammenVedOppsummering: false,
-        skjulIOppsummering: true
+        skjulesIOppsummering: true
     }
 ];
 
