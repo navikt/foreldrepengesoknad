@@ -11,8 +11,7 @@ import {
     Arbeidsform,
     AnnenPartInfoPeriode,
     GruppertInfoPeriode,
-    isAnnenPartInfoPeriode,
-    Oppholdsperiode
+    isAnnenPartInfoPeriode
 } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
@@ -22,7 +21,6 @@ import { getUtsettelseÅrsakFromSaksperiode } from '../uttaksplan/uttaksperiodeU
 import { Saksperiode, Saksgrunnlag, PeriodeResultatType } from '../../types/EksisterendeSak';
 import { Forelder } from 'common/types';
 import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
-import { isFeatureEnabled, Feature } from 'app/Feature';
 import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
 
 const harUttaksdager = (periode: Periode): boolean => {
@@ -157,12 +155,7 @@ const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Sak
         saksperiode.samtidigUttaksprosent !== undefined && saksperiode.samtidigUttaksprosent !== 0;
 
     if (saksperiode.gjelderAnnenPart) {
-        if (isFeatureEnabled(Feature.mapOpphold)) {
-            return isFeatureEnabled(Feature.mapAnnenPartTilInfo)
-                ? mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag)
-                : mapOppholdsperiodeFromSaksperiodeAnnenPart(saksperiode, grunnlag);
-        }
-        return undefined;
+        mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag);
     }
 
     const uttaksperiode: Uttaksperiode = {
@@ -185,12 +178,7 @@ const mapUttaksperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Sak
 
 const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode | undefined => {
     if (saksperiode.gjelderAnnenPart) {
-        if (isFeatureEnabled(Feature.mapOpphold)) {
-            return isFeatureEnabled(Feature.mapAnnenPartTilInfo)
-                ? mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag)
-                : mapOppholdsperiodeFromSaksperiodeAnnenPart(saksperiode, grunnlag);
-        }
-        return undefined;
+        mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag);
     }
 
     const utsettelsesperiode: Utsettelsesperiode = {
@@ -230,23 +218,6 @@ const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, grunnla
     return avslåttPeriode;
 };
 
-const mapOppholdsperiodeFromSaksperiodeAnnenPart = (
-    saksperiode: Saksperiode,
-    grunnlag: Saksgrunnlag
-): Oppholdsperiode | undefined => {
-    const årsak = getOppholdÅrsakFromSaksperiode(saksperiode);
-    if (årsak) {
-        return {
-            type: Periodetype.Opphold,
-            id: guid(),
-            årsak,
-            tidsperiode: { ...saksperiode.tidsperiode },
-            forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor)
-        };
-    }
-    return undefined;
-};
-
 const mapAnnenPartInfoPeriodeFromSaksperiode = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag
@@ -269,12 +240,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
 
 const mapPeriodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Periode | undefined => {
     if (saksperiode.gjelderAnnenPart) {
-        if (isFeatureEnabled(Feature.mapOpphold)) {
-            return isFeatureEnabled(Feature.mapAnnenPartTilInfo)
-                ? mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag)
-                : mapOppholdsperiodeFromSaksperiodeAnnenPart(saksperiode, grunnlag);
-        }
-        return undefined;
+        mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag);
     }
     if (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT) {
         return mapInfoPeriodeFromAvslåttSaksperiode(saksperiode, grunnlag);
@@ -304,9 +270,7 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harUttaksdager)
     );
 
-    return isFeatureEnabled(Feature.mapAnnenPartTilInfo)
-        ? grupperAnnenPartInfoPerioder(sammenslåddePerioder)
-        : sammenslåddePerioder;
+    return grupperAnnenPartInfoPerioder(sammenslåddePerioder);
 };
 
 export default mapSaksperioderTilUttaksperioder;
