@@ -15,7 +15,8 @@ export const Perioden = (periode: Periode) => ({
     getAntallUttaksdager: () => Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
     erLik: (periode2: Periode, inkluderTidsperiode: boolean = false, inkluderUtsettelser: boolean = false) =>
         erPerioderLike(periode, periode2, inkluderTidsperiode, inkluderUtsettelser),
-    erSammenhengende: (periode2: Periode) => erPerioderSammenhengende(periode, periode2)
+    erSammenhengende: (periode2: Periode) => erPerioderSammenhengende(periode, periode2),
+    inneholderFridager: () => Tidsperioden(periode.tidsperiode).getAntallFridager() > 0
 });
 
 function erOpphold(periode: Periode): boolean {
