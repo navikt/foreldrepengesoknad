@@ -8,7 +8,9 @@ import {
     PeriodeHullÅrsak,
     isOverskrivbarPeriode,
     isHull,
-    isInfoPeriode
+    isInfoPeriode,
+    isUtsettelsesperiode,
+    Utsettelsesperiode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -166,8 +168,21 @@ class UttaksplanAutoBuilder {
         return this;
     }
 
+    private leggTilEventuelleUttaksdagerIFeriePeriode = (periode: Utsettelsesperiode): Periode[] => {
+        if (periode.årsak === UtsettelseÅrsakType.Ferie && Tidsperioden(periode.tidsperiode).getAntallFridager() > 0) {
+            return splittPeriodeMedHelligdager(periode);
+        }
+        return [periode];
+    };
+
     private erstattPeriode(periode: Periode) {
-        this.perioder = this.perioder.map((p) => (p.id === periode.id ? periode : p));
+        const periodeSomSkalSettesInn: Periode[] =
+            isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Ferie
+                ? this.leggTilEventuelleUttaksdagerIFeriePeriode(periode)
+                : [periode];
+
+        const idx = this.perioder.findIndex((p) => p.id === periode.id);
+        this.perioder = [...this.perioder.slice(0, idx), ...periodeSomSkalSettesInn, ...this.perioder.slice(idx + 1)];
         return this;
     }
 
