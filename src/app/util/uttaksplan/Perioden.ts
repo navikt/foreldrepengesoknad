@@ -1,5 +1,10 @@
 import moment from 'moment';
-import { Periode, Periodetype, isForeldrepengerFørFødselUttaksperiode } from '../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    Periodetype,
+    isForeldrepengerFørFødselUttaksperiode,
+    isUtsettelsePgaFerie
+} from '../../types/uttaksplan/periodetyper';
 import { getTidsperiode, Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
 import { Tidsperiode } from 'common/types';
@@ -8,6 +13,7 @@ import { formaterDatoKompakt } from 'common/util/datoUtils';
 export const Perioden = (periode: Periode) => ({
     erUttak: () => erUttak(periode),
     erUtsettelse: () => erUtsettelse(periode),
+    erUtsettelsePgaFerie: () => isUtsettelsePgaFerie(periode),
     erOpphold: () => erOpphold(periode),
     setStartdato: (fom: Date) => flyttPeriode(periode, fom),
     setUttaksdager: (uttaksdager: number) =>
@@ -15,7 +21,8 @@ export const Perioden = (periode: Periode) => ({
     getAntallUttaksdager: () => Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
     erLik: (periode2: Periode, inkluderTidsperiode: boolean = false, inkluderUtsettelser: boolean = false) =>
         erPerioderLike(periode, periode2, inkluderTidsperiode, inkluderUtsettelser),
-    erSammenhengende: (periode2: Periode) => erPerioderSammenhengende(periode, periode2)
+    erSammenhengende: (periode2: Periode) => erPerioderSammenhengende(periode, periode2),
+    inneholderFridager: () => Tidsperioden(periode.tidsperiode).getAntallFridager() > 0
 });
 
 function erOpphold(periode: Periode): boolean {
