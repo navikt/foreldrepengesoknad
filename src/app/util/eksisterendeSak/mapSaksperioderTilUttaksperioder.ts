@@ -98,6 +98,9 @@ const grupperAnnenPartInfoPerioder = (perioder: Periode[]): Periode[] => {
 
         nyePerioder.push(periode);
     });
+    if (gruppertPeriode) {
+        nyePerioder.push(gruppertPeriode);
+    }
     return nyePerioder;
 };
 
