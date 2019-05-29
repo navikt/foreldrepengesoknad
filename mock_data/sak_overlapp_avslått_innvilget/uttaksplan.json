@@ -117,23 +117,6 @@
             "periode": { "fom": "2019-06-03", "tom": "2019-06-07" }
         },
         {
-            "periodeResultatType": "AVSLÅTT",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FELLESPERIODE",
-            "arbeidstidprosent": 0,
-            "gjelderAnnenPart": false,
-            "manueltBehandlet": false,
-            "flerbarnsdager": false,
-            "uttakArbeidType": "ORDINÆRT_ARBEID",
-            "arbeidsgiverInfo": {
-                "id": "973861778",
-                "type": "ORGANISASJON",
-                "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
-            },
-            "periode": { "fom": "2019-06-03", "tom": "2019-06-07" }
-        },
-        {
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
