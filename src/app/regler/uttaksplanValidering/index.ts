@@ -21,6 +21,7 @@ import { inneholderSeneGraderteUttakTest } from './tester/inneholderSeneGraderte
 import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
 import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndrePerioderTest';
 import periodevalideringsregler, { PeriodeValiderRegelKey } from './periodevalideringstester';
+import { harSøktOmFerieUtenArbeidsforhold } from './tester/harSøktOmFerieUtenArbeidsforholdTest';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -43,7 +44,8 @@ export enum UttaksplanRegelKey {
     'inneholderBareUtsettelser' = 'inneholderBareUtsettelser',
     'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode' = 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode',
     'endringerOverskriverAnnenPartsPerioder' = 'endringerOverskriverAnnenPartsPerioder',
-    'periodeOverlapperAndrePerioder' = 'periodeOverlapperAndrePerioder'
+    'periodeOverlapperAndrePerioder' = 'periodeOverlapperAndrePerioder',
+    'harSøktOmFerieUtenArbeidsforhold' = 'harSøktOmFerieUtenArbeidsforhold'
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -160,6 +162,11 @@ const uttaksplanRegler: Regel[] = [
         test: overlapperPeriodeAndrePerioder,
         slåsSammenVedOppsummering: false,
         skjulesIOppsummering: true
+    },
+    {
+        key: UttaksplanRegelKey.harSøktOmFerieUtenArbeidsforhold,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: harSøktOmFerieUtenArbeidsforhold
     }
 ];
 
