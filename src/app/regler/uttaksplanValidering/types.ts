@@ -63,16 +63,8 @@ export type AvvikType = 'forretning' | 'skjema';
 export interface RegelAvvik {
     id: string;
     regel: Regel;
-    // key: RegelKey;
     periodeId?: string;
     info: RegelAvvikInfo;
-    // alvorlighet: RegelAlvorlighet;
-    // overstyresAvRegel?: RegelKey;
-    // overstyrerRegler?: RegelKey[];
-    // slåsSammenVedOppsummering?: boolean;
-    // skjulesIOppsummering?: boolean;
-    // skjulesIPeriode?: boolean;
-    // avvikType?: AvvikType;
 }
 
 type avikValueFunk = (intl: InjectedIntl) => string;
