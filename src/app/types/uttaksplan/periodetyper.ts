@@ -236,6 +236,10 @@ export function isUtsettelsesperiode(periode: Periode | RecursivePartial<Periode
     return periode.type === Periodetype.Utsettelse;
 }
 
+export function isUtsettelsePgaFerie(periode: Periode | RecursivePartial<Periode>): periode is Periode {
+    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Ferie;
+}
+
 export function isOverføringsperiode(periode: Periode | RecursivePartial<Periode>): periode is Overføringsperiode {
     return periode.type === Periodetype.Overføring;
 }
