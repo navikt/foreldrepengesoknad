@@ -24,10 +24,10 @@ import {
     OppholdÅrsakType,
     Periode
 } from 'app/types/uttaksplan/periodetyper';
-import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
+import { UttaksplanDTO, UttaksplanPeriodeDTO } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { isFeatureEnabled, Feature } from 'app/Feature';
-import { datoErInnenforTidsperiode } from '../uttaksplan/Tidsperioden';
+import { datoErInnenforTidsperiode, Tidsperioden } from '../uttaksplan/Tidsperioden';
 import { guid } from 'nav-frontend-js-utils';
 import { cloneDeep } from 'lodash';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
@@ -66,72 +66,67 @@ export const erEksisterendeSakErDeltUttak = (dto: UttaksplanDTO): boolean => {
     return true;
 };
 
+const mapSaksperiodeFromDTO = (p: UttaksplanPeriodeDTO): Saksperiode => {
+    const {
+        periodeResultatType,
+        periode,
+        stønadskontotype,
+        utsettelsePeriodeType,
+        arbeidsgiverInfo,
+        uttakArbeidType,
+        morsAktivitetIPerioden,
+        oppholdAarsak,
+        gjelderAnnenPart,
+        ...periodeRest
+    } = p;
+
+    const returnPeriode = {
+        ...periodeRest,
+        guid: guid(),
+        periodeResultatType: periodeResultatType as PeriodeResultatType,
+        stønadskontotype: stønadskontotype as StønadskontoType,
+        utsettelsePeriodeType: utsettelsePeriodeType as SaksperiodeUtsettelseÅrsakType,
+        arbeidsgiverInfo: arbeidsgiverInfo as ArbeidsgiverInfo,
+        uttakArbeidType: uttakArbeidType as UttakArbeidType,
+        tidsperiode: {
+            fom: new Date(periode.fom),
+            tom: new Date(periode.tom)
+        },
+        gjelderAnnenPart,
+        morsAktivitetIPerioden: morsAktivitetIPerioden as MorsAktivitet
+    };
+
+    if (oppholdAarsak !== undefined && gjelderAnnenPart === false) {
+        returnPeriode.gjelderAnnenPart = true;
+        returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdÅrsakType(oppholdAarsak as OppholdÅrsakType);
+        returnPeriode.flerbarnsdager =
+            (oppholdAarsak as OppholdÅrsakType) === OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder;
+    }
+
+    return returnPeriode;
+};
+
 export const getEksisterendeSakFromDTO = (
     dto: UttaksplanDTO,
     arbeidsforhold: Arbeidsforhold[]
 ): EksisterendeSak | undefined => {
     const {
-        grunnlag: {
-            dekningsgrad,
-            familieHendelseDato,
-            familieHendelseType,
-            søkerKjønn,
-            annenForelderKjønn,
-            ...restGrunnlag
-        },
+        grunnlag: { dekningsgrad, familieHendelseDato, familieHendelseType, søkerKjønn, ...restGrunnlag },
         perioder
     } = dto;
 
-    const erDeltUttak = erEksisterendeSakErDeltUttak(dto);
-
     const grunnlag: Saksgrunnlag = {
         ...restGrunnlag,
-        erDeltUttak,
+        erDeltUttak: erEksisterendeSakErDeltUttak(dto),
         erBarnetFødt: familieHendelseType !== FamiliehendelsesType.TERM,
         dekningsgrad: dekningsgrad === 100 ? '100' : '80',
         familieHendelseDato: new Date(familieHendelseDato),
         familieHendelseType: familieHendelseType as FamiliehendelsesType
     };
 
-    const saksperioder = perioder.map((p): Saksperiode => {
-        const {
-            periodeResultatType,
-            periode,
-            stønadskontotype,
-            utsettelsePeriodeType,
-            arbeidsgiverInfo,
-            uttakArbeidType,
-            morsAktivitetIPerioden,
-            oppholdAarsak,
-            gjelderAnnenPart,
-            ...periodeRest
-        } = p;
-
-        const returnPeriode = {
-            ...periodeRest,
-            guid: guid(),
-            periodeResultatType: periodeResultatType as PeriodeResultatType,
-            stønadskontotype: stønadskontotype as StønadskontoType,
-            utsettelsePeriodeType: utsettelsePeriodeType as SaksperiodeUtsettelseÅrsakType,
-            arbeidsgiverInfo: arbeidsgiverInfo as ArbeidsgiverInfo,
-            uttakArbeidType: uttakArbeidType as UttakArbeidType,
-            tidsperiode: {
-                fom: new Date(periode.fom),
-                tom: new Date(periode.tom)
-            },
-            gjelderAnnenPart,
-            morsAktivitetIPerioden: morsAktivitetIPerioden as MorsAktivitet
-        };
-
-        if (oppholdAarsak !== undefined && gjelderAnnenPart === false) {
-            returnPeriode.gjelderAnnenPart = true;
-            returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdÅrsakType(oppholdAarsak as OppholdÅrsakType);
-            returnPeriode.flerbarnsdager =
-                (oppholdAarsak as OppholdÅrsakType) === OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder;
-        }
-
-        return returnPeriode;
-    });
+    const saksperioder = perioder
+        .map(mapSaksperiodeFromDTO)
+        .filter(fjernAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
 
     let uttaksplan: Periode[] | undefined = [];
 
@@ -154,6 +149,29 @@ export const getEksisterendeSakFromDTO = (
     };
 
     return sak;
+};
+
+const saksperiodeErInnviget = (saksperiode: Saksperiode) =>
+    saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET;
+
+const fjernAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
+    periode: Saksperiode,
+    index: number,
+    saksperioder: Saksperiode[]
+) => {
+    const likePerioder = saksperioder.filter(
+        (periode2) => periode.guid !== periode2.guid && Tidsperioden(periode.tidsperiode).erLik(periode2.tidsperiode)
+    );
+
+    if (likePerioder.length === 0) {
+        return true;
+    }
+
+    const innvilgedePerioder = likePerioder.filter(saksperiodeErInnviget);
+    if (saksperiodeErInnviget(periode) === false && innvilgedePerioder.length > 0) {
+        return false;
+    }
+    return true;
 };
 
 const fjernDuplikateSaksperioderGrunnetArbeidsforhold = (saksperioder: Saksperiode[]): Saksperiode[] => {
@@ -189,16 +207,9 @@ const inneholderDuplikatSaksperiode = (saksperioder: Saksperiode[], saksperiode:
 
     return saksperioder.some(
         (s) =>
-            saksperiodeneGårOverSammeTidsperiode(s, saksperiode) &&
+            Tidsperioden(s.tidsperiode).erLik(saksperiode.tidsperiode) &&
             s.gjelderAnnenPart === saksperiode.gjelderAnnenPart &&
             s.guid !== saksperiode.guid
-    );
-};
-
-const saksperiodeneGårOverSammeTidsperiode = (a: Saksperiode, b: Saksperiode): boolean => {
-    return (
-        moment(a.tidsperiode.tom).isSame(moment(b.tidsperiode.tom)) &&
-        moment(a.tidsperiode.fom).isSame(moment(b.tidsperiode.fom))
     );
 };
 
