@@ -16,7 +16,6 @@ import { fetchEksisterendeSak } from './sakerSaga';
 import { opprettSøknadFraEksisterendeSak } from '../../util/eksisterendeSak/eksisterendeSakUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
 import { StegID } from '../../util/routing/stegConfig';
-import { isFeatureEnabled, Feature } from '../../Feature';
 import { EksisterendeSak } from '../../types/EksisterendeSak';
 import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
 import Sak from 'app/types/søknad/Sak';
@@ -42,11 +41,7 @@ function* startSøknad(action: StartSøknad) {
     const appState: AppState = yield select(stateSelector);
 
     if (erEndringssøknad && saksnummer && appState.api.sakForEndringssøknad) {
-        if (isFeatureEnabled(Feature.hentEksisterendeSak)) {
-            yield call(startEnkelEndringssøknad, action, appState.api.sakForEndringssøknad);
-        } else {
-            yield call(startVanligEndringssøknad, action);
-        }
+        yield call(startEndringssøknad, action, appState.api.sakForEndringssøknad);
         yield put(apiActions.storeAppState());
     } else {
         yield call(startFørstegangssøknad, action);
@@ -58,24 +53,14 @@ function* startFørstegangssøknad(action: StartSøknad) {
     action.history.push(søknadStegPath(StegID.INNGANG));
 }
 
-function* startVanligEndringssøknad(action: StartSøknad) {
-    yield put(
-        søknadActions.updateSøknad({
-            erEndringssøknad: true,
-            saksnummer: action.saksnummer
-        })
-    );
-    yield put(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
-}
-
-function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
+function* startEndringssøknad(action: StartSøknad, sak: Sak) {
     const { saksnummer, søkerinfo, history } = action;
     const appState: AppState = yield select(stateSelector);
     const eksisterendeSak: EksisterendeSak | undefined = yield call(fetchEksisterendeSak, saksnummer);
     const søknad = eksisterendeSak ? opprettSøknadFraEksisterendeSak(søkerinfo, eksisterendeSak, sak) : undefined;
 
     if (eksisterendeSak === undefined || søknad === undefined) {
-        yield call(startVanligEndringssøknad, action);
+        yield call(startFallbackEndringssøknad, action);
     } else {
         yield put(
             søknadActions.updateSøknad({
@@ -106,6 +91,16 @@ function* startEnkelEndringssøknad(action: StartSøknad, sak: Sak) {
         yield call(validerUttaksplanAction);
         yield put(søknadActionCreators.setCurrentSteg(StegID.UTTAKSPLAN));
     }
+}
+
+function* startFallbackEndringssøknad(action: StartSøknad) {
+    yield put(
+        søknadActions.updateSøknad({
+            erEndringssøknad: true,
+            saksnummer: action.saksnummer
+        })
+    );
+    yield put(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
 }
 
 function* lagUttaksplanForslag() {

@@ -1,7 +1,6 @@
 import Environment from './Environment';
 
 export enum Feature {
-    hentEksisterendeSak = 'FEATURE_HENT_EKSISTERENDE_SAK',
     visAvslåttPeriode = 'FEATURE_VIS_AVSLATT_PERIODE',
     mapOpphold = 'FEATURE_MAP_OPPHOLD',
     mapAnnenPartTilInfo = 'FEATURE_MAP_ANNEN_PART_TIL_INFO',
