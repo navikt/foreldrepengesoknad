@@ -105,6 +105,9 @@ function flyttTidsperiode(tidsperiode: Tidsperiode, fom: Date): Tidsperiode {
 }
 
 function erTidsperioderLike(t1: Partial<Tidsperiode>, t2: Partial<Tidsperiode>) {
+    if (isValidTidsperiode(t1) && isValidTidsperiode(t2)) {
+        return moment(t1.fom).isSame(t2.fom, 'day') && moment(t1.tom).isSame(t2.tom, 'day');
+    }
     return JSON.stringify(t1) === JSON.stringify(t2);
 }
 
