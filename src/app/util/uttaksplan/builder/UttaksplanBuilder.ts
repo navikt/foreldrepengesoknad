@@ -168,9 +168,17 @@ class UttaksplanAutoBuilder {
 
     private erstattPeriode(periode: Periode) {
         this.perioder = this.perioder.map((p) => (p.id === periode.id ? periode : p));
+        const periodeSomSkalSettesInn: Periode[] =
+            periode.type === Periodetype.Utsettelse &&
+            periode.årsak === UtsettelseÅrsakType.Ferie &&
+            Perioden(periode).inneholderFridager()
+                ? splittPeriodeMedHelligdager(periode)
+                : [periode];
+
+        const idx = this.perioder.findIndex((p) => p.id === periode.id);
+        this.perioder = [...this.perioder.slice(0, idx), ...periodeSomSkalSettesInn, ...this.perioder.slice(idx + 1)];
         return this;
     }
-
     private oppdaterPerioderVedEndretPeriode(periode: Periode, oldPeriode: Periode) {
         if (Tidsperioden(periode.tidsperiode).erLik(oldPeriode.tidsperiode)) {
             return this;
