@@ -107,7 +107,7 @@ class SøknadSendtSide extends React.Component<Props> {
                                                 <Ingress>{person.bankkonto && person.bankkonto.kontonummer}</Ingress>
                                             </Block>
                                             <Block margin="none">
-                                                <Lenke href="#">
+                                                <Lenke href={lenker.brukerprofil}>
                                                     <FormattedMessage id="søknadSendt.pengene.kontonummer.endre" />
                                                 </Lenke>
                                             </Block>
