@@ -4,7 +4,7 @@ import { UttaksplanIkonProps } from '../types';
 const TerminIkon = (props: UttaksplanIkonProps) => {
     const { title, ...rest } = props;
     return (
-        <svg width={24} height={24} viewBox="0 0 24 24" {...rest}>
+        <svg focusable="false" role="presentation" width={24} height={24} viewBox="0 0 24 24" {...rest}>
             <title>{props.title}</title>
             <path
                 fill="none"

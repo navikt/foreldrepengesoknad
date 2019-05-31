@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 const CheckmarkIkon = (props: any) => (
-    <svg width={24} height={24} {...props}>
+    <svg focusable="false" role="presentation" width={24} height={24} {...props}>
         <g fill="none" fillRule="evenodd">
             <path
                 fill="#1C6937"

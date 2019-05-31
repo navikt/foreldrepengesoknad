@@ -4,7 +4,13 @@ import { UttaksplanIkonProps } from '../types';
 const FerieIkon = (props: UttaksplanIkonProps) => {
     const { title, ...rest } = props;
     return (
-        <svg xmlnsXlink="http://www.w3.org/1999/xlink" width={32} height={32} {...rest}>
+        <svg
+            focusable="false"
+            role="presentation"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            width={32}
+            height={32}
+            {...rest}>
             <title>{props.title}</title>
             <defs>
                 <rect id="a" width={32} height={32} rx={10} />
