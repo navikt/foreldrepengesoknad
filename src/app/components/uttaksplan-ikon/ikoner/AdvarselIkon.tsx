@@ -12,7 +12,14 @@ const AdvarselIkon = (props: Props) => {
     const { title, ...rest } = props;
 
     return (
-        <svg xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24" {...rest}>
+        <svg
+            focusable="false"
+            role="presentation"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            width={24}
+            height={24}
+            viewBox="0 0 24 24"
+            {...rest}>
             <title>{props.title}</title>
             <defs>
                 <path

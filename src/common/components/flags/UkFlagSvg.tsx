@@ -1,7 +1,7 @@
 import React from 'react';
 
 const UKFlagSVG = () => (
-    <svg width={25} height={18}>
+    <svg focusable="false" role="presentation" width={25} height={18}>
         <title>{'flag_united_kingdom'}</title>
         <g fill="none" fillRule="evenodd">
             <path fill="#00247D" d="M0 0v18h25V0z" />

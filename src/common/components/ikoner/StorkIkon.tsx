@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 const StorkIkon = (props: any) => (
-    <svg width={123} height={103} {...props}>
+    <svg focusable="false" role="presentation" width={123} height={103} {...props}>
         <defs>
             <path
                 id="prefix__a"
