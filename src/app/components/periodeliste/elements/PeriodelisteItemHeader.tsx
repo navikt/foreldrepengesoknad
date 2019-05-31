@@ -2,9 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import BEMHelper from 'common/util/bem';
 import { Element, Normaltekst, EtikettLiten } from 'nav-frontend-typografi';
-
 import { Tidsperiode } from 'common/types';
-import AriaText from 'common/components/aria/AriaText';
 import UttaksplanIkon from '../../uttaksplan-ikon/UttaksplanIkon';
 import { måned3bokstaver, måned, år } from 'common/util/datoUtils';
 import moment from 'moment';
@@ -20,7 +18,6 @@ interface Props {
     beskrivelse?: React.ReactNode;
     melding?: VeilederMessage;
     tidsperiode?: Tidsperiode;
-    ariaTekst?: string;
     type: 'periode' | 'info';
 }
 
@@ -45,7 +42,6 @@ const renderDagMnd = (dato: Date): JSX.Element => {
 const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
     type,
     isOpen,
-    ariaTekst,
     ikon,
     tittel,
     beskrivelse,
@@ -54,10 +50,7 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
 }) => {
     return (
         <div className={BEM.modifier(type)}>
-            {ariaTekst && <AriaText>{ariaTekst}</AriaText>}
             <div
-                role={ariaTekst ? 'presentation' : undefined}
-                aria-hidden={true}
                 className={classnames(BEM.block, 'typo-normal', {
                     [BEM.modifier('apnet')]: isOpen
                 })}>

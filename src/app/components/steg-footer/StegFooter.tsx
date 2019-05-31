@@ -26,7 +26,7 @@ const StegFooter: React.StatelessComponent<Props> = ({ onAvbryt, onFortsettSener
                     }}>
                     <FormattedMessage id="steg.footer.fortsettSenere" />
                 </LinkButton>
-                <span className={bem.element('dot')} />
+                <span className={bem.element('dot')} aria-hidden={true} />
                 <LinkButton
                     id="avbrytSøknadLenke"
                     onClick={(e) => {
