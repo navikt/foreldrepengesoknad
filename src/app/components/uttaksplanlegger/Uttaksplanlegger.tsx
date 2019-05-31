@@ -225,7 +225,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                 <Block>
                     <div className={BEM.block} id={uttaksplanleggerDomId} tabIndex={-1}>
                         <header className={BEM.element('header')}>
-                            <Systemtittel tag="h1" className={BEM.element('header__title')}>
+                            <Systemtittel tag="h2" className={BEM.element('header__title')}>
                                 <FormattedMessage id="uttaksplan.tittel" />
                             </Systemtittel>
                             {onRequestClear &&
