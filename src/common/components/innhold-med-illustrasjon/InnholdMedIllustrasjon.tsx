@@ -19,7 +19,7 @@ const InnholdMedIllustrasjon: React.StatelessComponent<Props> = ({ tittel, illus
         )}>
         <div className={bem.element('contentWrapper')}>
             <header>
-                <Systemtittel tag="h3" className={bem.element('tittel')}>
+                <Systemtittel tag="h2" className={bem.element('tittel')}>
                     {tittel}
                 </Systemtittel>
             </header>

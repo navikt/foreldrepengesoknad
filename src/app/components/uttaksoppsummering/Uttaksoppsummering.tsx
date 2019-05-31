@@ -14,7 +14,7 @@ export interface Props {
 
 const Uttaksoppsummering: React.StatelessComponent<Props> = ({ uttak, navnPåForeldre, gjelderDagerBrukt }) => (
     <section>
-        <Undertittel tag="h1" className="blokk-xs">
+        <Undertittel tag="h2" className="blokk-xs">
             <FormattedMessage
                 id={gjelderDagerBrukt ? 'uttaksoppsummering.forbrukt' : 'uttaksoppsummering.gjenstående'}
             />
