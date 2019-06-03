@@ -3,7 +3,7 @@ import { AnnenInntektType } from '../types/søknad/AnnenInntekt';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
-import FlervalgSpørsmål from '../components/flervalg-spørsmål/FlervalgSpørsmål';
+import FlervalgSpørsmål from '../components/skjema/flervalg-spørsmål/FlervalgSpørsmål';
 
 interface InntektstypeSpørsmålProps {
     inntektstype?: AnnenInntektType;

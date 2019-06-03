@@ -1,0 +1,61 @@
+@import '../../../../styles/variables.less';
+
+.striped(@color1, @color2) {
+    @pos: 6.2px;
+    background: repeating-linear-gradient(-45deg, @color1, @color1 @pos, @color2 @pos, @color2 @pos + 1.5px);
+}
+
+.iconBox {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.6rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    &--green {
+        background-color: @c-periodefarge-gronn;
+        &--striped {
+            .striped(@c-periodefarge-gronn, @c-periodefarge-gronn--gradert);
+        }
+    }
+    &--blue {
+        background-color: @c-periodefarge-blaa;
+        &--striped {
+            .striped(@c-periodefarge-blaa, @c-periodefarge-blaa--gradert);
+        }
+    }
+    &--purple {
+        background-color: @c-periodefarge-lilla;
+        &--striped {
+            .striped(@c-periodefarge-lilla, @c-periodefarge-lilla--gradert);
+        }
+    }
+    &--purpleBlue {
+        background: repeating-linear-gradient(
+            -45deg,
+            @c-periodefarge-blaa,
+            @c-periodefarge-blaa 50%,
+            @c-periodefarge-lilla 50%,
+            @c-periodefarge-lilla 100%
+        );
+        &--striped {
+            background: repeating-linear-gradient(
+                -45deg,
+                @c-periodefarge-blaa,
+                @c-periodefarge-blaa 50%,
+                @c-periodefarge-lilla 50%,
+                @c-periodefarge-lilla 100%
+            );
+            &:before {
+                position: absolute;
+                content: '';
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                .striped(transparent, rgba(255, 255, 255, 0.6));
+            }
+        }
+    }
+}

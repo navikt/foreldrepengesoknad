@@ -4,7 +4,7 @@ import { Validator } from 'common/lib/validation/types';
 import { dateIsSameOrAfterRule, dateIsSameOrBeforeRule, hasValueRule } from './common';
 
 import getMessage from 'common/util/i18nUtils';
-import { DatoValidatorer } from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import { DatoValidatorer } from '../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { Tidsperiode } from 'common/types';
 
 export const getFomTidsperiodeRegler = (fom: DateValue, tom: DateValue, intl: InjectedIntl): Validator[] => {

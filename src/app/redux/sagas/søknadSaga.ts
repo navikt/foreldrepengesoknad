@@ -14,7 +14,7 @@ import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { fetchEksisterendeSak } from './sakerSaga';
 import { opprettSøknadFraEksisterendeSak } from '../../util/eksisterendeSak/eksisterendeSakUtils';
-import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
+import { søknadStegPath } from '../../steg/StegRoutes';
 import { StegID } from '../../util/routing/stegConfig';
 import { EksisterendeSak } from '../../types/EksisterendeSak';
 import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';

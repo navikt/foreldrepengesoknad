@@ -5,7 +5,7 @@ import { RegelAlvorlighet, RegelAvvik } from '../regler/uttaksplanValidering/typ
 import { intlHasKey } from 'common/util/intlUtils';
 import { getRegelIntlValues, trimRelaterteRegelAvvik } from '../regler/uttaksplanValidering/regelUtils';
 import groupBy from 'lodash.groupby';
-import { VeilederMessageType, VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/veileder-info/types';
+import { VeilederMessageType, VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/veilederInfo/types';
 
 const getMessageTypeFromAvvik = (avvik: RegelAvvik): VeilederMessageType => {
     switch (avvik.regel.alvorlighet) {

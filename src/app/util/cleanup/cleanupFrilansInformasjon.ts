@@ -1,6 +1,6 @@
 import Søker from '../../types/søknad/Søker';
 import { FrilansInformasjon } from '../../types/søknad/FrilansInformasjon';
-import visibilityFns from '../../bolker/frilanser-bolk/visibility';
+import visibilityFns from '../../steg/andreInntekter/frilanserBolk/visibility';
 
 const cleanupFrilansInformasjon = (søker: Søker): FrilansInformasjon | undefined => {
     const { frilansInformasjon } = søker;
