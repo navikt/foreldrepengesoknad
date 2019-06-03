@@ -11,15 +11,17 @@ interface HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmålProps {
     validatorer?: Validator[];
     onChange: (variant: Utsettelsesvariant) => void;
     radios: RadioProps[];
+    infotekst?: string;
 }
 
 type Props = HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmålProps & InjectedIntlProps;
 
 const HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål = (props: Props) => {
-    const { onChange, variant, radios, validatorer, intl } = props;
+    const { onChange, variant, radios, validatorer, infotekst, intl } = props;
 
     return (
         <ValiderbarRadioPanelGruppeResponsive
+            infoboksTekst={infotekst}
             checked={variant}
             twoColumns={true}
             legend={getMessage(intl, 'hvaergrunnentilatduskalutsettedittuttak.spørsmål')}

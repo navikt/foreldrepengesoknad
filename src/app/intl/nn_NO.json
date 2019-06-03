@@ -626,6 +626,7 @@
         "Ferien du har lagt inn går over ein periode med helgedagar. Du kan ikkje ha ferie på helgedagar. Desse dagane vert lagt til som foreldrepengar i planen din, du må velge kva del av foreldrepengane du ynskjer å bruke.",
     "utsettelseskjema.veiledning.ferie":
         "Du kan utsetje foreldrepengane med lovfesta ferie i inntil fire veker og éin dag for kvart kalenderår, i tillegg til overført lovfesta ferie frå i fjor og ti feriedagar frå neste år. Du kan ikkje utsetje på helgedagar.  Du må avtale med arbiedgjevaren din at du skal ha ferie.",
+    "utsettelseskjema.kunHelligdager.disabledFerieMelding": "Du kan ikkje utsetje med ferie på helgedagar",
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagd søkjar",
