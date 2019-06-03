@@ -7,11 +7,11 @@ import { PeriodeHull, isAvslåttPeriode } from '../../../types/uttaksplan/period
 import { Tidsperiode, NavnPåForeldre } from 'common/types';
 import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
 import Knapperad from 'common/components/knapperad/Knapperad';
-import AdvarselIkon from '../../uttaksplan-ikon/ikoner/AdvarselIkon';
 import PeriodelisteInfo from './PeriodelisteInfo';
 import Block from 'common/components/block/Block';
 import { getVarighetString } from 'common/util/intlUtils';
 import { getStønadskontoNavn } from 'app/util/uttaksplan';
+import AdvarselIkon from 'app/components/ikoner/svgIkoner/advarselIkon/AdvarselIkon';
 
 export interface Props {
     itemId: string;

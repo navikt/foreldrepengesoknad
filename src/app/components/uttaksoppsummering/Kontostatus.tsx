@@ -5,11 +5,11 @@ import BEMHelper from 'common/util/bem';
 import { getVarighetString } from 'common/util/intlUtils';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { getStønadskontoNavn } from '../../util/uttaksplan';
-
-import StønadskontoIkon from '../uttaksplan-ikon/StønadskontoIkon';
 import { NavnPåForeldre } from 'common/types';
-import './kontostatus.less';
 import { Stønadskontouttak } from '../../types/uttaksplan/periodetyper';
+
+import './kontostatus.less';
+import StønadskontoIkon from '../ikoner/uttaksplan-ikon/StønadskontoIkon';
 
 export interface Props {
     uttak: Stønadskontouttak;

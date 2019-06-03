@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { UtsettelseÅrsakType } from '../../types/uttaksplan/periodetyper';
+
 import UttaksplanIkon, { UttaksplanIkonKeys } from './UttaksplanIkon';
-import { getUtsettelseFarge } from '../../util/uttaksplan/styleUtils';
-import IconBox from '../icon-box/IconBox';
 import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { UtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
+import { getUtsettelseFarge } from 'app/util/uttaksplan/styleUtils';
+import IconBox from '../icon-box/IconBox';
 
 export interface Props {
     årsak: UtsettelseÅrsakType;

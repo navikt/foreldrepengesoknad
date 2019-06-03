@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import BEMHelper from 'common/util/bem';
-import { UttaksplanColor } from '../../types/uttaksplan/colors';
+import { UttaksplanColor } from '../../../types/uttaksplan/colors';
 
 import './iconBox.less';
 
