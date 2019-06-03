@@ -26,7 +26,7 @@ import { HistoryProps } from '../../../types/common';
 import visibility from './visibility';
 import cleanupAdopsjonsSteg from '../../../util/cleanup/cleanupAdopsjonsSteg';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
+import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
 
 interface StateProps {
     barn: Adopsjonsbarn;

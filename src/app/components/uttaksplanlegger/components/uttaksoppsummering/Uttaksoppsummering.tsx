@@ -4,7 +4,7 @@ import Kontostatus from './Kontostatus';
 import { NavnPåForeldre } from 'common/types';
 import { FormattedMessage } from 'react-intl';
 import { Stønadskontouttak } from 'app/types/uttaksplan/periodetyper';
-import TilesList from 'app/components/elementer/tiles-list/TilesList';
+import TilesList from 'app/components/elementer/tilesList/TilesList';
 
 export interface Props {
     uttak: Stønadskontouttak[];

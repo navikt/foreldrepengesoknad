@@ -10,7 +10,7 @@ import { Språkkode } from 'common/intl/types';
 import BEMHelper from 'common/util/bem';
 import getMessage from 'common/util/i18nUtils';
 import Søknadstittel from 'common/components/søknadstittel/Søknadstittel';
-import UtløptSesjonModal from 'app/components/dialoger/utløpt-sesjon-modal/UtløptSesjonModal';
+import UtløptSesjonModal from 'app/components/dialoger/utløptSesjonModal/UtløptSesjonModal';
 import LanguageToggle from 'common/components/language-toggle/LanguageToggle';
 
 export interface OwnProps {

@@ -14,7 +14,7 @@ import InntektOppsummering from 'common/components/oppsummering/oppsummeringer/I
 import Oppsummeringspanel from 'common/components/oppsummeringspanel/Oppsummeringspanel';
 import UttaksplanOppsummering from 'common/components/oppsummering/oppsummeringer/UttaksplanOppsummering';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
-import VeilederInfo from 'app/components/veileder-info/VeilederInfo';
+import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import { Søknadsinfo } from 'app/selectors/types';
 
 import './oppsummering.less';

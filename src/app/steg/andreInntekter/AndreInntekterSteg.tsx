@@ -26,7 +26,7 @@ import { SøkerinfoProps } from '../../types/søkerinfo';
 import YtelseInfoWrapper from 'common/components/ytelser-infobox/InformasjonOmYtelserWrapper';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { formatDate } from 'app/util/dates/dates';
-import VeilederInfo from '../../components/veileder-info/VeilederInfo';
+import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import {
     uttaksplanInneholderFrilansaktivitet,

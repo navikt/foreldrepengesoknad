@@ -41,7 +41,7 @@ import {
     selectUttaksplanVeilederinfo,
     selectPeriodelisteMeldinger
 } from 'app/selectors/uttaksplanVeilederinfoSelector';
-import VeilederInfo from '../../components/veileder-info/VeilederInfo';
+import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
@@ -50,7 +50,7 @@ import InfoEksisterendeSak from '../../components/infoEksisterendeSak/InfoEksist
 import Sak from 'app/types/søknad/Sak';
 import { Saksgrunnlag } from 'app/types/EksisterendeSak';
 import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
-import { VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/veileder-info/types';
+import { VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/veilederInfo/types';
 import UttaksplanFeiloppsummering from 'app/components/uttaksplanlegger/components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import Uttaksoppsummering from 'app/components/uttaksplanlegger/components/uttaksoppsummering/Uttaksoppsummering';
 

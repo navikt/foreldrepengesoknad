@@ -10,7 +10,7 @@ import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Textarea from 'common/components/skjema/wrappers/Textarea';
 import throttle from 'lodash.throttle';
-import VedleggSpørsmål from 'app/components/skjema/vedlegg-spørsmål/VedleggSpørsmål';
+import VedleggSpørsmål from 'app/components/skjema/vedleggSpørsmål/VedleggSpørsmål';
 import { begrunnelseSenEndringMaxLength } from 'app/util/validation/uttaksplan/begrunnelseForSenEndringValidation';
 
 interface OwnProps {

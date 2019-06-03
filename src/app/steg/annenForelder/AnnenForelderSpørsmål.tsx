@@ -20,7 +20,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AnnenForelderSpørsmålKeys, AnnenForelderStegVisibility } from './visibility/annenForelderStegVisibility';
 import { DateValue } from '../../types/common';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
-import VeilederInfo from '../../components/veileder-info/VeilederInfo';
+import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
 
 export interface OwnProps {
     annenForelder: AnnenForelder;

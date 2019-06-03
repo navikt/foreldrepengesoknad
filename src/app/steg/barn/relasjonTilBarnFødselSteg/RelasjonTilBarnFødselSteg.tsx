@@ -23,7 +23,7 @@ import HvilkeBarnGjelderSøknadenBolk from './HvilkeBarnGjelderSøknadenBolk';
 import isAvailable from '../../util/isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import Block from 'common/components/block/Block';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
 import cleanupRelasjonTilBarnFødselSteg from '../../../util/cleanup/relasjonTilBarn/cleanupRelasjonTilBarnFødselSteg';
@@ -113,7 +113,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                         )}
                     {barn.erBarnetFødt === false &&
                         getErSøkerFarEllerMedmor(søker.rolle) && (
-                            <Veilederinfo>
+                            <OldVeilederinfo>
                                 <FormattedMessage
                                     id="erBarnetFødt.spørsmål.veileder.medMorEllerFar"
                                     values={{
@@ -124,7 +124,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                         )
                                     }}
                                 />
-                            </Veilederinfo>
+                            </OldVeilederinfo>
                         )}
                     {vis.ufødtBarnPart &&
                         isUfødtBarn(barn, situasjon) &&

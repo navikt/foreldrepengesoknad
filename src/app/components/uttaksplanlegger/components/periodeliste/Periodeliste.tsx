@@ -8,7 +8,7 @@ import {
 } from '../../../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
-import ToggleList from '../../../elementer/toggle-list/ToggleList';
+import ToggleList from '../../../elementer/toggleList/ToggleList';
 import PeriodelisteHull from './items/PeriodelisteHull';
 import { focusElement } from '../../../../util/focusUtils';
 import PeriodelistePeriode from './items/PeriodelistePeriode';
@@ -17,7 +17,7 @@ import { Søknadsinfo } from 'app/selectors/types';
 import PeriodelisteAvslåttPeriode from './items/PeriodelisteAvslåttPeriode';
 import PeriodelisteOppholdAnnenPart from './items/PeriodelisteOppholdAnnenPart';
 import PeriodelisteGruppertInfoPart from './items/PeriodelisteGruppertInfoPart';
-import { VeiledermeldingerPerPeriode } from '../../../veileder-info/types';
+import { VeiledermeldingerPerPeriode } from '../../../veilederInfo/types';
 
 import './periodeliste.less';
 

@@ -22,7 +22,7 @@ import { SøkerinfoProps } from '../../types/søkerinfo';
 import { Kjønn, HistoryProps } from '../../types/common';
 import { resolveStegToRender } from '../util/navigation';
 import visibility from './visibility';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import Lenke from 'nav-frontend-lenker';
 import lenker from '../../util/routing/lenker';
 
@@ -139,14 +139,14 @@ class InngangSteg extends React.Component<Props, {}> {
                     />
                 </Block>
                 <Block visible={visibility.papirsøknadInfo(situasjon)}>
-                    <Veilederinfo>
+                    <OldVeilederinfo>
                         <Block margin="xs">
                             <FormattedMessage id="velkommen.foreldreansvar.veileder" />
                         </Block>
                         <Lenke href={lenker.papirsøknad}>
                             <FormattedMessage id="papirsøknad.lenke" />
                         </Lenke>
-                    </Veilederinfo>
+                    </OldVeilederinfo>
                 </Block>
             </Steg>
         );

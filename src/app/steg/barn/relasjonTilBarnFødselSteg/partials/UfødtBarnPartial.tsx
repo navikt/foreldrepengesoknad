@@ -15,7 +15,7 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
 import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
-import VeilederInfo from '../../../../components/veileder-info/VeilederInfo';
+import VeilederInfo from '../../../../components/veilederInfo/VeilederInfo';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;

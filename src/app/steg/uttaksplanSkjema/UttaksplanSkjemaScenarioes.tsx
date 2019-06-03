@@ -18,7 +18,7 @@ import Block from 'common/components/block/Block';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import FarSinFørsteUttaksdagSpørsmål from './enkeltspørsmål/FarSinFørsteUttaksdagSpørsmål';
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from './enkeltspørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
-import VeilederInfo from '../../components/veileder-info/VeilederInfo';
+import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
 import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 import { getNavnGenitivEierform } from '../../util/tekstUtils';
 import { InjectedIntlProps, injectIntl } from 'react-intl';

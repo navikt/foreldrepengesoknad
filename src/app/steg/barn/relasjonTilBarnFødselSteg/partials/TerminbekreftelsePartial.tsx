@@ -15,7 +15,7 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
 import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import VeilederInfo from '../../../../components/veileder-info/VeilederInfo';
+import VeilederInfo from '../../../../components/veilederInfo/VeilederInfo';
 
 export interface OwnProps {
     barn: UfødtBarn;

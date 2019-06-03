@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AnnenInntektType } from '../../../types/søknad/AnnenInntekt';
-import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
+import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
 
 interface OwnProps {
     type?: AnnenInntektType;

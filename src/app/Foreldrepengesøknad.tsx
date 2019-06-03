@@ -7,14 +7,14 @@ import GenerellFeil from './sider/feilsider/GenerellFeil';
 import { DispatchProps } from 'common/redux/types';
 import { apiActionCreators as api } from './redux/actions';
 import IkkeMyndig from './sider/feilsider/IkkeMyndig';
-import SøknadSendtSide from './sider/søknad-sendt/SøknadSendtSide';
+import SøknadSendtSide from './sider/søknadSendt/SøknadSendtSide';
 import Velkommen from './sider/velkommen/Velkommen';
 import { AppState } from './redux/reducers';
 import { Søkerinfo } from './types/søkerinfo';
 import Søknad from './types/søknad/Søknad';
 import { StegID } from './util/routing/stegConfig';
-import IkkeTilgjengelig from './sider/feilsider/ikke-tilgjengelig/IkkeTilgjengelig';
-import LoadingScreen from 'app/components/applikasjon/loading-screen/LoadingScreen';
+import IkkeTilgjengelig from './sider/feilsider/ikkeTilgjengelig/IkkeTilgjengelig';
+import LoadingScreen from 'app/components/applikasjon/loadingScreen/LoadingScreen';
 
 interface StateProps {
     søknad: Partial<Søknad>;

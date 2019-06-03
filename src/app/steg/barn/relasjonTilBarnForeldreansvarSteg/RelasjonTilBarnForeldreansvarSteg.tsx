@@ -28,7 +28,7 @@ import { fødselsdatoerErFyltUt } from '../../../util/validation/fødselsdato';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import visibility from './visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
+import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
 
 export interface StateProps {
     barn: Partial<ForeldreansvarBarn>;

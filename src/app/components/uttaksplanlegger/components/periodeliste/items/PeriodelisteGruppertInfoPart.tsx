@@ -1,6 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
-import { onToggleItemProp } from '../../../../elementer/toggle-list/ToggleList';
+import { onToggleItemProp } from '../../../../elementer/toggleList/ToggleList';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { Periode, GruppertInfoPeriode } from '../../../../../types/uttaksplan/periodetyper';

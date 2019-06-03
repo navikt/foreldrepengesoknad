@@ -11,7 +11,7 @@ import Block from 'common/components/block/Block';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
-import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
+import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
 import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
 
 interface StateProps {

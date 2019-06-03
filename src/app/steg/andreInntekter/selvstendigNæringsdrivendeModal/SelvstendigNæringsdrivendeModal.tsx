@@ -29,7 +29,7 @@ import { removeSpacesFromString } from '../../../util/stringUtils';
 import { hasValueRule } from '../../../util/validation/common';
 import { getFritekstfeltRules } from '../../../util/validation/fritekstfelt';
 import { trimNumberFromInput } from 'common/util/numberUtils';
-import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
+import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
 import Landvelger from 'app/components/skjema/landvelger/Landvelger';
 import NæringsrelasjonBolk from './næringsrelasjonBolk/NæringsrelasjonBolk';
 

@@ -2,14 +2,14 @@ import * as React from 'react';
 import { Periode } from '../../../../../types/uttaksplan/periodetyper';
 import PeriodeHeader from '../elements/PeriodeHeader';
 import { NavnPåForeldre } from 'common/types';
-import { onToggleItemProp } from '../../../../elementer/toggle-list/ToggleList';
+import { onToggleItemProp } from '../../../../elementer/toggleList/ToggleList';
 import { getPeriodeTittel } from '../../../../../util/uttaksplan';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import EndrePeriodeForm from '../../endre-periode-form/EndrePeriodeForm';
+import EndrePeriodeForm from '../../endrePeriodeForm/EndrePeriodeForm';
 import PeriodelisteToggleItem from '../elements/PeriodelisteToggleItem';
 import PeriodelisteItemWrapper from '../elements/PeriodelisteItemWrapper';
 import { getPeriodeFarge } from '../../../../../util/uttaksplan/styleUtils';
-import { VeilederMessage } from 'app/components/veileder-info/types';
+import { VeilederMessage } from 'app/components/veilederInfo/types';
 
 export interface Props {
     id: string;

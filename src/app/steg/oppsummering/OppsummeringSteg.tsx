@@ -16,7 +16,7 @@ import { Kvittering } from '../../types/Kvittering';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import isAvailable from '../util/isAvailable';
 import Oppsummering from 'common/components/oppsummering/Oppsummering';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import { validerUttaksplanAction } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
@@ -35,10 +35,10 @@ import { findAllAttachments } from '../manglendeVedlegg/manglendeVedleggUtil';
 import _ from 'lodash';
 import { skalViseManglendeVedleggSteg } from '../util/navigation';
 import ErAnnenForelderInformertSpørsmål from 'app/spørsmål/ErAnnenForelderInformertSpørsmål';
-import VeilederInfo from 'app/components/veileder-info/VeilederInfo';
+import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
-import LinkButton from 'app/components/elementer/link-button/LinkButton';
+import LinkButton from 'app/components/elementer/linkButton/LinkButton';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -143,9 +143,9 @@ class OppsummeringSteg extends React.Component<Props> {
                         />
                         {uttaksplanValidering.erGyldig &&
                             missingAttachments.length > 0 && (
-                                <Veilederinfo type="advarsel">
+                                <OldVeilederinfo type="advarsel">
                                     {getMessage(intl, 'oppsummering.veileder.manglendeVedlegg')}
-                                </Veilederinfo>
+                                </OldVeilederinfo>
                             )}
                         {skalSpørreOmAnnenForelderErInformert && (
                             <>

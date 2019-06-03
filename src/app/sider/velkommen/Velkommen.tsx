@@ -11,8 +11,8 @@ import getMessage from 'common/util/i18nUtils';
 import VeilederMedSnakkeboble from 'common/components/veileder-med-snakkeboble/VeilederMedSnakkeboble';
 
 import Applikasjonsside from '../../components/applikasjon/applikasjonsside/Applikasjonsside';
-import DinePlikterModal from '../../components/dialoger/dine-plikter-modal/DinePlikterModal';
-import DinePersonopplysningerModal from '../../components/dialoger/dine-personopplysninger-modal/DinePersonopplysningerModal';
+import DinePlikterModal from './dinePlikterModal/DinePlikterModal';
+import DinePersonopplysningerModal from './dinePersonopplysningerModal/DinePersonopplysningerModal';
 
 import { AppState } from '../../redux/reducers';
 import { DispatchProps } from 'common/redux/types';
@@ -26,13 +26,13 @@ import Knapperad from 'common/components/knapperad/Knapperad';
 import SøknadstypeSpørsmål from '../../spørsmål/SøknadstypeSpørsmål';
 import Block from 'common/components/block/Block';
 import Sak, { SakType } from '../../types/søknad/Sak';
-import SakInfo from './sak-info/SakInfo';
+import SakInfo from './sakInfo/SakInfo';
 
 import { erInfotrygdSak } from '../../util/saker/sakerUtils';
 import BEMHelper from 'common/util/bem';
-import VeilederInfo from '../../components/veileder-info/VeilederInfo';
+import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
 import { StorageKvittering } from '../../types/StorageKvittering';
-import SakInfoStorageKvittering from 'app/sider/velkommen/sak-info/SakInfoStorageKvittering';
+import SakInfoStorageKvittering from 'app/sider/velkommen/sakInfo/SakInfoStorageKvittering';
 
 import './velkommen.less';
 

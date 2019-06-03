@@ -1,7 +1,7 @@
 import * as React from 'react';
 import moment from 'moment';
 import Block from 'common/components/block/Block';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { getVarighetString } from 'common/util/intlUtils';
 import getMessage from 'common/util/i18nUtils';
@@ -84,7 +84,7 @@ const VeilederStartdatoPermisjon: React.StatelessComponent<Props> = ({
     const msg = getMsg();
     return (
         <Block margin="none" visible={msg !== undefined}>
-            <Veilederinfo type={erFeilmelding ? 'feil' : 'info'}>{msg}</Veilederinfo>
+            <OldVeilederinfo type={erFeilmelding ? 'feil' : 'info'}>{msg}</OldVeilederinfo>
         </Block>
     );
 };

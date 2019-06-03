@@ -22,7 +22,7 @@ import { getSkjemanummerForAndreInntekter } from 'common/storage/attachment/comp
 import { hasValueRule } from '../../../util/validation/common';
 import InntektstypeSpørsmål from '../../../spørsmål/InntektstypeSpørsmål';
 import Input from 'common/components/skjema/wrappers/Input';
-import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
+import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
 import Landvelger from 'app/components/skjema/landvelger/Landvelger';
 import Block from 'common/components/block/Block';
 

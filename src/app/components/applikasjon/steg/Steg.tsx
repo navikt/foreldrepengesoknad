@@ -12,13 +12,13 @@ import { AppState } from '../../../redux/reducers';
 import { DispatchProps } from 'common/redux/types';
 import BEMHelper from 'common/util/bem';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
-import StegFooter from '../steg-footer/StegFooter';
+import StegFooter from '../stegFooter/StegFooter';
 import BackButton from 'common/components/back-button/BackButton';
 import Block from 'common/components/block/Block';
-import AvbrytSøknadDialog from '../../dialoger/avbryt-søknad-dialog/AvbrytSøknadDialog';
+import AvbrytSøknadDialog from '../../dialoger/avbrytSøknadDialog/AvbrytSøknadDialog';
 import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
 import DocumentTitle from 'react-document-title';
-import FortsettSøknadSenereDialog from '../../dialoger/fortsett-søknad-senere-dialog/FortsettSøknadSenereDialog';
+import FortsettSøknadSenereDialog from '../../dialoger/fortsettSøknadSenereDialog/FortsettSøknadSenereDialog';
 import Stegindikator from '../stegindikator/Stegindikator';
 
 import './steg.less';

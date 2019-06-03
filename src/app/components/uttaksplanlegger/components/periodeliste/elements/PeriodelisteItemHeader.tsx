@@ -6,8 +6,8 @@ import { Tidsperiode } from 'common/types';
 import { måned3bokstaver, måned, år } from 'common/util/datoUtils';
 import moment from 'moment';
 import { getIkonForVeilederMelding } from 'app/util/validation/getAdvarselForPeriode';
-import { VeilederMessage } from 'app/components/veileder-info/types';
-import UttaksplanIkon from 'app/components/ikoner/uttaksplan-ikon/UttaksplanIkon';
+import { VeilederMessage } from 'app/components/veilederInfo/types';
+import UttaksplanIkon from 'app/components/ikoner/uttaksplanIkon/UttaksplanIkon';
 
 import './periodeheader.less';
 
