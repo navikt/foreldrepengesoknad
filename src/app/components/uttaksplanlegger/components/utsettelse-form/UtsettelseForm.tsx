@@ -27,7 +27,7 @@ import { RecursivePartial } from '../../../../types/Partial';
 import { AppState } from '../../../../redux/reducers';
 import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
-import AktivitetskravMorBolk from '../../../../bolker/AktivitetskravMorBolk';
+import AktivitetskravMorBolk from '../AktivitetskravMorBolk';
 import HvorSkalDuJobbeSpørsmålFlervalg from 'app/spørsmål/HvorSkalDuJobbeSpørsmålFlervalg';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
 import { Tidsperioden, isValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';

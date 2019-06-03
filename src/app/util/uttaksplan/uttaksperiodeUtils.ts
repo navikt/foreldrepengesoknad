@@ -4,7 +4,7 @@ import {
     SaksperiodeUtsettelseÅrsakType,
     UtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
-import { DatoAvgrensninger } from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import { DatoAvgrensninger } from '../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { Avgrensninger, Tidsperiode } from 'common/types';
 import { uttaksplanDatoavgrensninger } from '../validation/uttaksplan/uttaksplanDatoavgrensninger';
 import { Tidsperioden, isValidTidsperiode } from './Tidsperioden';

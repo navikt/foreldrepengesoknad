@@ -1,7 +1,7 @@
 import * as React from 'react';
 import moment from 'moment';
 import { Tidsperiode } from 'common/types';
-import TidsperiodeBolk from '../../../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
 import {
     Periode,

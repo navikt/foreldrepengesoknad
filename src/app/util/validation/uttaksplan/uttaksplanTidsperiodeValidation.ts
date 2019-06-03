@@ -1,4 +1,4 @@
-import { DatoValidatorer } from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import { DatoValidatorer } from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
 import moment from 'moment';
 import { Tidsperiode } from 'common/types';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
