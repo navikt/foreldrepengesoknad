@@ -3,7 +3,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import { UtenlandsoppholdType, Utenlandsopphold } from '../../types/søknad/InformasjonOmUtenlandsopphold';
 import UtenlandsoppholdModal, {
     UtenlandsoppholdModalPropsPartial
-} from '../../components/utenlandsopphold-modal/UtenlandsoppholdModal';
+} from '../../components/dialoger/utenlandsopphold-modal/UtenlandsoppholdModal';
 import Block from 'common/components/block/Block';
 import List from '../../components/list/List';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';

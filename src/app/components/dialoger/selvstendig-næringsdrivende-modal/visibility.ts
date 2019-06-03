@@ -1,9 +1,9 @@
 import * as moment from 'moment';
-import { Næring, NæringPartial } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import { date4YearsAgo } from '../../util/validation/values';
-import { er4ÅrSidenOppstartEllerMindre } from '../../util/domain/næringer';
-import næringsrelasjonFns from '../../bolker/næringsrelasjon-bolk/visibility';
-import VisibilityFunction from '../../types/dom/Visibility';
+import { Næring, NæringPartial } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import { date4YearsAgo } from '../../../util/validation/values';
+import { er4ÅrSidenOppstartEllerMindre } from '../../../util/domain/næringer';
+import næringsrelasjonFns from '../../../bolker/næringsrelasjon-bolk/visibility';
+import VisibilityFunction from '../../../types/dom/Visibility';
 
 const navnPåNæringenVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { næringstyper } = næring;

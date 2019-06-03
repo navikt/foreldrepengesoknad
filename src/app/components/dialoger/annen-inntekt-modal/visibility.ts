@@ -1,5 +1,5 @@
-import { AnnenInntektPartial, AnnenInntektType } from '../../types/søknad/AnnenInntekt';
-import VisibilityFunction from '../../types/dom/Visibility';
+import { AnnenInntektPartial, AnnenInntektType } from '../../../types/søknad/AnnenInntekt';
+import VisibilityFunction from '../../../types/dom/Visibility';
 
 const landVisible: VisibilityFunction<AnnenInntektPartial> = (annenInntekt: AnnenInntektPartial) => {
     const { type } = annenInntekt;

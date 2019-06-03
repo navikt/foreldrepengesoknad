@@ -9,29 +9,29 @@ import {
     Næringsrelasjon,
     NæringsrelasjonPartial,
     Næringstype
-} from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import NæringstypeSpørsmål from '../../spørsmål/NæringstypeSpørsmål';
+} from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import NæringstypeSpørsmål from '../../../spørsmål/NæringstypeSpørsmål';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
-import ErNæringenRegistrertINorgeSpørsmål from '../../spørsmål/ErNæringenRegistrertINorgeSpørsmål';
-import Landvelger from '../landvelger/Landvelger';
-import VarigEndringAvNæringsinntektBolk from '../../bolker/VarigEndringAvNæringsinntektBolk';
-import NæringsrelasjonBolk from '../../bolker/næringsrelasjon-bolk/NæringsrelasjonBolk';
-import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsførerSpørsmål';
-import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
-import KanInnhenteOpplysningerFraRevisorSpørsmål from '../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
-import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
+import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import ErNæringenRegistrertINorgeSpørsmål from '../../../spørsmål/ErNæringenRegistrertINorgeSpørsmål';
+import Landvelger from '../../landvelger/Landvelger';
+import VarigEndringAvNæringsinntektBolk from '../../../bolker/VarigEndringAvNæringsinntektBolk';
+import NæringsrelasjonBolk from '../../../bolker/næringsrelasjon-bolk/NæringsrelasjonBolk';
+import HarDuRegnskapsførerSpørsmål from '../../../spørsmål/HarDuRegnskapsførerSpørsmål';
+import HarDuRevisorSpørsmål from '../../../spørsmål/HarDuRevisorSpørsmål';
+import KanInnhenteOpplysningerFraRevisorSpørsmål from '../../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
+import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
 import ModalForm from 'common/components/modalForm/ModalForm';
-import { getOrganisasjonsnummerRegler } from '../../util/validation/organisasjonsnummer';
+import { getOrganisasjonsnummerRegler } from '../../../util/validation/organisasjonsnummer';
 import visibility from './visibility';
-import { default as cleanupNæring } from '../../util/cleanup/cleanupNæring';
+import { default as cleanupNæring } from '../../../util/cleanup/cleanupNæring';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
-import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from '../../spørsmål/HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål';
-import { removeSpacesFromString } from '../../util/stringUtils';
-import { hasValueRule } from '../../util/validation/common';
-import { getFritekstfeltRules } from '../../util/validation/fritekstfelt';
+import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from '../../../spørsmål/HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål';
+import { removeSpacesFromString } from '../../../util/stringUtils';
+import { hasValueRule } from '../../../util/validation/common';
+import { getFritekstfeltRules } from '../../../util/validation/fritekstfelt';
 import { trimNumberFromInput } from 'common/util/numberUtils';
-import VeilederInfo from '../veileder-info/VeilederInfo';
+import VeilederInfo from '../../veileder-info/VeilederInfo';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;

@@ -4,7 +4,7 @@ import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
-import lenker from '../../util/routing/lenker';
+import lenker from '../../../util/routing/lenker';
 
 interface DineRettigheterModalProps {
     isOpen: boolean;

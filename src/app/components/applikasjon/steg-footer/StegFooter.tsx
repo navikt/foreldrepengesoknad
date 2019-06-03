@@ -1,6 +1,6 @@
 import * as React from 'react';
 import BEMHelper from 'common/util/bem';
-import LinkButton from '../link-button/LinkButton';
+import LinkButton from '../../link-button/LinkButton';
 
 import './stegFooter.less';
 import { FormattedMessage } from 'react-intl';

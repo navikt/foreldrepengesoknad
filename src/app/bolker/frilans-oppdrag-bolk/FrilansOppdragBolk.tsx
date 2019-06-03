@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { FrilansOppdrag } from '../../types/søknad/FrilansInformasjon';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
-import FrilansOppdragModal from '../../components/frilans-oppdrag-modal/FrilansOppdragModal';
+import FrilansOppdragModal from '../../components/dialoger/frilans-oppdrag-modal/FrilansOppdragModal';
 import List from '../../components/list/List';
 import Block from 'common/components/block/Block';
 import FrilansOppdragListElement from './FrilansOppdragListElement';

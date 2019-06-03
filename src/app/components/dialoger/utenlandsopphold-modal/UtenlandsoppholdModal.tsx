@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Modal, { ModalProps } from 'nav-frontend-modal';
-import Landvelger from '../landvelger/Landvelger';
+import Landvelger from '../../landvelger/Landvelger';
 import './utenlandsoppholdModal.less';
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import { Undertittel } from 'nav-frontend-typografi';
@@ -8,18 +8,18 @@ import {
     UtenlandsoppholdType,
     Utenlandsopphold,
     UtenlandsoppholdSkjemadataPartial
-} from '../../types/søknad/InformasjonOmUtenlandsopphold';
+} from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import Block from 'common/components/block/Block';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
 import { Avgrensninger, Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'common/types';
-import TidsperiodeBolk, { DatoAvgrensninger, DatoValidatorer } from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import TidsperiodeBolk, { DatoAvgrensninger, DatoValidatorer } from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { Validator } from 'common/lib/validation/types/index';
 import { InjectedIntl, InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
-import { DateValue } from '../../types/common';
-import { hasValueRule } from '../../util/validation/common';
+import { DateValue } from '../../../types/common';
+import { hasValueRule } from '../../../util/validation/common';
 
 export interface AvgrensningGetters {
     getFraAvgrensning?: (date?: Date) => Avgrensninger;
