@@ -1,6 +1,6 @@
 import { InjectedIntl } from 'react-intl';
-import { UttaksplanIkonKeys } from 'app/components/uttaksplan-ikon/UttaksplanIkon';
 import { VeilederMessage } from 'app/components/veileder-info/types';
+import { UttaksplanIkonKeys } from 'app/components/ikoner/uttaksplan-ikon/UttaksplanIkon';
 
 export const getVeilederMeldingForPeriode = (meldinger: VeilederMessage[], intl: InjectedIntl): VeilederMessage => {
     return meldinger[0];

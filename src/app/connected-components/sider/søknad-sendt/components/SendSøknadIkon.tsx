@@ -1,7 +1,7 @@
 import * as React from 'react';
 import KoffertIkon from 'common/components/ikoner/KoffertIkon';
 import KalenderIkon from 'common/components/ikoner/KalenderIkon';
-import UtbetalingerIkon from 'app/components/uttaksplan-ikon/ikoner/CashIkon';
+import UtbetalingerIkon from 'app/components/ikoner/uttaksplan-ikon/ikoner/CashIkon';
 
 interface Props {
     type: OppsummeringIkonType;

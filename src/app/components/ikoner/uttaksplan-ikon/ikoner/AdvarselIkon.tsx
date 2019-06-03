@@ -7,7 +7,7 @@ export interface OwnProps {
 
 type Props = OwnProps & SVGProps<any>;
 
-const AdvarselIkon = (props: Props) => {
+const UttaksplanAdvarselIkon = (props: Props) => {
     const farge = props.type === 'feil' ? '#ba3a26' : '#ff9100';
 
     return (
@@ -31,4 +31,4 @@ const AdvarselIkon = (props: Props) => {
     );
 };
 
-export default AdvarselIkon;
+export default UttaksplanAdvarselIkon;

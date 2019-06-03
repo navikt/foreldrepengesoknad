@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import UttaksplanIkon, { UttaksplanIkonKeys } from './UttaksplanIkon';
 import { Forelder, NavnPåForeldre } from 'common/types';
-import { getStønadskontoFarge } from '../../util/uttaksplan/styleUtils';
-import IconBox from '../icon-box/IconBox';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { getStønadskontoNavn } from '../../util/uttaksplan';
+import { StønadskontoType } from 'app/types/uttaksplan/periodetyper';
+import { getStønadskontoFarge } from 'app/util/uttaksplan/styleUtils';
+import IconBox from '../icon-box/IconBox';
+import { getStønadskontoNavn } from 'app/util/uttaksplan';
 
 export interface Props {
     konto: StønadskontoType;

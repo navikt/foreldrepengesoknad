@@ -3,7 +3,7 @@ import { FormattedMessage, FormattedHTMLMessage, injectIntl, InjectedIntlProps }
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { redirectToLogin } from 'app/util/routing/login';
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
-import AdvarselIkon from '../../advarsel-ikon/AdvarselIkon';
+import AdvarselIkon from '../../ikoner/svgIkoner/advarselIkon/AdvarselIkon';
 import BEMHelper from 'common/util/bem';
 import getMessage from 'common/util/i18nUtils';
 import Knappelenke from '../../knappelenke/Knappelenke';

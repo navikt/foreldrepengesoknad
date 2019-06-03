@@ -20,14 +20,12 @@ import { Knapp } from 'nav-frontend-knapper';
 import NyPeriodeForm from '../ny-periode-form/NyPeriodeForm';
 import FocusContainer from '../focus-container/FocusContainer';
 import TomUttaksplanInfo from '../tom-uttaksplan-info/TomUttaksplanInfo';
-import HjerteIkon from '../uttaksplan-ikon/ikoner/HjerteIkon';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Søknadsinfo } from '../../selectors/types';
 import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import TapteUttaksdagerFarMedmor from './meldinger/TapteUttaksdagerFarMedmor';
-import AdvarselIkon from '../uttaksplan-ikon/ikoner/AdvarselIkon';
 import { PeriodelisteInformasjon } from '../periodeliste/items/PeriodelisteInfo';
 import getMessage from 'common/util/i18nUtils';
 import VeilederInfo from '../veileder-info/VeilederInfo';
@@ -36,6 +34,8 @@ import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplan
 
 import './uttaksplanlegger.less';
 import { VeiledermeldingerPerPeriode } from '../veileder-info/types';
+import UttaksplanAdvarselIkon from '../ikoner/uttaksplan-ikon/ikoner/AdvarselIkon';
+import HjerteIkon from '../ikoner/uttaksplan-ikon/ikoner/HjerteIkon';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -199,7 +199,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         if (infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor) {
             infoItems.push({
                 id: 'infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor',
-                ikon: <AdvarselIkon />,
+                ikon: <UttaksplanAdvarselIkon />,
                 tittel: getMessage(intl, 'periodeliste.hull.tittel'),
                 beskrivelse: getMessage(intl, 'periodeliste.hull.beskrivelse', {
                     dager: infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor.antallUttaksdagerTapt

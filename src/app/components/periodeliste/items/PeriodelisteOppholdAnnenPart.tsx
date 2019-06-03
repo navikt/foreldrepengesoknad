@@ -5,10 +5,10 @@ import getMessage from 'common/util/i18nUtils';
 import { AnnenPartInfoPeriode } from '../../../types/uttaksplan/periodetyper';
 import { NavnPåForeldre } from 'common/types';
 import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
-import AdvarselIkon from '../../uttaksplan-ikon/ikoner/AdvarselIkon';
 import PeriodelisteInfo from './PeriodelisteInfo';
 import Block from 'common/components/block/Block';
 import { getVarighetString } from 'common/util/intlUtils';
+import AdvarselIkon from 'app/components/ikoner/svgIkoner/advarselIkon/AdvarselIkon';
 
 export interface Props {
     itemId: string;

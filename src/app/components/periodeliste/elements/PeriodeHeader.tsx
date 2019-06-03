@@ -10,13 +10,13 @@ import {
     isGruppertInfoPeriode
 } from '../../../types/uttaksplan/periodetyper';
 import { Tidsperioden, getValidTidsperiode } from '../../../util/uttaksplan/Tidsperioden';
-import StønadskontoIkon from '../../uttaksplan-ikon/StønadskontoIkon';
-import UtsettelseIkon from '../../uttaksplan-ikon/UtsettelseIkon';
 import getMessage from 'common/util/i18nUtils';
 import { getPeriodeForelderNavn, getPeriodeTittel } from '../../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
 import PeriodelisteItemHeader from './../elements/PeriodelisteItemHeader';
 import { VeilederMessage } from 'app/components/veileder-info/types';
+import StønadskontoIkon from 'app/components/ikoner/uttaksplan-ikon/StønadskontoIkon';
+import UtsettelseIkon from 'app/components/ikoner/uttaksplan-ikon/UtsettelseIkon';
 
 export interface Props {
     periode: Periode;

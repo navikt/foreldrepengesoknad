@@ -2,16 +2,16 @@ import * as React from 'react';
 import { Undertittel, Normaltekst } from 'nav-frontend-typografi';
 import { FormattedMessage, FormattedHTMLMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import BEMHelper from 'common/util/bem';
-import CheckmarkIkon from 'app/components/uttaksplan-ikon/ikoner/CheckmarkIkon';
 import Block from 'common/components/block/Block';
 import { MissingAttachment } from 'app/types/MissingAttachment';
-import AdvarselIkon from 'app/components/advarsel-ikon/AdvarselIkon';
+import AdvarselIkon from 'app/components/ikoner/svgIkoner/advarselIkon/AdvarselIkon';
 
 import getMessage from 'common/util/i18nUtils';
 import UtvidetInformasjon from 'app/components/utvidetinformasjon/UtvidetInformasjon';
 
 import './kvitteringSuksess.less';
 import { guid } from 'nav-frontend-js-utils';
+import CheckmarkIkon from 'app/components/ikoner/uttaksplan-ikon/ikoner/CheckmarkIkon';
 
 interface KvitteringSuksessProps {
     missingAttachments: MissingAttachment[];
