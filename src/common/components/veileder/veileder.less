@@ -17,6 +17,7 @@
     width: 100%;
     @noseColor: #d1bfa3;
     @mouthColor: #d19e9c;
+    transform: translate3d();
 
     .nose {
         stroke: @noseColor;
@@ -31,17 +32,21 @@
         animation-timing-function: ease;
     }
 
-    #Mouth-happy {
+    &--stil-iNavVeilederPanel {
+        height: 100% !important;
+    }
+
+    .Mouth-happy {
         opacity: 0;
         transition: all 0.3s ease;
     }
 
-    #Mouth-unsure {
+    .Mouth-unsure {
         opacity: 0;
         transition: all 0.3s ease;
     }
 
-    #Mouth-hesitant {
+    .Mouth-hesitant {
         opacity: 0;
         transition: all 0.3s ease;
 
@@ -51,42 +56,35 @@
         }
     }
 
-    &--glad #Mouth-happy {
+    &--glad .Mouth-happy {
         opacity: 1;
     }
 
-    &--skeptisk #Mouth-unsure {
+    &--skeptisk .Mouth-unsure {
         opacity: 1;
     }
 
-    &--undrende #Mouth-hesitant {
+    &--undrende .Mouth-hesitant {
         opacity: 1;
     }
 
-    #bakgrunn {
+    .Background-veileder {
         transition: fill 0.5s ease;
     }
 
-    &--stil-normal-uten-bakgrunn {
-        height: 100% !important;
-    }
-
-    &--farge-lilla #bakgrunn {
+    &--tema-lilla .Background-veileder {
         fill: #c1b5d0;
     }
 
-    &--farge-gronn #bakgrunn {
+    &--tema-gronn .Background-veileder {
         fill: #9bd0b0;
     }
 
-    &--farge-transparent {
-        #Background-veileder,
-        #Background {
-            fill: none;
-        }
+    &--tema-transparent .Background-veileder {
+        fill: none;
     }
 
-    &--farge-bla #bakgrunn {
+    &--tema-bla .Background-veileder {
         fill: #c2eaf7;
     }
 }
