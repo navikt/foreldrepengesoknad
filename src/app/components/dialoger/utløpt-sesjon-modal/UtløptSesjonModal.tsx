@@ -6,7 +6,7 @@ import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
 import AdvarselIkon from '../../ikoner/svgIkoner/advarselIkon/AdvarselIkon';
 import BEMHelper from 'common/util/bem';
 import getMessage from 'common/util/i18nUtils';
-import Knappelenke from '../../knappelenke/Knappelenke';
+import Knappelenke from '../../elementer/knappelenke/Knappelenke';
 import Modal from 'nav-frontend-modal';
 import './utløptSesjonModal.less';
 

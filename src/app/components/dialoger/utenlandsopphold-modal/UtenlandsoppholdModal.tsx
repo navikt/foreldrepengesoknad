@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Modal, { ModalProps } from 'nav-frontend-modal';
-import Landvelger from '../../landvelger/Landvelger';
 import './utenlandsoppholdModal.less';
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import { Undertittel } from 'nav-frontend-typografi';
@@ -20,6 +19,7 @@ import { InjectedIntl, InjectedIntlProps, injectIntl, FormattedMessage } from 'r
 import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
 import { DateValue } from '../../../types/common';
 import { hasValueRule } from '../../../util/validation/common';
+import Landvelger from 'app/components/skjema/landvelger/Landvelger';
 
 export interface AvgrensningGetters {
     getFraAvgrensning?: (date?: Date) => Avgrensninger;

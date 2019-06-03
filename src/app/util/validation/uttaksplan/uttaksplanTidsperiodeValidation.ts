@@ -9,7 +9,7 @@ import { DateValue } from '../../../types/common';
 import { uttaksdatoer, getUttaksdatoer } from '../../uttaksplan/uttaksdatoer';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { periodeErFørDato } from './uttakFarValidation';
-import { UtsettelseFormPeriodeType } from '../../../components/utsettelse-form/UtsettelseForm';
+import { UtsettelseFormPeriodeType } from '../../../components/uttaksplanlegger/components/utsettelse-form/UtsettelseForm';
 
 const erUtfyltTest = (dato: DateValue): Validator => ({
     test: () => dato !== undefined,

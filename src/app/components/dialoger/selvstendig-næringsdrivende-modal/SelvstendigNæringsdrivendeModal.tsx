@@ -14,7 +14,6 @@ import NæringstypeSpørsmål from '../../../spørsmål/NæringstypeSpørsmål';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import ErNæringenRegistrertINorgeSpørsmål from '../../../spørsmål/ErNæringenRegistrertINorgeSpørsmål';
-import Landvelger from '../../landvelger/Landvelger';
 import VarigEndringAvNæringsinntektBolk from '../../../bolker/VarigEndringAvNæringsinntektBolk';
 import NæringsrelasjonBolk from '../../../bolker/næringsrelasjon-bolk/NæringsrelasjonBolk';
 import HarDuRegnskapsførerSpørsmål from '../../../spørsmål/HarDuRegnskapsførerSpørsmål';
@@ -32,6 +31,7 @@ import { hasValueRule } from '../../../util/validation/common';
 import { getFritekstfeltRules } from '../../../util/validation/fritekstfelt';
 import { trimNumberFromInput } from 'common/util/numberUtils';
 import VeilederInfo from '../../veileder-info/VeilederInfo';
+import Landvelger from 'app/components/skjema/landvelger/Landvelger';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;

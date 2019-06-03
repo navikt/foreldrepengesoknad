@@ -1,10 +1,10 @@
 import * as React from 'react';
 import BEMHelper from 'common/util/bem';
-import LinkButton from '../../link-button/LinkButton';
-
-import './stegFooter.less';
 import { FormattedMessage } from 'react-intl';
 import { Normaltekst } from 'nav-frontend-typografi';
+import LinkButton from 'app/components/elementer/link-button/LinkButton';
+
+import './stegFooter.less';
 
 interface Props {
     onAvbryt: () => void;

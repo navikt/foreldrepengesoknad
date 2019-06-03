@@ -1,7 +1,7 @@
 import React from 'react';
 import InteractiveListElement, {
     InteractiveListElementProps
-} from '../../components/interactive-list-element/InteractiveListElement';
+} from '../../components/skjema/interactive-list-element/InteractiveListElement';
 import { Næring } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { prettifyTidsperiode } from '../../util/dates/dates';

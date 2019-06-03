@@ -8,25 +8,24 @@ import {
     StønadskontoType
 } from '../../types/uttaksplan/periodetyper';
 import { Systemtittel } from 'nav-frontend-typografi';
-import Periodeliste from '../periodeliste/Periodeliste';
+import Periodeliste from './components/periodeliste/Periodeliste';
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
-import LinkButton from '../link-button/LinkButton';
 import FamiliehendelsedatoInfo from './FamiliehendelsedatoInfo';
 import { Forelder, Tidsperiode } from 'common/types';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Knapp } from 'nav-frontend-knapper';
-import NyPeriodeForm from '../ny-periode-form/NyPeriodeForm';
-import FocusContainer from '../focus-container/FocusContainer';
-import TomUttaksplanInfo from '../tom-uttaksplan-info/TomUttaksplanInfo';
+import NyPeriodeForm from './components/ny-periode-form/NyPeriodeForm';
+import FocusContainer from '../applikasjon/focus-container/FocusContainer';
+import TomUttaksplanInfo from './components/tom-uttaksplan-info/TomUttaksplanInfo';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Søknadsinfo } from '../../selectors/types';
 import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
-import TapteUttaksdagerFarMedmor from './meldinger/TapteUttaksdagerFarMedmor';
-import { PeriodelisteInformasjon } from '../periodeliste/items/PeriodelisteInfo';
+import TapteUttaksdagerFarMedmor from './components/TapteUttaksdagerFarMedmor';
+import { PeriodelisteInformasjon } from './components/periodeliste/items/PeriodelisteInfo';
 import getMessage from 'common/util/i18nUtils';
 import VeilederInfo from '../veileder-info/VeilederInfo';
 import DevBlock from 'common/dev/DevBlock';
@@ -36,6 +35,7 @@ import './uttaksplanlegger.less';
 import { VeiledermeldingerPerPeriode } from '../veileder-info/types';
 import UttaksplanAdvarselIkon from '../ikoner/uttaksplan-ikon/ikoner/AdvarselIkon';
 import HjerteIkon from '../ikoner/uttaksplan-ikon/ikoner/HjerteIkon';
+import LinkButton from '../elementer/link-button/LinkButton';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -69,7 +69,7 @@ const initialState: State = {
 
 const BEM = BEMHelper('uttaksplanlegger');
 
-export const uttaksplanleggerDomId = 'uttaksplanlegger';
+export const UTTAKSPLANLEGGER_DOM_ID = 'uttaksplanlegger';
 
 class Uttaksplanlegger extends React.Component<Props, State> {
     nyPeriodeForm: FocusContainer | null;
@@ -223,7 +223,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         return (
             <section>
                 <Block>
-                    <div className={BEM.block} id={uttaksplanleggerDomId} tabIndex={-1}>
+                    <div className={BEM.block} id={UTTAKSPLANLEGGER_DOM_ID} tabIndex={-1}>
                         <header className={BEM.element('header')}>
                             <Systemtittel tag="h2" className={BEM.element('header__title')}>
                                 <FormattedMessage id="uttaksplan.tittel" />

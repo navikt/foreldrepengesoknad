@@ -3,7 +3,7 @@ import * as countries from 'i18n-iso-countries';
 import { Utenlandsopphold } from '../../types/søknad/InformasjonOmUtenlandsopphold';
 import InteractiveListElement, {
     InteractiveListElementProps
-} from '../../components/interactive-list-element/InteractiveListElement';
+} from '../../components/skjema/interactive-list-element/InteractiveListElement';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { prettifyTidsperiode } from '../../util/dates/dates';
