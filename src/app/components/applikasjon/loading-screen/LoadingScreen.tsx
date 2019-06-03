@@ -3,7 +3,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import DocumentTitle from 'react-document-title';
 import getMessage from 'common/util/i18nUtils';
-import Applikasjonsside from 'app/connected-components/sider/Applikasjonsside';
+import Applikasjonsside from 'app/components/applikasjon/applikasjonsside/Applikasjonsside';
 
 interface OwnProps {}
 

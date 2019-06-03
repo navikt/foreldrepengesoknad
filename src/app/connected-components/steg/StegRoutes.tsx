@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom';
 import routeConfig from '../../util/routing/routeConfig';
 import { StegID } from '../../util/routing/stegConfig';
-import Applikasjonsside from '../sider/Applikasjonsside';
+import Applikasjonsside from '../../components/applikasjon/applikasjonsside/Applikasjonsside';
 import RelasjonTilBarnFødselSteg from './relasjon-til-barn-fødsel/RelasjonTilBarnFødselSteg';
 import RelasjonTilBarnAdopsjonSteg from './relasjon-til-barn-adopsjon/RelasjonTilBarnAdopsjonSteg';
 import RelasjonTilBarnForeldreansvarSteg from './relasjon-til-barn-foreldreansvar/RelasjonTilBarnForeldreansvarSteg';

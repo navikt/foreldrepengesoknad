@@ -7,7 +7,7 @@ import { EtikettLiten, Ingress, Normaltekst } from 'nav-frontend-typografi';
 import moment from 'moment';
 
 import { Kvittering } from '../../../types/Kvittering';
-import Applikasjonsside from '../Applikasjonsside';
+import Applikasjonsside from '../../../components/applikasjon/applikasjonsside/Applikasjonsside';
 import { apiActionCreators as api } from '../../../redux/actions';
 import KvitteringHeader from './components/KvitteringHeader';
 import KvitteringSuksess from './components/KvitteringSuksess';

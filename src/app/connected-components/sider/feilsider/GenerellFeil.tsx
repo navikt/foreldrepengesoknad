@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
-import Applikasjonsside from '../Applikasjonsside';
+import Applikasjonsside from '../../../components/applikasjon/applikasjonsside/Applikasjonsside';
 import DocumentTitle from 'react-document-title';
 import Feilsidemelding from 'common/components/feilsidemelding/Feilsidemelding';
 import getMessage from 'common/util/i18nUtils';

@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import { DispatchProps } from 'common/redux/types';
-import { setSpråk } from '../../redux/actions/common/commonActionCreators';
-import { AppState } from '../../redux/reducers';
+import { setSpråk } from '../../../redux/actions/common/commonActionCreators';
+import { AppState } from '../../../redux/reducers';
 import { Språkkode } from 'common/intl/types';
 import BEMHelper from 'common/util/bem';
 import getMessage from 'common/util/i18nUtils';

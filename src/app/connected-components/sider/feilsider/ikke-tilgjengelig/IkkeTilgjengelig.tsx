@@ -2,7 +2,7 @@ import * as React from 'react';
 import BEMHelper from 'common/util/bem';
 import Veileder from 'common/components/veileder/Veileder';
 import { Innholdstittel, Ingress } from 'nav-frontend-typografi';
-import Applikasjonsside from '../../Applikasjonsside';
+import Applikasjonsside from '../../../../components/applikasjon/applikasjonsside/Applikasjonsside';
 import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import DocumentTitle from 'react-document-title';

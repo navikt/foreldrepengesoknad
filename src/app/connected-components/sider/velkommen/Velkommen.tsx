@@ -10,7 +10,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import getMessage from 'common/util/i18nUtils';
 import VeilederMedSnakkeboble from 'common/components/veileder-med-snakkeboble/VeilederMedSnakkeboble';
 
-import Applikasjonsside from '../Applikasjonsside';
+import Applikasjonsside from '../../../components/applikasjon/applikasjonsside/Applikasjonsside';
 import DinePlikterModal from '../../../components/dialoger/dine-plikter-modal/DinePlikterModal';
 import DinePersonopplysningerModal from '../../../components/dialoger/dine-personopplysninger-modal/DinePersonopplysningerModal';
 

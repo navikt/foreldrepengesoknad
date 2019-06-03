@@ -4,7 +4,7 @@ import { injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
 import DocumentTitle from 'react-document-title';
-import Applikasjonsside from '../Applikasjonsside';
+import Applikasjonsside from '../../../components/applikasjon/applikasjonsside/Applikasjonsside';
 import Feilsidemelding from 'common/components/feilsidemelding/Feilsidemelding';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 
