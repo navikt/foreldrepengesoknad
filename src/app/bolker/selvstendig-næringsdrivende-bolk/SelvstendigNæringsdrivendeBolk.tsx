@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
 import { Næring } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import SelvstendigNæringsdrivendeModal from '../../components/selvstendig-næringsdrivende-modal/SelvstendigNæringsdrivendeModal';
+import SelvstendigNæringsdrivendeModal from '../../components/dialoger/selvstendig-næringsdrivende-modal/SelvstendigNæringsdrivendeModal';
 import Block from 'common/components/block/Block';
 import List from '../../components/list/List';
 import SelvstendigNæringsdrivendeListElement from './SelvstendigNæringsdrivendeListElement';

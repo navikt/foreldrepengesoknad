@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { default as Steg, StegProps } from '../../../components/steg/Steg';
+import { default as Steg, StegProps } from '../../../components/applikasjon/steg/Steg';
 import moment from 'moment';
 import Block from 'common/components/block/Block';
 import { injectIntl, InjectedIntlProps } from 'react-intl';

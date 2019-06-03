@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { AppState } from '../../../redux/reducers';
 import { DispatchProps } from 'common/redux/types';
-import Steg, { StegProps } from '../../../components/steg/Steg';
+import Steg, { StegProps } from '../../../components/applikasjon/steg/Steg';
 import { StegID } from '../../../util/routing/stegConfig';
 import { HistoryProps } from '../../../types/common';
 import isAvailable from '../util/isAvailable';

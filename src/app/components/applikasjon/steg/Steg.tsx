@@ -1,25 +1,25 @@
 import * as React from 'react';
-import { getStegConfig, StegConfigItem, StegID } from '../../util/routing/stegConfig';
+import { getStegConfig, StegConfigItem, StegID } from '../../../util/routing/stegConfig';
 import { History } from 'history';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 import ValiderbarForm, { FormSubmitEvent, ValiderbarFormProps } from 'common/lib/validation/elements/ValiderbarForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
-import Stegindikator from '../stegindikator/Stegindikator';
-import routeConfig from '../../util/routing/routeConfig';
+import { søknadStegPath } from '../../../connected-components/steg/StegRoutes';
+import Stegindikator from '../../stegindikator/Stegindikator';
+import routeConfig from '../../../util/routing/routeConfig';
 import { connect } from 'react-redux';
-import { AppState } from '../../redux/reducers';
+import { AppState } from '../../../redux/reducers';
 import { DispatchProps } from 'common/redux/types';
 import BEMHelper from 'common/util/bem';
-import apiActionCreators from '../../redux/actions/api/apiActionCreators';
+import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import StegFooter from '../steg-footer/StegFooter';
 import BackButton from 'common/components/back-button/BackButton';
 import Block from 'common/components/block/Block';
-import AvbrytSøknadDialog from '../avbryt-søknad-dialog/AvbrytSøknadDialog';
-import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
+import AvbrytSøknadDialog from '../../dialoger/avbryt-søknad-dialog/AvbrytSøknadDialog';
+import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
 import DocumentTitle from 'react-document-title';
-import FortsettSøknadSenereDialog from '../fortsett-søknad-senere-dialog/FortsettSøknadSenereDialog';
+import FortsettSøknadSenereDialog from '../../dialoger/fortsett-søknad-senere-dialog/FortsettSøknadSenereDialog';
 
 import './steg.less';
 

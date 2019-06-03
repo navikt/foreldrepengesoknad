@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import Steg, { StegProps } from '../../../components/steg/Steg';
+import Steg, { StegProps } from '../../../components/applikasjon/steg/Steg';
 import { AppState } from '../../../redux/reducers';
 import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from '../../../types/common';

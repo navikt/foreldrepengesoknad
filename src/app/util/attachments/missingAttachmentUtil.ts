@@ -6,7 +6,7 @@ import {
     getAnnenForelderStegVisibility
 } from '../../connected-components/steg/annen-forelder/visibility/annenForelderStegVisibility';
 
-import annenInntektVisibility from '../../components/annen-inntekt-modal/visibility';
+import annenInntektVisibility from '../../components/dialoger/annen-inntekt-modal/visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
 import {

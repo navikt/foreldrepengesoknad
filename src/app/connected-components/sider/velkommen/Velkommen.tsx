@@ -11,8 +11,8 @@ import getMessage from 'common/util/i18nUtils';
 import VeilederMedSnakkeboble from 'common/components/veileder-med-snakkeboble/VeilederMedSnakkeboble';
 
 import Applikasjonsside from '../Applikasjonsside';
-import DinePlikterModal from '../../../components/dine-plikter-modal/DinePlikterModal';
-import DinePersonopplysningerModal from '../../../components/dine-personopplysninger-modal/DinePersonopplysningerModal';
+import DinePlikterModal from '../../../components/dialoger/dine-plikter-modal/DinePlikterModal';
+import DinePersonopplysningerModal from '../../../components/dialoger/dine-personopplysninger-modal/DinePersonopplysningerModal';
 
 import { AppState } from '../../../redux/reducers';
 import { DispatchProps } from 'common/redux/types';

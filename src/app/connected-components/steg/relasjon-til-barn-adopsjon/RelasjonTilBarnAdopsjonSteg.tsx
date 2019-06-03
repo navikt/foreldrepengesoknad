@@ -12,7 +12,7 @@ import { Adopsjonsbarn } from '../../../types/søknad/Barn';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 import utils from '../../../util/domain/fødselsdato';
 import { AppState } from '../../../redux/reducers';
-import Steg, { StegProps } from '../../../components/steg/Steg';
+import Steg, { StegProps } from '../../../components/applikasjon/steg/Steg';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../util/isAvailable';

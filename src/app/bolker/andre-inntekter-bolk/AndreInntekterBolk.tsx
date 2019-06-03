@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AnnenInntekt } from '../../types/søknad/AnnenInntekt';
 import { Knapp } from 'nav-frontend-knapper';
-import AnnenInntektModal from '../../components/annen-inntekt-modal/AnnenInntektModal';
+import AnnenInntektModal from '../../components/dialoger/annen-inntekt-modal/AnnenInntektModal';
 import List from '../../components/list/List';
 import Block from 'common/components/block/Block';
 import { FormattedMessage } from 'react-intl';

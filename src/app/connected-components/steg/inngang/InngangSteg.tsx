@@ -9,7 +9,7 @@ import { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
 
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 
-import Steg, { StegProps } from '../../../components/steg/Steg';
+import Steg, { StegProps } from '../../../components/applikasjon/steg/Steg';
 import Block from 'common/components/block/Block';
 import SøkersituasjonSpørsmål from '../../../spørsmål/SøkersituasjonSpørsmål';
 import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';

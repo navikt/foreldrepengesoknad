@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StegID } from 'app/util/routing/stegConfig';
 import { AppState } from 'app/redux/reducers';
 import { mapMissingAttachmentsOnSøknad } from 'app/util/attachments/missingAttachmentUtil';
-import Steg, { StegProps } from 'app/components/steg/Steg';
+import Steg, { StegProps } from 'app/components/applikasjon/steg/Steg';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from 'app/types/common';

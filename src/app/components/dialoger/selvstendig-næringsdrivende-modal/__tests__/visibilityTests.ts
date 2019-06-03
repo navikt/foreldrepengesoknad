@@ -1,9 +1,9 @@
-import fns from './../visibility';
+import fns from '../visibility';
 import {
     NæringPartial,
     Næringsrelasjon,
     Næringstype
-} from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
+} from '../../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 
 describe('SelvstendigNæringsdrivendeModal visibility', () => {
     describe('Navn på næringen', () => {

@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 
 import { AppState } from '../../../redux/reducers';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { default as Steg, StegProps } from '../../../components/steg/Steg';
+import { default as Steg, StegProps } from '../../../components/applikasjon/steg/Steg';
 import { DispatchProps } from 'common/redux/types';
 import { getSeneEndringerSomKreverBegrunnelse } from 'app/util/uttaksplan/uttakUtils';
 import { Forelder } from 'common/types';

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
 
-import Steg, { StegProps } from 'app/components/steg/Steg';
+import Steg, { StegProps } from 'app/components/applikasjon/steg/Steg';
 import UfødtBarnPartial from './partials/UfødtBarnPartial';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
 

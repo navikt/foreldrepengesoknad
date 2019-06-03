@@ -9,22 +9,22 @@ import {
     AnnenInntektType,
     JobbIUtlandetInntekt,
     JobbIUtlandetInntektPartial
-} from '../../types/søknad/AnnenInntekt';
+} from '../../../types/søknad/AnnenInntekt';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import Landvelger from '../landvelger/Landvelger';
-import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
+import Landvelger from '../../landvelger/Landvelger';
+import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
 import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
 import ModalForm from 'common/components/modalForm/ModalForm';
 import visibility from './visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { getSkjemanummerForAndreInntekter } from 'common/storage/attachment/components/util';
-import { hasValueRule } from '../../util/validation/common';
-import InntektstypeSpørsmål from '../../spørsmål/InntektstypeSpørsmål';
+import { hasValueRule } from '../../../util/validation/common';
+import InntektstypeSpørsmål from '../../../spørsmål/InntektstypeSpørsmål';
 import Input from 'common/components/skjema/wrappers/Input';
-import VeilederInfo from '../veileder-info/VeilederInfo';
+import VeilederInfo from '../../veileder-info/VeilederInfo';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;

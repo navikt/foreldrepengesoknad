@@ -10,7 +10,7 @@ import BoddINorgeSiste12MndSpørsmål from '../../../spørsmål/BoddINorgeSiste1
 import SkalBoINorgeNeste12MndSpørsmål from '../../../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
 import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
-import Steg, { StegProps } from '../../../components/steg/Steg';
+import Steg, { StegProps } from '../../../components/applikasjon/steg/Steg';
 import { StegID } from '../../../util/routing/stegConfig';
 import { HistoryProps } from '../../../types/common';
 import isAvailable from '../util/isAvailable';

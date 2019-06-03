@@ -1,5 +1,5 @@
 import { AnnenInntekt, JobbIUtlandetInntekt } from '../../types/søknad/AnnenInntekt';
-import visibility from '../../components/annen-inntekt-modal/visibility';
+import visibility from '../../components/dialoger/annen-inntekt-modal/visibility';
 
 const cleanupAnnenInntekt = (inntekt: AnnenInntekt): AnnenInntekt => {
     if (!visibility.vedlegg(inntekt)) {

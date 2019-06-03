@@ -1,5 +1,5 @@
-import fns from './../visibility';
-import { AnnenInntektType } from '../../../types/søknad/AnnenInntekt';
+import fns from '../visibility';
+import { AnnenInntektType } from '../../../../types/søknad/AnnenInntekt';
 
 describe('AnnenInntektModal visibility', () => {
     describe('landVisible', () => {
