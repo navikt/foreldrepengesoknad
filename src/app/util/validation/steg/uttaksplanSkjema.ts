@@ -2,7 +2,7 @@ import Søknad from '../../../types/søknad/Søknad';
 import {
     UttaksplanSkjemaScenario,
     getUttaksplanSkjemaScenario
-} from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemaScenario';
+} from '../../../steg/uttaksplan-skjema/uttaksplanSkjemaScenario';
 import { Søknadsinfo } from '../../../selectors/types';
 
 export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søknadsinfo?: Søknadsinfo): boolean => {

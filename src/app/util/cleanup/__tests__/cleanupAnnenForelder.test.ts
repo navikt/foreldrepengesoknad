@@ -9,7 +9,7 @@ import {
     getAnnenForelderStegVisibility,
     AnnenForelderStegVisibility,
     AnnenForelderSpørsmålKeys
-} from '../../../connected-components/steg/annen-forelder/visibility/annenForelderStegVisibility';
+} from '../../../steg/annen-forelder/visibility/annenForelderStegVisibility';
 import { Barn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
 
 const annenForelder: AnnenForelder = {
