@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../../components/flervalg-spørsmål/FlervalgSpørsmål';
+import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../../components/skjema/flervalg-spørsmål/FlervalgSpørsmål';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import Block from 'common/components/block/Block';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';

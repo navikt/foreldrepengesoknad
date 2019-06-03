@@ -6,7 +6,6 @@ import ValiderbarForm, { FormSubmitEvent, ValiderbarFormProps } from 'common/lib
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { søknadStegPath } from '../../../connected-components/steg/StegRoutes';
-import Stegindikator from '../../stegindikator/Stegindikator';
 import routeConfig from '../../../util/routing/routeConfig';
 import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
@@ -20,6 +19,7 @@ import AvbrytSøknadDialog from '../../dialoger/avbryt-søknad-dialog/AvbrytSøk
 import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
 import DocumentTitle from 'react-document-title';
 import FortsettSøknadSenereDialog from '../../dialoger/fortsett-søknad-senere-dialog/FortsettSøknadSenereDialog';
+import Stegindikator from '../stegindikator/Stegindikator';
 
 import './steg.less';
 

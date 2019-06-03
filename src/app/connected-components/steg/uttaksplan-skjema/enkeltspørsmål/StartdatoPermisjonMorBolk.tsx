@@ -15,8 +15,8 @@ import { getDefaultPermisjonStartdato } from '../../../../util/uttaksplan/permis
 import { ValidFormContext } from 'common/lib/validation/elements/ValiderbarForm';
 import { DateValue } from '../../../../types/common';
 import { Uttaksdagen } from '../../../../util/uttaksplan/Uttaksdagen';
-import VeilederStartdatoPermisjon from '../../../../components/veilederStartdatoPermisjon/VeilederStartdatoPermisjon';
 import uttaksConstants from 'app/constants';
+import VeilederStartdatoPermisjon from './VeilederStartdatoPermisjon';
 
 interface OwnProps {
     barnetErFødt: boolean;

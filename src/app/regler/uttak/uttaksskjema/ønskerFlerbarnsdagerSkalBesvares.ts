@@ -1,4 +1,4 @@
-import { UttakFormPeriodeType } from 'app/components/uttak-form/UttakForm';
+import { UttakFormPeriodeType } from 'app/components/uttaksplanlegger/components/uttak-form/UttakForm';
 import { isUttaksperiode } from 'app/types/uttaksplan/periodetyper';
 
 export const ønskerFlerbarnsdagerSkalBesvares = (

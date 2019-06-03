@@ -4,12 +4,12 @@ import { Checkbox } from 'nav-frontend-skjema';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
-import Landvelger from '../components/landvelger/Landvelger';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import { getFødselsnummerRegler } from '../util/validation/fødselsnummer';
 import Input from 'common/components/skjema/wrappers/Input';
 import { InputChangeEvent } from '../types/dom/Events';
 import ValiderbarControl from 'common/lib/validation/elements/ValiderbarControl';
+import Landvelger from 'app/components/skjema/landvelger/Landvelger';
 
 interface FødselsnummerSpørsmålProps {
     navn: string;

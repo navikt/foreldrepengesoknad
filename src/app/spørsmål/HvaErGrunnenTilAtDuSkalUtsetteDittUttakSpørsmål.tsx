@@ -2,7 +2,7 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
-import { Utsettelsesvariant } from '../components/utsettelse-form/UtsettelseForm';
+import { Utsettelsesvariant } from '../components/uttaksplanlegger/components/utsettelse-form/UtsettelseForm';
 import ValiderbarRadioPanelGruppeResponsive from 'common/lib/validation/elements/ValiderbarRadioPanelGruppeResponsive';
 import { Validator } from 'common/lib/validation/types';
 

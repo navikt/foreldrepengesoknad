@@ -8,7 +8,7 @@ import { default as Steg, StegProps } from '../../../components/applikasjon/steg
 import { DispatchProps } from 'common/redux/types';
 import { getSeneEndringerSomKreverBegrunnelse } from 'app/util/uttaksplan/uttakUtils';
 import { Forelder } from 'common/types';
-import { getPeriodelisteElementId } from '../../../components/periodeliste/Periodeliste';
+import { getPeriodelisteElementId } from '../../../components/uttaksplanlegger/components/periodeliste/Periodeliste';
 import { selectSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
 import { getUttaksstatus, skalBeregneAntallDagerBrukt } from '../../../util/uttaksplan/uttaksstatus';
@@ -35,8 +35,6 @@ import Block from 'common/components/block/Block';
 import isAvailable from '../util/isAvailable';
 import Søknad, { Tilleggsopplysninger, Opplysning } from '../../../types/søknad/Søknad';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
-import Uttaksoppsummering from '../../../components/uttaksoppsummering/Uttaksoppsummering';
-import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
 import { getVeilederInfoText } from 'app/util/uttaksplan/steg/util';
 import {
@@ -53,6 +51,8 @@ import Sak from 'app/types/søknad/Sak';
 import { Saksgrunnlag } from 'app/types/EksisterendeSak';
 import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
 import { VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/veileder-info/types';
+import UttaksplanFeiloppsummering from 'app/components/uttaksplanlegger/components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
+import Uttaksoppsummering from 'app/components/uttaksplanlegger/components/uttaksoppsummering/Uttaksoppsummering';
 
 interface StateProps {
     stegProps: StegProps;

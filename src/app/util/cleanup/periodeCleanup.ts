@@ -12,10 +12,10 @@ import {
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
-import { UttakSpørsmålVisibility } from '../../components/uttak-form/uttakFormConfig';
-import { UtsettelseFormPeriodeType } from '../../components/utsettelse-form/UtsettelseForm';
-import { UtsettelseSpørsmålVisibility } from '../../components/utsettelse-form/utsettelseFormConfig';
-import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
+import { UttakSpørsmålVisibility } from '../../components/uttaksplanlegger/components/uttak-form/uttakFormConfig';
+import { UtsettelseFormPeriodeType } from '../../components/uttaksplanlegger/components/utsettelse-form/UtsettelseForm';
+import { UtsettelseSpørsmålVisibility } from '../../components/uttaksplanlegger/components/utsettelse-form/utsettelseFormConfig';
+import { UttakFormPeriodeType } from '../../components/uttaksplanlegger/components/uttak-form/UttakForm';
 import { RecursivePartial } from '../../types/Partial';
 import { shouldPeriodeHaveAttachment } from '../attachments/missingAttachmentUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';

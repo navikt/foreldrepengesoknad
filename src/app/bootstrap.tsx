@@ -11,9 +11,9 @@ import './styles/app.less';
 
 import * as countries from 'i18n-iso-countries';
 import { Normaltekst } from 'nav-frontend-typografi';
-import ApplicationInfo from './components/applicationInfo/ApplicationInfo';
-import ErrorBoundary from './components/error-boundary/ErrorBoundary';
+import ApplicationInfo from './components/applikasjon/applicationInfo/ApplicationInfo';
 import { registerDevUtils } from 'common/dev/devUtils';
+import ErrorBoundary from './components/applikasjon/error-boundary/ErrorBoundary';
 
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));

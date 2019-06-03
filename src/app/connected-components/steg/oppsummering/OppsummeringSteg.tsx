@@ -23,9 +23,7 @@ import { TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetype
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import { søknadStegPath } from '../StegRoutes';
-
 import Block from 'common/components/block/Block';
-import LinkButton from '../../../components/link-button/LinkButton';
 import { MissingAttachment } from '../../../types/MissingAttachment';
 import { mapMissingAttachmentsOnSøknad } from '../../../util/attachments/missingAttachmentUtil';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
@@ -40,6 +38,7 @@ import ErAnnenForelderInformertSpørsmål from 'app/spørsmål/ErAnnenForelderIn
 import VeilederInfo from 'app/components/veileder-info/VeilederInfo';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
+import LinkButton from 'app/components/elementer/link-button/LinkButton';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;

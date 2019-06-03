@@ -10,7 +10,7 @@ import isAvailable from '../util/isAvailable';
 import { SøkerinfoProps } from 'app/types/søkerinfo';
 import { connect } from 'react-redux';
 import Block from 'common/components/block/Block';
-import VedleggSpørsmål from 'app/components/vedlegg-spørsmål/VedleggSpørsmål';
+import VedleggSpørsmål from 'app/components/skjema/vedlegg-spørsmål/VedleggSpørsmål';
 import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
 import Søknad from 'app/types/søknad/Søknad';

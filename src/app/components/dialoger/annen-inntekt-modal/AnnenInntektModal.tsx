@@ -14,7 +14,6 @@ import AttachmentsUploader from 'common/storage/attachment/components/Attachment
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import Landvelger from '../../landvelger/Landvelger';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
 import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
 import ModalForm from 'common/components/modalForm/ModalForm';
@@ -25,6 +24,7 @@ import { hasValueRule } from '../../../util/validation/common';
 import InntektstypeSpørsmål from '../../../spørsmål/InntektstypeSpørsmål';
 import Input from 'common/components/skjema/wrappers/Input';
 import VeilederInfo from '../../veileder-info/VeilederInfo';
+import Landvelger from 'app/components/skjema/landvelger/Landvelger';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
