@@ -1,7 +1,7 @@
-import { Validator } from 'common/lib/validation/types';
 import { InjectedIntl } from 'react-intl';
 import { maxLengthIsGreaterThanOrEqualToStringLengthRule } from './common';
 import getMessage from 'common/util/i18nUtils';
+import { Validator } from 'common/lib/validation/types';
 
 interface FritekstfeltValidationOptions {
     maxLength?: number;

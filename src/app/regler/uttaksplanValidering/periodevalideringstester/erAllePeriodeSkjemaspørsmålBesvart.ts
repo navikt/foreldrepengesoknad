@@ -1,12 +1,12 @@
 import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
 import { Periode, TilgjengeligStønadskonto, Periodetype } from 'app/types/uttaksplan/periodetyper';
 import { Søknadsinfo } from 'app/selectors/types';
-import { getUttakFormVisibility } from 'app/components/uttak-form/uttakFormConfig';
+import { getUttakFormVisibility } from 'app/components/uttaksplanlegger/components/uttakForm/uttakFormConfig';
 import { getVelgbareStønadskontotyper } from 'app/util/uttaksplan/stønadskontoer';
 import getUttakSkjemaregler from 'app/regler/uttak/uttaksskjema/uttakSkjemaregler';
 import getSøknadsperiode from 'app/regler/søknadsperioden/Søknadsperioden';
-import { getUtsettelseFormVisibility } from 'app/components/utsettelse-form/utsettelseFormConfig';
-import { getVariantFromPeriode } from 'app/components/utsettelse-form/UtsettelseForm';
+import { getUtsettelseFormVisibility } from 'app/components/uttaksplanlegger/components/utsettelseForm/utsettelseFormConfig';
+import { getVariantFromPeriode } from 'app/components/uttaksplanlegger/components/utsettelseForm/UtsettelseForm';
 
 const erAlleSpørsmålBesvart = (
     periode: Periode,

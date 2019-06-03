@@ -3,8 +3,8 @@ import {
     default as ValiderbartSkjemaelement,
     ValiderbartSkjemaelementProps
 } from 'common/lib/validation/elements/ValiderbartSkjemaelement';
-import UkerDagerTeller from 'app/components/uker-dager-teller/UkerDagerTeller';
-import { Props as NumberStepperProps } from 'app/components/number-stepper/NumberStepper';
+import { Props as NumberStepperProps } from 'app/components/skjema/number-stepper/NumberStepper';
+import UkerDagerTeller from 'app/components/skjema/uker-dager-teller/UkerDagerTeller';
 
 interface ValiderbarUkerDagerTellerProps {
     stepperProps: NumberStepperProps[];
