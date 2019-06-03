@@ -1,7 +1,14 @@
 import * as React from 'react';
 
 const BarnevognIkon = (props: any) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="123" height="103" viewBox="0 0 123 103" {...props}>
+    <svg
+        focusable="false"
+        role="presentation"
+        xmlns="http://www.w3.org/2000/svg"
+        width="123"
+        height="103"
+        viewBox="0 0 123 103"
+        {...props}>
         <g fill="none" fillRule="evenodd">
             <g fillRule="nonzero" transform="translate(87.7 55)">
                 <ellipse cx="18.4" cy="32.2" fill="#D87F0A" rx="10.35" ry="12.65" />
