@@ -6,7 +6,7 @@ import { getVarighetString } from 'common/util/intlUtils';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { NavnPåForeldre } from 'common/types';
 import { Stønadskontouttak } from 'app/types/uttaksplan/periodetyper';
-import StønadskontoIkon from 'app/components/ikoner/uttaksplan-ikon/StønadskontoIkon';
+import StønadskontoIkon from 'app/components/ikoner/uttaksplanIkon/StønadskontoIkon';
 import { getStønadskontoNavn } from 'app/util/uttaksplan';
 
 import './kontostatus.less';

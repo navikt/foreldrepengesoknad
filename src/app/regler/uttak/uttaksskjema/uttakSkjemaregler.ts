@@ -1,5 +1,5 @@
 import { Søknadsinfo } from 'app/selectors/types';
-import { UttakFormPeriodeType } from 'app/components/uttaksplanlegger/components/uttak-form/UttakForm';
+import { UttakFormPeriodeType } from 'app/components/uttaksplanlegger/components/uttakForm/UttakForm';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';

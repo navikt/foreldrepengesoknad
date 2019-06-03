@@ -13,7 +13,7 @@ import * as countries from 'i18n-iso-countries';
 import { Normaltekst } from 'nav-frontend-typografi';
 import ApplicationInfo from './components/applikasjon/applicationInfo/ApplicationInfo';
 import { registerDevUtils } from 'common/dev/devUtils';
-import ErrorBoundary from './components/applikasjon/error-boundary/ErrorBoundary';
+import ErrorBoundary from './components/applikasjon/errorBoundary/ErrorBoundary';
 
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));

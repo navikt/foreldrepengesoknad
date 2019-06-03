@@ -6,7 +6,7 @@ import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { MorsAktivitet } from '../../../types/uttaksplan/periodetyper';
 import HvaSkalMorGjøreSpørsmål from '../../../spørsmål/HvaSkalMorGjøreSpørsmål';
 import { getMorsAktivitetSkjemanummer } from '../../../util/skjemanummer/morsAktivitetSkjemanummer';
-import VedleggSpørsmål from '../../skjema/vedlegg-spørsmål/VedleggSpørsmål';
+import VedleggSpørsmål from '../../skjema/vedleggSpørsmål/VedleggSpørsmål';
 import { NavnISøknaden } from 'app/selectors/types';
 
 export interface AktivitetskravMorChangeEvent {

@@ -6,7 +6,7 @@ import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import Block from 'common/components/block/Block';
 import { Tidsperiode } from 'common/types';
-import LinkButton from 'app/components/elementer/link-button/LinkButton';
+import LinkButton from 'app/components/elementer/linkButton/LinkButton';
 
 interface Props {
     info: InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { onToggleItemProp } from '../../../../elementer/toggle-list/ToggleList';
+import { onToggleItemProp } from '../../../../elementer/toggleList/ToggleList';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { AvslåttPeriode } from '../../../../../types/uttaksplan/periodetyper';
@@ -11,7 +11,7 @@ import Block from 'common/components/block/Block';
 import { getVarighetString } from 'common/util/intlUtils';
 import { getStønadskontoNavn } from 'app/util/uttaksplan';
 import AdvarselIkon from 'app/components/ikoner/svgIkoner/advarselIkon/AdvarselIkon';
-import LinkButton from 'app/components/elementer/link-button/LinkButton';
+import LinkButton from 'app/components/elementer/linkButton/LinkButton';
 
 export interface Props {
     itemId: string;

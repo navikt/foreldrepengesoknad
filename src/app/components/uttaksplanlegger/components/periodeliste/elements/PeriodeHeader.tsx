@@ -14,9 +14,9 @@ import getMessage from 'common/util/i18nUtils';
 import { getPeriodeForelderNavn, getPeriodeTittel } from '../../../../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
 import PeriodelisteItemHeader from './PeriodelisteItemHeader';
-import { VeilederMessage } from 'app/components/veileder-info/types';
-import StønadskontoIkon from 'app/components/ikoner/uttaksplan-ikon/StønadskontoIkon';
-import UtsettelseIkon from 'app/components/ikoner/uttaksplan-ikon/UtsettelseIkon';
+import { VeilederMessage } from 'app/components/veilederInfo/types';
+import StønadskontoIkon from 'app/components/ikoner/uttaksplanIkon/StønadskontoIkon';
+import UtsettelseIkon from 'app/components/ikoner/uttaksplanIkon/UtsettelseIkon';
 
 export interface Props {
     periode: Periode;

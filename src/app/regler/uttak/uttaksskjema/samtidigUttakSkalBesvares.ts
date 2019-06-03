@@ -1,5 +1,5 @@
 import { isUttaksperiode, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
-import { UttakFormPeriodeType } from '../../../components/uttaksplanlegger/components/uttak-form/UttakForm';
+import { UttakFormPeriodeType } from '../../../components/uttaksplanlegger/components/uttakForm/UttakForm';
 
 const samtidigUttakSkalBesvares = (
     periode: UttakFormPeriodeType,

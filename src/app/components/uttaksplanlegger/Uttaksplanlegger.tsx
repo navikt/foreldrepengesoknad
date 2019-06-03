@@ -16,9 +16,9 @@ import { Forelder, Tidsperiode } from 'common/types';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Knapp } from 'nav-frontend-knapper';
-import NyPeriodeForm from './components/ny-periode-form/NyPeriodeForm';
-import FocusContainer from '../elementer/focus-container/FocusContainer';
-import TomUttaksplanInfo from './components/tom-uttaksplan-info/TomUttaksplanInfo';
+import NyPeriodeForm from './components/nyPeriodeForm/NyPeriodeForm';
+import FocusContainer from '../elementer/focusContainer/FocusContainer';
+import TomUttaksplanInfo from './components/tomUttaksplanInfo/TomUttaksplanInfo';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Søknadsinfo } from '../../selectors/types';
 import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
@@ -27,15 +27,15 @@ import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import TapteUttaksdagerFarMedmor from './components/TapteUttaksdagerFarMedmor';
 import { PeriodelisteInformasjon } from './components/periodeliste/items/PeriodelisteInfo';
 import getMessage from 'common/util/i18nUtils';
-import VeilederInfo from '../veileder-info/VeilederInfo';
+import VeilederInfo from '../veilederInfo/VeilederInfo';
 import DevBlock from 'common/dev/DevBlock';
 import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 import './uttaksplanlegger.less';
-import { VeiledermeldingerPerPeriode } from '../veileder-info/types';
-import UttaksplanAdvarselIkon from '../ikoner/uttaksplan-ikon/ikoner/AdvarselIkon';
-import HjerteIkon from '../ikoner/uttaksplan-ikon/ikoner/HjerteIkon';
-import LinkButton from '../elementer/link-button/LinkButton';
+import { VeiledermeldingerPerPeriode } from '../veilederInfo/types';
+import UttaksplanAdvarselIkon from '../ikoner/uttaksplanIkon/ikoner/AdvarselIkon';
+import HjerteIkon from '../ikoner/uttaksplanIkon/ikoner/HjerteIkon';
+import LinkButton from '../elementer/linkButton/LinkButton';
 
 interface OwnProps {
     uttaksplan: Periode[];
