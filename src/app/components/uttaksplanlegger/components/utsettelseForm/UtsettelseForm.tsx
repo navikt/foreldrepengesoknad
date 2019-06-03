@@ -147,13 +147,14 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         }
     }
 
-    getUtsettelseÅrsakRadios(): RadioProps[] {
+    getUtsettelseÅrsakRadios(disableFerie: boolean): RadioProps[] {
         const { søknadsinfo, intl } = this.props;
 
         const defaultRadios: RadioProps[] = [
             {
                 label: getMessage(intl, 'jegskalhaferie'),
-                value: Utsettelsesvariant.Ferie
+                value: Utsettelsesvariant.Ferie,
+                disabled: disableFerie === true
             },
             {
                 label: getMessage(intl, 'jegskaljobbeheltid'),
@@ -281,6 +282,9 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         }
         const tidsperiode = periode.tidsperiode as Partial<Tidsperiode>;
         const antallHelligdager = isValidTidsperiode(tidsperiode) ? Tidsperioden(tidsperiode).getAntallFridager() : 0;
+        const antallUttaksdager = Tidsperioden(tidsperiode).getAntallUttaksdager();
+        const kunHelligdager = antallHelligdager === antallUttaksdager;
+
         const visInfoOmHelligdagerOgFerie =
             antallHelligdager > 0 &&
             periode.type === Periodetype.Utsettelse &&
@@ -317,8 +321,13 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         margin={visInfoOmHelligdagerOgFerie ? 'xs' : undefined}>
                         <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
                             variant={variant}
-                            radios={this.getUtsettelseÅrsakRadios()}
+                            radios={this.getUtsettelseÅrsakRadios(kunHelligdager)}
                             onChange={(v) => this.onVariantChange(v)}
+                            infotekst={
+                                kunHelligdager
+                                    ? getMessage(intl, 'utsettelseskjema.kunHelligdager.disabledFerieMelding')
+                                    : undefined
+                            }
                         />
                     </Block>
                     <Block visible={visInfoOmHelligdagerOgFerie}>
