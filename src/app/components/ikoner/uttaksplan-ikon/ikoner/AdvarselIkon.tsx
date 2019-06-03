@@ -9,9 +9,17 @@ type Props = OwnProps & SVGProps<any>;
 
 const UttaksplanAdvarselIkon = (props: Props) => {
     const farge = props.type === 'feil' ? '#ba3a26' : '#ff9100';
+    const { title, ...rest } = props;
 
     return (
-        <svg xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24" {...props}>
+        <svg
+            focusable="false"
+            role="presentation"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            width={24}
+            height={24}
+            viewBox="0 0 24 24"
+            {...rest}>
             <title>{props.title}</title>
             <defs>
                 <path
