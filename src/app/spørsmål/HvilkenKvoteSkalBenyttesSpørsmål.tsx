@@ -5,7 +5,7 @@ import getMessage from 'common/util/i18nUtils';
 import { StønadskontoType } from '../types/uttaksplan/periodetyper';
 import { getStønadskontoNavn } from '../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
-import FlervalgSpørsmål from '../components/flervalg-spørsmål/FlervalgSpørsmål';
+import FlervalgSpørsmål from '../components/skjema/flervalg-spørsmål/FlervalgSpørsmål';
 
 interface HvilkenKvoteSkalBenyttesSpørsmålProps {
     onChange: (stønadskonto: StønadskontoType) => void;
