@@ -11,7 +11,7 @@ import { DispatchProps } from 'common/redux/types';
 import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../types/søknad/Søker';
-import FrilanserBolk from '../../bolker/frilanser-bolk/FrilanserBolk';
+import FrilanserBolk from './frilanserBolk/FrilanserBolk';
 import { FrilansInformasjon } from '../../types/søknad/FrilansInformasjon';
 import SelvstendigNæringsdrivendeBolk from './selvstendigNæringsdrivendeModal/selvstendigNæringsdrivendeBolk/SelvstendigNæringsdrivendeBolk';
 import { Næring } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';

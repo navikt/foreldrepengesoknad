@@ -1,10 +1,10 @@
-import fns from './../visibility';
-import Søker from '../../../types/søknad/Søker';
+import fns from '../visibility';
+import Søker from '../../../../types/søknad/Søker';
 import {
     FrilansInformasjon,
     FrilansInformasjonPartial,
     FrilansOppdrag
-} from '../../../types/søknad/FrilansInformasjon';
+} from '../../../../types/søknad/FrilansInformasjon';
 
 const frilansInformasjon: FrilansInformasjonPartial = {};
 

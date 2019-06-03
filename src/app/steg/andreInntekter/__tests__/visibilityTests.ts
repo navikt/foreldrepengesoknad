@@ -1,6 +1,6 @@
 import { default as Søker } from '../../../types/søknad/Søker';
 import { default as fns } from '../visibility';
-import { default as frilansFns } from '../../../bolker/frilanser-bolk/visibility';
+import { default as frilansFns } from '../frilanserBolk/visibility';
 import { FrilansInformasjon, FrilansInformasjonPartial } from '../../../types/søknad/FrilansInformasjon';
 
 const søkerUtenEgneVirksomheter = {

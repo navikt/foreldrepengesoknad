@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ModalProps } from 'nav-frontend-modal';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
@@ -11,6 +10,7 @@ import Input from 'common/components/skjema/wrappers/Input';
 import { getFritekstfeltRules } from '../../../util/validation/fritekstfelt';
 import { hasValueRule } from '../../../util/validation/common';
 import ModalForm from 'common/components/modalForm/ModalForm';
+import Block from 'common/components/block/Block';
 
 export interface FrilansOppdragModalProps extends ModalProps {
     oppdrag?: FrilansOppdrag;

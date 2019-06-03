@@ -1,6 +1,6 @@
-import Søker from '../../types/søknad/Søker';
-import { FrilansInformasjon } from '../../types/søknad/FrilansInformasjon';
-import VisibilityFunction from '../../types/dom/Visibility';
+import Søker from '../../../types/søknad/Søker';
+import { FrilansInformasjon } from '../../../types/søknad/FrilansInformasjon';
+import VisibilityFunction from '../../../types/dom/Visibility';
 
 const startdatoVisible: VisibilityFunction<Søker> = (søker: Søker) => søker.harJobbetSomFrilansSiste10Mnd === true;
 

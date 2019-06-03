@@ -1,5 +1,5 @@
 import Søker from '../../types/søknad/Søker';
-import frilansVisibility from '../../bolker/frilanser-bolk/visibility';
+import frilansVisibility from './frilanserBolk/visibility';
 import VisibilityFunction from '../../types/dom/Visibility';
 
 const selvstendigNæringsdrivendeBolkVisible: VisibilityFunction<Søker> = (søker: Søker) => {
