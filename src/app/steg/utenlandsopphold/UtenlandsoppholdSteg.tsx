@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { AppState } from '../../redux/reducers';
 import { Utenlandsopphold, UtenlandsoppholdType } from '../../types/søknad/InformasjonOmUtenlandsopphold';
-import UtenlandsoppholdBolk from '../../bolker/utenlandsopphold-bolk/UtenlandsoppholdBolk';
+import UtenlandsoppholdBolk from './utenlandsopphold-bolk/UtenlandsoppholdBolk';
 import Block from 'common/components/block/Block';
 import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
 import BoddINorgeSiste12MndSpørsmål from '../../spørsmål/BoddINorgeSiste12MndSpørsmål';

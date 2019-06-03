@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Knapp } from 'nav-frontend-knapper';
-import { UtenlandsoppholdType, Utenlandsopphold } from '../../types/søknad/InformasjonOmUtenlandsopphold';
+import { UtenlandsoppholdType, Utenlandsopphold } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import UtenlandsoppholdModal, {
     UtenlandsoppholdModalPropsPartial
-} from '../../components/dialoger/utenlandsopphold-modal/UtenlandsoppholdModal';
+} from '../utenlandsopphold-modal/UtenlandsoppholdModal';
 import Block from 'common/components/block/Block';
 import List from 'app/components/elementer/list/List';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
