@@ -31,7 +31,7 @@ import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { SøknadenGjelderBarnValg, Opplysning } from '../../../types/søknad/Søknad';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
-import { UttaksplanSkjemadata } from '../../../steg/uttaksplan-skjema/uttaksplanSkjemadata';
+import { UttaksplanSkjemadata } from '../../../steg/uttaksplanSkjema/uttaksplanSkjemadata';
 import { StegID } from '../../../util/routing/stegConfig';
 import { Barn } from '../../../types/søknad/Barn';
 import { History } from 'history';

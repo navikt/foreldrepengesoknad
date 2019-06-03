@@ -1,7 +1,7 @@
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
 import { deltUttak } from './deltUttak';
-import { UttaksplanSkjemadata } from '../../../steg/uttaksplan-skjema/uttaksplanSkjemadata';
+import { UttaksplanSkjemadata } from '../../../steg/uttaksplanSkjema/uttaksplanSkjemadata';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 import uttakEndringssøknad from './uttakEndringssøknad';
 

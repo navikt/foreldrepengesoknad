@@ -6,7 +6,6 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { Checkbox, SkjemaGruppe } from 'nav-frontend-skjema';
 
 import getMessage from 'common/util/i18nUtils';
-import Block from 'common/components/block/Block';
 import { Avgrensninger, Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'common/types';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import BEMHelper from 'common/util/bem';
@@ -21,6 +20,7 @@ import { Validator } from 'common/lib/validation/types';
 import { getTidsperiodeRegler } from '../../util/validation/tidsperiode';
 
 import './tidsperiodeBolk.less';
+import Block from 'common/components/block/Block';
 
 export interface DatoAvgrensninger {
     helgedagerIkkeTillatt?: boolean;
