@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Block from 'common/components/block/Block';
-import { RegistrertBarn } from '../types/Person';
-import GjelderSøknadenNoenAvDisseBarnaSpørsmål from '../spørsmål/GjelderSøknadenNoenAvDisseBarnaSpørsmål';
+import { RegistrertBarn } from '../../../types/Person';
+import GjelderSøknadenNoenAvDisseBarnaSpørsmål from '../../../spørsmål/GjelderSøknadenNoenAvDisseBarnaSpørsmål';
 import Checkbox from 'nav-frontend-skjema/lib/checkbox';
 import getMessage from 'common/util/i18nUtils';
-import { SøknadenGjelderBarnValg } from '../types/søknad/Søknad';
+import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
 
 interface BarnBolkProps {
     søknadenGjelderBarnValg: SøknadenGjelderBarnValg;

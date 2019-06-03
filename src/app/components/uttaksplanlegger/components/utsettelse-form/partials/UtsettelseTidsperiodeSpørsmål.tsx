@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Tidsperiode } from 'common/types';
-import TidsperiodeBolk from '../../../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { getUtsettelseTidsperiodeValidatorer } from '../../../../../util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
 

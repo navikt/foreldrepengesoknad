@@ -10,17 +10,17 @@ import { Avgrensninger, Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'comm
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import BEMHelper from 'common/util/bem';
 import { getVarighetString } from 'common/util/intlUtils';
-import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
+import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
 
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { KalenderPlassering } from 'nav-datovelger/dist/datovelger/types';
-import { DateValue } from '../../types/common';
-import { InputChangeEvent } from '../../types/dom/Events';
+import { DateValue } from '../../../types/common';
+import { InputChangeEvent } from '../../../types/dom/Events';
 import { Validator } from 'common/lib/validation/types';
-import { getTidsperiodeRegler } from '../../util/validation/tidsperiode';
+import { getTidsperiodeRegler } from '../../../util/validation/tidsperiode';
+import Block from 'common/components/block/Block';
 
 import './tidsperiodeBolk.less';
-import Block from 'common/components/block/Block';
 
 export interface DatoAvgrensninger {
     helgedagerIkkeTillatt?: boolean;

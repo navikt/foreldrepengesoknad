@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Block from 'common/components/block/Block';
 import { Checkbox } from 'nav-frontend-skjema';
-import FødselsnummerBolk from '../../bolker/FødselsnummerBolk';
+import FødselsnummerBolk from './FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import Søknad, { Skjemanummer, Søkersituasjon } from '../../types/søknad/Søknad';
 import { InjectedIntlProps, injectIntl } from 'react-intl';

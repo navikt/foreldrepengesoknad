@@ -13,7 +13,10 @@ import Block from 'common/components/block/Block';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
 import { Avgrensninger, Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'common/types';
-import TidsperiodeBolk, { DatoAvgrensninger, DatoValidatorer } from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import TidsperiodeBolk, {
+    DatoAvgrensninger,
+    DatoValidatorer
+} from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { Validator } from 'common/lib/validation/types/index';
 import { InjectedIntl, InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';

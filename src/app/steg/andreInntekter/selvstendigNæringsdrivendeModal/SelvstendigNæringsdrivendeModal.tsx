@@ -12,7 +12,7 @@ import {
 } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import NæringstypeSpørsmål from '../../../spørsmål/NæringstypeSpørsmål';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import TidsperiodeBolk from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
 import ErNæringenRegistrertINorgeSpørsmål from '../../../spørsmål/ErNæringenRegistrertINorgeSpørsmål';
 import VarigEndringAvNæringsinntektBolk from './VarigEndringAvNæringsinntektBolk';
 import HarDuRegnskapsførerSpørsmål from '../../../spørsmål/HarDuRegnskapsførerSpørsmål';

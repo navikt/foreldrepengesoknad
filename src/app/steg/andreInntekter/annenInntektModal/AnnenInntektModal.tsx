@@ -11,7 +11,7 @@ import {
 } from '../../../types/søknad/AnnenInntekt';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import TidsperiodeBolk from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
 import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';

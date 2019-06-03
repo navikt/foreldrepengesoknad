@@ -25,7 +25,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
 import { getUttakFormVisibility, UttakSpørsmålKeys } from './uttakFormConfig';
 import { getTidsperioderIUttaksplan } from '../../../../util/uttaksplan';
-import AktivitetskravMorBolk from '../../../../bolker/AktivitetskravMorBolk';
+import AktivitetskravMorBolk from '../AktivitetskravMorBolk';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import SamtidigUttakPart from './partials/SamtidigUttakPart';
 import ForeldrepengerFørFødselPart from './partials/ForeldrepengerFørFødselPart';

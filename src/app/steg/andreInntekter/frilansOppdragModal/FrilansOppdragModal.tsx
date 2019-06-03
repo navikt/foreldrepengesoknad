@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ModalProps } from 'nav-frontend-modal';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import TidsperiodeBolk from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import { FrilansOppdrag, FrilansOppdragPartial } from '../../../types/søknad/FrilansInformasjon';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
