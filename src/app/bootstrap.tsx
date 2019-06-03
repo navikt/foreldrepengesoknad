@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Modal from 'nav-frontend-modal';
-import Foreldrepengesøknad from './connected-components/Foreldrepengesøknad';
+import Foreldrepengesøknad from './Foreldrepengesøknad';
 import store from './redux';
 import IntlProvider from './intl/IntlProvider';
 
