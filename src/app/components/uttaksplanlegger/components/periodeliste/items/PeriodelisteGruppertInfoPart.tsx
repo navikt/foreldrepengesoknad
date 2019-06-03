@@ -1,6 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
-import { onToggleItemProp } from '../../../../toggle-list/ToggleList';
+import { onToggleItemProp } from '../../../../elementer/toggle-list/ToggleList';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { Periode, GruppertInfoPeriode } from '../../../../../types/uttaksplan/periodetyper';
@@ -8,7 +8,7 @@ import { NavnPåForeldre } from 'common/types';
 import PeriodelisteInfo from './PeriodelisteInfo';
 import { getPeriodeForelderNavn } from 'app/util/uttaksplan';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
-import EnkelPeriodeliste from 'app/components/enkelPeriodeliste/EnkelPeriodeliste';
+import EnkelPeriodeliste from 'app/components/uttaksplanlegger/components/enkelPeriodeliste/EnkelPeriodeliste';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { getPeriodeIkon } from '../elements/PeriodeHeader';
 

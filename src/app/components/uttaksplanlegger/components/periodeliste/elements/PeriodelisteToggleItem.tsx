@@ -1,6 +1,6 @@
 import * as React from 'react';
-import ToggleItemControlled from '../../../../toggle-list/toggle-item/ToggleItemControlled';
-import { onToggleItemProp } from '../../../../toggle-list/ToggleList';
+import ToggleItemControlled from '../../../../elementer/toggle-list/toggle-item/ToggleItemControlled';
+import { onToggleItemProp } from '../../../../elementer/toggle-list/ToggleList';
 import { periodelisteBem } from '../Periodeliste';
 
 interface Props {

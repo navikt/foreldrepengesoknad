@@ -5,7 +5,7 @@ import UtenlandsoppholdModal, {
     UtenlandsoppholdModalPropsPartial
 } from '../../components/dialoger/utenlandsopphold-modal/UtenlandsoppholdModal';
 import Block from 'common/components/block/Block';
-import List from '../../components/list/List';
+import List from 'app/components/elementer/list/List';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import OppholdListElement from './OppholdListElement';
 

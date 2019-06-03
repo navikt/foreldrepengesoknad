@@ -2,12 +2,12 @@ import * as React from 'react';
 import { AnnenInntekt } from '../../types/søknad/AnnenInntekt';
 import { Knapp } from 'nav-frontend-knapper';
 import AnnenInntektModal from '../../components/dialoger/annen-inntekt-modal/AnnenInntektModal';
-import List from '../../components/list/List';
 import Block from 'common/components/block/Block';
 import { FormattedMessage } from 'react-intl';
 import AndreInntekterListElement from './AndreInntekterListElement';
 import AnnenInntektSiste10MndSpørsmål from '../../spørsm\u00E5l/AnnenInntektSiste10MndSpørsm\u00E5l';
 import { Søker } from '../../types/søknad/Søker';
+import List from 'app/components/elementer/list/List';
 
 interface AndreInntekterBolkProps {
     harHattAnnenInntektSiste10Mnd: boolean | undefined;

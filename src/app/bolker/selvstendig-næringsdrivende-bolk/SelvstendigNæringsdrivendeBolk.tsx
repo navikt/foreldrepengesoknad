@@ -4,7 +4,7 @@ import Knapp from 'nav-frontend-knapper/lib/knapp';
 import { Næring } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import SelvstendigNæringsdrivendeModal from '../../components/dialoger/selvstendig-næringsdrivende-modal/SelvstendigNæringsdrivendeModal';
 import Block from 'common/components/block/Block';
-import List from '../../components/list/List';
+import List from 'app/components/elementer/list/List';
 import SelvstendigNæringsdrivendeListElement from './SelvstendigNæringsdrivendeListElement';
 import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../spørsm\u00E5l/HarDuJobbetSomSelvstendigN\u00E6ringsdrivendeSiste10MndSpørsm\u00E5l';
 import { Søker } from '../../types/søknad/Søker';

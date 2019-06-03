@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FormattedHTMLMessage } from 'react-intl';
-import UtvidetInformasjon from 'app/components/utvidetinformasjon/UtvidetInformasjon';
+import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 import Block from 'common/components/block/Block';
 
 const UlønnetPermisjonInfo: React.SFC<{}> = () => {

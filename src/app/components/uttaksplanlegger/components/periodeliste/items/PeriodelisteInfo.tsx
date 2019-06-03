@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { onToggleItemProp } from '../../../../toggle-list/ToggleList';
+import { onToggleItemProp } from '../../../../elementer/toggle-list/ToggleList';
 import PeriodelisteToggleItem from '../elements/PeriodelisteToggleItem';
 import PeriodelisteItemHeader from '../elements/PeriodelisteItemHeader';
 import PeriodelisteItemWrapper from '../elements/PeriodelisteItemWrapper';

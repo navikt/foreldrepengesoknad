@@ -6,13 +6,13 @@ import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import { getAntallUker } from '../../util/uttaksplan/stønadskontoer';
 import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedHTMLMessage } from 'react-intl';
 import InnholdMedIllustrasjon from 'common/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
-import SituasjonSirkel from '../endringsillustrasjoner/situasjonSirkel/SituasjonSirkel';
-import UkerSirkel from '../endringsillustrasjoner/ukerSirkel/UkerSirkel';
-import { Situasjon } from '../foreldrepar/foreldreparTypes';
 import { Kjønn } from 'app/types/common';
 import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
 import getMessage from 'common/util/i18nUtils';
 import { Forelder } from 'common/types';
+import { Situasjon } from './illustrasjoner/situasjonSirkel/foreldrepar/foreldreparTypes';
+import SituasjonSirkel from './illustrasjoner/situasjonSirkel/SituasjonSirkel';
+import UkerSirkel from './illustrasjoner/ukerSirkel/UkerSirkel';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;

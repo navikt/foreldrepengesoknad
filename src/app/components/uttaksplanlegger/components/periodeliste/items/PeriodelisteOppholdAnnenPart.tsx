@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { onToggleItemProp } from '../../../../toggle-list/ToggleList';
+import { onToggleItemProp } from '../../../../elementer/toggle-list/ToggleList';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { AnnenPartInfoPeriode } from '../../../../../types/uttaksplan/periodetyper';
