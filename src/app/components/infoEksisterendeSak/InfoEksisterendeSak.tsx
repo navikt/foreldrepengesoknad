@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EksisterendeSak } from '../../types/EksisterendeSak';
+import { EksisterendeSak as InfoEksisterendeSak } from '../../types/EksisterendeSak';
 import InfoBlock from 'common/components/info-block/InfoBlock';
 import { getVarighetString } from 'common/util/intlUtils';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
@@ -46,7 +46,7 @@ const getHvem = (intl: InjectedIntl, erDeltUttak: boolean, navn?: NavnISøknaden
     return getMessage(intl, 'eksisterendeSak.tekst.benevning.aleneomsorg');
 };
 
-const EksisterendeSak: React.StatelessComponent<Props> = ({ søknadsinfo, tilgjengeligeStønadskontoer, intl }) => {
+const InfoEksisterendeSak: React.StatelessComponent<Props> = ({ søknadsinfo, tilgjengeligeStønadskontoer, intl }) => {
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
     const situasjon = getSituasjon(søknadsinfo);
     if (situasjon === undefined) {
@@ -84,4 +84,4 @@ const EksisterendeSak: React.StatelessComponent<Props> = ({ søknadsinfo, tilgje
     );
 };
 
-export default injectIntl(EksisterendeSak);
+export default injectIntl(InfoEksisterendeSak);
