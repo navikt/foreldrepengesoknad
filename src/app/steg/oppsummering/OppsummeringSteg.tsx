@@ -31,7 +31,7 @@ import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
-import { findAllAttachments } from '../manglende-vedlegg/manglendeVedleggUtil';
+import { findAllAttachments } from '../manglendeVedlegg/manglendeVedleggUtil';
 import _ from 'lodash';
 import { skalViseManglendeVedleggSteg } from '../util/navigation';
 import ErAnnenForelderInformertSpørsmål from 'app/spørsmål/ErAnnenForelderInformertSpørsmål';

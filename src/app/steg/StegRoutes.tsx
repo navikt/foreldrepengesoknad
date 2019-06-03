@@ -3,25 +3,25 @@ import { Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom
 import routeConfig from '../util/routing/routeConfig';
 import { StegID } from '../util/routing/stegConfig';
 import Applikasjonsside from '../components/applikasjon/applikasjonsside/Applikasjonsside';
-import RelasjonTilBarnFødselSteg from './relasjon-til-barn-fødsel/RelasjonTilBarnFødselSteg';
-import RelasjonTilBarnAdopsjonSteg from './relasjon-til-barn-adopsjon/RelasjonTilBarnAdopsjonSteg';
-import RelasjonTilBarnForeldreansvarSteg from './relasjon-til-barn-foreldreansvar/RelasjonTilBarnForeldreansvarSteg';
+import RelasjonTilBarnFødselSteg from './barn/relasjonTilBarnFødselSteg/RelasjonTilBarnFødselSteg';
+import RelasjonTilBarnAdopsjonSteg from './barn/relasjonTilBarnAdopsjonSteg/RelasjonTilBarnAdopsjonSteg';
+import RelasjonTilBarnForeldreansvarSteg from './barn/relasjonTilBarnForeldreansvarSteg/RelasjonTilBarnForeldreansvarSteg';
 import UtenlandsoppholdSteg from './utenlandsopphold/UtenlandsoppholdSteg';
-import AndreInntekterSteg from './andre-inntekter/AndreInntekterSteg';
+import AndreInntekterSteg from './andreInntekter/AndreInntekterSteg';
 import UttaksplanSteg from './uttaksplan/UttaksplanSteg';
-import AnnenForelderSteg from './annen-forelder/AnnenForelderSteg';
+import AnnenForelderSteg from './annenForelder/AnnenForelderSteg';
 import InngangSteg from './inngang/InngangSteg';
 import OppsummeringSteg from './oppsummering/OppsummeringSteg';
 import { HistoryProps } from '../types/common';
 import { SøkerinfoProps } from '../types/søkerinfo';
-import UttaksplanSkjemaSteg from './uttaksplan-skjema/UttaksplanSkjemaSteg';
+import UttaksplanSkjemaSteg from './uttaksplanSkjema/UttaksplanSkjemaSteg';
 import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
 import { AppState } from '../redux/reducers';
 import søknadActionCreators from '../redux/actions/søknad/søknadActionCreators';
 import { apiActionCreators } from '../redux/actions';
 import { Redirect } from 'react-router';
-import ManglendeVedleggSteg from './manglende-vedlegg/ManglendeVedleggSteg';
+import ManglendeVedleggSteg from './manglendeVedlegg/ManglendeVedleggSteg';
 
 export const søknadStegPath = (stegPath?: string): string => `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
 

@@ -6,7 +6,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { RegistrertAnnenForelder, RegistrertBarn } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';
-import { UttaksplanSkjemadata } from '../../steg/uttaksplan-skjema/uttaksplanSkjemadata';
+import { UttaksplanSkjemadata } from '../../steg/uttaksplanSkjema/uttaksplanSkjemadata';
 import { StegID } from '../../util/routing/stegConfig';
 import { Omit } from 'react-redux';
 import { EksisterendeSak } from '../EksisterendeSak';

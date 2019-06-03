@@ -1,12 +1,12 @@
-import { getRelasjonTilBarnFødselVisibility } from '../../steg/relasjon-til-barn-fødsel/visibility/relasjonTilBarnFødselVisibility';
+import { getRelasjonTilBarnFødselVisibility } from '../../steg/barn/relasjonTilBarnFødselSteg/visibility/relasjonTilBarnFødselVisibility';
 import Søknad, { Skjemanummer } from '../../types/søknad/Søknad';
 import { ApiState } from '../../redux/reducers/apiReducer';
 import {
     AnnenForelderSpørsmålKeys,
     getAnnenForelderStegVisibility
-} from '../../steg/annen-forelder/visibility/annenForelderStegVisibility';
+} from '../../steg/annenForelder/visibility/annenForelderStegVisibility';
 
-import annenInntektVisibility from '../../components/dialoger/annen-inntekt-modal/visibility';
+import annenInntektVisibility from '../../steg/andreInntekter/annenInntektModal/visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
 import {
@@ -17,7 +17,7 @@ import {
     UtsettelseÅrsakType,
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
-import { spørsmålOmVedleggVisible } from '../../steg/relasjon-til-barn-adopsjon/visibility';
+import { spørsmålOmVedleggVisible } from '../../steg/barn/relasjonTilBarnAdopsjonSteg/visibility';
 import {
     getAttachmentTypeForPeriode,
     getSkjemanummerForAndreInntekter,
