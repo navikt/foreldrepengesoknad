@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { Element } from 'nav-frontend-typografi';
 import { guid } from 'nav-frontend-js-utils';
-import List from '../../../app/components/list/List';
+import List from 'app/components/elementer/list/List';
 import './oppsummeringsliste.less';
 
 export interface OppsummeringslisteelementProps {

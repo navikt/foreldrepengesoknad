@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 const KoffertIkon = (props: any) => (
-    <svg width={36} height={36} viewBox="0 0 48 48" {...props}>
+    <svg focusable="false" role="presentation" width={36} height={36} viewBox="0 0 48 48" {...props}>
         <g fill="none" fillRule="evenodd">
             <path
                 fill="#593A32"

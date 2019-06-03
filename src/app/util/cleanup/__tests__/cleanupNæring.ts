@@ -5,7 +5,7 @@ import {
     Næringsrelasjon,
     NæringsrelasjonPartial
 } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import visibility from '../../../components/selvstendig-næringsdrivende-modal/visibility';
+import visibility from '../../../steg/andreInntekter/selvstendigNæringsdrivendeModal/visibility';
 
 const revisorMock: NæringsrelasjonPartial = {};
 const regnskapsførerMock: NæringsrelasjonPartial = {};

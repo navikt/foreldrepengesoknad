@@ -2,7 +2,7 @@ import lenker from 'app/util/routing/lenker';
 import { Søknadsinfo } from '../../../selectors/types';
 import { getNavnGenitivEierform } from '../../tekstUtils';
 import { InjectedIntl } from 'react-intl';
-import { VeilederMessage } from 'app/components/veileder-info/types';
+import { VeilederMessage } from 'app/components/veilederInfo/types';
 
 export const getVeilederInfoText = (
     søknadsinfo: Søknadsinfo,

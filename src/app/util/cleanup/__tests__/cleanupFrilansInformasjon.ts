@@ -5,7 +5,7 @@ import {
     FrilansInformasjonPartial,
     FrilansOppdrag
 } from '../../../types/søknad/FrilansInformasjon';
-import visibility from './../../../bolker/frilanser-bolk/visibility';
+import visibility from '../../../steg/andreInntekter/frilanserBolk/visibility';
 
 const oppdrag: FrilansOppdrag = {
     navnPåArbeidsgiver: 'asdf',

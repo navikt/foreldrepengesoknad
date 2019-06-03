@@ -30,7 +30,13 @@ export default class RangeIcon extends React.Component<RangeIconProps> {
         const icon = type === 'minus' ? this.renderMinusIcon() : this.renderPlusIcon();
 
         return (
-            <svg width="24px" height="24px" viewBox="0 0 24 24" className="rangeIcon">
+            <svg
+                focusable="false"
+                role="presentation"
+                width="24px"
+                height="24px"
+                viewBox="0 0 24 24"
+                className="rangeIcon">
                 <g id="Icons/subtract/default" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                     {icon}
                 </g>
