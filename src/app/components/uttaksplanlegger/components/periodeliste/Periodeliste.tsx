@@ -8,7 +8,7 @@ import {
 } from '../../../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
-import ToggleList from '../../../toggle-list/ToggleList';
+import ToggleList from '../../../elementer/toggle-list/ToggleList';
 import PeriodelisteHull from './items/PeriodelisteHull';
 import { focusElement } from '../../../../util/focusUtils';
 import PeriodelistePeriode from './items/PeriodelistePeriode';

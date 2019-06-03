@@ -8,9 +8,9 @@ import EtikettBase from 'nav-frontend-etiketter';
 import InfoBlock from 'common/components/info-block/InfoBlock';
 import BarnevognIkon from 'common/components/ikoner/BarnevognIkon';
 import StorkIkon from 'common/components/ikoner/StorkIkon';
-import { getIntlKeyForStatus } from '../../util/stringUtils';
-import Sak from '../../types/søknad/Sak';
-import { sakGjelderAdopsjon } from '../../util/saker/sakerUtils';
+import { getIntlKeyForStatus } from '../../../../util/stringUtils';
+import Sak from '../../../../types/søknad/Sak';
+import { sakGjelderAdopsjon } from '../../../../util/saker/sakerUtils';
 
 import './sakInfo.less';
 

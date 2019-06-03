@@ -17,7 +17,7 @@ import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Knapp } from 'nav-frontend-knapper';
 import NyPeriodeForm from './components/ny-periode-form/NyPeriodeForm';
-import FocusContainer from '../applikasjon/focus-container/FocusContainer';
+import FocusContainer from '../elementer/focus-container/FocusContainer';
 import TomUttaksplanInfo from './components/tom-uttaksplan-info/TomUttaksplanInfo';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Søknadsinfo } from '../../selectors/types';

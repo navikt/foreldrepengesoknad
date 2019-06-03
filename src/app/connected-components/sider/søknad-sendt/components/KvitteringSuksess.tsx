@@ -7,7 +7,7 @@ import { MissingAttachment } from 'app/types/MissingAttachment';
 import AdvarselIkon from 'app/components/ikoner/svgIkoner/advarselIkon/AdvarselIkon';
 
 import getMessage from 'common/util/i18nUtils';
-import UtvidetInformasjon from 'app/components/utvidetinformasjon/UtvidetInformasjon';
+import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 
 import './kvitteringSuksess.less';
 import { guid } from 'nav-frontend-js-utils';

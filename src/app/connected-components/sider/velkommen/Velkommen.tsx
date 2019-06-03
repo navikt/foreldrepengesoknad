@@ -26,13 +26,13 @@ import Knapperad from 'common/components/knapperad/Knapperad';
 import SøknadstypeSpørsmål from '../../../spørsmål/SøknadstypeSpørsmål';
 import Block from 'common/components/block/Block';
 import Sak, { SakType } from '../../../types/søknad/Sak';
-import SakInfo from '../../../components/sak-info/SakInfo';
+import SakInfo from './sak-info/SakInfo';
 
 import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
 import BEMHelper from 'common/util/bem';
 import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
 import { StorageKvittering } from '../../../types/StorageKvittering';
-import SakInfoStorageKvittering from 'app/components/sak-info/SakInfoStorageKvittering';
+import SakInfoStorageKvittering from 'app/connected-components/sider/velkommen/sak-info/SakInfoStorageKvittering';
 
 import './velkommen.less';
 

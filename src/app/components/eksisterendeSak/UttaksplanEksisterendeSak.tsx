@@ -19,7 +19,7 @@ type Props = OwnProps & InjectedIntlProps;
 const bem = BEMHelper('uttaksplanEksisterendeSak');
 const datoformat = 'DD. MMM YYYY';
 
-const UttaksplanEgenSak: React.StatelessComponent<Props> = ({ uttaksplan, søknadsinfo, intl }) => {
+const UttaksplanEksisterendeSak: React.StatelessComponent<Props> = ({ uttaksplan, søknadsinfo, intl }) => {
     return (
         <ol className={bem.block}>
             {uttaksplan.sort(sorterPerioder).map((periode, index) => (
@@ -40,4 +40,4 @@ const UttaksplanEgenSak: React.StatelessComponent<Props> = ({ uttaksplan, søkna
     );
 };
 
-export default injectIntl(UttaksplanEgenSak);
+export default injectIntl(UttaksplanEksisterendeSak);

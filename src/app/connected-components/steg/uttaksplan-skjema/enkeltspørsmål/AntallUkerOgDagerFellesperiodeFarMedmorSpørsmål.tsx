@@ -5,7 +5,7 @@ import { Validator } from 'common/lib/validation/types';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import ValiderbarUkerDagerTeller from 'common/lib/validation/elements/ValiderbarUkerDagerTeller';
-import Tittel from '../../../../components/tittel/Tittel';
+import Tittel from '../../../../components/elementer/tittel/Tittel';
 
 interface AntallUkerOgDagerFellesperiodeFarMedmorProps {
     antallUkerFellesperiode: number;

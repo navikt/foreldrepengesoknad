@@ -1,5 +1,5 @@
 import * as React from 'react';
-import AntallUkerKalenderIkon from '../antallUkerKalenderIkon/AntallUkerKalenderIkon';
+import AntallUkerKalenderIkon from './antallUkerKalenderIkon/AntallUkerKalenderIkon';
 import BEMHelper from 'common/util/bem';
 import Sirkelmaske from 'common/components/sirkelmaske/Sirkelmaske';
 
