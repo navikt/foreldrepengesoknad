@@ -4,9 +4,9 @@ import { injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
 import DocumentTitle from 'react-document-title';
-import Applikasjonsside from '../../../components/applikasjon/applikasjonsside/Applikasjonsside';
+import Applikasjonsside from '../../components/applikasjon/applikasjonsside/Applikasjonsside';
 import Feilsidemelding from 'common/components/feilsidemelding/Feilsidemelding';
-import { SøkerinfoProps } from '../../../types/søkerinfo';
+import { SøkerinfoProps } from '../../types/søkerinfo';
 
 const URL_PAPIRSØKNAD =
     'https://www.nav.no/no/Person/Skjemaer-for-privatpersoner/Skjemaer/Familie/' +

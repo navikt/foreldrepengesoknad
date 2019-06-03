@@ -6,9 +6,9 @@ import Lenke from 'nav-frontend-lenker';
 import { EtikettLiten, Ingress, Normaltekst } from 'nav-frontend-typografi';
 import moment from 'moment';
 
-import { Kvittering } from '../../../types/Kvittering';
-import Applikasjonsside from '../../../components/applikasjon/applikasjonsside/Applikasjonsside';
-import { apiActionCreators as api } from '../../../redux/actions';
+import { Kvittering } from '../../types/Kvittering';
+import Applikasjonsside from '../../components/applikasjon/applikasjonsside/Applikasjonsside';
+import { apiActionCreators as api } from '../../redux/actions';
 import KvitteringHeader from './components/KvitteringHeader';
 import KvitteringSuksess from './components/KvitteringSuksess';
 import StatusBoks from './components/StatusBoks';

@@ -10,29 +10,29 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import getMessage from 'common/util/i18nUtils';
 import VeilederMedSnakkeboble from 'common/components/veileder-med-snakkeboble/VeilederMedSnakkeboble';
 
-import Applikasjonsside from '../../../components/applikasjon/applikasjonsside/Applikasjonsside';
-import DinePlikterModal from '../../../components/dialoger/dine-plikter-modal/DinePlikterModal';
-import DinePersonopplysningerModal from '../../../components/dialoger/dine-personopplysninger-modal/DinePersonopplysningerModal';
+import Applikasjonsside from '../../components/applikasjon/applikasjonsside/Applikasjonsside';
+import DinePlikterModal from '../../components/dialoger/dine-plikter-modal/DinePlikterModal';
+import DinePersonopplysningerModal from '../../components/dialoger/dine-personopplysninger-modal/DinePersonopplysningerModal';
 
-import { AppState } from '../../../redux/reducers';
+import { AppState } from '../../redux/reducers';
 import { DispatchProps } from 'common/redux/types';
-import Person from '../../../types/Person';
-import { HistoryProps } from '../../../types/common';
+import Person from '../../types/Person';
+import { HistoryProps } from '../../types/common';
 
-import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
+import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
 
-import { SøkerinfoProps } from '../../../types/søkerinfo';
+import { SøkerinfoProps } from '../../types/søkerinfo';
 import Knapperad from 'common/components/knapperad/Knapperad';
-import SøknadstypeSpørsmål from '../../../spørsmål/SøknadstypeSpørsmål';
+import SøknadstypeSpørsmål from '../../spørsmål/SøknadstypeSpørsmål';
 import Block from 'common/components/block/Block';
-import Sak, { SakType } from '../../../types/søknad/Sak';
+import Sak, { SakType } from '../../types/søknad/Sak';
 import SakInfo from './sak-info/SakInfo';
 
-import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
+import { erInfotrygdSak } from '../../util/saker/sakerUtils';
 import BEMHelper from 'common/util/bem';
-import VeilederInfo from '../../../components/veileder-info/VeilederInfo';
-import { StorageKvittering } from '../../../types/StorageKvittering';
-import SakInfoStorageKvittering from 'app/connected-components/sider/velkommen/sak-info/SakInfoStorageKvittering';
+import VeilederInfo from '../../components/veileder-info/VeilederInfo';
+import { StorageKvittering } from '../../types/StorageKvittering';
+import SakInfoStorageKvittering from 'app/sider/velkommen/sak-info/SakInfoStorageKvittering';
 
 import './velkommen.less';
 

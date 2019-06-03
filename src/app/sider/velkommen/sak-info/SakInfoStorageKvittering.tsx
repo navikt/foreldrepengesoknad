@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import InfoBlock from 'common/components/info-block/InfoBlock';
 import BarnevognIkon from 'common/components/ikoner/BarnevognIkon';
-import { StorageKvittering } from '../../../../types/StorageKvittering';
+import { StorageKvittering } from '../../../types/StorageKvittering';
 
 import './sakInfo.less';
 
