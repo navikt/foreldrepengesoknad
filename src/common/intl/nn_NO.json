@@ -1,4 +1,6 @@
 {
+    "common.dag": "dag",
+    "common.dager": "dagar",
     "common.varighet.dager": "{dager, plural, one {# dag} other {# dagar}}",
     "common.varighet.uker": "{uker, plural, one {# veke} other {# veker}}",
     "common.varighet.ukerogdager":
@@ -14,5 +16,11 @@
     "common.tall-8": "åtte",
     "common.tall-9": "ni",
     "common.tall-10": "ti",
-    "common.og": "og"
+
+    "infoboks.sirkeltekst": "Hjelp",
+
+    "datoinput.avgrensninger.beskrivelse.fraTil": "Du kan velge ein dato{fra}{til}. ",
+    "datoinput.avgrensninger.beskrivelse.fraOgMed": " frå og med {dato}",
+    "datoinput.avgrensninger.beskrivelse.tilOgMed": " til og med {dato}",
+    "datoinput.avgrensninger.beskrivelse.ikkeHelg": "Du kan ikkje velge ein helgedag."
 }

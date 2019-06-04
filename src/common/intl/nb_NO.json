@@ -1,9 +1,6 @@
 {
     "common.dag": "dag",
     "common.dager": "dager",
-    "common.varighet.ugyldigVarighet": "Ugyldig varighet ({dager})",
-    "common.varighet.dagerSomTekst": "{tekst} {dager, plural, one {dag} other {dager}}",
-    "common.varighet.dager.kunTekst": "{dager, plural, one {dag} other {dager}}",
     "common.varighet.dager": "{dager, plural, one {# dag} other {# dager}}",
     "common.varighet.uker": "{uker, plural, one {# uke} other {# uker}}",
     "common.varighet.ukerogdager":
