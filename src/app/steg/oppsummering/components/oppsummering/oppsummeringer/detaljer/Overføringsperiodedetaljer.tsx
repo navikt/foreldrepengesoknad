@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { Overføringsperiode, StønadskontoType } from '../../../../../app/types/uttaksplan/periodetyper';
+import { Overføringsperiode, StønadskontoType } from '../../../../../../types/uttaksplan/periodetyper';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
-import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import getMessage from 'common/util/i18nUtils';
 import { getÅrsakTekst } from 'common/util/oppsummeringUtils';
 import { NavnPåForeldre } from 'common/types';
-import { dokumentasjonBehøvesForOverføringsperiode } from '../../../../../app/util/uttaksplan/utsettelsesperiode';
+import { dokumentasjonBehøvesForOverføringsperiode } from '../../../../../../util/uttaksplan/utsettelsesperiode';
 
 interface OverføringsperiodedetaljerProps {
     periode: Overføringsperiode;

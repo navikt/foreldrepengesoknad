@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { formatDate } from '../../../../../app/util/dates/dates';
-import Oppsummeringsliste from 'common/components/oppsummeringsliste/Oppsummeringsliste';
-import { Næring } from '../../../../../app/types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import Næringsdetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Næringsdetaljer';
+import { formatDate } from '../../../../../../util/dates/dates';
+import Oppsummeringsliste from 'app/steg/oppsummering/components/oppsummeringsliste/Oppsummeringsliste';
+import { Næring } from '../../../../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import Næringsdetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/Næringsdetaljer';
 
 interface SelvstendigNæringsdrivendeOppsummeringslisteProps {
     næringer: Næring[];

@@ -15,7 +15,7 @@ import { StegID } from '../../util/routing/stegConfig';
 import { Kvittering } from '../../types/Kvittering';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import isAvailable from '../util/isAvailable';
-import Oppsummering from 'common/components/oppsummering/Oppsummering';
+import Oppsummering from 'app/steg/oppsummering/components/oppsummering/Oppsummering';
 import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import { validerUttaksplanAction } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionCreators';

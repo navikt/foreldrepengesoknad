@@ -1,7 +1,7 @@
 import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { formatDate } from '../../../../app/util/dates/dates';
+import { formatDate } from '../../../../../util/dates/dates';
 import Barn, {
     Adopsjonsbarn,
     ForeldreansvarBarn,
@@ -11,12 +11,12 @@ import Barn, {
     isAdopsjonsbarn,
     isForeldreansvarsbarn,
     isUfødtBarn
-} from '../../../../app/types/søknad/Barn';
-import { Søkersituasjon } from '../../../../app/types/søknad/Søknad';
-import AnnenForelder from '../../../../app/types/søknad/AnnenForelder';
-import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+} from '../../../../../types/søknad/Barn';
+import { Søkersituasjon } from '../../../../../types/søknad/Søknad';
+import AnnenForelder from '../../../../../types/søknad/AnnenForelder';
+import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
-import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 
 interface RelasjonTilBarnOppsummeringProps {
     barn: Barn;

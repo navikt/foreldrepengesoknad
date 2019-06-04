@@ -3,12 +3,12 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import InformasjonOmUtenlandsopphold, {
     Utenlandsopphold
-} from '../../../../app/types/søknad/InformasjonOmUtenlandsopphold';
-import UtenlandsoppholdOppsummeringsliste from 'common/components/oppsummering/oppsummeringer/lister/UtenlandsoppholdOppsummeringsliste';
-import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+} from '../../../../../types/søknad/InformasjonOmUtenlandsopphold';
+import UtenlandsoppholdOppsummeringsliste from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/lister/UtenlandsoppholdOppsummeringsliste';
+import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 import KompleksFeltoppsummering from 'common/components/kompleks-feltoppsummering/KompleksFeltoppsummering';
-import { Søkersituasjon } from '../../../../app/types/søknad/Søknad';
+import { Søkersituasjon } from '../../../../../types/søknad/Søknad';
 import * as moment from 'moment';
 import { Tidsperiode } from 'common/types';
 

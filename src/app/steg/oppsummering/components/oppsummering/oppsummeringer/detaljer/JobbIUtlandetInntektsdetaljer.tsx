@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
-import { JobbIUtlandetInntekt } from '../../../../../app/types/søknad/AnnenInntekt';
+import { JobbIUtlandetInntekt } from '../../../../../../types/søknad/AnnenInntekt';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';

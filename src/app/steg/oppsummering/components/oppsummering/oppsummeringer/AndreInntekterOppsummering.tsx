@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import Søker from '../../../../app/types/søknad/Søker';
-import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+import Søker from '../../../../../types/søknad/Søker';
+import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
-import AndreInntekterOppsummeringsliste from 'common/components/oppsummering/oppsummeringer/lister/AndreInntekterOppsummeringsliste';
+import AndreInntekterOppsummeringsliste from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/lister/AndreInntekterOppsummeringsliste';
 
 interface AndreInntekterOppsummeringProps {
     søker: Søker;

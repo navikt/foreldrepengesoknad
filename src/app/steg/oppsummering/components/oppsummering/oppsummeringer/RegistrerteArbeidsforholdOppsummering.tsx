@@ -1,9 +1,9 @@
 import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
 import InformasjonOmArbeidsforholdWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
-import Arbeidsforhold from '../../../../app/types/Arbeidsforhold';
+import Arbeidsforhold from '../../../../../types/Arbeidsforhold';
 
 interface RegistrerteArbeidsforholdOppsummeringProps {
     arbeidsforhold: Arbeidsforhold[];

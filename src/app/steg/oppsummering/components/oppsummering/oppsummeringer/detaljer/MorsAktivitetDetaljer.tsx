@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { MorsAktivitet } from '../../../../../app/types/uttaksplan/periodetyper';
+import { MorsAktivitet } from '../../../../../../types/uttaksplan/periodetyper';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 import getMessage from 'common/util/i18nUtils';
 

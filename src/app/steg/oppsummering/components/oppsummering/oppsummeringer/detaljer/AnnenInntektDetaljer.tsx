@@ -1,7 +1,7 @@
-import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from '../../../../../app/types/søknad/AnnenInntekt';
+import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from '../../../../../../types/søknad/AnnenInntekt';
 import * as React from 'react';
-import JobbIUtlandetInntektsdetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/JobbIUtlandetInntektsdetaljer';
-import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import JobbIUtlandetInntektsdetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/JobbIUtlandetInntektsdetaljer';
+import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 
 interface AnnenInntektDetaljerProps {
     annenInntekt: AnnenInntekt;

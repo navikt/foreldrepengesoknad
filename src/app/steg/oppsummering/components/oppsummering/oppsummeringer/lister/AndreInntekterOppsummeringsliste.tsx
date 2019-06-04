@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { formatDate } from '../../../../../app/util/dates/dates';
-import Oppsummeringsliste from 'common/components/oppsummeringsliste/Oppsummeringsliste';
-import { AnnenInntekt } from '../../../../../app/types/søknad/AnnenInntekt';
-import AnnenInntektDetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/AnnenInntektDetaljer';
+import { formatDate } from '../../../../../../util/dates/dates';
+import Oppsummeringsliste from 'app/steg/oppsummering/components/oppsummeringsliste/Oppsummeringsliste';
+import { AnnenInntekt } from '../../../../../../types/søknad/AnnenInntekt';
+import AnnenInntektDetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/AnnenInntektDetaljer';
 
 interface AndreInntekterOppsummeringslisteProps {
     andreInntekter: AnnenInntekt[];

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
-import { formatDate } from '../../../../app/util/dates/dates';
+import { formatDate } from '../../../../../util/dates/dates';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import Søker from '../../../../app/types/søknad/Søker';
+import Søker from '../../../../../types/søknad/Søker';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
-import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
 import KompleksFeltoppsummering from 'common/components/kompleks-feltoppsummering/KompleksFeltoppsummering';
 import Block from 'common/components/block/Block';
 import Element from 'nav-frontend-typografi/lib/element';
-import FrilansoppdragOppsummeringsliste from 'common/components/oppsummering/oppsummeringer/lister/FrilansoppdragOppsummeringsliste';
+import FrilansoppdragOppsummeringsliste from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/lister/FrilansoppdragOppsummeringsliste';
 
 interface FrilansOppsummeringProps {
     søker: Søker;

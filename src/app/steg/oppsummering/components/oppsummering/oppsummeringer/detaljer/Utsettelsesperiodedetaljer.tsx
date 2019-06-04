@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { Utsettelsesperiode, UtsettelseÅrsakType } from '../../../../../app/types/uttaksplan/periodetyper';
+import { Utsettelsesperiode, UtsettelseÅrsakType } from '../../../../../../types/uttaksplan/periodetyper';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
-import MorsAktivitetDetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
+import MorsAktivitetDetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
-import { dokumentasjonBehøvesForUtsettelsesperiode } from '../../../../../app/util/uttaksplan/utsettelsesperiode';
+import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import { dokumentasjonBehøvesForUtsettelsesperiode } from '../../../../../../util/uttaksplan/utsettelsesperiode';
 import { getArbeidsformTekst, getÅrsakTekst } from 'common/util/oppsummeringUtils';
 import getMessage from 'common/util/i18nUtils';
-import Arbeidsforhold from '../../../../../app/types/Arbeidsforhold';
+import Arbeidsforhold from '../../../../../../types/Arbeidsforhold';
 import { Søknadsinfo } from 'app/selectors/types';
 
 interface UtsettelsesperiodedetaljerProps {

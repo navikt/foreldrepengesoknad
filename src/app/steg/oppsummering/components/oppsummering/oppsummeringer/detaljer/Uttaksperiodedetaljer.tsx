@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { StønadskontoType, UttaksperiodeBase } from '../../../../../app/types/uttaksplan/periodetyper';
+import { StønadskontoType, UttaksperiodeBase } from '../../../../../../types/uttaksplan/periodetyper';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
-import MorsAktivitetDetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
+import MorsAktivitetDetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
 import getMessage from 'common/util/i18nUtils';
 import { getArbeidsformTekst } from 'common/util/oppsummeringUtils';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';

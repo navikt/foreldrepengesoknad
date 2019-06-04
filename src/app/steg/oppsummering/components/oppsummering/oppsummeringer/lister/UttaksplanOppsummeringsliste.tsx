@@ -2,7 +2,7 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import Oppsummeringsliste, {
     OppsummeringslisteelementProps
-} from 'common/components/oppsummeringsliste/Oppsummeringsliste';
+} from 'app/steg/oppsummering/components/oppsummeringsliste/Oppsummeringsliste';
 import {
     Overføringsperiode,
     Periode,
@@ -11,21 +11,21 @@ import {
     Utsettelsesperiode,
     Uttaksperiode,
     Oppholdsperiode
-} from '../../../../../app/types/uttaksplan/periodetyper';
+} from '../../../../../../types/uttaksplan/periodetyper';
 import getMessage from 'common/util/i18nUtils';
-import { formatDate } from '../../../../../app/util/dates/dates';
-import Uttaksperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Uttaksperiodedetaljer';
-import Utsettelsesperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Utsettelsesperiodedetaljer';
-import Overføringsperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Overføringsperiodedetaljer';
+import { formatDate } from '../../../../../../util/dates/dates';
+import Uttaksperiodedetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/Uttaksperiodedetaljer';
+import Utsettelsesperiodedetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/Utsettelsesperiodedetaljer';
+import Overføringsperiodedetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/Overføringsperiodedetaljer';
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
-import { getStønadskontoNavn, getPeriodeTittel } from '../../../../../app/util/uttaksplan';
-import Arbeidsforhold from '../../../../../app/types/Arbeidsforhold';
+import { getStønadskontoNavn, getPeriodeTittel } from '../../../../../../util/uttaksplan';
+import Arbeidsforhold from '../../../../../../types/Arbeidsforhold';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
-import AnnenForelder from '../../../../../app/types/søknad/AnnenForelder';
+import AnnenForelder from '../../../../../../types/søknad/AnnenForelder';
 import { Tilleggsopplysning, Opplysning } from 'app/types/søknad/Søknad';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
-import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import {
     beskrivTilleggsopplysning,
     TilleggsopplysningMedBeskrivelse

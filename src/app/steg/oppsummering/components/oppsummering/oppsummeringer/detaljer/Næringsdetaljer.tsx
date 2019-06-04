@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
-import { formatDate } from '../../../../../app/util/dates/dates';
-import { Næring } from '../../../../../app/types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import { formatDate } from '../../../../../../util/dates/dates';
+import { Næring } from '../../../../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';

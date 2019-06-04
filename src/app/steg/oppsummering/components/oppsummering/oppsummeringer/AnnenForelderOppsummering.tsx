@@ -6,10 +6,10 @@ import AnnenForelder from 'app/types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 import { formaterNavn } from 'app/util/domain/personUtil';
-import Barn from '../../../../app/types/søknad/Barn';
-import { formatDate } from '../../../../app/util/dates/dates';
-import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
-import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import Barn from '../../../../../types/søknad/Barn';
+import { formatDate } from '../../../../../util/dates/dates';
+import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 
 interface AnnenForelderOppsummeringProps {
     annenForelder: AnnenForelder;
