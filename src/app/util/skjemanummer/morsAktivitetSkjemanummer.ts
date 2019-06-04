@@ -8,7 +8,7 @@ export const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet): Skj
         case MorsAktivitet.Kvalifiseringsprogrammet:
             return Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM;
         case MorsAktivitet.Introduksjonsprogrammet:
-            return Skjemanummer.ANNET_SKJEMA_IKKE_NAV;
+            return Skjemanummer.BEKREFTELSE_DELTAR_INTRODUKSJONSPROGRAMMET;
         case MorsAktivitet.ArbeidOgUtdanning:
         case MorsAktivitet.Arbeid:
         case MorsAktivitet.TrengerHjelp:
