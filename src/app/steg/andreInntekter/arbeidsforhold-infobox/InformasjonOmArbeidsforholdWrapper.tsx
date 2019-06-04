@@ -3,9 +3,9 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import { Normaltekst } from 'nav-frontend-typografi';
 
-import Arbeidsforhold from '../../../app/types/Arbeidsforhold';
+import Arbeidsforhold from '../../../types/Arbeidsforhold';
 
-import ArbeidsforholdInfoBox from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforhold';
+import ArbeidsforholdInfoBox from 'app/steg/andreInntekter/arbeidsforhold-infobox/InformasjonOmArbeidsforhold';
 import getMessage from 'common/util/i18nUtils';
 
 import './arbeidsforhold.less';

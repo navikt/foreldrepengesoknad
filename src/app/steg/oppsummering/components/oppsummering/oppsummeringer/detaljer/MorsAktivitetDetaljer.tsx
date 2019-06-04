@@ -3,7 +3,7 @@ import { MorsAktivitet } from '../../../../../../types/uttaksplan/periodetyper';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
-import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 import getMessage from 'common/util/i18nUtils';
 
 interface MorsAktivitetDetaljerProps {

@@ -3,7 +3,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../../../types/søknad/Søker';
 import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
-import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 import AndreInntekterOppsummeringsliste from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/lister/AndreInntekterOppsummeringsliste';
 
 interface AndreInntekterOppsummeringProps {

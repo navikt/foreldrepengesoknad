@@ -4,7 +4,7 @@ import { formatDate } from '../../../../../../util/dates/dates';
 import { Næring } from '../../../../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 
 interface NæringsdetaljerProps {
     næring: Næring;

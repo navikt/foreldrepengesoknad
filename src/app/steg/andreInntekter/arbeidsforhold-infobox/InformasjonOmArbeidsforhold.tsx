@@ -2,8 +2,8 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { Element, EtikettLiten, Normaltekst } from 'nav-frontend-typografi';
 
-import Arbeidsforhold from '../../../app/types/Arbeidsforhold';
-import { formatDate } from '../../../app/util/dates/dates';
+import Arbeidsforhold from '../../../types/Arbeidsforhold';
+import { formatDate } from '../../../util/dates/dates';
 import getMessage from 'common/util/i18nUtils';
 import BEMHelper from 'common/util/bem';
 

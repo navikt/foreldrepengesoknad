@@ -6,8 +6,8 @@ import InformasjonOmUtenlandsopphold, {
 } from '../../../../../types/søknad/InformasjonOmUtenlandsopphold';
 import UtenlandsoppholdOppsummeringsliste from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/lister/UtenlandsoppholdOppsummeringsliste';
 import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
-import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
-import KompleksFeltoppsummering from 'common/components/kompleks-feltoppsummering/KompleksFeltoppsummering';
+import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
+import KompleksFeltoppsummering from 'app/steg/oppsummering/components/kompleks-feltoppsummering/KompleksFeltoppsummering';
 import { Søkersituasjon } from '../../../../../types/søknad/Søknad';
 import * as moment from 'moment';
 import { Tidsperiode } from 'common/types';

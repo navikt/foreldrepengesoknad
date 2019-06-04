@@ -4,7 +4,7 @@ import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../../../types/søknad/Søker';
 import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
 import SelvstendigNæringsdrivendeOppsummeringsliste from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/lister/SelvstendigNæringsdrivendeOppsummeringsliste';
-import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 
 interface SelvstendigNæringsdrivendeOppsummeringProps {
     søker: Søker;

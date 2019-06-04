@@ -24,7 +24,7 @@ import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideri
 import AnnenForelder from '../../../../../../types/søknad/AnnenForelder';
 import { Tilleggsopplysning, Opplysning } from 'app/types/søknad/Søknad';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import {
     beskrivTilleggsopplysning,

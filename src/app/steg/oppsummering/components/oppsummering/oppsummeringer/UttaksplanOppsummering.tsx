@@ -5,7 +5,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 import AnnenForelder from '../../../../../types/søknad/AnnenForelder';
 import Arbeidsforhold from '../../../../../types/Arbeidsforhold';
-import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
 import { Periode } from '../../../../../types/uttaksplan/periodetyper';
 import { Tilleggsopplysning } from 'app/types/søknad/Søknad';

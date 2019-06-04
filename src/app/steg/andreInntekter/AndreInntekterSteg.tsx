@@ -18,12 +18,12 @@ import { Næring } from '../../types/søknad/SelvstendigNæringsdrivendeInformas
 import isAvailable from '../util/isAvailable';
 import { annenInntektErGyldig } from '../../util/validation/steg/annenInntekt';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
-import InformasjonOmArbeidsforholdWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
+import InformasjonOmArbeidsforholdWrapper from 'app/steg/andreInntekter/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
 import visibility from './visibility';
 import cleanupAndreInntekterSteg from '../../util/cleanup/cleanupAndreInntekterSteg';
 import { HistoryProps } from '../../types/common';
 import { SøkerinfoProps } from '../../types/søkerinfo';
-import YtelseInfoWrapper from 'common/components/ytelser-infobox/InformasjonOmYtelserWrapper';
+import YtelseInfoWrapper from 'app/steg/andreInntekter/ytelserInfobox/InformasjonOmYtelserWrapper';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { formatDate } from 'app/util/dates/dates';
 import VeilederInfo from '../../components/veilederInfo/VeilederInfo';

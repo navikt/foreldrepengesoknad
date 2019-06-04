@@ -3,7 +3,7 @@ import * as countries from 'i18n-iso-countries';
 import { JobbIUtlandetInntekt } from '../../../../../../types/søknad/AnnenInntekt';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 
 interface JobbIUtlandetInntektsdetaljerProps {
     jobbIUtlandetInntekt: JobbIUtlandetInntekt;

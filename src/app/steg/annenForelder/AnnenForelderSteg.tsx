@@ -11,7 +11,7 @@ import isAvailable from '../util/isAvailable';
 import { StegID } from '../../util/routing/stegConfig';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
-import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
+import PersonaliaBox from 'app/steg/annenForelder/personalia-box/PersonaliaBox';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import {
     getAnnenForelderStegVisibility,

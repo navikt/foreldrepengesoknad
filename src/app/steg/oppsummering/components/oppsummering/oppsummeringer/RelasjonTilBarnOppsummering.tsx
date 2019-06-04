@@ -15,7 +15,7 @@ import Barn, {
 import { Søkersituasjon } from '../../../../../types/søknad/Søknad';
 import AnnenForelder from '../../../../../types/søknad/AnnenForelder';
 import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
-import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 
 interface RelasjonTilBarnOppsummeringProps {
