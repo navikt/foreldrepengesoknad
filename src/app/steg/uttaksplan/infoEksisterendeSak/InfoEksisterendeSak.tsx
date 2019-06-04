@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { EksisterendeSak as InfoEksisterendeSak } from '../../types/EksisterendeSak';
-import InfoBlock from 'common/components/info-block/InfoBlock';
-import { getVarighetString } from 'common/util/intlUtils';
-import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
-import { getAntallUker } from '../../util/uttaksplan/stønadskontoer';
+import { TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
+import { getAntallUker } from '../../../util/uttaksplan/stønadskontoer';
 import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedHTMLMessage } from 'react-intl';
-import InnholdMedIllustrasjon from 'common/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
-import { Kjønn } from 'app/types/common';
-import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
-import getMessage from 'common/util/i18nUtils';
-import { Forelder } from 'common/types';
 import { Situasjon } from './illustrasjoner/situasjonSirkel/foreldrepar/foreldreparTypes';
 import SituasjonSirkel from './illustrasjoner/situasjonSirkel/SituasjonSirkel';
 import UkerSirkel from './illustrasjoner/ukerSirkel/UkerSirkel';
+import { Kjønn } from '../../../types/common';
+import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
+import getMessage from 'common/util/i18nUtils';
+import { Forelder } from 'common/types';
+import InfoBlock from 'common/components/info-block/InfoBlock';
+import InnholdMedIllustrasjon from 'common/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
+import { getVarighetString } from 'common/util/intlUtils';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;

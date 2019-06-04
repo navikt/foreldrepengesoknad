@@ -46,13 +46,13 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
-import InfoEksisterendeSak from '../../components/infoEksisterendeSak/InfoEksisterendeSak';
 import Sak from 'app/types/søknad/Sak';
 import { Saksgrunnlag } from 'app/types/EksisterendeSak';
 import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
 import { VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/veilederInfo/types';
 import UttaksplanFeiloppsummering from 'app/components/uttaksplanlegger/components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import Uttaksoppsummering from 'app/components/uttaksplanlegger/components/uttaksoppsummering/Uttaksoppsummering';
+import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
 
 interface StateProps {
     stegProps: StegProps;
