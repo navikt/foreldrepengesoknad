@@ -2,110 +2,87 @@ import { takeEvery, all, put, select } from 'redux-saga/effects';
 import groupBy from 'lodash.groupby';
 import { AppState } from '../reducers';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
-import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
-import { Periode, TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
-import { Periodene } from '../../util/uttaksplan/Periodene';
-import { Periodevalidering, ValidertPeriode, PeriodeAdvarselKey } from '../reducers/uttaksplanValideringReducer';
 import {
     setUttaksplanValidering,
     resetUttaksplanvalideringAction
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
-import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
-import { getSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
-import { erSenUtsettelsePgaFerieEllerArbeid } from 'app/util/uttaksplan/uttakUtils';
-import { UttaksplanRegelTestresultat, RegelAlvorlighet } from '../../regler/uttaksplanValidering/types';
-import { sjekkUttaksplanOppMotRegler, getRegelAvvik } from '../../regler/uttaksplanValidering/regelUtils';
-import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
+import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { UttaksplanRegelTestresultat, RegelAvvik, RegelAlvorlighet } from '../../regler/uttaksplanValidering/types';
+import { sjekkUttaksplanOppMotRegler, getRegelAvvik, hasRegelFeil } from '../../regler/uttaksplanValidering/regelUtils';
+import { selectTilgjengeligeStønadskontoer, selectArbeidsforhold } from 'app/selectors/apiSelector';
+import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
 import { Søknadsinfo } from 'app/selectors/types';
-import { finnesPeriodeIOpprinneligPlan } from 'app/util/uttaksplan/uttaksplanEndringUtil';
+import { Periode, TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
+import Søknad from 'app/types/søknad/Søknad';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 const stateSelector = (state: AppState) => state;
 
-const validerPeriode = (
-    søknadsinfo: Søknadsinfo,
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    periode: Periode,
-    uttaksplan: Periode[],
-    eksisterendeUttaksplan?: Periode[]
-): ValidertPeriode => {
-    const advarsler = [];
-
-    if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
-        const periodeErNyEllerEndret = eksisterendeUttaksplan
-            ? finnesPeriodeIOpprinneligPlan(periode, eksisterendeUttaksplan) === false
-            : true;
-        if (periodeErNyEllerEndret) {
-            advarsler.push({ advarselKey: PeriodeAdvarselKey.MANGLENDE_VEDLEGG });
-        }
-    }
-    if (erSenUtsettelsePgaFerieEllerArbeid(periode)) {
-        advarsler.push({ advarselKey: PeriodeAdvarselKey.SEN_ÅRSAK_OG_TIDSPERIODE });
-    }
-
-    return {
-        periodeId: periode.id,
-        valideringsfeil: validerPeriodeForm(periode, tilgjengeligeStønadskontoer, søknadsinfo) || [],
-        advarsler,
-        overlappendePerioder: Periodene(uttaksplan).finnOverlappendePerioder(periode)
-    };
+const alvorlighetSortOrder = {
+    [RegelAlvorlighet.FEIL]: 0,
+    [RegelAlvorlighet.ADVARSEL]: 1,
+    [RegelAlvorlighet.INFO]: 2
 };
 
-const kjørUttaksplanRegler = (state: AppState): UttaksplanRegelTestresultat | undefined => {
-    const søknadsinfo = getSøknadsinfo(state);
-    const perioder = state.søknad.uttaksplan;
-    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
-    const eksisterendeUttaksplan = state.søknad.ekstrainfo.eksisterendeSak
-        ? state.søknad.ekstrainfo.eksisterendeSak.uttaksplan
-        : undefined;
-
-    if (!søknadsinfo) {
-        return undefined;
+export const sorterAvvik = (a1: RegelAvvik, a2: RegelAvvik): number => {
+    if (a1.regel.alvorlighet === a2.regel.alvorlighet) {
+        return 0;
     }
-
-    const uttaksstatusStønadskontoer = getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, perioder);
+    return alvorlighetSortOrder[a1.regel.alvorlighet] < alvorlighetSortOrder[a2.regel.alvorlighet] ? -1 : 1;
+};
+const kjørUttaksplanRegler = (
+    søknad: Søknad,
+    søknadsinfo: Søknadsinfo,
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    perioderSomSkalSendesInn: Periode[],
+    arbeidsforhold: Arbeidsforhold[]
+): UttaksplanRegelTestresultat => {
+    const { eksisterendeSak } = søknad.ekstrainfo;
+    const uttaksstatusStønadskontoer = getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan);
 
     const resultat = sjekkUttaksplanOppMotRegler({
         søknadsinfo,
-        perioder,
+        perioder: søknad.uttaksplan,
         uttaksstatusStønadskontoer,
         tilgjengeligeStønadskontoer,
-        tilleggsopplysninger: state.søknad.tilleggsopplysninger,
-        eksisterendeUttaksplan
+        tilleggsopplysninger: søknad.tilleggsopplysninger,
+        perioderSomSkalSendesInn,
+        eksisterendeUttaksplan: eksisterendeSak ? eksisterendeSak.uttaksplan : undefined,
+        arbeidsforhold
     });
 
-    if (resultat) {
-        const avvik = getRegelAvvik(resultat);
-        const avvikPerPeriode = groupBy(avvik.filter((a) => a.periodeId !== undefined), (r) => r.periodeId);
-        return {
-            resultat,
-            avvik,
-            avvikPerPeriode,
-            harFeil: avvik.filter((a) => a.alvorlighet === RegelAlvorlighet.FEIL).length > 0
-        };
-    }
-    return undefined;
+    const avvik = getRegelAvvik(resultat);
+    const avvikPerPeriode = groupBy(avvik.filter((a) => a.periodeId !== undefined), (r) => r.periodeId);
+    const harFeil = hasRegelFeil(avvik);
+    return {
+        resultat,
+        avvik,
+        avvikPerPeriode,
+        harFeil
+    };
 };
+
 function* validerUttaksplanSaga() {
-    const appState: AppState = yield select(stateSelector);
-    const { uttaksplan, ekstrainfo } = appState.søknad;
-    const validertePerioder: Periodevalidering = {};
-    const søknadsinfo = getSøknadsinfo(appState);
-    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
+    const state: AppState = yield select(stateSelector);
+    const søknadsinfo = selectSøknadsinfo(state);
+    const perioderSomSkalSendesInn = selectPerioderSomSkalSendesInn(state);
+    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
+    const arbeidsforhold = selectArbeidsforhold(state);
     if (søknadsinfo) {
-        uttaksplan.forEach((periode) => {
-            validertePerioder[periode.id] = validerPeriode(
-                søknadsinfo,
-                tilgjengeligeStønadskontoer,
-                periode,
-                uttaksplan,
-                ekstrainfo.eksisterendeSak ? ekstrainfo.eksisterendeSak.uttaksplan : undefined
-            );
-        });
+        yield put(
+            setUttaksplanValidering(
+                kjørUttaksplanRegler(
+                    state.søknad,
+                    søknadsinfo,
+                    tilgjengeligeStønadskontoer,
+                    perioderSomSkalSendesInn,
+                    arbeidsforhold
+                )
+            )
+        );
     }
-    const regelTestresultat = kjørUttaksplanRegler(appState);
-    yield put(setUttaksplanValidering(validertePerioder, regelTestresultat));
 }
 
 function* resetValideringSaga() {
@@ -120,5 +97,6 @@ export default function* uttaksplanValideringSaga() {
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_SET_FORSLAG, validerUttaksplanSaga)]);
     yield all([takeEvery(UttaksplanValideringActionKeys.VALIDER_UTTAKSPLAN, validerUttaksplanSaga)]);
     yield all([takeEvery(SøknadActionKeys.SET_TILLEGGSOPPLYSNING, validerUttaksplanSaga)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_RESET_ENDRINGER, validerUttaksplanSaga)]);
     yield all([takeEvery(SøknadActionKeys.AVBRYT_SØKNAD, resetValideringSaga)]);
 }

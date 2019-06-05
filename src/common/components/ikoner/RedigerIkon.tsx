@@ -1,7 +1,14 @@
 import * as React from 'react';
 
 const RedigerIkon = (props: any) => (
-    <svg width={16} height={16} viewBox="0 0 24 24" xmlnsXlink="http://www.w3.org/1999/xlink" {...props}>
+    <svg
+        focusable="false"
+        role="presentation"
+        width={16}
+        height={16}
+        viewBox="0 0 24 24"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        {...props}>
         <desc>Created with Sketch.</desc>
         <defs>
             <path

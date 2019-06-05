@@ -41,8 +41,16 @@ export const getOffentligeFridagerIMåned = (måned: Date): Holiday[] => {
 
 /* Default - hente ut helligdager i default tidsrom */
 export const fridager = getOffentligeFridager({
-    fom: new Date(2017, 0, 1),
-    tom: new Date(2025, 0, 1)
+    fom: new Date(
+        moment()
+            .subtract(4, 'years')
+            .toDate()
+    ),
+    tom: new Date(
+        moment()
+            .add(4, 'years')
+            .toDate()
+    )
 });
 
 export const erFridag = (dato: Date): string | undefined => {

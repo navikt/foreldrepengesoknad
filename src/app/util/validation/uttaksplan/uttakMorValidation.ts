@@ -15,8 +15,16 @@ export const harMorSøktUgyldigUttakFørsteSeksUker = (
     familiehendelsesdato: Date,
     situasjon: Søkersituasjon
 ): boolean => {
+    return getUgyldigUttakFørsteSeksUkerForMor(perioder, familiehendelsesdato, situasjon).length > 0;
+};
+
+export const getUgyldigUttakFørsteSeksUkerForMor = (
+    perioder: Periode[],
+    familiehendelsesdato: Date,
+    situasjon: Søkersituasjon
+): Periode[] => {
     if (situasjon === Søkersituasjon.ADOPSJON) {
-        return false;
+        return [];
     }
     const førsteUttaksdag = uttaksdatoer(familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
     const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
@@ -47,5 +55,5 @@ export const harMorSøktUgyldigUttakFørsteSeksUker = (
         .getUttak()
         .filter((p) => p.forelder === Forelder.MOR && p.konto === StønadskontoType.Fellesperiode);
 
-    return flernbarnsPerioder.length + gradertePerioder.length + ugyldigeUtsettelser.length + fellesPerioder.length > 0;
+    return [...flernbarnsPerioder, ...gradertePerioder, ...ugyldigeUtsettelser, ...fellesPerioder];
 };

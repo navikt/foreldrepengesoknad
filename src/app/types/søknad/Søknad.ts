@@ -6,7 +6,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { RegistrertAnnenForelder, RegistrertBarn } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';
-import { UttaksplanSkjemadata } from '../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
+import { UttaksplanSkjemadata } from '../../steg/uttaksplanSkjema/uttaksplanSkjemadata';
 import { StegID } from '../../util/routing/stegConfig';
 import { Omit } from 'react-redux';
 import { EksisterendeSak } from '../EksisterendeSak';
@@ -127,6 +127,7 @@ export interface SøknadPartial {
 
 export enum Skjemanummer {
     DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL = 'I000041',
+    DOKUMENTASJON_AV_ALENEOMSORG = 'I000041',
     ETTERLØNN_ELLER_SLUTTVEDERLAG = 'I000044',
     OMSORGSOVERTAKELSESDATO = 'I000042',
     ANNET = 'I000060',
@@ -139,7 +140,9 @@ export enum Skjemanummer {
     DOK_OVERFØRING_FOR_SYK = 'I000045',
     BEKREFTELSE_FRA_STUDIESTED = 'I000061',
     BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM = 'I000051',
-    ANNET_SKJEMA_IKKE_NAV = 'I000049'
+    ANNET_SKJEMA_IKKE_NAV = 'I000049',
+    BEGRUNNELSE_SØKE_TILBAKE_I_TID = 'I000109',
+    BEKREFTELSE_DELTAR_INTRODUKSJONSPROGRAMMET = 'I000110'
 }
 
 export default Søknad;

@@ -3,15 +3,16 @@ import { erSenUtsettelsePgaFerieEllerArbeid } from '../../../util/uttaksplan/utt
 import { Periodetype, UtsettelseÅrsakType } from '../../../types/uttaksplan/periodetyper';
 
 export function inneholderSenUtsettelsePgaArbeidTest(grunnlag: Regelgrunnlag): RegelTestresultat {
-    const inneholderSenUtsettelsePgaArbeid = grunnlag.perioder
+    const seneUtsettelserPgaArbeid = grunnlag.perioder
         .filter(erSenUtsettelsePgaFerieEllerArbeid)
-        .some((p) => p.type === Periodetype.Utsettelse && p.årsak === UtsettelseÅrsakType.Arbeid);
+        .filter((p) => p.type === Periodetype.Utsettelse && p.årsak === UtsettelseÅrsakType.Arbeid);
 
-    const passerer = inneholderSenUtsettelsePgaArbeid === false;
+    const passerer = seneUtsettelserPgaArbeid.length === 0;
     return {
         passerer,
-        info: {
-            intlKey: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid'
-        }
+        info: seneUtsettelserPgaArbeid.map((periode) => ({
+            intlKey: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid',
+            periodeId: periode.id
+        }))
     };
 }
