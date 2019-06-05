@@ -10,8 +10,8 @@ import PeriodelisteInfo from './PeriodelisteInfo';
 import Block from 'common/components/block/Block';
 import { getVarighetString } from 'common/util/intlUtils';
 import { getStønadskontoNavn } from 'app/util/uttaksplan';
-import AdvarselIkon from 'app/components/ikoner/svgIkoner/advarselIkon/AdvarselIkon';
 import LinkButton from 'app/components/elementer/linkButton/LinkButton';
+import UttaksplanAdvarselIkon from 'app/components/ikoner/uttaksplanIkon/ikoner/AdvarselIkon';
 
 export interface Props {
     itemId: string;
@@ -88,7 +88,7 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
             isExpanded={isExpanded}
             onToggle={onToggle}
             beskrivelse={beskrivelse}
-            ikon={<AdvarselIkon />}
+            ikon={<UttaksplanAdvarselIkon />}
             renderContent={() => (
                 <div>
                     {isAvslåttPeriode(periode) ? (
