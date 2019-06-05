@@ -21,11 +21,11 @@ export const finnAntallDagerÅTrekke = (dager: number, p: Periode): number => {
         const periodeErSamtidigUttak = p.samtidigUttakProsent !== undefined;
 
         if (periodeErSamtidigUttak) {
-            return Math.floor(dager * (getFloatFromString(p.samtidigUttakProsent)! / 100));
+            return dager * (getFloatFromString(p.samtidigUttakProsent)! / 100);
         } else if (periodeErGradert) {
             const graderingsProsent = (100 - getFloatFromString(p.stillingsprosent)!) / 100;
 
-            return Math.floor(dager * graderingsProsent);
+            return dager * graderingsProsent;
         } else {
             return dager;
         }
@@ -63,6 +63,8 @@ export const beregnGjenståendeUttaksdager = (
                         : antallDager - finnAntallDagerÅTrekke(Perioden(p).getAntallUttaksdager(), p);
                 }
             });
+
+            antallDager = beregnDagerBrukt ? Math.floor(antallDager) : Math.ceil(antallDager);
         }
 
         return {
