@@ -5,6 +5,7 @@ import { AppState } from '../redux/reducers';
 import { storageParser } from '../util/storage/parser';
 import { formaterDato } from 'common/util/datoUtils';
 import { StorageKvittering } from '../types/StorageKvittering';
+import AxiosInstance from './apiInterceptor';
 
 export interface GetTilgjengeligeStønadskontoerParams {
     antallBarn: number;
@@ -18,29 +19,25 @@ export interface GetTilgjengeligeStønadskontoerParams {
     startdatoUttak: Date;
 }
 
-const apiBaseUrl = Environment.REST_API_URL;
 const uttakBaseUrl = Environment.UTTAK_API_URL;
-const sendSøknadUrl = `${apiBaseUrl}/soknad`;
-const sendEndringssøknadUrl = `${sendSøknadUrl}/endre`;
+const sendSøknadUrl = '/soknad';
+const sendEndringssøknadUrl = '/soknad/endre';
 
 function getSøkerinfo() {
-    return axios.get(`${apiBaseUrl}/sokerinfo`, {
-        timeout: 15 * 1000,
-        withCredentials: true
+    return AxiosInstance.get('/sokerinfo', {
+        timeout: 15 * 1000
     });
 }
 
 const getSaker = () => {
-    return axios.get(`${apiBaseUrl}/innsyn/saker`, {
-        timeout: 60 * 1000,
-        withCredentials: true
+    return AxiosInstance.get('/innsyn/saker', {
+        timeout: 60 * 1000
     });
 };
 
 const getEksisterendeSak = (saksnummer: string) => {
-    return axios.get(`${apiBaseUrl}/innsyn/uttaksplan`, {
+    return AxiosInstance.get('/innsyn/uttaksplan', {
         timeout: 60 * 1000,
-        withCredentials: true,
         params: { saksnummer }
     });
 };
@@ -79,7 +76,7 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
 function sendSøknad(søknad: SøknadForInnsending) {
     const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
 
-    return axios.post(url, søknad, {
+    return AxiosInstance.post(url, søknad, {
         withCredentials: true,
         timeout: 30 * 1000,
         headers: {
@@ -89,35 +86,29 @@ function sendSøknad(søknad: SøknadForInnsending) {
 }
 
 function getStoredAppState() {
-    const url = `${apiBaseUrl}/storage`;
-    return axios.get(url, {
-        withCredentials: true,
+    return AxiosInstance.get('/storage', {
         transformResponse: storageParser
     });
 }
 
 function storeAppState(state: Partial<AppState>) {
-    const url = `${apiBaseUrl}/storage`;
     const { søknad, common } = state;
-    return axios.post(url, { søknad, common }, { withCredentials: true });
+    return AxiosInstance.post('/storage', { søknad, common }, { withCredentials: true });
 }
 
 function deleteStoredAppState() {
-    const url = `${apiBaseUrl}/storage`;
-    return axios.delete(url, { withCredentials: true });
+    return AxiosInstance.delete('/storage', { withCredentials: true });
 }
 
 function sendStorageKvittering(storageKvittering: StorageKvittering) {
-    const url = `${apiBaseUrl}/storage/kvittering/foreldrepenger`;
-    return axios.post(url, storageKvittering, {
+    return AxiosInstance.post('/storage/kvittering/foreldrepenger', storageKvittering, {
         withCredentials: true,
         timeout: 15 * 1000
     });
 }
 
 function getStorageKvittering() {
-    const url = `${apiBaseUrl}/storage/kvittering/foreldrepenger`;
-    return axios.get(url, {
+    return AxiosInstance.get('/storage/kvittering/foreldrepenger', {
         withCredentials: true,
         timeout: 15 * 1000
     });

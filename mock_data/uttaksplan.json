@@ -1,7 +1,7 @@
 {
     "grunnlag": {
         "familieHendelseType": "FODSL",
-        "familieHendelseDato": "2019-03-01",
+        "familieHendelseDato": "2019-01-30",
         "dekningsgrad": 100,
         "antallBarn": 1,
         "søkerErFarEllerMedmor": false,
@@ -17,7 +17,7 @@
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
+            "stønadskontotype": "FORELDREPENGER_FØR_FØDSEL",
             "arbeidstidprosent": 0,
             "gjelderAnnenPart": false,
             "manueltBehandlet": false,
@@ -28,7 +28,7 @@
                 "type": "ORGANISASJON",
                 "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
             },
-            "periode": { "fom": "2019-03-01", "tom": "2019-04-11" }
+            "periode": { "fom": "2019-01-09", "tom": "2019-01-29" }
         },
         {
             "periodeResultatType": "INNVILGET",
@@ -45,7 +45,42 @@
                 "type": "ORGANISASJON",
                 "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
             },
-            "periode": { "fom": "2019-04-12", "tom": "2019-06-13" }
+            "periode": { "fom": "2019-01-30", "tom": "2019-03-12" }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": false,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "973861778",
+                "type": "ORGANISASJON",
+                "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
+            },
+            "periode": { "fom": "2019-03-13", "tom": "2019-03-31" }
+        },
+        {
+            "utsettelsePeriodeType": "SYKDOM_SKADE",
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": false,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "973861778",
+                "type": "ORGANISASJON",
+                "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
+            },
+            "periode": { "fom": "2019-04-01", "tom": "2019-04-19" }
         },
         {
             "periodeResultatType": "INNVILGET",
@@ -62,21 +97,10 @@
                 "type": "ORGANISASJON",
                 "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
             },
-            "periode": { "fom": "2019-06-14", "tom": "2019-08-08" }
+            "periode": { "fom": "2019-04-22", "tom": "2019-06-02" }
         },
         {
-            "oppholdAarsak": "UTTAK_FEDREKVOTE_ANNEN_FORELDER",
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "gjelderAnnenPart": false,
-            "manueltBehandlet": false,
-            "flerbarnsdager": false,
-            "arbeidsgiverInfo": { "type": "PRIVAT" },
-            "periode": { "fom": "2019-08-09", "tom": "2019-08-30" }
-        },
-        {
-            "periodeResultatType": "INNVILGET",
+            "periodeResultatType": "AVSLÅTT",
             "graderingInnvilget": false,
             "samtidigUttak": false,
             "stønadskontotype": "FELLESPERIODE",
@@ -90,7 +114,50 @@
                 "type": "ORGANISASJON",
                 "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
             },
-            "periode": { "fom": "2019-09-02", "tom": "2019-09-27" }
+            "periode": { "fom": "2019-06-03", "tom": "2019-06-07" }
+        },
+        {
+            "periodeResultatType": "AVSLÅTT",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FELLESPERIODE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": false,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "973861778",
+                "type": "ORGANISASJON",
+                "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
+            },
+            "periode": { "fom": "2019-06-03", "tom": "2019-06-07" }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FEDREKVOTE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": { "id": "995428563", "type": "ORGANISASJON", "navn": "FORSVARET" },
+            "periode": { "fom": "2019-06-03", "tom": "2019-06-07" }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FEDREKVOTE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": { "id": "995428563", "type": "ORGANISASJON", "navn": "FORSVARET" },
+            "periode": { "fom": "2019-06-08", "tom": "2019-06-28" }
         }
     ]
 }

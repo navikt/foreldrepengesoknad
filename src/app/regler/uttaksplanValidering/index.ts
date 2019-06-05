@@ -18,8 +18,12 @@ import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelse
 import { innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode } from './tester/innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode';
 import { inneholderSenUtsettelsePgaArbeidTest } from './tester/inneholderSenUtsettelsePgaArbeidTest';
 import { inneholderSeneGraderteUttakTest } from './tester/inneholderSeneGraderteUttakTest';
+import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
+import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndrePerioderTest';
+import periodevalideringsregler, { PeriodeValiderRegelKey } from './periodevalideringstester';
+import { harSøktOmFerieUtenArbeidsforhold } from './tester/harSøktOmFerieUtenArbeidsforholdTest';
 
-export enum RegelKey {
+export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
     'morHarSøktUgyldigUttakFørsteSeksUker' = 'morHarSøktUgyldigUttakFørsteSeksUker',
     'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker' = 'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker',
@@ -38,106 +42,132 @@ export enum RegelKey {
     'inneholderSeneGraderteUttak' = 'inneholderSeneGraderteUttakTest',
     'inneholderTapteDager' = 'inneholderTapteDager',
     'inneholderBareUtsettelser' = 'inneholderBareUtsettelser',
-    'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode' = 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode'
+    'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode' = 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode',
+    'endringerOverskriverAnnenPartsPerioder' = 'endringerOverskriverAnnenPartsPerioder',
+    'periodeOverlapperAndrePerioder' = 'periodeOverlapperAndrePerioder',
+    'harSøktOmFerieUtenArbeidsforhold' = 'harSøktOmFerieUtenArbeidsforhold'
 }
+
+export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
 
 const uttaksplanRegler: Regel[] = [
     {
-        key: RegelKey.planenInneholderIngenPerioder,
+        key: UttaksplanRegelKey.planenInneholderIngenPerioder,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderUttaksplanPerioderTest
     },
     {
-        key: RegelKey.stønadskontoInneholderForMyeUttak,
+        key: UttaksplanRegelKey.stønadskontoInneholderForMyeUttak,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderStønadskontoForMyeUttakTest
     },
     {
-        key: RegelKey.morHarSøktUgyldigUttakFørsteSeksUker,
+        key: UttaksplanRegelKey.morHarSøktUgyldigUttakFørsteSeksUker,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harMorSøktUgyldigUttakFørsteSeksUkerTest
     },
     {
-        key: RegelKey.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker,
+        key: UttaksplanRegelKey.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest
     },
     {
-        key: RegelKey.uttaksplanErBareOpphold,
+        key: UttaksplanRegelKey.uttaksplanErBareOpphold,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erUttaksplanBareOppholdTest
     },
     {
-        key: RegelKey.uttaksplanStarterMedOpphold,
+        key: UttaksplanRegelKey.uttaksplanStarterMedOpphold,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: starterUttaksplanMedOppholdTest
     },
     {
-        key: RegelKey.uttaksplanSlutterMedOpphold,
+        key: UttaksplanRegelKey.uttaksplanSlutterMedOpphold,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: slutterUttaksplanMedOppholdTest
     },
     {
-        key: RegelKey.uttaksplanGraderingStørreEnnSamtidigUttak,
+        key: UttaksplanRegelKey.uttaksplanGraderingStørreEnnSamtidigUttak,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erUttaksplanGraderingStørreEnnSamtidigUttakTest
     },
     {
-        key: RegelKey.begrunnelseVedForSenEndringErUgyldig,
+        key: UttaksplanRegelKey.begrunnelseVedForSenEndringErUgyldig,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erBegrunnelseForSenEndringGyldigTest
     },
     {
-        key: RegelKey.uttaksplanHarForMangeFlerbarnsdager,
+        key: UttaksplanRegelKey.uttaksplanHarForMangeFlerbarnsdager,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harUttaksplanForMangeFlerbarnsdagerTest
     },
     {
-        key: RegelKey.uttaksmengdeForFarMedmorErForHøy,
+        key: UttaksplanRegelKey.uttaksmengdeForFarMedmorErForHøy,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erUttaksmengdeForFarMedmorForHøyTest
     },
     {
-        key: RegelKey.uttaksplanInneholderDatoSomIkkeErUttaksdag,
+        key: UttaksplanRegelKey.uttaksplanInneholderDatoSomIkkeErUttaksdag,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderUttaksplanDatoSomIkkeErUttaksdag
     },
     {
-        key: RegelKey.perioderManglerVedlegg,
-        alvorlighet: RegelAlvorlighet.INFO,
+        key: UttaksplanRegelKey.perioderManglerVedlegg,
+        alvorlighet: RegelAlvorlighet.ADVARSEL,
         test: harPerioderManglendeVedleggTest,
         slåsSammenVedOppsummering: true
     },
     {
-        key: RegelKey.inneholderSenUtsettelsePgaFerie,
+        key: UttaksplanRegelKey.inneholderSenUtsettelsePgaFerie,
         alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderSenUtsettelsePgaFerieTest
+        test: inneholderSenUtsettelsePgaFerieTest,
+        slåsSammenVedOppsummering: true
     },
     {
-        key: RegelKey.inneholderSenUtsettelsePgaArbeid,
+        key: UttaksplanRegelKey.inneholderSenUtsettelsePgaArbeid,
         alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderSenUtsettelsePgaArbeidTest
+        test: inneholderSenUtsettelsePgaArbeidTest,
+        slåsSammenVedOppsummering: true
     },
     {
-        key: RegelKey.inneholderSeneGraderteUttak,
+        key: UttaksplanRegelKey.inneholderSeneGraderteUttak,
         alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderSeneGraderteUttakTest
+        test: inneholderSeneGraderteUttakTest,
+        skjulesIPeriode: true
     },
     {
-        key: RegelKey.inneholderTapteDager,
+        key: UttaksplanRegelKey.inneholderTapteDager,
         alvorlighet: RegelAlvorlighet.INFO,
         test: inneholderTapteDagerTest
     },
     {
-        key: RegelKey.inneholderBareUtsettelser,
+        key: UttaksplanRegelKey.inneholderBareUtsettelser,
         alvorlighet: RegelAlvorlighet.INFO,
         test: inneholderBareUtsettelserTest
     },
     {
-        key: RegelKey.innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode,
+        key: UttaksplanRegelKey.innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode
+    },
+    {
+        key: UttaksplanRegelKey.endringerOverskriverAnnenPartsPerioder,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: overskriverEndringerAnnenPartsPerioder,
+        slåsSammenVedOppsummering: false
+    },
+    {
+        key: UttaksplanRegelKey.periodeOverlapperAndrePerioder,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: overlapperPeriodeAndrePerioder,
+        slåsSammenVedOppsummering: false,
+        skjulesIOppsummering: true
+    },
+    {
+        key: UttaksplanRegelKey.harSøktOmFerieUtenArbeidsforhold,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: harSøktOmFerieUtenArbeidsforhold
     }
 ];
 
-export default uttaksplanRegler;
+export default [...uttaksplanRegler, ...periodevalideringsregler];

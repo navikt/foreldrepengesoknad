@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import JaNeiSpørsmål from '../components/ja-nei-spørsmål/JaNeiSpørsmål';
+import JaNeiSpørsmål from '../components/skjema/ja-nei-spørsmål/JaNeiSpørsmål';
 import UttaksplanSkjemaSpørsmål, {
     UttaksplanSkjemaspørsmålProps
-} from '../connected-components/steg/uttaksplan-skjema/UttaksplanSkjemaSpørsmål';
+} from '../steg/uttaksplanSkjema/UttaksplanSkjemaSpørsmål';
 
 type Props = UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
 

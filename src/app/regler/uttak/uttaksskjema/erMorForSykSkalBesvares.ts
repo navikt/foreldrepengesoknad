@@ -1,4 +1,4 @@
-import { UttakFormPeriodeType } from '../../../components/uttak-form/UttakForm';
+import { UttakFormPeriodeType } from '../../../components/uttaksplanlegger/components/uttakForm/UttakForm';
 import { StønadskontoType, isUttaksperiode } from '../../../types/uttaksplan/periodetyper';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { Uttaksdatoer } from '../../../selectors/types';

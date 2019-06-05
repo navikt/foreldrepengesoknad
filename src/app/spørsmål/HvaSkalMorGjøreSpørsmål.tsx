@@ -5,7 +5,7 @@ import Select from 'common/components/skjema/wrappers/Select';
 import getMessage from 'common/util/i18nUtils';
 import { SelectChangeEvent } from '../types/dom/Events';
 import Block from 'common/components/block/Block';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import lenker from '../util/routing/lenker';
 import { NavnISøknaden } from 'app/selectors/types';
 import { getNavnGenitivEierform } from '../util/tekstUtils';
@@ -138,10 +138,10 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                     </Select>
                 </Block>
                 <Block visible={visVeileder} margin="none">
-                    <Veilederinfo>
+                    <OldVeilederinfo>
                         <span>{this.getVeilederTekst()}</span>
                         <FormattedHTMLMessage id="aktivitetskrav.lesmer" values={{ link: lenker.morsAktivitetskrav }} />
-                    </Veilederinfo>
+                    </OldVeilederinfo>
                 </Block>
             </>
         );

@@ -140,7 +140,7 @@ describe('Validering av fars uttak første 6 uker', () => {
     });
     it('skal godta uttak dersom mors aktivitet er innlagt ', () => {
         const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
-            [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Innlagt }],
+            [{ ...uttak, stønadskonto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Innlagt }],
             familiehendelsesdato,
             1,
             Søkersituasjon.FØDSEL,
@@ -151,7 +151,13 @@ describe('Validering av fars uttak første 6 uker', () => {
     });
     it('skal godta uttak dersom mors aktivitet er sykdom ', () => {
         const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
-            [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.TrengerHjelp }],
+            [
+                {
+                    ...uttak,
+                    stønadskonto: StønadskontoType.Fellesperiode,
+                    morsAktivitetIPerioden: MorsAktivitet.TrengerHjelp
+                }
+            ],
             familiehendelsesdato,
             1,
             Søkersituasjon.FØDSEL,
@@ -162,7 +168,7 @@ describe('Validering av fars uttak første 6 uker', () => {
     });
     it('skal IKKE godta uttak dersom mors aktivitet er annet enn sykdom eller innlagt ', () => {
         const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
-            [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Arbeid }],
+            [{ ...uttak, stønadskonto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Arbeid }],
             familiehendelsesdato,
             1,
             Søkersituasjon.FØDSEL,
@@ -177,7 +183,7 @@ describe('Validering av fars uttak første 6 uker', () => {
                 {
                     ...uttak,
                     tidsperiode: tidsperiodeEtterSeksUker,
-                    konto: StønadskontoType.Fellesperiode,
+                    stønadskonto: StønadskontoType.Fellesperiode,
                     morsAktivitetIPerioden: MorsAktivitet.Arbeid
                 }
             ],

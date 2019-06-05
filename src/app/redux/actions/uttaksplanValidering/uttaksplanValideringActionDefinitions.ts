@@ -1,4 +1,3 @@
-import { ValidertPeriode } from '../../reducers/uttaksplanValideringReducer';
 import { UttaksplanRegelTestresultat } from '../../../regler/uttaksplanValidering/types';
 
 export enum UttaksplanValideringActionKeys {
@@ -12,8 +11,7 @@ export interface ValiderUttaksplanAction {
 }
 export interface SetUttaksplanValidering {
     type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING;
-    regelTestresultat: UttaksplanRegelTestresultat | undefined;
-    validertePerioder: { [periodeId: string]: ValidertPeriode };
+    resultat: UttaksplanRegelTestresultat;
 }
 
 export interface ResetUttaksplanValidering {

@@ -457,7 +457,6 @@
     "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{annenForelderNavn} er innlagd på helseinstitusjon",
     "overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "For sjuk til å ta seg av barnet",
     "papirsøknad.lenke": "Her finn du papirsøknaden",
-    "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.hull.beskrivelse":
@@ -482,6 +481,7 @@
         "Du kan ikke endre datoen slik at den går over en annen periode med utsettelse.",
     "periodeliste.utsettelse.overlappendeTidsperiode.ny":
         "Det er allerede registrert utsettelse i denne perioden. Du må fjerne perioden med utsettelse før du kan legge inn en ny.",
+    "periodeliste.gruppertInfo.tittel": "{navn} {antallPerioder, plural, one{periode} other {perioder}}",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
     "personalia.år": "{år} år",
     "pgasykdom": "På grunn av sjukdom",
@@ -626,6 +626,7 @@
         "Ferien du har lagt inn går over ein periode med helgedagar. Du kan ikkje ha ferie på helgedagar. Desse dagane vert lagt til som foreldrepengar i planen din, du må velge kva del av foreldrepengane du ynskjer å bruke.",
     "utsettelseskjema.veiledning.ferie":
         "Du kan utsetje foreldrepengane med lovfesta ferie i inntil fire veker og éin dag for kvart kalenderår, i tillegg til overført lovfesta ferie frå i fjor og ti feriedagar frå neste år. Du kan ikkje utsetje på helgedagar.  Du må avtale med arbiedgjevaren din at du skal ha ferie.",
+    "utsettelseskjema.kunHelligdager.disabledFerieMelding": "Du kan ikkje utsetje med ferie på helgedagar",
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagd søkjar",
@@ -775,7 +776,12 @@
     "uttaksplan.tomPlan": "Du har ikkje lagt til nokon perioder enno.",
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikkje lasta opp.",
     "uttaksplan.validering.advarsel.senÅrsakOgTidsperiode": "Du søker om utsetjing tilbake i tid.",
+    "uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode":
+        "Du har lagt inn <strong>{periode} ({tidsperiode})</strong> som vil erstatte dagar som {forelder} allereie har fått innvilga.",
+
     "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikkje få foreldrepengar etter at barnet er fylt tre år.",
+    "uttaksplan.validering.feil.harSøktOmFerieUtenArbeidsforhold":
+        "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold i valgt tidsperiode.",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må vere ein vekedag.",
     "uttaksplan.validering.feil.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker":
         "Du kan ta ut eller utsetje foreldrepengane dine tidlegast frå veke sju etter fødselen. Dersom du skal ta ut foreldrepengar tidlegare fordi mor er sjuk eller innlagd, må du søkje på papir.",
@@ -790,8 +796,10 @@
     "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
         "Du kan ikkje søke om å utsetje før perioden din med foreldrepengar startar.",
     "uttaksplan.validering.feil.morHarSøktUgyldigUttakFørsteSeksUker":
-        "Du kan ikkje leggje inn utsetjing på grunn av ferie eller jobb, kombinere foreldrepengane med delvis arbeid eller nytta deg av flerbarnsukene eller fellesperioden dei første seks vekene du tek ut foreldrepengar.",
+        "Du kan ikkje leggje inn utsetjing på grunn av ferie eller jobb, kombinere foreldrepengane med delvis arbeid eller nytta deg av fellesperioden dei første seks vekene du tek ut foreldrepengar.",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlappar ein annan periode.",
+    "uttaksplan.validering.feil.periodeoverlapp.oppsummering":
+        "<strong>{periode} ({tidsperiode})</strong> overlappar med ein eller fleire andre periodar.",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå vidare i søknaden.",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det manglar informasjon om perioden.",
     "uttaksplan.validering.feil.planenInneholderIngenPerioder":
@@ -1066,5 +1074,13 @@
         "Viss du ikkje ettersender dokumenta innan tre veker behandlar vi søknaden din utor dei opplysningane som vi har tilgjengelege.",
 
     "periodetype.utsettelse": "utsettelse",
-    "periodetype.uttak": "uttak"
+    "periodetype.uttak": "uttak",
+
+    "uttaksplan.validering.feil.erAllePeriodeSkjemaspørsmålBesvart": "Nokon av spørsmåla for perioden manglar svar",
+    "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering":
+        "Stillingsprosenten du skal jobbe kan bare inneholde tall, over vera mellom 1 og 99",
+    "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden er ikkje gyldig",
+    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden er ikkje gyldig",
+    "uttaksplan.validering.feil.periodeOverlapperAndrePerioder":
+        "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane"
 }

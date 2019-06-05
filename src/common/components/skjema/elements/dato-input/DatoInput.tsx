@@ -11,6 +11,7 @@ import moment from 'moment';
 import { Avgrensninger, Tidsperiode } from 'common/types';
 import BEMHelper from 'common/util/bem';
 import { dateToISOFormattedDateString } from 'common/util/datoUtils';
+import { fridager } from 'common/util/fridagerUtils';
 import './datoInput.less';
 
 export interface DatoInputProps extends DatovelgerCommonProps {
@@ -60,6 +61,9 @@ class DatoInput extends React.Component<Props, {}> {
             ? getAvgrensningerDescriptionForInput(intl, this.props.avgrensninger)
             : undefined;
         const ariaDescriptionId = avgrensningerTekst ? `${id}_ariaDesc` : undefined;
+        const erHelligdag = (d: Date): boolean => {
+            return fridager.some((d2) => moment(d2.date).isSame(d, 'day'));
+        };
 
         return (
             <SkjemaInputElement id={this.props.id} feil={feil} label={label}>
@@ -85,6 +89,9 @@ class DatoInput extends React.Component<Props, {}> {
                                 }
                             }}
                             avgrensninger={datoAvgrensinger ? parseAvgrensinger(datoAvgrensinger) : undefined}
+                            dayPickerProps={{
+                                modifiers: { erHelligdag }
+                            }}
                         />
                         {ariaDescriptionId && (
                             <AriaText id={ariaDescriptionId} aria-role="presentation" aria-hidden="true">

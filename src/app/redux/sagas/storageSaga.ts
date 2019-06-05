@@ -11,7 +11,6 @@ import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AxiosResponse } from 'axios';
 import Søknad from '../../types/søknad/Søknad';
 import { cleanInvalidSøknadData } from '../../util/storageCleanup/storageCleanup';
-import { isFeatureEnabled, Feature } from '../../Feature';
 import { History } from 'history';
 import routeConfig from '../../util/routing/routeConfig';
 import StorageSagaUtils from '../../util/storageSagaUtils';
@@ -69,15 +68,11 @@ function* applyStoredStateToApp(storedState: AppState, history: History) {
         søknad.søker = StorageSagaUtils.upgradeAndreInntekterFromV1ToV2(søknad.søker);
         const { søkerinfo } = appState.api;
 
-        if (isFeatureEnabled(Feature.registrertBarn) === false) {
-            delete søknad.ekstrainfo.søknadenGjelderBarnValg;
-        } else {
-            if (søknad.ekstrainfo.søknadenGjelderBarnValg === undefined) {
-                søknad.ekstrainfo.søknadenGjelderBarnValg = {
-                    gjelderAnnetBarn: søknad.barn.erBarnetFødt !== undefined,
-                    valgteBarn: []
-                };
-            }
+        if (søknad.ekstrainfo.søknadenGjelderBarnValg === undefined) {
+            søknad.ekstrainfo.søknadenGjelderBarnValg = {
+                gjelderAnnetBarn: søknad.barn.erBarnetFødt !== undefined,
+                valgteBarn: []
+            };
         }
 
         const valgteRegistrerteBarn = StorageSagaUtils.getValgteRegistrerteBarnISøknaden(søknad);

@@ -1,3 +1,28 @@
+export interface UttaksplanPeriodeDTO {
+    periodeResultatType: string;
+    utsettelsePeriodeType: string;
+    graderingInnvilget: boolean;
+    samtidigUttak: boolean;
+    samtidigUttaksprosent: number;
+    stønadskontotype: string;
+    trekkDager: number;
+    arbeidstidprosent: number;
+    utbetalingprosent: number;
+    gjelderAnnenPart: boolean;
+    flerbarnsdager: boolean;
+    uttakArbeidType: string;
+    arbeidsgiverInfo: {
+        id: string;
+        type: string;
+        navn: string;
+    };
+    periode: {
+        fom: string;
+        tom: string;
+    };
+    morsAktivitetIPerioden: string;
+    oppholdAarsak: string;
+}
 export interface UttaksplanDTO {
     grunnlag: {
         familieHendelseType: string;
@@ -11,36 +36,6 @@ export interface UttaksplanDTO {
         farMedmorErAleneOmOmsorg: boolean;
         farMedmorHarRett: boolean;
         søkerKjønn: string;
-        /** Mangler */
-        annenForelderKjønn: string | undefined;
-        /** Utledet */
-        erBarnetFødt: boolean;
     };
-    perioder: [
-        {
-            periodeResultatType: string;
-            utsettelsePeriodeType: string;
-            graderingInnvilget: boolean;
-            samtidigUttak: boolean;
-            samtidigUttaksprosent: number;
-            stønadskontotype: string;
-            trekkDager: number;
-            arbeidstidprosent: number;
-            utbetalingprosent: number;
-            gjelderAnnenPart: boolean;
-            flerbarnsdager: boolean;
-            uttakArbeidType: string;
-            arbeidsgiverInfo: {
-                id: string;
-                type: string;
-                navn: string;
-            };
-            periode: {
-                fom: string;
-                tom: string;
-            };
-            morsAktivitetIPerioden: string;
-            oppholdAarsak: string;
-        }
-    ];
+    perioder: UttaksplanPeriodeDTO[];
 }

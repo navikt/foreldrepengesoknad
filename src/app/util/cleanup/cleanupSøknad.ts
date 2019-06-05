@@ -19,7 +19,6 @@ import stringifyTilleggsopplysninger from './stringifyTilleggsopplysninger';
 import { Barn } from '../../types/søknad/Barn';
 import { cleanupBarn } from '../barnUtils';
 import AnnenForelder from 'app/types/søknad/AnnenForelder';
-import { getEndretUttaksplanForInnsending } from '../uttaksplan/uttaksplanEndringUtil';
 
 export const isArrayOfAttachments = (object: object) => {
     return (
@@ -166,14 +165,13 @@ export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
 
 export const cleanEnkelEndringssøknad = (
     søknad: Søknad,
-    opprinneligUttaksplan: Periode[]
+    endringerIUttaksplan: Periode[]
 ): EnkelEndringssøknadForInnsending => {
-    const endringerIUttaksplan = getEndretUttaksplanForInnsending(opprinneligUttaksplan, søknad.uttaksplan);
     const cleanedSøknad: EnkelEndringssøknadForInnsending = {
         erEndringssøknad: true,
         saksnummer: søknad.saksnummer,
         type: søknad.type,
-        uttaksplan: endringerIUttaksplan || søknad.uttaksplan,
+        uttaksplan: endringerIUttaksplan,
         vedlegg: søknad.vedlegg,
         søker: søknad.søker,
         annenForelder: søknad.annenForelder,

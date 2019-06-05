@@ -1,6 +1,6 @@
 import cleanup from './../cleanupAnnenInntekt';
 import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from '../../../types/søknad/AnnenInntekt';
-import visibility from './../../../components/annen-inntekt-modal/visibility';
+import visibility from '../../../steg/andreInntekter/annenInntektModal/visibility';
 
 const annenInntekt: AnnenInntekt = {
     type: AnnenInntektType.JOBB_I_UTLANDET,

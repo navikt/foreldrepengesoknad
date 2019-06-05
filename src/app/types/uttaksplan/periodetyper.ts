@@ -1,6 +1,7 @@
 import { Tidsperiode, Forelder } from 'common/types';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { RecursivePartial } from '../Partial';
+import { PeriodeResultatType } from '../EksisterendeSak';
 
 export enum Periodetype {
     'Uttak' = 'uttak',
@@ -79,7 +80,9 @@ export enum SenEndringÅrsak {
 }
 
 export enum PeriodeInfoType {
-    'avslåttPeriode' = 'avslåttPeriode'
+    'avslåttPeriode' = 'avslåttPeriode',
+    'annenPart' = 'oppholdAnnenPart',
+    'gruppertInfo' = 'gruppertInfo'
 }
 
 export interface Helligdag {
@@ -103,12 +106,33 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
-    konto: StønadskontoType;
+    stønadskonto: StønadskontoType;
     forelder: Forelder;
     overskrives: true;
 }
 
-export type InfoPeriode = AvslåttPeriode;
+export interface AnnenPartInfoPeriode extends InfoPeriodeBase {
+    type: Periodetype.Info;
+    infotype: PeriodeInfoType.annenPart;
+    årsak: OppholdÅrsakType;
+    forelder: Forelder;
+    overskrives: true;
+    resultatType: PeriodeResultatType;
+}
+
+export const isAnnenPartInfoPeriode = (periode: Periode): periode is AnnenPartInfoPeriode => {
+    return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.annenPart;
+};
+
+export interface GruppertInfoPeriode extends InfoPeriodeBase {
+    type: Periodetype.Info;
+    infotype: PeriodeInfoType.gruppertInfo;
+    forelder: Forelder;
+    overskrives: true;
+    perioder: InfoPeriode[];
+}
+
+export type InfoPeriode = AvslåttPeriode | AnnenPartInfoPeriode | GruppertInfoPeriode;
 
 export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode => {
     return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.avslåttPeriode;
@@ -116,6 +140,10 @@ export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode 
 
 export const isInfoPeriode = (periode: Periode): periode is InfoPeriode => {
     return periode.type === Periodetype.Info && periode.overskrives === true;
+};
+
+export const isGruppertInfoPeriode = (periode: Periode): periode is GruppertInfoPeriode => {
+    return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.gruppertInfo;
 };
 
 export interface PeriodeHull extends PeriodeBase {
@@ -134,9 +162,9 @@ export interface UttaksperiodeBase extends PeriodeBase {
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak?: boolean;
-    samtidigUttakProsent?: number;
+    samtidigUttakProsent?: string;
     gradert?: boolean;
-    stillingsprosent?: number;
+    stillingsprosent?: string;
     orgnumre?: string[];
     arbeidsformer?: Arbeidsform[];
     erArbeidstaker?: boolean;
@@ -206,6 +234,10 @@ export function isUttaksperiode(periode: Periode | RecursivePartial<Periode>): p
 
 export function isUtsettelsesperiode(periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode {
     return periode.type === Periodetype.Utsettelse;
+}
+
+export function isUtsettelsePgaFerie(periode: Periode | RecursivePartial<Periode>): periode is Periode {
+    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Ferie;
 }
 
 export function isOverføringsperiode(periode: Periode | RecursivePartial<Periode>): periode is Overføringsperiode {

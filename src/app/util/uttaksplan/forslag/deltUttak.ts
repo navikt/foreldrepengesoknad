@@ -102,7 +102,7 @@ const deltUttakAdopsjonSøktSist = (
                 if (periode.konto === StønadskontoType.Fedrekvote) {
                     return {
                         ...periode,
-                        konto: StønadskontoType.Mødrekvote,
+                        stønadskonto: StønadskontoType.Mødrekvote,
                         forelder: Forelder.MOR
                     };
                 } else {

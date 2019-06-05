@@ -2,7 +2,7 @@ import { Forelder } from 'common/types';
 import { Periode, Periodetype, StønadskontoType, Oppholdsperiode } from '../../types/uttaksplan/periodetyper';
 import { UttaksplanColor } from '../../types/uttaksplan/colors';
 
-const getForelderFarge = (forelder: Forelder) => {
+export const getForelderFarge = (forelder: Forelder) => {
     return forelder === Forelder.MOR ? 'purple' : 'blue';
 };
 
@@ -28,7 +28,7 @@ export const getStønadskontoFarge = (
             case StønadskontoType.Flerbarnsdager:
                 return 'purpleBlue';
             default:
-                return '';
+                return 'transparent';
         }
     }
     return getForelderFarge(forelder);

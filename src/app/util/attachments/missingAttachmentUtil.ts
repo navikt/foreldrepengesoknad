@@ -1,12 +1,12 @@
-import { getRelasjonTilBarnFødselVisibility } from '../../connected-components/steg/relasjon-til-barn-fødsel/visibility/relasjonTilBarnFødselVisibility';
+import { getRelasjonTilBarnFødselVisibility } from '../../steg/barn/relasjonTilBarnFødselSteg/visibility/relasjonTilBarnFødselVisibility';
 import Søknad, { Skjemanummer } from '../../types/søknad/Søknad';
 import { ApiState } from '../../redux/reducers/apiReducer';
 import {
     AnnenForelderSpørsmålKeys,
     getAnnenForelderStegVisibility
-} from '../../connected-components/steg/annen-forelder/visibility/annenForelderStegVisibility';
+} from '../../steg/annenForelder/visibility/annenForelderStegVisibility';
 
-import annenInntektVisibility from '../../components/annen-inntekt-modal/visibility';
+import annenInntektVisibility from '../../steg/andreInntekter/annenInntektModal/visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
 import {
@@ -17,7 +17,7 @@ import {
     UtsettelseÅrsakType,
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
-import { spørsmålOmVedleggVisible } from '../../connected-components/steg/relasjon-til-barn-adopsjon/visibility';
+import { spørsmålOmVedleggVisible } from '../../steg/barn/relasjonTilBarnAdopsjonSteg/visibility';
 import {
     getAttachmentTypeForPeriode,
     getSkjemanummerForAndreInntekter,
@@ -37,7 +37,6 @@ import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
 import { isUfødtBarn, isAdopsjonsbarn } from '../../types/søknad/Barn';
 import { getMorsAktivitetSkjemanummer } from '../skjemanummer/morsAktivitetSkjemanummer';
-import { finnesPeriodeIOpprinneligPlan } from '../uttaksplan/uttaksplanEndringUtil';
 import { aktivitetskravMorSkalBesvares } from 'app/regler/uttak/uttaksskjema/aktivitetskravMorSkalBesvares';
 
 const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType): boolean =>
@@ -137,8 +136,7 @@ export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søk
 
 export const findMissingAttachmentsForPerioder = (
     perioder: Periode[],
-    søknadsinfo: Søknadsinfo,
-    eksisterendeUttaksplan?: Periode[]
+    søknadsinfo: Søknadsinfo
 ): MissingAttachment[] => {
     if (!perioder) {
         return [];
@@ -146,31 +144,26 @@ export const findMissingAttachmentsForPerioder = (
 
     const missingAttachments = [];
     for (const periode of perioder) {
-        const periodeErNyEllerEndret = eksisterendeUttaksplan
-            ? finnesPeriodeIOpprinneligPlan(periode, eksisterendeUttaksplan) === false
-            : true;
-        if (periodeErNyEllerEndret) {
-            if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
-                if (missingAttachmentForSykdomEllerInstitusjonsopphold(periode)) {
-                    missingAttachments.push({
-                        index: perioder.indexOf(periode),
-                        skjemanummer: getSkjemanummerForPeriode(periode),
-                        type: getAttachmentTypeForPeriode(periode),
-                        periodeId: periode.id
-                    });
-                }
+        if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
+            if (missingAttachmentForSykdomEllerInstitusjonsopphold(periode)) {
+                missingAttachments.push({
+                    index: perioder.indexOf(periode),
+                    skjemanummer: getSkjemanummerForPeriode(periode),
+                    type: getAttachmentTypeForPeriode(periode),
+                    periodeId: periode.id
+                });
+            }
 
-                if (
-                    (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Uttak) &&
-                    missingAttachmentForAktivitetskrav(periode, søknadsinfo)
-                ) {
-                    missingAttachments.push({
-                        index: perioder.indexOf(periode),
-                        skjemanummer: getMorsAktivitetSkjemanummer(periode.morsAktivitetIPerioden),
-                        type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-                        periodeId: periode.id
-                    });
-                }
+            if (
+                (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Uttak) &&
+                missingAttachmentForAktivitetskrav(periode, søknadsinfo)
+            ) {
+                missingAttachments.push({
+                    index: perioder.indexOf(periode),
+                    skjemanummer: getMorsAktivitetSkjemanummer(periode.morsAktivitetIPerioden),
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    periodeId: periode.id
+                });
             }
         }
     }
@@ -199,17 +192,12 @@ export const findMissingAttachmentsForAndreInntekter = (søknad: Søknad): Missi
 export const findMissingAttachments = (
     søknad: Søknad,
     api: ApiState,
-    søknadsinfo: Søknadsinfo
+    søknadsinfo: Søknadsinfo,
+    perioderSomSkalSendesInn: Periode[]
 ): MissingAttachment[] => {
     const missingAttachments = [];
     missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api));
-    missingAttachments.push(
-        ...findMissingAttachmentsForPerioder(
-            søknad.uttaksplan,
-            søknadsinfo,
-            søknad.ekstrainfo.eksisterendeSak ? søknad.ekstrainfo.eksisterendeSak.uttaksplan : undefined
-        )
-    );
+    missingAttachments.push(...findMissingAttachmentsForPerioder(perioderSomSkalSendesInn, søknadsinfo));
     missingAttachments.push(...findMissingAttachmentsForAndreInntekter(søknad));
     return missingAttachments;
 };

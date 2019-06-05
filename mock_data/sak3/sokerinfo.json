@@ -1,0 +1,20 @@
+{
+    "søker": {
+        "fnr": "07115626854",
+        "fornavn": "ARTIG",
+        "etternavn": "LAPP",
+        "kjønn": "K",
+        "fødselsdato": "1956-11-07",
+        "land": "NO",
+        "ikkeNordiskEøsLand": false
+    },
+    "arbeidsforhold": [
+        {
+            "arbeidsgiverId": "973861778",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET",
+            "stillingsprosent": 100.0,
+            "fom": "2017-01-01"
+        }
+    ]
+}

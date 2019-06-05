@@ -28,6 +28,7 @@ export interface ApiState {
     systemerIkkeTilgjengelig: boolean;
     storageKvittering?: StorageKvittering;
     eksisterendeSak?: EksisterendeSak;
+    innloggetSomAnnenForelder: boolean;
 }
 
 export type ApiStatePartial = Partial<ApiState>;
@@ -45,7 +46,8 @@ export const getDefaultApiState = (): ApiState => ({
     stønadskontoer100: [],
     stønadskontoer80: [],
     systemerIkkeTilgjengelig: false,
-    søkerinfoLastetCounter: 0
+    søkerinfoLastetCounter: 0,
+    innloggetSomAnnenForelder: false
 });
 
 const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiStatePartial => {
