@@ -2,14 +2,14 @@ import * as React from 'react';
 import { Forelder } from 'common/types';
 import BEMHelper from 'common/util/bem';
 import Sirkelmaske from 'common/components/sirkelmaske/Sirkelmaske';
-import { Situasjon } from './foreldrepar/foreldreparTypes';
-import { getSituasjonForelderSvg, getAntallForeldreISituasjon } from './foreldrepar/foreldreparUtils';
-import Foreldrepar from './foreldrepar/Foreldrepar';
 
 import './situasjonSirkel.less';
+import Foreldrepar from 'shared/components/foreldrepar/Foreldrepar';
+import { ForeldreparSituasjon } from 'shared/types';
+import { getSituasjonForelderSvg, getAntallForeldreISituasjon } from 'shared/components/foreldrepar/foreldreparUtils';
 
 interface Props {
-    situasjon: Situasjon;
+    situasjon: ForeldreparSituasjon;
     valgtForelder?: Forelder;
 }
 
