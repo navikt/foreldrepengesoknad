@@ -8,7 +8,7 @@ import { DispatchProps } from 'common/redux/types/index';
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../../types/søknad/Søker';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { getTermindatoRegler, termindatoAvgrensninger } from '../../../../util/validation/termindato';
 import TerminbekreftelsePartial from './TerminbekreftelsePartial';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';

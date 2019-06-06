@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { getStegConfig, StegConfigItem, StegID } from '../../../util/routing/stegConfig';
 import { History } from 'history';
-import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
+import FortsettKnapp from 'app/components/applikasjon/steg/fortsettKnapp/FortsettKnapp';
 import ValiderbarForm, { FormSubmitEvent, ValiderbarFormProps } from 'common/lib/validation/elements/ValiderbarForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
@@ -13,7 +13,7 @@ import { DispatchProps } from 'common/redux/types';
 import BEMHelper from 'common/util/bem';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import StegFooter from '../stegFooter/StegFooter';
-import BackButton from 'common/components/back-button/BackButton';
+import BackButton from 'app/components/applikasjon/steg/backButton/BackButton';
 import Block from 'common/components/block/Block';
 import AvbrytSøknadDialog from '../../dialoger/avbrytSøknadDialog/AvbrytSøknadDialog';
 import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';

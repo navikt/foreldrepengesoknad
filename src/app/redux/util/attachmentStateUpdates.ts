@@ -1,7 +1,7 @@
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { Operation } from '../types/Operation';
 import { SøknadPartial } from '../../types/søknad/Søknad';
-import { isAttachmentForAnnenInntekt, isAttachmentForBarn } from 'common/storage/attachment/components/util';
+import { isAttachmentForAnnenInntekt, isAttachmentForBarn } from 'app/components/storage/attachment/components/util';
 
 export const editAttachmentInState = (attachment: Attachment, state: SøknadPartial): SøknadPartial => {
     return updateAttachmentState(attachment, state, Operation.EDIT);

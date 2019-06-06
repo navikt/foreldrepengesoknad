@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
-import JaNeiSpørsmål from '../../../components/skjema/ja-nei-spørsmål/JaNeiSpørsmål';
+import JaNeiSpørsmål from '../../../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 
 interface OwnProps {
     navnAnnenForelder: string;

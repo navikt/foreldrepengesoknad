@@ -21,7 +21,7 @@ import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSp�
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import { RecursivePartial } from '../../../../types/Partial';
 import { AppState } from '../../../../redux/reducers';

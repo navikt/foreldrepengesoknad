@@ -1,17 +1,17 @@
 import * as React from 'react';
 
 import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
-import { Feil } from '../skjema-input-element/types';
 import NavDatovelger, { DatovelgerAvgrensninger } from 'nav-datovelger';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { DatovelgerCommonProps } from 'nav-datovelger/dist/datovelger/Datovelger';
 import AriaText from 'common/components/aria/AriaText';
-import { getAvgrensningerDescriptionForInput } from 'common/components/skjema/elements/dato-input/datoInputDescription';
 import moment from 'moment';
-import { Avgrensninger, Tidsperiode } from 'common/types';
+import { Avgrensninger, Tidsperiode, Feil } from 'common/types';
 import BEMHelper from 'common/util/bem';
 import { dateToISOFormattedDateString } from 'common/util/datoUtils';
 import { fridager } from 'common/util/fridagerUtils';
+import { getAvgrensningerDescriptionForInput } from './datoInputDescription';
+
 import './datoInput.less';
 
 export interface DatoInputProps extends DatovelgerCommonProps {

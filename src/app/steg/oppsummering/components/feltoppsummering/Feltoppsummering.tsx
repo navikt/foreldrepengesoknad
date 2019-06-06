@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Element } from 'nav-frontend-typografi';
 
 import './feltoppsummering.less';
-import InnholdMedLedetekst from 'common/components/innhold-med-ledetekst/InnholdMedLedetekst';
+import InnholdMedLedetekst from 'app/steg/oppsummering/components/innholdMedLedetekst/InnholdMedLedetekst';
 
 interface Props {
     feltnavn: string;

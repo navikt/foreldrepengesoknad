@@ -5,7 +5,7 @@ import Input from 'common/components/skjema/wrappers/Input';
 import Block from 'common/components/block/Block';
 import { getFloatFromString } from 'common/util/numberUtils';
 import Arbeidsforhold from '../../../../../types/Arbeidsforhold';
-import JaNeiSpørsmål from '../../../../skjema/ja-nei-spørsmål/JaNeiSpørsmål';
+import JaNeiSpørsmål from '../../../../../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 import { Arbeidsform, Uttaksperiode, Periode } from '../../../../../types/uttaksplan/periodetyper';
 import { RecursivePartial } from '../../../../../types/Partial';
 import HvorSkalDuJobbeSpørsmål from '../../../../../spørsmål/HvorSkalDuJobbeSpørsmål';

@@ -7,7 +7,7 @@ import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from '../../types/common';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import { getErSøkerFarEllerMedmor } from '../../util/domain/personUtil';
-import isAvailable from '../util/isAvailable';
+import isAvailable from '../../util/steg/isAvailable';
 import { StegID } from '../../util/routing/stegConfig';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
@@ -20,13 +20,13 @@ import {
 } from './visibility/annenForelderStegVisibility';
 import cleanupAnnenForelderSteg from '../../util/cleanup/cleanupAnnenForelderSteg';
 import { default as søknadActions } from '../../redux/actions/søknad/søknadActionCreators';
-import { resolveStegToRender } from '../util/navigation';
+import { resolveStegToRender } from '../../util/steg/navigation';
 import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
 import AnnenForelderSpørsmål from './AnnenForelderSpørsmål';
 import { Barn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 
 interface StateProps {
     søknad: Partial<Søknad>;

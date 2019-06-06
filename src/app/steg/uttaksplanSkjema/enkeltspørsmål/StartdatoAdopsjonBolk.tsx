@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../components/skjema/flervalg-spørsmål/FlervalgSpørsmål';
+import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import { Adopsjonsbarn } from '../../../types/søknad/Barn';
 import Block from 'common/components/block/Block';

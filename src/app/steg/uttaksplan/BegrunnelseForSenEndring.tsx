@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { getFritekstfeltRules } from 'app/util/validation/fritekstfelt';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { SenEndringÅrsak } from 'app/types/uttaksplan/periodetyper';
 import { Skjemanummer } from 'app/types/søknad/Søknad';
-import { TextareaChangeEvent } from 'app/types/dom/Events';
+import { TextareaChangeEvent } from 'common/types/Events';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Textarea from 'common/components/skjema/wrappers/Textarea';

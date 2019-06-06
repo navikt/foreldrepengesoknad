@@ -23,7 +23,7 @@ import Arbeidsforhold from '../../../../../../types/Arbeidsforhold';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 import AnnenForelder from '../../../../../../types/søknad/AnnenForelder';
 import { Tilleggsopplysning, Opplysning } from 'app/types/søknad/Søknad';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import {

@@ -8,7 +8,7 @@ import { Innholdstittel, Normaltekst, Ingress } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 
 import getMessage from 'common/util/i18nUtils';
-import VeilederMedSnakkeboble from 'common/components/veileder-med-snakkeboble/VeilederMedSnakkeboble';
+import VeilederMedSnakkeboble from 'common/components/veilederMedSnakkeboble/VeilederMedSnakkeboble';
 
 import Applikasjonsside from '../../components/applikasjon/applikasjonsside/Applikasjonsside';
 import DinePlikterModal from './dinePlikterModal/DinePlikterModal';

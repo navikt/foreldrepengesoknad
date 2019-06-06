@@ -9,16 +9,16 @@ import {
     JobbIUtlandetInntekt,
     JobbIUtlandetInntektPartial
 } from '../../../types/søknad/AnnenInntekt';
-import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import AttachmentsUploader from 'app/components/storage/attachment/components/AttachmentUploader';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
 import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
 import ModalForm from 'common/components/modalForm/ModalForm';
 import visibility from './visibility';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import { getSkjemanummerForAndreInntekter } from 'common/storage/attachment/components/util';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import { getSkjemanummerForAndreInntekter } from 'app/components/storage/attachment/components/util';
 import { hasValueRule } from '../../../util/validation/common';
 import InntektstypeSpørsmål from '../../../spørsmål/InntektstypeSpørsmål';
 import Input from 'common/components/skjema/wrappers/Input';

@@ -29,3 +29,8 @@ export interface TidsperiodeMedValgfriSluttdato {
     tom?: Date;
     pågående?: boolean;
 }
+
+export interface Feil {
+    tittel?: string;
+    feilmelding: string;
+}

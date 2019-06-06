@@ -13,7 +13,7 @@ import {
     Periode,
     isUttaksperiode
 } from '../../../../types/uttaksplan/periodetyper';
-import { Forelder, Tidsperiode } from 'common/types';
+import { Forelder, Tidsperiode, Feil } from 'common/types';
 import { RecursivePartial } from '../../../../types/Partial';
 import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
 import Block from 'common/components/block/Block';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
 import { getUttakFormVisibility, UttakSpørsmålKeys } from './uttakFormConfig';
 import { getTidsperioderIUttaksplan } from '../../../../util/uttaksplan';
@@ -33,11 +33,10 @@ import OverføringUttakPart from './partials/OverføringUttakPart';
 import GradertUttakPart from './partials/GradertUttakPart';
 import UttakTidsperiodeSpørsmål from './partials/UttakTidsperiodeSpørsmål';
 import getMessage from 'common/util/i18nUtils';
-import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { erUttakAvAnnenForeldersKvote } from '../../../../util/uttaksplan/uttakUtils';
 import { Uttaksdagen } from '../../../../util/uttaksplan/Uttaksdagen';
 import { getDefaultPermisjonStartdato } from '../../../../util/uttaksplan/permisjonUtils';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../../../skjema/vedleggSpørsmål/VedleggSpørsmål';
 import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
 import { EndrePeriodeChangeEvent } from '../endrePeriodeForm/EndrePeriodeForm';

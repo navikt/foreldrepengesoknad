@@ -15,12 +15,12 @@ import SøkersituasjonSpørsmål from '../../spørsmål/SøkersituasjonSpørsmå
 import SøkerrolleSpørsmål from '../../spørsmål/SøkerrolleSpørsmål';
 
 import { getSøkerrollerForBruker } from '../../util/domain/søkerrollerUtils';
-import isAvailable from '../util/isAvailable';
+import isAvailable from '../../util/steg/isAvailable';
 import { inngangErGyldig } from '../../util/validation/steg/inngang';
 import { default as Søker, SøkerPartial } from '../../types/søknad/Søker';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import { Kjønn, HistoryProps } from '../../types/common';
-import { resolveStegToRender } from '../util/navigation';
+import { resolveStegToRender } from '../../util/steg/navigation';
 import visibility from './visibility';
 import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import Lenke from 'nav-frontend-lenker';
