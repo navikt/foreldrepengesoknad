@@ -53,6 +53,7 @@ import { VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/vei
 import UttaksplanFeiloppsummering from 'app/components/uttaksplanlegger/components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import Uttaksoppsummering from 'app/components/uttaksplanlegger/components/uttaksoppsummering/Uttaksoppsummering';
 import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
+import UttakFordeling from 'app/components/uttaksplanlegger/components/uttakFordeling/UttakFordeling';
 
 interface StateProps {
     stegProps: StegProps;
@@ -298,19 +299,24 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 }
                                 meldingerPerPeriode={meldingerPerPeriode}
                                 onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
-                                forelder={søknadsinfo.søker.erFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR}
+                                forelder={søknadsinfo.søker.erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
                             />
                         </Block>
 
                         {søknad.uttaksplan &&
                             tilgjengeligeStønadskontoer.length > 0 && (
-                                <Block margin="l">
-                                    <Uttaksoppsummering
-                                        uttak={uttaksstatus}
-                                        navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
-                                        gjelderDagerBrukt={gjelderDagerBrukt}
-                                    />
-                                </Block>
+                                <>
+                                    <Block margin="l">
+                                        <Uttaksoppsummering
+                                            uttak={uttaksstatus}
+                                            navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
+                                            gjelderDagerBrukt={gjelderDagerBrukt}
+                                        />
+                                    </Block>
+                                    <Block>
+                                        <UttakFordeling />
+                                    </Block>
+                                </>
                             )}
 
                         <Block visible={uttaksplanVeilederInfo.length > 0}>

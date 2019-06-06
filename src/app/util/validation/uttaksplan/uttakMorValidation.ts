@@ -37,7 +37,7 @@ export const getUgyldigUttakFørsteSeksUkerForMor = (
         .getUtsettelser()
         .filter(
             (p) =>
-                p.forelder === Forelder.MOR &&
+                p.forelder === Forelder.mor &&
                 p.årsak !== UtsettelseÅrsakType.InstitusjonSøker &&
                 p.årsak !== UtsettelseÅrsakType.InstitusjonBarnet &&
                 p.årsak !== UtsettelseÅrsakType.Sykdom
@@ -45,15 +45,15 @@ export const getUgyldigUttakFørsteSeksUkerForMor = (
 
     const gradertePerioder = Periodene(perioderInnenforSeksFørsteUker)
         .getUttak()
-        .filter((p) => p.forelder === Forelder.MOR && p.gradert === true);
+        .filter((p) => p.forelder === Forelder.mor && p.gradert === true);
 
     const flernbarnsPerioder = Periodene(perioderInnenforSeksFørsteUker)
         .getUttak()
-        .filter((p) => p.forelder === Forelder.MOR && p.ønskerFlerbarnsdager === true);
+        .filter((p) => p.forelder === Forelder.mor && p.ønskerFlerbarnsdager === true);
 
     const fellesPerioder = Periodene(perioderInnenforSeksFørsteUker)
         .getUttak()
-        .filter((p) => p.forelder === Forelder.MOR && p.konto === StønadskontoType.Fellesperiode);
+        .filter((p) => p.forelder === Forelder.mor && p.konto === StønadskontoType.Fellesperiode);
 
     return [...flernbarnsPerioder, ...gradertePerioder, ...ugyldigeUtsettelser, ...fellesPerioder];
 };

@@ -22,7 +22,7 @@ const SituasjonSirkel: React.StatelessComponent<Props> = ({ situasjon, valgtFore
             <div className={bem.element('ikon')}>
                 <Sirkelmaske diameter="5rem">
                     {getAntallForeldreISituasjon(situasjon) === 1 && valgtForelder ? (
-                        <Foreldrepar forelder1={valgtForelder === Forelder.MOR ? info.mor : info.farMedmor} />
+                        <Foreldrepar forelder1={valgtForelder === Forelder.mor ? info.mor : info.farMedmor} />
                     ) : (
                         <Foreldrepar
                             forelder1={info.mor}

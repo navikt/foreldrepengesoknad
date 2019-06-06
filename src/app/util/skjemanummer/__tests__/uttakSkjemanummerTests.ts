@@ -9,7 +9,7 @@ const periodeMock: Uttaksperiode = {
     type: Periodetype.Uttak,
     konto: StønadskontoType.ForeldrepengerFørFødsel,
     skalIkkeHaUttakFørTermin: true,
-    forelder: Forelder.MOR,
+    forelder: Forelder.mor,
     id: 'asdf',
     tidsperiode: {
         fom: DateValues.today.toDate(),

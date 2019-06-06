@@ -48,11 +48,11 @@ export const beregnGjenståendeUttaksdager = (
         const uttaksplanPerioder = alleUttakIUttaksplan.filter((p: Uttaksperiode) => p.konto === konto.konto);
 
         if (konto.konto === StønadskontoType.Mødrekvote) {
-            forelder = Forelder.MOR;
+            forelder = Forelder.mor;
         }
 
         if (konto.konto === StønadskontoType.Fedrekvote) {
-            forelder = Forelder.FARMEDMOR;
+            forelder = Forelder.farMedmor;
         }
 
         if (uttaksplanPerioder) {

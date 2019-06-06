@@ -13,7 +13,7 @@ const periodeMock: Utsettelsesperiode = {
     id: 'asdf',
     type: Periodetype.Utsettelse,
     årsak: UtsettelseÅrsakType.InstitusjonBarnet,
-    forelder: Forelder.FARMEDMOR,
+    forelder: Forelder.farMedmor,
     erArbeidstaker: false,
     tidsperiode: {
         fom: DateValues.today.toDate(),

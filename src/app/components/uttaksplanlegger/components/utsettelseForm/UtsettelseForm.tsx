@@ -180,7 +180,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     onVariantChange(variant: Utsettelsesvariant) {
         if (variant !== this.state.variant) {
             const forelder =
-                this.props.søknadsinfo.søker.erFarEllerMedmor === false ? Forelder.MOR : Forelder.FARMEDMOR;
+                this.props.søknadsinfo.søker.erFarEllerMedmor === false ? Forelder.mor : Forelder.farMedmor;
             if (variant === Utsettelsesvariant.Arbeid) {
                 this.onChange({
                     type: Periodetype.Utsettelse,
@@ -340,7 +340,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         <UtsettelsePgaFerieInfo
                             antallFeriedager={antallFeriedager}
                             aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, tidsperiode.tom)}
-                            forelder={Forelder.MOR}
+                            forelder={Forelder.mor}
                         />
                     </Block>
                     {periode.type === Periodetype.Utsettelse && (
@@ -391,7 +391,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                     onChange={this.onSykdomÅrsakChange}
                                     vedlegg={(periode.vedlegg as Attachment[]) || []}
                                     sykdomsårsak={periode.årsak}
-                                    forelder={Forelder.MOR}
+                                    forelder={Forelder.mor}
                                 />
                             </Block>
 

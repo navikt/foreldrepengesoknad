@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import FordelingStatusHeader, { FordelingStatusHeaderProps } from './components/FordelingStatusHeader';
@@ -11,34 +10,47 @@ import './fordelingGraf.less';
 
 export const fordelingGrafBem = BEMHelper('fordelingGraf');
 
+export enum ForbrukType {
+    'deltOmsorg' = 'deltOmsorg',
+    'bareFar' = 'bareFar',
+    'bareMor' = 'bareMor'
+}
+
+interface ForbrukBase {
+    type: ForbrukType;
+}
+interface ForbrukDeltOmsorg extends ForbrukBase, GrafDeltOmsorgProps {
+    type: ForbrukType.deltOmsorg;
+}
+interface ForbrukBareFar extends ForbrukBase, GrafAleneomsorgProps {
+    type: ForbrukType.bareFar;
+}
+interface ForbrukBareMor extends ForbrukBase, GrafAleneomsorgProps {
+    type: ForbrukType.bareMor;
+}
+
+export type FordelingGrafForbruk = ForbrukDeltOmsorg | ForbrukBareFar | ForbrukBareMor;
+
 interface Props {
     headerProps: FordelingStatusHeaderProps;
     titlerProps: FordelingTitlerProps;
-    deltOmsorgProps?: GrafDeltOmsorgProps;
-    omsorgMorProps?: GrafAleneomsorgProps;
-    omsorgFarMedmorProps?: GrafAleneomsorgProps;
+    forbrukProps: ForbrukDeltOmsorg | ForbrukBareFar | ForbrukBareMor;
 }
 
-const FordelingGraf: React.StatelessComponent<Props & InjectedIntlProps> = ({
-    headerProps,
-    deltOmsorgProps,
-    omsorgFarMedmorProps,
-    omsorgMorProps,
-    titlerProps
-}) => {
+const FordelingGraf: React.StatelessComponent<Props> = ({ headerProps, forbrukProps, titlerProps }) => {
     return (
         <section className={fordelingGrafBem.block}>
             <Block margin="s" screenOnly={true}>
                 <FordelingStatusHeader {...headerProps} />
             </Block>
             <Block margin="s" screenOnly={true}>
-                {deltOmsorgProps && <GrafDeltOmsorg {...deltOmsorgProps} />}
-                {omsorgMorProps && <GrafAleneomsorg {...omsorgMorProps} />}
-                {omsorgFarMedmorProps && <GrafAleneomsorg {...omsorgFarMedmorProps} />}
+                {forbrukProps.type === ForbrukType.deltOmsorg && <GrafDeltOmsorg {...forbrukProps} />}
+                {forbrukProps.type === ForbrukType.bareFar && <GrafAleneomsorg {...forbrukProps} />}
+                {forbrukProps.type === ForbrukType.bareMor && <GrafAleneomsorg {...forbrukProps} />}
             </Block>
             <FordelingTitler {...titlerProps} />
         </section>
     );
 };
 
-export default injectIntl(FordelingGraf);
+export default FordelingGraf;

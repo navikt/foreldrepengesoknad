@@ -59,8 +59,8 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({ søknadsinfo, ti
     const forelderVedAleneomsorg = erDeltUttak
         ? undefined
         : søknadsinfo.søker.erMor
-            ? Forelder.MOR
-            : Forelder.FARMEDMOR;
+            ? Forelder.mor
+            : Forelder.farMedmor;
 
     return (
         <InfoBlock padding="m">

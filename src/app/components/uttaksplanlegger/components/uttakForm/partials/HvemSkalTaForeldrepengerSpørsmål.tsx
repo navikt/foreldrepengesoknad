@@ -29,11 +29,11 @@ const HvemSkalTaForeldrepengerSpørsmål: React.StatelessComponent<HvemSkalTaFor
             alternativer={[
                 {
                     label: søkerErFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor,
-                    value: søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR
+                    value: søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor
                 },
                 {
                     label: søkerErFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor,
-                    value: søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR
+                    value: søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor
                 }
             ]}
         />

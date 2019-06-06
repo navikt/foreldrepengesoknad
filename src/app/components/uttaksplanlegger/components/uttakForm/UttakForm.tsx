@@ -87,8 +87,8 @@ type Props = OwnProps & StateProps & InjectedIntlProps;
 
 const periodenGjelderAnnenForelder = (søkerErFarEllerMedmor: boolean, forelder: Forelder): boolean => {
     if (
-        (søkerErFarEllerMedmor && forelder === Forelder.FARMEDMOR) ||
-        (!søkerErFarEllerMedmor && forelder === Forelder.MOR)
+        (søkerErFarEllerMedmor && forelder === Forelder.farMedmor) ||
+        (!søkerErFarEllerMedmor && forelder === Forelder.mor)
     ) {
         return false;
     }
@@ -102,7 +102,7 @@ const getPeriodeGjelder = (
     søknadsinfo: Søknadsinfo
 ): Forelder | undefined => {
     if (!søknadsinfo.søknaden.erDeltUttak) {
-        return søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR;
+        return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
     }
 
     if (forelder === undefined) {
@@ -110,9 +110,9 @@ const getPeriodeGjelder = (
     }
 
     if (periodenGjelderAnnenForelder(søkerErFarEllerMedmor, forelder)) {
-        return søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR;
+        return søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;
     } else {
-        return søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR;
+        return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
     }
 };
 
