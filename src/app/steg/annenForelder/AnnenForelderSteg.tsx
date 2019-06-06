@@ -26,7 +26,7 @@ import AnnenForelderSpørsmål from './AnnenForelderSpørsmål';
 import { Barn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 
 interface StateProps {
     søknad: Partial<Søknad>;

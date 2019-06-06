@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { getFritekstfeltRules } from 'app/util/validation/fritekstfelt';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { SenEndringÅrsak } from 'app/types/uttaksplan/periodetyper';

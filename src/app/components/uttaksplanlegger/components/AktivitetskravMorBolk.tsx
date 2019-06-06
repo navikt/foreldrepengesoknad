@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Block from 'common/components/block/Block';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { MorsAktivitet } from '../../../types/uttaksplan/periodetyper';
 import HvaSkalMorGjøreSpørsmål from '../../../spørsmål/HvaSkalMorGjøreSpørsmål';
 import { getMorsAktivitetSkjemanummer } from '../../../util/skjemanummer/morsAktivitetSkjemanummer';

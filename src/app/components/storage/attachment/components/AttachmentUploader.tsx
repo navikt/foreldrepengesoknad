@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
-import AttachmentOverview from 'common/storage/attachment/components/AttachmentOverview';
-import { Skjemanummer } from '../../../../app/types/søknad/Søknad';
-import AttachmentApi from 'common/storage/api/attachmentApi';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import AttachmentOverview from 'app/components/storage/attachment/components/AttachmentOverview';
+import { Skjemanummer } from '../../../../types/søknad/Søknad';
+import AttachmentApi from 'app/components/storage/api/attachmentApi';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 
 export interface AttachmentsUploaderProps {
     attachments: Attachment[];

@@ -1,18 +1,18 @@
 import { guid } from 'nav-frontend-js-utils';
-import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
-import { Skjemanummer } from '../../../../app/types/søknad/Søknad';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { Attachment, InnsendingsType } from 'app/components/storage/attachment/types/Attachment';
+import { Skjemanummer } from '../../../../types/søknad/Søknad';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import {
     Overføringsperiode,
     Periode,
     Periodetype,
     Utsettelsesperiode,
     Uttaksperiode
-} from '../../../../app/types/uttaksplan/periodetyper';
-import { AnnenInntektType } from '../../../../app/types/søknad/AnnenInntekt';
-import { getOverføringÅrsakSkjemanummer } from '../../../../app/util/skjemanummer/overføringÅrsakSkjemanummer';
-import { getUtsettelseSkjemanummer } from '../../../../app/util/skjemanummer/utsettelseSkjemanummer';
-import { getUttakperiodeSkjemanummer } from '../../../../app/util/skjemanummer/uttakSkjemanummer';
+} from '../../../../types/uttaksplan/periodetyper';
+import { AnnenInntektType } from '../../../../types/søknad/AnnenInntekt';
+import { getOverføringÅrsakSkjemanummer } from '../../../../util/skjemanummer/overføringÅrsakSkjemanummer';
+import { getUtsettelseSkjemanummer } from '../../../../util/skjemanummer/utsettelseSkjemanummer';
+import { getUttakperiodeSkjemanummer } from '../../../../util/skjemanummer/uttakSkjemanummer';
 
 export const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
 

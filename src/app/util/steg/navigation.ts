@@ -1,8 +1,8 @@
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { AppState } from '../../redux/reducers';
 import { StegID } from '../routing/stegConfig';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import _ from 'lodash';
 
 export const resolveStegToRender = (state: AppState): StegID | undefined => {

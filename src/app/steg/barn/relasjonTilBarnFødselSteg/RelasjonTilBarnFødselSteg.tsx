@@ -18,7 +18,7 @@ import Søker from '../../../types/søknad/Søker';
 
 import { StegID } from '../../../util/routing/stegConfig';
 import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import HvilkeBarnGjelderSøknadenBolk from './HvilkeBarnGjelderSøknadenBolk';
 import isAvailable from '../../../util/steg/isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';

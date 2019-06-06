@@ -3,7 +3,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { Utsettelsesperiode, UtsettelseÅrsakType } from '../../../../../../types/uttaksplan/periodetyper';
 import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 import MorsAktivitetDetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import { dokumentasjonBehøvesForUtsettelsesperiode } from '../../../../../../util/uttaksplan/utsettelsesperiode';
 import { getArbeidsformTekst, getÅrsakTekst } from 'common/util/oppsummeringUtils';

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import ReactDOM from 'react-dom';
 
 import { AppState } from '../../redux/reducers';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { default as Steg, StegProps } from '../../components/applikasjon/steg/Steg';
 import { DispatchProps } from 'common/redux/types';
 import { getSeneEndringerSomKreverBegrunnelse } from 'app/util/uttaksplan/uttakUtils';
@@ -26,7 +26,7 @@ import { Søknadsinfo } from '../../selectors/types';
 import { StegID } from '../../util/routing/stegConfig';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import apiActionCreators from '../../redux/actions/api/apiActionCreators';
-import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
+import ApplicationSpinner from 'common/components/applicationSpinner/ApplicationSpinner';
 import BegrunnelseForSenEndring from './BegrunnelseForSenEndring';
 import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjemaDialog';
 import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';

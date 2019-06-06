@@ -1,9 +1,9 @@
 import { RegistrertBarn } from '../../../../types/Person';
 import { Kjønn } from '../../../../types/common';
 import visibility from '../visibility/visibilityFunctions';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { Skjemanummer } from '../../../../types/søknad/Søknad';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 
 const registrertBarn: RegistrertBarn = {
     fnr: '01010101010',

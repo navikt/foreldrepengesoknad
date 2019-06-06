@@ -21,7 +21,7 @@ import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValide
 import { validerUttaksplanAction } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
-import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
+import ApplicationSpinner from 'common/components/applicationSpinner/ApplicationSpinner';
 import { søknadStegPath } from '../StegRoutes';
 import Block from 'common/components/block/Block';
 import { MissingAttachment } from '../../types/MissingAttachment';

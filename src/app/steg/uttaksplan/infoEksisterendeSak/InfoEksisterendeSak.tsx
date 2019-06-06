@@ -9,8 +9,8 @@ import { Kjønn } from '../../../types/common';
 import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
 import getMessage from 'common/util/i18nUtils';
 import { Forelder } from 'common/types';
-import InfoBlock from 'common/components/info-block/InfoBlock';
-import InnholdMedIllustrasjon from 'common/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
+import InfoBlock from 'common/components/infoBlock/InfoBlock';
+import InnholdMedIllustrasjon from 'app/components/elementer/innholdMedIllustrasjon/InnholdMedIllustrasjon';
 import { getVarighetString } from 'common/util/intlUtils';
 
 interface OwnProps {

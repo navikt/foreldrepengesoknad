@@ -6,15 +6,15 @@ import {
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import { UfødtBarn } from '../../../../types/søknad/Barn';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
+import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
 import { DispatchProps } from 'common/redux/types/index';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
 import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import VeilederInfo from '../../../../components/veilederInfo/VeilederInfo';
 
 export interface OwnProps {

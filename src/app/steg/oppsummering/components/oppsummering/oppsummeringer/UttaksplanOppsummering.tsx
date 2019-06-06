@@ -12,7 +12,7 @@ import { Tilleggsopplysning } from 'app/types/søknad/Søknad';
 import UttaksplanOppsummeringsliste from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/lister/UttaksplanOppsummeringsliste';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 import getMessage from 'common/util/i18nUtils';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { Søknadsinfo } from 'app/selectors/types';
 
 interface OwnProps {

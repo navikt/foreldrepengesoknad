@@ -16,7 +16,7 @@ import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
 import { apiActionCreators } from '../../redux/actions';
 import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
-import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
+import ApplicationSpinner from 'common/components/applicationSpinner/ApplicationSpinner';
 import { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
 import { Søknadsinfo } from '../../selectors/types';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';

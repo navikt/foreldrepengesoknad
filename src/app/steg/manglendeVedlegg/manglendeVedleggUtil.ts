@@ -1,4 +1,4 @@
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { isArrayOfAttachments } from 'app/util/cleanup/cleanupSøknad';
 
 export const findAllAttachments = (
