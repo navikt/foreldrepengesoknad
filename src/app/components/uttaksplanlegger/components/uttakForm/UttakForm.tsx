@@ -13,7 +13,7 @@ import {
     Periode,
     isUttaksperiode
 } from '../../../../types/uttaksplan/periodetyper';
-import { Forelder, Tidsperiode } from 'common/types';
+import { Forelder, Tidsperiode, Feil } from 'common/types';
 import { RecursivePartial } from '../../../../types/Partial';
 import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -33,7 +33,6 @@ import OverføringUttakPart from './partials/OverføringUttakPart';
 import GradertUttakPart from './partials/GradertUttakPart';
 import UttakTidsperiodeSpørsmål from './partials/UttakTidsperiodeSpørsmål';
 import getMessage from 'common/util/i18nUtils';
-import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { erUttakAvAnnenForeldersKvote } from '../../../../util/uttaksplan/uttakUtils';
 import { Uttaksdagen } from '../../../../util/uttaksplan/Uttaksdagen';
 import { getDefaultPermisjonStartdato } from '../../../../util/uttaksplan/permisjonUtils';

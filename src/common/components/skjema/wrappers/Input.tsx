@@ -5,7 +5,7 @@ import { guid } from 'nav-frontend-js-utils';
 import InputLabel from 'common/components/skjema/wrappers/Label';
 import ValiderbarInput from 'common/lib/validation/elements/ValiderbarInput';
 import throttle from 'lodash.throttle';
-import { InputChangeEvent } from '../../../../app/types/dom/Events';
+import { InputChangeEvent } from '../../../types/Events';
 
 interface OwnProps {
     throttled?: boolean;

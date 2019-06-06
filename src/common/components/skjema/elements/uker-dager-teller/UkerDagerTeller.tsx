@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { SkjemaGruppe, Fieldset } from 'nav-frontend-skjema';
 import NumberStepper, { Props as NumberStepperProps } from '../number-stepper/NumberStepper';
-import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import Block from 'common/components/block/Block';
 import BEMHelper from 'common/util/bem';
+import { Feil } from 'common/types';
 
 import './ukerDagerTeller.less';
 

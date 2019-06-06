@@ -1,7 +1,7 @@
 import React from 'react';
 import InteractiveListElement, {
     InteractiveListElementProps
-} from '../../../components/skjema/interactive-list-element/InteractiveListElement';
+} from '../../../../common/components/skjema/elements/interactive-list-element/InteractiveListElement';
 import { FrilansOppdrag } from '../../../types/søknad/FrilansInformasjon';
 import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntlProps } from 'react-intl';

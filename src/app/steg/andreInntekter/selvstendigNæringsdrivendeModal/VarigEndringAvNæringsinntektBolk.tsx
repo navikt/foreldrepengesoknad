@@ -9,7 +9,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import VarigEndringAvNæringsinntektSpørsmål from '../../../spørsmål/VarigEndringAvNæringsinntektSpørsmål';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
-import { TextareaChangeEvent } from '../../../types/dom/Events';
+import { TextareaChangeEvent } from '../../../../common/types/Events';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { getTidsperiodeAvgrensningerSiste4år } from '../../../util/validation/andreInntekter';
 import { hasValueRule } from '../../../util/validation/common';
