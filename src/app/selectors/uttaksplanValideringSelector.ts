@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
 import { AppState } from '../redux/reducers';
 import { UttaksplanValideringState } from '../redux/reducers/uttaksplanValideringReducer';
-import { RegelAvvik, UttaksplanRegelTestresultat } from '../regler/uttaksplanValidering/types';
+import { UttaksplanRegelTestresultat } from '../regler/uttaksplanValidering/types';
+import { RegelAvvik } from 'shared/regler/regelTypes';
 
 export const uttaksplanValideringSelector = (state: AppState): UttaksplanValideringState => state.uttaksplanValidering;
 

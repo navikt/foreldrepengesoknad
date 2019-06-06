@@ -1,8 +1,12 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
+import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+
 import moment from 'moment';
 import { isUtsettelsesperiode } from 'app/types/uttaksplan/periodetyper';
 
-export const erUtsettelseEtterFamiliehendelsesdato: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+export const erUtsettelseEtterFamiliehendelsesdato: RegelTest = (
+    grunnlag: UttaksplanRegelgrunnlag
+): RegelTestresultat => {
     const { familiehendelsesdato } = grunnlag.søknadsinfo.søknaden;
     const ugyldigeUtsettelser = grunnlag.perioder
         .filter(isUtsettelsesperiode)

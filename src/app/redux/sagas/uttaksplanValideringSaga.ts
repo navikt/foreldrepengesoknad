@@ -9,29 +9,30 @@ import {
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
-import { UttaksplanRegelTestresultat, RegelAvvik, RegelAlvorlighet } from '../../regler/uttaksplanValidering/types';
-import { sjekkUttaksplanOppMotRegler, getRegelAvvik, hasRegelFeil } from '../../regler/uttaksplanValidering/regelUtils';
+import { UttaksplanRegelTestresultat, UttaksplanRegelgrunnlag } from '../../regler/uttaksplanValidering/types';
 import { selectTilgjengeligeStønadskontoer, selectArbeidsforhold } from 'app/selectors/apiSelector';
 import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import { Periode, TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
 import Søknad from 'app/types/søknad/Søknad';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import uttaksplanRegler from 'app/regler/uttaksplanValidering';
+import { regelPasserer, regelHarAvvik, getRegelAvvik, hasRegelFeil } from 'shared/regler/regelUtils';
+import { RegelStatus } from 'shared/regler/regelTypes';
 
 const stateSelector = (state: AppState) => state;
 
-const alvorlighetSortOrder = {
-    [RegelAlvorlighet.FEIL]: 0,
-    [RegelAlvorlighet.ADVARSEL]: 1,
-    [RegelAlvorlighet.INFO]: 2
+const REGEL_INTL_PREFIX = 'uttaksplan.validering.';
+
+export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: UttaksplanRegelgrunnlag): RegelStatus[] => {
+    return uttaksplanRegler.map((regel) => {
+        const resultat = regel.test(regelgrunnlag);
+        return resultat.passerer
+            ? regelPasserer(regel)
+            : regelHarAvvik(regel, REGEL_INTL_PREFIX, resultat.info, resultat.periodeId);
+    });
 };
 
-export const sorterAvvik = (a1: RegelAvvik, a2: RegelAvvik): number => {
-    if (a1.regel.alvorlighet === a2.regel.alvorlighet) {
-        return 0;
-    }
-    return alvorlighetSortOrder[a1.regel.alvorlighet] < alvorlighetSortOrder[a2.regel.alvorlighet] ? -1 : 1;
-};
 const kjørUttaksplanRegler = (
     søknad: Søknad,
     søknadsinfo: Søknadsinfo,
