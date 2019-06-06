@@ -5,14 +5,15 @@ import {
     SøknadActionKeys,
     UpdateSøkerAndStorage,
     AvbrytSøknad,
-    StartSøknad
+    StartSøknad,
+    UpdateSøknadenGjelder
 } from '../actions/søknad/søknadActionDefinitions';
 import { lagUttaksplan } from '../../util/uttaksplan/forslag/lagUttaksplan';
 import { AppState } from '../reducers';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
-import { fetchEksisterendeSak } from './sakerSaga';
+import { fetchEksisterendeSak, fetchEksisterendeSakMedFnr } from './sakerSaga';
 import { opprettSøknadFraEksisterendeSak } from '../../util/eksisterendeSak/eksisterendeSakUtils';
 import { søknadStegPath } from '../../steg/StegRoutes';
 import { StegID } from '../../util/routing/stegConfig';
@@ -21,6 +22,8 @@ import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParam
 import Sak, { SakType } from 'app/types/søknad/Sak';
 import { validerUttaksplanAction } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { ApiState } from '../reducers/apiReducer';
+import mapSaksperioderTilUttaksperioder from 'app/util/eksisterendeSak/mapSaksperioderTilUttaksperioder';
+import { getFødselsnummerForAnnenPartPåRegistrerteBarn } from '../util/fødselsnummerUtil';
 
 const stateSelector = (state: AppState) => state;
 
@@ -94,6 +97,35 @@ function* startEndringssøknad(action: StartSøknad, sak: Sak) {
     }
 }
 
+function* getAnnenPartSinSakForValgtBarn({ payload }: UpdateSøknadenGjelder) {
+    const appState: AppState = yield select(stateSelector);
+    const annenPartFnr = getFødselsnummerForAnnenPartPåRegistrerteBarn(payload.valgteBarn);
+    if (appState.søknad.erEndringssøknad || annenPartFnr === undefined) {
+        return;
+    };
+
+    const annenPartsEksisterendeSak: EksisterendeSak | undefined = yield call(fetchEksisterendeSakMedFnr, annenPartFnr);
+    if (annenPartsEksisterendeSak) {
+        const søknad = appState.søknad;
+        yield put(
+            søknadActions.updateSøknad({
+                ...søknad,
+                dekningsgrad: annenPartsEksisterendeSak.grunnlag.dekningsgrad,
+                ekstrainfo: {
+                    ...appState.søknad.ekstrainfo,
+                    sakForAnnenPart: {
+                        ...annenPartsEksisterendeSak,
+                        uttaksplan: mapSaksperioderTilUttaksperioder(
+                            annenPartsEksisterendeSak.saksperioder,
+                            annenPartsEksisterendeSak.grunnlag
+                        )
+                    }
+                }
+            })
+        );
+    }
+}
+
 function* startFallbackEndringssøknad(action: StartSøknad) {
     yield put(
         søknadActions.updateSøknad({
@@ -109,6 +141,7 @@ function* lagUttaksplanForslag() {
     const søknadsinfo = selectSøknadsinfo(appState);
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
     const { uttaksplanSkjema } = appState.søknad.ekstrainfo;
+    
     if (søknadsinfo) {
         const {
             søknaden: { erDeltUttak, erEndringssøknad, familiehendelsesdato, situasjon },
@@ -134,6 +167,7 @@ export default function* søknadSaga() {
         takeEvery(SøknadActionKeys.UPDATE_SØKER_AND_STORAGE, updateSøkerAndStorage),
         takeEvery(SøknadActionKeys.AVBRYT_SØKNAD, avbrytSøknadSaga),
         takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, lagUttaksplanForslag),
-        takeEvery(SøknadActionKeys.START_SØKNAD, startSøknad)
+        takeEvery(SøknadActionKeys.START_SØKNAD, startSøknad),
+        takeEvery(SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN, getAnnenPartSinSakForValgtBarn)
     ]);
 }

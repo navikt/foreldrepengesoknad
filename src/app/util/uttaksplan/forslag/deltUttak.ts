@@ -394,6 +394,5 @@ export const deltUttak = (
             farSinFørsteUttaksdag
         );
     }
-
     return [];
 };

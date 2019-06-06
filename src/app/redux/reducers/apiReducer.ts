@@ -16,9 +16,11 @@ export interface ApiState {
     isLoadingTilgjengeligeStønadskontoer: boolean;
     isLoadingSaker: boolean;
     isLoadingEksisterendeSak: boolean;
+    isLoadingSakForAnnenPart: boolean;
     sessionHasExpired: boolean;
     oppslagSakerFeilet?: boolean;
     oppslagEksisterendeSakFeilet?: boolean;
+    oppslagSakForAnnenPartFeilet?: boolean;
     søknadSendingInProgress: boolean;
     søknadHasBeenReceived: boolean;
     stønadskontoer100: TilgjengeligStønadskonto[];
@@ -28,6 +30,7 @@ export interface ApiState {
     systemerIkkeTilgjengelig: boolean;
     storageKvittering?: StorageKvittering;
     eksisterendeSak?: EksisterendeSak;
+    sakForAnnenPart?: EksisterendeSak;
     innloggetSomAnnenForelder: boolean;
 }
 
@@ -37,6 +40,7 @@ export const getDefaultApiState = (): ApiState => ({
     isLoadingInitialAppData: true,
     isLoadingSøkerinfo: false,
     isLoadingStoredAppState: false,
+    isLoadingSakForAnnenPart: false,
     isLoadingTilgjengeligeStønadskontoer: false,
     isLoadingSaker: false,
     isLoadingEksisterendeSak: false,

@@ -50,7 +50,7 @@ export interface Tilleggsopplysninger {
     begrunnelseForSenEndring?: Tilleggsopplysning;
 }
 
-interface SøknadEkstrainfo {
+export interface SøknadEkstrainfo {
     erEnkelEndringssøknad: boolean;
     erEnkelEndringssøknadMedUttaksplan: boolean;
     currentStegID: StegID | undefined;
@@ -58,6 +58,7 @@ interface SøknadEkstrainfo {
     lastAddedPeriodeId?: string;
     søknadenGjelderBarnValg?: SøknadenGjelderBarnValg;
     eksisterendeSak?: EksisterendeSak;
+    sakForAnnenPart?: EksisterendeSak;
 }
 
 interface Søknad {

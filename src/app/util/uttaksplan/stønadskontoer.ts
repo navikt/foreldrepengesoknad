@@ -67,7 +67,7 @@ const getBrukteUttaksdager = (perioder: Saksperiode[], kontoType: StønadskontoT
         .filter(
             (p) =>
                 p.stønadskontotype === kontoType &&
-                p.periodeResultatType !== PeriodeResultatType.INNVILGET &&
+                p.periodeResultatType === PeriodeResultatType.INNVILGET &&
                 moment(p.tidsperiode.fom).isBefore(moment(), 'day')
         )
         .map((p) => {

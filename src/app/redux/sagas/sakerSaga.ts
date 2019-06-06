@@ -80,6 +80,27 @@ export function* fetchEksisterendeSak(saksnummer: string) {
     }
 }
 
+export function* fetchEksisterendeSakMedFnr(fnr: string) {
+    try {
+        const appState: AppState = yield select(stateSelector);
+        yield put(apiActions.updateApi({ isLoadingSakForAnnenPart: true }));
+        const response = yield call(Api.getEksisterendeSakMedFnr, fnr);
+        return getEksisterendeSakFromDTO(response.data, appState.api.søkerinfo!.arbeidsforhold);
+    } catch (error) {
+        yield put(
+            apiActions.updateApi({
+                oppslagSakForAnnenPartFeilet: true
+            })
+        );
+    } finally {
+        yield put(
+            apiActions.updateApi({
+                isLoadingSakForAnnenPart: false
+            })
+        );
+    }
+}
+
 export default function* sakerSaga() {
     yield all([takeLatest(ApiActionKeys.GET_SAKER, getSaker)]);
 }
