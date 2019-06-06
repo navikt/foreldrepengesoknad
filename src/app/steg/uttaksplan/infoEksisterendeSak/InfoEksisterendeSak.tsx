@@ -12,6 +12,7 @@ import InfoBlock from 'common/components/infoBlock/InfoBlock';
 import InnholdMedIllustrasjon from 'app/components/elementer/innholdMedIllustrasjon/InnholdMedIllustrasjon';
 import { getVarighetString } from 'common/util/intlUtils';
 import { ForeldreparSituasjon } from 'shared/types';
+import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -78,6 +79,17 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({ søknadsinfo, ti
                         navn: getHvem(intl, erDeltUttak, navn)
                     }}
                 />
+                <FormattedHTMLMessage
+                    id="eksisterendeSak.tekst.html"
+                    values={{
+                        uker: getVarighetString(uker * 5, intl),
+                        dekningsgrad,
+                        navn: getHvem(intl, erDeltUttak, navn)
+                    }}
+                />
+                <UtvidetInformasjon apneLabel={getMessage(intl, 'eksisterendeSak.tekst.html')}>
+                    <FormattedHTMLMessage id="eksisterendeSak.tekst.html" />
+                </UtvidetInformasjon>
             </InnholdMedIllustrasjon>
         </InfoBlock>
     );

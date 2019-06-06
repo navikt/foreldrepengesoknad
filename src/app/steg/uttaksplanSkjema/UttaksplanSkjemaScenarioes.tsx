@@ -22,6 +22,9 @@ import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
 import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 import { getNavnGenitivEierform } from '../../util/tekstUtils';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import UtsettelseBegrunnelse from './enkeltspørsmål/UtsettelseBegrunnelse';
+import { Periodene } from 'app/util/uttaksplan/Periodene';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -31,6 +34,7 @@ export interface ScenarioProps {
     antallUkerFedreKvote: number | undefined;
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
+    eksisterendeSakAnnenPart?: EksisterendeSak;
 }
 export interface OwnProps extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
@@ -328,6 +332,24 @@ const Scenario8: React.StatelessComponent<ScenarioProps> = () => {
     );
 };
 
+const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehendelsesdato }) => {
+    const { uttaksplanSkjema, eksisterendeSakAnnenPart } = søknad.ekstrainfo;
+    const morsSisteDag = eksisterendeSakAnnenPart
+        ? Periodene(eksisterendeSakAnnenPart.uttaksplan!).finnSisteUttaksperiode().tidsperiode.tom
+        : undefined;
+
+    return (
+        <>
+            <FarSinFørsteUttaksdagSpørsmål visible={true} familiehendelsesdato={familiehendelsesdato} />
+            <UtsettelseBegrunnelse
+                visible={
+                    morsSisteDag !== undefined && !moment(uttaksplanSkjema.farSinFørsteUttaksdag).isSame(morsSisteDag)
+                }
+            />
+        </>
+    );
+};
+
 const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
     const { scenario, ...scenarioProps } = props;
     switch (scenario) {
@@ -345,6 +367,8 @@ const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
             return <Scenario7 {...scenarioProps} />;
         case UttaksplanSkjemaScenario.s8_endringssøknad:
             return <Scenario8 {...scenarioProps} />;
+        case UttaksplanSkjemaScenario.s9_førstegangssøknadMedAnnenPart:
+            return <Scenario9 {...scenarioProps} />;
         default:
             return <>Undefined scenario</>;
     }

@@ -52,7 +52,7 @@ import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
 import { VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/veilederInfo/types';
 import UttaksplanFeiloppsummering from 'app/components/uttaksplanlegger/components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import Uttaksoppsummering from 'app/components/uttaksplanlegger/components/uttaksoppsummering/Uttaksoppsummering';
-import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
+// import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
 
 interface StateProps {
     stegProps: StegProps;
@@ -215,7 +215,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             uttaksplanVeilederInfo,
             planErEndret,
             meldingerPerPeriode,
-            sak,
             intl
         } = this.props;
 
@@ -274,7 +273,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         {visVeileder && (
                             <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
                         )}
-                        {eksisterendeSak &&
+
+                        {/* {eksisterendeSak &&
                             sak && (
                                 <Block>
                                     <InfoEksisterendeSak
@@ -282,7 +282,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                         tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                     />
                                 </Block>
-                            )}
+                            )} */}
                         <Block>
                             <Uttaksplanlegger
                                 planErEndret={planErEndret}

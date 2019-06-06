@@ -4,7 +4,6 @@ import { Søkerinfo } from '../../types/søkerinfo';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import Sak from '../../types/søknad/Sak';
 import { StorageKvittering } from '../../types/StorageKvittering';
-import { EksisterendeSak } from '../../types/EksisterendeSak';
 
 export interface ApiState {
     søkerinfo?: Søkerinfo;
@@ -29,8 +28,6 @@ export interface ApiState {
     søkerinfoLastetCounter: number;
     systemerIkkeTilgjengelig: boolean;
     storageKvittering?: StorageKvittering;
-    eksisterendeSak?: EksisterendeSak;
-    sakForAnnenPart?: EksisterendeSak;
     innloggetSomAnnenForelder: boolean;
 }
 

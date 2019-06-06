@@ -113,7 +113,7 @@ function* getAnnenPartSinSakForValgtBarn({ payload }: UpdateSøknadenGjelder) {
                 dekningsgrad: annenPartsEksisterendeSak.grunnlag.dekningsgrad,
                 ekstrainfo: {
                     ...appState.søknad.ekstrainfo,
-                    sakForAnnenPart: {
+                    eksisterendeSakAnnenPart: {
                         ...annenPartsEksisterendeSak,
                         uttaksplan: mapSaksperioderTilUttaksperioder(
                             annenPartsEksisterendeSak.saksperioder,

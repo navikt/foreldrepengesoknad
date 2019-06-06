@@ -1,3 +1,5 @@
+import { UtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
+
 export enum ValgalternativerAdopsjonStartdato {
     'ankomst' = 'ankomst',
     'omsorgsovertakelse' = 'omsorgsovertakelse',
@@ -26,4 +28,5 @@ export interface UttaksplanSkjemadata {
     farSinFørsteUttaksdag?: Date;
     antallUkerFellesperiodeFarMedmor?: number;
     antallDagerFellesperiodeFarMedmor?: number;
+    begrunnelseForUtsettelse?: UtsettelseÅrsakType;
 }
