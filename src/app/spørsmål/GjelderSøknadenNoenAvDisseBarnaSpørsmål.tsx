@@ -2,7 +2,7 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
 import { formaterNavn } from '../util/domain/personUtil';
-import { InputChangeEvent } from '../types/dom/Events';
+import { InputChangeEvent } from '../../common/types/Events';
 import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../util/dates/dates';
 import { RegistrertBarn } from '../types/Person';

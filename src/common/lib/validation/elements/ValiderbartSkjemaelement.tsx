@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { Validator, ValidationResult } from '../types/index';
 import PT from 'prop-types';
-import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { runValidators } from 'common/lib/validation/utils/runValidFormValidation';
+import { Feil } from 'common/types';
 
 type ValiderEvent = (evt: any) => void;
 

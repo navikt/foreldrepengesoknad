@@ -2,7 +2,7 @@ import * as React from 'react';
 import Lenke from 'nav-frontend-lenker';
 import { Innholdstittel, Ingress } from 'nav-frontend-typografi';
 import { VeilederProps } from '../veileder/Veileder';
-import VeilederMedSnakkeboble from '../veileder-med-snakkeboble/VeilederMedSnakkeboble';
+import VeilederMedSnakkeboble from '../veilederMedSnakkeboble/VeilederMedSnakkeboble';
 import './feilsidemelding.less';
 import { FormattedMessage } from 'react-intl';
 

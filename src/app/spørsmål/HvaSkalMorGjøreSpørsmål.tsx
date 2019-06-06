@@ -3,7 +3,7 @@ import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedHTMLMessage }
 import { MorsAktivitet } from '../types/uttaksplan/periodetyper';
 import Select from 'common/components/skjema/wrappers/Select';
 import getMessage from 'common/util/i18nUtils';
-import { SelectChangeEvent } from '../types/dom/Events';
+import { SelectChangeEvent } from '../../common/types/Events';
 import Block from 'common/components/block/Block';
 import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import lenker from '../util/routing/lenker';
