@@ -21,7 +21,7 @@ const uttakEndringssøknad = (startDato: Date | undefined, familiehendelsesdato:
             const ekstraPeriodeFørFødsel: Periode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.MOR,
+                forelder: Forelder.mor,
                 konto: StønadskontoType.Fellesperiode,
                 tidsperiode: getTidsperiode(startdatoPermisjon, dagerFørFødsel - 15),
                 vedlegg: []
@@ -33,7 +33,7 @@ const uttakEndringssøknad = (startDato: Date | undefined, familiehendelsesdato:
         const periodeFørFødsel: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
+            forelder: Forelder.mor,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             tidsperiode: {
                 fom: startdatoFpFørFødsel,

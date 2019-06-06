@@ -32,7 +32,7 @@ const EnkelPeriodeliste: React.StatelessComponent<Props> = ({ perioder, navnPåF
                               intl,
                               periode.årsak,
                               getForelderNavn(periode.forelder, navnPåForeldre),
-                              periode.forelder === Forelder.MOR
+                              periode.forelder === Forelder.mor
                           )
                         : getPeriodeForelderNavn(periode, navnPåForeldre)}
                 </span>

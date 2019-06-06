@@ -131,9 +131,9 @@ const korrigerTidsperiodeTilGyldigUttaksdag = (periode: Periode): Periode => {
 
 const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor: boolean): Forelder => {
     if (saksperiode.gjelderAnnenPart) {
-        return søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR;
+        return søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;
     }
-    return søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR;
+    return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
 };
 
 const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsakType | undefined => {

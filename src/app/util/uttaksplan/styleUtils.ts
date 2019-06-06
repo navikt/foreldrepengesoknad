@@ -3,7 +3,7 @@ import { Periode, Periodetype, StønadskontoType, Oppholdsperiode } from '../../
 import { UttaksplanColor } from '../../types/uttaksplan/colors';
 
 export const getForelderFarge = (forelder: Forelder) => {
-    return forelder === Forelder.MOR ? 'purple' : 'blue';
+    return forelder === Forelder.mor ? 'purple' : 'blue';
 };
 
 export const getStønadskontoFarge = (

@@ -3,8 +3,8 @@ export * from '../intl/types';
 export type Dekningsgrad = '80' | '100';
 
 export enum Forelder {
-    'MOR' = 'mor',
-    'FARMEDMOR' = 'farMedmor'
+    'mor' = 'mor',
+    'farMedmor' = 'farMedmor'
 }
 
 export interface NavnPåForeldre {
