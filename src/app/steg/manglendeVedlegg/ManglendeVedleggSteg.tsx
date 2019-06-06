@@ -6,7 +6,7 @@ import Steg, { StegProps } from 'app/components/applikasjon/steg/Steg';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from 'app/types/common';
-import isAvailable from '../util/isAvailable';
+import isAvailable from '../../util/steg/isAvailable';
 import { SøkerinfoProps } from 'app/types/søkerinfo';
 import { connect } from 'react-redux';
 import Block from 'common/components/block/Block';

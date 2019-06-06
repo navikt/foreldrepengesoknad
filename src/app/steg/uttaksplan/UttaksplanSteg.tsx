@@ -32,7 +32,7 @@ import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjema
 import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
 import BekreftTilbakestillUttaksplanDialog from './BekreftTilbakestillUttaksplanDialog';
 import Block from 'common/components/block/Block';
-import isAvailable from '../util/isAvailable';
+import isAvailable from '../../util/steg/isAvailable';
 import Søknad, { Tilleggsopplysninger, Opplysning } from '../../types/søknad/Søknad';
 import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
 import Uttaksplanlegger from '../../components/uttaksplanlegger/Uttaksplanlegger';

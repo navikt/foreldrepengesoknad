@@ -19,7 +19,7 @@ import { HistoryProps } from '../../../types/common';
 import { StegProps } from '../../../components/applikasjon/steg/Steg';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import isAvailable from '../../util/isAvailable';
+import isAvailable from '../../../util/steg/isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { Skjemanummer } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';

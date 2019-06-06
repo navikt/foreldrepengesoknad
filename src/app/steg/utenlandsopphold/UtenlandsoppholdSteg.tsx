@@ -13,7 +13,7 @@ import { DispatchProps } from 'common/redux/types';
 import Steg, { StegProps } from '../../components/applikasjon/steg/Steg';
 import { StegID } from '../../util/routing/stegConfig';
 import { HistoryProps } from '../../types/common';
-import isAvailable from '../util/isAvailable';
+import isAvailable from '../../util/steg/isAvailable';
 import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
 import {
     getFraAvgrensninger as fraAvgrensningerTidligerePerioder,

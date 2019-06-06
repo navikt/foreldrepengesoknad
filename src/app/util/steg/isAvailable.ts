@@ -1,16 +1,12 @@
-import { StegID } from '../../util/routing/stegConfig';
+import { StegID } from '../routing/stegConfig';
 import Søknad from '../../types/søknad/Søknad';
-import {
-    søknadGjelderAdopsjon,
-    søknadGjelderForeldreansvar,
-    søknadGjelderFødsel
-} from '../../util/validation/situasjon';
-import { barnErGyldig } from '../../util/validation/steg/barn';
-import { annenForelderErGyldig } from '../../util/validation/steg/annenForelder';
-import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
+import { søknadGjelderAdopsjon, søknadGjelderForeldreansvar, søknadGjelderFødsel } from '../validation/situasjon';
+import { barnErGyldig } from '../validation/steg/barn';
+import { annenForelderErGyldig } from '../validation/steg/annenForelder';
+import { utenlandsoppholdErGyldig } from '../validation/steg/utenlandsopphold';
 import { Søkerinfo } from '../../types/søkerinfo';
-import { uttaksplanSkjemaErGyldig } from '../../util/validation/steg/uttaksplanSkjema';
-import { annenInntektErGyldig } from '../../util/validation/steg/annenInntekt';
+import { uttaksplanSkjemaErGyldig } from '../validation/steg/uttaksplanSkjema';
+import { annenInntektErGyldig } from '../validation/steg/annenInntekt';
 import { Søknadsinfo } from '../../selectors/types';
 
 const harGodkjentVilkår = (søknad: Søknad) => søknad.harGodkjentVilkår === true;

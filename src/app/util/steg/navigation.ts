@@ -1,6 +1,6 @@
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { AppState } from '../../redux/reducers';
-import { StegID } from '../../util/routing/stegConfig';
+import { StegID } from '../routing/stegConfig';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import _ from 'lodash';
