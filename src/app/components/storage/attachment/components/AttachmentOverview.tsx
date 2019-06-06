@@ -11,7 +11,7 @@ import { guid } from 'nav-frontend-js-utils';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import Block from 'common/components/block/Block';
-import AlertstripeWithCloseButton from 'common/components/alertstripe-content/AlertstripeWithCloseButton';
+import AlertstripeWithCloseButton from 'common/components/alertstripeWithCloseButton/AlertstripeWithCloseButton';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 
 export interface AttachmentOverviewProps {

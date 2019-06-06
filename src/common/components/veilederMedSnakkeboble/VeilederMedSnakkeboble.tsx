@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Veileder, { VeilederProps } from '../veileder/Veileder';
-import PersonMedSnakkeboble from 'common/components/person-med-snakkeboble/PersonMedSnakkeboble';
+import PersonMedSnakkeboble from 'common/components/personMedSnakkeboble/PersonMedSnakkeboble';
 
 interface Props {
     dialog?: Dialog;

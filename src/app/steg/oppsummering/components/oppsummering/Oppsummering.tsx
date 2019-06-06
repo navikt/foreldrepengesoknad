@@ -2,7 +2,7 @@ import React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Søknad from '../../../../types/søknad/Søknad';
-import SøkerPersonalia from 'common/components/søker-personalia/SøkerPersonalia';
+import SøkerPersonalia from 'app/steg/oppsummering/components/søkerPersonalia/SøkerPersonalia';
 import { formaterNavn } from 'app/util/domain/personUtil';
 import { Søkerinfo } from '../../../../types/søkerinfo';
 import { skalSøkerLasteOppTerminbekreftelse } from '../../../../util/validation/steg/barn';
