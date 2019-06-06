@@ -7,8 +7,8 @@ import {
 } from '../../steg/annenForelder/visibility/annenForelderStegVisibility';
 
 import annenInntektVisibility from '../../steg/andreInntekter/annenInntektModal/visibility';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import { Attachment, InnsendingsType } from 'app/components/storage/attachment/types/Attachment';
 import {
     Overføringsperiode,
     Periode,
@@ -26,7 +26,7 @@ import {
     isAttachmentForBarn,
     isAttachmentForPeriode,
     mapFileToAttachment
-} from 'common/storage/attachment/components/util';
+} from 'app/components/storage/attachment/components/util';
 import {
     dokumentasjonBehøvesForOverføringsperiode,
     dokumentasjonBehøvesForUtsettelsesperiode,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
+import ApplicationSpinner from 'common/components/applicationSpinner/ApplicationSpinner';
 import DocumentTitle from 'react-document-title';
 import getMessage from 'common/util/i18nUtils';
 import Applikasjonsside from 'app/components/applikasjon/applikasjonsside/Applikasjonsside';

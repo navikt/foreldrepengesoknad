@@ -1,7 +1,7 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
 import { default as apiActions } from '../actions/api/apiActionCreators';
-import AttachmentApi from '../../../common/storage/api/attachmentApi';
+import AttachmentApi from '../../components/storage/api/attachmentApi';
 import { DeleteAttachment, SøknadActionKeys, UploadAttachment } from '../actions/søknad/søknadActionDefinitions';
 
 function* uploadAttachment(action: UploadAttachment) {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Normaltekst from 'nav-frontend-typografi/lib/normaltekst';
-import CustomSVG from 'common/components/custom-svg/CustomSVG';
+import CustomSVG from 'common/components/customSvg/CustomSVG';
 import BEMHelper from 'common/util/bem';
 import { default as Etikett, EtikettBaseProps } from 'nav-frontend-etiketter';
 import { injectIntl, InjectedIntlProps } from 'react-intl';

@@ -3,16 +3,16 @@ import { FormattedMessage } from 'react-intl';
 
 import VedleggInput from './AttachmentInput';
 import AttachmentList from './AttachmentList';
-import LabelText from '../../../components/labeltekst/Labeltekst';
+import LabelText from '../../../../../common/components/labeltekst/Labeltekst';
 import { bytesString, getTotalFileSize } from 'common/util/filesize';
 import { isAttachmentWithError, mapFileToAttachment } from './util';
 import { CSSTransition } from 'react-transition-group';
 import { guid } from 'nav-frontend-js-utils';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { Skjemanummer } from '../../../../app/types/søknad/Søknad';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import Block from 'common/components/block/Block';
 import AlertstripeWithCloseButton from 'common/components/alertstripe-content/AlertstripeWithCloseButton';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 
 export interface AttachmentOverviewProps {
     attachments: Attachment[];

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Element } from 'nav-frontend-typografi';
-import CustomSVG from 'common/components/custom-svg/CustomSVG';
+import CustomSVG from 'common/components/customSvg/CustomSVG';
 import BEMHelper from 'common/util/bem';
 
 const uploadIcon = require('./upload.svg').default;

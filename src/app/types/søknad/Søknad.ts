@@ -2,7 +2,7 @@ import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
 import InformasjonOmUtenlandsopphold, { InformasjonOmUtenlandsoppholdPartial } from './InformasjonOmUtenlandsopphold';
 import { Barn } from './Barn';
 import Søker, { SøkerPartial } from './Søker';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { RegistrertAnnenForelder, RegistrertBarn } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';

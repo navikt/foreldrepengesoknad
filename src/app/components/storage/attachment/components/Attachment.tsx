@@ -2,12 +2,12 @@ import * as React from 'react';
 import * as classnames from 'classnames';
 
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import SlettKnapp from '../../../components/slett-knapp/SlettKnapp';
+import SlettKnapp from '../../../../../common/components/slettKnapp/SlettKnapp';
 
 import './attachment.less';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import Lenke from 'nav-frontend-lenker';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { bytesString } from 'common/util/filesize';
 import BEMHelper from 'common/util/bem';
 import VedleggIkon from 'common/components/ikoner/VedleggIkon';

@@ -1,9 +1,9 @@
 import * as React from 'react';
 // tslint:disable-next-line:no-var-requires
 import { KnappProps } from 'nav-frontend-knapper/lib/knapp';
+import TrashcanIkon from '../ikoner/TrashcanIkon';
 
 import './slettKnapp.less';
-import TrashcanIkon from '../ikoner/TrashcanIkon';
 
 export interface SlettKnappProps extends KnappProps {
     ariaLabel: string;
