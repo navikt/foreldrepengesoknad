@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import VedleggInput from './AttachmentInput';
 import AttachmentList from './AttachmentList';
 import LabelText from '../../../../../common/components/labeltekst/Labeltekst';
-import { bytesString, getTotalFileSize } from 'common/util/filesize';
+import { bytesString, getTotalFileSize } from 'app/util/filesize';
 import { isAttachmentWithError, mapFileToAttachment } from './util';
 import { CSSTransition } from 'react-transition-group';
 import { guid } from 'nav-frontend-js-utils';
