@@ -22,6 +22,7 @@ export interface BlockProps {
     hasChildBlocks?: boolean;
     /** content */
     children: React.ReactNode;
+    screenOnly?: boolean;
 }
 
 const cls = BEMHelper('block');
@@ -32,12 +33,17 @@ const Block: React.StatelessComponent<BlockProps> = ({
     header,
     animated = true,
     children,
-    hasChildBlocks
+    hasChildBlocks,
+    screenOnly
 }) => {
     if (children === undefined || (animated !== true && visible === false)) {
         return null;
     }
-    const contentClass = classNames(cls.block, !hasChildBlocks ? cls.modifier(margin) : cls.modifier('none'));
+    const contentClass = classNames(
+        cls.block,
+        !hasChildBlocks ? cls.modifier(margin) : cls.modifier('none'),
+        screenOnly ? 'no-print' : undefined
+    );
     const content =
         header !== undefined ? (
             <section className={contentClass}>
