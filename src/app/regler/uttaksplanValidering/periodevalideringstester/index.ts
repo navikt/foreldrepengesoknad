@@ -1,10 +1,10 @@
-import { Regel, RegelAlvorlighet } from '../types';
 import { harUttaksperiodeGyldigGradering } from './harUttaksperiodeGyldigGradering';
 import { harPeriodeGyldigTidsperiode } from './harPeriodeGyldigTidsperiode';
 import { harUttaksperiodeStønadskonto } from './harUttaksperiodeStønadskonto';
 import { erSamtidigUttakGyldig } from './erSamtidigUttakGyldig';
 import { erUtsettelseEtterFamiliehendelsesdato } from './erUtsettelseEtterFamiliehendelsesdato';
 import { erAllePeriodeSkjemaspørsmålBesvart } from './erAllePeriodeSkjemaspørsmålBesvart';
+import { Regel, RegelAlvorlighet } from 'shared/regler/regelTypes';
 
 export enum PeriodeValiderRegelKey {
     'uttaksperiodeHarGyldigGradering' = 'uttaksperiodeHarGyldigGradering',

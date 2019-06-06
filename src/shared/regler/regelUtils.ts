@@ -1,5 +1,7 @@
+import { InjectedIntl } from 'react-intl';
+import { flatten, uniqBy } from 'lodash';
+import { guid } from 'nav-frontend-js-utils';
 import {
-    Regelgrunnlag,
     UttaksplanRegelTestresultat,
     RegelAvvik,
     Regel,
@@ -8,33 +10,63 @@ import {
     RegelTestresultatInfoObject,
     RegelAvvikInfo,
     RegelAlvorlighet
-} from './types';
-import uttaksplanRegler from '.';
-import { InjectedIntl } from 'react-intl';
+} from './regelTypes';
 import { isArray } from 'util';
-import { flatten, uniqBy } from 'lodash';
-import { guid } from 'nav-frontend-js-utils';
-import { sorterAvvik } from 'app/redux/sagas/uttaksplanValideringSaga';
 
-export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: Regelgrunnlag): RegelStatus[] => {
-    return uttaksplanRegler.map((regel) => {
-        const resultat = regel.test(regelgrunnlag);
-        return resultat.passerer ? regelPasserer(regel) : regelHarAvvik(regel, resultat.info, resultat.periodeId);
-    });
+const getRegelIntlKey = (regel: Regel, intlRegelPrefix: string): string =>
+    `${intlRegelPrefix}.${regel.alvorlighet}.${regel.key}`;
+
+const alvorlighetSortOrder = {
+    [RegelAlvorlighet.FEIL]: 0,
+    [RegelAlvorlighet.ADVARSEL]: 1,
+    [RegelAlvorlighet.INFO]: 2
 };
 
-const getRegelIntlKey = (regel: Regel): string => `uttaksplan.validering.${regel.alvorlighet}.${regel.key}`;
+const sorterAvvik = (a1: RegelAvvik, a2: RegelAvvik): number => {
+    if (a1.regel.alvorlighet === a2.regel.alvorlighet) {
+        return 0;
+    }
+    return alvorlighetSortOrder[a1.regel.alvorlighet] < alvorlighetSortOrder[a2.regel.alvorlighet] ? -1 : 1;
+};
 
-const ensureRegelAvvikIntlKey = (regel: Regel, info?: Partial<RegelTestresultatInfo>): RegelAvvikInfo => ({
+const ensureRegelAvvikIntlKey = (
+    regel: Regel,
+    intlRegelPrefix: string,
+    info?: Partial<RegelTestresultatInfo>
+): RegelAvvikInfo => ({
     ...info,
-    intlKey: info ? info.intlKey || getRegelIntlKey(regel) : getRegelIntlKey(regel)
+    intlKey: info ? info.intlKey || getRegelIntlKey(regel, intlRegelPrefix) : getRegelIntlKey(regel, intlRegelPrefix)
 });
 
-export const regelHarAvvik = (regel: Regel, info?: RegelTestresultatInfoObject, periodeId?: string): RegelStatus => {
+const overstyresAvFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelAvvik[]): boolean => {
+    return (
+        avvik.regel.overstyresAvRegel === undefined &&
+        alleAvvik.some((b2) => b2.regel.key === avvik.regel.overstyresAvRegel) === false
+    );
+};
+
+const overstyrerAndreFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelAvvik[]): boolean => {
+    const overstyresAvAndre = alleAvvik.some(
+        (rb) =>
+            rb.regel.overstyrerRegler
+                ? rb.regel.overstyrerRegler.some((rbo) => {
+                      return rbo === avvik.regel.key;
+                  })
+                : false
+    );
+    return overstyresAvAndre === false;
+};
+
+export const regelHarAvvik = (
+    regel: Regel,
+    intlRegelPrefix: string,
+    info?: RegelTestresultatInfoObject,
+    periodeId?: string
+): RegelStatus => {
     const mapInfoToRegelAvvik = (i?: Partial<RegelTestresultatInfo>): RegelAvvik => ({
         id: guid(),
         regel,
-        info: ensureRegelAvvikIntlKey(regel, i),
+        info: ensureRegelAvvikIntlKey(regel, intlRegelPrefix, i),
         periodeId: i ? i.periodeId : periodeId
     });
     const regelAvvik: RegelAvvik[] = [];
@@ -72,31 +104,10 @@ export const isRegelFeil = (regelAvvik: RegelAvvik): boolean => regelAvvik.regel
 export const isRegelAdvarsel = (regelAvvik: RegelAvvik): boolean =>
     regelAvvik.regel.alvorlighet === RegelAlvorlighet.ADVARSEL;
 export const isRegelInfo = (regelAvvik: RegelAvvik): boolean => regelAvvik.regel.alvorlighet === RegelAlvorlighet.INFO;
-
 export const hasRegelFeil = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelFeil(a));
 export const hasRegelAdvarsler = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelAdvarsel(a));
 export const hasRegelInfo = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelInfo(a));
-
 export const hasRegelAvvikFeil = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelFeil(a));
-
-const overstyresAvFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelAvvik[]): boolean => {
-    return (
-        avvik.regel.overstyresAvRegel === undefined &&
-        alleAvvik.some((b2) => b2.regel.key === avvik.regel.overstyresAvRegel) === false
-    );
-};
-
-const overstyrerAndreFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelAvvik[]): boolean => {
-    const overstyresAvAndre = alleAvvik.some(
-        (rb) =>
-            rb.regel.overstyrerRegler
-                ? rb.regel.overstyrerRegler.some((rbo) => {
-                      return rbo === avvik.regel.key;
-                  })
-                : false
-    );
-    return overstyresAvAndre === false;
-};
 
 export const trimRelaterteRegelAvvik = (avvik: RegelAvvik[]): RegelAvvik[] => {
     return uniqBy(avvik.filter(overstyresAvFilter).filter(overstyrerAndreFilter), (a) => {

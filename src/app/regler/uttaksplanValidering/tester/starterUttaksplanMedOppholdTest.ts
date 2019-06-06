@@ -1,7 +1,9 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
+import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+
 import { uttaksplanStarterMedOpphold } from '../../../util/validation/uttaksplan/uttaksplanStarterMedOpphold';
 
-export const starterUttaksplanMedOppholdTest: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+export const starterUttaksplanMedOppholdTest: RegelTest = (grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat => {
     if (grunnlag.søknadsinfo.søknaden.erEndringssøknad) {
         return { passerer: true };
     }

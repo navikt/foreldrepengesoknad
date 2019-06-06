@@ -1,12 +1,15 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { Periode, isGruppertInfoPeriode } from 'app/types/uttaksplan/periodetyper';
 import { getPeriodeTittel } from 'app/util/uttaksplan';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import { InjectedIntl } from 'react-intl';
 import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
+import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from 'shared/regler/regelTypes';
 
-export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+export const overskriverEndringerAnnenPartsPerioder: RegelTest = (
+    grunnlag: UttaksplanRegelgrunnlag
+): RegelTestresultat => {
     const {
         eksisterendeUttaksplan,
         søknadsinfo: {
