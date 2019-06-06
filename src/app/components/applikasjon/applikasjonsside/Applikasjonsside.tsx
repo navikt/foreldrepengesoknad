@@ -9,7 +9,7 @@ import { AppState } from '../../../redux/reducers';
 import { Språkkode } from 'common/intl/types';
 import BEMHelper from 'common/util/bem';
 import getMessage from 'common/util/i18nUtils';
-import Søknadstittel from 'common/components/søknadstittel/Søknadstittel';
+import Søknadstittel from 'app/components/applikasjon/søknadstittel/Søknadstittel';
 import UtløptSesjonModal from 'app/components/dialoger/utløptSesjonModal/UtløptSesjonModal';
 import LanguageToggle from 'common/components/languageToggle/LanguageToggle';
 
