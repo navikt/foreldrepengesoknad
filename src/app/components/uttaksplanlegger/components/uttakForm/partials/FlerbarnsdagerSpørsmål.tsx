@@ -1,5 +1,5 @@
 import * as React from 'react';
-import JaNeiSpørsmål from 'app/components/skjema/ja-nei-spørsmål/JaNeiSpørsmål';
+import JaNeiSpørsmål from 'common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 import { Uttaksperiode, UttaksperiodeBase } from 'app/types/uttaksplan/periodetyper';
 import { RecursivePartial } from 'app/types/Partial';
 import { injectIntl, InjectedIntl } from 'react-intl';

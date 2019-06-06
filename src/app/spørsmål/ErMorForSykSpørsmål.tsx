@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import JaNeiSpørsmål from 'app/components/skjema/ja-nei-spørsmål/JaNeiSpørsmål';
+import JaNeiSpørsmål from 'common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 
 interface ErMorForSykSpørsmålProps {

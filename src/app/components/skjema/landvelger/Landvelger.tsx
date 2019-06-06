@@ -3,7 +3,7 @@ import * as countries from 'i18n-iso-countries';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import Select from 'common/components/skjema/wrappers/Select';
 import { Validator } from 'common/lib/validation/types';
-import { SelectChangeEvent } from 'app/types/dom/Events';
+import { SelectChangeEvent } from 'common/types/Events';
 
 interface StateProps {
     defaultValue?: string;

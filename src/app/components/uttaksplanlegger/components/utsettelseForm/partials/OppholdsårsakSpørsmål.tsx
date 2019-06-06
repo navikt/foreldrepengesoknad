@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../../skjema/flervalg-spørsmål/FlervalgSpørsmål';
+import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import {
     OppholdÅrsakType,
     TilgjengeligStønadskonto,

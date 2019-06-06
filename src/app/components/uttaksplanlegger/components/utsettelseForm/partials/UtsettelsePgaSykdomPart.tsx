@@ -2,7 +2,9 @@ import * as React from 'react';
 import { UtsettelseÅrsakType } from '../../../../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import Block from 'common/components/block/Block';
-import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../../skjema/flervalg-spørsmål/FlervalgSpørsmål';
+import FlervalgSpørsmål, {
+    FlervalgAlternativ
+} from '../../../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';

@@ -4,7 +4,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
 import { Næringstype } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import { InputChangeEvent } from '../types/dom/Events';
+import { InputChangeEvent } from '../../common/types/Events';
 import { CheckboksProps } from 'nav-frontend-skjema/lib/checkboks-panel';
 
 interface NæringstypeSpørsmålProps {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FlervalgSpørsmål from 'app/components/skjema/flervalg-spørsmål/FlervalgSpørsmål';
+import FlervalgSpørsmål from 'common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import { NavnPåForeldre, Forelder } from 'common/types';
 import { injectIntl, InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
