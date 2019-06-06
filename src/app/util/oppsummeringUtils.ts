@@ -1,9 +1,4 @@
-import {
-    Arbeidsform,
-    Overføringsperiode,
-    Periodetype,
-    Utsettelsesperiode
-} from '../../app/types/uttaksplan/periodetyper';
+import { Arbeidsform, Overføringsperiode, Periodetype, Utsettelsesperiode } from '../types/uttaksplan/periodetyper';
 import getMessage from 'common/util/i18nUtils';
 import { MessageValue, InjectedIntl } from 'react-intl';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';

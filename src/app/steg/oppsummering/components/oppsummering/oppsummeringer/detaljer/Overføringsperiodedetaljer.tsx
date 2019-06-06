@@ -4,7 +4,7 @@ import { Overføringsperiode, StønadskontoType } from '../../../../../../types/
 import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import getMessage from 'common/util/i18nUtils';
-import { getÅrsakTekst } from 'common/util/oppsummeringUtils';
+import { getÅrsakTekst } from 'app/util/oppsummeringUtils';
 import { NavnPåForeldre } from 'common/types';
 import { dokumentasjonBehøvesForOverføringsperiode } from '../../../../../../util/uttaksplan/utsettelsesperiode';
 

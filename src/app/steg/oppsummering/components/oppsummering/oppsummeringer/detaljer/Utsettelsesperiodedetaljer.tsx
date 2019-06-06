@@ -6,7 +6,7 @@ import MorsAktivitetDetaljer from 'app/steg/oppsummering/components/oppsummering
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import { dokumentasjonBehøvesForUtsettelsesperiode } from '../../../../../../util/uttaksplan/utsettelsesperiode';
-import { getArbeidsformTekst, getÅrsakTekst } from 'common/util/oppsummeringUtils';
+import { getArbeidsformTekst, getÅrsakTekst } from 'app/util/oppsummeringUtils';
 import getMessage from 'common/util/i18nUtils';
 import Arbeidsforhold from '../../../../../../types/Arbeidsforhold';
 import { Søknadsinfo } from 'app/selectors/types';
