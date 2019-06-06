@@ -8,7 +8,7 @@ import './attachment.less';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import Lenke from 'nav-frontend-lenker';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import { bytesString } from 'common/util/filesize';
+import { bytesString } from 'app/util/filesize';
 import BEMHelper from 'common/util/bem';
 import VedleggIkon from 'common/components/ikoner/VedleggIkon';
 
