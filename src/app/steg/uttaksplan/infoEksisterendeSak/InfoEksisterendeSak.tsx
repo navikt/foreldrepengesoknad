@@ -87,8 +87,8 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({ søknadsinfo, ti
                         navn: getHvem(intl, erDeltUttak, navn)
                     }}
                 />
-                <UtvidetInformasjon apneLabel={getMessage(intl, 'eksisterendeSak.tekst.html')}>
-                    <FormattedHTMLMessage id="eksisterendeSak.tekst.html" />
+                <UtvidetInformasjon apneLabel={getMessage(intl, 'ekisterendeSak.label.seAnnenPartsPlan')}>
+                    Liste med perioder
                 </UtvidetInformasjon>
             </InnholdMedIllustrasjon>
         </InfoBlock>

@@ -550,6 +550,10 @@
     "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ikke ha foreldrepenger før termin",
     "spørsmål.startdatoPermisjon.varighet": "{varighet} før termin",
     "spørsmål.startdatoPermisjonFarMedmor.label": "Når ønsker du å starte perioden?",
+    "spørsmål.utsettelse.begrunnelse.legend": "Hvorfor skal du ikke ha foreldrepenger rett etter { navn }?",
+    "spørsmål.utsettelse.begrunnelse.label.ferie": "Jeg skal ha ferie",
+    "spørsmål.utsettelse.begrunnelse.label.jobb": "Jeg skal jobbe heltid",
+    "spørsmål.utsettelse.begrunnelse.label.sykdom": "På grunn av sykdom",
     "stebarnsadopsjon.adopsjonsdato": "Adopsjonsdato",
     "stebarnsadopsjon.antallBarn": "Antall barn",
     "stebarnsadopsjonsdato.spørsmål": "Oppgi datoen for stebarnsadopsjon",
@@ -1023,6 +1027,7 @@
         "{navn} har valgt <strong>{uker}</strong> med <strong>{dekningsgrad} prosent utbetaling</strong>.",
     "eksisterendeSak.tekst.benevning.deltOmsorg": "Du og {navn}",
     "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
+    "ekisterendeSak.label.seAnnenPartsPlan": "Se { navn } plan",
 
     "søknadSendt.tittel": "Takk for søknaden { name }!",
     "søknadSendt.pdf": "Se og last ned søknaden din",
