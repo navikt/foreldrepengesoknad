@@ -80,7 +80,7 @@ class BegrunnelseForSenEndring extends React.Component<Props, State> {
                     onChange={(endredeVedlegg: Attachment[]) => {
                         onVedleggChange(endredeVedlegg);
                     }}
-                    skjemanummer={Skjemanummer.BEGRUNNELSE_SØKE_TILBAKE_I_TID}
+                    skjemanummer={Skjemanummer.ANNET}
                 />
             </div>
         );
