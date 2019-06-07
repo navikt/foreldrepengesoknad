@@ -18,7 +18,7 @@ import { søknadStegPath } from '../../steg/StegRoutes';
 import { StegID } from '../../util/routing/stegConfig';
 import { EksisterendeSak } from '../../types/EksisterendeSak';
 import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
-import Sak from 'app/types/søknad/Sak';
+import Sak, { SakType } from 'app/types/søknad/Sak';
 import { validerUttaksplanAction } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { ApiState } from '../reducers/apiReducer';
 
@@ -56,7 +56,8 @@ function* startFørstegangssøknad(action: StartSøknad) {
 function* startEndringssøknad(action: StartSøknad, sak: Sak) {
     const { saksnummer, søkerinfo, history } = action;
     const appState: AppState = yield select(stateSelector);
-    const eksisterendeSak: EksisterendeSak | undefined = yield call(fetchEksisterendeSak, saksnummer);
+
+    const eksisterendeSak: EksisterendeSak | undefined = sak.type === SakType.FPSAK ? yield call(fetchEksisterendeSak, saksnummer) : undefined;
     const søknad = eksisterendeSak ? opprettSøknadFraEksisterendeSak(søkerinfo, eksisterendeSak, sak) : undefined;
 
     if (eksisterendeSak === undefined || søknad === undefined) {
