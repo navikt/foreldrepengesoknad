@@ -7,6 +7,8 @@ export enum Forelder {
     'farMedmor' = 'farMedmor'
 }
 
+export type StatusKey = 'suksess' | 'advarsel' | 'feil';
+
 export interface NavnPåForeldre {
     mor: string;
     farMedmor: string;

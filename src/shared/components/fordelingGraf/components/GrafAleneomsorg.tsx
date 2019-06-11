@@ -2,7 +2,7 @@ import * as React from 'react';
 import Multibar from 'shared/elements/multibar/Multibar';
 import { UttaksplanHexFarge } from 'common/util/colors';
 import { fordelingGrafBem } from '../FordelingGraf';
-import { Forelder } from 'shared/types';
+import { Forelder } from 'common/types';
 
 export interface GrafAleneomsorgProps {
     forelder: Forelder;

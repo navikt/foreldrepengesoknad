@@ -26,7 +26,7 @@ export interface Regel {
     slåsSammenVedOppsummering?: boolean;
     skjulesIOppsummering?: boolean;
     skjulesIPeriode?: boolean;
-    avvikType?: string;
+    avvikType?: AvvikType;
     kategori?: RegelKategori;
 }
 
@@ -45,6 +45,8 @@ export interface RegelStatus {
     passerer: boolean;
     regelAvvik?: RegelAvvik[];
 }
+
+export type AvvikType = 'forretning' | 'skjema';
 
 export interface RegelAvvik {
     id: string;
