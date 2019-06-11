@@ -1,13 +1,9 @@
 import { ForeldreparForelder } from 'shared/types/foreldreparTypes';
+import { Forelder } from 'common/types';
 
 export * from '../regler/regelTypes';
 export * from './forbrukTypes';
 export * from './foreldreparTypes';
-
-export enum Forelder {
-    'farMedmor' = 'farMedmor',
-    'mor' = 'mor'
-}
 
 export interface Forelderinfo {
     navn: string;
