@@ -18,6 +18,8 @@ export interface Søknadsperiode {
     erInnenFørsteSeksUkerFødselFarMedmor: () => boolean;
     harAktivitetskrav: () => boolean;
     harGyldigTidsperiode: () => boolean;
+    harGradering: () => boolean;
+    harSamtidigUttak: () => boolean;
 }
 
 export const getSøknadsperiode = (søknadsinfo: Søknadsinfo, periode: Periode): Søknadsperiode => ({
@@ -38,7 +40,9 @@ export const getSøknadsperiode = (søknadsinfo: Søknadsinfo, periode: Periode)
             søknadsinfo.uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker
         ),
     harAktivitetskrav: () => isUttaksperiode(periode) && harAktivitetskrav(periode.konto),
-    harGyldigTidsperiode: () => isValidTidsperiode(periode.tidsperiode)
+    harGyldigTidsperiode: () => isValidTidsperiode(periode.tidsperiode),
+    harGradering: () => isUttaksperiode(periode) && periode.gradert === true,
+    harSamtidigUttak: () => isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true
 });
 
 export default getSøknadsperiode;
