@@ -52,11 +52,11 @@ const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntl
         );
     }
 
-    const tittel = getMessage(intl, 'periodeliste.ikkeInvilgetPeriode.tittel', {
+    const tittel = getMessage(intl, 'periodeliste.ikkeInnvilgetPeriode.tittel', {
         type: getMessage(intl, `periodetype.${periode.avslåttPeriodeType}`)
     });
 
-    const beskrivelse = getMessage(intl, 'periodeliste.ikkeInvilgetPeriode.beskrivelse', {
+    const beskrivelse = getMessage(intl, 'periodeliste.ikkeInnvilgetPeriode.beskrivelse', {
         varighet: getVarighetString(antallDager, intl),
         konto: getStønadskontoNavn(intl, periode.stønadskonto, navnPåForeldre)
     });
@@ -73,7 +73,7 @@ const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntl
                 <div>
                     <Block>
                         <FormattedMessage
-                            id={`periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.${periode.avslåttPeriodeType}`}
+                            id={`periodeliste.ikkeInnvilgetPeriode.expanded.beskrivelse.${periode.avslåttPeriodeType}`}
                         />
                     </Block>
                     <Knapperad align="left">{knapper}</Knapperad>

@@ -467,10 +467,10 @@
     "periodeliste.hull.info.uttaksdager":
         "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger",
     "periodeliste.hull.tittel": "Tapte foreldrepenger",
-    "periodeliste.ikkeInvilgetPeriode.tittel": "Tapte foreldrepenger - ikke invilget {type}",
-    "periodeliste.ikkeInvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
-    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Perioden er ikke innvilget",
-    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsen er ikke innvilget",
+    "periodeliste.ikkeInnvilgetPeriode.tittel": "Tapte foreldrepenger - ikke innvilget {type}",
+    "periodeliste.ikkeInnvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
+    "periodeliste.ikkeInnvilgetPeriode.expanded.beskrivelse.uttak": "Perioden er ikke innvilget",
+    "periodeliste.ikkeInnvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsen er ikke innvilget",
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",

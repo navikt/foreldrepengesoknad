@@ -467,10 +467,10 @@
     "periodeliste.hull.info.uttaksdager":
         "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar",
     "periodeliste.hull.tittel": "Mista foreldrepengar",
-    "periodeliste.ikkeInvilgetPeriode.tittel": "Tapte foreldrepengar - ikkje innvilga {type}",
-    "periodeliste.ikkeInvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
-    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.uttak": "Perioden med foreldrepengar er ikkje innvilga.",
-    "periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsetjinga er ikkje innvilga",
+    "periodeliste.ikkeInnvilgetPeriode.tittel": "Tapte foreldrepengar - ikkje innvilga {type}",
+    "periodeliste.ikkeInnvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
+    "periodeliste.ikkeInnvilgetPeriode.expanded.beskrivelse.uttak": "Perioden med foreldrepengar er ikkje innvilga.",
+    "periodeliste.ikkeInnvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsetjinga er ikkje innvilga",
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode": "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "periodeliste.nyPeriodeErFørFamiliehendelsesdato":
