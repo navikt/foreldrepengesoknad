@@ -8,7 +8,7 @@ import { Tidsperioden } from '../../../../../util/uttaksplan/Tidsperioden';
 import PeriodelisteInfo from './PeriodelisteInfo';
 import Block from 'common/components/block/Block';
 import { getVarighetString } from 'common/util/intlUtils';
-import AdvarselIkon from 'app/components/ikoner/svgIkoner/advarselIkon/AdvarselIkon';
+import UttaksplanAdvarselIkon from 'app/components/ikoner/uttaksplanIkon/ikoner/AdvarselIkon';
 
 export interface Props {
     itemId: string;
@@ -39,7 +39,7 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
             isExpanded={isExpanded}
             onToggle={onToggle}
             beskrivelse={getVarighetString(antallDager, intl)}
-            ikon={<AdvarselIkon />}
+            ikon={<UttaksplanAdvarselIkon />}
             renderContent={() => (
                 <div>
                     <Block>
