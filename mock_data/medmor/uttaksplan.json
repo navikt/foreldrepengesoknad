@@ -1,0 +1,129 @@
+{
+    "grunnlag": {
+        "familieHendelseType": "FODSL",
+        "familieHendelseDato": "2019-06-05",
+        "dekningsgrad": 100,
+        "antallBarn": 1,
+        "søkerErFarEllerMedmor": true,
+        "morErAleneOmOmsorg": false,
+        "morHarRett": true,
+        "morErUfør": false,
+        "farMedmorErAleneOmOmsorg": false,
+        "farMedmorHarRett": true,
+        "annenForelderErInformert": true
+    },
+    "perioder": [
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FORELDREPENGER_FØR_FØDSEL",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ANNET",
+            "arbeidsgiverInfo": { "type": "PRIVAT" },
+            "periode": { "fom": "2019-05-15", "tom": "2019-06-04" }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ANNET",
+            "arbeidsgiverInfo": { "type": "PRIVAT" },
+            "periode": { "fom": "2019-06-05", "tom": "2019-06-11" }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FEDREKVOTE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": false,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "973861778",
+                "type": "ORGANISASJON",
+                "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
+            },
+            "periode": { "fom": "2019-06-12", "tom": "2019-07-16" }
+        },
+        {
+            "periodeResultatType": "AVSLÅTT",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ANNET",
+            "arbeidsgiverInfo": { "type": "PRIVAT" },
+            "periode": { "fom": "2019-06-12", "tom": "2019-07-16" }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FEDREKVOTE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": false,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "973861778",
+                "type": "ORGANISASJON",
+                "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
+            },
+            "periode": { "fom": "2019-07-17", "tom": "2019-07-19" }
+        },
+        {
+            "periodeResultatType": "AVSLÅTT",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ANNET",
+            "arbeidsgiverInfo": { "type": "PRIVAT" },
+            "periode": { "fom": "2019-07-17", "tom": "2019-07-19" }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ANNET",
+            "arbeidsgiverInfo": { "type": "PRIVAT" },
+            "periode": { "fom": "2019-07-20", "tom": "2019-09-17" }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FELLESPERIODE",
+            "arbeidstidprosent": 0,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ANNET",
+            "arbeidsgiverInfo": { "type": "PRIVAT" },
+            "periode": { "fom": "2019-09-18", "tom": "2019-12-17" }
+        }
+    ]
+}
