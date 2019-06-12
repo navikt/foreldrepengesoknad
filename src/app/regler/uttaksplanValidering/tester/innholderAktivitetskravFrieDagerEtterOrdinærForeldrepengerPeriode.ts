@@ -9,7 +9,8 @@ export const innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode:
     const aktivetskravFriePerioder = grunnlag.perioder.filter(
         (p: Periode) => p.type === Periodetype.Uttak && p.harIkkeAktivitetskrav
     );
-    const antallUker = getAntallUker(grunnlag.tilgjengeligeStønadskontoer);
+    const reserverteUkerEtterfødsel = 6;
+    const antallUker = getAntallUker(grunnlag.tilgjengeligeStønadskontoer) + reserverteUkerEtterfødsel;
     const sisteMuligeDag = moment(grunnlag.søknadsinfo.søknaden.familiehendelsesdato).add(antallUker, 'weeks');
 
     if (aktivetskravFriePerioder.length > 0) {
