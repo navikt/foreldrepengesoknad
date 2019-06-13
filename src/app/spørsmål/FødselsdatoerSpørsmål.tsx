@@ -6,11 +6,14 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { Validator } from 'common/lib/validation/types';
 import { Avgrensninger } from 'common/types';
+import Block from 'common/components/block/Block';
 
 export interface FødselsdatoerSpørsmålProps {
     fødselsdatoer: DateValue[];
+    termindato?: Date;
     antallBarn: number | undefined;
-    onChange: (fødselsdatoer: DateValue[]) => void;
+    onChangeFødselsdato: (fødselsdatoer: DateValue[]) => void;
+    onChangeTermindato?: (termindato: Date) => void;
     collapsed?: boolean;
     datoavgrensninger?: Avgrensninger;
     datovalidatorer?: Validator[];
@@ -24,17 +27,17 @@ const getKey = (idx: number) => `fødselsdatoer.flere.${idx}`;
 class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
-        this.onDatoChange = this.onDatoChange.bind(this);
+        this.onFødselsdatoChange = this.onFødselsdatoChange.bind(this);
         this.renderCollapsedFødselsdatoSpørsmål = this.renderCollapsedFødselsdatoSpørsmål.bind(this);
         this.renderExpandedFødselsdatoSpørsmål = this.renderExpandedFødselsdatoSpørsmål.bind(this);
         this.getFødselsdatoAvgrensninger = this.getFødselsdatoAvgrensninger.bind(this);
         this.getValidatorer = this.getValidatorer.bind(this);
     }
 
-    onDatoChange(dato: DateValue, idx: number) {
+    onFødselsdatoChange(dato: DateValue, idx: number) {
         const datoer = [...this.props.fødselsdatoer];
         datoer[idx] = dato;
-        this.props.onChange(datoer);
+        this.props.onChangeFødselsdato(datoer);
     }
 
     getFødselsdatoAvgrensninger() {
@@ -53,24 +56,41 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
     }
 
     renderCollapsedFødselsdatoSpørsmål() {
-        const { fødselsdatoer, antallBarn } = this.props;
+        const { fødselsdatoer, antallBarn, termindato } = this.props;
 
-        let intlId = 'fødselsdatoer.fødsel';
+        let intlIdFødsel = 'fødselsdatoer.fødsel';
+        let intlIdTermin = 'fødselsdatoer.termin';
 
         if (antallBarn !== undefined && antallBarn > 1) {
-            intlId = 'fødselsdatoer.fødsel.flereBarn';
+            intlIdFødsel = 'fødselsdatoer.fødsel.flereBarn';
+            intlIdTermin = 'fødselsdatoer.termin.flereBarn';
         }
 
         return (
-            <DatoInput
-                id="fødselsdato"
-                name="fødsesdato"
-                dato={fødselsdatoer[0]}
-                onChange={(d: Date) => this.onDatoChange(d, 0)}
-                label={<Labeltekst intlId={intlId} />}
-                datoAvgrensinger={this.getFødselsdatoAvgrensninger()}
-                validators={this.getValidatorer()}
-            />
+            <>
+                <Block>
+                    <DatoInput
+                        id="fødselsdato"
+                        name="fødsesdato"
+                        dato={fødselsdatoer[0]}
+                        onChange={(d: Date) => this.onFødselsdatoChange(d, 0)}
+                        label={<Labeltekst intlId={intlIdFødsel} />}
+                        datoAvgrensinger={this.getFødselsdatoAvgrensninger()}
+                        validators={this.getValidatorer()}
+                    />
+                </Block>
+                <Block>
+                    <DatoInput
+                        id="termindato"
+                        name="termindato"
+                        dato={termindato}
+                        onChange={(d: Date) => this.props.onChangeTermindato!(d)}
+                        label={<Labeltekst intlId={intlIdTermin} />}
+                        datoAvgrensinger={this.getFødselsdatoAvgrensninger()}
+                        validators={this.getValidatorer()}
+                    />
+                </Block>
+            </>
         );
     }
 
@@ -84,7 +104,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                             id={getKey(idx)}
                             name={getKey(idx)}
                             dato={fødselsdatoer[idx]}
-                            onChange={(d: Date) => this.onDatoChange(d, idx)}
+                            onChange={(d: Date) => this.onFødselsdatoChange(d, idx)}
                             label={<Labeltekst intlId={`fødselsdatoer.flere.${idx + 1}`} />}
                             datoAvgrensinger={this.getFødselsdatoAvgrensninger()}
                             validators={this.getValidatorer()}

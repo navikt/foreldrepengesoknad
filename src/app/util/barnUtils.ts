@@ -32,7 +32,8 @@ export const getFødtBarnProps = (barn: Partial<FødtBarn>): Partial<FødtBarn> 
     removeUndefinedProps({
         ...getBarnProps(barn),
         fødselsattest: barn.fødselsattest,
-        fødselsdatoer: barn.fødselsdatoer
+        fødselsdatoer: barn.fødselsdatoer,
+        termindato: barn.termindato
     });
 
 export const getAdopsjonsbarnProps = (barn: Partial<Adopsjonsbarn>): Partial<Adopsjonsbarn> =>

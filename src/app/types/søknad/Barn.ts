@@ -17,6 +17,7 @@ export interface UfødtBarn extends BarnCommonProps {
 export interface FødtBarn extends BarnCommonProps {
     fødselsdatoer: Date[];
     fødselsattest: Attachment[];
+    termindato: Date;
 }
 
 export interface Adopsjonsbarn extends BarnCommonProps {
