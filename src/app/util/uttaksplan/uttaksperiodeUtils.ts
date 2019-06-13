@@ -52,7 +52,6 @@ export const getOppholdsÅrsakFromStønadskonto = (konto: StønadskontoType): Op
             return OppholdÅrsakType.UttakForelderpengerFørFødsel;
         case StønadskontoType.Foreldrepenger:
         case StønadskontoType.AktivitetsfriKvote:
-        case StønadskontoType.SamtidigUttak:
             return undefined;
     }
 };
