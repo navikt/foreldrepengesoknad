@@ -170,7 +170,7 @@ class Periodeliste extends React.Component<Props> {
                                                     navnPåForeldre={navnPåForeldre}
                                                 />
                                             );
-                                        case PeriodeInfoType.annenPart:
+                                        case PeriodeInfoType.oppholdAnnenPart:
                                             return (
                                                 <PeriodelisteOppholdAnnenPart
                                                     key={itemId}

@@ -43,7 +43,7 @@ class GradertUttakForm extends React.Component<Props> {
         const varighet =
             pst && uttaksdager
                 ? getMessage(intl, 'gradert.uttak.varighet', {
-                      varighet: getVarighetString(finnAntallDagerÅTrekke(uttaksdager, periode as Periode), intl)
+                      varighet: getVarighetString(finnAntallDagerÅTrekke(periode as Periode), intl)
                   })
                 : undefined;
 

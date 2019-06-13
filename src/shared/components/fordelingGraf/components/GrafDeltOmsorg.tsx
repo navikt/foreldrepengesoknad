@@ -2,35 +2,37 @@ import * as React from 'react';
 import Multibar from 'shared/elements/multibar/Multibar';
 import { UttaksplanHexFarge } from 'common/util/colors';
 import { fordelingGrafBem } from '../FordelingGraf';
+import { FordelingDeltOmsorg } from '../types';
 
-export interface GrafDeltOmsorgProps {
-    mor: {
-        pstAvTotal: number;
-        pstBrukt: number;
-    };
-    felles: {
-        pstAvTotal: number;
-        pstBruktMor: number;
-        pstBruktFar: number;
-        pstForMye: number;
-    };
-    farMedmor: {
-        pstAvTotal: number;
-        pstBrukt: number;
-    };
-}
-
-const GrafDeltOmsorg: React.StatelessComponent<GrafDeltOmsorgProps> = ({ mor, farMedmor, felles }) => {
+const GrafDeltOmsorg: React.StatelessComponent<FordelingDeltOmsorg> = ({ mor, farMedmor, felles }) => {
     const childBem = fordelingGrafBem.child('graf');
+    const morsFarge = UttaksplanHexFarge.lilla;
+    const farsFarge = UttaksplanHexFarge.blaa;
     return (
         <div className={childBem.block}>
             <div className={childBem.element('forelder1')} style={{ width: `${mor.pstAvTotal}%` }}>
                 <Multibar
-                    borderColor={UttaksplanHexFarge.lilla}
+                    borderColor={morsFarge}
                     leftBar={{
                         width: mor.pstBrukt,
-                        color: UttaksplanHexFarge.lilla
+                        color: morsFarge
                     }}
+                    centerBar={
+                        mor.pstForMye > 0
+                            ? {
+                                  width: mor.pstForMye,
+                                  color: UttaksplanHexFarge.rod
+                              }
+                            : undefined
+                    }
+                    rightBar={
+                        mor.pstOverførtTilAnnenForelder
+                            ? {
+                                  width: mor.pstOverførtTilAnnenForelder,
+                                  color: farsFarge
+                              }
+                            : undefined
+                    }
                 />
             </div>
             <div className={childBem.element('felles')} style={{ width: `${felles.pstAvTotal}%` }}>
@@ -38,11 +40,11 @@ const GrafDeltOmsorg: React.StatelessComponent<GrafDeltOmsorgProps> = ({ mor, fa
                     borderColor={UttaksplanHexFarge.graa}
                     leftBar={{
                         width: felles.pstBruktMor,
-                        color: UttaksplanHexFarge.lilla
+                        color: morsFarge
                     }}
                     rightBar={{
                         width: felles.pstBruktFar,
-                        color: UttaksplanHexFarge.blaa
+                        color: farsFarge
                     }}
                     centerBar={
                         felles.pstForMye > 0
@@ -52,14 +54,30 @@ const GrafDeltOmsorg: React.StatelessComponent<GrafDeltOmsorgProps> = ({ mor, fa
                               }
                             : undefined
                     }
-                />{' '}
+                />
             </div>
             <div className={childBem.element('forelder2')} style={{ width: `${farMedmor.pstAvTotal}%` }}>
                 <Multibar
-                    borderColor={UttaksplanHexFarge.blaa}
+                    borderColor={farsFarge}
+                    leftBar={
+                        farMedmor.pstOverførtTilAnnenForelder
+                            ? {
+                                  width: farMedmor.pstOverførtTilAnnenForelder,
+                                  color: morsFarge
+                              }
+                            : undefined
+                    }
+                    centerBar={
+                        farMedmor.pstForMye > 0
+                            ? {
+                                  width: farMedmor.pstForMye,
+                                  color: UttaksplanHexFarge.rod
+                              }
+                            : undefined
+                    }
                     rightBar={{
                         width: farMedmor.pstBrukt,
-                        color: UttaksplanHexFarge.blaa
+                        color: farsFarge
                     }}
                 />
             </div>

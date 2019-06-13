@@ -9,22 +9,23 @@ export interface FordelingsinfoEnForelder {
     ikonRef: ForeldreparForelder;
 }
 
+export interface FordelingDeltOmsorgForelderinfo {
+    pstAvTotal: number;
+    pstBrukt: number;
+    pstOverførtTilAnnenForelder: number;
+    pstForMye: number;
+}
+
 export interface FordelingDeltOmsorg {
     type: 'deltOmsorg';
-    mor: {
-        pstAvTotal: number;
-        pstBrukt: number;
-    };
+    mor: FordelingDeltOmsorgForelderinfo;
     felles: {
         pstAvTotal: number;
         pstBruktMor: number;
         pstBruktFar: number;
         pstForMye: number;
     };
-    farMedmor: {
-        pstAvTotal: number;
-        pstBrukt: number;
-    };
+    farMedmor: FordelingDeltOmsorgForelderinfo;
 }
 
 export interface FordelingIkkeDeltOmsorg {
