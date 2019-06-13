@@ -2,14 +2,13 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { NavnPåForeldre } from 'common/types';
 import { SummaryError } from 'common/lib/validation/types';
-
 import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
 import getMessage from 'common/util/i18nUtils';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
-import { RegelAlvorlighet, RegelAvvikInfo } from 'app/regler/uttaksplanValidering/types';
 import { UTTAKSPLANLEGGER_DOM_ID } from '../../Uttaksplanlegger';
-import { getRegelIntlValues } from 'app/regler/uttaksplanValidering/regelUtils';
+import { RegelAlvorlighet, RegelAvvikInfo } from 'shared/regler/regelTypes';
+import { getRegelIntlValues } from 'shared/regler/regelUtils';
 
 interface OwnProps {
     uttaksplan: Periode[];

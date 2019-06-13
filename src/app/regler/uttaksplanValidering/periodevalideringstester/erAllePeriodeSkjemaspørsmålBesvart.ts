@@ -1,4 +1,6 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
+import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+
 import { Periode, TilgjengeligStønadskonto, Periodetype } from 'app/types/uttaksplan/periodetyper';
 import { Søknadsinfo } from 'app/selectors/types';
 import { getUttakFormVisibility } from 'app/components/uttaksplanlegger/components/uttakForm/uttakFormConfig';
@@ -37,7 +39,7 @@ const erAlleSpørsmålBesvart = (
     }
 };
 
-export const erAllePeriodeSkjemaspørsmålBesvart: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+export const erAllePeriodeSkjemaspørsmålBesvart: RegelTest = (grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat => {
     const perioderMedUbesvarteSpørsmål = grunnlag.perioder.filter(
         (periode) =>
             erAlleSpørsmålBesvart(periode, grunnlag.tilgjengeligeStønadskontoer, grunnlag.søknadsinfo) === false

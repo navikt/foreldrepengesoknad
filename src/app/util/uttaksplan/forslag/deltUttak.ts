@@ -27,7 +27,7 @@ const deltUttakAdopsjonSøktFørst = (
         const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
         const perioder: Periode[] = [];
         const kontoType = erFarEllerMedmor ? StønadskontoType.Fedrekvote : StønadskontoType.Mødrekvote;
-        const forelder = erFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR;
+        const forelder = erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
         const konto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
             (k) =>
                 erFarEllerMedmor ? k.konto === StønadskontoType.Fedrekvote : k.konto === StønadskontoType.Mødrekvote
@@ -103,12 +103,12 @@ const deltUttakAdopsjonSøktSist = (
                     return {
                         ...periode,
                         stønadskonto: StønadskontoType.Mødrekvote,
-                        forelder: Forelder.MOR
+                        forelder: Forelder.mor
                     };
                 } else {
                     return {
                         ...periode,
-                        forelder: Forelder.MOR
+                        forelder: Forelder.mor
                     };
                 }
             }
@@ -181,7 +181,7 @@ const deltUttakFødselMor = (
             const ekstraPeriodeFørFødsel: Periode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.MOR,
+                forelder: Forelder.mor,
                 konto: StønadskontoType.Fellesperiode,
                 tidsperiode: getTidsperiode(startdatoPermisjon, dagerFørFødsel - 15),
                 vedlegg: []
@@ -193,7 +193,7 @@ const deltUttakFødselMor = (
         const periodeFørFødsel: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
+            forelder: Forelder.mor,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             tidsperiode: {
                 fom: startdatoFpFørFødsel,
@@ -206,7 +206,7 @@ const deltUttakFødselMor = (
         const periodeFørFødsel: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
+            forelder: Forelder.mor,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             skalIkkeHaUttakFørTermin: true,
             tidsperiode: {} as any,
@@ -219,7 +219,7 @@ const deltUttakFødselMor = (
         const periodeMødrekvote: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
+            forelder: Forelder.mor,
             konto: StønadskontoType.Mødrekvote,
             tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager),
             ønskerSamtidigUttak: false,
@@ -245,7 +245,7 @@ const deltUttakFødselMor = (
             const periodeFellesperiodeMor: Periode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.MOR,
+                forelder: Forelder.mor,
                 konto: StønadskontoType.Fellesperiode,
                 tidsperiode: getTidsperiode(currentTomDate, fellesperiodeukerMor * 5 - trekkEkstraPermisjonDager),
                 ønskerSamtidigUttak: false,
@@ -284,7 +284,7 @@ const deltUttakFødselFarMedmor = (
         const fedrekvotePeriode: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.FARMEDMOR,
+            forelder: Forelder.farMedmor,
             konto: StønadskontoType.Fedrekvote,
             tidsperiode: getTidsperiode(startDatoUttak, fkKonto.dager),
             ønskerSamtidigUttak: false,
@@ -311,7 +311,7 @@ const deltUttakFødselFarMedmor = (
             const fellesPeriode: Periode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.FARMEDMOR,
+                forelder: Forelder.farMedmor,
                 konto: StønadskontoType.Fellesperiode,
                 tidsperiode: getTidsperiode(sisteUttaksDag, antallDagerFellesperiode),
                 ønskerSamtidigUttak: false,

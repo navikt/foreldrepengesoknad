@@ -1,9 +1,12 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
 import { InjectedIntl } from 'react-intl';
 import { getStønadskontoNavn } from '../../../util/uttaksplan';
 import { getVarighetString } from 'common/util/intlUtils';
+import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from 'shared/regler/regelTypes';
 
-export const inneholderStønadskontoForMyeUttakTest: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+export const inneholderStønadskontoForMyeUttakTest: RegelTest = (
+    grunnlag: UttaksplanRegelgrunnlag
+): RegelTestresultat => {
     const stønadskontoerMedForMyeUttak = grunnlag.uttaksstatusStønadskontoer.filter((u) => u.antallDager < 0);
     return {
         passerer: stønadskontoerMedForMyeUttak.length === 0,

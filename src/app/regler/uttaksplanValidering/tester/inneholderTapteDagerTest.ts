@@ -1,9 +1,11 @@
-import { Regelgrunnlag, RegelTestresultat } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
+import { RegelTestresultat } from 'shared/regler/regelTypes';
+
 import { Periodene } from '../../../util/uttaksplan/Periodene';
 import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
 import { isUttaksperiode, Periodetype, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
 
-export function inneholderTapteDagerTest(grunnlag: Regelgrunnlag): RegelTestresultat {
+export function inneholderTapteDagerTest(grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat {
     const {
         perioder,
         søknadsinfo: { søknaden, søker, mor, annenForelder }

@@ -37,6 +37,7 @@ import { getErSøkerFarEllerMedmor } from '../util/domain/personUtil';
 import { Navn } from '../types/common';
 import { getUttaksdatoer } from '../util/uttaksplan/uttaksdatoer';
 import { OmMor, OmSøker, OmFarMedmor, OmAnnenForelder, NavnISøknaden, Søknadsinfo, OmSøknaden } from './types';
+import { Forelder } from 'common/types';
 
 const selectOmSøknaden = createSelector(
     [
@@ -122,7 +123,8 @@ const selectOmSøker = createSelector(
                   erFarEllerMedmor,
                   erMor,
                   rolle: rolle!,
-                  kjønn
+                  kjønn,
+                  forelder: erMor ? Forelder.mor : Forelder.farMedmor
               }
             : undefined;
     }

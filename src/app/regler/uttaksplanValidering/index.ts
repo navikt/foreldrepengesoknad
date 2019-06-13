@@ -1,4 +1,3 @@
-import { Regel, RegelAlvorlighet } from './types';
 import { inneholderUttaksplanPerioderTest } from './tester/inneholderUttaksplanPerioderTest';
 import { harMorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harMorSøktUgyldigUttakFørsteSeksUkerTest';
 import { inneholderStønadskontoForMyeUttakTest } from './tester/inneholderStønadskontoForMyeUttakTest';
@@ -22,6 +21,7 @@ import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndr
 import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndrePerioderTest';
 import periodevalideringsregler, { PeriodeValiderRegelKey } from './periodevalideringstester';
 import { harSøktOmFerieUtenArbeidsforhold } from './tester/harSøktOmFerieUtenArbeidsforholdTest';
+import { Regel, RegelAlvorlighet } from 'shared/regler/regelTypes';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -50,7 +50,7 @@ export enum UttaksplanRegelKey {
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
 
-const uttaksplanRegler: Regel[] = [
+const uttaksplanValideringRegler: Regel[] = [
     {
         key: UttaksplanRegelKey.planenInneholderIngenPerioder,
         alvorlighet: RegelAlvorlighet.FEIL,
@@ -170,4 +170,6 @@ const uttaksplanRegler: Regel[] = [
     }
 ];
 
-export default [...uttaksplanRegler, ...periodevalideringsregler];
+const uttaksplanRegler = [...uttaksplanValideringRegler, ...periodevalideringsregler];
+
+export default uttaksplanRegler;
