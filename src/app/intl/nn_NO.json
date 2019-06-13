@@ -316,11 +316,15 @@
     "næringstype.fiske": "Fiske",
     "næringstype.jordbruk_skogbruk": "Jordbruk",
     "næringstype.spørsmål": "Kva type verksemd har du?",
+    "oppholdsårsaktype.foreldernavn.mor.UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER":
+        "{foreldernavn} tek ut foreldrepenger før fødsel",
     "oppholdsårsaktype.foreldernavn.mor.UTTAK_FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tek ut kvoten sin",
     "oppholdsårsaktype.foreldernavn.mor.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tek ut av fellesperioden",
     "oppholdsårsaktype.foreldernavn.mor.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tek ut av flernbarnsperioden",
     "oppholdsårsaktype.foreldernavn.mor.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tek ut kvoten din",
     "oppholdsårsaktype.foreldernavn.mor.undefined": "{foreldernavn} tek ut",
+    "oppholdsårsaktype.foreldernavn.far.UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER":
+        "{foreldernavn} tek ut foreldrepenger før fødsel",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tek ut kvoten din",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tek ut av fellesperioden",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tek ut av flernbarnsperioden",
