@@ -252,5 +252,4 @@ export const isOverskrivbarPeriode = (periode: Periode): boolean => {
 export interface Stønadskontouttak {
     konto: StønadskontoType;
     antallDager: number;
-    // forelder?: Forelder;
 }

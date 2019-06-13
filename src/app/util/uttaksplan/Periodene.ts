@@ -213,16 +213,6 @@ function getFørsteUttaksdag(perioder: Periode[]): Date | undefined {
     return undefined;
 }
 
-// function getBrukteUttaksdager(perioder: Periode[]): number {
-//     return perioder.reduce((dager, periode) => {
-//         const uttaksinfo = periode.uttaksinfo || getUttaksinfoForPeriode(periode);
-//         if (uttaksinfo) {
-//             return dager + uttaksinfo.antallUttaksdagerBrukt;
-//         }
-//         return dager;
-//     }, 0);
-// }
-
 function getAntallUttaksdager(perioder: Periode[]): number {
     return perioder.reduce((dager, periode) => {
         return dager + Perioden(periode).getAntallUttaksdager();
