@@ -2,7 +2,6 @@ import * as React from 'react';
 import { TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { getAntallUker } from '../../../util/uttaksplan/stønadskontoer';
 import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedHTMLMessage } from 'react-intl';
-import { Situasjon } from './illustrasjoner/situasjonSirkel/foreldrepar/foreldreparTypes';
 import SituasjonSirkel from './illustrasjoner/situasjonSirkel/SituasjonSirkel';
 import UkerSirkel from './illustrasjoner/ukerSirkel/UkerSirkel';
 import { Kjønn } from '../../../types/common';
@@ -12,6 +11,7 @@ import { Forelder } from 'common/types';
 import InfoBlock from 'common/components/infoBlock/InfoBlock';
 import InnholdMedIllustrasjon from 'app/components/elementer/innholdMedIllustrasjon/InnholdMedIllustrasjon';
 import { getVarighetString } from 'common/util/intlUtils';
+import { ForeldreparSituasjon } from 'shared/types';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -20,20 +20,20 @@ interface OwnProps {
 
 type Props = InjectedIntlProps & OwnProps;
 
-const getSituasjon = (info: Søknadsinfo): Situasjon | undefined => {
+const getSituasjon = (info: Søknadsinfo): ForeldreparSituasjon | undefined => {
     const { søker, annenForelder, mor, farMedmor } = info;
     const kjønnSøker = søker.kjønn;
     const kjønnAnnenForelder = annenForelder.kjønn;
     if (info.søknaden.erDeltUttak) {
         if (kjønnSøker !== kjønnAnnenForelder) {
-            return Situasjon.farOgMor;
+            return ForeldreparSituasjon.farOgMor;
         }
-        return kjønnSøker === Kjønn.MANN ? Situasjon.farOgFar : Situasjon.morOgMedmor;
+        return kjønnSøker === Kjønn.MANN ? ForeldreparSituasjon.farOgFar : ForeldreparSituasjon.morOgMedmor;
     } else {
         if (kjønnSøker === Kjønn.KVINNE) {
-            return mor.erAleneOmOmsorg ? Situasjon.aleneomsorg : Situasjon.bareMor;
+            return mor.erAleneOmOmsorg ? ForeldreparSituasjon.aleneomsorg : ForeldreparSituasjon.bareMor;
         } else {
-            return farMedmor.erAleneOmOmsorg ? Situasjon.aleneomsorg : Situasjon.bareFar;
+            return farMedmor.erAleneOmOmsorg ? ForeldreparSituasjon.aleneomsorg : ForeldreparSituasjon.bareFar;
         }
     }
 };
@@ -59,8 +59,8 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({ søknadsinfo, ti
     const forelderVedAleneomsorg = erDeltUttak
         ? undefined
         : søknadsinfo.søker.erMor
-            ? Forelder.MOR
-            : Forelder.FARMEDMOR;
+            ? Forelder.mor
+            : Forelder.farMedmor;
 
     return (
         <InfoBlock padding="m">

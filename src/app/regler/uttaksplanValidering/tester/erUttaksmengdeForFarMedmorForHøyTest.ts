@@ -1,7 +1,11 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
+import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+
 import { erUttaksmengdeForFarMedmorForHøy } from '../../../util/validation/uttaksplan/erUttaksmengdeForFarMedmorForHøy';
 
-export const erUttaksmengdeForFarMedmorForHøyTest: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+export const erUttaksmengdeForFarMedmorForHøyTest: RegelTest = (
+    grunnlag: UttaksplanRegelgrunnlag
+): RegelTestresultat => {
     return {
         passerer:
             erUttaksmengdeForFarMedmorForHøy(

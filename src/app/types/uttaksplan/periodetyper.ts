@@ -1,7 +1,16 @@
-import { Tidsperiode, Forelder } from 'common/types';
+import { Tidsperiode, Forelder, StønadskontoType } from 'common/types';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { RecursivePartial } from '../Partial';
 import { PeriodeResultatType } from '../EksisterendeSak';
+
+export { TilgjengeligStønadskonto } from 'shared/types';
+export { StønadskontoType } from 'common/types';
+
+export interface Uttaksinfo {
+    antallUttaksdager: number;
+    antallFridager: number;
+    antallUttaksdagerBrukt: number;
+}
 
 export enum Periodetype {
     'Uttak' = 'uttak',
@@ -10,23 +19,6 @@ export enum Periodetype {
     'Overføring' = 'overføring',
     'Hull' = 'ubegrunnetOpphold',
     'Info' = 'info'
-}
-
-export enum StønadskontoType {
-    /** Kvote forbeholdt mor */
-    'Mødrekvote' = 'MØDREKVOTE',
-    /** Kvote forbehold medforelder */
-    'Fedrekvote' = 'FEDREKVOTE',
-    /** Felleskvote som kan fordeles mellom mor og medforelder */
-    'Fellesperiode' = 'FELLESPERIODE',
-    /** Når det kun er en forsørger/forelder */
-    'Foreldrepenger' = 'FORELDREPENGER',
-    /** Når det kun er en forsørger/forelder */
-    'ForeldrepengerFørFødsel' = 'FORELDREPENGER_FØR_FØDSEL',
-    /** Når det kun er en forsørger/forelder */
-    'SamtidigUttak' = 'SAMTIDIGUTTAK',
-    'Flerbarnsdager' = 'FLERBARNSDAGER',
-    'AktivitetsfriKvote' = 'AKTIVITETSFRI_KVOTE'
 }
 
 export enum UtsettelseÅrsakType {
@@ -82,7 +74,7 @@ export enum SenEndringÅrsak {
 
 export enum PeriodeInfoType {
     'avslåttPeriode' = 'avslåttPeriode',
-    'annenPart' = 'oppholdAnnenPart',
+    'oppholdAnnenPart' = 'oppholdAnnenPart',
     'gruppertInfo' = 'gruppertInfo'
 }
 
@@ -114,7 +106,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
 
 export interface AnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
-    infotype: PeriodeInfoType.annenPart;
+    infotype: PeriodeInfoType.oppholdAnnenPart;
     årsak: OppholdÅrsakType;
     forelder: Forelder;
     overskrives: true;
@@ -122,7 +114,7 @@ export interface AnnenPartInfoPeriode extends InfoPeriodeBase {
 }
 
 export const isAnnenPartInfoPeriode = (periode: Periode): periode is AnnenPartInfoPeriode => {
-    return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.annenPart;
+    return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.oppholdAnnenPart;
 };
 
 export interface GruppertInfoPeriode extends InfoPeriodeBase {
@@ -213,11 +205,6 @@ export type Periode =
     | PeriodeHull
     | InfoPeriode;
 
-export interface TilgjengeligStønadskonto {
-    konto: StønadskontoType;
-    dager: number;
-}
-
 export enum MorsAktivitet {
     'Arbeid' = 'ARBEID',
     'Utdanning' = 'UTDANNING',
@@ -233,11 +220,15 @@ export function isUttaksperiode(periode: Periode | RecursivePartial<Periode>): p
     return periode.type === Periodetype.Uttak;
 }
 
+export function isUttakAvFellesperiode(periode: Periode | RecursivePartial<Periode>): periode is Uttaksperiode {
+    return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.Fellesperiode;
+}
+
 export function isUtsettelsesperiode(periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode {
     return periode.type === Periodetype.Utsettelse;
 }
 
-export function isUtsettelsePgaFerie(periode: Periode | RecursivePartial<Periode>): periode is Periode {
+export function isUtsettelsePgaFerie(periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode {
     return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Ferie;
 }
 
@@ -262,5 +253,4 @@ export const isOverskrivbarPeriode = (periode: Periode): boolean => {
 export interface Stønadskontouttak {
     konto: StønadskontoType;
     antallDager: number;
-    forelder?: Forelder;
 }

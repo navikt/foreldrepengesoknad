@@ -1,7 +1,10 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
+import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from 'shared/regler/regelTypes';
 import { erUttaksdag } from '../../../util/uttaksplan/Uttaksdagen';
 
-export const inneholderUttaksplanDatoSomIkkeErUttaksdag: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+export const inneholderUttaksplanDatoSomIkkeErUttaksdag: RegelTest = (
+    grunnlag: UttaksplanRegelgrunnlag
+): RegelTestresultat => {
     const ugyldigePerioder = grunnlag.perioder.filter(
         ({ tidsperiode: { fom, tom } }) => erUttaksdag(fom) === false || erUttaksdag(tom) === false
     );

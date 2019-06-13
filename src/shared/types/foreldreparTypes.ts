@@ -6,7 +6,7 @@ export type ForeldreparIllustrasjonsvariant =
     | 'foreldreSeparert'
     | 'foreldreNærmere';
 
-export enum Situasjon {
+export enum ForeldreparSituasjon {
     'farOgMor' = 'farOgMor',
     'bareFar' = 'bareFar',
     'bareMor' = 'bareMor',

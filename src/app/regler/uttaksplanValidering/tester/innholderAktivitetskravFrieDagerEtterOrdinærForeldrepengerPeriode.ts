@@ -1,10 +1,12 @@
 import moment from 'moment';
-import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
+import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+
 import { Periode, Periodetype } from 'app/types/uttaksplan/periodetyper';
 import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
 
 export const innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode: RegelTest = (
-    grunnlag: Regelgrunnlag
+    grunnlag: UttaksplanRegelgrunnlag
 ): RegelTestresultat => {
     const aktivetskravFriePerioder = grunnlag.perioder.filter(
         (p: Periode) => p.type === Periodetype.Uttak && p.harIkkeAktivitetskrav

@@ -28,7 +28,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
         const periode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.FARMEDMOR,
+            forelder: Forelder.farMedmor,
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager),
             vedlegg: [],
@@ -41,7 +41,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
         const aktivitetsFriPeriode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.FARMEDMOR,
+            forelder: Forelder.farMedmor,
             konto: StønadskontoType.AktivitetsfriKvote,
             tidsperiode: getTidsperiode(førsteUttaksdag, aktivitetsfriKvote!.dager),
             vedlegg: [],
@@ -55,7 +55,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
         const aktivitetskravPeriode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.FARMEDMOR,
+            forelder: Forelder.farMedmor,
             konto: StønadskontoType.Foreldrepenger,
             tidsperiode: getTidsperiode(
                 Uttaksdagen(aktivitetsFriPeriode.tidsperiode.tom).neste(),
@@ -82,7 +82,7 @@ const ikkeDeltUttakAdopsjonMor = (
         {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
+            forelder: Forelder.mor,
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager),
             vedlegg: [],
@@ -135,7 +135,7 @@ const ikkeDeltUttakFødselMor = (
             const ekstraPeriodeFørFødsel: Periode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.MOR,
+                forelder: Forelder.mor,
                 konto: StønadskontoType.Foreldrepenger,
                 tidsperiode: getTidsperiode(startdatoPermisjon, dagerFørFødsel - 15),
                 vedlegg: [],
@@ -148,7 +148,7 @@ const ikkeDeltUttakFødselMor = (
         const periodeFørFødsel: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
+            forelder: Forelder.mor,
             konto: foreldrePengerFørFødselKonto.konto,
             tidsperiode: {
                 fom: startdatoFpFørFødsel,
@@ -163,7 +163,7 @@ const ikkeDeltUttakFødselMor = (
         const periodeFørFødsel: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
+            forelder: Forelder.mor,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             skalIkkeHaUttakFørTermin: true,
             tidsperiode: {} as any,
@@ -188,7 +188,7 @@ const ikkeDeltUttakFødselMor = (
     const foreldrepengerPeriode: Periode = {
         id: guid(),
         type: Periodetype.Uttak,
-        forelder: Forelder.MOR,
+        forelder: Forelder.mor,
         konto: foreldrepengerKonto.konto,
         tidsperiode: antallDagerIForeldrepenger,
         vedlegg: [],

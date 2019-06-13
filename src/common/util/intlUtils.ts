@@ -5,7 +5,9 @@ export function intlHasKey(intl: InjectedIntl, key: string) {
     return intl.messages[key] !== undefined;
 }
 
-export const getVarighetString = (antallDager: number, intl: InjectedIntl): string => {
+export type VarighetFormat = 'full' | 'normal';
+
+export const getVarighetString = (antallDager: number, intl: InjectedIntl, format: VarighetFormat = 'full'): string => {
     const { uker, dager } = getUkerOgDagerFromDager(Math.abs(antallDager));
     const dagerStr = intl.formatMessage(
         { id: 'common.varighet.dager' },
@@ -18,13 +20,12 @@ export const getVarighetString = (antallDager: number, intl: InjectedIntl): stri
     }
     const ukerStr = intl.formatMessage({ id: 'common.varighet.uker' }, { uker });
     if (dager > 0) {
-        return `${ukerStr} ${intl.formatMessage({
-            id: 'common.varighet.og'
-        })} ${dagerStr}`;
+        return `${ukerStr}${intl.formatMessage({
+            id: `common.varighet.separator--${format}`
+        })}${dagerStr}`;
     }
     return ukerStr;
 };
-
 export const pluralize = (count: number, single: string, other: string) => (count === 1 ? single : other);
 
 export const tallTilTekst = (tall: number, intl: InjectedIntl): string => {

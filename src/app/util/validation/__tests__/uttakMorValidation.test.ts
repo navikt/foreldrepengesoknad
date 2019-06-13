@@ -17,14 +17,14 @@ const uttakBase: Partial<Uttaksperiode> = {
     type: Periodetype.Uttak,
     gradert: false,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
-    forelder: Forelder.MOR
+    forelder: Forelder.mor
 };
 
 const utsettelseBase: Partial<Utsettelsesperiode> = {
     type: Periodetype.Utsettelse,
     årsak: UtsettelseÅrsakType.Sykdom,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
-    forelder: Forelder.MOR
+    forelder: Forelder.mor
 };
 
 const uttak = uttakBase as Uttaksperiode;

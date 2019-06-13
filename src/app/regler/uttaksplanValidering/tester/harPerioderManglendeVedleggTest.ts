@@ -1,8 +1,10 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
+import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+
 import { findMissingAttachmentsForPerioder } from '../../../util/attachments/missingAttachmentUtil';
 import { MissingAttachment } from '../../../types/MissingAttachment';
 
-export const harPerioderManglendeVedleggTest: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+export const harPerioderManglendeVedleggTest: RegelTest = (grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat => {
     const manglendeVedlegg: MissingAttachment[] = findMissingAttachmentsForPerioder(
         grunnlag.perioderSomSkalSendesInn,
         grunnlag.søknadsinfo

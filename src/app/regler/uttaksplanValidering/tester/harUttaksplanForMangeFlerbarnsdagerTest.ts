@@ -1,7 +1,11 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
+import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+
 import { uttaksplanHarForMangeFlerbarnsdager } from '../../../util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 
-export const harUttaksplanForMangeFlerbarnsdagerTest: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+export const harUttaksplanForMangeFlerbarnsdagerTest: RegelTest = (
+    grunnlag: UttaksplanRegelgrunnlag
+): RegelTestresultat => {
     const {
         perioder,
         søknadsinfo: {

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ForeldreparForelder, ForeldreparIllustrasjonsvariant } from './foreldreparTypes';
+import { FlexibleSvg } from '../../../common/components/customSvg/CustomSVG';
 import BEMHelper from 'common/util/bem';
-import { FlexibleSvg } from 'common/components/customSvg/CustomSVG';
+import { ForeldreparForelder, ForeldreparIllustrasjonsvariant } from 'shared/types';
 
 import './foreldrepar.less';
 
