@@ -53,7 +53,6 @@ import { VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/vei
 import UttaksplanFeiloppsummering from 'app/components/uttaksplanlegger/components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import Uttaksoppsummering from 'app/components/uttaksplanlegger/components/uttaksoppsummering/Uttaksoppsummering';
 import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
-import UttakFordeling from 'app/components/uttaksplanlegger/components/uttakFordeling/UttakFordeling';
 
 interface StateProps {
     stegProps: StegProps;
@@ -311,13 +310,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                             uttak={uttaksstatus}
                                             navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                                             gjelderDagerBrukt={gjelderDagerBrukt}
-                                        />
-                                    </Block>
-                                    <Block>
-                                        <UttakFordeling
-                                            søknadsinfo={søknadsinfo}
-                                            tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                            perioder={søknad.uttaksplan}
                                         />
                                     </Block>
                                 </>
