@@ -70,14 +70,16 @@ class FødtBarnPartial extends React.Component<Props> {
                     <FødselsdatoerSpørsmål
                         collapsed={true}
                         fødselsdatoer={barn.fødselsdatoer || []}
+                        termindato={barn.termindato}
                         antallBarn={barn.antallBarn}
-                        onChange={(fødselsdatoer: Date[]) =>
+                        onChangeFødselsdato={(fødselsdatoer: Date[]) =>
                             dispatch(
                                 søknadActions.updateBarn({
                                     fødselsdatoer
                                 })
                             )
                         }
+                        onChangeTermindato={(termindato: Date) => dispatch(søknadActions.updateBarn({ termindato }))}
                     />
                 </Block>
 

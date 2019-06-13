@@ -18,7 +18,6 @@ describe('cleanupRelasjonTIlBarnFødselSteg', () => {
     it('should remove irrelevant properties when child is born', () => {
         dirtyBarn.erBarnetFødt = true;
         const cleanedFødtBarn = cleanupRelasjonTilBarnFødselSteg(dirtyBarn) as any;
-        expect(cleanedFødtBarn.termindato).toBeUndefined();
         expect(cleanedFødtBarn.terminbekreftelse).toBeUndefined();
         expect(cleanedFødtBarn.terminbekreftelseDato).toBeUndefined();
     });

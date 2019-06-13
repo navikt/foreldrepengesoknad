@@ -90,7 +90,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                         datoavgrensninger={{
                             minDato: DateValues.date15YearsAgo.toDate()
                         }}
-                        onChange={(fødselsdatoer: Date[]) =>
+                        onChangeFødselsdato={(fødselsdatoer: Date[]) =>
                             dispatch(
                                 søknadActions.updateBarn({
                                     fødselsdatoer
