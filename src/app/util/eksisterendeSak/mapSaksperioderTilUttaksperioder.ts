@@ -229,7 +229,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
     if (årsak) {
         return {
             type: Periodetype.Info,
-            infotype: PeriodeInfoType.annenPart,
+            infotype: PeriodeInfoType.oppholdAnnenPart,
             id: guid(),
             årsak,
             tidsperiode: { ...saksperiode.tidsperiode },

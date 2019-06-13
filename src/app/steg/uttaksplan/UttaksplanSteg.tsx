@@ -314,7 +314,11 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                         />
                                     </Block>
                                     <Block>
-                                        <UttakFordeling />
+                                        <UttakFordeling
+                                            søknadsinfo={søknadsinfo}
+                                            tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                            perioder={søknad.uttaksplan}
+                                        />
                                     </Block>
                                 </>
                             )}

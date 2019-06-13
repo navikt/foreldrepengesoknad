@@ -22,7 +22,7 @@ import { RegelStatus } from 'shared/regler/regelTypes';
 
 const stateSelector = (state: AppState) => state;
 
-const REGEL_INTL_PREFIX = 'uttaksplan.validering.';
+const REGEL_INTL_PREFIX = 'uttaksplan.validering';
 
 export const sjekkUttaksplanOppMotRegler = (regelgrunnlag: UttaksplanRegelgrunnlag): RegelStatus[] => {
     return uttaksplanRegler.map((regel) => {
