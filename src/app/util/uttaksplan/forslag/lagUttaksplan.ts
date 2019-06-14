@@ -27,6 +27,10 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         uttaksplanSkjema
     } = params;
 
+    if (uttaksplanSkjema.ønskerIkkeFlerePerioder) {
+        return [];
+    }
+
     if (erEndringssøknad) {
         if (søkerErFarEllerMedmor) {
             return [];
@@ -44,7 +48,8 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         antallDagerFellesperiodeFarMedmor,
         antallUkerFellesperiodeFarMedmor,
         morSinSisteUttaksdag,
-        farSinFørsteUttaksdag
+        farSinFørsteUttaksdag,
+        begrunnelseForUtsettelse
     } = uttaksplanSkjema;
 
     if (familiehendelsesdato) {
@@ -60,7 +65,8 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 antallDagerFellesperiodeFarMedmor,
                 antallUkerFellesperiodeFarMedmor,
                 morSinSisteUttaksdag,
-                farSinFørsteUttaksdag
+                farSinFørsteUttaksdag,
+                begrunnelseForUtsettelse
             );
         } else {
             return ikkeDeltUttak(

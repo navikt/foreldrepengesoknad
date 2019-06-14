@@ -50,7 +50,7 @@ export const Periodene = (perioder: Periode[]) => ({
     finnPåfølgendePeriode: (periode: Periode) => finnPåfølgendePeriode(perioder, periode),
     forskyvPerioder: (uttaksdager: number) => forskyvPerioder(perioder, uttaksdager),
     sort: () => perioder.sort(sorterPerioder),
-    finnSisteUttaksperiode: () => finnSisteUttaksperiodePeriode(perioder)
+    finnSisteInfoperiode: () => finnSisteInfoperiode(perioder)
 });
 
 export function sorterPerioder(p1: Periode, p2: Periode) {
@@ -245,15 +245,13 @@ function getFørsteUttaksdagEtterSistePeriode(perioder: Periode[]): Date | undef
     return Uttaksdagen(perioder[perioder.length - 1].tidsperiode.tom).neste();
 }
 
-<<<<<<< HEAD
 export const erPeriodeMedFerieForForelder = (periode: Periode, forelder: Forelder): boolean => {
     return isUtsettelsePgaFerie(periode) && periode.forelder === forelder;
 };
-=======
-function finnSisteUttaksperiodePeriode(perioder: Periode[]) {
+
+function finnSisteInfoperiode(perioder: Periode[]) {
     return perioder
-        .filter((p) => p.type === Periodetype.Uttak)
+        .filter((p) => p.type === Periodetype.Info)
         .sort(sorterPerioder)
         .reverse()[0];
 }
->>>>>>> bd73d5ad... uttaksplanskjema scenario annen part

@@ -13,10 +13,19 @@ import InnholdMedIllustrasjon from 'app/components/elementer/innholdMedIllustras
 import { getVarighetString } from 'common/util/intlUtils';
 import { ForeldreparSituasjon } from 'shared/types';
 import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+
+import InfoEkisterendeSakPerioder from './InfoEkisterendeSakPerioder';
+import { Normaltekst } from 'nav-frontend-typografi';
+import { Periodene } from 'app/util/uttaksplan/Periodene';
+import { formaterDato } from 'common/util/datoUtils';
+import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    ekisterendeSak: EksisterendeSak;
+    erAnnenPartSinEkisterendeSak?: boolean;
 }
 
 type Props = InjectedIntlProps & OwnProps;
@@ -39,14 +48,29 @@ const getSituasjon = (info: Søknadsinfo): ForeldreparSituasjon | undefined => {
     }
 };
 
-const getHvem = (intl: InjectedIntl, erDeltUttak: boolean, navn?: NavnISøknaden): string => {
+const getHvem = (
+    intl: InjectedIntl,
+    erDeltUttak: boolean,
+    navn?: NavnISøknaden,
+    erAnnenPartSinEkisterendeSak?: boolean
+): string => {
     if (erDeltUttak && navn && navn.annenForelder) {
-        return getMessage(intl, 'eksisterendeSak.tekst.benevning.deltOmsorg', { navn: navn.annenForelder.fornavn });
+        return erAnnenPartSinEkisterendeSak
+            ? getMessage(intl, 'ekisterendeSak.tekst.benevning.førstegangssøknaMedEkisterndeSakAnnenPart', {
+                  navn: navn.annenForelder.fornavn
+              })
+            : getMessage(intl, 'eksisterendeSak.tekst.benevning.deltOmsorg', { navn: navn.annenForelder.fornavn });
     }
     return getMessage(intl, 'eksisterendeSak.tekst.benevning.aleneomsorg');
 };
 
-const InfoEksisterendeSak: React.StatelessComponent<Props> = ({ søknadsinfo, tilgjengeligeStønadskontoer, intl }) => {
+const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
+    søknadsinfo,
+    tilgjengeligeStønadskontoer,
+    ekisterendeSak,
+    erAnnenPartSinEkisterendeSak,
+    intl
+}) => {
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
     const situasjon = getSituasjon(søknadsinfo);
     if (situasjon === undefined) {
@@ -63,6 +87,13 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({ søknadsinfo, ti
             ? Forelder.mor
             : Forelder.farMedmor;
 
+    const hvem = getHvem(intl, erDeltUttak, navn, erAnnenPartSinEkisterendeSak);
+
+    const nesteMuligeUttaksdagEtterAnnenPart =
+        ekisterendeSak && ekisterendeSak.uttaksplan
+            ? Uttaksdagen(Periodene(ekisterendeSak.uttaksplan).finnSisteInfoperiode().tidsperiode.tom).neste()
+            : undefined;
+
     return (
         <InfoBlock padding="m">
             <InnholdMedIllustrasjon
@@ -71,24 +102,31 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({ søknadsinfo, ti
                     <SituasjonSirkel key="situasjon" situasjon={situasjon} valgtForelder={forelderVedAleneomsorg} />,
                     <UkerSirkel key="uker" uker={uker} />
                 ]}>
-                <FormattedHTMLMessage
-                    id="eksisterendeSak.tekst.html"
-                    values={{
-                        uker: getVarighetString(uker * 5, intl),
-                        dekningsgrad,
-                        navn: getHvem(intl, erDeltUttak, navn)
-                    }}
-                />
-                <FormattedHTMLMessage
-                    id="eksisterendeSak.tekst.html"
-                    values={{
-                        uker: getVarighetString(uker * 5, intl),
-                        dekningsgrad,
-                        navn: getHvem(intl, erDeltUttak, navn)
-                    }}
-                />
-                <UtvidetInformasjon apneLabel={getMessage(intl, 'ekisterendeSak.label.seAnnenPartsPlan')}>
-                    Liste med perioder
+                <Normaltekst>
+                    <FormattedHTMLMessage
+                        id="eksisterendeSak.tekst.html"
+                        values={{
+                            uker: getVarighetString(uker * 5, intl),
+                            dekningsgrad,
+                            navn: hvem
+                        }}
+                    />
+                </Normaltekst>
+                {nesteMuligeUttaksdagEtterAnnenPart && (
+                    <Normaltekst>
+                        <FormattedHTMLMessage
+                            id="eksisterendeSak.tekst.nesteMuligeUttaksdato"
+                            values={{
+                                dato: formaterDato(nesteMuligeUttaksdagEtterAnnenPart, 'DD. MMM YYYY'),
+                                navn: hvem
+                            }}
+                        />
+                    </Normaltekst>
+                )}
+
+                <UtvidetInformasjon
+                    apneLabel={getMessage(intl, 'ekisterendeSak.label.seAnnenPartsPlan', { navn: hvem })}>
+                    <InfoEkisterendeSakPerioder ekisterendeSak={ekisterendeSak} navn={hvem} />
                 </UtvidetInformasjon>
             </InnholdMedIllustrasjon>
         </InfoBlock>

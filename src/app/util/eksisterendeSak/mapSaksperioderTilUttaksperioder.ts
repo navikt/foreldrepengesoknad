@@ -9,9 +9,10 @@ import {
     PeriodeInfoType,
     UtsettelseÅrsakType,
     Arbeidsform,
-    AnnenPartInfoPeriode,
+    UttakAnnenPartInfoPeriode,
     GruppertInfoPeriode,
-    isAnnenPartInfoPeriode
+    isAnnenPartInfoPeriode,
+    UtsettelseAnnenPartInfoPeriode
 } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
@@ -226,12 +227,25 @@ const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, grunnla
 const mapAnnenPartInfoPeriodeFromSaksperiode = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag
-): AnnenPartInfoPeriode | undefined => {
+): UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode | undefined => {
+    if (saksperiode.utsettelsePeriodeType) {
+        return {
+            type: Periodetype.Info,
+            infotype: PeriodeInfoType.utsettelseAnnenPart,
+            id: guid(),
+            årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelsePeriodeType)!,
+            tidsperiode: { ...saksperiode.tidsperiode },
+            forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
+            overskrives: true,
+            resultatType: saksperiode.periodeResultatType
+        };
+    }
+
     const årsak = getOppholdÅrsakFromSaksperiode(saksperiode);
     if (årsak) {
         return {
             type: Periodetype.Info,
-            infotype: PeriodeInfoType.oppholdAnnenPart,
+            infotype: PeriodeInfoType.uttakAnnenPart,
             id: guid(),
             årsak,
             tidsperiode: { ...saksperiode.tidsperiode },

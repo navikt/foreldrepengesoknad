@@ -25,6 +25,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import UtsettelseBegrunnelse from './enkeltspørsmål/UtsettelseBegrunnelse';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
+import { skalFarUtsetteEtterMorSinSisteUttaksdag } from './utils';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -332,20 +333,31 @@ const Scenario8: React.StatelessComponent<ScenarioProps> = () => {
     );
 };
 
-const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehendelsesdato }) => {
+const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåForeldre, familiehendelsesdato }) => {
     const { uttaksplanSkjema, eksisterendeSakAnnenPart } = søknad.ekstrainfo;
-    const morsSisteDag = eksisterendeSakAnnenPart
-        ? Periodene(eksisterendeSakAnnenPart.uttaksplan!).finnSisteUttaksperiode().tidsperiode.tom
+    const morSinSisteUttaksdag = eksisterendeSakAnnenPart
+        ? Periodene(eksisterendeSakAnnenPart.uttaksplan!).finnSisteInfoperiode().tidsperiode.tom
         : undefined;
 
     return (
         <>
-            <FarSinFørsteUttaksdagSpørsmål visible={true} familiehendelsesdato={familiehendelsesdato} />
-            <UtsettelseBegrunnelse
-                visible={
-                    morsSisteDag !== undefined && !moment(uttaksplanSkjema.farSinFørsteUttaksdag).isSame(morsSisteDag)
-                }
+            <FarSinFørsteUttaksdagSpørsmål
+                visible={true}
+                familiehendelsesdato={familiehendelsesdato}
+                morSinSisteUttaksdag={morSinSisteUttaksdag}
+                harAnnenPartEkisterendeSak={true}
+                navnPåForeldre={navnPåForeldre}
             />
+            {uttaksplanSkjema.farSinFørsteUttaksdag &&
+                morSinSisteUttaksdag && (
+                    <UtsettelseBegrunnelse
+                        visible={skalFarUtsetteEtterMorSinSisteUttaksdag(
+                            uttaksplanSkjema.farSinFørsteUttaksdag,
+                            morSinSisteUttaksdag
+                        )}
+                        navn={navnPåForeldre.mor}
+                    />
+                )}
         </>
     );
 };

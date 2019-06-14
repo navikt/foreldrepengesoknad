@@ -22,8 +22,8 @@ import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParam
 import Sak, { SakType } from 'app/types/søknad/Sak';
 import { validerUttaksplanAction } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { ApiState } from '../reducers/apiReducer';
-import mapSaksperioderTilUttaksperioder from 'app/util/eksisterendeSak/mapSaksperioderTilUttaksperioder';
 import { getFødselsnummerForAnnenPartPåRegistrerteBarn } from '../util/fødselsnummerUtil';
+import { beregnGjenståendeUttaksdager } from 'app/util/uttaksPlanStatus';
 
 const stateSelector = (state: AppState) => state;
 
@@ -114,16 +114,12 @@ function* getAnnenPartSinSakForValgtBarn({ payload }: UpdateSøknadenGjelder) {
                 ekstrainfo: {
                     ...appState.søknad.ekstrainfo,
                     eksisterendeSakAnnenPart: {
-                        ...annenPartsEksisterendeSak,
-                        uttaksplan: mapSaksperioderTilUttaksperioder(
-                            annenPartsEksisterendeSak.saksperioder,
-                            annenPartsEksisterendeSak.grunnlag
-                        )
+                        ...annenPartsEksisterendeSak
                     }
                 }
             })
         );
-    }
+    };
 }
 
 function* startFallbackEndringssøknad(action: StartSøknad) {
@@ -139,9 +135,16 @@ function* startFallbackEndringssøknad(action: StartSøknad) {
 function* lagUttaksplanForslag() {
     const appState: AppState = yield select(stateSelector);
     const søknadsinfo = selectSøknadsinfo(appState);
-    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
-    const { uttaksplanSkjema } = appState.søknad.ekstrainfo;
-    
+    const { uttaksplanSkjema, eksisterendeSakAnnenPart } = appState.søknad.ekstrainfo;
+    let tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
+    if (eksisterendeSakAnnenPart) {
+        tilgjengeligeStønadskontoer = beregnGjenståendeUttaksdager(
+            tilgjengeligeStønadskontoer,
+            eksisterendeSakAnnenPart!.uttaksplan!,
+            false
+        );
+    };
+
     if (søknadsinfo) {
         const {
             søknaden: { erDeltUttak, erEndringssøknad, familiehendelsesdato, situasjon },
@@ -157,8 +160,13 @@ function* lagUttaksplanForslag() {
             søkerErFarEllerMedmor: søker.erFarEllerMedmor,
             tilgjengeligeStønadskontoer,
             uttaksplanSkjema
-        }).sort(sorterPerioder);
-        yield put(søknadActions.uttaksplanSetForslag(forslag));
+        });
+
+        if (eksisterendeSakAnnenPart && eksisterendeSakAnnenPart.uttaksplan) {
+            forslag.push(...eksisterendeSakAnnenPart.uttaksplan);
+        };
+        
+        yield put(søknadActions.uttaksplanSetForslag(forslag.sort(sorterPerioder)));
     }
 }
 

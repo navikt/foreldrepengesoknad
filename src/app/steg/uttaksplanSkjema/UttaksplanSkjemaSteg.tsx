@@ -118,6 +118,8 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                             <InfoEksisterendeSak
                                 søknadsinfo={søknadsinfo}
                                 tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                ekisterendeSak={eksisterendeSak ? eksisterendeSak : eksisterendeSakAnnenPart!}
+                                erAnnenPartSinEkisterendeSak={eksisterendeSakAnnenPart !== undefined}
                             />
                         </Block>
                         <UttaksplanSkjemaScenarioes

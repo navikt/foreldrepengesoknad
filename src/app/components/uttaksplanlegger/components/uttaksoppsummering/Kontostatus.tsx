@@ -19,8 +19,8 @@ export interface Props {
 const BEM = BEMHelper('kontostatus');
 
 const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({ uttak, navnPåForeldre, intl }) => {
-    const varighetString = getVarighetString(uttak.antallDager, intl);
-    const kontoErOvertrukket = uttak.antallDager < 0;
+    const varighetString = getVarighetString(uttak.dager, intl);
+    const kontoErOvertrukket = uttak.dager < 0;
 
     return (
         <Normaltekst className={BEM.block} tag="div">

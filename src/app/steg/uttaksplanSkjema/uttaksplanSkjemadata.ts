@@ -29,4 +29,5 @@ export interface UttaksplanSkjemadata {
     antallUkerFellesperiodeFarMedmor?: number;
     antallDagerFellesperiodeFarMedmor?: number;
     begrunnelseForUtsettelse?: UtsettelseÅrsakType;
+    ønskerIkkeFlerePerioder?: boolean;
 }

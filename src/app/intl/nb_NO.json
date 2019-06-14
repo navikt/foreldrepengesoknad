@@ -329,6 +329,15 @@
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperioden",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flernbarnsperioden",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin",
+
+    "oppholdsårsaktype.foreldernavn.far.LOVBESTEMT_FERIE": "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
+    "oppholdsårsaktype.foreldernavn.far.ARBEID": "{foreldernavn} har utsettelse på grunn av heltidsarbeid",
+    "oppholdsårsaktype.foreldernavn.far.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
+    "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_SØKER":
+        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstusujon",
+    "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET":
+        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstutusjon",
+
     "oppholdsårsaktype.foreldernavn.far.undefined": "{foreldernavn} tar ut",
     "oppsummering.adopsjonAvEktefellesBarn.label": "Gjelder søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
@@ -535,6 +544,9 @@
     "spørsmål.harAnnenForelderSøktFP.label": "Har {navnAnnenForelder} foreldrepenger?",
     "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} siste dag med foreldrepenger?",
     "spørsmål.farSinFørsteUttaksdagSpørsmål.label": "Når er din første dag med foreldrepenger?",
+    "spørsmål.farSinFørsteUttaksdagSpørsmål.ønskerIkkeFlerePerioder.checkbox.label":
+        "Jeg skal ikke ha mer foreldrepenger",
+    "spørsmål.farSinFørsteUttaksdagSpørsmål.førsteUttaksdagEtterAnnenPart": "Første dag etter { navn }: { dato }",
     "spørsmål.farFellesperiode.label": "Hvor mye fellesperiode skal du ha?",
     "spørsmål.farFellesperiode.uker.label": "Antall uker",
     "spørsmål.farFellesperiode.dager.label": "Antall dager",
@@ -1025,9 +1037,13 @@
     "eksisterendeSak.tittel.aleneomsorg": "Din foreldrepengeperiode",
     "eksisterendeSak.tekst.html":
         "{navn} har valgt <strong>{uker}</strong> med <strong>{dekningsgrad} prosent utbetaling</strong>.",
+    "eksisterendeSak.tekst.nesteMuligeUttaksdato": "<b>{ dato }</b> er første dag etter { navn } siste periode",
     "eksisterendeSak.tekst.benevning.deltOmsorg": "Du og {navn}",
     "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
+    "ekisterendeSak.tekst.benevning.førstegangssøknaMedEkisterndeSakAnnenPart": "{ navn }",
     "ekisterendeSak.label.seAnnenPartsPlan": "Se { navn } plan",
+    "ekisterendeSak.label.annenPartsPlan": "{ navn } plan:",
+    "ekisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { stønadskontotype }",
 
     "søknadSendt.tittel": "Takk for søknaden { name }!",
     "søknadSendt.pdf": "Se og last ned søknaden din",

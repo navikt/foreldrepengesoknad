@@ -23,7 +23,7 @@ export const getUttaksplanSkjemaScenario = (
     let scenario = UttaksplanSkjemaScenario.sX_ukjent_x;
     if (søknaden.erEndringssøknad) {
         scenario = UttaksplanSkjemaScenario.s8_endringssøknad;
-    } else if (!søknaden.erEndringssøknad && eksisterendeSakAnnenPart) {
+    } else if (!søknaden.erEndringssøknad && eksisterendeSakAnnenPart && eksisterendeSakAnnenPart.uttaksplan) {
         scenario = UttaksplanSkjemaScenario.s9_førstegangssøknadMedAnnenPart;
     } else if (søker.erFarEllerMedmor && søknaden.erFødsel && annenForelder.harRett) {
         scenario = UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan;

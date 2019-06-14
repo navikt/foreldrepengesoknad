@@ -1,7 +1,6 @@
-import { StønadskontoType, TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
-import { EksisterendeSak, Saksperiode, PeriodeResultatType } from 'app/types/EksisterendeSak';
-import { Tidsperioden } from './Tidsperioden';
-import * as moment from 'moment';
+import { StønadskontoType, TilgjengeligStønadskonto, Stønadskontouttak } from '../../types/uttaksplan/periodetyper';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { getBrukteDager } from 'app/components/uttaksplanlegger/components/uttakFordeling/brukteDagerUtils';
 
 export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligStønadskonto[]): StønadskontoType[] =>
     stønadskontoTyper
@@ -56,24 +55,19 @@ export const getResterendeStønadskontoer = (
     eksisterendeSak: EksisterendeSak,
     tilgjengeligStønadskonto: TilgjengeligStønadskonto[]
 ): TilgjengeligStønadskonto[] => {
+    const brukteDager = getBrukteDager(
+        tilgjengeligStønadskonto,
+        eksisterendeSak.uttaksplan!,
+        eksisterendeSak.grunnlag.familieHendelseDato
+    );
+    
     return tilgjengeligStønadskonto.map((k) => ({
         ...k,
-        dager: k.dager - getBrukteUttaksdager(eksisterendeSak.saksperioder, k.konto)
+        dager: k.dager - getBrukteUttaksdager(brukteDager.alle, k.konto)
     }));
 };
 
-const getBrukteUttaksdager = (perioder: Saksperiode[], kontoType: StønadskontoType): number => {
-    return perioder
-        .filter(
-            (p) =>
-                p.stønadskontotype === kontoType &&
-                p.periodeResultatType === PeriodeResultatType.INNVILGET &&
-                moment(p.tidsperiode.fom).isBefore(moment(), 'day')
-        )
-        .map((p) => {
-            return moment().isBefore(p.tidsperiode.tom)
-                ? Tidsperioden({ fom: p.tidsperiode.fom, tom: moment().toDate() }).getAntallUttaksdager()
-                : Tidsperioden(p.tidsperiode).getAntallUttaksdager();
-        })
-        .reduce((uttaksdager, total) => total + uttaksdager, 0);
+    const getBrukteUttaksdager = (tilgjengeligeStønadskontoer: Stønadskontouttak[], kontoType: StønadskontoType): number => {
+        const tilgjenligStønadskonto = tilgjengeligeStønadskontoer.find((t) => t.konto === kontoType)
+        return tilgjenligStønadskonto ? tilgjenligStønadskonto.dager : 0;
 };

@@ -8,7 +8,7 @@ export const erUttaksmengdeForFarMedmorForHøy = (
 ): boolean => {
     if (farEllerMedmor === true) {
         const kontoUttak = beregnGjenståendeUttaksdager(tilgjengeligeStønadskontoer, uttaksplan, false);
-        return kontoUttak.some((konto: Stønadskontouttak) => konto.antallDager < 0);
+        return kontoUttak.some((konto: Stønadskontouttak) => konto.dager < 0);
     } else {
         return false;
     }

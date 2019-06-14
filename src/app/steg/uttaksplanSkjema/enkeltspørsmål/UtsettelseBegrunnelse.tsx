@@ -8,12 +8,13 @@ import UttaksplanSkjemaSpørsmål from '../UttaksplanSkjemaSpørsmål';
 interface StateProps {}
 interface OwnProps {
     visible?: boolean;
+    navn: string;
 }
 
 type Props = OwnProps & StateProps & InjectedIntlProps;
 
 const UtsettelseBegrunnelse = (props: Props) => {
-    const { visible = true, intl } = props;
+    const { visible = true, navn, intl } = props;
     return (
         <UttaksplanSkjemaSpørsmål
             visible={visible}
@@ -21,7 +22,7 @@ const UtsettelseBegrunnelse = (props: Props) => {
                 <RadioPanelGruppeResponsive
                     twoColumns={true}
                     checked={data.begrunnelseForUtsettelse}
-                    legend={getMessage(intl, 'spørsmål.utsettelse.begrunnelse.legend')}
+                    legend={getMessage(intl, 'spørsmål.utsettelse.begrunnelse.legend', { navn })}
                     radios={[
                         {
                             label: getMessage(intl, 'spørsmål.utsettelse.begrunnelse.label.ferie'),
