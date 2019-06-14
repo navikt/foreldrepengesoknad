@@ -5,14 +5,15 @@ import {
     SøknadActionKeys,
     UpdateSøkerAndStorage,
     AvbrytSøknad,
-    StartSøknad
+    StartSøknad,
+    UpdateSøknadenGjelder
 } from '../actions/søknad/søknadActionDefinitions';
 import { lagUttaksplan } from '../../util/uttaksplan/forslag/lagUttaksplan';
 import { AppState } from '../reducers';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
-import { fetchEksisterendeSak } from './sakerSaga';
+import { fetchEksisterendeSak, fetchEksisterendeSakMedFnr } from './sakerSaga';
 import { opprettSøknadFraEksisterendeSak } from '../../util/eksisterendeSak/eksisterendeSakUtils';
 import { søknadStegPath } from '../../steg/StegRoutes';
 import { StegID } from '../../util/routing/stegConfig';
@@ -21,6 +22,9 @@ import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParam
 import Sak, { SakType } from 'app/types/søknad/Sak';
 import { validerUttaksplanAction } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { ApiState } from '../reducers/apiReducer';
+import { getFødselsnummerForAnnenPartPåRegistrerteBarn } from '../util/fødselsnummerUtil';
+import { beregnGjenståendeUttaksdager } from 'app/util/uttaksPlanStatus';
+import { selectSøkerErFarEllerMedmor } from 'app/selectors/utledetSøknadsinfoSelectors';
 
 const stateSelector = (state: AppState) => state;
 
@@ -94,6 +98,31 @@ function* startEndringssøknad(action: StartSøknad, sak: Sak) {
     }
 }
 
+function* getAnnenPartSinSakForValgtBarn({ payload }: UpdateSøknadenGjelder) {
+    const appState: AppState = yield select(stateSelector);
+    const annenPartFnr = getFødselsnummerForAnnenPartPåRegistrerteBarn(payload.valgteBarn);
+    if (appState.søknad.erEndringssøknad || annenPartFnr === undefined || !selectSøkerErFarEllerMedmor(appState)) {
+        return;
+    };
+
+    const annenPartsEksisterendeSak: EksisterendeSak | undefined = yield call(fetchEksisterendeSakMedFnr, annenPartFnr);
+    if (annenPartsEksisterendeSak) {
+        const søknad = appState.søknad;
+        yield put(
+            søknadActions.updateSøknad({
+                ...søknad,
+                dekningsgrad: annenPartsEksisterendeSak.grunnlag.dekningsgrad,
+                ekstrainfo: {
+                    ...appState.søknad.ekstrainfo,
+                    eksisterendeSakAnnenPart: {
+                        ...annenPartsEksisterendeSak
+                    }
+                }
+            })
+        );
+    };
+}
+
 function* startFallbackEndringssøknad(action: StartSøknad) {
     yield put(
         søknadActions.updateSøknad({
@@ -107,8 +136,16 @@ function* startFallbackEndringssøknad(action: StartSøknad) {
 function* lagUttaksplanForslag() {
     const appState: AppState = yield select(stateSelector);
     const søknadsinfo = selectSøknadsinfo(appState);
-    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
-    const { uttaksplanSkjema } = appState.søknad.ekstrainfo;
+    const { uttaksplanSkjema, eksisterendeSakAnnenPart } = appState.søknad.ekstrainfo;
+    let tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
+    if (eksisterendeSakAnnenPart) {
+        tilgjengeligeStønadskontoer = beregnGjenståendeUttaksdager(
+            tilgjengeligeStønadskontoer,
+            eksisterendeSakAnnenPart!.uttaksplan!,
+            false
+        );
+    };
+
     if (søknadsinfo) {
         const {
             søknaden: { erDeltUttak, erEndringssøknad, familiehendelsesdato, situasjon },
@@ -124,8 +161,13 @@ function* lagUttaksplanForslag() {
             søkerErFarEllerMedmor: søker.erFarEllerMedmor,
             tilgjengeligeStønadskontoer,
             uttaksplanSkjema
-        }).sort(sorterPerioder);
-        yield put(søknadActions.uttaksplanSetForslag(forslag));
+        });
+
+        if (eksisterendeSakAnnenPart && eksisterendeSakAnnenPart.uttaksplan) {
+            forslag.push(...eksisterendeSakAnnenPart.uttaksplan);
+        };
+        
+        yield put(søknadActions.uttaksplanSetForslag(forslag.sort(sorterPerioder)));
     }
 }
 
@@ -134,6 +176,7 @@ export default function* søknadSaga() {
         takeEvery(SøknadActionKeys.UPDATE_SØKER_AND_STORAGE, updateSøkerAndStorage),
         takeEvery(SøknadActionKeys.AVBRYT_SØKNAD, avbrytSøknadSaga),
         takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, lagUttaksplanForslag),
-        takeEvery(SøknadActionKeys.START_SØKNAD, startSøknad)
+        takeEvery(SøknadActionKeys.START_SØKNAD, startSøknad),
+        takeEvery(SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN, getAnnenPartSinSakForValgtBarn)
     ]);
 }

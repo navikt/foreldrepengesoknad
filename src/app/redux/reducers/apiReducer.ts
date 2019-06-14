@@ -4,7 +4,6 @@ import { Søkerinfo } from '../../types/søkerinfo';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import Sak from '../../types/søknad/Sak';
 import { StorageKvittering } from '../../types/StorageKvittering';
-import { EksisterendeSak } from '../../types/EksisterendeSak';
 
 export interface ApiState {
     søkerinfo?: Søkerinfo;
@@ -16,9 +15,11 @@ export interface ApiState {
     isLoadingTilgjengeligeStønadskontoer: boolean;
     isLoadingSaker: boolean;
     isLoadingEksisterendeSak: boolean;
+    isLoadingSakForAnnenPart: boolean;
     sessionHasExpired: boolean;
     oppslagSakerFeilet?: boolean;
     oppslagEksisterendeSakFeilet?: boolean;
+    oppslagSakForAnnenPartFeilet?: boolean;
     søknadSendingInProgress: boolean;
     søknadHasBeenReceived: boolean;
     stønadskontoer100: TilgjengeligStønadskonto[];
@@ -27,7 +28,6 @@ export interface ApiState {
     søkerinfoLastetCounter: number;
     systemerIkkeTilgjengelig: boolean;
     storageKvittering?: StorageKvittering;
-    eksisterendeSak?: EksisterendeSak;
     innloggetSomAnnenForelder: boolean;
 }
 
@@ -37,6 +37,7 @@ export const getDefaultApiState = (): ApiState => ({
     isLoadingInitialAppData: true,
     isLoadingSøkerinfo: false,
     isLoadingStoredAppState: false,
+    isLoadingSakForAnnenPart: false,
     isLoadingTilgjengeligeStønadskontoer: false,
     isLoadingSaker: false,
     isLoadingEksisterendeSak: false,
