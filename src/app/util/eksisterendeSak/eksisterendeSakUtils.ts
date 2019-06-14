@@ -41,6 +41,19 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType)
     }
 };
 
+// export const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdsÅrsak): StønadskontoType | undefined => {
+//     switch (årsak) {
+//         case OppholdsÅrsak.UTTAK_FEDREKVOTE_ANNEN_FORELDER:
+//             return StønadskontoType.Fedrekvote;
+//         case OppholdsÅrsak.UTTAK_FELLESP_ANNEN_FORELDER:
+//             return StønadskontoType.Fellesperiode;
+//         case OppholdsÅrsak.UTTAK_MØDREKVOTE_ANNEN_FORELDER:
+//             return StønadskontoType.Fellesperiode;
+//         default:
+//             return undefined;
+//     }
+// };
+
 export const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): StønadskontoType => {
     switch (årsak) {
         case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
@@ -77,10 +90,11 @@ const mapSaksperiodeFromDTO = (p: UttaksplanPeriodeDTO): Saksperiode => {
         morsAktivitetIPerioden,
         oppholdAarsak,
         gjelderAnnenPart,
+        flerbarnsdager,
         ...periodeRest
     } = p;
 
-    const returnPeriode = {
+    const returnPeriode: Partial<Saksperiode> = {
         ...periodeRest,
         guid: guid(),
         periodeResultatType: periodeResultatType as PeriodeResultatType,
@@ -93,17 +107,25 @@ const mapSaksperiodeFromDTO = (p: UttaksplanPeriodeDTO): Saksperiode => {
             tom: new Date(periode.tom)
         },
         gjelderAnnenPart,
-        morsAktivitetIPerioden: morsAktivitetIPerioden as MorsAktivitet
+        morsAktivitetIPerioden: morsAktivitetIPerioden as MorsAktivitet,
+        flerbarnsdager
     };
 
     if (oppholdAarsak !== undefined && gjelderAnnenPart === false) {
         returnPeriode.gjelderAnnenPart = true;
-        returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdÅrsakType(oppholdAarsak as OppholdÅrsakType);
-        returnPeriode.flerbarnsdager =
-            (oppholdAarsak as OppholdÅrsakType) === OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder;
+        returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdÅrsakType(
+            (oppholdAarsak as unknown) as OppholdÅrsakType
+        );
     }
 
-    return returnPeriode;
+    if (oppholdAarsak !== undefined && gjelderAnnenPart) {
+        returnPeriode.gjelderAnnenPart = false;
+        returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdÅrsakType(
+            (oppholdAarsak as unknown) as OppholdÅrsakType
+        );
+    }
+
+    return returnPeriode as Saksperiode;
 };
 
 export const getEksisterendeSakFromDTO = (

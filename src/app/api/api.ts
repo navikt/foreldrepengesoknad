@@ -42,6 +42,13 @@ const getEksisterendeSak = (saksnummer: string) => {
     });
 };
 
+const getEksisterendeSakMedFnr = (fnr: string) => {
+    return AxiosInstance.get('/innsyn/uttaksplan', {
+        timeout: 60 * 1000,
+        params: { fnr }
+    });
+};
+
 function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
     const {
         antallBarn,
@@ -135,6 +142,7 @@ const Api = {
     sendStorageKvittering,
     getStorageKvittering,
     getEksisterendeSak,
+    getEksisterendeSakMedFnr,
     log
 };
 
