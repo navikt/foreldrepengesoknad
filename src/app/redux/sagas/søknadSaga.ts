@@ -25,6 +25,7 @@ import { ApiState } from '../reducers/apiReducer';
 import { getFødselsnummerForAnnenPartPåRegistrerteBarn } from '../util/fødselsnummerUtil';
 import { beregnGjenståendeUttaksdager } from 'app/util/uttaksPlanStatus';
 import { selectSøkerErFarEllerMedmor } from 'app/selectors/utledetSøknadsinfoSelectors';
+import { StønadskontoType } from 'common/types';
 
 const stateSelector = (state: AppState) => state;
 
@@ -61,7 +62,8 @@ function* startEndringssøknad(action: StartSøknad, sak: Sak) {
     const { saksnummer, søkerinfo, history } = action;
     const appState: AppState = yield select(stateSelector);
 
-    const eksisterendeSak: EksisterendeSak | undefined = sak.type === SakType.FPSAK ? yield call(fetchEksisterendeSak, saksnummer) : undefined;
+    const eksisterendeSak: EksisterendeSak | undefined =
+        sak.type === SakType.FPSAK ? yield call(fetchEksisterendeSak, saksnummer) : undefined;
     const søknad = eksisterendeSak ? opprettSøknadFraEksisterendeSak(søkerinfo, eksisterendeSak, sak) : undefined;
 
     if (eksisterendeSak === undefined || søknad === undefined) {
@@ -103,7 +105,7 @@ function* getAnnenPartSinSakForValgtBarn({ payload }: UpdateSøknadenGjelder) {
     const annenPartFnr = getFødselsnummerForAnnenPartPåRegistrerteBarn(payload.valgteBarn);
     if (appState.søknad.erEndringssøknad || annenPartFnr === undefined || !selectSøkerErFarEllerMedmor(appState)) {
         return;
-    };
+    }
 
     const annenPartsEksisterendeSak: EksisterendeSak | undefined = yield call(fetchEksisterendeSakMedFnr, annenPartFnr);
     if (annenPartsEksisterendeSak) {
@@ -120,7 +122,7 @@ function* getAnnenPartSinSakForValgtBarn({ payload }: UpdateSøknadenGjelder) {
                 }
             })
         );
-    };
+    }
 }
 
 function* startFallbackEndringssøknad(action: StartSøknad) {
@@ -144,6 +146,12 @@ function* lagUttaksplanForslag() {
             eksisterendeSakAnnenPart!.uttaksplan!,
             false
         );
+        const resterendeFellesperiode = tilgjengeligeStønadskontoer.find(
+            (konto) => konto.konto === StønadskontoType.Fellesperiode
+        );
+        uttaksplanSkjema.antallDagerFellesperiodeFarMedmor = resterendeFellesperiode
+            ? resterendeFellesperiode.dager
+            : undefined;
     };
 
     if (søknadsinfo) {
