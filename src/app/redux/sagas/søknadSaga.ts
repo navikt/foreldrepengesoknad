@@ -24,6 +24,7 @@ import { validerUttaksplanAction } from '../actions/uttaksplanValidering/uttaksp
 import { ApiState } from '../reducers/apiReducer';
 import { getFødselsnummerForAnnenPartPåRegistrerteBarn } from '../util/fødselsnummerUtil';
 import { beregnGjenståendeUttaksdager } from 'app/util/uttaksPlanStatus';
+import { selectSøkerErFarEllerMedmor } from 'app/selectors/utledetSøknadsinfoSelectors';
 
 const stateSelector = (state: AppState) => state;
 
@@ -100,7 +101,7 @@ function* startEndringssøknad(action: StartSøknad, sak: Sak) {
 function* getAnnenPartSinSakForValgtBarn({ payload }: UpdateSøknadenGjelder) {
     const appState: AppState = yield select(stateSelector);
     const annenPartFnr = getFødselsnummerForAnnenPartPåRegistrerteBarn(payload.valgteBarn);
-    if (appState.søknad.erEndringssøknad || annenPartFnr === undefined) {
+    if (appState.søknad.erEndringssøknad || annenPartFnr === undefined || !selectSøkerErFarEllerMedmor(appState)) {
         return;
     };
 
