@@ -9,6 +9,7 @@ import { Checkbox } from 'nav-frontend-skjema';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import Block from 'common/components/block/Block';
 import { NavnPåForeldre } from 'common/types';
+import { formatDate } from 'app/util/dates/dates';
 
 interface FarSinFørsteUttaksdagSpørsmålProps {
     familiehendelsesdato: Date;
@@ -60,7 +61,7 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                                         text={
                                             <FormattedMessage
                                                 id="spørsmål.farSinFørsteUttaksdagSpørsmål.førsteUttaksdagEtterAnnenPart"
-                                                values={{ navn: navnPåForeldre.mor }}
+                                                values={{ navn: navnPåForeldre.mor, dato: formatDate(Uttaksdagen(morSinSisteUttaksdag).neste()) }}
                                             />
                                         }
                                         onClick={() =>
