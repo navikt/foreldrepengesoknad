@@ -38,6 +38,7 @@ interface StateProps {
     søknadsinfo: Søknadsinfo;
     scenario: UttaksplanSkjemaScenario;
     isLoadingTilgjengeligeStønadskontoer: boolean;
+    isLoadingSakForAnnenPart: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     eksisterendeSak?: EksisterendeSak;
     eksisterendeSakAnnenPart?: EksisterendeSak;
@@ -93,7 +94,8 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             tilgjengeligeStønadskontoer,
             søknadsinfo,
             eksisterendeSak,
-            eksisterendeSakAnnenPart
+            eksisterendeSakAnnenPart,
+            isLoadingSakForAnnenPart
         } = this.props;
         const søknad = this.props.søknad as Søknad;
         const navnPåForeldre = søknadsinfo.navn.navnPåForeldre;
@@ -110,7 +112,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         )
                     );
                 }}>
-                {isLoadingTilgjengeligeStønadskontoer === true ? (
+                {isLoadingTilgjengeligeStønadskontoer === true || isLoadingSakForAnnenPart === true ? (
                     <ApplicationSpinner />
                 ) : (
                     <>
@@ -156,7 +158,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     const { familiehendelsesdato } = søknadsinfo.søknaden;
     const scenario = getUttaksplanSkjemaScenario(søknadsinfo, state.søknad.ekstrainfo.eksisterendeSakAnnenPart);
     const {
-        api: { isLoadingTilgjengeligeStønadskontoer }
+        api: { isLoadingTilgjengeligeStønadskontoer, isLoadingSakForAnnenPart }
     } = state;
     const søknad = { ...state.søknad };
     const { ekstrainfo } = søknad;
@@ -181,6 +183,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         scenario,
         tilgjengeligeStønadskontoer,
         isLoadingTilgjengeligeStønadskontoer,
+        isLoadingSakForAnnenPart,
         eksisterendeSak: ekstrainfo.eksisterendeSak,
         eksisterendeSakAnnenPart: ekstrainfo.eksisterendeSakAnnenPart
     };
