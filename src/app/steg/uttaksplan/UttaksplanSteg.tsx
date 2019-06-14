@@ -53,7 +53,6 @@ import { VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/vei
 import UttaksplanFeiloppsummering from 'app/components/uttaksplanlegger/components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import Uttaksoppsummering from 'app/components/uttaksplanlegger/components/uttaksoppsummering/Uttaksoppsummering';
 import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
-// import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
 
 interface StateProps {
     stegProps: StegProps;
