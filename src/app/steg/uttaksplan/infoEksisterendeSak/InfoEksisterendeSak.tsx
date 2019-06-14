@@ -26,6 +26,7 @@ interface OwnProps {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     ekisterendeSak: EksisterendeSak;
     erAnnenPartSinEkisterendeSak?: boolean;
+    visPeriodeliste?: boolean;
 }
 
 type Props = InjectedIntlProps & OwnProps;
@@ -69,6 +70,7 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
     tilgjengeligeStønadskontoer,
     ekisterendeSak,
     erAnnenPartSinEkisterendeSak,
+    visPeriodeliste = false,
     intl
 }) => {
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
@@ -118,16 +120,18 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                             id="eksisterendeSak.tekst.nesteMuligeUttaksdato"
                             values={{
                                 dato: formaterDato(nesteMuligeUttaksdagEtterAnnenPart, 'DD. MMM YYYY'),
-                                navn: hvem
+                                navn: navn.annenForelder.fornavn
                             }}
                         />
                     </Normaltekst>
                 )}
 
-                <UtvidetInformasjon
-                    apneLabel={getMessage(intl, 'ekisterendeSak.label.seAnnenPartsPlan', { navn: hvem })}>
-                    <InfoEkisterendeSakPerioder ekisterendeSak={ekisterendeSak} navn={hvem} />
-                </UtvidetInformasjon>
+                {visPeriodeliste && (
+                    <UtvidetInformasjon
+                        apneLabel={getMessage(intl, 'ekisterendeSak.label.seAnnenPartsPlan', { navn: hvem })}>
+                        <InfoEkisterendeSakPerioder ekisterendeSak={ekisterendeSak} navn={hvem} />
+                    </UtvidetInformasjon>
+                )}
             </InnholdMedIllustrasjon>
         </InfoBlock>
     );

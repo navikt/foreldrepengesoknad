@@ -120,6 +120,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                                 tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                 ekisterendeSak={eksisterendeSak ? eksisterendeSak : eksisterendeSakAnnenPart!}
                                 erAnnenPartSinEkisterendeSak={eksisterendeSakAnnenPart !== undefined}
+                                visPeriodeliste={true}
                             />
                         </Block>
                         <UttaksplanSkjemaScenarioes
