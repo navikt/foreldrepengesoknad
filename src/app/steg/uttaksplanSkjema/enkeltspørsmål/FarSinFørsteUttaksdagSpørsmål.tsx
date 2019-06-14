@@ -66,6 +66,7 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                                         }
                                         onClick={() =>
                                             onChange({
+                                                morSinSisteUttaksdag,
                                                 farSinFørsteUttaksdag: morSinSisteUttaksdag
                                                     ? Uttaksdagen(morSinSisteUttaksdag).neste()
                                                     : undefined
