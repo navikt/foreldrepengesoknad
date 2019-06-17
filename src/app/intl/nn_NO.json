@@ -624,6 +624,8 @@
         "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold i valgt tidsperiode.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
         "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha utsetjing lengre enn fire veker og én dag må du ha overført lovfesta ferie frå i fjor eller ta ut lovfesta ferie frå neste år. Du må avtale med arbiedgjevaren din at du skal ha ferie.",
+    "utsettelseskjema.arbeid.avtaltFulltidVedDeltid":
+        "Har du ein skriftleg avtale med {antall, plural, one{arbeidsgivaren} other {arbeidsgiverane}} din om at du skal jobbe 100 prosent?",
     "utsettelseskjema.ferievarsel.ulovlig":
         "Du har lagt inn til saman {ukerOgDager} med ferie. Du kan maksimalt leggje inn ti veker og to dagar med lovfesta ferie. Du må avtale med arbiedgjevaren din at du skal ha ferie.",
     "utsettelseskjema.info.helligdagerIFerie":
@@ -1086,5 +1088,7 @@
     "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden er ikkje gyldig",
     "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden er ikkje gyldig",
     "uttaksplan.validering.feil.periodeOverlapperAndrePerioder":
-        "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane"
+        "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
+    "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale":
+        "Du må ha ein skriftleg avtale med arbeidsgivaren din om at du skal jobbe i den heiltid i den perioden du oppgir."
 }
