@@ -4,7 +4,7 @@ import { FormattedMessage, FormattedHTMLMessage, injectIntl, InjectedIntlProps }
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import { MissingAttachment } from 'app/types/MissingAttachment';
-import AdvarselIkon from 'app/components/ikoner/svgIkoner/advarselIkon/AdvarselIkon';
+import AdvarselIkon from 'common/components/ikoner/AdvarselIkon';
 
 import getMessage from 'common/util/i18nUtils';
 import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
