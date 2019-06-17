@@ -91,9 +91,12 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
 
     const hvem = getHvem(intl, erDeltUttak, navn, erAnnenPartSinEkisterendeSak);
 
+    const sisteInfoPeriode = ekisterendeSak.uttaksplan
+        ? Periodene(ekisterendeSak.uttaksplan).finnSisteInfoperiode()
+        : undefined;
     const nesteMuligeUttaksdagEtterAnnenPart =
-        ekisterendeSak && ekisterendeSak.uttaksplan
-            ? Uttaksdagen(Periodene(ekisterendeSak.uttaksplan).finnSisteInfoperiode().tidsperiode.tom).neste()
+        ekisterendeSak && ekisterendeSak.uttaksplan && sisteInfoPeriode
+            ? Uttaksdagen(sisteInfoPeriode.tidsperiode.tom).neste()
             : undefined;
 
     return (
