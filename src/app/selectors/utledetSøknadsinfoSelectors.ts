@@ -129,7 +129,7 @@ export const selectSøkerKjønn = createSelector([selectSøkerinfo], (søkerinfo
 });
 
 export const selectAnnenForelderKjønn = createSelector([selectAnnenForelder], (annenForelder): Kjønn | undefined => {
-    if (annenForelder && annenForelder.utenlandskFnr === false && annenForelder.fnr) {
+    if (annenForelder && annenForelder.utenlandskFnr !== true && annenForelder.fnr) {
         return getKjønnFromFnr(annenForelder.fnr);
     }
     return undefined;
