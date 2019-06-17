@@ -182,6 +182,7 @@ export interface Utsettelsesperiode extends PeriodeBase {
     orgnumre?: string[];
     erArbeidstaker: boolean;
     arbeidsformer?: Arbeidsform[];
+    harAvtaleOmFulltidForDeltidsstilling?: boolean;
 }
 
 export interface Oppholdsperiode extends PeriodeBase {
@@ -230,6 +231,10 @@ export function isUtsettelsesperiode(periode: Periode | RecursivePartial<Periode
 
 export function isUtsettelsePgaFerie(periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode {
     return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Ferie;
+}
+
+export function isUtsettelsePgaArbeid(periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode {
+    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Arbeid;
 }
 
 export function isOverføringsperiode(periode: Periode | RecursivePartial<Periode>): periode is Overføringsperiode {
