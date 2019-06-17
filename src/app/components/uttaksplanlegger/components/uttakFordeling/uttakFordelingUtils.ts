@@ -51,9 +51,11 @@ export const getFordelingDeltOmsorg = (
     const pstTildeltFarMedmor = dagerTildeltFarMedmor * pstTildelt;
     const pstTildeltFelles = dagerTildeltFelles * pstTildelt;
 
-    const pstIMorsDel = 100 / (dagerBruktMorsDel + dagerForMyeBruktAvMorsDel);
-    const pstIFarMedmorsDel = 100 / dagerTildeltFarMedmor;
-    const pstIFellesdel = 100 / dagerTildeltFelles;
+    const pstIMorsDel = 100 / Math.max(dagerTildeltMor, dagerBruktMorsDel + dagerForMyeBruktAvMorsDel);
+    const pstIFarMedmorsDel =
+        100 / Math.max(dagerTildeltFarMedmor, dagerBruktFarMedmorsDel + dagerForMyeBruktAvFarMedmorsDel);
+    const pstIFellesdel =
+        100 / Math.max(dagerTildeltFelles, morsDager.dagerFellesperiode + farMedmorsDager.dagerFellesperiode);
 
     return {
         type: 'deltOmsorg',
