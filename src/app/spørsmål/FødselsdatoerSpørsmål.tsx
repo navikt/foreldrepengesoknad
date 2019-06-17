@@ -7,6 +7,7 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { Validator } from 'common/lib/validation/types';
 import { Avgrensninger } from 'common/types';
 import Block from 'common/components/block/Block';
+import { termindatoAvgrensninger, getTermindatoRegler } from 'app/util/validation/termindato';
 
 export interface FødselsdatoerSpørsmålProps {
     fødselsdatoer: DateValue[];
@@ -32,6 +33,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
         this.renderExpandedFødselsdatoSpørsmål = this.renderExpandedFødselsdatoSpørsmål.bind(this);
         this.getFødselsdatoAvgrensninger = this.getFødselsdatoAvgrensninger.bind(this);
         this.getValidatorer = this.getValidatorer.bind(this);
+        this.getTermindatoAvgrensninger = this.getTermindatoAvgrensninger.bind(this);
     }
 
     onFødselsdatoChange(dato: DateValue, idx: number) {
@@ -47,12 +49,27 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
         };
     }
 
+    getTermindatoAvgrensninger() {
+        return {
+            ...termindatoAvgrensninger
+        };
+    }
+
     getValidatorer(): Validator[] {
         const { fødselsdatoer, datovalidatorer, intl } = this.props;
         return [
             ...(datovalidatorer || []),
             ...getFødselsdatoRegler(fødselsdatoer[0], this.props.gjelderAdopsjon === true, intl)
         ];
+    }
+
+    getTermindatoValidatorer(): Validator[] {
+        const { termindato, datovalidatorer, intl } = this.props;
+
+        return {
+            ...(datovalidatorer || []),
+            ...getTermindatoRegler(termindato, intl)
+        };
     }
 
     renderCollapsedFødselsdatoSpørsmål() {
@@ -86,8 +103,8 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                         dato={termindato}
                         onChange={(d: Date) => this.props.onChangeTermindato!(d)}
                         label={<Labeltekst intlId={intlIdTermin} />}
-                        datoAvgrensinger={this.getFødselsdatoAvgrensninger()}
-                        validators={this.getValidatorer()}
+                        datoAvgrensinger={this.getTermindatoAvgrensninger()}
+                        validators={this.getTermindatoValidatorer()}
                     />
                 </Block>
             </>
