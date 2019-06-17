@@ -47,7 +47,7 @@
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
     "annenInntekt.arbeidsforhold.veileder":
-        "Husk å be arbeidsgjevaren din om å sende inntektsmelding til NAV. Vi treng den for å kunne behandle søknaden din. arbeidsgjevaren din kan sende den tidlegast {dato}.",
+        "Husk å be arbeidsgjevaren din om å sende inntektsmelding til NAV. Vi treng den for å kunne behandle søknaden din. Arbeidsgjevaren din kan sende den tidlegast {dato}.",
     "annenInntekt.fom": "Når starta du {navnPåNæringen}?",
     "annenInntekt.leggTilInntekt": "Legg til inntektskjelde",
     "annenInntekt.modal.land": "Kva land har du jobba i?",
@@ -625,7 +625,7 @@
     "utsettelseskjema.ferievarsel.kreveroverforing":
         "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha utsetjing lengre enn fire veker og én dag må du ha overført lovfesta ferie frå i fjor eller ta ut lovfesta ferie frå neste år. Du må avtale med arbeidsgjevaren din at du skal ha ferie.",
     "utsettelseskjema.arbeid.avtaltFulltidVedDeltid":
-        "Har du ein skriftleg avtale med {antall, plural, one{arbeidsgjevaren} other {arbeidsgjevaran}}  {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent?",
+        "Har du ein skriftleg avtale med {antall, plural, one{arbeidsgjevaren} other {arbeidsgjevarane}} {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent?",
     "utsettelseskjema.ferievarsel.ulovlig":
         "Du har lagt inn til saman {ukerOgDager} med ferie. Du kan maksimalt leggje inn ti veker og to dagar med lovfesta ferie. Du må avtale med arbeidsgjevaren din at du skal ha ferie.",
     "utsettelseskjema.info.helligdagerIFerie":

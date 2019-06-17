@@ -19,7 +19,8 @@ export const harUtsettelsePgaArbeidMedDeltidUtenAvtale: RegelTest = (
     return {
         passerer: utsettelserMedDeltidUtenAvtale.length === 0,
         info: utsettelserMedDeltidUtenAvtale.map((periode) => ({
-            periodeId: periode.id
+            periodeId: periode.id,
+            values: { antall: periode.orgnumre ? periode.orgnumre.length : 0 }
         }))
     };
 };

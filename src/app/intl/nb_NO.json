@@ -1083,5 +1083,5 @@
     "uttaksplan.validering.feil.periodeOverlapperAndrePerioder":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",
     "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale":
-        "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe 100 prosent i perioden du oppgir."
+        "Du må ha en skriftlig avtale med {antall, plural, one{arbeidsgiveren} other {arbeidsgiverene}} {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent i perioden du oppgir."
 }
