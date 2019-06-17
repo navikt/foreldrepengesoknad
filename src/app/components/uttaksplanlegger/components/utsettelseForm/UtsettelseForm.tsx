@@ -399,7 +399,10 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                                 {
                                                     type: 'feil',
                                                     contentIntlKey:
-                                                        'vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse'
+                                                        'vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse',
+                                                    values: {
+                                                        antall: periode.orgnumre ? periode.orgnumre.length : 0
+                                                    }
                                                 }
                                             ]}
                                         />
