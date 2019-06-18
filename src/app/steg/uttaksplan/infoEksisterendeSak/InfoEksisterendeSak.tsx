@@ -163,14 +163,14 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                         </UtvidetInformasjon>
                     )}
             </InnholdMedIllustrasjon>
-
-            {søkersPerioder && (
-                <InnholdMedIllustrasjon
-                    tittel={getMessage(intl, 'ekisterendeSak.tittel.dineDagerMedForeldrepenger')}
-                    illustrasjoner={[]}>
-                    <InfoEkisterendeSakPerioder perioder={søkersPerioder} søknadsinfo={søknadsinfo} />
-                </InnholdMedIllustrasjon>
-            )}
+            {visPeriodeliste &&
+                søkersPerioder && (
+                    <InnholdMedIllustrasjon
+                        tittel={getMessage(intl, 'ekisterendeSak.tittel.dineDagerMedForeldrepenger')}
+                        illustrasjoner={[]}>
+                        <InfoEkisterendeSakPerioder perioder={søkersPerioder} søknadsinfo={søknadsinfo} />
+                    </InnholdMedIllustrasjon>
+                )}
         </InfoBlock>
     );
 };
