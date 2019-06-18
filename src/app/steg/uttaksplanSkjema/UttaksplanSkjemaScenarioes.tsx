@@ -22,6 +22,10 @@ import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
 import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 import { getNavnGenitivEierform } from '../../util/tekstUtils';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import UtsettelseBegrunnelse from './enkeltspørsmål/UtsettelseBegrunnelse';
+import { Periodene } from 'app/util/uttaksplan/Periodene';
+import { skalFarUtsetteEtterMorSinSisteUttaksdag } from './utils';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -31,6 +35,7 @@ export interface ScenarioProps {
     antallUkerFedreKvote: number | undefined;
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
+    eksisterendeSakAnnenPart?: EksisterendeSak;
 }
 export interface OwnProps extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
@@ -328,6 +333,35 @@ const Scenario8: React.StatelessComponent<ScenarioProps> = () => {
     );
 };
 
+const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåForeldre, familiehendelsesdato }) => {
+    const { uttaksplanSkjema, eksisterendeSakAnnenPart } = søknad.ekstrainfo;
+    const morSinSisteUttaksdag = eksisterendeSakAnnenPart
+        ? Periodene(eksisterendeSakAnnenPart.uttaksplan!).finnSisteInfoperiode().tidsperiode.tom
+        : undefined;
+
+    return (
+        <>
+            <FarSinFørsteUttaksdagSpørsmål
+                visible={true}
+                familiehendelsesdato={familiehendelsesdato}
+                morSinSisteUttaksdag={morSinSisteUttaksdag}
+                harAnnenPartEkisterendeSak={true}
+                navnPåForeldre={navnPåForeldre}
+            />
+            {uttaksplanSkjema.farSinFørsteUttaksdag &&
+                morSinSisteUttaksdag && (
+                    <UtsettelseBegrunnelse
+                        visible={skalFarUtsetteEtterMorSinSisteUttaksdag(
+                            uttaksplanSkjema.farSinFørsteUttaksdag,
+                            morSinSisteUttaksdag
+                        )}
+                        navn={navnPåForeldre.mor}
+                    />
+                )}
+        </>
+    );
+};
+
 const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
     const { scenario, ...scenarioProps } = props;
     switch (scenario) {
@@ -345,6 +379,8 @@ const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
             return <Scenario7 {...scenarioProps} />;
         case UttaksplanSkjemaScenario.s8_endringssøknad:
             return <Scenario8 {...scenarioProps} />;
+        case UttaksplanSkjemaScenario.s9_førstegangssøknadMedAnnenPart:
+            return <Scenario9 {...scenarioProps} />;
         default:
             return <>Undefined scenario</>;
     }

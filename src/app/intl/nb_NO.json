@@ -331,6 +331,15 @@
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperioden",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flernbarnsperioden",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin",
+
+    "oppholdsårsaktype.foreldernavn.far.LOVBESTEMT_FERIE": "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
+    "oppholdsårsaktype.foreldernavn.far.ARBEID": "{foreldernavn} har utsettelse på grunn av heltidsarbeid",
+    "oppholdsårsaktype.foreldernavn.far.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
+    "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_SØKER":
+        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstusujon",
+    "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET":
+        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstutusjon",
+
     "oppholdsårsaktype.foreldernavn.far.undefined": "{foreldernavn} tar ut",
     "oppsummering.adopsjonAvEktefellesBarn.label": "Gjelder søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
@@ -537,6 +546,9 @@
     "spørsmål.harAnnenForelderSøktFP.label": "Har {navnAnnenForelder} foreldrepenger?",
     "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} siste dag med foreldrepenger?",
     "spørsmål.farSinFørsteUttaksdagSpørsmål.label": "Når er din første dag med foreldrepenger?",
+    "spørsmål.farSinFørsteUttaksdagSpørsmål.ønskerIkkeFlerePerioder.checkbox.label":
+        "Jeg skal ikke ha mer foreldrepenger",
+    "spørsmål.farSinFørsteUttaksdagSpørsmål.førsteUttaksdagEtterAnnenPart": "Første dag etter { navn }: { dato }",
     "spørsmål.farFellesperiode.label": "Hvor mye fellesperiode skal du ha?",
     "spørsmål.farFellesperiode.uker.label": "Antall uker",
     "spørsmål.farFellesperiode.dager.label": "Antall dager",
@@ -552,6 +564,10 @@
     "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ikke ha foreldrepenger før termin",
     "spørsmål.startdatoPermisjon.varighet": "{varighet} før termin",
     "spørsmål.startdatoPermisjonFarMedmor.label": "Når ønsker du å starte perioden?",
+    "spørsmål.utsettelse.begrunnelse.legend": "Hvorfor skal du ikke ha foreldrepenger rett etter { navn }?",
+    "spørsmål.utsettelse.begrunnelse.label.ferie": "Jeg skal ha ferie",
+    "spørsmål.utsettelse.begrunnelse.label.jobb": "Jeg skal jobbe heltid",
+    "spørsmål.utsettelse.begrunnelse.label.sykdom": "På grunn av sykdom",
     "stebarnsadopsjon.adopsjonsdato": "Adopsjonsdato",
     "stebarnsadopsjon.antallBarn": "Antall barn",
     "stebarnsadopsjonsdato.spørsmål": "Oppgi datoen for stebarnsadopsjon",
@@ -623,6 +639,8 @@
         "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
     "utsettelse.sykdom.vedlegg.info.sykdom":
         "Du må legge ved bekreftelse fra legen din. Den må beskrive hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta deg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
+    "utsettelseskjema.arbeid.avtaltFulltidVedDeltid":
+        "Har du en skriftlig avtale med {antall, plural, one{arbeidsgiveren} other {arbeidsgiverene}} {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent?",
     "utsettelseskjema.ferie.utenArbeidsforhold":
         "Du kan dessverre ikke legge inn utsettelse på grunn av lovbestemt ferie fordi du ikke er registrert med et arbeidsforhold i valgt tidsperiode.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
@@ -948,7 +966,7 @@
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.veileder.adopsjon": "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
-        "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe i den stillingsprosenten du oppgir. Ved å søke om dette bekrefter du at dere har en skriftlig avtale. Du trenger ikke å sende denne til NAV.",
+        "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe 100 prosent i perioden du oppgir. Du må bekrefte at du har en skriftlig avtale med arbeidsgiveren din, før du kan legge til denne utsettelsen. Du trenger ikke å sende avtalen til NAV.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
         "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe i 100 prosent i perioden du oppgir. Ved å søke om dette bekrefter du at dere har en skriftlig avtale. Du trenger ikke å sende denne til NAV.",
     "vedlegg.veileder.fødselsattest":
@@ -1023,8 +1041,13 @@
     "eksisterendeSak.tittel.aleneomsorg": "Din foreldrepengeperiode",
     "eksisterendeSak.tekst.html":
         "{navn} har valgt <strong>{uker}</strong> med <strong>{dekningsgrad} prosent utbetaling</strong>.",
+    "eksisterendeSak.tekst.nesteMuligeUttaksdato": "<b>{ dato }</b> er første dag etter { navn } siste periode",
     "eksisterendeSak.tekst.benevning.deltOmsorg": "Du og {navn}",
     "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
+    "ekisterendeSak.tekst.benevning.førstegangssøknaMedEkisterndeSakAnnenPart": "{ navn }",
+    "ekisterendeSak.label.seAnnenPartsPlan": "Se { navn } plan",
+    "ekisterendeSak.label.annenPartsPlan": "{ navn } plan:",
+    "ekisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { stønadskontotype }",
 
     "søknadSendt.tittel": "Takk for søknaden { name }!",
     "søknadSendt.pdf": "Se og last ned søknaden din",
@@ -1081,5 +1104,11 @@
     "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden har ikke gyldig tidsperiode",
     "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden har ikke valgt stønadskonto",
     "uttaksplan.validering.feil.periodeOverlapperAndrePerioder":
-        "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper."
+        "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",
+    "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale":
+        "Du må ha en skriftlig avtale med {antall, plural, one{arbeidsgiveren} other {arbeidsgiverene}} {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent i perioden du oppgir.",
+    "byttBrowser.tittel": "Vi ser du bruker en utdatert nettleser",
+    "byttBrowser.ingress":
+        "For å få den beste brukeropplevelsen anbefaler vi en moderne nettleser som støtter moderne webstandarder.",
+    "ok": "Ok"
 }

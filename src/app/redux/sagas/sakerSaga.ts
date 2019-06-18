@@ -11,6 +11,7 @@ import {
 } from '../../util/saker/sakerUtils';
 import { getEksisterendeSakFromDTO } from 'app/util/eksisterendeSak/eksisterendeSakUtils';
 import { AppState } from '../reducers';
+import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
 
 const stateSelector = (state: AppState) => state;
 
@@ -75,6 +76,29 @@ export function* fetchEksisterendeSak(saksnummer: string) {
         yield put(
             apiActions.updateApi({
                 isLoadingEksisterendeSak: false
+            })
+        );
+    }
+}
+
+export function* fetchEksisterendeSakMedFnr(fnr: string) {
+    try {
+        const appState: AppState = yield select(stateSelector);
+        yield put(apiActions.updateApi({ isLoadingSakForAnnenPart: true }));
+        const response = yield call(Api.getEksisterendeSakMedFnr, fnr);
+        const uttaksplanDto: UttaksplanDTO = response.data;
+        uttaksplanDto.grunnlag.søkerErFarEllerMedmor = !uttaksplanDto.grunnlag.søkerErFarEllerMedmor;
+        return getEksisterendeSakFromDTO(uttaksplanDto, appState.api.søkerinfo!.arbeidsforhold);
+    } catch (error) {
+        yield put(
+            apiActions.updateApi({
+                oppslagSakForAnnenPartFeilet: true
+            })
+        );
+    } finally {
+        yield put(
+            apiActions.updateApi({
+                isLoadingSakForAnnenPart: false
             })
         );
     }

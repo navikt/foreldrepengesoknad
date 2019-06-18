@@ -90,11 +90,6 @@ export interface UpdateSøknad {
     payload: UpdateSøknadActionPayload;
 }
 
-export interface UpdateSøknad {
-    type: SøknadActionKeys.UPDATE_SØKNAD;
-    payload: UpdateSøknadActionPayload;
-}
-
 export interface UttaksplanSetPerioder {
     type: SøknadActionKeys.UTTAKSPLAN_SET_PERIODER;
     perioder: Periode[];

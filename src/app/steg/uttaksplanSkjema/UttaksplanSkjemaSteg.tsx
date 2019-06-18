@@ -29,6 +29,9 @@ import {
     getAntallUkerMødrekvote
 } from 'app/util/uttaksplan/stønadskontoer';
 import Barn from 'app/types/søknad/Barn';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import Block from 'common/components/block/Block';
+import InfoEksisterendeSak from '../uttaksplan/infoEksisterendeSak/InfoEksisterendeSak';
 
 interface StateProps {
     stegProps: StegProps;
@@ -36,8 +39,11 @@ interface StateProps {
     søknadsinfo: Søknadsinfo;
     scenario: UttaksplanSkjemaScenario;
     isLoadingTilgjengeligeStønadskontoer: boolean;
+    isLoadingSakForAnnenPart: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     barn: Barn;
+    eksisterendeSak?: EksisterendeSak;
+    eksisterendeSakAnnenPart?: EksisterendeSak;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -94,10 +100,16 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             isLoadingTilgjengeligeStønadskontoer,
             tilgjengeligeStønadskontoer,
             søknadsinfo,
-            barn
+            barn,
+            eksisterendeSak,
+            eksisterendeSakAnnenPart,
+            isLoadingSakForAnnenPart
         } = this.props;
         const søknad = this.props.søknad as Søknad;
         const navnPåForeldre = søknadsinfo.navn.navnPåForeldre;
+        const skalViseInfoEkisterendeSak: boolean =
+            eksisterendeSak !== undefined || eksisterendeSakAnnenPart !== undefined;
+
         return (
             <Steg
                 {...stegProps}
@@ -112,19 +124,31 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         )
                     );
                 }}>
-                {isLoadingTilgjengeligeStønadskontoer === true ? (
+                {isLoadingTilgjengeligeStønadskontoer === true || isLoadingSakForAnnenPart === true ? (
                     <ApplicationSpinner />
                 ) : (
-                    <UttaksplanSkjemaScenarioes
-                        scenario={scenario}
-                        søknad={søknad}
-                        navnPåForeldre={navnPåForeldre}
-                        antallUkerFellesperiode={getAntallUkerFellesperiode(tilgjengeligeStønadskontoer)}
-                        antallUkerFedreKvote={getAntallUkerFedrekvote(tilgjengeligeStønadskontoer)}
-                        antallUkerMødreKvote={getAntallUkerMødrekvote(tilgjengeligeStønadskontoer)}
-                        familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
-                        erFarEllerMedmor={søknadsinfo.søker.erFarEllerMedmor}
-                    />
+                    <>
+                        <Block visible={skalViseInfoEkisterendeSak}>
+                            <InfoEksisterendeSak
+                                søknadsinfo={søknadsinfo}
+                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                ekisterendeSak={eksisterendeSak ? eksisterendeSak : eksisterendeSakAnnenPart!}
+                                erAnnenPartSinEkisterendeSak={eksisterendeSakAnnenPart !== undefined}
+                                visPeriodeliste={true}
+                            />
+                        </Block>
+                        <UttaksplanSkjemaScenarioes
+                            scenario={scenario}
+                            søknad={søknad}
+                            navnPåForeldre={navnPåForeldre}
+                            antallUkerFellesperiode={getAntallUkerFellesperiode(tilgjengeligeStønadskontoer)}
+                            antallUkerFedreKvote={getAntallUkerFedrekvote(tilgjengeligeStønadskontoer)}
+                            antallUkerMødreKvote={getAntallUkerMødrekvote(tilgjengeligeStønadskontoer)}
+                            familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
+                            erFarEllerMedmor={søknadsinfo.søker.erFarEllerMedmor}
+                            eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
+                        />
+                    </>
                 )}
             </Steg>
         );
@@ -144,12 +168,13 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     };
 
     const { familiehendelsesdato } = søknadsinfo.søknaden;
-    const scenario = getUttaksplanSkjemaScenario(søknadsinfo);
+    const scenario = getUttaksplanSkjemaScenario(søknadsinfo, state.søknad.ekstrainfo.eksisterendeSakAnnenPart);
     const {
-        api: { isLoadingTilgjengeligeStønadskontoer }
+        api: { isLoadingTilgjengeligeStønadskontoer, isLoadingSakForAnnenPart }
     } = state;
     const søknad = { ...state.søknad };
-    const skjemadata = søknad.ekstrainfo.uttaksplanSkjema;
+    const { ekstrainfo } = søknad;
+    const skjemadata = ekstrainfo.uttaksplanSkjema;
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
     const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
     if (
@@ -160,8 +185,9 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         const defaultStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
             uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
         );
-        søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon = defaultStartdato;
+        ekstrainfo.uttaksplanSkjema.startdatoPermisjon = defaultStartdato;
     }
+
     return {
         søknadsinfo,
         stegProps,
@@ -169,7 +195,10 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         scenario,
         tilgjengeligeStønadskontoer,
         isLoadingTilgjengeligeStønadskontoer,
-        barn: søknad.barn
+        barn: søknad.barn,
+        isLoadingSakForAnnenPart,
+        eksisterendeSak: ekstrainfo.eksisterendeSak,
+        eksisterendeSakAnnenPart: ekstrainfo.eksisterendeSakAnnenPart
     };
 };
 

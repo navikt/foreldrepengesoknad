@@ -74,7 +74,8 @@ export enum SenEndringÅrsak {
 
 export enum PeriodeInfoType {
     'avslåttPeriode' = 'avslåttPeriode',
-    'oppholdAnnenPart' = 'oppholdAnnenPart',
+    'uttakAnnenPart' = 'uttakAnnenPart',
+    'utsettelseAnnenPart' = 'utsettelseAnnenPart',
     'gruppertInfo' = 'gruppertInfo'
 }
 
@@ -104,17 +105,37 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     overskrives: true;
 }
 
-export interface AnnenPartInfoPeriode extends InfoPeriodeBase {
+export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
-    infotype: PeriodeInfoType.oppholdAnnenPart;
+    infotype: PeriodeInfoType.uttakAnnenPart;
     årsak: OppholdÅrsakType;
     forelder: Forelder;
     overskrives: true;
     resultatType: PeriodeResultatType;
 }
 
-export const isAnnenPartInfoPeriode = (periode: Periode): periode is AnnenPartInfoPeriode => {
-    return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.oppholdAnnenPart;
+export interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
+    type: Periodetype.Info;
+    infotype: PeriodeInfoType.utsettelseAnnenPart;
+    årsak: UtsettelseÅrsakType;
+    forelder: Forelder;
+    overskrives: true;
+    resultatType: PeriodeResultatType;
+}
+
+export const isAnnenPartInfoPeriode = (periode: Periode): periode is UttakAnnenPartInfoPeriode => {
+    return (
+        periode.type === Periodetype.Info &&
+        (isAnnenPartInfoPeriodeOppholdUttak(periode) || isAnnenPartInfoPeriodeOppholdUtsettelse(periode))
+    );
+};
+
+const isAnnenPartInfoPeriodeOppholdUttak = (periode: InfoPeriode) => {
+    return periode.infotype === PeriodeInfoType.uttakAnnenPart;
+};
+
+const isAnnenPartInfoPeriodeOppholdUtsettelse = (periode: InfoPeriode) => {
+    return periode.infotype === PeriodeInfoType.utsettelseAnnenPart;
 };
 
 export interface GruppertInfoPeriode extends InfoPeriodeBase {
@@ -125,7 +146,11 @@ export interface GruppertInfoPeriode extends InfoPeriodeBase {
     perioder: InfoPeriode[];
 }
 
-export type InfoPeriode = AvslåttPeriode | AnnenPartInfoPeriode | GruppertInfoPeriode;
+export type InfoPeriode =
+    | AvslåttPeriode
+    | UttakAnnenPartInfoPeriode
+    | GruppertInfoPeriode
+    | UtsettelseAnnenPartInfoPeriode;
 
 export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode => {
     return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.avslåttPeriode;
@@ -182,6 +207,7 @@ export interface Utsettelsesperiode extends PeriodeBase {
     orgnumre?: string[];
     erArbeidstaker: boolean;
     arbeidsformer?: Arbeidsform[];
+    harAvtaleOmFulltidForDeltidsstilling?: boolean;
 }
 
 export interface Oppholdsperiode extends PeriodeBase {
@@ -232,6 +258,10 @@ export function isUtsettelsePgaFerie(periode: Periode | RecursivePartial<Periode
     return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Ferie;
 }
 
+export function isUtsettelsePgaArbeid(periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode {
+    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Arbeid;
+}
+
 export function isOverføringsperiode(periode: Periode | RecursivePartial<Periode>): periode is Overføringsperiode {
     return periode.type === Periodetype.Overføring;
 }
@@ -252,5 +282,5 @@ export const isOverskrivbarPeriode = (periode: Periode): boolean => {
 
 export interface Stønadskontouttak {
     konto: StønadskontoType;
-    antallDager: number;
+    dager: number;
 }

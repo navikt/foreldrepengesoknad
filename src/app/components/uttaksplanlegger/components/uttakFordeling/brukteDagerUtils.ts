@@ -48,7 +48,7 @@ const isFarMedmorsKvote = (uttak: Stønadskontouttak): boolean => {
 };
 
 const summerBrukteUttaksdager = (uttak: Stønadskontouttak[]) => {
-    return uttak.reduce((dager, u) => dager + u.antallDager, 0);
+    return uttak.reduce((dager, u) => dager + u.dager, 0);
 };
 
 const getBrukteDagerForForelder = (

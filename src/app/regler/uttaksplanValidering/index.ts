@@ -14,7 +14,7 @@ import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVe
 import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtsettelsePgaFerieTest';
 import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
 import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
-import { innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode } from './tester/innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode';
+// import { innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode } from './tester/innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode';
 import { inneholderSenUtsettelsePgaArbeidTest } from './tester/inneholderSenUtsettelsePgaArbeidTest';
 import { inneholderSeneGraderteUttakTest } from './tester/inneholderSeneGraderteUttakTest';
 import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
@@ -42,7 +42,7 @@ export enum UttaksplanRegelKey {
     'inneholderSeneGraderteUttak' = 'inneholderSeneGraderteUttakTest',
     'inneholderTapteDager' = 'inneholderTapteDager',
     'inneholderBareUtsettelser' = 'inneholderBareUtsettelser',
-    'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode' = 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode',
+    // 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode' = 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode',
     'endringerOverskriverAnnenPartsPerioder' = 'endringerOverskriverAnnenPartsPerioder',
     'periodeOverlapperAndrePerioder' = 'periodeOverlapperAndrePerioder',
     'harSøktOmFerieUtenArbeidsforhold' = 'harSøktOmFerieUtenArbeidsforhold'
@@ -145,11 +145,11 @@ const uttaksplanValideringRegler: Regel[] = [
         alvorlighet: RegelAlvorlighet.INFO,
         test: inneholderBareUtsettelserTest
     },
-    {
-        key: UttaksplanRegelKey.innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode,
-        alvorlighet: RegelAlvorlighet.FEIL,
-        test: innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode
-    },
+    // {
+    //     key: UttaksplanRegelKey.innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode,
+    //     alvorlighet: RegelAlvorlighet.FEIL,
+    //     test: innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode
+    // },
     {
         key: UttaksplanRegelKey.endringerOverskriverAnnenPartsPerioder,
         alvorlighet: RegelAlvorlighet.INFO,

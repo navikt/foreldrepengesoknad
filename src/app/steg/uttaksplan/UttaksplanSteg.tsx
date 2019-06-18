@@ -218,7 +218,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             uttaksplanVeilederInfo,
             planErEndret,
             meldingerPerPeriode,
-            sak,
             intl
         } = this.props;
 
@@ -277,15 +276,16 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         {visVeileder && (
                             <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
                         )}
-                        {eksisterendeSak &&
-                            sak && (
-                                <Block>
-                                    <InfoEksisterendeSak
-                                        søknadsinfo={søknadsinfo}
-                                        tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                    />
-                                </Block>
-                            )}
+
+                        {eksisterendeSak && (
+                            <Block>
+                                <InfoEksisterendeSak
+                                    søknadsinfo={søknadsinfo}
+                                    tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                    ekisterendeSak={eksisterendeSak}
+                                />
+                            </Block>
+                        )}
                         <Block>
                             <Uttaksplanlegger
                                 planErEndret={planErEndret}
