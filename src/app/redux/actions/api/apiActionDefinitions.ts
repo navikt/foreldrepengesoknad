@@ -7,6 +7,7 @@ export enum ApiActionKeys {
     'GET_SØKERINFO' = 'getSøkerinfo',
     'GET_SAKER' = 'getSaker',
     'GET_EKSISTERENDE_SAK' = 'getEksisterendeSak',
+    'GET_ANNEN_PART_SIN_SAK' = 'getAnnenPartSinSak',
 
     'GET_STORAGE_DATA' = 'getStorageData',
     'DELETE_STORED_APP_STATE' = 'deleteStoredAppState',
@@ -40,6 +41,10 @@ export interface GetSaker {
 export interface GetEksisterendeSak {
     type: ApiActionKeys.GET_EKSISTERENDE_SAK;
     saksnummer: string;
+}
+
+export interface GetAnnenPartSinEkisterendeSak {
+    type: ApiActionKeys.GET_ANNEN_PART_SIN_SAK;
 }
 
 export interface GetTilgjengeligeStønadskontoer {
@@ -86,6 +91,7 @@ export type ApiActionTypes =
     | GetSøkerinfo
     | GetSaker
     | GetEksisterendeSak
+    | GetAnnenPartSinEkisterendeSak
     | GetStorageData
     | GetTilgjengeligeStønadskontoer
     | GetTilgjengeligeStønadskontoerAndLagUttaksplanForslag

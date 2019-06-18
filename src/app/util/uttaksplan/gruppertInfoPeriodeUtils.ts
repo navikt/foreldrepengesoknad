@@ -16,3 +16,7 @@ export const trimPerioderIGruppertInfoPeriode = (periode: GruppertInfoPeriode): 
             }
         }));
 };
+
+export const getPerioderFromGruppertInfoPeriode = (perioder: GruppertInfoPeriode[]) => {
+    return perioder.map(trimPerioderIGruppertInfoPeriode);
+};

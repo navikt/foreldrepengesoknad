@@ -5,8 +5,7 @@ import {
     SøknadActionKeys,
     UpdateSøkerAndStorage,
     AvbrytSøknad,
-    StartSøknad,
-    UpdateSøknadenGjelder
+    StartSøknad
 } from '../actions/søknad/søknadActionDefinitions';
 import { lagUttaksplan } from '../../util/uttaksplan/forslag/lagUttaksplan';
 import { AppState } from '../reducers';
@@ -26,6 +25,7 @@ import { getFødselsnummerForAnnenPartPåRegistrerteBarn } from '../util/fødsel
 import { beregnGjenståendeUttaksdager } from 'app/util/uttaksPlanStatus';
 import { selectSøkerErFarEllerMedmor } from 'app/selectors/utledetSøknadsinfoSelectors';
 import { StønadskontoType } from 'common/types';
+import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 
 const stateSelector = (state: AppState) => state;
 
@@ -100,9 +100,14 @@ function* startEndringssøknad(action: StartSøknad, sak: Sak) {
     }
 }
 
-function* getAnnenPartSinSakForValgtBarn({ payload }: UpdateSøknadenGjelder) {
+function* getAnnenPartSinSakForValgtBarn() {
     const appState: AppState = yield select(stateSelector);
-    const annenPartFnr = getFødselsnummerForAnnenPartPåRegistrerteBarn(payload.valgteBarn);
+    const { søknad } = appState;
+    const { ekstrainfo } = søknad;
+    const annenPartFnr = ekstrainfo.søknadenGjelderBarnValg
+        ? getFødselsnummerForAnnenPartPåRegistrerteBarn(ekstrainfo.søknadenGjelderBarnValg.valgteBarn)
+        : undefined;
+
     if (appState.søknad.erEndringssøknad || annenPartFnr === undefined || !selectSøkerErFarEllerMedmor(appState)) {
         return;
     }
@@ -114,7 +119,6 @@ function* getAnnenPartSinSakForValgtBarn({ payload }: UpdateSøknadenGjelder) {
                 dekningsgrad: eksisterendeSakAnnenPart.grunnlag.dekningsgrad
             })
         );
-
         yield put(søknadActions.updateEkstrainfo({ eksisterendeSakAnnenPart }));
     }
 }
@@ -179,6 +183,6 @@ export default function* søknadSaga() {
         takeEvery(SøknadActionKeys.AVBRYT_SØKNAD, avbrytSøknadSaga),
         takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, lagUttaksplanForslag),
         takeEvery(SøknadActionKeys.START_SØKNAD, startSøknad),
-        takeEvery(SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN, getAnnenPartSinSakForValgtBarn)
+        takeEvery(ApiActionKeys.GET_ANNEN_PART_SIN_SAK, getAnnenPartSinSakForValgtBarn)
     ]);
 }

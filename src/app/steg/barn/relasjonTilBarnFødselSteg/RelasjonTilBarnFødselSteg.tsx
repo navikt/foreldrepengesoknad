@@ -34,6 +34,7 @@ import {
 import { SøknadenGjelderBarnValg, Søkersituasjon } from '../../../types/søknad/Søknad';
 import FødtBarnPartial from './partials/FødtBarnPartial';
 import lenker from '../../../util/routing/lenker';
+import { apiActionCreators } from 'app/redux/actions';
 
 interface RelasjonTilBarnFødselStegProps {
     barn: Barn;
@@ -52,7 +53,13 @@ type Props = RelasjonTilBarnFødselStegProps & InjectedIntlProps & DispatchProps
 class RelasjonTilBarnFødselSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
+        this.onPresubmit = this.onPresubmit.bind(this);
         this.cleanupSteg = this.cleanupSteg.bind(this);
+    }
+
+    onPresubmit() {
+        this.cleanupSteg();
+        this.props.dispatch(apiActionCreators.getSakForAnnenPart());
     }
 
     cleanupSteg() {
@@ -77,7 +84,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
         const { gjelderAnnetBarn } = søknadenGjelderBarnValg;
 
         return (
-            <Steg {...stegProps} onPreSubmit={this.cleanupSteg}>
+            <Steg {...stegProps} onPreSubmit={this.onPresubmit}>
                 <Block visible={vis.hvilketBarnGjelderSøknadenBolk} margin="none">
                     <HvilkeBarnGjelderSøknadenBolk
                         søknadenGjelderBarnValg={søknadenGjelderBarnValg}
