@@ -71,6 +71,9 @@ const cleanupUtsettelse = (periode: Utsettelsesperiode, søknadsinfo: Søknadsin
         orgnumre: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnumre : undefined,
         arbeidsformer: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.arbeidsformer : undefined,
         erArbeidstaker: periode.erArbeidstaker,
+        harAvtaleOmFulltidForDeltidsstilling: UtsettelseÅrsakType.Arbeid
+            ? periode.harAvtaleOmFulltidForDeltidsstilling
+            : undefined,
         vedlegg: shouldPeriodeHaveAttachment(periode, søknadsinfo)
             ? periode.vedlegg &&
               fjernIrrelevanteVedleggForUtsettelse(
