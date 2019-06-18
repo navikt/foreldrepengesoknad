@@ -11,22 +11,26 @@ import './infoEkisterendeSakPerioder.less';
 interface InfoEksisterendeSakPerioderProps {
     perioder: Periode[];
     søknadsinfo: Søknadsinfo;
+    navnForOverskrift?: string;
 }
 
 const InfoEksisterendeSakPerioder: React.StatelessComponent<InfoEksisterendeSakPerioderProps & InjectedIntlProps> = ({
     perioder,
     søknadsinfo,
+    navnForOverskrift,
     intl
 }) => {
     const bem = BEMHelper('infoEkisterendeSakPerioder');
     return (
         <>
-            <FormattedHTMLMessage
-                id="ekisterendeSak.label.annenPartsPlan"
-                values={{
-                    navn: søknadsinfo.navn.annenForelder.navn
-                }}
-            />
+            {navnForOverskrift && (
+                <FormattedHTMLMessage
+                    id="ekisterendeSak.label.annenPartsPlan"
+                    values={{
+                        navn: navnForOverskrift
+                    }}
+                />
+            )}
             <ol className={bem.element('list')}>
                 {perioder.map((periode) => {
                     return (

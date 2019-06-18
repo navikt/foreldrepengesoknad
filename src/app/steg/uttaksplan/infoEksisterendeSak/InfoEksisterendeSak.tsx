@@ -159,7 +159,11 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                             apneLabel={getMessage(intl, 'ekisterendeSak.label.seAnnenPartsPlan', {
                                 navn: navnGenitivEierform
                             })}>
-                            <InfoEkisterendeSakPerioder perioder={infoperioder} søknadsinfo={søknadsinfo} />
+                            <InfoEkisterendeSakPerioder
+                                perioder={infoperioder}
+                                søknadsinfo={søknadsinfo}
+                                navnForOverskrift={søknadsinfo.navn.annenForelder.navn}
+                            />
                         </UtvidetInformasjon>
                     )}
             </InnholdMedIllustrasjon>
