@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, InjectedIntl, FormattedHTMLMessage, injectIntl } from 'react-intl';
+import { InjectedIntlProps, FormattedHTMLMessage, injectIntl } from 'react-intl';
 import { guid } from 'nav-frontend-js-utils';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
