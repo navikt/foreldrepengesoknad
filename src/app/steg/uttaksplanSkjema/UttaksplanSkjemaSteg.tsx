@@ -28,6 +28,7 @@ import {
     getAntallUkerFedrekvote,
     getAntallUkerMødrekvote
 } from 'app/util/uttaksplan/stønadskontoer';
+import Barn from 'app/types/søknad/Barn';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import Block from 'common/components/block/Block';
 import InfoEksisterendeSak from '../uttaksplan/infoEksisterendeSak/InfoEksisterendeSak';
@@ -40,6 +41,7 @@ interface StateProps {
     isLoadingTilgjengeligeStønadskontoer: boolean;
     isLoadingSakForAnnenPart: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    barn: Barn;
     eksisterendeSak?: EksisterendeSak;
     eksisterendeSakAnnenPart?: EksisterendeSak;
 }
@@ -58,11 +60,16 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                     uttaksplanSkjema: { startdatoPermisjon }
                 }
             },
-            søknadsinfo
+            søknadsinfo,
+            barn
         } = props;
 
         if (stegProps.isAvailable) {
-            const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(søknadsinfo, startdatoPermisjon);
+            const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
+                søknadsinfo,
+                startdatoPermisjon,
+                barn
+            );
             dispatch(
                 apiActionCreators.getTilgjengeligeStønadskontoer({ ...params, dekningsgrad: '100' }, this.props.history)
             );
@@ -93,6 +100,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             isLoadingTilgjengeligeStønadskontoer,
             tilgjengeligeStønadskontoer,
             søknadsinfo,
+            barn,
             eksisterendeSak,
             eksisterendeSakAnnenPart,
             isLoadingSakForAnnenPart
@@ -108,7 +116,11 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 onPreSubmit={() => {
                     dispatch(
                         apiActionCreators.getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
-                            getStønadskontoParams(søknadsinfo, søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon)
+                            getStønadskontoParams(
+                                søknadsinfo,
+                                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon,
+                                barn
+                            )
                         )
                     );
                 }}>
@@ -183,6 +195,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         scenario,
         tilgjengeligeStønadskontoer,
         isLoadingTilgjengeligeStønadskontoer,
+        barn: søknad.barn,
         isLoadingSakForAnnenPart,
         eksisterendeSak: ekstrainfo.eksisterendeSak,
         eksisterendeSakAnnenPart: ekstrainfo.eksisterendeSakAnnenPart

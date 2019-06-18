@@ -39,6 +39,7 @@ import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
 import LinkButton from 'app/components/elementer/linkButton/LinkButton';
+import Barn from 'app/types/søknad/Barn';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -52,6 +53,7 @@ interface StateProps {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     isLoadingTilgjengeligeStønadskontoer: boolean;
     antallUkerUttaksplan: number;
+    barn: Barn;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -67,7 +69,7 @@ export const getSkalSpørreOmAnnenForelderErInformert = (søknad: Søknad): bool
 class OppsummeringSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-        const { tilgjengeligeStønadskontoer, søknad, stegProps, søknadsinfo, dispatch } = this.props;
+        const { tilgjengeligeStønadskontoer, søknad, stegProps, søknadsinfo, dispatch, barn } = this.props;
 
         this.sendSøknad = this.sendSøknad.bind(this);
         this.gotoUttaksplan = this.gotoUttaksplan.bind(this);
@@ -75,7 +77,8 @@ class OppsummeringSteg extends React.Component<Props> {
         if (tilgjengeligeStønadskontoer.length === 0 && stegProps.isAvailable) {
             const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
                 søknadsinfo,
-                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon
+                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon,
+                barn
             );
             dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
         }
@@ -230,6 +233,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     return {
         person,
         søknad,
+        barn: søknad.barn,
         uttaksplanValidering: state.uttaksplanValidering,
         kvittering: state.api.kvittering,
         missingAttachments,

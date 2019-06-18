@@ -129,7 +129,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                             maksDato: barn.adopsjonsdato
                         }}
                         gjelderAdopsjon={true}
-                        onChange={(fødselsdatoer: Date[]) =>
+                        onChangeFødselsdato={(fødselsdatoer: Date[]) =>
                             dispatch(
                                 søknadActions.updateBarn({
                                     fødselsdatoer
