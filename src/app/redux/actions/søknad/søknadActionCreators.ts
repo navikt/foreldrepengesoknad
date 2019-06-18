@@ -29,7 +29,7 @@ import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import { SøknadenGjelderBarnValg, Opplysning } from '../../../types/søknad/Søknad';
+import { SøknadenGjelderBarnValg, Opplysning, SøknadEkstrainfo } from '../../../types/søknad/Søknad';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../steg/uttaksplanSkjema/uttaksplanSkjemadata';
 import { StegID } from '../../../util/routing/stegConfig';
@@ -89,6 +89,11 @@ const updateSøknad = (payload: UpdateSøknadActionPayload): UpdateSøknad => ({
     type: SøknadActionKeys.UPDATE_SØKNAD,
     payload
 });
+
+const updateEkstrainfo = (payload: Partial<SøknadEkstrainfo>) => ({
+    type: SøknadActionKeys.UPDATE_EKSTRAINFO,
+    payload
+}) 
 
 const uttaksplanUpdateSkjemdata = (payload: Partial<UttaksplanSkjemadata>): UttaksplanUpdateSkjemadata => ({
     type: SøknadActionKeys.UTTAKSPLAN_UPDATE_SKJEMADATA,
@@ -192,6 +197,7 @@ export default {
     updateSøker,
     updateSøkerAndStorage,
     updateSøknad,
+    updateEkstrainfo,
     uttaksplanSetPerioder,
     uttaksplanAddPeriode,
     uttaksplanDeletePeriode,

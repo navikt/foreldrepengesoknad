@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
+import {
+    TilgjengeligStønadskonto,
+    Periodetype,
+    InfoPeriode,
+    PeriodeInfoType
+} from '../../../types/uttaksplan/periodetyper';
 import { getAntallUker } from '../../../util/uttaksplan/stønadskontoer';
 import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedHTMLMessage } from 'react-intl';
 import SituasjonSirkel from './illustrasjoner/situasjonSirkel/SituasjonSirkel';
@@ -20,6 +25,8 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { formaterDato } from 'common/util/datoUtils';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
+import { getNavnGenitivEierform } from 'app/util/tekstUtils';
+import { trimPerioderIGruppertInfoPeriode } from 'app/util/uttaksplan/gruppertInfoPeriodeUtils';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -99,6 +106,23 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
             ? Uttaksdagen(sisteInfoPeriode.tidsperiode.tom).neste()
             : undefined;
 
+    const navnGenitivEierform = getNavnGenitivEierform(navn.annenForelder.fornavn, intl.locale);
+
+    const infoperioder: InfoPeriode[] = [];
+    if (ekisterendeSak && ekisterendeSak.uttaksplan) {
+        ekisterendeSak.uttaksplan.filter((p) => p.type === Periodetype.Info).forEach((p: InfoPeriode) => {
+            if (p.infotype === PeriodeInfoType.gruppertInfo) {
+                return infoperioder.push(...trimPerioderIGruppertInfoPeriode(p));
+            }
+            return p;
+        });
+    }
+
+    const søkersPerioder =
+        ekisterendeSak &&
+        ekisterendeSak.uttaksplan &&
+        ekisterendeSak.uttaksplan.filter((p) => p.type !== Periodetype.Info);
+
     return (
         <InfoBlock padding="m">
             <InnholdMedIllustrasjon
@@ -129,13 +153,24 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                     </Normaltekst>
                 )}
 
-                {visPeriodeliste && (
-                    <UtvidetInformasjon
-                        apneLabel={getMessage(intl, 'ekisterendeSak.label.seAnnenPartsPlan', { navn: hvem })}>
-                        <InfoEkisterendeSakPerioder ekisterendeSak={ekisterendeSak} navn={hvem} />
-                    </UtvidetInformasjon>
-                )}
+                {visPeriodeliste &&
+                    infoperioder && (
+                        <UtvidetInformasjon
+                            apneLabel={getMessage(intl, 'ekisterendeSak.label.seAnnenPartsPlan', {
+                                navn: navnGenitivEierform
+                            })}>
+                            <InfoEkisterendeSakPerioder perioder={infoperioder} søknadsinfo={søknadsinfo} />
+                        </UtvidetInformasjon>
+                    )}
             </InnholdMedIllustrasjon>
+
+            {søkersPerioder && (
+                <InnholdMedIllustrasjon
+                    tittel={getMessage(intl, 'ekisterendeSak.tittel.dineDagerMedForeldrepenger')}
+                    illustrasjoner={[]}>
+                    <InfoEkisterendeSakPerioder perioder={søkersPerioder} søknadsinfo={søknadsinfo} />
+                </InnholdMedIllustrasjon>
+            )}
         </InfoBlock>
     );
 };

@@ -27,6 +27,7 @@ import visibility from './visibility';
 import cleanupAdopsjonsSteg from '../../../util/cleanup/cleanupAdopsjonsSteg';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
+import { apiActionCreators } from 'app/redux/actions';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -40,6 +41,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
+        this.onPresubmit = this.onPresubmit.bind(this);
         this.cleanupSteg = this.cleanupSteg.bind(this);
 
         if (props.barn.antallBarn) {
@@ -61,6 +63,11 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         );
     }
 
+    onPresubmit() {
+        this.cleanupSteg();
+        this.props.dispatch(apiActionCreators.getSakForAnnenPart());
+    }
+
     cleanupSteg() {
         const { dispatch, barn } = this.props;
         dispatch(søknadActions.updateBarn(cleanupAdopsjonsSteg(barn)));
@@ -70,7 +77,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         const { barn, dispatch, stegProps, intl, erEndringssøknad, situasjon } = this.props;
 
         return (
-            <Steg onPreSubmit={this.cleanupSteg} {...stegProps}>
+            <Steg onPreSubmit={this.onPresubmit} {...stegProps}>
                 <Block>
                     <AdopsjonAvEktefellesBarnSpørsmål
                         adopsjonAvEktefellesBarn={barn.adopsjonAvEktefellesBarn}

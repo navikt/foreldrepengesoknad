@@ -1,4 +1,4 @@
-import Søknad, { SøknadenGjelderBarnValg, SøknadPartial, Tilleggsopplysning } from '../../../types/søknad/Søknad';
+import Søknad, { SøknadenGjelderBarnValg, SøknadPartial, Tilleggsopplysning, SøknadEkstrainfo } from '../../../types/søknad/Søknad';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
@@ -27,6 +27,7 @@ export enum SøknadActionKeys {
     'UPDATE_SØKER' = 'updateSøker',
     'UPDATE_SØKER_AND_STORAGE' = 'updateSøkerAndStorage',
     'UPDATE_SØKNAD' = 'updateSøknad',
+    'UPDATE_EKSTRAINFO' = 'updateEkstrainfo',
     'UPDATE_SØKNADEN_GJELDER_BARN' = 'updateSøknadenGjelderBarn',
     'UTTAKSPLAN_SET_PERIODER' = 'uttaksplanSetPerioder',
     'UTTAKSPLAN_ADD_PERIODE' = 'uttaksplanAddPeriode',
@@ -88,6 +89,11 @@ export interface UpdateSøkerAndStorage {
 export interface UpdateSøknad {
     type: SøknadActionKeys.UPDATE_SØKNAD;
     payload: UpdateSøknadActionPayload;
+}
+
+export interface UpdateEkstrainfo {
+    type: SøknadActionKeys.UPDATE_EKSTRAINFO,
+    payload: Partial<SøknadEkstrainfo>;
 }
 
 export interface UttaksplanSetPerioder {

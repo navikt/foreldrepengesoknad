@@ -10,11 +10,13 @@ import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import Block from 'common/components/block/Block';
 import { NavnPåForeldre } from 'common/types';
 import { formatDate } from 'app/util/dates/dates';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { Periodetype } from 'app/types/uttaksplan/periodetyper';
 
 interface FarSinFørsteUttaksdagSpørsmålProps {
     familiehendelsesdato: Date;
     morSinSisteUttaksdag?: Date;
-    harAnnenPartEkisterendeSak?: boolean;
+    ekisterendeSakAnnenPart?: EksisterendeSak;
     navnPåForeldre?: NavnPåForeldre;
 }
 
@@ -24,72 +26,84 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
     visible,
     familiehendelsesdato,
     morSinSisteUttaksdag,
-    harAnnenPartEkisterendeSak = false,
+    ekisterendeSakAnnenPart,
     navnPåForeldre,
     intl
-}) => (
-    <UttaksplanSkjemaSpørsmål
-        visible={visible}
-        render={(data, onChange) => {
-            return (
-                <>
-                    <Block visible={harAnnenPartEkisterendeSak} margin="xs">
-                        <DatoInput
-                            name="farSinFørsteUttaksdagSpørsmål"
-                            id="farSinFørsteUttaksdagSpørsmål"
-                            label={getMessage(intl, 'spørsmål.farSinFørsteUttaksdagSpørsmål.label')}
-                            onChange={(farSinFørsteUttaksdag: Date) =>
-                                onChange(
-                                    morSinSisteUttaksdag
-                                        ? { farSinFørsteUttaksdag, morSinSisteUttaksdag }
-                                        : { farSinFørsteUttaksdag }
-                                )
-                            }
-                            dato={data.farSinFørsteUttaksdag}
-                            datoAvgrensinger={uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(
-                                familiehendelsesdato
-                            )}
-                            disabled={data.ønskerIkkeFlerePerioder}
-                        />
-                    </Block>
-                    {harAnnenPartEkisterendeSak &&
-                        morSinSisteUttaksdag &&
-                        navnPåForeldre && (
-                            <>
-                                <Block margin="xs">
-                                    <LenkeKnapp
-                                        text={
-                                            <FormattedMessage
-                                                id="spørsmål.farSinFørsteUttaksdagSpørsmål.førsteUttaksdagEtterAnnenPart"
-                                                values={{ navn: navnPåForeldre.mor, dato: formatDate(Uttaksdagen(morSinSisteUttaksdag).neste()) }}
-                                            />
-                                        }
-                                        onClick={() =>
-                                            onChange({
-                                                morSinSisteUttaksdag,
-                                                farSinFørsteUttaksdag: morSinSisteUttaksdag
-                                                    ? Uttaksdagen(morSinSisteUttaksdag).neste()
-                                                    : undefined
-                                            })
-                                        }
-                                    />
-                                </Block>
-                                <Checkbox
-                                    label={
-                                        <FormattedMessage
-                                            id="spørsmål.farSinFørsteUttaksdagSpørsmål.ønskerIkkeFlerePerioder.checkbox.label"
-                                            values={{ dato: Uttaksdagen(morSinSisteUttaksdag).neste() }}
+}) => {
+    const harAnnenPartForeslåttperioder =
+        ekisterendeSakAnnenPart &&
+        ekisterendeSakAnnenPart.uttaksplan &&
+        ekisterendeSakAnnenPart.uttaksplan.filter((p) => p.type !== Periodetype.Info).length > 0;
+
+    return (
+        <UttaksplanSkjemaSpørsmål
+            visible={visible}
+            render={(data, onChange) => {
+                return (
+                    <>
+                        <Block visible={ekisterendeSakAnnenPart !== undefined} margin="xs">
+                            <DatoInput
+                                name="farSinFørsteUttaksdagSpørsmål"
+                                id="farSinFørsteUttaksdagSpørsmål"
+                                label={getMessage(intl, 'spørsmål.farSinFørsteUttaksdagSpørsmål.label')}
+                                onChange={(farSinFørsteUttaksdag: Date) =>
+                                    onChange(
+                                        morSinSisteUttaksdag
+                                            ? { farSinFørsteUttaksdag, morSinSisteUttaksdag }
+                                            : { farSinFørsteUttaksdag }
+                                    )
+                                }
+                                dato={data.farSinFørsteUttaksdag}
+                                datoAvgrensinger={uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(
+                                    familiehendelsesdato
+                                )}
+                                disabled={data.ønskerIkkeFlerePerioder}
+                            />
+                        </Block>
+                        {ekisterendeSakAnnenPart &&
+                            morSinSisteUttaksdag &&
+                            navnPåForeldre && (
+                                <>
+                                    <Block margin="xs">
+                                        <LenkeKnapp
+                                            text={
+                                                <FormattedMessage
+                                                    id="spørsmål.farSinFørsteUttaksdagSpørsmål.førsteUttaksdagEtterAnnenPart"
+                                                    values={{
+                                                        navn: navnPåForeldre.mor,
+                                                        dato: formatDate(Uttaksdagen(morSinSisteUttaksdag).neste())
+                                                    }}
+                                                />
+                                            }
+                                            onClick={() =>
+                                                onChange({
+                                                    morSinSisteUttaksdag,
+                                                    farSinFørsteUttaksdag: morSinSisteUttaksdag
+                                                        ? Uttaksdagen(morSinSisteUttaksdag).neste()
+                                                        : undefined
+                                                })
+                                            }
                                         />
-                                    }
-                                    checked={data.ønskerIkkeFlerePerioder}
-                                    onChange={(e) => onChange({ ønskerIkkeFlerePerioder: e.target.checked })}
-                                />
-                            </>
-                        )}
-                </>
-            );
-        }}
-    />
-);
+                                    </Block>
+                                    {harAnnenPartForeslåttperioder && (
+                                        <Checkbox
+                                            label={
+                                                <FormattedMessage
+                                                    id="spørsmål.farSinFørsteUttaksdagSpørsmål.ønskerIkkeFlerePerioder.checkbox.label"
+                                                    values={{ dato: Uttaksdagen(morSinSisteUttaksdag).neste() }}
+                                                />
+                                            }
+                                            checked={data.ønskerIkkeFlerePerioder || false}
+                                            onChange={(e) => onChange({ ønskerIkkeFlerePerioder: e.target.checked })}
+                                        />
+                                    )}
+                                </>
+                            )}
+                    </>
+                );
+            }}
+        />
+    );
+};
 
 export default injectIntl(FarSinFørsteUttaksdagSpørsmål);

@@ -1,19 +1,22 @@
 import * as React from 'react';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import { FormattedHTMLMessage } from 'react-intl';
+import { InjectedIntlProps, InjectedIntl, FormattedHTMLMessage, injectIntl } from 'react-intl';
 import { guid } from 'nav-frontend-js-utils';
+import { Periode } from 'app/types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
+import { Søknadsinfo } from 'app/selectors/types';
+import { getPeriodeTittel } from 'app/util/uttaksplan';
 
 import './infoEkisterendeSakPerioder.less';
 
-interface InfoEkisterendeSakPerioderProps {
-    ekisterendeSak: EksisterendeSak;
-    navn: string;
+interface InfoEksisterendeSakPerioderProps {
+    perioder: Periode[];
+    søknadsinfo: Søknadsinfo;
 }
 
-const InfoEkisterendeSakPerioder: React.StatelessComponent<InfoEkisterendeSakPerioderProps> = ({
-    ekisterendeSak,
-    navn
+const InfoEksisterendeSakPerioder: React.StatelessComponent<InfoEksisterendeSakPerioderProps & InjectedIntlProps> = ({
+    perioder,
+    søknadsinfo,
+    intl
 }) => {
     const bem = BEMHelper('infoEkisterendeSakPerioder');
     return (
@@ -21,25 +24,27 @@ const InfoEkisterendeSakPerioder: React.StatelessComponent<InfoEkisterendeSakPer
             <FormattedHTMLMessage
                 id="ekisterendeSak.label.annenPartsPlan"
                 values={{
-                    navn
+                    navn: søknadsinfo.navn.annenForelder.navn
                 }}
             />
             <ol className={bem.element('list')}>
-                {ekisterendeSak.saksperioder!.map((periode) => (
-                    <li key={guid()}>
-                        <FormattedHTMLMessage
-                            id="ekisterendeSak.listeElement.periode"
-                            values={{
-                                fom: periode.tidsperiode.fom.toDateString(),
-                                tom: periode.tidsperiode.tom.toDateString(),
-                                stønadskontotype: periode.stønadskontotype
-                            }}
-                        />
-                    </li>
-                ))}
+                {perioder.map((periode) => {
+                    return (
+                        <li key={guid()}>
+                            <FormattedHTMLMessage
+                                id="ekisterendeSak.listeElement.periode"
+                                values={{
+                                    fom: periode.tidsperiode.fom.toDateString(),
+                                    tom: periode.tidsperiode.tom.toDateString(),
+                                    beskrivelse: getPeriodeTittel(intl, periode, søknadsinfo.navn.navnPåForeldre)
+                                }}
+                            />
+                        </li>
+                    );
+                })}
             </ol>
         </>
     );
 };
 
-export default InfoEkisterendeSakPerioder;
+export default injectIntl(InfoEksisterendeSakPerioder);

@@ -345,7 +345,7 @@ const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåFo
                 visible={true}
                 familiehendelsesdato={familiehendelsesdato}
                 morSinSisteUttaksdag={morSinSisteUttaksdag}
-                harAnnenPartEkisterendeSak={true}
+                ekisterendeSakAnnenPart={eksisterendeSakAnnenPart}
                 navnPåForeldre={navnPåForeldre}
             />
             {uttaksplanSkjema.farSinFørsteUttaksdag &&
