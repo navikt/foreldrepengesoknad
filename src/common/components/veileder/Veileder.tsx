@@ -32,7 +32,7 @@ const Veileder = (props: Props) => {
         className: classnames(
             'veileder',
             `veileder--${ansikt}`,
-            `veileder--farge-${farge}`,
+            `veileder--tema-${farge}`,
             `veileder--stil-${stil}`,
             props.className
         )
