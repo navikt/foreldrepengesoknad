@@ -8,7 +8,6 @@ import { selectDekningsgrad } from './søknadSelector';
 
 export const apiSelector = (state: AppState): ApiState => state.api;
 
-// API
 export const selectTilgjengeligeStønadskontoer = createSelector(
     [apiSelector, selectDekningsgrad],
     (api, dekningsgrad) => (dekningsgrad! === '100' ? api.stønadskontoer100 : api.stønadskontoer80)
