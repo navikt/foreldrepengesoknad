@@ -42,6 +42,10 @@ router.get('/rest/innsyn/uttaksplan', (req, res) => {
     res.send(MockStorage.getUttaksplan());
 });
 
+router.get('/rest/innsyn/uttaksplanannen', (req, res) => {
+    res.send(MockStorage.getUttaksplanannen());
+});
+
 router.get('/rest/konto', (req, res) => {
     res.send(MockStorage.getStønadskontoer());
 });

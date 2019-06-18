@@ -330,6 +330,15 @@
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tek ut av flernbarnsperioden",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tek ut kvoten sin",
     "oppholdsårsaktype.foreldernavn.far.undefined": "{foreldernavn} tek ut",
+
+    "oppholdsårsaktype.foreldernavn.far.LOVBESTEMT_FERIE": "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
+    "oppholdsårsaktype.foreldernavn.far.ARBEID": "{foreldernavn} har utsettelse på grunn av heltidsarbeid",
+    "oppholdsårsaktype.foreldernavn.far.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
+    "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_SØKER":
+        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstusujon",
+    "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET":
+        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstutusjon",
+
     "oppsummering.adopsjonAvEktefellesBarn.label": "Gjeld søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
     "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
@@ -538,6 +547,9 @@
     "spørsmål.farFellesperiode.uker.label": "Antall uker",
     "spørsmål.farFellesperiode.dager.label": "Antall dager",
     "spørsmål.farFellesperiode.infoboksTekst": "Fellesperioden er ukene med foreldrepenger som dere kan dele.",
+    "spørsmål.farSinFørsteUttaksdagSpørsmål.ønskerIkkeFlerePerioder.checkbox.label":
+        "Jeg skal ikke ha mer foreldrepenger",
+    "spørsmål.farSinFørsteUttaksdagSpørsmål.førsteUttaksdagEtterAnnenPart": "Første dag etter { navn }: { dato }",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noka utsetjing i perioden med foreldrepengar?",
     "spørsmål.skalHaDelAvFellesperiodeSpørsmål.label": "Skal du ha noko av fellesperioden?",
     "spørsmål.skalStarteRettEtterMorSpørsmål.label":
@@ -549,6 +561,10 @@
     "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Eg skal ikkje ha foreldrepengar før termin",
     "spørsmål.startdatoPermisjon.varighet": "{varighet} før termin",
     "spørsmål.startdatoPermisjonFarMedmor.label": "Når ønskjer du å starte perioden?",
+    "spørsmål.utsettelse.begrunnelse.legend": "Hvorfor skal du ikke ha foreldrepenger rett etter { navn }?",
+    "spørsmål.utsettelse.begrunnelse.label.ferie": "Jeg skal ha ferie",
+    "spørsmål.utsettelse.begrunnelse.label.jobb": "Jeg skal jobbe heltid",
+    "spørsmål.utsettelse.begrunnelse.label.sykdom": "På grunn av sykdom",
     "stebarnsadopsjon.adopsjonsdato": "Adopsjonsdato",
     "stebarnsadopsjon.antallBarn": "Tal på barn",
     "stebarnsadopsjonsdato.spørsmål": "Gi opp datoen for stebarnsadopsjon",
@@ -1029,8 +1045,13 @@
     "eksisterendeSak.tittel.aleneomsorg": "Din foreldrepengeperiode",
     "eksisterendeSak.tekst.html":
         "{navn} har valgt <strong>{uker}</strong> med <strong>{dekningsgrad} prosent utbetaling</strong>.",
+    "eksisterendeSak.tekst.nesteMuligeUttaksdato": "<b>{ dato }</b> er første dag etter { navn } siste periode",
     "eksisterendeSak.tekst.benevning.deltOmsorg": "Du og {navn}",
     "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
+    "ekisterendeSak.tekst.benevning.førstegangssøknaMedEkisterndeSakAnnenPart": "{ navn }",
+    "ekisterendeSak.label.seAnnenPartsPlan": "Se { navn } plan",
+    "ekisterendeSak.label.annenPartsPlan": "{ navn } plan:",
+    "ekisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { stønadskontotype }",
 
     "søknadSendt.tittel": "Takk for søknaden { name }!",
     "søknadSendt.pdf": "Sjå og last ned søknaden din her",
@@ -1090,5 +1111,10 @@
     "uttaksplan.validering.feil.periodeOverlapperAndrePerioder":
         "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale":
-        "Du må ha ein skriftleg avtale med arbeidsgjevaren din om at du skal jobbe i den heiltid i den perioden du oppgir."
+        "Du må ha ein skriftleg avtale med arbeidsgjevaren din om at du skal jobbe i den heiltid i den perioden du oppgir.",
+
+    "byttBrowser.tittel": "Vi ser du bruker en utdatert nettleser",
+    "byttBrowser.ingress":
+        "For å få den beste brukeropplevelsen anbefaler vi en moderne nettleser som støtter moderne webstandarder",
+    "ok": "Ok"
 }

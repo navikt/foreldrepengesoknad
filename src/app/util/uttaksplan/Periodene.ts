@@ -49,7 +49,8 @@ export const Periodene = (perioder: Periode[]) => ({
     finnDenForegåendePerioden: (periode: Periode) => finnForrigePeriode(perioder, periode),
     finnPåfølgendePeriode: (periode: Periode) => finnPåfølgendePeriode(perioder, periode),
     forskyvPerioder: (uttaksdager: number) => forskyvPerioder(perioder, uttaksdager),
-    sort: () => perioder.sort(sorterPerioder)
+    sort: () => perioder.sort(sorterPerioder),
+    finnSisteInfoperiode: () => finnSisteInfoperiode(perioder)
 });
 
 export function sorterPerioder(p1: Periode, p2: Periode) {
@@ -247,3 +248,10 @@ function getFørsteUttaksdagEtterSistePeriode(perioder: Periode[]): Date | undef
 export const erPeriodeMedFerieForForelder = (periode: Periode, forelder: Forelder): boolean => {
     return isUtsettelsePgaFerie(periode) && periode.forelder === forelder;
 };
+
+function finnSisteInfoperiode(perioder: Periode[]) {
+    return perioder
+        .filter((p) => p.type === Periodetype.Info)
+        .sort(sorterPerioder)
+        .reverse()[0];
+}

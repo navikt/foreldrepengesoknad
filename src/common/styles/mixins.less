@@ -66,3 +66,14 @@
         border-bottom-color: @redError;
     }
 }
+
+.knappeLenke() {
+    position: relative;
+    border: none !important;
+    background: transparent;
+    padding: 0;
+    display: inline-block;
+    &:focus {
+        .buttonFocus();
+    }
+}

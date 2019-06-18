@@ -1,5 +1,6 @@
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { Søknadsinfo } from '../../selectors/types';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 
 export enum UttaksplanSkjemaScenario {
     's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan' = 's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan',
@@ -10,14 +11,20 @@ export enum UttaksplanSkjemaScenario {
     's6_bareFarMedmorRettTilFpFødsel' = 's6_bareFarMedmorRettTilFpFødsel',
     's7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan' = 's7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan',
     's8_endringssøknad' = 's8_endringssøknad',
+    's9_førstegangssøknadMedAnnenPart' = 's9_førstegangssøknadMedAnnenPart',
     'sX_ukjent_x' = 'ukjent'
 }
 
-export const getUttaksplanSkjemaScenario = (søknadsinfo: Søknadsinfo): UttaksplanSkjemaScenario => {
+export const getUttaksplanSkjemaScenario = (
+    søknadsinfo: Søknadsinfo,
+    eksisterendeSakAnnenPart?: EksisterendeSak
+): UttaksplanSkjemaScenario => {
     const { søker, søknaden, annenForelder } = søknadsinfo;
     let scenario = UttaksplanSkjemaScenario.sX_ukjent_x;
     if (søknaden.erEndringssøknad) {
         scenario = UttaksplanSkjemaScenario.s8_endringssøknad;
+    } else if (!søknaden.erEndringssøknad && eksisterendeSakAnnenPart && eksisterendeSakAnnenPart.uttaksplan) {
+        scenario = UttaksplanSkjemaScenario.s9_førstegangssøknadMedAnnenPart;
     } else if (søker.erFarEllerMedmor && søknaden.erFødsel && annenForelder.harRett) {
         scenario = UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan;
     } else if (søker.erMor && søknaden.erFødsel) {
