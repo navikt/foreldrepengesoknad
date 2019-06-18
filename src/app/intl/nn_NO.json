@@ -1057,7 +1057,7 @@
     "ekisterendeSak.tekst.benevning.førstegangssøknaMedEkisterndeSakAnnenPart": "{ navn }",
     "ekisterendeSak.label.seAnnenPartsPlan": "Se { navn } plan",
     "ekisterendeSak.label.annenPartsPlan": "{ navn } plan:",
-    "ekisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { stønadskontotype }",
+    "ekisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { beskrivelse }",
 
     "ekisterendeSak.tittel.dineDagerMedForeldrepenger": "Dine dager med foreldrepenger",
 
