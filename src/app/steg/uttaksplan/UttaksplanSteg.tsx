@@ -53,6 +53,7 @@ import { VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/vei
 import UttaksplanFeiloppsummering from 'app/components/uttaksplanlegger/components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import Uttaksoppsummering from 'app/components/uttaksplanlegger/components/uttaksoppsummering/Uttaksoppsummering';
 import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
+import Barn from 'app/types/søknad/Barn';
 
 interface StateProps {
     stegProps: StegProps;
@@ -73,6 +74,7 @@ interface StateProps {
     planErEndret: boolean;
     sak?: Sak;
     grunnlag: Saksgrunnlag | undefined;
+    barn: Barn;
 }
 
 interface UttaksplanStegState {
@@ -91,7 +93,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     constructor(props: Props) {
         super(props);
 
-        const { søknad, tilgjengeligeStønadskontoer, stegProps, søknadsinfo, dispatch, grunnlag } = this.props;
+        const { søknad, tilgjengeligeStønadskontoer, stegProps, søknadsinfo, dispatch, grunnlag, barn } = this.props;
 
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftGåTilbakeDialog = this.showBekreftGåTilbakeDialog.bind(this);
@@ -121,6 +123,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                 const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
                     søknadsinfo,
                     startdatoPermisjon,
+                    barn,
                     grunnlag
                 );
 
@@ -421,6 +424,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         årsakTilSenEndring,
         vedleggForSenEndring: søknad.vedleggForSenEndring,
         tilleggsopplysninger: søknad.tilleggsopplysninger,
+        barn: søknad.barn,
         uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl)(state).filter(
             (melding) => melding.skjulesIOppsummering !== true
         ),

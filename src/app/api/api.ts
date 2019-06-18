@@ -3,7 +3,7 @@ import { SøknadForInnsending } from '../types/søknad/Søknad';
 import Environment from '../../app/Environment';
 import { AppState } from '../redux/reducers';
 import { storageParser } from '../util/storage/parser';
-import { formaterDato } from 'common/util/datoUtils';
+import { formaterDato, formaterStønadskontoParamsDatoer } from 'common/util/datoUtils';
 import { StorageKvittering } from '../types/StorageKvittering';
 import AxiosInstance from './apiInterceptor';
 
@@ -12,8 +12,9 @@ export interface GetTilgjengeligeStønadskontoerParams {
     morHarRett: boolean;
     farHarRett: boolean;
     dekningsgrad: '100' | '80';
-    familiehendelsesdato: Date;
-    erFødsel: boolean;
+    termindato?: Date;
+    fødselsdato?: Date;
+    omsorgsovertakelseDato?: Date;
     morHarAleneomsorg?: boolean;
     farHarAleneomsorg?: boolean;
     startdatoUttak: Date;
@@ -48,22 +49,24 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
         farHarRett,
         morHarRett,
         dekningsgrad,
-        familiehendelsesdato,
-        erFødsel,
+        fødselsdato,
+        termindato,
+        omsorgsovertakelseDato,
         morHarAleneomsorg,
         farHarAleneomsorg,
         startdatoUttak
     } = params;
 
     const urlParams = {
-        erFodsel: erFødsel,
         farHarRett,
         morHarRett,
         morHarAleneomsorg: morHarAleneomsorg || false,
         farHarAleneomsorg: farHarAleneomsorg || false,
         dekningsgrad,
         antallBarn,
-        familiehendelsesdato: formaterDato(familiehendelsesdato, 'YYYYMMDD'),
+        fødselsdato: formaterStønadskontoParamsDatoer(fødselsdato, 'YYYYMMDD'),
+        termindato: formaterStønadskontoParamsDatoer(termindato, 'YYYYMMDD'),
+        omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(omsorgsovertakelseDato, 'YYYYMMDD'),
         startdatoUttak: formaterDato(startdatoUttak, 'YYYYMMDD')
     };
 

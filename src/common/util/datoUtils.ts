@@ -1,7 +1,11 @@
 import moment, { Moment } from 'moment';
 
-export function formaterDato(dato: Date, datoformat?: string): string {
+export function formaterDato(dato: Date | undefined, datoformat?: string): string {
     return moment.utc(dato).format(datoformat || 'dddd D. MMMM YYYY');
+}
+
+export function formaterStønadskontoParamsDatoer(dato: Date | undefined, datoformat?: string): string | undefined {
+    return dato !== undefined ? moment.utc(dato).format(datoformat || 'dddd D. MMMM YYYY') : undefined;
 }
 
 export function formaterDatoKompakt(dato: Date, datoformat?: string): string {

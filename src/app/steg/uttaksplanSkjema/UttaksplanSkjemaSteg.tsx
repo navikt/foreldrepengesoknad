@@ -28,6 +28,7 @@ import {
     getAntallUkerFedrekvote,
     getAntallUkerMødrekvote
 } from 'app/util/uttaksplan/stønadskontoer';
+import Barn from 'app/types/søknad/Barn';
 
 interface StateProps {
     stegProps: StegProps;
@@ -36,6 +37,7 @@ interface StateProps {
     scenario: UttaksplanSkjemaScenario;
     isLoadingTilgjengeligeStønadskontoer: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    barn: Barn;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -52,11 +54,16 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                     uttaksplanSkjema: { startdatoPermisjon }
                 }
             },
-            søknadsinfo
+            søknadsinfo,
+            barn
         } = props;
 
         if (stegProps.isAvailable) {
-            const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(søknadsinfo, startdatoPermisjon);
+            const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
+                søknadsinfo,
+                startdatoPermisjon,
+                barn
+            );
             dispatch(
                 apiActionCreators.getTilgjengeligeStønadskontoer({ ...params, dekningsgrad: '100' }, this.props.history)
             );
@@ -86,7 +93,8 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             scenario,
             isLoadingTilgjengeligeStønadskontoer,
             tilgjengeligeStønadskontoer,
-            søknadsinfo
+            søknadsinfo,
+            barn
         } = this.props;
         const søknad = this.props.søknad as Søknad;
         const navnPåForeldre = søknadsinfo.navn.navnPåForeldre;
@@ -96,7 +104,11 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 onPreSubmit={() => {
                     dispatch(
                         apiActionCreators.getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
-                            getStønadskontoParams(søknadsinfo, søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon)
+                            getStønadskontoParams(
+                                søknadsinfo,
+                                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon,
+                                barn
+                            )
                         )
                     );
                 }}>
@@ -156,7 +168,8 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         søknad,
         scenario,
         tilgjengeligeStønadskontoer,
-        isLoadingTilgjengeligeStønadskontoer
+        isLoadingTilgjengeligeStønadskontoer,
+        barn: søknad.barn
     };
 };
 
