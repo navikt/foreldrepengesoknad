@@ -107,21 +107,15 @@ function* getAnnenPartSinSakForValgtBarn({ payload }: UpdateSøknadenGjelder) {
         return;
     }
 
-    const annenPartsEksisterendeSak: EksisterendeSak | undefined = yield call(fetchEksisterendeSakMedFnr, annenPartFnr);
-    if (annenPartsEksisterendeSak) {
-        const søknad = appState.søknad;
+    const eksisterendeSakAnnenPart: EksisterendeSak | undefined = yield call(fetchEksisterendeSakMedFnr, annenPartFnr);
+    if (eksisterendeSakAnnenPart) {
         yield put(
             søknadActions.updateSøknad({
-                ...søknad,
-                dekningsgrad: annenPartsEksisterendeSak.grunnlag.dekningsgrad,
-                ekstrainfo: {
-                    ...appState.søknad.ekstrainfo,
-                    eksisterendeSakAnnenPart: {
-                        ...annenPartsEksisterendeSak
-                    }
-                }
+                dekningsgrad: eksisterendeSakAnnenPart.grunnlag.dekningsgrad
             })
         );
+
+        yield put(søknadActions.updateEkstrainfo({ eksisterendeSakAnnenPart }));
     }
 }
 
@@ -152,7 +146,7 @@ function* lagUttaksplanForslag() {
         uttaksplanSkjema.antallDagerFellesperiodeFarMedmor = resterendeFellesperiode
             ? resterendeFellesperiode.dager
             : undefined;
-    };
+    }
 
     if (søknadsinfo) {
         const {
@@ -173,8 +167,8 @@ function* lagUttaksplanForslag() {
 
         if (eksisterendeSakAnnenPart && eksisterendeSakAnnenPart.uttaksplan) {
             forslag.push(...eksisterendeSakAnnenPart.uttaksplan);
-        };
-        
+        }
+
         yield put(søknadActions.uttaksplanSetForslag(forslag.sort(sorterPerioder)));
     }
 }

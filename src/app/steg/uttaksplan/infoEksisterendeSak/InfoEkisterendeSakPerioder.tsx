@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedHTMLMessage } from 'react-intl';
+import { InjectedIntlProps, InjectedIntl, FormattedHTMLMessage, injectIntl } from 'react-intl';
 import { guid } from 'nav-frontend-js-utils';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
@@ -9,8 +9,8 @@ import { getPeriodeTittel } from 'app/util/uttaksplan';
 import './infoEkisterendeSakPerioder.less';
 
 interface InfoEkisterendeSakPerioderProps {
-    ekisterendeSak: EksisterendeSak;
-    navn: string;
+    perioder: Periode[];
+    søknadsinfo: Søknadsinfo;
 }
 
 const getBeskrivelse = (periode: Periode, søknadsinfo: Søknadsinfo, intl: InjectedIntl): string => {
@@ -28,7 +28,7 @@ const InfoEkisterendeSakPerioder: React.StatelessComponent<InfoEkisterendeSakPer
             <FormattedHTMLMessage
                 id="ekisterendeSak.label.annenPartsPlan"
                 values={{
-                    navn
+                    navn: søknadsinfo.navn.annenForelder.navn
                 }}
             />
             <ol className={bem.element('list')}>
@@ -51,4 +51,4 @@ const InfoEkisterendeSakPerioder: React.StatelessComponent<InfoEkisterendeSakPer
     );
 };
 
-export default InfoEkisterendeSakPerioder;
+export default injectIntl(InfoEkisterendeSakPerioder);
