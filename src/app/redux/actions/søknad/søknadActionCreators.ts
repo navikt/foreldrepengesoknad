@@ -17,13 +17,13 @@ import {
     UttaksplanDeletePeriode,
     UttaksplanUpdatePeriode,
     UttaksplanUpdateSkjemadata,
-    UttaksplanLagForslag,
     SetCurrentSteg,
     AvbrytSøknad,
     SetVedleggForSenEndring,
     SetTilleggsopplysning,
     UttaksplanSetForslag,
-    StartSøknad
+    StartSøknad,
+    UttaksplanLagForslag,
 } from './søknadActionDefinitions';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
@@ -148,7 +148,7 @@ const uttaksplanUpdatePeriode = (periode: Periode): UttaksplanUpdatePeriode => (
 });
 
 const uttaksplanLagForslag = (): UttaksplanLagForslag => ({
-    type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG
+    type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG,
 });
 
 const uttaksplanSetForslag = (uttaksplan: Periode[]): UttaksplanSetForslag => ({

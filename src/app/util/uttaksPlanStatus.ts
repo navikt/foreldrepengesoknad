@@ -9,17 +9,17 @@ import {
     isAvslåttPeriode,
     InfoPeriode,
     PeriodeInfoType,
-    AnnenPartInfoPeriode,
     Overføringsperiode,
     isOppholdsperiode,
     isOverføringsperiode,
-    isInfoPeriode
+    isInfoPeriode,
+    UttakAnnenPartInfoPeriode
 } from '../types/uttaksplan/periodetyper';
 import { Perioden } from './uttaksplan/Perioden';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { getStønadskontoFromOppholdsårsak } from './uttaksplan/uttaksperiodeUtils';
-import { getStønadskontoTypeFromOppholdÅrsakType } from './eksisterendeSak/eksisterendeSakUtils';
 import { trimPerioderIGruppertInfoPeriode } from './uttaksplan/gruppertInfoPeriodeUtils';
+import { getStønadskontoTypeFromOppholdÅrsakType } from './eksisterendeSak/eksisterendeSakUtils';
 
 export const finnAntallDagerÅTrekke = (periode: Periode): number => {
     const dager = Perioden(periode).getAntallUttaksdager();
@@ -73,7 +73,7 @@ export const beregnGjenståendeUttaksdager = (
 
         return {
             konto: konto.konto,
-            antallDager
+            dager: antallDager
         };
     });
 };
@@ -114,14 +114,14 @@ const getUttakFraInfoperioder = (perioder: InfoPeriode[]): Uttaksperiode[] => {
     if (perioder.length === 0) {
         return [];
     }
-    const oppholdAnnenPart: AnnenPartInfoPeriode[] = [];
+    const oppholdAnnenPart: UttakAnnenPartInfoPeriode[] = [];
     perioder.filter((periode) => isAvslåttPeriode(periode) === false).forEach((periode) => {
-        if (periode.infotype === PeriodeInfoType.oppholdAnnenPart) {
+        if (periode.infotype === PeriodeInfoType.uttakAnnenPart) {
             oppholdAnnenPart.push(periode);
         } else if (periode.infotype === PeriodeInfoType.gruppertInfo) {
             const perioderInnenforPeriodeTidsrom = trimPerioderIGruppertInfoPeriode(periode);
             perioderInnenforPeriodeTidsrom.forEach((p) => {
-                if (p.infotype === PeriodeInfoType.oppholdAnnenPart) {
+                if (p.infotype === PeriodeInfoType.uttakAnnenPart) {
                     oppholdAnnenPart.push(p);
                 }
             });

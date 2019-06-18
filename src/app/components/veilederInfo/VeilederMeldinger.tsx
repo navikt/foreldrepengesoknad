@@ -5,13 +5,19 @@ import VeilederMelding, { VeilederMeldingStil } from './components/VeilederMeldi
 interface Props {
     meldinger: VeilederMessage[];
     stil?: VeilederMeldingStil;
+    skjulMeldingIkon?: boolean;
 }
 
-const VeilederMeldinger: React.StatelessComponent<Props> = ({ meldinger, stil }) => {
+const VeilederMeldinger: React.StatelessComponent<Props> = ({ meldinger, stil, skjulMeldingIkon }) => {
     return (
         <div>
             {meldinger.map((melding: VeilederMessage, index: number) => (
-                <VeilederMelding key={melding.contentIntlKey + index} message={melding} stil={stil} />
+                <VeilederMelding
+                    key={melding.contentIntlKey + index}
+                    message={melding}
+                    stil={stil}
+                    skjulMeldingIkon={skjulMeldingIkon}
+                />
             ))}
         </div>
     );

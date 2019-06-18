@@ -8,7 +8,8 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     TilgjengeligStønadskonto,
-    Periode
+    Periode,
+    isUtsettelsesperiode
 } from '../../../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import UtsettelsePgaFerieInfo from './UtsettelsePgaFerieInfo';
@@ -38,6 +39,7 @@ import { Søknadsinfo } from 'app/selectors/types';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { getTidsperioderIUttaksplan } from 'app/util/uttaksplan';
+import JaNeiSpørsmål from 'common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -234,13 +236,14 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     getVisibility() {
-        const { periode, søknadsinfo } = this.props;
+        const { periode, søknadsinfo, arbeidsforhold } = this.props;
         const { variant } = this.state;
 
         return getUtsettelseFormVisibility({
             variant,
             periode,
-            søknadsinfo
+            søknadsinfo,
+            arbeidsforhold
         });
     }
 
@@ -293,6 +296,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         const utsettelser = Periodene(uttaksplan).getUtsettelser();
         const ugyldigeTidsperioder = getTidsperioderIUttaksplan(utsettelser, periode.id);
         const overlapperAndreUtsettelser = overlapperUtsettelseAndreUtsettelser(periode as Periode, uttaksplan);
+        const harDeltidUtenAvtaleMedArbeidsgiver =
+            isUtsettelsesperiode(periode) && periode.harAvtaleOmFulltidForDeltidsstilling === false;
 
         const tidsperiodeFeilmeldingKey = getTidsperiodeFeilmeldingKey(
             harOverlappendePerioder === true,
@@ -361,13 +366,43 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                             orgnumre={(periode as Utsettelsesperiode).orgnumre || []}
                                         />
                                     </Block>
-                                    <Block visible={periode.erArbeidstaker === true}>
+                                    <Block
+                                        visible={visibility.isVisible(UtsettelseSpørsmålKeys.avtaltFulltidVedDeltid)}>
+                                        <JaNeiSpørsmål
+                                            navn={UtsettelseSpørsmålKeys.avtaltFulltidVedDeltid}
+                                            spørsmål={getMessage(
+                                                intl,
+                                                'utsettelseskjema.arbeid.avtaltFulltidVedDeltid',
+                                                {
+                                                    antall: periode.orgnumre ? periode.orgnumre.length : 0
+                                                }
+                                            )}
+                                            onChange={(avtaltFulltArbeidForDeltid) =>
+                                                this.onChange({
+                                                    harAvtaleOmFulltidForDeltidsstilling: avtaltFulltArbeidForDeltid
+                                                })
+                                            }
+                                            valgtVerdi={
+                                                (periode as Utsettelsesperiode).harAvtaleOmFulltidForDeltidsstilling
+                                            }
+                                        />
+                                    </Block>
+                                    <Block
+                                        visible={
+                                            visibility.isVisible(UtsettelseSpørsmålKeys.avtaltFulltidVedDeltid) &&
+                                            periode.harAvtaleOmFulltidForDeltidsstilling === false
+                                        }>
                                         <VeilederInfo
+                                            kompakt={true}
+                                            skjulMeldingIkon={true}
                                             messages={[
                                                 {
-                                                    type: 'normal',
+                                                    type: 'feil',
                                                     contentIntlKey:
-                                                        'vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse'
+                                                        'vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse',
+                                                    values: {
+                                                        antall: periode.orgnumre ? periode.orgnumre.length : 0
+                                                    }
                                                 }
                                             ]}
                                         />
@@ -411,7 +446,9 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                 {periode.id === undefined && (
                     <NyPeriodeKnapperad
                         periodeKanLeggesTil={
-                            visibility.areAllQuestionsAnswered() && overlapperAndreUtsettelser === false
+                            visibility.areAllQuestionsAnswered() &&
+                            overlapperAndreUtsettelser === false &&
+                            harDeltidUtenAvtaleMedArbeidsgiver === false
                         }
                         onCancel={onCancel}
                         ariaLabelAvbryt={getMessage(intl, 'uttaksplan.nyttopphold.avbrytAriaLabel')}

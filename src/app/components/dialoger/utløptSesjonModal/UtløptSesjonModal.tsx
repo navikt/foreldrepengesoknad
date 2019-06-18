@@ -3,12 +3,12 @@ import { FormattedMessage, FormattedHTMLMessage, injectIntl, InjectedIntlProps }
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { redirectToLogin } from 'app/util/routing/login';
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
-import AdvarselIkon from '../../ikoner/svgIkoner/advarselIkon/AdvarselIkon';
 import BEMHelper from 'common/util/bem';
 import getMessage from 'common/util/i18nUtils';
 import Knappelenke from '../../elementer/knappelenke/Knappelenke';
 import Modal from 'nav-frontend-modal';
 import './utløptSesjonModal.less';
+import AdvarselIkon from 'common/components/ikoner/AdvarselIkon';
 
 const cls = BEMHelper('utløptSesjonModal');
 const AVSLUTT_HREF = 'https://familie.nav.no';
