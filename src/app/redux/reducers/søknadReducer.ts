@@ -93,6 +93,11 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 ...state,
                 ...action.payload
             };
+        case SøknadActionKeys.UPDATE_EKSTRAINFO:
+                return {
+                    ...state,
+                    ekstrainfo: { ...state.ekstrainfo, ...action.payload }
+                };
         case SøknadActionKeys.SET_SØKNAD:
             return {
                 ...getDefaultSøknadState(),

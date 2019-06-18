@@ -197,6 +197,7 @@ export type SøknadAction =
     | UpdateSøker
     | UpdateSøkerAndStorage
     | UpdateSøknad
+    | UpdateEkstrainfo
     | UploadAttachment
     | UploadAttachmentSuccess
     | UploadAttachmentFailed
