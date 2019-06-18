@@ -497,6 +497,12 @@
         "Det er allerede registrerten  utsettelse i denne perioden. Du må slette perioden med utsettelse før du kan legge inn en ny utsettelse.",
     "periodeliste.gruppertInfo.tittel": "{navn} {antallPerioder, plural, one{periode} other {perioder}}",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
+    "periodetype.info.utsettelse.LOVBESTEMT_FERIE": "{ navn } Utsetter pga Ferie",
+    "periodetype.info.utsettelse.ARBEID": "{ navn } Utsetter pga heltidsarbeid",
+    "periodetype.info.utsettelse.SYKDOM": "{ navn ) Utsetter pga sykdom",
+    "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_SØKER": "{ navn } Utsetter pga INSTITUSJONSOPPHOLD_SØKER",
+    "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_BARNET": "{ navn } Utsetter pga INSTITUSJONSOPPHOLD_BARNET",
+
     "personalia.år": "{år} år",
     "pgasykdom": "På grunn av sykdom",
     "pågående": "Pågående",
@@ -1046,6 +1052,8 @@
     "ekisterendeSak.label.seAnnenPartsPlan": "Se { navn } plan",
     "ekisterendeSak.label.annenPartsPlan": "{ navn } plan:",
     "ekisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { stønadskontotype }",
+
+    "ekisterendeSak.tittel.dineDagerMedForeldrepenger": "Dine dager med foreldrepenger",
 
     "søknadSendt.tittel": "Takk for søknaden { name }!",
     "søknadSendt.pdf": "Se og last ned søknaden din",

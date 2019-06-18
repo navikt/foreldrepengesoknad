@@ -171,12 +171,16 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
         case Periodetype.Hull:
             return getMessage(intl, `periodetype.hull.tittel`);
         case Periodetype.Info:
+            let stønadskontotype;
             switch (periode.infotype) {
                 case PeriodeInfoType.uttakAnnenPart:
-                    const stønadskontotype = getStønadskontoFromOppholdsårsak(periode.årsak);
+                    stønadskontotype = getStønadskontoFromOppholdsårsak(periode.årsak);
                     return getStønadskontoNavn(intl, stønadskontotype, navnPåForeldre);
+                case PeriodeInfoType.utsettelseAnnenPart:
+                    return getMessage(intl, `periodetype.info.utsettelse.${periode.årsak}`, {
+                        navn: getForelderNavn(periode.forelder, navnPåForeldre)
+                    });
                 default:
-                    // TODO legge til alle infotyper
                     return getMessage(intl, `periodetype.info.${periode.infotype}`);
             }
     }
