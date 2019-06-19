@@ -1,12 +1,13 @@
 import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from '../uttakUtils';
-import { Saksgrunnlag } from '../../../types/EksisterendeSak';
+import { Saksgrunnlag, FamiliehendelsesType } from '../../../types/EksisterendeSak';
 import Søknad from '../../../../app/types/søknad/Søknad';
 import { DeepPartial } from 'redux';
 
 describe('uttakUtils', () => {
     // tslint:disable-next-line: no-object-literal-type-assertion
     const grunnlag: Saksgrunnlag = {
-        fødselsdato: new Date(),
+        familieHendelseDato: new Date(),
+        familieHendelseType: FamiliehendelsesType.FØDSEL,
         dekningsgrad: '100',
         antallBarn: 1,
         søkerErFarEllerMedmor: true,
