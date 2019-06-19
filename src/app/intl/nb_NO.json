@@ -1121,6 +1121,9 @@
         "For å få den beste brukeropplevelsen anbefaler vi en moderne nettleser som støtter moderne webstandarder.",
     "ok": "Ok",
 
-    "oversiktBrukteDager.tittel.brukteDager": "Brukte foreldrepenger",
-    "oversiktBrukteDager.tittel.ikkeBrukteDager": "Foreldrepenger {antall, plural, one {du} other {dere}} har igjen"
+    "oversiktBrukteDager.tittel.foreldre": "Brukte foreldrepenger",
+    "oversiktBrukteDager.tittel.kontoer.brukteDager":
+        "Foreldrepenger  {antall, plural, one {du} other {dere}} har registrert",
+    "oversiktBrukteDager.tittel.kontoer.ikkeBrukteDager":
+        "Foreldrepenger {antall, plural, one {du} other {dere}} har igjen"
 }

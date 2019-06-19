@@ -1129,6 +1129,9 @@
     "byttBrowser.ingress":
         "For å få den beste brukeropplevelsen anbefaler vi en moderne nettleser som støtter moderne webstandarder",
     "ok": "Ok",
-    "oversiktBrukteDager.tittel.brukteDager": "Brukte foreldrepengar",
-    "oversiktBrukteDager.tittel.ikkeBrukteDager": "Foreldrepengar {antall, plural, one {du} other {dere}} har igjen"
+    "oversiktBrukteDager.tittel.foreldre": "Brukte foreldrepengar",
+    "oversiktBrukteDager.tittel.kontoer.brukteDager":
+        "Foreldrepengar  {antall, plural, one {du} other {dere}} har registrert",
+    "oversiktBrukteDager.tittel.kontoer.ikkeBrukteDager":
+        "Foreldrepengar {antall, plural, one {du} other {dere}} har igjen"
 }
