@@ -108,7 +108,10 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
         const søknad = this.props.søknad as Søknad;
         const navnPåForeldre = søknadsinfo.navn.navnPåForeldre;
         const skalViseInfoEkisterendeSak: boolean =
-            eksisterendeSak !== undefined || eksisterendeSakAnnenPart !== undefined;
+            eksisterendeSak !== undefined ||
+            (eksisterendeSakAnnenPart !== undefined &&
+                eksisterendeSakAnnenPart.uttaksplan !== undefined &&
+                eksisterendeSakAnnenPart.uttaksplan.length > 0);
 
         return (
             <Steg
