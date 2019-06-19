@@ -1,5 +1,6 @@
 import { RegistrertBarn } from '../../../../types/Person';
 import Barn, { FødtBarn, UfødtBarn } from '../../../../types/søknad/Barn';
+import moment from 'moment';
 
 const hvilkeBarnGjelderSøknadenBolkVisible = (registrerteBarn: RegistrertBarn[]): boolean => {
     return registrerteBarn.length > 0;
@@ -61,6 +62,22 @@ const terminbekreftelseDatoVisible = (
     );
 };
 
+const visInfoOmPrematurukerVisible = (barn: Partial<FødtBarn>): boolean => {
+    const fødselsdato = barn.fødselsdatoer !== undefined ? barn.fødselsdatoer[0] : undefined;
+    const termindato = barn.termindato;
+    const fødselsdatoEtterEllerLikFørsteJuli = moment(fødselsdato).isSameOrAfter(moment(new Date('2019-07-01')));
+
+    if (fødselsdato === undefined || termindato === undefined) {
+        return false;
+    }
+
+    return (
+        moment(fødselsdato)
+            .add(7, 'weeks')
+            .isSameOrBefore(moment(termindato)) && fødselsdatoEtterEllerLikFørsteJuli
+    );
+};
+
 export default {
     hvilkeBarnGjelderSøknadenBolk: hvilkeBarnGjelderSøknadenBolkVisible,
     erBarnetFødtSpørsmål: erBarnetFødtSpørsmålVisible,
@@ -71,7 +88,8 @@ export default {
     morForSykSpørsmål: morForSykSpørsmålVisible,
     termindato: termindatoVisible,
     terminbekreftelse: terminbekreftelsePartialVisible,
-    terminbekreftelseDato: terminbekreftelseDatoVisible
+    terminbekreftelseDato: terminbekreftelseDatoVisible,
+    visInfoOmPrematuruker: visInfoOmPrematurukerVisible
 };
 
 export const RelasjonTilBarFødselVisibilityFunctions = {
@@ -84,5 +102,6 @@ export const RelasjonTilBarFødselVisibilityFunctions = {
     morForSykSpørsmålVisible,
     termindatoVisible,
     terminbekreftelsePartialVisible,
-    terminbekreftelseDatoVisible
+    terminbekreftelseDatoVisible,
+    visInfoOmPrematurukerVisible
 };

@@ -8,6 +8,7 @@ import { isUfødtBarn } from '../../../../types/søknad/Barn';
 export interface RelasjonTilBarnFødtVisibility {
     fødselsdatoer: boolean;
     fødselsattest: boolean;
+    visInfoOmPrematuruker: boolean;
 }
 
 export interface RelasjonTilBarnUfødtVisibility {
@@ -60,6 +61,7 @@ export const getRelasjonTilBarnFødselVisibility = (
         isUfødtBarn(barn, situasjon) &&
         visibility.terminbekreftelsePartialVisible(termindato, barn, skalLasteOppTerminbekreftelse);
     const terminbekreftelseDato = visibility.terminbekreftelseDatoVisible(terminbekreftelse, barn);
+    const visInfoOmPrematuruker = visibility.visInfoOmPrematurukerVisible(barn);
 
     return {
         hvilketBarnGjelderSøknadenBolk,
@@ -68,7 +70,8 @@ export const getRelasjonTilBarnFødselVisibility = (
         erBarnetFødt,
         født: {
             fødselsdatoer,
-            fødselsattest
+            fødselsattest,
+            visInfoOmPrematuruker
         },
         ufødt: {
             erMorForSyk,
