@@ -1,6 +1,6 @@
 import React from 'react';
 import { Søknadsinfo } from 'app/selectors/types';
-import { Periode, TilgjengeligStønadskonto, Stønadskontouttak } from 'app/types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
 import { NavnPåForeldre } from 'common/types';
 import Uttaksoppsummering from '../uttaksoppsummering/Uttaksoppsummering';
 import BEMHelper from 'common/util/bem';
@@ -13,15 +13,15 @@ import ForelderIkon from 'shared/components/foreldrepar/ForelderIkon';
 import { getSituasjonForelderSvg } from 'shared/components/foreldrepar/foreldreparUtils';
 import { getForeldreparSituasjonFraSøknadsinfo } from 'app/util/foreldreparSituasjonUtils';
 import TilesList from 'app/components/elementer/tilesList/TilesList';
+import { Uttaksstatus } from 'app/util/uttaksplan/uttaksstatus';
 
 import './oversiktBrukteDager.less';
-import getMessage from 'common/util/i18nUtils';
 
 interface Props {
     søknadsinfo: Søknadsinfo;
     perioder: Periode[];
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    uttak: Stønadskontouttak[];
+    uttaksstatus: Uttaksstatus;
     navnPåForeldre: NavnPåForeldre;
 }
 
@@ -31,7 +31,7 @@ const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> =
     søknadsinfo,
     perioder,
     tilgjengeligeStønadskontoer,
-    uttak,
+    uttaksstatus,
     navnPåForeldre,
     intl
 }) => {
@@ -50,7 +50,7 @@ const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> =
             <div className={bem.element('brukteDager')}>
                 <Undertittel tag="h2" className="blokk-xs">
                     <FormattedMessage
-                        id="oversiktBrukteDager.tittel.brukteDager"
+                        id="oversiktBrukteDager.tittel.foreldre"
                         values={{ antall: erDeltUttak ? 2 : 1 }}
                     />
                 </Undertittel>
@@ -72,10 +72,8 @@ const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> =
             <div className={bem.element('ikkeBrukteDager')}>
                 <Uttaksoppsummering
                     navnPåForeldre={navnPåForeldre}
-                    uttak={uttak}
-                    tittel={getMessage(intl, 'oversiktBrukteDager.tittel.ikkeBrukteDager', {
-                        antall: erDeltUttak ? 2 : 1
-                    })}
+                    uttaksstatus={uttaksstatus}
+                    erDeltUttak={erDeltUttak}
                 />
             </div>
         </div>
