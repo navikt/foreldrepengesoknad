@@ -8,7 +8,16 @@ import {
     tomorrow,
     date15YearsAnd3MonthsAgo
 } from '../validation/values';
+import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 const moment = require('moment');
+
+export const getRelevantFamiliehendelseDato = (params: GetTilgjengeligeStønadskontoerParams): Date => {
+    if (params.fødselsdato !== undefined) {
+        return params.fødselsdato;
+    } else {
+        return params.termindato !== undefined ? params.termindato : params.omsorgsovertakelseDato!;
+    }
+};
 
 export const getDateFromString = (dato?: string) => {
     if (dato) {
