@@ -62,7 +62,6 @@ function* startEndringssøknad(action: StartSøknad, sak: Sak) {
     const { saksnummer, søkerinfo, history } = action;
     const appState: AppState = yield select(stateSelector);
 
-    const barn = appState.søknad.barn;
     const eksisterendeSak: EksisterendeSak | undefined =
         sak.type === SakType.FPSAK ? yield call(fetchEksisterendeSak, saksnummer) : undefined;
     const søknad = eksisterendeSak ? opprettSøknadFraEksisterendeSak(søkerinfo, eksisterendeSak, sak) : undefined;
@@ -86,6 +85,7 @@ function* startEndringssøknad(action: StartSøknad, sak: Sak) {
         const updatedAppState = yield select(stateSelector);
         const søknadsinfo = selectSøknadsinfo(updatedAppState);
         if (søknadsinfo) {
+            const barn = updatedAppState.søknad.barn;
             yield call(
                 getTilgjengeligeStønadskontoer,
                 getStønadskontoParams(
