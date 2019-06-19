@@ -1,4 +1,4 @@
-import { RelasjonTilBarFødselVisibilityFunctions as f } from './visibilityFunctions';
+import { RelasjonTilBarFødselVisibilityFunctions as visibility } from './visibilityFunctions';
 import { skalSøkerLasteOppTerminbekreftelse } from '../../../../util/validation/steg/barn';
 import { getErSøkerFarEllerMedmor } from '../../../../util/domain/personUtil';
 import { ApiState } from '../../../../redux/reducers/apiReducer';
@@ -43,23 +43,23 @@ export const getRelasjonTilBarnFødselVisibility = (
     const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo!);
     const registrerteBarn = søkerinfo!.registrerteBarn || [];
 
-    const hvilketBarnGjelderSøknadenBolk = f.hvilkeBarnGjelderSøknadenBolkVisible(registrerteBarn);
-    const erBarnetFødt = f.erBarnetFødtSpørsmålVisible(
+    const hvilketBarnGjelderSøknadenBolk = visibility.hvilkeBarnGjelderSøknadenBolkVisible(registrerteBarn);
+    const erBarnetFødt = visibility.erBarnetFødtSpørsmålVisible(
         hvilketBarnGjelderSøknadenBolk,
         søknadenGjelderBarnValg ? søknadenGjelderBarnValg.gjelderAnnetBarn : undefined
     );
-    const ufødtBarnPart = f.ufødtBarnPartialVisible(erBarnetFødt, barn);
-    const fødtBarnPart = f.fødtBarnPartialVisible(erBarnetFødt, barn);
+    const ufødtBarnPart = visibility.ufødtBarnPartialVisible(erBarnetFødt, barn);
+    const fødtBarnPart = visibility.fødtBarnPartialVisible(erBarnetFødt, barn);
 
-    const fødselsdatoer = f.fødselsdatoerSpørsmålVisible(fødtBarnPart, barn);
-    const fødselsattest = f.fødselsattestUploaderVisible(fødselsdatoer, barn);
+    const fødselsdatoer = visibility.fødselsdatoerSpørsmålVisible(fødtBarnPart, barn);
+    const fødselsattest = visibility.fødselsattestUploaderVisible(fødselsdatoer, barn);
 
-    const erMorForSyk = f.morForSykSpørsmålVisible(ufødtBarnPart, søkerErFarEllerMedmor);
-    const termindato = f.termindatoVisible(ufødtBarnPart, barn);
+    const erMorForSyk = visibility.morForSykSpørsmålVisible(ufødtBarnPart, søkerErFarEllerMedmor);
+    const termindato = visibility.termindatoVisible(ufødtBarnPart, barn);
     const terminbekreftelse =
         isUfødtBarn(barn, situasjon) &&
-        f.terminbekreftelsePartialVisible(termindato, barn, skalLasteOppTerminbekreftelse);
-    const terminbekreftelseDato = f.terminbekreftelseDatoVisible(terminbekreftelse, barn);
+        visibility.terminbekreftelsePartialVisible(termindato, barn, skalLasteOppTerminbekreftelse);
+    const terminbekreftelseDato = visibility.terminbekreftelseDatoVisible(terminbekreftelse, barn);
 
     return {
         hvilketBarnGjelderSøknadenBolk,
