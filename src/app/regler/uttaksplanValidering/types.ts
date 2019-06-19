@@ -1,9 +1,10 @@
 import { RegelStatus, RegelAvvik } from 'shared/regler/regelTypes';
 import { Dictionary } from 'lodash';
-import { Periode, Stønadskontouttak, TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
 import { Søknadsinfo } from 'app/selectors/types';
 import { Tilleggsopplysninger } from 'app/types/søknad/Søknad';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { Uttaksstatus } from 'app/util/uttaksplan/uttaksstatus';
 
 export type UttaksplanAvvikType = 'forretning' | 'skjema';
 
@@ -17,7 +18,7 @@ export interface UttaksplanRegelTestresultat {
 export interface UttaksplanRegelgrunnlag {
     perioder: Periode[];
     søknadsinfo: Søknadsinfo;
-    uttaksstatusStønadskontoer: Stønadskontouttak[];
+    uttaksstatus: Uttaksstatus;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     tilleggsopplysninger: Tilleggsopplysninger;
     perioderSomSkalSendesInn: Periode[];
