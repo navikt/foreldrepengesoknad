@@ -8,7 +8,8 @@ import {
     tomorrow,
     date15YearsAnd3MonthsAgo
 } from '../validation/values';
-import { FamiliehendelseDatoer } from 'app/types/søknad/FamilieHendelseDatoer';
+import { FamiliehendelseDatoer } from '../../types/søknad/FamiliehendelseDatoer';
+
 const moment = require('moment');
 
 export const getRelevantFamiliehendelseDato = ({
