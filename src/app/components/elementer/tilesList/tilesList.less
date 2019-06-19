@@ -23,4 +23,26 @@
             max-width: 100%;
         }
     }
+    &--columns-2 {
+        .tilesList__tile {
+            min-width: 100% / 2;
+            max-width: 100% / 2;
+            @media screen and (max-width: @mobile-breakpoint) {
+                min-width: 100%;
+                max-width: 100%;
+            }
+        }
+    }
+    &--columns-1 {
+        .tilesList__tile {
+            min-width: 100%;
+            max-width: 100%;
+        }
+    }
+    &--columns-flex {
+        .tilesList__tile {
+            min-width: 0;
+            max-width: 100%;
+        }
+    }
 }
