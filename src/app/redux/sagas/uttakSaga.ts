@@ -100,7 +100,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
         const relevantFamiliehendelseDato = getRelevantFamiliehendelseDato({
             termindato: params.termindato,
             fødselsdato: params.fødselsdato,
-            omsorgsovertakelseDato: params.omsorgsovertakelseDato
+            omsorgsovertakelsesdato: params.omsorgsovertakelsesdato
         });
 
         if (
