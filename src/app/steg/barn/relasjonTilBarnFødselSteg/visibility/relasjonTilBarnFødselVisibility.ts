@@ -51,7 +51,7 @@ export const getRelasjonTilBarnFødselVisibility = (
     const ufødtBarnPart = f.ufødtBarnPartialVisible(erBarnetFødt, barn);
     const fødtBarnPart = f.fødtBarnPartialVisible(erBarnetFødt, barn);
 
-    const fødselsdatoer = f.fødeslsdatoerSpørsmålVisible(fødtBarnPart, barn);
+    const fødselsdatoer = f.fødselsdatoerSpørsmålVisible(fødtBarnPart, barn);
     const fødselsattest = f.fødselsattestUploaderVisible(fødselsdatoer, barn);
 
     const erMorForSyk = f.morForSykSpørsmålVisible(ufødtBarnPart, søkerErFarEllerMedmor);
