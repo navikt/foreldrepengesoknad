@@ -1,7 +1,7 @@
 {
     "grunnlag": {
         "familieHendelseType": "FODSL",
-        "familieHendelseDato": "2019-01-30",
+        "fødselsdato": "2019-01-30",
         "dekningsgrad": 100,
         "antallBarn": 1,
         "søkerErFarEllerMedmor": false,
