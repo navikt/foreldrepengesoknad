@@ -132,6 +132,15 @@ export const getEksisterendeSakFromDTO = (
         fødselsdato: fødselsdato ? moment.utc(fødselsdato).toDate() : undefined,
         omsorgsovertakelseDato: omsorgsovertakelseDato ? moment.utc(omsorgsovertakelseDato).toDate() : undefined
     };
+
+    if (
+        familiehendelseDatoer.fødselsdato === undefined &&
+        familiehendelseDatoer.termindato === undefined &&
+        familiehendelseDatoer.omsorgsovertakelseDato === undefined
+    ) {
+        return undefined;
+    }
+
     const familiehendelseType = getFamilieHendelseType(familiehendelseDatoer);
 
     const grunnlag: Saksgrunnlag = {
