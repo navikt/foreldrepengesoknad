@@ -233,13 +233,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         const { visFeiloppsummering } = this.state;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
-        // const gjelderDagerBrukt = skalBeregneAntallDagerBrukt(
-        //     søknadsinfo.søknaden.erDeltUttak,
-        //     søknadsinfo.søker.erFarEllerMedmor,
-        //     søknadsinfo.søknaden.erEndringssøknad,
-        //     søknadsinfo.søknaden.erEnkelEndringssøknadMedUttaksplan
-        // );
-
         const defaultStønadskontoType =
             tilgjengeligeStønadskontoer.length === 1 ? tilgjengeligeStønadskontoer[0].konto : undefined;
 
@@ -316,16 +309,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                             uttak={uttaksstatus}
                                             navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                                         />
-                                        {/* <UttakFordeling
-                                            tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                            perioder={søknad.uttaksplan}
-                                            søknadsinfo={søknadsinfo}
-                                        />
-                                        <Uttaksoppsummering
-                                            uttak={uttaksstatus}
-                                            navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
-                                            gjelderDagerBrukt={gjelderDagerBrukt}
-                                        /> */}
                                     </Block>
                                 </>
                             )}
