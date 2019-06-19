@@ -11,15 +11,14 @@ import { Forelder } from 'common/types';
 import { getPeriodelisteElementId } from '../../components/uttaksplanlegger/components/periodeliste/Periodeliste';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
-import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
+import { getUttaksstatus, Uttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { HistoryProps } from '../../types/common';
 import { hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar } from 'app/regler/uttaksplan/hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar';
 import {
     Periode,
     TilgjengeligStønadskonto,
     SenEndringÅrsak,
-    StønadskontoType,
-    Stønadskontouttak
+    StønadskontoType
 } from '../../types/uttaksplan/periodetyper';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import { Søknadsinfo } from '../../selectors/types';
@@ -60,7 +59,7 @@ interface StateProps {
     søknad: Søknad;
     søknadsinfo?: Søknadsinfo;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    uttaksstatus: Stønadskontouttak[];
+    uttaksstatus: Uttaksstatus | undefined;
     perioder: Periode[];
     lastAddedPeriodeId: string | undefined;
     uttaksplanValidering: UttaksplanValideringState;
@@ -299,14 +298,15 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         </Block>
 
                         {søknad.uttaksplan &&
-                            tilgjengeligeStønadskontoer.length > 0 && (
+                            tilgjengeligeStønadskontoer.length > 0 &&
+                            uttaksstatus && (
                                 <>
                                     <Block margin="l">
                                         <OversiktBrukteDager
                                             tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                             perioder={søknad.uttaksplan}
                                             søknadsinfo={søknadsinfo}
-                                            uttak={uttaksstatus}
+                                            uttaksstatus={uttaksstatus}
                                             navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                                         />
                                     </Block>
@@ -396,9 +396,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         }
     }
 
-    const uttaksstatus: Stønadskontouttak[] = søknadsinfo
+    const uttaksstatus = søknadsinfo
         ? getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan)
-        : [];
+        : undefined;
 
     const aktivitetsfriKvoteKonto = tilgjengeligeStønadskontoer.find(
         ({ konto }) => konto === StønadskontoType.AktivitetsfriKvote
