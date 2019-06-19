@@ -29,6 +29,9 @@ import { UttaksplanDTO, UttaksplanPeriodeDTO } from 'app/api/types/uttaksplanDTO
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { datoErInnenforTidsperiode, Tidsperioden } from '../uttaksplan/Tidsperioden';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { getRelevantFamiliehendelseDato } from '../dates/dates';
+import { FamiliehendelseDatoer } from 'app/types/søknad/FamilieHendelseDatoer';
+import { getFamilieHendelseType } from '../domain/getFamilieHendelseType';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -40,19 +43,6 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType)
             return Arbeidsform.arbeidstaker;
     }
 };
-
-// export const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdsÅrsak): StønadskontoType | undefined => {
-//     switch (årsak) {
-//         case OppholdsÅrsak.UTTAK_FEDREKVOTE_ANNEN_FORELDER:
-//             return StønadskontoType.Fedrekvote;
-//         case OppholdsÅrsak.UTTAK_FELLESP_ANNEN_FORELDER:
-//             return StønadskontoType.Fellesperiode;
-//         case OppholdsÅrsak.UTTAK_MØDREKVOTE_ANNEN_FORELDER:
-//             return StønadskontoType.Fellesperiode;
-//         default:
-//             return undefined;
-//     }
-// };
 
 export const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): StønadskontoType => {
     switch (årsak) {
@@ -133,17 +123,24 @@ export const getEksisterendeSakFromDTO = (
     arbeidsforhold: Arbeidsforhold[]
 ): EksisterendeSak | undefined => {
     const {
-        grunnlag: { dekningsgrad, familieHendelseDato, familieHendelseType, søkerKjønn, ...restGrunnlag },
+        grunnlag: { dekningsgrad, termindato, fødselsdato, omsorgsovertakelseDato, søkerKjønn, ...restGrunnlag },
         perioder
     } = dto;
+
+    const familiehendelseDatoer: FamiliehendelseDatoer = {
+        termindato: termindato ? moment.utc(termindato).toDate() : undefined,
+        fødselsdato: fødselsdato ? moment.utc(fødselsdato).toDate() : undefined,
+        omsorgsovertakelseDato: omsorgsovertakelseDato ? moment.utc(omsorgsovertakelseDato).toDate() : undefined
+    };
+    const familiehendelseType = getFamilieHendelseType(familiehendelseDatoer);
 
     const grunnlag: Saksgrunnlag = {
         ...restGrunnlag,
         erDeltUttak: erEksisterendeSakErDeltUttak(dto),
-        erBarnetFødt: familieHendelseType !== FamiliehendelsesType.TERM,
+        erBarnetFødt: fødselsdato !== undefined,
         dekningsgrad: dekningsgrad === 100 ? '100' : '80',
-        familieHendelseDato: new Date(familieHendelseDato),
-        familieHendelseType: familieHendelseType as FamiliehendelsesType
+        familieHendelseDato: getRelevantFamiliehendelseDato(familiehendelseDatoer),
+        familieHendelseType: familiehendelseType as FamiliehendelsesType
     };
 
     let saksperioder = perioder

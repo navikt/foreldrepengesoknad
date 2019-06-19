@@ -135,7 +135,8 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                 )}
 
                 {visPeriodeliste &&
-                    infoperioder && (
+                    infoperioder &&
+                    infoperioder.length > 0 && (
                         <UtvidetInformasjon
                             apneLabel={getMessage(intl, 'ekisterendeSak.label.seAnnenPartsPlan', {
                                 navn: navnGenitivEierform
@@ -149,7 +150,8 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                     )}
             </InnholdMedIllustrasjon>
             {visPeriodeliste &&
-                søkersPerioder && (
+                søkersPerioder &&
+                søkersPerioder.length > 0 && (
                     <InnholdMedIllustrasjon
                         tittel={getMessage(intl, 'ekisterendeSak.tittel.dineDagerMedForeldrepenger')}
                         illustrasjoner={[]}>
