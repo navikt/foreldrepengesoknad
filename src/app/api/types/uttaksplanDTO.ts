@@ -26,8 +26,6 @@ export interface UttaksplanPeriodeDTO {
 
 export interface UttaksplanDTO {
     grunnlag: {
-        familieHendelseType: string;
-        familieHendelseDato: string;
         dekningsgrad: number;
         antallBarn: number;
         søkerErFarEllerMedmor: boolean;
@@ -37,6 +35,9 @@ export interface UttaksplanDTO {
         farMedmorErAleneOmOmsorg: boolean;
         farMedmorHarRett: boolean;
         søkerKjønn: string;
+        termindato?: string;
+        fødselsdato?: string;
+        omsorgsovertakelseDato: string;
     };
     perioder: UttaksplanPeriodeDTO[];
 }

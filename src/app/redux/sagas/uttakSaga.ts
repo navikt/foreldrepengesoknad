@@ -97,7 +97,11 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
             }
         }
 
-        const relevantFamiliehendelseDato = getRelevantFamiliehendelseDato(params);
+        const relevantFamiliehendelseDato = getRelevantFamiliehendelseDato({
+            termindato: params.termindato,
+            fødselsdato: params.fødselsdato,
+            omsorgsovertakelseDato: params.omsorgsovertakelseDato
+        });
 
         if (
             skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018(
