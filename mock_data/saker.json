@@ -1,85 +1,30 @@
 [
     {
         "type": "FPSAK",
-        "saksnummer": "137662134",
-        "status": "UBEH",
-        "opprettet": "2019-02-12",
+        "saksnummer": "139020402",
+        "status": "LOP",
+        "opprettet": "2019-06-19",
         "annenPart": {
-            "fnr": "13107849798",
-            "aktørId": "1852066139322",
-            "navn": { "fornavn": "ROBUST", "etternavn": "KAFFI", "kjønn": "M" }
+            "fnr": "15039322312",
+            "aktørId": "1774997547520",
+            "navn": {
+                "fornavn": "NOBEL",
+                "etternavn": "HEST",
+                "kjønn": "M"
+            }
         },
         "behandlinger": [
             {
-                "opprettetTidspunkt": "2019-02-12T11:49:16.629",
-                "endretTidspunkt": "2019-02-12T11:51:12.787",
+                "opprettetTidspunkt": "2019-06-19T15:14:09.818",
+                "endretTidspunkt": "2019-06-19T15:15:42.246",
                 "status": "AVSLU",
                 "type": "FP",
-                "tema": "FORP_FODS",
-                "årsak": "RE-END-FRA-BRUKER",
-                "behandlingResultat": "FORELDREPENGER_ENDRET",
-                "behandlendeEnhet": "4802",
-                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Bærum",
-                "inntektsmeldinger": []
-            },
-            {
-                "opprettetTidspunkt": "2019-02-12T12:22:12.078",
-                "endretTidspunkt": "2019-02-12T12:29:47.473",
-                "status": "AVSLU",
-                "type": "FP",
-                "tema": "FORP_FODS",
-                "årsak": "RE-FRDLING",
-                "behandlingResultat": "INGEN_ENDRING",
-                "behandlendeEnhet": "4802",
-                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Bærum",
-                "inntektsmeldinger": []
-            },
-            {
-                "opprettetTidspunkt": "2019-02-12T11:54:14.62",
-                "endretTidspunkt": "2019-02-12T11:55:39.83",
-                "status": "AVSLU",
-                "type": "FP",
-                "tema": "FORP_FODS",
-                "årsak": "RE-END-FRA-BRUKER",
-                "behandlingResultat": "FORELDREPENGER_ENDRET",
-                "behandlendeEnhet": "4802",
-                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Bærum",
-                "inntektsmeldinger": []
-            },
-            {
-                "opprettetTidspunkt": "2019-02-13T16:17:13.184",
-                "endretTidspunkt": "2019-05-29T08:44:49.188",
-                "status": "AVSLU",
-                "type": "FP",
-                "tema": "FORP_FODS",
-                "årsak": "RE-HENDELSE-FØDSEL",
-                "behandlingResultat": "FORELDREPENGER_ENDRET",
-                "behandlendeEnhet": "4802",
-                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Bærum",
-                "inntektsmeldinger": []
-            },
-            {
-                "opprettetTidspunkt": "2019-02-12T11:40:44.319",
-                "endretTidspunkt": "2019-02-12T11:44:13.743",
-                "status": "AVSLU",
-                "type": "FP",
-                "tema": "FORP_FODS",
+                "tema": "FORP_ADOP",
+                "årsak": "RE-END-INNTEKTSMELD",
                 "behandlingResultat": "INNVILGET",
-                "behandlendeEnhet": "4802",
-                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Bærum",
-                "inntektsmeldinger": ["439772288"]
-            },
-            {
-                "opprettetTidspunkt": "2019-05-29T08:48:15.101",
-                "endretTidspunkt": "2019-05-29T08:48:22.114",
-                "status": "UTRED",
-                "type": "FP",
-                "tema": "FORP_FODS",
-                "årsak": "BERØRT-BEHANDLING",
-                "behandlingResultat": "FORELDREPENGER_ENDRET",
-                "behandlendeEnhet": "4802",
-                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Bærum",
-                "inntektsmeldinger": []
+                "behandlendeEnhet": "4833",
+                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Oslo 1",
+                "inntektsmeldinger": ["448233419"]
             }
         ]
     }

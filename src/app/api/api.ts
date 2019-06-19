@@ -14,7 +14,7 @@ export interface GetTilgjengeligeStønadskontoerParams {
     dekningsgrad: '100' | '80';
     termindato?: Date;
     fødselsdato?: Date;
-    omsorgsovertakelseDato?: Date;
+    omsorgsovertakelsesdato?: Date;
     morHarAleneomsorg?: boolean;
     farHarAleneomsorg?: boolean;
     startdatoUttak: Date;
@@ -58,7 +58,7 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
         dekningsgrad,
         fødselsdato,
         termindato,
-        omsorgsovertakelseDato,
+        omsorgsovertakelsesdato,
         morHarAleneomsorg,
         farHarAleneomsorg,
         startdatoUttak
@@ -73,7 +73,7 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
         antallBarn,
         fødselsdato: formaterStønadskontoParamsDatoer(fødselsdato, 'YYYYMMDD'),
         termindato: formaterStønadskontoParamsDatoer(termindato, 'YYYYMMDD'),
-        omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(omsorgsovertakelseDato, 'YYYYMMDD'),
+        omsorgsovertakelsesdato: formaterStønadskontoParamsDatoer(omsorgsovertakelsesdato, 'YYYYMMDD'),
         startdatoUttak: formaterDato(startdatoUttak, 'YYYYMMDD')
     };
 
