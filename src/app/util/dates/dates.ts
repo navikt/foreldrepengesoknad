@@ -8,14 +8,18 @@ import {
     tomorrow,
     date15YearsAnd3MonthsAgo
 } from '../validation/values';
-import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
+import { FamiliehendelseDatoer } from 'app/types/søknad/FamilieHendelseDatoer';
 const moment = require('moment');
 
-export const getRelevantFamiliehendelseDato = (params: GetTilgjengeligeStønadskontoerParams): Date => {
-    if (params.fødselsdato !== undefined) {
-        return params.fødselsdato;
+export const getRelevantFamiliehendelseDato = ({
+    termindato,
+    fødselsdato,
+    omsorgsovertakelseDato
+}: FamiliehendelseDatoer): Date => {
+    if (fødselsdato !== undefined) {
+        return fødselsdato;
     } else {
-        return params.termindato !== undefined ? params.termindato : params.omsorgsovertakelseDato!;
+        return termindato !== undefined ? termindato : omsorgsovertakelseDato!;
     }
 };
 
