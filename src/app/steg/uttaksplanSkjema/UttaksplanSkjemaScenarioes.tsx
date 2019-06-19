@@ -335,10 +335,12 @@ const Scenario8: React.StatelessComponent<ScenarioProps> = () => {
 
 const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåForeldre, familiehendelsesdato }) => {
     const { uttaksplanSkjema, eksisterendeSakAnnenPart } = søknad.ekstrainfo;
-    const morSinSisteUttaksdag =
+    const annenPartsSistePeriode =
         eksisterendeSakAnnenPart && eksisterendeSakAnnenPart.uttaksplan
-            ? Periodene(eksisterendeSakAnnenPart.uttaksplan).finnSisteInfoperiode().tidsperiode.tom
+            ? Periodene(eksisterendeSakAnnenPart.uttaksplan).finnSisteInfoperiode()
             : undefined;
+
+    const morSinSisteUttaksdag = annenPartsSistePeriode ? annenPartsSistePeriode.tidsperiode.tom : undefined;
 
     return (
         <>
