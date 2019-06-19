@@ -232,25 +232,35 @@ class UttaksplanAutoBuilder {
 function fjernOverskrivbarePerioderIPeriodetidsrom(perioder: Periode[], periode: Periode): Periode[] {
     const nyePerioder: Periode[] = perioder.filter((p) => isOverskrivbarPeriode(p) === false);
     const overskrivbarePerioder = perioder.filter((p) => isOverskrivbarPeriode(p));
-    overskrivbarePerioder.forEach((o) => {
-        if (Tidsperioden(o.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
+    overskrivbarePerioder.forEach((overskrivbarPeriode) => {
+        if (Tidsperioden(overskrivbarPeriode.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
             return;
-        } else if (Tidsperioden(o.tidsperiode).erUtenfor(periode.tidsperiode)) {
-            nyePerioder.push(o);
-        } else if (moment(o.tidsperiode.fom).isBefore(periode.tidsperiode.fom, 'day')) {
+        } else if (Tidsperioden(overskrivbarPeriode.tidsperiode).erUtenfor(periode.tidsperiode)) {
+            nyePerioder.push(overskrivbarPeriode);
+        } else if (moment(overskrivbarPeriode.tidsperiode.fom).isBefore(periode.tidsperiode.fom, 'day')) {
             nyePerioder.push({
-                ...o,
+                ...overskrivbarPeriode,
                 tidsperiode: {
-                    fom: o.tidsperiode.fom,
+                    fom: overskrivbarPeriode.tidsperiode.fom,
                     tom: Uttaksdagen(periode.tidsperiode.fom).forrige()
                 }
             });
+            if (moment(overskrivbarPeriode.tidsperiode.tom).isAfter(periode.tidsperiode.tom, 'day')) {
+                nyePerioder.push({
+                    ...overskrivbarPeriode,
+                    id: guid(),
+                    tidsperiode: {
+                        fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
+                        tom: Uttaksdagen(overskrivbarPeriode.tidsperiode.tom).forrige()
+                    }
+                });
+            }
         } else {
             nyePerioder.push({
-                ...o,
+                ...overskrivbarPeriode,
                 tidsperiode: {
                     fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
-                    tom: o.tidsperiode.tom
+                    tom: overskrivbarPeriode.tidsperiode.tom
                 }
             });
         }
