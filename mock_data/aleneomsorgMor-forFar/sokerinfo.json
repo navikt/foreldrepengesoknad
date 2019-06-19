@@ -1,0 +1,35 @@
+{
+    "søker": {
+        "fnr": "19039208779",
+        "fornavn": "NYDELIG",
+        "etternavn": "BÆREPOSE",
+        "kjønn": "M",
+        "fødselsdato": "1992-03-19",
+        "land": "NO",
+        "ikkeNordiskEøsLand": false,
+        "barn": [
+            {
+                "fornavn": "LITEN",
+                "etternavn": "KOPP",
+                "fnr": "01041992758",
+                "kjønn": "M",
+                "fødselsdato": "2019-04-01",
+                "annenForelder": {
+                    "fnr": "31089622401",
+                    "fornavn": "NOBEL",
+                    "etternavn": "KOPP",
+                    "fødselsdato": "1996-08-31"
+                }
+            }
+        ]
+    },
+    "arbeidsforhold": [
+        {
+            "arbeidsgiverId": "973861778",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET",
+            "stillingsprosent": 100.0,
+            "fom": "2017-01-01"
+        }
+    ]
+}
