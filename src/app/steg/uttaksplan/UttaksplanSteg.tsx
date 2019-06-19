@@ -11,15 +11,14 @@ import { Forelder } from 'common/types';
 import { getPeriodelisteElementId } from '../../components/uttaksplanlegger/components/periodeliste/Periodeliste';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
-import { getUttaksstatus, skalBeregneAntallDagerBrukt } from '../../util/uttaksplan/uttaksstatus';
+import { getUttaksstatus, Uttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { HistoryProps } from '../../types/common';
 import { hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar } from 'app/regler/uttaksplan/hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar';
 import {
     Periode,
     TilgjengeligStønadskonto,
     SenEndringÅrsak,
-    StønadskontoType,
-    Stønadskontouttak
+    StønadskontoType
 } from '../../types/uttaksplan/periodetyper';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import { Søknadsinfo } from '../../selectors/types';
@@ -51,16 +50,16 @@ import { Saksgrunnlag } from 'app/types/EksisterendeSak';
 import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
 import { VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/veilederInfo/types';
 import UttaksplanFeiloppsummering from 'app/components/uttaksplanlegger/components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
-import Uttaksoppsummering from 'app/components/uttaksplanlegger/components/uttaksoppsummering/Uttaksoppsummering';
 import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
 import Barn from 'app/types/søknad/Barn';
+import OversiktBrukteDager from 'app/components/uttaksplanlegger/components/oversiktBrukteDager/OversiktBrukteDager';
 
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
     søknadsinfo?: Søknadsinfo;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    uttaksstatus: Stønadskontouttak[];
+    uttaksstatus: Uttaksstatus | undefined;
     perioder: Periode[];
     lastAddedPeriodeId: string | undefined;
     uttaksplanValidering: UttaksplanValideringState;
@@ -233,13 +232,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         const { visFeiloppsummering } = this.state;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
-        const gjelderDagerBrukt = skalBeregneAntallDagerBrukt(
-            søknadsinfo.søknaden.erDeltUttak,
-            søknadsinfo.søker.erFarEllerMedmor,
-            søknadsinfo.søknaden.erEndringssøknad,
-            søknadsinfo.søknaden.erEnkelEndringssøknadMedUttaksplan
-        );
-
         const defaultStønadskontoType =
             tilgjengeligeStønadskontoer.length === 1 ? tilgjengeligeStønadskontoer[0].konto : undefined;
 
@@ -306,13 +298,16 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         </Block>
 
                         {søknad.uttaksplan &&
-                            tilgjengeligeStønadskontoer.length > 0 && (
+                            tilgjengeligeStønadskontoer.length > 0 &&
+                            uttaksstatus && (
                                 <>
                                     <Block margin="l">
-                                        <Uttaksoppsummering
-                                            uttak={uttaksstatus}
+                                        <OversiktBrukteDager
+                                            tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                            perioder={søknad.uttaksplan}
+                                            søknadsinfo={søknadsinfo}
+                                            uttaksstatus={uttaksstatus}
                                             navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
-                                            gjelderDagerBrukt={gjelderDagerBrukt}
                                         />
                                     </Block>
                                 </>
@@ -401,9 +396,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         }
     }
 
-    const uttaksstatus: Stønadskontouttak[] = søknadsinfo
+    const uttaksstatus = søknadsinfo
         ? getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan)
-        : [];
+        : undefined;
 
     const aktivitetsfriKvoteKonto = tilgjengeligeStønadskontoer.find(
         ({ konto }) => konto === StønadskontoType.AktivitetsfriKvote

@@ -9,14 +9,12 @@ import { getAntallUker } from '../../../util/uttaksplan/stønadskontoer';
 import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedHTMLMessage } from 'react-intl';
 import SituasjonSirkel from './illustrasjoner/situasjonSirkel/SituasjonSirkel';
 import UkerSirkel from './illustrasjoner/ukerSirkel/UkerSirkel';
-import { Kjønn } from '../../../types/common';
 import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
 import getMessage from 'common/util/i18nUtils';
 import { Forelder } from 'common/types';
 import InfoBlock from 'common/components/infoBlock/InfoBlock';
 import InnholdMedIllustrasjon from 'app/components/elementer/innholdMedIllustrasjon/InnholdMedIllustrasjon';
 import { getVarighetString } from 'common/util/intlUtils';
-import { ForeldreparSituasjon } from 'shared/types';
 import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 
@@ -27,6 +25,7 @@ import { formaterDato } from 'common/util/datoUtils';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import { trimPerioderIGruppertInfoPeriode } from 'app/util/uttaksplan/gruppertInfoPeriodeUtils';
+import { getForeldreparSituasjonFraSøknadsinfo } from 'app/util/foreldreparSituasjonUtils';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -37,24 +36,6 @@ interface OwnProps {
 }
 
 type Props = InjectedIntlProps & OwnProps;
-
-const getSituasjon = (info: Søknadsinfo): ForeldreparSituasjon | undefined => {
-    const { søker, annenForelder, mor, farMedmor } = info;
-    const kjønnSøker = søker.kjønn;
-    const kjønnAnnenForelder = annenForelder.kjønn;
-    if (info.søknaden.erDeltUttak) {
-        if (kjønnSøker !== kjønnAnnenForelder) {
-            return ForeldreparSituasjon.farOgMor;
-        }
-        return kjønnSøker === Kjønn.MANN ? ForeldreparSituasjon.farOgFar : ForeldreparSituasjon.morOgMedmor;
-    } else {
-        if (kjønnSøker === Kjønn.KVINNE) {
-            return mor.erAleneOmOmsorg ? ForeldreparSituasjon.aleneomsorg : ForeldreparSituasjon.bareMor;
-        } else {
-            return farMedmor.erAleneOmOmsorg ? ForeldreparSituasjon.aleneomsorg : ForeldreparSituasjon.bareFar;
-        }
-    }
-};
 
 const getHvem = (
     intl: InjectedIntl,
@@ -81,7 +62,7 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
     intl
 }) => {
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
-    const situasjon = getSituasjon(søknadsinfo);
+    const situasjon = getForeldreparSituasjonFraSøknadsinfo(søknadsinfo);
     if (situasjon === undefined) {
         return null;
     }

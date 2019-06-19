@@ -30,8 +30,8 @@ import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder
 import { datoErInnenforTidsperiode, Tidsperioden } from '../uttaksplan/Tidsperioden';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { getRelevantFamiliehendelseDato } from '../dates/dates';
-import { FamiliehendelseDatoer } from 'app/types/søknad/FamilieHendelseDatoer';
 import { getFamilieHendelseType } from '../domain/getFamilieHendelseType';
+import { FamiliehendelseDatoer } from 'app/types/søknad/FamiliehendelseDatoer';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {

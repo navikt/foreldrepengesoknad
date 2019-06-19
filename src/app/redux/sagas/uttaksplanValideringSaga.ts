@@ -41,12 +41,12 @@ const kjørUttaksplanRegler = (
     arbeidsforhold: Arbeidsforhold[]
 ): UttaksplanRegelTestresultat => {
     const { eksisterendeSak } = søknad.ekstrainfo;
-    const uttaksstatusStønadskontoer = getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan);
+    const uttaksstatus = getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan);
 
     const resultat = sjekkUttaksplanOppMotRegler({
         søknadsinfo,
         perioder: søknad.uttaksplan,
-        uttaksstatusStønadskontoer,
+        uttaksstatus,
         tilgjengeligeStønadskontoer,
         tilleggsopplysninger: søknad.tilleggsopplysninger,
         perioderSomSkalSendesInn,
