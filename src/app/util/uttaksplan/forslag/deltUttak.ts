@@ -16,7 +16,6 @@ import { sorterPerioder } from '../Periodene';
 import { DateValue } from '../../../types/common';
 import { dateIsSameOrAfter } from '../../../../app/util/dates/dates';
 import { skalFarUtsetteEtterMorSinSisteUttaksdag } from 'app/steg/uttaksplanSkjema/utils';
-import * as moment from 'moment';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,
@@ -301,9 +300,7 @@ const deltUttakFødselFarMedmor = (
             erArbeidstaker: false, // TODO
             tidsperiode: {
                 fom: Uttaksdagen(morSinSisteUttaksdag).neste(),
-                tom: moment(farSinFørsteUttaksdag)
-                    .subtract(1, 'days')
-                    .toDate()
+                tom: Uttaksdagen(farSinFørsteUttaksdag).forrige()
             }
         });
     }
