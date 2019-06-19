@@ -21,7 +21,7 @@ export const getStønadskontoParams = (
             antallBarn: grunnlag.antallBarn,
             fødselsdato: undefined,
             termindato: undefined,
-            omsorgsovertakelseDato: undefined,
+            omsorgsovertakelsesdato: undefined,
             dekningsgrad: grunnlag.dekningsgrad,
             morHarRett: grunnlag.morHarRett,
             morHarAleneomsorg: grunnlag.morErAleneOmOmsorg,
@@ -41,14 +41,14 @@ export const getStønadskontoParams = (
                 return { ...params, termindato: (barn as UfødtBarn).termindato };
             }
         } else {
-            return { ...params, omsorgsovertakelseDato: (barn as Adopsjonsbarn).adopsjonsdato };
+            return { ...params, omsorgsovertakelsesdato: (barn as Adopsjonsbarn).adopsjonsdato };
         }
     } else {
         const params = {
             antallBarn,
             fødselsdato: undefined,
             termindato: undefined,
-            omsorgsovertakelseDato: undefined,
+            omsorgsovertakelsesdato: undefined,
             dekningsgrad: (dekningsgrad === '80' ? '80' : '100') as Dekningsgrad,
             morHarRett: mor.harRett,
             morHarAleneomsorg: mor.erAleneOmOmsorg,
@@ -68,7 +68,7 @@ export const getStønadskontoParams = (
                 return { ...params, termindato: (barn as UfødtBarn).termindato };
             }
         } else {
-            return { ...params, omsorgsovertakelseDato: (barn as Adopsjonsbarn).adopsjonsdato };
+            return { ...params, omsorgsovertakelsesdato: (barn as Adopsjonsbarn).adopsjonsdato };
         }
     }
 };

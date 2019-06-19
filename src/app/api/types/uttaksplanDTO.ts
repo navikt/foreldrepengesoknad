@@ -37,7 +37,7 @@ export interface UttaksplanDTO {
         søkerKjønn: string;
         termindato?: string;
         fødselsdato?: string;
-        omsorgsovertakelseDato: string;
+        omsorgsovertakelsesdato: string;
     };
     perioder: UttaksplanPeriodeDTO[];
 }
