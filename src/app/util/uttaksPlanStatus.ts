@@ -58,7 +58,6 @@ export const beregnGjenståendeUttaksdager = (
     return tilgjengeligeStønadskontoer.map((konto): Stønadskontouttak => {
         let antallDager = beregnDagerBrukt ? 0 : konto.dager;
         const uttaksplanPerioder = alleUttakIUttaksplan.filter((p) => p.konto === konto.konto);
-
         if (uttaksplanPerioder) {
             uttaksplanPerioder.forEach((p: Periode) => {
                 if (p.type === Periodetype.Uttak || p.type === Periodetype.Overføring || isAvslåttPeriode(p)) {
