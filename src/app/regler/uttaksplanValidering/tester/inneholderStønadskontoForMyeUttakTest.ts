@@ -7,7 +7,7 @@ import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from 'shared/regl
 export const inneholderStønadskontoForMyeUttakTest: RegelTest = (
     grunnlag: UttaksplanRegelgrunnlag
 ): RegelTestresultat => {
-    const stønadskontoerMedForMyeUttak = grunnlag.uttaksstatusStønadskontoer.filter((u) => u.dager < 0);
+    const stønadskontoerMedForMyeUttak = grunnlag.uttaksstatus.uttak.filter((u) => u.dager < 0);
     return {
         passerer: stønadskontoerMedForMyeUttak.length === 0,
         info: stønadskontoerMedForMyeUttak.map((uttak): RegelTestresultatInfo => ({

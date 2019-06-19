@@ -140,10 +140,10 @@ function* lagUttaksplanForslag() {
     const søknadsinfo = selectSøknadsinfo(appState);
     const { uttaksplanSkjema, eksisterendeSakAnnenPart } = appState.søknad.ekstrainfo;
     let tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
-    if (eksisterendeSakAnnenPart) {
+    if (eksisterendeSakAnnenPart && eksisterendeSakAnnenPart.grunnlag.erDeltUttak === false) {
         tilgjengeligeStønadskontoer = beregnGjenståendeUttaksdager(
             tilgjengeligeStønadskontoer,
-            eksisterendeSakAnnenPart!.uttaksplan!,
+            eksisterendeSakAnnenPart.uttaksplan || [],
             false
         );
         const resterendeFellesperiode = tilgjengeligeStønadskontoer.find(
