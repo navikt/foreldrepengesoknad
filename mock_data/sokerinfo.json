@@ -1,49 +1,20 @@
 {
     "søker": {
-        "fnr": "31039314870",
-        "fornavn": "Therese",
-        "etternavn": "BAMSE",
+        "fnr": "27099224059",
+        "fornavn": "GUL",
+        "etternavn": "LAPP",
         "kjønn": "K",
-        "fødselsdato": "1993-03-31",
+        "fødselsdato": "1992-09-27",
         "land": "NO",
-        "ikkeNordiskEøsLand": false,
-        "barn": [
-            {
-                "fornavn": "Babisen",
-                "etternavn": "MYGG",
-                "fnr": "30011995647",
-                "kjønn": "K",
-                "fødselsdato": "2019-01-30",
-                "annenForelder": {
-                    "fnr": "13107849798",
-                    "fornavn": "Johannes",
-                    "etternavn": "KAFFI",
-                    "fødselsdato": "1978-10-13"
-                }
-            }
-        ]
+        "ikkeNordiskEøsLand": false
     },
     "arbeidsforhold": [
         {
             "arbeidsgiverId": "973861778",
             "arbeidsgiverIdType": "orgnr",
             "arbeidsgiverNavn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET",
-            "stillingsprosent": 90.0,
-            "fom": "2018-01-01"
-        },
-        {
-            "arbeidsgiverId": "123456789",
-            "arbeidsgiverIdType": "orgnr",
-            "arbeidsgiverNavn": "Telleverket",
-            "stillingsprosent": 5.0,
-            "fom": "2018-01-01"
-        },
-        {
-            "arbeidsgiverId": "123456781",
-            "arbeidsgiverIdType": "orgnr",
-            "arbeidsgiverNavn": "Alfabetet",
-            "stillingsprosent": 5.0,
-            "fom": "2018-01-01"
+            "stillingsprosent": 100,
+            "fom": "2017-01-01"
         }
     ]
 }

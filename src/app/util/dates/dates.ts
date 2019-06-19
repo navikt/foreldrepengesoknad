@@ -14,12 +14,12 @@ const moment = require('moment');
 export const getRelevantFamiliehendelseDato = ({
     termindato,
     fødselsdato,
-    omsorgsovertakelseDato
+    omsorgsovertakelsesdato
 }: FamiliehendelseDatoer): Date => {
     if (fødselsdato !== undefined) {
         return fødselsdato;
     } else {
-        return termindato !== undefined ? termindato : omsorgsovertakelseDato!;
+        return termindato !== undefined ? termindato : omsorgsovertakelsesdato!;
     }
 };
 

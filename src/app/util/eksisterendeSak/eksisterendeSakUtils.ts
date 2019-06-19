@@ -123,20 +123,20 @@ export const getEksisterendeSakFromDTO = (
     arbeidsforhold: Arbeidsforhold[]
 ): EksisterendeSak | undefined => {
     const {
-        grunnlag: { dekningsgrad, termindato, fødselsdato, omsorgsovertakelseDato, søkerKjønn, ...restGrunnlag },
+        grunnlag: { dekningsgrad, termindato, fødselsdato, omsorgsovertakelsesdato, søkerKjønn, ...restGrunnlag },
         perioder
     } = dto;
 
     const familiehendelseDatoer: FamiliehendelseDatoer = {
         termindato: termindato ? moment.utc(termindato).toDate() : undefined,
         fødselsdato: fødselsdato ? moment.utc(fødselsdato).toDate() : undefined,
-        omsorgsovertakelseDato: omsorgsovertakelseDato ? moment.utc(omsorgsovertakelseDato).toDate() : undefined
+        omsorgsovertakelsesdato: omsorgsovertakelsesdato ? moment.utc(omsorgsovertakelsesdato).toDate() : undefined
     };
 
     if (
         familiehendelseDatoer.fødselsdato === undefined &&
         familiehendelseDatoer.termindato === undefined &&
-        familiehendelseDatoer.omsorgsovertakelseDato === undefined
+        familiehendelseDatoer.omsorgsovertakelsesdato === undefined
     ) {
         return undefined;
     }
