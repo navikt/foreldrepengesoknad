@@ -7,7 +7,6 @@ describe('uttakUtils', () => {
     // tslint:disable-next-line: no-object-literal-type-assertion
     const grunnlag: Saksgrunnlag = {
         familieHendelseDato: new Date(),
-        familieHendelseType: FamiliehendelsesType.FØDSEL,
         dekningsgrad: '100',
         antallBarn: 1,
         søkerErFarEllerMedmor: true,
@@ -16,7 +15,8 @@ describe('uttakUtils', () => {
         morHarRett: true,
         farMedmorErAleneOmOmsorg: false,
         farMedmorHarRett: false,
-        erBarnetFødt: true
+        erBarnetFødt: true,
+        familieHendelseType: FamiliehendelsesType.FØDSEL
     } as Saksgrunnlag;
 
     // tslint:disable-next-line: no-object-literal-type-assertion

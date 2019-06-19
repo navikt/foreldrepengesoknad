@@ -17,12 +17,12 @@ const ufødtBarnPartialVisible = (erBarnetFødtSpørsmål: boolean, barn: Partia
     return erBarnetFødtSpørsmål ? barn.erBarnetFødt === false : false;
 };
 
-const fødeslsdatoerSpørsmålVisible = (fødtBarnPartial: boolean, barn: Partial<Barn>): boolean => {
+const fødselsdatoerSpørsmålVisible = (fødtBarnPartial: boolean, barn: Partial<Barn>): boolean => {
     return fødtBarnPartial ? barn.antallBarn !== undefined : false;
 };
 
-const fødselsattestUploaderVisible = (fødeslsdatoerSpørsmål: boolean, barn: Partial<FødtBarn>): boolean => {
-    if (!fødeslsdatoerSpørsmål) {
+const fødselsattestUploaderVisible = (fødselsdatoerSpørsmål: boolean, barn: Partial<FødtBarn>): boolean => {
+    if (!fødselsdatoerSpørsmål) {
         return false;
     }
 
@@ -66,7 +66,7 @@ export default {
     erBarnetFødtSpørsmål: erBarnetFødtSpørsmålVisible,
     fødtBarnPartial: fødtBarnPartialVisible,
     ufødtBarnPartial: ufødtBarnPartialVisible,
-    fødselsdatoerSpørsmål: fødeslsdatoerSpørsmålVisible,
+    fødselsdatoerSpørsmål: fødselsdatoerSpørsmålVisible,
     fødselsattestUploader: fødselsattestUploaderVisible,
     morForSykSpørsmål: morForSykSpørsmålVisible,
     termindato: termindatoVisible,
@@ -79,7 +79,7 @@ export const RelasjonTilBarFødselVisibilityFunctions = {
     erBarnetFødtSpørsmålVisible,
     fødtBarnPartialVisible,
     ufødtBarnPartialVisible,
-    fødeslsdatoerSpørsmålVisible,
+    fødselsdatoerSpørsmålVisible,
     fødselsattestUploaderVisible,
     morForSykSpørsmålVisible,
     termindatoVisible,
