@@ -2,24 +2,21 @@ import * as React from 'react';
 import { Undertittel } from 'nav-frontend-typografi';
 import Kontostatus from './Kontostatus';
 import { NavnPåForeldre } from 'common/types';
-import { FormattedMessage } from 'react-intl';
 import { Stønadskontouttak } from 'app/types/uttaksplan/periodetyper';
 import TilesList from 'app/components/elementer/tilesList/TilesList';
 
 export interface Props {
     uttak: Stønadskontouttak[];
     navnPåForeldre: NavnPåForeldre;
-    gjelderDagerBrukt: boolean;
+    tittel: string;
 }
 
-const Uttaksoppsummering: React.StatelessComponent<Props> = ({ uttak, navnPåForeldre, gjelderDagerBrukt }) => (
+const Uttaksoppsummering: React.StatelessComponent<Props> = ({ uttak, navnPåForeldre, tittel }) => (
     <section>
         <Undertittel tag="h2" className="blokk-xs">
-            <FormattedMessage
-                id={gjelderDagerBrukt ? 'uttaksoppsummering.forbrukt' : 'uttaksoppsummering.gjenstående'}
-            />
+            {tittel}
         </Undertittel>
-        <TilesList>
+        <TilesList columns={2}>
             {uttak.map((u, idx) => <Kontostatus key={idx} uttak={u} navnPåForeldre={navnPåForeldre} />)}
         </TilesList>
     </section>
