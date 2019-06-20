@@ -179,6 +179,8 @@
     "erBarnetFødt.spørsmål": "Er barnet født?",
     "erBarnetFødt.spørsmål.veileder.medMorEllerFar":
         "Du kan ikke søke før barnet er født. Unntaket er hvis mor er syk eller innlagt på sykehus eller helseinstitusjon. Da må du sende søknaden i posten. { lenke }",
+    "barnFødt.infoPrematuruker":
+        "Hvis barnet blir født før 33. svangerskapsuke så blir perioden med foreldrepenger utvidet med samme antall uker og dager som barnet er født før termindato.<br /><br /> Dersom barnet blir innlagt på sykehus etter fødselen, vil dere som regel kunne motta pleiepenger så lenge barnet er innlagt. Får dere pleiepenger i perioden fra fødsel og fram til opprinnelig termindato, trekkes disse fra den utvidede perioden.",
     "erDuMedmor.spørsmål": "Er du medmor?",
     "erDuSelvstendigNæringsdrivende.spørsmål": "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
     "erMorForSyk.spørsmål": "Er mor for syk til å ta seg av barnet eller innlagt i helseinstitusjon?",

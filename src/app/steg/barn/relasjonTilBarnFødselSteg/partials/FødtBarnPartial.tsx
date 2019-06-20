@@ -84,7 +84,11 @@ class FødtBarnPartial extends React.Component<Props> {
                     />
                 </Block>
                 <Block visible={vis.visInfoOmPrematuruker}>
-                    <VeilederInfo messages={[{ contentIntlKey: 'test', type: 'info' }]} />
+                    <VeilederInfo
+                        messages={[
+                            { contentIntlKey: 'barnFødt.infoPrematuruker', type: 'info', formatContentAsHTML: true }
+                        ]}
+                    />
                 </Block>
 
                 {/*
