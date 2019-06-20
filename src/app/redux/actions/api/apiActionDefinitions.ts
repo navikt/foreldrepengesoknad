@@ -43,7 +43,7 @@ export interface GetEksisterendeSak {
     saksnummer: string;
 }
 
-export interface GetAnnenPartSinEkisterendeSak {
+export interface GetAnnenPartsEksisterendeSak {
     type: ApiActionKeys.GET_ANNEN_PART_SIN_SAK;
 }
 
@@ -91,7 +91,7 @@ export type ApiActionTypes =
     | GetSøkerinfo
     | GetSaker
     | GetEksisterendeSak
-    | GetAnnenPartSinEkisterendeSak
+    | GetAnnenPartsEksisterendeSak
     | GetStorageData
     | GetTilgjengeligeStønadskontoer
     | GetTilgjengeligeStønadskontoerAndLagUttaksplanForslag

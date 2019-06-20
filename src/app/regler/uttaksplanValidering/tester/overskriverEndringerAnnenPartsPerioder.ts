@@ -16,7 +16,7 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (
             navn: { navnPåForeldre }
         }
     } = grunnlag;
-    if (grunnlag.søknadsinfo.søknaden.erEndringssøknad && eksisterendeUttaksplan) {
+    if (eksisterendeUttaksplan) {
         const { perioderSomSkalSendesInn } = grunnlag;
         const perioderSomOverlapper: Periode[] = [];
         perioderSomSkalSendesInn.forEach((periode) => {

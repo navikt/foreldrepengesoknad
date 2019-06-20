@@ -117,7 +117,10 @@ const mapSaksperiodeFromDTO = (p: UttaksplanPeriodeDTO): Saksperiode => {
     return returnPeriode as Saksperiode;
 };
 
-export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak | undefined => {
+export const getEksisterendeSakFromDTO = (
+    dto: UttaksplanDTO,
+    erAnnenPartsSak: boolean
+): EksisterendeSak | undefined => {
     const {
         grunnlag: { dekningsgrad, termindato, fødselsdato, omsorgsovertakelsesdato, søkerKjønn, ...restGrunnlag },
         perioder
@@ -148,23 +151,21 @@ export const getEksisterendeSakFromDTO = (dto: UttaksplanDTO): EksisterendeSak |
         familieHendelseType: familiehendelseType as FamiliehendelsesType
     };
 
-    let saksperioder = perioder
+    const saksperioder = perioder
         .map(mapSaksperiodeFromDTO)
-        .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
-
-    saksperioder = saksperioder.reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
+        .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode)
+        .reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
 
     const uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioder)
         ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag)
         : undefined;
 
-    const sak: EksisterendeSak = {
+    return {
+        erAnnenPartsSak,
         grunnlag,
         saksperioder,
         uttaksplan
     };
-
-    return sak;
 };
 
 const saksperiodeErInnvilget = (saksperiode: Saksperiode) =>

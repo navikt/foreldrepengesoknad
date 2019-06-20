@@ -73,9 +73,7 @@ export const selectUttaksplan = createSelector([søknadSelector], (søknad): Per
 export const selectEksisterendeSak = createSelector(
     [søknadSelector],
     (søknad): EksisterendeSak | undefined =>
-        søknad.erEndringssøknad && søknad.ekstrainfo
-            ? (søknad.ekstrainfo.eksisterendeSak as EksisterendeSak)
-            : undefined
+        søknad.ekstrainfo ? (søknad.ekstrainfo.eksisterendeSak as EksisterendeSak) : undefined
 );
 
 export const selectEksisterendeUttaksplan = createSelector(

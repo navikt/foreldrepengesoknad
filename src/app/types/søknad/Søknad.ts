@@ -57,7 +57,6 @@ export interface SøknadEkstrainfo {
     lastAddedPeriodeId?: string;
     søknadenGjelderBarnValg?: SøknadenGjelderBarnValg;
     eksisterendeSak?: EksisterendeSak;
-    eksisterendeSakAnnenPart?: EksisterendeSak;
 }
 
 interface Søknad {

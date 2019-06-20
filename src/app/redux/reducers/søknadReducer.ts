@@ -41,8 +41,7 @@ export const getDefaultSøknadState = (): SøknadPartial => {
                 valgteBarn: [],
                 gjelderAnnetBarn: undefined
             },
-            eksisterendeSak: undefined,
-            eksisterendeSakAnnenPart: undefined
+            eksisterendeSak: undefined
         },
         vedleggForSenEndring: undefined,
         tilleggsopplysninger: {},
@@ -86,7 +85,6 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             return UttaksplanBuilder(
                 perioder || state.uttaksplan,
                 familiehendelsesdato,
-                state.erEndringssøknad === true,
                 state.ekstrainfo.eksisterendeSak ? state.ekstrainfo.eksisterendeSak.uttaksplan : undefined
             );
         }
