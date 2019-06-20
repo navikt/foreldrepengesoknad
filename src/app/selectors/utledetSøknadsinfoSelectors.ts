@@ -5,7 +5,8 @@ import {
     selectAnnenForelder,
     selectAnnenForelderHarRettPåForeldrepenger,
     selectSøkerErAleneOmOmsorg,
-    selectAntallBarn
+    selectAntallBarn,
+    selectEkstrainfo
 } from './søknadSelector';
 import { createSelector } from 'reselect';
 import { RecursivePartial } from '../types/Partial';
@@ -133,4 +134,15 @@ export const selectAnnenForelderKjønn = createSelector([selectAnnenForelder], (
         return getKjønnFromFnr(annenForelder.fnr);
     }
     return undefined;
+});
+
+export const selectHarKomplettUttaksplan = createSelector([selectEkstrainfo], (ekstrainfo): boolean => {
+    if (ekstrainfo === undefined) {
+        return false;
+    }
+    return (
+        (ekstrainfo.eksisterendeSak !== undefined && ekstrainfo.eksisterendeSak.uttaksplan !== undefined) ||
+        (ekstrainfo.eksisterendeSakAnnenPart !== undefined &&
+            ekstrainfo.eksisterendeSakAnnenPart.uttaksplan !== undefined)
+    );
 });
