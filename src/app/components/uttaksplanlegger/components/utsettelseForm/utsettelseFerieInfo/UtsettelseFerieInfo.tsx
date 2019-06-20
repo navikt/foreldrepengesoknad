@@ -23,19 +23,10 @@ const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({ feried
         );
     }
     const ukerOgDager = getVarighetString(feriedager, intl);
-    if (feriedager > uttaksConstants.MAKS_FERIEDAGER_MED_OVERFØRING) {
-        return (
-            <VeilederInfo
-                messages={[
-                    {
-                        type: 'normal',
-                        contentIntlKey: 'utsettelseskjema.ferievarsel.ulovlig',
-                        values: { ukerOgDager }
-                    }
-                ]}
-            />
-        );
-    } else if (feriedager > uttaksConstants.MAKS_FERIEDAGER_ETT_ÅR) {
+    if (
+        feriedager > uttaksConstants.MAKS_FERIEDAGER_ETT_ÅR &&
+        feriedager < uttaksConstants.MAKS_FERIEDAGER_MED_OVERFØRING
+    ) {
         return (
             <VeilederInfo
                 messages={[
