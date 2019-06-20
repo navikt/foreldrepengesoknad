@@ -17,7 +17,7 @@ export enum UttaksplanSkjemaScenario {
 
 export const getUttaksplanSkjemaScenario = (
     søknadsinfo: Søknadsinfo,
-    eksisterendeSakAnnenPart?: EksisterendeSak
+    eksisterendeSak?: EksisterendeSak
 ): UttaksplanSkjemaScenario => {
     const { søker, søknaden, annenForelder } = søknadsinfo;
     let scenario = UttaksplanSkjemaScenario.sX_ukjent_x;
@@ -25,9 +25,10 @@ export const getUttaksplanSkjemaScenario = (
         scenario = UttaksplanSkjemaScenario.s8_endringssøknad;
     } else if (
         !søknaden.erEndringssøknad &&
-        eksisterendeSakAnnenPart &&
-        eksisterendeSakAnnenPart.uttaksplan &&
-        eksisterendeSakAnnenPart.uttaksplan.length > 0
+        eksisterendeSak &&
+        eksisterendeSak.erAnnenPartsSak &&
+        eksisterendeSak.uttaksplan &&
+        eksisterendeSak.uttaksplan.length > 0
     ) {
         scenario = UttaksplanSkjemaScenario.s9_førstegangssøknadMedAnnenPart;
     } else if (søker.erFarEllerMedmor && søknaden.erFødsel && annenForelder.harRett) {

@@ -101,7 +101,7 @@ function* startEndringssøknad(action: StartSøknad, sak: Sak) {
     }
 }
 
-function* getAnnenPartSinSakForValgtBarn() {
+function* getAnnenPartsSakForValgtBarn() {
     const appState: AppState = yield select(stateSelector);
     const { søknad } = appState;
     const { ekstrainfo } = søknad;
@@ -113,14 +113,14 @@ function* getAnnenPartSinSakForValgtBarn() {
         return;
     }
 
-    const eksisterendeSakAnnenPart: EksisterendeSak | undefined = yield call(fetchEksisterendeSakMedFnr, annenPartFnr);
-    if (eksisterendeSakAnnenPart) {
+    const sak: EksisterendeSak | undefined = yield call(fetchEksisterendeSakMedFnr, annenPartFnr);
+    if (sak) {
         yield put(
             søknadActions.updateSøknad({
-                dekningsgrad: eksisterendeSakAnnenPart.grunnlag.dekningsgrad
+                dekningsgrad: sak.grunnlag.dekningsgrad
             })
         );
-        yield put(søknadActions.updateEkstrainfo({ eksisterendeSakAnnenPart }));
+        yield put(søknadActions.updateEkstrainfo({ eksisterendeSak: { ...sak, erAnnenPartsSak: true } }));
     }
 }
 
@@ -137,12 +137,14 @@ function* startFallbackEndringssøknad(action: StartSøknad) {
 function* lagUttaksplanForslag() {
     const appState: AppState = yield select(stateSelector);
     const søknadsinfo = selectSøknadsinfo(appState);
-    const { uttaksplanSkjema, eksisterendeSakAnnenPart } = appState.søknad.ekstrainfo;
+    const { uttaksplanSkjema, eksisterendeSak } = appState.søknad.ekstrainfo;
     let tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
-    if (eksisterendeSakAnnenPart && eksisterendeSakAnnenPart.grunnlag.erDeltUttak === false) {
+
+    const annenPartsSak = eksisterendeSak && eksisterendeSak.erAnnenPartsSak ? eksisterendeSak : undefined;
+    if (annenPartsSak && annenPartsSak.grunnlag.erDeltUttak === false) {
         tilgjengeligeStønadskontoer = beregnGjenståendeUttaksdager(
             tilgjengeligeStønadskontoer,
-            eksisterendeSakAnnenPart.uttaksplan || [],
+            annenPartsSak.uttaksplan || [],
             false
         );
         const resterendeFellesperiode = tilgjengeligeStønadskontoer.find(
@@ -159,6 +161,7 @@ function* lagUttaksplanForslag() {
             annenForelder,
             søker
         } = søknadsinfo;
+
         const forslag = lagUttaksplan({
             annenForelderErUfør: annenForelder.erUfør,
             erDeltUttak,
@@ -170,8 +173,8 @@ function* lagUttaksplanForslag() {
             uttaksplanSkjema
         });
 
-        if (eksisterendeSakAnnenPart && eksisterendeSakAnnenPart.uttaksplan) {
-            forslag.push(...eksisterendeSakAnnenPart.uttaksplan);
+        if (annenPartsSak && annenPartsSak.uttaksplan) {
+            forslag.push(...annenPartsSak.uttaksplan);
         }
 
         yield put(søknadActions.uttaksplanSetForslag(forslag.sort(sorterPerioder)));
@@ -184,6 +187,6 @@ export default function* søknadSaga() {
         takeEvery(SøknadActionKeys.AVBRYT_SØKNAD, avbrytSøknadSaga),
         takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, lagUttaksplanForslag),
         takeEvery(SøknadActionKeys.START_SØKNAD, startSøknad),
-        takeEvery(ApiActionKeys.GET_ANNEN_PART_SIN_SAK, getAnnenPartSinSakForValgtBarn)
+        takeEvery(ApiActionKeys.GET_ANNEN_PART_SIN_SAK, getAnnenPartsSakForValgtBarn)
     ]);
 }

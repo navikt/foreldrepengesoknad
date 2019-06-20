@@ -35,7 +35,7 @@ export interface ScenarioProps {
     antallUkerFedreKvote: number | undefined;
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
-    eksisterendeSakAnnenPart?: EksisterendeSak;
+    eksisterendeSak?: EksisterendeSak;
 }
 export interface OwnProps extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
@@ -334,10 +334,10 @@ const Scenario8: React.StatelessComponent<ScenarioProps> = () => {
 };
 
 const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåForeldre, familiehendelsesdato }) => {
-    const { uttaksplanSkjema, eksisterendeSakAnnenPart } = søknad.ekstrainfo;
+    const { uttaksplanSkjema, eksisterendeSak } = søknad.ekstrainfo;
     const annenPartsSistePeriode =
-        eksisterendeSakAnnenPart && eksisterendeSakAnnenPart.uttaksplan
-            ? Periodene(eksisterendeSakAnnenPart.uttaksplan).finnSisteInfoperiode()
+        eksisterendeSak && eksisterendeSak.erAnnenPartsSak && eksisterendeSak.uttaksplan
+            ? Periodene(eksisterendeSak.uttaksplan).finnSisteInfoperiode()
             : undefined;
 
     const morSinSisteUttaksdag = annenPartsSistePeriode ? annenPartsSistePeriode.tidsperiode.tom : undefined;
@@ -348,7 +348,9 @@ const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåFo
                 visible={true}
                 familiehendelsesdato={familiehendelsesdato}
                 morSinSisteUttaksdag={morSinSisteUttaksdag}
-                ekisterendeSakAnnenPart={eksisterendeSakAnnenPart}
+                eksisterendeSakAnnenPart={
+                    eksisterendeSak && eksisterendeSak.erAnnenPartsSak ? eksisterendeSak : undefined
+                }
                 navnPåForeldre={navnPåForeldre}
             />
             {uttaksplanSkjema.farSinFørsteUttaksdag &&

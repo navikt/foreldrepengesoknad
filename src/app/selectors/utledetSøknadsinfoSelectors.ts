@@ -140,9 +140,5 @@ export const selectHarKomplettUttaksplan = createSelector([selectEkstrainfo], (e
     if (ekstrainfo === undefined) {
         return false;
     }
-    return (
-        (ekstrainfo.eksisterendeSak !== undefined && ekstrainfo.eksisterendeSak.uttaksplan !== undefined) ||
-        (ekstrainfo.eksisterendeSakAnnenPart !== undefined &&
-            ekstrainfo.eksisterendeSakAnnenPart.uttaksplan !== undefined)
-    );
+    return ekstrainfo.eksisterendeSak !== undefined && ekstrainfo.eksisterendeSak.uttaksplan !== undefined;
 });

@@ -17,8 +17,7 @@ import InnholdMedIllustrasjon from 'app/components/elementer/innholdMedIllustras
 import { getVarighetString } from 'common/util/intlUtils';
 import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
-
-import InfoEkisterendeSakPerioder from './InfoEkisterendeSakPerioder';
+import InfoEksisterendeSakPerioder from './InfoEksisterendeSakPerioder';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { formaterDato } from 'common/util/datoUtils';
@@ -30,8 +29,7 @@ import { getForeldreparSituasjonFraSøknadsinfo } from 'app/util/foreldreparSitu
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    ekisterendeSak: EksisterendeSak;
-    erAnnenPartSinEkisterendeSak?: boolean;
+    eksisterendeSak: EksisterendeSak;
     visPeriodeliste?: boolean;
 }
 
@@ -41,11 +39,11 @@ const getHvem = (
     intl: InjectedIntl,
     erDeltUttak: boolean,
     navn?: NavnISøknaden,
-    erAnnenPartSinEkisterendeSak?: boolean
+    erAnnenPartsEksisterendeSak?: boolean
 ): string => {
     if (erDeltUttak && navn && navn.annenForelder) {
-        return erAnnenPartSinEkisterendeSak
-            ? getMessage(intl, 'ekisterendeSak.tekst.benevning.førstegangssøknaMedEkisterndeSakAnnenPart', {
+        return erAnnenPartsEksisterendeSak
+            ? getMessage(intl, 'eksisterendeSak.tekst.benevning.førstegangssøknaMedEkisterndeSakAnnenPart', {
                   navn: navn.annenForelder.fornavn
               })
             : getMessage(intl, 'eksisterendeSak.tekst.benevning.deltOmsorg', { navn: navn.annenForelder.fornavn });
@@ -56,8 +54,7 @@ const getHvem = (
 const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
     søknadsinfo,
     tilgjengeligeStønadskontoer,
-    ekisterendeSak,
-    erAnnenPartSinEkisterendeSak,
+    eksisterendeSak,
     visPeriodeliste = false,
     intl
 }) => {
@@ -77,21 +74,21 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
             ? Forelder.mor
             : Forelder.farMedmor;
 
-    const hvem = getHvem(intl, erDeltUttak, navn, erAnnenPartSinEkisterendeSak);
+    const hvem = getHvem(intl, erDeltUttak, navn, eksisterendeSak.erAnnenPartsSak);
 
-    const sisteInfoPeriode = ekisterendeSak.uttaksplan
-        ? Periodene(ekisterendeSak.uttaksplan).finnSisteInfoperiode()
+    const sisteInfoPeriode = eksisterendeSak.uttaksplan
+        ? Periodene(eksisterendeSak.uttaksplan).finnSisteInfoperiode()
         : undefined;
     const nesteMuligeUttaksdagEtterAnnenPart =
-        ekisterendeSak && ekisterendeSak.uttaksplan && sisteInfoPeriode
+        eksisterendeSak && eksisterendeSak.uttaksplan && sisteInfoPeriode
             ? Uttaksdagen(sisteInfoPeriode.tidsperiode.tom).neste()
             : undefined;
 
     const navnGenitivEierform = getNavnGenitivEierform(navn.annenForelder.fornavn, intl.locale);
 
     const infoperioder: InfoPeriode[] = [];
-    if (ekisterendeSak && ekisterendeSak.uttaksplan) {
-        ekisterendeSak.uttaksplan.filter((p) => p.type === Periodetype.Info).forEach((p: InfoPeriode) => {
+    if (eksisterendeSak && eksisterendeSak.uttaksplan) {
+        eksisterendeSak.uttaksplan.filter((p) => p.type === Periodetype.Info).forEach((p: InfoPeriode) => {
             if (p.infotype === PeriodeInfoType.gruppertInfo) {
                 return infoperioder.push(...trimPerioderIGruppertInfoPeriode(p));
             }
@@ -100,9 +97,9 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
     }
 
     const søkersPerioder =
-        ekisterendeSak &&
-        ekisterendeSak.uttaksplan &&
-        ekisterendeSak.uttaksplan.filter((p) => p.type !== Periodetype.Info);
+        eksisterendeSak &&
+        eksisterendeSak.uttaksplan &&
+        eksisterendeSak.uttaksplan.filter((p) => p.type !== Periodetype.Info);
 
     return (
         <InfoBlock padding="m">
@@ -138,10 +135,10 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                     infoperioder &&
                     infoperioder.length > 0 && (
                         <UtvidetInformasjon
-                            apneLabel={getMessage(intl, 'ekisterendeSak.label.seAnnenPartsPlan', {
+                            apneLabel={getMessage(intl, 'eksisterendeSak.label.seAnnenPartsPlan', {
                                 navn: navnGenitivEierform
                             })}>
-                            <InfoEkisterendeSakPerioder
+                            <InfoEksisterendeSakPerioder
                                 perioder={infoperioder}
                                 søknadsinfo={søknadsinfo}
                                 navnForOverskrift={søknadsinfo.navn.annenForelder.navn}
@@ -153,9 +150,9 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                 søkersPerioder &&
                 søkersPerioder.length > 0 && (
                     <InnholdMedIllustrasjon
-                        tittel={getMessage(intl, 'ekisterendeSak.tittel.dineDagerMedForeldrepenger')}
+                        tittel={getMessage(intl, 'eksisterendeSak.tittel.dineDagerMedForeldrepenger')}
                         illustrasjoner={[]}>
-                        <InfoEkisterendeSakPerioder perioder={søkersPerioder} søknadsinfo={søknadsinfo} />
+                        <InfoEksisterendeSakPerioder perioder={søkersPerioder} søknadsinfo={søknadsinfo} />
                     </InnholdMedIllustrasjon>
                 )}
         </InfoBlock>

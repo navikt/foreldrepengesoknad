@@ -274,7 +274,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 <InfoEksisterendeSak
                                     søknadsinfo={søknadsinfo}
                                     tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                    ekisterendeSak={eksisterendeSak}
+                                    eksisterendeSak={eksisterendeSak}
                                 />
                             </Block>
                         )}

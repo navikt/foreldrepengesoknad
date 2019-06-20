@@ -16,7 +16,7 @@ import { Periodetype } from 'app/types/uttaksplan/periodetyper';
 interface FarSinFørsteUttaksdagSpørsmålProps {
     familiehendelsesdato: Date;
     morSinSisteUttaksdag?: Date;
-    ekisterendeSakAnnenPart?: EksisterendeSak;
+    eksisterendeSakAnnenPart?: EksisterendeSak;
     navnPåForeldre?: NavnPåForeldre;
 }
 
@@ -26,14 +26,14 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
     visible,
     familiehendelsesdato,
     morSinSisteUttaksdag,
-    ekisterendeSakAnnenPart,
+    eksisterendeSakAnnenPart,
     navnPåForeldre,
     intl
 }) => {
     const harAnnenPartForeslåttperioder =
-        ekisterendeSakAnnenPart &&
-        ekisterendeSakAnnenPart.uttaksplan &&
-        ekisterendeSakAnnenPart.uttaksplan.filter((p) => p.type !== Periodetype.Info).length > 0;
+        eksisterendeSakAnnenPart &&
+        eksisterendeSakAnnenPart.uttaksplan &&
+        eksisterendeSakAnnenPart.uttaksplan.filter((p) => p.type !== Periodetype.Info).length > 0;
 
     return (
         <UttaksplanSkjemaSpørsmål
@@ -41,7 +41,7 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
             render={(data, onChange) => {
                 return (
                     <>
-                        <Block visible={ekisterendeSakAnnenPart !== undefined} margin="xs">
+                        <Block visible={eksisterendeSakAnnenPart !== undefined} margin="xs">
                             <DatoInput
                                 name="farSinFørsteUttaksdagSpørsmål"
                                 id="farSinFørsteUttaksdagSpørsmål"
@@ -60,7 +60,7 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                                 disabled={data.ønskerIkkeFlerePerioder}
                             />
                         </Block>
-                        {ekisterendeSakAnnenPart &&
+                        {eksisterendeSakAnnenPart &&
                             morSinSisteUttaksdag &&
                             navnPåForeldre && (
                                 <>
