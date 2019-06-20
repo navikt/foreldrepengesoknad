@@ -123,7 +123,7 @@ class UttaksplanAutoBuilder {
         const perioder = this.perioder;
         const opprinneligPlan = this.opprinneligPlan;
         const opprinneligePerioderSomSkalLeggesInnIPlan: Periode[] = [];
-        if (perioder && opprinneligPlan) {
+        if (perioder && perioder.length > 0 && opprinneligPlan) {
             this.perioder.filter(isHull).forEach((hull) => {
                 const opprinneligePerioder = Periodene(
                     opprinneligPlan.filter((p) => isInfoPeriode(p) === true)
@@ -151,7 +151,19 @@ class UttaksplanAutoBuilder {
     }
 
     settInnOpprinneligePeriodeUtenforPlan() {
-        // Hent ut perioder som ligger
+        if (this.opprinneligPlan && this.perioder.length > 0) {
+            const førstePeriode = this.perioder[0];
+            const sistePeriode = this.perioder[this.perioder.length - 1];
+            this.perioder = [
+                ...this.opprinneligPlan.filter((p) =>
+                    moment(p.tidsperiode.tom).isBefore(førstePeriode.tidsperiode.fom, 'day')
+                ),
+                ...this.perioder,
+                ...this.opprinneligPlan.filter((p) =>
+                    moment(p.tidsperiode.fom).isAfter(sistePeriode.tidsperiode.tom, 'day')
+                )
+            ];
+        }
         return this;
     }
 
