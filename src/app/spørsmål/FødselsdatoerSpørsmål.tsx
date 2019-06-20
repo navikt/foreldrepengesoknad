@@ -92,6 +92,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                         dato={fødselsdatoer[0]}
                         onChange={(d: Date) => this.onFødselsdatoChange(d, 0)}
                         label={<Labeltekst intlId={intlIdFødsel} />}
+                        datoAvgrensinger={this.getFødselsdatoAvgrensninger()}
                         validators={this.getValidatorer()}
                     />
                 </Block>
