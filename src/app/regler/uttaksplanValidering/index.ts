@@ -22,6 +22,7 @@ import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndreP
 import periodevalideringsregler, { PeriodeValiderRegelKey } from './periodevalideringstester';
 import { harSøktOmFerieUtenArbeidsforhold } from './tester/harSøktOmFerieUtenArbeidsforholdTest';
 import { Regel, RegelAlvorlighet } from 'shared/regler/regelTypes';
+import { inneholderForMyeFerie } from './tester/inneholderForMyeFerie';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -42,6 +43,7 @@ export enum UttaksplanRegelKey {
     'inneholderSeneGraderteUttak' = 'inneholderSeneGraderteUttakTest',
     'inneholderTapteDager' = 'inneholderTapteDager',
     'inneholderBareUtsettelser' = 'inneholderBareUtsettelser',
+    'inneholderForMyeFerie' = 'inneholderForMyeFerie',
     // 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode' = 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode',
     'endringerOverskriverAnnenPartsPerioder' = 'endringerOverskriverAnnenPartsPerioder',
     'periodeOverlapperAndrePerioder' = 'periodeOverlapperAndrePerioder',
@@ -144,6 +146,11 @@ const uttaksplanValideringRegler: Regel[] = [
         key: UttaksplanRegelKey.inneholderBareUtsettelser,
         alvorlighet: RegelAlvorlighet.INFO,
         test: inneholderBareUtsettelserTest
+    },
+    {
+        key: UttaksplanRegelKey.inneholderForMyeFerie,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: inneholderForMyeFerie
     },
     // {
     //     key: UttaksplanRegelKey.innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode,

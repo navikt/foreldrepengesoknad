@@ -864,6 +864,8 @@
     "uttaksplan.veileder.planenInneholderHull.tittel": "Hull i planen",
     "uttaksplan.veileder.planenInneholderHull":
         "Planen din inneholder perioder med tapte foreldrepenger. Du står i fare for å miste dager om du ikke legger inn en utsettelse eller periode med foreldrepenger.",
+    "uttaksplan.validering.feil.inneholderForMyeFerie":
+        "Du har lagt inn til sammen {ukerOgDager} uker med ferie. Du kan maksimalt legge inn 10 uker og 2 dager med ferie. Ferien må avtales med din arbeidsgiver.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Planen inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Husk at du må søke om foreldrepenger senest {sisteDag}.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad.tittel": "Planen inneholder kun utsettelser",
