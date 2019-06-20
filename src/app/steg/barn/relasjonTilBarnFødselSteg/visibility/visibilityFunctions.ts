@@ -65,11 +65,12 @@ const terminbekreftelseDatoVisible = (
 const visInfoOmPrematurukerVisible = (barn: Partial<FødtBarn>): boolean => {
     const fødselsdato = barn.fødselsdatoer !== undefined ? barn.fødselsdatoer[0] : undefined;
     const termindato = barn.termindato;
-    const fødselsdatoEtterEllerLikFørsteJuli = moment(fødselsdato).isSameOrAfter(moment(new Date('2019-07-01')));
 
     if (fødselsdato === undefined || termindato === undefined) {
         return false;
     }
+
+    const fødselsdatoEtterEllerLikFørsteJuli = moment(fødselsdato).isSameOrAfter(moment(new Date('2019-07-01')));
 
     return (
         moment(fødselsdato)
