@@ -1,20 +1,26 @@
 {
     "søker": {
-        "fnr": "27099224059",
-        "fornavn": "GUL",
-        "etternavn": "LAPP",
+        "fnr": "08016411206",
+        "fornavn": "RASK",
+        "etternavn": "BOLLE",
         "kjønn": "K",
-        "fødselsdato": "1992-09-27",
+        "fødselsdato": "1964-01-08",
         "land": "NO",
-        "ikkeNordiskEøsLand": false
-    },
-    "arbeidsforhold": [
-        {
-            "arbeidsgiverId": "973861778",
-            "arbeidsgiverIdType": "orgnr",
-            "arbeidsgiverNavn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET",
-            "stillingsprosent": 100,
-            "fom": "2017-01-01"
-        }
-    ]
+        "ikkeNordiskEøsLand": false,
+        "barn": [
+            {
+                "fornavn": "FRODIG",
+                "etternavn": "FLOSKEL",
+                "fnr": "18061972656",
+                "kjønn": "K",
+                "fødselsdato": "2019-06-18",
+                "annenForelder": {
+                    "fnr": "26068222000",
+                    "fornavn": "SMIDIG",
+                    "etternavn": "PENN",
+                    "fødselsdato": "1982-06-26"
+                }
+            }
+        ]
+    }
 }
