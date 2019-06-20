@@ -156,9 +156,7 @@ export const getEksisterendeSakFromDTO = (
         .map(mapSaksperiodeFromDTO)
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
 
-    if (arbeidsforhold.length > 1) {
-        saksperioder = saksperioder.reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
-    }
+    saksperioder = saksperioder.reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
 
     const uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioder)
         ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag)
