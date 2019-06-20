@@ -102,16 +102,10 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             søknadsinfo,
             barn,
             eksisterendeSak,
-            eksisterendeSakAnnenPart,
             isLoadingSakForAnnenPart
         } = this.props;
         const søknad = this.props.søknad as Søknad;
         const navnPåForeldre = søknadsinfo.navn.navnPåForeldre;
-        const skalViseInfoEkisterendeSak: boolean =
-            eksisterendeSak !== undefined ||
-            (eksisterendeSakAnnenPart !== undefined &&
-                eksisterendeSakAnnenPart.uttaksplan !== undefined &&
-                eksisterendeSakAnnenPart.uttaksplan.length > 0);
 
         return (
             <Steg
@@ -131,15 +125,16 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                     <ApplicationSpinner />
                 ) : (
                     <>
-                        <Block visible={skalViseInfoEkisterendeSak}>
-                            <InfoEksisterendeSak
-                                søknadsinfo={søknadsinfo}
-                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                ekisterendeSak={eksisterendeSak ? eksisterendeSak : eksisterendeSakAnnenPart!}
-                                erAnnenPartSinEkisterendeSak={eksisterendeSakAnnenPart !== undefined}
-                                visPeriodeliste={true}
-                            />
-                        </Block>
+                        {eksisterendeSak && (
+                            <Block>
+                                <InfoEksisterendeSak
+                                    søknadsinfo={søknadsinfo}
+                                    tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                    eksisterendeSak={eksisterendeSak}
+                                    visPeriodeliste={true}
+                                />
+                            </Block>
+                        )}
                         <UttaksplanSkjemaScenarioes
                             scenario={scenario}
                             søknad={søknad}
@@ -149,7 +144,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                             antallUkerMødreKvote={getAntallUkerMødrekvote(tilgjengeligeStønadskontoer)}
                             familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
                             erFarEllerMedmor={søknadsinfo.søker.erFarEllerMedmor}
-                            eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
+                            eksisterendeSak={eksisterendeSak}
                         />
                     </>
                 )}
@@ -171,7 +166,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     };
 
     const { familiehendelsesdato } = søknadsinfo.søknaden;
-    const scenario = getUttaksplanSkjemaScenario(søknadsinfo, state.søknad.ekstrainfo.eksisterendeSakAnnenPart);
+    const scenario = getUttaksplanSkjemaScenario(søknadsinfo, state.søknad.ekstrainfo.eksisterendeSak);
     const {
         api: { isLoadingTilgjengeligeStønadskontoer, isLoadingSakForAnnenPart }
     } = state;
@@ -200,8 +195,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         isLoadingTilgjengeligeStønadskontoer,
         barn: søknad.barn,
         isLoadingSakForAnnenPart,
-        eksisterendeSak: ekstrainfo.eksisterendeSak,
-        eksisterendeSakAnnenPart: ekstrainfo.eksisterendeSakAnnenPart
+        eksisterendeSak: ekstrainfo.eksisterendeSak
     };
 };
 

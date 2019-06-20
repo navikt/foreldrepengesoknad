@@ -5,9 +5,9 @@ import { Periode } from 'app/types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { Søknadsinfo } from 'app/selectors/types';
 import { getPeriodeTittel } from 'app/util/uttaksplan';
-
-import './infoEkisterendeSakPerioder.less';
 import { formaterDato } from 'common/util/datoUtils';
+
+import './infoEksisterendeSakPerioder.less';
 
 interface InfoEksisterendeSakPerioderProps {
     perioder: Periode[];
@@ -22,12 +22,12 @@ const InfoEksisterendeSakPerioder: React.StatelessComponent<InfoEksisterendeSakP
     intl
 }) => {
     const dateFormat = 'DD. MMM YYYY';
-    const bem = BEMHelper('infoEkisterendeSakPerioder');
+    const bem = BEMHelper('infoEksisterendeSakPerioder');
     return (
         <>
             {navnForOverskrift && (
                 <FormattedHTMLMessage
-                    id="ekisterendeSak.label.annenPartsPlan"
+                    id="eksisterendeSak.label.annenPartsPlan"
                     values={{
                         navn: navnForOverskrift
                     }}
@@ -38,7 +38,7 @@ const InfoEksisterendeSakPerioder: React.StatelessComponent<InfoEksisterendeSakP
                     return (
                         <li key={guid()}>
                             <FormattedHTMLMessage
-                                id="ekisterendeSak.listeElement.periode"
+                                id="eksisterendeSak.listeElement.periode"
                                 values={{
                                     fom: formaterDato(periode.tidsperiode.fom, dateFormat),
                                     tom: formaterDato(periode.tidsperiode.tom, dateFormat),

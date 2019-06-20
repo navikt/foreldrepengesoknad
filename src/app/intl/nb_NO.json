@@ -1053,12 +1053,12 @@
     "eksisterendeSak.tekst.nesteMuligeUttaksdato": "<b>{ dato }</b> er første dag etter { navn } siste periode",
     "eksisterendeSak.tekst.benevning.deltOmsorg": "Du og {navn}",
     "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
-    "ekisterendeSak.tekst.benevning.førstegangssøknaMedEkisterndeSakAnnenPart": "{ navn }",
-    "ekisterendeSak.label.seAnnenPartsPlan": "Se { navn } plan",
-    "ekisterendeSak.label.annenPartsPlan": "{ navn } plan:",
-    "ekisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { beskrivelse }",
+    "eksisterendeSak.tekst.benevning.førstegangssøknaMedEkisterndeSakAnnenPart": "{ navn }",
+    "eksisterendeSak.label.seAnnenPartsPlan": "Se { navn } plan",
+    "eksisterendeSak.label.annenPartsPlan": "{ navn } plan:",
+    "eksisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { beskrivelse }",
 
-    "ekisterendeSak.tittel.dineDagerMedForeldrepenger": "Dine dager med foreldrepenger",
+    "eksisterendeSak.tittel.dineDagerMedForeldrepenger": "Dine dager med foreldrepenger",
 
     "søknadSendt.tittel": "Takk for søknaden { name }!",
     "søknadSendt.pdf": "Se og last ned søknaden din",

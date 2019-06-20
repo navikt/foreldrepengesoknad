@@ -28,7 +28,6 @@ import {
 import { UttaksplanDTO, UttaksplanPeriodeDTO } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { datoErInnenforTidsperiode, Tidsperioden } from '../uttaksplan/Tidsperioden';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { getRelevantFamiliehendelseDato } from '../dates/dates';
 import { getFamilieHendelseType } from '../domain/getFamilieHendelseType';
 import { FamiliehendelseDatoer } from 'app/types/søknad/FamiliehendelseDatoer';
@@ -120,7 +119,7 @@ const mapSaksperiodeFromDTO = (p: UttaksplanPeriodeDTO): Saksperiode => {
 
 export const getEksisterendeSakFromDTO = (
     dto: UttaksplanDTO,
-    arbeidsforhold: Arbeidsforhold[]
+    erAnnenPartsSak: boolean
 ): EksisterendeSak | undefined => {
     const {
         grunnlag: { dekningsgrad, termindato, fødselsdato, omsorgsovertakelsesdato, søkerKjønn, ...restGrunnlag },
@@ -152,25 +151,21 @@ export const getEksisterendeSakFromDTO = (
         familieHendelseType: familiehendelseType as FamiliehendelsesType
     };
 
-    let saksperioder = perioder
+    const saksperioder = perioder
         .map(mapSaksperiodeFromDTO)
-        .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
-
-    if (arbeidsforhold.length > 1) {
-        saksperioder = saksperioder.reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
-    }
+        .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode)
+        .reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
 
     const uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioder)
         ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag)
         : undefined;
 
-    const sak: EksisterendeSak = {
+    return {
+        erAnnenPartsSak,
         grunnlag,
         saksperioder,
         uttaksplan
     };
-
-    return sak;
 };
 
 const saksperiodeErInnvilget = (saksperiode: Saksperiode) =>
