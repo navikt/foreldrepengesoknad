@@ -66,8 +66,7 @@ const søknad: SøknadPartial = {
             valgteBarn: [],
             gjelderAnnetBarn: undefined
         },
-        erEnkelEndringssøknad: false,
-        erEnkelEndringssøknadMedUttaksplan: false
+        erEnkelEndringssøknad: false
     }
 };
 

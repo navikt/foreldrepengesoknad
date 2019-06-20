@@ -12,6 +12,7 @@ export const søknadSelector = (state: AppState): RecursivePartial<Søknad> => s
 // Søknad
 export const selectBarn = createSelector([søknadSelector], (søknad = {}) => søknad.barn);
 export const selectSituasjon = createSelector([søknadSelector], (søknad = {}) => søknad.situasjon);
+export const selectEkstrainfo = createSelector([søknadSelector], (søknad = {}) => søknad.ekstrainfo);
 export const selectErEndringssøknad = createSelector(
     [søknadSelector],
     (søknad = {}): boolean => søknad.erEndringssøknad === true
@@ -22,15 +23,6 @@ export const selectErEnkelEndringssøknad = createSelector(
         søknad.erEndringssøknad === true &&
         søknad.ekstrainfo !== undefined &&
         søknad.ekstrainfo.erEnkelEndringssøknad === true
-);
-
-export const selectErEndringssøknadMedUttaksplan = createSelector(
-    [søknadSelector],
-    (søknad = {}): boolean =>
-        søknad.erEndringssøknad === true &&
-        søknad.ekstrainfo !== undefined &&
-        søknad.ekstrainfo.erEnkelEndringssøknad === true &&
-        søknad.ekstrainfo.erEnkelEndringssøknadMedUttaksplan === true
 );
 
 export const selectOpprinneligUttaksplan = createSelector(

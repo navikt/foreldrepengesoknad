@@ -77,8 +77,7 @@ function* startEndringssøknad(action: StartSøknad, sak: Sak) {
                 ekstrainfo: {
                     ...appState.søknad.ekstrainfo,
                     eksisterendeSak,
-                    erEnkelEndringssøknad: true,
-                    erEnkelEndringssøknadMedUttaksplan: eksisterendeSak.uttaksplan !== undefined
+                    erEnkelEndringssøknad: true
                 }
             })
         );
