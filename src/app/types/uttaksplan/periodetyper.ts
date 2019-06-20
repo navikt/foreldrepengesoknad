@@ -112,6 +112,9 @@ export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
     forelder: Forelder;
     overskrives: true;
     resultatType: PeriodeResultatType;
+    samtidigUttakProsent?: string;
+    gradert?: boolean;
+    stillingsprosent?: string;
 }
 
 export interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
