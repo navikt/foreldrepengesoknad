@@ -52,7 +52,6 @@ export interface Tilleggsopplysninger {
 
 export interface SøknadEkstrainfo {
     erEnkelEndringssøknad: boolean;
-    erEnkelEndringssøknadMedUttaksplan: boolean;
     currentStegID: StegID | undefined;
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
     lastAddedPeriodeId?: string;
@@ -140,7 +139,7 @@ export enum Skjemanummer {
     DOK_OVERFØRING_FOR_SYK = 'I000045',
     BEKREFTELSE_FRA_STUDIESTED = 'I000061',
     BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM = 'I000051',
-    ANNET_SKJEMA_IKKE_NAV = 'I000049',
+    ANNET_SKJEMA_IKKE_NAV = 'I000049'
 }
 
 export default Søknad;
