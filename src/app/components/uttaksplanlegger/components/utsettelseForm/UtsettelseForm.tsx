@@ -387,11 +387,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                             }
                                         />
                                     </Block>
-                                    <Block
-                                        visible={
-                                            visibility.isVisible(UtsettelseSpørsmålKeys.avtaltFulltidVedDeltid) &&
-                                            periode.harAvtaleOmFulltidForDeltidsstilling === false
-                                        }>
+                                    <Block visible={periode.orgnumre && periode.orgnumre.length > 0}>
                                         <VeilederInfo
                                             kompakt={true}
                                             skjulMeldingIkon={true}
