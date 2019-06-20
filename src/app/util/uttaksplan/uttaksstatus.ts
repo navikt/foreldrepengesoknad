@@ -17,13 +17,15 @@ export const getUttaksstatus = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     uttaksplan: Periode[]
 ): Uttaksstatus => {
-    const { søknaden, søker } = søknadsinfo;
-    const gjelderDagerBrukt = skalBeregneAntallDagerBrukt(
-        søknaden.erDeltUttak,
-        søker.erFarEllerMedmor,
-        søknaden.erEndringssøknad,
-        søknaden.erEnkelEndringssøknadMedUttaksplan
-    );
+    const {
+        søknaden: { erDeltUttak, erEndringssøknad, harKomplettUttaksplan },
+        søker
+    } = søknadsinfo;
+
+    const gjelderDagerBrukt =
+        (erEndringssøknad && harKomplettUttaksplan !== true) ||
+        (erDeltUttak && søker.erFarEllerMedmor && harKomplettUttaksplan !== true);
+
     const uttak: Stønadskontouttak[] = beregnGjenståendeUttaksdager(
         tilgjengeligeStønadskontoer,
         uttaksplan,
@@ -36,10 +38,3 @@ export const getUttaksstatus = (
             : uttak
     };
 };
-
-export const skalBeregneAntallDagerBrukt = (
-    erDeltUttak: boolean,
-    erFarEllerMedmor: boolean,
-    erEndringssøknad: boolean,
-    erEnkelEndringssøknadMedUttaksplan: boolean
-): boolean => (erEndringssøknad && erEnkelEndringssøknadMedUttaksplan !== true) || (erDeltUttak && erFarEllerMedmor);

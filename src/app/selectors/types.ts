@@ -35,7 +35,6 @@ export interface NavnISøknaden {
 }
 
 export interface OmSøknaden {
-    saksnummer?: string;
     situasjon: Søkersituasjon;
     familiehendelsesdato: Date;
     dekningsgrad: Dekningsgrad | undefined;
@@ -44,7 +43,7 @@ export interface OmSøknaden {
     erFlerbarnssøknad: boolean;
     erEndringssøknad: boolean;
     erEnkelEndringssøknad: boolean;
-    erEnkelEndringssøknadMedUttaksplan: boolean;
+    harKomplettUttaksplan: boolean;
     antallBarn: number;
     erBarnFødt?: boolean;
     erAdopsjon?: boolean;

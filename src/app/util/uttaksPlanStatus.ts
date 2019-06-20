@@ -127,12 +127,11 @@ const getUttakFraInfoperioder = (perioder: InfoPeriode[]): Uttaksperiode[] => {
         }
     });
     return oppholdAnnenPart.map((periode): Uttaksperiode => {
+        const { type, årsak, ...rest } = periode;
         return {
-            id: periode.id,
-            tidsperiode: periode.tidsperiode,
             type: Periodetype.Uttak,
             konto: getStønadskontoTypeFromOppholdÅrsakType(periode.årsak),
-            forelder: periode.forelder
+            ...rest
         };
     });
 };

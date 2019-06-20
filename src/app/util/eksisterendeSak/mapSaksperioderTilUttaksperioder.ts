@@ -242,6 +242,9 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
     }
 
     const årsak = getOppholdÅrsakFromSaksperiode(saksperiode);
+    const gradert = saksperiode.arbeidstidprosent !== undefined && saksperiode.arbeidstidprosent !== 0;
+    const samtidigUttaksprosent =
+        saksperiode.samtidigUttaksprosent !== undefined && saksperiode.samtidigUttaksprosent !== 0;
     if (årsak) {
         return {
             type: Periodetype.Info,
@@ -251,7 +254,10 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             tidsperiode: { ...saksperiode.tidsperiode },
             forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
             overskrives: true,
-            resultatType: saksperiode.periodeResultatType
+            resultatType: saksperiode.periodeResultatType,
+            gradert,
+            samtidigUttakProsent: samtidigUttaksprosent ? samtidigUttaksprosent.toString() : undefined,
+            stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined
         };
     }
     return undefined;
