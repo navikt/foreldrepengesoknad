@@ -124,7 +124,7 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
                         </Block>
                         <FordelingFellesperiodeSpørsmål
                             visible={harSvartPåStartdato}
-                            ukerFellesperiode={antallUkerFellesperiode}
+                            ukerFellesperiode={Math.floor(antallUkerFellesperiode)}
                             navnPåForeldre={navnPåForeldre}
                             annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
                             antallUkerFedreKvote={antallUkerFedreKvote!}
@@ -243,7 +243,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
                         </Block>
                         <FordelingFellesperiodeSpørsmål
                             visible={skjema.startdatoPermisjon !== undefined && skjema.harAnnenForelderSøktFP !== true}
-                            ukerFellesperiode={antallUkerFellesperiode}
+                            ukerFellesperiode={Math.floor(antallUkerFellesperiode)}
                             navnPåForeldre={navnPåForeldre}
                             annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
                             antallUkerMødreKvote={antallUkerMødreKvote!}
