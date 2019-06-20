@@ -85,7 +85,6 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             return UttaksplanBuilder(
                 perioder || state.uttaksplan,
                 familiehendelsesdato,
-                state.erEndringssøknad === true,
                 state.ekstrainfo.eksisterendeSak ? state.ekstrainfo.eksisterendeSak.uttaksplan : undefined
             );
         }
