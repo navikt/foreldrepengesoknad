@@ -5,7 +5,7 @@ import { Dekningsgrad } from 'common/types';
 import { AppState } from '../redux/reducers';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
+import { getEndretUttaksplanForInnsending, erPeriodeSomSkalSendesInn } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 export const søknadSelector = (state: AppState): RecursivePartial<Søknad> => state.søknad;
 
@@ -83,8 +83,13 @@ export const selectEksisterendeUttaksplan = createSelector(
 );
 
 export const selectPerioderSomSkalSendesInn = createSelector(
-    [selectUttaksplan, selectEksisterendeUttaksplan],
-    (nyPlan, opprinneligPlan): Periode[] => {
-        return opprinneligPlan ? getEndretUttaksplanForInnsending(opprinneligPlan, nyPlan) || [] : nyPlan;
+    [selectUttaksplan, selectEksisterendeUttaksplan, selectErEndringssøknad],
+    (nyPlan, opprinneligPlan, erEndringssøknad): Periode[] => {
+        if (opprinneligPlan) {
+            return erEndringssøknad
+                ? getEndretUttaksplanForInnsending(opprinneligPlan, nyPlan)
+                : nyPlan.filter(erPeriodeSomSkalSendesInn);
+        }
+        return nyPlan;
     }
 );

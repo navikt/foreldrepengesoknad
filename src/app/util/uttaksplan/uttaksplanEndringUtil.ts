@@ -1,4 +1,10 @@
-import { Periode, isInfoPeriode, isUttaksperiode, isOverføringsperiode } from 'app/types/uttaksplan/periodetyper';
+import {
+    Periode,
+    isInfoPeriode,
+    isUttaksperiode,
+    isOverføringsperiode,
+    isUtsettelsesperiode
+} from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from './Perioden';
 import moment from 'moment';
 import DateValues from '../validation/values';
@@ -6,7 +12,7 @@ import { Periodene } from './Periodene';
 import { Uttaksdagen } from './Uttaksdagen';
 
 export const erPeriodeSomSkalSendesInn = (periode: Periode): boolean => {
-    return isUttaksperiode(periode) || isOverføringsperiode(periode);
+    return isUttaksperiode(periode) || isOverføringsperiode(periode) || isUtsettelsesperiode(periode);
 };
 
 export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan: Periode[]): boolean => {
