@@ -24,6 +24,8 @@ export const UttaksplanBuilder = (perioder: Periode[], familiehendelsesdato: Dat
 const periodeHasValidTidsrom = (periode: Periode): boolean =>
     periode.tidsperiode.fom !== undefined && periode.tidsperiode.tom !== undefined;
 
+const clonePeriode = (periode: Periode): Periode => ({ ...periode, tidsperiode: { ...periode.tidsperiode } });
+
 class UttaksplanAutoBuilder {
     protected familiehendelsesdato: Date;
     protected opprinneligPlan: Periode[] | undefined;
@@ -167,15 +169,15 @@ class UttaksplanAutoBuilder {
                             }
                         };
                     }
-                    return p;
+                    return clonePeriode(p);
                 });
 
             this.perioder = [
                 ...opprinneligePerioderFørFørstePeriode,
                 ...this.perioder,
-                ...this.opprinneligPlan.filter((p) =>
-                    moment(p.tidsperiode.fom).isAfter(sistePeriode.tidsperiode.tom, 'day')
-                )
+                ...this.opprinneligPlan
+                    .filter((p) => moment(p.tidsperiode.fom).isAfter(sistePeriode.tidsperiode.tom, 'day'))
+                    .map(clonePeriode)
             ];
         }
         return this;
