@@ -154,10 +154,24 @@ class UttaksplanAutoBuilder {
         if (this.opprinneligPlan && this.perioder.length > 0) {
             const førstePeriode = this.perioder[0];
             const sistePeriode = this.perioder[this.perioder.length - 1];
+
+            const opprinneligePerioderFørFørstePeriode = this.opprinneligPlan
+                .filter((p) => Perioden(p).starterFør(førstePeriode.tidsperiode.fom))
+                .map((p) => {
+                    if (Perioden(p).slutterSammeDagEllerEtter(førstePeriode.tidsperiode.fom)) {
+                        return {
+                            ...p,
+                            tidsperiode: {
+                                fom: p.tidsperiode.fom,
+                                tom: Uttaksdagen(førstePeriode.tidsperiode.fom).forrige()
+                            }
+                        };
+                    }
+                    return p;
+                });
+
             this.perioder = [
-                ...this.opprinneligPlan.filter((p) =>
-                    moment(p.tidsperiode.tom).isBefore(førstePeriode.tidsperiode.fom, 'day')
-                ),
+                ...opprinneligePerioderFørFørstePeriode,
                 ...this.perioder,
                 ...this.opprinneligPlan.filter((p) =>
                     moment(p.tidsperiode.fom).isAfter(sistePeriode.tidsperiode.tom, 'day')
