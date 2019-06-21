@@ -28,16 +28,12 @@ import TapteUttaksdagerFarMedmor from './components/TapteUttaksdagerFarMedmor';
 import { PeriodelisteInformasjon } from './components/periodeliste/items/PeriodelisteInfo';
 import getMessage from 'common/util/i18nUtils';
 import VeilederInfo from '../veilederInfo/VeilederInfo';
-import DevBlock from 'common/dev/DevBlock';
 
 import './uttaksplanlegger.less';
 import { VeiledermeldingerPerPeriode } from '../veilederInfo/types';
 import UttaksplanAdvarselIkon from '../ikoner/uttaksplanIkon/ikoner/AdvarselIkon';
 import HjerteIkon from '../ikoner/uttaksplanIkon/ikoner/HjerteIkon';
 import LinkButton from '../elementer/linkButton/LinkButton';
-import { Feature } from 'app/Feature';
-import FeatureBlock from '../elementer/featureBlock/FeatureBlock';
-import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -48,7 +44,6 @@ interface OwnProps {
     planErEndret: boolean;
     defaultStønadskontoType?: StønadskontoType;
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
-    perioderSomSkalSendesInn: Periode[];
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
@@ -180,9 +175,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             forelder,
             uttaksplan,
             planErEndret,
-            eksisterendeUttaksplan,
             meldingerPerPeriode,
-            perioderSomSkalSendesInn,
             intl
         } = this.props;
         const { formIsOpen, periodetype } = this.state;
@@ -282,30 +275,6 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 antallFeriedager={antallFeriedager}
                             />
                         </Block>
-                        {eksisterendeUttaksplan && (
-                            <FeatureBlock
-                                feature={Feature.visPerioderSomSendesInn}
-                                render={() => (
-                                    <DevBlock alwaysActive={true}>
-                                        <Ekspanderbartpanel tittel="Perioder som sendes sinn">
-                                            <Periodeliste
-                                                søknadsinfo={søknadsinfo}
-                                                ref={(c) => (this.periodeliste = c)}
-                                                perioder={perioderSomSkalSendesInn}
-                                                meldingerPerPeriode={meldingerPerPeriode}
-                                                informasjon={infoItems}
-                                                navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
-                                                lastAddedPeriodeId={lastAddedPeriodeId}
-                                                onLeggTilOpphold={this.settInnNyttOpphold}
-                                                onLeggTilPeriode={this.settInnNyPeriode}
-                                                onFjernPeriode={this.props.onDelete}
-                                                antallFeriedager={antallFeriedager}
-                                            />
-                                        </Ekspanderbartpanel>
-                                    </DevBlock>
-                                )}
-                            />
-                        )}
                         <Block visible={uttaksplan.length === 0}>
                             <Block margin="l">
                                 <TomUttaksplanInfo />
