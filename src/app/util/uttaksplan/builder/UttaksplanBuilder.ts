@@ -8,7 +8,8 @@ import {
     PeriodeHullÅrsak,
     isOverskrivbarPeriode,
     isHull,
-    isInfoPeriode
+    isInfoPeriode,
+    isGruppertInfoPeriode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -62,7 +63,7 @@ class UttaksplanAutoBuilder {
         this.finnOgSettInnHull();
         if (this.opprinneligPlan) {
             this.finnOgErstattHullMedOpprinneligPlan();
-            this.settInnOpprinneligePeriodeUtenforPlan();
+            this.settInnOpprinneligeInfoPerioderUtenforPlan();
         }
         this.slåSammenLikePerioder();
         if (foreldrepengerFørTermin === undefined) {
@@ -152,13 +153,14 @@ class UttaksplanAutoBuilder {
         return this;
     }
 
-    settInnOpprinneligePeriodeUtenforPlan() {
+    settInnOpprinneligeInfoPerioderUtenforPlan() {
         if (this.opprinneligPlan && this.perioder.length > 0) {
             const førstePeriode = this.perioder[0];
             const sistePeriode = this.perioder[this.perioder.length - 1];
 
             const opprinneligePerioderFørFørstePeriode = this.opprinneligPlan
                 .filter((p) => Perioden(p).starterFør(førstePeriode.tidsperiode.fom))
+                .filter(isInfoPeriode || isGruppertInfoPeriode)
                 .map((p) => {
                     if (Perioden(p).slutterSammeDagEllerEtter(førstePeriode.tidsperiode.fom)) {
                         return {
