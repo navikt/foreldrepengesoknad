@@ -38,7 +38,8 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (
                     values: {
                         periode: (intl: InjectedIntl) => getPeriodeTittel(intl, periode, navnPåForeldre),
                         tidsperiode: (intl: InjectedIntl) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
-                        forelder: (intl: InjectedIntl) =>
+                        forelder: grunnlag.søknadsinfo.navn.annenForelder.fornavn,
+                        forelders: (intl: InjectedIntl) =>
                             getNavnGenitivEierform(grunnlag.søknadsinfo.navn.annenForelder.fornavn, intl.locale)
                     }
                 };
