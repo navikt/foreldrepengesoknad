@@ -53,6 +53,9 @@ import UttaksplanFeiloppsummering from 'app/components/uttaksplanlegger/componen
 import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
 import Barn from 'app/types/søknad/Barn';
 import OversiktBrukteDager from 'app/components/uttaksplanlegger/components/oversiktBrukteDager/OversiktBrukteDager';
+import DevPerioderSomSendesInn from './DevPerioderSomSendesInn';
+import FeatureBlock from 'app/components/elementer/featureBlock/FeatureBlock';
+import { Feature } from 'app/Feature';
 
 interface StateProps {
     stegProps: StegProps;
@@ -296,7 +299,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 meldingerPerPeriode={meldingerPerPeriode}
                                 onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
                                 forelder={søknadsinfo.søker.erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
-                                perioderSomSkalSendesInn={perioderSomSkalSendesInn}
                             />
                         </Block>
 
@@ -325,6 +327,21 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 ariaTittel={getMessage(intl, 'uttaksplan.regelAvvik.ariaTittel')}
                             />
                         </Block>
+
+                        {eksisterendeSak &&
+                            eksisterendeSak.uttaksplan && (
+                                <FeatureBlock
+                                    feature={Feature.visPerioderSomSendesInn}
+                                    render={() => (
+                                        <Block>
+                                            <DevPerioderSomSendesInn
+                                                søknadsinfo={søknadsinfo}
+                                                perioderSomSkalSendesInn={perioderSomSkalSendesInn}
+                                            />
+                                        </Block>
+                                    )}
+                                />
+                            )}
 
                         {årsakTilSenEndring &&
                             årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
