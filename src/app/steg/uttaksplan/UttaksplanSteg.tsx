@@ -73,6 +73,7 @@ interface StateProps {
     planErEndret: boolean;
     sak?: Sak;
     grunnlag: Saksgrunnlag | undefined;
+    perioderSomSkalSendesInn: Periode[];
     barn: Barn;
 }
 
@@ -217,6 +218,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             uttaksplanVeilederInfo,
             planErEndret,
             meldingerPerPeriode,
+            perioderSomSkalSendesInn,
             intl
         } = this.props;
 
@@ -294,6 +296,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 meldingerPerPeriode={meldingerPerPeriode}
                                 onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
                                 forelder={søknadsinfo.søker.erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
+                                perioderSomSkalSendesInn={perioderSomSkalSendesInn}
                             />
                         </Block>
 
@@ -404,6 +407,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         ({ konto }) => konto === StønadskontoType.AktivitetsfriKvote
     );
 
+    const perioderSomSkalSendesInn = selectPerioderSomSkalSendesInn(state);
+
     const aktivitetsfriKvote = aktivitetsfriKvoteKonto ? Math.round(aktivitetsfriKvoteKonto.dager / 5) : 0;
 
     return {
@@ -426,6 +431,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         meldingerPerPeriode: selectPeriodelisteMeldinger(props.intl)(state),
         aktivitetsfriKvote,
         planErEndret: søknad.erEndringssøknad && perioderDetSøkesOm.length > 0,
+        perioderSomSkalSendesInn,
         sak,
         grunnlag
     };
