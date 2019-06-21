@@ -73,6 +73,7 @@ interface StateProps {
     planErEndret: boolean;
     sak?: Sak;
     grunnlag: Saksgrunnlag | undefined;
+    perioderSomSkalSendesInn: Periode[];
     barn: Barn;
 }
 
@@ -217,6 +218,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             uttaksplanVeilederInfo,
             planErEndret,
             meldingerPerPeriode,
+            perioderSomSkalSendesInn,
             intl
         } = this.props;
 
@@ -294,6 +296,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 meldingerPerPeriode={meldingerPerPeriode}
                                 onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
                                 forelder={søknadsinfo.søker.erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
+                                perioderSomSkalSendesInn={perioderSomSkalSendesInn}
                             />
                         </Block>
 
@@ -369,13 +372,13 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
 
     const søknadsinfo = selectSøknadsinfo(state);
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
-    const perioderDetSøkesOm = selectPerioderSomSkalSendesInn(state);
-    const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderDetSøkesOm);
+    const perioderSomSkalSendesInn = selectPerioderSomSkalSendesInn(state);
+    const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderSomSkalSendesInn);
     const grunnlag = søknad.ekstrainfo.eksisterendeSak ? søknad.ekstrainfo.eksisterendeSak.grunnlag : undefined;
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
-        renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true && perioderDetSøkesOm.length > 0,
+        renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true && perioderSomSkalSendesInn.length > 0,
         renderFormTag: false,
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo, søknadsinfo)
@@ -425,7 +428,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         ),
         meldingerPerPeriode: selectPeriodelisteMeldinger(props.intl)(state),
         aktivitetsfriKvote,
-        planErEndret: søknad.erEndringssøknad && perioderDetSøkesOm.length > 0,
+        planErEndret: søknad.erEndringssøknad && perioderSomSkalSendesInn.length > 0,
+        perioderSomSkalSendesInn,
         sak,
         grunnlag
     };
