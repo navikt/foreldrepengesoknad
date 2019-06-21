@@ -37,6 +37,7 @@ import HjerteIkon from '../ikoner/uttaksplanIkon/ikoner/HjerteIkon';
 import LinkButton from '../elementer/linkButton/LinkButton';
 import { Feature } from 'app/Feature';
 import FeatureBlock from '../elementer/featureBlock/FeatureBlock';
+import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -285,20 +286,22 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             <FeatureBlock
                                 feature={Feature.visPerioderSomSendesInn}
                                 render={() => (
-                                    <DevBlock title="Perioder som sendes inn" alwaysActive={true}>
-                                        <Periodeliste
-                                            søknadsinfo={søknadsinfo}
-                                            ref={(c) => (this.periodeliste = c)}
-                                            perioder={perioderSomSkalSendesInn}
-                                            meldingerPerPeriode={meldingerPerPeriode}
-                                            informasjon={infoItems}
-                                            navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
-                                            lastAddedPeriodeId={lastAddedPeriodeId}
-                                            onLeggTilOpphold={this.settInnNyttOpphold}
-                                            onLeggTilPeriode={this.settInnNyPeriode}
-                                            onFjernPeriode={this.props.onDelete}
-                                            antallFeriedager={antallFeriedager}
-                                        />
+                                    <DevBlock alwaysActive={true}>
+                                        <Ekspanderbartpanel tittel="Perioder som sendes sinn">
+                                            <Periodeliste
+                                                søknadsinfo={søknadsinfo}
+                                                ref={(c) => (this.periodeliste = c)}
+                                                perioder={perioderSomSkalSendesInn}
+                                                meldingerPerPeriode={meldingerPerPeriode}
+                                                informasjon={infoItems}
+                                                navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
+                                                lastAddedPeriodeId={lastAddedPeriodeId}
+                                                onLeggTilOpphold={this.settInnNyttOpphold}
+                                                onLeggTilPeriode={this.settInnNyPeriode}
+                                                onFjernPeriode={this.props.onDelete}
+                                                antallFeriedager={antallFeriedager}
+                                            />
+                                        </Ekspanderbartpanel>
                                     </DevBlock>
                                 )}
                             />
