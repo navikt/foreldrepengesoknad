@@ -141,7 +141,7 @@ function* lagUttaksplanForslag() {
     let tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
 
     const annenPartsSak = eksisterendeSak && eksisterendeSak.erAnnenPartsSak ? eksisterendeSak : undefined;
-    if (annenPartsSak && annenPartsSak.grunnlag.erDeltUttak === false) {
+    if (annenPartsSak) {
         tilgjengeligeStønadskontoer = beregnGjenståendeUttaksdager(
             tilgjengeligeStønadskontoer,
             annenPartsSak.uttaksplan || [],
