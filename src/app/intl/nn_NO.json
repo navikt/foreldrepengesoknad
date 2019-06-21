@@ -176,7 +176,7 @@
         "Du må orientere {navn} om søknaden, før du kan sende inn søknaden.",
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er de nære venner eller i familie?",
     "barnFødt.infoPrematuruker":
-        "Hvis barnet blir født før 33. svangerskapsuke så blir perioden med foreldrepenger utvidet med samme antall uker og dager som barnet er født før termindato.<br /><br /> Dersom barnet blir innlagt på sykehus etter fødselen, vil dere som regel kunne motta pleiepenger så lenge barnet er innlagt. Får dere pleiepenger i perioden fra fødsel og fram til opprinnelig termindato, trekkes disse fra den utvidede perioden.",
+        "Hvis barnet blir født før 33. svangerskapsuke så blir perioden med foreldrepenger utvidet med same antall uker og dager som barnet er født før termindato.<br /><br /> Dersom barnet blir innlagt på sykehus etter fødselen, vil dere som regel kunne motta pleiepenger så lenge barnet er innlagt. Får dere pleiepenger i perioden fra fødsel og fram til opprinnelig termindato, trekkes disse fra den utvidede perioden.",
     "erBarnetFødt.spørsmål": "Er barnet født?",
     "erBarnetFødt.spørsmål.veileder.medMorEllerFar":
         "Du kan ikkje søkje før barnet er født. Unntaket er dersom mor er sjuk eller innlagd på sjukehus eller helseinstitusjon. Då må du sende søknaden i posten.{ lenke }",
@@ -811,7 +811,7 @@
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikkje lasta opp.",
     "uttaksplan.validering.advarsel.senÅrsakOgTidsperiode": "Du søker om utsetjing tilbake i tid.",
     "uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode":
-        "Du har lagt inn <strong>{periode} ({tidsperiode})</strong> som vil erstatte dagar som {forelder} allereie har fått innvilga.",
+        "Du har lagt inn <strong>{periode}</strong> i perioden {tidsperiode}. {forelder} har foreldrepengar eller utsettelse i same periode. <strong>{periode}</strong> vil erstatte {forelders} foreldrepengar eller utsettelse i denne perioden.",
 
     "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikkje få foreldrepengar etter at barnet er fylt tre år.",
     "uttaksplan.validering.feil.harSøktOmFerieUtenArbeidsforhold":
@@ -861,7 +861,7 @@
     "uttaksplan.validering.feil.innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode":
         "Foreldrepenger uten aktivitetskrav må du ta ut innen {antallUker} uker etter at barnet er født. Skal du ha foreldrepenger etter denne perioden må mor være i aktivitet når du er hjemme med barnet.",
     "uttaksplan.validering.feil.inneholderForMyeFerie":
-        "Du har lagt inn til sammen {ukerOgDager} uker med ferie. Du kan maksimalt legge inn 10 uker og 2 dager med ferie. Ferien må avtales med din arbeidsgiver.",
+        "Du har lagt inn til samen {ukerOgDager} uker med ferie. Du kan maksimalt legge inn 10 uker og 2 dager med ferie. Ferien må avtales med din arbeidsgiver.",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepengar",
     "uttaksplan.varighet.uttak.gradert": "{varighet}",
     "uttaksplan.ulønnetPermisjonInfo.del1":
