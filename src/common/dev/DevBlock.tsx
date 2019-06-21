@@ -6,7 +6,7 @@ import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 
 interface Props {
-    title: string;
+    title?: string;
     alwaysActive?: boolean;
 }
 
@@ -14,9 +14,11 @@ const bem = BEMHelper('dev');
 
 const DevBlock: React.StatelessComponent<Props> = ({ children, title, alwaysActive }) => (
     <div className={bem.classNames(bem.block, bem.modifierConditional('active', alwaysActive))}>
-        <Block margin="xs">
-            <Ingress>{title}</Ingress>
-        </Block>
+        {title && (
+            <Block margin="xs">
+                <Ingress>{title}</Ingress>
+            </Block>
+        )}
         {children}
     </div>
 );
