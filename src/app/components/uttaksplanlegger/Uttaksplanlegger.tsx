@@ -107,7 +107,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
     settInnNyttOpphold(tidsperiode?: Tidsperiode) {
         const periode: Partial<Utsettelsesperiode> = {
             type: Periodetype.Utsettelse,
-            tidsperiode
+            tidsperiode,
+            forelder: this.props.forelder
         };
         this.props.onAdd(periode as Periode);
     }
