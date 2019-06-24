@@ -61,7 +61,7 @@ export function* fetchEksisterendeSak(saksnummer: string) {
     try {
         yield put(apiActions.updateApi({ isLoadingEksisterendeSak: true }));
         const response = yield call(Api.getEksisterendeSak, saksnummer);
-        return getEksisterendeSakFromDTO(response.data, false);
+        return getEksisterendeSakFromDTO(response.data, false, true);
     } catch (error) {
         yield put(
             apiActions.updateApi({
@@ -83,7 +83,7 @@ export function* fetchEksisterendeSakMedFnr(fnr: string) {
         const response = yield call(Api.getEksisterendeSakMedFnr, fnr);
         const uttaksplanDto: UttaksplanDTO = response.data;
         uttaksplanDto.grunnlag.søkerErFarEllerMedmor = !uttaksplanDto.grunnlag.søkerErFarEllerMedmor;
-        return getEksisterendeSakFromDTO(uttaksplanDto, true);
+        return getEksisterendeSakFromDTO(uttaksplanDto, true, false);
     } catch (error) {
         yield put(
             apiActions.updateApi({
