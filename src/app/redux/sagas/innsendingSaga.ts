@@ -22,7 +22,7 @@ const getSøknadsdataForInnsending = (
 ): SøknadForInnsending | EnkelEndringssøknadForInnsending => {
     const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
     mapMissingAttachmentsOnSøknad(missingAttachments, søknad);
-    if (søknad.ekstrainfo.eksisterendeSak !== undefined && søknad.ekstrainfo.eksisterendeSak.uttaksplan) {
+    if (søknad.erEndringssøknad) {
         return cleanEnkelEndringssøknad(søknad, endringerIUttaksplan);
     } else {
         return cleanUpSøknad(søknad);
