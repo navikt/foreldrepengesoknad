@@ -321,11 +321,13 @@
     "oppholdsårsaktype.foreldernavn.mor.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flernbarnsperioden",
     "oppholdsårsaktype.foreldernavn.mor.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten din",
     "oppholdsårsaktype.foreldernavn.mor.undefined": "{foreldernavn} tar ut",
+    "oppholdsårsaktype.foreldernavn.mor.ARBEID": "{foreldernavn} utsetter på grunn av heltidsarbeid",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten din",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperioden",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flernbarnsperioden",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin",
     "oppholdsårsaktype.foreldernavn.far.undefined": "{foreldernavn} tar ut",
+    "oppholdsårsaktype.foreldernavn.far.ARBEID": "{foreldernavn} utsetter på grunn av heltidsarbeid",
     "oppsummering.adopsjonAvEktefellesBarn.label": "Gjelder søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
     "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
@@ -1070,6 +1072,7 @@
     "periodetype.uttak": "uttak",
 
     "uttaksplan.validering.feil.erAllePeriodeSkjemaspørsmålBesvart": "Noen av spørsmålene for perioden er ikke besvart",
+    "uttaksplan.validering.feil.erUtsettelseEtterFamiliehendelsesdato": "Du kan ikke utsette før barnet er født",
     "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering":
         "Stillingsprosenten du skal jobbe kan bare inneholde tall, og være mellom 1 og 99",
     "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden har ikke gyldig tidsperiode",
