@@ -45,6 +45,10 @@ const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType):
     (type !== undefined && attachments.find((a) => a.type === type) === undefined);
 
 export function shouldPeriodeHaveAttachment(periode: Periode, søknadsinfo: Søknadsinfo): boolean {
+    if (periode.type === Periodetype.Info) {
+        return false;
+    }
+
     if (periode.type === Periodetype.Overføring) {
         return dokumentasjonBehøvesForOverføringsperiode(
             søknadsinfo.søker.erFarEllerMedmor,
@@ -192,12 +196,11 @@ export const findMissingAttachmentsForAndreInntekter = (søknad: Søknad): Missi
 export const findMissingAttachments = (
     søknad: Søknad,
     api: ApiState,
-    søknadsinfo: Søknadsinfo,
-    perioderSomSkalSendesInn: Periode[]
+    søknadsinfo: Søknadsinfo
 ): MissingAttachment[] => {
     const missingAttachments = [];
     missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api));
-    missingAttachments.push(...findMissingAttachmentsForPerioder(perioderSomSkalSendesInn, søknadsinfo));
+    missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknadsinfo));
     missingAttachments.push(...findMissingAttachmentsForAndreInntekter(søknad));
     return missingAttachments;
 };
