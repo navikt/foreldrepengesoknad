@@ -149,12 +149,20 @@ const justerStartdatoFørsteEndring = (endringer: Periode[], opprinneligPlan: Pe
 export const getEndretUttaksplanForInnsending = (opprinneligPlan: Periode[], nyPlan: Periode[]): Periode[] => {
     const endringer = finnEndringerIUttaksplan(opprinneligPlan, nyPlan);
     if (endringer && endringer.length > 0) {
+        // Her kontrolleres det om det kun er siste periode som er endret, og i så
+        // fall justerer en bare tidsperioden for den
         if (endringer.length === 1) {
             const endretPeriode = endringer[0];
             const perioder = getLikePerioder(endretPeriode, opprinneligPlan);
             const opprinneligPeriode = perioder.length === 1 ? perioder[0] : undefined;
+
             if (opprinneligPeriode) {
-                return [justerKunEndretSisteperiode(endretPeriode, opprinneligPeriode)];
+                // Dersom index er ulik, er det ny periode som er lag inn, ikke siste periode som er endret
+                const indexOgOpprinneligPeriode = opprinneligPlan.findIndex((p) => p === opprinneligPeriode);
+                const indexNyPeriode = nyPlan.findIndex((p) => p === endretPeriode);
+                if (indexOgOpprinneligPeriode === indexNyPeriode) {
+                    return [justerKunEndretSisteperiode(endretPeriode, opprinneligPeriode)];
+                }
             }
         }
         return justerStartdatoFørsteEndring(endringer, opprinneligPlan).filter((p) => isInfoPeriode(p) === false);
