@@ -4,7 +4,7 @@ import BEMHelper from 'common/util/bem';
 import { FormattedMessage } from 'react-intl';
 import moment from 'moment';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import InfoBlock from 'common/components/info-block/InfoBlock';
+import InfoBlock from 'common/components/infoBlock/InfoBlock';
 import BarnevognIkon from 'common/components/ikoner/BarnevognIkon';
 import { StorageKvittering } from '../../../types/StorageKvittering';
 

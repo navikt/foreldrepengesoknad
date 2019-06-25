@@ -10,8 +10,8 @@ import PeriodelisteInfo from './PeriodelisteInfo';
 import Block from 'common/components/block/Block';
 import { getVarighetString } from 'common/util/intlUtils';
 import { getStønadskontoNavn } from 'app/util/uttaksplan';
-import AdvarselIkon from 'app/components/ikoner/svgIkoner/advarselIkon/AdvarselIkon';
 import LinkButton from 'app/components/elementer/linkButton/LinkButton';
+import UttaksplanAdvarselIkon from 'app/components/ikoner/uttaksplanIkon/ikoner/AdvarselIkon';
 
 export interface Props {
     itemId: string;
@@ -52,11 +52,11 @@ const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntl
         );
     }
 
-    const tittel = getMessage(intl, 'periodeliste.ikkeInvilgetPeriode.tittel', {
+    const tittel = getMessage(intl, 'periodeliste.ikkeInnvilgetPeriode.tittel', {
         type: getMessage(intl, `periodetype.${periode.avslåttPeriodeType}`)
     });
 
-    const beskrivelse = getMessage(intl, 'periodeliste.ikkeInvilgetPeriode.beskrivelse', {
+    const beskrivelse = getMessage(intl, 'periodeliste.ikkeInnvilgetPeriode.beskrivelse', {
         varighet: getVarighetString(antallDager, intl),
         konto: getStønadskontoNavn(intl, periode.stønadskonto, navnPåForeldre)
     });
@@ -68,12 +68,12 @@ const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntl
             isExpanded={isExpanded}
             onToggle={onToggle}
             beskrivelse={beskrivelse}
-            ikon={<AdvarselIkon />}
+            ikon={<UttaksplanAdvarselIkon />}
             renderContent={() => (
                 <div>
                     <Block>
                         <FormattedMessage
-                            id={`periodeliste.ikkeInvilgetPeriode.expanded.beskrivelse.${periode.avslåttPeriodeType}`}
+                            id={`periodeliste.ikkeInnvilgetPeriode.expanded.beskrivelse.${periode.avslåttPeriodeType}`}
                         />
                     </Block>
                     <Knapperad align="left">{knapper}</Knapperad>

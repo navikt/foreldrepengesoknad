@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import { OverføringÅrsakType } from '../types/uttaksplan/periodetyper';
-import FlervalgSpørsmål, { FlervalgAlternativ } from '../components/skjema/flervalg-spørsmål/FlervalgSpørsmål';
+import FlervalgSpørsmål, { FlervalgAlternativ } from '../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import { getNavnGenitivEierform } from '../util/tekstUtils';
 
 interface OverføringsårsakSpørsmålProps {

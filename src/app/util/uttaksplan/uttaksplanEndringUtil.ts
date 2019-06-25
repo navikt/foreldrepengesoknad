@@ -1,9 +1,19 @@
-import { Periode, isInfoPeriode } from 'app/types/uttaksplan/periodetyper';
+import {
+    Periode,
+    isInfoPeriode,
+    isUttaksperiode,
+    isOverføringsperiode,
+    isUtsettelsesperiode
+} from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from './Perioden';
 import moment from 'moment';
 import DateValues from '../validation/values';
 import { Periodene } from './Periodene';
 import { Uttaksdagen } from './Uttaksdagen';
+
+export const erPeriodeSomSkalSendesInn = (periode: Periode): boolean => {
+    return isUttaksperiode(periode) || isOverføringsperiode(periode) || isUtsettelsesperiode(periode);
+};
 
 export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan: Periode[]): boolean => {
     const finnes = opprinneligPlan.some((op) => Perioden(periode).erLik(op, true, true));
@@ -15,7 +25,7 @@ export const finnEndringerIUttaksplan = (opprinneligPlan: Periode[], nyPlan: Per
         (periode) => finnesPeriodeIOpprinneligPlan(periode, opprinneligPlan) === false
     );
     if (idxFørsteEndredePeriode >= 0) {
-        return nyPlan.slice(idxFørsteEndredePeriode);
+        return nyPlan.slice(idxFørsteEndredePeriode).filter(erPeriodeSomSkalSendesInn);
     }
     /**
      * Dersom perioder er slettet, returneres siste periode i ny plan,

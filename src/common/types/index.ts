@@ -3,9 +3,11 @@ export * from '../intl/types';
 export type Dekningsgrad = '80' | '100';
 
 export enum Forelder {
-    'MOR' = 'mor',
-    'FARMEDMOR' = 'farMedmor'
+    'mor' = 'mor',
+    'farMedmor' = 'farMedmor'
 }
+
+export type StatusKey = 'suksess' | 'advarsel' | 'feil';
 
 export interface NavnPåForeldre {
     mor: string;
@@ -28,4 +30,19 @@ export interface TidsperiodeMedValgfriSluttdato {
     fom: Date;
     tom?: Date;
     pågående?: boolean;
+}
+
+export interface Feil {
+    tittel?: string;
+    feilmelding: string;
+}
+
+export enum StønadskontoType {
+    'Mødrekvote' = 'MØDREKVOTE',
+    'Fedrekvote' = 'FEDREKVOTE',
+    'Fellesperiode' = 'FELLESPERIODE',
+    'Foreldrepenger' = 'FORELDREPENGER',
+    'ForeldrepengerFørFødsel' = 'FORELDREPENGER_FØR_FØDSEL',
+    'Flerbarnsdager' = 'FLERBARNSDAGER', // Ikke brukt som egen type i periodene
+    'AktivitetsfriKvote' = 'AKTIVITETSFRI_KVOTE' // Foreldrepenger
 }

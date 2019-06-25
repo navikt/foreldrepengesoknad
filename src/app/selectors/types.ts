@@ -1,5 +1,5 @@
 import { Navn, Kjønn } from '../types/common';
-import { NavnPåForeldre, Dekningsgrad } from 'common/types';
+import { NavnPåForeldre, Dekningsgrad, Forelder } from 'common/types';
 import { Søkersituasjon, SøkerRolle } from '../types/søknad/Søknad';
 
 export interface Søknadsinfo {
@@ -35,7 +35,6 @@ export interface NavnISøknaden {
 }
 
 export interface OmSøknaden {
-    saksnummer?: string;
     situasjon: Søkersituasjon;
     familiehendelsesdato: Date;
     dekningsgrad: Dekningsgrad | undefined;
@@ -44,13 +43,14 @@ export interface OmSøknaden {
     erFlerbarnssøknad: boolean;
     erEndringssøknad: boolean;
     erEnkelEndringssøknad: boolean;
-    erEnkelEndringssøknadMedUttaksplan: boolean;
+    harKomplettUttaksplan: boolean;
     antallBarn: number;
     erBarnFødt?: boolean;
     erAdopsjon?: boolean;
 }
 
 export interface OmSøker {
+    forelder: Forelder;
     erMor: boolean;
     erFarEllerMedmor: boolean;
     erAleneOmOmsorg: boolean;

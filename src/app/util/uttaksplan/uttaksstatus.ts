@@ -7,31 +7,34 @@ import {
 import { beregnGjenståendeUttaksdager } from '../uttaksPlanStatus';
 import { Søknadsinfo } from '../../selectors/types';
 
+export interface Uttaksstatus {
+    gjelderDagerBrukt: boolean;
+    uttak: Stønadskontouttak[];
+}
+
 export const getUttaksstatus = (
     søknadsinfo: Søknadsinfo,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     uttaksplan: Periode[]
-): Stønadskontouttak[] => {
-    const { søknaden, søker } = søknadsinfo;
-    const uttaksstatus: Stønadskontouttak[] = beregnGjenståendeUttaksdager(
+): Uttaksstatus => {
+    const {
+        søknaden: { erDeltUttak, erEndringssøknad, harKomplettUttaksplan },
+        søker
+    } = søknadsinfo;
+
+    const gjelderDagerBrukt =
+        (erEndringssøknad && harKomplettUttaksplan !== true) ||
+        (erDeltUttak && søker.erFarEllerMedmor && harKomplettUttaksplan !== true);
+
+    const uttak: Stønadskontouttak[] = beregnGjenståendeUttaksdager(
         tilgjengeligeStønadskontoer,
         uttaksplan,
-        skalBeregneAntallDagerBrukt(
-            søknaden.erDeltUttak,
-            søker.erFarEllerMedmor,
-            søknaden.erEndringssøknad,
-            søknaden.erEnkelEndringssøknadMedUttaksplan
-        )
+        gjelderDagerBrukt
     );
-    if (søker.erFarEllerMedmor) {
-        return uttaksstatus.filter((kontouttak) => kontouttak.konto !== StønadskontoType.ForeldrepengerFørFødsel);
-    }
-    return uttaksstatus;
+    return {
+        gjelderDagerBrukt,
+        uttak: søker.erFarEllerMedmor
+            ? uttak.filter((kontouttak) => kontouttak.konto !== StønadskontoType.ForeldrepengerFørFødsel)
+            : uttak
+    };
 };
-
-export const skalBeregneAntallDagerBrukt = (
-    erDeltUttak: boolean,
-    erFarEllerMedmor: boolean,
-    erEndringssøknad: boolean,
-    erEnkelEndringssøknadMedUttaksplan: boolean
-): boolean => (erEndringssøknad && erEnkelEndringssøknadMedUttaksplan !== true) || (erDeltUttak && erFarEllerMedmor);

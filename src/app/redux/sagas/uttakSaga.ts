@@ -17,6 +17,7 @@ import routeConfig from '../../util/routing/routeConfig';
 import { Dekningsgrad } from 'common/types';
 import { selectSøkerErFarEllerMedmor } from 'app/selectors/utledetSøknadsinfoSelectors';
 import { extractUUID } from '../../api/utils/errorUtil';
+import { getRelevantFamiliehendelseDato } from 'app/util/dates/dates';
 
 const stateSelector = (state: AppState) => state;
 
@@ -96,9 +97,15 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
             }
         }
 
+        const relevantFamiliehendelseDato = getRelevantFamiliehendelseDato({
+            termindato: params.termindato,
+            fødselsdato: params.fødselsdato,
+            omsorgsovertakelsesdato: params.omsorgsovertakelsesdato
+        });
+
         if (
             skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018(
-                params.familiehendelsesdato,
+                relevantFamiliehendelseDato!,
                 tilgjengeligeStønadskontoer
             )
         ) {

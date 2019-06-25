@@ -1,4 +1,3 @@
-import { Regel, RegelAlvorlighet } from './types';
 import { inneholderUttaksplanPerioderTest } from './tester/inneholderUttaksplanPerioderTest';
 import { harMorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harMorSøktUgyldigUttakFørsteSeksUkerTest';
 import { inneholderStønadskontoForMyeUttakTest } from './tester/inneholderStønadskontoForMyeUttakTest';
@@ -15,13 +14,15 @@ import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVe
 import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtsettelsePgaFerieTest';
 import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
 import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
-import { innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode } from './tester/innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode';
+// import { innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode } from './tester/innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode';
 import { inneholderSenUtsettelsePgaArbeidTest } from './tester/inneholderSenUtsettelsePgaArbeidTest';
 import { inneholderSeneGraderteUttakTest } from './tester/inneholderSeneGraderteUttakTest';
 import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
 import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndrePerioderTest';
 import periodevalideringsregler, { PeriodeValiderRegelKey } from './periodevalideringstester';
 import { harSøktOmFerieUtenArbeidsforhold } from './tester/harSøktOmFerieUtenArbeidsforholdTest';
+import { Regel, RegelAlvorlighet } from 'shared/regler/regelTypes';
+import { inneholderForMyeFerie } from './tester/inneholderForMyeFerie';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -42,7 +43,8 @@ export enum UttaksplanRegelKey {
     'inneholderSeneGraderteUttak' = 'inneholderSeneGraderteUttakTest',
     'inneholderTapteDager' = 'inneholderTapteDager',
     'inneholderBareUtsettelser' = 'inneholderBareUtsettelser',
-    'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode' = 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode',
+    'inneholderForMyeFerie' = 'inneholderForMyeFerie',
+    // 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode' = 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode',
     'endringerOverskriverAnnenPartsPerioder' = 'endringerOverskriverAnnenPartsPerioder',
     'periodeOverlapperAndrePerioder' = 'periodeOverlapperAndrePerioder',
     'harSøktOmFerieUtenArbeidsforhold' = 'harSøktOmFerieUtenArbeidsforhold'
@@ -50,7 +52,7 @@ export enum UttaksplanRegelKey {
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
 
-const uttaksplanRegler: Regel[] = [
+const uttaksplanValideringRegler: Regel[] = [
     {
         key: UttaksplanRegelKey.planenInneholderIngenPerioder,
         alvorlighet: RegelAlvorlighet.FEIL,
@@ -146,10 +148,15 @@ const uttaksplanRegler: Regel[] = [
         test: inneholderBareUtsettelserTest
     },
     {
-        key: UttaksplanRegelKey.innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode,
+        key: UttaksplanRegelKey.inneholderForMyeFerie,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode
+        test: inneholderForMyeFerie
     },
+    // {
+    //     key: UttaksplanRegelKey.innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode,
+    //     alvorlighet: RegelAlvorlighet.FEIL,
+    //     test: innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode
+    // },
     {
         key: UttaksplanRegelKey.endringerOverskriverAnnenPartsPerioder,
         alvorlighet: RegelAlvorlighet.INFO,
@@ -170,4 +177,6 @@ const uttaksplanRegler: Regel[] = [
     }
 ];
 
-export default [...uttaksplanRegler, ...periodevalideringsregler];
+const uttaksplanRegler = [...uttaksplanValideringRegler, ...periodevalideringsregler];
+
+export default uttaksplanRegler;

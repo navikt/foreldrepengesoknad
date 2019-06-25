@@ -1,7 +1,11 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
+import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+
 import { getUgyldigUttakFørsteSeksUkerForMor } from '../../../util/validation/uttaksplan/uttakMorValidation';
 
-export const harMorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+export const harMorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (
+    grunnlag: UttaksplanRegelgrunnlag
+): RegelTestresultat => {
     if (grunnlag.søknadsinfo.søker.erMor) {
         const ugyldigePerioder = getUgyldigUttakFørsteSeksUkerForMor(
             grunnlag.perioder,

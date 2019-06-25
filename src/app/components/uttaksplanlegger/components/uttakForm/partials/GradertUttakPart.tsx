@@ -5,7 +5,7 @@ import Input from 'common/components/skjema/wrappers/Input';
 import Block from 'common/components/block/Block';
 import { getFloatFromString } from 'common/util/numberUtils';
 import Arbeidsforhold from '../../../../../types/Arbeidsforhold';
-import JaNeiSpørsmål from '../../../../skjema/ja-nei-spørsmål/JaNeiSpørsmål';
+import JaNeiSpørsmål from '../../../../../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 import { Arbeidsform, Uttaksperiode, Periode } from '../../../../../types/uttaksplan/periodetyper';
 import { RecursivePartial } from '../../../../../types/Partial';
 import HvorSkalDuJobbeSpørsmål from '../../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
@@ -43,7 +43,7 @@ class GradertUttakForm extends React.Component<Props> {
         const varighet =
             pst && uttaksdager
                 ? getMessage(intl, 'gradert.uttak.varighet', {
-                      varighet: getVarighetString(finnAntallDagerÅTrekke(uttaksdager, periode as Periode), intl)
+                      varighet: getVarighetString(finnAntallDagerÅTrekke(periode as Periode), intl)
                   })
                 : undefined;
 

@@ -8,7 +8,8 @@ import {
     PeriodeHullÅrsak,
     isOverskrivbarPeriode,
     isHull,
-    isInfoPeriode
+    isInfoPeriode,
+    isGruppertInfoPeriode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -17,32 +18,22 @@ import { Perioden } from '../Perioden';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { Tidsperiode } from 'common/types';
 
-export const UttaksplanBuilder = (
-    perioder: Periode[],
-    familiehendelsesdato: Date,
-    erEndringssøknad: boolean,
-    opprinneligPlan?: Periode[]
-) => {
-    return new UttaksplanAutoBuilder(perioder, familiehendelsesdato, erEndringssøknad, opprinneligPlan);
+export const UttaksplanBuilder = (perioder: Periode[], familiehendelsesdato: Date, opprinneligPlan?: Periode[]) => {
+    return new UttaksplanAutoBuilder(perioder, familiehendelsesdato, opprinneligPlan);
 };
 
 const periodeHasValidTidsrom = (periode: Periode): boolean =>
     periode.tidsperiode.fom !== undefined && periode.tidsperiode.tom !== undefined;
 
+const clonePeriode = (periode: Periode): Periode => ({ ...periode, tidsperiode: { ...periode.tidsperiode } });
+
 class UttaksplanAutoBuilder {
     protected familiehendelsesdato: Date;
-    protected erEndringssøknad: boolean;
     protected opprinneligPlan: Periode[] | undefined;
 
-    public constructor(
-        public perioder: Periode[],
-        familiehendelsesdato: Date,
-        erEndringssøknad: boolean,
-        opprinneligPlan?: Periode[]
-    ) {
+    public constructor(public perioder: Periode[], familiehendelsesdato: Date, opprinneligPlan?: Periode[]) {
         this.perioder = perioder;
         this.familiehendelsesdato = familiehendelsesdato;
-        this.erEndringssøknad = erEndringssøknad;
         this.opprinneligPlan = opprinneligPlan;
     }
 
@@ -70,8 +61,9 @@ class UttaksplanAutoBuilder {
         this.perioder = [...settInnPerioder(this.perioder, fastePerioder)];
 
         this.finnOgSettInnHull();
-        if (this.erEndringssøknad && this.opprinneligPlan) {
+        if (this.opprinneligPlan) {
             this.finnOgErstattHullMedOpprinneligPlan();
+            this.settInnOpprinneligeInfoPerioderUtenforPlan();
         }
         this.slåSammenLikePerioder();
         if (foreldrepengerFørTermin === undefined) {
@@ -80,7 +72,11 @@ class UttaksplanAutoBuilder {
         this.fjernHullPåSlutten();
         this.sort();
 
-        this.perioder = [...perioderFørFamDato, ...this.perioder, ...perioderMedUgyldigTidsperiode];
+        this.perioder = [
+            ...perioderFørFamDato.filter((p) => isOverskrivbarPeriode(p) === false),
+            ...this.perioder,
+            ...perioderMedUgyldigTidsperiode
+        ];
         return this;
     }
 
@@ -130,17 +126,20 @@ class UttaksplanAutoBuilder {
         const perioder = this.perioder;
         const opprinneligPlan = this.opprinneligPlan;
         const opprinneligePerioderSomSkalLeggesInnIPlan: Periode[] = [];
-        if (perioder && opprinneligPlan) {
+        if (perioder && perioder.length > 0 && opprinneligPlan) {
             this.perioder.filter(isHull).forEach((hull) => {
                 const opprinneligePerioder = Periodene(
                     opprinneligPlan.filter((p) => isInfoPeriode(p) === true)
                 ).finnOverlappendePerioder(hull);
+                const hullErFørstePeriodeIPlanen = this.perioder.indexOf(hull) === 0;
                 opprinneligePerioder.forEach((periode) => {
                     const op: Periode = {
                         ...periode,
                         id: guid(),
                         tidsperiode: {
-                            fom: moment.max([moment(hull.tidsperiode.fom), moment(periode.tidsperiode.fom)]).toDate(),
+                            fom: hullErFørstePeriodeIPlanen
+                                ? periode.tidsperiode.fom
+                                : moment.max([moment(hull.tidsperiode.fom), moment(periode.tidsperiode.fom)]).toDate(),
                             tom: moment.min([moment(hull.tidsperiode.tom), moment(periode.tidsperiode.tom)]).toDate()
                         }
                     };
@@ -151,6 +150,38 @@ class UttaksplanAutoBuilder {
             this.perioder = finnOgSettInnHull(settInnPerioder(nyPlan, opprinneligePerioderSomSkalLeggesInnIPlan));
         }
 
+        return this;
+    }
+
+    settInnOpprinneligeInfoPerioderUtenforPlan() {
+        if (this.opprinneligPlan && this.perioder.length > 0) {
+            const førstePeriode = this.perioder[0];
+            const sistePeriode = this.perioder[this.perioder.length - 1];
+
+            const opprinneligePerioderFørFørstePeriode = this.opprinneligPlan
+                .filter((p) => Perioden(p).starterFør(førstePeriode.tidsperiode.fom))
+                .filter(isInfoPeriode || isGruppertInfoPeriode)
+                .map((p) => {
+                    if (Perioden(p).slutterSammeDagEllerEtter(førstePeriode.tidsperiode.fom)) {
+                        return {
+                            ...p,
+                            tidsperiode: {
+                                fom: p.tidsperiode.fom,
+                                tom: Uttaksdagen(førstePeriode.tidsperiode.fom).forrige()
+                            }
+                        };
+                    }
+                    return clonePeriode(p);
+                });
+
+            this.perioder = [
+                ...opprinneligePerioderFørFørstePeriode,
+                ...this.perioder,
+                ...this.opprinneligPlan
+                    .filter((p) => moment(p.tidsperiode.fom).isAfter(sistePeriode.tidsperiode.tom, 'day'))
+                    .map(clonePeriode)
+            ];
+        }
         return this;
     }
 
@@ -232,25 +263,35 @@ class UttaksplanAutoBuilder {
 function fjernOverskrivbarePerioderIPeriodetidsrom(perioder: Periode[], periode: Periode): Periode[] {
     const nyePerioder: Periode[] = perioder.filter((p) => isOverskrivbarPeriode(p) === false);
     const overskrivbarePerioder = perioder.filter((p) => isOverskrivbarPeriode(p));
-    overskrivbarePerioder.forEach((o) => {
-        if (Tidsperioden(o.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
+    overskrivbarePerioder.forEach((overskrivbarPeriode) => {
+        if (Tidsperioden(overskrivbarPeriode.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
             return;
-        } else if (Tidsperioden(o.tidsperiode).erUtenfor(periode.tidsperiode)) {
-            nyePerioder.push(o);
-        } else if (moment(o.tidsperiode.fom).isBefore(periode.tidsperiode.fom, 'day')) {
+        } else if (Tidsperioden(overskrivbarPeriode.tidsperiode).erUtenfor(periode.tidsperiode)) {
+            nyePerioder.push(overskrivbarPeriode);
+        } else if (moment(overskrivbarPeriode.tidsperiode.fom).isBefore(periode.tidsperiode.fom, 'day')) {
             nyePerioder.push({
-                ...o,
+                ...overskrivbarPeriode,
                 tidsperiode: {
-                    fom: o.tidsperiode.fom,
+                    fom: overskrivbarPeriode.tidsperiode.fom,
                     tom: Uttaksdagen(periode.tidsperiode.fom).forrige()
                 }
             });
+            if (moment(overskrivbarPeriode.tidsperiode.tom).isAfter(periode.tidsperiode.tom, 'day')) {
+                nyePerioder.push({
+                    ...overskrivbarPeriode,
+                    id: guid(),
+                    tidsperiode: {
+                        fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
+                        tom: overskrivbarPeriode.tidsperiode.tom
+                    }
+                });
+            }
         } else {
             nyePerioder.push({
-                ...o,
+                ...overskrivbarPeriode,
                 tidsperiode: {
                     fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
-                    tom: o.tidsperiode.tom
+                    tom: overskrivbarPeriode.tidsperiode.tom
                 }
             });
         }

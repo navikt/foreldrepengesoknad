@@ -5,7 +5,8 @@ import {
     StønadskontoType,
     Periodetype,
     UttaksperiodeBase,
-    isUttaksperiode
+    isUttaksperiode,
+    UtsettelseÅrsakType
 } from '../../../types/uttaksplan/periodetyper';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { guid } from 'nav-frontend-js-utils';
@@ -14,6 +15,7 @@ import { getTidsperiode, Tidsperioden } from '../Tidsperioden';
 import { sorterPerioder } from '../Periodene';
 import { DateValue } from '../../../types/common';
 import { dateIsSameOrAfter } from '../../../../app/util/dates/dates';
+import { skalFarUtsetteEtterMorSinSisteUttaksdag } from 'app/steg/uttaksplanSkjema/utils';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,
@@ -27,7 +29,7 @@ const deltUttakAdopsjonSøktFørst = (
         const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
         const perioder: Periode[] = [];
         const kontoType = erFarEllerMedmor ? StønadskontoType.Fedrekvote : StønadskontoType.Mødrekvote;
-        const forelder = erFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR;
+        const forelder = erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
         const konto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
             (k) =>
                 erFarEllerMedmor ? k.konto === StønadskontoType.Fedrekvote : k.konto === StønadskontoType.Mødrekvote
@@ -76,7 +78,8 @@ const deltUttakAdopsjonSøktSist = (
     antallDagerFellesperiodeFarMedmor: number | undefined,
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date,
-    farSinFørsteUttaksdag: Date
+    farSinFørsteUttaksdag: Date,
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
 ) => {
     if (erFarEllerMedmor) {
         // Oppfører seg identisk som fødselsscenario
@@ -85,7 +88,8 @@ const deltUttakAdopsjonSøktSist = (
             antallDagerFellesperiodeFarMedmor,
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag,
-            farSinFørsteUttaksdag
+            farSinFørsteUttaksdag,
+            begrunnelseForUtsettelse
         );
     } else {
         const forslag = deltUttakFødselFarMedmor(
@@ -93,7 +97,8 @@ const deltUttakAdopsjonSøktSist = (
             antallDagerFellesperiodeFarMedmor,
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag,
-            farSinFørsteUttaksdag
+            farSinFørsteUttaksdag,
+            begrunnelseForUtsettelse
         ).map((periode) => {
             if (
                 isUttaksperiode(periode) &&
@@ -103,12 +108,12 @@ const deltUttakAdopsjonSøktSist = (
                     return {
                         ...periode,
                         stønadskonto: StønadskontoType.Mødrekvote,
-                        forelder: Forelder.MOR
+                        forelder: Forelder.mor
                     };
                 } else {
                     return {
                         ...periode,
-                        forelder: Forelder.MOR
+                        forelder: Forelder.mor
                     };
                 }
             }
@@ -130,7 +135,8 @@ const deltUttakAdopsjon = (
     antallDagerFellesperiodeFarMedmor: number | undefined,
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date | undefined,
-    farSinFørsteUttaksdag: Date | undefined
+    farSinFørsteUttaksdag: Date | undefined,
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
 ) => {
     if (!harAnnenForelderSøktFP) {
         return deltUttakAdopsjonSøktFørst(
@@ -148,7 +154,8 @@ const deltUttakAdopsjon = (
             antallDagerFellesperiodeFarMedmor,
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag!,
-            farSinFørsteUttaksdag!
+            farSinFørsteUttaksdag!,
+            begrunnelseForUtsettelse
         );
     }
 };
@@ -181,7 +188,7 @@ const deltUttakFødselMor = (
             const ekstraPeriodeFørFødsel: Periode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.MOR,
+                forelder: Forelder.mor,
                 konto: StønadskontoType.Fellesperiode,
                 tidsperiode: getTidsperiode(startdatoPermisjon, dagerFørFødsel - 15),
                 vedlegg: []
@@ -193,7 +200,7 @@ const deltUttakFødselMor = (
         const periodeFørFødsel: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
+            forelder: Forelder.mor,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             tidsperiode: {
                 fom: startdatoFpFørFødsel,
@@ -206,7 +213,7 @@ const deltUttakFødselMor = (
         const periodeFørFødsel: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
+            forelder: Forelder.mor,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             skalIkkeHaUttakFørTermin: true,
             tidsperiode: {} as any,
@@ -219,7 +226,7 @@ const deltUttakFødselMor = (
         const periodeMødrekvote: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
+            forelder: Forelder.mor,
             konto: StønadskontoType.Mødrekvote,
             tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager),
             ønskerSamtidigUttak: false,
@@ -245,7 +252,7 @@ const deltUttakFødselMor = (
             const periodeFellesperiodeMor: Periode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.MOR,
+                forelder: Forelder.mor,
                 konto: StønadskontoType.Fellesperiode,
                 tidsperiode: getTidsperiode(currentTomDate, fellesperiodeukerMor * 5 - trekkEkstraPermisjonDager),
                 ønskerSamtidigUttak: false,
@@ -264,7 +271,8 @@ const deltUttakFødselFarMedmor = (
     antallDagerFellesperiodeFarMedmor: number | undefined,
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date,
-    farSinFørsteUttaksdag: Date
+    farSinFørsteUttaksdag: Date,
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
 ): Periode[] => {
     if (dateIsSameOrAfter(morSinSisteUttaksdag, farSinFørsteUttaksdag)) {
         return [];
@@ -273,20 +281,37 @@ const deltUttakFødselFarMedmor = (
     const perioder: Periode[] = [];
     const startDatoUttak = Uttaksdagen(farSinFørsteUttaksdag).denneEllerNeste();
     let sisteUttaksDag = Uttaksdagen(farSinFørsteUttaksdag).denneEllerNeste();
-    const fkKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
+    const fedrekvoteKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
         (konto) => konto.konto === StønadskontoType.Fedrekvote
     );
     const fellesKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
         (konto) => konto.konto === StønadskontoType.Fellesperiode
     );
 
-    if (fkKonto !== undefined) {
+    if (
+        begrunnelseForUtsettelse &&
+        skalFarUtsetteEtterMorSinSisteUttaksdag(farSinFørsteUttaksdag, morSinSisteUttaksdag)
+    ) {
+        perioder.push({
+            id: guid(),
+            årsak: begrunnelseForUtsettelse,
+            type: Periodetype.Utsettelse,
+            forelder: Forelder.farMedmor,
+            erArbeidstaker: false, // TODO
+            tidsperiode: {
+                fom: Uttaksdagen(morSinSisteUttaksdag).neste(),
+                tom: Uttaksdagen(farSinFørsteUttaksdag).forrige()
+            }
+        });
+    }
+
+    if (fedrekvoteKonto !== undefined) {
         const fedrekvotePeriode: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.FARMEDMOR,
+            forelder: Forelder.farMedmor,
             konto: StønadskontoType.Fedrekvote,
-            tidsperiode: getTidsperiode(startDatoUttak, fkKonto.dager),
+            tidsperiode: getTidsperiode(startDatoUttak, fedrekvoteKonto.dager),
             ønskerSamtidigUttak: false,
             gradert: false
         };
@@ -311,7 +336,7 @@ const deltUttakFødselFarMedmor = (
             const fellesPeriode: Periode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.FARMEDMOR,
+                forelder: Forelder.farMedmor,
                 konto: StønadskontoType.Fellesperiode,
                 tidsperiode: getTidsperiode(sisteUttaksDag, antallDagerFellesperiode),
                 ønskerSamtidigUttak: false,
@@ -334,7 +359,8 @@ const deltUttakFødsel = (
     antallDagerFellesperiodeFarMedmor: number | undefined,
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date | undefined,
-    farSinFørsteUttaksdag: Date | undefined
+    farSinFørsteUttaksdag: Date | undefined,
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
 ) => {
     if (!erFarEllerMedmor) {
         return deltUttakFødselMor(famDato, tilgjengeligeStønadskontoer, startdatoPermisjon, fellesperiodeukerMor);
@@ -348,7 +374,8 @@ const deltUttakFødsel = (
             antallDagerFellesperiodeFarMedmor,
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag!,
-            farSinFørsteUttaksdag!
+            farSinFørsteUttaksdag!,
+            begrunnelseForUtsettelse
         );
     }
 };
@@ -364,7 +391,8 @@ export const deltUttak = (
     antallDagerFellesperiodeFarMedmor: number | undefined,
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date | undefined,
-    farSinFørsteUttaksdag: Date | undefined
+    farSinFørsteUttaksdag: Date | undefined,
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
 ) => {
     if (situasjon === Søkersituasjon.ADOPSJON) {
         return deltUttakAdopsjon(
@@ -377,7 +405,8 @@ export const deltUttak = (
             antallDagerFellesperiodeFarMedmor,
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag,
-            farSinFørsteUttaksdag
+            farSinFørsteUttaksdag,
+            begrunnelseForUtsettelse
         );
     }
 
@@ -391,9 +420,9 @@ export const deltUttak = (
             antallDagerFellesperiodeFarMedmor,
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag,
-            farSinFørsteUttaksdag
+            farSinFørsteUttaksdag,
+            begrunnelseForUtsettelse
         );
     }
-
     return [];
 };

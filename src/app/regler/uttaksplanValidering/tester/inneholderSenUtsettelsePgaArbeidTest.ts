@@ -1,8 +1,9 @@
-import { Regelgrunnlag, RegelTestresultat } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
 import { erSenUtsettelsePgaFerieEllerArbeid } from '../../../util/uttaksplan/uttakUtils';
 import { Periodetype, UtsettelseÅrsakType } from '../../../types/uttaksplan/periodetyper';
+import { RegelTestresultat } from 'shared/regler/regelTypes';
 
-export function inneholderSenUtsettelsePgaArbeidTest(grunnlag: Regelgrunnlag): RegelTestresultat {
+export function inneholderSenUtsettelsePgaArbeidTest(grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat {
     const seneUtsettelserPgaArbeid = grunnlag.perioder
         .filter(erSenUtsettelsePgaFerieEllerArbeid)
         .filter((p) => p.type === Periodetype.Utsettelse && p.årsak === UtsettelseÅrsakType.Arbeid);

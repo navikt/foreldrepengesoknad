@@ -12,7 +12,6 @@ import {
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
-import { cloneDeep } from 'lodash';
 
 export const getDefaultSøknadState = (): SøknadPartial => {
     return {
@@ -34,7 +33,6 @@ export const getDefaultSøknadState = (): SøknadPartial => {
         harGodkjentOppsummering: false,
         ekstrainfo: {
             erEnkelEndringssøknad: false,
-            erEnkelEndringssøknadMedUttaksplan: false,
             uttaksplanSkjema: {
                 startdatoPermisjon: undefined
             },
@@ -70,6 +68,16 @@ const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnn
     };
 };
 
+const cloneUttaksplan = (uttaksplan: Periode[] | undefined): Periode[] => {
+    if (!uttaksplan || uttaksplan.length === 0) {
+        return [];
+    }
+    return uttaksplan.map((periode) => ({
+        ...periode,
+        tidsperiode: { ...periode.tidsperiode }
+    }));
+};
+
 const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction): SøknadPartial => {
     const getBuilder = (perioder?: Periode[]) => {
         const familiehendelsesdato = getFamiliehendelsedato(state.barn, state.situasjon);
@@ -77,7 +85,6 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             return UttaksplanBuilder(
                 perioder || state.uttaksplan,
                 familiehendelsesdato,
-                state.erEndringssøknad === true,
                 state.ekstrainfo.eksisterendeSak ? state.ekstrainfo.eksisterendeSak.uttaksplan : undefined
             );
         }
@@ -92,6 +99,11 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             return {
                 ...state,
                 ...action.payload
+            };
+        case SøknadActionKeys.UPDATE_EKSTRAINFO:
+            return {
+                ...state,
+                ekstrainfo: { ...state.ekstrainfo, ...action.payload }
             };
         case SøknadActionKeys.SET_SØKNAD:
             return {
@@ -154,7 +166,7 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
         case SøknadActionKeys.UTTAKSPLAN_SET_PERIODER:
             return {
                 ...state,
-                uttaksplan: cloneDeep(action.perioder)
+                uttaksplan: cloneUttaksplan(action.perioder)
             };
 
         case SøknadActionKeys.UTTAKSPLAN_RESET_ENDRINGER:
@@ -162,7 +174,7 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 ...state,
                 uttaksplan:
                     state.ekstrainfo.eksisterendeSak !== undefined
-                        ? cloneDeep(state.ekstrainfo.eksisterendeSak.uttaksplan || [])
+                        ? cloneUttaksplan(state.ekstrainfo.eksisterendeSak.uttaksplan || [])
                         : []
             };
 

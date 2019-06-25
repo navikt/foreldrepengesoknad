@@ -1,19 +1,22 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { Periode, isGruppertInfoPeriode } from 'app/types/uttaksplan/periodetyper';
 import { getPeriodeTittel } from 'app/util/uttaksplan';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import { InjectedIntl } from 'react-intl';
 import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
+import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from 'shared/regler/regelTypes';
 
-export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+export const overskriverEndringerAnnenPartsPerioder: RegelTest = (
+    grunnlag: UttaksplanRegelgrunnlag
+): RegelTestresultat => {
     const {
         eksisterendeUttaksplan,
         søknadsinfo: {
             navn: { navnPåForeldre }
         }
     } = grunnlag;
-    if (grunnlag.søknadsinfo.søknaden.erEndringssøknad && eksisterendeUttaksplan) {
+    if (eksisterendeUttaksplan) {
         const { perioderSomSkalSendesInn } = grunnlag;
         const perioderSomOverlapper: Periode[] = [];
         perioderSomSkalSendesInn.forEach((periode) => {
@@ -35,7 +38,8 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Rege
                     values: {
                         periode: (intl: InjectedIntl) => getPeriodeTittel(intl, periode, navnPåForeldre),
                         tidsperiode: (intl: InjectedIntl) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
-                        forelder: (intl: InjectedIntl) =>
+                        forelder: grunnlag.søknadsinfo.navn.annenForelder.fornavn,
+                        forelders: (intl: InjectedIntl) =>
                             getNavnGenitivEierform(grunnlag.søknadsinfo.navn.annenForelder.fornavn, intl.locale)
                     }
                 };

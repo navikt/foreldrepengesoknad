@@ -1,16 +1,15 @@
 import * as React from 'react';
-import moment from 'moment';
 import { onToggleItemProp } from '../../../../elementer/toggleList/ToggleList';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { Periode, GruppertInfoPeriode } from '../../../../../types/uttaksplan/periodetyper';
+import { GruppertInfoPeriode } from '../../../../../types/uttaksplan/periodetyper';
 import { NavnPåForeldre } from 'common/types';
 import PeriodelisteInfo from './PeriodelisteInfo';
 import { getPeriodeForelderNavn } from 'app/util/uttaksplan';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import EnkelPeriodeliste from 'app/components/uttaksplanlegger/components/enkelPeriodeliste/EnkelPeriodeliste';
-import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { getPeriodeIkon } from '../elements/PeriodeHeader';
+import { trimPerioderIGruppertInfoPeriode } from 'app/util/uttaksplan/gruppertInfoPeriodeUtils';
 
 export interface Props {
     itemId: string;
@@ -30,16 +29,7 @@ const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedInt
     stil = 'medRammeOgStrek',
     intl
 }) => {
-    const perioderITidsperiode: Periode[] = Periodene(periode.perioder)
-        .finnOverlappendePerioder(periode)
-        .map((p) => ({
-            ...p,
-            tidsperiode: {
-                fom: moment.max([moment(periode.tidsperiode.fom), moment(p.tidsperiode.fom)]).toDate(),
-                tom: moment.min([moment(periode.tidsperiode.tom), moment(p.tidsperiode.tom)]).toDate()
-            }
-        }));
-
+    const perioderITidsperiode = trimPerioderIGruppertInfoPeriode(periode);
     const tittel = getMessage(intl, 'periodeliste.gruppertInfo.tittel', {
         navn: getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale),
         antallPerioder: perioderITidsperiode.length

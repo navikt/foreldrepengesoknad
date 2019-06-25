@@ -1,10 +1,11 @@
-import { Regel, RegelAlvorlighet } from '../types';
 import { harUttaksperiodeGyldigGradering } from './harUttaksperiodeGyldigGradering';
 import { harPeriodeGyldigTidsperiode } from './harPeriodeGyldigTidsperiode';
 import { harUttaksperiodeStønadskonto } from './harUttaksperiodeStønadskonto';
 import { erSamtidigUttakGyldig } from './erSamtidigUttakGyldig';
 import { erUtsettelseEtterFamiliehendelsesdato } from './erUtsettelseEtterFamiliehendelsesdato';
 import { erAllePeriodeSkjemaspørsmålBesvart } from './erAllePeriodeSkjemaspørsmålBesvart';
+import { Regel, RegelAlvorlighet } from 'shared/regler/regelTypes';
+import { harUtsettelsePgaArbeidMedDeltidUtenAvtale } from './harUtsettelsePgaArbeidMedDeltidUtenAvtale';
 
 export enum PeriodeValiderRegelKey {
     'uttaksperiodeHarGyldigGradering' = 'uttaksperiodeHarGyldigGradering',
@@ -12,7 +13,8 @@ export enum PeriodeValiderRegelKey {
     'uttaksperiodeHarStønadskonto' = 'uttaksperiodeHarStønadskonto',
     'erSamtidigUttakGyldig' = 'erSamtidigUttakGyldig',
     'erUtsettelseEtterFamiliehendelsesdato' = 'erUtsettelseEtterFamiliehendelsesdato',
-    'erAllePeriodeSkjemaspørsmålBesvart' = 'erAllePeriodeSkjemaspørsmålBesvart'
+    'erAllePeriodeSkjemaspørsmålBesvart' = 'erAllePeriodeSkjemaspørsmålBesvart',
+    'harUtsettelsePgaArbeidMedDeltidUtenAvtale' = 'harUtsettelsePgaArbeidMedDeltidUtenAvtale'
 }
 
 /** Meldingene skal default kun vises inne i skjema */
@@ -57,6 +59,12 @@ const periodevalideringsregler: Regel[] = [
         test: erAllePeriodeSkjemaspørsmålBesvart,
         skjulesIOppsummering: skjulIOppsummering,
         avvikType: 'skjema'
+    },
+    {
+        key: PeriodeValiderRegelKey.harUtsettelsePgaArbeidMedDeltidUtenAvtale,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: harUtsettelsePgaArbeidMedDeltidUtenAvtale,
+        skjulesIOppsummering: false
     }
 ];
 

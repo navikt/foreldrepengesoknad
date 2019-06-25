@@ -14,6 +14,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import ApplicationInfo from './components/applikasjon/applicationInfo/ApplicationInfo';
 import { registerDevUtils } from 'common/dev/devUtils';
 import ErrorBoundary from './components/applikasjon/errorBoundary/ErrorBoundary';
+import ByttBrowserModal from 'common/components/byttBrowserModal/ByttBrowserModal';
 
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
@@ -29,6 +30,7 @@ render(
             <IntlProvider>
                 <Router>
                     <Normaltekst tag="div">
+                        <ByttBrowserModal />
                         <Foreldrepengesøknad />
                         <ApplicationInfo />
                     </Normaltekst>

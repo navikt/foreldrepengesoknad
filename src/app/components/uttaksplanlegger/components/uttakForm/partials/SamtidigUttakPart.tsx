@@ -57,7 +57,7 @@ class SamtidigUttakPart extends React.Component<Props> {
         const varighet =
             pst && uttaksdager
                 ? getMessage(intl, 'samtidig.uttak.varighet', {
-                      varighet: getVarighetString(finnAntallDagerÅTrekke(uttaksdager, periode as Periode), intl)
+                      varighet: getVarighetString(finnAntallDagerÅTrekke(periode as Periode), intl)
                   })
                 : undefined;
 

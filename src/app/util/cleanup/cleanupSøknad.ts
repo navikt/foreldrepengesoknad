@@ -4,8 +4,8 @@ import Søknad, {
     EnkelEndringssøknadForInnsending,
     Tilleggsopplysninger
 } from '../../types/søknad/Søknad';
-import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
-import { isAttachmentWithError } from 'common/storage/attachment/components/util';
+import { Attachment, InnsendingsType } from 'app/components/storage/attachment/types/Attachment';
+import { isAttachmentWithError } from 'app/components/storage/attachment/components/util';
 import {
     Periode,
     isUttaksperiode,
