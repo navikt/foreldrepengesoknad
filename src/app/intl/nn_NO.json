@@ -282,7 +282,7 @@
     "manglendeVedlegg.title.terminbekreftelse": "Stadfesting på termin",
     "manglendeVedlegg.info.terminbekreftelse":
         "Du må leggja ved terminstadfestinga må vise at du er i 22. svangerskapsveke eller seinare.",
-    "manglendeVedlegg.title.utsettelseSykdomUttaksplan": "Stadfesting av sjukdom eller innleggelse",
+    "manglendeVedlegg.title.utsettelseSykdomUttaksplan": "Stadfesting av sjukdom eller innlegginga",
     "manglendeVedlegg.info.utsettelseSykdomUttaksplan":
         "Du må leggja ved stadfesting frå legen din eller frå sjukehuset eller helseinstitusjonen.",
     "manglendeVedlegg.title.anneninntektDokumentasjon": "Dokumentasjon av annen inntektskjelder",
@@ -327,6 +327,13 @@
     "oppholdsårsaktype.foreldernavn.mor.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tek ut av flernbarnsperioden",
     "oppholdsårsaktype.foreldernavn.mor.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tek ut kvoten din",
     "oppholdsårsaktype.foreldernavn.mor.undefined": "{foreldernavn} tek ut",
+    "oppholdsårsaktype.foreldernavn.mor.ARBEID": "{foreldernavn} utsetjer på grunn av heltidsarbeid",
+    "oppholdsårsaktype.foreldernavn.mor.LOVBESTEMT_FERIE": "{foreldernavn} har utset på grunn av lovbestemt ferie",
+    "oppholdsårsaktype.foreldernavn.mor.SYKDOM": "{foreldernavn} har utset på grunn av sykdom",
+    "oppholdsårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_SØKER":
+        "{foreldernavn} har utset på grunn av innlegging i helseinstitusjon",
+    "oppholdsårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_BARNET":
+        "{foreldernavn} har utset fordi barnet er innlagd i helseinstitusjon",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER":
         "{foreldernavn} tek ut foreldrepenger før fødsel",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tek ut kvoten din",
@@ -334,15 +341,13 @@
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tek ut av flernbarnsperioden",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tek ut kvoten sin",
     "oppholdsårsaktype.foreldernavn.far.undefined": "{foreldernavn} tek ut",
-
-    "oppholdsårsaktype.foreldernavn.far.LOVBESTEMT_FERIE": "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
-    "oppholdsårsaktype.foreldernavn.far.ARBEID": "{foreldernavn} har utsettelse på grunn av heltidsarbeid",
-    "oppholdsårsaktype.foreldernavn.far.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
+    "oppholdsårsaktype.foreldernavn.far.ARBEID": "{foreldernavn} utsetjer på grunn av heiltidsarbeid",
+    "oppholdsårsaktype.foreldernavn.far.LOVBESTEMT_FERIE": "{foreldernavn} har utset på grunn av lovbestemt ferie",
+    "oppholdsårsaktype.foreldernavn.far.SYKDOM": "{foreldernavn} har utset på grunn av sjukdom",
     "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_SØKER":
-        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstusujon",
+        "{foreldernavn} har utset på grunn av innlegging i helseinstitusjon",
     "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET":
-        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstutusjon",
-
+        "{foreldernavn} har utset fordi barnet er innlagd i helseinstitusjon",
     "oppsummering.adopsjonAvEktefellesBarn.label": "Gjeld søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
     "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
@@ -857,7 +862,7 @@
     "uttaksplan.validering.feil.periodeStarterPåDatoSomIkkeErUttaksdag":
         "Perioden kan ikkje starte på ein laurdag eller sundag",
     "uttaksplan.validering.feil.periodeSlutterPåDatoSomIkkeErUttaksdag":
-        "Perioden kan ikke slutte på ein laurdag eller sundag",
+        "Perioden kan ikkje slutte på ein laurdag eller sundag",
     "uttaksplan.validering.feil.innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode":
         "Foreldrepenger uten aktivitetskrav må du ta ut innen {antallUker} uker etter at barnet er født. Skal du ha foreldrepenger etter denne perioden må mor være i aktivitet når du er hjemme med barnet.",
     "uttaksplan.validering.feil.inneholderForMyeFerie":
@@ -965,8 +970,8 @@
     "vedlegg.feilmelding.tittel.flereFeil": " Opplasting av vedlegg feilte for:",
     "vedlegg.forStort": " Vedlegget må vera mindre enn 9MB",
     "vedlegg.forStort.flereFeil": "{filename} - Vedlegget må vera mindre enn 9MB",
-    "vedlegg.virus": "Vedlegget inneholder noe vi ikke vil ha",
-    "vedlegg.virus.flereFeil": "{filename} - Vedlegget inneholder noe vi ikke vil ha",
+    "vedlegg.virus": "Vedlegget inneholder noe vi ikkje vil ha",
+    "vedlegg.virus.flereFeil": "{filename} - Vedlegget inneheld noko vi ikkje vil ha",
     "vedlegg.lastoppknapp.anneninntektDokumentasjon": "Last opp dokumentasjon her",
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
     "vedlegg.lastoppknapp.dokumentasjonAvAleneomsorg": "Last opp dokumentasjon her",
@@ -1106,7 +1111,7 @@
     "søknadSendt.info.missingAttachment.I000039": "Stadfesting av militær- eller siviltjeneste",
     "søknadSendt.info.missingAttachment.I000007": "Inntektsopplysninger for selvstendig næringsdrivende",
     "søknadSendt.info.missingAttachment.I000038": "Stadfesting av mors utdanning, arbeid eller sykdom",
-    "søknadSendt.info.missingAttachment.I000037": "Stadfesting av innleggelse på sjukehus eller helseinstitusjon,",
+    "søknadSendt.info.missingAttachment.I000037": "Stadfesting av innlegging på sjukehus eller helseinstitusjon,",
     "søknadSendt.info.missingAttachment.I000045": "Stadfesting av sjukdom",
     "søknadSendt.info.missingAttachment.I000061": "Stadfesting av mors utdanning på heltid",
     "søknadSendt.info.missingAttachment.I000051": "Stadfesting av at mor deltar i kvalifiseringsprogrammet",
@@ -1120,6 +1125,7 @@
     "periodetype.uttak": "uttak",
 
     "uttaksplan.validering.feil.erAllePeriodeSkjemaspørsmålBesvart": "Nokon av spørsmåla for perioden manglar svar",
+    "uttaksplan.validering.feil.erUtsettelseEtterFamiliehendelsesdato": "Du kan ikkje utsette før barnet er født",
     "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering":
         "Stillingsprosenten du skal jobbe kan bare inneholde tall, over vera mellom 1 og 99",
     "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden er ikkje gyldig",
