@@ -91,6 +91,10 @@ export function sendStorageKvittering(): ApiActionTypes {
     };
 }
 
+const getSakForAnnenPart = () => ({
+    type: ApiActionKeys.GET_ANNEN_PART_SIN_SAK
+});
+
 export default {
     getSøkerinfo,
     getSaker,
@@ -103,5 +107,6 @@ export default {
     getTilgjengeligeStønadskonterAndLagUttaksplanForslag,
     getTilgjengeligeStønadsuker,
     updateApi,
-    sendStorageKvittering
+    sendStorageKvittering,
+    getSakForAnnenPart
 };

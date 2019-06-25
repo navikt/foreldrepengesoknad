@@ -1,4 +1,6 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
+import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+
 import { Periode, TilgjengeligStønadskonto, Periodetype } from 'app/types/uttaksplan/periodetyper';
 import { Søknadsinfo } from 'app/selectors/types';
 import { getUttakFormVisibility } from 'app/components/uttaksplanlegger/components/uttakForm/uttakFormConfig';
@@ -7,11 +9,13 @@ import getUttakSkjemaregler from 'app/regler/uttak/uttaksskjema/uttakSkjemaregle
 import getSøknadsperiode from 'app/regler/søknadsperioden/Søknadsperioden';
 import { getUtsettelseFormVisibility } from 'app/components/uttaksplanlegger/components/utsettelseForm/utsettelseFormConfig';
 import { getVariantFromPeriode } from 'app/components/uttaksplanlegger/components/utsettelseForm/UtsettelseForm';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 const erAlleSpørsmålBesvart = (
     periode: Periode,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    søknadsinfo: Søknadsinfo
+    søknadsinfo: Søknadsinfo,
+    arbeidsforhold: Arbeidsforhold[]
 ): boolean => {
     switch (periode.type) {
         case Periodetype.Hull:
@@ -32,15 +36,21 @@ const erAlleSpørsmålBesvart = (
             return getUtsettelseFormVisibility({
                 periode,
                 variant: getVariantFromPeriode(periode),
-                søknadsinfo
+                søknadsinfo,
+                arbeidsforhold
             }).areAllQuestionsAnswered();
     }
 };
 
-export const erAllePeriodeSkjemaspørsmålBesvart: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+export const erAllePeriodeSkjemaspørsmålBesvart: RegelTest = (grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat => {
     const perioderMedUbesvarteSpørsmål = grunnlag.perioder.filter(
         (periode) =>
-            erAlleSpørsmålBesvart(periode, grunnlag.tilgjengeligeStønadskontoer, grunnlag.søknadsinfo) === false
+            erAlleSpørsmålBesvart(
+                periode,
+                grunnlag.tilgjengeligeStønadskontoer,
+                grunnlag.søknadsinfo,
+                grunnlag.arbeidsforhold
+            ) === false
     );
     return {
         passerer: perioderMedUbesvarteSpørsmål.length === 0,

@@ -4,7 +4,7 @@ import { StønadskontoType, UttaksperiodeBase } from '../../../../../../types/ut
 import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 import MorsAktivitetDetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
 import getMessage from 'common/util/i18nUtils';
-import { getArbeidsformTekst } from 'common/util/oppsummeringUtils';
+import { getArbeidsformTekst } from 'app/util/oppsummeringUtils';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 interface UttaksperiodedetaljerProps {

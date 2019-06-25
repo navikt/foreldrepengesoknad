@@ -13,7 +13,7 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søknadsinfo?: Søkna
         return false;
     }
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
-    const scenario = getUttaksplanSkjemaScenario(søknadsinfo);
+    const scenario = getUttaksplanSkjemaScenario(søknadsinfo, søknad.ekstrainfo.eksisterendeSak);
     switch (scenario) {
         case UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan:
             return skjema.skalStarteRettEtterMor === false ? skjema.utsettelseEtterMorSkjemaValid === true : true;

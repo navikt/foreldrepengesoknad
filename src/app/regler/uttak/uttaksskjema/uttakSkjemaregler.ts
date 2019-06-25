@@ -58,7 +58,7 @@ export const getUttakSkjemaregler = (søknadsinfo: Søknadsinfo, periode: UttakF
     graderingSkalBesvares: (): boolean => {
         const søknadsperiode = getSøknadsperiode(søknadsinfo, periode as Periode);
 
-        return graderingSkalBesvares(søknadsperiode.erUttakFørFødsel());
+        return graderingSkalBesvares(søknadsperiode.erUttakFørFødsel(), søknadsperiode.harSamtidigUttak());
     },
     overføringsårsakSkalBesvares: () => overføringsårsakSkalBesvares(periode as Periode, søknadsinfo)
 });

@@ -3,8 +3,8 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import { Row, Column } from 'nav-frontend-grid';
-import SkjemaInputElement from 'common/components/skjema/elements/skjema-input-element/SkjemaInputElement';
 import Input from 'common/components/skjema/wrappers/Input';
+import SkjemaInputElement from 'common/components/skjema/elements/skjema-input-element/SkjemaInputElement';
 
 interface NavnPåAnnenForelderSpørsmålProps {
     fornavn?: string;

@@ -13,10 +13,14 @@ export const Perioden = (periode: Periode) => ({
     setUttaksdager: (uttaksdager: number) =>
         (periode.tidsperiode = getTidsperiode(periode.tidsperiode.fom, uttaksdager)),
     getAntallUttaksdager: () => Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
+    getAntallFridager: () => Tidsperioden(periode.tidsperiode).getAntallFridager(),
     erLik: (periode2: Periode, inkluderTidsperiode: boolean = false, inkluderUtsettelser: boolean = false) =>
         erPerioderLike(periode, periode2, inkluderTidsperiode, inkluderUtsettelser),
     erSammenhengende: (periode2: Periode) => erPerioderSammenhengende(periode, periode2),
-    inneholderFridager: () => Tidsperioden(periode.tidsperiode).getAntallFridager() > 0
+    inneholderFridager: () => Tidsperioden(periode.tidsperiode).getAntallFridager() > 0,
+    starterFør: (dato: Date) => moment(periode.tidsperiode.fom).isBefore(dato, 'day'),
+    slutterEtter: (dato: Date) => moment(periode.tidsperiode.tom).isAfter(dato, 'day'),
+    slutterSammeDagEllerEtter: (dato: Date) => moment(periode.tidsperiode.tom).isSameOrAfter(dato, 'day')
 });
 
 function erOpphold(periode: Periode): boolean {

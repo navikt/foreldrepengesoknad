@@ -3,8 +3,8 @@ import actions from '../../actions/søknad/søknadActionCreators';
 import { Skjemanummer, SøkerRolle } from '../../../types/søknad/Søknad';
 import { StegID } from '../../../util/routing/stegConfig';
 import * as attachmentReducerUtils from './../../util/attachmentStateUpdates';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 
 const defaultState = getDefaultSøknadState();
 

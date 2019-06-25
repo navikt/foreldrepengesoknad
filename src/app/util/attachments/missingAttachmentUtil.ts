@@ -7,8 +7,8 @@ import {
 } from '../../steg/annenForelder/visibility/annenForelderStegVisibility';
 
 import annenInntektVisibility from '../../steg/andreInntekter/annenInntektModal/visibility';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import { Attachment, InnsendingsType } from 'app/components/storage/attachment/types/Attachment';
 import {
     Overføringsperiode,
     Periode,
@@ -26,7 +26,7 @@ import {
     isAttachmentForBarn,
     isAttachmentForPeriode,
     mapFileToAttachment
-} from 'common/storage/attachment/components/util';
+} from 'app/components/storage/attachment/components/util';
 import {
     dokumentasjonBehøvesForOverføringsperiode,
     dokumentasjonBehøvesForUtsettelsesperiode,
@@ -45,6 +45,10 @@ const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType):
     (type !== undefined && attachments.find((a) => a.type === type) === undefined);
 
 export function shouldPeriodeHaveAttachment(periode: Periode, søknadsinfo: Søknadsinfo): boolean {
+    if (periode.type === Periodetype.Info) {
+        return false;
+    }
+
     if (periode.type === Periodetype.Overføring) {
         return dokumentasjonBehøvesForOverføringsperiode(
             søknadsinfo.søker.erFarEllerMedmor,
@@ -192,12 +196,11 @@ export const findMissingAttachmentsForAndreInntekter = (søknad: Søknad): Missi
 export const findMissingAttachments = (
     søknad: Søknad,
     api: ApiState,
-    søknadsinfo: Søknadsinfo,
-    perioderSomSkalSendesInn: Periode[]
+    søknadsinfo: Søknadsinfo
 ): MissingAttachment[] => {
     const missingAttachments = [];
     missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api));
-    missingAttachments.push(...findMissingAttachmentsForPerioder(perioderSomSkalSendesInn, søknadsinfo));
+    missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknadsinfo));
     missingAttachments.push(...findMissingAttachmentsForAndreInntekter(søknad));
     return missingAttachments;
 };

@@ -15,7 +15,7 @@ import FrilanserBolk from './frilanserBolk/FrilanserBolk';
 import { FrilansInformasjon } from '../../types/søknad/FrilansInformasjon';
 import SelvstendigNæringsdrivendeBolk from './selvstendigNæringsdrivendeModal/selvstendigNæringsdrivendeBolk/SelvstendigNæringsdrivendeBolk';
 import { Næring } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import isAvailable from '../util/isAvailable';
+import isAvailable from '../../util/steg/isAvailable';
 import { annenInntektErGyldig } from '../../util/validation/steg/annenInntekt';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import InformasjonOmArbeidsforholdWrapper from 'app/steg/andreInntekter/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
@@ -35,7 +35,7 @@ import {
 import { mapMissingAttachmentsOnSøknad } from 'app/util/attachments/missingAttachmentUtil';
 import { findAllAttachments } from '../manglendeVedlegg/manglendeVedleggUtil';
 import _ from 'lodash';
-import { skalViseManglendeVedleggSteg } from '../util/navigation';
+import { skalViseManglendeVedleggSteg } from '../../util/steg/navigation';
 import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
 
 interface StateProps {

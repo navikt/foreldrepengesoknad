@@ -3,7 +3,7 @@ import { SøknadForInnsending } from '../types/søknad/Søknad';
 import Environment from '../../app/Environment';
 import { AppState } from '../redux/reducers';
 import { storageParser } from '../util/storage/parser';
-import { formaterDato } from 'common/util/datoUtils';
+import { formaterDato, formaterStønadskontoParamsDatoer } from 'common/util/datoUtils';
 import { StorageKvittering } from '../types/StorageKvittering';
 import AxiosInstance from './apiInterceptor';
 
@@ -12,8 +12,9 @@ export interface GetTilgjengeligeStønadskontoerParams {
     morHarRett: boolean;
     farHarRett: boolean;
     dekningsgrad: '100' | '80';
-    familiehendelsesdato: Date;
-    erFødsel: boolean;
+    termindato?: Date;
+    fødselsdato?: Date;
+    omsorgsovertakelsesdato?: Date;
     morHarAleneomsorg?: boolean;
     farHarAleneomsorg?: boolean;
     startdatoUttak: Date;
@@ -42,28 +43,37 @@ const getEksisterendeSak = (saksnummer: string) => {
     });
 };
 
+const getEksisterendeSakMedFnr = (fnr: string) => {
+    return AxiosInstance.get('/innsyn/uttaksplanannen', {
+        timeout: 60 * 1000,
+        params: { annenPart: fnr }
+    });
+};
+
 function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
     const {
         antallBarn,
         farHarRett,
         morHarRett,
         dekningsgrad,
-        familiehendelsesdato,
-        erFødsel,
+        fødselsdato,
+        termindato,
+        omsorgsovertakelsesdato,
         morHarAleneomsorg,
         farHarAleneomsorg,
         startdatoUttak
     } = params;
 
     const urlParams = {
-        erFodsel: erFødsel,
         farHarRett,
         morHarRett,
         morHarAleneomsorg: morHarAleneomsorg || false,
         farHarAleneomsorg: farHarAleneomsorg || false,
         dekningsgrad,
         antallBarn,
-        familiehendelsesdato: formaterDato(familiehendelsesdato, 'YYYYMMDD'),
+        fødselsdato: formaterStønadskontoParamsDatoer(fødselsdato, 'YYYYMMDD'),
+        termindato: formaterStønadskontoParamsDatoer(termindato, 'YYYYMMDD'),
+        omsorgsovertakelsesdato: formaterStønadskontoParamsDatoer(omsorgsovertakelsesdato, 'YYYYMMDD'),
         startdatoUttak: formaterDato(startdatoUttak, 'YYYYMMDD')
     };
 
@@ -135,6 +145,7 @@ const Api = {
     sendStorageKvittering,
     getStorageKvittering,
     getEksisterendeSak,
+    getEksisterendeSakMedFnr,
     log
 };
 

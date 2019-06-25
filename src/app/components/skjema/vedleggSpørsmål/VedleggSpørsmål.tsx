@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
-import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import AttachmentsUploader from 'app/components/storage/attachment/components/AttachmentUploader';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Skjemanummer } from '../../../types/søknad/Søknad';
 
 interface OwnProps {

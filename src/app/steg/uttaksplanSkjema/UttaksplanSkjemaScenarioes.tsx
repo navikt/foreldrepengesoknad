@@ -22,6 +22,10 @@ import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
 import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
 import { getNavnGenitivEierform } from '../../util/tekstUtils';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import UtsettelseBegrunnelse from './enkeltspørsmål/UtsettelseBegrunnelse';
+import { Periodene } from 'app/util/uttaksplan/Periodene';
+import { skalFarUtsetteEtterMorSinSisteUttaksdag } from './utils';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -31,6 +35,7 @@ export interface ScenarioProps {
     antallUkerFedreKvote: number | undefined;
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
+    eksisterendeSak?: EksisterendeSak;
 }
 export interface OwnProps extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
@@ -119,7 +124,7 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
                         </Block>
                         <FordelingFellesperiodeSpørsmål
                             visible={harSvartPåStartdato}
-                            ukerFellesperiode={antallUkerFellesperiode}
+                            ukerFellesperiode={Math.floor(antallUkerFellesperiode)}
                             navnPåForeldre={navnPåForeldre}
                             annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
                             antallUkerFedreKvote={antallUkerFedreKvote!}
@@ -238,7 +243,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
                         </Block>
                         <FordelingFellesperiodeSpørsmål
                             visible={skjema.startdatoPermisjon !== undefined && skjema.harAnnenForelderSøktFP !== true}
-                            ukerFellesperiode={antallUkerFellesperiode}
+                            ukerFellesperiode={Math.floor(antallUkerFellesperiode)}
                             navnPåForeldre={navnPåForeldre}
                             annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
                             antallUkerMødreKvote={antallUkerMødreKvote!}
@@ -328,6 +333,40 @@ const Scenario8: React.StatelessComponent<ScenarioProps> = () => {
     );
 };
 
+const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåForeldre, familiehendelsesdato }) => {
+    const { uttaksplanSkjema, eksisterendeSak } = søknad.ekstrainfo;
+    const annenPartsSistePeriode =
+        eksisterendeSak && eksisterendeSak.erAnnenPartsSak && eksisterendeSak.uttaksplan
+            ? Periodene(eksisterendeSak.uttaksplan).finnSisteInfoperiode()
+            : undefined;
+
+    const morSinSisteUttaksdag = annenPartsSistePeriode ? annenPartsSistePeriode.tidsperiode.tom : undefined;
+
+    return (
+        <>
+            <FarSinFørsteUttaksdagSpørsmål
+                visible={true}
+                familiehendelsesdato={familiehendelsesdato}
+                morSinSisteUttaksdag={morSinSisteUttaksdag}
+                eksisterendeSakAnnenPart={
+                    eksisterendeSak && eksisterendeSak.erAnnenPartsSak ? eksisterendeSak : undefined
+                }
+                navnPåForeldre={navnPåForeldre}
+            />
+            {uttaksplanSkjema.farSinFørsteUttaksdag &&
+                morSinSisteUttaksdag && (
+                    <UtsettelseBegrunnelse
+                        visible={skalFarUtsetteEtterMorSinSisteUttaksdag(
+                            uttaksplanSkjema.farSinFørsteUttaksdag,
+                            morSinSisteUttaksdag
+                        )}
+                        navn={navnPåForeldre.mor}
+                    />
+                )}
+        </>
+    );
+};
+
 const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
     const { scenario, ...scenarioProps } = props;
     switch (scenario) {
@@ -345,6 +384,8 @@ const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
             return <Scenario7 {...scenarioProps} />;
         case UttaksplanSkjemaScenario.s8_endringssøknad:
             return <Scenario8 {...scenarioProps} />;
+        case UttaksplanSkjemaScenario.s9_førstegangssøknadMedAnnenPart:
+            return <Scenario9 {...scenarioProps} />;
         default:
             return <>Undefined scenario</>;
     }

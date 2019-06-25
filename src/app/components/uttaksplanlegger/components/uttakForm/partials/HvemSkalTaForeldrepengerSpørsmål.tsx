@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FlervalgSpørsmål from 'app/components/skjema/flervalg-spørsmål/FlervalgSpørsmål';
+import FlervalgSpørsmål from 'common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import { NavnPåForeldre, Forelder } from 'common/types';
 import { injectIntl, InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
@@ -29,11 +29,11 @@ const HvemSkalTaForeldrepengerSpørsmål: React.StatelessComponent<HvemSkalTaFor
             alternativer={[
                 {
                     label: søkerErFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor,
-                    value: søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR
+                    value: søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor
                 },
                 {
                     label: søkerErFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor,
-                    value: søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR
+                    value: søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor
                 }
             ]}
         />

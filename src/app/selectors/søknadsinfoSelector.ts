@@ -7,10 +7,8 @@ import {
     selectSøker,
     selectErEndringssøknad,
     selectSøkerrolle,
-    selectAntallBarn,
-    selectErBarnFødt,
-    selectErEnkelEndringssøknad,
-    selectErEndringssøknadMedUttaksplan
+    selectEkstrainfo,
+    selectBarn
 } from './søknadSelector';
 
 import {
@@ -27,7 +25,8 @@ import {
     selectMorErUfør,
     selectErAdopsjon,
     selectSøkerKjønn,
-    selectAnnenForelderKjønn
+    selectAnnenForelderKjønn,
+    selectHarKomplettUttaksplan
 } from './utledetSøknadsinfoSelectors';
 import { selectSøkerinfo } from './apiSelector';
 import { Søker } from '../types/søknad/Søker';
@@ -37,6 +36,7 @@ import { getErSøkerFarEllerMedmor } from '../util/domain/personUtil';
 import { Navn } from '../types/common';
 import { getUttaksdatoer } from '../util/uttaksplan/uttaksdatoer';
 import { OmMor, OmSøker, OmFarMedmor, OmAnnenForelder, NavnISøknaden, Søknadsinfo, OmSøknaden } from './types';
+import { Forelder } from 'common/types';
 
 const selectOmSøknaden = createSelector(
     [
@@ -48,10 +48,9 @@ const selectOmSøknaden = createSelector(
         selectErFødsel,
         selectErAdopsjon,
         selectErEndringssøknad,
-        selectErEnkelEndringssøknad,
-        selectErEndringssøknadMedUttaksplan,
-        selectAntallBarn,
-        selectErBarnFødt
+        selectEkstrainfo,
+        selectBarn,
+        selectHarKomplettUttaksplan
     ],
     (
         situasjon,
@@ -62,10 +61,9 @@ const selectOmSøknaden = createSelector(
         erFødsel,
         erAdopsjon,
         erEndringssøknad,
-        erEnkelEndringssøknad,
-        erEnkelEndringssøknadMedUttaksplan,
-        antallBarn,
-        erBarnFødt
+        ekstrainfo,
+        barn,
+        harKomplettUttaksplan
     ): OmSøknaden | undefined => {
         if (
             situasjon !== undefined &&
@@ -75,9 +73,11 @@ const selectOmSøknaden = createSelector(
             erFødsel !== undefined &&
             erAdopsjon !== undefined &&
             erEndringssøknad !== undefined &&
-            antallBarn !== undefined &&
-            erEnkelEndringssøknadMedUttaksplan !== undefined &&
-            erEnkelEndringssøknad !== undefined
+            barn !== undefined &&
+            barn.antallBarn !== undefined &&
+            barn.erBarnetFødt !== undefined &&
+            ekstrainfo !== undefined &&
+            harKomplettUttaksplan !== undefined
         ) {
             return {
                 situasjon,
@@ -88,10 +88,10 @@ const selectOmSøknaden = createSelector(
                 erFødsel,
                 erAdopsjon,
                 erEndringssøknad,
-                erEnkelEndringssøknad,
-                erEnkelEndringssøknadMedUttaksplan,
-                antallBarn,
-                erBarnFødt
+                erEnkelEndringssøknad: ekstrainfo.erEnkelEndringssøknad === true,
+                antallBarn: barn.antallBarn,
+                erBarnFødt: barn.erBarnetFødt,
+                harKomplettUttaksplan
             };
         }
         return undefined;
@@ -122,7 +122,8 @@ const selectOmSøker = createSelector(
                   erFarEllerMedmor,
                   erMor,
                   rolle: rolle!,
-                  kjønn
+                  kjønn,
+                  forelder: erMor ? Forelder.mor : Forelder.farMedmor
               }
             : undefined;
     }

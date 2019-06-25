@@ -14,14 +14,14 @@ import { apiActionCreators } from '../../redux/actions';
 import { StegID } from '../../util/routing/stegConfig';
 import { Kvittering } from '../../types/Kvittering';
 import { SøkerinfoProps } from '../../types/søkerinfo';
-import isAvailable from '../util/isAvailable';
+import isAvailable from '../../util/steg/isAvailable';
 import Oppsummering from 'app/steg/oppsummering/components/oppsummering/Oppsummering';
 import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import { validerUttaksplanAction } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
-import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
+import ApplicationSpinner from 'common/components/applicationSpinner/ApplicationSpinner';
 import { søknadStegPath } from '../StegRoutes';
 import Block from 'common/components/block/Block';
 import { MissingAttachment } from '../../types/MissingAttachment';
@@ -33,12 +33,13 @@ import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
 import { findAllAttachments } from '../manglendeVedlegg/manglendeVedleggUtil';
 import _ from 'lodash';
-import { skalViseManglendeVedleggSteg } from '../util/navigation';
+import { skalViseManglendeVedleggSteg } from '../../util/steg/navigation';
 import ErAnnenForelderInformertSpørsmål from 'app/spørsmål/ErAnnenForelderInformertSpørsmål';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
 import LinkButton from 'app/components/elementer/linkButton/LinkButton';
+import Barn from 'app/types/søknad/Barn';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -52,6 +53,7 @@ interface StateProps {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     isLoadingTilgjengeligeStønadskontoer: boolean;
     antallUkerUttaksplan: number;
+    barn: Barn;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -67,7 +69,7 @@ export const getSkalSpørreOmAnnenForelderErInformert = (søknad: Søknad): bool
 class OppsummeringSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-        const { tilgjengeligeStønadskontoer, søknad, stegProps, søknadsinfo, dispatch } = this.props;
+        const { tilgjengeligeStønadskontoer, søknad, stegProps, søknadsinfo, dispatch, barn } = this.props;
 
         this.sendSøknad = this.sendSøknad.bind(this);
         this.gotoUttaksplan = this.gotoUttaksplan.bind(this);
@@ -75,7 +77,8 @@ class OppsummeringSteg extends React.Component<Props> {
         if (tilgjengeligeStønadskontoer.length === 0 && stegProps.isAvailable) {
             const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
                 søknadsinfo,
-                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon
+                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon,
+                barn
             );
             dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
         }
@@ -230,6 +233,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     return {
         person,
         søknad,
+        barn: søknad.barn,
         uttaksplanValidering: state.uttaksplanValidering,
         kvittering: state.api.kvittering,
         missingAttachments,

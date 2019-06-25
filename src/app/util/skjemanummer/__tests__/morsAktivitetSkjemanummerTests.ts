@@ -15,7 +15,7 @@ describe('getMorsAktivitetSkjemanummer', () => {
 
     it('should require Skjemanummer.ANNET_SKJEMA_IKKE_NAV when morsAktivitet=Introduksjonsprogrammet', () => {
         expect(getMorsAktivitetSkjemanummer(MorsAktivitet.Introduksjonsprogrammet)).toBe(
-            Skjemanummer.BEKREFTELSE_DELTAR_INTRODUKSJONSPROGRAMMET
+            Skjemanummer.ANNET_SKJEMA_IKKE_NAV
         );
     });
 

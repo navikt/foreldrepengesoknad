@@ -2,19 +2,19 @@ import * as React from 'react';
 import { onToggleItemProp } from '../../../../elementer/toggleList/ToggleList';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { AnnenPartInfoPeriode } from '../../../../../types/uttaksplan/periodetyper';
+import { UttakAnnenPartInfoPeriode } from '../../../../../types/uttaksplan/periodetyper';
 import { NavnPåForeldre } from 'common/types';
 import { Tidsperioden } from '../../../../../util/uttaksplan/Tidsperioden';
 import PeriodelisteInfo from './PeriodelisteInfo';
 import Block from 'common/components/block/Block';
 import { getVarighetString } from 'common/util/intlUtils';
-import AdvarselIkon from 'app/components/ikoner/svgIkoner/advarselIkon/AdvarselIkon';
+import UttaksplanAdvarselIkon from 'app/components/ikoner/uttaksplanIkon/ikoner/AdvarselIkon';
 
 export interface Props {
     itemId: string;
     isExpanded: boolean;
     onToggle: onToggleItemProp;
-    periode: AnnenPartInfoPeriode;
+    periode: UttakAnnenPartInfoPeriode;
     navnPåForeldre: NavnPåForeldre;
 }
 
@@ -39,7 +39,7 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
             isExpanded={isExpanded}
             onToggle={onToggle}
             beskrivelse={getVarighetString(antallDager, intl)}
-            ikon={<AdvarselIkon />}
+            ikon={<UttaksplanAdvarselIkon />}
             renderContent={() => (
                 <div>
                     <Block>

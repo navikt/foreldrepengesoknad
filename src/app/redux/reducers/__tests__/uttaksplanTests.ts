@@ -9,7 +9,7 @@ import mockSøknad from '../../../testdata/soknad.data';
 let nyPeriode: Uttaksperiode = {
     id: '',
     type: Periodetype.Uttak,
-    forelder: Forelder.MOR,
+    forelder: Forelder.mor,
     konto: StønadskontoType.Fedrekvote,
     tidsperiode: {
         fom: new Date(2018, 9, 1),
@@ -20,7 +20,7 @@ let nyPeriode: Uttaksperiode = {
 const nyPeriode2: Uttaksperiode = {
     id: '',
     type: Periodetype.Uttak,
-    forelder: Forelder.MOR,
+    forelder: Forelder.mor,
     konto: StønadskontoType.Mødrekvote,
     tidsperiode: {
         fom: new Date(2018, 9, 3),
@@ -50,7 +50,7 @@ describe('Søknad - Uttaksplan reducer', () => {
         const periode2: Uttaksperiode = state.uttaksplan[1] as Uttaksperiode;
         const periode2BeforeUpdate = JSON.stringify(periode2);
 
-        state = søknadReducer(state, actions.uttaksplanUpdatePeriode({ ...periode1, forelder: Forelder.FARMEDMOR }));
+        state = søknadReducer(state, actions.uttaksplanUpdatePeriode({ ...periode1, forelder: Forelder.farMedmor }));
         const updatedPeriodeInState: Uttaksperiode = Periodene(state.uttaksplan).getPeriode(
             periode1.id!
         ) as Uttaksperiode;

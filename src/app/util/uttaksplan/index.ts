@@ -35,9 +35,9 @@ const prettifyProsent = (pst: string): number | undefined => {
 
 export const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåForeldre): string => {
     if (navnPåForeldre.farMedmor) {
-        return forelder === Forelder.MOR ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+        return forelder === Forelder.mor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     }
-    return forelder === Forelder.MOR ? navnPåForeldre.mor : forelder;
+    return forelder === Forelder.mor ? navnPåForeldre.mor : forelder;
 };
 
 export const getNavnFromObject = ({
@@ -166,15 +166,18 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
                 intl,
                 periode.årsak,
                 getForelderNavn(periode.forelder, navnPåForeldre),
-                periode.forelder === Forelder.MOR
+                periode.forelder === Forelder.mor
             );
         case Periodetype.Hull:
             return getMessage(intl, `periodetype.hull.tittel`);
         case Periodetype.Info:
             switch (periode.infotype) {
-                case PeriodeInfoType.annenPart:
-                    const stønadskontotype = getStønadskontoFromOppholdsårsak(periode.årsak);
-                    return getStønadskontoNavn(intl, stønadskontotype, navnPåForeldre);
+                case PeriodeInfoType.uttakAnnenPart:
+                    return getStønadskontoNavn(intl, getStønadskontoFromOppholdsårsak(periode.årsak), navnPåForeldre);
+                case PeriodeInfoType.utsettelseAnnenPart:
+                    return getMessage(intl, `periodetype.info.utsettelse.${periode.årsak}`, {
+                        navn: getForelderNavn(periode.forelder, navnPåForeldre)
+                    });
                 default:
                     return getMessage(intl, `periodetype.info.${periode.infotype}`);
             }

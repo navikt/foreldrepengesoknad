@@ -1,11 +1,12 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { getPeriodeTittel, getPeriodeForelderNavn } from 'app/util/uttaksplan';
 import { InjectedIntl } from 'react-intl';
 import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
+import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from 'shared/regler/regelTypes';
 
-export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: Regelgrunnlag): RegelTestresultat => {
+export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat => {
     const {
         perioder,
         søknadsinfo: {

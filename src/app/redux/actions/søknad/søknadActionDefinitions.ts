@@ -1,8 +1,8 @@
-import Søknad, { SøknadenGjelderBarnValg, SøknadPartial, Tilleggsopplysning } from '../../../types/søknad/Søknad';
+import Søknad, { SøknadenGjelderBarnValg, SøknadPartial, Tilleggsopplysning, SøknadEkstrainfo } from '../../../types/søknad/Søknad';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../steg/uttaksplanSkjema/uttaksplanSkjemadata';
 import { StegID } from '../../../util/routing/stegConfig';
@@ -27,6 +27,7 @@ export enum SøknadActionKeys {
     'UPDATE_SØKER' = 'updateSøker',
     'UPDATE_SØKER_AND_STORAGE' = 'updateSøkerAndStorage',
     'UPDATE_SØKNAD' = 'updateSøknad',
+    'UPDATE_EKSTRAINFO' = 'updateEkstrainfo',
     'UPDATE_SØKNADEN_GJELDER_BARN' = 'updateSøknadenGjelderBarn',
     'UTTAKSPLAN_SET_PERIODER' = 'uttaksplanSetPerioder',
     'UTTAKSPLAN_ADD_PERIODE' = 'uttaksplanAddPeriode',
@@ -90,9 +91,9 @@ export interface UpdateSøknad {
     payload: UpdateSøknadActionPayload;
 }
 
-export interface UpdateSøknad {
-    type: SøknadActionKeys.UPDATE_SØKNAD;
-    payload: UpdateSøknadActionPayload;
+export interface UpdateEkstrainfo {
+    type: SøknadActionKeys.UPDATE_EKSTRAINFO,
+    payload: Partial<SøknadEkstrainfo>;
 }
 
 export interface UttaksplanSetPerioder {
@@ -196,6 +197,7 @@ export type SøknadAction =
     | UpdateSøker
     | UpdateSøkerAndStorage
     | UpdateSøknad
+    | UpdateEkstrainfo
     | UploadAttachment
     | UploadAttachmentSuccess
     | UploadAttachmentFailed

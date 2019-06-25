@@ -1,7 +1,7 @@
 import { Periode, Periodetype } from '../../../types/uttaksplan/periodetyper';
 import { removeDuplicateAttachments, removePeriodetypeHullFromUttaksplan } from '../cleanupSøknad';
 import { Skjemanummer } from '../../../types/søknad/Søknad';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 
 const uttaksplan: Periode[] = [
     {

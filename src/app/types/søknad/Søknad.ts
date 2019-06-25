@@ -2,7 +2,7 @@ import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
 import InformasjonOmUtenlandsopphold, { InformasjonOmUtenlandsoppholdPartial } from './InformasjonOmUtenlandsopphold';
 import { Barn } from './Barn';
 import Søker, { SøkerPartial } from './Søker';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { RegistrertAnnenForelder, RegistrertBarn } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';
@@ -50,9 +50,8 @@ export interface Tilleggsopplysninger {
     begrunnelseForSenEndring?: Tilleggsopplysning;
 }
 
-interface SøknadEkstrainfo {
+export interface SøknadEkstrainfo {
     erEnkelEndringssøknad: boolean;
-    erEnkelEndringssøknadMedUttaksplan: boolean;
     currentStegID: StegID | undefined;
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
     lastAddedPeriodeId?: string;
@@ -127,7 +126,6 @@ export interface SøknadPartial {
 
 export enum Skjemanummer {
     DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL = 'I000041',
-    DOKUMENTASJON_AV_ALENEOMSORG = 'I000041',
     ETTERLØNN_ELLER_SLUTTVEDERLAG = 'I000044',
     OMSORGSOVERTAKELSESDATO = 'I000042',
     ANNET = 'I000060',
@@ -140,9 +138,7 @@ export enum Skjemanummer {
     DOK_OVERFØRING_FOR_SYK = 'I000045',
     BEKREFTELSE_FRA_STUDIESTED = 'I000061',
     BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM = 'I000051',
-    ANNET_SKJEMA_IKKE_NAV = 'I000049',
-    BEGRUNNELSE_SØKE_TILBAKE_I_TID = 'I000109',
-    BEKREFTELSE_DELTAR_INTRODUKSJONSPROGRAMMET = 'I000110'
+    ANNET_SKJEMA_IKKE_NAV = 'I000049'
 }
 
 export default Søknad;

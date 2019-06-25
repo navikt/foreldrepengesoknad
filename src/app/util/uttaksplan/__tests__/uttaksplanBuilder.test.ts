@@ -12,7 +12,7 @@ describe('UttaksplanBuilder', () => {
                 fom: new Date(2018, 11, 20),
                 tom: new Date(2018, 11, 28)
             },
-            forelder: Forelder.MOR,
+            forelder: Forelder.mor,
             erArbeidstaker: false
         };
 
@@ -28,7 +28,7 @@ describe('UttaksplanBuilder', () => {
                 fom: new Date(2018, 11, 20),
                 tom: new Date(2019, 0, 5)
             },
-            forelder: Forelder.MOR,
+            forelder: Forelder.mor,
             erArbeidstaker: false
         };
 

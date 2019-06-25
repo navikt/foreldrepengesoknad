@@ -12,6 +12,7 @@ import Block from 'common/components/block/Block';
 import { RegistrertBarn } from '../../../../types/Person';
 import { RelasjonTilBarnFødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
+import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 
 interface StateProps {
     barn: FødtBarn;
@@ -70,14 +71,23 @@ class FødtBarnPartial extends React.Component<Props> {
                     <FødselsdatoerSpørsmål
                         collapsed={true}
                         fødselsdatoer={barn.fødselsdatoer || []}
+                        termindato={barn.termindato}
                         antallBarn={barn.antallBarn}
-                        onChange={(fødselsdatoer: Date[]) =>
+                        onChangeFødselsdato={(fødselsdatoer: Date[]) =>
                             dispatch(
                                 søknadActions.updateBarn({
                                     fødselsdatoer
                                 })
                             )
                         }
+                        onChangeTermindato={(termindato: Date) => dispatch(søknadActions.updateBarn({ termindato }))}
+                    />
+                </Block>
+                <Block visible={vis.visInfoOmPrematuruker}>
+                    <VeilederInfo
+                        messages={[
+                            { contentIntlKey: 'barnFødt.infoPrematuruker', type: 'info', formatContentAsHTML: true }
+                        ]}
                     />
                 </Block>
 

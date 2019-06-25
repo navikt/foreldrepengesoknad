@@ -6,7 +6,6 @@ import { DeepPartial } from 'redux';
 describe('uttakUtils', () => {
     // tslint:disable-next-line: no-object-literal-type-assertion
     const grunnlag: Saksgrunnlag = {
-        familieHendelseType: FamiliehendelsesType.FØDSEL,
         familieHendelseDato: new Date(),
         dekningsgrad: '100',
         antallBarn: 1,
@@ -16,7 +15,8 @@ describe('uttakUtils', () => {
         morHarRett: true,
         farMedmorErAleneOmOmsorg: false,
         farMedmorHarRett: false,
-        erBarnetFødt: true
+        erBarnetFødt: true,
+        familieHendelseType: FamiliehendelsesType.FØDSEL
     } as Saksgrunnlag;
 
     // tslint:disable-next-line: no-object-literal-type-assertion

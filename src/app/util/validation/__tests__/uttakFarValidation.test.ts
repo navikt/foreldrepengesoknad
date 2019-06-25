@@ -25,21 +25,21 @@ const uttakBase: Partial<Uttaksperiode> = {
     konto: StønadskontoType.Fellesperiode,
     gradert: false,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
-    forelder: Forelder.FARMEDMOR
+    forelder: Forelder.farMedmor
 };
 
 const overføringBase: Partial<Overføringsperiode> = {
     type: Periodetype.Overføring,
     årsak: OverføringÅrsakType.sykdomAnnenForelder,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
-    forelder: Forelder.FARMEDMOR
+    forelder: Forelder.farMedmor
 };
 
 const utsettelseBase: Partial<Utsettelsesperiode> = {
     type: Periodetype.Utsettelse,
     årsak: UtsettelseÅrsakType.Sykdom,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
-    forelder: Forelder.FARMEDMOR
+    forelder: Forelder.farMedmor
 };
 
 const uttak = uttakBase as Uttaksperiode;

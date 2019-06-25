@@ -5,13 +5,14 @@ import { Dekningsgrad } from 'common/types';
 import { AppState } from '../redux/reducers';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import { getEndretUttaksplanForInnsending } from 'app/util/uttaksplan/uttaksplanEndringUtil';
+import { getEndretUttaksplanForInnsending, erPeriodeSomSkalSendesInn } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 export const søknadSelector = (state: AppState): RecursivePartial<Søknad> => state.søknad;
 
 // Søknad
 export const selectBarn = createSelector([søknadSelector], (søknad = {}) => søknad.barn);
 export const selectSituasjon = createSelector([søknadSelector], (søknad = {}) => søknad.situasjon);
+export const selectEkstrainfo = createSelector([søknadSelector], (søknad = {}) => søknad.ekstrainfo);
 export const selectErEndringssøknad = createSelector(
     [søknadSelector],
     (søknad = {}): boolean => søknad.erEndringssøknad === true
@@ -22,15 +23,6 @@ export const selectErEnkelEndringssøknad = createSelector(
         søknad.erEndringssøknad === true &&
         søknad.ekstrainfo !== undefined &&
         søknad.ekstrainfo.erEnkelEndringssøknad === true
-);
-
-export const selectErEndringssøknadMedUttaksplan = createSelector(
-    [søknadSelector],
-    (søknad = {}): boolean =>
-        søknad.erEndringssøknad === true &&
-        søknad.ekstrainfo !== undefined &&
-        søknad.ekstrainfo.erEnkelEndringssøknad === true &&
-        søknad.ekstrainfo.erEnkelEndringssøknadMedUttaksplan === true
 );
 
 export const selectOpprinneligUttaksplan = createSelector(
@@ -81,9 +73,7 @@ export const selectUttaksplan = createSelector([søknadSelector], (søknad): Per
 export const selectEksisterendeSak = createSelector(
     [søknadSelector],
     (søknad): EksisterendeSak | undefined =>
-        søknad.erEndringssøknad && søknad.ekstrainfo
-            ? (søknad.ekstrainfo.eksisterendeSak as EksisterendeSak)
-            : undefined
+        søknad.ekstrainfo ? (søknad.ekstrainfo.eksisterendeSak as EksisterendeSak) : undefined
 );
 
 export const selectEksisterendeUttaksplan = createSelector(
@@ -93,8 +83,13 @@ export const selectEksisterendeUttaksplan = createSelector(
 );
 
 export const selectPerioderSomSkalSendesInn = createSelector(
-    [selectUttaksplan, selectEksisterendeUttaksplan],
-    (nyPlan, opprinneligPlan): Periode[] => {
-        return opprinneligPlan ? getEndretUttaksplanForInnsending(opprinneligPlan, nyPlan) || [] : nyPlan;
+    [selectUttaksplan, selectEksisterendeUttaksplan, selectErEndringssøknad],
+    (nyPlan, opprinneligPlan, erEndringssøknad): Periode[] => {
+        if (opprinneligPlan) {
+            return erEndringssøknad
+                ? getEndretUttaksplanForInnsending(opprinneligPlan, nyPlan)
+                : nyPlan.filter(erPeriodeSomSkalSendesInn);
+        }
+        return nyPlan;
     }
 );

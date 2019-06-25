@@ -8,15 +8,15 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import ErMorUførSpørsmål from '../../spørsmål/ErMorUførSpørsmål';
 import ErAnnenForelderInformertSpørsmål from '../../spørsmål/ErAnnenForelderInformertSpørsmål';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
-import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
+import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import AleneOmOmsorgSpørsmål from '../../spørsmål/AleneOmOmsorgSpørsmål';
 import { Søker } from '../../types/søknad/Søker';
 import RettPåForeldrepengerSpørsmål from '../../spørsmål/RettPåForeldrepengerSpørsmål';
 import { Barn } from '../../types/søknad/Barn';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { AnnenForelderSpørsmålKeys, AnnenForelderStegVisibility } from './visibility/annenForelderStegVisibility';
 import { DateValue } from '../../types/common';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
@@ -222,7 +222,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         attachmentType={AttachmentType.ALENEOMSORG}
                         onFilesSelect={onFilesSelect}
                         onFileDelete={onFileDelete}
-                        skjemanummer={Skjemanummer.DOKUMENTASJON_AV_ALENEOMSORG}
+                        skjemanummer={Skjemanummer.ANNET}
                     />
                 </Block>
             </>

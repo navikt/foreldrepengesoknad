@@ -12,6 +12,7 @@ interface Props {
     kompakt?: boolean;
     veilederStil?: VeilederStil;
     ariaTittel?: string;
+    skjulMeldingIkon?: boolean;
 }
 
 const VeilederInfo: React.SFC<Props> = ({
@@ -19,6 +20,7 @@ const VeilederInfo: React.SFC<Props> = ({
     kompakt = true,
     paneltype = 'normal',
     veilederStil = 'kompakt',
+    skjulMeldingIkon = false,
     ariaTittel
 }) => {
     const harFeil = messages.some((m) => m.type === 'feil');
@@ -44,7 +46,7 @@ const VeilederInfo: React.SFC<Props> = ({
                     <FormattedMessage id="uttaksplan.regelAvvik.ariaTittel" />
                 </AriaText>
             )}
-            <VeilederMeldinger meldinger={messages} stil="transparent" />
+            <VeilederMeldinger meldinger={messages} stil="transparent" skjulMeldingIkon={skjulMeldingIkon} />
         </Veilederpanel>
     );
 };

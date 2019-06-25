@@ -1,10 +1,18 @@
 import { QuestionConfig, Questions, QuestionVisibility, questionValueIsOk } from '../../../../util/questions/Question';
 import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 import { Utsettelsesvariant, UtsettelseFormPeriodeType } from './UtsettelseForm';
-import { UtsettelseÅrsakType, Utsettelsesperiode, Periodetype } from '../../../../types/uttaksplan/periodetyper';
+import {
+    UtsettelseÅrsakType,
+    Utsettelsesperiode,
+    Periodetype,
+    isUtsettelsesperiode,
+    Arbeidsform
+} from '../../../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from 'app/util/domain/aktivitetskravMor';
 import { Tidsperiode } from 'common/types';
 import { Søknadsinfo } from 'app/selectors/types';
+import { getSamletStillingsprosentForArbeidsforhold } from 'app/util/domain/arbeidsforhold';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 export enum UtsettelseSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -12,13 +20,15 @@ export enum UtsettelseSpørsmålKeys {
     'sykdomsårsak' = 'sykdomsårsak',
     'arbeidsplass' = 'arbeidsplass',
     'morsAktivitet' = 'morsAktivitet',
-    'ferieinfo' = 'ferieinfo'
+    'ferieinfo' = 'ferieinfo',
+    'avtaltFulltidVedDeltid' = 'avtaltFulltidVedDeltid'
 }
 
 export interface UtsettelseFormPayload {
     variant: Utsettelsesvariant | undefined;
     periode: UtsettelseFormPeriodeType;
     søknadsinfo: Søknadsinfo;
+    arbeidsforhold: Arbeidsforhold[];
 }
 
 export type UtsettelseSpørsmålVisibility = QuestionVisibility<UtsettelseSpørsmålKeys>;
@@ -57,6 +67,20 @@ const harRegistrertArbeidOk = (variant: Utsettelsesvariant | undefined, periode:
     );
 };
 
+const harValgtFrilansEllerSelvstendig = (arbeidsformer: Arbeidsform[]): boolean =>
+    arbeidsformer.some(
+        (arbeidsform) => arbeidsform === Arbeidsform.frilans || arbeidsform === Arbeidsform.selvstendignæringsdrivende
+    );
+
+const harValgtArbeidsformerMedDeltid = (periode: Utsettelsesperiode, arbeidsforhold: Arbeidsforhold[]) => {
+    const { arbeidsformer, orgnumre } = periode;
+
+    if (arbeidsformer === undefined || harValgtFrilansEllerSelvstendig(arbeidsformer) || orgnumre === undefined) {
+        return false;
+    }
+    return getSamletStillingsprosentForArbeidsforhold(orgnumre, arbeidsforhold) < 100;
+};
+
 export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, UtsettelseSpørsmålKeys> = {
     [Sp.tidsperiode]: {
         isAnswered: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined
@@ -81,6 +105,13 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
                 : true,
         parentQuestion: Sp.variant,
         isIncluded: ({ variant }) => variant === Utsettelsesvariant.Arbeid
+    },
+    [Sp.avtaltFulltidVedDeltid]: {
+        isAnswered: ({ periode }) =>
+            isUtsettelsesperiode(periode) && periode.harAvtaleOmFulltidForDeltidsstilling !== undefined,
+        parentQuestion: Sp.arbeidsplass,
+        isIncluded: ({ periode, arbeidsforhold }) =>
+            isUtsettelsesperiode(periode) ? harValgtArbeidsformerMedDeltid(periode, arbeidsforhold) : false
     },
     [Sp.morsAktivitet]: {
         isAnswered: ({ periode }) => questionValueIsOk((periode as Utsettelsesperiode).morsAktivitetIPerioden),

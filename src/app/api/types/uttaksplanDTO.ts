@@ -21,12 +21,11 @@ export interface UttaksplanPeriodeDTO {
         tom: string;
     };
     morsAktivitetIPerioden: string;
-    oppholdAarsak: string;
+    oppholdAarsak: OppholdsÅrsak;
 }
+
 export interface UttaksplanDTO {
     grunnlag: {
-        familieHendelseType: string;
-        familieHendelseDato: string;
         dekningsgrad: number;
         antallBarn: number;
         søkerErFarEllerMedmor: boolean;
@@ -36,6 +35,17 @@ export interface UttaksplanDTO {
         farMedmorErAleneOmOmsorg: boolean;
         farMedmorHarRett: boolean;
         søkerKjønn: string;
+        termindato?: string;
+        fødselsdato?: string;
+        omsorgsovertakelsesdato: string;
     };
     perioder: UttaksplanPeriodeDTO[];
+}
+
+export enum OppholdsÅrsak {
+    'INGEN' = 'INGEN',
+    'UTTAK_MØDREKVOTE_ANNEN_FORELDER' = 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
+    'UTTAK_FEDREKVOTE_ANNEN_FORELDER' = 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
+    'UTTAK_FORELDREPENGER_ANNEN_FORELDER' = 'UTTAK_FORELDREPENGER_ANNEN_FORELDER',
+    'UTTAK_FELLESP_ANNEN_FORELDER' = 'UTTAK_FELLESP_ANNEN_FORELDER'
 }

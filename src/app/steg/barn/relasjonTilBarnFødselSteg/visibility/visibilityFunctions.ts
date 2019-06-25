@@ -1,5 +1,6 @@
 import { RegistrertBarn } from '../../../../types/Person';
 import Barn, { FødtBarn, UfødtBarn } from '../../../../types/søknad/Barn';
+import moment from 'moment';
 
 const hvilkeBarnGjelderSøknadenBolkVisible = (registrerteBarn: RegistrertBarn[]): boolean => {
     return registrerteBarn.length > 0;
@@ -17,12 +18,12 @@ const ufødtBarnPartialVisible = (erBarnetFødtSpørsmål: boolean, barn: Partia
     return erBarnetFødtSpørsmål ? barn.erBarnetFødt === false : false;
 };
 
-const fødeslsdatoerSpørsmålVisible = (fødtBarnPartial: boolean, barn: Partial<Barn>): boolean => {
+const fødselsdatoerSpørsmålVisible = (fødtBarnPartial: boolean, barn: Partial<Barn>): boolean => {
     return fødtBarnPartial ? barn.antallBarn !== undefined : false;
 };
 
-const fødselsattestUploaderVisible = (fødeslsdatoerSpørsmål: boolean, barn: Partial<FødtBarn>): boolean => {
-    if (!fødeslsdatoerSpørsmål) {
+const fødselsattestUploaderVisible = (fødselsdatoerSpørsmål: boolean, barn: Partial<FødtBarn>): boolean => {
+    if (!fødselsdatoerSpørsmål) {
         return false;
     }
 
@@ -61,17 +62,35 @@ const terminbekreftelseDatoVisible = (
     );
 };
 
+const visInfoOmPrematurukerVisible = (barn: Partial<FødtBarn>): boolean => {
+    const fødselsdato = barn.fødselsdatoer !== undefined ? barn.fødselsdatoer[0] : undefined;
+    const termindato = barn.termindato;
+
+    if (fødselsdato === undefined || termindato === undefined) {
+        return false;
+    }
+
+    const fødselsdatoEtterEllerLikFørsteJuli = moment(fødselsdato).isSameOrAfter(moment(new Date('2019-07-01')));
+
+    return (
+        moment(fødselsdato)
+            .add(7, 'weeks')
+            .isSameOrBefore(moment(termindato)) && fødselsdatoEtterEllerLikFørsteJuli
+    );
+};
+
 export default {
     hvilkeBarnGjelderSøknadenBolk: hvilkeBarnGjelderSøknadenBolkVisible,
     erBarnetFødtSpørsmål: erBarnetFødtSpørsmålVisible,
     fødtBarnPartial: fødtBarnPartialVisible,
     ufødtBarnPartial: ufødtBarnPartialVisible,
-    fødselsdatoerSpørsmål: fødeslsdatoerSpørsmålVisible,
+    fødselsdatoerSpørsmål: fødselsdatoerSpørsmålVisible,
     fødselsattestUploader: fødselsattestUploaderVisible,
     morForSykSpørsmål: morForSykSpørsmålVisible,
     termindato: termindatoVisible,
     terminbekreftelse: terminbekreftelsePartialVisible,
-    terminbekreftelseDato: terminbekreftelseDatoVisible
+    terminbekreftelseDato: terminbekreftelseDatoVisible,
+    visInfoOmPrematuruker: visInfoOmPrematurukerVisible
 };
 
 export const RelasjonTilBarFødselVisibilityFunctions = {
@@ -79,10 +98,11 @@ export const RelasjonTilBarFødselVisibilityFunctions = {
     erBarnetFødtSpørsmålVisible,
     fødtBarnPartialVisible,
     ufødtBarnPartialVisible,
-    fødeslsdatoerSpørsmålVisible,
+    fødselsdatoerSpørsmålVisible,
     fødselsattestUploaderVisible,
     morForSykSpørsmålVisible,
     termindatoVisible,
     terminbekreftelsePartialVisible,
-    terminbekreftelseDatoVisible
+    terminbekreftelseDatoVisible,
+    visInfoOmPrematurukerVisible
 };

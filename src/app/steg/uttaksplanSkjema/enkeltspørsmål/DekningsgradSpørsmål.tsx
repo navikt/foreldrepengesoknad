@@ -111,13 +111,19 @@ const DekningsgradSpørsmål = (props: Props) => {
                     radios={[
                         {
                             label: getMessage(intl, 'spørsmål.dekningsgrad.100', {
-                                antallUker: dekningsgrad100AntallUker
+                                antallUker:
+                                    dekningsgrad100AntallUker !== undefined
+                                        ? Math.floor(dekningsgrad100AntallUker)
+                                        : undefined
                             }),
                             value: '100'
                         },
                         {
                             label: getMessage(intl, 'spørsmål.dekningsgrad.80', {
-                                antallUker: dekningsgrad80AntallUker
+                                antallUker:
+                                    dekningsgrad80AntallUker !== undefined
+                                        ? Math.floor(dekningsgrad80AntallUker)
+                                        : undefined
                             }),
                             value: '80'
                         }

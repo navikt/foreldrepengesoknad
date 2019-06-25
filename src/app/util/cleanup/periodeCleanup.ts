@@ -18,8 +18,8 @@ import { UtsettelseSpørsmålVisibility } from '../../components/uttaksplanlegge
 import { UttakFormPeriodeType } from '../../components/uttaksplanlegger/components/uttakForm/UttakForm';
 import { RecursivePartial } from '../../types/Partial';
 import { shouldPeriodeHaveAttachment } from '../attachments/missingAttachmentUtil';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { erÅrsakSykdomEllerInstitusjonsopphold } from '../uttaksplan/utsettelsesperiode';
 import { Søknadsinfo } from 'app/selectors/types';
 
@@ -71,6 +71,9 @@ const cleanupUtsettelse = (periode: Utsettelsesperiode, søknadsinfo: Søknadsin
         orgnumre: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnumre : undefined,
         arbeidsformer: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.arbeidsformer : undefined,
         erArbeidstaker: periode.erArbeidstaker,
+        harAvtaleOmFulltidForDeltidsstilling: UtsettelseÅrsakType.Arbeid
+            ? periode.harAvtaleOmFulltidForDeltidsstilling
+            : undefined,
         vedlegg: shouldPeriodeHaveAttachment(periode, søknadsinfo)
             ? periode.vedlegg &&
               fjernIrrelevanteVedleggForUtsettelse(

@@ -1,4 +1,4 @@
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Skjemanummer } from './søknad/Søknad';
 
 export interface MissingAttachment {

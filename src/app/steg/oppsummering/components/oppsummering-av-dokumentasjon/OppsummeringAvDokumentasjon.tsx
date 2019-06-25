@@ -4,9 +4,9 @@ import KompleksFeltoppsummering from 'app/steg/oppsummering/components/kompleks-
 import EtikettBase from 'nav-frontend-etiketter';
 import getMessage from 'common/util/i18nUtils';
 import './oppsummeringAvDokumentasjon.less';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import Lenke from 'nav-frontend-lenker';
-import { isAttachmentWithError } from 'common/storage/attachment/components/util';
+import { isAttachmentWithError } from 'app/components/storage/attachment/components/util';
 
 interface OppsummeringAvDokumentasjonProps {
     ledetekst?: string;

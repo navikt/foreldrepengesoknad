@@ -1,4 +1,4 @@
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { Søkersituasjon } from './Søknad';
 
 export interface BarnCommonProps {
@@ -17,6 +17,7 @@ export interface UfødtBarn extends BarnCommonProps {
 export interface FødtBarn extends BarnCommonProps {
     fødselsdatoer: Date[];
     fødselsattest: Attachment[];
+    termindato: Date;
 }
 
 export interface Adopsjonsbarn extends BarnCommonProps {

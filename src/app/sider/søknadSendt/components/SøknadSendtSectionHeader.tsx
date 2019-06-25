@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import BEMHelper from 'common/util/bem';
 import SendSøknadIkon, { OppsummeringIkonType } from './SendSøknadIkon';
-import LabelMedInfobox from 'common/components/label-med-infobox/LabelMedInfobox';
+import LabelMedInfobox from 'app/components/elementer/labelMedInfobox/LabelMedInfobox';
 
 import './søknadSendtSectionHeader.less';
 

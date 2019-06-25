@@ -6,13 +6,13 @@ import Steg, { StegProps } from 'app/components/applikasjon/steg/Steg';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from 'app/types/common';
-import isAvailable from '../util/isAvailable';
+import isAvailable from '../../util/steg/isAvailable';
 import { SøkerinfoProps } from 'app/types/søkerinfo';
 import { connect } from 'react-redux';
 import Block from 'common/components/block/Block';
 import VedleggSpørsmål from 'app/components/skjema/vedleggSpørsmål/VedleggSpørsmål';
 import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
-import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
+import { Attachment, InnsendingsType } from 'app/components/storage/attachment/types/Attachment';
 import Søknad from 'app/types/søknad/Søknad';
 import { soknadActionCreators } from 'app/redux/actions';
 import _ from 'lodash';
@@ -21,7 +21,7 @@ import moment from 'moment';
 import { findAllAttachments } from './manglendeVedleggUtil';
 import getMessage from 'common/util/i18nUtils';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
-import { isAttachmentForPeriode } from 'common/storage/attachment/components/util';
+import { isAttachmentForPeriode } from 'app/components/storage/attachment/components/util';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { formatDate } from 'app/util/dates/dates';
 import { Periodetype } from 'app/types/uttaksplan/periodetyper';
@@ -30,7 +30,7 @@ import {
     getTerminbekreftelsedatoAvgrensninger,
     getTerminbekreftelseDatoRegler
 } from 'app/util/validation/terminbekreftelsedato';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import søknadActions from 'app/redux/actions/søknad/søknadActionCreators';
 import { UfødtBarn } from 'app/types/søknad/Barn';
 import { guid } from 'nav-frontend-js-utils';

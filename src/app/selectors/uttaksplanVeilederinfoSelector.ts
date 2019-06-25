@@ -1,11 +1,12 @@
 import { createSelector } from 'reselect';
 import { InjectedIntl } from 'react-intl';
 import { selectUttaksplanAvvik } from './uttaksplanValideringSelector';
-import { RegelAlvorlighet, RegelAvvik } from '../regler/uttaksplanValidering/types';
 import { intlHasKey } from 'common/util/intlUtils';
-import { getRegelIntlValues, trimRelaterteRegelAvvik } from '../regler/uttaksplanValidering/regelUtils';
 import groupBy from 'lodash.groupby';
 import { VeilederMessageType, VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/veilederInfo/types';
+import { RegelAvvik, RegelAlvorlighet } from 'shared/regler/regelTypes';
+import { getRegelIntlValues, trimRelaterteRegelAvvik } from 'shared/regler/regelUtils';
+import { UttaksplanAvvikType } from 'app/regler/uttaksplanValidering/types';
 
 const getMessageTypeFromAvvik = (avvik: RegelAvvik): VeilederMessageType => {
     switch (avvik.regel.alvorlighet) {
@@ -32,7 +33,7 @@ export const mapAvvikTilMessage = (avvik: RegelAvvik, intl: InjectedIntl): Veile
         values: getRegelIntlValues(intl, info),
         periodeId: avvik.regel.skjulesIPeriode !== true ? avvik.periodeId : undefined,
         skjulesIOppsummering: avvik.regel.skjulesIOppsummering,
-        avvikType: avvik.regel.avvikType
+        avvikType: avvik.regel.avvikType as UttaksplanAvvikType
     };
 };
 export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>

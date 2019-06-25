@@ -1,6 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
-import { Tidsperiode } from 'common/types';
+import { Tidsperiode, Feil } from 'common/types';
 import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
 import {
@@ -12,7 +12,6 @@ import {
 } from '../../../../../types/uttaksplan/periodetyper';
 import { getDatoavgrensningerForStønadskonto } from '../../../../../util/uttaksplan/uttaksperiodeUtils';
 import { UttakFormPeriodeType } from '../UttakForm';
-import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { getUttakTidsperiodeValidatorer } from '../../../../../util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
 import { getVarighetString } from 'common/util/intlUtils';
 import {

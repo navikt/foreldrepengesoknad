@@ -1,6 +1,5 @@
 import { Periode, isUttaksperiode } from 'app/types/uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';
-import { Perioden } from 'app/util/uttaksplan/Perioden';
 import { finnAntallDagerÅTrekke } from 'app/util/uttaksPlanStatus';
 
 export const getFlerbarnsuker = (dekningsgrad: Dekningsgrad, antallBarn: number): number => {
@@ -29,7 +28,7 @@ export const uttaksplanHarForMangeFlerbarnsdager = (
         .filter((periode) => isUttaksperiode(periode) && periode.ønskerFlerbarnsdager === true)
         .reduce((sum: number, periode: Periode) => {
             if (isUttaksperiode(periode)) {
-                return finnAntallDagerÅTrekke(Perioden(periode).getAntallUttaksdager(), periode) + sum;
+                return finnAntallDagerÅTrekke(periode) + sum;
             } else {
                 return sum;
             }

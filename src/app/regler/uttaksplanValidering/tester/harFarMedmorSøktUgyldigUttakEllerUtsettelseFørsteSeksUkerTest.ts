@@ -1,8 +1,9 @@
-import { Regelgrunnlag, RegelTest, RegelTestresultat } from '../types';
+import { UttaksplanRegelgrunnlag } from '../types';
 import { getUgyldigUttakFørsteSeksUkerForFarMedmor } from '../../../util/validation/uttaksplan/uttakFarValidation';
+import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
 
 export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: RegelTest = (
-    grunnlag: Regelgrunnlag
+    grunnlag: UttaksplanRegelgrunnlag
 ): RegelTestresultat => {
     const {
         søknadsinfo: { søker, søknaden },

@@ -39,16 +39,20 @@ export const getUtsettelseÅrsakFromSaksperiode = (
 };
 
 export const getOppholdsÅrsakFromStønadskonto = (konto: StønadskontoType): OppholdÅrsakType | undefined => {
-    if (konto === StønadskontoType.Fedrekvote) {
-        return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
-    } else if (konto === StønadskontoType.Mødrekvote) {
-        return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
-    } else if (konto === StønadskontoType.Fellesperiode) {
-        return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
-    } else if (konto === StønadskontoType.Flerbarnsdager) {
-        return OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder;
-    } else {
-        return undefined;
+    switch (konto) {
+        case StønadskontoType.Fedrekvote:
+            return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
+        case StønadskontoType.Mødrekvote:
+            return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+        case StønadskontoType.Fellesperiode:
+            return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+        case StønadskontoType.Flerbarnsdager:
+            return OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder;
+        case StønadskontoType.ForeldrepengerFørFødsel:
+            return OppholdÅrsakType.UttakForelderpengerFørFødsel;
+        case StønadskontoType.Foreldrepenger:
+        case StønadskontoType.AktivitetsfriKvote:
+            return undefined;
     }
 };
 
@@ -62,6 +66,8 @@ export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): S
             return StønadskontoType.Fellesperiode;
         case OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder:
             return StønadskontoType.Flerbarnsdager;
+        case OppholdÅrsakType.UttakForelderpengerFørFødsel:
+            return StønadskontoType.ForeldrepengerFørFødsel;
     }
 };
 

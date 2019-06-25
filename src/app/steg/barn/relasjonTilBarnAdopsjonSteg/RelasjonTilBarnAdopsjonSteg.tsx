@@ -13,9 +13,9 @@ import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsm�
 import utils from '../../../util/domain/fødselsdato';
 import { AppState } from '../../../redux/reducers';
 import Steg, { StegProps } from '../../../components/applikasjon/steg/Steg';
-import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
-import isAvailable from '../../util/isAvailable';
+import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import isAvailable from '../../../util/steg/isAvailable';
 import { barnErGyldig, getAdopsjonAnkomstdatoValidatorer } from '../../../util/validation/steg/barn';
 import { Skjemanummer, Søkersituasjon } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
@@ -25,8 +25,9 @@ import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
 import visibility from './visibility';
 import cleanupAdopsjonsSteg from '../../../util/cleanup/cleanupAdopsjonsSteg';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
+import { apiActionCreators } from 'app/redux/actions';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -40,6 +41,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
+        this.onPresubmit = this.onPresubmit.bind(this);
         this.cleanupSteg = this.cleanupSteg.bind(this);
 
         if (props.barn.antallBarn) {
@@ -61,6 +63,11 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         );
     }
 
+    onPresubmit() {
+        this.cleanupSteg();
+        this.props.dispatch(apiActionCreators.getSakForAnnenPart());
+    }
+
     cleanupSteg() {
         const { dispatch, barn } = this.props;
         dispatch(søknadActions.updateBarn(cleanupAdopsjonsSteg(barn)));
@@ -70,7 +77,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         const { barn, dispatch, stegProps, intl, erEndringssøknad, situasjon } = this.props;
 
         return (
-            <Steg onPreSubmit={this.cleanupSteg} {...stegProps}>
+            <Steg onPreSubmit={this.onPresubmit} {...stegProps}>
                 <Block>
                     <AdopsjonAvEktefellesBarnSpørsmål
                         adopsjonAvEktefellesBarn={barn.adopsjonAvEktefellesBarn}
@@ -122,7 +129,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                             maksDato: barn.adopsjonsdato
                         }}
                         gjelderAdopsjon={true}
-                        onChange={(fødselsdatoer: Date[]) =>
+                        onChangeFødselsdato={(fødselsdatoer: Date[]) =>
                             dispatch(
                                 søknadActions.updateBarn({
                                     fødselsdatoer
