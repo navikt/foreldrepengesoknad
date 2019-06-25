@@ -1,18 +1,19 @@
 import { UttaksplanRegelgrunnlag } from '../types';
 import { getUgyldigUttakFørsteSeksUkerForFarMedmor } from '../../../util/validation/uttaksplan/uttakFarValidation';
 import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+import { erPeriodeInnvilget } from 'app/util/uttaksplan/uttakUtils';
 
 export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: RegelTest = (
     grunnlag: UttaksplanRegelgrunnlag
 ): RegelTestresultat => {
     const {
         søknadsinfo: { søker, søknaden },
-        perioder
+        perioder,
     } = grunnlag;
-
+    
     if (søker.erFarEllerMedmor) {
         const ugyldigePerioder = getUgyldigUttakFørsteSeksUkerForFarMedmor(
-            perioder,
+            perioder.filter((p) => !erPeriodeInnvilget(p)),
             søknaden.familiehendelsesdato,
             søknaden.antallBarn,
             søknaden.situasjon,
