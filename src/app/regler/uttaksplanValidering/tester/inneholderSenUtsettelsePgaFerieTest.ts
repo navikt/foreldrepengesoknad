@@ -5,7 +5,7 @@ import { Periodetype, UtsettelseÅrsakType } from '../../../types/uttaksplan/per
 
 export function inneholderSenUtsettelsePgaFerieTest(grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat {
     const seneUtsettelsePgaFerie = grunnlag.perioder
-        .filter((p) => erPeriodeInnvilget(p, grunnlag.ekisterendeSak))
+        .filter((p) => !erPeriodeInnvilget(p, grunnlag.eksisterendeSak))
         .filter(erSenUtsettelsePgaFerieEllerArbeid)
         .filter((p) => p.type === Periodetype.Utsettelse && p.årsak === UtsettelseÅrsakType.Ferie);
 

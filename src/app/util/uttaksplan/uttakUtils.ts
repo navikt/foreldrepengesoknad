@@ -11,6 +11,7 @@ import { dateIsTodayOrInFuture } from '../dates/dates';
 import { Saksgrunnlag, EksisterendeSak, PeriodeResultatType } from 'app/types/EksisterendeSak';
 import Søknad from 'app/types/søknad/Søknad';
 import { getFamiliehendelsedato } from '.';
+import { erTidsperioderLike } from './Tidsperioden';
 
 export const erUttakAvAnnenForeldersKvote = (
     konto: StønadskontoType | undefined,
@@ -76,14 +77,16 @@ export const skalKunneViseMorsUttaksplanForFarEllerMedmor = (grunnlag: Saksgrunn
     );
 };
 
-export const erPeriodeInnvilget = (periode: Periode, ekisterendeSak?: EksisterendeSak): boolean => {
-    if (ekisterendeSak === undefined) {
+export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: EksisterendeSak): boolean => {
+    if (eksisterendeSak === undefined) {
         return false;
     }
-    const saksperiode = getSaksperiode(periode, ekisterendeSak);
+    const saksperiode = getSaksperiode(periode, eksisterendeSak);
     return saksperiode ? saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET : false;
 };
 
 const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
-    return ekisterendeSak.saksperioder.find((saksperiode) => saksperiode.tidsperiode === periode.tidsperiode);
+    return ekisterendeSak.saksperioder.find((saksperiode) =>
+        erTidsperioderLike(saksperiode.tidsperiode, periode.tidsperiode)
+    );
 };

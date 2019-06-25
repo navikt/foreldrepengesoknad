@@ -5,7 +5,7 @@ import { RegelTestresultat } from 'shared/regler/regelTypes';
 
 export function inneholderSenUtsettelsePgaArbeidTest(grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat {
     const seneUtsettelserPgaArbeid = grunnlag.perioder
-        .filter((p) => erPeriodeInnvilget(p, grunnlag.ekisterendeSak))
+        .filter((p) => !erPeriodeInnvilget(p, grunnlag.eksisterendeSak))
         .filter(erSenUtsettelsePgaFerieEllerArbeid)
         .filter((p) => p.type === Periodetype.Utsettelse && p.årsak === UtsettelseÅrsakType.Arbeid);
 

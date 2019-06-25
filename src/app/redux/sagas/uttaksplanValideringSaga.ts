@@ -51,7 +51,8 @@ const kjørUttaksplanRegler = (
         tilleggsopplysninger: søknad.tilleggsopplysninger,
         perioderSomSkalSendesInn,
         eksisterendeUttaksplan: eksisterendeSak ? eksisterendeSak.uttaksplan : undefined,
-        arbeidsforhold
+        arbeidsforhold,
+        eksisterendeSak
     });
 
     const avvik = getRegelAvvik(resultat);

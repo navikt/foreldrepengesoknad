@@ -25,5 +25,5 @@ export interface UttaksplanRegelgrunnlag {
     perioderSomSkalSendesInn: Periode[];
     eksisterendeUttaksplan: Periode[] | undefined;
     arbeidsforhold: Arbeidsforhold[];
-    ekisterendeSak?: EksisterendeSak;
+    eksisterendeSak?: EksisterendeSak;
 }
