@@ -149,7 +149,8 @@ const justerStartdatoFørsteEndring = (endringer: Periode[], opprinneligPlan: Pe
 export const getEndretUttaksplanForInnsending = (opprinneligPlan: Periode[], nyPlan: Periode[]): Periode[] => {
     const endringer = finnEndringerIUttaksplan(opprinneligPlan, nyPlan);
     if (endringer && endringer.length > 0) {
-        // Sjekk om det kun er siste periode som er endret
+        // Her kontrolleres det om det kun er siste periode som er endret, og i så
+        // fall justerer en bare tidsperioden for den
         if (endringer.length === 1) {
             const endretPeriode = endringer[0];
             const perioder = getLikePerioder(endretPeriode, opprinneligPlan);
