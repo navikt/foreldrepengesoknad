@@ -8,9 +8,10 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
 import { dateIsTodayOrInFuture } from '../dates/dates';
-import { Saksgrunnlag } from 'app/types/EksisterendeSak';
+import { Saksgrunnlag, EksisterendeSak, PeriodeResultatType } from 'app/types/EksisterendeSak';
 import Søknad from 'app/types/søknad/Søknad';
 import { getFamiliehendelsedato } from '.';
+import { erTidsperioderLike } from './Tidsperioden';
 
 export const erUttakAvAnnenForeldersKvote = (
     konto: StønadskontoType | undefined,
@@ -73,5 +74,19 @@ export const skalKunneViseMorsUttaksplanForFarEllerMedmor = (grunnlag: Saksgrunn
             grunnlag.morErUfør &&
             søknad.annenForelder.erUfør) ||
             (grunnlag.morHarRett && søknad.annenForelder.harRettPåForeldrepenger))
+    );
+};
+
+export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: EksisterendeSak): boolean => {
+    if (eksisterendeSak === undefined) {
+        return false;
+    }
+    const saksperiode = getSaksperiode(periode, eksisterendeSak);
+    return saksperiode ? saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET : false;
+};
+
+const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
+    return ekisterendeSak.saksperioder.find((saksperiode) =>
+        erTidsperioderLike(saksperiode.tidsperiode, periode.tidsperiode)
     );
 };

@@ -5,6 +5,7 @@ import { Søknadsinfo } from 'app/selectors/types';
 import { Tilleggsopplysninger } from 'app/types/søknad/Søknad';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Uttaksstatus } from 'app/util/uttaksplan/uttaksstatus';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 
 export type UttaksplanAvvikType = 'forretning' | 'skjema';
 
@@ -24,4 +25,5 @@ export interface UttaksplanRegelgrunnlag {
     perioderSomSkalSendesInn: Periode[];
     eksisterendeUttaksplan: Periode[] | undefined;
     arbeidsforhold: Arbeidsforhold[];
+    eksisterendeSak?: EksisterendeSak;
 }
