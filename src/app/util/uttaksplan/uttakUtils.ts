@@ -8,7 +8,7 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
 import { dateIsTodayOrInFuture } from '../dates/dates';
-import { Saksgrunnlag } from 'app/types/EksisterendeSak';
+import { Saksgrunnlag, EksisterendeSak, PeriodeResultatType } from 'app/types/EksisterendeSak';
 import Søknad from 'app/types/søknad/Søknad';
 import { getFamiliehendelsedato } from '.';
 
@@ -74,4 +74,16 @@ export const skalKunneViseMorsUttaksplanForFarEllerMedmor = (grunnlag: Saksgrunn
             søknad.annenForelder.erUfør) ||
             (grunnlag.morHarRett && søknad.annenForelder.harRettPåForeldrepenger))
     );
+};
+
+export const erPeriodeInnvilget = (periode: Periode, ekisterendeSak?: EksisterendeSak): boolean => {
+    if (ekisterendeSak === undefined) {
+        return false;
+    }
+    const saksperiode = getSaksperiode(periode, ekisterendeSak);
+    return saksperiode ? saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET : false;
+};
+
+const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
+    return ekisterendeSak.saksperioder.find((saksperiode) => saksperiode.tidsperiode === periode.tidsperiode);
 };
