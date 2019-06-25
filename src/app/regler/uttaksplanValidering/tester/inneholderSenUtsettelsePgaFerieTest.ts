@@ -1,10 +1,11 @@
 import { UttaksplanRegelgrunnlag } from '../types';
 import { RegelTestresultat } from 'shared/regler/regelTypes';
-import { erSenUtsettelsePgaFerieEllerArbeid } from '../../../util/uttaksplan/uttakUtils';
+import { erSenUtsettelsePgaFerieEllerArbeid, erPeriodeInnvilget } from '../../../util/uttaksplan/uttakUtils';
 import { Periodetype, UtsettelseÅrsakType } from '../../../types/uttaksplan/periodetyper';
 
 export function inneholderSenUtsettelsePgaFerieTest(grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat {
     const seneUtsettelsePgaFerie = grunnlag.perioder
+        .filter((p) => erPeriodeInnvilget(p, grunnlag.ekisterendeSak))
         .filter(erSenUtsettelsePgaFerieEllerArbeid)
         .filter((p) => p.type === Periodetype.Utsettelse && p.årsak === UtsettelseÅrsakType.Ferie);
 
