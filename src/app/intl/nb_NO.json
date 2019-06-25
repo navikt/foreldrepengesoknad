@@ -331,23 +331,23 @@
     "oppholdsårsaktype.foreldernavn.mor.ARBEID": "{foreldernavn} utsetter på grunn av heltidsarbeid",
     "oppholdsårsaktype.foreldernavn.mor.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
     "oppholdsårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_SØKER":
-        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstusujon",
+        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
     "oppholdsårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_BARNET":
-        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstutusjon",
+        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER":
         "{foreldernavn} tar ut foreldrepenger før fødsel",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten din",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperioden",
-    "oppholdsårsaktype.foreldernavn.far.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flernbarnsperioden",
+    "oppholdsårsaktype.foreldernavn.far.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flerbarnsuker",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin",
     "oppholdsårsaktype.foreldernavn.far.undefined": "{foreldernavn} tar ut",
     "oppholdsårsaktype.foreldernavn.far.LOVBESTEMT_FERIE": "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
     "oppholdsårsaktype.foreldernavn.far.ARBEID": "{foreldernavn} har utsettelse på grunn av heltidsarbeid",
     "oppholdsårsaktype.foreldernavn.far.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
     "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_SØKER":
-        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstusujon",
+        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
     "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET":
-        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstutusjon",
+        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
     "oppsummering.adopsjonAvEktefellesBarn.label": "Gjelder søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
     "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
