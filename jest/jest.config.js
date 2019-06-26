@@ -19,5 +19,6 @@ module.exports = {
             useBabelrc: true
         }
     },
-    rootDir: '../'
+    rootDir: '../',
+    coverageReporters: ['text-summary']
 };
