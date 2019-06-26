@@ -8,3 +8,4 @@ yarn-error.log
 .DS_Store
 mock_data/soknad.json
 *.iml
+coverage
