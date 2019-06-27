@@ -2,6 +2,7 @@ import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from '../uttakUtils';
 import { Saksgrunnlag, FamiliehendelsesType } from '../../../types/EksisterendeSak';
 import Søknad from '../../../../app/types/søknad/Søknad';
 import { DeepPartial } from 'redux';
+import { Søknadsinfo } from 'app/selectors/types';
 
 describe('uttakUtils', () => {
     // tslint:disable-next-line: no-object-literal-type-assertion
@@ -20,28 +21,30 @@ describe('uttakUtils', () => {
     } as Saksgrunnlag;
 
     // tslint:disable-next-line: no-object-literal-type-assertion
-    const søknad: DeepPartial<Søknad> = {
-        dekningsgrad: '100',
-        barn: {
-            antallBarn: 1,
-            fødselsdato: [new Date()]
-        },
-        søker: {
-            erAleneOmOmsorg: false
+    const søknadsinfo: DeepPartial<Søknadsinfo> = {
+        søknaden: {
+            dekningsgrad: '100',
+            erAleneOmOmsorg: false,
+            familieHendelseDato: new Date(),
+            antallBarn: 1
         },
         annenForelder: {
-            harRettPåForeldrepenger: true
+            harRett: true,
+            erUfør: false
         }
     } as DeepPartial<Søknad>;
 
     it('skalKunneViseMorsUttaksplanForFarEllerMedmor returnerer true hvis grunnlag og søknadsdata matcher', () => {
-        expect(skalKunneViseMorsUttaksplanForFarEllerMedmor(grunnlag, søknad as Søknad)).toBeTruthy();
+        expect(skalKunneViseMorsUttaksplanForFarEllerMedmor(grunnlag, søknadsinfo as Søknadsinfo)).toBeTruthy();
     });
 
     it('skalKunneViseMorsUttaksplanForFarEllerMedmor returnerer false hvis grunnlag og søknadsdata ikke matcher', () => {
         // tslint:disable-next-line: no-object-literal-type-assertion
         expect(
-            skalKunneViseMorsUttaksplanForFarEllerMedmor(grunnlag, { ...søknad, dekningsgrad: '80' } as Søknad)
+            skalKunneViseMorsUttaksplanForFarEllerMedmor(grunnlag, {
+                ...søknadsinfo,
+                søknaden: { ...søknadsinfo.søknaden, dekningsgrad: '80' }
+            } as Søknadsinfo)
         ).toBeFalsy();
     });
 });

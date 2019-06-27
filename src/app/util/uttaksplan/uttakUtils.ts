@@ -9,9 +9,8 @@ import {
 import moment from 'moment';
 import { dateIsTodayOrInFuture } from '../dates/dates';
 import { Saksgrunnlag, EksisterendeSak, PeriodeResultatType } from 'app/types/EksisterendeSak';
-import Søknad from 'app/types/søknad/Søknad';
-import { getFamiliehendelsedato } from '.';
 import { erTidsperioderLike } from './Tidsperioden';
+import { Søknadsinfo } from 'app/selectors/types';
 
 export const erUttakAvAnnenForeldersKvote = (
     konto: StønadskontoType | undefined,
@@ -64,16 +63,17 @@ export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): Sen
     }
 };
 
-export const skalKunneViseMorsUttaksplanForFarEllerMedmor = (grunnlag: Saksgrunnlag, søknad: Søknad): boolean => {
+export const skalKunneViseMorsUttaksplanForFarEllerMedmor = (
+    grunnlag: Saksgrunnlag,
+    søknadsinfo: Søknadsinfo
+): boolean => {
+    const { søknaden, annenForelder } = søknadsinfo;
     return (
-        moment(grunnlag.familieHendelseDato).isSame(getFamiliehendelsedato(søknad.barn, søknad.situasjon), 'day') &&
-        grunnlag.dekningsgrad === søknad.dekningsgrad &&
-        grunnlag.antallBarn === søknad.barn.antallBarn &&
-        grunnlag.farMedmorErAleneOmOmsorg === søknad.søker.erAleneOmOmsorg &&
-        ((søknad.annenForelder.harRettPåForeldrepenger === false &&
-            grunnlag.morErUfør &&
-            søknad.annenForelder.erUfør) ||
-            (grunnlag.morHarRett && søknad.annenForelder.harRettPåForeldrepenger))
+        moment(grunnlag.familieHendelseDato).isSame(søknaden.familiehendelsesdato, 'day') &&
+        grunnlag.dekningsgrad === søknaden.dekningsgrad &&
+        grunnlag.antallBarn === søknaden.antallBarn &&
+        ((annenForelder.harRett === false && grunnlag.morErUfør && annenForelder.erUfør) ||
+            (grunnlag.morHarRett && annenForelder.harRett))
     );
 };
 

@@ -1,6 +1,7 @@
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { Søknadsinfo } from '../../selectors/types';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from 'app/util/uttaksplan/uttakUtils';
 
 export enum UttaksplanSkjemaScenario {
     's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan' = 's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan',
@@ -25,10 +26,12 @@ export const getUttaksplanSkjemaScenario = (
         scenario = UttaksplanSkjemaScenario.s8_endringssøknad;
     } else if (
         !søknaden.erEndringssøknad &&
-        eksisterendeSak &&
+        eksisterendeSak !== undefined &&
         eksisterendeSak.erAnnenPartsSak &&
         eksisterendeSak.uttaksplan &&
-        eksisterendeSak.uttaksplan.length > 0
+        eksisterendeSak.grunnlag &&
+        eksisterendeSak.uttaksplan.length > 0 &&
+        skalKunneViseMorsUttaksplanForFarEllerMedmor(eksisterendeSak.grunnlag, søknadsinfo)
     ) {
         scenario = UttaksplanSkjemaScenario.s9_førstegangssøknadMedAnnenPart;
     } else if (søker.erFarEllerMedmor && søknaden.erFødsel && annenForelder.harRett) {
