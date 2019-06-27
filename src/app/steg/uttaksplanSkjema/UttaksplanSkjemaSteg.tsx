@@ -32,7 +32,6 @@ import Barn from 'app/types/søknad/Barn';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import Block from 'common/components/block/Block';
 import InfoEksisterendeSak from '../uttaksplan/infoEksisterendeSak/InfoEksisterendeSak';
-import { skalKunneSøkeOmEndring } from 'app/util/saker/sakerUtils';
 import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from 'app/util/uttaksplan/uttakUtils';
 
 interface StateProps {
