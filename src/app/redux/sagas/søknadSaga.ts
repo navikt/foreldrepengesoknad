@@ -26,6 +26,7 @@ import { beregnGjenståendeUttaksdager } from 'app/util/uttaksPlanStatus';
 import { selectSøkerErFarEllerMedmor } from 'app/selectors/utledetSøknadsinfoSelectors';
 import { StønadskontoType } from 'common/types';
 import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
+import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from 'app/util/uttaksplan/uttakUtils';
 
 const stateSelector = (state: AppState) => state;
 
@@ -173,7 +174,11 @@ function* lagUttaksplanForslag() {
             uttaksplanSkjema
         });
 
-        if (annenPartsSak && annenPartsSak.uttaksplan) {
+        if (
+            annenPartsSak &&
+            annenPartsSak.uttaksplan &&
+            skalKunneViseMorsUttaksplanForFarEllerMedmor(annenPartsSak.grunnlag, søknadsinfo)
+        ) {
             forslag.push(...annenPartsSak.uttaksplan);
         }
 
