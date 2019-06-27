@@ -11,8 +11,11 @@ import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import { RegistrertBarn } from '../../../../types/Person';
 import { RelasjonTilBarnFødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
-import { Søkersituasjon } from '../../../../types/søknad/Søknad';
+import { Søkersituasjon, Skjemanummer } from '../../../../types/søknad/Søknad';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
+import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 
 interface StateProps {
     barn: FødtBarn;
@@ -88,6 +91,22 @@ class FødtBarnPartial extends React.Component<Props> {
                         messages={[
                             { contentIntlKey: 'barnFødt.infoPrematuruker', type: 'info', formatContentAsHTML: true }
                         ]}
+                    />
+                </Block>
+
+                <Block visible={vis.visInfoOmPrematuruker}>
+                    <AttachmentsUploaderPure
+                        attachments={barn.terminbekreftelse || []}
+                        attachmentType={AttachmentType.TERMINBEKREFTELSE}
+                        skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
+                        onFilesSelect={(attachments: Attachment[]) => {
+                            attachments.forEach((attachment: Attachment) => {
+                                dispatch(søknadActions.uploadAttachment(attachment));
+                            });
+                        }}
+                        onFileDelete={(attachment: Attachment) => {
+                            dispatch(søknadActions.deleteAttachment(attachment));
+                        }}
                     />
                 </Block>
 
