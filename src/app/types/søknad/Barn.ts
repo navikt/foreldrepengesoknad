@@ -6,12 +6,12 @@ export interface BarnCommonProps {
     erBarnetFødt: boolean;
     dokumentasjonAvAleneomsorg: Attachment[];
     datoForAleneomsorg: Date;
+    terminbekreftelse: Attachment[];
 }
 
 export interface UfødtBarn extends BarnCommonProps {
     termindato: Date;
     terminbekreftelseDato: Date;
-    terminbekreftelse: Attachment[];
 }
 
 export interface FødtBarn extends BarnCommonProps {
