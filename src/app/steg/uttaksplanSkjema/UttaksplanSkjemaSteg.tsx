@@ -132,7 +132,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                                     søknadsinfo={søknadsinfo}
                                     tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                     eksisterendeSak={eksisterendeSak}
-                                    visPeriodeliste={skalKunneViseMorsUttaksplanForFarEllerMedmor(
+                                    skalKunneViseInfoOmEkisterendeSak={skalKunneViseMorsUttaksplanForFarEllerMedmor(
                                         eksisterendeSak.grunnlag,
                                         søknadsinfo
                                     )}

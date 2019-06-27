@@ -30,7 +30,7 @@ interface OwnProps {
     søknadsinfo: Søknadsinfo;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     eksisterendeSak: EksisterendeSak;
-    visPeriodeliste?: boolean;
+    skalKunneViseInfoOmEkisterendeSak?: boolean;
 }
 
 type Props = InjectedIntlProps & OwnProps;
@@ -55,7 +55,7 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
     søknadsinfo,
     tilgjengeligeStønadskontoer,
     eksisterendeSak,
-    visPeriodeliste = false,
+    skalKunneViseInfoOmEkisterendeSak = false,
     intl
 }) => {
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
@@ -119,19 +119,20 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                         }}
                     />
                 </Normaltekst>
-                {nesteMuligeUttaksdagEtterAnnenPart && (
-                    <Normaltekst>
-                        <FormattedHTMLMessage
-                            id="eksisterendeSak.tekst.nesteMuligeUttaksdato"
-                            values={{
-                                dato: formaterDato(nesteMuligeUttaksdagEtterAnnenPart, 'DD. MMM YYYY'),
-                                navn: navn.annenForelder.fornavn
-                            }}
-                        />
-                    </Normaltekst>
-                )}
+                {skalKunneViseInfoOmEkisterendeSak &&
+                    nesteMuligeUttaksdagEtterAnnenPart && (
+                        <Normaltekst>
+                            <FormattedHTMLMessage
+                                id="eksisterendeSak.tekst.nesteMuligeUttaksdato"
+                                values={{
+                                    dato: formaterDato(nesteMuligeUttaksdagEtterAnnenPart, 'DD. MMM YYYY'),
+                                    navn: navn.annenForelder.fornavn
+                                }}
+                            />
+                        </Normaltekst>
+                    )}
 
-                {visPeriodeliste &&
+                {skalKunneViseInfoOmEkisterendeSak &&
                     infoperioder &&
                     infoperioder.length > 0 && (
                         <UtvidetInformasjon
@@ -146,7 +147,7 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                         </UtvidetInformasjon>
                     )}
             </InnholdMedIllustrasjon>
-            {visPeriodeliste &&
+            {skalKunneViseInfoOmEkisterendeSak &&
                 søkersPerioder &&
                 søkersPerioder.length > 0 && (
                     <InnholdMedIllustrasjon
