@@ -23,6 +23,7 @@ import periodevalideringsregler, { PeriodeValiderRegelKey } from './periodevalid
 import { harSøktOmFerieUtenArbeidsforhold } from './tester/harSøktOmFerieUtenArbeidsforholdTest';
 import { Regel, RegelAlvorlighet } from 'shared/regler/regelTypes';
 import { inneholderForMyeFerie } from './tester/inneholderForMyeFerie';
+import { kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme } from './tester/kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -47,7 +48,8 @@ export enum UttaksplanRegelKey {
     // 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode' = 'innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode',
     'endringerOverskriverAnnenPartsPerioder' = 'endringerOverskriverAnnenPartsPerioder',
     'periodeOverlapperAndrePerioder' = 'periodeOverlapperAndrePerioder',
-    'harSøktOmFerieUtenArbeidsforhold' = 'harSøktOmFerieUtenArbeidsforhold'
+    'harSøktOmFerieUtenArbeidsforhold' = 'harSøktOmFerieUtenArbeidsforhold',
+    'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme' = 'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme'
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -174,6 +176,11 @@ const uttaksplanValideringRegler: Regel[] = [
         key: UttaksplanRegelKey.harSøktOmFerieUtenArbeidsforhold,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harSøktOmFerieUtenArbeidsforhold
+    },
+    {
+        key: UttaksplanRegelKey.kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme
     }
 ];
 
