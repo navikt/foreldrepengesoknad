@@ -37,6 +37,7 @@ import { Navn } from '../types/common';
 import { getUttaksdatoer } from '../util/uttaksplan/uttaksdatoer';
 import { OmMor, OmSøker, OmFarMedmor, OmAnnenForelder, NavnISøknaden, Søknadsinfo, OmSøknaden } from './types';
 import { Forelder } from 'common/types';
+import { Søkersituasjon } from 'app/types/søknad/Søknad';
 
 const selectOmSøknaden = createSelector(
     [
@@ -75,7 +76,6 @@ const selectOmSøknaden = createSelector(
             erEndringssøknad !== undefined &&
             barn !== undefined &&
             barn.antallBarn !== undefined &&
-            barn.erBarnetFødt !== undefined &&
             ekstrainfo !== undefined &&
             harKomplettUttaksplan !== undefined
         ) {
@@ -90,7 +90,7 @@ const selectOmSøknaden = createSelector(
                 erEndringssøknad,
                 erEnkelEndringssøknad: ekstrainfo.erEnkelEndringssøknad === true,
                 antallBarn: barn.antallBarn,
-                erBarnFødt: barn.erBarnetFødt,
+                erBarnFødt: situasjon === Søkersituasjon.FØDSEL ? barn.erBarnetFødt : undefined,
                 harKomplettUttaksplan
             };
         }
