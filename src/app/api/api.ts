@@ -73,7 +73,7 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
         antallBarn,
         fødselsdato: formaterStønadskontoParamsDatoer(fødselsdato, 'YYYYMMDD'),
         termindato: formaterStønadskontoParamsDatoer(termindato, 'YYYYMMDD'),
-        omsorgsovertakelsesdato: formaterStønadskontoParamsDatoer(omsorgsovertakelsesdato, 'YYYYMMDD'),
+        omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(omsorgsovertakelsesdato, 'YYYYMMDD'),
         startdatoUttak: formaterDato(startdatoUttak, 'YYYYMMDD')
     };
 
