@@ -63,23 +63,24 @@ const terminbekreftelseDatoVisible = (
     );
 };
 
-export const skalViseInfoOmPrematuruker = (
-    fødselsdato: Date | undefined,
-    termindato: Date | undefined,
-    rolle: SøkerRolle
-): boolean => {
-    if (fødselsdato === undefined || termindato === undefined) {
-        return false;
-    }
-
+export const visTermindato = (fødselsdato: Date | undefined, rolle: SøkerRolle): boolean => {
     const barnFødtMerEnn10UkerSiden = moment(fødselsdato)
         .add(10, 'weeks')
         .isBefore(moment(new Date()));
-    const fødselsdatoEtterEllerLikFørsteJuli = moment(fødselsdato).isSameOrAfter(moment(new Date('2019-07-01')));
 
     if ((rolle === SøkerRolle.FAR || rolle === SøkerRolle.MEDMOR) && barnFødtMerEnn10UkerSiden) {
         return false;
     }
+
+    return true;
+};
+
+export const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
+    if (fødselsdato === undefined || termindato === undefined) {
+        return false;
+    }
+
+    const fødselsdatoEtterEllerLikFørsteJuli = moment(fødselsdato).isSameOrAfter(moment(new Date('2019-07-01')));
 
     return (
         moment(fødselsdato)
@@ -92,7 +93,7 @@ const visInfoOmPrematurukerVisible = (barn: Partial<FødtBarn>, rolle: SøkerRol
     const fødselsdato = barn.fødselsdatoer !== undefined ? barn.fødselsdatoer[0] : undefined;
     const termindato = barn.termindato;
 
-    return skalViseInfoOmPrematuruker(fødselsdato, termindato, rolle);
+    return skalViseInfoOmPrematuruker(fødselsdato, termindato);
 };
 
 export default {
