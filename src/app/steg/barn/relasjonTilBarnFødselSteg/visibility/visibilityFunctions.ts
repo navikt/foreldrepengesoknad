@@ -1,6 +1,7 @@
 import { RegistrertBarn } from '../../../../types/Person';
 import Barn, { FødtBarn, UfødtBarn } from '../../../../types/søknad/Barn';
 import moment from 'moment';
+import { SøkerRolle } from 'app/types/søknad/Søknad';
 
 const hvilkeBarnGjelderSøknadenBolkVisible = (registrerteBarn: RegistrertBarn[]): boolean => {
     return registrerteBarn.length > 0;
@@ -62,21 +63,36 @@ const terminbekreftelseDatoVisible = (
     );
 };
 
-const visInfoOmPrematurukerVisible = (barn: Partial<FødtBarn>): boolean => {
-    const fødselsdato = barn.fødselsdatoer !== undefined ? barn.fødselsdatoer[0] : undefined;
-    const termindato = barn.termindato;
-
+export const skalViseInfoOmPrematuruker = (
+    fødselsdato: Date | undefined,
+    termindato: Date | undefined,
+    rolle: SøkerRolle
+): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
         return false;
     }
 
+    const barnFødtMerEnn10UkerSiden = moment(fødselsdato)
+        .add(10, 'weeks')
+        .isBefore(moment(new Date()));
     const fødselsdatoEtterEllerLikFørsteJuli = moment(fødselsdato).isSameOrAfter(moment(new Date('2019-07-01')));
+
+    if ((rolle === SøkerRolle.FAR || rolle === SøkerRolle.MEDMOR) && barnFødtMerEnn10UkerSiden) {
+        return false;
+    }
 
     return (
         moment(fødselsdato)
             .add(7, 'weeks')
             .isSameOrBefore(moment(termindato)) && fødselsdatoEtterEllerLikFørsteJuli
     );
+};
+
+const visInfoOmPrematurukerVisible = (barn: Partial<FødtBarn>, rolle: SøkerRolle): boolean => {
+    const fødselsdato = barn.fødselsdatoer !== undefined ? barn.fødselsdatoer[0] : undefined;
+    const termindato = barn.termindato;
+
+    return skalViseInfoOmPrematuruker(fødselsdato, termindato, rolle);
 };
 
 export default {

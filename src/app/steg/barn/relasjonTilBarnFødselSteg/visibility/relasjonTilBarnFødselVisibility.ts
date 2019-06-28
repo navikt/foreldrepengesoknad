@@ -61,7 +61,7 @@ export const getRelasjonTilBarnFødselVisibility = (
         isUfødtBarn(barn, situasjon) &&
         visibility.terminbekreftelsePartialVisible(termindato, barn, skalLasteOppTerminbekreftelse);
     const terminbekreftelseDato = visibility.terminbekreftelseDatoVisible(terminbekreftelse, barn);
-    const visInfoOmPrematuruker = visibility.visInfoOmPrematurukerVisible(barn);
+    const visInfoOmPrematuruker = visibility.visInfoOmPrematurukerVisible(barn, søker.rolle);
 
     return {
         hvilketBarnGjelderSøknadenBolk,
