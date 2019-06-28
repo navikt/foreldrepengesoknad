@@ -952,6 +952,8 @@
     "valideringsfeil.utenlandsopphold.førTilDato": "Du må leggje inn ein dato som er før til-datoen.",
     "valideringsfeil.utenlandsopphold.overlapp": "Du har allereie lagt inn utanlandsopphald i denne perioden.",
     "valideringsfeil.utenlandsopphold.senere": "Du må leggje inn ein dato som er innanfor dei siste tolv månadene.",
+    "valideringsfeil.sluttMedUtsettelse":
+        "Planen kan ikke slutte med en utsettelse fordi du ikke har flere dager igjen.",
     "valideringsfeil.utenlandsopphold.tidligere": "Du må leggje inn ein dato som er innanfor dei siste tolv månadene.",
     "valideringsfeil.uttaksplanskjema.forMangeUkerPeriodeFarMedmor":
         "Du kan maksimalt ta ut {uker} uker med fellesperiode.",
