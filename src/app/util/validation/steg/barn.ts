@@ -20,6 +20,7 @@ import { Validator } from 'common/lib/validation/types';
 import { InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
+import { visTermindato } from 'app/steg/barn/relasjonTilBarnFødselSteg/visibility/visibilityFunctions';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (
@@ -74,7 +75,9 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
     const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo);
     if (isFødtBarn(barn, situasjon) || isUfødtBarn(barn, situasjon)) {
         if (harValgtRegistrertBarn(søknad)) {
-            return barn.termindato !== undefined;
+            const { søknadenGjelderBarnValg } = søknad.ekstrainfo;
+            const valgtBarn = søknadenGjelderBarnValg!.valgteBarn[0];
+            return visTermindato(valgtBarn.fødselsdato, søknad.søker.rolle) ? barn.termindato !== undefined : true;
         }
         return isFødtBarn(barn, situasjon)
             ? fødtBarnErGyldig(barn)

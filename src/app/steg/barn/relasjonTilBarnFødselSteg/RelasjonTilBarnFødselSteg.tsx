@@ -31,7 +31,7 @@ import {
     getRelasjonTilBarnFødselVisibility,
     RelasjonTilBarnFødselStegVisibility
 } from './visibility/relasjonTilBarnFødselVisibility';
-import { SøknadenGjelderBarnValg, Søkersituasjon, Skjemanummer, SøkerRolle } from '../../../types/søknad/Søknad';
+import { SøknadenGjelderBarnValg, Søkersituasjon, Skjemanummer } from '../../../types/søknad/Søknad';
 import FødtBarnPartial from './partials/FødtBarnPartial';
 import lenker from '../../../util/routing/lenker';
 import { apiActionCreators } from 'app/redux/actions';
@@ -42,7 +42,7 @@ import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import { termindatoAvgrensninger, getTermindatoRegler } from 'app/util/validation/termindato';
 import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
-import { skalViseInfoOmPrematuruker } from './visibility/visibilityFunctions';
+import { skalViseInfoOmPrematuruker, visTermindato } from './visibility/visibilityFunctions';
 
 interface RelasjonTilBarnFødselStegProps {
     barn: Barn;
@@ -76,8 +76,8 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
         dispatch(søknadActions.updateBarn(cleanupRelasjonTilBarnFødselSteg(barn)));
     }
 
-    visInfoOmPrematuruker(fødselsdato: Date, termindato: Date, rolle: SøkerRolle) {
-        return skalViseInfoOmPrematuruker(fødselsdato, termindato, rolle);
+    visInfoOmPrematuruker(fødselsdato: Date, termindato: Date) {
+        return skalViseInfoOmPrematuruker(fødselsdato, termindato);
     }
 
     render() {
@@ -164,24 +164,23 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                         )}
                 </Block>
                 <Block visible={valgtBarn !== undefined}>
-                    <Block>
-                        <DatoInput
-                            id={guid()}
-                            name="termindato"
-                            dato={(barn as FødtBarn).termindato}
-                            onChange={(termindato: Date) => dispatch(søknadActions.updateBarn({ termindato }))}
-                            label={<Labeltekst intlId="fødselsdatoer.termin" />}
-                            datoAvgrensinger={{ ...termindatoAvgrensninger }}
-                            validators={{ ...getTermindatoRegler((barn as FødtBarn).termindato, intl) }}
-                        />
-                    </Block>
                     {valgtBarn !== undefined && (
                         <>
+                            <Block visible={visTermindato(valgtBarn.fødselsdato, søker.rolle)}>
+                                <DatoInput
+                                    id={guid()}
+                                    name="termindato"
+                                    dato={(barn as FødtBarn).termindato}
+                                    onChange={(termindato: Date) => dispatch(søknadActions.updateBarn({ termindato }))}
+                                    label={<Labeltekst intlId="fødselsdatoer.termin" />}
+                                    datoAvgrensinger={{ ...termindatoAvgrensninger }}
+                                    validators={{ ...getTermindatoRegler((barn as FødtBarn).termindato, intl) }}
+                                />
+                            </Block>
                             <Block
                                 visible={this.visInfoOmPrematuruker(
                                     valgtBarn.fødselsdato,
-                                    (barn as FødtBarn).termindato,
-                                    søker.rolle
+                                    (barn as FødtBarn).termindato
                                 )}>
                                 <VeilederInfo
                                     messages={[
@@ -196,8 +195,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                             <Block
                                 visible={this.visInfoOmPrematuruker(
                                     valgtBarn.fødselsdato,
-                                    (barn as FødtBarn).termindato,
-                                    søker.rolle
+                                    (barn as FødtBarn).termindato
                                 )}>
                                 <AttachmentsUploaderPure
                                     attachments={barn.terminbekreftelse || []}
