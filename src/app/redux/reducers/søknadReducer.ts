@@ -137,8 +137,8 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 }
             };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
-            const { gjelderAnnetBarn, valgteBarn } = action.payload;
-            const barn = getBarnInfoFraRegistrertBarnValg(gjelderAnnetBarn, valgteBarn);
+            const { gjelderAnnetBarn, valgteBarn, termindato } = action.payload;
+            const barn = { ...getBarnInfoFraRegistrertBarnValg(gjelderAnnetBarn, valgteBarn), termindato };
             const registrertAnnenForelder = getUniqueRegistrertAnnenForelderFromBarn(valgteBarn);
 
             return {
