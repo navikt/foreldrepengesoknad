@@ -74,7 +74,7 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
     const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo);
     if (isFødtBarn(barn, situasjon) || isUfødtBarn(barn, situasjon)) {
         if (harValgtRegistrertBarn(søknad)) {
-            return true;
+            return barn.termindato !== undefined;
         }
         return isFødtBarn(barn, situasjon)
             ? fødtBarnErGyldig(barn)

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
+import moment from 'moment';
 
 import Steg, { StegProps } from 'app/components/applikasjon/steg/Steg';
 import UfødtBarnPartial from './partials/UfødtBarnPartial';
@@ -13,7 +14,7 @@ import { AppState } from '../../../redux/reducers';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { DispatchProps } from 'common/redux/types';
 import { RegistrertBarn } from '../../../types/Person';
-import Barn, { isFødtBarn, isUfødtBarn } from '../../../types/søknad/Barn';
+import Barn, { isFødtBarn, isUfødtBarn, FødtBarn } from '../../../types/søknad/Barn';
 import Søker from '../../../types/søknad/Søker';
 
 import { StegID } from '../../../util/routing/stegConfig';
@@ -31,10 +32,17 @@ import {
     getRelasjonTilBarnFødselVisibility,
     RelasjonTilBarnFødselStegVisibility
 } from './visibility/relasjonTilBarnFødselVisibility';
-import { SøknadenGjelderBarnValg, Søkersituasjon } from '../../../types/søknad/Søknad';
+import { SøknadenGjelderBarnValg, Søkersituasjon, Skjemanummer } from '../../../types/søknad/Søknad';
 import FødtBarnPartial from './partials/FødtBarnPartial';
 import lenker from '../../../util/routing/lenker';
 import { apiActionCreators } from 'app/redux/actions';
+import { guid } from 'nav-frontend-js-utils';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
+import Labeltekst from 'common/components/labeltekst/Labeltekst';
+import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
+import { termindatoAvgrensninger, getTermindatoRegler } from 'app/util/validation/termindato';
+import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 
 interface RelasjonTilBarnFødselStegProps {
     barn: Barn;
@@ -55,6 +63,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
         super(props);
         this.onPresubmit = this.onPresubmit.bind(this);
         this.cleanupSteg = this.cleanupSteg.bind(this);
+        this.visInfoOmPrematuruker = this.visInfoOmPrematuruker.bind(this);
     }
 
     onPresubmit() {
@@ -65,6 +74,20 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
     cleanupSteg() {
         const { barn, dispatch } = this.props;
         dispatch(søknadActions.updateBarn(cleanupRelasjonTilBarnFødselSteg(barn)));
+    }
+
+    visInfoOmPrematuruker(fødselsdato: Date, termindato: Date) {
+        if (fødselsdato === undefined || termindato === undefined) {
+            return false;
+        }
+
+        const fødselsdatoEtterEllerLikFørsteJuli = moment(fødselsdato).isSameOrAfter(moment(new Date('2019-07-01')));
+
+        return (
+            moment(fødselsdato)
+                .add(7, 'weeks')
+                .isSameOrBefore(moment(termindato)) && fødselsdatoEtterEllerLikFørsteJuli
+        );
     }
 
     render() {
@@ -78,10 +101,12 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
             stegProps,
             vis,
             dispatch,
-            situasjon
+            situasjon,
+            intl
         } = this.props;
 
-        const { gjelderAnnetBarn } = søknadenGjelderBarnValg;
+        const { gjelderAnnetBarn, valgteBarn } = søknadenGjelderBarnValg;
+        const valgtBarn = valgteBarn[0];
 
         return (
             <Steg {...stegProps} onPreSubmit={this.onPresubmit}>
@@ -147,6 +172,57 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                 vis={vis.ufødt}
                             />
                         )}
+                </Block>
+                <Block visible={valgtBarn !== undefined}>
+                    <Block>
+                        <DatoInput
+                            id={guid()}
+                            name="termindato"
+                            dato={(barn as FødtBarn).termindato}
+                            onChange={(termindato: Date) => dispatch(søknadActions.updateBarn({ termindato }))}
+                            label={<Labeltekst intlId="fødselsdatoer.termin" />}
+                            datoAvgrensinger={{ ...termindatoAvgrensninger }}
+                            validators={{ ...getTermindatoRegler((barn as FødtBarn).termindato, intl) }}
+                        />
+                    </Block>
+                    {valgtBarn !== undefined && (
+                        <>
+                            <Block
+                                visible={this.visInfoOmPrematuruker(
+                                    valgtBarn.fødselsdato,
+                                    (barn as FødtBarn).termindato
+                                )}>
+                                <VeilederInfo
+                                    messages={[
+                                        {
+                                            contentIntlKey: 'barnFødt.infoPrematuruker',
+                                            type: 'info',
+                                            formatContentAsHTML: true
+                                        }
+                                    ]}
+                                />
+                            </Block>
+                            <Block
+                                visible={this.visInfoOmPrematuruker(
+                                    valgtBarn.fødselsdato,
+                                    (barn as FødtBarn).termindato
+                                )}>
+                                <AttachmentsUploaderPure
+                                    attachments={barn.terminbekreftelse || []}
+                                    attachmentType={AttachmentType.TERMINBEKREFTELSE}
+                                    skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
+                                    onFilesSelect={(attachments: Attachment[]) => {
+                                        attachments.forEach((attachment: Attachment) => {
+                                            dispatch(søknadActions.uploadAttachment(attachment));
+                                        });
+                                    }}
+                                    onFileDelete={(attachment: Attachment) => {
+                                        dispatch(søknadActions.deleteAttachment(attachment));
+                                    }}
+                                />
+                            </Block>
+                        </>
+                    )}
                 </Block>
             </Steg>
         );
