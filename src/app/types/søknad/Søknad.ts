@@ -31,6 +31,7 @@ export enum Søkersituasjon {
 export interface SøknadenGjelderBarnValg {
     valgteBarn: RegistrertBarn[];
     gjelderAnnetBarn?: boolean;
+    termindato?: Date;
 }
 
 interface SensitivSkjemaInfo {
