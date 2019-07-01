@@ -22,10 +22,10 @@ import {
     StønadskontoType,
     SaksperiodeUtsettelseÅrsakType,
     Arbeidsform,
-    MorsAktivitet,
-    OppholdÅrsakType
+    OppholdÅrsakType,
+    MorsAktivitet
 } from 'app/types/uttaksplan/periodetyper';
-import { UttaksplanDTO, UttaksplanPeriodeDTO } from 'app/api/types/uttaksplanDTO';
+import { UttaksplanDTO, UttaksplanPeriodeDTO, MorsAktivitetDto } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { datoErInnenforTidsperiode, Tidsperioden } from '../uttaksplan/Tidsperioden';
 import { getRelevantFamiliehendelseDato } from '../dates/dates';
@@ -76,7 +76,7 @@ const mapSaksperiodeFromDTO = (p: UttaksplanPeriodeDTO): Saksperiode => {
         utsettelsePeriodeType,
         arbeidsgiverInfo,
         uttakArbeidType,
-        morsAktivitetIPerioden,
+        morsAktivitet,
         oppholdAarsak,
         gjelderAnnenPart,
         flerbarnsdager,
@@ -96,7 +96,10 @@ const mapSaksperiodeFromDTO = (p: UttaksplanPeriodeDTO): Saksperiode => {
             tom: new Date(periode.tom)
         },
         gjelderAnnenPart,
-        morsAktivitetIPerioden: morsAktivitetIPerioden as MorsAktivitet,
+        morsAktivitetIPerioden:
+            morsAktivitet !== MorsAktivitetDto.samtidigUttak
+                ? ((morsAktivitet as unknown) as MorsAktivitet)
+                : undefined,
         flerbarnsdager
     };
 

@@ -20,7 +20,7 @@ export interface UttaksplanPeriodeDTO {
         fom: string;
         tom: string;
     };
-    morsAktivitetIPerioden: string;
+    morsAktivitet: MorsAktivitetDto;
     oppholdAarsak: OppholdsÅrsak;
 }
 
@@ -48,4 +48,16 @@ export enum OppholdsÅrsak {
     'UTTAK_FEDREKVOTE_ANNEN_FORELDER' = 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
     'UTTAK_FORELDREPENGER_ANNEN_FORELDER' = 'UTTAK_FORELDREPENGER_ANNEN_FORELDER',
     'UTTAK_FELLESP_ANNEN_FORELDER' = 'UTTAK_FELLESP_ANNEN_FORELDER'
+}
+
+export enum MorsAktivitetDto {
+    'Arbeid' = 'ARBEID',
+    'Utdanning' = 'UTDANNING',
+    'Kvalifiseringsprogrammet' = 'KVALPROG',
+    'Introduksjonsprogrammet' = 'INTROPROG',
+    'TrengerHjelp' = 'TRENGER_HJELP',
+    'Innlagt' = 'INNLAGT',
+    'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING',
+    'Uføre' = 'UFØRE',
+    'samtidigUttak' = 'SAMTIDIGUTTAK'
 }
