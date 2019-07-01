@@ -23,26 +23,14 @@ export const Uttaksdagen = (dato: Date) => ({
     trekkFra: (uttaksdager: number): Date => trekkUttaksdagerFraDato(dato, uttaksdager)
 });
 
-/**
- * Returnerer
- * @param dato
- */
-function getUkedag(dato: Date) {
+function getUkedag(dato: Date): number {
     return moment.utc(dato).isoWeekday();
 }
 
-/**
- * Returnerer om en dato er en uttaksdag
- * @param dato
- */
 export function erUttaksdag(dato: Date): boolean {
     return getUkedag(dato) !== 6 && getUkedag(dato) !== 7;
 }
 
-/**
- * Finner første uttaksdag før dato
- * @param dato
- */
 function getUttaksdagFørDato(dato: Date): Date {
     return getUttaksdagTilOgMedDato(
         moment(dato)
