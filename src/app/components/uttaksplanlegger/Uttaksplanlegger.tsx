@@ -324,7 +324,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             onClick={() => this.openNyUtsettelsesperiodeForm()}
                             htmlType="button"
                             ref={(c) => (this.leggTilOppholdKnapp = c)}
-                            aria-expanded={formIsOpen}>
+                            aria-expanded={formIsOpen}
+                            data-name="openNyUtsettelseForm">
                             <FormattedMessage id="uttaksplan.leggTil.opphold" />
                         </Knapp>
                         <Knapp

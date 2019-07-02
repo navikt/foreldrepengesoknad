@@ -16,7 +16,7 @@ const spørsmålOmAntallBarnVisible = (barn: Partial<Adopsjonsbarn>): boolean =>
     return barn.adopsjonsdato !== undefined;
 };
 
-const spørsmålOmFødselsdatoerVisible = (barn: Partial<Adopsjonsbarn>): boolean => {
+const spørsmålOmFodselsdatoerVisible = (barn: Partial<Adopsjonsbarn>): boolean => {
     return module.spørsmålOmAntallBarn(barn) && barn.antallBarn !== undefined;
 };
 
@@ -45,7 +45,7 @@ export const spørsmålOmVedleggVisible = (barn: Partial<Adopsjonsbarn>, erEndri
 const module = {
     spørsmålOmAdopsjonsdato: spørsmålOmAdopsjonsdatoVisible,
     spørsmålOmAntallBarn: spørsmålOmAntallBarnVisible,
-    spørsmålOmFødselsdatoer: spørsmålOmFødselsdatoerVisible,
+    spørsmålOmFødselsdatoer: spørsmålOmFodselsdatoerVisible,
     spørsmålOmAdoptertIUtlandet: spørsmålOmAdoptertIUtlandetVisible,
     spørsmålOmAnkomstdato: spørsmålOmAnkomstdatoVisible,
     spørsmålOmVedlegg: spørsmålOmVedleggVisible

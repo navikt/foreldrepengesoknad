@@ -19,7 +19,8 @@
         "precommit": "npm run jest && pretty-quick --staged",
         "jest":
             "jest --config ./jest/jest.config.js --coverage --collectCoverageFrom=src/**/*.{ts,tsx} --collectCoverageFrom=!src/**/*.d.{ts,tsx}",
-        "jest-watch": "jest --watch --verbose --config ./jest/jest.config.js"
+        "jest-watch": "jest --watch --verbose --config ./jest/jest.config.js",
+        "cypress": "$(npm bin)/cypress open"
     },
     "keywords": [],
     "author": "NAV",
@@ -57,6 +58,7 @@
         "body-parser": "1.18.3",
         "case-sensitive-paths-webpack-plugin": "2.1.2",
         "css-loader": "0.28.11",
+        "cypress": "^3.3.2",
         "dotenv": "5.0.1",
         "enzyme": "3.3.0",
         "enzyme-adapter-react-16": "1.1.1",

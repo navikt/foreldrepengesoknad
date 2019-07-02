@@ -31,7 +31,9 @@ const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({ utta
                 <div className={kontoErOvertrukket ? BEM.element('kontoOvertrukket') : BEM.element('konto')}>
                     {getStønadskontoNavn(intl, uttak.konto, navnPåForeldre)}
                 </div>
-                <strong className={kontoErOvertrukket ? BEM.element('dagerOvertrukket') : BEM.element('dager')}>
+                <strong
+                    className={kontoErOvertrukket ? BEM.element('dagerOvertrukket') : BEM.element('dager')}
+                    data-name={uttak.konto}>
                     {kontoErOvertrukket ? `- ${varighetString}` : varighetString}
                 </strong>
             </div>
