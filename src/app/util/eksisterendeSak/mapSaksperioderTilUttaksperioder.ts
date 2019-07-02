@@ -296,7 +296,9 @@ const mapSaksperioderTilUttaksperioder = (
     grunnlag: Saksgrunnlag,
     erEndringssøknad: boolean
 ): Periode[] | undefined => {
-    const perioder = saksperioder.map((periode) => mapPeriodeFromSaksperiode(periode, grunnlag, erEndringssøknad));
+    const perioder = saksperioder
+        .filter((saksperiode) => saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET)
+        .map((periode) => mapPeriodeFromSaksperiode(periode, grunnlag, erEndringssøknad));
 
     if (perioder.some((p) => p === undefined)) {
         return undefined;
