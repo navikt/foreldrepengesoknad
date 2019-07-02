@@ -7,8 +7,9 @@ import BEMHelper from 'common/util/bem';
 import getMessage from 'common/util/i18nUtils';
 import Knappelenke from '../../elementer/knappelenke/Knappelenke';
 import Modal from 'nav-frontend-modal';
-import './utløptSesjonModal.less';
 import AdvarselIkon from 'common/components/ikoner/AdvarselIkon';
+
+import './utløptSesjonModal.less';
 
 const cls = BEMHelper('utløptSesjonModal');
 const AVSLUTT_HREF = 'https://familie.nav.no';
