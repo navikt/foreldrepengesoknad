@@ -16,24 +16,26 @@ const SøknadstypeSpørsmål = (props: Props) => {
     const { harEksisterendeSak, skalEndre, onChange, erSakForEndringssøknadFraInfotrygd, intl } = props;
     if (harEksisterendeSak) {
         return (
-            <JaNeiSpørsmål
-                spørsmål={
-                    erSakForEndringssøknadFraInfotrygd
-                        ? getMessage(intl, `velkommen.spørsmål.søknadstype.harInfotrygdSak.spørsmål`)
-                        : getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.spørsmål`)
-                }
-                navn="søknadstype"
-                valgtVerdi={skalEndre}
-                labels={{
-                    ja: erSakForEndringssøknadFraInfotrygd
-                        ? getMessage(intl, `velkommen.spørsmål.søknadstype.harInfotrygdSak.alternativ.endring`)
-                        : getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.endring`),
-                    nei: erSakForEndringssøknadFraInfotrygd
-                        ? getMessage(intl, `velkommen.spørsmål.søknadstype.harInfotrygdSak.alternativ.nyttbarn`)
-                        : getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn`)
-                }}
-                onChange={(verdi) => onChange(verdi)}
-            />
+            <div data-name="soknadstype-spm">
+                <JaNeiSpørsmål
+                    spørsmål={
+                        erSakForEndringssøknadFraInfotrygd
+                            ? getMessage(intl, `velkommen.spørsmål.søknadstype.harInfotrygdSak.spørsmål`)
+                            : getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.spørsmål`)
+                    }
+                    navn="søknadstype"
+                    valgtVerdi={skalEndre}
+                    labels={{
+                        ja: erSakForEndringssøknadFraInfotrygd
+                            ? getMessage(intl, `velkommen.spørsmål.søknadstype.harInfotrygdSak.alternativ.endring`)
+                            : getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.endring`),
+                        nei: erSakForEndringssøknadFraInfotrygd
+                            ? getMessage(intl, `velkommen.spørsmål.søknadstype.harInfotrygdSak.alternativ.nyttbarn`)
+                            : getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn`)
+                    }}
+                    onChange={(verdi) => onChange(verdi)}
+                />
+            </div>
         );
     } else {
         return (
