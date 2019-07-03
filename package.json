@@ -17,7 +17,8 @@
         "start": "node ./src/build/scripts/start-dev.js",
         "start-no-decorator": "node ./src/build/scripts/start-dev-nodecorator.js",
         "precommit": "npm run jest && pretty-quick --staged",
-        "jest":
+        "jest": "jest --config ./jest/jest.config.js",
+        "jest-coverage":
             "jest --config ./jest/jest.config.js --coverage --collectCoverageFrom=src/**/*.{ts,tsx} --collectCoverageFrom=!src/**/*.d.{ts,tsx}",
         "jest-watch": "jest --watch --verbose --config ./jest/jest.config.js",
         "cypress": "$(npm bin)/cypress open",
