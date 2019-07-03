@@ -20,7 +20,8 @@
         "jest":
             "jest --config ./jest/jest.config.js --coverage --collectCoverageFrom=src/**/*.{ts,tsx} --collectCoverageFrom=!src/**/*.d.{ts,tsx}",
         "jest-watch": "jest --watch --verbose --config ./jest/jest.config.js",
-        "cypress": "$(npm bin)/cypress open"
+        "cypress": "$(npm bin)/cypress open",
+        "cypress-headless": "$(npm bin)/cypress run"
     },
     "keywords": [],
     "author": "NAV",
