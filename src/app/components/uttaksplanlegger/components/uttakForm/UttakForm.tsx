@@ -343,7 +343,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
         const periodeErNyOgFørFamiliehendelsesdatoFeil: Feil | undefined =
             periode.id === undefined &&
             isValidTidsperiode(tidsperiode) &&
-            moment(tidsperiode.fom).isBefore(familiehendelsesdato)
+            moment(tidsperiode.fom).isBefore(familiehendelsesdato, 'days')
                 ? { feilmelding: getMessage(intl, 'periodeliste.nyPeriodeErFørFamiliehendelsesdato') }
                 : undefined;
 
