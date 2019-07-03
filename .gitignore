@@ -9,3 +9,5 @@ yarn-error.log
 mock_data/soknad.json
 *.iml
 coverage
+cypress/screenshots
+cypress/videos
