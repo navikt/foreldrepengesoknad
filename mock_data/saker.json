@@ -1,1 +1,27 @@
-[]
+[
+    {
+        "type": "FPSAK",
+        "saksnummer": "139022894",
+        "status": "LOP",
+        "opprettet": "2019-07-03",
+        "annenPart": {
+            "fnr": "02056314469",
+            "aktørId": "1595773528178",
+            "navn": { "fornavn": "KORRUPT", "etternavn": "NORDMANN", "kjønn": "K" }
+        },
+        "behandlinger": [
+            {
+                "opprettetTidspunkt": "2019-07-03T09:38:03.037",
+                "endretTidspunkt": "2019-07-03T10:10:06.871",
+                "status": "AVSLU",
+                "type": "FP",
+                "tema": "FORP_FODS",
+                "årsak": "RE-END-INNTEKTSMELD",
+                "behandlingResultat": "INNVILGET",
+                "behandlendeEnhet": "4833",
+                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Oslo 1",
+                "inntektsmeldinger": ["448240297"]
+            }
+        ]
+    }
+]
