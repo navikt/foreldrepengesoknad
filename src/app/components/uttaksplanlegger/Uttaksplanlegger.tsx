@@ -237,7 +237,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                     </div>
                                 )}
                             {onRequestRevert &&
-                                planErEndret && (
+                                (planErEndret || søknadsinfo.søknaden.ønskerTomPlan) && (
                                     <div className={BEM.element('header__reset')}>
                                         <LinkButton
                                             className={BEM.element('resetLink')}
