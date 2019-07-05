@@ -69,7 +69,6 @@ export const skalKunneViseMorsUttaksplanForFarEllerMedmor = (
 ): boolean => {
     const { søknaden, annenForelder } = søknadsinfo;
     return (
-        moment(grunnlag.familieHendelseDato).isSame(søknaden.familiehendelsesdato, 'day') &&
         grunnlag.dekningsgrad === søknaden.dekningsgrad &&
         grunnlag.antallBarn === søknaden.antallBarn &&
         ((annenForelder.harRett === false && grunnlag.morErUfør && annenForelder.erUfør) ||
