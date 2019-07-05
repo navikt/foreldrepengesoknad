@@ -34,7 +34,8 @@ export const getDefaultSøknadState = (): SøknadPartial => {
         ekstrainfo: {
             erEnkelEndringssøknad: false,
             uttaksplanSkjema: {
-                startdatoPermisjon: undefined
+                startdatoPermisjon: undefined,
+                ønskerTomPlan: false
             },
             currentStegID: undefined,
             søknadenGjelderBarnValg: {
@@ -85,7 +86,7 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             return UttaksplanBuilder(
                 perioder || state.uttaksplan,
                 familiehendelsesdato,
-                state.ekstrainfo.eksisterendeSak ? state.ekstrainfo.eksisterendeSak.uttaksplan : undefined
+                state.ekstrainfo.eksisterendeSak && !state.ekstrainfo.uttaksplanSkjema.ønskerTomPlan ? state.ekstrainfo.eksisterendeSak.uttaksplan : undefined
             );
         }
         throw new Error('getBuilder: Familiehendelsesdato kunne ikke utledes');
@@ -175,7 +176,14 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 uttaksplan:
                     state.ekstrainfo.eksisterendeSak !== undefined
                         ? cloneUttaksplan(state.ekstrainfo.eksisterendeSak.uttaksplan || [])
-                        : []
+                        : [],
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    uttaksplanSkjema: {
+                        ...state.ekstrainfo.uttaksplanSkjema,
+                        ønskerTomPlan: false
+                    }
+                }
             };
 
         case SøknadActionKeys.UTTAKSPLAN_SET_FORSLAG:

@@ -166,6 +166,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     onBekreftSlettUttaksplan() {
         this.setState({ bekreftSlettUttaksplanDialogSynlig: false });
         this.props.dispatch(søknadActions.uttaksplanSetPerioder([]));
+        this.props.dispatch(søknadActions.uttaksplanUpdateSkjemdata({ ønskerTomPlan: true }));
     }
 
     onBekreftTilbakestillUttaksplan() {

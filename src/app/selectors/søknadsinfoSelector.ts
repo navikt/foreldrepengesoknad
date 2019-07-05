@@ -91,7 +91,8 @@ const selectOmSøknaden = createSelector(
                 erEnkelEndringssøknad: ekstrainfo.erEnkelEndringssøknad === true,
                 antallBarn: barn.antallBarn,
                 erBarnFødt: situasjon === Søkersituasjon.FØDSEL ? barn.erBarnetFødt : undefined,
-                harKomplettUttaksplan
+                harKomplettUttaksplan,
+                ønskerTomPlan: ekstrainfo.uttaksplanSkjema && ekstrainfo.uttaksplanSkjema.ønskerTomPlan
             };
         }
         return undefined;
