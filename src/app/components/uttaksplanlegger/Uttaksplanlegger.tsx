@@ -48,7 +48,7 @@ interface OwnProps {
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
     onRequestClear: () => void;
-    onRequestRevert?: () => void;
+    onRequestRevert: () => void;
 }
 
 type Props = OwnProps & InjectedIntlProps;
