@@ -172,6 +172,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     onBekreftTilbakestillUttaksplan() {
         this.setState({ bekreftTilbakestillUttaksplanDialogSynlig: false });
         this.props.dispatch(søknadActions.resetUttaksplanEndringer());
+        this.props.dispatch(søknadActions.uttaksplanLagForslag());
     }
 
     handleOnPeriodeErrorClick(periodeId: string) {
@@ -294,9 +295,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 defaultStønadskontoType={defaultStønadskontoType}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestClear={() => this.showBekreftSlettUttaksplanDialog()}
-                                onRequestRevert={
-                                    eksisterendeSak ? () => this.showBekreftTilbakestillUttaksplanDialog() : undefined
-                                }
+                                onRequestRevert={() => this.showBekreftTilbakestillUttaksplanDialog()}
                                 meldingerPerPeriode={meldingerPerPeriode}
                                 onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
                                 forelder={søknadsinfo.søker.erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
