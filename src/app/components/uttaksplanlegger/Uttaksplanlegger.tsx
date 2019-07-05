@@ -47,7 +47,7 @@ interface OwnProps {
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
-    onRequestClear?: () => void;
+    onRequestClear: () => void;
     onRequestRevert?: () => void;
 }
 
@@ -227,7 +227,6 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 <FormattedMessage id="uttaksplan.tittel" />
                             </Systemtittel>
                             {onRequestClear &&
-                                onRequestRevert === undefined &&
                                 uttaksplan.length > 0 && (
                                     <div className={BEM.element('header__reset')}>
                                         <LinkButton
@@ -247,6 +246,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                         </LinkButton>
                                     </div>
                                 )}
+
                             <span className={BEM.element('header__details')}>
                                 <span
                                     className={BEM.element('header__details__icon')}
