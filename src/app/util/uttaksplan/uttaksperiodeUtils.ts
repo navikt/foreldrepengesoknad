@@ -86,6 +86,7 @@ export function getDatoavgrensningerForStønadskonto(
             ugyldigeTidsperioder
         },
         til: {
+            ...standardAvgrensninger,
             minDato: tidsperiode && tidsperiode.fom ? tidsperiode.fom : standardAvgrensninger.minDato,
             ugyldigeTidsperioder
         }

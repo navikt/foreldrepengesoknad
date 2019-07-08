@@ -68,12 +68,10 @@ class TidsperiodeBolk extends React.Component<Props> {
     getValidators() {
         const { tidsperiode, intl, visPågåendePeriodeCheckbox, datoValidatorer, pågående } = this.props;
         const tidsperiodeValidators = getTidsperiodeRegler(tidsperiode, intl, visPågåendePeriodeCheckbox, pågående);
-
         if (datoValidatorer) {
             if (datoValidatorer.fra && tidsperiodeValidators.fra) {
                 tidsperiodeValidators.fra.push(...datoValidatorer.fra);
             }
-
             if (datoValidatorer.til && tidsperiodeValidators.til) {
                 tidsperiodeValidators.til.push(...datoValidatorer.til);
             }
@@ -114,8 +112,6 @@ class TidsperiodeBolk extends React.Component<Props> {
         } else if (tidsperiode.fom) {
             tilAvgrensninger = { minDato: tidsperiode.fom };
         }
-        const fraInputId = guid();
-        const tilInputId = guid();
 
         const validators = this.getValidators();
 
@@ -126,7 +122,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                         <Block margin="none">
                             <DatoInput
                                 name="fraDatoInput"
-                                id={fraInputId}
+                                id={guid()}
                                 label={datoInputLabelProps ? datoInputLabelProps.fom : getMessage(intl, 'fraogmed')}
                                 onChange={(fom: Date) => {
                                     this.handleOnChange({
@@ -149,7 +145,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                         <Block margin="none">
                             <DatoInput
                                 name="tilDatoInput"
-                                id={tilInputId}
+                                id={guid()}
                                 label={datoInputLabelProps ? datoInputLabelProps.tom : getMessage(intl, 'tilogmed')}
                                 onChange={(tom: DateValue) => {
                                     this.handleOnChange({

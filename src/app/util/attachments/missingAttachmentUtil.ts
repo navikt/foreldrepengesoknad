@@ -1,4 +1,3 @@
-import { getRelasjonTilBarnFødselVisibility } from '../../steg/barn/relasjonTilBarnFødselSteg/visibility/relasjonTilBarnFødselVisibility';
 import Søknad, { Skjemanummer } from '../../types/søknad/Søknad';
 import { ApiState } from '../../redux/reducers/apiReducer';
 import {
@@ -35,9 +34,10 @@ import {
 } from '../uttaksplan/utsettelsesperiode';
 import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
-import { isUfødtBarn, isAdopsjonsbarn } from '../../types/søknad/Barn';
+import { isAdopsjonsbarn } from '../../types/søknad/Barn';
 import { getMorsAktivitetSkjemanummer } from '../skjemanummer/morsAktivitetSkjemanummer';
 import { aktivitetskravMorSkalBesvares } from 'app/regler/uttak/uttaksskjema/aktivitetskravMorSkalBesvares';
+import { skalSøkerLasteOppTerminbekreftelse } from '../validation/steg/barn';
 
 const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType): boolean =>
     attachments === undefined ||
@@ -65,10 +65,8 @@ export function shouldPeriodeHaveAttachment(periode: Periode, søknadsinfo: Søk
 
 export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): MissingAttachment[] => {
     const missingAttachments = [];
-    const shouldUploadTerminbekreftelse = getRelasjonTilBarnFødselVisibility(søknad, api).ufødt.terminbekreftelse;
     if (
-        shouldUploadTerminbekreftelse &&
-        isUfødtBarn(søknad.barn, søknad.situasjon) &&
+        skalSøkerLasteOppTerminbekreftelse(søknad, api.søkerinfo!.arbeidsforhold) &&
         isAttachmentMissing(søknad.barn.terminbekreftelse)
     ) {
         missingAttachments.push({
