@@ -177,7 +177,7 @@ function* lagUttaksplanForslag() {
         if (
             annenPartsSak &&
             annenPartsSak.uttaksplan &&
-            skalKunneViseMorsUttaksplanForFarEllerMedmor(annenPartsSak.grunnlag, søknadsinfo)
+            skalKunneViseMorsUttaksplanForFarEllerMedmor(annenPartsSak.grunnlag, søknadsinfo) 
         ) {
             forslag.push(...annenPartsSak.uttaksplan);
         }
