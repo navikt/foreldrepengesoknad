@@ -3,7 +3,6 @@ import { ikkeDeltUttak } from './ikkeDeltUttak';
 import { deltUttak } from './deltUttak';
 import { UttaksplanSkjemadata } from '../../../steg/uttaksplanSkjema/uttaksplanSkjemadata';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
-import uttakEndringssøknad from './uttakEndringssøknad';
 
 export interface LagUttaksplanParams {
     situasjon: Søkersituasjon;
