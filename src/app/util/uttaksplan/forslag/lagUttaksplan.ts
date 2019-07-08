@@ -27,18 +27,8 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         uttaksplanSkjema
     } = params;
 
-    if (uttaksplanSkjema.ønskerIkkeFlerePerioder) {
+    if (uttaksplanSkjema.ønskerIkkeFlerePerioder || erEndringssøknad) {
         return [];
-    }
-
-    if (erEndringssøknad) {
-        if (søkerErFarEllerMedmor) {
-            return [];
-        } else if (!søkerErFarEllerMedmor && situasjon !== Søkersituasjon.ADOPSJON) {
-            return uttakEndringssøknad(uttaksplanSkjema.startdatoPermisjon, familiehendelsesdato);
-        } else {
-            return [];
-        }
     }
 
     const {
