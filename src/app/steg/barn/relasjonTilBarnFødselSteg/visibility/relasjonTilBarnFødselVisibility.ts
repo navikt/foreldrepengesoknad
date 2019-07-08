@@ -41,7 +41,7 @@ export const getRelasjonTilBarnFødselVisibility = (
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
 
-    const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo!);
+    const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo!.arbeidsforhold);
     const registrerteBarn = søkerinfo!.registrerteBarn || [];
 
     const hvilketBarnGjelderSøknadenBolk = visibility.hvilkeBarnGjelderSøknadenBolkVisible(registrerteBarn);

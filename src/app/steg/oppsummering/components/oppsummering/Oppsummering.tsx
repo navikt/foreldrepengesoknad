@@ -67,7 +67,10 @@ class Oppsummering extends React.Component<Props> {
                                 barn={søknad.barn}
                                 annenForelder={søknad.annenForelder}
                                 situasjon={søknad.situasjon}
-                                skalLasteOppTerminbekreftelse={skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo)}
+                                skalLasteOppTerminbekreftelse={skalSøkerLasteOppTerminbekreftelse(
+                                    søknad,
+                                    søkerinfo!.arbeidsforhold
+                                )}
                             />
                         </Oppsummeringspanel>
                     )}

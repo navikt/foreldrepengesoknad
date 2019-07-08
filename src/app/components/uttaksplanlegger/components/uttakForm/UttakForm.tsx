@@ -86,14 +86,10 @@ interface StateProps {
 type Props = OwnProps & StateProps & InjectedIntlProps;
 
 const periodenGjelderAnnenForelder = (søkerErFarEllerMedmor: boolean, forelder: Forelder): boolean => {
-    if (
-        (søkerErFarEllerMedmor && forelder === Forelder.farMedmor) ||
+    return (søkerErFarEllerMedmor && forelder === Forelder.farMedmor) ||
         (!søkerErFarEllerMedmor && forelder === Forelder.mor)
-    ) {
-        return false;
-    }
-
-    return true;
+        ? false
+        : true;
 };
 
 const getPeriodeGjelder = (
@@ -317,6 +313,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
             søknadsperiode: getSøknadsperiode(søknadsinfo, periode as Periode)
         });
     }
+
     render() {
         const {
             periode,

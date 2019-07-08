@@ -70,7 +70,7 @@ export function datoErInnenforTidsperiode(dato: Date, tidsperiode: Tidsperiode):
 }
 
 function getAntallUttaksdagerITidsperiode(tidsperiode: Partial<Tidsperiode>, taBortFridager?: boolean): number {
-    if (isValidTidsperiode(tidsperiode) === false) {
+    if (!isValidTidsperiode(tidsperiode)) {
         return 0;
     }
     const fom = moment(tidsperiode.fom);
@@ -93,10 +93,9 @@ function getAntallUttaksdagerITidsperiode(tidsperiode: Partial<Tidsperiode>, taB
 }
 
 function getUttaksdagerSomErFridager(tidsperiode: Partial<Tidsperiode>): Holiday[] {
-    if (isValidTidsperiode(tidsperiode) === false) {
-        return [];
-    }
-    return getOffentligeFridager(tidsperiode as Tidsperiode).filter((dag) => Uttaksdagen(dag.date).erUttaksdag());
+    return isValidTidsperiode(tidsperiode)
+        ? getOffentligeFridager(tidsperiode as Tidsperiode).filter((dag) => Uttaksdagen(dag.date).erUttaksdag())
+        : [];
 }
 
 function flyttTidsperiode(tidsperiode: Tidsperiode, fom: Date): Tidsperiode {

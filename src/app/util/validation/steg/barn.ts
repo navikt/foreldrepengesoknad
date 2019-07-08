@@ -72,7 +72,6 @@ const harValgtRegistrertBarn = (søknad: Søknad): boolean => {
 
 export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
     const { situasjon, barn } = søknad;
-    const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo);
     if (isFødtBarn(barn, situasjon) || isUfødtBarn(barn, situasjon)) {
         if (harValgtRegistrertBarn(søknad)) {
             const { søknadenGjelderBarnValg } = søknad.ekstrainfo;
@@ -81,7 +80,7 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
         }
         return isFødtBarn(barn, situasjon)
             ? fødtBarnErGyldig(barn)
-            : ufødtBarnErGyldig(barn, skalLasteOppTerminbekreftelse || false);
+            : ufødtBarnErGyldig(barn, skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo.arbeidsforhold) || false);
     }
     if (isAdopsjonsbarn(barn, situasjon)) {
         return adopsjonsbarnErGyldig(barn);
@@ -92,34 +91,9 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
     return false;
 };
 
-export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
-    let trengerLasteOppterminbekreftelse = false;
-
-    if (søknad.barn.erBarnetFødt === false && !harAktivtArbeidsforhold(søkerinfo.arbeidsforhold)) {
-        trengerLasteOppterminbekreftelse = true;
-    }
-    if (søkerinfo.arbeidsforhold.length < 1) {
-        trengerLasteOppterminbekreftelse = true;
-    }
-    const { barn } = søknad;
-    if (
-        isUfødtBarn(barn, søknad.situasjon) &&
-        barn.termindato !== undefined &&
-        !harAktivtArbeidsforhold(søkerinfo.arbeidsforhold)
-    ) {
-        søkerinfo.arbeidsforhold.forEach((a: Arbeidsforhold) => {
-            const sluttdato = a.tom;
-            if (sluttdato) {
-                if (barn.termindato > sluttdato) {
-                    trengerLasteOppterminbekreftelse = true;
-                }
-                if (barn.termindato < sluttdato) {
-                    trengerLasteOppterminbekreftelse = false;
-                }
-            }
-        });
-    }
-    return trengerLasteOppterminbekreftelse;
+export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, arbeidsforhold: Arbeidsforhold[]): boolean => {
+    const { barn, situasjon } = søknad;
+    return isUfødtBarn(barn, situasjon) && !harAktivtArbeidsforhold(arbeidsforhold, (barn as UfødtBarn).termindato);
 };
 
 export const getUniqueRegistrertAnnenForelderFromBarn = (
