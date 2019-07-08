@@ -173,6 +173,15 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.setState({ bekreftTilbakestillUttaksplanDialogSynlig: false });
         this.props.dispatch(søknadActions.resetUttaksplanEndringer());
         this.props.dispatch(søknadActions.uttaksplanLagForslag());
+        const { søknadsinfo, søknad } = this.props;
+        if (
+            søknadsinfo &&
+            søknadsinfo.søknaden.erEnkelEndringssøknad &&
+            søknad.ekstrainfo.eksisterendeSak &&
+            søknad.ekstrainfo.eksisterendeSak.uttaksplan
+        ) {
+            this.props.dispatch(søknadActions.uttaksplanSetPerioder(søknad.ekstrainfo.eksisterendeSak.uttaksplan));
+        }
     }
 
     handleOnPeriodeErrorClick(periodeId: string) {
