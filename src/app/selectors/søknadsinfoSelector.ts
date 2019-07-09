@@ -92,7 +92,11 @@ const selectOmSøknaden = createSelector(
                 antallBarn: barn.antallBarn,
                 erBarnFødt: situasjon === Søkersituasjon.FØDSEL ? barn.erBarnetFødt : undefined,
                 harKomplettUttaksplan,
-                ønskerTomPlan: ekstrainfo.uttaksplanSkjema && ekstrainfo.uttaksplanSkjema.ønskerTomPlan
+                ønskerTomPlan: ekstrainfo.uttaksplanSkjema && ekstrainfo.uttaksplanSkjema.ønskerTomPlan,
+                harGjenskaptUttaksplanFraEkisterendeSak:
+                    ekstrainfo.eksisterendeSak !== undefined &&
+                    ekstrainfo.eksisterendeSak.uttaksplan !== undefined &&
+                    ekstrainfo.eksisterendeSak.uttaksplan.length > 0
             };
         }
         return undefined;

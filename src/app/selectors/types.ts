@@ -48,6 +48,7 @@ export interface OmSøknaden {
     erBarnFødt?: boolean;
     erAdopsjon?: boolean;
     ønskerTomPlan?: boolean;
+    harGjenskaptUttaksplanFraEkisterendeSak: boolean;
 }
 
 export interface OmSøker {

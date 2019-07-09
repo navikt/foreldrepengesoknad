@@ -297,7 +297,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         <Block>
                             <Uttaksplanlegger
                                 planErEndret={planErEndret}
-                                eksisterendeUttaksplan={eksisterendeSak && eksisterendeSak.uttaksplan}
                                 uttaksplan={søknad.uttaksplan}
                                 søknadsinfo={søknadsinfo}
                                 lastAddedPeriodeId={lastAddedPeriodeId}

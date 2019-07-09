@@ -336,7 +336,9 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
         if (visibility === undefined) {
             return null;
         }
-        const ugyldigeTidsperioder = getTidsperioderIUttaksplan(uttaksplan, periode.id);
+        const ugyldigeTidsperioder = søknadsinfo.søknaden.harGjenskaptUttaksplanFraEkisterendeSak
+            ? []
+            : getTidsperioderIUttaksplan(uttaksplan, periode.id);
 
         const tidsperiode = periode.tidsperiode as Partial<Tidsperiode>;
 
@@ -355,8 +357,8 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                 <Block visible={erForeldrepengerFørFødselOgSkalIkkeHaUttakFørTermin === false}>
                     <UttakTidsperiodeSpørsmål
                         periode={periode}
-                        ugyldigeTidsperioder={ugyldigeTidsperioder}
                         familiehendelsesdato={familiehendelsesdato}
+                        ugyldigeTidsperioder={ugyldigeTidsperioder}
                         onChange={(v: Partial<Tidsperiode>) => this.onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode}
                         feil={periodeErNyOgFørFamiliehendelsesdatoFeil}
