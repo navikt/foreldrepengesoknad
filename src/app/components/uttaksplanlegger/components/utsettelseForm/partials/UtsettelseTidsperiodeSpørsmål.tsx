@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Tidsperiode, Feil } from 'common/types';
 import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
-import { getUtsettelseTidsperiodeValidatorer } from '../../../../../util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
+// import { getUtsettelseTidsperiodeValidatorer } from '../../../../../util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
 
 export interface Props {
     tidsperiode: Partial<Tidsperiode>;
@@ -18,25 +18,25 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     feil,
     ugyldigeTidsperioder
 }) => {
-    const datoValidatorer = getUtsettelseTidsperiodeValidatorer(tidsperiode, familiehendelsesdato);
+    // const datoValidatorer = getUtsettelseTidsperiodeValidatorer(tidsperiode, familiehendelsesdato);
     return (
         <TidsperiodeBolk
             onChange={(t: Partial<Tidsperiode>) => onChange(t)}
             tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
-            datoAvgrensninger={{
-                fra: {
-                    minDato: familiehendelsesdato,
-                    maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined,
-                    ugyldigeTidsperioder,
-                    helgedagerIkkeTillatt: true
-                },
-                til: {
-                    minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined,
-                    ugyldigeTidsperioder,
-                    helgedagerIkkeTillatt: true
-                }
-            }}
-            datoValidatorer={datoValidatorer}
+            // datoAvgrensninger={{
+                // fra: {
+                    // minDato: familiehendelsesdato,
+                    // maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined,
+                    // ugyldigeTidsperioder,
+                    // helgedagerIkkeTillatt: true
+                // },
+                // til: {
+                    // minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined,
+                    // ugyldigeTidsperioder,
+                    // helgedagerIkkeTillatt: true
+                // }
+            // }}
+            // datoValidatorer={datoValidatorer}
             feil={feil}
             visVarighet={true}
         />
