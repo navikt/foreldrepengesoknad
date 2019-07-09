@@ -7,10 +7,8 @@ import {
     Periode,
     isForeldrepengerFørFødselUttaksperiode,
     ForeldrepengerFørFødselUttaksperiode,
-    Periodetype,
-    isUttaksperiode
+    Periodetype
 } from '../../../../../types/uttaksplan/periodetyper';
-import { getDatoavgrensningerForStønadskonto } from '../../../../../util/uttaksplan/uttaksperiodeUtils';
 import { UttakFormPeriodeType } from '../UttakForm';
 import { getUttakTidsperiodeValidatorer } from '../../../../../util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
 import { getVarighetString } from 'common/util/intlUtils';
@@ -72,14 +70,16 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
         !erForeldrepengerFørFødsel &&
         isValidTidsperiode(tidsperiode) &&
         moment(tidsperiode.fom).isBefore(familiehendelsesdato);
-    const konto = isUttaksperiode(periode) ? periode.konto : undefined;
+    // const konto = isUttaksperiode(periode) ? periode.konto : undefined;
 
+    /*
     const datoAvgrensninger = getDatoavgrensningerForStønadskonto(
         konto,
         familiehendelsesdato,
         tidsperiode,
         ugyldigeTidsperioder
     );
+    */
     const datoValidatorer = getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode, familiehendelsesdato);
 
     const initialMonth = erForeldrepengerFørFødsel ? familiehendelsesdato : undefined;
@@ -90,7 +90,7 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
         <TidsperiodeBolk
             onChange={(t: Partial<Tidsperiode>) => onChange(resetTidsperiodeTomIfBeforeFom(t))}
             tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
-            datoAvgrensninger={datoAvgrensninger}
+            // datoAvgrensninger={datoAvgrensninger}
             datoValidatorer={datoValidatorer}
             kanVelgeUgyldigDato={erUttakFørForeldrepengerFørFødsel}
             visVarighet={true}
