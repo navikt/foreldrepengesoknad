@@ -294,7 +294,10 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             periode.årsak === UtsettelseÅrsakType.Ferie;
 
         const utsettelser = Periodene(uttaksplan).getUtsettelser();
-        const ugyldigeTidsperioder = getTidsperioderIUttaksplan(utsettelser, periode.id);
+        const ugyldigeTidsperioder = søknadsinfo.søknaden.harGjenskaptUttaksplanFraEkisterendeSak
+            ? undefined
+            : getTidsperioderIUttaksplan(utsettelser, periode.id);
+
         const overlapperAndreUtsettelser = overlapperUtsettelseAndreUtsettelser(periode as Periode, uttaksplan);
         const harDeltidUtenAvtaleMedArbeidsgiver =
             isUtsettelsesperiode(periode) && periode.harAvtaleOmFulltidForDeltidsstilling === false;

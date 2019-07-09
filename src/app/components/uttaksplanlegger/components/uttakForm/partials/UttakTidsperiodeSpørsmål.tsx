@@ -7,7 +7,8 @@ import {
     Periode,
     isForeldrepengerFørFødselUttaksperiode,
     ForeldrepengerFørFødselUttaksperiode,
-    Periodetype
+    Periodetype,
+    isUttaksperiode
 } from '../../../../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from '../UttakForm';
 import { getUttakTidsperiodeValidatorer } from '../../../../../util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
@@ -17,6 +18,7 @@ import {
     isValidTidsperiode,
     resetTidsperiodeTomIfBeforeFom
 } from '../../../../../util/uttaksplan/Tidsperioden';
+import { getDatoavgrensningerForStønadskonto } from 'app/util/uttaksplan/uttaksperiodeUtils';
 
 export interface Props {
     periode: UttakFormPeriodeType;
@@ -57,8 +59,8 @@ const varighetRenderer = (dager: number, gradert: boolean, intl: InjectedIntl): 
 const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlProps> = ({
     onChange,
     periode,
-    familiehendelsesdato,
     tidsperiode,
+    familiehendelsesdato,
     ugyldigeTidsperioder,
     feil,
     intl
@@ -70,27 +72,23 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
         !erForeldrepengerFørFødsel &&
         isValidTidsperiode(tidsperiode) &&
         moment(tidsperiode.fom).isBefore(familiehendelsesdato);
-    // const konto = isUttaksperiode(periode) ? periode.konto : undefined;
 
-    /*
     const datoAvgrensninger = getDatoavgrensningerForStønadskonto(
-        konto,
+        isUttaksperiode(periode) ? periode.konto : undefined,
         familiehendelsesdato,
         tidsperiode,
         ugyldigeTidsperioder
     );
-    */
+
     const datoValidatorer = getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode, familiehendelsesdato);
-
     const initialMonth = erForeldrepengerFørFødsel ? familiehendelsesdato : undefined;
-
     const erGradertPeriode = periode.type === Periodetype.Uttak && periode.gradert === true;
 
     return (
         <TidsperiodeBolk
             onChange={(t: Partial<Tidsperiode>) => onChange(resetTidsperiodeTomIfBeforeFom(t))}
             tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
-            // datoAvgrensninger={datoAvgrensninger}
+            datoAvgrensninger={datoAvgrensninger}
             datoValidatorer={datoValidatorer}
             kanVelgeUgyldigDato={erUttakFørForeldrepengerFørFødsel}
             visVarighet={true}

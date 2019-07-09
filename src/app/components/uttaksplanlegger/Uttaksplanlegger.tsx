@@ -37,7 +37,6 @@ import LinkButton from '../elementer/linkButton/LinkButton';
 
 interface OwnProps {
     uttaksplan: Periode[];
-    eksisterendeUttaksplan: Periode[] | undefined;
     søknadsinfo: Søknadsinfo;
     lastAddedPeriodeId: string | undefined;
     forelder: Forelder;
