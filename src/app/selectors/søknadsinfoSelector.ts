@@ -38,6 +38,7 @@ import { getUttaksdatoer } from '../util/uttaksplan/uttaksdatoer';
 import { OmMor, OmSøker, OmFarMedmor, OmAnnenForelder, NavnISøknaden, Søknadsinfo, OmSøknaden } from './types';
 import { Forelder } from 'common/types';
 import { Søkersituasjon } from 'app/types/søknad/Søknad';
+import Api from 'app/api/api';
 
 const selectOmSøknaden = createSelector(
     [
@@ -213,6 +214,14 @@ export const selectSøknadsinfo = createSelector(
                 uttaksdatoer: getUttaksdatoer(omSøknaden.familiehendelsesdato)
             };
         }
+
+        Api.log({
+            message: 'selectSøknadsinfo undefined',
+            omSøknaden: omSøknaden ? 'definert' : 'ikke definiert',
+            navn: navn ? 'navn er definert ' : 'navn er ikke definert',
+            omSøknad: omSøker ? 'omSøker er definert' : 'omSøker er ikke definert'
+        });
+        
         return undefined;
     }
 );
