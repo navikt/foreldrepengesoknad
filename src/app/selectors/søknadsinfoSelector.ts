@@ -100,6 +100,22 @@ const selectOmSøknaden = createSelector(
                     ekstrainfo.eksisterendeSak.uttaksplan.length > 0
             };
         }
+
+        Api.log({
+            message: 'selectSøknadsinfo undefined',
+            situasjon: situasjon ? 'definert' : 'ikke definiert',
+            familiehendelsesdato: familiehendelsesdato ? 'definert' : 'ikke definiert',
+            erDeltUttak: erDeltUttak ? 'definert' : 'ikke definiert',
+            erFlerbarnssøknad: erFlerbarnssøknad ? 'definert' : 'ikke definiert',
+            erFødsel: erFødsel ? 'definert' : 'ikke definiert',
+            erAdopsjon: erAdopsjon ? 'definert' : 'ikke definiert',
+            erEndringssøknad: erEndringssøknad ? 'definert' : 'ikke definiert',
+            barn: barn ? 'definert' : 'ikke definiert',
+            antallBarn: barn !== undefined && barn.antallBarn !== undefined ? 'definert' : 'ikke definiert',
+            ekstrainfo: ekstrainfo !== undefined ? 'definert' : 'ikke definiert',
+            harKomplettUttaksplan: harKomplettUttaksplan !== undefined ? 'definert' : 'ikke definiert',
+        });
+
         return undefined;
     }
 );
@@ -224,4 +240,4 @@ export const selectSøknadsinfo = createSelector(
         
         return undefined;
     }
-);
+)
