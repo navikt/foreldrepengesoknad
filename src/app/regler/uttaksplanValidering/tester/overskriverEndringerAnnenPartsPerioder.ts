@@ -1,6 +1,6 @@
 import { UttaksplanRegelgrunnlag } from '../types';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
-import { Periode, isGruppertInfoPeriode } from 'app/types/uttaksplan/periodetyper';
+import { Periode, isGruppertInfoPeriode, isUttaksperiode } from 'app/types/uttaksplan/periodetyper';
 import { getPeriodeTittel } from 'app/util/uttaksplan';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import { InjectedIntl } from 'react-intl';
@@ -27,7 +27,8 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (
                 perioderSomOverlapper.push(periode);
             }
         });
-        const passerer = perioderSomOverlapper.length === 0;
+        const passerer =
+            perioderSomOverlapper.filter((p) => !(isUttaksperiode(p) && p.ønskerSamtidigUttak)).length === 0;
         return {
             passerer,
             info: perioderSomOverlapper.map((periode) => {
