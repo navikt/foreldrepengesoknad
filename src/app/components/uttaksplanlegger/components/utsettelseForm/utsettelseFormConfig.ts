@@ -42,7 +42,12 @@ const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): bool
         søknadsinfo.annenForelder
     );
 
-    if (variant === undefined || erRelevant === false || søknadsinfo.søker.erAleneOmOmsorg) {
+    if (
+        variant === undefined ||
+        erRelevant === false ||
+        søknadsinfo.søker.erAleneOmOmsorg ||
+        søknadsinfo.annenForelder.kanIkkeOppgis
+    ) {
         return false;
     }
 
