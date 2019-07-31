@@ -1,4 +1,4 @@
-import { Periode, UtsettelseÅrsakType, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
+import { Periode, UtsettelseÅrsakType, StønadskontoType, Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../uttaksplan/Periodene';
 import { isValidTidsperiode, Tidsperioden } from '../../uttaksplan/Tidsperioden';
 import { Forelder } from 'common/types';
@@ -13,15 +13,17 @@ const periodeErFørDato = ({ tidsperiode }: Periode, dato: Date): boolean => {
 export const harMorSøktUgyldigUttakFørsteSeksUker = (
     perioder: Periode[],
     familiehendelsesdato: Date,
-    situasjon: Søkersituasjon
+    situasjon: Søkersituasjon,
+    flerbarnsFødsel?: boolean
 ): boolean => {
-    return getUgyldigUttakFørsteSeksUkerForMor(perioder, familiehendelsesdato, situasjon).length > 0;
+    return getUgyldigUttakFørsteSeksUkerForMor(perioder, familiehendelsesdato, situasjon, flerbarnsFødsel).length > 0;
 };
 
 export const getUgyldigUttakFørsteSeksUkerForMor = (
     perioder: Periode[],
     familiehendelsesdato: Date,
-    situasjon: Søkersituasjon
+    situasjon: Søkersituasjon,
+    flerbarnsFødsel?: boolean
 ): Periode[] => {
     if (situasjon === Søkersituasjon.ADOPSJON) {
         return [];
@@ -55,5 +57,19 @@ export const getUgyldigUttakFørsteSeksUkerForMor = (
         .getUttak()
         .filter((p) => p.forelder === Forelder.mor && p.konto === StønadskontoType.Fellesperiode);
 
-    return [...flernbarnsPerioder, ...gradertePerioder, ...ugyldigeUtsettelser, ...fellesPerioder];
+    let samtidigUttaksperioder: Uttaksperiode[] = [];
+
+    if (!flerbarnsFødsel && flerbarnsFødsel !== undefined) {
+        samtidigUttaksperioder = Periodene(perioderInnenforSeksFørsteUker)
+            .getUttak()
+            .filter((p) => p.forelder === Forelder.mor && p.ønskerSamtidigUttak);
+    }
+
+    return [
+        ...flernbarnsPerioder,
+        ...gradertePerioder,
+        ...ugyldigeUtsettelser,
+        ...fellesPerioder,
+        ...samtidigUttaksperioder
+    ];
 };
