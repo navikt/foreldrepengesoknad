@@ -873,6 +873,22 @@
         "Når ein forelder planleggar å vere heime i ulønt permisjon, må <b>den andre forelderen</b> søkje om å utsetje foreldrepengane på grunn av heiltidsarbeid, sjukdom eller ferie. Klikk her for å leggje til utsetjing.",
     "uttaksplan.ulønnetPermisjonInfo.del2":
         "Ulønt permisjon kan påverke rett til andre NAV ytingar og opptening av rett til foreldrepengar for eit nytt barn. <a href=\"https://www.nav.no/no/Person/Arbeid/Sykmeldt%2C+arbeidsavklaringspenger+og+yrkesskade/Sykepenger/Sykepenger+til+sarskilte+grupper#chapter-5\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">Her kan du lese meir om dine rettar.</a>",
+    "uttaksplan.arbeideHelgInfo.tittel": "Eg skal jobbe i helga",
+    "uttaksplan.arbeideHelgInfo.del1":
+        "Når du skal jobbe helgedagar, må du søkje om å <b>kombinere foreldrepengane med delvis arbeid</b> i veka du skal jobbe.",
+    "uttaksplan.arbeideHelgInfo.del2":
+        "Skal du jobbe ein laurdag, kryssar du av for at du skal kombinere foreldrepengar med 20 prosent arbeid den same veka.",
+    "uttaksplan.arbeideHelgInfo.del3":
+        "<b>Eksempel:</b> Du skal jobbe laurdag 6. april. Då søkjer du om å kombinere foreldrepengane med delvis arbeid frå måndag 1. april til fredag 5. april.",
+    "uttaksplan.arbeideHelgInfo.del4":
+        "Skal du jobbe på ein søndag, kryssar du av for at du skal kombinere foreldrepengar med 20 prosent arbeid veka som følgjer etter.",
+    "uttaksplan.arbeideHelgInfo.del5":
+        "<b>Eksempel:</b> Du skal jobbe søndag 7. april. Då søkjer du om å kombinere foreldrepengane med delvis arbeid frå måndag 8. april til fredag 12. april.",
+    "uttaksplan.arbeideHelgInfo.del6": "<b>Skal du jobbe faste helgedagar over ein lengre periode?</b>",
+    "uttaksplan.arbeideHelgInfo.del7":
+        "Dersom du skal jobbe kvar laurdag eller søndag over ein lengre periode, kryssar du av for at du skal kombinere foreldrepengane med delvis arbeid.",
+    "uttaksplan.arbeideHelgInfo.del8":
+        "<b>Eksempel:</b> Du skal jobbe kvar laurdag frå veke 12 i fem veker framover. Då søkjer du om å kombinere foreldrepengane med delvis arbeid frå måndag i veke 12 til fredag i veke 16, og gir opp at du skal jobbe 20 prosent.",
     "uttaksplan.veileder.planenInneholderHull.tittel": "Hull i planen",
     "uttaksplan.veileder.planenInneholderHull":
         "Planen din inneheld periodar med tapte foreldrepengar. Du står i fare for å miste dagar om du ikkje legg inn ei utsetjing eller ein periode med foreldrepengar.",

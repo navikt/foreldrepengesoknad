@@ -15,6 +15,7 @@ import { getVarighetString } from 'common/util/intlUtils';
 import { finnAntallDagerÅTrekke } from '../../../../../util/uttaksPlanStatus';
 import { Perioden } from '../../../../../util/uttaksplan/Perioden';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
+import ArbeideHelgInfo from './ArbeideHelgInfo';
 
 interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
@@ -114,6 +115,7 @@ class GradertUttakForm extends React.Component<Props> {
                             }
                         ]}
                     />
+                    <ArbeideHelgInfo />
                 </Block>
             </>
         );
