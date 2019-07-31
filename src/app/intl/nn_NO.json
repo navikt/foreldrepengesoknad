@@ -869,6 +869,7 @@
         "Du har lagt inn til samen {ukerOgDager} uker med ferie. Du kan maksimalt legge inn 10 uker og 2 dager med ferie. Ferien må avtales med din arbeidsgiver.",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepengar",
     "uttaksplan.varighet.uttak.gradert": "{varighet}",
+    "uttaksplan.ulønnetPermisjonInfo.tittel": "Vi ønskjer ein periode med ulønt permisjon",
     "uttaksplan.ulønnetPermisjonInfo.del1":
         "Når ein forelder planleggar å vere heime i ulønt permisjon, må <b>den andre forelderen</b> søkje om å utsetje foreldrepengane på grunn av heiltidsarbeid, sjukdom eller ferie. Klikk her for å leggje til utsetjing.",
     "uttaksplan.ulønnetPermisjonInfo.del2":

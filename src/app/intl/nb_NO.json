@@ -862,6 +862,7 @@
     "uttaksplan.validering.før12UkerFørTermin": "Du kan tidligst ta ut foreldrepenger 12 uker før termin eller fødsel",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepenger",
     "uttaksplan.varighet.uttak.gradert": "{varighet}",
+    "uttaksplan.ulønnetPermisjonInfo.tittel": "Vi ønsker en periode med ulønnet permisjon",
     "uttaksplan.ulønnetPermisjonInfo.del1":
         "Når en forelder planlegger å være hjemme i ulønnet permisjon må <b>den andre forelderen</b> søke om å utsette foreldrepengene på grunn av heltidsarbeid, sykdom eller ferie.",
     "uttaksplan.ulønnetPermisjonInfo.del2":
