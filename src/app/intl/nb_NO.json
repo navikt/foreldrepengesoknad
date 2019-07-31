@@ -862,10 +862,27 @@
     "uttaksplan.validering.før12UkerFørTermin": "Du kan tidligst ta ut foreldrepenger 12 uker før termin eller fødsel",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepenger",
     "uttaksplan.varighet.uttak.gradert": "{varighet}",
+    "uttaksplan.ulønnetPermisjonInfo.tittel": "Vi ønsker en periode med ulønnet permisjon",
     "uttaksplan.ulønnetPermisjonInfo.del1":
         "Når en forelder planlegger å være hjemme i ulønnet permisjon må <b>den andre forelderen</b> søke om å utsette foreldrepengene på grunn av heltidsarbeid, sykdom eller ferie.",
     "uttaksplan.ulønnetPermisjonInfo.del2":
         "Ulønnet permisjon kan påvirke retten til andre NAV ytelser og opptjening av rett til foreldrepenger for nytt barn. <a href=\"https://www.nav.no/no/Person/Arbeid/Sykmeldt%2C+arbeidsavklaringspenger+og+yrkesskade/Sykepenger/Sykepenger+til+sarskilte+grupper#chapter-5\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">Her kan du lese mer om dine rettigheter.</a>",
+    "uttaksplan.arbeideHelgInfo.tittel": "Jeg skal jobbe i helgen",
+    "uttaksplan.arbeideHelgInfo.del1":
+        "Når du skal jobbe i helgedager, må du søke om å <b>kombinere foreldrepengene med delvis arbeid</b> i uken du skal jobbe.",
+    "uttaksplan.arbeideHelgInfo.del2":
+        "Skal du jobbe en lørdag krysser du av for at du skal kombinere foreldrepenger med 20 prosent arbeid den samme uken.",
+    "uttaksplan.arbeideHelgInfo.del3":
+        "<b>Eksempel:</b> Du skal jobbe lørdag 6. april, da søker du om å kombinere foreldrepengene med delvis arbeid fra mandag 1. april til fredag 5. april.",
+    "uttaksplan.arbeideHelgInfo.del4":
+        "Skal du jobbe på en søndag krysser du av for at du skal kombinere foreldrepenger med 20 prosent arbeid den påfølgende uken.",
+    "uttaksplan.arbeideHelgInfo.del5":
+        "<b>Eksempel:</b> Du skal jobbe søndag 7. april, da søker du om å kombinere foreldrepengene med delvis arbeid fra mandag 8. april til fredag 12. april.",
+    "uttaksplan.arbeideHelgInfo.del6": "<b>Skal du jobbe faste helgedager over en lengre periode?</b>",
+    "uttaksplan.arbeideHelgInfo.del7":
+        "Hvis du skal jobbe hver lørdag eller søndag over en lengre periode krysser du av for at du skal kombinere foreldrepengene med delvis arbeid.",
+    "uttaksplan.arbeideHelgInfo.del8":
+        "<b>Eksempel:</b> Du skal jobbe hver lørdag fra uke i 12 i fem uker fremover. Da søker du om å kombinere foreldrepengene med delvis arbeid fra mandag i uke 12 til fredag i uke 16 og oppgir at du skal jobbe 20 prosent.",
     "uttaksplan.veileder.planenInneholderHull.tittel": "Hull i planen",
     "uttaksplan.veileder.planenInneholderHull":
         "Planen din inneholder perioder med tapte foreldrepenger. Du står i fare for å miste dager om du ikke legger inn en utsettelse eller periode med foreldrepenger.",
