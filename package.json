@@ -31,7 +31,7 @@
     "license": "MIT",
     "devDependencies": {
         "@types/bytes": "3.0.0",
-        "@types/classnames": "2.2.3",
+        "@types/classnames": "2.2.9",
         "@types/detect-browser": "3.0.0",
         "@types/enzyme": "3.1.10",
         "@types/enzyme-adapter-react-16": "1.0.2",
