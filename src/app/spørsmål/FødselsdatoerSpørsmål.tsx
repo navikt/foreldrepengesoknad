@@ -7,7 +7,7 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { Validator } from 'common/lib/validation/types';
 import { Avgrensninger } from 'common/types';
 import Block from 'common/components/block/Block';
-import { termindatoAvgrensninger, getTermindatoRegler } from 'app/util/validation/termindato';
+import { termindatoAvgrensningerFodsel, getTermindatoRegler } from 'app/util/validation/termindato';
 
 export interface FødselsdatoerSpørsmålProps {
     fødselsdatoer: DateValue[];
@@ -51,7 +51,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
 
     getTermindatoAvgrensninger() {
         return {
-            ...termindatoAvgrensninger
+            ...termindatoAvgrensningerFodsel
         };
     }
 
