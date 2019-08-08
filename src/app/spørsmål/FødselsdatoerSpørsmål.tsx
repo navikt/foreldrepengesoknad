@@ -1,4 +1,5 @@
 import * as React from 'react';
+import moment from 'moment';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import { DateValue } from '../types/common';
 import { fødselsdatoAvgrensninger, getFødselsdatoRegler } from '../util/validation/fødselsdato';
@@ -8,6 +9,7 @@ import { Validator } from 'common/lib/validation/types';
 import { Avgrensninger } from 'common/types';
 import Block from 'common/components/block/Block';
 import { termindatoAvgrensningerFodsel, getTermindatoRegler } from 'app/util/validation/termindato';
+import { dateMoreThan10WeeksAgo } from 'app/util/validation/values';
 
 export interface FødselsdatoerSpørsmålProps {
     fødselsdatoer: DateValue[];
@@ -19,6 +21,7 @@ export interface FødselsdatoerSpørsmålProps {
     datoavgrensninger?: Avgrensninger;
     datovalidatorer?: Validator[];
     gjelderAdopsjon?: boolean;
+    erFarMedmor?: boolean;
 }
 
 type Props = FødselsdatoerSpørsmålProps & InjectedIntlProps;
@@ -72,8 +75,28 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
         };
     }
 
+    visTermindato(
+        fødselsdatoer: DateValue[],
+        erFarMedmor: boolean | undefined,
+        gjelderAdopsjon: boolean | undefined
+    ): boolean {
+        if (gjelderAdopsjon) {
+            return false;
+        }
+
+        if (fødselsdatoer.length > 0) {
+            if (erFarMedmor) {
+                return moment(fødselsdatoer[0]).isSameOrAfter(dateMoreThan10WeeksAgo);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     renderCollapsedFødselsdatoSpørsmål() {
-        const { fødselsdatoer, antallBarn, termindato } = this.props;
+        const { fødselsdatoer, antallBarn, termindato, erFarMedmor, gjelderAdopsjon } = this.props;
 
         let intlIdFødsel = 'fødselsdatoer.fødsel';
         let intlIdTermin = 'fødselsdatoer.termin';
@@ -96,7 +119,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                         validators={this.getValidatorer()}
                     />
                 </Block>
-                <Block>
+                <Block visible={this.visTermindato(fødselsdatoer, erFarMedmor, gjelderAdopsjon)}>
                     <DatoInput
                         id="termindato"
                         name="termindato"

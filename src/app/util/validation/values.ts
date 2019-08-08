@@ -24,6 +24,8 @@ export const date15YearsAgo = moment().subtract(15, 'years');
 
 export const date18YearsAgo = moment().subtract(18, 'years');
 
+export const dateMoreThan10WeeksAgo = moment().subtract(10, 'weeks');
+
 export const dateMoreThan15YearsAnd3MonthsAgo = moment()
     .subtract(15, 'years')
     .subtract(3, 'months')
