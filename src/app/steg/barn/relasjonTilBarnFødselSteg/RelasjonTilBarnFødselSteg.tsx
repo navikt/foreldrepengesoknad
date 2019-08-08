@@ -31,7 +31,7 @@ import {
     getRelasjonTilBarnFødselVisibility,
     RelasjonTilBarnFødselStegVisibility
 } from './visibility/relasjonTilBarnFødselVisibility';
-import { SøknadenGjelderBarnValg, Søkersituasjon, Skjemanummer } from '../../../types/søknad/Søknad';
+import { SøknadenGjelderBarnValg, Søkersituasjon, Skjemanummer, SøkerRolle } from '../../../types/søknad/Søknad';
 import FødtBarnPartial from './partials/FødtBarnPartial';
 import lenker from '../../../util/routing/lenker';
 import { apiActionCreators } from 'app/redux/actions';
@@ -131,6 +131,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                 gjelderAnnetBarn={gjelderAnnetBarn}
                                 registrerteBarn={registrerteBarn}
                                 vis={vis.født}
+                                erFarMedmor={søker.rolle !== SøkerRolle.MOR}
                             />
                         )}
                     {barn.erBarnetFødt === false &&
