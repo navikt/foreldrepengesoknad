@@ -2,13 +2,18 @@ import moment from 'moment';
 import { InjectedIntl } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
-import { date21DaysAgo, attenUkerPluss3, attenUkerPluss3Number, today } from './values';
+import { date21DaysAgo, attenUkerPluss3, attenUkerPluss3Number, today, date3YearsAgo } from './values';
 import { hasValueRule } from './common';
 import { DateValue } from '../../types/common';
 import { Avgrensninger } from 'common/types';
 
 export const termindatoAvgrensninger: Avgrensninger = {
     minDato: date21DaysAgo.toDate(),
+    maksDato: attenUkerPluss3.subtract(24, 'hours').toDate()
+};
+
+export const termindatoAvgrensningerFodsel: Avgrensninger = {
+    minDato: date3YearsAgo.toDate(),
     maksDato: attenUkerPluss3.subtract(24, 'hours').toDate()
 };
 
