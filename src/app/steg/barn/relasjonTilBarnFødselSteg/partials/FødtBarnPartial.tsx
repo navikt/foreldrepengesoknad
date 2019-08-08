@@ -23,6 +23,7 @@ interface StateProps {
     gjelderAnnetBarn?: boolean;
     situasjon: Søkersituasjon;
     vis: RelasjonTilBarnFødtVisibility;
+    erFarMedmor: boolean;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
@@ -59,7 +60,7 @@ class FødtBarnPartial extends React.Component<Props> {
     }
 
     render() {
-        const { intl, dispatch, barn, vis, situasjon } = this.props;
+        const { intl, dispatch, barn, vis, situasjon, erFarMedmor } = this.props;
         return (
             <React.Fragment>
                 <AntallBarnBolk
@@ -76,6 +77,7 @@ class FødtBarnPartial extends React.Component<Props> {
                         fødselsdatoer={barn.fødselsdatoer || []}
                         termindato={barn.termindato}
                         antallBarn={barn.antallBarn}
+                        erFarMedmor={erFarMedmor}
                         onChangeFødselsdato={(fødselsdatoer: Date[]) =>
                             dispatch(
                                 søknadActions.updateBarn({
@@ -96,7 +98,7 @@ class FødtBarnPartial extends React.Component<Props> {
 
                 <Block visible={vis.visInfoOmPrematuruker}>
                     <AttachmentsUploaderPure
-                        attachments={barn.terminbekreftelse || []}
+                        attachments={barn.terminbekreftelse || []}
                         attachmentType={AttachmentType.TERMINBEKREFTELSE}
                         skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                         onFilesSelect={(attachments: Attachment[]) => {
