@@ -214,7 +214,8 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag:
         return {
             ...utsettelsesperiode,
             arbeidsformer: [arbeidsform],
-            orgnumre: arbeidsform === Arbeidsform.arbeidstaker ? [orgnummer] : undefined
+            orgnumre: arbeidsform === Arbeidsform.arbeidstaker ? [orgnummer] : undefined,
+            erArbeidstaker: orgnummer ? true : false
         };
     }
 
