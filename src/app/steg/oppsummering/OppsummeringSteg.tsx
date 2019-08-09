@@ -58,7 +58,11 @@ interface StateProps {
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 
-export const getSkalSpørreOmAnnenForelderErInformert = (søknad: Søknad): boolean => {
+export const getSkalSpørreOmAnnenForelderErInformert = (søknad: Søknad | undefined): boolean => {
+    if (!søknad) {
+        return false;
+    }
+
     return (
         søknad.erEndringssøknad &&
         søknad.ekstrainfo.erEnkelEndringssøknad &&
@@ -121,7 +125,7 @@ class OppsummeringSteg extends React.Component<Props> {
 
         return (
             <Steg {...stegProps} onSubmit={this.sendSøknad}>
-                {isLoadingTilgjengeligeStønadskontoer === true ? (
+                {isLoadingTilgjengeligeStønadskontoer === true || søknadsinfo === undefined ? (
                     <ApplicationSpinner />
                 ) : (
                     <>
@@ -206,18 +210,20 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         api: { isLoadingTilgjengeligeStønadskontoer }
     } = state;
 
-    const søknadsinfo = selectSøknadsinfo(state)!;
-    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
+    const skalSpørreOmAnnenForelderErInformert = getSkalSpørreOmAnnenForelderErInformert(søknad);
+    const søknadsinfo = selectSøknadsinfo(state);
     const missingAttachments: MissingAttachment[] = selectMissingAttachments(state);
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
-    const antallUkerUttaksplan = getAntallUker(tilgjengeligeStønadskontoer);
-    const previousStegID = søknadsinfo.søknaden.erEndringssøknad
-        ? StegID.UTTAKSPLAN
-        : skalViseManglendeVedleggSteg(attachmentMap)
-            ? StegID.MANGLENDE_VEDLEGG
-            : StegID.ANDRE_INNTEKTER;
 
-    const skalSpørreOmAnnenForelderErInformert = getSkalSpørreOmAnnenForelderErInformert(søknad);
+    let previousStegID = StegID.INNGANG;
+
+    if (søknadsinfo) {
+        previousStegID = søknadsinfo.søknaden.erEndringssøknad
+            ? StegID.UTTAKSPLAN
+            : skalViseManglendeVedleggSteg(attachmentMap)
+                ? StegID.MANGLENDE_VEDLEGG
+                : StegID.ANDRE_INNTEKTER;
+    }
 
     const stegProps: StegProps = {
         id: StegID.OPPSUMMERING,
@@ -230,6 +236,9 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         previousStegID
     };
 
+    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
+    const antallUkerUttaksplan = getAntallUker(tilgjengeligeStønadskontoer);
+
     return {
         person,
         søknad,
@@ -241,7 +250,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         tilgjengeligeStønadskontoer,
         isLoadingTilgjengeligeStønadskontoer,
         antallUkerUttaksplan,
-        søknadsinfo,
+        søknadsinfo: søknadsinfo!,
         skalSpørreOmAnnenForelderErInformert: getSkalSpørreOmAnnenForelderErInformert(søknad)
     };
 };
