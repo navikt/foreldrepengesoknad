@@ -989,6 +989,8 @@
     "vedlegg.feilmelding.tittel.flereFeil": " Opplasting av vedlegg feilte for:",
     "vedlegg.forStort": " Vedlegget må vera mindre enn 9MB",
     "vedlegg.forStort.flereFeil": "{filename} - Vedlegget må vera mindre enn 9MB",
+    "vedlegg.tomFil": "Du kan ikke laste opp en tom fil",
+    "vedlegg.tomFil.flereFeil": "{filename} - Du kan ikke laste opp en tom fil",
     "vedlegg.virus": "Vedlegget inneholder noe vi ikkje vil ha",
     "vedlegg.virus.flereFeil": "{filename} - Vedlegget inneheld noko vi ikkje vil ha",
     "vedlegg.lastoppknapp.anneninntektDokumentasjon": "Last opp dokumentasjon her",
