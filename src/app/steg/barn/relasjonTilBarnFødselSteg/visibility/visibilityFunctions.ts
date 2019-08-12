@@ -85,7 +85,8 @@ export const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termi
     return (
         moment(fødselsdato)
             .add(7, 'weeks')
-            .isSameOrBefore(moment(termindato)) && fødselsdatoEtterEllerLikFørsteJuli
+            .add(3, 'days')
+            .isBefore(moment(termindato)) && fødselsdatoEtterEllerLikFørsteJuli
     );
 };
 
