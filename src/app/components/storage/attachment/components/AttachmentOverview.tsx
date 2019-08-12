@@ -42,7 +42,14 @@ class AttachmentOverview extends React.Component<Props, State> {
 
         attachmentsWithError.forEach((a: Attachment) => {
             const error = a.error;
-            if (error && error.response !== undefined && error.response.status === 413) {
+            if (a.filesize === 0) {
+                errorMessages.push(
+                    <FormattedMessage
+                        id={multipleErrors ? 'vedlegg.tomFil.flereFeil' : 'vedlegg.tomFil'}
+                        values={{ filename: a.filename }}
+                    />
+                );
+            } else if (error && error.response !== undefined && error.response.status === 413) {
                 errorMessages.push(
                     <FormattedMessage
                         id={multipleErrors ? 'vedlegg.forStort.flereFeil' : 'vedlegg.forStort'}
