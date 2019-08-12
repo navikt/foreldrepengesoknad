@@ -12,7 +12,8 @@ import {
     UttakAnnenPartInfoPeriode,
     GruppertInfoPeriode,
     isAnnenPartInfoPeriode,
-    UtsettelseAnnenPartInfoPeriode
+    UtsettelseAnnenPartInfoPeriode,
+    Overføringsperiode
 } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
@@ -275,6 +276,17 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
     return undefined;
 };
 
+const mapOverføringsperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Overføringsperiode => {
+    return {
+        id: guid(),
+        forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
+        konto: saksperiode.stønadskontotype,
+        tidsperiode: { ...saksperiode.tidsperiode },
+        type: Periodetype.Overføring,
+        årsak: saksperiode.overfoeringAarsak!
+    };
+};
+
 const mapPeriodeFromSaksperiode = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag,
@@ -288,6 +300,9 @@ const mapPeriodeFromSaksperiode = (
     }
     if (saksperiode.utsettelsePeriodeType !== undefined) {
         return mapUtsettelseperiodeFromSaksperiode(saksperiode, grunnlag);
+    }
+    if (saksperiode.overfoeringAarsak !== undefined) {
+        return mapOverføringsperiodeFromSaksperiode(saksperiode, grunnlag);
     }
     return mapUttaksperiodeFromSaksperiode(saksperiode, grunnlag, erEndringssøknad);
 };
