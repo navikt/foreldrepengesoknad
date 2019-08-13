@@ -139,15 +139,17 @@ class SøknadSendtSide extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: any) => {
-    const førsteUttaksdag = Periodene(state.søknad.uttaksplan).getFørsteUttaksdag();
+    const førsteBehandlingsfrist = moment(Periodene(state.søknad.uttaksplan).getFørsteUttaksdag()).subtract(4, 'weeks');
+    const førsteMuligeBehandlingsfrist = moment(new Date()).isSameOrAfter(førsteBehandlingsfrist)
+        ? moment(new Date())
+        : førsteBehandlingsfrist;
+
     return {
         søkerinfo: state.api.søkerinfo,
         kvittering: state.api.kvittering,
         erEndringssøknad: state.søknad.erEndringssøknad,
         missingAttachments: selectMissingAttachments(state),
-        behandlingsFrist: moment(førsteUttaksdag)
-            .subtract(4, 'weeks')
-            .format('dddd Do MMM YYYY')
+        behandlingsFrist: førsteMuligeBehandlingsfrist.format('dddd Do MMM YYYY')
     };
 };
 
