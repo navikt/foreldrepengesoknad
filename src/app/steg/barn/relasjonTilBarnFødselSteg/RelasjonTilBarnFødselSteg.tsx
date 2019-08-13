@@ -39,7 +39,7 @@ import { guid } from 'nav-frontend-js-utils';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
-import { termindatoAvgrensninger, getTermindatoRegler } from 'app/util/validation/termindato';
+import { getTermindatoRegler, termindatoAvgrensningerFodsel } from 'app/util/validation/termindato';
 import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { skalViseInfoOmPrematuruker, visTermindato } from './visibility/visibilityFunctions';
@@ -174,7 +174,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                     dato={(barn as FødtBarn).termindato}
                                     onChange={(termindato: Date) => dispatch(søknadActions.updateBarn({ termindato }))}
                                     label={<Labeltekst intlId="fødselsdatoer.termin" />}
-                                    datoAvgrensinger={{ ...termindatoAvgrensninger }}
+                                    datoAvgrensinger={{ ...termindatoAvgrensningerFodsel }}
                                     validators={{ ...getTermindatoRegler((barn as FødtBarn).termindato, intl) }}
                                 />
                             </Block>
