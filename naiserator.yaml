@@ -1,0 +1,43 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: {{application_name}}
+  namespace: default
+  labels:
+    team: {{team}}
+spec:
+  image: {{version}}
+  port: 8080
+  replicas:
+      min: 2
+      max: 2
+      cpuThresholdPercentage: 50  
+  liveness:
+      path: /health/isAlive
+      initialDelay: 60
+  readiness:
+      path: /health/isReady
+      initialDelay: 60  
+  prometheus:
+      enabled: false
+      path: /internal/actuator/prometheus
+  replicas:
+      min: 2
+      max: 2
+      cpuThresholdPercentage: 50
+  ingresses:
+    - {{ingress}}
+    - {{ingress-internal}}
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  env: 
+  {{#each env}}
+   - name: {{@key}}
+     value: "{{this}}"
+  {{/each}}
+  webproxy: true
