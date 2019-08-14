@@ -43,7 +43,7 @@
         "@types/prop-types": "15.5.2",
         "@types/react": "16.8.20",
         "@types/react-aria-menubutton": "6.2.2",
-        "@types/react-collapse": "4.0.1",
+        "@types/react-collapse": "4.0.2",
         "@types/react-document-title": "2.0.2",
         "@types/react-dom": "16.8.4",
         "@types/react-intl": "2.3.11",
