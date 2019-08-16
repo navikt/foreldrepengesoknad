@@ -59,7 +59,7 @@ workflows:
                       - dev_deploy
 
             - slack/approval-notification:
-                  webhook: https://hooks.slack.com/services/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
+                  webhook: $SLACK
                   message: 'Godkjenn deploy til prod av $CIRCLE_PROJECT_REPONAME'
                   url: https://circleci.com/workflow-run/$CIRCLE_WORKFLOW_WORKSPACE_ID
                   requires:
