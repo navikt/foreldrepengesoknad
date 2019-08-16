@@ -27,7 +27,7 @@ import {
 } from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanDTO, UttaksplanPeriodeDTO, MorsAktivitetDto } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
-import { datoErInnenforTidsperiode, Tidsperioden } from '../uttaksplan/Tidsperioden';
+import { Tidsperioden } from '../uttaksplan/Tidsperioden';
 import { getRelevantFamiliehendelseDato } from '../dates/dates';
 import { getFamilieHendelseType } from '../domain/getFamilieHendelseType';
 import { FamiliehendelseDatoer } from 'app/types/søknad/FamiliehendelseDatoer';
@@ -355,32 +355,32 @@ const getAnnenForelderFromSaksgrunnlag = (
     }
 };
 
-const finnOverlappendeSaksperioder = (perioder: Saksperiode[], periode: Saksperiode): Saksperiode[] => {
-    return perioder.filter((p) => {
-        if (p.guid === periode.guid) {
-            return false;
-        }
-        const { fom, tom } = p.tidsperiode;
-        if (!fom || !tom) {
-            return false;
-        }
-        return (
-            datoErInnenforTidsperiode(fom, periode.tidsperiode) || datoErInnenforTidsperiode(tom, periode.tidsperiode)
-        );
-    });
-};
+// const finnOverlappendeSaksperioder = (perioder: Saksperiode[], periode: Saksperiode): Saksperiode[] => {
+//     return perioder.filter((p) => {
+//         if (p.guid === periode.guid) {
+//             return false;
+//         }
+//         const { fom, tom } = p.tidsperiode;
+//         if (!fom || !tom) {
+//             return false;
+//         }
+//         return (
+//             datoErInnenforTidsperiode(fom, periode.tidsperiode) || datoErInnenforTidsperiode(tom, periode.tidsperiode)
+//         );
+//     });
+// };
 
 const kanSaksperiodeKonverteresTilPeriode = (periode: Saksperiode) => {
-    if (periode.flerbarnsdager === false && periode.samtidigUttak === false) {
+    if (periode.flerbarnsdager === false) {
         return true;
     }
     return false;
 };
 
 export const kanUttaksplanGjennskapesFraSak = (perioder: Saksperiode[]): boolean => {
-    if (perioder.some((periode) => finnOverlappendeSaksperioder(perioder, periode).length > 0)) {
-        return false;
-    }
+    // if (perioder.some((periode) => finnOverlappendeSaksperioder(perioder, periode).length > 0)) {
+    //     return false;
+    // }
 
     const noenPerioderKanIkkeGjennskapes = perioder.some(
         (periode) => kanSaksperiodeKonverteresTilPeriode(periode) === false
