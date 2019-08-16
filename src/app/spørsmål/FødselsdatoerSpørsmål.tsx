@@ -69,10 +69,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
     getTermindatoValidatorer(): Validator[] {
         const { termindato, datovalidatorer, intl } = this.props;
 
-        return {
-            ...(datovalidatorer || []),
-            ...getTermindatoRegler(termindato, intl)
-        };
+        return [...(datovalidatorer || []), getTermindatoRegler(termindato, intl)[0]];
     }
 
     visTermindato(
