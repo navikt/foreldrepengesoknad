@@ -3,11 +3,10 @@ const request = require('request');
 
 const { JSDOM } = jsdom;
 
-const requestDecorator = (callback) =>
-    request(
-        `${process.env.APPRES_CMS_URL}/common-html/v4/navno?header=true&styles=true&scripts=true&footer=true`,
-        callback
-    );
+const requestDecorator = (callback) => {
+    const baseUrl = process.env.NAIS_CLUSTER_NAME === 'dev-sbs' ? 'https://appres-q1.nav.no' : 'https://appres.nav.no';
+    return request(`${baseUrl}/common-html/v4/navno?header=true&styles=true&scripts=true&footer=true`, callback);
+};
 
 const getDecorator = () =>
     new Promise((resolve, reject) => {
