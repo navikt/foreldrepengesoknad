@@ -178,7 +178,7 @@ const mapUttaksperiodeFromSaksperiode = (
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
         ønskerSamtidigUttak: saksperiode.samtidigUttak,
         gradert,
-        samtidigUttakProsent: samtidigUttaksprosent ? samtidigUttaksprosent.toString() : undefined,
+        samtidigUttakProsent: samtidigUttaksprosent ? saksperiode.samtidigUttaksprosent.toString() : undefined,
         stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
         arbeidsformer: gradert ? [getArbeidsformFromUttakArbeidstype(saksperiode.uttakArbeidType)] : undefined,
         orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
@@ -269,7 +269,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             overskrives: true,
             resultatType: saksperiode.periodeResultatType,
             gradert,
-            samtidigUttakProsent: samtidigUttaksprosent ? samtidigUttaksprosent.toString() : undefined,
+            samtidigUttakProsent: samtidigUttaksprosent ? saksperiode.samtidigUttaksprosent.toString() : undefined,
             stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined
         };
     }
