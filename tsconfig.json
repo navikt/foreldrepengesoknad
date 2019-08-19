@@ -37,6 +37,7 @@
         "src/config",
         "cypress",
         "dist",
-        "**.js"
+        "**.js",
+        "akseptansetest"
     ]
 }
