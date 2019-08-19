@@ -33,11 +33,15 @@ export const mapFileToAttachment = (
     innsendingsType
 });
 
-export const isAttachmentWithError = ({ pending, uploaded, innsendingsType, filesize }: Attachment) => {
-    if (innsendingsType === InnsendingsType.SEND_SENERE) {
-        return false;
+export const isAttachmentWithError = (attachment: Attachment) => {
+    if (attachment === undefined || attachment === null) {
+        return true;
     }
-    return (pending === false && uploaded === false) || filesize === 0;
+
+    const { innsendingsType, pending, uploaded, filesize } = attachment;
+    return innsendingsType === InnsendingsType.SEND_SENERE
+        ? false
+        : (pending === false && uploaded === false) || filesize === 0;
 };
 
 export const getSkjemanummerForPeriode = (periode: Periode): Skjemanummer => {
