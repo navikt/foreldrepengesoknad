@@ -25,6 +25,16 @@ jobs:
             - nais/docker-deploy:
                   image: navikt/$CIRCLE_PROJECT_REPONAME
 
+    akseptansetest: 
+        steps: 
+            - run: 
+                name: Config
+                command: echo $AKSEPTANSETEST_CONFIG >> ~/foreldrepengesoknad/akseptansetest/config.js
+
+            - run:
+                name: Run tests
+                command: cd akseptansetest && npm run test
+
 workflows:
     version: 2
     deploy-nais:
@@ -49,6 +59,10 @@ workflows:
                           only: master
                   requires:
                       - build
+            
+            - akseptansetest:
+                  requires:
+                      - dev_deploy
 
             - hold:
                   type: approval
