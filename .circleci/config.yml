@@ -28,7 +28,7 @@ jobs:
     akseptansetest:
         working_directory: ~/foreldrepengesoknad
         docker:
-            - image: circleci/node:latest
+            - image: circleci/node:10.14-browsers
         steps: 
             - checkout
             - run: 
