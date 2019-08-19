@@ -24,7 +24,7 @@ export const isArrayOfAttachments = (object: object) => {
     return (
         Array.isArray(object) &&
         object[0] !== null &&
-        object.some((element) => element.filename || element.innsendingsType === InnsendingsType.SEND_SENERE)
+        object.some((element) => element && (element.filename || element.innsendingsType === InnsendingsType.SEND_SENERE))
     );
 };
 

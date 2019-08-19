@@ -1,5 +1,5 @@
 import { Periode, Periodetype } from '../../../types/uttaksplan/periodetyper';
-import { removeDuplicateAttachments, removePeriodetypeHullFromUttaksplan } from '../cleanupSøknad';
+import { removeDuplicateAttachments, removePeriodetypeHullFromUttaksplan, cleanUpAttachments } from '../cleanupSøknad';
 import { Skjemanummer } from '../../../types/søknad/Søknad';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 
@@ -88,5 +88,25 @@ describe('cleanupSøknad', () => {
     it('Removes attachments with duplicate ids from perioder', () => {
         removeDuplicateAttachments(uttaksplanMedLikeVedlegg);
         expect(uttaksplanMedLikeVedlegg[uttaksplanMedLikeVedlegg.length - 1].vedlegg!.length).toEqual(1);
+    });
+
+    it('cleanupAttachments function handles attachment array with undefiend elements', () => {
+        const mockAttachment = {
+            id: 'v123',
+            file: new File([''], 'mock.pdf'),
+            filesize: 1024,
+            filename: 'mockFile.pdf',
+            pending: false,
+            uploaded: true,
+            url: 'url',
+            skjemanummer: Skjemanummer.ANNET
+        };
+
+        expect(cleanUpAttachments({ vedlegg: [undefined] }).length).toEqual(0);
+        expect(
+            cleanUpAttachments({
+                vedlegg: [mockAttachment, undefined]
+            })
+        ).toEqual([mockAttachment]);
     });
 });
