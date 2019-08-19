@@ -23,7 +23,7 @@ jobs:
                   command: npm run build
 
             - persist_to_workspace:
-                root: /tmp/workspace
+                root: .
                 paths:
                     - akseptansetest
 
