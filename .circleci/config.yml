@@ -22,18 +22,27 @@ jobs:
                   name: Build
                   command: npm run build
 
+            - persist_to_workspace:
+                root: /tmp/workspace
+                paths:
+                    - akseptansetest
+
             - nais/docker-deploy:
                   image: navikt/$CIRCLE_PROJECT_REPONAME
+
 
     akseptansetest:
         working_directory: ~/foreldrepengesoknad/akseptansetest 
         docker:
             - image: circleci/node:latest
         steps: 
+            - attach_workspace:
+                at: /tmp/workspace
+
             - run: 
                 name: install test dependencies
                 command: npm install
-                
+
             - run: 
                 name: Config
                 command: echo $AKSEPTANSETEST_CONFIG >> config.js
