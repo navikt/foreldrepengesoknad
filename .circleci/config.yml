@@ -26,17 +26,21 @@ jobs:
                   image: navikt/$CIRCLE_PROJECT_REPONAME
 
     akseptansetest:
-        working_directory: ~/foreldrepengesoknad 
+        working_directory: ~/foreldrepengesoknad/akseptansetest 
         docker:
             - image: circleci/node:latest
         steps: 
             - run: 
+                name: install test dependencies
+                command: npm install
+                
+            - run: 
                 name: Config
-                command: echo $AKSEPTANSETEST_CONFIG >> ~/foreldrepengesoknad/akseptansetest/config.js
+                command: echo $AKSEPTANSETEST_CONFIG >> config.js
 
             - run:
                 name: Run tests
-                command: cd akseptansetest && npm run test
+                command: npm run test
 
 workflows:
     version: 2
