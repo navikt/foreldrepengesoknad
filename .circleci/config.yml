@@ -25,7 +25,10 @@ jobs:
             - nais/docker-deploy:
                   image: navikt/$CIRCLE_PROJECT_REPONAME
 
-    akseptansetest: 
+    akseptansetest:
+        working_directory: ~/foreldrepengesoknad 
+        docker:
+            - image: circleci/node:latest
         steps: 
             - run: 
                 name: Config
