@@ -11,5 +11,3 @@ mock_data/soknad.json
 coverage
 cypress/screenshots
 cypress/videos
-akseptansetest/config.js
-akseptansetest/20*/
