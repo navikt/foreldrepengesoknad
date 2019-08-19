@@ -20,5 +20,6 @@ module.exports = {
         }
     },
     rootDir: '../',
-    coverageReporters: ['text-summary']
+    coverageReporters: ['text-summary'],
+    modulePathIgnorePatterns: ['akseptansetest']
 };
