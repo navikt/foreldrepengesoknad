@@ -9,7 +9,9 @@ import {
     isOverskrivbarPeriode,
     isHull,
     isInfoPeriode,
-    isGruppertInfoPeriode
+    isGruppertInfoPeriode,
+    isUttakAnnenPart,
+    UttakAnnenPartInfoPeriode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -143,7 +145,13 @@ class UttaksplanAutoBuilder {
                             tom: moment.min([moment(hull.tidsperiode.tom), moment(periode.tidsperiode.tom)]).toDate()
                         }
                     };
-                    opprinneligePerioderSomSkalLeggesInnIPlan.push(op);
+
+                    if (isUttakAnnenPart(op) && op.ønskerSamtidigUttak) {
+                        const infoPeriode: UttakAnnenPartInfoPeriode = { ...op, visPeriodeIPlan: true };
+                        opprinneligePerioderSomSkalLeggesInnIPlan.push(infoPeriode);
+                    } else {
+                        opprinneligePerioderSomSkalLeggesInnIPlan.push(op);
+                    }
                 });
             });
             const nyPlan: Periode[] = [...perioder].filter((p) => !isHull(p));
@@ -264,6 +272,12 @@ function fjernOverskrivbarePerioderIPeriodetidsrom(perioder: Periode[], periode:
     const nyePerioder: Periode[] = perioder.filter((p) => isOverskrivbarPeriode(p) === false);
     const overskrivbarePerioder = perioder.filter((p) => isOverskrivbarPeriode(p));
     overskrivbarePerioder.forEach((overskrivbarPeriode) => {
+        if (isUttakAnnenPart(overskrivbarPeriode) && overskrivbarPeriode.ønskerSamtidigUttak) {
+            nyePerioder.push(overskrivbarPeriode);
+
+            return;
+        }
+
         if (Tidsperioden(overskrivbarPeriode.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
             return;
         } else if (Tidsperioden(overskrivbarPeriode.tidsperiode).erUtenfor(periode.tidsperiode)) {
@@ -387,6 +401,7 @@ export function finnHullIPerioder(perioder: Periode[], startdato?: Date): Period
         }
 
         const uttaksdagerITidsperiode = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
+
         if (uttaksdagerITidsperiode > 0) {
             hull.push({
                 id: guid(),
