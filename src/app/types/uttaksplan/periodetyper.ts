@@ -283,6 +283,10 @@ export const isOverskrivbarPeriode = (periode: Periode): boolean => {
     return (periode.type === Periodetype.Info && periode.overskrives === true) || periode.type === Periodetype.Hull;
 };
 
+export const isUttakAnnenPart = (periode: Periode): periode is UttakAnnenPartInfoPeriode => {
+    return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.uttakAnnenPart;
+};
+
 export interface Stønadskontouttak {
     konto: StønadskontoType;
     dager: number;
