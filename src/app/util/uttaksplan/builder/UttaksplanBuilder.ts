@@ -59,7 +59,9 @@ class UttaksplanAutoBuilder {
 
         this.perioder = resetTidsperioder([...uttaksperioder, ...overføringer]);
 
-        const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hullOgInfo].sort(sorterPerioder);
+        const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hullOgInfo]
+            .sort(sorterPerioder)
+            .filter((p) => isUttakAnnenPart(p) && !p.ønskerSamtidigUttak);
         this.perioder = [...settInnPerioder(this.perioder, fastePerioder)];
 
         this.finnOgSettInnHull();
