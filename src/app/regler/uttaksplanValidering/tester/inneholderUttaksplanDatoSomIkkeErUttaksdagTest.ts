@@ -1,13 +1,15 @@
 import { UttaksplanRegelgrunnlag } from '../types';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from 'shared/regler/regelTypes';
 import { erUttaksdag } from '../../../util/uttaksplan/Uttaksdagen';
+import { isUttakAnnenPart } from 'app/types/uttaksplan/periodetyper';
 
 export const inneholderUttaksplanDatoSomIkkeErUttaksdag: RegelTest = (
     grunnlag: UttaksplanRegelgrunnlag
 ): RegelTestresultat => {
-    const ugyldigePerioder = grunnlag.perioder.filter(
-        ({ tidsperiode: { fom, tom } }) => erUttaksdag(fom) === false || erUttaksdag(tom) === false
-    );
+    const ugyldigePerioder = grunnlag.perioder
+        .filter((p) => !isUttakAnnenPart(p))
+        .filter(({ tidsperiode: { fom, tom } }) => erUttaksdag(fom) === false || erUttaksdag(tom) === false);
+
     return {
         passerer: ugyldigePerioder.length === 0,
         info: ugyldigePerioder.map((periode): RegelTestresultatInfo => {
