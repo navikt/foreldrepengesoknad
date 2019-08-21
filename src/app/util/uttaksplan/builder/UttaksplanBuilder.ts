@@ -44,9 +44,9 @@ class UttaksplanAutoBuilder {
             this.familiehendelsesdato
         );
 
-        const perioderEtterFamDato = Periodene(this.perioder).getPerioderEtterFamiliehendelsesdato(
-            this.familiehendelsesdato
-        );
+        const perioderEtterFamDato = Periodene(this.perioder)
+            .getPerioderEtterFamiliehendelsesdato(this.familiehendelsesdato)
+            .filter((p) => !(isUttakAnnenPart(p) && p.ønskerSamtidigUttak));
 
         const perioderMedUgyldigTidsperiode = Periodene(this.perioder).getPerioderMedUgyldigTidsperiode();
 
@@ -59,9 +59,7 @@ class UttaksplanAutoBuilder {
 
         this.perioder = resetTidsperioder([...uttaksperioder, ...overføringer]);
 
-        const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hullOgInfo]
-            .sort(sorterPerioder)
-            .filter((p) => isUttakAnnenPart(p) && !p.ønskerSamtidigUttak);
+        const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hullOgInfo].sort(sorterPerioder);
         this.perioder = [...settInnPerioder(this.perioder, fastePerioder)];
 
         this.finnOgSettInnHull();

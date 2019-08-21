@@ -117,11 +117,7 @@ function finnOverlappendePerioder(perioder: Periode[], periode: Periode): Period
             moment(periode.tidsperiode.fom).isSameOrAfter(fom, 'day') &&
             moment(periode.tidsperiode.tom).isSameOrBefore(tom, 'day');
 
-        const unntattOverlappingsRegler =
-            (periode.type === Periodetype.Uttak && periode.ønskerSamtidigUttak) ||
-            (p.type === Periodetype.Uttak && p.ønskerSamtidigUttak);
-
-        return (fomEllerTomErInnenforTidsperiode || fomTomOmkranserTidsperiode) && !unntattOverlappingsRegler;
+        return fomEllerTomErInnenforTidsperiode || fomTomOmkranserTidsperiode;
     });
 }
 
