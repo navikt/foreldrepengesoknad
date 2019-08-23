@@ -500,9 +500,9 @@
     "periodeliste.utsettelsesårsak": "Utsetjing - {årsak}",
     "periodeliste.utsettelsesårsak.ukjent": "Utsetjing - årsak ikkje vald",
     "periodeliste.utsettelse.overlappendeTidsperiode.endre":
-        "Du kan ikke endre datoen slik at den går over en annen periode med utsettelse.",
+        "Du kan ikkje endre datoen slik at han går over ein annan periode med utsetjing.",
     "periodeliste.utsettelse.overlappendeTidsperiode.ny":
-        "Det er allerede registrert utsettelse i denne perioden. Du må fjerne perioden med utsettelse før du kan legge inn en ny.",
+        "Det er allereie lagt inn ei utsetjing i denne perioden. Du må slette perioden med utsetjing før du kan leggje inn ei ny utsetjing.",
     "periodeliste.gruppertInfo.tittel": "{navn} {antallPerioder, plural, one{periode} other {perioder}}",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
     "periodetype.info.utsettelse.LOVBESTEMT_FERIE": "{ navn } utsetjer på grunn av ferie",
