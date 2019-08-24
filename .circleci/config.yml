@@ -1,15 +1,35 @@
 version: 2.1
 orbs:
-    nais: navikt/nais-deployment@1.4.1
-    slack: circleci/slack@3.3.0
+  nais: navikt/nais-deployment@1.5.0
+  slack: circleci/slack@3.3.0
+  env: christeredvartsen/persist-env@0.0.4
+  
+executors :
+   go:
+    docker:
+      - image: navikt/deployment-cli:v0.2.0  
 
 jobs:
     build:
         working_directory: ~/foreldrepengesoknad
         docker:
             - image: circleci/node:latest
+        environment:
+          MAJOR_VERSION: 2     
         steps:
             - checkout
+            - env/set-env-var:
+                 var-name: RELEASE_VERSION
+                 var-value: $MAJOR_VERSION-$CIRCLE_BUILD_NUM-$(git rev-parse --short HEAD)
+                 
+            - env/set-env-var:
+                 var-name: REPO
+                 var-value: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+
+            - env/set-env-var:
+                 var-name: IMAGE
+                 var-value: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME   
+            
             - run:
                   name: Run npm install
                   command: npm install
@@ -23,8 +43,26 @@ jobs:
                   command: npm run build
 
             - nais/docker-deploy:
-                  image: navikt/$CIRCLE_PROJECT_REPONAME
+                 registry: docker.pkg.github.com
+                 image: $IMAGE
+                 tag: $RELEASE_VERSION
 
+            - env/persist-env
+            
+    dev-deploy:
+      executor: go
+      steps:
+        - nais-deploy:
+            template-vars: dev.json
+            environment: dev-sbs
+          
+    prod-deploy:
+       executor: go
+       steps:
+          - nais-deploy:
+             template-vars: prod.json
+             environment: prod-sbs
+    
     akseptansetest:
         working_directory: ~/foreldrepengesoknad
         docker:
@@ -43,64 +81,62 @@ jobs:
                 name: Run tests
                 command: cd akseptansetest && npm run test
 
+commands:
+  nais-deploy:
+    parameters:
+      template-vars:
+        type: string
+      environment:
+        type: string
+    steps:
+      - env/attach-env
+      - checkout
+      - nais/generate-nais-deployment:
+          repo: $REPO
+          nais-template: naiserator.yaml
+          team: teamforeldrepenger
+          github-app-id: 20250
+          image: docker.pkg.github.com/$IMAGE
+          tag: $RELEASE_VERSION
+          environment: << parameters.environment >>
+          enable-vars: true
+          template-vars: << parameters.template-vars >>
 workflows:
     version: 2
     deploy-nais:
         jobs:
             - build:
-                  context: NAIS deployment
-
-            - nais/deploy:
-                  name: dev_deploy
-                  enable-vars: true
-                  template-vars: dev.json
-                  build-and-push-docker-image: false
-                  context: NAIS deployment
-                  repo: navikt/$CIRCLE_PROJECT_REPONAME
-                  image: navikt/$CIRCLE_PROJECT_REPONAME
-                  github-app-id: 20250
-                  nais-template: naiserator.yaml
-                  environment: dev-sbs
-                  team: teamforeldrepenger
-                  filters:
-                      branches:
-                          only: master
-                  requires:
-                      - build
-            
+               context: familie-ci 
+            - dev-deploy:
+               context: NAIS deployment
+               filters:
+                 branches:
+                   only: master
+               requires:
+                - build
+                
             - akseptansetest:
                   requires:
-                      - dev_deploy
-
+                      - dev-deploy
             - hold:
                   type: approval
                   filters:
                       branches:
                           only: master
                   requires:
-                      - dev_deploy
+                      - dev-deploy
 
             - slack/approval-notification:
-                  webhook: $SLACK
-                  message: 'Godkjenn deploy til prod av $CIRCLE_PROJECT_REPONAME'
-                  url: https://circleci.com/workflow-run/$CIRCLE_WORKFLOW_WORKSPACE_ID
-                  requires:
-                      - dev_deploy
+                 webhook: $SLACK
+                 message: "Godkjenn deploy til prod av $CIRCLE_PROJECT_REPONAME"
+                 url: https://circleci.com/workflow-run/$CIRCLE_WORKFLOW_WORKSPACE_ID
+                 requires:
+                  - dev-deploy
 
-            - nais/deploy:
-                  name: prod_deploy
-                  enable-vars: true
-                  template-vars: prod.json
-                  build-and-push-docker-image: false
-                  context: NAIS deployment
-                  repo: navikt/$CIRCLE_PROJECT_REPONAME
-                  image: navikt/$CIRCLE_PROJECT_REPONAME
-                  github-app-id: 20250
-                  nais-template: naiserator.yaml
-                  environment: prod-sbs
-                  team: teamforeldrepenger
-                  filters:
-                      branches:
-                          only: master
-                  requires:
-                      - hold
+            - prod-deploy:
+                context: NAIS deployment
+                filters:
+                  branches:
+                    only: master
+                requires:
+                    - hold
