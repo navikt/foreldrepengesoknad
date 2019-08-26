@@ -3,7 +3,8 @@ import {
     isInfoPeriode,
     isUttaksperiode,
     isOverføringsperiode,
-    isUtsettelsesperiode
+    isUtsettelsesperiode,
+    isOppholdsperiode
 } from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from './Perioden';
 import moment from 'moment';
@@ -12,7 +13,12 @@ import { Periodene } from './Periodene';
 import { Uttaksdagen } from './Uttaksdagen';
 
 export const erPeriodeSomSkalSendesInn = (periode: Periode): boolean => {
-    return isUttaksperiode(periode) || isOverføringsperiode(periode) || isUtsettelsesperiode(periode);
+    return (
+        isUttaksperiode(periode) ||
+        isOverføringsperiode(periode) ||
+        isUtsettelsesperiode(periode) ||
+        isOppholdsperiode(periode)
+    );
 };
 
 export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan: Periode[]): boolean => {
