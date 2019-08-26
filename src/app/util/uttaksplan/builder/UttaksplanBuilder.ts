@@ -9,7 +9,10 @@ import {
     isOverskrivbarPeriode,
     isHull,
     isInfoPeriode,
-    isGruppertInfoPeriode
+    isGruppertInfoPeriode,
+    isUttakAnnenPart,
+    UttakAnnenPartInfoPeriode,
+    isUttaksperiode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -42,7 +45,12 @@ class UttaksplanAutoBuilder {
             this.familiehendelsesdato
         );
 
-        const perioderEtterFamDato = Periodene(this.perioder).getPerioderEtterFamiliehendelsesdato(
+        // Fjern perioder med andre parts eventuelle samtidige uttak og erstatt de med hull
+        const perioderEtterFamDato = finnOgSettInnHull(
+            Periodene(this.perioder)
+                .getPerioderEtterFamiliehendelsesdato(this.familiehendelsesdato)
+                .filter((p) => !(isUttakAnnenPart(p) && p.ønskerSamtidigUttak))
+                .sort(sorterPerioder),
             this.familiehendelsesdato
         );
 
@@ -71,6 +79,7 @@ class UttaksplanAutoBuilder {
         }
         this.fjernHullPåSlutten();
         this.sort();
+        this.settInnSamtidigUttakAnnenPartFraOpprinneligPlan();
 
         this.perioder = [
             ...perioderFørFamDato.filter((p) => isOverskrivbarPeriode(p) === false),
@@ -95,6 +104,43 @@ class UttaksplanAutoBuilder {
             });
         }
         this.buildUttaksplan();
+        return this;
+    }
+
+    settInnSamtidigUttakAnnenPartFraOpprinneligPlan() {
+        const samtidigUttakIPlanen = this.perioder.filter((p) => isUttaksperiode(p) && p.ønskerSamtidigUttak);
+        const opprinneligSamtidigUttakAnnenPart = this.opprinneligPlan
+            ? this.opprinneligPlan.filter((p) => isUttakAnnenPart(p) && p.ønskerSamtidigUttak)
+            : [];
+
+        if (opprinneligSamtidigUttakAnnenPart.length === 0) {
+            return this;
+        }
+
+        samtidigUttakIPlanen.forEach((p) => {
+            const overlappendeSamtidigUttak = Periodene(opprinneligSamtidigUttakAnnenPart).finnOverlappendePerioder(p);
+
+            if (overlappendeSamtidigUttak.length === 0) {
+                return;
+            }
+
+            overlappendeSamtidigUttak.forEach((op) => {
+                this.perioder.push({
+                    ...op,
+                    tidsperiode: {
+                        fom: moment(p.tidsperiode.fom).isSameOrAfter(moment(op.tidsperiode.fom))
+                            ? p.tidsperiode.fom
+                            : op.tidsperiode.fom,
+                        tom: moment(p.tidsperiode.tom).isSameOrBefore(moment(op.tidsperiode.tom))
+                            ? p.tidsperiode.tom
+                            : op.tidsperiode.tom
+                    }
+                });
+                return;
+            });
+        });
+
+        this.sort();
         return this;
     }
 
@@ -143,7 +189,13 @@ class UttaksplanAutoBuilder {
                             tom: moment.min([moment(hull.tidsperiode.tom), moment(periode.tidsperiode.tom)]).toDate()
                         }
                     };
-                    opprinneligePerioderSomSkalLeggesInnIPlan.push(op);
+
+                    if (isUttakAnnenPart(op) && op.ønskerSamtidigUttak) {
+                        const infoPeriode: UttakAnnenPartInfoPeriode = { ...op, visPeriodeIPlan: true };
+                        opprinneligePerioderSomSkalLeggesInnIPlan.push(infoPeriode);
+                    } else {
+                        opprinneligePerioderSomSkalLeggesInnIPlan.push(op);
+                    }
                 });
             });
             const nyPlan: Periode[] = [...perioder].filter((p) => !isHull(p));
@@ -179,6 +231,7 @@ class UttaksplanAutoBuilder {
                 ...this.perioder,
                 ...this.opprinneligPlan
                     .filter((p) => moment(p.tidsperiode.fom).isAfter(sistePeriode.tidsperiode.tom, 'day'))
+                    .filter(isInfoPeriode || isGruppertInfoPeriode)
                     .map(clonePeriode)
             ];
         }
@@ -264,6 +317,12 @@ function fjernOverskrivbarePerioderIPeriodetidsrom(perioder: Periode[], periode:
     const nyePerioder: Periode[] = perioder.filter((p) => isOverskrivbarPeriode(p) === false);
     const overskrivbarePerioder = perioder.filter((p) => isOverskrivbarPeriode(p));
     overskrivbarePerioder.forEach((overskrivbarPeriode) => {
+        if (isUttakAnnenPart(overskrivbarPeriode) && overskrivbarPeriode.ønskerSamtidigUttak) {
+            nyePerioder.push(overskrivbarPeriode);
+
+            return;
+        }
+
         if (Tidsperioden(overskrivbarPeriode.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
             return;
         } else if (Tidsperioden(overskrivbarPeriode.tidsperiode).erUtenfor(periode.tidsperiode)) {
@@ -387,6 +446,7 @@ export function finnHullIPerioder(perioder: Periode[], startdato?: Date): Period
         }
 
         const uttaksdagerITidsperiode = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
+
         if (uttaksdagerITidsperiode > 0) {
             hull.push({
                 id: guid(),

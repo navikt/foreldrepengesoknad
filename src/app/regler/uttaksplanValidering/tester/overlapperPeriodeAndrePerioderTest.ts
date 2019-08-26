@@ -5,6 +5,7 @@ import { InjectedIntl } from 'react-intl';
 import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from 'shared/regler/regelTypes';
+import { isUttakAnnenPart } from 'app/types/uttaksplan/periodetyper';
 
 export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat => {
     const {
@@ -13,8 +14,9 @@ export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: UttaksplanRe
             navn: { navnPåForeldre }
         }
     } = grunnlag;
-    const perioderSomHarOverlapp = perioder.filter(
-        (periode) => Periodene(perioder).finnOverlappendePerioder(periode).length > 0
+    const perioderUtenSamtidigUttakAnnenPart = perioder.filter((p) => !(isUttakAnnenPart(p) && p.ønskerSamtidigUttak));
+    const perioderSomHarOverlapp = perioderUtenSamtidigUttakAnnenPart.filter(
+        (periode) => Periodene(perioderUtenSamtidigUttakAnnenPart).finnOverlappendePerioder(periode).length > 0
     );
 
     const passerer = perioderSomHarOverlapp.length === 0;
