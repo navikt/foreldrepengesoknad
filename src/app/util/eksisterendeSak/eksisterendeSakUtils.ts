@@ -160,7 +160,9 @@ export const getEksisterendeSakFromDTO = (
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode)
         .reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
 
-    const uttaksplan = mapSaksperioderTilUttaksperioder(saksperioder, grunnlag, erEndringssøknad);
+    const uttaksplan = kanUttaksplanGjennskapesFraSak(saksperioder)
+        ? mapSaksperioderTilUttaksperioder(saksperioder, grunnlag, erEndringssøknad)
+        : undefined;
 
     return {
         erAnnenPartsSak,
@@ -179,10 +181,7 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     saksperioder: Saksperiode[]
 ) => {
     const likePerioder = saksperioder.filter(
-        (periode2) =>
-            periode.guid !== periode2.guid &&
-            Tidsperioden(periode.tidsperiode).erLik(periode2.tidsperiode) &&
-            periode.gjelderAnnenPart === periode2.gjelderAnnenPart
+        (periode2) => periode.guid !== periode2.guid && Tidsperioden(periode.tidsperiode).erLik(periode2.tidsperiode)
     );
 
     if (likePerioder.length === 0) {

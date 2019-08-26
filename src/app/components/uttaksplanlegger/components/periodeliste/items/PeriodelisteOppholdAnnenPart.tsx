@@ -8,9 +8,9 @@ import { Tidsperioden } from '../../../../../util/uttaksplan/Tidsperioden';
 import PeriodelisteInfo from './PeriodelisteInfo';
 import { getVarighetString } from 'common/util/intlUtils';
 import { getPeriodeIkon } from '../elements/PeriodeHeader';
-import { getOppholdskontoNavn, getForelderNavn, getPeriodeForelderNavn } from 'app/util/uttaksplan';
+import { getOppholdskontoNavn, getForelderNavn } from 'app/util/uttaksplan';
 import { formaterDatoKompakt } from 'common/util/datoUtils';
-import { getNavnGenitivEierform } from 'app/util/tekstUtils';
+// import UttaksplanAdvarselIkon from 'app/components/ikoner/uttaksplanIkon/ikoner/AdvarselIkon';
 
 export interface Props {
     itemId: string;
@@ -31,7 +31,7 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
 
     const tittel = getMessage(intl, 'periodeliste.oppholdAnnenPart.tittel', {
-        navn: getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale)
+        type: getMessage(intl, `periodetype.${periode.type}`)
     });
 
     return (
