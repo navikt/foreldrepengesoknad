@@ -231,6 +231,7 @@ class UttaksplanAutoBuilder {
                 ...this.perioder,
                 ...this.opprinneligPlan
                     .filter((p) => moment(p.tidsperiode.fom).isAfter(sistePeriode.tidsperiode.tom, 'day'))
+                    .filter(isInfoPeriode || isGruppertInfoPeriode)
                     .map(clonePeriode)
             ];
         }
