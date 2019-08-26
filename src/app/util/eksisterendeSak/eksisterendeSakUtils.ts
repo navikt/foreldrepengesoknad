@@ -355,21 +355,6 @@ const getAnnenForelderFromSaksgrunnlag = (
     }
 };
 
-// const finnOverlappendeSaksperioder = (perioder: Saksperiode[], periode: Saksperiode): Saksperiode[] => {
-//     return perioder.filter((p) => {
-//         if (p.guid === periode.guid) {
-//             return false;
-//         }
-//         const { fom, tom } = p.tidsperiode;
-//         if (!fom || !tom) {
-//             return false;
-//         }
-//         return (
-//             datoErInnenforTidsperiode(fom, periode.tidsperiode) || datoErInnenforTidsperiode(tom, periode.tidsperiode)
-//         );
-//     });
-// };
-
 const kanSaksperiodeKonverteresTilPeriode = (periode: Saksperiode) => {
     if (periode.flerbarnsdager === false) {
         return true;
@@ -378,10 +363,6 @@ const kanSaksperiodeKonverteresTilPeriode = (periode: Saksperiode) => {
 };
 
 export const kanUttaksplanGjennskapesFraSak = (perioder: Saksperiode[]): boolean => {
-    // if (perioder.some((periode) => finnOverlappendeSaksperioder(perioder, periode).length > 0)) {
-    //     return false;
-    // }
-
     const noenPerioderKanIkkeGjennskapes = perioder.some(
         (periode) => kanSaksperiodeKonverteresTilPeriode(periode) === false
     );
