@@ -97,7 +97,7 @@ const cleanupUttak = (
         vedlegg: shouldPeriodeHaveAttachment(periode, søknadsinfo) ? periode.vedlegg : undefined,
         forelder: periode.forelder,
         tidsperiode: periode.tidsperiode,
-        gradert: periode.gradert,
+        gradert: periode.ønskerSamtidigUttak ? undefined : periode.gradert,
         morsAktivitetIPerioden:
             periodeKontotypeHasAktivitetskrav(periode) &&
             periode.morsAktivitetIPerioden &&
