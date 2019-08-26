@@ -1,7 +1,7 @@
 {
-    "ingress": "https://foreldrepengesoknad.nav.no",
+    "ingress": "https://foreldrepengesoknad-q.nav.no",
     "ingress-internal": "https://foreldrepengesoknad.nais.oera-q.local",
-    "application_name": "foreldrepengeoversikt",
+    "application_name": "foreldrepengesoknad",
     "env": {
         "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api-q.nav.no/rest",
         "LOGINSERVICE_URL": "https://loginservice-q.nav.no/login",
