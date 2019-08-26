@@ -77,7 +77,7 @@ const grupperAnnenPartInfoPerioder = (perioder: Periode[]): Periode[] => {
     let gruppertPeriode: GruppertInfoPeriode | undefined;
 
     perioder.forEach((periode, index) => {
-        if (isAnnenPartInfoPeriode(periode) && !periode.ønskerSamtidigUttak) {
+        if (isAnnenPartInfoPeriode(periode)) {
             if (!gruppertPeriode) {
                 gruppertPeriode = {
                     id: guid(),
@@ -86,8 +86,7 @@ const grupperAnnenPartInfoPerioder = (perioder: Periode[]): Periode[] => {
                     tidsperiode: { ...periode.tidsperiode },
                     forelder: periode.forelder,
                     overskrives: true,
-                    perioder: [periode],
-                    visPeriodeIPlan: true
+                    perioder: [periode]
                 };
             } else {
                 gruppertPeriode.tidsperiode.tom = periode.tidsperiode.tom;
@@ -95,7 +94,6 @@ const grupperAnnenPartInfoPerioder = (perioder: Periode[]): Periode[] => {
             }
             return;
         }
-
         if (gruppertPeriode) {
             nyePerioder.push(gruppertPeriode);
             gruppertPeriode = undefined;
@@ -180,7 +178,7 @@ const mapUttaksperiodeFromSaksperiode = (
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
         ønskerSamtidigUttak: saksperiode.samtidigUttak,
         gradert,
-        samtidigUttakProsent: samtidigUttaksprosent ? saksperiode.samtidigUttaksprosent.toString() : undefined,
+        samtidigUttakProsent: samtidigUttaksprosent ? samtidigUttaksprosent.toString() : undefined,
         stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
         arbeidsformer: gradert ? [getArbeidsformFromUttakArbeidstype(saksperiode.uttakArbeidType)] : undefined,
         orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
@@ -234,8 +232,7 @@ const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, grunnla
         avslåttPeriodeType: saksperiode.utsettelsePeriodeType ? Periodetype.Utsettelse : Periodetype.Uttak,
         stønadskonto: saksperiode.stønadskontotype,
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
-        overskrives: true,
-        visPeriodeIPlan: true
+        overskrives: true
     };
     return avslåttPeriode;
 };
@@ -253,8 +250,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             tidsperiode: { ...saksperiode.tidsperiode },
             forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
             overskrives: true,
-            resultatType: saksperiode.periodeResultatType,
-            visPeriodeIPlan: true
+            resultatType: saksperiode.periodeResultatType
         };
     }
 
@@ -273,10 +269,8 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             overskrives: true,
             resultatType: saksperiode.periodeResultatType,
             gradert,
-            ønskerSamtidigUttak: saksperiode.samtidigUttak,
-            samtidigUttakProsent: samtidigUttaksprosent ? saksperiode.samtidigUttaksprosent.toString() : undefined,
-            stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
-            visPeriodeIPlan: saksperiode.samtidigUttak ? false : true
+            samtidigUttakProsent: samtidigUttaksprosent ? samtidigUttaksprosent.toString() : undefined,
+            stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined
         };
     }
     return undefined;

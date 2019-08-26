@@ -172,16 +172,14 @@ class Periodeliste extends React.Component<Props> {
                                             );
                                         case PeriodeInfoType.uttakAnnenPart:
                                             return (
-                                                periode.visPeriodeIPlan && (
-                                                    <PeriodelisteOppholdAnnenPart
-                                                        key={itemId}
-                                                        itemId={itemId}
-                                                        isExpanded={isExpanded}
-                                                        onToggle={onToggle}
-                                                        periode={periode}
-                                                        navnPåForeldre={navnPåForeldre}
-                                                    />
-                                                )
+                                                <PeriodelisteOppholdAnnenPart
+                                                    key={itemId}
+                                                    itemId={itemId}
+                                                    isExpanded={isExpanded}
+                                                    onToggle={onToggle}
+                                                    periode={periode}
+                                                    navnPåForeldre={navnPåForeldre}
+                                                />
                                             );
                                         case PeriodeInfoType.gruppertInfo:
                                             return (
