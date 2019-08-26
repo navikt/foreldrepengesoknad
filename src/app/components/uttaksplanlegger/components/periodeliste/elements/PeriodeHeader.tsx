@@ -6,8 +6,7 @@ import {
     Periode,
     Periodetype,
     StønadskontoType,
-    isForeldrepengerFørFødselUttaksperiode,
-    isGruppertInfoPeriode
+    isForeldrepengerFørFødselUttaksperiode
 } from '../../../../../types/uttaksplan/periodetyper';
 import { Tidsperioden, getValidTidsperiode } from '../../../../../util/uttaksplan/Tidsperioden';
 import getMessage from 'common/util/i18nUtils';
@@ -53,15 +52,13 @@ export const getPeriodeIkon = (periode: Periode, navnPåForeldre: NavnPåForeldr
                 />
             );
         case Periodetype.Info:
-            if (isGruppertInfoPeriode(periode)) {
-                return (
-                    <StønadskontoIkon
-                        konto={StønadskontoType.Foreldrepenger}
-                        forelder={periode.forelder}
-                        navnPåForeldre={navnPåForeldre}
-                    />
-                );
-            }
+            return (
+                <StønadskontoIkon
+                    konto={StønadskontoType.Foreldrepenger}
+                    forelder={periode.forelder}
+                    navnPåForeldre={navnPåForeldre}
+                />
+            );
     }
     return undefined;
 };
