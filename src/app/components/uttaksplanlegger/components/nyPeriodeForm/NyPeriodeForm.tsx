@@ -101,8 +101,13 @@ class NyPeriodeForm extends React.Component<Props, State> {
                 ...this.state.periode,
                 ...periode
             };
+            const cleanedPeriode = PeriodeCleanup.cleanupNyPeriode(
+                updatedPeriode as Periode,
+                this.props.søknadsinfo,
+                visibility
+            );
             this.setState({
-                periode: updatedPeriode as RecursivePartial<Periode>,
+                periode: cleanedPeriode as RecursivePartial<Periode>,
                 visibility
             });
         }
