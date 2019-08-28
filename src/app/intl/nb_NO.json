@@ -348,6 +348,8 @@
         "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
     "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET":
         "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
+    "utsettelseårsaktype.foreldernavn.far.LOVBESTEMT_FERIE": "{foreldernavn} tar ferie",
+    "utsettelseårsaktype.foreldernavn.mor.LOVBESTEMT_FERIE": "{foreldernavn} tar ferie",
     "oppsummering.adopsjonAvEktefellesBarn.label": "Gjelder søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
     "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
@@ -1004,9 +1006,9 @@
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.veileder.adopsjon": "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
-        "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe 100 prosent i perioden du oppgir. Du må bekrefte at du har en skriftlig avtale med arbeidsgiveren din, før du kan legge til denne utsettelsen. Du trenger ikke å sende avtalen til NAV.",
+        "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe {prosent} prosent i perioden du oppgir. Ved å søke om dette bekrefter du at dere har en skriftlig avtale. Du trenger ikke å sende avtalen til NAV.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
-        "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe i 100 prosent i perioden du oppgir. Ved å søke om dette bekrefter du at dere har en skriftlig avtale. Du trenger ikke å sende denne til NAV.",
+        "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe 100 prosent i perioden du oppgir. Ved å søke om dette bekrefter du at dere har en skriftlig avtale. Du trenger ikke å sende denne til NAV.",
     "vedlegg.veileder.fødselsattest":
         "Barnet ditt er ikke registrert i folkeregisteret. Derfor må du legge ved fødselsattesten til barnet.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",

@@ -348,6 +348,8 @@
         "{foreldernavn} har utset på grunn av innlegging i helseinstitusjon",
     "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET":
         "{foreldernavn} har utset fordi barnet er innlagd i helseinstitusjon",
+    "utsettelseårsaktype.foreldernavn.far.LOVBESTEMT_FERIE": "{foreldernavn} tar ferie",
+    "utsettelseårsaktype.foreldernavn.mor.LOVBESTEMT_FERIE": "{foreldernavn} tar ferie",
     "oppsummering.adopsjonAvEktefellesBarn.label": "Gjeld søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
     "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
@@ -1011,9 +1013,9 @@
     "vedlegg.veileder.adopsjon":
         "Du må leggje ved adopsjonsbevillinga og stadfesting på datoen då du tok over omsorga.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
-        "Du må ha ein skriftleg avtale med arbeidsgjevaren din om at du skal jobbe i den stillingsprosenten du oppgir. Ved å søke om dette stadfestar du at de har ein skriftleg avtale. Du treng ikkje å sende den til NAV.",
+        "Du må ha ein skriftleg avtale med arbeidsgjevaren din om at du skal jobbe {prosent} prosent i perioden du oppgir. Ved å søke om dette stadfestar du at de har ein skriftleg avtale. Du treng ikkje å sende den til NAV.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
-        "Du må ha ein skriftleg avtale med arbeidsgjevaren din om at du skal jobbe i den heiltid i den perioden du oppgir. Ved å søke om dette stadfestar du at de har ein skriftleg avtale. Du treng ikkje å sende den til NAV.",
+        "Du må ha ein skriftleg avtale med arbeidsgjevaren din om at du skal jobbe heiltid i den perioden du oppgir. Ved å søke om dette stadfestar du at de har ein skriftleg avtale. Du treng ikkje å sende den til NAV.",
     "vedlegg.veileder.fødselsattest":
         "Barnet ditt er ikkje registrert i folkeregisteret. Derfor må du leggje ved fødselsattesten til barnet.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakinga av omsorga.",

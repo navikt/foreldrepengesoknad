@@ -13,7 +13,8 @@ import {
     // GruppertInfoPeriode,
     // isAnnenPartInfoPeriode,
     UtsettelseAnnenPartInfoPeriode,
-    Overføringsperiode
+    Overføringsperiode,
+    isInfoPeriode
 } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
@@ -40,9 +41,12 @@ const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
     }
 
     const nyePerioder: Periode[] = [];
+    const infoPerioder = perioder.filter((p) => isInfoPeriode(p));
+    const ordinærePerioder = perioder.filter((p) => !isInfoPeriode(p));
     let forrigePeriode: Periode | undefined = { ...perioder[0] };
+    const tmp = [...ordinærePerioder, ...infoPerioder];
 
-    perioder.forEach((periode, index) => {
+    tmp.forEach((periode, index) => {
         if (index === 0) {
             return;
         }
@@ -65,7 +69,7 @@ const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
 
     nyePerioder.push(forrigePeriode);
 
-    return nyePerioder;
+    return nyePerioder.sort(sorterPerioder);
 };
 
 // const grupperAnnenPartInfoPerioder = (perioder: Periode[]): Periode[] => {
@@ -142,9 +146,6 @@ const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor:
 };
 
 const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsakType | undefined => {
-    if (saksperiode.flerbarnsdager) {
-        return OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder;
-    }
     switch (saksperiode.stønadskontotype) {
         case StønadskontoType.Fedrekvote:
             return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
@@ -159,6 +160,22 @@ const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsa
     }
 };
 
+const beregnSamtidigUttaksProsent = (
+    egenProsent: number | undefined,
+    andrePartsProsent: number | undefined,
+    benyttersegAvFlerbarnsdager: boolean
+): string | undefined => {
+    if (egenProsent) {
+        return egenProsent.toString();
+    }
+
+    if (andrePartsProsent) {
+        return benyttersegAvFlerbarnsdager ? '100' : Math.min(150 - andrePartsProsent, 100).toString();
+    }
+
+    return undefined;
+};
+
 const mapUttaksperiodeFromSaksperiode = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag,
@@ -166,12 +183,26 @@ const mapUttaksperiodeFromSaksperiode = (
     innvilgedePerioder: Saksperiode[]
 ): Periode | undefined => {
     const gradert = saksperiode.arbeidstidprosent !== undefined && saksperiode.arbeidstidprosent !== 0;
-    const samtidigUttaksprosent =
-        saksperiode.samtidigUttaksprosent !== undefined && saksperiode.samtidigUttaksprosent !== 0;
 
     if (saksperiode.gjelderAnnenPart) {
         return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag, innvilgedePerioder);
     }
+
+    const annenPartSamtidigUttakPeriode: Saksperiode | undefined = innvilgedePerioder.find(
+        (ip) => Tidsperioden(ip.tidsperiode).erLik(saksperiode.tidsperiode) && ip.guid !== saksperiode.guid
+    );
+    let samtidigUttakProsentAnnenPart;
+
+    if (annenPartSamtidigUttakPeriode) {
+        samtidigUttakProsentAnnenPart = annenPartSamtidigUttakPeriode.samtidigUttaksprosent;
+    }
+    const benyttersegAvFlerbarnsdager =
+        annenPartSamtidigUttakPeriode !== undefined ? annenPartSamtidigUttakPeriode.flerbarnsdager : false;
+    const samtidigUttakProsent = beregnSamtidigUttaksProsent(
+        saksperiode.samtidigUttaksprosent,
+        samtidigUttakProsentAnnenPart,
+        benyttersegAvFlerbarnsdager
+    );
 
     const uttaksperiode: Uttaksperiode = {
         id: guid(),
@@ -179,9 +210,9 @@ const mapUttaksperiodeFromSaksperiode = (
         konto: saksperiode.stønadskontotype,
         tidsperiode: { ...saksperiode.tidsperiode },
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
-        ønskerSamtidigUttak: saksperiode.samtidigUttak,
+        ønskerSamtidigUttak: samtidigUttakProsent !== undefined,
         gradert,
-        samtidigUttakProsent: samtidigUttaksprosent ? saksperiode.samtidigUttaksprosent.toString() : undefined,
+        samtidigUttakProsent,
         stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
         arbeidsformer: gradert ? [getArbeidsformFromUttakArbeidstype(saksperiode.uttakArbeidType)] : undefined,
         orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
@@ -262,7 +293,9 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
 
     const skalVises =
         innvilgedePerioder !== undefined &&
-        innvilgedePerioder.some((ip) => !Tidsperioden(ip.tidsperiode).erLik(saksperiode.tidsperiode));
+        !innvilgedePerioder.some(
+            (ip) => Tidsperioden(ip.tidsperiode).erLik(saksperiode.tidsperiode) && ip.guid !== saksperiode.guid
+        );
     const årsak = getOppholdÅrsakFromSaksperiode(saksperiode);
     const gradert = saksperiode.arbeidstidprosent !== undefined && saksperiode.arbeidstidprosent !== 0;
     const samtidigUttaksprosent =
@@ -281,7 +314,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             ønskerSamtidigUttak: saksperiode.samtidigUttak,
             samtidigUttakProsent: samtidigUttaksprosent ? saksperiode.samtidigUttaksprosent.toString() : undefined,
             stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
-            visPeriodeIPlan: saksperiode.samtidigUttak && !skalVises ? false : true
+            visPeriodeIPlan: skalVises
         };
     }
     return undefined;

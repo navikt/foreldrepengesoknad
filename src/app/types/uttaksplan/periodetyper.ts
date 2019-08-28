@@ -292,6 +292,10 @@ export const isUttakAnnenPart = (periode: Periode): periode is UttakAnnenPartInf
     return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.uttakAnnenPart;
 };
 
+export const isUtsettelseAnnenPart = (periode: Periode): periode is UtsettelseAnnenPartInfoPeriode => {
+    return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.utsettelseAnnenPart;
+};
+
 export interface Stønadskontouttak {
     konto: StønadskontoType;
     dager: number;

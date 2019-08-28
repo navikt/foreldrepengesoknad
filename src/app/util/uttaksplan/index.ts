@@ -7,7 +7,8 @@ import {
     isUttaksperiode,
     Arbeidsform,
     isOverskrivbarPeriode,
-    PeriodeInfoType
+    PeriodeInfoType,
+    UtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
 import { InjectedIntl } from 'react-intl';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
@@ -100,6 +101,17 @@ export const getOppholdskontoNavn = (
     return erMor
         ? getMessage(intl, `oppholdsårsaktype.foreldernavn.far.${årsak}`, { foreldernavn })
         : getMessage(intl, `oppholdsårsaktype.foreldernavn.mor.${årsak}`, { foreldernavn });
+};
+
+export const getUtsettelseTekst = (
+    intl: InjectedIntl,
+    årsak: UtsettelseÅrsakType,
+    foreldernavn: string,
+    erMor: boolean
+) => {
+    return erMor
+        ? getMessage(intl, `utsettelseårsaktype.foreldernavn.far.${årsak}`, { foreldernavn })
+        : getMessage(intl, `utsettelseårsaktype.foreldernavn.mor.${årsak}`, { foreldernavn });
 };
 
 export const getFamiliehendelsedato = (barn: Partial<Barn>, situasjon?: Søkersituasjon): Date | undefined => {
