@@ -80,6 +80,7 @@ class UttaksplanAutoBuilder {
         this.fjernHullPåSlutten();
         this.sort();
         this.settInnSamtidigUttakAnnenPartFraOpprinneligPlan();
+        this.konverterAnnenPartsPlanTilSamtidigUttakHvisSøkerHarLagtInnSamtidigUttak();
 
         this.perioder = [
             ...perioderFørFamDato.filter((p) => isOverskrivbarPeriode(p) === false),
@@ -107,6 +108,47 @@ class UttaksplanAutoBuilder {
         return this;
     }
 
+    konverterAnnenPartsPlanTilSamtidigUttakHvisSøkerHarLagtInnSamtidigUttak() {
+        const samtidigUttakIPlanen = this.perioder.filter((p) => isUttaksperiode(p) && p.ønskerSamtidigUttak);
+        const opprinneligUttakAnnenPart = this.opprinneligPlan
+            ? this.opprinneligPlan.filter((p) => isUttakAnnenPart(p) && !p.ønskerSamtidigUttak)
+            : [];
+
+        if (opprinneligUttakAnnenPart.length === 0) {
+            return this;
+        }
+
+        samtidigUttakIPlanen.forEach((p) => {
+            const overlappendeUttak = Periodene(opprinneligUttakAnnenPart).finnOverlappendePerioder(p);
+
+            if (overlappendeUttak.length === 0) {
+                return;
+            }
+
+            overlappendeUttak.forEach((op: UttakAnnenPartInfoPeriode) => {
+                const nyPeriode: UttakAnnenPartInfoPeriode = {
+                    ...op,
+                    ønskerSamtidigUttak: true,
+                    visPeriodeIPlan: false,
+                    tidsperiode: {
+                        fom: moment(p.tidsperiode.fom).isSameOrAfter(moment(op.tidsperiode.fom))
+                            ? p.tidsperiode.fom
+                            : op.tidsperiode.fom,
+                        tom: moment(p.tidsperiode.tom).isSameOrBefore(moment(op.tidsperiode.tom))
+                            ? p.tidsperiode.tom
+                            : op.tidsperiode.tom
+                    }
+                };
+
+                this.perioder.push(nyPeriode);
+                return;
+            });
+        });
+
+        this.sort();
+        return this;
+    }
+
     settInnSamtidigUttakAnnenPartFraOpprinneligPlan() {
         const samtidigUttakIPlanen = this.perioder.filter((p) => isUttaksperiode(p) && p.ønskerSamtidigUttak);
         const opprinneligSamtidigUttakAnnenPart = this.opprinneligPlan
@@ -124,9 +166,10 @@ class UttaksplanAutoBuilder {
                 return;
             }
 
-            overlappendeSamtidigUttak.forEach((op) => {
+            overlappendeSamtidigUttak.forEach((op: UttakAnnenPartInfoPeriode) => {
                 this.perioder.push({
                     ...op,
+                    visPeriodeIPlan: false,
                     tidsperiode: {
                         fom: moment(p.tidsperiode.fom).isSameOrAfter(moment(op.tidsperiode.fom))
                             ? p.tidsperiode.fom
@@ -513,18 +556,22 @@ export function slåSammenLikePerioder(perioder: Periode[]): Periode[] {
 function leggTilPeriodeEtterPeriode(perioder: Periode[], periode: Periode, nyPeriode: Periode): Periode[] {
     const perioderFør = Periodene(perioder).finnAlleForegåendePerioder(periode);
     const perioderEtter = Periodene(perioder).finnAllePåfølgendePerioder(periode);
-    const uttaksdagerIUtsettelse: number = Tidsperioden(nyPeriode.tidsperiode).getAntallUttaksdager();
-    return [
-        ...perioderFør,
-        ...[nyPeriode],
-        ...Periodene([periode, ...perioderEtter]).forskyvPerioder(uttaksdagerIUtsettelse)
-    ];
+    const uttaksdager: number =
+        (isUttakAnnenPart(nyPeriode) && nyPeriode.ønskerSamtidigUttak) ||
+        (isUttaksperiode(nyPeriode) && nyPeriode.ønskerSamtidigUttak)
+            ? 0
+            : Tidsperioden(nyPeriode.tidsperiode).getAntallUttaksdager();
+    return [...perioderFør, ...[nyPeriode], ...Periodene([periode, ...perioderEtter]).forskyvPerioder(uttaksdager)];
 }
 
 function leggTilPeriodeFørPeriode(perioder: Periode[], periode: Periode, nyPeriode: Periode): Periode[] {
     const perioderEtter = Periodene(perioder).finnAllePåfølgendePerioder(periode);
-    const uttaksdagerIUtsettelse: number = Tidsperioden(nyPeriode.tidsperiode).getAntallUttaksdager();
-    return [...[nyPeriode], ...Periodene([periode, ...perioderEtter]).forskyvPerioder(uttaksdagerIUtsettelse)];
+    const uttaksdager: number =
+        (isUttakAnnenPart(nyPeriode) && nyPeriode.ønskerSamtidigUttak) ||
+        (isUttaksperiode(nyPeriode) && nyPeriode.ønskerSamtidigUttak)
+            ? 0
+            : Tidsperioden(nyPeriode.tidsperiode).getAntallUttaksdager();
+    return [...[nyPeriode], ...Periodene([periode, ...perioderEtter]).forskyvPerioder(uttaksdager)];
 }
 
 function leggTilPeriodeIPeriode(perioder: Periode[], periode: Periode, nyPeriode: Periode): Periode[] {
