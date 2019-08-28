@@ -2,13 +2,17 @@ import * as React from 'react';
 import { onToggleItemProp } from '../../../../elementer/toggleList/ToggleList';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { UttakAnnenPartInfoPeriode } from '../../../../../types/uttaksplan/periodetyper';
+import {
+    UttakAnnenPartInfoPeriode,
+    UtsettelseAnnenPartInfoPeriode,
+    isUttakAnnenPart
+} from '../../../../../types/uttaksplan/periodetyper';
 import { NavnPåForeldre, Forelder } from 'common/types';
 import { Tidsperioden } from '../../../../../util/uttaksplan/Tidsperioden';
 import PeriodelisteInfo from './PeriodelisteInfo';
 import { getVarighetString } from 'common/util/intlUtils';
 import { getPeriodeIkon } from '../elements/PeriodeHeader';
-import { getOppholdskontoNavn, getForelderNavn, getPeriodeForelderNavn } from 'app/util/uttaksplan';
+import { getOppholdskontoNavn, getForelderNavn, getPeriodeForelderNavn, getUtsettelseTekst } from 'app/util/uttaksplan';
 import { formaterDatoKompakt } from 'common/util/datoUtils';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 
@@ -16,7 +20,7 @@ export interface Props {
     itemId: string;
     isExpanded: boolean;
     onToggle: onToggleItemProp;
-    periode: UttakAnnenPartInfoPeriode;
+    periode: UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode;
     navnPåForeldre: NavnPåForeldre;
 }
 
@@ -51,12 +55,19 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
                         <span>&mdash;</span>
                         <span>{formaterDatoKompakt(periode.tidsperiode.tom)}:</span>
                     </strong>{' '}
-                    {getOppholdskontoNavn(
-                        intl,
-                        periode.årsak,
-                        getForelderNavn(periode.forelder, navnPåForeldre),
-                        periode.forelder === Forelder.mor
-                    )}
+                    {isUttakAnnenPart(periode)
+                        ? getOppholdskontoNavn(
+                              intl,
+                              periode.årsak,
+                              getForelderNavn(periode.forelder, navnPåForeldre),
+                              periode.forelder === Forelder.mor
+                          )
+                        : getUtsettelseTekst(
+                              intl,
+                              periode.årsak,
+                              getForelderNavn(periode.forelder, navnPåForeldre),
+                              periode.forelder === Forelder.mor
+                          )}
                 </div>
             )}
         />
