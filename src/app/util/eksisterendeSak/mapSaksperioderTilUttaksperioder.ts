@@ -10,8 +10,8 @@ import {
     UtsettelseÅrsakType,
     Arbeidsform,
     UttakAnnenPartInfoPeriode,
-    GruppertInfoPeriode,
-    isAnnenPartInfoPeriode,
+    // GruppertInfoPeriode,
+    // isAnnenPartInfoPeriode,
     UtsettelseAnnenPartInfoPeriode,
     Overføringsperiode
 } from '../../types/uttaksplan/periodetyper';
@@ -68,46 +68,46 @@ const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
     return nyePerioder;
 };
 
-const grupperAnnenPartInfoPerioder = (perioder: Periode[]): Periode[] => {
-    if (perioder.length <= 1) {
-        return perioder;
-    }
+// const grupperAnnenPartInfoPerioder = (perioder: Periode[]): Periode[] => {
+//     if (perioder.length <= 1) {
+//         return perioder;
+//     }
 
-    const nyePerioder: Periode[] = [];
-    let gruppertPeriode: GruppertInfoPeriode | undefined;
+//     const nyePerioder: Periode[] = [];
+//     let gruppertPeriode: GruppertInfoPeriode | undefined;
 
-    perioder.forEach((periode, index) => {
-        if (isAnnenPartInfoPeriode(periode) && !periode.ønskerSamtidigUttak) {
-            if (!gruppertPeriode) {
-                gruppertPeriode = {
-                    id: guid(),
-                    type: Periodetype.Info,
-                    infotype: PeriodeInfoType.gruppertInfo,
-                    tidsperiode: { ...periode.tidsperiode },
-                    forelder: periode.forelder,
-                    overskrives: true,
-                    perioder: [periode],
-                    visPeriodeIPlan: true
-                };
-            } else {
-                gruppertPeriode.tidsperiode.tom = periode.tidsperiode.tom;
-                gruppertPeriode.perioder.push(periode);
-            }
-            return;
-        }
+//     perioder.forEach((periode, index) => {
+//         if (isAnnenPartInfoPeriode(periode) && !periode.ønskerSamtidigUttak) {
+//             if (!gruppertPeriode) {
+//                 gruppertPeriode = {
+//                     id: guid(),
+//                     type: Periodetype.Info,
+//                     infotype: PeriodeInfoType.gruppertInfo,
+//                     tidsperiode: { ...periode.tidsperiode },
+//                     forelder: periode.forelder,
+//                     overskrives: true,
+//                     perioder: [periode],
+//                     visPeriodeIPlan: true
+//                 };
+//             } else {
+//                 gruppertPeriode.tidsperiode.tom = periode.tidsperiode.tom;
+//                 gruppertPeriode.perioder.push(periode);
+//             }
+//             return;
+//         }
 
-        if (gruppertPeriode) {
-            nyePerioder.push(gruppertPeriode);
-            gruppertPeriode = undefined;
-        }
+//         if (gruppertPeriode) {
+//             nyePerioder.push(gruppertPeriode);
+//             gruppertPeriode = undefined;
+//         }
 
-        nyePerioder.push(periode);
-    });
-    if (gruppertPeriode) {
-        nyePerioder.push(gruppertPeriode);
-    }
-    return nyePerioder;
-};
+//         nyePerioder.push(periode);
+//     });
+//     if (gruppertPeriode) {
+//         nyePerioder.push(gruppertPeriode);
+//     }
+//     return nyePerioder;
+// };
 
 const korrigerTidsperiodeTilGyldigUttaksdag = (periode: Periode): Periode => {
     const { fom, tom } = periode.tidsperiode;
@@ -344,7 +344,7 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harUttaksdager)
     );
 
-    return grupperAnnenPartInfoPerioder(sammenslåddePerioder);
+    return sammenslåddePerioder;
 };
 
 export default mapSaksperioderTilUttaksperioder;
