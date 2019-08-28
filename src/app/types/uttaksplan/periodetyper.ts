@@ -94,6 +94,7 @@ interface InfoPeriodeBase extends PeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType;
     overskrives: boolean;
+    visPeriodeIPlan: boolean;
 }
 
 export interface AvslåttPeriode extends InfoPeriodeBase {
@@ -103,6 +104,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     stønadskonto: StønadskontoType;
     forelder: Forelder;
     overskrives: true;
+    visPeriodeIPlan: boolean;
 }
 
 export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
@@ -112,6 +114,8 @@ export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
     forelder: Forelder;
     overskrives: true;
     resultatType: PeriodeResultatType;
+    visPeriodeIPlan: boolean;
+    ønskerSamtidigUttak?: boolean;
     samtidigUttakProsent?: string;
     gradert?: boolean;
     stillingsprosent?: string;
@@ -124,6 +128,7 @@ export interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
     forelder: Forelder;
     overskrives: true;
     resultatType: PeriodeResultatType;
+    visPeriodeIPlan: boolean;
 }
 
 export const isAnnenPartInfoPeriode = (periode: Periode): periode is UttakAnnenPartInfoPeriode => {
