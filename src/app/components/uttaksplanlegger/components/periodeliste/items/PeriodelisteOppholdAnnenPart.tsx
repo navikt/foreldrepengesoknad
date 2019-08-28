@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { onToggleItemProp } from '../../../../elementer/toggleList/ToggleList';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { UttakAnnenPartInfoPeriode } from '../../../../../types/uttaksplan/periodetyper';
-import { NavnPåForeldre } from 'common/types';
+import { NavnPåForeldre, Forelder } from 'common/types';
 import { Tidsperioden } from '../../../../../util/uttaksplan/Tidsperioden';
 import PeriodelisteInfo from './PeriodelisteInfo';
-import Block from 'common/components/block/Block';
 import { getVarighetString } from 'common/util/intlUtils';
-import UttaksplanAdvarselIkon from 'app/components/ikoner/uttaksplanIkon/ikoner/AdvarselIkon';
+import { getPeriodeIkon } from '../elements/PeriodeHeader';
+import { getOppholdskontoNavn, getForelderNavn, getPeriodeForelderNavn } from 'app/util/uttaksplan';
+import { formaterDatoKompakt } from 'common/util/datoUtils';
+import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 
 export interface Props {
     itemId: string;
@@ -29,7 +31,7 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
 
     const tittel = getMessage(intl, 'periodeliste.oppholdAnnenPart.tittel', {
-        type: getMessage(intl, `periodetype.${periode.type}`)
+        navn: getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale)
     });
 
     return (
@@ -39,12 +41,22 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
             isExpanded={isExpanded}
             onToggle={onToggle}
             beskrivelse={getVarighetString(antallDager, intl)}
-            ikon={<UttaksplanAdvarselIkon />}
+            ikon={getPeriodeIkon(periode, navnPåForeldre)}
+            farge="transparent"
+            border={true}
             renderContent={() => (
                 <div>
-                    <Block>
-                        <FormattedMessage id={`periodeliste.oppholdAnnenPart.expanded.beskrivelse.${periode.type}`} />
-                    </Block>
+                    <strong>
+                        <span>{formaterDatoKompakt(periode.tidsperiode.fom)}</span>
+                        <span>&mdash;</span>
+                        <span>{formaterDatoKompakt(periode.tidsperiode.tom)}:</span>
+                    </strong>{' '}
+                    {getOppholdskontoNavn(
+                        intl,
+                        periode.årsak,
+                        getForelderNavn(periode.forelder, navnPåForeldre),
+                        periode.forelder === Forelder.mor
+                    )}
                 </div>
             )}
         />
