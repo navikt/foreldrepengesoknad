@@ -111,7 +111,10 @@ class GradertUttakForm extends React.Component<Props> {
                                 contentIntlKey: periode.erArbeidstaker
                                     ? 'vedlegg.veileder.dokumentasjonAvArbeidVedGradering'
                                     : 'uttaksplan.infoTilFrilansOgSelvstendig',
-                                formatContentAsHTML: true
+                                formatContentAsHTML: true,
+                                values: {
+                                    prosent: pst
+                                }
                             }
                         ]}
                     />

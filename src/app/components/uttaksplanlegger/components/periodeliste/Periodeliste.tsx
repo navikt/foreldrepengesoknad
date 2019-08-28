@@ -171,6 +171,7 @@ class Periodeliste extends React.Component<Props> {
                                                 />
                                             );
                                         case PeriodeInfoType.uttakAnnenPart:
+                                        case PeriodeInfoType.utsettelseAnnenPart:
                                             return (
                                                 periode.visPeriodeIPlan && (
                                                     <PeriodelisteOppholdAnnenPart
