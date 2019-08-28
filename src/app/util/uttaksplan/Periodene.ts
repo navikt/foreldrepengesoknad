@@ -157,7 +157,7 @@ function finnPåfølgendePeriode(perioder: Periode[], periode: Periode): Periode
 }
 function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
     return perioder.map((periode) => {
-        if (periode.type === Periodetype.Utsettelse) {
+        if (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Info) {
             return periode;
         }
         return forskyvPeriode(periode, uttaksdager);
