@@ -20,6 +20,7 @@ import PeriodelisteGruppertInfoPart from './items/PeriodelisteGruppertInfoPart';
 import { VeiledermeldingerPerPeriode } from '../../../veilederInfo/types';
 
 import './periodeliste.less';
+import PeriodelisteUtsettelseAnnenPart from './items/PeriodelisteUtsettelseAnnenPart';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -186,6 +187,17 @@ class Periodeliste extends React.Component<Props> {
                                         case PeriodeInfoType.gruppertInfo:
                                             return (
                                                 <PeriodelisteGruppertInfoPart
+                                                    key={itemId}
+                                                    itemId={itemId}
+                                                    isExpanded={isExpanded}
+                                                    onToggle={onToggle}
+                                                    periode={periode}
+                                                    navnPåForeldre={navnPåForeldre}
+                                                />
+                                            );
+                                        case PeriodeInfoType.utsettelseAnnenPart:
+                                            return (
+                                                <PeriodelisteUtsettelseAnnenPart
                                                     key={itemId}
                                                     itemId={itemId}
                                                     isExpanded={isExpanded}
