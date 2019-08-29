@@ -17,6 +17,7 @@ export interface Props {
     isExpanded: boolean;
     antallFeriedager: number;
     navnPåForeldre: NavnPåForeldre;
+    annenForelderHarSamtidigUttakISammePeriode: boolean;
     meldinger?: VeilederMessage[];
     onToggle: onToggleItemProp;
 }
@@ -26,6 +27,7 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
     periode,
     navnPåForeldre,
     antallFeriedager,
+    annenForelderHarSamtidigUttakISammePeriode,
     meldinger = [],
     isExpanded,
     onToggle,
@@ -42,7 +44,12 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
                 isExpanded={isExpanded}
                 onToggle={onToggle}
                 renderHeader={() => (
-                    <PeriodeHeader periode={periode} navnPåForeldre={navnPåForeldre} melding={melding} />
+                    <PeriodeHeader
+                        periode={periode}
+                        navnPåForeldre={navnPåForeldre}
+                        melding={melding}
+                        annenForelderHarSamtidigUttakISammePeriode={annenForelderHarSamtidigUttakISammePeriode}
+                    />
                 )}
                 renderContent={() => (
                     <EndrePeriodeForm

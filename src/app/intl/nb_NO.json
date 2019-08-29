@@ -218,7 +218,7 @@
     "fødselsdatoer.termin.flereBarn": "Hva var termindatoen til det eldste barnet?",
     "gjelderSøknadenNoenAvDisseBarna.spørsmål": "Gjelder foreldrepengesøknaden noen av disse barna?",
     "gjelderSøknadenNoenAvDisseBarna.spørsmål.ettBarn": "Gjelder foreldrepengesøknaden dette barnet?",
-    "gradering.prosent": "{stillingsprosent} prosent",
+    "gradering.prosent": "{stillingsprosent}%",
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepenger",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet som frilanser de siste ti månedene?",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
@@ -348,8 +348,22 @@
         "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
     "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET":
         "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
-    "utsettelseårsaktype.foreldernavn.far.LOVBESTEMT_FERIE": "{foreldernavn} tar ferie",
-    "utsettelseårsaktype.foreldernavn.mor.LOVBESTEMT_FERIE": "{foreldernavn} tar ferie",
+    "utsettelseårsaktype.foreldernavn.far.LOVBESTEMT_FERIE":
+        "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
+    "utsettelseårsaktype.foreldernavn.far.ARBEID": "{foreldernavn} utsetter på grunn av heltidsarbeid",
+    "utsettelseårsaktype.foreldernavn.far.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
+    "utsettelseårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_SØKER":
+        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
+    "utsettelseårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET":
+        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
+    "utsettelseårsaktype.foreldernavn.mor.LOVBESTEMT_FERIE":
+        "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
+    "utsettelseårsaktype.foreldernavn.mor.ARBEID": "{foreldernavn} utsetter på grunn av heltidsarbeid",
+    "utsettelseårsaktype.foreldernavn.mor.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
+    "utsettelseårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_SØKER":
+        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
+    "utsettelseårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_BARNET":
+        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
     "oppsummering.adopsjonAvEktefellesBarn.label": "Gjelder søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
     "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
@@ -507,7 +521,7 @@
     "periodeliste.utsettelse.overlappendeTidsperiode.ny":
         "Det er allerede lagt inn en utsettelse i denne perioden. Du må slette perioden med utsettelse før du kan legge inn en ny utsettelse.",
     "periodeliste.gruppertInfo.tittel": "{navn} {antallPerioder, plural, one{periode} other {perioder}}",
-    "periodeliste.oppholdAnnenPart.tittel": "{navn} kvote",
+    "periodeliste.oppholdAnnenPart.tittel": "{navn} periode",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
     "periodetype.info.utsettelse.LOVBESTEMT_FERIE": "{ navn } utsetter på grunn av ferie",
     "periodetype.info.utsettelse.ARBEID": "{ navn } utsetter på grunn av heltidsarbeid",
@@ -838,7 +852,7 @@
         "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb, kombinere foreldrepenger med delvis arbeid, ta samtidig uttak eller bruke fellesperioden de første seks ukene du tar ut foreldrepenger.",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode.",
     "uttaksplan.validering.feil.periodeoverlapp.oppsummering":
-        "<strong>{periode} ({tidsperiode})</strong> overlapper med en eller flere andre perioder.",
+        "{periode} ({tidsperiode}) overlapper med en eller flere andre perioder.",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
 
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det mangler informasjon om perioden.",
