@@ -136,6 +136,7 @@ class Periodeliste extends React.Component<Props> {
                                     tittel={item.tittel}
                                     beskrivelse={item.beskrivelse}
                                     onToggle={onToggle}
+                                    erSamtidigUttak={false}
                                 />
                             ))}
                         {filteredPerioder.map((periode) => {
