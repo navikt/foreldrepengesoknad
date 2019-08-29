@@ -310,8 +310,28 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
         );
     const årsak = getOppholdÅrsakFromSaksperiode(saksperiode);
     const gradert = saksperiode.arbeidstidprosent !== undefined && saksperiode.arbeidstidprosent !== 0;
-    const samtidigUttaksprosent =
-        saksperiode.samtidigUttaksprosent !== undefined && saksperiode.samtidigUttaksprosent !== 0;
+
+    const annenPartSamtidigUttakPeriode: Saksperiode | undefined =
+        innvilgedePerioder !== undefined
+            ? innvilgedePerioder.find(
+                  (ip) => Tidsperioden(ip.tidsperiode).erLik(saksperiode.tidsperiode) && ip.guid !== saksperiode.guid
+              )
+            : undefined;
+    let samtidigUttakProsentAnnenPart;
+
+    if (annenPartSamtidigUttakPeriode) {
+        samtidigUttakProsentAnnenPart = annenPartSamtidigUttakPeriode.samtidigUttaksprosent;
+    }
+
+    const annenPartBenytterSegAvFlerbarnsdager =
+        annenPartSamtidigUttakPeriode !== undefined ? annenPartSamtidigUttakPeriode.flerbarnsdager : false;
+
+    const samtidigUttaksprosent = beregnSamtidigUttaksProsent(
+        saksperiode.samtidigUttaksprosent,
+        samtidigUttakProsentAnnenPart,
+        annenPartBenytterSegAvFlerbarnsdager
+    );
+
     if (årsak) {
         return {
             type: Periodetype.Info,
@@ -323,8 +343,8 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             overskrives: true,
             resultatType: saksperiode.periodeResultatType,
             gradert,
-            ønskerSamtidigUttak: saksperiode.samtidigUttak,
-            samtidigUttakProsent: samtidigUttaksprosent ? saksperiode.samtidigUttaksprosent.toString() : undefined,
+            ønskerSamtidigUttak: samtidigUttaksprosent !== undefined,
+            samtidigUttakProsent: samtidigUttaksprosent,
             stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
             visPeriodeIPlan: skalVises
         };
