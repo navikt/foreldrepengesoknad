@@ -4,7 +4,8 @@ import {
     Periodetype,
     isUttaksperiode,
     StønadskontoType,
-    PeriodeInfoType
+    PeriodeInfoType,
+    isUttakAnnenPart
 } from '../../../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
@@ -20,6 +21,7 @@ import PeriodelisteGruppertInfoPart from './items/PeriodelisteGruppertInfoPart';
 import { VeiledermeldingerPerPeriode } from '../../../veilederInfo/types';
 
 import './periodeliste.less';
+import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -52,6 +54,7 @@ class Periodeliste extends React.Component<Props> {
         this.checkPeriodeFocus = this.checkPeriodeFocus.bind(this);
         this.handleOnItemToggle = this.handleOnItemToggle.bind(this);
         this.shouldRenderHull = this.shouldRenderHull.bind(this);
+        this.harAnnenForelderSamtidigUttakISammePeriode = this.harAnnenForelderSamtidigUttakISammePeriode.bind(this);
 
         const { perioder } = props;
         if (perioder.length === 1 && perioder[0].id === props.lastAddedPeriodeId) {
@@ -97,6 +100,24 @@ class Periodeliste extends React.Component<Props> {
             this.periodeWhichHaveReceivedFocus = this.periodeToBeFocused;
             this.periodeToBeFocused = undefined;
         }
+    }
+
+    harAnnenForelderSamtidigUttakISammePeriode(periode: Periode): boolean {
+        if (isUttaksperiode(periode)) {
+            const { perioder } = this.props;
+            const annenPartHarSamtidigUttak = perioder
+                .filter((p) => isUttakAnnenPart(p))
+                .some(
+                    (p) =>
+                        isUttakAnnenPart(p) &&
+                        Tidsperioden(periode.tidsperiode).erLik(p.tidsperiode) &&
+                        p.ønskerSamtidigUttak === true
+                );
+
+            return annenPartHarSamtidigUttak;
+        }
+
+        return false;
     }
 
     handleOnItemToggle(id: string, open: boolean) {
@@ -209,6 +230,9 @@ class Periodeliste extends React.Component<Props> {
                                             meldinger={meldingerPerPeriode[periode.id]}
                                             isExpanded={isExpanded}
                                             onToggle={onToggle}
+                                            annenForelderHarSamtidigUttakISammePeriode={this.harAnnenForelderSamtidigUttakISammePeriode(
+                                                periode
+                                            )}
                                         />
                                     );
                             }

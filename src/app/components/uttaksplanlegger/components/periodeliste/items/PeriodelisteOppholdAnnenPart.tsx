@@ -37,6 +37,7 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
     const tittel = getMessage(intl, 'periodeliste.oppholdAnnenPart.tittel', {
         navn: getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale)
     });
+    const navnAnnenForelder = periode.forelder === Forelder.mor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
 
     return (
         <PeriodelisteInfo
@@ -48,6 +49,7 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
             ikon={getPeriodeIkon(periode, navnPåForeldre)}
             farge="transparent"
             border={true}
+            navnAnnenForelder={navnAnnenForelder}
             erSamtidigUttak={isUttakAnnenPart(periode) ? periode.ønskerSamtidigUttak === true : false}
             renderContent={() => (
                 <div>
