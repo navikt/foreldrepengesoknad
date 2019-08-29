@@ -19,6 +19,7 @@ interface Props {
     melding?: VeilederMessage;
     tidsperiode?: Tidsperiode;
     erSamtidigUttak?: boolean;
+    navnAnnenForelder?: string;
     type: 'periode' | 'info';
 }
 
@@ -48,7 +49,8 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
     beskrivelse,
     melding,
     tidsperiode,
-    erSamtidigUttak
+    erSamtidigUttak,
+    navnAnnenForelder
 }) => {
     return (
         <div className={BEM.modifier(type)}>
@@ -65,7 +67,9 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
                         {beskrivelse && <Normaltekst>{beskrivelse}</Normaltekst>}
                     </div>
                     <div>
-                        {erSamtidigUttak && <div className={BEM.element('samtidig-uttak-punkt')}>Samtidig uttak</div>}
+                        {erSamtidigUttak && (
+                            <div className={BEM.element('samtidig-uttak-punkt')}>{navnAnnenForelder}</div>
+                        )}
                     </div>
                 </div>
                 {melding && (

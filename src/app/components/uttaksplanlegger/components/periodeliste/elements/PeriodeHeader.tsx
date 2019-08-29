@@ -8,13 +8,12 @@ import {
     StønadskontoType,
     isForeldrepengerFørFødselUttaksperiode,
     isUtsettelseAnnenPart,
-    isUttakAnnenPart,
     isUttaksperiode
 } from '../../../../../types/uttaksplan/periodetyper';
 import { Tidsperioden, getValidTidsperiode } from '../../../../../util/uttaksplan/Tidsperioden';
 import getMessage from 'common/util/i18nUtils';
 import { getPeriodeForelderNavn, getPeriodeTittel } from '../../../../../util/uttaksplan';
-import { NavnPåForeldre } from 'common/types';
+import { NavnPåForeldre, Forelder } from 'common/types';
 import PeriodelisteItemHeader from './PeriodelisteItemHeader';
 import { VeilederMessage } from 'app/components/veilederInfo/types';
 import StønadskontoIkon from 'app/components/ikoner/uttaksplanIkon/StønadskontoIkon';
@@ -23,6 +22,7 @@ import UtsettelseIkon from 'app/components/ikoner/uttaksplanIkon/UtsettelseIkon'
 export interface Props {
     periode: Periode;
     navnPåForeldre: NavnPåForeldre;
+    annenForelderHarSamtidigUttakISammePeriode?: boolean;
     melding?: VeilederMessage;
     isOpen?: boolean;
 }
@@ -75,6 +75,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     navnPåForeldre,
     isOpen,
     melding,
+    annenForelderHarSamtidigUttakISammePeriode,
     intl
 }) => {
     const gyldigTidsperiode = getValidTidsperiode(periode.tidsperiode);
@@ -92,8 +93,18 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     }
     const foreldernavn = getPeriodeForelderNavn(periode, navnPåForeldre);
     const periodetittel = getPeriodeTittel(intl, periode, navnPåForeldre);
-    const samtidigUttakAnnenPart = isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true;
     const samtidigUttak = isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true;
+
+    let navnAnnenForelder;
+    if (
+        periode.type === Periodetype.Utsettelse ||
+        periode.type === Periodetype.Uttak ||
+        periode.type === Periodetype.Overføring ||
+        periode.type === Periodetype.Opphold ||
+        periode.type === Periodetype.Info
+    ) {
+        navnAnnenForelder = periode.forelder === Forelder.mor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
+    }
 
     return (
         <PeriodelisteItemHeader
@@ -101,7 +112,8 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
             isOpen={isOpen}
             melding={melding}
             tittel={periodetittel}
-            erSamtidigUttak={samtidigUttak || samtidigUttakAnnenPart}
+            erSamtidigUttak={samtidigUttak && annenForelderHarSamtidigUttakISammePeriode}
+            navnAnnenForelder={navnAnnenForelder}
             beskrivelse={
                 <>
                     {varighetString}

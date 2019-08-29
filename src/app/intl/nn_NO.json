@@ -348,8 +348,20 @@
         "{foreldernavn} har utset på grunn av innlegging i helseinstitusjon",
     "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET":
         "{foreldernavn} har utset fordi barnet er innlagd i helseinstitusjon",
-    "utsettelseårsaktype.foreldernavn.far.LOVBESTEMT_FERIE": "{foreldernavn} tar ferie",
-    "utsettelseårsaktype.foreldernavn.mor.LOVBESTEMT_FERIE": "{foreldernavn} tar ferie",
+    "utsettelseårsaktype.foreldernavn.far.LOVBESTEMT_FERIE": "{foreldernavn} har utset på grunn av lovbestemt ferie",
+    "utsettelseårsaktype.foreldernavn.far.ARBEID": "{foreldernavn} utsetjer på grunn av heltidsarbeid",
+    "utsettelseårsaktype.foreldernavn.far.SYKDOM": "{foreldernavn} har utset på grunn av sykdom",
+    "utsettelseårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_SØKER":
+        "{foreldernavn} har utset på grunn av innlegging i helseinstitusjon",
+    "utsettelseårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET":
+        "{foreldernavn} har utset fordi barnet er innlagd i helseinstitusjon",
+    "utsettelseårsaktype.foreldernavn.mor.LOVBESTEMT_FERIE": "{foreldernavn} har utset på grunn av lovbestemt ferie",
+    "utsettelseårsaktype.foreldernavn.mor.ARBEID": "{foreldernavn} utsetjer på grunn av heltidsarbeid",
+    "utsettelseårsaktype.foreldernavn.mor.SYKDOM": "{foreldernavn} har utset på grunn av sykdom",
+    "utsettelseårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_SØKER":
+        "{foreldernavn} har utset på grunn av innlegging i helseinstitusjon",
+    "utsettelseårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_BARNET":
+        "{foreldernavn} har utset fordi barnet er innlagd i helseinstitusjon",
     "oppsummering.adopsjonAvEktefellesBarn.label": "Gjeld søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
     "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
@@ -506,7 +518,7 @@
     "periodeliste.utsettelse.overlappendeTidsperiode.ny":
         "Det er allereie lagt inn ei utsetjing i denne perioden. Du må slette perioden med utsetjing før du kan leggje inn ei ny utsetjing.",
     "periodeliste.gruppertInfo.tittel": "{navn} {antallPerioder, plural, one{periode} other {perioder}}",
-    "periodeliste.oppholdAnnenPart.tittel": "{navn} kvote",
+    "periodeliste.oppholdAnnenPart.tittel": "{navn} periode",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
     "periodetype.info.utsettelse.LOVBESTEMT_FERIE": "{ navn } utsetjer på grunn av ferie",
     "periodetype.info.utsettelse.ARBEID": "{ navn } utsetjer på grunn av heiltidsarbeid. ",
@@ -841,7 +853,7 @@
         "Du kan ikkje leggje inn utsetjing på grunn av ferie eller jobb, kombinere foreldrepengane med delvis arbeid, ta samtidig uttak eller nytta deg av fellesperioden dei første seks vekene du tek ut foreldrepengar.",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlappar ein annan periode.",
     "uttaksplan.validering.feil.periodeoverlapp.oppsummering":
-        "<strong>{periode} ({tidsperiode})</strong> overlappar med ein eller fleire andre periodar.",
+        "{periode} ({tidsperiode}) overlappar med ein eller fleire andre periodar.",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå vidare i søknaden.",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det manglar informasjon om perioden.",
     "uttaksplan.validering.feil.planenInneholderIngenPerioder":
