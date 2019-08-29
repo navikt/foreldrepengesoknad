@@ -43,8 +43,8 @@ const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
     const nyePerioder: Periode[] = [];
     const infoPerioder = perioder.filter((p) => isInfoPeriode(p));
     const ordinærePerioder = perioder.filter((p) => !isInfoPeriode(p));
-    let forrigePeriode: Periode | undefined = { ...perioder[0] };
     const tmp = [...ordinærePerioder, ...infoPerioder];
+    let forrigePeriode: Periode | undefined = { ...tmp[0] };
 
     tmp.forEach((periode, index) => {
         if (index === 0) {
