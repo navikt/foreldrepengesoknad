@@ -23,7 +23,11 @@ import { getStønadskontoFromOppholdsårsak } from './uttaksperiodeUtils';
 const isValidStillingsprosent = (pst: string | undefined): boolean =>
     pst !== undefined && isNaN(parseFloat(pst)) === false;
 
-const prettifyProsent = (pst: string): number | undefined => {
+const prettifyProsent = (pst: string | undefined): number | undefined => {
+    if (pst === undefined) {
+        return undefined;
+    }
+
     const nbr = parseFloat(pst);
     if (isNaN(nbr)) {
         return undefined;
@@ -151,9 +155,8 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
         case Periodetype.Uttak:
             const tittel = getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
             if (
-                periode.gradert &&
-                periode.stillingsprosent !== undefined &&
-                isValidStillingsprosent(periode.stillingsprosent)
+                (periode.gradert && isValidStillingsprosent(periode.stillingsprosent)) ||
+                (periode.ønskerSamtidigUttak && isValidStillingsprosent(periode.samtidigUttakProsent))
             ) {
                 return `${tittel} ${getMessage(intl, 'gradering.prosent', {
                     stillingsprosent: getUttaksprosentFromStillingsprosent(
@@ -162,6 +165,7 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
                     )
                 })}`;
             }
+
             return tittel;
 
         case Periodetype.Overføring:
