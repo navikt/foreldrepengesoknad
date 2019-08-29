@@ -119,6 +119,14 @@ const korrigerTidsperiodeTilGyldigUttaksdag = (periode: Periode): Periode => {
     const tomOk = erUttaksdag(tom);
     if (fomOk && tomOk) {
         return periode;
+    } else if (!fomOk && !tomOk) {
+        return {
+            ...periode,
+            tidsperiode: {
+                fom: Uttaksdagen(fom).neste(),
+                tom: Uttaksdagen(tom).forrige()
+            }
+        };
     } else if (!fomOk && tomOk) {
         return {
             ...periode,
