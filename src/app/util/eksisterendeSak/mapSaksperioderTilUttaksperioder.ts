@@ -228,6 +228,7 @@ const mapUttaksperiodeFromSaksperiode = (
         erMorForSyk:
             erEndringssøknad &&
             grunnlag.søkerErFarEllerMedmor &&
+            !saksperiode.flerbarnsdager &&
             moment(saksperiode.tidsperiode.fom).isBefore(moment(grunnlag.familieHendelseDato).add(6, 'weeks'))
                 ? true
                 : undefined
