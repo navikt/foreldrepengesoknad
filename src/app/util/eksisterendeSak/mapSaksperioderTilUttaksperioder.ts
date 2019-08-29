@@ -221,6 +221,7 @@ const mapUttaksperiodeFromSaksperiode = (
         ønskerSamtidigUttak: samtidigUttakProsent !== undefined,
         gradert,
         samtidigUttakProsent,
+        ønskerFlerbarnsdager: benyttersegAvFlerbarnsdager,
         stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
         arbeidsformer: gradert ? [getArbeidsformFromUttakArbeidstype(saksperiode.uttakArbeidType)] : undefined,
         orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
