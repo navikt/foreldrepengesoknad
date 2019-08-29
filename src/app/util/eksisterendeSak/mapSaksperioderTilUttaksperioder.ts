@@ -204,12 +204,11 @@ const mapUttaksperiodeFromSaksperiode = (
     if (annenPartSamtidigUttakPeriode) {
         samtidigUttakProsentAnnenPart = annenPartSamtidigUttakPeriode.samtidigUttaksprosent;
     }
-    const benyttersegAvFlerbarnsdager =
-        annenPartSamtidigUttakPeriode !== undefined ? annenPartSamtidigUttakPeriode.flerbarnsdager : false;
+
     const samtidigUttakProsent = beregnSamtidigUttaksProsent(
         saksperiode.samtidigUttaksprosent,
         samtidigUttakProsentAnnenPart,
-        benyttersegAvFlerbarnsdager
+        saksperiode.flerbarnsdager
     );
 
     const uttaksperiode: Uttaksperiode = {
@@ -221,7 +220,7 @@ const mapUttaksperiodeFromSaksperiode = (
         ønskerSamtidigUttak: samtidigUttakProsent !== undefined,
         gradert,
         samtidigUttakProsent,
-        ønskerFlerbarnsdager: benyttersegAvFlerbarnsdager,
+        ønskerFlerbarnsdager: saksperiode.flerbarnsdager,
         stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
         arbeidsformer: gradert ? [getArbeidsformFromUttakArbeidstype(saksperiode.uttakArbeidType)] : undefined,
         orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
