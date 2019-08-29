@@ -48,6 +48,7 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
             ikon={getPeriodeIkon(periode, navnPåForeldre)}
             farge="transparent"
             border={true}
+            erSamtidigUttak={isUttakAnnenPart(periode) ? periode.ønskerSamtidigUttak === true : false}
             renderContent={() => (
                 <div>
                     <strong>

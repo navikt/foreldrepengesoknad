@@ -21,6 +21,7 @@ export interface PeriodelisteInformasjon {
     farge?: UttaksplanColor;
     periodeFargestrek?: UttaksplanColor;
     border?: boolean;
+    erSamtidigUttak: boolean;
 }
 
 const PeriodelisteInfo: React.StatelessComponent<Props> = ({
@@ -34,7 +35,8 @@ const PeriodelisteInfo: React.StatelessComponent<Props> = ({
     tidsperiode,
     farge = 'yellow',
     border,
-    periodeFargestrek
+    periodeFargestrek,
+    erSamtidigUttak
 }) => {
     return (
         <PeriodelisteItemWrapper
@@ -54,6 +56,7 @@ const PeriodelisteInfo: React.StatelessComponent<Props> = ({
                         tittel={tittel}
                         beskrivelse={beskrivelse}
                         tidsperiode={tidsperiode}
+                        erSamtidigUttak={erSamtidigUttak}
                     />
                 )}
                 renderContent={renderContent}

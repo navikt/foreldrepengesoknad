@@ -25,15 +25,34 @@
         line-height: 0;
     }
     &__beskrivelse {
+        display: flex;
         padding-left: 1rem;
         padding-top: 1rem;
         padding-bottom: 1rem;
         flex-grow: 3;
     }
+    &__beskrivelse__tekst {
+        min-width: 200px;
+    }
     &__advarsel {
         width: 3rem;
         flex-grow: 0;
     }
+
+    &__samtidig-uttak-punkt {
+        position: relative;
+
+        &:before {
+            content: ' \00b7';
+            font-size: 70px;
+            display: inline-block;
+            color: #634689;
+            position: absolute;
+            left: -1.25rem;
+            top: -0.125rem;
+        }
+    }
+
     &__tidsrom {
         min-width: 11rem;
         @media (max-width: @tablet-breakpoint) {

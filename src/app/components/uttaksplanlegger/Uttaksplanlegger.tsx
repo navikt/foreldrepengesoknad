@@ -206,7 +206,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         info={infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor}
                         onLeggTilOpphold={this.settInnNyttOpphold}
                     />
-                )
+                ),
+                erSamtidigUttak: false
             });
         }
 

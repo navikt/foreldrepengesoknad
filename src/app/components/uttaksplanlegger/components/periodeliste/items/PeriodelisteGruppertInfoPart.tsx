@@ -41,6 +41,7 @@ const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedInt
             tittel={tittel}
             isExpanded={isExpanded}
             onToggle={onToggle}
+            erSamtidigUttak={false}
             ikon={getPeriodeIkon(periode, navnPåForeldre)}
             farge="transparent"
             border={stil === 'medRammeOgStrek'}

@@ -7,7 +7,9 @@ import {
     Periodetype,
     StønadskontoType,
     isForeldrepengerFørFødselUttaksperiode,
-    isUtsettelseAnnenPart
+    isUtsettelseAnnenPart,
+    isUttakAnnenPart,
+    isUttaksperiode
 } from '../../../../../types/uttaksplan/periodetyper';
 import { Tidsperioden, getValidTidsperiode } from '../../../../../util/uttaksplan/Tidsperioden';
 import getMessage from 'common/util/i18nUtils';
@@ -90,12 +92,16 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     }
     const foreldernavn = getPeriodeForelderNavn(periode, navnPåForeldre);
     const periodetittel = getPeriodeTittel(intl, periode, navnPåForeldre);
+    const samtidigUttakAnnenPart = isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true;
+    const samtidigUttak = isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true;
+
     return (
         <PeriodelisteItemHeader
             type="periode"
             isOpen={isOpen}
             melding={melding}
             tittel={periodetittel}
+            erSamtidigUttak={samtidigUttak || samtidigUttakAnnenPart}
             beskrivelse={
                 <>
                     {varighetString}
