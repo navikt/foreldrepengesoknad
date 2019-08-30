@@ -58,10 +58,6 @@ const getSisteAvDagensDatoOgDato = (dato: Date): Date => {
     return moment.max(moment(dato), moment(uttaksdagDagensDato)).toDate();
 };
 
-const getLikePerioder = (periode: Periode, opprinneligPlan: Periode[]): Periode[] => {
-    return opprinneligPlan.filter((p) => Perioden(p).erLik(periode, false, true));
-};
-
 const justerKunEndretSisteperiode = (periode: Periode, opprinneligPeriode: Periode): Periode => {
     const kunTidsperiodeErEndret = Perioden(periode).erLik(opprinneligPeriode);
     if (kunTidsperiodeErEndret) {
@@ -159,16 +155,12 @@ export const getEndretUttaksplanForInnsending = (opprinneligPlan: Periode[], nyP
         // fall justerer en bare tidsperioden for den
         if (endringer.length === 1) {
             const endretPeriode = endringer[0];
-            const perioder = getLikePerioder(endretPeriode, opprinneligPlan);
-            const opprinneligPeriode = perioder.length === 1 ? perioder[0] : undefined;
 
-            if (opprinneligPeriode) {
-                // Dersom index er ulik, er det ny periode som er lag inn, ikke siste periode som er endret
-                const indexOgOpprinneligPeriode = opprinneligPlan.findIndex((p) => p === opprinneligPeriode);
-                const indexNyPeriode = nyPlan.findIndex((p) => p === endretPeriode);
-                if (indexOgOpprinneligPeriode === indexNyPeriode) {
-                    return [justerKunEndretSisteperiode(endretPeriode, opprinneligPeriode)];
-                }
+            const indexSisteOpprinneligPeriode = opprinneligPlan.length - 1;
+            const indexNyPeriode = nyPlan.findIndex((p) => p === endretPeriode);
+            // Dersom index er ulik, er det ny periode som er lag inn, ikke siste periode som er endret
+            if (indexSisteOpprinneligPeriode === indexNyPeriode) {
+                return [justerKunEndretSisteperiode(endretPeriode, opprinneligPlan[indexSisteOpprinneligPeriode])];
             }
         }
         return justerStartdatoFørsteEndring(endringer, opprinneligPlan).filter((p) => isInfoPeriode(p) === false);
