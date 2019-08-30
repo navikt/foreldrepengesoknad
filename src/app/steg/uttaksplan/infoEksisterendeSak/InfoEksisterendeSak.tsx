@@ -92,7 +92,7 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
             if (p.infotype === PeriodeInfoType.gruppertInfo) {
                 return infoperioder.push(...trimPerioderIGruppertInfoPeriode(p));
             }
-            return p;
+            return infoperioder.push(p);
         });
     }
 
