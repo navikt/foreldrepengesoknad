@@ -3,7 +3,7 @@ import { Periode, Periodetype, StønadskontoType, Oppholdsperiode } from '../../
 import { UttaksplanColor } from '../../types/uttaksplan/colors';
 
 export const getForelderFarge = (forelder: Forelder) => {
-    return forelder === Forelder.mor ? 'purple' : 'blue';
+    return forelder === Forelder.mor ? UttaksplanColor.purple : UttaksplanColor.blue;
 };
 
 export const getStønadskontoFarge = (
@@ -12,30 +12,30 @@ export const getStønadskontoFarge = (
     forIkon?: boolean
 ): UttaksplanColor => {
     if (forIkon && (konto === StønadskontoType.Fellesperiode || konto === StønadskontoType.Flerbarnsdager)) {
-        return 'purpleBlue';
+        return UttaksplanColor.purpleBlue;
     }
 
     if (forelder === undefined) {
         switch (konto) {
             case StønadskontoType.Fedrekvote:
             case StønadskontoType.AktivitetsfriKvote:
-                return 'blue';
+                return UttaksplanColor.blue;
             case StønadskontoType.Mødrekvote:
             case StønadskontoType.Foreldrepenger:
             case StønadskontoType.ForeldrepengerFørFødsel:
-                return 'purple';
+                return UttaksplanColor.purple;
             case StønadskontoType.Fellesperiode:
             case StønadskontoType.Flerbarnsdager:
-                return 'purpleBlue';
+                return UttaksplanColor.purpleBlue;
             default:
-                return 'transparent';
+                return UttaksplanColor.transparent;
         }
     }
     return getForelderFarge(forelder);
 };
 
 export const getUtsettelseFarge = (): UttaksplanColor => {
-    return 'green';
+    return UttaksplanColor.green;
 };
 
 export const getOppholdFarge = (periode: Oppholdsperiode): UttaksplanColor => {
