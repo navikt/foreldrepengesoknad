@@ -27,10 +27,9 @@ function sortTidsperiodeTom(t1: Partial<Tidsperiode>, t2: Partial<Tidsperiode>) 
     return moment(t1.tom).isBefore(t2.tom, 'day') ? -1 : 1;
 }
 
-function getAntallUttaksdagerITidsperioder(tidsperioder: Tidsperiode[], taBortFridager?: boolean): number {
+function getAntallUttaksdagerITidsperioder(tidsperioder: Tidsperiode[]): number {
     return tidsperioder.reduce(
-        (dager: number, tidsperiode: Tidsperiode) =>
-            dager + Tidsperioden(tidsperiode).getAntallUttaksdager(taBortFridager),
+        (dager: number, tidsperiode: Tidsperiode) => dager + Tidsperioden(tidsperiode).getAntallUttaksdager(),
         0
     );
 }
