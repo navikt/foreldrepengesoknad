@@ -43,6 +43,8 @@ import { getTermindatoRegler, termindatoAvgrensningerFodsel } from 'app/util/val
 import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { skalViseInfoOmPrematuruker, visTermindato } from './visibility/visibilityFunctions';
+import { Element } from 'nav-frontend-typografi';
+import getMessage from 'common/util/i18nUtils';
 
 interface RelasjonTilBarnFødselStegProps {
     barn: Barn;
@@ -198,6 +200,9 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                     valgtBarn.fødselsdato,
                                     (barn as FødtBarn).termindato
                                 )}>
+                                <Block margin="xs">
+                                    <Element>{getMessage(intl, 'vedlegg.lastoppknapp.terminbekreftelse')}</Element>
+                                </Block>
                                 <AttachmentsUploaderPure
                                     attachments={barn.terminbekreftelse || []}
                                     attachmentType={AttachmentType.TERMINBEKREFTELSE}
