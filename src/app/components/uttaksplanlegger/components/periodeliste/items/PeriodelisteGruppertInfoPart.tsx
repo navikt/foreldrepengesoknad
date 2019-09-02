@@ -10,6 +10,7 @@ import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import EnkelPeriodeliste from 'app/components/uttaksplanlegger/components/enkelPeriodeliste/EnkelPeriodeliste';
 import { getPeriodeIkon } from '../elements/PeriodeHeader';
 import { trimPerioderIGruppertInfoPeriode } from 'app/util/uttaksplan/gruppertInfoPeriodeUtils';
+import { UttaksplanColor } from 'app/types/uttaksplan/colors';
 
 export interface Props {
     itemId: string;
@@ -43,7 +44,7 @@ const PeriodelisteGruppertInfoPart: React.StatelessComponent<Props & InjectedInt
             onToggle={onToggle}
             erSamtidigUttak={false}
             ikon={getPeriodeIkon(periode, navnPåForeldre)}
-            farge="transparent"
+            farge={UttaksplanColor.transparent}
             border={stil === 'medRammeOgStrek'}
             renderContent={() => (
                 <div>
