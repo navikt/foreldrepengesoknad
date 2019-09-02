@@ -15,6 +15,7 @@ import { getPeriodeIkon } from '../elements/PeriodeHeader';
 import { getOppholdskontoNavn, getForelderNavn, getPeriodeForelderNavn, getUtsettelseTekst } from 'app/util/uttaksplan';
 import { formaterDatoKompakt } from 'common/util/datoUtils';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
+import { UttaksplanColor } from 'app/types/uttaksplan/colors';
 
 export interface Props {
     itemId: string;
@@ -47,7 +48,7 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
             onToggle={onToggle}
             beskrivelse={getVarighetString(antallDager, intl)}
             ikon={getPeriodeIkon(periode, navnPåForeldre)}
-            farge="transparent"
+            farge={UttaksplanColor.transparent}
             border={true}
             navnAnnenForelder={navnAnnenForelder}
             erSamtidigUttak={isUttakAnnenPart(periode) ? periode.ønskerSamtidigUttak === true : false}

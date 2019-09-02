@@ -34,7 +34,7 @@ const PeriodelisteInfo: React.StatelessComponent<Props> = ({
     tittel,
     beskrivelse,
     tidsperiode,
-    farge = 'yellow',
+    farge = UttaksplanColor.yellow,
     border,
     periodeFargestrek,
     erSamtidigUttak,
