@@ -12,7 +12,7 @@ export const Tidsperioden = (tidsperiode: Partial<Tidsperiode>) => ({
     erLik: (tidsperiode2: Tidsperiode) => erTidsperioderLike(tidsperiode, tidsperiode2),
     erOmsluttetAv: (tidsperiode2: Tidsperiode) => erTidsperiodeOmsluttetAvTidsperiode(tidsperiode, tidsperiode2),
     erUtenfor: (tidsperiode2: Tidsperiode) => erTidsperiodeUtenforTidsperiode(tidsperiode, tidsperiode2),
-    getAntallUttaksdager: (taBortFridager?: boolean) => getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
+    getAntallUttaksdager: () => getAntallUttaksdagerITidsperiode(tidsperiode),
     getAntallFridager: () => getUttaksdagerSomErFridager(tidsperiode).length,
     setStartdato: (fom: Date) => (isValidTidsperiode(tidsperiode) ? flyttTidsperiode(tidsperiode, fom) : tidsperiode),
     setUttaksdager: (uttaksdager: number) =>
@@ -69,27 +69,20 @@ export function datoErInnenforTidsperiode(dato: Date, tidsperiode: Tidsperiode):
     return moment(dato).isBetween(fom, tom, 'days', '[]');
 }
 
-function getAntallUttaksdagerITidsperiode(tidsperiode: Partial<Tidsperiode>, taBortFridager?: boolean): number {
+function getAntallUttaksdagerITidsperiode(tidsperiode: Partial<Tidsperiode>): number {
     if (!isValidTidsperiode(tidsperiode)) {
         return 0;
     }
     const fom = moment(tidsperiode.fom);
     const tom = moment(tidsperiode.tom);
-    if (fom.isAfter(tom, 'day')) {
-        return 0;
-    }
     let antall = 0;
-    let fridager = 0;
     while (fom.isSameOrBefore(tom, 'day')) {
         if (Uttaksdagen(fom.toDate()).erUttaksdag()) {
             antall++;
         }
         fom.add(24, 'hours');
     }
-    if (taBortFridager) {
-        fridager = getUttaksdagerSomErFridager(tidsperiode).length;
-    }
-    return antall - fridager;
+    return antall;
 }
 
 function getUttaksdagerSomErFridager(tidsperiode: Partial<Tidsperiode>): Holiday[] {
