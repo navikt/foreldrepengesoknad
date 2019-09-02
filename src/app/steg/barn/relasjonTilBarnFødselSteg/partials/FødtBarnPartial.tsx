@@ -16,6 +16,7 @@ import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import { Element } from 'nav-frontend-typografi';
 
 interface StateProps {
     barn: FødtBarn;
@@ -97,6 +98,9 @@ class FødtBarnPartial extends React.Component<Props> {
                 </Block>
 
                 <Block visible={vis.visInfoOmPrematuruker}>
+                    <Block margin="xs">
+                        <Element>{getMessage(intl, 'vedlegg.lastoppknapp.terminbekreftelse')}</Element>
+                    </Block>
                     <AttachmentsUploaderPure
                         attachments={barn.terminbekreftelse || []}
                         attachmentType={AttachmentType.TERMINBEKREFTELSE}
