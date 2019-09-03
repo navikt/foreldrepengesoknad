@@ -62,24 +62,6 @@ jobs:
           - nais-deploy:
              template-vars: prod.json
              environment: prod-sbs
-    
-    akseptansetest:
-        working_directory: ~/foreldrepengesoknad
-        docker:
-            - image: circleci/node:10.14-browsers
-        steps: 
-            - checkout
-            - run: 
-                name: Install test dependencies
-                command: cd akseptansetest && npm install
-
-            - run: 
-                name: Config
-                command: echo $AKSEPTANSETEST_CONFIG >> akseptansetest/config.js 
-
-            - run:
-                name: Run tests
-                command: cd akseptansetest && npm run test
 
 commands:
   nais-deploy:
@@ -114,10 +96,7 @@ workflows:
                    only: master
                requires:
                 - build
-                
-            - akseptansetest:
-                  requires:
-                      - dev-deploy
+
             - hold:
                   type: approval
                   filters:
