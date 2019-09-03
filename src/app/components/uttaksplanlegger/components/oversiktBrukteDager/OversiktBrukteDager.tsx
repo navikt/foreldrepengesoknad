@@ -39,7 +39,7 @@ const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> =
 
     const {
         søker,
-        søknaden: { erDeltUttak, familiehendelsesdato }
+        søknaden: { erDeltUttak, familiehendelsesdato, erEndringssøknad }
     } = søknadsinfo;
 
     const brukteDager = getBrukteDager(tilgjengeligeStønadskontoer, perioder, familiehendelsesdato);
@@ -74,6 +74,7 @@ const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> =
                     navnPåForeldre={navnPåForeldre}
                     uttaksstatus={uttaksstatus}
                     erDeltUttak={erDeltUttak}
+                    erEndringssøknad={erEndringssøknad}
                 />
             </div>
         </div>
