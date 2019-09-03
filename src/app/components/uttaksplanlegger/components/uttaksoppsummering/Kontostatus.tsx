@@ -4,7 +4,7 @@ import BEMHelper from 'common/util/bem';
 
 import { getVarighetString } from 'common/util/intlUtils';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { NavnPåForeldre } from 'common/types';
+import { NavnPåForeldre, StønadskontoType } from 'common/types';
 import { Stønadskontouttak } from 'app/types/uttaksplan/periodetyper';
 import StønadskontoIkon from 'app/components/ikoner/uttaksplanIkon/StønadskontoIkon';
 import { getStønadskontoNavn } from 'app/util/uttaksplan';
@@ -14,11 +14,21 @@ import './kontostatus.less';
 export interface Props {
     uttak: Stønadskontouttak;
     navnPåForeldre: NavnPåForeldre;
+    erEndringssøknad: boolean;
 }
 
 const BEM = BEMHelper('kontostatus');
 
-const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({ uttak, navnPåForeldre, intl }) => {
+const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({
+    uttak,
+    navnPåForeldre,
+    erEndringssøknad,
+    intl
+}) => {
+    if (erEndringssøknad && uttak.konto === StønadskontoType.ForeldrepengerFørFødsel) {
+        uttak.dager = 0;
+    }
+
     const varighetString = getVarighetString(uttak.dager, intl);
     const kontoErOvertrukket = uttak.dager < 0;
 
