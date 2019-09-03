@@ -70,6 +70,12 @@ export const getAnnenForelderKanIkkeOppgis = createSelector(
 
 export const selectUttaksplan = createSelector([søknadSelector], (søknad): Periode[] => søknad.uttaksplan as Periode[]);
 
+export const selectEndringstidspunkt = createSelector(
+    [søknadSelector],
+    (søknad): Date | undefined =>
+        søknad.ekstrainfo !== undefined ? (søknad.ekstrainfo.endringstidspunkt as Date) : undefined
+);
+
 export const selectEksisterendeSak = createSelector(
     [søknadSelector],
     (søknad): EksisterendeSak | undefined =>
@@ -83,11 +89,11 @@ export const selectEksisterendeUttaksplan = createSelector(
 );
 
 export const selectPerioderSomSkalSendesInn = createSelector(
-    [selectUttaksplan, selectEksisterendeUttaksplan, selectErEndringssøknad],
-    (nyPlan, opprinneligPlan, erEndringssøknad): Periode[] => {
+    [selectUttaksplan, selectEksisterendeUttaksplan, selectErEndringssøknad, selectEndringstidspunkt],
+    (nyPlan, opprinneligPlan, erEndringssøknad, endringstidspunkt): Periode[] => {
         if (opprinneligPlan) {
             return erEndringssøknad
-                ? getEndretUttaksplanForInnsending(opprinneligPlan, nyPlan)
+                ? getEndretUttaksplanForInnsending(nyPlan, endringstidspunkt)
                 : nyPlan.filter(erPeriodeSomSkalSendesInn);
         }
         return nyPlan;

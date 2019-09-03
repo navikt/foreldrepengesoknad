@@ -20,7 +20,7 @@ interface Props {
 }
 
 // TODO fjerne denne  logikken og bruke funksjonalitet fra datovelgeren v4
-const erDatoITidsperiode = (dato: Date, tidsperiode: Tidsperiode) => {
+export const erDatoITidsperiode = (dato: Date, tidsperiode: Tidsperiode) => {
     return moment(dato).isBetween(moment(tidsperiode.fom), moment(tidsperiode.tom), 'day', '[]');
 };
 
