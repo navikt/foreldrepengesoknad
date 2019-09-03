@@ -12,6 +12,7 @@ import {
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
+import { getEndringstidspunkt } from 'app/util/dates/dates';
 
 export const getDefaultSøknadState = (): SøknadPartial => {
     return {
@@ -86,7 +87,9 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             return UttaksplanBuilder(
                 perioder || state.uttaksplan,
                 familiehendelsesdato,
-                state.ekstrainfo.eksisterendeSak && !state.ekstrainfo.uttaksplanSkjema.ønskerTomPlan ? state.ekstrainfo.eksisterendeSak.uttaksplan : undefined
+                state.ekstrainfo.eksisterendeSak && !state.ekstrainfo.uttaksplanSkjema.ønskerTomPlan
+                    ? state.ekstrainfo.eksisterendeSak.uttaksplan
+                    : undefined
             );
         }
         throw new Error('getBuilder: Familiehendelsesdato kunne ikke utledes');
@@ -167,7 +170,11 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
         case SøknadActionKeys.UTTAKSPLAN_SET_PERIODER:
             return {
                 ...state,
-                uttaksplan: cloneUttaksplan(action.perioder)
+                uttaksplan: cloneUttaksplan(action.perioder),
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    endringstidspunkt: undefined
+                }
             };
 
         case SøknadActionKeys.UTTAKSPLAN_RESET_ENDRINGER:
@@ -182,7 +189,8 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                     uttaksplanSkjema: {
                         ...state.ekstrainfo.uttaksplanSkjema,
                         ønskerTomPlan: false
-                    }
+                    },
+                    endringstidspunkt: undefined
                 }
             };
 
@@ -212,7 +220,12 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                     : state.uttaksplan,
                 ekstrainfo: {
                     ...state.ekstrainfo,
-                    lastAddedPeriodeId: id
+                    lastAddedPeriodeId: id,
+                    endringstidspunkt: getEndringstidspunkt(
+                        state.erEndringssøknad,
+                        action.periode,
+                        state.ekstrainfo.endringstidspunkt
+                    )
                 }
             };
         }
@@ -223,7 +236,15 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 ...state,
                 uttaksplan: builderForDelete
                     ? builderForDelete.slettPeriodeOgBuild(action.periode).perioder
-                    : state.uttaksplan
+                    : state.uttaksplan,
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    endringstidspunkt: getEndringstidspunkt(
+                        state.erEndringssøknad,
+                        action.periode,
+                        state.ekstrainfo.endringstidspunkt
+                    )
+                }
             };
         }
 
@@ -240,7 +261,15 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 ...state,
                 uttaksplan: updateBuilder
                     ? updateBuilder.oppdaterPeriodeOgBuild(action.periode).perioder
-                    : state.uttaksplan
+                    : state.uttaksplan,
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    endringstidspunkt: getEndringstidspunkt(
+                        state.erEndringssøknad,
+                        action.periode,
+                        state.ekstrainfo.endringstidspunkt
+                    )
+                }
             };
         }
 
