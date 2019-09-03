@@ -10,9 +10,15 @@ export interface Props {
     uttaksstatus: Uttaksstatus;
     navnPåForeldre: NavnPåForeldre;
     erDeltUttak: boolean;
+    erEndringssøknad: boolean;
 }
 
-const Uttaksoppsummering: React.StatelessComponent<Props> = ({ uttaksstatus, navnPåForeldre, erDeltUttak }) => (
+const Uttaksoppsummering: React.StatelessComponent<Props> = ({
+    uttaksstatus,
+    navnPåForeldre,
+    erDeltUttak,
+    erEndringssøknad
+}) => (
     <section>
         <Undertittel tag="h2" className="blokk-xs">
             {
@@ -27,7 +33,9 @@ const Uttaksoppsummering: React.StatelessComponent<Props> = ({ uttaksstatus, nav
             }
         </Undertittel>
         <TilesList columns={2}>
-            {uttaksstatus.uttak.map((u, idx) => <Kontostatus key={idx} uttak={u} navnPåForeldre={navnPåForeldre} />)}
+            {uttaksstatus.uttak.map((u, idx) => (
+                <Kontostatus key={idx} uttak={u} navnPåForeldre={navnPåForeldre} erEndringssøknad={erEndringssøknad} />
+            ))}
         </TilesList>
     </section>
 );
