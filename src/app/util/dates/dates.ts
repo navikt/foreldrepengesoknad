@@ -9,6 +9,7 @@ import {
     date15YearsAnd3MonthsAgo
 } from '../validation/values';
 import { FamiliehendelseDatoer } from '../../types/søknad/FamiliehendelseDatoer';
+import { Periode } from 'app/types/uttaksplan/periodetyper';
 
 const moment = require('moment');
 
@@ -22,6 +23,24 @@ export const getRelevantFamiliehendelseDato = ({
     } else {
         return termindato !== undefined ? termindato : omsorgsovertakelsesdato!;
     }
+};
+
+export const getEndringstidspunkt = (
+    erEndringssøknad: boolean | undefined,
+    changedPeriode: Periode,
+    currentEndringstidspunkt: Date | undefined
+): Date | undefined => {
+    if (!erEndringssøknad) {
+        return undefined;
+    }
+
+    if (!currentEndringstidspunkt) {
+        return changedPeriode.tidsperiode.fom;
+    }
+
+    return moment(currentEndringstidspunkt).isSameOrBefore(moment(changedPeriode.tidsperiode.fom))
+        ? currentEndringstidspunkt
+        : changedPeriode.tidsperiode.fom;
 };
 
 export const getDateFromString = (dato?: string) => {
