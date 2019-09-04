@@ -43,7 +43,7 @@ import {
 import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
-import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
+import Api, { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
 import Sak from 'app/types/søknad/Sak';
 import { Saksgrunnlag } from 'app/types/EksisterendeSak';
@@ -56,6 +56,7 @@ import OversiktBrukteDager from 'app/components/uttaksplanlegger/components/over
 import DevPerioderSomSendesInn from './DevPerioderSomSendesInn';
 import FeatureBlock from 'app/components/elementer/featureBlock/FeatureBlock';
 import { Feature } from 'app/Feature';
+import { detect } from 'detect-browser';
 
 interface StateProps {
     stegProps: StegProps;
@@ -237,6 +238,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         } = this.props;
 
         if (!søknadsinfo) {
+            Api.log({
+                message: 'Søknadsinfo objektet er undefined i uttaksplansteget',
+                trace: undefined,
+                componentStack: undefined,
+                browserInfo: detect()
+            });
+
             return (
                 <Steg {...this.props.stegProps} renderFortsettKnapp={false}>
                     Det oppstod en feil, vennligst prøv på nytt
