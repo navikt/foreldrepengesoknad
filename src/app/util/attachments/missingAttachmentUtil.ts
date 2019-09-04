@@ -196,6 +196,10 @@ export const findMissingAttachments = (
     api: ApiState,
     søknadsinfo: Søknadsinfo
 ): MissingAttachment[] => {
+    if (!søknadsinfo) {
+        return [];
+    }
+
     const missingAttachments = [];
     missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api));
     missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknadsinfo));
