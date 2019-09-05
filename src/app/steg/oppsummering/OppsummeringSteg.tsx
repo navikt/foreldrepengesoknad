@@ -26,7 +26,7 @@ import { søknadStegPath } from '../StegRoutes';
 import Block from 'common/components/block/Block';
 import { MissingAttachment } from '../../types/MissingAttachment';
 import { mapMissingAttachmentsOnSøknad } from '../../util/attachments/missingAttachmentUtil';
-import Api, { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
+import { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
 import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
@@ -40,7 +40,7 @@ import AlertStripe from 'nav-frontend-alertstriper';
 import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
 import LinkButton from 'app/components/elementer/linkButton/LinkButton';
 import Barn from 'app/types/søknad/Barn';
-import { detect } from 'detect-browser';
+import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -125,12 +125,7 @@ class OppsummeringSteg extends React.Component<Props> {
         }
 
         if (!søknadsinfo) {
-            Api.log({
-                message: 'Søknadsinfo objektet er undefined i oppsummeringssteget',
-                trace: undefined,
-                componentStack: undefined,
-                browserInfo: detect()
-            });
+            return <ResetSoknad history={this.props.history} />;
         }
 
         return (

@@ -17,7 +17,7 @@ import { apiActionCreators } from '../../redux/actions';
 import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import ApplicationSpinner from 'common/components/applicationSpinner/ApplicationSpinner';
-import Api, { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
+import { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
 import { Søknadsinfo } from '../../selectors/types';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import uttaksConstants from 'app/constants';
@@ -33,7 +33,7 @@ import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import Block from 'common/components/block/Block';
 import InfoEksisterendeSak from '../uttaksplan/infoEksisterendeSak/InfoEksisterendeSak';
 import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from 'app/util/uttaksplan/uttakUtils';
-import { detect } from 'detect-browser';
+import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
 
 interface StateProps {
     stegProps: StegProps;
@@ -110,12 +110,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
         const navnPåForeldre = søknadsinfo.navn.navnPåForeldre;
 
         if (!søknadsinfo) {
-            Api.log({
-                message: 'Søknadsinfo objektet er undefined i uttaksplanskjemasteget',
-                trace: undefined,
-                componentStack: undefined,
-                browserInfo: detect()
-            });
+            return <ResetSoknad history={this.props.history} />;
         }
 
         return (
