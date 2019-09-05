@@ -11,7 +11,7 @@ import { StegID } from '../../util/routing/stegConfig';
 import { Omit } from 'react-redux';
 import { EksisterendeSak } from '../EksisterendeSak';
 
-type Foreldrepenger = 'foreldrepenger';
+export type Foreldrepenger = 'foreldrepenger';
 
 export enum SøkerRolle {
     MOR = 'MOR',

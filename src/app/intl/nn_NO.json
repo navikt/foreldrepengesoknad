@@ -193,6 +193,8 @@
     "feilside.ingress.lenke": "kontakt brukarstøtte",
     "feilside.tittel": "Det oppstod ein feil",
     "feilside.uuid": "Tek du kontakt med brukarstøtte, ver venleg og oppgje denne koden {uuid}",
+    "feilside.veiledertekst":
+        "Det har oppstått en feil. Dersom det ikke fungerer å prøve igjen, trykk på knappen under for å slette søknaden og starte på nytt.",
     "foreldreansvar.antallBarn": "Tal på barn",
     "foreldreansvar.overtakelsedato": "Dato for foreldreansvar",
     "fortsettknapp.label": "Hald fram",
