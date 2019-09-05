@@ -469,16 +469,6 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                 </>
                             )}
 
-                        <Block
-                            visible={visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)}
-                            hasChildBlocks={true}>
-                            <AktivitetskravMorBolk
-                                vedlegg={periode.vedlegg as Attachment[]}
-                                morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
-                                navnPåForeldre={søknadsinfo.navn}
-                                onChange={(periodeData) => this.onChange(periodeData)}
-                            />
-                        </Block>
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.samtidigUttak)} margin="none">
                             <SamtidigUttakPart
                                 onChange={this.onChange}
@@ -488,6 +478,16 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                 erFlerbarnssøknad={søknadsinfo.søknaden.erFlerbarnssøknad}
                                 periode={periode}
                                 søkerErMor={søknadsinfo.søker.erMor}
+                            />
+                        </Block>
+                        <Block
+                            visible={visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)}
+                            hasChildBlocks={true}>
+                            <AktivitetskravMorBolk
+                                vedlegg={periode.vedlegg as Attachment[]}
+                                morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
+                                navnPåForeldre={søknadsinfo.navn}
+                                onChange={(periodeData) => this.onChange(periodeData)}
                             />
                         </Block>
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.skalHaGradering)} margin="none">
