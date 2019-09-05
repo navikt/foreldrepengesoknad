@@ -81,6 +81,7 @@ class DatoInput extends React.Component<Props, {}> {
                                 name,
                                 ariaDescribedby: ariaDescriptionId
                             }}
+                            visÅrVelger={true}
                             onChange={(datoString: string) => {
                                 const nyDato =
                                     datoString && datoString !== 'Invalid date' ? new Date(datoString) : undefined;
