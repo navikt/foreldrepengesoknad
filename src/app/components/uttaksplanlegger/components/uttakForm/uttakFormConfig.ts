@@ -59,8 +59,12 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
             return false;
         }
 
-        return skjemaregler.ønskerFlerbarnsdagerSkalBesvares()
-            ? periode.ønskerFlerbarnsdager !== undefined
+        if (skjemaregler.ønskerFlerbarnsdagerSkalBesvares() && periode.ønskerFlerbarnsdager === undefined) {
+            return false;
+        }
+
+        return skjemaregler.samtidigUttakSkalBesvares()
+            ? periode.ønskerSamtidigUttak !== undefined
             : periode.konto !== undefined;
     } else {
         return false;
@@ -75,11 +79,11 @@ const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
             return false;
         }
 
-        if (skjemaregler.erMorForSykSkalBesvares() && periode.erMorForSyk === false) {
+        if (skjemaregler.ønskerFlerbarnsdagerSkalBesvares() && periode.ønskerFlerbarnsdager === undefined) {
             return false;
         }
 
-        if (skjemaregler.aktivitetskravMorSkalBesvares() && !questionValueIsOk(periode.morsAktivitetIPerioden)) {
+        if (skjemaregler.erMorForSykSkalBesvares() && periode.erMorForSyk === false) {
             return false;
         }
 
