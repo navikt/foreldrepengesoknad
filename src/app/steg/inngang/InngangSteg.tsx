@@ -35,6 +35,7 @@ export interface StateProps {
     stegProps: StegProps;
     søker: Søker;
     erEndringssøknad: boolean;
+    erEnkelEndringssøknad: boolean;
     saksnummer?: string;
 }
 
@@ -118,10 +119,18 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 
     render() {
-        const { velgbareRoller, situasjon, søker, erEndringssøknad, dispatch, stegProps } = this.props;
+        const {
+            velgbareRoller,
+            situasjon,
+            søker,
+            erEndringssøknad,
+            erEnkelEndringssøknad,
+            dispatch,
+            stegProps
+        } = this.props;
         const { rolle } = søker;
 
-        if (erEndringssøknad) {
+        if (erEndringssøknad && erEnkelEndringssøknad) {
             return <ResetSoknad history={this.props.history} />;
         }
 
@@ -166,6 +175,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const velgbareRoller = kjønn && situasjon ? getSøkerrollerForBruker(kjønn, situasjon) : [];
     const erRolleGyldig = velgbareRoller.some((r) => r === søker.rolle);
     const erEndringssøknad = state.søknad.erEndringssøknad;
+    const { erEnkelEndringssøknad } = state.søknad.ekstrainfo;
 
     const stegProps: StegProps = {
         id: StegID.INNGANG,
@@ -184,7 +194,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         velgbareRoller,
         stegProps,
         erEndringssøknad,
-        saksnummer: state.søknad.saksnummer
+        saksnummer: state.søknad.saksnummer,
+        erEnkelEndringssøknad
     };
 };
 
