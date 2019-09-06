@@ -309,7 +309,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             (ip) => Tidsperioden(ip.tidsperiode).erLik(saksperiode.tidsperiode) && ip.guid !== saksperiode.guid
         );
     const årsak = getOppholdÅrsakFromSaksperiode(saksperiode);
-    const gradert = saksperiode.arbeidstidprosent !== undefined && saksperiode.arbeidstidprosent !== 0;
+    const gradert = saksperiode.graderingInnvilget !== undefined ? saksperiode.graderingInnvilget : false;
 
     const annenPartSamtidigUttakPeriode: Saksperiode | undefined =
         innvilgedePerioder !== undefined
