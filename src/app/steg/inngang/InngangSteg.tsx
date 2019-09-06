@@ -25,6 +25,7 @@ import visibility from './visibility';
 import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import Lenke from 'nav-frontend-lenker';
 import lenker from '../../util/routing/lenker';
+import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
 
 export interface StateProps {
     kjønn: Kjønn;
@@ -117,8 +118,12 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 
     render() {
-        const { velgbareRoller, situasjon, søker, dispatch, stegProps } = this.props;
+        const { velgbareRoller, situasjon, søker, erEndringssøknad, dispatch, stegProps } = this.props;
         const { rolle } = søker;
+
+        if (erEndringssøknad) {
+            return <ResetSoknad history={this.props.history} />;
+        }
 
         return (
             <Steg {...stegProps} onPreSubmit={this.cleanupSøknad} nesteStegID={this.getNextStegID()}>
