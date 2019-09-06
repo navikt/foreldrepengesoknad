@@ -39,15 +39,15 @@ const ResetSoknad: React.FunctionComponent<StateProps & HistoryProps & DispatchP
     history
 }) => {
     const resetAndCancelSøknad = () => {
+        Api.log({
+            message: `Noe har gått galt i ${debugInfo.ekstrainfo.currentStegID}`,
+            trace: JSON.stringify(debugInfo),
+            browserInfo: detect()
+        });
+
         dispatch(søknadActionCreators.avbrytSøknad());
         history.push(routeConfig.APP_ROUTE_PREFIX);
     };
-
-    Api.log({
-        message: `Noe har gått galt i ${debugInfo.ekstrainfo.currentStegID}`,
-        trace: JSON.stringify(debugInfo),
-        browserInfo: detect()
-    });
 
     const bem = BEMHelper('resetSoknad');
 
