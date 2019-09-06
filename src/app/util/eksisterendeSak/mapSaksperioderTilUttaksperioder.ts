@@ -190,7 +190,7 @@ const mapUttaksperiodeFromSaksperiode = (
     erEndringssøknad: boolean,
     innvilgedePerioder: Saksperiode[]
 ): Periode | undefined => {
-    const gradert = saksperiode.arbeidstidprosent !== undefined && saksperiode.arbeidstidprosent !== 0;
+    const gradert = saksperiode.graderingInnvilget !== undefined ? saksperiode.graderingInnvilget : false;
 
     if (saksperiode.gjelderAnnenPart) {
         return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag, innvilgedePerioder);
