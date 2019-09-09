@@ -1,9 +1,10 @@
 import moment from 'moment';
 import Person, { RegistrertBarn } from '../../types/Person';
-import { SøkerinfoDTO, SøkerinfoDTOBarn } from '../types/sokerinfoDTO';
+import { SøkerinfoDTO, SøkerinfoDTOBarn, SøkerinfoDTOArbeidsforhold } from '../types/sokerinfoDTO';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { erMyndig } from '../../util/domain/personUtil';
 import { Søkerinfo } from '../../types/søkerinfo';
+import uniqBy from 'lodash/uniqBy';
 
 const getPerson = (søkerinfo: SøkerinfoDTO): Person => {
     const { barn, ...person } = søkerinfo.søker;
@@ -35,12 +36,16 @@ const getRegistrerteBarn = (søkerinfo: SøkerinfoDTO): RegistrertBarn[] => {
     });
 };
 
+const getArbeidsgiverId = (arbeidsforhold: SøkerinfoDTOArbeidsforhold): string => {
+    return arbeidsforhold.arbeidsgiverId;
+};
+
 const getArbeidsforhold = (søkerinfo: SøkerinfoDTO): Arbeidsforhold[] => {
     const { arbeidsforhold } = søkerinfo;
     if (arbeidsforhold === undefined || arbeidsforhold.length === 0) {
         return [];
     }
-    return arbeidsforhold.map((a) => {
+    return uniqBy(arbeidsforhold, getArbeidsgiverId).map((a: SøkerinfoDTOArbeidsforhold) => {
         const forhold: Arbeidsforhold = {
             ...a,
             fom: moment(a.fom).toDate(),
