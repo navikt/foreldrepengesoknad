@@ -1,11 +1,9 @@
 import {
     Periode,
-    isInfoPeriode,
     isUttaksperiode,
     isOverføringsperiode,
     isUtsettelsesperiode,
-    isOppholdsperiode,
-    isHull
+    isOppholdsperiode
 } from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from './Perioden';
 import moment from 'moment';
@@ -38,5 +36,5 @@ export const getEndretUttaksplanForInnsending = (nyPlan: Periode[], endringstids
         return [];
     }
 
-    return finnEndringerIUttaksplan(nyPlan, endringstidspunkt).filter((p) => !isInfoPeriode(p) && !isHull(p));
+    return finnEndringerIUttaksplan(nyPlan, endringstidspunkt).filter(erPeriodeSomSkalSendesInn);
 };
