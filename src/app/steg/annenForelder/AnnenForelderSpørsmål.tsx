@@ -222,7 +222,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         attachmentType={AttachmentType.ALENEOMSORG}
                         onFilesSelect={onFilesSelect}
                         onFileDelete={onFileDelete}
-                        skjemanummer={Skjemanummer.ANNET}
+                        skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
                     />
                 </Block>
             </>
