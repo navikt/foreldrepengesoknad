@@ -66,11 +66,7 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
                         <Element tag="h1">{tittel}</Element>
                         {beskrivelse && <Normaltekst>{beskrivelse}</Normaltekst>}
                     </div>
-                    <div>
-                        {erSamtidigUttak && (
-                            <div className={BEM.element('samtidig-uttak-punkt')}>{navnAnnenForelder}</div>
-                        )}
-                    </div>
+                    {erSamtidigUttak && <div className={BEM.element('samtidig-uttak-punkt')}>{navnAnnenForelder}</div>}
                 </div>
                 {melding && (
                     <div className={BEM.element('advarsel')}>
