@@ -1,26 +1,55 @@
 {
     "søker": {
-        "fnr": "08016411206",
-        "fornavn": "RASK",
-        "etternavn": "BOLLE",
+        "fnr": "12015649893",
+        "fornavn": "SEDAT",
+        "etternavn": "SAKS",
         "kjønn": "K",
-        "fødselsdato": "1964-01-08",
+        "fødselsdato": "1956-01-12",
         "land": "NO",
         "ikkeNordiskEøsLand": false,
         "barn": [
             {
-                "fornavn": "FRODIG",
-                "etternavn": "FLOSKEL",
-                "fnr": "18061972656",
+                "fornavn": "ABSURD",
+                "etternavn": "VEGGPRYD",
+                "fnr": "28081975401",
                 "kjønn": "K",
-                "fødselsdato": "2019-06-18",
+                "fødselsdato": "2019-08-28",
                 "annenForelder": {
-                    "fnr": "26068222000",
-                    "fornavn": "SMIDIG",
-                    "etternavn": "PENN",
-                    "fødselsdato": "1982-06-26"
+                    "fnr": "21115549933",
+                    "fornavn": "TUNGSINDIG",
+                    "etternavn": "HEST",
+                    "fødselsdato": "1955-11-21"
+                }
+            },
+            {
+                "fornavn": "SNILL",
+                "etternavn": "VEGGPRYD",
+                "fnr": "27081974255",
+                "kjønn": "K",
+                "fødselsdato": "2019-08-27",
+                "annenForelder": {
+                    "fnr": "21115549933",
+                    "fornavn": "TUNGSINDIG",
+                    "etternavn": "HEST",
+                    "fødselsdato": "1955-11-21"
                 }
             }
         ]
-    }
+    },
+    "arbeidsforhold": [
+        {
+            "arbeidsgiverId": "973861778",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET",
+            "stillingsprosent": 100.0,
+            "fom": "2017-01-01"
+        },
+        {
+            "arbeidsgiverId": "973861778",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET",
+            "stillingsprosent": 100.0,
+            "fom": "2017-01-01"
+        }
+    ]
 }
