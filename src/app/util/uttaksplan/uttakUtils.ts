@@ -105,7 +105,7 @@ export const justerAndrePartsUttakAvFellesperiodeOmMulig = (
 
     const dagerGjenståendeFellesperiode = uttakFellesperiode.dager;
 
-    const sistePeriode = perioder.pop()!;
+    const sistePeriode = perioder[perioder.length - 1];
 
     if (
         isAnnenPartInfoPeriode(sistePeriode) &&
@@ -115,19 +115,18 @@ export const justerAndrePartsUttakAvFellesperiodeOmMulig = (
         const diff = dagerGjenståendeFellesperiode + dagerMedFellesperiodeISistePeriode;
 
         if (dagerGjenståendeFellesperiode < 0 && diff > 0) {
-            return [
-                ...perioder,
-                {
-                    ...sistePeriode,
-                    tidsperiode: Tidsperioden(sistePeriode.tidsperiode).setUttaksdager(diff) as Tidsperiode
-                }
-            ];
+            perioder[perioder.length - 1] = {
+                ...sistePeriode,
+                tidsperiode: Tidsperioden(sistePeriode.tidsperiode).setUttaksdager(diff) as Tidsperiode
+            };
+            return perioder;
         }
 
         if (dagerGjenståendeFellesperiode < 0 && diff === 0) {
-            return [...perioder];
+            perioder.pop();
+            return perioder;
         }
     }
 
-    return [...perioder, { ...sistePeriode }];
+    return perioder;
 };
