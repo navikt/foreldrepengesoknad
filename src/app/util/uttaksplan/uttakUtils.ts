@@ -7,7 +7,8 @@ import {
     Utsettelsesperiode,
     Stønadskontouttak,
     isAnnenPartInfoPeriode,
-    OppholdÅrsakType
+    OppholdÅrsakType,
+    UttakAnnenPartInfoPeriode
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
 import { dateIsTodayOrInFuture } from '../dates/dates';
@@ -16,6 +17,7 @@ import { erTidsperioderLike, Tidsperioden } from './Tidsperioden';
 import { Søknadsinfo } from 'app/selectors/types';
 import { Perioden } from './Perioden';
 import { Tidsperiode } from 'common/types';
+import { getFloatFromString } from 'common/util/numberUtils';
 
 export const erUttakAvAnnenForeldersKvote = (
     konto: StønadskontoType | undefined,
@@ -95,6 +97,21 @@ const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
     );
 };
 
+const getSamtidigUttakEllerGraderingsProsent = (periode: UttakAnnenPartInfoPeriode): number | undefined => {
+    const periodeErGradert = periode.stillingsprosent !== undefined;
+    const periodeErSamtidigUttak = periode.samtidigUttakProsent !== undefined;
+
+    if (periodeErSamtidigUttak) {
+        return 100 - getFloatFromString(periode.samtidigUttakProsent)! / 100;
+    }
+
+    if (periodeErGradert) {
+        return getFloatFromString(periode.stillingsprosent)! / 100;
+    }
+
+    return undefined;
+};
+
 export const justerAndrePartsUttakAvFellesperiodeOmMulig = (
     perioder: Periode[],
     uttakFellesperiode: Stønadskontouttak | undefined
@@ -112,7 +129,8 @@ export const justerAndrePartsUttakAvFellesperiodeOmMulig = (
         sistePeriode.årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder
     ) {
         const dagerMedFellesperiodeISistePeriode = Perioden(sistePeriode).getAntallUttaksdager();
-        const diff = dagerGjenståendeFellesperiode + dagerMedFellesperiodeISistePeriode;
+        const justeringsProsent = getSamtidigUttakEllerGraderingsProsent(sistePeriode) || 1;
+        const diff = dagerGjenståendeFellesperiode / justeringsProsent + dagerMedFellesperiodeISistePeriode;
 
         if (dagerGjenståendeFellesperiode < 0 && diff > 0) {
             perioder[perioder.length - 1] = {
