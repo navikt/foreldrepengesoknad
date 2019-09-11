@@ -1,6 +1,6 @@
 import { inneholderUttaksplanPerioderTest } from './tester/inneholderUttaksplanPerioderTest';
 import { harMorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harMorSøktUgyldigUttakFørsteSeksUkerTest';
-import { inneholderStønadskontoForMyeUttakTest } from './tester/inneholderStønadskontoForMyeUttakTest';
+import { stønadskontoInneholderForMyeUttakKunSøkerTest } from './tester/stønadskontoInneholderForMyeUttakKunSøkerTest';
 import { harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest } from './tester/harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest';
 import { erUttaksplanBareOppholdTest } from './tester/erUttaksplanBareOppholdTest';
 import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOppholdTest';
@@ -8,7 +8,6 @@ import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOp
 import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUttaksplanGraderingStørreEnnSamtidigUttakTest';
 import { erBegrunnelseForSenEndringGyldigTest } from './tester/erBegrunnelseForSenEndringGyldigTest';
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
-import { erUttaksmengdeForFarMedmorForHøyTest } from './tester/erUttaksmengdeForFarMedmorForHøyTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
 import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
 import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtsettelsePgaFerieTest';
@@ -24,19 +23,20 @@ import { harSøktOmFerieUtenArbeidsforhold } from './tester/harSøktOmFerieUtenA
 import { Regel, RegelAlvorlighet } from 'shared/regler/regelTypes';
 import { inneholderForMyeFerie } from './tester/inneholderForMyeFerie';
 import { kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme } from './tester/kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme';
+import { stønadskontoInneholderForMyeUttakSøkerOgAnnenPartTest } from './tester/inneholderStønadskontoForMyeUttakTestEndringssøknad';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
     'morHarSøktUgyldigUttakFørsteSeksUker' = 'morHarSøktUgyldigUttakFørsteSeksUker',
     'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker' = 'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker',
-    'stønadskontoInneholderForMyeUttak' = 'stønadskontoInneholderForMyeUttak',
+    'stønadskontoInneholderForMyeUttakKunSøker' = 'stønadskontoInneholderForMyeUttakKunSøker',
+    'stønadskontoInneholderForMyeUttakSøkerOgAnnenPart' = 'stønadskontoInneholderForMyeUttakSøkerOgAnnenPart',
     'uttaksplanErBareOpphold' = 'uttaksplanErBareOpphold',
     'uttaksplanStarterMedOpphold' = 'uttaksplanStarterMedOpphold',
     'uttaksplanSlutterMedOpphold' = 'uttaksplanSlutterMedOpphold',
     'uttaksplanGraderingStørreEnnSamtidigUttak' = 'uttaksplanGraderingStørreEnnSamtidigUttak',
     'begrunnelseVedForSenEndringErUgyldig' = 'begrunnelseVedForSenEndringErUgyldig',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
-    'uttaksmengdeForFarMedmorErForHøy' = 'uttaksmengdeForFarMedmorErForHøy',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
     'perioderManglerVedlegg' = 'manglendeVedlegg',
     'inneholderSenUtsettelsePgaFerie' = 'inneholderSenUtsettelsePgaFerieTest',
@@ -61,9 +61,14 @@ const uttaksplanValideringRegler: Regel[] = [
         test: inneholderUttaksplanPerioderTest
     },
     {
-        key: UttaksplanRegelKey.stønadskontoInneholderForMyeUttak,
+        key: UttaksplanRegelKey.stønadskontoInneholderForMyeUttakKunSøker,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: inneholderStønadskontoForMyeUttakTest
+        test: stønadskontoInneholderForMyeUttakKunSøkerTest
+    },
+    {
+        key: UttaksplanRegelKey.stønadskontoInneholderForMyeUttakSøkerOgAnnenPart,
+        alvorlighet: RegelAlvorlighet.ADVARSEL,
+        test: stønadskontoInneholderForMyeUttakSøkerOgAnnenPartTest
     },
     {
         key: UttaksplanRegelKey.morHarSøktUgyldigUttakFørsteSeksUker,
@@ -104,11 +109,6 @@ const uttaksplanValideringRegler: Regel[] = [
         key: UttaksplanRegelKey.uttaksplanHarForMangeFlerbarnsdager,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harUttaksplanForMangeFlerbarnsdagerTest
-    },
-    {
-        key: UttaksplanRegelKey.uttaksmengdeForFarMedmorErForHøy,
-        alvorlighet: RegelAlvorlighet.FEIL,
-        test: erUttaksmengdeForFarMedmorForHøyTest
     },
     {
         key: UttaksplanRegelKey.uttaksplanInneholderDatoSomIkkeErUttaksdag,
