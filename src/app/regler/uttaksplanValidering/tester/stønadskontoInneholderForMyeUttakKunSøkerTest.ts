@@ -3,11 +3,18 @@ import { InjectedIntl } from 'react-intl';
 import { getStønadskontoNavn } from '../../../util/uttaksplan';
 import { getVarighetString } from 'common/util/intlUtils';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from 'shared/regler/regelTypes';
+import { getUttaksstatus } from 'app/util/uttaksplan/uttaksstatus';
 
-export const inneholderStønadskontoForMyeUttakTest: RegelTest = (
+export const stønadskontoInneholderForMyeUttakKunSøkerTest: RegelTest = (
     grunnlag: UttaksplanRegelgrunnlag
 ): RegelTestresultat => {
-    const stønadskontoerMedForMyeUttak = grunnlag.uttaksstatus.uttak.filter((u) => u.dager < 0);
+    const { søknadsinfo, perioder, tilgjengeligeStønadskontoer } = grunnlag;
+    const stønadskontoerMedForMyeUttak = getUttaksstatus(
+        søknadsinfo,
+        tilgjengeligeStønadskontoer,
+        perioder,
+        true
+    ).uttak.filter((u) => u.dager < 0);
     return {
         passerer: stønadskontoerMedForMyeUttak.length === 0,
         info: stønadskontoerMedForMyeUttak.map((uttak): RegelTestresultatInfo => ({
