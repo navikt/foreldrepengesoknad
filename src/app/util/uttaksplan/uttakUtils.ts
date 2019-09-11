@@ -4,13 +4,18 @@ import {
     SenEndringÅrsak,
     StønadskontoType,
     UtsettelseÅrsakType,
-    Utsettelsesperiode
+    Utsettelsesperiode,
+    Stønadskontouttak,
+    isAnnenPartInfoPeriode,
+    OppholdÅrsakType
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
 import { dateIsTodayOrInFuture } from '../dates/dates';
 import { Saksgrunnlag, EksisterendeSak, PeriodeResultatType } from 'app/types/EksisterendeSak';
-import { erTidsperioderLike } from './Tidsperioden';
+import { erTidsperioderLike, Tidsperioden } from './Tidsperioden';
 import { Søknadsinfo } from 'app/selectors/types';
+import { Perioden } from './Perioden';
+import { Tidsperiode } from 'common/types';
 
 export const erUttakAvAnnenForeldersKvote = (
     konto: StønadskontoType | undefined,
@@ -88,4 +93,41 @@ const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
     return ekisterendeSak.saksperioder.find((saksperiode) =>
         erTidsperioderLike(saksperiode.tidsperiode, periode.tidsperiode)
     );
+};
+
+export const justerAndrePartsUttakAvFellesperiodeOmMulig = (
+    perioder: Periode[],
+    uttakFellesperiode: Stønadskontouttak | undefined
+) => {
+    if (uttakFellesperiode === undefined || uttakFellesperiode.dager >= 0 || perioder.length === 0) {
+        return perioder;
+    }
+
+    const dagerGjenståendeFellesperiode = uttakFellesperiode.dager;
+
+    const sistePeriode = perioder.pop()!;
+
+    if (
+        isAnnenPartInfoPeriode(sistePeriode) &&
+        sistePeriode.årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder
+    ) {
+        const dagerMedFellesperiodeISistePeriode = Perioden(sistePeriode).getAntallUttaksdager();
+        const diff = dagerGjenståendeFellesperiode + dagerMedFellesperiodeISistePeriode;
+
+        if (dagerGjenståendeFellesperiode < 0 && diff > 0) {
+            return [
+                ...perioder,
+                {
+                    ...sistePeriode,
+                    tidsperiode: Tidsperioden(sistePeriode.tidsperiode).setUttaksdager(diff) as Tidsperiode
+                }
+            ];
+        }
+
+        if (dagerGjenståendeFellesperiode < 0 && diff === 0) {
+            return [...perioder];
+        }
+    }
+
+    return [...perioder, { ...sistePeriode }];
 };

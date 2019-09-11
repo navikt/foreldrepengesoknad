@@ -6,7 +6,10 @@ import { AppState } from '../../redux/reducers';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { default as Steg, StegProps } from '../../components/applikasjon/steg/Steg';
 import { DispatchProps } from 'common/redux/types';
-import { getSeneEndringerSomKreverBegrunnelse } from 'app/util/uttaksplan/uttakUtils';
+import {
+    getSeneEndringerSomKreverBegrunnelse,
+    justerAndrePartsUttakAvFellesperiodeOmMulig
+} from 'app/util/uttaksplan/uttakUtils';
 import { Forelder } from 'common/types';
 import { getPeriodelisteElementId } from '../../components/uttaksplanlegger/components/periodeliste/Periodeliste';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
@@ -64,7 +67,6 @@ interface StateProps {
     søknadsinfo?: Søknadsinfo;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksstatus: Uttaksstatus | undefined;
-    perioder: Periode[];
     lastAddedPeriodeId: string | undefined;
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
@@ -407,24 +409,37 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo, søknadsinfo)
     };
 
-    let perioder = søknad.uttaksplan;
     if (søknadsinfo) {
         const { søknaden, søker } = søknadsinfo;
 
-        if (søknaden.erFødsel && søknaden.erDeltUttak && søker.erFarEllerMedmor) {
+        if (
+            søknaden.erFødsel &&
+            søknaden.erDeltUttak &&
+            søker.erFarEllerMedmor &&
+            !søknad.ekstrainfo.erEnkelEndringssøknad
+        ) {
             const sisteUttaksdatoMor = state.søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag;
             const førsteUttaksdatoFar = state.søknad.ekstrainfo.uttaksplanSkjema.farSinFørsteUttaksdag;
-            perioder = hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar(
-                perioder,
+            søknad.uttaksplan = hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar(
+                søknad.uttaksplan,
                 sisteUttaksdatoMor,
                 førsteUttaksdatoFar
             );
         }
     }
 
-    const uttaksstatus = søknadsinfo
+    let uttaksstatus = søknadsinfo
         ? getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan)
         : undefined;
+
+    if (uttaksstatus && søknadsinfo) {
+        søknad.uttaksplan = justerAndrePartsUttakAvFellesperiodeOmMulig(
+            søknad.uttaksplan,
+            uttaksstatus.uttak.find((u) => u.konto === StønadskontoType.Fellesperiode)
+        );
+
+        uttaksstatus = getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan);
+    }
 
     const aktivitetsfriKvoteKonto = tilgjengeligeStønadskontoer.find(
         ({ konto }) => konto === StønadskontoType.AktivitetsfriKvote
@@ -440,7 +455,6 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         søknadsinfo,
         lastAddedPeriodeId: søknad.ekstrainfo.lastAddedPeriodeId,
         uttaksplanValidering: state.uttaksplanValidering,
-        perioder,
         isLoadingTilgjengeligeStønadskontoer,
         årsakTilSenEndring,
         vedleggForSenEndring: søknad.vedleggForSenEndring,
