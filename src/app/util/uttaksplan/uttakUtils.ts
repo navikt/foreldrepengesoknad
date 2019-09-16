@@ -4,13 +4,20 @@ import {
     SenEndringÅrsak,
     StønadskontoType,
     UtsettelseÅrsakType,
-    Utsettelsesperiode
+    Utsettelsesperiode,
+    Stønadskontouttak,
+    isAnnenPartInfoPeriode,
+    OppholdÅrsakType,
+    UttakAnnenPartInfoPeriode
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
 import { dateIsTodayOrInFuture } from '../dates/dates';
 import { Saksgrunnlag, EksisterendeSak, PeriodeResultatType } from 'app/types/EksisterendeSak';
-import { erTidsperioderLike } from './Tidsperioden';
+import { erTidsperioderLike, Tidsperioden } from './Tidsperioden';
 import { Søknadsinfo } from 'app/selectors/types';
+import { Perioden } from './Perioden';
+import { Tidsperiode } from 'common/types';
+import { getFloatFromString } from 'common/util/numberUtils';
 
 export const erUttakAvAnnenForeldersKvote = (
     konto: StønadskontoType | undefined,
@@ -88,4 +95,56 @@ const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
     return ekisterendeSak.saksperioder.find((saksperiode) =>
         erTidsperioderLike(saksperiode.tidsperiode, periode.tidsperiode)
     );
+};
+
+const getSamtidigUttakEllerGraderingsProsent = (periode: UttakAnnenPartInfoPeriode): number | undefined => {
+    const periodeErGradert = periode.stillingsprosent !== undefined;
+    const periodeErSamtidigUttak = periode.samtidigUttakProsent !== undefined;
+
+    if (periodeErSamtidigUttak) {
+        return 100 - getFloatFromString(periode.samtidigUttakProsent)! / 100;
+    }
+
+    if (periodeErGradert) {
+        return getFloatFromString(periode.stillingsprosent)! / 100;
+    }
+
+    return undefined;
+};
+
+export const justerAndrePartsUttakAvFellesperiodeOmMulig = (
+    perioder: Periode[],
+    uttakFellesperiode: Stønadskontouttak | undefined
+) => {
+    if (uttakFellesperiode === undefined || uttakFellesperiode.dager >= 0 || perioder.length === 0) {
+        return perioder;
+    }
+
+    const dagerGjenståendeFellesperiode = uttakFellesperiode.dager;
+
+    const sistePeriode = perioder[perioder.length - 1];
+
+    if (
+        isAnnenPartInfoPeriode(sistePeriode) &&
+        sistePeriode.årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder
+    ) {
+        const dagerMedFellesperiodeISistePeriode = Perioden(sistePeriode).getAntallUttaksdager();
+        const justeringsProsent = getSamtidigUttakEllerGraderingsProsent(sistePeriode) || 1;
+        const diff = dagerGjenståendeFellesperiode / justeringsProsent + dagerMedFellesperiodeISistePeriode;
+
+        if (dagerGjenståendeFellesperiode < 0 && diff > 0) {
+            perioder[perioder.length - 1] = {
+                ...sistePeriode,
+                tidsperiode: Tidsperioden(sistePeriode.tidsperiode).setUttaksdager(diff) as Tidsperiode
+            };
+            return perioder;
+        }
+
+        if (dagerGjenståendeFellesperiode < 0 && diff === 0) {
+            perioder.pop();
+            return perioder;
+        }
+    }
+
+    return perioder;
 };
