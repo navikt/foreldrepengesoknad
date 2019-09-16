@@ -2,8 +2,7 @@ import {
     TilgjengeligStønadskonto,
     Periode,
     StønadskontoType,
-    Stønadskontouttak,
-    isAnnenPartInfoPeriode
+    Stønadskontouttak
 } from '../../types/uttaksplan/periodetyper';
 import { beregnGjenståendeUttaksdager } from '../uttaksPlanStatus';
 import { Søknadsinfo } from '../../selectors/types';
@@ -16,8 +15,7 @@ export interface Uttaksstatus {
 export const getUttaksstatus = (
     søknadsinfo: Søknadsinfo,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    uttaksplan: Periode[],
-    doNotIncludeAnnenPartsUttak: boolean = false
+    uttaksplan: Periode[]
 ): Uttaksstatus => {
     const {
         søknaden: { erDeltUttak, erEndringssøknad, harKomplettUttaksplan },
@@ -27,10 +25,6 @@ export const getUttaksstatus = (
     const gjelderDagerBrukt =
         (erEndringssøknad && harKomplettUttaksplan !== true) ||
         (erDeltUttak && søker.erFarEllerMedmor && harKomplettUttaksplan !== true);
-
-    if (doNotIncludeAnnenPartsUttak) {
-        uttaksplan = uttaksplan.filter((p) => !isAnnenPartInfoPeriode(p));
-    }
 
     const uttak: Stønadskontouttak[] = beregnGjenståendeUttaksdager(
         tilgjengeligeStønadskontoer,
