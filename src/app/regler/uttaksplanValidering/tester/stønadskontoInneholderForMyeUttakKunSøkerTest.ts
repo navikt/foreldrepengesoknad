@@ -12,8 +12,7 @@ export const stønadskontoInneholderForMyeUttakKunSøkerTest: RegelTest = (
     const stønadskontoerMedForMyeUttak = getUttaksstatus(
         søknadsinfo,
         tilgjengeligeStønadskontoer,
-        perioder,
-        true
+        perioder
     ).uttak.filter((u) => u.dager < 0);
     return {
         passerer: stønadskontoerMedForMyeUttak.length === 0,
