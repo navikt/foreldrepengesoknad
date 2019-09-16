@@ -23,14 +23,12 @@ import { harSøktOmFerieUtenArbeidsforhold } from './tester/harSøktOmFerieUtenA
 import { Regel, RegelAlvorlighet } from 'shared/regler/regelTypes';
 import { inneholderForMyeFerie } from './tester/inneholderForMyeFerie';
 import { kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme } from './tester/kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme';
-import { stønadskontoInneholderForMyeUttakSøkerOgAnnenPartTest } from './tester/inneholderStønadskontoForMyeUttakTestEndringssøknad';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
     'morHarSøktUgyldigUttakFørsteSeksUker' = 'morHarSøktUgyldigUttakFørsteSeksUker',
     'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker' = 'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker',
     'stønadskontoInneholderForMyeUttakKunSøker' = 'stønadskontoInneholderForMyeUttakKunSøker',
-    'stønadskontoInneholderForMyeUttakSøkerOgAnnenPart' = 'stønadskontoInneholderForMyeUttakSøkerOgAnnenPart',
     'uttaksplanErBareOpphold' = 'uttaksplanErBareOpphold',
     'uttaksplanStarterMedOpphold' = 'uttaksplanStarterMedOpphold',
     'uttaksplanSlutterMedOpphold' = 'uttaksplanSlutterMedOpphold',
@@ -64,11 +62,6 @@ const uttaksplanValideringRegler: Regel[] = [
         key: UttaksplanRegelKey.stønadskontoInneholderForMyeUttakKunSøker,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: stønadskontoInneholderForMyeUttakKunSøkerTest
-    },
-    {
-        key: UttaksplanRegelKey.stønadskontoInneholderForMyeUttakSøkerOgAnnenPart,
-        alvorlighet: RegelAlvorlighet.ADVARSEL,
-        test: stønadskontoInneholderForMyeUttakSøkerOgAnnenPartTest
     },
     {
         key: UttaksplanRegelKey.morHarSøktUgyldigUttakFørsteSeksUker,
