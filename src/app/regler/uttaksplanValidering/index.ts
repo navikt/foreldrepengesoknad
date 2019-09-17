@@ -23,6 +23,7 @@ import { harSøktOmFerieUtenArbeidsforhold } from './tester/harSøktOmFerieUtenA
 import { Regel, RegelAlvorlighet } from 'shared/regler/regelTypes';
 import { inneholderForMyeFerie } from './tester/inneholderForMyeFerie';
 import { kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme } from './tester/kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme';
+import { erUttaksmengdeForFarMedmorForHøyTest } from './tester/erUttaksmengdeForFarMedmorForHøyTest';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -47,7 +48,8 @@ export enum UttaksplanRegelKey {
     'endringerOverskriverAnnenPartsPerioder' = 'endringerOverskriverAnnenPartsPerioder',
     'periodeOverlapperAndrePerioder' = 'periodeOverlapperAndrePerioder',
     'harSøktOmFerieUtenArbeidsforhold' = 'harSøktOmFerieUtenArbeidsforhold',
-    'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme' = 'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme'
+    'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme' = 'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme',
+    'uttaksmengdeForFarMedmorErForHøy' = 'uttaksmengdeForFarMedmorErForHøy'
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -72,6 +74,11 @@ const uttaksplanValideringRegler: Regel[] = [
         key: UttaksplanRegelKey.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest
+    },
+    {
+        key: UttaksplanRegelKey.uttaksmengdeForFarMedmorErForHøy,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: erUttaksmengdeForFarMedmorForHøyTest
     },
     {
         key: UttaksplanRegelKey.uttaksplanErBareOpphold,
