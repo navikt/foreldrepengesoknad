@@ -134,8 +134,9 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     getPreviousStegID(): StegID {
         const stegConfig = this.getStegConfig();
         const activeStegId = this.props.id;
+        const stegConfigArray = stegConfig !== undefined ? Object.keys(stegConfig) : [];
         const previousStegID =
-            Object.keys(stegConfig).find(
+            stegConfigArray.find(
                 (currentStegId) => stegConfig[currentStegId].index === stegConfig[activeStegId].index - 1
             ) || StegID.INNGANG;
         return previousStegID as StegID;
