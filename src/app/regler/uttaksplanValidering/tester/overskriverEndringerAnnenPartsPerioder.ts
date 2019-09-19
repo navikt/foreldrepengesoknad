@@ -1,6 +1,6 @@
 import { UttaksplanRegelgrunnlag } from '../types';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
-import { Periode, isGruppertInfoPeriode, isUttaksperiode } from 'app/types/uttaksplan/periodetyper';
+import { Periode, isUttaksperiode, isInfoPeriode } from 'app/types/uttaksplan/periodetyper';
 import { getPeriodeTittel } from 'app/util/uttaksplan';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import { InjectedIntl } from 'react-intl';
@@ -20,9 +20,7 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (
         const { perioderSomSkalSendesInn } = grunnlag;
         const perioderSomOverlapper: Periode[] = [];
         perioderSomSkalSendesInn.forEach((periode) => {
-            const overlapp = Periodene(eksisterendeUttaksplan.filter(isGruppertInfoPeriode)).finnOverlappendePerioder(
-                periode
-            );
+            const overlapp = Periodene(eksisterendeUttaksplan.filter(isInfoPeriode)).finnOverlappendePerioder(periode);
             if (overlapp.length > 0) {
                 perioderSomOverlapper.push(periode);
             }
