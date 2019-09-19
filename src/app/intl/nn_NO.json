@@ -524,7 +524,7 @@
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
     "periodetype.info.utsettelse.LOVBESTEMT_FERIE": "{ navn } utsetjer på grunn av ferie",
     "periodetype.info.utsettelse.ARBEID": "{ navn } utsetjer på grunn av heiltidsarbeid. ",
-    "periodetype.info.utsettelse.SYKDOM": "{ navn ) utsetjer på grunn av sjukdom",
+    "periodetype.info.utsettelse.SYKDOM": "{ navn } utsetjer på grunn av sjukdom",
     "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_SØKER":
         "{ navn } utsetjer på grunn av innleggelse i helseinstitusjon",
     "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_BARNET":
