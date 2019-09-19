@@ -38,6 +38,7 @@ import isAvailable from '../../util/steg/isAvailable';
 import Søknad, { Tilleggsopplysninger, Opplysning } from '../../types/søknad/Søknad';
 import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
 import Uttaksplanlegger from '../../components/uttaksplanlegger/Uttaksplanlegger';
+import { getVeilederInfoText } from 'app/util/uttaksplan/steg/util';
 import {
     selectUttaksplanVeilederinfo,
     selectPeriodelisteMeldinger
@@ -230,6 +231,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             vedleggForSenEndring,
             tilleggsopplysninger,
             søknadsinfo,
+            aktivitetsfriKvote,
             uttaksplanVeilederInfo,
             planErEndret,
             meldingerPerPeriode,
@@ -248,6 +250,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
         const defaultStønadskontoType =
             tilgjengeligeStønadskontoer.length === 1 ? tilgjengeligeStønadskontoer[0].konto : undefined;
+
+        const visVeileder = søknadsinfo.søknaden.erDeltUttak;
 
         return (
             <Steg
@@ -277,6 +281,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <>
+                        {visVeileder && (
+                            <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
+                        )}
                         {eksisterendeSak && (
                             <Block>
                                 <InfoEksisterendeSak
