@@ -5,6 +5,7 @@ function createEnvSettingsFile(settingsFile) {
         fsExtra.writeFileSync(
             settingsFile,
             `window.appSettings = {
+                APP_VERSION: '${process.env.APP_VERSION}'
                 REST_API_URL: '${process.env.FORELDREPENGESOKNAD_API_URL}',
                 UTTAK_API_URL: '${process.env.FP_UTTAK_SERVICE_URL}',
                 LOGIN_URL: '${process.env.LOGINSERVICE_URL}',

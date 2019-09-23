@@ -2,20 +2,28 @@ import * as React from 'react';
 import { BrowserInfo, detect } from 'detect-browser';
 import { isFeatureEnabled, Feature } from 'app/Feature';
 import Api from 'app/api/api';
+import * as Sentry from '@sentry/browser';
 
 interface State {
-    browser: BrowserInfo | null | boolean;
+    eventId: string | null;
 }
 
 class ErrorBoundary extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
+        this.state = { eventId: null };
         this.logError = this.logError.bind(this);
     }
 
-    componentDidCatch(error: Error | null, reactStackTrace: object) {
+    componentDidCatch(error: Error | null, errorInfo: object) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            const eventId = Sentry.captureException(error);
+            this.setState({ eventId });
+        });
+
         if (isFeatureEnabled(Feature.logging)) {
-            this.logError(error, detect(), reactStackTrace);
+            this.logError(error, detect(), errorInfo);
         }
     }
 

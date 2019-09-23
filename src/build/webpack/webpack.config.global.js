@@ -15,6 +15,7 @@ const webpackConfig = {
         filename: 'js/[name].js',
         publicPath: '/dist'
     },
+    devtool: 'source-map',
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],
         alias: {
