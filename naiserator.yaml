@@ -40,4 +40,6 @@ spec:
    - name: {{@key}}
      value: "{{this}}"
   {{/each}}
+   - name: APP_VERSION
+     value: {{version}}
   webproxy: true

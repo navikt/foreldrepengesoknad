@@ -3,11 +3,11 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Modal from 'nav-frontend-modal';
+import * as Sentry from '@sentry/browser';
+
 import Foreldrepengesøknad from './Foreldrepengesøknad';
 import store from './redux';
 import IntlProvider from './intl/IntlProvider';
-
-import './styles/app.less';
 
 import * as countries from 'i18n-iso-countries';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -16,6 +16,8 @@ import { registerDevUtils } from 'common/dev/devUtils';
 import ErrorBoundary from './components/applikasjon/errorBoundary/ErrorBoundary';
 import ByttBrowserModal from 'common/components/byttBrowserModal/ByttBrowserModal';
 
+import './styles/app.less';
+
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
 
@@ -23,6 +25,13 @@ Modal.setAppElement('#appContainer');
 const root = document.getElementById('app');
 
 registerDevUtils();
+
+Sentry.init({
+    dsn: 'https://4693d88a310b4162a78adba800dd6ba8@sentry.nav.no/15',
+    release: (window as any).APP_VERSION,
+    environment: window.location.hostname,
+    integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })]
+});
 
 render(
     <ErrorBoundary>
