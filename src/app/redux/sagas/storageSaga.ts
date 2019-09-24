@@ -66,7 +66,6 @@ function* applyStoredStateToApp(storedState: AppState, history: History) {
     if (Object.keys(storedState).length !== 0) {
         const appState: AppState = yield select(stateSelector);
         const søknad: Søknad = cleanInvalidSøknadData(storedState.søknad);
-        søknad.søker = StorageSagaUtils.upgradeAndreInntekterFromV1ToV2(søknad.søker);
         const { søkerinfo } = appState.api;
 
         if (søknad.ekstrainfo.søknadenGjelderBarnValg === undefined) {
