@@ -79,11 +79,6 @@ class AndreInntekterSteg extends React.Component<Props> {
             dispatch,
             intl
         } = this.props;
-        const fireUkerFørFørsteUttaksdag = formatDate(
-            moment(uttaksplan[0].tidsperiode.fom)
-                .subtract(4, 'weeks')
-                .toDate()
-        );
         const { harHattAnnenInntektSiste10Mnd } = søker;
         const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
 
@@ -101,19 +96,24 @@ class AndreInntekterSteg extends React.Component<Props> {
                         info: getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst')
                     }}>
                     <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} />
-                    {harArbeidsforhold && (
-                        <>
+                    {harArbeidsforhold &&
+                        uttaksplan.length > 0 && (
                             <VeilederInfo
                                 messages={[
                                     {
                                         type: 'normal',
                                         contentIntlKey: 'annenInntekt.arbeidsforhold.veileder',
-                                        values: { dato: fireUkerFørFørsteUttaksdag }
+                                        values: {
+                                            dato: formatDate(
+                                                moment(uttaksplan[0].tidsperiode.fom)
+                                                    .subtract(4, 'weeks')
+                                                    .toDate()
+                                            )
+                                        }
                                     }
                                 ]}
                             />
-                        </>
-                    )}
+                        )}
                 </Block>
 
                 <Block hasChildBlocks={true} margin="none">
