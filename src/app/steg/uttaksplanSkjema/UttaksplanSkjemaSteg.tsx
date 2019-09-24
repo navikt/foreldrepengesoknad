@@ -165,6 +165,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
 const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps): StateProps => {
     const { history } = props;
     const søknadsinfo = selectSøknadsinfo(state)!;
+
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN_SKJEMA,
         renderFortsettKnapp: uttaksplanSkjemaErGyldig(state.søknad, søknadsinfo),
