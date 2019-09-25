@@ -2,13 +2,7 @@ import { guid } from 'nav-frontend-js-utils';
 import { Attachment, InnsendingsType } from 'app/components/storage/attachment/types/Attachment';
 import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
-import {
-    Overføringsperiode,
-    Periode,
-    Periodetype,
-    Utsettelsesperiode,
-    Uttaksperiode
-} from '../../../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype } from '../../../../types/uttaksplan/periodetyper';
 import { AnnenInntektType } from '../../../../types/søknad/AnnenInntekt';
 import { getOverføringÅrsakSkjemanummer } from '../../../../util/skjemanummer/overføringÅrsakSkjemanummer';
 import { getUtsettelseSkjemanummer } from '../../../../util/skjemanummer/utsettelseSkjemanummer';
@@ -47,11 +41,11 @@ export const isAttachmentWithError = (attachment: Attachment) => {
 export const getSkjemanummerForPeriode = (periode: Periode): Skjemanummer => {
     switch (periode.type) {
         case Periodetype.Utsettelse:
-            return getUtsettelseSkjemanummer(periode as Utsettelsesperiode);
+            return getUtsettelseSkjemanummer(periode);
         case Periodetype.Uttak:
-            return getUttakperiodeSkjemanummer(periode as Uttaksperiode);
+            return getUttakperiodeSkjemanummer(periode);
         case Periodetype.Overføring:
-            return getOverføringÅrsakSkjemanummer((periode as Overføringsperiode).årsak);
+            return getOverføringÅrsakSkjemanummer(periode.årsak);
         default:
             return Skjemanummer.ANNET;
     }
