@@ -87,7 +87,7 @@ function getAntallUttaksdagerITidsperiode(tidsperiode: Partial<Tidsperiode>): nu
 
 function getUttaksdagerSomErFridager(tidsperiode: Partial<Tidsperiode>): Holiday[] {
     return isValidTidsperiode(tidsperiode)
-        ? getOffentligeFridager(tidsperiode as Tidsperiode).filter((dag) => Uttaksdagen(dag.date).erUttaksdag())
+        ? getOffentligeFridager(tidsperiode).filter((dag) => Uttaksdagen(dag.date).erUttaksdag())
         : [];
 }
 

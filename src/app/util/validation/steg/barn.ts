@@ -93,7 +93,7 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
 
 export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, arbeidsforhold: Arbeidsforhold[]): boolean => {
     const { barn, situasjon } = søknad;
-    return isUfødtBarn(barn, situasjon) && !harAktivtArbeidsforhold(arbeidsforhold, (barn as UfødtBarn).termindato);
+    return isUfødtBarn(barn, situasjon) && !harAktivtArbeidsforhold(arbeidsforhold, barn.termindato);
 };
 
 export const getUniqueRegistrertAnnenForelderFromBarn = (

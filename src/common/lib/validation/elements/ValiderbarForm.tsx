@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PT from 'prop-types';
-import { ValidationResult, SummaryError, ValidatorFailText, ValidatorFailTextIntl } from '../types/index';
+import { ValidationResult, SummaryError, ValidatorFailText } from '../types/index';
 import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
@@ -182,7 +182,7 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
         if (typeof failText === 'string') {
             return failText;
         }
-        const intlText = failText as ValidatorFailTextIntl;
+        const intlText = failText;
         return this.props.intl.formatMessage({ id: intlText.intlKey }, intlText.values);
     }
 

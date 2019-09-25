@@ -105,7 +105,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
 
         if (
             skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018(
-                relevantFamiliehendelseDato!,
+                relevantFamiliehendelseDato,
                 tilgjengeligeStønadskontoer
             )
         ) {

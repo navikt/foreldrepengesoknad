@@ -45,8 +45,7 @@ class AttachmentInput extends React.Component<Props> {
     }
 
     fileSelectHandler(fileList: FileList) {
-        const files = Array.from(fileList) as File[];
-        const validFiles = this.getValidFiles(files);
+        const validFiles = this.getValidFiles(Array.from(fileList));
         if (validFiles.length > 0) {
             this.props.onFilesSelect(validFiles);
         }

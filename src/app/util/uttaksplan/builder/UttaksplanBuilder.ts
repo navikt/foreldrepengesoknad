@@ -503,7 +503,7 @@ export function finnHullIPerioder(perioder: Periode[], startdato?: Date): Period
 
 function resetTidsperioder(perioder: Periode[]): Periode[] {
     let forrigePeriode: Periode;
-    const sammenslåttePerioder = slåSammenLikePerioder(perioder.sort(sorterPerioder)) as Periode[];
+    const sammenslåttePerioder = slåSammenLikePerioder(perioder.sort(sorterPerioder));
     const resattePerioder = sammenslåttePerioder.map((periode) => {
         if (forrigePeriode === undefined) {
             forrigePeriode = periode;

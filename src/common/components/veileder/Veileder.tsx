@@ -38,12 +38,11 @@ const Veileder = (props: Props) => {
         )
     };
 
-    switch (stil) {
-        case 'kompakt':
-            return <VeilederKompakt svgProps={svgProps} transparentBackground={farge === 'transparent'} />;
-        default:
-            return <VeilederNormal svgProps={svgProps} transparentBackground={farge === 'transparent'} />;
-    }
+    return stil === 'kompakt' ? (
+        <VeilederKompakt svgProps={svgProps} transparentBackground={farge === 'transparent'} />
+    ) : (
+        <VeilederNormal svgProps={svgProps} transparentBackground={farge === 'transparent'} />
+    );
 };
 
 export default Veileder;

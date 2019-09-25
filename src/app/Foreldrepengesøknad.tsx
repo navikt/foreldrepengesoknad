@@ -93,7 +93,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
         if (isLoadingInitialAppData || isSendSøknadInProgress || isLoadingSaker) {
             return <LoadingScreen />;
         } else if (søkerinfo && !søkerinfo.person.erMyndig) {
-            return <Route component={() => <IkkeMyndig søkerinfo={søkerinfo!} />} />;
+            return <Route component={() => <IkkeMyndig søkerinfo={søkerinfo} />} />;
         } else if (søknadHasBeenReceived) {
             return <Route component={SøknadSendtSide} />;
         } else if (systemerIkkeTilgjengelig) {

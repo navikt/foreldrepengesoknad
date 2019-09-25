@@ -51,7 +51,7 @@ export function getFocusableElements(el: Element, onlyTabReachable: boolean = tr
 export function focusFirstElement(el: Element) {
     const elements = getFocusableElements(el);
     if (elements && elements.length > 0) {
-        (elements[0] as HTMLElement).focus();
+        elements[0].focus();
     } else {
         (el as HTMLElement).focus();
     }

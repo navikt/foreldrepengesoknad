@@ -68,7 +68,7 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({
             )}
             {morsAktivitetIPerioden && (
                 <MorsAktivitetDetaljer
-                    morsAktivitet={morsAktivitetIPerioden!}
+                    morsAktivitet={morsAktivitetIPerioden}
                     dokumentasjonAvMorsAktivitet={vedlegg || []}
                     visOppsummeringAvDokumentasjon={periodeErNyEllerEndret}
                 />

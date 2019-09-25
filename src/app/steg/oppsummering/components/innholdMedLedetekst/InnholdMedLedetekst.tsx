@@ -8,7 +8,7 @@ interface InnholdMedLedetekstProps {
     className?: string;
 }
 
-const hasListOfChildren = (children: string | string[]): boolean => (Array.isArray(children) ? true : false);
+const hasListOfChildren = (children: string | string[]): boolean => Array.isArray(children);
 
 const InnholdMedLedetekst: React.StatelessComponent<InnholdMedLedetekstProps> = ({
     ledetekst,
