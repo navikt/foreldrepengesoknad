@@ -39,7 +39,7 @@ function* avbrytSøknadSaga(action: AvbrytSøknad) {
     const appState: AppState = yield select(stateSelector);
     const newApiState: ApiState = { ...appState.api, stønadskontoer100: [], stønadskontoer80: [] };
     yield put(apiActions.updateApi(newApiState));
-    yield put(apiActions.storeAppState());
+    yield put(apiActions.deleteStoredAppState());
 }
 
 function* startSøknad(action: StartSøknad) {
