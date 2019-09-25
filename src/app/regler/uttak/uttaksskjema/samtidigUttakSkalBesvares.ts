@@ -17,12 +17,12 @@ const samtidigUttakSkalBesvares = (
             return false;
         }
 
-        const erUttakEgenKvoteFarMedmorFørsteSeksUkerUtenFlerbarnsdager =
+        const erUttakEgenKvoteFarMedmorFørsteSeksUkerUtenFlerbarnsdager: boolean =
             erUttakInnenFørsteSeksUkerFødselFarMedmor &&
             (periode.konto === StønadskontoType.Fedrekvote || periode.konto === StønadskontoType.Foreldrepenger) &&
             periode.ønskerFlerbarnsdager !== true;
 
-        return erUttakFørFødsel || erUttakEgenKvoteFarMedmorFørsteSeksUkerUtenFlerbarnsdager ? false : true;
+        return erUttakFørFødsel || erUttakEgenKvoteFarMedmorFørsteSeksUkerUtenFlerbarnsdager;
     }
 
     return false;

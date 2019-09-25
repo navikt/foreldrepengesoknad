@@ -70,7 +70,7 @@ export const getAlderFraDato = (fødselsdato: Date): Alder => {
 export const formatDate = (dato?: Date | string) => {
     if (dato) {
         const parsetDato = moment.utc(dato);
-        return dato && parsetDato.isValid() ? parsetDato.format('DD.MM.YYYY') : '';
+        return parsetDato.isValid() ? parsetDato.format('DD.MM.YYYY') : '';
     }
     return dato;
 };

@@ -69,11 +69,7 @@ export const uttakTidsperiodeErGyldig = (uttaksperiode: Periode, familiehendelse
     if (isValidTidsperiode(tidsperiode) === false && !skalIkkeHaUttak) {
         return false;
     }
-    const validators = getUttakTidsperiodeValidatorer(
-        skalIkkeHaUttak,
-        tidsperiode as Tidsperiode,
-        familiehendelsesdato
-    );
+    const validators = getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode, familiehendelsesdato);
     if (validators === undefined) {
         return true;
     }

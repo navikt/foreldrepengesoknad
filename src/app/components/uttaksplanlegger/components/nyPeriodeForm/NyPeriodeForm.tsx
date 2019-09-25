@@ -6,7 +6,6 @@ import UtsettelsesperiodeForm, {
     Utsettelsesvariant
 } from '../utsettelseForm/UtsettelseForm';
 import ValiderbarForm, { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
-import { RecursivePartial } from '../../../../types/Partial';
 import './nyPeriodeForm.less';
 import Block from 'common/components/block/Block';
 import { Undertittel } from 'nav-frontend-typografi';
@@ -22,6 +21,7 @@ import { UtsettelseSpørsmålVisibility } from '../utsettelseForm/utsettelseForm
 import { getPeriodeFarge } from '../../../../util/uttaksplan/styleUtils';
 import { getPeriodeIkon } from '../periodeliste/elements/PeriodeHeader';
 import { Søknadsinfo } from 'app/selectors/types';
+import { RecursivePartial } from 'app/types/Partial';
 
 interface OwnProps {
     antallFeriedager: number;

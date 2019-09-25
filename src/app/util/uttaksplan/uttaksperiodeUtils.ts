@@ -106,7 +106,7 @@ function getDatoavgrensningerForPeriodeUtenKonto(
             helgedagerIkkeTillatt: true
         },
         til: {
-            minDato: tidsperiode !== undefined && tidsperiode.fom ? (tidsperiode.fom as Date) : minDato,
+            minDato: tidsperiode !== undefined && tidsperiode.fom ? tidsperiode.fom : minDato,
             ugyldigeTidsperioder,
             helgedagerIkkeTillatt: true
         }
