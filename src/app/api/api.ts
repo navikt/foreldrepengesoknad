@@ -25,27 +25,21 @@ const sendSøknadUrl = '/soknad';
 const sendEndringssøknadUrl = '/soknad/endre';
 
 function getSøkerinfo() {
-    return AxiosInstance.get('/sokerinfo', {
-        timeout: 15 * 1000
-    });
+    return AxiosInstance.get('/sokerinfo');
 }
 
 const getSaker = () => {
-    return AxiosInstance.get('/innsyn/saker', {
-        timeout: 60 * 1000
-    });
+    return AxiosInstance.get('/innsyn/saker');
 };
 
 const getEksisterendeSak = (saksnummer: string) => {
     return AxiosInstance.get('/innsyn/uttaksplan', {
-        timeout: 60 * 1000,
         params: { saksnummer }
     });
 };
 
 const getEksisterendeSakMedFnr = (fnr: string) => {
     return AxiosInstance.get('/innsyn/uttaksplanannen', {
-        timeout: 60 * 1000,
         params: { annenPart: fnr }
     });
 };
@@ -88,7 +82,6 @@ function sendSøknad(søknad: SøknadForInnsending) {
 
     return AxiosInstance.post(url, søknad, {
         withCredentials: true,
-        timeout: 60 * 1000,
         headers: {
             'content-type': 'application/json;'
         }
