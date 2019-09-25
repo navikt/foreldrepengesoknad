@@ -43,6 +43,7 @@ interface StateProps {
     sakUnderBehandling?: Sak;
     oppslagSakerFeilet?: boolean;
     storageKvittering?: StorageKvittering;
+    isLoadingEkisterendeSak: boolean;
 }
 
 interface State {
@@ -114,6 +115,7 @@ class Velkommen extends React.Component<Props, State> {
             oppslagSakerFeilet,
             harGodkjentVilkår,
             storageKvittering,
+            isLoadingEkisterendeSak,
             dispatch,
             intl
         } = this.props;
@@ -249,6 +251,7 @@ class Velkommen extends React.Component<Props, State> {
                         <Knapperad>
                             <Hovedknapp
                                 className={`${bem.element('startSøknadKnapp')} blokk-m`}
+                                spinner={isLoadingEkisterendeSak}
                                 disabled={!harGodkjentVilkår}
                                 onClick={() => this.handleStartSøknad(this.state.skalEndre)}>
                                 {this.getStartSøknadKnappLabel()}
@@ -291,7 +294,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     sakForEndringssøknad: state.api.sakForEndringssøknad,
     sakUnderBehandling: state.api.sakUnderBehandling,
     oppslagSakerFeilet: state.api.oppslagSakerFeilet,
-    storageKvittering: state.api.storageKvittering
+    storageKvittering: state.api.storageKvittering,
+    isLoadingEkisterendeSak: state.api.isLoadingEksisterendeSak
 });
 
 export default connect<StateProps>(mapStateToProps)(injectIntl(Velkommen));
