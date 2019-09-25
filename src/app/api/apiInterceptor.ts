@@ -9,6 +9,7 @@ const AxiosInstance = axios.create({ baseURL: apiBaseUrl });
 
 AxiosInstance.interceptors.request.use((config: AxiosRequestConfig): AxiosRequestConfig => {
     config.withCredentials = true;
+    config.timeout = 60 * 1000;
 
     const søkerinfo = store.getState().api.søkerinfo;
     if (process.env.NODE_ENV !== 'development' && store && søkerinfo) {
