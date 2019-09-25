@@ -22,7 +22,7 @@ const samtidigUttakSkalBesvares = (
             (periode.konto === StønadskontoType.Fedrekvote || periode.konto === StønadskontoType.Foreldrepenger) &&
             periode.ønskerFlerbarnsdager !== true;
 
-        return erUttakFørFødsel || erUttakEgenKvoteFarMedmorFørsteSeksUkerUtenFlerbarnsdager;
+        return !erUttakFørFødsel || !erUttakEgenKvoteFarMedmorFørsteSeksUkerUtenFlerbarnsdager;
     }
 
     return false;
