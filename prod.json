@@ -1,4 +1,5 @@
 {
+    "appres" : "appres.nav.no",
     "ingress": "https://foreldrepengesoknad.nav.no",
     "ingress-internal": "https://foreldrepengesoknad.nais.oera.local",
     "application_name": "foreldrepengesoknad",
