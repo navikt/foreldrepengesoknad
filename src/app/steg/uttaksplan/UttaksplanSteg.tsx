@@ -49,7 +49,7 @@ import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
 import Sak from 'app/types/søknad/Sak';
-import { Saksgrunnlag } from 'app/types/EksisterendeSak';
+import { Saksgrunnlag, Saksperiode } from 'app/types/EksisterendeSak';
 import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
 import { VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/veilederInfo/types';
 import UttaksplanFeiloppsummering from 'app/components/uttaksplanlegger/components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
@@ -122,6 +122,25 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         };
         if (stegProps.isAvailable && søknadsinfo !== undefined) {
             const { forslagLaget, startdatoPermisjon } = søknad.ekstrainfo.uttaksplanSkjema;
+            const { eksisterendeSak } = søknad.ekstrainfo;
+
+            if (eksisterendeSak) {
+                const { saksperioder } = eksisterendeSak;
+                let startDato: Date | undefined;
+                const inneholderPlanPerioderForSøkerOppgittAvAnnenPart = saksperioder.some((sp: Saksperiode) => {
+                    if (sp.angittAvAnnenPart === true) {
+                        startDato = sp.tidsperiode.fom;
+                        return true;
+                    }
+
+                    return false;
+                });
+
+                if (søknad.erEndringssøknad && inneholderPlanPerioderForSøkerOppgittAvAnnenPart && startDato) {
+                    dispatch(søknadActions.setEndringstidspunkt(startDato));
+                }
+            }
+
             if (forslagLaget === false) {
                 dispatch(søknadActions.uttaksplanLagForslag());
             }
