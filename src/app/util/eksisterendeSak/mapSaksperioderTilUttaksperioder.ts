@@ -318,13 +318,10 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
         samtidigUttakProsentAnnenPart = annenPartSamtidigUttakPeriode.samtidigUttaksprosent;
     }
 
-    const annenPartBenytterSegAvFlerbarnsdager =
-        annenPartSamtidigUttakPeriode !== undefined ? annenPartSamtidigUttakPeriode.flerbarnsdager : false;
-
     const samtidigUttaksprosent = beregnSamtidigUttaksProsent(
         saksperiode.samtidigUttaksprosent,
         samtidigUttakProsentAnnenPart,
-        annenPartBenytterSegAvFlerbarnsdager
+        saksperiode.utbetalingsprosent
     );
 
     if (årsak) {
