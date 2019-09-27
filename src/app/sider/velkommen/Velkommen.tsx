@@ -252,7 +252,7 @@ class Velkommen extends React.Component<Props, State> {
                             <Hovedknapp
                                 className={`${bem.element('startSøknadKnapp')} blokk-m`}
                                 spinner={isLoadingEkisterendeSak}
-                                disabled={!harGodkjentVilkår}
+                                disabled={!harGodkjentVilkår || isLoadingEkisterendeSak}
                                 onClick={() => this.handleStartSøknad(this.state.skalEndre)}>
                                 {this.getStartSøknadKnappLabel()}
                             </Hovedknapp>
