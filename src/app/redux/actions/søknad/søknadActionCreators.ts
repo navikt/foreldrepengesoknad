@@ -24,6 +24,7 @@ import {
     UttaksplanSetForslag,
     StartSøknad,
     UttaksplanLagForslag,
+    SetEndringstidspunkt
 } from './søknadActionDefinitions';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
@@ -93,7 +94,7 @@ const updateSøknad = (payload: UpdateSøknadActionPayload): UpdateSøknad => ({
 const updateEkstrainfo = (payload: Partial<SøknadEkstrainfo>) => ({
     type: SøknadActionKeys.UPDATE_EKSTRAINFO,
     payload
-}) 
+});
 
 const uttaksplanUpdateSkjemdata = (payload: Partial<UttaksplanSkjemadata>): UttaksplanUpdateSkjemadata => ({
     type: SøknadActionKeys.UTTAKSPLAN_UPDATE_SKJEMADATA,
@@ -153,7 +154,7 @@ const uttaksplanUpdatePeriode = (periode: Periode): UttaksplanUpdatePeriode => (
 });
 
 const uttaksplanLagForslag = (): UttaksplanLagForslag => ({
-    type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG,
+    type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG
 });
 
 const uttaksplanSetForslag = (uttaksplan: Periode[]): UttaksplanSetForslag => ({
@@ -188,6 +189,11 @@ const resetUttaksplanEndringer = () => ({
     type: SøknadActionKeys.UTTAKSPLAN_RESET_ENDRINGER
 });
 
+const setEndringstidspunkt = (endringstidspunkt: Date): SetEndringstidspunkt => ({
+    type: SøknadActionKeys.SET_ENDRINGSTIDSPUNKT,
+    endringstidspunkt
+});
+
 export default {
     startSøknad,
     updateAnnenForelder,
@@ -213,6 +219,7 @@ export default {
     avbrytSøknad,
     setSøknad,
     setCurrentSteg,
+    setEndringstidspunkt,
     setVedleggForSenEndring,
     setTilleggsopplysning,
     uttaksplanSetForslag,

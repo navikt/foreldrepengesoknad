@@ -307,6 +307,17 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             };
         }
 
+        case SøknadActionKeys.SET_ENDRINGSTIDSPUNKT: {
+            const { endringstidspunkt } = action;
+            return {
+                ...state,
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    endringstidspunkt
+                }
+            };
+        }
+
         case SøknadActionKeys.SET_CURRENT_STEG:
             const currentStegID = state.harGodkjentVilkår ? action.stegID : undefined;
             return {
