@@ -161,8 +161,6 @@ const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsa
             return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
         case StønadskontoType.Mødrekvote:
             return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
-        case StønadskontoType.ForeldrepengerFørFødsel:
-            return OppholdÅrsakType.UttakForelderpengerFørFødsel;
         default:
             return undefined;
     }

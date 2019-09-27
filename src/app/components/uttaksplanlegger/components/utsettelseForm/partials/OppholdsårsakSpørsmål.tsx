@@ -40,15 +40,10 @@ const createAlternative = (
                 ? OppholdÅrsakType.UttakMødrekvoteAnnenForelder
                 : OppholdÅrsakType.UttakFedrekvoteAnnenForelder
         };
-    } else if (konto.konto === StønadskontoType.Fellesperiode) {
+    } else {
         return {
             label: getMessage(intl, 'stønadskontotype.FELLESPERIODE'),
             value: OppholdÅrsakType.UttakFellesperiodeAnnenForelder
-        };
-    } else {
-        return {
-            label: getMessage(intl, 'stønadskontotype.FLERBARNSUKER'),
-            value: OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder
         };
     }
 };
