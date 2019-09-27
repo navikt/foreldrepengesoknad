@@ -22,10 +22,10 @@ import {
     StønadskontoType,
     SaksperiodeUtsettelseÅrsakType,
     Arbeidsform,
-    OppholdÅrsakType,
-    MorsAktivitet
+    MorsAktivitet,
+    OppholdÅrsakType
 } from 'app/types/uttaksplan/periodetyper';
-import { UttaksplanDTO, UttaksplanPeriodeDTO, MorsAktivitetDto } from 'app/api/types/uttaksplanDTO';
+import { UttaksplanDTO, UttaksplanPeriodeDTO, MorsAktivitetDto, OppholdsÅrsak } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { Tidsperioden } from '../uttaksplan/Tidsperioden';
 import { getRelevantFamiliehendelseDato } from '../dates/dates';
@@ -43,18 +43,27 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType)
     }
 };
 
+export const getStønadskontoTypeFromOppholdsÅrsak = (årsak: OppholdsÅrsak): StønadskontoType | undefined => {
+    switch (årsak) {
+        case OppholdsÅrsak.UTTAK_FEDREKVOTE_ANNEN_FORELDER:
+            return StønadskontoType.Fedrekvote;
+        case OppholdsÅrsak.UTTAK_FELLESP_ANNEN_FORELDER:
+            return StønadskontoType.Fellesperiode;
+        case OppholdsÅrsak.UTTAK_MØDREKVOTE_ANNEN_FORELDER:
+            return StønadskontoType.Mødrekvote;
+        default:
+            return undefined;
+    }
+};
+
 export const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): StønadskontoType => {
     switch (årsak) {
         case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
             return StønadskontoType.Fedrekvote;
         case OppholdÅrsakType.UttakFellesperiodeAnnenForelder:
             return StønadskontoType.Fellesperiode;
-        case OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder:
-            return StønadskontoType.Flerbarnsdager;
         case OppholdÅrsakType.UttakMødrekvoteAnnenForelder:
             return StønadskontoType.Mødrekvote;
-        case OppholdÅrsakType.UttakForelderpengerFørFødsel:
-            return StønadskontoType.ForeldrepengerFørFødsel;
     }
 };
 
@@ -105,17 +114,12 @@ const mapSaksperiodeFromDTO = (p: UttaksplanPeriodeDTO): Saksperiode => {
 
     if (oppholdAarsak !== undefined && gjelderAnnenPart === false) {
         returnPeriode.gjelderAnnenPart = true;
-        returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdÅrsakType(
-            (oppholdAarsak as unknown) as OppholdÅrsakType
-        );
+        returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdsÅrsak(oppholdAarsak);
     }
 
     if (oppholdAarsak !== undefined && gjelderAnnenPart) {
         returnPeriode.gjelderAnnenPart = false;
-        returnPeriode.angittAvAnnenPart = true;
-        returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdÅrsakType(
-            (oppholdAarsak as unknown) as OppholdÅrsakType
-        );
+        returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdsÅrsak(oppholdAarsak);
     }
 
     return returnPeriode as Saksperiode;
