@@ -169,14 +169,14 @@ const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsa
 const beregnSamtidigUttaksProsent = (
     egenProsent: number | undefined,
     andrePartsProsent: number | undefined,
-    benyttersegAvFlerbarnsdager: boolean
+    utbetalingsprosent: number
 ): string | undefined => {
     if (egenProsent) {
         return egenProsent.toString();
     }
 
     if (andrePartsProsent) {
-        return benyttersegAvFlerbarnsdager ? '100' : Math.min(150 - andrePartsProsent, 100).toString();
+        return utbetalingsprosent.toString();
     }
 
     return undefined;
@@ -203,13 +203,10 @@ const mapUttaksperiodeFromSaksperiode = (
         samtidigUttakProsentAnnenPart = annenPartSamtidigUttakPeriode.samtidigUttaksprosent;
     }
 
-    const annenPartBenytterSegAvFlerbarnsdager =
-        annenPartSamtidigUttakPeriode !== undefined ? annenPartSamtidigUttakPeriode.flerbarnsdager : false;
-
     const samtidigUttakProsent = beregnSamtidigUttaksProsent(
         saksperiode.samtidigUttaksprosent,
         samtidigUttakProsentAnnenPart,
-        annenPartBenytterSegAvFlerbarnsdager
+        saksperiode.utbetalingsprosent
     );
 
     const uttaksperiode: Uttaksperiode = {

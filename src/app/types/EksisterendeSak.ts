@@ -65,7 +65,7 @@ export interface Saksperiode {
     flerbarnsdager: boolean;
     trekkDager: number;
     arbeidstidprosent: number;
-    utbetalingprosent: number;
+    utbetalingsprosent: number;
     gjelderAnnenPart: boolean;
     tidsperiode: Tidsperiode;
     uttakArbeidType: UttakArbeidType;
