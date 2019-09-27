@@ -38,12 +38,7 @@ export const getOppholdsÅrsakFromStønadskonto = (konto: StønadskontoType): Op
             return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
         case StønadskontoType.Fellesperiode:
             return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
-        case StønadskontoType.Flerbarnsdager:
-            return OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder;
-        case StønadskontoType.ForeldrepengerFørFødsel:
-            return OppholdÅrsakType.UttakForelderpengerFørFødsel;
-        case StønadskontoType.Foreldrepenger:
-        case StønadskontoType.AktivitetsfriKvote:
+        default:
             return undefined;
     }
 };
@@ -56,10 +51,6 @@ export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): S
             return StønadskontoType.Mødrekvote;
         case OppholdÅrsakType.UttakFellesperiodeAnnenForelder:
             return StønadskontoType.Fellesperiode;
-        case OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder:
-            return StønadskontoType.Flerbarnsdager;
-        case OppholdÅrsakType.UttakForelderpengerFørFødsel:
-            return StønadskontoType.ForeldrepengerFørFødsel;
     }
 };
 
