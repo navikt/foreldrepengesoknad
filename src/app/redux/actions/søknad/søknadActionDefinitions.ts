@@ -1,4 +1,9 @@
-import Søknad, { SøknadenGjelderBarnValg, SøknadPartial, Tilleggsopplysning, SøknadEkstrainfo } from '../../../types/søknad/Søknad';
+import Søknad, {
+    SøknadenGjelderBarnValg,
+    SøknadPartial,
+    Tilleggsopplysning,
+    SøknadEkstrainfo
+} from '../../../types/søknad/Søknad';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
@@ -40,7 +45,8 @@ export enum SøknadActionKeys {
     'SET_VEDLEGG_FOR_SEN_ENDRING' = 'setVedleggForSenEndring',
     'SET_TILLEGGSOPPLYSNING' = 'setTilleggsopplysning',
     'SET_CURRENT_STEG' = 'setCurrentSteg',
-    'START_SØKNAD' = 'startNySøknad'
+    'START_SØKNAD' = 'startNySøknad',
+    'SET_ENDRINGSTIDSPUNKT' = 'setEndringstidspunkt'
 }
 
 export interface StartSøknad {
@@ -92,7 +98,7 @@ export interface UpdateSøknad {
 }
 
 export interface UpdateEkstrainfo {
-    type: SøknadActionKeys.UPDATE_EKSTRAINFO,
+    type: SøknadActionKeys.UPDATE_EKSTRAINFO;
     payload: Partial<SøknadEkstrainfo>;
 }
 
@@ -187,6 +193,11 @@ export interface ResetUttaksplanEndringer {
     type: SøknadActionKeys.UTTAKSPLAN_RESET_ENDRINGER;
 }
 
+export interface SetEndringstidspunkt {
+    type: SøknadActionKeys.SET_ENDRINGSTIDSPUNKT;
+    endringstidspunkt: Date;
+}
+
 export type SøknadAction =
     | SetSøknad
     | AvbrytSøknad
@@ -214,4 +225,5 @@ export type SøknadAction =
     | SetCurrentSteg
     | SetVedleggForSenEndring
     | SetTilleggsopplysning
+    | SetEndringstidspunkt
     | ResetUttaksplanEndringer;
