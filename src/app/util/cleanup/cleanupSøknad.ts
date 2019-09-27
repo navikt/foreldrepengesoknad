@@ -11,7 +11,6 @@ import {
     isUttaksperiode,
     StønadskontoType,
     Periodetype,
-    OppholdÅrsakType,
     Arbeidsform
 } from '../../types/uttaksplan/periodetyper';
 import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
@@ -64,14 +63,7 @@ const changeClientonlyKontotype = (periode: Periode, andreForelderHarRettPåFore
 
     return periode;
 };
-const changeClientonlyOppholdsÅrsak = (periode: Periode) => {
-    if (periode.type === Periodetype.Opphold) {
-        if (periode.årsak === OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder) {
-            periode.årsak = OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
-        }
-    }
-    return periode;
-};
+
 
 export const removePeriodetypeHullFromUttaksplan = (uttaksplan: Periode[]): Periode[] => {
     return uttaksplan.filter(isNotPeriodetypeHull);
@@ -138,8 +130,7 @@ const cleanupUttaksplan = (uttaksplan: Periode[], annenForelder?: AnnenForelder)
             (periode) =>
                 annenForelder ? changeClientonlyKontotype(periode, annenForelder.harRettPåForeldrepenger) : periode
         )
-        .map(changeGradertPeriode)
-        .map(changeClientonlyOppholdsÅrsak);
+        .map(changeGradertPeriode);
 };
 
 const cleanupTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string | undefined => {
