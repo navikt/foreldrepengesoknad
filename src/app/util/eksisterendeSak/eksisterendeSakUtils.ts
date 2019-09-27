@@ -64,6 +64,8 @@ export const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakT
             return StønadskontoType.Fellesperiode;
         case OppholdÅrsakType.UttakMødrekvoteAnnenForelder:
             return StønadskontoType.Mødrekvote;
+        case OppholdÅrsakType.UttakForelderpengerFørFødsel:
+            return StønadskontoType.ForeldrepengerFørFødsel;
     }
 };
 
