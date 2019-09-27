@@ -72,6 +72,7 @@ export interface Saksperiode {
     arbeidsgiverInfo: ArbeidsgiverInfo;
     morsAktivitetIPerioden?: MorsAktivitet;
     overfoeringAarsak?: OverføringÅrsakType;
+    angittAvAnnenPart?: boolean;
 }
 
 export interface EksisterendeSak {
