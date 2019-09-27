@@ -136,7 +136,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     return false;
                 });
 
-                if (inneholderPlanPerioderForSøkerOppgittAvAnnenPart && startDato) {
+                if (søknad.erEndringssøknad && inneholderPlanPerioderForSøkerOppgittAvAnnenPart && startDato) {
                     dispatch(søknadActions.setEndringstidspunkt(startDato));
                 }
             }
