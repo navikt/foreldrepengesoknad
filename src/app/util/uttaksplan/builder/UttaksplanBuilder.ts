@@ -657,7 +657,7 @@ function skalSlettetPeriodeErstattesMedHull(periode: Periode, perioder: Periode[
     return periode.type !== Periodetype.Utsettelse;
 }
 
-function finnOgSettInnHull(perioder: Periode[], startdato?: Date): Periode[] {
+export function finnOgSettInnHull(perioder: Periode[], startdato?: Date): Periode[] {
     const hull = finnHullIPerioder(perioder, startdato);
     return [...perioder, ...hull].sort(sorterPerioder);
 }
