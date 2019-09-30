@@ -73,6 +73,23 @@ const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiSt
                 ...state,
                 isLoadingStoredAppState: true
             };
+        case ApiActionKeys.FJERN_INAKTIVE_ARBEIDSFORHOLD:
+            if (state.søkerinfo) {
+                const aktiveArbeidsforhold = action.aktiveArbeidsforhold;
+
+                return {
+                    ...state,
+                    søkerinfo: {
+                        ...state.søkerinfo,
+                        arbeidsforhold: aktiveArbeidsforhold
+                    }
+                };
+            } else {
+                return {
+                    ...state
+                };
+            }
+
         default:
             return state;
     }
