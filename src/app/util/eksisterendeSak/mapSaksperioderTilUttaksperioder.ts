@@ -26,6 +26,7 @@ import { Forelder } from 'common/types';
 import { isValidTidsperiode, Tidsperioden } from '../uttaksplan/Tidsperioden';
 import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
 import * as moment from 'moment';
+import { finnOgSettInnHull } from '../uttaksplan/builder/UttaksplanBuilder';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;
@@ -366,10 +367,10 @@ const mapPeriodeFromSaksperiode = (
     if (saksperiode.gjelderAnnenPart) {
         return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag, innvilgedePerioder);
     }
-    if (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT) {
+    if (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT && saksperiode.utbetalingsprosent === 0) {
         return mapInfoPeriodeFromAvslåttSaksperiode(saksperiode, grunnlag);
     }
-    if (saksperiode.utsettelsePeriodeType !== undefined) {
+    if (saksperiode.utsettelsePeriodeType !== undefined && saksperiode.utbetalingsprosent === 0) {
         return mapUtsettelseperiodeFromSaksperiode(saksperiode, grunnlag);
     }
     if (saksperiode.overfoeringAarsak !== undefined) {
@@ -384,7 +385,9 @@ const mapSaksperioderTilUttaksperioder = (
     erEndringssøknad: boolean
 ): Periode[] | undefined => {
     const innvilgedePerioder = saksperioder.filter(
-        (saksperiode) => saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET
+        (saksperiode) =>
+            saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET ||
+            (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT && saksperiode.utbetalingsprosent > 0)
     );
     const perioder = innvilgedePerioder.map((periode) =>
         mapPeriodeFromSaksperiode(periode, grunnlag, erEndringssøknad, innvilgedePerioder)
@@ -403,7 +406,7 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harUttaksdager)
     );
 
-    return sammenslåddePerioder;
+    return finnOgSettInnHull(sammenslåddePerioder);
 };
 
 export default mapSaksperioderTilUttaksperioder;
