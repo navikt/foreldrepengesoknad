@@ -4,7 +4,7 @@ const request = require('request');
 const { JSDOM } = jsdom;
 
 const requestDecorator = (callback) => {
-    const baseUrl = process.env.NAIS_CLUSTER_NAME === 'dev-sbs' ? 'https://appres-q1.nav.no' : 'https://appres.nav.no';
+    const baseUrl = process.env.APPRES_CMS_URL;
     return request(`${baseUrl}/common-html/v4/navno?header=true&styles=true&scripts=true&footer=true`, callback);
 };
 
