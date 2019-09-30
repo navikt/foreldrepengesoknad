@@ -2,6 +2,7 @@ import { ApiStatePartial } from '../../reducers/apiReducer';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { History } from 'history';
 import { MissingAttachment } from '../../../types/MissingAttachment';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 export enum ApiActionKeys {
     'GET_SØKERINFO' = 'getSøkerinfo',
@@ -21,7 +22,9 @@ export enum ApiActionKeys {
     'GET_TILGJENGELIGE_STØNADSKONTOER_AND_LAG_UTTAKSPLAN_FORSLAG' = 'getTilgjengeligeStønadskontoerAndLagUttaksplanForslag',
     'GET_TILGJENGELIGE_STØNADSUKER' = 'GET_TILGJENGELIGE_STØNADSUKER',
 
-    'SEND_STORAGE_KVITTERING' = 'sendStorageKvittering'
+    'SEND_STORAGE_KVITTERING' = 'sendStorageKvittering',
+
+    'FJERN_INAKTIVE_ARBEIDSFORHOLD' = 'fjernInaktiveArbeidsforhold'
 }
 
 interface UpdateApi {
@@ -86,6 +89,11 @@ export interface SendStorageKvittering {
     type: ApiActionKeys.SEND_STORAGE_KVITTERING;
 }
 
+export interface FjernInaktiveArbeidsforhold {
+    type: ApiActionKeys.FJERN_INAKTIVE_ARBEIDSFORHOLD;
+    aktiveArbeidsforhold: Arbeidsforhold[];
+}
+
 export type ApiActionTypes =
     | DeleteStoredAppState
     | GetSøkerinfo
@@ -99,4 +107,5 @@ export type ApiActionTypes =
     | SendSøknad
     | StoreAppState
     | UpdateApi
-    | SendStorageKvittering;
+    | SendStorageKvittering
+    | FjernInaktiveArbeidsforhold;

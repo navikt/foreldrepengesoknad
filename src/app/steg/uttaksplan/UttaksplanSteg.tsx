@@ -60,6 +60,8 @@ import DevPerioderSomSendesInn from './DevPerioderSomSendesInn';
 import FeatureBlock from 'app/components/elementer/featureBlock/FeatureBlock';
 import { Feature } from 'app/Feature';
 import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
 
 interface StateProps {
     stegProps: StegProps;
@@ -81,6 +83,7 @@ interface StateProps {
     grunnlag: Saksgrunnlag | undefined;
     perioderSomSkalSendesInn: Periode[];
     barn: Barn;
+    arbeidsforhold: Arbeidsforhold[];
 }
 
 interface UttaksplanStegState {
@@ -99,7 +102,16 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     constructor(props: Props) {
         super(props);
 
-        const { søknad, tilgjengeligeStønadskontoer, stegProps, søknadsinfo, dispatch, grunnlag, barn } = this.props;
+        const {
+            søknad,
+            tilgjengeligeStønadskontoer,
+            stegProps,
+            søknadsinfo,
+            dispatch,
+            grunnlag,
+            barn,
+            arbeidsforhold
+        } = this.props;
 
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftGåTilbakeDialog = this.showBekreftGåTilbakeDialog.bind(this);
@@ -144,6 +156,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             if (forslagLaget === false) {
                 dispatch(søknadActions.uttaksplanLagForslag());
             }
+
             if (tilgjengeligeStønadskontoer.length === 0) {
                 const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
                     søknadsinfo,
@@ -153,6 +166,14 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                 );
 
                 dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
+            }
+
+            if (arbeidsforhold.length > 0) {
+                dispatch(
+                    apiActionCreators.fjernInaktiveArbeidsforhold(
+                        getAktiveArbeidsforhold(arbeidsforhold, søknadsinfo.søknaden.familiehendelsesdato)
+                    )
+                );
             }
         }
     }
@@ -486,6 +507,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         planErEndret: søknad.erEndringssøknad && perioderSomSkalSendesInn.length > 0,
         perioderSomSkalSendesInn,
         sak,
+        arbeidsforhold: søkerinfo.arbeidsforhold,
         grunnlag
     };
 };

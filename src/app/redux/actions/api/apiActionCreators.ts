@@ -3,6 +3,7 @@ import { ApiStatePartial } from '../../reducers/apiReducer';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { History } from 'history';
 import { MissingAttachment } from '../../../types/MissingAttachment';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 export function getSøkerinfo(history: History): ApiActionTypes {
     return {
@@ -91,6 +92,13 @@ export function sendStorageKvittering(): ApiActionTypes {
     };
 }
 
+export function fjernInaktiveArbeidsforhold(aktiveArbeidsforhold: Arbeidsforhold[]): ApiActionTypes {
+    return {
+        type: ApiActionKeys.FJERN_INAKTIVE_ARBEIDSFORHOLD,
+        aktiveArbeidsforhold
+    };
+}
+
 const getSakForAnnenPart = () => ({
     type: ApiActionKeys.GET_ANNEN_PART_SIN_SAK
 });
@@ -108,5 +116,6 @@ export default {
     getTilgjengeligeStønadsuker,
     updateApi,
     sendStorageKvittering,
+    fjernInaktiveArbeidsforhold,
     getSakForAnnenPart
 };
