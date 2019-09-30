@@ -55,6 +55,25 @@ const getArbeidsforhold = (søkerinfo: SøkerinfoDTO): Arbeidsforhold[] => {
     });
 };
 
+export const getAktiveArbeidsforhold = (
+    arbeidsforhold: Arbeidsforhold[],
+    familiehendelseDato: Date
+): Arbeidsforhold[] => {
+    return arbeidsforhold.reduce((aktiveArbeidsforhold: Arbeidsforhold[], a: Arbeidsforhold) => {
+        if (a.tom === undefined) {
+            aktiveArbeidsforhold.push(a);
+
+            return aktiveArbeidsforhold;
+        } else {
+            if (moment(a.tom).isSameOrAfter(moment(familiehendelseDato))) {
+                aktiveArbeidsforhold.push(a);
+            }
+
+            return aktiveArbeidsforhold;
+        }
+    }, []);
+};
+
 export const getSøkerinfoFromDTO = (søkerinfo: SøkerinfoDTO): Søkerinfo => {
     return {
         person: getPerson(søkerinfo),
