@@ -318,6 +318,15 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             };
         }
 
+        case SøknadActionKeys.SET_LAST_ADDED_PERIODE_ID:
+            return {
+                ...state,
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    lastAddedPeriodeId: action.id
+                }
+            };
+
         case SøknadActionKeys.SET_CURRENT_STEG:
             const currentStegID = state.harGodkjentVilkår ? action.stegID : undefined;
             return {
