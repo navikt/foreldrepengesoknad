@@ -23,6 +23,7 @@ const DevPerioderSomSendesInn: React.StatelessComponent<Props> = ({ søknadsinfo
                 onLeggTilOpphold={() => null}
                 onLeggTilPeriode={() => null}
                 onFjernPeriode={() => null}
+                onUpdate={() => null}
                 antallFeriedager={0}
             />
         </Ekspanderbartpanel>

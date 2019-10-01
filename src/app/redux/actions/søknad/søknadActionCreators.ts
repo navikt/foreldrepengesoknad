@@ -24,7 +24,8 @@ import {
     UttaksplanSetForslag,
     StartSøknad,
     UttaksplanLagForslag,
-    SetEndringstidspunkt
+    SetEndringstidspunkt,
+    SetLastAddedPeriodId
 } from './søknadActionDefinitions';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
@@ -194,6 +195,11 @@ const setEndringstidspunkt = (endringstidspunkt: Date): SetEndringstidspunkt => 
     endringstidspunkt
 });
 
+const setLastAddedPeriodeId = (id: string): SetLastAddedPeriodId => ({
+    type: SøknadActionKeys.SET_LAST_ADDED_PERIODE_ID,
+    id
+});
+
 export default {
     startSøknad,
     updateAnnenForelder,
@@ -220,6 +226,7 @@ export default {
     setSøknad,
     setCurrentSteg,
     setEndringstidspunkt,
+    setLastAddedPeriodeId,
     setVedleggForSenEndring,
     setTilleggsopplysning,
     uttaksplanSetForslag,

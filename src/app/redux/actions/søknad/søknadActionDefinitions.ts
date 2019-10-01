@@ -46,7 +46,8 @@ export enum SøknadActionKeys {
     'SET_TILLEGGSOPPLYSNING' = 'setTilleggsopplysning',
     'SET_CURRENT_STEG' = 'setCurrentSteg',
     'START_SØKNAD' = 'startNySøknad',
-    'SET_ENDRINGSTIDSPUNKT' = 'setEndringstidspunkt'
+    'SET_ENDRINGSTIDSPUNKT' = 'setEndringstidspunkt',
+    'SET_LAST_ADDED_PERIODE_ID' = 'setLastAddedPeriodeId'
 }
 
 export interface StartSøknad {
@@ -198,6 +199,11 @@ export interface SetEndringstidspunkt {
     endringstidspunkt: Date;
 }
 
+export interface SetLastAddedPeriodId {
+    type: SøknadActionKeys.SET_LAST_ADDED_PERIODE_ID;
+    id: string;
+}
+
 export type SøknadAction =
     | SetSøknad
     | AvbrytSøknad
@@ -226,4 +232,5 @@ export type SøknadAction =
     | SetVedleggForSenEndring
     | SetTilleggsopplysning
     | SetEndringstidspunkt
+    | SetLastAddedPeriodId
     | ResetUttaksplanEndringer;

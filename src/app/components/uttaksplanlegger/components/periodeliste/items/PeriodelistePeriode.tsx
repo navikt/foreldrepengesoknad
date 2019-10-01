@@ -20,6 +20,7 @@ export interface Props {
     annenForelderHarSamtidigUttakISammePeriode: boolean;
     meldinger?: VeilederMessage[];
     onToggle: onToggleItemProp;
+    onUpdate: (periode: Periode) => void;
 }
 
 const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> = ({
@@ -31,6 +32,7 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
     meldinger = [],
     isExpanded,
     onToggle,
+    onUpdate,
     intl
 }) => {
     const ariaLabel = getPeriodeTittel(intl, periode, navnPåForeldre);
@@ -56,6 +58,7 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
                         periode={periode}
                         antallFeriedager={antallFeriedager}
                         meldinger={meldinger.filter((m) => m.avvikType !== 'skjema')}
+                        onUpdate={onUpdate}
                         onRequestClose={() => {
                             onToggle(periode.id);
                             if (isExpanded) {
