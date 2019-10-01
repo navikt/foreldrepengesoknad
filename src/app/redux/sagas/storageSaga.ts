@@ -141,16 +141,12 @@ function* sendStorageKvittering() {
 }
 
 const THROTTLE_INTERVAL_MS = 2500;
-const THROTTLE_INTERVAL_UTTAKSPLAN = 15000;
 
 export default function* storageSaga() {
     yield all([
         takeEvery(ApiActionKeys.GET_STORAGE_DATA, getStorageData),
         takeEvery(ApiActionKeys.DELETE_STORED_APP_STATE, deleteStoredAppState),
         throttle(THROTTLE_INTERVAL_MS, ApiActionKeys.STORE_APP_STATE, saveAppState),
-        throttle(THROTTLE_INTERVAL_UTTAKSPLAN, SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, saveAppState),
-        throttle(THROTTLE_INTERVAL_UTTAKSPLAN, SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, saveAppState),
-        throttle(THROTTLE_INTERVAL_UTTAKSPLAN, SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, saveAppState),
         throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, saveAppState),
         throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, saveAppState),
         takeEvery(ApiActionKeys.SEND_STORAGE_KVITTERING, sendStorageKvittering)

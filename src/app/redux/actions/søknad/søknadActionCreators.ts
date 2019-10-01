@@ -13,9 +13,6 @@ import {
     UpdateSøknadActionPayload,
     UpdateSøknadenGjelder,
     UttaksplanSetPerioder,
-    UttaksplanAddPeriode,
-    UttaksplanDeletePeriode,
-    UttaksplanUpdatePeriode,
     UttaksplanUpdateSkjemadata,
     SetCurrentSteg,
     AvbrytSøknad,
@@ -140,20 +137,6 @@ const uttaksplanSetPerioder = (perioder: Periode[]): UttaksplanSetPerioder => ({
     perioder
 });
 
-const uttaksplanAddPeriode = (periode: Periode): UttaksplanAddPeriode => ({
-    type: SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE,
-    periode
-});
-const uttaksplanDeletePeriode = (periode: Periode): UttaksplanDeletePeriode => ({
-    type: SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE,
-    periode
-});
-
-const uttaksplanUpdatePeriode = (periode: Periode): UttaksplanUpdatePeriode => ({
-    type: SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE,
-    periode
-});
-
 const uttaksplanLagForslag = (): UttaksplanLagForslag => ({
     type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG
 });
@@ -211,9 +194,6 @@ export default {
     updateSøknad,
     updateEkstrainfo,
     uttaksplanSetPerioder,
-    uttaksplanAddPeriode,
-    uttaksplanDeletePeriode,
-    uttaksplanUpdatePeriode,
     uttaksplanUpdateSkjemdata,
     uploadAttachment,
     uploadAttachmentSuccess,
