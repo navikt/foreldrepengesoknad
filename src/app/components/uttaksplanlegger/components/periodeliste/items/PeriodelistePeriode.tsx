@@ -21,6 +21,7 @@ export interface Props {
     meldinger?: VeilederMessage[];
     onToggle: onToggleItemProp;
     onUpdate: (periode: Periode) => void;
+    onDelete: (periode: Periode) => void;
 }
 
 const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> = ({
@@ -33,6 +34,7 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
     isExpanded,
     onToggle,
     onUpdate,
+    onDelete,
     intl
 }) => {
     const ariaLabel = getPeriodeTittel(intl, periode, navnPåForeldre);
@@ -59,6 +61,7 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
                         antallFeriedager={antallFeriedager}
                         meldinger={meldinger.filter((m) => m.avvikType !== 'skjema')}
                         onUpdate={onUpdate}
+                        onDelete={onDelete}
                         onRequestClose={() => {
                             onToggle(periode.id);
                             if (isExpanded) {

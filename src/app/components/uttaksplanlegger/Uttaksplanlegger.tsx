@@ -45,7 +45,7 @@ interface OwnProps {
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
     onAdd: (periode: Periode) => void;
     onUpdate: (periode: Periode) => void;
-    onDelete?: (periode: Periode) => void;
+    onDelete: (periode: Periode) => void;
     onRequestClear: () => void;
     onRequestRevert: () => void;
 }
@@ -272,7 +272,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 onLeggTilOpphold={this.settInnNyttOpphold}
                                 onLeggTilPeriode={this.settInnNyPeriode}
-                                onFjernPeriode={this.props.onDelete}
+                                onDelete={this.props.onDelete}
                                 onUpdate={this.props.onUpdate}
                                 antallFeriedager={antallFeriedager}
                             />

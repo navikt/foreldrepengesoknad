@@ -22,7 +22,7 @@ const DevPerioderSomSendesInn: React.StatelessComponent<Props> = ({ søknadsinfo
                 lastAddedPeriodeId={undefined}
                 onLeggTilOpphold={() => null}
                 onLeggTilPeriode={() => null}
-                onFjernPeriode={() => null}
+                onDelete={() => null}
                 onUpdate={() => null}
                 antallFeriedager={0}
             />

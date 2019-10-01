@@ -13,7 +13,6 @@ import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import PeriodeCleanup from '../../../../util/cleanup/periodeCleanup';
-import søknadActionCreators from '../../../../redux/actions/søknad/søknadActionCreators';
 import UtsettelseForm from '../utsettelseForm/UtsettelseForm';
 import UttakForm from '../uttakForm/UttakForm';
 import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
@@ -39,6 +38,7 @@ interface OwnProps {
     meldinger: VeilederMessage[];
     onRequestClose: () => void;
     onUpdate: (periode: Periode) => void;
+    onDelete: (periode: Periode) => void;
 }
 
 interface StateProps {
@@ -82,7 +82,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
         }
     }
     onDelete() {
-        this.props.dispatch(søknadActionCreators.uttaksplanDeletePeriode(this.props.periode));
+        this.props.onDelete(this.props.periode);
     }
 
     onRequestDelete() {
