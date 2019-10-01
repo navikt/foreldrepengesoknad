@@ -61,7 +61,14 @@ jobs:
       steps:
         - nais-deploy:
             template-vars: dev-gcp.json
-            environment: dev-gcp         
+            environment: dev-gcp 
+    
+    prod-gcp-deploy:
+      executor: go
+      steps:
+        - nais-deploy:
+            template-vars: prod-gcp.json
+            environment: prod-gcp 
           
     prod-deploy:
        executor: go
