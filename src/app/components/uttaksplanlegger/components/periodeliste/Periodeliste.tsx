@@ -32,9 +32,10 @@ interface OwnProps {
     navnPåForeldre: NavnPåForeldre;
     lastAddedPeriodeId: string | undefined;
     onPeriodeLukk?: (id: string) => void;
-    onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void;
-    onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void;
-    onFjernPeriode?: (periode: Periode) => void;
+    onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
+    onReplaceHullWithPeriode?: (tidsperiode: Tidsperiode) => void;
+    updatePeriode: (periode: Periode) => void;
+    deletePeriode: (periode: Periode) => void;
 }
 
 type Props = OwnProps;
@@ -132,8 +133,10 @@ class Periodeliste extends React.Component<Props> {
             navnPåForeldre,
             antallFeriedager,
             meldingerPerPeriode,
-            onLeggTilOpphold,
-            onLeggTilPeriode
+            onReplaceHullWithOpphold,
+            onReplaceHullWithPeriode,
+            updatePeriode,
+            deletePeriode
         } = this.props;
 
         const filteredPerioder = this.shouldRenderHull(perioder)
@@ -172,8 +175,8 @@ class Periodeliste extends React.Component<Props> {
                                             isExpanded={isExpanded}
                                             onToggle={onToggle}
                                             periode={periode}
-                                            onLeggTilOpphold={onLeggTilOpphold}
-                                            onLeggTilPeriode={onLeggTilPeriode}
+                                            onReplaceHullWithOpphold={onReplaceHullWithOpphold}
+                                            onReplaceHullWithPeriode={onReplaceHullWithPeriode}
                                             navnPåForeldre={navnPåForeldre}
                                         />
                                     );
@@ -187,8 +190,8 @@ class Periodeliste extends React.Component<Props> {
                                                     isExpanded={isExpanded}
                                                     onToggle={onToggle}
                                                     periode={periode}
-                                                    onLeggTilOpphold={onLeggTilOpphold}
-                                                    onLeggTilPeriode={onLeggTilPeriode}
+                                                    onReplaceHullWithOpphold={onReplaceHullWithOpphold}
+                                                    onReplaceHullWithPeriode={onReplaceHullWithPeriode}
                                                     navnPåForeldre={navnPåForeldre}
                                                 />
                                             );
@@ -230,6 +233,8 @@ class Periodeliste extends React.Component<Props> {
                                             meldinger={meldingerPerPeriode[periode.id]}
                                             isExpanded={isExpanded}
                                             onToggle={onToggle}
+                                            updatePeriode={updatePeriode}
+                                            deletePeriode={deletePeriode}
                                             annenForelderHarSamtidigUttakISammePeriode={this.harAnnenForelderSamtidigUttakISammePeriode(
                                                 periode
                                             )}

@@ -13,7 +13,6 @@ import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import PeriodeCleanup from '../../../../util/cleanup/periodeCleanup';
-import søknadActionCreators from '../../../../redux/actions/søknad/søknadActionCreators';
 import UtsettelseForm from '../utsettelseForm/UtsettelseForm';
 import UttakForm from '../uttakForm/UttakForm';
 import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
@@ -38,6 +37,8 @@ interface OwnProps {
     antallFeriedager: number;
     meldinger: VeilederMessage[];
     onRequestClose: () => void;
+    updatePeriode: (periode: Periode) => void;
+    deletePeriode: (periode: Periode) => void;
 }
 
 interface StateProps {
@@ -66,7 +67,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
         replace: boolean = false,
         visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
     ) {
-        const { periode, dispatch, søknadsinfo } = this.props;
+        const { periode, søknadsinfo, updatePeriode } = this.props;
         const updatedPeriode = PeriodeCleanup.applyChangesAndCleanPeriode(
             periode,
             periodeChanges,
@@ -77,11 +78,11 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
             if (updatedPeriode.type !== this.props.periode.type) {
                 updatedPeriode.vedlegg = [];
             }
-            dispatch(søknadActionCreators.uttaksplanUpdatePeriode(updatedPeriode));
+            updatePeriode(updatedPeriode);
         }
     }
     onDelete() {
-        this.props.dispatch(søknadActionCreators.uttaksplanDeletePeriode(this.props.periode));
+        this.props.deletePeriode(this.props.periode);
     }
 
     onRequestDelete() {

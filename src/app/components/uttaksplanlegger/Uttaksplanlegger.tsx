@@ -43,9 +43,9 @@ interface OwnProps {
     planErEndret: boolean;
     defaultStønadskontoType?: StønadskontoType;
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
-    onAdd: (periode: Periode) => void;
-    onUpdate?: (periode: Periode) => void;
-    onDelete?: (periode: Periode) => void;
+    addPeriode: (periode: Periode) => void;
+    updatePeriode: (periode: Periode) => void;
+    deletePeriode: (periode: Periode) => void;
     onRequestClear: () => void;
     onRequestRevert: () => void;
 }
@@ -86,8 +86,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.handleOnCancel = this.handleOnCancel.bind(this);
         this.lukkPeriodeliste = this.lukkPeriodeliste.bind(this);
-        this.settInnNyttOpphold = this.settInnNyttOpphold.bind(this);
-        this.settInnNyPeriode = this.settInnNyPeriode.bind(this);
+        this.replaceHullWithOpphold = this.replaceHullWithOpphold.bind(this);
+        this.replaceHullWithPeriode = this.replaceHullWithPeriode.bind(this);
     }
 
     openForm(periodetype: Periodetype, tidsperiode?: Partial<Tidsperiode>) {
@@ -103,22 +103,23 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         });
     }
 
-    settInnNyttOpphold(tidsperiode?: Tidsperiode) {
+    replaceHullWithOpphold(tidsperiode?: Tidsperiode) {
         const periode: Partial<Utsettelsesperiode> = {
             type: Periodetype.Utsettelse,
             tidsperiode,
             forelder: this.props.forelder
         };
-        this.props.onAdd(periode as Periode);
+        this.props.addPeriode(periode as Periode);
     }
-    settInnNyPeriode(tidsperiode?: Tidsperiode) {
+
+    replaceHullWithPeriode(tidsperiode?: Tidsperiode) {
         const periode: Partial<Uttaksperiode> = {
             type: Periodetype.Uttak,
             tidsperiode,
             forelder: this.props.forelder,
             konto: this.props.defaultStønadskontoType
         };
-        this.props.onAdd(periode as Periode);
+        this.props.addPeriode(periode as Periode);
     }
 
     openNyUtsettelsesperiodeForm(tidsperiode?: Tidsperiode) {
@@ -149,8 +150,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
     }
 
     handleOnSubmit(periode: Periode) {
-        const { onAdd } = this.props;
-        onAdd(periode);
+        const { addPeriode } = this.props;
+        addPeriode(periode);
         this.closeForm();
     }
 
@@ -204,7 +205,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                 renderContent: () => (
                     <TapteUttaksdagerFarMedmor
                         info={infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor}
-                        onLeggTilOpphold={this.settInnNyttOpphold}
+                        onLeggTilOpphold={this.replaceHullWithOpphold}
                     />
                 ),
                 erSamtidigUttak: false
@@ -270,9 +271,10 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 meldingerPerPeriode={meldingerPerPeriode}
                                 navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
-                                onLeggTilOpphold={this.settInnNyttOpphold}
-                                onLeggTilPeriode={this.settInnNyPeriode}
-                                onFjernPeriode={this.props.onDelete}
+                                onReplaceHullWithOpphold={this.replaceHullWithOpphold}
+                                onReplaceHullWithPeriode={this.replaceHullWithPeriode}
+                                deletePeriode={this.props.deletePeriode}
+                                updatePeriode={this.props.updatePeriode}
                                 antallFeriedager={antallFeriedager}
                             />
                         </Block>
