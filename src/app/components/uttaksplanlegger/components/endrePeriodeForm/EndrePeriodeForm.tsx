@@ -37,8 +37,8 @@ interface OwnProps {
     antallFeriedager: number;
     meldinger: VeilederMessage[];
     onRequestClose: () => void;
-    onUpdate: (periode: Periode) => void;
-    onDelete: (periode: Periode) => void;
+    updatePeriode: (periode: Periode) => void;
+    deletePeriode: (periode: Periode) => void;
 }
 
 interface StateProps {
@@ -67,7 +67,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
         replace: boolean = false,
         visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
     ) {
-        const { periode, søknadsinfo, onUpdate } = this.props;
+        const { periode, søknadsinfo, updatePeriode } = this.props;
         const updatedPeriode = PeriodeCleanup.applyChangesAndCleanPeriode(
             periode,
             periodeChanges,
@@ -78,11 +78,11 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
             if (updatedPeriode.type !== this.props.periode.type) {
                 updatedPeriode.vedlegg = [];
             }
-            onUpdate(updatedPeriode);
+            updatePeriode(updatedPeriode);
         }
     }
     onDelete() {
-        this.props.onDelete(this.props.periode);
+        this.props.deletePeriode(this.props.periode);
     }
 
     onRequestDelete() {

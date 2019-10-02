@@ -43,9 +43,9 @@ interface OwnProps {
     planErEndret: boolean;
     defaultStønadskontoType?: StønadskontoType;
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
-    onAdd: (periode: Periode) => void;
-    onUpdate: (periode: Periode) => void;
-    onDelete: (periode: Periode) => void;
+    addPeriode: (periode: Periode) => void;
+    updatePeriode: (periode: Periode) => void;
+    deletePeriode: (periode: Periode) => void;
     onRequestClear: () => void;
     onRequestRevert: () => void;
 }
@@ -109,7 +109,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             tidsperiode,
             forelder: this.props.forelder
         };
-        this.props.onAdd(periode as Periode);
+        this.props.addPeriode(periode as Periode);
     }
     settInnNyPeriode(tidsperiode?: Tidsperiode) {
         const periode: Partial<Uttaksperiode> = {
@@ -118,7 +118,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             forelder: this.props.forelder,
             konto: this.props.defaultStønadskontoType
         };
-        this.props.onAdd(periode as Periode);
+        this.props.addPeriode(periode as Periode);
     }
 
     openNyUtsettelsesperiodeForm(tidsperiode?: Tidsperiode) {
@@ -149,8 +149,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
     }
 
     handleOnSubmit(periode: Periode) {
-        const { onAdd } = this.props;
-        onAdd(periode);
+        const { addPeriode } = this.props;
+        addPeriode(periode);
         this.closeForm();
     }
 
@@ -272,8 +272,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 onLeggTilOpphold={this.settInnNyttOpphold}
                                 onLeggTilPeriode={this.settInnNyPeriode}
-                                onDelete={this.props.onDelete}
-                                onUpdate={this.props.onUpdate}
+                                deletePeriode={this.props.deletePeriode}
+                                updatePeriode={this.props.updatePeriode}
                                 antallFeriedager={antallFeriedager}
                             />
                         </Block>

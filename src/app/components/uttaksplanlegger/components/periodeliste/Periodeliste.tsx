@@ -34,8 +34,8 @@ interface OwnProps {
     onPeriodeLukk?: (id: string) => void;
     onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void;
     onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void;
-    onUpdate: (periode: Periode) => void;
-    onDelete: (periode: Periode) => void;
+    updatePeriode: (periode: Periode) => void;
+    deletePeriode: (periode: Periode) => void;
 }
 
 type Props = OwnProps;
@@ -135,8 +135,8 @@ class Periodeliste extends React.Component<Props> {
             meldingerPerPeriode,
             onLeggTilOpphold,
             onLeggTilPeriode,
-            onUpdate,
-            onDelete
+            updatePeriode,
+            deletePeriode
         } = this.props;
 
         const filteredPerioder = this.shouldRenderHull(perioder)
@@ -233,8 +233,8 @@ class Periodeliste extends React.Component<Props> {
                                             meldinger={meldingerPerPeriode[periode.id]}
                                             isExpanded={isExpanded}
                                             onToggle={onToggle}
-                                            onUpdate={onUpdate}
-                                            onDelete={onDelete}
+                                            updatePeriode={updatePeriode}
+                                            deletePeriode={deletePeriode}
                                             annenForelderHarSamtidigUttakISammePeriode={this.harAnnenForelderSamtidigUttakISammePeriode(
                                                 periode
                                             )}
