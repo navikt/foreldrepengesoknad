@@ -86,8 +86,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.handleOnCancel = this.handleOnCancel.bind(this);
         this.lukkPeriodeliste = this.lukkPeriodeliste.bind(this);
-        this.settInnNyttOpphold = this.settInnNyttOpphold.bind(this);
-        this.settInnNyPeriode = this.settInnNyPeriode.bind(this);
+        this.replaceHullWithOpphold = this.replaceHullWithOpphold.bind(this);
+        this.replaceHullWithPeriode = this.replaceHullWithPeriode.bind(this);
     }
 
     openForm(periodetype: Periodetype, tidsperiode?: Partial<Tidsperiode>) {
@@ -103,7 +103,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         });
     }
 
-    settInnNyttOpphold(tidsperiode?: Tidsperiode) {
+    replaceHullWithOpphold(tidsperiode?: Tidsperiode) {
         const periode: Partial<Utsettelsesperiode> = {
             type: Periodetype.Utsettelse,
             tidsperiode,
@@ -111,7 +111,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         };
         this.props.addPeriode(periode as Periode);
     }
-    settInnNyPeriode(tidsperiode?: Tidsperiode) {
+
+    replaceHullWithPeriode(tidsperiode?: Tidsperiode) {
         const periode: Partial<Uttaksperiode> = {
             type: Periodetype.Uttak,
             tidsperiode,
@@ -204,7 +205,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                 renderContent: () => (
                     <TapteUttaksdagerFarMedmor
                         info={infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor}
-                        onLeggTilOpphold={this.settInnNyttOpphold}
+                        onLeggTilOpphold={this.replaceHullWithOpphold}
                     />
                 ),
                 erSamtidigUttak: false
@@ -270,8 +271,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 meldingerPerPeriode={meldingerPerPeriode}
                                 navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
-                                onLeggTilOpphold={this.settInnNyttOpphold}
-                                onLeggTilPeriode={this.settInnNyPeriode}
+                                onReplaceHullWithOpphold={this.replaceHullWithOpphold}
+                                onReplaceHullWithPeriode={this.replaceHullWithPeriode}
                                 deletePeriode={this.props.deletePeriode}
                                 updatePeriode={this.props.updatePeriode}
                                 antallFeriedager={antallFeriedager}

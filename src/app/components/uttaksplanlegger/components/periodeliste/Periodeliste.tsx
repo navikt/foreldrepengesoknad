@@ -32,8 +32,8 @@ interface OwnProps {
     navnPåForeldre: NavnPåForeldre;
     lastAddedPeriodeId: string | undefined;
     onPeriodeLukk?: (id: string) => void;
-    onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void;
-    onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void;
+    onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
+    onReplaceHullWithPeriode?: (tidsperiode: Tidsperiode) => void;
     updatePeriode: (periode: Periode) => void;
     deletePeriode: (periode: Periode) => void;
 }
@@ -133,8 +133,8 @@ class Periodeliste extends React.Component<Props> {
             navnPåForeldre,
             antallFeriedager,
             meldingerPerPeriode,
-            onLeggTilOpphold,
-            onLeggTilPeriode,
+            onReplaceHullWithOpphold,
+            onReplaceHullWithPeriode,
             updatePeriode,
             deletePeriode
         } = this.props;
@@ -175,8 +175,8 @@ class Periodeliste extends React.Component<Props> {
                                             isExpanded={isExpanded}
                                             onToggle={onToggle}
                                             periode={periode}
-                                            onLeggTilOpphold={onLeggTilOpphold}
-                                            onLeggTilPeriode={onLeggTilPeriode}
+                                            onReplaceHullWithOpphold={onReplaceHullWithOpphold}
+                                            onReplaceHullWithPeriode={onReplaceHullWithPeriode}
                                             navnPåForeldre={navnPåForeldre}
                                         />
                                     );
@@ -190,8 +190,8 @@ class Periodeliste extends React.Component<Props> {
                                                     isExpanded={isExpanded}
                                                     onToggle={onToggle}
                                                     periode={periode}
-                                                    onLeggTilOpphold={onLeggTilOpphold}
-                                                    onLeggTilPeriode={onLeggTilPeriode}
+                                                    onReplaceHullWithOpphold={onReplaceHullWithOpphold}
+                                                    onReplaceHullWithPeriode={onReplaceHullWithPeriode}
                                                     navnPåForeldre={navnPåForeldre}
                                                 />
                                             );

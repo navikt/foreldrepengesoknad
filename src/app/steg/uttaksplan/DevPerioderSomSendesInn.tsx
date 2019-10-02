@@ -20,8 +20,8 @@ const DevPerioderSomSendesInn: React.StatelessComponent<Props> = ({ søknadsinfo
                 informasjon={undefined}
                 navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                 lastAddedPeriodeId={undefined}
-                onLeggTilOpphold={() => null}
-                onLeggTilPeriode={() => null}
+                onReplaceHullWithOpphold={() => null}
+                onReplaceHullWithPeriode={() => null}
                 deletePeriode={() => null}
                 updatePeriode={() => null}
                 antallFeriedager={0}
