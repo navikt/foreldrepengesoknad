@@ -22,8 +22,8 @@ const DevPerioderSomSendesInn: React.StatelessComponent<Props> = ({ søknadsinfo
                 lastAddedPeriodeId={undefined}
                 onLeggTilOpphold={() => null}
                 onLeggTilPeriode={() => null}
-                onDelete={() => null}
-                onUpdate={() => null}
+                deletePeriode={() => null}
+                updatePeriode={() => null}
                 antallFeriedager={0}
             />
         </Ekspanderbartpanel>

@@ -374,9 +374,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 søknadsinfo={søknadsinfo}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 defaultStønadskontoType={defaultStønadskontoType}
-                                onAdd={(periode) => this.handleAddPeriode(periode, opprinneligPlan)}
-                                onDelete={(periode) => this.handleDeletePeriode(periode, opprinneligPlan)}
-                                onUpdate={(periode) => this.handleUpdatePeriode(periode, opprinneligPlan)}
+                                addPeriode={(periode) => this.handleAddPeriode(periode, opprinneligPlan)}
+                                deletePeriode={(periode) => this.handleDeletePeriode(periode, opprinneligPlan)}
+                                updatePeriode={(periode) => this.handleUpdatePeriode(periode, opprinneligPlan)}
                                 onRequestClear={() => this.showBekreftSlettUttaksplanDialog()}
                                 onRequestRevert={() => this.showBekreftTilbakestillUttaksplanDialog()}
                                 meldingerPerPeriode={meldingerPerPeriode}
