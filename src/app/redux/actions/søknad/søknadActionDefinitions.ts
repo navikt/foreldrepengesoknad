@@ -35,9 +35,6 @@ export enum SøknadActionKeys {
     'UPDATE_EKSTRAINFO' = 'updateEkstrainfo',
     'UPDATE_SØKNADEN_GJELDER_BARN' = 'updateSøknadenGjelderBarn',
     'UTTAKSPLAN_SET_PERIODER' = 'uttaksplanSetPerioder',
-    'UTTAKSPLAN_ADD_PERIODE' = 'uttaksplanAddPeriode',
-    'UTTAKSPLAN_DELETE_PERIODE' = 'uttaksplanDeletePeriode',
-    'UTTAKSPLAN_UPDATE_PERIODE' = 'uttaksplanUpdatePeriode',
     'UTTAKSPLAN_UPDATE_SKJEMADATA' = 'uttaksplanUpdateSkjemadata',
     'UTTAKSPLAN_LAG_FORSLAG' = 'uttaksplanLagForslag',
     'UTTAKSPLAN_SET_FORSLAG' = 'uttaksplanSetForslag',
@@ -46,7 +43,8 @@ export enum SøknadActionKeys {
     'SET_TILLEGGSOPPLYSNING' = 'setTilleggsopplysning',
     'SET_CURRENT_STEG' = 'setCurrentSteg',
     'START_SØKNAD' = 'startNySøknad',
-    'SET_ENDRINGSTIDSPUNKT' = 'setEndringstidspunkt'
+    'SET_ENDRINGSTIDSPUNKT' = 'setEndringstidspunkt',
+    'SET_LAST_ADDED_PERIODE_ID' = 'setLastAddedPeriodeId'
 }
 
 export interface StartSøknad {
@@ -107,11 +105,6 @@ export interface UttaksplanSetPerioder {
     perioder: Periode[];
 }
 
-export interface UttaksplanAddPeriode {
-    type: SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE;
-    periode: Periode;
-}
-
 export interface UttaksplanLagForslag {
     type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG;
 }
@@ -121,19 +114,9 @@ export interface UttaksplanSetForslag {
     uttaksplan: Periode[];
 }
 
-export interface UttaksplanDeletePeriode {
-    type: SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE;
-    periode: Periode;
-}
-
 export interface UttaksplanUpdateSkjemadata {
     type: SøknadActionKeys.UTTAKSPLAN_UPDATE_SKJEMADATA;
     payload: Partial<UttaksplanSkjemadata>;
-}
-
-export interface UttaksplanUpdatePeriode {
-    type: SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE;
-    periode: Periode;
 }
 
 export interface UploadAttachment {
@@ -198,6 +181,11 @@ export interface SetEndringstidspunkt {
     endringstidspunkt: Date;
 }
 
+export interface SetLastAddedPeriodId {
+    type: SøknadActionKeys.SET_LAST_ADDED_PERIODE_ID;
+    id: string;
+}
+
 export type SøknadAction =
     | SetSøknad
     | AvbrytSøknad
@@ -216,9 +204,6 @@ export type SøknadAction =
     | DeleteAttachmentSuccess
     | DeleteAttachmentFailed
     | UttaksplanSetPerioder
-    | UttaksplanAddPeriode
-    | UttaksplanDeletePeriode
-    | UttaksplanUpdatePeriode
     | UttaksplanUpdateSkjemadata
     | UttaksplanLagForslag
     | UttaksplanSetForslag
@@ -226,4 +211,5 @@ export type SøknadAction =
     | SetVedleggForSenEndring
     | SetTilleggsopplysning
     | SetEndringstidspunkt
+    | SetLastAddedPeriodId
     | ResetUttaksplanEndringer;

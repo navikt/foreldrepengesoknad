@@ -19,8 +19,8 @@ export interface Props {
     onToggle: onToggleItemProp;
     periode: AvslåttPeriode;
     navnPåForeldre: NavnPåForeldre;
-    onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void;
-    onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void;
+    onReplaceHullWithPeriode?: (tidsperiode: Tidsperiode) => void;
+    onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
 }
 
 const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntlProps> = ({
@@ -28,25 +28,25 @@ const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntl
     isExpanded,
     onToggle,
     periode,
-    onLeggTilPeriode,
-    onLeggTilOpphold,
+    onReplaceHullWithPeriode,
+    onReplaceHullWithOpphold,
     navnPåForeldre,
     intl
 }) => {
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
     const knapper: React.ReactNode[] = [];
 
-    if (onLeggTilPeriode) {
+    if (onReplaceHullWithPeriode) {
         knapper.unshift(
-            <LinkButton key="periode" onClick={() => onLeggTilPeriode(periode.tidsperiode)}>
+            <LinkButton key="periode" onClick={() => onReplaceHullWithPeriode(periode.tidsperiode)}>
                 {getMessage(intl, 'uttaksplan.hull.leggTil.uttak')}
             </LinkButton>
         );
     }
 
-    if (onLeggTilOpphold) {
+    if (onReplaceHullWithOpphold) {
         knapper.unshift(
-            <LinkButton key="opphold" onClick={() => onLeggTilOpphold(periode.tidsperiode)}>
+            <LinkButton key="opphold" onClick={() => onReplaceHullWithOpphold(periode.tidsperiode)}>
                 {getMessage(intl, 'uttaksplan.hull.leggTil.opphold')}
             </LinkButton>
         );

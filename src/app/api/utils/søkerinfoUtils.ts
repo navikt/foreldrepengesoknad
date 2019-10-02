@@ -57,7 +57,7 @@ const getArbeidsforhold = (søkerinfo: SøkerinfoDTO): Arbeidsforhold[] => {
 
 export const getAktiveArbeidsforhold = (
     arbeidsforhold: Arbeidsforhold[],
-    familiehendelseDato: Date
+    familiehendelsedato: Date
 ): Arbeidsforhold[] => {
     return arbeidsforhold.reduce((aktiveArbeidsforhold: Arbeidsforhold[], a: Arbeidsforhold) => {
         if (a.tom === undefined) {
@@ -65,7 +65,7 @@ export const getAktiveArbeidsforhold = (
 
             return aktiveArbeidsforhold;
         } else {
-            if (moment(a.tom).isSameOrAfter(moment(familiehendelseDato))) {
+            if (moment(a.tom).isSameOrAfter(moment(familiehendelsedato))) {
                 aktiveArbeidsforhold.push(a);
             }
 
