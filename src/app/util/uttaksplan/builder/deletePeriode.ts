@@ -8,8 +8,8 @@ const deletePeriode = (
     slettetPeriode: Periode,
     opprinneligPlan?: Periode[]
 ): Periode[] => {
-    const familiehendelseDato = søknadsinfo.søknaden.familiehendelsesdato;
-    const builder = UttaksplanBuilder(uttaksplan, familiehendelseDato, opprinneligPlan);
+    const familiehendelsedato = søknadsinfo.søknaden.familiehendelsesdato;
+    const builder = UttaksplanBuilder(uttaksplan, familiehendelsedato, opprinneligPlan);
 
     return builder.slettPeriodeOgBuild(slettetPeriode).perioder;
 };

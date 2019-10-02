@@ -14,8 +14,8 @@ const addPeriode = (
     nyPeriode: Periode,
     opprinneligPlan?: Periode[]
 ): AddPeriodeResult => {
-    const familiehendelseDato = søknadsinfo.søknaden.familiehendelsesdato;
-    const builder = UttaksplanBuilder(uttaksplan, familiehendelseDato, opprinneligPlan);
+    const familiehendelsedato = søknadsinfo.søknaden.familiehendelsesdato;
+    const builder = UttaksplanBuilder(uttaksplan, familiehendelsedato, opprinneligPlan);
     const id = guid();
 
     return {

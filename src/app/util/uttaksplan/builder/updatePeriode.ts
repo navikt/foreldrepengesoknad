@@ -3,10 +3,10 @@ import { Periode, isForeldrepengerFørFødselUttaksperiode } from 'app/types/utt
 import { UttaksplanBuilder } from './UttaksplanBuilder';
 import moment from 'moment';
 
-const removeEkstrauttakFørTermin = (uttaksplan: Periode[], familiehendelseDato: Date) => {
+const removeEkstrauttakFørTermin = (uttaksplan: Periode[], familiehendelsedato: Date) => {
     return uttaksplan.filter(
         (periode) =>
-            moment(periode.tidsperiode.fom).isSameOrAfter(familiehendelseDato, 'day') ||
+            moment(periode.tidsperiode.fom).isSameOrAfter(familiehendelsedato, 'day') ||
             isForeldrepengerFørFødselUttaksperiode(periode)
     );
 };
@@ -17,14 +17,14 @@ const updatePeriode = (
     oppdatertPeriode: Periode,
     opprinneligPlan?: Periode[]
 ): Periode[] => {
-    const familiehendelseDato = søknadsinfo.søknaden.familiehendelsesdato;
+    const familiehendelsedato = søknadsinfo.søknaden.familiehendelsesdato;
     const removeOtherPerioderFørTermin =
         isForeldrepengerFørFødselUttaksperiode(oppdatertPeriode) && oppdatertPeriode.skalIkkeHaUttakFørTermin === true;
     const filteredPerioder = removeOtherPerioderFørTermin
         ? removeEkstrauttakFørTermin(uttaksplan, søknadsinfo.søknaden.familiehendelsesdato)
         : uttaksplan;
 
-    const builder = UttaksplanBuilder(filteredPerioder, familiehendelseDato, opprinneligPlan);
+    const builder = UttaksplanBuilder(filteredPerioder, familiehendelsedato, opprinneligPlan);
 
     return builder.oppdaterPeriodeOgBuild(oppdatertPeriode).perioder;
 };
