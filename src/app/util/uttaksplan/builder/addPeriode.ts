@@ -1,5 +1,5 @@
 import { Søknadsinfo } from 'app/selectors/types';
-import { Periode } from 'app/types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanBuilder } from './UttaksplanBuilder';
 import { guid } from 'nav-frontend-js-utils';
 
@@ -12,10 +12,17 @@ const addPeriode = (
     søknadsinfo: Søknadsinfo,
     uttaksplan: Periode[],
     nyPeriode: Periode,
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     opprinneligPlan?: Periode[]
 ): AddPeriodeResult => {
     const familiehendelsedato = søknadsinfo.søknaden.familiehendelsesdato;
-    const builder = UttaksplanBuilder(uttaksplan, familiehendelsedato, opprinneligPlan);
+    const builder = UttaksplanBuilder(
+        uttaksplan,
+        familiehendelsedato,
+        søknadsinfo,
+        tilgjengeligeStønadskontoer,
+        opprinneligPlan
+    );
     const id = guid();
 
     return {

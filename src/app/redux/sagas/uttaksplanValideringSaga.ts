@@ -13,13 +13,12 @@ import { UttaksplanRegelTestresultat, UttaksplanRegelgrunnlag } from '../../regl
 import { selectTilgjengeligeStønadskontoer, selectArbeidsforhold } from 'app/selectors/apiSelector';
 import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
 import { Søknadsinfo } from 'app/selectors/types';
-import { Periode, TilgjengeligStønadskonto, StønadskontoType } from 'app/types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
 import Søknad from 'app/types/søknad/Søknad';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import uttaksplanRegler from 'app/regler/uttaksplanValidering';
 import { regelPasserer, regelHarAvvik, getRegelAvvik, hasRegelFeil } from 'shared/regler/regelUtils';
 import { RegelStatus } from 'shared/regler/regelTypes';
-import { justerAndrePartsUttakAvFellesperiodeOmMulig } from 'app/util/uttaksplan/uttakUtils';
 
 const stateSelector = (state: AppState) => state;
 
@@ -42,16 +41,7 @@ const kjørUttaksplanRegler = (
     arbeidsforhold: Arbeidsforhold[]
 ): UttaksplanRegelTestresultat => {
     const { eksisterendeSak } = søknad.ekstrainfo;
-    let uttaksstatus = getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan);
-
-    if (uttaksstatus && søknadsinfo) {
-        const temp = justerAndrePartsUttakAvFellesperiodeOmMulig(
-            søknad.uttaksplan,
-            uttaksstatus.uttak.find((u) => u.konto === StønadskontoType.Fellesperiode)
-        );
-
-        uttaksstatus = getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, temp);
-    }
+    const uttaksstatus = getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan);
 
     const resultat = sjekkUttaksplanOppMotRegler({
         søknadsinfo,
