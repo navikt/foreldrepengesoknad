@@ -97,7 +97,7 @@ const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
     );
 };
 
-const getSamtidigUttakEllerGraderingsProsent = (periode: UttakAnnenPartInfoPeriode): number | undefined => {
+export const getSamtidigUttakEllerGraderingsProsent = (periode: UttakAnnenPartInfoPeriode): number | undefined => {
     const periodeErGradert = periode.stillingsprosent !== undefined;
     const periodeErSamtidigUttak = periode.samtidigUttakProsent !== undefined;
 
@@ -115,34 +115,33 @@ const getSamtidigUttakEllerGraderingsProsent = (periode: UttakAnnenPartInfoPerio
 export const justerAndrePartsUttakAvFellesperiodeOmMulig = (
     perioder: Periode[],
     uttakFellesperiode: Stønadskontouttak | undefined
-) => {
+): Periode[] => {
     if (uttakFellesperiode === undefined || uttakFellesperiode.dager >= 0 || perioder.length === 0) {
         return perioder;
     }
 
     const dagerGjenståendeFellesperiode = uttakFellesperiode.dager;
 
-    const sistePeriode = perioder[perioder.length - 1];
+    const sisteFellesperiodeAnnenPart = [...perioder]
+        .reverse()
+        .find((p) => isAnnenPartInfoPeriode(p) && p.årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder);
 
-    if (
-        isAnnenPartInfoPeriode(sistePeriode) &&
-        sistePeriode.årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder
-    ) {
-        const dagerMedFellesperiodeISistePeriode = Perioden(sistePeriode).getAntallUttaksdager();
-        const justeringsProsent = getSamtidigUttakEllerGraderingsProsent(sistePeriode) || 1;
+    if (sisteFellesperiodeAnnenPart !== undefined && isAnnenPartInfoPeriode(sisteFellesperiodeAnnenPart)) {
+        const dagerMedFellesperiodeISistePeriode = Perioden(sisteFellesperiodeAnnenPart).getAntallUttaksdager();
+        const justeringsProsent = getSamtidigUttakEllerGraderingsProsent(sisteFellesperiodeAnnenPart) || 1;
         const diff = dagerGjenståendeFellesperiode / justeringsProsent + dagerMedFellesperiodeISistePeriode;
+        const indexSistePeriode = perioder.findIndex((p) => p.id === sisteFellesperiodeAnnenPart.id);
 
         if (dagerGjenståendeFellesperiode < 0 && diff > 0) {
-            perioder[perioder.length - 1] = {
-                ...sistePeriode,
-                tidsperiode: Tidsperioden(sistePeriode.tidsperiode).setUttaksdager(diff) as Tidsperiode
+            perioder[indexSistePeriode] = {
+                ...sisteFellesperiodeAnnenPart,
+                tidsperiode: Tidsperioden(sisteFellesperiodeAnnenPart.tidsperiode).setUttaksdager(diff) as Tidsperiode
             };
             return perioder;
         }
 
         if (dagerGjenståendeFellesperiode < 0 && diff === 0) {
-            perioder.pop();
-            return perioder;
+            return perioder.splice(indexSistePeriode, 1);
         }
     }
 

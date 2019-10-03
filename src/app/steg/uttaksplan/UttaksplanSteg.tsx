@@ -6,10 +6,7 @@ import { AppState } from '../../redux/reducers';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { default as Steg, StegProps } from '../../components/applikasjon/steg/Steg';
 import { DispatchProps } from 'common/redux/types';
-import {
-    getSeneEndringerSomKreverBegrunnelse,
-    justerAndrePartsUttakAvFellesperiodeOmMulig
-} from 'app/util/uttaksplan/uttakUtils';
+import { getSeneEndringerSomKreverBegrunnelse } from 'app/util/uttaksplan/uttakUtils';
 import { Forelder } from 'common/types';
 import { getPeriodelisteElementId } from '../../components/uttaksplanlegger/components/periodeliste/Periodeliste';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
@@ -240,26 +237,44 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         }
     }
 
-    handleAddPeriode(nyPeriode: Periode, opprinneligPlan: Periode[] | undefined) {
-        const { søknadsinfo, søknad } = this.props;
-        const { updatedPlan, id } = addPeriode(søknadsinfo!, søknad.uttaksplan, nyPeriode, opprinneligPlan);
+    handleAddPeriode(nyPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
+        const { søknad, tilgjengeligeStønadskontoer } = this.props;
+        const { updatedPlan, id } = addPeriode(
+            søknadsinfo,
+            søknad.uttaksplan,
+            nyPeriode,
+            tilgjengeligeStønadskontoer,
+            opprinneligPlan
+        );
 
         this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan));
         this.props.dispatch(søknadActions.setEndringstidspunkt(nyPeriode.tidsperiode.fom));
         this.props.dispatch(søknadActions.setLastAddedPeriodeId(id));
     }
 
-    handleDeletePeriode(slettetPeriode: Periode, opprinneligPlan: Periode[] | undefined) {
-        const { søknadsinfo, søknad } = this.props;
-        const updatedPlan = deletePeriode(søknadsinfo!, søknad.uttaksplan, slettetPeriode, opprinneligPlan);
+    handleDeletePeriode(slettetPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
+        const { søknad, tilgjengeligeStønadskontoer } = this.props;
+        const updatedPlan = deletePeriode(
+            søknadsinfo,
+            søknad.uttaksplan,
+            slettetPeriode,
+            tilgjengeligeStønadskontoer,
+            opprinneligPlan
+        );
 
         this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan));
         this.props.dispatch(søknadActions.setEndringstidspunkt(slettetPeriode.tidsperiode.fom));
     }
 
-    handleUpdatePeriode(oppdatertPeriode: Periode, opprinneligPlan: Periode[] | undefined) {
-        const { søknadsinfo, søknad } = this.props;
-        const updatedPlan = updatePeriode(søknadsinfo!, søknad.uttaksplan, oppdatertPeriode, opprinneligPlan);
+    handleUpdatePeriode(oppdatertPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
+        const { søknad, tilgjengeligeStønadskontoer } = this.props;
+        const updatedPlan = updatePeriode(
+            søknadsinfo,
+            søknad.uttaksplan,
+            oppdatertPeriode,
+            tilgjengeligeStønadskontoer,
+            opprinneligPlan
+        );
 
         this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan));
         this.props.dispatch(søknadActions.setEndringstidspunkt(oppdatertPeriode.tidsperiode.fom));
@@ -374,9 +389,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 søknadsinfo={søknadsinfo}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 defaultStønadskontoType={defaultStønadskontoType}
-                                addPeriode={(periode) => this.handleAddPeriode(periode, opprinneligPlan)}
-                                deletePeriode={(periode) => this.handleDeletePeriode(periode, opprinneligPlan)}
-                                updatePeriode={(periode) => this.handleUpdatePeriode(periode, opprinneligPlan)}
+                                addPeriode={(periode) => this.handleAddPeriode(periode, opprinneligPlan, søknadsinfo)}
+                                deletePeriode={(periode) =>
+                                    this.handleDeletePeriode(periode, opprinneligPlan, søknadsinfo)
+                                }
+                                updatePeriode={(periode) =>
+                                    this.handleUpdatePeriode(periode, opprinneligPlan, søknadsinfo)
+                                }
                                 onRequestClear={() => this.showBekreftSlettUttaksplanDialog()}
                                 onRequestRevert={() => this.showBekreftTilbakestillUttaksplanDialog()}
                                 meldingerPerPeriode={meldingerPerPeriode}
@@ -502,18 +521,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         }
     }
 
-    let uttaksstatus = søknadsinfo
+    const uttaksstatus = søknadsinfo
         ? getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan)
         : undefined;
-
-    if (uttaksstatus && søknadsinfo) {
-        søknad.uttaksplan = justerAndrePartsUttakAvFellesperiodeOmMulig(
-            søknad.uttaksplan,
-            uttaksstatus.uttak.find((u) => u.konto === StønadskontoType.Fellesperiode)
-        );
-
-        uttaksstatus = getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, søknad.uttaksplan);
-    }
 
     const aktivitetsfriKvoteKonto = tilgjengeligeStønadskontoer.find(
         ({ konto }) => konto === StønadskontoType.AktivitetsfriKvote
