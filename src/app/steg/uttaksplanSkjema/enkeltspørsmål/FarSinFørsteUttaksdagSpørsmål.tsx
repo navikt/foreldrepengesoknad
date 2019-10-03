@@ -41,7 +41,7 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
             render={(data, onChange) => {
                 return (
                     <>
-                        <Block visible={eksisterendeSakAnnenPart !== undefined} margin="xs">
+                        <Block margin="xs">
                             <DatoInput
                                 name="farSinFørsteUttaksdagSpørsmål"
                                 id="farSinFørsteUttaksdagSpørsmål"
@@ -60,8 +60,7 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                                 disabled={data.ønskerIkkeFlerePerioder}
                             />
                         </Block>
-                        {eksisterendeSakAnnenPart &&
-                            morSinSisteUttaksdag &&
+                        {morSinSisteUttaksdag &&
                             navnPåForeldre && (
                                 <>
                                     <Block margin="xs">
