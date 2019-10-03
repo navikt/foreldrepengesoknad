@@ -1,5 +1,9 @@
 import { Søknadsinfo } from 'app/selectors/types';
-import { Periode, isForeldrepengerFørFødselUttaksperiode } from 'app/types/uttaksplan/periodetyper';
+import {
+    Periode,
+    isForeldrepengerFørFødselUttaksperiode,
+    TilgjengeligStønadskonto
+} from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanBuilder } from './UttaksplanBuilder';
 import moment from 'moment';
 
@@ -15,6 +19,7 @@ const updatePeriode = (
     søknadsinfo: Søknadsinfo,
     uttaksplan: Periode[],
     oppdatertPeriode: Periode,
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     opprinneligPlan?: Periode[]
 ): Periode[] => {
     const familiehendelsedato = søknadsinfo.søknaden.familiehendelsesdato;
@@ -24,7 +29,13 @@ const updatePeriode = (
         ? removeEkstrauttakFørTermin(uttaksplan, søknadsinfo.søknaden.familiehendelsesdato)
         : uttaksplan;
 
-    const builder = UttaksplanBuilder(filteredPerioder, familiehendelsedato, opprinneligPlan);
+    const builder = UttaksplanBuilder(
+        filteredPerioder,
+        familiehendelsedato,
+        søknadsinfo,
+        tilgjengeligeStønadskontoer,
+        opprinneligPlan
+    );
 
     return builder.oppdaterPeriodeOgBuild(oppdatertPeriode).perioder;
 };
