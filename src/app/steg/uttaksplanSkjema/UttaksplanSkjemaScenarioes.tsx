@@ -47,6 +47,7 @@ const Scenario1: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
     søknad,
     antallUkerFellesperiode,
     familiehendelsesdato,
+    navnPåForeldre,
     intl
 }) => {
     const harSvartPåDekningsgradSpørsmål = søknad.dekningsgrad !== undefined;
@@ -71,6 +72,8 @@ const Scenario1: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
             />
             <FarSinFørsteUttaksdagSpørsmål
                 visible={morSinSisteUttaksdag !== undefined}
+                morSinSisteUttaksdag={morSinSisteUttaksdag}
+                navnPåForeldre={navnPåForeldre}
                 familiehendelsesdato={familiehendelsesdato}
             />
             <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
