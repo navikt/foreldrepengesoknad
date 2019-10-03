@@ -12,17 +12,33 @@ import {
     isGruppertInfoPeriode,
     isUttakAnnenPart,
     UttakAnnenPartInfoPeriode,
-    isUttaksperiode
+    isUttaksperiode,
+    TilgjengeligStønadskonto
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { Perioden } from '../Perioden';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
-import { Tidsperiode } from 'common/types';
+import { Tidsperiode, StønadskontoType } from 'common/types';
+import { Søknadsinfo } from 'app/selectors/types';
+import { getUttaksstatus } from '../uttaksstatus';
+import { justerAndrePartsUttakAvFellesperiodeOmMulig } from '../uttakUtils';
 
-export const UttaksplanBuilder = (perioder: Periode[], familiehendelsesdato: Date, opprinneligPlan?: Periode[]) => {
-    return new UttaksplanAutoBuilder(perioder, familiehendelsesdato, opprinneligPlan);
+export const UttaksplanBuilder = (
+    perioder: Periode[],
+    familiehendelsesdato: Date,
+    søknadsinfo: Søknadsinfo,
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    opprinneligPlan?: Periode[]
+) => {
+    return new UttaksplanAutoBuilder(
+        perioder,
+        familiehendelsesdato,
+        søknadsinfo,
+        tilgjengeligeStønadskontoer,
+        opprinneligPlan
+    );
 };
 
 const periodeHasValidTidsrom = (periode: Periode): boolean =>
@@ -33,11 +49,21 @@ const clonePeriode = (periode: Periode): Periode => ({ ...periode, tidsperiode: 
 class UttaksplanAutoBuilder {
     protected familiehendelsesdato: Date;
     protected opprinneligPlan: Periode[] | undefined;
+    protected søknadsinfo: Søknadsinfo;
+    protected tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
 
-    public constructor(public perioder: Periode[], familiehendelsesdato: Date, opprinneligPlan?: Periode[]) {
+    public constructor(
+        public perioder: Periode[],
+        familiehendelsesdato: Date,
+        søknadsinfo: Søknadsinfo,
+        tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+        opprinneligPlan?: Periode[]
+    ) {
         this.perioder = perioder;
         this.familiehendelsesdato = familiehendelsesdato;
         this.opprinneligPlan = opprinneligPlan;
+        this.søknadsinfo = søknadsinfo;
+        this.tilgjengeligeStønadskontoer = tilgjengeligeStønadskontoer;
     }
 
     buildUttaksplan() {
@@ -81,6 +107,12 @@ class UttaksplanAutoBuilder {
         this.sort();
         this.settInnSamtidigUttakAnnenPartFraOpprinneligPlan();
         this.konverterAnnenPartsPlanTilSamtidigUttakHvisSøkerHarLagtInnSamtidigUttak();
+        const uttaksstatus = getUttaksstatus(this.søknadsinfo, this.tilgjengeligeStønadskontoer, this.perioder);
+        this.perioder = justerAndrePartsUttakAvFellesperiodeOmMulig(
+            this.perioder,
+            uttaksstatus.uttak.find((u) => u.konto === StønadskontoType.Fellesperiode)
+        );
+        this.finnOgSettInnHull();
 
         this.perioder = [
             ...perioderFørFamDato.filter((p) => isOverskrivbarPeriode(p) === false),
