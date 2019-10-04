@@ -372,10 +372,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                     tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                     eksisterendeSak={eksisterendeSak}
                                     erIUttaksplanenSteg={true}
-                                    skalKunneViseInfoOmEkisterendeSak={skalKunneViseMorsUttaksplanForFarEllerMedmor(
-                                        eksisterendeSak.grunnlag,
-                                        søknadsinfo
-                                    )}
+                                    skalKunneViseInfoOmEkisterendeSak={
+                                        !søknadsinfo.søknaden.erEndringssøknad &&
+                                        skalKunneViseMorsUttaksplanForFarEllerMedmor(
+                                            eksisterendeSak.grunnlag,
+                                            søknadsinfo
+                                        )
+                                    }
                                 />
                             </Block>
                         )}
