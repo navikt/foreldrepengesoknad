@@ -144,8 +144,7 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 ...state,
                 uttaksplan: cloneUttaksplan(action.perioder),
                 ekstrainfo: {
-                    ...state.ekstrainfo,
-                    endringstidspunkt: undefined
+                    ...state.ekstrainfo
                 }
             };
 
