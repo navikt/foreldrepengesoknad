@@ -1,3 +1,5 @@
+import { detect } from 'detect-browser';
+
 const base64ToArrayBuffer = (base64: string) => {
     const binaryString = window.atob(base64);
     const bytes = new Uint8Array(binaryString.length);
@@ -8,11 +10,14 @@ const base64ToArrayBuffer = (base64: string) => {
 };
 
 export const openPdfPreview = (base64: string) => {
-    window.open(
-        URL.createObjectURL(
-            new Blob([base64ToArrayBuffer(base64)], {
-                type: 'application/pdf'
-            })
-        )
-    );
+    const browserInfo = detect();
+    const pdfBlob = new Blob([base64ToArrayBuffer(base64)], {
+        type: 'application/pdf'
+    });
+
+    if (browserInfo && browserInfo.name === 'edge' && window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(pdfBlob);
+    } else {
+        window.open(URL.createObjectURL(pdfBlob));
+    }
 };
