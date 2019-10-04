@@ -6,7 +6,10 @@ import { AppState } from '../../redux/reducers';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { default as Steg, StegProps } from '../../components/applikasjon/steg/Steg';
 import { DispatchProps } from 'common/redux/types';
-import { getSeneEndringerSomKreverBegrunnelse } from 'app/util/uttaksplan/uttakUtils';
+import {
+    getSeneEndringerSomKreverBegrunnelse,
+    skalKunneViseMorsUttaksplanForFarEllerMedmor
+} from 'app/util/uttaksplan/uttakUtils';
 import { Forelder } from 'common/types';
 import { getPeriodelisteElementId } from '../../components/uttaksplanlegger/components/periodeliste/Periodeliste';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
@@ -35,7 +38,6 @@ import isAvailable from '../../util/steg/isAvailable';
 import Søknad, { Tilleggsopplysninger, Opplysning } from '../../types/søknad/Søknad';
 import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
 import Uttaksplanlegger from '../../components/uttaksplanlegger/Uttaksplanlegger';
-import { getVeilederInfoText } from 'app/util/uttaksplan/steg/util';
 import {
     selectUttaksplanVeilederinfo,
     selectPeriodelisteMeldinger
@@ -316,7 +318,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             vedleggForSenEndring,
             tilleggsopplysninger,
             søknadsinfo,
-            aktivitetsfriKvote,
             uttaksplanVeilederInfo,
             planErEndret,
             meldingerPerPeriode,
@@ -339,8 +340,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
         const defaultStønadskontoType =
             tilgjengeligeStønadskontoer.length === 1 ? tilgjengeligeStønadskontoer[0].konto : undefined;
-
-        const visVeileder = søknadsinfo.søknaden.erDeltUttak;
 
         return (
             <Steg
@@ -370,15 +369,17 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <>
-                        {visVeileder && (
-                            <VeilederInfo messages={[getVeilederInfoText(søknadsinfo, aktivitetsfriKvote, intl)]} />
-                        )}
                         {eksisterendeSak && (
                             <Block>
                                 <InfoEksisterendeSak
                                     søknadsinfo={søknadsinfo}
                                     tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                     eksisterendeSak={eksisterendeSak}
+                                    erIUttaksplanenSteg={true}
+                                    skalKunneViseInfoOmEkisterendeSak={skalKunneViseMorsUttaksplanForFarEllerMedmor(
+                                        eksisterendeSak.grunnlag,
+                                        søknadsinfo
+                                    )}
                                 />
                             </Block>
                         )}
