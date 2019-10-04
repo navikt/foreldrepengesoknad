@@ -646,7 +646,7 @@
     "terminbekreftelseDato.spørsmål": "Når er terminstadfestinga datert?",
     "termindato.spørsmål": "Når er termindatoen?",
     "termindato.infotekst":
-        "Dersom du har fått ein dato for planlagd keisarsnitt, legg du inn denne datoen som termindato. Du skal leggje ved stadfesting på keisarsnitt dersom du er sjølvstendig næringsdrivande eller frilansar.",
+        "Dersom du har fått ein dato for planlagd keisarsnitt, legg du inn denne datoen som termindato. Du skal leggje ved stadfesting på keisarsnitt dersom du kun mottar utbetaling fra NAV, er sjølvstendig næringsdrivande eller frilansar.",
     "tidsintervall": "{fom} - {tom}",
     "tidsperiode": "Fra {fom} til {tom}",
     "tidsperiode.kort": "{fom} - {tom}",
