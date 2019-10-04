@@ -30,6 +30,7 @@ interface OwnProps {
     søknadsinfo: Søknadsinfo;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     eksisterendeSak: EksisterendeSak;
+    erIUttaksplanenSteg: boolean;
     skalKunneViseInfoOmEkisterendeSak?: boolean;
 }
 
@@ -55,7 +56,8 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
     søknadsinfo,
     tilgjengeligeStønadskontoer,
     eksisterendeSak,
-    skalKunneViseInfoOmEkisterendeSak = false,
+    erIUttaksplanenSteg,
+    skalKunneViseInfoOmEkisterendeSak,
     intl
 }) => {
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
@@ -95,6 +97,9 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
             return infoperioder.push(p);
         });
     }
+    const visPlanTekst: string = erIUttaksplanenSteg
+        ? 'eksisterendeSak.label.seAnnenPartsPlanIPlanen'
+        : 'eksisterendeSak.label.seAnnenPartsPlan';
 
     const søkersPerioder =
         eksisterendeSak &&
@@ -136,7 +141,7 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                     infoperioder &&
                     infoperioder.length > 0 && (
                         <UtvidetInformasjon
-                            apneLabel={getMessage(intl, 'eksisterendeSak.label.seAnnenPartsPlan', {
+                            apneLabel={getMessage(intl, visPlanTekst, {
                                 navn: navnGenitivEierform
                             })}>
                             <InfoEksisterendeSakPerioder
@@ -156,6 +161,9 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                         <InfoEksisterendeSakPerioder perioder={søkersPerioder} søknadsinfo={søknadsinfo} />
                     </InnholdMedIllustrasjon>
                 )}
+            <Normaltekst>
+                <FormattedHTMLMessage id="uttaksplan.informasjon.lesMer" />
+            </Normaltekst>
         </InfoBlock>
     );
 };

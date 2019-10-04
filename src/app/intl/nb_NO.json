@@ -757,6 +757,8 @@
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan ha {aktivitetsfriKvote} uker med foreldrepenger uten aktivitetskrav til mor.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn periode med foreldrepenger for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
+    "uttaksplan.informasjon.lesMer":
+        "Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMindreEnnTreUker":
         "{varighet} du ikke bruker før termin faller bort",
@@ -1102,6 +1104,7 @@
     "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
     "eksisterendeSak.tekst.benevning.førstegangssøknaMedEkisterndeSakAnnenPart": "{ navn }",
     "eksisterendeSak.label.seAnnenPartsPlan": "Se { navn } plan",
+    "eksisterendeSak.label.seAnnenPartsPlanIPlanen": "Se { navn } opprinnelige plan",
     "eksisterendeSak.label.annenPartsPlan": "{ navn } plan:",
     "eksisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { beskrivelse }",
 

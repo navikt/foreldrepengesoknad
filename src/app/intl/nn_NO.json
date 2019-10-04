@@ -1107,6 +1107,7 @@
     "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
     "eksisterendeSak.tekst.benevning.førstegangssøknaMedEkisterndeSakAnnenPart": "{ navn }",
     "eksisterendeSak.label.seAnnenPartsPlan": "Se { navn } plan",
+    "eksisterendeSak.label.seAnnenPartsPlanIPlanen": "Se { navn } opprinnelige plan",
     "eksisterendeSak.label.annenPartsPlan": "{ navn } plan:",
     "eksisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { beskrivelse }",
 
