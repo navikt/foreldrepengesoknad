@@ -57,7 +57,10 @@ const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
             return;
         }
 
-        if (Perioden(forrigePeriode).erLik(periode) && Perioden(forrigePeriode).erSammenhengende(periode)) {
+        if (
+            Perioden(forrigePeriode).erLik(periode, false, true) &&
+            Perioden(forrigePeriode).erSammenhengende(periode)
+        ) {
             forrigePeriode.tidsperiode.tom = periode.tidsperiode.tom;
             return;
         } else {
