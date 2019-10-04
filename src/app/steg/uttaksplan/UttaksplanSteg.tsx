@@ -249,9 +249,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             opprinneligPlan
         );
 
-        this.props.dispatch(søknadActions.setEndringstidspunkt(nyPeriode.tidsperiode.fom));
-        this.props.dispatch(søknadActions.setLastAddedPeriodeId(id));
-        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan));
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, nyPeriode.tidsperiode.fom, id));
     }
 
     handleDeletePeriode(slettetPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
@@ -264,8 +262,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             opprinneligPlan
         );
 
-        this.props.dispatch(søknadActions.setEndringstidspunkt(slettetPeriode.tidsperiode.fom));
-        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan));
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, slettetPeriode.tidsperiode.fom));
     }
 
     handleUpdatePeriode(oppdatertPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
@@ -278,8 +275,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             opprinneligPlan
         );
 
-        this.props.dispatch(søknadActions.setEndringstidspunkt(oppdatertPeriode.tidsperiode.fom));
-        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan));
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, oppdatertPeriode.tidsperiode.fom));
     }
 
     handleBegrunnelseChange = (årsak: string) => (begrunnelse: string) => {
@@ -376,10 +372,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                     tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                     eksisterendeSak={eksisterendeSak}
                                     erIUttaksplanenSteg={true}
-                                    skalKunneViseInfoOmEkisterendeSak={skalKunneViseMorsUttaksplanForFarEllerMedmor(
-                                        eksisterendeSak.grunnlag,
-                                        søknadsinfo
-                                    )}
+                                    skalKunneViseInfoOmEkisterendeSak={
+                                        !søknadsinfo.søknaden.erEndringssøknad &&
+                                        skalKunneViseMorsUttaksplanForFarEllerMedmor(
+                                            eksisterendeSak.grunnlag,
+                                            søknadsinfo
+                                        )
+                                    }
                                 />
                             </Block>
                         )}

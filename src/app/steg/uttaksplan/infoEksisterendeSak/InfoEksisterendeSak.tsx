@@ -25,6 +25,7 @@ import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import { trimPerioderIGruppertInfoPeriode } from 'app/util/uttaksplan/gruppertInfoPeriodeUtils';
 import { getForeldreparSituasjonFraSøknadsinfo } from 'app/util/foreldreparSituasjonUtils';
+import Block from 'common/components/block/Block';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -108,59 +109,65 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
 
     return (
         <InfoBlock padding="m">
-            <InnholdMedIllustrasjon
-                tittel={getMessage(intl, `eksisterendeSak.tittel.${erDeltUttak ? 'deltUttak' : 'aleneomsorg'}`)}
-                illustrasjoner={[
-                    <SituasjonSirkel key="situasjon" situasjon={situasjon} valgtForelder={forelderVedAleneomsorg} />,
-                    <UkerSirkel key="uker" uker={uker} />
-                ]}>
-                <Normaltekst>
-                    <FormattedHTMLMessage
-                        id="eksisterendeSak.tekst.html"
-                        values={{
-                            uker: getVarighetString(uker * 5, intl),
-                            dekningsgrad,
-                            navn: hvem
-                        }}
-                    />
-                </Normaltekst>
-                {skalKunneViseInfoOmEkisterendeSak &&
-                    nesteMuligeUttaksdagEtterAnnenPart && (
-                        <Normaltekst>
-                            <FormattedHTMLMessage
-                                id="eksisterendeSak.tekst.nesteMuligeUttaksdato"
-                                values={{
-                                    dato: formaterDato(nesteMuligeUttaksdagEtterAnnenPart, 'DD. MMM YYYY'),
-                                    navn: navn.annenForelder.fornavn
-                                }}
-                            />
-                        </Normaltekst>
-                    )}
+            <Block margin="xs">
+                <InnholdMedIllustrasjon
+                    tittel={getMessage(intl, `eksisterendeSak.tittel.${erDeltUttak ? 'deltUttak' : 'aleneomsorg'}`)}
+                    illustrasjoner={[
+                        <SituasjonSirkel
+                            key="situasjon"
+                            situasjon={situasjon}
+                            valgtForelder={forelderVedAleneomsorg}
+                        />,
+                        <UkerSirkel key="uker" uker={uker} />
+                    ]}>
+                    <Normaltekst>
+                        <FormattedHTMLMessage
+                            id="eksisterendeSak.tekst.html"
+                            values={{
+                                uker: getVarighetString(uker * 5, intl),
+                                dekningsgrad,
+                                navn: hvem
+                            }}
+                        />
+                    </Normaltekst>
+                    {skalKunneViseInfoOmEkisterendeSak &&
+                        nesteMuligeUttaksdagEtterAnnenPart && (
+                            <Normaltekst>
+                                <FormattedHTMLMessage
+                                    id="eksisterendeSak.tekst.nesteMuligeUttaksdato"
+                                    values={{
+                                        dato: formaterDato(nesteMuligeUttaksdagEtterAnnenPart, 'DD. MMM YYYY'),
+                                        navn: navn.annenForelder.fornavn
+                                    }}
+                                />
+                            </Normaltekst>
+                        )}
 
+                    {skalKunneViseInfoOmEkisterendeSak &&
+                        infoperioder &&
+                        infoperioder.length > 0 && (
+                            <UtvidetInformasjon
+                                apneLabel={getMessage(intl, visPlanTekst, {
+                                    navn: navnGenitivEierform
+                                })}>
+                                <InfoEksisterendeSakPerioder
+                                    perioder={infoperioder}
+                                    søknadsinfo={søknadsinfo}
+                                    navnForOverskrift={søknadsinfo.navn.annenForelder.navn}
+                                />
+                            </UtvidetInformasjon>
+                        )}
+                </InnholdMedIllustrasjon>
                 {skalKunneViseInfoOmEkisterendeSak &&
-                    infoperioder &&
-                    infoperioder.length > 0 && (
-                        <UtvidetInformasjon
-                            apneLabel={getMessage(intl, visPlanTekst, {
-                                navn: navnGenitivEierform
-                            })}>
-                            <InfoEksisterendeSakPerioder
-                                perioder={infoperioder}
-                                søknadsinfo={søknadsinfo}
-                                navnForOverskrift={søknadsinfo.navn.annenForelder.navn}
-                            />
-                        </UtvidetInformasjon>
+                    søkersPerioder &&
+                    søkersPerioder.length > 0 && (
+                        <InnholdMedIllustrasjon
+                            tittel={getMessage(intl, 'eksisterendeSak.tittel.dineDagerMedForeldrepenger')}
+                            illustrasjoner={[]}>
+                            <InfoEksisterendeSakPerioder perioder={søkersPerioder} søknadsinfo={søknadsinfo} />
+                        </InnholdMedIllustrasjon>
                     )}
-            </InnholdMedIllustrasjon>
-            {skalKunneViseInfoOmEkisterendeSak &&
-                søkersPerioder &&
-                søkersPerioder.length > 0 && (
-                    <InnholdMedIllustrasjon
-                        tittel={getMessage(intl, 'eksisterendeSak.tittel.dineDagerMedForeldrepenger')}
-                        illustrasjoner={[]}>
-                        <InfoEksisterendeSakPerioder perioder={søkersPerioder} søknadsinfo={søknadsinfo} />
-                    </InnholdMedIllustrasjon>
-                )}
+            </Block>
             <Normaltekst>
                 <FormattedHTMLMessage id="uttaksplan.informasjon.lesMer" />
             </Normaltekst>
