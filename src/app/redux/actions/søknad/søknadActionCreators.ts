@@ -21,8 +21,7 @@ import {
     UttaksplanSetForslag,
     StartSøknad,
     UttaksplanLagForslag,
-    SetEndringstidspunkt,
-    SetLastAddedPeriodId
+    SetEndringstidspunkt
 } from './søknadActionDefinitions';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
@@ -132,9 +131,15 @@ const deleteAttachmentFailed = (error: any, attachment: Attachment): DeleteAttac
     attachment
 });
 
-const uttaksplanSetPerioder = (perioder: Periode[]): UttaksplanSetPerioder => ({
+const uttaksplanSetPerioder = (
+    perioder: Periode[],
+    endringstidspunkt?: Date,
+    lastAddedPeriodeId?: string
+): UttaksplanSetPerioder => ({
     type: SøknadActionKeys.UTTAKSPLAN_SET_PERIODER,
-    perioder
+    perioder,
+    endringstidspunkt,
+    lastAddedPeriodeId
 });
 
 const uttaksplanLagForslag = (): UttaksplanLagForslag => ({
@@ -178,11 +183,6 @@ const setEndringstidspunkt = (endringstidspunkt: Date): SetEndringstidspunkt => 
     endringstidspunkt
 });
 
-const setLastAddedPeriodeId = (id: string): SetLastAddedPeriodId => ({
-    type: SøknadActionKeys.SET_LAST_ADDED_PERIODE_ID,
-    id
-});
-
 export default {
     startSøknad,
     updateAnnenForelder,
@@ -206,7 +206,6 @@ export default {
     setSøknad,
     setCurrentSteg,
     setEndringstidspunkt,
-    setLastAddedPeriodeId,
     setVedleggForSenEndring,
     setTilleggsopplysning,
     uttaksplanSetForslag,
