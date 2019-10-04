@@ -15,7 +15,12 @@ export const openPdfPreview = (base64: string) => {
         type: 'application/pdf'
     });
 
-    if (browserInfo && browserInfo.name === 'edge' && window.navigator && window.navigator.msSaveOrOpenBlob) {
+    if (
+        browserInfo &&
+        (browserInfo.name === 'edge' || browserInfo.name === 'ie') &&
+        window.navigator &&
+        window.navigator.msSaveOrOpenBlob
+    ) {
         window.navigator.msSaveOrOpenBlob(pdfBlob);
     } else {
         window.open(URL.createObjectURL(pdfBlob));
