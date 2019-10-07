@@ -441,7 +441,7 @@ function settInnPerioder(perioder: Periode[], fastePerioder: Periode[]): Periode
         return fastePerioder;
     }
     let nyePerioder: Periode[] = [...perioder];
-    fastePerioder.sort(sorterPerioder).forEach((periode) => {
+    fastePerioder.forEach((periode) => {
         nyePerioder = settInnPeriode(nyePerioder, periode);
     });
     return nyePerioder.sort(sorterPerioder);
