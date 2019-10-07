@@ -24,6 +24,7 @@ import { Tidsperiode, StønadskontoType } from 'common/types';
 import { Søknadsinfo } from 'app/selectors/types';
 import { getUttaksstatus } from '../uttaksstatus';
 import { justerAndrePartsUttakAvFellesperiodeOmMulig } from '../uttakUtils';
+import { getFloatFromString } from 'common/util/numberUtils';
 
 export const UttaksplanBuilder = (
     perioder: Periode[],
@@ -163,7 +164,9 @@ class UttaksplanAutoBuilder {
                     id: guid(),
                     ønskerSamtidigUttak: true,
                     visPeriodeIPlan: false,
-                    samtidigUttakProsent: '50',
+                    samtidigUttakProsent: isUttaksperiode(p)
+                        ? this.beregnSamtidigUttaksprosent(p.samtidigUttakProsent)
+                        : '100',
                     tidsperiode: {
                         fom: moment(p.tidsperiode.fom).isSameOrAfter(moment(op.tidsperiode.fom))
                             ? p.tidsperiode.fom
@@ -341,6 +344,7 @@ class UttaksplanAutoBuilder {
         this.perioder = [...this.perioder.slice(0, idx), ...periodeSomSkalSettesInn, ...this.perioder.slice(idx + 1)];
         return this;
     }
+
     private oppdaterPerioderVedEndretPeriode(periode: Periode, oldPeriode: Periode) {
         if (Tidsperioden(periode.tidsperiode).erLik(oldPeriode.tidsperiode)) {
             return this;
@@ -388,6 +392,19 @@ class UttaksplanAutoBuilder {
     private sort() {
         this.perioder.sort(sorterPerioder);
         return this;
+    }
+
+    private beregnSamtidigUttaksprosent(søkersSamtidigUttaksprosent: string | undefined): string {
+        const { erFlerbarnssøknad } = this.søknadsinfo.søknaden;
+
+        if (erFlerbarnssøknad) {
+            return '100';
+        } else {
+            const søkersProsent = getFloatFromString(søkersSamtidigUttaksprosent);
+            const annenPartsProsent = søkersProsent ? 150 - søkersProsent : 100;
+
+            return Math.min(100, annenPartsProsent).toString();
+        }
     }
 }
 
