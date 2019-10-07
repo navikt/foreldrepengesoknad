@@ -105,8 +105,8 @@ class UttaksplanAutoBuilder {
         }
         this.fjernHullPåSlutten();
         this.sort();
-        this.settInnSamtidigUttakAnnenPartFraOpprinneligPlan();
         this.konverterAnnenPartsPlanTilSamtidigUttakHvisSøkerHarLagtInnSamtidigUttak();
+        this.settInnSamtidigUttakAnnenPartFraOpprinneligPlan();
         const uttaksstatus = getUttaksstatus(this.søknadsinfo, this.tilgjengeligeStønadskontoer, this.perioder);
         this.perioder = justerAndrePartsUttakAvFellesperiodeOmMulig(
             this.perioder,
@@ -160,8 +160,10 @@ class UttaksplanAutoBuilder {
             overlappendeUttak.forEach((op: UttakAnnenPartInfoPeriode) => {
                 const nyPeriode: UttakAnnenPartInfoPeriode = {
                     ...op,
+                    id: guid(),
                     ønskerSamtidigUttak: true,
                     visPeriodeIPlan: false,
+                    samtidigUttakProsent: '50',
                     tidsperiode: {
                         fom: moment(p.tidsperiode.fom).isSameOrAfter(moment(op.tidsperiode.fom))
                             ? p.tidsperiode.fom
@@ -201,6 +203,7 @@ class UttaksplanAutoBuilder {
             overlappendeSamtidigUttak.forEach((op: UttakAnnenPartInfoPeriode) => {
                 this.perioder.push({
                     ...op,
+                    id: guid(),
                     visPeriodeIPlan: false,
                     tidsperiode: {
                         fom: moment(p.tidsperiode.fom).isSameOrAfter(moment(op.tidsperiode.fom))
@@ -433,12 +436,12 @@ function fjernOverskrivbarePerioderIPeriodetidsrom(perioder: Periode[], periode:
     return nyePerioder;
 }
 
-function settInnPerioder(perioder: Periode[], perioder2: Periode[]): Periode[] {
+function settInnPerioder(perioder: Periode[], fastePerioder: Periode[]): Periode[] {
     if (perioder.length === 0) {
-        return perioder2;
+        return fastePerioder;
     }
     let nyePerioder: Periode[] = [...perioder];
-    perioder2.sort(sorterPerioder).forEach((periode) => {
+    fastePerioder.sort(sorterPerioder).forEach((periode) => {
         nyePerioder = settInnPeriode(nyePerioder, periode);
     });
     return nyePerioder.sort(sorterPerioder);
@@ -586,6 +589,10 @@ export function slåSammenLikePerioder(perioder: Periode[]): Periode[] {
 }
 
 function leggTilPeriodeEtterPeriode(perioder: Periode[], periode: Periode, nyPeriode: Periode): Periode[] {
+    if (isInfoPeriode(nyPeriode)) {
+        return perioder;
+    }
+
     const perioderFør = Periodene(perioder).finnAlleForegåendePerioder(periode);
     const perioderEtter = Periodene(perioder).finnAllePåfølgendePerioder(periode);
     const uttaksdager: number =
@@ -597,16 +604,23 @@ function leggTilPeriodeEtterPeriode(perioder: Periode[], periode: Periode, nyPer
 }
 
 function leggTilPeriodeFørPeriode(perioder: Periode[], periode: Periode, nyPeriode: Periode): Periode[] {
+    if (isInfoPeriode(nyPeriode)) {
+        return perioder;
+    }
+
     const perioderEtter = Periodene(perioder).finnAllePåfølgendePerioder(periode);
     const uttaksdager: number =
-        (isUttakAnnenPart(nyPeriode) && nyPeriode.ønskerSamtidigUttak) ||
-        (isUttaksperiode(nyPeriode) && nyPeriode.ønskerSamtidigUttak)
+        isUttaksperiode(nyPeriode) && nyPeriode.ønskerSamtidigUttak
             ? 0
             : Tidsperioden(nyPeriode.tidsperiode).getAntallUttaksdager();
     return [...[nyPeriode], ...Periodene([periode, ...perioderEtter]).forskyvPerioder(uttaksdager)];
 }
 
 function leggTilPeriodeIPeriode(perioder: Periode[], periode: Periode, nyPeriode: Periode): Periode[] {
+    if (isInfoPeriode(nyPeriode)) {
+        return perioder;
+    }
+
     const perioderFør = Periodene(perioder).finnAlleForegåendePerioder(periode);
     const perioderEtter = Periodene(perioder).finnAllePåfølgendePerioder(periode);
     const splittetPeriode = splittPeriodeMedPeriode(periode, nyPeriode);

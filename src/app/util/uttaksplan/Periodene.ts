@@ -156,12 +156,43 @@ function finnPåfølgendePeriode(perioder: Periode[], periode: Periode): Periode
     return undefined;
 }
 function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
-    return perioder.map((periode) => {
-        if (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Info) {
-            return periode;
+    let uttaksdagerCurrent = uttaksdager;
+
+    return perioder.reduce((result: Periode[], periode: Periode) => {
+        if (periode.type === Periodetype.Utsettelse) {
+            result.push(periode);
+            return result;
         }
-        return forskyvPeriode(periode, uttaksdager);
-    });
+
+        if (periode.type === Periodetype.Info) {
+            const dagerIPerioden = Perioden(periode).getAntallUttaksdager();
+
+            if (dagerIPerioden > uttaksdagerCurrent) {
+                const forskyvetStartdato = Uttaksdagen(Uttaksdagen(periode.tidsperiode.fom).denneEllerNeste()).leggTil(
+                    uttaksdager
+                );
+                const justertInfoPeriode: InfoPeriode = {
+                    ...periode,
+                    tidsperiode: {
+                        fom: forskyvetStartdato,
+                        tom: periode.tidsperiode.tom
+                    }
+                };
+
+                result.push(justertInfoPeriode);
+                return result;
+            } else if (dagerIPerioden === uttaksdagerCurrent) {
+                uttaksdagerCurrent = 0;
+                return result;
+            } else {
+                uttaksdagerCurrent -= dagerIPerioden;
+                return result;
+            }
+        }
+
+        result.push(forskyvPeriode(periode, uttaksdagerCurrent));
+        return result;
+    }, []);
 }
 
 function forskyvPeriode(periode: Periode, uttaksdager: number): Periode {

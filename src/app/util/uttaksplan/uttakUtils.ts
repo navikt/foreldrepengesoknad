@@ -102,7 +102,7 @@ export const getSamtidigUttakEllerGraderingsProsent = (periode: UttakAnnenPartIn
     const periodeErSamtidigUttak = periode.samtidigUttakProsent !== undefined;
 
     if (periodeErSamtidigUttak) {
-        return 100 - getFloatFromString(periode.samtidigUttakProsent)! / 100;
+        return (100 - getFloatFromString(periode.samtidigUttakProsent)!) / 100;
     }
 
     if (periodeErGradert) {
