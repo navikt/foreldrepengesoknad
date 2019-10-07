@@ -606,10 +606,6 @@ export function slåSammenLikePerioder(perioder: Periode[]): Periode[] {
 }
 
 function leggTilPeriodeEtterPeriode(perioder: Periode[], periode: Periode, nyPeriode: Periode): Periode[] {
-    if (isInfoPeriode(nyPeriode)) {
-        return perioder;
-    }
-
     const perioderFør = Periodene(perioder).finnAlleForegåendePerioder(periode);
     const perioderEtter = Periodene(perioder).finnAllePåfølgendePerioder(periode);
     const uttaksdager: number =
@@ -621,13 +617,10 @@ function leggTilPeriodeEtterPeriode(perioder: Periode[], periode: Periode, nyPer
 }
 
 function leggTilPeriodeFørPeriode(perioder: Periode[], periode: Periode, nyPeriode: Periode): Periode[] {
-    if (isInfoPeriode(nyPeriode)) {
-        return perioder;
-    }
-
     const perioderEtter = Periodene(perioder).finnAllePåfølgendePerioder(periode);
     const uttaksdager: number =
-        isUttaksperiode(nyPeriode) && nyPeriode.ønskerSamtidigUttak
+        (isUttakAnnenPart(nyPeriode) && nyPeriode.ønskerSamtidigUttak) ||
+        (isUttaksperiode(nyPeriode) && nyPeriode.ønskerSamtidigUttak)
             ? 0
             : Tidsperioden(nyPeriode.tidsperiode).getAntallUttaksdager();
     return [...[nyPeriode], ...Periodene([periode, ...perioderEtter]).forskyvPerioder(uttaksdager)];
