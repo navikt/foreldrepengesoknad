@@ -450,7 +450,7 @@ function fjernOverskrivbarePerioderIPeriodetidsrom(perioder: Periode[], periode:
             });
         }
     });
-    return nyePerioder;
+    return nyePerioder.sort(sorterPerioder);
 }
 
 function settInnPerioder(perioder: Periode[], fastePerioder: Periode[]): Periode[] {

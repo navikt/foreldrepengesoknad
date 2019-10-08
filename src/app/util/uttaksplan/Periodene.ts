@@ -169,7 +169,7 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
 
             if (dagerIPerioden > uttaksdagerCurrent) {
                 const forskyvetStartdato = Uttaksdagen(Uttaksdagen(periode.tidsperiode.fom).denneEllerNeste()).leggTil(
-                    uttaksdager
+                    uttaksdagerCurrent
                 );
                 const justertInfoPeriode: InfoPeriode = {
                     ...periode,
@@ -178,6 +178,8 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
                         tom: periode.tidsperiode.tom
                     }
                 };
+
+                uttaksdagerCurrent = 0;
 
                 result.push(justertInfoPeriode);
                 return result;
