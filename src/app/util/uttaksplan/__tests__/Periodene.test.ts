@@ -30,7 +30,7 @@ const perioder: Array<Partial<Periode>> = [
 
 describe('Periodene', () => {
     describe('finnOverlappendePerioder', () => {
-        it('Should find overlappende perioder', () => {
+        it('Skal finne overlappende perioder', () => {
             const nyPeriode: Partial<Periode> = {
                 id: '4',
                 type: Periodetype.Uttak,
@@ -44,7 +44,7 @@ describe('Periodene', () => {
             expect(result.length).toEqual(2);
         });
 
-        it('Should find overlapp if periode is wholly contained in another periode', () => {
+        it('Skal finne overlapp om perioden dekkes av en annen periode', () => {
             const nyPeriode: Partial<Periode> = {
                 id: '4',
                 type: Periodetype.Uttak,
@@ -58,7 +58,7 @@ describe('Periodene', () => {
             expect(result.length).toEqual(1);
         });
 
-        it('Should find overlapp if periode spans the exact same tidsperiode as another periode', () => {
+        it('Skal finne overlapp om perioden dekkes eksakt av en annen periode', () => {
             const nyPeriode: Partial<Periode> = {
                 id: '4',
                 type: Periodetype.Uttak,
@@ -72,7 +72,7 @@ describe('Periodene', () => {
             expect(result.length).toEqual(1);
         });
 
-        it('Should not find overlap if none exists', () => {
+        it('Skal ikke finne overlapp dersom det ikke er overlapp', () => {
             const nyPeriode: Partial<Periode> = {
                 id: '4',
                 type: Periodetype.Uttak,
@@ -86,7 +86,7 @@ describe('Periodene', () => {
             expect(result.length).toEqual(0);
         });
 
-        it('Should not find overlap if there are no perioder', () => {
+        it('Skal ikke finne overlapp dersom det ikke er noen andre perioder', () => {
             const nyPeriode: Partial<Periode> = {
                 id: '4',
                 type: Periodetype.Uttak,
@@ -102,7 +102,7 @@ describe('Periodene', () => {
     });
 
     describe('finnPeriodeMedDato', () => {
-        it('Should find periode if startdato does overlapp with any other periode', () => {
+        it('Skal finne periode dersom startdato overlapper med en annen periode', () => {
             const nyPeriode: Partial<Periode> = {
                 id: '4',
                 type: Periodetype.Uttak,
@@ -116,7 +116,7 @@ describe('Periodene', () => {
             expect(result).toBe(perioder[0]);
         });
 
-        it('Should find no periode if startdato does not overlapp with any other periode', () => {
+        it('Skal ikke finne periode dersom startdato ikke overlapper med en annen periode', () => {
             const nyPeriode: Partial<Periode> = {
                 id: '4',
                 type: Periodetype.Uttak,
@@ -130,7 +130,7 @@ describe('Periodene', () => {
             expect(result).toBe(undefined);
         });
 
-        it('Should find no periode if there are no perioder', () => {
+        it('Skal ikke finne en periode dersom det ikke er noen perioder', () => {
             const nyPeriode: Partial<Periode> = {
                 id: '4',
                 type: Periodetype.Uttak,
