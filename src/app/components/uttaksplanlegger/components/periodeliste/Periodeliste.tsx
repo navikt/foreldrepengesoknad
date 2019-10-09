@@ -17,11 +17,10 @@ import PeriodelisteInfo, { PeriodelisteInformasjon } from './items/PeriodelisteI
 import { Søknadsinfo } from 'app/selectors/types';
 import PeriodelisteAvslåttPeriode from './items/PeriodelisteAvslåttPeriode';
 import PeriodelisteOppholdAnnenPart from './items/PeriodelisteOppholdAnnenPart';
-import PeriodelisteGruppertInfoPart from './items/PeriodelisteGruppertInfoPart';
 import { VeiledermeldingerPerPeriode } from '../../../veilederInfo/types';
+import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 
 import './periodeliste.less';
-import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -208,17 +207,6 @@ class Periodeliste extends React.Component<Props> {
                                                         navnPåForeldre={navnPåForeldre}
                                                     />
                                                 )
-                                            );
-                                        case PeriodeInfoType.gruppertInfo:
-                                            return (
-                                                <PeriodelisteGruppertInfoPart
-                                                    key={itemId}
-                                                    itemId={itemId}
-                                                    isExpanded={isExpanded}
-                                                    onToggle={onToggle}
-                                                    periode={periode}
-                                                    navnPåForeldre={navnPåForeldre}
-                                                />
                                             );
                                     }
                                     return;
