@@ -9,7 +9,6 @@ import {
     isOverskrivbarPeriode,
     isHull,
     isInfoPeriode,
-    isGruppertInfoPeriode,
     isUttakAnnenPart,
     UttakAnnenPartInfoPeriode,
     isUttaksperiode,
@@ -293,7 +292,7 @@ class UttaksplanAutoBuilder {
 
             const opprinneligePerioderFørFørstePeriode = this.opprinneligPlan
                 .filter((p) => Perioden(p).starterFør(førstePeriode.tidsperiode.fom))
-                .filter(isInfoPeriode || isGruppertInfoPeriode)
+                .filter(isInfoPeriode)
                 .map((p) => {
                     if (Perioden(p).slutterSammeDagEllerEtter(førstePeriode.tidsperiode.fom)) {
                         return {
@@ -312,7 +311,7 @@ class UttaksplanAutoBuilder {
                 ...this.perioder,
                 ...this.opprinneligPlan
                     .filter((p) => moment(p.tidsperiode.fom).isAfter(sistePeriode.tidsperiode.tom, 'day'))
-                    .filter(isInfoPeriode || isGruppertInfoPeriode)
+                    .filter(isInfoPeriode)
                     .map(clonePeriode)
             ];
         }
