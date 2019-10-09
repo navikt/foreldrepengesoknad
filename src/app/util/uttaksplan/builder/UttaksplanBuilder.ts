@@ -21,23 +21,24 @@ import { Uttaksdagen } from '../Uttaksdagen';
 import { Perioden } from '../Perioden';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { Tidsperiode, StønadskontoType } from 'common/types';
-import { Søknadsinfo } from 'app/selectors/types';
-import { getUttaksstatus } from '../uttaksstatus';
+import { Uttaksstatus } from '../uttaksstatus';
 import { justerAndrePartsUttakAvFellesperiodeOmMulig } from '../uttakUtils';
 import { getFloatFromString } from 'common/util/numberUtils';
 
 export const UttaksplanBuilder = (
+    getUttaksstatusFunc: (tilgjengStønadskontoer: TilgjengeligStønadskonto[], uttaksplan: Periode[]) => Uttaksstatus,
     perioder: Periode[],
     familiehendelsesdato: Date,
-    søknadsinfo: Søknadsinfo,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    erFlerbarnssøknad: boolean,
     opprinneligPlan?: Periode[]
 ) => {
     return new UttaksplanAutoBuilder(
         perioder,
         familiehendelsesdato,
-        søknadsinfo,
         tilgjengeligeStønadskontoer,
+        getUttaksstatusFunc,
+        erFlerbarnssøknad,
         opprinneligPlan
     );
 };
@@ -50,21 +51,30 @@ const clonePeriode = (periode: Periode): Periode => ({ ...periode, tidsperiode: 
 class UttaksplanAutoBuilder {
     protected familiehendelsesdato: Date;
     protected opprinneligPlan: Periode[] | undefined;
-    protected søknadsinfo: Søknadsinfo;
     protected tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    protected getUttaksstatusFunc: (
+        tilgjengStønadskontoer: TilgjengeligStønadskonto[],
+        uttaksplan: Periode[]
+    ) => Uttaksstatus;
+    protected erFlerbarnssøknad: boolean;
 
     public constructor(
         public perioder: Periode[],
         familiehendelsesdato: Date,
-        søknadsinfo: Søknadsinfo,
         tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+        getUttaksstatusFunc: (
+            tilgjengStønadskontoer: TilgjengeligStønadskonto[],
+            uttaksplan: Periode[]
+        ) => Uttaksstatus,
+        erFlerbarnssøknad: boolean,
         opprinneligPlan?: Periode[]
     ) {
         this.perioder = perioder;
         this.familiehendelsesdato = familiehendelsesdato;
         this.opprinneligPlan = opprinneligPlan;
-        this.søknadsinfo = søknadsinfo;
         this.tilgjengeligeStønadskontoer = tilgjengeligeStønadskontoer;
+        this.getUttaksstatusFunc = getUttaksstatusFunc;
+        this.erFlerbarnssøknad = erFlerbarnssøknad;
     }
 
     buildUttaksplan() {
@@ -108,7 +118,7 @@ class UttaksplanAutoBuilder {
         this.sort();
         this.konverterAnnenPartsPlanTilSamtidigUttakHvisSøkerHarLagtInnSamtidigUttak();
         this.settInnSamtidigUttakAnnenPartFraOpprinneligPlan();
-        const uttaksstatus = getUttaksstatus(this.søknadsinfo, this.tilgjengeligeStønadskontoer, this.perioder);
+        const uttaksstatus = this.getUttaksstatusFunc(this.tilgjengeligeStønadskontoer, this.perioder);
         this.perioder = justerAndrePartsUttakAvFellesperiodeOmMulig(
             this.perioder,
             uttaksstatus.uttak.find((u) => u.konto === StønadskontoType.Fellesperiode)
@@ -395,9 +405,7 @@ class UttaksplanAutoBuilder {
     }
 
     private beregnSamtidigUttaksprosent(søkersSamtidigUttaksprosent: string | undefined): string {
-        const { erFlerbarnssøknad } = this.søknadsinfo.søknaden;
-
-        if (erFlerbarnssøknad) {
+        if (this.erFlerbarnssøknad) {
             return '100';
         } else {
             const søkersProsent = getFloatFromString(søkersSamtidigUttaksprosent);

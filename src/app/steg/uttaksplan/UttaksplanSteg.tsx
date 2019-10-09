@@ -98,6 +98,12 @@ interface UttaksplanStegState {
 
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps & InjectedIntlProps;
 
+const getUttaksstatusFunc = (søkInfo: Søknadsinfo) => (
+    tilgjengStønadskontoer: TilgjengeligStønadskonto[],
+    uttaksplan: Periode[]
+) => {
+    return getUttaksstatus(søkInfo, tilgjengStønadskontoer, uttaksplan);
+};
 class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     feilOppsummering: React.Component | null;
 
@@ -241,11 +247,15 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     handleAddPeriode(nyPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
         const { søknad, tilgjengeligeStønadskontoer } = this.props;
+        const { familiehendelsesdato, erFlerbarnssøknad } = søknadsinfo.søknaden;
+
         const { updatedPlan, id } = addPeriode(
-            søknadsinfo,
+            getUttaksstatusFunc(søknadsinfo),
             søknad.uttaksplan,
             nyPeriode,
             tilgjengeligeStønadskontoer,
+            familiehendelsesdato,
+            erFlerbarnssøknad,
             opprinneligPlan
         );
 
@@ -254,11 +264,15 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     handleDeletePeriode(slettetPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
         const { søknad, tilgjengeligeStønadskontoer } = this.props;
+        const { familiehendelsesdato, erFlerbarnssøknad } = søknadsinfo.søknaden;
+
         const updatedPlan = deletePeriode(
-            søknadsinfo,
+            getUttaksstatusFunc(søknadsinfo),
             søknad.uttaksplan,
             slettetPeriode,
             tilgjengeligeStønadskontoer,
+            familiehendelsesdato,
+            erFlerbarnssøknad,
             opprinneligPlan
         );
 
@@ -267,11 +281,15 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     handleUpdatePeriode(oppdatertPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
         const { søknad, tilgjengeligeStønadskontoer } = this.props;
+        const { familiehendelsesdato, erFlerbarnssøknad } = søknadsinfo.søknaden;
+
         const updatedPlan = updatePeriode(
-            søknadsinfo,
+            getUttaksstatusFunc(søknadsinfo),
             søknad.uttaksplan,
             oppdatertPeriode,
             tilgjengeligeStønadskontoer,
+            familiehendelsesdato,
+            erFlerbarnssøknad,
             opprinneligPlan
         );
 
