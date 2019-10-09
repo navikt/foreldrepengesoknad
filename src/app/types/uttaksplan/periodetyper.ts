@@ -74,8 +74,7 @@ export enum SenEndringÅrsak {
 export enum PeriodeInfoType {
     'avslåttPeriode' = 'avslåttPeriode',
     'uttakAnnenPart' = 'uttakAnnenPart',
-    'utsettelseAnnenPart' = 'utsettelseAnnenPart',
-    'gruppertInfo' = 'gruppertInfo'
+    'utsettelseAnnenPart' = 'utsettelseAnnenPart'
 }
 
 export interface Helligdag {
@@ -145,19 +144,7 @@ const isAnnenPartInfoPeriodeOppholdUtsettelse = (periode: InfoPeriode) => {
     return periode.infotype === PeriodeInfoType.utsettelseAnnenPart;
 };
 
-export interface GruppertInfoPeriode extends InfoPeriodeBase {
-    type: Periodetype.Info;
-    infotype: PeriodeInfoType.gruppertInfo;
-    forelder: Forelder;
-    overskrives: true;
-    perioder: InfoPeriode[];
-}
-
-export type InfoPeriode =
-    | AvslåttPeriode
-    | UttakAnnenPartInfoPeriode
-    | GruppertInfoPeriode
-    | UtsettelseAnnenPartInfoPeriode;
+export type InfoPeriode = AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode;
 
 export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode => {
     return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.avslåttPeriode;
@@ -165,10 +152,6 @@ export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode 
 
 export const isInfoPeriode = (periode: Periode): periode is InfoPeriode => {
     return periode.type === Periodetype.Info && periode.overskrives === true;
-};
-
-export const isGruppertInfoPeriode = (periode: Periode): periode is GruppertInfoPeriode => {
-    return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.gruppertInfo;
 };
 
 export interface PeriodeHull extends PeriodeBase {

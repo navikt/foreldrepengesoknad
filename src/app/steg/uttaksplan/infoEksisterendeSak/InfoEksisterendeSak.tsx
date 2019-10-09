@@ -3,7 +3,7 @@ import {
     TilgjengeligStønadskonto,
     Periodetype,
     InfoPeriode,
-    PeriodeInfoType
+    isInfoPeriode
 } from '../../../types/uttaksplan/periodetyper';
 import { getAntallUker } from '../../../util/uttaksplan/stønadskontoer';
 import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedHTMLMessage } from 'react-intl';
@@ -23,7 +23,6 @@ import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { formaterDato } from 'common/util/datoUtils';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
-import { trimPerioderIGruppertInfoPeriode } from 'app/util/uttaksplan/gruppertInfoPeriodeUtils';
 import { getForeldreparSituasjonFraSøknadsinfo } from 'app/util/foreldreparSituasjonUtils';
 import Block from 'common/components/block/Block';
 
@@ -89,15 +88,9 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
 
     const navnGenitivEierform = getNavnGenitivEierform(navn.annenForelder.fornavn, intl.locale);
 
-    const infoperioder: InfoPeriode[] = [];
-    if (eksisterendeSak && eksisterendeSak.uttaksplan) {
-        eksisterendeSak.uttaksplan.filter((p) => p.type === Periodetype.Info).forEach((p: InfoPeriode) => {
-            if (p.infotype === PeriodeInfoType.gruppertInfo) {
-                return infoperioder.push(...trimPerioderIGruppertInfoPeriode(p));
-            }
-            return infoperioder.push(p);
-        });
-    }
+    const infoperioder: InfoPeriode[] =
+        eksisterendeSak && eksisterendeSak.uttaksplan ? eksisterendeSak.uttaksplan.filter(isInfoPeriode) : [];
+
     const visPlanTekst: string = erIUttaksplanenSteg
         ? 'eksisterendeSak.label.seAnnenPartsPlanIPlanen'
         : 'eksisterendeSak.label.seAnnenPartsPlan';
