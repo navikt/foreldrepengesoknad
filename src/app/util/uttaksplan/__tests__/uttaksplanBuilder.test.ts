@@ -1,6 +1,8 @@
-import { Utsettelsesperiode, Periodetype, UtsettelseÅrsakType } from '../../../types/uttaksplan/periodetyper';
-import { Forelder, Tidsperiode } from 'common/types';
+import { Utsettelsesperiode, Periodetype, UtsettelseÅrsakType, Periode } from '../../../types/uttaksplan/periodetyper';
+import { Forelder, Tidsperiode, StønadskontoType } from 'common/types';
 import { splittPeriodeMedHelligdager, getFriperioderITidsperiode } from '../builder/UttaksplanBuilder';
+import addPeriode from '../builder/addPeriode';
+import { Perioden } from '../Perioden';
 
 describe('UttaksplanBuilder', () => {
     it('should split jul 2018 med periodehull correctly', () => {
@@ -74,5 +76,34 @@ describe('UttaksplanBuilder', () => {
         };
         const friperioder = getFriperioderITidsperiode(tidsperiode);
         expect(friperioder.length).toBe(0);
+    });
+
+    it('test', () => {
+        const test = jest.fn().mockReturnValue({
+            gjelderDagerBrukt: false,
+            uttak: [{ konto: StønadskontoType.Foreldrepenger, dager: 15 }]
+        });
+
+        const nyPeriode: Partial<Periode> = {
+            type: Periodetype.Utsettelse,
+            årsak: UtsettelseÅrsakType.Ferie,
+            tidsperiode: {
+                fom: new Date('2019-01-31'),
+                tom: new Date('2019-02-10')
+            },
+            forelder: Forelder.mor,
+            erArbeidstaker: false
+        };
+
+        const result = addPeriode(
+            test,
+            [],
+            nyPeriode as Periode,
+            [{ konto: StønadskontoType.Foreldrepenger, dager: 50 }],
+            new Date('2019-01-31'),
+            false
+        );
+
+        expect(Perioden(result.updatedPlan[0]).erLik(nyPeriode as Periode));
     });
 });
