@@ -22,7 +22,8 @@ import {
     timeintervalsOverlap,
     dateIs15YearsAnd3MonthsAgoOrLess,
     dateIsTodayOrInFuture,
-    dateIsInThePast
+    dateIsInThePast,
+    getEndringstidspunkt
 } from '../dates';
 
 describe('dateUtils', () => {
@@ -89,5 +90,45 @@ describe('dateUtils', () => {
         expect(timeintervalsOverlap(overlap2, fixedIntervals)).toBe(true);
         expect(timeintervalsOverlap(overlap3, fixedIntervals)).toBe(true);
         expect(timeintervalsOverlap(noOverlap, fixedIntervals)).toBe(false);
+    });
+
+    describe('getEndringstidspunkt', () => {
+        it('Skal returnere undefined hvis ikke endringssøknad', () => {
+            const endringstidspunkt = getEndringstidspunkt(false, new Date(), new Date());
+
+            expect(endringstidspunkt).toBe(undefined);
+        });
+
+        it('Skal returnere eldste dato', () => {
+            let endringstidspunkt = getEndringstidspunkt(true, new Date('2019-01-01'), new Date('2019-02-01'));
+
+            expect(endringstidspunkt).toEqual(new Date('2019-01-01'));
+
+            endringstidspunkt = getEndringstidspunkt(true, new Date('2019-02-01'), new Date('2019-01-01'));
+
+            expect(endringstidspunkt).toEqual(new Date('2019-01-01'));
+        });
+
+        it('Skal fungere med en dato som undefined', () => {
+            let endringstidspunkt = getEndringstidspunkt(true, new Date('2019-01-01'), undefined);
+
+            expect(endringstidspunkt).toEqual(new Date('2019-01-01'));
+
+            endringstidspunkt = getEndringstidspunkt(true, undefined, new Date('2019-01-01'));
+
+            expect(endringstidspunkt).toEqual(new Date('2019-01-01'));
+        });
+
+        it('Skal returnere undefined hvis begge datoer er undefined', () => {
+            const endringstidspunkt = getEndringstidspunkt(true, undefined, undefined);
+
+            expect(endringstidspunkt).toEqual(undefined);
+        });
+
+        it('Skal returnere en dato om begge er samme dato', () => {
+            const endringstidspunkt = getEndringstidspunkt(true, new Date('2019-01-01'), new Date('2019-01-01'));
+
+            expect(endringstidspunkt).toEqual(new Date('2019-01-01'));
+        });
     });
 });
