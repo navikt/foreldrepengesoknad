@@ -1,4 +1,3 @@
-import { Søknadsinfo } from 'app/selectors/types';
 import {
     Periode,
     isForeldrepengerFørFødselUttaksperiode,
@@ -6,6 +5,7 @@ import {
 } from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanBuilder } from './UttaksplanBuilder';
 import moment from 'moment';
+import { Uttaksstatus } from '../uttaksstatus';
 
 const removeEkstrauttakFørTermin = (uttaksplan: Periode[], familiehendelsedato: Date) => {
     return uttaksplan.filter(
@@ -16,24 +16,27 @@ const removeEkstrauttakFørTermin = (uttaksplan: Periode[], familiehendelsedato:
 };
 
 const updatePeriode = (
-    søknadsinfo: Søknadsinfo,
+    getUttaksstatusFunc: (tilgjengStønadskontoer: TilgjengeligStønadskonto[], uttaksplan: Periode[]) => Uttaksstatus,
     uttaksplan: Periode[],
     oppdatertPeriode: Periode,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    familiehendelsesdato: Date,
+    erFlerbarnssøknad: boolean,
     opprinneligPlan?: Periode[]
 ): Periode[] => {
-    const familiehendelsedato = søknadsinfo.søknaden.familiehendelsesdato;
+    const familiehendelsedato = familiehendelsesdato;
     const removeOtherPerioderFørTermin =
         isForeldrepengerFørFødselUttaksperiode(oppdatertPeriode) && oppdatertPeriode.skalIkkeHaUttakFørTermin === true;
     const filteredPerioder = removeOtherPerioderFørTermin
-        ? removeEkstrauttakFørTermin(uttaksplan, søknadsinfo.søknaden.familiehendelsesdato)
+        ? removeEkstrauttakFørTermin(uttaksplan, familiehendelsesdato)
         : uttaksplan;
 
     const builder = UttaksplanBuilder(
+        getUttaksstatusFunc,
         filteredPerioder,
         familiehendelsedato,
-        søknadsinfo,
         tilgjengeligeStønadskontoer,
+        erFlerbarnssøknad,
         opprinneligPlan
     );
 
