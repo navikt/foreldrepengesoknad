@@ -85,6 +85,20 @@ describe('Periodene', () => {
             const result = Periodene(perioder as Periode[]).finnOverlappendePerioder(nyPeriode as Periode);
             expect(result.length).toEqual(0);
         });
+
+        it('Should not find overlap if there are no perioder', () => {
+            const nyPeriode: Partial<Periode> = {
+                id: '4',
+                type: Periodetype.Uttak,
+                tidsperiode: {
+                    fom: new Date('2019-02-01'),
+                    tom: new Date('2019-02-10')
+                }
+            };
+
+            const result = Periodene([]).finnOverlappendePerioder(nyPeriode as Periode);
+            expect(result.length).toEqual(0);
+        });
     });
 
     describe('finnPeriodeMedDato', () => {
@@ -113,6 +127,20 @@ describe('Periodene', () => {
             };
 
             const result = Periodene(perioder as Periode[]).finnPeriodeMedDato((nyPeriode as Periode).tidsperiode.fom);
+            expect(result).toBe(undefined);
+        });
+
+        it('Should find no periode if there are no perioder', () => {
+            const nyPeriode: Partial<Periode> = {
+                id: '4',
+                type: Periodetype.Uttak,
+                tidsperiode: {
+                    fom: new Date('2019-02-01'),
+                    tom: new Date('2019-02-10')
+                }
+            };
+
+            const result = Periodene([]).finnPeriodeMedDato((nyPeriode as Periode).tidsperiode.fom);
             expect(result).toBe(undefined);
         });
     });
