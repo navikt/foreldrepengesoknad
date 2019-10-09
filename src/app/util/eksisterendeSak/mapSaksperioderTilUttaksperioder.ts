@@ -10,8 +10,6 @@ import {
     UtsettelseÅrsakType,
     Arbeidsform,
     UttakAnnenPartInfoPeriode,
-    // GruppertInfoPeriode,
-    // isAnnenPartInfoPeriode,
     UtsettelseAnnenPartInfoPeriode,
     Overføringsperiode,
     isInfoPeriode
@@ -75,47 +73,6 @@ const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
 
     return nyePerioder.sort(sorterPerioder);
 };
-
-// const grupperAnnenPartInfoPerioder = (perioder: Periode[]): Periode[] => {
-//     if (perioder.length <= 1) {
-//         return perioder;
-//     }
-
-//     const nyePerioder: Periode[] = [];
-//     let gruppertPeriode: GruppertInfoPeriode | undefined;
-
-//     perioder.forEach((periode, index) => {
-//         if (isAnnenPartInfoPeriode(periode) && !periode.ønskerSamtidigUttak) {
-//             if (!gruppertPeriode) {
-//                 gruppertPeriode = {
-//                     id: guid(),
-//                     type: Periodetype.Info,
-//                     infotype: PeriodeInfoType.gruppertInfo,
-//                     tidsperiode: { ...periode.tidsperiode },
-//                     forelder: periode.forelder,
-//                     overskrives: true,
-//                     perioder: [periode],
-//                     visPeriodeIPlan: true
-//                 };
-//             } else {
-//                 gruppertPeriode.tidsperiode.tom = periode.tidsperiode.tom;
-//                 gruppertPeriode.perioder.push(periode);
-//             }
-//             return;
-//         }
-
-//         if (gruppertPeriode) {
-//             nyePerioder.push(gruppertPeriode);
-//             gruppertPeriode = undefined;
-//         }
-
-//         nyePerioder.push(periode);
-//     });
-//     if (gruppertPeriode) {
-//         nyePerioder.push(gruppertPeriode);
-//     }
-//     return nyePerioder;
-// };
 
 const korrigerTidsperiodeTilGyldigUttaksdag = (periode: Periode): Periode => {
     const { fom, tom } = periode.tidsperiode;

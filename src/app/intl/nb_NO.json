@@ -522,7 +522,6 @@
         "Du kan ikke endre datoen slik at den går over en annen periode med utsettelse.",
     "periodeliste.utsettelse.overlappendeTidsperiode.ny":
         "Det er allerede lagt inn en utsettelse i denne perioden. Du må slette perioden med utsettelse før du kan legge inn en ny utsettelse.",
-    "periodeliste.gruppertInfo.tittel": "{navn} {antallPerioder, plural, one{periode} other {perioder}}",
     "periodeliste.oppholdAnnenPart.tittel": "{navn} periode",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
     "periodetype.info.utsettelse.LOVBESTEMT_FERIE": "{ navn } utsetter på grunn av ferie",
