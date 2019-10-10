@@ -519,22 +519,25 @@ function settInnPeriode(perioder: Periode[], nyPeriode: Periode): Periode[] {
     }
 }
 
-export function finnHullIPerioder(perioder: Periode[], startdato?: Date): PeriodeHull[] {
+export function finnHullIPerioder(perioder: Periode[], familiehendelsesdato?: Date): PeriodeHull[] {
     const hull: PeriodeHull[] = [];
-    const len = perioder.length;
+    const perioderLength = perioder.length;
+    const shouldHullBeInsertedBetweenFamiliehendelsedatoAndFirstPeriode =
+        familiehendelsesdato !== undefined && perioderLength > 0 && perioder[0].type !== Periodetype.Hull;
 
-    if (startdato && len > 0 && perioder[0].type !== Periodetype.Hull) {
-        const fom = Uttaksdagen(startdato).denneEllerNeste();
-        const uttagsdagerMellomStartOgFørstePeriode = Tidsperioden({
+    if (familiehendelsesdato && shouldHullBeInsertedBetweenFamiliehendelsedatoAndFirstPeriode) {
+        const fom = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+        const uttaksdagerMellomStartOgFørstePeriode = Tidsperioden({
             fom,
             tom: Uttaksdagen(perioder[0].tidsperiode.fom).forrige()
         }).getAntallUttaksdager();
-        if (uttagsdagerMellomStartOgFørstePeriode > 0) {
-            hull.push(getNyttPeriodehull(getTidsperiode(fom, uttagsdagerMellomStartOgFørstePeriode)));
+
+        if (uttaksdagerMellomStartOgFørstePeriode > 0) {
+            hull.push(getNyttPeriodehull(getTidsperiode(fom, uttaksdagerMellomStartOgFørstePeriode)));
         }
     }
     perioder.forEach((periode, idx) => {
-        if (idx === len - 1) {
+        if (idx === perioderLength - 1) {
             return;
         }
         const nestePeriode = perioder[idx + 1];
@@ -550,11 +553,7 @@ export function finnHullIPerioder(perioder: Periode[], startdato?: Date): Period
         const uttaksdagerITidsperiode = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
 
         if (uttaksdagerITidsperiode > 0) {
-            hull.push({
-                id: guid(),
-                type: Periodetype.Hull,
-                tidsperiode: tidsperiodeMellomPerioder
-            });
+            hull.push(getNyttPeriodehull(tidsperiodeMellomPerioder));
         }
     });
     return hull;
