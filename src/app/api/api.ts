@@ -82,6 +82,7 @@ function sendSøknad(søknad: SøknadForInnsending) {
 
     return AxiosInstance.post(url, søknad, {
         withCredentials: true,
+        timeout: 120 * 1000,
         headers: {
             'content-type': 'application/json;'
         }
