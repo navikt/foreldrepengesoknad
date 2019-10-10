@@ -9,7 +9,6 @@ import {
     isOverskrivbarPeriode,
     isHull,
     isInfoPeriode,
-    isGruppertInfoPeriode,
     isUttakAnnenPart,
     UttakAnnenPartInfoPeriode,
     isUttaksperiode,
@@ -303,7 +302,7 @@ class UttaksplanAutoBuilder {
 
             const opprinneligePerioderFørFørstePeriode = this.opprinneligPlan
                 .filter((p) => Perioden(p).starterFør(førstePeriode.tidsperiode.fom))
-                .filter(isInfoPeriode || isGruppertInfoPeriode)
+                .filter(isInfoPeriode)
                 .map((p) => {
                     if (Perioden(p).slutterSammeDagEllerEtter(førstePeriode.tidsperiode.fom)) {
                         return {
@@ -322,7 +321,7 @@ class UttaksplanAutoBuilder {
                 ...this.perioder,
                 ...this.opprinneligPlan
                     .filter((p) => moment(p.tidsperiode.fom).isAfter(sistePeriode.tidsperiode.tom, 'day'))
-                    .filter(isInfoPeriode || isGruppertInfoPeriode)
+                    .filter(isInfoPeriode)
                     .map(clonePeriode)
             ];
         }
@@ -674,7 +673,7 @@ function splittPeriodeMedPeriode(periode: Periode, nyPeriode: Periode): Periode[
     };
     const startSisteDel: Date = Uttaksdagen(midt.tidsperiode.tom).neste();
 
-    if (Perioden(periode).erOpphold()) {
+    if (Perioden(periode).erOpphold() || isInfoPeriode(periode)) {
         dagerSisteDel = dagerSisteDel - Perioden(midt).getAntallUttaksdager();
     }
 

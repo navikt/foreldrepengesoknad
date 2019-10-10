@@ -8,6 +8,7 @@ import {
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
+import { getEndringstidspunkt } from 'app/util/dates/dates';
 
 export const getDefaultSøknadState = (): SøknadPartial => {
     return {
@@ -145,7 +146,11 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 uttaksplan: cloneUttaksplan(action.perioder),
                 ekstrainfo: {
                     ...state.ekstrainfo,
-                    endringstidspunkt: action.endringstidspunkt,
+                    endringstidspunkt: getEndringstidspunkt(
+                        state.erEndringssøknad,
+                        action.endringstidspunkt,
+                        state.ekstrainfo.endringstidspunkt
+                    ),
                     lastAddedPeriodeId: action.lastAddedPeriodeId
                 }
             };
