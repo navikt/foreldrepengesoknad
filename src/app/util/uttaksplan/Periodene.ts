@@ -164,14 +164,14 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
             return result;
         }
 
-        if (periode.type === Periodetype.Info) {
+        if (periode.type === Periodetype.Info || periode.type === Periodetype.Opphold) {
             const dagerIPerioden = Perioden(periode).getAntallUttaksdager();
 
             if (dagerIPerioden > uttaksdagerCurrent) {
                 const forskyvetStartdato = Uttaksdagen(Uttaksdagen(periode.tidsperiode.fom).denneEllerNeste()).leggTil(
                     uttaksdagerCurrent
                 );
-                const justertInfoPeriode: InfoPeriode = {
+                const justertPeriode: Periode = {
                     ...periode,
                     tidsperiode: {
                         fom: forskyvetStartdato,
@@ -181,7 +181,7 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
 
                 uttaksdagerCurrent = 0;
 
-                result.push(justertInfoPeriode);
+                result.push(justertPeriode);
                 return result;
             } else if (dagerIPerioden === uttaksdagerCurrent) {
                 uttaksdagerCurrent = 0;
