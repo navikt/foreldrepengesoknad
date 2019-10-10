@@ -62,7 +62,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
 
         Object.keys(stønadskontoer.kontoer)
             .filter((konto: StønadskontoType) => konto !== StønadskontoType.Flerbarnsdager)
-            .map((konto) => {
+            .forEach((konto) => {
                 tilgjengeligeStønadskontoer.push({
                     konto: konto as StønadskontoType,
                     dager: stønadskontoer.kontoer[konto]

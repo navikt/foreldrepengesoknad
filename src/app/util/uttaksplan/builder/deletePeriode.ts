@@ -1,20 +1,22 @@
-import { Søknadsinfo } from 'app/selectors/types';
 import { Periode, TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanBuilder } from './UttaksplanBuilder';
+import { Uttaksstatus } from '../uttaksstatus';
 
 const deletePeriode = (
-    søknadsinfo: Søknadsinfo,
+    getUttaksstatusFunc: (tilgjengStønadskontoer: TilgjengeligStønadskonto[], uttaksplan: Periode[]) => Uttaksstatus,
     uttaksplan: Periode[],
     slettetPeriode: Periode,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    familiehendelsesdato: Date,
+    erFlerbarnssøknad: boolean,
     opprinneligPlan?: Periode[]
 ): Periode[] => {
-    const familiehendelsedato = søknadsinfo.søknaden.familiehendelsesdato;
     const builder = UttaksplanBuilder(
+        getUttaksstatusFunc,
         uttaksplan,
-        familiehendelsedato,
-        søknadsinfo,
+        familiehendelsesdato,
         tilgjengeligeStønadskontoer,
+        erFlerbarnssøknad,
         opprinneligPlan
     );
 

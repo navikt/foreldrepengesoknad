@@ -20,23 +20,24 @@ import { Uttaksdagen } from '../Uttaksdagen';
 import { Perioden } from '../Perioden';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { Tidsperiode, StønadskontoType } from 'common/types';
-import { Søknadsinfo } from 'app/selectors/types';
-import { getUttaksstatus } from '../uttaksstatus';
+import { Uttaksstatus } from '../uttaksstatus';
 import { justerAndrePartsUttakAvFellesperiodeOmMulig } from '../uttakUtils';
 import { getFloatFromString } from 'common/util/numberUtils';
 
 export const UttaksplanBuilder = (
+    getUttaksstatusFunc: (tilgjengStønadskontoer: TilgjengeligStønadskonto[], uttaksplan: Periode[]) => Uttaksstatus,
     perioder: Periode[],
     familiehendelsesdato: Date,
-    søknadsinfo: Søknadsinfo,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    erFlerbarnssøknad: boolean,
     opprinneligPlan?: Periode[]
 ) => {
     return new UttaksplanAutoBuilder(
         perioder,
         familiehendelsesdato,
-        søknadsinfo,
         tilgjengeligeStønadskontoer,
+        getUttaksstatusFunc,
+        erFlerbarnssøknad,
         opprinneligPlan
     );
 };
@@ -49,21 +50,30 @@ const clonePeriode = (periode: Periode): Periode => ({ ...periode, tidsperiode: 
 class UttaksplanAutoBuilder {
     protected familiehendelsesdato: Date;
     protected opprinneligPlan: Periode[] | undefined;
-    protected søknadsinfo: Søknadsinfo;
     protected tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    protected getUttaksstatusFunc: (
+        tilgjengStønadskontoer: TilgjengeligStønadskonto[],
+        uttaksplan: Periode[]
+    ) => Uttaksstatus;
+    protected erFlerbarnssøknad: boolean;
 
     public constructor(
         public perioder: Periode[],
         familiehendelsesdato: Date,
-        søknadsinfo: Søknadsinfo,
         tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+        getUttaksstatusFunc: (
+            tilgjengStønadskontoer: TilgjengeligStønadskonto[],
+            uttaksplan: Periode[]
+        ) => Uttaksstatus,
+        erFlerbarnssøknad: boolean,
         opprinneligPlan?: Periode[]
     ) {
         this.perioder = perioder;
         this.familiehendelsesdato = familiehendelsesdato;
         this.opprinneligPlan = opprinneligPlan;
-        this.søknadsinfo = søknadsinfo;
         this.tilgjengeligeStønadskontoer = tilgjengeligeStønadskontoer;
+        this.getUttaksstatusFunc = getUttaksstatusFunc;
+        this.erFlerbarnssøknad = erFlerbarnssøknad;
     }
 
     buildUttaksplan() {
@@ -107,7 +117,7 @@ class UttaksplanAutoBuilder {
         this.sort();
         this.konverterAnnenPartsPlanTilSamtidigUttakHvisSøkerHarLagtInnSamtidigUttak();
         this.settInnSamtidigUttakAnnenPartFraOpprinneligPlan();
-        const uttaksstatus = getUttaksstatus(this.søknadsinfo, this.tilgjengeligeStønadskontoer, this.perioder);
+        const uttaksstatus = this.getUttaksstatusFunc(this.tilgjengeligeStønadskontoer, this.perioder);
         this.perioder = justerAndrePartsUttakAvFellesperiodeOmMulig(
             this.perioder,
             uttaksstatus.uttak.find((u) => u.konto === StønadskontoType.Fellesperiode)
@@ -394,9 +404,7 @@ class UttaksplanAutoBuilder {
     }
 
     private beregnSamtidigUttaksprosent(søkersSamtidigUttaksprosent: string | undefined): string {
-        const { erFlerbarnssøknad } = this.søknadsinfo.søknaden;
-
-        if (erFlerbarnssøknad) {
+        if (this.erFlerbarnssøknad) {
             return '100';
         } else {
             const søkersProsent = getFloatFromString(søkersSamtidigUttaksprosent);
@@ -511,22 +519,25 @@ function settInnPeriode(perioder: Periode[], nyPeriode: Periode): Periode[] {
     }
 }
 
-export function finnHullIPerioder(perioder: Periode[], startdato?: Date): PeriodeHull[] {
+export function finnHullIPerioder(perioder: Periode[], familiehendelsesdato?: Date): PeriodeHull[] {
     const hull: PeriodeHull[] = [];
-    const len = perioder.length;
+    const perioderLength = perioder.length;
+    const shouldHullBeInsertedBetweenFamiliehendelsedatoAndFirstPeriode =
+        familiehendelsesdato !== undefined && perioderLength > 0 && perioder[0].type !== Periodetype.Hull;
 
-    if (startdato && len > 0 && perioder[0].type !== Periodetype.Hull) {
-        const fom = Uttaksdagen(startdato).denneEllerNeste();
-        const uttagsdagerMellomStartOgFørstePeriode = Tidsperioden({
+    if (familiehendelsesdato && shouldHullBeInsertedBetweenFamiliehendelsedatoAndFirstPeriode) {
+        const fom = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+        const uttaksdagerMellomStartOgFørstePeriode = Tidsperioden({
             fom,
             tom: Uttaksdagen(perioder[0].tidsperiode.fom).forrige()
         }).getAntallUttaksdager();
-        if (uttagsdagerMellomStartOgFørstePeriode > 0) {
-            hull.push(getNyttPeriodehull(getTidsperiode(fom, uttagsdagerMellomStartOgFørstePeriode)));
+
+        if (uttaksdagerMellomStartOgFørstePeriode > 0) {
+            hull.push(getNyttPeriodehull(getTidsperiode(fom, uttaksdagerMellomStartOgFørstePeriode)));
         }
     }
     perioder.forEach((periode, idx) => {
-        if (idx === len - 1) {
+        if (idx === perioderLength - 1) {
             return;
         }
         const nestePeriode = perioder[idx + 1];
@@ -542,11 +553,7 @@ export function finnHullIPerioder(perioder: Periode[], startdato?: Date): Period
         const uttaksdagerITidsperiode = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
 
         if (uttaksdagerITidsperiode > 0) {
-            hull.push({
-                id: guid(),
-                type: Periodetype.Hull,
-                tidsperiode: tidsperiodeMellomPerioder
-            });
+            hull.push(getNyttPeriodehull(tidsperiodeMellomPerioder));
         }
     });
     return hull;
