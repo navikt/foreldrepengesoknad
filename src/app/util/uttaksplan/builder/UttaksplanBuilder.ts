@@ -665,7 +665,7 @@ function splittPeriodeMedPeriode(periode: Periode, nyPeriode: Periode): Periode[
     };
     const startSisteDel: Date = Uttaksdagen(midt.tidsperiode.tom).neste();
 
-    if (Perioden(periode).erOpphold()) {
+    if (Perioden(periode).erOpphold() || isInfoPeriode(periode)) {
         dagerSisteDel = dagerSisteDel - Perioden(midt).getAntallUttaksdager();
     }
 
