@@ -5,9 +5,7 @@ import DocumentTitle from 'react-document-title';
 import getMessage from 'common/util/i18nUtils';
 import Applikasjonsside from 'app/components/applikasjon/applikasjonsside/Applikasjonsside';
 
-interface OwnProps {}
-
-type Props = OwnProps & InjectedIntlProps;
+type Props = InjectedIntlProps;
 
 const LoadingScreen: React.StatelessComponent<Props> = (props: Props) => {
     return (

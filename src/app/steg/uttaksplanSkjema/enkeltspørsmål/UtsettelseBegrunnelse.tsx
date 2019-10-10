@@ -5,13 +5,12 @@ import getMessage from 'common/util/i18nUtils';
 import { UtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
 import UttaksplanSkjemaSpørsmål from '../UttaksplanSkjemaSpørsmål';
 
-interface StateProps {}
 interface OwnProps {
     visible?: boolean;
     navn: string;
 }
 
-type Props = OwnProps & StateProps & InjectedIntlProps;
+type Props = OwnProps & InjectedIntlProps;
 
 const UtsettelseBegrunnelse = (props: Props) => {
     const { visible = true, navn, intl } = props;
