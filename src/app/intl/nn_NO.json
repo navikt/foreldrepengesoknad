@@ -520,6 +520,7 @@
     "periodeliste.utsettelse.overlappendeTidsperiode.ny":
         "Det er allereie lagt inn ei utsetjing i denne perioden. Du må slette perioden med utsetjing før du kan leggje inn ei ny utsetjing.",
     "periodeliste.oppholdAnnenPart.tittel": "{navn} periode",
+    "periodeliste.oppholdAnnenPart.tittel.gradertEllerSamtidigUttak": "{navn} periode {prosent}%",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
     "periodetype.info.utsettelse.LOVBESTEMT_FERIE": "{ navn } utsetjer på grunn av ferie",
     "periodetype.info.utsettelse.ARBEID": "{ navn } utsetjer på grunn av heiltidsarbeid. ",

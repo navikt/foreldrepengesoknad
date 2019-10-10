@@ -34,10 +34,26 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
     intl
 }) => {
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
+    const navn = getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale);
 
-    const tittel = getMessage(intl, 'periodeliste.oppholdAnnenPart.tittel', {
-        navn: getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale)
+    let tittel = getMessage(intl, 'periodeliste.oppholdAnnenPart.tittel', {
+        navn
     });
+
+    if (isUttakAnnenPart(periode) && periode.samtidigUttakProsent !== undefined) {
+        tittel = getMessage(intl, 'periodeliste.oppholdAnnenPart.tittel.gradertEllerSamtidigUttak', {
+            navn,
+            prosent: periode.samtidigUttakProsent
+        });
+    }
+
+    if (isUttakAnnenPart(periode) && periode.stillingsprosent !== undefined) {
+        tittel = getMessage(intl, 'periodeliste.oppholdAnnenPart.tittel.gradertEllerSamtidigUttak', {
+            navn,
+            prosent: periode.stillingsprosent
+        });
+    }
+
     const navnAnnenForelder = periode.forelder === Forelder.mor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
 
     return (

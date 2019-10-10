@@ -111,7 +111,8 @@ class Periodeliste extends React.Component<Props> {
                     (p) =>
                         isUttakAnnenPart(p) &&
                         Tidsperioden(periode.tidsperiode).erLik(p.tidsperiode) &&
-                        p.ønskerSamtidigUttak === true
+                        p.ønskerSamtidigUttak === true &&
+                        p.id !== periode.id
                 );
 
             return annenPartHarSamtidigUttak;
