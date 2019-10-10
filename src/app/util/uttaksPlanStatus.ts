@@ -18,7 +18,6 @@ import {
 import { Perioden } from './uttaksplan/Perioden';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { getStønadskontoFromOppholdsårsak } from './uttaksplan/uttaksperiodeUtils';
-import { trimPerioderIGruppertInfoPeriode } from './uttaksplan/gruppertInfoPeriodeUtils';
 import { getStønadskontoTypeFromOppholdÅrsakType } from './eksisterendeSak/eksisterendeSakUtils';
 
 export const finnAntallDagerÅTrekke = (periode: Periode): number => {
@@ -117,13 +116,6 @@ const getUttakFraInfoperioder = (perioder: InfoPeriode[]): Uttaksperiode[] => {
     perioder.filter((periode) => isAvslåttPeriode(periode) === false).forEach((periode) => {
         if (periode.infotype === PeriodeInfoType.uttakAnnenPart) {
             oppholdAnnenPart.push(periode);
-        } else if (periode.infotype === PeriodeInfoType.gruppertInfo) {
-            const perioderInnenforPeriodeTidsrom = trimPerioderIGruppertInfoPeriode(periode);
-            perioderInnenforPeriodeTidsrom.forEach((p) => {
-                if (p.infotype === PeriodeInfoType.uttakAnnenPart) {
-                    oppholdAnnenPart.push(p);
-                }
-            });
         }
     });
     return oppholdAnnenPart.map((periode): Uttaksperiode => {
