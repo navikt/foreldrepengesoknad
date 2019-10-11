@@ -2,19 +2,21 @@ import moment from 'moment';
 import {
     Periode,
     Uttaksperiode,
-    Periodetype,
     Utsettelsesperiode,
     Oppholdsperiode,
     PeriodeHull,
     isForeldrepengerFørFødselUttaksperiode,
     Overføringsperiode,
-    UtsettelseÅrsakType,
     StønadskontoType,
     ForeldrepengerFørFødselUttaksperiode,
     InfoPeriode,
     isHull,
     isInfoPeriode,
-    isUtsettelsePgaFerie
+    isUtsettelsePgaFerie,
+    isOppholdsperiode,
+    isOverføringsperiode,
+    isUtsettelsesperiode,
+    isUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import { Perioden } from './Perioden';
@@ -68,21 +70,19 @@ function getPeriode(perioder: Periode[], id: string): Periode | undefined {
 }
 
 function getUttaksperioder(perioder: Periode[]): Uttaksperiode[] {
-    return perioder.filter((periode) => periode.type === Periodetype.Uttak) as Uttaksperiode[];
+    return perioder.filter((periode) => isUttaksperiode(periode)) as Uttaksperiode[];
 }
 
 function getUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
-    return perioder.filter((periode) => periode.type === Periodetype.Utsettelse) as Utsettelsesperiode[];
+    return perioder.filter((periode) => isUtsettelsesperiode(periode)) as Utsettelsesperiode[];
 }
 
 function getFerieUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
-    return perioder.filter(
-        (periode) => periode.type === Periodetype.Utsettelse && periode.årsak === UtsettelseÅrsakType.Ferie
-    ) as Utsettelsesperiode[];
+    return perioder.filter((periode) => isUtsettelsePgaFerie(periode)) as Utsettelsesperiode[];
 }
 
 function getOverføringer(perioder: Periode[]): Overføringsperiode[] {
-    return perioder.filter((periode) => periode.type === Periodetype.Overføring) as Overføringsperiode[];
+    return perioder.filter((periode) => isOverføringsperiode(periode)) as Overføringsperiode[];
 }
 
 function getHull(perioder: Periode[]): PeriodeHull[] {
@@ -98,7 +98,7 @@ function getInfoperioder(perioder: Periode[]): InfoPeriode[] {
 }
 
 function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
-    return perioder.filter((periode) => periode.type === Periodetype.Opphold) as Oppholdsperiode[];
+    return perioder.filter((periode) => isOppholdsperiode(periode)) as Oppholdsperiode[];
 }
 
 function finnOverlappendePerioder(perioder: Periode[], periode: Periode): Periode[] {
@@ -159,12 +159,12 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
     let uttaksdagerCurrent = uttaksdager;
 
     return perioder.reduce((result: Periode[], periode: Periode) => {
-        if (periode.type === Periodetype.Utsettelse) {
+        if (isUtsettelsesperiode(periode)) {
             result.push(periode);
             return result;
         }
 
-        if (periode.type === Periodetype.Info || periode.type === Periodetype.Opphold) {
+        if (isInfoPeriode(periode) || isOppholdsperiode(periode)) {
             const dagerIPerioden = Perioden(periode).getAntallUttaksdager();
 
             if (dagerIPerioden > uttaksdagerCurrent) {
@@ -266,7 +266,7 @@ function getPerioderMedFerieForForelder(perioder: Periode[], forelder: Forelder)
 
 function getForeldrepengerFørTermin(perioder: Periode[]): ForeldrepengerFørFødselUttaksperiode | undefined {
     const periode: Periode | undefined = perioder.find(
-        (p) => p.type === Periodetype.Uttak && p.konto === StønadskontoType.ForeldrepengerFørFødsel
+        (p) => isUttaksperiode(p) && p.konto === StønadskontoType.ForeldrepengerFørFødsel
     );
     return periode ? (periode as ForeldrepengerFørFødselUttaksperiode) : undefined;
 }
@@ -284,7 +284,7 @@ export const erPeriodeMedFerieForForelder = (periode: Periode, forelder: Forelde
 
 function finnSisteInfoperiode(perioder: Periode[]) {
     return perioder
-        .filter((p) => p.type === Periodetype.Info)
+        .filter((p) => isInfoPeriode(p))
         .sort(sorterPerioder)
         .reverse()[0];
 }
