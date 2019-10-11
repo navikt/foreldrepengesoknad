@@ -25,6 +25,7 @@ import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import { getForeldreparSituasjonFraSøknadsinfo } from 'app/util/foreldreparSituasjonUtils';
 import Block from 'common/components/block/Block';
+import lenker from 'app/util/routing/lenker';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -162,7 +163,7 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                     )}
             </Block>
             <Normaltekst>
-                <FormattedHTMLMessage id="uttaksplan.informasjon.lesMer" />
+                <FormattedHTMLMessage id="uttaksplan.informasjon.lesMer" values={{ link: lenker.viktigeFrister }} />
             </Normaltekst>
         </InfoBlock>
     );
