@@ -138,4 +138,57 @@ describe('Uttaksdagen', () => {
             expect(result).toEqual(new Date('2019-01-03'));
         });
     });
+
+    describe('getUttaksdagerFremTilDato', () => {
+        it('Skal hente ut korrekt antall uttaksdager frem til dato', () => {
+            const dato = Uttaksdagen(new Date('2019-01-01'));
+
+            const result = dato.getUttaksdagerFremTilDato(new Date('2019-01-31'));
+            expect(result).toBe(22);
+        });
+
+        it('Skal returnere 0 dager om samme dato er angitt', () => {
+            const dato = Uttaksdagen(new Date('2019-01-01'));
+
+            const result = dato.getUttaksdagerFremTilDato(new Date('2019-01-01'));
+            expect(result).toBe(0);
+        });
+
+        it('Skal ikke regne med helgedager', () => {
+            const mandag = Uttaksdagen(new Date('2019-01-07'));
+
+            const result = mandag.getUttaksdagerFremTilDato(new Date('2019-01-13'));
+            expect(result).toBe(4);
+        });
+
+        it('Skal ikke være inklusive startdato', () => {
+            const dato = Uttaksdagen(new Date('2019-01-01'));
+
+            const result = dato.getUttaksdagerFremTilDato(new Date('2019-01-02'));
+            expect(result).toBe(1);
+        });
+    });
+
+    describe('trekkFra', () => {
+        it('Skal trekke fra dager korrekt', () => {
+            const dato = Uttaksdagen(new Date('2019-01-01'));
+
+            const result = dato.trekkFra(1);
+            expect(result).toEqual(new Date('2018-12-31'));
+        });
+
+        it('Skal returnere samme dato om man trekker fra 0 dager', () => {
+            const dato = Uttaksdagen(new Date('2019-01-01'));
+
+            const result = dato.trekkFra(0);
+            expect(result).toEqual(new Date('2019-01-01'));
+        });
+
+        it('Skal hoppe over helgedager', () => {
+            const mandag = Uttaksdagen(new Date('2019-01-07'));
+
+            const result = mandag.trekkFra(1);
+            expect(result).toEqual(new Date('2019-01-04'));
+        });
+    });
 });
