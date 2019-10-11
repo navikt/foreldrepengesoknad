@@ -1,4 +1,11 @@
-import { Utsettelsesperiode, Periodetype, UtsettelseÅrsakType, Periode } from '../../../types/uttaksplan/periodetyper';
+import {
+    Utsettelsesperiode,
+    Periodetype,
+    UtsettelseÅrsakType,
+    Periode,
+    PeriodeInfoType,
+    OppholdÅrsakType
+} from '../../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode, StønadskontoType } from 'common/types';
 import {
     splittPeriodeMedHelligdager,
@@ -7,6 +14,8 @@ import {
     UttaksplanBuilder
 } from '../builder/UttaksplanBuilder';
 import { Perioden } from '../Perioden';
+import { PeriodeResultatType } from 'app/types/EksisterendeSak';
+import { Uttaksdagen } from '../Uttaksdagen';
 
 const perioder: Array<Partial<Periode>> = [
     {
@@ -115,12 +124,12 @@ describe('UttaksplanBuilder', () => {
     });
 
     describe('leggTilPeriodeOgBuild', () => {
-        it('Legge til periode i en tom plan skal fungere', () => {
-            const test = jest.fn().mockReturnValue({
-                gjelderDagerBrukt: false,
-                uttak: [{ konto: StønadskontoType.Foreldrepenger, dager: 15 }]
-            });
+        const getUttaksstatusFunc = jest.fn().mockReturnValue({
+            gjelderDagerBrukt: false,
+            uttak: [{ konto: StønadskontoType.Foreldrepenger, dager: 15 }]
+        });
 
+        it('Legge til periode i en tom plan skal fungere', () => {
             const nyPeriode: Partial<Periode> = {
                 id: '1',
                 type: Periodetype.Uttak,
@@ -133,7 +142,7 @@ describe('UttaksplanBuilder', () => {
             const eksisterendePlan: Periode[] = [];
 
             const result = UttaksplanBuilder(
-                test,
+                getUttaksstatusFunc,
                 eksisterendePlan,
                 new Date('2019-01-31'),
                 [{ konto: StønadskontoType.Foreldrepenger, dager: 50 }],
@@ -142,6 +151,50 @@ describe('UttaksplanBuilder', () => {
 
             expect(Perioden(result.perioder[0]).erLik(nyPeriode as Periode));
             expect(result.perioder.length).toBe(1);
+        });
+
+        it('Søkers perioder skal overskrive andre parts perioder', () => {
+            const familiehendelsedato = Uttaksdagen(new Date('2019-01-01'));
+            const nyPeriode: Partial<Periode> = {
+                id: '2',
+                type: Periodetype.Uttak,
+                tidsperiode: {
+                    fom: familiehendelsedato.denneEllerNeste(),
+                    tom: familiehendelsedato.leggTil(4)
+                },
+                forelder: Forelder.farMedmor,
+                ønskerSamtidigUttak: false
+            };
+
+            const eksisterendePlan: Periode[] = [
+                {
+                    type: Periodetype.Info,
+                    infotype: PeriodeInfoType.uttakAnnenPart,
+                    id: '1',
+                    årsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                    tidsperiode: {
+                        fom: familiehendelsedato.denneEllerNeste(),
+                        tom: familiehendelsedato.leggTil(9)
+                    },
+                    forelder: Forelder.mor,
+                    overskrives: true,
+                    resultatType: PeriodeResultatType.INNVILGET,
+                    gradert: false,
+                    ønskerSamtidigUttak: false,
+                    visPeriodeIPlan: true
+                }
+            ];
+
+            const result = UttaksplanBuilder(
+                getUttaksstatusFunc,
+                eksisterendePlan,
+                familiehendelsedato.denneEllerNeste(),
+                [{ konto: StønadskontoType.Foreldrepenger, dager: 50 }],
+                false
+            ).leggTilPeriodeOgBuild(nyPeriode as Periode);
+
+            console.log(result.perioder);
+            expect(result.perioder.length).toBe(2);
         });
     });
 

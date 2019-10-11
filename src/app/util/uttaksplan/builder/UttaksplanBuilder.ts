@@ -318,13 +318,20 @@ class UttaksplanAutoBuilder {
                     return clonePeriode(p);
                 });
 
+            const opprinneligePerioderEtterSistePeriode = this.opprinneligPlan
+                .filter(
+                    (p) => isInfoPeriode(p) && moment(p.tidsperiode.tom).isAfter(sistePeriode.tidsperiode.tom, 'day')
+                )
+                .map(clonePeriode); // Unngå modifisering av perioden i opprinneligPlan i state
+
+            opprinneligePerioderEtterSistePeriode[0].tidsperiode.fom = Uttaksdagen(
+                sistePeriode.tidsperiode.tom
+            ).neste();
+
             this.perioder = [
                 ...opprinneligePerioderFørFørstePeriode,
                 ...this.perioder,
-                ...this.opprinneligPlan
-                    .filter((p) => moment(p.tidsperiode.fom).isAfter(sistePeriode.tidsperiode.tom, 'day'))
-                    .filter(isInfoPeriode)
-                    .map(clonePeriode)
+                ...opprinneligePerioderEtterSistePeriode
             ];
         }
         return this;
