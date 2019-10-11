@@ -12,7 +12,9 @@ import {
     isUttakAnnenPart,
     UttakAnnenPartInfoPeriode,
     isUttaksperiode,
-    TilgjengeligStønadskonto
+    TilgjengeligStønadskonto,
+    isOppholdsperiode,
+    isUtsettelsesperiode
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -509,7 +511,7 @@ function settInnPeriode(perioder: Periode[], nyPeriode: Periode): Periode[] {
         return leggTilPeriodeFørPeriode(perioder, perioder[0], nyPeriode);
     }
 
-    if (Perioden(periodeSomMåSplittes).erUtsettelse()) {
+    if (isUtsettelsesperiode(periodeSomMåSplittes)) {
         throw new Error('Kan ikke dele opp en utsettelse');
     }
     if (moment(periodeSomMåSplittes.tidsperiode.fom).isSame(nyPeriode.tidsperiode.fom, 'day')) {
@@ -672,7 +674,7 @@ function splittPeriodeMedPeriode(periode: Periode, nyPeriode: Periode): Periode[
     };
     const startSisteDel: Date = Uttaksdagen(midt.tidsperiode.tom).neste();
 
-    if (Perioden(periode).erOpphold() || isInfoPeriode(periode)) {
+    if (isOppholdsperiode(periode) || isInfoPeriode(periode)) {
         dagerSisteDel = dagerSisteDel - Perioden(midt).getAntallUttaksdager();
     }
 
