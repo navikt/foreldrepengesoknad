@@ -3,9 +3,9 @@ import { Forelder, Tidsperiode, StønadskontoType } from 'common/types';
 import {
     splittPeriodeMedHelligdager,
     getFriperioderITidsperiode,
-    finnHullIPerioder
+    finnHullIPerioder,
+    UttaksplanBuilder
 } from '../builder/UttaksplanBuilder';
-import addPeriode from '../builder/addPeriode';
 import { Perioden } from '../Perioden';
 
 const perioder: Array<Partial<Periode>> = [
@@ -37,7 +37,7 @@ const perioder: Array<Partial<Periode>> = [
 
 describe('UttaksplanBuilder', () => {
     describe('splittPeriodeMedHelligdager', () => {
-        it('should split jul 2018 med periodehull correctly', () => {
+        it('Skal splitte jul 2018 med periodehull korrekt', () => {
             const periode: Utsettelsesperiode = {
                 id: 'sdf',
                 type: Periodetype.Utsettelse,
@@ -53,7 +53,7 @@ describe('UttaksplanBuilder', () => {
             const result = splittPeriodeMedHelligdager(periode);
             expect(result.length).toBe(3);
         });
-        it('should split christmas and new years eve 2018/2019 med periodehull correctly', () => {
+        it('Skal splitte jul og nyttårsaften 2018/2019 med periodehull korrekt', () => {
             const periode: Utsettelsesperiode = {
                 id: 'sdf',
                 type: Periodetype.Utsettelse,
@@ -72,7 +72,7 @@ describe('UttaksplanBuilder', () => {
     });
 
     describe('getFriperioderITidsperiode', () => {
-        it('should find 2 friperioder during christmas and new year', () => {
+        it('Skal finne to friperioder i løpet av jul og nyttår', () => {
             const tidsperiode: Tidsperiode = {
                 fom: new Date(2018, 11, 20),
                 tom: new Date(2019, 0, 3)
@@ -80,7 +80,7 @@ describe('UttaksplanBuilder', () => {
             const result = getFriperioderITidsperiode(tidsperiode);
             expect(result.length).toBe(2);
         });
-        it('should find 0 friperioder in february', () => {
+        it('Skal finne 0 friperioder i februar 2019', () => {
             const tidsperiode: Tidsperiode = {
                 fom: new Date(2019, 1, 1),
                 tom: new Date(2019, 1, 27)
@@ -88,7 +88,7 @@ describe('UttaksplanBuilder', () => {
             const result = getFriperioderITidsperiode(tidsperiode);
             expect(result.length).toBe(0);
         });
-        it('should find 8 friperioder in 2018', () => {
+        it('Skal finne 8 friperioder i 2018', () => {
             const tidsperiode: Tidsperiode = {
                 fom: new Date(2018, 0, 1),
                 tom: new Date(2018, 11, 31)
@@ -96,7 +96,7 @@ describe('UttaksplanBuilder', () => {
             const result = getFriperioderITidsperiode(tidsperiode);
             expect(result.length).toBe(8);
         });
-        it('should find 1. of january 2018', () => {
+        it('Skal finne 1. januar 2018', () => {
             const tidsperiode: Tidsperiode = {
                 fom: new Date(2017, 11, 31),
                 tom: new Date(2018, 0, 2)
@@ -104,7 +104,7 @@ describe('UttaksplanBuilder', () => {
             const result = getFriperioderITidsperiode(tidsperiode);
             expect(result.length).toBe(1);
         });
-        it('should not find 1. of january 2017 because it is a sunday (not uttaksdag)', () => {
+        it('Skal ikke finne 1. januar 2017 siden det er en helgedag', () => {
             const tidsperiode: Tidsperiode = {
                 fom: new Date(2016, 11, 31),
                 tom: new Date(2017, 0, 2)
@@ -114,33 +114,35 @@ describe('UttaksplanBuilder', () => {
         });
     });
 
-    it('test', () => {
-        const test = jest.fn().mockReturnValue({
-            gjelderDagerBrukt: false,
-            uttak: [{ konto: StønadskontoType.Foreldrepenger, dager: 15 }]
+    describe('leggTilPeriodeOgBuild', () => {
+        it('Legge til periode i en tom plan skal fungere', () => {
+            const test = jest.fn().mockReturnValue({
+                gjelderDagerBrukt: false,
+                uttak: [{ konto: StønadskontoType.Foreldrepenger, dager: 15 }]
+            });
+
+            const nyPeriode: Partial<Periode> = {
+                id: '1',
+                type: Periodetype.Uttak,
+                tidsperiode: {
+                    fom: new Date('2019-01-31'),
+                    tom: new Date('2019-02-10')
+                }
+            };
+
+            const eksisterendePlan: Periode[] = [];
+
+            const result = UttaksplanBuilder(
+                test,
+                eksisterendePlan,
+                new Date('2019-01-31'),
+                [{ konto: StønadskontoType.Foreldrepenger, dager: 50 }],
+                false
+            ).leggTilPeriodeOgBuild(nyPeriode as Periode);
+
+            expect(Perioden(result.perioder[0]).erLik(nyPeriode as Periode));
+            expect(result.perioder.length).toBe(1);
         });
-
-        const nyPeriode: Partial<Periode> = {
-            type: Periodetype.Utsettelse,
-            årsak: UtsettelseÅrsakType.Ferie,
-            tidsperiode: {
-                fom: new Date('2019-01-31'),
-                tom: new Date('2019-02-10')
-            },
-            forelder: Forelder.mor,
-            erArbeidstaker: false
-        };
-
-        const result = addPeriode(
-            test,
-            [],
-            nyPeriode as Periode,
-            [{ konto: StønadskontoType.Foreldrepenger, dager: 50 }],
-            new Date('2019-01-31'),
-            false
-        );
-
-        expect(Perioden(result.updatedPlan[0]).erLik(nyPeriode as Periode));
     });
 
     describe('finnHullIPerioder', () => {
