@@ -67,7 +67,7 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
             farge={UttaksplanColor.transparent}
             border={true}
             navnAnnenForelder={navnAnnenForelder}
-            erSamtidigUttak={isUttakAnnenPart(periode) ? periode.ønskerSamtidigUttak === true : false}
+            erSamtidigUttak={false}
             renderContent={() => (
                 <div>
                     <strong>

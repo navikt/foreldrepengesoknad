@@ -219,6 +219,9 @@ class UttaksplanAutoBuilder {
                     ...op,
                     id: guid(),
                     visPeriodeIPlan: false,
+                    samtidigUttakProsent: isUttaksperiode(p)
+                        ? this.beregnSamtidigUttaksprosent(p.samtidigUttakProsent)
+                        : '100',
                     tidsperiode: {
                         fom: moment(p.tidsperiode.fom).isSameOrAfter(moment(op.tidsperiode.fom))
                             ? p.tidsperiode.fom
@@ -430,12 +433,6 @@ function fjernOverskrivbarePerioderIPeriodetidsrom(perioder: Periode[], periode:
     const nyePerioder: Periode[] = perioder.filter((p) => isOverskrivbarPeriode(p) === false);
     const overskrivbarePerioder = perioder.filter((p) => isOverskrivbarPeriode(p));
     overskrivbarePerioder.forEach((overskrivbarPeriode) => {
-        if (isUttakAnnenPart(overskrivbarPeriode) && overskrivbarPeriode.ønskerSamtidigUttak) {
-            nyePerioder.push(overskrivbarPeriode);
-
-            return;
-        }
-
         if (Tidsperioden(overskrivbarPeriode.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
             return;
         } else if (Tidsperioden(overskrivbarPeriode.tidsperiode).erUtenfor(periode.tidsperiode)) {
