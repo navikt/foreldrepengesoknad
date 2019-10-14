@@ -194,6 +194,8 @@ describe('UttaksplanBuilder', () => {
             ).leggTilPeriodeOgBuild(nyPeriode as Periode);
 
             expect(result.perioder.length).toBe(2);
+            expect(result.perioder[1].type).toEqual(Periodetype.Info);
+            expect(result.perioder[1].tidsperiode.fom).toEqual(familiehendelsedato.leggTil(5));
         });
     });
 
