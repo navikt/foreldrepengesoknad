@@ -193,7 +193,6 @@ describe('UttaksplanBuilder', () => {
                 false
             ).leggTilPeriodeOgBuild(nyPeriode as Periode);
 
-            console.log(result.perioder);
             expect(result.perioder.length).toBe(2);
         });
     });
