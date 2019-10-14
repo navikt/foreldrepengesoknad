@@ -6,9 +6,6 @@ import { Tidsperiode } from 'common/types';
 import { formaterDatoKompakt } from 'common/util/datoUtils';
 
 export const Perioden = (periode: Periode) => ({
-    erUttak: () => erUttak(periode),
-    erUtsettelse: () => erUtsettelse(periode),
-    erOpphold: () => erOpphold(periode),
     setStartdato: (fom: Date) => flyttPeriode(periode, fom),
     setUttaksdager: (uttaksdager: number) =>
         (periode.tidsperiode = getTidsperiode(periode.tidsperiode.fom, uttaksdager)),
@@ -22,18 +19,6 @@ export const Perioden = (periode: Periode) => ({
     slutterEtter: (dato: Date) => moment(periode.tidsperiode.tom).isAfter(dato, 'day'),
     slutterSammeDagEllerEtter: (dato: Date) => moment(periode.tidsperiode.tom).isSameOrAfter(dato, 'day')
 });
-
-function erOpphold(periode: Periode): boolean {
-    return periode.type === Periodetype.Opphold;
-}
-
-function erUtsettelse(periode: Periode): boolean {
-    return periode.type === Periodetype.Utsettelse;
-}
-
-function erUttak(periode: Periode): boolean {
-    return periode.type === Periodetype.Uttak;
-}
 
 function erPerioderSammenhengende(p1: Periode, p2: Periode) {
     const p1NesteUttaksdato = Uttaksdagen(p1.tidsperiode.tom).neste();
