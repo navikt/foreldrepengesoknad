@@ -324,9 +324,11 @@ class UttaksplanAutoBuilder {
                 )
                 .map(clonePeriode); // Unngå modifisering av perioden i opprinneligPlan i state
 
-            opprinneligePerioderEtterSistePeriode[0].tidsperiode.fom = Uttaksdagen(
-                sistePeriode.tidsperiode.tom
-            ).neste();
+            if (opprinneligePerioderEtterSistePeriode.length > 0) {
+                opprinneligePerioderEtterSistePeriode[0].tidsperiode.fom = Uttaksdagen(
+                    sistePeriode.tidsperiode.tom
+                ).neste();
+            }
 
             this.perioder = [
                 ...opprinneligePerioderFørFørstePeriode,
