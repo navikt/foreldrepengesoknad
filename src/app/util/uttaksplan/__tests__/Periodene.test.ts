@@ -178,7 +178,8 @@ describe('Periodene', () => {
                 tidsperiode: {
                     fom: startdato.leggTil(30),
                     tom: startdato.leggTil(44)
-                }
+                },
+                overskrives: true
             };
             const nyePerioder = [...perioder, nyPeriode];
             const antallDagerForskyvelse = 10;
@@ -224,7 +225,8 @@ describe('Periodene', () => {
                 tidsperiode: {
                     fom: new Date('2019-02-12'),
                     tom: new Date('2019-02-25')
-                }
+                },
+                overskrives: true
             };
             const nyePerioder = [...perioder, nyPeriode];
             const antallDagerForskyvelse = 10;
