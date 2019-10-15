@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import BEMHelper from 'common/util/bem';
 import { Element, Normaltekst, EtikettLiten } from 'nav-frontend-typografi';
-import { Tidsperiode } from 'common/types';
+import { Tidsperiode, Forelder } from 'common/types';
 import { måned3bokstaver, måned, år } from 'common/util/datoUtils';
 import moment from 'moment';
 import { getIkonForVeilederMelding } from 'app/util/validation/getAdvarselForPeriode';
@@ -10,31 +10,36 @@ import { VeilederMessage } from 'app/components/veilederInfo/types';
 import UttaksplanIkon from 'app/components/ikoner/uttaksplanIkon/UttaksplanIkon';
 
 import './periodeheader.less';
+import { Periode, isUttakAnnenPart } from 'app/types/uttaksplan/periodetyper';
+import { FormattedMessage } from 'react-intl';
 
 interface Props {
     isOpen?: boolean;
     tittel: string;
     ikon: React.ReactNode | undefined;
     beskrivelse?: React.ReactNode;
+    beskrivelseSamtidigUttak?: React.ReactNode;
     melding?: VeilederMessage;
     tidsperiode?: Tidsperiode;
-    erSamtidigUttak?: boolean;
+    annenForelderSamtidigUttakPeriode?: Periode;
     navnAnnenForelder?: string;
     type: 'periode' | 'info';
 }
 
 const BEM = BEMHelper('periodelisteItemHeader');
 
-const renderDagMnd = (dato: Date): JSX.Element => {
+const renderDagMnd = (dato: Date, visÅr: boolean = true): JSX.Element => {
     const d = moment.utc(dato);
     return dato ? (
         <div className={BEM.element('dagmnd')}>
             <span className={BEM.element('dagmnd__dato')}>
                 {d.get('date')}. {måned3bokstaver(d)}.
             </span>
-            <EtikettLiten tag="span" className={BEM.element('dagmnd__mnd')}>
-                <abbr title={`${måned(d)} ${år(d)}`}>{år(d)}</abbr>
-            </EtikettLiten>
+            {visÅr && (
+                <EtikettLiten tag="span" className={BEM.element('dagmnd__mnd')}>
+                    <abbr title={`${måned(d)} ${år(d)}`}>{år(d)}</abbr>
+                </EtikettLiten>
+            )}
         </div>
     ) : (
         <div className={BEM.element('dagmnd')}>-</div>
@@ -49,9 +54,14 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
     beskrivelse,
     melding,
     tidsperiode,
-    erSamtidigUttak,
-    navnAnnenForelder
+    annenForelderSamtidigUttakPeriode,
+    beskrivelseSamtidigUttak
 }) => {
+    let annenForelderIsMor;
+    if (annenForelderSamtidigUttakPeriode && isUttakAnnenPart(annenForelderSamtidigUttakPeriode)) {
+        annenForelderIsMor = annenForelderSamtidigUttakPeriode.forelder === Forelder.mor;
+    }
+
     return (
         <div className={BEM.modifier(type)}>
             <div
@@ -66,7 +76,6 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
                         <Element tag="h1">{tittel}</Element>
                         {beskrivelse && <Normaltekst>{beskrivelse}</Normaltekst>}
                     </div>
-                    {erSamtidigUttak && <div className={BEM.element('samtidig-uttak-punkt')}>{navnAnnenForelder}</div>}
                 </div>
                 {melding && (
                     <div className={BEM.element('advarsel')}>
@@ -82,6 +91,30 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
                     </div>
                 )}
             </div>
+            {annenForelderSamtidigUttakPeriode && (
+                <div
+                    className={classnames(BEM.element('samtidig-uttak'), {
+                        [BEM.element('samtidig-uttak-mor')]: annenForelderIsMor,
+                        [BEM.element('samtidig-uttak-far')]: !annenForelderIsMor
+                    })}>
+                    <div>
+                        <Element>
+                            <FormattedMessage id="morsAktivitet.SamtidigUttak" />
+                        </Element>
+                    </div>
+                    <div className={BEM.element('beskrivelse')}>
+                        <div className={BEM.element('beskrivelse__tekst')}>
+                            {beskrivelseSamtidigUttak && <Normaltekst>{beskrivelseSamtidigUttak}</Normaltekst>}
+                        </div>
+                    </div>
+                    {annenForelderSamtidigUttakPeriode.tidsperiode && (
+                        <div className={BEM.element('tidsrom')}>
+                            {renderDagMnd(annenForelderSamtidigUttakPeriode.tidsperiode.fom, false)}
+                            {renderDagMnd(annenForelderSamtidigUttakPeriode.tidsperiode.tom, false)}
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

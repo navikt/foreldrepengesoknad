@@ -18,9 +18,9 @@ import { Søknadsinfo } from 'app/selectors/types';
 import PeriodelisteAvslåttPeriode from './items/PeriodelisteAvslåttPeriode';
 import PeriodelisteOppholdAnnenPart from './items/PeriodelisteOppholdAnnenPart';
 import { VeiledermeldingerPerPeriode } from '../../../veilederInfo/types';
-import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 
 import './periodeliste.less';
+import moment from 'moment';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -102,23 +102,23 @@ class Periodeliste extends React.Component<Props> {
         }
     }
 
-    harAnnenForelderSamtidigUttakISammePeriode(periode: Periode): boolean {
+    harAnnenForelderSamtidigUttakISammePeriode(periode: Periode): Periode | undefined {
         if (isUttaksperiode(periode)) {
             const { perioder } = this.props;
-            const annenPartHarSamtidigUttak = perioder
+            const samtidigUttak = perioder
                 .filter((p) => isUttakAnnenPart(p))
-                .some(
+                .find(
                     (p) =>
                         isUttakAnnenPart(p) &&
-                        Tidsperioden(periode.tidsperiode).erFomEllerEtterDato(p.tidsperiode.fom) &&
+                        moment(periode.tidsperiode.fom).isSame(p.tidsperiode.fom) &&
                         p.ønskerSamtidigUttak === true &&
                         p.id !== periode.id
                 );
 
-            return annenPartHarSamtidigUttak;
+            return samtidigUttak !== undefined ? samtidigUttak : undefined;
         }
 
-        return false;
+        return undefined;
     }
 
     handleOnItemToggle(id: string, open: boolean) {
@@ -160,7 +160,7 @@ class Periodeliste extends React.Component<Props> {
                                     tittel={item.tittel}
                                     beskrivelse={item.beskrivelse}
                                     onToggle={onToggle}
-                                    erSamtidigUttak={false}
+                                    annenForelderSamtidigUttakPeriode={undefined}
                                 />
                             ))}
                         {filteredPerioder.map((periode) => {
@@ -224,7 +224,7 @@ class Periodeliste extends React.Component<Props> {
                                             onToggle={onToggle}
                                             updatePeriode={updatePeriode}
                                             deletePeriode={deletePeriode}
-                                            annenForelderHarSamtidigUttakISammePeriode={this.harAnnenForelderSamtidigUttakISammePeriode(
+                                            annenForelderSamtidigUttakPeriode={this.harAnnenForelderSamtidigUttakISammePeriode(
                                                 periode
                                             )}
                                         />

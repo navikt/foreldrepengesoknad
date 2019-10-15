@@ -5,6 +5,7 @@ import PeriodelisteItemHeader from '../elements/PeriodelisteItemHeader';
 import PeriodelisteItemWrapper from '../elements/PeriodelisteItemWrapper';
 import { UttaksplanColor } from 'app/types/uttaksplan/colors';
 import { Tidsperiode } from 'common/types';
+import { Periode } from 'app/types/uttaksplan/periodetyper';
 
 interface Props extends PeriodelisteInformasjon {
     isExpanded: boolean;
@@ -21,7 +22,7 @@ export interface PeriodelisteInformasjon {
     farge?: UttaksplanColor;
     periodeFargestrek?: UttaksplanColor;
     border?: boolean;
-    erSamtidigUttak: boolean;
+    annenForelderSamtidigUttakPeriode: Periode | undefined;
     navnAnnenForelder?: string;
 }
 
@@ -37,7 +38,7 @@ const PeriodelisteInfo: React.StatelessComponent<Props> = ({
     farge = UttaksplanColor.yellow,
     border,
     periodeFargestrek,
-    erSamtidigUttak,
+    annenForelderSamtidigUttakPeriode,
     navnAnnenForelder
 }) => {
     return (
@@ -58,7 +59,7 @@ const PeriodelisteInfo: React.StatelessComponent<Props> = ({
                         tittel={tittel}
                         beskrivelse={beskrivelse}
                         tidsperiode={tidsperiode}
-                        erSamtidigUttak={erSamtidigUttak}
+                        annenForelderSamtidigUttakPeriode={annenForelderSamtidigUttakPeriode}
                         navnAnnenForelder={navnAnnenForelder}
                     />
                 )}

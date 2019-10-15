@@ -69,7 +69,7 @@ const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntl
             onToggle={onToggle}
             beskrivelse={beskrivelse}
             ikon={<UttaksplanAdvarselIkon />}
-            erSamtidigUttak={false}
+            annenForelderSamtidigUttakPeriode={undefined}
             renderContent={() => (
                 <div>
                     <Block>
