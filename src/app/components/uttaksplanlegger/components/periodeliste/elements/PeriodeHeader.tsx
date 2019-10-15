@@ -121,7 +121,6 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
             melding={melding}
             tittel={periodetittel}
             annenForelderSamtidigUttakPeriode={annenForelderSamtidigUttakPeriode}
-            navnAnnenForelder={navnAnnenForelder}
             beskrivelse={
                 <>
                     {varighetString}
