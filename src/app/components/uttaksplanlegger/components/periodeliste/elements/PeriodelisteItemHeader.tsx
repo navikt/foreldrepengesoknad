@@ -22,7 +22,6 @@ interface Props {
     melding?: VeilederMessage;
     tidsperiode?: Tidsperiode;
     annenForelderSamtidigUttakPeriode?: Periode;
-    navnAnnenForelder?: string;
     type: 'periode' | 'info';
 }
 

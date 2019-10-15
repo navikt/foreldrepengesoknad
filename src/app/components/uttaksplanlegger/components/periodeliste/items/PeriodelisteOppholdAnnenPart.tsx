@@ -54,8 +54,6 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
         });
     }
 
-    const navnAnnenForelder = periode.forelder === Forelder.mor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
-
     return (
         <PeriodelisteInfo
             id={itemId}
@@ -66,7 +64,6 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
             ikon={getPeriodeIkon(periode, navnPåForeldre)}
             farge={UttaksplanColor.transparent}
             border={true}
-            navnAnnenForelder={navnAnnenForelder}
             annenForelderSamtidigUttakPeriode={undefined}
             renderContent={() => (
                 <div>
