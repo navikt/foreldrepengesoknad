@@ -152,6 +152,30 @@ class UttaksplanAutoBuilder {
         return this;
     }
 
+    oppdaterPeriodeOgBuild(periode: Periode) {
+        const oldPeriode = periode.id ? Periodene(this.perioder).getPeriode(periode.id) : undefined;
+
+        if (!oldPeriode) {
+            throw new Error('Periode for endring ikke funnet');
+        }
+        if (isValidTidsperiode(periode.tidsperiode) && isValidTidsperiode(oldPeriode.tidsperiode) === false) {
+            this.slettPeriodeOgBuild(oldPeriode);
+            this.leggTilPeriodeOgBuild(periode);
+        }
+        if (Tidsperioden(periode.tidsperiode).erFomEllerEtterDato(this.familiehendelsesdato)) {
+            this.oppdaterPerioderVedEndretPeriode(periode, oldPeriode);
+        }
+
+        this.erstattPeriode(periode).buildUttaksplan();
+
+        return this;
+    }
+
+    slettPeriodeOgBuild(periode: Periode) {
+        this.slettPeriode(periode, skalSlettetPeriodeErstattesMedHull(periode, this.perioder)).buildUttaksplan();
+        return this;
+    }
+
     konverterAnnenPartsPlanTilSamtidigUttakHvisSøkerHarLagtInnSamtidigUttak() {
         const samtidigUttakIPlanen = this.perioder.filter((p) => isUttaksperiode(p) && p.ønskerSamtidigUttak);
         const opprinneligUttakAnnenPart = this.opprinneligPlan
@@ -236,30 +260,6 @@ class UttaksplanAutoBuilder {
         });
 
         this.sort();
-        return this;
-    }
-
-    oppdaterPeriodeOgBuild(periode: Periode) {
-        const oldPeriode = periode.id ? Periodene(this.perioder).getPeriode(periode.id) : undefined;
-
-        if (!oldPeriode) {
-            throw new Error('Periode for endring ikke funnet');
-        }
-        if (isValidTidsperiode(periode.tidsperiode) && isValidTidsperiode(oldPeriode.tidsperiode) === false) {
-            this.slettPeriodeOgBuild(oldPeriode);
-            this.leggTilPeriodeOgBuild(periode);
-        }
-        if (Tidsperioden(periode.tidsperiode).erFomEllerEtterDato(this.familiehendelsesdato)) {
-            this.oppdaterPerioderVedEndretPeriode(periode, oldPeriode);
-        }
-
-        this.erstattPeriode(periode).buildUttaksplan();
-
-        return this;
-    }
-
-    slettPeriodeOgBuild(periode: Periode) {
-        this.slettPeriode(periode, skalSlettetPeriodeErstattesMedHull(periode, this.perioder)).buildUttaksplan();
         return this;
     }
 
