@@ -62,6 +62,10 @@ export function sorterPerioder(p1: Periode, p2: Periode) {
         }
         return isValidTidsperiode(p1.tidsperiode) ? -1 : 1;
     }
+    if (moment(p1.tidsperiode.fom).isSame(p2.tidsperiode.fom, 'day')) {
+        return isInfoPeriode(p1) ? -1 : 1;
+    }
+
     return moment(p1.tidsperiode.fom).isBefore(p2.tidsperiode.fom, 'day') ? -1 : 1;
 }
 

@@ -126,7 +126,11 @@ describe('UttaksplanBuilder', () => {
     describe('leggTilPeriodeOgBuild', () => {
         const getUttaksstatusFunc = jest.fn().mockReturnValue({
             gjelderDagerBrukt: false,
-            uttak: [{ konto: StønadskontoType.Foreldrepenger, dager: 15 }]
+            uttak: [
+                { konto: StønadskontoType.Fellesperiode, dager: 50 },
+                { konto: StønadskontoType.Fedrekvote, dager: 50 },
+                { konto: StønadskontoType.Mødrekvote, dager: 50 }
+            ]
         });
 
         it('Legge til periode i en tom plan skal fungere', () => {
@@ -158,12 +162,14 @@ describe('UttaksplanBuilder', () => {
             const nyPeriode: Partial<Periode> = {
                 id: '2',
                 type: Periodetype.Uttak,
+                konto: StønadskontoType.Fedrekvote,
                 tidsperiode: {
                     fom: familiehendelsedato.denneEllerNeste(),
                     tom: familiehendelsedato.leggTil(4)
                 },
                 forelder: Forelder.farMedmor,
-                ønskerSamtidigUttak: false
+                ønskerSamtidigUttak: false,
+                gradert: false
             };
 
             const eksisterendePlan: Periode[] = [
@@ -189,8 +195,30 @@ describe('UttaksplanBuilder', () => {
                 getUttaksstatusFunc,
                 eksisterendePlan,
                 familiehendelsedato.denneEllerNeste(),
-                [{ konto: StønadskontoType.Foreldrepenger, dager: 50 }],
-                false
+                [
+                    { konto: StønadskontoType.Fellesperiode, dager: 50 },
+                    { konto: StønadskontoType.Fedrekvote, dager: 50 },
+                    { konto: StønadskontoType.Mødrekvote, dager: 50 }
+                ],
+                false,
+                [
+                    {
+                        type: Periodetype.Info,
+                        infotype: PeriodeInfoType.uttakAnnenPart,
+                        id: '3',
+                        årsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                        tidsperiode: {
+                            fom: familiehendelsedato.denneEllerNeste(),
+                            tom: familiehendelsedato.leggTil(9)
+                        },
+                        forelder: Forelder.mor,
+                        overskrives: true,
+                        resultatType: PeriodeResultatType.INNVILGET,
+                        gradert: false,
+                        ønskerSamtidigUttak: false,
+                        visPeriodeIPlan: true
+                    }
+                ]
             ).leggTilPeriodeOgBuild(nyPeriode as Periode);
 
             expect(result.perioder.length).toBe(2);
