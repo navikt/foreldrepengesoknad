@@ -20,7 +20,7 @@ export interface RegistrertBarn extends PersonBase {
     annenForelder?: RegistrertAnnenForelder;
 }
 
-export interface RegistrertAnnenForelder extends PersonBase {
+export interface RegistrertAnnenForelder extends Omit<PersonBase, 'kjønn'> {
     harOpplystOmSinPågåendeSak?: boolean;
 }
 

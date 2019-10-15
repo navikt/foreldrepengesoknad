@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { EtikettLiten, Element } from 'nav-frontend-typografi';
 
-import './personaliaBox.less';
-import { PersonBase } from 'app/types/Person';
+import { RegistrertAnnenForelder } from 'app/types/Person';
 import { getAlderFraDato } from 'app/util/dates/dates';
 import { formaterNavn } from 'app/util/domain/personUtil';
 import { injectIntl, FormattedMessage, InjectedIntlProps } from 'react-intl';
 
+import './personaliaBox.less';
+
 interface PersonaliaBoxProps {
-    person: PersonBase;
+    person: RegistrertAnnenForelder;
 }
 
 type Props = PersonaliaBoxProps & InjectedIntlProps;

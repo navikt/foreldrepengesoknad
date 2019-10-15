@@ -30,8 +30,7 @@ const registrertAnnenForelder: RegistrertAnnenForelder = {
     etternavn: 'etternavnet',
     fornavn: 'fornavnet',
     fødselsdato: new Date(),
-    harOpplystOmSinPågåendeSak: false,
-    kjønn: Kjønn.MANN
+    harOpplystOmSinPågåendeSak: false
 };
 
 const søknad: SøknadPartial = {
@@ -83,8 +82,7 @@ const kvinnePerson: Person = {
 const søkerinfo: Søkerinfo = {
     person: kvinnePerson,
     arbeidsforhold: [],
-    registrerteBarn: [],
-    søknadsinfo: {}
+    registrerteBarn: []
 };
 
 const propsSetOutsideSteg: string[] = ['erForSyk'];

@@ -1,16 +1,18 @@
 import cleanupRelasjonTilBarnFødselSteg from '../cleanupRelasjonTilBarnFødselSteg';
 import { Barn } from '../../../../types/søknad/Barn';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 
 let dirtyBarn: Partial<Barn>;
 describe('cleanupRelasjonTIlBarnFødselSteg', () => {
     beforeEach(() => {
+        const fødselsattest: Partial<Attachment> = { file: new File([''], 'filename.pdf') };
         dirtyBarn = {
             antallBarn: 1,
             erBarnetFødt: true,
             termindato: new Date(),
             terminbekreftelse: [],
             terminbekreftelseDato: new Date(),
-            fødselsattest: new File([''], 'filename.pdf'),
+            fødselsattest: [fødselsattest as Attachment],
             fødselsdatoer: [new Date()]
         };
     });

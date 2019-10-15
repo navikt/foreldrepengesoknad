@@ -140,7 +140,7 @@ describe('Validering av fars uttak første 6 uker', () => {
     });
     it('skal godta uttak dersom mors aktivitet er innlagt ', () => {
         const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
-            [{ ...uttak, stønadskonto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Innlagt }],
+            [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Innlagt }],
             familiehendelsesdato,
             1,
             Søkersituasjon.FØDSEL,
@@ -154,7 +154,7 @@ describe('Validering av fars uttak første 6 uker', () => {
             [
                 {
                     ...uttak,
-                    stønadskonto: StønadskontoType.Fellesperiode,
+                    konto: StønadskontoType.Fellesperiode,
                     morsAktivitetIPerioden: MorsAktivitet.TrengerHjelp
                 }
             ],
@@ -168,7 +168,7 @@ describe('Validering av fars uttak første 6 uker', () => {
     });
     it('skal IKKE godta uttak dersom mors aktivitet er annet enn sykdom eller innlagt ', () => {
         const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
-            [{ ...uttak, stønadskonto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Arbeid }],
+            [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Arbeid }],
             familiehendelsesdato,
             1,
             Søkersituasjon.FØDSEL,
@@ -183,7 +183,7 @@ describe('Validering av fars uttak første 6 uker', () => {
                 {
                     ...uttak,
                     tidsperiode: tidsperiodeEtterSeksUker,
-                    stønadskonto: StønadskontoType.Fellesperiode,
+                    konto: StønadskontoType.Fellesperiode,
                     morsAktivitetIPerioden: MorsAktivitet.Arbeid
                 }
             ],

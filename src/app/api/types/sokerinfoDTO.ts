@@ -9,12 +9,8 @@ export interface SøkerinfoDTOPerson {
     kjønn: Kjønn;
 }
 
-export interface SøkerinfoDTOAnnenForelder extends SøkerinfoDTOPerson {
-    harOpplystOmSinPågåendeSak?: boolean;
-}
-
 export interface SøkerinfoDTOBarn extends SøkerinfoDTOPerson {
-    annenForelder?: SøkerinfoDTOAnnenForelder;
+    annenForelder?: Omit<SøkerinfoDTOPerson, 'kjønn'>;
 }
 
 export interface SøkerinfoDTOSøker extends SøkerinfoDTOPerson {
@@ -31,12 +27,7 @@ export interface SøkerinfoDTOArbeidsforhold {
     tom?: string;
 }
 
-export interface SøknadsinfoDTO {
-    deltUttaksplan: boolean;
-}
-
 export interface SøkerinfoDTO {
     søker: SøkerinfoDTOSøker;
     arbeidsforhold?: SøkerinfoDTOArbeidsforhold[];
-    søknadsinfo: SøknadsinfoDTO;
 }

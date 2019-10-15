@@ -9,16 +9,14 @@ const mor: RegistrertAnnenForelder = {
     fnr: '1',
     fornavn: '',
     etternavn: '',
-    fødselsdato: new Date(),
-    kjønn: Kjønn.MANN
+    fødselsdato: new Date()
 };
 
 const farMedmor: RegistrertAnnenForelder = {
     fnr: '2',
     fornavn: '',
     etternavn: '',
-    fødselsdato: new Date(),
-    kjønn: Kjønn.MANN
+    fødselsdato: new Date()
 };
 
 const barn: RegistrertBarn = {
@@ -84,7 +82,6 @@ describe('barn.steg.validation', () => {
             ];
             expect(
                 skalSøkerLasteOppTerminbekreftelse(
-                    // tslint:disable-next-line: no-object-literal-type-assertion
                     { barn: b as Barn, situasjon: Søkersituasjon.FØDSEL } as Søknad,
                     arbeidsforholdList
                 )
@@ -92,7 +89,6 @@ describe('barn.steg.validation', () => {
 
             expect(
                 skalSøkerLasteOppTerminbekreftelse(
-                    // tslint:disable-next-line: no-object-literal-type-assertion
                     { barn: b as Barn, situasjon: Søkersituasjon.ADOPSJON } as Søknad,
                     arbeidsforholdList
                 )
@@ -100,7 +96,6 @@ describe('barn.steg.validation', () => {
 
             expect(
                 skalSøkerLasteOppTerminbekreftelse(
-                    // tslint:disable-next-line: no-object-literal-type-assertion
                     { barn: b as Barn, situasjon: Søkersituasjon.FORELDREANSVAR } as Søknad,
                     arbeidsforholdList
                 )
@@ -114,14 +109,12 @@ describe('barn.steg.validation', () => {
             const arbeidsforhold2: Arbeidsforhold[] = [{ ...a }, { ...a }];
             expect(
                 skalSøkerLasteOppTerminbekreftelse(
-                    // tslint:disable-next-line: no-object-literal-type-assertion
                     { barn: b as Barn, situasjon: Søkersituasjon.FØDSEL } as Søknad,
                     arbeidsforhold1
                 )
             ).toBeFalsy();
             expect(
                 skalSøkerLasteOppTerminbekreftelse(
-                    // tslint:disable-next-line: no-object-literal-type-assertion
                     { barn: b as Barn, situasjon: Søkersituasjon.FØDSEL } as Søknad,
                     arbeidsforhold2
                 )
@@ -137,12 +130,10 @@ describe('barn.steg.validation', () => {
                     .toDate()
             };
             expect(
-                // tslint:disable-next-line: no-object-literal-type-assertion
                 skalSøkerLasteOppTerminbekreftelse({ barn: b as Barn, situasjon: Søkersituasjon.FØDSEL } as Søknad, [a])
             ).toBeTruthy();
 
             expect(
-                // tslint:disable-next-line: no-object-literal-type-assertion
                 skalSøkerLasteOppTerminbekreftelse({ barn: b as Barn, situasjon: Søkersituasjon.FØDSEL } as Søknad, [])
             ).toBeTruthy();
         });
@@ -150,7 +141,6 @@ describe('barn.steg.validation', () => {
         it('søker med barn som allerede er født må ikke laste opp terminbekreftelse', () => {
             const b: Partial<Barn> = { erBarnetFødt: true, termindato: moment().toDate() };
             expect(
-                // tslint:disable-next-line: no-object-literal-type-assertion
                 skalSøkerLasteOppTerminbekreftelse({ barn: b, situasjon: Søkersituasjon.FØDSEL } as Søknad, [
                     arbeidsforhold
                 ])
