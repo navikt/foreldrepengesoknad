@@ -273,11 +273,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                 this.onChange({
                     type: Periodetype.Overføring,
                     konto,
-                    forelder: this.state.periodenGjelder,
-                    harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
-                    ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined,
-                    morsAktivitetIPerioden:
-                        konto === StønadskontoType.AktivitetsfriKvote ? MorsAktivitet.Uføre : undefined
+                    forelder: this.state.periodenGjelder
                 });
             }
         } else {
