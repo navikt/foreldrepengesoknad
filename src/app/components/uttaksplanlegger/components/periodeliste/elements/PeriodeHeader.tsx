@@ -7,8 +7,7 @@ import {
     Periodetype,
     StønadskontoType,
     isForeldrepengerFørFødselUttaksperiode,
-    isUtsettelseAnnenPart,
-    isUttaksperiode
+    isUtsettelseAnnenPart
 } from '../../../../../types/uttaksplan/periodetyper';
 import { Tidsperioden, getValidTidsperiode } from '../../../../../util/uttaksplan/Tidsperioden';
 import getMessage from 'common/util/i18nUtils';
@@ -22,7 +21,7 @@ import UtsettelseIkon from 'app/components/ikoner/uttaksplanIkon/UtsettelseIkon'
 export interface Props {
     periode: Periode;
     navnPåForeldre: NavnPåForeldre;
-    annenForelderHarSamtidigUttakISammePeriode?: boolean;
+    annenForelderSamtidigUttakPeriode?: Periode;
     melding?: VeilederMessage;
     isOpen?: boolean;
 }
@@ -75,7 +74,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     navnPåForeldre,
     isOpen,
     melding,
-    annenForelderHarSamtidigUttakISammePeriode,
+    annenForelderSamtidigUttakPeriode,
     intl
 }) => {
     const gyldigTidsperiode = getValidTidsperiode(periode.tidsperiode);
@@ -91,9 +90,18 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
             intl
         );
     }
+    let samtidigUttakAnnenForelderVarighet;
+    if (annenForelderSamtidigUttakPeriode) {
+        const annenForelderTidsperiode = annenForelderSamtidigUttakPeriode.tidsperiode;
+        samtidigUttakAnnenForelderVarighet = getVarighetString(
+            getValidTidsperiode(annenForelderTidsperiode)
+                ? Tidsperioden(annenForelderTidsperiode).getAntallUttaksdager()
+                : 0,
+            intl
+        );
+    }
     const foreldernavn = getPeriodeForelderNavn(periode, navnPåForeldre);
     const periodetittel = getPeriodeTittel(intl, periode, navnPåForeldre);
-    const samtidigUttak = isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true;
 
     let navnAnnenForelder;
     if (
@@ -112,12 +120,18 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
             isOpen={isOpen}
             melding={melding}
             tittel={periodetittel}
-            erSamtidigUttak={samtidigUttak && annenForelderHarSamtidigUttakISammePeriode}
+            annenForelderSamtidigUttakPeriode={annenForelderSamtidigUttakPeriode}
             navnAnnenForelder={navnAnnenForelder}
             beskrivelse={
                 <>
                     {varighetString}
                     <em className={BEM.element('hvem')}> - {foreldernavn}</em>
+                </>
+            }
+            beskrivelseSamtidigUttak={
+                <>
+                    {samtidigUttakAnnenForelderVarighet}
+                    <em className={BEM.element('hvem')}> - {navnAnnenForelder}</em>
                 </>
             }
             ikon={getPeriodeIkon(periode, navnPåForeldre)}

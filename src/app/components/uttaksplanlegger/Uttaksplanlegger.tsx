@@ -208,7 +208,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         onLeggTilOpphold={this.replaceHullWithOpphold}
                     />
                 ),
-                erSamtidigUttak: false
+                annenForelderSamtidigUttakPeriode: undefined
             });
         }
 

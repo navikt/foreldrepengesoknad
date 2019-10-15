@@ -39,19 +39,23 @@
         flex-grow: 0;
     }
 
-    &__samtidig-uttak-punkt {
-        position: relative;
-        padding-right: 1rem;
+    &__samtidig-uttak {
+        align-items: center;
+        display: flex;
+        margin-left: 2rem;
+        padding-left: 1rem;
+        margin-bottom: 1rem;
+        margin-right: 1rem;
+        border: 1px dotted #c6c2bf;
+        border-radius: 0.25rem;
+    }
 
-        &:before {
-            content: ' \00b7';
-            font-size: 70px;
-            display: inline-block;
-            color: #634689;
-            position: absolute;
-            left: -1.25rem;
-            top: -0.125rem;
-        }
+    &__samtidig-uttak-mor {
+        border-left: 8px solid @c-periodefarge-lilla;
+    }
+
+    &__samtidig-uttak-far {
+        border-left: 8px solid @c-periodefarge-blaa;
     }
 
     &__tidsrom {
