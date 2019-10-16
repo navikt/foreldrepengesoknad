@@ -79,7 +79,16 @@ class DatoInput extends React.Component<Props, {}> {
                                 id,
                                 placeholder: 'dd.mm.åååå',
                                 name,
-                                ariaDescribedby: ariaDescriptionId
+                                ariaDescribedby: ariaDescriptionId,
+                                onChange: (datoString: string, evt: any) => {
+                                    if (moment(datoString, 'DDMMYYYY', true).isValid()) {
+                                        onChange(moment.utc(datoString, 'DDMMYYYY').toDate());
+                                    }
+
+                                    if (moment(datoString, 'D.M.YYYY', true).isValid()) {
+                                        onChange(moment.utc(datoString, 'D.M.YYYY').toDate());
+                                    }
+                                }
                             }}
                             visÅrVelger={true}
                             onChange={(datoString: string) => {
