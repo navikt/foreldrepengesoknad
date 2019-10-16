@@ -502,8 +502,10 @@
     "periodeliste.hull.info.helligdager": "Du må ta ut foreldrepengar i denne perioden",
     "periodeliste.hull.info.helligdagerOgUttaksdager":
         "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar",
-    "periodeliste.hull.info.uttaksdager":
+    "periodeliste.hull.info.uttaksdager.ikkeDeltUttak":
         "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar",
+    "periodeliste.hull.info.uttaksdager.deltUttak":
+        "Viss {navn} skal vera heime eller utsetja må {navn} sende inn sin eigen søknad.",
     "periodeliste.hull.tittel": "Mista foreldrepengar",
     "periodeliste.ikkeInnvilgetPeriode.tittel": "Tapte foreldrepengar - ikkje innvilga {type}",
     "periodeliste.ikkeInnvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",

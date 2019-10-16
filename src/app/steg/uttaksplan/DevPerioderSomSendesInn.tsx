@@ -14,11 +14,11 @@ const DevPerioderSomSendesInn: React.StatelessComponent<Props> = ({ søknadsinfo
     <DevBlock alwaysActive={true}>
         <Ekspanderbartpanel tittel="Perioder som sendes inn" apen={true}>
             <Periodeliste
-                søknadsinfo={søknadsinfo}
+                erDeltUttak={søknadsinfo.søknaden.erDeltUttak}
                 perioder={perioderSomSkalSendesInn}
                 meldingerPerPeriode={{}}
                 informasjon={undefined}
-                navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
+                navn={søknadsinfo.navn}
                 lastAddedPeriodeId={undefined}
                 onReplaceHullWithOpphold={() => null}
                 onReplaceHullWithPeriode={() => null}

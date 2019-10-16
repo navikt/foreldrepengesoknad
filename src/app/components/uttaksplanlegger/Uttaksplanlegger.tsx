@@ -264,12 +264,12 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         </header>
                         <Block visible={uttaksplan.length > 0}>
                             <Periodeliste
-                                søknadsinfo={søknadsinfo}
+                                erDeltUttak={søknadsinfo.søknaden.erDeltUttak}
                                 ref={(c) => (this.periodeliste = c)}
                                 perioder={uttaksplan}
                                 informasjon={infoItems}
                                 meldingerPerPeriode={meldingerPerPeriode}
-                                navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
+                                navn={søknadsinfo.navn}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 onReplaceHullWithOpphold={this.replaceHullWithOpphold}
                                 onReplaceHullWithPeriode={this.replaceHullWithPeriode}
