@@ -8,27 +8,27 @@ import {
     isUttakAnnenPart
 } from '../../../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
-import { NavnPåForeldre, Tidsperiode } from 'common/types';
+import { Tidsperiode } from 'common/types';
 import ToggleList from '../../../elementer/toggleList/ToggleList';
 import PeriodelisteHull from './items/PeriodelisteHull';
 import { focusElement } from '../../../../util/focusUtils';
 import PeriodelistePeriode from './items/PeriodelistePeriode';
 import PeriodelisteInfo, { PeriodelisteInformasjon } from './items/PeriodelisteInfo';
-import { Søknadsinfo } from 'app/selectors/types';
 import PeriodelisteAvslåttPeriode from './items/PeriodelisteAvslåttPeriode';
 import PeriodelisteOppholdAnnenPart from './items/PeriodelisteOppholdAnnenPart';
 import { VeiledermeldingerPerPeriode } from '../../../veilederInfo/types';
+import { NavnISøknaden } from 'app/selectors/types';
 
 import './periodeliste.less';
 import moment from 'moment';
 
 interface OwnProps {
-    søknadsinfo: Søknadsinfo;
+    erDeltUttak: boolean;
     perioder: Periode[];
     informasjon?: PeriodelisteInformasjon[];
     antallFeriedager: number;
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
-    navnPåForeldre: NavnPåForeldre;
+    navn: NavnISøknaden;
     lastAddedPeriodeId: string | undefined;
     onPeriodeLukk?: (id: string) => void;
     onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
@@ -130,13 +130,14 @@ class Periodeliste extends React.Component<Props> {
         const {
             perioder,
             informasjon,
-            navnPåForeldre,
+            navn,
             antallFeriedager,
             meldingerPerPeriode,
             onReplaceHullWithOpphold,
             onReplaceHullWithPeriode,
             updatePeriode,
-            deletePeriode
+            deletePeriode,
+            erDeltUttak
         } = this.props;
 
         const filteredPerioder = this.shouldRenderHull(perioder)
@@ -177,7 +178,8 @@ class Periodeliste extends React.Component<Props> {
                                             periode={periode}
                                             onReplaceHullWithOpphold={onReplaceHullWithOpphold}
                                             onReplaceHullWithPeriode={onReplaceHullWithPeriode}
-                                            navnPåForeldre={navnPåForeldre}
+                                            navn={navn}
+                                            erDeltUttak={erDeltUttak}
                                         />
                                     );
                                 case Periodetype.Info:
@@ -192,7 +194,7 @@ class Periodeliste extends React.Component<Props> {
                                                     periode={periode}
                                                     onReplaceHullWithOpphold={onReplaceHullWithOpphold}
                                                     onReplaceHullWithPeriode={onReplaceHullWithPeriode}
-                                                    navnPåForeldre={navnPåForeldre}
+                                                    navnPåForeldre={navn.navnPåForeldre}
                                                 />
                                             );
                                         case PeriodeInfoType.uttakAnnenPart:
@@ -205,7 +207,7 @@ class Periodeliste extends React.Component<Props> {
                                                         isExpanded={isExpanded}
                                                         onToggle={onToggle}
                                                         periode={periode}
-                                                        navnPåForeldre={navnPåForeldre}
+                                                        navnPåForeldre={navn.navnPåForeldre}
                                                     />
                                                 )
                                             );
@@ -218,7 +220,7 @@ class Periodeliste extends React.Component<Props> {
                                             id={itemId}
                                             periode={periode}
                                             antallFeriedager={antallFeriedager}
-                                            navnPåForeldre={navnPåForeldre}
+                                            navnPåForeldre={navn.navnPåForeldre}
                                             meldinger={meldingerPerPeriode[periode.id]}
                                             isExpanded={isExpanded}
                                             onToggle={onToggle}
