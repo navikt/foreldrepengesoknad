@@ -502,12 +502,14 @@
     "periodeliste.hull.beskrivelse":
         "{dager} {dager, plural, one{dag} other {dager}} uten registrert periode eller utsettelse",
     "periodeliste.hull.info.helligdager": "Du må ta ut foreldrepenger i denne perioden",
-    "periodeliste.hull.info.helligdagerOgUttaksdager":
-        "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger",
+    "periodeliste.hull.info.helligdagerOgUttaksdager.ikkeDeltUttak":
+        "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger.",
+    "periodeliste.hull.info.helligdagerOgUttaksdager.deltUttak":
+        "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger. Hvis {navn} skal være hjemme eller utsette må {navn} sende inn sin egen søknad.",
     "periodeliste.hull.info.uttaksdager.ikkeDeltUttak":
-        "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger",
+        "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger.",
     "periodeliste.hull.info.uttaksdager.deltUttak":
-        "Hvis {navn} skal være hjemme eller utsette må {navn} sende inn sin egen søknad.",
+        "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger. Hvis {navn} skal være hjemme eller utsette må {navn} sende inn sin egen søknad.",
     "periodeliste.hull.tittel": "Tapte foreldrepenger",
     "periodeliste.ikkeInnvilgetPeriode.tittel": "Tapte foreldrepenger - ikke innvilget {type}",
     "periodeliste.ikkeInnvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",

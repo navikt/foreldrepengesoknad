@@ -113,7 +113,8 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
                                     <FormattedMessage
                                         id="periodeliste.hull.info.uttaksdager.deltUttak"
                                         values={{
-                                            navn: navn.annenForelder.fornavn
+                                            navn: navn.annenForelder.fornavn,
+                                            dager: antallDager
                                         }}
                                     />
                                 ) : (
@@ -126,13 +127,22 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
                                 )}
                             </Block>
                             <Block margin="xs" visible={kunUttaksdager === false && kunHelligdager === false}>
-                                <FormattedMessage
-                                    id="periodeliste.hull.info.helligdagerOgUttaksdager"
-                                    values={{
-                                        dager: antallDager,
-                                        antallHelligdager
-                                    }}
-                                />
+                                {erDeltUttak ? (
+                                    <FormattedMessage
+                                        id="periodeliste.hull.info.helligdagerOgUttaksdager.deltUttak"
+                                        values={{
+                                            navn: navn.annenForelder.fornavn,
+                                            dager: antallDager
+                                        }}
+                                    />
+                                ) : (
+                                    <FormattedMessage
+                                        id="periodeliste.hull.info.helligdagerOgUttaksdager.ikkeDeltUttak"
+                                        values={{
+                                            dager: antallDager
+                                        }}
+                                    />
+                                )}
                             </Block>
                         </>
                     )}
