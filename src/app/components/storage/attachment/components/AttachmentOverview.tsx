@@ -58,9 +58,12 @@ class AttachmentOverview extends React.Component<Props, State> {
                 );
             } else if (error && error.response !== undefined && error.response.status === 422) {
                 const intlId =
-                    error.response.message && error.respnse.message.contains('decrypt')
+                    error.response.data &&
+                    error.response.data.messages &&
+                    error.response.data.messages.includes('decrypt')
                         ? 'vedlegg.passordbeskyttet'
                         : 'vedlegg.virus';
+
                 errorMessages.push(
                     <FormattedMessage
                         id={multipleErrors ? `${intlId}.flereFeil` : intlId}
@@ -115,7 +118,7 @@ class AttachmentOverview extends React.Component<Props, State> {
                         <Block margin="xs" visible={showErrorMessage} animated={false}>
                             <AlertstripeWithCloseButton
                                 lukknappProps={{
-                                    hvit: true,
+                                    hvit: false,
                                     type: 'button'
                                 }}
                                 errorMessages={this.createErrorMessagesForFailedAttachments(
