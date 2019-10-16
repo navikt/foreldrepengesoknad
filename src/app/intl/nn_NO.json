@@ -1012,6 +1012,10 @@
     "vedlegg.tomFil.flereFeil": "{filename} - Du kan ikke laste opp en tom fil",
     "vedlegg.virus": "Vedlegget inneholder noe vi ikkje vil ha",
     "vedlegg.virus.flereFeil": "{filename} - Vedlegget inneheld noko vi ikkje vil ha",
+    "vedlegg.passordbeskyttet":
+        "Vedlegget du forsøker å laste opp er passordbeskyttet. Du må endre vedlegget slik at det ikke er passordbeskyttet eller laste opp et annet vedlegg.",
+    "vedlegg.passordbeskyttet.flereFeil":
+        "{filename} - Vedlegget du forsøker å laste opp er passordbeskyttet. Du må endre vedlegget slik at det ikke er passordbeskyttet eller laste opp et annet vedlegg.",
     "vedlegg.lastoppknapp.anneninntektDokumentasjon": "Last opp dokumentasjon her",
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
     "vedlegg.lastoppknapp.dokumentasjonAvAleneomsorg": "Last opp dokumentasjon her",
