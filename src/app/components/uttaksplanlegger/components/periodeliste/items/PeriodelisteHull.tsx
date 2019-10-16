@@ -12,15 +12,17 @@ import { getVarighetString } from 'common/util/intlUtils';
 import { getStønadskontoNavn } from 'app/util/uttaksplan';
 import LinkButton from 'app/components/elementer/linkButton/LinkButton';
 import UttaksplanAdvarselIkon from 'app/components/ikoner/uttaksplanIkon/ikoner/AdvarselIkon';
+import { NavnISøknaden } from 'app/selectors/types';
 
 export interface Props {
     itemId: string;
     isExpanded: boolean;
     onToggle: onToggleItemProp;
     periode: PeriodeHull;
-    navnPåForeldre: NavnPåForeldre;
+    navn: NavnISøknaden;
     onReplaceHullWithPeriode?: (tidsperiode: Tidsperiode) => void;
     onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
+    erDeltUttak: boolean;
 }
 
 const getTittelOgBeskrivelseForHull = (
@@ -53,7 +55,8 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
     periode,
     onReplaceHullWithPeriode,
     onReplaceHullWithOpphold,
-    navnPåForeldre,
+    navn,
+    erDeltUttak,
     intl
 }) => {
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
@@ -79,12 +82,12 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
         );
     }
 
-    const { tittel, beskrivelse } = getTittelOgBeskrivelseForHull(periode, antallDager, navnPåForeldre, intl);
+    const { tittel, beskrivelse } = getTittelOgBeskrivelseForHull(periode, antallDager, navn.navnPåForeldre, intl);
 
     return (
         <PeriodelisteInfo
             id={itemId}
-            tittel={tittel}
+            tittel={erDeltUttak ? '' : tittel}
             isExpanded={isExpanded}
             onToggle={onToggle}
             beskrivelse={beskrivelse}
@@ -106,12 +109,21 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
                                 <FormattedMessage id="periodeliste.hull.info.helligdager" />
                             </Block>
                             <Block margin="xs" visible={kunUttaksdager}>
-                                <FormattedMessage
-                                    id="periodeliste.hull.info.uttaksdager"
-                                    values={{
-                                        dager: antallDager
-                                    }}
-                                />
+                                {erDeltUttak ? (
+                                    <FormattedMessage
+                                        id="periodeliste.hull.info.uttaksdager.deltUttak"
+                                        values={{
+                                            navn: navn.annenForelder.fornavn
+                                        }}
+                                    />
+                                ) : (
+                                    <FormattedMessage
+                                        id="periodeliste.hull.info.uttaksdager.ikkeDeltUttak"
+                                        values={{
+                                            dager: antallDager
+                                        }}
+                                    />
+                                )}
                             </Block>
                             <Block margin="xs" visible={kunUttaksdager === false && kunHelligdager === false}>
                                 <FormattedMessage
