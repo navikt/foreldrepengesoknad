@@ -54,7 +54,7 @@ class Periodeliste extends React.Component<Props> {
         this.checkPeriodeFocus = this.checkPeriodeFocus.bind(this);
         this.handleOnItemToggle = this.handleOnItemToggle.bind(this);
         this.shouldRenderHull = this.shouldRenderHull.bind(this);
-        this.harAnnenForelderSamtidigUttakISammePeriode = this.harAnnenForelderSamtidigUttakISammePeriode.bind(this);
+        this.annenForelderSamtidigUttak = this.annenForelderSamtidigUttak.bind(this);
 
         const { perioder } = props;
         if (perioder.length === 1 && perioder[0].id === props.lastAddedPeriodeId) {
@@ -102,7 +102,7 @@ class Periodeliste extends React.Component<Props> {
         }
     }
 
-    harAnnenForelderSamtidigUttakISammePeriode(periode: Periode): Periode | undefined {
+    annenForelderSamtidigUttak(periode: Periode): Periode | undefined {
         if (isUttaksperiode(periode)) {
             const { perioder } = this.props;
             const samtidigUttak = perioder
@@ -224,9 +224,7 @@ class Periodeliste extends React.Component<Props> {
                                             onToggle={onToggle}
                                             updatePeriode={updatePeriode}
                                             deletePeriode={deletePeriode}
-                                            annenForelderSamtidigUttakPeriode={this.harAnnenForelderSamtidigUttakISammePeriode(
-                                                periode
-                                            )}
+                                            annenForelderSamtidigUttakPeriode={this.annenForelderSamtidigUttak(periode)}
                                         />
                                     );
                             }
