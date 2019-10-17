@@ -37,6 +37,8 @@ import { findAllAttachments } from '../manglendeVedlegg/manglendeVedleggUtil';
 import _ from 'lodash';
 import { skalViseManglendeVedleggSteg } from '../../util/steg/navigation';
 import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
+import { apiActionCreators } from 'app/redux/actions';
+import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
 
 interface StateProps {
     stegProps: StegProps;
@@ -45,6 +47,7 @@ interface StateProps {
     uttaksplan: Periode[];
     planInneholderFrilansaktivitet: boolean;
     planInneholderSelvstendignæringaktivitet: boolean;
+    familiehendelsesdato: Date | undefined;
 }
 
 type Props = SøkerinfoProps & HistoryProps & StateProps & InjectedIntlProps & DispatchProps;
@@ -57,6 +60,15 @@ class AndreInntekterSteg extends React.Component<Props> {
         this.state = {
             harHattAnnenInntekt: undefined
         };
+        const { arbeidsforhold, familiehendelsesdato, dispatch } = this.props;
+
+        if (arbeidsforhold.length > 0) {
+            dispatch(
+                apiActionCreators.fjernInaktiveArbeidsforhold(
+                    getAktiveArbeidsforhold(arbeidsforhold, familiehendelsesdato)
+                )
+            );
+        }
     }
 
     updateSøkerAndSave(søker: Partial<Søker>) {
@@ -177,15 +189,18 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     );
     const missingAttachments = selectMissingAttachments(state);
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
+    const søknadsinfo = selectSøknadsinfo(state);
 
     const stegProps: StegProps = {
         id: StegID.ANDRE_INNTEKTER,
         renderFortsettKnapp: annenInntektErGyldig(søker),
         renderFormTag: true,
         history,
-        isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo, selectSøknadsinfo(state)),
+        isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo, søknadsinfo),
         nesteStegID: skalViseManglendeVedleggSteg(attachmentMap) ? StegID.MANGLENDE_VEDLEGG : StegID.OPPSUMMERING
     };
+
+    const familiehendelsesdato = søknadsinfo !== undefined ? søknadsinfo.søknaden.familiehendelsesdato : undefined;
 
     return {
         søker,
@@ -193,7 +208,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         stegProps,
         uttaksplan,
         planInneholderFrilansaktivitet,
-        planInneholderSelvstendignæringaktivitet
+        planInneholderSelvstendignæringaktivitet,
+        familiehendelsesdato
     };
 };
 

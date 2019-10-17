@@ -57,8 +57,12 @@ const getArbeidsforhold = (søkerinfo: SøkerinfoDTO): Arbeidsforhold[] => {
 
 export const getAktiveArbeidsforhold = (
     arbeidsforhold: Arbeidsforhold[],
-    familiehendelsedato: Date
+    familiehendelsedato: Date | undefined
 ): Arbeidsforhold[] => {
+    if (familiehendelsedato === undefined) {
+        return arbeidsforhold;
+    }
+
     return arbeidsforhold.reduce((aktiveArbeidsforhold: Arbeidsforhold[], a: Arbeidsforhold) => {
         if (a.tom === undefined) {
             aktiveArbeidsforhold.push(a);

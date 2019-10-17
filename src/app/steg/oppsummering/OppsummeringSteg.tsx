@@ -41,6 +41,7 @@ import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
 import LinkButton from 'app/components/elementer/linkButton/LinkButton';
 import Barn from 'app/types/søknad/Barn';
 import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
+import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -55,6 +56,7 @@ interface StateProps {
     isLoadingTilgjengeligeStønadskontoer: boolean;
     antallUkerUttaksplan: number;
     barn: Barn;
+    familiehendelsesdato: Date | undefined;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -74,7 +76,16 @@ export const getSkalSpørreOmAnnenForelderErInformert = (søknad: Søknad | unde
 class OppsummeringSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-        const { tilgjengeligeStønadskontoer, søknad, stegProps, søknadsinfo, dispatch, barn } = this.props;
+        const {
+            tilgjengeligeStønadskontoer,
+            søknad,
+            familiehendelsesdato,
+            søkerinfo,
+            stegProps,
+            søknadsinfo,
+            dispatch,
+            barn
+        } = this.props;
 
         this.sendSøknad = this.sendSøknad.bind(this);
         this.gotoUttaksplan = this.gotoUttaksplan.bind(this);
@@ -86,6 +97,15 @@ class OppsummeringSteg extends React.Component<Props> {
                 barn
             );
             dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));
+        }
+        const { arbeidsforhold } = søkerinfo;
+
+        if (arbeidsforhold.length > 0) {
+            dispatch(
+                apiActionCreators.fjernInaktiveArbeidsforhold(
+                    getAktiveArbeidsforhold(arbeidsforhold, familiehendelsesdato)
+                )
+            );
         }
     }
 
@@ -222,6 +242,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     let previousStegID = StegID.UTTAKSPLAN;
 
+    const familiehendelsesdato = søknadsinfo !== undefined ? søknadsinfo.søknaden.familiehendelsesdato : undefined;
+
     if (søknadsinfo) {
         previousStegID = søknadsinfo.søknaden.erEndringssøknad
             ? StegID.UTTAKSPLAN
@@ -256,7 +278,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         isLoadingTilgjengeligeStønadskontoer,
         antallUkerUttaksplan,
         søknadsinfo: søknadsinfo!,
-        skalSpørreOmAnnenForelderErInformert
+        skalSpørreOmAnnenForelderErInformert,
+        familiehendelsesdato
     };
 };
 
