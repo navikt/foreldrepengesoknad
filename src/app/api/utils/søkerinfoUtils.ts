@@ -40,19 +40,24 @@ const getArbeidsgiverId = (arbeidsforhold: SøkerinfoDTOArbeidsforhold): string 
     return arbeidsforhold.arbeidsgiverId;
 };
 
-const getArbeidsforhold = (søkerinfo: SøkerinfoDTO): Arbeidsforhold[] => {
-    const { arbeidsforhold } = søkerinfo;
+export const getArbeidsforhold = (arbeidsforhold: SøkerinfoDTOArbeidsforhold[] | undefined): Arbeidsforhold[] => {
     if (arbeidsforhold === undefined || arbeidsforhold.length === 0) {
         return [];
     }
-    return uniqBy(arbeidsforhold, getArbeidsgiverId).map((a: SøkerinfoDTOArbeidsforhold) => {
-        const forhold: Arbeidsforhold = {
-            ...a,
-            fom: moment(a.fom).toDate(),
-            tom: a.tom ? moment(a.tom).toDate() : undefined
-        };
-        return forhold;
-    });
+
+    const pågåendeArbeidsforhold = arbeidsforhold.filter((a) => a.tom === undefined);
+    const avsluttedeArbeidsforhold = arbeidsforhold.filter((a) => a.tom !== undefined);
+
+    return uniqBy([...pågåendeArbeidsforhold, ...avsluttedeArbeidsforhold], getArbeidsgiverId).map(
+        (a: SøkerinfoDTOArbeidsforhold) => {
+            const forhold: Arbeidsforhold = {
+                ...a,
+                fom: moment(a.fom).toDate(),
+                tom: a.tom ? moment(a.tom).toDate() : undefined
+            };
+            return forhold;
+        }
+    );
 };
 
 export const getAktiveArbeidsforhold = (
@@ -82,6 +87,6 @@ export const getSøkerinfoFromDTO = (søkerinfo: SøkerinfoDTO): Søkerinfo => {
     return {
         person: getPerson(søkerinfo),
         registrerteBarn: getRegistrerteBarn(søkerinfo),
-        arbeidsforhold: getArbeidsforhold(søkerinfo)
+        arbeidsforhold: getArbeidsforhold(søkerinfo.arbeidsforhold)
     };
 };
