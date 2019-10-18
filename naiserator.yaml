@@ -14,7 +14,7 @@ spec:
     outbound:
       external:
         - host: {{appres}}
-        - host: uttak-service.dev-nav.no
+        - host: fp-uttak-service.dev-nav.no
       rules : []  
   image: {{version}}
   port: 8080
