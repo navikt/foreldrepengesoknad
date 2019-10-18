@@ -14,7 +14,8 @@ spec:
     outbound:
       external:
         - host: {{appres}}
-      rules : []
+      rules : 
+        - application: fp-uttak-service
   image: {{version}}
   port: 8080
   replicas:
