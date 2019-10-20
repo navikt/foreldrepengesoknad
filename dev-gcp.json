@@ -1,10 +1,10 @@
 {
     "namespace": "foreldrepenger",
-    "appres": "appres-q1.nav.no",
+    "appres": "appres.nav.no",
     "ingress": "https://foreldrepengesoknad.dev-nav.no",
     "application_name": "foreldrepengesoknad",
     "env": {
-        "APPRES_CMS_URL": "https://appres-q1.nav.no",
+        "APPRES_CMS_URL": "https://appres.nav.no",
         "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.dev-nav.no/rest",
         "LOGINSERVICE_URL": "https://loginservice.dev-nav.no/login",
         "FP_UTTAK_SERVICE_URL": "https://fp-uttak-service.dev-nav.no",
