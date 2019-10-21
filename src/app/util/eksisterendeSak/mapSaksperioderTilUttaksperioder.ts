@@ -24,7 +24,7 @@ import { Saksperiode, Saksgrunnlag, PeriodeResultatType } from '../../types/Eksi
 import { Forelder } from 'common/types';
 import { isValidTidsperiode, Tidsperioden } from '../uttaksplan/Tidsperioden';
 import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
-import * as moment from 'moment';
+import moment from 'moment';
 import { finnOgSettInnHull } from '../uttaksplan/builder/UttaksplanBuilder';
 
 const harUttaksdager = (periode: Periode): boolean => {
@@ -146,7 +146,7 @@ const beregnSamtidigUttaksProsent = (
     return undefined;
 };
 
-const mapUttaksperiodeFromSaksperiode = (
+export const mapUttaksperiodeFromSaksperiode = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag,
     erEndringssøknad: boolean,
