@@ -7,8 +7,6 @@ import {
     StønadskontoType,
     MorsAktivitet
 } from '../../types/uttaksplan/periodetyper';
-import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
-import { Søknadsinfo } from 'app/selectors/types';
 
 export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakType | OverføringÅrsakType) =>
     årsak === UtsettelseÅrsakType.Sykdom ||
@@ -19,14 +17,9 @@ export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakT
 
 export const dokumentasjonBehøvesForUtsettelsesperiode = (
     { årsak }: Utsettelsesperiode,
-    søknadsinfo: Søknadsinfo
+    harMorAktivitetskrav: boolean
 ): boolean => {
-    return (
-        aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-            søknadsinfo.søker.erFarEllerMedmor,
-            søknadsinfo.annenForelder
-        ) || erÅrsakSykdomEllerInstitusjonsopphold(årsak)
-    );
+    return harMorAktivitetskrav || erÅrsakSykdomEllerInstitusjonsopphold(årsak);
 };
 
 export const dokumentasjonBehøvesForOverføringsperiode = (

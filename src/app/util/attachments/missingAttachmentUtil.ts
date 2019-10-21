@@ -13,7 +13,6 @@ import {
     Periode,
     Periodetype,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { spørsmålOmVedleggVisible } from '../../steg/barn/relasjonTilBarnAdopsjonSteg/visibility';
@@ -38,77 +37,88 @@ import { isAdopsjonsbarn } from '../../types/søknad/Barn';
 import { getMorsAktivitetSkjemanummer } from '../skjemanummer/morsAktivitetSkjemanummer';
 import { aktivitetskravMorSkalBesvares } from 'app/regler/uttak/uttaksskjema/aktivitetskravMorSkalBesvares';
 import { skalSøkerLasteOppTerminbekreftelse } from '../validation/steg/barn';
+import { Søkerinfo } from 'app/types/søkerinfo';
+import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType): boolean =>
     attachments === undefined ||
     attachments.length === 0 ||
     (type !== undefined && attachments.find((a) => a.type === type) === undefined);
 
-export function shouldPeriodeHaveAttachment(periode: Periode, søknadsinfo: Søknadsinfo): boolean {
-    if (periode.type === Periodetype.Info) {
-        return false;
+export const shouldPeriodeHaveAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
+    switch (periode.type) {
+        case Periodetype.Overføring:
+            return dokumentasjonBehøvesForOverføringsperiode(
+                søknadsinfo.søker.erFarEllerMedmor,
+                periode as Overføringsperiode
+            );
+        case Periodetype.Utsettelse:
+            return dokumentasjonBehøvesForUtsettelsesperiode(
+                periode as Utsettelsesperiode,
+                aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
+                    søknadsinfo.søker.erFarEllerMedmor,
+                    søknadsinfo.annenForelder
+                )
+            );
+        case Periodetype.Uttak:
+            return dokumentasjonBehøvesForUttaksperiode(periode as Uttaksperiode);
+        default:
+            return false;
     }
+};
 
-    if (periode.type === Periodetype.Overføring) {
-        return dokumentasjonBehøvesForOverføringsperiode(
-            søknadsinfo.søker.erFarEllerMedmor,
-            periode as Overføringsperiode
-        );
-    } else if (periode.type === Periodetype.Utsettelse) {
-        return dokumentasjonBehøvesForUtsettelsesperiode(periode as Utsettelsesperiode, søknadsinfo);
-    } else if (periode.type === Periodetype.Uttak) {
-        return dokumentasjonBehøvesForUttaksperiode(periode as Uttaksperiode);
-    } else {
-        return (periode as any).årsak === UtsettelseÅrsakType.Sykdom;
-    }
-}
+const isTerminbekreftelseMissing = (søknad: Søknad, arbeidsforhold: Arbeidsforhold[]): boolean =>
+    skalSøkerLasteOppTerminbekreftelse(søknad, arbeidsforhold) && isAttachmentMissing(søknad.barn.terminbekreftelse);
 
-export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): MissingAttachment[] => {
+const isOmsorgsovertakelseMissing = (søknad: Søknad) =>
+    spørsmålOmVedleggVisible(søknad.barn, søknad.erEndringssøknad) &&
+    isAdopsjonsbarn(søknad.barn, søknad.situasjon) &&
+    isAttachmentMissing(søknad.barn.omsorgsovertakelse);
+
+const isDokumentasjonAvAleneomsorgMissing = (søknad: Søknad, søkerinfo: Søkerinfo) => {
+    const annenForelderStegVisibility = getAnnenForelderStegVisibility(søknad, søkerinfo);
+    const shouldUploadDokumentasjonAvAleneomsorg =
+        annenForelderStegVisibility &&
+        annenForelderStegVisibility.isVisible(AnnenForelderSpørsmålKeys.datoForAleneomsorg) &&
+        søknad.barn.datoForAleneomsorg !== undefined;
+    return shouldUploadDokumentasjonAvAleneomsorg && isAttachmentMissing(søknad.barn.dokumentasjonAvAleneomsorg);
+};
+
+export const findMissingAttachmentsForBarn = (søknad: Søknad, søkerinfo: Søkerinfo): MissingAttachment[] => {
     const missingAttachments = [];
-    if (
-        skalSøkerLasteOppTerminbekreftelse(søknad, api.søkerinfo!.arbeidsforhold) &&
-        isAttachmentMissing(søknad.barn.terminbekreftelse)
-    ) {
+    if (isTerminbekreftelseMissing(søknad, søkerinfo.arbeidsforhold)) {
         missingAttachments.push({
             skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
             type: AttachmentType.TERMINBEKREFTELSE
         });
     }
 
-    if (
-        spørsmålOmVedleggVisible(søknad.barn, søknad.erEndringssøknad) &&
-        isAdopsjonsbarn(søknad.barn, søknad.situasjon) &&
-        isAttachmentMissing(søknad.barn.omsorgsovertakelse)
-    ) {
+    if (isOmsorgsovertakelseMissing(søknad)) {
         missingAttachments.push({
             skjemanummer: Skjemanummer.OMSORGSOVERTAKELSESDATO,
             type: AttachmentType.OMSORGSOVERTAKELSE
         });
     }
 
-    const annenForelderStegVisibility = getAnnenForelderStegVisibility(søknad, api.søkerinfo!);
-    const shouldUploadDokumentasjonAvAleneomsorg =
-        annenForelderStegVisibility &&
-        annenForelderStegVisibility.isVisible(AnnenForelderSpørsmålKeys.datoForAleneomsorg) &&
-        søknad.barn.datoForAleneomsorg !== undefined;
-    if (shouldUploadDokumentasjonAvAleneomsorg && isAttachmentMissing(søknad.barn.dokumentasjonAvAleneomsorg)) {
+    if (isDokumentasjonAvAleneomsorgMissing(søknad, søkerinfo)) {
         missingAttachments.push({
-            skjemanummer: Skjemanummer.ANNET,
+            skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
             type: AttachmentType.ALENEOMSORG
         });
     }
-
     return missingAttachments;
 };
 
 const missingAttachmentForAktivitetskrav = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
-    const skalBesvares = aktivitetskravMorSkalBesvares(
-        periode,
-        søknadsinfo.søker.erMor,
-        søknadsinfo.søker.erAleneOmOmsorg,
-        søknadsinfo.annenForelder.kanIkkeOppgis
+    return (
+        aktivitetskravMorSkalBesvares(
+            periode,
+            søknadsinfo.søker.erMor,
+            søknadsinfo.søker.erAleneOmOmsorg,
+            søknadsinfo.annenForelder.kanIkkeOppgis
+        ) && isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON)
     );
-    return skalBesvares ? isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON) : false;
 };
 
 const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): boolean => {
@@ -196,12 +206,12 @@ export const findMissingAttachments = (
     api: ApiState,
     søknadsinfo: Søknadsinfo
 ): MissingAttachment[] => {
-    if (!søknadsinfo) {
+    if (!søknadsinfo || !api.søkerinfo) {
         return [];
     }
 
     const missingAttachments = [];
-    missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api));
+    missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api.søkerinfo));
     missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknadsinfo));
     missingAttachments.push(...findMissingAttachmentsForAndreInntekter(søknad));
     return missingAttachments;
