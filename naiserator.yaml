@@ -10,12 +10,14 @@ metadata:
   labels:
     team: {{team}}
 spec:
+{{#if namespace}}        
   accessPolicy:
     outbound:
       external:
         - host: {{appres}}
-        - host: fp-uttak-service.dev-nav.no
+        - host: {{uttak}}
       rules : []  
+{{/if}}               
   image: {{version}}
   port: 8080
   replicas:
