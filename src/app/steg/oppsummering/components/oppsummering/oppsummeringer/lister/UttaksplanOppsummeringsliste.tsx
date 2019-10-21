@@ -112,7 +112,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
         periode: Uttaksperiode,
         periodeErNyEllerEndret: boolean = true
     ) {
-        const { registrerteArbeidsforhold } = this.props;
+        const { registrerteArbeidsforhold, søknadsinfo } = this.props;
         return {
             venstrestiltTekst: this.getStønadskontoNavnFromKonto(periode.konto),
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
@@ -121,6 +121,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
                     periode={periode}
                     registrerteArbeidsforhold={registrerteArbeidsforhold}
                     periodeErNyEllerEndret={periodeErNyEllerEndret}
+                    søknadsinfo={søknadsinfo}
                 />
             )
         };

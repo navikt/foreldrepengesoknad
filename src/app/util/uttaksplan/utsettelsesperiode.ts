@@ -37,6 +37,10 @@ export const dokumentasjonBehøvesForOverføringsperiode = (
     periode.årsak !== OverføringÅrsakType.ikkeRettAnnenForelder;
 
 export const dokumentasjonBehøvesForUttaksperiode = (periode: Uttaksperiode): boolean => {
+    if (periode.harIkkeAktivitetskrav) {
+        return false;
+    }
+
     return (
         (periode.morsAktivitetIPerioden !== undefined && periode.morsAktivitetIPerioden !== MorsAktivitet.Uføre) ||
         (periode.konto === StønadskontoType.Fedrekvote && periode.erMorForSyk === true)

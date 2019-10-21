@@ -5,11 +5,11 @@ import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/
 import MorsAktivitetDetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
-import { dokumentasjonBehøvesForUtsettelsesperiode } from '../../../../../../util/uttaksplan/utsettelsesperiode';
 import { getArbeidsformTekst, getÅrsakTekst } from 'app/util/oppsummeringUtils';
 import getMessage from 'common/util/i18nUtils';
 import Arbeidsforhold from '../../../../../../types/Arbeidsforhold';
 import { Søknadsinfo } from 'app/selectors/types';
+import { shouldPeriodeHaveAttachment } from 'app/util/attachments/missingAttachmentUtil';
 
 interface UtsettelsesperiodedetaljerProps {
     periode: Utsettelsesperiode;
@@ -40,7 +40,7 @@ const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({
                 feltnavn={getMessage(intl, 'oppsummering.uttak.årsak')}
                 verdi={getÅrsakTekst(intl, periode)}
             />
-            {dokumentasjonBehøvesForUtsettelsesperiode(periode, søknadsinfo) &&
+            {shouldPeriodeHaveAttachment(periode, søknadsinfo) &&
                 periodeErNyEllerEndret && (
                     <OppsummeringAvDokumentasjon
                         vedlegg={(vedlegg || []).filter(
@@ -54,15 +54,16 @@ const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({
                     verdi={arbeidsformTekst}
                 />
             )}
-            {morsAktivitetIPerioden && (
-                <MorsAktivitetDetaljer
-                    morsAktivitet={morsAktivitetIPerioden}
-                    dokumentasjonAvMorsAktivitet={(vedlegg || []).filter(
-                        (currentVedlegg) => currentVedlegg.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
-                    )}
-                    visOppsummeringAvDokumentasjon={periodeErNyEllerEndret}
-                />
-            )}
+            {shouldPeriodeHaveAttachment(periode, søknadsinfo) &&
+                morsAktivitetIPerioden && (
+                    <MorsAktivitetDetaljer
+                        morsAktivitet={morsAktivitetIPerioden}
+                        dokumentasjonAvMorsAktivitet={(vedlegg || []).filter(
+                            (currentVedlegg) => currentVedlegg.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                        )}
+                        visOppsummeringAvDokumentasjon={periodeErNyEllerEndret}
+                    />
+                )}
         </>
     );
 };

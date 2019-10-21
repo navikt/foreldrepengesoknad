@@ -6,11 +6,14 @@ import MorsAktivitetDetaljer from 'app/steg/oppsummering/components/oppsummering
 import getMessage from 'common/util/i18nUtils';
 import { getArbeidsformTekst } from 'app/util/oppsummeringUtils';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { shouldPeriodeHaveAttachment } from 'app/util/attachments/missingAttachmentUtil';
+import { Søknadsinfo } from 'app/selectors/types';
 
 interface UttaksperiodedetaljerProps {
     periode: UttaksperiodeBase;
     registrerteArbeidsforhold: Arbeidsforhold[] | undefined;
     periodeErNyEllerEndret: boolean;
+    søknadsinfo: Søknadsinfo;
 }
 
 type Props = UttaksperiodedetaljerProps & InjectedIntlProps;
@@ -19,7 +22,8 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({
     periode,
     registrerteArbeidsforhold,
     periodeErNyEllerEndret,
-    intl
+    intl,
+    søknadsinfo
 }) => {
     const {
         konto,
@@ -66,13 +70,14 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({
                     verdi={arbeidsformTekst}
                 />
             )}
-            {morsAktivitetIPerioden && (
-                <MorsAktivitetDetaljer
-                    morsAktivitet={morsAktivitetIPerioden}
-                    dokumentasjonAvMorsAktivitet={vedlegg || []}
-                    visOppsummeringAvDokumentasjon={periodeErNyEllerEndret}
-                />
-            )}
+            {shouldPeriodeHaveAttachment(periode, søknadsinfo) &&
+                morsAktivitetIPerioden && (
+                    <MorsAktivitetDetaljer
+                        morsAktivitet={morsAktivitetIPerioden}
+                        dokumentasjonAvMorsAktivitet={vedlegg || []}
+                        visOppsummeringAvDokumentasjon={periodeErNyEllerEndret}
+                    />
+                )}
         </>
     );
 };
