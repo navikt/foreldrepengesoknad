@@ -12,7 +12,8 @@ import {
     UttakAnnenPartInfoPeriode,
     UtsettelseAnnenPartInfoPeriode,
     Overføringsperiode,
-    isInfoPeriode
+    isInfoPeriode,
+    MorsAktivitet
 } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
@@ -172,10 +173,15 @@ const mapUttaksperiodeFromSaksperiode = (
         saksperiode.utbetalingsprosent
     );
 
+    let konto;
+    if (saksperiode.morsAktivitetIPerioden === MorsAktivitet.Uføre) {
+        konto = StønadskontoType.AktivitetsfriKvote;
+    }
+
     const uttaksperiode: Uttaksperiode = {
         id: guid(),
         type: Periodetype.Uttak,
-        konto: saksperiode.stønadskontotype,
+        konto: konto !== undefined ? konto : saksperiode.stønadskontotype,
         tidsperiode: { ...saksperiode.tidsperiode },
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
         ønskerSamtidigUttak: samtidigUttakProsent !== undefined,
