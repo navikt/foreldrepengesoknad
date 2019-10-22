@@ -60,27 +60,12 @@ export const getArbeidsforhold = (arbeidsforhold: SøkerinfoDTOArbeidsforhold[] 
     );
 };
 
-export const getAktiveArbeidsforhold = (
-    arbeidsforhold: Arbeidsforhold[],
-    familiehendelsedato: Date | undefined
-): Arbeidsforhold[] => {
-    if (familiehendelsedato === undefined) {
-        return arbeidsforhold;
-    }
-
-    return arbeidsforhold.reduce((aktiveArbeidsforhold: Arbeidsforhold[], a: Arbeidsforhold) => {
-        if (a.tom === undefined) {
-            aktiveArbeidsforhold.push(a);
-
-            return aktiveArbeidsforhold;
-        } else {
-            if (moment(a.tom).isSameOrAfter(moment(familiehendelsedato))) {
-                aktiveArbeidsforhold.push(a);
-            }
-
-            return aktiveArbeidsforhold;
-        }
-    }, []);
+export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], fraDato?: Date): Arbeidsforhold[] => {
+    return arbeidsforhold.filter((a) => (
+        a.tom === undefined ||
+        a.tom === null ||
+        fraDato !== undefined && moment(fraDato).isSameOrBefore(a.tom, 'days')
+    ));
 };
 
 export const getSøkerinfoFromDTO = (søkerinfo: SøkerinfoDTO): Søkerinfo => {

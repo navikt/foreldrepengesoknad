@@ -1,19 +1,8 @@
 import Arbeidsforhold from '../../types/Arbeidsforhold';
-import moment from 'moment';
+import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
 
-const tomDatoErFørEllerLikSisteDag = (tom: Date, sisteDag: Date): boolean => {
-    return moment(sisteDag).isSameOrBefore(tom, 'days');
-};
-
-export const harAktivtArbeidsforhold = (arbeidsforhold: Arbeidsforhold[] | undefined, sisteDag?: Date): boolean => {
-    return arbeidsforhold === undefined
-        ? false
-        : arbeidsforhold.some(
-              (a) =>
-                  a.tom === undefined ||
-                  a.tom === null ||
-                  (sisteDag !== undefined && tomDatoErFørEllerLikSisteDag(a.tom, sisteDag))
-          );
+export const harAktivtArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], fraDato?: Date): boolean => {
+    return getAktiveArbeidsforhold(arbeidsforhold, fraDato).length > 0;
 };
 
 const getArbeidsforholdFromOrgnummer = (
