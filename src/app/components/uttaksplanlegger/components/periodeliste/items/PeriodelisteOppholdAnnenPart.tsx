@@ -16,6 +16,7 @@ import { getOppholdskontoNavn, getForelderNavn, getPeriodeForelderNavn, getUtset
 import { formaterDatoKompakt } from 'common/util/datoUtils';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import { UttaksplanColor } from 'app/types/uttaksplan/colors';
+import { getFloatFromString } from 'common/util/numberUtils';
 
 export interface Props {
     itemId: string;
@@ -48,9 +49,10 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
     }
 
     if (isUttakAnnenPart(periode) && periode.stillingsprosent !== undefined) {
+        const prosent = 100 - getFloatFromString(periode.stillingsprosent)!;
         tittel = getMessage(intl, 'periodeliste.oppholdAnnenPart.tittel.gradertEllerSamtidigUttak', {
             navn,
-            prosent: periode.stillingsprosent
+            prosent: prosent.toString()
         });
     }
 
