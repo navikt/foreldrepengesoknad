@@ -51,7 +51,7 @@ function* sendSøknad(action: SendSøknad) {
     } catch (error) {
         action.history.push(`${routeConfig.GENERELL_FEIL_URL}`, {
             errorMessage:
-                error && error.response && error.response.status === 413 ? error.response.data.message : undefined,
+                error && error.response && error.response.status === 413 ? error.response.data.messages : undefined,
             uuid: extractUUID(error)
         });
     } finally {
