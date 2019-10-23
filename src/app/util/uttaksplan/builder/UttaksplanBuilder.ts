@@ -200,7 +200,7 @@ class UttaksplanAutoBuilder {
                     ønskerSamtidigUttak: true,
                     visPeriodeIPlan: false,
                     samtidigUttakProsent: isUttaksperiode(p)
-                        ? this.beregnSamtidigUttaksprosent(p.samtidigUttakProsent)
+                        ? this.beregnSamtidigUttaksprosent(p.samtidigUttakProsent, op.samtidigUttakProsent)
                         : '100',
                     tidsperiode: {
                         fom: moment(p.tidsperiode.fom).isSameOrAfter(moment(op.tidsperiode.fom))
@@ -244,7 +244,7 @@ class UttaksplanAutoBuilder {
                     id: guid(),
                     visPeriodeIPlan: false,
                     samtidigUttakProsent: isUttaksperiode(p)
-                        ? this.beregnSamtidigUttaksprosent(p.samtidigUttakProsent)
+                        ? this.beregnSamtidigUttaksprosent(p.samtidigUttakProsent, op.samtidigUttakProsent)
                         : '100',
                     tidsperiode: {
                         fom: moment(p.tidsperiode.fom).isSameOrAfter(moment(op.tidsperiode.fom))
@@ -417,12 +417,32 @@ class UttaksplanAutoBuilder {
         return this;
     }
 
-    private beregnSamtidigUttaksprosent(søkersSamtidigUttaksprosent: string | undefined): string {
+    private beregnSamtidigUttaksprosent(
+        søkersSamtidigUttaksprosent: string | undefined,
+        andrepartsSamtidigUttaksprosent: string | undefined
+    ): string {
         if (this.erFlerbarnssøknad) {
+            if (andrepartsSamtidigUttaksprosent !== undefined) {
+                return andrepartsSamtidigUttaksprosent;
+            }
+
             return '100';
         } else {
+            let annenPartsProsent;
             const søkersProsent = getFloatFromString(søkersSamtidigUttaksprosent);
-            const annenPartsProsent = søkersProsent ? 150 - søkersProsent : 100;
+            if (andrepartsSamtidigUttaksprosent !== undefined) {
+                annenPartsProsent = getFloatFromString(andrepartsSamtidigUttaksprosent);
+            }
+
+            if (annenPartsProsent !== undefined && søkersProsent !== undefined) {
+                if (annenPartsProsent + søkersProsent > 150) {
+                    return (150 - søkersProsent).toString();
+                } else {
+                    return annenPartsProsent.toString();
+                }
+            }
+
+            annenPartsProsent = søkersProsent ? 150 - søkersProsent : 100;
 
             return Math.min(100, annenPartsProsent).toString();
         }
