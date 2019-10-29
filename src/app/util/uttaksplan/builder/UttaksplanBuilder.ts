@@ -32,6 +32,7 @@ export const UttaksplanBuilder = (
     familiehendelsesdato: Date,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     erFlerbarnssøknad: boolean,
+    erEndringssønad: boolean,
     opprinneligPlan?: Periode[]
 ) => {
     return new UttaksplanAutoBuilder(
@@ -40,6 +41,7 @@ export const UttaksplanBuilder = (
         tilgjengeligeStønadskontoer,
         getUttaksstatusFunc,
         erFlerbarnssøknad,
+        erEndringssønad,
         opprinneligPlan
     );
 };
@@ -58,6 +60,7 @@ class UttaksplanAutoBuilder {
         uttaksplan: Periode[]
     ) => Uttaksstatus;
     protected erFlerbarnssøknad: boolean;
+    protected erEndringssønad: boolean;
 
     public constructor(
         public perioder: Periode[],
@@ -68,6 +71,7 @@ class UttaksplanAutoBuilder {
             uttaksplan: Periode[]
         ) => Uttaksstatus,
         erFlerbarnssøknad: boolean,
+        erEndringssønad: boolean,
         opprinneligPlan?: Periode[]
     ) {
         this.perioder = perioder;
@@ -76,6 +80,7 @@ class UttaksplanAutoBuilder {
         this.tilgjengeligeStønadskontoer = tilgjengeligeStønadskontoer;
         this.getUttaksstatusFunc = getUttaksstatusFunc;
         this.erFlerbarnssøknad = erFlerbarnssøknad;
+        this.erEndringssønad = erEndringssønad;
     }
 
     buildUttaksplan() {
@@ -89,6 +94,7 @@ class UttaksplanAutoBuilder {
                 .getPerioderEtterFamiliehendelsesdato(this.familiehendelsesdato)
                 .filter((p) => !(isUttakAnnenPart(p) && p.ønskerSamtidigUttak))
                 .sort(sorterPerioder),
+            this.erEndringssønad,
             this.familiehendelsesdato
         );
 
@@ -104,7 +110,7 @@ class UttaksplanAutoBuilder {
         this.perioder = resetTidsperioder([...uttaksperioder, ...overføringer]);
 
         const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hullOgInfo].sort(sorterPerioder);
-        this.perioder = [...settInnPerioder(this.perioder, fastePerioder)];
+        this.perioder = [...settInnPerioder(this.perioder, fastePerioder, this.erEndringssønad)];
 
         this.finnOgSettInnHull();
         if (this.opprinneligPlan) {
@@ -142,11 +148,15 @@ class UttaksplanAutoBuilder {
             periode.årsak === UtsettelseÅrsakType.Ferie &&
             Tidsperioden(periode.tidsperiode).getAntallFridager() > 0
         ) {
-            this.perioder = settInnFerieMedHelligdager(this.perioder, periode);
+            this.perioder = settInnFerieMedHelligdager(this.perioder, periode, this.erEndringssønad);
         } else {
-            this.perioder = settInnPeriode(this.perioder, {
-                ...periode
-            });
+            this.perioder = settInnPeriode(
+                this.perioder,
+                {
+                    ...periode
+                },
+                this.erEndringssønad
+            );
         }
         this.buildUttaksplan();
         return this;
@@ -294,7 +304,10 @@ class UttaksplanAutoBuilder {
                 });
             });
             const nyPlan: Periode[] = [...perioder].filter((p) => !isHull(p));
-            this.perioder = finnOgSettInnHull(settInnPerioder(nyPlan, opprinneligePerioderSomSkalLeggesInnIPlan));
+            this.perioder = finnOgSettInnHull(
+                settInnPerioder(nyPlan, opprinneligePerioderSomSkalLeggesInnIPlan, this.erEndringssønad),
+                this.erEndringssønad
+            );
         }
 
         return this;
@@ -408,7 +421,7 @@ class UttaksplanAutoBuilder {
     }
 
     private finnOgSettInnHull() {
-        this.perioder = finnOgSettInnHull(this.perioder, this.familiehendelsesdato);
+        this.perioder = finnOgSettInnHull(this.perioder, this.erEndringssønad, this.familiehendelsesdato);
         return this;
     }
 
@@ -488,13 +501,13 @@ function fjernOverskrivbarePerioderIPeriodetidsrom(perioder: Periode[], periode:
     return nyePerioder.sort(sorterPerioder);
 }
 
-function settInnPerioder(perioder: Periode[], fastePerioder: Periode[]): Periode[] {
+function settInnPerioder(perioder: Periode[], fastePerioder: Periode[], erEndringssønad: boolean): Periode[] {
     if (perioder.length === 0) {
         return fastePerioder;
     }
     let nyePerioder: Periode[] = [...perioder];
     [...fastePerioder].sort(sorterPerioder).forEach((periode) => {
-        nyePerioder = settInnPeriode(nyePerioder, periode);
+        nyePerioder = settInnPeriode(nyePerioder, periode, erEndringssønad);
     });
     return nyePerioder.sort(sorterPerioder);
 }
@@ -502,18 +515,19 @@ function settInnPerioder(perioder: Periode[], fastePerioder: Periode[]): Periode
 function settInnPerioderInnITidsrom(
     perioder: Periode[],
     perioderSomSkalSettesInn: Periode[],
-    tidsperiode: Tidsperiode
+    tidsperiode: Tidsperiode,
+    erEndringssønad: boolean
 ): Periode[] {
     const placeholderPeriode: PeriodeHull = {
         id: guid(),
         type: Periodetype.Hull,
         tidsperiode
     };
-    const nyePerioder = settInnPeriode(perioder, placeholderPeriode);
+    const nyePerioder = settInnPeriode(perioder, placeholderPeriode, erEndringssønad);
     return [...nyePerioder.filter((p) => p.id !== placeholderPeriode.id), ...perioderSomSkalSettesInn];
 }
 
-function settInnPeriode(perioder: Periode[], nyPeriode: Periode): Periode[] {
+function settInnPeriode(perioder: Periode[], nyPeriode: Periode, erEndringssønad: boolean): Periode[] {
     if (perioder.length === 0) {
         return [nyPeriode];
     }
@@ -522,7 +536,7 @@ function settInnPeriode(perioder: Periode[], nyPeriode: Periode): Periode[] {
     if (berørtePerioder.length === 0 && !periodeSomMåSplittes) {
         const nyPeriodeliste = [...perioder, nyPeriode].sort(sorterPerioder);
         if (nyPeriodeliste[nyPeriodeliste.length - 1].id === nyPeriode.id) {
-            return finnOgSettInnHull(nyPeriodeliste);
+            return finnOgSettInnHull(nyPeriodeliste, erEndringssønad);
         }
         return nyPeriodeliste;
     }
@@ -547,11 +561,18 @@ function settInnPeriode(perioder: Periode[], nyPeriode: Periode): Periode[] {
     }
 }
 
-export function finnHullIPerioder(perioder: Periode[], familiehendelsesdato?: Date): PeriodeHull[] {
+export function finnHullIPerioder(
+    perioder: Periode[],
+    erEndringssønad: boolean,
+    familiehendelsesdato?: Date
+): PeriodeHull[] {
     const hull: PeriodeHull[] = [];
     const perioderLength = perioder.length;
     const shouldHullBeInsertedBetweenFamiliehendelsedatoAndFirstPeriode =
-        familiehendelsesdato !== undefined && perioderLength > 0 && perioder[0].type !== Periodetype.Hull;
+        familiehendelsesdato !== undefined &&
+        perioderLength > 0 &&
+        perioder[0].type !== Periodetype.Hull &&
+        !erEndringssønad;
 
     if (familiehendelsesdato && shouldHullBeInsertedBetweenFamiliehendelsedatoAndFirstPeriode) {
         const fom = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
@@ -747,14 +768,14 @@ function skalSlettetPeriodeErstattesMedHull(periode: Periode, perioder: Periode[
     return periode.type !== Periodetype.Utsettelse;
 }
 
-export function finnOgSettInnHull(perioder: Periode[], startdato?: Date): Periode[] {
-    const hull = finnHullIPerioder(perioder, startdato);
+export function finnOgSettInnHull(perioder: Periode[], erEndringssønad: boolean, startdato?: Date): Periode[] {
+    const hull = finnHullIPerioder(perioder, erEndringssønad, startdato);
     return [...perioder, ...hull].sort(sorterPerioder);
 }
 
-function settInnFerieMedHelligdager(perioder: Periode[], periode: Periode) {
+function settInnFerieMedHelligdager(perioder: Periode[], periode: Periode, erEndringssønad: boolean) {
     const splittetPeriode = splittPeriodeMedHelligdager(periode);
-    return settInnPerioderInnITidsrom(perioder, splittetPeriode, periode.tidsperiode);
+    return settInnPerioderInnITidsrom(perioder, splittetPeriode, periode.tidsperiode, erEndringssønad);
 }
 
 const getNyttPeriodehull = (tidsperiode: Tidsperiode, årsak?: PeriodeHullÅrsak): PeriodeHull => ({
