@@ -15,6 +15,7 @@ const addPeriode = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     familiehendelsesdato: Date,
     erFlerbarnssøknad: boolean,
+    erEndringssønad: boolean,
     opprinneligPlan?: Periode[]
 ): AddPeriodeResult => {
     const familiehendelsedato = familiehendelsesdato;
@@ -24,6 +25,7 @@ const addPeriode = (
         familiehendelsedato,
         tilgjengeligeStønadskontoer,
         erFlerbarnssøknad,
+        erEndringssønad,
         opprinneligPlan
     );
     const id = guid();

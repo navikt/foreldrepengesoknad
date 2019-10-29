@@ -372,7 +372,7 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harUttaksdager)
     );
 
-    return finnOgSettInnHull(sammenslåddePerioder);
+    return finnOgSettInnHull(sammenslåddePerioder, erEndringssøknad);
 };
 
 export default mapSaksperioderTilUttaksperioder;
