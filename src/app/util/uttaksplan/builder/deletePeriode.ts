@@ -9,7 +9,7 @@ const deletePeriode = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     familiehendelsesdato: Date,
     erFlerbarnssøknad: boolean,
-    erEndringssøknad: boolean,
+    erEndringsøknadUtenEkisterendeSak: boolean,
     opprinneligPlan?: Periode[]
 ): Periode[] => {
     const builder = UttaksplanBuilder(
@@ -18,7 +18,7 @@ const deletePeriode = (
         familiehendelsesdato,
         tilgjengeligeStønadskontoer,
         erFlerbarnssøknad,
-        erEndringssøknad,
+        erEndringsøknadUtenEkisterendeSak,
         opprinneligPlan
     );
 

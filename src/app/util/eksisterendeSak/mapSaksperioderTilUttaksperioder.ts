@@ -348,7 +348,7 @@ const mapPeriodeFromSaksperiode = (
 const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
-    erEndringssøknad: boolean
+    erEndringsøknadUtenEkisterendeSak: boolean
 ): Periode[] | undefined => {
     const innvilgedePerioder = saksperioder.filter(
         (saksperiode) =>
@@ -356,7 +356,7 @@ const mapSaksperioderTilUttaksperioder = (
             (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT && saksperiode.utbetalingsprosent > 0)
     );
     const perioder = innvilgedePerioder.map((periode) =>
-        mapPeriodeFromSaksperiode(periode, grunnlag, erEndringssøknad, innvilgedePerioder)
+        mapPeriodeFromSaksperiode(periode, grunnlag, erEndringsøknadUtenEkisterendeSak, innvilgedePerioder)
     );
 
     if (perioder.some((p) => p === undefined)) {
@@ -372,7 +372,7 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harUttaksdager)
     );
 
-    return finnOgSettInnHull(sammenslåddePerioder, erEndringssøknad);
+    return finnOgSettInnHull(sammenslåddePerioder, erEndringsøknadUtenEkisterendeSak);
 };
 
 export default mapSaksperioderTilUttaksperioder;
