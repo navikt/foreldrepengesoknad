@@ -247,7 +247,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     handleAddPeriode(nyPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
         const { søknad, tilgjengeligeStønadskontoer } = this.props;
-        const { familiehendelsesdato, erFlerbarnssøknad } = søknadsinfo.søknaden;
+        const { familiehendelsesdato, erFlerbarnssøknad, erEndringssøknad } = søknadsinfo.søknaden;
 
         const { updatedPlan, id } = addPeriode(
             getUttaksstatusFunc(søknadsinfo),
@@ -256,6 +256,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             tilgjengeligeStønadskontoer,
             familiehendelsesdato,
             erFlerbarnssøknad,
+            erEndringssøknad,
             opprinneligPlan
         );
 
@@ -264,7 +265,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     handleDeletePeriode(slettetPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
         const { søknad, tilgjengeligeStønadskontoer } = this.props;
-        const { familiehendelsesdato, erFlerbarnssøknad } = søknadsinfo.søknaden;
+        const { familiehendelsesdato, erFlerbarnssøknad, erEndringssøknad } = søknadsinfo.søknaden;
 
         const updatedPlan = deletePeriode(
             getUttaksstatusFunc(søknadsinfo),
@@ -273,6 +274,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             tilgjengeligeStønadskontoer,
             familiehendelsesdato,
             erFlerbarnssøknad,
+            erEndringssøknad,
             opprinneligPlan
         );
 
@@ -281,7 +283,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     handleUpdatePeriode(oppdatertPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
         const { søknad, tilgjengeligeStønadskontoer } = this.props;
-        const { familiehendelsesdato, erFlerbarnssøknad } = søknadsinfo.søknaden;
+        const { familiehendelsesdato, erFlerbarnssøknad, erEndringssøknad } = søknadsinfo.søknaden;
 
         const updatedPlan = updatePeriode(
             getUttaksstatusFunc(søknadsinfo),
@@ -290,6 +292,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             tilgjengeligeStønadskontoer,
             familiehendelsesdato,
             erFlerbarnssøknad,
+            erEndringssøknad,
             opprinneligPlan
         );
 

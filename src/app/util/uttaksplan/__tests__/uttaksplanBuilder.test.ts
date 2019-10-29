@@ -16,6 +16,7 @@ import {
 import { Perioden } from '../Perioden';
 import { PeriodeResultatType } from 'app/types/EksisterendeSak';
 import { Uttaksdagen } from '../Uttaksdagen';
+import moment from 'moment';
 
 const perioder: Array<Partial<Periode>> = [
     {
@@ -150,6 +151,7 @@ describe('UttaksplanBuilder', () => {
                 eksisterendePlan,
                 new Date('2019-01-31'),
                 [{ konto: StønadskontoType.Foreldrepenger, dager: 50 }],
+                false,
                 false
             ).leggTilPeriodeOgBuild(nyPeriode as Periode);
 
@@ -201,6 +203,7 @@ describe('UttaksplanBuilder', () => {
                     { konto: StønadskontoType.Mødrekvote, dager: 50 }
                 ],
                 false,
+                false,
                 [
                     {
                         type: Periodetype.Info,
@@ -239,7 +242,7 @@ describe('UttaksplanBuilder', () => {
             };
             const perioderMedHull = [...perioder, nyPeriode];
 
-            const hull = finnHullIPerioder(perioderMedHull as Periode[]);
+            const hull = finnHullIPerioder(perioderMedHull as Periode[], false);
             expect(hull.length).toBe(1);
             expect(hull[0].tidsperiode.fom).toEqual(new Date('2019-01-31'));
             expect(hull[0].tidsperiode.tom).toEqual(new Date('2019-02-08'));
@@ -264,18 +267,36 @@ describe('UttaksplanBuilder', () => {
             };
             const perioderMedHull = [...perioder, nyPeriode, nyPeriode2];
 
-            const hull = finnHullIPerioder(perioderMedHull as Periode[]);
+            const hull = finnHullIPerioder(perioderMedHull as Periode[], false);
             expect(hull.length).toBe(0);
         });
 
         it('Skal ikke finne hull i en uttaksplan uten hull', () => {
-            const hull = finnHullIPerioder(perioder as Periode[]);
+            const hull = finnHullIPerioder(perioder as Periode[], false);
             expect(hull.length).toBe(0);
         });
 
         it('Skal ikke finne hull i en tom uttaksplan', () => {
-            const hull = finnHullIPerioder([]);
+            const hull = finnHullIPerioder([], false);
             expect(hull.length).toBe(0);
+        });
+
+        it('Skal ikke detektere hull hvis det gjelder endringssønad uten ekisterende sak', () => {
+            const hull = finnHullIPerioder(
+                [
+                    {
+                        id: '5',
+                        type: Periodetype.Uttak,
+                        tidsperiode: {
+                            fom: new Date('2019-02-04'),
+                            tom: new Date('2019-02-08')
+                        }
+                    }
+                ] as Periode[],
+                true,
+                moment('2018-01-01').toDate()
+            );
+            expect(hull.length).toEqual(0);
         });
     });
 });
