@@ -80,7 +80,7 @@ export const prettifyTidsperiode = (tidsperiode: Partial<Tidsperiode>) => {
 
 export const findOldestDate = (dateArray: Date[]): DateValue => {
     if (dateArray.length > 0) {
-        return moment.max(dateArray.map((date: Date) => moment(date))).toDate();
+        return moment.min(dateArray.map((date: Date) => moment(date))).toDate();
     }
     return undefined;
 };
