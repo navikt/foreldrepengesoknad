@@ -315,7 +315,7 @@ const getBarnFromSaksgrunnlag = (
                 erBarnetFødt,
                 ...(erBarnetFødt
                     ? {
-                          fødselsdatoer: [nyesteBarn.fødselsdato]
+                          fødselsdatoer: [sak.familieHendelseDato]
                       }
                     : {
                           termindato: sak.familieHendelseDato
