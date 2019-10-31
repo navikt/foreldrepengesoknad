@@ -28,9 +28,9 @@ const getRegistrerteBarn = (søkerinfo: SøkerinfoDTO): RegistrertBarn[] => {
             fødselsdato: moment.utc(fødselsdato).toDate(),
             annenForelder: annenForelder
                 ? {
-                      ...annenForelder,
-                      fødselsdato: moment.utc(annenForelder.fødselsdato).toDate()
-                  }
+                    ...annenForelder,
+                    fødselsdato: moment.utc(annenForelder.fødselsdato).toDate()
+                }
                 : undefined
         };
     });
@@ -45,7 +45,7 @@ export const getArbeidsforhold = (arbeidsforhold: SøkerinfoDTOArbeidsforhold[] 
         return [];
     }
 
-    const pågåendeArbeidsforhold = arbeidsforhold.filter((a) => a.tom === undefined);
+    const pågåendeArbeidsforhold = arbeidsforhold.filter((a) => a.tom === undefined || (a.tom !== undefined && moment(a.tom).isSameOrAfter(moment(new Date()))));
     const avsluttedeArbeidsforhold = arbeidsforhold.filter((a) => a.tom !== undefined);
 
     return uniqBy([...pågåendeArbeidsforhold, ...avsluttedeArbeidsforhold], getArbeidsgiverId).map(
