@@ -34,6 +34,7 @@ const getSaker = () => {
 
 const getEksisterendeSak = (saksnummer: string) => {
     return AxiosInstance.get('/innsyn/uttaksplan', {
+        withCredentials: true,
         params: { saksnummer }
     });
 };
