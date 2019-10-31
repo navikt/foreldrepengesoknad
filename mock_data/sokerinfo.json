@@ -1,49 +1,29 @@
 {
     "søker": {
-        "fnr": "12015649893",
-        "fornavn": "SEDAT",
-        "etternavn": "SAKS",
+        "fnr": "26079224625",
+        "fornavn": "SMEKKER",
+        "etternavn": "SKILPADDE",
         "kjønn": "K",
-        "fødselsdato": "1956-01-12",
+        "fødselsdato": "1992-07-26",
         "land": "NO",
         "ikkeNordiskEøsLand": false,
         "barn": [
             {
-                "fornavn": "ABSURD",
-                "etternavn": "VEGGPRYD",
-                "fnr": "28081975401",
-                "kjønn": "K",
-                "fødselsdato": "2019-08-28",
+                "fornavn": "SLAPP",
+                "etternavn": "KOPP",
+                "fnr": "28101950184",
+                "kjønn": "M",
+                "fødselsdato": "2019-10-28",
                 "annenForelder": {
-                    "fnr": "21115549933",
-                    "fornavn": "TUNGSINDIG",
-                    "etternavn": "HEST",
-                    "fødselsdato": "1955-11-21"
-                }
-            },
-            {
-                "fornavn": "SNILL",
-                "etternavn": "VEGGPRYD",
-                "fnr": "27081974255",
-                "kjønn": "K",
-                "fødselsdato": "2019-08-27",
-                "annenForelder": {
-                    "fnr": "21115549933",
-                    "fornavn": "TUNGSINDIG",
-                    "etternavn": "HEST",
-                    "fødselsdato": "1955-11-21"
+                    "fnr": "21105826580",
+                    "fornavn": "SMEKKER",
+                    "etternavn": "TØFFELDYR",
+                    "fødselsdato": "1958-10-21"
                 }
             }
         ]
     },
     "arbeidsforhold": [
-        {
-            "arbeidsgiverId": "973861778",
-            "arbeidsgiverIdType": "orgnr",
-            "arbeidsgiverNavn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET",
-            "stillingsprosent": 100.0,
-            "fom": "2017-01-01"
-        },
         {
             "arbeidsgiverId": "973861778",
             "arbeidsgiverIdType": "orgnr",
