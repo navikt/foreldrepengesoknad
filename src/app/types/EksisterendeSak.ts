@@ -52,6 +52,7 @@ export interface Saksgrunnlag {
     farMedmorHarRett: boolean;
     erDeltUttak: boolean;
     erBarnetFødt: boolean; // Utledet fra familieHendelseType
+    termindato?: Date;
 }
 
 export interface Saksperiode {

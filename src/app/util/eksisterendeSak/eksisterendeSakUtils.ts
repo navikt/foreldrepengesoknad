@@ -159,7 +159,8 @@ export const getEksisterendeSakFromDTO = (
         erBarnetFødt: fødselsdato !== undefined,
         dekningsgrad: dekningsgrad === 100 ? '100' : '80',
         familieHendelseDato: getRelevantFamiliehendelseDato(familiehendelseDatoer),
-        familieHendelseType: familiehendelseType as FamiliehendelsesType
+        familieHendelseType: familiehendelseType as FamiliehendelsesType,
+        termindato: familiehendelseDatoer.termindato
     };
 
     const saksperioder = perioder
@@ -315,7 +316,8 @@ const getBarnFromSaksgrunnlag = (
                 erBarnetFødt,
                 ...(erBarnetFødt
                     ? {
-                          fødselsdatoer: [sak.familieHendelseDato]
+                          fødselsdatoer: [sak.familieHendelseDato],
+                          termindato: sak.termindato
                       }
                     : {
                           termindato: sak.familieHendelseDato
