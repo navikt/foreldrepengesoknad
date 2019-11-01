@@ -45,10 +45,11 @@ export const getArbeidsforhold = (arbeidsforhold: SøkerinfoDTOArbeidsforhold[] 
         return [];
     }
 
-    const pågåendeArbeidsforhold = arbeidsforhold.filter((a) => a.tom === undefined || (a.tom !== undefined && moment(a.tom).isSameOrAfter(moment(new Date()))));
+    const pågåendeArbeidsforhold = arbeidsforhold.filter((a) => a.tom === undefined);
+    const pågåendeArbeidsforholdMedTomDato = arbeidsforhold.filter((a) => a.tom !== undefined && moment(a.tom).isSameOrAfter(moment(new Date())));
     const avsluttedeArbeidsforhold = arbeidsforhold.filter((a) => a.tom !== undefined && moment(a.tom).isBefore(moment(new Date())));
 
-    return uniqBy([...pågåendeArbeidsforhold, ...avsluttedeArbeidsforhold], getArbeidsgiverId).map(
+    return uniqBy([...pågåendeArbeidsforhold, ...pågåendeArbeidsforholdMedTomDato, ...avsluttedeArbeidsforhold], getArbeidsgiverId).map(
         (a: SøkerinfoDTOArbeidsforhold) => {
             const forhold: Arbeidsforhold = {
                 ...a,
