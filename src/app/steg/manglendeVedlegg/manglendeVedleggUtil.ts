@@ -6,6 +6,10 @@ export const findAllAttachments = (
     currentKey?: string,
     previousEntries?: Map<string, Attachment[]>
 ): Map<string, Attachment[]> => {
+    if (object === null || object === undefined) {
+        return new Map();
+    }
+
     const path: string = currentKey || 'søknad';
     let foundAttachments = previousEntries || new Map();
     Object.keys(object).forEach((key: string) => {
