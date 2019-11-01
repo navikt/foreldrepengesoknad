@@ -7,8 +7,6 @@ import {
     UploadAttachmentSuccess,
     UploadAttachmentFailed,
     DeleteAttachment,
-    DeleteAttachmentFailed,
-    DeleteAttachmentSuccess,
     UpdateSøkerAndStorage,
     UpdateSøknadActionPayload,
     UpdateSøknadenGjelder,
@@ -121,16 +119,6 @@ const deleteAttachment = (attachment: Attachment): DeleteAttachment => ({
     attachment
 });
 
-const deleteAttachmentSuccess = (attachment: Attachment): DeleteAttachmentSuccess => ({
-    type: SøknadActionKeys.DELETE_ATTACHMENT_SUCCESS,
-    attachment
-});
-
-const deleteAttachmentFailed = (error: any, attachment: Attachment): DeleteAttachmentFailed => ({
-    type: SøknadActionKeys.DELETE_ATTACHMENT_FAILED,
-    attachment
-});
-
 const uttaksplanSetPerioder = (
     perioder: Periode[],
     endringstidspunkt?: Date,
@@ -199,8 +187,6 @@ export default {
     uploadAttachmentSuccess,
     uploadAttachmentFailed,
     deleteAttachment,
-    deleteAttachmentSuccess,
-    deleteAttachmentFailed,
     uttaksplanLagForslag,
     avbrytSøknad,
     setSøknad,

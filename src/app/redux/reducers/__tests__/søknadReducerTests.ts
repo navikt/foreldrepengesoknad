@@ -162,16 +162,4 @@ describe('søknadReducer', () => {
         expect(attachmentReducerUtils.editAttachmentInState).toHaveBeenCalledWith(mockedAttachment, defaultState);
         expect(newSøknadState.vedlegg![0].pending).toBe(true);
     });
-
-    it('should call removeAttachmentFromState with specified attachment when DELETE_ATTACHMENT_SUCCESS-action is dispatched', () => {
-        (attachmentReducerUtils as any).removeAttachmentFromState = jest.fn();
-        reducer(defaultState, actions.deleteAttachmentSuccess(mockedAttachment));
-        expect(attachmentReducerUtils.removeAttachmentFromState).toHaveBeenCalledWith(mockedAttachment, defaultState);
-    });
-
-    it('should call removeAttachmentFromState with specified attachment when DELETE_ATTACHMENT_FAILED-action is dispatched', () => {
-        (attachmentReducerUtils as any).removeAttachmentFromState = jest.fn();
-        reducer(defaultState, actions.deleteAttachmentFailed('someError', mockedAttachment));
-        expect(attachmentReducerUtils.removeAttachmentFromState).toHaveBeenCalledWith(mockedAttachment, defaultState);
-    });
 });

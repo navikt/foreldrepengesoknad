@@ -55,8 +55,7 @@ class VedleggSpørsmål extends React.Component<Props> {
                     this.updateVedleggList([...(vedlegg || []), ...nyeVedlegg]);
                 }}
                 onFileUploadFinish={this.updateVedleggItem}
-                onFileDeleteStart={this.updateVedleggItem}
-                onFileDeleteFinish={this.deleteVedleggItem}
+                onFileDelete={this.deleteVedleggItem}
                 attachmentType={attachmentType}
                 skjemanummer={skjemanummer}
             />
