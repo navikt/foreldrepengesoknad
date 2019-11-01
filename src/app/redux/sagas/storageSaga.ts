@@ -149,6 +149,19 @@ export default function* storageSaga() {
         throttle(THROTTLE_INTERVAL_MS, ApiActionKeys.STORE_APP_STATE, saveAppState),
         throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, saveAppState),
         throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, saveAppState),
+        throttle(
+            THROTTLE_INTERVAL_MS,
+            [
+                SøknadActionKeys.UPDATE_SØKNAD,
+                SøknadActionKeys.UPDATE_SØKER,
+                SøknadActionKeys.UPDATE_BARN,
+                SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD,
+                SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN,
+                SøknadActionKeys.UPDATE_ANNEN_FORELDER,
+                SøknadActionKeys.SET_TILLEGGSOPPLYSNING
+            ],
+            saveAppState
+        ),
         takeEvery(ApiActionKeys.SEND_STORAGE_KVITTERING, sendStorageKvittering)
     ]);
 }
