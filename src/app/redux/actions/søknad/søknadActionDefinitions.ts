@@ -26,8 +26,6 @@ export enum SøknadActionKeys {
     'UPLOAD_ATTACHMENT_SUCCESS' = 'uploadAttachmentSuccess',
     'UPLOAD_ATTACHMENT_FAILED' = 'uploadAttachmentFailed',
     'DELETE_ATTACHMENT' = 'deleteAttachment',
-    'DELETE_ATTACHMENT_SUCCESS' = 'deleteAttachmentSuccess',
-    'DELETE_ATTACHMENT_FAILED' = 'deleteAttachmentFailed',
     'UPDATE_UTENLANDSOPPHOLD' = 'updateUtenlandsopphold',
     'UPDATE_SØKER' = 'updateSøker',
     'UPDATE_SØKER_AND_STORAGE' = 'updateSøkerAndStorage',
@@ -142,17 +140,6 @@ export interface DeleteAttachment {
     type: SøknadActionKeys.DELETE_ATTACHMENT;
     attachment: Attachment;
 }
-
-export interface DeleteAttachmentSuccess {
-    type: SøknadActionKeys.DELETE_ATTACHMENT_SUCCESS;
-    attachment: Attachment;
-}
-
-export interface DeleteAttachmentFailed {
-    type: SøknadActionKeys.DELETE_ATTACHMENT_FAILED;
-    attachment: Attachment;
-}
-
 export interface AvbrytSøknad {
     type: SøknadActionKeys.AVBRYT_SØKNAD;
 }
@@ -197,8 +184,6 @@ export type SøknadAction =
     | UploadAttachmentSuccess
     | UploadAttachmentFailed
     | DeleteAttachment
-    | DeleteAttachmentSuccess
-    | DeleteAttachmentFailed
     | UttaksplanSetPerioder
     | UttaksplanUpdateSkjemadata
     | UttaksplanLagForslag
