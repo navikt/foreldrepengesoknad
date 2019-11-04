@@ -151,15 +151,4 @@ describe('søknadReducer', () => {
         expect(newSøknadState.vedlegg![0].uploaded).toBe(false);
         expect(newSøknadState.vedlegg![0].error).toBe('someError');
     });
-
-    it('should set attachment.pending to true and call editAttachmentInState when DELETE_ATTACHMENT-action is dispatched', () => {
-        mockedAttachment.pending = false;
-        (attachmentReducerUtils as any).editAttachmentInState = jest.fn((attachment, state) => {
-            state.vedlegg = [attachment];
-            return state;
-        });
-        const newSøknadState = reducer(defaultState, actions.deleteAttachment(mockedAttachment));
-        expect(attachmentReducerUtils.editAttachmentInState).toHaveBeenCalledWith(mockedAttachment, defaultState);
-        expect(newSøknadState.vedlegg![0].pending).toBe(true);
-    });
 });
