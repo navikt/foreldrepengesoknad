@@ -262,19 +262,8 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             failedAttachment.uploaded = false;
             failedAttachment.error = action.error;
             return editAttachmentInState(failedAttachment, state);
-
         case SøknadActionKeys.DELETE_ATTACHMENT:
-            const attachmentToDelete = action.attachment;
-            attachmentToDelete.pending = true;
-            return editAttachmentInState(attachmentToDelete, state);
-
-        case SøknadActionKeys.DELETE_ATTACHMENT_SUCCESS:
-            const deletedAttachment = action.attachment;
-            return removeAttachmentFromState(deletedAttachment, state);
-
-        case SøknadActionKeys.DELETE_ATTACHMENT_FAILED:
-            const attachmentFailedToDelete = action.attachment;
-            return removeAttachmentFromState(attachmentFailedToDelete, state);
+            return removeAttachmentFromState(action.attachment, state);
         default:
             return state;
     }

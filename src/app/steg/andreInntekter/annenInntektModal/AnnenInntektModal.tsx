@@ -191,10 +191,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             this.updateVedleggList([...(annenInntekt.vedlegg || []), ...attachments]);
                         }}
                         onFileUploadFinish={(vedlegg: Attachment) => this.updateVedleggItem(vedlegg)}
-                        onFileDeleteStart={(vedlegg: Attachment) => {
-                            this.updateVedleggItem(vedlegg);
-                        }}
-                        onFileDeleteFinish={(vedlegg: Attachment) => {
+                        onFileDelete={(vedlegg: Attachment) => {
                             const vedleggList = annenInntekt.vedlegg || [];
                             const index = vedleggList.indexOf(vedlegg);
                             vedleggList.splice(index, 1);
