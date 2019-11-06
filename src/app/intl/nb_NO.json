@@ -64,12 +64,12 @@
     "annenInntekt.infoboksTekst.punktFem": "Lønn fra arbeidsgiver under videre- eller etterutdanning",
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi navnet på arbeidsgiveren",
     "annenInntekt.spørsmål.næringsinntekt":
-        "Hva har du hatt i næringsresultat før skatt de siste tolv månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.        ",
+        "Hva har du hatt i næringsresultat før skatt de siste 12 månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.        ",
     "annenInntekt.spørsmål.næringsinntekt.info":
         "Næringsresultatet er inntekter du har i næringen din, minus utgifter og avskrivninger.",
     "annenInntekt.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
     "annenInntekt.ytelser.label": "Utbetalinger fra NAV",
-    "annenInntekt.ytelser.tekst": "Hvis du får penger fra NAV, trenger du ikke opplyse om det i søknaden din.",
+    "annenInntekt.ytelser.tekst": "Hvis du får utbetaling fra NAV, trenger du ikke opplyse om det i søknaden din.",
     "antallBarn.alternativ.ettbarn": "ett barn",
     "antallBarn.alternativ.flere": "flere barn",
     "antallBarn.alternativ.tobarn": "to barn",
@@ -115,7 +115,7 @@
     "bekreftTilbakestillUttaksplanDialog.tittel": "Tilbakestill plan",
     "blittYrkesaktivSiste3År.hjelpetekst":
         "Du skal svare ja på spørsmålet hvis du har hatt jobb med lav eller ingen inntekt før du starter virksomheten din.",
-    "blittYrkesaktivSiste3År.spørsmål": "Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?",
+    "blittYrkesaktivSiste3År.spørsmål": "Har du begynt å jobbe i løpet av de 3 siste ferdigliknede årene?",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",
     "boddINorgeSiste12Mnd.alternativ.boddIUtlandet": "bodd i utlandet helt eller delvis",
     "boddINorgeSiste12Mnd.spørsmål": "Hvor har du bodd de siste 12 månedene?",
@@ -178,7 +178,7 @@
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er dere nære venner eller i familie?",
     "erBarnetFødt.spørsmål": "Er barnet født?",
     "erBarnetFødt.spørsmål.veileder.medMorEllerFar":
-        "Du kan ikke søke før barnet er født. Unntaket er hvis mor er syk eller innlagt på sykehus eller helseinstitusjon. Da må du sende søknaden i posten. { lenke }",
+        "Du kan ikke søke om foreldrepenger før barnet er født. Unntaket er hvis mor er syk eller innlagt på sykehus eller helseinstitusjon. Da må du sende søknaden i posten. { lenke }",
     "barnFødt.infoPrematuruker":
         "Hvis barnet blir født før 33. svangerskapsuke så blir perioden med foreldrepenger utvidet med samme antall uker og dager som barnet er født før termindato.<br /><br /> Dersom barnet blir innlagt på sykehus etter fødselen, vil dere som regel kunne motta pleiepenger så lenge barnet er innlagt. Får dere pleiepenger i perioden fra fødsel og fram til opprinnelig termindato, trekkes disse fra den utvidede perioden.",
     "erDuMedmor.spørsmål": "Er du medmor?",
@@ -222,17 +222,17 @@
     "gjelderSøknadenNoenAvDisseBarna.spørsmål.ettBarn": "Gjelder foreldrepengesøknaden dette barnet?",
     "gradering.prosent": "{stillingsprosent}%",
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepenger",
-    "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet og hatt inntekt som frilanser de siste ti månedene?",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet og hatt inntekt som frilanser de siste 10 månedene?",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
         "Eksempel på hvem som kan være frilansere er<br/><ul><li>Musikere</li><li>Tekstforfattere</li><li>Skuespillere</li><li>Journalister</li><li>Oversettere</li><li> Folkevalgt, politikere i kommuner, fylkeskommuner og på Stortinget som får godtgjørelse for politisk arbeid.</li><li>Fosterforeldre, og personer med omsorgslønn</li></ul>Hvis du er usikker på om du er frilanser kan du lese mer om hva det betyr å være frilanser på skatteetaten sin",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
-        "Oppdrag for nære venner og/eller familie de siste ti månedene",
+        "Oppdrag for nære venner og/eller familie de siste 10 månedene",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
-        "Har du hatt oppdrag for nær venn eller familie de ti siste månedene?",
+        "Har du hatt oppdrag for nær venn eller familie de 10 siste månedene?",
     "harJobbetForNærVennEllerFamilieSiste12Mnd.spørsmål":
         "Har du de siste 12 månedene jobbet for en nær venn eller familie?",
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
-        "Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste ti månedene?",
+        "Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 10 månedene?",
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst":
         "Du kan lese mer om hva det betyr å være selvstendig næringsdrivende på skatteetatens",
     "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
@@ -259,7 +259,7 @@
         "Siden du har jobbet i {land} må vi innhente dokumentasjon derfra. Derfor kan det ta litt lenger tid før du får svar på søknaden din.",
     "inntektstype.lønn_under_utdanning": "Lønn fra arbeidsgiver under videre- eller etterutdanning",
     "inntektstype.lønn_under_utdanning_info": "Trenger vi noe tekst her?",
-    "inntektstype.militær_eller_siviltjeneste": "Førstegangstjeneste i forsvaret",
+    "inntektstype.militær_eller_siviltjeneste": "Førstegangstjeneste i forsvaret eller sivilforsvaret",
     "inntektstype.militær_eller_siviltjeneste_info":
         "Du må legge ved dokumentasjon på perioden fra tjenestestedet ditt.",
     "inntektstype.selvstendigNæringsdrivende": "Selvstendig næringsdrivende",
@@ -434,7 +434,7 @@
     "oppsummering.samtykke":
         "Jeg har gjort meg kjent med vilkårene for å motta foreldrepenger, og skal ha omsorgen for barnet i perioden jeg søker om.",
     "oppsummering.selvstendigNæringsdrivende.blittYrkesaktivSiste3År":
-        "Jeg har blitt yrkesaktiv i løpet av de tre siste ferdigliknede årene",
+        "Jeg har blitt yrkesaktiv i løpet av de 3 siste ferdigliknede årene",
     "oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt": "Dato for endring av næringsinntekt",
     "oppsummering.selvstendigNæringsdrivende.dokumentasjon": "Dokumentasjon av inntekten din det siste året",
     "oppsummering.selvstendigNæringsdrivende.forklaring": "Forklaring av endring av næringsinntekt",
@@ -593,7 +593,7 @@
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe utsettelse i perioden med foreldrepenger?",
     "spørsmål.skalHaDelAvFellesperiodeSpørsmål.label": "Skal du ha noe av fellesperioden?",
     "spørsmål.skalStarteRettEtterMorSpørsmål.label":
-        "Skal du begynne rett etter at mor er ferdig med sine foreldrepenger?",
+        "Skal du starte rett etter at mor er ferdig med sine foreldrepenger?",
     "spørsmål.startdatoPermisjon.barnetErFødt.label": "Når ønsker du å starte perioden?",
     "spørsmål.startdatoPermisjon.barnetErFødt.varighet": "{varighet} før fødsel",
     "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte perioden før termin?",
@@ -870,7 +870,7 @@
     "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosent kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikke gyldig",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
-        "Du kan ikke søke om utsettelse på grunn av arbeid eller ferie mindre enn seks uker etter fødsel",
+        "Du kan ikke søke om utsettelse på grunn av arbeid eller ferie mindre enn 6 uker etter fødsel",
     "uttaksplan.validering.feil.stønadskontoMangler": "Perioden er ikke gyldig.",
     "uttaksplan.validering.feil.uttaksplanErBareOpphold": "Du kan ikke ha en plan med kun en utsettelse.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold":
@@ -987,8 +987,8 @@
     "valideringsfeil.utenlandsopphold.etterFraDato": "Du må legge inn en dato som er etter fra-datoen",
     "valideringsfeil.utenlandsopphold.førTilDato": "Du må legge inn en dato som er før til-datoen.",
     "valideringsfeil.utenlandsopphold.overlapp": "Du har allerede lagt inn utenlandsopphold i denne perioden",
-    "valideringsfeil.utenlandsopphold.senere": "Du må legge inn en dato som er innenfor de neste tolv månedene.",
-    "valideringsfeil.utenlandsopphold.tidligere": "Du må legge inn en dato som er innenfor de siste tolv månedene.",
+    "valideringsfeil.utenlandsopphold.senere": "Du må legge inn en dato som er innenfor de neste 12 månedene.",
+    "valideringsfeil.utenlandsopphold.tidligere": "Du må legge inn en dato som er innenfor de siste 12 månedene.",
     "valideringsfeil.sluttMedUtsettelse":
         "Planen kan ikke slutte med en utsettelse fordi du ikke har flere dager igjen.",
     "valideringsfeil.uttaksplanskjema.forMangeUkerPeriodeFarMedmor":
@@ -1041,7 +1041,7 @@
     "vedlegg.veileder.stebarnsadopsjon":
         "Du må laste opp dokumentasjon på stebarnsadopsjonen og bekreftelse på dato for stebarnsadopsjonen.",
     "vedlegg.veileder.terminbekreftelsen":
-        "Du må legge ved en bekreftelse på termin. Denne må være datert og signert av lege eller jordmor når du er i 22. svangerskapsuke eller senere.",
+        "Du må legge ved en bekreftelse på termindato. Denne må være datert og signert av lege eller jordmor når du er i 22. svangerskapsuke eller senere.",
     "vedlegg.beskrivelse.begrunnelseForSenEndring": "Dokumentasjon av sen endring",
     "vedlegg.beskrivelse.dokumentasjonAvAleneomsorg": "Dokumentasjon av aleneomsorg",
     "velkommen.bobletekst": "Jeg vil hjelpe deg med å fylle ut søknaden.",
@@ -1094,9 +1094,9 @@
     "utvidetInformasjon.lukkTekst": "Lukk informasjon",
     "tilleggsopplysning.begrunnelseForSenEndring": "Begrunnelse for å søke om utsettelse",
     "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM": "på grunn av sykdom tilbake i tid",
-    "tilleggsopplysning.begrunnelseForSenEndring.UTTAK": "på grunn av uttak mer enn tre måneder tilbake i tid",
+    "tilleggsopplysning.begrunnelseForSenEndring.UTTAK": "på grunn av uttak mer enn 3 måneder tilbake i tid",
     "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM_OG_UTTAK":
-        "på grunn av sykdom tilbake i tid og uttak mer enn tre måneder tilbake i tid",
+        "på grunn av sykdom tilbake i tid og uttak mer enn 3 måneder tilbake i tid",
     "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikke tilgjengelig akkurat nå",
     "feilside.ikkeTilgjengelig.melding":
         "Huffda, det virker som om et av våre systemer er nede akkurat nå. Vi jobber iherdig med å rette opp feilen. Prøv igjen litt senere, vi beklager ulempen for deg.",
@@ -1146,11 +1146,11 @@
     "søknadSendt.status.saksnummer": "Saksnummer",
     "søknadSendt.info.missingAttachment.I000065": "Bekreftelse fra arbeidsgiver",
     "søknadSendt.info.missingAttachment.I000044": "Etterlønn",
-    "søknadSendt.info.missingAttachment.I000042": "Dokumentasjon av dato for overtakelse av omsorg",
+    "søknadSendt.info.missingAttachment.I000042": "Dokumentasjon av dato for omsorgsovertakelse",
     "søknadSendt.info.missingAttachment.I000060": "Annet",
     "søknadSendt.info.missingAttachment.I000063": "Fødselsattest",
     "søknadSendt.info.missingAttachment.I000062": "Terminbekreftelse",
-    "søknadSendt.info.missingAttachment.I000039": "Dokumentasjon av førstegangstjeneste i forsvaret",
+    "søknadSendt.info.missingAttachment.I000039": "Dokumentasjon av førstegangstjeneste i forsvaret eller sivilforsvaret",
     "søknadSendt.info.missingAttachment.I000007": "Inntektsopplysninger for selvstendig næringsdrivende",
     "søknadSendt.info.missingAttachment.I000038": "Dokumentasjon av mors utdanning, arbeid eller sykdom",
     "søknadSendt.info.missingAttachment.I000037": "Dokumentasjon av innleggelse i sykehus eller helseinstitusjon",
@@ -1167,11 +1167,11 @@
     "periodetype.uttak": "uttak",
 
     "uttaksplan.validering.feil.erAllePeriodeSkjemaspørsmålBesvart": "Noen av spørsmålene for perioden er ikke besvart",
-    "uttaksplan.validering.feil.erUtsettelseEtterFamiliehendelsesdato": "Du kan ikke utsette før barnet er født",
+    "uttaksplan.validering.feil.erUtsettelseEtterFamiliehendelsesdato": "Du kan ikke utsette foreldrepengene før barnet er født",
     "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering":
         "Stillingsprosenten du skal jobbe kan bare inneholde tall, og være mellom 1 og 99",
-    "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden har ikke gyldig tidsperiode",
-    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden har ikke valgt stønadskonto",
+    "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden har ikke gyldig tidsperiode. Du må korrigere datoene",
+    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden mangler informasjon om hvilken del av foreldrepengene skal du ta ut",
     "uttaksplan.validering.feil.periodeOverlapperAndrePerioder":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",
     "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale":
