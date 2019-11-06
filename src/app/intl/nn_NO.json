@@ -221,7 +221,7 @@
     "gjelderSøknadenNoenAvDisseBarna.spørsmål.ettBarn": "Gjeld foreldrepengesøknaden dette barnet?",
     "gradering.prosent": "{stillingsprosent} prosent",
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepengar",
-    "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobba som frilansar dei siste ti månadene?",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobba og hatt inntekt som frilansar dei siste ti månadene?",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
         "Eksempel på kven som kan vere frilansar er<br/><ul><li>Musikar</li><li>Tekstforfattarar</li><li>Skodespelarar</li><li>Journalistar</li><li>Omsetjararr</li><li> Folkevalde, politikarar i kommunar, fylkeskommunar og på Stortinget som får godtgjering for politisk arbeid.</li><li>Fosterforeldre, og personar med omsorgslønn</li></ul>Dersom du er usikker på om du er frilansar, kan du lese mer om kva det vil seie å være frilansar på skatteetaten sin",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
@@ -231,7 +231,7 @@
     "harJobbetForNærVennEllerFamilieSiste12Mnd.spørsmål":
         "Har du dei siste tolv månadene jobba for ein nær venn eller for familie?",
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
-        "Har du jobba som sjølvstendig næringsdrivande dei siste ti månadene?",
+        "Har du jobba og hatt inntekt som sjølvstendig næringsdrivande dei siste ti månadene?",
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst":
         "Du kan lesa meir om kva det tyder å vera sjølvstendig næringsdrivande på skatteetaten sine",
     "harRegnskapsfører.spørsmål": "Har du rekneskapsførar?",
