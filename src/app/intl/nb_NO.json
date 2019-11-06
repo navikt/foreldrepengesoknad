@@ -767,7 +767,7 @@
     "uttaksplan.informasjon.foreldrepengerFørFødselMindreEnnTreUker":
         "{varighet} du ikke bruker før termin faller bort",
     "uttaksplan.informasjon.foreldrepengerFørFødselSkalIkkeHa":
-        "Når du ikke starter foreldrepengeperioden tre uker før termindato mister du rett til foreldrepenger disse dagene.",
+        "Når du ikke starter foreldrepengeperioden 3 uker før termindato mister du rett til foreldrepenger disse dagene.",
     "uttaksplan.informasjon.mor.aleneOmsorg":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
     "uttaksplan.informasjon.mor.deltOmsorg":
@@ -840,7 +840,7 @@
     "uttaksplan.validering.advarsel.senÅrsakOgTidsperiode": "Du søker om utsettelse tilbake i tid.",
     "uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode":
         "Du har lagt inn <strong>{periode}</strong> i perioden {tidsperiode}. {forelder} har foreldrepenger eller utsettelse i samme periode. <strong>{periode}</strong> vil erstatte {forelders} foreldrepenger eller utsettelse i denne perioden.",
-    "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikke få foreldrepenger etter at barnet er fylt tre år.",
+    "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikke få foreldrepenger etter at barnet er fylt 3 år.",
     "uttaksplan.validering.feil.harSøktOmFerieUtenArbeidsforhold":
         "Du kan dessverre ikke legge inn utsettelse på grunn av lovbestemt ferie fordi du ikke er registrert med et arbeidsforhold i valgt tidsperiode.",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag.",
@@ -931,9 +931,9 @@
     "uttaksplan.senEndring.veileder.SYKDOM":
         "Du søker om å utsette på grunn av sykdom tilbake i tid. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
     "uttaksplan.senEndring.veileder.UTTAK":
-        "Du kan søke om foreldrepenger tre måneder tilbake i tid fra den dagen NAV mottar søknaden fra deg. Når du søker mer enn tre måneder tilbake i tid må vi vurdere rettighetene dine. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+        "Du kan søke om foreldrepenger 3 måneder tilbake i tid fra den dagen NAV mottar søknaden fra deg. Når du søker mer enn 3 måneder tilbake i tid må vi vurdere rettighetene dine. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
     "uttaksplan.senEndring.veileder.SYKDOM_OG_UTTAK":
-        "Du kan søke om foreldrepenger og om å utsette på grunn av sykdom tre måneder tilbake i tid. Når du søker mer enn tre måneder tilbake i tid må vi vurdere rettighetene dine. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+        "Du kan søke om foreldrepenger og om å utsette på grunn av sykdom 3 måneder tilbake i tid. Når du søker mer enn 3 måneder tilbake i tid må vi vurdere rettighetene dine. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
     "uttaksplan.senEndring.begrunnelse.SYKDOM": "Hva er grunnen til at du ikke har søkt om utsettelse tidligere?",
     "uttaksplan.senEndring.begrunnelse.UTTAK": "Hva er grunnen til at du ikke har søkt om foreldrepenger tidligere?",
     "uttaksplan.senEndring.begrunnelse.SYKDOM_OG_UTTAK":
@@ -945,7 +945,7 @@
     "uttaksplanSkjema.info.ikkeAdoptertIUtlandet":
         "Starter du foreldrepengene senere enn omsorgsovertakelsen vil du miste dager.",
     "uttaksplanSkjema.info.reservertMor":
-        "Dersom du starter ditt uttak i de første seks ukene etter fødsel må du kunne dokumentere at mor er for syk til å ta seg av barnet eller innlagt på sykehus eller helseinstitusjon.",
+        "Dersom du starter ditt uttak i de første 6 ukene etter fødsel må du kunne dokumentere at mor er for syk til å ta seg av barnet eller innlagt på sykehus eller helseinstitusjon.",
     "uttaksplanSkjema.info.manglerVedlegg": "Du har ikke lastet opp påkrevd dokumentasjon.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig",
     "validering.oppsummeringstittel": "Du må rette opp i følgende feil:",
@@ -954,7 +954,7 @@
     "valideringsfeil.fodselsdato.ikkeMerEnn15År3MndTilbake":
         "Du kan ikke søke om foreldrepenger for barn som er eldre enn 15 år og 3 måneder {dato}.",
     "valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake":
-        "Du kan ikke søke om foreldrepenger for barn som er eldre enn tre år.",
+        "Du kan ikke søke om foreldrepenger for barn som er eldre enn 3 år.",
     "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være i dag eller tidligere",
     "valideringsfeil.frilansOppstart.duMåOppgi": "Du må oppgi oppstartsdato",
     "valideringsfeil.frilansOppstart.måVæreIdagEllerTidligere": "Oppstartsdato må være i dag eller tidligere",
@@ -1000,7 +1000,7 @@
     "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
         "Oppgi næringsinntekten din etter endringen. Oppgi årsinntekten i hele kroner.",
     "varigEndringAvNæringsinntekt.spørsmål":
-        "Har du hatt en varig endring i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din de siste fire årene?",
+        "Har du hatt en varig endring i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din de siste 4 årene?",
     "vedlagtdokumentasjon": "Vedlagt dokumentasjon",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.feilmelding": "Ops noe gikk galt, prøv igjen",
@@ -1128,7 +1128,7 @@
     "søknadSendt.info.innhold.isMissingAttachments": "Vi har mottatt søknaden din, og den mangler disse dokumentene:",
     "søknadSendt.når.tittel": "Når kan jeg tidligst forvente få svar på min søknad?",
     "søknadSendt.når.infoBox":
-        "Du kan tidligst få svar på søknaden din fire uker før foreldrepengeperioden din starter. Dette er fordi vi bruker de nyeste opplysningene om inntekten din når vi skal beregne hva du skal få i foreldrepenger.",
+        "Du kan tidligst få svar på søknaden din 4 uker før foreldrepengeperioden din starter. Dette er fordi vi bruker de nyeste opplysningene om inntekten din når vi skal beregne hva du skal få i foreldrepenger.",
     "søknadSendt.infoFraArbeidsgiver.tittel": "Hvilken informasjon trenger min arbeidsgiver?",
     "søknadSendt.infoFraArbeidsgiver": "Viktig informasjon til arbeidsgiveren din",
     "søknadSendt.infoFraArbeidsgiver.infoBox":
@@ -1161,7 +1161,7 @@
     "søknadSendt.info.missingAttachment.I000049": "Annen dokumentasjon",
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikke blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
-        "Hvis du ikke ettersender dokumentene innen tre uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig.",
+        "Hvis du ikke ettersender dokumentene innen 3 uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig.",
 
     "periodetype.utsettelse": "utsettelse",
     "periodetype.uttak": "uttak",
