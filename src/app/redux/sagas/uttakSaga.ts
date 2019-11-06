@@ -22,7 +22,7 @@ import { getRelevantFamiliehendelseDato } from 'app/util/dates/dates';
 const stateSelector = (state: AppState) => state;
 
 const getAktivitetsFrieUkerForeldrepenger = (dekningsgrad: Dekningsgrad, startdatoUttak: Date): number => {
-    if (dekningsgrad === '100') {
+    if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT) {
         return 15;
     } else {
         return moment(startdatoUttak).isBefore(moment(new Date(2019, 0, 1))) ? 15 : 19;
@@ -119,7 +119,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 getStønadskontoSortOrder(a.konto) > getStønadskontoSortOrder(b.konto) ? 1 : -1
         );
 
-        if (params.dekningsgrad === '100') {
+        if (params.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT) {
             yield put(
                 apiActions.updateApi({
                     isLoadingTilgjengeligeStønadskontoer: false,

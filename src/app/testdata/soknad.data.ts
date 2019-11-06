@@ -1,5 +1,6 @@
 import { RecursivePartial } from '../types/Partial';
 import Søknad, { SøkerRolle, Søkersituasjon } from '../types/søknad/Søknad';
+import { Dekningsgrad } from 'common/types';
 
 const mockSøknad: RecursivePartial<Søknad> = {
     type: 'foreldrepenger',
@@ -35,7 +36,7 @@ const mockSøknad: RecursivePartial<Søknad> = {
     harGodkjentOppsummering: false,
     uttaksplan: [],
     situasjon: Søkersituasjon.FØDSEL,
-    dekningsgrad: '100'
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT
 };
 
 export default mockSøknad;

@@ -21,7 +21,7 @@ import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperiode
 import { Uttaksdagen } from '../Uttaksdagen';
 import { Perioden } from '../Perioden';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
-import { Tidsperiode, StønadskontoType } from 'common/types';
+import { Tidsperiode, StønadskontoType, Dekningsgrad } from 'common/types';
 import { Uttaksstatus } from '../uttaksstatus';
 import { justerAndrePartsUttakAvFellesperiodeOmMulig } from '../uttakUtils';
 import { getFloatFromString } from 'common/util/numberUtils';
@@ -211,7 +211,7 @@ class UttaksplanAutoBuilder {
                     visPeriodeIPlan: false,
                     samtidigUttakProsent: isUttaksperiode(p)
                         ? this.beregnSamtidigUttaksprosent(p.samtidigUttakProsent, op.samtidigUttakProsent)
-                        : '100',
+                        : Dekningsgrad.HUNDRE_PROSENT,
                     tidsperiode: {
                         fom: moment(p.tidsperiode.fom).isSameOrAfter(moment(op.tidsperiode.fom))
                             ? p.tidsperiode.fom
@@ -255,7 +255,7 @@ class UttaksplanAutoBuilder {
                     visPeriodeIPlan: false,
                     samtidigUttakProsent: isUttaksperiode(p)
                         ? this.beregnSamtidigUttaksprosent(p.samtidigUttakProsent, op.samtidigUttakProsent)
-                        : '100',
+                        : Dekningsgrad.HUNDRE_PROSENT,
                     tidsperiode: {
                         fom: moment(p.tidsperiode.fom).isSameOrAfter(moment(op.tidsperiode.fom))
                             ? p.tidsperiode.fom
@@ -447,7 +447,7 @@ class UttaksplanAutoBuilder {
                 return andrepartsSamtidigUttaksprosent;
             }
 
-            return '100';
+            return Dekningsgrad.HUNDRE_PROSENT;
         } else {
             let annenPartsProsent;
             const søkersProsent = getFloatFromString(søkersSamtidigUttaksprosent);

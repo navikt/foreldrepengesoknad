@@ -1,6 +1,9 @@
 export * from '../intl/types';
 
-export type Dekningsgrad = '80' | '100';
+export enum Dekningsgrad {
+    ÅTTI_PROSENT = '80',
+    HUNDRE_PROSENT = '100'
+}
 
 export enum Forelder {
     'mor' = 'mor',

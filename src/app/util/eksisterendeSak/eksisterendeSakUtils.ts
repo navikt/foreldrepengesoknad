@@ -31,6 +31,7 @@ import { Tidsperioden } from '../uttaksplan/Tidsperioden';
 import { getRelevantFamiliehendelseDato } from '../dates/dates';
 import { getFamilieHendelseType } from '../domain/getFamilieHendelseType';
 import { FamiliehendelseDatoer } from 'app/types/søknad/FamiliehendelseDatoer';
+import { Dekningsgrad } from 'common/types';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -157,7 +158,7 @@ export const getEksisterendeSakFromDTO = (
         ...restGrunnlag,
         erDeltUttak: erEksisterendeSakErDeltUttak(dto),
         erBarnetFødt: fødselsdato !== undefined,
-        dekningsgrad: dekningsgrad === 100 ? '100' : '80',
+        dekningsgrad: dekningsgrad === 100 ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
         familieHendelseDato: getRelevantFamiliehendelseDato(familiehendelseDatoer),
         familieHendelseType: familiehendelseType as FamiliehendelsesType,
         termindato: familiehendelseDatoer.termindato
