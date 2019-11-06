@@ -6,12 +6,13 @@ import { storageParser } from '../util/storage/parser';
 import { formaterDato, formaterStønadskontoParamsDatoer } from 'common/util/datoUtils';
 import { StorageKvittering } from '../types/StorageKvittering';
 import AxiosInstance from './apiInterceptor';
+import { Dekningsgrad } from 'common/types';
 
 export interface GetTilgjengeligeStønadskontoerParams {
     antallBarn: number;
     morHarRett: boolean;
     farHarRett: boolean;
-    dekningsgrad: '100' | '80';
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT | Dekningsgrad.ÅTTI_PROSENT;
     termindato?: Date;
     fødselsdato?: Date;
     omsorgsovertakelsesdato?: Date;

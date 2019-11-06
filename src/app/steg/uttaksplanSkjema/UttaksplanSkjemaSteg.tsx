@@ -34,6 +34,7 @@ import Block from 'common/components/block/Block';
 import InfoEksisterendeSak from '../uttaksplan/infoEksisterendeSak/InfoEksisterendeSak';
 import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from 'app/util/uttaksplan/uttakUtils';
 import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
+import { Dekningsgrad } from 'common/types';
 
 interface StateProps {
     stegProps: StegProps;
@@ -73,10 +74,16 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 barn
             );
             dispatch(
-                apiActionCreators.getTilgjengeligeStønadskontoer({ ...params, dekningsgrad: '100' }, this.props.history)
+                apiActionCreators.getTilgjengeligeStønadskontoer(
+                    { ...params, dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
+                    this.props.history
+                )
             );
             dispatch(
-                apiActionCreators.getTilgjengeligeStønadskontoer({ ...params, dekningsgrad: '80' }, this.props.history)
+                apiActionCreators.getTilgjengeligeStønadskontoer(
+                    { ...params, dekningsgrad: Dekningsgrad.ÅTTI_PROSENT },
+                    this.props.history
+                )
             );
         }
     }

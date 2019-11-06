@@ -4,13 +4,13 @@ import { finnAntallDagerÅTrekke } from 'app/util/uttaksPlanStatus';
 
 export const getFlerbarnsuker = (dekningsgrad: Dekningsgrad, antallBarn: number): number => {
     if (antallBarn === 2) {
-        if (dekningsgrad === '100') {
+        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT) {
             return 17;
         } else {
             return 21;
         }
     } else {
-        if (dekningsgrad === '100') {
+        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT) {
             return 46;
         } else {
             return 56;

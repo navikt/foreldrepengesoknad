@@ -31,7 +31,7 @@ module.exports = {
         uttaksplan: [],
         erEndringssøknad: false,
         situasjon: 'fødsel',
-        dekningsgrad: '100'
+        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT
     },
     common: { språkkode: 'nb' }
 }

@@ -42,7 +42,7 @@ const skalViseVeileder = (
     harAnnenForelderSøktFP?: boolean,
     dekningsgrad?: Dekningsgrad
 ): boolean => {
-    if (dekningsgrad === '80' && erEndringssøknad === false) {
+    if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && erEndringssøknad === false) {
         if (situasjon === Søkersituasjon.ADOPSJON && (harAnnenForelderSøktFP === false || erAleneomsorg)) {
             return true;
         }
@@ -77,10 +77,10 @@ const DekningsgradSpørsmål = (props: Props) => {
     const { harRett } = søknadsinfo.annenForelder;
 
     let checked;
-    if (dekningsgrad === '100') {
-        checked = '100';
-    } else if (dekningsgrad === '80') {
-        checked = '80';
+    if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT) {
+        checked = Dekningsgrad.HUNDRE_PROSENT;
+    } else if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT) {
+        checked = Dekningsgrad.ÅTTI_PROSENT;
     }
 
     let labelKey: string = '';
@@ -116,7 +116,7 @@ const DekningsgradSpørsmål = (props: Props) => {
                                         ? Math.floor(dekningsgrad100AntallUker)
                                         : undefined
                             }),
-                            value: '100'
+                            value: Dekningsgrad.HUNDRE_PROSENT
                         },
                         {
                             label: getMessage(intl, 'spørsmål.dekningsgrad.80', {
@@ -125,7 +125,7 @@ const DekningsgradSpørsmål = (props: Props) => {
                                         ? Math.floor(dekningsgrad80AntallUker)
                                         : undefined
                             }),
-                            value: '80'
+                            value: Dekningsgrad.ÅTTI_PROSENT
                         }
                     ]}
                     name="dekningsgrad"

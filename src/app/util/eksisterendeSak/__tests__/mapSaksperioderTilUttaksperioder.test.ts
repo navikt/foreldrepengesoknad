@@ -5,14 +5,14 @@ import {
     EksisterendeSak,
     FamiliehendelsesType
 } from 'app/types/EksisterendeSak';
-import { StønadskontoType } from 'common/types';
+import { StønadskontoType, Dekningsgrad } from 'common/types';
 import { MorsAktivitet, Periodetype, isUttaksperiode } from 'app/types/uttaksplan/periodetyper';
 import { mapUttaksperiodeFromSaksperiode } from '../mapSaksperioderTilUttaksperioder';
 
 const morUfør: Pick<EksisterendeSak, 'grunnlag' | 'saksperioder'> = {
     grunnlag: {
         familieHendelseDato: new Date('2019-09-01'),
-        dekningsgrad: '100',
+        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
         antallBarn: 1,
         søkerErFarEllerMedmor: true,
         morErAleneOmOmsorg: false,
