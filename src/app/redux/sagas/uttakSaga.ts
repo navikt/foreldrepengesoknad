@@ -81,6 +81,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 const aktivitetsFriKvoteDager = tilgjengeligeStønadskontoer.find(
                     (konto) => konto.konto === StønadskontoType.AktivitetsfriKvote
                 )!.dager;
+
                 tilgjengeligeStønadskontoer = tilgjengeligeStønadskontoer
                     .map((konto) => {
                         if (konto.konto === StønadskontoType.AktivitetsfriKvote) {
