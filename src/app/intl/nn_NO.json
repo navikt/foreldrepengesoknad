@@ -57,7 +57,7 @@
     "annenInntekt.oppfølgingsspørsmål": "Periodar med anna inntekt",
     "annenInntekt.spørsmål": "Har du hatt andre inntektskjelder dei siste 10 månadene?",
     "annenInntekt.infoboksTekst.overskrift": "Har du andre inntektskjelder, kan du ha rett til foreldrepengar:",
-    "annenInntekt.infoboksTekst.punktEn": "Førstegongsteneste i forsvaret",
+    "annenInntekt.infoboksTekst.punktEn": "Førstegongsteneste i forsvaret eller sivilforsvaret",
     "annenInntekt.infoboksTekst.punktTo": "Jobba i et anna EØS-land",
     "annenInntekt.infoboksTekst.punktTre": "Ventelønn",
     "annenInntekt.infoboksTekst.punktFire": "Sluttpakke",
@@ -1156,7 +1156,7 @@
     "søknadSendt.info.missingAttachment.I000060": "Annet",
     "søknadSendt.info.missingAttachment.I000063": "Fødselsattest",
     "søknadSendt.info.missingAttachment.I000062": "Terminstadfesting",
-    "søknadSendt.info.missingAttachment.I000039": "Stadfesting av militær- eller siviltjeneste",
+    "søknadSendt.info.missingAttachment.I000039": "Stadfesting av militær- eller sivilforsvaret",
     "søknadSendt.info.missingAttachment.I000007": "Inntektsopplysninger for selvstendig næringsdrivende",
     "søknadSendt.info.missingAttachment.I000038": "Stadfesting av mors utdanning, arbeid eller sykdom",
     "søknadSendt.info.missingAttachment.I000037": "Stadfesting av innlegging på sjukehus eller helseinstitusjon,",
@@ -1177,7 +1177,7 @@
     "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering":
         "Stillingsprosenten du skal jobbe kan bare inneholde tall, over vera mellom 1 og 99",
     "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden er ikkje gyldig",
-    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden er ikkje gyldig",
+    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Du har ikkje vlagt kva for ein del av foreldrepengane du skal bruke",
     "uttaksplan.validering.feil.periodeOverlapperAndrePerioder":
         "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale":
@@ -1185,7 +1185,7 @@
 
     "byttBrowser.tittel": "Vi ser du bruker en utdatert nettleser",
     "byttBrowser.ingress":
-        "For å få den beste brukeropplevelsen anbefaler vi en moderne nettleser som støtter moderne webstandarder",
+        "For å få den beste brukaropplevinga anbefaler vi ein moderne nettlesar som støttar moderne webstandarder",
     "ok": "Ok",
     "oversiktBrukteDager.tittel.foreldre": "Brukte foreldrepengar",
     "oversiktBrukteDager.tittel.kontoer.brukteDager":
