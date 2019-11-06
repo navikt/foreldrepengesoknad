@@ -55,7 +55,7 @@
     "annenInntekt.modal.tittel": "Legg til inntektskjelde",
     "annenInntekt.modal.velgInntektstype": "Velg inntektstype",
     "annenInntekt.oppfølgingsspørsmål": "Periodar med anna inntekt",
-    "annenInntekt.spørsmål": "Har du hatt andre inntektskjelder dei siste ti månadene?",
+    "annenInntekt.spørsmål": "Har du hatt andre inntektskjelder dei siste 10 månadene?",
     "annenInntekt.infoboksTekst.overskrift": "Har du andre inntektskjelder, kan du ha rett til foreldrepengar:",
     "annenInntekt.infoboksTekst.punktEn": "Førstegongsteneste i forsvaret",
     "annenInntekt.infoboksTekst.punktTo": "Jobba i et anna EØS-land",
@@ -114,7 +114,7 @@
     "bekreftTilbakestillUttaksplanDialog.tittel": "Tilbakestill plan",
     "blittYrkesaktivSiste3År.hjelpetekst":
         "Du skal svare ja på spørsmålet viss du ha hatt jobb med låg eller ingen inntekt før du starta verksemda di.",
-    "blittYrkesaktivSiste3År.spørsmål": "Har du begynt å jobbe i løpet av dei tre siste ferdiglikna åra?",
+    "blittYrkesaktivSiste3År.spørsmål": "Har du begynt å jobbe i løpet av dei 3 siste ferdiglikna åra?",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "berre budd i Noreg",
     "boddINorgeSiste12Mnd.alternativ.boddIUtlandet": "budd i utlandet heilt eller delvis",
     "boddINorgeSiste12Mnd.spørsmål": "Kvar har du budd dei siste tolv månadene?",
@@ -181,7 +181,7 @@
     "erBarnetFødt.spørsmål.veileder.medMorEllerFar":
         "Du kan ikkje søkje før barnet er født. Unntaket er dersom mor er sjuk eller innlagd på sjukehus eller helseinstitusjon. Då må du sende søknaden i posten.{ lenke }",
     "erDuMedmor.spørsmål": "Er du medmor?",
-    "erDuSelvstendigNæringsdrivende.spørsmål": "Har du jobba som sjølvstendig næringsdrivande dei siste ti månadene?",
+    "erDuSelvstendigNæringsdrivende.spørsmål": "Har du jobba eller hatt inntekt som sjølvstendig næringsdrivande dei siste 10 månadene?",
     "erMorForSyk.spørsmål": "Er mor for sjuk til å ta seg av barnet eller innlagd i helseinstitusjon?",
     "erMorUfør.spørsmål": "Har {navn} uføretrygd?",
     "erNæringenRegistrertINorge.spørsmål": "Er {navnPåNæringen} registrert i Noreg?",
@@ -221,17 +221,17 @@
     "gjelderSøknadenNoenAvDisseBarna.spørsmål.ettBarn": "Gjeld foreldrepengesøknaden dette barnet?",
     "gradering.prosent": "{stillingsprosent} prosent",
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepengar",
-    "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobba og hatt inntekt som frilansar dei siste ti månadene?",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobba og hatt inntekt som frilansar dei siste 10 månadene?",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
         "Eksempel på kven som kan vere frilansar er<br/><ul><li>Musikar</li><li>Tekstforfattarar</li><li>Skodespelarar</li><li>Journalistar</li><li>Omsetjararr</li><li> Folkevalde, politikarar i kommunar, fylkeskommunar og på Stortinget som får godtgjering for politisk arbeid.</li><li>Fosterforeldre, og personar med omsorgslønn</li></ul>Dersom du er usikker på om du er frilansar, kan du lese mer om kva det vil seie å være frilansar på skatteetaten sin",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
-        "Oppdrag for nære venner og/eller familie dei siste ti månadene",
+        "Oppdrag for nære venner og/eller familie dei siste 10 månadene",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
-        "Har du hatt oppdrag for nære venner eller familie dei ti siste månadene?",
+        "Har du hatt oppdrag for nære venner eller familie dei 10 siste månadene?",
     "harJobbetForNærVennEllerFamilieSiste12Mnd.spørsmål":
         "Har du dei siste tolv månadene jobba for ein nær venn eller for familie?",
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
-        "Har du jobba og hatt inntekt som sjølvstendig næringsdrivande dei siste ti månadene?",
+        "Har du jobba og hatt inntekt som sjølvstendig næringsdrivande dei siste 10 månadene?",
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst":
         "Du kan lesa meir om kva det tyder å vera sjølvstendig næringsdrivande på skatteetaten sine",
     "harRegnskapsfører.spørsmål": "Har du rekneskapsførar?",
@@ -369,9 +369,9 @@
     "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
     "oppsummering.andreInntekter.arbeidsgiverLand": "Landet til arbeidsgjevaren",
     "oppsummering.andreInntekter.arbeidsgiverNavn": "Namnet til arbeidsgjevaren",
-    "oppsummering.andreInntekter.ikkeHattAndreInntekter": "Eg har ikkje hatt andre inntekter dei siste ti månadene",
+    "oppsummering.andreInntekter.ikkeHattAndreInntekter": "Eg har ikkje hatt andre inntekter dei siste 10 månadene",
     "oppsummering.andreInntekter.nærVennEllerFamilie": "Eg er nær venn av eller i familie med denne arbeidsgjevaren",
-    "oppsummering.andreInntekter.tittel": "Andre inntekter dei siste ti månadene",
+    "oppsummering.andreInntekter.tittel": "Andre inntekter dei siste 10 månadene",
     "oppsummering.ankomstdato.label": "innkomstdato",
     "oppsummering.annenForelder": "Den andre forelderen",
     "oppsummering.annenForelder.aleneOmOmsorg.label": "{personligPronomen} har",
@@ -404,10 +404,10 @@
     "oppsummering.frilans.driverFosterhjem": "Eg driv fosterheim",
     "oppsummering.frilans.fremdelesFrilans": "Eg jobbar framleis som frilansar",
     "oppsummering.frilans.frilansArbeidForNæreVennerEllerFamilieSiste10Mnd":
-        "Frilansarbeid for nære venner eller familie dei siste ti månadene",
+        "Frilansarbeid for nære venner eller familie dei siste 10 månadene",
     "oppsummering.frilans.harIkkeUtførtFrilansArbeidForNæreVennerEllerFamilieSiste10Mnd":
-        "Eg har ikkje jobba som frilansar for nære venner eller familie dei siste ti månadene",
-    "oppsummering.frilans.ikkeFrilans": "Eg har ikkje jobba som frilansar dei siste ti månadene",
+        "Eg har ikkje jobba som frilansar for nære venner eller familie dei siste 10 månadene",
+    "oppsummering.frilans.ikkeFrilans": "Eg har ikkje jobba som frilansar dei siste 10 månadene",
     "oppsummering.frilans.oppstartsdato": "Oppstartsdato som frilansar",
     "oppsummering.frilans.tittel": "Frilansarbeid",
     "oppsummering.fødselINorge.label": "Eg skal føde barnet",
@@ -432,7 +432,7 @@
     "oppsummering.samtykke":
         "Eg har gjort meg kjend med vilkåra for å få foreldrepengar, og skal ha omsorga for barnet i perioden eg søkjer om.",
     "oppsummering.selvstendigNæringsdrivende.blittYrkesaktivSiste3År":
-        "Eg er blitt yrkesaktiv i løpet av dei tre siste ferdiglikna åra ",
+        "Eg er blitt yrkesaktiv i løpet av dei 3 siste ferdiglikna åra ",
     "oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt": "Dato for endring av næringsinntekt",
     "oppsummering.selvstendigNæringsdrivende.dokumentasjon": "Dokumentasjon av inntekta di det siste året",
     "oppsummering.selvstendigNæringsdrivende.forklaring": "Forklaring av endring av næringsinntekt",
@@ -441,9 +441,9 @@
     "oppsummering.selvstendigNæringsdrivende.harIkkeRegnskapsfører": "Eg har ikkje regnskapsførar",
     "oppsummering.selvstendigNæringsdrivende.harIkkeRevisor": "Eg har ikkje revisor",
     "oppsummering.selvstendigNæringsdrivende.hattVarigEndringAvNæringsinntektSiste4Kalenderår":
-        "Har hatt varig endring av næringsinntekt dei siste fire kalenderåra",
+        "Har hatt varig endring av næringsinntekt dei siste 4 kalenderåra",
     "oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende":
-        "Eg har ikkje jobba som sjølvstendig næringsdrivande dei siste ti månadene",
+        "Eg har ikkje jobba som sjølvstendig næringsdrivande dei siste 10 månadene",
     "oppsummering.selvstendigNæringsdrivende.næringsinntekt": "Næringsinntekt",
     "oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring": "Næringsinntekt etter endring",
     "oppsummering.selvstendigNæringsdrivende.næringstype": "Næringstype",
@@ -764,7 +764,7 @@
     "uttaksplan.informasjon.foreldrepengerFørFødselMindreEnnTreUker":
         "{varighet} du ikkje bruker før termin, fell bort",
     "uttaksplan.informasjon.foreldrepengerFørFødselSkalIkkeHa":
-        "Når du ikkje startar foreldrepengeperioden tre veker før termindato, fell desse dagane bort.",
+        "Når du ikkje startar foreldrepengeperioden 3 veker før termindato, fell desse dagane bort.",
     "uttaksplan.informasjon.mor.aleneOmsorg":
         "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk.",
     "uttaksplan.informasjon.mor.deltOmsorg":
@@ -841,7 +841,7 @@
     "uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode":
         "Du har lagt inn <strong>{periode}</strong> i perioden {tidsperiode}. {forelder} har foreldrepengar eller utsettelse i same periode. <strong>{periode}</strong> vil erstatte {forelders} foreldrepengar eller utsettelse i denne perioden.",
 
-    "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikkje få foreldrepengar etter at barnet er fylt tre år.",
+    "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikkje få foreldrepengar etter at barnet er fylt 3 år.",
     "uttaksplan.validering.feil.harSøktOmFerieUtenArbeidsforhold":
         "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold i valgt tidsperiode.",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må vere ein vekedag.",
@@ -934,9 +934,9 @@
     "uttaksplan.senEndring.veileder.SYKDOM":
         "Du søkjer om å utsetje på grunn av sjukdom tilbake i tid. Her kan du fortelje kva som er grunnen til at du ikkje har søkt tidlegare. Det er også mogleg for deg å laste opp relevant dokumentasjon.",
     "uttaksplan.senEndring.veileder.UTTAK":
-        "Du kan søkje om foreldrepengar tre månader tilbake i tid frå den dagen NAV får søknaden frå deg. Når du søkjer meir enn tre månader tilbake i tid, må vi vurdere rettane dine. Her kan du fortelje kva som er grunnen til at du ikkje har søkt tidlegare. Det er også mogleg for deg å laste opp relevant dokumentasjon.",
+        "Du kan søkje om foreldrepengar 3 månader tilbake i tid frå den dagen NAV får søknaden frå deg. Når du søkjer meir enn 3 månader tilbake i tid, må vi vurdere rettane dine. Her kan du fortelje kva som er grunnen til at du ikkje har søkt tidlegare. Det er også mogleg for deg å laste opp relevant dokumentasjon.",
     "uttaksplan.senEndring.veileder.SYKDOM_OG_UTTAK":
-        "Du kan søkje om foreldrepengar og om å utsetje på grunn av sjukdom tre månader tilbake i tid. Når du søkjer meir enn tre månader tilbake i tid, må vi vurdere rettane dine. Her kan du fortelje kva som er grunnen til at du ikkje har søkt tidlegare. Det er også mogleg for deg å laste opp relevant dokumentasjon.",
+        "Du kan søkje om foreldrepengar og om å utsetje på grunn av sjukdom 3 månader tilbake i tid. Når du søkjer meir enn 3 månader tilbake i tid, må vi vurdere rettane dine. Her kan du fortelje kva som er grunnen til at du ikkje har søkt tidlegare. Det er også mogleg for deg å laste opp relevant dokumentasjon.",
     "uttaksplan.senEndring.begrunnelse.SYKDOM": "Kva er årsaka til at du ikkje har søkt om utsetjing tidlegare?",
     "uttaksplan.senEndring.begrunnelse.UTTAK": "Kva er årsaka til at du ikkje har søkt om foreldrepengar tidlegare?",
     "uttaksplan.senEndring.begrunnelse.SYKDOM_OG_UTTAK":
@@ -957,7 +957,7 @@
     "valideringsfeil.fodselsdato.ikkeMerEnn15År3MndTilbake":
         "Du kan ikkje søke om foreldrepengar for barn som er eldre enn 15 år og 3 månader {dato}",
     "valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake":
-        "Du kan ikkje søkje om foreldrepengar for barn som er eldre enn tre år.",
+        "Du kan ikkje søkje om foreldrepengar for barn som er eldre enn 3 år.",
     "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere": "Fødselsdatoen må vere i dag eller tidlegare",
     "valideringsfeil.frilansOppstart.duMåOppgi": "Du må gi opp oppstartsdatoen",
     "valideringsfeil.frilansOppstart.måVæreIdagEllerTidligere": "Oppstartsdatoen må vere i dag eller tidlegare",
@@ -986,7 +986,7 @@
     "valideringsfeil.terminbekreftelseDato.forSen": "Datoen på terminstadfestinga kan ikkje vere fram i tid.",
     "valideringsfeil.termindato.duMåOppgi": "Du må gi opp termindatoen",
     "valideringsfeil.termindato.duMåVæreIUke22": "Du kan tidlegast søkje når du er i 22. svangerskapsveke",
-    "valideringsfeil.termindato.forTidlig": "Termindatoen kan ikkje vere tidlegare enn tre veker frå i dag",
+    "valideringsfeil.termindato.forTidlig": "Termindatoen kan ikkje vere tidlegare enn 3 veker frå i dag",
     "valideringsfeil.utenlandsopphold.dagensEllerSenere": "Du må leggje inn dagens dato eller seinare.",
     "valideringsfeil.utenlandsopphold.etterFraDato": "Du må leggje inn ein dato som er etter frå-datoen.",
     "valideringsfeil.utenlandsopphold.førTilDato": "Du må leggje inn ein dato som er før til-datoen.",
@@ -1004,7 +1004,7 @@
     "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
         "Gi opp næringsinntekta di etter endringa. Gi opp årsinntekta i heile kroner.",
     "varigEndringAvNæringsinntekt.spørsmål":
-        "Har du hatt ei varig endring i arbeidsforholdet ditt, verksemda eller arbeidssituasjonen din dei siste fire åra?",
+        "Har du hatt ei varig endring i arbeidsforholdet ditt, verksemda eller arbeidssituasjonen din dei siste 4 åra?",
     "vedlagtdokumentasjon": "Vedlagd dokumentasjon",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.feilmelding": " Ops noko gjekk gale, prøv igjen",
@@ -1099,9 +1099,9 @@
     "utvidetInformasjon.lukkTekst": "Lukk informasjon",
     "tilleggsopplysning.begrunnelseForSenEndring": "Grunngiving for å søke om utsetjing",
     "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM": "på grunn av sykdom tilbake i tid",
-    "tilleggsopplysning.begrunnelseForSenEndring.UTTAK": "på grunn av uttak meir enn tre månader tilbake i tid",
+    "tilleggsopplysning.begrunnelseForSenEndring.UTTAK": "på grunn av uttak meir enn 3 månader tilbake i tid",
     "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM_OG_UTTAK":
-        "på grunn av sykdom tilbake i tid og uttak meir enn tre månader tilbake i tid",
+        "på grunn av sykdom tilbake i tid og uttak meir enn 3 månader tilbake i tid",
     "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikkje tilgjengeleg akkurat nå",
     "feilside.ikkeTilgjengelig.melding":
         "Huffda, det ser ut til at eit av systema våre er nede akkurat no. Vi jobbar med å ordna feilen. Forsøk igjen litt seinare, vi beklagar ulempa for deg.",
@@ -1134,7 +1134,7 @@
         "Vi har mottatt søknaden din, og den manglar følgjande dokumentasjon:",
     "søknadSendt.når.tittel": "Når kan eg tidligast forvente få svar på min søknad?",
     "søknadSendt.når.infoBox":
-        "Du får tidlegast svar på søknaden din fire veker før foreldrepengeperioden din startar. Dette er fordi vi bruker dei nyaste opplysningane om inntekta di når vi skal berekne kva du skal få i foreldrepengar.",
+        "Du får tidlegast svar på søknaden din 4 veker før foreldrepengeperioden din startar. Dette er fordi vi bruker dei nyaste opplysningane om inntekta di når vi skal berekne kva du skal få i foreldrepengar.",
     "søknadSendt.infoFraArbeidsgiver.tittel": "Kva for ei informasjon treng arbeidsgjevaren min?",
     "søknadSendt.infoFraArbeidsgiver": "Viktig informasjon til din arbeidsgjevar",
     "søknadSendt.infoFraArbeidsgiver.infoBox":
@@ -1167,7 +1167,7 @@
     "søknadSendt.info.missingAttachment.I000049": "Annan stadfesting",
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumenta ikkje blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
-        "Viss du ikkje ettersender dokumenta innan tre veker behandlar vi søknaden din utor dei opplysningane som vi har tilgjengelege.",
+        "Viss du ikkje ettersender dokumenta innan 3 veker behandlar vi søknaden din utor dei opplysningane som vi har tilgjengelege.",
 
     "periodetype.utsettelse": "utsettelse",
     "periodetype.uttak": "uttak",
