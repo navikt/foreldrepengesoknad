@@ -222,7 +222,7 @@
     "gjelderSøknadenNoenAvDisseBarna.spørsmål.ettBarn": "Gjelder foreldrepengesøknaden dette barnet?",
     "gradering.prosent": "{stillingsprosent}%",
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepenger",
-    "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet som frilanser de siste ti månedene?",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet og hatt inntekt som frilanser de siste ti månedene?",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
         "Eksempel på hvem som kan være frilansere er<br/><ul><li>Musikere</li><li>Tekstforfattere</li><li>Skuespillere</li><li>Journalister</li><li>Oversettere</li><li> Folkevalgt, politikere i kommuner, fylkeskommuner og på Stortinget som får godtgjørelse for politisk arbeid.</li><li>Fosterforeldre, og personer med omsorgslønn</li></ul>Hvis du er usikker på om du er frilanser kan du lese mer om hva det betyr å være frilanser på skatteetaten sin",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
@@ -232,7 +232,7 @@
     "harJobbetForNærVennEllerFamilieSiste12Mnd.spørsmål":
         "Har du de siste 12 månedene jobbet for en nær venn eller familie?",
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
-        "Har du jobbet som selvstendig næringsdrivende de siste ti månedene?",
+        "Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste ti månedene?",
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst":
         "Du kan lese mer om hva det betyr å være selvstendig næringsdrivende på skatteetatens",
     "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
