@@ -89,7 +89,7 @@
     "avbrytSøknadDialog.fortsettSøknadLabel": "Nei",
     "avbrytSøknadDialog.intro": "Det du har fylt ut i søknaden blir slettet, og du kommer tilbake til velkomstsiden.",
     "avbrytSøknadDialog.spørsmål": "Ønsker du å slette søknaden?",
-    "avbrytSøknadDialog.tittel": "Avbryt søknad",
+    "avbrytSøknadDialog.tittel": "Avbryt søknad og slett søknad",
     "fortsettSøknadSenereDialog.avbrytSøknadLabel": "Ja, fortsett senere",
     "fortsettSøknadSenereDialog.fortsettSøknadLabel": "Nei",
     "fortsettSøknadSenereDialog.intro": "Vi lagrer søknaden din for deg i 24 timer.",
@@ -195,7 +195,7 @@
     "feilside.tittel": "Det oppstod en feil",
     "feilside.veiledertekst":
         "Det har oppstått en feil. Dersom det ikke fungerer å prøve igjen, trykk på knappen under for å slette søknaden og starte på nytt.",
-    "feilside.uuid": "Tar du kontakt med brukerstøtte, vennligst oppgi denne koden {uuid}",
+    "feilside.uuid": "Tar du kontakt med brukerstøtte, vennligst oppgi denne koden {uuid} slik at vi kan finne ut av hva som har gått galt",
     "foreldreansvar.antallBarn": "Antall barn",
     "foreldreansvar.overtakelsedato": "Dato for foreldreansvar",
     "fortsettknapp.label": "Fortsett",
