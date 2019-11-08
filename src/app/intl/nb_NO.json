@@ -40,14 +40,14 @@
     "annenInntekt.alternativ.hatt": "Ja",
     "annenInntekt.alternativ.ikkeHatt": "Nei",
     "annenInntekt.arbeidsforhold.infotekst":
-        "Hvis du mangler informasjon om et eller flere arbeidsforhold, eller mener at informasjonen ikke stemmer så må du kontakte din arbeidsgiver og be dem oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
+        "Er det feil eller mangler i informasjonen om dine arbeidsforhold? Da må du be din arbeidsgiver oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
     "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikke registrert med noen arbeidsforhold.",
     "annenInntekt.arbeidsforhold.label": "Dine arbeidsforhold",
     "annenInntekt.arbeidsforhold.organisasjonsnummer": "ORG.NR: {organisasjonsnummer}",
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
     "annenInntekt.arbeidsforhold.veileder":
-        "Husk å be arbeidsgiveren din sende inntektsmelding til NAV. Vi trenger den for å kunne behandle søknaden din. Arbeidsgiver kan sende den tidligst {dato}.",
+        "Husk å be arbeidsgiveren din sende inntektsmelding til NAV. Vi trenger den for å kunne behandle søknaden din. Arbeidsgiver kan sende den tidligst {dato}, som er 4 uker før foreldrepengeperioden din starter.",
     "annenInntekt.fom": "Når startet du {navnPåNæringen}?",
     "annenInntekt.leggTilInntekt": "Legg til inntektskilde",
     "annenInntekt.modal.land": "Hvilket land har du jobbet i?",
@@ -178,7 +178,7 @@
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er dere nære venner eller i familie?",
     "erBarnetFødt.spørsmål": "Er barnet født?",
     "erBarnetFødt.spørsmål.veileder.medMorEllerFar":
-        "Du kan ikke søke om foreldrepenger før barnet er født. Unntaket er hvis mor er syk eller innlagt på sykehus eller helseinstitusjon. Da må du sende søknaden i posten. { lenke }",
+        "Du kan dessverre ikke søke om foreldrepenger før barnet er født. Unntaket er hvis mor er syk eller innlagt på sykehus eller helseinstitusjon. Du må fylle ut søknaden på papir og sender den i posten. { lenke }",
     "barnFødt.infoPrematuruker":
         "Hvis barnet blir født før 33. svangerskapsuke så blir perioden med foreldrepenger utvidet med samme antall uker og dager som barnet er født før termindato.<br /><br /> Dersom barnet blir innlagt på sykehus etter fødselen, vil dere som regel kunne motta pleiepenger så lenge barnet er innlagt. Får dere pleiepenger i perioden fra fødsel og fram til opprinnelig termindato, trekkes disse fra den utvidede perioden.",
     "erDuMedmor.spørsmål": "Er du medmor?",
@@ -219,7 +219,7 @@
     "fødselsdatoer.termin": "Hva var termindatoen?",
     "fødselsdatoer.termin.flereBarn": "Hva var termindatoen til det eldste barnet?",
     "gjelderSøknadenNoenAvDisseBarna.spørsmål": "Gjelder foreldrepengesøknaden noen av disse barna?",
-    "gjelderSøknadenNoenAvDisseBarna.spørsmål.ettBarn": "Gjelder foreldrepengesøknaden dette barnet?",
+    "gjelderSøknadenNoenAvDisseBarna.spørsmål.ettBarn": "Hvilket barn gjelder søknaden?",
     "gradering.prosent": "{stillingsprosent}%",
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepenger",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet og hatt inntekt som frilanser de siste 10 månedene?",
@@ -1048,7 +1048,7 @@
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.dinePlikter": "dine plikter.<br /><br />",
     "velkommen.foreldreansvar.veileder":
-        "Du er blitt tildelt foreldreansvaret etter barneloven § 38 eller 64. Du må sende søknaden i posten.",
+        "Hvis du har blitt tildelt foreldreansvaret for barnet etter barneloven § 38 eller 64, kan du ikke sende inn søknaden elektronisk. Du må fylle ut søknaden på papir og sender den i posten.",
     "velkommen.ingress": "Foreldrepenger er noe du kan få for hvert barn du føder eller adopterer.",
     "velkommen.intro.harInfotrygdSak":
         "Her søker du om foreldrepenger når du skal være hjemme med barnet. <br /><br /> Har du allerede fått innvilget foreldrepenger, kan du endre perioden du skal være hjemme eller utsette hvis du skal på ferie eller om du ønsker å jobbe, eller på grunn av sykdom.",
@@ -1059,7 +1059,7 @@
     "velkommen.intro.harSak.veileder":
         "Når du søker om foreldrepenger for et nytt barn,  mister du dager du har igjen fra den første foreldrepengeperioden din.",
     "velkommen.intro.harFørstegangssøknadUnderBehandling":
-        "Du har en søknad til behandling. Ønsker du å sende inn en ny søknad må du fylle ut hele søknaden på nytt.",
+        "Du har en søknad til behandling. Ønsker du å sende inn en ny søknad erstatter du søknaden som ligger til behandling, og du må fylle ut hele søknaden på nytt.",
     "velkommen.endringssøknadIkkeTilgjengelig.veileder":
         "Endringssøknad er ikke tilgjengelig for øyeblikket. Vennligst prøv igjen litt senere.",
     "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
