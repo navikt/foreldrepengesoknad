@@ -49,12 +49,13 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({
                     verdi={ønskerSamtidigUttak ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
             )}
-            {konto !== StønadskontoType.ForeldrepengerFørFødsel && (
-                <Feltoppsummering
-                    feltnavn={getMessage(intl, 'oppsummering.uttak.kombineresMedarbeid')}
-                    verdi={gradert ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
-                />
-            )}
+            {konto !== StønadskontoType.ForeldrepengerFørFødsel &&
+                ønskerSamtidigUttak !== true && (
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.uttak.kombineresMedarbeid')}
+                        verdi={gradert ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                    />
+                )}
 
             {gradert === true &&
                 stillingsprosent && (
