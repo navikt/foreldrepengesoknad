@@ -34,7 +34,7 @@ export const getStønadskontoParams = (
             if (erBarnFødt) {
                 return {
                     ...params,
-                    termindato: (barn as FødtBarn).termindato,
+                    termindato: grunnlag.termindato,
                     fødselsdato: (barn as FødtBarn).fødselsdatoer[0]
                 };
             } else {
