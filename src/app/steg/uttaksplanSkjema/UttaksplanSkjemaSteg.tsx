@@ -64,14 +64,17 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 }
             },
             søknadsinfo,
-            barn
+            barn,
+            eksisterendeSak
         } = props;
 
         if (stegProps.isAvailable) {
+            const grunnlag = eksisterendeSak !== undefined ? eksisterendeSak.grunnlag : undefined;
             const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
                 søknadsinfo,
                 startdatoPermisjon,
-                barn
+                barn,
+                grunnlag
             );
             dispatch(
                 apiActionCreators.getTilgjengeligeStønadskontoer(
