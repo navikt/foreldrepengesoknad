@@ -118,6 +118,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
         } = this.props;
         const søknad = this.props.søknad as Søknad;
         const navnPåForeldre = søknadsinfo.navn.navnPåForeldre;
+        const grunnlag = eksisterendeSak !== undefined ? eksisterendeSak.grunnlag : undefined;
 
         if (!søknadsinfo) {
             return <ResetSoknad history={this.props.history} />;
@@ -132,7 +133,8 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                             getStønadskontoParams(
                                 søknadsinfo,
                                 søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon,
-                                barn
+                                barn,
+                                grunnlag
                             )
                         )
                     );
