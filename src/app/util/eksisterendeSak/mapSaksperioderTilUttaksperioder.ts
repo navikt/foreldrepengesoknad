@@ -333,10 +333,16 @@ const mapPeriodeFromSaksperiode = (
     if (saksperiode.gjelderAnnenPart) {
         return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, grunnlag, innvilgedePerioder);
     }
-    if (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT && saksperiode.utbetalingsprosent === 0) {
+    if (
+        saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT &&
+        (!saksperiode.utbetalingsprosent || saksperiode.utbetalingsprosent === 0)
+    ) {
         return mapInfoPeriodeFromAvslåttSaksperiode(saksperiode, grunnlag);
     }
-    if (saksperiode.utsettelsePeriodeType !== undefined && saksperiode.utbetalingsprosent === 0) {
+    if (
+        saksperiode.utsettelsePeriodeType !== undefined &&
+        (!saksperiode.utbetalingsprosent || saksperiode.utbetalingsprosent === 0)
+    ) {
         return mapUtsettelseperiodeFromSaksperiode(saksperiode, grunnlag);
     }
     if (saksperiode.overfoeringAarsak !== undefined) {
