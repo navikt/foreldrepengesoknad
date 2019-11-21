@@ -396,7 +396,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                             skjulMeldingIkon={true}
                                             messages={[
                                                 {
-                                                    type: 'feil',
+                                                    type: 'info',
                                                     contentIntlKey:
                                                         'vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse',
                                                     values: {
