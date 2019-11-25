@@ -33,6 +33,7 @@ export const UttaksplanBuilder = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     erFlerbarnssøknad: boolean,
     erEndringsøknadUtenEkisterendeSak: boolean,
+    relevantStartDatoForUttak: Date | undefined,
     opprinneligPlan?: Periode[]
 ) => {
     return new UttaksplanAutoBuilder(
@@ -42,6 +43,7 @@ export const UttaksplanBuilder = (
         getUttaksstatusFunc,
         erFlerbarnssøknad,
         erEndringsøknadUtenEkisterendeSak,
+        relevantStartDatoForUttak,
         opprinneligPlan
     );
 };
@@ -61,6 +63,7 @@ class UttaksplanAutoBuilder {
     ) => Uttaksstatus;
     protected erFlerbarnssøknad: boolean;
     protected erEndringsøknadUtenEkisterendeSak: boolean;
+    protected relevantStartDatoForUttak: Date | undefined;
 
     public constructor(
         public perioder: Periode[],
@@ -72,6 +75,7 @@ class UttaksplanAutoBuilder {
         ) => Uttaksstatus,
         erFlerbarnssøknad: boolean,
         erEndringsøknadUtenEkisterendeSak: boolean,
+        relevantStartDatoForUttak: Date | undefined,
         opprinneligPlan?: Periode[]
     ) {
         this.perioder = perioder;
@@ -80,6 +84,7 @@ class UttaksplanAutoBuilder {
         this.tilgjengeligeStønadskontoer = tilgjengeligeStønadskontoer;
         this.getUttaksstatusFunc = getUttaksstatusFunc;
         this.erFlerbarnssøknad = erFlerbarnssøknad;
+        this.relevantStartDatoForUttak = relevantStartDatoForUttak;
         this.erEndringsøknadUtenEkisterendeSak = erEndringsøknadUtenEkisterendeSak;
     }
 
@@ -95,7 +100,7 @@ class UttaksplanAutoBuilder {
                 .filter((p) => !(isUttakAnnenPart(p) && p.ønskerSamtidigUttak))
                 .sort(sorterPerioder),
             this.erEndringsøknadUtenEkisterendeSak,
-            this.familiehendelsesdato
+            this.relevantStartDatoForUttak || this.familiehendelsesdato
         );
 
         const perioderMedUgyldigTidsperiode = Periodene(this.perioder).getPerioderMedUgyldigTidsperiode();
@@ -304,14 +309,12 @@ class UttaksplanAutoBuilder {
                 });
             });
             const nyPlan: Periode[] = [...perioder].filter((p) => !isHull(p));
-            this.perioder = finnOgSettInnHull(
-                settInnPerioder(
-                    nyPlan,
-                    opprinneligePerioderSomSkalLeggesInnIPlan,
-                    this.erEndringsøknadUtenEkisterendeSak
-                ),
+            this.perioder = settInnPerioder(
+                nyPlan,
+                opprinneligePerioderSomSkalLeggesInnIPlan,
                 this.erEndringsøknadUtenEkisterendeSak
             );
+            this.finnOgSettInnHull();
         }
 
         return this;
@@ -428,7 +431,7 @@ class UttaksplanAutoBuilder {
         this.perioder = finnOgSettInnHull(
             this.perioder,
             this.erEndringsøknadUtenEkisterendeSak,
-            this.familiehendelsesdato
+            this.relevantStartDatoForUttak || this.familiehendelsesdato
         );
         return this;
     }
@@ -576,18 +579,18 @@ function settInnPeriode(
 export function finnHullIPerioder(
     perioder: Periode[],
     erEndringsøknadUtenEkisterendeSak: boolean,
-    familiehendelsesdato?: Date
+    startDato?: Date
 ): PeriodeHull[] {
     const hull: PeriodeHull[] = [];
     const perioderLength = perioder.length;
     const shouldHullBeInsertedBetweenFamiliehendelsedatoAndFirstPeriode =
-        familiehendelsesdato !== undefined &&
+        startDato !== undefined &&
         perioderLength > 0 &&
         perioder[0].type !== Periodetype.Hull &&
         !erEndringsøknadUtenEkisterendeSak;
 
-    if (familiehendelsesdato && shouldHullBeInsertedBetweenFamiliehendelsedatoAndFirstPeriode) {
-        const fom = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+    if (startDato && shouldHullBeInsertedBetweenFamiliehendelsedatoAndFirstPeriode) {
+        const fom = Uttaksdagen(startDato).denneEllerNeste();
         const uttaksdagerMellomStartOgFørstePeriode = Tidsperioden({
             fom,
             tom: Uttaksdagen(perioder[0].tidsperiode.fom).forrige()

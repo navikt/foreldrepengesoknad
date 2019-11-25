@@ -152,7 +152,8 @@ describe('UttaksplanBuilder', () => {
                 new Date('2019-01-31'),
                 [{ konto: StønadskontoType.Foreldrepenger, dager: 50 }],
                 false,
-                false
+                false,
+                undefined
             ).leggTilPeriodeOgBuild(nyPeriode as Periode);
 
             expect(Perioden(result.perioder[0]).erLik(nyPeriode as Periode));
@@ -204,6 +205,7 @@ describe('UttaksplanBuilder', () => {
                 ],
                 false,
                 false,
+                undefined,
                 [
                     {
                         type: Periodetype.Info,
@@ -281,7 +283,7 @@ describe('UttaksplanBuilder', () => {
             expect(hull.length).toBe(0);
         });
 
-        it('Skal ikke detektere hull hvis det gjelder endringssønad uten ekisterende sak', () => {
+        it('Skal ikke finne hull hvis det gjelder endringssøknad uten eksisterende sak', () => {
             const hull = finnHullIPerioder(
                 [
                     {
@@ -297,6 +299,27 @@ describe('UttaksplanBuilder', () => {
                 moment('2018-01-01').toDate()
             );
             expect(hull.length).toEqual(0);
+        });
+
+        it('Skal finne hull hvis det er avvik i startdato og første dag med uttak', () => {
+            const hull = finnHullIPerioder(
+                [
+                    {
+                        id: '1',
+                        type: Periodetype.Uttak,
+                        tidsperiode: {
+                            fom: new Date('2019-02-04'),
+                            tom: new Date('2019-02-08')
+                        }
+                    }
+                ] as Periode[],
+                false,
+                new Date('2019-01-30')
+            );
+
+            expect(hull.length).toEqual(1);
+            expect(hull[0].tidsperiode.fom).toEqual(new Date('2019-01-30'));
+            expect(hull[0].tidsperiode.tom).toEqual(new Date('2019-02-01'));
         });
     });
 });

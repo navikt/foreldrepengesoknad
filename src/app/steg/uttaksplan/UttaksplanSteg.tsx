@@ -16,7 +16,6 @@ import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
 import { getUttaksstatus, Uttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { HistoryProps } from '../../types/common';
-import { hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar } from 'app/regler/uttaksplan/hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar';
 import {
     Periode,
     TilgjengeligStønadskonto,
@@ -86,6 +85,7 @@ interface StateProps {
     perioderSomSkalSendesInn: Periode[];
     barn: Barn;
     arbeidsforhold: Arbeidsforhold[];
+    relevantStartDatoForUttak: Date | undefined;
 }
 
 interface UttaksplanStegState {
@@ -246,7 +246,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 
     handleAddPeriode(nyPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
-        const { søknad, tilgjengeligeStønadskontoer } = this.props;
+        const { søknad, tilgjengeligeStønadskontoer, relevantStartDatoForUttak } = this.props;
         const {
             familiehendelsesdato,
             erFlerbarnssøknad,
@@ -262,6 +262,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             familiehendelsesdato,
             erFlerbarnssøknad,
             erEndringssøknad && !erEnkelEndringssøknad,
+            relevantStartDatoForUttak,
             opprinneligPlan
         );
 
@@ -269,7 +270,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 
     handleDeletePeriode(slettetPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
-        const { søknad, tilgjengeligeStønadskontoer } = this.props;
+        const { søknad, tilgjengeligeStønadskontoer, relevantStartDatoForUttak } = this.props;
         const {
             familiehendelsesdato,
             erFlerbarnssøknad,
@@ -285,6 +286,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             familiehendelsesdato,
             erFlerbarnssøknad,
             erEndringssøknad && !erEnkelEndringssøknad,
+            relevantStartDatoForUttak,
             opprinneligPlan
         );
 
@@ -292,7 +294,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 
     handleUpdatePeriode(oppdatertPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
-        const { søknad, tilgjengeligeStønadskontoer } = this.props;
+        const { søknad, tilgjengeligeStønadskontoer, relevantStartDatoForUttak } = this.props;
         const {
             familiehendelsesdato,
             erFlerbarnssøknad,
@@ -308,6 +310,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             familiehendelsesdato,
             erFlerbarnssøknad,
             erEndringssøknad && !erEnkelEndringssøknad,
+            relevantStartDatoForUttak,
             opprinneligPlan
         );
 
@@ -538,8 +541,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo, søknadsinfo)
     };
 
+    let relevantStartDatoForUttak: Date | undefined;
     if (søknadsinfo) {
-        const { søknaden, søker } = søknadsinfo;
+        const { søknaden, søker, uttaksdatoer } = søknadsinfo;
 
         if (
             søknaden.erFødsel &&
@@ -547,13 +551,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
             søker.erFarEllerMedmor &&
             !søknad.ekstrainfo.erEnkelEndringssøknad
         ) {
-            const sisteUttaksdatoMor = state.søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag;
-            const førsteUttaksdatoFar = state.søknad.ekstrainfo.uttaksplanSkjema.farSinFørsteUttaksdag;
-            søknad.uttaksplan = hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar(
-                søknad.uttaksplan,
-                sisteUttaksdatoMor,
-                førsteUttaksdatoFar
-            );
+            relevantStartDatoForUttak =
+                state.søknad.ekstrainfo.uttaksplanSkjema.farSinFørsteUttaksdag ||
+                uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker;
         }
     }
 
@@ -589,7 +589,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         perioderSomSkalSendesInn,
         sak,
         arbeidsforhold: søkerinfo.arbeidsforhold,
-        grunnlag
+        grunnlag,
+        relevantStartDatoForUttak
     };
 };
 
