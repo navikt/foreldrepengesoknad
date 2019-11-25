@@ -399,7 +399,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                         onErrorClick={(periodeId: string) => this.handleOnPeriodeErrorClick(periodeId)}
                     />
-                )}>
+                )}
+            >
                 {isLoadingTilgjengeligeStønadskontoer === true ? (
                     <ApplicationSpinner />
                 ) : (
