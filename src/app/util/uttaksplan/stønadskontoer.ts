@@ -60,14 +60,14 @@ export const getResterendeStønadskontoer = (
         eksisterendeSak.uttaksplan!,
         eksisterendeSak.grunnlag.familieHendelseDato
     );
-    
+
     return tilgjengeligStønadskonto.map((k) => ({
         ...k,
         dager: k.dager - getBrukteUttaksdager(brukteDager.alle, k.konto)
     }));
 };
 
-    const getBrukteUttaksdager = (tilgjengeligeStønadskontoer: Stønadskontouttak[], kontoType: StønadskontoType): number => {
-        const tilgjenligStønadskonto = tilgjengeligeStønadskontoer.find((t) => t.konto === kontoType)
-        return tilgjenligStønadskonto ? tilgjenligStønadskonto.dager : 0;
+const getBrukteUttaksdager = (tilgjengeligeStønadskontoer: Stønadskontouttak[], kontoType: StønadskontoType): number => {
+    const tilgjenligStønadskonto = tilgjengeligeStønadskontoer.find((t) => t.konto === kontoType);
+    return tilgjenligStønadskonto ? tilgjenligStønadskonto.dager : 0;
 };
