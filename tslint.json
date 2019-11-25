@@ -17,6 +17,7 @@
         "no-switch-case-fall-through": true,
         "ordered-imports": false,
         "prefer-object-spread": true,
-        "max-classes-per-file": false
+        "max-classes-per-file": false,
+        "semicolon": true
     }
 }
