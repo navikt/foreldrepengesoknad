@@ -158,10 +158,12 @@ function* lagUttaksplanForslag() {
 
     if (søknadsinfo) {
         const {
-            søknaden: { erDeltUttak, erEndringssøknad, familiehendelsesdato, situasjon },
+            søknaden: { erDeltUttak, erEndringssøknad, erEnkelEndringssøknad, familiehendelsesdato, situasjon },
             annenForelder,
             søker
         } = søknadsinfo;
+
+        const { førsteUttaksdagEtterSeksUker } = søknadsinfo.uttaksdatoer.etterFødsel;
 
         const forslag = lagUttaksplan({
             annenForelderErUfør: annenForelder.erUfør,
@@ -171,13 +173,15 @@ function* lagUttaksplanForslag() {
             situasjon,
             søkerErFarEllerMedmor: søker.erFarEllerMedmor,
             tilgjengeligeStønadskontoer,
-            uttaksplanSkjema
+            uttaksplanSkjema,
+            erEnkelEndringssøknad,
+            førsteUttaksdagEtterSeksUker
         });
 
         if (
             annenPartsSak &&
             annenPartsSak.uttaksplan &&
-            skalKunneViseMorsUttaksplanForFarEllerMedmor(annenPartsSak.grunnlag, søknadsinfo) 
+            skalKunneViseMorsUttaksplanForFarEllerMedmor(annenPartsSak.grunnlag, søknadsinfo)
         ) {
             forslag.push(...annenPartsSak.uttaksplan);
         }
