@@ -553,7 +553,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
             !søknad.ekstrainfo.erEnkelEndringssøknad
         ) {
             relevantStartDatoForUttak =
-                state.søknad.ekstrainfo.uttaksplanSkjema.farSinFørsteUttaksdag ||
+                state.søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag ||
                 uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker;
         }
     }
