@@ -195,7 +195,8 @@
     "feilside.tittel": "Det oppstod en feil",
     "feilside.veiledertekst":
         "Det har oppstått en feil. Dersom det ikke fungerer å prøve igjen, trykk på knappen under for å slette søknaden og starte på nytt.",
-    "feilside.uuid": "Tar du kontakt med brukerstøtte, vennligst oppgi denne koden {uuid} slik at vi kan finne ut av hva som har gått galt",
+    "feilside.uuid":
+        "Tar du kontakt med brukerstøtte, vennligst oppgi denne koden {uuid} slik at vi kan finne ut av hva som har gått galt",
     "foreldreansvar.antallBarn": "Antall barn",
     "foreldreansvar.overtakelsedato": "Dato for foreldreansvar",
     "fortsettknapp.label": "Fortsett",
@@ -535,7 +536,6 @@
     "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_SØKER": "{ navn } på grunn av innleggelse i helseinstitusjon",
     "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_BARNET":
         "{ navn } utsetter fordi barnet er innlagt i helseinstitusjon",
-
     "personalia.år": "{år} år",
     "pgasykdom": "På grunn av sykdom",
     "pågående": "Pågående",
@@ -862,7 +862,6 @@
     "uttaksplan.validering.feil.periodeoverlapp.oppsummering":
         "{periode} ({tidsperiode}) overlapper med en eller flere andre perioder.",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
-
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det mangler informasjon om perioden.",
     "uttaksplan.validering.feil.planenInneholderIngenPerioder":
         "For å komme videre i søknaden må du legge til en periode med foreldrepenger eller en utsettelse",
@@ -1115,9 +1114,7 @@
     "eksisterendeSak.label.seAnnenPartsPlanIPlanen": "Se { navn } opprinnelige plan",
     "eksisterendeSak.label.annenPartsPlan": "{ navn } plan:",
     "eksisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { beskrivelse }",
-
     "eksisterendeSak.tittel.dineDagerMedForeldrepenger": "Dine dager med foreldrepenger",
-
     "søknadSendt.tittel": "Takk for søknaden { name }!",
     "søknadSendt.pdf": "Se og last ned søknaden din",
     "søknadSendt.sendtInn": "sendt inn:",
@@ -1150,7 +1147,8 @@
     "søknadSendt.info.missingAttachment.I000060": "Annet",
     "søknadSendt.info.missingAttachment.I000063": "Fødselsattest",
     "søknadSendt.info.missingAttachment.I000062": "Terminbekreftelse",
-    "søknadSendt.info.missingAttachment.I000039": "Dokumentasjon av førstegangstjeneste i forsvaret eller sivilforsvaret",
+    "søknadSendt.info.missingAttachment.I000039":
+        "Dokumentasjon av førstegangstjeneste i forsvaret eller sivilforsvaret",
     "søknadSendt.info.missingAttachment.I000007": "Inntektsopplysninger for selvstendig næringsdrivende",
     "søknadSendt.info.missingAttachment.I000038": "Dokumentasjon av mors utdanning, arbeid eller sykdom",
     "søknadSendt.info.missingAttachment.I000037": "Dokumentasjon av innleggelse i sykehus eller helseinstitusjon",
@@ -1162,25 +1160,26 @@
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikke blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
         "Hvis du ikke ettersender dokumentene innen 3 uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig.",
-
     "periodetype.utsettelse": "utsettelse",
     "periodetype.uttak": "uttak",
-
     "uttaksplan.validering.feil.erAllePeriodeSkjemaspørsmålBesvart": "Noen av spørsmålene for perioden er ikke besvart",
-    "uttaksplan.validering.feil.erUtsettelseEtterFamiliehendelsesdato": "Du kan ikke utsette foreldrepengene før barnet er født",
+    "uttaksplan.validering.feil.erUtsettelseEtterFamiliehendelsesdato":
+        "Du kan ikke utsette foreldrepengene før barnet er født",
     "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering":
         "Stillingsprosenten du skal jobbe kan bare inneholde tall, og være mellom 1 og 99",
-    "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden har ikke gyldig tidsperiode. Du må korrigere datoene",
-    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden mangler informasjon om hvilken del av foreldrepengene skal du ta ut",
+    "uttaksplan.validering.feil.periodeHarGyldigTidsperiode":
+        "Perioden har ikke gyldig tidsperiode. Du må korrigere datoene",
+    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto":
+        "Perioden mangler informasjon om hvilken del av foreldrepengene skal du ta ut",
     "uttaksplan.validering.feil.periodeOverlapperAndrePerioder":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",
     "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale":
         "Du må ha en skriftlig avtale med {antall, plural, one{arbeidsgiveren} other {arbeidsgiverene}} {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent i perioden du oppgir.",
+    "uttaksplan.validering.info.burdeKanskjeSøkeGradering": "Du burde kanskje heller søke om gradering",
     "byttBrowser.tittel": "Vi ser du bruker en utdatert nettleser",
     "byttBrowser.ingress":
         "For å få den beste brukeropplevelsen anbefaler vi en moderne nettleser som støtter moderne webstandarder.",
     "ok": "Ok",
-
     "oversiktBrukteDager.tittel.foreldre": "Brukte foreldrepenger",
     "oversiktBrukteDager.tittel.kontoer.brukteDager":
         "Foreldrepenger  {antall, plural, one {du} other {dere}} har registrert",

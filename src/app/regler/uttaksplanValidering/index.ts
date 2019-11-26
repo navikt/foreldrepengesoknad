@@ -24,6 +24,7 @@ import { Regel, RegelAlvorlighet } from 'shared/regler/regelTypes';
 import { inneholderForMyeFerie } from './tester/inneholderForMyeFerie';
 import { kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme } from './tester/kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './tester/erUttaksmengdeForFarMedmorForHøyTest';
+import { burdeKanskjeSøkeGraderingTest } from './tester/burdeKanskjeSøkeGraderingTest';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -49,7 +50,8 @@ export enum UttaksplanRegelKey {
     'periodeOverlapperAndrePerioder' = 'periodeOverlapperAndrePerioder',
     'harSøktOmFerieUtenArbeidsforhold' = 'harSøktOmFerieUtenArbeidsforhold',
     'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme' = 'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme',
-    'uttaksmengdeForFarMedmorErForHøy' = 'uttaksmengdeForFarMedmorErForHøy'
+    'uttaksmengdeForFarMedmorErForHøy' = 'uttaksmengdeForFarMedmorErForHøy',
+    'burdeKanskjeSøkeGradering' = 'burdeKanskjeSøkeGradering'
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -181,6 +183,11 @@ const uttaksplanValideringRegler: Regel[] = [
         key: UttaksplanRegelKey.kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme
+    },
+    {
+        key: UttaksplanRegelKey.burdeKanskjeSøkeGradering,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: burdeKanskjeSøkeGraderingTest
     }
 ];
 
