@@ -39,7 +39,22 @@ export const getEndringstidspunkt = (
     let endringstidspunkt;
     if (opprinneligPlan) {
         endringstidspunkt = updatedPlan.reduce((currentDate, periode, index) => {
-            if (currentDate === undefined && !Perioden(periode).erLik(opprinneligPlan[index], true, true)) {
+            if (index < opprinneligPlan.length) {
+                if (currentDate === undefined && !Perioden(periode).erLik(opprinneligPlan[index], true, true)) {
+                    return periode.tidsperiode.fom;
+                }
+            }
+
+            if (
+                index === updatedPlan.length - 1 &&
+                currentDate === undefined &&
+                updatedPlan.length < opprinneligPlan.length
+            ) {
+                // Siste periode i planen har blitt slettet
+                return periode.tidsperiode.tom;
+            }
+
+            if (index >= opprinneligPlan.length && currentDate === undefined) {
                 return periode.tidsperiode.fom;
             }
 
