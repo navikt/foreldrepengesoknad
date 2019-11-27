@@ -240,8 +240,6 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const missingAttachments: MissingAttachment[] = selectMissingAttachments(state);
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
 
-    console.log(missingAttachments);
-
     let previousStegID = StegID.UTTAKSPLAN;
 
     const familiehendelsesdato = søknadsinfo !== undefined ? søknadsinfo.søknaden.familiehendelsesdato : undefined;
