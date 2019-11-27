@@ -25,7 +25,62 @@ import {
     dateIsInThePast,
     getEndringstidspunkt
 } from '../dates';
-import { Periode } from 'app/types/uttaksplan/periodetyper';
+import { Periode, Uttaksperiode, Periodetype } from 'app/types/uttaksplan/periodetyper';
+import { guid } from 'nav-frontend-js-utils';
+
+const opprinneligPlan: Array<Partial<Periode>> = [
+    {
+        id: '2203724966-2284-5396-14729-8277157806438',
+        tidsperiode: {
+            fom: new Date('2019-09-10T00:00:00.000Z'),
+            tom: new Date('2019-09-30T00:00:00.000Z')
+        },
+        type: Periodetype.Uttak
+    },
+    {
+        id: '96519825-01917-7239-1861-16148140669135',
+        tidsperiode: {
+            fom: new Date('2019-10-01T00:00:00.000Z'),
+            tom: new Date('2020-01-13T00:00:00.000Z')
+        },
+        type: Periodetype.Uttak
+    },
+    {
+        id: '3105926427-6496-7446-7246-02332065872239',
+        tidsperiode: {
+            fom: new Date('2020-01-14T00:00:00.000Z'),
+            tom: new Date('2020-05-04T00:00:00.000Z')
+        },
+        type: Periodetype.Uttak
+    }
+];
+
+const nyPlan: Array<Partial<Periode>> = [
+    {
+        id: '2203724966-2284-5396-14729-8277157806438',
+        tidsperiode: {
+            fom: new Date('2019-09-10T00:00:00.000Z'),
+            tom: new Date('2019-09-30T00:00:00.000Z')
+        },
+        type: Periodetype.Uttak
+    },
+    {
+        id: '96519825-01917-7239-1861-16148140669135',
+        tidsperiode: {
+            fom: new Date('2019-10-01T00:00:00.000Z'),
+            tom: new Date('2020-01-13T00:00:00.000Z')
+        },
+        type: Periodetype.Uttak
+    },
+    {
+        id: '3105926427-6496-7446-7246-02332065872239',
+        tidsperiode: {
+            fom: new Date('2020-01-14T00:00:00.000Z'),
+            tom: new Date('2020-05-04T00:00:00.000Z')
+        },
+        type: Periodetype.Uttak
+    }
+];
 
 describe('dateUtils', () => {
     it('dateIsNotInFuture', () => {
@@ -99,6 +154,41 @@ describe('dateUtils', () => {
             const endringstidspunkt = getEndringstidspunkt(undefined, [], emptyPeriode as Periode, false);
 
             expect(endringstidspunkt).toBe(undefined);
+        });
+
+        it('Skal returnere undefined for ingen endringer', () => {
+            const emptyPeriode: Partial<Periode> = {};
+            const endringstidspunkt = getEndringstidspunkt(
+                opprinneligPlan as Periode[],
+                nyPlan as Periode[],
+                emptyPeriode as Periode,
+                true
+            );
+
+            expect(endringstidspunkt).toBe(undefined);
+        });
+
+        it('Skal finne endringstidspunkt gitt at det er endringer', () => {
+            const emptyPeriode: Partial<Periode> = {};
+            const gradertPeriode: Partial<Uttaksperiode> = {
+                id: guid(),
+                tidsperiode: {
+                    fom: new Date('2019-05-05'),
+                    tom: new Date('2019-05-08')
+                },
+                type: Periodetype.Uttak,
+                gradert: true,
+                stillingsprosent: '50'
+            };
+            const endretPlan = [...nyPlan, gradertPeriode];
+
+            const endringstidspunkt = getEndringstidspunkt(
+                opprinneligPlan as Periode[],
+                endretPlan as Periode[],
+                emptyPeriode as Periode,
+                true
+            );
+            expect(endringstidspunkt).toEqual(new Date('2019-05-05'));
         });
     });
 });
