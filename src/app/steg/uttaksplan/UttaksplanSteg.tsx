@@ -63,6 +63,7 @@ import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
 import addPeriode from 'app/util/uttaksplan/builder/addPeriode';
 import deletePeriode from 'app/util/uttaksplan/builder/deletePeriode';
 import updatePeriode from 'app/util/uttaksplan/builder/updatePeriode';
+import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 
 interface StateProps {
     stegProps: StegProps;
@@ -552,9 +553,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
             søker.erFarEllerMedmor &&
             !søknad.ekstrainfo.erEnkelEndringssøknad
         ) {
-            relevantStartDatoForUttak =
-                state.søknad.ekstrainfo.uttaksplanSkjema.farSinFørsteUttaksdag ||
-                uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker;
+            const { morSinSisteUttaksdag } = state.søknad.ekstrainfo.uttaksplanSkjema;
+            const dagEtterMorsSisteDag = morSinSisteUttaksdag ? Uttaksdagen(morSinSisteUttaksdag).neste() : undefined;
+            relevantStartDatoForUttak = dagEtterMorsSisteDag || uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker;
         }
     }
 

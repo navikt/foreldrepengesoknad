@@ -46,7 +46,9 @@ const lagUttaksplanProps: LagUttaksplanParams = {
     situasjon: Søkersituasjon.FØDSEL,
     søkerErFarEllerMedmor: false,
     tilgjengeligeStønadskontoer: tilgjengeligeKontoerDeltUttak,
-    uttaksplanSkjema: søknad.ekstrainfo.uttaksplanSkjema
+    uttaksplanSkjema: søknad.ekstrainfo.uttaksplanSkjema,
+    erEnkelEndringssøknad: true,
+    førsteUttaksdagEtterSeksUker: new Date('2019-01-01')
 };
 
 describe('Forslag til uttaksplan', () => {
@@ -74,8 +76,8 @@ describe('Forslag til uttaksplan', () => {
             const farSøknad = {
                 antallUkerFellesperiodeFarMedmor: 8,
                 antallDagerFellesperiodeFarMedmor: 0,
-                morSinSisteUttaksdag: new Date(2019, 0, 1),
-                farSinFørsteUttaksdag: new Date(2019, 0, 2)
+                morSinSisteUttaksdag: new Date('2019-01-01'),
+                farSinFørsteUttaksdag: new Date('2019-01-02')
             };
             const uttaksplan = lagUttaksplan({
                 ...lagUttaksplanProps,
@@ -85,6 +87,7 @@ describe('Forslag til uttaksplan', () => {
                     ...farSøknad
                 }
             });
+
             expect(uttaksplan.length).toBe(2);
         });
     });
