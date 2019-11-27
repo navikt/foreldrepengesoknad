@@ -3,6 +3,8 @@ import { ikkeDeltUttak } from './ikkeDeltUttak';
 import { deltUttak } from './deltUttak';
 import { UttaksplanSkjemadata } from '../../../steg/uttaksplanSkjema/uttaksplanSkjemadata';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
+import { finnOgSettInnHull } from '../builder/UttaksplanBuilder';
+import { Uttaksdagen } from '../Uttaksdagen';
 
 export interface LagUttaksplanParams {
     situasjon: Søkersituasjon;
@@ -13,7 +15,10 @@ export interface LagUttaksplanParams {
     annenForelderErUfør: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksplanSkjema: UttaksplanSkjemadata;
+    erEnkelEndringssøknad: boolean;
+    førsteUttaksdagEtterSeksUker: Date;
 }
+
 export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
     const {
         situasjon,
@@ -23,12 +28,16 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         søkerErFarEllerMedmor,
         annenForelderErUfør,
         tilgjengeligeStønadskontoer,
-        uttaksplanSkjema
+        uttaksplanSkjema,
+        erEnkelEndringssøknad,
+        førsteUttaksdagEtterSeksUker
     } = params;
 
     if (uttaksplanSkjema.ønskerIkkeFlerePerioder || erEndringssøknad) {
         return [];
     }
+
+    const erEndringssøknadUtenEksisterendeSak = erEndringssøknad && !erEnkelEndringssøknad;
 
     const {
         harAnnenForelderSøktFP,
@@ -43,7 +52,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
 
     if (familiehendelsesdato) {
         if (erDeltUttak) {
-            return deltUttak(
+            const forslag = deltUttak(
                 situasjon,
                 familiehendelsesdato,
                 søkerErFarEllerMedmor,
@@ -57,8 +66,15 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 farSinFørsteUttaksdag,
                 begrunnelseForUtsettelse
             );
+            const dagEtterMorsSisteDag = morSinSisteUttaksdag ? Uttaksdagen(morSinSisteUttaksdag).neste() : undefined;
+
+            return finnOgSettInnHull(
+                forslag,
+                erEndringssøknadUtenEksisterendeSak,
+                dagEtterMorsSisteDag || førsteUttaksdagEtterSeksUker
+            );
         } else {
-            return ikkeDeltUttak(
+            const forslag = ikkeDeltUttak(
                 situasjon,
                 familiehendelsesdato,
                 søkerErFarEllerMedmor,
@@ -66,6 +82,8 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 startdatoPermisjon,
                 annenForelderErUfør
             );
+
+            return finnOgSettInnHull(forslag, erEndringssøknadUtenEksisterendeSak, familiehendelsesdato);
         }
     }
 
