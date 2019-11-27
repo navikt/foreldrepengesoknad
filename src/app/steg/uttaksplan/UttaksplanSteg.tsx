@@ -64,6 +64,7 @@ import addPeriode from 'app/util/uttaksplan/builder/addPeriode';
 import deletePeriode from 'app/util/uttaksplan/builder/deletePeriode';
 import updatePeriode from 'app/util/uttaksplan/builder/updatePeriode';
 import { getEndringstidspunkt } from 'app/util/dates/dates';
+import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 
 interface StateProps {
     stegProps: StegProps;
