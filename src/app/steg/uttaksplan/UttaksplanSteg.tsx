@@ -63,6 +63,7 @@ import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
 import addPeriode from 'app/util/uttaksplan/builder/addPeriode';
 import deletePeriode from 'app/util/uttaksplan/builder/deletePeriode';
 import updatePeriode from 'app/util/uttaksplan/builder/updatePeriode';
+import { getEndringstidspunkt } from 'app/util/dates/dates';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 
 interface StateProps {
@@ -99,11 +100,11 @@ interface UttaksplanStegState {
 
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps & InjectedIntlProps;
 
-const getUttaksstatusFunc = (søkInfo: Søknadsinfo) => (
-    tilgjengStønadskontoer: TilgjengeligStønadskonto[],
+const getUttaksstatusFunc = (søknadsinfo: Søknadsinfo) => (
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     uttaksplan: Periode[]
 ) => {
-    return getUttaksstatus(søkInfo, tilgjengStønadskontoer, uttaksplan);
+    return getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, uttaksplan);
 };
 class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     feilOppsummering: React.Component | null;
@@ -267,7 +268,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             opprinneligPlan
         );
 
-        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, nyPeriode.tidsperiode.fom, id));
+        const endringstidspunkt = getEndringstidspunkt(opprinneligPlan, updatedPlan, nyPeriode, erEndringssøknad);
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, endringstidspunkt, id));
     }
 
     handleDeletePeriode(slettetPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
@@ -291,7 +293,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             opprinneligPlan
         );
 
-        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, slettetPeriode.tidsperiode.fom));
+        const endringstidspunkt = getEndringstidspunkt(opprinneligPlan, updatedPlan, slettetPeriode, erEndringssøknad);
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, endringstidspunkt));
     }
 
     handleUpdatePeriode(oppdatertPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
@@ -315,7 +318,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             opprinneligPlan
         );
 
-        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, oppdatertPeriode.tidsperiode.fom));
+        const endringstidspunkt = getEndringstidspunkt(
+            opprinneligPlan,
+            updatedPlan,
+            oppdatertPeriode,
+            erEndringssøknad
+        );
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, endringstidspunkt));
     }
 
     handleBegrunnelseChange = (årsak: string) => (begrunnelse: string) => {
