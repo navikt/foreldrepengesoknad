@@ -8,7 +8,6 @@ import {
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
-import { getEndringstidspunkt } from 'app/util/dates/dates';
 
 export const getDefaultSøknadState = (): SøknadPartial => {
     return {
@@ -123,10 +122,10 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 barn,
                 annenForelder: registrertAnnenForelder
                     ? {
-                          ...state.annenForelder,
-                          ...getAnnenForelderFromRegistrertForelder(registrertAnnenForelder),
-                          kanIkkeOppgis: getDefaultSøknadState().annenForelder.kanIkkeOppgis
-                      }
+                        ...state.annenForelder,
+                        ...getAnnenForelderFromRegistrertForelder(registrertAnnenForelder),
+                        kanIkkeOppgis: getDefaultSøknadState().annenForelder.kanIkkeOppgis
+                    }
                     : gjelderAnnetBarn
                         ? { ...state.annenForelder, fnr: undefined, fornavn: undefined, etternavn: undefined }
                         : state.annenForelder,
@@ -146,11 +145,7 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 uttaksplan: cloneUttaksplan(action.perioder),
                 ekstrainfo: {
                     ...state.ekstrainfo,
-                    endringstidspunkt: getEndringstidspunkt(
-                        state.erEndringssøknad,
-                        action.endringstidspunkt,
-                        state.ekstrainfo.endringstidspunkt
-                    ),
+                    endringstidspunkt: action.endringstidspunkt,
                     lastAddedPeriodeId: action.lastAddedPeriodeId
                 }
             };
