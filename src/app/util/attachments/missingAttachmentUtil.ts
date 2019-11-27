@@ -211,9 +211,11 @@ export const findMissingAttachments = (
     }
 
     const missingAttachments = [];
-    missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api.søkerinfo));
+    if (!søknadsinfo.søknaden.erEndringssøknad) {
+        missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api.søkerinfo));
+        missingAttachments.push(...findMissingAttachmentsForAndreInntekter(søknad));
+    }
     missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknadsinfo));
-    missingAttachments.push(...findMissingAttachmentsForAndreInntekter(søknad));
     return missingAttachments;
 };
 
