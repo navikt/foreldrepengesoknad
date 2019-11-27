@@ -561,9 +561,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
             søker.erFarEllerMedmor &&
             !søknad.ekstrainfo.erEnkelEndringssøknad
         ) {
-            relevantStartDatoForUttak =
-                state.søknad.ekstrainfo.uttaksplanSkjema.farSinFørsteUttaksdag ||
-                uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker;
+            const { morSinSisteUttaksdag } = state.søknad.ekstrainfo.uttaksplanSkjema;
+            const dagEtterMorsSisteDag = morSinSisteUttaksdag ? Uttaksdagen(morSinSisteUttaksdag).neste() : undefined;
+            relevantStartDatoForUttak = dagEtterMorsSisteDag || uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker;
         }
     }
 
