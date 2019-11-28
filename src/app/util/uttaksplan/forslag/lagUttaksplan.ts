@@ -5,6 +5,7 @@ import { UttaksplanSkjemadata } from '../../../steg/uttaksplanSkjema/uttaksplanS
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { finnOgSettInnHull } from '../builder/UttaksplanBuilder';
 import { Uttaksdagen } from '../Uttaksdagen';
+import moment from 'moment';
 
 export interface LagUttaksplanParams {
     situasjon: Søkersituasjon;
@@ -67,12 +68,13 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 begrunnelseForUtsettelse
             );
             const dagEtterMorsSisteDag = morSinSisteUttaksdag ? Uttaksdagen(morSinSisteUttaksdag).neste() : undefined;
+            const relevantStartDatoForUttak = moment(dagEtterMorsSisteDag).isSameOrAfter(
+                moment(førsteUttaksdagEtterSeksUker)
+            )
+                ? dagEtterMorsSisteDag
+                : førsteUttaksdagEtterSeksUker;
 
-            return finnOgSettInnHull(
-                forslag,
-                erEndringssøknadUtenEksisterendeSak,
-                dagEtterMorsSisteDag || førsteUttaksdagEtterSeksUker
-            );
+            return finnOgSettInnHull(forslag, erEndringssøknadUtenEksisterendeSak, relevantStartDatoForUttak);
         } else {
             const forslag = ikkeDeltUttak(
                 situasjon,
