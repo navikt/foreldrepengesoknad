@@ -223,7 +223,7 @@
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepengar",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobba og hatt inntekt som frilansar dei siste 10 månadene?",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
-        "Eksempel på kven som kan vere frilansar er<br/><ul><li>Musikar</li><li>Tekstforfattarar</li><li>Skodespelarar</li><li>Journalistar</li><li>Omsetjararr</li><li> Folkevalde, politikarar i kommunar, fylkeskommunar og på Stortinget som får godtgjering for politisk arbeid.</li><li>Fosterforeldre, og personar med omsorgslønn</li></ul>Dersom du er usikker på om du er frilansar, kan du lese mer om kva det vil seie å være frilansar på skatteetaten sin",
+        "Eksempel på kven som kan vere frilansar er<br/><ul><li>Musikar</li><li>Tekstforfattarar</li><li>Skodespelarar</li><li>Journalistar</li><li>Støttekontakt</li><li>Omsetjararr</li><li> Folkevalde, politikarar i kommunar, fylkeskommunar og på Stortinget som får godtgjering for politisk arbeid.</li><li>Fosterforeldre, og personar med omsorgslønn</li></ul>Dersom du er usikker på om du er frilansar, kan du lese mer om kva det vil seie å være frilansar på skatteetaten sin",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie dei siste 10 månadene",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
@@ -962,7 +962,7 @@
     "valideringsfeil.frilansOppstart.duMåOppgi": "Du må gi opp oppstartsdatoen",
     "valideringsfeil.frilansOppstart.måVæreIdagEllerTidligere": "Oppstartsdatoen må vere i dag eller tidlegare",
     "valideringsfeil.frilans.måBesvares":
-        "Du har planlagt at du skal kombinere foreldrepenger med at du skal jobbe som frilanser. Du må derfor oppgi informasjon om frilansforholdet ditt.",
+        "Du har planlagt at du skal kombinere foreldrepengar med at du skal jobba som frilansar. Du må derfor oppgi informasjon om frilansforholdet ditt.",
     "valideringsfeil.fritekst.kanIkkeVæreLengreEnn": "Svaret kan ikkje være lengre enn {maxLength} tegn.",
     "valideringsfeil.fødselsnummer.required": "Fødselsnummer må fyllast ut",
     "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikkje gi opp ditt eige fødselsnummer",
@@ -975,7 +975,7 @@
     "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt":
         "Du kan ikkje gi opp summen med øre. Du kan runde av til næraste heile krone.",
     "valideringsfeil.selvstendigNæringsdrivende.måBesvares":
-        "Du har planlagt at du skal kombinere foreldrepenger med at du skal jobbe som selvstending næringsdrivende. Du må derfor oppgi informasjon om næringen din.",
+        "Du har planlagt at du skal kombinere foreldrepengar med at du skal jobbe som sjølstendig næringsdrivende. Du må derfor oppgje informasjon om næringa di.",
     "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosenten må vere under 100",
     "valideringsfeil.stillingsprosent.required": "Du må gi opp stillingsprosent",
     "valideringsfeil.stillingsprosent.ugyldigTall": "Stillingsprosenten må vere eit gyldig tal opp til 100",
