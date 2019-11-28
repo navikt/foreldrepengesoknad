@@ -65,6 +65,7 @@ import deletePeriode from 'app/util/uttaksplan/builder/deletePeriode';
 import updatePeriode from 'app/util/uttaksplan/builder/updatePeriode';
 import { getEndringstidspunkt } from 'app/util/dates/dates';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
+import moment from 'moment';
 
 interface StateProps {
     stegProps: StegProps;
@@ -564,7 +565,11 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         ) {
             const { morSinSisteUttaksdag } = state.søknad.ekstrainfo.uttaksplanSkjema;
             const dagEtterMorsSisteDag = morSinSisteUttaksdag ? Uttaksdagen(morSinSisteUttaksdag).neste() : undefined;
-            relevantStartDatoForUttak = dagEtterMorsSisteDag || uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker;
+            const { førsteUttaksdagEtterSeksUker } = uttaksdatoer.etterFødsel;
+
+            relevantStartDatoForUttak = moment(dagEtterMorsSisteDag).isSameOrAfter(moment(førsteUttaksdagEtterSeksUker))
+                ? dagEtterMorsSisteDag
+                : førsteUttaksdagEtterSeksUker;
         }
     }
 
