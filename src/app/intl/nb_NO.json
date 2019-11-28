@@ -224,7 +224,7 @@
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepenger",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet og hatt inntekt som frilanser de siste 10 månedene?",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
-        "Eksempel på hvem som kan være frilansere er<br/><ul><li>Musikere</li><li>Tekstforfattere</li><li>Skuespillere</li><li>Journalister</li><li>Oversettere</li><li> Folkevalgt, politikere i kommuner, fylkeskommuner og på Stortinget som får godtgjørelse for politisk arbeid.</li><li>Fosterforeldre, og personer med omsorgslønn</li></ul>Hvis du er usikker på om du er frilanser kan du lese mer om hva det betyr å være frilanser på skatteetaten sin",
+        "Eksempel på hvem som kan være frilansere er<br/><ul><li>Musikere</li><li>Tekstforfattere</li><li>Skuespillere</li><li>Journalister</li><li>Oversettere</li><li> Folkevalgt, politikere i kommuner, fylkeskommuner og på Stortinget som får godtgjørelse for politisk arbeid</li><li>Støttekontakt</li><li>Fosterforeldre, og personer med omsorgslønn</li></ul>Hvis du er usikker på om du er frilanser, kan du lese mer om hva det betyr å være frilanser på skatteetaten sin",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie de siste 10 månedene",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
@@ -234,7 +234,7 @@
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
         "Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 10 månedene?",
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst":
-        "Du kan lese mer om hva det betyr å være selvstendig næringsdrivende på skatteetatens",
+        "Er du usikker på om du er selvstendig næringsdrivende? Du kan lese mer om hva det betyr å være selvstendig næringsdrivende på skatteetatens",
     "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
     "harRevisor.spørsmål": "Har du revisor?",
     "heltid": "Heltid",
