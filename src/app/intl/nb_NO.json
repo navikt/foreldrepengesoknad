@@ -679,7 +679,7 @@
     "utsettelseskjema.arbeid.avtaltFulltidVedDeltid":
         "Har du en skriftlig avtale med {antall, plural, one{arbeidsgiveren} other {arbeidsgiverene}} {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent?",
     "utsettelseskjema.ferie.utenArbeidsforhold":
-        "Du kan dessverre ikke legge inn utsettelse på grunn av lovbestemt ferie fordi du ikke er registrert med et arbeidsforhold i valgt tidsperiode.",
+        "Du kan dessverre ikke legge inn utsettelse på grunn av lovbestemt ferie fordi du ikke er registrert med et arbeidsforhold i denne perioden. Hvis du er arbeidstaker må du be din arbeidsgiver oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
         "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha utsettelse lengre enn fire uker og én dag må du ha overført lovbestemt ferie fra i fjor eller ta ut lovbestemt ferie fra neste år. Ferien må avtales med din arbeidsgiver.",
     "utsettelseskjema.ferievarsel.ulovlig":
@@ -1128,7 +1128,7 @@
     "søknadSendt.info.innhold.isMissingAttachments": "Vi har mottatt søknaden din, og den mangler disse dokumentene:",
     "søknadSendt.når.tittel": "Når kan jeg tidligst forvente få svar på min søknad?",
     "søknadSendt.når.infoBox":
-        "Du kan tidligst få svar på søknaden din 4 uker før foreldrepengeperioden din starter. Dette er fordi vi bruker de nyeste opplysningene om inntekten din når vi skal beregne hva du skal få i foreldrepenger.",
+        "Du kan tidligst få svar på søknaden din 4 uker før foreldrepengeperioden din starter. Dette er fordi vi må bruke de nyeste opplysningene om inntekten din når vi skal beregne hva du skal få i foreldrepenger.",
     "søknadSendt.infoFraArbeidsgiver.tittel": "Hvilken informasjon trenger min arbeidsgiver?",
     "søknadSendt.infoFraArbeidsgiver": "Viktig informasjon til arbeidsgiveren din",
     "søknadSendt.infoFraArbeidsgiver.infoBox":
@@ -1178,7 +1178,7 @@
         "Du må ha en skriftlig avtale med {antall, plural, one{arbeidsgiveren} other {arbeidsgiverene}} {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent i perioden du oppgir.",
     "byttBrowser.tittel": "Vi ser du bruker en utdatert nettleser",
     "byttBrowser.ingress":
-        "For å få den beste brukeropplevelsen anbefaler vi en moderne nettleser som støtter moderne webstandarder.",
+        "For å få den beste brukeropplevelsen anbefaler vi at du bytter til en moderne nettleser som støtter moderne webstandarder.",
     "ok": "Ok",
 
     "oversiktBrukteDager.tittel.foreldre": "Brukte foreldrepenger",
