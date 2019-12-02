@@ -4,17 +4,19 @@ import { SkjemaGruppe, Fieldset, CheckboksPanel, CheckboksPanelGruppeProps } fro
 import './checkboksPanelGruppeResponsive.less';
 import 'nav-frontend-skjema-style';
 import { CheckboksProps } from 'nav-frontend-skjema/lib/checkboks-panel';
+import Infoboks from 'common/components/infoboks/Infoboks';
 
 interface ResponsiveProps {
     twoColumns?: boolean;
     disabled?: boolean;
+    infoboksTekst?: string;
 }
 
 type Props = CheckboksPanelGruppeProps & ResponsiveProps;
 
 class CheckboksPanelGruppeResponsive extends React.Component<Props> {
     render() {
-        const { feil, twoColumns = false, disabled = false, legend, checkboxes, onChange } = this.props;
+        const { feil, twoColumns = false, disabled = false, legend, checkboxes, infoboksTekst, onChange } = this.props;
 
         if (checkboxes === undefined) {
             return null;
@@ -27,6 +29,7 @@ class CheckboksPanelGruppeResponsive extends React.Component<Props> {
         return (
             <div className="checkboksPanelGruppe">
                 <Fieldset legend={legend}>
+                    {infoboksTekst && <Infoboks tekst={infoboksTekst} />}
                     <SkjemaGruppe className="checkboksPanelGruppe--responsive" feil={feil}>
                         {checkboxes &&
                             checkboxes.map((checkboks: CheckboksProps, index: number) => {
