@@ -100,6 +100,7 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
                     this.handleOnChange(e, value, orgnumre, arbeidsformer)
                 }
                 checkboxes={this.getOptions(orgnumre, arbeidsformer)}
+                infoboksTekst="test"
             />
         );
     }
