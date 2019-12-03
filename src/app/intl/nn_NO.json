@@ -181,7 +181,8 @@
     "erBarnetFødt.spørsmål.veileder.medMorEllerFar":
         "Du kan dessverre ikkje søkje før barnet er født. Unntaket er dersom mor er sjuk eller innlagd på sjukehus eller helseinstitusjon. Du må fylle ut søknaden på papir og sende han i posten.{ lenke }",
     "erDuMedmor.spørsmål": "Er du medmor?",
-    "erDuSelvstendigNæringsdrivende.spørsmål": "Har du jobba eller hatt inntekt som sjølvstendig næringsdrivande dei siste 10 månadene?",
+    "erDuSelvstendigNæringsdrivende.spørsmål":
+        "Har du jobba eller hatt inntekt som sjølvstendig næringsdrivande dei siste 10 månadene?",
     "erMorForSyk.spørsmål": "Er mor for sjuk til å ta seg av barnet eller innlagd i helseinstitusjon?",
     "erMorUfør.spørsmål": "Har {navn} uføretrygd?",
     "erNæringenRegistrertINorge.spørsmål": "Er {navnPåNæringen} registrert i Noreg?",
@@ -533,7 +534,6 @@
         "{ navn } utsetjer på grunn av innleggelse i helseinstitusjon",
     "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_BARNET":
         "{ navn } utsetjer fordi barnet er innlagt i helseinstitusjon",
-
     "personalia.år": "{år} år",
     "pgasykdom": "På grunn av sjukdom",
     "pågående": "Eg jobbar her framleis",
@@ -687,6 +687,8 @@
     "utsettelseskjema.veiledning.ferie":
         "Du kan utsetje foreldrepengane med lovfesta ferie i inntil fire veker og éin dag for kvart kalenderår, i tillegg til overført lovfesta ferie frå i fjor og ti feriedagar frå neste år. Du kan ikkje utsetje på helgedagar.  Du må avtale med arbeidsgjevaren din at du skal ha ferie.",
     "utsettelseskjema.kunHelligdager.disabledFerieMelding": "Du kan ikkje utsetje med ferie på helgedagar",
+    "utsettelseskjema.info.utsettelseArbeid":
+        "Viss du ikkje finn arbeidsforholdet ditt her, har ikkje arbeidsgivaren din meldt deg inn i Arbeids- og arbeidsgivarregisteret. Du må vera registrert som tilsett der du skal jobbe for å bruke den digitale søknaden, ta kontakt med arbeidsgivaren din. <br /><br />Du må sende inn søknaden om utsette foreldrepengar før du skal byrja å jobba. Du kan derfor sende inn søknad på papir dersom det er kort tid til du skal byrja å jobba. Her finn du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>",
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagd søkjar",
@@ -840,7 +842,6 @@
     "uttaksplan.validering.advarsel.senÅrsakOgTidsperiode": "Du søker om utsetjing tilbake i tid.",
     "uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode":
         "Du har lagt inn <strong>{periode}</strong> i perioden {tidsperiode}. {forelder} har foreldrepengar eller utsettelse i same periode. <strong>{periode}</strong> vil erstatte {forelders} foreldrepengar eller utsettelse i denne perioden.",
-
     "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikkje få foreldrepengar etter at barnet er fylt 3 år.",
     "uttaksplan.validering.feil.harSøktOmFerieUtenArbeidsforhold":
         "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold i valgt tidsperiode.",
@@ -1120,9 +1121,7 @@
     "eksisterendeSak.label.seAnnenPartsPlanIPlanen": "Se { navn } opprinnelige plan",
     "eksisterendeSak.label.annenPartsPlan": "{ navn } plan:",
     "eksisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { beskrivelse }",
-
     "eksisterendeSak.tittel.dineDagerMedForeldrepenger": "Dine dager med foreldrepenger",
-
     "søknadSendt.tittel": "Takk for søknaden { name }!",
     "søknadSendt.pdf": "Sjå og last ned søknaden din her",
     "søknadSendt.sendtInn": "sendt inn:",
@@ -1168,21 +1167,19 @@
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumenta ikkje blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
         "Viss du ikkje ettersender dokumenta innan 3 veker behandlar vi søknaden din utor dei opplysningane som vi har tilgjengelege.",
-
     "periodetype.utsettelse": "utsettelse",
     "periodetype.uttak": "uttak",
-
     "uttaksplan.validering.feil.erAllePeriodeSkjemaspørsmålBesvart": "Nokon av spørsmåla for perioden manglar svar",
     "uttaksplan.validering.feil.erUtsettelseEtterFamiliehendelsesdato": "Du kan ikkje utsette før barnet er født",
     "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering":
         "Stillingsprosenten du skal jobbe kan bare inneholde tall, over vera mellom 1 og 99",
     "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden er ikkje gyldig",
-    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Du har ikkje vlagt kva for ein del av foreldrepengane du skal bruke",
+    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto":
+        "Du har ikkje vlagt kva for ein del av foreldrepengane du skal bruke",
     "uttaksplan.validering.feil.periodeOverlapperAndrePerioder":
         "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale":
         "Du må ha ein skriftleg avtale med arbeidsgjevaren din om at du skal jobbe i den heiltid i den perioden du oppgir.",
-
     "byttBrowser.tittel": "Vi ser du bruker en utdatert nettleser",
     "byttBrowser.ingress":
         "For å få den beste brukaropplevinga anbefaler vi ein moderne nettlesar som støttar moderne webstandarder",

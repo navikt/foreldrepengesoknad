@@ -9,7 +9,7 @@ import Infoboks from 'common/components/infoboks/Infoboks';
 interface ResponsiveProps {
     twoColumns?: boolean;
     disabled?: boolean;
-    infoboksTekst?: string;
+    infoboksTekst?: string | React.ReactNode;
 }
 
 type Props = CheckboksPanelGruppeProps & ResponsiveProps;
