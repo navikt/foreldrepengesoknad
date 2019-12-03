@@ -71,6 +71,7 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
                 toKolonner={true}
                 spørsmål={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
                 onChange={this.handleOnChange}
+                hjelpetekst="Test"
             />
         );
     }
