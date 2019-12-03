@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedHTMLMessage } from 'react-intl';
 import Arbeidsforhold from '../types/Arbeidsforhold';
 import getMessage from 'common/util/i18nUtils';
 import { Arbeidsform } from '../types/uttaksplan/periodetyper';
@@ -100,6 +100,7 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
                     this.handleOnChange(e, value, orgnumre, arbeidsformer)
                 }
                 checkboxes={this.getOptions(orgnumre, arbeidsformer)}
+                infoboksTekst={<FormattedHTMLMessage id="utsettelseskjema.info.utsettelseArbeid" />}
             />
         );
     }

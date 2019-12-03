@@ -195,7 +195,8 @@
     "feilside.tittel": "Det oppstod en feil",
     "feilside.veiledertekst":
         "Det har oppstått en feil. Dersom det ikke fungerer å prøve igjen, trykk på knappen under for å slette søknaden og starte på nytt.",
-    "feilside.uuid": "Tar du kontakt med brukerstøtte, vennligst oppgi denne koden {uuid} slik at vi kan finne ut av hva som har gått galt",
+    "feilside.uuid":
+        "Tar du kontakt med brukerstøtte, vennligst oppgi denne koden {uuid} slik at vi kan finne ut av hva som har gått galt",
     "foreldreansvar.antallBarn": "Antall barn",
     "foreldreansvar.overtakelsedato": "Dato for foreldreansvar",
     "fortsettknapp.label": "Fortsett",
@@ -535,7 +536,6 @@
     "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_SØKER": "{ navn } på grunn av innleggelse i helseinstitusjon",
     "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_BARNET":
         "{ navn } utsetter fordi barnet er innlagt i helseinstitusjon",
-
     "personalia.år": "{år} år",
     "pgasykdom": "På grunn av sykdom",
     "pågående": "Pågående",
@@ -688,6 +688,8 @@
         "Ferien du har lagt inn går over en periode med helligdager. Du kan ikke ha ferie på helligdager. Disse dagene vil bli lagt til som foreldrepenger i planen din, du må velge hvilken del av foreldrepengene du ønsker å bruke.",
     "utsettelseskjema.veiledning.ferie":
         "<p>Du kan utsette foreldrepengene med lovbestemt ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.</p> Ferien må avtales med din arbeidsgiver.",
+    "utsettelseskjema.info.utsettelseArbeid":
+        "Hvis du ikke finner arbeidsforholdet ditt her, har ikke arbeidsgiveren din meldt deg inn i Arbeids- og arbeidsgiverregisteret. Du må være registrert som ansatt der du skal jobbe for å bruke den digitale søknaden, ta kontakt med arbeidsgiveren din. <br /><br />Du må sende inn søknaden om å utsette foreldrepenger før du skal begynne å jobbe. Du kan derfor sende inn søknad på papir dersom det er kort tid til du skal begynne å jobbe. Her finner du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>",
     "utsettelseskjema.kunHelligdager.disabledFerieMelding": "Du kan ikke utsette med ferie på helligdager",
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt",
@@ -862,7 +864,6 @@
     "uttaksplan.validering.feil.periodeoverlapp.oppsummering":
         "{periode} ({tidsperiode}) overlapper med en eller flere andre perioder.",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
-
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det mangler informasjon om perioden.",
     "uttaksplan.validering.feil.planenInneholderIngenPerioder":
         "For å komme videre i søknaden må du legge til en periode med foreldrepenger eller en utsettelse",
@@ -1115,9 +1116,7 @@
     "eksisterendeSak.label.seAnnenPartsPlanIPlanen": "Se { navn } opprinnelige plan",
     "eksisterendeSak.label.annenPartsPlan": "{ navn } plan:",
     "eksisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { beskrivelse }",
-
     "eksisterendeSak.tittel.dineDagerMedForeldrepenger": "Dine dager med foreldrepenger",
-
     "søknadSendt.tittel": "Takk for søknaden { name }!",
     "søknadSendt.pdf": "Se og last ned søknaden din",
     "søknadSendt.sendtInn": "sendt inn:",
@@ -1150,7 +1149,8 @@
     "søknadSendt.info.missingAttachment.I000060": "Annet",
     "søknadSendt.info.missingAttachment.I000063": "Fødselsattest",
     "søknadSendt.info.missingAttachment.I000062": "Terminbekreftelse",
-    "søknadSendt.info.missingAttachment.I000039": "Dokumentasjon av førstegangstjeneste i forsvaret eller sivilforsvaret",
+    "søknadSendt.info.missingAttachment.I000039":
+        "Dokumentasjon av førstegangstjeneste i forsvaret eller sivilforsvaret",
     "søknadSendt.info.missingAttachment.I000007": "Inntektsopplysninger for selvstendig næringsdrivende",
     "søknadSendt.info.missingAttachment.I000038": "Dokumentasjon av mors utdanning, arbeid eller sykdom",
     "søknadSendt.info.missingAttachment.I000037": "Dokumentasjon av innleggelse i sykehus eller helseinstitusjon",
@@ -1162,16 +1162,17 @@
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikke blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
         "Hvis du ikke ettersender dokumentene innen 3 uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig.",
-
     "periodetype.utsettelse": "utsettelse",
     "periodetype.uttak": "uttak",
-
     "uttaksplan.validering.feil.erAllePeriodeSkjemaspørsmålBesvart": "Noen av spørsmålene for perioden er ikke besvart",
-    "uttaksplan.validering.feil.erUtsettelseEtterFamiliehendelsesdato": "Du kan ikke utsette foreldrepengene før barnet er født",
+    "uttaksplan.validering.feil.erUtsettelseEtterFamiliehendelsesdato":
+        "Du kan ikke utsette foreldrepengene før barnet er født",
     "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering":
         "Stillingsprosenten du skal jobbe kan bare inneholde tall, og være mellom 1 og 99",
-    "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden har ikke gyldig tidsperiode. Du må korrigere datoene",
-    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden mangler informasjon om hvilken del av foreldrepengene skal du ta ut",
+    "uttaksplan.validering.feil.periodeHarGyldigTidsperiode":
+        "Perioden har ikke gyldig tidsperiode. Du må korrigere datoene",
+    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto":
+        "Perioden mangler informasjon om hvilken del av foreldrepengene skal du ta ut",
     "uttaksplan.validering.feil.periodeOverlapperAndrePerioder":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",
     "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale":
@@ -1180,7 +1181,6 @@
     "byttBrowser.ingress":
         "For å få den beste brukeropplevelsen anbefaler vi at du bytter til en moderne nettleser som støtter moderne webstandarder.",
     "ok": "Ok",
-
     "oversiktBrukteDager.tittel.foreldre": "Brukte foreldrepenger",
     "oversiktBrukteDager.tittel.kontoer.brukteDager":
         "Foreldrepenger  {antall, plural, one {du} other {dere}} har registrert",
