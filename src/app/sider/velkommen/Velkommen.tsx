@@ -80,7 +80,8 @@ class Velkommen extends React.Component<Props, State> {
                                 this.setState({
                                     isDinePlikterModalOpen: true
                                 });
-                            }}>
+                            }}
+                        >
                             <FormattedHTMLMessage id="velkommen.dinePlikter" />
                         </a>
                     )
@@ -245,7 +246,8 @@ class Velkommen extends React.Component<Props, State> {
                             label={getMessage(intl, 'velkommen.samtykke')}
                             onChange={() => {
                                 dispatch(søknadActions.updateSøknad({ harGodkjentVilkår: !harGodkjentVilkår }));
-                            }}>
+                            }}
+                        >
                             <Normaltekst>{this.getBekreftCheckboksPanelLabelHeader()}</Normaltekst>
                         </BekreftCheckboksPanel>
                         <Knapperad>
@@ -253,7 +255,8 @@ class Velkommen extends React.Component<Props, State> {
                                 className={`${bem.element('startSøknadKnapp')} blokk-m`}
                                 spinner={isLoadingEkisterendeSak}
                                 disabled={!harGodkjentVilkår || isLoadingEkisterendeSak}
-                                onClick={() => this.handleStartSøknad(this.state.skalEndre)}>
+                                onClick={() => this.handleStartSøknad(this.state.skalEndre)}
+                            >
                                 {this.getStartSøknadKnappLabel()}
                             </Hovedknapp>
                         </Knapperad>
@@ -264,7 +267,8 @@ class Velkommen extends React.Component<Props, State> {
                                 onClick={(e) => {
                                     e.preventDefault();
                                     this.setState({ isDinePersonopplysningerModalOpen: true });
-                                }}>
+                                }}
+                            >
                                 <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
                             </a>
                         </Normaltekst>
