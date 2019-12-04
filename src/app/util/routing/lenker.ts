@@ -13,5 +13,6 @@ export default {
         'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/',
     NaringsdrivendeInfoBoks:
         'https://www.skatteetaten.no/bedrift-og-organisasjon/starte-og-drive/er-jeg-naringsdrivende/',
-    brukerprofil: 'https://tjenester.nav.no/brukerprofil/'
+    brukerprofil: 'https://tjenester.nav.no/brukerprofil/',
+    familie: 'https://familie.nav.no/'
 };

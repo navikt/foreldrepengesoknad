@@ -11,7 +11,8 @@ function createEnvSettingsFile(settingsFile) {
                 LOGIN_URL: '${process.env.LOGINSERVICE_URL}',
                 FEATURE_LOGGING:  '${process.env.FEATURE_LOGGING}',
                 FEATURE_VIS_PERIODER_SOM_SENDES_INN:  '${process.env.FEATURE_VIS_PERIODER_SOM_SENDES_INN}',
-                FEATURE_VIS_INFOSKRIV:  '${process.env.FEATURE_VIS_INFOSKRIV}',
+                FEATURE_VIS_FEILSIDE:  '${process.env.FEATURE_VIS_FEILSIDE}',
+                FEATURE_VIS_ALERTSTRIPE:  '${process.env.FEATURE_VIS_ALERTSTRIPE}',
             };`
         );
     });

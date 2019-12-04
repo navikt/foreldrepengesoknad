@@ -1185,5 +1185,11 @@
     "oversiktBrukteDager.tittel.kontoer.brukteDager":
         "Foreldrepenger  {antall, plural, one {du} other {dere}} har registrert",
     "oversiktBrukteDager.tittel.kontoer.ikkeBrukteDager":
-        "Foreldrepenger {antall, plural, one {du} other {dere}} har igjen"
+        "Foreldrepenger {antall, plural, one {du} other {dere}} har igjen",
+
+    "feature.visFeilside.tittel": "feilside tittel",
+    "feature.visFeilside.ingress":
+        "Fredag 6. desember er foreldrepengesøknaden nede mellom klokken 12-13. Søknader som er mellomlagret må sendes inn før fredag klokken 12, hvis ikke mister du den påbegynte søknaden.",
+    "feature.alertstripe.tekst":
+        "Fredag 6. desember er foreldrepengesøknaden nede mellom klokken 12-13. Søknader som er mellomlagret må sendes inn før fredag klokken 12, hvis ikke mister du den påbegynte søknaden"
 }
