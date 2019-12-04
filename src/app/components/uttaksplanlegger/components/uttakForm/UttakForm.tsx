@@ -362,7 +362,8 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         !isForeldrepengerFørFødselUttaksperiode(periode) &&
                         søknadsinfo.søknaden.erDeltUttak &&
                         isValidTidsperiode(tidsperiode)
-                    }>
+                    }
+                >
                     <HvemSkalTaForeldrepengerSpørsmål
                         navnPåForeldre={navnPåForeldre}
                         valgtForelder={this.state.periodenGjelder}
@@ -375,7 +376,27 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         visibility.isVisible(UttakSpørsmålKeys.kvote) &&
                         this.state.periodenGjelder !== undefined &&
                         velgbareStønadskontotyper.length > 1
-                    }>
+                    }
+                >
+                    {søknadsinfo.søknaden.erFlerbarnssøknad && (
+                        <VeilederInfo
+                            messages={[
+                                {
+                                    type: 'normal',
+                                    contentIntlKey: søknadsinfo.søknaden.erDeltUttak
+                                        ? 'uttaksplan.informasjon.flerbarnssøknad'
+                                        : 'uttaksplan.informasjon.flerbarnssøknad.ikkeDeltUttak',
+                                    values: {
+                                        navnMor: søknadsinfo.navn.mor.fornavn,
+                                        uker: getFlerbarnsuker(
+                                            søknadsinfo.søknaden.dekningsgrad!,
+                                            søknadsinfo.søknaden.antallBarn
+                                        )
+                                    }
+                                }
+                            ]}
+                        />
+                    )}
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskontoType) => this.updateStønadskontoType(stønadskontoType)}
                         navnPåForeldre={navnPåForeldre}
@@ -403,23 +424,6 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                             />
                         )}
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.ønskerFlerbarnsdager)}>
-                            <VeilederInfo
-                                messages={[
-                                    {
-                                        type: 'normal',
-                                        contentIntlKey: søknadsinfo.søknaden.erDeltUttak
-                                            ? 'uttaksplan.informasjon.flerbarnssøknad'
-                                            : 'uttaksplan.informasjon.flerbarnssøknad.ikkeDeltUttak',
-                                        values: {
-                                            navnMor: søknadsinfo.navn.mor.fornavn,
-                                            uker: getFlerbarnsuker(
-                                                søknadsinfo.søknaden.dekningsgrad!,
-                                                søknadsinfo.søknaden.antallBarn
-                                            )
-                                        }
-                                    }
-                                ]}
-                            />
                             <FlernbarnsdagerSpørsmål periode={periode} onChange={this.onChange} />
                         </Block>
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.erMorForSyk)}>
@@ -478,7 +482,8 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                         </Block>
                         <Block
                             visible={visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)}
-                            hasChildBlocks={true}>
+                            hasChildBlocks={true}
+                        >
                             <AktivitetskravMorBolk
                                 vedlegg={periode.vedlegg as Attachment[]}
                                 morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
@@ -501,7 +506,8 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                     <Block
                         visible={visibility.isVisible(UttakSpørsmålKeys.overføringsårsak)}
                         hasChildBlocks={true}
-                        margin="none">
+                        margin="none"
+                    >
                         <OverføringUttakPart
                             erEndringssøknad={søknadsinfo.søknaden.erEndringssøknad}
                             navnAnnenForelder={søknadsinfo.navn.annenForelder.fornavn}
