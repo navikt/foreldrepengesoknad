@@ -888,6 +888,7 @@
     "uttaksplan.validering.feiloppsummering.tittel":
         "Planen din inneholder feil som du må rette opp i før du kan gå videre",
     "uttaksplan.validering.før12UkerFørTermin": "Du kan tidligst ta ut foreldrepenger 12 uker før termin eller fødsel",
+    "uttaksplan.validering.feil.erSamtidigUttakGyldig": "Du må oppgi hvor mange prosent du skal være hjemme",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepenger",
     "uttaksplan.varighet.uttak.gradert": "{varighet}",
     "uttaksplan.ulønnetPermisjonInfo.tittel": "Vi ønsker en periode med ulønnet permisjon",

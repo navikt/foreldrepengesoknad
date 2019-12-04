@@ -893,6 +893,7 @@
         "Foreldrepenger uten aktivitetskrav må du ta ut innen {antallUker} uker etter at barnet er født. Skal du ha foreldrepenger etter denne perioden må mor være i aktivitet når du er hjemme med barnet.",
     "uttaksplan.validering.feil.inneholderForMyeFerie":
         "Du har lagt inn til samen {ukerOgDager} uker med ferie. Du kan maksimalt legge inn 10 uker og 2 dager med ferie. Ferien må avtales med din arbeidsgiver.",
+    "uttaksplan.validering.feil.erSamtidigUttakGyldig": "Du må gi opp kor mange prosent du skal vera heime",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepengar",
     "uttaksplan.varighet.uttak.gradert": "{varighet}",
     "uttaksplan.ulønnetPermisjonInfo.tittel": "Vi ønskjer ein periode med ulønt permisjon",
