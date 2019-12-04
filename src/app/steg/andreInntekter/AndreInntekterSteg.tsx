@@ -24,7 +24,7 @@ import cleanupAndreInntekterSteg from '../../util/cleanup/cleanupAndreInntekterS
 import { HistoryProps } from '../../types/common';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import YtelseInfoWrapper from 'app/steg/andreInntekter/ytelserInfobox/InformasjonOmYtelserWrapper';
-import { Periode, isInfoPeriode } from 'app/types/uttaksplan/periodetyper';
+import { Periode, isInfoPeriode, isHull } from 'app/types/uttaksplan/periodetyper';
 import { formatDate } from 'app/util/dates/dates';
 import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
@@ -93,7 +93,7 @@ class AndreInntekterSteg extends React.Component<Props> {
         } = this.props;
         const { harHattAnnenInntektSiste10Mnd } = søker;
         const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
-        const kunEgetUttak = uttaksplan.filter((p) => !isInfoPeriode(p));
+        const kunEgetUttak = uttaksplan.filter((p) => !isInfoPeriode(p) && !isHull(p));
 
         return (
             <Steg {...stegProps} onPreSubmit={this.cleanupSteg}>
