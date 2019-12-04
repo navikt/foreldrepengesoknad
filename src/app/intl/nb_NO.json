@@ -754,7 +754,7 @@
     "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan":
         "Perioden med foreldrepenger starter {dato}. Starter du senere, får du færre dager med foreldrepenger.",
     "uttaksplan.informasjon.flerbarnssøknad":
-        "Dere har {uker} uker med flerbarnsuker som dere kan dele. Disse ukene kan dere ta ut når som helst i foreldrepengeperioden. Dere kan ta de ut samtidig, eller hver for dere. Det er ikke krav til hva {navnMor} gjør når du tar ut dager med flerbarnsuker.",
+        "Dere har {uker} uker med flerbarnsuker som dere kan dele, disse kan ta ut når som helst i foreldrepengeperioden. Du velger selv om flerbarnsukene skal tas ut som fellesperiode eller kvoten din. Dere kan ta de ut samtidig, eller hver for dere. Det er ikke krav til hva {navnMor} gjør når du tar ut dager med flerbarnsuker.",
     "uttaksplan.informasjon.flerbarnssøknad.ikkeDeltUttak":
         "Du har {uker} uker med flerbarnsuker. Disse ukene kan du ta ut når som helst i foreldrepengeperioden. Det er ikke krav til hva {navnMor} gjør når du tar ut dager med flerbarnsuker.",
     "uttaksplan.informasjon.endringssøknad":
