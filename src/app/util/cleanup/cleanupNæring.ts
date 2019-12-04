@@ -14,8 +14,13 @@ const cleanupNæring = (næring: Næring): Næring => {
         regnskapsfører,
         revisor,
         organisasjonsnummer,
+        endringAvNæringsinntektInformasjon,
         ...rest
     } = næring;
+
+    const hattVarigEndring = visibility.varigEndringAvNæringsinntekt(næring)
+        ? hattVarigEndringAvNæringsinntektSiste4Kalenderår
+        : undefined;
 
     const newNæring: Partial<Næring> = {
         næringsinntekt: visibility.næringsinntekt(næring) ? næringsinntekt : undefined,
@@ -27,9 +32,7 @@ const cleanupNæring = (næring: Næring): Næring => {
             : undefined,
         organisasjonsnummer: næring.registrertINorge === true ? organisasjonsnummer : undefined,
         oppstartsdato: visibility.oppstartsdato(næring) ? oppstartsdato : undefined,
-        hattVarigEndringAvNæringsinntektSiste4Kalenderår: visibility.varigEndringAvNæringsinntekt(næring)
-            ? hattVarigEndringAvNæringsinntektSiste4Kalenderår
-            : undefined,
+        hattVarigEndringAvNæringsinntektSiste4Kalenderår: hattVarigEndring,
         harRevisor: visibility.revisorBolk(næring) ? harRevisor : undefined,
         regnskapsfører: harRegnskapsfører ? regnskapsfører : undefined,
         harRegnskapsfører,
@@ -38,6 +41,7 @@ const cleanupNæring = (næring: Næring): Næring => {
             harRevisor && visibility.kanInnhenteOpplysningerFraRevisor(næring)
                 ? kanInnhenteOpplsyningerFraRevisor
                 : undefined,
+        endringAvNæringsinntektInformasjon: hattVarigEndring ? endringAvNæringsinntektInformasjon : undefined,
         ...rest
     };
 
