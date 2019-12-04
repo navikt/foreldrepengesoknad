@@ -24,7 +24,7 @@ import cleanupAndreInntekterSteg from '../../util/cleanup/cleanupAndreInntekterS
 import { HistoryProps } from '../../types/common';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import YtelseInfoWrapper from 'app/steg/andreInntekter/ytelserInfobox/InformasjonOmYtelserWrapper';
-import { Periode } from 'app/types/uttaksplan/periodetyper';
+import { Periode, isInfoPeriode } from 'app/types/uttaksplan/periodetyper';
 import { formatDate } from 'app/util/dates/dates';
 import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
@@ -93,23 +93,26 @@ class AndreInntekterSteg extends React.Component<Props> {
         } = this.props;
         const { harHattAnnenInntektSiste10Mnd } = søker;
         const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
+        const kunEgetUttak = uttaksplan.filter((p) => !isInfoPeriode(p));
 
         return (
             <Steg {...stegProps} onPreSubmit={this.cleanupSteg}>
                 <Block
                     header={{
                         title: getMessage(intl, 'annenInntekt.ytelser.label')
-                    }}>
+                    }}
+                >
                     <YtelseInfoWrapper ytelser={[]} />
                 </Block>
                 <Block
                     header={{
                         title: getMessage(intl, 'annenInntekt.arbeidsforhold.label'),
                         info: getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst')
-                    }}>
+                    }}
+                >
                     <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} />
                     {harArbeidsforhold &&
-                        uttaksplan.length > 0 && (
+                        kunEgetUttak.length > 0 && (
                             <VeilederInfo
                                 messages={[
                                     {
@@ -117,7 +120,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                                         contentIntlKey: 'annenInntekt.arbeidsforhold.veileder',
                                         values: {
                                             dato: formatDate(
-                                                moment(uttaksplan[0].tidsperiode.fom)
+                                                moment(kunEgetUttak[0].tidsperiode.fom)
                                                     .subtract(4, 'weeks')
                                                     .toDate()
                                             )

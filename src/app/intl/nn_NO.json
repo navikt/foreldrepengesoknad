@@ -243,6 +243,8 @@
     "hvilkenkvoteskalbenyttes.spørsmål": "Kva del av foreldrepengane skal du ta ut?",
     "hvilkenkvoteskalbenyttes.spørsmål.annenForelder": "Kva del av foreldrepengane skal {navnAnnenForelder} ta ut?",
     "hvorSkalDuJobbe.spørsmål": "Kvar skal du jobbe?",
+    "hvorSkalDuJobbe.spørsmål.gradering.hjelpetekst":
+        "<b>Viss du ikkje finn arbeidsforholdet ditt her</b>, har ikkje arbeidsgivaren din meldt deg inn i Arbeids- og arbeidsgivarregisteret. Du må vera registrert som tilsett der du skal jobbe for å bruke den digitale søknaden. Du må be din arbeidsgjevar oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
     "iNorgeNeste12Mnd.alternativ.boINorge": "berre bu i Noreg",
     "iNorgeNeste12Mnd.alternativ.boIUtlandet": "bu i utlandet heilt eller delvis",
     "iNorgeNeste12Mnd.spørsmål": "Kvar skal du bu dei neste 12 månadene?",
@@ -699,7 +701,7 @@
     "uttaksoppsummering.gjenstående": "Foreldrepengar du har igjen",
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengane med delvis arbeid?",
     "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst":
-        "<b>Viss du ikkje finn arbeidsforholdet ditt her</b>, har ikkje arbeidsgivaren din meldt deg inn i Arbeids- og arbeidsgivarregisteret. Du må vera registrert som tilsett der du skal jobbe for å bruke den digitale søknaden. Du må be din arbeidsgjevar oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret. <br /><br/> Du må sende inn søknaden om utsette foreldrepengar før du skal byrja å jobba. Du kan derfor sende inn søknad på papir dersom det er kort tid til du skal byrja å jobba. Her finn du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>. <br /><br /> <b>Skal du jobbe hos fleire arbeidsgivarar samtidig</b>, må du sende inn søknaden på papir. Du kan lese meir om dette dette på <a href=\"https://www.nav.no/fleksibeltuttak\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">familie.nav.no</a>, og her finner du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>.",
+        "Du må sende inn søknaden om utsette foreldrepengar før du skal byrja å jobba. Du kan derfor sende inn søknad på papir dersom det er kort tid til du skal byrja å jobba. Her finn du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>. <br /><br /> <b>Skal du jobbe hos fleire arbeidsgivarar samtidig</b>, må du sende inn søknaden på papir. Du kan lese meir om dette dette på <a href=\"https://www.nav.no/fleksibeltuttak\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">familie.nav.no</a>, og her finner du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>.",
     "uttaksplan.familiehendelsesdato.adopsjon": "Barnet er adoptert {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Barnet er født {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin {dato}",
@@ -1189,7 +1191,6 @@
         "Foreldrepengar  {antall, plural, one {du} other {dere}} har registrert",
     "oversiktBrukteDager.tittel.kontoer.ikkeBrukteDager":
         "Foreldrepengar {antall, plural, one {du} other {dere}} har igjen",
-
     "feature.visFeilside.tittel": "feilside tittel",
     "feature.visFeilside.ingress":
         "Fredag 6. desember er foreldrepengesøknaden nede mellom klokken 12-13. Søknader som er mellomlagret må sendes inn før fredag klokken 12, hvis ikke mister du den påbegynte søknaden.",
