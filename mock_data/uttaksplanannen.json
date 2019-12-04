@@ -1,6 +1,7 @@
 {
     "grunnlag": {
-        "fødselsdato": "2019-06-18",
+        "termindato": "2019-10-01",
+        "fødselsdato": "2019-10-01",
         "dekningsgrad": 100,
         "antallBarn": 1,
         "søkerErFarEllerMedmor": false,
@@ -17,50 +18,31 @@
             "graderingInnvilget": false,
             "samtidigUttak": false,
             "stønadskontotype": "FORELDREPENGER_FØR_FØDSEL",
+            "trekkDager": 15,
             "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
             "gjelderAnnenPart": true,
             "manueltBehandlet": false,
             "flerbarnsdager": false,
             "uttakArbeidType": "ORDINÆRT_ARBEID",
             "arbeidsgiverInfo": {
-                "id": "973861778",
+                "id": "973135678",
                 "type": "ORGANISASJON",
-                "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
+                "navn": "COLOR LINE CREW AS"
             },
-            "periode": { "fom": "2019-05-28", "tom": "2019-06-17" }
+            "periode": {
+                "fom": "2019-09-10",
+                "tom": "2019-09-30"
+            }
         },
         {
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
             "stønadskontotype": "FORELDREPENGER_FØR_FØDSEL",
+            "trekkDager": 15,
             "arbeidstidprosent": 0,
-            "gjelderAnnenPart": true,
-            "manueltBehandlet": false,
-            "flerbarnsdager": false,
-            "uttakArbeidType": "ORDINÆRT_ARBEID",
-            "arbeidsgiverInfo": { "id": "973135678", "type": "ORGANISASJON", "navn": "COLOR LINE CREW AS" },
-            "periode": { "fom": "2019-05-28", "tom": "2019-06-17" }
-        },
-        {
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "arbeidstidprosent": 0,
-            "gjelderAnnenPart": true,
-            "manueltBehandlet": false,
-            "flerbarnsdager": false,
-            "uttakArbeidType": "ORDINÆRT_ARBEID",
-            "arbeidsgiverInfo": { "id": "973135678", "type": "ORGANISASJON", "navn": "COLOR LINE CREW AS" },
-            "periode": { "fom": "2019-06-18", "tom": "2019-07-29" }
-        },
-        {
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
             "gjelderAnnenPart": true,
             "manueltBehandlet": false,
             "flerbarnsdager": false,
@@ -70,27 +52,41 @@
                 "type": "ORGANISASJON",
                 "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
             },
-            "periode": { "fom": "2019-06-18", "tom": "2019-07-29" }
+            "periode": {
+                "fom": "2019-09-10",
+                "tom": "2019-09-30"
+            }
         },
         {
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
             "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": 30,
             "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
             "gjelderAnnenPart": true,
             "manueltBehandlet": false,
             "flerbarnsdager": false,
             "uttakArbeidType": "ORDINÆRT_ARBEID",
-            "arbeidsgiverInfo": { "id": "973135678", "type": "ORGANISASJON", "navn": "COLOR LINE CREW AS" },
-            "periode": { "fom": "2019-07-30", "tom": "2019-09-30" }
+            "arbeidsgiverInfo": {
+                "id": "973135678",
+                "type": "ORGANISASJON",
+                "navn": "COLOR LINE CREW AS"
+            },
+            "periode": {
+                "fom": "2019-10-01",
+                "tom": "2019-11-11"
+            }
         },
         {
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
             "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": 30,
             "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
             "gjelderAnnenPart": true,
             "manueltBehandlet": false,
             "flerbarnsdager": false,
@@ -100,14 +96,85 @@
                 "type": "ORGANISASJON",
                 "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
             },
-            "periode": { "fom": "2019-07-30", "tom": "2019-09-30" }
+            "periode": {
+                "fom": "2019-10-01",
+                "tom": "2019-11-11"
+            }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": 45,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "973135678",
+                "type": "ORGANISASJON",
+                "navn": "COLOR LINE CREW AS"
+            },
+            "periode": {
+                "fom": "2019-11-12",
+                "tom": "2020-01-13"
+            }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": 45,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "973861778",
+                "type": "ORGANISASJON",
+                "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
+            },
+            "periode": {
+                "fom": "2019-11-12",
+                "tom": "2020-01-13"
+            }
         },
         {
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
             "stønadskontotype": "FELLESPERIODE",
+            "trekkDager": 80,
             "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "973135678",
+                "type": "ORGANISASJON",
+                "navn": "COLOR LINE CREW AS"
+            },
+            "periode": {
+                "fom": "2020-01-14",
+                "tom": "2020-05-04"
+            }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FELLESPERIODE",
+            "trekkDager": 80,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
             "gjelderAnnenPart": true,
             "manueltBehandlet": false,
             "flerbarnsdager": false,
@@ -117,20 +184,10 @@
                 "type": "ORGANISASJON",
                 "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
             },
-            "periode": { "fom": "2019-10-01", "tom": "2019-12-23" }
-        },
-        {
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FELLESPERIODE",
-            "arbeidstidprosent": 0,
-            "gjelderAnnenPart": true,
-            "manueltBehandlet": false,
-            "flerbarnsdager": false,
-            "uttakArbeidType": "ORDINÆRT_ARBEID",
-            "arbeidsgiverInfo": { "id": "973135678", "type": "ORGANISASJON", "navn": "COLOR LINE CREW AS" },
-            "periode": { "fom": "2019-10-01", "tom": "2019-12-23" }
+            "periode": {
+                "fom": "2020-01-14",
+                "tom": "2020-05-04"
+            }
         }
     ]
 }

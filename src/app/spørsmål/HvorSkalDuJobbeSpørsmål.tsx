@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedHTMLMessage } from 'react-intl';
 import Arbeidsforhold from '../types/Arbeidsforhold';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
@@ -71,7 +71,7 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
                 toKolonner={true}
                 spørsmål={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
                 onChange={this.handleOnChange}
-                hjelpetekst="Test"
+                hjelpetekst={<FormattedHTMLMessage id="hvorSkalDuJobbe.spørsmål.gradering.hjelpetekst" />}
             />
         );
     }
