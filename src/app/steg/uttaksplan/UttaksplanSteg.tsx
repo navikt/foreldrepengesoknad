@@ -269,7 +269,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             opprinneligPlan
         );
 
-        const endringstidspunkt = getEndringstidspunkt(opprinneligPlan, updatedPlan, nyPeriode, erEndringssøknad);
+        const endringstidspunkt = getEndringstidspunkt(opprinneligPlan, updatedPlan, erEndringssøknad);
         this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, endringstidspunkt, id));
     }
 
@@ -294,7 +294,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             opprinneligPlan
         );
 
-        const endringstidspunkt = getEndringstidspunkt(opprinneligPlan, updatedPlan, slettetPeriode, erEndringssøknad);
+        const endringstidspunkt = getEndringstidspunkt(opprinneligPlan, updatedPlan, erEndringssøknad);
         this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, endringstidspunkt));
     }
 
@@ -319,12 +319,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             opprinneligPlan
         );
 
-        const endringstidspunkt = getEndringstidspunkt(
-            opprinneligPlan,
-            updatedPlan,
-            oppdatertPeriode,
-            erEndringssøknad
-        );
+        const endringstidspunkt = getEndringstidspunkt(opprinneligPlan, updatedPlan, erEndringssøknad);
         this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, endringstidspunkt));
     }
 

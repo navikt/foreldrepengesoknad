@@ -29,7 +29,6 @@ export const getRelevantFamiliehendelseDato = ({
 export const getEndringstidspunkt = (
     opprinneligPlan: Periode[] | undefined,
     updatedPlan: Periode[],
-    relevantPeriode: Periode,
     erEndringssøknad: boolean
 ): Date | undefined => {
     if (!erEndringssøknad) {

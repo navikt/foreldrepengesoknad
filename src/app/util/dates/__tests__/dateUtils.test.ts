@@ -150,26 +150,18 @@ describe('dateUtils', () => {
 
     describe('getEndringstidspunkt', () => {
         it('Skal returnere undefined hvis ikke endringssøknad', () => {
-            const emptyPeriode: Partial<Periode> = {};
-            const endringstidspunkt = getEndringstidspunkt(undefined, [], emptyPeriode as Periode, false);
+            const endringstidspunkt = getEndringstidspunkt(undefined, [], false);
 
             expect(endringstidspunkt).toBe(undefined);
         });
 
         it('Skal returnere undefined for ingen endringer', () => {
-            const emptyPeriode: Partial<Periode> = {};
-            const endringstidspunkt = getEndringstidspunkt(
-                opprinneligPlan as Periode[],
-                nyPlan as Periode[],
-                emptyPeriode as Periode,
-                true
-            );
+            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], nyPlan as Periode[], true);
 
             expect(endringstidspunkt).toBe(undefined);
         });
 
         it('Skal finne endringstidspunkt gitt at det er endringer', () => {
-            const emptyPeriode: Partial<Periode> = {};
             const gradertPeriode: Partial<Uttaksperiode> = {
                 id: guid(),
                 tidsperiode: {
@@ -182,12 +174,7 @@ describe('dateUtils', () => {
             };
             const endretPlan = [...nyPlan, gradertPeriode];
 
-            const endringstidspunkt = getEndringstidspunkt(
-                opprinneligPlan as Periode[],
-                endretPlan as Periode[],
-                emptyPeriode as Periode,
-                true
-            );
+            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
             expect(endringstidspunkt).toEqual(new Date('2019-05-05'));
         });
     });
