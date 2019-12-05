@@ -9,7 +9,7 @@ type Props = InjectedIntlProps;
 
 const LoadingScreen: React.StatelessComponent<Props> = (props: Props) => {
     return (
-        <Applikasjonsside>
+        <Applikasjonsside visAlertstripe={false}>
             <DocumentTitle title={getMessage(props.intl, 'dokument.tittel.loadingScreen')} />
             <ApplicationSpinner />
         </Applikasjonsside>
