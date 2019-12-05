@@ -60,7 +60,7 @@ class AttachmentOverview extends React.Component<Props, State> {
                 const intlId =
                     error.response.data &&
                     error.response.data.messages &&
-                    error.response.data.messages.includes('decrypt')
+                    error.response.data.messages.includes('AttachmentPasswordProtectedException')
                         ? 'vedlegg.passordbeskyttet'
                         : 'vedlegg.virus';
 
