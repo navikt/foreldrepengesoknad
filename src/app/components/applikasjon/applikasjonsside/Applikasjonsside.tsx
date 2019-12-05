@@ -18,6 +18,7 @@ import { isFeatureEnabled, Feature } from 'app/Feature';
 export interface OwnProps {
     visSøknadstittel?: boolean;
     visSpråkvelger?: boolean;
+    visAlertstripe?: boolean;
     margin?: boolean;
 }
 
@@ -44,6 +45,7 @@ class Sidemal extends React.Component<Props> {
             sessionHasExpired,
             innloggetSomAnnenBruker,
             margin = true,
+            visAlertstripe = true,
             dispatch
         } = this.props;
 
@@ -66,17 +68,18 @@ class Sidemal extends React.Component<Props> {
                     </Søknadstittel>
                 )}
 
-                {isFeatureEnabled(Feature.visAlertstripe) && (
-                    <div
-                        className={classnames(BEM.element('alertstripe'), {
-                            [BEM.modifier('purple-background')]: visSpråkvelger
-                        })}
-                    >
-                        <AlertStripe type="info">
-                            <FormattedMessage id="feature.alertstripe.tekst" />
-                        </AlertStripe>
-                    </div>
-                )}
+                {isFeatureEnabled(Feature.visAlertstripe) &&
+                    visAlertstripe && (
+                        <div
+                            className={classnames(BEM.element('alertstripe'), {
+                                [BEM.modifier('purple-background')]: visSpråkvelger
+                            })}
+                        >
+                            <AlertStripe type="info">
+                                <FormattedMessage id="feature.alertstripe.tekst" />
+                            </AlertStripe>
+                        </div>
+                    )}
 
                 <div className={cls}>{children}</div>
                 <UtløptSesjonModal erÅpen={sessionHasExpired} />
