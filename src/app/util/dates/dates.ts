@@ -61,7 +61,10 @@ export const getEndringstidspunkt = (
             return currentDate;
         }, undefined);
     } else {
-        endringstidspunkt = relevantPeriode.tidsperiode.fom;
+        // Bruker har slettet opprinnelig plan, send med alt
+        if (updatedPlan.length > 0) {
+            return updatedPlan[0].tidsperiode.fom;
+        }
     }
 
     return endringstidspunkt;
@@ -142,8 +145,8 @@ export const timeintervalsOverlap = (
             const fom = moment(timeinterval.fom).startOf('day');
             const tom = moment(timeinterval.tom).endOf('day');
             return (
-                fom.isBetween(t.fom, t.tom, 'day', []) ||
-                tom.isBetween(t.fom, t.tom, 'day', []) ||
+                fom.isBetween(t.fom, t.tom, 'day', '[]') ||
+                tom.isBetween(t.fom, t.tom, 'day', '[]') ||
                 (fom.isBefore(t.fom, 'day') && tom.isSameOrAfter(t.fom, 'day')) ||
                 (tom.isAfter(t.tom, 'day') && fom.isSameOrBefore(t.tom, 'day'))
             );
