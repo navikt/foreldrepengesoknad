@@ -93,15 +93,6 @@ class Foreldrepengesøknad extends React.Component<Props> {
             systemerIkkeTilgjengelig
         } = this.props;
 
-        if (isFeatureEnabled(Feature.visFeilside)) {
-            return (
-                <Feilsidemelding
-                    tittel={<FormattedMessage id="feature.visFeilside.tittel" />}
-                    ingress={<FormattedMessage id="feature.visFeilside.ingress" />}
-                />
-            );
-        }
-
         if (isLoadingInitialAppData || isSendSøknadInProgress || isLoadingSaker) {
             return <LoadingScreen />;
         } else if (søkerinfo && !søkerinfo.person.erMyndig) {
@@ -110,6 +101,15 @@ class Foreldrepengesøknad extends React.Component<Props> {
             return <Route component={SøknadSendtSide} />;
         } else if (systemerIkkeTilgjengelig) {
             return <IkkeTilgjengelig />;
+        }
+        
+        if (isFeatureEnabled(Feature.visFeilside)) {
+            return (
+                <Feilsidemelding
+                    tittel={<FormattedMessage id="feature.visFeilside.tittel" />}
+                    ingress={<FormattedMessage id="feature.visFeilside.ingress" />}
+                />
+            );
         }
 
         return this.renderSøknadRoutes(søkerinfo!);
