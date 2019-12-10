@@ -122,6 +122,8 @@ export const dateIs1YearAheadOrLess = (date: DateValue): boolean =>
     moment(date).isBetween(today, date1YearAhead, 'day', '[]');
 export const dateIs1YearAgoOrLess = (date: DateValue): boolean =>
     moment(date).isBetween(date1YearAgo, today, 'day', '[]');
+export const dateIsBetween = (date: DateValue, fom: DateValue, tom: DateValue): boolean =>
+    moment(date).isBetween(fom, tom, 'day', '[]');
 
 export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boolean => {
     if (date && otherDate) {

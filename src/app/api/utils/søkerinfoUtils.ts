@@ -4,7 +4,7 @@ import { SøkerinfoDTO, SøkerinfoDTOBarn, SøkerinfoDTOArbeidsforhold } from '.
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { erMyndig } from '../../util/domain/personUtil';
 import { Søkerinfo } from '../../types/søkerinfo';
-import uniqBy from 'lodash/uniqBy';
+// import uniqBy from 'lodash/uniqBy';
 
 const getPerson = (søkerinfo: SøkerinfoDTO): Person => {
     const { barn, ...person } = søkerinfo.søker;
@@ -36,20 +36,20 @@ const getRegistrerteBarn = (søkerinfo: SøkerinfoDTO): RegistrertBarn[] => {
     });
 };
 
-const getArbeidsgiverId = (arbeidsforhold: SøkerinfoDTOArbeidsforhold): string => {
-    return arbeidsforhold.arbeidsgiverId;
-};
+// const getArbeidsgiverId = (arbeidsforhold: SøkerinfoDTOArbeidsforhold): string => {
+//     return arbeidsforhold.arbeidsgiverId;
+// };
 
 export const getArbeidsforhold = (arbeidsforhold: SøkerinfoDTOArbeidsforhold[] | undefined): Arbeidsforhold[] => {
     if (arbeidsforhold === undefined || arbeidsforhold.length === 0) {
         return [];
     }
 
-    const pågåendeArbeidsforhold = arbeidsforhold.filter((a) => a.tom === undefined);
-    const pågåendeArbeidsforholdMedTomDato = arbeidsforhold.filter((a) => a.tom !== undefined && moment(a.tom).isSameOrAfter(moment(new Date())));
-    const avsluttedeArbeidsforhold = arbeidsforhold.filter((a) => a.tom !== undefined && moment(a.tom).isBefore(moment(new Date())));
+    // const pågåendeArbeidsforhold = arbeidsforhold.filter((a) => a.tom === undefined);
+    // const pågåendeArbeidsforholdMedTomDato = arbeidsforhold.filter((a) => a.tom !== undefined && moment(a.tom).isSameOrAfter(moment(new Date())));
+    // const avsluttedeArbeidsforhold = arbeidsforhold.filter((a) => a.tom !== undefined && moment(a.tom).isBefore(moment(new Date())));
 
-    return uniqBy([...pågåendeArbeidsforhold, ...pågåendeArbeidsforholdMedTomDato, ...avsluttedeArbeidsforhold], getArbeidsgiverId).map(
+    return [...arbeidsforhold].map(
         (a: SøkerinfoDTOArbeidsforhold) => {
             const forhold: Arbeidsforhold = {
                 ...a,
@@ -59,6 +59,17 @@ export const getArbeidsforhold = (arbeidsforhold: SøkerinfoDTOArbeidsforhold[] 
             return forhold;
         }
     );
+
+    // return uniqBy([...pågåendeArbeidsforhold, ...pågåendeArbeidsforholdMedTomDato, ...avsluttedeArbeidsforhold], getArbeidsgiverId).map(
+    //     (a: SøkerinfoDTOArbeidsforhold) => {
+    //         const forhold: Arbeidsforhold = {
+    //             ...a,
+    //             fom: moment(a.fom).toDate(),
+    //             tom: a.tom ? moment(a.tom).toDate() : undefined
+    //         };
+    //         return forhold;
+    //     }
+    // );
 };
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], fraDato?: Date): Arbeidsforhold[] => {
