@@ -5,12 +5,14 @@ import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import FlervalgSpørsmål from '../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import { Arbeidsform } from '../types/uttaksplan/periodetyper';
+import { Tidsperiode } from 'common/types';
 
 interface HvorSkalDuJobbeSpørsmålProps {
     onChange: (orgnr: string[], frilansEllerSelvstendigNæringsdrivende: Arbeidsform[]) => void;
     arbeidsformer: Arbeidsform[];
     arbeidsforhold: Arbeidsforhold[];
     orgnumre: string[];
+    tidsperiode: Tidsperiode;
 }
 
 type Props = HvorSkalDuJobbeSpørsmålProps & InjectedIntlProps;

@@ -36,13 +36,13 @@ export const mapAvvikTilMessage = (avvik: RegelAvvik, intl: InjectedIntl): Veile
         avvikType: avvik.regel.avvikType as UttaksplanAvvikType
     };
 };
-export const selectUttaksplanVeilederinfo = (intl: InjectedIntl) =>
+export const selectUttaksplanVeilederinfo = (intl: InjectedIntl, grupperAvvik: boolean) =>
     createSelector([selectUttaksplanAvvik], (avvik) => {
-        return trimRelaterteRegelAvvik(avvik).map((a) => mapAvvikTilMessage(a, intl));
+        return trimRelaterteRegelAvvik(avvik, grupperAvvik).map((a) => mapAvvikTilMessage(a, intl));
     });
 
-export const selectPeriodelisteMeldinger = (intl: InjectedIntl) =>
-    createSelector([selectUttaksplanVeilederinfo(intl)], (veilederinfo): VeiledermeldingerPerPeriode => {
+export const selectPeriodelisteMeldinger = (intl: InjectedIntl, grupperAvvik: boolean) =>
+    createSelector([selectUttaksplanVeilederinfo(intl, grupperAvvik)], (veilederinfo): VeiledermeldingerPerPeriode => {
         const meldinger = veilederinfo.filter((info) => info.periodeId !== undefined);
         return groupBy(meldinger, (info) => info.periodeId);
     });
