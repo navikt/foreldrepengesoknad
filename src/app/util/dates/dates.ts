@@ -95,8 +95,7 @@ export const getAlderFraDato = (fødselsdato: Date): Alder => {
 
 export const formatDate = (dato?: Date | string) => {
     if (dato) {
-        const parsetDato = moment.utc(dato);
-        return parsetDato.isValid() ? parsetDato.format('DD.MM.YYYY') : '';
+        return moment(dato).isValid() ? moment(dato).format('DD.MM.YYYY') : '';
     }
     return dato;
 };

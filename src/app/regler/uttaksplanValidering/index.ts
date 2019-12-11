@@ -187,7 +187,8 @@ const uttaksplanValideringRegler: Regel[] = [
     {
         key: UttaksplanRegelKey.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold
+        test: inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold,
+        skjulesIOppsummering: true
     }
 ];
 
