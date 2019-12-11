@@ -39,18 +39,14 @@ export function inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold(
                 return result;
             }
 
-            const arbeidsforholdGruppertByArbeidsgiver = filtrerteArbeidsforhold.reduce(
-                (gruppert: any, arb: Arbeidsforhold) => {
-                    if (gruppert[arb.arbeidsgiverId]) {
-                        gruppert[arb.arbeidsgiverId].push(arb);
-                    } else {
-                        gruppert[arb.arbeidsgiverId] = [arb];
-                    }
-
-                    return gruppert;
-                },
-                {}
-            );
+            const arbeidsforholdGruppertByArbeidsgiver = {};
+            filtrerteArbeidsforhold.forEach((arb: Arbeidsforhold) => {
+                if (arbeidsforholdGruppertByArbeidsgiver[arb.arbeidsgiverId]) {
+                    arbeidsforholdGruppertByArbeidsgiver[arb.arbeidsgiverId].push(arb);
+                } else {
+                    arbeidsforholdGruppertByArbeidsgiver[arb.arbeidsgiverId] = [arb];
+                }
+            });
 
             Object.keys(arbeidsforholdGruppertByArbeidsgiver).forEach((orgnr: string) => {
                 arbeidsforholdGruppertByArbeidsgiver[orgnr].forEach((arb: Arbeidsforhold) => {
