@@ -1,8 +1,7 @@
 export default {
     rettOgPlikt: 'https://nav.no/rettOgPlikt',
     fleksibeltuttak: 'https://familie.nav.no/om-foreldrepenger#hjemme-samtidig',
-    papirsøknad:
-        'https://www.nav.no/no/Person/Skjemaer-for-privatpersoner/skjemaveileder/vedlegg?key=267385&veiledertype=privatperson&method=mail',
+    papirsøknad: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
     viktigeFrister: 'https://familie.nav.no/om-foreldrepenger#nar-kan-du-soke',
     nav_aktivitetskrav: 'https://familie.nav.no/om-foreldrepenger#hvor-lenge-kan-jeg-fa-foreldrepenger',
     brukerstøtte:
