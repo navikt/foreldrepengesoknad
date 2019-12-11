@@ -1,10 +1,18 @@
 import { UttaksplanRegelgrunnlag } from '../types';
 import { RegelTestresultat, RegelTestresultatInfo } from 'shared/regler/regelTypes';
-import { isUtsettelsesperiode, Utsettelsesperiode, UtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
+import {
+    isUtsettelsesperiode,
+    Utsettelsesperiode,
+    UtsettelseÅrsakType,
+    Uttaksperiode,
+    isUttaksperiode
+} from 'app/types/uttaksplan/periodetyper';
 import { dateIsBetween, formatDate } from 'app/util/dates/dates';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
-const erArbeidsforholdRelevant = (utsettelsePeriode: Utsettelsesperiode) => (arbforhold: Arbeidsforhold): boolean => {
+const erArbeidsforholdRelevant = (utsettelsePeriode: Utsettelsesperiode | Uttaksperiode) => (
+    arbforhold: Arbeidsforhold
+): boolean => {
     if (
         (dateIsBetween(utsettelsePeriode.tidsperiode.fom, arbforhold.fom, arbforhold.tom) ||
             dateIsBetween(utsettelsePeriode.tidsperiode.tom, arbforhold.fom, arbforhold.tom)) &&
@@ -19,21 +27,15 @@ const erArbeidsforholdRelevant = (utsettelsePeriode: Utsettelsesperiode) => (arb
     return false;
 };
 
-export function inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold(
-    grunnlag: UttaksplanRegelgrunnlag
-): RegelTestresultat {
-    const { arbeidsforhold, perioder } = grunnlag;
-    const arbeidsUtsettelser = perioder.filter(
-        (p) => isUtsettelsesperiode(p) && p.årsak === UtsettelseÅrsakType.Arbeid
-    ) as Utsettelsesperiode[];
-
-    const arbeidsUtsettelserUtenArbeidsforhold = arbeidsUtsettelser.reduce(
-        (result, utsettelse) => {
+const finnPeriodeUtenArbeidsforhold = (
+    perioder: Array<Utsettelsesperiode | Uttaksperiode>,
+    arbeidsforhold: Arbeidsforhold[]
+) => {
+    return perioder.reduce(
+        (result, periode) => {
             const filtrerteArbeidsforhold = arbeidsforhold
-                .filter(
-                    (arb) => utsettelse.orgnumre && utsettelse.orgnumre.some((orgnr) => orgnr === arb.arbeidsgiverId)
-                )
-                .filter(erArbeidsforholdRelevant(utsettelse));
+                .filter((arb) => periode.orgnumre && periode.orgnumre.some((orgnr) => orgnr === arb.arbeidsgiverId))
+                .filter(erArbeidsforholdRelevant(periode));
 
             if (filtrerteArbeidsforhold.length === 0) {
                 return result;
@@ -52,7 +54,7 @@ export function inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold(
                 arbeidsforholdGruppertByArbeidsgiver[orgnr].forEach((arb: Arbeidsforhold) => {
                     result.push({
                         intlKey: 'uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold',
-                        periodeId: utsettelse.id,
+                        periodeId: periode.id,
                         values: {
                             fom: formatDate(arb.fom),
                             tom: formatDate(arb.tom),
@@ -66,9 +68,23 @@ export function inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold(
         },
         [] as RegelTestresultatInfo[]
     );
+};
+
+export function inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold(
+    grunnlag: UttaksplanRegelgrunnlag
+): RegelTestresultat {
+    const { arbeidsforhold, perioder } = grunnlag;
+    const arbeidsUtsettelser = perioder.filter(
+        (p) => isUtsettelsesperiode(p) && p.årsak === UtsettelseÅrsakType.Arbeid
+    ) as Utsettelsesperiode[];
+    const gradertePerioder = perioder.filter((p) => isUttaksperiode(p) && p.gradert) as Uttaksperiode[];
+
+    const arbeidsUtsettelserUtenArbeidsforhold = finnPeriodeUtenArbeidsforhold(arbeidsUtsettelser, arbeidsforhold);
+    const gradertePerioderUtenArbeidsforhold = finnPeriodeUtenArbeidsforhold(gradertePerioder, arbeidsforhold);
+    const allePerioder = [...gradertePerioderUtenArbeidsforhold, ...arbeidsUtsettelserUtenArbeidsforhold];
 
     return {
-        passerer: arbeidsUtsettelserUtenArbeidsforhold.length === 0,
-        info: arbeidsUtsettelserUtenArbeidsforhold.map((info) => info)
+        passerer: allePerioder.length === 0,
+        info: allePerioder.map((info) => info)
     };
 }
