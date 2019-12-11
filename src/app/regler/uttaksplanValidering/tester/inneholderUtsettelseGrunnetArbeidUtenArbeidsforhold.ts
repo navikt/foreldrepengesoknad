@@ -52,15 +52,28 @@ const finnPeriodeUtenArbeidsforhold = (
 
             Object.keys(arbeidsforholdGruppertByArbeidsgiver).forEach((orgnr: string) => {
                 arbeidsforholdGruppertByArbeidsgiver[orgnr].forEach((arb: Arbeidsforhold) => {
-                    result.push({
-                        intlKey: 'uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold',
-                        periodeId: periode.id,
-                        values: {
-                            fom: formatDate(arb.fom),
-                            tom: formatDate(arb.tom),
-                            navn: arb.arbeidsgiverNavn
-                        }
-                    });
+                    if (arb.fom && arb.tom) {
+                        result.push({
+                            intlKey:
+                                'uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.medTom',
+                            periodeId: periode.id,
+                            values: {
+                                fom: formatDate(arb.fom),
+                                tom: formatDate(arb.tom),
+                                navn: arb.arbeidsgiverNavn
+                            }
+                        });
+                    } else {
+                        result.push({
+                            intlKey:
+                                'uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.utenTom',
+                            periodeId: periode.id,
+                            values: {
+                                fom: formatDate(arb.fom),
+                                navn: arb.arbeidsgiverNavn
+                            }
+                        });
+                    }
                 });
             });
 
