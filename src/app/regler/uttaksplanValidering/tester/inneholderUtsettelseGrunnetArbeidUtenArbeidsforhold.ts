@@ -14,14 +14,23 @@ const erArbeidsforholdRelevant = (utsettelsePeriode: Utsettelsesperiode | Uttaks
     arbforhold: Arbeidsforhold
 ): boolean => {
     if (
-        (dateIsBetween(utsettelsePeriode.tidsperiode.fom, arbforhold.fom, arbforhold.tom) ||
-            dateIsBetween(utsettelsePeriode.tidsperiode.tom, arbforhold.fom, arbforhold.tom)) &&
-        !(
-            dateIsBetween(utsettelsePeriode.tidsperiode.fom, arbforhold.fom, arbforhold.tom) &&
-            dateIsBetween(utsettelsePeriode.tidsperiode.tom, arbforhold.fom, arbforhold.tom)
-        )
+        dateIsBetween(arbforhold.fom, utsettelsePeriode.tidsperiode.fom, utsettelsePeriode.tidsperiode.tom) &&
+        arbforhold.tom === undefined
     ) {
         return true;
+    }
+
+    if (arbforhold.tom) {
+        if (
+            (dateIsBetween(utsettelsePeriode.tidsperiode.fom, arbforhold.fom, arbforhold.tom) ||
+                dateIsBetween(utsettelsePeriode.tidsperiode.tom, arbforhold.fom, arbforhold.tom)) &&
+            !(
+                dateIsBetween(utsettelsePeriode.tidsperiode.fom, arbforhold.fom, arbforhold.tom) &&
+                dateIsBetween(utsettelsePeriode.tidsperiode.tom, arbforhold.fom, arbforhold.tom)
+            )
+        ) {
+            return true;
+        }
     }
 
     return false;
