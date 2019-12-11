@@ -895,7 +895,7 @@
         "Du har lagt inn til samen {ukerOgDager} uker med ferie. Du kan maksimalt legge inn 10 uker og 2 dager med ferie. Ferien må avtales med din arbeidsgiver.",
     "uttaksplan.validering.feil.erSamtidigUttakGyldig": "Du må gi opp kor mange prosent du skal vera heime",
     "uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold":
-        "Det er registrert at du jobbar hos {navn} frå {fom} til {tom}. For å kunne utsetje eller kombinere foreldrepengar med arbeid må du vere ansatt. Du må endre datoen for å gå videre.",
+        "Arbeidsgjevaren din {navn} har registrert at du er ansatt frå {fom} til {tom}. For å kunne utsetje eller kombinere foreldrepengar med arbeid må du vere ansatt. Du må endre datoen for å gå videre.",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepengar",
     "uttaksplan.varighet.uttak.gradert": "{varighet}",
     "uttaksplan.ulønnetPermisjonInfo.tittel": "Vi ønskjer ein periode med ulønt permisjon",
