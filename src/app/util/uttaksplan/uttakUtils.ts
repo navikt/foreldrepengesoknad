@@ -11,7 +11,7 @@ import {
     UttakAnnenPartInfoPeriode
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
-import { dateIsTodayOrInFuture } from '../dates/dates';
+import { dateIsTodayOrInFuture, dateIsNotInFuture } from '../dates/dates';
 import { Saksgrunnlag, EksisterendeSak, PeriodeResultatType } from 'app/types/EksisterendeSak';
 import { erTidsperioderLike, Tidsperioden } from './Tidsperioden';
 import { Søknadsinfo } from 'app/selectors/types';
@@ -34,7 +34,7 @@ export const erUttakEgenKvote = (konto: StønadskontoType | undefined, søkerErF
 };
 
 const erUtsettelseTilbakeITid = (periode: Periode) =>
-    periode.type === Periodetype.Utsettelse && !dateIsTodayOrInFuture(periode.tidsperiode.fom);
+    periode.type === Periodetype.Utsettelse && dateIsNotInFuture(periode.tidsperiode.fom);
 
 const erUttakEllerOppholdMerEnnTreMånederSiden = (periode: Periode) =>
     (periode.type === Periodetype.Uttak || periode.type === Periodetype.Opphold) &&
