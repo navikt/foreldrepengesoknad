@@ -3,6 +3,7 @@ import { Søknadsinfo } from '../../selectors/types';
 import { Saksgrunnlag } from 'app/types/EksisterendeSak';
 import Barn, { FødtBarn, UfødtBarn, Adopsjonsbarn } from 'app/types/søknad/Barn';
 import { Dekningsgrad } from 'common/types';
+import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from './uttakUtils';
 
 export const getStønadskontoParams = (
     søknadsinfo: Søknadsinfo,
@@ -16,7 +17,7 @@ export const getStønadskontoParams = (
         farMedmor
     } = søknadsinfo;
 
-    if (grunnlag) {
+    if (grunnlag && skalKunneViseMorsUttaksplanForFarEllerMedmor(grunnlag, søknadsinfo)) {
         const params = {
             antallBarn: grunnlag.antallBarn,
             fødselsdato: undefined,
