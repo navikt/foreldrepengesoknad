@@ -3,6 +3,7 @@ import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
 import { Tidsperiode } from 'common/types';
 import { dateIsBetween } from '../dates/dates';
+import moment from 'moment';
 
 export const harAktivtArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], fraDato?: Date): boolean => {
     return getAktiveArbeidsforhold(arbeidsforhold, fraDato).length > 0;
@@ -48,6 +49,14 @@ export const getKunArbeidsforholdForValgtTidsperiode = (
 ): Arbeidsforhold[] => {
     if (tidsperiode.tom && tidsperiode.fom) {
         const kunArbeidsforholdForValgtTidsperiode = arbeidsforhold.filter((a) => {
+            if (a.tom === undefined) {
+                if (moment(tidsperiode.fom).isSameOrAfter(moment(a.fom))) {
+                    return true;
+                }
+
+                return false;
+            }
+
             if (dateIsBetween(tidsperiode.fom, a.fom, a.tom) || dateIsBetween(tidsperiode.tom, a.fom, a.tom)) {
                 return true;
             }
