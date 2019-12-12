@@ -9,31 +9,67 @@ import {
 } from 'app/types/uttaksplan/periodetyper';
 import { dateIsBetween, formatDate } from 'app/util/dates/dates';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import moment from 'moment';
 
-const erArbeidsforholdRelevant = (utsettelsePeriode: Utsettelsesperiode | Uttaksperiode) => (
+interface SjekketArbeidsforhold {
+    dekkerPerioden: boolean;
+    erRelevant: boolean;
+    fom: Date;
+    tom?: Date;
+    arbeidsgiverNavn: string;
+}
+
+const sjekkArbeidsforhold = (periode: Utsettelsesperiode | Uttaksperiode) => (
     arbforhold: Arbeidsforhold
-): boolean => {
-    if (
-        dateIsBetween(arbforhold.fom, utsettelsePeriode.tidsperiode.fom, utsettelsePeriode.tidsperiode.tom) &&
-        arbforhold.tom === undefined
-    ) {
-        return true;
-    }
+): SjekketArbeidsforhold => {
+    const { fom, tom } = arbforhold;
 
-    if (arbforhold.tom) {
-        if (
-            (dateIsBetween(utsettelsePeriode.tidsperiode.fom, arbforhold.fom, arbforhold.tom) ||
-                dateIsBetween(utsettelsePeriode.tidsperiode.tom, arbforhold.fom, arbforhold.tom)) &&
-            !(
-                dateIsBetween(utsettelsePeriode.tidsperiode.fom, arbforhold.fom, arbforhold.tom) &&
-                dateIsBetween(utsettelsePeriode.tidsperiode.tom, arbforhold.fom, arbforhold.tom)
-            )
-        ) {
-            return true;
+    const result = {
+        dekkerPerioden: false,
+        erRelevant: false,
+        tom: arbforhold.tom,
+        fom: arbforhold.fom,
+        arbeidsgiverNavn: arbforhold.arbeidsgiverNavn
+    };
+
+    if (tom === undefined) {
+        const arbeidsforholdStarterFørPeriode = moment(fom).isSameOrBefore(moment(periode.tidsperiode.fom));
+        const arbeidsforholdStarterIPeriode = dateIsBetween(fom, periode.tidsperiode.fom, periode.tidsperiode.tom);
+
+        if (arbeidsforholdStarterFørPeriode) {
+            result.dekkerPerioden = true;
+            result.erRelevant = true;
+
+            return result;
         }
+
+        if (arbeidsforholdStarterIPeriode) {
+            result.dekkerPerioden = false;
+            result.erRelevant = true;
+
+            return result;
+        }
+
+        return result;
     }
 
-    return false;
+    const periodenStarterInnenforArbeidsforhold = dateIsBetween(periode.tidsperiode.fom, fom, tom);
+    const periodenSlutterInnenforArbeidsforhold = dateIsBetween(periode.tidsperiode.tom, fom, tom);
+
+    if (periodenStarterInnenforArbeidsforhold && periodenSlutterInnenforArbeidsforhold) {
+        result.dekkerPerioden = true;
+        result.erRelevant = true;
+    }
+
+    if (periodenStarterInnenforArbeidsforhold && !periodenSlutterInnenforArbeidsforhold) {
+        result.erRelevant = true;
+    }
+
+    if (!periodenStarterInnenforArbeidsforhold && periodenSlutterInnenforArbeidsforhold) {
+        result.erRelevant = true;
+    }
+
+    return result;
 };
 
 const finnPeriodeUtenArbeidsforhold = (
@@ -42,9 +78,9 @@ const finnPeriodeUtenArbeidsforhold = (
 ) => {
     return perioder.reduce(
         (result, periode) => {
-            const filtrerteArbeidsforhold = arbeidsforhold
-                .filter((arb) => periode.orgnumre && periode.orgnumre.some((orgnr) => orgnr === arb.arbeidsgiverId))
-                .filter(erArbeidsforholdRelevant(periode));
+            const filtrerteArbeidsforhold = arbeidsforhold.filter(
+                (arb) => periode.orgnumre && periode.orgnumre.some((orgnr) => orgnr === arb.arbeidsgiverId)
+            );
 
             if (filtrerteArbeidsforhold.length === 0) {
                 return result;
@@ -60,30 +96,39 @@ const finnPeriodeUtenArbeidsforhold = (
             });
 
             Object.keys(arbeidsforholdGruppertByArbeidsgiver).forEach((orgnr: string) => {
-                arbeidsforholdGruppertByArbeidsgiver[orgnr].forEach((arb: Arbeidsforhold) => {
-                    if (arb.fom && arb.tom) {
-                        result.push({
-                            intlKey:
-                                'uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.medTom',
-                            periodeId: periode.id,
-                            values: {
-                                fom: formatDate(arb.fom),
-                                tom: formatDate(arb.tom),
-                                navn: arb.arbeidsgiverNavn
-                            }
-                        });
-                    } else {
-                        result.push({
-                            intlKey:
-                                'uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.utenTom',
-                            periodeId: periode.id,
-                            values: {
-                                fom: formatDate(arb.fom),
-                                navn: arb.arbeidsgiverNavn
-                            }
-                        });
-                    }
-                });
+                const alleArbeidsforholdForArbeidsgiver: SjekketArbeidsforhold[] = arbeidsforholdGruppertByArbeidsgiver[
+                    orgnr
+                ].map(sjekkArbeidsforhold(periode));
+                const harFeil = !alleArbeidsforholdForArbeidsgiver.some((a) => a.dekkerPerioden);
+
+                if (harFeil) {
+                    const relevanteArbeidsforhold = alleArbeidsforholdForArbeidsgiver.filter((a) => a.erRelevant);
+
+                    relevanteArbeidsforhold.forEach((arb: SjekketArbeidsforhold) => {
+                        if (arb.fom && arb.tom) {
+                            result.push({
+                                intlKey:
+                                    'uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.medTom',
+                                periodeId: periode.id,
+                                values: {
+                                    fom: formatDate(arb.fom),
+                                    tom: formatDate(arb.tom),
+                                    navn: arb.arbeidsgiverNavn
+                                }
+                            });
+                        } else {
+                            result.push({
+                                intlKey:
+                                    'uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.utenTom',
+                                periodeId: periode.id,
+                                values: {
+                                    fom: formatDate(arb.fom),
+                                    navn: arb.arbeidsgiverNavn
+                                }
+                            });
+                        }
+                    });
+                }
             });
 
             return result;
