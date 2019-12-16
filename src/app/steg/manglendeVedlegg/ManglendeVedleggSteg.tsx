@@ -24,7 +24,7 @@ import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import { isAttachmentForPeriode } from 'app/components/storage/attachment/components/util';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { formatDate } from 'app/util/dates/dates';
-import { Periodetype } from 'app/types/uttaksplan/periodetyper';
+import { isInfoPeriode } from 'app/types/uttaksplan/periodetyper';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import {
     getTerminbekreftelsedatoAvgrensninger,
@@ -118,7 +118,8 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                               }
                                             : undefined
                                     )
-                                }}>
+                                }}
+                            >
                                 {isAttachmentForPeriode(a.type) && this.renderPeriodeinfo(key)}
                                 <VedleggSpørsmål
                                     vedlegg={attachmentsToRender}
@@ -131,7 +132,8 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                             </Block>
 
                             <Block
-                                visible={a.type === AttachmentType.TERMINBEKREFTELSE && attachmentsToRender.length > 0}>
+                                visible={a.type === AttachmentType.TERMINBEKREFTELSE && attachmentsToRender.length > 0}
+                            >
                                 <DatoInput
                                     id="terminbekreftelseDato"
                                     name="terminbekreftelseDato"
@@ -172,10 +174,7 @@ const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
 
     const førsteUttaksdagEllerUttsettelsesdag = søknad.uttaksplan
-        .filter(
-            (p) =>
-                p.tidsperiode.fom !== undefined && (p.type === Periodetype.Utsettelse || p.type === Periodetype.Uttak)
-        )
+        .filter((p) => p.tidsperiode.fom !== undefined && !isInfoPeriode(p))
         .sort(sorterPerioder)
         .shift();
 
