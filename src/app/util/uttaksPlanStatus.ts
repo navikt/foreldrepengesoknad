@@ -26,7 +26,11 @@ export const finnAntallDagerÅTrekke = (periode: Periode): number => {
         const periodeErGradert = periode.stillingsprosent !== undefined;
         const periodeErSamtidigUttak = periode.samtidigUttakProsent !== undefined;
 
-        if (periodeErSamtidigUttak) {
+        if (periodeErGradert && periodeErSamtidigUttak) {
+            const graderingsProsent = (100 - getFloatFromString(periode.stillingsprosent)!) / 100;
+
+            return dager * graderingsProsent;
+        } else if (periodeErSamtidigUttak) {
             return dager * (getFloatFromString(periode.samtidigUttakProsent)! / 100);
         } else if (periodeErGradert) {
             const graderingsProsent = (100 - getFloatFromString(periode.stillingsprosent)!) / 100;
