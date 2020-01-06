@@ -1,0 +1,56 @@
+name: Promote
+on:
+  repository_dispatch:
+    types: [promote-command]
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/foreldrepengesoknad
+      
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    
+    steps:
+       
+      - name: Set variabler for image og cluster
+        run: |
+           echo "::set-env name=TAG::$(echo ${{ github.event.client_payload.slash_command.arg1 }} | cut -c16-22)"  
+           echo "::set-env name=IMAGE::$IMAGE_BASE:${{ github.event.client_payload.slash_command.arg1 }}" 
+           echo "::set-env name=CLUSTER::${{ github.event.client_payload.slash_command.arg2 }}"         
+       
+      - name: Sjekk ut kode
+        uses: actions/checkout@v1
+        with:
+          ref: ${{ env.TAG }}
+    
+      - name: Promoter til cluster
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: ${{ env.CLUSTER }}
+          RESOURCE: naiserator.yaml
+          PRINT_PAYLOAD: true
+          VARS: ${{ env.CLUSTER }}.json 
+          
+      - name: Oppdater kommentar med deployment status ved feil
+        if: failure()
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.NOTIFICATION }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          body: |
+            >promote ${{ env.IMAGE }} til ${{ env.CLUSTER }} feilet
+          reaction-type: -1          
+ 
+      - name: Oppdater kommentar med deployment status
+        if: success()
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.NOTIFICATION }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          body: |
+            >promote ${{ env.IMAGE }} til ${{ env.CLUSTER }} var OK
+          reaction-type: rocket
+                  

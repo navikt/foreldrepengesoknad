@@ -1,0 +1,57 @@
+name: Prod
+on:
+  repository_dispatch:
+    types: [prod-command]
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/foreldrepengesoknad
+      
+jobs:
+  prod:
+    runs-on: ubuntu-latest
+    
+    steps:
+ 
+      - name: Sjekk ut kode
+        uses: actions/checkout@v1
+    
+      - name: Set variabler for dato og sha
+        run: |
+           echo "::set-env name=DATO::$(git show --no-patch --oneline --pretty=%ad  --date=format:'%Y%m%d%H%M%S' $GITHUB_SHA)"    
+           echo "::set-env name=SHA::$(echo $GITHUB_SHA | cut -c1-7)"  
+  
+      - name: Set image navn
+        run: |
+         echo "::set-env name=IMAGE::$IMAGE_BASE:${{ env.DATO }}-${{ env.SHA }}"   
+     
+      - name: deploy til prod
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod
+          RESOURCE: naiserator.yaml
+          PRINT_PAYLOAD: true
+          VARS: prod.json 
+          
+      - name: Oppdater kommentar med deployment status ved feil
+        if: failure()
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.NOTIFICATION }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          body: |
+            >Produksjonssetting ${{ env.IMAGE }} feilet
+          reaction-type: -1          
+ 
+      - name: Oppdater kommentar med deployment status
+        if: success()
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.NOTIFICATION }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          body: |
+            >Produksjonssetting av ${{ env.IMAGE }} var OK
+          reaction-type: rocket
+                  
