@@ -1,0 +1,54 @@
+name: Deployment pipeline q1
+
+on:
+  push:
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/foreldrepengesoknad
+  
+jobs:
+  kompiler:
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Sjekk ut kode
+        uses: actions/checkout@v1
+     
+      - name: Hent tag    
+        run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)"  
+             
+      - run:  npm install
+      - run:  npm run jest
+      - run: |
+           npm run build
+          echo "::set-env name=IMAGE::$IMAGE_BASE:$TAG" 
+                   
+      - name: Bygg, tag og push Docker image  
+        run: |
+          docker build --tag ${IMAGE} --tag ${IMAGE_BASE}:latest .
+          echo  ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} --password-stdin
+          docker push ${IMAGE_BASE}   
+    
+      - name: Deploy til k8s cluster dev-fss
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-sbs
+          RESOURCE: naiserator.yaml
+          PRINT_PAYLOAD: true
+          VARS: dev.json  
+          
+      - name: Informer om deployment i issue som kan kommenteres for å promotere til andre miljøer
+        if: success()
+        run: |
+         echo "Lager  issue for $TAG"
+             curl -X POST \
+            --url  https://api.github.com/repos/${{ github.repository }}/issues \
+            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            --header "content-type: application/json" \
+            --data '{
+              "labels": ["deployment"],
+              "title": "Deployment av ${{env.TAG}} til dev-fss var OK",
+              "body":  "Kommenter med <b>/promote ${{env.TAG}} env</b>, hvor <b>env</b> er et gyldig clusternavn. Kommenter med <b>/prod</b> for å deploye direkte til prod"
+            }'       
+     
