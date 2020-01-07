@@ -1,0 +1,45 @@
+name: Bygg branch eller PR
+
+on: 
+  pull_request
+  push:
+    branches:    
+      - '!master'   
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/foreldrepengesoknad
+  
+jobs:
+  kompiler:
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Sjekk ut kode
+        uses: actions/checkout@v2
+     
+      - name: Hent tag    
+        run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)"  
+             
+             
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+         path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+         restore-keys: |
+           ${{ runner.os }}-build-${{ env.cache-name }}-
+           ${{ runner.os }}-build-
+           ${{ runner.os }}-
+         
+      - run:  npm install
+      - run:  npm run jest
+      - run: |
+          npm run build
+          echo "::set-env name=IMAGE::$IMAGE_BASE:$TAG" 
+                   
+      - name: Bygg, tag og push Docker image  
+        run: |
+          docker build --tag ${IMAGE} --tag ${IMAGE_BASE}:latest .
+          echo  ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} --password-stdin
+          docker push ${IMAGE_BASE}   
