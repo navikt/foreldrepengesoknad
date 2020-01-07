@@ -3,7 +3,8 @@ name: Bygg branch eller PR
 on: 
   pull_request:
   push:
-    branches:    
+    branches:   
+      - '*'  
       - '!master'   
 
 env:
