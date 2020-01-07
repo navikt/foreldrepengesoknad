@@ -47,7 +47,7 @@ jobs:
           CLUSTER: dev-sbs
           RESOURCE: naiserator.yaml
           PRINT_PAYLOAD: true
-          VARS: dev.json  
+          VARS: dev-sbs.json  
           
       - name: Informer om deployment i issue som kan kommenteres for å promotere til andre miljøer
         if: success()
