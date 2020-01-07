@@ -550,11 +550,11 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
 
     let relevantStartDatoForUttak: Date | undefined;
     if (søknadsinfo) {
-        const { søknaden, søker, uttaksdatoer } = søknadsinfo;
+        const { søknaden, søker, uttaksdatoer, annenForelder } = søknadsinfo;
 
         if (
             søknaden.erFødsel &&
-            søknaden.erDeltUttak &&
+            (søknaden.erDeltUttak || (!søker.erAleneOmOmsorg && !annenForelder.harRett)) &&
             søker.erFarEllerMedmor &&
             !søknad.ekstrainfo.erEnkelEndringssøknad
         ) {
