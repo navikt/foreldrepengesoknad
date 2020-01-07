@@ -3,7 +3,7 @@
 Kildekoden til frontend-appen for ny selvbetjeningsløsning for
 foreldrepengesøknad.
 
-# Komme i gang
+# For å komme i gang
 
 For å kjøre opp appen i dev:
 
