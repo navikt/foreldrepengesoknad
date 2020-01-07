@@ -2,6 +2,8 @@ name: Deployment pipeline q1
 
 on:
   push:
+    branches:
+      - master 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/foreldrepengesoknad
