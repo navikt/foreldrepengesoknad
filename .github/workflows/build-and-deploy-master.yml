@@ -60,6 +60,6 @@ jobs:
             --data '{
               "labels": ["deployment","q1"],
               "title": "Deployment av ${{env.TAG}} til dev-fss q1 var OK",
-              "body":  "Kommenter med <b>/promote ${{env.TAG}} env</b>, hvor <b>env</b> er et gyldig clusternavn. Kommenter med <b>/prod</b> for å deploye direkte til prod"
+              "body":  "Kommenter med <b>/promote ${{env.TAG}} env</b>, hvor <b>env</b> er et gyldig clusternavn. Kommenter med <b>/prod</b> for å deploye <b> HEAD</b> fra <b>Master</b> direkte til prod"
             }'       
      
