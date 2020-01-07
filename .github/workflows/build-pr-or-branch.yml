@@ -3,9 +3,8 @@ name: Bygg branch eller PR
 on: 
   pull_request:
   push:
-    branches:   
-      - '*'  
-      - '!master'   
+    branches-ignore:   
+      - master   
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
