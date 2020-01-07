@@ -12,7 +12,7 @@ jobs:
     steps:
     
       - name: Sjekk ut kode
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
      
       - name: Hent tag    
         run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)"  
@@ -58,8 +58,8 @@ jobs:
             --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             --header "content-type: application/json" \
             --data '{
-              "labels": ["deployment"],
-              "title": "Deployment av ${{env.TAG}} til dev-fss var OK",
+              "labels": ["deployment","q1"],
+              "title": "Deployment av ${{env.TAG}} til dev-fss q1 var OK",
               "body":  "Kommenter med <b>/promote ${{env.TAG}} env</b>, hvor <b>env</b> er et gyldig clusternavn. Kommenter med <b>/prod</b> for å deploye direkte til prod"
             }'       
      
