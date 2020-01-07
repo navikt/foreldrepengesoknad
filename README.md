@@ -3,9 +3,9 @@
 Kildekoden til frontend-appen for ny selvbetjeningsløsning for
 foreldrepengesøknad.
 
-# Komme i gang
+# For å komme i gang
 
-For å kjøre opp app-en i dev:
+For å kjøre opp appen i dev:
 
 1.  `npm install`.
 2.  `npm run start`.
