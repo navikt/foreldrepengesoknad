@@ -38,7 +38,7 @@ jobs:
         with:
           token: ${{ secrets.NOTIFICATION }}
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
-          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
           body: |
             >promote ${{ github.event.client_payload.slash_command.args }} feilet
           reaction-type: -1          
@@ -49,7 +49,7 @@ jobs:
         with:
           token: ${{ secrets.NOTIFICATION }}
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
-          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
           body: |
             >promote ${{ github.event.client_payload.slash_command.args }} var OK
           reaction-type: rocket
