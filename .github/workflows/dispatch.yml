@@ -11,7 +11,7 @@ jobs:
         with:
           reaction-token: ${{ secrets.GITHUB_TOKEN }}
           token: ${{ secrets.NOTIFICATION }}
-          commands: promote,prod
+          commands: promote
           issue-type: issue 
           allow_edits: true   
           reactions: false     
