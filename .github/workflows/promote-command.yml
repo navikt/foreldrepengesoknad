@@ -40,7 +40,7 @@ jobs:
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
           comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
           body: |
-            >promote ${{ env.IMAGE }} til ${{ env.CLUSTER }} feilet
+            >promote ${{ github.event.client_payload.slash_command.args }} feilet
           reaction-type: -1          
  
       - name: Oppdater kommentar med deployment status
@@ -51,6 +51,6 @@ jobs:
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
           comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
           body: |
-            >promote ${{ env.TAG}} til ${{ env.CLUSTER }} var OK
+            >promote ${{ github.event.client_payload.slash_command.args }} var OK
           reaction-type: rocket
                   
