@@ -42,26 +42,33 @@ jobs:
           echo  ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} --password-stdin
           docker push ${IMAGE_BASE}   
     
-      - name: Deploy til k8s cluster dev-sbs
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-sbs
-          RESOURCE: naiserator.yaml
-          PRINT_PAYLOAD: true
-          VARS: dev-sbs.json  
-          
-      - name: Informer om deployment i issue som kan kommenteres for å promotere til andre miljøer
+      - name: Tag release      
+        uses: maxkomarychev/oction-create-release@v0.7.1
+        id: release
+        with:
+          token: ${{ secrets.NOTIFICATION }}
+          tag_name: ${{ env.TAG }}
+  
+      - name: Opprett deployment issue
         if: success()
-        run: |
-         echo "Lager  issue for $TAG"
-             curl -X POST \
-            --url  https://api.github.com/repos/${{ github.repository }}/issues \
-            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            --header "content-type: application/json" \
-            --data '{
-              "labels": ["deployment","q1"],
-              "title": "Deployment av ${{env.TAG}} til dev-fss q1 var OK",
-              "body":  "Kommenter med <b>/promote ${{env.TAG}} env</b>, hvor <b>env</b> er et gyldig clusternavn. Kommenter med <b>/prod</b> for å deploye <b> HEAD</b> fra <b>Master</b> direkte til prod"
-            }'       
+        uses: maxkomarychev/oction-create-issue@v0.7.1
+        id: createdeployissue
+        with:
+          token: ${{ secrets.NOTIFICATION }}
+          title: Deploy av ${{ env.TAG }}
+          labels: deployment
+          body: |
+            Kommenter med <b>/promote ${{ env.TAG }} cluster</b>, hvor <b>cluster</b> er et gyldig clusternavn
+            <table>
+            <tr><th>Cluster</th></tr>
+            <tr><td>dev-fss</td>
+            <tr><td>prod-fss</tr>
+            </table>
+      - name: Trigg deploy til dev-sbs
+        if: success()
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.NOTIFICATION }}
+          issue-number: ${{ steps.createdeployissue.outputs.number }}
+          body: /promote ${{ env.TAG }} dev-sbs
      
