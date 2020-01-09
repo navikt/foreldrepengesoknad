@@ -8,6 +8,9 @@ import List from 'app/components/elementer/list/List';
 import SelvstendigNæringsdrivendeListElement from './SelvstendigNæringsdrivendeListElement';
 import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../../../spørsmål/HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål';
 import { Søker } from '../../../../types/søknad/Søker';
+import BEMHelper from 'common/util/bem';
+
+import './selvstendigNæringsdrivendeBolk.less';
 
 interface SelvstendigNæringsdrivendeBolkProps {
     næringListe: Næring[];
@@ -28,7 +31,7 @@ type SelvstendigNæringsdrivendeBolkStatePartial = Partial<SelvstendigNæringsdr
 export default class SelvstendigNæringsdrivendeBolk extends React.Component<
     SelvstendigNæringsdrivendeBolkProps,
     SelvstendigNæringsdrivendeBolkState
-> {
+    > {
     constructor(props: SelvstendigNæringsdrivendeBolkProps) {
         super(props);
 
@@ -101,6 +104,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
         } = this.props;
 
         const { næringToEdit } = this.state;
+        const bem = BEMHelper('selvstendigNæringsdrivendeBolk');
 
         return (
             <React.Fragment>
@@ -116,7 +120,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                     />
                 </Block>
                 {harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true && (
-                    <React.Fragment>
+                    <div className={bem.element('innhold')}>
                         <Block margin="xs" visible={næringListe.length > 0}>
                             <List
                                 data={næringListe}
@@ -132,8 +136,8 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                                 )}
                             />
                         </Block>
-                        <Block>
-                            <Knapp onClick={() => this.openModal()} htmlType="button" data-name="leggTilNæring">
+                        <Block margin="none">
+                            <Knapp style={{ backgroundColor: '#ffffff' }} onClick={() => this.openModal()} htmlType="button" data-name="leggTilNæring">
                                 <FormattedMessage id="selvstendigNæringsdrivende.leggTilNæring" />
                             </Knapp>
                         </Block>
@@ -149,7 +153,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                             }
                             onSubmit={næringToEdit !== undefined ? this.onEdit : this.onAdd}
                         />
-                    </React.Fragment>
+                    </div>
                 )}
             </React.Fragment>
         );
