@@ -14,6 +14,9 @@ import visibility from './visibility';
 import { notInFutureAvgrensning } from '../../../util/validation/common';
 import { getFrilansOppstartRules } from '../../../util/validation/frilans';
 
+import './frilanserBolk.less';
+import BEMHelper from 'common/util/bem';
+
 interface FrilanserBolkProps {
     søker: Søker;
     onChangeSøker: (v: SøkerPartial) => void;
@@ -49,7 +52,7 @@ class FrilanserBolk extends React.Component<Props> {
             frilansInformasjon && frilansInformasjon.harJobbetForNærVennEllerFamilieSiste10Mnd;
 
         return (
-            <Block margin={harJobbetForNærVennEllerFamilieSiste10Mnd ? 'xs' : 'm'}>
+            <Block margin={harJobbetForNærVennEllerFamilieSiste10Mnd ? 'xs' : 'none'}>
                 <HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål
                     onChange={(v: boolean) =>
                         this.handleFrilansinformasjonOnChange({
@@ -71,6 +74,7 @@ class FrilanserBolk extends React.Component<Props> {
         const oppdragForNæreVennerEllerFamilieSiste10Mnd =
             frilansInformasjon && frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd;
         const oppstartsdato = frilansInformasjon && frilansInformasjon.oppstart;
+        const bem = BEMHelper('frilanserBolk');
 
         return (
             <React.Fragment>
@@ -86,56 +90,60 @@ class FrilanserBolk extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block animated={false} visible={visibility.startdatoVisible(søker)}>
-                    <DatoInput
-                        name="frilansStartDato"
-                        id="frilansStartDato"
-                        label={getMessage(intl, 'frilans.oppstart')}
-                        onChange={(oppstart: Date) =>
-                            this.handleFrilansinformasjonOnChange({
-                                oppstart
-                            })
-                        }
-                        dato={oppstartsdato}
-                        datoAvgrensinger={notInFutureAvgrensning}
-                        validators={getFrilansOppstartRules(oppstartsdato, intl)}
-                    />
-                </Block>
+                {søker.harJobbetSomFrilansSiste10Mnd === true && (
+                    <div className={bem.element('innhold')}>
+                        <Block animated={false} visible={visibility.startdatoVisible(søker)} margin="xs">
+                            <DatoInput
+                                name="frilansStartDato"
+                                id="frilansStartDato"
+                                label={getMessage(intl, 'frilans.oppstart')}
+                                onChange={(oppstart: Date) =>
+                                    this.handleFrilansinformasjonOnChange({
+                                        oppstart
+                                    })
+                                }
+                                dato={oppstartsdato}
+                                datoAvgrensinger={notInFutureAvgrensning}
+                                validators={getFrilansOppstartRules(oppstartsdato, intl)}
+                            />
+                        </Block>
 
-                <Block visible={visibility.fremdelesFrilansVisible(søker)}>
-                    <JobberDuFremdelesSomFrilansSpørsmål
-                        onChange={(v: boolean) =>
-                            this.handleFrilansinformasjonOnChange({
-                                jobberFremdelesSomFrilans: v
-                            })
-                        }
-                        jobberFremdelesSomFrilans={jobberFremdelesSomFrilans}
-                    />
-                </Block>
+                        <Block visible={visibility.fremdelesFrilansVisible(søker)} margin="xs">
+                            <JobberDuFremdelesSomFrilansSpørsmål
+                                onChange={(v: boolean) =>
+                                    this.handleFrilansinformasjonOnChange({
+                                        jobberFremdelesSomFrilans: v
+                                    })
+                                }
+                                jobberFremdelesSomFrilans={jobberFremdelesSomFrilans}
+                            />
+                        </Block>
 
-                <Block visible={visibility.oppdragBolkVisible(søker)} margin="none">
-                    <FrilansOppdragBolk
-                        renderSpørsmål={this.renderOppdragSiste10MndSpørsmål}
-                        showOppdragsPerioderContent={visibility.oppdragPerioderVisible(søker)}
-                        oppdragListe={oppdragForNæreVennerEllerFamilieSiste10Mnd || []}
-                        onChange={(oppdragListe: FrilansOppdrag[]) =>
-                            this.handleFrilansinformasjonOnChange({
-                                oppdragForNæreVennerEllerFamilieSiste10Mnd: oppdragListe
-                            })
-                        }
-                    />
-                </Block>
+                        <Block visible={visibility.oppdragBolkVisible(søker)} margin="xs">
+                            <FrilansOppdragBolk
+                                renderSpørsmål={this.renderOppdragSiste10MndSpørsmål}
+                                showOppdragsPerioderContent={visibility.oppdragPerioderVisible(søker)}
+                                oppdragListe={oppdragForNæreVennerEllerFamilieSiste10Mnd || []}
+                                onChange={(oppdragListe: FrilansOppdrag[]) =>
+                                    this.handleFrilansinformasjonOnChange({
+                                        oppdragForNæreVennerEllerFamilieSiste10Mnd: oppdragListe
+                                    })
+                                }
+                            />
+                        </Block>
 
-                <Block visible={visibility.driverDuFosterhjemVisible(søker)}>
-                    <DriverDuFosterhjemSpørsmål
-                        onChange={(v: boolean) =>
-                            this.handleFrilansinformasjonOnChange({
-                                driverFosterhjem: v
-                            })
-                        }
-                        driverFosterhjem={driverFosterhjem}
-                    />
-                </Block>
+                        <Block visible={visibility.driverDuFosterhjemVisible(søker)} margin="xs">
+                            <DriverDuFosterhjemSpørsmål
+                                onChange={(v: boolean) =>
+                                    this.handleFrilansinformasjonOnChange({
+                                        driverFosterhjem: v
+                                    })
+                                }
+                                driverFosterhjem={driverFosterhjem}
+                            />
+                        </Block>
+                    </div>
+                )}
             </React.Fragment>
         );
     }
