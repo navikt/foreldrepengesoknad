@@ -108,7 +108,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
 
         return (
             <React.Fragment>
-                <Block margin={harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd ? 'xs' : 'm'}>
+                <Block margin="xs">
                     <HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål
                         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={
                             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd

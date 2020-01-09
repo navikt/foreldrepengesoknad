@@ -78,7 +78,7 @@ class FrilanserBolk extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Block>
+                <Block margin="xs">
                     <HarDuJobbetSomFrilansSiste10MndSpørsmål
                         onChange={(v: boolean) =>
                             this.handleSøkerOnChange({
