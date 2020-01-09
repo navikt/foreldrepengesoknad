@@ -8,6 +8,9 @@ import AndreInntekterListElement from './AndreInntekterListElement';
 import AnnenInntektSiste10MndSpørsmål from '../../../spørsmål/AnnenInntektSiste10MndSpørsmål';
 import { Søker } from '../../../types/søknad/Søker';
 import List from 'app/components/elementer/list/List';
+import BEMHelper from 'common/util/bem';
+
+import './andreInntekterBolk.less';
 
 interface AndreInntekterBolkProps {
     harHattAnnenInntektSiste10Mnd: boolean | undefined;
@@ -93,8 +96,10 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
 
         const { annenInntektToEdit } = this.state;
 
+        const bem = BEMHelper('andreInntekterBolk');
+
         return (
-            <React.Fragment>
+            <>
                 <Block margin={harHattAnnenInntektSiste10Mnd ? 'xs' : 'm'}>
                     <AnnenInntektSiste10MndSpørsmål
                         harHattAnnenInntekt={harHattAnnenInntektSiste10Mnd}
@@ -106,7 +111,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
                     />
                 </Block>
                 {harHattAnnenInntektSiste10Mnd === true && (
-                    <React.Fragment>
+                    <div className={bem.element('innhold')}>
                         <Block margin="xs" visible={andreInntekterSiste10Mnd.length > 0}>
                             <List
                                 data={andreInntekterSiste10Mnd}
@@ -121,12 +126,17 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
                             />
                         </Block>
 
-                        <Block>
-                            <Knapp onClick={() => this.openModal()} htmlType="button" data-name="leggTilAnnenInntekt">
+                        <Block margin="none">
+                            <Knapp
+                                style={{ backgroundColor: '#ffffff' }}
+                                onClick={() => this.openModal()}
+                                htmlType="button"
+                                data-name="leggTilAnnenInntekt"
+                            >
                                 <FormattedMessage id="annenInntekt.leggTilInntekt" />
                             </Knapp>
                         </Block>
-                    </React.Fragment>
+                    </div>
                 )}
 
                 <AnnenInntektModal
@@ -140,7 +150,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
                     annenInntekt={annenInntektToEdit}
                     onSubmit={annenInntektToEdit ? this.onEditSubmit : this.onAdd}
                 />
-            </React.Fragment>
+            </>
         );
     }
 }
