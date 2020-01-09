@@ -1,6 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
-import Søknad from '../../types/søknad/Søknad';
+import Søknad, { SøkerRolle } from '../../types/søknad/Søknad';
 import HarAnnenForelderSøktForeldrepengerSpørsmål from './enkeltspørsmål/HarAnnenForelderSøktForeldrepengerSpørsmål';
 import DekningsgradSpørsmål from './enkeltspørsmål/DekningsgradSpørsmål';
 import MorSinSisteUttaksdagSpørsmål from './enkeltspørsmål/MorSinSisteUttaksdagSpørsmål';
@@ -65,6 +65,26 @@ const Scenario1: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
             />
 
             <DekningsgradSpørsmål />
+            <Block
+                visible={
+                    (søknad.søker.rolle === SøkerRolle.FAR || søknad.søker.rolle === SøkerRolle.MEDMOR) &&
+                    harSvartPåDekningsgradSpørsmål
+                }
+                margin="xs"
+            >
+                <VeilederInfo
+                    messages={[
+                        {
+                            type: 'normal',
+                            contentIntlKey:
+                                'uttaksplan.skjema.farMedmor.infoOmTidsromMellomMorsSisteDagOgFarsFørsteDag',
+                            values: {
+                                navnMor: navnPåForeldre.mor
+                            }
+                        }
+                    ]}
+                />
+            </Block>
             <MorSinSisteUttaksdagSpørsmål
                 visible={harSvartPåDekningsgradSpørsmål}
                 navnMor={søknad.annenForelder.fornavn}
@@ -208,7 +228,8 @@ const Scenario4: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
                     startdatoPermisjon !== undefined &&
                     moment(latestDate).isBefore(moment(startdatoPermisjon)) &&
                     stebarnsadopsjon !== true
-                }>
+                }
+            >
                 <VeilederInfo
                     messages={[
                         {
@@ -229,7 +250,8 @@ const Scenario4: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
                                 søknad.barn.antallBarn > 1 &&
                                 skjema.startdatoPermisjon !== undefined &&
                                 skjema.harAnnenForelderSøktFP !== true
-                            }>
+                            }
+                        >
                             <VeilederInfo
                                 messages={[
                                     {
