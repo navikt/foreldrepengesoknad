@@ -821,6 +821,8 @@
         "Dato for omsorgsovertakinga ({dato})",
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.annenDato.spørsmål": "Vel annan dato",
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.spørsmål": "Når skal du starte foreldrepengane dine?",
+    "uttaksplan.skjema.farMedmor.infoOmTidsromMellomMorsSisteDagOgFarsFørsteDag":
+        "Du skal leggja inn siste dagen {navnMor} får utbetalt foreldrepenger frå NAV. Viss {navnMor} har ulønna permisjon eller ferie så er ikkje dette ein del av foreldrepengeperioden, du skal derfor leggja inn siste dag {navnMor} får utbetalt foreldrepenger. Er du usikker på kva som er riktig dato kan de sjå i vedtaket mor har fått frå NAV.",
     "uttaksplan.skjema.aleneomsorgFarMedmor.navSaraVeileder":
         "Foreldrepengeperioden din startar når <b>barnet er født</b>. Dersom {navn} har hatt foreldrepengar før du vart åleine om omsorga, kan du få foreldrepengar for perioden som er igjen.",
     "uttaksplan.skjema.adopsjon.navSaraVeileder":
