@@ -233,11 +233,10 @@ const reduceDuplikateSaksperioderGrunnetArbeidsforhold = (
             );
             const arbeidsform = periode.uttakArbeidType[0];
 
-            if (
-                arbeidsform === UttakArbeidType.FRILANS ||
-                arbeidsform === UttakArbeidType.SELVSTENDIG_NÆRINGSDRIVENDE
-            ) {
-                periodeSomOverlever!.uttakArbeidType.push(arbeidsform);
+            if (arbeidsform !== undefined && periodeSomOverlever !== undefined) {
+                if (!periodeSomOverlever.uttakArbeidType.includes(arbeidsform)) {
+                    periodeSomOverlever.uttakArbeidType.push(arbeidsform);
+                }
             }
 
             return resultatPerioder;
