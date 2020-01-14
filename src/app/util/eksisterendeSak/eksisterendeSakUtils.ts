@@ -102,7 +102,7 @@ const mapSaksperiodeFromDTO = (p: UttaksplanPeriodeDTO): Saksperiode => {
         stønadskontotype: stønadskontotype as StønadskontoType,
         utsettelsePeriodeType: utsettelsePeriodeType as SaksperiodeUtsettelseÅrsakType,
         arbeidsgiverInfo: arbeidsgiverInfo as ArbeidsgiverInfo,
-        uttakArbeidType: uttakArbeidType as UttakArbeidType,
+        uttakArbeidType: [uttakArbeidType as UttakArbeidType],
         tidsperiode: {
             fom: new Date(periode.fom),
             tom: new Date(periode.tom)
@@ -220,6 +220,25 @@ const reduceDuplikateSaksperioderGrunnetArbeidsforhold = (
 
         if (!periode.graderingInnvilget && !inneholderDuplikatSaksperiode(resultatPerioder, periode)) {
             resultatPerioder.push(periode);
+
+            return resultatPerioder;
+        }
+
+        if (!periode.graderingInnvilget && inneholderDuplikatSaksperiode(resultatPerioder, periode)) {
+            const periodeSomOverlever = saksperioder.find(
+                (s) =>
+                    Tidsperioden(s.tidsperiode).erLik(periode.tidsperiode) &&
+                    s.gjelderAnnenPart === periode.gjelderAnnenPart &&
+                    s.guid !== periode.guid
+            );
+            const arbeidsform = periode.uttakArbeidType[0];
+
+            if (
+                arbeidsform === UttakArbeidType.FRILANS ||
+                arbeidsform === UttakArbeidType.SELVSTENDIG_NÆRINGSDRIVENDE
+            ) {
+                periodeSomOverlever!.uttakArbeidType.push(arbeidsform);
+            }
 
             return resultatPerioder;
         }
