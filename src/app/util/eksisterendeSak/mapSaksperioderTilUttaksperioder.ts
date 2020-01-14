@@ -189,7 +189,9 @@ export const mapUttaksperiodeFromSaksperiode = (
         samtidigUttakProsent,
         ønskerFlerbarnsdager: saksperiode.flerbarnsdager,
         stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
-        arbeidsformer: gradert ? [getArbeidsformFromUttakArbeidstype(saksperiode.uttakArbeidType)] : undefined,
+        arbeidsformer: gradert
+            ? saksperiode.uttakArbeidType.map((arbType) => getArbeidsformFromUttakArbeidstype(arbType))
+            : undefined,
         orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
         morsAktivitetIPerioden: saksperiode.morsAktivitetIPerioden,
         erMorForSyk:
@@ -219,13 +221,13 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag:
     };
 
     if (utsettelsesperiode.årsak === UtsettelseÅrsakType.Arbeid) {
-        const arbeidsform = getArbeidsformFromUttakArbeidstype(saksperiode.uttakArbeidType);
+        const arbeidsformer = saksperiode.uttakArbeidType.map((arbType) => getArbeidsformFromUttakArbeidstype(arbType));
         const orgnummer = saksperiode.arbeidsgiverInfo.id;
 
         return {
             ...utsettelsesperiode,
-            arbeidsformer: [arbeidsform],
-            orgnumre: arbeidsform === Arbeidsform.arbeidstaker ? [orgnummer] : undefined,
+            arbeidsformer,
+            orgnumre: arbeidsformer.includes(Arbeidsform.arbeidstaker) ? [orgnummer] : undefined,
             erArbeidstaker: orgnummer ? true : false
         };
     }
