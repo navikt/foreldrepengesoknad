@@ -64,11 +64,17 @@ jobs:
             <tr><td>dev-sbs</td>
             <tr><td>prod-sbs</tr>
             </table>
-      - name: Trigg deploy til dev-sbs
+     
+      - name: Trigg deploy til dev-sbs 
         if: success()
-        uses: peter-evans/create-or-update-comment@v1
+        uses: actions/github-script@0.3.0
         with:
-          token: ${{ secrets.NOTIFICATION }}
-          issue-number: ${{ steps.createdeployissue.outputs.number }}
-          body: /promote ${{ env.TAG }} dev-sbs
+          github-token: ${{secrets.NOTIFICATION}}
+          script: |
+            const issue = { owner: context.issue.owner,
+                            repo: context.issue.repo,
+                            issue_number: ${{ steps.createdeployissue.outputs.number }} }
+            github.issues.createComment({...issue,
+                                    title: 'Deploy av ${{ env.TAG }}',
+                                    body: '/promote ${{ env.TAG }} dev-sbs'})
      
