@@ -32,7 +32,7 @@ jobs:
           PRINT_PAYLOAD: true
           VARS: ${{ env.CLUSTER }}.json 
           
-     - name: Oppdater kommentar med deployment status ved feil
+      - name: Oppdater kommentar med deployment status ved feil
         if: failure()
         uses: actions/github-script@0.4.0
         with:
