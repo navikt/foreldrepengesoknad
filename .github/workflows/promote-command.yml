@@ -32,25 +32,31 @@ jobs:
           PRINT_PAYLOAD: true
           VARS: ${{ env.CLUSTER }}.json 
           
-      - name: Oppdater kommentar med deployment status ved feil
+     - name: Oppdater kommentar med deployment status ved feil
         if: failure()
-        uses: peter-evans/create-or-update-comment@v1
+        uses: actions/github-script@0.4.0
         with:
-          token: ${{ secrets.NOTIFICATION }}
-          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
-          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
-          body: |
-            >promote ${{ github.event.client_payload.slash_command.args }} feilet
-          reaction-type: -1          
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const issue = { owner: context.issue.owner,
+                            repo: context.issue.repo,
+                            issue_number: ${{ github.event.client_payload.github.payload.issue.number }} }
+            github.issues.createComment({...issue,
+                                    body: '>promote ${{ github.event.client_payload.slash_command.args }} feilet'})
+            github.issues.addLabels({...issue, labels: ['deployment','${{ env.CLUSTER }}']})
+     
  
       - name: Oppdater kommentar med deployment status
         if: success()
-        uses: peter-evans/create-or-update-comment@v1
+        uses: actions/github-script@0.4.0
         with:
-          token: ${{ secrets.NOTIFICATION }}
-          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
-          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
-          body: |
-            >promote ${{ github.event.client_payload.slash_command.args }} var OK
-          reaction-type: rocket
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const issue = { owner: context.issue.owner,
+                            repo: context.issue.repo,
+                            issue_number: ${{ github.event.client_payload.github.payload.issue.number }} }
+            github.issues.createComment({...issue,
+                                    body: '>promote ${{ github.event.client_payload.slash_command.args }} var OK'})
+            github.issues.addLabels({...issue, labels: ['deployment','${{ env.CLUSTER }}']})
+   
                   
