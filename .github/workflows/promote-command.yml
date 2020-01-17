@@ -43,7 +43,7 @@ jobs:
                             issue_number: ${{ github.event.client_payload.github.payload.issue.number }} }
             github.issues.createComment({...issue,
                                     body: '>promote ${{ github.event.client_payload.slash_command.args }} feilet'})
-            github.issues.addLabels({...issue, labels: ['deployment','${{ env.CLUSTER }}']})
+            github.issues.addLabels({...issue, labels: ['deployment-feil','${{ env.CLUSTER }}']})
      
  
       - name: Oppdater kommentar med deployment status
