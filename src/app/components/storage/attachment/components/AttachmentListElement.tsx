@@ -4,13 +4,14 @@ import * as classnames from 'classnames';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import SlettKnapp from '../../../../../common/components/slettKnapp/SlettKnapp';
 
-import './attachment.less';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import Lenke from 'nav-frontend-lenker';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { bytesString } from 'app/util/filesize';
 import BEMHelper from 'common/util/bem';
 import VedleggIkon from 'common/components/ikoner/VedleggIkon';
+
+import './attachment.less';
 
 interface OwnProps {
     attachment: Attachment;
@@ -20,7 +21,7 @@ interface OwnProps {
 
 type Props = OwnProps & InjectedIntlProps;
 
-const Attachment: React.StatelessComponent<Props> = ({ attachment, showFileSize, onDelete, intl }) => {
+const AttachmentListElement: React.StatelessComponent<Props> = ({ attachment, showFileSize, onDelete, intl }) => {
     const BEM = BEMHelper('attachment');
     const cls = classnames(BEM.block, {
         [BEM.modifier('pending')]: attachment.pending
@@ -61,4 +62,4 @@ const Attachment: React.StatelessComponent<Props> = ({ attachment, showFileSize,
     );
 };
 
-export default injectIntl(Attachment);
+export default injectIntl(AttachmentListElement);

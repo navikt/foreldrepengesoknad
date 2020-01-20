@@ -1,8 +1,9 @@
 import * as React from 'react';
-import AttachmentComponent from './Attachment';
+import AttachmentListElement from './AttachmentListElement';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import './attachment.less';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+
+import './attachment.less';
 
 interface Props {
     attachments: Attachment[];
@@ -18,7 +19,7 @@ const AttachmentList: React.StatelessComponent<Props> = (props) => {
                 {attachments.map((attachment, index) => (
                     <CSSTransition classNames="transitionFade" timeout={500} key={index}>
                         <li>
-                            <AttachmentComponent
+                            <AttachmentListElement
                                 attachment={attachment}
                                 onDelete={onDelete}
                                 showFileSize={showFileSize}

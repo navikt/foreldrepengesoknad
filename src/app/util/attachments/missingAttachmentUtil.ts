@@ -8,13 +8,7 @@ import {
 import annenInntektVisibility from '../../steg/andreInntekter/annenInntektModal/visibility';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Attachment, InnsendingsType } from 'app/components/storage/attachment/types/Attachment';
-import {
-    Overføringsperiode,
-    Periode,
-    Periodetype,
-    Utsettelsesperiode,
-    Uttaksperiode
-} from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import { spørsmålOmVedleggVisible } from '../../steg/barn/relasjonTilBarnAdopsjonSteg/visibility';
 import {
     getAttachmentTypeForPeriode,
@@ -49,20 +43,17 @@ const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType):
 export const shouldPeriodeHaveAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
     switch (periode.type) {
         case Periodetype.Overføring:
-            return dokumentasjonBehøvesForOverføringsperiode(
-                søknadsinfo.søker.erFarEllerMedmor,
-                periode as Overføringsperiode
-            );
+            return dokumentasjonBehøvesForOverføringsperiode(søknadsinfo.søker.erFarEllerMedmor, periode);
         case Periodetype.Utsettelse:
             return dokumentasjonBehøvesForUtsettelsesperiode(
-                periode as Utsettelsesperiode,
+                periode,
                 aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
                     søknadsinfo.søker.erFarEllerMedmor,
                     søknadsinfo.annenForelder
                 )
             );
         case Periodetype.Uttak:
-            return dokumentasjonBehøvesForUttaksperiode(periode as Uttaksperiode);
+            return dokumentasjonBehøvesForUttaksperiode(periode);
         default:
             return false;
     }
