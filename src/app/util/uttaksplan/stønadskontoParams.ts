@@ -50,7 +50,7 @@ export const getStønadskontoParams = (
             fødselsdato: undefined,
             termindato: undefined,
             omsorgsovertakelsesdato: undefined,
-            dekningsgrad: (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT ? Dekningsgrad.ÅTTI_PROSENT : Dekningsgrad.HUNDRE_PROSENT) as Dekningsgrad,
+            dekningsgrad: (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT ? Dekningsgrad.ÅTTI_PROSENT : Dekningsgrad.HUNDRE_PROSENT),
             morHarRett: mor.harRett,
             morHarAleneomsorg: mor.erAleneOmOmsorg,
             farHarRett: farMedmor.harRett,

@@ -40,9 +40,9 @@ const getDecorator = () =>
             } else {
                 try {
                     resolve(extractDecoratorFragments(loadFallbackDecorator()));
-                } catch (error) {
-                    console.log(error);
-                    reject(error);
+                } catch (err) {
+                    console.log(err);
+                    reject(err);
                 }
             }
         };

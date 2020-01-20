@@ -21,7 +21,7 @@ export interface Props extends ModalProps {
     /** Label for avbryt-knapp. Default hentes fra intl: komponent.bekreftDialog.avbrytLabel */
     avbrytLabel?: string;
     /** Maks bredde */
-    størrelse?: undefined | '30';
+    størrelse?: '30';
 }
 
 const bem = BEMHelper('bekreftDialog');
@@ -42,7 +42,8 @@ class BekreftDialog extends React.Component<Props & InjectedIntlProps, {}> {
         return (
             <Modal
                 {...modalProps}
-                className={classnames(bem.block, størrelse ? bem.modifier(`size-${størrelse}`) : undefined)}>
+                className={classnames(bem.block, størrelse ? bem.modifier(`size-${størrelse}`) : undefined)}
+            >
                 {this.props.isOpen && (
                     <>
                         {tittel && <Systemtittel className="blokk-s">{tittel}</Systemtittel>}
@@ -56,7 +57,8 @@ class BekreftDialog extends React.Component<Props & InjectedIntlProps, {}> {
                             </Hovedknapp>
                             <Knapp
                                 onClick={() => (onAvbryt ? onAvbryt() : this.props.onRequestClose())}
-                                className="bekreftDialog__avbrytKnapp">
+                                className="bekreftDialog__avbrytKnapp"
+                            >
                                 {this.props.avbrytLabel ||
                                     intl.formatMessage({
                                         id: 'komponent.bekreftDialog.avbrytLabel'

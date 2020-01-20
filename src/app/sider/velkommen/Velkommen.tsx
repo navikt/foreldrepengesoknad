@@ -52,7 +52,7 @@ interface State {
     skalEndre: boolean | undefined;
 }
 
-type Props = StateProps & DispatchProps & InjectedIntlProps & HistoryProps & DispatchProps & SøkerinfoProps;
+type Props = StateProps & DispatchProps & InjectedIntlProps & HistoryProps & SøkerinfoProps;
 
 class Velkommen extends React.Component<Props, State> {
     constructor(props: Props) {
