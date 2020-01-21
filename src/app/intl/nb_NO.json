@@ -683,15 +683,15 @@
     "utsettelseskjema.ferie.utenArbeidsforhold":
         "Du kan dessverre ikke legge inn utsettelse på grunn av lovbestemt ferie fordi du ikke er registrert med et arbeidsforhold i denne perioden. Hvis du er arbeidstaker må du be din arbeidsgiver oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
-        "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha utsettelse lengre enn fire uker og én dag må du ha overført lovbestemt ferie fra i fjor eller ta ut lovbestemt ferie fra neste år. Ferien må avtales med din arbeidsgiver.",
+        "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha utsettelse lengre enn 4 uker og 1 dag må du ha overført lovbestemt ferie fra i fjor eller ta ut lovbestemt ferie fra neste år. Ferien må avtales med din arbeidsgiver.",
     "utsettelseskjema.ferievarsel.ulovlig":
-        "Du har lagt inn til sammen {ukerOgDager} med ferie. Du kan maksimalt legge inn ti uker og to dager med ferie. Ferien må avtales med din arbeidsgiver.",
+        "Du har lagt inn til sammen {ukerOgDager} med ferie. Du kan maksimalt legge inn 10 uker og 2 dager med ferie. Ferien må avtales med din arbeidsgiver.",
     "utsettelseskjema.info.helligdagerIFerie":
         "Ferien du har lagt inn går over en periode med helligdager. Du kan ikke ha ferie på helligdager. Disse dagene vil bli lagt til som foreldrepenger i planen din, du må velge hvilken del av foreldrepengene du ønsker å bruke.",
     "utsettelseskjema.veiledning.ferie":
-        "<p>Du kan utsette foreldrepengene med lovbestemt ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.</p> Ferien må avtales med din arbeidsgiver.",
+        "<p>Du kan utsette foreldrepengene med lovbestemt ferie i inntil 4 uker og 1 dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og 10 feriedager fra neste år. Du kan ikke utsette på helligdager.</p> Ferien må avtales med din arbeidsgiver.",
     "utsettelseskjema.info.utsettelseArbeid":
-        "Hvis du ikke finner arbeidsforholdet ditt her, har ikke arbeidsgiveren din meldt deg inn i Arbeids- og arbeidsgiverregisteret. Du må være registrert som ansatt der du skal jobbe for å bruke den digitale søknaden, ta kontakt med arbeidsgiveren din. <br /><br />Du må sende inn søknaden om å utsette foreldrepenger før du skal begynne å jobbe. Du kan derfor sende inn søknad på papir dersom det er kort tid til du skal begynne å jobbe. Her finner du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>",
+        "Hvis du ikke finner arbeidsforholdet ditt her, har ikke arbeidsgiveren din meldt deg inn i Arbeids- og arbeidsgiverregisteret. Du må være registrert som ansatt der du skal jobbe for å bruke den digitale søknaden, ta kontakt med arbeidsgiveren din. <br /><br />Du må sende inn søknaden om å utsette foreldrepenger før du skal begynne å jobbe.",
     "utsettelseskjema.kunHelligdager.disabledFerieMelding": "Du kan ikke utsette med ferie på helligdager",
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt",
@@ -703,7 +703,7 @@
     "uttaksoppsummering.gjenstående": "Foreldrepenger du har igjen",
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
     "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst":
-        "Du må sende inn søknaden om å kombinere foreldrepenger med arbeid før du skal begynne å jobbe. Du kan derfor sende inn søknad på papir dersom det er kort tid til du skal begynne å jobbe. Her finner du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>. <br /><br /> Skal du <b>jobbe hos flere arbeidsgivere samtidig</b> kan du ikke bruke den digitale søknaden, du må sende inn søknaden på papir. Du kan lese mer om dette på <a href=\"https://www.nav.no/fleksibeltuttak\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">familie.nav.no</a>, og her finner du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>.",
+        "Du må sende inn søknaden om å kombinere foreldrepenger med arbeid før du skal begynne å jobbe. <br /><br /> Skal du <b>jobbe hos flere arbeidsgivere samtidig</b> kan du ikke bruke den digitale søknaden, du må sende inn søknaden på papir. Du kan lese mer om dette på <a href=\"https://www.nav.no/fleksibeltuttak\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">familie.nav.no</a>, og her finner du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>.",
     "uttaksplan.ønskerFlerbarnsdager": "Ønsker du å benytte deg av flerbarnsdagene?",
     "uttaksplan.familiehendelsesdato.adopsjon": "Barnet er adoptert {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Barnet er født {dato}",
