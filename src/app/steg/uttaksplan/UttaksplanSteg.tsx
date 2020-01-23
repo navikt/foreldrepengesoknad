@@ -449,21 +449,19 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             />
                         </Block>
 
-                        {søknad.uttaksplan &&
-                            tilgjengeligeStønadskontoer.length > 0 &&
-                            uttaksstatus && (
-                                <>
-                                    <Block margin="l">
-                                        <OversiktBrukteDager
-                                            tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                            perioder={søknad.uttaksplan}
-                                            søknadsinfo={søknadsinfo}
-                                            uttaksstatus={uttaksstatus}
-                                            navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
-                                        />
-                                    </Block>
-                                </>
-                            )}
+                        {søknad.uttaksplan && tilgjengeligeStønadskontoer.length > 0 && uttaksstatus && (
+                            <>
+                                <Block margin="l">
+                                    <OversiktBrukteDager
+                                        tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                        perioder={søknad.uttaksplan}
+                                        søknadsinfo={søknadsinfo}
+                                        uttaksstatus={uttaksstatus}
+                                        navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
+                                    />
+                                </Block>
+                            </>
+                        )}
 
                         <Block visible={uttaksplanVeilederInfo.length > 0}>
                             <VeilederInfo
@@ -475,35 +473,33 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             />
                         </Block>
 
-                        {eksisterendeSak &&
-                            eksisterendeSak.uttaksplan && (
-                                <FeatureBlock
-                                    feature={Feature.visPerioderSomSendesInn}
-                                    render={() => (
-                                        <Block>
-                                            <DevPerioderSomSendesInn
-                                                søknadsinfo={søknadsinfo}
-                                                perioderSomSkalSendesInn={perioderSomSkalSendesInn}
-                                            />
-                                        </Block>
-                                    )}
-                                />
-                            )}
+                        {eksisterendeSak && eksisterendeSak.uttaksplan && (
+                            <FeatureBlock
+                                feature={Feature.visPerioderSomSendesInn}
+                                render={() => (
+                                    <Block>
+                                        <DevPerioderSomSendesInn
+                                            søknadsinfo={søknadsinfo}
+                                            perioderSomSkalSendesInn={perioderSomSkalSendesInn}
+                                        />
+                                    </Block>
+                                )}
+                            />
+                        )}
 
-                        {årsakTilSenEndring &&
-                            årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
-                                <BegrunnelseForSenEndring
-                                    årsak={årsakTilSenEndring}
-                                    begrunnelse={
-                                        tilleggsopplysninger.begrunnelseForSenEndring
-                                            ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
-                                            : ''
-                                    }
-                                    vedlegg={vedleggForSenEndring}
-                                    onBegrunnelseChange={this.handleBegrunnelseChange(årsakTilSenEndring)}
-                                    onVedleggChange={this.handleBegrunnelseVedleggChange}
-                                />
-                            )}
+                        {årsakTilSenEndring && årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
+                            <BegrunnelseForSenEndring
+                                årsak={årsakTilSenEndring}
+                                begrunnelse={
+                                    tilleggsopplysninger.begrunnelseForSenEndring
+                                        ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
+                                        : ''
+                                }
+                                vedlegg={vedleggForSenEndring}
+                                onBegrunnelseChange={this.handleBegrunnelseChange(årsakTilSenEndring)}
+                                onVedleggChange={this.handleBegrunnelseVedleggChange}
+                            />
+                        )}
                     </>
                 )}
 
@@ -547,10 +543,15 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo, søknadsinfo)
     };
+    const { startdatoPermisjon } = søknad.ekstrainfo.uttaksplanSkjema;
 
     let relevantStartDatoForUttak: Date | undefined;
     if (søknadsinfo) {
         const { søknaden, søker, uttaksdatoer, annenForelder } = søknadsinfo;
+
+        if (!søknaden.erFødsel && startdatoPermisjon !== undefined) {
+            relevantStartDatoForUttak = startdatoPermisjon;
+        }
 
         if (
             søknaden.erFødsel &&
