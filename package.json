@@ -126,7 +126,7 @@
         "lodash": "^4.17.15",
         "lodash.groupby": "^4.6.0",
         "lodash.throttle": "^4.1.1",
-        "moment": "2.22.1",
+        "moment": "2.24.0",
         "mustache-express": "1.2.5",
         "nav-datovelger": "4.1.0",
         "nav-frontend-alertstriper": "3.0.3",
