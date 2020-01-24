@@ -8,7 +8,8 @@ import {
     Arbeidsform,
     isOverskrivbarPeriode,
     PeriodeInfoType,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
+    isUtsettelsesperiode
 } from '../../types/uttaksplan/periodetyper';
 import { InjectedIntl } from 'react-intl';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
@@ -206,7 +207,7 @@ export const getTidsperioderIUttaksplan = (uttaksplan: Periode[], periodeId: str
 export const uttaksplanInneholderFrilansaktivitet = (uttaksplan: Periode[]): boolean => {
     return uttaksplan.some(
         (periode: Periode) =>
-            isUttaksperiode(periode) &&
+            (isUttaksperiode(periode) || isUtsettelsesperiode(periode)) &&
             periode.arbeidsformer !== undefined &&
             periode.arbeidsformer.length > 0 &&
             periode.arbeidsformer.some((arbeidsform: Arbeidsform) => arbeidsform === Arbeidsform.frilans)
@@ -216,7 +217,7 @@ export const uttaksplanInneholderFrilansaktivitet = (uttaksplan: Periode[]): boo
 export const uttaksplanInneholderSelvstendignæringaktivitet = (uttaksplan: Periode[]): boolean => {
     return uttaksplan.some(
         (periode: Periode) =>
-            isUttaksperiode(periode) &&
+            (isUttaksperiode(periode) || isUtsettelsesperiode(periode)) &&
             periode.arbeidsformer !== undefined &&
             periode.arbeidsformer.length > 0 &&
             periode.arbeidsformer.some(
