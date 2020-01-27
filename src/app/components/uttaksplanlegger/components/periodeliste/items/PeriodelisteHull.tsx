@@ -93,6 +93,7 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
             beskrivelse={beskrivelse}
             ikon={<UttaksplanAdvarselIkon />}
             annenForelderSamtidigUttakPeriode={undefined}
+            tidsperiode={periode.tidsperiode}
             renderContent={() => (
                 <div>
                     {isAvslåttPeriode(periode) ? (
