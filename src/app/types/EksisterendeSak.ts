@@ -69,7 +69,7 @@ export interface Saksperiode {
     utbetalingsprosent: number;
     gjelderAnnenPart: boolean;
     tidsperiode: Tidsperiode;
-    uttakArbeidType: UttakArbeidType;
+    uttakArbeidType: UttakArbeidType[];
     arbeidsgiverInfo: ArbeidsgiverInfo;
     morsAktivitetIPerioden?: MorsAktivitet;
     overfoeringAarsak?: OverføringÅrsakType;
