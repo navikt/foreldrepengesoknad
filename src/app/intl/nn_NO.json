@@ -580,7 +580,7 @@
     "utenlandsopphold.select.spørsmål.tidligereOpphold": "Kva land budde du i?",
     "utenlandsopphold.tittel": "Legg til utanlandsopphald",
     "utenlandsopphold.tittel.endre": "Endre utanlandsopphald",
-    "utenlandsopphold.infoOmFødselsattest": "Du har opplyst at du skal være i {land} når du har termin {termindato}. Hvis du føder i utlandet må du ettersende fødselsattest til oss, grunnen er at vi ikke får inn opplysninger om fødselen automatisk når du ikke føder i Norge.",
+    "utenlandsopphold.infoOmFødselsattest": "Du har opplyst at du skal vera i {land} når du har termin {termindato}. Viss du føder i utlandet må du ettersenda fødselsattest til oss, grunnen er at vi ikkje får inn opplysningar om fødselen automatisk når du ikkje føder i Noreg.",
     "utsettelse.helligdager": "Perioden du har valt går over heilagdagar. Du kan ikkje ha ferie på heilagdagar. Du må leggje til periode med foreldrepengar i planen din, dette gjer du etter at du har lagt til utsetjinga.",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Eg er innlagd på helseinstitusjon",
