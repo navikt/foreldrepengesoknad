@@ -32,7 +32,7 @@
     "devDependencies": {
         "@types/bytes": "3.0.0",
         "@types/classnames": "2.2.3",
-        "@types/detect-browser": "3.0.0",
+        "@types/detect-browser": "4.0.0",
         "@types/enzyme": "3.1.10",
         "@types/enzyme-adapter-react-16": "1.0.2",
         "@types/history": "4.6.2",
