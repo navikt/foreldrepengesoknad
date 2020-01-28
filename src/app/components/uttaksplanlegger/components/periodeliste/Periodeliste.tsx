@@ -208,6 +208,7 @@ class Periodeliste extends React.Component<Props> {
                                                         onToggle={onToggle}
                                                         periode={periode}
                                                         navnPåForeldre={navn.navnPåForeldre}
+                                                        tidsperiode={periode.tidsperiode}
                                                     />
                                                 )
                                             );
