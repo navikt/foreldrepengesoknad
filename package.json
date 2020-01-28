@@ -90,7 +90,7 @@
         "nav-frontend-skjema-style": "1.0.40",
         "nav-frontend-spinner-style": "0.2.5",
         "nav-frontend-stegindikator-style": "1.0.13",
-        "nav-frontend-typografi-style": "1.0.13",
+        "nav-frontend-typografi-style": "1.0.18",
         "postcss-loader": "2.1.4",
         "prettier": "1.12.1",
         "pretty-quick": "1.4.1",
