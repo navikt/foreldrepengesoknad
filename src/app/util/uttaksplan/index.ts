@@ -204,6 +204,9 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
 export const getTidsperioderIUttaksplan = (uttaksplan: Periode[], periodeId: string | undefined): Tidsperiode[] =>
     uttaksplan.filter((p) => !isOverskrivbarPeriode(p) && p.id !== periodeId).map((p) => p.tidsperiode);
 
+export const getUtsettelserIUttaksplan = (uttaksplan: Periode[], periodeId: string | undefined): Tidsperiode[] =>
+    uttaksplan.filter((p) => isUtsettelsesperiode(p) && p.id !== periodeId).map((p) => p.tidsperiode);
+
 export const uttaksplanInneholderFrilansaktivitet = (uttaksplan: Periode[]): boolean => {
     return uttaksplan.some(
         (periode: Periode) =>
