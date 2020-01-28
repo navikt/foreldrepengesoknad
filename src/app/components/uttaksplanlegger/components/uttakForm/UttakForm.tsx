@@ -24,7 +24,7 @@ import Block from 'common/components/block/Block';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
 import { getUttakFormVisibility, UttakSpørsmålKeys } from './uttakFormConfig';
-import { getTidsperioderIUttaksplan } from '../../../../util/uttaksplan';
+import { getTidsperioderIUttaksplan, getUtsettelserIUttaksplan } from '../../../../util/uttaksplan';
 import AktivitetskravMorBolk from '../AktivitetskravMorBolk';
 import NyPeriodeKnapperad from '../nyPeriodeForm/NyPeriodeKnapperad';
 import SamtidigUttakPart from './partials/SamtidigUttakPart';
@@ -330,7 +330,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
             return null;
         }
         const ugyldigeTidsperioder = søknadsinfo.søknaden.harGjenskaptUttaksplanFraEkisterendeSak
-            ? []
+            ? getUtsettelserIUttaksplan(uttaksplan, periode.id)
             : getTidsperioderIUttaksplan(uttaksplan, periode.id);
 
         const tidsperiode = periode.tidsperiode as Partial<Tidsperiode>;
@@ -432,42 +432,40 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                 erMorForSyk={periode.erMorForSyk}
                             />
                         </Block>
-                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
-                            periode.erMorForSyk === true && (
-                                <>
-                                    <VeilederInfo
-                                        messages={[
-                                            {
-                                                type: 'normal',
-                                                contentIntlKey: 'uttaksplan.informasjon.morErForSyk',
-                                                values: { navnMor: navnPåForeldre.mor }
-                                            }
-                                        ]}
-                                    />
+                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) && periode.erMorForSyk === true && (
+                            <>
+                                <VeilederInfo
+                                    messages={[
+                                        {
+                                            type: 'normal',
+                                            contentIntlKey: 'uttaksplan.informasjon.morErForSyk',
+                                            values: { navnMor: navnPåForeldre.mor }
+                                        }
+                                    ]}
+                                />
 
-                                    <Block>
-                                        <VedleggSpørsmål
-                                            attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-                                            skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
-                                            vedlegg={periode.vedlegg as Attachment[]}
-                                            onChange={(v) => this.onChange({ vedlegg: v })}
-                                        />
-                                    </Block>
-                                </>
-                            )}
-                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
-                            periode.erMorForSyk === false && (
-                                <>
-                                    <VeilederInfo
-                                        messages={[
-                                            {
-                                                type: 'normal',
-                                                contentIntlKey: 'uttaksplan.informasjon.morErForSykNeiSvar'
-                                            }
-                                        ]}
+                                <Block>
+                                    <VedleggSpørsmål
+                                        attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+                                        skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
+                                        vedlegg={periode.vedlegg as Attachment[]}
+                                        onChange={(v) => this.onChange({ vedlegg: v })}
                                     />
-                                </>
-                            )}
+                                </Block>
+                            </>
+                        )}
+                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) && periode.erMorForSyk === false && (
+                            <>
+                                <VeilederInfo
+                                    messages={[
+                                        {
+                                            type: 'normal',
+                                            contentIntlKey: 'uttaksplan.informasjon.morErForSykNeiSvar'
+                                        }
+                                    ]}
+                                />
+                            </>
+                        )}
 
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.samtidigUttak)} margin="none">
                             <SamtidigUttakPart
