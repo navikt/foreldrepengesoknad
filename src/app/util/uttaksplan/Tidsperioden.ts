@@ -20,8 +20,13 @@ export const Tidsperioden = (tidsperiode: Partial<Tidsperiode>) => ({
     formaterString: (intl: InjectedIntl) => tidsperiodeToString(tidsperiode, intl),
     formaterStringKort: (intl: InjectedIntl) => tidsperiodeToStringKort(tidsperiode, intl),
     erFomEllerEtterDato: (dato: Date) => erTidsperiodeFomEllerEtterDato(tidsperiode, dato),
-    erFørDato: (dato: Date) => erTidsperiodeFomEllerEtterDato(tidsperiode, dato) === false
+    erFørDato: (dato: Date) => erTidsperiodeFomEllerEtterDato(tidsperiode, dato) === false,
+    inneholderDato: (dato: Date) => inneholderTidsperiodeDato(tidsperiode, dato)
 });
+
+function inneholderTidsperiodeDato(tidsperiode: Partial<Tidsperiode>, dato: Date) {
+    return moment(dato).isBetween(tidsperiode.fom, tidsperiode.tom, 'days', '[]');
+}
 
 export function isValidTidsperiode(tidsperiode: any): tidsperiode is Tidsperiode {
     return (

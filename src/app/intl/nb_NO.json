@@ -4,19 +4,16 @@
     "adopsjonAvEktefellesBarn.spørsmål": "Gjelder søknaden din stebarnsadopsjon?",
     "adopsjonsdato.spørsmål": "Når overtar du omsorgen?",
     "adoptertIUtlandet.spørsmål": "Adopterer du fra utlandet?",
-    "aktivitetskrav.lesmer":
-        " <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les mer om aktivitetskravet til mor her.</a>",
+    "aktivitetskrav.lesmer": " <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les mer om aktivitetskravet til mor her.</a>",
     "ankomstdato.spørsmål": "Når kommer barnet til Norge?",
     "annenForelder.aleneOmOmsorg": "Er du alene om omsorgen av barnet?",
-    "annenForelder.aleneOmOmsorg.veileder":
-        "Du har omsorgen for barnet alene, og du bor ikke sammen med den andre forelderen.",
+    "annenForelder.aleneOmOmsorg.veileder": "Du har omsorgen for barnet alene, og du bor ikke sammen med den andre forelderen.",
     "annenForelder.bostedsland": "Hvor bor { navn }?",
     "annenForelder.label.bostedsland": "og bor i",
     "annenForelder.label.fødselsnummer": "og har fødselsnummer eller D-nummer",
     "annenForelder.label.kanIkkeOppgiNavn": "Jeg kan ikke oppgi navnet til andre forelderen",
     "annenForelder.label.navn": "Hva heter den andre forelderen?",
-    "annenForelder.label.registrertForelder":
-        "Informasjon om den andre forelderen til {antallBarn, plural, one {barnet} other {barna}}",
+    "annenForelder.label.registrertForelder": "Informasjon om den andre forelderen til {antallBarn, plural, one {barnet} other {barna}}",
     "annenForelder.label.utenlandskFødselsnummer": "Utenlandsk fødselsnummer",
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
     "annenForelder.placeholder.fødselsnummer": "Fødselsnummer",
@@ -34,20 +31,17 @@
     "annenForelder.ugyldigFødselsnummer": "Du må skrive et gyldig nummer 11 siffer",
     "annenForelder.ugyldigNavn": "Du må skrive navnet på den andre forelderen",
     "annenForelder.veileder.aleneOmsorg.forBarnet": "Dere kan avtale at {navn} tar ut foreldrepenger",
-    "annenForelder.veileder.rettigheterOgDelingAvUttaksplan":
-        "Hvis dere startet foreldrepengeperioden 1. januar 2019 eller senere, vil {navn} se i søknaden sin når du skal ha foreldrepenger og eventuelle utsettelser.",
+    "annenForelder.veileder.rettigheterOgDelingAvUttaksplan": "Hvis dere startet foreldrepengeperioden 1. januar 2019 eller senere, vil {navn} se i søknaden sin når du skal ha foreldrepenger og eventuelle utsettelser.",
     "annenForelderRettPåForeldrepenger.spørsmål": "Har {navn} rett til foreldrepenger?",
     "annenInntekt.alternativ.hatt": "Ja",
     "annenInntekt.alternativ.ikkeHatt": "Nei",
-    "annenInntekt.arbeidsforhold.infotekst":
-        "Er det feil eller mangler i informasjonen om dine arbeidsforhold? Da må du be din arbeidsgiver oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
+    "annenInntekt.arbeidsforhold.infotekst": "Er det feil eller mangler i informasjonen om dine arbeidsforhold? Da må du be din arbeidsgiver oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
     "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikke registrert med noen arbeidsforhold.",
     "annenInntekt.arbeidsforhold.label": "Dine arbeidsforhold",
     "annenInntekt.arbeidsforhold.organisasjonsnummer": "ORG.NR: {organisasjonsnummer}",
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
-    "annenInntekt.arbeidsforhold.veileder":
-        "Husk å be arbeidsgiveren din sende inntektsmelding til NAV. Vi trenger den for å kunne behandle søknaden din. Arbeidsgiver kan sende den tidligst {dato}, som er 4 uker før foreldrepengeperioden din starter.",
+    "annenInntekt.arbeidsforhold.veileder": "Husk å be arbeidsgiveren din sende inntektsmelding til NAV. Vi trenger den for å kunne behandle søknaden din. Arbeidsgiver kan sende den tidligst {dato}, som er 4 uker før foreldrepengeperioden din starter.",
     "annenInntekt.fom": "Når startet du {navnPåNæringen}?",
     "annenInntekt.leggTilInntekt": "Legg til inntektskilde",
     "annenInntekt.modal.land": "Hvilket land har du jobbet i?",
@@ -63,10 +57,8 @@
     "annenInntekt.infoboksTekst.punktFire": "Sluttpakke",
     "annenInntekt.infoboksTekst.punktFem": "Lønn fra arbeidsgiver under videre- eller etterutdanning",
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi navnet på arbeidsgiveren",
-    "annenInntekt.spørsmål.næringsinntekt":
-        "Hva har du hatt i næringsresultat før skatt de siste 12 månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.        ",
-    "annenInntekt.spørsmål.næringsinntekt.info":
-        "Næringsresultatet er inntekter du har i næringen din, minus utgifter og avskrivninger.",
+    "annenInntekt.spørsmål.næringsinntekt": "Hva har du hatt i næringsresultat før skatt de siste 12 månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.        ",
+    "annenInntekt.spørsmål.næringsinntekt.info": "Næringsresultatet er inntekter du har i næringen din, minus utgifter og avskrivninger.",
     "annenInntekt.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
     "annenInntekt.ytelser.label": "Utbetalinger fra NAV",
     "annenInntekt.ytelser.tekst": "Hvis du får utbetaling fra NAV, trenger du ikke opplyse om det i søknaden din.",
@@ -96,12 +88,10 @@
     "fortsettSøknadSenereDialog.spørsmål": "Vil du avslutte nå og fortsette senere?",
     "fortsettSøknadSenereDialog.tittel": "Avslutt og fortsett senere",
     "avslutt": "Avslutt",
-    "befinnerDuDegINorgePåDatoForOmsorgsovertakelse.spørsmål":
-        "Befinner du deg i Norge på datoen for omsorgsovertakelse?",
+    "befinnerDuDegINorgePåDatoForOmsorgsovertakelse.spørsmål": "Befinner du deg i Norge på datoen for omsorgsovertakelse?",
     "begynnsøknad.label": "Begynn med søknaden",
     "bekreftGåTilUttaksplanSkjemaDialog.avbrytLabel": "Nei",
-    "bekreftGåTilUttaksplanSkjemaDialog.intro":
-        "Hvis du går tilbake til forrige steg, blir planen din slettet og du må lage den på nytt.",
+    "bekreftGåTilUttaksplanSkjemaDialog.intro": "Hvis du går tilbake til forrige steg, blir planen din slettet og du må lage den på nytt.",
     "bekreftGåTilUttaksplanSkjemaDialog.okLabel": "Ja",
     "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake?",
     "bekreftGåTilUttaksplanSkjemaDialog.tittel": "Planen din blir slettet.",
@@ -113,34 +103,26 @@
     "bekreftTilbakestillUttaksplanDialog.okLabel": "Ja, tilbakestill",
     "bekreftTilbakestillUttaksplanDialog.tekst": "Ønsker du å tilbakestille planen til opprinnelig plan?",
     "bekreftTilbakestillUttaksplanDialog.tittel": "Tilbakestill plan",
-    "blittYrkesaktivSiste3År.hjelpetekst":
-        "Du skal svare ja på spørsmålet hvis du har hatt jobb med lav eller ingen inntekt før du starter virksomheten din.",
+    "blittYrkesaktivSiste3År.hjelpetekst": "Du skal svare ja på spørsmålet hvis du har hatt jobb med lav eller ingen inntekt før du starter virksomheten din.",
     "blittYrkesaktivSiste3År.spørsmål": "Har du begynt å jobbe i løpet av de 3 siste ferdigliknede årene?",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",
     "boddINorgeSiste12Mnd.alternativ.boddIUtlandet": "bodd i utlandet helt eller delvis",
     "boddINorgeSiste12Mnd.spørsmål": "Hvor har du bodd de siste 12 månedene?",
     "datoForAleneomsorg.spørsmål": "Dato du ble alene om omsorgen",
     "deltid": "Deltid",
-    "dinePersonopplysninger.avsnitt.automatiskBehandling.html":
-        "<p>Nav vil behandle søknaden automatisk hvis vi har tilstrekkelige opplysninger. Den automatiske behandlingen baserer seg på opplysninger</p><ul><li>du gir i søknaden</li><li>fra Folkeregisteret og enhetsregisteret</li><li>om arbeidsforholdene dine fra Arbeidstaker- og arbeidsgiverregisteret</li><li>om inntekten din fra A-meldingen</li><li>om inntekt og avtalt permisjon fra arbeidsgiveren din</li></ul>",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.html": "<p>Nav vil behandle søknaden automatisk hvis vi har tilstrekkelige opplysninger. Den automatiske behandlingen baserer seg på opplysninger</p><ul><li>du gir i søknaden</li><li>fra Folkeregisteret og enhetsregisteret</li><li>om arbeidsforholdene dine fra Arbeidstaker- og arbeidsgiverregisteret</li><li>om inntekten din fra A-meldingen</li><li>om inntekt og avtalt permisjon fra arbeidsgiveren din</li></ul>",
     "dinePersonopplysninger.avsnitt.automatiskBehandling.tittel": "Automatisk behandling av søknaden",
-    "dinePersonopplysninger.avsnitt.innhenting.html":
-        "<p>For å behandle søknaden din henter vi inn opplysninger om</p><ul><li>tilknytningen din til Norge, arbeidsforholdene dine og inntekten din</li><li>ytelser du mottar fra NAV</li><li>barn og den andre forelderen</li><li>trygdeordninger du kan ha rett til i andre land</li></ul><p>Vi kan også sende opplysninger om deg til trygdeordninger i andre land.</p>",
+    "dinePersonopplysninger.avsnitt.innhenting.html": "<p>For å behandle søknaden din henter vi inn opplysninger om</p><ul><li>tilknytningen din til Norge, arbeidsforholdene dine og inntekten din</li><li>ytelser du mottar fra NAV</li><li>barn og den andre forelderen</li><li>trygdeordninger du kan ha rett til i andre land</li></ul><p>Vi kan også sende opplysninger om deg til trygdeordninger i andre land.</p>",
     "dinePersonopplysninger.avsnitt.innhenting.tittel": "Opplysninger vi innhenter fra deg og offentlige registre",
-    "dinePersonopplysninger.avsnitt.lagring.html":
-        "Hvis du sender inn søknaden, blir opplysninger du har gitt i søknaden lagret i tråd med arkivloven.",
+    "dinePersonopplysninger.avsnitt.lagring.html": "Hvis du sender inn søknaden, blir opplysninger du har gitt i søknaden lagret i tråd med arkivloven.",
     "dinePersonopplysninger.avsnitt.lagring.tittel": "Lagring av opplysninger",
-    "dinePersonopplysninger.avsnitt.personvernerklaringen.html":
-        "<p>Du kan lese mer om hvordan NAV behandler personopplysninger i Arbeids- og velferdsetatens personvernerklæring på <a class=\"lenke\" rel=\"noopener\" href=\"https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten\">nav.no/personvern.</a></p>",
+    "dinePersonopplysninger.avsnitt.personvernerklaringen.html": "<p>Du kan lese mer om hvordan NAV behandler personopplysninger i Arbeids- og velferdsetatens personvernerklæring på <a class=\"lenke\" rel=\"noopener\" href=\"https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten\">nav.no/personvern.</a></p>",
     "dinePersonopplysninger.avsnitt.personvernerklaringen.tittel": "Personvernerklæringen i NAV",
-    "dinePersonopplysninger.avsnitt.svarPaSoknaden.html":
-        "<p>Når søknaden din er behandlet, får du et vedtaksbrev. Det forteller deg om</p><ul><li>begrunnelse for beslutningen</li><li>hvordan du får innsyn i saksbehandlingen og reglene som er blitt brukt</li><li>hvordan du kan klage hvis du er uenig</li></ul>",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.html": "<p>Når søknaden din er behandlet, får du et vedtaksbrev. Det forteller deg om</p><ul><li>begrunnelse for beslutningen</li><li>hvordan du får innsyn i saksbehandlingen og reglene som er blitt brukt</li><li>hvordan du kan klage hvis du er uenig</li></ul>",
     "dinePersonopplysninger.avsnitt.svarPaSoknaden.tittel": "Svar på søknaden",
-    "dinePersonopplysninger.behandling.html":
-        "<p>NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.</p><p>Du har valgt å søke om foreldrepenger. Det er en ytelse fra folketrygden som du kan få hvis du fyller vilkårene. Vilkårene står på <a href=\"https://www.nav.no/foreldrepenger\"  class=\"lenke\" rel=\"noopener\">nav.no/foreldrepenger</a>.</p>",
+    "dinePersonopplysninger.behandling.html": "<p>NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.</p><p>Du har valgt å søke om foreldrepenger. Det er en ytelse fra folketrygden som du kan få hvis du fyller vilkårene. Vilkårene står på <a href=\"https://www.nav.no/foreldrepenger\"  class=\"lenke\" rel=\"noopener\">nav.no/foreldrepenger</a>.</p>",
     "dinePersonopplysninger.sectionheading": "Slik behandler NAV personopplysningene dine",
-    "dinePlikter.listeElement.1":
-        "Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til foreldrepenger.",
+    "dinePlikter.listeElement.1": "Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til foreldrepenger.",
     "dinePlikter.listeElement.2": "Jeg har lest og forstått det som står på {link}",
     "dinePlikter.listeElement.2.link": "nav.no/rettogplikt",
     "dinePlikter.sectionheading": "Dine plikter",
@@ -154,10 +136,8 @@
     "dokumentasjon.mangler": "Dokumentasjon mangler",
     "dokumentasjon.vedlagt": "Dokumentasjon er vedlagt",
     "driverFosterhjem.spørsmål": "Har du inntekt som fosterforelder?",
-    "egenDelUttakForm.samtidigUttak.flerBarnsuker.veiledertekst":
-        "Dere kan begge ta ut 100 prosent foreldrepenger samtidig når dere får flere barn. Dere velger selv om flerbarnsukene skal tas ut som fellesperiode eller kvote. Det er ikke krav til hva {navnMor} gjør når {navnFar} tar ut flerbarnsuker eller kvote. {link}.",
-    "egenDelUttakForm.samtidigUttak.veiledertekst":
-        "Dere kan ta ut opptil 100 prosent foreldrepenger til sammen, for eksempel ved at dere bytter på å jobbe og å være hjemme med barnet. Hvis en av dere tar ut 100 prosent kvote, kan den andre kombinere arbeid med å ta ut opptil 50 prosent av fellesperioden. {link}.",
+    "egenDelUttakForm.samtidigUttak.flerBarnsuker.veiledertekst": "Dere kan begge ta ut 100 prosent foreldrepenger samtidig når dere får flere barn. Dere velger selv om flerbarnsukene skal tas ut som fellesperiode eller kvote. Det er ikke krav til hva {navnMor} gjør når {navnFar} tar ut flerbarnsuker eller kvote. {link}.",
+    "egenDelUttakForm.samtidigUttak.veiledertekst": "Dere kan ta ut opptil 100 prosent foreldrepenger til sammen, for eksempel ved at dere bytter på å jobbe og å være hjemme med barnet. Hvis en av dere tar ut 100 prosent kvote, kan den andre kombinere arbeid med å ta ut opptil 50 prosent av fellesperioden. {link}.",
     "egenDelUttakForm.samtidigUttak.veiledertekst.lenke": "Les mer om å være hjemme samtidig her",
     "endrePeriodeForm.bekreftSlettDialog.opphold.melding": "Ønsker du å slette oppholdet?",
     "endrePeriodeForm.bekreftSlettDialog.opphold.tittel": "Slett oppholdet",
@@ -173,30 +153,24 @@
     "endrePeriodeForm.slett.uttak": "Slett periode",
     "erAnnenForelderInformert.spørsmål": "Har du orientert {navn} om søknaden din?",
     "erAnnenForelderInformert.veilederIkkeInformert": "Du må orientere {navn} om søknaden, før du kan gå videre.",
-    "erAnnenForelderInformert.veilederIkkeInformert.oppsummeringsside":
-        "Du må orientere {navn} om søknaden, før du kan sende inn søknaden.",
+    "erAnnenForelderInformert.veilederIkkeInformert.oppsummeringsside": "Du må orientere {navn} om søknaden, før du kan sende inn søknaden.",
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er dere nære venner eller i familie?",
     "erBarnetFødt.spørsmål": "Er barnet født?",
-    "erBarnetFødt.spørsmål.veileder.medMorEllerFar":
-        "Du kan dessverre ikke søke om foreldrepenger før barnet er født. Unntaket er hvis mor er syk eller innlagt på sykehus eller helseinstitusjon. Du må fylle ut søknaden på papir og sender den i posten. { lenke }",
-    "barnFødt.infoPrematuruker":
-        "Hvis barnet blir født før 33. svangerskapsuke så blir perioden med foreldrepenger utvidet med samme antall uker og dager som barnet er født før termindato.<br /><br /> Dersom barnet blir innlagt på sykehus etter fødselen, vil dere som regel kunne motta pleiepenger så lenge barnet er innlagt. Får dere pleiepenger i perioden fra fødsel og fram til opprinnelig termindato, trekkes disse fra den utvidede perioden.",
+    "erBarnetFødt.spørsmål.veileder.medMorEllerFar": "Du kan dessverre ikke søke om foreldrepenger før barnet er født. Unntaket er hvis mor er syk eller innlagt på sykehus eller helseinstitusjon. Du må fylle ut søknaden på papir og sender den i posten. { lenke }",
+    "barnFødt.infoPrematuruker": "Hvis barnet blir født før 33. svangerskapsuke så blir perioden med foreldrepenger utvidet med samme antall uker og dager som barnet er født før termindato.<br /><br /> Dersom barnet blir innlagt på sykehus etter fødselen, vil dere som regel kunne motta pleiepenger så lenge barnet er innlagt. Får dere pleiepenger i perioden fra fødsel og fram til opprinnelig termindato, trekkes disse fra den utvidede perioden.",
     "erDuMedmor.spørsmål": "Er du medmor?",
     "erDuSelvstendigNæringsdrivende.spørsmål": "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
     "erMorForSyk.spørsmål": "Er mor for syk til å ta seg av barnet eller innlagt i helseinstitusjon?",
     "erMorUfør.spørsmål": "Har {navn} uføretrygd?",
     "erNæringenRegistrertINorge.spørsmål": "Er {navnPåNæringen} registrert i Norge?",
-    "far.dokumantasjonAvAleneomsorg.vedlegg.veileder":
-        "Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet",
+    "far.dokumantasjonAvAleneomsorg.vedlegg.veileder": "Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet",
     "feilside.bobletekst": "noe gikk galt.",
     "feilside.bobletittel": "Oops,",
     "feilside.ingress": "Vennligst prøv igjen senere. Dersom det fremdeles oppstår feil, {lenke}.",
     "feilside.ingress.lenke": "kontakt brukerstøtte",
     "feilside.tittel": "Det oppstod en feil",
-    "feilside.veiledertekst":
-        "Det har oppstått en feil. Dersom det ikke fungerer å prøve igjen, trykk på knappen under for å slette søknaden og starte på nytt.",
-    "feilside.uuid":
-        "Tar du kontakt med brukerstøtte, vennligst oppgi denne koden {uuid} slik at vi kan finne ut av hva som har gått galt",
+    "feilside.veiledertekst": "Det har oppstått en feil. Dersom det ikke fungerer å prøve igjen, trykk på knappen under for å slette søknaden og starte på nytt.",
+    "feilside.uuid": "Tar du kontakt med brukerstøtte, vennligst oppgi denne koden {uuid} slik at vi kan finne ut av hva som har gått galt",
     "foreldreansvar.antallBarn": "Antall barn",
     "foreldreansvar.overtakelsedato": "Dato for foreldreansvar",
     "fortsettknapp.label": "Fortsett",
@@ -224,18 +198,12 @@
     "gradering.prosent": "{stillingsprosent}%",
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepenger",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet og hatt inntekt som frilanser de siste 10 månedene?",
-    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
-        "Eksempel på hvem som kan være frilansere er<br/><ul><li>Musikere</li><li>Tekstforfattere</li><li>Skuespillere</li><li>Journalister</li><li>Oversettere</li><li> Folkevalgt, politikere i kommuner, fylkeskommuner og på Stortinget som får godtgjørelse for politisk arbeid</li><li>Støttekontakt</li><li>Fosterforeldre, og personer med omsorgslønn</li></ul>Hvis du er usikker på om du er frilanser, kan du lese mer om hva det betyr å være frilanser på skatteetaten sin",
-    "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
-        "Oppdrag for nære venner og/eller familie de siste 10 månedene",
-    "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
-        "Har du hatt oppdrag for nær venn eller familie de 10 siste månedene?",
-    "harJobbetForNærVennEllerFamilieSiste12Mnd.spørsmål":
-        "Har du de siste 12 månedene jobbet for en nær venn eller familie?",
-    "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
-        "Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 10 månedene?",
-    "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst":
-        "Er du usikker på om du er selvstendig næringsdrivende? Du kan lese mer om hva det betyr å være selvstendig næringsdrivende på skatteetatens",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst": "Eksempel på hvem som kan være frilansere er<br/><ul><li>Musikere</li><li>Tekstforfattere</li><li>Skuespillere</li><li>Journalister</li><li>Oversettere</li><li> Folkevalgt, politikere i kommuner, fylkeskommuner og på Stortinget som får godtgjørelse for politisk arbeid</li><li>Støttekontakt</li><li>Fosterforeldre, og personer med omsorgslønn</li></ul>Hvis du er usikker på om du er frilanser, kan du lese mer om hva det betyr å være frilanser på skatteetaten sin",
+    "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål": "Oppdrag for nære venner og/eller familie de siste 10 månedene",
+    "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål": "Har du hatt oppdrag for nær venn eller familie de 10 siste månedene?",
+    "harJobbetForNærVennEllerFamilieSiste12Mnd.spørsmål": "Har du de siste 12 månedene jobbet for en nær venn eller familie?",
+    "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål": "Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 10 månedene?",
+    "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst": "Er du usikker på om du er selvstendig næringsdrivende? Du kan lese mer om hva det betyr å være selvstendig næringsdrivende på skatteetatens",
     "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
     "harRevisor.spørsmål": "Har du revisor?",
     "heltid": "Heltid",
@@ -244,31 +212,25 @@
     "hvilkenkvoteskalbenyttes.spørsmål": "Hvilken del av foreldrepengene skal du ta ut?",
     "hvilkenkvoteskalbenyttes.spørsmål.annenForelder": "Hvilken del av foreldrepengene skal {navnAnnenForelder} ta ut?",
     "hvorSkalDuJobbe.spørsmål": "Hvor skal du jobbe?",
-    "hvorSkalDuJobbe.spørsmål.gradering.hjelpetekst":
-        "<b>Hvis du ikke finner arbeidsforholdet ditt her</b>, har ikke arbeidsgiveren din meldt deg inn som ansatt i Arbeids- og arbeidsgiverregisteret. Du må være registrert som ansatt for å bruke den digitale søknaden. Du må be arbeidsgiveren din oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
+    "hvorSkalDuJobbe.spørsmål.gradering.hjelpetekst": "<b>Hvis du ikke finner arbeidsforholdet ditt her</b>, har ikke arbeidsgiveren din meldt deg inn som ansatt i Arbeids- og arbeidsgiverregisteret. Du må være registrert som ansatt for å bruke den digitale søknaden. Du må be arbeidsgiveren din oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
     "iNorgeNeste12Mnd.alternativ.boINorge": "kun bo i Norge",
     "iNorgeNeste12Mnd.alternativ.boIUtlandet": "bo i utlandet helt eller delvis",
     "iNorgeNeste12Mnd.spørsmål": "Hvor skal du bo de neste 12 månedene?",
     "ikkeMyndig.boblelenketekst": "Her kan du laste ned papirsøknaden",
-    "ikkeMyndig.ingress":
-        "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden sammen med deg. Du må derfor fylle ut søknaden på papir og sende den i posten.",
+    "ikkeMyndig.ingress": "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden sammen med deg. Du må derfor fylle ut søknaden på papir og sende den i posten.",
     "ikkeMyndig.tittel": "Hei, {navn}!",
     "inntektstype.etterlønn_sluttpakke": "Sluttvederlag, sluttpakke eller etterlønn",
-    "inntektstype.etterlønn_sluttpakke_info":
-        "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise inntekten og perioden den gjelder for.",
+    "inntektstype.etterlønn_sluttpakke_info": "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise inntekten og perioden den gjelder for.",
     "inntektstype.frilans": "Frilans",
     "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
-    "inntektstype.jobb_i_utlandet_info":
-        "Siden du har jobbet i {land} må vi innhente dokumentasjon derfra. Derfor kan det ta litt lenger tid før du får svar på søknaden din.",
+    "inntektstype.jobb_i_utlandet_info": "Siden du har jobbet i {land} må vi innhente dokumentasjon derfra. Derfor kan det ta litt lenger tid før du får svar på søknaden din.",
     "inntektstype.lønn_under_utdanning": "Lønn fra arbeidsgiver under videre- eller etterutdanning",
     "inntektstype.lønn_under_utdanning_info": "Trenger vi noe tekst her?",
     "inntektstype.militær_eller_siviltjeneste": "Førstegangstjeneste i forsvaret eller sivilforsvaret",
-    "inntektstype.militær_eller_siviltjeneste_info":
-        "Du må legge ved dokumentasjon på perioden fra tjenestestedet ditt.",
+    "inntektstype.militær_eller_siviltjeneste_info": "Du må legge ved dokumentasjon på perioden fra tjenestestedet ditt.",
     "inntektstype.selvstendigNæringsdrivende": "Selvstendig næringsdrivende",
     "inntektstype.ventelønn_vartpenger": "Vartpenger og ventelønn",
-    "inntektstype.ventelønn_vartpenger_info":
-        "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise inntekten og perioden vartpengene eller ventelønnen gjelder for.",
+    "inntektstype.ventelønn_vartpenger_info": "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise inntekten og perioden vartpengene eller ventelønnen gjelder for.",
     "ja": "Ja",
     "jeg": "jeg",
     "jegSkalJobbeSomFrilans": "Jeg skal jobbe som frilans",
@@ -277,34 +239,25 @@
     "jegskaliarbeid": "Jeg skal i arbeid",
     "jegskaljobbeheltid": "Jeg skal jobbe heltid",
     "jobberFremdelesSomFrilans.spørsmål": "Jobber du fortsatt som frilanser?",
-    "kanInnhenteOpplysningerFraRevisor.spørsmål":
-        "Gir du NAV fullmakt til å innhente opplysninger direkte fra revisor?",
+    "kanInnhenteOpplysningerFraRevisor.spørsmål": "Gir du NAV fullmakt til å innhente opplysninger direkte fra revisor?",
     "komponent.bekreftDialog.avbrytLabel": "Avbryt",
     "komponent.bekreftDialog.bekreftLabel": "Ok",
     "leggtil": "Legg til",
     "manglendeVedlegg.periode.tidsperiode": "Gjelder perioden med { type } fra { fom } til { tom }",
-    "manglendeVedlegg.veileder":
-        "Før du kan sende søknaden må du laste opp dokumentasjon som vi trenger for å kunne behandle søknaden din.",
+    "manglendeVedlegg.veileder": "Før du kan sende søknaden må du laste opp dokumentasjon som vi trenger for å kunne behandle søknaden din.",
     "manglendeVedlegg.title.terminbekreftelse": "Bekreftelse på termindato",
-    "manglendeVedlegg.info.terminbekreftelse":
-        "Du må legge ved en terminbekreftelse som må være datert og signert av lege eller jordmor når du er i 22. svangerskapsuke eller senere.",
+    "manglendeVedlegg.info.terminbekreftelse": "Du må legge ved en terminbekreftelse som må være datert og signert av lege eller jordmor når du er i 22. svangerskapsuke eller senere.",
     "manglendeVedlegg.title.utsettelseSykdomUttaksplan": "Dokumentasjon på sykdom eller innleggelse i helseinstitusjon",
-    "manglendeVedlegg.info.utsettelseSykdomUttaksplan":
-        "Du må legge ved bekreftelse fra legen din. Den må beskrive hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta deg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding. Er du eller barnet innlagt i helseinstitusjon må du legge ved dokumentasjon på innleggelsen.",
+    "manglendeVedlegg.info.utsettelseSykdomUttaksplan": "Du må legge ved bekreftelse fra legen din. Den må beskrive hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta deg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding. Er du eller barnet innlagt i helseinstitusjon må du legge ved dokumentasjon på innleggelsen.",
     "manglendeVedlegg.title.anneninntektDokumentasjon": "Dokumentasjon av annen inntektskilde",
     "manglendeVedlegg.info.anneninntektDokumentasjon": "Du må legge ved dokumentasjon av inntektskilden.",
     "manglendeVedlegg.title.omsorgsovertakelse": "Adopsjonsbevillingen og bekreftelse på datoen du overtar omsorgen",
-    "manglendeVedlegg.info.omsorgsovertakelse":
-        "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtar omsorgen.",
-    "manglendeVedlegg.title.dokumentasjonOverføringAvKvote":
-        "Dokumentasjon av overtakelse av kvoten til den andre forelderen",
-    "manglendeVedlegg.info.dokumentasjonOverføringAvKvote":
-        "Du må legge ved dokumentasjon av hvorfor du søker om å overta kvoten til den andre forelderen.",
+    "manglendeVedlegg.info.omsorgsovertakelse": "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtar omsorgen.",
+    "manglendeVedlegg.title.dokumentasjonOverføringAvKvote": "Dokumentasjon av overtakelse av kvoten til den andre forelderen",
+    "manglendeVedlegg.info.dokumentasjonOverføringAvKvote": "Du må legge ved dokumentasjon av hvorfor du søker om å overta kvoten til den andre forelderen.",
     "manglendeVedlegg.title.dokumentasjonAvAleneomsorg": "Dokumentasjon av datoen du ble alene om omsorgen for barnet.",
-    "manglendeVedlegg.title.morsaktivitetdokumentasjon":
-        "Du må legge ved dokumentasjon av hva {navn} skal gjøre i perioden",
-    "manglendeVedlegg.info.morsaktivitetdokumentasjon":
-        "Du må legge ved dokumentasjon på aktivitetskravet til {navn} når du skal være hjemme i fellesperioden eller ha foreldrepenger.",
+    "manglendeVedlegg.title.morsaktivitetdokumentasjon": "Du må legge ved dokumentasjon av hva {navn} skal gjøre i perioden",
+    "manglendeVedlegg.info.morsaktivitetdokumentasjon": "Du må legge ved dokumentasjon på aktivitetskravet til {navn} når du skal være hjemme i fellesperioden eller ha foreldrepenger.",
     "morForSykSpørsmål.spørsmål": "Er mor for syk til å ta seg av barnet eller innlagt?",
     "morsAktivitet.Arbeid": "Arbeid",
     "morsAktivitet.ArbeidOgUtdanning": "Arbeid og utdanning",
@@ -325,8 +278,7 @@
     "næringstype.fiske": "Fiske",
     "næringstype.jordbruk_skogbruk": "Jordbruk",
     "næringstype.spørsmål": "Hvilken type virksomhet har du?",
-    "oppholdsårsaktype.foreldernavn.mor.UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER":
-        "{foreldernavn} tar ut foreldrepenger før fødsel",
+    "oppholdsårsaktype.foreldernavn.mor.UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER": "{foreldernavn} tar ut foreldrepenger før fødsel",
     "oppholdsårsaktype.foreldernavn.mor.UTTAK_FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin",
     "oppholdsårsaktype.foreldernavn.mor.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperioden",
     "oppholdsårsaktype.foreldernavn.mor.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flernbarnsperioden",
@@ -335,12 +287,9 @@
     "oppholdsårsaktype.foreldernavn.mor.LOVBESTEMT_FERIE": "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
     "oppholdsårsaktype.foreldernavn.mor.ARBEID": "{foreldernavn} utsetter på grunn av heltidsarbeid",
     "oppholdsårsaktype.foreldernavn.mor.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
-    "oppholdsårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_SØKER":
-        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
-    "oppholdsårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_BARNET":
-        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
-    "oppholdsårsaktype.foreldernavn.far.UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER":
-        "{foreldernavn} tar ut foreldrepenger før fødsel",
+    "oppholdsårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_SØKER": "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
+    "oppholdsårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_BARNET": "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
+    "oppholdsårsaktype.foreldernavn.far.UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER": "{foreldernavn} tar ut foreldrepenger før fødsel",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten din",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperioden",
     "oppholdsårsaktype.foreldernavn.far.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flerbarnsuker",
@@ -349,26 +298,18 @@
     "oppholdsårsaktype.foreldernavn.far.LOVBESTEMT_FERIE": "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
     "oppholdsårsaktype.foreldernavn.far.ARBEID": "{foreldernavn} har utsettelse på grunn av heltidsarbeid",
     "oppholdsårsaktype.foreldernavn.far.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
-    "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_SØKER":
-        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
-    "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET":
-        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
-    "utsettelseårsaktype.foreldernavn.far.LOVBESTEMT_FERIE":
-        "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
+    "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_SØKER": "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
+    "oppholdsårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET": "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
+    "utsettelseårsaktype.foreldernavn.far.LOVBESTEMT_FERIE": "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
     "utsettelseårsaktype.foreldernavn.far.ARBEID": "{foreldernavn} utsetter på grunn av heltidsarbeid",
     "utsettelseårsaktype.foreldernavn.far.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
-    "utsettelseårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_SØKER":
-        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
-    "utsettelseårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET":
-        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
-    "utsettelseårsaktype.foreldernavn.mor.LOVBESTEMT_FERIE":
-        "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
+    "utsettelseårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_SØKER": "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
+    "utsettelseårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_BARNET": "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
+    "utsettelseårsaktype.foreldernavn.mor.LOVBESTEMT_FERIE": "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
     "utsettelseårsaktype.foreldernavn.mor.ARBEID": "{foreldernavn} utsetter på grunn av heltidsarbeid",
     "utsettelseårsaktype.foreldernavn.mor.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
-    "utsettelseårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_SØKER":
-        "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
-    "utsettelseårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_BARNET":
-        "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
+    "utsettelseårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_SØKER": "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
+    "utsettelseårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_BARNET": "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
     "oppsummering.adopsjonAvEktefellesBarn.label": "Gjelder søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
     "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
@@ -408,10 +349,8 @@
     "oppsummering.ettBarn": "ett barn",
     "oppsummering.frilans.driverFosterhjem": "Jeg driver fosterhjem",
     "oppsummering.frilans.fremdelesFrilans": "Jeg jobber fremdeles som frilans",
-    "oppsummering.frilans.frilansArbeidForNæreVennerEllerFamilieSiste10Mnd":
-        "Frilansarbeid for nære venner eller familie de siste 10 månedene",
-    "oppsummering.frilans.harIkkeUtførtFrilansArbeidForNæreVennerEllerFamilieSiste10Mnd":
-        "Jeg har ikke jobbet som frilans for nære venner eller familie de siste 10 månedene",
+    "oppsummering.frilans.frilansArbeidForNæreVennerEllerFamilieSiste10Mnd": "Frilansarbeid for nære venner eller familie de siste 10 månedene",
+    "oppsummering.frilans.harIkkeUtførtFrilansArbeidForNæreVennerEllerFamilieSiste10Mnd": "Jeg har ikke jobbet som frilans for nære venner eller familie de siste 10 månedene",
     "oppsummering.frilans.ikkeFrilans": "Jeg har ikke jobbet som frilanser de siste 10 månedene",
     "oppsummering.frilans.oppstartsdato": "Oppstartsdato som frilans",
     "oppsummering.frilans.tittel": "Frilansarbeid",
@@ -434,21 +373,16 @@
     "oppsummering.omsorgsovertakelse.label": "omsorgsovertakelse",
     "oppsummering.overtakelse.pga": "Overtakelse av {konto}",
     "oppsummering.relasjonTilBarn": "Om barnet",
-    "oppsummering.samtykke":
-        "Jeg har gjort meg kjent med vilkårene for å motta foreldrepenger, og skal ha omsorgen for barnet i perioden jeg søker om.",
-    "oppsummering.selvstendigNæringsdrivende.blittYrkesaktivSiste3År":
-        "Jeg har blitt yrkesaktiv i løpet av de 3 siste ferdigliknede årene",
+    "oppsummering.samtykke": "Jeg har gjort meg kjent med vilkårene for å motta foreldrepenger, og skal ha omsorgen for barnet i perioden jeg søker om.",
+    "oppsummering.selvstendigNæringsdrivende.blittYrkesaktivSiste3År": "Jeg har blitt yrkesaktiv i løpet av de 3 siste ferdigliknede årene",
     "oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt": "Dato for endring av næringsinntekt",
     "oppsummering.selvstendigNæringsdrivende.dokumentasjon": "Dokumentasjon av inntekten din det siste året",
     "oppsummering.selvstendigNæringsdrivende.forklaring": "Forklaring av endring av næringsinntekt",
-    "oppsummering.selvstendigNæringsdrivende.harGittRevisorSamtykke":
-        "Har gitt samtykke til å innhente opplysninger fra revisor",
+    "oppsummering.selvstendigNæringsdrivende.harGittRevisorSamtykke": "Har gitt samtykke til å innhente opplysninger fra revisor",
     "oppsummering.selvstendigNæringsdrivende.harIkkeRegnskapsfører": "Jeg har ikke regnskapsfører",
     "oppsummering.selvstendigNæringsdrivende.harIkkeRevisor": "Jeg har ikke revisor",
-    "oppsummering.selvstendigNæringsdrivende.hattVarigEndringAvNæringsinntektSiste4Kalenderår":
-        "Har hatt varig endring av næringsinntekt siste 4 kalenderår",
-    "oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende":
-        "Jeg har ikke jobbet som selvstendig næringsdrivende de siste 10 månedene",
+    "oppsummering.selvstendigNæringsdrivende.hattVarigEndringAvNæringsinntektSiste4Kalenderår": "Har hatt varig endring av næringsinntekt siste 4 kalenderår",
+    "oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende": "Jeg har ikke jobbet som selvstendig næringsdrivende de siste 10 månedene",
     "oppsummering.selvstendigNæringsdrivende.næringsinntekt": "Næringsinntekt",
     "oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring": "Næringsinntekt etter endring",
     "oppsummering.selvstendigNæringsdrivende.næringstype": "Næringstype",
@@ -457,8 +391,7 @@
     "oppsummering.selvstendigNæringsdrivende.registrertLand": "Registrert i land",
     "oppsummering.selvstendigNæringsdrivende.regnskapsfører": "Regnskapsfører",
     "oppsummering.selvstendigNæringsdrivende.regnskapsførerNavn": "Regnskapsførers navn",
-    "oppsummering.selvstendigNæringsdrivende.regnskapsførerNærVennEllerFamilie":
-        "Regnskapsfører er nær venn eller familie",
+    "oppsummering.selvstendigNæringsdrivende.regnskapsførerNærVennEllerFamilie": "Regnskapsfører er nær venn eller familie",
     "oppsummering.selvstendigNæringsdrivende.regnskapsførerTlf": "Regnskapsførers telefonnummer",
     "oppsummering.selvstendigNæringsdrivende.revisor": "Revisor",
     "oppsummering.selvstendigNæringsdrivende.revisorNavn": "Revisors navn",
@@ -489,11 +422,9 @@
     "oppsummering.uttak.årsak": "Årsak",
     "oppsummering.valideringsfeil.uttaksplan.intro": "Det er en feil i planen din som du må rette opp.",
     "oppsummering.valideringsfeil.uttaksplan.lenketekst": "Gå til planen",
-    "oppsummering.veileder":
-        "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
+    "oppsummering.veileder": "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
     "oppsummering.veileder.manglendeVedlegg.tittel": "Manglende vedlegg",
-    "oppsummering.veileder.manglendeVedlegg":
-        "Husk å sende oss dokumentasjonen som mangler innen 3 uker. Hvis vi mangler nødvendige opplysninger når vi skal behandle søknaden, kan du få avslag.",
+    "oppsummering.veileder.manglendeVedlegg": "Husk å sende oss dokumentasjonen som mangler innen 3 uker. Hvis vi mangler nødvendige opplysninger når vi skal behandle søknaden, kan du få avslag.",
     "orgnr": "Organisasjonsnummer",
     "overføringsårsaktype.ALENEOMSORG": "Jeg har blitt alene om omsorgen",
     "overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER": "{annenForelderNavn} har ikke rett til foreldrepenger",
@@ -502,33 +433,24 @@
     "papirsøknad.lenke": "Her finner du papirsøknaden",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
-    "periodeliste.hull.beskrivelse":
-        "{dager} {dager, plural, one{dag} other {dager}} uten registrert periode eller utsettelse",
+    "periodeliste.hull.beskrivelse": "{dager} {dager, plural, one{dag} other {dager}} uten registrert periode eller utsettelse",
     "periodeliste.hull.info.helligdager": "Du må ta ut foreldrepenger i denne perioden",
-    "periodeliste.hull.info.helligdagerOgUttaksdager.ikkeDeltUttak":
-        "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger.",
-    "periodeliste.hull.info.helligdagerOgUttaksdager.deltUttak":
-        "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger. Hvis {navn} skal være hjemme eller utsette må {navn} sende inn sin egen søknad.",
-    "periodeliste.hull.info.uttaksdager.ikkeDeltUttak":
-        "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger.",
-    "periodeliste.hull.info.uttaksdager.deltUttak":
-        "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger. Hvis {navn} skal være hjemme eller utsette må {navn} sende inn sin egen søknad.",
+    "periodeliste.hull.info.helligdagerOgUttaksdager.ikkeDeltUttak": "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger.",
+    "periodeliste.hull.info.helligdagerOgUttaksdager.deltUttak": "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger. Hvis {navn} skal være hjemme eller utsette må {navn} sende inn sin egen søknad.",
+    "periodeliste.hull.info.uttaksdager.ikkeDeltUttak": "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger.",
+    "periodeliste.hull.info.uttaksdager.deltUttak": "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger. Hvis {navn} skal være hjemme eller utsette må {navn} sende inn sin egen søknad.",
     "periodeliste.hull.tittel": "Tapte foreldrepenger",
     "periodeliste.ikkeInnvilgetPeriode.tittel": "Tapte foreldrepenger - ikke innvilget {type}",
     "periodeliste.ikkeInnvilgetPeriode.beskrivelse": "{varighet} trekkes fra {konto}.",
     "periodeliste.ikkeInnvilgetPeriode.expanded.beskrivelse.uttak": "Perioden er ikke innvilget",
     "periodeliste.ikkeInnvilgetPeriode.expanded.beskrivelse.utsettelse": "Utsettelsen er ikke innvilget",
     "periodeliste.lukk": "Lukk",
-    "periodeliste.overlappendePeriode":
-        "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",
-    "periodeliste.nyPeriodeErFørFamiliehendelsesdato":
-        "For å legge inn en periode før fødselsdato, må du gå tilbake til forrige steg og gjøre det der.",
+    "periodeliste.overlappendePeriode": "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",
+    "periodeliste.nyPeriodeErFørFamiliehendelsesdato": "For å legge inn en periode før fødselsdato, må du gå tilbake til forrige steg og gjøre det der.",
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
     "periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
-    "periodeliste.utsettelse.overlappendeTidsperiode.endre":
-        "Du kan ikke endre datoen slik at den går over en annen periode med utsettelse.",
-    "periodeliste.utsettelse.overlappendeTidsperiode.ny":
-        "Det er allerede lagt inn en utsettelse i denne perioden. Du må slette perioden med utsettelse før du kan legge inn en ny utsettelse.",
+    "periodeliste.utsettelse.overlappendeTidsperiode.endre": "Du kan ikke endre datoen slik at den går over en annen periode med utsettelse.",
+    "periodeliste.utsettelse.overlappendeTidsperiode.ny": "Det er allerede lagt inn en utsettelse i denne perioden. Du må slette perioden med utsettelse før du kan legge inn en ny utsettelse.",
     "periodeliste.oppholdAnnenPart.tittel": "{navn} periode",
     "periodeliste.oppholdAnnenPart.tittel.gradertEllerSamtidigUttak": "{navn} periode {prosent}%",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
@@ -536,8 +458,7 @@
     "periodetype.info.utsettelse.ARBEID": "{ navn } utsetter på grunn av heltidsarbeid",
     "periodetype.info.utsettelse.SYKDOM": "{ navn } utsetter på grunn av sykdom",
     "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_SØKER": "{ navn } på grunn av innleggelse i helseinstitusjon",
-    "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_BARNET":
-        "{ navn } utsetter fordi barnet er innlagt i helseinstitusjon",
+    "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_BARNET": "{ navn } utsetter fordi barnet er innlagt i helseinstitusjon",
     "personalia.år": "{år} år",
     "pgasykdom": "På grunn av sykdom",
     "pågående": "Pågående",
@@ -557,13 +478,11 @@
     "selvstendigNæringsdrivende.modal.registrertILand": "I hvilket land er virksomheten din registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Hva er stillingsprosenten din?",
     "selvstendigNæringsdrivende.modal.tittel": "Opplysninger om virksomheten din",
-    "selvstendigNæringsdrivende.modal.veileder.blikontaktet":
-        "Vi henter inn opplysninger om virksomheten og inntekten din fra offentlige registre. Vi tar kontakt med deg hvis vi trenger flere opplysninger.",
+    "selvstendigNæringsdrivende.modal.veileder.blikontaktet": "Vi henter inn opplysninger om virksomheten og inntekten din fra offentlige registre. Vi tar kontakt med deg hvis vi trenger flere opplysninger.",
     "selvstendigNæringsdrivende.oppfølgingsspørsmål": "Perioder som selvstendig næringsdrivende",
     "selvstendigNæringsdrivende.tidsperiode.fom": "Når startet du {navnPåNæringen}?",
     "selvstendigNæringsdrivende.tidsperiode.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
-    "selvstendigNæringsdrivende.modal.infoboks.forFisker":
-        "Hvis du ikke har organisasjonsnummer, svarer du nei på spørsmålet \"Er {navnPåNæringen} er registrert i Norge?\" I nedtrekkslisten velger du at virksomheten er registrert i Norge.",
+    "selvstendigNæringsdrivende.modal.infoboks.forFisker": "Hvis du ikke har organisasjonsnummer, svarer du nei på spørsmålet \"Er {navnPåNæringen} er registrert i Norge?\" I nedtrekkslisten velger du at virksomheten er registrert i Norge.",
     "skalDereHaGradertUttakSamtidig.spørsmål": "Skal dere ha foreldrepenger samtidig?",
     "skaldujobbeheltidellerdeltid.spørsmål": "Skal du jobbe heltid eller deltid?",
     "skaltautforeldrepenger": "skal ta ut foreldrepenger",
@@ -575,18 +494,15 @@
     "spørsmål.dekningsgrad.80": "{antallUker} uker med 80 prosent foreldrepenger",
     "spørsmål.dekningsgrad.endringssøknad.label.deltUttak": "Hvor lang periode med foreldrepenger har dere valgt?",
     "spørsmål.dekningsgrad.endringssøknad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger har du valgt?",
-    "spørsmål.dekningsgrad.hjelpetekst.aleneomsorg":
-        "Den totale utbetalingen blir noe høyere ved å velge 100 prosent. Du kan ikke gjøre om dette valget senere.",
-    "spørsmål.dekningsgrad.hjelpetekst":
-        "Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan ikke endres senere.",
+    "spørsmål.dekningsgrad.hjelpetekst.aleneomsorg": "Den totale utbetalingen blir noe høyere ved å velge 100 prosent. Du kan ikke gjøre om dette valget senere.",
+    "spørsmål.dekningsgrad.hjelpetekst": "Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan ikke endres senere.",
     "spørsmål.dekningsgrad.label.deltUttak": "Hvor lang periode med foreldrepenger har dere valgt?",
     "spørsmål.dekningsgrad.label.deltUttakMor": "Hvor lang periode med foreldrepenger ønsker dere?",
     "spørsmål.dekningsgrad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger ønsker du?",
     "spørsmål.harAnnenForelderSøktFP.label": "Har {navnAnnenForelder} foreldrepenger?",
     "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} siste dag med foreldrepenger?",
     "spørsmål.farSinFørsteUttaksdagSpørsmål.label": "Når er din første dag med foreldrepenger?",
-    "spørsmål.farSinFørsteUttaksdagSpørsmål.ønskerIkkeFlerePerioder.checkbox.label":
-        "Jeg skal ikke ha mer foreldrepenger",
+    "spørsmål.farSinFørsteUttaksdagSpørsmål.ønskerIkkeFlerePerioder.checkbox.label": "Jeg skal ikke ha mer foreldrepenger",
     "spørsmål.farSinFørsteUttaksdagSpørsmål.førsteUttaksdagEtterAnnenPart": "Første dag etter { navn }: { dato }",
     "spørsmål.farFellesperiode.label": "Hvor mye fellesperiode skal du ha?",
     "spørsmål.farFellesperiode.uker.label": "Antall uker",
@@ -594,8 +510,7 @@
     "spørsmål.farFellesperiode.infoboksTekst": "Fellesperioden er ukene med foreldrepenger som dere kan dele.",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe utsettelse i perioden med foreldrepenger?",
     "spørsmål.skalHaDelAvFellesperiodeSpørsmål.label": "Skal du ha noe av fellesperioden?",
-    "spørsmål.skalStarteRettEtterMorSpørsmål.label":
-        "Skal du starte rett etter at mor er ferdig med sine foreldrepenger?",
+    "spørsmål.skalStarteRettEtterMorSpørsmål.label": "Skal du starte rett etter at mor er ferdig med sine foreldrepenger?",
     "spørsmål.startdatoPermisjon.barnetErFødt.label": "Når ønsker du å starte perioden?",
     "spørsmål.startdatoPermisjon.barnetErFødt.varighet": "{varighet} før fødsel",
     "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte perioden før termin?",
@@ -653,8 +568,7 @@
     "søknadenGjelderAnnetBarn.spørsmål": "Søknaden min gjelder et annet barn",
     "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsen datert?",
     "termindato.spørsmål": "Når er termindatoen?",
-    "termindato.infotekst":
-        "Hvis du har fått en dato for planlagt keisersnitt, legger du inn denne datoen som termindato. Du skal legge ved bekreftelse på keisersnitt hvis du kun mottar utbetalinger fra NAV, er selvstendig næringsdrivende eller frilanser.",
+    "termindato.infotekst": "Hvis du har fått en dato for planlagt keisersnitt, legger du inn denne datoen som termindato. Du skal legge ved bekreftelse på keisersnitt hvis du kun mottar utbetalinger fra NAV, er selvstendig næringsdrivende eller frilanser.",
     "tidsintervall": "{fom} - {tom}",
     "tidsperiode": "Fra {fom} til {tom}",
     "tidsperiode.kort": "{fom} - {tom}",
@@ -666,32 +580,22 @@
     "utenlandsopphold.select.spørsmål.tidligereOpphold": "Hvilket land bodde du i?",
     "utenlandsopphold.tittel": "Legg til utenlandsopphold",
     "utenlandsopphold.tittel.endre": "Endre utenlandsopphold",
-    "utsettelse.helligdager":
-        "Perioden du har valgt går over helligdager. Du kan ikke ha ferie på helligdager. Du må legge til periode med foreldrepenger i planen din, dette gjør du etter du har lagt til utsettelsen.",
+    "utenlandsopphold.infoOmFødselsattest": "Du har opplyst at du skal være i {land} når du har termin {termindato}. Hvis du føder i utlandet må du ettersende fødselsattest til oss, grunnen er at vi ikke får inn opplysninger om fødselen automatisk når du ikke føder i Norge.",
+    "utsettelse.helligdager": "Perioden du har valgt går over helligdager. Du kan ikke ha ferie på helligdager. Du må legge til periode med foreldrepenger i planen din, dette gjør du etter du har lagt til utsettelsen.",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Jeg er innlagt på helseinstitusjon",
     "utsettelse.sykdom.alternativ.SYKDOM": "Jeg er for syk til å ta meg av barnet",
     "utsettelse.sykdom.alternativer.spørsmål": "Velg alternativ",
-    "utsettelse.sykdom.vedlegg.info.barnInnlagt":
-        "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
-    "utsettelse.sykdom.vedlegg.info.innlagt":
-        "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
-    "utsettelse.sykdom.vedlegg.info.sykdom":
-        "Du må legge ved bekreftelse fra legen din. Den må beskrive hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta deg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
-    "utsettelseskjema.arbeid.avtaltFulltidVedDeltid":
-        "Har du en skriftlig avtale med {antall, plural, one{arbeidsgiveren} other {arbeidsgiverene}} {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent?",
-    "utsettelseskjema.ferie.utenArbeidsforhold":
-        "Du kan dessverre ikke legge inn utsettelse på grunn av lovbestemt ferie fordi du ikke er registrert med et arbeidsforhold i denne perioden. Hvis du er arbeidstaker må du be din arbeidsgiver oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
-    "utsettelseskjema.ferievarsel.kreveroverforing":
-        "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha utsettelse lengre enn 4 uker og 1 dag må du ha overført lovbestemt ferie fra i fjor eller ta ut lovbestemt ferie fra neste år. Ferien må avtales med din arbeidsgiver.",
-    "utsettelseskjema.ferievarsel.ulovlig":
-        "Du har lagt inn til sammen {ukerOgDager} med ferie. Du kan maksimalt legge inn 10 uker og 2 dager med ferie. Ferien må avtales med din arbeidsgiver.",
-    "utsettelseskjema.info.helligdagerIFerie":
-        "Ferien du har lagt inn går over en periode med helligdager. Du kan ikke ha ferie på helligdager. Disse dagene vil bli lagt til som foreldrepenger i planen din, du må velge hvilken del av foreldrepengene du ønsker å bruke.",
-    "utsettelseskjema.veiledning.ferie":
-        "<p>Du kan utsette foreldrepengene med lovbestemt ferie i inntil 4 uker og 1 dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og 10 feriedager fra neste år. Du kan ikke utsette på helligdager.</p> Ferien må avtales med din arbeidsgiver.",
-    "utsettelseskjema.info.utsettelseArbeid":
-        "Hvis du ikke finner arbeidsforholdet ditt her, har ikke arbeidsgiveren din meldt deg inn i Arbeids- og arbeidsgiverregisteret. Du må være registrert som ansatt der du skal jobbe for å bruke den digitale søknaden, ta kontakt med arbeidsgiveren din. <br /><br />Du må sende inn søknaden om å utsette foreldrepenger før du skal begynne å jobbe.",
+    "utsettelse.sykdom.vedlegg.info.barnInnlagt": "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
+    "utsettelse.sykdom.vedlegg.info.innlagt": "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
+    "utsettelse.sykdom.vedlegg.info.sykdom": "Du må legge ved bekreftelse fra legen din. Den må beskrive hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta deg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
+    "utsettelseskjema.arbeid.avtaltFulltidVedDeltid": "Har du en skriftlig avtale med {antall, plural, one{arbeidsgiveren} other {arbeidsgiverene}} {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent?",
+    "utsettelseskjema.ferie.utenArbeidsforhold": "Du kan dessverre ikke legge inn utsettelse på grunn av lovbestemt ferie fordi du ikke er registrert med et arbeidsforhold i denne perioden. Hvis du er arbeidstaker må du be din arbeidsgiver oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
+    "utsettelseskjema.ferievarsel.kreveroverforing": "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha utsettelse lengre enn 4 uker og 1 dag må du ha overført lovbestemt ferie fra i fjor eller ta ut lovbestemt ferie fra neste år. Ferien må avtales med din arbeidsgiver.",
+    "utsettelseskjema.ferievarsel.ulovlig": "Du har lagt inn til sammen {ukerOgDager} med ferie. Du kan maksimalt legge inn 10 uker og 2 dager med ferie. Ferien må avtales med din arbeidsgiver.",
+    "utsettelseskjema.info.helligdagerIFerie": "Ferien du har lagt inn går over en periode med helligdager. Du kan ikke ha ferie på helligdager. Disse dagene vil bli lagt til som foreldrepenger i planen din, du må velge hvilken del av foreldrepengene du ønsker å bruke.",
+    "utsettelseskjema.veiledning.ferie": "<p>Du kan utsette foreldrepengene med lovbestemt ferie i inntil 4 uker og 1 dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og 10 feriedager fra neste år. Du kan ikke utsette på helligdager.</p> Ferien må avtales med din arbeidsgiver.",
+    "utsettelseskjema.info.utsettelseArbeid": "Hvis du ikke finner arbeidsforholdet ditt her, har ikke arbeidsgiveren din meldt deg inn i Arbeids- og arbeidsgiverregisteret. Du må være registrert som ansatt der du skal jobbe for å bruke den digitale søknaden, ta kontakt med arbeidsgiveren din. <br /><br />Du må sende inn søknaden om å utsette foreldrepenger før du skal begynne å jobbe.",
     "utsettelseskjema.kunHelligdager.disabledFerieMelding": "Du kan ikke utsette med ferie på helligdager",
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt",
@@ -702,8 +606,7 @@
     "uttaksoppsummering.forbrukt": "Foreldrepenger du har brukt",
     "uttaksoppsummering.gjenstående": "Foreldrepenger du har igjen",
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
-    "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst":
-        "Du må sende inn søknaden om å kombinere foreldrepenger med arbeid før du skal begynne å jobbe. <br /><br /> Skal du <b>jobbe hos flere arbeidsgivere samtidig</b> kan du ikke bruke den digitale søknaden, du må sende inn søknaden på papir. Du kan lese mer om dette på <a href=\"https://www.nav.no/fleksibeltuttak\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">familie.nav.no</a>, og her finner du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>.",
+    "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst": "Du må sende inn søknaden om å kombinere foreldrepenger med arbeid før du skal begynne å jobbe. <br /><br /> Skal du <b>jobbe hos flere arbeidsgivere samtidig</b> kan du ikke bruke den digitale søknaden, du må sende inn søknaden på papir. Du kan lese mer om dette på <a href=\"https://www.nav.no/fleksibeltuttak\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">familie.nav.no</a>, og her finner du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>.",
     "uttaksplan.ønskerFlerbarnsdager": "Ønsker du å benytte deg av flerbarnsdagene?",
     "uttaksplan.familiehendelsesdato.adopsjon": "Barnet er adoptert {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Barnet er født {dato}",
@@ -711,77 +614,49 @@
     "uttaksplan.familiehendelsesdato.omsorgsovertakelse": "Omsorgsovertakselsedato den {dato}",
     "uttaksplan.periodenGjelder": "Hvem skal ha foreldrepenger?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål": "Hva skal {navnMor} gjøre i denne perioden?",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid":
-        "Du må legge ved bekreftelse fra {navnMor} arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent. Dersom mor er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning":
-        "Du må legge ved dokumentasjon på {navnMor} sitt arbeidsforhold og studier. Dokumentasjon fra studiestedet må vise",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid": "Du må legge ved bekreftelse fra {navnMor} arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent. Dersom mor er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning": "Du må legge ved dokumentasjon på {navnMor} sitt arbeidsforhold og studier. Dokumentasjon fra studiestedet må vise",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt1": "navn og fødselsnummer",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt2": "studiested, fag eller studieprogram",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt3": "oppstart og varighet av studiet",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt4":
-        "har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt":
-        "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.introduksjonsprogrammet":
-        "Du må legge ved bekreftelse fra programarrangøren at {navnMor} deltar i introduksjonsprogrammet etter kapittel 2 for nyankomne innvandrere.",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.kvalifiseringsprogrammet":
-        "Du må legge ved bekreftelse fra programarrangøren at {navnMor} deltar i kvalifiseringsprogrammet til NAV.",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.trengerhjelp":
-        "Du må legge ved bekreftelse som {navnMor} får fra legen sin. Den må beskrive hvordan sykdommen eller skaden gjør {navnMor} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning":
-        "Du må legge ved bekreftelse på at {navnMor} er fulltidsstudent. Bekreftelsen må vise",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt4": "har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt": "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.introduksjonsprogrammet": "Du må legge ved bekreftelse fra programarrangøren at {navnMor} deltar i introduksjonsprogrammet etter kapittel 2 for nyankomne innvandrere.",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.kvalifiseringsprogrammet": "Du må legge ved bekreftelse fra programarrangøren at {navnMor} deltar i kvalifiseringsprogrammet til NAV.",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.trengerhjelp": "Du må legge ved bekreftelse som {navnMor} får fra legen sin. Den må beskrive hvordan sykdommen eller skaden gjør {navnMor} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning": "Du må legge ved bekreftelse på at {navnMor} er fulltidsstudent. Bekreftelsen må vise",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt1": "navn og fødselsnummer",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt2": "studiested, fag eller studieprogram",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt3": "oppstart og varighet av studiet",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4":
-        "har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4": "har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen",
     "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal {navnAnnenForelder} ha foreldrepenger i samme periode?",
     "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal dere ha foreldrepenger samtidig?",
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.hull.fjern": "Bruk {nesteUttaksperiode}",
     "uttaksplan.hull.leggTil.opphold": "Legg inn ny utsettelse",
     "uttaksplan.hull.leggTil.uttak": "Legg inn ny periode",
-    "uttaksplan.infoTilFrilansOgSelvstendig":
-        "Når du bekrefter her hvor mye du skal jobbe, regnes det som en avtale mellom deg og NAV hvis du får innvilget søknaden din.",
-    "uttaksplan.infoVedOpphold":
-        "Du kan planlegge når {navn} skal ha foreldrepenger, men {navn} må sende inn sin egen søknad. Søknaden må sendes inn senest dagen før foreldrepengene skal tas ut for ikke å miste dager. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige frister.</a>",
-    "uttaksplan.infoVedOpphold.førsteSeksUker":
-        "{navnFar} kan kun ta ut fellesperiode eller kvote om du er så syk at du er helt avhengig av hjelp til å ta deg av barnet eller innlagt i helseinstitusjon. Du kan planlegge når {navnFar} skal ha foreldrepenger, men {navnFar} må sende inn sin egen søknad.",
-    "uttaksplan.infoVedTapteUttaksdager":
-        "Du vil miste {dager} {dager, plural, one{dag} other {dager}} med foreldrepenger siden du starter senere enn seks uker etter fødsel. For å unngå tap av dager kan du legge til en utsettelse i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
+    "uttaksplan.infoTilFrilansOgSelvstendig": "Når du bekrefter her hvor mye du skal jobbe, regnes det som en avtale mellom deg og NAV hvis du får innvilget søknaden din.",
+    "uttaksplan.infoVedOpphold": "Du kan planlegge når {navn} skal ha foreldrepenger, men {navn} må sende inn sin egen søknad. Søknaden må sendes inn senest dagen før foreldrepengene skal tas ut for ikke å miste dager. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige frister.</a>",
+    "uttaksplan.infoVedOpphold.førsteSeksUker": "{navnFar} kan kun ta ut fellesperiode eller kvote om du er så syk at du er helt avhengig av hjelp til å ta deg av barnet eller innlagt i helseinstitusjon. Du kan planlegge når {navnFar} skal ha foreldrepenger, men {navnFar} må sende inn sin egen søknad.",
+    "uttaksplan.infoVedTapteUttaksdager": "Du vil miste {dager} {dager, plural, one{dag} other {dager}} med foreldrepenger siden du starter senere enn seks uker etter fødsel. For å unngå tap av dager kan du legge til en utsettelse i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
     "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapt foreldrepenger",
     "uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse": "Legg til utsettelse",
-    "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan":
-        "Perioden med foreldrepenger starter {dato}. Starter du senere, får du færre dager med foreldrepenger.",
-    "uttaksplan.informasjon.flerbarnssøknad":
-        "Dere har {uker} uker med flerbarnsuker som dere kan dele, disse kan ta ut når som helst i foreldrepengeperioden. Du velger selv om flerbarnsukene skal tas ut som fellesperiode eller kvoten din. Dere kan ta de ut samtidig, eller hver for dere. Det er ikke krav til hva {navnMor} gjør når du tar ut dager med flerbarnsuker.",
-    "uttaksplan.informasjon.flerbarnssøknad.ikkeDeltUttak":
-        "Du har {uker} uker med flerbarnsuker. Disse ukene kan du ta ut når som helst i foreldrepengeperioden. Det er ikke krav til hva {navnMor} gjør når du tar ut dager med flerbarnsuker.",
-    "uttaksplan.informasjon.endringssøknad":
-        "Her legger du inn når du vil ha foreldrepenger eller utsette fordi du skal ha ferie, jobbe eller er blitt syk. Denne endringssøknaden erstatter din opprinnelige plan.",
-    "uttaksplan.informasjon.farMedmor.aleneOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
-    "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan ha {aktivitetsfriKvote} uker med foreldrepenger uten aktivitetskrav til mor.",
-    "uttaksplan.informasjon.farMedmor.deltUttak":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn periode med foreldrepenger for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
-    "uttaksplan.informasjon.lesMer":
-        "Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
+    "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan": "Perioden med foreldrepenger starter {dato}. Starter du senere, får du færre dager med foreldrepenger.",
+    "uttaksplan.informasjon.flerbarnssøknad": "Dere har {uker} uker med flerbarnsuker som dere kan dele, disse kan ta ut når som helst i foreldrepengeperioden. Du velger selv om flerbarnsukene skal tas ut som fellesperiode eller kvoten din. Dere kan ta de ut samtidig, eller hver for dere. Det er ikke krav til hva {navnMor} gjør når du tar ut dager med flerbarnsuker.",
+    "uttaksplan.informasjon.flerbarnssøknad.ikkeDeltUttak": "Du har {uker} uker med flerbarnsuker. Disse ukene kan du ta ut når som helst i foreldrepengeperioden. Det er ikke krav til hva {navnMor} gjør når du tar ut dager med flerbarnsuker.",
+    "uttaksplan.informasjon.endringssøknad": "Her legger du inn når du vil ha foreldrepenger eller utsette fordi du skal ha ferie, jobbe eller er blitt syk. Denne endringssøknaden erstatter din opprinnelige plan.",
+    "uttaksplan.informasjon.farMedmor.aleneOmsorg": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
+    "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan ha {aktivitetsfriKvote} uker med foreldrepenger uten aktivitetskrav til mor.",
+    "uttaksplan.informasjon.farMedmor.deltUttak": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn periode med foreldrepenger for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
+    "uttaksplan.informasjon.lesMer": "Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
-    "uttaksplan.informasjon.foreldrepengerFørFødselMindreEnnTreUker":
-        "{varighet} du ikke bruker før termin faller bort",
-    "uttaksplan.informasjon.foreldrepengerFørFødselSkalIkkeHa":
-        "Når du ikke starter foreldrepengeperioden 3 uker før termindato mister du rett til foreldrepenger disse dagene.",
-    "uttaksplan.informasjon.mor.aleneOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
-    "uttaksplan.informasjon.mor.deltOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn periode med foreldrepenger for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
-    "uttaksplan.informasjon.morErForSyk":
-        "Dersom du skal starte ditt uttak innenfor de første seks ukene etter fødsel må du legge ved bekreftelse fra legen til {navnMor}. Den må beskrive hvordan sykdommen eller skaden gjør {navnMor} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
-    "uttaksplan.informasjon.morErForSykNeiSvar":
-        "Du kan ikke starte ditt uttak innenfor de første seks ukene etter fødsel dersom mor ikke er for syk eller innlagt i helseinstitusjon.",
-    "uttaksplan.informasjonTilSøker":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navn}, men {navn} må søke selv.",
+    "uttaksplan.informasjon.foreldrepengerFørFødselMindreEnnTreUker": "{varighet} du ikke bruker før termin faller bort",
+    "uttaksplan.informasjon.foreldrepengerFørFødselSkalIkkeHa": "Når du ikke starter foreldrepengeperioden 3 uker før termindato mister du rett til foreldrepenger disse dagene.",
+    "uttaksplan.informasjon.mor.aleneOmsorg": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
+    "uttaksplan.informasjon.mor.deltOmsorg": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn periode med foreldrepenger for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
+    "uttaksplan.informasjon.morErForSyk": "Dersom du skal starte ditt uttak innenfor de første seks ukene etter fødsel må du legge ved bekreftelse fra legen til {navnMor}. Den må beskrive hvordan sykdommen eller skaden gjør {navnMor} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
+    "uttaksplan.informasjon.morErForSykNeiSvar": "Du kan ikke starte ditt uttak innenfor de første seks ukene etter fødsel dersom mor ikke er for syk eller innlagt i helseinstitusjon.",
+    "uttaksplan.informasjonTilSøker": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navn}, men {navn} må søke selv.",
     "uttaksplan.leggTil.opphold": "Legg til utsettelse",
     "uttaksplan.leggTil.uttak": "Legg til ny periode",
     "uttaksplan.nyperiode.avbrytAriaLabel": "Avbryt legg til ny periode",
@@ -789,28 +664,20 @@
     "uttaksplan.nyttopphold.avbrytAriaLabel": "Avbryt, legg til ny utsettelse",
     "uttaksplan.nyttopphold.leggTilAriaLabel": "Ok, legg til ny utsettelse",
     "uttaksplan.overføring.vedlegg.info": "Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet.",
-    "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder":
-        "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
-    "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder":
-        "Du må legge ved bekreftelse som {navnAnnenForelder} får fra sin lege. Den må beskrive hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
+    "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder": "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
+    "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder": "Du må legge ved bekreftelse som {navnAnnenForelder} får fra sin lege. Den må beskrive hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "uttaksplan.overføring.årsak.spørsmål": "Hvorfor skal du overta {annenForelderNavn} kvote?",
-    "uttaksplan.skjema.flerbarnsInformasjon":
-        "Dere har {uker} uker med flerbarnsuker som dere kan dele. Disse ukene kan dere ta ut når som helst i foreldrepengeperioden. Dere kan ta de ut samtidig, eller hver for dere. Det er ikke krav til hva {navnMor} gjør når {navnFar} tar ut dager med flerbarnsuker.",
-    "uttaksplan.skjema.fordeling.annenForeldersFellesperiode":
-        "{annenForeldersNavn} kan ta ut {antallUker} uker av fellesperioden",
-    "uttaksplan.skjema.fordeling.aria.fordeling":
-        "Hvor mange uker av fellesdelen skal {navnMor} ha av totalt {ukerFellesperiode} uker?",
+    "uttaksplan.skjema.flerbarnsInformasjon": "Dere har {uker} uker med flerbarnsuker som dere kan dele. Disse ukene kan dere ta ut når som helst i foreldrepengeperioden. Dere kan ta de ut samtidig, eller hver for dere. Det er ikke krav til hva {navnMor} gjør når {navnFar} tar ut dager med flerbarnsuker.",
+    "uttaksplan.skjema.fordeling.annenForeldersFellesperiode": "{annenForeldersNavn} kan ta ut {antallUker} uker av fellesperioden",
+    "uttaksplan.skjema.fordeling.aria.fordeling": "Hvor mange uker av fellesdelen skal {navnMor} ha av totalt {ukerFellesperiode} uker?",
     "uttaksplan.skjema.fordeling.reduser.tooltip": "En uke mindre",
     "uttaksplan.skjema.fordeling.spørsmål": "Hvor mange uker skal du ha av fellesperioden?",
     "uttaksplan.skjema.fordeling.uker": "{uker, plural, one {# uke} other {# uker}}",
-    "uttaksplan.skjema.fordeling.valgtVerdi":
-        "{ukerForelder} av {ukerTotalt, plural, one {# uke} other {# uker}} med fellesperiode",
-    "uttaksplan.skjema.fordeling.veiledning":
-        "Av perioden med foreldrepenger er {pakrevdForelder1} uker satt av til {navnForelder1}, mens {pakrevdForelder2} uker er satt av til {navnForelder2}. Resten av ukene er fellesperiode som dere kan dele. Husk at det er aktivitetskrav til {navnForelder1} når {navnForelder2} har fellesperiode.",
+    "uttaksplan.skjema.fordeling.valgtVerdi": "{ukerForelder} av {ukerTotalt, plural, one {# uke} other {# uker}} med fellesperiode",
+    "uttaksplan.skjema.fordeling.veiledning": "Av perioden med foreldrepenger er {pakrevdForelder1} uker satt av til {navnForelder1}, mens {pakrevdForelder2} uker er satt av til {navnForelder2}. Resten av ukene er fellesperiode som dere kan dele. Husk at det er aktivitetskrav til {navnForelder1} når {navnForelder2} har fellesperiode.",
     "uttaksplan.skjema.fordeling.veiledning.lenketekst": "Les mer om aktivitetskravet her.",
     "uttaksplan.skjema.fordeling.øk.tooltip": "En uke mer",
-    "uttaksplan.skjema.informasjonTilAnnenForelder":
-        "Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i {navn} søknad.",
+    "uttaksplan.skjema.informasjonTilAnnenForelder": "Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i {navn} søknad.",
     "uttaksplan.skjema.opphold.årsak.spørsmål": "Hvilken del av foreldrepengene skal {navn} ta ut?",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.ankomst": "Ankomst til Norge {dato}",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.annen": "Annen dato",
@@ -821,170 +688,118 @@
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.alternativ.datoForAleneomsorg": "Omsorgsovertakelsen {dato}",
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.annenDato.spørsmål": "Velg annen dato",
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.spørsmål": "Når skal du starte foreldrepengene dine?",
-    "uttaksplan.skjema.farMedmor.infoOmTidsromMellomMorsSisteDagOgFarsFørsteDag":
-        "Du skal legge inn siste dagen {navnMor} får utbetalt foreldrepenger fra NAV. Hvis {navnMor} har ulønnet permisjon eller ferie så er ikke dette en del av foreldrepengeperioden, du skal derfor legge inn siste dag {navnMor} får utbetalt foreldrepenger. Er du usikker på hva som er riktig dato kan dere se i vedtaket {navnMor} har fått fra NAV.",
-    "uttaksplan.skjema.aleneomsorgFarMedmor.navSaraVeileder":
-        "Foreldrepengeperioden din starter når <b>barnet er født</b>. Hvis {navn} har hatt foreldrepenger før du ble alene om omsorgen, kan du få foreldrepenger for perioden som er igjen.",
-    "uttaksplan.skjema.adopsjon.navSaraVeileder":
-        "Foreldrepengeperioden din starter på dato for omsorgsovertakelse. Hvis {navn} har hatt foreldrepenger før du ble alene om omsorgen, kan du få foreldrepenger for perioden som er igjen.",
+    "uttaksplan.skjema.farMedmor.infoOmTidsromMellomMorsSisteDagOgFarsFørsteDag": "Du skal legge inn siste dagen {navnMor} får utbetalt foreldrepenger fra NAV. Hvis {navnMor} har ulønnet permisjon eller ferie så er ikke dette en del av foreldrepengeperioden, du skal derfor legge inn siste dag {navnMor} får utbetalt foreldrepenger. Er du usikker på hva som er riktig dato kan dere se i vedtaket {navnMor} har fått fra NAV.",
+    "uttaksplan.skjema.aleneomsorgFarMedmor.navSaraVeileder": "Foreldrepengeperioden din starter når <b>barnet er født</b>. Hvis {navn} har hatt foreldrepenger før du ble alene om omsorgen, kan du få foreldrepenger for perioden som er igjen.",
+    "uttaksplan.skjema.adopsjon.navSaraVeileder": "Foreldrepengeperioden din starter på dato for omsorgsovertakelse. Hvis {navn} har hatt foreldrepenger før du ble alene om omsorgen, kan du få foreldrepenger for perioden som er igjen.",
     "uttaksplan.skjema.validering.startdatoFarMedmor": "Du må oppgi når du skal starte",
-    "uttaksplan.skjema.validering.startdatoFørTermin":
-        "Du må oppgi når du skal starte foreldrepengene, eller krysse av for at du ikke skal ha foreldrepenger før termindato",
-    "uttaksplan.skjema.validering.startdatoHelg":
-        "Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag",
-    "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom":
-        "Startdatoen må være innen de {uker} første ukene før termin eller fødsel",
+    "uttaksplan.skjema.validering.startdatoFørTermin": "Du må oppgi når du skal starte foreldrepengene, eller krysse av for at du ikke skal ha foreldrepenger før termindato",
+    "uttaksplan.skjema.validering.startdatoHelg": "Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag",
+    "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom": "Startdatoen må være innen de {uker} første ukene før termin eller fødsel",
     "uttaksplan.slettPlan": "Slett plan",
     "uttaksplan.tilbakestillPlan": "Tilbakestill endringer",
-    "uttaksplan.startdato.veileder.forTidligStartdato":
-        "Startdatoen av foreldrepengene dine må være innen de 12 første ukene før termin eller fødsel. Den første mulige startdato er {dato}.",
-    "uttaksplan.startdato.veileder.helgedag":
-        "Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag.",
+    "uttaksplan.startdato.veileder.forTidligStartdato": "Startdatoen av foreldrepengene dine må være innen de 12 første ukene før termin eller fødsel. Den første mulige startdato er {dato}.",
+    "uttaksplan.startdato.veileder.helgedag": "Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag.",
     "uttaksplan.tittel": "Din plan",
     "uttaksplan.tomPlan": "Du har ikke lagt til noen perioder ennå.",
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp.",
     "uttaksplan.validering.advarsel.senÅrsakOgTidsperiode": "Du søker om utsettelse tilbake i tid.",
-    "uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode":
-        "Du har lagt inn <strong>{periode}</strong> i perioden {tidsperiode}. {forelder} har foreldrepenger eller utsettelse i samme periode. <strong>{periode}</strong> vil erstatte {forelders} foreldrepenger eller utsettelse i denne perioden.",
+    "uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode": "Du har lagt inn <strong>{periode}</strong> i perioden {tidsperiode}. {forelder} har foreldrepenger eller utsettelse i samme periode. <strong>{periode}</strong> vil erstatte {forelders} foreldrepenger eller utsettelse i denne perioden.",
     "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikke få foreldrepenger etter at barnet er fylt 3 år.",
-    "uttaksplan.validering.feil.harSøktOmFerieUtenArbeidsforhold":
-        "Du kan dessverre ikke legge inn utsettelse på grunn av lovbestemt ferie fordi du ikke er registrert med et arbeidsforhold i valgt tidsperiode.",
+    "uttaksplan.validering.feil.harSøktOmFerieUtenArbeidsforhold": "Du kan dessverre ikke legge inn utsettelse på grunn av lovbestemt ferie fordi du ikke er registrert med et arbeidsforhold i valgt tidsperiode.",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag.",
-    "uttaksplan.validering.feil.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker":
-        "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Unntaket er om mor er for syk eller innlagt i helseinstitusjon.",
-    "uttaksplan.validering.feil.uttaksmengdeForFarMedmorErForHøy":
-        "Du har lagt inn flere dager enn du har tilgjengelig.",
+    "uttaksplan.validering.feil.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker": "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Unntaket er om mor er for syk eller innlagt i helseinstitusjon.",
+    "uttaksplan.validering.feil.uttaksmengdeForFarMedmorErForHøy": "Du har lagt inn flere dager enn du har tilgjengelig.",
     "uttaksplan.validering.feil.forMyeUttak.tittel": "Lagt inn for mange dager i planen",
     "uttaksplan.validering.feil.forMyeUttak": "Du har tatt {dager } for mye av {konto}",
-    "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
-        "Du er for tidlig ute. Du kan tidligst søke seks uker før du skal ha foreldrepenger. Du må vente med å sende søknaden din til {dato}.",
-    "uttaksplan.validering.feil.uttaksplanGraderingStørreEnnSamtidigUttak":
-        "Samtidig uttaksprosent og foreldrepenger kombinert med arbeid kan ikke være høyere enn 100 prosent til sammen.",
-    "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
-        "Du kan ikke søke om utsettelse før foreldrepengeperioden din starter.",
-    "uttaksplan.validering.feil.morHarSøktUgyldigUttakFørsteSeksUker":
-        "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb, kombinere foreldrepenger med delvis arbeid, ta samtidig uttak eller bruke fellesperioden de første seks ukene du tar ut foreldrepenger.",
+    "uttaksplan.validering.feil.forsteUttakEtterSeksUker": "Du er for tidlig ute. Du kan tidligst søke seks uker før du skal ha foreldrepenger. Du må vente med å sende søknaden din til {dato}.",
+    "uttaksplan.validering.feil.uttaksplanGraderingStørreEnnSamtidigUttak": "Samtidig uttaksprosent og foreldrepenger kombinert med arbeid kan ikke være høyere enn 100 prosent til sammen.",
+    "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel": "Du kan ikke søke om utsettelse før foreldrepengeperioden din starter.",
+    "uttaksplan.validering.feil.morHarSøktUgyldigUttakFørsteSeksUker": "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb, kombinere foreldrepenger med delvis arbeid, ta samtidig uttak eller bruke fellesperioden de første seks ukene du tar ut foreldrepenger.",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode.",
-    "uttaksplan.validering.feil.periodeoverlapp.oppsummering":
-        "{periode} ({tidsperiode}) overlapper med en eller flere andre perioder.",
+    "uttaksplan.validering.feil.periodeoverlapp.oppsummering": "{periode} ({tidsperiode}) overlapper med en eller flere andre perioder.",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det mangler informasjon om perioden.",
-    "uttaksplan.validering.feil.planenInneholderIngenPerioder":
-        "For å komme videre i søknaden må du legge til en periode med foreldrepenger eller en utsettelse",
+    "uttaksplan.validering.feil.planenInneholderIngenPerioder": "For å komme videre i søknaden må du legge til en periode med foreldrepenger eller en utsettelse",
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosent kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikke gyldig",
-    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
-        "Du kan ikke søke om utsettelse på grunn av arbeid eller ferie mindre enn 6 uker etter fødsel",
+    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode": "Du kan ikke søke om utsettelse på grunn av arbeid eller ferie mindre enn 6 uker etter fødsel",
     "uttaksplan.validering.feil.stønadskontoMangler": "Perioden er ikke gyldig.",
     "uttaksplan.validering.feil.uttaksplanErBareOpphold": "Du kan ikke ha en plan med kun en utsettelse.",
-    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold":
-        "Planen din kan ikke slutte med at den andre forelderen skal være hjemme.",
-    "uttaksplan.validering.feil.uttaksplanStarterMedOpphold":
-        "Planen din kan ikke starte med at den andre forelderen skal være hjemme.",
+    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Planen din kan ikke slutte med at den andre forelderen skal være hjemme.",
+    "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Planen din kan ikke starte med at den andre forelderen skal være hjemme.",
     "uttaksplan.validering.feil.uttaksplanHarForMangeFlerbarnsdager": "Du har lagt inn for mange flerbarnsdager",
     "uttaksplan.validering.feil.periodeStarterPåDatoSomIkkeErUttaksdag": "Perioden kan ikke starte på en helgedag",
     "uttaksplan.validering.feil.periodeSlutterPåDatoSomIkkeErUttaksdag": "Perioden kan ikke slutte på en helgedag",
-    "uttaksplan.validering.feil.innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode":
-        "Foreldrepenger uten aktivitetskrav må du ta ut innen {antallUker} uker etter at barnet er født. Skal du ha foreldrepenger etter denne perioden må mor være i aktivitet når du er hjemme med barnet.",
-    "uttaksplan.validering.feiloppsummering.tittel":
-        "Planen din inneholder feil som du må rette opp i før du kan gå videre",
+    "uttaksplan.validering.feil.innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode": "Foreldrepenger uten aktivitetskrav må du ta ut innen {antallUker} uker etter at barnet er født. Skal du ha foreldrepenger etter denne perioden må mor være i aktivitet når du er hjemme med barnet.",
+    "uttaksplan.validering.feiloppsummering.tittel": "Planen din inneholder feil som du må rette opp i før du kan gå videre",
     "uttaksplan.validering.før12UkerFørTermin": "Du kan tidligst ta ut foreldrepenger 12 uker før termin eller fødsel",
     "uttaksplan.validering.feil.erSamtidigUttakGyldig": "Du må oppgi hvor mange prosent du skal være hjemme",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepenger",
     "uttaksplan.varighet.uttak.gradert": "{varighet}",
     "uttaksplan.ulønnetPermisjonInfo.tittel": "Vi ønsker en periode med ulønnet permisjon",
-    "uttaksplan.ulønnetPermisjonInfo.del1":
-        "Når en forelder planlegger å være hjemme i ulønnet permisjon må <b>den andre forelderen</b> søke om å utsette foreldrepengene på grunn av heltidsarbeid, sykdom eller ferie.",
-    "uttaksplan.ulønnetPermisjonInfo.del2":
-        "Ulønnet permisjon kan påvirke retten til andre NAV ytelser og opptjening av rett til foreldrepenger for nytt barn. <a href=\"https://www.nav.no/no/Person/Arbeid/Sykmeldt%2C+arbeidsavklaringspenger+og+yrkesskade/Sykepenger/Sykepenger+til+sarskilte+grupper#chapter-5\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">Her kan du lese mer om dine rettigheter.</a>",
+    "uttaksplan.ulønnetPermisjonInfo.del1": "Når en forelder planlegger å være hjemme i ulønnet permisjon må <b>den andre forelderen</b> søke om å utsette foreldrepengene på grunn av heltidsarbeid, sykdom eller ferie.",
+    "uttaksplan.ulønnetPermisjonInfo.del2": "Ulønnet permisjon kan påvirke retten til andre NAV ytelser og opptjening av rett til foreldrepenger for nytt barn. <a href=\"https://www.nav.no/no/Person/Arbeid/Sykmeldt%2C+arbeidsavklaringspenger+og+yrkesskade/Sykepenger/Sykepenger+til+sarskilte+grupper#chapter-5\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">Her kan du lese mer om dine rettigheter.</a>",
     "uttaksplan.arbeideHelgInfo.tittel": "Jeg skal jobbe i helgen",
-    "uttaksplan.arbeideHelgInfo.del1":
-        "Når du skal jobbe i helgedager, må du søke om å <b>kombinere foreldrepengene med delvis arbeid</b> i uken du skal jobbe.",
-    "uttaksplan.arbeideHelgInfo.del2":
-        "Skal du jobbe en lørdag krysser du av for at du skal kombinere foreldrepenger med 20 prosent arbeid den samme uken.",
-    "uttaksplan.arbeideHelgInfo.del3":
-        "<b>Eksempel:</b> Du skal jobbe lørdag 6. april, da søker du om å kombinere foreldrepengene med delvis arbeid fra mandag 1. april til fredag 5. april.",
-    "uttaksplan.arbeideHelgInfo.del4":
-        "Skal du jobbe på en søndag krysser du av for at du skal kombinere foreldrepenger med 20 prosent arbeid den påfølgende uken.",
-    "uttaksplan.arbeideHelgInfo.del5":
-        "<b>Eksempel:</b> Du skal jobbe søndag 7. april, da søker du om å kombinere foreldrepengene med delvis arbeid fra mandag 8. april til fredag 12. april.",
+    "uttaksplan.arbeideHelgInfo.del1": "Når du skal jobbe i helgedager, må du søke om å <b>kombinere foreldrepengene med delvis arbeid</b> i uken du skal jobbe.",
+    "uttaksplan.arbeideHelgInfo.del2": "Skal du jobbe en lørdag krysser du av for at du skal kombinere foreldrepenger med 20 prosent arbeid den samme uken.",
+    "uttaksplan.arbeideHelgInfo.del3": "<b>Eksempel:</b> Du skal jobbe lørdag 6. april, da søker du om å kombinere foreldrepengene med delvis arbeid fra mandag 1. april til fredag 5. april.",
+    "uttaksplan.arbeideHelgInfo.del4": "Skal du jobbe på en søndag krysser du av for at du skal kombinere foreldrepenger med 20 prosent arbeid den påfølgende uken.",
+    "uttaksplan.arbeideHelgInfo.del5": "<b>Eksempel:</b> Du skal jobbe søndag 7. april, da søker du om å kombinere foreldrepengene med delvis arbeid fra mandag 8. april til fredag 12. april.",
     "uttaksplan.arbeideHelgInfo.del6": "<b>Skal du jobbe faste helgedager over en lengre periode?</b>",
-    "uttaksplan.arbeideHelgInfo.del7":
-        "Hvis du skal jobbe hver lørdag eller søndag over en lengre periode krysser du av for at du skal kombinere foreldrepengene med delvis arbeid.",
-    "uttaksplan.arbeideHelgInfo.del8":
-        "<b>Eksempel:</b> Du skal jobbe hver lørdag fra uke i 12 i fem uker fremover. Da søker du om å kombinere foreldrepengene med delvis arbeid fra mandag i uke 12 til fredag i uke 16 og oppgir at du skal jobbe 20 prosent.",
+    "uttaksplan.arbeideHelgInfo.del7": "Hvis du skal jobbe hver lørdag eller søndag over en lengre periode krysser du av for at du skal kombinere foreldrepengene med delvis arbeid.",
+    "uttaksplan.arbeideHelgInfo.del8": "<b>Eksempel:</b> Du skal jobbe hver lørdag fra uke i 12 i fem uker fremover. Da søker du om å kombinere foreldrepengene med delvis arbeid fra mandag i uke 12 til fredag i uke 16 og oppgir at du skal jobbe 20 prosent.",
     "uttaksplan.veileder.planenInneholderHull.tittel": "Hull i planen",
-    "uttaksplan.veileder.planenInneholderHull":
-        "Planen din inneholder perioder med tapte foreldrepenger. Du står i fare for å miste dager om du ikke legger inn en utsettelse eller periode med foreldrepenger.",
-    "uttaksplan.validering.feil.inneholderForMyeFerie":
-        "Du har lagt inn til sammen {ukerOgDager} uker med ferie. Du kan maksimalt legge inn 10 uker og 2 dager med ferie. Ferien må avtales med din arbeidsgiver.",
+    "uttaksplan.veileder.planenInneholderHull": "Planen din inneholder perioder med tapte foreldrepenger. Du står i fare for å miste dager om du ikke legger inn en utsettelse eller periode med foreldrepenger.",
+    "uttaksplan.validering.feil.inneholderForMyeFerie": "Du har lagt inn til sammen {ukerOgDager} uker med ferie. Du kan maksimalt legge inn 10 uker og 2 dager med ferie. Ferien må avtales med din arbeidsgiver.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Planen inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Husk at du må søke om foreldrepenger senest {sisteDag}.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad.tittel": "Planen inneholder kun utsettelser",
-    "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad":
-        "Husk at du må legge inn alle perioder med foreldrepenger etter {sisteDag} på nytt, da endringssøknaden erstatter den  opprinnelige planen din.",
+    "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad": "Husk at du må legge inn alle perioder med foreldrepenger etter {sisteDag} på nytt, da endringssøknaden erstatter den  opprinnelige planen din.",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie.tittel": "Søke om ferie tilbake i tid",
-    "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie":
-        "Du må søke om utsettelse på grunn av ferie senest dagen før du starter ferien din. Vi kan innvilge utsettelse tilbake i tid hvis du gav beskjed til NAV før ferien din startet.",
+    "uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie": "Du må søke om utsettelse på grunn av ferie senest dagen før du starter ferien din. Vi kan innvilge utsettelse tilbake i tid hvis du gav beskjed til NAV før ferien din startet.",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid.tittel": "Søke om arbeid tilbake i tid",
-    "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid":
-        "Du må søke om utsettelse på grunn av arbeid senest dagen før du begynner å jobbe. Hvis du søker om å utsette etter at du har begynt å jobbe, mister du dager med foreldrepenger fra den dagen du startet å jobbe, og frem til dagen du søker om å utsette. Hvis du gir beskjed til NAV før du begynner å jobbe, mister du ikke dager med foreldrepenger.",
+    "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid": "Du må søke om utsettelse på grunn av arbeid senest dagen før du begynner å jobbe. Hvis du søker om å utsette etter at du har begynt å jobbe, mister du dager med foreldrepenger fra den dagen du startet å jobbe, og frem til dagen du søker om å utsette. Hvis du gir beskjed til NAV før du begynner å jobbe, mister du ikke dager med foreldrepenger.",
     "uttaksplan.veileder.planenAdvarerOmUttak.tittel": "Søke om å kombinere foreldrepenger med arbeid tilbake i tid",
-    "uttaksplan.veileder.planenAdvarerOmUttak":
-        "Du må søke om å kombinere foreldrepengene med delvis arbeid senest dagen før du begynner å jobbe. Når du søker etter at du har begynt å jobbe, mister du dager med foreldrepenger ut fra stillingsprosenten du har jobbet i, frem til vi får søknaden din. Hvis du gir beskjed til NAV før du begynner å jobbe, mister du ikke dager med foreldrepenger.",
+    "uttaksplan.veileder.planenAdvarerOmUttak": "Du må søke om å kombinere foreldrepengene med delvis arbeid senest dagen før du begynner å jobbe. Når du søker etter at du har begynt å jobbe, mister du dager med foreldrepenger ut fra stillingsprosenten du har jobbet i, frem til vi får søknaden din. Hvis du gir beskjed til NAV før du begynner å jobbe, mister du ikke dager med foreldrepenger.",
     "uttaksplan.regelAvvik.ariaTittel": "Detaljer om planen",
-    "uttaksplan.senEndring.veileder.SYKDOM":
-        "Du søker om å utsette på grunn av sykdom tilbake i tid. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
-    "uttaksplan.senEndring.veileder.UTTAK":
-        "Du kan søke om foreldrepenger 3 måneder tilbake i tid fra den dagen NAV mottar søknaden fra deg. Når du søker mer enn 3 måneder tilbake i tid må vi vurdere rettighetene dine. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
-    "uttaksplan.senEndring.veileder.SYKDOM_OG_UTTAK":
-        "Du kan søke om foreldrepenger og om å utsette på grunn av sykdom 3 måneder tilbake i tid. Når du søker mer enn 3 måneder tilbake i tid må vi vurdere rettighetene dine. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.senEndring.veileder.SYKDOM": "Du søker om å utsette på grunn av sykdom tilbake i tid. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.senEndring.veileder.UTTAK": "Du kan søke om foreldrepenger 3 måneder tilbake i tid fra den dagen NAV mottar søknaden fra deg. Når du søker mer enn 3 måneder tilbake i tid må vi vurdere rettighetene dine. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.senEndring.veileder.SYKDOM_OG_UTTAK": "Du kan søke om foreldrepenger og om å utsette på grunn av sykdom 3 måneder tilbake i tid. Når du søker mer enn 3 måneder tilbake i tid må vi vurdere rettighetene dine. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
     "uttaksplan.senEndring.begrunnelse.SYKDOM": "Hva er grunnen til at du ikke har søkt om utsettelse tidligere?",
     "uttaksplan.senEndring.begrunnelse.UTTAK": "Hva er grunnen til at du ikke har søkt om foreldrepenger tidligere?",
-    "uttaksplan.senEndring.begrunnelse.SYKDOM_OG_UTTAK":
-        "Hva er grunnen til at du ikke har søkt om foreldrepenger og utsettelse tidligere?",
-    "uttaksplanSkjema.info.adoptertIUtlandet":
-        "Starter du foreldrepengene senere enn omsorgsovertakelsen eller når dere kommer til Norge vil du miste dager.",
-    "uttaksplanSkjema.info.dekningsgrad80":
-        "Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan ikke endres senere.",
-    "uttaksplanSkjema.info.ikkeAdoptertIUtlandet":
-        "Starter du foreldrepengene senere enn omsorgsovertakelsen vil du miste dager.",
-    "uttaksplanSkjema.info.reservertMor":
-        "Dersom du starter ditt uttak i de første 6 ukene etter fødsel må du kunne dokumentere at mor er for syk til å ta seg av barnet eller innlagt på sykehus eller helseinstitusjon.",
+    "uttaksplan.senEndring.begrunnelse.SYKDOM_OG_UTTAK": "Hva er grunnen til at du ikke har søkt om foreldrepenger og utsettelse tidligere?",
+    "uttaksplanSkjema.info.adoptertIUtlandet": "Starter du foreldrepengene senere enn omsorgsovertakelsen eller når dere kommer til Norge vil du miste dager.",
+    "uttaksplanSkjema.info.dekningsgrad80": "Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan ikke endres senere.",
+    "uttaksplanSkjema.info.ikkeAdoptertIUtlandet": "Starter du foreldrepengene senere enn omsorgsovertakelsen vil du miste dager.",
+    "uttaksplanSkjema.info.reservertMor": "Dersom du starter ditt uttak i de første 6 ukene etter fødsel må du kunne dokumentere at mor er for syk til å ta seg av barnet eller innlagt på sykehus eller helseinstitusjon.",
     "uttaksplanSkjema.info.manglerVedlegg": "Du har ikke lastet opp påkrevd dokumentasjon.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig",
     "validering.oppsummeringstittel": "Du må rette opp i følgende feil:",
     "valideringsfeil.fodselsdato.duMåOppgi": "Du må oppgi fødselsdato",
     "valideringsfeil.fodselsdato.etterAdopsjonsdato": "Fødselsdato kan ikke være etter adopsjonsdato",
-    "valideringsfeil.fodselsdato.ikkeMerEnn15År3MndTilbake":
-        "Du kan ikke søke om foreldrepenger for barn som er eldre enn 15 år og 3 måneder {dato}.",
-    "valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake":
-        "Du kan ikke søke om foreldrepenger for barn som er eldre enn 3 år.",
+    "valideringsfeil.fodselsdato.ikkeMerEnn15År3MndTilbake": "Du kan ikke søke om foreldrepenger for barn som er eldre enn 15 år og 3 måneder {dato}.",
+    "valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake": "Du kan ikke søke om foreldrepenger for barn som er eldre enn 3 år.",
     "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være i dag eller tidligere",
     "valideringsfeil.frilansOppstart.duMåOppgi": "Du må oppgi oppstartsdato",
     "valideringsfeil.frilansOppstart.måVæreIdagEllerTidligere": "Oppstartsdato må være i dag eller tidligere",
-    "valideringsfeil.frilans.måBesvares":
-        "Du har planlagt at du skal kombinere foreldrepenger med at du skal jobbe som frilanser. Du må derfor oppgi informasjon om frilansforholdet ditt.",
+    "valideringsfeil.frilans.måBesvares": "Du har planlagt at du skal kombinere foreldrepenger med at du skal jobbe som frilanser. Du må derfor oppgi informasjon om frilansforholdet ditt.",
     "valideringsfeil.fritekst.kanIkkeVæreLengreEnn": "Feltet kan maks være {maxLength} tegn.",
     "valideringsfeil.fødselsnummer.required": "Fødselsnummer må fylles ut",
     "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikke oppgi ditt eget fødselsnummer",
     "valideringsfeil.fødselsnummer.ugyldigFødselsnummer": "Du må skrive et gyldig fødselsnummer 11 siffer",
     "valideringsfeil.fødselsnummer.underSeksten": "Den andre forelderen må være over seksten",
     "valideringsfeil.organisasjonsnummer.er9tall": "Organisasjonsnummer må bestå av 9 tall",
-    "valideringsfeil.organisasjonsnummer.erUgyldigOrgNummer":
-        "Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer",
+    "valideringsfeil.organisasjonsnummer.erUgyldigOrgNummer": "Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer",
     "valideringsfeil.organisasjonsnummer.required": "Organisasjonsnummer må fylles ut",
     "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt": "Du må runde av til nærmeste hele krone.",
-    "valideringsfeil.selvstendigNæringsdrivende.måBesvares":
-        "Du har planlagt at du skal kombinere foreldrepenger med at du skal jobbe som selvstending næringsdrivende. Du må derfor oppgi informasjon om næringen din.",
+    "valideringsfeil.selvstendigNæringsdrivende.måBesvares": "Du har planlagt at du skal kombinere foreldrepenger med at du skal jobbe som selvstending næringsdrivende. Du må derfor oppgi informasjon om næringen din.",
     "valideringsfeil.stillingsprosent.over100prosent": "Prosent må være under 100",
     "valideringsfeil.stillingsprosent.required": "Du må oppgi prosent",
     "valideringsfeil.stillingsprosent.ugyldigTall": "Prosent må være et gyldig tall opp til 100",
     "valideringsfeil.stillingsprosent.under1": "Prosenten må være over 0",
     "valideringsfeil.terminbekreftelseDato.duMåOppgi": "Du må oppgi når terminbekreftelsen er datert",
-    "valideringsfeil.terminbekreftelseDato.duMåVæreIUke22":
-        "Terminbekreftelsen må vise at du er i 22. svangerskapsuke eller senere",
+    "valideringsfeil.terminbekreftelseDato.duMåVæreIUke22": "Terminbekreftelsen må vise at du er i 22. svangerskapsuke eller senere",
     "valideringsfeil.terminbekreftelseDato.forSen": "Datoen på terminbekreftelsen kan ikke være frem i tid.",
     "valideringsfeil.termindato.duMåOppgi": "Du må oppgi termindato",
     "valideringsfeil.termindato.duMåVæreIUke22": "Du kan tidligst søke når du er i 22. svangerskapsuke",
@@ -995,18 +810,13 @@
     "valideringsfeil.utenlandsopphold.overlapp": "Du har allerede lagt inn utenlandsopphold i denne perioden",
     "valideringsfeil.utenlandsopphold.senere": "Du må legge inn en dato som er innenfor de neste 12 månedene.",
     "valideringsfeil.utenlandsopphold.tidligere": "Du må legge inn en dato som er innenfor de siste 12 månedene.",
-    "valideringsfeil.sluttMedUtsettelse":
-        "Planen kan ikke slutte med en utsettelse fordi du ikke har flere dager igjen.",
-    "valideringsfeil.uttaksplanskjema.forMangeUkerPeriodeFarMedmor":
-        "Du kan maksimalt ta ut {uker} uker med fellesperiode.",
+    "valideringsfeil.sluttMedUtsettelse": "Planen kan ikke slutte med en utsettelse fordi du ikke har flere dager igjen.",
+    "valideringsfeil.uttaksplanskjema.forMangeUkerPeriodeFarMedmor": "Du kan maksimalt ta ut {uker} uker med fellesperiode.",
     "varDuINorgeDaBarnetBleFødt.spørsmål": "Var du i Norge da barnet ble født?",
     "varigEndringAvNæringsinntekt.dato.label": "Oppgi dato for endringen",
-    "varigEndringAvNæringsinntekt.forklaring.label":
-        "Her kan du skrive kort hva som har endret seg i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din",
-    "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
-        "Oppgi næringsinntekten din etter endringen. Oppgi årsinntekten i hele kroner.",
-    "varigEndringAvNæringsinntekt.spørsmål":
-        "Har du hatt en varig endring i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din de siste 4 årene?",
+    "varigEndringAvNæringsinntekt.forklaring.label": "Her kan du skrive kort hva som har endret seg i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din",
+    "varigEndringAvNæringsinntekt.inntektEtterEndring.label": "Oppgi næringsinntekten din etter endringen. Oppgi årsinntekten i hele kroner.",
+    "varigEndringAvNæringsinntekt.spørsmål": "Har du hatt en varig endring i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din de siste 4 årene?",
     "vedlagtdokumentasjon": "Vedlagt dokumentasjon",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.feilmelding": "Ops noe gikk galt, prøv igjen",
@@ -1016,10 +826,8 @@
     "vedlegg.forStort.flereFeil": "{filename} - Vedlegget må være mindre enn 9MB",
     "vedlegg.tomFil": "Du kan ikke laste opp en tom fil",
     "vedlegg.tomFil.flereFeil": "{filename} - Du kan ikke laste opp en tom fil",
-    "vedlegg.passordbeskyttet":
-        "Vedlegget du forsøker å laste opp er passordbeskyttet. Du må endre vedlegget slik at det ikke er passordbeskyttet eller laste opp et annet vedlegg.",
-    "vedlegg.passordbeskyttet.flereFeil":
-        "{filename} - Vedlegget du forsøker å laste opp er passordbeskyttet. Du må endre vedlegget slik at det ikke er passordbeskyttet eller laste opp et annet vedlegg.",
+    "vedlegg.passordbeskyttet": "Vedlegget du forsøker å laste opp er passordbeskyttet. Du må endre vedlegget slik at det ikke er passordbeskyttet eller laste opp et annet vedlegg.",
+    "vedlegg.passordbeskyttet.flereFeil": "{filename} - Vedlegget du forsøker å laste opp er passordbeskyttet. Du må endre vedlegget slik at det ikke er passordbeskyttet eller laste opp et annet vedlegg.",
     "vedlegg.virus": "Vedlegget inneholder noe vi ikke vil ha",
     "vedlegg.virus.flereFeil": "{filename} - Vedlegget inneholder noe vi ikke vil ha",
     "vedlegg.lastoppknapp.anneninntektDokumentasjon": "Last opp dokumentasjon her",
@@ -1037,37 +845,25 @@
     "vedlegg.lastoppknapp.senEndring": "Last opp dokumentasjon ...",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.veileder.adopsjon": "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
-    "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
-        "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe {prosent} prosent i perioden du oppgir. Ved å søke om dette bekrefter du at dere har en skriftlig avtale. Du trenger ikke å sende avtalen til NAV.",
-    "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
-        "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe 100 prosent i perioden du oppgir. Ved å søke om dette bekrefter du at dere har en skriftlig avtale. Du trenger ikke å sende denne til NAV.",
-    "vedlegg.veileder.fødselsattest":
-        "Barnet ditt er ikke registrert i folkeregisteret. Derfor må du legge ved fødselsattesten til barnet.",
+    "vedlegg.veileder.dokumentasjonAvArbeidVedGradering": "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe {prosent} prosent i perioden du oppgir. Ved å søke om dette bekrefter du at dere har en skriftlig avtale. Du trenger ikke å sende avtalen til NAV.",
+    "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse": "Du må ha en skriftlig avtale med arbeidsgiveren din om at du skal jobbe 100 prosent i perioden du oppgir. Ved å søke om dette bekrefter du at dere har en skriftlig avtale. Du trenger ikke å sende denne til NAV.",
+    "vedlegg.veileder.fødselsattest": "Barnet ditt er ikke registrert i folkeregisteret. Derfor må du legge ved fødselsattesten til barnet.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",
-    "vedlegg.veileder.stebarnsadopsjon":
-        "Du må laste opp dokumentasjon på stebarnsadopsjonen og bekreftelse på dato for stebarnsadopsjonen.",
-    "vedlegg.veileder.terminbekreftelsen":
-        "Du må legge ved en bekreftelse på termindato. Denne må være datert og signert av lege eller jordmor når du er i 22. svangerskapsuke eller senere.",
+    "vedlegg.veileder.stebarnsadopsjon": "Du må laste opp dokumentasjon på stebarnsadopsjonen og bekreftelse på dato for stebarnsadopsjonen.",
+    "vedlegg.veileder.terminbekreftelsen": "Du må legge ved en bekreftelse på termindato. Denne må være datert og signert av lege eller jordmor når du er i 22. svangerskapsuke eller senere.",
     "vedlegg.beskrivelse.begrunnelseForSenEndring": "Dokumentasjon av sen endring",
     "vedlegg.beskrivelse.dokumentasjonAvAleneomsorg": "Dokumentasjon av aleneomsorg",
     "velkommen.bobletekst": "Jeg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.dinePlikter": "dine plikter.<br /><br />",
-    "velkommen.foreldreansvar.veileder":
-        "Hvis du har blitt tildelt foreldreansvaret for barnet etter barneloven § 38 eller 64, kan du ikke sende inn søknaden elektronisk. Du må fylle ut søknaden på papir og sender den i posten.",
+    "velkommen.foreldreansvar.veileder": "Hvis du har blitt tildelt foreldreansvaret for barnet etter barneloven § 38 eller 64, kan du ikke sende inn søknaden elektronisk. Du må fylle ut søknaden på papir og sender den i posten.",
     "velkommen.ingress": "Foreldrepenger er noe du kan få for hvert barn du føder eller adopterer.",
-    "velkommen.intro.harInfotrygdSak":
-        "Her søker du om foreldrepenger når du skal være hjemme med barnet. <br /><br /> Har du allerede fått innvilget foreldrepenger, kan du endre perioden du skal være hjemme eller utsette hvis du skal på ferie eller om du ønsker å jobbe, eller på grunn av sykdom.",
-    "velkommen.intro.harInfotrygdSak.veileder":
-        "Du må tidligere ha søkt og fått innvilget foreldrepenger for det samme barnet for å sende inn en søknad om endring.",
-    "velkommen.intro.harSak":
-        "Her kan du endre perioden du skal være hjemme eller utsette hvis du skal på ferie eller om du ønsker å jobbe, eller på grunn av sykdom. <br />  <br /> Skal du søke om foreldrepenger for et nytt barn, velger du det nedenfor.",
-    "velkommen.intro.harSak.veileder":
-        "Når du søker om foreldrepenger for et nytt barn,  mister du dager du har igjen fra den første foreldrepengeperioden din.",
-    "velkommen.intro.harFørstegangssøknadUnderBehandling":
-        "Du har en søknad til behandling. Ønsker du å sende inn en ny søknad erstatter du søknaden som ligger til behandling, og du må fylle ut hele søknaden på nytt.",
-    "velkommen.endringssøknadIkkeTilgjengelig.veileder":
-        "Endringssøknad er ikke tilgjengelig for øyeblikket. Vennligst prøv igjen litt senere.",
+    "velkommen.intro.harInfotrygdSak": "Her søker du om foreldrepenger når du skal være hjemme med barnet. <br /><br /> Har du allerede fått innvilget foreldrepenger, kan du endre perioden du skal være hjemme eller utsette hvis du skal på ferie eller om du ønsker å jobbe, eller på grunn av sykdom.",
+    "velkommen.intro.harInfotrygdSak.veileder": "Du må tidligere ha søkt og fått innvilget foreldrepenger for det samme barnet for å sende inn en søknad om endring.",
+    "velkommen.intro.harSak": "Her kan du endre perioden du skal være hjemme eller utsette hvis du skal på ferie eller om du ønsker å jobbe, eller på grunn av sykdom. <br />  <br /> Skal du søke om foreldrepenger for et nytt barn, velger du det nedenfor.",
+    "velkommen.intro.harSak.veileder": "Når du søker om foreldrepenger for et nytt barn,  mister du dager du har igjen fra den første foreldrepengeperioden din.",
+    "velkommen.intro.harFørstegangssøknadUnderBehandling": "Du har en søknad til behandling. Ønsker du å sende inn en ny søknad erstatter du søknaden som ligger til behandling, og du må fylle ut hele søknaden på nytt.",
+    "velkommen.endringssøknadIkkeTilgjengelig.veileder": "Endringssøknad er ikke tilgjengelig for øyeblikket. Vennligst prøv igjen litt senere.",
     "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
     "velkommen.sak.sistEndret": "Sist endret: {date}",
     "velkommen.sak.mottatt": "Søknad mottatt: {date}",
@@ -1075,8 +871,7 @@
     "velkommen.sak.status.underBehandling": "Under behandling",
     "velkommen.sak.type": "Foreldrepenger",
     "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
-    "velkommen.samtykkeIntro":
-        "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link } Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
+    "velkommen.samtykkeIntro": "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link } Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
     "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring": "Nei, jeg vil søke om endring",
     "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.nyttbarn": "Ja, start ny søknad",
     "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål": "Vil du begynne med ny foreldrepengesøknad?",
@@ -1092,8 +887,7 @@
     "vi": "vi",
     "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge når barnet blir født?",
     "sesjonUtløpt.tittel": "Du er nå logget ut",
-    "sesjonUtløpt.ingress":
-        "Du har vært innlogget i en time, derfor må du logge inn på nytt for å fortsette med søknaden.<br />Ønsker du å fortsette?",
+    "sesjonUtløpt.ingress": "Du har vært innlogget i en time, derfor må du logge inn på nytt for å fortsette med søknaden.<br />Ønsker du å fortsette?",
     "sesjonUtløpt.avslutt": "Nei, jeg vil avslutte",
     "sesjonUtløpt.fortsett": "Ja, jeg vil fortsette",
     "arbeidsgiver": "Arbeidsgiver",
@@ -1101,18 +895,15 @@
     "tilleggsopplysning.begrunnelseForSenEndring": "Begrunnelse for å søke om utsettelse",
     "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM": "på grunn av sykdom tilbake i tid",
     "tilleggsopplysning.begrunnelseForSenEndring.UTTAK": "på grunn av uttak mer enn 3 måneder tilbake i tid",
-    "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM_OG_UTTAK":
-        "på grunn av sykdom tilbake i tid og uttak mer enn 3 måneder tilbake i tid",
+    "tilleggsopplysning.begrunnelseForSenEndring.SYKDOM_OG_UTTAK": "på grunn av sykdom tilbake i tid og uttak mer enn 3 måneder tilbake i tid",
     "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikke tilgjengelig akkurat nå",
-    "feilside.ikkeTilgjengelig.melding":
-        "Huffda, det virker som om et av våre systemer er nede akkurat nå. Vi jobber iherdig med å rette opp feilen. Prøv igjen litt senere, vi beklager ulempen for deg.",
+    "feilside.ikkeTilgjengelig.melding": "Huffda, det virker som om et av våre systemer er nede akkurat nå. Vi jobber iherdig med å rette opp feilen. Prøv igjen litt senere, vi beklager ulempen for deg.",
     "manglendeVedlegg.info": "Før du kan sende inn søknaden så må du laste opp vedleggene som er listet nedenfor.",
     "languageToggle.bokmål": "Bokmål - Norsk",
     "languageToggle.nynorsk": "Nynorsk - Norsk",
     "eksisterendeSak.tittel.deltUttak": "Deres foreldrepengeperiode",
     "eksisterendeSak.tittel.aleneomsorg": "Din foreldrepengeperiode",
-    "eksisterendeSak.tekst.html":
-        "{navn} har valgt <strong>{uker}</strong> med <strong>{dekningsgrad} prosent utbetaling</strong>.",
+    "eksisterendeSak.tekst.html": "{navn} har valgt <strong>{uker}</strong> med <strong>{dekningsgrad} prosent utbetaling</strong>.",
     "eksisterendeSak.tekst.nesteMuligeUttaksdato": "<b>{ dato }</b> er første dag etter { navn } siste periode",
     "eksisterendeSak.tekst.benevning.deltOmsorg": "Du og {navn}",
     "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
@@ -1127,19 +918,15 @@
     "søknadSendt.sendtInn": "sendt inn:",
     "søknadSendt.info.tittel": "Nå er resten vårt ansvar",
     "søknadSendt.info.tittel.isMissingAttachments": "Ettersend manglende dokumentasjon innen 3 uker",
-    "søknadSendt.info.innhold":
-        "Du trenger ikke gjøre noe mer, vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg.",
+    "søknadSendt.info.innhold": "Du trenger ikke gjøre noe mer, vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg.",
     "søknadSendt.info.innhold.isMissingAttachments": "Vi har mottatt søknaden din, og den mangler disse dokumentene:",
     "søknadSendt.når.tittel": "Når kan jeg tidligst forvente få svar på min søknad?",
-    "søknadSendt.når.infoBox":
-        "Du kan tidligst få svar på søknaden din 4 uker før foreldrepengeperioden din starter. Dette er fordi vi må bruke de nyeste opplysningene om inntekten din når vi skal beregne hva du skal få i foreldrepenger.",
+    "søknadSendt.når.infoBox": "Du kan tidligst få svar på søknaden din 4 uker før foreldrepengeperioden din starter. Dette er fordi vi må bruke de nyeste opplysningene om inntekten din når vi skal beregne hva du skal få i foreldrepenger.",
     "søknadSendt.infoFraArbeidsgiver.tittel": "Hvilken informasjon trenger min arbeidsgiver?",
     "søknadSendt.infoFraArbeidsgiver": "Viktig informasjon til arbeidsgiveren din",
-    "søknadSendt.infoFraArbeidsgiver.infoBox":
-        "Informasjonsbrevet er en veiledning som arbeidsgiveren din kan bruke for å fylle ut den riktige informasjonen i inntektsmeldingen, sånn at vi kan behandle søknaden din. Hvis du har flere arbeidsgivere trenger hver arbeidsgiver kun å legge inn perioder med arbeid eller ferie du skal ha hos dem.",
+    "søknadSendt.infoFraArbeidsgiver.infoBox": "Informasjonsbrevet er en veiledning som arbeidsgiveren din kan bruke for å fylle ut den riktige informasjonen i inntektsmeldingen, sånn at vi kan behandle søknaden din. Hvis du har flere arbeidsgivere trenger hver arbeidsgiver kun å legge inn perioder med arbeid eller ferie du skal ha hos dem.",
     "søknadSendt.pengene.tittel": "Hvor blir pengene utbetalt?",
-    "søknadSendt.pengene.infoBox":
-        "Hvis søknaden din blir innvilget, blir foreldrepengene dine enten utbetalt av arbeidsgiveren din eller av NAV. Sjekk at du har registrert riktig kontonummer hos oss.",
+    "søknadSendt.pengene.infoBox": "Hvis søknaden din blir innvilget, blir foreldrepengene dine enten utbetalt av arbeidsgiveren din eller av NAV. Sjekk at du har registrert riktig kontonummer hos oss.",
     "søknadSendt.pengene.kontonummer": "Registrert kontonummer",
     "søknadSendt.pengene.ingenKontonummer": "Du har ikke registrert et kontonummer",
     "søknadSendt.pengene.kontonummer.endre": "Endre kontonummer",
@@ -1154,8 +941,7 @@
     "søknadSendt.info.missingAttachment.I000060": "Annet",
     "søknadSendt.info.missingAttachment.I000063": "Fødselsattest",
     "søknadSendt.info.missingAttachment.I000062": "Terminbekreftelse",
-    "søknadSendt.info.missingAttachment.I000039":
-        "Dokumentasjon av førstegangstjeneste i forsvaret eller sivilforsvaret",
+    "søknadSendt.info.missingAttachment.I000039": "Dokumentasjon av førstegangstjeneste i forsvaret eller sivilforsvaret",
     "søknadSendt.info.missingAttachment.I000007": "Inntektsopplysninger for selvstendig næringsdrivende",
     "søknadSendt.info.missingAttachment.I000038": "Dokumentasjon av mors utdanning, arbeid eller sykdom",
     "søknadSendt.info.missingAttachment.I000037": "Dokumentasjon av innleggelse i sykehus eller helseinstitusjon",
@@ -1165,39 +951,25 @@
     "søknadSendt.info.missingAttachment.I000036": "Bekreftelse på avtalt ferie",
     "søknadSendt.info.missingAttachment.I000049": "Annen dokumentasjon",
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumentasjonen ikke blir ettersendt?",
-    "søknadSendt.info.missingAttachment.lesMer.content":
-        "Hvis du ikke ettersender dokumentene innen 3 uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig.",
+    "søknadSendt.info.missingAttachment.lesMer.content": "Hvis du ikke ettersender dokumentene innen 3 uker behandler vi søknaden din utfra de opplysninger som vi har tilgjengelig.",
     "periodetype.utsettelse": "utsettelse",
     "periodetype.uttak": "uttak",
     "uttaksplan.validering.feil.erAllePeriodeSkjemaspørsmålBesvart": "Noen av spørsmålene for perioden er ikke besvart",
-    "uttaksplan.validering.feil.erUtsettelseEtterFamiliehendelsesdato":
-        "Du kan ikke utsette foreldrepengene før barnet er født",
-    "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering":
-        "Stillingsprosenten du skal jobbe kan bare inneholde tall, og være mellom 1 og 99",
-    "uttaksplan.validering.feil.periodeHarGyldigTidsperiode":
-        "Perioden har ikke gyldig tidsperiode. Du må korrigere datoene",
-    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto":
-        "Perioden mangler informasjon om hvilken del av foreldrepengene skal du ta ut",
-    "uttaksplan.validering.feil.periodeOverlapperAndrePerioder":
-        "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",
-    "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale":
-        "Du må ha en skriftlig avtale med {antall, plural, one{arbeidsgiveren} other {arbeidsgiverene}} {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent i perioden du oppgir.",
-    "uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.medTom":
-        "Arbeidsgiveren din {navn} har registrert at du er ansatt fra {fom} til {tom}. For å kunne utsette eller kombinere foreldrepenger med arbeid må du være ansatt. Du må endre datoen for å gå videre.",
-    "uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.utenTom":
-        "Arbeidsgiveren din {navn} har registrert at du er ansatt fra {fom}. For å kunne utsette eller kombinere foreldrepenger med arbeid må du være ansatt. Du må endre datoen for å gå videre.",
+    "uttaksplan.validering.feil.erUtsettelseEtterFamiliehendelsesdato": "Du kan ikke utsette foreldrepengene før barnet er født",
+    "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering": "Stillingsprosenten du skal jobbe kan bare inneholde tall, og være mellom 1 og 99",
+    "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden har ikke gyldig tidsperiode. Du må korrigere datoene",
+    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden mangler informasjon om hvilken del av foreldrepengene skal du ta ut",
+    "uttaksplan.validering.feil.periodeOverlapperAndrePerioder": "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",
+    "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale": "Du må ha en skriftlig avtale med {antall, plural, one{arbeidsgiveren} other {arbeidsgiverene}} {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent i perioden du oppgir.",
+    "uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.medTom": "Arbeidsgiveren din {navn} har registrert at du er ansatt fra {fom} til {tom}. For å kunne utsette eller kombinere foreldrepenger med arbeid må du være ansatt. Du må endre datoen for å gå videre.",
+    "uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.utenTom": "Arbeidsgiveren din {navn} har registrert at du er ansatt fra {fom}. For å kunne utsette eller kombinere foreldrepenger med arbeid må du være ansatt. Du må endre datoen for å gå videre.",
     "byttBrowser.tittel": "Vi ser du bruker en utdatert nettleser",
-    "byttBrowser.ingress":
-        "For å få den beste brukeropplevelsen anbefaler vi at du bytter til en moderne nettleser som støtter moderne webstandarder.",
+    "byttBrowser.ingress": "For å få den beste brukeropplevelsen anbefaler vi at du bytter til en moderne nettleser som støtter moderne webstandarder.",
     "ok": "Ok",
     "oversiktBrukteDager.tittel.foreldre": "Brukte foreldrepenger",
-    "oversiktBrukteDager.tittel.kontoer.brukteDager":
-        "Foreldrepenger  {antall, plural, one {du} other {dere}} har registrert",
-    "oversiktBrukteDager.tittel.kontoer.ikkeBrukteDager":
-        "Foreldrepenger {antall, plural, one {du} other {dere}} har igjen",
+    "oversiktBrukteDager.tittel.kontoer.brukteDager": "Foreldrepenger  {antall, plural, one {du} other {dere}} har registrert",
+    "oversiktBrukteDager.tittel.kontoer.ikkeBrukteDager": "Foreldrepenger {antall, plural, one {du} other {dere}} har igjen",
     "feature.visFeilside.tittel": "Søknaden er ikke tilgjengelig",
-    "feature.visFeilside.ingress":
-        "Fredag 6. desember er foreldrepengesøknaden nede mellom klokken 12:00-14:30. Søknader som er mellomlagret må sendes inn før fredag klokken 12, hvis ikke mister du den påbegynte søknaden.",
-    "feature.alertstripe.tekst":
-        "Foreldrepengesøknaden er dessverre utilgjengelig tirsdag 10. desember klokken 12-13. Søknader som er mellomlagret må sendes inn før tirsdag klokken 12, hvis ikke mister du den påbegynte søknaden."
+    "feature.visFeilside.ingress": "Fredag 6. desember er foreldrepengesøknaden nede mellom klokken 12:00-14:30. Søknader som er mellomlagret må sendes inn før fredag klokken 12, hvis ikke mister du den påbegynte søknaden.",
+    "feature.alertstripe.tekst": "Foreldrepengesøknaden er dessverre utilgjengelig tirsdag 10. desember klokken 12-13. Søknader som er mellomlagret må sendes inn før tirsdag klokken 12, hvis ikke mister du den påbegynte søknaden."
 }
