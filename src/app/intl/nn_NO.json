@@ -915,6 +915,7 @@
     "eksisterendeSak.label.annenPartsPlan": "{ navn } plan:",
     "eksisterendeSak.listeElement.periode": "<b>{ fom }</b> - <b>{ tom }</b>: { beskrivelse }",
     "eksisterendeSak.tittel.dineDagerMedForeldrepenger": "Dine dager med foreldrepenger",
+    "eksisterendeSak.tittel.dineDagerMedForeldrepenger.infoboks": "Periodene med foreldrepenger er oppgitt av {navn}, du kan endre periodene i neste steg.",
     "søknadSendt.tittel": "Takk for søknaden { name }!",
     "søknadSendt.pdf": "Sjå og last ned søknaden din her",
     "søknadSendt.sendtInn": "sendt inn:",
