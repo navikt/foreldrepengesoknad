@@ -25,7 +25,7 @@ const InnholdMedIllustrasjon: React.StatelessComponent<Props> = ({ tittel, illus
                     <Systemtittel tag="h2" className={bem.element('tittel')}>
                         {tittel}
                     </Systemtittel>
-                    {infoboks && infoboks}
+                    {infoboks !== undefined && infoboks}
                 </header>
             </div>
             <div className={bem.element('content')}>{children}</div>
