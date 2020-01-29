@@ -7,22 +7,27 @@ import './innholdMedIllustrasjon.less';
 interface Props {
     tittel: string;
     illustrasjoner?: React.ReactNode;
+    infoboks?: React.ReactNode;
 }
 
 const bem = BEMHelper('innholdMedIllustrasjon');
 
-const InnholdMedIllustrasjon: React.StatelessComponent<Props> = ({ tittel, illustrasjoner, children }) => (
+const InnholdMedIllustrasjon: React.StatelessComponent<Props> = ({ tittel, illustrasjoner, infoboks, children }) => (
     <div
         className={bem.classNames(
             bem.block,
             bem.modifierConditional('medIllustrasjoner', illustrasjoner !== undefined)
-        )}>
+        )}
+    >
         <div className={bem.element('contentWrapper')}>
-            <header>
-                <Systemtittel tag="h2" className={bem.element('tittel')}>
-                    {tittel}
-                </Systemtittel>
-            </header>
+            <div className={bem.element('headerWrapper')}>
+                <header>
+                    <Systemtittel tag="h2" className={bem.element('tittel')}>
+                        {tittel}
+                    </Systemtittel>
+                    {infoboks !== undefined && infoboks}
+                </header>
+            </div>
             <div className={bem.element('content')}>{children}</div>
         </div>
         {illustrasjoner && (

@@ -26,6 +26,7 @@ import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import { getForeldreparSituasjonFraSøknadsinfo } from 'app/util/foreldreparSituasjonUtils';
 import Block from 'common/components/block/Block';
 import lenker from 'app/util/routing/lenker';
+import Infoboks from 'common/components/infoboks/Infoboks';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
@@ -74,8 +75,8 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
     const forelderVedAleneomsorg = erDeltUttak
         ? undefined
         : søknadsinfo.søker.erMor
-            ? Forelder.mor
-            : Forelder.farMedmor;
+        ? Forelder.mor
+        : Forelder.farMedmor;
 
     const hvem = getHvem(intl, erDeltUttak, navn, eksisterendeSak.erAnnenPartsSak);
 
@@ -113,7 +114,8 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                             valgtForelder={forelderVedAleneomsorg}
                         />,
                         <UkerSirkel key="uker" uker={uker} />
-                    ]}>
+                    ]}
+                >
                     <Normaltekst>
                         <FormattedHTMLMessage
                             id="eksisterendeSak.tekst.html"
@@ -124,43 +126,52 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                             }}
                         />
                     </Normaltekst>
-                    {skalKunneViseInfoOmEkisterendeSak &&
-                        nesteMuligeUttaksdagEtterAnnenPart && (
-                            <Normaltekst>
-                                <FormattedHTMLMessage
-                                    id="eksisterendeSak.tekst.nesteMuligeUttaksdato"
-                                    values={{
-                                        dato: formaterDato(nesteMuligeUttaksdagEtterAnnenPart, 'DD. MMM YYYY'),
-                                        navn: navn.annenForelder.fornavn
-                                    }}
-                                />
-                            </Normaltekst>
-                        )}
-
-                    {skalKunneViseInfoOmEkisterendeSak &&
-                        infoperioder &&
-                        infoperioder.length > 0 && (
-                            <UtvidetInformasjon
-                                apneLabel={getMessage(intl, visPlanTekst, {
-                                    navn: navnGenitivEierform
-                                })}>
-                                <InfoEksisterendeSakPerioder
-                                    perioder={infoperioder}
-                                    søknadsinfo={søknadsinfo}
-                                    navnForOverskrift={søknadsinfo.navn.annenForelder.navn}
-                                />
-                            </UtvidetInformasjon>
-                        )}
-                </InnholdMedIllustrasjon>
-                {skalKunneViseInfoOmEkisterendeSak &&
-                    søkersPerioder &&
-                    søkersPerioder.length > 0 && (
-                        <InnholdMedIllustrasjon
-                            tittel={getMessage(intl, 'eksisterendeSak.tittel.dineDagerMedForeldrepenger')}
-                            illustrasjoner={[]}>
-                            <InfoEksisterendeSakPerioder perioder={søkersPerioder} søknadsinfo={søknadsinfo} />
-                        </InnholdMedIllustrasjon>
+                    {skalKunneViseInfoOmEkisterendeSak && nesteMuligeUttaksdagEtterAnnenPart && (
+                        <Normaltekst>
+                            <FormattedHTMLMessage
+                                id="eksisterendeSak.tekst.nesteMuligeUttaksdato"
+                                values={{
+                                    dato: formaterDato(nesteMuligeUttaksdagEtterAnnenPart, 'DD. MMM YYYY'),
+                                    navn: navn.annenForelder.fornavn
+                                }}
+                            />
+                        </Normaltekst>
                     )}
+
+                    {skalKunneViseInfoOmEkisterendeSak && infoperioder && infoperioder.length > 0 && (
+                        <UtvidetInformasjon
+                            apneLabel={getMessage(intl, visPlanTekst, {
+                                navn: navnGenitivEierform
+                            })}
+                        >
+                            <InfoEksisterendeSakPerioder
+                                perioder={infoperioder}
+                                søknadsinfo={søknadsinfo}
+                                navnForOverskrift={søknadsinfo.navn.annenForelder.navn}
+                            />
+                        </UtvidetInformasjon>
+                    )}
+                </InnholdMedIllustrasjon>
+                {skalKunneViseInfoOmEkisterendeSak && søkersPerioder && søkersPerioder.length > 0 && (
+                    <InnholdMedIllustrasjon
+                        tittel={getMessage(intl, 'eksisterendeSak.tittel.dineDagerMedForeldrepenger')}
+                        illustrasjoner={[]}
+                        infoboks={
+                            <Infoboks
+                                tekst={intl.formatMessage(
+                                    {
+                                        id: 'eksisterendeSak.tittel.dineDagerMedForeldrepenger.infoboks'
+                                    },
+                                    {
+                                        navn: søknadsinfo.navn.annenForelder.navn
+                                    }
+                                )}
+                            />
+                        }
+                    >
+                        <InfoEksisterendeSakPerioder perioder={søkersPerioder} søknadsinfo={søknadsinfo} />
+                    </InnholdMedIllustrasjon>
+                )}
             </Block>
             <Normaltekst>
                 <FormattedHTMLMessage id="uttaksplan.informasjon.lesMer" values={{ link: lenker.viktigeFrister }} />
