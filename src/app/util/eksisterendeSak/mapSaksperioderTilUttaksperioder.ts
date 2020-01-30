@@ -13,7 +13,8 @@ import {
     UtsettelseAnnenPartInfoPeriode,
     Overføringsperiode,
     isInfoPeriode,
-    MorsAktivitet
+    MorsAktivitet,
+    SaksperiodeUtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
@@ -353,16 +354,32 @@ const mapPeriodeFromSaksperiode = (
     return mapUttaksperiodeFromSaksperiode(saksperiode, grunnlag, erEndringssøknad, innvilgedePerioder);
 };
 
+const gyldigeSaksperioder = (saksperiode: Saksperiode): boolean => {
+    if (saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET) {
+        return true;
+    }
+
+    if (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT && saksperiode.utbetalingsprosent > 0) {
+        return true;
+    }
+
+    if (
+        saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT &&
+        saksperiode.utsettelsePeriodeType &&
+        saksperiode.utsettelsePeriodeType === SaksperiodeUtsettelseÅrsakType.InstitusjonBarnet
+    ) {
+        return true;
+    }
+
+    return false;
+};
+
 const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
     erEndringsøknadUtenEkisterendeSak: boolean
 ): Periode[] | undefined => {
-    const innvilgedePerioder = saksperioder.filter(
-        (saksperiode) =>
-            saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET ||
-            (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT && saksperiode.utbetalingsprosent > 0)
-    );
+    const innvilgedePerioder = saksperioder.filter(gyldigeSaksperioder);
     const perioder = innvilgedePerioder.map((periode) =>
         mapPeriodeFromSaksperiode(periode, grunnlag, erEndringsøknadUtenEkisterendeSak, innvilgedePerioder)
     );
