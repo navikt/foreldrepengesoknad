@@ -71,10 +71,15 @@ export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): Sen
 };
 
 export const skalKunneViseMorsUttaksplanForFarEllerMedmor = (
-    grunnlag: Saksgrunnlag,
+    grunnlag: Saksgrunnlag | undefined,
     søknadsinfo: Søknadsinfo
 ): boolean => {
     const { søknaden, annenForelder } = søknadsinfo;
+
+    if (!grunnlag) {
+        return false;
+    }
+
     return (
         grunnlag.dekningsgrad === søknaden.dekningsgrad &&
         grunnlag.antallBarn === søknaden.antallBarn &&
