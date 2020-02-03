@@ -138,7 +138,8 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                             )
                         )
                     );
-                }}>
+                }}
+            >
                 {isLoadingTilgjengeligeStønadskontoer === true || isLoadingSakForAnnenPart === true ? (
                     <ApplicationSpinner />
                 ) : (

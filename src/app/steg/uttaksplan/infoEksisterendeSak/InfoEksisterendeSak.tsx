@@ -31,7 +31,7 @@ import Infoboks from 'common/components/infoboks/Infoboks';
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    eksisterendeSak: EksisterendeSak;
+    eksisterendeSak?: EksisterendeSak;
     erIUttaksplanenSteg: boolean;
     skalKunneViseInfoOmEkisterendeSak?: boolean;
 }
@@ -78,11 +78,14 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
         ? Forelder.mor
         : Forelder.farMedmor;
 
-    const hvem = getHvem(intl, erDeltUttak, navn, eksisterendeSak.erAnnenPartsSak);
+    const hvem = getHvem(intl, erDeltUttak, navn, eksisterendeSak ? eksisterendeSak.erAnnenPartsSak : false);
 
-    const sisteInfoPeriode = eksisterendeSak.uttaksplan
-        ? Periodene(eksisterendeSak.uttaksplan).finnSisteInfoperiode()
-        : undefined;
+    let sisteInfoPeriode;
+    if (eksisterendeSak) {
+        sisteInfoPeriode = eksisterendeSak.uttaksplan
+            ? Periodene(eksisterendeSak.uttaksplan).finnSisteInfoperiode()
+            : undefined;
+    }
     const nesteMuligeUttaksdagEtterAnnenPart =
         eksisterendeSak && eksisterendeSak.uttaksplan && sisteInfoPeriode
             ? Uttaksdagen(sisteInfoPeriode.tidsperiode.tom).neste()
@@ -157,16 +160,20 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                         tittel={getMessage(intl, 'eksisterendeSak.tittel.dineDagerMedForeldrepenger')}
                         illustrasjoner={[]}
                         infoboks={
-                            <Infoboks
-                                tekst={intl.formatMessage(
-                                    {
-                                        id: 'eksisterendeSak.tittel.dineDagerMedForeldrepenger.infoboks'
-                                    },
-                                    {
-                                        navn: søknadsinfo.navn.annenForelder.navn
-                                    }
-                                )}
-                            />
+                            erIUttaksplanenSteg === false ? (
+                                <Infoboks
+                                    tekst={intl.formatMessage(
+                                        {
+                                            id: 'eksisterendeSak.tittel.dineDagerMedForeldrepenger.infoboks'
+                                        },
+                                        {
+                                            navn: søknadsinfo.navn.annenForelder.navn
+                                        }
+                                    )}
+                                />
+                            ) : (
+                                undefined
+                            )
                         }
                     >
                         <InfoEksisterendeSakPerioder perioder={søkersPerioder} søknadsinfo={søknadsinfo} />
