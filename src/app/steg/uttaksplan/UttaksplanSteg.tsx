@@ -411,7 +411,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <>
-                        {eksisterendeSak && (
+                        {(eksisterendeSak || (søknadsinfo.søker.erMor && !søknadsinfo.søknaden.erEndringssøknad)) && (
                             <Block>
                                 <InfoEksisterendeSak
                                     søknadsinfo={søknadsinfo}
@@ -421,7 +421,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                     skalKunneViseInfoOmEkisterendeSak={
                                         !søknadsinfo.søknaden.erEndringssøknad &&
                                         skalKunneViseMorsUttaksplanForFarEllerMedmor(
-                                            eksisterendeSak.grunnlag,
+                                            (eksisterendeSak || {}).grunnlag,
                                             søknadsinfo
                                         )
                                     }
