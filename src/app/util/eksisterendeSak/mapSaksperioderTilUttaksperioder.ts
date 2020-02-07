@@ -256,7 +256,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
     grunnlag: Saksgrunnlag,
     innvilgedePerioder?: Saksperiode[]
 ): UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode | undefined => {
-    if (saksperiode.utsettelsePeriodeType) {
+    if (saksperiode.utsettelsePeriodeType && saksperiode.periodeResultatType !== PeriodeResultatType.AVSLÅTT) {
         return {
             type: Periodetype.Info,
             infotype: PeriodeInfoType.utsettelseAnnenPart,
