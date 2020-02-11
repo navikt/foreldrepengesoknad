@@ -5,9 +5,9 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
     periode: UttakFormPeriodeType,
     erFlerbarnssøknad: boolean,
     søkerErFarEllerMedmor: boolean,
-    morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg: boolean
+    søkerHarMidlertidigOmsorg: boolean
 ): boolean => {
-    if (morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg) {
+    if (søkerHarMidlertidigOmsorg) {
         return false;
     }
 

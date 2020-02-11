@@ -19,30 +19,28 @@ export interface UttakSkjemaregler {
 }
 
 export const getUttakSkjemaregler = (søknadsinfo: Søknadsinfo, periode: UttakFormPeriodeType): UttakSkjemaregler => {
-    const { saksgrunnlag } = søknadsinfo;
-    const morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg =
-        !søknadsinfo.søker.erAleneOmOmsorg && saksgrunnlag !== undefined && saksgrunnlag.morErAleneOmOmsorg;
+    const { søker, søknaden, annenForelder, uttaksdatoer } = søknadsinfo;
 
     return {
         aktivitetskravMorSkalBesvares: () =>
             aktivitetskravMorSkalBesvares(
                 periode as Periode,
-                søknadsinfo.søker.erMor,
-                søknadsinfo.søker.erAleneOmOmsorg,
-                søknadsinfo.annenForelder.kanIkkeOppgis,
-                morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg
+                søker.erMor,
+                søker.erAleneOmOmsorg,
+                annenForelder.kanIkkeOppgis,
+                søker.harMidlertidigOmsorg
             ),
 
         erMorForSykSkalBesvares: (): boolean =>
             erMorForForSykSkalBesvares(
                 periode,
-                søknadsinfo.søknaden.situasjon,
-                søknadsinfo.søker.erFarEllerMedmor,
-                søknadsinfo.uttaksdatoer,
-                søknadsinfo.søknaden.erFlerbarnssøknad,
-                søknadsinfo.søker.erAleneOmOmsorg,
-                søknadsinfo.annenForelder.kanIkkeOppgis,
-                morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg
+                søknaden.situasjon,
+                søker.erFarEllerMedmor,
+                uttaksdatoer,
+                søknaden.erFlerbarnssøknad,
+                søker.erAleneOmOmsorg,
+                annenForelder.kanIkkeOppgis,
+                søker.harMidlertidigOmsorg
             ),
 
         samtidigUttakSkalBesvares: (): boolean => {
@@ -52,17 +50,17 @@ export const getUttakSkjemaregler = (søknadsinfo: Søknadsinfo, periode: UttakF
                 periode,
                 søknadsperiode.erInnenFørsteSeksUkerFødselFarMedmor(),
                 søknadsperiode.erUttakFørFødsel(),
-                søknadsinfo.søker.erAleneOmOmsorg,
-                søknadsinfo.søknaden.erDeltUttak,
-                morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg
+                søker.erAleneOmOmsorg,
+                søknaden.erDeltUttak,
+                søker.harMidlertidigOmsorg
             );
         },
         ønskerFlerbarnsdagerSkalBesvares: (): boolean => {
             return ønskerFlerbarnsdagerSkalBesvares(
                 periode,
-                søknadsinfo.søknaden.erFlerbarnssøknad,
-                søknadsinfo.søker.erFarEllerMedmor,
-                morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg
+                søknaden.erFlerbarnssøknad,
+                søker.erFarEllerMedmor,
+                søker.harMidlertidigOmsorg
             );
         },
         graderingSkalBesvares: (): boolean => {

@@ -321,7 +321,6 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
         const { familiehendelsesdato } = søknadsinfo.søknaden;
         const { søker } = søknadsinfo;
         const { navnPåForeldre } = søknadsinfo.navn;
-        const { saksgrunnlag } = søknadsinfo;
 
         if (visibility === undefined) {
             return null;
@@ -342,9 +341,6 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
         const erForeldrepengerFørFødselOgSkalIkkeHaUttakFørTermin =
             isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true;
 
-        const morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg =
-            !søknadsinfo.søker.erAleneOmOmsorg && saksgrunnlag !== undefined && saksgrunnlag.morErAleneOmOmsorg;
-
         return (
             <React.Fragment>
                 <Block visible={erForeldrepengerFørFødselOgSkalIkkeHaUttakFørTermin === false}>
@@ -360,7 +356,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                 <Block
                     visible={
                         !isForeldrepengerFørFødselUttaksperiode(periode) &&
-                        !morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg &&
+                        !søker.harMidlertidigOmsorg &&
                         søknadsinfo.søknaden.erDeltUttak &&
                         isValidTidsperiode(tidsperiode)
                     }

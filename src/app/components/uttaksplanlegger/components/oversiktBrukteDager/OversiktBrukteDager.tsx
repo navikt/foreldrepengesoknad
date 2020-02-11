@@ -23,7 +23,6 @@ interface Props {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksstatus: Uttaksstatus;
     navnPåForeldre: NavnPåForeldre;
-    morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg: boolean;
 }
 
 const bem = BEMHelper('oversiktBrukteDager');
@@ -34,7 +33,6 @@ const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> =
     tilgjengeligeStønadskontoer,
     uttaksstatus,
     navnPåForeldre,
-    morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg,
     intl
 }) => {
     const situasjon = getForeldreparSituasjonFraSøknadsinfo(søknadsinfo);
@@ -54,13 +52,12 @@ const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> =
                     <FormattedMessage id="oversiktBrukteDager.tittel.foreldre" />
                 </Undertittel>
                 <TilesList columns={'flex'}>
-                    {((erDeltUttak && !morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg) || søker.erMor) && (
+                    {(erDeltUttak || søker.erMor) && (
                         <Personkort ikon={<ForelderIkon forelder={info.mor} />} tittel={søknadsinfo.navn.mor.fornavn}>
                             <strong>{getVarighetString(brukteDager.mor.dagerTotalt, intl)}</strong>
                         </Personkort>
                     )}
-                    {((erDeltUttak && !morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg) ||
-                        søker.erFarEllerMedmor) && (
+                    {(erDeltUttak || søker.erFarEllerMedmor) && (
                         <Personkort
                             ikon={<ForelderIkon forelder={info.farMedmor} />}
                             tittel={søknadsinfo.navn.farMedmor.fornavn}
@@ -74,7 +71,7 @@ const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> =
                 <Uttaksoppsummering
                     navnPåForeldre={navnPåForeldre}
                     uttaksstatus={uttaksstatus}
-                    erDeltUttak={erDeltUttak && !morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg}
+                    erDeltUttak={erDeltUttak}
                     erEndringssøknad={erEndringssøknad}
                 />
             </div>
