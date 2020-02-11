@@ -8,7 +8,8 @@ import {
     selectErEndringssøknad,
     selectSøkerrolle,
     selectEkstrainfo,
-    selectBarn
+    selectBarn,
+    selectSaksgrunnlag
 } from './søknadSelector';
 
 import {
@@ -201,8 +202,16 @@ const getNavnISøknaden = (søkerpersonalia: Person, søker: Søker, annenForeld
 };
 
 export const selectSøknadsinfo = createSelector(
-    [selectOmSøknaden, selectOmSøker, selectOmMor, selectOmFarMedmor, selectOmAnnenForelder, selectNavnISøknaden],
-    (omSøknaden, omSøker, omMor, omFarMedmor, omAnnenForelder, navn): Søknadsinfo | undefined => {
+    [
+        selectOmSøknaden,
+        selectOmSøker,
+        selectOmMor,
+        selectOmFarMedmor,
+        selectOmAnnenForelder,
+        selectNavnISøknaden,
+        selectSaksgrunnlag
+    ],
+    (omSøknaden, omSøker, omMor, omFarMedmor, omAnnenForelder, navn, saksgrunnlag): Søknadsinfo | undefined => {
         if (omSøknaden !== undefined && navn !== undefined && omSøker !== undefined) {
             return {
                 søknaden: omSøknaden,
@@ -211,7 +220,8 @@ export const selectSøknadsinfo = createSelector(
                 farMedmor: omFarMedmor,
                 annenForelder: omAnnenForelder,
                 navn,
-                uttaksdatoer: getUttaksdatoer(omSøknaden.familiehendelsesdato)
+                uttaksdatoer: getUttaksdatoer(omSøknaden.familiehendelsesdato),
+                saksgrunnlag
             };
         }
 
