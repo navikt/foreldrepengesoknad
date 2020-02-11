@@ -1,7 +1,6 @@
 import { Navn, Kjønn } from '../types/common';
 import { NavnPåForeldre, Dekningsgrad, Forelder } from 'common/types';
 import { Søkersituasjon, SøkerRolle } from '../types/søknad/Søknad';
-import { Saksgrunnlag } from 'app/types/EksisterendeSak';
 
 export interface Søknadsinfo {
     søknaden: OmSøknaden;
@@ -11,7 +10,6 @@ export interface Søknadsinfo {
     mor: OmMor;
     farMedmor: OmFarMedmor;
     uttaksdatoer: Uttaksdatoer;
-    saksgrunnlag: Saksgrunnlag | undefined;
 }
 
 export interface Uttaksdatoer {
@@ -60,6 +58,7 @@ export interface OmSøker {
     erAleneOmOmsorg: boolean;
     rolle: SøkerRolle;
     kjønn: Kjønn;
+    harMidlertidigOmsorg: boolean;
 }
 
 export interface OmAnnenForelder {

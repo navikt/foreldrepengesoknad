@@ -5,14 +5,14 @@ export const aktivitetskravMorSkalBesvares = (
     søkerErMor: boolean,
     erAleneOmOmsorg: boolean,
     annenForelderKanIkkeOppgis: boolean,
-    morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg: boolean
+    søkerHarMidlertidigOmsorg: boolean
 ): boolean => {
     if (
         søkerErMor ||
         erAleneOmOmsorg ||
         !isUttaksperiode(periode) ||
         annenForelderKanIkkeOppgis ||
-        morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg
+        søkerHarMidlertidigOmsorg
     ) {
         return false;
     }

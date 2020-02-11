@@ -45,9 +45,9 @@ export const getOppholdFarge = (periode: Oppholdsperiode): UttaksplanColor => {
 export const getPeriodeFarge = (
     periode: Periode,
     forelder?: Forelder,
-    morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg?: boolean
+    harMidlertidligOmsorg?: boolean
 ): UttaksplanColor | undefined => {
-    if (morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg) {
+    if (harMidlertidligOmsorg) {
         return UttaksplanColor.purple;
     }
 
