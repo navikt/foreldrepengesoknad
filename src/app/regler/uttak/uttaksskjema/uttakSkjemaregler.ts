@@ -56,12 +56,7 @@ export const getUttakSkjemaregler = (søknadsinfo: Søknadsinfo, periode: UttakF
             );
         },
         ønskerFlerbarnsdagerSkalBesvares: (): boolean => {
-            return ønskerFlerbarnsdagerSkalBesvares(
-                periode,
-                søknaden.erFlerbarnssøknad,
-                søker.erFarEllerMedmor,
-                søker.harMidlertidigOmsorg
-            );
+            return ønskerFlerbarnsdagerSkalBesvares(periode, søknaden.erFlerbarnssøknad, søker.erFarEllerMedmor);
         },
         graderingSkalBesvares: (): boolean => {
             const søknadsperiode = getSøknadsperiode(søknadsinfo, periode as Periode);
