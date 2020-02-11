@@ -18,49 +18,60 @@ export interface UttakSkjemaregler {
     graderingSkalBesvares: () => boolean;
 }
 
-export const getUttakSkjemaregler = (søknadsinfo: Søknadsinfo, periode: UttakFormPeriodeType): UttakSkjemaregler => ({
-    aktivitetskravMorSkalBesvares: () =>
-        aktivitetskravMorSkalBesvares(
-            periode as Periode,
-            søknadsinfo.søker.erMor,
-            søknadsinfo.søker.erAleneOmOmsorg,
-            søknadsinfo.annenForelder.kanIkkeOppgis
-        ),
+export const getUttakSkjemaregler = (søknadsinfo: Søknadsinfo, periode: UttakFormPeriodeType): UttakSkjemaregler => {
+    const { saksgrunnlag } = søknadsinfo;
+    const morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg =
+        !søknadsinfo.søker.erAleneOmOmsorg && saksgrunnlag !== undefined && saksgrunnlag.morErAleneOmOmsorg;
 
-    erMorForSykSkalBesvares: (): boolean =>
-        erMorForForSykSkalBesvares(
-            periode,
-            søknadsinfo.søknaden.situasjon,
-            søknadsinfo.søker.erFarEllerMedmor,
-            søknadsinfo.uttaksdatoer,
-            søknadsinfo.søknaden.erFlerbarnssøknad,
-            søknadsinfo.søker.erAleneOmOmsorg,
-            søknadsinfo.annenForelder.kanIkkeOppgis
-        ),
+    return {
+        aktivitetskravMorSkalBesvares: () =>
+            aktivitetskravMorSkalBesvares(
+                periode as Periode,
+                søknadsinfo.søker.erMor,
+                søknadsinfo.søker.erAleneOmOmsorg,
+                søknadsinfo.annenForelder.kanIkkeOppgis,
+                morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg
+            ),
 
-    samtidigUttakSkalBesvares: (): boolean => {
-        const søknadsperiode = getSøknadsperiode(søknadsinfo, periode as Periode);
-        return samtidigUttakSkalBesvares(
-            periode,
-            søknadsperiode.erInnenFørsteSeksUkerFødselFarMedmor(),
-            søknadsperiode.erUttakFørFødsel(),
-            søknadsinfo.søker.erAleneOmOmsorg,
-            søknadsinfo.søknaden.erDeltUttak
-        );
-    },
-    ønskerFlerbarnsdagerSkalBesvares: (): boolean => {
-        return ønskerFlerbarnsdagerSkalBesvares(
-            periode,
-            søknadsinfo.søknaden.erFlerbarnssøknad,
-            søknadsinfo.søker.erFarEllerMedmor
-        );
-    },
-    graderingSkalBesvares: (): boolean => {
-        const søknadsperiode = getSøknadsperiode(søknadsinfo, periode as Periode);
+        erMorForSykSkalBesvares: (): boolean =>
+            erMorForForSykSkalBesvares(
+                periode,
+                søknadsinfo.søknaden.situasjon,
+                søknadsinfo.søker.erFarEllerMedmor,
+                søknadsinfo.uttaksdatoer,
+                søknadsinfo.søknaden.erFlerbarnssøknad,
+                søknadsinfo.søker.erAleneOmOmsorg,
+                søknadsinfo.annenForelder.kanIkkeOppgis,
+                morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg
+            ),
 
-        return graderingSkalBesvares(søknadsperiode.erUttakFørFødsel(), søknadsperiode.harSamtidigUttak());
-    },
-    overføringsårsakSkalBesvares: () => overføringsårsakSkalBesvares(periode as Periode, søknadsinfo)
-});
+        samtidigUttakSkalBesvares: (): boolean => {
+            const søknadsperiode = getSøknadsperiode(søknadsinfo, periode as Periode);
+
+            return samtidigUttakSkalBesvares(
+                periode,
+                søknadsperiode.erInnenFørsteSeksUkerFødselFarMedmor(),
+                søknadsperiode.erUttakFørFødsel(),
+                søknadsinfo.søker.erAleneOmOmsorg,
+                søknadsinfo.søknaden.erDeltUttak,
+                morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg
+            );
+        },
+        ønskerFlerbarnsdagerSkalBesvares: (): boolean => {
+            return ønskerFlerbarnsdagerSkalBesvares(
+                periode,
+                søknadsinfo.søknaden.erFlerbarnssøknad,
+                søknadsinfo.søker.erFarEllerMedmor,
+                morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg
+            );
+        },
+        graderingSkalBesvares: (): boolean => {
+            const søknadsperiode = getSøknadsperiode(søknadsinfo, periode as Periode);
+
+            return graderingSkalBesvares(søknadsperiode.erUttakFørFødsel(), søknadsperiode.harSamtidigUttak());
+        },
+        overføringsårsakSkalBesvares: () => overføringsårsakSkalBesvares(periode as Periode, søknadsinfo)
+    };
+};
 
 export default getUttakSkjemaregler;

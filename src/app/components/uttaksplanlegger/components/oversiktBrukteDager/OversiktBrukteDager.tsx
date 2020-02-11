@@ -23,6 +23,7 @@ interface Props {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksstatus: Uttaksstatus;
     navnPåForeldre: NavnPåForeldre;
+    morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg: boolean;
 }
 
 const bem = BEMHelper('oversiktBrukteDager');
@@ -33,6 +34,7 @@ const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> =
     tilgjengeligeStønadskontoer,
     uttaksstatus,
     navnPåForeldre,
+    morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg,
     intl
 }) => {
     const situasjon = getForeldreparSituasjonFraSøknadsinfo(søknadsinfo);
@@ -49,21 +51,20 @@ const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> =
         <div className={bem.block}>
             <div className={bem.element('brukteDager')}>
                 <Undertittel tag="h2" className="blokk-xs">
-                    <FormattedMessage
-                        id="oversiktBrukteDager.tittel.foreldre"
-                        values={{ antall: erDeltUttak ? 2 : 1 }}
-                    />
+                    <FormattedMessage id="oversiktBrukteDager.tittel.foreldre" />
                 </Undertittel>
                 <TilesList columns={'flex'}>
-                    {(erDeltUttak || søker.erMor) && (
+                    {((erDeltUttak && !morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg) || søker.erMor) && (
                         <Personkort ikon={<ForelderIkon forelder={info.mor} />} tittel={søknadsinfo.navn.mor.fornavn}>
                             <strong>{getVarighetString(brukteDager.mor.dagerTotalt, intl)}</strong>
                         </Personkort>
                     )}
-                    {(erDeltUttak || søker.erFarEllerMedmor) && (
+                    {((erDeltUttak && !morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg) ||
+                        søker.erFarEllerMedmor) && (
                         <Personkort
                             ikon={<ForelderIkon forelder={info.farMedmor} />}
-                            tittel={søknadsinfo.navn.farMedmor.fornavn}>
+                            tittel={søknadsinfo.navn.farMedmor.fornavn}
+                        >
                             <strong>{getVarighetString(brukteDager.farMedmor.dagerTotalt, intl)}</strong>
                         </Personkort>
                     )}
@@ -73,7 +74,7 @@ const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> =
                 <Uttaksoppsummering
                     navnPåForeldre={navnPåForeldre}
                     uttaksstatus={uttaksstatus}
-                    erDeltUttak={erDeltUttak}
+                    erDeltUttak={erDeltUttak && !morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg}
                     erEndringssøknad={erEndringssøknad}
                 />
             </div>

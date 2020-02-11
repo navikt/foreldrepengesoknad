@@ -378,6 +378,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             søknad.ekstrainfo.eksisterendeSak && !søknad.ekstrainfo.uttaksplanSkjema.ønskerTomPlan
                 ? søknad.ekstrainfo.eksisterendeSak.uttaksplan
                 : undefined;
+        const { saksgrunnlag } = søknadsinfo;
+        const morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg =
+            !søknadsinfo.søker.erAleneOmOmsorg && saksgrunnlag !== undefined && saksgrunnlag.morErAleneOmOmsorg;
 
         const defaultStønadskontoType =
             tilgjengeligeStønadskontoer.length === 1 ? tilgjengeligeStønadskontoer[0].konto : undefined;
@@ -458,6 +461,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                         søknadsinfo={søknadsinfo}
                                         uttaksstatus={uttaksstatus}
                                         navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
+                                        morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg={
+                                            morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg
+                                        }
                                     />
                                 </Block>
                             </>

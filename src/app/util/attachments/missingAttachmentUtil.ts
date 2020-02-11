@@ -102,12 +102,17 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, søkerinfo: Søk
 };
 
 const missingAttachmentForAktivitetskrav = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
+    const { saksgrunnlag } = søknadsinfo;
+    const morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg =
+        !søknadsinfo.søker.erAleneOmOmsorg && saksgrunnlag !== undefined && saksgrunnlag.morErAleneOmOmsorg;
+
     return (
         aktivitetskravMorSkalBesvares(
             periode,
             søknadsinfo.søker.erMor,
             søknadsinfo.søker.erAleneOmOmsorg,
-            søknadsinfo.annenForelder.kanIkkeOppgis
+            søknadsinfo.annenForelder.kanIkkeOppgis,
+            morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg
         ) && isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON)
     );
 };

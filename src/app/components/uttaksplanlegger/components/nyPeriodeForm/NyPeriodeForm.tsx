@@ -137,16 +137,26 @@ class NyPeriodeForm extends React.Component<Props, State> {
     }
 
     render() {
-        const { intl, antallFeriedager, forelder, navnPåForeldre, onCancel } = this.props;
+        const { intl, antallFeriedager, forelder, navnPåForeldre, onCancel, søknadsinfo } = this.props;
+        const { saksgrunnlag } = søknadsinfo;
+        const morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg =
+            !søknadsinfo.søker.erAleneOmOmsorg && saksgrunnlag !== undefined && saksgrunnlag.morErAleneOmOmsorg;
         const { periode } = this.state;
         return (
             <ValiderbarForm
                 runValidationOnRegister={false}
                 validateBeforeSubmit={true}
                 className={classnames(bem.block, bem.modifier(periode.type!.toLowerCase()))}
-                onSubmit={this.handleOnSubmit}>
+                onSubmit={this.handleOnSubmit}
+            >
                 <div className={bem.element('fargestrek')}>
-                    <PeriodeFargestrek farge={getPeriodeFarge(periode as Periode, forelder)} />
+                    <PeriodeFargestrek
+                        farge={getPeriodeFarge(
+                            periode as Periode,
+                            forelder,
+                            morHarAleneomsorgMenFarmedmorHarMidlertidligOmsorg
+                        )}
+                    />
                 </div>
                 {periode.type === Periodetype.Utsettelse && (
                     <>
