@@ -11,9 +11,10 @@ const erMorForForSykSkalBesvares = (
     uttaksdatoer: Uttaksdatoer,
     erFlerbarnssøknad: boolean,
     erAleneOmOmsorg: boolean,
-    annenForelderKanIkkeOppgis: boolean
+    annenForelderKanIkkeOppgis: boolean,
+    søkerHarMidlertidigOmsorg: boolean
 ): boolean => {
-    if (erAleneOmOmsorg || annenForelderKanIkkeOppgis) {
+    if (erAleneOmOmsorg || annenForelderKanIkkeOppgis || søkerHarMidlertidigOmsorg) {
         return false;
     }
 

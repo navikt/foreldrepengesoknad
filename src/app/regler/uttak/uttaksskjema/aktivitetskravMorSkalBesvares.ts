@@ -4,9 +4,16 @@ export const aktivitetskravMorSkalBesvares = (
     periode: Periode,
     søkerErMor: boolean,
     erAleneOmOmsorg: boolean,
-    annenForelderKanIkkeOppgis: boolean
+    annenForelderKanIkkeOppgis: boolean,
+    søkerHarMidlertidigOmsorg: boolean
 ): boolean => {
-    if (søkerErMor || erAleneOmOmsorg || !isUttaksperiode(periode) || annenForelderKanIkkeOppgis) {
+    if (
+        søkerErMor ||
+        erAleneOmOmsorg ||
+        !isUttaksperiode(periode) ||
+        annenForelderKanIkkeOppgis ||
+        søkerHarMidlertidigOmsorg
+    ) {
         return false;
     }
 
