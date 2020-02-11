@@ -5,10 +5,11 @@ import Select from 'common/components/skjema/wrappers/Select';
 import getMessage from 'common/util/i18nUtils';
 import { SelectChangeEvent } from '../../common/types/Events';
 import Block from 'common/components/block/Block';
-import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import lenker from '../util/routing/lenker';
 import { NavnISøknaden } from 'app/selectors/types';
 import { getNavnGenitivEierform } from '../util/tekstUtils';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
 
 interface HvaSkalMorGjøreSpørsmålProps {
     morsAktivitetIPerioden?: MorsAktivitet;
@@ -48,7 +49,11 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                         id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning"
                         values={{ navnMor: navnPåForeldre.mor.fornavn }}
                     />
-                    <ul>{listData.map((listItem, index) => <li key={`arbeidOgUtdanning${index}`}>{listItem}</li>)}</ul>
+                    <ul>
+                        {listData.map((listItem, index) => (
+                            <li key={`arbeidOgUtdanning${index}`}>{listItem}</li>
+                        ))}
+                    </ul>
                 </>
             );
         } else if (morsAktivitetIPerioden === MorsAktivitet.Innlagt) {
@@ -93,7 +98,11 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                         id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning"
                         values={{ navnMor: navnPåForeldre.mor.fornavn }}
                     />
-                    <ul>{listData.map((listItem, index) => <li key={`trengerhjelp${index}`}>{listItem}</li>)}</ul>
+                    <ul>
+                        {listData.map((listItem, index) => (
+                            <li key={`trengerhjelp${index}`}>{listItem}</li>
+                        ))}
+                    </ul>
                 </>
             );
         } else {
@@ -132,16 +141,16 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                                     morsAktivitetIPerioden.length > 0,
                                 failText: getMessage(intl, 'påkrevd')
                             }
-                        ]}>
+                        ]}
+                    >
                         <option value="" />
                         {this.renderOptions()}
                     </Select>
                 </Block>
                 <Block visible={visVeileder} margin="none">
-                    <OldVeilederinfo>
-                        <span>{this.getVeilederTekst()}</span>
+                    <Veilederpanel svg={<Veileder farge="lilla" stil="kompakt" />}>
                         <FormattedHTMLMessage id="aktivitetskrav.lesmer" values={{ link: lenker.morsAktivitetskrav }} />
-                    </OldVeilederinfo>
+                    </Veilederpanel>
                 </Block>
             </>
         );
