@@ -22,10 +22,11 @@ import { SøkerinfoProps } from '../../types/søkerinfo';
 import { Kjønn, HistoryProps } from '../../types/common';
 import { resolveStegToRender } from '../../util/steg/navigation';
 import visibility from './visibility';
-import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import Lenke from 'nav-frontend-lenker';
 import lenker from '../../util/routing/lenker';
 import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
 
 export interface StateProps {
     kjønn: Kjønn;
@@ -153,14 +154,14 @@ class InngangSteg extends React.Component<Props, {}> {
                     />
                 </Block>
                 <Block visible={visibility.papirsøknadInfo(situasjon)}>
-                    <OldVeilederinfo>
+                    <Veilederpanel svg={<Veileder farge="lilla" stil="kompakt" />}>
                         <Block margin="xs">
                             <FormattedMessage id="velkommen.foreldreansvar.veileder" />
                         </Block>
                         <Lenke href={lenker.papirsøknad}>
                             <FormattedMessage id="papirsøknad.lenke" />
                         </Lenke>
-                    </OldVeilederinfo>
+                    </Veilederpanel>
                 </Block>
             </Steg>
         );
