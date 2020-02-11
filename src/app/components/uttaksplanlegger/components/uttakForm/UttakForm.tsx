@@ -165,13 +165,9 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
     }
 
     componentDidMount() {
-        const { søknadsinfo, periode, velgbareStønadskontotyper } = this.props;
-        if (
-            !søknadsinfo.søknaden.erDeltUttak &&
-            isUttaksperiode(periode) &&
-            velgbareStønadskontotyper.length === 1 &&
-            periode.konto === undefined
-        ) {
+        const { periode, velgbareStønadskontotyper } = this.props;
+
+        if (isUttaksperiode(periode) && velgbareStønadskontotyper.length === 1 && periode.konto === undefined) {
             if (this.state.periodenGjelder !== undefined) {
                 this.onChange({ konto: StønadskontoType.Foreldrepenger, forelder: this.state.periodenGjelder });
             } else {
@@ -360,6 +356,7 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                 <Block
                     visible={
                         !isForeldrepengerFørFødselUttaksperiode(periode) &&
+                        !søker.harMidlertidigOmsorg &&
                         søknadsinfo.søknaden.erDeltUttak &&
                         isValidTidsperiode(tidsperiode)
                     }

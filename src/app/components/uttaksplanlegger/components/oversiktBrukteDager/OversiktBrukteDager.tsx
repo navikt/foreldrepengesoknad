@@ -49,10 +49,7 @@ const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> =
         <div className={bem.block}>
             <div className={bem.element('brukteDager')}>
                 <Undertittel tag="h2" className="blokk-xs">
-                    <FormattedMessage
-                        id="oversiktBrukteDager.tittel.foreldre"
-                        values={{ antall: erDeltUttak ? 2 : 1 }}
-                    />
+                    <FormattedMessage id="oversiktBrukteDager.tittel.foreldre" />
                 </Undertittel>
                 <TilesList columns={'flex'}>
                     {(erDeltUttak || søker.erMor) && (
@@ -63,7 +60,8 @@ const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> =
                     {(erDeltUttak || søker.erFarEllerMedmor) && (
                         <Personkort
                             ikon={<ForelderIkon forelder={info.farMedmor} />}
-                            tittel={søknadsinfo.navn.farMedmor.fornavn}>
+                            tittel={søknadsinfo.navn.farMedmor.fornavn}
+                        >
                             <strong>{getVarighetString(brukteDager.farMedmor.dagerTotalt, intl)}</strong>
                         </Personkort>
                     )}

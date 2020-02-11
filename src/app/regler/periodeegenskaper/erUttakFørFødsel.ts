@@ -6,6 +6,6 @@ export const erUttakFørFødsel = (periode: Periode, familiehendelsesdato: Date)
     const tom = tidsperiode && tidsperiode.tom;
     return (
         (periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel) ||
-        (tom && moment(tom).isBefore(familiehendelsesdato, 'day'))
+        (tom !== undefined && moment(tom).isBefore(familiehendelsesdato, 'day'))
     );
 };

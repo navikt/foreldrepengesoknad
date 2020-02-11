@@ -6,9 +6,10 @@ const samtidigUttakSkalBesvares = (
     erUttakInnenFørsteSeksUkerFødselFarMedmor: boolean,
     erUttakFørFødsel: boolean,
     erAleneOmsorg: boolean,
-    erDeltUttak: boolean
+    erDeltUttak: boolean,
+    søkerHarMidlertidigOmsorg: boolean
 ): boolean => {
-    if (erAleneOmsorg || !erDeltUttak) {
+    if (erAleneOmsorg || !erDeltUttak || søkerHarMidlertidigOmsorg) {
         return false;
     }
 

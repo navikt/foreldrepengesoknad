@@ -42,7 +42,15 @@ export const getOppholdFarge = (periode: Oppholdsperiode): UttaksplanColor => {
     return getForelderFarge(periode.forelder);
 };
 
-export const getPeriodeFarge = (periode: Periode, forelder?: Forelder): UttaksplanColor | undefined => {
+export const getPeriodeFarge = (
+    periode: Periode,
+    forelder?: Forelder,
+    harMidlertidligOmsorg?: boolean
+): UttaksplanColor | undefined => {
+    if (harMidlertidligOmsorg) {
+        return UttaksplanColor.purple;
+    }
+
     if (periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring) {
         return getStønadskontoFarge(periode.konto, periode.forelder || forelder);
     }

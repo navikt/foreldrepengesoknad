@@ -1,18 +1,27 @@
 import { createSelector } from 'reselect';
-import Søknad, { SøkerRolle } from '../types/søknad/Søknad';
+import Søknad, { SøkerRolle, SøknadEkstrainfo } from '../types/søknad/Søknad';
 import { RecursivePartial } from '../types/Partial';
 import { Dekningsgrad } from 'common/types';
 import { AppState } from '../redux/reducers';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { EksisterendeSak, Saksgrunnlag } from 'app/types/EksisterendeSak';
 import { getEndretUttaksplanForInnsending, erPeriodeSomSkalSendesInn } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 export const søknadSelector = (state: AppState): RecursivePartial<Søknad> => state.søknad;
 
 // Søknad
-export const selectBarn = createSelector([søknadSelector], (søknad = {}) => søknad.barn);
-export const selectSituasjon = createSelector([søknadSelector], (søknad = {}) => søknad.situasjon);
-export const selectEkstrainfo = createSelector([søknadSelector], (søknad = {}) => søknad.ekstrainfo);
+export const selectBarn = createSelector(
+    [søknadSelector],
+    (søknad = {}) => søknad.barn
+);
+export const selectSituasjon = createSelector(
+    [søknadSelector],
+    (søknad = {}) => søknad.situasjon
+);
+export const selectEkstrainfo = createSelector(
+    [søknadSelector],
+    (søknad = {}) => søknad.ekstrainfo
+);
 export const selectErEndringssøknad = createSelector(
     [søknadSelector],
     (søknad = {}): boolean => søknad.erEndringssøknad === true
@@ -36,27 +45,51 @@ export const selectOpprinneligUttaksplan = createSelector(
             : undefined
 );
 
+export const selectSaksgrunnlag = createSelector(
+    [selectEkstrainfo],
+    (ekstrainfo: SøknadEkstrainfo): Saksgrunnlag | undefined =>
+        ekstrainfo.eksisterendeSak !== undefined ? ekstrainfo.eksisterendeSak.grunnlag : undefined
+);
+
 export const selectDekningsgrad = createSelector(
     [søknadSelector],
     (søknad = {}): Dekningsgrad | undefined => søknad.dekningsgrad
 );
-export const selectSøker = createSelector([søknadSelector], (søknad = {}) => søknad.søker);
-export const selectAnnenForelder = createSelector([søknadSelector], (søknad = {}) => søknad.annenForelder);
+export const selectSøker = createSelector(
+    [søknadSelector],
+    (søknad = {}) => søknad.søker
+);
+export const selectAnnenForelder = createSelector(
+    [søknadSelector],
+    (søknad = {}) => søknad.annenForelder
+);
 
 // Søker
-export const selectSøkerErAleneOmOmsorg = createSelector([selectSøker], (søker = {}): boolean => {
-    return søker.erAleneOmOmsorg === true;
-});
-export const selectSøkerrolle = createSelector([selectSøker], (søker): SøkerRolle | undefined => {
-    if (søker !== undefined) {
-        return søker.rolle;
+export const selectSøkerErAleneOmOmsorg = createSelector(
+    [selectSøker],
+    (søker = {}): boolean => {
+        return søker.erAleneOmOmsorg === true;
     }
-    return undefined;
-});
+);
+export const selectSøkerrolle = createSelector(
+    [selectSøker],
+    (søker): SøkerRolle | undefined => {
+        if (søker !== undefined) {
+            return søker.rolle;
+        }
+        return undefined;
+    }
+);
 
 // Barn
-export const selectAntallBarn = createSelector([selectBarn], (barn = {}) => barn.antallBarn);
-export const selectErBarnFødt = createSelector([selectBarn], (barn = {}) => barn.erBarnetFødt);
+export const selectAntallBarn = createSelector(
+    [selectBarn],
+    (barn = {}) => barn.antallBarn
+);
+export const selectErBarnFødt = createSelector(
+    [selectBarn],
+    (barn = {}) => barn.erBarnetFødt
+);
 
 // Annen forelder
 export const selectAnnenForelderHarRettPåForeldrepenger = createSelector(
@@ -68,7 +101,10 @@ export const getAnnenForelderKanIkkeOppgis = createSelector(
     (annenForelder = {}) => annenForelder.kanIkkeOppgis
 );
 
-export const selectUttaksplan = createSelector([søknadSelector], (søknad): Periode[] => søknad.uttaksplan as Periode[]);
+export const selectUttaksplan = createSelector(
+    [søknadSelector],
+    (søknad): Periode[] => søknad.uttaksplan as Periode[]
+);
 
 export const selectEndringstidspunkt = createSelector(
     [søknadSelector],
