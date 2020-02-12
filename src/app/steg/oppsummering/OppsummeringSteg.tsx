@@ -16,7 +16,6 @@ import { Kvittering } from '../../types/Kvittering';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import isAvailable from '../../util/steg/isAvailable';
 import Oppsummering from 'app/steg/oppsummering/components/oppsummering/Oppsummering';
-import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import { validerUttaksplanAction } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
@@ -42,6 +41,8 @@ import LinkButton from 'app/components/elementer/linkButton/LinkButton';
 import Barn from 'app/types/søknad/Barn';
 import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
 import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -175,9 +176,9 @@ class OppsummeringSteg extends React.Component<Props> {
                         />
                         {uttaksplanValidering.erGyldig &&
                             missingAttachments.length > 0 && (
-                                <OldVeilederinfo type="advarsel">
-                                    {getMessage(intl, 'oppsummering.veileder.manglendeVedlegg')}
-                                </OldVeilederinfo>
+                                <Veilederpanel svg={<Veileder farge="lilla" ansikt="skeptisk" stil="kompakt" />}>
+                                    <FormattedMessage id="oppsummering.veileder.manglendeVedlegg" />
+                                </Veilederpanel>
                             )}
                         {skalSpørreOmAnnenForelderErInformert && (
                             <>
