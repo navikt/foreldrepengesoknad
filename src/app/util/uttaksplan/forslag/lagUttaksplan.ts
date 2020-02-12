@@ -18,6 +18,7 @@ export interface LagUttaksplanParams {
     uttaksplanSkjema: UttaksplanSkjemadata;
     erEnkelEndringssøknad: boolean;
     førsteUttaksdagEtterSeksUker: Date;
+    søkerHarMidlertidigOmsorg: boolean;
 }
 
 export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
@@ -31,7 +32,8 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         tilgjengeligeStønadskontoer,
         uttaksplanSkjema,
         erEnkelEndringssøknad,
-        førsteUttaksdagEtterSeksUker
+        førsteUttaksdagEtterSeksUker,
+        søkerHarMidlertidigOmsorg
     } = params;
 
     if (uttaksplanSkjema.ønskerIkkeFlerePerioder || erEndringssøknad) {
@@ -74,7 +76,12 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 ? dagEtterMorsSisteDag
                 : førsteUttaksdagEtterSeksUker;
 
-            return finnOgSettInnHull(forslag, erEndringssøknadUtenEksisterendeSak, relevantStartDatoForUttak);
+            return finnOgSettInnHull(
+                forslag,
+                erEndringssøknadUtenEksisterendeSak,
+                søkerHarMidlertidigOmsorg,
+                relevantStartDatoForUttak
+            );
         } else {
             const forslag = ikkeDeltUttak(
                 situasjon,
@@ -85,7 +92,12 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 annenForelderErUfør
             );
 
-            return finnOgSettInnHull(forslag, erEndringssøknadUtenEksisterendeSak, familiehendelsesdato);
+            return finnOgSettInnHull(
+                forslag,
+                erEndringssøknadUtenEksisterendeSak,
+                søkerHarMidlertidigOmsorg,
+                familiehendelsesdato
+            );
         }
     }
 

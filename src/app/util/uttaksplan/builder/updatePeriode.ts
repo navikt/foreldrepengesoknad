@@ -24,6 +24,7 @@ const updatePeriode = (
     erFlerbarnssøknad: boolean,
     erEndringsøknadUtenEkisterendeSak: boolean,
     relevantStartDatoForUttak: Date | undefined,
+    harMidlertidigOmsorg: boolean,
     opprinneligPlan?: Periode[]
 ): Periode[] => {
     const familiehendelsedato = familiehendelsesdato;
@@ -41,6 +42,7 @@ const updatePeriode = (
         erFlerbarnssøknad,
         erEndringsøknadUtenEkisterendeSak,
         relevantStartDatoForUttak,
+        harMidlertidigOmsorg,
         opprinneligPlan
     );
 
