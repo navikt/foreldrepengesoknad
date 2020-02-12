@@ -124,13 +124,13 @@ class NyPeriodeForm extends React.Component<Props, State> {
     }
 
     getUtsettelsePeriodeFormTittelIkon(periode: Periode | undefined) {
-        const { navnPåForeldre } = this.props;
+        const { navnPåForeldre, søknadsinfo } = this.props;
         const { utsettelsesvariant } = this.state;
         if (periode && periode.type === Periodetype.Utsettelse && periode.årsak) {
-            return getPeriodeIkon(periode as Periode, navnPåForeldre);
+            return getPeriodeIkon(periode as Periode, navnPåForeldre, søknadsinfo.søker.harMidlertidigOmsorg);
         } else if (periode && utsettelsesvariant) {
             const sykdomsutsettelse = { ...periode, årsak: UtsettelseÅrsakType.Sykdom };
-            return getPeriodeIkon(sykdomsutsettelse as Periode, navnPåForeldre);
+            return getPeriodeIkon(sykdomsutsettelse as Periode, navnPåForeldre, søknadsinfo.søker.harMidlertidigOmsorg);
         } else {
             return undefined;
         }
@@ -174,7 +174,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                     <>
                         <PeriodeFormTittel
                             tittel={getMessage(intl, 'nyPeriodeForm.uttak.tittel')}
-                            ikon={getPeriodeIkon(periode as Periode, navnPåForeldre)}
+                            ikon={getPeriodeIkon(periode as Periode, navnPåForeldre, søker.harMidlertidigOmsorg)}
                         />
                         <UttakForm
                             periode={periode as Partial<Uttaksperiode>}
