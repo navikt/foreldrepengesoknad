@@ -1,9 +1,9 @@
 {
-    "plugins": ["transform-object-rest-spread"],
-    "presets": ["env", "react"],
+    "plugins": ["@babel/plugin-proposal-object-rest-spread"],
+    "presets": ["@babel/env", "@babel/react"],
     "env": {
         "test": {
-            "plugins": ["transform-es2015-modules-commonjs"]
+            "plugins": ["@babel/plugin-transform-modules-commonjs"]
         }
     }
 }
