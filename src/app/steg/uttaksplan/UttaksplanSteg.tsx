@@ -257,6 +257,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erEnkelEndringssøknad
         } = søknadsinfo.søknaden;
 
+        const { harMidlertidigOmsorg } = søknadsinfo.søker;
+
         const { updatedPlan, id } = addPeriode(
             getUttaksstatusFunc(søknadsinfo),
             søknad.uttaksplan,
@@ -266,6 +268,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erFlerbarnssøknad,
             erEndringssøknad && !erEnkelEndringssøknad,
             relevantStartDatoForUttak,
+            harMidlertidigOmsorg,
             opprinneligPlan
         );
 
@@ -282,6 +285,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erEnkelEndringssøknad
         } = søknadsinfo.søknaden;
 
+        const { harMidlertidigOmsorg } = søknadsinfo.søker;
+
         const updatedPlan = deletePeriode(
             getUttaksstatusFunc(søknadsinfo),
             søknad.uttaksplan,
@@ -291,6 +296,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erFlerbarnssøknad,
             erEndringssøknad && !erEnkelEndringssøknad,
             relevantStartDatoForUttak,
+            harMidlertidigOmsorg,
             opprinneligPlan
         );
 
@@ -306,6 +312,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erEndringssøknad,
             erEnkelEndringssøknad
         } = søknadsinfo.søknaden;
+        const { harMidlertidigOmsorg } = søknadsinfo.søker;
 
         const updatedPlan = updatePeriode(
             getUttaksstatusFunc(søknadsinfo),
@@ -316,6 +323,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erFlerbarnssøknad,
             erEndringssøknad && !erEnkelEndringssøknad,
             relevantStartDatoForUttak,
+            harMidlertidigOmsorg,
             opprinneligPlan
         );
 
@@ -449,19 +457,21 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             />
                         </Block>
 
-                        {søknad.uttaksplan && tilgjengeligeStønadskontoer.length > 0 && uttaksstatus && (
-                            <>
-                                <Block margin="l">
-                                    <OversiktBrukteDager
-                                        tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                        perioder={søknad.uttaksplan}
-                                        søknadsinfo={søknadsinfo}
-                                        uttaksstatus={uttaksstatus}
-                                        navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
-                                    />
-                                </Block>
-                            </>
-                        )}
+                        {søknad.uttaksplan &&
+                            tilgjengeligeStønadskontoer.length > 0 &&
+                            uttaksstatus && (
+                                <>
+                                    <Block margin="l">
+                                        <OversiktBrukteDager
+                                            tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                            perioder={søknad.uttaksplan}
+                                            søknadsinfo={søknadsinfo}
+                                            uttaksstatus={uttaksstatus}
+                                            navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
+                                        />
+                                    </Block>
+                                </>
+                            )}
 
                         <Block visible={uttaksplanVeilederInfo.length > 0}>
                             <VeilederInfo
@@ -473,33 +483,35 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             />
                         </Block>
 
-                        {eksisterendeSak && eksisterendeSak.uttaksplan && (
-                            <FeatureBlock
-                                feature={Feature.visPerioderSomSendesInn}
-                                render={() => (
-                                    <Block>
-                                        <DevPerioderSomSendesInn
-                                            søknadsinfo={søknadsinfo}
-                                            perioderSomSkalSendesInn={perioderSomSkalSendesInn}
-                                        />
-                                    </Block>
-                                )}
-                            />
-                        )}
+                        {eksisterendeSak &&
+                            eksisterendeSak.uttaksplan && (
+                                <FeatureBlock
+                                    feature={Feature.visPerioderSomSendesInn}
+                                    render={() => (
+                                        <Block>
+                                            <DevPerioderSomSendesInn
+                                                søknadsinfo={søknadsinfo}
+                                                perioderSomSkalSendesInn={perioderSomSkalSendesInn}
+                                            />
+                                        </Block>
+                                    )}
+                                />
+                            )}
 
-                        {årsakTilSenEndring && årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
-                            <BegrunnelseForSenEndring
-                                årsak={årsakTilSenEndring}
-                                begrunnelse={
-                                    tilleggsopplysninger.begrunnelseForSenEndring
-                                        ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
-                                        : ''
-                                }
-                                vedlegg={vedleggForSenEndring}
-                                onBegrunnelseChange={this.handleBegrunnelseChange(årsakTilSenEndring)}
-                                onVedleggChange={this.handleBegrunnelseVedleggChange}
-                            />
-                        )}
+                        {årsakTilSenEndring &&
+                            årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
+                                <BegrunnelseForSenEndring
+                                    årsak={årsakTilSenEndring}
+                                    begrunnelse={
+                                        tilleggsopplysninger.begrunnelseForSenEndring
+                                            ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
+                                            : ''
+                                    }
+                                    vedlegg={vedleggForSenEndring}
+                                    onBegrunnelseChange={this.handleBegrunnelseChange(årsakTilSenEndring)}
+                                    onVedleggChange={this.handleBegrunnelseVedleggChange}
+                                />
+                            )}
                     </>
                 )}
 
