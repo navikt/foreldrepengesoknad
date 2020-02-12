@@ -1,6 +1,10 @@
 import Axios from 'axios';
 import lenker from '../lenker';
 
+/**
+ * @jest-environment node
+ */
+
 const testLenke = (href: string): Promise<any> => {
     return new Promise((resolve, reject) =>
         Axios.get(href)
@@ -10,7 +14,7 @@ const testLenke = (href: string): Promise<any> => {
 };
 
 describe('eksterne lenker', () => {
-    it(
+    it.skip(
         'alle lenker skal returnere 200',
         () => {
             return Promise.all(Object.values(lenker).map(testLenke)).then((results) => {

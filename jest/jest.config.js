@@ -1,9 +1,5 @@
 module.exports = {
-    transform: {
-        '^.+\\.jsx?$': 'babel-jest',
-        '^.+\\.tsx?$': 'ts-jest'
-    },
-    setupTestFrameworkScriptFile: './jest/setup.ts',
+    setupFilesAfterEnv: ['./jest/setup.ts'],
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
     moduleNameMapper: {
         '\\.(css|jpg|png|svg|less)$': '<rootDir>/node_modules/jest-css-modules',
@@ -12,14 +8,16 @@ module.exports = {
         '^app/(.*)': '<rootDir>/src/app/$1',
         '^shared/(.*)': '<rootDir>/src/shared/$1'
     },
-    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+    moduleFileExtensions: ['js', 'json', 'jsx', 'node', 'ts', 'tsx'],
     globals: {
         'ts-jest': {
-            tsConfigFile: './tsconfig.json',
-            useBabelrc: true
+            tsConfig: './tsconfig.json',
+            babelConfig: true
         }
     },
     rootDir: '../',
     coverageReporters: ['text-summary'],
-    modulePathIgnorePatterns: ['akseptansetest']
+    modulePathIgnorePatterns: ['akseptansetest'],
+    preset: 'ts-jest/presets/js-with-babel',
+    testMatch: null
 };
