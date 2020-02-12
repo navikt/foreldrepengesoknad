@@ -21,6 +21,7 @@ import UtsettelseIkon from 'app/components/ikoner/uttaksplanIkon/UtsettelseIkon'
 export interface Props {
     periode: Periode;
     navnPåForeldre: NavnPåForeldre;
+    harMidlertidigOmsorg: boolean;
     annenForelderSamtidigUttakPeriode?: Periode;
     melding?: VeilederMessage;
     isOpen?: boolean;
@@ -28,7 +29,11 @@ export interface Props {
 
 const BEM = BEMHelper('periodelisteItemHeader');
 
-export const getPeriodeIkon = (periode: Periode, navnPåForeldre: NavnPåForeldre): JSX.Element | undefined => {
+export const getPeriodeIkon = (
+    periode: Periode,
+    navnPåForeldre: NavnPåForeldre,
+    harMidlertidigOmsorg?: boolean
+): JSX.Element | undefined => {
     switch (periode.type) {
         case Periodetype.Uttak:
             return (
@@ -37,6 +42,7 @@ export const getPeriodeIkon = (periode: Periode, navnPåForeldre: NavnPåForeldr
                     forelder={periode.forelder}
                     gradert={periode.gradert}
                     navnPåForeldre={navnPåForeldre}
+                    harMidlertidigOmsorg={harMidlertidigOmsorg}
                 />
             );
         case Periodetype.Overføring:
@@ -75,6 +81,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     isOpen,
     melding,
     annenForelderSamtidigUttakPeriode,
+    harMidlertidigOmsorg,
     intl
 }) => {
     const gyldigTidsperiode = getValidTidsperiode(periode.tidsperiode);
@@ -133,7 +140,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
                     <em className={BEM.element('hvem')}> - {navnAnnenForelder}</em>
                 </>
             }
-            ikon={getPeriodeIkon(periode, navnPåForeldre)}
+            ikon={getPeriodeIkon(periode, navnPåForeldre, harMidlertidigOmsorg)}
             tidsperiode={visDatoer && periode.tidsperiode}
         />
     );

@@ -30,6 +30,7 @@ interface OwnProps {
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
     navn: NavnISøknaden;
     lastAddedPeriodeId: string | undefined;
+    harMidlertidigOmsorg: boolean;
     onPeriodeLukk?: (id: string) => void;
     onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
     onReplaceHullWithPeriode?: (tidsperiode: Tidsperiode) => void;
@@ -137,7 +138,8 @@ class Periodeliste extends React.Component<Props> {
             onReplaceHullWithPeriode,
             updatePeriode,
             deletePeriode,
-            erDeltUttak
+            erDeltUttak,
+            harMidlertidigOmsorg
         } = this.props;
 
         const filteredPerioder = this.shouldRenderHull(perioder)
@@ -228,6 +230,7 @@ class Periodeliste extends React.Component<Props> {
                                             updatePeriode={updatePeriode}
                                             deletePeriode={deletePeriode}
                                             annenForelderSamtidigUttakPeriode={this.annenForelderSamtidigUttak(periode)}
+                                            harMidlertidigOmsorg={harMidlertidigOmsorg}
                                         />
                                     );
                             }

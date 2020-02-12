@@ -17,6 +17,7 @@ const addPeriode = (
     erFlerbarnssøknad: boolean,
     erEndringsøknadUtenEkisterendeSak: boolean,
     relevantStartDatoForUttak: Date | undefined,
+    harMidlertidigOmsorg: boolean,
     opprinneligPlan?: Periode[]
 ): AddPeriodeResult => {
     const familiehendelsedato = familiehendelsesdato;
@@ -28,6 +29,7 @@ const addPeriode = (
         erFlerbarnssøknad,
         erEndringsøknadUtenEkisterendeSak,
         relevantStartDatoForUttak,
+        harMidlertidigOmsorg,
         opprinneligPlan
     );
     const id = guid();
