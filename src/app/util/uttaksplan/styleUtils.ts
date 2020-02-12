@@ -9,10 +9,15 @@ export const getForelderFarge = (forelder: Forelder) => {
 export const getStønadskontoFarge = (
     konto: StønadskontoType,
     forelder: Forelder | undefined,
-    forIkon?: boolean
+    forIkon?: boolean,
+    harMidlertidigOmsorg?: boolean
 ): UttaksplanColor => {
     if (forIkon && (konto === StønadskontoType.Fellesperiode || konto === StønadskontoType.Flerbarnsdager)) {
         return UttaksplanColor.purpleBlue;
+    }
+
+    if (harMidlertidigOmsorg) {
+        return UttaksplanColor.purple;
     }
 
     if (forelder === undefined) {

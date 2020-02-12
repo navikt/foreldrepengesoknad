@@ -232,7 +232,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                     <div className={BEM.element('header__reset')}>
                                         <LinkButton
                                             className={BEM.element('resetLink')}
-                                            onClick={() => onRequestClear()}>
+                                            onClick={() => onRequestClear()}
+                                        >
                                             <FormattedMessage id="uttaksplan.slettPlan" />
                                         </LinkButton>
                                     </div>
@@ -242,7 +243,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                     <div className={BEM.element('header__reset')}>
                                         <LinkButton
                                             className={BEM.element('resetLink')}
-                                            onClick={() => onRequestRevert()}>
+                                            onClick={() => onRequestRevert()}
+                                        >
                                             <FormattedMessage id="uttaksplan.tilbakestillPlan" />
                                         </LinkButton>
                                     </div>
@@ -252,7 +254,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 <span
                                     className={BEM.element('header__details__icon')}
                                     role="presentation"
-                                    aria-hidden={true}>
+                                    aria-hidden={true}
+                                >
                                     <HjerteIkon fylt={true} title="Hjerte" />
                                 </span>
                                 <FamiliehendelsedatoInfo
@@ -276,6 +279,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 deletePeriode={this.props.deletePeriode}
                                 updatePeriode={this.props.updatePeriode}
                                 antallFeriedager={antallFeriedager}
+                                harMidlertidigOmsorg={søknadsinfo.søker.harMidlertidigOmsorg}
                             />
                         </Block>
                         <Block visible={uttaksplan.length === 0}>
@@ -327,7 +331,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             htmlType="button"
                             ref={(c) => (this.leggTilOppholdKnapp = c)}
                             aria-expanded={formIsOpen}
-                            data-name="openNyUtsettelseForm">
+                            data-name="openNyUtsettelseForm"
+                        >
                             <FormattedMessage id="uttaksplan.leggTil.opphold" />
                         </Knapp>
                         <Knapp
@@ -335,7 +340,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             htmlType="button"
                             ref={(c) => (this.leggTilUttakKnapp = c)}
                             aria-expanded={formIsOpen}
-                            data-name="openNyPeriodeForm">
+                            data-name="openNyPeriodeForm"
+                        >
                             <FormattedMessage id="uttaksplan.leggTil.uttak" />
                         </Knapp>
                     </Knapperad>
