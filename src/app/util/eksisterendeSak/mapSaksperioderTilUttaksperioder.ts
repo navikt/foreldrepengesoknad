@@ -397,7 +397,7 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harUttaksdager)
     );
 
-    return finnOgSettInnHull(sammenslåddePerioder, erEndringsøknadUtenEkisterendeSak);
+    return finnOgSettInnHull(sammenslåddePerioder, erEndringsøknadUtenEkisterendeSak, false);
 };
 
 export default mapSaksperioderTilUttaksperioder;

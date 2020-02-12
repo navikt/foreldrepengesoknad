@@ -25,6 +25,7 @@ const DevPerioderSomSendesInn: React.StatelessComponent<Props> = ({ søknadsinfo
                 deletePeriode={() => null}
                 updatePeriode={() => null}
                 antallFeriedager={0}
+                harMidlertidigOmsorg={false}
             />
         </Ekspanderbartpanel>
     </DevBlock>

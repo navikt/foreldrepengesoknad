@@ -20,6 +20,7 @@ export interface Props {
     annenForelderSamtidigUttakPeriode: Periode | undefined;
     meldinger?: VeilederMessage[];
     onToggle: onToggleItemProp;
+    harMidlertidigOmsorg: boolean;
     updatePeriode: (periode: Periode) => void;
     deletePeriode: (periode: Periode) => void;
 }
@@ -35,13 +36,18 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
     onToggle,
     updatePeriode,
     deletePeriode,
+    harMidlertidigOmsorg,
     intl
 }) => {
     const ariaLabel = getPeriodeTittel(intl, periode, navnPåForeldre);
     const melding = meldinger.length > 0 ? meldinger[0] : undefined;
 
     return (
-        <PeriodelisteItemWrapper key={id} farge={getPeriodeFarge(periode)} isExpanded={isExpanded}>
+        <PeriodelisteItemWrapper
+            key={id}
+            farge={getPeriodeFarge(periode, undefined, harMidlertidigOmsorg)}
+            isExpanded={isExpanded}
+        >
             <PeriodelisteToggleItem
                 id={id}
                 ariaLabel={ariaLabel}
@@ -53,6 +59,7 @@ const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> =
                         navnPåForeldre={navnPåForeldre}
                         melding={melding}
                         annenForelderSamtidigUttakPeriode={annenForelderSamtidigUttakPeriode}
+                        harMidlertidigOmsorg={harMidlertidigOmsorg}
                     />
                 )}
                 renderContent={() => (

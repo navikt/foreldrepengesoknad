@@ -175,7 +175,8 @@ function* lagUttaksplanForslag() {
             tilgjengeligeStønadskontoer,
             uttaksplanSkjema,
             erEnkelEndringssøknad,
-            førsteUttaksdagEtterSeksUker
+            førsteUttaksdagEtterSeksUker,
+            søkerHarMidlertidigOmsorg: søker.harMidlertidigOmsorg
         });
 
         if (

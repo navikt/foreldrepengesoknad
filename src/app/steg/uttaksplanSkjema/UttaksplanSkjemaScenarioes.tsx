@@ -36,6 +36,7 @@ export interface ScenarioProps {
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
     eksisterendeSak?: EksisterendeSak;
+    søkerHarMidlertidigOmsorg: boolean;
 }
 export interface OwnProps extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
@@ -48,6 +49,7 @@ const Scenario1: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
     antallUkerFellesperiode,
     familiehendelsesdato,
     navnPåForeldre,
+    søkerHarMidlertidigOmsorg,
     intl
 }) => {
     const harSvartPåDekningsgradSpørsmål = søknad.dekningsgrad !== undefined;
@@ -68,7 +70,8 @@ const Scenario1: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
             <Block
                 visible={
                     (søknad.søker.rolle === SøkerRolle.FAR || søknad.søker.rolle === SøkerRolle.MEDMOR) &&
-                    harSvartPåDekningsgradSpørsmål
+                    harSvartPåDekningsgradSpørsmål &&
+                    !søkerHarMidlertidigOmsorg
                 }
                 margin="xs"
             >
@@ -86,7 +89,7 @@ const Scenario1: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
                 />
             </Block>
             <MorSinSisteUttaksdagSpørsmål
-                visible={harSvartPåDekningsgradSpørsmål}
+                visible={harSvartPåDekningsgradSpørsmål && !søkerHarMidlertidigOmsorg}
                 navnMor={søknad.annenForelder.fornavn}
                 familiehendelsesdato={familiehendelsesdato}
             />
