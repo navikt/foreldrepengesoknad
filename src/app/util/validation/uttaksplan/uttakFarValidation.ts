@@ -19,8 +19,12 @@ export const periodeErFørDato = ({ tidsperiode }: Periode, dato: Date): boolean
     return isValidTidsperiode(tidsperiode) && Tidsperioden(tidsperiode).erFørDato(dato);
 };
 
-export const unntakFarFørsteSeksUker = (periode: Uttaksperiode) => ({
+export const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigOmsorg: boolean) => ({
     erMorForSykDeFørsteSeksUker: (): boolean => {
+        if (harMidlertidigOmsorg) {
+            return true;
+        }
+
         if (periode.konto === StønadskontoType.Fellesperiode || periode.konto === StønadskontoType.Foreldrepenger) {
             return (
                 periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
@@ -39,8 +43,12 @@ export const unntakFarFørsteSeksUker = (periode: Uttaksperiode) => ({
     }
 });
 
-const erFarsUttakFørsteSeksUkerGyldig = (periode: Uttaksperiode, antallBarn: number): boolean => {
-    const unntak = unntakFarFørsteSeksUker(periode);
+const erFarsUttakFørsteSeksUkerGyldig = (
+    periode: Uttaksperiode,
+    antallBarn: number,
+    harMidlertidigOmsorg: boolean
+): boolean => {
+    const unntak = unntakFarFørsteSeksUker(periode, harMidlertidigOmsorg);
     return (
         unntak.erMorForSykDeFørsteSeksUker() || unntak.erFlerbarnsukerOgUttakAvFlerbarnsdagerEllerFedrekvote(antallBarn)
     );
@@ -52,7 +60,8 @@ export const harFarMedmorSøktUgyldigUttakFørsteSeksUker = (
     antallBarn: number,
     situasjon: Søkersituasjon,
     annenForelder: OmAnnenForelder,
-    erAleneOmOmsorg: boolean
+    erAleneOmOmsorg: boolean,
+    harMidlertidigOmsorg: boolean
 ): boolean => {
     return (
         getUgyldigUttakFørsteSeksUkerForFarMedmor(
@@ -61,7 +70,8 @@ export const harFarMedmorSøktUgyldigUttakFørsteSeksUker = (
             antallBarn,
             situasjon,
             annenForelder,
-            erAleneOmOmsorg
+            erAleneOmOmsorg,
+            harMidlertidigOmsorg
         ).length > 0
     );
 };
@@ -72,7 +82,8 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
     antallBarn: number,
     situasjon: Søkersituasjon,
     annenForelder: OmAnnenForelder,
-    erAleneOmOmsorg: boolean
+    erAleneOmOmsorg: boolean,
+    harMidlertidigOmsorg: boolean
 ): Periode[] => {
     if (situasjon === Søkersituasjon.ADOPSJON || annenForelder.kanIkkeOppgis || erAleneOmOmsorg) {
         return [];
@@ -88,7 +99,7 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
 
     const ugyldigeUttak = Periodene(farsPerioderInnenforSeksFørsteUker)
         .getUttak()
-        .filter((p) => erFarsUttakFørsteSeksUkerGyldig(p, antallBarn) === false);
+        .filter((p) => erFarsUttakFørsteSeksUkerGyldig(p, antallBarn, harMidlertidigOmsorg) === false);
 
     const ugyldigeOverføringer = Periodene(farsPerioderInnenforSeksFørsteUker)
         .getOverføringer()
