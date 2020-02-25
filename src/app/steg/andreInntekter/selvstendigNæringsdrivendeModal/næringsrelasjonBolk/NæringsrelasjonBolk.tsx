@@ -7,6 +7,7 @@ import Input from 'common/components/skjema/wrappers/Input';
 import { NæringsrelasjonPartial } from 'app/types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import ErNærVennEllerFamilieAvPersonSpørsmål from 'app/spørsmål/ErNærVennEllerFamilieAvPersonSpørsmål';
 import { getFritekstfeltRules } from 'app/util/validation/fritekstfelt';
+import { hasValueRule } from 'app/util/validation/common';
 
 interface NæringsrelasjonBolkProps {
     næringsrelasjon: NæringsrelasjonPartial;
@@ -64,6 +65,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                                         telefonnummer: v
                                     })
                                 }
+                                validators={[hasValueRule(telefonnummer, getMessage(intl, 'påkrevd'))]}
                             />
                         </Block>
                         <Block visible={visibility.erNærVennEllerFamilie(næringsrelasjon)}>
