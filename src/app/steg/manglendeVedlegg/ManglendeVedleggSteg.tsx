@@ -173,7 +173,7 @@ const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
     const missingAttachments = selectMissingAttachments(state);
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
 
-    const førsteUttaksdagEllerUttsettelsesdag = søknad.uttaksplan
+    const førsteUttaksEllerUttsettelsesPeriode = søknad.uttaksplan
         .filter((p) => p.tidsperiode.fom !== undefined && !isInfoPeriode(p))
         .sort(sorterPerioder)
         .shift();
@@ -181,8 +181,10 @@ const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
     const stegProps: StegProps = {
         id: StegID.MANGLENDE_VEDLEGG,
         renderFortsettKnapp:
-            (førsteUttaksdagEllerUttsettelsesdag &&
-                moment(førsteUttaksdagEllerUttsettelsesdag.tidsperiode.fom).isSameOrBefore(moment().add(4, 'weeks'))) ||
+            (førsteUttaksEllerUttsettelsesPeriode &&
+                moment(førsteUttaksEllerUttsettelsesPeriode.tidsperiode.fom).isSameOrBefore(
+                    moment().add(4, 'weeks')
+                )) ||
             missingAttachments.length === 0,
         history: props.history,
         renderFormTag: true,
