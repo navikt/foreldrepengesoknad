@@ -58,6 +58,7 @@ export interface OmSøker {
     erAleneOmOmsorg: boolean;
     rolle: SøkerRolle;
     kjønn: Kjønn;
+    harMidlertidigOmsorg: boolean;
 }
 
 export interface OmAnnenForelder {

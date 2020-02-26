@@ -1,16 +1,19 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedHTMLMessage } from 'react-intl';
 import Arbeidsforhold from '../types/Arbeidsforhold';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import FlervalgSpørsmål from '../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import { Arbeidsform } from '../types/uttaksplan/periodetyper';
+import { Tidsperiode } from 'common/types';
+import { getKunArbeidsforholdForValgtTidsperiode } from 'app/util/domain/arbeidsforhold';
 
 interface HvorSkalDuJobbeSpørsmålProps {
     onChange: (orgnr: string[], frilansEllerSelvstendigNæringsdrivende: Arbeidsform[]) => void;
     arbeidsformer: Arbeidsform[];
     arbeidsforhold: Arbeidsforhold[];
     orgnumre: string[];
+    tidsperiode: Tidsperiode;
 }
 
 type Props = HvorSkalDuJobbeSpørsmålProps & InjectedIntlProps;
@@ -46,9 +49,19 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
     }
 
     getRadioOptions(): RadioProps[] {
-        const { arbeidsforhold, intl } = this.props;
+        const { arbeidsforhold, tidsperiode, intl } = this.props;
+
+        let kunArbeidsforholdForValgtTidsperiode = [...arbeidsforhold];
+
+        if (tidsperiode && tidsperiode.fom && tidsperiode.tom) {
+            kunArbeidsforholdForValgtTidsperiode = getKunArbeidsforholdForValgtTidsperiode(
+                arbeidsforhold,
+                tidsperiode as Tidsperiode
+            );
+        }
+
         return [
-            ...arbeidsforhold.map((v) => ({
+            ...kunArbeidsforholdForValgtTidsperiode.map((v) => ({
                 label: v.arbeidsgiverIdType === 'orgnr' ? v.arbeidsgiverNavn : getMessage(intl, 'arbeidsgiver'),
                 value: v.arbeidsgiverId
             })),
@@ -71,6 +84,7 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
                 toKolonner={true}
                 spørsmål={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
                 onChange={this.handleOnChange}
+                hjelpetekst={<FormattedHTMLMessage id="hvorSkalDuJobbe.spørsmål.gradering.hjelpetekst" />}
             />
         );
     }

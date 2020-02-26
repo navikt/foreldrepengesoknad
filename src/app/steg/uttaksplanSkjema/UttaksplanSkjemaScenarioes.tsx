@@ -1,6 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
-import Søknad from '../../types/søknad/Søknad';
+import Søknad, { SøkerRolle } from '../../types/søknad/Søknad';
 import HarAnnenForelderSøktForeldrepengerSpørsmål from './enkeltspørsmål/HarAnnenForelderSøktForeldrepengerSpørsmål';
 import DekningsgradSpørsmål from './enkeltspørsmål/DekningsgradSpørsmål';
 import MorSinSisteUttaksdagSpørsmål from './enkeltspørsmål/MorSinSisteUttaksdagSpørsmål';
@@ -36,6 +36,7 @@ export interface ScenarioProps {
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
     eksisterendeSak?: EksisterendeSak;
+    søkerHarMidlertidigOmsorg: boolean;
 }
 export interface OwnProps extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
@@ -48,6 +49,7 @@ const Scenario1: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
     antallUkerFellesperiode,
     familiehendelsesdato,
     navnPåForeldre,
+    søkerHarMidlertidigOmsorg,
     intl
 }) => {
     const harSvartPåDekningsgradSpørsmål = søknad.dekningsgrad !== undefined;
@@ -65,8 +67,29 @@ const Scenario1: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
             />
 
             <DekningsgradSpørsmål />
+            <Block
+                visible={
+                    (søknad.søker.rolle === SøkerRolle.FAR || søknad.søker.rolle === SøkerRolle.MEDMOR) &&
+                    harSvartPåDekningsgradSpørsmål &&
+                    !søkerHarMidlertidigOmsorg
+                }
+                margin="xs"
+            >
+                <VeilederInfo
+                    messages={[
+                        {
+                            type: 'normal',
+                            contentIntlKey:
+                                'uttaksplan.skjema.farMedmor.infoOmTidsromMellomMorsSisteDagOgFarsFørsteDag',
+                            values: {
+                                navnMor: navnPåForeldre.mor
+                            }
+                        }
+                    ]}
+                />
+            </Block>
             <MorSinSisteUttaksdagSpørsmål
-                visible={harSvartPåDekningsgradSpørsmål}
+                visible={harSvartPåDekningsgradSpørsmål && !søkerHarMidlertidigOmsorg}
                 navnMor={søknad.annenForelder.fornavn}
                 familiehendelsesdato={familiehendelsesdato}
             />
@@ -208,7 +231,8 @@ const Scenario4: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
                     startdatoPermisjon !== undefined &&
                     moment(latestDate).isBefore(moment(startdatoPermisjon)) &&
                     stebarnsadopsjon !== true
-                }>
+                }
+            >
                 <VeilederInfo
                     messages={[
                         {
@@ -229,7 +253,8 @@ const Scenario4: React.StatelessComponent<ScenarioProps & InjectedIntlProps> = (
                                 søknad.barn.antallBarn > 1 &&
                                 skjema.startdatoPermisjon !== undefined &&
                                 skjema.harAnnenForelderSøktFP !== true
-                            }>
+                            }
+                        >
                             <VeilederInfo
                                 messages={[
                                     {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 import { connect } from 'react-redux';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 
 import { DispatchProps } from 'common/redux/types';
 import { setSpråk } from '../../../redux/actions/common/commonActionCreators';
@@ -12,10 +12,13 @@ import getMessage from 'common/util/i18nUtils';
 import Søknadstittel from 'app/components/applikasjon/søknadstittel/Søknadstittel';
 import UtløptSesjonModal from 'app/components/dialoger/utløptSesjonModal/UtløptSesjonModal';
 import LanguageToggle from 'common/components/languageToggle/LanguageToggle';
+import AlertStripe from 'nav-frontend-alertstriper';
+import { isFeatureEnabled, Feature } from 'app/Feature';
 
 export interface OwnProps {
     visSøknadstittel?: boolean;
     visSpråkvelger?: boolean;
+    visAlertstripe?: boolean;
     margin?: boolean;
 }
 
@@ -42,6 +45,7 @@ class Sidemal extends React.Component<Props> {
             sessionHasExpired,
             innloggetSomAnnenBruker,
             margin = true,
+            visAlertstripe = true,
             dispatch
         } = this.props;
 
@@ -63,6 +67,20 @@ class Sidemal extends React.Component<Props> {
                         {getMessage(this.props.intl, `søknad.pageheading.${erEndringssøknad ? 'endring' : 'ny'}`)}
                     </Søknadstittel>
                 )}
+
+                {isFeatureEnabled(Feature.visAlertstripe) &&
+                    visAlertstripe && (
+                        <div
+                            className={classnames(BEM.element('alertstripe'), {
+                                [BEM.modifier('purple-background')]: visSpråkvelger
+                            })}
+                        >
+                            <AlertStripe type="info">
+                                <FormattedMessage id="feature.alertstripe.tekst" />
+                            </AlertStripe>
+                        </div>
+                    )}
+
                 <div className={cls}>{children}</div>
                 <UtløptSesjonModal erÅpen={sessionHasExpired} />
                 {innloggetSomAnnenBruker && <UtløptSesjonModal erÅpen={true} />}

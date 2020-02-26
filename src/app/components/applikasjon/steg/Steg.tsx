@@ -20,6 +20,7 @@ import søknadActionCreators from '../../../redux/actions/søknad/søknadActionC
 import DocumentTitle from 'react-document-title';
 import FortsettSøknadSenereDialog from '../../dialoger/fortsettSøknadSenereDialog/FortsettSøknadSenereDialog';
 import Stegindikator from '../stegindikator/Stegindikator';
+import lenker from 'app/util/routing/lenker';
 
 import './steg.less';
 
@@ -86,7 +87,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 
     handleAvsluttOgFortsettSenere() {
-        (window as any).location = 'https://familie.nav.no';
+        (window as any).location = lenker.familie;
     }
 
     handleOnSubmit(event?: FormSubmitEvent) {
@@ -222,7 +223,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         };
 
         return (
-            <React.Fragment>
+            <>
                 {renderFormTag ? (
                     <ValiderbarForm {...formProps}>{this.renderContent()}</ValiderbarForm>
                 ) : (
@@ -244,7 +245,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                     onAvbrytSøknad={() => this.handleAvbrytSøknad()}
                     onFortsettSøknad={() => this.setState({ visAvbrytDialog: false })}
                 />
-            </React.Fragment>
+            </>
         );
     }
 }

@@ -1,15 +1,19 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedHTMLMessage } from 'react-intl';
 import Arbeidsforhold from '../types/Arbeidsforhold';
 import getMessage from 'common/util/i18nUtils';
 import { Arbeidsform } from '../types/uttaksplan/periodetyper';
 import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
+import { Tidsperiode } from 'common/types';
+import { RecursivePartial } from 'app/types/Partial';
+import { getKunArbeidsforholdForValgtTidsperiode } from 'app/util/domain/arbeidsforhold';
 
 interface HvorSkalDuJobbeSpørsmålFlervalgProps {
     onChange: (orgnumre: string[], frilansEllerSelvstendigNæringsdrivende: Arbeidsform[]) => void;
     arbeidsformer: Arbeidsform[];
     arbeidsforhold: Arbeidsforhold[];
     orgnumre: string[];
+    tidsperiode?: RecursivePartial<Tidsperiode>;
 }
 
 type Props = HvorSkalDuJobbeSpørsmålFlervalgProps & InjectedIntlProps;
@@ -28,9 +32,15 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
     }
 
     getOptions(orgnumre: string[], arbeidsformer: Arbeidsform[]) {
-        const { arbeidsforhold, intl } = this.props;
+        const { arbeidsforhold, tidsperiode, intl } = this.props;
+        let kunArbeidsforholdForValgtTidsperiode = [...arbeidsforhold];
+
+        if (tidsperiode && tidsperiode.fom && tidsperiode.tom) {
+            kunArbeidsforholdForValgtTidsperiode = getKunArbeidsforholdForValgtTidsperiode(arbeidsforhold, tidsperiode as Tidsperiode)
+        }
+
         return [
-            ...arbeidsforhold.map((v) => ({
+            ...kunArbeidsforholdForValgtTidsperiode.map((v) => ({
                 label: v.arbeidsgiverNavn,
                 value: v.arbeidsgiverId,
                 checked: orgnumre.includes(v.arbeidsgiverId)
@@ -100,6 +110,7 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
                     this.handleOnChange(e, value, orgnumre, arbeidsformer)
                 }
                 checkboxes={this.getOptions(orgnumre, arbeidsformer)}
+                infoboksTekst={<FormattedHTMLMessage id="utsettelseskjema.info.utsettelseArbeid" />}
             />
         );
     }

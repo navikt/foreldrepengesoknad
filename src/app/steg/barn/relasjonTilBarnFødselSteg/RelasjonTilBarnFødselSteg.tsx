@@ -23,7 +23,6 @@ import HvilkeBarnGjelderSøknadenBolk from './HvilkeBarnGjelderSøknadenBolk';
 import isAvailable from '../../../util/steg/isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import Block from 'common/components/block/Block';
-import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
 import cleanupRelasjonTilBarnFødselSteg from '../../../util/cleanup/relasjonTilBarn/cleanupRelasjonTilBarnFødselSteg';
@@ -45,6 +44,8 @@ import { AttachmentType } from 'app/components/storage/attachment/types/Attachme
 import { skalViseInfoOmPrematuruker, visTermindato } from './visibility/visibilityFunctions';
 import { Element } from 'nav-frontend-typografi';
 import getMessage from 'common/util/i18nUtils';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
 
 interface RelasjonTilBarnFødselStegProps {
     barn: Barn;
@@ -124,47 +125,43 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                             }
                         />
                     </Block>
-                    {vis.fødtBarnPart &&
-                        isFødtBarn(barn, situasjon) && (
-                            <FødtBarnPartial
-                                situasjon={situasjon}
-                                dispatch={dispatch}
-                                barn={barn}
-                                gjelderAnnetBarn={gjelderAnnetBarn}
-                                registrerteBarn={registrerteBarn}
-                                vis={vis.født}
-                                erFarMedmor={søker.rolle !== SøkerRolle.MOR}
+                    {vis.fødtBarnPart && isFødtBarn(barn, situasjon) && (
+                        <FødtBarnPartial
+                            situasjon={situasjon}
+                            dispatch={dispatch}
+                            barn={barn}
+                            gjelderAnnetBarn={gjelderAnnetBarn}
+                            registrerteBarn={registrerteBarn}
+                            vis={vis.født}
+                            erFarMedmor={søker.rolle !== SøkerRolle.MOR}
+                        />
+                    )}
+                    {barn.erBarnetFødt === false && getErSøkerFarEllerMedmor(søker.rolle) && (
+                        <Veilederpanel svg={<Veileder farge="lilla" stil="kompakt" />}>
+                            <FormattedMessage
+                                id="erBarnetFødt.spørsmål.veileder.medMorEllerFar"
+                                values={{
+                                    lenke: (
+                                        <Lenke href={lenker.papirsøknad}>
+                                            <FormattedMessage id="papirsøknad.lenke" />
+                                        </Lenke>
+                                    )
+                                }}
                             />
-                        )}
-                    {barn.erBarnetFødt === false &&
-                        getErSøkerFarEllerMedmor(søker.rolle) && (
-                            <OldVeilederinfo>
-                                <FormattedMessage
-                                    id="erBarnetFødt.spørsmål.veileder.medMorEllerFar"
-                                    values={{
-                                        lenke: (
-                                            <Lenke href={lenker.papirsøknad}>
-                                                <FormattedMessage id="papirsøknad.lenke" />
-                                            </Lenke>
-                                        )
-                                    }}
-                                />
-                            </OldVeilederinfo>
-                        )}
-                    {vis.ufødtBarnPart &&
-                        isUfødtBarn(barn, situasjon) &&
-                        !getErSøkerFarEllerMedmor(søker.rolle) && (
-                            <UfødtBarnPartial
-                                situasjon={situasjon}
-                                dispatch={dispatch}
-                                barn={barn}
-                                annenForelder={annenForelder}
-                                søker={søker}
-                                erFarEllerMedmor={getErSøkerFarEllerMedmor(søker.rolle)}
-                                terminbekreftelse={terminbekreftelse || []}
-                                vis={vis.ufødt}
-                            />
-                        )}
+                        </Veilederpanel>
+                    )}
+                    {vis.ufødtBarnPart && isUfødtBarn(barn, situasjon) && !getErSøkerFarEllerMedmor(søker.rolle) && (
+                        <UfødtBarnPartial
+                            situasjon={situasjon}
+                            dispatch={dispatch}
+                            barn={barn}
+                            annenForelder={annenForelder}
+                            søker={søker}
+                            erFarEllerMedmor={getErSøkerFarEllerMedmor(søker.rolle)}
+                            terminbekreftelse={terminbekreftelse || []}
+                            vis={vis.ufødt}
+                        />
+                    )}
                 </Block>
                 <Block visible={valgtBarn !== undefined}>
                     {valgtBarn !== undefined && (
@@ -184,7 +181,8 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                 visible={this.visInfoOmPrematuruker(
                                     valgtBarn.fødselsdato,
                                     (barn as FødtBarn).termindato
-                                )}>
+                                )}
+                            >
                                 <VeilederInfo
                                     messages={[
                                         {
@@ -199,7 +197,8 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                 visible={this.visInfoOmPrematuruker(
                                     valgtBarn.fødselsdato,
                                     (barn as FødtBarn).termindato
-                                )}>
+                                )}
+                            >
                                 <Block margin="xs">
                                     <Element>{getMessage(intl, 'vedlegg.lastoppknapp.terminbekreftelse')}</Element>
                                 </Block>

@@ -4,7 +4,7 @@ export const getFødselsnummerForAnnenPartPåRegistrerteBarn = (registrerteBarn:
     const fnrArray = Array.from(new Set(registrerteBarn
         .map((b) => b.annenForelder && b.annenForelder.fnr)));
 
-    if(fnrArray.length > 1) {
+    if (fnrArray.length > 1) {
         return undefined;
     }
 

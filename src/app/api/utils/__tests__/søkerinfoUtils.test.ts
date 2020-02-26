@@ -41,37 +41,15 @@ describe('søkerinfoUtils', () => {
     });
 
     describe('getArbeidsforhold', () => {
-        it('Skal kun beholde ett arbeidsforhold per orgnr', () => {
-            const arbeidsforhold = [mockArbeidsforholdDTO, mockArbeidsforholdDTO, mockArbeidsforholdDTO];
-
-            expect(getArbeidsforhold(arbeidsforhold).length).toEqual(1);
+        it('Skal gi en tom liste tilbake hvis det er ingen arbeidsforhold', () => {
+            expect(getArbeidsforhold([])).toEqual([]);
         });
 
-        it('Skal beholde pågående arbeidsforhold hvis flere arbeidsforhold med samme orgnr', () => {
-            const arbeidsforholdDTOAvsluttet = {
-                ...mockArbeidsforholdDTO,
-                arbeidsgiverNavn: 'avsluttet',
-                tom: moment(new Date()).format('YYYY-MM-DD')
-            };
-
-            const arbeidsforholdDTOPågående = {
-                ...mockArbeidsforholdDTO,
-                arbeidsgiverNavn: 'pågående'
-            };
-            const arbeidsforhold = [
-                arbeidsforholdDTOAvsluttet,
-                arbeidsforholdDTOAvsluttet,
-                arbeidsforholdDTOAvsluttet,
-                arbeidsforholdDTOPågående
-            ];
-
-            const result = getArbeidsforhold(arbeidsforhold);
-
-            expect(result.length).toEqual(1);
-            expect(result[0].arbeidsgiverNavn).toEqual('pågående');
+        it('Skal gi en tom liste tilbake hvis arbeidsforhold er udefinert', () => {
+            expect(getArbeidsforhold(undefined)).toEqual([]);
         });
 
-        it('Skal ikke gjøre noe om alle arbeidsforhold har unike orgnr', () => {
+        it('Skal returnere alle arbeidsforhold', () => {
             const arbf1 = {
                 ...mockArbeidsforholdDTO
             };

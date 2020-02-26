@@ -1,5 +1,6 @@
 const jsdom = require('jsdom');
 const request = require('request');
+const fs = require('fs-extra');
 
 const { JSDOM } = jsdom;
 
@@ -8,26 +9,43 @@ const requestDecorator = (callback) => {
     return request(`${baseUrl}/common-html/v4/navno?header=true&styles=true&scripts=true&footer=true`, callback);
 };
 
+const loadFallbackDecorator = () => {
+    console.log('Attempt to load fallback decorator');
+    try {
+        return fs.readFileSync('fallback-decorator.html', 'utf8');
+    } catch (err) {
+        console.log(err);
+        return undefined;
+    }
+};
+
+const extractDecoratorFragments = (html) => {
+    console.log('Extracting decorator fragments', html);
+    const { document } = new JSDOM(html).window;
+    const prop = 'innerHTML';
+
+    return {
+        NAV_SCRIPTS: document.getElementById('scripts')[prop],
+        NAV_STYLES: document.getElementById('styles')[prop],
+        NAV_HEADING: document.getElementById('header')[prop],
+        NAV_FOOTER: document.getElementById('footer')[prop]
+    };
+};
+
 const getDecorator = () =>
     new Promise((resolve, reject) => {
         const callback = (error, response, body) => {
             if (!error && response.statusCode >= 200 && response.statusCode < 400) {
-                const { document } = new JSDOM(body).window;
-                const prop = 'innerHTML';
-
-                const data = {
-                    NAV_SCRIPTS: document.getElementById('scripts')[prop],
-                    NAV_STYLES: document.getElementById('styles')[prop],
-                    NAV_HEADING: document.getElementById('header')[prop],
-                    NAV_FOOTER: document.getElementById('footer')[prop]
-                };
-                resolve(data);
+                resolve(extractDecoratorFragments(body));
             } else {
-                console.log(error);
-                reject(new Error(error));
+                try {
+                    resolve(extractDecoratorFragments(loadFallbackDecorator()));
+                } catch (err) {
+                    console.log(err);
+                    reject(err);
+                }
             }
         };
-
         requestDecorator(callback);
     });
 

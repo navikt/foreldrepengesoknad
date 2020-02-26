@@ -1,12 +1,13 @@
 import * as React from 'react';
 import moment from 'moment';
 import Block from 'common/components/block/Block';
-import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { getVarighetString } from 'common/util/intlUtils';
 import getMessage from 'common/util/i18nUtils';
 import { formaterDato } from 'common/util/datoUtils';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
 
 type ugyldigStartdatoÅrsak = undefined | 'helgedag' | 'fortidlig';
 
@@ -84,7 +85,9 @@ const VeilederStartdatoPermisjon: React.StatelessComponent<Props> = ({
     const msg = getMsg();
     return (
         <Block margin="none" visible={msg !== undefined}>
-            <OldVeilederinfo type={erFeilmelding ? 'feil' : 'info'}>{msg}</OldVeilederinfo>
+            <Veilederpanel svg={<Veileder farge="lilla" ansikt={erFeilmelding ? 'skeptisk' : 'glad'} stil="kompakt" />}>
+                {msg}
+            </Veilederpanel>
         </Block>
     );
 };

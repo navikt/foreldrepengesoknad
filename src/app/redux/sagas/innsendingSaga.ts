@@ -12,6 +12,7 @@ import Søknad, { SøknadForInnsending, EnkelEndringssøknadForInnsending } from
 import { MissingAttachment } from 'app/types/MissingAttachment';
 import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
+import _ from 'lodash';
 
 const stateSelector = (state: AppState) => state;
 
@@ -37,9 +38,9 @@ function* sendSøknad(action: SendSøknad) {
         const response = yield call(
             Api.sendSøknad,
             getSøknadsdataForInnsending(
-                originalSøknad,
+                _.cloneDeep(originalSøknad),
                 action.missingAttachments,
-                selectPerioderSomSkalSendesInn(state)
+                _.cloneDeep(selectPerioderSomSkalSendesInn(state))
             )
         );
         const kvittering: Kvittering = response.data;

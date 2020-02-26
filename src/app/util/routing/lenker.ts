@@ -1,8 +1,7 @@
 export default {
     rettOgPlikt: 'https://nav.no/rettOgPlikt',
     fleksibeltuttak: 'https://familie.nav.no/om-foreldrepenger#hjemme-samtidig',
-    papirsøknad:
-        'https://www.nav.no/no/Person/Skjemaer-for-privatpersoner/skjemaveileder/vedlegg?key=267385&veiledertype=privatperson&method=mail',
+    papirsøknad: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
     viktigeFrister: 'https://familie.nav.no/om-foreldrepenger#nar-kan-du-soke',
     nav_aktivitetskrav: 'https://familie.nav.no/om-foreldrepenger#hvor-lenge-kan-jeg-fa-foreldrepenger',
     brukerstøtte:
@@ -13,5 +12,6 @@ export default {
         'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/',
     NaringsdrivendeInfoBoks:
         'https://www.skatteetaten.no/bedrift-og-organisasjon/starte-og-drive/er-jeg-naringsdrivende/',
-    brukerprofil: 'https://tjenester.nav.no/brukerprofil/'
+    brukerprofil: 'https://tjenester.nav.no/brukerprofil/',
+    familie: 'https://familie.nav.no/'
 };

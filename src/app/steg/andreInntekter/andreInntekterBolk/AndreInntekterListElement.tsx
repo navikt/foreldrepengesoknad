@@ -18,8 +18,8 @@ const AndreInntekterListeElement: React.StatelessComponent<Props> = ({ annenInnt
     const inntektstypeSkalHaVedlegg = type !== AnnenInntektType.JOBB_I_UTLANDET;
     const harVedlegg = vedlegg !== undefined && vedlegg.length > 0;
     const intlKey = 'inntektstype.';
-    let title = `${type}`;
 
+    let title;
     if (type === AnnenInntektType.JOBB_I_UTLANDET) {
         const arbeidsgiver = (annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn;
         title = `${getMessage(intl, `${intlKey}${type.toLowerCase()}`)} (${arbeidsgiver})`;

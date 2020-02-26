@@ -138,7 +138,8 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                             )
                         )
                     );
-                }}>
+                }}
+            >
                 {isLoadingTilgjengeligeStønadskontoer === true || isLoadingSakForAnnenPart === true ? (
                     <ApplicationSpinner />
                 ) : (
@@ -166,6 +167,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                             antallUkerMødreKvote={getAntallUkerMødrekvote(tilgjengeligeStønadskontoer)}
                             familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
                             erFarEllerMedmor={søknadsinfo.søker.erFarEllerMedmor}
+                            søkerHarMidlertidigOmsorg={søknadsinfo.søker.harMidlertidigOmsorg}
                             eksisterendeSak={eksisterendeSak}
                         />
                     </>

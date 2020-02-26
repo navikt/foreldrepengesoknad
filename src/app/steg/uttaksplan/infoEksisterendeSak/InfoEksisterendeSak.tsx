@@ -26,11 +26,12 @@ import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import { getForeldreparSituasjonFraSøknadsinfo } from 'app/util/foreldreparSituasjonUtils';
 import Block from 'common/components/block/Block';
 import lenker from 'app/util/routing/lenker';
+import Infoboks from 'common/components/infoboks/Infoboks';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    eksisterendeSak: EksisterendeSak;
+    eksisterendeSak?: EksisterendeSak;
     erIUttaksplanenSteg: boolean;
     skalKunneViseInfoOmEkisterendeSak?: boolean;
 }
@@ -77,11 +78,14 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
             ? Forelder.mor
             : Forelder.farMedmor;
 
-    const hvem = getHvem(intl, erDeltUttak, navn, eksisterendeSak.erAnnenPartsSak);
+    const hvem = getHvem(intl, erDeltUttak, navn, eksisterendeSak ? eksisterendeSak.erAnnenPartsSak : false);
 
-    const sisteInfoPeriode = eksisterendeSak.uttaksplan
-        ? Periodene(eksisterendeSak.uttaksplan).finnSisteInfoperiode()
-        : undefined;
+    let sisteInfoPeriode;
+    if (eksisterendeSak) {
+        sisteInfoPeriode = eksisterendeSak.uttaksplan
+            ? Periodene(eksisterendeSak.uttaksplan).finnSisteInfoperiode()
+            : undefined;
+    }
     const nesteMuligeUttaksdagEtterAnnenPart =
         eksisterendeSak && eksisterendeSak.uttaksplan && sisteInfoPeriode
             ? Uttaksdagen(sisteInfoPeriode.tidsperiode.tom).neste()
@@ -113,7 +117,8 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                             valgtForelder={forelderVedAleneomsorg}
                         />,
                         <UkerSirkel key="uker" uker={uker} />
-                    ]}>
+                    ]}
+                >
                     <Normaltekst>
                         <FormattedHTMLMessage
                             id="eksisterendeSak.tekst.html"
@@ -143,7 +148,8 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                             <UtvidetInformasjon
                                 apneLabel={getMessage(intl, visPlanTekst, {
                                     navn: navnGenitivEierform
-                                })}>
+                                })}
+                            >
                                 <InfoEksisterendeSakPerioder
                                     perioder={infoperioder}
                                     søknadsinfo={søknadsinfo}
@@ -157,7 +163,24 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                     søkersPerioder.length > 0 && (
                         <InnholdMedIllustrasjon
                             tittel={getMessage(intl, 'eksisterendeSak.tittel.dineDagerMedForeldrepenger')}
-                            illustrasjoner={[]}>
+                            illustrasjoner={[]}
+                            infoboks={
+                                erIUttaksplanenSteg === false ? (
+                                    <Infoboks
+                                        tekst={intl.formatMessage(
+                                            {
+                                                id: 'eksisterendeSak.tittel.dineDagerMedForeldrepenger.infoboks'
+                                            },
+                                            {
+                                                navn: søknadsinfo.navn.annenForelder.navn
+                                            }
+                                        )}
+                                    />
+                                ) : (
+                                    undefined
+                                )
+                            }
+                        >
                             <InfoEksisterendeSakPerioder perioder={søkersPerioder} søknadsinfo={søknadsinfo} />
                         </InnholdMedIllustrasjon>
                     )}

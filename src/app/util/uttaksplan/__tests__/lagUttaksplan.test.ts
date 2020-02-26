@@ -48,7 +48,8 @@ const lagUttaksplanProps: LagUttaksplanParams = {
     tilgjengeligeStønadskontoer: tilgjengeligeKontoerDeltUttak,
     uttaksplanSkjema: søknad.ekstrainfo.uttaksplanSkjema,
     erEnkelEndringssøknad: true,
-    førsteUttaksdagEtterSeksUker: new Date('2019-01-01')
+    førsteUttaksdagEtterSeksUker: new Date('2019-01-01'),
+    søkerHarMidlertidigOmsorg: false
 };
 
 describe('Forslag til uttaksplan', () => {
@@ -59,7 +60,7 @@ describe('Forslag til uttaksplan', () => {
         });
         it('mor: skal ikke ha hull', () => {
             const uttaksplan = lagUttaksplan(lagUttaksplanProps);
-            expect(finnHullIPerioder(uttaksplan, false).length).toBe(0);
+            expect(finnHullIPerioder(uttaksplan, false, false).length).toBe(0);
         });
         it('mor: skal ikke ha overlappende perioder', () => {
             const uttaksplan = lagUttaksplan(lagUttaksplanProps);
@@ -106,7 +107,7 @@ describe('Forslag til uttaksplan', () => {
                 erDeltUttak: false,
                 tilgjengeligeStønadskontoer: tilgjengeligeKontoerIkkeDeltUttak
             });
-            expect(finnHullIPerioder(uttaksplan, false).length).toBe(0);
+            expect(finnHullIPerioder(uttaksplan, false, false).length).toBe(0);
         });
         it('mor: skal ikke ha overlappende perioder', () => {
             const uttaksplan = lagUttaksplan({

@@ -13,7 +13,8 @@ import {
     UtsettelseAnnenPartInfoPeriode,
     Overføringsperiode,
     isInfoPeriode,
-    MorsAktivitet
+    MorsAktivitet,
+    SaksperiodeUtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
@@ -189,7 +190,9 @@ export const mapUttaksperiodeFromSaksperiode = (
         samtidigUttakProsent,
         ønskerFlerbarnsdager: saksperiode.flerbarnsdager,
         stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
-        arbeidsformer: gradert ? [getArbeidsformFromUttakArbeidstype(saksperiode.uttakArbeidType)] : undefined,
+        arbeidsformer: gradert
+            ? saksperiode.uttakArbeidType.map((arbType) => getArbeidsformFromUttakArbeidstype(arbType))
+            : undefined,
         orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
         morsAktivitetIPerioden: saksperiode.morsAktivitetIPerioden,
         erMorForSyk:
@@ -219,13 +222,13 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag:
     };
 
     if (utsettelsesperiode.årsak === UtsettelseÅrsakType.Arbeid) {
-        const arbeidsform = getArbeidsformFromUttakArbeidstype(saksperiode.uttakArbeidType);
+        const arbeidsformer = saksperiode.uttakArbeidType.map((arbType) => getArbeidsformFromUttakArbeidstype(arbType));
         const orgnummer = saksperiode.arbeidsgiverInfo.id;
 
         return {
             ...utsettelsesperiode,
-            arbeidsformer: [arbeidsform],
-            orgnumre: arbeidsform === Arbeidsform.arbeidstaker ? [orgnummer] : undefined,
+            arbeidsformer,
+            orgnumre: arbeidsformer.includes(Arbeidsform.arbeidstaker) ? [orgnummer] : undefined,
             erArbeidstaker: orgnummer ? true : false
         };
     }
@@ -253,7 +256,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
     grunnlag: Saksgrunnlag,
     innvilgedePerioder?: Saksperiode[]
 ): UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode | undefined => {
-    if (saksperiode.utsettelsePeriodeType) {
+    if (saksperiode.utsettelsePeriodeType && saksperiode.periodeResultatType !== PeriodeResultatType.AVSLÅTT) {
         return {
             type: Periodetype.Info,
             infotype: PeriodeInfoType.utsettelseAnnenPart,
@@ -351,16 +354,32 @@ const mapPeriodeFromSaksperiode = (
     return mapUttaksperiodeFromSaksperiode(saksperiode, grunnlag, erEndringssøknad, innvilgedePerioder);
 };
 
+const gyldigeSaksperioder = (saksperiode: Saksperiode): boolean => {
+    if (saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET) {
+        return true;
+    }
+
+    if (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT && saksperiode.utbetalingsprosent > 0) {
+        return true;
+    }
+
+    if (
+        saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT &&
+        saksperiode.utsettelsePeriodeType &&
+        saksperiode.utsettelsePeriodeType === SaksperiodeUtsettelseÅrsakType.InstitusjonBarnet
+    ) {
+        return true;
+    }
+
+    return false;
+};
+
 const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
     erEndringsøknadUtenEkisterendeSak: boolean
 ): Periode[] | undefined => {
-    const innvilgedePerioder = saksperioder.filter(
-        (saksperiode) =>
-            saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET ||
-            (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT && saksperiode.utbetalingsprosent > 0)
-    );
+    const innvilgedePerioder = saksperioder.filter(gyldigeSaksperioder);
     const perioder = innvilgedePerioder.map((periode) =>
         mapPeriodeFromSaksperiode(periode, grunnlag, erEndringsøknadUtenEkisterendeSak, innvilgedePerioder)
     );
@@ -378,7 +397,7 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harUttaksdager)
     );
 
-    return finnOgSettInnHull(sammenslåddePerioder, erEndringsøknadUtenEkisterendeSak);
+    return finnOgSettInnHull(sammenslåddePerioder, erEndringsøknadUtenEkisterendeSak, false);
 };
 
 export default mapSaksperioderTilUttaksperioder;

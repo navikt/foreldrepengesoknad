@@ -124,29 +124,34 @@ class NyPeriodeForm extends React.Component<Props, State> {
     }
 
     getUtsettelsePeriodeFormTittelIkon(periode: Periode | undefined) {
-        const { navnPåForeldre } = this.props;
+        const { navnPåForeldre, søknadsinfo } = this.props;
         const { utsettelsesvariant } = this.state;
         if (periode && periode.type === Periodetype.Utsettelse && periode.årsak) {
-            return getPeriodeIkon(periode as Periode, navnPåForeldre);
+            return getPeriodeIkon(periode as Periode, navnPåForeldre, søknadsinfo.søker.harMidlertidigOmsorg);
         } else if (periode && utsettelsesvariant) {
             const sykdomsutsettelse = { ...periode, årsak: UtsettelseÅrsakType.Sykdom };
-            return getPeriodeIkon(sykdomsutsettelse as Periode, navnPåForeldre);
+            return getPeriodeIkon(sykdomsutsettelse as Periode, navnPåForeldre, søknadsinfo.søker.harMidlertidigOmsorg);
         } else {
             return undefined;
         }
     }
 
     render() {
-        const { intl, antallFeriedager, forelder, navnPåForeldre, onCancel } = this.props;
+        const { intl, antallFeriedager, forelder, navnPåForeldre, onCancel, søknadsinfo } = this.props;
+        const { søker } = søknadsinfo;
         const { periode } = this.state;
+
         return (
             <ValiderbarForm
                 runValidationOnRegister={false}
                 validateBeforeSubmit={true}
                 className={classnames(bem.block, bem.modifier(periode.type!.toLowerCase()))}
-                onSubmit={this.handleOnSubmit}>
+                onSubmit={this.handleOnSubmit}
+            >
                 <div className={bem.element('fargestrek')}>
-                    <PeriodeFargestrek farge={getPeriodeFarge(periode as Periode, forelder)} />
+                    <PeriodeFargestrek
+                        farge={getPeriodeFarge(periode as Periode, forelder, søker.harMidlertidigOmsorg)}
+                    />
                 </div>
                 {periode.type === Periodetype.Utsettelse && (
                     <>
@@ -169,7 +174,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                     <>
                         <PeriodeFormTittel
                             tittel={getMessage(intl, 'nyPeriodeForm.uttak.tittel')}
-                            ikon={getPeriodeIkon(periode as Periode, navnPåForeldre)}
+                            ikon={getPeriodeIkon(periode as Periode, navnPåForeldre, søker.harMidlertidigOmsorg)}
                         />
                         <UttakForm
                             periode={periode as Partial<Uttaksperiode>}

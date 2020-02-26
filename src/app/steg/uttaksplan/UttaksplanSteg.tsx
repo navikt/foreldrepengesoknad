@@ -63,7 +63,9 @@ import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
 import addPeriode from 'app/util/uttaksplan/builder/addPeriode';
 import deletePeriode from 'app/util/uttaksplan/builder/deletePeriode';
 import updatePeriode from 'app/util/uttaksplan/builder/updatePeriode';
+import { getEndringstidspunkt } from 'app/util/dates/dates';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
+import moment from 'moment';
 
 interface StateProps {
     stegProps: StegProps;
@@ -99,11 +101,11 @@ interface UttaksplanStegState {
 
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps & InjectedIntlProps;
 
-const getUttaksstatusFunc = (søkInfo: Søknadsinfo) => (
-    tilgjengStønadskontoer: TilgjengeligStønadskonto[],
+const getUttaksstatusFunc = (søknadsinfo: Søknadsinfo) => (
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     uttaksplan: Periode[]
 ) => {
-    return getUttaksstatus(søkInfo, tilgjengStønadskontoer, uttaksplan);
+    return getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, uttaksplan);
 };
 class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     feilOppsummering: React.Component | null;
@@ -255,6 +257,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erEnkelEndringssøknad
         } = søknadsinfo.søknaden;
 
+        const { harMidlertidigOmsorg } = søknadsinfo.søker;
+
         const { updatedPlan, id } = addPeriode(
             getUttaksstatusFunc(søknadsinfo),
             søknad.uttaksplan,
@@ -264,10 +268,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erFlerbarnssøknad,
             erEndringssøknad && !erEnkelEndringssøknad,
             relevantStartDatoForUttak,
+            harMidlertidigOmsorg,
             opprinneligPlan
         );
 
-        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, nyPeriode.tidsperiode.fom, id));
+        const endringstidspunkt = getEndringstidspunkt(opprinneligPlan, updatedPlan, erEndringssøknad);
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, endringstidspunkt, id));
     }
 
     handleDeletePeriode(slettetPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
@@ -279,6 +285,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erEnkelEndringssøknad
         } = søknadsinfo.søknaden;
 
+        const { harMidlertidigOmsorg } = søknadsinfo.søker;
+
         const updatedPlan = deletePeriode(
             getUttaksstatusFunc(søknadsinfo),
             søknad.uttaksplan,
@@ -288,10 +296,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erFlerbarnssøknad,
             erEndringssøknad && !erEnkelEndringssøknad,
             relevantStartDatoForUttak,
+            harMidlertidigOmsorg,
             opprinneligPlan
         );
 
-        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, slettetPeriode.tidsperiode.fom));
+        const endringstidspunkt = getEndringstidspunkt(opprinneligPlan, updatedPlan, erEndringssøknad);
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, endringstidspunkt));
     }
 
     handleUpdatePeriode(oppdatertPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
@@ -302,6 +312,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erEndringssøknad,
             erEnkelEndringssøknad
         } = søknadsinfo.søknaden;
+        const { harMidlertidigOmsorg } = søknadsinfo.søker;
 
         const updatedPlan = updatePeriode(
             getUttaksstatusFunc(søknadsinfo),
@@ -312,10 +323,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erFlerbarnssøknad,
             erEndringssøknad && !erEnkelEndringssøknad,
             relevantStartDatoForUttak,
+            harMidlertidigOmsorg,
             opprinneligPlan
         );
 
-        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, oppdatertPeriode.tidsperiode.fom));
+        const endringstidspunkt = getEndringstidspunkt(opprinneligPlan, updatedPlan, erEndringssøknad);
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder(updatedPlan, endringstidspunkt));
     }
 
     handleBegrunnelseChange = (årsak: string) => (begrunnelse: string) => {
@@ -406,7 +419,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <>
-                        {eksisterendeSak && (
+                        {(eksisterendeSak || (søknadsinfo.søker.erMor && !søknadsinfo.søknaden.erEndringssøknad)) && (
                             <Block>
                                 <InfoEksisterendeSak
                                     søknadsinfo={søknadsinfo}
@@ -416,7 +429,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                     skalKunneViseInfoOmEkisterendeSak={
                                         !søknadsinfo.søknaden.erEndringssøknad &&
                                         skalKunneViseMorsUttaksplanForFarEllerMedmor(
-                                            eksisterendeSak.grunnlag,
+                                            (eksisterendeSak || {}).grunnlag,
                                             søknadsinfo
                                         )
                                     }
@@ -542,20 +555,29 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo, søknadsinfo)
     };
+    const { startdatoPermisjon } = søknad.ekstrainfo.uttaksplanSkjema;
 
     let relevantStartDatoForUttak: Date | undefined;
     if (søknadsinfo) {
-        const { søknaden, søker, uttaksdatoer } = søknadsinfo;
+        const { søknaden, søker, uttaksdatoer, annenForelder } = søknadsinfo;
+
+        if (!søknaden.erFødsel && startdatoPermisjon !== undefined) {
+            relevantStartDatoForUttak = startdatoPermisjon;
+        }
 
         if (
             søknaden.erFødsel &&
-            søknaden.erDeltUttak &&
+            (søknaden.erDeltUttak || (!søker.erAleneOmOmsorg && !annenForelder.harRett)) &&
             søker.erFarEllerMedmor &&
             !søknad.ekstrainfo.erEnkelEndringssøknad
         ) {
             const { morSinSisteUttaksdag } = state.søknad.ekstrainfo.uttaksplanSkjema;
             const dagEtterMorsSisteDag = morSinSisteUttaksdag ? Uttaksdagen(morSinSisteUttaksdag).neste() : undefined;
-            relevantStartDatoForUttak = dagEtterMorsSisteDag || uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker;
+            const { førsteUttaksdagEtterSeksUker } = uttaksdatoer.etterFødsel;
+
+            relevantStartDatoForUttak = moment(dagEtterMorsSisteDag).isSameOrAfter(moment(førsteUttaksdagEtterSeksUker))
+                ? dagEtterMorsSisteDag
+                : førsteUttaksdagEtterSeksUker;
         }
     }
 
@@ -582,10 +604,10 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         vedleggForSenEndring: søknad.vedleggForSenEndring,
         tilleggsopplysninger: søknad.tilleggsopplysninger,
         barn: søknad.barn,
-        uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl)(state).filter(
+        uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl, true)(state).filter(
             (melding) => melding.skjulesIOppsummering !== true
         ),
-        meldingerPerPeriode: selectPeriodelisteMeldinger(props.intl)(state),
+        meldingerPerPeriode: selectPeriodelisteMeldinger(props.intl, false)(state),
         aktivitetsfriKvote,
         planErEndret: søknad.erEndringssøknad && perioderSomSkalSendesInn.length > 0,
         perioderSomSkalSendesInn,

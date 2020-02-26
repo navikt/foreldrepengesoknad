@@ -98,12 +98,14 @@ class GradertUttakForm extends React.Component<Props> {
                         }
                         arbeidsformer={periode.arbeidsformer || []}
                         orgnumre={periode.orgnumre || []}
+                        tidsperiode={periode.tidsperiode}
                     />
                 </Block>
                 <Block
                     visible={
                         !!periode.gradert && periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0
-                    }>
+                    }
+                >
                     <VeilederInfo
                         messages={[
                             {

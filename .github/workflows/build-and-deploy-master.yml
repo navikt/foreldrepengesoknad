@@ -1,0 +1,72 @@
+name: Deployment pipeline q1
+
+on:
+  push:
+    branches:
+      - master 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/foreldrepengesoknad
+  
+jobs:
+  kompiler:
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Sjekk ut kode
+        uses: actions/checkout@v2
+     
+      - name: Hent tag    
+        run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)"  
+             
+             
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+         path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+         restore-keys: |
+           ${{ runner.os }}-build-${{ env.cache-name }}-
+           ${{ runner.os }}-build-
+           ${{ runner.os }}-
+         
+      - run:  npm install
+      - run:  npm run jest
+      - run: |
+          npm run build
+          echo "::set-env name=IMAGE::$IMAGE_BASE:$TAG" 
+                   
+      - name: Bygg, tag og push Docker image  
+        run: |
+          docker build --tag ${IMAGE} --tag ${IMAGE_BASE}:latest .
+          echo  ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} --password-stdin
+          docker push ${IMAGE_BASE}   
+  
+      - name: Opprett deployment issue
+        if: success()
+        uses: maxkomarychev/oction-create-issue@v0.7.1
+        id: createdeployissue
+        with:
+          token: ${{ secrets.NOTIFICATION }}
+          title: Bygg av ${{ env.TAG }}
+          body: |
+            Kommenter med <b>/promote ${{ env.TAG }} cluster</b>, hvor <b>cluster</b> er et gyldig clusternavn
+            <table>
+            <tr><th>Cluster</th></tr>
+            <tr><td>dev-sbs</td>
+            <tr><td>prod-sbs</tr>
+            </table>
+     
+      - name: Trigg deploy til dev-sbs 
+        if: success()
+        uses: actions/github-script@0.3.0
+        with:
+          github-token: ${{secrets.NOTIFICATION}}
+          script: |
+            const issue = { owner: context.issue.owner,
+                            repo: context.issue.repo,
+                            issue_number: ${{ steps.createdeployissue.outputs.number }} }
+            github.issues.createComment({...issue,
+                                    title: 'Deploy av ${{ env.TAG }}',
+                                    body: '/promote ${{ env.TAG }} dev-sbs'})
+     

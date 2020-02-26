@@ -57,6 +57,7 @@ describe('Validering av fars uttak første 6 uker', () => {
             1,
             Søkersituasjon.FØDSEL,
             omAnnenForelder as OmAnnenForelder,
+            false,
             false
         );
         expect(result).toBeFalsy();
@@ -68,6 +69,7 @@ describe('Validering av fars uttak første 6 uker', () => {
             1,
             Søkersituasjon.FØDSEL,
             omAnnenForelder as OmAnnenForelder,
+            false,
             false
         );
         expect(result).toBeFalsy();
@@ -79,6 +81,7 @@ describe('Validering av fars uttak første 6 uker', () => {
             1,
             Søkersituasjon.FØDSEL,
             omAnnenForelder as OmAnnenForelder,
+            false,
             false
         );
         expect(result).toBeTruthy();
@@ -90,6 +93,7 @@ describe('Validering av fars uttak første 6 uker', () => {
             1,
             Søkersituasjon.FØDSEL,
             omAnnenForelder as OmAnnenForelder,
+            false,
             false
         );
         expect(result).toBeTruthy();
@@ -101,6 +105,7 @@ describe('Validering av fars uttak første 6 uker', () => {
             1,
             Søkersituasjon.FØDSEL,
             omAnnenForelder as OmAnnenForelder,
+            false,
             false
         );
         expect(result).toBeTruthy();
@@ -112,6 +117,7 @@ describe('Validering av fars uttak første 6 uker', () => {
             1,
             Søkersituasjon.FØDSEL,
             omAnnenForelder as OmAnnenForelder,
+            false,
             false
         );
         expect(result).toBeTruthy();
@@ -123,6 +129,7 @@ describe('Validering av fars uttak første 6 uker', () => {
             2,
             Søkersituasjon.FØDSEL,
             omAnnenForelder as OmAnnenForelder,
+            false,
             false
         );
         expect(result).toBeFalsy();
@@ -134,6 +141,7 @@ describe('Validering av fars uttak første 6 uker', () => {
             2,
             Søkersituasjon.FØDSEL,
             omAnnenForelder as OmAnnenForelder,
+            false,
             false
         );
         expect(result).toBeFalsy();
@@ -145,6 +153,7 @@ describe('Validering av fars uttak første 6 uker', () => {
             1,
             Søkersituasjon.FØDSEL,
             omAnnenForelder as OmAnnenForelder,
+            false,
             false
         );
         expect(result).toBeFalsy();
@@ -162,6 +171,7 @@ describe('Validering av fars uttak første 6 uker', () => {
             1,
             Søkersituasjon.FØDSEL,
             omAnnenForelder as OmAnnenForelder,
+            false,
             false
         );
         expect(result).toBeFalsy();
@@ -173,6 +183,7 @@ describe('Validering av fars uttak første 6 uker', () => {
             1,
             Søkersituasjon.FØDSEL,
             omAnnenForelder as OmAnnenForelder,
+            false,
             false
         );
         expect(result).toBeTruthy();
@@ -191,6 +202,7 @@ describe('Validering av fars uttak første 6 uker', () => {
             1,
             Søkersituasjon.FØDSEL,
             omAnnenForelder as OmAnnenForelder,
+            false,
             false
         );
         expect(result).toBeFalsy();

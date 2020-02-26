@@ -8,7 +8,8 @@ import {
     Arbeidsform,
     isOverskrivbarPeriode,
     PeriodeInfoType,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
+    isUtsettelsesperiode
 } from '../../types/uttaksplan/periodetyper';
 import { InjectedIntl } from 'react-intl';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
@@ -203,10 +204,13 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
 export const getTidsperioderIUttaksplan = (uttaksplan: Periode[], periodeId: string | undefined): Tidsperiode[] =>
     uttaksplan.filter((p) => !isOverskrivbarPeriode(p) && p.id !== periodeId).map((p) => p.tidsperiode);
 
+export const getUtsettelserIUttaksplan = (uttaksplan: Periode[], periodeId: string | undefined): Tidsperiode[] =>
+    uttaksplan.filter((p) => isUtsettelsesperiode(p) && p.id !== periodeId).map((p) => p.tidsperiode);
+
 export const uttaksplanInneholderFrilansaktivitet = (uttaksplan: Periode[]): boolean => {
     return uttaksplan.some(
         (periode: Periode) =>
-            isUttaksperiode(periode) &&
+            (isUttaksperiode(periode) || isUtsettelsesperiode(periode)) &&
             periode.arbeidsformer !== undefined &&
             periode.arbeidsformer.length > 0 &&
             periode.arbeidsformer.some((arbeidsform: Arbeidsform) => arbeidsform === Arbeidsform.frilans)
@@ -216,7 +220,7 @@ export const uttaksplanInneholderFrilansaktivitet = (uttaksplan: Periode[]): boo
 export const uttaksplanInneholderSelvstendignæringaktivitet = (uttaksplan: Periode[]): boolean => {
     return uttaksplan.some(
         (periode: Periode) =>
-            isUttaksperiode(periode) &&
+            (isUttaksperiode(periode) || isUtsettelsesperiode(periode)) &&
             periode.arbeidsformer !== undefined &&
             periode.arbeidsformer.length > 0 &&
             periode.arbeidsformer.some(

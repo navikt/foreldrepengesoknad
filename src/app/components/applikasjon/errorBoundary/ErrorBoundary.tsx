@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserInfo, detect } from 'detect-browser';
+import { BrowserInfo, detect, BotInfo, NodeInfo } from 'detect-browser';
 import { isFeatureEnabled, Feature } from 'app/Feature';
 import Api from 'app/api/api';
 import * as Sentry from '@sentry/browser';
@@ -27,7 +27,11 @@ class ErrorBoundary extends React.Component<{}, State> {
         }
     }
 
-    logError(error: Error | null | undefined, browserInfo: BrowserInfo | null | false, reactStackTrace?: any) {
+    logError(
+        error: Error | null | undefined,
+        browserInfo: BrowserInfo | BotInfo | NodeInfo | null,
+        reactStackTrace?: any
+    ) {
         Api.log({
             message: error ? error.message : undefined,
             trace: error ? error.stack : undefined,

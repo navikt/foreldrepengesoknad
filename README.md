@@ -3,9 +3,9 @@
 Kildekoden til frontend-appen for ny selvbetjeningsløsning for
 foreldrepengesøknad.
 
-# Komme i gang
+# For å komme i gang
 
-For å kjøre opp app-en i dev:
+å kjøre opp appen i dev:
 
 1.  `npm install`.
 2.  `npm run start`.
@@ -18,7 +18,7 @@ For å kjøre cypress-tester:
 
 # Henvendelser
 
-Spørsmål knyttet til koden eller prosjektet kan rettes mot nav.team.bris@nav.no.
+Spørsmål knyttet til koden eller prosjektet kan rettes mot teamforeldrepenger@nav.no.
 
 ## For NAV-ansatte
 

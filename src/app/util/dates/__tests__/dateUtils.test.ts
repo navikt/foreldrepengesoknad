@@ -25,6 +25,62 @@ import {
     dateIsInThePast,
     getEndringstidspunkt
 } from '../dates';
+import { Periode, Uttaksperiode, Periodetype } from 'app/types/uttaksplan/periodetyper';
+import { guid } from 'nav-frontend-js-utils';
+
+const opprinneligPlan: Array<Partial<Periode>> = [
+    {
+        id: '2203724966-2284-5396-14729-8277157806438',
+        tidsperiode: {
+            fom: new Date('2019-09-10T00:00:00.000Z'),
+            tom: new Date('2019-09-30T00:00:00.000Z')
+        },
+        type: Periodetype.Uttak
+    },
+    {
+        id: '96519825-01917-7239-1861-16148140669135',
+        tidsperiode: {
+            fom: new Date('2019-10-01T00:00:00.000Z'),
+            tom: new Date('2020-01-13T00:00:00.000Z')
+        },
+        type: Periodetype.Uttak
+    },
+    {
+        id: '3105926427-6496-7446-7246-02332065872239',
+        tidsperiode: {
+            fom: new Date('2020-01-14T00:00:00.000Z'),
+            tom: new Date('2020-05-04T00:00:00.000Z')
+        },
+        type: Periodetype.Uttak
+    }
+];
+
+const nyPlan: Array<Partial<Periode>> = [
+    {
+        id: '2203724966-2284-5396-14729-8277157806438',
+        tidsperiode: {
+            fom: new Date('2019-09-10T00:00:00.000Z'),
+            tom: new Date('2019-09-30T00:00:00.000Z')
+        },
+        type: Periodetype.Uttak
+    },
+    {
+        id: '96519825-01917-7239-1861-16148140669135',
+        tidsperiode: {
+            fom: new Date('2019-10-01T00:00:00.000Z'),
+            tom: new Date('2020-01-13T00:00:00.000Z')
+        },
+        type: Periodetype.Uttak
+    },
+    {
+        id: '3105926427-6496-7446-7246-02332065872239',
+        tidsperiode: {
+            fom: new Date('2020-01-14T00:00:00.000Z'),
+            tom: new Date('2020-05-04T00:00:00.000Z')
+        },
+        type: Periodetype.Uttak
+    }
+];
 
 describe('dateUtils', () => {
     it('dateIsNotInFuture', () => {
@@ -94,41 +150,32 @@ describe('dateUtils', () => {
 
     describe('getEndringstidspunkt', () => {
         it('Skal returnere undefined hvis ikke endringssøknad', () => {
-            const endringstidspunkt = getEndringstidspunkt(false, new Date(), new Date());
+            const endringstidspunkt = getEndringstidspunkt(undefined, [], false);
 
             expect(endringstidspunkt).toBe(undefined);
         });
 
-        it('Skal returnere eldste dato', () => {
-            let endringstidspunkt = getEndringstidspunkt(true, new Date('2019-01-01'), new Date('2019-02-01'));
+        it('Skal returnere undefined for ingen endringer', () => {
+            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], nyPlan as Periode[], true);
 
-            expect(endringstidspunkt).toEqual(new Date('2019-01-01'));
-
-            endringstidspunkt = getEndringstidspunkt(true, new Date('2019-02-01'), new Date('2019-01-01'));
-
-            expect(endringstidspunkt).toEqual(new Date('2019-01-01'));
+            expect(endringstidspunkt).toBe(undefined);
         });
 
-        it('Skal fungere med en dato som undefined', () => {
-            let endringstidspunkt = getEndringstidspunkt(true, new Date('2019-01-01'), undefined);
+        it('Skal finne endringstidspunkt gitt at det er endringer', () => {
+            const gradertPeriode: Partial<Uttaksperiode> = {
+                id: guid(),
+                tidsperiode: {
+                    fom: new Date('2019-05-05'),
+                    tom: new Date('2019-05-08')
+                },
+                type: Periodetype.Uttak,
+                gradert: true,
+                stillingsprosent: '50'
+            };
+            const endretPlan = [...nyPlan, gradertPeriode];
 
-            expect(endringstidspunkt).toEqual(new Date('2019-01-01'));
-
-            endringstidspunkt = getEndringstidspunkt(true, undefined, new Date('2019-01-01'));
-
-            expect(endringstidspunkt).toEqual(new Date('2019-01-01'));
-        });
-
-        it('Skal returnere undefined hvis begge datoer er undefined', () => {
-            const endringstidspunkt = getEndringstidspunkt(true, undefined, undefined);
-
-            expect(endringstidspunkt).toEqual(undefined);
-        });
-
-        it('Skal returnere en dato om begge er samme dato', () => {
-            const endringstidspunkt = getEndringstidspunkt(true, new Date('2019-01-01'), new Date('2019-01-01'));
-
-            expect(endringstidspunkt).toEqual(new Date('2019-01-01'));
+            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
+            expect(endringstidspunkt).toEqual(new Date('2019-05-05'));
         });
     });
 });

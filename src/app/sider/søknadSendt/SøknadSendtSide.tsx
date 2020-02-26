@@ -51,7 +51,7 @@ class SøknadSendtSide extends React.Component<Props> {
         const { person, arbeidsforhold } = søkerinfo;
         const cls = BEMHelper('søknadSendt');
         return (
-            <Applikasjonsside visSøknadstittel={true}>
+            <Applikasjonsside visSøknadstittel={true} visAlertstripe={false}>
                 <DocumentTitle title={getMessage(intl, 'dokument.tittel.søknadSendt')} />
                 <div className={cls.block}>
                     <KvitteringHeader søker={person} kvittering={kvittering} />

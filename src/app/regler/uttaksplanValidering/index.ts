@@ -25,6 +25,7 @@ import { inneholderForMyeFerie } from './tester/inneholderForMyeFerie';
 import { kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme } from './tester/kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './tester/erUttaksmengdeForFarMedmorForHøyTest';
 import { burdeKanskjeSøkeGraderingTest } from './tester/burdeKanskjeSøkeGraderingTest';
+// import { inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold } from './tester/inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -51,7 +52,8 @@ export enum UttaksplanRegelKey {
     'harSøktOmFerieUtenArbeidsforhold' = 'harSøktOmFerieUtenArbeidsforhold',
     'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme' = 'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme',
     'uttaksmengdeForFarMedmorErForHøy' = 'uttaksmengdeForFarMedmorErForHøy',
-    'burdeKanskjeSøkeGradering' = 'burdeKanskjeSøkeGradering'
+    'burdeKanskjeSøkeGradering' = 'burdeKanskjeSøkeGradering',
+    'inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold' = 'inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold'
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -189,6 +191,12 @@ const uttaksplanValideringRegler: Regel[] = [
         alvorlighet: RegelAlvorlighet.INFO,
         test: burdeKanskjeSøkeGraderingTest
     }
+    // {
+    //     key: UttaksplanRegelKey.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold,
+    //     alvorlighet: RegelAlvorlighet.INFO,
+    //     test: inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold,
+    //     skjulesIOppsummering: true
+    // }
 ];
 
 const uttaksplanRegler = [...uttaksplanValideringRegler, ...periodevalideringsregler];

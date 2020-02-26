@@ -38,7 +38,7 @@ const morUfør: Pick<EksisterendeSak, 'grunnlag' | 'saksperioder'> = {
             gjelderAnnenPart: false,
             morsAktivitetIPerioden: MorsAktivitet.Uføre,
             flerbarnsdager: false,
-            uttakArbeidType: UttakArbeidType.ORDINÆRT_ARBEID,
+            uttakArbeidType: [UttakArbeidType.ORDINÆRT_ARBEID],
             arbeidsgiverInfo: {
                 id: '973861778',
                 type: ArbeidsgiverInfoType.ORGANISASJON,

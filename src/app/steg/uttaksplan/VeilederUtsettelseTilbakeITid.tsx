@@ -1,18 +1,17 @@
 import React from 'react';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { Utsettelsesperiode, Uttaksperiode, UtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
 import Block from 'common/components/block/Block';
-import OldVeilederinfo from 'common/components/oldVeilederInfo/OldVeilederinfo';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Veileder from 'common/components/veileder/Veileder';
 
-interface OwnProps {
+interface Props {
     utsettelser: Utsettelsesperiode[];
     uttak: Uttaksperiode[];
 }
 
-type Props = OwnProps & InjectedIntlProps;
-
-const VeilederUtsettelseTilbakeITid = ({ utsettelser, uttak, intl }: Props) => {
+const VeilederUtsettelseTilbakeITid: React.StatelessComponent<Props> = ({ utsettelser, uttak }: Props) => {
     const inneholderUtsettelsePgaFerie = utsettelser.some(
         (utsettelse) => utsettelse.årsak === UtsettelseÅrsakType.Ferie
     );
@@ -22,7 +21,7 @@ const VeilederUtsettelseTilbakeITid = ({ utsettelser, uttak, intl }: Props) => {
     const inneholderUttak = uttak.length > 0;
 
     return (
-        <OldVeilederinfo type="advarsel">
+        <Veilederpanel svg={<Veileder farge="lilla" stil="kompakt" />}>
             <Block margin={inneholderUtsettelsePgaArbeid ? 's' : 'none'} visible={inneholderUtsettelsePgaFerie}>
                 <FormattedMessage id="uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie" />
             </Block>
@@ -32,8 +31,8 @@ const VeilederUtsettelseTilbakeITid = ({ utsettelser, uttak, intl }: Props) => {
             </Block>
 
             {uttak.length > 0 && <FormattedMessage id="uttaksplan.veileder.planenAdvarerOmUttak" />}
-        </OldVeilederinfo>
+        </Veilederpanel>
     );
 };
 
-export default injectIntl(VeilederUtsettelseTilbakeITid);
+export default VeilederUtsettelseTilbakeITid;

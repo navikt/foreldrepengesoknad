@@ -86,8 +86,9 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                 onRequestClose={onRequestClose}
                 submitLabel={getMessage(intl, 'leggtil')}
                 cancelLabel={getMessage(intl, 'avbryt')}
-                {...modalProps}>
-                <Block>
+                {...modalProps}
+            >
+                <Block margin="xs">
                     <Input
                         label={getMessage(intl, 'frilansOppdrag.modal.oppdragsgiver')}
                         value={oppdrag.navnPåArbeidsgiver || ''}

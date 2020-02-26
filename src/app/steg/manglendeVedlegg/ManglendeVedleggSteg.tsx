@@ -24,7 +24,7 @@ import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import { isAttachmentForPeriode } from 'app/components/storage/attachment/components/util';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { formatDate } from 'app/util/dates/dates';
-import { Periodetype } from 'app/types/uttaksplan/periodetyper';
+import { isInfoPeriode } from 'app/types/uttaksplan/periodetyper';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import {
     getTerminbekreftelsedatoAvgrensninger,
@@ -40,6 +40,7 @@ interface ReduxProps {
     stegProps: StegProps;
     søknad: Søknad;
     attachmentMap: Map<string, Attachment[]>;
+    erLikEllerMindreEnnFireUkerTilUttaketStarter: boolean;
 }
 
 type Props = SøkerinfoProps & ReduxProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -73,7 +74,14 @@ class ManglendeVedleggsteg extends React.Component<Props> {
     }
 
     render() {
-        const { søknad, stegProps, attachmentMap, intl, dispatch } = this.props;
+        const {
+            søknad,
+            stegProps,
+            attachmentMap,
+            erLikEllerMindreEnnFireUkerTilUttaketStarter,
+            intl,
+            dispatch
+        } = this.props;
 
         return (
             <Steg {...stegProps}>
@@ -81,7 +89,9 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                     messages={[
                         {
                             type: 'normal',
-                            contentIntlKey: 'manglendeVedlegg.veileder'
+                            contentIntlKey: erLikEllerMindreEnnFireUkerTilUttaketStarter
+                                ? 'manglendeVedlegg.veileder'
+                                : 'uttaksplan.validering.advarsel.forTidligUtenDokumentasjon'
                         }
                     ]}
                 />
@@ -118,7 +128,8 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                               }
                                             : undefined
                                     )
-                                }}>
+                                }}
+                            >
                                 {isAttachmentForPeriode(a.type) && this.renderPeriodeinfo(key)}
                                 <VedleggSpørsmål
                                     vedlegg={attachmentsToRender}
@@ -131,7 +142,8 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                             </Block>
 
                             <Block
-                                visible={a.type === AttachmentType.TERMINBEKREFTELSE && attachmentsToRender.length > 0}>
+                                visible={a.type === AttachmentType.TERMINBEKREFTELSE && attachmentsToRender.length > 0}
+                            >
                                 <DatoInput
                                     id="terminbekreftelseDato"
                                     name="terminbekreftelseDato"
@@ -171,20 +183,18 @@ const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
     const missingAttachments = selectMissingAttachments(state);
     const attachmentMap = findAllAttachments(mapMissingAttachmentsOnSøknad(missingAttachments, _.cloneDeep(søknad)));
 
-    const førsteUttaksdagEllerUttsettelsesdag = søknad.uttaksplan
-        .filter(
-            (p) =>
-                p.tidsperiode.fom !== undefined && (p.type === Periodetype.Utsettelse || p.type === Periodetype.Uttak)
-        )
+    const førsteUttaksEllerUttsettelsesPeriode = søknad.uttaksplan
+        .filter((p) => p.tidsperiode.fom !== undefined && !isInfoPeriode(p))
         .sort(sorterPerioder)
         .shift();
 
+    const erLikEllerMindreEnnFireUkerTilUttaketStarter =
+        førsteUttaksEllerUttsettelsesPeriode !== undefined &&
+        moment(førsteUttaksEllerUttsettelsesPeriode.tidsperiode.fom).isSameOrBefore(moment().add(4, 'weeks'));
+
     const stegProps: StegProps = {
         id: StegID.MANGLENDE_VEDLEGG,
-        renderFortsettKnapp:
-            (førsteUttaksdagEllerUttsettelsesdag &&
-                moment(førsteUttaksdagEllerUttsettelsesdag.tidsperiode.fom).isSameOrBefore(moment().add(4, 'weeks'))) ||
-            missingAttachments.length === 0,
+        renderFortsettKnapp: erLikEllerMindreEnnFireUkerTilUttaketStarter || missingAttachments.length === 0,
         history: props.history,
         renderFormTag: true,
         isAvailable: isAvailable(StegID.MANGLENDE_VEDLEGG, søknad, props.søkerinfo, selectSøknadsinfo(state))
@@ -193,7 +203,8 @@ const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
     return {
         søknad,
         stegProps,
-        attachmentMap
+        attachmentMap,
+        erLikEllerMindreEnnFireUkerTilUttaketStarter
     };
 };
 
