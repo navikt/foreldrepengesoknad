@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PT from 'prop-types';
 import { ValidationResult, SummaryError, ValidatorFailText } from '../types/index';
 import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -36,10 +35,6 @@ interface ValiderbarFormState {
 type Props = ValiderbarFormProps & InjectedIntlProps;
 
 class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
-    static childContextTypes = {
-        validForm: PT.object
-    };
-
     components: any[];
 
     constructor(props: Props) {

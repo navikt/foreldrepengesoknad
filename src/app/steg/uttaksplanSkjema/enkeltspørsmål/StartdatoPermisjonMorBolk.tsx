@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
@@ -37,9 +36,6 @@ const getVarighetForStartdato = (antallDager: number, barnetErFødt: boolean, in
         : undefined;
 
 class StartdatoPermisjonMorBolk extends React.Component<Props> {
-    static contextTypes = {
-        validForm: PropTypes.object
-    };
     context: ValidFormContext;
 
     renderContent(data: Partial<UttaksplanSkjemadata>, onChange: (data: Partial<UttaksplanSkjemadata>) => void) {
