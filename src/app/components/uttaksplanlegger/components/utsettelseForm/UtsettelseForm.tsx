@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PT from 'prop-types';
 
 import {
     Arbeidsform,
@@ -120,9 +119,6 @@ const overlapperUtsettelseAndreUtsettelser = (periode: Partial<Periode>, uttaksp
 };
 
 class UtsettelsesperiodeForm extends React.Component<Props, State> {
-    static contextTypes = {
-        validForm: PT.object
-    };
     context: any;
 
     constructor(props: Props) {

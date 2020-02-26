@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import { Validator, ValidationResult } from '../types/index';
-import PT from 'prop-types';
 import { runValidators } from 'common/lib/validation/utils/runValidFormValidation';
 import { Feil } from 'common/types';
 
@@ -30,10 +29,6 @@ export interface ValiderbartSkjemaelementState {
 }
 
 class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemaelementState> {
-    static contextTypes = {
-        validForm: PT.object
-    };
-
     element: any;
     context: any;
 
