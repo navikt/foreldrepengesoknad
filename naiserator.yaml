@@ -8,7 +8,7 @@ metadata:
   namespace: default
 {{/if}} 
   labels:
-    team: {{team}}
+    team: teamforeldrepenger
 spec:
 {{#if namespace}}        
   accessPolicy:
@@ -18,7 +18,7 @@ spec:
         - host: {{uttak}}
       rules : []  
 {{/if}}               
-  image: {{version}}
+  image: {{image}}
   port: 8080
   replicas:
       min: 2
@@ -52,5 +52,5 @@ spec:
      value: "{{this}}"
   {{/each}}
    - name: APP_VERSION
-     value: {{version}}
+     value: {{image}}
   webproxy: true

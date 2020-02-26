@@ -7,7 +7,7 @@ import {
     UtsettelseAnnenPartInfoPeriode,
     isUttakAnnenPart
 } from '../../../../../types/uttaksplan/periodetyper';
-import { NavnPåForeldre, Forelder } from 'common/types';
+import { NavnPåForeldre, Forelder, Tidsperiode } from 'common/types';
 import { Tidsperioden } from '../../../../../util/uttaksplan/Tidsperioden';
 import PeriodelisteInfo from './PeriodelisteInfo';
 import { getVarighetString } from 'common/util/intlUtils';
@@ -24,6 +24,7 @@ export interface Props {
     onToggle: onToggleItemProp;
     periode: UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode;
     navnPåForeldre: NavnPåForeldre;
+    tidsperiode: Tidsperiode;
 }
 
 const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedIntlProps> = ({
@@ -32,6 +33,7 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
     onToggle,
     periode,
     navnPåForeldre,
+    tidsperiode,
     intl
 }) => {
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
@@ -66,6 +68,7 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedInt
             ikon={getPeriodeIkon(periode, navnPåForeldre)}
             farge={UttaksplanColor.transparent}
             border={true}
+            tidsperiode={tidsperiode}
             annenForelderSamtidigUttakPeriode={undefined}
             renderContent={() => (
                 <div>

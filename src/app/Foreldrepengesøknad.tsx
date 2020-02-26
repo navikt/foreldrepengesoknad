@@ -15,6 +15,9 @@ import Søknad from './types/søknad/Søknad';
 import { StegID } from './util/routing/stegConfig';
 import IkkeTilgjengelig from './sider/feilsider/ikkeTilgjengelig/IkkeTilgjengelig';
 import LoadingScreen from 'app/components/applikasjon/loadingScreen/LoadingScreen';
+import { Feature, isFeatureEnabled } from './Feature';
+import Feilsidemelding from 'common/components/feilsidemelding/Feilsidemelding';
+import { FormattedMessage } from 'react-intl';
 
 interface StateProps {
     søknad: Partial<Søknad>;
@@ -98,6 +101,15 @@ class Foreldrepengesøknad extends React.Component<Props> {
             return <Route component={SøknadSendtSide} />;
         } else if (systemerIkkeTilgjengelig) {
             return <IkkeTilgjengelig />;
+        }
+        
+        if (isFeatureEnabled(Feature.visFeilside)) {
+            return (
+                <Feilsidemelding
+                    tittel={<FormattedMessage id="feature.visFeilside.tittel" />}
+                    ingress={<FormattedMessage id="feature.visFeilside.ingress" />}
+                />
+            );
         }
 
         return this.renderSøknadRoutes(søkerinfo!);

@@ -26,7 +26,8 @@ import {
     selectErAdopsjon,
     selectSøkerKjønn,
     selectAnnenForelderKjønn,
-    selectHarKomplettUttaksplan
+    selectHarKomplettUttaksplan,
+    selectHarMidlertidigOmsorg
 } from './utledetSøknadsinfoSelectors';
 import { selectSøkerinfo } from './apiSelector';
 import { Søker } from '../types/søknad/Søker';
@@ -119,9 +120,16 @@ const getNavn = ({ fornavn, etternavn }: { fornavn: string | undefined; etternav
     };
 };
 
-const selectOmSøker = createSelector(
-    [selectSøkerErAleneOmOmsorg, selectSøkerErFarEllerMedmor, selectSøkerErMor, selectSøkerrolle, selectSøkerKjønn],
-    (erAleneOmOmsorg, erFarEllerMedmor, erMor, rolle, kjønn): OmSøker | undefined => {
+export const selectOmSøker = createSelector(
+    [
+        selectSøkerErAleneOmOmsorg,
+        selectSøkerErFarEllerMedmor,
+        selectSøkerErMor,
+        selectSøkerrolle,
+        selectSøkerKjønn,
+        selectHarMidlertidigOmsorg
+    ],
+    (erAleneOmOmsorg, erFarEllerMedmor, erMor, rolle, kjønn, harMidlertidigOmsorg): OmSøker | undefined => {
         return kjønn !== undefined
             ? {
                   erAleneOmOmsorg,
@@ -129,7 +137,8 @@ const selectOmSøker = createSelector(
                   erMor,
                   rolle: rolle!,
                   kjønn,
-                  forelder: erMor ? Forelder.mor : Forelder.farMedmor
+                  forelder: erMor ? Forelder.mor : Forelder.farMedmor,
+                  harMidlertidigOmsorg
               }
             : undefined;
     }

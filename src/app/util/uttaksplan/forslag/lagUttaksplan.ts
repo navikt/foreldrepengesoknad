@@ -5,6 +5,7 @@ import { UttaksplanSkjemadata } from '../../../steg/uttaksplanSkjema/uttaksplanS
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { finnOgSettInnHull } from '../builder/UttaksplanBuilder';
 import { Uttaksdagen } from '../Uttaksdagen';
+import moment from 'moment';
 
 export interface LagUttaksplanParams {
     situasjon: Søkersituasjon;
@@ -17,6 +18,7 @@ export interface LagUttaksplanParams {
     uttaksplanSkjema: UttaksplanSkjemadata;
     erEnkelEndringssøknad: boolean;
     førsteUttaksdagEtterSeksUker: Date;
+    søkerHarMidlertidigOmsorg: boolean;
 }
 
 export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
@@ -30,7 +32,8 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         tilgjengeligeStønadskontoer,
         uttaksplanSkjema,
         erEnkelEndringssøknad,
-        førsteUttaksdagEtterSeksUker
+        førsteUttaksdagEtterSeksUker,
+        søkerHarMidlertidigOmsorg
     } = params;
 
     if (uttaksplanSkjema.ønskerIkkeFlerePerioder || erEndringssøknad) {
@@ -67,11 +70,17 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 begrunnelseForUtsettelse
             );
             const dagEtterMorsSisteDag = morSinSisteUttaksdag ? Uttaksdagen(morSinSisteUttaksdag).neste() : undefined;
+            const relevantStartDatoForUttak = moment(dagEtterMorsSisteDag).isSameOrAfter(
+                moment(førsteUttaksdagEtterSeksUker)
+            )
+                ? dagEtterMorsSisteDag
+                : førsteUttaksdagEtterSeksUker;
 
             return finnOgSettInnHull(
                 forslag,
                 erEndringssøknadUtenEksisterendeSak,
-                dagEtterMorsSisteDag || førsteUttaksdagEtterSeksUker
+                søkerHarMidlertidigOmsorg,
+                relevantStartDatoForUttak
             );
         } else {
             const forslag = ikkeDeltUttak(
@@ -83,7 +92,12 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 annenForelderErUfør
             );
 
-            return finnOgSettInnHull(forslag, erEndringssøknadUtenEksisterendeSak, familiehendelsesdato);
+            return finnOgSettInnHull(
+                forslag,
+                erEndringssøknadUtenEksisterendeSak,
+                søkerHarMidlertidigOmsorg,
+                familiehendelsesdato
+            );
         }
     }
 

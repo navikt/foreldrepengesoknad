@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PT from 'prop-types';
 
 import {
     Arbeidsform,
@@ -120,9 +119,6 @@ const overlapperUtsettelseAndreUtsettelser = (periode: Partial<Periode>, uttaksp
 };
 
 class UtsettelsesperiodeForm extends React.Component<Props, State> {
-    static contextTypes = {
-        validForm: PT.object
-    };
     context: any;
 
     constructor(props: Props) {
@@ -326,7 +322,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     </Block>
                     <Block
                         visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}
-                        margin={visInfoOmHelligdagerOgFerie ? 'xs' : undefined}>
+                        margin={visInfoOmHelligdagerOgFerie ? 'xs' : undefined}
+                    >
                         <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
                             variant={variant}
                             radios={this.getUtsettelseÅrsakRadios(kunHelligdager)}
@@ -367,10 +364,12 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                             }
                                             arbeidsformer={(periode as Utsettelsesperiode).arbeidsformer || []}
                                             orgnumre={(periode as Utsettelsesperiode).orgnumre || []}
+                                            tidsperiode={periode.tidsperiode}
                                         />
                                     </Block>
                                     <Block
-                                        visible={visibility.isVisible(UtsettelseSpørsmålKeys.avtaltFulltidVedDeltid)}>
+                                        visible={visibility.isVisible(UtsettelseSpørsmålKeys.avtaltFulltidVedDeltid)}
+                                    >
                                         <JaNeiSpørsmål
                                             navn={UtsettelseSpørsmålKeys.avtaltFulltidVedDeltid}
                                             spørsmål={getMessage(
@@ -420,7 +419,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             )}
                             <Block
                                 visible={visibility.isVisible(UtsettelseSpørsmålKeys.sykdomsårsak)}
-                                hasChildBlocks={true}>
+                                hasChildBlocks={true}
+                            >
                                 <UtsettelsePgaSykdomPart
                                     onChange={this.onSykdomÅrsakChange}
                                     vedlegg={(periode.vedlegg as Attachment[]) || []}
@@ -431,7 +431,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
                             <Block
                                 visible={visibility.isVisible(UtsettelseSpørsmålKeys.morsAktivitet)}
-                                hasChildBlocks={true}>
+                                hasChildBlocks={true}
+                            >
                                 <AktivitetskravMorBolk
                                     navnPåForeldre={søknadsinfo.navn}
                                     morsAktivitetIPerioden={periode.morsAktivitetIPerioden}

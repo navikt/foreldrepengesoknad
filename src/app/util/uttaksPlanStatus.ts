@@ -13,7 +13,8 @@ import {
     isOppholdsperiode,
     isOverføringsperiode,
     isInfoPeriode,
-    UttakAnnenPartInfoPeriode
+    UttakAnnenPartInfoPeriode,
+    AvslåttPeriode
 } from '../types/uttaksplan/periodetyper';
 import { Perioden } from './uttaksplan/Perioden';
 import { getFloatFromString } from 'common/util/numberUtils';
@@ -26,7 +27,11 @@ export const finnAntallDagerÅTrekke = (periode: Periode): number => {
         const periodeErGradert = periode.stillingsprosent !== undefined;
         const periodeErSamtidigUttak = periode.samtidigUttakProsent !== undefined;
 
-        if (periodeErSamtidigUttak) {
+        if (periodeErGradert && periodeErSamtidigUttak) {
+            const graderingsProsent = (100 - getFloatFromString(periode.stillingsprosent)!) / 100;
+
+            return dager * graderingsProsent;
+        } else if (periodeErSamtidigUttak) {
             return dager * (getFloatFromString(periode.samtidigUttakProsent)! / 100);
         } else if (periodeErGradert) {
             const graderingsProsent = (100 - getFloatFromString(periode.stillingsprosent)!) / 100;
@@ -44,7 +49,8 @@ export const getAllePerioderMedUttaksinfoFraUttaksplan = (perioder: Periode[]): 
         ...perioder.filter(isUttaksperiode),
         ...getUttakFraOppholdsperioder(perioder.filter(isOppholdsperiode)),
         ...getUttakFraOverføringsperioder(perioder.filter(isOverføringsperiode)),
-        ...getUttakFraInfoperioder(perioder.filter(isInfoPeriode))
+        ...getUttakFraInfoperioder(perioder.filter(isInfoPeriode)),
+        ...getUttakFraAvslåttePerioder(perioder.filter(isAvslåttPeriode))
     ];
 };
 
@@ -126,4 +132,18 @@ const getUttakFraInfoperioder = (perioder: InfoPeriode[]): Uttaksperiode[] => {
             ...rest
         };
     });
+};
+
+const getUttakFraAvslåttePerioder = (perioder: AvslåttPeriode[]): Uttaksperiode[] => {
+    if (perioder.length === 0) {
+        return [];
+    }
+
+    return perioder.map((periode): Uttaksperiode => ({
+        type: Periodetype.Uttak,
+        konto: periode.stønadskonto,
+        tidsperiode: periode.tidsperiode,
+        id: periode.id,
+        forelder: periode.forelder
+    }));
 };

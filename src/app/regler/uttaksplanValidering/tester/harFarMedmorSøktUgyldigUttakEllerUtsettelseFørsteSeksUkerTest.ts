@@ -8,9 +8,9 @@ export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: Re
 ): RegelTestresultat => {
     const {
         søknadsinfo: { søker, søknaden },
-        perioder,
+        perioder
     } = grunnlag;
-    
+
     if (søker.erFarEllerMedmor) {
         const ugyldigePerioder = getUgyldigUttakFørsteSeksUkerForFarMedmor(
             perioder.filter((p) => !erPeriodeInnvilget(p)),
@@ -18,7 +18,8 @@ export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: Re
             søknaden.antallBarn,
             søknaden.situasjon,
             grunnlag.søknadsinfo.annenForelder,
-            grunnlag.søknadsinfo.søker.erAleneOmOmsorg
+            grunnlag.søknadsinfo.søker.erAleneOmOmsorg,
+            søker.harMidlertidigOmsorg
         );
         const passerer = ugyldigePerioder.length === 0;
         return {

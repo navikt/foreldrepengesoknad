@@ -9,10 +9,15 @@ export const getForelderFarge = (forelder: Forelder) => {
 export const getStønadskontoFarge = (
     konto: StønadskontoType,
     forelder: Forelder | undefined,
-    forIkon?: boolean
+    forIkon?: boolean,
+    harMidlertidigOmsorg?: boolean
 ): UttaksplanColor => {
     if (forIkon && (konto === StønadskontoType.Fellesperiode || konto === StønadskontoType.Flerbarnsdager)) {
         return UttaksplanColor.purpleBlue;
+    }
+
+    if (harMidlertidigOmsorg) {
+        return UttaksplanColor.purple;
     }
 
     if (forelder === undefined) {
@@ -42,7 +47,15 @@ export const getOppholdFarge = (periode: Oppholdsperiode): UttaksplanColor => {
     return getForelderFarge(periode.forelder);
 };
 
-export const getPeriodeFarge = (periode: Periode, forelder?: Forelder): UttaksplanColor | undefined => {
+export const getPeriodeFarge = (
+    periode: Periode,
+    forelder?: Forelder,
+    harMidlertidligOmsorg?: boolean
+): UttaksplanColor | undefined => {
+    if (harMidlertidligOmsorg) {
+        return UttaksplanColor.purple;
+    }
+
     if (periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring) {
         return getStønadskontoFarge(periode.konto, periode.forelder || forelder);
     }

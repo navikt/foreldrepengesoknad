@@ -109,10 +109,12 @@ export const hasRegelAdvarsler = (avvik: RegelAvvik[] = []) => avvik.some((a) =>
 export const hasRegelInfo = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelInfo(a));
 export const hasRegelAvvikFeil = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelFeil(a));
 
-export const trimRelaterteRegelAvvik = (avvik: RegelAvvik[]): RegelAvvik[] => {
-    return uniqBy(avvik.filter(overstyresAvFilter).filter(overstyrerAndreFilter), (a) => {
-        return a.regel.slåsSammenVedOppsummering ? a.regel.key : guid();
-    });
+export const trimRelaterteRegelAvvik = (avvik: RegelAvvik[], grupperAvvik: boolean): RegelAvvik[] => {
+    return grupperAvvik
+        ? uniqBy(avvik.filter(overstyresAvFilter).filter(overstyrerAndreFilter), (a) => {
+              return a.regel.slåsSammenVedOppsummering ? a.regel.key : guid();
+          })
+        : avvik.filter(overstyresAvFilter).filter(overstyrerAndreFilter);
 };
 
 export const getRegelIntlValues = (
