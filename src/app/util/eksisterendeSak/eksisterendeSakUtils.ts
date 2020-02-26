@@ -15,7 +15,7 @@ import { Barn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
 import { Søkerinfo } from '../../types/søkerinfo';
-import Person from '../../types/Person';
+import Person, { RegistrertBarn } from '../../types/Person';
 import { Kjønn } from '../../types/common';
 import Sak, { AnnenPart } from 'app/types/søknad/Sak';
 import {
@@ -32,6 +32,7 @@ import { getRelevantFamiliehendelseDato } from '../dates/dates';
 import { getFamilieHendelseType } from '../domain/getFamilieHendelseType';
 import { FamiliehendelseDatoer } from 'app/types/søknad/FamiliehendelseDatoer';
 import { Dekningsgrad } from 'common/types';
+import { RecursivePartial } from 'app/types/Partial';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -161,7 +162,8 @@ export const getEksisterendeSakFromDTO = (
         dekningsgrad: dekningsgrad === 100 ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
         familieHendelseDato: getRelevantFamiliehendelseDato(familiehendelseDatoer),
         familieHendelseType: familiehendelseType as FamiliehendelsesType,
-        termindato: familiehendelseDatoer.termindato
+        termindato: familiehendelseDatoer.termindato,
+        fødselsdato: familiehendelseDatoer.fødselsdato
     };
 
     const saksperioder = perioder
@@ -355,10 +357,10 @@ const getBarnFromSaksgrunnlag = (
 
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Søkersituasjon,
-    sak: Saksgrunnlag,
+    grunnlag: Saksgrunnlag,
     annenPart: AnnenPart
 ): Partial<AnnenForelder> | undefined => {
-    const { søkerErFarEllerMedmor } = sak;
+    const { søkerErFarEllerMedmor } = grunnlag;
     switch (situasjon) {
         case Søkersituasjon.FØDSEL:
         case Søkersituasjon.ADOPSJON:
@@ -366,8 +368,8 @@ const getAnnenForelderFromSaksgrunnlag = (
                 return {
                     fornavn: annenPart.navn.fornavn,
                     etternavn: annenPart.navn.etternavn,
-                    erUfør: sak.morErUfør,
-                    harRettPåForeldrepenger: sak.morHarRett,
+                    erUfør: grunnlag.morErUfør,
+                    harRettPåForeldrepenger: grunnlag.morHarRett,
                     fnr: annenPart.fnr,
                     kanIkkeOppgis: false
                 };
@@ -375,7 +377,7 @@ const getAnnenForelderFromSaksgrunnlag = (
             return {
                 fornavn: annenPart.navn.fornavn,
                 etternavn: annenPart.navn.etternavn,
-                harRettPåForeldrepenger: sak.farMedmorHarRett,
+                harRettPåForeldrepenger: grunnlag.farMedmorHarRett,
                 fnr: annenPart.fnr,
                 kanIkkeOppgis: false
             };
@@ -399,6 +401,35 @@ export const kanUttaksplanGjennskapesFraSak = (perioder: Saksperiode[]): boolean
     return noenPerioderKanIkkeGjennskapes === false;
 };
 
+const finnAnnenForelderPåFødselsdato = (
+    barn: RegistrertBarn[],
+    fødselsdato: Date | undefined,
+    grunnlag: Saksgrunnlag,
+    situasjon: Søkersituasjon
+): Partial<AnnenForelder> | undefined => {
+    if (fødselsdato === undefined) {
+        return undefined;
+    }
+
+    const barnMedGittFødselsdato = barn.find((b) => moment(b.fødselsdato).isSame(moment(fødselsdato)));
+
+    if (barnMedGittFødselsdato !== undefined) {
+        const annenForelder = barnMedGittFødselsdato.annenForelder;
+
+        if (annenForelder !== undefined) {
+            const { fnr, etternavn, fornavn } = annenForelder;
+            const annenPart: RecursivePartial<AnnenPart> = {
+                navn: {
+                    fornavn,
+                    etternavn
+                },
+                fnr
+            };
+            return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart as AnnenPart);
+        }
+    }
+};
+
 export const opprettSøknadFraEksisterendeSak = (
     søkerinfo: Søkerinfo,
     eksisterendeSak: EksisterendeSak,
@@ -420,9 +451,17 @@ export const opprettSøknadFraEksisterendeSak = (
     };
     const søker = getSøkerFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, søkerinfo);
-    const annenForelder = sak.annenPart
+    const annenForelderFraSak = sak.annenPart
         ? getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, sak.annenPart)
-        : mockForelder;
+        : undefined;
+    const annenForelderFraBarn = finnAnnenForelderPåFødselsdato(
+        søkerinfo.registrerteBarn,
+        grunnlag.fødselsdato,
+        grunnlag,
+        situasjon
+    );
+
+    const annenForelder = annenForelderFraSak || annenForelderFraBarn || mockForelder;
 
     if (!søker || !barn || (grunnlag.erDeltUttak && !annenForelder)) {
         return undefined;
