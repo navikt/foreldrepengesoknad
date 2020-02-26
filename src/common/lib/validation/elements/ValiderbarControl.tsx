@@ -1,5 +1,4 @@
 import React from 'react';
-import PT from 'prop-types';
 import { ValidFormContext } from 'common/lib/validation/elements/ValiderbarForm';
 
 export interface Props {
@@ -7,10 +6,6 @@ export interface Props {
 }
 
 class ValiderbarControl extends React.Component<Props> {
-    static contextTypes = {
-        validForm: PT.object
-    };
-
     context: ValidFormContext;
 
     constructor(props: Props) {

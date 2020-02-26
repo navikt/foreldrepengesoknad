@@ -1,6 +1,5 @@
 import * as React from 'react';
 import moment from 'moment';
-import PT from 'prop-types';
 import {
     Periodetype,
     StønadskontoType,
@@ -142,9 +141,6 @@ const getOppholdsInfotekst = (
 };
 
 class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
-    static contextTypes = {
-        validForm: PT.object
-    };
     context: any;
     timeoutId: number;
 
@@ -429,40 +425,42 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                 erMorForSyk={periode.erMorForSyk}
                             />
                         </Block>
-                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) && periode.erMorForSyk === true && (
-                            <>
-                                <VeilederInfo
-                                    messages={[
-                                        {
-                                            type: 'normal',
-                                            contentIntlKey: 'uttaksplan.informasjon.morErForSyk',
-                                            values: { navnMor: navnPåForeldre.mor }
-                                        }
-                                    ]}
-                                />
-
-                                <Block>
-                                    <VedleggSpørsmål
-                                        attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-                                        skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
-                                        vedlegg={periode.vedlegg as Attachment[]}
-                                        onChange={(v) => this.onChange({ vedlegg: v })}
+                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
+                            periode.erMorForSyk === true && (
+                                <>
+                                    <VeilederInfo
+                                        messages={[
+                                            {
+                                                type: 'normal',
+                                                contentIntlKey: 'uttaksplan.informasjon.morErForSyk',
+                                                values: { navnMor: navnPåForeldre.mor }
+                                            }
+                                        ]}
                                     />
-                                </Block>
-                            </>
-                        )}
-                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) && periode.erMorForSyk === false && (
-                            <>
-                                <VeilederInfo
-                                    messages={[
-                                        {
-                                            type: 'normal',
-                                            contentIntlKey: 'uttaksplan.informasjon.morErForSykNeiSvar'
-                                        }
-                                    ]}
-                                />
-                            </>
-                        )}
+
+                                    <Block>
+                                        <VedleggSpørsmål
+                                            attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+                                            skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
+                                            vedlegg={periode.vedlegg as Attachment[]}
+                                            onChange={(v) => this.onChange({ vedlegg: v })}
+                                        />
+                                    </Block>
+                                </>
+                            )}
+                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
+                            periode.erMorForSyk === false && (
+                                <>
+                                    <VeilederInfo
+                                        messages={[
+                                            {
+                                                type: 'normal',
+                                                contentIntlKey: 'uttaksplan.informasjon.morErForSykNeiSvar'
+                                            }
+                                        ]}
+                                    />
+                                </>
+                            )}
 
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.samtidigUttak)} margin="none">
                             <SamtidigUttakPart
