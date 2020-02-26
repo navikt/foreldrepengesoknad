@@ -1189,6 +1189,7 @@
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",
     "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale":
         "Du må ha en skriftlig avtale med {antall, plural, one{arbeidsgiveren} other {arbeidsgiverene}} {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent i perioden du oppgir.",
+    "uttaksplan.validering.info.burdeKanskjeSøkeGradering": "Du burde kanskje heller søke om gradering",
     "uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.medTom":
         "Arbeidsgiveren din {navn} har registrert at du er ansatt fra {fom} til {tom}. For å kunne utsette eller kombinere foreldrepenger med arbeid må du være ansatt. Du må endre datoen for å gå videre.",
     "uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.utenTom":
