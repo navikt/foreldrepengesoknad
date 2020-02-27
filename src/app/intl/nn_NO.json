@@ -1196,7 +1196,10 @@
         "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale":
         "Du må ha ein skriftleg avtale med arbeidsgjevaren din om at du skal jobbe i den heiltid i den perioden du oppgir.",
-    "uttaksplan.validering.info.burdeKanskjeSøkeGradering": "Du burde kanskje heller søke om gradering",
+    "uttaksplan.validering.info.burdeKanskjeSøkeGradering":
+        "Du har lagt inn flere dager med utsettelse på grunn av arbeid. Hvis du heller søker om å kombinere foreldrepengene med arbeid så slipper du å legge inn enkeltdager. Slett periodene du har lagt til, og legg til en ny periode. Velg fra og med dato og til og med dato du ønsker å kombinere foreldrepenger med arbeid, og oppgi stillingsprosent. Du kan lese mer på <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a> om hvordan du kan kombinere foreldrepenger med arbeid.",
+    "uttaksplan.validering.info.burdeKanskjeSøkeGradering.tittel":
+        "Informasjon om å kombinere foreldrepenger med arbeid",
     "byttBrowser.tittel": "Vi ser du bruker en utdatert nettleser",
     "byttBrowser.ingress":
         "For å få den beste brukaropplevinga anbefaler vi ein moderne nettlesar som støttar moderne webstandarder",
