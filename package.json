@@ -153,7 +153,7 @@
         "nav-frontend-veilederpanel": "0.1.10",
         "nav-frontend-veilederpanel-style": "0.0.14",
         "prom-client": "11.3.0",
-        "promise": "8.0.1",
+        "promise": "8.0.3",
         "react": "16.8.6",
         "react-aria-menubutton": "6.2.0",
         "react-collapse": "4.0.3",
