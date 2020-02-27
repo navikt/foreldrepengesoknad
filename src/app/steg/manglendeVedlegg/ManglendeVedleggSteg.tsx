@@ -106,72 +106,76 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                         : [];
 
                     const attachmentMapValue = am[1];
-                    return attachmentMapValue.filter((v) => v.type !== AttachmentType.SEN_ENDRING).map((a) => (
-                        <div key={guid()}>
-                            <Block
-                                header={{
-                                    title: getMessage(
-                                        intl,
-                                        `manglendeVedlegg.title.${a.type}`,
-                                        a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
-                                            ? {
-                                                  navn: søknad.annenForelder.fornavn
-                                              }
-                                            : undefined
-                                    ),
-                                    info: getMessage(
-                                        intl,
-                                        `manglendeVedlegg.info.${a.type}`,
-                                        a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
-                                            ? {
-                                                  navn: søknad.annenForelder.fornavn
-                                              }
-                                            : undefined
-                                    )
-                                }}
-                            >
-                                {isAttachmentForPeriode(a.type) && this.renderPeriodeinfo(key)}
-                                <VedleggSpørsmål
-                                    vedlegg={attachmentsToRender}
-                                    attachmentType={a.type}
-                                    skjemanummer={a.skjemanummer}
-                                    onChange={(updatedAttachments: Attachment[]) =>
-                                        this.handleVedleggSpørsmålOnChange(updatedAttachments, key)
-                                    }
-                                />
-                            </Block>
-
-                            <Block
-                                visible={a.type === AttachmentType.TERMINBEKREFTELSE && attachmentsToRender.length > 0}
-                            >
-                                <DatoInput
-                                    id="terminbekreftelseDato"
-                                    name="terminbekreftelseDato"
-                                    label={getMessage(intl, 'terminbekreftelseDato.spørsmål')}
-                                    onChange={(terminbekreftelseDato: Date) => {
-                                        dispatch(
-                                            søknadActions.updateBarn({
-                                                terminbekreftelseDato
-                                            })
-                                        );
+                    return attachmentMapValue
+                        .filter((v) => v.type !== AttachmentType.SEN_ENDRING && !!v.filesize === false)
+                        .map((a) => (
+                            <div key={guid()}>
+                                <Block
+                                    header={{
+                                        title: getMessage(
+                                            intl,
+                                            `manglendeVedlegg.title.${a.type}`,
+                                            a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                                                ? {
+                                                      navn: søknad.annenForelder.fornavn
+                                                  }
+                                                : undefined
+                                        ),
+                                        info: getMessage(
+                                            intl,
+                                            `manglendeVedlegg.info.${a.type}`,
+                                            a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                                                ? {
+                                                      navn: søknad.annenForelder.fornavn
+                                                  }
+                                                : undefined
+                                        )
                                     }}
-                                    dato={(søknad.barn as UfødtBarn).terminbekreftelseDato}
-                                    datoAvgrensinger={getTerminbekreftelsedatoAvgrensninger(
-                                        (søknad.barn as UfødtBarn).termindato
-                                    )}
-                                    validators={
-                                        attachmentsToRender.length > 0
-                                            ? getTerminbekreftelseDatoRegler(
-                                                  (søknad.barn as UfødtBarn).terminbekreftelseDato,
-                                                  (søknad.barn as UfødtBarn).termindato,
-                                                  intl
-                                              )
-                                            : []
+                                >
+                                    {isAttachmentForPeriode(a.type) && this.renderPeriodeinfo(key)}
+                                    <VedleggSpørsmål
+                                        vedlegg={attachmentsToRender}
+                                        attachmentType={a.type}
+                                        skjemanummer={a.skjemanummer}
+                                        onChange={(updatedAttachments: Attachment[]) =>
+                                            this.handleVedleggSpørsmålOnChange(updatedAttachments, key)
+                                        }
+                                    />
+                                </Block>
+
+                                <Block
+                                    visible={
+                                        a.type === AttachmentType.TERMINBEKREFTELSE && attachmentsToRender.length > 0
                                     }
-                                />
-                            </Block>
-                        </div>
-                    ));
+                                >
+                                    <DatoInput
+                                        id="terminbekreftelseDato"
+                                        name="terminbekreftelseDato"
+                                        label={getMessage(intl, 'terminbekreftelseDato.spørsmål')}
+                                        onChange={(terminbekreftelseDato: Date) => {
+                                            dispatch(
+                                                søknadActions.updateBarn({
+                                                    terminbekreftelseDato
+                                                })
+                                            );
+                                        }}
+                                        dato={(søknad.barn as UfødtBarn).terminbekreftelseDato}
+                                        datoAvgrensinger={getTerminbekreftelsedatoAvgrensninger(
+                                            (søknad.barn as UfødtBarn).termindato
+                                        )}
+                                        validators={
+                                            attachmentsToRender.length > 0
+                                                ? getTerminbekreftelseDatoRegler(
+                                                      (søknad.barn as UfødtBarn).terminbekreftelseDato,
+                                                      (søknad.barn as UfødtBarn).termindato,
+                                                      intl
+                                                  )
+                                                : []
+                                        }
+                                    />
+                                </Block>
+                            </div>
+                        ));
                 })}
             </Steg>
         );

@@ -19,5 +19,5 @@ export const resolveStegToRender = (state: AppState): StegID | undefined => {
 
 export const skalViseManglendeVedleggSteg = (attachmentMap: Map<string, Attachment[]>): boolean => {
     const alleVedlegg = _.flatten(Array.from(attachmentMap.values()).map((v) => [...v]));
-    return alleVedlegg.filter((v) => v.type !== AttachmentType.SEN_ENDRING).length > 0;
+    return alleVedlegg.filter((v) => v.type !== AttachmentType.SEN_ENDRING && !!v.filesize === false).length > 0;
 };
