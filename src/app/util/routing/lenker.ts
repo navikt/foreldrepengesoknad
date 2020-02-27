@@ -13,5 +13,6 @@ export default {
     NaringsdrivendeInfoBoks:
         'https://www.skatteetaten.no/bedrift-og-organisasjon/starte-og-drive/er-jeg-naringsdrivende/',
     brukerprofil: 'https://tjenester.nav.no/brukerprofil/',
-    familie: 'https://familie.nav.no/'
+    familie: 'https://familie.nav.no/',
+    graderingInfo: 'https://familie.nav.no/om-foreldrepenger#hvis-du-vil-jobbe'
 };
