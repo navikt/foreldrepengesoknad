@@ -149,6 +149,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                 </Block>
                 <Block visible={visVeileder} margin="none">
                     <Veilederpanel svg={<Veileder farge="lilla" stil="kompakt" />}>
+                        <span>{this.getVeilederTekst()}</span>
                         <FormattedHTMLMessage id="aktivitetskrav.lesmer" values={{ link: lenker.morsAktivitetskrav }} />
                     </Veilederpanel>
                 </Block>
