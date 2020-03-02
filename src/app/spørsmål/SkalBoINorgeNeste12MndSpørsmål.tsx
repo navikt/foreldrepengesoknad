@@ -23,6 +23,7 @@ const SkalBoINorgeNeste12MndSpørsmål = (props: Props) => {
                 nei: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boIUtlandet')
             }}
             onChange={(verdi) => onChange(verdi)}
+            hjelpetekst={getMessage(intl, 'utenlandsopphold.neste12MånederInfotekst')}
         />
     );
 };
