@@ -11,7 +11,6 @@ import getMessage from 'common/util/i18nUtils';
 import VeilederMedSnakkeboble from 'common/components/veilederMedSnakkeboble/VeilederMedSnakkeboble';
 
 import Applikasjonsside from '../../components/applikasjon/applikasjonsside/Applikasjonsside';
-import DinePlikterModal from './dinePlikterModal/DinePlikterModal';
 import DinePersonopplysningerModal from './dinePersonopplysningerModal/DinePersonopplysningerModal';
 
 import { AppState } from '../../redux/reducers';
@@ -33,6 +32,8 @@ import BEMHelper from 'common/util/bem';
 import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
 import { StorageKvittering } from '../../types/StorageKvittering';
 import SakInfoStorageKvittering from 'app/sider/velkommen/sakInfo/SakInfoStorageKvittering';
+import DinePlikter from './dinePlikter/DinePlikter';
+import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 
 import './velkommen.less';
 
@@ -47,7 +48,6 @@ interface StateProps {
 }
 
 interface State {
-    isDinePlikterModalOpen: boolean;
     isDinePersonopplysningerModalOpen: boolean;
     skalEndre: boolean | undefined;
 }
@@ -61,32 +61,19 @@ class Velkommen extends React.Component<Props, State> {
     }
     componentWillMount() {
         this.setState({
-            isDinePlikterModalOpen: false,
             isDinePersonopplysningerModalOpen: false
         });
     }
 
     getBekreftCheckboksPanelLabelHeader() {
         return (
-            <FormattedMessage
-                id="velkommen.samtykkeIntro"
-                values={{
-                    link: (
-                        <a
-                            className="lenke"
-                            href="#"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                this.setState({
-                                    isDinePlikterModalOpen: true
-                                });
-                            }}
-                        >
-                            <FormattedHTMLMessage id="velkommen.dinePlikter" />
-                        </a>
-                    )
-                }}
-            />
+            <>
+                <FormattedMessage id="velkommen.samtykkeIntro.del1" />
+                <UtvidetInformasjon apneLabel="Les mer om dine plikter">
+                    <DinePlikter />
+                </UtvidetInformasjon>
+                <FormattedMessage id="velkommen.samtykkeIntro.del2" />
+            </>
         );
     }
 
@@ -274,11 +261,6 @@ class Velkommen extends React.Component<Props, State> {
                         </Normaltekst>
                     </Block>
                 </div>
-
-                <DinePlikterModal
-                    isOpen={this.state.isDinePlikterModalOpen}
-                    onRequestClose={() => this.setState({ isDinePlikterModalOpen: false })}
-                />
                 <DinePersonopplysningerModal
                     isOpen={this.state.isDinePersonopplysningerModalOpen}
                     onRequestClose={() =>
