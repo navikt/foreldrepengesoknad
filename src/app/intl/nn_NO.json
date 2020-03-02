@@ -1093,8 +1093,10 @@
     "velkommen.sak.status.underBehandling": "Under behandling",
     "velkommen.sak.type": "Foreldrepengar",
     "velkommen.samtykke": "Eg stadfestar at eg har lese og forstått",
-    "velkommen.samtykkeIntro":
-        "For å gå vidare med søknaden må du stadfeste at du har lese og forstått { link } Vi lagrar søknaden for deg i 24 timar. Dersom du ikkje held fram, eller dersom du avbryt søknaden, blir opplysningane du har lagt inn, sletta.",
+    "velkommen.samtykkeIntro.del1":
+        "For å gå vidare med søknaden må du stadfeste at du har lese og forstått dine plikter.",
+    "velkommen.samtykkeIntro.del2":
+        "Vi lagrar søknaden for deg i 24 timar. Dersom du ikkje held fram, eller dersom du avbryt søknaden, blir opplysningane du har lagt inn, sletta.",
     "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring": "Nei, eg vil søkje om endring",
     "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.nyttbarn": "Ja, start ny søknad",
     "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål": "Vil du begynne med ny foreldrepengesøknad?",
