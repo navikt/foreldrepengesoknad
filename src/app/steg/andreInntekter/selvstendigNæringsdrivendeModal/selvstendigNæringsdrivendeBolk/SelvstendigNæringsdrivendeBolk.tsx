@@ -31,7 +31,7 @@ type SelvstendigNæringsdrivendeBolkStatePartial = Partial<SelvstendigNæringsdr
 export default class SelvstendigNæringsdrivendeBolk extends React.Component<
     SelvstendigNæringsdrivendeBolkProps,
     SelvstendigNæringsdrivendeBolkState
-    > {
+> {
     constructor(props: SelvstendigNæringsdrivendeBolkProps) {
         super(props);
 
@@ -137,7 +137,12 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                             />
                         </Block>
                         <Block margin="none">
-                            <Knapp style={{ backgroundColor: '#ffffff' }} onClick={() => this.openModal()} htmlType="button" data-name="leggTilNæring">
+                            <Knapp
+                                className={bem.element('leggTilKnapp')}
+                                onClick={() => this.openModal()}
+                                htmlType="button"
+                                data-name="leggTilNæring"
+                            >
                                 <FormattedMessage id="selvstendigNæringsdrivende.leggTilNæring" />
                             </Knapp>
                         </Block>
