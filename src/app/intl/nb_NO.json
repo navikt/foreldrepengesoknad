@@ -33,7 +33,7 @@
     "annenForelder.ugyldigEgetFødselsnummer": "Du kan ikke oppgi ditt eget fødselsnummer",
     "annenForelder.ugyldigFødselsnummer": "Du må skrive et gyldig nummer 11 siffer",
     "annenForelder.ugyldigNavn": "Du må skrive navnet på den andre forelderen",
-    "annenForelder.veileder.aleneOmsorg.forBarnet": "Dere kan avtale at {navn} tar ut foreldrepenger",
+    "annenForelder.veileder.aleneOmsorg.forBarnet": "Dere kan avtale at {navn} tar ut foreldrepenger.",
     "annenForelder.veileder.rettigheterOgDelingAvUttaksplan":
         "Hvis dere startet foreldrepengeperioden 1. januar 2019 eller senere, vil {navn} se i søknaden sin når du skal ha foreldrepenger og eventuelle utsettelser.",
     "annenForelderRettPåForeldrepenger.spørsmål": "Har {navn} rett til foreldrepenger?",
