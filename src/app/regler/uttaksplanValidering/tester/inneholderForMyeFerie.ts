@@ -16,7 +16,7 @@ export const inneholderForMyeFerie: RegelTest = (grunnlag: UttaksplanRegelgrunnl
     );
 
     return {
-        passerer: ferieDager < uttaksConstants.MAKS_FERIEDAGER_MED_OVERFØRING,
+        passerer: ferieDager <= uttaksConstants.MAKS_FERIEDAGER_MED_OVERFØRING,
         info: ferieUtsettelser.map((periode) => ({
             periodeId: periode.id,
             values: {
