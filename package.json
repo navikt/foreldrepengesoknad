@@ -152,7 +152,6 @@
         "nav-frontend-veileder-style": "2.0.6",
         "nav-frontend-veilederpanel": "0.1.10",
         "nav-frontend-veilederpanel-style": "0.0.14",
-        "prom-client": "11.3.0",
         "promise": "8.0.1",
         "react": "16.8.6",
         "react-aria-menubutton": "6.2.0",
@@ -170,8 +169,7 @@
         "redux": "4.0.5",
         "redux-saga": "0.16.0",
         "reselect": "3.0.1",
-        "snyk": "^1.290.1",
-        "winston": "3.1.0"
+        "snyk": "^1.290.1"
     },
     "snyk": true
 }

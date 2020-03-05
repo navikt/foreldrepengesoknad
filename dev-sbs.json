@@ -7,7 +7,6 @@
         "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api-q.nav.no/rest",
         "LOGINSERVICE_URL": "https://loginservice-q.nav.no/login",
         "FP_UTTAK_SERVICE_URL": "https://fp-uttak-service-q.nav.no",
-        "FEATURE_LOGGING": "on",
         "FEATURE_VIS_PERIODER_SOM_SENDES_INN": "on",
         "FEATURE_VIS_FEILSIDE": "off",
         "FEATURE_VIS_ALERTSTRIPE": "off"
