@@ -131,13 +131,9 @@ function* deleteStoredAppState() {
 }
 
 function* sendStorageKvittering() {
-    try {
-        yield call(Api.sendStorageKvittering, {
-            innsendingstidspunkt: moment().format('YYYY-MM-DD')
-        });
-    } catch (e) {
-        yield call(Api.log, { message: 'sendStorageKvittering kall feilet' });
-    }
+    yield call(Api.sendStorageKvittering, {
+        innsendingstidspunkt: moment().format('YYYY-MM-DD')
+    });
 }
 
 const THROTTLE_INTERVAL_MS = 2500;
