@@ -22,6 +22,8 @@ server.use((req, res, next) => {
     res.set('X-Frame-Options', 'SAMEORIGIN');
     res.set('X-XSS-Protection', '1; mode=block');
     res.set('X-Content-Type-Options', 'nosniff');
+    res.set('Referrer-Policy', 'no-referrer');
+    res.set('Feature-Policy', "geolocation 'none'; microphone 'none'; camera 'none'");
     next();
 });
 
