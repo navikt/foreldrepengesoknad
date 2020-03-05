@@ -120,16 +120,6 @@ function getStorageKvittering() {
     });
 }
 
-const log = (error: any) => {
-    return axios.post('/log', error, {
-        timeout: 15 * 1000,
-        withCredentials: true,
-        headers: {
-            'content-type': 'application/json'
-        }
-    });
-};
-
 const Api = {
     getSøkerinfo,
     getSaker,
@@ -141,8 +131,7 @@ const Api = {
     sendStorageKvittering,
     getStorageKvittering,
     getEksisterendeSak,
-    getEksisterendeSakMedFnr,
-    log
+    getEksisterendeSakMedFnr
 };
 
 export default Api;
