@@ -17,7 +17,7 @@ const isFødselsnummerFormatValid = (fnr: string): FødselsnummerValidationResul
 };
 
 const isUtenlandskFødselsnummerValid = (fnr: string): boolean => {
-    return fnr === undefined || fnr === '' || fnr.length <= MAKS_FNR_LENGTH;
+    return fnr !== undefined && fnr !== '' && fnr.length <= MAKS_FNR_LENGTH;
 };
 
 export const isSixteenOrOlder = (fnr: string, isFødselsnummerValid: FødselsnummerValidationResult): boolean => {

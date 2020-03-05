@@ -102,12 +102,23 @@ class AnnenForelderSteg extends React.Component<Props> {
 
         if (søkersFødselsnummer && visibility) {
             return (
-                <Steg {...stegProps} onPreSubmit={this.cleanupSteg}>
+                <Steg
+                    {...stegProps}
+                    onPreSubmit={this.cleanupSteg}
+                    onRequestNavigateToNextStep={() => {
+                        if (annenForelder.kanIkkeOppgis) {
+                            return true;
+                        }
+
+                        return annenForelder.fnr !== undefined && annenForelder.fnr !== '';
+                    }}
+                >
                     <Block
                         header={{
                             title: getMessage(intl, 'annenForelder.label.registrertForelder', { antallBarn })
                         }}
-                        visible={registrertAnnenForelder !== undefined}>
+                        visible={registrertAnnenForelder !== undefined}
+                    >
                         {registrertAnnenForelder ? <PersonaliaBox person={registrertAnnenForelder} /> : undefined}
                     </Block>
                     <AnnenForelderSpørsmål
