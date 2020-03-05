@@ -159,7 +159,7 @@
         "react-document-title": "2.0.3",
         "react-dom": "16.8.6",
         "react-flip-move": "3.0.2",
-        "react-intl": "2.7.2",
+        "react-intl": "3.12.1",
         "react-modal": "3.4.4",
         "react-motion": "0.5.2",
         "react-redux": "5.0.7",
