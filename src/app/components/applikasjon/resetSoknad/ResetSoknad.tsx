@@ -7,8 +7,6 @@ import Barn from 'app/types/søknad/Barn';
 import Søker from 'app/types/søknad/Søker';
 import { RecursivePartial } from 'app/types/Partial';
 import { Dekningsgrad } from 'common/types';
-import Api from 'app/api/api';
-import { detect } from 'detect-browser';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import søknadActionCreators from 'app/redux/actions/søknad/søknadActionCreators';
 import { DispatchProps } from 'common/redux/types';
@@ -16,9 +14,10 @@ import routeConfig from 'app/util/routing/routeConfig';
 import { HistoryProps } from 'app/types/common';
 import BEMHelper from 'common/util/bem';
 
-import './resetSoknad.less';
 import Block from 'common/components/block/Block';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
+
+import './resetSoknad.less';
 
 interface StateProps {
     debugInfo: {
@@ -39,12 +38,6 @@ const ResetSoknad: React.FunctionComponent<StateProps & HistoryProps & DispatchP
     history
 }) => {
     const resetAndCancelSøknad = () => {
-        Api.log({
-            message: `Noe har gått galt i ${debugInfo.ekstrainfo.currentStegID}`,
-            trace: JSON.stringify(debugInfo),
-            browserInfo: detect()
-        });
-
         dispatch(søknadActionCreators.avbrytSøknad());
         history.push(routeConfig.APP_ROUTE_PREFIX);
     };
