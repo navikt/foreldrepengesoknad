@@ -548,6 +548,28 @@
     "riktigBarn.spørsmål": "Eg vil søkje om foreldrepengar for",
     "samtidig.uttak.varighet": "Du brukar {varighet} med foreldrepengar",
     "samtidigUttakProsent": "Oppgi kor mange prosent foreldrepengar du tek ut",
+    "andreInntekter.infoTilFiskere.hyre": "Hyre",
+    "andreInntekter.infoTilFiskere.lott": "Lott",
+    "andreInntekter.infoTilFiskere.egenBåt": "Fiskar med eigen båt",
+    "andreInntekter.infoTilFiskere.lottOgHyre": "Dersom du har både lott og hyre",
+    "andreInntekter.infoTilFiskere.del1":
+        "Som fiskar er det ulike måtar du kan få lønn på. Du kan få lønn som hyre eller lott, eller du kan få begge delar. Det er viktig at vi får rett informasjon om arbeidssituasjonen din, slik at vi får berekna foreldrepengane dine rett.",
+    "andreInntekter.infoTilFiskere.del2":
+        "Dersom du får hyre, får du lønn som arbeidstakar. Det er ikkje alle fiskarar som er registrerte med eit arbeidsforhold i arbeidsgivar- og arbeidstakarregisteret, slik at det er synleg i søknaden. Grunnen til at du ikkje ser arbeidsforholdet ditt, er at arbeidsgivaren din ikkje er har plikt til å melde deg inn som arbeidstakar når du er fiskar.",
+    "andreInntekter.infoTilFiskere.del3":
+        "Dersom du er fiskar med hyre, må arbeidsgivaren din sende inn inntektsmelding med informasjon om inntekta di. Her kan arbeidsgivaren din lese meir om korleis ein sender inn inntektsmelding, og korleis ho <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">skal fyllast ut.</a>",
+    "andreInntekter.infoTilFiskere.del4":
+        "Dersom du er fiskar med lott, blir du rekna som sjølvstendig næringsdrivande. I søknadsdialogen må du svare ja på spørsmålet om du er sjølvstendig næringsdrivande, du må velje at du er fiskar når du fyller ut informasjon om næringa di. Spørsmåla du får i søknaden, er tilpassa situasjonen din, og du får rettleiing og informasjon undervegs. Når du gir oss informasjon om at du er fiskar, får vi registrert rett informasjon om deg, og vi får sendt rett informasjon om deg til Skatteetaten.",
+    "andreInntekter.infoTilFiskere.del5":
+        "På heimesida til Skatteetaten kan du lese meir om <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">lott og hyre.</a>",
+    "andreInntekter.infoTilFiskere.del6":
+        "Dersom du er fiskar med eigen båt, er du sjølvstendig næringsdrivande. I søknadsdialogen må du svare ja på spørsmålet om du er sjølvstendig næringsdrivande, og du må velje at du er fiskar når du fyller ut informasjon om næringa di. Spørsmåla du får i søknaden, er tilpassa situasjonen din, og du får rettleiing og informasjon undervegs.",
+    "andreInntekter.infoTilFiskere.del7":
+        "Dersom du får både lott og hyre, får du inntekt både som arbeidstakar og som sjølvstendig næringsdrivande.",
+    "andreInntekter.infoTilFiskere.del8":
+        "For den delen av inntekta di som er hyre, blir du rekna som arbeidstakar, og du får lønn som arbeidstakar. Det er ikkje alle fiskarar som er registrerte med eit arbeidsforhold i arbeidsgivar- og arbeidstakarregisteret. Dersom du er fiskar med hyre, må arbeidsgivaren din sende inn inntektsmelding med informasjon om inntekta di.",
+    "andreInntekter.infoTilFiskere.del9":
+        "For den delen av inntekta di som er lott, blir du rekna som sjølvstendig næringsdrivande. I søknadsdialogen må du svare ja på spørsmålet om du er sjølvstendig næringsdrivande, du må velje at du er fiskar når du fyller ut informasjon om næringa di. Spørsmåla du får i søknaden, er tilpassa situasjonen din, og du får rettleiing og informasjon undervegs. Når du gir oss informasjon om at du er fiskar, får vi registrert rett informasjon om deg, og vi får sendt rett informasjon om deg til Skatteetaten.",
     "selvstendigNæringsdrivende.leggTilNæring": "Legg til verksemd ",
     "selvstendigNæringsdrivende.modal.navn": "Kva heiter verksemda di?",
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Gi opp dato for når du blei yrkesaktiv",
