@@ -669,9 +669,9 @@
     "utenlandsopphold.infoOmFødselsattest":
         "Du har opplyst at du skal være i {land} når du har termin {termindato}. Hvis du føder i utlandet må du ettersende fødselsattest til oss slik at vi får registrert fødselsdatoen til barnet. Grunnen til at du må sende inn fødselsattest er at vi ikke får inn opplysninger om fødselen automatisk når du ikke føder i Norge.",
     "utenlandsopphold.siste12MånederInfotekst":
-        "Du svarer ja bare hvis du har oppholdt deg fast i et annet land enn Norge. Korte utlandsturer i forbindelse med for eksempel ferie regnes ikke med.",
+        "Du svarer bodd i utlandet helt eller delvis bare hvis du har oppholdt deg fast i et annet land enn Norge. Korte utlandsturer i forbindelse med for eksempel ferie regnes ikke med.",
     "utenlandsopphold.neste12MånederInfotekst":
-        "Du svarer ja bare hvis du planlegger å oppholde deg fast i et annet land enn Norge. Korte utlandsturer i forbindelse med for eksempel ferie regnes ikke med.",
+        "Du svarer bo i utlandet helt eller delvis bare hvis du planlegger å oppholde deg fast i et annet land enn Norge. Korte utlandsturer i forbindelse med for eksempel ferie regnes ikke med.",
     "utsettelse.helligdager":
         "Perioden du har valgt går over helligdager. Du kan ikke ha ferie på helligdager. Du må legge til periode med foreldrepenger i planen din, dette gjør du etter du har lagt til utsettelsen.",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt på helseinstitusjon",
