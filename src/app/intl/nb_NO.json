@@ -550,6 +550,28 @@
     "riktigBarn.spørsmål": "Jeg vil søke om foreldrepenger for",
     "samtidig.uttak.varighet": "Du bruker {varighet} med foreldrepenger",
     "samtidigUttakProsent": "Oppgi hvor mange prosent foreldrepenger du skal ta ut",
+    "andreInntekter.infoTilFiskere.hyre": "Hyre",
+    "andreInntekter.infoTilFiskere.lott": "Lott",
+    "andreInntekter.infoTilFiskere.egenBåt": "Fisker med egen båt",
+    "andreInntekter.infoTilFiskere.lottOgHyre": "Hvis du har både lott og hyre",
+    "andreInntekter.infoTilFiskere.del1":
+        "Som fisker er det ulike måter man kan motta lønn. Du kan motta lønn som hyre eller lott, eller du kan motta begge deler. Det er viktig at vi mottar riktig informasjon om arbeidssituasjonen din slik at vi får gitt deg riktig beregning av foreldrepengene.",
+    "andreInntekter.infoTilFiskere.del2":
+        "Hvis du mottar hyre får du lønn som arbeidstaker. Det er ikke alle fiskere som er registret med et arbeidsforhold i arbeids- og arbeidstakerregisteret slik at det er synlig i søknaden. Grunnen til at du ikke ser arbeidsforholdet ditt er at arbeidsgiveren din ikke er pliktig til å melde deg inn som arbeidstaker når du er fisker.",
+    "andreInntekter.infoTilFiskere.del3":
+        "Hvis du er fisker med hyre, må arbeidsgiveren din sende inn inntektsmelding med informasjon om inntekten din. Arbeidsgiveren din kan lese mer om hvordan man sender inn inntektsmelding og hvordan denne <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">skal fylles ut.</a>",
+    "andreInntekter.infoTilFiskere.del4":
+        "Hvis du er fisker med lott, regnes du som selvstendig næringsdrivende. I søknadsdialogen må du svare ja på spørsmålet om du er selvstendig næringsdrivende, du må velge at du er fisker når du fyller ut informasjon om næringen din. Spørsmålene du får i søknaden er tilpasset din situasjon og du får veiledning og informasjon underveis. Når du gir oss informasjon om at du er fisker får vi registret riktig informasjon om deg, og vi får sendt riktig informasjon om deg til skatteetaten.",
+    "andreInntekter.infoTilFiskere.del5":
+        "På skatteetaten sine hjemmesider kan du lese mer om <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">lott og hyre.</a>",
+    "andreInntekter.infoTilFiskere.del6":
+        "Hvis du er fisker med egen båt, er du selvstendig næringsdrivende. I søknadsdialogen må du svare ja på spørsmålet om du er selvstendig næringsdrivende, du må velge at du er fisker når du fyller ut informasjon om næringen din. Spørsmålene du får i søknaden er tilpasset din situasjon og du får veiledning og informasjon underveis.",
+    "andreInntekter.infoTilFiskere.del7":
+        "Hvis du mottar både lott og hyre så mottar du inntekt både som arbeidstaker og som selvstendig næringsrivende.",
+    "andreInntekter.infoTilFiskere.del8":
+        "For den delen av inntekten din som er hyre er du å regne som arbeidstaker, og du mottar lønn som arbeidstaker.  Det er ikke alle fiskere som er registret med et arbeidsforhold i arbeids- og arbeidstakerregisteret slik at det er synlig i søknaden. Hvis du er fisker med hyre, må arbeidsgiveren din sende inn inntektsmelding med informasjon om inntekten din.",
+    "andreInntekter.infoTilFiskere.del9":
+        "For den delen av innteksten din som er lott, er du å regne som selvstendig næringsdrivende. I søknadsdialogen må du svare ja på spørsmålet om du er selvstendig næringsdrivende, du må velge at du er fisker når du fyller ut informasjon om næringen din. Spørsmålene du får i søknaden er tilpasset din situasjon og du får veiledning og informasjon underveis. Når du gir oss informasjon om at du er fisker får vi registret riktig informasjon om deg, og vi får sendt riktig informasjon om deg til skatteetaten.",
     "selvstendigNæringsdrivende.leggTilNæring": "Legg til virksomhet",
     "selvstendigNæringsdrivende.modal.navn": "Hva heter virksomheten din?",
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Oppgi dato for når du ble yrkesaktiv",

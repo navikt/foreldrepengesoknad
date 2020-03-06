@@ -69,7 +69,7 @@ class Velkommen extends React.Component<Props, State> {
         return (
             <>
                 <FormattedMessage id="velkommen.samtykkeIntro.del1" />
-                <UtvidetInformasjon apneLabel="Les mer om dine plikter">
+                <UtvidetInformasjon apneLabel="Les om dine plikter">
                     <DinePlikter />
                 </UtvidetInformasjon>
                 <FormattedMessage id="velkommen.samtykkeIntro.del2" />

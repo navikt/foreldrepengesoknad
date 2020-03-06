@@ -39,6 +39,7 @@ import { skalViseManglendeVedleggSteg } from '../../util/steg/navigation';
 import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
 import { apiActionCreators } from 'app/redux/actions';
 import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
+import InfoTilFiskere from './info-til-fiskere/InfoTilFiskere';
 
 interface StateProps {
     stegProps: StegProps;
@@ -109,6 +110,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                         title: getMessage(intl, 'annenInntekt.arbeidsforhold.label'),
                         info: getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst')
                     }}
+                    margin="xs"
                 >
                     <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} />
                     {harArbeidsforhold &&
@@ -129,6 +131,10 @@ class AndreInntekterSteg extends React.Component<Props> {
                                 ]}
                             />
                         )}
+                </Block>
+
+                <Block margin="xs">
+                    <InfoTilFiskere />
                 </Block>
 
                 <Block hasChildBlocks={true} margin="none">
