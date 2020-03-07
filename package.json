@@ -123,7 +123,7 @@
         "history": "4.7.2",
         "i18n-iso-countries": "3.6.3",
         "is-valid-fodselsnummer": "3.0.3",
-        "jsdom": "11.9.0",
+        "jsdom": "15.2.0",
         "lodash": "^4.17.15",
         "lodash.groupby": "^4.6.0",
         "lodash.throttle": "^4.1.1",
