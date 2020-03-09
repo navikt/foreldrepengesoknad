@@ -128,7 +128,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
 
                         <Block margin="none">
                             <Knapp
-                                style={{ backgroundColor: '#ffffff' }}
+                                className={bem.element('leggTilKnapp')}
                                 onClick={() => this.openModal()}
                                 htmlType="button"
                                 data-name="leggTilAnnenInntekt"

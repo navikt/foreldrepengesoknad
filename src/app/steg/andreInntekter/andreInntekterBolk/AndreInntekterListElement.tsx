@@ -7,13 +7,13 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { prettifyTidsperiode } from '../../../util/dates/dates';
 
-interface AndreInntekterListeElementProps extends InteractiveListElementProps {
+interface AndreInntekterListElementProps extends InteractiveListElementProps {
     annenInntekt: AnnenInntekt;
 }
 
-type Props = AndreInntekterListeElementProps & InjectedIntlProps;
+type Props = AndreInntekterListElementProps & InjectedIntlProps;
 
-const AndreInntekterListeElement: React.StatelessComponent<Props> = ({ annenInntekt, intl, ...rest }) => {
+const AndreInntekterListElement: React.StatelessComponent<Props> = ({ annenInntekt, intl, ...rest }) => {
     const { type, tidsperiode, vedlegg } = annenInntekt;
     const inntektstypeSkalHaVedlegg = type !== AnnenInntektType.JOBB_I_UTLANDET;
     const harVedlegg = vedlegg !== undefined && vedlegg.length > 0;
@@ -49,4 +49,4 @@ const AndreInntekterListeElement: React.StatelessComponent<Props> = ({ annenInnt
     );
 };
 
-export default injectIntl(AndreInntekterListeElement);
+export default injectIntl(AndreInntekterListElement);
