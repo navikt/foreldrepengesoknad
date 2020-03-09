@@ -46,8 +46,10 @@ class UtenlandsoppholdBolk extends React.Component<Props, UtenlandsoppholdBolkSt
 
     onAdd(oppholdToAdd: Utenlandsopphold) {
         const { opphold, onChange } = this.props;
-        onChange([...opphold, oppholdToAdd]);
-        this.closeModal();
+        if (oppholdToAdd && oppholdToAdd.tidsperiode.fom) {
+            onChange([...opphold, oppholdToAdd]);
+            this.closeModal();
+        }
     }
 
     onEdit(oppholdToEdit: Utenlandsopphold) {
@@ -122,7 +124,8 @@ class UtenlandsoppholdBolk extends React.Component<Props, UtenlandsoppholdBolkSt
                             <Knapp
                                 onClick={() => this.openModal()}
                                 htmlType="button"
-                                data-name="leggTilUtenlandsopphold">
+                                data-name="leggTilUtenlandsopphold"
+                            >
                                 <FormattedMessage id="utenlandsopphold.leggTilLand" />
                             </Knapp>
                         </Block>
