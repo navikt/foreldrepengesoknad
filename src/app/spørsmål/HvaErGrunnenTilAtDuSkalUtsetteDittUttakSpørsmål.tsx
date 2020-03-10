@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import { Utsettelsesvariant } from '../components/uttaksplanlegger/components/utsettelseForm/UtsettelseForm';
 import ValiderbarRadioPanelGruppeResponsive from 'common/lib/validation/elements/ValiderbarRadioPanelGruppeResponsive';
 import { Validator } from 'common/lib/validation/types';
+import { RadioProps } from 'nav-frontend-skjema';
 
 interface HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmålProps {
     variant?: Utsettelsesvariant;

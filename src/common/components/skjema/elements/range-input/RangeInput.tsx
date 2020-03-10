@@ -2,12 +2,12 @@ import * as React from 'react';
 import * as classnames from 'classnames';
 import { guid } from 'nav-frontend-js-utils';
 import RangeStepper from './RangeStepper';
-import { Fieldset } from 'nav-frontend-skjema';
 import Infoboks from 'common/components/infoboks/Infoboks';
 
 import './rangeInput.less';
 import AriaText from 'common/components/aria/AriaText';
 import BEMHelper from 'common/util/bem';
+import Fieldset from 'app/temp-components/Fieldset';
 
 export interface RangeInputElementRendererOptions {
     value: number;
@@ -131,7 +131,8 @@ class RangeInput extends React.Component<Props, State> {
                         })}
                         ref={(c) => (this.container = c)}
                         onBlur={this.handleBlur}
-                        onFocus={this.handleFocus}>
+                        onFocus={this.handleFocus}
+                    >
                         {steppers && (
                             <div className={`${bemStepper.block} ${bemStepper.modifier('previous')}`}>
                                 <RangeStepper

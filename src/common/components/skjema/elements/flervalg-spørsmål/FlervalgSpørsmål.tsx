@@ -3,18 +3,14 @@ import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import RadioPanelGruppe from 'common/components/skjema/wrappers/RadioPanelGruppe';
 import getMessage from 'common/util/i18nUtils';
 import { Validator } from 'common/lib/validation/types';
-
-export interface FlervalgAlternativ {
-    label: React.ReactNode;
-    value: string;
-}
+import { RadioProps } from 'nav-frontend-skjema';
 
 interface FlervalgSpørsmålProps {
     navn: string;
     spørsmål: string;
     hjelpetekst?: string | React.ReactNode;
     valgtVerdi?: string;
-    alternativer: FlervalgAlternativ[];
+    alternativer: Array<Omit<RadioProps, 'name'>>;
     toKolonner?: boolean;
     clsName?: string;
     validators?: Validator[];

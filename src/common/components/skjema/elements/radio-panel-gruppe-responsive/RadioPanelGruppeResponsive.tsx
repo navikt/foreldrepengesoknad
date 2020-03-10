@@ -1,9 +1,7 @@
 import * as React from 'react';
-import * as classnames from 'classnames';
-import { SkjemaGruppe, Fieldset, RadioPanel, RadioPanelGruppeProps } from 'nav-frontend-skjema';
+import { RadioPanelGruppeProps, RadioPanelGruppe } from 'nav-frontend-skjema';
 import './radioPanelGruppeResponsive.less';
 import 'nav-frontend-skjema-style';
-import Infoboks from 'common/components/infoboks/Infoboks';
 
 interface ResponsiveProps {
     twoColumns?: boolean;
@@ -18,8 +16,7 @@ class RadioPanelGruppeResponsive extends React.Component<RadioPanelGruppeRespons
         const {
             feil,
             twoColumns = false,
-            infoboksTekst,
-            fieldsetClassname,
+            // infoboksTekst,
             legend,
             checked,
             name,
@@ -27,32 +24,16 @@ class RadioPanelGruppeResponsive extends React.Component<RadioPanelGruppeRespons
             onChange
         } = this.props;
 
-        const cls = classnames('radioPanelWrapper', {
-            'radioPanelWrapper--twoColumns': twoColumns === true
-        });
-
         return (
-            <div className="radioPanelGruppe">
-                <SkjemaGruppe feil={feil}>
-                    <Fieldset className={fieldsetClassname} legend={legend}>
-                        {infoboksTekst && <Infoboks fieldsetClsName={fieldsetClassname} tekst={infoboksTekst} />}
-                        <div className="radioPanelGruppe--responsive">
-                            {radios.map((radio) => {
-                                return (
-                                    <div className={cls} key={radio.value}>
-                                        <RadioPanel
-                                            checked={checked === radio.value}
-                                            name={name}
-                                            onChange={(event) => onChange(event, radio.value)}
-                                            {...radio}
-                                        />
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </Fieldset>
-                </SkjemaGruppe>
-            </div>
+            <RadioPanelGruppe
+                legend={legend}
+                className={twoColumns ? 'twoColumnsPanelGruppe' : undefined}
+                feil={feil}
+                radios={radios}
+                name={name}
+                checked={checked}
+                onChange={onChange}
+            />
         );
     }
 }
