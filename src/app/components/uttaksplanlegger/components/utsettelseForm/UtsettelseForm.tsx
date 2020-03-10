@@ -18,7 +18,6 @@ import { getUtsettelseFormVisibility, UtsettelseSpørsmålKeys } from './utsette
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import Block from 'common/components/block/Block';
 import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
-import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
@@ -39,6 +38,7 @@ import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { getTidsperioderIUttaksplan } from 'app/util/uttaksplan';
 import JaNeiSpørsmål from 'common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
+import { RadioProps } from 'nav-frontend-skjema';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -152,15 +152,18 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             {
                 label: getMessage(intl, 'jegskalhaferie'),
                 value: Utsettelsesvariant.Ferie,
-                disabled: disableFerie === true
+                disabled: disableFerie === true,
+                name: 'utsettelseÅrsak'
             },
             {
                 label: getMessage(intl, 'jegskaljobbeheltid'),
-                value: Utsettelsesvariant.Arbeid
+                value: Utsettelsesvariant.Arbeid,
+                name: 'utsettelseÅrsak'
             },
             {
                 label: getMessage(intl, 'pgasykdom'),
-                value: Utsettelsesvariant.Sykdom
+                value: Utsettelsesvariant.Sykdom,
+                name: 'utsettelseÅrsak'
             }
         ];
 

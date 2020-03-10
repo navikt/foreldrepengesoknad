@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl, FormattedHTMLMessage } from 'react-intl';
 import Arbeidsforhold from '../types/Arbeidsforhold';
-import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import FlervalgSpørsmål from '../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import { Arbeidsform } from '../types/uttaksplan/periodetyper';
 import { Tidsperiode } from 'common/types';
 import { getKunArbeidsforholdForValgtTidsperiode } from 'app/util/domain/arbeidsforhold';
+import { RadioProps } from 'nav-frontend-skjema';
 
 interface HvorSkalDuJobbeSpørsmålProps {
     onChange: (orgnr: string[], frilansEllerSelvstendigNæringsdrivende: Arbeidsform[]) => void;
@@ -60,16 +60,20 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
             );
         }
 
+        const name = 'hvorSkalDuJobbe';
+
         return [
-            ...kunArbeidsforholdForValgtTidsperiode.map((v) => ({
+            ...kunArbeidsforholdForValgtTidsperiode.map((v, i) => ({
                 label: v.arbeidsgiverIdType === 'orgnr' ? v.arbeidsgiverNavn : getMessage(intl, 'arbeidsgiver'),
-                value: v.arbeidsgiverId
+                value: v.arbeidsgiverId,
+                name
             })),
             {
                 label: getMessage(intl, 'jegSkalJobbeSomSelvstendigNæringsdrivende'),
-                value: Arbeidsform.selvstendignæringsdrivende
+                value: Arbeidsform.selvstendignæringsdrivende,
+                name
             },
-            { label: getMessage(intl, 'jegSkalJobbeSomFrilans'), value: Arbeidsform.frilans }
+            { label: getMessage(intl, 'jegSkalJobbeSomFrilans'), value: Arbeidsform.frilans, name }
         ];
     }
 

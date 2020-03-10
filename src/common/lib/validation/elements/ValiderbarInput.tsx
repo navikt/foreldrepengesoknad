@@ -1,11 +1,11 @@
 import React from 'react';
-import { Input, NavFrontendInputProps } from 'nav-frontend-skjema';
+import { Input, InputProps } from 'nav-frontend-skjema';
 import {
     default as ValiderbartSkjemaelement,
     ValiderbartSkjemaelementProps
 } from 'common/lib/validation/elements/ValiderbartSkjemaelement';
 
-export type ValiderbarInputProps = ValiderbartSkjemaelementProps & NavFrontendInputProps;
+export type ValiderbarInputProps = ValiderbartSkjemaelementProps & InputProps;
 
 const ValiderbarInput: React.StatelessComponent<ValiderbarInputProps> = (props: ValiderbarInputProps) => {
     const { validators, optional, validateOnBlur, validateOnChange, ...inputProps } = props;
