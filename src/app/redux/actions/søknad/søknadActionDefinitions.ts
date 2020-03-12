@@ -5,7 +5,9 @@ import Søknad, {
     SøknadEkstrainfo
 } from '../../../types/søknad/Søknad';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
-import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
+import InformasjonOmUtenlandsopphold, {
+    InformasjonOmUtenlandsoppholdPartial
+} from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
@@ -41,7 +43,8 @@ export enum SøknadActionKeys {
     'SET_TILLEGGSOPPLYSNING' = 'setTilleggsopplysning',
     'SET_CURRENT_STEG' = 'setCurrentSteg',
     'START_SØKNAD' = 'startNySøknad',
-    'SET_ENDRINGSTIDSPUNKT' = 'setEndringstidspunkt'
+    'SET_ENDRINGSTIDSPUNKT' = 'setEndringstidspunkt',
+    'SET_INFORMASJON_OM_UTENLANDSOPPHOLD' = 'SET_INFORMASJON_OM_UTENLANDSOPPHOLD'
 }
 
 export interface StartSøknad {
@@ -169,6 +172,11 @@ export interface SetEndringstidspunkt {
     endringstidspunkt: Date;
 }
 
+export interface SetInformasjonOmUtenlandsopphold {
+    type: SøknadActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD;
+    payload: InformasjonOmUtenlandsopphold;
+}
+
 export type SøknadAction =
     | SetSøknad
     | AvbrytSøknad
@@ -192,4 +200,5 @@ export type SøknadAction =
     | SetVedleggForSenEndring
     | SetTilleggsopplysning
     | SetEndringstidspunkt
-    | ResetUttaksplanEndringer;
+    | ResetUttaksplanEndringer
+    | SetInformasjonOmUtenlandsopphold;

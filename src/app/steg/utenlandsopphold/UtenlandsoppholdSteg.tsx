@@ -2,15 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { AppState } from '../../redux/reducers';
-import InformasjonOmUtenlandsopphold, {
-    Utenlandsopphold,
-    UtenlandsoppholdType
-} from '../../types/søknad/InformasjonOmUtenlandsopphold';
-import UtenlandsoppholdBolk from './utenlandsoppholdBolk/UtenlandsoppholdBolk';
+import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from '../../types/søknad/InformasjonOmUtenlandsopphold';
 import Block from 'common/components/block/Block';
 import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
-import BoddINorgeSiste12MndSpørsmål from '../../spørsmål/BoddINorgeSiste12MndSpørsmål';
-import SkalBoINorgeNeste12MndSpørsmål from '../../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
 import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import Steg, { StegProps } from '../../components/applikasjon/steg/Steg';
@@ -18,27 +12,18 @@ import { StegID } from '../../util/routing/stegConfig';
 import { HistoryProps } from '../../types/common';
 import isAvailable from '../../util/steg/isAvailable';
 import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
-import {
-    getFraAvgrensninger as fraAvgrensningerTidligerePerioder,
-    getTilAvgrensninger as tilAvgrensningerTidligerePerioder,
-    getTidligereUtenlandsoppholdFradatoRegler as fraReglerTidligerePerioder,
-    getTidligereUtenlandsoppholdTildatoRegler as tilReglerTidligerePerioder
-} from '../../util/validation/tidligereUtenlandsopphold';
-import {
-    getFraAvgrensninger as fraAvgrensningerSenerePerioder,
-    getTilAvgrensninger as tilAvgrensningerSenerePerioder,
-    getSenereUtenlandsoppholdFradatoRegler as fraReglerSenerePerioder,
-    getSenereUtenlandsoppholdTildatoRegler as tilReglerSenerePerioder
-} from '../../util/validation/senereUtenlandsopphold';
-import { default as visibility } from './visibility';
+// import { default as visibility } from './visibility';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import cleanupUtenlandsOppholdSteg from '../../util/cleanup/cleanupUtenlandsoppholdSteg';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import Barn, { isUfødtBarn, UfødtBarn } from 'app/types/søknad/Barn';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
-import { formatDate } from 'app/util/dates/dates';
 import * as countries from 'i18n-iso-countries';
+import FormikUtenlandsopphold, { UtenlandsoppholdFormValues } from './FormikUtenlandsopphold';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
+import { formatDate } from 'app/util/dates/dates';
 
 interface StateProps {
     søknad: Søknad;
@@ -48,58 +33,33 @@ interface StateProps {
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 
+const mapBostedTilUtenlandsopphold = (opphold: BostedUtland): Utenlandsopphold => ({
+    land: opphold.landkode,
+    tidsperiode: {
+        fom: opphold.fom,
+        tom: opphold.tom
+    }
+});
+
 class UtenlandsoppholdSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
 
-        this.renderSkalBoINorgeNeste12MndSpørsmål = this.renderSkalBoINorgeNeste12MndSpørsmål.bind(this);
-        this.renderHarBoddINorgeSiste12MndSpørsmål = this.renderHarBoddINorgeSiste12MndSpørsmål.bind(this);
-        this.updateUtenlandsopphold = this.updateUtenlandsopphold.bind(this);
         this.cleanupSteg = this.cleanupSteg.bind(this);
         this.hentRelevantUtenlandsopphold = this.hentRelevantUtenlandsopphold.bind(this);
+        this.updateReduxState = this.updateReduxState.bind(this);
     }
 
-    renderSkalBoINorgeNeste12MndSpørsmål() {
-        const { søknad, dispatch } = this.props;
-        const { informasjonOmUtenlandsopphold } = søknad;
-        return (
-            <Block margin={informasjonOmUtenlandsopphold.iNorgeNeste12Mnd ? 'm' : 'xs'}>
-                <SkalBoINorgeNeste12MndSpørsmål
-                    iNorgeNeste12={informasjonOmUtenlandsopphold.iNorgeNeste12Mnd}
-                    onChange={(iNorgeNeste12Mnd: boolean) =>
-                        dispatch(
-                            søknadActions.updateUtenlandsopphold({
-                                iNorgeNeste12Mnd
-                            })
-                        )
-                    }
-                />
-            </Block>
-        );
-    }
-
-    renderHarBoddINorgeSiste12MndSpørsmål() {
-        const { søknad, dispatch } = this.props;
-        const { informasjonOmUtenlandsopphold } = søknad;
-        return (
-            <Block margin={informasjonOmUtenlandsopphold.iNorgeSiste12Mnd ? 'm' : 'xs'}>
-                <BoddINorgeSiste12MndSpørsmål
-                    iNorgeSiste12={informasjonOmUtenlandsopphold.iNorgeSiste12Mnd}
-                    onChange={(iNorgeSiste12Mnd: boolean) =>
-                        dispatch(
-                            søknadActions.updateUtenlandsopphold({
-                                iNorgeSiste12Mnd
-                            })
-                        )
-                    }
-                />
-            </Block>
-        );
-    }
-
-    updateUtenlandsopphold(opphold: Utenlandsopphold[], oppholdType: UtenlandsoppholdType) {
+    updateReduxState(values: UtenlandsoppholdFormValues) {
         const { dispatch } = this.props;
-        dispatch(søknadActions.updateUtenlandsopphold({ [oppholdType]: opphold }));
+        const reduxObject: InformasjonOmUtenlandsopphold = {
+            iNorgeNeste12Mnd: values.skalBoUtenforNorgeNeste12Mnd === YesOrNo.YES,
+            iNorgeSiste12Mnd: values.harBoddUtenforNorgeSiste12Mnd === YesOrNo.YES,
+            senereOpphold: values.utenlandsoppholdNeste12Mnd.map(mapBostedTilUtenlandsopphold),
+            tidligereOpphold: values.utenlandsoppholdSiste12Mnd.map(mapBostedTilUtenlandsopphold)
+        };
+
+        dispatch(søknadActions.setInformasjonOmUtenlandsopphold(reduxObject));
     }
 
     cleanupSteg() {
@@ -150,56 +110,6 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
 
         return (
             <Steg {...stegProps} onPreSubmit={this.cleanupSteg}>
-                <Block hasChildBlocks={true}>
-                    <UtenlandsoppholdBolk
-                        renderSpørsmål={this.renderHarBoddINorgeSiste12MndSpørsmål}
-                        showUtenlandsoppholdContent={visibility.harBoddINorgeSiste12MndContent(
-                            informasjonOmUtenlandsopphold
-                        )}
-                        opphold={søknad.informasjonOmUtenlandsopphold.tidligereOpphold}
-                        oppholdType="tidligereOpphold"
-                        onChange={(opphold: Utenlandsopphold[]) =>
-                            this.updateUtenlandsopphold(opphold, 'tidligereOpphold')
-                        }
-                        utenlandsoppholdModalProps={{
-                            avgrensningGetters: {
-                                getFraAvgrensning: fraAvgrensningerTidligerePerioder,
-                                getTilAvgrensning: tilAvgrensningerTidligerePerioder
-                            },
-                            tidsperiodeValidators: {
-                                getFraRegler: fraReglerTidligerePerioder,
-                                getTilRegler: tilReglerTidligerePerioder
-                            }
-                        }}
-                    />
-                </Block>
-
-                <Block
-                    hasChildBlocks={true}
-                    visible={visibility.skalBoINorgeNeste12MndBlock(informasjonOmUtenlandsopphold)}
-                >
-                    <UtenlandsoppholdBolk
-                        renderSpørsmål={this.renderSkalBoINorgeNeste12MndSpørsmål}
-                        showUtenlandsoppholdContent={visibility.skalBoINorgeNeste12MndContent(
-                            informasjonOmUtenlandsopphold
-                        )}
-                        opphold={søknad.informasjonOmUtenlandsopphold.senereOpphold}
-                        oppholdType="senereOpphold"
-                        onChange={(opphold: Utenlandsopphold[]) =>
-                            this.updateUtenlandsopphold(opphold, 'senereOpphold')
-                        }
-                        utenlandsoppholdModalProps={{
-                            avgrensningGetters: {
-                                getFraAvgrensning: fraAvgrensningerSenerePerioder,
-                                getTilAvgrensning: tilAvgrensningerSenerePerioder
-                            },
-                            tidsperiodeValidators: {
-                                getFraRegler: fraReglerSenerePerioder,
-                                getTilRegler: tilReglerSenerePerioder
-                            }
-                        }}
-                    />
-                </Block>
                 <Block visible={relevantUtenlandsopphold !== undefined}>
                     <VeilederInfo
                         messages={[
@@ -214,6 +124,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                         ]}
                     />
                 </Block>
+                <FormikUtenlandsopphold onValidSubmit={this.updateReduxState} />
             </Steg>
         );
     }

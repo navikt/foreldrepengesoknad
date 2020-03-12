@@ -16,10 +16,8 @@
         "start-mock-api-server": "node ./mock-api-server.js",
         "start": "node ./src/build/scripts/start-dev.js",
         "start-no-decorator": "node ./src/build/scripts/start-dev-nodecorator.js",
-        "precommit": "pretty-quick --staged",
         "jest": "jest --config ./jest/jest.config.js --maxWorkers 2",
-        "jest-coverage":
-            "jest --config ./jest/jest.config.js --coverage --collectCoverageFrom=src/**/*.{ts,tsx} --collectCoverageFrom=!src/**/*.d.{ts,tsx}",
+        "jest-coverage": "jest --config ./jest/jest.config.js --coverage --collectCoverageFrom=src/**/*.{ts,tsx} --collectCoverageFrom=!src/**/*.d.{ts,tsx}",
         "jest-watch": "jest --watch --verbose --config ./jest/jest.config.js",
         "cypress": "$(npm bin)/cypress open",
         "cypress-headless": "$(npm bin)/cypress run",
@@ -114,8 +112,10 @@
         "webpack-dev-server": "3.1.14"
     },
     "dependencies": {
-        "@navikt/sif-common-formik": "^2.2.34",
         "@navikt/fnrvalidator": "^1.1.0",
+        "@navikt/sif-common-core": "^0.1.1",
+        "@navikt/sif-common-formik": "^3.0.0",
+        "@navikt/sif-common-forms": "^1.0.0",
         "@sentry/browser": "^5.6.3",
         "axios": "^0.19.2",
         "bytes": "3.0.0",
