@@ -1,27 +1,16 @@
 import React from 'react';
-import Block from 'common/components/block/Block';
-import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
-import BostedUtlandListAndDialog from '@navikt/sif-common-forms/lib/bosted-utland/BostedUtlandListAndDialog';
-import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
 import moment from 'moment';
-import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntl } from 'react-intl';
 
-const enum UtenlandsoppholdFieldNames {
-    harBoddUtenforNorgeSiste12Mnd = 'harBoddUtenforNorgeSiste12Mnd',
-    utenlandsoppholdSiste12Mnd = 'utenlandsoppholdSiste12Mnd',
-    skalBoUtenforNorgeNeste12Mnd = 'skalBoUtenforNorgeNeste12Mnd',
-    utenlandsoppholdNeste12Mnd = 'utenlandsoppholdNeste12Mnd'
-}
-
-export interface UtenlandsoppholdFormValues {
-    [UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd]: YesOrNo;
-    [UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd]: BostedUtland[];
-    [UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd]: YesOrNo;
-    [UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd]: BostedUtland[];
-}
-
-const FormComponents = getTypedFormComponents<UtenlandsoppholdFieldNames, UtenlandsoppholdFormValues>();
+import Block from 'common/components/block/Block';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import BostedUtlandListAndDialog from '@navikt/sif-common-forms/lib/bosted-utland/BostedUtlandListAndDialog';
+import getMessage from 'common/util/i18nUtils';
+import {
+    UtenlandsoppholdFormValues,
+    FormComponents,
+    UtenlandsoppholdFieldNames
+} from './formTypes/utenlandsoppholdFormTypes';
 
 const initialValues: UtenlandsoppholdFormValues = {
     harBoddUtenforNorgeSiste12Mnd: YesOrNo.UNANSWERED,

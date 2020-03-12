@@ -20,10 +20,11 @@ import Barn, { isUfødtBarn, UfødtBarn } from 'app/types/søknad/Barn';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 import * as countries from 'i18n-iso-countries';
-import FormikUtenlandsopphold, { UtenlandsoppholdFormValues } from './FormikUtenlandsopphold';
+import FormikUtenlandsopphold from './FormikUtenlandsopphold';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
 import { formatDate } from 'app/util/dates/dates';
+import { UtenlandsoppholdFormValues } from './formTypes/utenlandsoppholdFormTypes';
 
 interface StateProps {
     søknad: Søknad;
