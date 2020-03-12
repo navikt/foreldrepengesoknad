@@ -122,13 +122,13 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 barn,
                 annenForelder: registrertAnnenForelder
                     ? {
-                        ...state.annenForelder,
-                        ...getAnnenForelderFromRegistrertForelder(registrertAnnenForelder),
-                        kanIkkeOppgis: getDefaultSøknadState().annenForelder.kanIkkeOppgis
-                    }
+                          ...state.annenForelder,
+                          ...getAnnenForelderFromRegistrertForelder(registrertAnnenForelder),
+                          kanIkkeOppgis: getDefaultSøknadState().annenForelder.kanIkkeOppgis
+                      }
                     : gjelderAnnetBarn
-                        ? { ...state.annenForelder, fnr: undefined, fornavn: undefined, etternavn: undefined }
-                        : state.annenForelder,
+                    ? { ...state.annenForelder, fnr: undefined, fornavn: undefined, etternavn: undefined }
+                    : state.annenForelder,
                 ekstrainfo: {
                     ...state.ekstrainfo,
                     søknadenGjelderBarnValg: action.payload
@@ -259,6 +259,13 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             return editAttachmentInState(failedAttachment, state);
         case SøknadActionKeys.DELETE_ATTACHMENT:
             return removeAttachmentFromState(action.attachment, state);
+        case SøknadActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD:
+            return {
+                ...state,
+                informasjonOmUtenlandsopphold: {
+                    ...action.payload
+                }
+            };
         default:
             return state;
     }
