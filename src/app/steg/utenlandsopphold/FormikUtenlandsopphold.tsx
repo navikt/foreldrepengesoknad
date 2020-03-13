@@ -4,13 +4,13 @@ import { injectIntl, InjectedIntl } from 'react-intl';
 
 import Block from 'common/components/block/Block';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import BostedUtlandListAndDialog from '@navikt/sif-common-forms/lib/bosted-utland/BostedUtlandListAndDialog';
 import getMessage from 'common/util/i18nUtils';
 import {
     UtenlandsoppholdFormValues,
     FormComponents,
     UtenlandsoppholdFieldNames
 } from './formTypes/utenlandsoppholdFormTypes';
+import BostedUtlandListAndDialog from './bostedUtlandListAndDialog/BostedUtlandListAndDialog';
 
 const initialValues: UtenlandsoppholdFormValues = {
     harBoddUtenforNorgeSiste12Mnd: YesOrNo.UNANSWERED,
@@ -47,15 +47,19 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({ intl, onValidSubmit }
                             includeValidationSummary={true}
                         >
                             <div>
-                                <Block margin="xl">
+                                <Block margin="m">
                                     <FormComponents.YesOrNoQuestion
-                                        legend={'test'}
+                                        legend={getMessage(intl, 'iNorgeNeste12Mnd.spørsmål')}
                                         name={UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd}
-                                        info={'test'}
+                                        info={getMessage(intl, 'utenlandsopphold.neste12MånederInfotekst')}
+                                        labels={{
+                                            no: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boINorge'),
+                                            yes: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boIUtlandet')
+                                        }}
                                     />
                                 </Block>
                                 {formValues.harBoddUtenforNorgeSiste12Mnd === YesOrNo.YES && (
-                                    <Block margin="m">
+                                    <Block margin="l">
                                         <BostedUtlandListAndDialog<UtenlandsoppholdFieldNames>
                                             name={UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd}
                                             minDate={date1YearAgo}
@@ -64,14 +68,19 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({ intl, onValidSubmit }
                                                 addLabel: 'Legg til nytt utenlandsopphold',
                                                 modalTitle: 'Utenlandsopphold siste 12 måneder'
                                             }}
+                                            erFremtidigOpphold={true}
                                         />
                                     </Block>
                                 )}
                                 <Block>
                                     <FormComponents.YesOrNoQuestion
-                                        legend={getMessage(intl, 'steg.medlemsskap.annetLandNeste12.spm')}
+                                        legend={getMessage(intl, 'boddINorgeSiste12Mnd.spørsmål')}
                                         name={UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd}
-                                        info={getMessage(intl, 'steg.medlemsskap.annetLandNeste12.hjelp')}
+                                        info={getMessage(intl, 'utenlandsopphold.siste12MånederInfotekst')}
+                                        labels={{
+                                            no: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddINorge'),
+                                            yes: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddIUtlandet')
+                                        }}
                                     />
                                 </Block>
                                 {formValues.skalBoUtenforNorgeNeste12Mnd === YesOrNo.YES && (
@@ -84,6 +93,7 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({ intl, onValidSubmit }
                                                 addLabel: 'Legg til nytt utenlandsopphold',
                                                 modalTitle: 'Utenlandsopphold neste 12 måneder'
                                             }}
+                                            erFremtidigOpphold={false}
                                         />
                                     </Block>
                                 )}

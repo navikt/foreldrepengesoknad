@@ -54,8 +54,8 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
     updateReduxState(values: UtenlandsoppholdFormValues) {
         const { dispatch } = this.props;
         const reduxObject: InformasjonOmUtenlandsopphold = {
-            iNorgeNeste12Mnd: values.skalBoUtenforNorgeNeste12Mnd === YesOrNo.YES,
-            iNorgeSiste12Mnd: values.harBoddUtenforNorgeSiste12Mnd === YesOrNo.YES,
+            iNorgeNeste12Mnd: values.skalBoUtenforNorgeNeste12Mnd === YesOrNo.NO,
+            iNorgeSiste12Mnd: values.harBoddUtenforNorgeSiste12Mnd === YesOrNo.NO,
             senereOpphold: values.utenlandsoppholdNeste12Mnd.map(mapBostedTilUtenlandsopphold),
             tidligereOpphold: values.utenlandsoppholdSiste12Mnd.map(mapBostedTilUtenlandsopphold)
         };
@@ -108,9 +108,11 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
             informasjonOmUtenlandsopphold,
             situasjon
         );
+        const visFortsettKnapp = utenlandsoppholdErGyldig(informasjonOmUtenlandsopphold);
+        const nyStegProps: StegProps = { ...stegProps, renderFortsettKnapp: visFortsettKnapp };
 
         return (
-            <Steg {...stegProps} onPreSubmit={this.cleanupSteg}>
+            <Steg {...nyStegProps} onPreSubmit={this.cleanupSteg}>
                 <Block visible={relevantUtenlandsopphold !== undefined}>
                     <VeilederInfo
                         messages={[
@@ -138,7 +140,6 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
 
     const stegProps: StegProps = {
         id: StegID.UTENLANDSOPPHOLD,
-        renderFortsettKnapp: utenlandsoppholdErGyldig(søknad),
         renderFormTag: true,
         history,
         isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state.søknad, props.søkerinfo, selectSøknadsinfo(state))
