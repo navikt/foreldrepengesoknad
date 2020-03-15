@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Lukk deployment-issues
-        uses: actions/github-script@0.5.0
+        uses: actions/github-script@0.8.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -80,7 +80,7 @@ jobs:
      
       - name: Trigg deploy til dev-sbs 
         if: success()
-        uses: actions/github-script@0.3.0
+        uses: actions/github-script@0.8.0
         with:
           github-token: ${{secrets.NOTIFICATION}}
           script: |
