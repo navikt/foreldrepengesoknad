@@ -3,7 +3,7 @@ import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import { validateRequiredSelect } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents, NavFrontendSkjemaFeil } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BostedUtland, isValidBostedUtland } from './types';
 import getMessage from 'common/util/i18nUtils';
@@ -32,6 +32,16 @@ type FormValues = Partial<BostedUtland>;
 
 const Form = getTypedFormComponents<BostedUtlandFormFields, FormValues>();
 
+export const commonFieldErrorRenderer = (intl: InjectedIntl, error: any): NavFrontendSkjemaFeil => {
+    if (typeof error === 'object' && error.key !== undefined) {
+        return intl.formatMessage({ id: error.key }, error.values);
+    }
+    if (typeof error === 'string') {
+        return error;
+    }
+    return error !== undefined;
+};
+
 const BostedUtlandForm: React.FunctionComponent<Props> = ({
     maxDate,
     minDate,
@@ -56,7 +66,10 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
             renderForm={(formik) => {
                 const { values } = formik;
                 return (
-                    <Form.Form onCancel={onCancel} fieldErrorRenderer={() => true}>
+                    <Form.Form
+                        onCancel={onCancel}
+                        fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
+                    >
                         <Systemtittel tag="h1">
                             <FormattedMessage id="utenlandsopphold.tittel" />
                         </Systemtittel>
@@ -94,7 +107,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                 label={
                                     erFremtidigOpphold
                                         ? getMessage(intl, 'utenlandsopphold.select.spørsmål.senereOpphold')
-                                        : getMessage(intl, 'utenlandsopphold.select.spørsmål.senereOpphold')
+                                        : getMessage(intl, 'utenlandsopphold.select.spørsmål.tidligereOpphold')
                                 }
                                 validate={validateRequiredSelect}
                             />

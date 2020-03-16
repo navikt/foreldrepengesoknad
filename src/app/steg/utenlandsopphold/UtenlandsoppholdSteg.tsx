@@ -112,7 +112,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         const nyStegProps: StegProps = { ...stegProps, renderFortsettKnapp: visFortsettKnapp };
 
         return (
-            <Steg {...nyStegProps} onPreSubmit={this.cleanupSteg}>
+            <Steg {...nyStegProps} onPreSubmit={this.cleanupSteg} renderFormTag={false}>
                 <Block visible={relevantUtenlandsopphold !== undefined}>
                     <VeilederInfo
                         messages={[

@@ -11,6 +11,7 @@ import {
     UtenlandsoppholdFieldNames
 } from './formTypes/utenlandsoppholdFormTypes';
 import BostedUtlandListAndDialog from './bostedUtlandListAndDialog/BostedUtlandListAndDialog';
+import { commonFieldErrorRenderer } from './bostedUtlandListAndDialog/BostedUtlandForm';
 
 const initialValues: UtenlandsoppholdFormValues = {
     harBoddUtenforNorgeSiste12Mnd: YesOrNo.UNANSWERED,
@@ -43,7 +44,7 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({ intl, onValidSubmit }
                         <FormComponents.Form
                             includeButtons={true}
                             submitButtonLabel="Gå videre"
-                            fieldErrorRenderer={() => true}
+                            fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
                             includeValidationSummary={true}
                         >
                             <div>
