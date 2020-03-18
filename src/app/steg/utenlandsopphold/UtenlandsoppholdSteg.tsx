@@ -118,7 +118,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                 renderFormTag={false}
                 renderFortsettKnapp={false}
                 submitButtonId="utenlandsoppholdForm"
-                renderProp={(options) => (
+                renderProp={({ onValidFormSubmit }) => (
                     <>
                         <Block visible={relevantUtenlandsopphold !== undefined}>
                             <VeilederInfo
@@ -137,7 +137,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                         <FormikUtenlandsopphold
                             onValidSubmit={(values) => {
                                 this.updateReduxState(values);
-                                options.onValidFormSubmit();
+                                onValidFormSubmit();
                             }}
                         />
                     </>
