@@ -14,7 +14,8 @@ import BostedUtlandListAndDialog from './bostedUtlandListAndDialog/BostedUtlandL
 import { commonFieldErrorRenderer } from './bostedUtlandListAndDialog/BostedUtlandForm';
 import {
     validateUtenlandsoppholdSiste12Mnd,
-    validateUtenlandsoppholdNeste12Mnd
+    validateUtenlandsoppholdNeste12Mnd,
+    validateYesOrNoIsAnswered
 } from 'app/validation/fieldValidations';
 import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/types/søknad/InformasjonOmUtenlandsopphold';
 import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
@@ -71,7 +72,7 @@ const getInitialValues = (
     return defaultInitialValues;
 };
 
-const MedlemsskapStep: React.FunctionComponent<Props> = ({
+const FormikUtenlandsopphold: React.FunctionComponent<Props> = ({
     intl,
     informasjonOmUtenlandsoppholdFraSøknad,
     onValidSubmit
@@ -101,6 +102,7 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({
                                             no: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boINorge'),
                                             yes: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boIUtlandet')
                                         }}
+                                        validate={validateYesOrNoIsAnswered}
                                     />
                                 </Block>
                                 {formValues.harBoddUtenforNorgeSiste12Mnd === YesOrNo.YES && (
@@ -127,6 +129,7 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({
                                             no: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddINorge'),
                                             yes: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddIUtlandet')
                                         }}
+                                        validate={validateYesOrNoIsAnswered}
                                     />
                                 </Block>
                                 {formValues.skalBoUtenforNorgeNeste12Mnd === YesOrNo.YES && (
@@ -153,4 +156,4 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({
     );
 };
 
-export default injectIntl(MedlemsskapStep);
+export default injectIntl(FormikUtenlandsopphold);
