@@ -16,8 +16,11 @@ import {
     validateUtenlandsoppholdSiste12Mnd,
     validateUtenlandsoppholdNeste12Mnd
 } from 'app/validation/fieldValidations';
+import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/types/søknad/InformasjonOmUtenlandsopphold';
+import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
+import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
 
-const initialValues: UtenlandsoppholdFormValues = {
+const defaultInitialValues: UtenlandsoppholdFormValues = {
     harBoddUtenforNorgeSiste12Mnd: YesOrNo.UNANSWERED,
     skalBoUtenforNorgeNeste12Mnd: YesOrNo.UNANSWERED,
     utenlandsoppholdNeste12Mnd: [],
@@ -34,10 +37,47 @@ const date1YearAgo = moment()
 
 interface Props {
     intl: InjectedIntl;
+    informasjonOmUtenlandsoppholdFraSøknad: InformasjonOmUtenlandsopphold;
     onValidSubmit: (values: UtenlandsoppholdFormValues) => void;
 }
 
-const MedlemsskapStep: React.FunctionComponent<Props> = ({ intl, onValidSubmit }) => {
+const mapTilBostedUtland = (opphold: Utenlandsopphold): BostedUtland => ({
+    fom: opphold.tidsperiode.fom,
+    tom: opphold.tidsperiode.tom,
+    landkode: opphold.land
+});
+
+const getInitialValues = (
+    informasjonOmUtenlandsoppholdFraSøknad: InformasjonOmUtenlandsopphold
+): UtenlandsoppholdFormValues => {
+    if (utenlandsoppholdErGyldig(informasjonOmUtenlandsoppholdFraSøknad)) {
+        const {
+            iNorgeSiste12Mnd,
+            iNorgeNeste12Mnd,
+            senereOpphold,
+            tidligereOpphold
+        } = informasjonOmUtenlandsoppholdFraSøknad;
+
+        const initialValues: UtenlandsoppholdFormValues = {
+            harBoddUtenforNorgeSiste12Mnd: iNorgeSiste12Mnd ? YesOrNo.NO : YesOrNo.YES,
+            skalBoUtenforNorgeNeste12Mnd: iNorgeNeste12Mnd ? YesOrNo.NO : YesOrNo.YES,
+            utenlandsoppholdNeste12Mnd: senereOpphold.map(mapTilBostedUtland),
+            utenlandsoppholdSiste12Mnd: tidligereOpphold.map(mapTilBostedUtland)
+        };
+
+        return initialValues;
+    }
+
+    return defaultInitialValues;
+};
+
+const MedlemsskapStep: React.FunctionComponent<Props> = ({
+    intl,
+    informasjonOmUtenlandsoppholdFraSøknad,
+    onValidSubmit
+}) => {
+    const initialValues = getInitialValues(informasjonOmUtenlandsoppholdFraSøknad);
+
     return (
         <FormComponents.FormikWrapper
             initialValues={initialValues}
@@ -46,10 +86,10 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({ intl, onValidSubmit }
                 return (
                     <div>
                         <FormComponents.Form
-                            includeButtons={false}
+                            includeButtons={true}
                             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
                             includeValidationSummary={true}
-                            id={'utenlandsoppholdForm'}
+                            submitButtonLabel="Fortsett"
                         >
                             <div>
                                 <Block margin="m">

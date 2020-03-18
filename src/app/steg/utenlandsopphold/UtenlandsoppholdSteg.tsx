@@ -115,25 +115,35 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
             <Steg
                 {...nyStegProps}
                 onPreSubmit={this.cleanupSteg}
+                renderFortsettKnapp={false}
                 renderFormTag={false}
                 submitButtonId="utenlandsoppholdForm"
-            >
-                <Block visible={relevantUtenlandsopphold !== undefined}>
-                    <VeilederInfo
-                        messages={[
-                            {
-                                type: 'normal',
-                                contentIntlKey: 'utenlandsopphold.infoOmFødselsattest',
-                                values: {
-                                    land: this.getCountryName(countryNames, relevantUtenlandsopphold),
-                                    termindato: formatDate((barn as UfødtBarn).termindato)
-                                }
-                            }
-                        ]}
-                    />
-                </Block>
-                <FormikUtenlandsopphold onValidSubmit={this.updateReduxState} />
-            </Steg>
+                renderProp={(options) => (
+                    <>
+                        <Block visible={relevantUtenlandsopphold !== undefined}>
+                            <VeilederInfo
+                                messages={[
+                                    {
+                                        type: 'normal',
+                                        contentIntlKey: 'utenlandsopphold.infoOmFødselsattest',
+                                        values: {
+                                            land: this.getCountryName(countryNames, relevantUtenlandsopphold),
+                                            termindato: formatDate((barn as UfødtBarn).termindato)
+                                        }
+                                    }
+                                ]}
+                            />
+                        </Block>
+                        <FormikUtenlandsopphold
+                            onValidSubmit={(values) => {
+                                this.updateReduxState(values);
+                                options.onValidFormSubmit();
+                            }}
+                            informasjonOmUtenlandsoppholdFraSøknad={informasjonOmUtenlandsopphold}
+                        />
+                    </>
+                )}
+            />
         );
     }
 }

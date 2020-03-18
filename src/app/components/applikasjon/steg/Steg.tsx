@@ -24,6 +24,10 @@ import lenker from 'app/util/routing/lenker';
 
 import './steg.less';
 
+interface RenderStegContentOptions {
+    onValidFormSubmit: () => void;
+}
+
 export interface StegProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
@@ -39,6 +43,7 @@ export interface StegProps {
     onRequestNavigateToNextStep?: () => boolean;
     submitButtonId?: string;
     confirmNavigateToPreviousStep?: (callback: () => void) => void;
+    renderProp?: (props: RenderStegContentOptions) => React.ReactNode;
 }
 
 interface StateProps {
@@ -201,7 +206,9 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                         erEnkelEndringssøknad={erEnkelEndringssøknad}
                     />
                 </Block>
-                {this.props.children}
+                {this.props.renderProp
+                    ? this.props.renderProp({ onValidFormSubmit: () => this.handleFortsett() })
+                    : this.props.children}
                 {renderFortsettKnapp === true && (
                     <Block>
                         <FortsettKnapp
