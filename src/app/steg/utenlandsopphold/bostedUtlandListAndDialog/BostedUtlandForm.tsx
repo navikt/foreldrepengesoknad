@@ -1,12 +1,12 @@
 import React from 'react';
 import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
-import { validateRequiredSelect } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { getTypedFormComponents, NavFrontendSkjemaFeil } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BostedUtland, isValidBostedUtland } from './types';
 import getMessage from 'common/util/i18nUtils';
+import { dateRangeValidation } from 'app/util/dates/dates';
+import { validateRequiredSelect } from 'app/validation/fieldValidations';
 
 export interface BostedUtlandFormLabels {
     tittel: string;

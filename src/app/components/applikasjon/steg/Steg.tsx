@@ -37,6 +37,7 @@ export interface StegProps {
     onSubmit?: (event?: FormSubmitEvent) => void;
     onPreSubmit?: () => void;
     onRequestNavigateToNextStep?: () => boolean;
+    submitButtonId?: string;
     confirmNavigateToPreviousStep?: (callback: () => void) => void;
 }
 
@@ -175,6 +176,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
             errorSummaryRenderer,
             erEndringssøknad,
             erEnkelEndringssøknad,
+            submitButtonId,
             intl
         } = this.props;
 
@@ -202,7 +204,10 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                 {this.props.children}
                 {renderFortsettKnapp === true && (
                     <Block>
-                        <FortsettKnapp onClick={this.props.renderFormTag ? undefined : () => this.handleFortsett()}>
+                        <FortsettKnapp
+                            submitButtonId={submitButtonId}
+                            onClick={this.props.renderFormTag ? undefined : () => this.handleFortsett()}
+                        >
                             {fortsettKnappLabel || stegConfig[id].fortsettKnappLabel}
                         </FortsettKnapp>
                     </Block>

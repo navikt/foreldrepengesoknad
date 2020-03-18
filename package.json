@@ -116,7 +116,7 @@
     "dependencies": {
         "@navikt/fnrvalidator": "^1.1.0",
         "@navikt/sif-common-core": "^0.1.1",
-        "@navikt/sif-common-formik": "^3.0.0",
+        "@navikt/sif-common-formik": "^3.0.3",
         "@navikt/sif-common-forms": "^1.0.0",
         "@sentry/browser": "^5.6.3",
         "axios": "^0.19.2",
@@ -147,7 +147,7 @@
         "nav-frontend-hjelpetekst": "^2.0.24",
         "nav-frontend-ikoner-assets": "^1.0.5",
         "nav-frontend-js-utils": "^1.0.8",
-        "nav-frontend-knapper": "^1.0.39",
+        "nav-frontend-knapper": "^2.0.1",
         "nav-frontend-lenkepanel": "1.0.29",
         "nav-frontend-lenker": "^1.0.33",
         "nav-frontend-lukknapp": "^1.0.24",

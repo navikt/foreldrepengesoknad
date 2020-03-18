@@ -10,12 +10,13 @@ interface FortsettKnappProps {
     location?: string;
     children?: JSX.Element | string;
     onClick?: (e: SubmitEvent) => void;
+    submitButtonId?: string;
 }
 
 const FortsettKnapp = (props: FortsettKnappProps & InjectedIntlProps) => {
-    const { intl, children, onClick } = props;
+    const { intl, children, submitButtonId, onClick } = props;
     return (
-        <Hovedknapp className="fortsettKnapp" htmlType="submit" onClick={onClick}>
+        <Hovedknapp className="fortsettKnapp" htmlType="submit" onClick={onClick} form={submitButtonId}>
             {children || getMessage(intl, 'fortsettknapp.label')}
         </Hovedknapp>
     );

@@ -486,6 +486,7 @@
     "oppsummering.uttak.type.uttak": "Uttak",
     "oppsummering.uttak.årsak": "Årsak",
     "oppsummering.valideringsfeil.uttaksplan.intro": "Det er ein feil i planen din som du må retta opp.",
+    "valideringsfeil.dateOutsideRange": "Ugyldig dato",
     "oppsummering.valideringsfeil.uttaksplan.lenketekst": "Gå til planen",
     "oppsummering.veileder":
         "Les gjennom oppsummeringa før du sender inn søknaden. Dersom du treng å gjere endringar, kan du gå tilbake.",

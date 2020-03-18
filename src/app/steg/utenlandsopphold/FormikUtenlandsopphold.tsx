@@ -12,6 +12,10 @@ import {
 } from './formTypes/utenlandsoppholdFormTypes';
 import BostedUtlandListAndDialog from './bostedUtlandListAndDialog/BostedUtlandListAndDialog';
 import { commonFieldErrorRenderer } from './bostedUtlandListAndDialog/BostedUtlandForm';
+import {
+    validateUtenlandsoppholdSiste12Mnd,
+    validateUtenlandsoppholdNeste12Mnd
+} from 'app/validation/fieldValidations';
 
 const initialValues: UtenlandsoppholdFormValues = {
     harBoddUtenforNorgeSiste12Mnd: YesOrNo.UNANSWERED,
@@ -42,10 +46,10 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({ intl, onValidSubmit }
                 return (
                     <div>
                         <FormComponents.Form
-                            includeButtons={true}
-                            submitButtonLabel="Gå videre"
+                            includeButtons={false}
                             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
                             includeValidationSummary={true}
+                            id={'utenlandsoppholdForm'}
                         >
                             <div>
                                 <Block margin="m">
@@ -70,6 +74,7 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({ intl, onValidSubmit }
                                                 modalTitle: 'Utenlandsopphold siste 12 måneder'
                                             }}
                                             erFremtidigOpphold={true}
+                                            validate={validateUtenlandsoppholdSiste12Mnd}
                                         />
                                     </Block>
                                 )}
@@ -95,6 +100,7 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({ intl, onValidSubmit }
                                                 modalTitle: 'Utenlandsopphold neste 12 måneder'
                                             }}
                                             erFremtidigOpphold={false}
+                                            validate={validateUtenlandsoppholdNeste12Mnd}
                                         />
                                     </Block>
                                 )}

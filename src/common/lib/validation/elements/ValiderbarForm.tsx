@@ -11,6 +11,7 @@ export interface ValiderbarFormProps {
     noSummary?: boolean;
     validateBeforeSubmit?: boolean;
     onSubmit?: (evt: FormSubmitEvent) => void;
+    id?: string;
     onValidationResult?: (result: SummaryError[]) => void;
     runValidationOnRegister?: boolean;
 }
@@ -182,17 +183,19 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
     }
 
     mapResultsToErrorSummary(): SummaryError[] {
-        return this.state.results.filter((result) => !result.valid).map((result) => {
-            const failedTest = result.tests.find((test: any) => !test.verdict);
-            const text =
-                failedTest !== undefined
-                    ? this.getFailedText(failedTest.failText)
-                    : this.props.intl.formatMessage({ id: 'validerbarForm.ukjentFeil' });
-            return {
-                name: result.name,
-                text
-            };
-        });
+        return this.state.results
+            .filter((result) => !result.valid)
+            .map((result) => {
+                const failedTest = result.tests.find((test: any) => !test.verdict);
+                const text =
+                    failedTest !== undefined
+                        ? this.getFailedText(failedTest.failText)
+                        : this.props.intl.formatMessage({ id: 'validerbarForm.ukjentFeil' });
+                return {
+                    name: result.name,
+                    text
+                };
+            });
     }
 
     render() {
