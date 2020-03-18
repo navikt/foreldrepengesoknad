@@ -91,6 +91,7 @@ const FormikUtenlandsopphold: React.FunctionComponent<Props> = ({
                             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
                             includeValidationSummary={true}
                             submitButtonLabel="Fortsett"
+                            runDelayedFormValidation={true}
                         >
                             <div>
                                 <Block margin="m">
