@@ -1,21 +1,21 @@
 import React from 'react';
-import moment from 'moment';
-import { injectIntl, InjectedIntl } from 'react-intl';
-
-import Block from 'common/components/block/Block';
+import { InjectedIntl, injectIntl } from 'react-intl';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import moment from 'moment';
+import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
+import { validateYesOrNoIsAnswered } from '../../../common/util/validateYesOrNoIsAnswered';
 import {
-    UtenlandsoppholdFormValues,
-    FormComponents,
-    UtenlandsoppholdFieldNames
-} from './formTypes/utenlandsoppholdFormTypes';
-import BostedUtlandListAndDialog from './bostedUtlandListAndDialog/BostedUtlandListAndDialog';
-import { commonFieldErrorRenderer } from './bostedUtlandListAndDialog/BostedUtlandForm';
-import {
-    validateUtenlandsoppholdSiste12Mnd,
-    validateUtenlandsoppholdNeste12Mnd
+    validateUtenlandsoppholdNeste12Mnd,
+    validateUtenlandsoppholdSiste12Mnd
 } from 'app/validation/fieldValidations';
+import { commonFieldErrorRenderer } from './bostedUtlandListAndDialog/BostedUtlandForm';
+import BostedUtlandListAndDialog from './bostedUtlandListAndDialog/BostedUtlandListAndDialog';
+import {
+    FormComponents,
+    UtenlandsoppholdFieldNames,
+    UtenlandsoppholdFormValues
+} from './formTypes/utenlandsoppholdFormTypes';
 
 const initialValues: UtenlandsoppholdFormValues = {
     harBoddUtenforNorgeSiste12Mnd: YesOrNo.UNANSWERED,
@@ -46,9 +46,10 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({ intl, onValidSubmit }
                 return (
                     <div>
                         <FormComponents.Form
-                            includeButtons={false}
+                            includeButtons={true}
                             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
                             includeValidationSummary={true}
+                            submitButtonLabel="Fortsett"
                             id={'utenlandsoppholdForm'}
                         >
                             <div>
@@ -61,6 +62,7 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({ intl, onValidSubmit }
                                             no: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boINorge'),
                                             yes: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boIUtlandet')
                                         }}
+                                        validate={validateYesOrNoIsAnswered}
                                     />
                                 </Block>
                                 {formValues.harBoddUtenforNorgeSiste12Mnd === YesOrNo.YES && (
@@ -87,6 +89,7 @@ const MedlemsskapStep: React.FunctionComponent<Props> = ({ intl, onValidSubmit }
                                             no: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddINorge'),
                                             yes: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddIUtlandet')
                                         }}
+                                        validate={validateYesOrNoIsAnswered}
                                     />
                                 </Block>
                                 {formValues.skalBoUtenforNorgeNeste12Mnd === YesOrNo.YES && (

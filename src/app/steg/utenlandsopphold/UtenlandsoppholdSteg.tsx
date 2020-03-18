@@ -1,29 +1,29 @@
 import * as React from 'react';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { AppState } from '../../redux/reducers';
-import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from '../../types/søknad/InformasjonOmUtenlandsopphold';
-import Block from 'common/components/block/Block';
-import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
-import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
-import { DispatchProps } from 'common/redux/types';
-import Steg, { StegProps } from '../../components/applikasjon/steg/Steg';
-import { StegID } from '../../util/routing/stegConfig';
-import { HistoryProps } from '../../types/common';
-import isAvailable from '../../util/steg/isAvailable';
-import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
-// import { default as visibility } from './visibility';
-import { SøkerinfoProps } from '../../types/søkerinfo';
-import cleanupUtenlandsOppholdSteg from '../../util/cleanup/cleanupUtenlandsoppholdSteg';
-import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
-import Barn, { isUfødtBarn, UfødtBarn } from 'app/types/søknad/Barn';
-import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
-import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
-import * as countries from 'i18n-iso-countries';
-import FormikUtenlandsopphold from './FormikUtenlandsopphold';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
+import * as countries from 'i18n-iso-countries';
+import Block from 'common/components/block/Block';
+import { DispatchProps } from 'common/redux/types';
+import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
+import Barn, { isUfødtBarn, UfødtBarn } from 'app/types/søknad/Barn';
 import { formatDate } from 'app/util/dates/dates';
+import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
+import Steg, { StegProps } from '../../components/applikasjon/steg/Steg';
+import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
+import { AppState } from '../../redux/reducers';
+import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
+import { HistoryProps } from '../../types/common';
+// import { default as visibility } from './visibility';
+import { SøkerinfoProps } from '../../types/søkerinfo';
+import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from '../../types/søknad/InformasjonOmUtenlandsopphold';
+import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
+import cleanupUtenlandsOppholdSteg from '../../util/cleanup/cleanupUtenlandsoppholdSteg';
+import { StegID } from '../../util/routing/stegConfig';
+import isAvailable from '../../util/steg/isAvailable';
+import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
+import FormikUtenlandsopphold from './FormikUtenlandsopphold';
 import { UtenlandsoppholdFormValues } from './formTypes/utenlandsoppholdFormTypes';
 
 interface StateProps {
@@ -116,24 +116,33 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                 {...nyStegProps}
                 onPreSubmit={this.cleanupSteg}
                 renderFormTag={false}
+                renderFortsettKnapp={false}
                 submitButtonId="utenlandsoppholdForm"
-            >
-                <Block visible={relevantUtenlandsopphold !== undefined}>
-                    <VeilederInfo
-                        messages={[
-                            {
-                                type: 'normal',
-                                contentIntlKey: 'utenlandsopphold.infoOmFødselsattest',
-                                values: {
-                                    land: this.getCountryName(countryNames, relevantUtenlandsopphold),
-                                    termindato: formatDate((barn as UfødtBarn).termindato)
-                                }
-                            }
-                        ]}
-                    />
-                </Block>
-                <FormikUtenlandsopphold onValidSubmit={this.updateReduxState} />
-            </Steg>
+                renderProp={(options) => (
+                    <>
+                        <Block visible={relevantUtenlandsopphold !== undefined}>
+                            <VeilederInfo
+                                messages={[
+                                    {
+                                        type: 'normal',
+                                        contentIntlKey: 'utenlandsopphold.infoOmFødselsattest',
+                                        values: {
+                                            land: this.getCountryName(countryNames, relevantUtenlandsopphold),
+                                            termindato: formatDate((barn as UfødtBarn).termindato)
+                                        }
+                                    }
+                                ]}
+                            />
+                        </Block>
+                        <FormikUtenlandsopphold
+                            onValidSubmit={(values) => {
+                                this.updateReduxState(values);
+                                options.onValidFormSubmit();
+                            }}
+                        />
+                    </>
+                )}
+            />
         );
     }
 }
@@ -145,7 +154,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
 
     const stegProps: StegProps = {
         id: StegID.UTENLANDSOPPHOLD,
-        renderFormTag: true,
+        renderFormTag: false,
         history,
         isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state.søknad, props.søkerinfo, selectSøknadsinfo(state))
     };

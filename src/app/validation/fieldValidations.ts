@@ -1,7 +1,7 @@
-import { SkjemaelementFeil } from 'common/lib/validation/types';
-import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
-import { date1YearAgo, date1YearAhead } from 'app/util/validation/values';
 import { dateRangesCollide, dateRangesExceedsRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
+import { SkjemaelementFeil } from 'common/lib/validation/types';
+import { date1YearAgo, date1YearAhead } from 'app/util/validation/values';
 
 const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
@@ -34,7 +34,6 @@ export const validateUtenlandsoppholdSiste12Mnd = (utenlandsopphold: BostedUtlan
     if (dateRangesExceedsRange(dateRanges, { from: date1YearAgo.toDate(), to: new Date() })) {
         return createFieldValidationError('valideringsfeil.utenlandsopphold_utenfor_periode');
     }
-
     return undefined;
 };
 

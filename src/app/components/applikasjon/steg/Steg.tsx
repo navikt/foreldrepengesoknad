@@ -1,29 +1,31 @@
 import * as React from 'react';
-import { getStegConfig, StegConfigItem, StegID } from '../../../util/routing/stegConfig';
-import { History } from 'history';
-import FortsettKnapp from 'app/components/applikasjon/steg/fortsettKnapp/FortsettKnapp';
-import ValiderbarForm, { FormSubmitEvent, ValiderbarFormProps } from 'common/lib/validation/elements/ValiderbarForm';
+import DocumentTitle from 'react-document-title';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
-import { søknadStegPath } from '../../../steg/StegRoutes';
-import routeConfig from '../../../util/routing/routeConfig';
 import { connect } from 'react-redux';
-import { AppState } from '../../../redux/reducers';
+import { History } from 'history';
+import Block from 'common/components/block/Block';
+import ValiderbarForm, { FormSubmitEvent, ValiderbarFormProps } from 'common/lib/validation/elements/ValiderbarForm';
 import { DispatchProps } from 'common/redux/types';
 import BEMHelper from 'common/util/bem';
-import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
-import StegFooter from '../stegFooter/StegFooter';
+import getMessage from 'common/util/i18nUtils';
 import BackButton from 'app/components/applikasjon/steg/backButton/BackButton';
-import Block from 'common/components/block/Block';
-import AvbrytSøknadDialog from '../../dialoger/avbrytSøknadDialog/AvbrytSøknadDialog';
-import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
-import DocumentTitle from 'react-document-title';
-import FortsettSøknadSenereDialog from '../../dialoger/fortsettSøknadSenereDialog/FortsettSøknadSenereDialog';
-import Stegindikator from '../stegindikator/Stegindikator';
+import FortsettKnapp from 'app/components/applikasjon/steg/fortsettKnapp/FortsettKnapp';
 import lenker from 'app/util/routing/lenker';
-
+import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
+import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
+import { AppState } from '../../../redux/reducers';
+import { søknadStegPath } from '../../../steg/StegRoutes';
+import routeConfig from '../../../util/routing/routeConfig';
+import { getStegConfig, StegConfigItem, StegID } from '../../../util/routing/stegConfig';
+import AvbrytSøknadDialog from '../../dialoger/avbrytSøknadDialog/AvbrytSøknadDialog';
+import FortsettSøknadSenereDialog from '../../dialoger/fortsettSøknadSenereDialog/FortsettSøknadSenereDialog';
+import StegFooter from '../stegFooter/StegFooter';
+import Stegindikator from '../stegindikator/Stegindikator';
 import './steg.less';
 
+interface RenderStegContentOptions {
+    onValidFormSubmit: () => void;
+}
 export interface StegProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
@@ -39,6 +41,7 @@ export interface StegProps {
     onRequestNavigateToNextStep?: () => boolean;
     submitButtonId?: string;
     confirmNavigateToPreviousStep?: (callback: () => void) => void;
+    renderProp?: (props: RenderStegContentOptions) => React.ReactNode;
 }
 
 interface StateProps {
@@ -52,6 +55,13 @@ interface State {
 }
 
 type Props = StateProps & StegProps & InjectedIntlProps;
+
+// interface StegContext {
+//     isValid: boolean;
+//     setFormIsValid?: (isValid: boolean) => void;
+// }
+
+// const StegContext = React.createContext<StegContext>({ isValid: false });
 
 class Steg extends React.Component<Props & DispatchProps, State> {
     constructor(props: Props & DispatchProps) {
@@ -201,7 +211,10 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                         erEnkelEndringssøknad={erEnkelEndringssøknad}
                     />
                 </Block>
-                {this.props.children}
+                {this.props.renderProp
+                    ? this.props.renderProp({ onValidFormSubmit: () => this.handleFortsett() })
+                    : this.props.children}
+
                 {renderFortsettKnapp === true && (
                     <Block>
                         <FortsettKnapp
