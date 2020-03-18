@@ -1039,6 +1039,8 @@
     "valideringsfeil.utenlandsopphold.tidligere": "Du må leggje inn ein dato som er innanfor dei siste 12 månadene.",
     "valideringsfeil.uttaksplanskjema.forMangeUkerPeriodeFarMedmor":
         "Du kan maksimalt ta ut {uker} uker med fellesperiode.",
+    "valideringsfeil.utenlandsopphold_ikke_registrert": "Du har ikke lagt inn et utenlandsopphold",
+    "valideringsfeil.utenlandsopphold_utenfor_periode": "Du kan ikke legge inn et utenlandsopphold i valgt tidsperiode",
     "varDuINorgeDaBarnetBleFødt.spørsmål": "Var du i Noreg då barnet blei født?",
     "varigEndringAvNæringsinntekt.dato.label": "Gi opp dato for endringa",
     "varigEndringAvNæringsinntekt.forklaring.label":
