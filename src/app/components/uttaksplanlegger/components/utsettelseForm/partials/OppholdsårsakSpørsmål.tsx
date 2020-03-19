@@ -1,5 +1,4 @@
 import * as React from 'react';
-import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import {
     OppholdÅrsakType,
     TilgjengeligStønadskonto,
@@ -8,6 +7,8 @@ import {
 import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { getNavnGenitivEierform } from '../../../../../util/tekstUtils';
+import { RadioProps } from 'nav-frontend-skjema';
+import FlervalgSpørsmål from 'common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 
 export interface OwnProps {
     oppholdsårsak: OppholdÅrsakType | undefined;
@@ -30,7 +31,7 @@ const createAlternative = (
     søkerErFarEllerMedmor: boolean,
     navnAnnenForelder: string,
     intl: InjectedIntl
-): FlervalgAlternativ => {
+): RadioProps => {
     if (konto.konto === StønadskontoType.Fedrekvote || konto.konto === StønadskontoType.Mødrekvote) {
         return {
             label: getMessage(intl, 'stønadskontotype.foreldernavn.kvote', {
@@ -38,12 +39,14 @@ const createAlternative = (
             }),
             value: søkerErFarEllerMedmor
                 ? OppholdÅrsakType.UttakMødrekvoteAnnenForelder
-                : OppholdÅrsakType.UttakFedrekvoteAnnenForelder
+                : OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+            name: 'oppholdÅrsak'
         };
     } else {
         return {
             label: getMessage(intl, 'stønadskontotype.FELLESPERIODE'),
-            value: OppholdÅrsakType.UttakFellesperiodeAnnenForelder
+            value: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+            name: 'oppholdÅrsak'
         };
     }
 };
@@ -53,7 +56,7 @@ const getAlternativer = (
     søkerErFarEllerMedmor: boolean,
     navnAnnenForelder: string,
     intl: InjectedIntl
-): FlervalgAlternativ[] => {
+): RadioProps[] => {
     return tilgjengeligeStønadskontoer
         .filter(
             (konto) =>

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import { OverføringÅrsakType } from '../types/uttaksplan/periodetyper';
-import FlervalgSpørsmål, { FlervalgAlternativ } from '../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
+import FlervalgSpørsmål from '../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import { getNavnGenitivEierform } from '../util/tekstUtils';
+import { RadioProps } from 'nav-frontend-skjema';
 
 interface OverføringsårsakSpørsmålProps {
     årsak: OverføringÅrsakType | undefined;
@@ -16,30 +17,40 @@ type Props = OverføringsårsakSpørsmålProps & InjectedIntlProps;
 const getOverføringsårsakAlternativ = (
     årsak: OverføringÅrsakType,
     annenForelderNavn: string,
+    radioName: string,
     intl: InjectedIntl
-): FlervalgAlternativ => ({
+): RadioProps => ({
     label: intl.formatMessage({ id: `overføringsårsaktype.${årsak}` }, { annenForelderNavn }),
-    value: årsak
+    value: årsak,
+    name: radioName
 });
 
 const OverføringsårsakSpørsmål = (props: Props) => {
     const { årsak, annenForelderNavn, visAleneomsorgSomMuligÅrsak, intl, onChange } = props;
+    const radioName = 'overføringsårsak';
 
     const alternativer = [
-        getOverføringsårsakAlternativ(OverføringÅrsakType.insititusjonsoppholdAnnenForelder, annenForelderNavn, intl),
-        getOverføringsårsakAlternativ(OverføringÅrsakType.sykdomAnnenForelder, annenForelderNavn, intl)
+        getOverføringsårsakAlternativ(
+            OverføringÅrsakType.insititusjonsoppholdAnnenForelder,
+            annenForelderNavn,
+            radioName,
+            intl
+        ),
+        getOverføringsårsakAlternativ(OverføringÅrsakType.sykdomAnnenForelder, annenForelderNavn, radioName, intl)
     ];
 
     if (visAleneomsorgSomMuligÅrsak) {
-        alternativer.push(getOverføringsårsakAlternativ(OverføringÅrsakType.aleneomsorg, annenForelderNavn, intl));
         alternativer.push(
-            getOverføringsårsakAlternativ(OverføringÅrsakType.ikkeRettAnnenForelder, annenForelderNavn, intl)
+            getOverføringsårsakAlternativ(OverføringÅrsakType.aleneomsorg, annenForelderNavn, radioName, intl)
+        );
+        alternativer.push(
+            getOverføringsårsakAlternativ(OverføringÅrsakType.ikkeRettAnnenForelder, annenForelderNavn, radioName, intl)
         );
     }
 
     return (
         <FlervalgSpørsmål
-            navn="overføringsårsak"
+            navn={radioName}
             toKolonner={true}
             spørsmål={intl.formatMessage(
                 { id: 'uttaksplan.overføring.årsak.spørsmål' },

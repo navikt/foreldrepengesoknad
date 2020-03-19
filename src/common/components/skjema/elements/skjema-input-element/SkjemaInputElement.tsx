@@ -2,7 +2,7 @@ import * as React from 'react';
 const { guid } = require('nav-frontend-js-utils');
 import classnames from 'classnames';
 import SkjemaelementFeilmelding from 'common/lib/validation/errors/SkjemaelementFeilmelding';
-import { SkjemaelementFeil } from 'nav-frontend-skjema/src/skjemaelement-feilmelding';
+import { SkjemaelementFeil } from 'common/lib/validation/types';
 
 export interface Props {
     label: string | React.ReactNode;
@@ -18,7 +18,8 @@ const SkjemaInputElement: React.StatelessComponent<Props> = (props: Props) => {
         <div
             className={classnames('skjemaelement', {
                 'skjemaelement--harFeil': feil !== undefined
-            })}>
+            })}
+        >
             {typeof label === 'string' ? (
                 <label className="skjemaelement__label" htmlFor={inputId}>
                     {label}
@@ -29,10 +30,11 @@ const SkjemaInputElement: React.StatelessComponent<Props> = (props: Props) => {
             <div
                 className={classnames({
                     'skjema__feilomrade--harFeil': feil !== undefined
-                })}>
+                })}
+            >
                 {children}
             </div>
-            <SkjemaelementFeilmelding feil={feil} />
+            {feil && <SkjemaelementFeilmelding feil={'feil'} />}
         </div>
     );
 };

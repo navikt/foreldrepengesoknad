@@ -2,9 +2,7 @@ import * as React from 'react';
 import { UtsettelseÅrsakType } from '../../../../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import Block from 'common/components/block/Block';
-import FlervalgSpørsmål, {
-    FlervalgAlternativ
-} from '../../../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
+import FlervalgSpørsmål from '../../../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
@@ -12,6 +10,7 @@ import { Skjemanummer } from '../../../../../types/søknad/Søknad';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../../../../skjema/vedleggSpørsmål/VedleggSpørsmål';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
+import { RadioProps } from 'nav-frontend-skjema';
 
 export interface UtsettelsePgaSykdomChangePayload {
     sykdomsårsak: UtsettelseÅrsakType;
@@ -27,10 +26,11 @@ export interface OwnProps {
 
 export const visVedlegg = (sykdomsårsak?: UtsettelseÅrsakType) => sykdomsårsak !== undefined;
 
-const getSykdomAlternativ = (intl: InjectedIntl, årsak: UtsettelseÅrsakType): FlervalgAlternativ => {
+const getSykdomAlternativ = (intl: InjectedIntl, årsak: UtsettelseÅrsakType, radioName: string): RadioProps => {
     return {
         label: getMessage(intl, `utsettelse.sykdom.alternativ.${årsak}`),
-        value: årsak
+        value: årsak,
+        name: radioName
     };
 };
 
@@ -63,11 +63,12 @@ class UtsettelsePgaSykdomPart extends React.Component<Props> {
     render() {
         const { onChange, intl, sykdomsårsak } = this.props;
         const vedleggList = [...this.props.vedlegg];
+        const radioName = 'utsettelsePgaSykdomÅrsak';
         return (
             <>
                 <Block>
                     <FlervalgSpørsmål
-                        navn="utsttelsePgaSykdomÅrsak"
+                        navn={radioName}
                         spørsmål={getMessage(intl, 'utsettelse.sykdom.alternativer.spørsmål')}
                         valgtVerdi={sykdomsårsak}
                         onChange={(årsak: UtsettelseÅrsakType) =>
@@ -75,9 +76,9 @@ class UtsettelsePgaSykdomPart extends React.Component<Props> {
                         }
                         toKolonner={true}
                         alternativer={[
-                            getSykdomAlternativ(intl, UtsettelseÅrsakType.Sykdom),
-                            getSykdomAlternativ(intl, UtsettelseÅrsakType.InstitusjonSøker),
-                            getSykdomAlternativ(intl, UtsettelseÅrsakType.InstitusjonBarnet)
+                            getSykdomAlternativ(intl, UtsettelseÅrsakType.Sykdom, radioName),
+                            getSykdomAlternativ(intl, UtsettelseÅrsakType.InstitusjonSøker, radioName),
+                            getSykdomAlternativ(intl, UtsettelseÅrsakType.InstitusjonBarnet, radioName)
                         ]}
                     />
                 </Block>

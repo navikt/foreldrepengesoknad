@@ -19,10 +19,13 @@ import {
     UttaksplanSetForslag,
     StartSøknad,
     UttaksplanLagForslag,
-    SetEndringstidspunkt
+    SetEndringstidspunkt,
+    SetInformasjonOmUtenlandsopphold
 } from './søknadActionDefinitions';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
-import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
+import InformasjonOmUtenlandsopphold, {
+    InformasjonOmUtenlandsoppholdPartial
+} from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { SøknadenGjelderBarnValg, Opplysning, SøknadEkstrainfo } from '../../../types/søknad/Søknad';
@@ -171,6 +174,13 @@ const setEndringstidspunkt = (endringstidspunkt: Date): SetEndringstidspunkt => 
     endringstidspunkt
 });
 
+const setInformasjonOmUtenlandsopphold = (
+    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold
+): SetInformasjonOmUtenlandsopphold => ({
+    type: SøknadActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD,
+    payload: informasjonOmUtenlandsopphold
+});
+
 export default {
     startSøknad,
     updateAnnenForelder,
@@ -195,5 +205,6 @@ export default {
     setVedleggForSenEndring,
     setTilleggsopplysning,
     uttaksplanSetForslag,
-    resetUttaksplanEndringer
+    resetUttaksplanEndringer,
+    setInformasjonOmUtenlandsopphold
 };
