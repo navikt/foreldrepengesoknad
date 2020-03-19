@@ -162,7 +162,7 @@
         "nav-frontend-veileder": "^2.0.15",
         "nav-frontend-veilederpanel": "^0.1.21",
         "promise": "8.0.1",
-        "react": "16.12.0",
+        "react": "16.13.0",
         "react-aria-menubutton": "6.2.0",
         "react-collapse": "4.0.3",
         "react-day-picker": "^7.4.0",
