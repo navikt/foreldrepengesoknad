@@ -27,8 +27,8 @@ const extractDecoratorFragments = (html) => {
     return {
         NAV_SCRIPTS: document.getElementById('scripts')[prop],
         NAV_STYLES: document.getElementById('styles')[prop],
-        NAV_HEADING: document.getElementById('header')[prop],
-        NAV_FOOTER: document.getElementById('footer')[prop]
+        NAV_HEADING: document.getElementById('header-withmenu')[prop],
+        NAV_FOOTER: document.getElementById('footer-withmenu')[prop]
     };
 };
 
