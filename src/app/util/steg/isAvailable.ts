@@ -50,7 +50,7 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo, s
                 barnErGyldig(søknad, søkerinfo) &&
                 annenForelderErGyldig(søknad, søkerinfo) &&
                 uttaksplanSkjemaErGyldig(søknad, søknadsinfo) &&
-                utenlandsoppholdErGyldig(søknad)
+                utenlandsoppholdErGyldig(søknad.informasjonOmUtenlandsopphold)
             );
         case StegID.MANGLENDE_VEDLEGG:
             return (
@@ -58,7 +58,7 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo, s
                 barnErGyldig(søknad, søkerinfo) &&
                 annenForelderErGyldig(søknad, søkerinfo) &&
                 uttaksplanSkjemaErGyldig(søknad, søknadsinfo) &&
-                utenlandsoppholdErGyldig(søknad) &&
+                utenlandsoppholdErGyldig(søknad.informasjonOmUtenlandsopphold) &&
                 annenInntektErGyldig(søknad.søker)
             );
         case StegID.OPPSUMMERING:
@@ -71,7 +71,9 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo, s
                 barnStegGyldig &&
                 annenForelderStegGyldig &&
                 uttaksplanStegGyldig &&
-                (søknad.erEndringssøknad === false ? utenlandsoppholdErGyldig(søknad) : true) &&
+                (søknad.erEndringssøknad === false
+                    ? utenlandsoppholdErGyldig(søknad.informasjonOmUtenlandsopphold)
+                    : true) &&
                 (søknad.erEndringssøknad === false ? annenInntektErGyldig(søknad.søker) : true) &&
                 søknadsinfo !== undefined
             );

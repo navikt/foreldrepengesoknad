@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
+import FlervalgSpørsmål from '../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import Block from 'common/components/block/Block';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
@@ -10,6 +10,7 @@ import { uttaksplanDatoavgrensninger } from '../../../util/validation/uttaksplan
 import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
 import startdatoFarMedmorValidation from '../../../util/validation/uttaksplan/startdatoFarMedmorValidation';
 import { DateValue } from '../../../types/common';
+import { RadioProps } from 'nav-frontend-skjema';
 
 interface OwnProps {
     familiehendelsesdato: Date;
@@ -22,14 +23,15 @@ const getAlternativ = (
     intl: InjectedIntl,
     alternativ: ValgalternativerAleneomsorgFarMedmor,
     dato?: Date
-): FlervalgAlternativ => {
+): RadioProps => {
     return {
         label: getMessage(
             intl,
             `uttaksplan.skjema.startdatoAleneomsorgFarMedmor.alternativ.${alternativ}`,
             dato ? { dato: formaterDatoUtenDag(dato) } : undefined
         ),
-        value: alternativ
+        value: alternativ,
+        name: 'startdatoUttakFarMedmorAleneomsorg'
     };
 };
 
@@ -47,7 +49,7 @@ const getStartdatoFromAlternativ = (
 const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
     const { visible, datoForAleneomsorg, familiehendelsesdato, intl } = props;
 
-    const alternativer: FlervalgAlternativ[] = [
+    const alternativer: RadioProps[] = [
         getAlternativ(intl, ValgalternativerAleneomsorgFarMedmor.datoForAleneomsorg, datoForAleneomsorg),
         getAlternativ(intl, ValgalternativerAleneomsorgFarMedmor.annen)
     ];
@@ -82,9 +84,8 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
                         />
                     </Block>
                     <Block
-                        visible={
-                            data.valgtStartdatoAleneomsorgFarMedmor === ValgalternativerAleneomsorgFarMedmor.annen
-                        }>
+                        visible={data.valgtStartdatoAleneomsorgFarMedmor === ValgalternativerAleneomsorgFarMedmor.annen}
+                    >
                         <ValiderbarDatoInput
                             id="annenStartdatoAleneomsorgFarMedmor"
                             name="annenStartdatoAleneomsorgFarMedmor"

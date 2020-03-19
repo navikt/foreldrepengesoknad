@@ -11,7 +11,6 @@ interface UtenlandsoppholdSkjemadata {
 }
 
 interface InformasjonOmUtenlandsopphold {
-    jobbetINorgeSiste12Mnd: boolean;
     iNorgeSiste12Mnd: boolean;
     iNorgeNeste12Mnd: boolean;
     tidligereOpphold: Utenlandsopphold[];

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
-import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import { StønadskontoType } from '../types/uttaksplan/periodetyper';
 import { getStønadskontoNavn } from '../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
 import FlervalgSpørsmål from '../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
+import { RadioProps } from 'nav-frontend-skjema';
 
 interface HvilkenKvoteSkalBenyttesSpørsmålProps {
     onChange: (stønadskonto: StønadskontoType) => void;
@@ -39,10 +39,13 @@ const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
         onChange
     } = props;
 
-    const radios = velgbareStønadskontoer.map((konto): RadioProps => ({
-        label: getStønadskontoNavn(intl, konto, navnPåForeldre),
-        value: `${konto}`
-    }));
+    const radios = velgbareStønadskontoer.map(
+        (konto): RadioProps => ({
+            label: getStønadskontoNavn(intl, konto, navnPåForeldre),
+            value: `${konto}`,
+            name: 'hvilkenKvote'
+        })
+    );
 
     return (
         <FlervalgSpørsmål

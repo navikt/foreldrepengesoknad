@@ -4,9 +4,9 @@ import { Select } from 'nav-frontend-skjema';
 import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import Block from 'common/components/block/Block';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
-import { SkjemaelementFeil } from 'nav-frontend-skjema/lib/skjemaelement-feilmelding';
 import getMessage from 'common/util/i18nUtils';
 import { Søkersituasjon } from 'app/types/søknad/Søknad';
+import { SkjemaelementFeil } from 'common/lib/validation/types';
 
 export interface OwnProps {
     /** Spørsmålstekst */
@@ -76,19 +76,19 @@ class AntallBarnBolk extends React.Component<Props> {
                         checked={antallBarnVerdi}
                         radios={[
                             {
-                                inputProps: { id: 'js-ettBarn' },
                                 label: getMessage(intl, 'antallBarn.alternativ.ettbarn'),
-                                value: '1'
+                                value: '1',
+                                name: inputName
                             },
                             {
-                                inputProps: { id: 'js-tvillinger' },
                                 label: getMessage(intl, antallBarnLabel),
-                                value: '2'
+                                value: '2',
+                                name: inputName
                             },
                             {
-                                inputProps: { id: 'js-flereBarn' },
                                 label: getMessage(intl, 'antallBarn.alternativ.flere'),
-                                value: '3'
+                                value: '3',
+                                name: inputName
                             }
                         ]}
                     />
@@ -101,7 +101,8 @@ class AntallBarnBolk extends React.Component<Props> {
                         value={antallBarn}
                         onChange={(evt: React.ChangeEvent<HTMLSelectElement>) =>
                             this.onSelectChange(parseInt(evt.target.value, 10))
-                        }>
+                        }
+                    >
                         <option value={3}>3</option>
                         <option value={4}>4</option>
                         <option value={5}>5</option>

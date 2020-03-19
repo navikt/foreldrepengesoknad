@@ -3,6 +3,8 @@ export interface ValidatorFailTextIntl {
     values?: { [key: string]: string | number | boolean | Date | null | undefined };
 }
 
+export type SkjemaelementFeil = React.ReactNode | boolean;
+
 export type ValidatorFailText = string | ValidatorFailTextIntl;
 
 export interface Validator {

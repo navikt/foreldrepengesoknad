@@ -4,7 +4,7 @@ import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import { Row, Column } from 'nav-frontend-grid';
 import Input from 'common/components/skjema/wrappers/Input';
-import SkjemaInputElement from 'common/components/skjema/elements/skjema-input-element/SkjemaInputElement';
+import Fieldset from 'app/temp-components/Fieldset';
 
 interface NavnPåAnnenForelderSpørsmålProps {
     fornavn?: string;
@@ -19,7 +19,7 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
     const { kanIkkeOppgis, fornavn, etternavn, onChange, intl } = props;
 
     return (
-        <SkjemaInputElement label={getMessage(intl, 'annenForelder.spørsmål.navn')}>
+        <Fieldset legend={getMessage(intl, 'annenForelder.spørsmål.navn')}>
             <Row>
                 <Column xs="12" sm="6" className="block--sm--xs">
                     <Input
@@ -43,7 +43,7 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
                     />
                 </Column>
             </Row>
-        </SkjemaInputElement>
+        </Fieldset>
     );
 };
 

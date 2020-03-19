@@ -14,6 +14,11 @@ import { Perioden } from '../uttaksplan/Perioden';
 
 const moment = require('moment');
 
+export interface DateRange {
+    from: Date;
+    to: Date;
+}
+
 export const getRelevantFamiliehendelseDato = ({
     termindato,
     fødselsdato,
@@ -153,4 +158,100 @@ export const timeintervalsOverlap = (
         });
     }
     return true;
+};
+
+const prettyDateFormatExtended = 'DD. MMM YYYY';
+const prettifyDateExtended = (date: Date) => moment(date).format(prettyDateFormatExtended);
+
+const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
+    return moment(date).isBetween(minDate, maxDate, 'day', '[]');
+};
+
+const validateDateInRange = (date: Date | undefined, minDate: Date, maxDate: Date) => {
+    if (date === undefined) {
+        return {
+            key: 'påkrevd'
+        };
+    }
+
+    if (!dateIsWithinRange(date, minDate, maxDate)) {
+        return {
+            key: 'valideringsfeil.dateOutsideRange',
+            values: {
+                fom: prettifyDateExtended(minDate),
+                tom: prettifyDateExtended(maxDate)
+            }
+        };
+    }
+
+    return undefined;
+};
+
+const validateFromDate = (date: Date | undefined, minDate: Date, maxDate: Date, toDate?: Date) => {
+    const error = validateDateInRange(date, minDate, maxDate);
+    if (error !== undefined) {
+        return error;
+    }
+    if (toDate && moment(date).isAfter(toDate, 'day')) {
+        return {
+            key: 'valideringsfeil.utenlandsopphold.førTilDato'
+        };
+    }
+    return undefined;
+};
+
+const validateToDate = (date: Date | undefined, minDate: Date, maxDate: Date, fromDate?: Date) => {
+    const error = validateDateInRange(date, minDate, maxDate);
+    if (error !== undefined) {
+        return error;
+    }
+    if (fromDate && moment(date).isBefore(fromDate, 'day')) {
+        return {
+            key: 'valideringsfeil.utenlandsopphold.etterFraDato'
+        };
+    }
+    return undefined;
+};
+
+export const dateRangeValidation = {
+    validateToDate,
+    validateFromDate
+};
+
+export const sortDateRange = (d1: DateRange, d2: DateRange): number => {
+    if (moment(d1.from).isSameOrBefore(d2.from)) {
+        return -1;
+    }
+    return 1;
+};
+
+export const dateRangesCollide = (ranges: DateRange[], fromDateCannotBeSameAsPreviousToDate?: boolean): boolean => {
+    if (ranges.length > 0) {
+        const sortedDates = ranges.sort(sortDateRange);
+        const hasOverlap = ranges.find((d, idx) => {
+            if (idx < sortedDates.length - 1) {
+                return moment(d.to).isAfter(sortedDates[idx + 1].from);
+            }
+            return false;
+        });
+        return hasOverlap !== undefined;
+    }
+    return false;
+};
+
+export const dateRangesExceedsRange = (ranges: DateRange[], allowedRange: DateRange): boolean => {
+    if (ranges.length === 0) {
+        return false;
+    }
+    const sortedRanges = ranges.sort(sortDateRange);
+    const from = sortedRanges[0].from;
+    const to = sortedRanges[sortedRanges.length - 1].to;
+
+    if (
+        !moment(from).isBetween(allowedRange.from, allowedRange.to, 'day', '[]') ||
+        !moment(to).isBetween(allowedRange.from, allowedRange.to, 'day', '[]')
+    ) {
+        return true;
+    }
+    return false;
 };
