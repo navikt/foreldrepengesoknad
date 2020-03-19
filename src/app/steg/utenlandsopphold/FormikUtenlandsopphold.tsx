@@ -97,7 +97,7 @@ const FormikUtenlandsopphold: React.FunctionComponent<Props> = ({
                                 <Block margin="m">
                                     <FormComponents.YesOrNoQuestion
                                         legend={getMessage(intl, 'iNorgeNeste12Mnd.spørsmål')}
-                                        name={UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd}
+                                        name={UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd}
                                         info={getMessage(intl, 'utenlandsopphold.neste12MånederInfotekst')}
                                         labels={{
                                             no: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boINorge'),
@@ -106,25 +106,25 @@ const FormikUtenlandsopphold: React.FunctionComponent<Props> = ({
                                         validate={validateYesOrNoIsAnswered}
                                     />
                                 </Block>
-                                {formValues.harBoddUtenforNorgeSiste12Mnd === YesOrNo.YES && (
+                                {formValues.skalBoUtenforNorgeNeste12Mnd === YesOrNo.YES && (
                                     <Block margin="l">
                                         <BostedUtlandListAndDialog<UtenlandsoppholdFieldNames>
-                                            name={UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd}
-                                            minDate={date1YearAgo}
-                                            maxDate={dateToday}
+                                            name={UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd}
+                                            minDate={dateToday}
+                                            maxDate={date1YearFromNow}
                                             labels={{
                                                 addLabel: 'Legg til nytt utenlandsopphold',
-                                                modalTitle: 'Utenlandsopphold siste 12 måneder'
+                                                modalTitle: 'Utenlandsopphold neste 12 måneder'
                                             }}
                                             erFremtidigOpphold={true}
-                                            validate={validateUtenlandsoppholdSiste12Mnd}
+                                            validate={validateUtenlandsoppholdNeste12Mnd}
                                         />
                                     </Block>
                                 )}
                                 <Block>
                                     <FormComponents.YesOrNoQuestion
                                         legend={getMessage(intl, 'boddINorgeSiste12Mnd.spørsmål')}
-                                        name={UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd}
+                                        name={UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd}
                                         info={getMessage(intl, 'utenlandsopphold.siste12MånederInfotekst')}
                                         labels={{
                                             no: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddINorge'),
@@ -133,18 +133,18 @@ const FormikUtenlandsopphold: React.FunctionComponent<Props> = ({
                                         validate={validateYesOrNoIsAnswered}
                                     />
                                 </Block>
-                                {formValues.skalBoUtenforNorgeNeste12Mnd === YesOrNo.YES && (
+                                {formValues.harBoddUtenforNorgeSiste12Mnd === YesOrNo.YES && (
                                     <Block margin="m">
                                         <BostedUtlandListAndDialog<UtenlandsoppholdFieldNames>
-                                            minDate={dateToday}
-                                            maxDate={date1YearFromNow}
-                                            name={UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd}
+                                            minDate={date1YearAgo}
+                                            maxDate={dateToday}
+                                            name={UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd}
                                             labels={{
                                                 addLabel: 'Legg til nytt utenlandsopphold',
-                                                modalTitle: 'Utenlandsopphold neste 12 måneder'
+                                                modalTitle: 'Utenlandsopphold siste 12 måneder'
                                             }}
                                             erFremtidigOpphold={false}
-                                            validate={validateUtenlandsoppholdNeste12Mnd}
+                                            validate={validateUtenlandsoppholdSiste12Mnd}
                                         />
                                     </Block>
                                 )}
