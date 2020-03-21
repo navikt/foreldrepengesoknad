@@ -17,6 +17,8 @@ import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnF�
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 import VeilederInfo from '../../../../components/veilederInfo/VeilederInfo';
 
+import './ufødtBarnPartial.less';
+
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
     søker: Søker;
@@ -79,22 +81,24 @@ class UfødtBarnPartial extends React.Component<Props> {
                         />
 
                         <Block visible={vis.termindato}>
-                            <DatoInput
-                                id="termindato"
-                                name="termindato"
-                                label={getMessage(intl, 'termindato.spørsmål')}
-                                infotekst={getMessage(intl, 'termindato.infotekst')}
-                                onChange={(termindato: Date) => {
-                                    dispatch(
-                                        søknadActions.updateBarn({
-                                            termindato
-                                        })
-                                    );
-                                }}
-                                dato={barn.termindato}
-                                datoAvgrensinger={termindatoAvgrensninger}
-                                validators={getTermindatoRegler(barn.termindato, intl)}
-                            />
+                            <div className="infoknappfiks">
+                                <DatoInput
+                                    id="termindato"
+                                    name="termindato"
+                                    label={getMessage(intl, 'termindato.spørsmål')}
+                                    infotekst={getMessage(intl, 'termindato.infotekst')}
+                                    onChange={(termindato: Date) => {
+                                        dispatch(
+                                            søknadActions.updateBarn({
+                                                termindato
+                                            })
+                                        );
+                                    }}
+                                    dato={barn.termindato}
+                                    datoAvgrensinger={termindatoAvgrensninger}
+                                    validators={getTermindatoRegler(barn.termindato, intl)}
+                                />
+                            </div>
                         </Block>
 
                         {vis.terminbekreftelse ? (
