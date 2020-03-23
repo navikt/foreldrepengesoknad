@@ -20,7 +20,7 @@ import Barn, { isUfødtBarn, UfødtBarn } from 'app/types/søknad/Barn';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 import * as countries from 'i18n-iso-countries';
-import FormikUtenlandsopphold from './FormikUtenlandsopphold';
+import UtenlandsoppholdForm from './UtenlandsoppholdForm';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
 import { formatDate } from 'app/util/dates/dates';
@@ -134,7 +134,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                                 ]}
                             />
                         </Block>
-                        <FormikUtenlandsopphold
+                        <UtenlandsoppholdForm
                             onValidSubmit={(values) => {
                                 this.updateReduxState(values);
                                 options.onValidFormSubmit();

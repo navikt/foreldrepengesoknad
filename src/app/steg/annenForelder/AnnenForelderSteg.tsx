@@ -11,7 +11,7 @@ import isAvailable from '../../util/steg/isAvailable';
 import { StegID } from '../../util/routing/stegConfig';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
-import PersonaliaBox from 'app/steg/annenForelder/personalia-box/PersonaliaBox';
+import RegistrertePersonalia from './registrerte-personalia/RegistrertePersonalia';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import {
     getAnnenForelderStegVisibility,
@@ -27,6 +27,7 @@ import { Barn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import AnnenForelderForm from './AnnenForelderForm';
 
 interface StateProps {
     søknad: Partial<Søknad>;
@@ -119,8 +120,13 @@ class AnnenForelderSteg extends React.Component<Props> {
                         }}
                         visible={registrertAnnenForelder !== undefined}
                     >
-                        {registrertAnnenForelder ? <PersonaliaBox person={registrertAnnenForelder} /> : undefined}
+                        {registrertAnnenForelder ? (
+                            <RegistrertePersonalia person={registrertAnnenForelder} />
+                        ) : (
+                            undefined
+                        )}
                     </Block>
+                    <AnnenForelderForm onValidSubmit={() => null} />
                     <AnnenForelderSpørsmål
                         søkerFnr={søkersFødselsnummer}
                         søker={søker}

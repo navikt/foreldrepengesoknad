@@ -8,7 +8,7 @@ const isValidFødselsnummer = require('is-valid-fodselsnummer');
 const MAKS_FNR_LENGTH = 30;
 
 type FødselsnummerValidationResult = false | 'F' | 'D';
-const isFødselsnummerFormatValid = (fnr: string): FødselsnummerValidationResult => {
+export const isFødselsnummerFormatValid = (fnr: string): FødselsnummerValidationResult => {
     try {
         return isValidFødselsnummer(fnr, true);
     } catch (e) {
@@ -16,7 +16,7 @@ const isFødselsnummerFormatValid = (fnr: string): FødselsnummerValidationResul
     }
 };
 
-const isUtenlandskFødselsnummerValid = (fnr: string): boolean => {
+export const isUtenlandskFødselsnummerValid = (fnr: string): boolean => {
     return fnr !== undefined && fnr !== '' && fnr.length <= MAKS_FNR_LENGTH;
 };
 

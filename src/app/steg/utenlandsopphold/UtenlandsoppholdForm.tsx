@@ -7,7 +7,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import getMessage from 'common/util/i18nUtils';
 import {
     UtenlandsoppholdFormValues,
-    FormComponents,
+    UtenlandsoppholdFormComponents,
     UtenlandsoppholdFieldNames
 } from './formTypes/utenlandsoppholdFormTypes';
 import BostedUtlandListAndDialog from './bostedUtlandListAndDialog/BostedUtlandListAndDialog';
@@ -72,7 +72,7 @@ const getInitialValues = (
     return defaultInitialValues;
 };
 
-const FormikUtenlandsopphold: React.FunctionComponent<Props> = ({
+const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
     intl,
     informasjonOmUtenlandsoppholdFraSøknad,
     onValidSubmit
@@ -80,13 +80,13 @@ const FormikUtenlandsopphold: React.FunctionComponent<Props> = ({
     const initialValues = getInitialValues(informasjonOmUtenlandsoppholdFraSøknad);
 
     return (
-        <FormComponents.FormikWrapper
+        <UtenlandsoppholdFormComponents.FormikWrapper
             initialValues={initialValues}
             onSubmit={(values: UtenlandsoppholdFormValues) => onValidSubmit(values)}
             renderForm={({ values: formValues }) => {
                 return (
                     <div>
-                        <FormComponents.Form
+                        <UtenlandsoppholdFormComponents.Form
                             includeButtons={true}
                             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
                             includeValidationSummary={true}
@@ -95,7 +95,7 @@ const FormikUtenlandsopphold: React.FunctionComponent<Props> = ({
                         >
                             <div>
                                 <Block margin="m">
-                                    <FormComponents.YesOrNoQuestion
+                                    <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                         legend={getMessage(intl, 'iNorgeNeste12Mnd.spørsmål')}
                                         name={UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd}
                                         info={getMessage(intl, 'utenlandsopphold.neste12MånederInfotekst')}
@@ -122,7 +122,7 @@ const FormikUtenlandsopphold: React.FunctionComponent<Props> = ({
                                     </Block>
                                 )}
                                 <Block>
-                                    <FormComponents.YesOrNoQuestion
+                                    <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                         legend={getMessage(intl, 'boddINorgeSiste12Mnd.spørsmål')}
                                         name={UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd}
                                         info={getMessage(intl, 'utenlandsopphold.siste12MånederInfotekst')}
@@ -149,7 +149,7 @@ const FormikUtenlandsopphold: React.FunctionComponent<Props> = ({
                                     </Block>
                                 )}
                             </div>
-                        </FormComponents.Form>
+                        </UtenlandsoppholdFormComponents.Form>
                     </div>
                 );
             }}
@@ -157,4 +157,4 @@ const FormikUtenlandsopphold: React.FunctionComponent<Props> = ({
     );
 };
 
-export default injectIntl(FormikUtenlandsopphold);
+export default injectIntl(UtenlandsoppholdForm);

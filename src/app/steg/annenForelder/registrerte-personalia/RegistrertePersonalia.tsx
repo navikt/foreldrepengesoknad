@@ -6,7 +6,7 @@ import { getAlderFraDato } from 'app/util/dates/dates';
 import { formaterNavn } from 'app/util/domain/personUtil';
 import { injectIntl, FormattedMessage, InjectedIntlProps } from 'react-intl';
 
-import './personaliaBox.less';
+import './registrertePersonalia.less';
 
 interface PersonaliaBoxProps {
     person: RegistrertAnnenForelder;

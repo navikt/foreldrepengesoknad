@@ -6,7 +6,7 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { BostedUtland, isValidBostedUtland } from './types';
 import getMessage from 'common/util/i18nUtils';
 import { dateRangeValidation } from 'app/util/dates/dates';
-import { validateRequiredSelect } from 'app/validation/fieldValidations';
+import { validateRequiredField } from 'app/validation/fieldValidations';
 
 export interface BostedUtlandFormLabels {
     tittel: string;
@@ -109,7 +109,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                         ? getMessage(intl, 'utenlandsopphold.select.spørsmål.senereOpphold')
                                         : getMessage(intl, 'utenlandsopphold.select.spørsmål.tidligereOpphold')
                                 }
-                                validate={validateRequiredSelect}
+                                validate={validateRequiredField}
                             />
                         </FormBlock>
                     </Form.Form>
