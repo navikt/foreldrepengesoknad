@@ -16,7 +16,6 @@ import AttachmentsUploaderPure from 'app/components/storage/attachment/component
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import Barn from 'app/types/søknad/Barn';
-import { RegistrertAnnenForelder } from 'app/types/Person';
 
 interface Props {
     intl: InjectedIntl;
@@ -25,25 +24,11 @@ interface Props {
     gjelderStebarnsadopsjon: boolean;
     familiehendelseDato: Date | undefined;
     barn: Barn;
-    registrertAnnenForelder: RegistrertAnnenForelder | undefined;
+    initialFormValues: AnnenForelderFormValues;
     onValidSubmit: (values: AnnenForelderFormValues) => void;
     onFilesSelect: (attachments: Attachment[]) => void;
     onFileDelete: (attachment: Attachment) => void;
 }
-
-const getInitialValues = (
-    registrertAnnenForelder: RegistrertAnnenForelder | undefined
-): Partial<AnnenForelderFormValues> => {
-    if (registrertAnnenForelder !== undefined) {
-        return {
-            fornavn: registrertAnnenForelder.fornavn,
-            etternavn: registrertAnnenForelder.etternavn,
-            fnr: registrertAnnenForelder.fnr
-        };
-    }
-
-    return {};
-};
 
 const AnnenForelderForm: React.FunctionComponent<Props> = ({
     onValidSubmit,
@@ -52,16 +37,14 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
     gjelderStebarnsadopsjon,
     familiehendelseDato,
     barn,
-    registrertAnnenForelder,
+    initialFormValues,
     onFilesSelect,
     onFileDelete,
     intl
 }) => {
-    const initialValues = getInitialValues(registrertAnnenForelder);
-
     return (
         <AnnenForelderFormComponents.FormikWrapper
-            initialValues={initialValues}
+            initialValues={initialFormValues}
             onSubmit={(values: AnnenForelderFormValues) => onValidSubmit(values)}
             renderForm={({ values: formValues }) => {
                 const visibility = annenForelderFormQuestions.getVisbility({
@@ -82,6 +65,7 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                             <OppgiPersonalia
                                 fornavn={formValues.fornavn}
                                 erUtenlandskFnr={formValues.utenlandskFnr}
+                                kanIkkeOppgis={formValues.kanIkkeOppgis}
                                 visibility={visibility}
                             />
                         )}

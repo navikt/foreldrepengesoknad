@@ -44,6 +44,7 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
         isIncluded: ({ skalOppgiPersonalia }) => skalOppgiPersonalia
     },
     [AnnenForelderFieldNames.aleneOmOmsorg]: {
+        parentQuestion: AnnenForelderFieldNames.fnr,
         isAnswered: ({ aleneOmOmsorg }) => aleneOmOmsorg !== YesOrNo.UNANSWERED,
         isIncluded: () => true,
         visibilityFilter: ({ skalOppgiPersonalia, fnr, utenlandskFnr, bostedsland }) =>

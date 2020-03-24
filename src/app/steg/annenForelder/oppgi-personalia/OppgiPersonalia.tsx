@@ -7,7 +7,7 @@ import { AnnenForelderFormComponents, AnnenForelderFieldNames } from '../form/an
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
-import { validateRequiredField, validateFødselsnummer } from 'app/validation/fieldValidations';
+import { validateFødselsnummer } from 'app/validation/fieldValidations';
 
 import './oppgiPersonalia.less';
 
@@ -16,11 +16,18 @@ const bem = BEMHelper('oppgiPersonalia');
 interface Props {
     intl: InjectedIntl;
     fornavn: string;
+    kanIkkeOppgis: boolean;
     erUtenlandskFnr: boolean;
     visibility: QuestionVisibility<AnnenForelderFieldNames, undefined>;
 }
 
-const OppgiPersonalia: React.FunctionComponent<Props> = ({ fornavn, erUtenlandskFnr, visibility, intl }) => {
+const OppgiPersonalia: React.FunctionComponent<Props> = ({
+    fornavn,
+    erUtenlandskFnr,
+    kanIkkeOppgis,
+    visibility,
+    intl
+}) => {
     return (
         <div className={bem.block}>
             <Block margin="xxs">
@@ -32,12 +39,13 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ fornavn, erUtenlandsk
                         className={bem.element('nameInput')}
                         name={AnnenForelderFieldNames.fornavn}
                         label={getMessage(intl, 'annenForelder.spørsmål.fornavn')}
-                        validate={validateRequiredField}
+                        disabled={kanIkkeOppgis}
                     />
                     <AnnenForelderFormComponents.Input
                         className={bem.element('nameInput')}
                         name={AnnenForelderFieldNames.etternavn}
                         label={getMessage(intl, 'annenForelder.spørsmål.etternavn')}
+                        disabled={kanIkkeOppgis}
                     />
                 </div>
             </Block>

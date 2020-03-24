@@ -114,7 +114,6 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         return (
             <Steg
                 {...nyStegProps}
-                onPreSubmit={this.cleanupSteg}
                 renderProp={(options) => (
                     <>
                         <Block visible={relevantUtenlandsopphold !== undefined}>
