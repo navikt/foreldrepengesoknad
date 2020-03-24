@@ -118,6 +118,7 @@
         "@navikt/sif-common-core": "^0.1.1",
         "@navikt/sif-common-formik": "^3.1.0",
         "@navikt/sif-common-forms": "^1.0.0",
+        "@navikt/sif-common-question-config": "0.0.2",
         "@sentry/browser": "^5.6.3",
         "axios": "^0.19.2",
         "bytes": "3.0.0",

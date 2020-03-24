@@ -15,4 +15,7 @@ export interface UtenlandsoppholdFormValues {
     [UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd]: BostedUtland[];
 }
 
-export const FormComponents = getTypedFormComponents<UtenlandsoppholdFieldNames, UtenlandsoppholdFormValues>();
+export const UtenlandsoppholdFormComponents = getTypedFormComponents<
+    UtenlandsoppholdFieldNames,
+    UtenlandsoppholdFormValues
+>();

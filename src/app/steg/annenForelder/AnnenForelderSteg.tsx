@@ -11,22 +11,21 @@ import isAvailable from '../../util/steg/isAvailable';
 import { StegID } from '../../util/routing/stegConfig';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
-import PersonaliaBox from 'app/steg/annenForelder/personalia-box/PersonaliaBox';
+import RegistrertePersonalia from './registrerte-personalia/RegistrertePersonalia';
 import { SøkerinfoProps } from '../../types/søkerinfo';
-import {
-    getAnnenForelderStegVisibility,
-    AnnenForelderStegVisibility,
-    skalBrukerStoppesPgaAnnenForelderIkkeInformert
-} from './visibility/annenForelderStegVisibility';
+import { getAnnenForelderStegVisibility, AnnenForelderStegVisibility } from './visibility/annenForelderStegVisibility';
 import cleanupAnnenForelderSteg from '../../util/cleanup/cleanupAnnenForelderSteg';
 import { default as søknadActions } from '../../redux/actions/søknad/søknadActionCreators';
 import { resolveStegToRender } from '../../util/steg/navigation';
 import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
-import AnnenForelderSpørsmål from './AnnenForelderSpørsmål';
-import { Barn } from '../../types/søknad/Barn';
+import { Barn, isAdopsjonsbarn } from '../../types/søknad/Barn';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import AnnenForelderForm from './AnnenForelderForm';
+import { getFamiliehendelsedato } from 'app/util/uttaksplan';
+import { AnnenForelderFormValues } from './form/annenforelderFormTypes';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 interface StateProps {
     søknad: Partial<Søknad>;
@@ -39,7 +38,10 @@ interface StateProps {
     erSøkerFarEllerMedmor: boolean;
     registrertAnnenForelder?: RegistrertAnnenForelder;
     stegProps: StegProps;
+    gjelderStebarnsadopsjon: boolean;
+    familiehendelseDato: Date | undefined;
     visibility?: AnnenForelderStegVisibility;
+    initialFormValues: AnnenForelderFormValues;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -48,11 +50,38 @@ class AnnenForelderSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.cleanupSteg = this.cleanupSteg.bind(this);
-        this.onBarnChange = this.onBarnChange.bind(this);
-        this.onSøkerChange = this.onSøkerChange.bind(this);
-        this.onAnnenForelderChange = this.onAnnenForelderChange.bind(this);
+        this.updateBarn = this.updateBarn.bind(this);
+        this.updateSøker = this.updateSøker.bind(this);
+        this.updateAnnenForelder = this.updateAnnenForelder.bind(this);
         this.onFileDelete = this.onFileDelete.bind(this);
         this.onFilesSelect = this.onFilesSelect.bind(this);
+        this.updateReduxState = this.updateReduxState.bind(this);
+    }
+
+    updateReduxState(values: AnnenForelderFormValues) {
+        const annenForelder: Partial<AnnenForelder> = {
+            fornavn: values.fornavn,
+            etternavn: values.etternavn,
+            fnr: values.fnr,
+            erInformertOmSøknaden: values.erInformertOmSøknaden === YesOrNo.YES,
+            harRettPåForeldrepenger: values.harRettPåForeldrepenger === YesOrNo.YES,
+            kanIkkeOppgis: values.kanIkkeOppgis,
+            utenlandskFnr: values.utenlandskFnr,
+            erUfør: values.erMorUfør === YesOrNo.YES,
+            bostedsland: values.bostedsland
+        };
+
+        const barn: Partial<Barn> = {
+            datoForAleneomsorg: values.datoForAleneomsorg
+        };
+
+        const søker: Partial<Søker> = {
+            erAleneOmOmsorg: values.aleneOmOmsorg === YesOrNo.YES
+        };
+
+        this.updateAnnenForelder(annenForelder);
+        this.updateBarn(barn);
+        this.updateSøker(søker);
     }
 
     cleanupSteg() {
@@ -63,15 +92,15 @@ class AnnenForelderSteg extends React.Component<Props> {
         }
     }
 
-    onBarnChange(barn: Partial<Barn>) {
+    updateBarn(barn: Partial<Barn>) {
         this.props.dispatch(søknadActions.updateBarn(barn));
     }
 
-    onAnnenForelderChange(annenForelder: Partial<AnnenForelder>) {
+    updateAnnenForelder(annenForelder: Partial<AnnenForelder>) {
         this.props.dispatch(søknadActions.updateAnnenForelder(annenForelder));
     }
 
-    onSøkerChange(søker: Partial<Søker>) {
+    updateSøker(søker: Partial<Søker>) {
         this.props.dispatch(søknadActions.updateSøker(søker));
     }
 
@@ -92,11 +121,12 @@ class AnnenForelderSteg extends React.Component<Props> {
             søkersFødselsnummer,
             søker,
             barn,
-            annenForelder,
             antallBarn,
-            situasjon,
             stegProps,
+            gjelderStebarnsadopsjon,
+            familiehendelseDato,
             visibility,
+            initialFormValues,
             intl
         } = this.props;
 
@@ -104,53 +134,49 @@ class AnnenForelderSteg extends React.Component<Props> {
             return (
                 <Steg
                     {...stegProps}
-                    onPreSubmit={this.cleanupSteg}
-                    onRequestNavigateToNextStep={() => {
-                        if (annenForelder.kanIkkeOppgis) {
-                            return true;
-                        }
-
-                        return annenForelder.fnr !== undefined && annenForelder.fnr !== '';
-                    }}
-                >
-                    <Block
-                        header={{
-                            title: getMessage(intl, 'annenForelder.label.registrertForelder', { antallBarn })
-                        }}
-                        visible={registrertAnnenForelder !== undefined}
-                    >
-                        {registrertAnnenForelder ? <PersonaliaBox person={registrertAnnenForelder} /> : undefined}
-                    </Block>
-                    <AnnenForelderSpørsmål
-                        søkerFnr={søkersFødselsnummer}
-                        søker={søker}
-                        annenForelder={annenForelder}
-                        søknad={this.props.søknad}
-                        barn={barn}
-                        situasjon={situasjon}
-                        visibility={visibility}
-                        onSøkerChange={this.onSøkerChange}
-                        onBarnChange={this.onBarnChange}
-                        onAnnenForelderChange={this.onAnnenForelderChange}
-                        onFileDelete={this.onFileDelete}
-                        onFilesSelect={this.onFilesSelect}
-                    />
-                </Steg>
+                    renderProp={(options) => (
+                        <>
+                            <Block
+                                header={{
+                                    title: getMessage(intl, 'annenForelder.label.registrertForelder', { antallBarn })
+                                }}
+                                visible={registrertAnnenForelder !== undefined}
+                            >
+                                {registrertAnnenForelder ? (
+                                    <RegistrertePersonalia person={registrertAnnenForelder} />
+                                ) : (
+                                    undefined
+                                )}
+                            </Block>
+                            <AnnenForelderForm
+                                onValidSubmit={(values) => {
+                                    this.updateReduxState(values);
+                                    this.cleanupSteg();
+                                    options.onValidFormSubmit();
+                                }}
+                                skalOppgiPersonalia={registrertAnnenForelder === undefined}
+                                søkerRolle={søker.rolle}
+                                gjelderStebarnsadopsjon={gjelderStebarnsadopsjon}
+                                familiehendelseDato={familiehendelseDato}
+                                barn={barn}
+                                initialFormValues={initialFormValues}
+                                onFileDelete={this.onFileDelete}
+                                onFilesSelect={this.onFilesSelect}
+                            />
+                        </>
+                    )}
+                />
             );
         }
         return null;
     }
 }
 
-const skalFortsettKnappRendres = (søknad: Søknad, visibility: AnnenForelderStegVisibility | undefined): boolean => {
-    if (
-        visibility === undefined ||
-        visibility.areAllQuestionsAnswered() === false ||
-        skalBrukerStoppesPgaAnnenForelderIkkeInformert(søknad.annenForelder, visibility)
-    ) {
-        return false;
+const gjelderSøknadenStebarnsadopsjon = (barn: Barn, situasjon: Søkersituasjon): boolean => {
+    if (situasjon === Søkersituasjon.ADOPSJON && isAdopsjonsbarn(barn, situasjon)) {
+        return barn.adopsjonAvEktefellesBarn === true;
     }
-    return true;
+    return false;
 };
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
@@ -159,15 +185,32 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const { registrertAnnenForelder } = sensitivInfoIkkeLagre;
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
 
+    const gjelderStebarnsadopsjon = gjelderSøknadenStebarnsadopsjon(barn, situasjon);
+    const familiehendelseDato = getFamiliehendelsedato(barn, situasjon);
+
     const visibility = getAnnenForelderStegVisibility(state.søknad, props.søkerinfo);
 
     const stegProps: StegProps = {
         id: StegID.ANNEN_FORELDER,
-        renderFortsettKnapp: skalFortsettKnappRendres(state.søknad, visibility),
-        renderFormTag: true,
+        renderFortsettKnapp: false,
+        renderFormTag: false,
         previousStegID: resolveStegToRender(state),
         history: props.history,
         isAvailable: isAvailable(StegID.ANNEN_FORELDER, state.søknad, props.søkerinfo)
+    };
+
+    const initialFormValues: AnnenForelderFormValues = {
+        aleneOmOmsorg: søker.erAleneOmOmsorg ? YesOrNo.YES : YesOrNo.NO,
+        bostedsland: annenForelder.bostedsland,
+        datoForAleneomsorg: barn.datoForAleneomsorg,
+        erInformertOmSøknaden: annenForelder.erInformertOmSøknaden ? YesOrNo.YES : YesOrNo.NO,
+        erMorUfør: annenForelder.erUfør ? YesOrNo.YES : YesOrNo.NO,
+        etternavn: annenForelder.etternavn,
+        fornavn: annenForelder.fornavn,
+        fnr: annenForelder.fnr,
+        harRettPåForeldrepenger: annenForelder.harRettPåForeldrepenger ? YesOrNo.YES : YesOrNo.NO,
+        kanIkkeOppgis: annenForelder.kanIkkeOppgis,
+        utenlandskFnr: annenForelder.utenlandskFnr
     };
 
     return {
@@ -181,7 +224,10 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         antallBarn: registrerteBarn ? registrerteBarn.length : 0,
         søkersFødselsnummer: person.fnr,
         erSøkerFarEllerMedmor,
-        registrertAnnenForelder
+        registrertAnnenForelder,
+        gjelderStebarnsadopsjon,
+        familiehendelseDato,
+        initialFormValues
     };
 };
 

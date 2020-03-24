@@ -20,7 +20,7 @@ import Barn, { isUfødtBarn, UfødtBarn } from 'app/types/søknad/Barn';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 import * as countries from 'i18n-iso-countries';
-import FormikUtenlandsopphold from './FormikUtenlandsopphold';
+import UtenlandsoppholdForm from './UtenlandsoppholdForm';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
 import { formatDate } from 'app/util/dates/dates';
@@ -114,10 +114,6 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         return (
             <Steg
                 {...nyStegProps}
-                onPreSubmit={this.cleanupSteg}
-                renderFortsettKnapp={false}
-                renderFormTag={false}
-                submitButtonId="utenlandsoppholdForm"
                 renderProp={(options) => (
                     <>
                         <Block visible={relevantUtenlandsopphold !== undefined}>
@@ -134,9 +130,10 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                                 ]}
                             />
                         </Block>
-                        <FormikUtenlandsopphold
+                        <UtenlandsoppholdForm
                             onValidSubmit={(values) => {
                                 this.updateReduxState(values);
+                                this.cleanupSteg();
                                 options.onValidFormSubmit();
                             }}
                             informasjonOmUtenlandsoppholdFraSøknad={informasjonOmUtenlandsopphold}
@@ -155,7 +152,8 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
 
     const stegProps: StegProps = {
         id: StegID.UTENLANDSOPPHOLD,
-        renderFormTag: true,
+        renderFormTag: false,
+        renderFortsettKnapp: false,
         history,
         isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state.søknad, props.søkerinfo, selectSøknadsinfo(state))
     };
