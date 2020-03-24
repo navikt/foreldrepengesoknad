@@ -1,61 +1,154 @@
 import React from 'react';
+import { injectIntl, InjectedIntl } from 'react-intl';
 import {
     AnnenForelderFormValues,
     AnnenForelderFormComponents,
     AnnenForelderFieldNames
-} from './formTypes/annenforelderFormTypes';
+} from './form/annenforelderFormTypes';
 import { commonFieldErrorRenderer } from '../utenlandsopphold/bostedUtlandListAndDialog/BostedUtlandForm';
-import { injectIntl, InjectedIntl } from 'react-intl';
 import OppgiPersonalia from './oppgi-personalia/OppgiPersonalia';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
+import { annenForelderFormQuestions } from './form/annenForelderFormQuestions';
+import { SøkerRolle, Skjemanummer } from 'app/types/søknad/Søknad';
+import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
+import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import Barn from 'app/types/søknad/Barn';
+import { RegistrertAnnenForelder } from 'app/types/Person';
 
 interface Props {
     intl: InjectedIntl;
+    skalOppgiPersonalia: boolean;
+    søkerRolle: SøkerRolle;
+    gjelderStebarnsadopsjon: boolean;
+    familiehendelseDato: Date | undefined;
+    barn: Barn;
+    registrertAnnenForelder: RegistrertAnnenForelder | undefined;
     onValidSubmit: (values: AnnenForelderFormValues) => void;
+    onFilesSelect: (attachments: Attachment[]) => void;
+    onFileDelete: (attachment: Attachment) => void;
 }
 
-const AnnenForelderForm: React.FunctionComponent<Props> = ({ onValidSubmit, intl }) => {
+const getInitialValues = (
+    registrertAnnenForelder: RegistrertAnnenForelder | undefined
+): Partial<AnnenForelderFormValues> => {
+    if (registrertAnnenForelder !== undefined) {
+        return {
+            fornavn: registrertAnnenForelder.fornavn,
+            etternavn: registrertAnnenForelder.etternavn,
+            fnr: registrertAnnenForelder.fnr
+        };
+    }
+
+    return {};
+};
+
+const AnnenForelderForm: React.FunctionComponent<Props> = ({
+    onValidSubmit,
+    skalOppgiPersonalia,
+    søkerRolle,
+    gjelderStebarnsadopsjon,
+    familiehendelseDato,
+    barn,
+    registrertAnnenForelder,
+    onFilesSelect,
+    onFileDelete,
+    intl
+}) => {
+    const initialValues = getInitialValues(registrertAnnenForelder);
+
     return (
         <AnnenForelderFormComponents.FormikWrapper
-            initialValues={{}}
+            initialValues={initialValues}
             onSubmit={(values: AnnenForelderFormValues) => onValidSubmit(values)}
             renderForm={({ values: formValues }) => {
+                const visibility = annenForelderFormQuestions.getVisbility({
+                    ...formValues,
+                    skalOppgiPersonalia,
+                    søkerRolle,
+                    gjelderStebarnsadopsjon
+                });
                 return (
-                    <div>
-                        <AnnenForelderFormComponents.Form
-                            includeButtons={true}
-                            fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
-                            includeValidationSummary={true}
-                            submitButtonLabel="Fortsett"
-                            runDelayedFormValidation={true}
+                    <AnnenForelderFormComponents.Form
+                        includeButtons={true}
+                        fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
+                        includeValidationSummary={true}
+                        submitButtonLabel="Fortsett"
+                        runDelayedFormValidation={true}
+                    >
+                        {skalOppgiPersonalia && (
+                            <OppgiPersonalia
+                                fornavn={formValues.fornavn}
+                                erUtenlandskFnr={formValues.utenlandskFnr}
+                                visibility={visibility}
+                            />
+                        )}
+                        <Block
+                            visible={
+                                visibility.isVisible(AnnenForelderFieldNames.aleneOmOmsorg) || !skalOppgiPersonalia
+                            }
                         >
-                            <OppgiPersonalia fornavn={formValues.fornavn} erUtenlandskFnr={formValues.utenlandskFnr} />
+                            <AnnenForelderFormComponents.YesOrNoQuestion
+                                name={AnnenForelderFieldNames.aleneOmOmsorg}
+                                info={getMessage(intl, 'annenForelder.aleneOmOmsorg.veileder')}
+                                legend={getMessage(intl, 'annenForelder.aleneOmOmsorg')}
+                            />
+                        </Block>
+                        <Block visible={visibility.isVisible(AnnenForelderFieldNames.datoForAleneomsorg)}>
                             <Block>
-                                <AnnenForelderFormComponents.YesOrNoQuestion
-                                    name={AnnenForelderFieldNames.aleneOmOmsorg}
-                                    info={getMessage(intl, 'annenForelder.aleneOmOmsorg.veileder')}
-                                    legend={getMessage(intl, 'annenForelder.aleneOmOmsorg')}
+                                <AnnenForelderFormComponents.DatePicker
+                                    name={AnnenForelderFieldNames.datoForAleneomsorg}
+                                    label={getMessage(intl, 'datoForAleneomsorg.spørsmål')}
+                                    dateLimitations={{ minDato: familiehendelseDato }}
                                 />
                             </Block>
-                            <Block>
-                                <AnnenForelderFormComponents.YesOrNoQuestion
-                                    name={AnnenForelderFieldNames.harRettPåForeldrepenger}
-                                    legend={getMessage(intl, 'annenForelderRettPåForeldrepenger.spørsmål', {
-                                        navn: formValues.fornavn
-                                    })}
+
+                            <Block margin="xs">
+                                <VeilederInfo
+                                    messages={[
+                                        {
+                                            type: 'normal',
+                                            contentIntlKey: 'far.dokumantasjonAvAleneomsorg.vedlegg.veileder'
+                                        }
+                                    ]}
                                 />
                             </Block>
-                            <Block>
-                                <AnnenForelderFormComponents.YesOrNoQuestion
-                                    name={AnnenForelderFieldNames.erInformertOmSøknaden}
-                                    legend={getMessage(intl, 'erAnnenForelderInformert.spørsmål', {
-                                        navn: formValues.fornavn
-                                    })}
-                                />
-                            </Block>
-                        </AnnenForelderFormComponents.Form>
-                    </div>
+
+                            <AttachmentsUploaderPure
+                                attachments={barn.dokumentasjonAvAleneomsorg || []}
+                                attachmentType={AttachmentType.ALENEOMSORG}
+                                onFilesSelect={onFilesSelect}
+                                onFileDelete={onFileDelete}
+                                skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
+                            />
+                        </Block>
+                        <Block visible={visibility.isVisible(AnnenForelderFieldNames.harRettPåForeldrepenger)}>
+                            <AnnenForelderFormComponents.YesOrNoQuestion
+                                name={AnnenForelderFieldNames.harRettPåForeldrepenger}
+                                legend={getMessage(intl, 'annenForelderRettPåForeldrepenger.spørsmål', {
+                                    navn: formValues.fornavn
+                                })}
+                            />
+                        </Block>
+                        <Block visible={visibility.isVisible(AnnenForelderFieldNames.erInformertOmSøknaden)}>
+                            <AnnenForelderFormComponents.YesOrNoQuestion
+                                name={AnnenForelderFieldNames.erInformertOmSøknaden}
+                                legend={getMessage(intl, 'erAnnenForelderInformert.spørsmål', {
+                                    navn: formValues.fornavn
+                                })}
+                            />
+                        </Block>
+                        <Block visible={visibility.isVisible(AnnenForelderFieldNames.erMorUfør)}>
+                            <AnnenForelderFormComponents.YesOrNoQuestion
+                                name={AnnenForelderFieldNames.erMorUfør}
+                                legend={getMessage(intl, 'erMorUfør.spørsmål', {
+                                    navn: formValues.fornavn
+                                })}
+                            />
+                        </Block>
+                    </AnnenForelderFormComponents.Form>
                 );
             }}
         />

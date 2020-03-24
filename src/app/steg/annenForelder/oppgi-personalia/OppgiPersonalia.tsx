@@ -1,8 +1,9 @@
 import React from 'react';
 import { injectIntl, InjectedIntl } from 'react-intl';
 import { Element } from 'nav-frontend-typografi';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 
-import { AnnenForelderFormComponents, AnnenForelderFieldNames } from '../formTypes/annenforelderFormTypes';
+import { AnnenForelderFormComponents, AnnenForelderFieldNames } from '../form/annenforelderFormTypes';
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
@@ -16,15 +17,16 @@ interface Props {
     intl: InjectedIntl;
     fornavn: string;
     erUtenlandskFnr: boolean;
+    visibility: QuestionVisibility<AnnenForelderFieldNames, undefined>;
 }
 
-const OppgiPersonalia: React.FunctionComponent<Props> = ({ fornavn, erUtenlandskFnr, intl }) => {
+const OppgiPersonalia: React.FunctionComponent<Props> = ({ fornavn, erUtenlandskFnr, visibility, intl }) => {
     return (
         <div className={bem.block}>
             <Block margin="xxs">
                 <Element>{getMessage(intl, 'annenForelder.spørsmål.navn')}</Element>
             </Block>
-            <Block margin="xs">
+            <Block margin="xs" visible={visibility.isVisible(AnnenForelderFieldNames.fornavn)}>
                 <div className={bem.element('nameInputsWrapper')}>
                     <AnnenForelderFormComponents.Input
                         className={bem.element('nameInput')}
@@ -39,23 +41,29 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ fornavn, erUtenlandsk
                     />
                 </div>
             </Block>
-            <Block>
+            <Block visible={visibility.isVisible(AnnenForelderFieldNames.kanIkkeOppgis)}>
                 <AnnenForelderFormComponents.Checkbox
                     name={AnnenForelderFieldNames.kanIkkeOppgis}
                     label={getMessage(intl, 'annenForelder.spørsmål.kanOppgis')}
                 />
             </Block>
-            <Block margin="xs">
+            <Block margin="xs" visible={visibility.isVisible(AnnenForelderFieldNames.fnr)}>
                 <AnnenForelderFormComponents.Input
                     name={AnnenForelderFieldNames.fnr}
                     label={getMessage(intl, 'annenForelder.spørsmål.fnr', { navn: fornavn })}
                     validate={(fnr: string) => validateFødselsnummer(fnr, erUtenlandskFnr)}
                 />
             </Block>
-            <Block>
+            <Block visible={visibility.isVisible(AnnenForelderFieldNames.utenlandskFnr)}>
                 <AnnenForelderFormComponents.Checkbox
                     name={AnnenForelderFieldNames.utenlandskFnr}
                     label={getMessage(intl, 'annenForelder.spørsmål.utenlandskFnr', { navn: fornavn })}
+                />
+            </Block>
+            <Block visible={visibility.isVisible(AnnenForelderFieldNames.bostedsland)}>
+                <AnnenForelderFormComponents.CountrySelect
+                    name={AnnenForelderFieldNames.bostedsland}
+                    label={getMessage(intl, 'annenForelder.spørsmål.fnr', { navn: fornavn })}
                 />
             </Block>
         </div>

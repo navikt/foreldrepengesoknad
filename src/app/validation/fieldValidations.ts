@@ -12,7 +12,7 @@ export const validateYesOrNoIsAnswered = (answer: YesOrNo): string | undefined =
     return undefined;
 };
 
-const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+export const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 export const fieldIsRequiredError = () => createFieldValidationError('påkrevd');
 

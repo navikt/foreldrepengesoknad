@@ -8,18 +8,24 @@ export const enum AnnenForelderFieldNames {
     etternavn = 'etternavn',
     fnr = 'fnr',
     utenlandskFnr = 'utenlandskFnr',
-    aleneOmOmsorg = 'aleneOmOmsorg'
+    aleneOmOmsorg = 'aleneOmOmsorg',
+    erMorUfør = 'erMorUfør',
+    datoForAleneomsorg = 'datoForAleneomsorg',
+    bostedsland = 'bostedsland'
 }
 
 export interface AnnenForelderFormValues {
-    [AnnenForelderFieldNames.kanIkkeOppgis]: YesOrNo;
+    [AnnenForelderFieldNames.kanIkkeOppgis]: boolean;
     [AnnenForelderFieldNames.harRettPåForeldrepenger]: YesOrNo;
     [AnnenForelderFieldNames.erInformertOmSøknaden]: YesOrNo;
     [AnnenForelderFieldNames.fornavn]: string;
     [AnnenForelderFieldNames.etternavn]: string;
     [AnnenForelderFieldNames.fnr]: string;
     [AnnenForelderFieldNames.utenlandskFnr]: boolean;
-    [AnnenForelderFieldNames.aleneOmOmsorg]: boolean;
+    [AnnenForelderFieldNames.aleneOmOmsorg]: YesOrNo;
+    [AnnenForelderFieldNames.erMorUfør]: YesOrNo;
+    [AnnenForelderFieldNames.datoForAleneomsorg]: Date;
+    [AnnenForelderFieldNames.bostedsland]: string;
 }
 
 export const AnnenForelderFormComponents = getTypedFormComponents<AnnenForelderFieldNames, AnnenForelderFormValues>();
