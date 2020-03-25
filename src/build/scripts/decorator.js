@@ -23,7 +23,7 @@ const extractDecoratorFragments = (html) => {
     console.log('Extracting decorator fragments', html);
     const { document } = new JSDOM(html).window;
     const prop = 'innerHTML';
-    const brukNyDekoratør = (process.env.BRUK_NY_DEKORATOR = 'on');
+    const brukNyDekoratør = process.env.BRUK_NY_DEKORATOR === 'on';
 
     return {
         NAV_SCRIPTS: document.getElementById('scripts')[prop],
