@@ -12,6 +12,14 @@ export const validateYesOrNoIsAnswered = (answer: YesOrNo): string | undefined =
     return undefined;
 };
 
+export const validateAnnenForelderInformert = (answer: YesOrNo, fornavn: string): SkjemaelementFeil => {
+    if (answer !== YesOrNo.YES) {
+        return createFieldValidationError('erAnnenForelderInformert.veilederIkkeInformert', { navn: fornavn });
+    }
+
+    return undefined;
+};
+
 export const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 export const fieldIsRequiredError = () => createFieldValidationError('påkrevd');
