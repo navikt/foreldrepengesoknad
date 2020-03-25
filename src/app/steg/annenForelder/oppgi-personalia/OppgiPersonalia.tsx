@@ -19,6 +19,7 @@ interface Props {
     kanIkkeOppgis: boolean;
     erUtenlandskFnr: boolean;
     visibility: QuestionVisibility<AnnenForelderFieldNames, undefined>;
+    gjelderAdopsjon: boolean;
 }
 
 const OppgiPersonalia: React.FunctionComponent<Props> = ({
@@ -26,6 +27,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
     erUtenlandskFnr,
     kanIkkeOppgis,
     visibility,
+    gjelderAdopsjon,
     intl
 }) => {
     return (
@@ -52,7 +54,11 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
             <Block visible={visibility.isVisible(AnnenForelderFieldNames.kanIkkeOppgis)}>
                 <AnnenForelderFormComponents.Checkbox
                     name={AnnenForelderFieldNames.kanIkkeOppgis}
-                    label={getMessage(intl, 'annenForelder.spørsmål.kanOppgis')}
+                    label={
+                        gjelderAdopsjon
+                            ? getMessage(intl, 'annenForelder.spørsmål.adoptererAlene')
+                            : getMessage(intl, 'annenForelder.spørsmål.kanOppgis')
+                    }
                 />
             </Block>
             <Block margin="xs" visible={visibility.isVisible(AnnenForelderFieldNames.fnr)}>

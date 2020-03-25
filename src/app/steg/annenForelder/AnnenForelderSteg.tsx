@@ -128,8 +128,11 @@ class AnnenForelderSteg extends React.Component<Props> {
             familiehendelseDato,
             visibility,
             initialFormValues,
+            situasjon,
             intl
         } = this.props;
+
+        const gjelderAdopsjon = situasjon === Søkersituasjon.ADOPSJON;
 
         if (søkersFødselsnummer && visibility) {
             return (
@@ -160,6 +163,7 @@ class AnnenForelderSteg extends React.Component<Props> {
                                 gjelderStebarnsadopsjon={gjelderStebarnsadopsjon}
                                 familiehendelseDato={familiehendelseDato}
                                 barn={barn}
+                                gjelderAdopsjon={gjelderAdopsjon}
                                 initialFormValues={initialFormValues}
                                 onFileDelete={this.onFileDelete}
                                 onFilesSelect={this.onFilesSelect}
