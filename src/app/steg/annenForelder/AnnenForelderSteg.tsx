@@ -26,6 +26,7 @@ import AnnenForelderForm from './AnnenForelderForm';
 import { getFamiliehendelsedato } from 'app/util/uttaksplan';
 import { AnnenForelderFormValues } from './form/annenforelderFormTypes';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { mapBooleanToYesOrNo } from 'app/util/form/formUtils';
 
 interface StateProps {
     søknad: Partial<Søknad>;
@@ -200,15 +201,15 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 
     const initialFormValues: AnnenForelderFormValues = {
-        aleneOmOmsorg: søker.erAleneOmOmsorg ? YesOrNo.YES : YesOrNo.NO,
+        aleneOmOmsorg: mapBooleanToYesOrNo(søker.erAleneOmOmsorg),
         bostedsland: annenForelder.bostedsland,
         datoForAleneomsorg: barn.datoForAleneomsorg,
-        erInformertOmSøknaden: annenForelder.erInformertOmSøknaden ? YesOrNo.YES : YesOrNo.NO,
-        erMorUfør: annenForelder.erUfør ? YesOrNo.YES : YesOrNo.NO,
+        erInformertOmSøknaden: mapBooleanToYesOrNo(annenForelder.erInformertOmSøknaden),
+        erMorUfør: mapBooleanToYesOrNo(annenForelder.erUfør),
         etternavn: annenForelder.etternavn,
         fornavn: annenForelder.fornavn,
         fnr: annenForelder.fnr,
-        harRettPåForeldrepenger: annenForelder.harRettPåForeldrepenger ? YesOrNo.YES : YesOrNo.NO,
+        harRettPåForeldrepenger: mapBooleanToYesOrNo(annenForelder.harRettPåForeldrepenger),
         kanIkkeOppgis: annenForelder.kanIkkeOppgis,
         utenlandskFnr: annenForelder.utenlandskFnr
     };
