@@ -11,11 +11,20 @@ import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import { annenForelderFormQuestions } from './form/annenForelderFormQuestions';
 import { SøkerRolle, Skjemanummer } from 'app/types/søknad/Søknad';
-import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import Barn from 'app/types/søknad/Barn';
+import {
+    validateYesOrNoIsAnswered,
+    validateRequiredField,
+    validateAnnenForelderInformert
+} from 'app/validation/fieldValidations';
+import AvtaleAtFarTarUtForeldrepengerVeileder from './veiledere/AvtaleAtFarTarUtForeldrepengerVeileder';
+import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import MåOrientereAnnenForelderVeileder from './veiledere/MåOrientereAnnenForelderVeileder';
+import FarDokumentasjonAleneomsorgVeileder from './veiledere/FarDokumentasjonAleneomsorgVeileder';
 
 interface Props {
     intl: InjectedIntl;
@@ -78,27 +87,27 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                                 name={AnnenForelderFieldNames.aleneOmOmsorg}
                                 info={getMessage(intl, 'annenForelder.aleneOmOmsorg.veileder')}
                                 legend={getMessage(intl, 'annenForelder.aleneOmOmsorg')}
+                                validate={validateYesOrNoIsAnswered}
+                            />
+                            <AvtaleAtFarTarUtForeldrepengerVeileder
+                                visible={
+                                    !getErSøkerFarEllerMedmor(søkerRolle) && formValues.aleneOmOmsorg === YesOrNo.YES
+                                }
+                                annenForelderNavn={formValues.fornavn}
                             />
                         </Block>
+
                         <Block visible={visibility.isVisible(AnnenForelderFieldNames.datoForAleneomsorg)}>
                             <Block>
                                 <AnnenForelderFormComponents.DatePicker
                                     name={AnnenForelderFieldNames.datoForAleneomsorg}
                                     label={getMessage(intl, 'datoForAleneomsorg.spørsmål')}
                                     dateLimitations={{ minDato: familiehendelseDato }}
+                                    validate={validateRequiredField}
                                 />
                             </Block>
 
-                            <Block margin="xs">
-                                <VeilederInfo
-                                    messages={[
-                                        {
-                                            type: 'normal',
-                                            contentIntlKey: 'far.dokumantasjonAvAleneomsorg.vedlegg.veileder'
-                                        }
-                                    ]}
-                                />
-                            </Block>
+                            <FarDokumentasjonAleneomsorgVeileder />
 
                             <AttachmentsUploaderPure
                                 attachments={barn.dokumentasjonAvAleneomsorg || []}
@@ -114,6 +123,7 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                                 legend={getMessage(intl, 'annenForelderRettPåForeldrepenger.spørsmål', {
                                     navn: formValues.fornavn
                                 })}
+                                validate={validateYesOrNoIsAnswered}
                             />
                         </Block>
                         <Block visible={visibility.isVisible(AnnenForelderFieldNames.erInformertOmSøknaden)}>
@@ -122,14 +132,21 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                                 legend={getMessage(intl, 'erAnnenForelderInformert.spørsmål', {
                                     navn: formValues.fornavn
                                 })}
+                                validate={(value) => validateAnnenForelderInformert(value, formValues.fornavn)}
+                            />
+                            <MåOrientereAnnenForelderVeileder
+                                visible={formValues.erInformertOmSøknaden === YesOrNo.NO}
+                                annenForelderNavn={formValues.fornavn}
                             />
                         </Block>
+
                         <Block visible={visibility.isVisible(AnnenForelderFieldNames.erMorUfør)}>
                             <AnnenForelderFormComponents.YesOrNoQuestion
                                 name={AnnenForelderFieldNames.erMorUfør}
                                 legend={getMessage(intl, 'erMorUfør.spørsmål', {
                                     navn: formValues.fornavn
                                 })}
+                                validate={validateYesOrNoIsAnswered}
                             />
                         </Block>
                     </AnnenForelderFormComponents.Form>
