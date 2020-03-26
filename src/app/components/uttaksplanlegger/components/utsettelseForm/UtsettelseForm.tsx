@@ -424,11 +424,21 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                 visible={visibility.isVisible(UtsettelseSpørsmålKeys.sykdomsårsak)}
                                 hasChildBlocks={true}
                             >
+                                <Block>
+                                    <VeilederInfo
+                                        messages={[
+                                            {
+                                                type: 'normal',
+                                                contentIntlKey: 'uttaksplan.informasjonVedSykdom'
+                                            }
+                                        ]}
+                                    />
+                                </Block>
                                 <UtsettelsePgaSykdomPart
                                     onChange={this.onSykdomÅrsakChange}
-                                    vedlegg={(periode.vedlegg as Attachment[]) || []}
                                     sykdomsårsak={periode.årsak}
                                     forelder={Forelder.mor}
+                                    vedlegg={(periode.vedlegg as Attachment[]) || []}
                                 />
                             </Block>
 
