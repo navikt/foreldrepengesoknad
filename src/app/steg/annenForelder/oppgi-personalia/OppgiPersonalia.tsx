@@ -7,7 +7,7 @@ import { AnnenForelderFormComponents, AnnenForelderFieldNames } from '../form/an
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
-import { validateFødselsnummer } from 'app/validation/fieldValidations';
+import { validateFødselsnummer, validateRequiredField } from 'app/validation/fieldValidations';
 
 import './oppgiPersonalia.less';
 
@@ -44,12 +44,14 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
                         name={AnnenForelderFieldNames.fornavn}
                         label={getMessage(intl, 'annenForelder.spørsmål.fornavn')}
                         disabled={kanIkkeOppgis}
+                        validate={validateRequiredField}
                     />
                     <AnnenForelderFormComponents.Input
                         className={bem.element('nameInput')}
                         name={AnnenForelderFieldNames.etternavn}
                         label={getMessage(intl, 'annenForelder.spørsmål.etternavn')}
                         disabled={kanIkkeOppgis}
+                        validate={validateRequiredField}
                     />
                 </div>
             </Block>
