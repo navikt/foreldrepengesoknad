@@ -5,12 +5,11 @@ import Block from 'common/components/block/Block';
 import FlervalgSpørsmål from '../../../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl, injectIntl, InjectedIntlProps } from 'react-intl';
-import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { Skjemanummer } from '../../../../../types/søknad/Søknad';
-import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
-import VedleggSpørsmål from '../../../../skjema/vedleggSpørsmål/VedleggSpørsmål';
-import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import { RadioProps } from 'nav-frontend-skjema';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import VedleggSpørsmål from 'app/components/skjema/vedleggSpørsmål/VedleggSpørsmål';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 
 export interface UtsettelsePgaSykdomChangePayload {
     sykdomsårsak: UtsettelseÅrsakType;
@@ -32,16 +31,6 @@ const getSykdomAlternativ = (intl: InjectedIntl, årsak: UtsettelseÅrsakType, r
         value: årsak,
         name: radioName
     };
-};
-
-const getSykdomVeilederInfo = (sykdomsårsak: UtsettelseÅrsakType) => {
-    if (sykdomsårsak === UtsettelseÅrsakType.Sykdom) {
-        return 'utsettelse.sykdom.vedlegg.info.sykdom';
-    } else if (sykdomsårsak === UtsettelseÅrsakType.InstitusjonBarnet) {
-        return 'utsettelse.sykdom.vedlegg.info.barnInnlagt';
-    } else {
-        return 'utsettelse.sykdom.vedlegg.info.innlagt';
-    }
 };
 
 type Props = OwnProps & InjectedIntlProps;
@@ -84,14 +73,6 @@ class UtsettelsePgaSykdomPart extends React.Component<Props> {
                 </Block>
                 {visVedlegg(sykdomsårsak) && (
                     <Block>
-                        <VeilederInfo
-                            messages={[
-                                {
-                                    type: 'normal',
-                                    contentIntlKey: getSykdomVeilederInfo(sykdomsårsak!)
-                                }
-                            ]}
-                        />
                         <VedleggSpørsmål
                             vedlegg={vedleggList}
                             attachmentType={AttachmentType.UTSETTELSE_SYKDOM}

@@ -14,7 +14,6 @@ import {
 } from '../../../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode, Feil } from 'common/types';
 import { RecursivePartial } from '../../../../types/Partial';
-import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers';
@@ -35,8 +34,6 @@ import getMessage from 'common/util/i18nUtils';
 import { erUttakAvAnnenForeldersKvote } from '../../../../util/uttaksplan/uttakUtils';
 import { Uttaksdagen } from '../../../../util/uttaksplan/Uttaksdagen';
 import { getDefaultPermisjonStartdato } from '../../../../util/uttaksplan/permisjonUtils';
-import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
-import VedleggSpørsmål from '../../../skjema/vedleggSpørsmål/VedleggSpørsmål';
 import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
 import { EndrePeriodeChangeEvent } from '../endrePeriodeForm/EndrePeriodeForm';
 import { isValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
@@ -58,6 +55,9 @@ import getSøknadsperiode from 'app/regler/søknadsperioden/Søknadsperioden';
 import getUttakSkjemaregler from 'app/regler/uttak/uttaksskjema/uttakSkjemaregler';
 import { periodeErInnenDeFørsteSeksUkene } from 'app/util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
 import { VeilederMessage } from '../../../veilederInfo/types';
+import VedleggSpørsmål from 'app/components/skjema/vedleggSpørsmål/VedleggSpørsmål';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import { Skjemanummer } from 'app/types/søknad/Søknad';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -432,8 +432,8 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
                                         messages={[
                                             {
                                                 type: 'normal',
-                                                contentIntlKey: 'uttaksplan.informasjon.morErForSyk',
-                                                values: { navnMor: navnPåForeldre.mor }
+                                                contentIntlKey: 'uttaksplan.informasjonVedSykdomAnnenForelder',
+                                                values: { navn: navnPåForeldre.mor }
                                             }
                                         ]}
                                     />
