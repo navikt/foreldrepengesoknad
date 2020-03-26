@@ -44,14 +44,14 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
                         name={AnnenForelderFieldNames.fornavn}
                         label={getMessage(intl, 'annenForelder.spørsmål.fornavn')}
                         disabled={kanIkkeOppgis}
-                        validate={validateRequiredField}
+                        validate={(fornavn) => (kanIkkeOppgis ? undefined : validateRequiredField(fornavn))}
                     />
                     <AnnenForelderFormComponents.Input
                         className={bem.element('nameInput')}
                         name={AnnenForelderFieldNames.etternavn}
                         label={getMessage(intl, 'annenForelder.spørsmål.etternavn')}
                         disabled={kanIkkeOppgis}
-                        validate={validateRequiredField}
+                        validate={(etternavn) => (kanIkkeOppgis ? undefined : validateRequiredField(etternavn))}
                     />
                 </div>
             </Block>
