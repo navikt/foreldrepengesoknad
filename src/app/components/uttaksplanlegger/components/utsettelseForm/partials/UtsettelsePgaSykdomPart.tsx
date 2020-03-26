@@ -7,14 +7,19 @@ import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Skjemanummer } from '../../../../../types/søknad/Søknad';
 import { RadioProps } from 'nav-frontend-skjema';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import VedleggSpørsmål from 'app/components/skjema/vedleggSpørsmål/VedleggSpørsmål';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 
 export interface UtsettelsePgaSykdomChangePayload {
     sykdomsårsak: UtsettelseÅrsakType;
+    vedlegg: Attachment[];
 }
 
 export interface OwnProps {
     forelder: Forelder;
     sykdomsårsak?: UtsettelseÅrsakType;
+    vedlegg: Attachment[];
     onChange: (payload: UtsettelsePgaSykdomChangePayload) => void;
 }
 
@@ -46,6 +51,7 @@ class UtsettelsePgaSykdomPart extends React.Component<Props> {
 
     render() {
         const { onChange, intl, sykdomsårsak } = this.props;
+        const vedleggList = [...this.props.vedlegg];
         const radioName = 'utsettelsePgaSykdomÅrsak';
         return (
             <>
@@ -54,7 +60,9 @@ class UtsettelsePgaSykdomPart extends React.Component<Props> {
                         navn={radioName}
                         spørsmål={getMessage(intl, 'utsettelse.sykdom.alternativer.spørsmål')}
                         valgtVerdi={sykdomsårsak}
-                        onChange={(årsak: UtsettelseÅrsakType) => onChange({ sykdomsårsak: årsak })}
+                        onChange={(årsak: UtsettelseÅrsakType) =>
+                            onChange({ sykdomsårsak: årsak, vedlegg: vedleggList })
+                        }
                         toKolonner={true}
                         alternativer={[
                             getSykdomAlternativ(intl, UtsettelseÅrsakType.Sykdom, radioName),
@@ -63,6 +71,16 @@ class UtsettelsePgaSykdomPart extends React.Component<Props> {
                         ]}
                     />
                 </Block>
+                {visVedlegg(sykdomsårsak) && (
+                    <Block>
+                        <VedleggSpørsmål
+                            vedlegg={vedleggList}
+                            attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+                            skjemanummer={this.getAttachmentSkjemanummer()}
+                            onChange={(vedlegg) => onChange({ vedlegg, sykdomsårsak: sykdomsårsak! })}
+                        />
+                    </Block>
+                )}
             </>
         );
     }

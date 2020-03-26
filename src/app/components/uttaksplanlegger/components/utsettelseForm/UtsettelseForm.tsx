@@ -213,18 +213,21 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         }
     }
 
-    onSykdomÅrsakChange({ sykdomsårsak }: UtsettelsePgaSykdomChangePayload) {
+    onSykdomÅrsakChange({ sykdomsårsak, vedlegg }: UtsettelsePgaSykdomChangePayload) {
         if (sykdomsårsak === UtsettelseÅrsakType.InstitusjonBarnet) {
             this.onChange({
-                årsak: UtsettelseÅrsakType.InstitusjonBarnet
+                årsak: UtsettelseÅrsakType.InstitusjonBarnet,
+                vedlegg
             });
         } else if (sykdomsårsak === UtsettelseÅrsakType.InstitusjonSøker) {
             this.onChange({
-                årsak: UtsettelseÅrsakType.InstitusjonSøker
+                årsak: UtsettelseÅrsakType.InstitusjonSøker,
+                vedlegg
             });
         } else if (sykdomsårsak === UtsettelseÅrsakType.Sykdom) {
             this.onChange({
-                årsak: UtsettelseÅrsakType.Sykdom
+                årsak: UtsettelseÅrsakType.Sykdom,
+                vedlegg
             });
         } else {
             throw new Error('No sykdomsårsak defined');
@@ -435,6 +438,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                     onChange={this.onSykdomÅrsakChange}
                                     sykdomsårsak={periode.årsak}
                                     forelder={Forelder.mor}
+                                    vedlegg={(periode.vedlegg as Attachment[]) || []}
                                 />
                             </Block>
 

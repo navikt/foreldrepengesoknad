@@ -32,17 +32,14 @@ export const visVedlegg = (søkerErFarEllerMedmor: boolean, årsak: Overføring�
 };
 
 const getVeilederInfotekst = (årsak: OverføringÅrsakType, navnAnnenForelder: string): VeilederMessage => {
-    if (årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder) {
+    if (
+        årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder ||
+        årsak === OverføringÅrsakType.sykdomAnnenForelder
+    ) {
         return {
             type: 'normal',
-            contentIntlKey: 'uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder',
-            values: { navnAnnenForelder }
-        };
-    } else if (årsak === OverføringÅrsakType.sykdomAnnenForelder) {
-        return {
-            type: 'normal',
-            contentIntlKey: 'uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder',
-            values: { navnAnnenForelder }
+            contentIntlKey: 'uttaksplan.informasjonVedSykdomAnnenForelder',
+            values: { navn: navnAnnenForelder }
         };
     } else {
         return {
