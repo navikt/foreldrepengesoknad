@@ -808,6 +808,8 @@
         "Du kan ikkje starte uttaket ditt dei første seks vekene etter fødsel dersom mor ikkje er for sjuk, eller dersom ho er innlagd i helseinstitusjon.",
     "uttaksplan.informasjonTilSøker":
         "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk. Du kan leggje inn perioden for {navn}, men {navn} må søkje sjølv.",
+    "uttaksplan.informasjonVedSykdom":
+        "Når du er syk må legen din dokumentere at du er helt avhengig av hjelp til å ta deg av barnet eller vi må få en bekreftelse på innleggelsen i helseinstitusjonen. Det er nå ikke et krav til at du må legge ved dokumentasjon, du kan skrive en egenerklæring til oss nederst i søknaden. Du må fortelle oss hvordan skaden eller sykdommen gjør deg helt avhengig av hjelp til å ta deg av barnet. Er du innlagt i helseinstitusjon skriver du hvor du er innlagt. Hvis du har dokumentasjon fra lege eller helseinstitusjon kan du laste vedlegg opp til søknaden.",
     "uttaksplan.leggTil.opphold": "Legg til utsetjing",
     "uttaksplan.leggTil.uttak": "Legg til periode",
     "uttaksplan.nyperiode.avbrytAriaLabel": "Avbryt legg til ny periode",

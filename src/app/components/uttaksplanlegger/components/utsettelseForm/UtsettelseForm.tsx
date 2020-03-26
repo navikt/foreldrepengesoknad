@@ -213,21 +213,18 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         }
     }
 
-    onSykdomÅrsakChange({ sykdomsårsak, vedlegg }: UtsettelsePgaSykdomChangePayload) {
+    onSykdomÅrsakChange({ sykdomsårsak }: UtsettelsePgaSykdomChangePayload) {
         if (sykdomsårsak === UtsettelseÅrsakType.InstitusjonBarnet) {
             this.onChange({
-                årsak: UtsettelseÅrsakType.InstitusjonBarnet,
-                vedlegg
+                årsak: UtsettelseÅrsakType.InstitusjonBarnet
             });
         } else if (sykdomsårsak === UtsettelseÅrsakType.InstitusjonSøker) {
             this.onChange({
-                årsak: UtsettelseÅrsakType.InstitusjonSøker,
-                vedlegg
+                årsak: UtsettelseÅrsakType.InstitusjonSøker
             });
         } else if (sykdomsårsak === UtsettelseÅrsakType.Sykdom) {
             this.onChange({
-                årsak: UtsettelseÅrsakType.Sykdom,
-                vedlegg
+                årsak: UtsettelseÅrsakType.Sykdom
             });
         } else {
             throw new Error('No sykdomsårsak defined');
@@ -424,9 +421,18 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                 visible={visibility.isVisible(UtsettelseSpørsmålKeys.sykdomsårsak)}
                                 hasChildBlocks={true}
                             >
+                                <Block>
+                                    <VeilederInfo
+                                        messages={[
+                                            {
+                                                type: 'normal',
+                                                contentIntlKey: 'uttaksplan.informasjonVedSykdom'
+                                            }
+                                        ]}
+                                    />
+                                </Block>
                                 <UtsettelsePgaSykdomPart
                                     onChange={this.onSykdomÅrsakChange}
-                                    vedlegg={(periode.vedlegg as Attachment[]) || []}
                                     sykdomsårsak={periode.årsak}
                                     forelder={Forelder.mor}
                                 />
