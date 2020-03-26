@@ -8,7 +8,11 @@ import {
     Stønadskontouttak,
     isAnnenPartInfoPeriode,
     OppholdÅrsakType,
-    UttakAnnenPartInfoPeriode
+    UttakAnnenPartInfoPeriode,
+    isUttaksperiode,
+    isOverføringsperiode,
+    OverføringÅrsakType,
+    Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
 import { dateIsTodayOrInFuture, dateIsNotInFuture } from '../dates/dates';
@@ -36,6 +40,26 @@ export const erUttakEgenKvote = (konto: StønadskontoType | undefined, søkerErF
 const erUtsettelseTilbakeITid = (periode: Periode) =>
     periode.type === Periodetype.Utsettelse && dateIsNotInFuture(periode.tidsperiode.fom);
 
+const erUttakTilbakeITid = (periode: Periode) => isUttaksperiode(periode) && dateIsNotInFuture(periode.tidsperiode.fom);
+
+const erGradering = (periode: Periode) => periode.type === Periodetype.Uttak && periode.gradert === true;
+
+const erUttakGrunnetSykdom = (periode: Uttaksperiode) => {
+    if (
+        isOverføringsperiode(periode) &&
+        (periode.årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder ||
+            periode.årsak === OverføringÅrsakType.sykdomAnnenForelder)
+    ) {
+        return true;
+    }
+
+    if (periode.erMorForSyk === true) {
+        return true;
+    }
+
+    return false;
+};
+
 const erUttakEllerOppholdMerEnnTreMånederSiden = (periode: Periode) =>
     (periode.type === Periodetype.Uttak || periode.type === Periodetype.Opphold) &&
     moment(periode.tidsperiode.fom).isBefore(
@@ -49,6 +73,8 @@ const erUtsettelsePgaSykdom = (periode: Utsettelsesperiode) =>
     periode.årsak === UtsettelseÅrsakType.InstitusjonSøker ||
     periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet;
 
+const erUtsettelseGrunnetPgaArbeid = (periode: Utsettelsesperiode) => periode.årsak === UtsettelseÅrsakType.Arbeid;
+
 const erUtsettelsePgaFerieEllerArbeid = (periode: Periode) =>
     periode.type === Periodetype.Utsettelse &&
     (periode.årsak === UtsettelseÅrsakType.Ferie || periode.årsak === UtsettelseÅrsakType.Arbeid);
@@ -60,14 +86,24 @@ export const erSentGradertUttak = (periode: Periode) =>
     periode.type === Periodetype.Uttak && !dateIsTodayOrInFuture(periode.tidsperiode.fom) && periode.gradert;
 
 export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): SenEndringÅrsak => {
-    const utsettelseKreverBegrunnelse = uttaksplan.filter(erUtsettelseTilbakeITid).some(erUtsettelsePgaSykdom);
-    const uttakKreverBegrunnelse = uttaksplan.some(erUttakEllerOppholdMerEnnTreMånederSiden);
+    const sykdomKreverBegrunnelse = uttaksplan.some(erUtsettelsePgaSykdom || erUttakGrunnetSykdom);
+    const sykdomKreverBegrunnelsePgaSøktSent = uttaksplan
+        .filter(erUtsettelseTilbakeITid || erUttakTilbakeITid)
+        .some(erUtsettelsePgaSykdom || erUttakGrunnetSykdom);
+    const arbeidKreverBegrunnelsePgaSøktSent = uttaksplan
+        .filter(erUtsettelseTilbakeITid || erUttakTilbakeITid)
+        .some(erUtsettelseGrunnetPgaArbeid || erGradering);
+    const uttakKreverBegrunnelsePgaSøktSent = uttaksplan.some(erUttakEllerOppholdMerEnnTreMånederSiden);
 
-    if (utsettelseKreverBegrunnelse) {
-        return uttakKreverBegrunnelse ? SenEndringÅrsak.SykdomOgUttak : SenEndringÅrsak.Sykdom;
-    } else {
-        return uttakKreverBegrunnelse ? SenEndringÅrsak.Uttak : SenEndringÅrsak.Ingen;
+    if (arbeidKreverBegrunnelsePgaSøktSent) {
+        return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.ArbeidOgUttak : SenEndringÅrsak.Arbeid;
     }
+
+    if (sykdomKreverBegrunnelse || sykdomKreverBegrunnelsePgaSøktSent) {
+        return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.SykdomOgUttak : SenEndringÅrsak.Sykdom;
+    }
+
+    return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.Uttak : SenEndringÅrsak.Ingen;
 };
 
 export const skalKunneViseMorsUttaksplanForFarEllerMedmor = (
