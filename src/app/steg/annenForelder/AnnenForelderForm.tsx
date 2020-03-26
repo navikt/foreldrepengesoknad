@@ -35,6 +35,7 @@ interface Props {
     barn: Barn;
     initialFormValues: AnnenForelderFormValues;
     gjelderAdopsjon: boolean;
+    søkersFødselsnummer: string;
     onValidSubmit: (values: AnnenForelderFormValues) => void;
     onFilesSelect: (attachments: Attachment[]) => void;
     onFileDelete: (attachment: Attachment) => void;
@@ -48,6 +49,7 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
     familiehendelseDato,
     barn,
     gjelderAdopsjon,
+    søkersFødselsnummer,
     initialFormValues,
     onFilesSelect,
     onFileDelete,
@@ -79,6 +81,7 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                                 kanIkkeOppgis={formValues.kanIkkeOppgis}
                                 visibility={visibility}
                                 gjelderAdopsjon={gjelderAdopsjon}
+                                søkersFødselsnummer={søkersFødselsnummer}
                             />
                         )}
                         <Block

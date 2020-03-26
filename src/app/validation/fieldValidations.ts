@@ -69,9 +69,17 @@ export const validateUtenlandsoppholdNeste12Mnd = (utenlandsopphold: BostedUtlan
     return undefined;
 };
 
-export const validateFødselsnummer = (fnr: string, erUtenlandskFnr: boolean): SkjemaelementFeil => {
+export const validateFødselsnummer = (
+    fnr: string,
+    erUtenlandskFnr: boolean,
+    søkersFødselsnummer: string
+): SkjemaelementFeil => {
     if (erUtenlandskFnr) {
         return isUtenlandskFødselsnummerValid(fnr) ? undefined : createFieldValidationError('påkrevd');
+    }
+
+    if (fnr === søkersFødselsnummer) {
+        return createFieldValidationError('valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer');
     }
 
     return isFødselsnummerFormatValid(fnr)

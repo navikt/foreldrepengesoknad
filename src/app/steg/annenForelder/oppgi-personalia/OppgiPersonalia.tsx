@@ -20,6 +20,7 @@ interface Props {
     erUtenlandskFnr: boolean;
     visibility: QuestionVisibility<AnnenForelderFieldNames, undefined>;
     gjelderAdopsjon: boolean;
+    søkersFødselsnummer: string;
 }
 
 const OppgiPersonalia: React.FunctionComponent<Props> = ({
@@ -28,6 +29,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
     kanIkkeOppgis,
     visibility,
     gjelderAdopsjon,
+    søkersFødselsnummer,
     intl
 }) => {
     return (
@@ -65,7 +67,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
                 <AnnenForelderFormComponents.Input
                     name={AnnenForelderFieldNames.fnr}
                     label={getMessage(intl, 'annenForelder.spørsmål.fnr', { navn: fornavn })}
-                    validate={(fnr: string) => validateFødselsnummer(fnr, erUtenlandskFnr)}
+                    validate={(fnr: string) => validateFødselsnummer(fnr, erUtenlandskFnr, søkersFødselsnummer)}
                 />
             </Block>
             <Block visible={visibility.isVisible(AnnenForelderFieldNames.utenlandskFnr)}>

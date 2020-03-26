@@ -164,6 +164,7 @@ class AnnenForelderSteg extends React.Component<Props> {
                                 familiehendelseDato={familiehendelseDato}
                                 barn={barn}
                                 gjelderAdopsjon={gjelderAdopsjon}
+                                søkersFødselsnummer={søkersFødselsnummer}
                                 initialFormValues={initialFormValues}
                                 onFileDelete={this.onFileDelete}
                                 onFilesSelect={this.onFilesSelect}
