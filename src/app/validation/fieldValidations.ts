@@ -3,7 +3,11 @@ import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
 import { date1YearAgo, date1YearAhead } from 'app/util/validation/values';
 import { dateRangesCollide, dateRangesExceedsRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { isFødselsnummerFormatValid, isUtenlandskFødselsnummerValid } from 'app/util/validation/fødselsnummer';
+import {
+    isFødselsnummerFormatValid,
+    isUtenlandskFødselsnummerValid,
+    isSixteenOrOlder
+} from 'app/util/validation/fødselsnummer';
 
 export const validateYesOrNoIsAnswered = (answer: YesOrNo): string | undefined => {
     if (answer === YesOrNo.UNANSWERED || answer === undefined) {
@@ -74,6 +78,8 @@ export const validateFødselsnummer = (
     erUtenlandskFnr: boolean,
     søkersFødselsnummer: string
 ): SkjemaelementFeil => {
+    const validFnrResult = isFødselsnummerFormatValid(fnr);
+
     if (erUtenlandskFnr) {
         return isUtenlandskFødselsnummerValid(fnr) ? undefined : createFieldValidationError('påkrevd');
     }
@@ -82,7 +88,11 @@ export const validateFødselsnummer = (
         return createFieldValidationError('valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer');
     }
 
-    return isFødselsnummerFormatValid(fnr)
+    if (!erUtenlandskFnr && !isSixteenOrOlder(fnr, validFnrResult)) {
+        return createFieldValidationError('valideringsfeil.fødselsnummer.underSeksten');
+    }
+
+    return validFnrResult === 'F'
         ? undefined
         : createFieldValidationError('valideringsfeil.fødselsnummer.ugyldigFødselsnummer');
 };
