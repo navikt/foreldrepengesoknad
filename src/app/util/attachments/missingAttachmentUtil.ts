@@ -11,9 +11,9 @@ import { Attachment, InnsendingsType } from 'app/components/storage/attachment/t
 import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import { spørsmålOmVedleggVisible } from '../../steg/barn/relasjonTilBarnAdopsjonSteg/visibility';
 import {
-    getAttachmentTypeForPeriode,
+    // getAttachmentTypeForPeriode,
     getSkjemanummerForAndreInntekter,
-    getSkjemanummerForPeriode,
+    // getSkjemanummerForPeriode,
     isAttachmentForAnnenInntekt,
     isAttachmentForBarn,
     isAttachmentForPeriode,
@@ -22,8 +22,8 @@ import {
 import {
     dokumentasjonBehøvesForOverføringsperiode,
     dokumentasjonBehøvesForUtsettelsesperiode,
-    dokumentasjonBehøvesForUttaksperiode,
-    erÅrsakSykdomEllerInstitusjonsopphold
+    dokumentasjonBehøvesForUttaksperiode
+    // erÅrsakSykdomEllerInstitusjonsopphold
 } from '../uttaksplan/utsettelsesperiode';
 import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
@@ -115,29 +115,29 @@ const missingAttachmentForAktivitetskrav = (periode: Periode, søknadsinfo: Søk
     );
 };
 
-const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): boolean => {
-    if (periode.type === Periodetype.Utsettelse) {
-        return (
-            erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
-            isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
-        );
-    }
+// const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): boolean => {
+//     if (periode.type === Periodetype.Utsettelse) {
+//         return (
+//             erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
+//             isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
+//         );
+//     }
 
-    if (periode.type === Periodetype.Overføring) {
-        return (
-            erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
-            isAttachmentMissing(periode.vedlegg, AttachmentType.OVERFØRING_KVOTE)
-        );
-    }
+//     if (periode.type === Periodetype.Overføring) {
+//         return (
+//             erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
+//             isAttachmentMissing(periode.vedlegg, AttachmentType.OVERFØRING_KVOTE)
+//         );
+//     }
 
-    return false;
-};
+//     return false;
+// };
 
 export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
     const shouldHave = shouldPeriodeHaveAttachment(periode, søknadsinfo);
     const missingForAktivitetskrav = missingAttachmentForAktivitetskrav(periode, søknadsinfo);
-    const missingForSykdomEllerInst = missingAttachmentForSykdomEllerInstitusjonsopphold(periode);
-    return shouldHave && (missingForAktivitetskrav || missingForSykdomEllerInst);
+    // const missingForSykdomEllerInst = missingAttachmentForSykdomEllerInstitusjonsopphold(periode);
+    return shouldHave && missingForAktivitetskrav;
 };
 
 export const findMissingAttachmentsForPerioder = (
@@ -151,14 +151,14 @@ export const findMissingAttachmentsForPerioder = (
     const missingAttachments = [];
     for (const periode of perioder) {
         if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
-            if (missingAttachmentForSykdomEllerInstitusjonsopphold(periode)) {
-                missingAttachments.push({
-                    index: perioder.indexOf(periode),
-                    skjemanummer: getSkjemanummerForPeriode(periode),
-                    type: getAttachmentTypeForPeriode(periode),
-                    periodeId: periode.id
-                });
-            }
+            // if (missingAttachmentForSykdomEllerInstitusjonsopphold(periode)) {
+            //     missingAttachments.push({
+            //         index: perioder.indexOf(periode),
+            //         skjemanummer: getSkjemanummerForPeriode(periode),
+            //         type: getAttachmentTypeForPeriode(periode),
+            //         periodeId: periode.id
+            //     });
+            // }
 
             if (
                 (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Uttak) &&
