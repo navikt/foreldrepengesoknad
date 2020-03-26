@@ -3,7 +3,7 @@ import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
 import { date1YearAgo, date1YearAhead } from 'app/util/validation/values';
 import { dateRangesCollide, dateRangesExceedsRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { isFødselsnummerFormatValid } from 'app/util/validation/fødselsnummer';
+import { isFødselsnummerFormatValid, isUtenlandskFødselsnummerValid } from 'app/util/validation/fødselsnummer';
 
 export const validateYesOrNoIsAnswered = (answer: YesOrNo): string | undefined => {
     if (answer === YesOrNo.UNANSWERED || answer === undefined) {
@@ -71,7 +71,7 @@ export const validateUtenlandsoppholdNeste12Mnd = (utenlandsopphold: BostedUtlan
 
 export const validateFødselsnummer = (fnr: string, erUtenlandskFnr: boolean): SkjemaelementFeil => {
     if (erUtenlandskFnr) {
-        return undefined;
+        return isUtenlandskFødselsnummerValid(fnr) ? undefined : createFieldValidationError('påkrevd');
     }
 
     return isFødselsnummerFormatValid(fnr)
