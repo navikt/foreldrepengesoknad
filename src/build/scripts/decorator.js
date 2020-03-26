@@ -23,17 +23,12 @@ const extractDecoratorFragments = (html) => {
     console.log('Extracting decorator fragments', html);
     const { document } = new JSDOM(html).window;
     const prop = 'innerHTML';
-    const brukNyDekoratør = process.env.BRUK_NY_DEKORATOR === 'on';
 
     return {
         NAV_SCRIPTS: document.getElementById('scripts')[prop],
         NAV_STYLES: document.getElementById('styles')[prop],
-        NAV_HEADING: brukNyDekoratør
-            ? document.getElementById('header-withmenu')[prop]
-            : document.getElementById('header')[prop],
-        NAV_FOOTER: brukNyDekoratør
-            ? document.getElementById('footer-withmenu')[prop]
-            : document.getElementById('footer')[prop]
+        NAV_HEADING: document.getElementById('header')[prop],
+        NAV_FOOTER: document.getElementById('footer')[prop]
     };
 };
 
