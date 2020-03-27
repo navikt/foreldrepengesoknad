@@ -235,7 +235,7 @@ class Velkommen extends React.Component<Props, State> {
                                 dispatch(søknadActions.updateSøknad({ harGodkjentVilkår: !harGodkjentVilkår }));
                             }}
                         >
-                            <Normaltekst>{this.getBekreftCheckboksPanelLabelHeader()}</Normaltekst>
+                            {this.getBekreftCheckboksPanelLabelHeader()}
                         </BekreftCheckboksPanel>
                         <Knapperad>
                             <Hovedknapp
