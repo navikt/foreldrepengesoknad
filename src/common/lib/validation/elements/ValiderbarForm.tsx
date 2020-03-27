@@ -17,12 +17,19 @@ export interface ValiderbarFormProps {
 }
 
 export interface ValidFormContextInterface {
-    register: (component: React.Component) => void;
-    unregister: (component: React.Component) => void;
-    onChange: (e: any, component: React.ComponentType) => void;
-    onBlur: (e: any, component: React.ComponentType) => void;
+    register: (component: ValidatableComponent) => void;
+    unregister: (component: ValidatableComponent) => void;
+    onChange: (e: any, component: ValidatableComponent) => void;
+    onBlur: (e: any, component: ValidatableComponent) => void;
     validateField: (componentId: string, forceValidation?: boolean) => void;
     validateAll: () => void;
+}
+
+export interface ValidatableComponent {
+    readonly props: {
+        readonly id?: string;
+    };
+    validate: () => ValidationResult;
 }
 
 export const ValidFormContext = React.createContext<ValidFormContextInterface>(null!);
@@ -36,7 +43,7 @@ interface ValiderbarFormState {
 type Props = ValiderbarFormProps & InjectedIntlProps;
 
 class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
-    components: any[];
+    components: ValidatableComponent[];
     formContext: ValidFormContextInterface;
 
     constructor(props: Props) {
@@ -65,13 +72,13 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
         return this.state.failedSubmit || this.props.validateBeforeSubmit;
     }
 
-    onChange(e: any, component: React.ComponentType) {
+    onChange(e: any, component: ValidatableComponent) {
         if (this.shouldValidate()) {
             this.validateOne(component);
         }
     }
 
-    onBlur(e: any, component: React.ComponentType) {
+    onBlur(e: any, component: ValidatableComponent) {
         if (this.shouldValidate()) {
             this.validateOne(component);
         }
@@ -91,7 +98,7 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
         }
     }
 
-    validateOne(component: React.ComponentType) {
+    validateOne(component: ValidatableComponent) {
         const index = this.components.indexOf(component);
         if (index !== -1) {
             this.validateComponentAtIndex(index);
@@ -142,7 +149,7 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
         return valid;
     }
 
-    registerComponent(component: React.ComponentType) {
+    registerComponent(component: ValidatableComponent) {
         if (this.components.indexOf(component) === -1) {
             this.components.push(component);
             if (this.props.runValidationOnRegister) {
@@ -151,7 +158,7 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
         }
     }
 
-    unRegisterComponent(component: React.Component) {
+    unRegisterComponent(component: ValidatableComponent) {
         // Fjern komponent fra komponent-listen
         const index = this.components.indexOf(component);
         this.components.splice(index, 1);

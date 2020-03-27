@@ -58,6 +58,7 @@ import { VeilederMessage } from '../../../veilederInfo/types';
 import VedleggSpørsmål from 'app/components/skjema/vedleggSpørsmål/VedleggSpørsmål';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Skjemanummer } from 'app/types/søknad/Søknad';
+import { ValidFormContext, ValidFormContextInterface } from 'common/lib/validation/elements/ValiderbarForm';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -140,11 +141,14 @@ const getOppholdsInfotekst = (
           ];
 };
 
-class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
-    context: any;
+type FormContextProps = Props & {
+    formContext: ValidFormContextInterface;
+};
+
+class UttaksperiodeForm extends React.Component<FormContextProps, ComponentStateProps> {
     timeoutId: number;
 
-    constructor(props: Props) {
+    constructor(props: FormContextProps) {
         super(props);
         this.updateStønadskontoType = this.updateStønadskontoType.bind(this);
         this.updateForeldrepengerFørFødselUttak = this.updateForeldrepengerFørFødselUttak.bind(this);
@@ -171,8 +175,8 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
             }
         }
 
-        if (this.context.validForm && this.props.periode.id) {
-            this.context.validForm.validateAll();
+        if (this.props.formContext && this.props.periode.id) {
+            this.props.formContext.validateAll();
         }
     }
 
@@ -184,10 +188,10 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
 
     onChange(periode: UttakFormPeriodeType, replace: boolean = false) {
         this.props.onChange(periode, replace, this.getVisibility());
-        if (this.context.validForm) {
+        if (this.props.formContext) {
             this.timeoutId = setTimeout(() => {
-                if (this.context.validForm && this.props.periode.id) {
-                    this.context.validForm.validateAll();
+                if (this.props.formContext && this.props.periode.id) {
+                    this.props.formContext.validateAll();
                 }
             });
         }
@@ -542,6 +546,12 @@ class UttaksperiodeForm extends React.Component<Props, ComponentStateProps> {
     }
 }
 
+const UttaksperiodeFormContextWrapper = (props: Props) => {
+    const formContext = React.useContext(ValidFormContext);
+
+    return <UttaksperiodeForm {...props} formContext={formContext} />;
+};
+
 const mapStateToProps = (state: AppState): StateProps => {
     const søknadsinfo = selectSøknadsinfo(state);
     const arbeidsforhold = selectArbeidsforhold(state);
@@ -555,4 +565,4 @@ const mapStateToProps = (state: AppState): StateProps => {
     };
 };
 
-export default connect(mapStateToProps)(injectIntl(UttaksperiodeForm));
+export default connect(mapStateToProps)(injectIntl(UttaksperiodeFormContextWrapper));

@@ -39,6 +39,7 @@ import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { getTidsperioderIUttaksplan } from 'app/util/uttaksplan';
 import JaNeiSpørsmål from 'common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 import { RadioProps } from 'nav-frontend-skjema';
+import { ValidFormContext, ValidFormContextInterface } from 'common/lib/validation/elements/ValiderbarForm';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -118,10 +119,12 @@ const overlapperUtsettelseAndreUtsettelser = (periode: Partial<Periode>, uttaksp
         : false;
 };
 
-class UtsettelsesperiodeForm extends React.Component<Props, State> {
-    context: any;
+type FormContextProps = Props & {
+    formContext: ValidFormContextInterface;
+};
 
-    constructor(props: Props) {
+class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
+    constructor(props: FormContextProps) {
         super(props);
         this.onVariantChange = this.onVariantChange.bind(this);
         this.onSykdomÅrsakChange = this.onSykdomÅrsakChange.bind(this);
@@ -133,15 +136,15 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        if (this.context.validForm && this.props.periode.id) {
-            this.context.validForm.validateAll();
+        if (this.props.formContext && this.props.periode.id) {
+            this.props.formContext.validateAll();
         }
     }
 
     onChange(periode: UtsettelseFormPeriodeType, replace: boolean = false) {
         this.props.onChange(periode, replace, this.getVisibility());
-        if (this.context.validForm && this.props.periode.id) {
-            this.context.validForm.validateAll();
+        if (this.props.formContext && this.props.periode.id) {
+            this.props.formContext.validateAll();
         }
     }
 
@@ -474,6 +477,12 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 }
 
+const UtsettelsesperiodeFormContextWrapper = (props: Props) => {
+    const formContext = React.useContext(ValidFormContext);
+
+    return <UtsettelsesperiodeForm {...props} formContext={formContext} />;
+};
+
 const mapStateToProps = (state: AppState): StateProps => {
     return {
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
@@ -483,4 +492,4 @@ const mapStateToProps = (state: AppState): StateProps => {
     };
 };
 
-export default connect(mapStateToProps)(injectIntl(UtsettelsesperiodeForm));
+export default connect(mapStateToProps)(injectIntl(UtsettelsesperiodeFormContextWrapper));
