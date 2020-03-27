@@ -14,7 +14,6 @@ import {
     Arbeidsform
 } from '../../types/uttaksplan/periodetyper';
 import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
-import stringifyTilleggsopplysninger from './stringifyTilleggsopplysninger';
 import { Barn } from '../../types/søknad/Barn';
 import { cleanupBarn } from '../barnUtils';
 import AnnenForelder from 'app/types/søknad/AnnenForelder';
@@ -23,7 +22,9 @@ export const isArrayOfAttachments = (object: object) => {
     return (
         Array.isArray(object) &&
         object[0] !== null &&
-        object.some((element) => element && (element.filename || element.innsendingsType === InnsendingsType.SEND_SENERE))
+        object.some(
+            (element) => element && (element.filename || element.innsendingsType === InnsendingsType.SEND_SENERE)
+        )
     );
 };
 
@@ -63,7 +64,6 @@ const changeClientonlyKontotype = (periode: Periode, andreForelderHarRettPåFore
 
     return periode;
 };
-
 
 export const removePeriodetypeHullFromUttaksplan = (uttaksplan: Periode[]): Periode[] => {
     return uttaksplan.filter(isNotPeriodetypeHull);
@@ -126,16 +126,15 @@ const cleanupUttaksplan = (uttaksplan: Periode[], annenForelder?: AnnenForelder)
     return uttaksplan
         .filter((periode: Periode) => isValidTidsperiode(periode.tidsperiode))
         .filter(skalPeriodeSendesInn)
-        .map(
-            (periode) =>
-                annenForelder ? changeClientonlyKontotype(periode, annenForelder.harRettPåForeldrepenger) : periode
+        .map((periode) =>
+            annenForelder ? changeClientonlyKontotype(periode, annenForelder.harRettPåForeldrepenger) : periode
         )
         .map(changeGradertPeriode);
 };
 
 const cleanupTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string | undefined => {
-    const tilleggsopplysningerTilSaksbehandler = stringifyTilleggsopplysninger(tilleggsopplysninger);
-    if (tilleggsopplysningerTilSaksbehandler.length > 0) {
+    const tilleggsopplysningerTilSaksbehandler = tilleggsopplysninger.begrunnelseForSenEndring?.tekst;
+    if (tilleggsopplysningerTilSaksbehandler !== undefined && tilleggsopplysningerTilSaksbehandler.length > 0) {
         return tilleggsopplysningerTilSaksbehandler;
     }
     return undefined;

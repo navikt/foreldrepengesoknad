@@ -972,10 +972,10 @@
         "Du må søkje om å utsetje på grunn av ferie seinast dagen før du startar ferien din.",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid.tittel": "Søkja om arbeid tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid":
-        "Du må søkje om å utsetje på grunn av arbeid seinast dagen før du begynner å jobbe. Søkjer du om å utsetje etter at du har begynt å jobbe, mistar du dagar med foreldrepengar frå den dagen du starta å jobbe, og fram til dagen du søkjer om å utsetje. Dersom du melder frå til NAV før du begynner å jobbe, mistar du ikkje dagar med foreldrepengar.",
+        "Du må søkje om å utsetje på grunn av arbeid seinast dagen før du begynner å jobbe. Søkjer du om å utsetje etter at du har begynt å jobbe, mistar du dagar med foreldrepengar frå den dagen du starta å jobbe, og fram til dagen du søkjer om å utsetje. Dersom du melder frå til NAV før du begynner å jobbe, mistar du ikkje dagar med foreldrepengar. Er du blitt beordret ut i arbeid kan vi i slike tilfeller innvilge utsettelse tilbake i tid. Skriv en forklaring til oss nederst i søknaden.",
     "uttaksplan.veileder.planenAdvarerOmUttak.tittel": "Søkja om å kombinere foreldrepengar med arbeid tilbake i tid",
     "uttaksplan.veileder.planenAdvarerOmUttak":
-        "Du må søkje om å kombinere foreldrepengane med delvis arbeid seinast dagen før du begynner å jobbe. Når du søkjer etter at du har begynt å jobbe, mistar du dagar med foreldrepengar ut frå stillingsprosenten du har jobba i, fram til vi får søknaden din. Dersom du melder frå til NAV før du begynner å jobbe, mistar du ikkje dagar med foreldrepengar.",
+        "Du må søkje om å kombinere foreldrepengane med delvis arbeid seinast dagen før du begynner å jobbe. Når du søkjer etter at du har begynt å jobbe, mistar du dagar med foreldrepengar ut frå stillingsprosenten du har jobba i, fram til vi får søknaden din. Dersom du melder frå til NAV før du begynner å jobbe, mistar du ikkje dagar med foreldrepengar. Er du blitt beordret ut i delvis arbeid kan vi i slike tilfeller innvilge foreldrepenger kombinert med arbeid tilbake i tid. Skriv en forklaring til oss nederst i søknaden.",
     "uttaksplan.regelAvvik.ariaTittel": "Detaljer om planen",
     "uttaksplan.senEndring.veileder.SYKDOM":
         "Du søkjer om å utsetje på grunn av sjukdom tilbake i tid. Her kan du fortelje kva som er grunnen til at du ikkje har søkt tidlegare. Det er også mogleg for deg å laste opp relevant dokumentasjon.",
@@ -987,6 +987,24 @@
     "uttaksplan.senEndring.begrunnelse.UTTAK": "Kva er årsaka til at du ikkje har søkt om foreldrepengar tidlegare?",
     "uttaksplan.senEndring.begrunnelse.SYKDOM_OG_UTTAK":
         "Kva er årsaka til at du ikkje har søkt om foreldrepengar og utsetjing tidlegare?",
+    "uttaksplan.tilleggsopplysninger.label":
+        "Hva er grunnen til at du søker tilbake i tid eller gi en forklaring av sykdomssituasjonen",
+    "uttaksplan.tilleggsopplysninger.sykdomTilbakeITid.overskrift":
+        "Søker du om utsettelse på grunn av sykdom tilbake i tid?",
+    "uttaksplan.tilleggsopplysninger.sykdomTilbakeITid":
+        "Søker du om  utsette på grunn av sykdom tilbake i tid. Så kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.tilleggsopplysninger.uttak.overskrift":
+        "Søker du om en perioden med foreldrepenger mer enn 3 måneder tilbake i tid?",
+    "uttaksplan.tilleggsopplysninger.uttak":
+        "Du kan søke om foreldrepenger 3 måneder tilbake i tid fra den dagen NAV mottar søknaden fra deg. Når du søker mer enn 3 måneder tilbake i tid må vi vurdere rettighetene dine. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering.overskrift":
+        "Søker du om utsettelse på grunn av arbeid eller kombinere arbeid og foreldrepenger tilbake i tid?",
+    "uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering":
+        "Som hovedregel må du søke om å kombinere foreldrepenger og arbeid eller utsettelse på grunn av arbeid før du skal begynne å jobbe. Har du blitt beordret ut i jobb på grunn av korona kan du skrive en forklaring til oss her.",
+    "uttaksplan.tilleggsopplysninger.sykdom.overskrift":
+        "Er du eller den andre forelderen for syk til å ta seg av barnet eller innlagt i helseinstitusjon?",
+    "uttaksplan.tilleggsopplysninger.sykdom":
+        "Her skal du skrive hvordan du eller den andre forelderen er helt avhengig av hjelp til å ta seg av barnet. Er du eller den andre forelderen innlagt i helseinstitusjon, skriver du hvor du eller den andre forelderen  er innlagt.",
     "uttaksplanSkjema.info.adoptertIUtlandet":
         "Startar du foreldrepengane seinare enn omsorgsovertakinga eller når de kjem til Noreg, mistar du dagar.",
     "uttaksplanSkjema.info.dekningsgrad80":

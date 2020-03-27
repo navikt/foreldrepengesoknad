@@ -87,19 +87,25 @@ export const erSentGradertUttak = (periode: Periode) =>
 
 export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): SenEndringÅrsak => {
     const sykdomKreverBegrunnelse = uttaksplan.some(erUtsettelsePgaSykdom || erUttakGrunnetSykdom);
-    const sykdomKreverBegrunnelsePgaSøktSent = uttaksplan
-        .filter(erUtsettelseTilbakeITid || erUttakTilbakeITid)
-        .some(erUtsettelsePgaSykdom || erUttakGrunnetSykdom);
-    const arbeidKreverBegrunnelsePgaSøktSent = uttaksplan
-        .filter(erUtsettelseTilbakeITid || erUttakTilbakeITid)
-        .some(erUtsettelseGrunnetPgaArbeid || erGradering);
+    const utsettelseSykdomKreverBegrunnelsePgaSøktSent = uttaksplan
+        .filter(erUtsettelseTilbakeITid)
+        .some(erUtsettelsePgaSykdom);
+    const uttakSykdomKreverBegrunnelsePgaSøktSent = uttaksplan.filter(erUttakTilbakeITid).some(erUttakGrunnetSykdom);
+    const utsettelseArbeidKreverBegrunnelsePgaSøktSent = uttaksplan
+        .filter(erUtsettelseTilbakeITid)
+        .some(erUtsettelseGrunnetPgaArbeid);
+    const uttakArbeidKreverBegrunnelsePgaSøktSent = uttaksplan.filter(erUttakTilbakeITid).some(erGradering);
     const uttakKreverBegrunnelsePgaSøktSent = uttaksplan.some(erUttakEllerOppholdMerEnnTreMånederSiden);
 
-    if (arbeidKreverBegrunnelsePgaSøktSent) {
+    if (utsettelseArbeidKreverBegrunnelsePgaSøktSent || uttakArbeidKreverBegrunnelsePgaSøktSent) {
         return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.ArbeidOgUttak : SenEndringÅrsak.Arbeid;
     }
 
-    if (sykdomKreverBegrunnelse || sykdomKreverBegrunnelsePgaSøktSent) {
+    if (
+        sykdomKreverBegrunnelse ||
+        utsettelseSykdomKreverBegrunnelsePgaSøktSent ||
+        uttakSykdomKreverBegrunnelsePgaSøktSent
+    ) {
         return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.SykdomOgUttak : SenEndringÅrsak.Sykdom;
     }
 

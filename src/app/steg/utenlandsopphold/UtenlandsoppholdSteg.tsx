@@ -11,8 +11,6 @@ import Steg, { StegProps } from '../../components/applikasjon/steg/Steg';
 import { StegID } from '../../util/routing/stegConfig';
 import { HistoryProps } from '../../types/common';
 import isAvailable from '../../util/steg/isAvailable';
-import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
-// import { default as visibility } from './visibility';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import cleanupUtenlandsOppholdSteg from '../../util/cleanup/cleanupUtenlandsoppholdSteg';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
@@ -108,12 +106,10 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
             informasjonOmUtenlandsopphold,
             situasjon
         );
-        const visFortsettKnapp = utenlandsoppholdErGyldig(informasjonOmUtenlandsopphold);
-        const nyStegProps: StegProps = { ...stegProps, renderFortsettKnapp: visFortsettKnapp };
 
         return (
             <Steg
-                {...nyStegProps}
+                {...stegProps}
                 renderProp={(options) => (
                     <>
                         <Block visible={relevantUtenlandsopphold !== undefined}>
