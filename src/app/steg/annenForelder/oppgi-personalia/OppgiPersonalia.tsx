@@ -44,7 +44,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
                         name={AnnenForelderFieldNames.fornavn}
                         label={getMessage(intl, 'annenForelder.spørsmål.fornavn')}
                         disabled={kanIkkeOppgis}
-                        validate={(fornavn) => (kanIkkeOppgis ? undefined : validateRequiredField(fornavn))}
+                        validate={(fornavnValue) => (kanIkkeOppgis ? undefined : validateRequiredField(fornavnValue))}
                     />
                     <AnnenForelderFormComponents.Input
                         className={bem.element('nameInput')}

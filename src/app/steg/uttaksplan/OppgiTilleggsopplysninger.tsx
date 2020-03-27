@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { getFritekstfeltRules } from 'app/util/validation/fritekstfelt';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { SenEndringÅrsak } from 'app/types/uttaksplan/periodetyper';
+import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import { Skjemanummer } from 'app/types/søknad/Søknad';
 import { TextareaChangeEvent } from 'common/types/Events';
 import Block from 'common/components/block/Block';
@@ -11,10 +10,11 @@ import getMessage from 'common/util/i18nUtils';
 import Textarea from 'common/components/skjema/wrappers/Textarea';
 import throttle from 'lodash.throttle';
 import VedleggSpørsmål from 'app/components/skjema/vedleggSpørsmål/VedleggSpørsmål';
-import { begrunnelseSenEndringMaxLength } from 'app/util/validation/uttaksplan/begrunnelseForSenEndringValidation';
+import { tilleggsopplysningerMaxLength } from 'app/util/validation/uttaksplan/tilleggsopplysningerValidation';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
+import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 
 interface OwnProps {
-    årsak: SenEndringÅrsak;
     begrunnelse?: string;
     vedlegg?: Attachment[];
     onBegrunnelseChange: (begrunnelse: string) => void;
@@ -27,7 +27,19 @@ interface State {
     begrunnelse: string;
 }
 
-class BegrunnelseForSenEndring extends React.Component<Props, State> {
+const getLabel = (intl: InjectedIntl) => {
+    return (
+        <div>
+            <Element>{getMessage(intl, 'uttaksplan.tilleggsopplysninger.label')}</Element>
+            <UtvidetInformasjon apneLabel="Les mer om hva vi ønsker at du skal gi en forklaring om">
+                <Element>Noe info</Element>
+                <Normaltekst>Hei her skjer det ting</Normaltekst>
+            </UtvidetInformasjon>
+        </div>
+    );
+};
+
+class OppgiTilleggsopplysninger extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -52,26 +64,22 @@ class BegrunnelseForSenEndring extends React.Component<Props, State> {
     };
 
     render() {
-        const { vedlegg, intl, årsak, onVedleggChange } = this.props;
-
-        const infotekst = `uttaksplan.senEndring.veileder.${årsak}`;
-        const begrunnelseLabel = `uttaksplan.senEndring.begrunnelse.${årsak}`;
+        const { vedlegg, intl, onVedleggChange } = this.props;
 
         return (
             <div className="blokk-m">
                 <Block margin="s">
                     <Textarea
                         value={this.state.begrunnelse}
-                        maxLength={begrunnelseSenEndringMaxLength}
+                        maxLength={tilleggsopplysningerMaxLength}
                         validators={getFritekstfeltRules(
-                            { maxLength: begrunnelseSenEndringMaxLength },
+                            { maxLength: tilleggsopplysningerMaxLength },
                             intl,
                             this.state.begrunnelse
                         )}
                         name="begrunnelseForSenEndring"
-                        label={getMessage(intl, begrunnelseLabel)}
+                        label={getLabel(intl)}
                         onChange={this.handleBegrunnelseChange}
-                        infotekst={getMessage(intl, infotekst)}
                     />
                 </Block>
                 <VedleggSpørsmål
@@ -87,4 +95,4 @@ class BegrunnelseForSenEndring extends React.Component<Props, State> {
     }
 }
 
-export default injectIntl(BegrunnelseForSenEndring);
+export default injectIntl(OppgiTilleggsopplysninger);

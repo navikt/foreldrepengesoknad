@@ -28,7 +28,6 @@ import { StegID } from '../../util/routing/stegConfig';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import apiActionCreators from '../../redux/actions/api/apiActionCreators';
 import ApplicationSpinner from 'common/components/applicationSpinner/ApplicationSpinner';
-import BegrunnelseForSenEndring from './BegrunnelseForSenEndring';
 import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjemaDialog';
 import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
 import BekreftTilbakestillUttaksplanDialog from './BekreftTilbakestillUttaksplanDialog';
@@ -66,6 +65,7 @@ import updatePeriode from 'app/util/uttaksplan/builder/updatePeriode';
 import { getEndringstidspunkt } from 'app/util/dates/dates';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import moment from 'moment';
+import OppgiTilleggsopplysninger from './OppgiTilleggsopplysninger';
 
 interface StateProps {
     stegProps: StegProps;
@@ -500,8 +500,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
                         {årsakTilSenEndring &&
                             årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
-                                <BegrunnelseForSenEndring
-                                    årsak={årsakTilSenEndring}
+                                <OppgiTilleggsopplysninger
                                     begrunnelse={
                                         tilleggsopplysninger.begrunnelseForSenEndring
                                             ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
