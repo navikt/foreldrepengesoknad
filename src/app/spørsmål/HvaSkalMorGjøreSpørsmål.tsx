@@ -59,8 +59,8 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
         } else if (morsAktivitetIPerioden === MorsAktivitet.Innlagt) {
             return (
                 <FormattedMessage
-                    id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt"
-                    values={{ navnMor: navnPåForeldre.mor.fornavn }}
+                    id="uttaksplan.informasjonVedSykdomAnnenForelder"
+                    values={{ navn: navnPåForeldre.mor.fornavn }}
                 />
             );
         } else if (morsAktivitetIPerioden === MorsAktivitet.Introduksjonsprogrammet) {
@@ -80,8 +80,8 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
         } else if (morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp) {
             return (
                 <FormattedMessage
-                    id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.trengerhjelp"
-                    values={{ navnMor: navnPåForeldre.mor.fornavn }}
+                    id="uttaksplan.informasjonVedSykdomAnnenForelder"
+                    values={{ navn: navnPåForeldre.mor.fornavn }}
                 />
             );
         } else if (morsAktivitetIPerioden === MorsAktivitet.Utdanning) {

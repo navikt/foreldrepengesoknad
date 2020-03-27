@@ -12,7 +12,9 @@ import {
     isUttaksperiode,
     isOverføringsperiode,
     OverføringÅrsakType,
-    Uttaksperiode
+    Uttaksperiode,
+    isUttakAvFellesperiode,
+    MorsAktivitet
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
 import { dateIsTodayOrInFuture, dateIsNotInFuture } from '../dates/dates';
@@ -57,6 +59,14 @@ const erUttakGrunnetSykdom = (periode: Uttaksperiode) => {
         return true;
     }
 
+    if (
+        isUttakAvFellesperiode(periode) &&
+        (periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
+            periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp)
+    ) {
+        return true;
+    }
+
     return false;
 };
 
@@ -86,7 +96,8 @@ export const erSentGradertUttak = (periode: Periode) =>
     periode.type === Periodetype.Uttak && !dateIsTodayOrInFuture(periode.tidsperiode.fom) && periode.gradert;
 
 export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): SenEndringÅrsak => {
-    const sykdomKreverBegrunnelse = uttaksplan.some(erUtsettelsePgaSykdom || erUttakGrunnetSykdom);
+    const utsettelseSykdomKreverBegrunnelse = uttaksplan.some(erUtsettelsePgaSykdom);
+    const uttakSykdomKreverBegrunnelse = uttaksplan.some(erUttakGrunnetSykdom);
     const utsettelseSykdomKreverBegrunnelsePgaSøktSent = uttaksplan
         .filter(erUtsettelseTilbakeITid)
         .some(erUtsettelsePgaSykdom);
@@ -102,9 +113,10 @@ export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): Sen
     }
 
     if (
-        sykdomKreverBegrunnelse ||
+        utsettelseSykdomKreverBegrunnelse ||
         utsettelseSykdomKreverBegrunnelsePgaSøktSent ||
-        uttakSykdomKreverBegrunnelsePgaSøktSent
+        uttakSykdomKreverBegrunnelsePgaSøktSent ||
+        uttakSykdomKreverBegrunnelse
     ) {
         return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.SykdomOgUttak : SenEndringÅrsak.Sykdom;
     }
