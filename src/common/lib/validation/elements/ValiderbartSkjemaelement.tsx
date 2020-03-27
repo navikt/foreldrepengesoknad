@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { Validator, ValidationResult } from '../types/index';
 import { runValidators } from 'common/lib/validation/utils/runValidFormValidation';
 import { Feil } from 'common/types';
+import { ValidFormContext, ValidFormContextInterface, ValidatableComponent } from './ValiderbarForm';
 
 type ValiderEvent = (evt: any) => void;
 
@@ -15,6 +16,7 @@ export interface ValiderbartSkjemaelementProps {
     onChange?: any;
     onBlur?: any;
     onValidate?: any;
+    id?: string;
 }
 
 export interface Props extends ValiderbartSkjemaelementProps {
@@ -28,11 +30,15 @@ export interface ValiderbartSkjemaelementState {
     optional?: boolean;
 }
 
-class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemaelementState> {
-    element: any;
-    context: any;
+type FormContextProps = Props & {
+    formContext: ValidFormContextInterface;
+};
 
-    constructor(props: Props) {
+class ValiderbartSkjemaelement extends React.Component<FormContextProps, ValiderbartSkjemaelementState>
+    implements ValidatableComponent {
+    element: any;
+
+    constructor(props: FormContextProps) {
         super(props);
 
         this.state = {
@@ -46,14 +52,14 @@ class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemae
     }
 
     componentWillMount() {
-        if (this.context.validForm) {
-            this.context.validForm.register(this);
+        if (this.props.formContext) {
+            this.props.formContext.register(this);
         }
     }
 
     componentWillUnmount() {
-        if (this.context.validForm) {
-            this.context.validForm.unregister(this);
+        if (this.props.formContext) {
+            this.props.formContext.unregister(this);
         }
     }
 
@@ -63,8 +69,8 @@ class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemae
                 this.validate();
             });
         }
-        if (this.context.validForm) {
-            this.context.validForm.onChange(e, this);
+        if (this.props.formContext) {
+            this.props.formContext.onChange(e, this);
         }
 
         if (this.props.onChange) {
@@ -78,8 +84,8 @@ class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemae
             hasBlurred: true
         });
 
-        if (this.context.validForm) {
-            this.context.validForm.onBlur(e, this);
+        if (this.props.formContext) {
+            this.props.formContext.onBlur(e, this);
         } else {
             setTimeout(() => {
                 this.validate();
@@ -139,4 +145,11 @@ class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemae
         return render(this.onChange, this.onBlur, failedVerdict);
     }
 }
-export default ValiderbartSkjemaelement;
+
+const ValiderbartSkjemaelementContextWrapper = (props: Props) => {
+    const formContext = React.useContext(ValidFormContext);
+
+    return <ValiderbartSkjemaelement {...props} formContext={formContext} />;
+};
+
+export default ValiderbartSkjemaelementContextWrapper;
