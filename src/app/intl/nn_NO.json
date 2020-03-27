@@ -989,6 +989,22 @@
         "Kva er årsaka til at du ikkje har søkt om foreldrepengar og utsetjing tidlegare?",
     "uttaksplan.tilleggsopplysninger.label":
         "Hva er grunnen til at du søker tilbake i tid eller gi en forklaring av sykdomssituasjonen",
+    "uttaksplan.tilleggsopplysninger.sykdomTilbakeITid.overskrift":
+        "Søker du om utsettelse på grunn av sykdom tilbake i tid?",
+    "uttaksplan.tilleggsopplysninger.sykdomTilbakeITid":
+        "Søker du om  utsette på grunn av sykdom tilbake i tid. Så kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.tilleggsopplysninger.uttak.overskrift":
+        "Søker du om en perioden med foreldrepenger mer enn 3 måneder tilbake i tid?",
+    "uttaksplan.tilleggsopplysninger.uttak":
+        "Du kan søke om foreldrepenger 3 måneder tilbake i tid fra den dagen NAV mottar søknaden fra deg. Når du søker mer enn 3 måneder tilbake i tid må vi vurdere rettighetene dine. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering.overskrift":
+        "Søker du om utsettelse på grunn av arbeid eller kombinere arbeid og foreldrepenger tilbake i tid?",
+    "uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering":
+        "Som hovedregel må du søke om å kombinere foreldrepenger og arbeid eller utsettelse på grunn av arbeid før du skal begynne å jobbe. Har du blitt beordret ut i jobb på grunn av korona kan du skrive en forklaring til oss her.",
+    "uttaksplan.tilleggsopplysninger.sykdom.overskrift":
+        "Er du eller den andre forelderen for syk til å ta seg av barnet eller innlagt i helseinstitusjon?",
+    "uttaksplan.tilleggsopplysninger.sykdom":
+        "Her skal du skrive hvordan du eller den andre forelderen er helt avhengig av hjelp til å ta seg av barnet. Er du eller den andre forelderen innlagt i helseinstitusjon skriver du hvor du eller den andre forelderen  er innlagt.",
     "uttaksplanSkjema.info.adoptertIUtlandet":
         "Startar du foreldrepengane seinare enn omsorgsovertakinga eller når de kjem til Noreg, mistar du dagar.",
     "uttaksplanSkjema.info.dekningsgrad80":

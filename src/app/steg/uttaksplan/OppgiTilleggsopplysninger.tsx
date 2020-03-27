@@ -29,13 +29,38 @@ interface State {
 
 const getLabel = (intl: InjectedIntl) => {
     return (
-        <div>
+        <>
             <Element>{getMessage(intl, 'uttaksplan.tilleggsopplysninger.label')}</Element>
             <UtvidetInformasjon apneLabel="Les mer om hva vi ønsker at du skal gi en forklaring om">
-                <Element>Noe info</Element>
-                <Normaltekst>Hei her skjer det ting</Normaltekst>
+                <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
+                    <Block margin="s">
+                        <Element>
+                            {getMessage(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid.overskrift')}
+                        </Element>
+                        <Normaltekst>
+                            {getMessage(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid')}
+                        </Normaltekst>
+                    </Block>
+                    <Block margin="s">
+                        <Element>{getMessage(intl, 'uttaksplan.tilleggsopplysninger.uttak.overskrift')}</Element>
+                        <Normaltekst>{getMessage(intl, 'uttaksplan.tilleggsopplysninger.uttak')}</Normaltekst>
+                    </Block>
+                    <Block margin="s">
+                        <Element>
+                            {getMessage(
+                                intl,
+                                'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering.overskrift'
+                            )}
+                        </Element>
+                        <Normaltekst>
+                            {getMessage(intl, 'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering')}
+                        </Normaltekst>
+                    </Block>
+                    <Element>{getMessage(intl, 'uttaksplan.tilleggsopplysninger.sykdom.overskrift')}</Element>
+                    <Normaltekst>{getMessage(intl, 'uttaksplan.tilleggsopplysninger.sykdom')}</Normaltekst>
+                </div>
             </UtvidetInformasjon>
-        </div>
+        </>
     );
 };
 
