@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl, FormattedHTMLMessage } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import Arbeidsforhold from '../types/Arbeidsforhold';
 import getMessage from 'common/util/i18nUtils';
 import { Arbeidsform } from '../types/uttaksplan/periodetyper';
@@ -7,6 +7,7 @@ import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/ch
 import { Tidsperiode } from 'common/types';
 import { RecursivePartial } from 'app/types/Partial';
 import { getKunArbeidsforholdForValgtTidsperiode } from 'app/util/domain/arbeidsforhold';
+import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 
 interface HvorSkalDuJobbeSpørsmålFlervalgProps {
     onChange: (orgnumre: string[], frilansEllerSelvstendigNæringsdrivende: Arbeidsform[]) => void;
@@ -36,7 +37,10 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
         let kunArbeidsforholdForValgtTidsperiode = [...arbeidsforhold];
 
         if (tidsperiode && tidsperiode.fom && tidsperiode.tom) {
-            kunArbeidsforholdForValgtTidsperiode = getKunArbeidsforholdForValgtTidsperiode(arbeidsforhold, tidsperiode as Tidsperiode)
+            kunArbeidsforholdForValgtTidsperiode = getKunArbeidsforholdForValgtTidsperiode(
+                arbeidsforhold,
+                tidsperiode as Tidsperiode
+            );
         }
 
         return [
@@ -110,7 +114,17 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
                     this.handleOnChange(e, value, orgnumre, arbeidsformer)
                 }
                 checkboxes={this.getOptions(orgnumre, arbeidsformer)}
-                infoboksTekst={<FormattedHTMLMessage id="utsettelseskjema.info.utsettelseArbeid" />}
+                infoboksTekst={
+                    <VeilederInfo
+                        messages={[
+                            {
+                                type: 'normal',
+                                contentIntlKey: 'utsettelseskjema.info.utsettelseArbeid',
+                                formatContentAsHTML: true
+                            }
+                        ]}
+                    />
+                }
             />
         );
     }

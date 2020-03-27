@@ -6,7 +6,7 @@ import { erUttaksplanBareOppholdTest } from './tester/erUttaksplanBareOppholdTes
 import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOppholdTest';
 import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOppholdTest';
 import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUttaksplanGraderingStørreEnnSamtidigUttakTest';
-import { erBegrunnelseForSenEndringGyldigTest } from './tester/erBegrunnelseForSenEndringGyldigTest';
+import { erTilleggsopplysningerGyldigTest } from './tester/erTilleggsopplysningerGyldigTest';
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
 import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
@@ -107,7 +107,7 @@ const uttaksplanValideringRegler: Regel[] = [
     {
         key: UttaksplanRegelKey.begrunnelseVedForSenEndringErUgyldig,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: erBegrunnelseForSenEndringGyldigTest
+        test: erTilleggsopplysningerGyldigTest
     },
     {
         key: UttaksplanRegelKey.uttaksplanHarForMangeFlerbarnsdager,
