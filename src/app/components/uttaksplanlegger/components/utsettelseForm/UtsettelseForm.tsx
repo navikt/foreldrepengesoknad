@@ -429,7 +429,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                         messages={[
                                             {
                                                 type: 'normal',
-                                                contentIntlKey: 'uttaksplan.informasjonVedSykdom'
+                                                contentIntlKey: 'uttaksplan.informasjonVedSykdom',
+                                                formatContentAsHTML: true
                                             }
                                         ]}
                                     />
