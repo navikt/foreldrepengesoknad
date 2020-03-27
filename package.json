@@ -163,7 +163,6 @@
         "nav-frontend-veileder": "^2.0.15",
         "nav-frontend-veilederpanel": "^0.1.21",
         "promise": "8.0.1",
-        "prop-types": "^15.7.2",
         "react": "16.12.0",
         "react-aria-menubutton": "6.2.0",
         "react-collapse": "4.0.3",
