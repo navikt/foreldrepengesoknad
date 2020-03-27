@@ -5,30 +5,13 @@ export interface Props {
     render: (validateField: (componentId: string) => void, validateAll: () => void) => JSX.Element;
 }
 
-class ValiderbarControl extends React.Component<Props> {
-    context: ValidFormContext;
+const ValiderbarControl: React.FunctionComponent<Props> = ({ render }) => {
+    const formContext = React.useContext(ValidFormContext);
+    const validateField = React.useCallback((componentId: string) => formContext.validateField(componentId, true), [
+        formContext
+    ]);
 
-    constructor(props: Props) {
-        super(props);
-        this.validateField = this.validateField.bind(this);
-        this.validateAll = this.validateAll.bind(this);
-    }
+    return render(validateField, formContext.validateAll);
+};
 
-    validateField(componentId: string) {
-        if (this.context) {
-            this.context.validForm.validateField(componentId, true);
-        }
-    }
-
-    validateAll() {
-        if (this.context) {
-            this.context.validForm.validateAll();
-        }
-    }
-
-    render() {
-        const { render } = this.props;
-        return render(this.validateField, this.validateAll);
-    }
-}
 export default ValiderbarControl;

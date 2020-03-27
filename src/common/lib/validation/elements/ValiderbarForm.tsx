@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { ValidationResult, SummaryError, ValidatorFailText } from '../types/index';
 import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -17,16 +16,16 @@ export interface ValiderbarFormProps {
     runValidationOnRegister?: boolean;
 }
 
-export interface ValidFormContext {
-    validForm: {
-        register: (component: React.Component) => void;
-        unregister: (component: React.Component) => void;
-        onChange: (e: any, component: React.ComponentType) => void;
-        onBlur: (e: any, component: React.ComponentType) => void;
-        validateField: (componentId: string, forceValidation?: boolean) => void;
-        validateAll: () => void;
-    };
+export interface ValidFormContextInterface {
+    register: (component: React.Component) => void;
+    unregister: (component: React.Component) => void;
+    onChange: (e: any, component: React.ComponentType) => void;
+    onBlur: (e: any, component: React.ComponentType) => void;
+    validateField: (componentId: string, forceValidation?: boolean) => void;
+    validateAll: () => void;
 }
+
+export const ValidFormContext = React.createContext<ValidFormContextInterface>(null!);
 
 interface ValiderbarFormState {
     results: ValidationResult[];
@@ -37,17 +36,8 @@ interface ValiderbarFormState {
 type Props = ValiderbarFormProps & InjectedIntlProps;
 
 class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
-    static childContextTypes = {
-        validForm: PropTypes.shape({
-            register: PropTypes.func,
-            unregister: PropTypes.func,
-            onChange: PropTypes.func,
-            onBlur: PropTypes.func,
-            validateField: PropTypes.func,
-            validateAll: PropTypes.func
-        })
-    };
     components: any[];
+    formContext: ValidFormContextInterface;
 
     constructor(props: Props) {
         super(props);
@@ -55,24 +45,19 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
         this.components = [];
         this.onSubmit = this.onSubmit.bind(this);
         this.shouldValidate = this.shouldValidate.bind(this);
+        this.formContext = {
+            register: this.registerComponent.bind(this),
+            unregister: this.unRegisterComponent.bind(this),
+            onChange: this.onChange.bind(this),
+            onBlur: this.onBlur.bind(this),
+            validateField: this.validateField.bind(this),
+            validateAll: this.validateAll.bind(this)
+        };
 
         this.state = {
             results: [],
             valid: true,
             failedSubmit: false
-        };
-    }
-
-    getChildContext() {
-        return {
-            validForm: {
-                register: this.registerComponent.bind(this),
-                unregister: this.unRegisterComponent.bind(this),
-                onChange: this.onChange.bind(this),
-                onBlur: this.onBlur.bind(this),
-                validateField: this.validateField.bind(this),
-                validateAll: this.validateAll.bind(this)
-            }
         };
     }
 
@@ -216,10 +201,12 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
             );
         }
         return (
-            <form onSubmit={this.onSubmit} className={className}>
-                <div role="alert">{summaryBox}</div>
-                {this.props.children}
-            </form>
+            <ValidFormContext.Provider value={this.formContext}>
+                <form onSubmit={this.onSubmit} className={className}>
+                    <div role="alert">{summaryBox}</div>
+                    {this.props.children}
+                </form>
+            </ValidFormContext.Provider>
         );
     }
 }
