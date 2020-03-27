@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { ValidationResult, SummaryError, ValidatorFailText } from '../types/index';
 import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -36,6 +37,16 @@ interface ValiderbarFormState {
 type Props = ValiderbarFormProps & InjectedIntlProps;
 
 class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
+    static childContextTypes = {
+        validForm: PropTypes.shape({
+            register: PropTypes.func,
+            unregister: PropTypes.func,
+            onChange: PropTypes.func,
+            onBlur: PropTypes.func,
+            validateField: PropTypes.func,
+            validateAll: PropTypes.func
+        })
+    };
     components: any[];
 
     constructor(props: Props) {
@@ -183,19 +194,17 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
     }
 
     mapResultsToErrorSummary(): SummaryError[] {
-        return this.state.results
-            .filter((result) => !result.valid)
-            .map((result) => {
-                const failedTest = result.tests.find((test: any) => !test.verdict);
-                const text =
-                    failedTest !== undefined
-                        ? this.getFailedText(failedTest.failText)
-                        : this.props.intl.formatMessage({ id: 'validerbarForm.ukjentFeil' });
-                return {
-                    name: result.name,
-                    text
-                };
-            });
+        return this.state.results.filter((result) => !result.valid).map((result) => {
+            const failedTest = result.tests.find((test: any) => !test.verdict);
+            const text =
+                failedTest !== undefined
+                    ? this.getFailedText(failedTest.failText)
+                    : this.props.intl.formatMessage({ id: 'validerbarForm.ukjentFeil' });
+            return {
+                name: result.name,
+                text
+            };
+        });
     }
 
     render() {
