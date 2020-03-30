@@ -13,7 +13,12 @@ const ValiderbarInput: React.StatelessComponent<ValiderbarInputProps> = (props: 
         <ValiderbartSkjemaelement
             {...props}
             render={(onChange, onBlur, feil) => (
-                <Input {...inputProps} onChange={onChange} onBlur={onBlur} feil={feil} />
+                <Input
+                    {...inputProps}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    feil={feil !== undefined ? feil.feilmelding : undefined}
+                />
             )}
         />
     );

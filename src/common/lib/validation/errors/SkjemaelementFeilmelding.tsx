@@ -16,7 +16,7 @@ class SkjemaelementFeilmelding extends React.Component<Props & InjectedIntlProps
     render() {
         const { feil, intl } = this.props;
         return (
-            <div role="alert" aria-live="assertive">
+            <div style={{ color: '#ba3a26', fontWeight: 600 }} role="alert" aria-live="assertive">
                 {feil && renderFeil(feil, intl)}
             </div>
         );
