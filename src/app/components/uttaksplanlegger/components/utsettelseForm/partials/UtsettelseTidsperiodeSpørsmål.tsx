@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { Tidsperiode, Feil } from 'common/types';
+import { Tidsperiode } from 'common/types';
 import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { getUtsettelseTidsperiodeValidatorer } from 'app/util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
+import { SkjemaelementFeil } from 'common/lib/validation/types';
 
 export interface Props {
     tidsperiode: Partial<Tidsperiode>;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder?: Tidsperiode[];
-    feil?: Feil;
+    feil?: SkjemaelementFeil;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
 }
 
@@ -24,7 +25,7 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
             onChange={(t: Partial<Tidsperiode>) => onChange(t)}
             tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
             datoAvgrensninger={{
-                 fra: {
+                fra: {
                     minDato: familiehendelsesdato,
                     maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined,
                     ugyldigeTidsperioder,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
-import { Tidsperiode, Feil } from 'common/types';
+import { Tidsperiode } from 'common/types';
 import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
 import {
@@ -19,13 +19,14 @@ import {
     resetTidsperiodeTomIfBeforeFom
 } from '../../../../../util/uttaksplan/Tidsperioden';
 import { getDatoavgrensningerForStønadskonto } from 'app/util/uttaksplan/uttaksperiodeUtils';
+import { SkjemaelementFeil } from 'common/lib/validation/types';
 
 export interface Props {
     periode: UttakFormPeriodeType;
     tidsperiode: Partial<Tidsperiode>;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder: Tidsperiode[];
-    feil?: Feil;
+    feil?: SkjemaelementFeil;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
 }
 

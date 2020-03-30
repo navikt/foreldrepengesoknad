@@ -3,15 +3,15 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 import NumberStepper, { Props as NumberStepperProps } from '../number-stepper/NumberStepper';
 import Block from 'common/components/block/Block';
 import BEMHelper from 'common/util/bem';
-import { Feil } from 'common/types';
 import Fieldset from 'app/temp-components/Fieldset';
 
 import './ukerDagerTeller.less';
+import { SkjemaelementFeil } from 'common/lib/validation/types';
 
 export interface Props {
     ukeLegend: string;
     dagLegend: string;
-    feil?: Feil;
+    feil?: SkjemaelementFeil;
     ukeStepper: NumberStepperProps;
     dagStepper: NumberStepperProps;
 }

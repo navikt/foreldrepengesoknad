@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
-import { Validator, ValidationResult } from '../types/index';
+import { Validator, ValidationResult, SkjemaelementFeil } from '../types/index';
 import { runValidators } from 'common/lib/validation/utils/runValidFormValidation';
-import { Feil } from 'common/types';
 import { ValidFormContext, ValidFormContextInterface, ValidatableComponent } from './ValiderbarForm';
 
 type ValiderEvent = (evt: any) => void;
@@ -20,7 +19,7 @@ export interface ValiderbartSkjemaelementProps {
 }
 
 export interface Props extends ValiderbartSkjemaelementProps {
-    render: (onChange: ValiderEvent, onBlur: ValiderEvent, feil: Feil | undefined) => JSX.Element;
+    render: (onChange: ValiderEvent, onBlur: ValiderEvent, feil: SkjemaelementFeil) => JSX.Element;
 }
 
 export interface ValiderbartSkjemaelementState {
@@ -141,7 +140,7 @@ class ValiderbartSkjemaelement extends React.Component<FormContextProps, Valider
 
     render() {
         const { render } = this.props;
-        const failedVerdict = !this.state.valid ? { feilmelding: this.getFirstFailedVerdict().failText } : undefined;
+        const failedVerdict: SkjemaelementFeil = !this.state.valid ? this.getFirstFailedVerdict().failText : undefined;
         return render(this.onChange, this.onBlur, failedVerdict);
     }
 }

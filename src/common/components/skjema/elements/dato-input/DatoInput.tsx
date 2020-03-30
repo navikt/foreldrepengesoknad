@@ -6,11 +6,12 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { DatovelgerCommonProps } from 'nav-datovelger/dist/datovelger/Datovelger';
 import AriaText from 'common/components/aria/AriaText';
 import moment from 'moment';
-import { Avgrensninger, Tidsperiode, Feil } from 'common/types';
+import { Avgrensninger, Tidsperiode } from 'common/types';
 import BEMHelper from 'common/util/bem';
 import { dateToISOFormattedDateString } from 'common/util/datoUtils';
 import { fridager } from 'common/util/fridagerUtils';
 import { getAvgrensningerDescriptionForInput } from './datoInputDescription';
+import { SkjemaelementFeil } from 'common/lib/validation/types';
 
 import './datoInput.less';
 
@@ -19,7 +20,7 @@ export interface DatoInputProps extends DatovelgerCommonProps {
     label: React.ReactNode;
     dato?: Date;
     postfix?: string;
-    feil?: Feil;
+    feil?: SkjemaelementFeil;
     onChange: (dato?: Date) => void;
     datoAvgrensinger?: Avgrensninger;
 }

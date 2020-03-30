@@ -2,11 +2,11 @@ import * as React from 'react';
 const { guid } = require('nav-frontend-js-utils');
 import classnames from 'classnames';
 import SkjemaelementFeilmelding from 'common/lib/validation/errors/SkjemaelementFeilmelding';
-import { Feil } from 'common/types';
+import { SkjemaelementFeil } from 'common/lib/validation/types';
 
 export interface Props {
     label: string | React.ReactNode;
-    feil?: Feil;
+    feil?: SkjemaelementFeil;
     id?: string;
     children: React.ReactNode;
 }
@@ -34,7 +34,7 @@ const SkjemaInputElement: React.StatelessComponent<Props> = (props: Props) => {
             >
                 {children}
             </div>
-            {feil && <SkjemaelementFeilmelding feil={feil.feilmelding} />}
+            {feil && <SkjemaelementFeilmelding feil={feil} />}
         </div>
     );
 };

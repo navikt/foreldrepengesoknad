@@ -1,26 +1,24 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
-import { SkjemaelementFeil, ValidatorFailText } from 'common/lib/validation/types';
+import { SkjemaelementFeil } from '../types';
 
 export interface Props {
-    feil?: ValidatorFailText;
+    feil: SkjemaelementFeil;
 }
 
-const renderFeil = (feil: ValidatorFailText, intl: InjectedIntl): SkjemaelementFeil => {
-    const msg = typeof feil === 'string' ? feil : intl.formatMessage({ id: feil.intlKey }, feil.values);
-
-    return <div className="skjemaelement__feilmelding">{msg}</div>;
-};
-
-class SkjemaelementFeilmelding extends React.Component<Props & InjectedIntlProps> {
+class SkjemaelementFeilmelding extends React.Component<Props> {
     render() {
-        const { feil, intl } = this.props;
+        const { feil } = this.props;
+
+        if (!feil) {
+            return null;
+        }
+
         return (
             <div role="alert" aria-live="assertive">
-                {feil && renderFeil(feil, intl)}
+                {feil}
             </div>
         );
     }
 }
 
-export default injectIntl(SkjemaelementFeilmelding);
+export default SkjemaelementFeilmelding;

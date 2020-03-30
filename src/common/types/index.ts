@@ -35,11 +35,6 @@ export interface TidsperiodeMedValgfriSluttdato {
     pågående?: boolean;
 }
 
-export interface Feil {
-    tittel?: string;
-    feilmelding: string;
-}
-
 export enum StønadskontoType {
     'Mødrekvote' = 'MØDREKVOTE',
     'Fedrekvote' = 'FEDREKVOTE',

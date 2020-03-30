@@ -12,7 +12,7 @@ import {
     Periode,
     isUttaksperiode
 } from '../../../../types/uttaksplan/periodetyper';
-import { Forelder, Tidsperiode, Feil } from 'common/types';
+import { Forelder, Tidsperiode } from 'common/types';
 import { RecursivePartial } from '../../../../types/Partial';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { connect } from 'react-redux';
@@ -59,6 +59,7 @@ import VedleggSpørsmål from 'app/components/skjema/vedleggSpørsmål/VedleggSp
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Skjemanummer } from 'app/types/søknad/Søknad';
 import { ValidFormContext, ValidFormContextInterface } from 'common/lib/validation/elements/ValiderbarForm';
+import { SkjemaelementFeil } from 'common/lib/validation/types';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -331,7 +332,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
 
         const tidsperiode = periode.tidsperiode as Partial<Tidsperiode>;
 
-        const periodeErNyOgFørFamiliehendelsesdatoFeil: Feil | undefined =
+        const periodeErNyOgFørFamiliehendelsesdatoFeil: SkjemaelementFeil | undefined =
             periode.id === undefined &&
             isValidTidsperiode(tidsperiode) &&
             moment(tidsperiode.fom).isBefore(familiehendelsesdato, 'days')
