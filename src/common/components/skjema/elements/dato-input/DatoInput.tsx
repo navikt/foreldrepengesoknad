@@ -1,9 +1,7 @@
 import * as React from 'react';
 
 import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
-import NavDatovelger, { DatovelgerAvgrensninger } from 'nav-datovelger';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { DatovelgerCommonProps } from 'nav-datovelger/dist/datovelger/Datovelger';
 import AriaText from 'common/components/aria/AriaText';
 import moment from 'moment';
 import { Avgrensninger, Tidsperiode, Feil } from 'common/types';
@@ -11,6 +9,8 @@ import BEMHelper from 'common/util/bem';
 import { dateToISOFormattedDateString } from 'common/util/datoUtils';
 import { fridager } from 'common/util/fridagerUtils';
 import { getAvgrensningerDescriptionForInput } from './datoInputDescription';
+import Datovelger, { DatovelgerCommonProps } from 'nav-datovelger/lib/Datovelger';
+import { DatovelgerAvgrensninger } from 'nav-datovelger';
 
 import './datoInput.less';
 
@@ -69,7 +69,7 @@ class DatoInput extends React.Component<Props, {}> {
             <SkjemaInputElement id={this.props.id} feil={feil} label={label}>
                 <div className={bem.block}>
                     <div className={bem.element('datovelger')}>
-                        <NavDatovelger.Datovelger
+                        <Datovelger
                             {...rest}
                             valgtDato={dato ? moment.utc(dato).format('YYYY-MM-DD') : undefined}
                             id={id ? id : name}
