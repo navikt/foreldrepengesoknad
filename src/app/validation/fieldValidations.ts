@@ -1,13 +1,13 @@
 import { SkjemaelementFeil } from 'common/lib/validation/types';
-import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
 import { date1YearAgo, date1YearAhead } from 'app/util/validation/values';
-import { dateRangesCollide, dateRangesExceedsRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import {
     isFødselsnummerFormatValid,
     isUtenlandskFødselsnummerValid,
     isSixteenOrOlder
 } from 'app/util/validation/fødselsnummer';
+import { dateRangesCollide, dateRangesExceedsRange } from 'app/util/dates/dates';
+import { BostedUtland } from 'app/steg/utenlandsopphold/bostedUtlandListAndDialog/types';
 
 export const validateYesOrNoIsAnswered = (answer: YesOrNo): string | undefined => {
     if (answer === YesOrNo.UNANSWERED || answer === undefined) {

@@ -19,7 +19,7 @@ import {
 } from 'app/validation/fieldValidations';
 import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/types/søknad/InformasjonOmUtenlandsopphold';
 import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
-import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
+import { BostedUtland } from './bostedUtlandListAndDialog/types';
 
 const defaultInitialValues: UtenlandsoppholdFormValues = {
     harBoddUtenforNorgeSiste12Mnd: YesOrNo.UNANSWERED,

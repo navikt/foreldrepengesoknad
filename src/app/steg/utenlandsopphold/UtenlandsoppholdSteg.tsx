@@ -20,9 +20,9 @@ import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 import * as countries from 'i18n-iso-countries';
 import UtenlandsoppholdForm from './UtenlandsoppholdForm';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
 import { formatDate } from 'app/util/dates/dates';
 import { UtenlandsoppholdFormValues } from './formTypes/utenlandsoppholdFormTypes';
+import { BostedUtland } from './bostedUtlandListAndDialog/types';
 
 interface StateProps {
     søknad: Søknad;

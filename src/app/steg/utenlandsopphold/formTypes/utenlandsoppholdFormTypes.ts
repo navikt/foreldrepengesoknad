@@ -1,5 +1,5 @@
-import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { BostedUtland } from '../bostedUtlandListAndDialog/types';
 
 export const enum UtenlandsoppholdFieldNames {
     harBoddUtenforNorgeSiste12Mnd = 'harBoddUtenforNorgeSiste12Mnd',
