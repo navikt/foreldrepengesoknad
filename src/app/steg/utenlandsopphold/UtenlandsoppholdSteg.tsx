@@ -12,7 +12,6 @@ import { StegID } from '../../util/routing/stegConfig';
 import { HistoryProps } from '../../types/common';
 import isAvailable from '../../util/steg/isAvailable';
 import { SøkerinfoProps } from '../../types/søkerinfo';
-// import cleanupUtenlandsOppholdSteg from '../../util/cleanup/cleanupUtenlandsoppholdSteg';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import Barn, { isUfødtBarn, UfødtBarn } from 'app/types/søknad/Barn';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
@@ -44,7 +43,6 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
 
-        // this.cleanupSteg = this.cleanupSteg.bind(this);
         this.hentRelevantUtenlandsopphold = this.hentRelevantUtenlandsopphold.bind(this);
         this.updateReduxState = this.updateReduxState.bind(this);
     }
@@ -60,12 +58,6 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
 
         dispatch(søknadActions.setInformasjonOmUtenlandsopphold(reduxObject));
     }
-
-    // cleanupSteg() {
-    //     const { dispatch, søknad } = this.props;
-    //     const { informasjonOmUtenlandsopphold } = søknad;
-    //     dispatch(søknadActions.updateUtenlandsopphold(cleanupUtenlandsOppholdSteg(informasjonOmUtenlandsopphold)));
-    // }
 
     hentRelevantUtenlandsopphold(
         barn: Barn,
