@@ -109,7 +109,7 @@
         "tslint-loader": "^3.6.0",
         "tslint-react": "^3.5.1",
         "typescript": "^3.7.5",
-        "wait-on": "2.1.0",
+        "wait-on": "4.0.1",
         "webpack": "4.41.6",
         "webpack-dev-server": "3.1.14"
     },
