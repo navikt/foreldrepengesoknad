@@ -17,6 +17,8 @@ const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
         case UtsettelseÅrsakType.Ferie:
             return UttaksplanIkonKeys.ferie;
         case UtsettelseÅrsakType.Arbeid:
+        case UtsettelseÅrsakType.HvØvelse:
+        case UtsettelseÅrsakType.NavTiltak:
             return UttaksplanIkonKeys.arbeid;
         case UtsettelseÅrsakType.InstitusjonBarnet:
         case UtsettelseÅrsakType.InstitusjonSøker:

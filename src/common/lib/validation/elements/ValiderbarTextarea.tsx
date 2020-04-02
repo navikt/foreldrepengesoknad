@@ -14,7 +14,12 @@ const ValiderbarTextarea: React.StatelessComponent<ValiderbarTextareaProps> = (p
         <ValiderbartSkjemaelement
             {...props}
             render={(onChange, onBlur, feil) => (
-                <Textarea {...inputProps} onChange={onChange} onBlur={onBlur} feil={feil} />
+                <Textarea
+                    {...inputProps}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    feil={feil !== undefined ? feil.feilmelding : undefined}
+                />
             )}
         />
     );

@@ -69,7 +69,9 @@ interface State {
 export enum Utsettelsesvariant {
     Ferie = 'ferie',
     Arbeid = 'arbeid',
-    Sykdom = 'sykdom'
+    Sykdom = 'sykdom',
+    HvØvelse = 'hv_øvelse',
+    NavTiltak = 'nav_tiltak'
 }
 
 export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utsettelsesvariant | undefined => {
@@ -78,6 +80,10 @@ export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utset
             return Utsettelsesvariant.Arbeid;
         case UtsettelseÅrsakType.Ferie:
             return Utsettelsesvariant.Ferie;
+        case UtsettelseÅrsakType.HvØvelse:
+            return Utsettelsesvariant.HvØvelse;
+        case UtsettelseÅrsakType.NavTiltak:
+            return Utsettelsesvariant.NavTiltak;
         case UtsettelseÅrsakType.Sykdom:
         case UtsettelseÅrsakType.InstitusjonBarnet:
         case UtsettelseÅrsakType.InstitusjonSøker:
@@ -167,6 +173,16 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                 label: getMessage(intl, 'pgasykdom'),
                 value: Utsettelsesvariant.Sykdom,
                 name: 'utsettelseÅrsak'
+            },
+            {
+                label: getMessage(intl, 'hv_øvelse'),
+                value: Utsettelsesvariant.HvØvelse,
+                name: 'utsettelseÅrsak'
+            },
+            {
+                label: getMessage(intl, 'navtiltak'),
+                value: Utsettelsesvariant.NavTiltak,
+                name: 'utsettelseÅrsak'
             }
         ];
 
@@ -203,6 +219,20 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                 this.onChange({
                     type: Periodetype.Utsettelse,
                     årsak: undefined,
+                    forelder,
+                    erArbeidstaker: this.props.arbeidsforhold.length > 0
+                });
+            } else if (variant === Utsettelsesvariant.HvØvelse) {
+                this.onChange({
+                    type: Periodetype.Utsettelse,
+                    årsak: UtsettelseÅrsakType.HvØvelse,
+                    forelder,
+                    erArbeidstaker: this.props.arbeidsforhold.length > 0
+                });
+            } else if (variant === Utsettelsesvariant.NavTiltak) {
+                this.onChange({
+                    type: Periodetype.Utsettelse,
+                    årsak: UtsettelseÅrsakType.NavTiltak,
                     forelder,
                     erArbeidstaker: this.props.arbeidsforhold.length > 0
                 });

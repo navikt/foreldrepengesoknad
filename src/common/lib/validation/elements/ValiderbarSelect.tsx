@@ -11,7 +11,14 @@ const ValiderbarSelect: React.StatelessComponent<ValiderbarSelectProps> = (props
     return (
         <ValiderbartSkjemaelement
             {...props}
-            render={(onChange, onBlur, feil) => <Select {...rest} onChange={onChange} onBlur={onBlur} feil={feil} />}
+            render={(onChange, onBlur, feil) => (
+                <Select
+                    {...rest}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    feil={feil !== undefined ? feil.feilmelding : undefined}
+                />
+            )}
         />
     );
 };
