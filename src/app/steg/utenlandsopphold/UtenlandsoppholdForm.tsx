@@ -9,7 +9,8 @@ import {
     UtenlandsoppholdFormValues,
     UtenlandsoppholdFormComponents,
     UtenlandsoppholdFieldNames
-} from './formTypes/utenlandsoppholdFormTypes';
+} from './form/utenlandsoppholdFormTypes';
+import { utenlandsoppholdFormQuestions } from './form/utenlandsoppholdFormQuestions';
 import BostedUtlandListAndDialog from './bostedUtlandListAndDialog/BostedUtlandListAndDialog';
 import { commonFieldErrorRenderer } from './bostedUtlandListAndDialog/BostedUtlandForm';
 import {
@@ -19,7 +20,8 @@ import {
 } from 'app/validation/fieldValidations';
 import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/types/søknad/InformasjonOmUtenlandsopphold';
 import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
-import { BostedUtland } from '@navikt/sif-common-forms/lib/bosted-utland/types';
+import { BostedUtland } from './bostedUtlandListAndDialog/types';
+import utenlandsoppholdFormCleanup from './form/utenlandsoppholdFormCleanup';
 
 const defaultInitialValues: UtenlandsoppholdFormValues = {
     harBoddUtenforNorgeSiste12Mnd: YesOrNo.UNANSWERED,
@@ -84,17 +86,24 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
             initialValues={initialValues}
             onSubmit={(values: UtenlandsoppholdFormValues) => onValidSubmit(values)}
             renderForm={({ values: formValues }) => {
+                const visibility = utenlandsoppholdFormQuestions.getVisbility(formValues);
                 return (
                     <div>
                         <UtenlandsoppholdFormComponents.Form
-                            includeButtons={true}
+                            includeButtons={visibility.areAllQuestionsAnswered()}
                             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
                             includeValidationSummary={true}
                             submitButtonLabel="Fortsett"
                             runDelayedFormValidation={true}
+                            cleanup={(values) => utenlandsoppholdFormCleanup(values)}
                         >
                             <div>
-                                <Block margin="m">
+                                <Block
+                                    margin="m"
+                                    visible={visibility.isVisible(
+                                        UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd
+                                    )}
+                                >
                                     <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                         legend={getMessage(intl, 'iNorgeNeste12Mnd.spørsmål')}
                                         name={UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd}
@@ -106,22 +115,29 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                         validate={validateYesOrNoIsAnswered}
                                     />
                                 </Block>
-                                {formValues.skalBoUtenforNorgeNeste12Mnd === YesOrNo.YES && (
-                                    <Block margin="l">
-                                        <BostedUtlandListAndDialog<UtenlandsoppholdFieldNames>
-                                            name={UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd}
-                                            minDate={dateToday}
-                                            maxDate={date1YearFromNow}
-                                            labels={{
-                                                addLabel: 'Legg til nytt utenlandsopphold',
-                                                modalTitle: 'Utenlandsopphold neste 12 måneder'
-                                            }}
-                                            erFremtidigOpphold={true}
-                                            validate={validateUtenlandsoppholdNeste12Mnd}
-                                        />
-                                    </Block>
-                                )}
-                                <Block>
+                                <Block
+                                    margin="l"
+                                    visible={visibility.isVisible(
+                                        UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd
+                                    )}
+                                >
+                                    <BostedUtlandListAndDialog<UtenlandsoppholdFieldNames>
+                                        name={UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd}
+                                        minDate={dateToday}
+                                        maxDate={date1YearFromNow}
+                                        labels={{
+                                            addLabel: 'Legg til nytt utenlandsopphold',
+                                            modalTitle: 'Utenlandsopphold neste 12 måneder'
+                                        }}
+                                        erFremtidigOpphold={true}
+                                        validate={validateUtenlandsoppholdNeste12Mnd}
+                                    />
+                                </Block>
+                                <Block
+                                    visible={visibility.isVisible(
+                                        UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd
+                                    )}
+                                >
                                     <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                         legend={getMessage(intl, 'boddINorgeSiste12Mnd.spørsmål')}
                                         name={UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd}
@@ -133,21 +149,24 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                         validate={validateYesOrNoIsAnswered}
                                     />
                                 </Block>
-                                {formValues.harBoddUtenforNorgeSiste12Mnd === YesOrNo.YES && (
-                                    <Block margin="m">
-                                        <BostedUtlandListAndDialog<UtenlandsoppholdFieldNames>
-                                            minDate={date1YearAgo}
-                                            maxDate={dateToday}
-                                            name={UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd}
-                                            labels={{
-                                                addLabel: 'Legg til nytt utenlandsopphold',
-                                                modalTitle: 'Utenlandsopphold siste 12 måneder'
-                                            }}
-                                            erFremtidigOpphold={false}
-                                            validate={validateUtenlandsoppholdSiste12Mnd}
-                                        />
-                                    </Block>
-                                )}
+                                <Block
+                                    margin="m"
+                                    visible={visibility.isVisible(
+                                        UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd
+                                    )}
+                                >
+                                    <BostedUtlandListAndDialog<UtenlandsoppholdFieldNames>
+                                        minDate={date1YearAgo}
+                                        maxDate={dateToday}
+                                        name={UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd}
+                                        labels={{
+                                            addLabel: 'Legg til nytt utenlandsopphold',
+                                            modalTitle: 'Utenlandsopphold siste 12 måneder'
+                                        }}
+                                        erFremtidigOpphold={false}
+                                        validate={validateUtenlandsoppholdSiste12Mnd}
+                                    />
+                                </Block>
                             </div>
                         </UtenlandsoppholdFormComponents.Form>
                     </div>

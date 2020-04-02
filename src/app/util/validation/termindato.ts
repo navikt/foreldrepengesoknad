@@ -19,17 +19,20 @@ export const termindatoAvgrensningerFodsel: Avgrensninger = {
 
 export const getTermindatoRegler = (dato: DateValue, intl: InjectedIntl): Validator[] => {
     const intlKey = 'valideringsfeil.termindato';
-    const termindato = moment(dato);
+    const termindato = dato ? dato.toISOString() : undefined;
 
     return [
         hasValueRule(dato, getMessage(intl, `${intlKey}.duMåOppgi`)),
         {
-            test: () => moment.max(termindato, date21DaysAgo) === termindato,
+            test: () => {
+                const wrappedTermindato = moment(termindato);
+                return moment.max(wrappedTermindato, date21DaysAgo).isSame(wrappedTermindato, 'day');
+            },
             failText: getMessage(intl, `${intlKey}.forTidlig`)
         },
         {
             test: () => {
-                const uke22 = termindato.subtract((attenUkerPluss3Number - 1) * 24, 'hours');
+                const uke22 = moment(termindato).subtract((attenUkerPluss3Number - 1) * 24, 'hours');
                 return moment.max(today, uke22).isSame(today, 'day');
             },
             failText: getMessage(intl, `${intlKey}.duMåVæreIUke22`)

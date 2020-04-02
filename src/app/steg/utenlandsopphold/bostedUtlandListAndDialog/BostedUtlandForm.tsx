@@ -1,12 +1,12 @@
 import React from 'react';
 import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl';
-import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { getTypedFormComponents, NavFrontendSkjemaFeil } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BostedUtland, isValidBostedUtland } from './types';
 import getMessage from 'common/util/i18nUtils';
 import { dateRangeValidation } from 'app/util/dates/dates';
 import { validateRequiredField } from 'app/validation/fieldValidations';
+import Block from 'common/components/block/Block';
 
 export interface BostedUtlandFormLabels {
     tittel: string;
@@ -73,8 +73,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                         <Systemtittel tag="h1">
                             <FormattedMessage id="utenlandsopphold.tittel" />
                         </Systemtittel>
-
-                        <FormBlock>
+                        <Block>
                             <Form.DateIntervalPicker
                                 legend="Tidsrom"
                                 fromDatepickerProps={{
@@ -100,8 +99,8 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                         dateRangeValidation.validateToDate(date, minDate, maxDate, values.fom)
                                 }}
                             />
-                        </FormBlock>
-                        <FormBlock>
+                        </Block>
+                        <Block>
                             <Form.CountrySelect
                                 name={BostedUtlandFormFields.landkode}
                                 label={
@@ -111,7 +110,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                 }
                                 validate={validateRequiredField}
                             />
-                        </FormBlock>
+                        </Block>
                     </Form.Form>
                 );
             }}

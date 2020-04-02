@@ -1,9 +1,9 @@
 import React from 'react';
-import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
 import BostedUtlandForm from './BostedUtlandForm';
 import BostedUtlandListe from './BostedUtlandList';
 import { BostedUtland } from './types';
+import { sortItemsByFom } from 'app/util/dates/dates';
 
 interface Props<FieldNames> {
     name: FieldNames;

@@ -1,12 +1,14 @@
 import React from 'react';
-import ActionLink from '@navikt/sif-common-core/lib/components/action-link/ActionLink';
-import ItemList from '@navikt/sif-common-core/lib/components/item-list/ItemList';
-import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
-import { prettifyDateExtended } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { getCountryName } from '@navikt/sif-common-formik';
-import { BostedUtland } from './types';
-import './bostedUtlandList.less';
 import { injectIntl, InjectedIntl } from 'react-intl';
+import { getCountryName } from '@navikt/sif-common-formik';
+
+import { BostedUtland } from './types';
+import ActionLink from 'app/components/elementer/actionLink/ActionLink';
+import ItemList from 'app/components/elementer/itemList/ItemList';
+import BEMHelper from 'common/util/bem';
+import { prettifyDateExtended } from 'app/util/dates/dates';
+
+import './bostedUtlandList.less';
 
 interface Props {
     bosteder: BostedUtland[];
@@ -15,7 +17,7 @@ interface Props {
     intl: InjectedIntl;
 }
 
-const bem = bemUtils('bostedUtlandList');
+const bem = BEMHelper('bostedUtlandList');
 
 const BostedUtlandList: React.FunctionComponent<Props> = ({ bosteder, onDelete, onEdit, intl }) => {
     const renderBostedUtlandLabel = (opphold: BostedUtland): React.ReactNode => {
