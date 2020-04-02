@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { RadioPanelGruppeProps, RadioPanelGruppe } from 'nav-frontend-skjema';
-import './radioPanelGruppeResponsive.less';
 import 'nav-frontend-skjema-style';
+import { RadioPanelGruppeProps, RadioPanelGruppe } from 'nav-frontend-skjema';
 import { LabelWithInfo } from '@navikt/sif-common-formik';
+
+import './radioPanelGruppeResponsive.less';
 
 interface ResponsiveProps {
     twoColumns?: boolean;

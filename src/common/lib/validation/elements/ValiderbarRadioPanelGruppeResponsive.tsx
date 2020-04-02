@@ -15,7 +15,11 @@ const ValiderbarRadioPanelGruppeResponsive: React.StatelessComponent<Props> = (p
         <ValiderbartSkjemaelement
             {...props}
             render={(onChange, onBlur, feil) => (
-                <RadioPanelGruppeResponsive {...inputProps} onChange={onChange} feil={feil} />
+                <RadioPanelGruppeResponsive
+                    {...inputProps}
+                    onChange={onChange}
+                    feil={feil !== undefined ? feil.feilmelding : undefined}
+                />
             )}
         />
     );
