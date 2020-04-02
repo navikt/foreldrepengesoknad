@@ -12,7 +12,7 @@ const EksternUrl: React.StatelessComponent<Props & InjectedIntlProps> = ({ intl,
     <span>
         {tekst && getMessage(intl, tekst)}
         <a href={url} className="lenke" rel="noopener" target="_blank" style={{ marginLeft: 3 }}>
-            {getMessage(intl, lenkeTekst)}
+            {lenkeTekst}
             <EksternIkon />
         </a>
     </span>
@@ -26,7 +26,8 @@ const EksternIkon = () => (
         viewBox="0 0 24 24"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink">
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+    >
         <title>Ekstern lenke</title>
         <g stroke="none" strokeWidth="10" fill="none" fillRule="evenodd">
             <path
