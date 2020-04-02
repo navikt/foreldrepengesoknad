@@ -26,7 +26,9 @@ export enum UtsettelseÅrsakType {
     'Arbeid' = 'ARBEID',
     'Sykdom' = 'SYKDOM',
     'InstitusjonSøker' = 'INSTITUSJONSOPPHOLD_SØKER',
-    'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET'
+    'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET',
+    'HvØvelse' = 'HV_OVELSE',
+    'NavTiltak' = 'NAV_TILTAK'
 }
 
 export enum SaksperiodeUtsettelseÅrsakType {
