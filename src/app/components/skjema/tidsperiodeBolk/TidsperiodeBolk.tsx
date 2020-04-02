@@ -4,6 +4,7 @@ import moment from 'moment';
 import { guid } from 'nav-frontend-js-utils';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Checkbox, SkjemaGruppe } from 'nav-frontend-skjema';
+import { KalenderPlassering } from 'nav-datovelger';
 
 import getMessage from 'common/util/i18nUtils';
 import { Avgrensninger, Tidsperiode, TidsperiodeMedValgfriSluttdato, Feil } from 'common/types';
@@ -11,7 +12,6 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import BEMHelper from 'common/util/bem';
 import { getVarighetString } from 'common/util/intlUtils';
 import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
-import { KalenderPlassering } from 'nav-datovelger/dist/datovelger/types';
 import { DateValue } from '../../../types/common';
 import { InputChangeEvent } from '../../../../common/types/Events';
 import { Validator } from 'common/lib/validation/types';

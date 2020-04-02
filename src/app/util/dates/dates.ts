@@ -160,8 +160,26 @@ export const timeintervalsOverlap = (
     return true;
 };
 
+interface ItemWithFom {
+    fom: Date;
+}
+
+export interface OpenDateRange {
+    from: Date;
+    to?: Date;
+}
+
 const prettyDateFormatExtended = 'DD. MMM YYYY';
-const prettifyDateExtended = (date: Date) => moment(date).format(prettyDateFormatExtended);
+export const prettifyDateExtended = (date: Date) => moment(date).format(prettyDateFormatExtended);
+
+export const sortOpenDateRange = (d1: OpenDateRange, d2: OpenDateRange): number => {
+    if (moment(d1.from).isSameOrBefore(d2.from)) {
+        return -1;
+    }
+    return 1;
+};
+
+export const sortItemsByFom = (a: ItemWithFom, b: ItemWithFom) => sortOpenDateRange({ from: a.fom }, { from: b.fom });
 
 const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
     return moment(date).isBetween(minDate, maxDate, 'day', '[]');
