@@ -21,7 +21,9 @@ export enum UtsettelseSpørsmålKeys {
     'arbeidsplass' = 'arbeidsplass',
     'morsAktivitet' = 'morsAktivitet',
     'ferieinfo' = 'ferieinfo',
-    'avtaltFulltidVedDeltid' = 'avtaltFulltidVedDeltid'
+    'avtaltFulltidVedDeltid' = 'avtaltFulltidVedDeltid',
+    'hvØvelse' = 'hvØvelse',
+    'navTiltak' = 'navTiltak'
 }
 
 export interface UtsettelseFormPayload {
@@ -121,6 +123,14 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
     [Sp.morsAktivitet]: {
         isAnswered: ({ periode }) => questionValueIsOk((periode as Utsettelsesperiode).morsAktivitetIPerioden),
         isIncluded: (payload) => skalViseSpørsmålOmMorsAktivitet(payload)
+    },
+    [Sp.hvØvelse]: {
+        isAnswered: () => true,
+        isIncluded: ({ variant }) => variant === Utsettelsesvariant.HvØvelse
+    },
+    [Sp.navTiltak]: {
+        isAnswered: () => true,
+        isIncluded: ({ variant }) => variant === Utsettelsesvariant.NavTiltak
     }
 };
 

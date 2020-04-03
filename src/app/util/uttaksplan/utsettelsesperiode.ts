@@ -19,7 +19,12 @@ export const dokumentasjonBehøvesForUtsettelsesperiode = (
     { årsak }: Utsettelsesperiode,
     harMorAktivitetskrav: boolean
 ): boolean => {
-    return harMorAktivitetskrav || erÅrsakSykdomEllerInstitusjonsopphold(årsak);
+    return (
+        harMorAktivitetskrav ||
+        erÅrsakSykdomEllerInstitusjonsopphold(årsak) ||
+        årsak === UtsettelseÅrsakType.HvØvelse ||
+        årsak === UtsettelseÅrsakType.NavTiltak
+    );
 };
 
 export const dokumentasjonBehøvesForOverføringsperiode = (

@@ -40,6 +40,9 @@ import { getTidsperioderIUttaksplan } from 'app/util/uttaksplan';
 import JaNeiSpørsmål from 'common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 import { RadioProps } from 'nav-frontend-skjema';
 import { ValidFormContext, ValidFormContextInterface } from 'common/lib/validation/elements/ValiderbarForm';
+import VedleggSpørsmål from 'app/components/skjema/vedleggSpørsmål/VedleggSpørsmål';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import { Skjemanummer } from 'app/types/søknad/Søknad';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -485,6 +488,42 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                     morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
                                     vedlegg={periode.vedlegg as Attachment[]}
                                     onChange={(periodeData) => this.onChange(periodeData)}
+                                />
+                            </Block>
+                            <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.hvØvelse)}>
+                                <Block>
+                                    <VeilederInfo
+                                        messages={[
+                                            {
+                                                type: 'normal',
+                                                contentIntlKey: 'uttaksplan.informasjonVedHVØvelse'
+                                            }
+                                        ]}
+                                    />
+                                </Block>
+                                <VedleggSpørsmål
+                                    attachmentType={AttachmentType.HV_ØVELSE}
+                                    skjemanummer={Skjemanummer.HV_ØVELSE}
+                                    vedlegg={periode.vedlegg as Attachment[]}
+                                    onChange={(v) => this.onChange({ vedlegg: v })}
+                                />
+                            </Block>
+                            <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.navTiltak)}>
+                                <Block>
+                                    <VeilederInfo
+                                        messages={[
+                                            {
+                                                type: 'normal',
+                                                contentIntlKey: 'uttaksplan.informasjonVedNAVTiltak'
+                                            }
+                                        ]}
+                                    />
+                                </Block>
+                                <VedleggSpørsmål
+                                    attachmentType={AttachmentType.NAV_TILTAK}
+                                    skjemanummer={Skjemanummer.NAV_TILTAK}
+                                    vedlegg={periode.vedlegg as Attachment[]}
+                                    onChange={(v) => this.onChange({ vedlegg: v })}
                                 />
                             </Block>
                         </>

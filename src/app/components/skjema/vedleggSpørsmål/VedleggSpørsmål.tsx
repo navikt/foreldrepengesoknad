@@ -24,7 +24,7 @@ class VedleggSpørsmål extends React.Component<Props> {
 
     updateVedleggItem(vedleggItem: Attachment) {
         const { vedlegg } = this.props;
-        let vedleggList: Attachment[] = (vedlegg as Attachment[]) || [];
+        let vedleggList: Attachment[] = vedlegg || [];
         const index = vedleggList.indexOf(vedleggItem);
         if (index >= 0) {
             vedleggList[index] = vedleggItem;
@@ -36,7 +36,7 @@ class VedleggSpørsmål extends React.Component<Props> {
 
     deleteVedleggItem(vedleggItem: Attachment) {
         const { vedlegg } = this.props;
-        const vedleggList: Attachment[] = (vedlegg as Attachment[]) || [];
+        const vedleggList: Attachment[] = vedlegg || [];
         const index = vedleggList.indexOf(vedleggItem);
         vedleggList.splice(index, 1);
         this.updateVedleggList(vedleggList);
