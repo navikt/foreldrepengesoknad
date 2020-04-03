@@ -818,6 +818,10 @@
         "Når du er syk må legen din dokumentere at du er helt avhengig av hjelp til å ta deg av barnet eller vi må få en bekreftelse på innleggelsen i helseinstitusjonen. Det er nå ikke et krav til at du må legge ved dokumentasjon de 4 første ukene. For de første 4 ukene kan du skrive en egenerklæring til oss nederst i søknaden. Du må fortelle oss hvordan skaden eller sykdommen gjør deg helt avhengig av hjelp til å ta deg av barnet. Er du innlagt i helseinstitusjon skriver du hvor du er innlagt.<br /><br /> Hvis du har dokumentasjon fra lege eller helseinstitusjon, kan du laste vedlegg opp til søknaden.",
     "uttaksplan.informasjonVedSykdomAnnenForelder":
         "Når {navn} er syk må legen dokumentere at {navn} er helt avhengig av hjelp til å ta seg av barnet eller vi må få en bekreftelse på innleggelsen i helseinstitusjonen. Det er nå ikke et krav til at du må legge ved dokumentasjon de 4 første ukene. For de første 4 ukene kan du skrive en egenerklæring til oss nederst i søknaden. Du må fortelle oss hvordan skaden eller sykdommen til {navn} gjør {navn} helt avhengig av hjelp til å ta deg av barnet. Er {navn} innlagt i helseinstitusjon skriver du hvor {navn} er innlagt. Hvis du har dokumentasjon fra lege eller helseinstitusjon, kan du laste vedlegg opp til søknaden.",
+    "uttaksplan.informasjonVedHVØvelse":
+        "Du kan utsette foreldrepengene hvis du skal på øvelse eller tjeneste i Heimevernet. Du må legge ved bekreftelse på tjenesten eller øvelsen fra heimevernet som viser perioden det gjelder.",
+    "uttaksplan.informasjonVedNAVTiltak":
+        "Du kan utsette foreldrepengene hvis du er i et tiltak i regi av NAV som gjør at du er i inntektsgivende arbeid på heltid. Du må legge ved bekreftelse på tiltaket og perioden.",
     "uttaksplan.leggTil.opphold": "Legg til utsettelse",
     "uttaksplan.leggTil.uttak": "Legg til ny periode",
     "uttaksplan.nyperiode.avbrytAriaLabel": "Avbryt legg til ny periode",
@@ -1094,6 +1098,8 @@
     "vedlegg.lastoppknapp.selvstendignæringdrivendeDokumentasjon": "Last opp dokumentasjon her",
     "vedlegg.lastoppknapp.terminbekreftelse": "Last opp dokumentasjon om terminbekreftelse her",
     "vedlegg.lastoppknapp.utsettelseSykdomUttaksplan": "Last opp dokumentasjon her",
+    "vedlegg.lastoppknapp.hvØvelse": "Last opp dokumentasjon her",
+    "vedlegg.lastoppknapp.navTiltak": "Last opp dokumentasjon her",
     "vedlegg.lastoppknapp.senEndring": "Last opp dokumentasjon ...",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.veileder.adopsjon": "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
