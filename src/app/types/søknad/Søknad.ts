@@ -142,7 +142,9 @@ export enum Skjemanummer {
     FØDSELSATTEST = 'I000063', // will be required once we start fetching data from TPS about registered children.
     INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG = 'I000007',
     OMSORGSOVERTAKELSESDATO = 'I000042',
-    TERMINBEKREFTELSE = 'I000062'
+    TERMINBEKREFTELSE = 'I000062',
+    HV_ØVELSE = 'I000116',
+    NAV_TILTAK = 'I000117'
 }
 
 export default Søknad;
