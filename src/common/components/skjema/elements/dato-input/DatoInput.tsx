@@ -9,12 +9,12 @@ import BEMHelper from 'common/util/bem';
 import { dateToISOFormattedDateString } from 'common/util/datoUtils';
 import { fridager } from 'common/util/fridagerUtils';
 import { getAvgrensningerDescriptionForInput } from './datoInputDescription';
-import Datovelger, { DatovelgerCommonProps } from 'nav-datovelger/lib/Datovelger';
+import Datovelger, { DatovelgerProps } from 'nav-datovelger/lib/Datovelger';
 import { DatovelgerAvgrensninger } from 'nav-datovelger';
 
 import './datoInput.less';
 
-export interface DatoInputProps extends DatovelgerCommonProps {
+export interface DatoInputProps extends Omit<DatovelgerProps, 'onChange' | 'input'> {
     name: string;
     label: React.ReactNode;
     dato?: Date;
@@ -79,16 +79,7 @@ class DatoInput extends React.Component<Props, {}> {
                                 id,
                                 placeholder: 'dd.mm.åååå',
                                 name,
-                                ariaDescribedby: ariaDescriptionId,
-                                onChange: (datoString: string, evt: any) => {
-                                    if (moment(datoString, 'DDMMYYYY', true).isValid()) {
-                                        onChange(moment.utc(datoString, 'DDMMYYYY').toDate());
-                                    }
-
-                                    if (moment(datoString, 'D.M.YYYY', true).isValid()) {
-                                        onChange(moment.utc(datoString, 'D.M.YYYY').toDate());
-                                    }
-                                }
+                                ariaDescribedby: ariaDescriptionId
                             }}
                             visÅrVelger={true}
                             onChange={(datoString: string) => {
