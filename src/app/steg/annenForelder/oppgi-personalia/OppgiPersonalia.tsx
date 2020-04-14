@@ -81,7 +81,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
             <Block visible={visibility.isVisible(AnnenForelderFieldNames.bostedsland)}>
                 <AnnenForelderFormComponents.CountrySelect
                     name={AnnenForelderFieldNames.bostedsland}
-                    label={getMessage(intl, 'annenForelder.spørsmål.fnr', { navn: fornavn })}
+                    label={getMessage(intl, 'annenForelder.bostedsland', { navn: fornavn })}
                 />
             </Block>
         </div>
