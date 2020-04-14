@@ -3,7 +3,7 @@ import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import Sak from '../../types/søknad/Sak';
-import { getSakForEndringssøknad, getSakUnderBehandlig } from '../../util/saker/sakerUtils';
+import { getSakForEndringssøknad, getSakUnderBehandling } from '../../util/saker/sakerUtils';
 import { getEksisterendeSakFromDTO } from 'app/util/eksisterendeSak/eksisterendeSakUtils';
 import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
 
@@ -22,7 +22,7 @@ function* getSaker() {
 
         yield put(
             apiActions.updateApi({
-                sakUnderBehandling: sakForEndringssøknad ? undefined : getSakUnderBehandlig(saker)
+                sakUnderBehandling: sakForEndringssøknad ? undefined : getSakUnderBehandling(saker)
             })
         );
     } catch (error) {

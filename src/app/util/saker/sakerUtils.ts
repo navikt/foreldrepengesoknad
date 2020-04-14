@@ -50,7 +50,7 @@ export const skalKunneSøkeOmEndring = (sak: Sak): boolean => {
         : false;
 };
 
-export const getSakUnderBehandlig = (saker: Sak[]): Sak | undefined => {
+export const getSakUnderBehandling = (saker: Sak[]): Sak | undefined => {
     return saker
         .filter(gjelderSakForeldrepengesøknad)
         .filter((sak) => !harEnAvsluttetBehandling(sak) && harSakUnderBehandling(sak))
