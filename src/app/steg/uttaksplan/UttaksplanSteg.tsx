@@ -574,9 +574,10 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
             const dagEtterMorsSisteDag = morSinSisteUttaksdag ? Uttaksdagen(morSinSisteUttaksdag).neste() : undefined;
             const { førsteUttaksdagEtterSeksUker } = uttaksdatoer.etterFødsel;
 
-            relevantStartDatoForUttak = moment(dagEtterMorsSisteDag).isSameOrAfter(moment(førsteUttaksdagEtterSeksUker))
-                ? dagEtterMorsSisteDag
-                : førsteUttaksdagEtterSeksUker;
+            relevantStartDatoForUttak =
+                dagEtterMorsSisteDag && moment(dagEtterMorsSisteDag).isSameOrAfter(moment(førsteUttaksdagEtterSeksUker))
+                    ? dagEtterMorsSisteDag
+                    : førsteUttaksdagEtterSeksUker;
         }
     }
 
