@@ -1,5 +1,10 @@
 import Sak, { FagsakStatus, SakType } from '../../types/søknad/Sak';
-import Behandling, { BehandlingStatus, BehandlingTema, BehandligType } from '../../types/søknad/Behandling';
+import Behandling, {
+    BehandlingStatus,
+    BehandlingTema,
+    BehandligType,
+    BehandlingResultatType
+} from '../../types/søknad/Behandling';
 
 const getBehandling = (sak: Sak): Behandling | undefined => {
     if (sak !== undefined && sak.behandlinger !== undefined && sak.behandlinger.length > 0) {
@@ -22,9 +27,18 @@ export const erInfotrygdSak = (sak: Sak): boolean => {
     return sak.type === SakType.SAK;
 };
 
+const erAvslåttBehandling = (behandling: Behandling) => {
+    return (
+        behandling.status === BehandlingStatus.AVSLUTTET &&
+        behandling.behandlingResultat === BehandlingResultatType.AVSLÅTT
+    );
+};
+
 export const harEnAvsluttetBehandling = (sak: Sak): boolean => {
     return sak.behandlinger
-        ? sak.behandlinger.some((behandling: Behandling) => behandling.status === BehandlingStatus.AVSLUTTET)
+        ? sak.behandlinger
+              .filter((behandling: Behandling) => !erAvslåttBehandling(behandling))
+              .some((behandling: Behandling) => behandling.status === BehandlingStatus.AVSLUTTET)
         : false;
 };
 
