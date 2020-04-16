@@ -136,7 +136,7 @@
         "lodash.throttle": "^4.1.1",
         "moment": "2.24.0",
         "mustache-express": "1.2.5",
-        "nav-datovelger": "^6.0.0",
+        "nav-datovelger": "^6.0.1",
         "nav-frontend-alertstriper": "^3.0.9",
         "nav-frontend-chevron": "^1.0.10",
         "nav-frontend-core": "^4.0.10",
