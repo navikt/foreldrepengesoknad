@@ -1050,6 +1050,7 @@
     "valideringsfeil.termindato.duMåOppgi": "Du må oppgi termindato",
     "valideringsfeil.termindato.duMåVæreIUke22": "Du kan tidligst søke når du er i 22. svangerskapsuke",
     "valideringsfeil.termindato.forTidlig": "Termindatoen kan ikke være tidligere enn 3 uker fra i dag",
+    "valideringsfeil.termindato.forLangtFremITid": "Termindatoen kan ikke være lenger enn 9 måneder frem i tid",
     "valideringsfeil.utenlandsopphold.dagensEllerSenere": "Du må legge inn dagens dato eller senere.",
     "valideringsfeil.utenlandsopphold.etterFraDato": "Du må legge inn en dato som er etter fra-datoen",
     "valideringsfeil.utenlandsopphold.førTilDato": "Du må legge inn en dato som er før til-datoen.",
