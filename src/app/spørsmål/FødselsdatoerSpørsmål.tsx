@@ -10,6 +10,7 @@ import { Avgrensninger } from 'common/types';
 import Block from 'common/components/block/Block';
 import { termindatoAvgrensningerFodsel, getTermindatoRegler } from 'app/util/validation/termindato';
 import { dateMoreThan10WeeksAgo } from 'app/util/validation/values';
+import getMessage from 'common/util/i18nUtils';
 
 export interface FødselsdatoerSpørsmålProps {
     fødselsdatoer: DateValue[];
@@ -48,13 +49,13 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
     getFødselsdatoAvgrensninger() {
         return {
             ...fødselsdatoAvgrensninger,
-            ...this.props.datoavgrensninger
+            ...this.props.datoavgrensninger,
         };
     }
 
     getTermindatoAvgrensninger() {
         return {
-            ...termindatoAvgrensningerFodsel
+            ...termindatoAvgrensningerFodsel,
         };
     }
 
@@ -62,14 +63,22 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
         const { fødselsdatoer, datovalidatorer, intl } = this.props;
         return [
             ...(datovalidatorer || []),
-            ...getFødselsdatoRegler(fødselsdatoer[0], this.props.gjelderAdopsjon === true, intl)
+            ...getFødselsdatoRegler(fødselsdatoer[0], this.props.gjelderAdopsjon === true, intl),
         ];
     }
 
     getTermindatoValidatorer(): Validator[] {
         const { termindato, datovalidatorer, intl } = this.props;
 
-        return [...(datovalidatorer || []), getTermindatoRegler(termindato, intl)[0]];
+        const forLangtFremITidRegel: Validator = {
+            test: () => {
+                const wrappedTermindato = moment(termindato);
+                return moment().add(9, 'months').isSameOrAfter(wrappedTermindato, 'day');
+            },
+            failText: getMessage(intl, 'valideringsfeil.termindato.forLangtFremITid'),
+        };
+
+        return [...(datovalidatorer || []), getTermindatoRegler(termindato, intl)[0], forLangtFremITidRegel];
     }
 
     visTermindato(
