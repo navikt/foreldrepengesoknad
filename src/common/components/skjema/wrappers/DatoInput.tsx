@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { SkjemaelementProps } from 'common/components/skjema/wrappers/types/common';
 import { guid } from 'nav-frontend-js-utils';
-import InputLabel from 'common/components/skjema/wrappers/Label';
 import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
 import { DatoInputProps } from 'common/components/skjema/elements/dato-input/DatoInput';
+import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 
 type DatoInputWrapperProps = SkjemaelementProps & DatoInputProps;
 
@@ -13,7 +13,7 @@ const DatoInput: React.StatelessComponent<DatoInputWrapperProps> = (props: DatoI
         <ValiderbarDatoInput
             {...props}
             id={id}
-            label={<InputLabel label={props.label} infotekst={props.infotekst} inputId={id} />}
+            label={<LabelWithInfo info={props.infotekst}>{props.label}</LabelWithInfo>}
         />
     );
 };
