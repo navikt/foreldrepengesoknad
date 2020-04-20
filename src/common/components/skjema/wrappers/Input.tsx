@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { SkjemaelementProps } from 'common/components/skjema/wrappers/types/common';
 import { guid } from 'nav-frontend-js-utils';
-import InputLabel from 'common/components/skjema/wrappers/Label';
+// import InputLabel from 'common/components/skjema/wrappers/Label';
 import ValiderbarInput from 'common/lib/validation/elements/ValiderbarInput';
 import throttle from 'lodash.throttle';
 import { InputChangeEvent } from '../../../types/Events';
 import { InputProps } from 'nav-frontend-skjema';
+import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 
 interface OwnProps {
     throttled?: boolean;
@@ -63,7 +64,7 @@ export default class Input extends React.Component<InputWrapperProps, InputWrapp
             <ValiderbarInput
                 {...otherProps}
                 id={id}
-                label={<InputLabel label={label} infotekst={infotekst} inputId={id} />}
+                label={<LabelWithInfo info={infotekst}>{label}</LabelWithInfo>}
                 onChange={this.handleOnChange}
                 value={value}
                 autoComplete="off"

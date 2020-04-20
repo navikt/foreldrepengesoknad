@@ -734,6 +734,7 @@
     "uttaksoppsummering.forbrukt": "Foreldrepenger du har brukt",
     "uttaksoppsummering.gjenstående": "Foreldrepenger du har igjen",
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
+    "uttaksperiode.gradert.stillingsprosentInfo": "Du skal oppgi hvor mye du skal jobbe ut ifra en 100 % stilling.",
     "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst":
         "Du må sende inn søknaden om å kombinere foreldrepenger med arbeid før du skal begynne å jobbe. <br /><br /> Skal du <b>jobbe hos flere arbeidsgivere samtidig</b> kan du ikke bruke den digitale søknaden, du må sende inn søknaden på papir. Du kan lese mer om dette på <a href=\"https://www.nav.no/fleksibeltuttak\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">familie.nav.no</a>, og her finner du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>.",
     "uttaksplan.ønskerFlerbarnsdager": "Ønsker du å benytte deg av flerbarnsdagene?",

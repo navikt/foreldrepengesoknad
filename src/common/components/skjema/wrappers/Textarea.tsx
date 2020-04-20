@@ -2,8 +2,8 @@ import * as React from 'react';
 import { TextareaProps } from 'nav-frontend-skjema';
 import { SkjemaelementProps } from 'common/components/skjema/wrappers/types/common';
 import { guid } from 'nav-frontend-js-utils';
-import InputLabel from 'common/components/skjema/wrappers/Label';
 import ValiderbarTextarea from 'common/lib/validation/elements/ValiderbarTextarea';
+import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 
 export type TextareaWrapperProps = SkjemaelementProps & TextareaProps;
 
@@ -13,7 +13,7 @@ const Textarea: React.StatelessComponent<TextareaWrapperProps> = (props: Textare
         <ValiderbarTextarea
             {...props}
             id={id}
-            label={<InputLabel label={props.label} infotekst={props.infotekst} inputId={id} />}
+            label={<LabelWithInfo info={props.infotekst}>{props.label}</LabelWithInfo>}
         />
     );
 };

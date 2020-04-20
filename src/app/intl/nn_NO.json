@@ -733,6 +733,7 @@
     "uttaksoppsummering.forbrukt": "Foreldrepengar du har brukt",
     "uttaksoppsummering.gjenstående": "Foreldrepengar du har igjen",
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengane med delvis arbeid?",
+    "uttaksperiode.gradert.stillingsprosentInfo": "Du skal gi opp kor mykje du skal jobba ut ifrå ein 100 % stilling.",
     "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst":
         "Du må sende inn søknaden om utsette foreldrepengar før du skal byrja å jobba. <br /><br /> <b>Skal du jobbe hos fleire arbeidsgivarar samtidig</b>, må du sende inn søknaden på papir. Du kan lese meir om dette dette på <a href=\"https://www.nav.no/fleksibeltuttak\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">familie.nav.no</a>, og her finner du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>.",
     "uttaksplan.familiehendelsesdato.adopsjon": "Barnet er adoptert {dato}",
