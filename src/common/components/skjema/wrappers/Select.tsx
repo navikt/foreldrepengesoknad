@@ -2,8 +2,8 @@ import * as React from 'react';
 import { SelectProps } from 'nav-frontend-skjema';
 import { SkjemaelementProps } from 'common/components/skjema/wrappers/types/common';
 import { guid } from 'nav-frontend-js-utils';
-import InputLabel from 'common/components/skjema/wrappers/Label';
 import ValiderbarSelect from 'common/lib/validation/elements/ValiderbarSelect';
+import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 
 export type SelectWrapperProps = SkjemaelementProps & SelectProps;
 
@@ -13,7 +13,7 @@ const Select: React.StatelessComponent<SelectWrapperProps> = (props: SelectWrapp
         <ValiderbarSelect
             {...props}
             id={id}
-            label={<InputLabel label={props.label} infotekst={props.infotekst} inputId={id} />}
+            label={<LabelWithInfo info={props.infotekst}>{props.label}</LabelWithInfo>}
         />
     );
 };

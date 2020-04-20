@@ -78,6 +78,7 @@ class GradertUttakForm extends React.Component<Props> {
                             onBlur={(e: React.FocusEvent<HTMLInputElement>) =>
                                 this.handleStillingsprosentChange(e.target.value)
                             }
+                            infotekst={getMessage(intl, 'uttaksperiode.gradert.stillingsprosentInfo')}
                             value={periode.stillingsprosent || ''}
                             maxLength={4}
                             validators={getStillingsprosentRegler(false, periode.stillingsprosent || '', intl)}
