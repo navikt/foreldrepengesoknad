@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { SkjemaelementProps } from 'common/components/skjema/wrappers/types/common';
 import { guid } from 'nav-frontend-js-utils';
-// import InputLabel from 'common/components/skjema/wrappers/Label';
 import ValiderbarInput from 'common/lib/validation/elements/ValiderbarInput';
 import throttle from 'lodash.throttle';
 import { InputChangeEvent } from '../../../types/Events';
