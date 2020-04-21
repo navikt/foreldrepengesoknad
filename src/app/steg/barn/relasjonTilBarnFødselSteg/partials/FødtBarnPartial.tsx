@@ -44,7 +44,7 @@ class FødtBarnPartial extends React.Component<Props> {
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
         props.dispatch(
             søknadActions.updateBarn({
-                fødselsdatoer: getFødselsdatoer(props.barn.fødselsdatoer)
+                fødselsdatoer: getFødselsdatoer(props.barn.fødselsdatoer),
             })
         );
     }
@@ -55,7 +55,7 @@ class FødtBarnPartial extends React.Component<Props> {
             søknadActions.updateBarn({
                 ...barn,
                 antallBarn: antall,
-                fødselsdatoer: getFødselsdatoer(barn.fødselsdatoer)
+                fødselsdatoer: getFødselsdatoer(barn.fødselsdatoer),
             })
         );
     }
@@ -82,7 +82,7 @@ class FødtBarnPartial extends React.Component<Props> {
                         onChangeFødselsdato={(fødselsdatoer: Date[]) =>
                             dispatch(
                                 søknadActions.updateBarn({
-                                    fødselsdatoer
+                                    fødselsdatoer,
                                 })
                             )
                         }
@@ -92,7 +92,7 @@ class FødtBarnPartial extends React.Component<Props> {
                 <Block visible={vis.visInfoOmPrematuruker}>
                     <VeilederInfo
                         messages={[
-                            { contentIntlKey: 'barnFødt.infoPrematuruker', type: 'info', formatContentAsHTML: true }
+                            { contentIntlKey: 'barnFødt.infoPrematuruker', type: 'info', formatContentAsHTML: true },
                         ]}
                     />
                 </Block>
