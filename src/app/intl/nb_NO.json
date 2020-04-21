@@ -1275,5 +1275,22 @@
     "feature.visFeilside.ingress":
         "Fredag 6. desember er foreldrepengesøknaden nede mellom klokken 12:00-14:30. Søknader som er mellomlagret må sendes inn før fredag klokken 12, hvis ikke mister du den påbegynte søknaden.",
     "feature.alertstripe.tekst":
-        "Foreldrepengesøknaden er dessverre utilgjengelig tirsdag 10. desember klokken 12-13. Søknader som er mellomlagret må sendes inn før tirsdag klokken 12, hvis ikke mister du den påbegynte søknaden."
+        "Foreldrepengesøknaden er dessverre utilgjengelig tirsdag 10. desember klokken 12-13. Søknader som er mellomlagret må sendes inn før tirsdag klokken 12, hvis ikke mister du den påbegynte søknaden.",
+    "psg.innholdstittel": "Ta bilde av vedlegget og last opp",
+    "psg.section1.tittel": "Slik tar du et godt bilde:",
+    "psg.section1.liste":
+        "<li>Hold mobilen eller kameraet direkte over dokumentet.</li><li>Vedlegget skal fylle hele bildet. Bildet skal ikke <i>ikke</i> inneholde annen dokumentasjon eller gjenstander.</li><li>Bildet må inneholde all tekst i vedlegget. Hvis vedlegget er skrevet på mer enn én side, bør du last opp flere bilder.</li>",
+    "psg.section2.tittel": "Etter at du har tatt bildet, sjekk følgende før du laster opp:",
+    "psg.section2.liste":
+        "<li>Vedlegget har riktig retning.</li><li>Teksten til vedlegget er godt leselig.</li><li>Bildet er godt opplyst, uten skygger.</li>",
+    "psg.icon.heading": "Bra og dårlige eksempler på bilder av legeerklæring",
+    "psg.good": "Bra",
+    "psg.bad": "Dårlig",
+    "psg.icon.label.good": "Vedlegget fyller hele bildet",
+    "psg.icon.label.keystone": "Bildet er ikke tatt ovenfra",
+    "psg.icon.label.horizontal": "Bildet har ikke riktig retning",
+    "psg.icon.label.shadow": "Bildet har skygge på vedlegget",
+    "psg.lenkepanel.url":
+        "https://www.nav.no/no/nav-og-samfunn/kontakt-nav/relatert-informasjon/ta-bilde-av-vedleggene-med-mobilen",
+    "psg.lenkepanel.text": "Mer hjelp til å laste opp vedlegg (åpnes i et nytt vindu)."
 }

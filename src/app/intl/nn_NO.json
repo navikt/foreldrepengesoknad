@@ -1278,5 +1278,22 @@
     "feature.visFeilside.ingress":
         "Fredag 6. desember er foreldrepengesøknaden nede mellom klokken 12-13. Søknader som er mellomlagret må sendes inn før fredag klokken 12, hvis ikke mister du den påbegynte søknaden.",
     "feature.alertstripe.tekst":
-        "Foreldrepengesøknaden er dessverre utilgjengeleg tysdag 10. desember klokka 12-13. Søknader som er mellomlagret må sendast inn før tysdag klokka 12, viss ikkje mistar du den påbyrja søknaden."
+        "Foreldrepengesøknaden er dessverre utilgjengeleg tysdag 10. desember klokka 12-13. Søknader som er mellomlagret må sendast inn før tysdag klokka 12, viss ikkje mistar du den påbyrja søknaden.",
+    "psg.innholdstittel": "Last opp bilete av vedlegget",
+    "psg.section1.tittel": "Slik tek du eit godt bilete:",
+    "psg.section1.liste":
+        "<li>Hald mobilen eller kameraet direkte over dokumentet.</li><li>Vedlegget skal fylle heile biletet. Biletet skal <i>ikkje</i> innehalde annan dokumentasjon eller gjenstandar.</li><li>Biletet må innehalde all tekst i vedlegget. Dersom vedlegget er skriven på meir enn éi side, bør du laste opp fleire bilete.</li>",
+    "psg.section2.tittel": "Etter at du har teke biletet, sjekk følgjande før du lastar opp:",
+    "psg.section2.liste":
+        "<li>Vedlegget har rett retning.</li><li>Teksten til vedlegget er godt leseleg.</li><li>Biletet er godt opplyst, utan skuggar.</li>",
+    "psg.icon.heading": "Bra og dårlige eksempler på bilder av legeerklæring",
+    "psg.good": "Bra",
+    "psg.bad": "Dårlig",
+    "psg.icon.label.good": "Vedlegget fyller heile biletet",
+    "psg.icon.label.keystone": "Biletet er ikkje tatt ovanfrå",
+    "psg.icon.label.horizontal": "Biletet har ikkje rett retning",
+    "psg.icon.label.shadow": "Biletet har skugge oppå vedlegget",
+    "psg.lenkepanel.url":
+        "https://www.nav.no/no/nav-og-samfunn/kontakt-nav/relatert-informasjon/ta-bilde-av-vedleggene-med-mobilen",
+    "psg.lenkepanel.text": "Meir hjelp til opplasting av vedlegg (vert åpna i nytt vindauge)."
 }
