@@ -4,6 +4,8 @@ import AttachmentOverview from 'app/components/storage/attachment/components/Att
 import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import AttachmentApi from 'app/components/storage/api/attachmentApi';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
+import PictureScanningGuide from 'app/components/uttaksplanlegger/components/picture-scanning-guide/PictureScanningGuide';
 
 export interface AttachmentsUploaderProps {
     attachments: Attachment[];
@@ -54,13 +56,18 @@ export default class AttachmentsUploader extends React.Component<AttachmentsUplo
     render() {
         const { attachments, attachmentType, skjemanummer } = this.props;
         return (
-            <AttachmentOverview
-                attachments={attachments}
-                attachmentType={attachmentType}
-                skjemanummer={skjemanummer}
-                onFilesSelect={this.onFilesSelect}
-                onFileDelete={this.onFileDelete}
-            />
+            <>
+                <AttachmentOverview
+                    attachments={attachments}
+                    attachmentType={attachmentType}
+                    skjemanummer={skjemanummer}
+                    onFilesSelect={this.onFilesSelect}
+                    onFileDelete={this.onFileDelete}
+                />
+                <UtvidetInformasjon apneLabel="Les mer om å ta et bra bilde av vedlegg">
+                    <PictureScanningGuide />
+                </UtvidetInformasjon>
+            </>
         );
     }
 }
