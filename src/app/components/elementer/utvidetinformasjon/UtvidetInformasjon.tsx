@@ -11,8 +11,8 @@ import getMessage from 'common/util/i18nUtils';
 interface OwnProps {
     children: React.ReactNode;
     erApen?: boolean;
-    apneLabel?: string;
-    lukkLabel?: string;
+    apneLabel?: React.ReactNode;
+    lukkLabel?: React.ReactNode;
 }
 
 type Props = OwnProps & InjectedIntlProps;
