@@ -6,6 +6,7 @@ import AttachmentApi from 'app/components/storage/api/attachmentApi';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 import PictureScanningGuide from 'app/components/uttaksplanlegger/components/picture-scanning-guide/PictureScanningGuide';
+import { FormattedMessage } from 'react-intl';
 
 export interface AttachmentsUploaderProps {
     attachments: Attachment[];
@@ -64,7 +65,7 @@ export default class AttachmentsUploader extends React.Component<AttachmentsUplo
                     onFilesSelect={this.onFilesSelect}
                     onFileDelete={this.onFileDelete}
                 />
-                <UtvidetInformasjon apneLabel="Les mer om å ta et bra bilde av vedlegg">
+                <UtvidetInformasjon apneLabel={<FormattedMessage id="psg.åpneLabel" />}>
                     <PictureScanningGuide />
                 </UtvidetInformasjon>
             </>
