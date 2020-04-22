@@ -66,8 +66,6 @@ import { getEndringstidspunkt } from 'app/util/dates/dates';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import moment from 'moment';
 import OppgiTilleggsopplysninger from './OppgiTilleggsopplysninger';
-import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
-import PictureScanningGuide from 'app/components/uttaksplanlegger/components/picture-scanning-guide/PictureScanningGuide';
 
 interface StateProps {
     stegProps: StegProps;
@@ -457,12 +455,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 meldingerPerPeriode={meldingerPerPeriode}
                                 forelder={søknadsinfo.søker.erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
                             />
-                        </Block>
-
-                        <Block>
-                            <UtvidetInformasjon apneLabel="Les mer om å ta et bra bilde av vedlegg">
-                                <PictureScanningGuide />
-                            </UtvidetInformasjon>
                         </Block>
 
                         {søknad.uttaksplan &&
