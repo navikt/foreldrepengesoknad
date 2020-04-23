@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { onToggleItemProp } from '../../../../elementer/toggleList/ToggleList';
-import { injectIntl, InjectedIntlProps, FormattedMessage, InjectedIntl } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { PeriodeHull, isAvslåttPeriode } from '../../../../../types/uttaksplan/periodetyper';
 import { Tidsperiode, NavnPåForeldre } from 'common/types';
@@ -23,13 +23,14 @@ export interface Props {
     onReplaceHullWithPeriode?: (tidsperiode: Tidsperiode) => void;
     onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
     erDeltUttak: boolean;
+    intl: IntlShape;
 }
 
 const getTittelOgBeskrivelseForHull = (
     periode: PeriodeHull,
     dager: number,
     navnPåForeldre: NavnPåForeldre,
-    intl: InjectedIntl
+    intl: IntlShape
 ): { tittel: string; beskrivelse: string } => {
     if (isAvslåttPeriode(periode)) {
         return {
@@ -48,7 +49,7 @@ const getTittelOgBeskrivelseForHull = (
     };
 };
 
-const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const PeriodelisteHullItem: React.StatelessComponent<Props> = ({
     itemId,
     isExpanded,
     onToggle,

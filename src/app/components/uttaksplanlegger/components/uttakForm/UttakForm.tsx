@@ -14,7 +14,7 @@ import {
 } from '../../../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode, Feil } from 'common/types';
 import { RecursivePartial } from '../../../../types/Partial';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
@@ -70,6 +70,7 @@ interface OwnProps {
     kanEndreStønadskonto: boolean;
     onChange: EndrePeriodeChangeEvent;
     onCancel?: () => void;
+    intl: IntlShape;
 }
 
 interface ComponentStateProps {
@@ -83,7 +84,7 @@ interface StateProps {
     velgbareStønadskontotyper: StønadskontoType[];
 }
 
-type Props = OwnProps & StateProps & InjectedIntlProps;
+type Props = OwnProps & StateProps;
 
 const periodenGjelderAnnenForelder = (søkerErFarEllerMedmor: boolean, forelder: Forelder): boolean => {
     return (søkerErFarEllerMedmor && forelder === Forelder.farMedmor) ||

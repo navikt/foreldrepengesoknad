@@ -2,13 +2,13 @@ import * as React from 'react';
 import moment from 'moment';
 import { Tidsperiode, Feil } from 'common/types';
 import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
-import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import {
     Periode,
     isForeldrepengerFørFødselUttaksperiode,
     ForeldrepengerFørFødselUttaksperiode,
     Periodetype,
-    isUttaksperiode
+    isUttaksperiode,
 } from '../../../../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from '../UttakForm';
 import { getUttakTidsperiodeValidatorer } from '../../../../../util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
@@ -16,7 +16,7 @@ import { getVarighetString } from 'common/util/intlUtils';
 import {
     Tidsperioden,
     isValidTidsperiode,
-    resetTidsperiodeTomIfBeforeFom
+    resetTidsperiodeTomIfBeforeFom,
 } from '../../../../../util/uttaksplan/Tidsperioden';
 import { getDatoavgrensningerForStønadskonto } from 'app/util/uttaksplan/uttaksperiodeUtils';
 
@@ -27,6 +27,7 @@ export interface Props {
     ugyldigeTidsperioder: Tidsperiode[];
     feil?: Feil;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
+    intl: IntlShape;
 }
 
 const getTidsperiodeDisabledProps = (
@@ -37,7 +38,7 @@ const getTidsperiodeDisabledProps = (
         const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
         return {
             startdatoDisabled: skalIkkeHaUttak,
-            sluttdatoDisabled: true
+            sluttdatoDisabled: true,
         };
     } else if (
         periode.id &&
@@ -45,25 +46,25 @@ const getTidsperiodeDisabledProps = (
         Tidsperioden(periode.tidsperiode as Tidsperiode).erFørDato(familiehendelsesdato)
     ) {
         return {
-            sluttdatoDisabled: true
+            sluttdatoDisabled: true,
         };
     }
     return undefined;
 };
 
-const varighetRenderer = (dager: number, gradert: boolean, intl: InjectedIntl): string => {
+const varighetRenderer = (dager: number, gradert: boolean, intl: IntlShape): string => {
     const intlId = `uttaksplan.varighet.uttak${gradert ? '.gradert' : ''}`;
     return intl.formatMessage({ id: intlId }, { varighet: getVarighetString(dager, intl) });
 };
 
-const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     onChange,
     periode,
     tidsperiode,
     familiehendelsesdato,
     ugyldigeTidsperioder,
     feil,
-    intl
+    intl,
 }) => {
     const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
     const erForeldrepengerFørFødsel = isForeldrepengerFørFødselUttaksperiode(periode);

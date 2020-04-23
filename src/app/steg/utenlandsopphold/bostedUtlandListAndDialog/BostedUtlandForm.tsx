@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl';
+import { FormattedMessage, useIntl, IntlShape } from 'react-intl';
 import { getTypedFormComponents, NavFrontendSkjemaFeil } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BostedUtland, isValidBostedUtland } from './types';
@@ -18,21 +18,20 @@ interface Props {
     bosted?: BostedUtland;
     onSubmit: (values: BostedUtland) => void;
     onCancel: () => void;
-    intl: InjectedIntl;
     erFremtidigOpphold: boolean;
 }
 
 enum BostedUtlandFormFields {
     fom = 'fom',
     tom = 'tom',
-    landkode = 'landkode'
+    landkode = 'landkode',
 }
 
 type FormValues = Partial<BostedUtland>;
 
 const Form = getTypedFormComponents<BostedUtlandFormFields, FormValues>();
 
-export const commonFieldErrorRenderer = (intl: InjectedIntl, error: any): NavFrontendSkjemaFeil => {
+export const commonFieldErrorRenderer = (intl: IntlShape, error: any): NavFrontendSkjemaFeil => {
     if (typeof error === 'object' && error.key !== undefined) {
         return intl.formatMessage({ id: error.key }, error.values);
     }
@@ -49,8 +48,8 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
     onSubmit,
     onCancel,
     erFremtidigOpphold,
-    intl
 }) => {
+    const intl = useIntl();
     const onFormikSubmit = (formValues: Partial<BostedUtland>) => {
         if (isValidBostedUtland(formValues)) {
             onSubmit(formValues);
@@ -82,10 +81,10 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     fullscreenOverlay: true,
                                     dateLimitations: {
                                         minDato: minDate,
-                                        maksDato: values.tom || maxDate
+                                        maksDato: values.tom || maxDate,
                                     },
                                     validate: (date: Date) =>
-                                        dateRangeValidation.validateFromDate(date, minDate, maxDate, values.tom)
+                                        dateRangeValidation.validateFromDate(date, minDate, maxDate, values.tom),
                                 }}
                                 toDatepickerProps={{
                                     name: BostedUtlandFormFields.tom,
@@ -93,10 +92,10 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     fullscreenOverlay: true,
                                     dateLimitations: {
                                         minDato: values.fom || minDate,
-                                        maksDato: maxDate
+                                        maksDato: maxDate,
                                     },
                                     validate: (date: Date) =>
-                                        dateRangeValidation.validateToDate(date, minDate, maxDate, values.fom)
+                                        dateRangeValidation.validateToDate(date, minDate, maxDate, values.fom),
                                 }}
                             />
                         </Block>
@@ -118,4 +117,4 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
     );
 };
 
-export default injectIntl(BostedUtlandForm);
+export default BostedUtlandForm;

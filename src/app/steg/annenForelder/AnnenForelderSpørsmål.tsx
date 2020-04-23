@@ -4,7 +4,7 @@ import { Checkbox } from 'nav-frontend-skjema';
 import FødselsnummerBolk from './FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import Søknad, { Skjemanummer, Søkersituasjon } from '../../types/søknad/Søknad';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import ErMorUførSpørsmål from '../../spørsmål/ErMorUførSpørsmål';
 import ErAnnenForelderInformertSpørsmål from '../../spørsmål/ErAnnenForelderInformertSpørsmål';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
@@ -35,9 +35,10 @@ export interface OwnProps {
     onSøkerChange: (søker: Partial<Søker>) => void;
     onFilesSelect: (attachments: Attachment[]) => void;
     onFileDelete: (attachment: Attachment) => void;
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 class AnnenForelderSpørsmål extends React.Component<Props, {}> {
     constructor(props: Props) {
@@ -51,7 +52,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
             etternavn: undefined,
             fnr: undefined,
             utenlandskFnr: undefined,
-            harRettPåForeldrepenger: undefined
+            harRettPåForeldrepenger: undefined,
         });
     }
     render() {
@@ -67,7 +68,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
             onSøkerChange,
             onFileDelete,
             onFilesSelect,
-            intl
+            intl,
         } = this.props;
 
         const { kanIkkeOppgis, fornavn, etternavn } = annenForelder!;
@@ -121,16 +122,17 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         søker.rolle === 'MOR' &&
                         søker.erAleneOmOmsorg !== undefined &&
                         søker.erAleneOmOmsorg
-                    }>
+                    }
+                >
                     <VeilederInfo
                         messages={[
                             {
                                 type: 'normal',
                                 contentIntlKey: 'annenForelder.veileder.aleneOmsorg.forBarnet',
                                 values: {
-                                    navn: annenForelder.fornavn
-                                }
-                            }
+                                    navn: annenForelder.fornavn,
+                                },
+                            },
                         ]}
                     />
                 </Block>
@@ -155,16 +157,17 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     visible={
                         visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger) &&
                         annenForelder.harRettPåForeldrepenger === true
-                    }>
+                    }
+                >
                     <VeilederInfo
                         messages={[
                             {
                                 type: 'normal',
                                 contentIntlKey: 'annenForelder.veileder.rettigheterOgDelingAvUttaksplan',
                                 values: {
-                                    navn: annenForelder.fornavn
-                                }
-                            }
+                                    navn: annenForelder.fornavn,
+                                },
+                            },
                         ]}
                     />
                 </Block>
@@ -183,8 +186,8 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                                 {
                                     type: 'normal',
                                     contentIntlKey: 'erAnnenForelderInformert.veilederIkkeInformert',
-                                    values: { navn: annenForelder.fornavn }
-                                }
+                                    values: { navn: annenForelder.fornavn },
+                                },
                             ]}
                         />
                     )}
@@ -197,7 +200,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         onChange={(datoForAleneomsorg: DateValue) => onBarnChange({ datoForAleneomsorg })}
                         dato={barn.datoForAleneomsorg}
                         datoAvgrensinger={{
-                            minDato: getFamiliehendelsedato(barn, situasjon)
+                            minDato: getFamiliehendelsedato(barn, situasjon),
                         }}
                     />
                 </Block>
@@ -205,14 +208,15 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     visible={
                         visibility.isVisible(AnnenForelderSpørsmålKeys.datoForAleneomsorg) &&
                         barn.datoForAleneomsorg !== undefined
-                    }>
+                    }
+                >
                     <Block margin="xs">
                         <VeilederInfo
                             messages={[
                                 {
                                     type: 'normal',
-                                    contentIntlKey: 'far.dokumantasjonAvAleneomsorg.vedlegg.veileder'
-                                }
+                                    contentIntlKey: 'far.dokumantasjonAvAleneomsorg.vedlegg.veileder',
+                                },
                             ]}
                         />
                     </Block>

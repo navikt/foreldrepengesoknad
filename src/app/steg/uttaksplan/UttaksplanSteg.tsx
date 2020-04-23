@@ -8,7 +8,7 @@ import { default as Steg, StegProps } from '../../components/applikasjon/steg/St
 import { DispatchProps } from 'common/redux/types';
 import {
     getSeneEndringerSomKreverBegrunnelse,
-    skalKunneViseMorsUttaksplanForFarEllerMedmor
+    skalKunneViseMorsUttaksplanForFarEllerMedmor,
 } from 'app/util/uttaksplan/uttakUtils';
 import { Forelder } from 'common/types';
 import { getPeriodelisteElementId } from '../../components/uttaksplanlegger/components/periodeliste/Periodeliste';
@@ -20,7 +20,7 @@ import {
     Periode,
     TilgjengeligStønadskonto,
     SenEndringÅrsak,
-    StønadskontoType
+    StønadskontoType,
 } from '../../types/uttaksplan/periodetyper';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import { Søknadsinfo } from '../../selectors/types';
@@ -38,10 +38,10 @@ import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
 import Uttaksplanlegger from '../../components/uttaksplanlegger/Uttaksplanlegger';
 import {
     selectUttaksplanVeilederinfo,
-    selectPeriodelisteMeldinger
+    selectPeriodelisteMeldinger,
 } from 'app/selectors/uttaksplanVeilederinfoSelector';
 import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
 import getMessage from 'common/util/i18nUtils';
@@ -91,6 +91,10 @@ interface StateProps {
     relevantStartDatoForUttak: Date | undefined;
 }
 
+interface OwnProps {
+    intl: IntlShape;
+}
+
 interface UttaksplanStegState {
     bekreftGåTilbakeDialogSynlig: boolean;
     bekreftSlettUttaksplanDialogSynlig: boolean;
@@ -99,7 +103,7 @@ interface UttaksplanStegState {
     harKlikketFortsett: boolean;
 }
 
-type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps & InjectedIntlProps;
+type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps & OwnProps;
 
 const getUttaksstatusFunc = (søknadsinfo: Søknadsinfo) => (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
@@ -121,7 +125,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             dispatch,
             grunnlag,
             barn,
-            arbeidsforhold
+            arbeidsforhold,
         } = this.props;
 
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
@@ -144,7 +148,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             bekreftSlettUttaksplanDialogSynlig: false,
             bekreftTilbakestillUttaksplanDialogSynlig: false,
             visFeiloppsummering: false,
-            harKlikketFortsett: false
+            harKlikketFortsett: false,
         };
         if (stegProps.isAvailable && søknadsinfo !== undefined) {
             const { forslagLaget, startdatoPermisjon } = søknad.ekstrainfo.uttaksplanSkjema;
@@ -254,7 +258,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             familiehendelsesdato,
             erFlerbarnssøknad,
             erEndringssøknad,
-            erEnkelEndringssøknad
+            erEnkelEndringssøknad,
         } = søknadsinfo.søknaden;
 
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
@@ -282,7 +286,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             familiehendelsesdato,
             erFlerbarnssøknad,
             erEndringssøknad,
-            erEnkelEndringssøknad
+            erEnkelEndringssøknad,
         } = søknadsinfo.søknaden;
 
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
@@ -310,7 +314,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             familiehendelsesdato,
             erFlerbarnssøknad,
             erEndringssøknad,
-            erEnkelEndringssøknad
+            erEnkelEndringssøknad,
         } = søknadsinfo.søknaden;
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
 
@@ -372,7 +376,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             meldingerPerPeriode,
             perioderSomSkalSendesInn,
             history,
-            intl
+            intl,
         } = this.props;
 
         if (!søknadsinfo) {
@@ -396,7 +400,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                 onRequestNavigateToNextStep={() => {
                     this.setState({
                         harKlikketFortsett: true,
-                        visFeiloppsummering: uttaksplanValidering.erGyldig === false
+                        visFeiloppsummering: uttaksplanValidering.erGyldig === false,
                     });
                     if (uttaksplanValidering.erGyldig === false) {
                         this.delayedSetFocusOnFeiloppsummering();
@@ -457,21 +461,19 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             />
                         </Block>
 
-                        {søknad.uttaksplan &&
-                            tilgjengeligeStønadskontoer.length > 0 &&
-                            uttaksstatus && (
-                                <>
-                                    <Block margin="l">
-                                        <OversiktBrukteDager
-                                            tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                            perioder={søknad.uttaksplan}
-                                            søknadsinfo={søknadsinfo}
-                                            uttaksstatus={uttaksstatus}
-                                            navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
-                                        />
-                                    </Block>
-                                </>
-                            )}
+                        {søknad.uttaksplan && tilgjengeligeStønadskontoer.length > 0 && uttaksstatus && (
+                            <>
+                                <Block margin="l">
+                                    <OversiktBrukteDager
+                                        tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                        perioder={søknad.uttaksplan}
+                                        søknadsinfo={søknadsinfo}
+                                        uttaksstatus={uttaksstatus}
+                                        navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
+                                    />
+                                </Block>
+                            </>
+                        )}
 
                         <Block visible={uttaksplanVeilederInfo.length > 0}>
                             <VeilederInfo
@@ -483,34 +485,32 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             />
                         </Block>
 
-                        {eksisterendeSak &&
-                            eksisterendeSak.uttaksplan && (
-                                <FeatureBlock
-                                    feature={Feature.visPerioderSomSendesInn}
-                                    render={() => (
-                                        <Block>
-                                            <DevPerioderSomSendesInn
-                                                søknadsinfo={søknadsinfo}
-                                                perioderSomSkalSendesInn={perioderSomSkalSendesInn}
-                                            />
-                                        </Block>
-                                    )}
-                                />
-                            )}
+                        {eksisterendeSak && eksisterendeSak.uttaksplan && (
+                            <FeatureBlock
+                                feature={Feature.visPerioderSomSendesInn}
+                                render={() => (
+                                    <Block>
+                                        <DevPerioderSomSendesInn
+                                            søknadsinfo={søknadsinfo}
+                                            perioderSomSkalSendesInn={perioderSomSkalSendesInn}
+                                        />
+                                    </Block>
+                                )}
+                            />
+                        )}
 
-                        {årsakTilSenEndring &&
-                            årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
-                                <OppgiTilleggsopplysninger
-                                    begrunnelse={
-                                        tilleggsopplysninger.begrunnelseForSenEndring
-                                            ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
-                                            : ''
-                                    }
-                                    vedlegg={vedleggForSenEndring}
-                                    onBegrunnelseChange={this.handleBegrunnelseChange(årsakTilSenEndring)}
-                                    onVedleggChange={this.handleBegrunnelseVedleggChange}
-                                />
-                            )}
+                        {årsakTilSenEndring && årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
+                            <OppgiTilleggsopplysninger
+                                begrunnelse={
+                                    tilleggsopplysninger.begrunnelseForSenEndring
+                                        ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
+                                        : ''
+                                }
+                                vedlegg={vedleggForSenEndring}
+                                onBegrunnelseChange={this.handleBegrunnelseChange(årsakTilSenEndring)}
+                                onVedleggChange={this.handleBegrunnelseVedleggChange}
+                            />
+                        )}
                     </>
                 )}
 
@@ -534,10 +534,10 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 }
 
-const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps & InjectedIntlProps): StateProps => {
+const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps & OwnProps): StateProps => {
     const {
         søknad,
-        api: { isLoadingTilgjengeligeStønadskontoer, sakForEndringssøknad: sak }
+        api: { isLoadingTilgjengeligeStønadskontoer, sakForEndringssøknad: sak },
     } = state;
     const { søkerinfo, history } = props;
 
@@ -552,7 +552,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true && perioderSomSkalSendesInn.length > 0,
         renderFormTag: false,
         history,
-        isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo, søknadsinfo)
+        isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo, søknadsinfo),
     };
     const { startdatoPermisjon } = søknad.ekstrainfo.uttaksplanSkjema;
 
@@ -604,9 +604,10 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         vedleggForSenEndring: søknad.vedleggForSenEndring,
         tilleggsopplysninger: søknad.tilleggsopplysninger,
         barn: søknad.barn,
-        uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(props.intl, true)(state).filter(
-            (melding) => melding.skjulesIOppsummering !== true
-        ),
+        uttaksplanVeilederInfo: selectUttaksplanVeilederinfo(
+            props.intl,
+            true
+        )(state).filter((melding) => melding.skjulesIOppsummering !== true),
         meldingerPerPeriode: selectPeriodelisteMeldinger(props.intl, false)(state),
         aktivitetsfriKvote,
         planErEndret: søknad.erEndringssøknad && perioderSomSkalSendesInn.length > 0,
@@ -614,7 +615,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         sak,
         arbeidsforhold: søkerinfo.arbeidsforhold,
         grunnlag,
-        relevantStartDatoForUttak
+        relevantStartDatoForUttak,
     };
 };
 

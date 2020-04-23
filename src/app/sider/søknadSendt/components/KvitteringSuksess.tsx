@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Undertittel, Normaltekst } from 'nav-frontend-typografi';
-import { FormattedMessage, FormattedHTMLMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import { MissingAttachment } from 'app/types/MissingAttachment';
@@ -15,9 +15,10 @@ import CheckmarkIkon from 'app/components/ikoner/uttaksplanIkon/ikoner/Checkmark
 
 interface KvitteringSuksessProps {
     missingAttachments: MissingAttachment[];
+    intl: IntlShape;
 }
 
-type Props = KvitteringSuksessProps & InjectedIntlProps;
+type Props = KvitteringSuksessProps;
 const cls = BEMHelper('kvittering');
 const KvitteringSuksess: React.StatelessComponent<Props> = ({ missingAttachments, intl }) => {
     const isMissingAttachments = missingAttachments.length > 0;
@@ -27,7 +28,8 @@ const KvitteringSuksess: React.StatelessComponent<Props> = ({ missingAttachments
                 className={cls.classNames(
                     cls.element('suksess'),
                     cls.modifierConditional('mangler-vedlegg', isMissingAttachments)
-                )}>
+                )}
+            >
                 <div className={cls.element('ikon')}>
                     {isMissingAttachments ? <AdvarselIkon height={24} width={24} /> : <CheckmarkIkon />}
                 </div>
@@ -45,7 +47,7 @@ const KvitteringSuksess: React.StatelessComponent<Props> = ({ missingAttachments
                     </Block>
                     <div>
                         <Normaltekst>
-                            <FormattedHTMLMessage
+                            <FormattedMessage
                                 id={
                                     isMissingAttachments
                                         ? 'søknadSendt.info.innhold.isMissingAttachments'
@@ -59,7 +61,7 @@ const KvitteringSuksess: React.StatelessComponent<Props> = ({ missingAttachments
                                     {missingAttachments.map((a) => (
                                         <li key={guid()}>
                                             <Normaltekst>
-                                                <FormattedHTMLMessage
+                                                <FormattedMessage
                                                     id={`søknadSendt.info.missingAttachment.${a.skjemanummer}`}
                                                 />
                                             </Normaltekst>
@@ -68,8 +70,9 @@ const KvitteringSuksess: React.StatelessComponent<Props> = ({ missingAttachments
                                 </ul>
 
                                 <UtvidetInformasjon
-                                    apneLabel={getMessage(intl, 'søknadSendt.info.missingAttachment.lesMer')}>
-                                    <FormattedHTMLMessage id="søknadSendt.info.missingAttachment.lesMer.content" />
+                                    apneLabel={getMessage(intl, 'søknadSendt.info.missingAttachment.lesMer')}
+                                >
+                                    <FormattedMessage id="søknadSendt.info.missingAttachment.lesMer.content" />
                                 </UtvidetInformasjon>
                             </>
                         )}

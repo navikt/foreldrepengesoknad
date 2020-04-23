@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
 import { Utenlandsopphold } from '../../../../../../types/søknad/InformasjonOmUtenlandsopphold';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../../../../../../util/dates/dates';
 import Oppsummeringsliste from 'app/steg/oppsummering/components/oppsummeringsliste/Oppsummeringsliste';
@@ -10,12 +10,11 @@ interface UtenlandsoppholdOppsummeringslisteProps {
     informasjonOmUtenlandsopphold: Utenlandsopphold[];
 }
 
-type Props = UtenlandsoppholdOppsummeringslisteProps & InjectedIntlProps;
+type Props = UtenlandsoppholdOppsummeringslisteProps;
 
-const UtenlandsoppholdOppsummeringsliste: React.StatelessComponent<Props> = ({
-    informasjonOmUtenlandsopphold,
-    intl
-}: Props) => {
+const UtenlandsoppholdOppsummeringsliste: React.StatelessComponent<Props> = ({ informasjonOmUtenlandsopphold }) => {
+    const intl = useIntl();
+
     return (
         <Oppsummeringsliste
             data={informasjonOmUtenlandsopphold.map(({ land, tidsperiode }) => ({
@@ -31,4 +30,4 @@ const UtenlandsoppholdOppsummeringsliste: React.StatelessComponent<Props> = ({
         />
     );
 };
-export default injectIntl(UtenlandsoppholdOppsummeringsliste);
+export default UtenlandsoppholdOppsummeringsliste;

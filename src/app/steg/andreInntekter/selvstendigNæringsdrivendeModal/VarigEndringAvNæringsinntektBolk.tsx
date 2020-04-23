@@ -3,9 +3,9 @@ import {
     EndringAvNæringsinntektInformasjon,
     EndringAvNæringsinntektInformasjonPartial,
     Næring,
-    NæringPartial
+    NæringPartial,
 } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import VarigEndringAvNæringsinntektSpørsmål from '../../../spørsmål/VarigEndringAvNæringsinntektSpørsmål';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
@@ -21,19 +21,20 @@ import { trimNumberFromInput } from 'common/util/numberUtils';
 interface VarigEndringAvNæringsinntektBolkProps {
     næring: Næring;
     onChange: (v: NæringPartial) => void;
+    intl: IntlShape;
 }
 
-type Props = VarigEndringAvNæringsinntektBolkProps & InjectedIntlProps;
+type Props = VarigEndringAvNæringsinntektBolkProps;
 
 class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
     updateEndringAvNæringsinntektInformasjon(changedProps: EndringAvNæringsinntektInformasjonPartial) {
         const { næring, onChange } = this.props;
         const updatedInfo = {
             ...næring.endringAvNæringsinntektInformasjon,
-            ...changedProps
+            ...changedProps,
         };
         onChange({
-            endringAvNæringsinntektInformasjon: updatedInfo as EndringAvNæringsinntektInformasjon
+            endringAvNæringsinntektInformasjon: updatedInfo as EndringAvNæringsinntektInformasjon,
         });
     }
 
@@ -49,7 +50,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                         varigEndringAvNæringsinntekt={hattVarigEndringAvNæringsinntektSiste4Kalenderår}
                         onChange={(v: boolean) =>
                             onChange({
-                                hattVarigEndringAvNæringsinntektSiste4Kalenderår: v
+                                hattVarigEndringAvNæringsinntektSiste4Kalenderår: v,
                             })
                         }
                     />
@@ -58,7 +59,8 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                 <Block
                     margin="none"
                     animated={false}
-                    visible={hattVarigEndringAvNæringsinntektSiste4Kalenderår === true}>
+                    visible={hattVarigEndringAvNæringsinntektSiste4Kalenderår === true}
+                >
                     <Block>
                         <DatoInput
                             name="næring-datoForEndring"
@@ -66,7 +68,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                             label={getMessage(intl, 'varigEndringAvNæringsinntekt.dato.label')}
                             onChange={(dato: Date) => {
                                 this.updateEndringAvNæringsinntektInformasjon({
-                                    dato
+                                    dato,
                                 });
                             }}
                             dato={info && info.dato}
@@ -85,14 +87,14 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                             }
                             onChange={(v: string) => {
                                 this.updateEndringAvNæringsinntektInformasjon({
-                                    næringsinntektEtterEndring: trimNumberFromInput(v)
+                                    næringsinntektEtterEndring: trimNumberFromInput(v),
                                 });
                             }}
                             validators={[
                                 hasValueRule(
                                     (info && isNaN(info.næringsinntektEtterEndring) === false) || '',
                                     getMessage(intl, 'påkrevd')
-                                )
+                                ),
                             ]}
                         />
                     </Block>
@@ -103,7 +105,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                             label={getMessage(intl, 'varigEndringAvNæringsinntekt.forklaring.label')}
                             onChange={(e: TextareaChangeEvent) => {
                                 this.updateEndringAvNæringsinntektInformasjon({
-                                    forklaring: e.target.value
+                                    forklaring: e.target.value,
                                 });
                             }}
                             validators={getFritekstfeltRules({ maxLength: 1000 }, intl, info && info.forklaring)}

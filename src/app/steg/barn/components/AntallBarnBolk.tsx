@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { Select } from 'nav-frontend-skjema';
 import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import Block from 'common/components/block/Block';
@@ -23,9 +23,10 @@ export interface OwnProps {
     situasjon?: Søkersituasjon;
     /** Valideringsfeilmelding */
     feil?: SkjemaelementFeil;
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 type AntallBarnVerdi = '1' | '2' | '3';
 

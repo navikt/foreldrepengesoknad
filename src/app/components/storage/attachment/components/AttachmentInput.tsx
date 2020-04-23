@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { Element } from 'nav-frontend-typografi';
 import CustomSVG from 'common/components/customSvg/CustomSVG';
 import BEMHelper from 'common/util/bem';
@@ -14,9 +14,10 @@ interface AttachmentInputProps {
     onFilesSelect: (files: File[]) => void;
     onClick: () => void;
     attachmentType: AttachmentType;
+    intl: IntlShape;
 }
 
-type Props = AttachmentInputProps & InjectedIntlProps;
+type Props = AttachmentInputProps;
 
 class AttachmentInput extends React.Component<Props> {
     constructor(props: Props) {
@@ -94,7 +95,8 @@ class AttachmentInput extends React.Component<Props> {
                 className={BEM.block}
                 onDragOver={(e) => this.onFileDragOverHandler(e)}
                 onDrop={(e) => this.onFileDropHandler(e)}
-                onKeyPress={(e) => this.onKeyPress(e)}>
+                onKeyPress={(e) => this.onKeyPress(e)}
+            >
                 <div className={BEM.element('icon')}>
                     <CustomSVG iconRef={uploadIcon} size={22} />
                 </div>

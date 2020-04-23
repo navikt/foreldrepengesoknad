@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl, FormattedHTMLMessage } from 'react-intl';
+import { injectIntl, IntlShape, FormattedMessage } from 'react-intl';
 import Arbeidsforhold from '../types/Arbeidsforhold';
 import getMessage from 'common/util/i18nUtils';
 import FlervalgSpørsmål from '../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
@@ -14,9 +14,10 @@ interface HvorSkalDuJobbeSpørsmålProps {
     arbeidsforhold: Arbeidsforhold[];
     orgnumre: string[];
     tidsperiode: Tidsperiode;
+    intl: IntlShape;
 }
 
-type Props = HvorSkalDuJobbeSpørsmålProps & InjectedIntlProps;
+type Props = HvorSkalDuJobbeSpørsmålProps;
 
 const erFrilansEllerSelvstendig = (value: string): boolean => {
     return value === Arbeidsform.selvstendignæringsdrivende || value === Arbeidsform.frilans;
@@ -66,14 +67,14 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
             ...kunArbeidsforholdForValgtTidsperiode.map((v, i) => ({
                 label: v.arbeidsgiverIdType === 'orgnr' ? v.arbeidsgiverNavn : getMessage(intl, 'arbeidsgiver'),
                 value: v.arbeidsgiverId,
-                name
+                name,
             })),
             {
                 label: getMessage(intl, 'jegSkalJobbeSomSelvstendigNæringsdrivende'),
                 value: Arbeidsform.selvstendignæringsdrivende,
-                name
+                name,
             },
-            { label: getMessage(intl, 'jegSkalJobbeSomFrilans'), value: Arbeidsform.frilans, name }
+            { label: getMessage(intl, 'jegSkalJobbeSomFrilans'), value: Arbeidsform.frilans, name },
         ];
     }
 
@@ -88,7 +89,7 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
                 toKolonner={true}
                 spørsmål={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
                 onChange={this.handleOnChange}
-                hjelpetekst={<FormattedHTMLMessage id="hvorSkalDuJobbe.spørsmål.gradering.hjelpetekst" />}
+                hjelpetekst={<FormattedMessage id="hvorSkalDuJobbe.spørsmål.gradering.hjelpetekst" />}
             />
         );
     }

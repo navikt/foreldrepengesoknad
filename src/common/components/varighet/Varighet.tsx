@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import BEMHelper from 'common/util/bem';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { getUkerOgDagerFromDager } from 'common/util/datoUtils';
 import getMessage from 'common/util/i18nUtils';
 
@@ -15,9 +15,10 @@ interface OwnProps {
 
 const bem = BEMHelper('varighet');
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
-const Varighet: React.StatelessComponent<Props> = ({ dager, layout, separator, intl }) => {
+const Varighet: React.StatelessComponent<Props> = ({ dager, layout, separator }) => {
+    const intl = useIntl();
     const ud = getUkerOgDagerFromDager(dager);
     return (
         <span className={classNames(bem.block, layout ? bem.modifier(layout) : undefined)}>
@@ -38,8 +39,9 @@ const Varighet: React.StatelessComponent<Props> = ({ dager, layout, separator, i
                             </span>
                         </span>
                     )}
-                    {ud.uker > 0 &&
-                        ud.dager > 0 && <span className={bem.element('separator')}>{separator || ', '}</span>}
+                    {ud.uker > 0 && ud.dager > 0 && (
+                        <span className={bem.element('separator')}>{separator || ', '}</span>
+                    )}
                     {(ud.dager > 0 || ud.uker === 0) && (
                         <span className={bem.element('dager')}>
                             <span className={bem.element('value')}>{ud.dager}</span>
@@ -54,4 +56,4 @@ const Varighet: React.StatelessComponent<Props> = ({ dager, layout, separator, i
     );
 };
 
-export default injectIntl(Varighet);
+export default Varighet;

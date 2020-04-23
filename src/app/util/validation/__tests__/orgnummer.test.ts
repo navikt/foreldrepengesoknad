@@ -1,9 +1,9 @@
 import { erGyldigNorskOrgnummer, er9Tall, getOrganisasjonsnummerRegler } from '../organisasjonsnummer';
 import * as getMessage from 'common/util/i18nUtils';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { runValidators } from 'common/lib/validation/utils/runValidFormValidation';
 
-const intl = {} as InjectedIntl;
+const intl = {} as IntlShape;
 
 (getMessage.default as any) = jest.fn(() => '');
 

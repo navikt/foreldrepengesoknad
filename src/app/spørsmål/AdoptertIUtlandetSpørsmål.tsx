@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 
@@ -8,10 +8,11 @@ interface BarnFødtBolkProps {
     onChange: (fødtIUtlandet: boolean) => void;
 }
 
-type Props = BarnFødtBolkProps & InjectedIntlProps;
+type Props = BarnFødtBolkProps;
 
 const AdoptertIUtlandetSpørsmål = (props: Props) => {
-    const { onChange, adoptertIUtlandet, intl } = props;
+    const { onChange, adoptertIUtlandet } = props;
+    const intl = useIntl();
 
     return (
         <JaNeiSpørsmål
@@ -23,4 +24,4 @@ const AdoptertIUtlandetSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(AdoptertIUtlandetSpørsmål);
+export default AdoptertIUtlandetSpørsmål;

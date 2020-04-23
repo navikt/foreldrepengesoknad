@@ -3,16 +3,17 @@ import { default as NavStegindikator } from 'nav-frontend-stegindikator';
 import getMessage from 'common/util/i18nUtils';
 import './stegindikator.less';
 import BEMHelper from 'common/util/bem';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { StegConfig, StegConfigItem, StegID, getStegConfig } from 'app/util/routing/stegConfig';
 
 interface StegProps {
     id: StegID;
     erEndringssøknad: boolean;
     erEnkelEndringssøknad?: boolean;
+    intl: IntlShape;
 }
 
-type Props = StegProps & InjectedIntlProps;
+type Props = StegProps;
 
 class Stegindikator extends React.Component<Props> {
     title: HTMLElement | null;

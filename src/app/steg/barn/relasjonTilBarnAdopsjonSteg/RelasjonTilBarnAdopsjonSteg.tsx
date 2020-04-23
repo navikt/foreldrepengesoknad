@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { StegID } from '../../../util/routing/stegConfig';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
@@ -36,7 +36,11 @@ interface StateProps {
     erEndringssøknad: boolean;
 }
 
-type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
+interface OwnProps {
+    intl: IntlShape;
+}
+
+type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps & OwnProps;
 class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);

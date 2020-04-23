@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
 import { Søkersituasjon } from '../types/søknad/Søknad';
@@ -10,19 +10,20 @@ interface SøkersituasjonProps {
     onChange: (situasjon: Søkersituasjon, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-type Props = SøkersituasjonProps & InjectedIntlProps;
+type Props = SøkersituasjonProps;
 
 const SøkersituasjonSpørsmål = (props: Props) => {
-    const { onChange, situasjon, intl } = props;
+    const { onChange, situasjon } = props;
+    const intl = useIntl();
 
     const søkersituasjonRadioName = 'søkersituasjon';
 
     const getSituasjonOption = (key: Søkersituasjon): RadioProps => ({
         label: intl.formatMessage({
-            id: `søkersituasjon.alternativ.${key}`
+            id: `søkersituasjon.alternativ.${key}`,
         }),
         value: key,
-        name: søkersituasjonRadioName
+        name: søkersituasjonRadioName,
     });
 
     return (
@@ -32,7 +33,7 @@ const SøkersituasjonSpørsmål = (props: Props) => {
             radios={[
                 getSituasjonOption(Søkersituasjon.FØDSEL),
                 getSituasjonOption(Søkersituasjon.ADOPSJON),
-                getSituasjonOption(Søkersituasjon.FORELDREANSVAR)
+                getSituasjonOption(Søkersituasjon.FORELDREANSVAR),
             ]}
             name={søkersituasjonRadioName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>, v: Søkersituasjon) => onChange(v, e)}
@@ -40,4 +41,4 @@ const SøkersituasjonSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(SøkersituasjonSpørsmål);
+export default SøkersituasjonSpørsmål;

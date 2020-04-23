@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { onToggleItemProp } from '../../../../elementer/toggleList/ToggleList';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import {
     UttakAnnenPartInfoPeriode,
@@ -25,9 +25,10 @@ export interface Props {
     periode: UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode;
     navnPåForeldre: NavnPåForeldre;
     tidsperiode: Tidsperiode;
+    intl: IntlShape;
 }
 
-const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props> = ({
     itemId,
     isExpanded,
     onToggle,

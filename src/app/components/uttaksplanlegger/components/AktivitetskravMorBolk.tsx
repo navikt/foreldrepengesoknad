@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Block from 'common/components/block/Block';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { MorsAktivitet } from '../../../types/uttaksplan/periodetyper';
@@ -19,9 +19,10 @@ interface OwnProps {
     vedlegg?: Attachment[];
     navnPåForeldre: NavnISøknaden;
     onChange: (event: AktivitetskravMorChangeEvent) => void;
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 class AktivitetskravMorBolk extends React.Component<Props> {
     render() {

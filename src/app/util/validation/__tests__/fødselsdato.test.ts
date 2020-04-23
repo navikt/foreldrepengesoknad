@@ -1,9 +1,9 @@
 import { getFødselsdatoRegler } from '../fødselsdato';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
 import * as commonRules from '../common';
 import { today } from '../values';
-const intl = {} as InjectedIntl;
+const intl = {} as IntlShape;
 
 const todaysDate = today.toDate();
 const someString = '';

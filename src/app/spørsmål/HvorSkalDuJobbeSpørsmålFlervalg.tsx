@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import Arbeidsforhold from '../types/Arbeidsforhold';
 import getMessage from 'common/util/i18nUtils';
 import { Arbeidsform } from '../types/uttaksplan/periodetyper';
@@ -15,9 +15,10 @@ interface HvorSkalDuJobbeSpørsmålFlervalgProps {
     arbeidsforhold: Arbeidsforhold[];
     orgnumre: string[];
     tidsperiode?: RecursivePartial<Tidsperiode>;
+    intl: IntlShape;
 }
 
-type Props = HvorSkalDuJobbeSpørsmålFlervalgProps & InjectedIntlProps;
+type Props = HvorSkalDuJobbeSpørsmålFlervalgProps;
 
 const erFrilansEllerSelvstendig = (value: string): boolean => {
     return value === Arbeidsform.selvstendignæringsdrivende || value === Arbeidsform.frilans;
@@ -47,18 +48,18 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
             ...kunArbeidsforholdForValgtTidsperiode.map((v) => ({
                 label: v.arbeidsgiverNavn,
                 value: v.arbeidsgiverId,
-                checked: orgnumre.includes(v.arbeidsgiverId)
+                checked: orgnumre.includes(v.arbeidsgiverId),
             })),
             {
                 label: getMessage(intl, 'jegSkalJobbeSomSelvstendigNæringsdrivende'),
                 value: Arbeidsform.selvstendignæringsdrivende,
-                checked: arbeidsformer.includes(Arbeidsform.selvstendignæringsdrivende)
+                checked: arbeidsformer.includes(Arbeidsform.selvstendignæringsdrivende),
             },
             {
                 label: getMessage(intl, 'jegSkalJobbeSomFrilans'),
                 value: Arbeidsform.frilans,
-                checked: arbeidsformer.includes(Arbeidsform.frilans)
-            }
+                checked: arbeidsformer.includes(Arbeidsform.frilans),
+            },
         ];
     }
 
@@ -120,8 +121,8 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
                             {
                                 type: 'normal',
                                 contentIntlKey: 'utsettelseskjema.info.utsettelseArbeid',
-                                formatContentAsHTML: true
-                            }
+                                formatContentAsHTML: true,
+                            },
                         ]}
                     />
                 }

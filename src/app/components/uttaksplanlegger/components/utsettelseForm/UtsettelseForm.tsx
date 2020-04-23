@@ -21,7 +21,7 @@ import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSp�
 import getMessage from 'common/util/i18nUtils';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import { RecursivePartial } from '../../../../types/Partial';
 import { AppState } from '../../../../redux/reducers';
 import { connect } from 'react-redux';
@@ -53,6 +53,7 @@ interface OwnProps {
     onChange: EndrePeriodeChangeEvent;
     onCancel?: () => void;
     onUtsettelsesvariantChange?: (utsettelsesvariant: Utsettelsesvariant | undefined) => void;
+    intl: IntlShape;
 }
 
 interface StateProps {
@@ -62,7 +63,7 @@ interface StateProps {
     uttaksplan: Periode[];
 }
 
-type Props = OwnProps & StateProps & InjectedIntlProps;
+type Props = OwnProps & StateProps;
 
 interface State {
     variant?: Utsettelsesvariant;
@@ -366,7 +367,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                         <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
                             variant={variant}
                             radios={this.getUtsettelseÅrsakRadios(kunHelligdager)}
-                            onChange={(v) => this.onVariantChange(v)}
+                            onChange={(v: Utsettelsesvariant) => this.onVariantChange(v)}
                             infotekst={
                                 kunHelligdager
                                     ? getMessage(intl, 'utsettelseskjema.kunHelligdager.disabledFerieMelding')
@@ -394,7 +395,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.arbeidsplass)}>
                                         <HvorSkalDuJobbeSpørsmålFlervalg
                                             arbeidsforhold={arbeidsforhold || []}
-                                            onChange={(orgnumre, arbeidsformer) =>
+                                            onChange={(orgnumre: string[], arbeidsformer: Arbeidsform[]) =>
                                                 this.onChange({
                                                     orgnumre,
                                                     arbeidsformer,
@@ -418,7 +419,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                                     antall: periode.orgnumre ? periode.orgnumre.length : 0
                                                 }
                                             )}
-                                            onChange={(avtaltFulltArbeidForDeltid) =>
+                                            onChange={(avtaltFulltArbeidForDeltid: boolean) =>
                                                 this.onChange({
                                                     harAvtaleOmFulltidForDeltidsstilling: avtaltFulltArbeidForDeltid
                                                 })
@@ -487,7 +488,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                     navnPåForeldre={søknadsinfo.navn}
                                     morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
                                     vedlegg={periode.vedlegg as Attachment[]}
-                                    onChange={(periodeData) => this.onChange(periodeData)}
+                                    onChange={(periodeData: UtsettelseFormPeriodeType) => this.onChange(periodeData)}
                                 />
                             </Block>
                             <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.hvØvelse)}>
@@ -505,7 +506,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                     attachmentType={AttachmentType.HV_ØVELSE}
                                     skjemanummer={Skjemanummer.HV_ØVELSE}
                                     vedlegg={periode.vedlegg as Attachment[]}
-                                    onChange={(v) => this.onChange({ vedlegg: v })}
+                                    onChange={(v: Attachment[]) => this.onChange({ vedlegg: v })}
                                 />
                             </Block>
                             <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.navTiltak)}>
@@ -523,7 +524,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                     attachmentType={AttachmentType.NAV_TILTAK}
                                     skjemanummer={Skjemanummer.NAV_TILTAK}
                                     vedlegg={periode.vedlegg as Attachment[]}
-                                    onChange={(v) => this.onChange({ vedlegg: v })}
+                                    onChange={(v: Attachment[]) => this.onChange({ vedlegg: v })}
                                 />
                             </Block>
                         </>

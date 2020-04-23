@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {
     getTerminbekreftelsedatoAvgrensninger,
-    getTerminbekreftelseDatoRegler
+    getTerminbekreftelseDatoRegler,
 } from '../../../../util/validation/terminbekreftelsedato';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import { UfødtBarn } from '../../../../types/søknad/Barn';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
 import { DispatchProps } from 'common/redux/types/index';
@@ -23,10 +23,11 @@ export interface OwnProps {
     vis: RelasjonTilBarnUfødtVisibility;
 }
 
-export type Props = OwnProps & InjectedIntlProps & DispatchProps;
+export type Props = OwnProps & DispatchProps;
 
 const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
-    const { barn, terminbekreftelse, intl, dispatch, vis } = props;
+    const { barn, terminbekreftelse, dispatch, vis } = props;
+    const intl = useIntl();
     const validerDatofelt = barn.terminbekreftelse && barn.terminbekreftelse.length > 0;
 
     return (
@@ -36,8 +37,8 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                     messages={[
                         {
                             type: 'normal',
-                            contentIntlKey: 'vedlegg.veileder.terminbekreftelsen'
-                        }
+                            contentIntlKey: 'vedlegg.veileder.terminbekreftelsen',
+                        },
                     ]}
                 />
             </Block>
@@ -64,7 +65,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                     onChange={(terminbekreftelseDato: Date) => {
                         dispatch(
                             søknadActions.updateBarn({
-                                terminbekreftelseDato
+                                terminbekreftelseDato,
                             })
                         );
                     }}
@@ -81,4 +82,4 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
     );
 };
 
-export default injectIntl(Terminbekreftelse);
+export default Terminbekreftelse;

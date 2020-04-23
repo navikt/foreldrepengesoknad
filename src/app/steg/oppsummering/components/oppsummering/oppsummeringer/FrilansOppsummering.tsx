@@ -1,7 +1,7 @@
 import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../../../../../util/dates/dates';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import Søker from '../../../../../types/søknad/Søker';
 import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
@@ -14,10 +14,11 @@ interface FrilansOppsummeringProps {
     søker: Søker;
 }
 
-type Props = FrilansOppsummeringProps & InjectedIntlProps;
+type Props = FrilansOppsummeringProps;
 
-const FrilansOppsummering = ({ søker, intl }: Props) => {
+const FrilansOppsummering = ({ søker }: Props) => {
     const { frilansInformasjon, harJobbetSomFrilansSiste10Mnd } = søker;
+    const intl = useIntl();
 
     if (frilansInformasjon && harJobbetSomFrilansSiste10Mnd) {
         const {
@@ -45,7 +46,8 @@ const FrilansOppsummering = ({ søker, intl }: Props) => {
                     ledetekst={getMessage(
                         intl,
                         'oppsummering.frilans.frilansArbeidForNæreVennerEllerFamilieSiste10Mnd'
-                    )}>
+                    )}
+                >
                     <Block visible={!harJobbetForNærVennEllerFamilieSiste10Mnd} margin="none">
                         <Element>
                             {getMessage(
@@ -70,4 +72,4 @@ const FrilansOppsummering = ({ søker, intl }: Props) => {
     );
 };
 
-export default injectIntl(FrilansOppsummering);
+export default FrilansOppsummering;

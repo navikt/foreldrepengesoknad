@@ -1,7 +1,9 @@
 import { Arbeidsform, Overføringsperiode, Periodetype, Utsettelsesperiode } from '../types/uttaksplan/periodetyper';
 import getMessage from 'common/util/i18nUtils';
-import { MessageValue, InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
+
+type MessageValue = string | number | boolean | Date | null | undefined;
 
 const getValgtArbeidsgiverNavn = (arbeidsforhold: Arbeidsforhold[], orgnr?: string) => {
     if (orgnr) {
@@ -16,7 +18,7 @@ const getValgtArbeidsgiverNavn = (arbeidsforhold: Arbeidsforhold[], orgnr?: stri
 };
 
 export const getArbeidsformTekst = (
-    intl: InjectedIntl,
+    intl: IntlShape,
     arbeidsformer: Arbeidsform[],
     orgnumre?: string[],
     arbeidsforhold?: Arbeidsforhold[]
@@ -43,7 +45,7 @@ export const getArbeidsformTekst = (
 };
 
 export const getÅrsakTekst = (
-    intl: InjectedIntl,
+    intl: IntlShape,
     { type, årsak }: Utsettelsesperiode | Overføringsperiode,
     messageValues?: { [key: string]: MessageValue }
 ) => {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Dekningsgrad, NavnPåForeldre } from 'common/types';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import AnnenForelder from '../../../../../types/søknad/AnnenForelder';
 import Arbeidsforhold from '../../../../../types/Arbeidsforhold';
@@ -30,24 +30,22 @@ interface OwnProps {
     eksisterendeUttaksplan?: Periode[];
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
-class UttaksplanOppsummering extends React.Component<Props> {
-    render() {
-        const { dekningsgrad, antallUkerUttaksplan, intl, ...rest } = this.props;
+const UttaksplanOppsummering: React.FunctionComponent<Props> = ({ dekningsgrad, antallUkerUttaksplan, ...rest }) => {
+    const intl = useIntl();
 
-        return (
-            <Oppsummeringsseksjon>
-                <Feltoppsummering
-                    feltnavn={getMessage(intl, 'oppsummering.dekningsgrad.label')}
-                    verdi={getMessage(intl, `oppsummering.dekningsgrad.verdi${dekningsgrad}`, {
-                        antallUker: antallUkerUttaksplan
-                    })}
-                />
-                <UttaksplanOppsummeringsliste {...rest} />
-            </Oppsummeringsseksjon>
-        );
-    }
-}
+    return (
+        <Oppsummeringsseksjon>
+            <Feltoppsummering
+                feltnavn={getMessage(intl, 'oppsummering.dekningsgrad.label')}
+                verdi={getMessage(intl, `oppsummering.dekningsgrad.verdi${dekningsgrad}`, {
+                    antallUker: antallUkerUttaksplan
+                })}
+            />
+            <UttaksplanOppsummeringsliste {...rest} />
+        </Oppsummeringsseksjon>
+    );
+};
 
-export default injectIntl(UttaksplanOppsummering);
+export default UttaksplanOppsummering;

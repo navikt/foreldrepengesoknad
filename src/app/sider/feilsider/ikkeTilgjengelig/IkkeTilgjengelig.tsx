@@ -4,7 +4,7 @@ import Veileder from 'common/components/veileder/Veileder';
 import { Innholdstittel, Ingress } from 'nav-frontend-typografi';
 import Applikasjonsside from '../../../components/applikasjon/applikasjonsside/Applikasjonsside';
 import getMessage from 'common/util/i18nUtils';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import DocumentTitle from 'react-document-title';
 import Block from 'common/components/block/Block';
 import Lenke from 'nav-frontend-lenker';
@@ -13,7 +13,11 @@ import './ikkeTilgjengelig.less';
 
 const bem = BEMHelper('ikkeTilgjengelig');
 
-const Feilmeldingsplakat: React.StatelessComponent<InjectedIntlProps> = ({ intl }) => (
+interface Props {
+    intl: IntlShape;
+}
+
+const Feilmeldingsplakat: React.StatelessComponent<Props> = ({ intl }) => (
     <Applikasjonsside visSpråkvelger={false} margin={true}>
         <DocumentTitle title={getMessage(intl, 'dokument.tittel.ikkeTilgjengelig')} />
 

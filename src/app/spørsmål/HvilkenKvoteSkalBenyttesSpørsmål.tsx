@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { useIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { StønadskontoType } from '../types/uttaksplan/periodetyper';
 import { getStønadskontoNavn } from '../util/uttaksplan';
@@ -16,12 +16,12 @@ interface HvilkenKvoteSkalBenyttesSpørsmålProps {
     velgbareStønadskontoer: StønadskontoType[];
 }
 
-type Props = HvilkenKvoteSkalBenyttesSpørsmålProps & InjectedIntlProps;
+type Props = HvilkenKvoteSkalBenyttesSpørsmålProps;
 
-const getSpørsmålsTekst = (erOppholdsperiode: boolean, intl: InjectedIntl, navnAnnenForelder: string): string => {
+const getSpørsmålsTekst = (erOppholdsperiode: boolean, intl: IntlShape, navnAnnenForelder: string): string => {
     if (erOppholdsperiode) {
         return getMessage(intl, 'hvilkenkvoteskalbenyttes.spørsmål.annenForelder', {
-            navnAnnenForelder
+            navnAnnenForelder,
         });
     } else {
         return getMessage(intl, 'hvilkenkvoteskalbenyttes.spørsmål');
@@ -35,15 +35,16 @@ const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
         velgbareStønadskontoer,
         erOppholdsperiode,
         navnAnnenForelder,
-        intl,
-        onChange
+        onChange,
     } = props;
+
+    const intl = useIntl();
 
     const radios = velgbareStønadskontoer.map(
         (konto): RadioProps => ({
             label: getStønadskontoNavn(intl, konto, navnPåForeldre),
             value: `${konto}`,
-            name: 'hvilkenKvote'
+            name: 'hvilkenKvote',
         })
     );
 
@@ -59,4 +60,4 @@ const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(HvilkenKvoteSkalBenyttesSpørsmål);
+export default HvilkenKvoteSkalBenyttesSpørsmål;

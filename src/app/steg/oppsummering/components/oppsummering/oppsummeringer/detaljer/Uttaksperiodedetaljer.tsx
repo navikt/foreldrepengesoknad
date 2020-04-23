@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { StønadskontoType, UttaksperiodeBase } from '../../../../../../types/uttaksplan/periodetyper';
 import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 import MorsAktivitetDetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
@@ -16,13 +16,12 @@ interface UttaksperiodedetaljerProps {
     søknadsinfo: Søknadsinfo;
 }
 
-type Props = UttaksperiodedetaljerProps & InjectedIntlProps;
+type Props = UttaksperiodedetaljerProps;
 
 const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({
     periode,
     registrerteArbeidsforhold,
     periodeErNyEllerEndret,
-    intl,
     søknadsinfo
 }) => {
     const {
@@ -35,6 +34,7 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({
         arbeidsformer,
         vedlegg
     } = periode;
+    const intl = useIntl();
 
     let arbeidsformTekst = '';
     if (arbeidsformer) {
@@ -83,4 +83,4 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({
     );
 };
 
-export default injectIntl(Uttaksperiodedetaljer);
+export default Uttaksperiodedetaljer;

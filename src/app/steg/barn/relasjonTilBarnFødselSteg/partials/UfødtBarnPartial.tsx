@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { UfødtBarn } from '../../../../types/søknad/Barn';
 import MorForSykSpørsmål from '../../../../spørsmål/MorForSykSpørsmål';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
@@ -27,9 +27,10 @@ interface UfødtBarnPartialProps {
     situasjon: Søkersituasjon;
     erFarEllerMedmor: boolean;
     vis: RelasjonTilBarnUfødtVisibility;
+    intl: IntlShape;
 }
 
-type Props = UfødtBarnPartialProps & InjectedIntlProps & DispatchProps;
+type Props = UfødtBarnPartialProps & DispatchProps;
 
 class UfødtBarnPartial extends React.Component<Props> {
     render() {
@@ -45,7 +46,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                         onChange={(erForSyk: boolean) => {
                             dispatch(
                                 søknadActions.updateAnnenForelder({
-                                    erForSyk
+                                    erForSyk,
                                 })
                             );
                         }}
@@ -57,8 +58,8 @@ class UfødtBarnPartial extends React.Component<Props> {
                         messages={[
                             {
                                 type: 'feil',
-                                contentIntlKey: 'annenForelder.morIkkeSyk'
-                            }
+                                contentIntlKey: 'annenForelder.morIkkeSyk',
+                            },
                         ]}
                     />
                 )}
@@ -73,7 +74,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                             onChange={(antallBarn: number) => {
                                 dispatch(
                                     søknadActions.updateBarn({
-                                        antallBarn
+                                        antallBarn,
                                     })
                                 );
                             }}
@@ -90,7 +91,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                                     onChange={(termindato: Date) => {
                                         dispatch(
                                             søknadActions.updateBarn({
-                                                termindato
+                                                termindato,
                                             })
                                         );
                                     }}

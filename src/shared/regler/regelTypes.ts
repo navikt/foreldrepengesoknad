@@ -1,12 +1,12 @@
 import { Dictionary } from 'lodash';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 
-type FeilIntlMessage = (intl: InjectedIntl) => string;
+type FeilIntlMessage = (intl: IntlShape) => string;
 
 export enum RegelAlvorlighet {
     'FEIL' = 'feil',
     'ADVARSEL' = 'advarsel',
-    'INFO' = 'info'
+    'INFO' = 'info',
 }
 
 export interface UttaksplanRegelTestresultat {
@@ -55,7 +55,7 @@ export interface RegelAvvik {
     info: RegelAvvikInfo;
 }
 
-type avikValueFunk = (intl: InjectedIntl) => string;
+type avikValueFunk = (intl: IntlShape) => string;
 
 interface AvvikInfo {
     periodeId?: string;

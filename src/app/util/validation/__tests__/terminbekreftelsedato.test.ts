@@ -3,15 +3,15 @@ import * as getMessage from 'common/util/i18nUtils';
 import { attenUkerPluss3Number, today } from '../values';
 import { getTerminbekreftelseDatoRegler } from '../terminbekreftelsedato';
 import * as commonRules from '../common';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { DateValue } from '../../../types/common';
-const intl: Partial<InjectedIntl> = {};
+const intl: Partial<IntlShape> = {};
 
 const todaysDate = today.toDate();
 const someString = '';
 
 const callUtstedtUke22EllerSenere = (terminbekreftelseDato: DateValue, termindato: DateValue) => {
-    return getTerminbekreftelseDatoRegler(terminbekreftelseDato, termindato, intl as InjectedIntl)[2].test();
+    return getTerminbekreftelseDatoRegler(terminbekreftelseDato, termindato, intl as IntlShape)[2].test();
 };
 
 describe('Terminbekreftelsedato validation', () => {
@@ -23,7 +23,7 @@ describe('Terminbekreftelsedato validation', () => {
     });
 
     it('should call correct validators with given date and string', () => {
-        getTerminbekreftelseDatoRegler(todaysDate, moment().toDate(), intl as InjectedIntl);
+        getTerminbekreftelseDatoRegler(todaysDate, moment().toDate(), intl as IntlShape);
         expect(commonRules.hasValueRule).toHaveBeenCalledWith(todaysDate, expect.any(String));
         expect(commonRules.dateIsNotInFutureRule).toHaveBeenCalledWith(todaysDate, expect.any(String));
     });

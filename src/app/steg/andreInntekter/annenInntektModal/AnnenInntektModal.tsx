@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import * as countries from 'i18n-iso-countries';
 import {
@@ -31,9 +31,10 @@ export interface AnnenInntektModalProps {
     isOpen: boolean;
     onCancel: () => void;
     onSubmit: (annenInntekt: AnnenInntekt) => void;
+    intl: IntlShape;
 }
 
-type Props = AnnenInntektModalProps & InjectedIntlProps;
+type Props = AnnenInntektModalProps;
 
 interface State {
     annenInntekt: AnnenInntektPartial;
@@ -118,7 +119,8 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 renderFormButtons={true}
                 dialogSize="medium"
                 submitLabel={getMessage(intl, 'leggtil')}
-                cancelLabel={getMessage(intl, 'avbryt')}>
+                cancelLabel={getMessage(intl, 'avbryt')}
+            >
                 <Block>
                     <InntektstypeSpørsmål
                         inntektstype={annenInntekt.type}

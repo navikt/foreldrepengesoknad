@@ -1,7 +1,7 @@
 import * as React from 'react';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import getMessage from 'common/util/i18nUtils';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import { uttaksplanDatoavgrensninger } from 'app/util/validation/uttaksplan/uttaksplanDatoavgrensninger';
 import LenkeKnapp from 'common/components/lenkeKnapp/LenkeKnapp';
@@ -20,7 +20,7 @@ interface FarSinFørsteUttaksdagSpørsmålProps {
     navnPåForeldre?: NavnPåForeldre;
 }
 
-type Props = FarSinFørsteUttaksdagSpørsmålProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
+type Props = FarSinFørsteUttaksdagSpørsmålProps & UttaksplanSkjemaspørsmålProps;
 
 const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
     visible,
@@ -28,8 +28,8 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
     morSinSisteUttaksdag,
     eksisterendeSakAnnenPart,
     navnPåForeldre,
-    intl
 }) => {
+    const intl = useIntl();
     const harAnnenPartForeslåttperioder =
         eksisterendeSakAnnenPart &&
         eksisterendeSakAnnenPart.uttaksplan &&
@@ -60,44 +60,43 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                                 disabled={data.ønskerIkkeFlerePerioder}
                             />
                         </Block>
-                        {morSinSisteUttaksdag &&
-                            navnPåForeldre && (
-                                <>
-                                    <Block margin="xs">
-                                        <LenkeKnapp
-                                            text={
-                                                <FormattedMessage
-                                                    id="spørsmål.farSinFørsteUttaksdagSpørsmål.førsteUttaksdagEtterAnnenPart"
-                                                    values={{
-                                                        navn: navnPåForeldre.mor,
-                                                        dato: formatDate(Uttaksdagen(morSinSisteUttaksdag).neste())
-                                                    }}
-                                                />
-                                            }
-                                            onClick={() =>
-                                                onChange({
-                                                    morSinSisteUttaksdag,
-                                                    farSinFørsteUttaksdag: morSinSisteUttaksdag
-                                                        ? Uttaksdagen(morSinSisteUttaksdag).neste()
-                                                        : undefined
-                                                })
-                                            }
-                                        />
-                                    </Block>
-                                    {harAnnenPartForeslåttperioder && (
-                                        <Checkbox
-                                            label={
-                                                <FormattedMessage
-                                                    id="spørsmål.farSinFørsteUttaksdagSpørsmål.ønskerIkkeFlerePerioder.checkbox.label"
-                                                    values={{ dato: Uttaksdagen(morSinSisteUttaksdag).neste() }}
-                                                />
-                                            }
-                                            checked={data.ønskerIkkeFlerePerioder || false}
-                                            onChange={(e) => onChange({ ønskerIkkeFlerePerioder: e.target.checked })}
-                                        />
-                                    )}
-                                </>
-                            )}
+                        {morSinSisteUttaksdag && navnPåForeldre && (
+                            <>
+                                <Block margin="xs">
+                                    <LenkeKnapp
+                                        text={
+                                            <FormattedMessage
+                                                id="spørsmål.farSinFørsteUttaksdagSpørsmål.førsteUttaksdagEtterAnnenPart"
+                                                values={{
+                                                    navn: navnPåForeldre.mor,
+                                                    dato: formatDate(Uttaksdagen(morSinSisteUttaksdag).neste()),
+                                                }}
+                                            />
+                                        }
+                                        onClick={() =>
+                                            onChange({
+                                                morSinSisteUttaksdag,
+                                                farSinFørsteUttaksdag: morSinSisteUttaksdag
+                                                    ? Uttaksdagen(morSinSisteUttaksdag).neste()
+                                                    : undefined,
+                                            })
+                                        }
+                                    />
+                                </Block>
+                                {harAnnenPartForeslåttperioder && (
+                                    <Checkbox
+                                        label={
+                                            <FormattedMessage
+                                                id="spørsmål.farSinFørsteUttaksdagSpørsmål.ønskerIkkeFlerePerioder.checkbox.label"
+                                                values={{ dato: Uttaksdagen(morSinSisteUttaksdag).neste() }}
+                                            />
+                                        }
+                                        checked={data.ønskerIkkeFlerePerioder || false}
+                                        onChange={(e) => onChange({ ønskerIkkeFlerePerioder: e.target.checked })}
+                                    />
+                                )}
+                            </>
+                        )}
                     </>
                 );
             }}
@@ -105,4 +104,4 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
     );
 };
 
-export default injectIntl(FarSinFørsteUttaksdagSpørsmål);
+export default FarSinFørsteUttaksdagSpørsmål;

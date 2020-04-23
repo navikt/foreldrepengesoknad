@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Input from 'common/components/skjema/wrappers/Input';
@@ -8,7 +8,7 @@ import {
     NæringPartial,
     Næringsrelasjon,
     NæringsrelasjonPartial,
-    Næringstype
+    Næringstype,
 } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import NæringstypeSpørsmål from '../../../spørsmål/NæringstypeSpørsmål';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
@@ -38,9 +38,10 @@ export interface SelvstendigNæringsdrivendeModalProps {
     isOpen: boolean;
     onCancel: () => void;
     onSubmit: (næring: Næring) => void;
+    intl: IntlShape;
 }
 
-type Props = SelvstendigNæringsdrivendeModalProps & InjectedIntlProps;
+type Props = SelvstendigNæringsdrivendeModalProps;
 
 interface State {
     næring: NæringPartial;
@@ -59,7 +60,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         } else {
             return {
                 næring:
-                    state && state.næring && Object.keys(state.næring).length > 0 ? state.næring : props.næring || {}
+                    state && state.næring && Object.keys(state.næring).length > 0 ? state.næring : props.næring || {},
             };
         }
     }
@@ -78,8 +79,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         this.setState({
             næring: {
                 ...this.state.næring,
-                ...næringProperties
-            }
+                ...næringProperties,
+            },
         });
     }
 
@@ -117,13 +118,13 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             harRevisor,
             kanInnhenteOpplsyningerFraRevisor,
             regnskapsfører,
-            revisor
+            revisor,
         } = næring;
 
         return (
             <ModalForm
                 title={intl.formatMessage({
-                    id: 'selvstendigNæringsdrivende.modal.tittel'
+                    id: 'selvstendigNæringsdrivende.modal.tittel',
                 })}
                 onSubmit={this.onSubmit}
                 onRequestClose={onCancel}
@@ -131,7 +132,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 renderFormButtons={visibility.formButtons(næring)}
                 submitLabel={getMessage(intl, 'leggtil')}
                 cancelLabel={getMessage(intl, 'avbryt')}
-                noSummary={true}>
+                noSummary={true}
+            >
                 <Block>
                     <NæringstypeSpørsmål næringstyper={næringstyper || []} onChange={this.toggleNæringstype} />
                 </Block>
@@ -143,7 +145,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         required={true}
                         onChange={(v: string) =>
                             this.updateNæring({
-                                navnPåNæringen: v
+                                navnPåNæringen: v,
                             })
                         }
                         value={navnPåNæringen || ''}
@@ -159,16 +161,17 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         navnPåNæringen !== '' &&
                         næring.næringstyper !== undefined &&
                         næring.næringstyper.some((n) => n === Næringstype.FISKER)
-                    }>
+                    }
+                >
                     <VeilederInfo
                         messages={[
                             {
                                 contentIntlKey: 'selvstendigNæringsdrivende.modal.infoboks.forFisker',
                                 type: 'normal',
                                 values: {
-                                    navnPåNæringen
-                                }
-                            }
+                                    navnPåNæringen,
+                                },
+                            },
                         ]}
                     />
                 </Block>
@@ -196,7 +199,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.orgnr')}
                         onChange={(v: string) =>
                             this.updateNæring({
-                                organisasjonsnummer: removeSpacesFromString(v)
+                                organisasjonsnummer: removeSpacesFromString(v),
                             })
                         }
                         required={true}
@@ -215,7 +218,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(tidsperiode)}
                         datoInputLabelProps={{
                             fom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.fom', { navnPåNæringen }),
-                            tom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.tom', { navnPåNæringen })
+                            tom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.tom', { navnPåNæringen }),
                         }}
                         kalenderplassering="fullskjerm"
                     />
@@ -228,7 +231,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
                         onChange={(v: string) => {
                             const næringPartial: NæringPartial = {
-                                næringsinntekt: trimNumberFromInput(v)
+                                næringsinntekt: trimNumberFromInput(v),
                             };
                             this.updateNæring(næringPartial);
                         }}
@@ -237,7 +240,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             hasValueRule(
                                 (næringsinntekt && isNaN(næringsinntekt) === false) || '',
                                 getMessage(intl, 'påkrevd')
-                            )
+                            ),
                         ]}
                     />
                 </Block>
@@ -250,7 +253,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         }
                         onChange={(v: boolean) =>
                             this.updateNæring({
-                                harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: v
+                                harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: v,
                             })
                         }
                     />
@@ -282,7 +285,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 harRegnskapsfører={harRegnskapsfører}
                                 onChange={(v: boolean) =>
                                     this.updateNæring({
-                                        harRegnskapsfører: v
+                                        harRegnskapsfører: v,
                                     })
                                 }
                             />
@@ -291,7 +294,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         næringsrelasjon={regnskapsfører || {}}
                         onChange={(v: NæringsrelasjonPartial) =>
                             this.updateNæring({
-                                regnskapsfører: v as Næringsrelasjon
+                                regnskapsfører: v as Næringsrelasjon,
                             })
                         }
                         næringsrelasjonsType="regnskapsfører"
@@ -305,7 +308,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 harRevisor={harRevisor}
                                 onChange={(v: boolean) =>
                                     this.updateNæring({
-                                        harRevisor: v
+                                        harRevisor: v,
                                     })
                                 }
                             />
@@ -314,7 +317,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         næringsrelasjon={revisor || {}}
                         onChange={(v: NæringsrelasjonPartial) =>
                             this.updateNæring({
-                                revisor: v as Næringsrelasjon
+                                revisor: v as Næringsrelasjon,
                             })
                         }
                         næringsrelasjonsType="revisor"
@@ -326,7 +329,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         kanInnhenteOpplysningerFraRevisor={kanInnhenteOpplsyningerFraRevisor}
                         onChange={(v: boolean) =>
                             this.updateNæring({
-                                kanInnhenteOpplsyningerFraRevisor: v
+                                kanInnhenteOpplsyningerFraRevisor: v,
                             })
                         }
                     />
@@ -337,8 +340,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         messages={[
                             {
                                 type: 'normal',
-                                contentIntlKey: 'selvstendigNæringsdrivende.modal.veileder.blikontaktet'
-                            }
+                                contentIntlKey: 'selvstendigNæringsdrivende.modal.veileder.blikontaktet',
+                            },
                         ]}
                     />
                 </Block>

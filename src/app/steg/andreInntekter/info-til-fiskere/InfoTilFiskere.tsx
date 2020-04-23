@@ -2,7 +2,7 @@ import React from 'react';
 import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 import { Undertittel } from 'nav-frontend-typografi';
 import Block from 'common/components/block/Block';
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import lenker from 'app/util/routing/lenker';
 
 const InfoTilFiskere = () => {
@@ -19,7 +19,7 @@ const InfoTilFiskere = () => {
                     <FormattedMessage id="andreInntekter.infoTilFiskere.del2" />
                 </Block>
                 <Block margin="xs">
-                    <FormattedHTMLMessage
+                    <FormattedMessage
                         id="andreInntekter.infoTilFiskere.del3"
                         values={{ link: lenker.hvordanSendeInntektsmelding }}
                     />
@@ -31,10 +31,7 @@ const InfoTilFiskere = () => {
                     <FormattedMessage id="andreInntekter.infoTilFiskere.del4" />
                 </Block>
                 <Block margin="xs">
-                    <FormattedHTMLMessage
-                        id="andreInntekter.infoTilFiskere.del5"
-                        values={{ link: lenker.omLottOgHyre }}
-                    />
+                    <FormattedMessage id="andreInntekter.infoTilFiskere.del5" values={{ link: lenker.omLottOgHyre }} />
                 </Block>
                 <Undertittel>
                     <FormattedMessage id="andreInntekter.infoTilFiskere.egenBåt" />
@@ -55,10 +52,7 @@ const InfoTilFiskere = () => {
                     <FormattedMessage id="andreInntekter.infoTilFiskere.del9" />
                 </Block>
                 <Block margin="none">
-                    <FormattedHTMLMessage
-                        id="andreInntekter.infoTilFiskere.del5"
-                        values={{ link: lenker.omLottOgHyre }}
-                    />
+                    <FormattedMessage id="andreInntekter.infoTilFiskere.del5" values={{ link: lenker.omLottOgHyre }} />
                 </Block>
             </div>
         </UtvidetInformasjon>

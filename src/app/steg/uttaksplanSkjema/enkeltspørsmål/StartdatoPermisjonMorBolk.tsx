@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { useIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import { Checkbox } from 'nav-frontend-skjema';
@@ -22,22 +22,27 @@ interface OwnProps {
     familiehendelsesdato: Date;
 }
 
-type Props = OwnProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
+type Props = OwnProps & UttaksplanSkjemaspørsmålProps;
 
-const getVarighetForStartdato = (antallDager: number, barnetErFødt: boolean, intl: InjectedIntl): string | undefined =>
+const getVarighetForStartdato = (antallDager: number, barnetErFødt: boolean, intl: IntlShape): string | undefined =>
     antallDager > 0
         ? barnetErFødt
             ? getMessage(intl, 'spørsmål.startdatoPermisjon.barnetErFødt.varighet', {
-                varighet: getVarighetString(antallDager, intl)
-            })
+                  varighet: getVarighetString(antallDager, intl),
+              })
             : getMessage(intl, 'spørsmål.startdatoPermisjon.varighet', {
-                varighet: getVarighetString(antallDager, intl)
-            })
+                  varighet: getVarighetString(antallDager, intl),
+              })
         : undefined;
 
-
-const renderContent = (props: Props, data: Partial<UttaksplanSkjemadata>, onChange: (data: Partial<UttaksplanSkjemadata>) => void, formContext: ValidFormContextInterface) => {
-    const { barnetErFødt, familiehendelsesdato, intl } = props;
+const renderContent = (
+    props: Props,
+    data: Partial<UttaksplanSkjemadata>,
+    onChange: (data: Partial<UttaksplanSkjemadata>) => void,
+    formContext: ValidFormContextInterface
+) => {
+    const { barnetErFødt, familiehendelsesdato } = props;
+    const intl = useIntl();
 
     const spørsmålNår = barnetErFødt
         ? getMessage(intl, 'spørsmål.startdatoPermisjon.barnetErFødt.label')
@@ -50,7 +55,7 @@ const renderContent = (props: Props, data: Partial<UttaksplanSkjemadata>, onChan
     const sisteUttaksdagFørTermin = Uttaksdagen(familiehendelsesdato).forrige();
     const tidsperiode = getValidTidsperiode({
         fom: data.startdatoPermisjon,
-        tom: sisteUttaksdagFørTermin
+        tom: sisteUttaksdagFørTermin,
     });
     const antallDager = tidsperiode ? Tidsperioden(tidsperiode).getAntallUttaksdager() : 0;
     const antallDagerFørFødselIhtRegler = uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5;
@@ -74,10 +79,10 @@ const renderContent = (props: Props, data: Partial<UttaksplanSkjemadata>, onChan
                     disabled={data.skalIkkeHaUttakFørTermin}
                     datoAvgrensinger={{
                         ...datoAvgrensninger,
-                        minDato: undefined
+                        minDato: undefined,
                     }}
                     dayPickerProps={{
-                        initialMonth: data.startdatoPermisjon ? data.startdatoPermisjon : familiehendelsesdato
+                        initialMonth: data.startdatoPermisjon ? data.startdatoPermisjon : familiehendelsesdato,
                     }}
                     kanVelgeUgyldigDato={true}
                     validators={startdatoFørTerminValidators(
@@ -99,7 +104,7 @@ const renderContent = (props: Props, data: Partial<UttaksplanSkjemadata>, onChan
                             skalIkkeHaUttakFørTermin: e.target.checked,
                             startdatoPermisjon: e.target.checked
                                 ? undefined
-                                : getDefaultPermisjonStartdato(familiehendelsesdato)
+                                : getDefaultPermisjonStartdato(familiehendelsesdato),
                         });
                         if (formContext) {
                             formContext.validateField('permisjonStartdato');
@@ -113,9 +118,7 @@ const renderContent = (props: Props, data: Partial<UttaksplanSkjemadata>, onChan
                     antallDager={antallDager}
                     skalIkkeHaUttakFørTermin={data.skalIkkeHaUttakFørTermin === true}
                     antallDagerFørFødselIhtRegler={antallDagerFørFødselIhtRegler}
-                    førsteMuligeStartdato={
-                        datoAvgrensninger.minDato ? new Date(datoAvgrensninger.minDato) : undefined
-                    }
+                    førsteMuligeStartdato={datoAvgrensninger.minDato ? new Date(datoAvgrensninger.minDato) : undefined}
                 />
             </Block>
         </>
@@ -134,4 +137,4 @@ const StartdatoPermisjonMorBolk: React.FunctionComponent<Props> = (props) => {
     );
 };
 
-export default injectIntl(StartdatoPermisjonMorBolk);
+export default StartdatoPermisjonMorBolk;

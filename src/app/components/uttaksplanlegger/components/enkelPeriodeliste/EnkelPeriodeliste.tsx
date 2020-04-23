@@ -2,7 +2,7 @@ import React from 'react';
 import { getPeriodeForelderNavn, getOppholdskontoNavn, getForelderNavn } from 'app/util/uttaksplan';
 import { NavnPåForeldre, Forelder } from 'common/types';
 import { Periode, isAnnenPartInfoPeriode } from 'app/types/uttaksplan/periodetyper';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { formaterDatoKompakt } from 'common/util/datoUtils';
 import BEMHelper from 'common/util/bem';
 
@@ -11,9 +11,10 @@ import './enkelPeriodeliste.less';
 interface OwnProps {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 const bem = BEMHelper('enkelPeriodeliste');
 

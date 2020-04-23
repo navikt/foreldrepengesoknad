@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { Knapp } from 'nav-frontend-knapper';
 import { AppState } from '../../../../redux/reducers';
 import { DispatchProps } from 'common/redux/types';
@@ -39,6 +39,7 @@ interface OwnProps {
     onRequestClose: () => void;
     updatePeriode: (periode: Periode) => void;
     deletePeriode: (periode: Periode) => void;
+    intl: IntlShape;
 }
 
 interface StateProps {
@@ -49,7 +50,7 @@ interface State {
     visBekreftSlettDialog: boolean;
 }
 
-type Props = StateProps & OwnProps & DispatchProps & InjectedIntlProps;
+type Props = StateProps & OwnProps & DispatchProps;
 
 class EndrePeriodeFormRenderer extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -127,7 +128,8 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
                                 <Knapp
                                     onClick={onRequestClose}
                                     className={bem.element('lukkPeriode')}
-                                    htmlType="button">
+                                    htmlType="button"
+                                >
                                     <FormattedMessage id={`periodeliste.lukk`} />
                                 </Knapp>
                             </div>
@@ -146,7 +148,8 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
                     onBekreft={this.onDelete}
                     onRequestClose={this.onCancelDelete}
                     bekreftLabel={getMessage(intl, 'ja')}
-                    avbrytLabel={getMessage(intl, 'nei')}>
+                    avbrytLabel={getMessage(intl, 'nei')}
+                >
                     <FormattedMessage id="endrePeriodeForm.bekreftSlettDialog.uttak.melding" />
                 </BekreftDialog>
             </ValiderbarForm>

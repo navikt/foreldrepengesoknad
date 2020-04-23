@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../../../types/søknad/Søker';
 import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
@@ -10,9 +10,10 @@ interface SelvstendigNæringsdrivendeOppsummeringProps {
     søker: Søker;
 }
 
-type Props = SelvstendigNæringsdrivendeOppsummeringProps & InjectedIntlProps;
+type Props = SelvstendigNæringsdrivendeOppsummeringProps;
 
-const SelvstendigNæringsdrivendeOppsummering = ({ søker, intl }: Props) => {
+const SelvstendigNæringsdrivendeOppsummering = ({ søker }: Props) => {
+    const intl = useIntl();
     const { selvstendigNæringsdrivendeInformasjon, harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd } = søker;
 
     if (selvstendigNæringsdrivendeInformasjon && harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) {
@@ -33,4 +34,4 @@ const SelvstendigNæringsdrivendeOppsummering = ({ søker, intl }: Props) => {
     );
 };
 
-export default injectIntl(SelvstendigNæringsdrivendeOppsummering);
+export default SelvstendigNæringsdrivendeOppsummering;

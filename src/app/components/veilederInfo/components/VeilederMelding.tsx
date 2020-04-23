@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { VeilederMessage } from '../types';
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import BEMHelper from 'common/util/bem';
 import AlertStripe, { AlertStripeType } from 'nav-frontend-alertstriper';
 import { Element } from 'nav-frontend-typografi';
@@ -51,7 +51,7 @@ const VeilederMelding: React.SFC<VeilederpanelInnholdContentProps> = ({
     skjulMeldingIkon = false
 }) => {
     const bem = BEMHelper('veilederMelding');
-    const FormatComponent = message.formatContentAsHTML === true ? FormattedHTMLMessage : FormattedMessage;
+    const FormatComponent = message.formatContentAsHTML === true ? FormattedMessage : FormattedMessage;
     return (
         <div className={bem.classNames(bem.block, bem.modifier(stil))}>
             {message.type !== 'normal' ? (

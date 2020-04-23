@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import Oppsummeringsliste, {
     OppsummeringslisteelementProps
 } from 'app/steg/oppsummering/components/oppsummeringsliste/Oppsummeringsliste';
@@ -44,9 +44,10 @@ interface UttaksplanOppsummeringslisteProps {
     begrunnelseForSenEndringVedlegg?: Attachment[];
     søknadsinfo: Søknadsinfo;
     eksisterendeUttaksplan?: Periode[];
+    intl: IntlShape;
 }
 
-type Props = UttaksplanOppsummeringslisteProps & InjectedIntlProps;
+type Props = UttaksplanOppsummeringslisteProps;
 
 class UttaksplanOppsummeringsliste extends React.Component<Props> {
     constructor(props: Props) {

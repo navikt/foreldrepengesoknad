@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { onToggleItemProp } from '../../../../elementer/toggleList/ToggleList';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { AvslåttPeriode } from '../../../../../types/uttaksplan/periodetyper';
 import { Tidsperiode, NavnPåForeldre } from 'common/types';
@@ -21,9 +21,10 @@ export interface Props {
     navnPåForeldre: NavnPåForeldre;
     onReplaceHullWithPeriode?: (tidsperiode: Tidsperiode) => void;
     onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
+    intl: IntlShape;
 }
 
-const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props> = ({
     itemId,
     isExpanded,
     onToggle,
@@ -31,7 +32,7 @@ const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntl
     onReplaceHullWithPeriode,
     onReplaceHullWithOpphold,
     navnPåForeldre,
-    intl
+    intl,
 }) => {
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
     const knapper: React.ReactNode[] = [];
@@ -53,12 +54,12 @@ const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props & InjectedIntl
     }
 
     const tittel = getMessage(intl, 'periodeliste.ikkeInnvilgetPeriode.tittel', {
-        type: getMessage(intl, `periodetype.${periode.avslåttPeriodeType}`)
+        type: getMessage(intl, `periodetype.${periode.avslåttPeriodeType}`),
     });
 
     const beskrivelse = getMessage(intl, 'periodeliste.ikkeInnvilgetPeriode.beskrivelse', {
         varighet: getVarighetString(antallDager, intl),
-        konto: getStønadskontoNavn(intl, periode.stønadskonto, navnPåForeldre)
+        konto: getStønadskontoNavn(intl, periode.stønadskonto, navnPåForeldre),
     });
 
     return (

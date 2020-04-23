@@ -1,7 +1,7 @@
 import * as React from 'react';
 import FlervalgSpørsmål from 'common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import { NavnPåForeldre, Forelder } from 'common/types';
-import { injectIntl, InjectedIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
 interface HvemSkalTaForeldrepengerSpørsmålProps {
@@ -9,7 +9,6 @@ interface HvemSkalTaForeldrepengerSpørsmålProps {
     valgtForelder: Forelder | undefined;
     søkerErFarEllerMedmor: boolean;
     onChange: (forelder: Forelder) => void;
-    intl: InjectedIntl;
 }
 
 const HvemSkalTaForeldrepengerSpørsmål: React.StatelessComponent<HvemSkalTaForeldrepengerSpørsmålProps> = ({
@@ -17,8 +16,9 @@ const HvemSkalTaForeldrepengerSpørsmål: React.StatelessComponent<HvemSkalTaFor
     valgtForelder,
     onChange,
     søkerErFarEllerMedmor,
-    intl
 }) => {
+    const intl = useIntl();
+
     return (
         <FlervalgSpørsmål
             navn="periodenGjelder"
@@ -29,15 +29,15 @@ const HvemSkalTaForeldrepengerSpørsmål: React.StatelessComponent<HvemSkalTaFor
             alternativer={[
                 {
                     label: søkerErFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor,
-                    value: søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor
+                    value: søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
                 },
                 {
                     label: søkerErFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor,
-                    value: søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor
-                }
+                    value: søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor,
+                },
             ]}
         />
     );
 };
 
-export default injectIntl(HvemSkalTaForeldrepengerSpørsmål);
+export default HvemSkalTaForeldrepengerSpørsmål;

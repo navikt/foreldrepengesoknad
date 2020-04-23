@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { selectUttaksplanAvvik } from './uttaksplanValideringSelector';
 import { intlHasKey } from 'common/util/intlUtils';
 import groupBy from 'lodash.groupby';
@@ -21,7 +21,7 @@ const getMessageTypeFromAvvik = (avvik: RegelAvvik): VeilederMessageType => {
     }
 };
 
-export const mapAvvikTilMessage = (avvik: RegelAvvik, intl: InjectedIntl): VeilederMessage => {
+export const mapAvvikTilMessage = (avvik: RegelAvvik, intl: IntlShape): VeilederMessage => {
     const { info } = avvik;
     const tittelIntlKey = `${info.intlKey}.tittel`;
     const harTittel = intlHasKey(intl, tittelIntlKey);
@@ -36,12 +36,12 @@ export const mapAvvikTilMessage = (avvik: RegelAvvik, intl: InjectedIntl): Veile
         avvikType: avvik.regel.avvikType as UttaksplanAvvikType
     };
 };
-export const selectUttaksplanVeilederinfo = (intl: InjectedIntl, grupperAvvik: boolean) =>
+export const selectUttaksplanVeilederinfo = (intl: IntlShape, grupperAvvik: boolean) =>
     createSelector([selectUttaksplanAvvik], (avvik) => {
         return trimRelaterteRegelAvvik(avvik, grupperAvvik).map((a) => mapAvvikTilMessage(a, intl));
     });
 
-export const selectPeriodelisteMeldinger = (intl: InjectedIntl, grupperAvvik: boolean) =>
+export const selectPeriodelisteMeldinger = (intl: IntlShape, grupperAvvik: boolean) =>
     createSelector([selectUttaksplanVeilederinfo(intl, grupperAvvik)], (veilederinfo): VeiledermeldingerPerPeriode => {
         const meldinger = veilederinfo.filter((info) => info.periodeId !== undefined);
         return groupBy(meldinger, (info) => info.periodeId);

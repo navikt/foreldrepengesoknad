@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl, FormattedHTMLMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 import EksternUrl from 'common/components/infoboks/EksternUrl';
@@ -13,16 +13,17 @@ interface HarDuJobbetSomFrilansSiste10MndSpørsmålProps {
     validators?: Validator[];
 }
 
-type Props = HarDuJobbetSomFrilansSiste10MndSpørsmålProps & InjectedIntlProps;
+type Props = HarDuJobbetSomFrilansSiste10MndSpørsmålProps;
 
 const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
-    const { onChange, harJobbetSomFrilansSiste10Mnd, planInneholderFrilansaktivitet, intl } = props;
+    const { onChange, harJobbetSomFrilansSiste10Mnd, planInneholderFrilansaktivitet } = props;
+    const intl = useIntl();
 
     const validerFrilans = [
         {
             test: () => (planInneholderFrilansaktivitet ? harJobbetSomFrilansSiste10Mnd === true : true),
-            failText: getMessage(intl, 'valideringsfeil.frilans.måBesvares')
-        }
+            failText: getMessage(intl, 'valideringsfeil.frilans.måBesvares'),
+        },
     ];
 
     return (
@@ -34,7 +35,7 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
             clsName="frilanseSiste10mnd"
             hjelpetekst={
                 <>
-                    <FormattedHTMLMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst" />
+                    <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst" />
                     <EksternUrl url={lenker.frilanserInfoBoks} lenkeTekst={getMessage(intl, 'hjemmeside')} />
                 </>
             }
@@ -43,4 +44,4 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(HarDuJobbetSomFrilansSiste10MndSpørsmål);
+export default HarDuJobbetSomFrilansSiste10MndSpørsmål;

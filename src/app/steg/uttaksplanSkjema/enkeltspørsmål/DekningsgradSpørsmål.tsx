@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { useIntl, IntlShape } from 'react-intl';
 import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
 import { Dekningsgrad } from 'common/types';
@@ -25,9 +25,9 @@ interface OwnProps {
     visible?: boolean;
 }
 
-type Props = OwnProps & StateProps & InjectedIntlProps & DispatchProps;
+type Props = OwnProps & StateProps & DispatchProps;
 
-const getInfoboxText = (intl: InjectedIntl, erAleneOmOmsorg: boolean): string | undefined => {
+const getInfoboxText = (intl: IntlShape, erAleneOmOmsorg: boolean): string | undefined => {
     return erAleneOmOmsorg
         ? getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg')
         : getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst');
@@ -65,12 +65,12 @@ const DekningsgradSpørsmål = (props: Props) => {
     const {
         visible = true,
         dispatch,
-        intl,
         dekningsgrad100AntallUker,
         dekningsgrad80AntallUker,
         harAnnenForelderSøktFP,
-        søknadsinfo
+        søknadsinfo,
     } = props;
+    const intl = useIntl();
 
     const { dekningsgrad, situasjon, erEndringssøknad, erDeltUttak } = søknadsinfo.søknaden;
     const { erFarEllerMedmor, erAleneOmOmsorg } = søknadsinfo.søker;
@@ -96,8 +96,8 @@ const DekningsgradSpørsmål = (props: Props) => {
             labelKey = !erDeltUttak
                 ? 'spørsmål.dekningsgrad.label.ikkeDeltUttak'
                 : erFarEllerMedmor
-                    ? 'spørsmål.dekningsgrad.label.deltUttak'
-                    : 'spørsmål.dekningsgrad.label.deltUttakMor';
+                ? 'spørsmål.dekningsgrad.label.deltUttak'
+                : 'spørsmål.dekningsgrad.label.deltUttakMor';
         }
     }
 
@@ -114,19 +114,19 @@ const DekningsgradSpørsmål = (props: Props) => {
                                 antallUker:
                                     dekningsgrad100AntallUker !== undefined
                                         ? Math.floor(dekningsgrad100AntallUker)
-                                        : undefined
+                                        : undefined,
                             }),
-                            value: Dekningsgrad.HUNDRE_PROSENT
+                            value: Dekningsgrad.HUNDRE_PROSENT,
                         },
                         {
                             label: getMessage(intl, 'spørsmål.dekningsgrad.80', {
                                 antallUker:
                                     dekningsgrad80AntallUker !== undefined
                                         ? Math.floor(dekningsgrad80AntallUker)
-                                        : undefined
+                                        : undefined,
                             }),
-                            value: Dekningsgrad.ÅTTI_PROSENT
-                        }
+                            value: Dekningsgrad.ÅTTI_PROSENT,
+                        },
                     ]}
                     name="dekningsgrad"
                     infoboksTekst={erEndringssøknad ? undefined : getInfoboxText(intl, erAleneOmOmsorg)}
@@ -142,15 +142,16 @@ const DekningsgradSpørsmål = (props: Props) => {
                     harRett,
                     harAnnenForelderSøktFP,
                     dekningsgrad
-                )}>
+                )}
+            >
                 <VeilederInfo
                     messages={[
                         {
                             type: 'normal',
                             contentIntlKey: !erDeltUttak
                                 ? 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg'
-                                : 'spørsmål.dekningsgrad.hjelpetekst'
-                        }
+                                : 'spørsmål.dekningsgrad.hjelpetekst',
+                        },
                     ]}
                 />
             </Block>
@@ -163,7 +164,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
     dekningsgrad80AntallUker: getAntallUker(state.api.stønadskontoer80),
     harAnnenForelderSøktFP: state.søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP,
     søknadsinfo: selectSøknadsinfo(state)!,
-    startdatoPermisjon: state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon
+    startdatoPermisjon: state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon,
 });
 
-export default connect(mapStateToProps)(injectIntl(DekningsgradSpørsmål));
+export default connect(mapStateToProps)(DekningsgradSpørsmål);

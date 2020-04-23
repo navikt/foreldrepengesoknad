@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
 
 import Steg, { StegProps } from 'app/components/applikasjon/steg/Steg';
@@ -28,7 +28,7 @@ import { HistoryProps } from '../../../types/common';
 import cleanupRelasjonTilBarnFødselSteg from '../../../util/cleanup/relasjonTilBarn/cleanupRelasjonTilBarnFødselSteg';
 import {
     getRelasjonTilBarnFødselVisibility,
-    RelasjonTilBarnFødselStegVisibility
+    RelasjonTilBarnFødselStegVisibility,
 } from './visibility/relasjonTilBarnFødselVisibility';
 import { SøknadenGjelderBarnValg, Søkersituasjon, Skjemanummer, SøkerRolle } from '../../../types/søknad/Søknad';
 import FødtBarnPartial from './partials/FødtBarnPartial';
@@ -59,7 +59,11 @@ interface RelasjonTilBarnFødselStegProps {
     situasjon: Søkersituasjon;
 }
 
-type Props = RelasjonTilBarnFødselStegProps & InjectedIntlProps & DispatchProps & SøkerinfoProps & HistoryProps;
+interface OwnProps {
+    intl: IntlShape;
+}
+
+type Props = RelasjonTilBarnFødselStegProps & DispatchProps & SøkerinfoProps & HistoryProps & OwnProps;
 
 class RelasjonTilBarnFødselSteg extends React.Component<Props> {
     constructor(props: Props) {
@@ -95,7 +99,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
             vis,
             dispatch,
             situasjon,
-            intl
+            intl,
         } = this.props;
 
         const { gjelderAnnetBarn, valgteBarn } = søknadenGjelderBarnValg;
@@ -119,7 +123,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                             onChange={(erBarnetFødt: boolean) =>
                                 dispatch(
                                     søknadActions.updateBarn({
-                                        erBarnetFødt
+                                        erBarnetFødt,
                                     })
                                 )
                             }
@@ -145,7 +149,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                         <Lenke href={lenker.papirsøknad}>
                                             <FormattedMessage id="papirsøknad.lenke" />
                                         </Lenke>
-                                    )
+                                    ),
                                 }}
                             />
                         </Veilederpanel>
@@ -188,8 +192,8 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                         {
                                             contentIntlKey: 'barnFødt.infoPrematuruker',
                                             type: 'info',
-                                            formatContentAsHTML: true
-                                        }
+                                            formatContentAsHTML: true,
+                                        },
                                     ]}
                                 />
                             </Block>
@@ -230,7 +234,7 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
         barn,
         søker,
         annenForelder,
-        ekstrainfo: { søknadenGjelderBarnValg }
+        ekstrainfo: { søknadenGjelderBarnValg },
     } = state.søknad;
 
     const stegProps: StegProps = {
@@ -238,7 +242,7 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
         history: props.history,
         renderFortsettKnapp: barnErGyldig(state.søknad, props.søkerinfo),
         renderFormTag: true,
-        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FØDSEL, state.søknad, props.søkerinfo)
+        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FØDSEL, state.søknad, props.søkerinfo),
     };
 
     const vis = getRelasjonTilBarnFødselVisibility(state.søknad, state.api);
@@ -254,7 +258,7 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
         terminbekreftelse: isUfødtBarn(barn, state.søknad.situasjon) ? barn.terminbekreftelse : [],
         stegProps,
         vis,
-        situasjon: state.søknad.situasjon
+        situasjon: state.søknad.situasjon,
     };
 };
 

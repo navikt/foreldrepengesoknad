@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedHTMLMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Input from 'common/components/skjema/wrappers/Input';
 import Block from 'common/components/block/Block';
@@ -23,9 +23,10 @@ interface OwnProps {
     visibility: UttakSpørsmålVisibility;
     visAntallDagerUttak: boolean;
     arbeidsforhold?: Arbeidsforhold[];
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 class GradertUttakForm extends React.Component<Props> {
     handleStillingsprosentChange(stillingsprosent: string) {
@@ -59,7 +60,7 @@ class GradertUttakForm extends React.Component<Props> {
                         onChange={(ønskerGradering) =>
                             onChange({ gradert: ønskerGradering, erArbeidstaker: ønskerGradering ? false : undefined })
                         }
-                        hjelpetekst={<FormattedHTMLMessage id="uttaksperiode.gradert.skalDuHarGradering.hjelpetekst" />}
+                        hjelpetekst={<FormattedMessage id="uttaksperiode.gradert.skalDuHarGradering.hjelpetekst" />}
                         clsName="onskerDuGradertuttak"
                     />
                 </Block>

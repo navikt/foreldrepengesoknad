@@ -3,7 +3,7 @@ import { UttaksplanRegelgrunnlag } from '../types';
 import { isUtsettelsesperiode, UtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from 'app/util/uttaksplan/Perioden';
 import uttaksConstants from 'app/constants';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { getVarighetString } from 'common/util/intlUtils';
 
 export const inneholderForMyeFerie: RegelTest = (grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat => {
@@ -20,7 +20,7 @@ export const inneholderForMyeFerie: RegelTest = (grunnlag: UttaksplanRegelgrunnl
         info: ferieUtsettelser.map((periode) => ({
             periodeId: periode.id,
             values: {
-                ukerOgDager: (intl: InjectedIntl) => getVarighetString(ferieDager, intl)
+                ukerOgDager: (intl: IntlShape) => getVarighetString(ferieDager, intl)
             }
         }))
     };

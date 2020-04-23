@@ -1,7 +1,7 @@
 import * as React from 'react';
 import moment from 'moment';
 import Block from 'common/components/block/Block';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { getVarighetString } from 'common/util/intlUtils';
 import getMessage from 'common/util/i18nUtils';
 import { formaterDato } from 'common/util/datoUtils';
@@ -20,7 +20,7 @@ export interface OwnProps {
     visKunFeil?: boolean;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 export const getÅrsakDersomUgyldigStartdato = (
     startdato: Date | undefined,
@@ -44,14 +44,14 @@ const VeilederStartdatoPermisjon: React.StatelessComponent<Props> = ({
     skalIkkeHaUttakFørTermin,
     førsteMuligeStartdato,
     visKunFeil,
-    intl
 }) => {
+    const intl = useIntl();
     const ugyldigDatoÅrsak = startdato && getÅrsakDersomUgyldigStartdato(startdato, førsteMuligeStartdato);
     const getMsg = () => {
         if (ugyldigDatoÅrsak && førsteMuligeStartdato) {
             return ugyldigDatoÅrsak === 'fortidlig'
                 ? getMessage(intl, 'uttaksplan.startdato.veileder.forTidligStartdato', {
-                      dato: formaterDato(førsteMuligeStartdato)
+                      dato: formaterDato(førsteMuligeStartdato),
                   })
                 : getMessage(intl, 'uttaksplan.startdato.veileder.helgedag');
         }
@@ -65,7 +65,7 @@ const VeilederStartdatoPermisjon: React.StatelessComponent<Props> = ({
                 <FormattedMessage
                     id="uttaksplan.informasjon.foreldrepengerFørFødselMindreEnnTreUker"
                     values={{
-                        varighet: getVarighetString(antallDagerFørFødselIhtRegler - antallDager, intl)
+                        varighet: getVarighetString(antallDagerFørFødselIhtRegler - antallDager, intl),
                     }}
                 />
             );
@@ -74,7 +74,7 @@ const VeilederStartdatoPermisjon: React.StatelessComponent<Props> = ({
                 <FormattedMessage
                     id="uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker"
                     values={{
-                        varighet: getVarighetString(antallDager - antallDagerFørFødselIhtRegler, intl)
+                        varighet: getVarighetString(antallDager - antallDagerFørFødselIhtRegler, intl),
                     }}
                 />
             );
@@ -92,4 +92,4 @@ const VeilederStartdatoPermisjon: React.StatelessComponent<Props> = ({
     );
 };
 
-export default injectIntl(VeilederStartdatoPermisjon);
+export default VeilederStartdatoPermisjon;

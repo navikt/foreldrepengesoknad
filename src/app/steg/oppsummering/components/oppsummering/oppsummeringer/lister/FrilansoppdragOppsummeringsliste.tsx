@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../../../../../../util/dates/dates';
 import Oppsummeringsliste from 'app/steg/oppsummering/components/oppsummeringsliste/Oppsummeringsliste';
@@ -9,9 +9,11 @@ interface FrilansoppdragOppsummeringslisteProps {
     frilansoppdrag: FrilansOppdrag[];
 }
 
-type Props = FrilansoppdragOppsummeringslisteProps & InjectedIntlProps;
+type Props = FrilansoppdragOppsummeringslisteProps;
 
-const FrilansoppdragOppsummeringsliste: React.StatelessComponent<Props> = ({ frilansoppdrag, intl }: Props) => {
+const FrilansoppdragOppsummeringsliste: React.StatelessComponent<Props> = ({ frilansoppdrag }) => {
+    const intl = useIntl();
+
     return (
         <Oppsummeringsliste
             data={frilansoppdrag.map(({ navnPåArbeidsgiver, tidsperiode, pågående }) => ({
@@ -24,4 +26,4 @@ const FrilansoppdragOppsummeringsliste: React.StatelessComponent<Props> = ({ fri
         />
     );
 };
-export default injectIntl(FrilansoppdragOppsummeringsliste);
+export default FrilansoppdragOppsummeringsliste;

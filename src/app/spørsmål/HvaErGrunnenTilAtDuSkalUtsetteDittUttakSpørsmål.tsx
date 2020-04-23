@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { Utsettelsesvariant } from '../components/uttaksplanlegger/components/utsettelseForm/UtsettelseForm';
 import ValiderbarRadioPanelGruppeResponsive from 'common/lib/validation/elements/ValiderbarRadioPanelGruppeResponsive';
@@ -14,10 +14,11 @@ interface HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmålProps {
     infotekst?: string;
 }
 
-type Props = HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmålProps & InjectedIntlProps;
+type Props = HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmålProps;
 
 const HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål = (props: Props) => {
-    const { onChange, variant, radios, validatorer, infotekst, intl } = props;
+    const { onChange, variant, radios, validatorer, infotekst } = props;
+    const intl = useIntl();
 
     return (
         <ValiderbarRadioPanelGruppeResponsive
@@ -33,4 +34,4 @@ const HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål);
+export default HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål;

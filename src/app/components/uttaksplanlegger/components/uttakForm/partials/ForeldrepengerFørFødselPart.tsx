@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { Checkbox } from 'nav-frontend-skjema';
 import getMessage from 'common/util/i18nUtils';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 
 export interface OwnProps {
     skalIkkeHaUttakFørTermin: boolean;
     onChange: (skalIkkeHaUttakFørTermin: boolean) => void;
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 class ForeldrepengerFørFødselUttakForm extends React.Component<Props, {}> {
     render() {

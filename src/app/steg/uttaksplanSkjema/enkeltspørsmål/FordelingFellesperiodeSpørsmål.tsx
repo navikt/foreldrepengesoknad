@@ -1,6 +1,6 @@
 import * as React from 'react';
 import RangeInput from 'common/components/skjema/elements/range-input/RangeInput';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { Ingress, Normaltekst } from 'nav-frontend-typografi';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import { NavnPåForeldre } from 'common/types';
@@ -17,22 +17,20 @@ export interface OwnProps {
     antallUkerMødreKvote: number;
 }
 
-const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
-    OwnProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps
-> = ({
+const FordelingFellesperiodeSpørsmål: React.StatelessComponent<OwnProps & UttaksplanSkjemaspørsmålProps> = ({
     visible,
     annenForelderErFarEllerMedmor,
     navnPåForeldre,
     ukerFellesperiode,
     antallUkerFedreKvote,
     antallUkerMødreKvote,
-    intl
 }) => {
+    const intl = useIntl();
     const infotekst = getMessage(intl, 'uttaksplan.skjema.fordeling.veiledning', {
         pakrevdForelder1: antallUkerMødreKvote,
         pakrevdForelder2: antallUkerFedreKvote,
         navnForelder1: navnPåForeldre.mor,
-        navnForelder2: navnPåForeldre.farMedmor
+        navnForelder2: navnPåForeldre.farMedmor,
     });
     const annenForeldersNavn = annenForelderErFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
     return (
@@ -56,7 +54,7 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
                     onChange={(fellesperiodeukerMor) => onChange({ fellesperiodeukerMor })}
                     steppers={{
                         reduceLabel: intl.formatMessage({ id: 'uttaksplan.skjema.fordeling.reduser.tooltip' }),
-                        increaseLabel: intl.formatMessage({ id: 'uttaksplan.skjema.fordeling.øk.tooltip' })
+                        increaseLabel: intl.formatMessage({ id: 'uttaksplan.skjema.fordeling.øk.tooltip' }),
                     }}
                     ariaValueChangedMessage={(value) =>
                         intl.formatMessage(
@@ -64,7 +62,7 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
                             {
                                 ukerForelder: value,
                                 ukerTotalt: ukerFellesperiode,
-                                navnForelder: navnPåForeldre.mor || intl.formatMessage({ id: 'uttaksplan.mor' })
+                                navnForelder: navnPåForeldre.mor || intl.formatMessage({ id: 'uttaksplan.mor' }),
                             }
                         )
                     }
@@ -75,7 +73,7 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
                                 values={{
                                     ukerForelder: options.value,
                                     ukerTotalt: options.max,
-                                    navnForelder: navnPåForeldre.mor || intl.formatMessage({ id: 'uttaksplan.mor' })
+                                    navnForelder: navnPåForeldre.mor || intl.formatMessage({ id: 'uttaksplan.mor' }),
                                 }}
                             />
                         </Ingress>
@@ -95,4 +93,4 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
     );
 };
 
-export default injectIntl(FordelingFellesperiodeSpørsmål);
+export default FordelingFellesperiodeSpørsmål;

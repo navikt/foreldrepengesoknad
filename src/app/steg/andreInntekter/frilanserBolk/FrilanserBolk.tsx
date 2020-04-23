@@ -7,7 +7,7 @@ import Søker, { SøkerPartial } from '../../../types/søknad/Søker';
 import JobberDuFremdelesSomFrilansSpørsmål from '../../../spørsmål/JobberDuFremdelesSomFrilansSpørsmål';
 import { FrilansInformasjonPartial, FrilansOppdrag } from '../../../types/søknad/FrilansInformasjon';
 import FrilansOppdragBolk from '../frilansOppdragBolk/FrilansOppdragBolk';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import visibility from './visibility';
@@ -22,9 +22,10 @@ interface FrilanserBolkProps {
     onChangeSøker: (v: SøkerPartial) => void;
     onChangeFrilansinformasjon: (v: FrilansInformasjonPartial) => void;
     planInneholderFrilansaktivitet: boolean;
+    intl: IntlShape;
 }
 
-type Props = FrilanserBolkProps & InjectedIntlProps;
+type Props = FrilanserBolkProps;
 
 class FrilanserBolk extends React.Component<Props> {
     constructor(props: Props) {

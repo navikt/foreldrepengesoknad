@@ -1,5 +1,5 @@
 import React from 'react';
-import { injectIntl, InjectedIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Element } from 'nav-frontend-typografi';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 
@@ -14,7 +14,6 @@ import './oppgiPersonalia.less';
 const bem = BEMHelper('oppgiPersonalia');
 
 interface Props {
-    intl: InjectedIntl;
     fornavn: string;
     kanIkkeOppgis: boolean;
     erUtenlandskFnr: boolean;
@@ -29,9 +28,10 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
     kanIkkeOppgis,
     visibility,
     gjelderAdopsjon,
-    søkersFødselsnummer,
-    intl
+    søkersFødselsnummer
 }) => {
+    const intl = useIntl();
+
     return (
         <div className={bem.block}>
             <Block margin="xxs">
@@ -88,4 +88,4 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
     );
 };
 
-export default injectIntl(OppgiPersonalia);
+export default OppgiPersonalia;

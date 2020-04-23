@@ -9,9 +9,9 @@ import {
     isOverskrivbarPeriode,
     PeriodeInfoType,
     UtsettelseÅrsakType,
-    isUtsettelsesperiode
+    isUtsettelsesperiode,
 } from '../../types/uttaksplan/periodetyper';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { findOldestDate } from '../dates/dates';
 import { Barn, isFødtBarn, isUfødtBarn, isAdopsjonsbarn, isForeldreansvarsbarn } from '../../types/søknad/Barn';
@@ -48,7 +48,7 @@ export const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåFore
 
 export const getNavnFromObject = ({
     fornavn,
-    etternavn
+    etternavn,
 }: {
     fornavn?: string;
     etternavn?: string;
@@ -57,7 +57,7 @@ export const getNavnFromObject = ({
         return {
             fornavn,
             etternavn,
-            navn: formaterNavn(fornavn, etternavn)
+            navn: formaterNavn(fornavn, etternavn),
         };
     }
     return undefined;
@@ -76,7 +76,7 @@ export const getPeriodeForelderNavn = (periode: Periode, navnPåForeldre: NavnP�
     return 'Ingen forelder registrert';
 };
 
-export const getStønadskontoNavn = (intl: InjectedIntl, konto: StønadskontoType, navnPåForeldre: NavnPåForeldre) => {
+export const getStønadskontoNavn = (intl: IntlShape, konto: StønadskontoType, navnPåForeldre: NavnPåForeldre) => {
     let navn;
     switch (konto) {
         case StønadskontoType.Mødrekvote:
@@ -98,7 +98,7 @@ export const getStønadskontoNavn = (intl: InjectedIntl, konto: StønadskontoTyp
 };
 
 export const getOppholdskontoNavn = (
-    intl: InjectedIntl,
+    intl: IntlShape,
     årsak: OppholdÅrsakType,
     foreldernavn: string,
     erMor: boolean
@@ -109,7 +109,7 @@ export const getOppholdskontoNavn = (
 };
 
 export const getUtsettelseTekst = (
-    intl: InjectedIntl,
+    intl: IntlShape,
     årsak: UtsettelseÅrsakType,
     foreldernavn: string,
     erMor: boolean
@@ -151,7 +151,7 @@ export const getUttaksprosentFromStillingsprosent = (
     return undefined;
 };
 
-export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
+export const getPeriodeTittel = (intl: IntlShape, periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
     switch (periode.type) {
         case Periodetype.Uttak:
             const tittel = getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
@@ -163,7 +163,7 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
                     stillingsprosent: getUttaksprosentFromStillingsprosent(
                         prettifyProsent(periode.stillingsprosent),
                         periode.samtidigUttakProsent ? prettifyProsent(periode.samtidigUttakProsent) : undefined
-                    )
+                    ),
                 })}`;
             }
 
@@ -174,7 +174,7 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
         case Periodetype.Utsettelse:
             if (periode.årsak) {
                 return getMessage(intl, `periodeliste.utsettelsesårsak`, {
-                    årsak: getMessage(intl, `utsettelsesårsak.${periode.årsak}`)
+                    årsak: getMessage(intl, `utsettelsesårsak.${periode.årsak}`),
                 });
             }
             return getMessage(intl, `periodeliste.utsettelsesårsak.ukjent`);
@@ -193,7 +193,7 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
                     return getStønadskontoNavn(intl, getStønadskontoFromOppholdsårsak(periode.årsak), navnPåForeldre);
                 case PeriodeInfoType.utsettelseAnnenPart:
                     return getMessage(intl, `periodetype.info.utsettelse.${periode.årsak}`, {
-                        navn: getForelderNavn(periode.forelder, navnPåForeldre)
+                        navn: getForelderNavn(periode.forelder, navnPåForeldre),
                     });
                 default:
                     return getMessage(intl, `periodetype.info.${periode.infotype}`);

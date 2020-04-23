@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 
 import { StegID } from '../../../util/routing/stegConfig';
 import Steg from 'app/components/applikasjon/steg/Steg';
@@ -35,7 +35,11 @@ export interface StateProps {
     stegProps: StegProps;
 }
 
-export type Props = SøkerinfoProps & StateProps & DispatchProps & InjectedIntlProps & HistoryProps;
+interface OwnProps {
+    intl: IntlShape;
+}
+
+export type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps & OwnProps;
 
 class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
     constructor(props: Props) {

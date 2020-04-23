@@ -1,20 +1,20 @@
 import lenker from 'app/util/routing/lenker';
 import { Søknadsinfo } from '../../../selectors/types';
 import { getNavnGenitivEierform } from '../../tekstUtils';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { VeilederMessage } from 'app/components/veilederInfo/types';
 
 export const getVeilederInfoText = (
     søknadsinfo: Søknadsinfo,
     aktivitetsfriKvote: number,
-    intl: InjectedIntl
+    intl: IntlShape
 ): VeilederMessage => {
     const { søknaden, annenForelder, søker, navn } = søknadsinfo;
 
     if (søknaden.erEndringssøknad) {
         return {
             type: 'normal',
-            contentIntlKey: 'uttaksplan.informasjon.endringssøknad'
+            contentIntlKey: 'uttaksplan.informasjon.endringssøknad',
         };
     } else {
         if (søker.erFarEllerMedmor) {
@@ -25,13 +25,13 @@ export const getVeilederInfoText = (
             ) {
                 return {
                     type: 'normal',
-                    contentIntlKey: 'uttaksplan.informasjon.farMedmor.aleneOmsorg'
+                    contentIntlKey: 'uttaksplan.informasjon.farMedmor.aleneOmsorg',
                 };
             } else if (annenForelder.erUfør) {
                 return {
                     type: 'normal',
                     contentIntlKey: 'uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør',
-                    values: { aktivitetsfriKvote }
+                    values: { aktivitetsfriKvote },
                 };
             } else {
                 return {
@@ -40,21 +40,21 @@ export const getVeilederInfoText = (
                     formatContentAsHTML: true,
                     values: {
                         navnAnnenForelder: getNavnGenitivEierform(navn.annenForelder.fornavn, intl.locale),
-                        link: lenker.viktigeFrister
-                    }
+                        link: lenker.viktigeFrister,
+                    },
                 };
             }
         } else {
             if (annenForelder.kanIkkeOppgis || !annenForelder.harRett || søker.erAleneOmOmsorg) {
                 return {
                     type: 'normal',
-                    contentIntlKey: 'uttaksplan.informasjon.mor.aleneOmsorg'
+                    contentIntlKey: 'uttaksplan.informasjon.mor.aleneOmsorg',
                 };
             } else {
                 return {
                     type: 'normal',
                     contentIntlKey: 'uttaksplan.informasjon.mor.deltOmsorg',
-                    values: { navnAnnenForelder: navn.annenForelder.fornavn }
+                    values: { navnAnnenForelder: navn.annenForelder.fornavn },
                 };
             }
         }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import Block from 'common/components/block/Block';
 import { RegistrertBarn } from '../../../types/Person';
 import GjelderSøknadenNoenAvDisseBarnaSpørsmål from '../../../spørsmål/GjelderSøknadenNoenAvDisseBarnaSpørsmål';
@@ -11,9 +11,10 @@ interface BarnBolkProps {
     søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
     registrerteBarn: RegistrertBarn[];
     onChange: (søknadenGjelder: SøknadenGjelderBarnValg) => void;
+    intl: IntlShape;
 }
 
-type Props = BarnBolkProps & InjectedIntlProps;
+type Props = BarnBolkProps;
 class BarnBolk extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
@@ -24,7 +25,7 @@ class BarnBolk extends React.Component<Props> {
     onGjelderAnnetBarnChange(checked: boolean): void {
         this.props.onChange({
             gjelderAnnetBarn: checked,
-            valgteBarn: []
+            valgteBarn: [],
         });
     }
 
@@ -32,7 +33,7 @@ class BarnBolk extends React.Component<Props> {
         const { valgteBarn } = this.props.søknadenGjelderBarnValg;
         this.props.onChange({
             gjelderAnnetBarn: false,
-            valgteBarn: checked ? [...valgteBarn, barn] : valgteBarn.filter((b) => b.fnr !== barn.fnr)
+            valgteBarn: checked ? [...valgteBarn, barn] : valgteBarn.filter((b) => b.fnr !== barn.fnr),
         });
     }
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Overføringsperiode, StønadskontoType } from '../../../../../../types/uttaksplan/periodetyper';
 import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
@@ -15,7 +15,7 @@ interface OverføringsperiodedetaljerProps {
     periodeErNyEllerEndret: boolean;
 }
 
-type Props = OverføringsperiodedetaljerProps & InjectedIntlProps;
+type Props = OverføringsperiodedetaljerProps;
 
 const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: StønadskontoType) => {
     if (konto === StønadskontoType.Fedrekvote) {
@@ -31,9 +31,9 @@ const Overføringsperiodedetaljer: React.StatelessComponent<Props> = ({
     navnPåForeldre,
     erFarEllerMedmor,
     periodeErNyEllerEndret,
-    intl
 }) => {
     const { vedlegg } = periode;
+    const intl = useIntl();
     const annenForelderNavn = getNavnPåAnnenForelder(navnPåForeldre, periode.konto);
     return (
         <>
@@ -42,10 +42,11 @@ const Overføringsperiodedetaljer: React.StatelessComponent<Props> = ({
                 verdi={getÅrsakTekst(intl, periode, { annenForelderNavn })}
             />
 
-            {dokumentasjonBehøvesForOverføringsperiode(erFarEllerMedmor, periode) &&
-                periodeErNyEllerEndret && <OppsummeringAvDokumentasjon vedlegg={vedlegg || []} />}
+            {dokumentasjonBehøvesForOverføringsperiode(erFarEllerMedmor, periode) && periodeErNyEllerEndret && (
+                <OppsummeringAvDokumentasjon vedlegg={vedlegg || []} />
+            )}
         </>
     );
 };
 
-export default injectIntl(Overføringsperiodedetaljer);
+export default Overføringsperiodedetaljer;

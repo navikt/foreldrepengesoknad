@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../../../../../../util/dates/dates';
 import Oppsummeringsliste from 'app/steg/oppsummering/components/oppsummeringsliste/Oppsummeringsliste';
@@ -8,15 +8,16 @@ import Næringsdetaljer from 'app/steg/oppsummering/components/oppsummering/opps
 
 interface SelvstendigNæringsdrivendeOppsummeringslisteProps {
     næringer: Næring[];
+    intl: IntlShape;
 }
 
-type Props = SelvstendigNæringsdrivendeOppsummeringslisteProps & InjectedIntlProps;
+type Props = SelvstendigNæringsdrivendeOppsummeringslisteProps;
 
 class SelvstendigNæringsdrivendeOppsummeringsliste extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            modalIsOpen: false
+            modalIsOpen: false,
         };
 
         this.createOppsummeringslisteData = this.createOppsummeringslisteData.bind(this);
@@ -35,9 +36,9 @@ class SelvstendigNæringsdrivendeOppsummeringsliste extends React.Component<Prop
             venstrestiltTekst: navnPåNæringen,
             høyrestiltTekst: getMessage(intl, 'tidsintervall', {
                 fom: formatDate(tidsperiode.fom),
-                tom: pågående ? 'pågående' : formatDate(tidsperiode.tom)
+                tom: pågående ? 'pågående' : formatDate(tidsperiode.tom),
             }),
-            content: <Næringsdetaljer næring={næring} />
+            content: <Næringsdetaljer næring={næring} />,
         };
     }
 

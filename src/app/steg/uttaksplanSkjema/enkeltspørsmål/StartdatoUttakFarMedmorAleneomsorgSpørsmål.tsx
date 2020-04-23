@@ -3,7 +3,7 @@ import FlervalgSpørsmål from '../../../../common/components/skjema/elements/fl
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import Block from 'common/components/block/Block';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { useIntl, IntlShape } from 'react-intl';
 import { ValgalternativerAleneomsorgFarMedmor } from '../uttaksplanSkjemadata';
 import getMessage from 'common/util/i18nUtils';
 import { uttaksplanDatoavgrensninger } from '../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
@@ -17,13 +17,9 @@ interface OwnProps {
     datoForAleneomsorg: Date;
 }
 
-type Props = UttaksplanSkjemaspørsmålProps & OwnProps & InjectedIntlProps;
+type Props = UttaksplanSkjemaspørsmålProps & OwnProps;
 
-const getAlternativ = (
-    intl: InjectedIntl,
-    alternativ: ValgalternativerAleneomsorgFarMedmor,
-    dato?: Date
-): RadioProps => {
+const getAlternativ = (intl: IntlShape, alternativ: ValgalternativerAleneomsorgFarMedmor, dato?: Date): RadioProps => {
     return {
         label: getMessage(
             intl,
@@ -31,7 +27,7 @@ const getAlternativ = (
             dato ? { dato: formaterDatoUtenDag(dato) } : undefined
         ),
         value: alternativ,
-        name: 'startdatoUttakFarMedmorAleneomsorg'
+        name: 'startdatoUttakFarMedmorAleneomsorg',
     };
 };
 
@@ -47,11 +43,12 @@ const getStartdatoFromAlternativ = (
 };
 
 const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
-    const { visible, datoForAleneomsorg, familiehendelsesdato, intl } = props;
+    const { visible, datoForAleneomsorg, familiehendelsesdato } = props;
+    const intl = useIntl();
 
     const alternativer: RadioProps[] = [
         getAlternativ(intl, ValgalternativerAleneomsorgFarMedmor.datoForAleneomsorg, datoForAleneomsorg),
-        getAlternativ(intl, ValgalternativerAleneomsorgFarMedmor.annen)
+        getAlternativ(intl, ValgalternativerAleneomsorgFarMedmor.annen),
     ];
 
     const avgrensningerAnnenDato = uttaksplanDatoavgrensninger.startdatoPermisjonAleneomsorgFarMedmor(
@@ -78,7 +75,7 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
                                         value,
                                         datoForAleneomsorg,
                                         data.startdatoPermisjon
-                                    )
+                                    ),
                                 })
                             }
                         />
@@ -106,4 +103,4 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(StartdatoUttakFarMedmorAleneomsorgSpørsmål);
+export default StartdatoUttakFarMedmorAleneomsorgSpørsmål;

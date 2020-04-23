@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { AppState } from '../../redux/reducers';
 import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from '../../types/søknad/InformasjonOmUtenlandsopphold';
 import Block from 'common/components/block/Block';
@@ -29,14 +29,18 @@ interface StateProps {
     barn: Barn;
 }
 
-type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
+interface OwnProps {
+    intl: IntlShape;
+}
+
+type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps & OwnProps;
 
 const mapBostedTilUtenlandsopphold = (opphold: BostedUtland): Utenlandsopphold => ({
     land: opphold.landkode,
     tidsperiode: {
         fom: opphold.fom,
-        tom: opphold.tom
-    }
+        tom: opphold.tom,
+    },
 });
 
 class UtenlandsoppholdSteg extends React.Component<Props> {
@@ -53,7 +57,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
             iNorgeNeste12Mnd: values.skalBoUtenforNorgeNeste12Mnd === YesOrNo.NO,
             iNorgeSiste12Mnd: values.harBoddUtenforNorgeSiste12Mnd === YesOrNo.NO,
             senereOpphold: values.utenlandsoppholdNeste12Mnd.map(mapBostedTilUtenlandsopphold),
-            tidligereOpphold: values.utenlandsoppholdSiste12Mnd.map(mapBostedTilUtenlandsopphold)
+            tidligereOpphold: values.utenlandsoppholdSiste12Mnd.map(mapBostedTilUtenlandsopphold),
         };
 
         dispatch(søknadActions.setInformasjonOmUtenlandsopphold(reduxObject));
@@ -112,9 +116,9 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                                         contentIntlKey: 'utenlandsopphold.infoOmFødselsattest',
                                         values: {
                                             land: this.getCountryName(countryNames, relevantUtenlandsopphold),
-                                            termindato: formatDate((barn as UfødtBarn).termindato)
-                                        }
-                                    }
+                                            termindato: formatDate((barn as UfødtBarn).termindato),
+                                        },
+                                    },
                                 ]}
                             />
                         </Block>
@@ -142,14 +146,14 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         renderFormTag: false,
         renderFortsettKnapp: false,
         history,
-        isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state.søknad, props.søkerinfo, selectSøknadsinfo(state))
+        isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state.søknad, props.søkerinfo, selectSøknadsinfo(state)),
     };
 
     return {
         søknad,
         stegProps,
         barn,
-        ...props
+        ...props,
     };
 };
 

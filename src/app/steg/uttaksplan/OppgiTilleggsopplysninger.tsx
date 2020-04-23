@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { getFritekstfeltRules } from 'app/util/validation/fritekstfelt';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { Skjemanummer } from 'app/types/søknad/Søknad';
 import { TextareaChangeEvent } from 'common/types/Events';
 import Block from 'common/components/block/Block';
@@ -19,15 +19,16 @@ interface OwnProps {
     vedlegg?: Attachment[];
     onBegrunnelseChange: (begrunnelse: string) => void;
     onVedleggChange: (vedlegg: Attachment[]) => void;
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 interface State {
     begrunnelse: string;
 }
 
-const getLabel = (intl: InjectedIntl) => {
+const getLabel = (intl: IntlShape) => {
     return (
         <>
             <Element>{getMessage(intl, 'uttaksplan.tilleggsopplysninger.label')}</Element>
@@ -69,7 +70,7 @@ class OppgiTilleggsopplysninger extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            begrunnelse: this.props.begrunnelse || ''
+            begrunnelse: this.props.begrunnelse || '',
         };
 
         this.throttledOnChange = throttle(this.throttledOnChange, 2000);
@@ -82,7 +83,7 @@ class OppgiTilleggsopplysninger extends React.Component<Props, State> {
     handleBegrunnelseChange = (e: TextareaChangeEvent) => {
         this.setState(
             {
-                begrunnelse: e.target.value
+                begrunnelse: e.target.value,
             },
             this.throttledOnChange
         );

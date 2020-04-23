@@ -1,5 +1,5 @@
 import React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Søknad from '../../../../types/søknad/Søknad';
 import SøkerPersonalia from 'app/steg/oppsummering/components/søkerPersonalia/SøkerPersonalia';
@@ -25,9 +25,10 @@ interface OppsummeringProps {
     søknad: Søknad;
     uttaksplanValidering: UttaksplanValideringState;
     antallUkerUttaksplan: number;
+    intl: IntlShape;
 }
 
-type Props = OppsummeringProps & InjectedIntlProps;
+type Props = OppsummeringProps;
 class Oppsummering extends React.Component<Props> {
     render() {
         const { søkerinfo, søknad, uttaksplanValidering, antallUkerUttaksplan, søknadsinfo, intl } = this.props;
@@ -62,7 +63,8 @@ class Oppsummering extends React.Component<Props> {
                     {visBarn && (
                         <Oppsummeringspanel
                             tittel={getMessage(intl, 'oppsummering.relasjonTilBarn')}
-                            tittelProps="undertittel">
+                            tittelProps="undertittel"
+                        >
                             <RelasjonTilBarnOppsummering
                                 barn={søknad.barn}
                                 annenForelder={søknad.annenForelder}
@@ -78,7 +80,8 @@ class Oppsummering extends React.Component<Props> {
                     {visAnnenForelder && (
                         <Oppsummeringspanel
                             tittel={getMessage(intl, 'oppsummering.annenForelder')}
-                            tittelProps="undertittel">
+                            tittelProps="undertittel"
+                        >
                             <AnnenForelderOppsummering
                                 annenForelder={søknad.annenForelder}
                                 erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
@@ -92,7 +95,8 @@ class Oppsummering extends React.Component<Props> {
                         <>
                             <Oppsummeringspanel
                                 tittel={getMessage(intl, 'oppsummering.utenlandsopphold')}
-                                tittelProps="undertittel">
+                                tittelProps="undertittel"
+                            >
                                 <UtenlandsoppholdOppsummering
                                     informasjonOmUtenlandsopphold={søknad.informasjonOmUtenlandsopphold}
                                     situasjon={søknad.situasjon}
@@ -103,7 +107,8 @@ class Oppsummering extends React.Component<Props> {
 
                             <Oppsummeringspanel
                                 tittel={getMessage(intl, 'oppsummering.inntekt')}
-                                tittelProps="undertittel">
+                                tittelProps="undertittel"
+                            >
                                 <InntektOppsummering søker={søknad.søker} arbeidsforhold={søkerinfo.arbeidsforhold} />
                             </Oppsummeringspanel>
                         </>
@@ -112,7 +117,8 @@ class Oppsummering extends React.Component<Props> {
                     <Oppsummeringspanel
                         tittel={getMessage(intl, 'oppsummering.uttak')}
                         tittelProps="undertittel"
-                        apen={erEnkelEndringssøknad}>
+                        apen={erEnkelEndringssøknad}
+                    >
                         <UttaksplanOppsummering
                             perioder={søknad.uttaksplan}
                             navnPåForeldre={søknadsinfo.navn.navnPåForeldre}

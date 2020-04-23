@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 import Steg, { StegProps } from '../../components/applikasjon/steg/Steg';
 import { AppState } from '../../redux/reducers';
@@ -60,7 +60,11 @@ interface StateProps {
     familiehendelsesdato: Date | undefined;
 }
 
-type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
+interface OwnProps {
+    intl: IntlShape;
+}
+
+type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps & OwnProps;
 
 export const getSkalSpørreOmAnnenForelderErInformert = (søknad: Søknad | undefined): boolean => {
     if (!søknad) {

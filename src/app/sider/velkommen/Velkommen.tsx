@@ -1,6 +1,6 @@
 import * as React from 'react';
 import DocumentTitle from 'react-document-title';
-import { InjectedIntlProps, injectIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
@@ -52,7 +52,11 @@ interface State {
     skalEndre: boolean | undefined;
 }
 
-type Props = StateProps & DispatchProps & InjectedIntlProps & HistoryProps & SøkerinfoProps;
+interface OwnProps {
+    intl: IntlShape;
+}
+
+type Props = StateProps & DispatchProps & HistoryProps & SøkerinfoProps & OwnProps;
 
 class Velkommen extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -145,7 +149,7 @@ class Velkommen extends React.Component<Props, State> {
                         <>
                             <Block>
                                 <Ingress>
-                                    <FormattedHTMLMessage
+                                    <FormattedMessage
                                         id={
                                             erSakForEndringssøknadFraInfotrygd
                                                 ? 'velkommen.intro.harInfotrygdSak'

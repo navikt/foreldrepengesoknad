@@ -50,7 +50,6 @@
         "@types/react-collapse": "4.0.1",
         "@types/react-document-title": "2.0.2",
         "@types/react-dom": "16.9.5",
-        "@types/react-intl": "2.3.11",
         "@types/react-redux": "5.0.18",
         "@types/react-router-dom": "4.3.0",
         "@types/react-scroll": "1.5.3",
@@ -114,6 +113,8 @@
         "webpack-dev-server": "3.1.14"
     },
     "dependencies": {
+        "@formatjs/intl-pluralrules": "^1.5.5",
+        "@formatjs/intl-relativetimeformat": "^4.5.12",
         "@navikt/fnrvalidator": "^1.1.0",
         "@navikt/sif-common-formik": "^7.0.1",
         "@navikt/sif-common-question-config": "0.0.2",
@@ -168,7 +169,7 @@
         "react-document-title": "2.0.3",
         "react-dom": "16.12.0",
         "react-flip-move": "3.0.2",
-        "react-intl": "2.7.2",
+        "react-intl": "^4.5.0",
         "react-modal": "3.4.4",
         "react-motion": "0.5.2",
         "react-redux": "5.0.7",

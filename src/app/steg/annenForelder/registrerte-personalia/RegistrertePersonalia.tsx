@@ -4,15 +4,14 @@ import { EtikettLiten, Element } from 'nav-frontend-typografi';
 import { RegistrertAnnenForelder } from 'app/types/Person';
 import { getAlderFraDato } from 'app/util/dates/dates';
 import { formaterNavn } from 'app/util/domain/personUtil';
-import { injectIntl, FormattedMessage, InjectedIntlProps } from 'react-intl';
-
+import { FormattedMessage } from 'react-intl';
 import './registrertePersonalia.less';
 
 interface PersonaliaBoxProps {
     person: RegistrertAnnenForelder;
 }
 
-type Props = PersonaliaBoxProps & InjectedIntlProps;
+type Props = PersonaliaBoxProps;
 const PersonaliaBox: React.StatelessComponent<Props> = ({ person }: Props) => {
     return (
         <div className="personaliaBox">
@@ -27,4 +26,4 @@ const PersonaliaBox: React.StatelessComponent<Props> = ({ person }: Props) => {
     );
 };
 
-export default injectIntl(PersonaliaBox);
+export default PersonaliaBox;

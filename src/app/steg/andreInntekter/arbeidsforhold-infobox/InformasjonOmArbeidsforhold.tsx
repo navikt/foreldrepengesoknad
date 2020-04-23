@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Element, EtikettLiten, Normaltekst } from 'nav-frontend-typografi';
 
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
@@ -13,8 +13,9 @@ interface InformasjonOmArbeidsforholdProps {
     arbeidsforhold: Arbeidsforhold;
 }
 
-type Props = InformasjonOmArbeidsforholdProps & InjectedIntlProps;
-const InformasjonOmArbeidsforhold: React.StatelessComponent<Props> = ({ arbeidsforhold, intl }: Props) => {
+type Props = InformasjonOmArbeidsforholdProps;
+const InformasjonOmArbeidsforhold: React.StatelessComponent<Props> = ({ arbeidsforhold }: Props) => {
+    const intl = useIntl();
     const cls = BEMHelper('arbeidsforholdInfoBox');
     return (
         <div className={cls.block}>
@@ -46,4 +47,4 @@ const InformasjonOmArbeidsforhold: React.StatelessComponent<Props> = ({ arbeidsf
         </div>
     );
 };
-export default injectIntl(InformasjonOmArbeidsforhold);
+export default InformasjonOmArbeidsforhold;
