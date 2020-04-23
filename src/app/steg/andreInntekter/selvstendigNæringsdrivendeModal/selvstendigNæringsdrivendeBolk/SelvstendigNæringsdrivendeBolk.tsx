@@ -43,7 +43,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
         this.onSelect = this.onSelect.bind(this);
 
         this.state = {
-            modalIsOpen: false
+            modalIsOpen: false,
         };
     }
 
@@ -63,14 +63,14 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
         }
         this.closeModal({
             næringIndex: undefined,
-            næringToEdit: undefined
+            næringToEdit: undefined,
         });
     }
 
     onSelect(næringToEdit: Næring, næringIndex: number) {
         this.openModal({
             næringToEdit,
-            næringIndex
+            næringIndex,
         });
     }
 
@@ -84,14 +84,14 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
     openModal(otherState: SelvstendigNæringsdrivendeBolkStatePartial = {}) {
         this.setState({
             ...otherState,
-            modalIsOpen: true
+            modalIsOpen: true,
         });
     }
 
     closeModal(otherState: SelvstendigNæringsdrivendeBolkStatePartial = {}) {
         this.setState({
             ...otherState,
-            modalIsOpen: false
+            modalIsOpen: false,
         });
     }
 
@@ -100,7 +100,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
             næringListe,
             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
             planInneholderSelvstendignæringaktivitet,
-            onChangeSøker
+            onChangeSøker,
         } = this.props;
 
         const { næringToEdit } = this.state;
@@ -108,7 +108,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
 
         return (
             <React.Fragment>
-                <Block margin="xs">
+                <Block margin="none">
                     <HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål
                         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={
                             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
@@ -153,7 +153,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                             onCancel={() =>
                                 this.closeModal({
                                     næringIndex: undefined,
-                                    næringToEdit: undefined
+                                    næringToEdit: undefined,
                                 })
                             }
                             onSubmit={næringToEdit !== undefined ? this.onEdit : this.onAdd}

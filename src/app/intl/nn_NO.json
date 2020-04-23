@@ -551,6 +551,8 @@
     "riktigBarn.spørsmål": "Eg vil søkje om foreldrepengar for",
     "samtidig.uttak.varighet": "Du brukar {varighet} med foreldrepengar",
     "samtidigUttakProsent": "Oppgi kor mange prosent foreldrepengar du tek ut",
+    "andreInntekter.erJegNæringsdrivendeFrilansEllerArbeidstaker":
+        "Er eg sjølvstendig næringsdrivande, frilansar eller arbeidstakar?",
     "andreInntekter.infoTilFiskere.hyre": "Hyre",
     "andreInntekter.infoTilFiskere.lott": "Lott",
     "andreInntekter.infoTilFiskere.egenBåt": "Fiskar med eigen båt",

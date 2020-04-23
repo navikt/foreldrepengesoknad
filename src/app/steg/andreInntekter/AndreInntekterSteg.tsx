@@ -2,7 +2,7 @@ import * as React from 'react';
 import { default as Steg, StegProps } from '../../components/applikasjon/steg/Steg';
 import moment from 'moment';
 import Block from 'common/components/block/Block';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { StegID } from '../../util/routing/stegConfig';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
@@ -40,6 +40,7 @@ import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
 import { apiActionCreators } from 'app/redux/actions';
 import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
 import InfoTilFiskere from './info-til-fiskere/InfoTilFiskere';
+import Lenke from 'nav-frontend-lenker';
 
 interface StateProps {
     stegProps: StegProps;
@@ -166,6 +167,14 @@ class AndreInntekterSteg extends React.Component<Props> {
                         }
                         planInneholderSelvstendignæringaktivitet={planInneholderSelvstendignæringaktivitet}
                     />
+                </Block>
+                <Block margin="xs">
+                    <Lenke
+                        target="_blank"
+                        href="https://www.nav.no/no/person/innhold-til-person-forside/nyttig-a-vite/er-jeg-selvstendig-naeringsdrivende-frilanser-eller-arbeidstaker"
+                    >
+                        <FormattedMessage id="andreInntekter.erJegNæringsdrivendeFrilansEllerArbeidstaker" />
+                    </Lenke>
                 </Block>
 
                 <Block hasChildBlocks={true} margin="none" visible={visibility.andreInntekterBolk(søker)}>
