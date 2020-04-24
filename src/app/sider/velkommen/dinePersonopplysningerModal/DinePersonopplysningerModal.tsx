@@ -2,13 +2,12 @@ import * as React from 'react';
 import Modal from 'nav-frontend-modal';
 import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import getMessage from 'common/util/i18nUtils';
-import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Block from 'common/components/block/Block';
 
 interface DineRettigheterModalProps {
     isOpen: boolean;
     onRequestClose: () => void;
-    intl: IntlShape;
 }
 
 const Avsnitt: React.StatelessComponent<{ id: string }> = ({ id }) => {
@@ -18,15 +17,33 @@ const Avsnitt: React.StatelessComponent<{ id: string }> = ({ id }) => {
                 <FormattedMessage id={`dinePersonopplysninger.avsnitt.${id}.tittel`} />
             </Ingress>
             <Normaltekst>
-                <FormattedMessage id={`dinePersonopplysninger.avsnitt.${id}.html`} />
+                <FormattedMessage
+                    id={`dinePersonopplysninger.avsnitt.${id}.html`}
+                    values={{
+                        ul: (msg: any) => <ul>{msg}</ul>,
+                        li: (...msg: any) => <li>{msg}</li>,
+                        a: (msg: any) => (
+                            <a
+                                className="lenke"
+                                target="_blank"
+                                rel="noopener"
+                                href="https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten"
+                            >
+                                {msg}
+                            </a>
+                        )
+                    }}
+                />
             </Normaltekst>
         </Block>
     );
 };
 
 type Props = DineRettigheterModalProps;
+
 const DinePersonopplysningerModal = (props: Props) => {
-    const { intl } = props;
+    const intl = useIntl();
+
     return (
         <Modal
             isOpen={props.isOpen}
@@ -42,7 +59,21 @@ const DinePersonopplysningerModal = (props: Props) => {
                 </Block>
                 <Block margin="s">
                     <Normaltekst>
-                        <FormattedMessage id="dinePersonopplysninger.behandling.html" />
+                        <FormattedMessage
+                            id="dinePersonopplysninger.behandling.html"
+                            values={{
+                                a: (msg: any) => (
+                                    <a
+                                        href="https://www.nav.no/foreldrepenger"
+                                        className="lenke"
+                                        rel="noopener"
+                                        target="_blank"
+                                    >
+                                        {msg}
+                                    </a>
+                                )
+                            }}
+                        />
                     </Normaltekst>
                 </Block>
 
@@ -55,4 +86,4 @@ const DinePersonopplysningerModal = (props: Props) => {
     );
 };
 
-export default injectIntl(DinePersonopplysningerModal);
+export default DinePersonopplysningerModal;

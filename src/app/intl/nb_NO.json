@@ -1,11 +1,9 @@
 {
-    "Oppdater": "Oppdater tull",
     "hjemmeside": "hjemmeside ",
     "adopsjonAvEktefellesBarn.spørsmål": "Gjelder søknaden din stebarnsadopsjon?",
     "adopsjonsdato.spørsmål": "Når overtar du omsorgen?",
     "adoptertIUtlandet.spørsmål": "Adopterer du fra utlandet?",
-    "aktivitetskrav.lesmer":
-        " <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les mer om aktivitetskravet til mor her.</a>",
+    "aktivitetskrav.lesmer": " <a>Les mer om aktivitetskravet til mor her.</a>",
     "ankomstdato.spørsmål": "Når kommer barnet til Norge?",
     "annenForelder.aleneOmOmsorg": "Er du alene om omsorgen av barnet?",
     "annenForelder.aleneOmOmsorg.veileder":
@@ -122,22 +120,22 @@
     "datoForAleneomsorg.spørsmål": "Dato du ble alene om omsorgen",
     "deltid": "Deltid",
     "dinePersonopplysninger.avsnitt.automatiskBehandling.html":
-        "<p>Nav vil behandle søknaden automatisk hvis vi har tilstrekkelige opplysninger. Den automatiske behandlingen baserer seg på opplysninger</p><ul><li>du gir i søknaden</li><li>fra Folkeregisteret og enhetsregisteret</li><li>om arbeidsforholdene dine fra Arbeidstaker- og arbeidsgiverregisteret</li><li>om inntekten din fra A-meldingen</li><li>om inntekt og avtalt permisjon fra arbeidsgiveren din</li></ul>",
+        "Nav vil behandle søknaden automatisk hvis vi har tilstrekkelige opplysninger. Den automatiske behandlingen baserer seg på opplysninger<ul><li>du gir i søknaden</li><li>fra Folkeregisteret og enhetsregisteret</li><li>om arbeidsforholdene dine fra Arbeidstaker- og arbeidsgiverregisteret</li><li>om inntekten din fra A-meldingen</li><li>om inntekt og avtalt permisjon fra arbeidsgiveren din</li></ul>",
     "dinePersonopplysninger.avsnitt.automatiskBehandling.tittel": "Automatisk behandling av søknaden",
     "dinePersonopplysninger.avsnitt.innhenting.html":
-        "<p>For å behandle søknaden din henter vi inn opplysninger om</p><ul><li>tilknytningen din til Norge, arbeidsforholdene dine og inntekten din</li><li>ytelser du mottar fra NAV</li><li>barn og den andre forelderen</li><li>trygdeordninger du kan ha rett til i andre land</li></ul><p>Vi kan også sende opplysninger om deg til trygdeordninger i andre land.</p>",
+        "For å behandle søknaden din henter vi inn opplysninger om<ul><li>tilknytningen din til Norge, arbeidsforholdene dine og inntekten din</li><li>ytelser du mottar fra NAV</li><li>barn og den andre forelderen</li><li>trygdeordninger du kan ha rett til i andre land</li></ul>Vi kan også sende opplysninger om deg til trygdeordninger i andre land.",
     "dinePersonopplysninger.avsnitt.innhenting.tittel": "Opplysninger vi innhenter fra deg og offentlige registre",
     "dinePersonopplysninger.avsnitt.lagring.html":
         "Hvis du sender inn søknaden, blir opplysninger du har gitt i søknaden lagret i tråd med arkivloven.",
     "dinePersonopplysninger.avsnitt.lagring.tittel": "Lagring av opplysninger",
     "dinePersonopplysninger.avsnitt.personvernerklaringen.html":
-        "<p>Du kan lese mer om hvordan NAV behandler personopplysninger i Arbeids- og velferdsetatens personvernerklæring på <a class=\"lenke\" rel=\"noopener\" href=\"https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten\">nav.no/personvern.</a></p>",
+        "Du kan lese mer om hvordan NAV behandler personopplysninger i Arbeids- og velferdsetatens personvernerklæring på <a>nav.no/personvern.</a>",
     "dinePersonopplysninger.avsnitt.personvernerklaringen.tittel": "Personvernerklæringen i NAV",
     "dinePersonopplysninger.avsnitt.svarPaSoknaden.html":
-        "<p>Når søknaden din er behandlet, får du et vedtaksbrev. Det forteller deg om</p><ul><li>begrunnelse for beslutningen</li><li>hvordan du får innsyn i saksbehandlingen og reglene som er blitt brukt</li><li>hvordan du kan klage hvis du er uenig</li></ul>",
+        "Når søknaden din er behandlet, får du et vedtaksbrev. Det forteller deg om<ul><li>begrunnelse for beslutningen</li><li>hvordan du får innsyn i saksbehandlingen og reglene som er blitt brukt</li><li>hvordan du kan klage hvis du er uenig</li></ul>",
     "dinePersonopplysninger.avsnitt.svarPaSoknaden.tittel": "Svar på søknaden",
     "dinePersonopplysninger.behandling.html":
-        "<p>NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.</p><p>Du har valgt å søke om foreldrepenger. Det er en ytelse fra folketrygden som du kan få hvis du fyller vilkårene. Vilkårene står på <a href=\"https://www.nav.no/foreldrepenger\"  class=\"lenke\" rel=\"noopener\">nav.no/foreldrepenger</a>.</p>",
+        "NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.Du har valgt å søke om foreldrepenger. Det er en ytelse fra folketrygden som du kan få hvis du fyller vilkårene. Vilkårene står på <a>nav.no/foreldrepenger</a>.",
     "dinePersonopplysninger.sectionheading": "Slik behandler NAV personopplysningene dine",
     "dinePlikter.listeElement.1":
         "Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til foreldrepenger.",
@@ -800,8 +798,7 @@
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan ha {aktivitetsfriKvote} uker med foreldrepenger uten aktivitetskrav til mor.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn periode med foreldrepenger for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
-    "uttaksplan.informasjon.lesMer":
-        "Du kan lese mer om viktige frister på våre <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nettsider</a>",
+    "uttaksplan.informasjon.lesMer": "Du kan lese mer om viktige frister på våre <a>nettsider</a>",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMindreEnnTreUker":
         "{varighet} du ikke bruker før termin faller bort",
@@ -1183,8 +1180,7 @@
     "languageToggle.nynorsk": "Nynorsk - Norsk",
     "eksisterendeSak.tittel.deltUttak": "Deres foreldrepengeperiode",
     "eksisterendeSak.tittel.aleneomsorg": "Din foreldrepengeperiode",
-    "eksisterendeSak.tekst.html":
-        "{navn} har valgt <strong>{uker}</strong> med <strong>{dekningsgrad} prosent utbetaling</strong>.",
+    "eksisterendeSak.tekst.html": "{navn} har valgt {uker} med {dekningsgrad} prosent utbetaling.",
     "eksisterendeSak.tekst.nesteMuligeUttaksdato": "<b>{ dato }</b> er første dag etter { navn } siste periode",
     "eksisterendeSak.tekst.benevning.deltOmsorg": "Du og {navn}",
     "eksisterendeSak.tekst.benevning.aleneomsorg": "Du",
