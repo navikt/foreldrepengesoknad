@@ -13,7 +13,7 @@ const HvØvelse: React.FunctionComponent<Props> = ({ vedlegg, onChange }) => {
     return (
         <VedleggSpørsmål
             attachmentType={AttachmentType.HV_ØVELSE}
-            skjemanummer={Skjemanummer.ANNET}
+            skjemanummer={Skjemanummer.HV_ØVELSE}
             vedlegg={vedlegg}
             onChange={(v) => {
                 onChange(v);
