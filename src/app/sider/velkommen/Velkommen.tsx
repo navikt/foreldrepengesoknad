@@ -149,13 +149,25 @@ class Velkommen extends React.Component<Props, State> {
                         <>
                             <Block>
                                 <Ingress>
-                                    <FormattedMessage
-                                        id={
-                                            erSakForEndringssøknadFraInfotrygd
-                                                ? 'velkommen.intro.harInfotrygdSak'
-                                                : 'velkommen.intro.harSak'
-                                        }
-                                    />
+                                    {erSakForEndringssøknadFraInfotrygd ? (
+                                        <>
+                                            <Block margin="xs">
+                                                <FormattedMessage id="velkommen.intro.harInfotrygdSak.del1" />
+                                            </Block>
+                                            <Block margin="xs">
+                                                <FormattedMessage id="velkommen.intro.harInfotrygdSak.del2" />
+                                            </Block>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Block margin="xs">
+                                                <FormattedMessage id="velkommen.intro.harSak.del1" />
+                                            </Block>
+                                            <Block margin="xs">
+                                                <FormattedMessage id="velkommen.intro.harSak.del2" />
+                                            </Block>
+                                        </>
+                                    )}
                                 </Ingress>
                             </Block>
                             {sakForEndringssøknad !== undefined &&

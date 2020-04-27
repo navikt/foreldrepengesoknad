@@ -1135,12 +1135,15 @@
     "velkommen.foreldreansvar.veileder":
         "Du er vorten tildelt foreldreansvaret etter barnelova § 38 eller 64, kan du ikkje sende inn søknaden elektronisk. Du må fylle ut søknaden på papir og sende han i posten.",
     "velkommen.ingress": "Foreldrepengar er noko du kan få for kvart barn du føder eller adopterer.",
-    "velkommen.intro.harInfotrygdSak":
-        "Her søkjer du om foreldrepengar når du skal være heime med barnet. Har du allereie invilga foreldrepengar kan du utsetje eller gjere andre endringar.",
+    "velkommen.intro.harInfotrygdSak.del1": "Her søkjer du om foreldrepengar når du skal være heime med barnet.",
+    "velkommen.intro.harInfotrygdSak.del2":
+        "Har du allereie invilga foreldrepengar kan du utsetje eller gjere andre endringar.",
     "velkommen.intro.harInfotrygdSak.veileder":
         "Du må ha søkt og fått invilga foreldrepengar for det same barnet for å kunne sende inn søknad om endring",
-    "velkommen.intro.harSak":
-        "Her søker du om foreldrepengar når du skal ha barn eller skal vera heime i foreldrepermisjon. Har du allereie innvilga foreldrepengar, kan du utsetje eller endre ved å velje søk om endring.",
+    "velkommen.intro.harSak.del1":
+        "Her søker du om foreldrepengar når du skal ha barn eller skal vera heime i foreldrepermisjon.",
+    "velkommen.intro.harSak.del2":
+        "Har du allereie innvilga foreldrepengar, kan du utsetje eller endre ved å velje søk om endring.",
     "velkommen.intro.harSak.veileder":
         "Når du søkjer om foreldrepengar for eit nytt barn, mistar du dagar du har igjen frå den første foreldrepengeperioden din.",
     "velkommen.intro.harFørstegangssøknadUnderBehandling":
