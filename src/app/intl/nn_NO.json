@@ -906,7 +906,7 @@
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
         "Du er for tidleg ute. Du kan tidlegast søkje seks veker før du skal ha foreldrepengar. Du må vente med å sende søknaden din til {dato}",
     "uttaksplan.validering.feil.uttaksplanGraderingStørreEnnSamtidigUttak":
-        "Prosenten du skal jobbe kan ikkje vere høgare enn prosenten du skal vere heime med foreldrepengar.",
+        "Prosenten du skal jobbe kan ikkje vere høgare enn prosenten du skal vere heime med foreldrepengar. Du må endre prosenten med samtidig uttak eller foreldrepenger kombinert med arbeid.",
     "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
         "Du kan ikkje søke om å utsetje før perioden din med foreldrepengar startar.",
     "uttaksplan.validering.feil.morHarSøktUgyldigUttakFørsteSeksUker":
