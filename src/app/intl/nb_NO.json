@@ -119,21 +119,38 @@
     "boddINorgeSiste12Mnd.spørsmål": "Hvor har du bodd de siste 12 månedene?",
     "datoForAleneomsorg.spørsmål": "Dato du ble alene om omsorgen",
     "deltid": "Deltid",
-    "dinePersonopplysninger.avsnitt.automatiskBehandling.html":
-        "Nav vil behandle søknaden automatisk hvis vi har tilstrekkelige opplysninger. Den automatiske behandlingen baserer seg på opplysninger<ul><li>du gir i søknaden</li><li>fra Folkeregisteret og enhetsregisteret</li><li>om arbeidsforholdene dine fra Arbeidstaker- og arbeidsgiverregisteret</li><li>om inntekten din fra A-meldingen</li><li>om inntekt og avtalt permisjon fra arbeidsgiveren din</li></ul>",
     "dinePersonopplysninger.avsnitt.automatiskBehandling.tittel": "Automatisk behandling av søknaden",
-    "dinePersonopplysninger.avsnitt.innhenting.html":
-        "For å behandle søknaden din henter vi inn opplysninger om<ul><li>tilknytningen din til Norge, arbeidsforholdene dine og inntekten din</li><li>ytelser du mottar fra NAV</li><li>barn og den andre forelderen</li><li>trygdeordninger du kan ha rett til i andre land</li></ul>Vi kan også sende opplysninger om deg til trygdeordninger i andre land.",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.del1":
+        "Nav vil behandle søknaden automatisk hvis vi har tilstrekkelige opplysninger. Den automatiske behandlingen baserer seg på opplysninger",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt1": "du gir i søknaden",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt2": "fra Folkeregisteret og enhetsregisteret",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt3":
+        "om arbeidsforholdene dine fra Arbeidstaker- og arbeidsgiverregisteret",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt4": "om inntekten din fra A-meldingen",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt5":
+        "om inntekt og avtalt permisjon fra arbeidsgiveren din",
     "dinePersonopplysninger.avsnitt.innhenting.tittel": "Opplysninger vi innhenter fra deg og offentlige registre",
+    "dinePersonopplysninger.avsnitt.innhenting.del1": "For å behandle søknaden din henter vi inn opplysninger om",
+    "dinePersonopplysninger.avsnitt.innhenting.del2":
+        "Vi kan også sende opplysninger om deg til trygdeordninger i andre land.",
+    "dinePersonopplysninger.avsnitt.innhenting.punkt1":
+        "tilknytningen din til Norge, arbeidsforholdene dine og inntekten din",
+    "dinePersonopplysninger.avsnitt.innhenting.punkt2": "ytelser du mottar fra NAV",
+    "dinePersonopplysninger.avsnitt.innhenting.punkt3": "barn og den andre forelderen",
+    "dinePersonopplysninger.avsnitt.innhenting.punkt4": "trygdeordninger du kan ha rett til i andre land",
     "dinePersonopplysninger.avsnitt.lagring.html":
         "Hvis du sender inn søknaden, blir opplysninger du har gitt i søknaden lagret i tråd med arkivloven.",
     "dinePersonopplysninger.avsnitt.lagring.tittel": "Lagring av opplysninger",
     "dinePersonopplysninger.avsnitt.personvernerklaringen.html":
         "Du kan lese mer om hvordan NAV behandler personopplysninger i Arbeids- og velferdsetatens personvernerklæring på <a>nav.no/personvern.</a>",
     "dinePersonopplysninger.avsnitt.personvernerklaringen.tittel": "Personvernerklæringen i NAV",
-    "dinePersonopplysninger.avsnitt.svarPaSoknaden.html":
-        "Når søknaden din er behandlet, får du et vedtaksbrev. Det forteller deg om<ul><li>begrunnelse for beslutningen</li><li>hvordan du får innsyn i saksbehandlingen og reglene som er blitt brukt</li><li>hvordan du kan klage hvis du er uenig</li></ul>",
     "dinePersonopplysninger.avsnitt.svarPaSoknaden.tittel": "Svar på søknaden",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.del1":
+        "Når søknaden din er behandlet, får du et vedtaksbrev. Det forteller deg om",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt1": "begrunnelse for beslutningen",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt2":
+        "hvordan du får innsyn i saksbehandlingen og reglene som er blitt brukt",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt3": "hvordan du kan klage hvis du er uenig",
     "dinePersonopplysninger.behandling.html":
         "NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.Du har valgt å søke om foreldrepenger. Det er en ytelse fra folketrygden som du kan få hvis du fyller vilkårene. Vilkårene står på <a>nav.no/foreldrepenger</a>.",
     "dinePersonopplysninger.sectionheading": "Slik behandler NAV personopplysningene dine",
@@ -178,7 +195,7 @@
     "erBarnetFødt.spørsmål.veileder.medMorEllerFar":
         "Du kan dessverre ikke søke om foreldrepenger før barnet er født. Unntaket er hvis mor er syk eller innlagt på sykehus eller helseinstitusjon. Du må fylle ut søknaden på papir og sender den i posten. { lenke }",
     "barnFødt.infoPrematuruker":
-        "Hvis barnet blir født før 33. svangerskapsuke så blir perioden med foreldrepenger utvidet med samme antall uker og dager som barnet er født før termindato.<br /><br /> Dersom barnet blir innlagt på sykehus etter fødselen, vil dere som regel kunne motta pleiepenger så lenge barnet er innlagt. Får dere pleiepenger i perioden fra fødsel og fram til opprinnelig termindato, trekkes disse fra den utvidede perioden.",
+        "Hvis barnet blir født før 33. svangerskapsuke så blir perioden med foreldrepenger utvidet med samme antall uker og dager som barnet er født før termindato. Dersom barnet blir innlagt på sykehus etter fødselen, vil dere som regel kunne motta pleiepenger så lenge barnet er innlagt. Får dere pleiepenger i perioden fra fødsel og fram til opprinnelig termindato, trekkes disse fra den utvidede perioden.",
     "erDuMedmor.spørsmål": "Er du medmor?",
     "erDuSelvstendigNæringsdrivende.spørsmål": "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
     "erMorForSyk.spørsmål": "Er mor for syk til å ta seg av barnet eller innlagt i helseinstitusjon?",

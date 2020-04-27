@@ -10,35 +10,6 @@ interface DineRettigheterModalProps {
     onRequestClose: () => void;
 }
 
-const Avsnitt: React.StatelessComponent<{ id: string }> = ({ id }) => {
-    return (
-        <Block margin="s">
-            <Ingress tag="h2">
-                <FormattedMessage id={`dinePersonopplysninger.avsnitt.${id}.tittel`} />
-            </Ingress>
-            <Normaltekst>
-                <FormattedMessage
-                    id={`dinePersonopplysninger.avsnitt.${id}.html`}
-                    values={{
-                        ul: (msg: any) => <ul>{msg}</ul>,
-                        li: (...msg: any) => <li>{msg}</li>,
-                        a: (msg: any) => (
-                            <a
-                                className="lenke"
-                                target="_blank"
-                                rel="noopener"
-                                href="https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten"
-                            >
-                                {msg}
-                            </a>
-                        )
-                    }}
-                />
-            </Normaltekst>
-        </Block>
-    );
-};
-
 type Props = DineRettigheterModalProps;
 
 const DinePersonopplysningerModal = (props: Props) => {
@@ -76,11 +47,95 @@ const DinePersonopplysningerModal = (props: Props) => {
                         />
                     </Normaltekst>
                 </Block>
-
-                <Avsnitt id="innhenting" />
-                <Avsnitt id="automatiskBehandling" />
-                <Avsnitt id="svarPaSoknaden" />
-                <Avsnitt id="personvernerklaringen" />
+                <Block margin="s">
+                    <Ingress>
+                        <FormattedMessage id="dinePersonopplysninger.avsnitt.innhenting.tittel" />
+                    </Ingress>
+                    <Normaltekst>
+                        <FormattedMessage id="dinePersonopplysninger.avsnitt.innhenting.del1" />
+                        <ul>
+                            <li>
+                                <FormattedMessage id="dinePersonopplysninger.avsnitt.innhenting.punkt1" />
+                            </li>
+                            <li>
+                                <FormattedMessage id="dinePersonopplysninger.avsnitt.innhenting.punkt2" />
+                            </li>
+                            <li>
+                                <FormattedMessage id="dinePersonopplysninger.avsnitt.innhenting.punkt3" />
+                            </li>
+                            <li>
+                                <FormattedMessage id="dinePersonopplysninger.avsnitt.innhenting.punkt4" />
+                            </li>
+                        </ul>
+                        <FormattedMessage id="dinePersonopplysninger.avsnitt.innhenting.del2" />
+                    </Normaltekst>
+                </Block>
+                <Block margin="s">
+                    <Ingress>
+                        <FormattedMessage id="dinePersonopplysninger.avsnitt.automatiskBehandling.tittel" />
+                    </Ingress>
+                    <Normaltekst>
+                        <FormattedMessage id="dinePersonopplysninger.avsnitt.automatiskBehandling.del1" />
+                        <ul>
+                            <li>
+                                <FormattedMessage id="dinePersonopplysninger.avsnitt.automatiskBehandling.punkt1" />
+                            </li>
+                            <li>
+                                <FormattedMessage id="dinePersonopplysninger.avsnitt.automatiskBehandling.punkt2" />
+                            </li>
+                            <li>
+                                <FormattedMessage id="dinePersonopplysninger.avsnitt.automatiskBehandling.punkt3" />
+                            </li>
+                            <li>
+                                <FormattedMessage id="dinePersonopplysninger.avsnitt.automatiskBehandling.punkt4" />
+                            </li>
+                            <li>
+                                <FormattedMessage id="dinePersonopplysninger.avsnitt.automatiskBehandling.punkt5" />
+                            </li>
+                        </ul>
+                    </Normaltekst>
+                </Block>
+                <Block margin="s">
+                    <Ingress>
+                        <FormattedMessage id="dinePersonopplysninger.avsnitt.svarPaSoknaden.tittel" />
+                    </Ingress>
+                    <Normaltekst>
+                        <FormattedMessage id="dinePersonopplysninger.avsnitt.svarPaSoknaden.del1" />
+                        <ul>
+                            <li>
+                                <FormattedMessage id="dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt1" />
+                            </li>
+                            <li>
+                                <FormattedMessage id="dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt2" />
+                            </li>
+                            <li>
+                                <FormattedMessage id="dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt3" />
+                            </li>
+                        </ul>
+                    </Normaltekst>
+                </Block>
+                <Block margin="s">
+                    <Ingress tag="h2">
+                        <FormattedMessage id="dinePersonopplysninger.avsnitt.personvernerklaringen.tittel" />
+                    </Ingress>
+                    <Normaltekst>
+                        <FormattedMessage
+                            id="dinePersonopplysninger.avsnitt.personvernerklaringen.html"
+                            values={{
+                                a: (msg: any) => (
+                                    <a
+                                        className="lenke"
+                                        target="_blank"
+                                        rel="noopener"
+                                        href="https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten"
+                                    >
+                                        {msg}
+                                    </a>
+                                )
+                            }}
+                        />
+                    </Normaltekst>
+                </Block>
             </article>
         </Modal>
     );

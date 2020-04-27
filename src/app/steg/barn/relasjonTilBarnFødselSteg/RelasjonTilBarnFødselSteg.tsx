@@ -192,7 +192,6 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                         {
                                             contentIntlKey: 'barnFødt.infoPrematuruker',
                                             type: 'info',
-                                            formatContentAsHTML: true,
                                         },
                                     ]}
                                 />

@@ -4,8 +4,7 @@
     "adopsjonAvEktefellesBarn.spørsmål": "Gjeld søknaden din stebarnsadopsjon?",
     "adopsjonsdato.spørsmål": "Når overtek du omsorga?",
     "adoptertIUtlandet.spørsmål": "Adopterer du frå utlandet?",
-    "aktivitetskrav.lesmer":
-        " <a href={link} rel=\"noopener\" target=\"_blank\">Les meir om aktivitetskravet til mor her.</a>",
+    "aktivitetskrav.lesmer": " <a>Les meir om aktivitetskravet til mor her.</a>",
     "ankomstdato.spørsmål": "Når kom barnet til Noreg?",
     "annenForelder.aleneOmOmsorg": "Er du åleine om omsorga av barnet?",
     "annenForelder.aleneOmOmsorg.veileder":
@@ -120,23 +119,39 @@
     "boddINorgeSiste12Mnd.spørsmål": "Kvar har du budd dei siste 12 månadene?",
     "datoForAleneomsorg.spørsmål": "Datoen då du blei åleine om omsorga",
     "deltid": "Deltid",
-    "dinePersonopplysninger.avsnitt.automatiskBehandling.html":
-        "<p>Nav behandlar søknaden automatisk dersom vi har tilstrekkelege opplysningar. Den automatiske behandlinga baserer seg på opplysningar</p><ul><li>du gir i søknaden</li><li>frå Folkeregisteret og enhetsregisteret</li><li>om arbeidsforholda dine frå Arbeidstakar- og arbeidsgivarregisteret</li><li>om inntekta di frå A-meldinga</li><li>om inntekt og avtalt permisjon frå arbeidsgjevaren din</li></ul>",
     "dinePersonopplysninger.avsnitt.automatiskBehandling.tittel": "Automatisk behandling av søknaden",
-    "dinePersonopplysninger.avsnitt.innhenting.html":
-        "<p>For å behandle søknaden din henter vi inn opplysningar om</p><ul><li>tilknytinga di i Norge, arbeidsforholda dine og inntekta di</li><li>ytingar du får frå NAV</li><li>barn og den andre forelderen</li><li>trygdeordningar du kan ha rett til i andre land</li></ul><p>Vi kan også sende opplysningar om deg til trygdeordningar i andre land.</p>",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.del1":
+        "Nav behandlar søknaden automatisk dersom vi har tilstrekkelege opplysningar. Den automatiske behandlinga baserer seg på opplysningar",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt1": "du gir i søknaden",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt2": "frå Folkeregisteret og enhetsregisteret",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt3":
+        "om arbeidsforholda dine frå Arbeidstakar- og arbeidsgivarregisteret",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt4": "om inntekta di frå A-meldinga",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt5":
+        "om inntekt og avtalt permisjon frå arbeidsgjevaren din",
     "dinePersonopplysninger.avsnitt.innhenting.tittel": "Opplysningar henta inn frå deg og offentlege register",
+    "dinePersonopplysninger.avsnitt.innhenting.del1": "For å behandle søknaden din henter vi inn opplysningar om",
+    "dinePersonopplysninger.avsnitt.innhenting.del2":
+        "Vi kan også sende opplysningar om deg til trygdeordningar i andre land.",
+    "dinePersonopplysninger.avsnitt.innhenting.punkt1": "tilknytinga di i Norge, arbeidsforholda dine og inntekta di",
+    "dinePersonopplysninger.avsnitt.innhenting.punkt2": "ytingar du får frå NAV",
+    "dinePersonopplysninger.avsnitt.innhenting.punkt3": "barn og den andre forelderen",
+    "dinePersonopplysninger.avsnitt.innhenting.punkt4": "trygdeordningar du kan ha rett til i andre land",
     "dinePersonopplysninger.avsnitt.lagring.html":
         "Dersom du sender inn søknaden, blir opplysningar du har gitt i søknaden lagra i tråd med arkivlova.",
     "dinePersonopplysninger.avsnitt.lagring.tittel": "Lagring av opplysningar",
     "dinePersonopplysninger.avsnitt.personvernerklaringen.html":
-        "<p>Du kan lese meir om korleis NAV behandlar personopplysningar i Arbeids- og velferdsetatens personvernerklæring på <a class=\"lenke\"rel=\"noopener\"href=\"https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten\">nav.no/personvern.</a></p>",
+        "Du kan lese meir om korleis NAV behandlar personopplysningar i Arbeids- og velferdsetatens personvernerklæring på <a>nav.no/personvern.</a>",
     "dinePersonopplysninger.avsnitt.personvernerklaringen.tittel": "Personvernerklæringa i NAV",
-    "dinePersonopplysninger.avsnitt.svarPaSoknaden.html":
-        "<p>Når søknaden din er behandla, får du eit vedtaksbrev. Det fortel deg om</p><ul><li>grunngivinga for avgjerda</li><li>korleis du får innsyn i saksbehandlinga og reglane som er blitt brukte</li><li>korleis du kan klage dersom du er ueinig</li></ul>",
     "dinePersonopplysninger.avsnitt.svarPaSoknaden.tittel": "Svar på søknaden",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.del1":
+        "Når søknaden din er behandla, får du eit vedtaksbrev. Det fortel deg om",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt1": "grunngivinga for avgjerda",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt2":
+        "korleis du får innsyn i saksbehandlinga og reglane som er blitt brukte",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt3": "korleis du kan klage dersom du er ueinig",
     "dinePersonopplysninger.behandling.html":
-        "<p>NAV hentar inn og mottar opplysningar om deg når du sender inn ein søknad. Det er nødvendig for at du skal kunne få rett teneste og rette ytingar.</p><p>Du har valt å søkje om foreldrepengar. Det er ei yting frå folketrygda som du kan få dersom du fyller vilkåra. Vilkåra står på <a href=\"https://www.nav.no/foreldrepengar\" class=\"lenke\"rel=\"noopener\">nav.no/foreldrepenger</a>.</p>",
+        "NAV hentar inn og mottar opplysningar om deg når du sender inn ein søknad. Det er nødvendig for at du skal kunne få rett teneste og rette ytingar. Du har valt å søkje om foreldrepengar. Det er ei yting frå folketrygda som du kan få dersom du fyller vilkåra. Vilkåra står på <a>nav.no/foreldrepenger</a>.",
     "dinePersonopplysninger.sectionheading": "Slik behandlar NAV personopplysningane dine",
     "dinePlikter.listeElement.1":
         "Eg forstår at dersom eg gir urette opplysningar eller held tilbake opplysningar kan det få konsekvensar for retten min til foreldrepengar.",
@@ -176,7 +191,7 @@
         "Du må orientere {navn} om søknaden, før du kan sende inn søknaden.",
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er de nære venner eller i familie?",
     "barnFødt.infoPrematuruker":
-        "Dersom barnet blir født før 33. svangerskapsveke, blir perioden med foreldrepengar utvida med same talet veker og dagar som barnet er født før termindato.<br /><br /> Foreldrepengane blir utvida med same perioden uavhengig av om de får eitt eller fleire barn, eller om de har 100 prosent foreldrepengar eller 80 prosent foreldrepengar.",
+        "Dersom barnet blir født før 33. svangerskapsveke, blir perioden med foreldrepengar utvida med same talet veker og dagar som barnet er født før termindato. Foreldrepengane blir utvida med same perioden uavhengig av om de får eitt eller fleire barn, eller om de har 100 prosent foreldrepengar eller 80 prosent foreldrepengar.",
     "erBarnetFødt.spørsmål": "Er barnet født?",
     "erBarnetFødt.spørsmål.veileder.medMorEllerFar":
         "Du kan dessverre ikkje søkje før barnet er født. Unntaket er dersom mor er sjuk eller innlagd på sjukehus eller helseinstitusjon. Du må fylle ut søknaden på papir og sende han i posten.{ lenke }",
