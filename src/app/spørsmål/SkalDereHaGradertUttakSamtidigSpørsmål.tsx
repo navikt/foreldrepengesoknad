@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 
@@ -8,10 +8,12 @@ interface SkalDereHaGradertUttakSamtidigSpørsmålProps {
     onChange: (samtidigGradertUttak: boolean) => void;
 }
 
-type Props = SkalDereHaGradertUttakSamtidigSpørsmålProps & InjectedIntlProps;
+type Props = SkalDereHaGradertUttakSamtidigSpørsmålProps;
 
 const SkalDereHaGradertUttakSamtidigSpørsmål = (props: Props) => {
-    const { samtidigGradertUttak, onChange, intl } = props;
+    const { samtidigGradertUttak, onChange } = props;
+    const intl = useIntl();
+
     return (
         <JaNeiSpørsmål
             spørsmål={getMessage(intl, 'skalDereHaGradertUttakSamtidig.spørsmål')}
@@ -22,4 +24,4 @@ const SkalDereHaGradertUttakSamtidigSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(SkalDereHaGradertUttakSamtidigSpørsmål);
+export default SkalDereHaGradertUttakSamtidigSpørsmål;

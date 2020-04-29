@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import Modal from 'nav-frontend-modal';
 import { Undertittel } from 'nav-frontend-typografi';
 import classnames from 'classnames';
@@ -24,11 +24,13 @@ export interface ModalFormProps {
     cancelLabel?: string;
     onRequestClose?: () => void;
     onSubmit: () => void;
+    intl: IntlShape;
+    children?: React.ReactNode;
 }
 
 const cls = BEMHelper('modalForm');
 
-type Props = ModalFormProps & InjectedIntlProps;
+type Props = ModalFormProps;
 
 class ModalForm extends React.Component<Props, {}> {
     constructor(props: Props) {
@@ -57,7 +59,7 @@ class ModalForm extends React.Component<Props, {}> {
             summary,
             dialogSize = 'large',
             noSummary,
-            renderFormButtons
+            renderFormButtons,
         } = this.props;
 
         return (
@@ -67,12 +69,14 @@ class ModalForm extends React.Component<Props, {}> {
                 onRequestClose={this.handleOnRequestClose}
                 closeButton={true}
                 shouldCloseOnOverlayClick={false}
-                className={classnames(cls.block, cls.modifier(dialogSize))}>
+                className={classnames(cls.block, cls.modifier(dialogSize))}
+            >
                 <div className={cls.element('content')}>
                     <ValiderbarForm
                         onSubmit={this.handleOnSubmit}
                         noSummary={noSummary}
-                        summaryTitle={summary ? summary.title : undefined}>
+                        summaryTitle={summary ? summary.title : undefined}
+                    >
                         <Undertittel className={cls.element('title')}>{title}</Undertittel>
                         <div className="blokk-m">{children}</div>
                         {renderFormButtons && (
@@ -82,16 +86,17 @@ class ModalForm extends React.Component<Props, {}> {
                                         type="standard"
                                         htmlType="button"
                                         className={cls.element('cancelButton')}
-                                        onClick={this.handleOnRequestClose}>
+                                        onClick={this.handleOnRequestClose}
+                                    >
                                         {cancelLabel ||
                                             intl.formatMessage({
-                                                id: 'komponent.modalForm.cancelLabel'
+                                                id: 'komponent.modalForm.cancelLabel',
                                             })}
                                     </Knapp>
                                     <Hovedknapp className={cls.element('submitButton')}>
                                         {submitLabel ||
                                             intl.formatMessage({
-                                                id: 'komponent.modalForm.submitLabel'
+                                                id: 'komponent.modalForm.submitLabel',
                                             })}
                                     </Hovedknapp>
                                 </Knapperad>

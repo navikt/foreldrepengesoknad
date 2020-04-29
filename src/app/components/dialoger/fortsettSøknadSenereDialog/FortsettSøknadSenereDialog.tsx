@@ -2,20 +2,21 @@ import * as React from 'react';
 import BekreftDialog from 'common/components/dialog/BekreftDialog';
 import { Undertittel, Normaltekst } from 'nav-frontend-typografi';
 import Block from 'common/components/block/Block';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
 export interface Props {
     synlig: boolean;
     onFortsettSøknadSenere: () => void;
     onFortsettSøknad: () => void;
+    intl: IntlShape;
 }
 
-const FortsettSøknadSenereDialog: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const FortsettSøknadSenereDialog: React.StatelessComponent<Props> = ({
     intl,
     synlig,
     onFortsettSøknadSenere,
-    onFortsettSøknad
+    onFortsettSøknad,
 }) => (
     <>
         <BekreftDialog
@@ -26,7 +27,8 @@ const FortsettSøknadSenereDialog: React.StatelessComponent<Props & InjectedIntl
             contentLabel={getMessage(intl, 'fortsettSøknadSenereDialog.tittel')}
             onBekreft={onFortsettSøknadSenere}
             størrelse="30"
-            onRequestClose={onFortsettSøknad}>
+            onRequestClose={onFortsettSøknad}
+        >
             <Block margin="xs">
                 <Undertittel tag="h1">{getMessage(intl, 'fortsettSøknadSenereDialog.tittel')}</Undertittel>
             </Block>

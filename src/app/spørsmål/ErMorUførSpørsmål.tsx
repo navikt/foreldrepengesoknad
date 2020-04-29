@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 
@@ -9,10 +9,11 @@ interface ErMorUførProps {
     onChange: (erFrilanser: boolean) => void;
 }
 
-type Props = ErMorUførProps & InjectedIntlProps;
+type Props = ErMorUførProps;
 
 const ErMorUfør = (props: Props) => {
-    const { onChange, navn, intl, erUfør } = props;
+    const { onChange, navn, erUfør } = props;
+    const intl = useIntl();
 
     return (
         <JaNeiSpørsmål
@@ -24,4 +25,4 @@ const ErMorUfør = (props: Props) => {
     );
 };
 
-export default injectIntl(ErMorUfør);
+export default ErMorUfør;

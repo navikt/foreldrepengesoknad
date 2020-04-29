@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import Select from 'common/components/skjema/wrappers/Select';
 import { Validator } from 'common/lib/validation/types';
 import { SelectChangeEvent } from 'common/types/Events';
@@ -13,9 +13,10 @@ interface StateProps {
     onChange: (value: string, event?: React.ChangeEvent<HTMLSelectElement>) => void;
     infotekst?: string;
     visBareEuOgEftaLand?: boolean;
+    intl: IntlShape;
 }
 
-type Props = StateProps & InjectedIntlProps;
+type Props = StateProps;
 
 interface CountryOptionsCache {
     locale: string;
@@ -30,7 +31,7 @@ class Landvelger extends React.Component<Props> {
         this.updateCache = this.updateCache.bind(this);
     }
 
-    updateCache(intl: InjectedIntl) {
+    updateCache(intl: IntlShape) {
         this.countryOptionsCache = {
             locale: intl.locale,
             options: createCountryOptions(this.props.visBareEuOgEftaLand ? this.props.visBareEuOgEftaLand : false, intl)
@@ -52,7 +53,8 @@ class Landvelger extends React.Component<Props> {
                 {...restProps}
                 infotekst={infotekst}
                 onChange={(e: SelectChangeEvent) => onChange(e.target.value, e)}
-                validators={validators}>
+                validators={validators}
+            >
                 <option value="" />
                 {this.getCountryOptions()}
             </Select>
@@ -104,7 +106,7 @@ const filteredListEØSCountries = (countryOptionValue: string, shouldFilter?: bo
     }
 };
 
-const createCountryOptions = (visBareEuOgEftaLand: boolean, intl: InjectedIntl): React.ReactNode[] => {
+const createCountryOptions = (visBareEuOgEftaLand: boolean, intl: IntlShape): React.ReactNode[] => {
     const språk = intl.locale;
     const isoCodeIndex = 0;
     const countryNameIndex = 1;

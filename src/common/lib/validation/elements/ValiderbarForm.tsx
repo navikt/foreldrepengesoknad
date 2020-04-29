@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ValidationResult, SummaryError, ValidatorFailText } from '../types/index';
 import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 
 export type FormSubmitEvent = React.FormEvent<HTMLFormElement>;
 
@@ -14,6 +14,11 @@ export interface ValiderbarFormProps {
     id?: string;
     onValidationResult?: (result: SummaryError[]) => void;
     runValidationOnRegister?: boolean;
+    children?: React.ReactNode;
+}
+
+interface IntlProp {
+    intl: IntlShape;
 }
 
 export interface ValidFormContextInterface {
@@ -40,7 +45,7 @@ interface ValiderbarFormState {
     failedSubmit: boolean;
 }
 
-type Props = ValiderbarFormProps & InjectedIntlProps;
+type Props = ValiderbarFormProps & IntlProp;
 
 class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
     components: ValidatableComponent[];
@@ -58,13 +63,13 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
             onChange: this.onChange.bind(this),
             onBlur: this.onBlur.bind(this),
             validateField: this.validateField.bind(this),
-            validateAll: this.validateAll.bind(this)
+            validateAll: this.validateAll.bind(this),
         };
 
         this.state = {
             results: [],
             valid: true,
-            failedSubmit: false
+            failedSubmit: false,
         };
     }
 
@@ -93,7 +98,7 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
             }
         } else {
             this.setState({
-                failedSubmit: true
+                failedSubmit: true,
             });
         }
     }
@@ -125,7 +130,7 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
                 this.setState({
                     results,
                     valid,
-                    failedSubmit: this.state.failedSubmit && !valid
+                    failedSubmit: this.state.failedSubmit && !valid,
                 });
                 if (this.props.onValidationResult) {
                     this.props.onValidationResult(this.mapResultsToErrorSummary());
@@ -141,7 +146,7 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
         this.setState({
             results: results.slice(),
             valid,
-            failedSubmit: this.state.failedSubmit && !valid
+            failedSubmit: this.state.failedSubmit && !valid,
         });
         if (this.props.onValidationResult) {
             this.props.onValidationResult(this.mapResultsToErrorSummary());
@@ -173,7 +178,7 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
         // Oppdater state
         this.setState({
             results,
-            valid
+            valid,
         });
     }
 
@@ -186,17 +191,19 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
     }
 
     mapResultsToErrorSummary(): SummaryError[] {
-        return this.state.results.filter((result) => !result.valid).map((result) => {
-            const failedTest = result.tests.find((test: any) => !test.verdict);
-            const text =
-                failedTest !== undefined
-                    ? this.getFailedText(failedTest.failText)
-                    : this.props.intl.formatMessage({ id: 'validerbarForm.ukjentFeil' });
-            return {
-                name: result.name,
-                text
-            };
-        });
+        return this.state.results
+            .filter((result) => !result.valid)
+            .map((result) => {
+                const failedTest = result.tests.find((test: any) => !test.verdict);
+                const text =
+                    failedTest !== undefined
+                        ? this.getFailedText(failedTest.failText)
+                        : this.props.intl.formatMessage({ id: 'validerbarForm.ukjentFeil' });
+                return {
+                    name: result.name,
+                    text,
+                };
+            });
     }
 
     render() {

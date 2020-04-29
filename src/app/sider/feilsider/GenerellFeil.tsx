@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import Applikasjonsside from '../../components/applikasjon/applikasjonsside/Applikasjonsside';
 import DocumentTitle from 'react-document-title';
 import Feilsidemelding from 'common/components/feilsidemelding/Feilsidemelding';
@@ -10,9 +10,10 @@ import { History } from 'history';
 
 interface GenerellFeilProps {
     history: History;
+    intl: IntlShape;
 }
 
-type Props = GenerellFeilProps & InjectedIntlProps;
+type Props = GenerellFeilProps;
 const GenerellFeil: React.StatelessComponent<Props> = (props: Props) => {
     const errorMessage =
         props.history.location.state && props.history.location.state.errorMessage

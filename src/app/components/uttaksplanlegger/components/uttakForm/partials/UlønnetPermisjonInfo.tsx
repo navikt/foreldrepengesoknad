@@ -1,21 +1,36 @@
 import * as React from 'react';
-import { FormattedHTMLMessage, injectIntl, InjectedIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 import Block from 'common/components/block/Block';
 
-interface Props {
-    intl: InjectedIntl;
-}
+const UlønnetPermisjonInfo = () => {
+    const intl = useIntl();
 
-const UlønnetPermisjonInfo: React.FunctionComponent<Props> = ({ intl }) => {
     return (
         <UtvidetInformasjon apneLabel={intl.formatMessage({ id: 'uttaksplan.ulønnetPermisjonInfo.tittel' })}>
             <Block margin="xs">
-                <FormattedHTMLMessage id="uttaksplan.ulønnetPermisjonInfo.del1" />
+                <FormattedMessage
+                    id="uttaksplan.ulønnetPermisjonInfo.del1"
+                    values={{ b: (msg: any) => <b>{msg}</b> }}
+                />
             </Block>
-            <FormattedHTMLMessage id="uttaksplan.ulønnetPermisjonInfo.del2" />
+            <FormattedMessage
+                id="uttaksplan.ulønnetPermisjonInfo.del2"
+                values={{
+                    a: (msg: any) => (
+                        <a
+                            href="https://www.nav.no/no/Person/Arbeid/Sykmeldt%2C+arbeidsavklaringspenger+og+yrkesskade/Sykepenger/Sykepenger+til+sarskilte+grupper#chapter-5"
+                            className="lenke"
+                            rel="noopener"
+                            target="_blank"
+                        >
+                            {msg}
+                        </a>
+                    ),
+                }}
+            />
         </UtvidetInformasjon>
     );
 };
 
-export default injectIntl(UlønnetPermisjonInfo);
+export default UlønnetPermisjonInfo;

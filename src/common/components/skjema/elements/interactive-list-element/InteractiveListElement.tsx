@@ -3,7 +3,7 @@ import Normaltekst from 'nav-frontend-typografi/lib/normaltekst';
 import CustomSVG from 'common/components/customSvg/CustomSVG';
 import BEMHelper from 'common/util/bem';
 import { default as Etikett, EtikettBaseProps } from 'nav-frontend-etiketter';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 
 import './interactiveListElement.less';
 import getMessage from 'common/util/i18nUtils';
@@ -16,6 +16,10 @@ export interface InteractiveListElementProps {
     deleteButtonAriaText?: string;
 }
 
+interface IntlProp {
+    intl: IntlShape;
+}
+
 interface AllListElementProps extends InteractiveListElementProps {
     title: string;
     text: string;
@@ -25,7 +29,7 @@ interface AllListElementProps extends InteractiveListElementProps {
 
 const bem = BEMHelper('interactiveListElement');
 
-class InteractiveListElement extends React.Component<AllListElementProps & InjectedIntlProps> {
+class InteractiveListElement extends React.Component<AllListElementProps & IntlProp> {
     render() {
         const {
             title,
@@ -36,7 +40,7 @@ class InteractiveListElement extends React.Component<AllListElementProps & Injec
             editButtonAriaText,
             onDelete,
             onEdit,
-            intl
+            intl,
         } = this.props;
         return (
             <li className={bem.block}>
@@ -46,7 +50,8 @@ class InteractiveListElement extends React.Component<AllListElementProps & Injec
                         type="button"
                         className={bem.element('editButton')}
                         onClick={onEdit}
-                        aria-label={editButtonAriaText || getMessage(intl, 'rediger')}>
+                        aria-label={editButtonAriaText || getMessage(intl, 'rediger')}
+                    >
                         <CustomSVG className={bem.element('editButton__icon')} iconRef={pencil} size={24} />
                     </button>
                 </div>
@@ -57,7 +62,8 @@ class InteractiveListElement extends React.Component<AllListElementProps & Injec
                         className={bem.element('deleteButton')}
                         onClick={onDelete}
                         type="button"
-                        aria-label={deleteButtonAriaText}>
+                        aria-label={deleteButtonAriaText}
+                    >
                         {deleteLinkText}
                     </button>
                 </div>

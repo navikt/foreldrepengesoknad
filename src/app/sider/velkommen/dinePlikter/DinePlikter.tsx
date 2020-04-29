@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { Normaltekst } from 'nav-frontend-typografi';
 import getMessage from 'common/util/i18nUtils';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, useIntl } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
 import lenker from '../../../util/routing/lenker';
 
-type Props = InjectedIntlProps;
-const DinePlikter = (props: Props) => {
-    const { intl } = props;
+const DinePlikter = () => {
+    const intl = useIntl();
     return (
         <article className="velkommenDinePlikter">
             <ul>

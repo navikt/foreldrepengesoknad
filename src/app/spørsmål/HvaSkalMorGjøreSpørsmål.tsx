@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import { MorsAktivitet } from '../types/uttaksplan/periodetyper';
 import Select from 'common/components/skjema/wrappers/Select';
 import getMessage from 'common/util/i18nUtils';
@@ -15,9 +15,10 @@ interface HvaSkalMorGjøreSpørsmålProps {
     morsAktivitetIPerioden?: MorsAktivitet;
     navnPåForeldre: NavnISøknaden;
     onChange: (morsAktivitetIPerioden: MorsAktivitet) => void;
+    intl: IntlShape;
 }
 
-type Props = HvaSkalMorGjøreSpørsmålProps & InjectedIntlProps;
+type Props = HvaSkalMorGjøreSpørsmålProps;
 
 class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
     constructor(props: Props) {
@@ -40,7 +41,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                 getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt1'),
                 getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt2'),
                 getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt3'),
-                getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt4')
+                getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt4'),
             ];
 
             return (
@@ -89,7 +90,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                 getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt1'),
                 getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt2'),
                 getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt3'),
-                getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4')
+                getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4'),
             ];
 
             return (
@@ -130,7 +131,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                         value={morsAktivitetIPerioden}
                         name="hvaSkalMorGjøre.spørsmål"
                         label={getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål', {
-                            navnMor: navnPåForeldre.mor.fornavn
+                            navnMor: navnPåForeldre.mor.fornavn,
                         })}
                         onChange={(e: SelectChangeEvent) => onChange(e.target.value as MorsAktivitet)}
                         validators={[
@@ -139,8 +140,8 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                                     morsAktivitetIPerioden !== undefined &&
                                     morsAktivitetIPerioden !== MorsAktivitet.Uføre &&
                                     morsAktivitetIPerioden.length > 0,
-                                failText: getMessage(intl, 'påkrevd')
-                            }
+                                failText: getMessage(intl, 'påkrevd'),
+                            },
                         ]}
                     >
                         <option value="" />
@@ -150,7 +151,21 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                 <Block visible={visVeileder} margin="none">
                     <Veilederpanel svg={<Veileder farge="lilla" stil="kompakt" />}>
                         <span>{this.getVeilederTekst()}</span>
-                        <FormattedHTMLMessage id="aktivitetskrav.lesmer" values={{ link: lenker.morsAktivitetskrav }} />
+                        <FormattedMessage
+                            id="aktivitetskrav.lesmer"
+                            values={{
+                                a: (msg: any) => (
+                                    <a
+                                        href={lenker.morsAktivitetskrav}
+                                        className="lenke"
+                                        rel="noopener"
+                                        target="_blank"
+                                    >
+                                        {msg}
+                                    </a>
+                                ),
+                            }}
+                        />
                     </Veilederpanel>
                 </Block>
             </>

@@ -3,7 +3,7 @@ import moment from 'moment';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import { DateValue } from '../types/common';
 import { fødselsdatoAvgrensninger, getFødselsdatoRegler } from '../util/validation/fødselsdato';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { Validator } from 'common/lib/validation/types';
 import { Avgrensninger } from 'common/types';
@@ -23,9 +23,10 @@ export interface FødselsdatoerSpørsmålProps {
     datovalidatorer?: Validator[];
     gjelderAdopsjon?: boolean;
     erFarMedmor?: boolean;
+    intl: IntlShape;
 }
 
-type Props = FødselsdatoerSpørsmålProps & InjectedIntlProps;
+type Props = FødselsdatoerSpørsmålProps;
 
 const getKey = (idx: number) => `fødselsdatoer.flere.${idx}`;
 

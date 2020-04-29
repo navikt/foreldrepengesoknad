@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import BEMHelper from 'common/util/bem';
 
 import { getVarighetString } from 'common/util/intlUtils';
@@ -15,16 +15,12 @@ export interface Props {
     uttak: Stønadskontouttak;
     navnPåForeldre: NavnPåForeldre;
     erEndringssøknad: boolean;
+    intl: IntlShape;
 }
 
 const BEM = BEMHelper('kontostatus');
 
-const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({
-    uttak,
-    navnPåForeldre,
-    erEndringssøknad,
-    intl
-}) => {
+const Kontostatus: React.StatelessComponent<Props> = ({ uttak, navnPåForeldre, erEndringssøknad, intl }) => {
     if (erEndringssøknad && uttak.konto === StønadskontoType.ForeldrepengerFørFødsel) {
         uttak.dager = 0;
     }
@@ -43,7 +39,8 @@ const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({
                 </div>
                 <strong
                     className={kontoErOvertrukket ? BEM.element('dagerOvertrukket') : BEM.element('dager')}
-                    data-name={uttak.konto}>
+                    data-name={uttak.konto}
+                >
                     {kontoErOvertrukket ? `- ${varighetString}` : varighetString}
                 </strong>
             </div>

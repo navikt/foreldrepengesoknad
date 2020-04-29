@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 import UttaksplanSkjemaSpørsmål, {
-    UttaksplanSkjemaspørsmålProps
+    UttaksplanSkjemaspørsmålProps,
 } from '../steg/uttaksplanSkjema/UttaksplanSkjemaSpørsmål';
 
-type Props = UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
+type Props = UttaksplanSkjemaspørsmålProps;
 
 const PlanlagtOppholdIUttakSpørsmål = (props: Props) => {
-    const { visible, intl } = props;
+    const { visible } = props;
+    const intl = useIntl();
 
     return (
         <UttaksplanSkjemaSpørsmål
@@ -26,4 +27,4 @@ const PlanlagtOppholdIUttakSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(PlanlagtOppholdIUttakSpørsmål);
+export default PlanlagtOppholdIUttakSpørsmål;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { NavnPåForeldre } from 'common/types';
 import { SummaryError } from 'common/lib/validation/types';
 import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
@@ -16,6 +16,7 @@ interface OwnProps {
     navnPåForeldre: NavnPåForeldre;
     erSynlig?: boolean;
     onErrorClick: (periodeId: string) => void;
+    intl: IntlShape;
 }
 
 interface PeriodeRelatertFeil {
@@ -24,7 +25,7 @@ interface PeriodeRelatertFeil {
 
 type UttaksplanValideringFeil = SummaryError<PeriodeRelatertFeil>;
 
-export type Props = OwnProps & InjectedIntlProps;
+export type Props = OwnProps;
 
 class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
     constructor(props: Props) {

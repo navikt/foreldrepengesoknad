@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import SlettKnapp from '../../../../../common/components/slettKnapp/SlettKnapp';
 
 import NavFrontendSpinner from 'nav-frontend-spinner';
@@ -17,9 +17,10 @@ interface OwnProps {
     attachment: Attachment;
     showFileSize?: boolean;
     onDelete?: (file: Attachment) => void;
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 const AttachmentListElement: React.StatelessComponent<Props> = ({ attachment, showFileSize, onDelete, intl }) => {
     const BEM = BEMHelper('attachment');

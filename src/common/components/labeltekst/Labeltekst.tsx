@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, MessageValue } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import './labeltekst.less';
+
+type MessageValue = string | number | boolean | Date | null | undefined;
 
 interface OwnProps {
     children?: React.ReactNode;
@@ -9,10 +11,12 @@ interface OwnProps {
     intlValue?: { [key: string]: MessageValue };
 }
 
-export type Props = OwnProps & InjectedIntlProps;
+export type Props = OwnProps;
 
-const Labeltekst: React.StatelessComponent<Props> = ({ children, intlId, intlValue, intl }) => (
-    <span className="labeltext">{intlId ? intl.formatMessage({ id: intlId }, intlValue) : children}</span>
-);
+const Labeltekst: React.StatelessComponent<Props> = ({ children, intlId, intlValue }) => {
+    const intl = useIntl();
 
-export default injectIntl(Labeltekst);
+    return <span className="labeltext">{intlId ? intl.formatMessage({ id: intlId }, intlValue) : children}</span>;
+};
+
+export default Labeltekst;

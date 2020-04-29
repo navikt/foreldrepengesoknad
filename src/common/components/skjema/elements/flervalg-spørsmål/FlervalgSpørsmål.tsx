@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import RadioPanelGruppe from 'common/components/skjema/wrappers/RadioPanelGruppe';
 import getMessage from 'common/util/i18nUtils';
 import { Validator } from 'common/lib/validation/types';
@@ -17,14 +17,15 @@ interface FlervalgSpørsmålProps {
     onChange: (verdi: string) => void;
 }
 
-type Props = FlervalgSpørsmålProps & InjectedIntlProps;
+type Props = FlervalgSpørsmålProps;
 
-const getDefaultValidator = (intl: InjectedIntl, valgtVerdi?: string): Validator[] => {
+const getDefaultValidator = (valgtVerdi?: string): Validator[] => {
+    const intl = useIntl();
     return [
         {
             test: () => valgtVerdi !== undefined,
-            failText: getMessage(intl, 'radiopanelgruppe.required.feilmelding')
-        }
+            failText: getMessage(intl, 'radiopanelgruppe.required.feilmelding'),
+        },
     ];
 };
 
@@ -39,7 +40,6 @@ const FlervalgSpørsmål = (props: Props) => {
         clsName,
         toKolonner = false,
         validators,
-        intl
     } = props;
 
     return (
@@ -52,9 +52,9 @@ const FlervalgSpørsmål = (props: Props) => {
             radios={alternativer}
             fieldsetClassname={clsName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>, v: string) => onChange(v)}
-            validators={validators !== undefined ? validators : getDefaultValidator(intl, valgtVerdi)}
+            validators={validators !== undefined ? validators : getDefaultValidator(valgtVerdi)}
         />
     );
 };
 
-export default injectIntl(FlervalgSpørsmål);
+export default FlervalgSpørsmål;

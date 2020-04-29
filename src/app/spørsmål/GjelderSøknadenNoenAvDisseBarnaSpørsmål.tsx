@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
 import { formaterNavn } from '../util/domain/personUtil';
 import { InputChangeEvent } from '../../common/types/Events';
@@ -12,9 +12,10 @@ interface GjelderSøknadenNoenAvDisseBarnaSpørsmålProps {
     valgteBarn: RegistrertBarn[];
     onChange: (barn: RegistrertBarn, checked: boolean) => void;
     disabled: boolean;
+    intl: IntlShape;
 }
 
-type Props = GjelderSøknadenNoenAvDisseBarnaSpørsmålProps & InjectedIntlProps;
+type Props = GjelderSøknadenNoenAvDisseBarnaSpørsmålProps;
 
 const erBarnValgt = (barn: RegistrertBarn, valgteBarn: RegistrertBarn[]): boolean => {
     return valgteBarn.find((b) => b.fnr === barn.fnr) !== undefined;
@@ -30,7 +31,7 @@ class GjelderSøknadenNoenAvDisseBarnaSpørsmål extends React.Component<Props> 
                 label: formatertNavn,
                 value: registrertBarn.fnr,
                 checked: erBarnValgt(registrertBarn, valgteBarn),
-                subtext: formatDate(registrertBarn.fødselsdato)
+                subtext: formatDate(registrertBarn.fødselsdato),
             };
         });
     }

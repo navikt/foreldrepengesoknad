@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { useIntl, IntlShape } from 'react-intl';
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton';
 const { NedChevron } = require('nav-frontend-chevron');
 import 'nav-frontend-lenker-style';
@@ -24,7 +24,7 @@ const getLanguageCodeFromValue = (value: string) => {
     }
 };
 
-const getLanguageTextFromCode = (intl: InjectedIntl, code: string) => {
+const getLanguageTextFromCode = (intl: IntlShape, code: string) => {
     if (code === 'nb') {
         return getMessage(intl, 'languageToggle.bokmål');
     } else if (code === 'nn') {
@@ -34,7 +34,7 @@ const getLanguageTextFromCode = (intl: InjectedIntl, code: string) => {
     }
 };
 
-const renderMenuItem = (intl: InjectedIntl, languageCode: string) => {
+const renderMenuItem = (intl: IntlShape, languageCode: string) => {
     return (
         <li key={languageCode}>
             <MenuItem className="languageToggle__menu__item">
@@ -51,14 +51,16 @@ const handleSelection = (value: JSX.Element[], e: any, toggleLanguage: any) => {
     toggleLanguage(getLanguageCodeFromValue(value[1].props.children));
 };
 
-const LanguageToggle: React.StatelessComponent<Props & InjectedIntlProps> = ({ intl, language, toggleLanguage }) => {
+const LanguageToggle: React.StatelessComponent<Props> = ({ language, toggleLanguage }) => {
+    const intl = useIntl();
     const menuLanguages = ['nb', 'nn'].filter((code) => code !== language);
 
     return (
         <div className="languageToggle">
             <Wrapper
                 className="languageToggle__wrapper"
-                onSelection={(value: JSX.Element[], e: any) => handleSelection(value, e, toggleLanguage)}>
+                onSelection={(value: JSX.Element[], e: any) => handleSelection(value, e, toggleLanguage)}
+            >
                 <Button className="languageToggle__button">
                     <div className="languageToggle__button__flag">
                         {language === 'en' ? <UKFlagSVG /> : <NorwayFlagSVG />}
@@ -75,4 +77,4 @@ const LanguageToggle: React.StatelessComponent<Props & InjectedIntlProps> = ({ i
         </div>
     );
 };
-export default injectIntl(LanguageToggle);
+export default LanguageToggle;

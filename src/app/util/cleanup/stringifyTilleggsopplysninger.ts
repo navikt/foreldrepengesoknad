@@ -1,12 +1,12 @@
 import { Tilleggsopplysninger, Tilleggsopplysning, Opplysning } from 'app/types/søknad/Søknad';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 
 const TIL_SAKSBEHANDLER = {
     'tilleggsopplysning.begrunnelseForSenEndring': 'Begrunnelse for å søke om utsettelse',
     'tilleggsopplysning.begrunnelseForSenEndring.SYKDOM': 'på grunn av sykdom tilbake i tid',
     'tilleggsopplysning.begrunnelseForSenEndring.UTTAK': 'på grunn av uttak mer enn tre måneder tilbake i tid',
     'tilleggsopplysning.begrunnelseForSenEndring.SYKDOM_OG_UTTAK':
-        'på grunn av sykdom tilbake i tid og uttak mer enn tre måneder tilbake i tid'
+        'på grunn av sykdom tilbake i tid og uttak mer enn tre måneder tilbake i tid',
 };
 
 export interface TilleggsopplysningMedBeskrivelse {
@@ -18,7 +18,7 @@ export interface TilleggsopplysningMedBeskrivelse {
 export const beskrivTilleggsopplysning = (
     opplysning: Opplysning,
     tilleggsopplysning: Tilleggsopplysning,
-    intl?: InjectedIntl
+    intl?: IntlShape
 ): TilleggsopplysningMedBeskrivelse => {
     const { tekst, ekstraInformasjon } = tilleggsopplysning;
 
@@ -26,7 +26,7 @@ export const beskrivTilleggsopplysning = (
     let beskrivelseAvOpplysning = TIL_SAKSBEHANDLER[beskrivelseMessageId];
     if (intl) {
         beskrivelseAvOpplysning = intl.formatMessage({
-            id: beskrivelseMessageId
+            id: beskrivelseMessageId,
         });
     }
 
@@ -35,7 +35,7 @@ export const beskrivTilleggsopplysning = (
     if (intl) {
         ekstraInfoTilSaksbehandling = ekstraInformasjon
             ? intl.formatMessage({
-                  id: ekstraMessageId
+                  id: ekstraMessageId,
               })
             : undefined;
     }
@@ -43,7 +43,7 @@ export const beskrivTilleggsopplysning = (
     return {
         beskrivelse: beskrivelseAvOpplysning,
         ekstraInformasjon: ekstraInfoTilSaksbehandling,
-        tekst
+        tekst,
     };
 };
 

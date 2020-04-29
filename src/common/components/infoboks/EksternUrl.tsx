@@ -1,6 +1,6 @@
 import React from 'react';
 import getMessage from 'common/util/i18nUtils';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 interface Props {
     tekst?: string;
@@ -8,15 +8,18 @@ interface Props {
     lenkeTekst: string;
 }
 
-const EksternUrl: React.StatelessComponent<Props & InjectedIntlProps> = ({ intl, tekst, url, lenkeTekst }) => (
-    <span>
-        {tekst && getMessage(intl, tekst)}
-        <a href={url} className="lenke" rel="noopener" target="_blank" style={{ marginLeft: 3 }}>
-            {lenkeTekst}
-            <EksternIkon />
-        </a>
-    </span>
-);
+const EksternUrl: React.StatelessComponent<Props> = ({ tekst, url, lenkeTekst }) => {
+    const intl = useIntl();
+    return (
+        <span>
+            {tekst && getMessage(intl, tekst)}
+            <a href={url} className="lenke" rel="noopener" target="_blank" style={{ marginLeft: 3 }}>
+                {lenkeTekst}
+                <EksternIkon />
+            </a>
+        </span>
+    );
+};
 
 const EksternIkon = () => (
     <svg
@@ -46,4 +49,4 @@ const EksternIkon = () => (
     </svg>
 );
 
-export default injectIntl(EksternUrl);
+export default EksternUrl;

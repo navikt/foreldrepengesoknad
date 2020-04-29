@@ -2,7 +2,7 @@ import * as React from 'react';
 import Modal from 'nav-frontend-modal';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import classNames from 'classnames';
-import { FormattedMessage, FormattedHTMLMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
 
 import BEMHelper from 'common/util/bem';
@@ -12,10 +12,9 @@ import AdvarselIkon from '../ikoner/AdvarselIkon';
 
 import './byttBrowserModal.less';
 
-type Props = InjectedIntlProps;
-
-const ByttBrowserModal: React.FunctionComponent<Props> = ({ intl }) => {
+const ByttBrowserModal = () => {
     const [isOpen, toggleIsOpen] = React.useState(shouldChangeBrowser());
+    const intl = useIntl();
     const cls = BEMHelper('bytt-browser-modal');
     return (
         <Modal
@@ -23,13 +22,14 @@ const ByttBrowserModal: React.FunctionComponent<Props> = ({ intl }) => {
             contentLabel={getMessage(intl, 'sesjonUtløpt.tittel')}
             closeButton={false}
             isOpen={isOpen}
-            onRequestClose={() => undefined}>
+            onRequestClose={() => undefined}
+        >
             <AdvarselIkon className={classNames(cls.element('ikon'), 'blokk-m')} />
             <Systemtittel className="blokk-m">
-                <FormattedHTMLMessage id="byttBrowser.tittel" />
+                <FormattedMessage id="byttBrowser.tittel" />
             </Systemtittel>
             <Normaltekst className="blokk-m">
-                <FormattedHTMLMessage id="byttBrowser.ingress" />
+                <FormattedMessage id="byttBrowser.ingress" />
             </Normaltekst>
             <div className={cls.element('ok-knapp')}>
                 <Hovedknapp className={cls.element('ok-knapp')} onClick={() => toggleIsOpen(false)}>
@@ -39,4 +39,4 @@ const ByttBrowserModal: React.FunctionComponent<Props> = ({ intl }) => {
         </Modal>
     );
 };
-export default injectIntl(ByttBrowserModal);
+export default ByttBrowserModal;

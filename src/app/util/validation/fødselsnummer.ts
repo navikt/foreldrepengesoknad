@@ -1,4 +1,4 @@
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import moment from 'moment';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
@@ -42,7 +42,7 @@ export const getFødselsnummerRegler = (
     fnr: string,
     utenlandskFnr: boolean,
     søkersFødselsnummer: string,
-    intl: InjectedIntl
+    intl: IntlShape
 ): Validator[] => {
     const intlKey = 'valideringsfeil.fødselsnummer';
     const isFødselsnummerValid = isFødselsnummerFormatValid(fnr);
@@ -52,15 +52,15 @@ export const getFødselsnummerRegler = (
             test: () =>
                 (!utenlandskFnr && isFødselsnummerValid !== false) ||
                 (utenlandskFnr === true && isUtenlandskFødselsnummerValid(fnr)),
-            failText: getMessage(intl, `${intlKey}.ugyldigFødselsnummer`)
+            failText: getMessage(intl, `${intlKey}.ugyldigFødselsnummer`),
         },
         {
             test: () => søkersFødselsnummer !== fnr,
-            failText: getMessage(intl, `${intlKey}.ugyldigEgetFødselsnummer`)
+            failText: getMessage(intl, `${intlKey}.ugyldigEgetFødselsnummer`),
         },
         {
             test: () => (!utenlandskFnr && isSixteenOrOlder(fnr, isFødselsnummerValid)) || utenlandskFnr === true,
-            failText: getMessage(intl, `${intlKey}.underSeksten`)
-        }
+            failText: getMessage(intl, `${intlKey}.underSeksten`),
+        },
     ];
 };

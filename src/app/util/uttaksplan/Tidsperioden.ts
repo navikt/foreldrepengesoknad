@@ -3,7 +3,7 @@ import { Holiday } from 'date-holidays';
 import { Tidsperiode } from 'common/types';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { Uttaksdagen } from './Uttaksdagen';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import getMessage from 'common/util/i18nUtils';
 import { dateIsSameOrBefore, dateIsSameOrAfter } from '../dates/dates';
@@ -17,11 +17,11 @@ export const Tidsperioden = (tidsperiode: Partial<Tidsperiode>) => ({
     setStartdato: (fom: Date) => (isValidTidsperiode(tidsperiode) ? flyttTidsperiode(tidsperiode, fom) : tidsperiode),
     setUttaksdager: (uttaksdager: number) =>
         tidsperiode.fom ? getTidsperiode(tidsperiode.fom, uttaksdager) : tidsperiode,
-    formaterString: (intl: InjectedIntl) => tidsperiodeToString(tidsperiode, intl),
-    formaterStringKort: (intl: InjectedIntl) => tidsperiodeToStringKort(tidsperiode, intl),
+    formaterString: (intl: IntlShape) => tidsperiodeToString(tidsperiode, intl),
+    formaterStringKort: (intl: IntlShape) => tidsperiodeToStringKort(tidsperiode, intl),
     erFomEllerEtterDato: (dato: Date) => erTidsperiodeFomEllerEtterDato(tidsperiode, dato),
     erFørDato: (dato: Date) => erTidsperiodeFomEllerEtterDato(tidsperiode, dato) === false,
-    inneholderDato: (dato: Date) => inneholderTidsperiodeDato(tidsperiode, dato)
+    inneholderDato: (dato: Date) => inneholderTidsperiodeDato(tidsperiode, dato),
 });
 
 function inneholderTidsperiodeDato(tidsperiode: Partial<Tidsperiode>, dato: Date) {
@@ -42,7 +42,7 @@ export function resetTidsperiodeTomIfBeforeFom(tidsperiode: Partial<Tidsperiode>
         tom:
             tidsperiode.fom && tidsperiode.tom && moment(tidsperiode.fom).isAfter(tidsperiode.tom, 'day')
                 ? tidsperiode.fom
-                : tidsperiode.tom
+                : tidsperiode.tom,
     };
 }
 
@@ -62,7 +62,7 @@ export function getTidsperiode(fom: Date, uttaksdager: number): Tidsperiode {
     }
     return {
         fom,
-        tom: Uttaksdagen(fom).leggTil(uttaksdager - 1)
+        tom: Uttaksdagen(fom).leggTil(uttaksdager - 1),
     };
 }
 
@@ -134,25 +134,25 @@ function erTidsperiodeUtenforTidsperiode(
     return false;
 }
 
-function tidsperiodeToString(tidsperiode: Partial<Tidsperiode>, intl: InjectedIntl) {
+function tidsperiodeToString(tidsperiode: Partial<Tidsperiode>, intl: IntlShape) {
     const { fom, tom } = tidsperiode;
     if (fom && tom && moment(fom).isSame(tom, 'day')) {
         return formaterDatoUtenDag(fom ? fom : tom);
     }
     return getMessage(intl, 'tidsperiode', {
         fom: fom ? formaterDatoUtenDag(fom) : '',
-        tom: tom ? formaterDatoUtenDag(tom) : ''
+        tom: tom ? formaterDatoUtenDag(tom) : '',
     });
 }
 
-function tidsperiodeToStringKort(tidsperiode: Partial<Tidsperiode>, intl: InjectedIntl) {
+function tidsperiodeToStringKort(tidsperiode: Partial<Tidsperiode>, intl: IntlShape) {
     const { fom, tom } = tidsperiode;
     if (fom && tom && moment(fom).isSame(tom, 'day')) {
         return formaterDatoUtenDag(fom ? fom : tom);
     }
     return getMessage(intl, 'tidsperiode.kort', {
         fom: fom ? formaterDatoUtenDag(fom) : '',
-        tom: tom ? formaterDatoUtenDag(tom) : ''
+        tom: tom ? formaterDatoUtenDag(tom) : '',
     });
 }
 

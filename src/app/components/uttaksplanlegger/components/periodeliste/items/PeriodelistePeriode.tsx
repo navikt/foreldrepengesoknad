@@ -4,7 +4,7 @@ import PeriodeHeader from '../elements/PeriodeHeader';
 import { NavnPåForeldre } from 'common/types';
 import { onToggleItemProp } from '../../../../elementer/toggleList/ToggleList';
 import { getPeriodeTittel } from '../../../../../util/uttaksplan';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import EndrePeriodeForm from '../../endrePeriodeForm/EndrePeriodeForm';
 import PeriodelisteToggleItem from '../elements/PeriodelisteToggleItem';
 import PeriodelisteItemWrapper from '../elements/PeriodelisteItemWrapper';
@@ -23,9 +23,10 @@ export interface Props {
     harMidlertidigOmsorg: boolean;
     updatePeriode: (periode: Periode) => void;
     deletePeriode: (periode: Periode) => void;
+    intl: IntlShape;
 }
 
-const PeriodelistePeriode: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const PeriodelistePeriode: React.StatelessComponent<Props> = ({
     id,
     periode,
     navnPåForeldre,

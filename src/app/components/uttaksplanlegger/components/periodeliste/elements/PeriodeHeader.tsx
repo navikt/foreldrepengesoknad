@@ -1,7 +1,7 @@
 import * as React from 'react';
 import BEMHelper from 'common/util/bem';
 import { getVarighetString } from 'common/util/intlUtils';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import {
     Periode,
     Periodetype,
@@ -25,6 +25,7 @@ export interface Props {
     annenForelderSamtidigUttakPeriode?: Periode;
     melding?: VeilederMessage;
     isOpen?: boolean;
+    intl: IntlShape;
 }
 
 const BEM = BEMHelper('periodelisteItemHeader');
@@ -75,7 +76,7 @@ export const getPeriodeIkon = (
     return undefined;
 };
 
-const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const PeriodeHeader: React.StatelessComponent<Props> = ({
     periode,
     navnPåForeldre,
     isOpen,

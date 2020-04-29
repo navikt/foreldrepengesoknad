@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
 import { date21DaysAgo, attenUkerPluss3, attenUkerPluss3Number, today, date3YearsAgo } from './values';
@@ -9,15 +9,15 @@ import { Avgrensninger } from 'common/types';
 
 export const termindatoAvgrensninger: Avgrensninger = {
     minDato: date21DaysAgo.toDate(),
-    maksDato: attenUkerPluss3.subtract(24, 'hours').toDate()
+    maksDato: attenUkerPluss3.subtract(24, 'hours').toDate(),
 };
 
 export const termindatoAvgrensningerFodsel: Avgrensninger = {
     minDato: date3YearsAgo.toDate(),
-    maksDato: attenUkerPluss3.subtract(24, 'hours').toDate()
+    maksDato: attenUkerPluss3.subtract(24, 'hours').toDate(),
 };
 
-export const getTermindatoRegler = (dato: DateValue, intl: InjectedIntl): Validator[] => {
+export const getTermindatoRegler = (dato: DateValue, intl: IntlShape): Validator[] => {
     const intlKey = 'valideringsfeil.termindato';
     const termindato = dato ? dato.toISOString() : undefined;
 
@@ -28,14 +28,14 @@ export const getTermindatoRegler = (dato: DateValue, intl: InjectedIntl): Valida
                 const wrappedTermindato = moment(termindato);
                 return moment.max(wrappedTermindato, date21DaysAgo).isSame(wrappedTermindato, 'day');
             },
-            failText: getMessage(intl, `${intlKey}.forTidlig`)
+            failText: getMessage(intl, `${intlKey}.forTidlig`),
         },
         {
             test: () => {
                 const uke22 = moment(termindato).subtract((attenUkerPluss3Number - 1) * 24, 'hours');
                 return moment.max(today, uke22).isSame(today, 'day');
             },
-            failText: getMessage(intl, `${intlKey}.duMåVæreIUke22`)
-        }
+            failText: getMessage(intl, `${intlKey}.duMåVæreIUke22`),
+        },
     ];
 };

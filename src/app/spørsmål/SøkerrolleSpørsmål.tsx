@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
+import { useIntl, IntlShape } from 'react-intl';
 import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import { SøkerRolle } from '../types/søknad/Søknad';
 import { RadioProps } from 'nav-frontend-skjema';
@@ -10,17 +10,18 @@ interface OwnProps {
     onChange: (rolle: SøkerRolle) => void;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
-const getRadioOptions = (roller: SøkerRolle[] = [], radioName: string, intl: InjectedIntl): RadioProps[] =>
+const getRadioOptions = (roller: SøkerRolle[] = [], radioName: string, intl: IntlShape): RadioProps[] =>
     roller.map((rolle) => ({
         label: intl.formatMessage({ id: `søkerrolle.rolle.${rolle}` }),
         value: rolle,
-        name: radioName
+        name: radioName,
     }));
 
 const SøkerrolleSpørsmål = (props: Props) => {
-    const { onChange, rolle, roller, intl } = props;
+    const { onChange, rolle, roller } = props;
+    const intl = useIntl();
     const radioName = 'søkerrolle';
 
     return (
@@ -34,4 +35,4 @@ const SøkerrolleSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(SøkerrolleSpørsmål);
+export default SøkerrolleSpørsmål;

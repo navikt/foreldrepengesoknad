@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { addLocaleData, IntlProvider as Provider } from 'react-intl';
+import { IntlProvider as Provider } from 'react-intl';
 import moment from 'moment';
-import * as nb from 'react-intl/locale-data/nb';
-import * as nn from 'react-intl/locale-data/nn';
 
 import nnMessages from './nn_NO.json';
 import nbMessages from './nb_NO.json';
@@ -21,7 +19,6 @@ moment.locale('nb');
 class IntlProvider extends React.Component<StateProps> {
     constructor(props: StateProps) {
         super(props);
-        addLocaleData([...nb, ...nn]);
     }
 
     render() {

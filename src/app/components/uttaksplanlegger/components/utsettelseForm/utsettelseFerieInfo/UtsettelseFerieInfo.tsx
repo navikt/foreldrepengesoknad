@@ -1,22 +1,22 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { getVarighetString } from 'common/util/intlUtils';
 import uttaksConstants from 'app/constants';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 
 export interface Props {
     feriedager: number;
+    intl: IntlShape;
 }
 
-const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({ feriedager, intl }) => {
+const Ferieinfo: React.StatelessComponent<Props> = ({ feriedager, intl }) => {
     if (feriedager <= uttaksConstants.MAKS_FERIEDAGER_ETT_ÅR) {
         return (
             <VeilederInfo
                 messages={[
                     {
                         type: 'normal',
-                        contentIntlKey: 'utsettelseskjema.veiledning.ferie',
-                        formatContentAsHTML: true
+                        contentIntlKey: 'utsettelseskjema.veiledning.ferie'
                     }
                 ]}
             />

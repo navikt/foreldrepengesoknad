@@ -1,4 +1,4 @@
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
 import { DateValue } from '../../types/common';
 import getMessage from 'common/util/i18nUtils';
@@ -8,32 +8,32 @@ import {
     dateIs3YearsAgoOrLaterRule,
     dateIsNotInFutureRule,
     notInFutureAvgrensning,
-    hasValueRule
+    hasValueRule,
 } from './common';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import { Avgrensninger } from 'common/types';
 
 export const fødselsdatoAvgrensninger: Avgrensninger = {
     minDato: date3YearsAgo.toDate(),
-    ...notInFutureAvgrensning
+    ...notInFutureAvgrensning,
 };
 
 export const getFødselsdatoRegler = (
     fødselsdato: DateValue,
     gjelderAdopsjon: boolean,
-    intl: InjectedIntl
+    intl: IntlShape
 ): Validator[] => {
     const intlKey = 'valideringsfeil.fodselsdato';
     const regler = [
         hasValueRule(fødselsdato, getMessage(intl, `${intlKey}.duMåOppgi`)),
-        dateIsNotInFutureRule(fødselsdato, getMessage(intl, `${intlKey}.måVæreIdagEllerTidligere`))
+        dateIsNotInFutureRule(fødselsdato, getMessage(intl, `${intlKey}.måVæreIdagEllerTidligere`)),
     ];
     if (gjelderAdopsjon) {
         regler.push(
             dateIs15YearsAnd3MonthsAgoOrLaterRule(
                 fødselsdato,
                 getMessage(intl, `${intlKey}.ikkeMerEnn15År3MndTilbake`, {
-                    dato: formaterDatoUtenDag(date15YearsAnd3MonthsAgo.toDate())
+                    dato: formaterDatoUtenDag(date15YearsAnd3MonthsAgo.toDate()),
                 })
             )
         );

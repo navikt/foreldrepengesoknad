@@ -2,9 +2,9 @@ import * as React from 'react';
 import {
     OppholdÅrsakType,
     TilgjengeligStønadskonto,
-    StønadskontoType
+    StønadskontoType,
 } from '../../../../../types/uttaksplan/periodetyper';
-import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { getNavnGenitivEierform } from '../../../../../util/tekstUtils';
 import { RadioProps } from 'nav-frontend-skjema';
@@ -16,9 +16,10 @@ export interface OwnProps {
     søkerErFarEllerMedmor: boolean;
     onChange: (årsak: OppholdÅrsakType) => void;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 const filterEgenKonto = (konto: TilgjengeligStønadskonto, søkerErFarEllerMedmor: boolean) => {
     return søkerErFarEllerMedmor
@@ -30,23 +31,23 @@ const createAlternative = (
     konto: TilgjengeligStønadskonto,
     søkerErFarEllerMedmor: boolean,
     navnAnnenForelder: string,
-    intl: InjectedIntl
+    intl: IntlShape
 ): RadioProps => {
     if (konto.konto === StønadskontoType.Fedrekvote || konto.konto === StønadskontoType.Mødrekvote) {
         return {
             label: getMessage(intl, 'stønadskontotype.foreldernavn.kvote', {
-                navn: getNavnGenitivEierform(navnAnnenForelder, intl.locale)
+                navn: getNavnGenitivEierform(navnAnnenForelder, intl.locale),
             }),
             value: søkerErFarEllerMedmor
                 ? OppholdÅrsakType.UttakMødrekvoteAnnenForelder
                 : OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
-            name: 'oppholdÅrsak'
+            name: 'oppholdÅrsak',
         };
     } else {
         return {
             label: getMessage(intl, 'stønadskontotype.FELLESPERIODE'),
             value: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
-            name: 'oppholdÅrsak'
+            name: 'oppholdÅrsak',
         };
     }
 };
@@ -55,7 +56,7 @@ const getAlternativer = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     søkerErFarEllerMedmor: boolean,
     navnAnnenForelder: string,
-    intl: InjectedIntl
+    intl: IntlShape
 ): RadioProps[] => {
     return tilgjengeligeStønadskontoer
         .filter(
@@ -72,7 +73,7 @@ const OppholdsårsakSpørsmål: React.StatelessComponent<Props> = ({
     navnAnnenForelder,
     søkerErFarEllerMedmor,
     tilgjengeligeStønadskontoer,
-    intl
+    intl,
 }) => (
     <>
         <FlervalgSpørsmål
