@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { useIntl, IntlShape } from 'react-intl';
 import { OverføringÅrsakType } from '../types/uttaksplan/periodetyper';
 import FlervalgSpørsmål from '../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import { getNavnGenitivEierform } from '../util/tekstUtils';
@@ -12,21 +12,22 @@ interface OverføringsårsakSpørsmålProps {
     visAleneomsorgSomMuligÅrsak: boolean;
 }
 
-type Props = OverføringsårsakSpørsmålProps & InjectedIntlProps;
+type Props = OverføringsårsakSpørsmålProps;
 
 const getOverføringsårsakAlternativ = (
     årsak: OverføringÅrsakType,
     annenForelderNavn: string,
     radioName: string,
-    intl: InjectedIntl
+    intl: IntlShape
 ): RadioProps => ({
     label: intl.formatMessage({ id: `overføringsårsaktype.${årsak}` }, { annenForelderNavn }),
     value: årsak,
-    name: radioName
+    name: radioName,
 });
 
 const OverføringsårsakSpørsmål = (props: Props) => {
-    const { årsak, annenForelderNavn, visAleneomsorgSomMuligÅrsak, intl, onChange } = props;
+    const { årsak, annenForelderNavn, visAleneomsorgSomMuligÅrsak, onChange } = props;
+    const intl = useIntl();
     const radioName = 'overføringsårsak';
 
     const alternativer = [
@@ -36,7 +37,7 @@ const OverføringsårsakSpørsmål = (props: Props) => {
             radioName,
             intl
         ),
-        getOverføringsårsakAlternativ(OverføringÅrsakType.sykdomAnnenForelder, annenForelderNavn, radioName, intl)
+        getOverføringsårsakAlternativ(OverføringÅrsakType.sykdomAnnenForelder, annenForelderNavn, radioName, intl),
     ];
 
     if (visAleneomsorgSomMuligÅrsak) {
@@ -63,4 +64,4 @@ const OverføringsårsakSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(OverføringsårsakSpørsmål);
+export default OverføringsårsakSpørsmål;

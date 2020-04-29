@@ -3,7 +3,7 @@ import { getStegConfig, StegConfigItem, StegID } from '../../../util/routing/ste
 import { History } from 'history';
 import FortsettKnapp from 'app/components/applikasjon/steg/fortsettKnapp/FortsettKnapp';
 import ValiderbarForm, { FormSubmitEvent, ValiderbarFormProps } from 'common/lib/validation/elements/ValiderbarForm';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { søknadStegPath } from '../../../steg/StegRoutes';
 import routeConfig from '../../../util/routing/routeConfig';
@@ -46,6 +46,10 @@ export interface StegProps {
     renderProp?: (props: RenderStegContentOptions) => React.ReactNode;
 }
 
+interface OwnProps {
+    intl: IntlShape;
+}
+
 interface StateProps {
     erEndringssøknad: boolean;
     erEnkelEndringssøknad?: boolean;
@@ -56,7 +60,7 @@ interface State {
     visFortsettSenereDialog: boolean;
 }
 
-type Props = StateProps & StegProps & InjectedIntlProps;
+type Props = StateProps & StegProps & OwnProps;
 
 class Steg extends React.Component<Props & DispatchProps, State> {
     constructor(props: Props & DispatchProps) {

@@ -1,7 +1,7 @@
 import { UttaksplanRegelgrunnlag } from '../types';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { getPeriodeTittel, getPeriodeForelderNavn } from 'app/util/uttaksplan';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from 'shared/regler/regelTypes';
@@ -28,9 +28,9 @@ export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: UttaksplanRe
                 intlKey: 'uttaksplan.validering.feil.periodeoverlapp.oppsummering',
                 renderAsHtml: true,
                 values: {
-                    periode: (intl: InjectedIntl) => getPeriodeTittel(intl, periode, navnPåForeldre),
-                    tidsperiode: (intl: InjectedIntl) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
-                    forelder: (intl: InjectedIntl) =>
+                    periode: (intl: IntlShape) => getPeriodeTittel(intl, periode, navnPåForeldre),
+                    tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
+                    forelder: (intl: IntlShape) =>
                         getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale)
                 }
             };

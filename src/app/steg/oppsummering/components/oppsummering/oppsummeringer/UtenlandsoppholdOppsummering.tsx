@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import InformasjonOmUtenlandsopphold, {
     Utenlandsopphold
@@ -38,8 +38,9 @@ const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (
     );
 };
 
-const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedIntlProps> = (props) => {
-    const { situasjon, intl, farEllerMedmor, familiehendelsedato } = props;
+const UtenlandsoppholdOppsummering: React.StatelessComponent<Props> = (props) => {
+    const { situasjon, farEllerMedmor, familiehendelsedato } = props;
+    const intl = useIntl();
     const { iNorgeNeste12Mnd, iNorgeSiste12Mnd, tidligereOpphold, senereOpphold } = props.informasjonOmUtenlandsopphold;
 
     return (
@@ -99,4 +100,4 @@ const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedInt
         </Oppsummeringsseksjon>
     );
 };
-export default injectIntl(UtenlandsoppholdOppsummering);
+export default UtenlandsoppholdOppsummering;

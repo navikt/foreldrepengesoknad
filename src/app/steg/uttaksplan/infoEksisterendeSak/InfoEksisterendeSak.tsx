@@ -6,7 +6,7 @@ import {
     isInfoPeriode
 } from '../../../types/uttaksplan/periodetyper';
 import { getAntallUker } from '../../../util/uttaksplan/stønadskontoer';
-import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedHTMLMessage } from 'react-intl';
+import { useIntl, IntlShape, FormattedMessage } from 'react-intl';
 import SituasjonSirkel from './illustrasjoner/situasjonSirkel/SituasjonSirkel';
 import UkerSirkel from './illustrasjoner/ukerSirkel/UkerSirkel';
 import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
@@ -36,10 +36,10 @@ interface OwnProps {
     skalKunneViseInfoOmEkisterendeSak?: boolean;
 }
 
-type Props = InjectedIntlProps & OwnProps;
+type Props = OwnProps;
 
 const getHvem = (
-    intl: InjectedIntl,
+    intl: IntlShape,
     erDeltUttak: boolean,
     navn?: NavnISøknaden,
     erAnnenPartsEksisterendeSak?: boolean
@@ -59,9 +59,9 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
     tilgjengeligeStønadskontoer,
     eksisterendeSak,
     erIUttaksplanenSteg,
-    skalKunneViseInfoOmEkisterendeSak,
-    intl
+    skalKunneViseInfoOmEkisterendeSak
 }) => {
+    const intl = useIntl();
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
     const situasjon = getForeldreparSituasjonFraSøknadsinfo(søknadsinfo);
     if (situasjon === undefined) {
@@ -120,11 +120,11 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                     ]}
                 >
                     <Normaltekst>
-                        <FormattedHTMLMessage
+                        <FormattedMessage
                             id="eksisterendeSak.tekst.html"
                             values={{
-                                uker: getVarighetString(uker * 5, intl),
-                                dekningsgrad,
+                                uker: <strong>{getVarighetString(uker * 5, intl)}</strong>,
+                                dekningsgrad: <strong>{dekningsgrad}</strong>,
                                 navn: hvem
                             }}
                         />
@@ -132,11 +132,12 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                     {skalKunneViseInfoOmEkisterendeSak &&
                         nesteMuligeUttaksdagEtterAnnenPart && (
                             <Normaltekst>
-                                <FormattedHTMLMessage
+                                <FormattedMessage
                                     id="eksisterendeSak.tekst.nesteMuligeUttaksdato"
                                     values={{
                                         dato: formaterDato(nesteMuligeUttaksdagEtterAnnenPart, 'DD. MMM YYYY'),
-                                        navn: navn.annenForelder.fornavn
+                                        navn: navn.annenForelder.fornavn,
+                                        b: (msg: any) => <b>{msg}</b>
                                     }}
                                 />
                             </Normaltekst>
@@ -186,10 +187,19 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                     )}
             </Block>
             <Normaltekst>
-                <FormattedHTMLMessage id="uttaksplan.informasjon.lesMer" values={{ link: lenker.viktigeFrister }} />
+                <FormattedMessage
+                    id="uttaksplan.informasjon.lesMer"
+                    values={{
+                        a: (msg: any) => (
+                            <a href={lenker.viktigeFrister} className="lenke" rel="noopener" target="_blank">
+                                {msg}
+                            </a>
+                        )
+                    }}
+                />
             </Normaltekst>
         </InfoBlock>
     );
 };
 
-export default injectIntl(InfoEksisterendeSak);
+export default InfoEksisterendeSak;

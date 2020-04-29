@@ -1,7 +1,6 @@
 {
     "grunnlag": {
-        "termindato": "2019-10-01",
-        "fødselsdato": "2019-10-01",
+        "fødselsdato": "2019-11-27",
         "dekningsgrad": 100,
         "antallBarn": 1,
         "søkerErFarEllerMedmor": false,
@@ -20,9 +19,9 @@
             "stønadskontotype": "FORELDREPENGER_FØR_FØDSEL",
             "trekkDager": 15,
             "arbeidstidprosent": 0,
-            "utbetalingsprosent": 100,
+            "utbetalingsprosent": 10,
             "gjelderAnnenPart": false,
-            "manueltBehandlet": false,
+            "manueltBehandlet": true,
             "flerbarnsdager": false,
             "uttakArbeidType": "ORDINÆRT_ARBEID",
             "arbeidsgiverInfo": {
@@ -30,9 +29,10 @@
                 "type": "ORGANISASJON",
                 "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
             },
+            "periodeResultatÅrsak": "2006",
             "periode": {
-                "fom": "2019-09-10",
-                "tom": "2019-09-30"
+                "fom": "2019-11-06",
+                "tom": "2019-11-26"
             }
         },
         {
@@ -40,7 +40,7 @@
             "graderingInnvilget": false,
             "samtidigUttak": false,
             "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": 30,
+            "trekkDager": 3,
             "arbeidstidprosent": 0,
             "utbetalingsprosent": 100,
             "gjelderAnnenPart": false,
@@ -52,9 +52,33 @@
                 "type": "ORGANISASJON",
                 "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
             },
+            "periodeResultatÅrsak": "2003",
             "periode": {
-                "fom": "2019-10-01",
-                "tom": "2019-11-11"
+                "fom": "2019-11-27",
+                "tom": "2019-11-30"
+            }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": 27,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": false,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "973861778",
+                "type": "ORGANISASJON",
+                "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
+            },
+            "periodeResultatÅrsak": "2003",
+            "periode": {
+                "fom": "2019-12-01",
+                "tom": "2020-01-07"
             }
         },
         {
@@ -74,9 +98,10 @@
                 "type": "ORGANISASJON",
                 "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
             },
+            "periodeResultatÅrsak": "2003",
             "periode": {
-                "fom": "2019-11-12",
-                "tom": "2020-01-13"
+                "fom": "2020-01-08",
+                "tom": "2020-03-10"
             }
         },
         {
@@ -84,7 +109,7 @@
             "graderingInnvilget": false,
             "samtidigUttak": false,
             "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": 80,
+            "trekkDager": 37,
             "arbeidstidprosent": 0,
             "utbetalingsprosent": 100,
             "gjelderAnnenPart": false,
@@ -96,32 +121,10 @@
                 "type": "ORGANISASJON",
                 "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
             },
+            "periodeResultatÅrsak": "2002",
             "periode": {
-                "fom": "2020-01-14",
-                "tom": "2020-05-04"
-            }
-        },
-        {
-            "utsettelsePeriodeType": "FERIE",
-            "periodeResultatType": "AVSLÅTT",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": 0,
-            "arbeidstidprosent": 0,
-            "utbetalingsprosent": 0,
-            "gjelderAnnenPart": false,
-            "manueltBehandlet": true,
-            "flerbarnsdager": false,
-            "uttakArbeidType": "ORDINÆRT_ARBEID",
-            "arbeidsgiverInfo": {
-                "id": "996663191",
-                "type": "ORGANISASJON",
-                "navn": "HELSE BERGEN HF, RADIOLOGISK AVDELING, RADIOLOGI HAUKELAND"
-            },
-            "periode": {
-                "fom": "2020-05-05",
-                "tom": "2020-05-29"
+                "fom": "2020-03-11",
+                "tom": "2020-04-30"
             }
         }
     ]

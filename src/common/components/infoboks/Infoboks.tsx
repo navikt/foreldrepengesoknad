@@ -5,7 +5,7 @@ import InfoIkon from 'common/components/ikoner/InfoIkon';
 import { Collapse } from 'react-collapse';
 const classNames = require('classnames');
 import getMessage from 'common/util/i18nUtils';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 
 import './infoboks.less';
 
@@ -14,6 +14,7 @@ interface InfoboksProps {
     stil?: Stil;
     contentFullWidth?: boolean;
     fieldsetClsName?: string;
+    intl: IntlShape;
 }
 
 interface InfoboksState {
@@ -21,7 +22,7 @@ interface InfoboksState {
     windowPos: number;
 }
 
-type Props = InfoboksProps & InjectedIntlProps;
+type Props = InfoboksProps;
 
 class Infoboks extends React.Component<Props, InfoboksState> {
     constructor(props: Props) {
@@ -29,14 +30,14 @@ class Infoboks extends React.Component<Props, InfoboksState> {
 
         this.state = {
             isExpanded: false,
-            windowPos: 0
+            windowPos: 0,
         };
         this.toggleIsExpanded = this.toggleIsExpanded.bind(this);
     }
 
     toggleIsExpanded() {
         this.setState({
-            isExpanded: !this.state.isExpanded
+            isExpanded: !this.state.isExpanded,
         });
     }
 
@@ -80,10 +81,11 @@ class Infoboks extends React.Component<Props, InfoboksState> {
                     hasNestedCollapse={true}
                     className={classNames('infoboks', {
                         'infoboks--open': isExpanded,
-                        'infoboks__content--fullWidth': contentFullWidth
+                        'infoboks__content--fullWidth': contentFullWidth,
                     })}
                     isOpened={isExpanded}
-                    springConfig={{ stiffness: 250, damping: 30 }}>
+                    springConfig={{ stiffness: 250, damping: 30 }}
+                >
                     {isExpanded ? <div className="infoboks__wrapper typo-normal">{tekst}</div> : <span />}
                 </Collapse>
             </React.Fragment>

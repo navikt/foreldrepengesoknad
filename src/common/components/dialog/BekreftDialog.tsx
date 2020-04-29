@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import Modal, { ModalProps } from 'nav-frontend-modal';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -22,11 +22,12 @@ export interface Props extends ModalProps {
     avbrytLabel?: string;
     /** Maks bredde */
     størrelse?: '30';
+    intl: IntlShape;
 }
 
 const bem = BEMHelper('bekreftDialog');
 
-class BekreftDialog extends React.Component<Props & InjectedIntlProps, {}> {
+class BekreftDialog extends React.Component<Props, {}> {
     render() {
         const {
             tittel,
@@ -52,7 +53,7 @@ class BekreftDialog extends React.Component<Props & InjectedIntlProps, {}> {
                             <Hovedknapp onClick={() => onBekreft()} className="bekreftDialog__bekreftKnapp">
                                 {this.props.bekreftLabel ||
                                     intl.formatMessage({
-                                        id: 'komponent.bekreftDialog.bekreftLabel'
+                                        id: 'komponent.bekreftDialog.bekreftLabel',
                                     })}
                             </Hovedknapp>
                             <Knapp
@@ -61,7 +62,7 @@ class BekreftDialog extends React.Component<Props & InjectedIntlProps, {}> {
                             >
                                 {this.props.avbrytLabel ||
                                     intl.formatMessage({
-                                        id: 'komponent.bekreftDialog.avbrytLabel'
+                                        id: 'komponent.bekreftDialog.avbrytLabel',
                                     })}
                             </Knapp>
                         </Knapperad>

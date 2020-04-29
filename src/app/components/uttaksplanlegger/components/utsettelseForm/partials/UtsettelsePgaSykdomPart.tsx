@@ -4,7 +4,7 @@ import { Forelder } from 'common/types';
 import Block from 'common/components/block/Block';
 import FlervalgSpørsmål from '../../../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import getMessage from 'common/util/i18nUtils';
-import { InjectedIntl, injectIntl, InjectedIntlProps } from 'react-intl';
+import { IntlShape, injectIntl } from 'react-intl';
 import { Skjemanummer } from '../../../../../types/søknad/Søknad';
 import { RadioProps } from 'nav-frontend-skjema';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
@@ -21,11 +21,12 @@ export interface OwnProps {
     sykdomsårsak?: UtsettelseÅrsakType;
     vedlegg: Attachment[];
     onChange: (payload: UtsettelsePgaSykdomChangePayload) => void;
+    intl: IntlShape;
 }
 
 export const visVedlegg = (sykdomsårsak?: UtsettelseÅrsakType) => sykdomsårsak !== undefined;
 
-const getSykdomAlternativ = (intl: InjectedIntl, årsak: UtsettelseÅrsakType, radioName: string): RadioProps => {
+const getSykdomAlternativ = (intl: IntlShape, årsak: UtsettelseÅrsakType, radioName: string): RadioProps => {
     return {
         label: getMessage(intl, `utsettelse.sykdom.alternativ.${årsak}`),
         value: årsak,
@@ -33,7 +34,7 @@ const getSykdomAlternativ = (intl: InjectedIntl, årsak: UtsettelseÅrsakType, r
     };
 };
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 class UtsettelsePgaSykdomPart extends React.Component<Props> {
     getAttachmentSkjemanummer() {

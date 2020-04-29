@@ -1,23 +1,21 @@
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
 import { isSixteenOrOlder, getFødselsnummerRegler } from '../fødselsnummer';
 import moment from 'moment';
 
-const intl: Partial<InjectedIntl> = {};
+const intl: Partial<IntlShape> = {};
 
 const callFødselsnummerValidator = (
     fødselsnummer: string,
     utenlandskFødselsnummer: boolean,
     søkersFødselsnummer: string
-) =>
-    getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl as InjectedIntl)[1].test();
+) => getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl as IntlShape)[1].test();
 
 const callMatchingApplicantsFødselsnummerValidator = (
     fødselsnummer: string,
     utenlandskFødselsnummer: boolean,
     søkersFødselsnummer: string
-) =>
-    getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl as InjectedIntl)[2].test();
+) => getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl as IntlShape)[2].test();
 
 describe('Fødselsnummer validation', () => {
     const SØKER_FNR = '21079951436';
@@ -63,33 +61,19 @@ describe('Fødselsnummer validation', () => {
             });
 
             it('returns true if input fnr proves that person is sixteen', () => {
-                const fnr: string = moment()
-                    .utc()
-                    .subtract(16, 'year')
-                    .format('DDMMYY')
-                    .toString();
+                const fnr: string = moment().utc().subtract(16, 'year').format('DDMMYY').toString();
 
                 expect(isSixteenOrOlder(fnr, 'F')).toBeTruthy();
             });
 
             it('returns true if input fnr proves that person is older than sixteen', () => {
-                const fnr: string = moment()
-                    .utc()
-                    .subtract(16, 'year')
-                    .subtract(1, 'day')
-                    .format('DDMMYY')
-                    .toString();
+                const fnr: string = moment().utc().subtract(16, 'year').subtract(1, 'day').format('DDMMYY').toString();
 
                 expect(isSixteenOrOlder(fnr, 'F')).toBeTruthy();
             });
 
             it('returns false if input fnr proves that person is under sixteen', () => {
-                const fnr: string = moment()
-                    .utc()
-                    .subtract(16, 'year')
-                    .add(1, 'day')
-                    .format('DDMMYY')
-                    .toString();
+                const fnr: string = moment().utc().subtract(16, 'year').add(1, 'day').format('DDMMYY').toString();
 
                 expect(isSixteenOrOlder(fnr, 'F')).toBeFalsy();
             });

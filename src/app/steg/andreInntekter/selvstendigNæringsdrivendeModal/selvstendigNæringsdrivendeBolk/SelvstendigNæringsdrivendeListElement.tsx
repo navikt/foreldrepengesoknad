@@ -1,9 +1,9 @@
 import React from 'react';
 import InteractiveListElement, {
-    InteractiveListElementProps
+    InteractiveListElementProps,
 } from '../../../../../common/components/skjema/elements/interactive-list-element/InteractiveListElement';
 import { Næring } from '../../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { prettifyTidsperiode } from '../../../../util/dates/dates';
 import getMessage from 'common/util/i18nUtils';
 
@@ -11,11 +11,12 @@ interface NæringListeElementProps extends InteractiveListElementProps {
     næring: Næring;
 }
 
-const NæringListeElement: React.StatelessComponent<NæringListeElementProps & InjectedIntlProps> = ({
+const NæringListeElement: React.StatelessComponent<NæringListeElementProps> = ({
     næring,
-    intl,
+
     ...rest
 }) => {
+    const intl = useIntl();
     const deleteLinkText = getMessage(intl, 'slett.næring');
     return (
         <InteractiveListElement
@@ -27,4 +28,4 @@ const NæringListeElement: React.StatelessComponent<NæringListeElementProps & I
     );
 };
 
-export default injectIntl(NæringListeElement);
+export default NæringListeElement;

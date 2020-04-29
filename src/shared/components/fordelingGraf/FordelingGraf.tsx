@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import FordelingForelderInfo from './components/FordelingForelderInfo';
@@ -21,14 +20,7 @@ interface Props {
     farMedmor?: FordelingsinfoEnForelder;
 }
 
-const FordelingGraf: React.StatelessComponent<Props & InjectedIntlProps> = ({
-    tittel,
-    status,
-    statusTekst,
-    fordeling,
-    mor,
-    farMedmor
-}) => {
+const FordelingGraf: React.StatelessComponent<Props> = ({ tittel, status, statusTekst, fordeling, mor, farMedmor }) => {
     return (
         <div className={fordelingGrafBem.block}>
             <Block margin="s" screenOnly={true}>
@@ -47,4 +39,4 @@ const FordelingGraf: React.StatelessComponent<Props & InjectedIntlProps> = ({
     );
 };
 
-export default injectIntl(FordelingGraf);
+export default FordelingGraf;

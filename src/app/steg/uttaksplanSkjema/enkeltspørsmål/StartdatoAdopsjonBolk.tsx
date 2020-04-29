@@ -4,7 +4,7 @@ import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../
 import { Adopsjonsbarn } from '../../../types/søknad/Barn';
 import Block from 'common/components/block/Block';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { useIntl, IntlShape } from 'react-intl';
 import { ValgalternativerAdopsjonStartdato } from '../uttaksplanSkjemadata';
 import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
 import getMessage from 'common/util/i18nUtils';
@@ -17,9 +17,9 @@ interface OwnProps {
     familiehendelsesdato: Date;
 }
 
-type Props = UttaksplanSkjemaspørsmålProps & OwnProps & InjectedIntlProps;
+type Props = UttaksplanSkjemaspørsmålProps & OwnProps;
 
-const getAlternativ = (intl: InjectedIntl, alternativ: ValgalternativerAdopsjonStartdato, dato?: Date): RadioProps => {
+const getAlternativ = (intl: IntlShape, alternativ: ValgalternativerAdopsjonStartdato, dato?: Date): RadioProps => {
     return {
         label: getMessage(
             intl,
@@ -27,7 +27,7 @@ const getAlternativ = (intl: InjectedIntl, alternativ: ValgalternativerAdopsjonS
             dato ? { dato: formaterDatoUtenDag(dato) } : undefined
         ),
         value: alternativ,
-        name: 'startdatoAdopsjonBolk'
+        name: 'startdatoAdopsjonBolk',
     };
 };
 
@@ -45,7 +45,8 @@ const getStartdatoFromAlternativ = (
 };
 
 const StartdatoAdopsjonBolk = (props: Props) => {
-    const { visible, barn, familiehendelsesdato, intl } = props;
+    const { visible, barn, familiehendelsesdato } = props;
+    const intl = useIntl();
 
     const alternativer: RadioProps[] = [];
     if (barn.adoptertIUtlandet && barn.ankomstdato) {
@@ -70,7 +71,11 @@ const StartdatoAdopsjonBolk = (props: Props) => {
                             onChange={(value: ValgalternativerAdopsjonStartdato) =>
                                 onChange({
                                     valgtAdopsjonStartdato: value,
-                                    startdatoPermisjon: getStartdatoFromAlternativ(value, barn, data.startdatoPermisjon)
+                                    startdatoPermisjon: getStartdatoFromAlternativ(
+                                        value,
+                                        barn,
+                                        data.startdatoPermisjon
+                                    ),
                                 })
                             }
                         />
@@ -93,4 +98,4 @@ const StartdatoAdopsjonBolk = (props: Props) => {
     );
 };
 
-export default injectIntl(StartdatoAdopsjonBolk);
+export default StartdatoAdopsjonBolk;

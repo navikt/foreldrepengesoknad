@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Checkbox } from 'nav-frontend-skjema';
 import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
@@ -21,10 +21,11 @@ interface FødselsnummerSpørsmålProps {
     onChange: (annenForelder: AnnenForelderPartial) => void;
 }
 
-type Props = FødselsnummerSpørsmålProps & InjectedIntlProps;
+type Props = FødselsnummerSpørsmålProps;
 
 const FødselsnummerBolk = (props: Props) => {
-    const { kanIkkeOppgis, fnr, utenlandskFnr, søkersFødselsnummer, bostedsland, navn, onChange, intl } = props;
+    const { kanIkkeOppgis, fnr, utenlandskFnr, søkersFødselsnummer, bostedsland, navn, onChange } = props;
+    const intl = useIntl();
 
     return (
         <ValiderbarControl
@@ -69,4 +70,4 @@ const FødselsnummerBolk = (props: Props) => {
     );
 };
 
-export default injectIntl(FødselsnummerBolk);
+export default FødselsnummerBolk;

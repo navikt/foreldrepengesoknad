@@ -1,7 +1,7 @@
 import { Dictionary } from 'lodash';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 
-type FeilIntlMessage = (intl: InjectedIntl) => string;
+type FeilIntlMessage = (intl: IntlShape) => string;
 
 export enum RegelAlvorlighet {
     'FEIL' = 'feil',
@@ -55,11 +55,14 @@ export interface RegelAvvik {
     info: RegelAvvikInfo;
 }
 
-type avikValueFunk = (intl: InjectedIntl) => string;
+type avikValueFunk = (intl: IntlShape) => string;
+type intlHTMLFragmentFunc = (msg: any) => any;
 
 interface AvvikInfo {
     periodeId?: string;
-    values?: { [key: string]: string | number | Date | FeilIntlMessage | avikValueFunk | undefined };
+    values?: {
+        [key: string]: string | number | Date | FeilIntlMessage | avikValueFunk | undefined | intlHTMLFragmentFunc;
+    };
     renderAsHtml?: boolean;
 }
 

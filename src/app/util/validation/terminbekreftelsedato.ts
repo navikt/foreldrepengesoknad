@@ -1,6 +1,6 @@
 import moment from 'moment';
 import getMessage from 'common/util/i18nUtils';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
 import { date1YearAgo, attenUkerPluss3Number, today } from './values';
 import { dateIsNotInFutureRule, hasValueRule } from './common';
@@ -13,13 +13,13 @@ export const getTerminbekreftelsedatoAvgrensninger = (termindato?: Date): Avgren
               .subtract((attenUkerPluss3Number - 1) * 24, 'hours')
               .toDate()
         : date1YearAgo.toDate(),
-    maksDato: today.toDate()
+    maksDato: today.toDate(),
 });
 
 export const getTerminbekreftelseDatoRegler = (
     terminbekreftelseDato: DateValue,
     termindato: DateValue,
-    intl: InjectedIntl
+    intl: IntlShape
 ): Validator[] => {
     const intlKey = 'valideringsfeil.terminbekreftelseDato';
     const terminbekreftelsedatoM = moment(terminbekreftelseDato);
@@ -33,7 +33,7 @@ export const getTerminbekreftelseDatoRegler = (
                 moment
                     .max(termindatoM.subtract((attenUkerPluss3Number - 1) * 24, 'hours'), terminbekreftelsedatoM)
                     .isSame(terminbekreftelsedatoM, 'day'),
-            failText: getMessage(intl, `${intlKey}.duMåVæreIUke22`)
-        }
+            failText: getMessage(intl, `${intlKey}.duMåVæreIUke22`),
+        },
     ];
 };

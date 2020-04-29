@@ -2,8 +2,8 @@ import * as commonRules from '../common';
 import * as getMessage from 'common/util/i18nUtils';
 import { today } from '../values';
 import { getFrilansOppstartRules } from '../frilans';
-import { InjectedIntl } from 'react-intl';
-const intl = {} as InjectedIntl;
+import { IntlShape } from 'react-intl';
+const intl = {} as IntlShape;
 
 const todaysDate = today.toDate();
 const someString = '';

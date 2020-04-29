@@ -1,10 +1,9 @@
 import { getVarighetString } from 'common/util/intlUtils';
-import { IntlProvider } from 'react-intl';
+import { createIntl } from 'react-intl';
 import nbMessagesCommon from '../../intl/nb_NO.json';
 
 describe('intlUtils', () => {
-    const intlProvider = new IntlProvider({ locale: 'nb', messages: nbMessagesCommon });
-    const { intl } = intlProvider.getChildContext();
+    const intl = createIntl({ locale: 'nb', messages: nbMessagesCommon });
 
     describe('getVarighetString', () => {
         it('returns correctly when 0 days', () => {

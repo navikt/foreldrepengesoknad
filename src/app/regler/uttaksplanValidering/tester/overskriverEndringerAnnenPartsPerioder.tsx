@@ -1,9 +1,10 @@
+import React from 'react';
 import { UttaksplanRegelgrunnlag } from '../types';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { Periode, isUttaksperiode, isInfoPeriode } from 'app/types/uttaksplan/periodetyper';
 import { getPeriodeTittel } from 'app/util/uttaksplan';
 import { getNavnGenitivEierform } from 'app/util/tekstUtils';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from 'shared/regler/regelTypes';
 
@@ -35,11 +36,12 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (
                     intlKey: 'uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode',
                     renderAsHtml: true,
                     values: {
-                        periode: (intl: InjectedIntl) => getPeriodeTittel(intl, periode, navnPåForeldre),
-                        tidsperiode: (intl: InjectedIntl) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
+                        periode: (intl: IntlShape) => getPeriodeTittel(intl, periode, navnPåForeldre),
+                        tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
                         forelder: grunnlag.søknadsinfo.navn.annenForelder.fornavn,
-                        forelders: (intl: InjectedIntl) =>
-                            getNavnGenitivEierform(grunnlag.søknadsinfo.navn.annenForelder.fornavn, intl.locale)
+                        forelders: (intl: IntlShape) =>
+                            getNavnGenitivEierform(grunnlag.søknadsinfo.navn.annenForelder.fornavn, intl.locale),
+                        strong: (intl: IntlShape) => (msg: any) => <strong>{msg}</strong>
                     }
                 };
                 return regelInfo;

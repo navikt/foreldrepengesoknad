@@ -1,6 +1,6 @@
 import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
 import InformasjonOmArbeidsforholdWrapper from 'app/steg/andreInntekter/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
 import Arbeidsforhold from '../../../../../types/Arbeidsforhold';
@@ -9,9 +9,10 @@ interface RegistrerteArbeidsforholdOppsummeringProps {
     arbeidsforhold: Arbeidsforhold[];
 }
 
-type Props = RegistrerteArbeidsforholdOppsummeringProps & InjectedIntlProps;
+type Props = RegistrerteArbeidsforholdOppsummeringProps;
 
-const RegistrerteArbeidsforholdOppsummering: React.StatelessComponent<Props> = ({ arbeidsforhold, intl }) => {
+const RegistrerteArbeidsforholdOppsummering: React.StatelessComponent<Props> = ({ arbeidsforhold }) => {
+    const intl = useIntl();
     return (
         <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.inntekt.registrerteArbeidsforhold')}>
             <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} />
@@ -19,4 +20,4 @@ const RegistrerteArbeidsforholdOppsummering: React.StatelessComponent<Props> = (
     );
 };
 
-export default injectIntl(RegistrerteArbeidsforholdOppsummering);
+export default RegistrerteArbeidsforholdOppsummering;

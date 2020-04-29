@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { IntlShape, injectIntl } from 'react-intl';
 import ApplicationSpinner from 'common/components/applicationSpinner/ApplicationSpinner';
 import DocumentTitle from 'react-document-title';
 import getMessage from 'common/util/i18nUtils';
 import Applikasjonsside from 'app/components/applikasjon/applikasjonsside/Applikasjonsside';
 
-type Props = InjectedIntlProps;
+interface Props {
+    intl: IntlShape;
+}
 
 const LoadingScreen: React.StatelessComponent<Props> = (props: Props) => {
     return (

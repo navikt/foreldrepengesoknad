@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import AriaText from 'common/components/aria/AriaText';
 import moment from 'moment';
 import { Avgrensninger, Tidsperiode, Feil } from 'common/types';
@@ -24,7 +24,11 @@ export interface DatoInputProps extends Omit<DatovelgerProps, 'onChange' | 'inpu
     datoAvgrensinger?: Avgrensninger;
 }
 
-export type Props = DatoInputProps & InjectedIntlProps;
+interface IntlProps {
+    intl: IntlShape;
+}
+
+export type Props = DatoInputProps & IntlProps;
 
 const parseAvgrensinger = (avgrensinger: Avgrensninger): DatovelgerAvgrensninger => {
     return {
@@ -35,8 +39,8 @@ const parseAvgrensinger = (avgrensinger: Avgrensninger): DatovelgerAvgrensninger
             avgrensinger.ugyldigeTidsperioder &&
             avgrensinger.ugyldigeTidsperioder.map((t: Tidsperiode) => ({
                 fom: dateToISOFormattedDateString(t.fom)!,
-                tom: dateToISOFormattedDateString(t.tom)!
-            }))
+                tom: dateToISOFormattedDateString(t.tom)!,
+            })),
     };
 };
 
@@ -79,7 +83,7 @@ class DatoInput extends React.Component<Props, {}> {
                                 id,
                                 placeholder: 'dd.mm.åååå',
                                 name,
-                                ariaDescribedby: ariaDescriptionId
+                                ariaDescribedby: ariaDescriptionId,
                             }}
                             visÅrVelger={true}
                             onChange={(datoString: string) => {
@@ -91,7 +95,7 @@ class DatoInput extends React.Component<Props, {}> {
                             }}
                             avgrensninger={datoAvgrensinger ? parseAvgrensinger(datoAvgrensinger) : undefined}
                             dayPickerProps={{
-                                modifiers: { erHelligdag }
+                                modifiers: { erHelligdag },
                             }}
                         />
                         {ariaDescriptionId && (

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { formatDate } from '../../../../../util/dates/dates';
 import Barn, {
     Adopsjonsbarn,
@@ -23,9 +23,10 @@ interface RelasjonTilBarnOppsummeringProps {
     annenForelder: AnnenForelder;
     situasjon: Søkersituasjon;
     skalLasteOppTerminbekreftelse: boolean;
+    intl: IntlShape;
 }
 
-type Props = RelasjonTilBarnOppsummeringProps & InjectedIntlProps;
+type Props = RelasjonTilBarnOppsummeringProps;
 class RelasjonTilBarnOppsummering extends React.Component<Props> {
     getAntallBarnSummaryText(antallBarn: number): string {
         const { intl } = this.props;

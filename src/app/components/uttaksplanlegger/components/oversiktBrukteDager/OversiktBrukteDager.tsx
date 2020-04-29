@@ -7,7 +7,7 @@ import BEMHelper from 'common/util/bem';
 import { Undertittel } from 'nav-frontend-typografi';
 import { getBrukteDager } from '../uttakFordeling/brukteDagerUtils';
 import { getVarighetString } from 'common/util/intlUtils';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import Personkort from 'shared/components/personkort/Personkort';
 import ForelderIkon from 'shared/components/foreldrepar/ForelderIkon';
 import { getSituasjonForelderSvg } from 'shared/components/foreldrepar/foreldreparUtils';
@@ -23,11 +23,12 @@ interface Props {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksstatus: Uttaksstatus;
     navnPåForeldre: NavnPåForeldre;
+    intl: IntlShape;
 }
 
 const bem = BEMHelper('oversiktBrukteDager');
 
-const OversiktBrukteDager: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const OversiktBrukteDager: React.StatelessComponent<Props> = ({
     søknadsinfo,
     perioder,
     tilgjengeligeStønadskontoer,

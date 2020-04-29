@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../../../types/søknad/Søker';
 import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
@@ -10,10 +10,11 @@ interface AndreInntekterOppsummeringProps {
     søker: Søker;
 }
 
-type Props = AndreInntekterOppsummeringProps & InjectedIntlProps;
+type Props = AndreInntekterOppsummeringProps;
 
-const AndreInntekterOppsummering = ({ søker, intl }: Props) => {
+const AndreInntekterOppsummering = ({ søker }: Props) => {
     const { harHattAnnenInntektSiste10Mnd, andreInntekterSiste10Mnd } = søker;
+    const intl = useIntl();
 
     if (andreInntekterSiste10Mnd && harHattAnnenInntektSiste10Mnd) {
         return (
@@ -33,4 +34,4 @@ const AndreInntekterOppsummering = ({ søker, intl }: Props) => {
     );
 };
 
-export default injectIntl(AndreInntekterOppsummering);
+export default AndreInntekterOppsummering;

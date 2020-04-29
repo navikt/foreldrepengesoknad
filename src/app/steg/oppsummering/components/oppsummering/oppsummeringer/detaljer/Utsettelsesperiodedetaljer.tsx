@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Utsettelsesperiode, UtsettelseÅrsakType } from '../../../../../../types/uttaksplan/periodetyper';
 import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 import MorsAktivitetDetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
@@ -18,16 +18,16 @@ interface UtsettelsesperiodedetaljerProps {
     periodeErNyEllerEndret: boolean;
 }
 
-type Props = UtsettelsesperiodedetaljerProps & InjectedIntlProps;
+type Props = UtsettelsesperiodedetaljerProps;
 
-const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({
+const Utsettelsesperiodedetaljer: React.FunctionComponent<Props> = ({
     periode,
     registrerteArbeidsforhold,
     søknadsinfo,
-    periodeErNyEllerEndret,
-    intl
-}: Props) => {
+    periodeErNyEllerEndret
+}) => {
     const { årsak, morsAktivitetIPerioden, orgnumre, arbeidsformer, vedlegg } = periode;
+    const intl = useIntl();
 
     let arbeidsformTekst: string[] = [];
     if (arbeidsformer) {
@@ -68,4 +68,4 @@ const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({
     );
 };
 
-export default injectIntl(Utsettelsesperiodedetaljer);
+export default Utsettelsesperiodedetaljer;

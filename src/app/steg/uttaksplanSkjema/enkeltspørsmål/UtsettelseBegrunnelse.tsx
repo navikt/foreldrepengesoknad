@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
 import { UtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
@@ -10,10 +10,12 @@ interface OwnProps {
     navn: string;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 const UtsettelseBegrunnelse = (props: Props) => {
-    const { visible = true, navn, intl } = props;
+    const { visible = true, navn } = props;
+    const intl = useIntl();
+
     return (
         <UttaksplanSkjemaSpørsmål
             visible={visible}
@@ -25,18 +27,18 @@ const UtsettelseBegrunnelse = (props: Props) => {
                     radios={[
                         {
                             label: getMessage(intl, 'spørsmål.utsettelse.begrunnelse.label.ferie'),
-                            value: UtsettelseÅrsakType.Ferie
+                            value: UtsettelseÅrsakType.Ferie,
                         },
                         {
                             label: getMessage(intl, 'spørsmål.utsettelse.begrunnelse.label.jobb'),
-                            value: UtsettelseÅrsakType.Arbeid
+                            value: UtsettelseÅrsakType.Arbeid,
                         },
                         {
                             label: getMessage(intl, 'spørsmål.utsettelse.begrunnelse.label.sykdom', {
-                                antallUker: UtsettelseÅrsakType.Sykdom
+                                antallUker: UtsettelseÅrsakType.Sykdom,
                             }),
-                            value: UtsettelseÅrsakType.Sykdom
-                        }
+                            value: UtsettelseÅrsakType.Sykdom,
+                        },
                     ]}
                     name="begrunnelseForUtsettelse"
                     onChange={(e, v: UtsettelseÅrsakType) => onChange({ begrunnelseForUtsettelse: v })}
@@ -46,4 +48,4 @@ const UtsettelseBegrunnelse = (props: Props) => {
     );
 };
 
-export default injectIntl(UtsettelseBegrunnelse);
+export default UtsettelseBegrunnelse;

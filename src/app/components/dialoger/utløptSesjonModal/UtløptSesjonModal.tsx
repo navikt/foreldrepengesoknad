@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage, FormattedHTMLMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { redirectToLogin } from 'app/util/routing/login';
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
@@ -15,9 +15,10 @@ const AVSLUTT_HREF = 'https://familie.nav.no';
 
 interface OwnProps {
     erÅpen: boolean;
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 const UtløptSesjonModal = ({ erÅpen, intl }: Props) => {
     return (
@@ -26,13 +27,14 @@ const UtløptSesjonModal = ({ erÅpen, intl }: Props) => {
             contentLabel={getMessage(intl, 'sesjonUtløpt.tittel')}
             closeButton={false}
             isOpen={erÅpen}
-            onRequestClose={() => undefined}>
+            onRequestClose={() => undefined}
+        >
             <AdvarselIkon />
             <Systemtittel className="blokk-m">
                 <FormattedMessage id="sesjonUtløpt.tittel" />
             </Systemtittel>
             <Normaltekst className="blokk-m">
-                <FormattedHTMLMessage id="sesjonUtløpt.ingress" />
+                <FormattedMessage id="sesjonUtløpt.ingress" />
             </Normaltekst>
             <div className={cls.element('valg')}>
                 <Knappelenke href={AVSLUTT_HREF}>

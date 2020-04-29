@@ -1,6 +1,5 @@
 import * as React from 'react';
-import InjectedIntlProps = ReactIntl.InjectedIntlProps;
-import { injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
 import DocumentTitle from 'react-document-title';
@@ -12,7 +11,9 @@ const URL_PAPIRSØKNAD =
     'https://www.nav.no/no/Person/Skjemaer-for-privatpersoner/Skjemaer/Familie/' +
     'foreldrepenger-og-engangsstonad/Foreldrepenger+og+engangsst%C3%B8nad?method=mail&veiledertype=privatperson';
 
-type Props = InjectedIntlProps & SøkerinfoProps;
+interface Props extends SøkerinfoProps {
+    intl: IntlShape;
+}
 
 const IkkeMyndig: React.StatelessComponent<Props> = (props: Props) => {
     const { intl, søkerinfo } = props;

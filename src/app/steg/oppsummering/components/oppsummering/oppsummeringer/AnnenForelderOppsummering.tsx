@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Element } from 'nav-frontend-typografi';
 import AnnenForelder from 'app/types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
@@ -18,9 +18,10 @@ interface AnnenForelderOppsummeringProps {
     erFarEllerMedmor: boolean;
 }
 
-type Props = AnnenForelderOppsummeringProps & InjectedIntlProps;
+type Props = AnnenForelderOppsummeringProps;
 const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props) => {
-    const { erFarEllerMedmor, erAleneOmOmsorg, barn, intl } = props;
+    const { erFarEllerMedmor, erAleneOmOmsorg, barn } = props;
+    const intl = useIntl();
     const {
         fornavn,
         etternavn,
@@ -126,4 +127,4 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
         </Oppsummeringsseksjon>
     );
 };
-export default injectIntl(AnnenForelderOppsummering);
+export default AnnenForelderOppsummering;

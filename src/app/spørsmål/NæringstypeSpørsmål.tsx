@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import getMessage from 'common/util/i18nUtils';
 import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
@@ -12,19 +12,20 @@ interface NæringstypeSpørsmålProps {
     onChange: (fødselsnummer: string) => void;
 }
 
-type Props = NæringstypeSpørsmålProps & InjectedIntlProps;
+type Props = NæringstypeSpørsmålProps;
 
 const næringstypeValues = [Næringstype.DAGMAMMA, Næringstype.FISKER, Næringstype.JORDBRUK, Næringstype.ANNET];
 
 const NæringstypeSpørsmål: React.StatelessComponent<Props> = (props: Props) => {
-    const { onChange, næringstyper, intl } = props;
+    const { onChange, næringstyper } = props;
+    const intl = useIntl();
     const createNæringstypeOptions = (): CheckboksPanelProps[] => {
         return næringstypeValues.map(
             (næringstype: Næringstype): CheckboksPanelProps => {
                 return {
                     label: getMessage(intl, `næringstype.${næringstype.toLocaleLowerCase()}`),
                     value: næringstype,
-                    checked: næringstyper.indexOf(næringstype) >= 0
+                    checked: næringstyper.indexOf(næringstype) >= 0,
                 };
             }
         );
@@ -42,4 +43,4 @@ const NæringstypeSpørsmål: React.StatelessComponent<Props> = (props: Props) =
     );
 };
 
-export default injectIntl(NæringstypeSpørsmål);
+export default NæringstypeSpørsmål;

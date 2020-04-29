@@ -2,17 +2,19 @@ import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
 import { JobbIUtlandetInntekt } from '../../../../../../types/søknad/AnnenInntekt';
 import getMessage from 'common/util/i18nUtils';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 
 interface JobbIUtlandetInntektsdetaljerProps {
     jobbIUtlandetInntekt: JobbIUtlandetInntekt;
 }
 
-type Props = JobbIUtlandetInntektsdetaljerProps & InjectedIntlProps;
+type Props = JobbIUtlandetInntektsdetaljerProps;
 
-const JobbIUtlandetInntektsdetaljer: React.StatelessComponent<Props> = ({ jobbIUtlandetInntekt, intl }) => {
+const JobbIUtlandetInntektsdetaljer: React.StatelessComponent<Props> = ({ jobbIUtlandetInntekt }) => {
     const { arbeidsgiverNavn, land } = jobbIUtlandetInntekt;
+    const intl = useIntl();
+
     return (
         <>
             <Feltoppsummering
@@ -27,4 +29,4 @@ const JobbIUtlandetInntektsdetaljer: React.StatelessComponent<Props> = ({ jobbIU
     );
 };
 
-export default injectIntl(JobbIUtlandetInntektsdetaljer);
+export default JobbIUtlandetInntektsdetaljer;

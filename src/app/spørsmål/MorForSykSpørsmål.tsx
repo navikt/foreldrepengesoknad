@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 
 export enum MorForSyk {
     'FOR_SYK' = 'forSyk',
-    'IKKE_FOR_SYK' = 'ikkeForSyk'
+    'IKKE_FOR_SYK' = 'ikkeForSyk',
 }
 
 interface MorForSykSpørsmålProps {
@@ -13,10 +13,11 @@ interface MorForSykSpørsmålProps {
     onChange: (erBarnetFødt: boolean) => void;
 }
 
-type Props = MorForSykSpørsmålProps & InjectedIntlProps;
+type Props = MorForSykSpørsmålProps;
 
 const MorForSykSpørsmål = (props: Props) => {
-    const { onChange, erMorForSyk, intl } = props;
+    const { onChange, erMorForSyk } = props;
+    const intl = useIntl();
 
     return (
         <JaNeiSpørsmål
@@ -28,4 +29,4 @@ const MorForSykSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(MorForSykSpørsmål);
+export default MorForSykSpørsmål;

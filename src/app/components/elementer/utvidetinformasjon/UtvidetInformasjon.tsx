@@ -5,7 +5,7 @@ import InfoToggler from './InfoToggler';
 import './utvidetInformasjon.less';
 import EkspanderbartInnhold from './EkspanderbartInnhold';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
 interface OwnProps {
@@ -13,9 +13,10 @@ interface OwnProps {
     erApen?: boolean;
     apneLabel?: React.ReactNode;
     lukkLabel?: React.ReactNode;
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 interface State {
     apen: boolean;

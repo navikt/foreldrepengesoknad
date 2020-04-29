@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import visibility from './visibility';
@@ -15,9 +15,10 @@ interface NæringsrelasjonBolkProps {
     oppfølgingsspørsmålSynlig: boolean;
     onChange: (updatedProps: NæringsrelasjonPartial) => void;
     næringsrelasjonsType: 'revisor' | 'regnskapsfører';
+    intl: IntlShape;
 }
 
-type Props = NæringsrelasjonBolkProps & InjectedIntlProps;
+type Props = NæringsrelasjonBolkProps;
 
 class NæringsrelasjonBolk extends React.Component<Props> {
     constructor(props: Props) {
@@ -29,7 +30,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
         const { næringsrelasjon, onChange } = this.props;
         onChange({
             ...næringsrelasjon,
-            ...partial
+            ...partial,
         });
     }
 
@@ -49,7 +50,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                                 label={getMessage(intl, 'næringsrelasjon.navn', { næringsrelasjonsType })}
                                 onChange={(v: string) =>
                                     this.handleOnChange({
-                                        navn: v
+                                        navn: v,
                                     })
                                 }
                                 validators={getFritekstfeltRules({ maxLength: 100 }, intl, navn)}
@@ -62,7 +63,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                                 label={getMessage(intl, 'næringsrelasjon.tlfnr', { næringsrelasjonsType })}
                                 onChange={(v: string) =>
                                     this.handleOnChange({
-                                        telefonnummer: v
+                                        telefonnummer: v,
                                     })
                                 }
                                 validators={[hasValueRule(telefonnummer, getMessage(intl, 'påkrevd'))]}
@@ -73,7 +74,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                                 erNærVennEllerFamilieAvPerson={erNærVennEllerFamilie}
                                 onChange={(v: boolean) =>
                                     this.handleOnChange({
-                                        erNærVennEllerFamilie: v
+                                        erNærVennEllerFamilie: v,
                                     })
                                 }
                             />

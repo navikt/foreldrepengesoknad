@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 import { connect } from 'react-redux';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 
 import { DispatchProps } from 'common/redux/types';
 import { setSpråk } from '../../../redux/actions/common/commonActionCreators';
@@ -20,6 +20,7 @@ export interface OwnProps {
     visSpråkvelger?: boolean;
     visAlertstripe?: boolean;
     margin?: boolean;
+    intl: IntlShape;
 }
 
 interface StateProps {
@@ -29,7 +30,7 @@ interface StateProps {
     innloggetSomAnnenBruker: boolean;
 }
 
-type Props = OwnProps & StateProps & DispatchProps & InjectedIntlProps;
+type Props = OwnProps & StateProps & DispatchProps;
 class Sidemal extends React.Component<Props> {
     constructor(props: Props) {
         super(props);

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { default as Steg, StegProps } from '../../components/applikasjon/steg/Steg';
 import moment from 'moment';
 import Block from 'common/components/block/Block';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import { StegID } from '../../util/routing/stegConfig';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
@@ -52,7 +52,11 @@ interface StateProps {
     familiehendelsesdato: Date | undefined;
 }
 
-type Props = SøkerinfoProps & HistoryProps & StateProps & InjectedIntlProps & DispatchProps;
+interface OwnProps {
+    intl: IntlShape;
+}
+
+type Props = SøkerinfoProps & HistoryProps & StateProps & DispatchProps & OwnProps;
 
 class AndreInntekterSteg extends React.Component<Props> {
     constructor(props: Props) {

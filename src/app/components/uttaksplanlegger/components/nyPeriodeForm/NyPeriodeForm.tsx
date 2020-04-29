@@ -10,7 +10,7 @@ import './nyPeriodeForm.less';
 import Block from 'common/components/block/Block';
 import { Undertittel } from 'nav-frontend-typografi';
 import BEMHelper from 'common/util/bem';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import UttakForm from '../uttakForm/UttakForm';
 import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
@@ -31,6 +31,7 @@ interface OwnProps {
     tidsperiode?: Partial<Tidsperiode>;
     navnPåForeldre: NavnPåForeldre;
     søknadsinfo: Søknadsinfo;
+    intl: IntlShape;
     onSubmit: (periode: Periode) => void;
     onCancel: () => void;
 }
@@ -41,7 +42,7 @@ interface State {
     visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility | undefined;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 const bem = BEMHelper('nyPeriodeForm');
 

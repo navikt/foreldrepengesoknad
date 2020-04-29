@@ -3,7 +3,7 @@ import InteractiveListElement, {
     InteractiveListElementProps
 } from '../../../../common/components/skjema/elements/interactive-list-element/InteractiveListElement';
 import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from '../../../types/søknad/AnnenInntekt';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { prettifyTidsperiode } from '../../../util/dates/dates';
 
@@ -11,9 +11,10 @@ interface AndreInntekterListElementProps extends InteractiveListElementProps {
     annenInntekt: AnnenInntekt;
 }
 
-type Props = AndreInntekterListElementProps & InjectedIntlProps;
+type Props = AndreInntekterListElementProps;
 
-const AndreInntekterListElement: React.StatelessComponent<Props> = ({ annenInntekt, intl, ...rest }) => {
+const AndreInntekterListElement: React.StatelessComponent<Props> = ({ annenInntekt, ...rest }) => {
+    const intl = useIntl();
     const { type, tidsperiode, vedlegg } = annenInntekt;
     const inntektstypeSkalHaVedlegg = type !== AnnenInntektType.JOBB_I_UTLANDET;
     const harVedlegg = vedlegg !== undefined && vedlegg.length > 0;
@@ -49,4 +50,4 @@ const AndreInntekterListElement: React.StatelessComponent<Props> = ({ annenInnte
     );
 };
 
-export default injectIntl(AndreInntekterListElement);
+export default AndreInntekterListElement;

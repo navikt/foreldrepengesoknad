@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
 import Lenke from 'nav-frontend-lenker';
@@ -38,7 +38,11 @@ interface StateProps {
     behandlingsFrist: string;
 }
 
-type Props = StateProps & InjectedIntlProps & DispatchProps;
+interface OwnProps {
+    intl: IntlShape;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
 class SøknadSendtSide extends React.Component<Props> {
     componentWillMount(): void {
         if (!this.props.erEndringssøknad) {
@@ -66,36 +70,38 @@ class SøknadSendtSide extends React.Component<Props> {
                                 <SøknadSendtSectionHeader
                                     title={getMessage(intl, 'søknadSendt.når.tittel')}
                                     type="kalender"
-                                    info={getMessage(intl, 'søknadSendt.når.infoBox')}>
+                                    info={getMessage(intl, 'søknadSendt.når.infoBox')}
+                                >
                                     {this.props.behandlingsFrist}
                                 </SøknadSendtSectionHeader>
                             </Block>
 
-                            {kvittering.infoskrivPdf &&
-                                arbeidsforhold &&
-                                arbeidsforhold.length > 0 && (
-                                    <Block>
-                                        <SøknadSendtSectionHeader
-                                            title={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.tittel')}
-                                            type="koffert"
-                                            info={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.infoBox')}>
-                                            <Lenke
-                                                href={'#'}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    openPdfPreview(kvittering.infoskrivPdf);
-                                                }}>
-                                                <FormattedMessage id={'søknadSendt.infoFraArbeidsgiver'} />
-                                            </Lenke>
-                                        </SøknadSendtSectionHeader>
-                                    </Block>
-                                )}
+                            {kvittering.infoskrivPdf && arbeidsforhold && arbeidsforhold.length > 0 && (
+                                <Block>
+                                    <SøknadSendtSectionHeader
+                                        title={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.tittel')}
+                                        type="koffert"
+                                        info={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.infoBox')}
+                                    >
+                                        <Lenke
+                                            href={'#'}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                openPdfPreview(kvittering.infoskrivPdf);
+                                            }}
+                                        >
+                                            <FormattedMessage id={'søknadSendt.infoFraArbeidsgiver'} />
+                                        </Lenke>
+                                    </SøknadSendtSectionHeader>
+                                </Block>
+                            )}
 
                             <Block>
                                 <SøknadSendtSectionHeader
                                     title={getMessage(intl, 'søknadSendt.pengene.tittel')}
                                     type="cash"
-                                    info={getMessage(intl, 'søknadSendt.pengene.infoBox')}>
+                                    info={getMessage(intl, 'søknadSendt.pengene.infoBox')}
+                                >
                                     {person.bankkonto && person.bankkonto.kontonummer ? (
                                         <>
                                             <Block margin="none">
@@ -149,7 +155,7 @@ const mapStateToProps = (state: any) => {
         kvittering: state.api.kvittering,
         erEndringssøknad: state.søknad.erEndringssøknad,
         missingAttachments: selectMissingAttachments(state),
-        behandlingsFrist: førsteMuligeBehandlingsfrist.format('dddd Do MMM YYYY')
+        behandlingsFrist: førsteMuligeBehandlingsfrist.format('dddd Do MMM YYYY'),
     };
 };
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { AppState } from '../../redux/reducers';
 import { DispatchProps } from 'common/redux/types';
 import Steg, { StegProps } from '../../components/applikasjon/steg/Steg';
@@ -26,7 +26,7 @@ import { TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
 import {
     getAntallUkerFellesperiode,
     getAntallUkerFedrekvote,
-    getAntallUkerMødrekvote
+    getAntallUkerMødrekvote,
 } from 'app/util/uttaksplan/stønadskontoer';
 import Barn from 'app/types/søknad/Barn';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
@@ -49,7 +49,11 @@ interface StateProps {
     eksisterendeSakAnnenPart?: EksisterendeSak;
 }
 
-type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
+interface OwnProps {
+    intl: IntlShape;
+}
+
+type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps & OwnProps;
 
 class UttaksplanSkjemaSteg extends React.Component<Props> {
     constructor(props: Props) {
@@ -60,12 +64,12 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             stegProps,
             søknad: {
                 ekstrainfo: {
-                    uttaksplanSkjema: { startdatoPermisjon }
-                }
+                    uttaksplanSkjema: { startdatoPermisjon },
+                },
             },
             søknadsinfo,
             barn,
-            eksisterendeSak
+            eksisterendeSak,
         } = props;
 
         if (stegProps.isAvailable) {
@@ -98,7 +102,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 søknadActions.uttaksplanUpdateSkjemdata({
                     fellesperiodeukerMor: Math.round(
                         (getAntallUkerFellesperiode(nextProps.tilgjengeligeStønadskontoer) || 0) / 2
-                    )
+                    ),
                 })
             );
         }
@@ -114,7 +118,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             søknadsinfo,
             barn,
             eksisterendeSak,
-            isLoadingSakForAnnenPart
+            isLoadingSakForAnnenPart,
         } = this.props;
         const søknad = this.props.søknad as Søknad;
         const navnPåForeldre = søknadsinfo.navn.navnPåForeldre;
@@ -187,13 +191,13 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         fortsettKnappLabel: 'Fortsett',
         renderFormTag: true,
         history,
-        isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo, søknadsinfo)
+        isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo, søknadsinfo),
     };
 
     const { familiehendelsesdato } = søknadsinfo.søknaden;
     const scenario = getUttaksplanSkjemaScenario(søknadsinfo, state.søknad.ekstrainfo.eksisterendeSak);
     const {
-        api: { isLoadingTilgjengeligeStønadskontoer, isLoadingSakForAnnenPart }
+        api: { isLoadingTilgjengeligeStønadskontoer, isLoadingSakForAnnenPart },
     } = state;
     const søknad = { ...state.søknad };
     const { ekstrainfo } = søknad;
@@ -220,7 +224,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         isLoadingTilgjengeligeStønadskontoer,
         barn: søknad.barn,
         isLoadingSakForAnnenPart,
-        eksisterendeSak: ekstrainfo.eksisterendeSak
+        eksisterendeSak: ekstrainfo.eksisterendeSak,
     };
 };
 

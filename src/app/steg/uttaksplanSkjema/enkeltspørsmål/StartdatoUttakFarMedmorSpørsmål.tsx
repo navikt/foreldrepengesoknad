@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import { uttaksplanDatoavgrensninger } from '../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
@@ -11,10 +11,11 @@ interface OwnProps {
     familiehendelsesdato: Date;
 }
 
-type Props = OwnProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
+type Props = OwnProps & UttaksplanSkjemaspørsmålProps;
 
 const StartdatoPermisjonSpørsmål = (props: Props) => {
-    const { visible, familiehendelsesdato, intl } = props;
+    const { visible, familiehendelsesdato } = props;
+    const intl = useIntl();
 
     return (
         <UttaksplanSkjemaSpørsmål
@@ -35,4 +36,4 @@ const StartdatoPermisjonSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(StartdatoPermisjonSpørsmål);
+export default StartdatoPermisjonSpørsmål;

@@ -4,8 +4,7 @@
     "adopsjonAvEktefellesBarn.spørsmål": "Gjeld søknaden din stebarnsadopsjon?",
     "adopsjonsdato.spørsmål": "Når overtek du omsorga?",
     "adoptertIUtlandet.spørsmål": "Adopterer du frå utlandet?",
-    "aktivitetskrav.lesmer":
-        " <a href={link} rel=\"noopener\" target=\"_blank\">Les meir om aktivitetskravet til mor her.</a>",
+    "aktivitetskrav.lesmer": " <a>Les meir om aktivitetskravet til mor her.</a>",
     "ankomstdato.spørsmål": "Når kom barnet til Noreg?",
     "annenForelder.aleneOmOmsorg": "Er du åleine om omsorga av barnet?",
     "annenForelder.aleneOmOmsorg.veileder":
@@ -120,23 +119,39 @@
     "boddINorgeSiste12Mnd.spørsmål": "Kvar har du budd dei siste 12 månadene?",
     "datoForAleneomsorg.spørsmål": "Datoen då du blei åleine om omsorga",
     "deltid": "Deltid",
-    "dinePersonopplysninger.avsnitt.automatiskBehandling.html":
-        "<p>Nav behandlar søknaden automatisk dersom vi har tilstrekkelege opplysningar. Den automatiske behandlinga baserer seg på opplysningar</p><ul><li>du gir i søknaden</li><li>frå Folkeregisteret og enhetsregisteret</li><li>om arbeidsforholda dine frå Arbeidstakar- og arbeidsgivarregisteret</li><li>om inntekta di frå A-meldinga</li><li>om inntekt og avtalt permisjon frå arbeidsgjevaren din</li></ul>",
     "dinePersonopplysninger.avsnitt.automatiskBehandling.tittel": "Automatisk behandling av søknaden",
-    "dinePersonopplysninger.avsnitt.innhenting.html":
-        "<p>For å behandle søknaden din henter vi inn opplysningar om</p><ul><li>tilknytinga di i Norge, arbeidsforholda dine og inntekta di</li><li>ytingar du får frå NAV</li><li>barn og den andre forelderen</li><li>trygdeordningar du kan ha rett til i andre land</li></ul><p>Vi kan også sende opplysningar om deg til trygdeordningar i andre land.</p>",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.del1":
+        "Nav behandlar søknaden automatisk dersom vi har tilstrekkelege opplysningar. Den automatiske behandlinga baserer seg på opplysningar",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt1": "du gir i søknaden",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt2": "frå Folkeregisteret og enhetsregisteret",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt3":
+        "om arbeidsforholda dine frå Arbeidstakar- og arbeidsgivarregisteret",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt4": "om inntekta di frå A-meldinga",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.punkt5":
+        "om inntekt og avtalt permisjon frå arbeidsgjevaren din",
     "dinePersonopplysninger.avsnitt.innhenting.tittel": "Opplysningar henta inn frå deg og offentlege register",
+    "dinePersonopplysninger.avsnitt.innhenting.del1": "For å behandle søknaden din henter vi inn opplysningar om",
+    "dinePersonopplysninger.avsnitt.innhenting.del2":
+        "Vi kan også sende opplysningar om deg til trygdeordningar i andre land.",
+    "dinePersonopplysninger.avsnitt.innhenting.punkt1": "tilknytinga di i Norge, arbeidsforholda dine og inntekta di",
+    "dinePersonopplysninger.avsnitt.innhenting.punkt2": "ytingar du får frå NAV",
+    "dinePersonopplysninger.avsnitt.innhenting.punkt3": "barn og den andre forelderen",
+    "dinePersonopplysninger.avsnitt.innhenting.punkt4": "trygdeordningar du kan ha rett til i andre land",
     "dinePersonopplysninger.avsnitt.lagring.html":
         "Dersom du sender inn søknaden, blir opplysningar du har gitt i søknaden lagra i tråd med arkivlova.",
     "dinePersonopplysninger.avsnitt.lagring.tittel": "Lagring av opplysningar",
     "dinePersonopplysninger.avsnitt.personvernerklaringen.html":
-        "<p>Du kan lese meir om korleis NAV behandlar personopplysningar i Arbeids- og velferdsetatens personvernerklæring på <a class=\"lenke\"rel=\"noopener\"href=\"https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten\">nav.no/personvern.</a></p>",
+        "Du kan lese meir om korleis NAV behandlar personopplysningar i Arbeids- og velferdsetatens personvernerklæring på <a>nav.no/personvern.</a>",
     "dinePersonopplysninger.avsnitt.personvernerklaringen.tittel": "Personvernerklæringa i NAV",
-    "dinePersonopplysninger.avsnitt.svarPaSoknaden.html":
-        "<p>Når søknaden din er behandla, får du eit vedtaksbrev. Det fortel deg om</p><ul><li>grunngivinga for avgjerda</li><li>korleis du får innsyn i saksbehandlinga og reglane som er blitt brukte</li><li>korleis du kan klage dersom du er ueinig</li></ul>",
     "dinePersonopplysninger.avsnitt.svarPaSoknaden.tittel": "Svar på søknaden",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.del1":
+        "Når søknaden din er behandla, får du eit vedtaksbrev. Det fortel deg om",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt1": "grunngivinga for avgjerda",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt2":
+        "korleis du får innsyn i saksbehandlinga og reglane som er blitt brukte",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt3": "korleis du kan klage dersom du er ueinig",
     "dinePersonopplysninger.behandling.html":
-        "<p>NAV hentar inn og mottar opplysningar om deg når du sender inn ein søknad. Det er nødvendig for at du skal kunne få rett teneste og rette ytingar.</p><p>Du har valt å søkje om foreldrepengar. Det er ei yting frå folketrygda som du kan få dersom du fyller vilkåra. Vilkåra står på <a href=\"https://www.nav.no/foreldrepengar\" class=\"lenke\"rel=\"noopener\">nav.no/foreldrepenger</a>.</p>",
+        "NAV hentar inn og mottar opplysningar om deg når du sender inn ein søknad. Det er nødvendig for at du skal kunne få rett teneste og rette ytingar. Du har valt å søkje om foreldrepengar. Det er ei yting frå folketrygda som du kan få dersom du fyller vilkåra. Vilkåra står på <a>nav.no/foreldrepenger</a>.",
     "dinePersonopplysninger.sectionheading": "Slik behandlar NAV personopplysningane dine",
     "dinePlikter.listeElement.1":
         "Eg forstår at dersom eg gir urette opplysningar eller held tilbake opplysningar kan det få konsekvensar for retten min til foreldrepengar.",
@@ -176,7 +191,7 @@
         "Du må orientere {navn} om søknaden, før du kan sende inn søknaden.",
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er de nære venner eller i familie?",
     "barnFødt.infoPrematuruker":
-        "Dersom barnet blir født før 33. svangerskapsveke, blir perioden med foreldrepengar utvida med same talet veker og dagar som barnet er født før termindato.<br /><br /> Foreldrepengane blir utvida med same perioden uavhengig av om de får eitt eller fleire barn, eller om de har 100 prosent foreldrepengar eller 80 prosent foreldrepengar.",
+        "Dersom barnet blir født før 33. svangerskapsveke, blir perioden med foreldrepengar utvida med same talet veker og dagar som barnet er født før termindato. Foreldrepengane blir utvida med same perioden uavhengig av om de får eitt eller fleire barn, eller om de har 100 prosent foreldrepengar eller 80 prosent foreldrepengar.",
     "erBarnetFødt.spørsmål": "Er barnet født?",
     "erBarnetFødt.spørsmål.veileder.medMorEllerFar":
         "Du kan dessverre ikkje søkje før barnet er født. Unntaket er dersom mor er sjuk eller innlagd på sjukehus eller helseinstitusjon. Du må fylle ut søknaden på papir og sende han i posten.{ lenke }",
@@ -223,8 +238,18 @@
     "gradering.prosent": "{stillingsprosent} prosent",
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepengar",
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobba og hatt inntekt som frilansar dei siste 10 månadene?",
-    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst":
-        "Eksempel på kven som kan vere frilansar er<br/><ul><li>Musikar</li><li>Tekstforfattarar</li><li>Skodespelarar</li><li>Journalistar</li><li>Støttekontakt</li><li>Omsetjararr</li><li> Folkevalde, politikarar i kommunar, fylkeskommunar og på Stortinget som får godtgjering for politisk arbeid.</li><li>Fosterforeldre, og personar med omsorgslønn</li></ul>Dersom du er usikker på om du er frilansar, kan du lese mer om kva det vil seie å være frilansar på skatteetaten sin",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.del1": "Eksempel på kven som kan vere frilansar er",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.del2":
+        "Dersom du er usikker på om du er frilansar, kan du lese mer om kva det vil seie å være frilansar på skatteetaten sin",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt1": "Musikar",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt2": "Tekstforfattarar",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt3": "Skodespelarar",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt4": "Journalistar",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt5": "Omsetjararr",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt6":
+        "Folkevalde, politikarar i kommunar, fylkeskommunar og på Stortinget som får godtgjering for politisk arbeid.",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt7": "Støttekontakt",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt8": "Fosterforeldre, og personar med omsorgslønn",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie dei siste 10 månadene",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
@@ -562,11 +587,10 @@
     "andreInntekter.infoTilFiskere.del2":
         "Dersom du får hyre, får du lønn som arbeidstakar. Det er ikkje alle fiskarar som er registrerte med eit arbeidsforhold i arbeidsgivar- og arbeidstakarregisteret, slik at det er synleg i søknaden. Grunnen til at du ikkje ser arbeidsforholdet ditt, er at arbeidsgivaren din ikkje er har plikt til å melde deg inn som arbeidstakar når du er fiskar.",
     "andreInntekter.infoTilFiskere.del3":
-        "Dersom du er fiskar med hyre, må arbeidsgivaren din sende inn inntektsmelding med informasjon om inntekta di. Her kan arbeidsgivaren din lese meir om korleis ein sender inn inntektsmelding, og korleis ho <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">skal fyllast ut.</a>",
+        "Dersom du er fiskar med hyre, må arbeidsgivaren din sende inn inntektsmelding med informasjon om inntekta di. Her kan arbeidsgivaren din lese meir om korleis ein sender inn inntektsmelding, og korleis ho <a>skal fyllast ut.</a>",
     "andreInntekter.infoTilFiskere.del4":
         "Dersom du er fiskar med lott, blir du rekna som sjølvstendig næringsdrivande. I søknadsdialogen må du svare ja på spørsmålet om du er sjølvstendig næringsdrivande, du må velje at du er fiskar når du fyller ut informasjon om næringa di. Spørsmåla du får i søknaden, er tilpassa situasjonen din, og du får rettleiing og informasjon undervegs. Når du gir oss informasjon om at du er fiskar, får vi registrert rett informasjon om deg, og vi får sendt rett informasjon om deg til Skatteetaten.",
-    "andreInntekter.infoTilFiskere.del5":
-        "På heimesida til Skatteetaten kan du lese meir om <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">lott og hyre.</a>",
+    "andreInntekter.infoTilFiskere.del5": "På heimesida til Skatteetaten kan du lese meir om <a>lott og hyre.</a>",
     "andreInntekter.infoTilFiskere.del6":
         "Dersom du er fiskar med eigen båt, er du sjølvstendig næringsdrivande. I søknadsdialogen må du svare ja på spørsmålet om du er sjølvstendig næringsdrivande, og du må velje at du er fiskar når du fyller ut informasjon om næringa di. Spørsmåla du får i søknaden, er tilpassa situasjonen din, og du får rettleiing og informasjon undervegs.",
     "andreInntekter.infoTilFiskere.del7":
@@ -723,7 +747,7 @@
         "Du kan utsetje foreldrepengane med lovfesta ferie i inntil 4 veker og 1 dag for kvart kalenderår, i tillegg til overført lovfesta ferie frå i fjor og 10 feriedagar frå neste år. Du kan ikkje utsetje på helgedagar. Du må avtale med arbeidsgjevaren din at du skal ha ferie.",
     "utsettelseskjema.kunHelligdager.disabledFerieMelding": "Du kan ikkje utsetje med ferie på helgedagar",
     "utsettelseskjema.info.utsettelseArbeid":
-        "Viss du ikkje finn arbeidsforholdet ditt her, har ikkje arbeidsgivaren din meldt deg inn i Arbeids- og arbeidsgivarregisteret. Du må vera registrert som tilsett der du skal jobbe for å bruke den digitale søknaden, ta kontakt med arbeidsgivaren din. <br /><br />Du må sende inn søknaden om utsette foreldrepengar før du skal byrja å jobba.",
+        "Viss du ikkje finn arbeidsforholdet ditt her, har ikkje arbeidsgivaren din meldt deg inn i Arbeids- og arbeidsgivarregisteret. Du må vera registrert som tilsett der du skal jobbe for å bruke den digitale søknaden, ta kontakt med arbeidsgivaren din. Du må sende inn søknaden om utsette foreldrepengar før du skal byrja å jobba.",
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagd søkjar",
@@ -736,8 +760,9 @@
     "uttaksoppsummering.gjenstående": "Foreldrepengar du har igjen",
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengane med delvis arbeid?",
     "uttaksperiode.gradert.stillingsprosentInfo": "Du skal gi opp kor mykje du skal jobba ut ifrå ein 100 % stilling.",
-    "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst":
-        "Du må sende inn søknaden om utsette foreldrepengar før du skal byrja å jobba. <br /><br /> <b>Skal du jobbe hos fleire arbeidsgivarar samtidig</b>, må du sende inn søknaden på papir. Du kan lese meir om dette dette på <a href=\"https://www.nav.no/fleksibeltuttak\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">familie.nav.no</a>, og her finner du <a href=\"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirsøknaden</a>.",
+    "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst.del1":
+        "Du må sende inn søknaden om utsette foreldrepengar før du skal byrja å jobba. <b>Skal du jobbe hos fleire arbeidsgivarar samtidig</b>, må du sende inn søknaden på papir. Du kan lese meir om dette dette på <a>familie.nav.no</a>",
+    "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst.del2": ", og her finner du <a>papirsøknaden</a>.",
     "uttaksplan.familiehendelsesdato.adopsjon": "Barnet er adoptert {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Barnet er født {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin {dato}",
@@ -777,7 +802,7 @@
     "uttaksplan.infoTilFrilansOgSelvstendig":
         "Når du stadfestar her kor mykje du skal jobbe, blir det rekna som ein avtale mellom deg og NAV dersom du får innvilga søknaden din.",
     "uttaksplan.infoVedOpphold":
-        "Du kan planlegge når {navn} skal ha foreldrepengar, men {navn} må søkje sjølv. Søknaden må sendes inn seinast dagen før foreldrepengane tek til for ikkje å miste dagar. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige fristar.</a>",
+        "Du kan planlegge når {navn} skal ha foreldrepengar, men {navn} må søkje sjølv. Søknaden må sendes inn seinast dagen før foreldrepengane tek til for ikkje å miste dagar. <a>Les om viktige fristar.</a>",
     "uttaksplan.infoVedOpphold.førsteSeksUker":
         "{navnFar} kan kun ta ut fellesperiode eller kvote om du er så sjuk at du er heilt avhengig av hjelp til å ta deg av barnet eller innlagt i helseinstitusjon. Du kan planlegge når {navnFar} skal ha foreldrepengar, men {navnFar} må søkje sjølv.",
     "uttaksplan.infoVedTapteUttaksdager":
@@ -790,25 +815,12 @@
         "De har {uker} veker med fleirbarnsveker som dykk kan dele. Disse vekene kan de ta ut når som helst i foreldrepengeperioden. De kan ta de ut samtidig, eller kvar for dere. Det er ikkje krav til kva {navnMor} gjer når du tek ut dager med flerbarnsveker.",
     "uttaksplan.informasjon.flerbarnssøknad.ikkeDeltUttak":
         "Du har {uker} veker med fleirbarnsveker. Disse vekene kan du ta ut når som helt i foreldrepengeperioden. Det er ikkje krav til kva {navnMor} gjer når du tek ut dager med flerbarnsveker.",
-    "uttaksplan.informasjon.endringssøknad":
-        "Her legg du inn kva tidsrom du vil ha foreldrepengar eller utsetje når du skal ha ferie, jobbe er har blitt sjuk. Denne endringssøknaden erstattar din tidlegare plan.",
-    "uttaksplan.informasjon.farMedmor.aleneOmsorg":
-        "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk.",
-    "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
-        "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk. Du kan ha {aktivitetsfriKvote} veker med foreldrepengar utan aktivitetskrav til mor.",
-    "uttaksplan.informasjon.farMedmor.deltUttak":
-        "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk. Du kan leggje inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søkje sjølv. Dersom du ikkje skal ta ut foreldrepengane dine rett etter den siste dagen til {navnAnnenForelder}, må du søkje om å utsetje.<br /><br /> Du kan lese meir om viktige fristar her: <a href={link} class=\"lenke\"rel=\"noopener\"target=\"_blank\">nav.no</a>",
-    "uttaksplan.informasjon.lesMer":
-        "Du kan lese mer om viktige frister på våre <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nettsider</a>",
+    "uttaksplan.informasjon.lesMer": "Du kan lese mer om viktige frister på våre <a>nettsider</a>",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} blir tekne av fellesperioden.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMindreEnnTreUker":
         "{varighet} du ikkje bruker før termin, fell bort",
     "uttaksplan.informasjon.foreldrepengerFørFødselSkalIkkeHa":
         "Når du ikkje startar foreldrepengeperioden 3 veker før termindato, fell desse dagane bort.",
-    "uttaksplan.informasjon.mor.aleneOmsorg":
-        "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk.",
-    "uttaksplan.informasjon.mor.deltOmsorg":
-        "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk. Du kan leggje inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søkje sjølv.",
     "uttaksplan.informasjon.morErForSyk":
         "Dersom du skal starte uttaket ditt dei første seks vekene etter fødselen, må du leggje ved ei stadfesting frå legen til {navnMor}. Stadfestinga må gjere greie for korleis sjukdommen eller skaden gjer {navnMor} helt avhengig av hjelp til å ta seg av barnet, og kor lenge det kjem til å vare. Det er ikkje nok med vanleg sjukmelding.",
     "uttaksplan.informasjon.morErForSykNeiSvar":
@@ -816,7 +828,7 @@
     "uttaksplan.informasjonTilSøker":
         "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk. Du kan leggje inn perioden for {navn}, men {navn} må søkje sjølv.",
     "uttaksplan.informasjonVedSykdom":
-        "Når du er syk må legen din dokumentere at du er helt avhengig av hjelp til å ta deg av barnet eller vi må få en bekreftelse på innleggelsen i helseinstitusjonen. Det er nå ikke et krav til at du må legge ved dokumentasjon 4 uker. For 4 uker kan du skrive en egenerklæring til oss nederst i søknaden. Du må fortelle oss hvordan skaden eller sykdommen gjør deg helt avhengig av hjelp til å ta deg av barnet. Er du innlagt i helseinstitusjon skriver du hvor du er innlagt.<br /><br /> Hvis du har dokumentasjon fra lege eller helseinstitusjon, kan du laste vedlegg opp til søknaden.",
+        "Når du er syk må legen din dokumentere at du er helt avhengig av hjelp til å ta deg av barnet eller vi må få en bekreftelse på innleggelsen i helseinstitusjonen. Det er nå ikke et krav til at du må legge ved dokumentasjon 4 uker. For 4 uker kan du skrive en egenerklæring til oss nederst i søknaden. Du må fortelle oss hvordan skaden eller sykdommen gjør deg helt avhengig av hjelp til å ta deg av barnet. Er du innlagt i helseinstitusjon skriver du hvor du er innlagt. Hvis du har dokumentasjon fra lege eller helseinstitusjon, kan du laste vedlegg opp til søknaden.",
     "uttaksplan.informasjonVedSykdomAnnenForelder":
         "Når {navn} er syk må legen dokumentere at {navn} er helt avhengig av hjelp til å ta seg av barnet eller vi må få en bekreftelse på innleggelsen i helseinstitusjonen. Det er nå ikke et krav til at du må legge ved dokumentasjon for 4 uker. For 4 uker kan du skrive en egenerklæring til oss nederst i søknaden. Du må fortelle oss hvordan skaden eller sykdommen til {navn} gjør {navn} helt avhengig av hjelp til å ta deg av barnet. Er {navn} innlagt i helseinstitusjon skriver du hvor {navn} er innlagt. Hvis du har dokumentasjon fra lege eller helseinstitusjon, kan du laste vedlegg opp til søknaden.",
     "uttaksplan.informasjonVedHVØvelse":
@@ -953,7 +965,7 @@
     "uttaksplan.ulønnetPermisjonInfo.del1":
         "Når ein forelder planleggar å vere heime i ulønt permisjon, må <b>den andre forelderen</b> søkje om å utsetje foreldrepengane på grunn av heiltidsarbeid, sjukdom eller ferie. Klikk her for å leggje til utsetjing.",
     "uttaksplan.ulønnetPermisjonInfo.del2":
-        "Ulønt permisjon kan påverke rett til andre NAV ytingar og opptening av rett til foreldrepengar for eit nytt barn. <a href=\"https://www.nav.no/no/Person/Arbeid/Sykmeldt%2C+arbeidsavklaringspenger+og+yrkesskade/Sykepenger/Sykepenger+til+sarskilte+grupper#chapter-5\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">Her kan du lese meir om dine rettar.</a>",
+        "Ulønt permisjon kan påverke rett til andre NAV ytingar og opptening av rett til foreldrepengar for eit nytt barn. <a>Her kan du lese meir om dine rettar.</a>",
     "uttaksplan.arbeideHelgInfo.tittel": "Eg skal jobbe i helga",
     "uttaksplan.arbeideHelgInfo.del1":
         "Når du skal jobbe helgedagar, må du søkje om å <b>kombinere foreldrepengane med delvis arbeid</b> i veka du skal jobbe.",
@@ -1131,16 +1143,19 @@
     "vedlegg.beskrivelse.dokumentasjonAvAleneomsorg": "Dokumentasjon av aleneomsorg",
     "velkommen.bobletekst": "Eg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.bobletittel": "Hei, {name}!",
-    "velkommen.dinePlikter": "dine plikter.<br /><br />",
+    "velkommen.dinePlikter": "dine plikter.",
     "velkommen.foreldreansvar.veileder":
         "Du er vorten tildelt foreldreansvaret etter barnelova § 38 eller 64, kan du ikkje sende inn søknaden elektronisk. Du må fylle ut søknaden på papir og sende han i posten.",
     "velkommen.ingress": "Foreldrepengar er noko du kan få for kvart barn du føder eller adopterer.",
-    "velkommen.intro.harInfotrygdSak":
-        "Her søkjer du om foreldrepengar når du skal være heime med barnet. Har du allereie invilga foreldrepengar kan du utsetje eller gjere andre endringar.",
+    "velkommen.intro.harInfotrygdSak.del1": "Her søkjer du om foreldrepengar når du skal være heime med barnet.",
+    "velkommen.intro.harInfotrygdSak.del2":
+        "Har du allereie invilga foreldrepengar kan du utsetje eller gjere andre endringar.",
     "velkommen.intro.harInfotrygdSak.veileder":
         "Du må ha søkt og fått invilga foreldrepengar for det same barnet for å kunne sende inn søknad om endring",
-    "velkommen.intro.harSak":
-        "Her søker du om foreldrepengar når du skal ha barn eller skal vera heime i foreldrepermisjon. Har du allereie innvilga foreldrepengar, kan du utsetje eller endre ved å velje søk om endring.",
+    "velkommen.intro.harSak.del1":
+        "Her søker du om foreldrepengar når du skal ha barn eller skal vera heime i foreldrepermisjon.",
+    "velkommen.intro.harSak.del2":
+        "Har du allereie innvilga foreldrepengar, kan du utsetje eller endre ved å velje søk om endring.",
     "velkommen.intro.harSak.veileder":
         "Når du søkjer om foreldrepengar for eit nytt barn, mistar du dagar du har igjen frå den første foreldrepengeperioden din.",
     "velkommen.intro.harFørstegangssøknadUnderBehandling":
@@ -1174,7 +1189,7 @@
     "væreINorgeVedFødsel.spørsmål": "Skal du vere i Noreg når barnet blir født?",
     "sesjonUtløpt.tittel": "Du er no logga ut",
     "sesjonUtløpt.ingress":
-        "Du har vore innlogga i ein time, difor må du logge inn på nytt for å fortsetje med søknaden.<br />Ønskjer du å fortsetje?",
+        "Du har vore innlogga i ein time, difor må du logge inn på nytt for å fortsetje med søknaden. Ønskjer du å fortsetje?",
     "sesjonUtløpt.avslutt": "Nei, eg vil avslutte",
     "sesjonUtløpt.fortsett": "Ja, eg vil fortsetje",
     "arbeidsgiver": "Arbeidsgjevar",
@@ -1264,7 +1279,7 @@
     "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale":
         "Du må ha ein skriftleg avtale med arbeidsgjevaren din om at du skal jobbe i den heiltid i den perioden du oppgir.",
     "uttaksplan.validering.info.burdeKanskjeSøkeGradering":
-        "Du har lagt inn flere dager med utsettelse på grunn av arbeid. Hvis du heller søker om å kombinere foreldrepengene med arbeid så slipper du å legge inn enkeltdager. Slett periodene du har lagt til, og legg til en ny periode. Velg fra og med dato og til og med dato du ønsker å kombinere foreldrepenger med arbeid, og oppgi stillingsprosent. Du kan lese mer på <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a> om hvordan du kan kombinere foreldrepenger med arbeid.",
+        "Du har lagt inn flere dager med utsettelse på grunn av arbeid. Hvis du heller søker om å kombinere foreldrepengene med arbeid så slipper du å legge inn enkeltdager. Slett periodene du har lagt til, og legg til en ny periode. Velg fra og med dato og til og med dato du ønsker å kombinere foreldrepenger med arbeid, og oppgi stillingsprosent. Du kan lese mer på <a>nav.no</a> om hvordan du kan kombinere foreldrepenger med arbeid.",
     "uttaksplan.validering.info.burdeKanskjeSøkeGradering.tittel":
         "Informasjon om å kombinere foreldrepenger med arbeid",
     "byttBrowser.tittel": "Vi ser du bruker en utdatert nettleser",
@@ -1284,12 +1299,16 @@
     "psg.åpneLabel": "Les meir om korleis ta eit bra bilde av vedlegg",
     "psg.innholdstittel": "Last opp bilete av vedlegget",
     "psg.section1.tittel": "Slik tek du eit godt bilete:",
-    "psg.section1.liste":
-        "<li>Hald mobilen eller kameraet direkte over dokumentet.</li><li>Vedlegget skal fylle heile biletet. Biletet skal <i>ikkje</i> innehalde annan dokumentasjon eller gjenstandar.</li><li>Biletet må innehalde all tekst i vedlegget. Dersom vedlegget er skriven på meir enn éi side, bør du laste opp fleire bilete.</li>",
+    "psg.section1.liste.punkt1": "Hald mobilen eller kameraet direkte over dokumentet.",
+    "psg.section1.liste.punkt2":
+        "Vedlegget skal fylle heile biletet. Biletet skal <i>ikkje</i> innehalde annan dokumentasjon eller gjenstandar.",
+    "psg.section1.liste.punkt3":
+        "Biletet må innehalde all tekst i vedlegget. Dersom vedlegget er skriven på meir enn éi side, bør du laste opp fleire bilete.",
     "psg.section2.tittel": "Etter at du har teke biletet, sjekk følgjande før du lastar opp:",
-    "psg.section2.liste":
-        "<li>Vedlegget har rett retning.</li><li>Teksten til vedlegget er godt leseleg.</li><li>Biletet er godt opplyst, utan skuggar.</li>",
-    "psg.icon.heading": "Bra og dårlige eksempler på bilder av legeerklæring",
+    "psg.section2.liste.punkt1": "Vedlegget har rett retning.",
+    "psg.section2.liste.punkt2": "Teksten til vedlegget er godt leseleg.",
+    "psg.section2.liste.punkt3": "Biletet er godt opplyst, utan skuggar.",
+    "psg.icon.heading": "Bra og dårlige eksempler på bilder av vedlegg",
     "psg.good": "Bra",
     "psg.bad": "Dårlig",
     "psg.icon.label.good": "Vedlegget fyller heile biletet",

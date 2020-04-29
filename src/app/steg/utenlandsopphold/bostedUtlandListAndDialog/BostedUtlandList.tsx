@@ -1,5 +1,5 @@
 import React from 'react';
-import { injectIntl, InjectedIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { getCountryName } from '@navikt/sif-common-formik';
 
 import { BostedUtland } from './types';
@@ -14,12 +14,12 @@ interface Props {
     bosteder: BostedUtland[];
     onEdit?: (opphold: BostedUtland) => void;
     onDelete?: (opphold: BostedUtland) => void;
-    intl: InjectedIntl;
 }
 
 const bem = BEMHelper('bostedUtlandList');
 
-const BostedUtlandList: React.FunctionComponent<Props> = ({ bosteder, onDelete, onEdit, intl }) => {
+const BostedUtlandList: React.FunctionComponent<Props> = ({ bosteder, onDelete, onEdit }) => {
+    const intl = useIntl();
     const renderBostedUtlandLabel = (opphold: BostedUtland): React.ReactNode => {
         const navn = getCountryName(opphold.landkode, intl.locale);
         return (
@@ -47,4 +47,4 @@ const BostedUtlandList: React.FunctionComponent<Props> = ({ bosteder, onDelete, 
     );
 };
 
-export default injectIntl(BostedUtlandList);
+export default BostedUtlandList;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ModalProps } from 'nav-frontend-modal';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import TidsperiodeBolk from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
@@ -17,9 +17,10 @@ export interface FrilansOppdragModalProps extends ModalProps {
     editMode: boolean;
     onAdd: (oppdrag: FrilansOppdrag) => void;
     onEdit: (oppdrag: FrilansOppdrag) => void;
+    intl: IntlShape;
 }
 
-type Props = FrilansOppdragModalProps & InjectedIntlProps;
+type Props = FrilansOppdragModalProps;
 
 interface State {
     oppdrag: FrilansOppdragPartial;

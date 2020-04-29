@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import { Normaltekst } from 'nav-frontend-typografi';
 
@@ -13,10 +13,11 @@ import './arbeidsforhold.less';
 interface ArbeidsforholdInfoWrapperProps {
     arbeidsforhold: Arbeidsforhold[];
 }
-const InformasjonOmArbeidsforholdWrapper: React.StatelessComponent<
-    ArbeidsforholdInfoWrapperProps & InjectedIntlProps
-> = ({ arbeidsforhold, intl }) => {
+const InformasjonOmArbeidsforholdWrapper: React.StatelessComponent<ArbeidsforholdInfoWrapperProps> = ({
+    arbeidsforhold
+}) => {
     const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
+    const intl = useIntl();
 
     return (
         <React.Fragment>
@@ -43,4 +44,4 @@ const InformasjonOmArbeidsforholdWrapper: React.StatelessComponent<
     );
 };
 
-export default injectIntl(InformasjonOmArbeidsforholdWrapper);
+export default InformasjonOmArbeidsforholdWrapper;

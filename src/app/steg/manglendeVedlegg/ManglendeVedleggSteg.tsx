@@ -3,7 +3,7 @@ import { StegID } from 'app/util/routing/stegConfig';
 import { AppState } from 'app/redux/reducers';
 import { mapMissingAttachmentsOnSøknad } from 'app/util/attachments/missingAttachmentUtil';
 import Steg, { StegProps } from 'app/components/applikasjon/steg/Steg';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from 'app/types/common';
 import isAvailable from '../../util/steg/isAvailable';
@@ -43,7 +43,11 @@ interface ReduxProps {
     erLikEllerMindreEnnFireUkerTilUttaketStarter: boolean;
 }
 
-type Props = SøkerinfoProps & ReduxProps & InjectedIntlProps & DispatchProps & HistoryProps;
+interface OwnProps {
+    intl: IntlShape;
+}
+
+type Props = SøkerinfoProps & ReduxProps & OwnProps & DispatchProps & HistoryProps;
 
 class ManglendeVedleggsteg extends React.Component<Props> {
     constructor(props: Props) {

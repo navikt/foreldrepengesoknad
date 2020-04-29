@@ -13,7 +13,7 @@ import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import FamiliehendelsedatoInfo from './FamiliehendelsedatoInfo';
 import { Forelder, Tidsperiode } from 'common/types';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Knapp } from 'nav-frontend-knapper';
 import NyPeriodeForm from './components/nyPeriodeForm/NyPeriodeForm';
@@ -48,9 +48,10 @@ interface OwnProps {
     deletePeriode: (periode: Periode) => void;
     onRequestClear: () => void;
     onRequestRevert: () => void;
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 interface State {
     periodetype?: Periodetype;

@@ -1,35 +1,12 @@
 {
     "søker": {
-        "fnr": "11076931536",
-        "fornavn": "ROBUST",
-        "etternavn": "KAMELEON",
-        "kjønn": "M",
-        "fødselsdato": "1969-07-11",
+        "fnr": "17066425606",
+        "fornavn": "LUNKEN",
+        "etternavn": "TRANE",
+        "kjønn": "K",
+        "fødselsdato": "1964-06-17",
         "land": "NO",
-        "ikkeNordiskEøsLand": false,
-        "barn": [
-            {
-                "fnr": "01101992302",
-                "fornavn": "VAKKER",
-                "etternavn": "KAKKERLAKK",
-                "kjønn": "M",
-                "fødselsdato": "2019-10-01",
-                "annenForelder": {
-                    "fnr": "23018821850",
-                    "fornavn": "BRÅKETE",
-                    "etternavn": "TRANFLASKE",
-                    "fødselsdato": "1988-01-23"
-                }
-            }
-        ]
+        "ikkeNordiskEøsLand": false
     },
-    "arbeidsforhold": [
-        {
-            "arbeidsgiverId": "973861778",
-            "arbeidsgiverIdType": "orgnr",
-            "arbeidsgiverNavn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET",
-            "stillingsprosent": 100,
-            "fom": "2016-01-01"
-        }
-    ]
+    "arbeidsforhold": []
 }

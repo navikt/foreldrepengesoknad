@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import AntallBarnBolk from '../../components/AntallBarnBolk';
@@ -27,7 +27,11 @@ interface StateProps {
     erFarMedmor: boolean;
 }
 
-type Props = StateProps & InjectedIntlProps & DispatchProps;
+interface OwnProps {
+    intl: IntlShape;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
 
 const getFødselsdatoer = (fødselsdatoer?: Date[]): Date[] => {
     return fødselsdatoer !== undefined &&
@@ -90,11 +94,7 @@ class FødtBarnPartial extends React.Component<Props> {
                     />
                 </Block>
                 <Block visible={vis.visInfoOmPrematuruker}>
-                    <VeilederInfo
-                        messages={[
-                            { contentIntlKey: 'barnFødt.infoPrematuruker', type: 'info', formatContentAsHTML: true },
-                        ]}
-                    />
+                    <VeilederInfo messages={[{ contentIntlKey: 'barnFødt.infoPrematuruker', type: 'info' }]} />
                 </Block>
 
                 <Block visible={vis.visInfoOmPrematuruker}>

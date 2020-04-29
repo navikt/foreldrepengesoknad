@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { VeilederMessage } from '../types';
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import BEMHelper from 'common/util/bem';
 import AlertStripe, { AlertStripeType } from 'nav-frontend-alertstriper';
 import { Element } from 'nav-frontend-typografi';
@@ -27,15 +27,15 @@ const getAlertStripeTypeFromMessageType = (message: VeilederMessage): AlertStrip
     }
 };
 
-const renderAlert = (message: VeilederMessage, FormatComponent: any, skjulMeldingIkon: boolean) => {
+const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean) => {
     const content = (
         <>
             {message.titleIntlKey !== undefined && (
                 <Element>
-                    <FormatComponent id={message.titleIntlKey!} />
+                    <FormattedMessage id={message.titleIntlKey!} />
                 </Element>
             )}
-            <FormatComponent id={message.contentIntlKey} values={message.values} />
+            <FormattedMessage id={message.contentIntlKey} values={message.values} />
         </>
     );
     return skjulMeldingIkon ? (
@@ -51,13 +51,12 @@ const VeilederMelding: React.SFC<VeilederpanelInnholdContentProps> = ({
     skjulMeldingIkon = false
 }) => {
     const bem = BEMHelper('veilederMelding');
-    const FormatComponent = message.formatContentAsHTML === true ? FormattedHTMLMessage : FormattedMessage;
     return (
         <div className={bem.classNames(bem.block, bem.modifier(stil))}>
             {message.type !== 'normal' ? (
-                renderAlert(message, FormatComponent, skjulMeldingIkon)
+                renderAlert(message, skjulMeldingIkon)
             ) : (
-                <FormatComponent id={message.contentIntlKey} values={message.values} />
+                <FormattedMessage id={message.contentIntlKey} values={message.values} />
             )}
         </div>
     );

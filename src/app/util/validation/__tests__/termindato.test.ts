@@ -1,15 +1,15 @@
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
 import { getTermindatoRegler } from '../termindato';
 import { date21DaysAgo, date22DaysAgo, attenUkerPluss3, attenUkerPluss4, today } from '../values';
 import * as commonRules from '../common';
 
-const intl: Partial<InjectedIntl> = {};
+const intl: Partial<IntlShape> = {};
 const callIkkeMerEnn3UkerSiden = (termindato: Date) => {
-    return getTermindatoRegler(termindato, intl as InjectedIntl)[1].test();
+    return getTermindatoRegler(termindato, intl as IntlShape)[1].test();
 };
 const callIUke22 = (termindato: Date) => {
-    return getTermindatoRegler(termindato, intl as InjectedIntl)[2].test();
+    return getTermindatoRegler(termindato, intl as IntlShape)[2].test();
 };
 
 const someString = '';
@@ -22,7 +22,7 @@ describe('Termindato validation', () => {
     });
 
     it('should call correct validators with given date and string', () => {
-        getTermindatoRegler(todaysDate, intl as InjectedIntl);
+        getTermindatoRegler(todaysDate, intl as IntlShape);
         expect(commonRules.hasValueRule).toHaveBeenCalledWith(todaysDate, someString);
     });
 

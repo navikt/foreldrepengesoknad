@@ -1,6 +1,6 @@
 import * as React from 'react';
 import JaNeiSpørsmål from '../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
 interface HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmålProps {
@@ -9,10 +9,11 @@ interface HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmålPr
     onChange: (harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: boolean) => void;
 }
 
-type Props = HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmålProps & InjectedIntlProps;
+type Props = HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmålProps;
 
 const HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål = (props: Props) => {
-    const { onChange, spørsmålstekst, harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene, intl } = props;
+    const { onChange, spørsmålstekst, harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene } = props;
+    const intl = useIntl();
 
     return (
         <JaNeiSpørsmål
@@ -25,4 +26,4 @@ const HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål = (pr
     );
 };
 
-export default injectIntl(HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål);
+export default HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål;

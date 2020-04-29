@@ -1,5 +1,5 @@
 import React from 'react';
-import { injectIntl, InjectedIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import {
     AnnenForelderFormValues,
     AnnenForelderFormComponents,
@@ -27,7 +27,6 @@ import MåOrientereAnnenForelderVeileder from './veiledere/MåOrientereAnnenFore
 import FarDokumentasjonAleneomsorgVeileder from './veiledere/FarDokumentasjonAleneomsorgVeileder';
 
 interface Props {
-    intl: InjectedIntl;
     skalOppgiPersonalia: boolean;
     søkerRolle: SøkerRolle;
     gjelderStebarnsadopsjon: boolean;
@@ -52,9 +51,10 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
     søkersFødselsnummer,
     initialFormValues,
     onFilesSelect,
-    onFileDelete,
-    intl
+    onFileDelete
 }) => {
+    const intl = useIntl();
+
     return (
         <AnnenForelderFormComponents.FormikWrapper
             initialValues={initialFormValues}
@@ -162,4 +162,4 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
     );
 };
 
-export default injectIntl(AnnenForelderForm);
+export default AnnenForelderForm;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import Steg, { StegProps } from '../../components/applikasjon/steg/Steg';
 import { AppState } from '../../redux/reducers';
 import { DispatchProps } from 'common/redux/types';
@@ -45,7 +45,11 @@ interface StateProps {
     initialFormValues: AnnenForelderFormValues;
 }
 
-type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
+interface OwnProps {
+    intl: IntlShape;
+}
+
+type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps & OwnProps;
 
 class AnnenForelderSteg extends React.Component<Props> {
     constructor(props: Props) {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 
@@ -8,10 +8,11 @@ interface DriverFosterhjemSpørsmålProps {
     onChange: (harJobbetForNærVennEllerFamilieSiste12Mnd: boolean) => void;
 }
 
-type Props = DriverFosterhjemSpørsmålProps & InjectedIntlProps;
+type Props = DriverFosterhjemSpørsmålProps;
 
 const DriverDuFosterhjemSpørsmål = (props: Props) => {
-    const { onChange, driverFosterhjem, intl } = props;
+    const { onChange, driverFosterhjem } = props;
+    const intl = useIntl();
 
     return (
         <JaNeiSpørsmål
@@ -23,4 +24,4 @@ const DriverDuFosterhjemSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(DriverDuFosterhjemSpørsmål);
+export default DriverDuFosterhjemSpørsmål;

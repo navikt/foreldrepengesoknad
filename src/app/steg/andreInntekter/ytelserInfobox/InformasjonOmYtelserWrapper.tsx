@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import { Normaltekst } from 'nav-frontend-typografi';
 
@@ -10,10 +10,8 @@ import './ytelser.less';
 interface YtelseInfoWrapperProps {
     ytelser: any[];
 }
-const InformasjonOmYtelserWrapper: React.StatelessComponent<YtelseInfoWrapperProps & InjectedIntlProps> = ({
-    ytelser,
-    intl
-}) => {
+const InformasjonOmYtelserWrapper: React.StatelessComponent<YtelseInfoWrapperProps> = ({ ytelser }) => {
+    const intl = useIntl();
     const harYtelser = ytelser !== undefined && ytelser.length > 0;
 
     return (
@@ -33,4 +31,4 @@ const InformasjonOmYtelserWrapper: React.StatelessComponent<YtelseInfoWrapperPro
     );
 };
 
-export default injectIntl(InformasjonOmYtelserWrapper);
+export default InformasjonOmYtelserWrapper;

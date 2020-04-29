@@ -8,7 +8,7 @@ import {
     isUfødtBarn,
     isFødtBarn,
     isAdopsjonsbarn,
-    isForeldreansvarsbarn
+    isForeldreansvarsbarn,
 } from '../../../types/søknad/Barn';
 import Søknad from '../../../types/søknad/Søknad';
 import { fødselsdatoerErFyltUt } from '../fødselsdato';
@@ -17,7 +17,7 @@ import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
 import { RegistrertBarn, RegistrertAnnenForelder } from '../../../types/Person';
 import { findOldestDate } from '../../dates/dates';
 import { Validator } from 'common/lib/validation/types';
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import { visTermindato } from 'app/steg/barn/relasjonTilBarnFødselSteg/visibility/visibilityFunctions';
@@ -108,7 +108,7 @@ export const getUniqueRegistrertAnnenForelderFromBarn = (
         if (annenForelder && !foreldre.find((f) => f.fnr === annenForelder.fnr)) {
             foreldre.push({
                 ...annenForelder,
-                fødselsdato: moment(annenForelder.fødselsdato).toDate()
+                fødselsdato: moment(annenForelder.fødselsdato).toDate(),
             });
         }
     });
@@ -121,14 +121,14 @@ export const getBarnInfoFraRegistrertBarnValg = (
 ): Partial<Barn> => {
     if (gjelderAnnetBarn === true) {
         return {
-            fødselsdatoer: []
+            fødselsdatoer: [],
         };
     }
     const fødselsdato = findOldestDate(valgteBarn.map((b: RegistrertBarn) => b.fødselsdato));
     return {
         fødselsdatoer: fødselsdato ? [fødselsdato] : [],
         antallBarn: valgteBarn.length > 0 ? valgteBarn.length : undefined,
-        erBarnetFødt: valgteBarn.length > 0 || undefined
+        erBarnetFødt: valgteBarn.length > 0 || undefined,
     };
 };
 
@@ -136,14 +136,14 @@ const barnErFødtFørAnkomstNorge = (fødselsdato: Date, ankomstdato: Date): boo
     return moment(fødselsdato).isSameOrBefore(ankomstdato, 'day');
 };
 
-export const getAdopsjonAnkomstdatoValidatorer = (barn: Adopsjonsbarn, intl: InjectedIntl): Validator[] | undefined => {
+export const getAdopsjonAnkomstdatoValidatorer = (barn: Adopsjonsbarn, intl: IntlShape): Validator[] | undefined => {
     const { fødselsdatoer, ankomstdato } = barn;
     if (fødselsdatoer && fødselsdatoer.length > 0 && ankomstdato !== undefined) {
         return [
             {
                 test: () => barnErFødtFørAnkomstNorge(barn.fødselsdatoer[0], ankomstdato),
-                failText: getMessage(intl, 'valideringsfeil.fodselsdato.etterAdopsjonsdato')
-            }
+                failText: getMessage(intl, 'valideringsfeil.fodselsdato.etterAdopsjonsdato'),
+            },
         ];
     }
     return undefined;

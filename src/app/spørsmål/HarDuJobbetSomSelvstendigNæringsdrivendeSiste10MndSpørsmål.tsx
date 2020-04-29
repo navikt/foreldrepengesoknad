@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 import EksternUrl from 'common/components/infoboks/EksternUrl';
@@ -11,15 +11,15 @@ interface HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmålProps {
     planInneholderSelvstendignæringaktivitet: boolean;
 }
 
-type Props = HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmålProps & InjectedIntlProps;
+type Props = HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmålProps;
 
 const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (props: Props) => {
     const {
         onChange,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
         planInneholderSelvstendignæringaktivitet,
-        intl
     } = props;
+    const intl = useIntl();
 
     const validerSelvstendignæring = [
         {
@@ -27,8 +27,8 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (props: Pr
                 planInneholderSelvstendignæringaktivitet
                     ? harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true
                     : true,
-            failText: getMessage(intl, 'valideringsfeil.selvstendigNæringsdrivende.måBesvares')
-        }
+            failText: getMessage(intl, 'valideringsfeil.selvstendigNæringsdrivende.måBesvares'),
+        },
     ];
 
     return (
@@ -50,4 +50,4 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (props: Pr
     );
 };
 
-export default injectIntl(HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål);
+export default HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål;

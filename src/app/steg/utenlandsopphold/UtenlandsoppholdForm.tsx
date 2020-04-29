@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { injectIntl, InjectedIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import Block from 'common/components/block/Block';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
@@ -8,7 +8,7 @@ import getMessage from 'common/util/i18nUtils';
 import {
     UtenlandsoppholdFormValues,
     UtenlandsoppholdFormComponents,
-    UtenlandsoppholdFieldNames
+    UtenlandsoppholdFieldNames,
 } from './form/utenlandsoppholdFormTypes';
 import { utenlandsoppholdFormQuestions } from './form/utenlandsoppholdFormQuestions';
 import BostedUtlandListAndDialog from './bostedUtlandListAndDialog/BostedUtlandListAndDialog';
@@ -16,7 +16,7 @@ import { commonFieldErrorRenderer } from './bostedUtlandListAndDialog/BostedUtla
 import {
     validateUtenlandsoppholdSiste12Mnd,
     validateUtenlandsoppholdNeste12Mnd,
-    validateYesOrNoIsAnswered
+    validateYesOrNoIsAnswered,
 } from 'app/validation/fieldValidations';
 import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/types/søknad/InformasjonOmUtenlandsopphold';
 import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
@@ -27,19 +27,14 @@ const defaultInitialValues: UtenlandsoppholdFormValues = {
     harBoddUtenforNorgeSiste12Mnd: YesOrNo.UNANSWERED,
     skalBoUtenforNorgeNeste12Mnd: YesOrNo.UNANSWERED,
     utenlandsoppholdNeste12Mnd: [],
-    utenlandsoppholdSiste12Mnd: []
+    utenlandsoppholdSiste12Mnd: [],
 };
 
 const dateToday = new Date();
-const date1YearFromNow = moment()
-    .add(1, 'year')
-    .toDate();
-const date1YearAgo = moment()
-    .subtract(1, 'year')
-    .toDate();
+const date1YearFromNow = moment().add(1, 'year').toDate();
+const date1YearAgo = moment().subtract(1, 'year').toDate();
 
 interface Props {
-    intl: InjectedIntl;
     informasjonOmUtenlandsoppholdFraSøknad: InformasjonOmUtenlandsopphold;
     onValidSubmit: (values: UtenlandsoppholdFormValues) => void;
 }
@@ -47,7 +42,7 @@ interface Props {
 const mapTilBostedUtland = (opphold: Utenlandsopphold): BostedUtland => ({
     fom: opphold.tidsperiode.fom,
     tom: opphold.tidsperiode.tom,
-    landkode: opphold.land
+    landkode: opphold.land,
 });
 
 const getInitialValues = (
@@ -58,14 +53,14 @@ const getInitialValues = (
             iNorgeSiste12Mnd,
             iNorgeNeste12Mnd,
             senereOpphold,
-            tidligereOpphold
+            tidligereOpphold,
         } = informasjonOmUtenlandsoppholdFraSøknad;
 
         const initialValues: UtenlandsoppholdFormValues = {
             harBoddUtenforNorgeSiste12Mnd: iNorgeSiste12Mnd ? YesOrNo.NO : YesOrNo.YES,
             skalBoUtenforNorgeNeste12Mnd: iNorgeNeste12Mnd ? YesOrNo.NO : YesOrNo.YES,
             utenlandsoppholdNeste12Mnd: senereOpphold.map(mapTilBostedUtland),
-            utenlandsoppholdSiste12Mnd: tidligereOpphold.map(mapTilBostedUtland)
+            utenlandsoppholdSiste12Mnd: tidligereOpphold.map(mapTilBostedUtland),
         };
 
         return initialValues;
@@ -75,10 +70,10 @@ const getInitialValues = (
 };
 
 const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
-    intl,
     informasjonOmUtenlandsoppholdFraSøknad,
-    onValidSubmit
+    onValidSubmit,
 }) => {
+    const intl = useIntl();
     const initialValues = getInitialValues(informasjonOmUtenlandsoppholdFraSøknad);
 
     return (
@@ -110,7 +105,7 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                         info={getMessage(intl, 'utenlandsopphold.neste12MånederInfotekst')}
                                         labels={{
                                             no: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boINorge'),
-                                            yes: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boIUtlandet')
+                                            yes: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boIUtlandet'),
                                         }}
                                         validate={validateYesOrNoIsAnswered}
                                     />
@@ -127,7 +122,7 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                         maxDate={date1YearFromNow}
                                         labels={{
                                             addLabel: 'Legg til nytt utenlandsopphold',
-                                            modalTitle: 'Utenlandsopphold neste 12 måneder'
+                                            modalTitle: 'Utenlandsopphold neste 12 måneder',
                                         }}
                                         erFremtidigOpphold={true}
                                         validate={validateUtenlandsoppholdNeste12Mnd}
@@ -144,7 +139,7 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                         info={getMessage(intl, 'utenlandsopphold.siste12MånederInfotekst')}
                                         labels={{
                                             no: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddINorge'),
-                                            yes: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddIUtlandet')
+                                            yes: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddIUtlandet'),
                                         }}
                                         validate={validateYesOrNoIsAnswered}
                                     />
@@ -161,7 +156,7 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                         name={UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd}
                                         labels={{
                                             addLabel: 'Legg til nytt utenlandsopphold',
-                                            modalTitle: 'Utenlandsopphold siste 12 måneder'
+                                            modalTitle: 'Utenlandsopphold siste 12 måneder',
                                         }}
                                         erFremtidigOpphold={false}
                                         validate={validateUtenlandsoppholdSiste12Mnd}
@@ -176,4 +171,4 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
     );
 };
 
-export default injectIntl(UtenlandsoppholdForm);
+export default UtenlandsoppholdForm;

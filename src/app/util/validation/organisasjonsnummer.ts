@@ -1,4 +1,4 @@
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
 import { hasValueRule } from './common';
@@ -24,7 +24,7 @@ export const erGyldigNorskOrgnummer = (orgnr: string): boolean => {
 export const getOrganisasjonsnummerRegler = (
     organisasjonsnummer: string,
     registrertINorge: boolean | undefined,
-    intl: InjectedIntl
+    intl: IntlShape
 ): Validator[] => {
     const intlKey = 'valideringsfeil.organisasjonsnummer';
     if (registrertINorge === true) {
@@ -32,12 +32,12 @@ export const getOrganisasjonsnummerRegler = (
             hasValueRule(organisasjonsnummer, getMessage(intl, `${intlKey}.required`)),
             {
                 test: () => er9Tall(organisasjonsnummer),
-                failText: getMessage(intl, `${intlKey}.er9tall`)
+                failText: getMessage(intl, `${intlKey}.er9tall`),
             },
             {
                 test: () => erGyldigNorskOrgnummer(organisasjonsnummer),
-                failText: getMessage(intl, `${intlKey}.erUgyldigOrgNummer`)
-            }
+                failText: getMessage(intl, `${intlKey}.erUgyldigOrgNummer`),
+            },
         ];
     }
     return [hasValueRule(organisasjonsnummer, getMessage(intl, `${intlKey}.required`))];

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import { Row, Column } from 'nav-frontend-grid';
@@ -13,10 +13,11 @@ interface NavnPåAnnenForelderSpørsmålProps {
     onChange: (annenForelder: AnnenForelderPartial) => void;
 }
 
-type Props = NavnPåAnnenForelderSpørsmålProps & InjectedIntlProps;
+type Props = NavnPåAnnenForelderSpørsmålProps;
 
 const NavnPåAnnenForelderSpørsmål = (props: Props) => {
-    const { kanIkkeOppgis, fornavn, etternavn, onChange, intl } = props;
+    const { kanIkkeOppgis, fornavn, etternavn, onChange } = props;
+    const intl = useIntl();
 
     return (
         <Fieldset legend={getMessage(intl, 'annenForelder.spørsmål.navn')}>
@@ -47,4 +48,4 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(NavnPåAnnenForelderSpørsmål);
+export default NavnPåAnnenForelderSpørsmål;

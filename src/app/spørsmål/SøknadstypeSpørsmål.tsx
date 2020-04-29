@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 
@@ -10,10 +10,11 @@ interface OwnProps {
     erSakForEndringssøknadFraInfotrygd: boolean;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 const SøknadstypeSpørsmål = (props: Props) => {
-    const { harEksisterendeSak, skalEndre, onChange, erSakForEndringssøknadFraInfotrygd, intl } = props;
+    const { harEksisterendeSak, skalEndre, onChange, erSakForEndringssøknadFraInfotrygd } = props;
+    const intl = useIntl();
     if (harEksisterendeSak) {
         return (
             <div data-name="soknadstype-spm">
@@ -31,7 +32,7 @@ const SøknadstypeSpørsmål = (props: Props) => {
                             : getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.endring`),
                         nei: erSakForEndringssøknadFraInfotrygd
                             ? getMessage(intl, `velkommen.spørsmål.søknadstype.harInfotrygdSak.alternativ.nyttbarn`)
-                            : getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn`)
+                            : getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn`),
                     }}
                     onChange={(verdi) => onChange(verdi)}
                 />
@@ -45,7 +46,7 @@ const SøknadstypeSpørsmål = (props: Props) => {
                 valgtVerdi={skalEndre !== undefined ? !skalEndre : undefined}
                 labels={{
                     ja: getMessage(intl, `velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.nyttbarn`),
-                    nei: getMessage(intl, `velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring`)
+                    nei: getMessage(intl, `velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring`),
                 }}
                 onChange={(verdi) => onChange(!verdi)}
             />
@@ -53,4 +54,4 @@ const SøknadstypeSpørsmål = (props: Props) => {
     }
 };
 
-export default injectIntl(SøknadstypeSpørsmål);
+export default SøknadstypeSpørsmål;

@@ -5,16 +5,17 @@ import { getBrukteDager } from './brukteDagerUtils';
 import { getTilgjengeligeDager } from './tilgjengeligeDagerUtils';
 import FordelingGraf from 'shared/components/fordelingGraf/FordelingGraf';
 import { getVarighetString } from 'common/util/intlUtils';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { getFordelingDeltOmsorg, getFordelingIkkeDeltOmsorg } from './uttakFordelingUtils';
 
 interface Props {
     søknadsinfo: Søknadsinfo;
     perioder: Periode[];
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    intl: IntlShape;
 }
 
-const UttakFordeling: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const UttakFordeling: React.StatelessComponent<Props> = ({
     søknadsinfo,
     tilgjengeligeStønadskontoer,
     perioder,

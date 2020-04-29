@@ -4,18 +4,15 @@ import InteractiveListElement, {
 } from '../../../../common/components/skjema/elements/interactive-list-element/InteractiveListElement';
 import { FrilansOppdrag } from '../../../types/søknad/FrilansInformasjon';
 import getMessage from 'common/util/i18nUtils';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { prettifyTidsperiode } from '../../../util/dates/dates';
 
 interface FrilansOppdragListeElementProps extends InteractiveListElementProps {
     oppdrag: FrilansOppdrag;
 }
 
-const FrilansOppdragListElement: React.StatelessComponent<FrilansOppdragListeElementProps & InjectedIntlProps> = ({
-    oppdrag,
-    intl,
-    ...rest
-}) => {
+const FrilansOppdragListElement: React.StatelessComponent<FrilansOppdragListeElementProps> = ({ oppdrag, ...rest }) => {
+    const intl = useIntl();
     const deleteLinkText = getMessage(intl, 'slett.oppdrag');
     return (
         <InteractiveListElement
@@ -27,4 +24,4 @@ const FrilansOppdragListElement: React.StatelessComponent<FrilansOppdragListeEle
     );
 };
 
-export default injectIntl(FrilansOppdragListElement);
+export default FrilansOppdragListElement;

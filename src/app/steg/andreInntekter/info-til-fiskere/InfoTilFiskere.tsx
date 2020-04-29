@@ -2,7 +2,7 @@ import React from 'react';
 import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 import { Undertittel } from 'nav-frontend-typografi';
 import Block from 'common/components/block/Block';
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import lenker from 'app/util/routing/lenker';
 
 const InfoTilFiskere = () => {
@@ -19,9 +19,20 @@ const InfoTilFiskere = () => {
                     <FormattedMessage id="andreInntekter.infoTilFiskere.del2" />
                 </Block>
                 <Block margin="xs">
-                    <FormattedHTMLMessage
+                    <FormattedMessage
                         id="andreInntekter.infoTilFiskere.del3"
-                        values={{ link: lenker.hvordanSendeInntektsmelding }}
+                        values={{
+                            a: (msg: any) => (
+                                <a
+                                    href={lenker.hvordanSendeInntektsmelding}
+                                    target="_blank"
+                                    rel="noopener"
+                                    className="lenke"
+                                >
+                                    {msg}
+                                </a>
+                            )
+                        }}
                     />
                 </Block>
                 <Undertittel>
@@ -31,9 +42,15 @@ const InfoTilFiskere = () => {
                     <FormattedMessage id="andreInntekter.infoTilFiskere.del4" />
                 </Block>
                 <Block margin="xs">
-                    <FormattedHTMLMessage
+                    <FormattedMessage
                         id="andreInntekter.infoTilFiskere.del5"
-                        values={{ link: lenker.omLottOgHyre }}
+                        values={{
+                            a: (msg: any) => (
+                                <a href={lenker.omLottOgHyre} target="_blank" rel="noopener" className="lenke">
+                                    {msg}
+                                </a>
+                            )
+                        }}
                     />
                 </Block>
                 <Undertittel>
@@ -55,10 +72,7 @@ const InfoTilFiskere = () => {
                     <FormattedMessage id="andreInntekter.infoTilFiskere.del9" />
                 </Block>
                 <Block margin="none">
-                    <FormattedHTMLMessage
-                        id="andreInntekter.infoTilFiskere.del5"
-                        values={{ link: lenker.omLottOgHyre }}
-                    />
+                    <FormattedMessage id="andreInntekter.infoTilFiskere.del5" values={{ link: lenker.omLottOgHyre }} />
                 </Block>
             </div>
         </UtvidetInformasjon>

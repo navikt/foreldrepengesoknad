@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../../../../../../util/dates/dates';
 import Oppsummeringsliste from 'app/steg/oppsummering/components/oppsummeringsliste/Oppsummeringsliste';
@@ -8,9 +8,10 @@ import AnnenInntektDetaljer from 'app/steg/oppsummering/components/oppsummering/
 
 interface AndreInntekterOppsummeringslisteProps {
     andreInntekter: AnnenInntekt[];
+    intl: IntlShape;
 }
 
-type Props = AndreInntekterOppsummeringslisteProps & InjectedIntlProps;
+type Props = AndreInntekterOppsummeringslisteProps;
 
 class AndreInntekterOppsummeringsliste extends React.Component<Props> {
     constructor(props: Props) {

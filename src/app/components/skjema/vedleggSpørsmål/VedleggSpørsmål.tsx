@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import AttachmentsUploader from 'app/components/storage/attachment/components/AttachmentUploader';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
@@ -10,9 +10,10 @@ interface OwnProps {
     attachmentType: AttachmentType;
     onChange: (vedlegg: Attachment[]) => void;
     skjemanummer: Skjemanummer;
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 class VedleggSpørsmål extends React.Component<Props> {
     constructor(props: Props) {

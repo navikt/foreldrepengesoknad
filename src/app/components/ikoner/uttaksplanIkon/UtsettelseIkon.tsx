@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import UttaksplanIkon, { UttaksplanIkonKeys } from './UttaksplanIkon';
 import getMessage from 'common/util/i18nUtils';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { UtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
 import { getUtsettelseFarge } from 'app/util/uttaksplan/styleUtils';
 import IconBox from './iconBox/IconBox';
@@ -10,6 +10,7 @@ import IconBox from './iconBox/IconBox';
 export interface Props {
     årsak: UtsettelseÅrsakType;
     gradert?: boolean;
+    intl: IntlShape;
 }
 
 const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
@@ -27,7 +28,7 @@ const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
     }
 };
 
-const UtsettelseIkon: React.StatelessComponent<Props & InjectedIntlProps> = ({ årsak, gradert, intl }) => (
+const UtsettelseIkon: React.StatelessComponent<Props> = ({ årsak, gradert, intl }) => (
     <IconBox color={getUtsettelseFarge()} stripes={gradert}>
         <UttaksplanIkon
             ikon={getIkonForKonto(årsak)}

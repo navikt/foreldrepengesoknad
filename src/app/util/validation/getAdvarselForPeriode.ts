@@ -1,8 +1,8 @@
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 import { VeilederMessage } from 'app/components/veilederInfo/types';
 import { UttaksplanIkonKeys } from 'app/components/ikoner/uttaksplanIkon/UttaksplanIkon';
 
-export const getVeilederMeldingForPeriode = (meldinger: VeilederMessage[], intl: InjectedIntl): VeilederMessage => {
+export const getVeilederMeldingForPeriode = (meldinger: VeilederMessage[], intl: IntlShape): VeilederMessage => {
     return meldinger[0];
 };
 

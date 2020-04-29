@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import moment from 'moment';
 import { guid } from 'nav-frontend-js-utils';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -50,9 +50,10 @@ interface TidsperiodeBolkProps {
     kalenderplassering?: KalenderPlassering;
     kanVelgeUgyldigDato?: boolean;
     visPågåendePeriodeCheckbox?: boolean;
+    intl: IntlShape;
 }
 
-type Props = TidsperiodeBolkProps & InjectedIntlProps;
+type Props = TidsperiodeBolkProps;
 
 class TidsperiodeBolk extends React.Component<Props> {
     constructor(props: Props) {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, FormattedHTMLMessage, injectIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { guid } from 'nav-frontend-js-utils';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
@@ -15,18 +15,18 @@ interface InfoEksisterendeSakPerioderProps {
     navnForOverskrift?: string;
 }
 
-const InfoEksisterendeSakPerioder: React.StatelessComponent<InfoEksisterendeSakPerioderProps & InjectedIntlProps> = ({
+const InfoEksisterendeSakPerioder: React.StatelessComponent<InfoEksisterendeSakPerioderProps> = ({
     perioder,
     søknadsinfo,
-    navnForOverskrift,
-    intl
+    navnForOverskrift
 }) => {
+    const intl = useIntl();
     const dateFormat = 'DD. MMM YYYY';
     const bem = BEMHelper('infoEksisterendeSakPerioder');
     return (
         <>
             {navnForOverskrift && (
-                <FormattedHTMLMessage
+                <FormattedMessage
                     id="eksisterendeSak.label.annenPartsPlan"
                     values={{
                         navn: navnForOverskrift
@@ -37,12 +37,13 @@ const InfoEksisterendeSakPerioder: React.StatelessComponent<InfoEksisterendeSakP
                 {perioder.map((periode) => {
                     return (
                         <li key={guid()}>
-                            <FormattedHTMLMessage
+                            <FormattedMessage
                                 id="eksisterendeSak.listeElement.periode"
                                 values={{
                                     fom: formaterDato(periode.tidsperiode.fom, dateFormat),
                                     tom: formaterDato(periode.tidsperiode.tom, dateFormat),
-                                    beskrivelse: getPeriodeTittel(intl, periode, søknadsinfo.navn.navnPåForeldre)
+                                    beskrivelse: getPeriodeTittel(intl, periode, søknadsinfo.navn.navnPåForeldre),
+                                    b: (msg: any) => <b>{msg}</b>
                                 }}
                             />
                         </li>
@@ -53,4 +54,4 @@ const InfoEksisterendeSakPerioder: React.StatelessComponent<InfoEksisterendeSakP
     );
 };
 
-export default injectIntl(InfoEksisterendeSakPerioder);
+export default InfoEksisterendeSakPerioder;

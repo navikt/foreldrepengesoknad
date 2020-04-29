@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
 import { formatDate } from '../../../../../../util/dates/dates';
 import { Næring } from '../../../../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
 
@@ -10,9 +10,9 @@ interface NæringsdetaljerProps {
     næring: Næring;
 }
 
-type Props = NæringsdetaljerProps & InjectedIntlProps;
+type Props = NæringsdetaljerProps;
 
-const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Props) => {
+const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring }) => {
     const {
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
         registrertILand,
@@ -28,8 +28,9 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
         revisor,
         harRegnskapsfører,
         regnskapsfører,
-        harRevisor
+        harRevisor,
     } = næring;
+    const intl = useIntl();
 
     return (
         <>
@@ -144,33 +145,29 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                 />
             )}
 
-            {harRegnskapsfører === false &&
-                harRevisor === true && (
-                    <>
-                        <Feltoppsummering
-                            feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorNavn')}
-                            verdi={revisor.navn}
-                        />
-                        <Feltoppsummering
-                            feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorTlf')}
-                            verdi={revisor.telefonnummer}
-                        />
-                        <Feltoppsummering
-                            feltnavn={getMessage(
-                                intl,
-                                'oppsummering.selvstendigNæringsdrivende.revisorNærVennEllerFamilie'
-                            )}
-                            verdi={revisor.erNærVennEllerFamilie ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
-                        />
-                        <Feltoppsummering
-                            feltnavn={getMessage(
-                                intl,
-                                'oppsummering.selvstendigNæringsdrivende.harGittRevisorSamtykke'
-                            )}
-                            verdi={kanInnhenteOpplsyningerFraRevisor ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
-                        />
-                    </>
-                )}
+            {harRegnskapsfører === false && harRevisor === true && (
+                <>
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorNavn')}
+                        verdi={revisor.navn}
+                    />
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorTlf')}
+                        verdi={revisor.telefonnummer}
+                    />
+                    <Feltoppsummering
+                        feltnavn={getMessage(
+                            intl,
+                            'oppsummering.selvstendigNæringsdrivende.revisorNærVennEllerFamilie'
+                        )}
+                        verdi={revisor.erNærVennEllerFamilie ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                    />
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.harGittRevisorSamtykke')}
+                        verdi={kanInnhenteOpplsyningerFraRevisor ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                    />
+                </>
+            )}
 
             {harRevisor === false && (
                 <Feltoppsummering
@@ -182,4 +179,4 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
     );
 };
 
-export default injectIntl(Næringsdetaljer);
+export default Næringsdetaljer;

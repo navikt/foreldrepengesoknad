@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål from '../../../../../spørsmål/SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål';
 import Block from 'common/components/block/Block';
 import Lenke from 'nav-frontend-lenker';
@@ -25,9 +25,10 @@ export interface OwnProps {
     navn: NavnISøknaden;
     erFlerbarnssøknad: boolean;
     søkerErMor: boolean;
+    intl: IntlShape;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps;
 
 class SamtidigUttakPart extends React.Component<Props> {
     handleSamtidigUttakProsentChange(samtidigUttakProsent: string) {
