@@ -161,7 +161,7 @@
         "nav-frontend-typografi": "^2.0.17",
         "nav-frontend-veileder": "^2.0.15",
         "nav-frontend-veilederpanel": "^0.1.21",
-        "promise": "8.0.1",
+        "promise": "8.1.0",
         "react": "16.12.0",
         "react-aria-menubutton": "6.2.0",
         "react-collapse": "4.0.3",
