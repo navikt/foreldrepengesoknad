@@ -26,13 +26,25 @@ const PictureScanningGuide = () => {
             <Undertittel className={bem.element('title')}>
                 <FormattedMessage id="psg.section1.tittel" />
             </Undertittel>
-            <FormattedMessage tagName="ul" id="psg.section1.liste" />
+            <ul>
+                <FormattedMessage tagName="li" id="psg.section1.liste.punkt1" />
+                <FormattedMessage
+                    tagName="li"
+                    id="psg.section1.liste.punkt2"
+                    values={{ i: (msg: any) => <i>{msg}</i> }}
+                />
+                <FormattedMessage tagName="li" id="psg.section1.liste.punkt3" />
+            </ul>
 
             <Undertittel className={bem.element('title')}>
                 <FormattedMessage id="psg.section2.tittel" />
             </Undertittel>
 
-            <FormattedMessage tagName="ul" id="psg.section2.liste" />
+            <ul>
+                <FormattedMessage tagName="li" id="psg.section2.liste.punkt1" />
+                <FormattedMessage tagName="li" id="psg.section2.liste.punkt2" />
+                <FormattedMessage tagName="li" id="psg.section2.liste.punkt3" />
+            </ul>
             <div className={bem.element('examples')}>
                 <Undertittel tag="h3" className={bem.element('title')}>
                     <FormattedMessage id="psg.icon.heading" />

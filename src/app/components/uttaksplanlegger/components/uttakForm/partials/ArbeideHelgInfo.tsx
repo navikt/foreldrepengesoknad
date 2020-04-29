@@ -9,27 +9,27 @@ const ArbeideHelgInfo = () => {
     return (
         <UtvidetInformasjon apneLabel={intl.formatMessage({ id: 'uttaksplan.arbeideHelgInfo.tittel' })}>
             <Block margin="xs">
-                <FormattedMessage id="uttaksplan.arbeideHelgInfo.del1" />
+                <FormattedMessage id="uttaksplan.arbeideHelgInfo.del1" values={{ b: (msg: any) => <b>{msg}</b> }} />
             </Block>
             <Block margin="xs">
                 <FormattedMessage id="uttaksplan.arbeideHelgInfo.del2" />
             </Block>
             <Block margin="xs">
-                <FormattedMessage id="uttaksplan.arbeideHelgInfo.del3" />
+                <FormattedMessage id="uttaksplan.arbeideHelgInfo.del3" values={{ b: (msg: any) => <b>{msg}</b> }} />
             </Block>
             <Block margin="xs">
                 <FormattedMessage id="uttaksplan.arbeideHelgInfo.del4" />
             </Block>
             <Block margin="xs">
-                <FormattedMessage id="uttaksplan.arbeideHelgInfo.del5" />
+                <FormattedMessage id="uttaksplan.arbeideHelgInfo.del5" values={{ b: (msg: any) => <b>{msg}</b> }} />
             </Block>
             <Block margin="xs">
-                <FormattedMessage id="uttaksplan.arbeideHelgInfo.del6" />
+                <FormattedMessage id="uttaksplan.arbeideHelgInfo.del6" values={{ b: (msg: any) => <b>{msg}</b> }} />
             </Block>
             <Block margin="xs">
                 <FormattedMessage id="uttaksplan.arbeideHelgInfo.del7" />
             </Block>
-            <FormattedMessage id="uttaksplan.arbeideHelgInfo.del8" />
+            <FormattedMessage id="uttaksplan.arbeideHelgInfo.del8" values={{ b: (msg: any) => <b>{msg}</b> }} />
         </UtvidetInformasjon>
     );
 };

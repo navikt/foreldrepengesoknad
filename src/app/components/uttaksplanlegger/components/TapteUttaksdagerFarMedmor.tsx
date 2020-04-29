@@ -26,7 +26,8 @@ const TapteUttaksdagerFarMedmor: React.StatelessComponent<Props> = ({ info, onLe
                     values={{
                         dager: info.antallUttaksdagerTapt,
                         fom: formaterDatoUtenDag(tidsperiodenOpphold.fom),
-                        tom: formaterDatoUtenDag(tidsperiodenOpphold.tom)
+                        tom: formaterDatoUtenDag(tidsperiodenOpphold.tom),
+                        strong: (msg: any) => <strong>{msg}</strong>
                     }}
                 />
             </Block>

@@ -121,7 +121,6 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
                             {
                                 type: 'normal',
                                 contentIntlKey: 'utsettelseskjema.info.utsettelseArbeid',
-                                formatContentAsHTML: true,
                             },
                         ]}
                     />

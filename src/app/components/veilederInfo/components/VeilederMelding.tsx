@@ -27,15 +27,15 @@ const getAlertStripeTypeFromMessageType = (message: VeilederMessage): AlertStrip
     }
 };
 
-const renderAlert = (message: VeilederMessage, FormatComponent: any, skjulMeldingIkon: boolean) => {
+const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean) => {
     const content = (
         <>
             {message.titleIntlKey !== undefined && (
                 <Element>
-                    <FormatComponent id={message.titleIntlKey!} />
+                    <FormattedMessage id={message.titleIntlKey!} />
                 </Element>
             )}
-            <FormatComponent id={message.contentIntlKey} values={message.values} />
+            <FormattedMessage id={message.contentIntlKey} values={message.values} />
         </>
     );
     return skjulMeldingIkon ? (
@@ -54,7 +54,7 @@ const VeilederMelding: React.SFC<VeilederpanelInnholdContentProps> = ({
     return (
         <div className={bem.classNames(bem.block, bem.modifier(stil))}>
             {message.type !== 'normal' ? (
-                renderAlert(message, FormattedMessage, skjulMeldingIkon)
+                renderAlert(message, skjulMeldingIkon)
             ) : (
                 <FormattedMessage id={message.contentIntlKey} values={message.values} />
             )}

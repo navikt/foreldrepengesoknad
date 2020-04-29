@@ -136,7 +136,8 @@ const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
                                     id="eksisterendeSak.tekst.nesteMuligeUttaksdato"
                                     values={{
                                         dato: formaterDato(nesteMuligeUttaksdagEtterAnnenPart, 'DD. MMM YYYY'),
-                                        navn: navn.annenForelder.fornavn
+                                        navn: navn.annenForelder.fornavn,
+                                        b: (msg: any) => <b>{msg}</b>
                                     }}
                                 />
                             </Normaltekst>

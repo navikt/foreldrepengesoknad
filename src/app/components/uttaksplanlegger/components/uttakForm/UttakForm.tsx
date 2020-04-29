@@ -133,10 +133,13 @@ const getOppholdsInfotekst = (
               {
                   type: 'normal',
                   contentIntlKey: 'uttaksplan.infoVedOpphold',
-                  formatContentAsHTML: true,
                   values: {
                       navn: navn.annenForelder.fornavn,
-                      link: lenker.viktigeFrister
+                      a: (msg: any) => (
+                          <a href={lenker.viktigeFrister} className="lenke" rel="noopener" target="_blank">
+                              {msg}
+                          </a>
+                      )
                   }
               }
           ];

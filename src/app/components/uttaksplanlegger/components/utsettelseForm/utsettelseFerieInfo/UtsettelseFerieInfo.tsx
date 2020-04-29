@@ -16,8 +16,7 @@ const Ferieinfo: React.StatelessComponent<Props> = ({ feriedager, intl }) => {
                 messages={[
                     {
                         type: 'normal',
-                        contentIntlKey: 'utsettelseskjema.veiledning.ferie',
-                        formatContentAsHTML: true
+                        contentIntlKey: 'utsettelseskjema.veiledning.ferie'
                     }
                 ]}
             />

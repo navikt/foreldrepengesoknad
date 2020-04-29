@@ -60,7 +60,41 @@ class GradertUttakForm extends React.Component<Props> {
                         onChange={(ønskerGradering) =>
                             onChange({ gradert: ønskerGradering, erArbeidstaker: ønskerGradering ? false : undefined })
                         }
-                        hjelpetekst={<FormattedMessage id="uttaksperiode.gradert.skalDuHarGradering.hjelpetekst" />}
+                        hjelpetekst={
+                            <>
+                                <FormattedMessage
+                                    id="uttaksperiode.gradert.skalDuHarGradering.hjelpetekst.del1"
+                                    values={{
+                                        b: (msg: any) => <b>{msg}</b>,
+                                        a: (msg: any) => (
+                                            <a
+                                                href="https://www.nav.no/fleksibeltuttak"
+                                                className="lenke"
+                                                rel="noopener"
+                                                target="_blank"
+                                            >
+                                                {msg}
+                                            </a>
+                                        )
+                                    }}
+                                />
+                                <FormattedMessage
+                                    id="uttaksperiode.gradert.skalDuHarGradering.hjelpetekst.del2"
+                                    values={{
+                                        a: (msg: any) => (
+                                            <a
+                                                href="https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad"
+                                                className="lenke"
+                                                rel="noopener"
+                                                target="_blank"
+                                            >
+                                                {msg}
+                                            </a>
+                                        )
+                                    }}
+                                />
+                            </>
+                        }
                         clsName="onskerDuGradertuttak"
                     />
                 </Block>

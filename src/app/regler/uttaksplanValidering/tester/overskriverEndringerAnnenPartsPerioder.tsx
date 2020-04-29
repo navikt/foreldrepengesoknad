@@ -1,3 +1,4 @@
+import React from 'react';
 import { UttaksplanRegelgrunnlag } from '../types';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { Periode, isUttaksperiode, isInfoPeriode } from 'app/types/uttaksplan/periodetyper';
@@ -39,7 +40,8 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (
                         tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
                         forelder: grunnlag.søknadsinfo.navn.annenForelder.fornavn,
                         forelders: (intl: IntlShape) =>
-                            getNavnGenitivEierform(grunnlag.søknadsinfo.navn.annenForelder.fornavn, intl.locale)
+                            getNavnGenitivEierform(grunnlag.søknadsinfo.navn.annenForelder.fornavn, intl.locale),
+                        strong: (intl: IntlShape) => (msg: any) => <strong>{msg}</strong>
                     }
                 };
                 return regelInfo;

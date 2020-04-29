@@ -35,7 +35,34 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
             clsName="frilanseSiste10mnd"
             hjelpetekst={
                 <>
-                    <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst" />
+                    <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.del1" />
+                    <ul>
+                        <li>
+                            <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt1" />
+                        </li>
+                        <li>
+                            <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt2" />
+                        </li>
+                        <li>
+                            <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt3" />
+                        </li>
+                        <li>
+                            <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt4" />
+                        </li>
+                        <li>
+                            <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt5" />
+                        </li>
+                        <li>
+                            <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt6" />
+                        </li>
+                        <li>
+                            <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt7" />
+                        </li>
+                        <li>
+                            <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt8" />
+                        </li>
+                    </ul>
+                    <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.del2" />
                     <EksternUrl url={lenker.frilanserInfoBoks} lenkeTekst={getMessage(intl, 'hjemmeside')} />
                 </>
             }

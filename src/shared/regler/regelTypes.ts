@@ -6,7 +6,7 @@ type FeilIntlMessage = (intl: IntlShape) => string;
 export enum RegelAlvorlighet {
     'FEIL' = 'feil',
     'ADVARSEL' = 'advarsel',
-    'INFO' = 'info',
+    'INFO' = 'info'
 }
 
 export interface UttaksplanRegelTestresultat {
@@ -56,10 +56,13 @@ export interface RegelAvvik {
 }
 
 type avikValueFunk = (intl: IntlShape) => string;
+type intlHTMLFragmentFunc = (msg: any) => any;
 
 interface AvvikInfo {
     periodeId?: string;
-    values?: { [key: string]: string | number | Date | FeilIntlMessage | avikValueFunk | undefined };
+    values?: {
+        [key: string]: string | number | Date | FeilIntlMessage | avikValueFunk | undefined | intlHTMLFragmentFunc;
+    };
     renderAsHtml?: boolean;
 }
 

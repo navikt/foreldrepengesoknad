@@ -89,7 +89,12 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
                 toKolonner={true}
                 spørsmål={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
                 onChange={this.handleOnChange}
-                hjelpetekst={<FormattedMessage id="hvorSkalDuJobbe.spørsmål.gradering.hjelpetekst" />}
+                hjelpetekst={
+                    <FormattedMessage
+                        id="hvorSkalDuJobbe.spørsmål.gradering.hjelpetekst"
+                        values={{ b: (msg: any) => <b>{msg}</b> }}
+                    />
+                }
             />
         );
     }

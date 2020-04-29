@@ -21,7 +21,18 @@ const InfoTilFiskere = () => {
                 <Block margin="xs">
                     <FormattedMessage
                         id="andreInntekter.infoTilFiskere.del3"
-                        values={{ link: lenker.hvordanSendeInntektsmelding }}
+                        values={{
+                            a: (msg: any) => (
+                                <a
+                                    href={lenker.hvordanSendeInntektsmelding}
+                                    target="_blank"
+                                    rel="noopener"
+                                    className="lenke"
+                                >
+                                    {msg}
+                                </a>
+                            )
+                        }}
                     />
                 </Block>
                 <Undertittel>
@@ -31,7 +42,16 @@ const InfoTilFiskere = () => {
                     <FormattedMessage id="andreInntekter.infoTilFiskere.del4" />
                 </Block>
                 <Block margin="xs">
-                    <FormattedMessage id="andreInntekter.infoTilFiskere.del5" values={{ link: lenker.omLottOgHyre }} />
+                    <FormattedMessage
+                        id="andreInntekter.infoTilFiskere.del5"
+                        values={{
+                            a: (msg: any) => (
+                                <a href={lenker.omLottOgHyre} target="_blank" rel="noopener" className="lenke">
+                                    {msg}
+                                </a>
+                            )
+                        }}
+                    />
                 </Block>
                 <Undertittel>
                     <FormattedMessage id="andreInntekter.infoTilFiskere.egenBåt" />

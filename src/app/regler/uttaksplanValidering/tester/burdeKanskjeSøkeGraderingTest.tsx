@@ -1,7 +1,9 @@
+import React from 'react';
 import { UttaksplanRegelgrunnlag } from '../types';
 import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
 import { Periode, isInfoPeriode, isUtsettelsePgaArbeid, isUttaksperiode } from 'app/types/uttaksplan/periodetyper';
 import lenker from 'app/util/routing/lenker';
+import { IntlShape } from 'react-intl';
 
 const primitivGraderingTest = (kunSøkersPerioder: Periode[]): boolean => {
     const firstArbeidsperiodeIndex = kunSøkersPerioder.findIndex((p) => isUtsettelsePgaArbeid(p));
@@ -55,13 +57,17 @@ export const burdeKanskjeSøkeGraderingTest: RegelTest = (grunnlag: UttaksplanRe
                 intlKey: 'uttaksplan.validering.info.burdeKanskjeSøkeGradering',
                 renderAsHtml: true,
                 values: {
-                    link: lenker.graderingInfo
-                }
-            }
+                    a: (intl: IntlShape) => (msg: any) => (
+                        <a href={lenker.graderingInfo} className="lenke" rel="noopener" target="_blank">
+                            {msg}
+                        </a>
+                    ),
+                },
+            },
         };
     }
 
     return {
-        passerer: true
+        passerer: true,
     };
 };

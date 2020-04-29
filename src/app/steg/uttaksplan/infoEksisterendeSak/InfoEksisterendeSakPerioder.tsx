@@ -18,7 +18,7 @@ interface InfoEksisterendeSakPerioderProps {
 const InfoEksisterendeSakPerioder: React.StatelessComponent<InfoEksisterendeSakPerioderProps> = ({
     perioder,
     søknadsinfo,
-    navnForOverskrift,
+    navnForOverskrift
 }) => {
     const intl = useIntl();
     const dateFormat = 'DD. MMM YYYY';
@@ -29,7 +29,7 @@ const InfoEksisterendeSakPerioder: React.StatelessComponent<InfoEksisterendeSakP
                 <FormattedMessage
                     id="eksisterendeSak.label.annenPartsPlan"
                     values={{
-                        navn: navnForOverskrift,
+                        navn: navnForOverskrift
                     }}
                 />
             )}
@@ -43,6 +43,7 @@ const InfoEksisterendeSakPerioder: React.StatelessComponent<InfoEksisterendeSakP
                                     fom: formaterDato(periode.tidsperiode.fom, dateFormat),
                                     tom: formaterDato(periode.tidsperiode.tom, dateFormat),
                                     beskrivelse: getPeriodeTittel(intl, periode, søknadsinfo.navn.navnPåForeldre),
+                                    b: (msg: any) => <b>{msg}</b>
                                 }}
                             />
                         </li>
