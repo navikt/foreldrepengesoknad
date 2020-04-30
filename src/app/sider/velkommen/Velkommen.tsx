@@ -24,7 +24,7 @@ import { SøkerinfoProps } from '../../types/søkerinfo';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import SøknadstypeSpørsmål from '../../spørsmål/SøknadstypeSpørsmål';
 import Block from 'common/components/block/Block';
-import Sak, { SakType } from '../../types/søknad/Sak';
+import Sak, { SakType, FagsakStatus } from '../../types/søknad/Sak';
 import SakInfo from './sakInfo/SakInfo';
 
 import { erInfotrygdSak } from '../../util/saker/sakerUtils';
@@ -190,6 +190,19 @@ class Velkommen extends React.Component<Props, State> {
                                         messages={[
                                             {
                                                 contentIntlKey: 'velkommen.intro.harSak.veileder',
+                                                type: 'normal'
+                                            }
+                                        ]}
+                                    />
+                                )}
+                            {this.state.skalEndre &&
+                                !erSakForEndringssøknadFraInfotrygd &&
+                                sakForEndringssøknad !== undefined &&
+                                sakForEndringssøknad.status === FagsakStatus.UNDER_BEHANDLING && (
+                                    <VeilederInfo
+                                        messages={[
+                                            {
+                                                contentIntlKey: 'velkommen.intro.harSak.veileder.endring',
                                                 type: 'normal'
                                             }
                                         ]}

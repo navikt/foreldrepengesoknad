@@ -1149,6 +1149,8 @@
     "velkommen.intro.harSak.del2": "Skal du søke om foreldrepenger for et nytt barn, velger du det nedenfor.",
     "velkommen.intro.harSak.veileder":
         "Når du søker om foreldrepenger for et nytt barn,  mister du dager du har igjen fra den første foreldrepengeperioden din.",
+    "velkommen.intro.harSak.veileder.endring":
+        "Du har en søknad til behandling. Ønsker du å sende inn en ny søknad erstatter du søknaden som ligger til behandling.",
     "velkommen.intro.harFørstegangssøknadUnderBehandling":
         "Du har en søknad til behandling. Ønsker du å sende inn en ny søknad erstatter du søknaden som ligger til behandling, og du må fylle ut hele søknaden på nytt.",
     "velkommen.endringssøknadIkkeTilgjengelig.veileder":
