@@ -7,7 +7,7 @@ import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/ch
 import { Tidsperiode } from 'common/types';
 import { RecursivePartial } from 'app/types/Partial';
 import { getKunArbeidsforholdForValgtTidsperiode } from 'app/util/domain/arbeidsforhold';
-import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
+import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 
 interface HvorSkalDuJobbeSpørsmålFlervalgProps {
     onChange: (orgnumre: string[], frilansEllerSelvstendigNæringsdrivende: Arbeidsform[]) => void;
@@ -110,21 +110,15 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
         return (
             <CheckboksPanelGruppeResponsive
                 twoColumns={true}
-                legend={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
+                legend={
+                    <LabelWithInfo info={getMessage(intl, 'utsettelseskjema.info.utsettelseArbeid')}>
+                        {getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
+                    </LabelWithInfo>
+                }
                 onChange={(e: any, value: Arbeidsform | string) =>
                     this.handleOnChange(e, value, orgnumre, arbeidsformer)
                 }
                 checkboxes={this.getOptions(orgnumre, arbeidsformer)}
-                infoboksTekst={
-                    <VeilederInfo
-                        messages={[
-                            {
-                                type: 'normal',
-                                contentIntlKey: 'utsettelseskjema.info.utsettelseArbeid',
-                            },
-                        ]}
-                    />
-                }
             />
         );
     }
