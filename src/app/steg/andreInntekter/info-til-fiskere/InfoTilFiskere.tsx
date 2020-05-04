@@ -72,7 +72,16 @@ const InfoTilFiskere = () => {
                     <FormattedMessage id="andreInntekter.infoTilFiskere.del9" />
                 </Block>
                 <Block margin="none">
-                    <FormattedMessage id="andreInntekter.infoTilFiskere.del5" values={{ link: lenker.omLottOgHyre }} />
+                    <FormattedMessage
+                        id="andreInntekter.infoTilFiskere.del5"
+                        values={{
+                            a: (msg: any) => (
+                                <a href={lenker.omLottOgHyre} target="_blank" rel="noopener" className="lenke">
+                                    {msg}
+                                </a>
+                            )
+                        }}
+                    />
                 </Block>
             </div>
         </UtvidetInformasjon>
