@@ -41,6 +41,7 @@ export const Periodene = (perioder: Periode[]) => ({
     getForeldrepengerFørTermin: () => getForeldrepengerFørTermin(perioder),
     getFørsteUttaksdag: () => getFørsteUttaksdag(perioder),
     getFørsteUttaksdagEtterSistePeriode: () => getFørsteUttaksdagEtterSistePeriode(perioder),
+    getFørsteUttaksdagEksluderInfoperioder: () => getFørsteUttaksdagEksluderInfoperioder(perioder),
     getAntallUttaksdager: () => getAntallUttaksdager(perioder),
     getAntallFeriedager: (forelder?: Forelder) => getAntallFeriedager(perioder, forelder),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
@@ -243,6 +244,17 @@ function getPeriodeMedUgyldigTidsperiode(perioder: Periode[]) {
 function getFørsteUttaksdag(perioder: Periode[]): Date | undefined {
     const førstePeriode = perioder
         .filter((p) => p.tidsperiode.fom !== undefined)
+        .sort(sorterPerioder)
+        .shift();
+    if (førstePeriode) {
+        return førstePeriode.tidsperiode.fom;
+    }
+    return undefined;
+}
+
+function getFørsteUttaksdagEksluderInfoperioder(perioder: Periode[]): Date | undefined {
+    const førstePeriode = perioder
+        .filter((p) => p.tidsperiode.fom !== undefined && !isInfoPeriode(p))
         .sort(sorterPerioder)
         .shift();
     if (førstePeriode) {
