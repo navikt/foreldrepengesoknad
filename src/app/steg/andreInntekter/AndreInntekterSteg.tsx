@@ -41,6 +41,7 @@ import { apiActionCreators } from 'app/redux/actions';
 import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
 import InfoTilFiskere from './info-til-fiskere/InfoTilFiskere';
 import Lenke from 'nav-frontend-lenker';
+import { Periodene } from 'app/util/uttaksplan/Periodene';
 
 interface StateProps {
     stegProps: StegProps;
@@ -49,7 +50,7 @@ interface StateProps {
     uttaksplan: Periode[];
     planInneholderFrilansaktivitet: boolean;
     planInneholderSelvstendignæringaktivitet: boolean;
-    familiehendelsesdato: Date | undefined;
+    førsteUttaksDato: Date | undefined;
 }
 
 interface OwnProps {
@@ -66,13 +67,11 @@ class AndreInntekterSteg extends React.Component<Props> {
         this.state = {
             harHattAnnenInntekt: undefined
         };
-        const { arbeidsforhold, familiehendelsesdato, dispatch } = this.props;
+        const { arbeidsforhold, førsteUttaksDato, dispatch } = this.props;
 
         if (arbeidsforhold.length > 0) {
             dispatch(
-                apiActionCreators.fjernInaktiveArbeidsforhold(
-                    getAktiveArbeidsforhold(arbeidsforhold, familiehendelsesdato)
-                )
+                apiActionCreators.fjernInaktiveArbeidsforhold(getAktiveArbeidsforhold(arbeidsforhold, førsteUttaksDato))
             );
         }
     }
@@ -222,7 +221,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         nesteStegID: skalViseManglendeVedleggSteg(attachmentMap) ? StegID.MANGLENDE_VEDLEGG : StegID.OPPSUMMERING
     };
 
-    const familiehendelsesdato = søknadsinfo !== undefined ? søknadsinfo.søknaden.familiehendelsesdato : undefined;
+    const førsteUttaksDato = Periodene(uttaksplan).getFørsteUttaksdagEksluderInfoperioder();
 
     return {
         søker,
@@ -231,7 +230,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         uttaksplan,
         planInneholderFrilansaktivitet,
         planInneholderSelvstendignæringaktivitet,
-        familiehendelsesdato
+        førsteUttaksDato
     };
 };
 
