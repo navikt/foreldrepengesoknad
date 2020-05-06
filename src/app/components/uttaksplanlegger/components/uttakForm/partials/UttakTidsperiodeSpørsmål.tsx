@@ -7,12 +7,10 @@ import {
     Periode,
     isForeldrepengerFørFødselUttaksperiode,
     ForeldrepengerFørFødselUttaksperiode,
-    Periodetype,
     isUttaksperiode,
 } from '../../../../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from '../UttakForm';
 import { getUttakTidsperiodeValidatorer } from '../../../../../util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
-import { getVarighetString } from 'common/util/intlUtils';
 import {
     Tidsperioden,
     isValidTidsperiode,
@@ -52,11 +50,6 @@ const getTidsperiodeDisabledProps = (
     return undefined;
 };
 
-const varighetRenderer = (dager: number, gradert: boolean, intl: IntlShape): string => {
-    const intlId = `uttaksplan.varighet.uttak${gradert ? '.gradert' : ''}`;
-    return intl.formatMessage({ id: intlId }, { varighet: getVarighetString(dager, intl) });
-};
-
 const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     onChange,
     periode,
@@ -83,7 +76,6 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
 
     const datoValidatorer = getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode, familiehendelsesdato);
     const initialMonth = erForeldrepengerFørFødsel ? familiehendelsesdato : undefined;
-    const erGradertPeriode = periode.type === Periodetype.Uttak && periode.gradert === true;
 
     return (
         <TidsperiodeBolk
@@ -92,11 +84,10 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
             datoAvgrensninger={datoAvgrensninger}
             datoValidatorer={datoValidatorer}
             kanVelgeUgyldigDato={erUttakFørForeldrepengerFørFødsel}
-            visVarighet={true}
-            varighetRenderer={(dager) => varighetRenderer(dager, erGradertPeriode, intl)}
             feil={feil}
             defaultMånedFom={initialMonth}
             defaultMånedTom={initialMonth}
+            ukerOgDagerVelgerEnabled={true}
             {...getTidsperiodeDisabledProps(periode, familiehendelsesdato)}
         />
     );

@@ -1,22 +1,24 @@
 import * as React from 'react';
-import { injectIntl, IntlShape } from 'react-intl';
+import { useIntl } from 'react-intl';
 import moment from 'moment';
 import { guid } from 'nav-frontend-js-utils';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { Checkbox, SkjemaGruppe } from 'nav-frontend-skjema';
 import { KalenderPlassering } from 'nav-datovelger';
+import { Normaltekst, Element } from 'nav-frontend-typografi';
 
 import getMessage from 'common/util/i18nUtils';
 import { Avgrensninger, Tidsperiode, TidsperiodeMedValgfriSluttdato, Feil } from 'common/types';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import BEMHelper from 'common/util/bem';
-import { getVarighetString } from 'common/util/intlUtils';
-import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
+import { Tidsperioden, getTidsperiode } from '../../../util/uttaksplan/Tidsperioden';
 import { DateValue } from '../../../types/common';
 import { InputChangeEvent } from '../../../../common/types/Events';
 import { Validator } from 'common/lib/validation/types';
 import { getTidsperiodeRegler } from '../../../util/validation/tidsperiode';
 import Block from 'common/components/block/Block';
+import ValiderbarUkerDagerTeller from 'common/lib/validation/elements/ValiderbarUkerDagerTeller';
+import { getUkerOgDagerFromDager } from 'common/util/datoUtils';
+import { getVarighetString } from 'common/util/intlUtils';
 
 import './tidsperiodeBolk.less';
 
@@ -50,24 +52,38 @@ interface TidsperiodeBolkProps {
     kalenderplassering?: KalenderPlassering;
     kanVelgeUgyldigDato?: boolean;
     visPågåendePeriodeCheckbox?: boolean;
-    intl: IntlShape;
+    ukerOgDagerVelgerEnabled?: boolean;
 }
 
 type Props = TidsperiodeBolkProps;
 
-class TidsperiodeBolk extends React.Component<Props> {
-    constructor(props: Props) {
-        super(props);
-        this.handleOnChange = this.handleOnChange.bind(this);
-    }
+const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
+    const {
+        tidsperiode,
+        pågående,
+        datoAvgrensninger,
+        feil,
+        datoValidatorer,
+        startdatoDisabled,
+        defaultMånedFom,
+        defaultMånedTom,
+        datoInputLabelProps,
+        kanVelgeUgyldigDato,
+        kalenderplassering,
+        onChange,
+        visVarighet,
+        varighetRenderer,
+        visPågåendePeriodeCheckbox = false,
+        ukerOgDagerVelgerEnabled = false
+    } = props;
 
-    handleOnChange(tidsperiode: Partial<TidsperiodeMedValgfriSluttdato>) {
-        const { onChange } = this.props;
-        onChange(tidsperiode);
-    }
+    const intl = useIntl();
 
-    getValidators() {
-        const { tidsperiode, intl, visPågåendePeriodeCheckbox, datoValidatorer, pågående } = this.props;
+    const handleOnChange = (value: Partial<TidsperiodeMedValgfriSluttdato>) => {
+        onChange(value);
+    };
+
+    const getValidators = () => {
         const tidsperiodeValidators = getTidsperiodeRegler(tidsperiode, intl, visPågåendePeriodeCheckbox, pågående);
         if (datoValidatorer) {
             if (datoValidatorer.fra && tidsperiodeValidators.fra) {
@@ -78,124 +94,145 @@ class TidsperiodeBolk extends React.Component<Props> {
             }
         }
         return tidsperiodeValidators;
+    };
+
+    const bem = BEMHelper('tidsperiodeBolk');
+
+    const varighetIDager =
+        tidsperiode &&
+        tidsperiode.fom &&
+        tidsperiode.tom &&
+        moment(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
+            ? Tidsperioden({ fom: tidsperiode.fom, tom: tidsperiode.tom }).getAntallUttaksdager()
+            : undefined;
+
+    let tilAvgrensninger: Avgrensninger = {};
+    if (datoAvgrensninger && datoAvgrensninger.til) {
+        tilAvgrensninger = datoAvgrensninger.til;
+    } else if (tidsperiode.fom) {
+        tilAvgrensninger = { minDato: tidsperiode.fom };
     }
 
-    render() {
-        const {
-            tidsperiode,
-            pågående,
-            datoAvgrensninger,
-            visVarighet,
-            feil,
-            intl,
-            varighetRenderer,
-            startdatoDisabled,
-            defaultMånedFom,
-            defaultMånedTom,
-            datoInputLabelProps,
-            kanVelgeUgyldigDato,
-            kalenderplassering,
-            visPågåendePeriodeCheckbox = false
-        } = this.props;
-        const bem = BEMHelper('tidsperiodeBolk');
+    const { uker, dager } = varighetIDager ? getUkerOgDagerFromDager(Math.abs(varighetIDager)) : { uker: 0, dager: 0 };
 
-        const varighetIDager =
-            tidsperiode &&
-            tidsperiode.fom &&
-            tidsperiode.tom &&
-            moment(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
-                ? Tidsperioden({ fom: tidsperiode.fom, tom: tidsperiode.tom }).getAntallUttaksdager()
-                : undefined;
+    const validators = getValidators();
 
-        let tilAvgrensninger: Avgrensninger = {};
-        if (datoAvgrensninger && datoAvgrensninger.til) {
-            tilAvgrensninger = datoAvgrensninger.til;
-        } else if (tidsperiode.fom) {
-            tilAvgrensninger = { minDato: tidsperiode.fom };
-        }
-
-        const validators = this.getValidators();
-
-        return (
-            <SkjemaGruppe feil={feil}>
-                <div className={bem.block}>
-                    <div className={bem.element('fra')}>
-                        <Block margin="none">
-                            <DatoInput
-                                name="fraDatoInput"
-                                id={guid()}
-                                label={datoInputLabelProps ? datoInputLabelProps.fom : getMessage(intl, 'fraogmed')}
-                                onChange={(fom: Date) => {
-                                    this.handleOnChange({
-                                        ...tidsperiode,
-                                        fom
-                                    });
-                                }}
-                                kanVelgeUgyldigDato={kanVelgeUgyldigDato}
-                                disabled={startdatoDisabled}
-                                dato={tidsperiode.fom}
-                                datoAvgrensinger={datoAvgrensninger && datoAvgrensninger.fra}
-                                validators={validators.fra}
-                                dayPickerProps={{ initialMonth: defaultMånedFom }}
-                                kalender={{ plassering: kalenderplassering }}
-                            />
-                        </Block>
-                    </div>
-
-                    <div className={bem.element('til')}>
-                        <Block margin="none">
-                            <DatoInput
-                                name="tilDatoInput"
-                                id={guid()}
-                                label={datoInputLabelProps ? datoInputLabelProps.tom : getMessage(intl, 'tilogmed')}
-                                onChange={(tom: DateValue) => {
-                                    this.handleOnChange({
-                                        ...tidsperiode,
-                                        tom
-                                    });
-                                }}
-                                kanVelgeUgyldigDato={kanVelgeUgyldigDato}
-                                dato={tidsperiode.tom}
-                                disabled={pågående || false}
-                                datoAvgrensinger={tilAvgrensninger}
-                                validators={validators.til}
-                                dayPickerProps={{
-                                    initialMonth: defaultMånedTom || tidsperiode.fom
-                                }}
-                                kalender={{ plassering: kalenderplassering }}
-                            />
-                        </Block>
-                    </div>
-
-                    {visVarighet &&
-                        varighetIDager !== undefined && (
-                            <Normaltekst className={bem.element('varighet')}>
-                                {varighetRenderer
-                                    ? varighetRenderer(varighetIDager)
-                                    : getVarighetString(varighetIDager, intl)}
-                            </Normaltekst>
-                        )}
-                </div>
-
-                <div className={bem.element('pågående-checkbox')}>
-                    <Block visible={visPågåendePeriodeCheckbox}>
-                        <Checkbox
-                            name="pågående"
-                            checked={pågående || false}
-                            label={getMessage(intl, 'pågående')}
-                            onChange={(e: InputChangeEvent) => {
-                                this.handleOnChange({
+    return (
+        <SkjemaGruppe feil={feil}>
+            <div className={bem.block}>
+                <div className={bem.element('fra')}>
+                    <Block margin="none">
+                        <DatoInput
+                            name="fraDatoInput"
+                            id={guid()}
+                            label={datoInputLabelProps ? datoInputLabelProps.fom : getMessage(intl, 'fraogmed')}
+                            onChange={(fom: Date) => {
+                                handleOnChange({
                                     ...tidsperiode,
-                                    tom: undefined,
-                                    pågående: e.target.checked
+                                    fom
                                 });
                             }}
+                            kanVelgeUgyldigDato={kanVelgeUgyldigDato}
+                            disabled={startdatoDisabled}
+                            dato={tidsperiode.fom}
+                            datoAvgrensinger={datoAvgrensninger && datoAvgrensninger.fra}
+                            validators={validators.fra}
+                            dayPickerProps={{ initialMonth: defaultMånedFom }}
+                            kalender={{ plassering: kalenderplassering }}
                         />
                     </Block>
                 </div>
-            </SkjemaGruppe>
-        );
-    }
-}
 
-export default injectIntl(TidsperiodeBolk);
+                <div className={bem.element('til')}>
+                    <Block margin="none">
+                        <DatoInput
+                            name="tilDatoInput"
+                            id={guid()}
+                            label={datoInputLabelProps ? datoInputLabelProps.tom : getMessage(intl, 'tilogmed')}
+                            onChange={(tom: DateValue) => {
+                                handleOnChange({
+                                    ...tidsperiode,
+                                    tom
+                                });
+                            }}
+                            kanVelgeUgyldigDato={kanVelgeUgyldigDato}
+                            dato={tidsperiode.tom}
+                            disabled={pågående || false}
+                            datoAvgrensinger={tilAvgrensninger}
+                            validators={validators.til}
+                            dayPickerProps={{
+                                initialMonth: defaultMånedTom || tidsperiode.fom
+                            }}
+                            kalender={{ plassering: kalenderplassering }}
+                        />
+                    </Block>
+                </div>
+
+                {ukerOgDagerVelgerEnabled && (
+                    <Block margin="none">
+                        <Block margin="xs">
+                            <Element>Lengde</Element>
+                        </Block>
+                        <ValiderbarUkerDagerTeller
+                            name="periodeUkerOgDager"
+                            ukeLegend={getMessage(intl, 'spørsmål.farFellesperiode.uker.label')}
+                            dagLegend={getMessage(intl, 'spørsmål.farFellesperiode.dager.label')}
+                            stepperProps={[
+                                {
+                                    value: uker !== undefined ? uker : 0,
+                                    min: 0,
+                                    max: 100,
+                                    onChange: (nyUker: number) =>
+                                        handleOnChange({
+                                            ...tidsperiode,
+                                            tom: getTidsperiode(tidsperiode.fom!, nyUker * 5 + dager).tom
+                                        }),
+                                    ariaLabel: 'Antall uker'
+                                },
+                                {
+                                    value: dager !== undefined && dager !== 5 ? dager : 0,
+                                    min: 0,
+                                    max: 5,
+                                    onChange: (nyDager: number) =>
+                                        handleOnChange({
+                                            ...tidsperiode,
+                                            tom: getTidsperiode(tidsperiode.fom!, uker * 5 + nyDager).tom
+                                        }),
+                                    ariaLabel: 'Antall dager'
+                                }
+                            ]}
+                        />
+                    </Block>
+                )}
+
+                {visVarighet &&
+                    varighetIDager !== undefined && (
+                        <Normaltekst className={bem.element('varighet')}>
+                            {varighetRenderer
+                                ? varighetRenderer(varighetIDager)
+                                : getVarighetString(varighetIDager, intl)}
+                        </Normaltekst>
+                    )}
+            </div>
+
+            <div className={bem.element('pågående-checkbox')}>
+                <Block visible={visPågåendePeriodeCheckbox}>
+                    <Checkbox
+                        name="pågående"
+                        checked={pågående || false}
+                        label={getMessage(intl, 'pågående')}
+                        onChange={(e: InputChangeEvent) => {
+                            handleOnChange({
+                                ...tidsperiode,
+                                tom: undefined,
+                                pågående: e.target.checked
+                            });
+                        }}
+                    />
+                </Block>
+            </div>
+        </SkjemaGruppe>
+    );
+};
+
+export default TidsperiodeBolk;

@@ -16,7 +16,7 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     familiehendelsesdato,
     tidsperiode,
     feil,
-    ugyldigeTidsperioder
+    ugyldigeTidsperioder,
 }) => {
     const datoValidatorer = getUtsettelseTidsperiodeValidatorer(tidsperiode, familiehendelsesdato);
     return (
@@ -24,21 +24,21 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
             onChange={(t: Partial<Tidsperiode>) => onChange(t)}
             tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
             datoAvgrensninger={{
-                 fra: {
+                fra: {
                     minDato: familiehendelsesdato,
                     maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined,
                     ugyldigeTidsperioder,
-                    helgedagerIkkeTillatt: true
+                    helgedagerIkkeTillatt: true,
                 },
                 til: {
                     minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined,
                     ugyldigeTidsperioder,
-                    helgedagerIkkeTillatt: true
-                }
+                    helgedagerIkkeTillatt: true,
+                },
             }}
             datoValidatorer={datoValidatorer}
             feil={feil}
-            visVarighet={true}
+            ukerOgDagerVelgerEnabled={true}
         />
     );
 };
