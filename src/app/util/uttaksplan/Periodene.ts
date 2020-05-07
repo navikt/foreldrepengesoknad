@@ -67,6 +67,10 @@ export function sorterPerioder(p1: Periode, p2: Periode) {
         return isInfoPeriode(p1) ? -1 : 1;
     }
 
+    if (Tidsperioden(p2.tidsperiode).erOmsluttetAv(p1.tidsperiode)) {
+        return 1;
+    }
+
     return moment(p1.tidsperiode.fom).isBefore(p2.tidsperiode.fom, 'day') ? -1 : 1;
 }
 
@@ -166,6 +170,15 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
     return perioder.reduce((result: Periode[], periode: Periode) => {
         if (isUtsettelsesperiode(periode)) {
             result.push(periode);
+
+            const dagerIPerioden = Perioden(periode).getAntallUttaksdager();
+
+            if (dagerIPerioden >= uttaksdagerCurrent) {
+                uttaksdagerCurrent = 0;
+            } else {
+                uttaksdagerCurrent -= dagerIPerioden;
+            }
+
             return result;
         }
 
