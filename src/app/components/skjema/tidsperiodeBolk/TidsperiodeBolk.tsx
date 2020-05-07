@@ -171,7 +171,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                 {ukerOgDagerVelgerEnabled && (
                     <Block margin="none">
                         <Block margin="xs">
-                            <Element>Lengde</Element>
+                            <Element>{getMessage(intl, 'tidsperiodeBolk.velgLengde')}</Element>
                         </Block>
                         <ValiderbarUkerDagerTeller
                             name="periodeUkerOgDager"
