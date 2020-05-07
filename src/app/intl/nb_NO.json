@@ -1315,5 +1315,6 @@
     "psg.icon.label.shadow": "Bildet har skygge på vedlegget",
     "psg.lenkepanel.url":
         "https://www.nav.no/no/nav-og-samfunn/kontakt-nav/relatert-informasjon/ta-bilde-av-vedleggene-med-mobilen",
-    "psg.lenkepanel.text": "Mer hjelp til å laste opp vedlegg (åpnes i et nytt vindu)."
+    "psg.lenkepanel.text": "Mer hjelp til å laste opp vedlegg (åpnes i et nytt vindu).",
+    "tidsperiodeBolk.velgLengde": "Velg lengde"
 }
