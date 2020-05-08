@@ -1,6 +1,7 @@
 {
     "Oppdater": "Oppdater",
     "hjemmeside": "hjemmeside ",
+    "uker": "uker",
     "adopsjonAvEktefellesBarn.spørsmål": "Gjelder søknaden din stebarnsadopsjon?",
     "adopsjonsdato.spørsmål": "Når overtar du omsorgen?",
     "adoptertIUtlandet.spørsmål": "Adopterer du fra utlandet?",
@@ -1316,5 +1317,7 @@
     "psg.lenkepanel.url":
         "https://www.nav.no/no/nav-og-samfunn/kontakt-nav/relatert-informasjon/ta-bilde-av-vedleggene-med-mobilen",
     "psg.lenkepanel.text": "Mer hjelp til å laste opp vedlegg (åpnes i et nytt vindu).",
-    "tidsperiodeBolk.velgLengde": "Velg lengde"
+    "tidsperiodeBolk.velgLengde": "Velg lengde",
+    "tilgjengeligeDagerGraf.person.del": "{navnEierform} del",
+    "tilgjengeligeDagerGraf.fellesperiode": "Fellesperiode"
 }

@@ -26,7 +26,7 @@ import { TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
 import {
     getAntallUkerFellesperiode,
     getAntallUkerFedrekvote,
-    getAntallUkerMødrekvote,
+    getAntallUkerMødrekvote
 } from 'app/util/uttaksplan/stønadskontoer';
 import Barn from 'app/types/søknad/Barn';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
@@ -35,6 +35,7 @@ import InfoEksisterendeSak from '../uttaksplan/infoEksisterendeSak/InfoEksistere
 import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from 'app/util/uttaksplan/uttakUtils';
 import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
 import { Dekningsgrad } from 'common/types';
+import { getTilgjengeligeDager } from 'app/components/uttaksplanlegger/components/uttakFordeling/tilgjengeligeDagerUtils';
 
 interface StateProps {
     stegProps: StegProps;
@@ -64,12 +65,12 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             stegProps,
             søknad: {
                 ekstrainfo: {
-                    uttaksplanSkjema: { startdatoPermisjon },
-                },
+                    uttaksplanSkjema: { startdatoPermisjon }
+                }
             },
             søknadsinfo,
             barn,
-            eksisterendeSak,
+            eksisterendeSak
         } = props;
 
         if (stegProps.isAvailable) {
@@ -102,7 +103,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 søknadActions.uttaksplanUpdateSkjemdata({
                     fellesperiodeukerMor: Math.round(
                         (getAntallUkerFellesperiode(nextProps.tilgjengeligeStønadskontoer) || 0) / 2
-                    ),
+                    )
                 })
             );
         }
@@ -118,11 +119,19 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             søknadsinfo,
             barn,
             eksisterendeSak,
-            isLoadingSakForAnnenPart,
+            isLoadingSakForAnnenPart
         } = this.props;
         const søknad = this.props.søknad as Søknad;
         const navnPåForeldre = søknadsinfo.navn.navnPåForeldre;
         const grunnlag = eksisterendeSak !== undefined ? eksisterendeSak.grunnlag : undefined;
+        const tilgjengeligeDager = getTilgjengeligeDager(
+            tilgjengeligeStønadskontoer,
+            søknadsinfo.søknaden.erDeltUttak,
+            søknadsinfo.søknaden.erDeltUttak ? undefined : søknadsinfo.søker.forelder
+        );
+        const erKunFarMedmor =
+            søknadsinfo.søker.erFarEllerMedmor &&
+            (søknadsinfo.søker.erAleneOmOmsorg || søknadsinfo.annenForelder.kanIkkeOppgis);
 
         if (!søknadsinfo) {
             return <ResetSoknad history={this.props.history} />;
@@ -173,6 +182,9 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                             erFarEllerMedmor={søknadsinfo.søker.erFarEllerMedmor}
                             søkerHarMidlertidigOmsorg={søknadsinfo.søker.harMidlertidigOmsorg}
                             eksisterendeSak={eksisterendeSak}
+                            tilgjengeligeDager={tilgjengeligeDager}
+                            erKunFarMedmor={erKunFarMedmor}
+                            erDeltUttak={søknadsinfo.søknaden.erDeltUttak}
                         />
                     </>
                 )}
@@ -191,13 +203,13 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         fortsettKnappLabel: 'Fortsett',
         renderFormTag: true,
         history,
-        isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo, søknadsinfo),
+        isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo, søknadsinfo)
     };
 
     const { familiehendelsesdato } = søknadsinfo.søknaden;
     const scenario = getUttaksplanSkjemaScenario(søknadsinfo, state.søknad.ekstrainfo.eksisterendeSak);
     const {
-        api: { isLoadingTilgjengeligeStønadskontoer, isLoadingSakForAnnenPart },
+        api: { isLoadingTilgjengeligeStønadskontoer, isLoadingSakForAnnenPart }
     } = state;
     const søknad = { ...state.søknad };
     const { ekstrainfo } = søknad;
@@ -224,7 +236,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         isLoadingTilgjengeligeStønadskontoer,
         barn: søknad.barn,
         isLoadingSakForAnnenPart,
-        eksisterendeSak: ekstrainfo.eksisterendeSak,
+        eksisterendeSak: ekstrainfo.eksisterendeSak
     };
 };
 

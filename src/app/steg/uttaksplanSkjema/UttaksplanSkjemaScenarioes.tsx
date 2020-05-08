@@ -26,6 +26,8 @@ import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import UtsettelseBegrunnelse from './enkeltspørsmål/UtsettelseBegrunnelse';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { skalFarUtsetteEtterMorSinSisteUttaksdag } from './utils';
+import { TilgjengeligeDager } from 'shared/types';
+import TilgjengeligeDagerGraf from 'app/components/elementer/tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -37,6 +39,9 @@ export interface ScenarioProps {
     erFarEllerMedmor: boolean;
     eksisterendeSak?: EksisterendeSak;
     søkerHarMidlertidigOmsorg: boolean;
+    tilgjengeligeDager: TilgjengeligeDager;
+    erKunFarMedmor: boolean;
+    erDeltUttak: boolean;
 }
 export interface OwnProps extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
@@ -116,7 +121,10 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
     navnPåForeldre,
     antallUkerFedreKvote,
     antallUkerMødreKvote,
-    familiehendelsesdato
+    familiehendelsesdato,
+    tilgjengeligeDager,
+    erKunFarMedmor,
+    erDeltUttak
 }) => {
     const harSvartPåStartdato =
         søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon !== undefined ||
@@ -124,6 +132,14 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
     return (
         <>
             <DekningsgradSpørsmål />
+            {søknad.dekningsgrad !== undefined && (
+                <TilgjengeligeDagerGraf
+                    navnPåForeldre={navnPåForeldre}
+                    tilgjengeligeDager={tilgjengeligeDager}
+                    erKunFarMedmor={erKunFarMedmor}
+                    erDeltUttak={erDeltUttak}
+                />
+            )}
             <StartdatoPermisjonMorBolk
                 visible={søknad.dekningsgrad !== undefined}
                 familiehendelsesdato={familiehendelsesdato}
@@ -148,6 +164,7 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
                                 ]}
                             />
                         </Block>
+
                         <FordelingFellesperiodeSpørsmål
                             visible={harSvartPåStartdato}
                             ukerFellesperiode={Math.floor(antallUkerFellesperiode)}
