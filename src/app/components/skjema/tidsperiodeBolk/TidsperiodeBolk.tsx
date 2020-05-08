@@ -118,7 +118,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
     const validators = getValidators();
 
     return (
-        <SkjemaGruppe feil={feil}>
+        <SkjemaGruppe feil={feil !== undefined ? feil.feilmelding : undefined}>
             <div className={bem.block}>
                 <div className={bem.element('fra')}>
                     <Block margin="none">

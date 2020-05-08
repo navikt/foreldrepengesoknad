@@ -25,7 +25,7 @@ const ValiderbarUkerDagerTeller: React.StatelessComponent<Props> = (props) => {
                     dagStepper={{ ...stepperProps[1] }}
                     dagLegend={dagLegend}
                     ukeLegend={ukeLegend}
-                    feil={feil}
+                    feil={feil !== undefined ? feil.feilmelding : undefined}
                 />
             )}
         />
