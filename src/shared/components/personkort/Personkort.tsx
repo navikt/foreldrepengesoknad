@@ -7,7 +7,7 @@ import './personkort.less';
 interface Props {
     tittel?: string;
     children: React.ReactNode;
-    ikon: React.ReactNode;
+    ikon?: React.ReactNode;
     invertert?: boolean;
     textValign?: 'top' | 'center' | 'bottom';
 }
@@ -21,8 +21,9 @@ const Personkort: React.StatelessComponent<Props> = ({ tittel, children, ikon, i
                 bem.block,
                 bem.modifierConditional('invertert', invertert === true),
                 bem.modifier(`valign-${textValign}`)
-            )}>
-            <div className={bem.element('ikon')}>{ikon}</div>
+            )}
+        >
+            {ikon && <div className={bem.element('ikon')}>{ikon}</div>}
             <div className={bem.element('innhold')}>
                 {tittel && <Normaltekst className="tittel">{tittel}</Normaltekst>}
                 <div className={bem.element('tekst')}>{children}</div>
