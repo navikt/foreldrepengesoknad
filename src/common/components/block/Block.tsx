@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import BEMHelper from 'common/util/bem';
-import Infoboks from 'common/components/infoboks/Infoboks';
+import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 
 import './block.less';
 
@@ -48,8 +48,7 @@ const Block: React.StatelessComponent<BlockProps> = ({
         header !== undefined ? (
             <section className={contentClass}>
                 <div className="heading">
-                    <h1 className={`typo-element ${cls.element('title')}`}>{header.title}</h1>
-                    {header.info && <Infoboks tekst={header.info} contentFullWidth={true} />}
+                    <LabelWithInfo info={header.info}>{header.title}</LabelWithInfo>
                 </div>
                 {children}
             </section>
