@@ -88,4 +88,6 @@ export const isAttachmentForBarn = (type: AttachmentType) =>
 export const isAttachmentForPeriode = (type: AttachmentType) =>
     type === AttachmentType.UTSETTELSE_SYKDOM ||
     type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON ||
+    type === AttachmentType.HV_ØVELSE ||
+    type === AttachmentType.NAV_TILTAK ||
     type === AttachmentType.OVERFØRING_KVOTE;
