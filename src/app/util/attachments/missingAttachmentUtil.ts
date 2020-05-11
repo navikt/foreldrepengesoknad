@@ -8,7 +8,14 @@ import {
 import annenInntektVisibility from '../../steg/andreInntekter/annenInntektModal/visibility';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Attachment, InnsendingsType } from 'app/components/storage/attachment/types/Attachment';
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    Periodetype,
+    isUtsettelsesperiode,
+    UtsettelseÅrsakType,
+    isUttaksperiode,
+    StønadskontoType
+} from '../../types/uttaksplan/periodetyper';
 import { spørsmålOmVedleggVisible } from '../../steg/barn/relasjonTilBarnAdopsjonSteg/visibility';
 import {
     getSkjemanummerForAndreInntekter,
@@ -20,7 +27,8 @@ import {
 import {
     dokumentasjonBehøvesForOverføringsperiode,
     dokumentasjonBehøvesForUtsettelsesperiode,
-    dokumentasjonBehøvesForUttaksperiode
+    dokumentasjonBehøvesForUttaksperiode,
+    erÅrsakSykdomEllerInstitusjonsopphold
 } from '../uttaksplan/utsettelsesperiode';
 import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
@@ -36,6 +44,20 @@ const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType):
     attachments === undefined ||
     attachments.length === 0 ||
     (type !== undefined && attachments.find((a) => a.type === type) === undefined);
+
+const createMissingAttachment = (
+    index: number,
+    skjemanummer: Skjemanummer,
+    type: AttachmentType,
+    periodeId?: string
+): MissingAttachment => {
+    return {
+        index,
+        skjemanummer,
+        type,
+        periodeId
+    };
+};
 
 export const shouldPeriodeHaveAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
     switch (periode.type) {
@@ -112,34 +134,30 @@ const missingAttachmentForAktivitetskrav = (periode: Periode, søknadsinfo: Søk
     );
 };
 
-// Skal tilbake når koronaunntak er over
-// const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): boolean => {
-//     if (periode.type === Periodetype.Utsettelse) {
-//         return (
-//             erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
-//             isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
-//         );
-//     }
+const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): boolean => {
+    if (periode.type === Periodetype.Utsettelse) {
+        return (
+            erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
+            isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
+        );
+    }
 
-//     if (periode.type === Periodetype.Overføring) {
-//         return (
-//             erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
-//             isAttachmentMissing(periode.vedlegg, AttachmentType.OVERFØRING_KVOTE)
-//         );
-//     }
+    if (periode.type === Periodetype.Overføring) {
+        return (
+            erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
+            isAttachmentMissing(periode.vedlegg, AttachmentType.OVERFØRING_KVOTE)
+        );
+    }
 
-//     return false;
-// };
+    return false;
+};
 
 export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
     const shouldHave = shouldPeriodeHaveAttachment(periode, søknadsinfo);
-    const missingForAktivitetskrav = missingAttachmentForAktivitetskrav(periode, søknadsinfo);
+    // Skal fjernes når koronauttak er borte
+    const missingForSykdomEllerInst = missingAttachmentForSykdomEllerInstitusjonsopphold(periode);
 
-    // Skal tilbake når koronaunntak er over
-    // const missingForSykdomEllerInst = missingAttachmentForSykdomEllerInstitusjonsopphold(periode);
-    // return shouldHave && (missingForAktivitetskrav || missingForSykdomEllerInst);
-
-    return shouldHave && missingForAktivitetskrav;
+    return shouldHave && !missingForSykdomEllerInst;
 };
 
 export const findMissingAttachmentsForPerioder = (
@@ -150,19 +168,54 @@ export const findMissingAttachmentsForPerioder = (
         return [];
     }
 
-    const missingAttachments = [];
+    const missingAttachments: MissingAttachment[] = [];
     for (const periode of perioder) {
         if (hasPeriodeMissingAttachment(periode, søknadsinfo)) {
+            const index = perioder.indexOf(periode);
             if (
-                (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Uttak) &&
+                (isUtsettelsesperiode(periode) || isUttaksperiode(periode)) &&
                 missingAttachmentForAktivitetskrav(periode, søknadsinfo)
             ) {
-                missingAttachments.push({
-                    index: perioder.indexOf(periode),
-                    skjemanummer: getMorsAktivitetSkjemanummer(periode.morsAktivitetIPerioden),
-                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-                    periodeId: periode.id
-                });
+                missingAttachments.push(
+                    createMissingAttachment(
+                        index,
+                        getMorsAktivitetSkjemanummer(periode.morsAktivitetIPerioden),
+                        AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                        periode.id
+                    )
+                );
+            } else {
+                if (isUtsettelsesperiode(periode)) {
+                    if (periode.årsak === UtsettelseÅrsakType.HvØvelse) {
+                        missingAttachments.push(
+                            createMissingAttachment(index, Skjemanummer.HV_ØVELSE, AttachmentType.HV_ØVELSE, periode.id)
+                        );
+                    }
+
+                    if (periode.årsak === UtsettelseÅrsakType.NavTiltak) {
+                        missingAttachments.push(
+                            createMissingAttachment(
+                                index,
+                                Skjemanummer.NAV_TILTAK,
+                                AttachmentType.NAV_TILTAK,
+                                periode.id
+                            )
+                        );
+                    }
+                }
+
+                if (isUttaksperiode(periode)) {
+                    if (periode.konto === StønadskontoType.Fedrekvote && periode.erMorForSyk === true) {
+                        missingAttachments.push(
+                            createMissingAttachment(
+                                index,
+                                Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM,
+                                AttachmentType.UTSETTELSE_SYKDOM,
+                                periode.id
+                            )
+                        );
+                    }
+                }
             }
         }
     }
