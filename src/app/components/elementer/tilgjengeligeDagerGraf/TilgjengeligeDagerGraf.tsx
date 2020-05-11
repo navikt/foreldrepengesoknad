@@ -12,11 +12,12 @@ import { getNavnGenitivEierform } from 'app/util/tekstUtils';
 
 import './tilgjengeligeDagerGraf.less';
 import { NavnPåForeldre } from 'common/types';
+import { Element } from 'nav-frontend-typografi';
 
 interface OwnProps {
     tilgjengeligeDager: TilgjengeligeDager;
     navnPåForeldre: NavnPåForeldre;
-    erKunFarMedmor: boolean;
+    erFarEllerMedmor: boolean;
     erDeltUttak: boolean;
 }
 
@@ -101,11 +102,19 @@ const DeltOmsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, n
                     </div>
                 )}
             </div>
+            <div style={{ paddingTop: '0.625rem' }}>
+                <Element>
+                    <FormattedMessage
+                        id="tilgjengeligeDagerGraf.uttakFørFødselInfo"
+                        values={{ navn: navnPåForeldre.mor }}
+                    />
+                </Element>
+            </div>
         </div>
     );
 };
 
-const AleneomsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, erKunFarMedmor }) => {
+const AleneomsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, erFarEllerMedmor }) => {
     const intl = useIntl();
     const txt =
         tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0
@@ -114,14 +123,29 @@ const AleneomsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, 
             : getVarighetString(tilgjengeligeDager.dagerEtterTermin, intl);
     return (
         <div className={bem.block}>
+            <div style={{ position: 'relative' }}>
+                <div className={bem.element('barTitle')}>
+                    <Element>
+                        <FormattedMessage id="stønadskontotype.FORELDREPENGER" />
+                    </Element>
+                </div>
+            </div>
             <Multibar
                 borderColor={UttaksplanHexFarge.graa}
                 leftBar={{
-                    color: erKunFarMedmor ? UttaksplanHexFarge.blaa : UttaksplanHexFarge.lilla,
+                    color: erFarEllerMedmor ? UttaksplanHexFarge.blaa : UttaksplanHexFarge.lilla,
                     width: 100,
                     text: <div className={bem.element('barTekst')}>{txt}</div>
                 }}
             />
+            {!erFarEllerMedmor &&
+                tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
+                    <div style={{ paddingTop: '0.625rem' }}>
+                        <Element>
+                            <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfoIkkeDeltUttak" />>
+                        </Element>
+                    </div>
+                )}
         </div>
     );
 };
