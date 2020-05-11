@@ -112,9 +112,33 @@ const missingAttachmentForAktivitetskrav = (periode: Periode, søknadsinfo: Søk
     );
 };
 
+// Skal tilbake når koronaunntak er over
+// const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): boolean => {
+//     if (periode.type === Periodetype.Utsettelse) {
+//         return (
+//             erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
+//             isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
+//         );
+//     }
+
+//     if (periode.type === Periodetype.Overføring) {
+//         return (
+//             erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
+//             isAttachmentMissing(periode.vedlegg, AttachmentType.OVERFØRING_KVOTE)
+//         );
+//     }
+
+//     return false;
+// };
+
 export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
     const shouldHave = shouldPeriodeHaveAttachment(periode, søknadsinfo);
     const missingForAktivitetskrav = missingAttachmentForAktivitetskrav(periode, søknadsinfo);
+
+    // Skal tilbake når koronaunntak er over
+    // const missingForSykdomEllerInst = missingAttachmentForSykdomEllerInstitusjonsopphold(periode);
+    // return shouldHave && (missingForAktivitetskrav || missingForSykdomEllerInst);
+
     return shouldHave && missingForAktivitetskrav;
 };
 
