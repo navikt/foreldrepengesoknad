@@ -40,7 +40,6 @@ export interface ScenarioProps {
     eksisterendeSak?: EksisterendeSak;
     søkerHarMidlertidigOmsorg: boolean;
     tilgjengeligeDager: TilgjengeligeDager;
-    erKunFarMedmor: boolean;
     erDeltUttak: boolean;
 }
 export interface OwnProps extends ScenarioProps {
@@ -54,7 +53,10 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({
     antallUkerFellesperiode,
     familiehendelsesdato,
     navnPåForeldre,
-    søkerHarMidlertidigOmsorg
+    søkerHarMidlertidigOmsorg,
+    tilgjengeligeDager,
+    erFarEllerMedmor,
+    erDeltUttak
 }) => {
     const harSvartPåDekningsgradSpørsmål = søknad.dekningsgrad !== undefined;
     const intl = useIntl();
@@ -72,6 +74,14 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({
             />
 
             <DekningsgradSpørsmål />
+            {søknad.dekningsgrad !== undefined && (
+                <TilgjengeligeDagerGraf
+                    navnPåForeldre={navnPåForeldre}
+                    tilgjengeligeDager={tilgjengeligeDager}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    erDeltUttak={erDeltUttak}
+                />
+            )}
             <Block
                 visible={
                     (søknad.søker.rolle === SøkerRolle.FAR || søknad.søker.rolle === SøkerRolle.MEDMOR) &&
@@ -123,7 +133,7 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
     antallUkerMødreKvote,
     familiehendelsesdato,
     tilgjengeligeDager,
-    erKunFarMedmor,
+    erFarEllerMedmor,
     erDeltUttak
 }) => {
     const harSvartPåStartdato =
@@ -136,7 +146,7 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
                 <TilgjengeligeDagerGraf
                     navnPåForeldre={navnPåForeldre}
                     tilgjengeligeDager={tilgjengeligeDager}
-                    erKunFarMedmor={erKunFarMedmor}
+                    erFarEllerMedmor={erFarEllerMedmor}
                     erDeltUttak={erDeltUttak}
                 />
             )}
@@ -185,7 +195,10 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
     navnPåForeldre,
     antallUkerFedreKvote,
     antallUkerMødreKvote,
-    familiehendelsesdato
+    familiehendelsesdato,
+    tilgjengeligeDager,
+    erDeltUttak,
+    erFarEllerMedmor
 }) => {
     /** Mor og far, adopsjon, begge har rett, adopterer alene, bare en har rett */
     const intl = useIntl();
@@ -221,6 +234,14 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
             <DekningsgradSpørsmål
                 visible={skjema.harAnnenForelderSøktFP !== undefined || !søknad.annenForelder.harRettPåForeldrepenger}
             />
+            {søknad.dekningsgrad !== undefined && (
+                <TilgjengeligeDagerGraf
+                    navnPåForeldre={navnPåForeldre}
+                    tilgjengeligeDager={tilgjengeligeDager}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    erDeltUttak={erDeltUttak}
+                />
+            )}
             <StartdatoAdopsjonBolk
                 familiehendelsesdato={familiehendelsesdato}
                 visible={søknad.dekningsgrad !== undefined && skjema.harAnnenForelderSøktFP !== true}
@@ -300,11 +321,26 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
     );
 };
 
-const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehendelsesdato }) => {
+const Scenario5: React.StatelessComponent<ScenarioProps> = ({
+    søknad,
+    familiehendelsesdato,
+    navnPåForeldre,
+    tilgjengeligeDager,
+    erFarEllerMedmor,
+    erDeltUttak
+}) => {
     const omsorgsDato = søknad.barn.datoForAleneomsorg || familiehendelsesdato;
     return (
         <>
             <DekningsgradSpørsmål />
+            {søknad.dekningsgrad !== undefined && (
+                <TilgjengeligeDagerGraf
+                    navnPåForeldre={navnPåForeldre}
+                    tilgjengeligeDager={tilgjengeligeDager}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    erDeltUttak={erDeltUttak}
+                />
+            )}
             <Block visible={søknad.dekningsgrad !== undefined && søknad.situasjon === 'fødsel'}>
                 <VeilederInfo
                     messages={[
@@ -340,12 +376,27 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehe
     );
 };
 
-const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehendelsesdato }) => {
+const Scenario6: React.StatelessComponent<ScenarioProps> = ({
+    søknad,
+    familiehendelsesdato,
+    navnPåForeldre,
+    erDeltUttak,
+    erFarEllerMedmor,
+    tilgjengeligeDager
+}) => {
     const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
 
     return (
         <>
             <DekningsgradSpørsmål />
+            {søknad.dekningsgrad !== undefined && (
+                <TilgjengeligeDagerGraf
+                    navnPåForeldre={navnPåForeldre}
+                    tilgjengeligeDager={tilgjengeligeDager}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    erDeltUttak={erDeltUttak}
+                />
+            )}
             <StartdatoUttakFarMedmorSpørsmål
                 visible={søknad.dekningsgrad !== undefined && søknad.annenForelder.erUfør === true}
                 familiehendelsesdato={førsteUttaksdag}
@@ -354,10 +405,25 @@ const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad, familiehe
     );
 };
 
-const Scenario7: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåForeldre, familiehendelsesdato }) => (
+const Scenario7: React.StatelessComponent<ScenarioProps> = ({
+    søknad,
+    navnPåForeldre,
+    familiehendelsesdato,
+    tilgjengeligeDager,
+    erFarEllerMedmor,
+    erDeltUttak
+}) => (
     <>
         <HarAnnenForelderSøktForeldrepengerSpørsmål navnAnnenForelder={søknad.annenForelder.fornavn} visible={true} />
         <DekningsgradSpørsmål visible={søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP !== undefined} />
+        {søknad.dekningsgrad !== undefined && (
+            <TilgjengeligeDagerGraf
+                navnPåForeldre={navnPåForeldre}
+                tilgjengeligeDager={tilgjengeligeDager}
+                erFarEllerMedmor={erFarEllerMedmor}
+                erDeltUttak={erDeltUttak}
+            />
+        )}
         <MorSinSisteUttaksdagSpørsmål
             visible={
                 søknad.dekningsgrad !== undefined &&

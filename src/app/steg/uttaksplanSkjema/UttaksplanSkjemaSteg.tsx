@@ -129,9 +129,6 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             søknadsinfo.søknaden.erDeltUttak,
             søknadsinfo.søknaden.erDeltUttak ? undefined : søknadsinfo.søker.forelder
         );
-        const erKunFarMedmor =
-            søknadsinfo.søker.erFarEllerMedmor &&
-            (søknadsinfo.søker.erAleneOmOmsorg || søknadsinfo.annenForelder.kanIkkeOppgis);
 
         if (!søknadsinfo) {
             return <ResetSoknad history={this.props.history} />;
@@ -183,7 +180,6 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                             søkerHarMidlertidigOmsorg={søknadsinfo.søker.harMidlertidigOmsorg}
                             eksisterendeSak={eksisterendeSak}
                             tilgjengeligeDager={tilgjengeligeDager}
-                            erKunFarMedmor={erKunFarMedmor}
                             erDeltUttak={søknadsinfo.søknaden.erDeltUttak}
                         />
                     </>

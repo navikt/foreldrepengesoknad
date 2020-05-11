@@ -1322,5 +1322,9 @@
     "psg.lenkepanel.text": "Mer hjelp til å laste opp vedlegg (åpnes i et nytt vindu).",
     "tidsperiodeBolk.velgLengde": "Velg lengde",
     "tilgjengeligeDagerGraf.person.del": "{navnEierform} del",
-    "tilgjengeligeDagerGraf.fellesperiode": "Fellesperiode"
+    "tilgjengeligeDagerGraf.fellesperiode": "Fellesperiode",
+    "tilgjengeligeDagerGraf.uttakFørFødselInfo":
+        "Tar {navn} ut mer enn 3 uker før termindato trekkes disse dagene av fellesperioden",
+    "tilgjengeligeDagerGraf.uttakFørFødselInfoIkkeDeltUttak":
+        "Tar du ut mer enn 3 uker før termindato trekkes disse dagene av fellesperioden"
 }
