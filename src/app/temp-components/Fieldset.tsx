@@ -2,7 +2,7 @@ import React from 'react';
 import { Element } from 'nav-frontend-typografi';
 
 interface Props {
-    legend: string;
+    legend: React.ReactNode;
     children: React.ReactNode;
     className?: string;
 }

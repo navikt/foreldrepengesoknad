@@ -2,12 +2,13 @@ import * as React from 'react';
 import * as classnames from 'classnames';
 import { guid } from 'nav-frontend-js-utils';
 import RangeStepper from './RangeStepper';
-import Infoboks from 'common/components/infoboks/Infoboks';
+// import Infoboks from 'common/components/infoboks/Infoboks';
 
 import './rangeInput.less';
 import AriaText from 'common/components/aria/AriaText';
 import BEMHelper from 'common/util/bem';
 import Fieldset from 'app/temp-components/Fieldset';
+import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 
 export interface RangeInputElementRendererOptions {
     value: number;
@@ -116,12 +117,10 @@ class RangeInput extends React.Component<Props, State> {
 
         return (
             <div className={bemWrapper.block}>
-                <Fieldset legend={label} className={'uttakfordeler'}>
-                    {hjelpetekst && (
-                        <div className={bemWrapper.element('help')}>
-                            <Infoboks tekst={hjelpetekst} fieldsetClsName={'uttakfordeler'} />
-                        </div>
-                    )}
+                <Fieldset
+                    legend={<LabelWithInfo info={hjelpetekst}>{label}</LabelWithInfo>}
+                    className={'uttakfordeler'}
+                >
                     <div aria-live="polite">
                         {valueLabelPlacement === 'above' && labelRenderer({ value, min, max })}
                     </div>
