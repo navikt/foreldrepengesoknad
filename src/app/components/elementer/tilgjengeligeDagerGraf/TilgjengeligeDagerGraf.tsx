@@ -102,14 +102,13 @@ const DeltOmsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, n
                     </div>
                 )}
             </div>
-            {!erFarEllerMedmor &&
-                tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
-                    <div style={{ paddingTop: '0.625rem' }}>
-                        <Element>
-                            <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfo" />>
-                        </Element>
-                    </div>
-                )}
+            {tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
+                <div style={{ paddingTop: '0.625rem' }}>
+                    <Element>
+                        <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfo" />>
+                    </Element>
+                </div>
+            )}
         </div>
     );
 };
@@ -138,14 +137,13 @@ const AleneomsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, 
                     text: <div className={bem.element('barTekst')}>{txt}</div>
                 }}
             />
-            {!erFarEllerMedmor &&
-                tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
-                    <div style={{ paddingTop: '0.625rem' }}>
-                        <Element>
-                            <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfoIkkeDeltUttak" />>
-                        </Element>
-                    </div>
-                )}
+            {tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
+                <div style={{ paddingTop: '0.625rem' }}>
+                    <Element>
+                        <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfoIkkeDeltUttak" />>
+                    </Element>
+                </div>
+            )}
         </div>
     );
 };
