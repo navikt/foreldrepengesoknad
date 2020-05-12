@@ -157,7 +157,7 @@ export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søk
     // Skal fjernes når koronauttak er borte
     const missingForSykdomEllerInst = missingAttachmentForSykdomEllerInstitusjonsopphold(periode);
 
-    return shouldHave && !missingForSykdomEllerInst;
+    return shouldHave && !missingForSykdomEllerInst && isAttachmentMissing(periode.vedlegg);
 };
 
 export const findMissingAttachmentsForPerioder = (
