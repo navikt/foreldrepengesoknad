@@ -25,7 +25,7 @@ type Props = OwnProps;
 
 const bem = BEMHelper('tilgjengeligeDagerGraf');
 
-const DeltOmsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, navnPåForeldre }) => {
+const DeltOmsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, navnPåForeldre, erFarEllerMedmor }) => {
     const intl = useIntl();
     const fordeling = getProsentFordelingPerDel(tilgjengeligeDager, true);
     const txtMor =
@@ -102,14 +102,14 @@ const DeltOmsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, n
                     </div>
                 )}
             </div>
-            <div style={{ paddingTop: '0.625rem' }}>
-                <Element>
-                    <FormattedMessage
-                        id="tilgjengeligeDagerGraf.uttakFørFødselInfo"
-                        values={{ navn: navnPåForeldre.mor }}
-                    />
-                </Element>
-            </div>
+            {!erFarEllerMedmor &&
+                tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
+                    <div style={{ paddingTop: '0.625rem' }}>
+                        <Element>
+                            <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfo" />>
+                        </Element>
+                    </div>
+                )}
         </div>
     );
 };
