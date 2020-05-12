@@ -102,13 +102,28 @@ const DeltOmsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, n
                     </div>
                 )}
             </div>
-            {tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
-                <div style={{ paddingTop: '0.625rem' }}>
-                    <Element>
-                        <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfo" />>
-                    </Element>
-                </div>
-            )}
+            {!erFarEllerMedmor &&
+                tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
+                    <div style={{ paddingTop: '0.625rem' }}>
+                        <Element>
+                            <FormattedMessage
+                                id="tilgjengeligeDagerGraf.uttakFørFødselInfo"
+                                values={{ navn: navnPåForeldre.mor }}
+                            />
+                        </Element>
+                    </div>
+                )}
+            {erFarEllerMedmor &&
+                tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
+                    <div style={{ paddingTop: '0.625rem' }}>
+                        <Element>
+                            <FormattedMessage
+                                id="tilgjengeligeDagerGraf.uttakFørFødselInfoFarMedmor"
+                                values={{ navn: navnPåForeldre.mor }}
+                            />
+                        </Element>
+                    </div>
+                )}
         </div>
     );
 };
@@ -137,13 +152,14 @@ const AleneomsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, 
                     text: <div className={bem.element('barTekst')}>{txt}</div>
                 }}
             />
-            {tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
-                <div style={{ paddingTop: '0.625rem' }}>
-                    <Element>
-                        <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfoIkkeDeltUttak" />>
-                    </Element>
-                </div>
-            )}
+            {!erFarEllerMedmor &&
+                tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
+                    <div style={{ paddingTop: '0.625rem' }}>
+                        <Element>
+                            <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfoIkkeDeltUttak" />>
+                        </Element>
+                    </div>
+                )}
         </div>
     );
 };

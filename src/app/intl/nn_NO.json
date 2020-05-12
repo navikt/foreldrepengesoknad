@@ -1329,6 +1329,8 @@
     "tilgjengeligeDagerGraf.fellesperiode": "Fellesperiode",
     "tilgjengeligeDagerGraf.uttakFørFødselInfo":
         "Tar {navn} ut meir enn 3 veker før termindato blir trekte desse dagane av fellesperioden",
+    "tilgjengeligeDagerGraf.uttakFørFødselInfoFarMedmor":
+        "Tok {navn} ut meir enn 3 veker før termindato blir trekte desse dagane av fellesperioden",
     "tilgjengeligeDagerGraf.uttakFørFødselInfoIkkeDeltUttak":
         "Tar du ut meir enn 3 veker før termindato blir trekte desse dagane av foreldrepengar du kan få etter fødsel"
 }
