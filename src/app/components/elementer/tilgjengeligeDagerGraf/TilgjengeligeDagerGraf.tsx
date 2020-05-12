@@ -156,7 +156,7 @@ const AleneomsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, 
                 tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
                     <div style={{ paddingTop: '0.625rem' }}>
                         <Element>
-                            <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfoIkkeDeltUttak" />>
+                            <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfoIkkeDeltUttak" />
                         </Element>
                     </div>
                 )}
