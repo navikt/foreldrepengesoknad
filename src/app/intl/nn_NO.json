@@ -1328,7 +1328,7 @@
     "tilgjengeligeDagerGraf.person.del": "{navnEierform} del",
     "tilgjengeligeDagerGraf.fellesperiode": "Fellesperiode",
     "tilgjengeligeDagerGraf.uttakFørFødselInfo":
-        "Tar {navn} ut mer enn 3 uker før termindato trekkes disse dagene av fellesperioden",
+        "Tar {navn} ut meir enn 3 veker før termindato blir trekte desse dagane av fellesperioden",
     "tilgjengeligeDagerGraf.uttakFørFødselInfoIkkeDeltUttak":
-        "Tar du ut mer enn 3 uker før termindato trekkes disse dagene av fellesperioden"
+        "Tar du ut meir enn 3 veker før termindato blir trekte desse dagane av foreldrepengar du kan få etter fødsel"
 }
