@@ -140,7 +140,7 @@ const AleneomsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, 
             <div style={{ position: 'relative' }}>
                 <div className={bem.element('barTitle')}>
                     <Element>
-                        <FormattedMessage id="stønadskontotype.FORELDREPENGER" />
+                        <FormattedMessage id="tilgjengeligeDagerGraf.periodeMedForeldrepenger" />
                     </Element>
                 </div>
             </div>
