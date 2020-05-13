@@ -152,11 +152,16 @@ const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): b
     }
 
     if (isUttaksperiode(periode)) {
-        return (
-            (periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
-                periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt) &&
-            isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON)
-        );
+        if (
+            periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
+            periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
+        ) {
+            return isAttachmentMissing(periode.vedlegg);
+        }
+
+        if (periode.erMorForSyk) {
+            return isAttachmentMissing(periode.vedlegg);
+        }
     }
 
     return false;
