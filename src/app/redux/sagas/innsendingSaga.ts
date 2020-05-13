@@ -16,6 +16,17 @@ import _ from 'lodash';
 
 const stateSelector = (state: AppState) => state;
 
+const mapMissingAttachmentsOnEndringer = (
+    perioderWithMissingAttachments: Periode[],
+    endringer: Periode[]
+): Periode[] => {
+    return endringer.map((endring) => {
+        const periode = perioderWithMissingAttachments.find((a) => a.id === endring.id);
+
+        return periode !== undefined ? { ...endring, vedlegg: periode.vedlegg } : endring;
+    });
+};
+
 const getSøknadsdataForInnsending = (
     originalSøknad: Søknad,
     missingAttachments: MissingAttachment[],
@@ -23,8 +34,13 @@ const getSøknadsdataForInnsending = (
 ): SøknadForInnsending | EnkelEndringssøknadForInnsending => {
     const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
     mapMissingAttachmentsOnSøknad(missingAttachments, søknad);
+
     if (søknad.ekstrainfo.erEnkelEndringssøknad) {
-        return cleanEnkelEndringssøknad(søknad, endringerIUttaksplan);
+        const endringerIUttaksplanWithMissingAttachments = mapMissingAttachmentsOnEndringer(
+            søknad.uttaksplan,
+            endringerIUttaksplan
+        );
+        return cleanEnkelEndringssøknad(søknad, endringerIUttaksplanWithMissingAttachments);
     } else {
         return cleanUpSøknad(søknad);
     }
