@@ -2,7 +2,7 @@ import Søknad, {
     SøknadForInnsending,
     Søkersituasjon,
     EnkelEndringssøknadForInnsending,
-    Tilleggsopplysninger
+    Tilleggsopplysninger,
 } from '../../types/søknad/Søknad';
 import { Attachment, InnsendingsType } from 'app/components/storage/attachment/types/Attachment';
 import { isAttachmentWithError } from 'app/components/storage/attachment/components/util';
@@ -11,7 +11,7 @@ import {
     isUttaksperiode,
     StønadskontoType,
     Periodetype,
-    Arbeidsform
+    Arbeidsform,
 } from '../../types/uttaksplan/periodetyper';
 import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
 import { Barn } from '../../types/søknad/Barn';
@@ -104,7 +104,7 @@ const getArbeidstakerFrilansSN = (arbeidsformer: Arbeidsform[] | undefined) => {
         return {
             erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker,
             erFrilanser: arbeidsform === Arbeidsform.frilans,
-            erSelvstendig: arbeidsform === Arbeidsform.selvstendignæringsdrivende
+            erSelvstendig: arbeidsform === Arbeidsform.selvstendignæringsdrivende,
         };
     } else {
         return {};
@@ -167,7 +167,7 @@ export const cleanEnkelEndringssøknad = (
         annenForelder: søknad.annenForelder,
         barn: søknad.barn,
         dekningsgrad: søknad.dekningsgrad,
-        situasjon: søknad.situasjon
+        situasjon: søknad.situasjon,
     };
     cleanedSøknad.uttaksplan = cleanupUttaksplan(cleanedSøknad.uttaksplan, søknad.annenForelder);
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
