@@ -311,8 +311,8 @@
     "manglendeVedlegg.veileder":
         "Før du kan senda inn søknaden så treng vi at du lastar opp dei vedleggen som er lista opp nedanfor. Utan dei har vi ikkje moglegheit at behandla søknaden din.",
     "manglendeVedlegg.title.terminbekreftelse": "Stadfesting på termin",
-    "manglendeVedlegg.title.hvØvelse": "Dokumentasjon av øvelse eller tjeneste i Heimevernet",
-    "manglendeVedlegg.title.navTiltak": "Dokumentasjon på NAV tiltak som utgjør 100% arbeid",
+    "manglendeVedlegg.title.hvØvelse": "Stadfesting av øvelse eller tjeneste i Heimevernet",
+    "manglendeVedlegg.title.navTiltak": "Stadfesting av NAV tiltak som utgjør 100% arbeid",
     "manglendeVedlegg.title.morForSykFørsteSeksUker": "Dokumentasjon på at mor er for syk",
     "manglendeVedlegg.info.terminbekreftelse":
         "Du må leggja ved terminstadfestinga må vise at du er i 22. svangerskapsveke eller seinare.",
@@ -1268,6 +1268,9 @@
     "søknadSendt.info.missingAttachment.I000051": "Stadfesting av at mor deltar i kvalifiseringsprogrammet",
     "søknadSendt.info.missingAttachment.I000036": "Stadfesting av avtalt ferie",
     "søknadSendt.info.missingAttachment.I000049": "Annan stadfesting",
+    "søknadSendt.info.missingAttachment.I000112": "Stadfesting av at mor deltar i introduksjonsprogrammet",
+    "søknadSendt.info.missingAttachment.I000116": "Stadfesting av øvelse eller tjeneste i Heimevernet",
+    "søknadSendt.info.missingAttachment.I000117": "Stadfesting av NAV tiltak som utgjør 100% arbeid",
     "søknadSendt.info.missingAttachment.lesMer": "Hva skjer hvis dokumenta ikkje blir ettersendt?",
     "søknadSendt.info.missingAttachment.lesMer.content":
         "Viss du ikkje ettersender dokumenta innan 3 veker behandlar vi søknaden din utor dei opplysningane som vi har tilgjengelege.",
