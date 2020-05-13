@@ -25,6 +25,10 @@ export const getUtsettelseÅrsakFromSaksperiode = (
             return UtsettelseÅrsakType.InstitusjonSøker;
         case SaksperiodeUtsettelseÅrsakType.Sykdom:
             return UtsettelseÅrsakType.Sykdom;
+        case SaksperiodeUtsettelseÅrsakType.HvØvelse:
+            return UtsettelseÅrsakType.HvØvelse;
+        case SaksperiodeUtsettelseÅrsakType.NavTiltak:
+            return UtsettelseÅrsakType.NavTiltak;
         default:
             return undefined;
     }

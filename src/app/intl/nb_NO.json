@@ -386,6 +386,10 @@
     "utsettelseårsaktype.foreldernavn.far.LOVBESTEMT_FERIE":
         "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
     "utsettelseårsaktype.foreldernavn.far.ARBEID": "{foreldernavn} utsetter på grunn av heltidsarbeid",
+    "utsettelseårsaktype.foreldernavn.far.NAV_TILTAK":
+        "{foreldernavn} utsetter på grunn av NAV tiltak som utgjør 100% arbeid",
+    "utsettelseårsaktype.foreldernavn.far.HV_OVELSE":
+        "{foreldernavn} utsetter på grunn av øvelse eller tjeneste i Heimevernet",
     "utsettelseårsaktype.foreldernavn.far.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
     "utsettelseårsaktype.foreldernavn.far.INSTITUSJONSOPPHOLD_SØKER":
         "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
@@ -394,6 +398,10 @@
     "utsettelseårsaktype.foreldernavn.mor.LOVBESTEMT_FERIE":
         "{foreldernavn} har utsettelse på grunn av lovbestemt ferie",
     "utsettelseårsaktype.foreldernavn.mor.ARBEID": "{foreldernavn} utsetter på grunn av heltidsarbeid",
+    "utsettelseårsaktype.foreldernavn.mor.NAV_TILTAK":
+        "{foreldernavn} utsetter på på grunn av NAV tiltak som utgjør 100% arbeid",
+    "utsettelseårsaktype.foreldernavn.mor.HV_OVELSE":
+        "{foreldernavn} utsetter på grunn av øvelse eller tjeneste i Heimevernet",
     "utsettelseårsaktype.foreldernavn.mor.SYKDOM": "{foreldernavn} har utsettelse på grunn av sykdom",
     "utsettelseårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_SØKER":
         "{foreldernavn} har utsettelse på grunn av innleggelse i helseinstitusjon",
