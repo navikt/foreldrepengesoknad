@@ -14,7 +14,9 @@ import {
     isUtsettelsesperiode,
     UtsettelseÅrsakType,
     isUttaksperiode,
-    StønadskontoType
+    StønadskontoType,
+    isOverføringsperiode,
+    MorsAktivitet
 } from '../../types/uttaksplan/periodetyper';
 import { spørsmålOmVedleggVisible } from '../../steg/barn/relasjonTilBarnAdopsjonSteg/visibility';
 import {
@@ -135,17 +137,25 @@ const missingAttachmentForAktivitetskrav = (periode: Periode, søknadsinfo: Søk
 };
 
 const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): boolean => {
-    if (periode.type === Periodetype.Utsettelse) {
+    if (isUtsettelsesperiode(periode)) {
         return (
             erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
             isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
         );
     }
 
-    if (periode.type === Periodetype.Overføring) {
+    if (isOverføringsperiode(periode)) {
         return (
             erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
             isAttachmentMissing(periode.vedlegg, AttachmentType.OVERFØRING_KVOTE)
+        );
+    }
+
+    if (isUttaksperiode(periode)) {
+        return (
+            (periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
+                periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt) &&
+            isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON)
         );
     }
 
