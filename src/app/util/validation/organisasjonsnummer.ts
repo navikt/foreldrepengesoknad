@@ -15,7 +15,7 @@ export const starterPå8Eller9 = (orgnr: string): boolean => {
 };
 
 export const erGyldigNorskOrgnummer = (orgnr: string): boolean => {
-    if (!orgnr || er9Tall(orgnr) === false || starterPå8Eller9(orgnr) === false) {
+    if (!orgnr || er9Tall(orgnr) === false || starterPå8Eller9(orgnr) === false || orgnr === '999999999') {
         return false;
     }
     return getMod11(orgnr) === parseInt(orgnr.charAt(8), 10);
@@ -32,12 +32,12 @@ export const getOrganisasjonsnummerRegler = (
             hasValueRule(organisasjonsnummer, getMessage(intl, `${intlKey}.required`)),
             {
                 test: () => er9Tall(organisasjonsnummer),
-                failText: getMessage(intl, `${intlKey}.er9tall`),
+                failText: getMessage(intl, `${intlKey}.er9tall`)
             },
             {
                 test: () => erGyldigNorskOrgnummer(organisasjonsnummer),
-                failText: getMessage(intl, `${intlKey}.erUgyldigOrgNummer`),
-            },
+                failText: getMessage(intl, `${intlKey}.erUgyldigOrgNummer`)
+            }
         ];
     }
     return [hasValueRule(organisasjonsnummer, getMessage(intl, `${intlKey}.required`))];
