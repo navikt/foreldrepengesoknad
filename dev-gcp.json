@@ -1,6 +1,6 @@
 {
-    "namespace": "foreldrepenger",
-    "appres": "appres-q1.nav.no",
+    "namespace": "teamforeldrepenger",
+    "appres": "www-q1.nav.no",
     "uttak": "fp-uttak-service.dev-nav.no",
     "ingress": "https://foreldrepengesoknad.dev-nav.no",
     "application_name": "foreldrepengesoknad",
