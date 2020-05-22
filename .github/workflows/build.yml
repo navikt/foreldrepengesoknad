@@ -78,7 +78,7 @@ jobs:
             <tr><td>prod-sbs</tr>
             </table>
      
-      - name: Trigg deploy til dev-sbs 
+      - name: Trigg deploy til dev-sbs og dev-gcp
         if: success()
         uses: actions/github-script@0.8.0
         with:
@@ -90,4 +90,6 @@ jobs:
             github.issues.createComment({...issue,
                                     title: 'Deploy av ${{ env.TAG }}',
                                     body: '/promote dev-sbs'})
-     
+            github.issues.createComment({...issue,
+                                    title: 'Deploy av ${{ env.TAG }}',
+                                    body: '/promote dev-gcp'})
