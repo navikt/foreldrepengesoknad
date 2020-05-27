@@ -1230,7 +1230,7 @@
     "søknadSendt.info.tittel": "Nå er resten vårt ansvar",
     "søknadSendt.info.tittel.isMissingAttachments": "Ettersend manglende dokumentasjon innen 3 uker",
     "søknadSendt.info.innhold":
-        "Du trenger ikke gjøre noe mer, vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg.",
+        "Vi har mottatt søknaden din, og du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger noe mer fra deg.",
     "søknadSendt.info.innhold.isMissingAttachments": "Vi har mottatt søknaden din, og den mangler disse dokumentene:",
     "søknadSendt.når.tittel": "Når kan jeg tidligst forvente få svar på min søknad?",
     "søknadSendt.når.infoBox":
