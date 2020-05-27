@@ -1235,8 +1235,8 @@
     "søknadSendt.når.tittel": "Når kan jeg tidligst forvente få svar på min søknad?",
     "søknadSendt.når.infoBox":
         "Du kan tidligst få svar på søknaden din 4 uker før foreldrepengeperioden din starter. Dette er fordi vi må bruke de nyeste opplysningene om inntekten din når vi skal beregne hva du skal få i foreldrepenger.",
-    "søknadSendt.infoFraArbeidsgiver.tittel": "Hvilken informasjon trenger min arbeidsgiver?",
-    "søknadSendt.infoFraArbeidsgiver": "Viktig informasjon du kan gi til arbeidsgiveren din",
+    "søknadSendt.infoFraArbeidsgiver.tittel": "Hvilken informasjon trenger arbeidsgiveren min?",
+    "søknadSendt.infoFraArbeidsgiver": "Det er arbeidsgiveren din som skal sende inn inntektsmelding til oss. Her er et informasjonsbrev du kan gi til arbeidsgiveren, som vil være til hjelp når de skal fylle ut inntektsmeldingen.",
     "søknadSendt.infoFraArbeidsgiver.infoBox":
         "Informasjonsbrevet er en veiledning som arbeidsgiveren din kan bruke for å fylle ut den riktige informasjonen i inntektsmeldingen, sånn at vi kan behandle søknaden din. Arbeidsgiveren din må sende inntektsmelding til NAV for at vi kan behandle søknaden din, det kan være lurt å minne arbeidsgiveren din på å gjøre dette. Hvis du har flere arbeidsgivere må hver av arbeidsgiverne dine sende inn inntektsmelding til NAV.",
     "søknadSendt.pengene.tittel": "Hvor blir pengene utbetalt?",
