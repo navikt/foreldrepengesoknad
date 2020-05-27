@@ -76,13 +76,16 @@ class SøknadSendtSide extends React.Component<Props> {
                                 </SøknadSendtSectionHeader>
                             </Block>
 
-                            {kvittering.infoskrivPdf && arbeidsforhold && arbeidsforhold.length > 0 && (
+                            {arbeidsforhold && arbeidsforhold.length > 0 && (
                                 <Block>
                                     <SøknadSendtSectionHeader
                                         title={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.tittel')}
                                         type="koffert"
                                         info={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.infoBox')}
                                     >
+                                        <Block margin="xxs">
+                                            <FormattedMessage id={'søknadSendt.infoFraArbeidsgiver.del1'} />
+                                        </Block>
                                         <Lenke
                                             href={'#'}
                                             onClick={(e) => {
@@ -90,7 +93,7 @@ class SøknadSendtSide extends React.Component<Props> {
                                                 openPdfPreview(kvittering.infoskrivPdf);
                                             }}
                                         >
-                                            <FormattedMessage id={'søknadSendt.infoFraArbeidsgiver'} />
+                                            <FormattedMessage id={'søknadSendt.infoFraArbeidsgiver.del2'} />
                                         </Lenke>
                                     </SøknadSendtSectionHeader>
                                 </Block>
