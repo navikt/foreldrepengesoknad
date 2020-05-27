@@ -11,6 +11,7 @@ import { Kvittering } from 'app/types/Kvittering';
 import { openPdfPreview } from 'common/util/pdfUtils';
 
 import './kvitteringHeader.less';
+import VedleggIkon from 'common/components/ikoner/VedleggIkon';
 
 interface Props {
     søker: Person;
@@ -32,21 +33,26 @@ const KvitteringHeader: React.StatelessComponent<Props> = ({ søker, kvittering 
                     <FormattedMessage
                         id="søknadSendt.tittel"
                         values={{
-                            name: `${søker.fornavn} ${søker.etternavn}`
+                            name: `${søker.fornavn} ${søker.etternavn}`,
                         }}
                     />
                 </Sidetittel>
             </Block>
 
             <Block visible={pdf !== undefined}>
-                <Lenke
-                    href={'#'}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        openPdfPreview(pdf);
-                    }}>
-                    <FormattedMessage id={'søknadSendt.pdf'} />
-                </Lenke>
+                <div className={cls.element('vedleggWrapper')}>
+                    <VedleggIkon className={cls.element('vedleggIkon')} width={20} height={20} />
+                    <Lenke
+                        className={cls.element('vedleggLink')}
+                        href={'#'}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            openPdfPreview(pdf);
+                        }}
+                    >
+                        <FormattedMessage id={'søknadSendt.pdf'} />
+                    </Lenke>
+                </div>
             </Block>
 
             <Block>
