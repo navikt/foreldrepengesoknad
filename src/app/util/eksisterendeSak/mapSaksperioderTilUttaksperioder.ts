@@ -150,7 +150,6 @@ const beregnSamtidigUttaksProsent = (
 export const mapUttaksperiodeFromSaksperiode = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag,
-    erEndringssøknad: boolean,
     innvilgedePerioder: Saksperiode[]
 ): Periode | undefined => {
     const gradert = saksperiode.graderingInnvilget !== undefined ? saksperiode.graderingInnvilget : false;
@@ -196,7 +195,6 @@ export const mapUttaksperiodeFromSaksperiode = (
         orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
         morsAktivitetIPerioden: saksperiode.morsAktivitetIPerioden,
         erMorForSyk:
-            erEndringssøknad &&
             grunnlag.søkerErFarEllerMedmor &&
             !saksperiode.flerbarnsdager &&
             moment(saksperiode.tidsperiode.fom).isBefore(moment(grunnlag.familieHendelseDato).add(6, 'weeks'))
@@ -330,7 +328,6 @@ const mapOverføringsperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnla
 const mapPeriodeFromSaksperiode = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag,
-    erEndringssøknad: boolean,
     innvilgedePerioder: Saksperiode[]
 ): Periode | undefined => {
     if (saksperiode.gjelderAnnenPart) {
@@ -351,7 +348,7 @@ const mapPeriodeFromSaksperiode = (
     if (saksperiode.overfoeringAarsak !== undefined) {
         return mapOverføringsperiodeFromSaksperiode(saksperiode, grunnlag);
     }
-    return mapUttaksperiodeFromSaksperiode(saksperiode, grunnlag, erEndringssøknad, innvilgedePerioder);
+    return mapUttaksperiodeFromSaksperiode(saksperiode, grunnlag, innvilgedePerioder);
 };
 
 const gyldigeSaksperioder = (saksperiode: Saksperiode): boolean => {
@@ -381,7 +378,7 @@ const mapSaksperioderTilUttaksperioder = (
 ): Periode[] | undefined => {
     const innvilgedePerioder = saksperioder.filter(gyldigeSaksperioder);
     const perioder = innvilgedePerioder.map((periode) =>
-        mapPeriodeFromSaksperiode(periode, grunnlag, erEndringsøknadUtenEkisterendeSak, innvilgedePerioder)
+        mapPeriodeFromSaksperiode(periode, grunnlag, innvilgedePerioder)
     );
 
     if (perioder.some((p) => p === undefined)) {
