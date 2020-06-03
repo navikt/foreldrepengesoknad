@@ -58,7 +58,6 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             const result = mapUttaksperiodeFromSaksperiode(
                 morUfør.saksperioder[0],
                 morUfør.grunnlag,
-                true,
                 morUfør.saksperioder
             );
             expect(result).toBeDefined();
