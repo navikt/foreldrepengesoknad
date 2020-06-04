@@ -1,5 +1,5 @@
-import { Periode, Periodetype } from '../../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, isInfoPeriode } from '../../../types/uttaksplan/periodetyper';
 
 export const uttaksplanStarterMedOpphold = (perioder: Periode[]): boolean => {
-    return perioder.findIndex((periode) => periode.type === Periodetype.Opphold) === 0;
+    return perioder.filter((p) => !isInfoPeriode(p)).findIndex((periode) => periode.type === Periodetype.Opphold) === 0;
 };
