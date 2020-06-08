@@ -12,7 +12,6 @@ import {
     isUttaksperiode,
     isOverføringsperiode,
     OverføringÅrsakType,
-    Uttaksperiode,
     isUttakAvFellesperiode,
     MorsAktivitet
 } from '../../types/uttaksplan/periodetyper';
@@ -46,7 +45,7 @@ const erUttakTilbakeITid = (periode: Periode) => isUttaksperiode(periode) && dat
 
 const erGradering = (periode: Periode) => periode.type === Periodetype.Uttak && periode.gradert === true;
 
-const erUttakGrunnetSykdom = (periode: Uttaksperiode) => {
+const erUttakGrunnetSykdom = (periode: Periode) => {
     if (
         isOverføringsperiode(periode) &&
         (periode.årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder ||
@@ -55,7 +54,7 @@ const erUttakGrunnetSykdom = (periode: Uttaksperiode) => {
         return true;
     }
 
-    if (periode.erMorForSyk === true) {
+    if (isUttaksperiode(periode) && periode.erMorForSyk === true) {
         return true;
     }
 

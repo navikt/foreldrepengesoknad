@@ -102,7 +102,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
         } else if (systemerIkkeTilgjengelig) {
             return <IkkeTilgjengelig />;
         }
-        
+
         if (isFeatureEnabled(Feature.visFeilside)) {
             return (
                 <Feilsidemelding
