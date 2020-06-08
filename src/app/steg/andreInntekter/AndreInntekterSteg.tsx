@@ -117,24 +117,23 @@ class AndreInntekterSteg extends React.Component<Props> {
                     margin="xs"
                 >
                     <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} />
-                    {harArbeidsforhold &&
-                        kunEgetUttak.length > 0 && (
-                            <VeilederInfo
-                                messages={[
-                                    {
-                                        type: 'normal',
-                                        contentIntlKey: 'annenInntekt.arbeidsforhold.veileder',
-                                        values: {
-                                            dato: formatDate(
-                                                moment(kunEgetUttak[0].tidsperiode.fom)
-                                                    .subtract(4, 'weeks')
-                                                    .toDate()
-                                            )
-                                        }
+                    {harArbeidsforhold && kunEgetUttak.length > 0 && (
+                        <VeilederInfo
+                            messages={[
+                                {
+                                    type: 'normal',
+                                    contentIntlKey: 'annenInntekt.arbeidsforhold.veileder',
+                                    values: {
+                                        dato: formatDate(
+                                            moment(kunEgetUttak[0].tidsperiode.fom)
+                                                .subtract(4, 'weeks')
+                                                .toDate()
+                                        )
                                     }
-                                ]}
-                            />
-                        )}
+                                }
+                            ]}
+                        />
+                    )}
                 </Block>
 
                 <Block margin="xs">

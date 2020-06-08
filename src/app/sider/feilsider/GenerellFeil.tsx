@@ -16,13 +16,13 @@ interface GenerellFeilProps {
 type Props = GenerellFeilProps;
 const GenerellFeil: React.StatelessComponent<Props> = (props: Props) => {
     const errorMessage =
-        props.history.location.state && props.history.location.state.errorMessage
-            ? props.history.location.state.errorMessage
+        props.history.location.state && (props.history.location.state as any).errorMessage
+            ? (props.history.location.state as any).errorMessage
             : undefined;
 
     const uuid =
-        props.history.location.state && props.history.location.state.uuid
-            ? props.history.location.state.uuid
+        props.history.location.state && (props.history.location.state as any).uuid
+            ? (props.history.location.state as any).uuid
             : undefined;
 
     return (

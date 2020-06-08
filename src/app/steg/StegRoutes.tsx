@@ -22,6 +22,7 @@ import søknadActionCreators from '../redux/actions/søknad/søknadActionCreator
 import { apiActionCreators } from '../redux/actions';
 import { Redirect } from 'react-router';
 import ManglendeVedleggSteg from './manglendeVedlegg/ManglendeVedleggSteg';
+import { Location } from 'history';
 
 export const søknadStegPath = (stegPath?: string): string => `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
 
@@ -56,7 +57,7 @@ class StegRoutes extends React.Component<Props> {
     }
 
     componentWillMount() {
-        this.unlistenLocationChange = this.props.history.listen((location) => {
+        this.unlistenLocationChange = this.props.history.listen((location: Location) => {
             const steg = getStegFromPathname(location.pathname);
             if (steg) {
                 this.requestedSteg = steg;
