@@ -53,10 +53,9 @@ class Foreldrepengesøknad extends React.Component<Props> {
     }
 
     renderRoutes(routes: JSX.Element[]) {
-        debugger;
         return (
             <Switch>
-                {...routes}
+                {routes}
                 <Route path={routeConfig.GENERELL_FEIL_URL} component={GenerellFeil} />
                 <Redirect to={`${routeConfig.APP_ROUTE_PREFIX}velkommen`} />
             </Switch>

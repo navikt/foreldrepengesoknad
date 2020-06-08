@@ -22,6 +22,8 @@ webpackConfig.plugins.push(
     })
 );
 
+webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
+
 module.exports = Object.assign(webpackConfig, {
     devtool: 'inline-source-map'
 });

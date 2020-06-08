@@ -14,7 +14,9 @@ const configureDevServer = (decoratorFragments) => ({
             res.render('index.html', Object.assign(decoratorFragments));
         });
     },
-    watchContentBase: true,
+    watchContentBase: false,
+    liveReload: false,
+    hot: true,
     quiet: false,
     noInfo: false,
     stats: 'minimal',
