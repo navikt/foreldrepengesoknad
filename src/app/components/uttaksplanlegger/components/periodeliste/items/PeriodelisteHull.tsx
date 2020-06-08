@@ -2,7 +2,7 @@ import * as React from 'react';
 import { onToggleItemProp } from '../../../../elementer/toggleList/ToggleList';
 import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { PeriodeHull, isAvslåttPeriode } from '../../../../../types/uttaksplan/periodetyper';
+import { PeriodeHull, isAvslåttPeriode, AvslåttPeriode } from '../../../../../types/uttaksplan/periodetyper';
 import { Tidsperiode, NavnPåForeldre } from 'common/types';
 import { Tidsperioden } from '../../../../../util/uttaksplan/Tidsperioden';
 import Knapperad from 'common/components/knapperad/Knapperad';
@@ -18,7 +18,7 @@ export interface Props {
     itemId: string;
     isExpanded: boolean;
     onToggle: onToggleItemProp;
-    periode: PeriodeHull;
+    periode: PeriodeHull | AvslåttPeriode;
     navn: NavnISøknaden;
     onReplaceHullWithPeriode?: (tidsperiode: Tidsperiode) => void;
     onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
@@ -27,7 +27,7 @@ export interface Props {
 }
 
 const getTittelOgBeskrivelseForHull = (
-    periode: PeriodeHull,
+    periode: PeriodeHull | AvslåttPeriode,
     dager: number,
     navnPåForeldre: NavnPåForeldre,
     intl: IntlShape
@@ -100,9 +100,7 @@ const PeriodelisteHullItem: React.StatelessComponent<Props> = ({
                     {isAvslåttPeriode(periode) ? (
                         <Block>
                             <FormattedMessage
-                                id={`periodeliste.ikkeInnvilgetPeriode.expanded.beskrivelse.${
-                                    periode.avslåttPeriodeType
-                                }`}
+                                id={`periodeliste.ikkeInnvilgetPeriode.expanded.beskrivelse.${periode.avslåttPeriodeType}`}
                             />
                         </Block>
                     ) : (
