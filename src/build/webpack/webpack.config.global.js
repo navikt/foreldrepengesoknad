@@ -8,12 +8,12 @@ const gitRevisionPlugin = new GitRevisionPlugin();
 
 const webpackConfig = {
     entry: {
-        bundle: ['babel-polyfill', `${__dirname}/../../app/bootstrap.tsx`]
+        bundle: ['babel-polyfill', `${__dirname}/../../app/bootstrap.tsx`],
     },
     output: {
         path: path.resolve(__dirname, './../../../dist'),
         filename: 'js/[name].js',
-        publicPath: '/dist'
+        publicPath: '/dist',
     },
     devtool: 'source-map',
     resolve: {
@@ -21,15 +21,15 @@ const webpackConfig = {
         alias: {
             app: path.resolve(__dirname, './../../app'),
             common: path.resolve(__dirname, './../../common'),
-            shared: path.resolve(__dirname, './../../shared')
-        }
+            shared: path.resolve(__dirname, './../../shared'),
+        },
     },
     module: {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
                 loader: require.resolve('tslint-loader'),
-                enforce: 'pre'
+                enforce: 'pre',
             },
             {
                 test: /\.(ts|tsx)$/,
@@ -37,15 +37,15 @@ const webpackConfig = {
                     path.resolve(__dirname, './../../app'),
                     path.resolve(__dirname, './../../common'),
                     path.resolve(__dirname, './../../storage'),
-                    path.resolve(__dirname, './../../shared')
+                    path.resolve(__dirname, './../../shared'),
                 ],
-                loader: require.resolve('awesome-typescript-loader')
+                loader: require.resolve('awesome-typescript-loader'),
             },
 
             {
                 test: /\.js$/,
                 use: [{ loader: 'babel-loader' }],
-                exclude: /node_modules/
+                exclude: /node_modules/,
             },
             {
                 test: /\.less$/,
@@ -54,47 +54,41 @@ const webpackConfig = {
                     use: [
                         {
                             loader: 'css-loader',
-                            options: { minimize: true }
+                            options: { minimize: true },
                         },
                         {
-                            loader: 'postcss-loader'
+                            loader: 'postcss-loader',
                         },
                         {
                             loader: 'less-loader',
-                            options: {
-                                globalVars: {
-                                    coreModulePath: '"~"',
-                                    nodeModulesPath: '"~"'
-                                }
-                            }
-                        }
-                    ]
-                })
+                        },
+                    ],
+                }),
             },
             {
                 test: /\.svg$/,
-                use: 'svg-sprite-loader'
-            }
-        ]
+                use: 'svg-sprite-loader',
+            },
+        ],
     },
     plugins: [
         new CaseSensitivePathsPlugin(),
         new ExtractTextPlugin({
             filename: 'css/[name].css?[hash]-[chunkhash]-[name]',
             disable: false,
-            allChunks: true
+            allChunks: true,
         }),
         new SpriteLoaderPlugin({
-            plainSprite: true
+            plainSprite: true,
         }),
 
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /nb|nn|en/),
         new webpack.DefinePlugin({
             BUILD: {
-                VERSION: JSON.stringify(gitRevisionPlugin.version())
-            }
-        })
-    ]
+                VERSION: JSON.stringify(gitRevisionPlugin.version()),
+            },
+        }),
+    ],
 };
 
 module.exports = webpackConfig;
