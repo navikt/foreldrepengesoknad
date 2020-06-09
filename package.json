@@ -68,7 +68,7 @@
         "fs-extra": "^6.0.1",
         "html-webpack-harddisk-plugin": "^1.0.1",
         "html-webpack-plugin": "^4.3.0",
-        "husky": "^0.14.3",
+        "husky": "^4.2.5",
         "jest": "^25.5.4",
         "jest-css-modules": "^2.1.0",
         "jest-environment-node": "^25.5.0",
