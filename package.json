@@ -116,8 +116,8 @@
         "webpack-dev-server": "^3.11.0"
     },
     "dependencies": {
-        "@formatjs/intl-pluralrules": "^1.5.9",
-        "@formatjs/intl-relativetimeformat": "^4.5.16",
+        "@formatjs/intl-pluralrules": "^2.2.6",
+        "@formatjs/intl-relativetimeformat": "^5.2.6",
         "@navikt/fnrvalidator": "^1.1.2",
         "@navikt/sif-common-formik": "^7.2.1",
         "@navikt/sif-common-question-config": "^0.0.2",
@@ -127,7 +127,7 @@
         "classnames": "^2.2.6",
         "compression": "^1.7.4",
         "date-holidays": "^1.5.3",
-        "detect-browser": "^4.8.0",
+        "detect-browser": "^5.1.0",
         "express": "^4.17.1",
         "formik": "^2.1.4",
         "git-revision-webpack-plugin": "^3.0.6",
