@@ -94,7 +94,7 @@
         "nav-frontend-veileder-style": "^2.0.14",
         "nav-frontend-veilederpanel-style": "^0.0.28",
         "postcss-loader": "^2.1.6",
-        "prettier": "^1.19.1",
+        "prettier": "^2.0.5",
         "pretty-quick": "^1.11.1",
         "react-test-renderer": "^16.13.1",
         "style-loader": "^0.21.0",
