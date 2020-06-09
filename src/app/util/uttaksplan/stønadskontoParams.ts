@@ -12,12 +12,12 @@ export const getStønadskontoParams = (
     grunnlag?: Saksgrunnlag
 ): GetTilgjengeligeStønadskontoerParams => {
     const {
-        søknaden: { familiehendelsesdato, dekningsgrad, antallBarn, erFødsel, erBarnFødt },
+        søknaden: { familiehendelsesdato, dekningsgrad, antallBarn, erFødsel, erBarnFødt, erEndringssøknad },
         mor,
-        farMedmor
+        farMedmor,
     } = søknadsinfo;
 
-    if (grunnlag && skalKunneViseMorsUttaksplanForFarEllerMedmor(grunnlag, søknadsinfo)) {
+    if (grunnlag && skalKunneViseMorsUttaksplanForFarEllerMedmor(grunnlag, søknadsinfo) && erEndringssøknad) {
         const params = {
             antallBarn: grunnlag.antallBarn,
             fødselsdato: undefined,
@@ -28,7 +28,7 @@ export const getStønadskontoParams = (
             morHarAleneomsorg: grunnlag.morErAleneOmOmsorg,
             farHarRett: grunnlag.farMedmorHarRett,
             farHarAleneomsorg: grunnlag.farMedmorErAleneOmOmsorg,
-            startdatoUttak: startdatoPermisjon || grunnlag.familieHendelseDato
+            startdatoUttak: startdatoPermisjon || grunnlag.familieHendelseDato,
         };
 
         if (erFødsel) {
@@ -36,7 +36,7 @@ export const getStønadskontoParams = (
                 return {
                     ...params,
                     termindato: grunnlag.termindato,
-                    fødselsdato: (barn as FødtBarn).fødselsdatoer[0]
+                    fødselsdato: (barn as FødtBarn).fødselsdatoer[0],
                 };
             } else {
                 return { ...params, termindato: (barn as UfødtBarn).termindato };
@@ -50,12 +50,13 @@ export const getStønadskontoParams = (
             fødselsdato: undefined,
             termindato: undefined,
             omsorgsovertakelsesdato: undefined,
-            dekningsgrad: (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT ? Dekningsgrad.ÅTTI_PROSENT : Dekningsgrad.HUNDRE_PROSENT),
+            dekningsgrad:
+                dekningsgrad === Dekningsgrad.ÅTTI_PROSENT ? Dekningsgrad.ÅTTI_PROSENT : Dekningsgrad.HUNDRE_PROSENT,
             morHarRett: mor.harRett,
             morHarAleneomsorg: mor.erAleneOmOmsorg,
             farHarRett: farMedmor.harRett,
             farHarAleneomsorg: farMedmor.erAleneOmOmsorg,
-            startdatoUttak: startdatoPermisjon || familiehendelsesdato
+            startdatoUttak: startdatoPermisjon || familiehendelsesdato,
         };
 
         if (erFødsel) {
@@ -63,7 +64,7 @@ export const getStønadskontoParams = (
                 return {
                     ...params,
                     termindato: (barn as FødtBarn).termindato,
-                    fødselsdato: (barn as FødtBarn).fødselsdatoer[0]
+                    fødselsdato: (barn as FødtBarn).fødselsdatoer[0],
                 };
             } else {
                 return { ...params, termindato: (barn as UfødtBarn).termindato };
