@@ -175,7 +175,7 @@
         "react-intl": "^4.6.9",
         "react-modal": "^3.11.2",
         "react-motion": "^0.5.2",
-        "react-redux": "^5.1.2",
+        "react-redux": "^7.2.0",
         "react-router-dom": "^5.2.0",
         "react-scroll": "^1.7.16",
         "react-transition-group": "^2.9.0",
