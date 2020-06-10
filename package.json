@@ -178,7 +178,7 @@
         "react-redux": "^5.1.2",
         "react-router-dom": "^5.2.0",
         "react-scroll": "^1.7.16",
-        "react-transition-group": "^2.9.0",
+        "react-transition-group": "^4.4.1",
         "redux": "^4.0.5",
         "redux-saga": "^0.16.2",
         "reselect": "^3.0.1",
