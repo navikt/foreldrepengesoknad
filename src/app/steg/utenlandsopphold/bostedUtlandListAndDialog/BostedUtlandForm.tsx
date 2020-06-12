@@ -108,6 +108,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                         : getMessage(intl, 'utenlandsopphold.select.spørsmål.tidligereOpphold')
                                 }
                                 validate={validateRequiredField}
+                                useAlpha3Code={false}
                             />
                         </Block>
                     </Form.Form>
