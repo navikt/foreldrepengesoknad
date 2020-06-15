@@ -16,7 +16,6 @@ spec:
       external:
         - host: {{appres}}
         - host: {{uttak}}
-      rules : []  
 {{/if}}               
   image: {{image}}
   port: 8080
@@ -38,8 +37,9 @@ spec:
       max: 2
       cpuThresholdPercentage: 50
   ingresses:
-{{#each ingresses as |url|}}
+  {{#each ingresses as |url|}}
     - {{url}}
+  {{/each}}
   resources:
     limits:
       cpu: 500m
