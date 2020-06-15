@@ -28,7 +28,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
     kanIkkeOppgis,
     visibility,
     gjelderAdopsjon,
-    søkersFødselsnummer
+    søkersFødselsnummer,
 }) => {
     const intl = useIntl();
 
@@ -82,6 +82,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
                 <AnnenForelderFormComponents.CountrySelect
                     name={AnnenForelderFieldNames.bostedsland}
                     label={getMessage(intl, 'annenForelder.bostedsland', { navn: fornavn })}
+                    useAlpha3Code={false}
                 />
             </Block>
         </div>
