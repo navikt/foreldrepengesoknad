@@ -1,6 +1,6 @@
 {
     "appres": "appres-q1.nav.no",
-    "ingress": "https://foreldrepengesoknad-q.nav.no",
+    "ingresses": ["https://foreldrepengesoknad-q.nav.no"],
     "application_name": "foreldrepengesoknad",
     "env": {
         "APPRES_CMS_URL": "https://www-q1.nav.no/dekoratoren",
