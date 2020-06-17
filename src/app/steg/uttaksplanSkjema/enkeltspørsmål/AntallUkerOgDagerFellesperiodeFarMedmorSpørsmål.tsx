@@ -5,7 +5,7 @@ import { Validator } from 'common/lib/validation/types';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import ValiderbarUkerDagerTeller from 'common/lib/validation/elements/ValiderbarUkerDagerTeller';
-import Tittel from '../../../components/elementer/tittel/Tittel';
+import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 
 interface AntallUkerOgDagerFellesperiodeFarMedmorProps {
     antallUkerFellesperiode: number;
@@ -32,6 +32,7 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: React.StatelessComponen
     antallUkerFellesperiode,
 }) => {
     const intl = useIntl();
+
     return (
         <UttaksplanSkjemaSpørsmål
             visible={visible}
@@ -41,12 +42,11 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: React.StatelessComponen
                 return (
                     <>
                         <Block margin="xxs">
-                            <Tittel
-                                tittel={getMessage(intl, 'spørsmål.farFellesperiode.label')}
-                                info={{
-                                    tekst: getMessage(intl, 'spørsmål.farFellesperiode.infoboksTekst'),
-                                }}
-                            />
+                            <LabelWithInfo
+                                info={getMessage(intl, getMessage(intl, 'spørsmål.farFellesperiode.infoboksTekst'))}
+                            >
+                                {getMessage(intl, 'spørsmål.farFellesperiode.label')}
+                            </LabelWithInfo>
                         </Block>
                         <Block margin="xxs">
                             <ValiderbarUkerDagerTeller
