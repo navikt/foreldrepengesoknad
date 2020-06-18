@@ -15,7 +15,7 @@ spec:
     outbound:
       rules:
         - application: {{uttak}}
-      external
+      external:
         - host: {{appres}}
 {{/if}}               
   image: {{image}}
