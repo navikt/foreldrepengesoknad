@@ -12,7 +12,6 @@
         "docker-stop": "docker stop foreldrepengesoknad",
         "docker-rmi": "npm run docker-kill && docker rmi foreldrepengesoknad",
         "lint": "eslint --quiet \"./src/**/*.{js,ts,tsx}\"",
-        "lint:watch": "eslint --quiet --watch \"./src/**/*.{js,ts,tsx}\"",
         "lint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
         "start-express": "node ./server.js",
         "start-mock-api-server": "node ./mock-api-server.js",
