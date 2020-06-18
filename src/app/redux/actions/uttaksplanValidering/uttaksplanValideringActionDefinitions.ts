@@ -3,7 +3,7 @@ import { UttaksplanRegelTestresultat } from '../../../regler/uttaksplanValiderin
 export enum UttaksplanValideringActionKeys {
     'SET_UTTAKSPLAN_VALIDERING' = 'setUttaksplanValidering',
     'VALIDER_UTTAKSPLAN' = 'validerUttaksplan',
-    'RESET_UTTAKSPLANVALIDERING' = 'resetUttaksplanvalidering'
+    'RESET_UTTAKSPLANVALIDERING' = 'resetUttaksplanvalidering',
 }
 
 export interface ValiderUttaksplanAction {

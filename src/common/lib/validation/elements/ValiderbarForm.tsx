@@ -77,13 +77,13 @@ class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
         return this.state.failedSubmit || this.props.validateBeforeSubmit;
     }
 
-    onChange(e: any, component: ValidatableComponent) {
+    onChange(_e: any, component: ValidatableComponent) {
         if (this.shouldValidate()) {
             this.validateOne(component);
         }
     }
 
-    onBlur(e: any, component: ValidatableComponent) {
+    onBlur(_e: any, component: ValidatableComponent) {
         if (this.shouldValidate()) {
             this.validateOne(component);
         }

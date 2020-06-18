@@ -14,7 +14,7 @@ import {
     Overføringsperiode,
     isInfoPeriode,
     MorsAktivitet,
-    SaksperiodeUtsettelseÅrsakType
+    SaksperiodeUtsettelseÅrsakType,
 } from '../../types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 import { sorterPerioder } from '../uttaksplan/Periodene';
@@ -87,24 +87,24 @@ const korrigerTidsperiodeTilGyldigUttaksdag = (periode: Periode): Periode => {
             ...periode,
             tidsperiode: {
                 fom: Uttaksdagen(fom).neste(),
-                tom: Uttaksdagen(tom).forrige()
-            }
+                tom: Uttaksdagen(tom).forrige(),
+            },
         };
     } else if (!fomOk && tomOk) {
         return {
             ...periode,
             tidsperiode: {
                 fom: Uttaksdagen(fom).neste(),
-                tom
-            }
+                tom,
+            },
         };
     } else {
         return {
             ...periode,
             tidsperiode: {
                 fom,
-                tom: Uttaksdagen(tom).forrige()
-            }
+                tom: Uttaksdagen(tom).forrige(),
+            },
         };
     }
 };
@@ -199,7 +199,7 @@ export const mapUttaksperiodeFromSaksperiode = (
             !saksperiode.flerbarnsdager &&
             moment(saksperiode.tidsperiode.fom).isBefore(moment(grunnlag.familieHendelseDato).add(6, 'weeks'))
                 ? true
-                : undefined
+                : undefined,
     };
 
     return uttaksperiode;
@@ -216,7 +216,7 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag:
         årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelsePeriodeType)!,
         tidsperiode: { ...saksperiode.tidsperiode },
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
-        erArbeidstaker: false
+        erArbeidstaker: false,
     };
 
     if (utsettelsesperiode.årsak === UtsettelseÅrsakType.Arbeid) {
@@ -227,7 +227,7 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag:
             ...utsettelsesperiode,
             arbeidsformer,
             orgnumre: arbeidsformer.includes(Arbeidsform.arbeidstaker) ? [orgnummer] : undefined,
-            erArbeidstaker: orgnummer ? true : false
+            erArbeidstaker: orgnummer ? true : false,
         };
     }
 
@@ -244,7 +244,7 @@ const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, grunnla
         stønadskonto: saksperiode.stønadskontotype,
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
         overskrives: true,
-        visPeriodeIPlan: true
+        visPeriodeIPlan: true,
     };
     return avslåttPeriode;
 };
@@ -264,7 +264,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
             overskrives: true,
             resultatType: saksperiode.periodeResultatType,
-            visPeriodeIPlan: true
+            visPeriodeIPlan: true,
         };
     }
 
@@ -308,7 +308,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             ønskerSamtidigUttak: samtidigUttaksprosent !== undefined,
             samtidigUttakProsent: samtidigUttaksprosent,
             stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
-            visPeriodeIPlan: skalVises
+            visPeriodeIPlan: skalVises,
         };
     }
     return undefined;
@@ -321,7 +321,7 @@ const mapOverføringsperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnla
         konto: saksperiode.stønadskontotype,
         tidsperiode: { ...saksperiode.tidsperiode },
         type: Periodetype.Overføring,
-        årsak: saksperiode.overfoeringAarsak!
+        årsak: saksperiode.overfoeringAarsak!,
     };
 };
 

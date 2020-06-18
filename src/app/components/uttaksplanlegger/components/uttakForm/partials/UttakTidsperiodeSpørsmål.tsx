@@ -57,7 +57,6 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     familiehendelsesdato,
     ugyldigeTidsperioder,
     feil,
-    intl,
 }) => {
     const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
     const erForeldrepengerFørFødsel = isForeldrepengerFørFødselUttaksperiode(periode);

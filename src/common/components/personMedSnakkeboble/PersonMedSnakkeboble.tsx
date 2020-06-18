@@ -24,7 +24,7 @@ const PersonMedSnakkeboble: React.StatelessComponent<Props> = ({
     dialog,
     personRenderer,
     stil,
-    fyltBakgrunn = true
+    fyltBakgrunn = true,
 }) => {
     return (
         <div
@@ -32,7 +32,8 @@ const PersonMedSnakkeboble: React.StatelessComponent<Props> = ({
                 bem.block,
                 fyltBakgrunn ? bem.modifier('fyltBakgrunn') : undefined,
                 stil ? bem.modifier(stil) : undefined
-            )}>
+            )}
+        >
             {dialog && (
                 <Normaltekst tag="div" className={bem.element('snakkeboble')}>
                     <Snakkeboble tittel={dialog.title} tekst={dialog.text} />

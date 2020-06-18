@@ -21,11 +21,13 @@ const OppsummeringAvDokumentasjon: React.FunctionComponent<Props> = (props) => {
     const intl = useIntl();
 
     const renderListOfAttachmentPreviewLinks = () => {
-        return vedlegg.filter((a: Attachment) => !isAttachmentWithError(a)).map(({ url, id, filename }) => (
-            <Lenke href={url!} key={id} target="_blank">
-                {filename}
-            </Lenke>
-        ));
+        return vedlegg
+            .filter((a: Attachment) => !isAttachmentWithError(a))
+            .map(({ url, id, filename }) => (
+                <Lenke href={url!} key={id} target="_blank">
+                    {filename}
+                </Lenke>
+            ));
     };
 
     return (

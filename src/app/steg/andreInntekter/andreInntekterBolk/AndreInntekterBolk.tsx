@@ -39,7 +39,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
         this.onEdit = this.onEdit.bind(this);
 
         this.state = {
-            modalIsOpen: false
+            modalIsOpen: false,
         };
     }
 
@@ -59,7 +59,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
         }
         this.closeModal({
             annenInntektIndex: undefined,
-            annenInntektToEdit: undefined
+            annenInntektToEdit: undefined,
         });
     }
 
@@ -73,21 +73,21 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
     onEdit(annenInntektToEdit: AnnenInntekt, annenInntektIndex: number) {
         this.openModal({
             annenInntektToEdit,
-            annenInntektIndex
+            annenInntektIndex,
         });
     }
 
     openModal(otherState: AndreInntekterBolkStatePartial = {}) {
         this.setState({
             ...otherState,
-            modalIsOpen: true
+            modalIsOpen: true,
         });
     }
 
     closeModal(otherState: AndreInntekterBolkStatePartial = {}) {
         this.setState({
             ...otherState,
-            modalIsOpen: false
+            modalIsOpen: false,
         });
     }
 
@@ -105,7 +105,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
                         harHattAnnenInntekt={harHattAnnenInntektSiste10Mnd}
                         onChange={(value) =>
                             onChangeSøker({
-                                harHattAnnenInntektSiste10Mnd: value
+                                harHattAnnenInntektSiste10Mnd: value,
                             })
                         }
                     />
@@ -144,7 +144,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
                     onCancel={() =>
                         this.closeModal({
                             annenInntektIndex: undefined,
-                            annenInntektToEdit: undefined
+                            annenInntektToEdit: undefined,
                         })
                     }
                     annenInntekt={annenInntektToEdit}

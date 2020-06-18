@@ -13,7 +13,7 @@ describe('cleanupRelasjonTIlBarnFødselSteg', () => {
             terminbekreftelse: [],
             terminbekreftelseDato: new Date(),
             fødselsattest: [fødselsattest as Attachment],
-            fødselsdatoer: [new Date()]
+            fødselsdatoer: [new Date()],
         };
     });
 

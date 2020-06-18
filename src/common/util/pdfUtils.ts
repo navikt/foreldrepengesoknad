@@ -12,7 +12,7 @@ const base64ToArrayBuffer = (base64: string) => {
 export const openPdfPreview = (base64: string) => {
     const browserInfo = detect();
     const pdfBlob = new Blob([base64ToArrayBuffer(base64)], {
-        type: 'application/pdf'
+        type: 'application/pdf',
     });
 
     if (

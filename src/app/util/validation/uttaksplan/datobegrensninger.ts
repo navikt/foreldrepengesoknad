@@ -17,7 +17,5 @@ export const førsteUttakErInnenforKommendeSeksUker = (perioder: Periode[]): boo
 };
 
 export const getFørsteMuligeSøknadsdagGittUttak = (førsteUttak: Date): Date => {
-    return moment(førsteUttak)
-        .subtract(6, 'weeks')
-        .toDate();
+    return moment(førsteUttak).subtract(6, 'weeks').toDate();
 };

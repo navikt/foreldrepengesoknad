@@ -1,12 +1,7 @@
 import { takeEvery, all, put, call, select } from 'redux-saga/effects';
 import søknadActionCreators, { default as søknadActions } from '../actions/søknad/søknadActionCreators';
 import { default as apiActions, getTilgjengeligeStønadskontoer } from '../actions/api/apiActionCreators';
-import {
-    SøknadActionKeys,
-    UpdateSøkerAndStorage,
-    AvbrytSøknad,
-    StartSøknad
-} from '../actions/søknad/søknadActionDefinitions';
+import { SøknadActionKeys, UpdateSøkerAndStorage, StartSøknad } from '../actions/søknad/søknadActionDefinitions';
 import { lagUttaksplan } from '../../util/uttaksplan/forslag/lagUttaksplan';
 import { AppState } from '../reducers';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
@@ -35,7 +30,7 @@ function* updateSøkerAndStorage(action: UpdateSøkerAndStorage) {
     yield put(apiActions.storeAppState());
 }
 
-function* avbrytSøknadSaga(action: AvbrytSøknad) {
+function* avbrytSøknadSaga() {
     const appState: AppState = yield select(stateSelector);
     const newApiState: ApiState = { ...appState.api, stønadskontoer100: [], stønadskontoer80: [] };
     yield put(apiActions.updateApi(newApiState));
@@ -78,8 +73,8 @@ function* startEndringssøknad(action: StartSøknad, sak: Sak) {
                 ekstrainfo: {
                     ...appState.søknad.ekstrainfo,
                     eksisterendeSak,
-                    erEnkelEndringssøknad: true
-                }
+                    erEnkelEndringssøknad: true,
+                },
             })
         );
         const updatedAppState = yield select(stateSelector);
@@ -118,7 +113,7 @@ function* getAnnenPartsSakForValgtBarn() {
     if (sak) {
         yield put(
             søknadActions.updateSøknad({
-                dekningsgrad: sak.grunnlag.dekningsgrad
+                dekningsgrad: sak.grunnlag.dekningsgrad,
             })
         );
         yield put(søknadActions.updateEkstrainfo({ eksisterendeSak: { ...sak, erAnnenPartsSak: true } }));
@@ -129,7 +124,7 @@ function* startFallbackEndringssøknad(action: StartSøknad) {
     yield put(
         søknadActions.updateSøknad({
             erEndringssøknad: true,
-            saksnummer: action.saksnummer
+            saksnummer: action.saksnummer,
         })
     );
     yield put(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
@@ -160,7 +155,7 @@ function* lagUttaksplanForslag() {
         const {
             søknaden: { erDeltUttak, erEndringssøknad, erEnkelEndringssøknad, familiehendelsesdato, situasjon },
             annenForelder,
-            søker
+            søker,
         } = søknadsinfo;
 
         const { førsteUttaksdagEtterSeksUker } = søknadsinfo.uttaksdatoer.etterFødsel;
@@ -176,7 +171,7 @@ function* lagUttaksplanForslag() {
             uttaksplanSkjema,
             erEnkelEndringssøknad,
             førsteUttaksdagEtterSeksUker,
-            søkerHarMidlertidigOmsorg: søker.harMidlertidigOmsorg
+            søkerHarMidlertidigOmsorg: søker.harMidlertidigOmsorg,
         });
 
         if (
@@ -197,6 +192,6 @@ export default function* søknadSaga() {
         takeEvery(SøknadActionKeys.AVBRYT_SØKNAD, avbrytSøknadSaga),
         takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, lagUttaksplanForslag),
         takeEvery(SøknadActionKeys.START_SØKNAD, startSøknad),
-        takeEvery(ApiActionKeys.GET_ANNEN_PART_SIN_SAK, getAnnenPartsSakForValgtBarn)
+        takeEvery(ApiActionKeys.GET_ANNEN_PART_SIN_SAK, getAnnenPartsSakForValgtBarn),
     ]);
 }

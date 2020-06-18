@@ -30,7 +30,7 @@ import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 import {
     uttaksplanInneholderFrilansaktivitet,
-    uttaksplanInneholderSelvstendignæringaktivitet
+    uttaksplanInneholderSelvstendignæringaktivitet,
 } from 'app/util/uttaksplan';
 import { mapMissingAttachmentsOnSøknad } from 'app/util/attachments/missingAttachmentUtil';
 import { findAllAttachments } from '../manglendeVedlegg/manglendeVedleggUtil';
@@ -65,7 +65,7 @@ class AndreInntekterSteg extends React.Component<Props> {
         this.cleanupSteg = this.cleanupSteg.bind(this);
         this.updateSøkerAndSave = this.updateSøkerAndSave.bind(this);
         this.state = {
-            harHattAnnenInntekt: undefined
+            harHattAnnenInntekt: undefined,
         };
         const { arbeidsforhold, førsteUttaksDato, dispatch } = this.props;
 
@@ -94,7 +94,7 @@ class AndreInntekterSteg extends React.Component<Props> {
             planInneholderFrilansaktivitet,
             planInneholderSelvstendignæringaktivitet,
             dispatch,
-            intl
+            intl,
         } = this.props;
         const { harHattAnnenInntektSiste10Mnd } = søker;
         const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
@@ -104,7 +104,7 @@ class AndreInntekterSteg extends React.Component<Props> {
             <Steg {...stegProps} onPreSubmit={this.cleanupSteg}>
                 <Block
                     header={{
-                        title: getMessage(intl, 'annenInntekt.ytelser.label')
+                        title: getMessage(intl, 'annenInntekt.ytelser.label'),
                     }}
                 >
                     <YtelseInfoWrapper ytelser={[]} />
@@ -112,7 +112,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                 <Block
                     header={{
                         title: getMessage(intl, 'annenInntekt.arbeidsforhold.label'),
-                        info: getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst')
+                        info: getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst'),
                     }}
                     margin="xs"
                 >
@@ -125,12 +125,10 @@ class AndreInntekterSteg extends React.Component<Props> {
                                     contentIntlKey: 'annenInntekt.arbeidsforhold.veileder',
                                     values: {
                                         dato: formatDate(
-                                            moment(kunEgetUttak[0].tidsperiode.fom)
-                                                .subtract(4, 'weeks')
-                                                .toDate()
-                                        )
-                                    }
-                                }
+                                            moment(kunEgetUttak[0].tidsperiode.fom).subtract(4, 'weeks').toDate()
+                                        ),
+                                    },
+                                },
                             ]}
                         />
                     )}
@@ -147,7 +145,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                         onChangeFrilansinformasjon={(frilansInformasjon: FrilansInformasjon) =>
                             dispatch(
                                 søknadActions.updateSøker({
-                                    frilansInformasjon
+                                    frilansInformasjon,
                                 })
                             )
                         }
@@ -164,7 +162,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                         onChangeSøker={(søkerProperties: Søker) => dispatch(søknadActions.updateSøker(søkerProperties))}
                         onChange={(updatedNæringer: Næring[]) =>
                             this.updateSøkerAndSave({
-                                selvstendigNæringsdrivendeInformasjon: updatedNæringer
+                                selvstendigNæringsdrivendeInformasjon: updatedNæringer,
                             })
                         }
                         planInneholderSelvstendignæringaktivitet={planInneholderSelvstendignæringaktivitet}
@@ -187,7 +185,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                         onChange={(andreInntekterSiste10Mnd) =>
                             dispatch(
                                 søknadActions.updateSøker({
-                                    andreInntekterSiste10Mnd
+                                    andreInntekterSiste10Mnd,
                                 })
                             )
                         }
@@ -217,7 +215,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFormTag: true,
         history,
         isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo, søknadsinfo),
-        nesteStegID: skalViseManglendeVedleggSteg(attachmentMap) ? StegID.MANGLENDE_VEDLEGG : StegID.OPPSUMMERING
+        nesteStegID: skalViseManglendeVedleggSteg(attachmentMap) ? StegID.MANGLENDE_VEDLEGG : StegID.OPPSUMMERING,
     };
 
     const førsteUttaksDato = Periodene(uttaksplan).getFørsteUttaksdagEksluderInfoperioder();
@@ -229,8 +227,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         uttaksplan,
         planInneholderFrilansaktivitet,
         planInneholderSelvstendignæringaktivitet,
-        førsteUttaksDato
+        førsteUttaksDato,
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(injectIntl(AndreInntekterSteg));
+export default connect<StateProps>(mapStateToProps)(injectIntl(AndreInntekterSteg));

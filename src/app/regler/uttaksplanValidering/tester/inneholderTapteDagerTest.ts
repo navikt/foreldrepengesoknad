@@ -8,7 +8,7 @@ import { isUttaksperiode, Periodetype, StønadskontoType } from '../../../types/
 export function inneholderTapteDagerTest(grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat {
     const {
         perioder,
-        søknadsinfo: { søknaden, søker, mor, annenForelder }
+        søknadsinfo: { søknaden, søker, mor, annenForelder },
     } = grunnlag;
     const infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor = getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor(
         perioder,
@@ -32,7 +32,7 @@ export function inneholderTapteDagerTest(grunnlag: UttaksplanRegelgrunnlag): Reg
     return {
         passerer,
         info: {
-            intlKey: 'uttaksplan.veileder.planenInneholderHull'
-        }
+            intlKey: 'uttaksplan.veileder.planenInneholderHull',
+        },
     };
 }

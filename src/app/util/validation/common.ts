@@ -10,13 +10,13 @@ import {
     dateIsSameOrAfter,
     dateIsSameOrBefore,
     timeintervalsOverlap,
-    dateIs15YearsAnd3MonthsAgoOrLess
+    dateIs15YearsAnd3MonthsAgoOrLess,
 } from '../dates/dates';
 import { maxLengthIsGreaterThanOrEqualToStringLength } from '../stringUtils';
 
 export const hasValueRule = (v: any, failText: string): Validator => ({
     test: () => v !== undefined && v !== '',
-    failText
+    failText,
 });
 
 export const maxLengthIsGreaterThanOrEqualToStringLengthRule = (
@@ -25,42 +25,42 @@ export const maxLengthIsGreaterThanOrEqualToStringLengthRule = (
     failText: string
 ): Validator => ({
     test: () => maxLengthIsGreaterThanOrEqualToStringLength(maxLength, v),
-    failText
+    failText,
 });
 
 export const dateIsNotInFutureRule = (date: DateValue, failText: string): Validator => ({
     test: () => dateIsNotInFuture(date),
-    failText
+    failText,
 });
 
 export const dateIs3YearsAgoOrLaterRule = (date: DateValue, failText: string): Validator => ({
     test: () => dateIs3YearsAgoOrLess(date),
-    failText
+    failText,
 });
 
 export const dateIs15YearsAnd3MonthsAgoOrLaterRule = (date: DateValue, failText: string): Validator => ({
     test: () => dateIs15YearsAnd3MonthsAgoOrLess(date),
-    failText
+    failText,
 });
 
 export const dateIs1YearAheadAtLatestRule = (date: DateValue, failText: string): Validator => ({
     test: () => dateIs1YearAheadOrLess(date),
-    failText
+    failText,
 });
 
 export const dateIs1YearBeforeAtEarliestRule = (date: DateValue, failText: string): Validator => ({
     test: () => dateIs1YearAgoOrLess(date),
-    failText
+    failText,
 });
 
 export const dateIsSameOrBeforeRule = (date: DateValue, otherDate: DateValue, failText: string): Validator => ({
     test: () => dateIsSameOrBefore(date, otherDate),
-    failText
+    failText,
 });
 
 export const dateIsSameOrAfterRule = (date: DateValue, otherDate: DateValue, failText: string): Validator => ({
     test: () => dateIsSameOrAfter(date, otherDate),
-    failText
+    failText,
 });
 
 export const timeintervalsDoNotOverlapRule = (
@@ -69,9 +69,9 @@ export const timeintervalsDoNotOverlapRule = (
     failText: string
 ): Validator => ({
     test: () => !timeintervalsOverlap(timeinterval, otherTimeintervals),
-    failText
+    failText,
 });
 
 export const notInFutureAvgrensning: Avgrensninger = {
-    maksDato: today.toDate()
+    maksDato: today.toDate(),
 };

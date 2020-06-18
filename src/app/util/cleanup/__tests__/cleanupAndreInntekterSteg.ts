@@ -14,7 +14,7 @@ const søkerPartial: SøkerPartial = {
     harHattAnnenInntektSiste10Mnd: false,
     selvstendigNæringsdrivendeInformasjon: [næring1 as Næring],
     frilansInformasjon: frilans as FrilansInformasjon,
-    andreInntekterSiste10Mnd: [annenInntekt as AnnenInntekt]
+    andreInntekterSiste10Mnd: [annenInntekt as AnnenInntekt],
 };
 
 jest.mock('../cleanupNæring', () => () => 1);

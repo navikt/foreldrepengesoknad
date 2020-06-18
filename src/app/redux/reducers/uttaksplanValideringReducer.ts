@@ -1,6 +1,6 @@
 import {
     UttaksplanValideringActionTypes,
-    UttaksplanValideringActionKeys
+    UttaksplanValideringActionKeys,
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { UttaksplanRegelTestresultat } from '../../regler/uttaksplanValidering/types';
 
@@ -15,9 +15,9 @@ const getDefaultState = (): UttaksplanValideringState => {
             avvik: [],
             resultat: [],
             avvikPerPeriode: {},
-            harFeil: false
+            harFeil: false,
         },
-        erGyldig: true
+        erGyldig: true,
     };
 };
 
@@ -31,7 +31,7 @@ const uttaksplanValideringReducer = (
             return {
                 ...state,
                 erGyldig: resultat.harFeil === false,
-                resultat: action.resultat
+                resultat: action.resultat,
             };
         case UttaksplanValideringActionKeys.RESET_UTTAKSPLANVALIDERING:
             return getDefaultState();

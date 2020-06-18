@@ -24,7 +24,7 @@ export const stønadskontoSortOrder = {
     [StønadskontoType.Fellesperiode]: 4,
     [StønadskontoType.Foreldrepenger]: 5,
     [StønadskontoType.Flerbarnsdager]: 6,
-    [StønadskontoType.AktivitetsfriKvote]: 7
+    [StønadskontoType.AktivitetsfriKvote]: 7,
 };
 
 export const getAntallUker = (kontoer: TilgjengeligStønadskonto[]): number => {
@@ -63,11 +63,14 @@ export const getResterendeStønadskontoer = (
 
     return tilgjengeligStønadskonto.map((k) => ({
         ...k,
-        dager: k.dager - getBrukteUttaksdager(brukteDager.alle, k.konto)
+        dager: k.dager - getBrukteUttaksdager(brukteDager.alle, k.konto),
     }));
 };
 
-const getBrukteUttaksdager = (tilgjengeligeStønadskontoer: Stønadskontouttak[], kontoType: StønadskontoType): number => {
+const getBrukteUttaksdager = (
+    tilgjengeligeStønadskontoer: Stønadskontouttak[],
+    kontoType: StønadskontoType
+): number => {
     const tilgjenligStønadskonto = tilgjengeligeStønadskontoer.find((t) => t.konto === kontoType);
     return tilgjenligStønadskonto ? tilgjenligStønadskonto.dager : 0;
 };

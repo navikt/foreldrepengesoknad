@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     default as ValiderbartSkjemaelement,
-    ValiderbartSkjemaelementProps
+    ValiderbartSkjemaelementProps,
 } from 'common/lib/validation/elements/ValiderbartSkjemaelement';
 import { Props as NumberStepperProps } from 'common/components/skjema/elements/number-stepper/NumberStepper';
 import UkerDagerTeller from 'common/components/skjema/elements/uker-dager-teller/UkerDagerTeller';
@@ -19,7 +19,7 @@ const ValiderbarUkerDagerTeller: React.StatelessComponent<Props> = (props) => {
     return (
         <ValiderbartSkjemaelement
             {...props}
-            render={(onChange, onBlur, feil) => (
+            render={(_onChange, _onBlur, feil) => (
                 <UkerDagerTeller
                     ukeStepper={{ ...stepperProps[0] }}
                     dagStepper={{ ...stepperProps[1] }}

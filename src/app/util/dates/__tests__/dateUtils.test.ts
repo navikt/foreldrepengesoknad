@@ -10,7 +10,7 @@ import {
     tomorrow,
     date15YearsAnd3MonthsAgo,
     dateMoreThan15YearsAnd3MonthsAgo,
-    yesterday
+    yesterday,
 } from '../../validation/values';
 import {
     dateIs1YearAheadOrLess,
@@ -23,63 +23,63 @@ import {
     dateIs15YearsAnd3MonthsAgoOrLess,
     dateIsTodayOrInFuture,
     dateIsInThePast,
-    getEndringstidspunkt
+    getEndringstidspunkt,
 } from '../dates';
 import { Periode, Uttaksperiode, Periodetype } from 'app/types/uttaksplan/periodetyper';
 import { guid } from 'nav-frontend-js-utils';
 
-const opprinneligPlan: Array<Partial<Periode>> = [
+const opprinneligPlan: Partial<Periode>[] = [
     {
         id: '2203724966-2284-5396-14729-8277157806438',
         tidsperiode: {
             fom: new Date('2019-09-10T00:00:00.000Z'),
-            tom: new Date('2019-09-30T00:00:00.000Z')
+            tom: new Date('2019-09-30T00:00:00.000Z'),
         },
-        type: Periodetype.Uttak
+        type: Periodetype.Uttak,
     },
     {
         id: '96519825-01917-7239-1861-16148140669135',
         tidsperiode: {
             fom: new Date('2019-10-01T00:00:00.000Z'),
-            tom: new Date('2020-01-13T00:00:00.000Z')
+            tom: new Date('2020-01-13T00:00:00.000Z'),
         },
-        type: Periodetype.Uttak
+        type: Periodetype.Uttak,
     },
     {
         id: '3105926427-6496-7446-7246-02332065872239',
         tidsperiode: {
             fom: new Date('2020-01-14T00:00:00.000Z'),
-            tom: new Date('2020-05-04T00:00:00.000Z')
+            tom: new Date('2020-05-04T00:00:00.000Z'),
         },
-        type: Periodetype.Uttak
-    }
+        type: Periodetype.Uttak,
+    },
 ];
 
-const nyPlan: Array<Partial<Periode>> = [
+const nyPlan: Partial<Periode>[] = [
     {
         id: '2203724966-2284-5396-14729-8277157806438',
         tidsperiode: {
             fom: new Date('2019-09-10T00:00:00.000Z'),
-            tom: new Date('2019-09-30T00:00:00.000Z')
+            tom: new Date('2019-09-30T00:00:00.000Z'),
         },
-        type: Periodetype.Uttak
+        type: Periodetype.Uttak,
     },
     {
         id: '96519825-01917-7239-1861-16148140669135',
         tidsperiode: {
             fom: new Date('2019-10-01T00:00:00.000Z'),
-            tom: new Date('2020-01-13T00:00:00.000Z')
+            tom: new Date('2020-01-13T00:00:00.000Z'),
         },
-        type: Periodetype.Uttak
+        type: Periodetype.Uttak,
     },
     {
         id: '3105926427-6496-7446-7246-02332065872239',
         tidsperiode: {
             fom: new Date('2020-01-14T00:00:00.000Z'),
-            tom: new Date('2020-05-04T00:00:00.000Z')
+            tom: new Date('2020-05-04T00:00:00.000Z'),
         },
-        type: Periodetype.Uttak
-    }
+        type: Periodetype.Uttak,
+    },
 ];
 
 describe('dateUtils', () => {
@@ -136,7 +136,7 @@ describe('dateUtils', () => {
         const fixedIntervals = [{ fom: today.toDate(), tom: date5DaysAhead.toDate() }];
         const overlap1 = {
             fom: date1YearAgo.toDate(),
-            tom: tomorrow.toDate()
+            tom: tomorrow.toDate(),
         };
         const overlap2 = { fom: today.toDate(), tom: date5DaysAhead.toDate() };
         const overlap3 = { fom: date5DaysAhead.toDate(), tom: date1YearAhead.toDate() };
@@ -166,11 +166,11 @@ describe('dateUtils', () => {
                 id: guid(),
                 tidsperiode: {
                     fom: new Date('2019-05-05'),
-                    tom: new Date('2019-05-08')
+                    tom: new Date('2019-05-08'),
                 },
                 type: Periodetype.Uttak,
                 gradert: true,
-                stillingsprosent: '50'
+                stillingsprosent: '50',
             };
             const endretPlan = [...nyPlan, gradertPeriode];
 

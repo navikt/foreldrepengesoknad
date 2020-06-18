@@ -8,6 +8,6 @@ export const getMod11 = (strValue: string): number => {
             checkNbr = 2;
         }
     }
-    const result = 11 - mod % 11;
+    const result = 11 - (mod % 11);
     return result === 11 ? 0 : result;
 };

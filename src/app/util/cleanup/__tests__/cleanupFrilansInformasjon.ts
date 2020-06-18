@@ -3,7 +3,7 @@ import { default as Søker, SøkerPartial } from '../../../types/søknad/Søker'
 import {
     FrilansInformasjon,
     FrilansInformasjonPartial,
-    FrilansOppdrag
+    FrilansOppdrag,
 } from '../../../types/søknad/FrilansInformasjon';
 import visibility from '../../../steg/andreInntekter/frilanserBolk/visibility';
 
@@ -11,8 +11,8 @@ const oppdrag: FrilansOppdrag = {
     navnPåArbeidsgiver: 'asdf',
     pågående: true,
     tidsperiode: {
-        fom: new Date()
-    }
+        fom: new Date(),
+    },
 };
 
 const frilansInformasjon: FrilansInformasjonPartial = {
@@ -20,11 +20,11 @@ const frilansInformasjon: FrilansInformasjonPartial = {
     harJobbetForNærVennEllerFamilieSiste10Mnd: true,
     driverFosterhjem: true,
     oppstart: new Date(),
-    jobberFremdelesSomFrilans: true
+    jobberFremdelesSomFrilans: true,
 };
 
 const søker: SøkerPartial = {
-    frilansInformasjon: frilansInformasjon as FrilansInformasjon
+    frilansInformasjon: frilansInformasjon as FrilansInformasjon,
 };
 
 describe('cleanupFrilansInformasjon', () => {

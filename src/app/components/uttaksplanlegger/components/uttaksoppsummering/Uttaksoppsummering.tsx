@@ -17,7 +17,7 @@ const Uttaksoppsummering: React.StatelessComponent<Props> = ({
     uttaksstatus,
     navnPåForeldre,
     erDeltUttak,
-    erEndringssøknad
+    erEndringssøknad,
 }) => (
     <section>
         <Undertittel tag="h2" className="blokk-xs">

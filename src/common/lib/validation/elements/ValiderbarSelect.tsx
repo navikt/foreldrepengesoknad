@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select, SelectProps } from 'nav-frontend-skjema';
 import ValiderbartSkjemaelement, {
-    ValiderbartSkjemaelementProps
+    ValiderbartSkjemaelementProps,
 } from 'common/lib/validation/elements/ValiderbartSkjemaelement';
 
 export type ValiderbarSelectProps = ValiderbartSkjemaelementProps & SelectProps;

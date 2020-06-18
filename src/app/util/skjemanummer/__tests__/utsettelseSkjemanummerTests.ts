@@ -3,7 +3,7 @@ import {
     MorsAktivitet,
     Periodetype,
     Utsettelsesperiode,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
 } from '../../../types/uttaksplan/periodetyper';
 import { Skjemanummer } from '../../../types/søknad/Søknad';
 import { Forelder } from 'common/types';
@@ -17,8 +17,8 @@ const periodeMock: Utsettelsesperiode = {
     erArbeidstaker: false,
     tidsperiode: {
         fom: DateValues.today.toDate(),
-        tom: DateValues.today.toDate()
-    }
+        tom: DateValues.today.toDate(),
+    },
 };
 
 describe('getUtsettelseSkjemanummer', () => {

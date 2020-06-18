@@ -21,7 +21,7 @@ const UlønnetPermisjonInfo = () => {
                         <a
                             href="https://www.nav.no/no/Person/Arbeid/Sykmeldt%2C+arbeidsavklaringspenger+og+yrkesskade/Sykepenger/Sykepenger+til+sarskilte+grupper#chapter-5"
                             className="lenke"
-                            rel="noopener"
+                            rel="noreferrer"
                             target="_blank"
                         >
                             {msg}

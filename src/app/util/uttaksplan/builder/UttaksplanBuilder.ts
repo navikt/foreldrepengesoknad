@@ -14,7 +14,7 @@ import {
     isUttaksperiode,
     TilgjengeligStønadskonto,
     isOppholdsperiode,
-    isUtsettelsesperiode
+    isUtsettelsesperiode,
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -127,7 +127,7 @@ class UttaksplanAutoBuilder {
                 fastePerioder,
                 this.erEndringsøknadUtenEkisterendeSak,
                 this.harMidlertidigOmsorg
-            )
+            ),
         ];
 
         this.finnOgSettInnHull();
@@ -153,7 +153,7 @@ class UttaksplanAutoBuilder {
         this.perioder = [
             ...perioderFørFamDato.filter((p) => isOverskrivbarPeriode(p) === false),
             ...this.perioder,
-            ...perioderMedUgyldigTidsperiode
+            ...perioderMedUgyldigTidsperiode,
         ];
 
         return this;
@@ -177,7 +177,7 @@ class UttaksplanAutoBuilder {
             this.perioder = settInnPeriode(
                 this.perioder,
                 {
-                    ...periode
+                    ...periode,
                 },
                 this.erEndringsøknadUtenEkisterendeSak,
                 this.harMidlertidigOmsorg
@@ -243,8 +243,8 @@ class UttaksplanAutoBuilder {
                             : op.tidsperiode.fom,
                         tom: moment(p.tidsperiode.tom).isSameOrBefore(moment(op.tidsperiode.tom))
                             ? p.tidsperiode.tom
-                            : op.tidsperiode.tom
-                    }
+                            : op.tidsperiode.tom,
+                    },
                 };
 
                 this.perioder.push(nyPeriode);
@@ -287,8 +287,8 @@ class UttaksplanAutoBuilder {
                             : op.tidsperiode.fom,
                         tom: moment(p.tidsperiode.tom).isSameOrBefore(moment(op.tidsperiode.tom))
                             ? p.tidsperiode.tom
-                            : op.tidsperiode.tom
-                    }
+                            : op.tidsperiode.tom,
+                    },
                 });
                 return;
             });
@@ -316,8 +316,8 @@ class UttaksplanAutoBuilder {
                             fom: hullErFørstePeriodeIPlanen
                                 ? periode.tidsperiode.fom
                                 : moment.max([moment(hull.tidsperiode.fom), moment(periode.tidsperiode.fom)]).toDate(),
-                            tom: moment.min([moment(hull.tidsperiode.tom), moment(periode.tidsperiode.tom)]).toDate()
-                        }
+                            tom: moment.min([moment(hull.tidsperiode.tom), moment(periode.tidsperiode.tom)]).toDate(),
+                        },
                     };
 
                     if (isUttakAnnenPart(op) && op.ønskerSamtidigUttak) {
@@ -355,8 +355,8 @@ class UttaksplanAutoBuilder {
                             ...p,
                             tidsperiode: {
                                 fom: p.tidsperiode.fom,
-                                tom: Uttaksdagen(førstePeriode.tidsperiode.fom).forrige()
-                            }
+                                tom: Uttaksdagen(førstePeriode.tidsperiode.fom).forrige(),
+                            },
                         };
                     }
                     return clonePeriode(p);
@@ -377,7 +377,7 @@ class UttaksplanAutoBuilder {
             this.perioder = [
                 ...opprinneligePerioderFørFørstePeriode,
                 ...this.perioder,
-                ...opprinneligePerioderEtterSistePeriode
+                ...opprinneligePerioderEtterSistePeriode,
             ];
         }
         return this;
@@ -389,7 +389,7 @@ class UttaksplanAutoBuilder {
             this.perioder.push({
                 id: guid(),
                 type: Periodetype.Hull,
-                tidsperiode: { ...periode.tidsperiode }
+                tidsperiode: { ...periode.tidsperiode },
             });
         }
         return this;
@@ -508,8 +508,8 @@ function fjernOverskrivbarePerioderIPeriodetidsrom(perioder: Periode[], periode:
                 ...overskrivbarPeriode,
                 tidsperiode: {
                     fom: overskrivbarPeriode.tidsperiode.fom,
-                    tom: Uttaksdagen(periode.tidsperiode.fom).forrige()
-                }
+                    tom: Uttaksdagen(periode.tidsperiode.fom).forrige(),
+                },
             });
             if (moment(overskrivbarPeriode.tidsperiode.tom).isAfter(periode.tidsperiode.tom, 'day')) {
                 nyePerioder.push({
@@ -517,8 +517,8 @@ function fjernOverskrivbarePerioderIPeriodetidsrom(perioder: Periode[], periode:
                     id: guid(),
                     tidsperiode: {
                         fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
-                        tom: overskrivbarPeriode.tidsperiode.tom
-                    }
+                        tom: overskrivbarPeriode.tidsperiode.tom,
+                    },
                 });
             }
         } else {
@@ -526,8 +526,8 @@ function fjernOverskrivbarePerioderIPeriodetidsrom(perioder: Periode[], periode:
                 ...overskrivbarPeriode,
                 tidsperiode: {
                     fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
-                    tom: overskrivbarPeriode.tidsperiode.tom
-                }
+                    tom: overskrivbarPeriode.tidsperiode.tom,
+                },
             });
         }
     });
@@ -560,7 +560,7 @@ function settInnPerioderInnITidsrom(
     const placeholderPeriode: PeriodeHull = {
         id: guid(),
         type: Periodetype.Hull,
-        tidsperiode
+        tidsperiode,
     };
     const nyePerioder = settInnPeriode(
         perioder,
@@ -591,9 +591,7 @@ function settInnPeriode(
     }
 
     if (!periodeSomMåSplittes) {
-        const foregåendePeriode = Periodene(perioder)
-            .finnAlleForegåendePerioder(nyPeriode)
-            .pop();
+        const foregåendePeriode = Periodene(perioder).finnAlleForegåendePerioder(nyPeriode).pop();
         if (foregåendePeriode) {
             return leggTilPeriodeEtterPeriode(perioder, foregåendePeriode, nyPeriode);
         }
@@ -629,7 +627,7 @@ export function finnHullIPerioder(
         const fom = Uttaksdagen(startDato).denneEllerNeste();
         const uttaksdagerMellomStartOgFørstePeriode = Tidsperioden({
             fom,
-            tom: Uttaksdagen(perioder[0].tidsperiode.fom).forrige()
+            tom: Uttaksdagen(perioder[0].tidsperiode.fom).forrige(),
         }).getAntallUttaksdager();
 
         if (uttaksdagerMellomStartOgFørstePeriode > 0) {
@@ -644,7 +642,7 @@ export function finnHullIPerioder(
 
         const tidsperiodeMellomPerioder: Tidsperiode = {
             fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
-            tom: Uttaksdagen(nestePeriode.tidsperiode.fom).forrige()
+            tom: Uttaksdagen(nestePeriode.tidsperiode.fom).forrige(),
         };
         if (moment(tidsperiodeMellomPerioder.tom).isBefore(tidsperiodeMellomPerioder.fom, 'day')) {
             return;
@@ -672,11 +670,11 @@ function resetTidsperioder(perioder: Periode[]): Periode[] {
             tidsperiode: getTidsperiode(
                 Uttaksdagen(forrigePeriode.tidsperiode.tom).neste(),
                 Tidsperioden(periode.tidsperiode).getAntallUttaksdager()
-            )
+            ),
         };
         return {
             ...periode,
-            tidsperiode: { ...forrigePeriode.tidsperiode }
+            tidsperiode: { ...forrigePeriode.tidsperiode },
         };
     });
 
@@ -743,7 +741,7 @@ function leggTilPeriodeIPeriode(perioder: Periode[], periode: Periode, nyPeriode
     const opprinneligVarighet = Perioden(periode).getAntallUttaksdager();
     const nyVarighet = Tidsperioden({
         fom: splittetPeriode[0].tidsperiode.fom,
-        tom: splittetPeriode[2].tidsperiode.tom // Ta høyde for at split inneholdt opphold
+        tom: splittetPeriode[2].tidsperiode.tom, // Ta høyde for at split inneholdt opphold
     }).getAntallUttaksdager();
     const uttaksdager = nyVarighet - opprinneligVarighet;
     return [...perioderFør, ...splittetPeriode, ...Periodene(perioderEtter).forskyvPerioder(uttaksdager)];
@@ -753,22 +751,22 @@ function splittPeriodeMedPeriode(periode: Periode, nyPeriode: Periode): Periode[
     const dagerIPeriode = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
     const dagerForsteDel = Tidsperioden({
         fom: periode.tidsperiode.fom,
-        tom: Uttaksdagen(nyPeriode.tidsperiode.fom).forrige()
+        tom: Uttaksdagen(nyPeriode.tidsperiode.fom).forrige(),
     }).getAntallUttaksdager();
     let dagerSisteDel = dagerIPeriode - dagerForsteDel;
     const forste: Periode = {
         ...periode,
         tidsperiode: {
             fom: periode.tidsperiode.fom,
-            tom: Uttaksdagen(nyPeriode.tidsperiode.fom).forrige()
-        }
+            tom: Uttaksdagen(nyPeriode.tidsperiode.fom).forrige(),
+        },
     };
     const midt: Periode = {
         ...nyPeriode,
         tidsperiode: {
             fom: Uttaksdagen(nyPeriode.tidsperiode.fom).denneEllerNeste(),
-            tom: Uttaksdagen(nyPeriode.tidsperiode.tom).denneEllerNeste()
-        }
+            tom: Uttaksdagen(nyPeriode.tidsperiode.tom).denneEllerNeste(),
+        },
     };
     const startSisteDel: Date = Uttaksdagen(midt.tidsperiode.tom).neste();
 
@@ -779,7 +777,7 @@ function splittPeriodeMedPeriode(periode: Periode, nyPeriode: Periode): Periode[
     const siste: Periode = {
         ...periode,
         id: guid(),
-        tidsperiode: getTidsperiode(startSisteDel, dagerSisteDel)
+        tidsperiode: getTidsperiode(startSisteDel, dagerSisteDel),
     };
     return [forste, midt, siste];
 }
@@ -801,7 +799,7 @@ function finnHullVedEndretTidsperiode(oldPeriode: Periode, periode: Periode): Pe
         periodehull.push(
             getNyttPeriodehull({
                 fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
-                tom: oldPeriode.tidsperiode.tom
+                tom: oldPeriode.tidsperiode.tom,
             })
         );
     }
@@ -849,7 +847,7 @@ const getNyttPeriodehull = (tidsperiode: Tidsperiode, årsak?: PeriodeHullÅrsak
     id: guid(),
     type: Periodetype.Hull,
     tidsperiode,
-    årsak
+    årsak,
 });
 
 export function splittPeriodeMedHelligdager(periode: Periode): Periode[] {
@@ -857,7 +855,7 @@ export function splittPeriodeMedHelligdager(periode: Periode): Periode[] {
     const { tidsperiode } = periode;
     const friperioder = getFriperioderITidsperiode(tidsperiode);
     let fom = periode.tidsperiode.fom;
-    friperioder.forEach((friperiode, idx) => {
+    friperioder.forEach((friperiode) => {
         if (moment(friperiode.fom).isSame(fom, 'day')) {
             nyePerioder.push(getNyttPeriodehull(friperiode, PeriodeHullÅrsak.Fridag));
             fom = Uttaksdagen(friperiode.tom).neste();
@@ -867,8 +865,8 @@ export function splittPeriodeMedHelligdager(periode: Periode): Periode[] {
                 id: guid(),
                 tidsperiode: {
                     fom,
-                    tom: Uttaksdagen(friperiode.fom).forrige()
-                }
+                    tom: Uttaksdagen(friperiode.fom).forrige(),
+                },
             });
             nyePerioder.push(getNyttPeriodehull(friperiode, PeriodeHullÅrsak.Fridag));
             fom = Uttaksdagen(friperiode.tom).neste();
@@ -880,8 +878,8 @@ export function splittPeriodeMedHelligdager(periode: Periode): Periode[] {
             id: guid(),
             tidsperiode: {
                 fom,
-                tom: tidsperiode.tom
-            }
+                tom: tidsperiode.tom,
+            },
         });
     }
     return nyePerioder;
@@ -900,18 +898,14 @@ export function getFriperioderITidsperiode(tidsperiode: Tidsperiode): Tidsperiod
         if (idx === antallFridager - 1 && fom) {
             friperioder.push({
                 fom,
-                tom: moment(fridagerIPerioden[idx].date).toDate()
+                tom: moment(fridagerIPerioden[idx].date).toDate(),
             });
         } else {
             const nextDate = moment(fridagerIPerioden[idx + 1].date).toDate();
-            if (
-                moment(fom)
-                    .add(24, 'hours')
-                    .isSame(nextDate, 'day') === false
-            ) {
+            if (moment(fom).add(24, 'hours').isSame(nextDate, 'day') === false) {
                 friperioder.push({
                     fom,
-                    tom: moment(fridag.date).toDate()
+                    tom: moment(fridag.date).toDate(),
                 });
                 fom = nextDate;
             }

@@ -5,7 +5,7 @@ const aktivitetskravMorUtil = {
         return !søkerErFarEllerMedmor || (annenForelder.harRett === false && annenForelder.erUfør === true)
             ? false
             : annenForelder.harRett === false;
-    }
+    },
 };
 
 export default aktivitetskravMorUtil;

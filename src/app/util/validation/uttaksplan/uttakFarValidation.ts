@@ -5,7 +5,7 @@ import {
     Periodetype,
     Uttaksperiode,
     MorsAktivitet,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../uttaksplan/Periodene';
 import { isValidTidsperiode, Tidsperioden } from '../../uttaksplan/Tidsperioden';
@@ -40,7 +40,7 @@ export const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigO
     },
     erFlerbarnsukerOgUttakAvFlerbarnsdagerEllerFedrekvote: (antallBarn: number): boolean => {
         return antallBarn > 1 && periode.ønskerFlerbarnsdager === true;
-    }
+    },
 });
 
 const erFarsUttakFørsteSeksUkerGyldig = (

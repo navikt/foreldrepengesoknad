@@ -10,5 +10,5 @@ export enum AttachmentType {
     ALENEOMSORG = 'dokumentasjonAvAleneomsorg',
     SEN_ENDRING = 'senEndring',
     HV_ØVELSE = 'hvØvelse',
-    NAV_TILTAK = 'navTiltak'
+    NAV_TILTAK = 'navTiltak',
 }

@@ -12,7 +12,8 @@ const CheckboxIkon = (props: CheckboxIkonProps) => {
             viewBox="0 0 24 24"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink">
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+        >
             <defs>
                 <circle id="path-1" cx="12" cy="12" r="12" />
             </defs>
@@ -38,7 +39,8 @@ const CheckboxIkon = (props: CheckboxIkonProps) => {
             viewBox="0 0 24 24"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink">
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+        >
             <defs>
                 <circle id="path-1" cx="12" cy="12" r="12" />
             </defs>

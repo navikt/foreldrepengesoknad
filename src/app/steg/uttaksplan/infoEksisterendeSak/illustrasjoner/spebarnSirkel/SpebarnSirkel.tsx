@@ -5,11 +5,7 @@ import SpebarnIkon from 'common/components/ikoner/SpebarnIkon';
 
 import './spebarnSirkel.less';
 
-interface Props {
-    diameter?: string;
-}
-
-const SpebarnSirkel: React.StatelessComponent<Props> = (props) => {
+const SpebarnSirkel: React.StatelessComponent = () => {
     const bem = BEMHelper('spebarnSirkel');
     return (
         <div className={bem.block}>

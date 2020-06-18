@@ -9,7 +9,7 @@ const Environment = () => {
         [Feature.visFeilside]: window.appSettings[Feature.visFeilside],
         [Feature.visAlertstripe]: window.appSettings[Feature.visAlertstripe],
         [Feature.logging]: window.appSettings[Feature.logging],
-        [Feature.visPerioderSomSendesInn]: window.appSettings[Feature.visPerioderSomSendesInn]
+        [Feature.visPerioderSomSendesInn]: window.appSettings[Feature.visPerioderSomSendesInn],
     };
 };
 

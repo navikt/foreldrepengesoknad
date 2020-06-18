@@ -28,7 +28,7 @@ import { isInfoPeriode } from 'app/types/uttaksplan/periodetyper';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import {
     getTerminbekreftelsedatoAvgrensninger,
-    getTerminbekreftelseDatoRegler
+    getTerminbekreftelseDatoRegler,
 } from 'app/util/validation/terminbekreftelsedato';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import søknadActions from 'app/redux/actions/søknad/søknadActionCreators';
@@ -70,7 +70,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                     {getMessage(intl, 'manglendeVedlegg.periode.tidsperiode', {
                         type: periode.type,
                         fom: formatDate(periode.tidsperiode.fom),
-                        tom: formatDate(periode.tidsperiode.tom)
+                        tom: formatDate(periode.tidsperiode.tom),
                     })}
                 </Normaltekst>
             </Block>
@@ -84,7 +84,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
             attachmentMap,
             erLikEllerMindreEnnFireUkerTilUttaketStarter,
             intl,
-            dispatch
+            dispatch,
         } = this.props;
 
         return (
@@ -95,8 +95,8 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                             type: 'normal',
                             contentIntlKey: erLikEllerMindreEnnFireUkerTilUttaketStarter
                                 ? 'manglendeVedlegg.veileder'
-                                : 'uttaksplan.validering.advarsel.forTidligUtenDokumentasjon'
-                        }
+                                : 'uttaksplan.validering.advarsel.forTidligUtenDokumentasjon',
+                        },
                     ]}
                 />
 
@@ -121,7 +121,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                             `manglendeVedlegg.title.${a.type}`,
                                             a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
                                                 ? {
-                                                      navn: søknad.annenForelder.fornavn
+                                                      navn: søknad.annenForelder.fornavn,
                                                   }
                                                 : undefined
                                         ),
@@ -130,10 +130,10 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                             `manglendeVedlegg.info.${a.type}`,
                                             a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
                                                 ? {
-                                                      navn: søknad.annenForelder.fornavn
+                                                      navn: søknad.annenForelder.fornavn,
                                                   }
                                                 : undefined
-                                        )
+                                        ),
                                     }}
                                 >
                                     {isAttachmentForPeriode(a.type) && this.renderPeriodeinfo(key)}
@@ -159,7 +159,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                         onChange={(terminbekreftelseDato: Date) => {
                                             dispatch(
                                                 søknadActions.updateBarn({
-                                                    terminbekreftelseDato
+                                                    terminbekreftelseDato,
                                                 })
                                             );
                                         }}
@@ -205,14 +205,14 @@ const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
         renderFortsettKnapp: erLikEllerMindreEnnFireUkerTilUttaketStarter || missingAttachments.length === 0,
         history: props.history,
         renderFormTag: true,
-        isAvailable: isAvailable(StegID.MANGLENDE_VEDLEGG, søknad, props.søkerinfo, selectSøknadsinfo(state))
+        isAvailable: isAvailable(StegID.MANGLENDE_VEDLEGG, søknad, props.søkerinfo, selectSøknadsinfo(state)),
     };
 
     return {
         søknad,
         stegProps,
         attachmentMap,
-        erLikEllerMindreEnnFireUkerTilUttaketStarter
+        erLikEllerMindreEnnFireUkerTilUttaketStarter,
     };
 };
 

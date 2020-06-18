@@ -6,9 +6,7 @@ import uttaksConstants from 'app/constants';
 function sisteMuligePermisjonsdag(familiehendelsedato: Date): Date {
     const startDato = Uttaksdagen(familiehendelsedato).denneEllerNeste();
     return Uttaksdagen(
-        moment(startDato)
-            .add(uttaksConstants.MAKS_PERMISJONSLENGDE_I_ÅR, 'years')
-            .toDate()
+        moment(startDato).add(uttaksConstants.MAKS_PERMISJONSLENGDE_I_ÅR, 'years').toDate()
     ).denneEllerNeste();
 }
 
@@ -18,7 +16,7 @@ const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): Avgren
     return {
         minDato,
         maksDato,
-        helgedagerIkkeTillatt: true
+        helgedagerIkkeTillatt: true,
     };
 };
 
@@ -28,7 +26,7 @@ const startdatoFørTermin = (familiehendelsesdato: Date): Avgrensninger => {
     return {
         minDato,
         maksDato,
-        helgedagerIkkeTillatt: true
+        helgedagerIkkeTillatt: true,
     };
 };
 
@@ -38,7 +36,7 @@ const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato:
     return {
         minDato,
         maksDato,
-        helgedagerIkkeTillatt: true
+        helgedagerIkkeTillatt: true,
     };
 };
 
@@ -53,7 +51,7 @@ const ekstrauttakFørFødsel = (familiehendelsesdato: Date): Avgrensninger => {
     return {
         minDato,
         maksDato,
-        helgedagerIkkeTillatt: true
+        helgedagerIkkeTillatt: true,
     };
 };
 
@@ -64,7 +62,7 @@ const startdatoPermisjonAleneomsorgFarMedmor = (
     return {
         helgedagerIkkeTillatt: true,
         minDato: Uttaksdagen(datoForAleneomsorg).denneEllerNeste(),
-        maksDato: sisteMuligePermisjonsdag(familiehendelsesdato)
+        maksDato: sisteMuligePermisjonsdag(familiehendelsesdato),
     };
 };
 
@@ -87,5 +85,5 @@ export const uttaksplanDatoavgrensninger = {
     startdatoPermisjonAdopsjon,
     startdatoPermisjonAleneomsorgFarMedmor,
     startdatoFørTerminForeldrepengerFørFødselKonto,
-    ekstrauttakFørFødsel
+    ekstrauttakFørFødsel,
 };

@@ -71,7 +71,7 @@ class AntallBarnBolk extends React.Component<Props> {
                         legend={spørsmål}
                         name={inputName}
                         feil={feil}
-                        onChange={(event: React.SyntheticEvent<EventTarget>, value: string) =>
+                        onChange={(_e: React.SyntheticEvent<EventTarget>, value: string) =>
                             this.onRadioChange(value as AntallBarnVerdi)
                         }
                         checked={antallBarnVerdi}
@@ -79,18 +79,18 @@ class AntallBarnBolk extends React.Component<Props> {
                             {
                                 label: getMessage(intl, 'antallBarn.alternativ.ettbarn'),
                                 value: '1',
-                                name: inputName
+                                name: inputName,
                             },
                             {
                                 label: getMessage(intl, antallBarnLabel),
                                 value: '2',
-                                name: inputName
+                                name: inputName,
                             },
                             {
                                 label: getMessage(intl, 'antallBarn.alternativ.flere'),
                                 value: '3',
-                                name: inputName
-                            }
+                                name: inputName,
+                            },
                         ]}
                     />
                 </Block>

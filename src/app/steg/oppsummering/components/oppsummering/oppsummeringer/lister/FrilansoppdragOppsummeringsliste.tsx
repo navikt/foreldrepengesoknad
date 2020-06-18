@@ -20,8 +20,8 @@ const FrilansoppdragOppsummeringsliste: React.StatelessComponent<Props> = ({ fri
                 venstrestiltTekst: navnPåArbeidsgiver,
                 høyrestiltTekst: getMessage(intl, 'tidsintervall', {
                     fom: formatDate(tidsperiode.fom),
-                    tom: pågående ? 'pågående' : formatDate(tidsperiode.tom)
-                })
+                    tom: pågående ? 'pågående' : formatDate(tidsperiode.tom),
+                }),
             }))}
         />
     );

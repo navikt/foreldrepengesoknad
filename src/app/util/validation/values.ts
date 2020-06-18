@@ -31,29 +31,17 @@ export const dateMoreThan15YearsAnd3MonthsAgo = moment()
     .subtract(3, 'months')
     .subtract(daysToHours(1), 'hours');
 
-export const date15YearsAnd3MonthsAgo = moment()
-    .subtract(15, 'years')
-    .subtract(3, 'months');
+export const date15YearsAnd3MonthsAgo = moment().subtract(15, 'years').subtract(3, 'months');
 
-export const dateMoreThan3YearsAgo = moment()
-    .subtract(3, 'years')
-    .subtract(daysToHours(1), 'hours');
+export const dateMoreThan3YearsAgo = moment().subtract(3, 'years').subtract(daysToHours(1), 'hours');
 
-export const dateMoreThan4YearsAgo = moment()
-    .subtract(4, 'years')
-    .subtract(daysToHours(1), 'hours');
+export const dateMoreThan4YearsAgo = moment().subtract(4, 'years').subtract(daysToHours(1), 'hours');
 
-export const dateMoreThan1YearAhead = moment()
-    .add(1, 'years')
-    .add(24, 'hours');
+export const dateMoreThan1YearAhead = moment().add(1, 'years').add(24, 'hours');
 
-export const dateMoreThan1YearAgo = moment()
-    .subtract(1, 'years')
-    .subtract(daysToHours(1), 'hours');
+export const dateMoreThan1YearAgo = moment().subtract(1, 'years').subtract(daysToHours(1), 'hours');
 
-export const dateMoreThan18YearsAgo = moment()
-    .subtract(18, 'years')
-    .subtract(daysToHours(1), 'hours');
+export const dateMoreThan18YearsAgo = moment().subtract(18, 'years').subtract(daysToHours(1), 'hours');
 
 export const date5DaysAhead = moment().add(5 * 24, 'hours');
 
@@ -77,7 +65,7 @@ const DateValues = {
     dateMoreThan1YearAhead,
     dateMoreThan1YearAgo,
     dateMoreThan4YearsAgo,
-    dateMoreThan18YearsAgo
+    dateMoreThan18YearsAgo,
 };
 
 export default DateValues;

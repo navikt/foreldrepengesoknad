@@ -1,3 +1,3 @@
-export const graderingSkalBesvares = (erUttakFørFødsel: boolean, harSamtidigUttak: boolean): boolean => {
+export const graderingSkalBesvares = (erUttakFørFødsel: boolean): boolean => {
     return !erUttakFørFødsel;
 };

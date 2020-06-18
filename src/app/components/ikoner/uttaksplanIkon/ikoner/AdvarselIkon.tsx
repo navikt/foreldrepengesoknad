@@ -19,7 +19,8 @@ const UttaksplanAdvarselIkon = (props: Props) => {
             width={24}
             height={24}
             viewBox="0 0 24 24"
-            {...rest}>
+            {...rest}
+        >
             <title>{props.title}</title>
             <defs>
                 <path

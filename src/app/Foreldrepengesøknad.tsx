@@ -29,7 +29,7 @@ interface StateProps {
     systemerIkkeTilgjengelig: boolean;
 }
 
-type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
+type Props = StateProps & DispatchProps & RouteComponentProps<any>;
 
 const checkIfUserShouldJumpToSteg = (søknad: Partial<Søknad> | undefined, pathname: string): StegID | undefined => {
     if (pathname.indexOf(routeConfig.GENERELL_FEIL_URL) >= 0) {
@@ -44,7 +44,7 @@ const checkIfUserShouldJumpToSteg = (søknad: Partial<Søknad> | undefined, path
 };
 
 class Foreldrepengesøknad extends React.Component<Props> {
-    componentWillMount() {
+    componentDidMount() {
         const { dispatch, søkerinfo } = this.props;
         if (!søkerinfo) {
             dispatch(api.getSøkerinfo(this.props.history));
@@ -78,7 +78,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 path={`${routeConfig.APP_ROUTE_PREFIX}velkommen`}
                 render={(props) => <Velkommen {...props} søkerinfo={søkerinfo} />}
                 key="velkommen"
-            />
+            />,
         ];
         return this.renderRoutes(routes);
     }
@@ -90,7 +90,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
             isSendSøknadInProgress,
             isLoadingSaker,
             søknadHasBeenReceived,
-            systemerIkkeTilgjengelig
+            systemerIkkeTilgjengelig,
         } = this.props;
 
         if (isLoadingInitialAppData || isSendSøknadInProgress || isLoadingSaker) {
@@ -123,7 +123,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
     isLoadingSaker: state.api.isLoadingSaker,
     isSendSøknadInProgress: state.api.søknadSendingInProgress,
     søknadHasBeenReceived: state.api.søknadHasBeenReceived,
-    systemerIkkeTilgjengelig: state.api.systemerIkkeTilgjengelig
+    systemerIkkeTilgjengelig: state.api.systemerIkkeTilgjengelig,
 });
 
-export default withRouter(connect<StateProps, {}, {}>(mapStateToProps)(Foreldrepengesøknad));
+export default withRouter(connect<StateProps, any, any>(mapStateToProps)(Foreldrepengesøknad));

@@ -22,7 +22,7 @@ const EkspanderbartInnhold = ({
     animert = true,
     harEkspanderbartInnhold = false,
     erApen = false,
-    ariaLive = 'off'
+    ariaLive = 'off',
 }: Props) => {
     const content = <div aria-live={ariaLive}>{erApen ? <div>{children}</div> : <div />}</div>;
     if (!animert) {
@@ -34,9 +34,10 @@ const EkspanderbartInnhold = ({
             isOpened={erApen}
             springConfig={{ stiffness: 250, damping: 30 }}
             className={classnames('ekspanderbartInnhold', {
-                'ekspanderbartInnhold--apen': erApen
+                'ekspanderbartInnhold--apen': erApen,
             })}
-            hasNestedCollapse={harEkspanderbartInnhold}>
+            hasNestedCollapse={harEkspanderbartInnhold}
+        >
             {content}
         </Collapse>
     );

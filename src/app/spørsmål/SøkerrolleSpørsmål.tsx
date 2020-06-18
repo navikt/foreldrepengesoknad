@@ -30,7 +30,7 @@ const SøkerrolleSpørsmål = (props: Props) => {
             checked={rolle}
             legend={intl.formatMessage({ id: 'søkerrolle.spørsmål' })}
             radios={getRadioOptions(roller, radioName, intl)}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>, nyRolle: SøkerRolle) => onChange(nyRolle)}
+            onChange={(_e: React.ChangeEvent<HTMLInputElement>, nyRolle: SøkerRolle) => onChange(nyRolle)}
         />
     );
 };

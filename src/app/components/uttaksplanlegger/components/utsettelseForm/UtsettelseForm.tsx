@@ -8,7 +8,7 @@ import {
     UtsettelseÅrsakType,
     TilgjengeligStønadskonto,
     Periode,
-    isUtsettelsesperiode
+    isUtsettelsesperiode,
 } from '../../../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import UtsettelsePgaFerieInfo from './UtsettelsePgaFerieInfo';
@@ -75,7 +75,7 @@ export enum Utsettelsesvariant {
     Arbeid = 'arbeid',
     Sykdom = 'sykdom',
     HvØvelse = 'hv_øvelse',
-    NavTiltak = 'nav_tiltak'
+    NavTiltak = 'nav_tiltak',
 }
 
 export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utsettelsesvariant | undefined => {
@@ -141,7 +141,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
         this.getVisibility = this.getVisibility.bind(this);
         this.oppdaterTidsperiode = this.oppdaterTidsperiode.bind(this);
         this.state = {
-            variant: getVariantFromPeriode(props.periode)
+            variant: getVariantFromPeriode(props.periode),
         };
     }
 
@@ -151,7 +151,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
         }
     }
 
-    onChange(periode: UtsettelseFormPeriodeType, replace: boolean = false) {
+    onChange(periode: UtsettelseFormPeriodeType, replace = false) {
         this.props.onChange(periode, replace, this.getVisibility());
         if (this.props.formContext && this.props.periode.id) {
             this.props.formContext.validateAll();
@@ -166,28 +166,28 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                 label: getMessage(intl, 'jegskalhaferie'),
                 value: Utsettelsesvariant.Ferie,
                 disabled: disableFerie === true,
-                name: 'utsettelseÅrsak'
+                name: 'utsettelseÅrsak',
             },
             {
                 label: getMessage(intl, 'jegskaljobbeheltid'),
                 value: Utsettelsesvariant.Arbeid,
-                name: 'utsettelseÅrsak'
+                name: 'utsettelseÅrsak',
             },
             {
                 label: getMessage(intl, 'pgasykdom'),
                 value: Utsettelsesvariant.Sykdom,
-                name: 'utsettelseÅrsak'
+                name: 'utsettelseÅrsak',
             },
             {
                 label: getMessage(intl, 'hv_øvelse'),
                 value: Utsettelsesvariant.HvØvelse,
-                name: 'utsettelseÅrsak'
+                name: 'utsettelseÅrsak',
             },
             {
                 label: getMessage(intl, 'navtiltak'),
                 value: Utsettelsesvariant.NavTiltak,
-                name: 'utsettelseÅrsak'
-            }
+                name: 'utsettelseÅrsak',
+            },
         ];
 
         if (
@@ -210,40 +210,40 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                     type: Periodetype.Utsettelse,
                     årsak: UtsettelseÅrsakType.Arbeid,
                     forelder,
-                    erArbeidstaker: this.props.arbeidsforhold.length > 0
+                    erArbeidstaker: this.props.arbeidsforhold.length > 0,
                 });
             } else if (variant === Utsettelsesvariant.Ferie) {
                 this.onChange({
                     type: Periodetype.Utsettelse,
                     årsak: UtsettelseÅrsakType.Ferie,
                     forelder,
-                    erArbeidstaker: this.props.arbeidsforhold.length > 0
+                    erArbeidstaker: this.props.arbeidsforhold.length > 0,
                 });
             } else if (variant === Utsettelsesvariant.Sykdom) {
                 this.onChange({
                     type: Periodetype.Utsettelse,
                     årsak: undefined,
                     forelder,
-                    erArbeidstaker: this.props.arbeidsforhold.length > 0
+                    erArbeidstaker: this.props.arbeidsforhold.length > 0,
                 });
             } else if (variant === Utsettelsesvariant.HvØvelse) {
                 this.onChange({
                     type: Periodetype.Utsettelse,
                     årsak: UtsettelseÅrsakType.HvØvelse,
                     forelder,
-                    erArbeidstaker: this.props.arbeidsforhold.length > 0
+                    erArbeidstaker: this.props.arbeidsforhold.length > 0,
                 });
             } else if (variant === Utsettelsesvariant.NavTiltak) {
                 this.onChange({
                     type: Periodetype.Utsettelse,
                     årsak: UtsettelseÅrsakType.NavTiltak,
                     forelder,
-                    erArbeidstaker: this.props.arbeidsforhold.length > 0
+                    erArbeidstaker: this.props.arbeidsforhold.length > 0,
                 });
             }
         }
         this.setState({
-            variant
+            variant,
         });
         if (this.props.onUtsettelsesvariantChange) {
             this.props.onUtsettelsesvariantChange(variant);
@@ -254,17 +254,17 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
         if (sykdomsårsak === UtsettelseÅrsakType.InstitusjonBarnet) {
             this.onChange({
                 årsak: UtsettelseÅrsakType.InstitusjonBarnet,
-                vedlegg
+                vedlegg,
             });
         } else if (sykdomsårsak === UtsettelseÅrsakType.InstitusjonSøker) {
             this.onChange({
                 årsak: UtsettelseÅrsakType.InstitusjonSøker,
-                vedlegg
+                vedlegg,
             });
         } else if (sykdomsårsak === UtsettelseÅrsakType.Sykdom) {
             this.onChange({
                 årsak: UtsettelseÅrsakType.Sykdom,
-                vedlegg
+                vedlegg,
             });
         } else {
             throw new Error('No sykdomsårsak defined');
@@ -279,7 +279,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
             variant,
             periode,
             søknadsinfo,
-            arbeidsforhold
+            arbeidsforhold,
         });
     }
 
@@ -309,7 +309,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
             onCancel,
             søknadsinfo,
             uttaksplan,
-            intl
+            intl,
         } = this.props;
 
         const { variant, ugyldigTidsperiode } = this.state;
@@ -399,7 +399,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                                 this.onChange({
                                                     orgnumre,
                                                     arbeidsformer,
-                                                    erArbeidstaker: arbeidsformer.includes(Arbeidsform.arbeidstaker)
+                                                    erArbeidstaker: arbeidsformer.includes(Arbeidsform.arbeidstaker),
                                                 })
                                             }
                                             arbeidsformer={(periode as Utsettelsesperiode).arbeidsformer || []}
@@ -416,12 +416,12 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                                 intl,
                                                 'utsettelseskjema.arbeid.avtaltFulltidVedDeltid',
                                                 {
-                                                    antall: periode.orgnumre ? periode.orgnumre.length : 0
+                                                    antall: periode.orgnumre ? periode.orgnumre.length : 0,
                                                 }
                                             )}
                                             onChange={(avtaltFulltArbeidForDeltid: boolean) =>
                                                 this.onChange({
-                                                    harAvtaleOmFulltidForDeltidsstilling: avtaltFulltArbeidForDeltid
+                                                    harAvtaleOmFulltidForDeltidsstilling: avtaltFulltArbeidForDeltid,
                                                 })
                                             }
                                             valgtVerdi={
@@ -439,9 +439,9 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                                     contentIntlKey:
                                                         'vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse',
                                                     values: {
-                                                        antall: periode.orgnumre ? periode.orgnumre.length : 0
-                                                    }
-                                                }
+                                                        antall: periode.orgnumre ? periode.orgnumre.length : 0,
+                                                    },
+                                                },
                                             ]}
                                         />
                                     </Block>
@@ -450,8 +450,8 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                             messages={[
                                                 {
                                                     type: 'normal',
-                                                    contentIntlKey: 'uttaksplan.infoTilFrilansOgSelvstendig'
-                                                }
+                                                    contentIntlKey: 'uttaksplan.infoTilFrilansOgSelvstendig',
+                                                },
                                             ]}
                                         />
                                     </Block>
@@ -466,8 +466,8 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                         messages={[
                                             {
                                                 type: 'normal',
-                                                contentIntlKey: 'uttaksplan.informasjonVedSykdom'
-                                            }
+                                                contentIntlKey: 'uttaksplan.informasjonVedSykdom',
+                                            },
                                         ]}
                                     />
                                 </Block>
@@ -496,8 +496,8 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                         messages={[
                                             {
                                                 type: 'normal',
-                                                contentIntlKey: 'uttaksplan.informasjonVedHVØvelse'
-                                            }
+                                                contentIntlKey: 'uttaksplan.informasjonVedHVØvelse',
+                                            },
                                         ]}
                                     />
                                 </Block>
@@ -514,8 +514,8 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                         messages={[
                                             {
                                                 type: 'normal',
-                                                contentIntlKey: 'uttaksplan.informasjonVedNAVTiltak'
-                                            }
+                                                contentIntlKey: 'uttaksplan.informasjonVedNAVTiltak',
+                                            },
                                         ]}
                                     />
                                 </Block>
@@ -557,7 +557,7 @@ const mapStateToProps = (state: AppState): StateProps => {
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
         tilgjengeligeStønadskontoer: selectTilgjengeligeStønadskontoer(state),
         søknadsinfo: selectSøknadsinfo(state)!,
-        uttaksplan: state.søknad.uttaksplan
+        uttaksplan: state.søknad.uttaksplan,
     };
 };
 

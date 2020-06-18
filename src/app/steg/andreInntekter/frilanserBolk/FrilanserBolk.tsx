@@ -57,7 +57,7 @@ class FrilanserBolk extends React.Component<Props> {
                 <HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål
                     onChange={(v: boolean) =>
                         this.handleFrilansinformasjonOnChange({
-                            harJobbetForNærVennEllerFamilieSiste10Mnd: v
+                            harJobbetForNærVennEllerFamilieSiste10Mnd: v,
                         })
                     }
                     harJobbetForNærVennEllerFamilieSiste10Mnd={harJobbetForNærVennEllerFamilieSiste10Mnd}
@@ -83,7 +83,7 @@ class FrilanserBolk extends React.Component<Props> {
                     <HarDuJobbetSomFrilansSiste10MndSpørsmål
                         onChange={(v: boolean) =>
                             this.handleSøkerOnChange({
-                                harJobbetSomFrilansSiste10Mnd: v
+                                harJobbetSomFrilansSiste10Mnd: v,
                             })
                         }
                         harJobbetSomFrilansSiste10Mnd={søker.harJobbetSomFrilansSiste10Mnd}
@@ -100,7 +100,7 @@ class FrilanserBolk extends React.Component<Props> {
                                 label={getMessage(intl, 'frilans.oppstart')}
                                 onChange={(oppstart: Date) =>
                                     this.handleFrilansinformasjonOnChange({
-                                        oppstart
+                                        oppstart,
                                     })
                                 }
                                 dato={oppstartsdato}
@@ -113,7 +113,7 @@ class FrilanserBolk extends React.Component<Props> {
                             <JobberDuFremdelesSomFrilansSpørsmål
                                 onChange={(v: boolean) =>
                                     this.handleFrilansinformasjonOnChange({
-                                        jobberFremdelesSomFrilans: v
+                                        jobberFremdelesSomFrilans: v,
                                     })
                                 }
                                 jobberFremdelesSomFrilans={jobberFremdelesSomFrilans}
@@ -127,7 +127,7 @@ class FrilanserBolk extends React.Component<Props> {
                                 oppdragListe={oppdragForNæreVennerEllerFamilieSiste10Mnd || []}
                                 onChange={(oppdragListe: FrilansOppdrag[]) =>
                                     this.handleFrilansinformasjonOnChange({
-                                        oppdragForNæreVennerEllerFamilieSiste10Mnd: oppdragListe
+                                        oppdragForNæreVennerEllerFamilieSiste10Mnd: oppdragListe,
                                     })
                                 }
                             />
@@ -137,7 +137,7 @@ class FrilanserBolk extends React.Component<Props> {
                             <DriverDuFosterhjemSpørsmål
                                 onChange={(v: boolean) =>
                                     this.handleFrilansinformasjonOnChange({
-                                        driverFosterhjem: v
+                                        driverFosterhjem: v,
                                     })
                                 }
                                 driverFosterhjem={driverFosterhjem}

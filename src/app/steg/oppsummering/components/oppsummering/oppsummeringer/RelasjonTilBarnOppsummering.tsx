@@ -10,7 +10,7 @@ import Barn, {
     isFødtBarn,
     isAdopsjonsbarn,
     isForeldreansvarsbarn,
-    isUfødtBarn
+    isUfødtBarn,
 } from '../../../../../types/søknad/Barn';
 import { Søkersituasjon } from '../../../../../types/søknad/Søknad';
 import AnnenForelder from '../../../../../types/søknad/AnnenForelder';
@@ -36,7 +36,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
             return getMessage(intl, 'oppsummering.tvillinger');
         } else {
             return getMessage(intl, 'oppsummering.antallBarn.flere', {
-                antall: antallBarn
+                antall: antallBarn,
             });
         }
     }
@@ -82,7 +82,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
             ankomstdato,
             adopsjonAvEktefellesBarn,
             adoptertIUtlandet,
-            omsorgsovertakelse
+            omsorgsovertakelse,
         } = barn;
 
         return (

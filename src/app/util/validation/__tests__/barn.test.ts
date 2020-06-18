@@ -9,14 +9,14 @@ const mor: RegistrertAnnenForelder = {
     fnr: '1',
     fornavn: '',
     etternavn: '',
-    fødselsdato: new Date()
+    fødselsdato: new Date(),
 };
 
 const farMedmor: RegistrertAnnenForelder = {
     fnr: '2',
     fornavn: '',
     etternavn: '',
-    fødselsdato: new Date()
+    fødselsdato: new Date(),
 };
 
 const barn: RegistrertBarn = {
@@ -24,17 +24,17 @@ const barn: RegistrertBarn = {
     fornavn: 'a',
     etternavn: 'b',
     fødselsdato: new Date(),
-    kjønn: Kjønn.MANN
+    kjønn: Kjønn.MANN,
 };
 
 const barnMedForelder: RegistrertBarn = {
     ...barn,
-    annenForelder: mor
+    annenForelder: mor,
 };
 
 const barnMedUlikForelder: RegistrertBarn = {
     ...barn,
-    annenForelder: farMedmor
+    annenForelder: farMedmor,
 };
 
 describe('barn.steg.validation', () => {
@@ -67,7 +67,7 @@ describe('barn.steg.validation', () => {
             arbeidsgiverNavn: 'navn',
             arbeidsgiverIdType: 'orgnr',
             stillingsprosent: 100,
-            fom: new Date('2000-12-24')
+            fom: new Date('2000-12-24'),
         };
 
         it('kun søkere i fødselssituasjon skal laste opp terminbekreftelse', () => {
@@ -75,10 +75,8 @@ describe('barn.steg.validation', () => {
             const arbeidsforholdList = [
                 {
                     ...arbeidsforhold,
-                    tom: moment()
-                        .subtract(1, 'day')
-                        .toDate()
-                }
+                    tom: moment().subtract(1, 'day').toDate(),
+                },
             ];
             expect(
                 skalSøkerLasteOppTerminbekreftelse(
@@ -125,9 +123,7 @@ describe('barn.steg.validation', () => {
             const b: Partial<Barn> = { erBarnetFødt: false, termindato: moment().toDate() };
             const a: Arbeidsforhold = {
                 ...arbeidsforhold,
-                tom: moment()
-                    .subtract(1, 'day')
-                    .toDate()
+                tom: moment().subtract(1, 'day').toDate(),
             };
             expect(
                 skalSøkerLasteOppTerminbekreftelse({ barn: b as Barn, situasjon: Søkersituasjon.FØDSEL } as Søknad, [a])
@@ -142,7 +138,7 @@ describe('barn.steg.validation', () => {
             const b: Partial<Barn> = { erBarnetFødt: true, termindato: moment().toDate() };
             expect(
                 skalSøkerLasteOppTerminbekreftelse({ barn: b, situasjon: Søkersituasjon.FØDSEL } as Søknad, [
-                    arbeidsforhold
+                    arbeidsforhold,
                 ])
             ).toBeFalsy();
         });

@@ -10,8 +10,8 @@ const FarDokumentasjonAleneomsorgVeileder: React.FunctionComponent = () => {
                 messages={[
                     {
                         type: 'normal',
-                        contentIntlKey: 'far.dokumantasjonAvAleneomsorg.vedlegg.veileder'
-                    }
+                        contentIntlKey: 'far.dokumantasjonAvAleneomsorg.vedlegg.veileder',
+                    },
                 ]}
             />
         </div>

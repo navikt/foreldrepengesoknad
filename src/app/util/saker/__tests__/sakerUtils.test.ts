@@ -24,8 +24,8 @@ describe('sakerUtils', () => {
                     {
                         ...SakerMock.fpsakFP,
                         opprettet: FagsakStatus.LOPENDE,
-                        behandlinger: [{ ...foreldrepengesoknadBehandlingMock, status: BehandlingStatus.AVSLUTTET }]
-                    }
+                        behandlinger: [{ ...foreldrepengesoknadBehandlingMock, status: BehandlingStatus.AVSLUTTET }],
+                    },
                 ])
             ).toBeDefined();
             expect(
@@ -33,8 +33,8 @@ describe('sakerUtils', () => {
                     {
                         ...SakerMock.fpsakFP,
                         opprettet: FagsakStatus.LOPENDE,
-                        behandlinger: [{ ...foreldrepengesoknadBehandlingMock, status: BehandlingStatus.AVSLUTTET }]
-                    }
+                        behandlinger: [{ ...foreldrepengesoknadBehandlingMock, status: BehandlingStatus.AVSLUTTET }],
+                    },
                 ])
             ).toBeDefined();
             expect(
@@ -42,8 +42,8 @@ describe('sakerUtils', () => {
                     {
                         ...SakerMock.fpsakFP,
                         opprettet: FagsakStatus.LOPENDE,
-                        behandlinger: [{ ...foreldrepengesoknadBehandlingMock, status: BehandlingStatus.AVSLUTTET }]
-                    }
+                        behandlinger: [{ ...foreldrepengesoknadBehandlingMock, status: BehandlingStatus.AVSLUTTET }],
+                    },
                 ])
             ).toBeDefined();
         });
@@ -54,8 +54,8 @@ describe('sakerUtils', () => {
                     {
                         ...SakerMock.fpsakFP,
                         opprettet: FagsakStatus.OPPRETTET,
-                        behandlinger: [{ ...foreldrepengesoknadBehandlingMock, status: BehandlingStatus.AVSLUTTET }]
-                    }
+                        behandlinger: [{ ...foreldrepengesoknadBehandlingMock, status: BehandlingStatus.AVSLUTTET }],
+                    },
                 ])
             ).toBeDefined();
 
@@ -64,8 +64,8 @@ describe('sakerUtils', () => {
                     {
                         ...SakerMock.fpsakFP,
                         opprettet: FagsakStatus.UNDER_BEHANDLING,
-                        behandlinger: [{ ...foreldrepengesoknadBehandlingMock, status: BehandlingStatus.AVSLUTTET }]
-                    }
+                        behandlinger: [{ ...foreldrepengesoknadBehandlingMock, status: BehandlingStatus.AVSLUTTET }],
+                    },
                 ])
             ).toBeDefined();
 
@@ -74,8 +74,8 @@ describe('sakerUtils', () => {
                     {
                         ...SakerMock.fpsakFP,
                         opprettet: FagsakStatus.LOPENDE,
-                        behandlinger: [{ ...foreldrepengesoknadBehandlingMock, status: BehandlingStatus.AVSLUTTET }]
-                    }
+                        behandlinger: [{ ...foreldrepengesoknadBehandlingMock, status: BehandlingStatus.AVSLUTTET }],
+                    },
                 ])
             ).toBeDefined();
         });

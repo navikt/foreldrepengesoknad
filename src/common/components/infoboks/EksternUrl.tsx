@@ -13,7 +13,7 @@ const EksternUrl: React.StatelessComponent<Props> = ({ tekst, url, lenkeTekst })
     return (
         <span>
             {tekst && getMessage(intl, tekst)}
-            <a href={url} className="lenke" rel="noopener" target="_blank" style={{ marginLeft: 3 }}>
+            <a href={url} className="lenke" rel="noreferrer" target="_blank" style={{ marginLeft: 3 }}>
                 {lenkeTekst}
                 <EksternIkon />
             </a>

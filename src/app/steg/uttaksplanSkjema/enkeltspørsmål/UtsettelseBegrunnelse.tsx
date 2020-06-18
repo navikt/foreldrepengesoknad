@@ -41,7 +41,7 @@ const UtsettelseBegrunnelse = (props: Props) => {
                         },
                     ]}
                     name="begrunnelseForUtsettelse"
-                    onChange={(e, v: UtsettelseÅrsakType) => onChange({ begrunnelseForUtsettelse: v })}
+                    onChange={(_e, v: UtsettelseÅrsakType) => onChange({ begrunnelseForUtsettelse: v })}
                 />
             )}
         />

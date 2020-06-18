@@ -33,7 +33,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         uttaksplanSkjema,
         erEnkelEndringssøknad,
         førsteUttaksdagEtterSeksUker,
-        søkerHarMidlertidigOmsorg
+        søkerHarMidlertidigOmsorg,
     } = params;
 
     if (uttaksplanSkjema.ønskerIkkeFlerePerioder || erEndringssøknad) {
@@ -50,7 +50,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         antallUkerFellesperiodeFarMedmor,
         morSinSisteUttaksdag,
         farSinFørsteUttaksdag,
-        begrunnelseForUtsettelse
+        begrunnelseForUtsettelse,
     } = uttaksplanSkjema;
 
     if (familiehendelsesdato) {

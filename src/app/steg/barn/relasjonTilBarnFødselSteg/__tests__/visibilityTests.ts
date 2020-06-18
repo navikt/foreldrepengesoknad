@@ -10,7 +10,7 @@ const registrertBarn: RegistrertBarn = {
     fornavn: 'fornavn',
     etternavn: 'etternavn',
     kjønn: Kjønn.MANN,
-    fødselsdato: new Date()
+    fødselsdato: new Date(),
 };
 
 const attachment: Attachment = {
@@ -21,7 +21,7 @@ const attachment: Attachment = {
     pending: false,
     uploaded: true,
     type: AttachmentType.TERMINBEKREFTELSE,
-    skjemanummer: Skjemanummer.TERMINBEKREFTELSE
+    skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
 };
 
 describe('RelasjonTilBarnFødselSteg visbility tester', () => {

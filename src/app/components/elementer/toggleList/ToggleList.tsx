@@ -23,13 +23,13 @@ class ToggleList<T> extends React.Component<Props, State> {
         this.isOpen = this.isOpen.bind(this);
         this.collapseAll = this.collapseAll.bind(this);
         this.state = {
-            openItems: new Map()
+            openItems: new Map(),
         };
     }
 
     collapseAll() {
         this.setState({
-            openItems: new Map()
+            openItems: new Map(),
         });
     }
 
@@ -41,13 +41,13 @@ class ToggleList<T> extends React.Component<Props, State> {
         const { singleMode = true } = this.props;
         if (open !== undefined) {
             this.setState({
-                openItems: singleMode ? new Map().set(id, open) : new Map(this.state.openItems).set(id, open)
+                openItems: singleMode ? new Map().set(id, open) : new Map(this.state.openItems).set(id, open),
             });
         } else {
             const currState = this.state.openItems.get(id);
             const newState = currState === true ? false : true;
             this.setState({
-                openItems: singleMode ? new Map().set(id, newState) : new Map(this.state.openItems).set(id, newState)
+                openItems: singleMode ? new Map().set(id, newState) : new Map(this.state.openItems).set(id, newState),
             });
         }
         if (this.props.onItemToggle) {

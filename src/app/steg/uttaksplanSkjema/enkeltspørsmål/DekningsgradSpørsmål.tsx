@@ -83,7 +83,7 @@ const DekningsgradSpørsmål = (props: Props) => {
         checked = Dekningsgrad.ÅTTI_PROSENT;
     }
 
-    let labelKey: string = '';
+    let labelKey = '';
 
     if (erEndringssøknad) {
         labelKey = erDeltUttak
@@ -130,7 +130,7 @@ const DekningsgradSpørsmål = (props: Props) => {
                     ]}
                     name="dekningsgrad"
                     infoboksTekst={erEndringssøknad ? undefined : getInfoboxText(intl, erAleneOmOmsorg)}
-                    onChange={(e, v: Dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad: v }))}
+                    onChange={(_e, v: Dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad: v }))}
                 />
             </Block>
             <Block

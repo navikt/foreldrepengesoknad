@@ -7,7 +7,7 @@ import {
     Periodetype,
     StønadskontoType,
     isForeldrepengerFørFødselUttaksperiode,
-    isUtsettelseAnnenPart
+    isUtsettelseAnnenPart,
 } from '../../../../../types/uttaksplan/periodetyper';
 import { Tidsperioden, getValidTidsperiode } from '../../../../../util/uttaksplan/Tidsperioden';
 import getMessage from 'common/util/i18nUtils';
@@ -83,7 +83,7 @@ const PeriodeHeader: React.StatelessComponent<Props> = ({
     melding,
     annenForelderSamtidigUttakPeriode,
     harMidlertidigOmsorg,
-    intl
+    intl,
 }) => {
     const gyldigTidsperiode = getValidTidsperiode(periode.tidsperiode);
     const visDatoer = periode.tidsperiode.fom || periode.tidsperiode.tom;

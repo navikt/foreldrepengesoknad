@@ -30,7 +30,7 @@ const getSykdomAlternativ = (intl: IntlShape, årsak: UtsettelseÅrsakType, radi
     return {
         label: getMessage(intl, `utsettelse.sykdom.alternativ.${årsak}`),
         value: årsak,
-        name: radioName
+        name: radioName,
     };
 };
 
@@ -68,7 +68,7 @@ class UtsettelsePgaSykdomPart extends React.Component<Props> {
                         alternativer={[
                             getSykdomAlternativ(intl, UtsettelseÅrsakType.Sykdom, radioName),
                             getSykdomAlternativ(intl, UtsettelseÅrsakType.InstitusjonSøker, radioName),
-                            getSykdomAlternativ(intl, UtsettelseÅrsakType.InstitusjonBarnet, radioName)
+                            getSykdomAlternativ(intl, UtsettelseÅrsakType.InstitusjonBarnet, radioName),
                         ]}
                     />
                 </Block>

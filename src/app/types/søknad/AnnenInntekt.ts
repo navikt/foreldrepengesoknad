@@ -7,7 +7,7 @@ export enum AnnenInntektType {
     'MILITÆRTJENESTE' = 'MILITÆR_ELLER_SIVILTJENESTE',
     'VENTELØNN' = 'VENTELØNN_VARTPENGER',
     'VENTELØNN_V1' = 'VENTELØNN',
-    'JOBB_I_UTLANDET' = 'JOBB_I_UTLANDET'
+    'JOBB_I_UTLANDET' = 'JOBB_I_UTLANDET',
 }
 
 abstract class AnnenInntektBase {

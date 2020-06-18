@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as classnames from 'classnames';
 import { guid } from 'nav-frontend-js-utils';
 import RangeStepper from './RangeStepper';
-// import Infoboks from 'common/components/infoboks/Infoboks';
 
 import './rangeInput.less';
 import AriaText from 'common/components/aria/AriaText';
@@ -66,18 +65,18 @@ class RangeInput extends React.Component<Props, State> {
         this.handleFocus = this.handleFocus.bind(this);
         this.deactivateIfOutside = this.deactivateIfOutside.bind(this);
         this.state = {
-            active: false
+            active: false,
         };
     }
-    handleBlur(e: React.FocusEvent<HTMLDivElement>) {
+    handleBlur(_e: React.FocusEvent<HTMLDivElement>) {
         if (!this.container) {
             return;
         }
         setTimeout(() => this.deactivateIfOutside(), 0);
     }
-    handleFocus(e: React.FocusEvent<HTMLDivElement>) {
+    handleFocus(_e: React.FocusEvent<HTMLDivElement>) {
         this.setState({
-            active: true
+            active: true,
         });
     }
     deactivateIfOutside() {
@@ -87,7 +86,7 @@ class RangeInput extends React.Component<Props, State> {
             !this.container.contains(window.document.activeElement)
         ) {
             this.setState({
-                active: false
+                active: false,
             });
         }
     }
@@ -126,7 +125,7 @@ class RangeInput extends React.Component<Props, State> {
                     </div>
                     <div
                         className={classnames(bemRangeInput.block, {
-                            [bemRangeInput.modifier('withSteppers')]: steppers !== undefined
+                            [bemRangeInput.modifier('withSteppers')]: steppers !== undefined,
                         })}
                         ref={(c) => (this.container = c)}
                         onBlur={this.handleBlur}

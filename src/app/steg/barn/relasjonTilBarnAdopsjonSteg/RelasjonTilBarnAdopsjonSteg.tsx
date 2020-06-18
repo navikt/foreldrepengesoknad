@@ -51,7 +51,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         if (props.barn.antallBarn) {
             props.dispatch(
                 søknadActions.updateBarn({
-                    fødselsdatoer: utils.trimFødselsdatoer(props.barn.antallBarn, this.props.barn.fødselsdatoer)
+                    fødselsdatoer: utils.trimFødselsdatoer(props.barn.antallBarn, this.props.barn.fødselsdatoer),
                 })
             );
         }
@@ -62,7 +62,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
             søknadActions.updateBarn({
                 ...this.props.barn,
                 antallBarn: antall,
-                fødselsdatoer: utils.trimFødselsdatoer(antall, this.props.barn.fødselsdatoer)
+                fødselsdatoer: utils.trimFødselsdatoer(antall, this.props.barn.fødselsdatoer),
             })
         );
     }
@@ -88,7 +88,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         onChange={(adopsjonAvEktefellesBarn: boolean) => {
                             dispatch(
                                 søknadActions.updateBarn({
-                                    adopsjonAvEktefellesBarn
+                                    adopsjonAvEktefellesBarn,
                                 })
                             );
                         }}
@@ -106,7 +106,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         onChange={(adopsjonsdato: Date) => {
                             dispatch(
                                 søknadActions.updateBarn({
-                                    adopsjonsdato
+                                    adopsjonsdato,
                                 })
                             );
                         }}
@@ -130,13 +130,13 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         antallBarn={barn.antallBarn}
                         datoavgrensninger={{
                             minDato: DateValues.date15YearsAnd3MonthsAgo.toDate(),
-                            maksDato: barn.adopsjonsdato
+                            maksDato: barn.adopsjonsdato,
                         }}
                         gjelderAdopsjon={true}
                         onChangeFødselsdato={(fødselsdatoer: Date[]) =>
                             dispatch(
                                 søknadActions.updateBarn({
-                                    fødselsdatoer
+                                    fødselsdatoer,
                                 })
                             )
                         }
@@ -149,7 +149,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         onChange={(adoptertIUtlandet) =>
                             dispatch(
                                 søknadActions.updateBarn({
-                                    adoptertIUtlandet
+                                    adoptertIUtlandet,
                                 })
                             )
                         }
@@ -164,7 +164,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         onChange={(ankomstdato: Date) => {
                             dispatch(
                                 søknadActions.updateBarn({
-                                    ankomstdato
+                                    ankomstdato,
                                 })
                             );
                         }}
@@ -181,8 +181,8 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                                     type: 'normal',
                                     contentIntlKey: barn.adopsjonAvEktefellesBarn
                                         ? 'vedlegg.veileder.stebarnsadopsjon'
-                                        : 'vedlegg.veileder.adopsjon'
-                                }
+                                        : 'vedlegg.veileder.adopsjon',
+                                },
                             ]}
                         />
                     </Block>
@@ -211,15 +211,15 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFortsettKnapp: barnErGyldig(state.søknad, props.søkerinfo),
         renderFormTag: true,
         history: props.history,
-        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_ADOPSJON, state.søknad, props.søkerinfo)
+        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_ADOPSJON, state.søknad, props.søkerinfo),
     };
 
     return {
         barn,
         stegProps,
         situasjon: state.søknad.situasjon,
-        erEndringssøknad: state.søknad.erEndringssøknad
+        erEndringssøknad: state.søknad.erEndringssøknad,
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(injectIntl(RelasjonTilBarnAdopsjonSteg));
+export default connect<StateProps>(mapStateToProps)(injectIntl(RelasjonTilBarnAdopsjonSteg));

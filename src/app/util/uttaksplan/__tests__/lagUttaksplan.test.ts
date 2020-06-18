@@ -9,31 +9,31 @@ import { FødtBarn } from '../../../types/søknad/Barn';
 const tilgjengeligeKontoerDeltUttak: TilgjengeligStønadskonto[] = [
     {
         konto: StønadskontoType.Mødrekvote,
-        dager: 95
+        dager: 95,
     },
     {
         konto: StønadskontoType.Fedrekvote,
-        dager: 95
+        dager: 95,
     },
     {
         konto: StønadskontoType.Fellesperiode,
-        dager: 90
+        dager: 90,
     },
     {
         konto: StønadskontoType.ForeldrepengerFørFødsel,
-        dager: 15
-    }
+        dager: 15,
+    },
 ];
 
 const tilgjengeligeKontoerIkkeDeltUttak: TilgjengeligStønadskonto[] = [
     {
         konto: StønadskontoType.Foreldrepenger,
-        dager: 230
+        dager: 230,
     },
     {
         konto: StønadskontoType.ForeldrepengerFørFødsel,
-        dager: 15
-    }
+        dager: 15,
+    },
 ];
 
 const søknad: Søknad = { ...(mockSøknad as Søknad) };
@@ -49,7 +49,7 @@ const lagUttaksplanProps: LagUttaksplanParams = {
     uttaksplanSkjema: søknad.ekstrainfo.uttaksplanSkjema,
     erEnkelEndringssøknad: true,
     førsteUttaksdagEtterSeksUker: new Date('2019-01-01'),
-    søkerHarMidlertidigOmsorg: false
+    søkerHarMidlertidigOmsorg: false,
 };
 
 describe('Forslag til uttaksplan', () => {
@@ -78,15 +78,15 @@ describe('Forslag til uttaksplan', () => {
                 antallUkerFellesperiodeFarMedmor: 8,
                 antallDagerFellesperiodeFarMedmor: 0,
                 morSinSisteUttaksdag: new Date('2019-01-01'),
-                farSinFørsteUttaksdag: new Date('2019-01-02')
+                farSinFørsteUttaksdag: new Date('2019-01-02'),
             };
             const uttaksplan = lagUttaksplan({
                 ...lagUttaksplanProps,
                 søkerErFarEllerMedmor: true,
                 uttaksplanSkjema: {
                     ...lagUttaksplanProps.uttaksplanSkjema,
-                    ...farSøknad
-                }
+                    ...farSøknad,
+                },
             });
 
             expect(uttaksplan.length).toBe(2);
@@ -97,7 +97,7 @@ describe('Forslag til uttaksplan', () => {
             const uttaksplan = lagUttaksplan({
                 ...lagUttaksplanProps,
                 erDeltUttak: false,
-                tilgjengeligeStønadskontoer: tilgjengeligeKontoerIkkeDeltUttak
+                tilgjengeligeStønadskontoer: tilgjengeligeKontoerIkkeDeltUttak,
             });
             expect(uttaksplan.length).toBe(2);
         });
@@ -105,7 +105,7 @@ describe('Forslag til uttaksplan', () => {
             const uttaksplan = lagUttaksplan({
                 ...lagUttaksplanProps,
                 erDeltUttak: false,
-                tilgjengeligeStønadskontoer: tilgjengeligeKontoerIkkeDeltUttak
+                tilgjengeligeStønadskontoer: tilgjengeligeKontoerIkkeDeltUttak,
             });
             expect(finnHullIPerioder(uttaksplan, false, false).length).toBe(0);
         });
@@ -113,7 +113,7 @@ describe('Forslag til uttaksplan', () => {
             const uttaksplan = lagUttaksplan({
                 ...lagUttaksplanProps,
                 erDeltUttak: false,
-                tilgjengeligeStønadskontoer: tilgjengeligeKontoerIkkeDeltUttak
+                tilgjengeligeStønadskontoer: tilgjengeligeKontoerIkkeDeltUttak,
             });
             const overlappendePerioder = uttaksplan.find(
                 (periode) => Periodene(uttaksplan).finnOverlappendePerioder(periode).length > 0

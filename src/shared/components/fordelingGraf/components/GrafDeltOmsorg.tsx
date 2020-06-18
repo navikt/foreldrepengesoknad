@@ -15,13 +15,13 @@ const GrafDeltOmsorg: React.StatelessComponent<FordelingDeltOmsorg> = ({ mor, fa
                     borderColor={morsFarge}
                     leftBar={{
                         width: mor.pstBrukt,
-                        color: morsFarge
+                        color: morsFarge,
                     }}
                     centerBar={
                         mor.pstForMye > 0
                             ? {
                                   width: mor.pstForMye,
-                                  color: UttaksplanHexFarge.rod
+                                  color: UttaksplanHexFarge.rod,
                               }
                             : undefined
                     }
@@ -29,7 +29,7 @@ const GrafDeltOmsorg: React.StatelessComponent<FordelingDeltOmsorg> = ({ mor, fa
                         mor.pstOverførtTilAnnenForelder
                             ? {
                                   width: mor.pstOverførtTilAnnenForelder,
-                                  color: farsFarge
+                                  color: farsFarge,
                               }
                             : undefined
                     }
@@ -40,17 +40,17 @@ const GrafDeltOmsorg: React.StatelessComponent<FordelingDeltOmsorg> = ({ mor, fa
                     borderColor={UttaksplanHexFarge.graa}
                     leftBar={{
                         width: felles.pstBruktMor,
-                        color: morsFarge
+                        color: morsFarge,
                     }}
                     rightBar={{
                         width: felles.pstBruktFar,
-                        color: farsFarge
+                        color: farsFarge,
                     }}
                     centerBar={
                         felles.pstForMye > 0
                             ? {
                                   width: felles.pstForMye,
-                                  color: UttaksplanHexFarge.rod
+                                  color: UttaksplanHexFarge.rod,
                               }
                             : undefined
                     }
@@ -63,7 +63,7 @@ const GrafDeltOmsorg: React.StatelessComponent<FordelingDeltOmsorg> = ({ mor, fa
                         farMedmor.pstOverførtTilAnnenForelder
                             ? {
                                   width: farMedmor.pstOverførtTilAnnenForelder,
-                                  color: morsFarge
+                                  color: morsFarge,
                               }
                             : undefined
                     }
@@ -71,13 +71,13 @@ const GrafDeltOmsorg: React.StatelessComponent<FordelingDeltOmsorg> = ({ mor, fa
                         farMedmor.pstForMye > 0
                             ? {
                                   width: farMedmor.pstForMye,
-                                  color: UttaksplanHexFarge.rod
+                                  color: UttaksplanHexFarge.rod,
                               }
                             : undefined
                     }
                     rightBar={{
                         width: farMedmor.pstBrukt,
-                        color: farsFarge
+                        color: farsFarge,
                     }}
                 />
             </div>

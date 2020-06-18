@@ -37,7 +37,7 @@ const PeriodelisteInfo: React.StatelessComponent<Props> = ({
     farge = UttaksplanColor.yellow,
     border,
     periodeFargestrek,
-    annenForelderSamtidigUttakPeriode
+    annenForelderSamtidigUttakPeriode,
 }) => {
     return (
         <PeriodelisteItemWrapper
@@ -45,7 +45,8 @@ const PeriodelisteInfo: React.StatelessComponent<Props> = ({
             farge={farge}
             periodeFargestrek={periodeFargestrek}
             isExpanded={isExpanded}
-            border={border}>
+            border={border}
+        >
             <PeriodelisteToggleItem
                 id={id}
                 isExpanded={isExpanded}

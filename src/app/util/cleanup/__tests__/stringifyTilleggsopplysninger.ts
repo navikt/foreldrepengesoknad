@@ -2,22 +2,22 @@ import stringifyTilleggsopplysninger from '../stringifyTilleggsopplysninger';
 
 const UTEN_EKSTRA = {
     begrunnelseForSenEndring: {
-        tekst: 'Jeg glemte det'
-    }
+        tekst: 'Jeg glemte det',
+    },
 };
 
 const SYKDOM = {
     begrunnelseForSenEndring: {
         ekstraInformasjon: 'SYKDOM',
-        tekst: 'Jeg var for syk til å søke'
-    }
+        tekst: 'Jeg var for syk til å søke',
+    },
 };
 
 const UTTAK = {
     begrunnelseForSenEndring: {
         ekstraInformasjon: 'UTTAK',
-        tekst: 'Jeg glemte det'
-    }
+        tekst: 'Jeg glemte det',
+    },
 };
 
 describe('stringifyTilleggsopplysninger', () => {

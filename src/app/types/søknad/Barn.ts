@@ -42,9 +42,9 @@ export const isUfødtBarn = (barn: Partial<Barn>, situasjon: Søkersituasjon): b
     situasjon === Søkersituasjon.FØDSEL && barn.erBarnetFødt === false;
 export const isFødtBarn = (barn: Partial<Barn>, situasjon: Søkersituasjon): barn is FødtBarn =>
     situasjon === Søkersituasjon.FØDSEL && barn.erBarnetFødt === true;
-export const isAdopsjonsbarn = (barn: Partial<Barn>, situasjon: Søkersituasjon): barn is Adopsjonsbarn =>
+export const isAdopsjonsbarn = (_barn: Partial<Barn>, situasjon: Søkersituasjon): _barn is Adopsjonsbarn =>
     situasjon === Søkersituasjon.ADOPSJON;
-export const isForeldreansvarsbarn = (barn: Partial<Barn>, situasjon: Søkersituasjon): barn is ForeldreansvarBarn =>
+export const isForeldreansvarsbarn = (_barn: Partial<Barn>, situasjon: Søkersituasjon): _barn is ForeldreansvarBarn =>
     situasjon === Søkersituasjon.FORELDREANSVAR;
 
 export default Barn;

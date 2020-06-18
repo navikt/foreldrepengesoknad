@@ -13,8 +13,8 @@ const periodeMock: Uttaksperiode = {
     id: 'asdf',
     tidsperiode: {
         fom: DateValues.today.toDate(),
-        tom: DateValues.today.toDate()
-    }
+        tom: DateValues.today.toDate(),
+    },
 };
 
 describe('getUttakperiodeSkjemanummer', () => {

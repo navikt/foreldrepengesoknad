@@ -1,5 +1,3 @@
-/* tslint:disable:no-console */
-
 import nb from '../nb_NO.json';
 import nn from '../nn_NO.json';
 

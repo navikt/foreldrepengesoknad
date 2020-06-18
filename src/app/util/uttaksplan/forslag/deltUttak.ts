@@ -6,7 +6,7 @@ import {
     Periodetype,
     UttaksperiodeBase,
     isUttaksperiode,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
 } from '../../../types/uttaksplan/periodetyper';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { guid } from 'nav-frontend-js-utils';
@@ -30,9 +30,8 @@ const deltUttakAdopsjonSøktFørst = (
         const perioder: Periode[] = [];
         const kontoType = erFarEllerMedmor ? StønadskontoType.Fedrekvote : StønadskontoType.Mødrekvote;
         const forelder = erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
-        const konto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
-            (k) =>
-                erFarEllerMedmor ? k.konto === StønadskontoType.Fedrekvote : k.konto === StønadskontoType.Mødrekvote
+        const konto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find((k) =>
+            erFarEllerMedmor ? k.konto === StønadskontoType.Fedrekvote : k.konto === StønadskontoType.Mødrekvote
         );
         let currentTomDate: Date = førsteUttaksdag;
 
@@ -44,7 +43,7 @@ const deltUttakAdopsjonSøktFørst = (
                 konto: kontoType,
                 tidsperiode: getTidsperiode(currentTomDate, konto.dager),
                 ønskerSamtidigUttak: false,
-                gradert: false
+                gradert: false,
             };
 
             currentTomDate = Uttaksdagen(periodeMødrekvote.tidsperiode.tom).neste();
@@ -60,7 +59,7 @@ const deltUttakAdopsjonSøktFørst = (
                 konto: StønadskontoType.Fellesperiode,
                 tidsperiode: getTidsperiode(currentTomDate, fellesperiodeukerMor * 5),
                 ønskerSamtidigUttak: false,
-                gradert: false
+                gradert: false,
             };
 
             perioder.push(periodeFellesperiode);
@@ -108,12 +107,12 @@ const deltUttakAdopsjonSøktSist = (
                     return {
                         ...periode,
                         stønadskonto: StønadskontoType.Mødrekvote,
-                        forelder: Forelder.mor
+                        forelder: Forelder.mor,
                     };
                 } else {
                     return {
                         ...periode,
-                        forelder: Forelder.mor
+                        forelder: Forelder.mor,
                     };
                 }
             }
@@ -191,7 +190,7 @@ const deltUttakFødselMor = (
                 forelder: Forelder.mor,
                 konto: StønadskontoType.Fellesperiode,
                 tidsperiode: getTidsperiode(startdatoPermisjon, dagerFørFødsel - 15),
-                vedlegg: []
+                vedlegg: [],
             };
 
             perioder.push(ekstraPeriodeFørFødsel);
@@ -204,8 +203,8 @@ const deltUttakFødselMor = (
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             tidsperiode: {
                 fom: startdatoFpFørFødsel,
-                tom: Uttaksdagen(currentTomDate).forrige()
-            }
+                tom: Uttaksdagen(currentTomDate).forrige(),
+            },
         };
 
         perioder.push(periodeFørFødsel);
@@ -217,7 +216,7 @@ const deltUttakFødselMor = (
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             skalIkkeHaUttakFørTermin: true,
             tidsperiode: {} as any,
-            vedlegg: []
+            vedlegg: [],
         };
         perioder.push(periodeFørFødsel);
     }
@@ -230,7 +229,7 @@ const deltUttakFødselMor = (
             konto: StønadskontoType.Mødrekvote,
             tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager),
             ønskerSamtidigUttak: false,
-            gradert: false
+            gradert: false,
         };
 
         currentTomDate = Uttaksdagen(periodeMødrekvote.tidsperiode.tom).neste();
@@ -256,7 +255,7 @@ const deltUttakFødselMor = (
                 konto: StønadskontoType.Fellesperiode,
                 tidsperiode: getTidsperiode(currentTomDate, fellesperiodeukerMor * 5 - trekkEkstraPermisjonDager),
                 ønskerSamtidigUttak: false,
-                gradert: false
+                gradert: false,
             };
 
             perioder.push(periodeFellesperiodeMor);
@@ -300,8 +299,8 @@ const deltUttakFødselFarMedmor = (
             erArbeidstaker: false, // TODO
             tidsperiode: {
                 fom: Uttaksdagen(morSinSisteUttaksdag).neste(),
-                tom: Uttaksdagen(farSinFørsteUttaksdag).forrige()
-            }
+                tom: Uttaksdagen(farSinFørsteUttaksdag).forrige(),
+            },
         });
     }
 
@@ -313,7 +312,7 @@ const deltUttakFødselFarMedmor = (
             konto: StønadskontoType.Fedrekvote,
             tidsperiode: getTidsperiode(startDatoUttak, fedrekvoteKonto.dager),
             ønskerSamtidigUttak: false,
-            gradert: false
+            gradert: false,
         };
 
         sisteUttaksDag = Uttaksdagen(fedrekvotePeriode.tidsperiode.tom).neste();
@@ -340,7 +339,7 @@ const deltUttakFødselFarMedmor = (
                 konto: StønadskontoType.Fellesperiode,
                 tidsperiode: getTidsperiode(sisteUttaksDag, antallDagerFellesperiode),
                 ønskerSamtidigUttak: false,
-                gradert: false
+                gradert: false,
             };
 
             perioder.push(fellesPeriode);

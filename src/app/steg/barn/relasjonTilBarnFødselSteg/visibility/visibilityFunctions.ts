@@ -64,9 +64,7 @@ const terminbekreftelseDatoVisible = (
 };
 
 export const visTermindato = (fødselsdato: Date | undefined, rolle: SøkerRolle): boolean => {
-    const barnFødtMerEnn10UkerSiden = moment(fødselsdato)
-        .add(10, 'weeks')
-        .isBefore(moment(new Date()));
+    const barnFødtMerEnn10UkerSiden = moment(fødselsdato).add(10, 'weeks').isBefore(moment(new Date()));
 
     if ((rolle === SøkerRolle.FAR || rolle === SøkerRolle.MEDMOR) && barnFødtMerEnn10UkerSiden) {
         return false;
@@ -83,14 +81,12 @@ export const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termi
     const fødselsdatoEtterEllerLikFørsteJuli = moment(fødselsdato).isSameOrAfter(moment(new Date('2019-07-01')));
 
     return (
-        moment(fødselsdato)
-            .add(7, 'weeks')
-            .add(3, 'days')
-            .isBefore(moment(termindato)) && fødselsdatoEtterEllerLikFørsteJuli
+        moment(fødselsdato).add(7, 'weeks').add(3, 'days').isBefore(moment(termindato)) &&
+        fødselsdatoEtterEllerLikFørsteJuli
     );
 };
 
-const visInfoOmPrematurukerVisible = (barn: Partial<FødtBarn>, rolle: SøkerRolle): boolean => {
+const visInfoOmPrematurukerVisible = (barn: Partial<FødtBarn>): boolean => {
     const fødselsdato = barn.fødselsdatoer !== undefined ? barn.fødselsdatoer[0] : undefined;
     const termindato = barn.termindato;
 
@@ -108,7 +104,7 @@ export default {
     termindato: termindatoVisible,
     terminbekreftelse: terminbekreftelsePartialVisible,
     terminbekreftelseDato: terminbekreftelseDatoVisible,
-    visInfoOmPrematuruker: visInfoOmPrematurukerVisible
+    visInfoOmPrematuruker: visInfoOmPrematurukerVisible,
 };
 
 export const RelasjonTilBarFødselVisibilityFunctions = {
@@ -122,5 +118,5 @@ export const RelasjonTilBarFødselVisibilityFunctions = {
     termindatoVisible,
     terminbekreftelsePartialVisible,
     terminbekreftelseDatoVisible,
-    visInfoOmPrematurukerVisible
+    visInfoOmPrematurukerVisible,
 };

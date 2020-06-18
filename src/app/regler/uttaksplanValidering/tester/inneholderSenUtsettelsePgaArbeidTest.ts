@@ -14,7 +14,7 @@ export function inneholderSenUtsettelsePgaArbeidTest(grunnlag: UttaksplanRegelgr
         passerer,
         info: seneUtsettelserPgaArbeid.map((periode) => ({
             intlKey: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.arbeid',
-            periodeId: periode.id
-        }))
+            periodeId: periode.id,
+        })),
     };
 }

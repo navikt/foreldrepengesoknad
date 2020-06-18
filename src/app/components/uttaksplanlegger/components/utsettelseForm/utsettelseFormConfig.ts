@@ -6,7 +6,7 @@ import {
     Utsettelsesperiode,
     Periodetype,
     isUtsettelsesperiode,
-    Arbeidsform
+    Arbeidsform,
 } from '../../../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from 'app/util/domain/aktivitetskravMor';
 import { Tidsperiode } from 'common/types';
@@ -23,7 +23,7 @@ export enum UtsettelseSpørsmålKeys {
     'ferieinfo' = 'ferieinfo',
     'avtaltFulltidVedDeltid' = 'avtaltFulltidVedDeltid',
     'hvØvelse' = 'hvØvelse',
-    'navTiltak' = 'navTiltak'
+    'navTiltak' = 'navTiltak',
 }
 
 export interface UtsettelseFormPayload {
@@ -90,20 +90,20 @@ const harValgtArbeidsformerMedDeltid = (periode: Utsettelsesperiode, arbeidsforh
 
 export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, UtsettelseSpørsmålKeys> = {
     [Sp.tidsperiode]: {
-        isAnswered: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined
+        isAnswered: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined,
     },
     [Sp.variant]: {
         isAnswered: ({ variant }) => questionValueIsOk(variant),
-        isIncluded: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined
+        isIncluded: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined,
     },
     [Sp.sykdomsårsak]: {
         isAnswered: ({ periode }) => questionValueIsOk(periode.årsak),
         parentQuestion: Sp.variant,
-        isIncluded: ({ variant }) => variant === Utsettelsesvariant.Sykdom
+        isIncluded: ({ variant }) => variant === Utsettelsesvariant.Sykdom,
     },
     [Sp.ferieinfo]: {
         isAnswered: () => true,
-        isIncluded: ({ variant }) => variant === Utsettelsesvariant.Ferie
+        isIncluded: ({ variant }) => variant === Utsettelsesvariant.Ferie,
     },
     [Sp.arbeidsplass]: {
         isAnswered: ({ variant, periode }) =>
@@ -111,27 +111,27 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
                 ? harRegistrertArbeidOk(variant, periode as Utsettelsesperiode)
                 : true,
         parentQuestion: Sp.variant,
-        isIncluded: ({ variant }) => variant === Utsettelsesvariant.Arbeid
+        isIncluded: ({ variant }) => variant === Utsettelsesvariant.Arbeid,
     },
     [Sp.avtaltFulltidVedDeltid]: {
         isAnswered: ({ periode }) =>
             isUtsettelsesperiode(periode) && periode.harAvtaleOmFulltidForDeltidsstilling !== undefined,
         parentQuestion: Sp.arbeidsplass,
         isIncluded: ({ periode, arbeidsforhold }) =>
-            isUtsettelsesperiode(periode) ? harValgtArbeidsformerMedDeltid(periode, arbeidsforhold) : false
+            isUtsettelsesperiode(periode) ? harValgtArbeidsformerMedDeltid(periode, arbeidsforhold) : false,
     },
     [Sp.morsAktivitet]: {
         isAnswered: ({ periode }) => questionValueIsOk((periode as Utsettelsesperiode).morsAktivitetIPerioden),
-        isIncluded: (payload) => skalViseSpørsmålOmMorsAktivitet(payload)
+        isIncluded: (payload) => skalViseSpørsmålOmMorsAktivitet(payload),
     },
     [Sp.hvØvelse]: {
         isAnswered: () => true,
-        isIncluded: ({ variant }) => variant === Utsettelsesvariant.HvØvelse
+        isIncluded: ({ variant }) => variant === Utsettelsesvariant.HvØvelse,
     },
     [Sp.navTiltak]: {
         isAnswered: () => true,
-        isIncluded: ({ variant }) => variant === Utsettelsesvariant.NavTiltak
-    }
+        isIncluded: ({ variant }) => variant === Utsettelsesvariant.NavTiltak,
+    },
 };
 
 export const getUtsettelseFormVisibility = (payload: UtsettelseFormPayload): UtsettelseSpørsmålVisibility => {

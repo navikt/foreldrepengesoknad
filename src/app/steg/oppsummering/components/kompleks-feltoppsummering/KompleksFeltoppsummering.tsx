@@ -8,7 +8,9 @@ interface Props {
 }
 
 const KompleksFeltoppsummering: React.StatelessComponent<Props> = ({ ledetekst, children, className }) => (
-    <InnholdMedLedetekst className={`feltoppsummering ${className}`} ledetekst={ledetekst} children={children} />
+    <InnholdMedLedetekst className={`feltoppsummering ${className}`} ledetekst={ledetekst}>
+        {children}
+    </InnholdMedLedetekst>
 );
 
 export default KompleksFeltoppsummering;

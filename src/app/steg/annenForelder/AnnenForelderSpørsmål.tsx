@@ -40,7 +40,7 @@ export interface OwnProps {
 
 type Props = OwnProps;
 
-class AnnenForelderSpørsmål extends React.Component<Props, {}> {
+class AnnenForelderSpørsmål extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.annenForelderKanIkkeOppgis = this.annenForelderKanIkkeOppgis.bind(this);

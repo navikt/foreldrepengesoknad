@@ -1,11 +1,10 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
 import {
     Periode,
     Periodetype,
     Uttaksperiode,
     Utsettelsesperiode,
-    StønadskontoType
+    StønadskontoType,
 } from '../../types/uttaksplan/periodetyper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import Periodeliste from './components/periodeliste/Periodeliste';
@@ -62,7 +61,7 @@ interface State {
 const initialState: State = {
     formIsOpen: false,
     periodetype: undefined,
-    tidsperiode: undefined
+    tidsperiode: undefined,
 };
 
 const BEM = BEMHelper('uttaksplanlegger');
@@ -71,8 +70,6 @@ export const UTTAKSPLANLEGGER_DOM_ID = 'uttaksplanlegger';
 
 class Uttaksplanlegger extends React.Component<Props, State> {
     nyPeriodeForm: FocusContainer | null;
-    leggTilOppholdKnapp: Knapp | null;
-    leggTilUttakKnapp: Knapp | null;
     periodeliste: Periodeliste | null;
 
     constructor(props: Props) {
@@ -95,7 +92,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         this.setState({
             formIsOpen: true,
             periodetype,
-            tidsperiode
+            tidsperiode,
         });
         setTimeout(() => {
             if (this.nyPeriodeForm) {
@@ -108,7 +105,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         const periode: Partial<Utsettelsesperiode> = {
             type: Periodetype.Utsettelse,
             tidsperiode,
-            forelder: this.props.forelder
+            forelder: this.props.forelder,
         };
         this.props.addPeriode(periode as Periode);
     }
@@ -118,7 +115,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             type: Periodetype.Uttak,
             tidsperiode,
             forelder: this.props.forelder,
-            konto: this.props.defaultStønadskontoType
+            konto: this.props.defaultStønadskontoType,
         };
         this.props.addPeriode(periode as Periode);
     }
@@ -133,7 +130,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         const tidsperiode: Partial<Tidsperiode> | undefined =
             this.props.uttaksplan.length > 0
                 ? {
-                      fom: Periodene(this.props.uttaksplan).getFørsteUttaksdagEtterSistePeriode()
+                      fom: Periodene(this.props.uttaksplan).getFørsteUttaksdagEtterSistePeriode(),
                   }
                 : undefined;
 
@@ -157,15 +154,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
     }
 
     handleOnCancel() {
-        const { periodetype } = this.state;
         this.closeForm();
-        setTimeout(() => {
-            if (periodetype === Periodetype.Utsettelse && this.leggTilOppholdKnapp) {
-                (ReactDOM.findDOMNode(this.leggTilOppholdKnapp) as HTMLElement).focus();
-            } else if (periodetype === Periodetype.Uttak && this.leggTilUttakKnapp) {
-                (ReactDOM.findDOMNode(this.leggTilUttakKnapp) as HTMLElement).focus();
-            }
-        });
     }
 
     render() {
@@ -178,7 +167,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             uttaksplan,
             planErEndret,
             meldingerPerPeriode,
-            intl
+            intl,
         } = this.props;
         const { formIsOpen, periodetype } = this.state;
         const antallFeriedager = Periodene(uttaksplan).getAntallFeriedager(forelder);
@@ -201,7 +190,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                 ikon: <UttaksplanAdvarselIkon />,
                 tittel: getMessage(intl, 'periodeliste.hull.tittel'),
                 beskrivelse: getMessage(intl, 'periodeliste.hull.beskrivelse', {
-                    dager: infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor.antallUttaksdagerTapt
+                    dager: infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor.antallUttaksdagerTapt,
                 }),
                 renderContent: () => (
                     <TapteUttaksdagerFarMedmor
@@ -209,7 +198,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         onLeggTilOpphold={this.replaceHullWithOpphold}
                     />
                 ),
-                annenForelderSamtidigUttakPeriode: undefined
+                annenForelderSamtidigUttakPeriode: undefined,
             });
         }
 
@@ -228,28 +217,20 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             <Systemtittel tag="h2" className={BEM.element('header__title')}>
                                 <FormattedMessage id="uttaksplan.tittel" />
                             </Systemtittel>
-                            {onRequestClear &&
-                                uttaksplan.length > 0 && (
-                                    <div className={BEM.element('header__reset')}>
-                                        <LinkButton
-                                            className={BEM.element('resetLink')}
-                                            onClick={() => onRequestClear()}
-                                        >
-                                            <FormattedMessage id="uttaksplan.slettPlan" />
-                                        </LinkButton>
-                                    </div>
-                                )}
-                            {onRequestRevert &&
-                                (planErEndret || søknadsinfo.søknaden.ønskerTomPlan) && (
-                                    <div className={BEM.element('header__reset')}>
-                                        <LinkButton
-                                            className={BEM.element('resetLink')}
-                                            onClick={() => onRequestRevert()}
-                                        >
-                                            <FormattedMessage id="uttaksplan.tilbakestillPlan" />
-                                        </LinkButton>
-                                    </div>
-                                )}
+                            {onRequestClear && uttaksplan.length > 0 && (
+                                <div className={BEM.element('header__reset')}>
+                                    <LinkButton className={BEM.element('resetLink')} onClick={() => onRequestClear()}>
+                                        <FormattedMessage id="uttaksplan.slettPlan" />
+                                    </LinkButton>
+                                </div>
+                            )}
+                            {onRequestRevert && (planErEndret || søknadsinfo.søknaden.ønskerTomPlan) && (
+                                <div className={BEM.element('header__reset')}>
+                                    <LinkButton className={BEM.element('resetLink')} onClick={() => onRequestRevert()}>
+                                        <FormattedMessage id="uttaksplan.tilbakestillPlan" />
+                                    </LinkButton>
+                                </div>
+                            )}
 
                             <span className={BEM.element('header__details')}>
                                 <span
@@ -299,9 +280,9 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                                         søknadsinfo.uttaksdatoer.etterFødsel
                                                             .sisteUttaksdagInnenforSeksUker
                                                     ).neste()
-                                                )
-                                            }
-                                        }
+                                                ),
+                                            },
+                                        },
                                     ]}
                                 />
                             </Block>
@@ -330,7 +311,6 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         <Knapp
                             onClick={() => this.openNyUtsettelsesperiodeForm()}
                             htmlType="button"
-                            ref={(c) => (this.leggTilOppholdKnapp = c)}
                             aria-expanded={formIsOpen}
                             data-name="openNyUtsettelseForm"
                         >
@@ -339,7 +319,6 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         <Knapp
                             onClick={() => this.openNyUttaksperiodeForm()}
                             htmlType="button"
-                            ref={(c) => (this.leggTilUttakKnapp = c)}
                             aria-expanded={formIsOpen}
                             data-name="openNyPeriodeForm"
                         >

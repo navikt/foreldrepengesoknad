@@ -4,7 +4,7 @@ enum TestKeys {
     parent = 'parent',
     child = 'child',
     grandchild = 'grandchild',
-    friend = 'friend'
+    friend = 'friend',
 }
 
 interface TestPayload {
@@ -22,22 +22,22 @@ const testPayload: TestPayload = {};
 export const questionConfig: QuestionConfig<TestPayload, TestKeys> = {
     [TestKeys.parent]: {
         isIncluded: () => true,
-        isAnswered: (payload: TestPayload) => questionValueIsOk(payload.parent)
+        isAnswered: (payload: TestPayload) => questionValueIsOk(payload.parent),
     },
     [TestKeys.child]: {
         isIncluded: (payload) => payload.allowChildren === true,
-        isAnswered: (payload: TestPayload) => payload.child !== undefined
+        isAnswered: (payload: TestPayload) => payload.child !== undefined,
     },
     [TestKeys.grandchild]: {
         parentQuestion: TestKeys.child,
         isIncluded: (payload) => payload.allowChildren === true,
-        isAnswered: (payload: TestPayload) => payload.grandchild !== undefined
+        isAnswered: (payload: TestPayload) => payload.grandchild !== undefined,
     },
     [TestKeys.friend]: {
         isIncluded: () => true,
         isAnswered: (payload: TestPayload) => payload.friend !== undefined,
-        visibilityFilter: ({ parent, child, grandchild }) => parent === true && child === true && grandchild === true
-    }
+        visibilityFilter: ({ parent, child, grandchild }) => parent === true && child === true && grandchild === true,
+    },
 };
 
 const getVisibility = (payload: TestPayload): TestQuestionVisibility => Questions(questionConfig).getVisbility(payload);
@@ -75,7 +75,7 @@ describe('question', () => {
             allowChildren: true,
             child: true,
             parent: true,
-            grandchild: true
+            grandchild: true,
         });
         expect(visibility.isVisible(TestKeys.grandchild)).toBe(true);
     });

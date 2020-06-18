@@ -21,9 +21,9 @@ declare module 'nav-frontend-ikoner-assets' {
         onClick?: () => void;
         preview?: boolean;
         size?: string | number;
-        style?: Object | Array;
-        wrapperStyle?: Object | Array;
+        style?: Record<string, unknown> | any[];
+        wrapperStyle?: Record<string, unknown> | any[];
     }
 
-    export default class Icon extends React.Component<IconProps, {}> {}
+    export default class Icon extends React.Component<IconProps, Record<string, unknown>> {}
 }

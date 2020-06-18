@@ -16,25 +16,25 @@ function* getSaker() {
 
         yield put(
             apiActions.updateApi({
-                sakForEndringssøknad
+                sakForEndringssøknad,
             })
         );
 
         yield put(
             apiActions.updateApi({
-                sakUnderBehandling: sakForEndringssøknad ? undefined : getSakUnderBehandling(saker)
+                sakUnderBehandling: sakForEndringssøknad ? undefined : getSakUnderBehandling(saker),
             })
         );
     } catch (error) {
         yield put(
             apiActions.updateApi({
-                oppslagSakerFeilet: true
+                oppslagSakerFeilet: true,
             })
         );
     } finally {
         yield put(
             apiActions.updateApi({
-                isLoadingSaker: false
+                isLoadingSaker: false,
             })
         );
     }
@@ -48,13 +48,13 @@ export function* fetchEksisterendeSak(saksnummer: string) {
     } catch (error) {
         yield put(
             apiActions.updateApi({
-                oppslagEksisterendeSakFeilet: true
+                oppslagEksisterendeSakFeilet: true,
             })
         );
     } finally {
         yield put(
             apiActions.updateApi({
-                isLoadingEksisterendeSak: false
+                isLoadingEksisterendeSak: false,
             })
         );
     }
@@ -70,13 +70,13 @@ export function* fetchEksisterendeSakMedFnr(fnr: string) {
     } catch (error) {
         yield put(
             apiActions.updateApi({
-                oppslagSakForAnnenPartFeilet: true
+                oppslagSakForAnnenPartFeilet: true,
             })
         );
     } finally {
         yield put(
             apiActions.updateApi({
-                isLoadingSakForAnnenPart: false
+                isLoadingSakForAnnenPart: false,
             })
         );
     }

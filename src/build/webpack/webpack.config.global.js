@@ -28,11 +28,6 @@ const webpackConfig = {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
-                loader: require.resolve('tslint-loader'),
-                enforce: 'pre',
-            },
-            {
-                test: /\.(ts|tsx)$/,
                 include: [
                     path.resolve(__dirname, './../../app'),
                     path.resolve(__dirname, './../../common'),

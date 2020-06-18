@@ -14,10 +14,10 @@ interface Props {
 
 const cls = (show: boolean, className?: string) =>
     classNames('feil-oppsummering-boks', className, {
-        'feil-oppsummering-boks--visible': show
+        'feil-oppsummering-boks--visible': show,
     });
 
-class Feiloppsummering extends React.Component<Props, {}> {
+class Feiloppsummering extends React.Component<Props> {
     element: HTMLElement | null;
     componentDidMount() {
         if (this.element) {
@@ -34,7 +34,8 @@ class Feiloppsummering extends React.Component<Props, {}> {
                     <a
                         className="feil-oppsummering-boks__lenke"
                         href={link}
-                        onClick={onErrorClick ? (evt) => onErrorClick(error, evt) : undefined}>
+                        onClick={onErrorClick ? (evt) => onErrorClick(error, evt) : undefined}
+                    >
                         {error.text}
                     </a>
                 </li>
@@ -48,7 +49,8 @@ class Feiloppsummering extends React.Component<Props, {}> {
                 }}
                 tabIndex={-1}
                 className={cls(show, className)}
-                {...other}>
+                {...other}
+            >
                 <h1 className="typo-undertittel">{title}</h1>
                 <ul className="feil-oppsummering-boks__liste">{listItems}</ul>
             </article>

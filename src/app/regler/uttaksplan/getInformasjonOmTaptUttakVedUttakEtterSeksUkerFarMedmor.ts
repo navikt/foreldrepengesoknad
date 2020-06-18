@@ -39,7 +39,7 @@ const getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor = (
     const antallUttaksdager =
         Tidsperioden({
             fom: førsteUttaksdag,
-            tom: førsteRegistrerteUttaksdag
+            tom: førsteRegistrerteUttaksdag,
         }).getAntallUttaksdager() - 1;
 
     if (antallUttaksdager === undefined || antallUttaksdager <= ANTALL_UTTAKSDAGER_SEKS_UKER) {
@@ -49,7 +49,7 @@ const getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor = (
     return {
         antallUttaksdagerTapt: antallUttaksdager - ANTALL_UTTAKSDAGER_SEKS_UKER,
         førsteRegistrerteUttaksdag,
-        sisteUttaksdagInnenforSeksUker
+        sisteUttaksdagInnenforSeksUker,
     };
 };
 

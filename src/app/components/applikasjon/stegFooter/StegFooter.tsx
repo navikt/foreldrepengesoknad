@@ -23,7 +23,8 @@ const StegFooter: React.StatelessComponent<Props> = ({ onAvbryt, onFortsettSener
                     onClick={(e) => {
                         e.preventDefault();
                         onFortsettSenere();
-                    }}>
+                    }}
+                >
                     <FormattedMessage id="steg.footer.fortsettSenere" />
                 </LinkButton>
                 <span className={bem.element('dot')} aria-hidden={true} />
@@ -32,7 +33,8 @@ const StegFooter: React.StatelessComponent<Props> = ({ onAvbryt, onFortsettSener
                     onClick={(e) => {
                         e.preventDefault();
                         onAvbryt();
-                    }}>
+                    }}
+                >
                     <FormattedMessage id="steg.footer.avbryt" />
                 </LinkButton>
             </div>

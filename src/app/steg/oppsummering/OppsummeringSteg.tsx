@@ -89,7 +89,7 @@ class OppsummeringSteg extends React.Component<Props> {
             stegProps,
             søknadsinfo,
             dispatch,
-            barn
+            barn,
         } = this.props;
 
         this.sendSøknad = this.sendSøknad.bind(this);
@@ -114,7 +114,7 @@ class OppsummeringSteg extends React.Component<Props> {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.dispatch(validerUttaksplanAction());
     }
 
@@ -142,7 +142,7 @@ class OppsummeringSteg extends React.Component<Props> {
             antallUkerUttaksplan,
             skalSpørreOmAnnenForelderErInformert,
             dispatch,
-            intl
+            intl,
         } = this.props;
         const { person } = søkerinfo;
         if (person === undefined) {
@@ -178,12 +178,11 @@ class OppsummeringSteg extends React.Component<Props> {
                             uttaksplanValidering={uttaksplanValidering}
                             antallUkerUttaksplan={antallUkerUttaksplan}
                         />
-                        {uttaksplanValidering.erGyldig &&
-                            missingAttachments.length > 0 && (
-                                <Veilederpanel svg={<Veileder farge="lilla" ansikt="skeptisk" stil="kompakt" />}>
-                                    <FormattedMessage id="oppsummering.veileder.manglendeVedlegg" />
-                                </Veilederpanel>
-                            )}
+                        {uttaksplanValidering.erGyldig && missingAttachments.length > 0 && (
+                            <Veilederpanel svg={<Veileder farge="lilla" ansikt="skeptisk" stil="kompakt" />}>
+                                <FormattedMessage id="oppsummering.veileder.manglendeVedlegg" />
+                            </Veilederpanel>
+                        )}
                         {skalSpørreOmAnnenForelderErInformert && (
                             <>
                                 <Block>
@@ -202,8 +201,8 @@ class OppsummeringSteg extends React.Component<Props> {
                                                 type: 'normal',
                                                 contentIntlKey:
                                                     'erAnnenForelderInformert.veilederIkkeInformert.oppsummeringsside',
-                                                values: { navn: søknadsinfo.navn.annenForelder.fornavn }
-                                            }
+                                                values: { navn: søknadsinfo.navn.annenForelder.fornavn },
+                                            },
                                         ]}
                                     />
                                 </Block>
@@ -220,7 +219,7 @@ class OppsummeringSteg extends React.Component<Props> {
                                     onChange={() => {
                                         dispatch(
                                             søknadActions.updateSøknad({
-                                                harGodkjentOppsummering: !søknad.harGodkjentOppsummering
+                                                harGodkjentOppsummering: !søknad.harGodkjentOppsummering,
                                             })
                                         );
                                     }}
@@ -237,7 +236,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const { søknad } = state;
     const { person } = props.søkerinfo;
     const {
-        api: { isLoadingTilgjengeligeStønadskontoer }
+        api: { isLoadingTilgjengeligeStønadskontoer },
     } = state;
 
     const skalSpørreOmAnnenForelderErInformert = getSkalSpørreOmAnnenForelderErInformert(søknad);
@@ -253,8 +252,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         previousStegID = søknadsinfo.søknaden.erEndringssøknad
             ? StegID.UTTAKSPLAN
             : skalViseManglendeVedleggSteg(attachmentMap)
-                ? StegID.MANGLENDE_VEDLEGG
-                : StegID.ANDRE_INNTEKTER;
+            ? StegID.MANGLENDE_VEDLEGG
+            : StegID.ANDRE_INNTEKTER;
     }
 
     const stegProps: StegProps = {
@@ -265,7 +264,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFormTag: true,
         history: props.history,
         isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, søknadsinfo),
-        previousStegID
+        previousStegID,
     };
 
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
@@ -284,8 +283,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         antallUkerUttaksplan,
         søknadsinfo: søknadsinfo!,
         skalSpørreOmAnnenForelderErInformert,
-        familiehendelsesdato
+        familiehendelsesdato,
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(injectIntl(OppsummeringSteg));
+export default connect<StateProps>(mapStateToProps)(injectIntl(OppsummeringSteg));

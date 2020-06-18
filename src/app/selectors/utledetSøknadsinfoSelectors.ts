@@ -7,7 +7,7 @@ import {
     selectSøkerErAleneOmOmsorg,
     selectAntallBarn,
     selectEkstrainfo,
-    selectSaksgrunnlag
+    selectSaksgrunnlag,
 } from './søknadSelector';
 import { createSelector } from 'reselect';
 import { RecursivePartial } from '../types/Partial';
@@ -37,48 +37,33 @@ const søkersituasjonHasRequiredValues = (
     situasjon: RecursivePartial<Søkersituasjon> | undefined
 ): situasjon is Søkersituasjon => situasjon !== undefined;
 
-export const selectFamiliehendelsesdato = createSelector(
-    [selectBarn, selectSituasjon],
-    (barn, situasjon): Date | undefined =>
-        barnHasRequiredValues(barn) && søkersituasjonHasRequiredValues(situasjon)
-            ? getFamiliehendelsedato(barn, situasjon)
-            : undefined
+export const selectFamiliehendelsesdato = createSelector([selectBarn, selectSituasjon], (barn, situasjon):
+    | Date
+    | undefined =>
+    barnHasRequiredValues(barn) && søkersituasjonHasRequiredValues(situasjon)
+        ? getFamiliehendelsedato(barn, situasjon)
+        : undefined
 );
 
-export const selectErFlerbarnssøknad = createSelector(
-    [selectAntallBarn],
-    (antallBarn): boolean | undefined => {
-        return antallBarn === undefined ? undefined : getErFlerbarnssøknad(antallBarn);
-    }
-);
+export const selectErFlerbarnssøknad = createSelector([selectAntallBarn], (antallBarn): boolean | undefined => {
+    return antallBarn === undefined ? undefined : getErFlerbarnssøknad(antallBarn);
+});
 
-export const selectErFødsel = createSelector(
-    [selectSituasjon],
-    (situasjon): boolean | undefined => {
-        return situasjon ? situasjon === Søkersituasjon.FØDSEL : undefined;
-    }
-);
+export const selectErFødsel = createSelector([selectSituasjon], (situasjon): boolean | undefined => {
+    return situasjon ? situasjon === Søkersituasjon.FØDSEL : undefined;
+});
 
-export const selectErAdopsjon = createSelector(
-    [selectSituasjon],
-    (situasjon): boolean | undefined => {
-        return situasjon ? situasjon === Søkersituasjon.ADOPSJON : undefined;
-    }
-);
+export const selectErAdopsjon = createSelector([selectSituasjon], (situasjon): boolean | undefined => {
+    return situasjon ? situasjon === Søkersituasjon.ADOPSJON : undefined;
+});
 
-export const selectSøkerErFarEllerMedmor = createSelector(
-    [selectSøkerrolle],
-    (søkerrolle): boolean => {
-        return søkerrolle ? getErSøkerFarEllerMedmor(søkerrolle) : false;
-    }
-);
+export const selectSøkerErFarEllerMedmor = createSelector([selectSøkerrolle], (søkerrolle): boolean => {
+    return søkerrolle ? getErSøkerFarEllerMedmor(søkerrolle) : false;
+});
 
-export const selectSøkerErMor = createSelector(
-    [selectSøkerrolle],
-    (søkerrolle): boolean => {
-        return søkerrolle ? getErSøkerFarEllerMedmor(søkerrolle) === false : false;
-    }
-);
+export const selectSøkerErMor = createSelector([selectSøkerrolle], (søkerrolle): boolean => {
+    return søkerrolle ? getErSøkerFarEllerMedmor(søkerrolle) === false : false;
+});
 
 export const selectHarMidlertidigOmsorg = createSelector(
     [selectSøkerErMor, selectSaksgrunnlag, selectSøkerErAleneOmOmsorg],
@@ -161,29 +146,20 @@ export const selectFarEllerMedmorHarAleneomsorg = createSelector(
     }
 );
 
-export const selectSøkerKjønn = createSelector(
-    [selectSøkerinfo],
-    (søkerinfo): Kjønn | undefined => {
-        return søkerinfo ? søkerinfo.person.kjønn : undefined;
-    }
-);
+export const selectSøkerKjønn = createSelector([selectSøkerinfo], (søkerinfo): Kjønn | undefined => {
+    return søkerinfo ? søkerinfo.person.kjønn : undefined;
+});
 
-export const selectAnnenForelderKjønn = createSelector(
-    [selectAnnenForelder],
-    (annenForelder): Kjønn | undefined => {
-        if (annenForelder && annenForelder.utenlandskFnr !== true && annenForelder.fnr) {
-            return getKjønnFromFnr(annenForelder.fnr);
-        }
-        return undefined;
+export const selectAnnenForelderKjønn = createSelector([selectAnnenForelder], (annenForelder): Kjønn | undefined => {
+    if (annenForelder && annenForelder.utenlandskFnr !== true && annenForelder.fnr) {
+        return getKjønnFromFnr(annenForelder.fnr);
     }
-);
+    return undefined;
+});
 
-export const selectHarKomplettUttaksplan = createSelector(
-    [selectEkstrainfo],
-    (ekstrainfo): boolean => {
-        if (ekstrainfo === undefined) {
-            return false;
-        }
-        return ekstrainfo.eksisterendeSak !== undefined && ekstrainfo.eksisterendeSak.uttaksplan !== undefined;
+export const selectHarKomplettUttaksplan = createSelector([selectEkstrainfo], (ekstrainfo): boolean => {
+    if (ekstrainfo === undefined) {
+        return false;
     }
-);
+    return ekstrainfo.eksisterendeSak !== undefined && ekstrainfo.eksisterendeSak.uttaksplan !== undefined;
+});

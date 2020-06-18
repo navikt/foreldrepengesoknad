@@ -39,12 +39,12 @@ const getVeilederInfotekst = (årsak: OverføringÅrsakType, navnAnnenForelder: 
         return {
             type: 'normal',
             contentIntlKey: 'uttaksplan.informasjonVedSykdomAnnenForelder',
-            values: { navn: navnAnnenForelder }
+            values: { navn: navnAnnenForelder },
         };
     } else {
         return {
             type: 'normal',
-            contentIntlKey: 'uttaksplan.overføring.vedlegg.info'
+            contentIntlKey: 'uttaksplan.overføring.vedlegg.info',
         };
     }
 };

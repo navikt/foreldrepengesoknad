@@ -38,7 +38,7 @@ const PeriodelistePeriode: React.StatelessComponent<Props> = ({
     updatePeriode,
     deletePeriode,
     harMidlertidigOmsorg,
-    intl
+    intl,
 }) => {
     const ariaLabel = getPeriodeTittel(intl, periode, navnPåForeldre);
     const melding = meldinger.length > 0 ? meldinger[0] : undefined;

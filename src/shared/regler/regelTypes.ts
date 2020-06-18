@@ -6,7 +6,7 @@ type FeilIntlMessage = (intl: IntlShape) => string;
 export enum RegelAlvorlighet {
     'FEIL' = 'feil',
     'ADVARSEL' = 'advarsel',
-    'INFO' = 'info'
+    'INFO' = 'info',
 }
 
 export interface UttaksplanRegelTestresultat {

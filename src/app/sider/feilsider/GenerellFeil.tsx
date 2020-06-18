@@ -31,7 +31,7 @@ const GenerellFeil: React.StatelessComponent<Props> = (props: Props) => {
             <Feilsidemelding
                 illustrasjon={{
                     tittel: getMessage(props.intl, 'feilside.bobletittel'),
-                    tekst: getMessage(props.intl, 'feilside.bobletekst')
+                    tekst: getMessage(props.intl, 'feilside.bobletekst'),
                 }}
                 tittel={getMessage(props.intl, 'feilside.tittel')}
                 uuid={uuid}
@@ -46,7 +46,7 @@ const GenerellFeil: React.StatelessComponent<Props> = (props: Props) => {
                                     <Lenke href={lenker.brukerstøtte}>
                                         {getMessage(props.intl, 'feilside.ingress.lenke')}
                                     </Lenke>
-                                )
+                                ),
                             }}
                         />
                     )

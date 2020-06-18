@@ -6,28 +6,28 @@ import { AttachmentType } from 'app/components/storage/attachment/types/Attachme
 const uttaksplan: Periode[] = [
     {
         id: 'asd',
-        type: Periodetype.Utsettelse
+        type: Periodetype.Utsettelse,
     },
     {
         id: 'asd',
-        type: Periodetype.Uttak
+        type: Periodetype.Uttak,
     },
     {
         id: 'asd',
-        type: Periodetype.Opphold
+        type: Periodetype.Opphold,
     },
     {
         id: 'asd',
-        type: Periodetype.Overføring
-    }
+        type: Periodetype.Overføring,
+    },
 ] as Periode[];
 
 const uttaksplanMedHull: Periode[] = [
     ...uttaksplan,
     {
         id: 'asd',
-        type: Periodetype.Hull
-    }
+        type: Periodetype.Hull,
+    },
 ] as Periode[];
 
 const uttaksplanMedLikeVedlegg: Periode[] = [
@@ -45,9 +45,9 @@ const uttaksplanMedLikeVedlegg: Periode[] = [
                 uploaded: true,
                 url: undefined,
                 skjemanummer: Skjemanummer.ANNET,
-                type: AttachmentType.OVERFØRING_KVOTE
-            }
-        ]
+                type: AttachmentType.OVERFØRING_KVOTE,
+            },
+        ],
     },
     {
         id: 'asd',
@@ -62,7 +62,7 @@ const uttaksplanMedLikeVedlegg: Periode[] = [
                 uploaded: true,
                 url: undefined,
                 skjemanummer: Skjemanummer.ANNET,
-                type: AttachmentType.OVERFØRING_KVOTE
+                type: AttachmentType.OVERFØRING_KVOTE,
             },
             {
                 id: 'v321',
@@ -73,10 +73,10 @@ const uttaksplanMedLikeVedlegg: Periode[] = [
                 uploaded: true,
                 url: undefined,
                 skjemanummer: Skjemanummer.ANNET,
-                type: AttachmentType.OVERFØRING_KVOTE
-            }
-        ]
-    }
+                type: AttachmentType.OVERFØRING_KVOTE,
+            },
+        ],
+    },
 ] as Periode[];
 
 describe('cleanupSøknad', () => {
@@ -99,13 +99,13 @@ describe('cleanupSøknad', () => {
             pending: false,
             uploaded: true,
             url: 'url',
-            skjemanummer: Skjemanummer.ANNET
+            skjemanummer: Skjemanummer.ANNET,
         };
 
         expect(cleanUpAttachments({ vedlegg: [undefined] }).length).toEqual(0);
         expect(
             cleanUpAttachments({
-                vedlegg: [mockAttachment, undefined]
+                vedlegg: [mockAttachment, undefined],
             })
         ).toEqual([mockAttachment]);
     });

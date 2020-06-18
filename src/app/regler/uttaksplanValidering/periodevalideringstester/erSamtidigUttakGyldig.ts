@@ -10,7 +10,7 @@ export const erSamtidigUttakGyldig: RegelTest = (grunnlag: UttaksplanRegelgrunnl
     return {
         passerer: perioderMedUgyldigTidsperiode.length === 0,
         info: perioderMedUgyldigTidsperiode.map((periode) => ({
-            periodeId: periode.id
-        }))
+            periodeId: periode.id,
+        })),
     };
 };

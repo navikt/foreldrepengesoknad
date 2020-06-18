@@ -157,4 +157,4 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(injectIntl(UtenlandsoppholdSteg));
+export default connect<StateProps>(mapStateToProps)(injectIntl(UtenlandsoppholdSteg));

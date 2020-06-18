@@ -8,7 +8,7 @@ export function formaterStønadskontoParamsDatoer(dato: Date | undefined, datofo
     return dato !== undefined ? moment.utc(dato).format(datoformat || 'dddd D. MMMM YYYY') : undefined;
 }
 
-export function formaterDatoKompakt(dato: Date, datoformat?: string): string {
+export function formaterDatoKompakt(dato: Date): string {
     return formaterDato(dato, 'DD.MM.YYYY');
 }
 
@@ -56,7 +56,7 @@ export const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: n
     const uker = Math.floor(dager / 5);
     return {
         dager: dager - uker * 5,
-        uker
+        uker,
     };
 };
 

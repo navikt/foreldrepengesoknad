@@ -13,7 +13,7 @@ export enum UttaksplanSkjemaScenario {
     's7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan' = 's7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan',
     's8_endringssøknad' = 's8_endringssøknad',
     's9_førstegangssøknadMedAnnenPart' = 's9_førstegangssøknadMedAnnenPart',
-    'sX_ukjent_x' = 'ukjent'
+    'sX_ukjent_x' = 'ukjent',
 }
 
 export const getUttaksplanSkjemaScenario = (

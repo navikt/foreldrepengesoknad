@@ -7,7 +7,7 @@ import {
     AnnenInntektPartial,
     AnnenInntektType,
     JobbIUtlandetInntekt,
-    JobbIUtlandetInntektPartial
+    JobbIUtlandetInntektPartial,
 } from '../../../types/søknad/AnnenInntekt';
 import AttachmentsUploader from 'app/components/storage/attachment/components/AttachmentUploader';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
@@ -55,7 +55,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 annenInntekt:
                     state && state.annenInntekt && Object.keys(state.annenInntekt).length > 0
                         ? state.annenInntekt
-                        : props.annenInntekt || {}
+                        : props.annenInntekt || {},
             };
         }
     }
@@ -71,8 +71,8 @@ class AnnenInntektModal extends React.Component<Props, State> {
         this.setState({
             annenInntekt: {
                 ...this.state.annenInntekt,
-                ...annenInntektProperties
-            }
+                ...annenInntektProperties,
+            },
         });
     }
 
@@ -81,8 +81,8 @@ class AnnenInntektModal extends React.Component<Props, State> {
         this.setState({
             annenInntekt: {
                 ...annenInntekt,
-                vedlegg
-            }
+                vedlegg,
+            },
         });
     }
 
@@ -94,8 +94,8 @@ class AnnenInntektModal extends React.Component<Props, State> {
             this.setState({
                 annenInntekt: {
                     ...annenInntekt,
-                    vedlegg: annenInntekt.vedlegg
-                }
+                    vedlegg: annenInntekt.vedlegg,
+                },
             });
         }
     }
@@ -134,13 +134,13 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         label={getMessage(intl, 'annenInntekt.modal.land')}
                         onChange={(v: string) => {
                             const utlandInntekt: JobbIUtlandetInntektPartial = {
-                                land: v
+                                land: v,
                             };
                             this.updateAnnenInntekt(utlandInntekt);
                         }}
                         visBareEuOgEftaLand={true}
                         validators={[
-                            hasValueRule(annenInntekt && (annenInntekt as JobbIUtlandetInntekt).land, 'påkrevd')
+                            hasValueRule(annenInntekt && (annenInntekt as JobbIUtlandetInntekt).land, 'påkrevd'),
                         ]}
                     />
                 </Block>
@@ -151,7 +151,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         label={getMessage(intl, 'annenInntekt.spørsmål.arbeidsgiver')}
                         onChange={(arbeidsgiverNavn: string) => {
                             const utlandInntekt: JobbIUtlandetInntektPartial = {
-                                arbeidsgiverNavn
+                                arbeidsgiverNavn,
                             };
                             this.updateAnnenInntekt(utlandInntekt);
                         }}
@@ -160,7 +160,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             hasValueRule(
                                 annenInntekt && (annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn,
                                 'påkrevd'
-                            )
+                            ),
                         ]}
                     />
                 </Block>
@@ -178,9 +178,9 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             til: [
                                 {
                                     test: () => tidsperiode.tom !== undefined || tidsperiode.pågående === true,
-                                    failText: getMessage(intl, 'påkrevd')
-                                }
-                            ]
+                                    failText: getMessage(intl, 'påkrevd'),
+                                },
+                            ],
                         }}
                         kalenderplassering="fullskjerm"
                     />
@@ -216,9 +216,9 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                                   (annenInntekt as JobbIUtlandetInntekt).land,
                                                   intl.locale
                                               )
-                                            : 'annet land'
-                                }
-                            }
+                                            : 'annet land',
+                                },
+                            },
                         ]}
                     />
                 </Block>

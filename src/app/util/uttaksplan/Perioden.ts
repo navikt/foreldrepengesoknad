@@ -11,13 +11,13 @@ export const Perioden = (periode: Periode) => ({
         (periode.tidsperiode = getTidsperiode(periode.tidsperiode.fom, uttaksdager)),
     getAntallUttaksdager: () => Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
     getAntallFridager: () => Tidsperioden(periode.tidsperiode).getAntallFridager(),
-    erLik: (periode2: Periode, inkluderTidsperiode: boolean = false, inkluderUtsettelser: boolean = false) =>
+    erLik: (periode2: Periode, inkluderTidsperiode = false, inkluderUtsettelser = false) =>
         erPerioderLike(periode, periode2, inkluderTidsperiode, inkluderUtsettelser),
     erSammenhengende: (periode2: Periode) => erPerioderSammenhengende(periode, periode2),
     inneholderFridager: () => Tidsperioden(periode.tidsperiode).getAntallFridager() > 0,
     starterFør: (dato: Date) => moment(periode.tidsperiode.fom).isBefore(dato, 'day'),
     slutterEtter: (dato: Date) => moment(periode.tidsperiode.tom).isAfter(dato, 'day'),
-    slutterSammeDagEllerEtter: (dato: Date) => moment(periode.tidsperiode.tom).isSameOrAfter(dato, 'day')
+    slutterSammeDagEllerEtter: (dato: Date) => moment(periode.tidsperiode.tom).isSameOrAfter(dato, 'day'),
 });
 
 function erPerioderSammenhengende(p1: Periode, p2: Periode) {
@@ -26,12 +26,7 @@ function erPerioderSammenhengende(p1: Periode, p2: Periode) {
     return moment(p1NesteUttaksdato).isSame(p2Startdato, 'day');
 }
 
-function erPerioderLike(
-    p1: Periode,
-    p2: Periode,
-    inkluderTidsperiode: boolean = false,
-    inkluderUtsettelser: boolean = false
-) {
+function erPerioderLike(p1: Periode, p2: Periode, inkluderTidsperiode = false, inkluderUtsettelser = false) {
     if (p1.type !== p2.type) {
         return false;
     }
@@ -57,7 +52,7 @@ function erPerioderLike(
     return k1 === k2;
 }
 
-function getPeriodeFootprint(periode: Periode, inkluderTidsperiode: boolean = false) {
+function getPeriodeFootprint(periode: Periode, inkluderTidsperiode = false) {
     const { tidsperiode, id, ...rest } = periode;
     const sortedPeriode: any = {};
     Object.keys(rest)
@@ -69,7 +64,7 @@ function getPeriodeFootprint(periode: Periode, inkluderTidsperiode: boolean = fa
     if (inkluderTidsperiode && tidsperiode) {
         sortedPeriode.tidsperiode = {
             fom: tidsperiode.fom ? formaterDatoKompakt(tidsperiode.fom) : undefined,
-            tom: tidsperiode.tom ? formaterDatoKompakt(tidsperiode.tom) : undefined
+            tom: tidsperiode.tom ? formaterDatoKompakt(tidsperiode.tom) : undefined,
         };
     }
     return JSON.stringify({ ...sortedPeriode });
@@ -78,6 +73,6 @@ function getPeriodeFootprint(periode: Periode, inkluderTidsperiode: boolean = fa
 function flyttPeriode(periode: Periode, fom: Date): Periode {
     return {
         ...periode,
-        tidsperiode: Tidsperioden(periode.tidsperiode).setStartdato(fom) as Tidsperiode
+        tidsperiode: Tidsperioden(periode.tidsperiode).setStartdato(fom) as Tidsperiode,
     };
 }

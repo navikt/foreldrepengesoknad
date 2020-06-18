@@ -10,7 +10,7 @@ export interface Alder {
 
 export enum Kjønn {
     'MANN' = 'M',
-    'KVINNE' = 'K'
+    'KVINNE' = 'K',
 }
 
 export interface HistoryProps {

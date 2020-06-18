@@ -3,12 +3,10 @@ import ChildSVG from 'app/components/uttaksplanlegger/components/childSvg/ChildS
 import PersonMedSnakkeboble from 'common/components/personMedSnakkeboble/PersonMedSnakkeboble';
 import { FormattedMessage } from 'react-intl';
 
-export interface Props {}
-
-const TomUttaksplanInfo: React.StatelessComponent<Props> = (props) => (
+const TomUttaksplanInfo: React.StatelessComponent = () => (
     <PersonMedSnakkeboble
         dialog={{
-            text: <FormattedMessage id="uttaksplan.tomPlan" />
+            text: <FormattedMessage id="uttaksplan.tomPlan" />,
         }}
         stil="kompakt"
         fyltBakgrunn={false}

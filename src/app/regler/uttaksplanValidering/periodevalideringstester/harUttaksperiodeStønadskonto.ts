@@ -10,7 +10,7 @@ export const harUttaksperiodeStønadskonto: RegelTest = (grunnlag: UttaksplanReg
     return {
         passerer: uttaksperioderUtenStønadskonto.length === 0,
         info: uttaksperioderUtenStønadskonto.map((periode) => ({
-            periodeId: periode.id
-        }))
+            periodeId: periode.id,
+        })),
     };
 };

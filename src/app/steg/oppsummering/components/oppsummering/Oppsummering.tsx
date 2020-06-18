@@ -46,8 +46,8 @@ class Oppsummering extends React.Component<Props> {
                         messages={[
                             {
                                 type: 'normal',
-                                contentIntlKey: 'oppsummering.veileder'
-                            }
+                                contentIntlKey: 'oppsummering.veileder',
+                            },
                         ]}
                     />
                 )}

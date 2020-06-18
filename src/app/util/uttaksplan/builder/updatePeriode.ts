@@ -1,7 +1,7 @@
 import {
     Periode,
     isForeldrepengerFørFødselUttaksperiode,
-    TilgjengeligStønadskonto
+    TilgjengeligStønadskonto,
 } from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanBuilder } from './UttaksplanBuilder';
 import moment from 'moment';

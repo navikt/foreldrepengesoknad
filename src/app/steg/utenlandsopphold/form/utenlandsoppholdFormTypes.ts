@@ -5,7 +5,7 @@ export const enum UtenlandsoppholdFieldNames {
     harBoddUtenforNorgeSiste12Mnd = 'harBoddUtenforNorgeSiste12Mnd',
     utenlandsoppholdSiste12Mnd = 'utenlandsoppholdSiste12Mnd',
     skalBoUtenforNorgeNeste12Mnd = 'skalBoUtenforNorgeNeste12Mnd',
-    utenlandsoppholdNeste12Mnd = 'utenlandsoppholdNeste12Mnd'
+    utenlandsoppholdNeste12Mnd = 'utenlandsoppholdNeste12Mnd',
 }
 
 export interface UtenlandsoppholdFormValues {

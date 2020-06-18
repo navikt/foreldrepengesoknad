@@ -45,7 +45,7 @@ const parseAvgrensinger = (avgrensinger: Avgrensninger): DatovelgerAvgrensninger
 };
 
 const bem = BEMHelper('datoInput');
-class DatoInput extends React.Component<Props, {}> {
+class DatoInput extends React.Component<Props> {
     render() {
         const {
             id,
@@ -61,16 +61,14 @@ class DatoInput extends React.Component<Props, {}> {
             datoAvgrensinger,
             ...rest
         } = this.props;
-        const avgrensningerTekst = this.props.avgrensninger
-            ? getAvgrensningerDescriptionForInput(intl, this.props.avgrensninger)
-            : undefined;
+        const avgrensningerTekst = avgrensninger ? getAvgrensningerDescriptionForInput(intl, avgrensninger) : undefined;
         const ariaDescriptionId = avgrensningerTekst ? `${id}_ariaDesc` : undefined;
         const erHelligdag = (d: Date): boolean => {
             return fridager.some((d2) => moment(d2.date).isSame(d, 'day'));
         };
 
         return (
-            <SkjemaInputElement id={this.props.id} feil={feil} label={label}>
+            <SkjemaInputElement id={id} feil={feil} label={label}>
                 <div className={bem.block}>
                     <div className={bem.element('datovelger')}>
                         <Datovelger

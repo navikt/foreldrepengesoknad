@@ -8,7 +8,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
     isAdopsjonsbarn,
-    isForeldreansvarsbarn
+    isForeldreansvarsbarn,
 } from '../types/søknad/Barn';
 import { Søkersituasjon } from '../types/søknad/Søknad';
 
@@ -17,7 +17,7 @@ const getBarnProps = (barn: Partial<Barn | UfødtBarn | Adopsjonsbarn | Foreldre
         antallBarn: barn.antallBarn,
         datoForAleneomsorg: barn.datoForAleneomsorg,
         dokumentasjonAvAleneomsorg: barn.dokumentasjonAvAleneomsorg,
-        erBarnetFødt: barn.erBarnetFødt
+        erBarnetFødt: barn.erBarnetFødt,
     });
 
 export const getUfødtBarnProps = (barn: Partial<UfødtBarn>): Partial<UfødtBarn> =>
@@ -25,7 +25,7 @@ export const getUfødtBarnProps = (barn: Partial<UfødtBarn>): Partial<UfødtBar
         ...getBarnProps(barn),
         terminbekreftelse: barn.terminbekreftelse,
         terminbekreftelseDato: barn.terminbekreftelseDato,
-        termindato: barn.termindato
+        termindato: barn.termindato,
     });
 
 export const getFødtBarnProps = (barn: Partial<FødtBarn>): Partial<FødtBarn> =>
@@ -33,7 +33,7 @@ export const getFødtBarnProps = (barn: Partial<FødtBarn>): Partial<FødtBarn> 
         ...getBarnProps(barn),
         fødselsattest: barn.fødselsattest,
         fødselsdatoer: barn.fødselsdatoer,
-        termindato: barn.termindato
+        termindato: barn.termindato,
     });
 
 export const getAdopsjonsbarnProps = (barn: Partial<Adopsjonsbarn>): Partial<Adopsjonsbarn> =>
@@ -44,7 +44,7 @@ export const getAdopsjonsbarnProps = (barn: Partial<Adopsjonsbarn>): Partial<Ado
         adoptertIUtlandet: barn.adoptertIUtlandet,
         ankomstdato: barn.ankomstdato,
         fødselsdatoer: barn.fødselsdatoer,
-        omsorgsovertakelse: barn.omsorgsovertakelse
+        omsorgsovertakelse: barn.omsorgsovertakelse,
     });
 
 export const getForeldreansvarsbarnProps = (barn: Partial<ForeldreansvarBarn>): Partial<ForeldreansvarBarn> =>
@@ -53,7 +53,7 @@ export const getForeldreansvarsbarnProps = (barn: Partial<ForeldreansvarBarn>): 
         adopsjonsvedtak: barn.adopsjonsvedtak,
         foreldreansvarsdato: barn.foreldreansvarsdato,
         fødselsdatoer: barn.fødselsdatoer,
-        omsorgsovertakelse: barn.omsorgsovertakelse
+        omsorgsovertakelse: barn.omsorgsovertakelse,
     });
 
 export const cleanupBarn = (barn: Partial<Barn>, situasjon: Søkersituasjon): Partial<Barn> | undefined => {

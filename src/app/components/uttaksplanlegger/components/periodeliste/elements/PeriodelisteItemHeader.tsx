@@ -27,7 +27,7 @@ interface Props {
 
 const BEM = BEMHelper('periodelisteItemHeader');
 
-const renderDagMnd = (dato: Date, visÅr: boolean = true): JSX.Element => {
+const renderDagMnd = (dato: Date, visÅr = true): JSX.Element => {
     const d = moment.utc(dato);
     return dato ? (
         <div className={BEM.element('dagmnd')}>
@@ -54,7 +54,7 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
     melding,
     tidsperiode,
     annenForelderSamtidigUttakPeriode,
-    beskrivelseSamtidigUttak
+    beskrivelseSamtidigUttak,
 }) => {
     let annenForelderIsMor;
     if (annenForelderSamtidigUttakPeriode && isUttakAnnenPart(annenForelderSamtidigUttakPeriode)) {
@@ -65,8 +65,9 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
         <div className={BEM.modifier(type)}>
             <div
                 className={classnames(BEM.block, 'typo-normal', {
-                    [BEM.modifier('apnet')]: isOpen
-                })}>
+                    [BEM.modifier('apnet')]: isOpen,
+                })}
+            >
                 <div className={BEM.element('ikon')} role="presentation" aria-hidden={true}>
                     {ikon}
                 </div>
@@ -94,8 +95,9 @@ const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
                 <div
                     className={classnames(BEM.element('samtidig-uttak'), {
                         [BEM.element('samtidig-uttak-mor')]: annenForelderIsMor,
-                        [BEM.element('samtidig-uttak-far')]: !annenForelderIsMor
-                    })}>
+                        [BEM.element('samtidig-uttak-far')]: !annenForelderIsMor,
+                    })}
+                >
                     <div>
                         <Element>
                             <FormattedMessage id="morsAktivitet.SamtidigUttak" />

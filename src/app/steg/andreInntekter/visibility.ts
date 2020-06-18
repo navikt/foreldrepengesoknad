@@ -39,7 +39,7 @@ const andreInntekterBolkVisible: VisibilityFunction<Søker> = (søker: Søker) =
 
 const module = {
     selvstendigNæringsdrivendeBolk: selvstendigNæringsdrivendeBolkVisible,
-    andreInntekterBolk: andreInntekterBolkVisible
+    andreInntekterBolk: andreInntekterBolkVisible,
 };
 
 export default module;

@@ -21,9 +21,9 @@ const AvtaleAtFarTarUtForeldrepengerVeileder: React.FunctionComponent<Props> = (
                         type: 'normal',
                         contentIntlKey: 'annenForelder.veileder.aleneOmsorg.forBarnet',
                         values: {
-                            navn: annenForelderNavn
-                        }
-                    }
+                            navn: annenForelderNavn,
+                        },
+                    },
                 ]}
             />
         </div>

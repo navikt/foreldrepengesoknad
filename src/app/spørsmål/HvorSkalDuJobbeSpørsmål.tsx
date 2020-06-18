@@ -64,7 +64,7 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
         const name = 'hvorSkalDuJobbe';
 
         return [
-            ...kunArbeidsforholdForValgtTidsperiode.map((v, i) => ({
+            ...kunArbeidsforholdForValgtTidsperiode.map((v) => ({
                 label: v.arbeidsgiverIdType === 'orgnr' ? v.arbeidsgiverNavn : getMessage(intl, 'arbeidsgiver'),
                 value: v.arbeidsgiverId,
                 name,

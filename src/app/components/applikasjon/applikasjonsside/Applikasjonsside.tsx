@@ -47,12 +47,12 @@ class Sidemal extends React.Component<Props> {
             innloggetSomAnnenBruker,
             margin = true,
             visAlertstripe = true,
-            dispatch
+            dispatch,
         } = this.props;
 
         const BEM = BEMHelper('content');
         const cls = classnames(BEM.block, {
-            [`${BEM.modifier('withoutMargin')}`]: margin === false
+            [`${BEM.modifier('withoutMargin')}`]: margin === false,
         });
 
         return (
@@ -69,18 +69,17 @@ class Sidemal extends React.Component<Props> {
                     </Søknadstittel>
                 )}
 
-                {isFeatureEnabled(Feature.visAlertstripe) &&
-                    visAlertstripe && (
-                        <div
-                            className={classnames(BEM.element('alertstripe'), {
-                                [BEM.modifier('purple-background')]: visSpråkvelger
-                            })}
-                        >
-                            <AlertStripe type="info">
-                                <FormattedMessage id="feature.alertstripe.tekst" />
-                            </AlertStripe>
-                        </div>
-                    )}
+                {isFeatureEnabled(Feature.visAlertstripe) && visAlertstripe && (
+                    <div
+                        className={classnames(BEM.element('alertstripe'), {
+                            [BEM.modifier('purple-background')]: visSpråkvelger,
+                        })}
+                    >
+                        <AlertStripe type="info">
+                            <FormattedMessage id="feature.alertstripe.tekst" />
+                        </AlertStripe>
+                    </div>
+                )}
 
                 <div className={cls}>{children}</div>
                 <UtløptSesjonModal erÅpen={sessionHasExpired} />
@@ -94,7 +93,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
     språkkode: state.common.språkkode,
     erEndringssøknad: state.søknad.erEndringssøknad,
     sessionHasExpired: state.api.sessionHasExpired,
-    innloggetSomAnnenBruker: state.api.innloggetSomAnnenForelder
+    innloggetSomAnnenBruker: state.api.innloggetSomAnnenForelder,
 });
 
 export default connect(mapStateToProps)(injectIntl(Sidemal));

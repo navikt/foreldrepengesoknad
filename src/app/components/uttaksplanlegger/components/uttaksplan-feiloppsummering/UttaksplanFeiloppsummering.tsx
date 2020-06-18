@@ -27,7 +27,7 @@ type UttaksplanValideringFeil = SummaryError<PeriodeRelatertFeil>;
 
 export type Props = OwnProps;
 
-class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
+class UttaksplanFeiloppsummering extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.handleOnErrorClick = this.handleOnErrorClick.bind(this);
@@ -55,7 +55,7 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
                         feil.push({
                             name: UTTAKSPLANLEGGER_DOM_ID,
                             text: getMessage(intl, info.intlKey, getRegelIntlValues(intl, info)),
-                            payload: info.periodeId ? { periodeId: info.periodeId } : undefined
+                            payload: info.periodeId ? { periodeId: info.periodeId } : undefined,
                         });
                     };
                     addFeilInfo(avvik.info);

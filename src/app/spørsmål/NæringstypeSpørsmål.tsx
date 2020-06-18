@@ -36,7 +36,7 @@ const NæringstypeSpørsmål: React.StatelessComponent<Props> = (props: Props) =
             twoColumns={true}
             legend={getMessage(intl, 'næringstype.spørsmål')}
             checkboxes={createNæringstypeOptions()}
-            onChange={(e: InputChangeEvent, næringstype: Næringstype) => {
+            onChange={(_e: InputChangeEvent, næringstype: Næringstype) => {
                 onChange(næringstype);
             }}
         />

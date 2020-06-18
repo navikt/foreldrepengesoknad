@@ -35,7 +35,7 @@ const Veileder = (props: Props) => {
             `veileder--tema-${farge}`,
             `veileder--stil-${stil}`,
             props.className
-        )
+        ),
     };
 
     return stil === 'kompakt' ? (

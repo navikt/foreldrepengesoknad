@@ -6,7 +6,7 @@ describe('getSøkerrollerForBruker', () => {
     it('should return correct list of SøkerRolle when situasjon is Søkersituasjon.FØDSEL', () => {
         expect(getSøkerrollerForBruker(Kjønn.KVINNE, Søkersituasjon.FØDSEL)).toEqual([
             SøkerRolle.MOR,
-            SøkerRolle.MEDMOR
+            SøkerRolle.MEDMOR,
         ]);
         expect(getSøkerrollerForBruker(Kjønn.MANN, Søkersituasjon.FØDSEL)).toEqual([]);
     });

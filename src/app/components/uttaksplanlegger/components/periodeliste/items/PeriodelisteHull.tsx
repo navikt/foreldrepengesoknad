@@ -35,17 +35,17 @@ const getTittelOgBeskrivelseForHull = (
     if (isAvslåttPeriode(periode)) {
         return {
             tittel: getMessage(intl, 'periodeliste.ikkeInnvilgetPeriode.tittel', {
-                type: getMessage(intl, `periodetype.${periode.avslåttPeriodeType}`)
+                type: getMessage(intl, `periodetype.${periode.avslåttPeriodeType}`),
             }),
             beskrivelse: getMessage(intl, 'periodeliste.ikkeInnvilgetPeriode.beskrivelse', {
                 varighet: getVarighetString(dager, intl),
-                konto: getStønadskontoNavn(intl, periode.stønadskonto, navnPåForeldre)
-            })
+                konto: getStønadskontoNavn(intl, periode.stønadskonto, navnPåForeldre),
+            }),
         };
     }
     return {
         tittel: getMessage(intl, 'periodeliste.hull.tittel'),
-        beskrivelse: getMessage(intl, 'periodeliste.hull.beskrivelse', { dager })
+        beskrivelse: getMessage(intl, 'periodeliste.hull.beskrivelse', { dager }),
     };
 };
 
@@ -58,7 +58,7 @@ const PeriodelisteHullItem: React.StatelessComponent<Props> = ({
     onReplaceHullWithOpphold,
     navn,
     erDeltUttak,
-    intl
+    intl,
 }) => {
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
     const antallHelligdager = Tidsperioden(periode.tidsperiode).getAntallFridager();
@@ -114,14 +114,14 @@ const PeriodelisteHullItem: React.StatelessComponent<Props> = ({
                                         id="periodeliste.hull.info.uttaksdager.deltUttak"
                                         values={{
                                             navn: navn.annenForelder.fornavn,
-                                            dager: antallDager
+                                            dager: antallDager,
                                         }}
                                     />
                                 ) : (
                                     <FormattedMessage
                                         id="periodeliste.hull.info.uttaksdager.ikkeDeltUttak"
                                         values={{
-                                            dager: antallDager
+                                            dager: antallDager,
                                         }}
                                     />
                                 )}
@@ -132,14 +132,14 @@ const PeriodelisteHullItem: React.StatelessComponent<Props> = ({
                                         id="periodeliste.hull.info.helligdagerOgUttaksdager.deltUttak"
                                         values={{
                                             navn: navn.annenForelder.fornavn,
-                                            dager: antallDager
+                                            dager: antallDager,
                                         }}
                                     />
                                 ) : (
                                     <FormattedMessage
                                         id="periodeliste.hull.info.helligdagerOgUttaksdager.ikkeDeltUttak"
                                         values={{
-                                            dager: antallDager
+                                            dager: antallDager,
                                         }}
                                     />
                                 )}

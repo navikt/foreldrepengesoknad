@@ -1,11 +1,9 @@
-import ReactDOM from 'react-dom';
-
 const elementSelector = [
     'a[href]',
     'select:not([disabled])',
     'input:not([disabled])',
     'textarea:not([disabled])',
-    'button:not([disabled])'
+    'button:not([disabled])',
 ];
 
 function nodelistToArray(nodes: NodeList): HTMLElement[] {
@@ -20,24 +18,18 @@ const tabEnabledSelectors = [`[tabIndex='0']`].concat(elementSelector);
 
 const allTabIndexEnabledSelectors = [`[tabIndex]`].concat(elementSelector);
 
-export function focusElement(el: any) {
+export function focusElement(el: string) {
     if (!el) {
         return;
     }
-    if (typeof el === 'object') {
-        const node = ReactDOM.findDOMNode(el);
-        if (node) {
-            (node as HTMLElement).focus();
-        }
-    } else {
-        const domElement = document.getElementById(el);
-        if (domElement) {
-            domElement.focus();
-        }
+
+    const domElement = document.getElementById(el);
+    if (domElement) {
+        domElement.focus();
     }
 }
 
-export function getFocusableElements(el: Element, onlyTabReachable: boolean = true): HTMLElement[] | undefined {
+export function getFocusableElements(el: Element, onlyTabReachable = true): HTMLElement[] | undefined {
     if (!el) {
         return undefined;
     }

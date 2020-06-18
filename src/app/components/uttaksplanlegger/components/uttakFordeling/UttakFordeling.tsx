@@ -19,11 +19,11 @@ const UttakFordeling: React.StatelessComponent<Props> = ({
     søknadsinfo,
     tilgjengeligeStønadskontoer,
     perioder,
-    intl
+    intl,
 }) => {
     const {
         søker,
-        søknaden: { erDeltUttak, familiehendelsesdato }
+        søknaden: { erDeltUttak, familiehendelsesdato },
     } = søknadsinfo;
 
     const brukteDager = getBrukteDager(tilgjengeligeStønadskontoer, perioder, familiehendelsesdato);
@@ -62,7 +62,7 @@ const UttakFordeling: React.StatelessComponent<Props> = ({
                                   harForMangeDager: mor.dagerTotalt > tilgjengeligeDager.maksDagerMor,
                                   navn: søknadsinfo.navn.mor.fornavn,
                                   ikonRef: 'mor1',
-                                  tittel: getVarighetString(mor.dagerTotalt, intl)
+                                  tittel: getVarighetString(mor.dagerTotalt, intl),
                               }
                             : undefined
                     }
@@ -73,7 +73,7 @@ const UttakFordeling: React.StatelessComponent<Props> = ({
                                   harForMangeDager: farMedmor.dagerTotalt > tilgjengeligeDager.maksDagerFar,
                                   navn: søknadsinfo.navn.farMedmor.fornavn,
                                   ikonRef: 'far1',
-                                  tittel: getVarighetString(farMedmor.dagerTotalt, intl)
+                                  tittel: getVarighetString(farMedmor.dagerTotalt, intl),
                               }
                             : undefined
                     }

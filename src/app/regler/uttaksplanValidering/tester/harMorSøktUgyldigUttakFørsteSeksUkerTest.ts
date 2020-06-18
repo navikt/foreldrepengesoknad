@@ -17,8 +17,8 @@ export const harMorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (
         return {
             passerer,
             info: ugyldigePerioder.map((periode) => ({
-                periodeId: periode.id
-            }))
+                periodeId: periode.id,
+            })),
         };
     }
 

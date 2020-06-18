@@ -20,7 +20,7 @@ function BostedUtlandListAndDialog<FieldNames>({
     maxDate,
     validate,
     labels,
-    erFremtidigOpphold
+    erFremtidigOpphold,
 }: Props<FieldNames>) {
     return (
         <FormikModalFormAndList<FieldNames, BostedUtland>

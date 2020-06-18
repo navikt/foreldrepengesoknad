@@ -4,45 +4,45 @@ import {
     UtsettelseÅrsakType,
     Periode,
     PeriodeInfoType,
-    OppholdÅrsakType
+    OppholdÅrsakType,
 } from '../../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode, StønadskontoType } from 'common/types';
 import {
     splittPeriodeMedHelligdager,
     getFriperioderITidsperiode,
     finnHullIPerioder,
-    UttaksplanBuilder
+    UttaksplanBuilder,
 } from '../builder/UttaksplanBuilder';
 import { Perioden } from '../Perioden';
 import { PeriodeResultatType } from 'app/types/EksisterendeSak';
 import { Uttaksdagen } from '../Uttaksdagen';
 import moment from 'moment';
 
-const perioder: Array<Partial<Periode>> = [
+const perioder: Partial<Periode>[] = [
     {
         id: '1',
         type: Periodetype.Uttak,
         tidsperiode: {
             fom: new Date('2019-01-01'),
-            tom: new Date('2019-01-10')
-        }
+            tom: new Date('2019-01-10'),
+        },
     },
     {
         id: '2',
         type: Periodetype.Uttak,
         tidsperiode: {
             fom: new Date('2019-01-11'),
-            tom: new Date('2019-01-20')
-        }
+            tom: new Date('2019-01-20'),
+        },
     },
     {
         id: '3',
         type: Periodetype.Uttak,
         tidsperiode: {
             fom: new Date('2019-01-21'),
-            tom: new Date('2019-01-30')
-        }
-    }
+            tom: new Date('2019-01-30'),
+        },
+    },
 ];
 
 describe('UttaksplanBuilder', () => {
@@ -54,10 +54,10 @@ describe('UttaksplanBuilder', () => {
                 årsak: UtsettelseÅrsakType.Ferie,
                 tidsperiode: {
                     fom: new Date(2018, 11, 20),
-                    tom: new Date(2018, 11, 28)
+                    tom: new Date(2018, 11, 28),
                 },
                 forelder: Forelder.mor,
-                erArbeidstaker: false
+                erArbeidstaker: false,
             };
 
             const result = splittPeriodeMedHelligdager(periode);
@@ -70,10 +70,10 @@ describe('UttaksplanBuilder', () => {
                 årsak: UtsettelseÅrsakType.Ferie,
                 tidsperiode: {
                     fom: new Date(2018, 11, 20),
-                    tom: new Date(2019, 0, 5)
+                    tom: new Date(2019, 0, 5),
                 },
                 forelder: Forelder.mor,
-                erArbeidstaker: false
+                erArbeidstaker: false,
             };
 
             const result = splittPeriodeMedHelligdager(periode);
@@ -85,7 +85,7 @@ describe('UttaksplanBuilder', () => {
         it('Skal finne to friperioder i løpet av jul og nyttår', () => {
             const tidsperiode: Tidsperiode = {
                 fom: new Date(2018, 11, 20),
-                tom: new Date(2019, 0, 3)
+                tom: new Date(2019, 0, 3),
             };
             const result = getFriperioderITidsperiode(tidsperiode);
             expect(result.length).toBe(2);
@@ -93,7 +93,7 @@ describe('UttaksplanBuilder', () => {
         it('Skal finne 0 friperioder i februar 2019', () => {
             const tidsperiode: Tidsperiode = {
                 fom: new Date(2019, 1, 1),
-                tom: new Date(2019, 1, 27)
+                tom: new Date(2019, 1, 27),
             };
             const result = getFriperioderITidsperiode(tidsperiode);
             expect(result.length).toBe(0);
@@ -101,7 +101,7 @@ describe('UttaksplanBuilder', () => {
         it('Skal finne 8 friperioder i 2018', () => {
             const tidsperiode: Tidsperiode = {
                 fom: new Date(2018, 0, 1),
-                tom: new Date(2018, 11, 31)
+                tom: new Date(2018, 11, 31),
             };
             const result = getFriperioderITidsperiode(tidsperiode);
             expect(result.length).toBe(8);
@@ -109,7 +109,7 @@ describe('UttaksplanBuilder', () => {
         it('Skal finne 1. januar 2018', () => {
             const tidsperiode: Tidsperiode = {
                 fom: new Date(2017, 11, 31),
-                tom: new Date(2018, 0, 2)
+                tom: new Date(2018, 0, 2),
             };
             const result = getFriperioderITidsperiode(tidsperiode);
             expect(result.length).toBe(1);
@@ -117,7 +117,7 @@ describe('UttaksplanBuilder', () => {
         it('Skal ikke finne 1. januar 2017 siden det er en helgedag', () => {
             const tidsperiode: Tidsperiode = {
                 fom: new Date(2016, 11, 31),
-                tom: new Date(2017, 0, 2)
+                tom: new Date(2017, 0, 2),
             };
             const result = getFriperioderITidsperiode(tidsperiode);
             expect(result.length).toBe(0);
@@ -130,8 +130,8 @@ describe('UttaksplanBuilder', () => {
             uttak: [
                 { konto: StønadskontoType.Fellesperiode, dager: 50 },
                 { konto: StønadskontoType.Fedrekvote, dager: 50 },
-                { konto: StønadskontoType.Mødrekvote, dager: 50 }
-            ]
+                { konto: StønadskontoType.Mødrekvote, dager: 50 },
+            ],
         });
 
         it('Legge til periode i en tom plan skal fungere', () => {
@@ -140,8 +140,8 @@ describe('UttaksplanBuilder', () => {
                 type: Periodetype.Uttak,
                 tidsperiode: {
                     fom: new Date('2019-01-31'),
-                    tom: new Date('2019-02-10')
-                }
+                    tom: new Date('2019-02-10'),
+                },
             };
 
             const eksisterendePlan: Periode[] = [];
@@ -169,11 +169,11 @@ describe('UttaksplanBuilder', () => {
                 konto: StønadskontoType.Fedrekvote,
                 tidsperiode: {
                     fom: familiehendelsedato.denneEllerNeste(),
-                    tom: familiehendelsedato.leggTil(4)
+                    tom: familiehendelsedato.leggTil(4),
                 },
                 forelder: Forelder.farMedmor,
                 ønskerSamtidigUttak: false,
-                gradert: false
+                gradert: false,
             };
 
             const eksisterendePlan: Periode[] = [
@@ -184,15 +184,15 @@ describe('UttaksplanBuilder', () => {
                     årsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
                     tidsperiode: {
                         fom: familiehendelsedato.denneEllerNeste(),
-                        tom: familiehendelsedato.leggTil(9)
+                        tom: familiehendelsedato.leggTil(9),
                     },
                     forelder: Forelder.mor,
                     overskrives: true,
                     resultatType: PeriodeResultatType.INNVILGET,
                     gradert: false,
                     ønskerSamtidigUttak: false,
-                    visPeriodeIPlan: true
-                }
+                    visPeriodeIPlan: true,
+                },
             ];
 
             const result = UttaksplanBuilder(
@@ -202,7 +202,7 @@ describe('UttaksplanBuilder', () => {
                 [
                     { konto: StønadskontoType.Fellesperiode, dager: 50 },
                     { konto: StønadskontoType.Fedrekvote, dager: 50 },
-                    { konto: StønadskontoType.Mødrekvote, dager: 50 }
+                    { konto: StønadskontoType.Mødrekvote, dager: 50 },
                 ],
                 false,
                 false,
@@ -216,15 +216,15 @@ describe('UttaksplanBuilder', () => {
                         årsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
                         tidsperiode: {
                             fom: familiehendelsedato.denneEllerNeste(),
-                            tom: familiehendelsedato.leggTil(9)
+                            tom: familiehendelsedato.leggTil(9),
                         },
                         forelder: Forelder.mor,
                         overskrives: true,
                         resultatType: PeriodeResultatType.INNVILGET,
                         gradert: false,
                         ønskerSamtidigUttak: false,
-                        visPeriodeIPlan: true
-                    }
+                        visPeriodeIPlan: true,
+                    },
                 ]
             ).leggTilPeriodeOgBuild(nyPeriode as Periode);
 
@@ -241,8 +241,8 @@ describe('UttaksplanBuilder', () => {
                 type: Periodetype.Uttak,
                 tidsperiode: {
                     fom: new Date('2019-02-11'),
-                    tom: new Date('2019-02-30')
-                }
+                    tom: new Date('2019-02-30'),
+                },
             };
             const perioderMedHull = [...perioder, nyPeriode];
 
@@ -258,16 +258,16 @@ describe('UttaksplanBuilder', () => {
                 type: Periodetype.Uttak,
                 tidsperiode: {
                     fom: new Date('2019-01-31'),
-                    tom: new Date('2019-02-01')
-                }
+                    tom: new Date('2019-02-01'),
+                },
             };
             const nyPeriode2: Partial<Periode> = {
                 id: '5',
                 type: Periodetype.Uttak,
                 tidsperiode: {
                     fom: new Date('2019-02-04'),
-                    tom: new Date('2019-02-08')
-                }
+                    tom: new Date('2019-02-08'),
+                },
             };
             const perioderMedHull = [...perioder, nyPeriode, nyPeriode2];
 
@@ -293,9 +293,9 @@ describe('UttaksplanBuilder', () => {
                         type: Periodetype.Uttak,
                         tidsperiode: {
                             fom: new Date('2019-02-04'),
-                            tom: new Date('2019-02-08')
-                        }
-                    }
+                            tom: new Date('2019-02-08'),
+                        },
+                    },
                 ] as Periode[],
                 true,
                 false,
@@ -312,9 +312,9 @@ describe('UttaksplanBuilder', () => {
                         type: Periodetype.Uttak,
                         tidsperiode: {
                             fom: new Date('2019-02-04'),
-                            tom: new Date('2019-02-08')
-                        }
-                    }
+                            tom: new Date('2019-02-08'),
+                        },
+                    },
                 ] as Periode[],
                 false,
                 false,

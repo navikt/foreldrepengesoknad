@@ -37,12 +37,12 @@ const DinePersonopplysningerModal = (props: Props) => {
                                     <a
                                         href="https://www.nav.no/foreldrepenger"
                                         className="lenke"
-                                        rel="noopener"
+                                        rel="noreferrer"
                                         target="_blank"
                                     >
                                         {msg}
                                     </a>
-                                )
+                                ),
                             }}
                         />
                     </Normaltekst>
@@ -126,12 +126,12 @@ const DinePersonopplysningerModal = (props: Props) => {
                                     <a
                                         className="lenke"
                                         target="_blank"
-                                        rel="noopener"
+                                        rel="noreferrer"
                                         href="https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten"
                                     >
                                         {msg}
                                     </a>
-                                )
+                                ),
                             }}
                         />
                     </Normaltekst>

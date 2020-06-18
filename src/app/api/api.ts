@@ -36,13 +36,13 @@ const getSaker = () => {
 const getEksisterendeSak = (saksnummer: string) => {
     return AxiosInstance.get('/innsyn/uttaksplan', {
         withCredentials: true,
-        params: { saksnummer }
+        params: { saksnummer },
     });
 };
 
 const getEksisterendeSakMedFnr = (fnr: string) => {
     return AxiosInstance.get('/innsyn/uttaksplanannen', {
-        params: { annenPart: fnr }
+        params: { annenPart: fnr },
     });
 };
 
@@ -57,7 +57,7 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
         omsorgsovertakelsesdato,
         morHarAleneomsorg,
         farHarAleneomsorg,
-        startdatoUttak
+        startdatoUttak,
     } = params;
     const fpUttakServiceDateFormat = 'YYYYMMDD';
     const urlParams = {
@@ -70,12 +70,12 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
         fødselsdato: formaterStønadskontoParamsDatoer(fødselsdato, fpUttakServiceDateFormat),
         termindato: formaterStønadskontoParamsDatoer(termindato, fpUttakServiceDateFormat),
         omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(omsorgsovertakelsesdato, fpUttakServiceDateFormat),
-        startdatoUttak: formaterDato(startdatoUttak, fpUttakServiceDateFormat)
+        startdatoUttak: formaterDato(startdatoUttak, fpUttakServiceDateFormat),
     };
 
     return axios.get(`${uttakBaseUrl}/konto`, {
         timeout: 15 * 1000,
-        params: urlParams
+        params: urlParams,
     });
 }
 
@@ -86,14 +86,14 @@ function sendSøknad(søknad: SøknadForInnsending) {
         withCredentials: true,
         timeout: 120 * 1000,
         headers: {
-            'content-type': 'application/json;'
-        }
+            'content-type': 'application/json;',
+        },
     });
 }
 
 function getStoredAppState() {
     return AxiosInstance.get('/storage', {
-        transformResponse: storageParser
+        transformResponse: storageParser,
     });
 }
 
@@ -109,14 +109,14 @@ function deleteStoredAppState() {
 function sendStorageKvittering(storageKvittering: StorageKvittering) {
     return AxiosInstance.post('/storage/kvittering/foreldrepenger', storageKvittering, {
         withCredentials: true,
-        timeout: 15 * 1000
+        timeout: 15 * 1000,
     });
 }
 
 function getStorageKvittering() {
     return AxiosInstance.get('/storage/kvittering/foreldrepenger', {
         withCredentials: true,
-        timeout: 15 * 1000
+        timeout: 15 * 1000,
     });
 }
 
@@ -131,7 +131,7 @@ const Api = {
     sendStorageKvittering,
     getStorageKvittering,
     getEksisterendeSak,
-    getEksisterendeSakMedFnr
+    getEksisterendeSakMedFnr,
 };
 
 export default Api;

@@ -1,16 +1,11 @@
-import * as React from 'react';
-import { Dekningsgrad } from 'common/types';
+import React from 'react';
 import BEMHelper from 'common/util/bem';
 import Sirkelmaske from 'common/components/sirkelmaske/Sirkelmaske';
 import PengerIkon from 'common/components/ikoner/PengerIkon';
 
 import './dekningsgradSirkel.less';
 
-interface Props {
-    dekningsgrad: Dekningsgrad;
-}
-
-const DekningsgradSirkel: React.StatelessComponent<Props> = ({ dekningsgrad }) => {
+const DekningsgradSirkel: React.StatelessComponent = () => {
     const bem = BEMHelper('dekningsgradSirkel');
     return (
         <div className={bem.block}>

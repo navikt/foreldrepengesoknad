@@ -7,7 +7,7 @@ const frilansErGyldig = (frilansInformasjon: FrilansInformasjon): boolean => {
         oppstart,
         driverFosterhjem,
         harJobbetForNærVennEllerFamilieSiste10Mnd,
-        oppdragForNæreVennerEllerFamilieSiste10Mnd
+        oppdragForNæreVennerEllerFamilieSiste10Mnd,
     } = frilansInformasjon;
 
     let oppdragGyldig = true;
@@ -33,7 +33,7 @@ export const annenInntektErGyldig = (søker: Søker): boolean => {
         harJobbetSomFrilansSiste10Mnd,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
         frilansInformasjon,
-        selvstendigNæringsdrivendeInformasjon
+        selvstendigNæringsdrivendeInformasjon,
     } = søker;
 
     let frilansGyldig = true;

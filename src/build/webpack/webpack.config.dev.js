@@ -12,18 +12,18 @@ webpackConfig.plugins.push(
     new HtmlWebpackPlugin({
         template: './src/app/index.html',
         inject: 'body',
-        alwaysWriteToDisk: true
+        alwaysWriteToDisk: true,
     })
 );
 
 webpackConfig.plugins.push(
     new HtmlWebpackHarddiskPlugin({
-        outputPath: path.resolve(__dirname, '../../../dist/dev')
+        outputPath: path.resolve(__dirname, '../../../dist/dev'),
     })
 );
 
 webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
 
 module.exports = Object.assign(webpackConfig, {
-    devtool: 'inline-source-map'
+    devtool: 'inline-source-map',
 });

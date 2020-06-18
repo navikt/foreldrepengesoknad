@@ -9,8 +9,8 @@ const annenInntekt: AnnenInntekt = {
     land: 'some country',
     pågående: true,
     tidsperiode: {
-        fom: new Date()
-    }
+        fom: new Date(),
+    },
 };
 
 describe('cleanupAnnenInntekt', () => {

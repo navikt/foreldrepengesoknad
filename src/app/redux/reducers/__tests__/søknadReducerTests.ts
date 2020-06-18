@@ -18,7 +18,7 @@ const mockedAttachment: Attachment = {
     file: new File(['aasdfsdf'], 'asdf'),
     uploaded: false,
     type: AttachmentType.ADOPSJONSVEDTAK,
-    skjemanummer: Skjemanummer.OMSORGSOVERTAKELSESDATO
+    skjemanummer: Skjemanummer.OMSORGSOVERTAKELSESDATO,
 };
 
 describe('søknadReducer', () => {
@@ -33,7 +33,7 @@ describe('søknadReducer', () => {
             søker,
             ekstrainfo,
             sensitivInfoIkkeLagre,
-            uttaksplan
+            uttaksplan,
         } = defaultState;
 
         expect(type).toEqual('foreldrepenger');
@@ -81,9 +81,12 @@ describe('søknadReducer', () => {
     });
 
     it('should update specified properties of søknad.annenForelder when UPDATE_ANNEN_FORELDER-action is dispatched', () => {
-        const someAlteredState = reducer(defaultState, actions.updateAnnenForelder({
-            fornavn: 'Ola'
-        }) as any);
+        const someAlteredState = reducer(
+            defaultState,
+            actions.updateAnnenForelder({
+                fornavn: 'Ola',
+            }) as any
+        );
         expect(someAlteredState.annenForelder.fornavn).toBe('Ola');
     });
 

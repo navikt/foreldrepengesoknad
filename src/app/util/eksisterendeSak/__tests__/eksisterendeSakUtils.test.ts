@@ -23,12 +23,12 @@ describe('eksisterendeSakUtils', () => {
                 arbeidsgiverInfo: {
                     id: '973861778',
                     type: ArbeidsgiverInfoType.ORGANISASJON,
-                    navn: 'EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET'
+                    navn: 'EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET',
                 },
                 periode: {
                     fom: '2019-10-21',
-                    tom: '2019-11-29'
-                }
+                    tom: '2019-11-29',
+                },
             };
             const utsettelse2 = { ...utsettelse, uttakArbeidType: UttakArbeidType.SELVSTENDIG_NÆRINGSDRIVENDE };
             const utsettelse3 = { ...utsettelse, uttakArbeidType: UttakArbeidType.ORDINÆRT_ARBEID };
@@ -45,9 +45,9 @@ describe('eksisterendeSakUtils', () => {
                     farMedmorErAleneOmOmsorg: false,
                     farMedmorHarRett: true,
                     søkerKjønn: 'M',
-                    omsorgsovertakelsesdato: '2019-09-01'
+                    omsorgsovertakelsesdato: '2019-09-01',
                 },
-                perioder: [utsettelse, utsettelse2, utsettelse3]
+                perioder: [utsettelse, utsettelse2, utsettelse3],
             };
             const result = getEksisterendeSakFromDTO(uttaksplanDTO as UttaksplanDTO, false);
 

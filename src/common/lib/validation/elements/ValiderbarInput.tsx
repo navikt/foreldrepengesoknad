@@ -2,7 +2,7 @@ import React from 'react';
 import { Input, InputProps } from 'nav-frontend-skjema';
 import {
     default as ValiderbartSkjemaelement,
-    ValiderbartSkjemaelementProps
+    ValiderbartSkjemaelementProps,
 } from 'common/lib/validation/elements/ValiderbartSkjemaelement';
 
 export type ValiderbarInputProps = ValiderbartSkjemaelementProps & InputProps;

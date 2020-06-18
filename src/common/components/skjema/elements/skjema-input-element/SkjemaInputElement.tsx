@@ -17,7 +17,7 @@ const SkjemaInputElement: React.StatelessComponent<Props> = (props: Props) => {
     return (
         <div
             className={classnames('skjemaelement', {
-                'skjemaelement--harFeil': feil !== undefined
+                'skjemaelement--harFeil': feil !== undefined,
             })}
         >
             {typeof label === 'string' ? (
@@ -29,7 +29,7 @@ const SkjemaInputElement: React.StatelessComponent<Props> = (props: Props) => {
             )}
             <div
                 className={classnames({
-                    'skjema__feilomrade--harFeil': feil !== undefined
+                    'skjema__feilomrade--harFeil': feil !== undefined,
                 })}
             >
                 {children}

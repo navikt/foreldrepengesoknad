@@ -158,7 +158,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                                     <a
                                         href={lenker.morsAktivitetskrav}
                                         className="lenke"
-                                        rel="noopener"
+                                        rel="noreferrer"
                                         target="_blank"
                                     >
                                         {msg}

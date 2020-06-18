@@ -4,7 +4,7 @@ import { AppState } from '../reducers';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import {
     setUttaksplanValidering,
-    resetUttaksplanvalideringAction
+    resetUttaksplanvalideringAction,
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
@@ -52,17 +52,20 @@ const kjørUttaksplanRegler = (
         perioderSomSkalSendesInn,
         eksisterendeUttaksplan: eksisterendeSak ? eksisterendeSak.uttaksplan : undefined,
         arbeidsforhold,
-        eksisterendeSak
+        eksisterendeSak,
     });
 
     const avvik = getRegelAvvik(resultat);
-    const avvikPerPeriode = groupBy(avvik.filter((a) => a.periodeId !== undefined), (r) => r.periodeId);
+    const avvikPerPeriode = groupBy(
+        avvik.filter((a) => a.periodeId !== undefined),
+        (r) => r.periodeId
+    );
     const harFeil = hasRegelFeil(avvik);
     return {
         resultat,
         avvik,
         avvikPerPeriode,
-        harFeil
+        harFeil,
     };
 };
 

@@ -5,7 +5,7 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode,
-    isUttaksperiode
+    isUttaksperiode,
 } from 'app/types/uttaksplan/periodetyper';
 import { dateIsBetween, formatDate } from 'app/util/dates/dates';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
@@ -29,7 +29,7 @@ const sjekkArbeidsforhold = (periode: Utsettelsesperiode | Uttaksperiode) => (
         erRelevant: false,
         tom: arbforhold.tom,
         fom: arbforhold.fom,
-        arbeidsgiverNavn: arbforhold.arbeidsgiverNavn
+        arbeidsgiverNavn: arbforhold.arbeidsgiverNavn,
     };
 
     if (tom === undefined) {
@@ -73,68 +73,65 @@ const sjekkArbeidsforhold = (periode: Utsettelsesperiode | Uttaksperiode) => (
 };
 
 const finnPeriodeUtenArbeidsforhold = (
-    perioder: Array<Utsettelsesperiode | Uttaksperiode>,
+    perioder: (Utsettelsesperiode | Uttaksperiode)[],
     arbeidsforhold: Arbeidsforhold[]
 ) => {
-    return perioder.reduce(
-        (result, periode) => {
-            const filtrerteArbeidsforhold = arbeidsforhold.filter(
-                (arb) => periode.orgnumre && periode.orgnumre.some((orgnr) => orgnr === arb.arbeidsgiverId)
-            );
+    return perioder.reduce((result, periode) => {
+        const filtrerteArbeidsforhold = arbeidsforhold.filter(
+            (arb) => periode.orgnumre && periode.orgnumre.some((orgnr) => orgnr === arb.arbeidsgiverId)
+        );
 
-            if (filtrerteArbeidsforhold.length === 0) {
-                return result;
-            }
-
-            const arbeidsforholdGruppertByArbeidsgiver = {};
-            filtrerteArbeidsforhold.forEach((arb: Arbeidsforhold) => {
-                if (arbeidsforholdGruppertByArbeidsgiver[arb.arbeidsgiverId]) {
-                    arbeidsforholdGruppertByArbeidsgiver[arb.arbeidsgiverId].push(arb);
-                } else {
-                    arbeidsforholdGruppertByArbeidsgiver[arb.arbeidsgiverId] = [arb];
-                }
-            });
-
-            Object.keys(arbeidsforholdGruppertByArbeidsgiver).forEach((orgnr: string) => {
-                const alleArbeidsforholdForArbeidsgiver: SjekketArbeidsforhold[] = arbeidsforholdGruppertByArbeidsgiver[
-                    orgnr
-                ].map(sjekkArbeidsforhold(periode));
-                const harFeil = !alleArbeidsforholdForArbeidsgiver.some((a) => a.dekkerPerioden);
-
-                if (harFeil) {
-                    const relevanteArbeidsforhold = alleArbeidsforholdForArbeidsgiver.filter((a) => a.erRelevant);
-
-                    relevanteArbeidsforhold.forEach((arb: SjekketArbeidsforhold) => {
-                        if (arb.fom && arb.tom) {
-                            result.push({
-                                intlKey:
-                                    'uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.medTom',
-                                periodeId: periode.id,
-                                values: {
-                                    fom: formatDate(arb.fom),
-                                    tom: formatDate(arb.tom),
-                                    navn: arb.arbeidsgiverNavn
-                                }
-                            });
-                        } else {
-                            result.push({
-                                intlKey:
-                                    'uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.utenTom',
-                                periodeId: periode.id,
-                                values: {
-                                    fom: formatDate(arb.fom),
-                                    navn: arb.arbeidsgiverNavn
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-
+        if (filtrerteArbeidsforhold.length === 0) {
             return result;
-        },
-        [] as RegelTestresultatInfo[]
-    );
+        }
+
+        const arbeidsforholdGruppertByArbeidsgiver = {};
+        filtrerteArbeidsforhold.forEach((arb: Arbeidsforhold) => {
+            if (arbeidsforholdGruppertByArbeidsgiver[arb.arbeidsgiverId]) {
+                arbeidsforholdGruppertByArbeidsgiver[arb.arbeidsgiverId].push(arb);
+            } else {
+                arbeidsforholdGruppertByArbeidsgiver[arb.arbeidsgiverId] = [arb];
+            }
+        });
+
+        Object.keys(arbeidsforholdGruppertByArbeidsgiver).forEach((orgnr: string) => {
+            const alleArbeidsforholdForArbeidsgiver: SjekketArbeidsforhold[] = arbeidsforholdGruppertByArbeidsgiver[
+                orgnr
+            ].map(sjekkArbeidsforhold(periode));
+            const harFeil = !alleArbeidsforholdForArbeidsgiver.some((a) => a.dekkerPerioden);
+
+            if (harFeil) {
+                const relevanteArbeidsforhold = alleArbeidsforholdForArbeidsgiver.filter((a) => a.erRelevant);
+
+                relevanteArbeidsforhold.forEach((arb: SjekketArbeidsforhold) => {
+                    if (arb.fom && arb.tom) {
+                        result.push({
+                            intlKey:
+                                'uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.medTom',
+                            periodeId: periode.id,
+                            values: {
+                                fom: formatDate(arb.fom),
+                                tom: formatDate(arb.tom),
+                                navn: arb.arbeidsgiverNavn,
+                            },
+                        });
+                    } else {
+                        result.push({
+                            intlKey:
+                                'uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.utenTom',
+                            periodeId: periode.id,
+                            values: {
+                                fom: formatDate(arb.fom),
+                                navn: arb.arbeidsgiverNavn,
+                            },
+                        });
+                    }
+                });
+            }
+        });
+
+        return result;
+    }, [] as RegelTestresultatInfo[]);
 };
 
 export function inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold(
@@ -152,6 +149,6 @@ export function inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold(
 
     return {
         passerer: allePerioder.length === 0,
-        info: allePerioder.map((info) => info)
+        info: allePerioder.map((info) => info),
     };
 }

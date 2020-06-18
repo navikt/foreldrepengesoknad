@@ -32,7 +32,7 @@ const cls = BEMHelper('modalForm');
 
 type Props = ModalFormProps;
 
-class ModalForm extends React.Component<Props, {}> {
+class ModalForm extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.handleOnRequestClose = this.handleOnRequestClose.bind(this);

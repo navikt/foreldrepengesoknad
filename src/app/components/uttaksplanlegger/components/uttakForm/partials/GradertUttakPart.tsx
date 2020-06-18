@@ -33,7 +33,7 @@ class GradertUttakForm extends React.Component<Props> {
         const { onChange } = this.props;
         const pst = getFloatFromString(stillingsprosent);
         onChange({
-            stillingsprosent: pst ? pst.toFixed(1) : stillingsprosent
+            stillingsprosent: pst ? pst.toFixed(1) : stillingsprosent,
         });
     }
 
@@ -45,7 +45,7 @@ class GradertUttakForm extends React.Component<Props> {
         const varighet =
             pst && uttaksdager
                 ? getMessage(intl, 'gradert.uttak.varighet', {
-                      varighet: getVarighetString(finnAntallDagerÅTrekke(periode as Periode), intl)
+                      varighet: getVarighetString(finnAntallDagerÅTrekke(periode as Periode), intl),
                   })
                 : undefined;
 
@@ -70,12 +70,12 @@ class GradertUttakForm extends React.Component<Props> {
                                             <a
                                                 href="https://www.nav.no/fleksibeltuttak"
                                                 className="lenke"
-                                                rel="noopener"
+                                                rel="noreferrer"
                                                 target="_blank"
                                             >
                                                 {msg}
                                             </a>
-                                        )
+                                        ),
                                     }}
                                 />
                                 <FormattedMessage
@@ -85,12 +85,12 @@ class GradertUttakForm extends React.Component<Props> {
                                             <a
                                                 href="https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad"
                                                 className="lenke"
-                                                rel="noopener"
+                                                rel="noreferrer"
                                                 target="_blank"
                                             >
                                                 {msg}
                                             </a>
-                                        )
+                                        ),
                                     }}
                                 />
                             </>
@@ -107,7 +107,7 @@ class GradertUttakForm extends React.Component<Props> {
                             label={getMessage(intl, 'stillingsprosent')}
                             onChange={(v: string) =>
                                 onChange({
-                                    stillingsprosent: v
+                                    stillingsprosent: v,
                                 })
                             }
                             onBlur={(e: React.FocusEvent<HTMLInputElement>) =>
@@ -129,7 +129,7 @@ class GradertUttakForm extends React.Component<Props> {
                             onChange({
                                 orgnumre,
                                 arbeidsformer,
-                                erArbeidstaker: arbeidsformer.includes(Arbeidsform.arbeidstaker)
+                                erArbeidstaker: arbeidsformer.includes(Arbeidsform.arbeidstaker),
                             })
                         }
                         arbeidsformer={periode.arbeidsformer || []}
@@ -151,9 +151,9 @@ class GradertUttakForm extends React.Component<Props> {
                                     : 'uttaksplan.infoTilFrilansOgSelvstendig',
                                 formatContentAsHTML: true,
                                 values: {
-                                    prosent: pst
-                                }
-                            }
+                                    prosent: pst,
+                                },
+                            },
                         ]}
                     />
                     <ArbeideHelgInfo />

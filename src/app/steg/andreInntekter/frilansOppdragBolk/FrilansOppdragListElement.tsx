@@ -1,6 +1,6 @@
 import React from 'react';
 import InteractiveListElement, {
-    InteractiveListElementProps
+    InteractiveListElementProps,
 } from '../../../../common/components/skjema/elements/interactive-list-element/InteractiveListElement';
 import { FrilansOppdrag } from '../../../types/søknad/FrilansInformasjon';
 import getMessage from 'common/util/i18nUtils';

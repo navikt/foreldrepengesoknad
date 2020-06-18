@@ -14,7 +14,7 @@ export interface UttaksplanSkjemaspørsmålProps {
 export type UttaksplanSkjemaSpørsmålChange = (skjemadata: Partial<UttaksplanSkjemadata>) => void;
 
 interface OwnProps extends UttaksplanSkjemaspørsmålProps {
-    render: (data: Partial<UttaksplanSkjemadata>, onChange: UttaksplanSkjemaSpørsmålChange) => {};
+    render: (data: Partial<UttaksplanSkjemadata>, onChange: UttaksplanSkjemaSpørsmålChange) => React.ReactElement;
 }
 
 interface StateProps {
@@ -28,7 +28,7 @@ const UttaksplanSkjemaSpørsmål: React.StatelessComponent<Props> = ({
     harUnderspørsmål,
     skjemadata,
     render,
-    dispatch
+    dispatch,
 }) => (
     <Block visible={visible} hasChildBlocks={harUnderspørsmål}>
         {visible && render(skjemadata, (data) => dispatch(søknadActionCreators.uttaksplanUpdateSkjemdata(data)))}
@@ -36,7 +36,7 @@ const UttaksplanSkjemaSpørsmål: React.StatelessComponent<Props> = ({
 );
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    skjemadata: state.søknad.ekstrainfo.uttaksplanSkjema
+    skjemadata: state.søknad.ekstrainfo.uttaksplanSkjema,
 });
 
 export default connect(mapStateToProps)(UttaksplanSkjemaSpørsmål);

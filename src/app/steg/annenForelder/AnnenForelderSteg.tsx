@@ -73,15 +73,15 @@ class AnnenForelderSteg extends React.Component<Props> {
             kanIkkeOppgis: values.kanIkkeOppgis,
             utenlandskFnr: values.utenlandskFnr,
             erUfør: values.erMorUfør === YesOrNo.YES,
-            bostedsland: values.bostedsland
+            bostedsland: values.bostedsland,
         };
 
         const barn: Partial<Barn> = {
-            datoForAleneomsorg: values.datoForAleneomsorg
+            datoForAleneomsorg: values.datoForAleneomsorg,
         };
 
         const søker: Partial<Søker> = {
-            erAleneOmOmsorg: values.aleneOmOmsorg === YesOrNo.YES
+            erAleneOmOmsorg: values.aleneOmOmsorg === YesOrNo.YES,
         };
 
         this.updateAnnenForelder(annenForelder);
@@ -133,7 +133,7 @@ class AnnenForelderSteg extends React.Component<Props> {
             visibility,
             initialFormValues,
             situasjon,
-            intl
+            intl,
         } = this.props;
 
         const gjelderAdopsjon = situasjon === Søkersituasjon.ADOPSJON;
@@ -146,15 +146,13 @@ class AnnenForelderSteg extends React.Component<Props> {
                         <>
                             <Block
                                 header={{
-                                    title: getMessage(intl, 'annenForelder.label.registrertForelder', { antallBarn })
+                                    title: getMessage(intl, 'annenForelder.label.registrertForelder', { antallBarn }),
                                 }}
                                 visible={registrertAnnenForelder !== undefined}
                             >
                                 {registrertAnnenForelder ? (
                                     <RegistrertePersonalia person={registrertAnnenForelder} />
-                                ) : (
-                                    undefined
-                                )}
+                                ) : undefined}
                             </Block>
                             <AnnenForelderForm
                                 onValidSubmit={(values) => {
@@ -206,7 +204,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFormTag: false,
         previousStegID: resolveStegToRender(state),
         history: props.history,
-        isAvailable: isAvailable(StegID.ANNEN_FORELDER, state.søknad, props.søkerinfo)
+        isAvailable: isAvailable(StegID.ANNEN_FORELDER, state.søknad, props.søkerinfo),
     };
 
     const initialFormValues: AnnenForelderFormValues = {
@@ -220,7 +218,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         fnr: annenForelder.fnr,
         harRettPåForeldrepenger: mapBooleanToYesOrNo(annenForelder.harRettPåForeldrepenger),
         kanIkkeOppgis: annenForelder.kanIkkeOppgis,
-        utenlandskFnr: annenForelder.utenlandskFnr
+        utenlandskFnr: annenForelder.utenlandskFnr,
     };
 
     return {
@@ -237,8 +235,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         registrertAnnenForelder,
         gjelderStebarnsadopsjon,
         familiehendelseDato,
-        initialFormValues
+        initialFormValues,
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(injectIntl(AnnenForelderSteg));
+export default connect<StateProps>(mapStateToProps)(injectIntl(AnnenForelderSteg));

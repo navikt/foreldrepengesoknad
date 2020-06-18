@@ -261,4 +261,4 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
     };
 };
 
-export default connect<RelasjonTilBarnFødselStegProps, {}, {}>(mapStateToProps)(injectIntl(RelasjonTilBarnFødselSteg));
+export default connect<RelasjonTilBarnFødselStegProps>(mapStateToProps)(injectIntl(RelasjonTilBarnFødselSteg));

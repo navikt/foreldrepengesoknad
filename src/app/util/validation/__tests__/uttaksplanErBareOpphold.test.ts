@@ -3,7 +3,7 @@ import {
     Oppholdsperiode,
     OppholdÅrsakType,
     Uttaksperiode,
-    StønadskontoType
+    StønadskontoType,
 } from '../../../types/uttaksplan/periodetyper';
 import { getTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
@@ -18,14 +18,14 @@ const uttakBase: Partial<Uttaksperiode> = {
     konto: StønadskontoType.Fellesperiode,
     gradert: false,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
-    forelder: Forelder.farMedmor
+    forelder: Forelder.farMedmor,
 };
 
 const oppholdsBase: Partial<Oppholdsperiode> = {
     type: Periodetype.Opphold,
     årsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
-    forelder: Forelder.farMedmor
+    forelder: Forelder.farMedmor,
 };
 
 const uttak = uttakBase as Uttaksperiode;

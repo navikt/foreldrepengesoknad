@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import InformasjonOmUtenlandsopphold, {
-    Utenlandsopphold
+    Utenlandsopphold,
 } from '../../../../../types/søknad/InformasjonOmUtenlandsopphold';
 import UtenlandsoppholdOppsummeringsliste from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/lister/UtenlandsoppholdOppsummeringsliste';
 import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';

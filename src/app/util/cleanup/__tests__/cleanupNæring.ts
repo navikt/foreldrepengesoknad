@@ -3,7 +3,7 @@ import {
     Næring,
     NæringPartial,
     Næringsrelasjon,
-    NæringsrelasjonPartial
+    NæringsrelasjonPartial,
 } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import visibility from '../../../steg/andreInntekter/selvstendigNæringsdrivendeModal/visibility';
 
@@ -19,7 +19,7 @@ const næring: NæringPartial = {
     harRegnskapsfører: true,
     regnskapsfører: regnskapsførerMock as Næringsrelasjon,
     kanInnhenteOpplsyningerFraRevisor: true,
-    næringsinntekt: 2000
+    næringsinntekt: 2000,
 };
 
 describe('cleanupNæring', () => {
@@ -41,7 +41,7 @@ describe('cleanupNæring', () => {
                 hattVarigEndringAvNæringsinntektSiste4Kalenderår,
                 harRevisor,
                 kanInnhenteOpplsyningerFraRevisor,
-                næringsinntekt
+                næringsinntekt,
             } = result;
 
             expect(registrertILand).toBeUndefined();
@@ -71,7 +71,7 @@ describe('cleanupNæring', () => {
                 hattVarigEndringAvNæringsinntektSiste4Kalenderår,
                 harRevisor,
                 kanInnhenteOpplsyningerFraRevisor,
-                næringsinntekt
+                næringsinntekt,
             } = result;
 
             expect(registrertILand).toBe(næring.registrertILand);

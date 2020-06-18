@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     default as ValiderbartSkjemaelement,
-    ValiderbartSkjemaelementProps
+    ValiderbartSkjemaelementProps,
 } from 'common/lib/validation/elements/ValiderbartSkjemaelement';
 import DatoInput, { DatoInputProps } from 'common/components/skjema/elements/dato-input/DatoInput';
 
@@ -12,7 +12,7 @@ const ValiderbarDatoInput: React.StatelessComponent<Props> = (props) => {
     return (
         <ValiderbartSkjemaelement
             {...props}
-            render={(onChange, onBlur, feil) => <DatoInput {...rest} onChange={onChange} feil={feil} />}
+            render={(onChange, _onBlur, feil) => <DatoInput {...rest} onChange={onChange} feil={feil} />}
         />
     );
 };

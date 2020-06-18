@@ -2,7 +2,7 @@ import React from 'react';
 import { TextareaProps } from 'nav-frontend-skjema';
 import {
     default as ValiderbartSkjemaelement,
-    ValiderbartSkjemaelementProps
+    ValiderbartSkjemaelementProps,
 } from 'common/lib/validation/elements/ValiderbartSkjemaelement';
 import Textarea from 'nav-frontend-skjema/lib/textarea';
 
