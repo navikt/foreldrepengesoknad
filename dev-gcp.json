@@ -1,7 +1,6 @@
 {
     "namespace": "teamforeldrepenger",
-    "appres": "www-q1.nav.no",
-    "uttak": "fp-uttak-service.dev-nav.no",
+    "uttak": "fp-uttak-service",
     "ingresses": ["https://foreldrepengesoknad.dev-nav.no","https://foreldrepengesoknad.dev-gcp.nais.io"],
     "env": {
         "APPRES_CMS_URL": "https://www-q1.nav.no/dekoratoren",
