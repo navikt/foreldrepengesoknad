@@ -14,17 +14,17 @@ interface OwnProps {
 type InputWrapperProps = SkjemaelementProps & InputProps & OwnProps;
 
 interface InputWrapperState {
-    value: string | number | string[];
+    value: string | number | readonly string[] | undefined;
 }
 
 export default class Input extends React.Component<InputWrapperProps, InputWrapperState> {
     static defaultProps = {
-        throttled: false
+        throttled: false,
     };
 
     static getDerivedStateFromProps(props: InputWrapperProps) {
         return {
-            value: props.value
+            value: props.value,
         };
     }
 
@@ -36,7 +36,7 @@ export default class Input extends React.Component<InputWrapperProps, InputWrapp
 
         const { value } = props;
         this.state = {
-            value: value || ''
+            value: value || '',
         };
 
         this.throttledOnChange = throttle(this.throttledOnChange, 2000);
