@@ -6,7 +6,6 @@ import { Søknadsinfo } from 'app/selectors/types';
 import { Dekningsgrad } from 'common/types';
 
 describe('uttakUtils', () => {
-    // tslint:disable-next-line: no-object-literal-type-assertion
     const grunnlag: Saksgrunnlag = {
         familieHendelseDato: new Date(),
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -18,21 +17,20 @@ describe('uttakUtils', () => {
         farMedmorErAleneOmOmsorg: false,
         farMedmorHarRett: false,
         erBarnetFødt: true,
-        familieHendelseType: FamiliehendelsesType.FØDSEL
+        familieHendelseType: FamiliehendelsesType.FØDSEL,
     } as Saksgrunnlag;
 
-    // tslint:disable-next-line: no-object-literal-type-assertion
     const søknadsinfo: DeepPartial<Søknadsinfo> = {
         søknaden: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
             erAleneOmOmsorg: false,
             familieHendelseDato: new Date(),
-            antallBarn: 1
+            antallBarn: 1,
         },
         annenForelder: {
             harRett: true,
-            erUfør: false
-        }
+            erUfør: false,
+        },
     } as DeepPartial<Søknad>;
 
     it('skalKunneViseMorsUttaksplanForFarEllerMedmor returnerer true hvis grunnlag og søknadsdata matcher', () => {
@@ -40,11 +38,10 @@ describe('uttakUtils', () => {
     });
 
     it('skalKunneViseMorsUttaksplanForFarEllerMedmor returnerer false hvis grunnlag og søknadsdata ikke matcher', () => {
-        // tslint:disable-next-line: no-object-literal-type-assertion
         expect(
             skalKunneViseMorsUttaksplanForFarEllerMedmor(grunnlag, {
                 ...søknadsinfo,
-                søknaden: { ...søknadsinfo.søknaden, dekningsgrad: Dekningsgrad.ÅTTI_PROSENT }
+                søknaden: { ...søknadsinfo.søknaden, dekningsgrad: Dekningsgrad.ÅTTI_PROSENT },
             } as Søknadsinfo)
         ).toBeFalsy();
     });
