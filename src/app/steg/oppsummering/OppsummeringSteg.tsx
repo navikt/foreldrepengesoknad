@@ -114,7 +114,7 @@ class OppsummeringSteg extends React.Component<Props> {
         }
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         this.props.dispatch(validerUttaksplanAction());
     }
 

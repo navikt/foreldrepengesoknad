@@ -62,11 +62,10 @@ class Velkommen extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.getStartSøknadKnappLabel = this.getStartSøknadKnappLabel.bind(this);
-    }
-    UNSAFE_componentWillMount() {
-        this.setState({
+        this.state = {
             isDinePersonopplysningerModalOpen: false,
-        });
+            skalEndre: undefined,
+        };
     }
 
     getBekreftCheckboksPanelLabelHeader() {

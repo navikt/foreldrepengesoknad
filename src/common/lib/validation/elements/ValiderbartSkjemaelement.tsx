@@ -51,7 +51,7 @@ class ValiderbartSkjemaelement extends React.Component<FormContextProps, Valider
         this.onBlur = this.onBlur.bind(this);
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         if (this.props.formContext) {
             this.props.formContext.register(this);
         }

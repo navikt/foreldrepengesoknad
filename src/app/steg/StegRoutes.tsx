@@ -56,7 +56,7 @@ class StegRoutes extends React.Component<Props> {
         this.navigateToStegIfNeeded(props);
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         this.unlistenLocationChange = this.props.history.listen((location: Location) => {
             const steg = getStegFromPathname(location.pathname);
             if (steg) {
