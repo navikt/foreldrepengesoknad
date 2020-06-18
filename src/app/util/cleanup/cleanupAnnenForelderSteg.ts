@@ -3,7 +3,7 @@ import { Barn } from '../../types/søknad/Barn';
 import Søknad from '../../types/søknad/Søknad';
 import {
     AnnenForelderStegVisibility,
-    AnnenForelderSpørsmålKeys
+    AnnenForelderSpørsmålKeys,
 } from '../../steg/annenForelder/visibility/annenForelderStegVisibility';
 
 interface CleanedAnnenForelderSteg {
@@ -52,7 +52,7 @@ export const cleanupAnnenForelder = (
         erInformertOmSøknaden: visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)
             ? erInformertOmSøknaden
             : undefined,
-        erUfør: visibility.isVisible(AnnenForelderSpørsmålKeys.erMorUfør) ? erUfør : undefined
+        erUfør: visibility.isVisible(AnnenForelderSpørsmålKeys.erMorUfør) ? erUfør : undefined,
     };
     return cleanedAnnenForelder;
 };
@@ -62,12 +62,12 @@ export const cleanupAnnenForelderBarn = (visibility: AnnenForelderStegVisibility
         return {
             ...barn,
             datoForAleneomsorg: undefined,
-            dokumentasjonAvAleneomsorg: undefined
+            dokumentasjonAvAleneomsorg: undefined,
         };
     }
     return {
         ...barn,
-        datoForAleneomsorg: barn.datoForAleneomsorg
+        datoForAleneomsorg: barn.datoForAleneomsorg,
     };
 };
 
@@ -77,7 +77,7 @@ const cleanupAnnenForelderSteg = (
 ): CleanedAnnenForelderSteg => {
     return {
         annenForelder: cleanupAnnenForelder(vis, søknad),
-        barn: søknad.barn ? cleanupAnnenForelderBarn(vis, søknad.barn) : {}
+        barn: søknad.barn ? cleanupAnnenForelderBarn(vis, søknad.barn) : {},
     };
 };
 

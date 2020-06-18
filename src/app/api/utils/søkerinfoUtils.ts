@@ -11,7 +11,7 @@ const getPerson = (søkerinfo: SøkerinfoDTO): Person => {
         ...person,
         fødselsdato: moment(person.fødselsdato).toDate(),
         ikkeNordiskEøsLand: person.ikkeNordiskEøsLand || false,
-        erMyndig: erMyndig(person.fødselsdato)
+        erMyndig: erMyndig(person.fødselsdato),
     };
 };
 
@@ -29,9 +29,9 @@ const getRegistrerteBarn = (søkerinfo: SøkerinfoDTO): RegistrertBarn[] => {
                 annenForelder: annenForelder
                     ? {
                           ...annenForelder,
-                          fødselsdato: moment.utc(annenForelder.fødselsdato).toDate()
+                          fødselsdato: moment.utc(annenForelder.fødselsdato).toDate(),
                       }
-                    : undefined
+                    : undefined,
             };
         }
     );
@@ -46,7 +46,7 @@ export const getArbeidsforhold = (arbeidsforhold: SøkerinfoDTOArbeidsforhold[] 
         const forhold: Arbeidsforhold = {
             ...a,
             fom: moment(a.fom).toDate(),
-            tom: a.tom ? moment(a.tom).toDate() : undefined
+            tom: a.tom ? moment(a.tom).toDate() : undefined,
         };
         return forhold;
     });
@@ -65,6 +65,6 @@ export const getSøkerinfoFromDTO = (søkerinfo: SøkerinfoDTO): Søkerinfo => {
     return {
         person: getPerson(søkerinfo),
         registrerteBarn: getRegistrerteBarn(søkerinfo),
-        arbeidsforhold: getArbeidsforhold(søkerinfo.arbeidsforhold)
+        arbeidsforhold: getArbeidsforhold(søkerinfo.arbeidsforhold),
     };
 };

@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import {
     AnnenForelderFormValues,
     AnnenForelderFormComponents,
-    AnnenForelderFieldNames
+    AnnenForelderFieldNames,
 } from './form/annenforelderFormTypes';
 import { commonFieldErrorRenderer } from '../utenlandsopphold/bostedUtlandListAndDialog/BostedUtlandForm';
 import OppgiPersonalia from './oppgi-personalia/OppgiPersonalia';
@@ -18,7 +18,7 @@ import Barn from 'app/types/søknad/Barn';
 import {
     validateYesOrNoIsAnswered,
     validateRequiredField,
-    validateAnnenForelderInformert
+    validateAnnenForelderInformert,
 } from 'app/validation/fieldValidations';
 import AvtaleAtFarTarUtForeldrepengerVeileder from './veiledere/AvtaleAtFarTarUtForeldrepengerVeileder';
 import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
@@ -51,7 +51,7 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
     søkersFødselsnummer,
     initialFormValues,
     onFilesSelect,
-    onFileDelete
+    onFileDelete,
 }) => {
     const intl = useIntl();
 
@@ -64,7 +64,7 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                     ...formValues,
                     skalOppgiPersonalia,
                     søkerRolle,
-                    gjelderStebarnsadopsjon
+                    gjelderStebarnsadopsjon,
                 });
                 return (
                     <AnnenForelderFormComponents.Form
@@ -127,7 +127,7 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                             <AnnenForelderFormComponents.YesOrNoQuestion
                                 name={AnnenForelderFieldNames.harRettPåForeldrepenger}
                                 legend={getMessage(intl, 'annenForelderRettPåForeldrepenger.spørsmål', {
-                                    navn: formValues.fornavn
+                                    navn: formValues.fornavn,
                                 })}
                                 validate={validateYesOrNoIsAnswered}
                             />
@@ -136,7 +136,7 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                             <AnnenForelderFormComponents.YesOrNoQuestion
                                 name={AnnenForelderFieldNames.erInformertOmSøknaden}
                                 legend={getMessage(intl, 'erAnnenForelderInformert.spørsmål', {
-                                    navn: formValues.fornavn
+                                    navn: formValues.fornavn,
                                 })}
                                 validate={(value) => validateAnnenForelderInformert(value, formValues.fornavn)}
                             />
@@ -150,7 +150,7 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                             <AnnenForelderFormComponents.YesOrNoQuestion
                                 name={AnnenForelderFieldNames.erMorUfør}
                                 legend={getMessage(intl, 'erMorUfør.spørsmål', {
-                                    navn: formValues.fornavn
+                                    navn: formValues.fornavn,
                                 })}
                                 validate={validateYesOrNoIsAnswered}
                             />

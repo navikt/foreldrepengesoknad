@@ -1,7 +1,7 @@
 const fsExtra = require('fs-extra');
 
 function createEnvSettingsFile(settingsFile) {
-    fsExtra.ensureFile(settingsFile).then((f) => {
+    fsExtra.ensureFile(settingsFile).then(() => {
         fsExtra.writeFileSync(
             settingsFile,
             `window.appSettings = {

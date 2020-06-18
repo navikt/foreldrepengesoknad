@@ -22,5 +22,5 @@ const søkerRolleSpørsmålVisible: VisibilityFunction<SøkerRolleSpørsmålVisi
 
 export default {
     papirsøknadInfo: papirsøknadInfoVisible,
-    søkerRolleSpørsmål: søkerRolleSpørsmålVisible
+    søkerRolleSpørsmål: søkerRolleSpørsmålVisible,
 };

@@ -80,7 +80,7 @@ const getBrukteDagerForForelder = (
         dagerTotalt,
         dagerEgneKvoter,
         dagerFellesperiode,
-        dagerAnnenForeldersKvote: dagerOverført
+        dagerAnnenForeldersKvote: dagerOverført,
     };
 };
 
@@ -103,6 +103,6 @@ export const getBrukteDager = (
             familiehendelsesdato,
             Forelder.farMedmor
         ),
-        alle: beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioder)
+        alle: beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioder),
     };
 };

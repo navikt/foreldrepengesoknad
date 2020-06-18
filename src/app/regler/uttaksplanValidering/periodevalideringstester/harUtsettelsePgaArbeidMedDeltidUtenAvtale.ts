@@ -8,19 +8,18 @@ export const harUtsettelsePgaArbeidMedDeltidUtenAvtale: RegelTest = (
 ): RegelTestresultat => {
     const utsettelserMedDeltidUtenAvtale = grunnlag.perioder
         .filter(isUtsettelsePgaArbeid)
-        .filter(
-            (periode) =>
-                periode.orgnumre
-                    ? getSamletStillingsprosentForArbeidsforhold(periode.orgnumre, grunnlag.arbeidsforhold) < 100 &&
-                      periode.harAvtaleOmFulltidForDeltidsstilling === false
-                    : false
+        .filter((periode) =>
+            periode.orgnumre
+                ? getSamletStillingsprosentForArbeidsforhold(periode.orgnumre, grunnlag.arbeidsforhold) < 100 &&
+                  periode.harAvtaleOmFulltidForDeltidsstilling === false
+                : false
         );
 
     return {
         passerer: utsettelserMedDeltidUtenAvtale.length === 0,
         info: utsettelserMedDeltidUtenAvtale.map((periode) => ({
             periodeId: periode.id,
-            values: { antall: periode.orgnumre ? periode.orgnumre.length : 0 }
-        }))
+            values: { antall: periode.orgnumre ? periode.orgnumre.length : 0 },
+        })),
     };
 };

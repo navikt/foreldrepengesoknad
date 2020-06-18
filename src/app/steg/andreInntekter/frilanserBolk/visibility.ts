@@ -34,7 +34,7 @@ const oppdragPerioderVisible: VisibilityFunction<Søker> = (søker: Søker) => {
 const frilansOppdragErUtfylt: VisibilityFunction<FrilansInformasjon> = (frilansInformasjon: FrilansInformasjon) => {
     const {
         harJobbetForNærVennEllerFamilieSiste10Mnd,
-        oppdragForNæreVennerEllerFamilieSiste10Mnd
+        oppdragForNæreVennerEllerFamilieSiste10Mnd,
     } = frilansInformasjon;
 
     if (harJobbetForNærVennEllerFamilieSiste10Mnd === true) {
@@ -63,7 +63,7 @@ const module = {
     oppdragBolkVisible,
     oppdragPerioderVisible,
     driverDuFosterhjemVisible,
-    frilansOppdragErUtfylt
+    frilansOppdragErUtfylt,
 };
 
 export default module;

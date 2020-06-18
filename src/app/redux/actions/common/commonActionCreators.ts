@@ -4,10 +4,10 @@ import { Språkkode } from 'common/intl/types';
 export function setSpråk(språkkode: Språkkode): CommonActionTypes {
     return {
         type: CommonActionKeys.SET_SPRÅK,
-        språkkode
+        språkkode,
     };
 }
 
 export default {
-    setSpråk
+    setSpråk,
 };

@@ -8,20 +8,20 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 export function getSøkerinfo(history: History): ApiActionTypes {
     return {
         type: ApiActionKeys.GET_SØKERINFO,
-        history
+        history,
     };
 }
 
 export function getSaker(): ApiActionTypes {
     return {
-        type: ApiActionKeys.GET_SAKER
+        type: ApiActionKeys.GET_SAKER,
     };
 }
 
 export function getEksisterendeSak(saksnummer: string): ApiActionTypes {
     return {
         type: ApiActionKeys.GET_EKSISTERENDE_SAK,
-        saksnummer
+        saksnummer,
     };
 }
 
@@ -29,14 +29,14 @@ export function sendSøknad(missingAttachments: MissingAttachment[], history: Hi
     return {
         type: ApiActionKeys.SEND_SØKNAD,
         missingAttachments,
-        history
+        history,
     };
 }
 
 export function getStorageData(history: History): ApiActionTypes {
     return {
         type: ApiActionKeys.GET_STORAGE_DATA,
-        history
+        history,
     };
 }
 
@@ -47,14 +47,14 @@ export function getTilgjengeligeStønadskontoer(
     return {
         type: ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER,
         params,
-        history
+        history,
     };
 }
 
 export function getTilgjengeligeStønadsuker(params: GetTilgjengeligeStønadskontoerParams): ApiActionTypes {
     return {
         type: ApiActionKeys.GET_TILGJENGELIGE_STØNADSUKER,
-        params
+        params,
     };
 }
 
@@ -63,44 +63,44 @@ export function getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
 ): ApiActionTypes {
     return {
         type: ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER_AND_LAG_UTTAKSPLAN_FORSLAG,
-        params
+        params,
     };
 }
 
 export function deleteStoredAppState(): ApiActionTypes {
     return {
-        type: ApiActionKeys.DELETE_STORED_APP_STATE
+        type: ApiActionKeys.DELETE_STORED_APP_STATE,
     };
 }
 
 export function storeAppState(): ApiActionTypes {
     return {
-        type: ApiActionKeys.STORE_APP_STATE
+        type: ApiActionKeys.STORE_APP_STATE,
     };
 }
 
 export function updateApi(payload: ApiStatePartial): ApiActionTypes {
     return {
         type: ApiActionKeys.UPDATE_API,
-        payload
+        payload,
     };
 }
 
 export function sendStorageKvittering(): ApiActionTypes {
     return {
-        type: ApiActionKeys.SEND_STORAGE_KVITTERING
+        type: ApiActionKeys.SEND_STORAGE_KVITTERING,
     };
 }
 
 export function fjernInaktiveArbeidsforhold(aktiveArbeidsforhold: Arbeidsforhold[]): ApiActionTypes {
     return {
         type: ApiActionKeys.FJERN_INAKTIVE_ARBEIDSFORHOLD,
-        aktiveArbeidsforhold
+        aktiveArbeidsforhold,
     };
 }
 
 const getSakForAnnenPart = () => ({
-    type: ApiActionKeys.GET_ANNEN_PART_SIN_SAK
+    type: ApiActionKeys.GET_ANNEN_PART_SIN_SAK,
 });
 
 export default {
@@ -117,5 +117,5 @@ export default {
     updateApi,
     sendStorageKvittering,
     fjernInaktiveArbeidsforhold,
-    getSakForAnnenPart
+    getSakForAnnenPart,
 };

@@ -30,14 +30,14 @@ const erAlleSpørsmålBesvart = (
                 kanEndreStønadskonto: true,
                 søknadsinfo,
                 skjemaregler: getUttakSkjemaregler(søknadsinfo, periode),
-                søknadsperiode: getSøknadsperiode(søknadsinfo, periode)
+                søknadsperiode: getSøknadsperiode(søknadsinfo, periode),
             }).areAllQuestionsAnswered();
         case Periodetype.Utsettelse:
             return getUtsettelseFormVisibility({
                 periode,
                 variant: getVariantFromPeriode(periode),
                 søknadsinfo,
-                arbeidsforhold
+                arbeidsforhold,
             }).areAllQuestionsAnswered();
     }
 };
@@ -55,7 +55,7 @@ export const erAllePeriodeSkjemaspørsmålBesvart: RegelTest = (grunnlag: Uttaks
     return {
         passerer: perioderMedUbesvarteSpørsmål.length === 0,
         info: perioderMedUbesvarteSpørsmål.map((periode) => ({
-            periodeId: periode.id
-        }))
+            periodeId: periode.id,
+        })),
     };
 };

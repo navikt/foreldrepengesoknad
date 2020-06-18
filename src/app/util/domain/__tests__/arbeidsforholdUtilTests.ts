@@ -7,7 +7,7 @@ const mockedArbeidsforhold: Arbeidsforhold = {
     arbeidsgiverIdType: 'orgnr',
     arbeidsgiverNavn: 'navn',
     arbeidsgiverId: '123412341',
-    stillingsprosent: 80
+    stillingsprosent: 80,
 };
 
 describe('harAktivtArbeidsforhold', () => {

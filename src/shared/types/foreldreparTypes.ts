@@ -12,5 +12,5 @@ export enum ForeldreparSituasjon {
     'bareMor' = 'bareMor',
     'aleneomsorg' = 'aleneomsorg',
     'farOgFar' = 'farOgFar',
-    'morOgMedmor' = 'morOgMedmor'
+    'morOgMedmor' = 'morOgMedmor',
 }

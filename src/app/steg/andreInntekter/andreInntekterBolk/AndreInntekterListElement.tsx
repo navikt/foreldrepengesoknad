@@ -1,6 +1,6 @@
 import React from 'react';
 import InteractiveListElement, {
-    InteractiveListElementProps
+    InteractiveListElementProps,
 } from '../../../../common/components/skjema/elements/interactive-list-element/InteractiveListElement';
 import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from '../../../types/søknad/AnnenInntekt';
 import { useIntl } from 'react-intl';
@@ -41,7 +41,7 @@ const AndreInntekterListElement: React.StatelessComponent<Props> = ({ annenInnte
                 inntektstypeSkalHaVedlegg
                     ? {
                           type: harVedlegg ? 'suksess' : 'fokus',
-                          children: harVedlegg ? dokVedlagt : dokMangler
+                          children: harVedlegg ? dokVedlagt : dokMangler,
                       }
                     : undefined
             }

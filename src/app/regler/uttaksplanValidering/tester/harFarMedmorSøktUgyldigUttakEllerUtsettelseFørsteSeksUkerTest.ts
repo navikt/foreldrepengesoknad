@@ -8,7 +8,7 @@ export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: Re
 ): RegelTestresultat => {
     const {
         søknadsinfo: { søker, søknaden },
-        perioder
+        perioder,
     } = grunnlag;
 
     if (søker.erFarEllerMedmor) {
@@ -25,8 +25,8 @@ export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: Re
         return {
             passerer,
             info: ugyldigePerioder.map((periode) => ({
-                periodeId: periode.id
-            }))
+                periodeId: periode.id,
+            })),
         };
     }
 

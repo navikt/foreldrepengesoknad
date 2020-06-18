@@ -47,7 +47,7 @@ const renderMenuItem = (intl: IntlShape, languageCode: string) => {
     );
 };
 
-const handleSelection = (value: JSX.Element[], e: any, toggleLanguage: any) => {
+const handleSelection = (value: JSX.Element[], _e: any, toggleLanguage: any) => {
     toggleLanguage(getLanguageCodeFromValue(value[1].props.children));
 };
 

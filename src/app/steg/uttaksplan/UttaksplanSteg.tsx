@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import ReactDOM from 'react-dom';
 
 import { AppState } from '../../redux/reducers';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
@@ -112,7 +111,7 @@ const getUttaksstatusFunc = (søknadsinfo: Søknadsinfo) => (
     return getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, uttaksplan);
 };
 class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
-    feilOppsummering: React.Component | null;
+    feilOppsummering: (React.Component & HTMLElement) | null;
 
     constructor(props: Props) {
         super(props);
@@ -351,9 +350,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     delayedSetFocusOnFeiloppsummering() {
         setTimeout(() => {
             if (this.feilOppsummering) {
-                const el = ReactDOM.findDOMNode(this.feilOppsummering);
+                const el = this.feilOppsummering;
                 if (el) {
-                    (el as HTMLElement).focus();
+                    el.focus();
                 }
             }
         });
@@ -619,4 +618,4 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
     };
 };
 
-export default injectIntl(connect<StateProps, {}, {}>(mapStateToProps)(UttaksplanSteg));
+export default injectIntl(connect<StateProps>(mapStateToProps)(UttaksplanSteg));

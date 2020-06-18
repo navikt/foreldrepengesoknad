@@ -36,7 +36,8 @@ export default class RangeIcon extends React.Component<RangeIconProps> {
                 width="24px"
                 height="24px"
                 viewBox="0 0 24 24"
-                className="rangeIcon">
+                className="rangeIcon"
+            >
                 <g id="Icons/subtract/default" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                     {icon}
                 </g>

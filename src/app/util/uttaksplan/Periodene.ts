@@ -16,7 +16,7 @@ import {
     isOppholdsperiode,
     isOverføringsperiode,
     isUtsettelsesperiode,
-    isUttaksperiode
+    isUttaksperiode,
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import { Perioden } from './Perioden';
@@ -53,7 +53,7 @@ export const Periodene = (perioder: Periode[]) => ({
     finnPåfølgendePeriode: (periode: Periode) => finnPåfølgendePeriode(perioder, periode),
     forskyvPerioder: (uttaksdager: number) => forskyvPerioder(perioder, uttaksdager),
     sort: () => perioder.sort(sorterPerioder),
-    finnSisteInfoperiode: () => finnSisteInfoperiode(perioder)
+    finnSisteInfoperiode: () => finnSisteInfoperiode(perioder),
 });
 
 export function sorterPerioder(p1: Periode, p2: Periode) {
@@ -98,8 +98,8 @@ function getHull(perioder: Periode[]): PeriodeHull[] {
     return perioder.filter((periode) => isHull(periode)) as PeriodeHull[];
 }
 
-function getHullOgInfo(perioder: Periode[]): Array<PeriodeHull | InfoPeriode> {
-    return perioder.filter((periode) => isHull(periode) || isInfoPeriode(periode)) as Array<PeriodeHull | InfoPeriode>;
+function getHullOgInfo(perioder: Periode[]): (PeriodeHull | InfoPeriode)[] {
+    return perioder.filter((periode) => isHull(periode) || isInfoPeriode(periode)) as (PeriodeHull | InfoPeriode)[];
 }
 
 function getInfoperioder(perioder: Periode[]): InfoPeriode[] {
@@ -193,8 +193,8 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
                     ...periode,
                     tidsperiode: {
                         fom: forskyvetStartdato,
-                        tom: periode.tidsperiode.tom
-                    }
+                        tom: periode.tidsperiode.tom,
+                    },
                 };
 
                 uttaksdagerCurrent = 0;

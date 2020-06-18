@@ -20,8 +20,8 @@ const MåOrientereAnnenForelderVeileder: React.FunctionComponent<Props> = ({ vis
                     {
                         type: 'normal',
                         contentIntlKey: 'erAnnenForelderInformert.veilederIkkeInformert',
-                        values: { navn: annenForelderNavn }
-                    }
+                        values: { navn: annenForelderNavn },
+                    },
                 ]}
             />
         </div>

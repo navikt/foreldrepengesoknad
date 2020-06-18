@@ -5,31 +5,31 @@ import { Uttaksdagen } from '../Uttaksdagen';
 
 const startdato = Uttaksdagen(new Date('2019-01-01'));
 
-const perioder: Array<Partial<Periode>> = [
+const perioder: Partial<Periode>[] = [
     {
         id: '1',
         type: Periodetype.Uttak,
         tidsperiode: {
             fom: startdato.denneEllerNeste(),
-            tom: startdato.leggTil(9)
-        }
+            tom: startdato.leggTil(9),
+        },
     },
     {
         id: '2',
         type: Periodetype.Uttak,
         tidsperiode: {
             fom: startdato.leggTil(10),
-            tom: startdato.leggTil(19)
-        }
+            tom: startdato.leggTil(19),
+        },
     },
     {
         id: '3',
         type: Periodetype.Uttak,
         tidsperiode: {
             fom: startdato.leggTil(20),
-            tom: startdato.leggTil(29)
-        }
-    }
+            tom: startdato.leggTil(29),
+        },
+    },
 ];
 
 describe('Periodene', () => {
@@ -40,8 +40,8 @@ describe('Periodene', () => {
                 type: Periodetype.Uttak,
                 tidsperiode: {
                     fom: startdato.denneEllerNeste(),
-                    tom: startdato.leggTil(13)
-                }
+                    tom: startdato.leggTil(13),
+                },
             };
 
             const result = Periodene(perioder as Periode[]).finnOverlappendePerioder(nyPeriode as Periode);
@@ -54,8 +54,8 @@ describe('Periodene', () => {
                 type: Periodetype.Uttak,
                 tidsperiode: {
                     fom: startdato.leggTil(1),
-                    tom: startdato.leggTil(7)
-                }
+                    tom: startdato.leggTil(7),
+                },
             };
 
             const result = Periodene(perioder as Periode[]).finnOverlappendePerioder(nyPeriode as Periode);
@@ -68,8 +68,8 @@ describe('Periodene', () => {
                 type: Periodetype.Uttak,
                 tidsperiode: {
                     fom: startdato.denneEllerNeste(),
-                    tom: startdato.leggTil(9)
-                }
+                    tom: startdato.leggTil(9),
+                },
             };
 
             const result = Periodene(perioder as Periode[]).finnOverlappendePerioder(nyPeriode as Periode);
@@ -82,8 +82,8 @@ describe('Periodene', () => {
                 type: Periodetype.Uttak,
                 tidsperiode: {
                     fom: startdato.leggTil(30),
-                    tom: startdato.leggTil(35)
-                }
+                    tom: startdato.leggTil(35),
+                },
             };
 
             const result = Periodene(perioder as Periode[]).finnOverlappendePerioder(nyPeriode as Periode);
@@ -96,8 +96,8 @@ describe('Periodene', () => {
                 type: Periodetype.Uttak,
                 tidsperiode: {
                     fom: new Date(),
-                    tom: new Date()
-                }
+                    tom: new Date(),
+                },
             };
 
             const result = Periodene([]).finnOverlappendePerioder(nyPeriode as Periode);
@@ -112,8 +112,8 @@ describe('Periodene', () => {
                 type: Periodetype.Uttak,
                 tidsperiode: {
                     fom: startdato.denneEllerNeste(),
-                    tom: startdato.leggTil(15)
-                }
+                    tom: startdato.leggTil(15),
+                },
             };
 
             const result = Periodene(perioder as Periode[]).finnPeriodeMedDato((nyPeriode as Periode).tidsperiode.fom);
@@ -126,8 +126,8 @@ describe('Periodene', () => {
                 type: Periodetype.Uttak,
                 tidsperiode: {
                     fom: startdato.leggTil(30),
-                    tom: startdato.leggTil(35)
-                }
+                    tom: startdato.leggTil(35),
+                },
             };
 
             const result = Periodene(perioder as Periode[]).finnPeriodeMedDato((nyPeriode as Periode).tidsperiode.fom);
@@ -140,8 +140,8 @@ describe('Periodene', () => {
                 type: Periodetype.Uttak,
                 tidsperiode: {
                     fom: new Date(),
-                    tom: new Date()
-                }
+                    tom: new Date(),
+                },
             };
 
             const result = Periodene([]).finnPeriodeMedDato((nyPeriode as Periode).tidsperiode.fom);
@@ -177,9 +177,9 @@ describe('Periodene', () => {
                 type: Periodetype.Info,
                 tidsperiode: {
                     fom: startdato.leggTil(30),
-                    tom: startdato.leggTil(44)
+                    tom: startdato.leggTil(44),
                 },
-                overskrives: true
+                overskrives: true,
             };
             const nyePerioder = [...perioder, nyPeriode];
             const antallDagerForskyvelse = 10;
@@ -201,8 +201,8 @@ describe('Periodene', () => {
                 type: Periodetype.Opphold,
                 tidsperiode: {
                     fom: new Date('2019-02-12'),
-                    tom: new Date('2019-03-04')
-                }
+                    tom: new Date('2019-03-04'),
+                },
             };
             const antallDagerForskyvelse = 10;
             const nyePerioder = [...perioder, nyPeriode];
@@ -224,9 +224,9 @@ describe('Periodene', () => {
                 type: Periodetype.Info,
                 tidsperiode: {
                     fom: new Date('2019-02-12'),
-                    tom: new Date('2019-02-25')
+                    tom: new Date('2019-02-25'),
                 },
-                overskrives: true
+                overskrives: true,
             };
             const nyePerioder = [...perioder, nyPeriode];
             const antallDagerForskyvelse = 10;
@@ -244,8 +244,8 @@ describe('Periodene', () => {
                 type: Periodetype.Opphold,
                 tidsperiode: {
                     fom: new Date('2019-02-12'),
-                    tom: new Date('2019-02-25')
-                }
+                    tom: new Date('2019-02-25'),
+                },
             };
             const nyePerioder = [...perioder, nyPeriode];
             const antallDagerForskyvelse = 10;

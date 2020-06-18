@@ -26,12 +26,12 @@ const InfoTilFiskere = () => {
                                 <a
                                     href={lenker.hvordanSendeInntektsmelding}
                                     target="_blank"
-                                    rel="noopener"
+                                    rel="noreferrer"
                                     className="lenke"
                                 >
                                     {msg}
                                 </a>
-                            )
+                            ),
                         }}
                     />
                 </Block>
@@ -46,10 +46,10 @@ const InfoTilFiskere = () => {
                         id="andreInntekter.infoTilFiskere.del5"
                         values={{
                             a: (msg: any) => (
-                                <a href={lenker.omLottOgHyre} target="_blank" rel="noopener" className="lenke">
+                                <a href={lenker.omLottOgHyre} target="_blank" rel="noreferrer" className="lenke">
                                     {msg}
                                 </a>
-                            )
+                            ),
                         }}
                     />
                 </Block>
@@ -76,10 +76,10 @@ const InfoTilFiskere = () => {
                         id="andreInntekter.infoTilFiskere.del5"
                         values={{
                             a: (msg: any) => (
-                                <a href={lenker.omLottOgHyre} target="_blank" rel="noopener" className="lenke">
+                                <a href={lenker.omLottOgHyre} target="_blank" rel="noreferrer" className="lenke">
                                     {msg}
                                 </a>
-                            )
+                            ),
                         }}
                     />
                 </Block>

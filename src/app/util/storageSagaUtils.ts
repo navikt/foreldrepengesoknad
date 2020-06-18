@@ -29,6 +29,6 @@ const stemmerValgteBarnISøknadMedSøkersBarn = (
 
 const StorageSagaUtils = {
     stemmerValgteBarnISøknadMedSøkersBarn,
-    getValgteRegistrerteBarnISøknaden
+    getValgteRegistrerteBarnISøknaden,
 };
 export default StorageSagaUtils;

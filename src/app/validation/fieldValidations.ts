@@ -4,7 +4,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import {
     isFødselsnummerFormatValid,
     isUtenlandskFødselsnummerValid,
-    isSixteenOrOlder
+    isSixteenOrOlder,
 } from 'app/util/validation/fødselsnummer';
 import { dateRangesCollide, dateRangesExceedsRange } from 'app/util/dates/dates';
 import { BostedUtland } from 'app/steg/utenlandsopphold/bostedUtlandListAndDialog/types';
@@ -39,7 +39,7 @@ export const createFieldValidationError = <T extends string>(key: T | undefined,
     return key
         ? {
               key,
-              values
+              values,
           }
         : undefined;
 };

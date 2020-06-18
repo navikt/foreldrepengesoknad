@@ -33,7 +33,7 @@ export const mapAvvikTilMessage = (avvik: RegelAvvik, intl: IntlShape): Veileder
         values: getRegelIntlValues(intl, info),
         periodeId: avvik.regel.skjulesIPeriode !== true ? avvik.periodeId : undefined,
         skjulesIOppsummering: avvik.regel.skjulesIOppsummering,
-        avvikType: avvik.regel.avvikType as UttaksplanAvvikType
+        avvikType: avvik.regel.avvikType as UttaksplanAvvikType,
     };
 };
 export const selectUttaksplanVeilederinfo = (intl: IntlShape, grupperAvvik: boolean) =>
@@ -42,7 +42,10 @@ export const selectUttaksplanVeilederinfo = (intl: IntlShape, grupperAvvik: bool
     });
 
 export const selectPeriodelisteMeldinger = (intl: IntlShape, grupperAvvik: boolean) =>
-    createSelector([selectUttaksplanVeilederinfo(intl, grupperAvvik)], (veilederinfo): VeiledermeldingerPerPeriode => {
-        const meldinger = veilederinfo.filter((info) => info.periodeId !== undefined);
-        return groupBy(meldinger, (info) => info.periodeId);
-    });
+    createSelector(
+        [selectUttaksplanVeilederinfo(intl, grupperAvvik)],
+        (veilederinfo): VeiledermeldingerPerPeriode => {
+            const meldinger = veilederinfo.filter((info) => info.periodeId !== undefined);
+            return groupBy(meldinger, (info) => info.periodeId);
+        }
+    );

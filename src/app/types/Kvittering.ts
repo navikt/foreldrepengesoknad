@@ -5,7 +5,7 @@ export enum LeveranseStatus {
     INNVILGET = 'INNVILGET',
     SENDT_OG_FORSØKT_BEHANDLET_FPSAK = 'SENDT_OG_FORSØKT_BEHANDLET_FPSAK',
     FP_FORDEL_MESSED_UP = 'FP_FORDEL_MESSED_UP',
-    GOSYS = 'GOSYS'
+    GOSYS = 'GOSYS',
 }
 
 export interface Kvittering {

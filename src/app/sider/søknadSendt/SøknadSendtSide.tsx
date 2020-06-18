@@ -44,7 +44,7 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 class SøknadSendtSide extends React.Component<Props> {
-    componentWillMount(): void {
+    UNSAFE_componentWillMount(): void {
         if (!this.props.erEndringssøknad) {
             this.props.dispatch(api.sendStorageKvittering());
         }

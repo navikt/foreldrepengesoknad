@@ -2,7 +2,7 @@ import * as React from 'react';
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import FordelingForelderInfo from './components/FordelingForelderInfo';
-import { Forelder, StatusKey } from 'common/types';
+import { StatusKey } from 'common/types';
 import { FordelingGrafData, FordelingsinfoEnForelder } from './types';
 import FordelingGrafHeader from './components/FordelingGrafHeader';
 import FordelingGrafBar from './components/FordelingGrafBar';
@@ -28,7 +28,7 @@ const FordelingGraf: React.StatelessComponent<Props> = ({ tittel, status, status
             </Block>
             {fordeling && (
                 <Block margin="s" screenOnly={true}>
-                    <FordelingGrafBar fordeling={fordeling} forelder={mor ? Forelder.mor : Forelder.farMedmor} />
+                    <FordelingGrafBar fordeling={fordeling} />
                 </Block>
             )}
             <div className={fordelingGrafBem.element('titler')}>

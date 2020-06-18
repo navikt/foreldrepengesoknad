@@ -11,7 +11,7 @@ export const enum AnnenForelderFieldNames {
     aleneOmOmsorg = 'aleneOmOmsorg',
     erMorUfør = 'erMorUfør',
     datoForAleneomsorg = 'datoForAleneomsorg',
-    bostedsland = 'bostedsland'
+    bostedsland = 'bostedsland',
 }
 
 export interface AnnenForelderFormValues {

@@ -42,7 +42,7 @@ const Feilsidemelding: React.StatelessComponent<Props> = ({ containerId, illustr
                                     </Lenke>
                                 )}
                             </div>
-                        )
+                        ),
                     }}
                 />
             )}

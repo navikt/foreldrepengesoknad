@@ -10,7 +10,7 @@ export interface Props {
     aktivtArbeidsforhold: boolean;
 }
 
-class UtsettelsePgaFerieInfo extends React.Component<Props, {}> {
+class UtsettelsePgaFerieInfo extends React.Component<Props> {
     render() {
         const { antallFeriedager, aktivtArbeidsforhold } = this.props;
 
@@ -20,8 +20,8 @@ class UtsettelsePgaFerieInfo extends React.Component<Props, {}> {
                     messages={[
                         {
                             type: 'normal',
-                            contentIntlKey: 'utsettelseskjema.ferie.utenArbeidsforhold'
-                        }
+                            contentIntlKey: 'utsettelseskjema.ferie.utenArbeidsforhold',
+                        },
                     ]}
                 />
             );

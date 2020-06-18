@@ -27,7 +27,7 @@ function* getSøkerinfo(action: GetSøkerinfo) {
 
         yield put(
             apiActions.updateApi({
-                søkerinfo
+                søkerinfo,
             })
         );
 
@@ -49,7 +49,7 @@ function* getSøkerinfo(action: GetSøkerinfo) {
     } finally {
         yield put(
             apiActions.updateApi({
-                isLoadingSøkerinfo: false
+                isLoadingSøkerinfo: false,
             })
         );
     }

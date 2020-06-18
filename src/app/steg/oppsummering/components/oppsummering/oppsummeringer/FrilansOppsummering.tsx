@@ -26,7 +26,7 @@ const FrilansOppsummering = ({ søker }: Props) => {
             jobberFremdelesSomFrilans,
             oppstart,
             harJobbetForNærVennEllerFamilieSiste10Mnd,
-            oppdragForNæreVennerEllerFamilieSiste10Mnd
+            oppdragForNæreVennerEllerFamilieSiste10Mnd,
         } = frilansInformasjon;
         return (
             <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.frilans.tittel')}>

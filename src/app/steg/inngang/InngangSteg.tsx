@@ -42,7 +42,7 @@ export interface StateProps {
 
 export type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps;
 
-class InngangSteg extends React.Component<Props, {}> {
+class InngangSteg extends React.Component<Props> {
     initiellSituasjon: Søkersituasjon | undefined;
     initiellSøkerrolle: SøkerRolle | undefined;
 
@@ -75,13 +75,13 @@ class InngangSteg extends React.Component<Props, {}> {
         const { søker, dispatch } = this.props;
         const updatedSøker: SøkerPartial = {
             ...søker,
-            rolle: this.resolveSøkerRolle(situasjon)
+            rolle: this.resolveSøkerRolle(situasjon),
         };
 
         dispatch(
             søknadActions.updateSøknad({
                 situasjon,
-                søker: updatedSøker as Søker
+                søker: updatedSøker as Søker,
             })
         );
     }
@@ -94,12 +94,12 @@ class InngangSteg extends React.Component<Props, {}> {
                     erEndringssøknad,
                     saksnummer,
                     situasjon,
-                    harGodkjentVilkår: true
+                    harGodkjentVilkår: true,
                 })
             );
             dispatch(
                 søknadActions.updateSøker({
-                    rolle: valgtRolle
+                    rolle: valgtRolle,
                 })
             );
         }
@@ -127,7 +127,7 @@ class InngangSteg extends React.Component<Props, {}> {
             erEndringssøknad,
             erEnkelEndringssøknad,
             dispatch,
-            stegProps
+            stegProps,
         } = this.props;
         const { rolle } = søker;
 
@@ -147,7 +147,7 @@ class InngangSteg extends React.Component<Props, {}> {
                         onChange={(nyRolle: SøkerRolle) =>
                             dispatch(
                                 søknadActions.updateSøker({
-                                    rolle: nyRolle
+                                    rolle: nyRolle,
                                 })
                             )
                         }
@@ -184,7 +184,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFormTag: true,
         history: props.history,
         isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
-        nesteStegID: resolveStegToRender(state)
+        nesteStegID: resolveStegToRender(state),
     };
 
     return {
@@ -196,7 +196,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         stegProps,
         erEndringssøknad,
         saksnummer: state.søknad.saksnummer,
-        erEnkelEndringssøknad
+        erEnkelEndringssøknad,
     };
 };
 

@@ -13,7 +13,7 @@ describe('apiReducer', () => {
             søknadSendingInProgress,
             søknadHasBeenReceived,
             stønadskontoer100,
-            stønadskontoer80
+            stønadskontoer80,
         } = defaultState;
 
         expect(isLoadingSøkerinfo).toBe(false);

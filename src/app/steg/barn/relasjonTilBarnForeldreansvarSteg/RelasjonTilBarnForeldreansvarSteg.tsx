@@ -41,7 +41,7 @@ interface OwnProps {
 
 export type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps & OwnProps;
 
-class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
+class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
@@ -51,7 +51,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
         this.props.dispatch(
             søknadActions.updateBarn({
                 antallBarn: antall,
-                fødselsdatoer: utils.trimFødselsdatoer(antall, this.props.barn.fødselsdatoer)
+                fødselsdatoer: utils.trimFødselsdatoer(antall, this.props.barn.fødselsdatoer),
             })
         );
     }
@@ -68,7 +68,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                         onChange={(dato: Date) =>
                             dispatch(
                                 søknadActions.updateBarn({
-                                    foreldreansvarsdato: dato
+                                    foreldreansvarsdato: dato,
                                 })
                             )
                         }
@@ -79,7 +79,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                 <Block visible={visibility.antallBarn(barn)}>
                     <AntallBarnBolk
                         spørsmål={intl.formatMessage({
-                            id: 'foreldreansvar.antallBarn'
+                            id: 'foreldreansvar.antallBarn',
                         })}
                         inputName="foreldreansvar.antallBarn.input"
                         antallBarn={barn.antallBarn}
@@ -92,12 +92,12 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                         antallBarn={barn.antallBarn}
                         fødselsdatoer={barn.fødselsdatoer || []}
                         datoavgrensninger={{
-                            minDato: DateValues.date15YearsAgo.toDate()
+                            minDato: DateValues.date15YearsAgo.toDate(),
                         }}
                         onChangeFødselsdato={(fødselsdatoer: Date[]) =>
                             dispatch(
                                 søknadActions.updateBarn({
-                                    fødselsdatoer
+                                    fødselsdatoer,
                                 })
                             )
                         }
@@ -109,8 +109,8 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                         messages={[
                             {
                                 type: 'info',
-                                contentIntlKey: 'Barn over 15 år er registrert.'
-                            }
+                                contentIntlKey: 'Barn over 15 år er registrert.',
+                            },
                         ]}
                     />
                 </Block>
@@ -120,8 +120,8 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                         messages={[
                             {
                                 type: 'normal',
-                                contentIntlKey: 'vedlegg.veileder.omsorgsovertakelse'
-                            }
+                                contentIntlKey: 'vedlegg.veileder.omsorgsovertakelse',
+                            },
                         ]}
                     />
                     <AttachmentsUploaderPure
@@ -150,13 +150,13 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFortsettKnapp: barnErGyldig(state.søknad, props.søkerinfo) && fødselsdatoerOk,
         renderFormTag: true,
         history: props.history,
-        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FORELDREANSVAR, state.søknad, props.søkerinfo)
+        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FORELDREANSVAR, state.søknad, props.søkerinfo),
     };
 
     return {
         barn,
-        stegProps
+        stegProps,
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(injectIntl(RelasjonTilBarnForeldreansvarSteg));
+export default connect<StateProps>(mapStateToProps)(injectIntl(RelasjonTilBarnForeldreansvarSteg));

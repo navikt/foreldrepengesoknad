@@ -8,7 +8,8 @@ const AdvarselIkon = (props: any) => (
         width="80"
         height="80"
         viewBox="0 0 80 80"
-        {...props}>
+        {...props}
+    >
         <g fill="none" fillRule="evenodd">
             <circle cx="40" cy="40" r="40" fill="#FFBD66" />
             <path

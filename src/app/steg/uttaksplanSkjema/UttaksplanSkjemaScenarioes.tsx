@@ -56,7 +56,7 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({
     søkerHarMidlertidigOmsorg,
     tilgjengeligeDager,
     erFarEllerMedmor,
-    erDeltUttak
+    erDeltUttak,
 }) => {
     const harSvartPåDekningsgradSpørsmål = søknad.dekningsgrad !== undefined;
     const intl = useIntl();
@@ -68,8 +68,8 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({
                     {
                         type: 'normal',
                         contentIntlKey: 'uttaksplan.skjema.informasjonTilAnnenForelder',
-                        values: { navn: getNavnGenitivEierform(søknad.annenForelder.fornavn, intl.locale) }
-                    }
+                        values: { navn: getNavnGenitivEierform(søknad.annenForelder.fornavn, intl.locale) },
+                    },
                 ]}
             />
 
@@ -97,9 +97,9 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({
                             contentIntlKey:
                                 'uttaksplan.skjema.farMedmor.infoOmTidsromMellomMorsSisteDagOgFarsFørsteDag',
                             values: {
-                                navnMor: navnPåForeldre.mor
-                            }
-                        }
+                                navnMor: navnPåForeldre.mor,
+                            },
+                        },
                     ]}
                 />
             </Block>
@@ -134,7 +134,7 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
     familiehendelsesdato,
     tilgjengeligeDager,
     erFarEllerMedmor,
-    erDeltUttak
+    erDeltUttak,
 }) => {
     const harSvartPåStartdato =
         søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon !== undefined ||
@@ -168,9 +168,9 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
                                         values: {
                                             uker: getFlerbarnsuker(søknad.dekningsgrad!, søknad.barn.antallBarn),
                                             navnFar: navnPåForeldre.farMedmor,
-                                            navnMor: navnPåForeldre.mor
-                                        }
-                                    }
+                                            navnMor: navnPåForeldre.mor,
+                                        },
+                                    },
                                 ]}
                             />
                         </Block>
@@ -198,7 +198,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
     familiehendelsesdato,
     tilgjengeligeDager,
     erDeltUttak,
-    erFarEllerMedmor
+    erFarEllerMedmor,
 }) => {
     /** Mor og far, adopsjon, begge har rett, adopterer alene, bare en har rett */
     const intl = useIntl();
@@ -226,8 +226,8 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
                         {
                             type: 'normal',
                             contentIntlKey: 'uttaksplan.skjema.informasjonTilAnnenForelder',
-                            values: { navn: getNavnGenitivEierform(søknad.annenForelder.fornavn, intl.locale) }
-                        }
+                            values: { navn: getNavnGenitivEierform(søknad.annenForelder.fornavn, intl.locale) },
+                        },
                     ]}
                 />
             )}
@@ -278,45 +278,44 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
                             contentIntlKey:
                                 adoptertIUtlandet !== undefined && adoptertIUtlandet === true
                                     ? 'uttaksplanSkjema.info.adoptertIUtlandet'
-                                    : 'uttaksplanSkjema.info.ikkeAdoptertIUtlandet'
-                        }
+                                    : 'uttaksplanSkjema.info.ikkeAdoptertIUtlandet',
+                        },
                     ]}
                 />
             </Block>
-            {søknad.søker.erAleneOmOmsorg === false &&
-                søknad.annenForelder.harRettPåForeldrepenger && (
-                    <>
-                        <Block
-                            visible={
-                                søknad.barn.antallBarn > 1 &&
-                                skjema.startdatoPermisjon !== undefined &&
-                                skjema.harAnnenForelderSøktFP !== true
-                            }
-                        >
-                            <VeilederInfo
-                                messages={[
-                                    {
-                                        type: 'normal',
-                                        contentIntlKey: 'uttaksplan.skjema.flerbarnsInformasjon',
-                                        values: {
-                                            uker: getFlerbarnsuker(søknad.dekningsgrad!, søknad.barn.antallBarn),
-                                            navnFar: navnPåForeldre.farMedmor,
-                                            navnMor: navnPåForeldre.mor
-                                        }
-                                    }
-                                ]}
-                            />
-                        </Block>
-                        <FordelingFellesperiodeSpørsmål
-                            visible={skjema.startdatoPermisjon !== undefined && skjema.harAnnenForelderSøktFP !== true}
-                            ukerFellesperiode={Math.floor(antallUkerFellesperiode)}
-                            navnPåForeldre={navnPåForeldre}
-                            annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
-                            antallUkerMødreKvote={antallUkerMødreKvote!}
-                            antallUkerFedreKvote={antallUkerFedreKvote!}
+            {søknad.søker.erAleneOmOmsorg === false && søknad.annenForelder.harRettPåForeldrepenger && (
+                <>
+                    <Block
+                        visible={
+                            søknad.barn.antallBarn > 1 &&
+                            skjema.startdatoPermisjon !== undefined &&
+                            skjema.harAnnenForelderSøktFP !== true
+                        }
+                    >
+                        <VeilederInfo
+                            messages={[
+                                {
+                                    type: 'normal',
+                                    contentIntlKey: 'uttaksplan.skjema.flerbarnsInformasjon',
+                                    values: {
+                                        uker: getFlerbarnsuker(søknad.dekningsgrad!, søknad.barn.antallBarn),
+                                        navnFar: navnPåForeldre.farMedmor,
+                                        navnMor: navnPåForeldre.mor,
+                                    },
+                                },
+                            ]}
                         />
-                    </>
-                )}
+                    </Block>
+                    <FordelingFellesperiodeSpørsmål
+                        visible={skjema.startdatoPermisjon !== undefined && skjema.harAnnenForelderSøktFP !== true}
+                        ukerFellesperiode={Math.floor(antallUkerFellesperiode)}
+                        navnPåForeldre={navnPåForeldre}
+                        annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
+                        antallUkerMødreKvote={antallUkerMødreKvote!}
+                        antallUkerFedreKvote={antallUkerFedreKvote!}
+                    />
+                </>
+            )}
         </>
     );
 };
@@ -327,7 +326,7 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({
     navnPåForeldre,
     tilgjengeligeDager,
     erFarEllerMedmor,
-    erDeltUttak
+    erDeltUttak,
 }) => {
     const omsorgsDato = søknad.barn.datoForAleneomsorg || familiehendelsesdato;
     return (
@@ -349,9 +348,9 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({
                             contentIntlKey: 'uttaksplan.skjema.aleneomsorgFarMedmor.navSaraVeileder',
                             values: {
                                 navn: søknad.annenForelder.fornavn,
-                                b: (msg: any) => <b>{msg}</b>
-                            }
-                        }
+                                b: (msg: any) => <b>{msg}</b>,
+                            },
+                        },
                     ]}
                 />
             </Block>
@@ -362,8 +361,8 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({
                             type: 'normal',
                             contentIntlKey: 'uttaksplan.skjema.adopsjon.navSaraVeileder',
                             values: { navn: søknad.annenForelder.fornavn },
-                            formatContentAsHTML: true
-                        }
+                            formatContentAsHTML: true,
+                        },
                     ]}
                 />
             </Block>
@@ -382,7 +381,7 @@ const Scenario6: React.StatelessComponent<ScenarioProps> = ({
     navnPåForeldre,
     erDeltUttak,
     erFarEllerMedmor,
-    tilgjengeligeDager
+    tilgjengeligeDager,
 }) => {
     const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
 
@@ -411,7 +410,7 @@ const Scenario7: React.StatelessComponent<ScenarioProps> = ({
     familiehendelsesdato,
     tilgjengeligeDager,
     erFarEllerMedmor,
-    erDeltUttak
+    erDeltUttak,
 }) => (
     <>
         <HarAnnenForelderSøktForeldrepengerSpørsmål navnAnnenForelder={søknad.annenForelder.fornavn} visible={true} />
@@ -466,16 +465,15 @@ const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåFo
                 }
                 navnPåForeldre={navnPåForeldre}
             />
-            {uttaksplanSkjema.farSinFørsteUttaksdag &&
-                morSinSisteUttaksdag && (
-                    <UtsettelseBegrunnelse
-                        visible={skalFarUtsetteEtterMorSinSisteUttaksdag(
-                            uttaksplanSkjema.farSinFørsteUttaksdag,
-                            morSinSisteUttaksdag
-                        )}
-                        navn={navnPåForeldre.mor}
-                    />
-                )}
+            {uttaksplanSkjema.farSinFørsteUttaksdag && morSinSisteUttaksdag && (
+                <UtsettelseBegrunnelse
+                    visible={skalFarUtsetteEtterMorSinSisteUttaksdag(
+                        uttaksplanSkjema.farSinFørsteUttaksdag,
+                        morSinSisteUttaksdag
+                    )}
+                    navn={navnPåForeldre.mor}
+                />
+            )}
         </>
     );
 };

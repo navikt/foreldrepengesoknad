@@ -14,7 +14,7 @@ interface ArbeidsforholdInfoWrapperProps {
     arbeidsforhold: Arbeidsforhold[];
 }
 const InformasjonOmArbeidsforholdWrapper: React.StatelessComponent<ArbeidsforholdInfoWrapperProps> = ({
-    arbeidsforhold
+    arbeidsforhold,
 }) => {
     const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
     const intl = useIntl();

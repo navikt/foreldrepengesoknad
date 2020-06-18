@@ -8,7 +8,8 @@ const RedigerIkon = (props: any) => (
         height={16}
         viewBox="0 0 24 24"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        {...props}>
+        {...props}
+    >
         <desc>Created with Sketch.</desc>
         <defs>
             <path

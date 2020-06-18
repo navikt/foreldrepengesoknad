@@ -30,7 +30,7 @@ type Props = FødselsdatoerSpørsmålProps;
 
 const getKey = (idx: number) => `fødselsdatoer.flere.${idx}`;
 
-class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
+class FødselsdatoerSpørsmål extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.onFødselsdatoChange = this.onFødselsdatoChange.bind(this);
@@ -150,7 +150,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                         <DatoInput
                             id={getKey(idx)}
                             name={getKey(idx)}
-                            dato={fødselsdatoer[idx]}
+                            dato={dato}
                             onChange={(d: Date) => this.onFødselsdatoChange(d, idx)}
                             label={<Labeltekst intlId={`fødselsdatoer.flere.${idx + 1}`} />}
                             datoAvgrensinger={this.getFødselsdatoAvgrensninger()}

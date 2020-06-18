@@ -29,10 +29,12 @@ export const harPerioderManglendeVedleggTest: RegelTest = (grunnlag: UttaksplanR
         passerer,
         info: passerer
             ? undefined
-            : manglendeVedlegg.filter((vedlegg) => !!vedlegg.periodeId).map((vedlegg) => ({
-                  periodeId: vedlegg.periodeId,
-                  intlKey: regelTekst
-              }))
+            : manglendeVedlegg
+                  .filter((vedlegg) => !!vedlegg.periodeId)
+                  .map((vedlegg) => ({
+                      periodeId: vedlegg.periodeId,
+                      intlKey: regelTekst,
+                  })),
     };
     return x;
 };

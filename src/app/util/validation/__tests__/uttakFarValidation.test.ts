@@ -6,7 +6,7 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     StønadskontoType,
-    MorsAktivitet
+    MorsAktivitet,
 } from '../../../types/uttaksplan/periodetyper';
 import { getTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
@@ -25,28 +25,28 @@ const uttakBase: Partial<Uttaksperiode> = {
     konto: StønadskontoType.Fellesperiode,
     gradert: false,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
-    forelder: Forelder.farMedmor
+    forelder: Forelder.farMedmor,
 };
 
 const overføringBase: Partial<Overføringsperiode> = {
     type: Periodetype.Overføring,
     årsak: OverføringÅrsakType.sykdomAnnenForelder,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
-    forelder: Forelder.farMedmor
+    forelder: Forelder.farMedmor,
 };
 
 const utsettelseBase: Partial<Utsettelsesperiode> = {
     type: Periodetype.Utsettelse,
     årsak: UtsettelseÅrsakType.Sykdom,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
-    forelder: Forelder.farMedmor
+    forelder: Forelder.farMedmor,
 };
 
 const uttak = uttakBase as Uttaksperiode;
 const utsettelse = utsettelseBase as Utsettelsesperiode;
 const overføring = overføringBase as Overføringsperiode;
 const omAnnenForelder: Partial<OmAnnenForelder> = {
-    kanIkkeOppgis: false
+    kanIkkeOppgis: false,
 };
 
 describe('Validering av fars uttak første 6 uker', () => {
@@ -164,8 +164,8 @@ describe('Validering av fars uttak første 6 uker', () => {
                 {
                     ...uttak,
                     konto: StønadskontoType.Fellesperiode,
-                    morsAktivitetIPerioden: MorsAktivitet.TrengerHjelp
-                }
+                    morsAktivitetIPerioden: MorsAktivitet.TrengerHjelp,
+                },
             ],
             familiehendelsesdato,
             1,
@@ -195,8 +195,8 @@ describe('Validering av fars uttak første 6 uker', () => {
                     ...uttak,
                     tidsperiode: tidsperiodeEtterSeksUker,
                     konto: StønadskontoType.Fellesperiode,
-                    morsAktivitetIPerioden: MorsAktivitet.Arbeid
-                }
+                    morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                },
             ],
             familiehendelsesdato,
             1,

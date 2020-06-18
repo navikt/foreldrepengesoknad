@@ -25,12 +25,12 @@ export const overstyrAntallTilgjengeligeUkerForBarnFørJuli2018 = (
         if (konto.konto === StønadskontoType.Fedrekvote || konto.konto === StønadskontoType.Mødrekvote) {
             return {
                 konto: konto.konto,
-                dager: UKERFØRJULI * 5
+                dager: UKERFØRJULI * 5,
             };
         } else if (konto.konto === StønadskontoType.Fellesperiode) {
             return {
                 konto: konto.konto,
-                dager: konto.dager + ekstraFedrekvoteDager + ekstraMødrekvoteDager
+                dager: konto.dager + ekstraFedrekvoteDager + ekstraMødrekvoteDager,
             };
         } else {
             return konto;

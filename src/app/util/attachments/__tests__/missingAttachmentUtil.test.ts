@@ -15,7 +15,7 @@ describe('missingAttachmentUtil', () => {
             søkerinfo = {
                 person: {} as Person,
                 registrerteBarn: [] as RegistrertBarn[],
-                arbeidsforhold: [] as Arbeidsforhold[]
+                arbeidsforhold: [] as Arbeidsforhold[],
             };
         });
 
@@ -25,16 +25,16 @@ describe('missingAttachmentUtil', () => {
                     {
                         ...mockSøknad,
                         barn: {
-                            erBarnetFødt: false
-                        }
+                            erBarnetFødt: false,
+                        },
                     } as Søknad,
                     søkerinfo
                 )
             ).toEqual([
                 {
                     skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
-                    type: AttachmentType.TERMINBEKREFTELSE
-                }
+                    type: AttachmentType.TERMINBEKREFTELSE,
+                },
             ]);
         });
 
@@ -42,8 +42,8 @@ describe('missingAttachmentUtil', () => {
             const forventetResultat = [
                 {
                     skjemanummer: Skjemanummer.OMSORGSOVERTAKELSESDATO,
-                    type: AttachmentType.OMSORGSOVERTAKELSE
-                }
+                    type: AttachmentType.OMSORGSOVERTAKELSE,
+                },
             ];
 
             expect(
@@ -57,9 +57,9 @@ describe('missingAttachmentUtil', () => {
                             adoptertIUtlandet: false,
                             adopsjonAvEktefellesBarn: false,
                             fødselsdatoer: [new Date()],
-                            ...mockSøknad.barn
+                            ...mockSøknad.barn,
                         },
-                        situasjon: Søkersituasjon.ADOPSJON
+                        situasjon: Søkersituasjon.ADOPSJON,
                     } as Søknad,
                     søkerinfo
                 )
@@ -76,9 +76,9 @@ describe('missingAttachmentUtil', () => {
                             adoptertIUtlandet: false,
                             adopsjonAvEktefellesBarn: true,
                             fødselsdatoer: [new Date()],
-                            ...mockSøknad.barn
+                            ...mockSøknad.barn,
                         },
-                        situasjon: Søkersituasjon.ADOPSJON
+                        situasjon: Søkersituasjon.ADOPSJON,
                     } as Søknad,
                     søkerinfo
                 )
@@ -92,19 +92,19 @@ describe('missingAttachmentUtil', () => {
                         ...mockSøknad,
                         søker: {
                             erAleneOmOmsorg: true,
-                            rolle: SøkerRolle.FAR
+                            rolle: SøkerRolle.FAR,
                         },
                         barn: {
-                            datoForAleneomsorg: new Date()
-                        }
+                            datoForAleneomsorg: new Date(),
+                        },
                     } as Søknad,
                     søkerinfo
                 )
             ).toEqual([
                 {
                     skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
-                    type: AttachmentType.ALENEOMSORG
-                }
+                    type: AttachmentType.ALENEOMSORG,
+                },
             ]);
         });
     });
@@ -112,7 +112,7 @@ describe('missingAttachmentUtil', () => {
     describe('shouldPeriodeHaveAttachment', () => {
         it('infoperioder skal ikke behøve vedlegg', () => {
             const infoperiode = {
-                type: Periodetype.Info
+                type: Periodetype.Info,
             } as InfoPeriode;
             expect(shouldPeriodeHaveAttachment(infoperiode, {} as Søknadsinfo)).toBeFalsy();
         });

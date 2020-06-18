@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { Periode, Periodetype, Uttaksperiode, UtsettelseÅrsakType } from '../../../../types/uttaksplan/periodetyper';
 import UtsettelsesperiodeForm, {
     UtsettelseFormPeriodeType,
-    Utsettelsesvariant
+    Utsettelsesvariant,
 } from '../utsettelseForm/UtsettelseForm';
 import ValiderbarForm, { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import './nyPeriodeForm.less';
@@ -70,7 +70,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
 
         const { periodetype, tidsperiode } = props;
         const periode: RecursivePartial<Periode> = {
-            tidsperiode: tidsperiode || {}
+            tidsperiode: tidsperiode || {},
         };
         if (
             periodetype === Periodetype.Utsettelse ||
@@ -82,7 +82,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
         }
         this.state = {
             periode,
-            visibility: undefined
+            visibility: undefined,
         };
 
         this.updatePeriode = this.updatePeriode.bind(this);
@@ -100,16 +100,12 @@ class NyPeriodeForm extends React.Component<Props, State> {
         } else {
             const updatedPeriode = {
                 ...this.state.periode,
-                ...periode
+                ...periode,
             };
-            const cleanedPeriode = PeriodeCleanup.cleanupNyPeriode(
-                updatedPeriode as Periode,
-                this.props.søknadsinfo,
-                visibility
-            );
+            const cleanedPeriode = PeriodeCleanup.cleanupNyPeriode(updatedPeriode as Periode, this.props.søknadsinfo);
             this.setState({
                 periode: cleanedPeriode as RecursivePartial<Periode>,
-                visibility
+                visibility,
             });
         }
     }
@@ -118,8 +114,8 @@ class NyPeriodeForm extends React.Component<Props, State> {
         e.preventDefault();
         e.stopPropagation();
         const { onSubmit, søknadsinfo } = this.props;
-        const { periode, visibility } = this.state;
-        const cleanedPeriode = PeriodeCleanup.cleanupNyPeriode(periode as Periode, søknadsinfo, visibility);
+        const { periode } = this.state;
+        const cleanedPeriode = PeriodeCleanup.cleanupNyPeriode(periode as Periode, søknadsinfo);
         onSubmit(cleanedPeriode as Periode);
         this.updatePeriode({ tidsperiode: {} }, false);
     }

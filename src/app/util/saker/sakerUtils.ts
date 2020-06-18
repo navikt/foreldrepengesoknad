@@ -3,7 +3,7 @@ import Behandling, {
     BehandlingStatus,
     BehandlingTema,
     BehandligType,
-    BehandlingResultatType
+    BehandlingResultatType,
 } from '../../types/søknad/Behandling';
 
 const getBehandling = (sak: Sak): Behandling | undefined => {

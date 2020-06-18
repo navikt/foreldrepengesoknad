@@ -34,12 +34,13 @@ const Oppsummeringslisteelement: React.StatelessComponent<Oppsummeringslisteelem
     venstrestiltTekst,
     høyrestiltTekst,
     content,
-    kompakt
+    kompakt,
 }: OppsummeringslisteelementProps) => (
     <li
         className={classnames('oppsummeringsliste__element', {
-            'oppsummeringsliste__element--kompakt': kompakt === true
-        })}>
+            'oppsummeringsliste__element--kompakt': kompakt === true,
+        })}
+    >
         <div className="oppsummeringsliste__element__heading">
             <Element>{venstrestiltTekst}</Element>
             <Element className="høyrestiltTekst">{høyrestiltTekst}</Element>

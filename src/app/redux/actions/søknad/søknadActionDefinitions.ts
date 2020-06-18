@@ -2,11 +2,11 @@ import Søknad, {
     SøknadenGjelderBarnValg,
     SøknadPartial,
     Tilleggsopplysning,
-    SøknadEkstrainfo
+    SøknadEkstrainfo,
 } from '../../../types/søknad/Søknad';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import InformasjonOmUtenlandsopphold, {
-    InformasjonOmUtenlandsoppholdPartial
+    InformasjonOmUtenlandsoppholdPartial,
 } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
@@ -44,7 +44,7 @@ export enum SøknadActionKeys {
     'SET_CURRENT_STEG' = 'setCurrentSteg',
     'START_SØKNAD' = 'startNySøknad',
     'SET_ENDRINGSTIDSPUNKT' = 'setEndringstidspunkt',
-    'SET_INFORMASJON_OM_UTENLANDSOPPHOLD' = 'SET_INFORMASJON_OM_UTENLANDSOPPHOLD'
+    'SET_INFORMASJON_OM_UTENLANDSOPPHOLD' = 'SET_INFORMASJON_OM_UTENLANDSOPPHOLD',
 }
 
 export interface StartSøknad {

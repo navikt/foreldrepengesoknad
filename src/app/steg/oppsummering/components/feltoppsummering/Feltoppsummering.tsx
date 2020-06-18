@@ -10,11 +10,9 @@ interface Props {
 }
 
 const Feltoppsummering: React.StatelessComponent<Props> = ({ feltnavn, verdi }) => (
-    <InnholdMedLedetekst
-        className="feltoppsummering"
-        ledetekst={feltnavn}
-        children={<Element className="feltoppsummering__verdi">{verdi}</Element>}
-    />
+    <InnholdMedLedetekst className="feltoppsummering" ledetekst={feltnavn}>
+        <Element className="feltoppsummering__verdi">{verdi}</Element>
+    </InnholdMedLedetekst>
 );
 
 export default Feltoppsummering;

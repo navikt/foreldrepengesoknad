@@ -13,7 +13,7 @@ const hasListOfChildren = (children: string | string[]): boolean => Array.isArra
 const InnholdMedLedetekst: React.StatelessComponent<InnholdMedLedetekstProps> = ({
     ledetekst,
     children,
-    className
+    className,
 }) => {
     return (
         <div className={className}>

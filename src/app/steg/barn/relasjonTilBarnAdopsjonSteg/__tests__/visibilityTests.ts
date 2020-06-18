@@ -32,7 +32,7 @@ describe('Relasjon til barn adopsjon', () => {
         expect(
             fns.spørsmålOmAdoptertIUtlandet({
                 adopsjonAvEktefellesBarn: false,
-                fødselsdatoer: [new Date('2018-01-01')]
+                fødselsdatoer: [new Date('2018-01-01')],
             })
         ).toBe(false);
         expect(
@@ -45,7 +45,7 @@ describe('Relasjon til barn adopsjon', () => {
         expect(
             fns.spørsmålOmAdoptertIUtlandet({
                 adopsjonAvEktefellesBarn: false,
-                fødselsdatoer: [new Date('2018-01-01')]
+                fødselsdatoer: [new Date('2018-01-01')],
             })
         ).toBe(true);
         expect(

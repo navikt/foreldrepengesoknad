@@ -19,7 +19,8 @@ const ChildSVG: React.StatelessComponent<Props> = (props) => {
             viewBox="0 0 120 120"
             xmlnsXlink="http://www.w3.org/1999/xlink"
             {...svgProps}
-            className={classnames(bem.block, bem.modifier(face))}>
+            className={classnames(bem.block, bem.modifier(face))}
+        >
             <title>Kid</title>
             <g id="Page-1" stroke="none" strokeWidth={1} fill="none" fillRule="evenodd">
                 <g id="child-2-">
@@ -98,7 +99,8 @@ const ChildSVG: React.StatelessComponent<Props> = (props) => {
                                     id="SadEyes"
                                     className="eyes"
                                     transform="translate(0.000000, 3.000000)"
-                                    fillRule="nonzero">
+                                    fillRule="nonzero"
+                                >
                                     <g id="SadEyeLeft">
                                         <path d="M0.0154261199,4.29727314 C-0.0845738801,4.79727314 0.31542612,5.29727314 0.81542612,5.39727314 C1.31542612,5.49727314 1.81542612,5.09727314 1.91542612,4.59727314 C2.01542612,3.59727314 2.81542612,2.79727314 4.31542612,2.29727314 C5.81542612,1.79727314 6.81542612,1.89727314 7.61542612,2.59727314 C8.01542612,2.99727314 8.61542612,2.99727314 9.01542612,2.59727314 C9.41542612,2.19727314 9.41542612,1.59727314 9.01542612,1.19727314 C7.71542612,-0.102726862 5.91542612,-0.302726862 3.81542612,0.397273138 C1.51542612,1.19727314 0.21542612,2.49727314 0.0154261199,4.29727314 Z" />
                                     </g>

@@ -40,7 +40,7 @@ const UttaksplanOppsummering: React.FunctionComponent<Props> = ({ dekningsgrad, 
             <Feltoppsummering
                 feltnavn={getMessage(intl, 'oppsummering.dekningsgrad.label')}
                 verdi={getMessage(intl, `oppsummering.dekningsgrad.verdi${dekningsgrad}`, {
-                    antallUker: antallUkerUttaksplan
+                    antallUker: antallUkerUttaksplan,
                 })}
             />
             <UttaksplanOppsummeringsliste {...rest} />

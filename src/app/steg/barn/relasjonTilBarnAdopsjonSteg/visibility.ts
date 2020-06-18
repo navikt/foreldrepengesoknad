@@ -48,7 +48,7 @@ const module = {
     spørsmålOmFødselsdatoer: spørsmålOmFodselsdatoerVisible,
     spørsmålOmAdoptertIUtlandet: spørsmålOmAdoptertIUtlandetVisible,
     spørsmålOmAnkomstdato: spørsmålOmAnkomstdatoVisible,
-    spørsmålOmVedlegg: spørsmålOmVedleggVisible
+    spørsmålOmVedlegg: spørsmålOmVedleggVisible,
 };
 
 export default module;

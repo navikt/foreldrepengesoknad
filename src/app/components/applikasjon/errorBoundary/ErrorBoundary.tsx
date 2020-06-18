@@ -5,13 +5,13 @@ interface State {
     eventId: string | null;
 }
 
-class ErrorBoundary extends React.Component<{}, State> {
-    constructor(props: any) {
+class ErrorBoundary extends React.Component<unknown, State> {
+    constructor(props: unknown) {
         super(props);
         this.state = { eventId: null };
     }
 
-    componentDidCatch(error: Error | null, errorInfo: object) {
+    componentDidCatch(error: Error | null, errorInfo: any): void {
         Sentry.withScope((scope) => {
             scope.setExtras(errorInfo);
             const eventId = Sentry.captureException(error);
@@ -19,7 +19,7 @@ class ErrorBoundary extends React.Component<{}, State> {
         });
     }
 
-    render() {
+    render(): React.ReactNode {
         return this.props.children;
     }
 }

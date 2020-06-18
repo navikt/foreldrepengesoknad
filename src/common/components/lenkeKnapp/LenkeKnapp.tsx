@@ -14,7 +14,8 @@ const LenkeKnapp: React.StatelessComponent<Props> = ({ text, onClick }) => {
             onClick={(e) => {
                 e.preventDefault();
                 onClick();
-            }}>
+            }}
+        >
             {text}
         </button>
     );

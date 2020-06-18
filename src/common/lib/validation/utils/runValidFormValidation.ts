@@ -5,7 +5,7 @@ export const runValidators = (validators: Validator[] | undefined, inputName: st
         return {
             name: inputName,
             tests: [],
-            valid: true
+            valid: true,
         };
     }
     const results: Validator[] = validators.filter((validator) => {
@@ -18,7 +18,7 @@ export const runValidators = (validators: Validator[] | undefined, inputName: st
     return {
         name: inputName,
         tests,
-        valid
+        valid,
     };
 };
 

@@ -17,6 +17,6 @@ export default function* rootSaga() {
         søknadSaga(),
         uttakSaga(),
         uttaksplanValideringSaga(),
-        sakerSaga()
+        sakerSaga(),
     ]);
 }

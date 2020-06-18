@@ -12,9 +12,9 @@ export interface Props {
 const FamiliehendelsedatoInfo: React.StatelessComponent<Props> = ({
     søkersituasjon,
     familiehendelsesdato,
-    erBarnetFødt
+    erBarnetFødt,
 }) => {
-    let key: string = `uttaksplan.familiehendelsesdato.${søkersituasjon}`;
+    let key = `uttaksplan.familiehendelsesdato.${søkersituasjon}`;
     if (søkersituasjon === Søkersituasjon.FØDSEL) {
         key = `${key}.${erBarnetFødt ? 'fødtBarn' : 'ufødtBarn'}`;
     }

@@ -23,13 +23,13 @@ const IkkeMyndig: React.StatelessComponent<Props> = (props: Props) => {
             <Feilsidemelding
                 illustrasjon={{
                     tittel: getMessage(intl, 'ikkeMyndig.tittel', {
-                        navn: søkerinfo.person.fornavn.toLowerCase()
+                        navn: søkerinfo.person.fornavn.toLowerCase(),
                     }),
                     tekst: getMessage(intl, 'ikkeMyndig.ingress'),
                     lenke: {
                         url: URL_PAPIRSØKNAD,
-                        tekst: getMessage(intl, 'ikkeMyndig.boblelenketekst')
-                    }
+                        tekst: getMessage(intl, 'ikkeMyndig.boblelenketekst'),
+                    },
                 }}
                 tittel={getMessage(intl, 'velkommen.tittel')}
                 ingress={getMessage(intl, 'velkommen.ingress')}

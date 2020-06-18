@@ -34,7 +34,10 @@ class Landvelger extends React.Component<Props> {
     updateCache(intl: IntlShape) {
         this.countryOptionsCache = {
             locale: intl.locale,
-            options: createCountryOptions(this.props.visBareEuOgEftaLand ? this.props.visBareEuOgEftaLand : false, intl)
+            options: createCountryOptions(
+                this.props.visBareEuOgEftaLand ? this.props.visBareEuOgEftaLand : false,
+                intl
+            ),
         };
     }
 

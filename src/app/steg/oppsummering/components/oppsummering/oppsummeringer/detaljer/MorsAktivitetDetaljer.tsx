@@ -17,7 +17,7 @@ type Props = MorsAktivitetDetaljerProps;
 const MorsAktivitetDetaljer: React.StatelessComponent<Props> = ({
     morsAktivitet,
     dokumentasjonAvMorsAktivitet,
-    visOppsummeringAvDokumentasjon
+    visOppsummeringAvDokumentasjon,
 }) => {
     const intl = useIntl();
 

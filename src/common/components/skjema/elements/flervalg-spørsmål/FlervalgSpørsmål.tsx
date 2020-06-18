@@ -10,7 +10,7 @@ interface FlervalgSpørsmålProps {
     spørsmål: string;
     hjelpetekst?: string | React.ReactNode;
     valgtVerdi?: string;
-    alternativer: Array<Omit<RadioProps, 'name'>>;
+    alternativer: Omit<RadioProps, 'name'>[];
     toKolonner?: boolean;
     clsName?: string;
     validators?: Validator[];
@@ -51,7 +51,7 @@ const FlervalgSpørsmål = (props: Props) => {
             infoboksTekst={hjelpetekst}
             radios={alternativer}
             fieldsetClassname={clsName}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: string) => onChange(v)}
+            onChange={(_e: React.ChangeEvent<HTMLInputElement>, v: string) => onChange(v)}
             validators={validators !== undefined ? validators : getDefaultValidator(valgtVerdi)}
         />
     );

@@ -15,7 +15,7 @@ const PeriodelisteItemWrapper: React.StatelessComponent<Props> = ({
     farge,
     periodeFargestrek,
     border,
-    children
+    children,
 }) => {
     const bem = periodelisteBem.child('item');
     return (
@@ -25,7 +25,8 @@ const PeriodelisteItemWrapper: React.StatelessComponent<Props> = ({
                 bem.modifierConditional('expanded', isExpanded),
                 bem.modifierConditional(farge, farge !== undefined),
                 bem.modifierConditional('border', border)
-            )}>
+            )}
+        >
             <PeriodeFargestrek farge={periodeFargestrek || farge} />
             {children}
         </div>

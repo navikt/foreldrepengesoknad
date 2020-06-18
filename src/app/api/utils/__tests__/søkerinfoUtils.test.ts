@@ -8,7 +8,7 @@ const mockedArbeidsforhold: Arbeidsforhold = {
     arbeidsgiverIdType: 'orgnr',
     arbeidsgiverNavn: 'navn',
     arbeidsgiverId: '123412341',
-    stillingsprosent: 80
+    stillingsprosent: 80,
 };
 
 const mockArbeidsforholdDTO: SøkerinfoDTOArbeidsforhold = {
@@ -16,7 +16,7 @@ const mockArbeidsforholdDTO: SøkerinfoDTOArbeidsforhold = {
     arbeidsgiverIdType: 'orgnr',
     arbeidsgiverNavn: 'navn',
     arbeidsgiverId: '123412341',
-    stillingsprosent: 80
+    stillingsprosent: 80,
 };
 
 describe('søkerinfoUtils', () => {
@@ -33,7 +33,7 @@ describe('søkerinfoUtils', () => {
             const inaktivtArbeidsforhold: Arbeidsforhold = {
                 ...mockedArbeidsforhold,
                 fom: new Date('2016-01-01'),
-                tom: new Date('2019-01-01')
+                tom: new Date('2019-01-01'),
             };
 
             expect(getAktiveArbeidsforhold([inaktivtArbeidsforhold], new Date('2019-06-01'))).toEqual([]);
@@ -51,15 +51,15 @@ describe('søkerinfoUtils', () => {
 
         it('Skal returnere alle arbeidsforhold', () => {
             const arbf1 = {
-                ...mockArbeidsforholdDTO
+                ...mockArbeidsforholdDTO,
             };
             const arbf2 = {
                 ...mockArbeidsforholdDTO,
-                arbeidsgiverId: '123'
+                arbeidsgiverId: '123',
             };
             const arbf3 = {
                 ...mockArbeidsforholdDTO,
-                arbeidsgiverId: '234'
+                arbeidsgiverId: '234',
             };
 
             const arbeidsforhold = [arbf1, arbf2, arbf3];

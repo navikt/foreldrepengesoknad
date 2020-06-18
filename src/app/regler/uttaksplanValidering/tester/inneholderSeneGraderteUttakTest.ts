@@ -12,7 +12,7 @@ export function inneholderSeneGraderteUttakTest(grunnlag: UttaksplanRegelgrunnla
         passerer,
         info: seneGraderteUttak.map((periode) => ({
             intlKey: 'uttaksplan.veileder.planenAdvarerOmUttak',
-            periodeId: periode.id
-        }))
+            periodeId: periode.id,
+        })),
     };
 }

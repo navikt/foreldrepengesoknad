@@ -15,7 +15,7 @@ const erNærVennEllerFamilieVisible: VisibilityFunction<NæringsrelasjonPartial>
 
 const module = {
     tlfnr: tlfnrVisible,
-    erNærVennEllerFamilie: erNærVennEllerFamilieVisible
+    erNærVennEllerFamilie: erNærVennEllerFamilieVisible,
 };
 
 export default module;

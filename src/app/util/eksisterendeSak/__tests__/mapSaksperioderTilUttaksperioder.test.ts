@@ -3,7 +3,7 @@ import {
     UttakArbeidType,
     ArbeidsgiverInfoType,
     EksisterendeSak,
-    FamiliehendelsesType
+    FamiliehendelsesType,
 } from 'app/types/EksisterendeSak';
 import { StønadskontoType, Dekningsgrad } from 'common/types';
 import { MorsAktivitet, Periodetype, isUttaksperiode } from 'app/types/uttaksplan/periodetyper';
@@ -22,7 +22,7 @@ const morUfør: Pick<EksisterendeSak, 'grunnlag' | 'saksperioder'> = {
         farMedmorHarRett: true,
         erBarnetFødt: true,
         erDeltUttak: false,
-        familieHendelseType: FamiliehendelsesType.FØDSEL
+        familieHendelseType: FamiliehendelsesType.FØDSEL,
     },
     saksperioder: [
         {
@@ -42,14 +42,14 @@ const morUfør: Pick<EksisterendeSak, 'grunnlag' | 'saksperioder'> = {
             arbeidsgiverInfo: {
                 id: '973861778',
                 type: ArbeidsgiverInfoType.ORGANISASJON,
-                navn: 'EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET'
+                navn: 'EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET',
             },
             tidsperiode: {
                 fom: new Date('2019-10-21'),
-                tom: new Date('2019-11-29')
-            }
-        }
-    ]
+                tom: new Date('2019-11-29'),
+            },
+        },
+    ],
 };
 
 describe('mapSaksperioderTilUttaksperioder', () => {

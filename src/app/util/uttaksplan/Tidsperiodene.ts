@@ -10,7 +10,7 @@ export const Tidsperiodene = (tidsperioder: Tidsperiode[]) => ({
     getTidsperioderTomDato: (dato: Date) => getTidsperioderTomDato(dato, tidsperioder),
     getTidsperiodeSomInneholderDato: (dato: Date) => getTidsperiodeSomOverlapperDato(dato, tidsperioder),
     sortOnFom: () => tidsperioder.sort(sortTidsperiodeFom),
-    sortOnTom: () => tidsperioder.sort(sortTidsperiodeTom)
+    sortOnTom: () => tidsperioder.sort(sortTidsperiodeTom),
 });
 
 export function sortTidsperiodeFom(t1: Partial<Tidsperiode>, t2: Partial<Tidsperiode>) {

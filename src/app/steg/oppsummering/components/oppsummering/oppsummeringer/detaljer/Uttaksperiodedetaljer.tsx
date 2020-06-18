@@ -22,7 +22,7 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({
     periode,
     registrerteArbeidsforhold,
     periodeErNyEllerEndret,
-    søknadsinfo
+    søknadsinfo,
 }) => {
     const {
         konto,
@@ -32,7 +32,7 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({
         stillingsprosent,
         orgnumre,
         arbeidsformer,
-        vedlegg
+        vedlegg,
     } = periode;
     const intl = useIntl();
 
@@ -49,21 +49,19 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({
                     verdi={ønskerSamtidigUttak ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
             )}
-            {konto !== StønadskontoType.ForeldrepengerFørFødsel &&
-                ønskerSamtidigUttak !== true && (
-                    <Feltoppsummering
-                        feltnavn={getMessage(intl, 'oppsummering.uttak.kombineresMedarbeid')}
-                        verdi={gradert ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
-                    />
-                )}
+            {konto !== StønadskontoType.ForeldrepengerFørFødsel && ønskerSamtidigUttak !== true && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.uttak.kombineresMedarbeid')}
+                    verdi={gradert ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                />
+            )}
 
-            {gradert === true &&
-                stillingsprosent && (
-                    <Feltoppsummering
-                        feltnavn={getMessage(intl, 'oppsummering.uttak.stillingsprosent')}
-                        verdi={stillingsprosent}
-                    />
-                )}
+            {gradert === true && stillingsprosent && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.uttak.stillingsprosent')}
+                    verdi={stillingsprosent}
+                />
+            )}
 
             {arbeidsformer && (
                 <Feltoppsummering
@@ -71,14 +69,13 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({
                     verdi={arbeidsformTekst}
                 />
             )}
-            {shouldPeriodeHaveAttachment(periode, søknadsinfo) &&
-                morsAktivitetIPerioden && (
-                    <MorsAktivitetDetaljer
-                        morsAktivitet={morsAktivitetIPerioden}
-                        dokumentasjonAvMorsAktivitet={vedlegg || []}
-                        visOppsummeringAvDokumentasjon={periodeErNyEllerEndret}
-                    />
-                )}
+            {shouldPeriodeHaveAttachment(periode, søknadsinfo) && morsAktivitetIPerioden && (
+                <MorsAktivitetDetaljer
+                    morsAktivitet={morsAktivitetIPerioden}
+                    dokumentasjonAvMorsAktivitet={vedlegg || []}
+                    visOppsummeringAvDokumentasjon={periodeErNyEllerEndret}
+                />
+            )}
         </>
     );
 };

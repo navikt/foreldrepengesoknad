@@ -1,7 +1,7 @@
 import Søknad from '../../../types/søknad/Søknad';
 import {
     UttaksplanSkjemaScenario,
-    getUttaksplanSkjemaScenario
+    getUttaksplanSkjemaScenario,
 } from '../../../steg/uttaksplanSkjema/uttaksplanSkjemaScenario';
 import { Søknadsinfo } from '../../../selectors/types';
 

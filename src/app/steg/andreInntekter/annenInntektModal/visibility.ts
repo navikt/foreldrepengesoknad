@@ -19,5 +19,5 @@ const vedleggVisible: VisibilityFunction<AnnenInntektPartial> = (annenInntekt: A
 export default {
     land: landVisible,
     arbeidsgiverNavn: arbeidsgiverNavnVisible,
-    vedlegg: vedleggVisible
+    vedlegg: vedleggVisible,
 };

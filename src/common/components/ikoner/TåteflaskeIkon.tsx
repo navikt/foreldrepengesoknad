@@ -7,7 +7,13 @@ export interface OwnProps {
 const TåteflaskeIkon = (props: any) => {
     const ratio = 48 / 51;
     return (
-        <svg focusable="false" role="presentation" viewBox="0 0 48 51" width={props.size} height={props.size ? props.size * ratio : undefined}>
+        <svg
+            focusable="false"
+            role="presentation"
+            viewBox="0 0 48 51"
+            width={props.size}
+            height={props.size ? props.size * ratio : undefined}
+        >
             <g fill="none">
                 <path
                     fill="#D8D8D8"

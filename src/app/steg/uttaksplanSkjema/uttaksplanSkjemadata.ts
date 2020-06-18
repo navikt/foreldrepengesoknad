@@ -3,12 +3,12 @@ import { UtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
 export enum ValgalternativerAdopsjonStartdato {
     'ankomst' = 'ankomst',
     'omsorgsovertakelse' = 'omsorgsovertakelse',
-    'annen' = 'annen'
+    'annen' = 'annen',
 }
 
 export enum ValgalternativerAleneomsorgFarMedmor {
     'datoForAleneomsorg' = 'datoForAleneomsorg',
-    'annen' = 'annen'
+    'annen' = 'annen',
 }
 
 export interface UttaksplanSkjemadata {

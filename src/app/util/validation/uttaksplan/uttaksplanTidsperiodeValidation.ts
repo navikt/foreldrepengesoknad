@@ -13,26 +13,26 @@ import { UtsettelseFormPeriodeType } from '../../../components/uttaksplanlegger/
 
 const erUtfyltTest = (dato: DateValue): Validator => ({
     test: () => dato !== undefined,
-    failText: { intlKey: `uttaksplan.validering.feil.påkrevd` }
+    failText: { intlKey: `uttaksplan.validering.feil.påkrevd` },
 });
 
 const erUttaksdagTest = (dato: DateValue) => ({
     test: () => dato !== undefined && Uttaksdagen(dato).erUttaksdag(),
-    failText: { intlKey: `uttaksplan.validering.feil.datoErIkkeUttaksdag` }
+    failText: { intlKey: `uttaksplan.validering.feil.datoErIkkeUttaksdag` },
 });
 
 const starterInnenfor12UkerFørTermin = (dato: DateValue, familiehendelsesdato: Date) => ({
     test: () =>
         dato !== undefined &&
         moment(dato).isSameOrAfter(uttaksdatoer(familiehendelsesdato).førsteMuligeUttaksdagFørTermin),
-    failText: { intlKey: 'uttaksplan.validering.før12UkerFørTermin' }
+    failText: { intlKey: 'uttaksplan.validering.før12UkerFørTermin' },
 });
 
 const slutterInnenforGyldigPermisjonsperiode = (dato: DateValue, familiehendelsesdato: Date) => ({
     test: () =>
         dato !== undefined &&
         moment(dato).isSameOrBefore(uttaksdatoer(familiehendelsesdato).sisteMuligeUttaksdagEtterTermin),
-    failText: { intlKey: 'uttaksplan.validering.etterSistePermisjonsdag' }
+    failText: { intlKey: 'uttaksplan.validering.etterSistePermisjonsdag' },
 });
 
 export const getUttakTidsperiodeValidatorer = (
@@ -47,13 +47,13 @@ export const getUttakTidsperiodeValidatorer = (
         fra: [
             erUtfyltTest(tidsperiode.fom),
             erUttaksdagTest(tidsperiode.fom),
-            starterInnenfor12UkerFørTermin(tidsperiode.fom, familiehendelsesdato)
+            starterInnenfor12UkerFørTermin(tidsperiode.fom, familiehendelsesdato),
         ],
         til: [
             erUtfyltTest(tidsperiode.tom),
             erUttaksdagTest(tidsperiode.tom),
-            slutterInnenforGyldigPermisjonsperiode(tidsperiode.tom, familiehendelsesdato)
-        ]
+            slutterInnenforGyldigPermisjonsperiode(tidsperiode.tom, familiehendelsesdato),
+        ],
     };
 };
 
@@ -93,8 +93,8 @@ export const getUtsettelseTidsperiodeValidatorer = (
         til: [
             erUtfyltTest(tidsperiode.tom),
             erUttaksdagTest(tidsperiode.tom),
-            slutterInnenforGyldigPermisjonsperiode(tidsperiode.tom, familiehendelsesdato)
-        ]
+            slutterInnenforGyldigPermisjonsperiode(tidsperiode.tom, familiehendelsesdato),
+        ],
     };
 };
 

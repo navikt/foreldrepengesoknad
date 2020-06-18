@@ -12,6 +12,6 @@ export const erUttaksmengdeForFarMedmorForHøyTest: RegelTest = (
                 grunnlag.perioder,
                 grunnlag.tilgjengeligeStønadskontoer,
                 grunnlag.søknadsinfo.søker.erFarEllerMedmor
-            ) === false
+            ) === false,
     };
 };

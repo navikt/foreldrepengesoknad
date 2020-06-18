@@ -2,7 +2,7 @@ import fns from '../visibility';
 import {
     NæringPartial,
     Næringsrelasjon,
-    Næringstype
+    Næringstype,
 } from '../../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 
 describe('SelvstendigNæringsdrivendeModal visibility', () => {
@@ -192,7 +192,7 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
             expect(
                 fns.kanInnhenteOpplysningerFraRevisor({
                     harRevisor: true,
-                    revisor: { navn: 'asdf', telefonnummer: '1234', erNærVennEllerFamilie: true }
+                    revisor: { navn: 'asdf', telefonnummer: '1234', erNærVennEllerFamilie: true },
                 })
             ).toBe(true);
         });
@@ -210,7 +210,7 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
             expect(
                 fns.kanInnhenteOpplysningerFraRevisor({
                     harRevisor: true,
-                    revisor: { navn: 'asdf', telefonnummer: '1234', erNærVennEllerFamilie: true }
+                    revisor: { navn: 'asdf', telefonnummer: '1234', erNærVennEllerFamilie: true },
                 })
             ).toBe(false);
         });
@@ -220,7 +220,7 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
             expect(
                 fns.kanInnhenteOpplysningerFraRevisor({
                     harRevisor: true,
-                    revisor: relasjon as Næringsrelasjon
+                    revisor: relasjon as Næringsrelasjon,
                 })
             ).toBe(false);
         });
@@ -237,7 +237,7 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
             expect(
                 fns.formButtons({
                     harRegnskapsfører: true,
-                    regnskapsfører: { navn: 'asdf', telefonnummer: '1234', erNærVennEllerFamilie: true }
+                    regnskapsfører: { navn: 'asdf', telefonnummer: '1234', erNærVennEllerFamilie: true },
                 })
             ).toBe(true);
         });
@@ -247,7 +247,7 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
             expect(
                 fns.formButtons({
                     harRegnskapsfører: true,
-                    regnskapsfører: relasjon as Næringsrelasjon
+                    regnskapsfører: relasjon as Næringsrelasjon,
                 })
             ).toBe(false);
         });
@@ -257,7 +257,7 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
                 fns.formButtons({
                     harRevisor: true,
                     kanInnhenteOpplsyningerFraRevisor: true,
-                    revisor: { navn: 'asdf', telefonnummer: '1234', erNærVennEllerFamilie: true }
+                    revisor: { navn: 'asdf', telefonnummer: '1234', erNærVennEllerFamilie: true },
                 })
             ).toBe(true);
         });
@@ -277,7 +277,7 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
                 fns.formButtons({
                     harRevisor: false,
                     harRegnskapsfører: false,
-                    harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true
+                    harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true,
                 })
             ).toBe(true);
         });

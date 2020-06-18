@@ -14,7 +14,7 @@ export function inneholderSenUtsettelsePgaFerieTest(grunnlag: UttaksplanRegelgru
         passerer,
         info: seneUtsettelsePgaFerie.map((periode) => ({
             intlKey: 'uttaksplan.veileder.planenAdvarerOmUtsettelser.ferie',
-            periodeId: periode.id
-        }))
+            periodeId: periode.id,
+        })),
     };
 }

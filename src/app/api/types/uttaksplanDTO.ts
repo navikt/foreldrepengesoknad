@@ -46,7 +46,7 @@ export enum OppholdsÅrsak {
     'INGEN' = 'INGEN',
     'UTTAK_MØDREKVOTE_ANNEN_FORELDER' = 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
     'UTTAK_FEDREKVOTE_ANNEN_FORELDER' = 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
-    'UTTAK_FELLESP_ANNEN_FORELDER' = 'UTTAK_FELLESP_ANNEN_FORELDER'
+    'UTTAK_FELLESP_ANNEN_FORELDER' = 'UTTAK_FELLESP_ANNEN_FORELDER',
 }
 
 export enum MorsAktivitetDto {
@@ -58,5 +58,5 @@ export enum MorsAktivitetDto {
     'Innlagt' = 'INNLAGT',
     'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING',
     'Uføre' = 'UFØRE',
-    'samtidigUttak' = 'SAMTIDIGUTTAK'
+    'samtidigUttak' = 'SAMTIDIGUTTAK',
 }

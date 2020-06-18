@@ -26,7 +26,7 @@ export enum AnnenForelderSpørsmålKeys {
     'erAnnenForelderInformert' = 'erAnnenForelderInformert',
     'erMorUfør' = 'erMorUfør',
     'harRettPåForeldrepenger' = 'harRettPåForeldrepenger',
-    'datoForAleneomsorg' = 'datoForAleneomsorg'
+    'datoForAleneomsorg' = 'datoForAleneomsorg',
 }
 
 export type AnnenForelderStegVisibility = QuestionVisibility<AnnenForelderSpørsmålKeys>;
@@ -55,8 +55,8 @@ const visDeltOmsorg = (payload: AnnenForelderSpørsmålPayload): boolean => {
     }
     return (
         annenForelderErRegistrert === true ||
-        ((annenForelder.utenlandskFnr !== true && questionValueIsOk(annenForelder.fnr)) ||
-            (annenForelder.utenlandskFnr === true && questionValueIsOk(annenForelder.bostedsland)))
+        (annenForelder.utenlandskFnr !== true && questionValueIsOk(annenForelder.fnr)) ||
+        (annenForelder.utenlandskFnr === true && questionValueIsOk(annenForelder.bostedsland))
     );
 };
 const visErAnnenForelderInformert = (payload: AnnenForelderSpørsmålPayload): boolean => {
@@ -80,12 +80,12 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
         isAnswered: ({ annenForelder }) =>
             questionValueIsOk(annenForelder.fornavn) && questionValueIsOk(annenForelder.etternavn),
         isIncluded: (payload) => payload.annenForelderErRegistrert === false,
-        isOptional: (payload) => payload.annenForelder.kanIkkeOppgis === true
+        isOptional: (payload) => payload.annenForelder.kanIkkeOppgis === true,
     },
     [AnnenForelderSpørsmålKeys.kanIkkeOppgis]: {
         isOptional: () => true,
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.kanIkkeOppgis),
-        isIncluded: (payload) => visAnnenForelderKanIkkeOppgis(payload)
+        isIncluded: (payload) => visAnnenForelderKanIkkeOppgis(payload),
     },
     [AnnenForelderSpørsmålKeys.fødselsnummer]: {
         isAnswered: ({ annenForelder }) =>
@@ -100,18 +100,18 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
                 questionValueIsOk(payload.annenForelder.fornavn) &&
                 questionValueIsOk(payload.annenForelder.etternavn)
             );
-        }
+        },
     },
     [AnnenForelderSpørsmålKeys.deltOmsorg]: {
         isAnswered: ({ søker }) => questionValueIsOk(søker.erAleneOmOmsorg),
-        isIncluded: (payload) => visDeltOmsorg(payload)
+        isIncluded: (payload) => visDeltOmsorg(payload),
     },
     [AnnenForelderSpørsmålKeys.harRettPåForeldrepenger]: {
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.harRettPåForeldrepenger),
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
         isIncluded: (payload) => {
             return payload.søker.erAleneOmOmsorg === false;
-        }
+        },
     },
     [AnnenForelderSpørsmålKeys.erMorUfør]: {
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.erUfør),
@@ -119,12 +119,12 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
         isIncluded: (payload) =>
             payload.søker.erAleneOmOmsorg === false &&
             payload.annenForelder.harRettPåForeldrepenger === false &&
-            payload.søkerErFarEllerMedmor
+            payload.søkerErFarEllerMedmor,
     },
     [AnnenForelderSpørsmålKeys.erAnnenForelderInformert]: {
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.erInformertOmSøknaden),
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
-        isIncluded: (payload) => visErAnnenForelderInformert(payload)
+        isIncluded: (payload) => visErAnnenForelderInformert(payload),
     },
     [AnnenForelderSpørsmålKeys.datoForAleneomsorg]: {
         isAnswered: ({ barn }) => barn.datoForAleneomsorg !== undefined,
@@ -132,8 +132,8 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
         isIncluded: (payload) =>
             payload.erEndringssøknad === false &&
             payload.søker.erAleneOmOmsorg === true &&
-            payload.søkerErFarEllerMedmor === true
-    }
+            payload.søkerErFarEllerMedmor === true,
+    },
 };
 
 export const getAnnenForelderStegVisibility = (
@@ -158,7 +158,7 @@ export const getAnnenForelderStegVisibility = (
         erEndringssøknad: søknad.erEndringssøknad === true,
         søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(søker.rolle),
         annenForelderErRegistrert: registrertAnnenForelder !== undefined,
-        gjelderStebarnsadopsjon: gjelderSøknadenStebarnsadopsjon(barn, situasjon)
+        gjelderStebarnsadopsjon: gjelderSøknadenStebarnsadopsjon(barn, situasjon),
     };
 
     return Questions(annenForelderSpørsmålConfig).getVisbility(payload);

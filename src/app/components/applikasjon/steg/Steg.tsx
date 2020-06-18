@@ -74,7 +74,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 
         this.state = {
             visAvbrytDialog: false,
-            visFortsettSenereDialog: false
+            visFortsettSenereDialog: false,
         };
 
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
@@ -186,7 +186,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
             erEndringssøknad,
             erEnkelEndringssøknad,
             submitButtonId,
-            intl
+            intl,
         } = this.props;
 
         const stegConfig = this.getStegConfig();
@@ -235,7 +235,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         const formProps: ValiderbarFormProps = {
             className: bem.block,
             summaryTitle: getMessage(intl, 'validering.oppsummeringstittel'),
-            onSubmit: this.handleOnSubmit
+            onSubmit: this.handleOnSubmit,
         };
 
         return (
@@ -268,7 +268,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 
 const mapStateToProps = (state: AppState): StateProps => ({
     erEnkelEndringssøknad: state.søknad.ekstrainfo.erEnkelEndringssøknad === true,
-    erEndringssøknad: state.søknad.erEndringssøknad
+    erEndringssøknad: state.søknad.erEndringssøknad,
 });
 
 export default connect(mapStateToProps)(injectIntl(Steg));

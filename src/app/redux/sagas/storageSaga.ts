@@ -20,20 +20,20 @@ import { FødtBarn } from 'app/types/søknad/Barn';
 
 const stateSelector = (state: AppState) => state;
 
-function* saveAppState(action: any) {
+function* saveAppState() {
     try {
         const appState: AppState = yield select(stateSelector);
         const { sensitivInfoIkkeLagre, ...søknad } = appState.søknad;
         const cleanedAppState = {
             ...appState,
-            søknad: søknad as Søknad
+            søknad: søknad as Søknad,
         };
 
         yield call(Api.storeAppState, cleanedAppState);
     } catch (error) {
         const update = {
             isLoadingStoredAppState: false,
-            ...(_.get(error, 'response.status') === 401 ? { sessionHasExpired: true } : {})
+            ...(_.get(error, 'response.status') === 401 ? { sessionHasExpired: true } : {}),
         };
 
         yield put(apiActions.updateApi(update));
@@ -71,7 +71,7 @@ function* applyStoredStateToApp(storedState: AppState, history: History) {
         if (søknad.ekstrainfo.søknadenGjelderBarnValg === undefined) {
             søknad.ekstrainfo.søknadenGjelderBarnValg = {
                 gjelderAnnetBarn: søknad.barn.erBarnetFødt !== undefined,
-                valgteBarn: []
+                valgteBarn: [],
             };
         }
 
@@ -99,7 +99,7 @@ function* applyStoredStateToApp(storedState: AppState, history: History) {
                 yield put(
                     søknadActions.updateSøknadenGjelderBarn({
                         valgteBarn: valgteRegistrerteBarn,
-                        termindato: (barn as FødtBarn).termindato
+                        termindato: (barn as FødtBarn).termindato,
                     })
                 );
             }
@@ -117,14 +117,14 @@ function* deleteStoredAppState() {
     } catch {
         yield put(
             apiActions.updateApi({
-                isLoadingStoredAppState: false
+                isLoadingStoredAppState: false,
             })
         );
     } finally {
         yield put(
             apiActions.updateApi({
                 isLoadingStoredAppState: false,
-                isLoadingInitialAppData: false
+                isLoadingInitialAppData: false,
             })
         );
     }
@@ -132,7 +132,7 @@ function* deleteStoredAppState() {
 
 function* sendStorageKvittering() {
     yield call(Api.sendStorageKvittering, {
-        innsendingstidspunkt: moment().format('YYYY-MM-DD')
+        innsendingstidspunkt: moment().format('YYYY-MM-DD'),
     });
 }
 
@@ -154,10 +154,10 @@ export default function* storageSaga() {
                 SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD,
                 SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN,
                 SøknadActionKeys.UPDATE_ANNEN_FORELDER,
-                SøknadActionKeys.SET_TILLEGGSOPPLYSNING
+                SøknadActionKeys.SET_TILLEGGSOPPLYSNING,
             ],
             saveAppState
         ),
-        takeEvery(ApiActionKeys.SEND_STORAGE_KVITTERING, sendStorageKvittering)
+        takeEvery(ApiActionKeys.SEND_STORAGE_KVITTERING, sendStorageKvittering),
     ]);
 }

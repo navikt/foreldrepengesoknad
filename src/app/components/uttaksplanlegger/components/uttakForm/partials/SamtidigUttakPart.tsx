@@ -35,7 +35,7 @@ class SamtidigUttakPart extends React.Component<Props> {
         const { onChange } = this.props;
         const pst = getFloatFromString(samtidigUttakProsent);
         onChange({
-            samtidigUttakProsent: pst ? pst.toFixed(1) : samtidigUttakProsent
+            samtidigUttakProsent: pst ? pst.toFixed(1) : samtidigUttakProsent,
         });
     }
 
@@ -48,7 +48,7 @@ class SamtidigUttakPart extends React.Component<Props> {
             periode,
             navn,
             erFlerbarnssøknad,
-            søkerErMor
+            søkerErMor,
         } = this.props;
 
         const ønskerFlerbarnsuker = periode.ønskerFlerbarnsdager;
@@ -58,7 +58,7 @@ class SamtidigUttakPart extends React.Component<Props> {
         const varighet =
             pst && uttaksdager
                 ? getMessage(intl, 'samtidig.uttak.varighet', {
-                      varighet: getVarighetString(finnAntallDagerÅTrekke(periode as Periode), intl)
+                      varighet: getVarighetString(finnAntallDagerÅTrekke(periode as Periode), intl),
                   })
                 : undefined;
 
@@ -88,9 +88,9 @@ class SamtidigUttakPart extends React.Component<Props> {
                                     ),
                                     navn: navn.annenForelder.fornavn,
                                     navnMor: navn.mor.fornavn,
-                                    navnFar: navn.farMedmor.fornavn
-                                }
-                            }
+                                    navnFar: navn.farMedmor.fornavn,
+                                },
+                            },
                         ]}
                     />
                 </Block>
@@ -102,7 +102,7 @@ class SamtidigUttakPart extends React.Component<Props> {
                             label={getMessage(intl, 'samtidigUttakProsent')}
                             onChange={(v: string) =>
                                 onChange({
-                                    samtidigUttakProsent: v
+                                    samtidigUttakProsent: v,
                                 })
                             }
                             onBlur={(e: React.FocusEvent<HTMLInputElement>) =>

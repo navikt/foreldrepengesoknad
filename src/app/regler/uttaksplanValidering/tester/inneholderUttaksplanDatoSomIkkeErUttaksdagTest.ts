@@ -12,15 +12,17 @@ export const inneholderUttaksplanDatoSomIkkeErUttaksdag: RegelTest = (
 
     return {
         passerer: ugyldigePerioder.length === 0,
-        info: ugyldigePerioder.map((periode): RegelTestresultatInfo => {
-            return {
-                intlKey: `uttaksplan.validering.feil.${
-                    erUttaksdag(periode.tidsperiode.fom)
-                        ? 'periodeSlutterPåDatoSomIkkeErUttaksdag'
-                        : 'periodeStarterPåDatoSomIkkeErUttaksdag'
-                }`,
-                periodeId: periode.id
-            };
-        })
+        info: ugyldigePerioder.map(
+            (periode): RegelTestresultatInfo => {
+                return {
+                    intlKey: `uttaksplan.validering.feil.${
+                        erUttaksdag(periode.tidsperiode.fom)
+                            ? 'periodeSlutterPåDatoSomIkkeErUttaksdag'
+                            : 'periodeStarterPåDatoSomIkkeErUttaksdag'
+                    }`,
+                    periodeId: periode.id,
+                };
+            }
+        ),
     };
 };

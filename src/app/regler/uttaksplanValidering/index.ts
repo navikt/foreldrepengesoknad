@@ -53,7 +53,7 @@ export enum UttaksplanRegelKey {
     'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme' = 'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme',
     'uttaksmengdeForFarMedmorErForHøy' = 'uttaksmengdeForFarMedmorErForHøy',
     'burdeKanskjeSøkeGradering' = 'burdeKanskjeSøkeGradering',
-    'inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold' = 'inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold'
+    'inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold' = 'inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold',
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -62,101 +62,101 @@ const uttaksplanValideringRegler: Regel[] = [
     {
         key: UttaksplanRegelKey.planenInneholderIngenPerioder,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: inneholderUttaksplanPerioderTest
+        test: inneholderUttaksplanPerioderTest,
     },
     {
         key: UttaksplanRegelKey.stønadskontoInneholderForMyeUttakKunSøker,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: stønadskontoInneholderForMyeUttakKunSøkerTest
+        test: stønadskontoInneholderForMyeUttakKunSøkerTest,
     },
     {
         key: UttaksplanRegelKey.morHarSøktUgyldigUttakFørsteSeksUker,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: harMorSøktUgyldigUttakFørsteSeksUkerTest
+        test: harMorSøktUgyldigUttakFørsteSeksUkerTest,
     },
     {
         key: UttaksplanRegelKey.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest
+        test: harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest,
     },
     {
         key: UttaksplanRegelKey.uttaksmengdeForFarMedmorErForHøy,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: erUttaksmengdeForFarMedmorForHøyTest
+        test: erUttaksmengdeForFarMedmorForHøyTest,
     },
     {
         key: UttaksplanRegelKey.uttaksplanErBareOpphold,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: erUttaksplanBareOppholdTest
+        test: erUttaksplanBareOppholdTest,
     },
     {
         key: UttaksplanRegelKey.uttaksplanStarterMedOpphold,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: starterUttaksplanMedOppholdTest
+        test: starterUttaksplanMedOppholdTest,
     },
     {
         key: UttaksplanRegelKey.uttaksplanSlutterMedOpphold,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: slutterUttaksplanMedOppholdTest
+        test: slutterUttaksplanMedOppholdTest,
     },
     {
         key: UttaksplanRegelKey.uttaksplanGraderingStørreEnnSamtidigUttak,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: erUttaksplanGraderingStørreEnnSamtidigUttakTest
+        test: erUttaksplanGraderingStørreEnnSamtidigUttakTest,
     },
     {
         key: UttaksplanRegelKey.begrunnelseVedForSenEndringErUgyldig,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: erTilleggsopplysningerGyldigTest
+        test: erTilleggsopplysningerGyldigTest,
     },
     {
         key: UttaksplanRegelKey.uttaksplanHarForMangeFlerbarnsdager,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: harUttaksplanForMangeFlerbarnsdagerTest
+        test: harUttaksplanForMangeFlerbarnsdagerTest,
     },
     {
         key: UttaksplanRegelKey.uttaksplanInneholderDatoSomIkkeErUttaksdag,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: inneholderUttaksplanDatoSomIkkeErUttaksdag
+        test: inneholderUttaksplanDatoSomIkkeErUttaksdag,
     },
     {
         key: UttaksplanRegelKey.perioderManglerVedlegg,
         alvorlighet: RegelAlvorlighet.ADVARSEL,
         test: harPerioderManglendeVedleggTest,
-        slåsSammenVedOppsummering: true
+        slåsSammenVedOppsummering: true,
     },
     {
         key: UttaksplanRegelKey.inneholderSenUtsettelsePgaFerie,
         alvorlighet: RegelAlvorlighet.INFO,
         test: inneholderSenUtsettelsePgaFerieTest,
-        slåsSammenVedOppsummering: true
+        slåsSammenVedOppsummering: true,
     },
     {
         key: UttaksplanRegelKey.inneholderSenUtsettelsePgaArbeid,
         alvorlighet: RegelAlvorlighet.INFO,
         test: inneholderSenUtsettelsePgaArbeidTest,
-        slåsSammenVedOppsummering: true
+        slåsSammenVedOppsummering: true,
     },
     {
         key: UttaksplanRegelKey.inneholderSeneGraderteUttak,
         alvorlighet: RegelAlvorlighet.INFO,
         test: inneholderSeneGraderteUttakTest,
-        skjulesIPeriode: true
+        skjulesIPeriode: true,
     },
     {
         key: UttaksplanRegelKey.inneholderTapteDager,
         alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderTapteDagerTest
+        test: inneholderTapteDagerTest,
     },
     {
         key: UttaksplanRegelKey.inneholderBareUtsettelser,
         alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderBareUtsettelserTest
+        test: inneholderBareUtsettelserTest,
     },
     {
         key: UttaksplanRegelKey.inneholderForMyeFerie,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: inneholderForMyeFerie
+        test: inneholderForMyeFerie,
     },
     // {
     //     key: UttaksplanRegelKey.innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode,
@@ -167,30 +167,30 @@ const uttaksplanValideringRegler: Regel[] = [
         key: UttaksplanRegelKey.endringerOverskriverAnnenPartsPerioder,
         alvorlighet: RegelAlvorlighet.INFO,
         test: overskriverEndringerAnnenPartsPerioder,
-        slåsSammenVedOppsummering: false
+        slåsSammenVedOppsummering: false,
     },
     {
         key: UttaksplanRegelKey.periodeOverlapperAndrePerioder,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: overlapperPeriodeAndrePerioder,
         slåsSammenVedOppsummering: false,
-        skjulesIOppsummering: true
+        skjulesIOppsummering: true,
     },
     {
         key: UttaksplanRegelKey.harSøktOmFerieUtenArbeidsforhold,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: harSøktOmFerieUtenArbeidsforhold
+        test: harSøktOmFerieUtenArbeidsforhold,
     },
     {
         key: UttaksplanRegelKey.kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme,
         alvorlighet: RegelAlvorlighet.FEIL,
-        test: kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme
+        test: kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme,
     },
     {
         key: UttaksplanRegelKey.burdeKanskjeSøkeGradering,
         alvorlighet: RegelAlvorlighet.INFO,
-        test: burdeKanskjeSøkeGraderingTest
-    }
+        test: burdeKanskjeSøkeGraderingTest,
+    },
     // {
     //     key: UttaksplanRegelKey.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold,
     //     alvorlighet: RegelAlvorlighet.INFO,

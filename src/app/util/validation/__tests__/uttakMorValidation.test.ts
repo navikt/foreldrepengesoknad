@@ -2,7 +2,7 @@ import {
     Uttaksperiode,
     Utsettelsesperiode,
     Periodetype,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
 } from '../../../types/uttaksplan/periodetyper';
 import { getTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
@@ -17,14 +17,14 @@ const uttakBase: Partial<Uttaksperiode> = {
     type: Periodetype.Uttak,
     gradert: false,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
-    forelder: Forelder.mor
+    forelder: Forelder.mor,
 };
 
 const utsettelseBase: Partial<Utsettelsesperiode> = {
     type: Periodetype.Utsettelse,
     årsak: UtsettelseÅrsakType.Sykdom,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
-    forelder: Forelder.mor
+    forelder: Forelder.mor,
 };
 
 const uttak = uttakBase as Uttaksperiode;
@@ -75,7 +75,7 @@ describe('Validering av mors uttak første 6 uker', () => {
         const utsettelseEtter6uker = {
             ...utsettelse,
             årsak: UtsettelseÅrsakType.Arbeid,
-            tidsperiode: getTidsperiode(Uttaksdagen(førsteUttaksdag).leggTil(30), 5)
+            tidsperiode: getTidsperiode(Uttaksdagen(førsteUttaksdag).leggTil(30), 5),
         };
         const result = harMorSøktUgyldigUttakFørsteSeksUker(
             [utsettelseEtter6uker],

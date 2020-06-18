@@ -21,7 +21,7 @@ const VeilederInfo: React.SFC<Props> = ({
     paneltype = 'normal',
     veilederStil = 'kompakt',
     skjulMeldingIkon = false,
-    ariaTittel
+    ariaTittel,
 }) => {
     const harFeil = messages.some((m) => m.type === 'feil');
     const harAdvarsler = messages.some((m) => m.type === 'advarsel');
@@ -40,7 +40,8 @@ const VeilederInfo: React.SFC<Props> = ({
             type={paneltype}
             kompakt={kompakt}
             svg={<Veileder stil={veilederStil} ansikt={ansikt} farge="transparent" />}
-            fargetema={harFeil ? 'feilmelding' : 'normal'}>
+            fargetema={harFeil ? 'feilmelding' : 'normal'}
+        >
             {ariaTittel && (
                 <AriaText tag="h2">
                     <FormattedMessage id="uttaksplan.regelAvvik.ariaTittel" />

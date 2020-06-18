@@ -18,7 +18,7 @@ import { Barn } from '../../types/søknad/Barn';
 import { cleanupBarn } from '../barnUtils';
 import AnnenForelder from 'app/types/søknad/AnnenForelder';
 
-export const isArrayOfAttachments = (object: object) => {
+export const isArrayOfAttachments = (object: any) => {
     return (
         Array.isArray(object) &&
         object[0] !== null &&
@@ -31,7 +31,7 @@ export const isArrayOfAttachments = (object: object) => {
 export const removeAttachmentsWithUploadError = (attachments: Attachment[]) =>
     attachments.filter((a: Attachment) => !isAttachmentWithError(a));
 
-export const cleanUpAttachments = (object: object): Attachment[] => {
+export const cleanUpAttachments = (object: any): Attachment[] => {
     const foundAttachments = [] as Attachment[];
     Object.keys(object).forEach((key: string) => {
         if (typeof object[key] === 'object') {

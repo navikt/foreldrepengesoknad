@@ -22,7 +22,7 @@ class ToggleItemControlled extends React.Component<Props> {
         super(props);
         this.toggleExpanded = this.toggleExpanded.bind(this);
         this.state = {
-            expanded: false
+            expanded: false,
         };
     }
     toggleExpanded(evt: React.MouseEvent<HTMLElement>) {
@@ -37,7 +37,7 @@ class ToggleItemControlled extends React.Component<Props> {
             renderContent,
             renderHeader,
             expandedHeaderClassName,
-            expandedContentClassName
+            expandedContentClassName,
         } = this.props;
 
         return (
@@ -45,14 +45,16 @@ class ToggleItemControlled extends React.Component<Props> {
                 className={classnames(
                     BEM.block,
                     isExpanded && expandedHeaderClassName ? expandedHeaderClassName : undefined
-                )}>
+                )}
+            >
                 <a
                     id={id}
                     href="#"
                     className={BEM.element('header')}
                     onClick={this.toggleExpanded}
                     tabIndex={0}
-                    aria-expanded={isExpanded}>
+                    aria-expanded={isExpanded}
+                >
                     <div className={BEM.element('header__content')}>{renderHeader()}</div>
                     <div className={BEM.element('header__arrow')}>
                         <ToggleArrow expanded={isExpanded} />
@@ -62,9 +64,7 @@ class ToggleItemControlled extends React.Component<Props> {
                     <div className={classnames(BEM.element('content'), expandedContentClassName)}>
                         {renderContent()}
                     </div>
-                ) : (
-                    undefined
-                )}
+                ) : undefined}
             </div>
         );
     }

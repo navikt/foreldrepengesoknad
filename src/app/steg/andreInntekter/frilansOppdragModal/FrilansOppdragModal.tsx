@@ -12,7 +12,7 @@ import { hasValueRule } from '../../../util/validation/common';
 import ModalForm from 'common/components/modalForm/ModalForm';
 import Block from 'common/components/block/Block';
 
-export interface FrilansOppdragModalProps extends ModalProps {
+export interface FrilansOppdragModalProps extends Omit<ModalProps, 'children'> {
     oppdrag?: FrilansOppdrag;
     editMode: boolean;
     onAdd: (oppdrag: FrilansOppdrag) => void;
@@ -41,7 +41,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                 oppdrag:
                     state && state.oppdrag && Object.keys(state.oppdrag).length > 0
                         ? state.oppdrag
-                        : props.oppdrag || {}
+                        : props.oppdrag || {},
             };
         }
     }
@@ -57,8 +57,8 @@ class FrilansOppdragModal extends React.Component<Props, State> {
         this.setState({
             oppdrag: {
                 ...this.state.oppdrag,
-                ...oppdragProperties
-            }
+                ...oppdragProperties,
+            },
         });
     }
 
@@ -95,13 +95,13 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                         value={oppdrag.navnPåArbeidsgiver || ''}
                         onChange={(value: string) =>
                             this.updateOppdrag({
-                                navnPåArbeidsgiver: value
+                                navnPåArbeidsgiver: value,
                             })
                         }
                         name="oppdragsgiverNavn"
                         validators={[
                             hasValueRule(oppdrag.navnPåArbeidsgiver, getMessage(intl, 'påkrevd')),
-                            ...getFritekstfeltRules({ maxLength: 100 }, intl, oppdrag.navnPåArbeidsgiver)
+                            ...getFritekstfeltRules({ maxLength: 100 }, intl, oppdrag.navnPåArbeidsgiver),
                         ]}
                     />
                 </Block>

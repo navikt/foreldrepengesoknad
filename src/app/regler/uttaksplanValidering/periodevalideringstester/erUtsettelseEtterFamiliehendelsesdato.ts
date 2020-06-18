@@ -14,7 +14,7 @@ export const erUtsettelseEtterFamiliehendelsesdato: RegelTest = (
     return {
         passerer: ugyldigeUtsettelser.length === 0,
         info: ugyldigeUtsettelser.map((periode) => ({
-            periodeId: periode.id
-        }))
+            periodeId: periode.id,
+        })),
     };
 };

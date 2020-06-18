@@ -32,11 +32,7 @@ interface StateProps {
     };
 }
 
-const ResetSoknad: React.FunctionComponent<StateProps & HistoryProps & DispatchProps> = ({
-    debugInfo,
-    dispatch,
-    history
-}) => {
+const ResetSoknad: React.FunctionComponent<StateProps & HistoryProps & DispatchProps> = ({ dispatch, history }) => {
     const resetAndCancelSøknad = () => {
         dispatch(søknadActionCreators.avbrytSøknad());
         history.push(routeConfig.APP_ROUTE_PREFIX);
@@ -52,8 +48,8 @@ const ResetSoknad: React.FunctionComponent<StateProps & HistoryProps & DispatchP
                     messages={[
                         {
                             type: 'feil',
-                            contentIntlKey: 'feilside.veiledertekst'
-                        }
+                            contentIntlKey: 'feilside.veiledertekst',
+                        },
                     ]}
                 />
             </Block>
@@ -75,14 +71,14 @@ const mapStateToProps = (state: AppState): StateProps => {
             annenForelder: {
                 harRettPåForeldrepenger: annenForelder.harRettPåForeldrepenger,
                 erForSyk: annenForelder.erForSyk,
-                erUfør: annenForelder.erUfør
+                erUfør: annenForelder.erUfør,
             },
             barn: {
-                antallBarn: barn.antallBarn
+                antallBarn: barn.antallBarn,
             },
             søker: {
                 erAleneOmOmsorg: søker.erAleneOmOmsorg,
-                rolle: søker.rolle
+                rolle: søker.rolle,
             },
             ekstrainfo: {
                 currentStegID: ekstrainfo.currentStegID,
@@ -91,14 +87,15 @@ const mapStateToProps = (state: AppState): StateProps => {
                         ekstrainfo.eksisterendeSak !== undefined
                             ? ekstrainfo.eksisterendeSak.erAnnenPartsSak
                             : undefined,
-                    grunnlag: ekstrainfo.eksisterendeSak !== undefined ? ekstrainfo.eksisterendeSak.grunnlag : undefined
-                }
+                    grunnlag:
+                        ekstrainfo.eksisterendeSak !== undefined ? ekstrainfo.eksisterendeSak.grunnlag : undefined,
+                },
             },
             situasjon,
             erEndringssøknad,
-            dekningsgrad
-        }
+            dekningsgrad,
+        },
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(ResetSoknad);
+export default connect<StateProps>(mapStateToProps)(ResetSoknad);

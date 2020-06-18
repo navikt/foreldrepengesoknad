@@ -71,7 +71,8 @@ const harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneVisible: Visibilit
         (næring.registrertINorge !== undefined ||
             (næring.registrertILand !== undefined && næring.registrertILand !== '')) &&
         er4ÅrSidenOppstartEllerMindre(næring as Næring) &&
-        (module.næringsinntekt(næring) && næring.næringsinntekt !== undefined)
+        module.næringsinntekt(næring) &&
+        næring.næringsinntekt !== undefined
     );
 };
 
@@ -96,7 +97,7 @@ const varigEndringAvNæringsinntektVisible: VisibilityFunction<NæringPartial> =
 const regnskapsførerBolkVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const {
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
-        hattVarigEndringAvNæringsinntektSiste4Kalenderår
+        hattVarigEndringAvNæringsinntektSiste4Kalenderår,
     } = næring;
     if (module.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene(næring)) {
         return harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene !== undefined;
@@ -135,7 +136,7 @@ const formButtonsVisible: VisibilityFunction<NæringPartial> = (næring: Næring
         revisor,
         regnskapsfører,
         kanInnhenteOpplsyningerFraRevisor,
-        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
     } = næring;
 
     if (harRegnskapsfører && regnskapsfører !== undefined) {
@@ -169,7 +170,7 @@ export const module = {
     regnskapsførerBolk: regnskapsførerBolkVisible,
     revisorBolk: revisorBolkVisible,
     kanInnhenteOpplysningerFraRevisor: kanInnhenteOpplysningerFraRevisorVisible,
-    formButtons: formButtonsVisible
+    formButtons: formButtonsVisible,
 };
 
 export default module;

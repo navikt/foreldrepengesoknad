@@ -6,7 +6,7 @@ import {
     date3YearsAgo,
     today,
     tomorrow,
-    date15YearsAnd3MonthsAgo
+    date15YearsAnd3MonthsAgo,
 } from '../validation/values';
 import { FamiliehendelseDatoer } from '../../types/søknad/FamiliehendelseDatoer';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
@@ -22,7 +22,7 @@ export interface DateRange {
 export const getRelevantFamiliehendelseDato = ({
     termindato,
     fødselsdato,
-    omsorgsovertakelsesdato
+    omsorgsovertakelsesdato,
 }: FamiliehendelseDatoer): Date => {
     if (fødselsdato !== undefined) {
         return fødselsdato;
@@ -94,7 +94,7 @@ export const getAlderFraDato = (fødselsdato: Date): Alder => {
     return {
         år,
         måneder,
-        dager
+        dager,
     };
 };
 
@@ -188,7 +188,7 @@ const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
 const validateDateInRange = (date: Date | undefined, minDate: Date, maxDate: Date) => {
     if (date === undefined) {
         return {
-            key: 'påkrevd'
+            key: 'påkrevd',
         };
     }
 
@@ -197,8 +197,8 @@ const validateDateInRange = (date: Date | undefined, minDate: Date, maxDate: Dat
             key: 'valideringsfeil.dateOutsideRange',
             values: {
                 fom: prettifyDateExtended(minDate),
-                tom: prettifyDateExtended(maxDate)
-            }
+                tom: prettifyDateExtended(maxDate),
+            },
         };
     }
 
@@ -212,7 +212,7 @@ const validateFromDate = (date: Date | undefined, minDate: Date, maxDate: Date, 
     }
     if (toDate && moment(date).isAfter(toDate, 'day')) {
         return {
-            key: 'valideringsfeil.utenlandsopphold.førTilDato'
+            key: 'valideringsfeil.utenlandsopphold.førTilDato',
         };
     }
     return undefined;
@@ -225,7 +225,7 @@ const validateToDate = (date: Date | undefined, minDate: Date, maxDate: Date, fr
     }
     if (fromDate && moment(date).isBefore(fromDate, 'day')) {
         return {
-            key: 'valideringsfeil.utenlandsopphold.etterFraDato'
+            key: 'valideringsfeil.utenlandsopphold.etterFraDato',
         };
     }
     return undefined;
@@ -233,7 +233,7 @@ const validateToDate = (date: Date | undefined, minDate: Date, maxDate: Date, fr
 
 export const dateRangeValidation = {
     validateToDate,
-    validateFromDate
+    validateFromDate,
 };
 
 export const sortDateRange = (d1: DateRange, d2: DateRange): number => {
@@ -243,7 +243,7 @@ export const sortDateRange = (d1: DateRange, d2: DateRange): number => {
     return 1;
 };
 
-export const dateRangesCollide = (ranges: DateRange[], fromDateCannotBeSameAsPreviousToDate?: boolean): boolean => {
+export const dateRangesCollide = (ranges: DateRange[]): boolean => {
     if (ranges.length > 0) {
         const sortedDates = ranges.sort(sortDateRange);
         const hasOverlap = ranges.find((d, idx) => {

@@ -5,5 +5,5 @@ export enum UttaksplanHexFarge {
     yellow = '#ff9100',
     graa = '#7f756c',
     rammeGraa = '#c6c2bf',
-    rod = '#BA3A26'
+    rod = '#BA3A26',
 }

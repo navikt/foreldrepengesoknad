@@ -74,7 +74,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
         visVarighet,
         varighetRenderer,
         visPågåendePeriodeCheckbox = false,
-        ukerOgDagerVelgerEnabled = false
+        ukerOgDagerVelgerEnabled = false,
     } = props;
 
     const intl = useIntl();
@@ -129,7 +129,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                             onChange={(fom: Date) => {
                                 handleOnChange({
                                     ...tidsperiode,
-                                    fom
+                                    fom,
                                 });
                             }}
                             kanVelgeUgyldigDato={kanVelgeUgyldigDato}
@@ -152,7 +152,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                             onChange={(tom: DateValue) => {
                                 handleOnChange({
                                     ...tidsperiode,
-                                    tom
+                                    tom,
                                 });
                             }}
                             kanVelgeUgyldigDato={kanVelgeUgyldigDato}
@@ -161,7 +161,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                             datoAvgrensinger={tilAvgrensninger}
                             validators={validators.til}
                             dayPickerProps={{
-                                initialMonth: defaultMånedTom || tidsperiode.fom
+                                initialMonth: defaultMånedTom || tidsperiode.fom,
                             }}
                             kalender={{ plassering: kalenderplassering }}
                         />
@@ -185,9 +185,9 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                     onChange: (nyUker: number) =>
                                         handleOnChange({
                                             ...tidsperiode,
-                                            tom: getTidsperiode(tidsperiode.fom!, nyUker * 5 + dager).tom
+                                            tom: getTidsperiode(tidsperiode.fom!, nyUker * 5 + dager).tom,
                                         }),
-                                    ariaLabel: 'Antall uker'
+                                    ariaLabel: 'Antall uker',
                                 },
                                 {
                                     value: dager !== undefined && dager !== 5 ? dager : 0,
@@ -196,23 +196,20 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                     onChange: (nyDager: number) =>
                                         handleOnChange({
                                             ...tidsperiode,
-                                            tom: getTidsperiode(tidsperiode.fom!, uker * 5 + nyDager).tom
+                                            tom: getTidsperiode(tidsperiode.fom!, uker * 5 + nyDager).tom,
                                         }),
-                                    ariaLabel: 'Antall dager'
-                                }
+                                    ariaLabel: 'Antall dager',
+                                },
                             ]}
                         />
                     </Block>
                 )}
 
-                {visVarighet &&
-                    varighetIDager !== undefined && (
-                        <Normaltekst className={bem.element('varighet')}>
-                            {varighetRenderer
-                                ? varighetRenderer(varighetIDager)
-                                : getVarighetString(varighetIDager, intl)}
-                        </Normaltekst>
-                    )}
+                {visVarighet && varighetIDager !== undefined && (
+                    <Normaltekst className={bem.element('varighet')}>
+                        {varighetRenderer ? varighetRenderer(varighetIDager) : getVarighetString(varighetIDager, intl)}
+                    </Normaltekst>
+                )}
             </div>
 
             <div className={bem.element('pågående-checkbox')}>
@@ -225,7 +222,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                             handleOnChange({
                                 ...tidsperiode,
                                 tom: undefined,
-                                pågående: e.target.checked
+                                pågående: e.target.checked,
                             });
                         }}
                     />

@@ -36,7 +36,7 @@ const module = {
     antallBarn: antallBarnVisible,
     fødselsdatoer: fødselsdatoerVisible,
     harBarnOver15ÅrMelding: harBarnOver15ÅrMeldingVisible,
-    vedlegg: vedleggVisible
+    vedlegg: vedleggVisible,
 };
 
 export default module;

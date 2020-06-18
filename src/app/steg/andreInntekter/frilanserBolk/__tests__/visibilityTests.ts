@@ -3,14 +3,14 @@ import Søker from '../../../../types/søknad/Søker';
 import {
     FrilansInformasjon,
     FrilansInformasjonPartial,
-    FrilansOppdrag
+    FrilansOppdrag,
 } from '../../../../types/søknad/FrilansInformasjon';
 
 const frilansInformasjon: FrilansInformasjonPartial = {};
 
 const søker = {
     harJobbetSomFrilansSiste10Mnd: true,
-    frilansInformasjon
+    frilansInformasjon,
 };
 
 describe('Frilanser-bolk', () => {
@@ -33,10 +33,7 @@ describe('Frilanser-bolk', () => {
         });
 
         it('should be hidden if either oppstart is undefined or !startdatoVisible', () => {
-            fns.startdatoVisible = jest
-                .fn()
-                .mockReturnValueOnce(false)
-                .mockReturnValue(true);
+            fns.startdatoVisible = jest.fn().mockReturnValueOnce(false).mockReturnValue(true);
             søker.frilansInformasjon.oppstart = new Date();
             expect(fns.fremdelesFrilansVisible(søker as Søker)).toBe(false);
             søker.frilansInformasjon.oppstart = undefined;
@@ -52,10 +49,7 @@ describe('Frilanser-bolk', () => {
         });
 
         it('should be hidden if either oppstart is undefined or !startdatoVisible', () => {
-            fns.fremdelesFrilansVisible = jest
-                .fn()
-                .mockReturnValueOnce(false)
-                .mockReturnValue(true);
+            fns.fremdelesFrilansVisible = jest.fn().mockReturnValueOnce(false).mockReturnValue(true);
             søker.frilansInformasjon.jobberFremdelesSomFrilans = true;
             expect(fns.oppdragBolkVisible(søker as Søker)).toBe(false);
             søker.frilansInformasjon.jobberFremdelesSomFrilans = undefined;
@@ -71,10 +65,7 @@ describe('Frilanser-bolk', () => {
         });
 
         it('should be hidden if either harJobbetForNærVennEllerFamilieSiste10Mnd !== true or oppdragBolkVisible evaluates to false', () => {
-            fns.oppdragBolkVisible = jest
-                .fn()
-                .mockReturnValueOnce(false)
-                .mockReturnValue(true);
+            fns.oppdragBolkVisible = jest.fn().mockReturnValueOnce(false).mockReturnValue(true);
             søker.frilansInformasjon.harJobbetForNærVennEllerFamilieSiste10Mnd = true;
             expect(fns.oppdragPerioderVisible(søker as Søker)).toBe(false);
             søker.frilansInformasjon.harJobbetForNærVennEllerFamilieSiste10Mnd = false;

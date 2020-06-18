@@ -2,13 +2,13 @@ import StorageSagaUtils from '../storageSagaUtils';
 import { RegistrertBarn } from '../../types/Person';
 
 const barn1: Partial<RegistrertBarn> = {
-    fnr: 'barn1'
+    fnr: 'barn1',
 };
 const barn2: Partial<RegistrertBarn> = {
-    fnr: 'barn2'
+    fnr: 'barn2',
 };
 const barn3: Partial<RegistrertBarn> = {
-    fnr: 'barn3'
+    fnr: 'barn3',
 };
 
 const valgteBarn: RegistrertBarn[] = [barn1 as RegistrertBarn];

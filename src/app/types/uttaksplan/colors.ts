@@ -6,5 +6,5 @@ export enum UttaksplanColor {
     'yellow' = 'yellow',
     'white' = 'white',
     'transparent' = 'transparent',
-    'infoBlue' = 'infoBlue'
+    'infoBlue' = 'infoBlue',
 }

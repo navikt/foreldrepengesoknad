@@ -30,11 +30,9 @@ const DeltOmsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, n
     const fordeling = getProsentFordelingPerDel(tilgjengeligeDager, true);
     const txtMor =
         tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0
-            ? `${tilgjengeligeDager.dagerForeldrepengerFørFødsel / 5} + ${tilgjengeligeDager.dagerMor / 5} ${getMessage(
-                  intl,
-                  'uker',
-                  { uker: 15 }
-              )}`
+            ? `${tilgjengeligeDager.dagerForeldrepengerFørFødsel / 5} + ${
+                  tilgjengeligeDager.dagerMor / 5
+              } ${getMessage(intl, 'uker', { uker: 15 })}`
             : getVarighetString(tilgjengeligeDager.dagerMor, intl);
     return (
         <div className={bem.classNames(bem.block, bem.modifier('flereForeldre'))}>
@@ -53,7 +51,7 @@ const DeltOmsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, n
                         leftBar={{
                             color: UttaksplanHexFarge.lilla,
                             width: 100,
-                            text: <div className={bem.element('barTekst')}>{txtMor}</div>
+                            text: <div className={bem.element('barTekst')}>{txtMor}</div>,
                         }}
                     />
                 </div>
@@ -71,7 +69,7 @@ const DeltOmsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, n
                                 <div className={bem.element('barTekst')}>
                                     {getVarighetString(tilgjengeligeDager.dagerFelles, intl)}
                                 </div>
-                            )
+                            ),
                         }}
                     />
                 </div>
@@ -82,7 +80,7 @@ const DeltOmsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, n
                                 <FormattedMessage
                                     id="tilgjengeligeDagerGraf.person.del"
                                     values={{
-                                        navnEierform: getNavnGenitivEierform(navnPåForeldre.farMedmor, intl.locale)
+                                        navnEierform: getNavnGenitivEierform(navnPåForeldre.farMedmor, intl.locale),
                                     }}
                                 />
                             </Personkort>
@@ -96,34 +94,32 @@ const DeltOmsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, n
                                     <div className={bem.element('barTekst')}>
                                         {getVarighetString(tilgjengeligeDager.dagerFarMedmor, intl)}
                                     </div>
-                                )
+                                ),
                             }}
                         />
                     </div>
                 )}
             </div>
-            {!erFarEllerMedmor &&
-                tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
-                    <div style={{ paddingTop: '0.625rem' }}>
-                        <Element>
-                            <FormattedMessage
-                                id="tilgjengeligeDagerGraf.uttakFørFødselInfo"
-                                values={{ navn: navnPåForeldre.mor }}
-                            />
-                        </Element>
-                    </div>
-                )}
-            {erFarEllerMedmor &&
-                tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
-                    <div style={{ paddingTop: '0.625rem' }}>
-                        <Element>
-                            <FormattedMessage
-                                id="tilgjengeligeDagerGraf.uttakFørFødselInfoFarMedmor"
-                                values={{ navn: navnPåForeldre.mor }}
-                            />
-                        </Element>
-                    </div>
-                )}
+            {!erFarEllerMedmor && tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
+                <div style={{ paddingTop: '0.625rem' }}>
+                    <Element>
+                        <FormattedMessage
+                            id="tilgjengeligeDagerGraf.uttakFørFødselInfo"
+                            values={{ navn: navnPåForeldre.mor }}
+                        />
+                    </Element>
+                </div>
+            )}
+            {erFarEllerMedmor && tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
+                <div style={{ paddingTop: '0.625rem' }}>
+                    <Element>
+                        <FormattedMessage
+                            id="tilgjengeligeDagerGraf.uttakFørFødselInfoFarMedmor"
+                            values={{ navn: navnPåForeldre.mor }}
+                        />
+                    </Element>
+                </div>
+            )}
         </div>
     );
 };
@@ -132,8 +128,9 @@ const AleneomsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, 
     const intl = useIntl();
     const txt =
         tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0
-            ? `${tilgjengeligeDager.dagerForeldrepengerFørFødsel / 5} + ${tilgjengeligeDager.dagerForeldrepenger /
-                  5} uker`
+            ? `${tilgjengeligeDager.dagerForeldrepengerFørFødsel / 5} + ${
+                  tilgjengeligeDager.dagerForeldrepenger / 5
+              } uker`
             : getVarighetString(tilgjengeligeDager.dagerEtterTermin, intl);
     return (
         <div className={bem.block}>
@@ -149,17 +146,16 @@ const AleneomsorgGraf: React.StatelessComponent<Props> = ({ tilgjengeligeDager, 
                 leftBar={{
                     color: erFarEllerMedmor ? UttaksplanHexFarge.blaa : UttaksplanHexFarge.lilla,
                     width: 100,
-                    text: <div className={bem.element('barTekst')}>{txt}</div>
+                    text: <div className={bem.element('barTekst')}>{txt}</div>,
                 }}
             />
-            {!erFarEllerMedmor &&
-                tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
-                    <div style={{ paddingTop: '0.625rem' }}>
-                        <Element>
-                            <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfoIkkeDeltUttak" />
-                        </Element>
-                    </div>
-                )}
+            {!erFarEllerMedmor && tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
+                <div style={{ paddingTop: '0.625rem' }}>
+                    <Element>
+                        <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfoIkkeDeltUttak" />
+                    </Element>
+                </div>
+            )}
         </div>
     );
 };

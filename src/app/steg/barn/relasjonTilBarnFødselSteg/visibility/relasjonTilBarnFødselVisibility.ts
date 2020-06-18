@@ -36,7 +36,7 @@ export const getRelasjonTilBarnFødselVisibility = (
         søker,
         barn,
         situasjon,
-        ekstrainfo: { søknadenGjelderBarnValg }
+        ekstrainfo: { søknadenGjelderBarnValg },
     } = søknad;
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
@@ -61,7 +61,7 @@ export const getRelasjonTilBarnFødselVisibility = (
         isUfødtBarn(barn, situasjon) &&
         visibility.terminbekreftelsePartialVisible(termindato, barn, skalLasteOppTerminbekreftelse);
     const terminbekreftelseDato = visibility.terminbekreftelseDatoVisible(terminbekreftelse, barn);
-    const visInfoOmPrematuruker = visibility.visInfoOmPrematurukerVisible(barn, søker.rolle);
+    const visInfoOmPrematuruker = visibility.visInfoOmPrematurukerVisible(barn);
 
     return {
         hvilketBarnGjelderSøknadenBolk,
@@ -71,13 +71,13 @@ export const getRelasjonTilBarnFødselVisibility = (
         født: {
             fødselsdatoer,
             fødselsattest,
-            visInfoOmPrematuruker
+            visInfoOmPrematuruker,
         },
         ufødt: {
             erMorForSyk,
             termindato,
             terminbekreftelse,
-            terminbekreftelseDato
-        }
+            terminbekreftelseDato,
+        },
     };
 };

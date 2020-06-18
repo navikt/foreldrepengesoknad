@@ -19,13 +19,13 @@ const GrafAleneomsorg: React.StatelessComponent<GrafAleneomsorgProps> = ({ forel
                 borderColor={farge}
                 leftBar={{
                     width: pstBrukt,
-                    color: farge
+                    color: farge,
                 }}
                 centerBar={
                     pstForMye
                         ? {
                               width: pstForMye,
-                              color: UttaksplanHexFarge.rod
+                              color: UttaksplanHexFarge.rod,
                           }
                         : undefined
                 }

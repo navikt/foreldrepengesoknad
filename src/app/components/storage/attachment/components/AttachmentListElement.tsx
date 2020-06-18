@@ -25,7 +25,7 @@ type Props = OwnProps;
 const AttachmentListElement: React.StatelessComponent<Props> = ({ attachment, showFileSize, onDelete, intl }) => {
     const BEM = BEMHelper('attachment');
     const cls = classnames(BEM.block, {
-        [BEM.modifier('pending')]: attachment.pending
+        [BEM.modifier('pending')]: attachment.pending,
     });
 
     return (
@@ -46,19 +46,14 @@ const AttachmentListElement: React.StatelessComponent<Props> = ({ attachment, sh
                 )}
                 {showFileSize && <div>{bytesString(attachment.filesize)}</div>}
             </div>
-            {onDelete &&
-                attachment.uploaded &&
-                !attachment.pending && (
-                    <span className={BEM.element('deleteButton')}>
-                        <SlettKnapp
-                            onClick={() => onDelete(attachment)}
-                            ariaLabel={intl.formatMessage(
-                                { id: 'vedlegg.arialabel.slett' },
-                                { navn: attachment.filename }
-                            )}
-                        />
-                    </span>
-                )}
+            {onDelete && attachment.uploaded && !attachment.pending && (
+                <span className={BEM.element('deleteButton')}>
+                    <SlettKnapp
+                        onClick={() => onDelete(attachment)}
+                        ariaLabel={intl.formatMessage({ id: 'vedlegg.arialabel.slett' }, { navn: attachment.filename })}
+                    />
+                </span>
+            )}
         </div>
     );
 };

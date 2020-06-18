@@ -6,7 +6,7 @@ const bem = BEMHelper('layoutRow');
 
 export interface LayoutRowProps extends React.Props<any> {
     left: React.ReactNode;
-    right?: Array<React.ReactNode | string>;
+    right?: (React.ReactNode | string)[];
     valign?: 'top' | 'middle' | 'bottom';
     keepMargins?: boolean;
     padding?: 'none' | 'small' | 'normal';
@@ -17,7 +17,7 @@ const LayoutRow: React.StatelessComponent<LayoutRowProps> = ({
     right,
     keepMargins,
     valign = 'middle',
-    padding = 'normal'
+    padding = 'normal',
 }) => {
     if (!right || right.length === 0) {
         return <div>{left}</div>;
@@ -33,7 +33,8 @@ const LayoutRow: React.StatelessComponent<LayoutRowProps> = ({
                 bem.block,
                 bem.modifier(valign),
                 bem.modifierConditional('clearMargins', !keepMargins)
-            )}>
+            )}
+        >
             <div className={bem.classNames(bem.element('item'), bem.element('left'))}>{left}</div>
             {right.map((item: React.ReactNode | string, idx) => (
                 <div className={rightItemClassName} key={idx}>

@@ -19,8 +19,8 @@ const AnnenInntektVedleggInfo: React.StatelessComponent<Props> = ({ type }) => {
             messages={[
                 {
                     type: 'normal',
-                    contentIntlKey: textKey
-                }
+                    contentIntlKey: textKey,
+                },
             ]}
         />
     );

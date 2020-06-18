@@ -5,12 +5,12 @@ import { FrilansInformasjon, FrilansInformasjonPartial } from '../../../types/s�
 
 const søkerUtenEgneVirksomheter = {
     harJobbetSomFrilansSiste10Mnd: false,
-    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false
+    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
 };
 
 const søkerMedEgneVirksomheter = {
     harJobbetSomFrilansSiste10Mnd: true,
-    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true
+    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true,
 };
 
 describe('Selvstendig næringsdrivende-bolk', () => {
@@ -26,7 +26,7 @@ describe('Selvstendig næringsdrivende-bolk', () => {
         beforeEach(() => {
             const frilansInformasjon: FrilansInformasjonPartial = {
                 jobberFremdelesSomFrilans: true,
-                driverFosterhjem: undefined
+                driverFosterhjem: undefined,
             };
 
             søker = søkerMedEgneVirksomheter as Søker;

@@ -27,7 +27,8 @@ class FocusContainer extends React.Component<Props> {
                 ref={(c) => (this.container = c)}
                 className={bem.block}
                 tabIndex={focusOnContainer === undefined ? undefined : -1}
-                aria-labelledby={focusOnContainer ? focusOnContainer.ariaLabelId : undefined}>
+                aria-labelledby={focusOnContainer ? focusOnContainer.ariaLabelId : undefined}
+            >
                 {children}
             </div>
         );

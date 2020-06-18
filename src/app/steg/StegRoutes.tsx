@@ -51,12 +51,12 @@ class StegRoutes extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            currentSteg: props.steg
+            currentSteg: props.steg,
         };
         this.navigateToStegIfNeeded(props);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.unlistenLocationChange = this.props.history.listen((location: Location) => {
             const steg = getStegFromPathname(location.pathname);
             if (steg) {
@@ -158,6 +158,8 @@ class StegRoutes extends React.Component<Props> {
     }
 }
 
-export default connect((appState: AppState): StateProps => ({
-    steg: appState.søknad.ekstrainfo.currentStegID
-}))(withRouter(StegRoutes));
+export default connect(
+    (appState: AppState): StateProps => ({
+        steg: appState.søknad.ekstrainfo.currentStegID,
+    })
+)(withRouter(StegRoutes));

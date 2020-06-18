@@ -20,7 +20,8 @@ const FordelingForelderInfo: React.StatelessComponent<Props> = ({ info, highligh
                 className={tittelBem.classNames(
                     tittelBem.element('dager'),
                     tittelBem.modifierConditional('formangedager', harForMangeDager)
-                )}>
+                )}
+            >
                 {highlightChanges ? (
                     <HighlightContent watchValue={antallDager} invalid={antallDager < 0}>
                         {tittel}

@@ -23,13 +23,13 @@ const InformasjonOmArbeidsforhold: React.StatelessComponent<Props> = ({ arbeidsf
                 {arbeidsforhold.arbeidsgiverIdType === 'orgnr' && (
                     <EtikettLiten>
                         {getMessage(intl, 'annenInntekt.arbeidsforhold.organisasjonsnummer', {
-                            organisasjonsnummer: arbeidsforhold.arbeidsgiverId
+                            organisasjonsnummer: arbeidsforhold.arbeidsgiverId,
                         })}
                     </EtikettLiten>
                 )}
                 <EtikettLiten className={cls.element('stillingsprosent')}>
                     {getMessage(intl, 'annenInntekt.arbeidsforhold.stillingsprosent', {
-                        stillingsprosent: arbeidsforhold.stillingsprosent
+                        stillingsprosent: arbeidsforhold.stillingsprosent,
                     })}
                 </EtikettLiten>
             </div>
@@ -41,7 +41,7 @@ const InformasjonOmArbeidsforhold: React.StatelessComponent<Props> = ({ arbeidsf
             <Normaltekst>
                 {getMessage(intl, 'annenInntekt.arbeidsforhold.periode', {
                     fom: formatDate(arbeidsforhold.fom),
-                    tom: arbeidsforhold.tom ? formatDate(arbeidsforhold.tom) : getMessage(intl, 'pågående')
+                    tom: arbeidsforhold.tom ? formatDate(arbeidsforhold.tom) : getMessage(intl, 'pågående'),
                 })}
             </Normaltekst>
         </div>

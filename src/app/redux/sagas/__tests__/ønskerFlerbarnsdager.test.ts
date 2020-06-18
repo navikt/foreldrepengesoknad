@@ -3,28 +3,28 @@ import { Periodetype } from '../../../types/uttaksplan/periodetyper';
 import { cleanInvalidSøknadData } from '../../../util/storageCleanup/storageCleanup';
 
 const dummyPeriode: any = {
-    ønskerFlerbarnsdager: true
+    ønskerFlerbarnsdager: true,
 };
 
 const søknad: Partial<Søknad> = {
     uttaksplan: [
         {
             ...dummyPeriode,
-            type: Periodetype.Overføring
+            type: Periodetype.Overføring,
         },
         {
             ...dummyPeriode,
-            type: Periodetype.Utsettelse
+            type: Periodetype.Utsettelse,
         },
         {
             ...dummyPeriode,
-            type: Periodetype.Uttak
+            type: Periodetype.Uttak,
         },
         {
             ...dummyPeriode,
-            type: Periodetype.Opphold
-        }
-    ]
+            type: Periodetype.Opphold,
+        },
+    ],
 };
 
 describe('Fjern ønskerFlerbarnsdager fra alle periode untatt uttak', () => {

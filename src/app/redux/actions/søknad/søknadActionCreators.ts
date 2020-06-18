@@ -20,11 +20,11 @@ import {
     StartSøknad,
     UttaksplanLagForslag,
     SetEndringstidspunkt,
-    SetInformasjonOmUtenlandsopphold
+    SetInformasjonOmUtenlandsopphold,
 } from './søknadActionDefinitions';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import InformasjonOmUtenlandsopphold, {
-    InformasjonOmUtenlandsoppholdPartial
+    InformasjonOmUtenlandsoppholdPartial,
 } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
@@ -46,80 +46,80 @@ const startSøknad = (
     søkerinfo,
     erEndringssøknad,
     saksnummer,
-    history
+    history,
 });
 
 const setSøknad = (payload: UpdateSøknadActionPayload) => ({
     type: SøknadActionKeys.SET_SØKNAD,
-    payload
+    payload,
 });
 
 const updateBarn = (payload: Partial<Barn>): UpdateBarn => ({
     type: SøknadActionKeys.UPDATE_BARN,
-    payload
+    payload,
 });
 
 const updateSøknadenGjelderBarn = (payload: SøknadenGjelderBarnValg): UpdateSøknadenGjelder => ({
     type: SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN,
-    payload
+    payload,
 });
 
 const updateAnnenForelder = (payload: AnnenForelderPartial) => ({
     type: SøknadActionKeys.UPDATE_ANNEN_FORELDER,
-    payload
+    payload,
 });
 
 const updateUtenlandsopphold = (payload: InformasjonOmUtenlandsoppholdPartial): UpdateUtenlandsopphold => ({
     type: SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD,
-    payload
+    payload,
 });
 
 const updateSøker = (payload: SøkerPartial): UpdateSøker => ({
     type: SøknadActionKeys.UPDATE_SØKER,
-    payload
+    payload,
 });
 
 const updateSøkerAndStorage = (payload: SøkerPartial): UpdateSøkerAndStorage => ({
     type: SøknadActionKeys.UPDATE_SØKER_AND_STORAGE,
-    payload
+    payload,
 });
 
 const updateSøknad = (payload: UpdateSøknadActionPayload): UpdateSøknad => ({
     type: SøknadActionKeys.UPDATE_SØKNAD,
-    payload
+    payload,
 });
 
 const updateEkstrainfo = (payload: Partial<SøknadEkstrainfo>) => ({
     type: SøknadActionKeys.UPDATE_EKSTRAINFO,
-    payload
+    payload,
 });
 
 const uttaksplanUpdateSkjemdata = (payload: Partial<UttaksplanSkjemadata>): UttaksplanUpdateSkjemadata => ({
     type: SøknadActionKeys.UTTAKSPLAN_UPDATE_SKJEMADATA,
-    payload
+    payload,
 });
 
 const uploadAttachment = (payload: Attachment) => ({
     type: SøknadActionKeys.UPLOAD_ATTACHMENT,
-    payload
+    payload,
 });
 
 const uploadAttachmentSuccess = (attachment: Attachment, url: string, uuid: string): UploadAttachmentSuccess => ({
     type: SøknadActionKeys.UPLOAD_ATTACHMENT_SUCCESS,
     attachment,
     url,
-    uuid
+    uuid,
 });
 
 const uploadAttachmentFailed = (error: string, attachment: Attachment): UploadAttachmentFailed => ({
     type: SøknadActionKeys.UPLOAD_ATTACHMENT_FAILED,
     error,
-    attachment
+    attachment,
 });
 
 const deleteAttachment = (attachment: Attachment): DeleteAttachment => ({
     type: SøknadActionKeys.DELETE_ATTACHMENT,
-    attachment
+    attachment,
 });
 
 const uttaksplanSetPerioder = (
@@ -130,25 +130,25 @@ const uttaksplanSetPerioder = (
     type: SøknadActionKeys.UTTAKSPLAN_SET_PERIODER,
     perioder,
     endringstidspunkt,
-    lastAddedPeriodeId
+    lastAddedPeriodeId,
 });
 
 const uttaksplanLagForslag = (): UttaksplanLagForslag => ({
-    type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG
+    type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG,
 });
 
 const uttaksplanSetForslag = (uttaksplan: Periode[]): UttaksplanSetForslag => ({
     type: SøknadActionKeys.UTTAKSPLAN_SET_FORSLAG,
-    uttaksplan
+    uttaksplan,
 });
 
 const avbrytSøknad = (): AvbrytSøknad => ({
-    type: SøknadActionKeys.AVBRYT_SØKNAD
+    type: SøknadActionKeys.AVBRYT_SØKNAD,
 });
 
 const setCurrentSteg = (stegID: StegID): SetCurrentSteg => ({
     type: SøknadActionKeys.SET_CURRENT_STEG,
-    stegID
+    stegID,
 });
 
 const setTilleggsopplysning = (
@@ -157,28 +157,28 @@ const setTilleggsopplysning = (
     ekstraInformasjon?: string
 ): SetTilleggsopplysning => ({
     type: SøknadActionKeys.SET_TILLEGGSOPPLYSNING,
-    payload: { opplysning, tekst, ekstraInformasjon }
+    payload: { opplysning, tekst, ekstraInformasjon },
 });
 
 const setVedleggForSenEndring = (payload: Attachment[]): SetVedleggForSenEndring => ({
     type: SøknadActionKeys.SET_VEDLEGG_FOR_SEN_ENDRING,
-    payload
+    payload,
 });
 
 const resetUttaksplanEndringer = () => ({
-    type: SøknadActionKeys.UTTAKSPLAN_RESET_ENDRINGER
+    type: SøknadActionKeys.UTTAKSPLAN_RESET_ENDRINGER,
 });
 
 const setEndringstidspunkt = (endringstidspunkt: Date): SetEndringstidspunkt => ({
     type: SøknadActionKeys.SET_ENDRINGSTIDSPUNKT,
-    endringstidspunkt
+    endringstidspunkt,
 });
 
 const setInformasjonOmUtenlandsopphold = (
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold
 ): SetInformasjonOmUtenlandsopphold => ({
     type: SøknadActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD,
-    payload: informasjonOmUtenlandsopphold
+    payload: informasjonOmUtenlandsopphold,
 });
 
 export default {
@@ -206,5 +206,5 @@ export default {
     setTilleggsopplysning,
     uttaksplanSetForslag,
     resetUttaksplanEndringer,
-    setInformasjonOmUtenlandsopphold
+    setInformasjonOmUtenlandsopphold,
 };

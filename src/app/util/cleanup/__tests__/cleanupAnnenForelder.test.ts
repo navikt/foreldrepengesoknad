@@ -8,7 +8,7 @@ import { cleanupAnnenForelder, cleanupAnnenForelderBarn } from '../cleanupAnnenF
 import {
     getAnnenForelderStegVisibility,
     AnnenForelderStegVisibility,
-    AnnenForelderSpørsmålKeys
+    AnnenForelderSpørsmålKeys,
 } from '../../../steg/annenForelder/visibility/annenForelderStegVisibility';
 import { Barn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
 
@@ -22,7 +22,7 @@ const annenForelder: AnnenForelder = {
     kanIkkeOppgis: false,
     fornavn: 'fornavnet',
     etternavn: 'etternavnet',
-    utenlandskFnr: false
+    utenlandskFnr: false,
 };
 
 const registrertAnnenForelder: RegistrertAnnenForelder = {
@@ -30,7 +30,7 @@ const registrertAnnenForelder: RegistrertAnnenForelder = {
     etternavn: 'etternavnet',
     fornavn: 'fornavnet',
     fødselsdato: new Date(),
-    harOpplystOmSinPågåendeSak: false
+    harOpplystOmSinPågåendeSak: false,
 };
 
 const søknad: SøknadPartial = {
@@ -38,23 +38,23 @@ const søknad: SøknadPartial = {
     annenForelder,
     barn: {
         fødselsdatoer: [],
-        foreldreansvarsdato: new Date()
+        foreldreansvarsdato: new Date(),
     },
     informasjonOmUtenlandsopphold: {
         tidligereOpphold: [],
-        senereOpphold: []
+        senereOpphold: [],
     },
     søker: {
         rolle: SøkerRolle.MOR,
         erAleneOmOmsorg: false,
-        andreInntekterSiste10Mnd: []
+        andreInntekterSiste10Mnd: [],
     },
     situasjon: Søkersituasjon.FØDSEL,
     uttaksplan: [],
     harGodkjentVilkår: false,
     harGodkjentOppsummering: false,
     sensitivInfoIkkeLagre: {
-        registrertAnnenForelder
+        registrertAnnenForelder,
     },
     vedleggForSenEndring: undefined,
     tilleggsopplysninger: {},
@@ -63,10 +63,10 @@ const søknad: SøknadPartial = {
         currentStegID: undefined,
         søknadenGjelderBarnValg: {
             valgteBarn: [],
-            gjelderAnnetBarn: undefined
+            gjelderAnnetBarn: undefined,
         },
-        erEnkelEndringssøknad: false
-    }
+        erEnkelEndringssøknad: false,
+    },
 };
 
 const kvinnePerson: Person = {
@@ -76,13 +76,13 @@ const kvinnePerson: Person = {
     fornavn: 'fornavnet',
     etternavn: 'etternavnet',
     fødselsdato: new Date(2000, 1, 1),
-    kjønn: Kjønn.KVINNE
+    kjønn: Kjønn.KVINNE,
 };
 
 const søkerinfo: Søkerinfo = {
     person: kvinnePerson,
     arbeidsforhold: [],
-    registrerteBarn: []
+    registrerteBarn: [],
 };
 
 const propsSetOutsideSteg: string[] = ['erForSyk'];
@@ -118,19 +118,19 @@ describe('Cleanup AnnenForelder', () => {
                     annenForelder: { ...testSøknad.annenForelder, kanIkkeOppgis: false },
                     søker: {
                         ...søknad.søker,
-                        erAleneOmOmsorg: true
+                        erAleneOmOmsorg: true,
                     },
                     barn: {
                         ...søknad.barn,
-                        datoForAleneomsorg: new Date()
-                    }
+                        datoForAleneomsorg: new Date(),
+                    },
                 };
             });
             it('when erFarEllerMedmor', () => {
                 testSøknad.søker.rolle = SøkerRolle.FAR;
                 testVisibility = getAnnenForelderStegVisibility(testSøknad as Søknad, {
                     ...søkerinfo,
-                    person: { ...søkerinfo.person, kjønn: Kjønn.MANN }
+                    person: { ...søkerinfo.person, kjønn: Kjønn.MANN },
                 })!;
                 const af: AnnenForelder = cleanupAnnenForelder(testVisibility, testSøknad as Søknad) as AnnenForelder;
                 const b: Barn = cleanupAnnenForelderBarn(
@@ -145,7 +145,7 @@ describe('Cleanup AnnenForelder', () => {
             it('when er mor', () => {
                 testVisibility = getAnnenForelderStegVisibility(testSøknad as Søknad, {
                     ...søkerinfo,
-                    person: { ...søkerinfo.person, kjønn: Kjønn.KVINNE }
+                    person: { ...søkerinfo.person, kjønn: Kjønn.KVINNE },
                 })!;
                 const af: AnnenForelder = cleanupAnnenForelder(testVisibility, testSøknad as Søknad) as AnnenForelder;
                 const b: Barn = cleanupAnnenForelderBarn(

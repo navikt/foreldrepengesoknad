@@ -8,11 +8,9 @@ interface BUILDInfo {
 
 declare const BUILD: BUILDInfo;
 
-export interface Props {}
-
 const bem = BEMHelper('applicationInfo');
 
-const ApplicationInfo: React.StatelessComponent<Props> = (props) => {
+const ApplicationInfo: React.StatelessComponent = () => {
     try {
         return (
             <div className={bem.block} role="presentation" aria-hidden={true}>

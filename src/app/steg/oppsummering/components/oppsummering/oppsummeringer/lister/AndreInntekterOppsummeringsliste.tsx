@@ -17,7 +17,7 @@ class AndreInntekterOppsummeringsliste extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            modalIsOpen: false
+            modalIsOpen: false,
         };
 
         this.createOppsummeringslisteData = this.createOppsummeringslisteData.bind(this);
@@ -36,9 +36,9 @@ class AndreInntekterOppsummeringsliste extends React.Component<Props> {
             venstrestiltTekst: getMessage(intl, `inntektstype.${type.toLowerCase()}`),
             høyrestiltTekst: getMessage(intl, 'tidsintervall', {
                 fom: formatDate(tidsperiode.fom),
-                tom: pågående ? 'pågående' : formatDate(tidsperiode.tom)
+                tom: pågående ? 'pågående' : formatDate(tidsperiode.tom),
             }),
-            content: <AnnenInntektDetaljer annenInntekt={annenInntekt} />
+            content: <AnnenInntektDetaljer annenInntekt={annenInntekt} />,
         };
     }
 

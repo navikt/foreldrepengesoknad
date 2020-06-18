@@ -2,12 +2,12 @@ export * from '../intl/types';
 
 export enum Dekningsgrad {
     ÅTTI_PROSENT = '80',
-    HUNDRE_PROSENT = '100'
+    HUNDRE_PROSENT = '100',
 }
 
 export enum Forelder {
     'mor' = 'mor',
-    'farMedmor' = 'farMedmor'
+    'farMedmor' = 'farMedmor',
 }
 
 export type StatusKey = 'suksess' | 'advarsel' | 'feil';
@@ -47,5 +47,5 @@ export enum StønadskontoType {
     'Foreldrepenger' = 'FORELDREPENGER',
     'ForeldrepengerFørFødsel' = 'FORELDREPENGER_FØR_FØDSEL',
     'Flerbarnsdager' = 'FLERBARNSDAGER', // Ikke brukt som egen type i periodene
-    'AktivitetsfriKvote' = 'AKTIVITETSFRI_KVOTE' // Foreldrepenger
+    'AktivitetsfriKvote' = 'AKTIVITETSFRI_KVOTE', // Foreldrepenger
 }

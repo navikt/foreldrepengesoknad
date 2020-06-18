@@ -13,7 +13,7 @@ interface AntallUkerOgDagerFellesperiodeFarMedmorProps {
 
 type Props = AntallUkerOgDagerFellesperiodeFarMedmorProps & UttaksplanSkjemaspørsmålProps;
 
-const getUkerOgDagerRegler = (uker: number = 0, maksUker: number, dager: number = 0, intl: IntlShape): Validator[] => {
+const getUkerOgDagerRegler = (uker = 0, maksUker: number, dager = 0, intl: IntlShape): Validator[] => {
     const maksDager = maksUker * 5;
     const valgtAntallDager = uker * 5 + dager;
 

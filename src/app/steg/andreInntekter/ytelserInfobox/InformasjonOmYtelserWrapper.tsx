@@ -21,12 +21,7 @@ const InformasjonOmYtelserWrapper: React.StatelessComponent<YtelseInfoWrapperPro
                     <Normaltekst>{getMessage(intl, 'annenInntekt.ytelser.tekst')}</Normaltekst>
                 </div>
             )}
-            {harYtelser && (
-                <ul className="ytelserList">
-                    /* TODO: Render info om ytelse */
-                    {ytelser.map(() => 'Ytelse')}
-                </ul>
-            )}
+            {harYtelser && <ul className="ytelserList">{ytelser.map(() => 'Ytelse')}</ul>}
         </React.Fragment>
     );
 };

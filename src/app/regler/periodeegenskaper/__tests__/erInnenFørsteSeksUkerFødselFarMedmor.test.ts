@@ -6,7 +6,7 @@ import { Tidsperiode } from 'common/types';
 
 const tidsperiode: Tidsperiode = {
     fom: new Date(2018, 11, 1),
-    tom: new Date(2018, 11, 2)
+    tom: new Date(2018, 11, 2),
 };
 const uttaksdatoer = getUttaksdatoer(tidsperiode.fom);
 
@@ -14,7 +14,7 @@ const validProps = {
     tidsperiode,
     situasjon: Søkersituasjon.FØDSEL,
     søkerErFarEllerMedmor: true,
-    førsteUttaksdagEtterSeksUker: uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker
+    førsteUttaksdagEtterSeksUker: uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker,
 };
 
 describe('erInnenFørsteSeksUkerFødselFarMedmor', () => {
@@ -87,9 +87,7 @@ describe('erInnenFørsteSeksUkerFødselFarMedmor', () => {
             erInnenFørsteSeksUkerFødselFarMedmor(
                 {
                     ...tidsperiode,
-                    fom: moment(validProps.førsteUttaksdagEtterSeksUker)
-                        .add(1, 'day')
-                        .toDate()
+                    fom: moment(validProps.førsteUttaksdagEtterSeksUker).add(1, 'day').toDate(),
                 },
                 Søkersituasjon.FØDSEL,
                 false,

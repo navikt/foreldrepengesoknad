@@ -32,13 +32,13 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
         harRettPåForeldrepenger,
         erInformertOmSøknaden,
         erForSyk,
-        erUfør
+        erUfør,
     } = props.annenForelder;
 
     const { datoForAleneomsorg, dokumentasjonAvAleneomsorg } = barn;
 
     const erAleneOmOmsorgLabel = getMessage(intl, 'oppsummering.annenForelder.aleneOmOmsorg.label', {
-        personligPronomen: erAleneOmOmsorg ? getMessage(intl, 'jeg') : getMessage(intl, 'vi')
+        personligPronomen: erAleneOmOmsorg ? getMessage(intl, 'jeg') : getMessage(intl, 'vi'),
     });
 
     const navn = fornavn && etternavn ? formaterNavn(fornavn, etternavn) : undefined;
@@ -50,14 +50,13 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
                     {getMessage(intl, 'oppsummering.annenForelder.kanIkkeOppgis')}
                 </Element>
             )}
-            {!kanIkkeOppgis &&
-                navn && (
-                    <Feltoppsummering
-                        key="annenForelderNavn"
-                        feltnavn={getMessage(intl, 'oppsummering.annenForelder.navn.label')}
-                        verdi={navn}
-                    />
-                )}
+            {!kanIkkeOppgis && navn && (
+                <Feltoppsummering
+                    key="annenForelderNavn"
+                    feltnavn={getMessage(intl, 'oppsummering.annenForelder.navn.label')}
+                    verdi={navn}
+                />
+            )}
             {(fnr || utenlandskFnr) && (
                 <Feltoppsummering
                     key="annenForelderFødselsnummer"
@@ -69,37 +68,34 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
                     verdi={fnr ? fnr : 'som ikke er oppgitt'}
                 />
             )}
-            {utenlandskFnr &&
-                bostedsland && (
-                    <Feltoppsummering
-                        feltnavn={getMessage(intl, 'oppsummering.annenForelder.bostedsland.label')}
-                        verdi={countries.getName(bostedsland, 'nb')}
-                    />
-                )}
-            {erAleneOmOmsorg !== undefined &&
-                !kanIkkeOppgis && (
-                    <Feltoppsummering
-                        feltnavn={erAleneOmOmsorgLabel}
-                        verdi={
-                            erAleneOmOmsorg
-                                ? getMessage(intl, 'oppsummering.annenForelder.aleneomsorg')
-                                : getMessage(intl, 'oppsummering.annenForelder.deltOmsorg')
-                        }
-                    />
-                )}
+            {utenlandskFnr && bostedsland && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.annenForelder.bostedsland.label')}
+                    verdi={countries.getName(bostedsland, 'nb')}
+                />
+            )}
+            {erAleneOmOmsorg !== undefined && !kanIkkeOppgis && (
+                <Feltoppsummering
+                    feltnavn={erAleneOmOmsorgLabel}
+                    verdi={
+                        erAleneOmOmsorg
+                            ? getMessage(intl, 'oppsummering.annenForelder.aleneomsorg')
+                            : getMessage(intl, 'oppsummering.annenForelder.deltOmsorg')
+                    }
+                />
+            )}
             {datoForAleneomsorg && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.annenForelder.datoForAleneomsorg.label')}
                     verdi={formatDate(datoForAleneomsorg) || ''}
                 />
             )}
-            {erAleneOmOmsorg &&
-                erFarEllerMedmor && (
-                    <OppsummeringAvDokumentasjon
-                        vedlegg={dokumentasjonAvAleneomsorg}
-                        ledetekst={getMessage(intl, 'oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label')}
-                    />
-                )}
+            {erAleneOmOmsorg && erFarEllerMedmor && (
+                <OppsummeringAvDokumentasjon
+                    vedlegg={dokumentasjonAvAleneomsorg}
+                    ledetekst={getMessage(intl, 'oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label')}
+                />
+            )}
             {harRettPåForeldrepenger !== undefined && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.annenForelder.harRettPåForeldrepenger.label', { navn })}

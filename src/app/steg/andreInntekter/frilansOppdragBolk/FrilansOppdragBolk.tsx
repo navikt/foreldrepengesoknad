@@ -34,7 +34,7 @@ class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, Frilan
         this.onSelect = this.onSelect.bind(this);
 
         this.state = {
-            modalIsOpen: false
+            modalIsOpen: false,
         };
     }
 
@@ -54,14 +54,14 @@ class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, Frilan
         }
         this.closeModal({
             oppdragIndex: undefined,
-            oppdragToEdit: undefined
+            oppdragToEdit: undefined,
         });
     }
 
     onSelect(oppdragToEdit: FrilansOppdrag, oppdragIndex: number) {
         this.openModal({
             oppdragToEdit,
-            oppdragIndex
+            oppdragIndex,
         });
     }
 
@@ -75,14 +75,14 @@ class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, Frilan
     openModal(otherState: FrilansOppdragBolkStatePartial = {}) {
         this.setState({
             ...otherState,
-            modalIsOpen: true
+            modalIsOpen: true,
         });
     }
 
     closeModal(otherState: FrilansOppdragBolkStatePartial = {}) {
         this.setState({
             ...otherState,
-            modalIsOpen: false
+            modalIsOpen: false,
         });
     }
 
@@ -127,11 +127,10 @@ class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, Frilan
                     onRequestClose={() =>
                         this.closeModal({
                             oppdragIndex: undefined,
-                            oppdragToEdit: undefined
+                            oppdragToEdit: undefined,
                         })
                     }
                     contentLabel="Periode med frilansoppdrag for nær venn eller familie siste 10 måneder"
-                    children={null}
                     oppdrag={oppdragToEdit}
                     onAdd={this.onAdd}
                     onEdit={this.onEditSubmit}

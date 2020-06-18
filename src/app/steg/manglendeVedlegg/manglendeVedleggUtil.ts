@@ -2,7 +2,7 @@ import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { isArrayOfAttachments } from 'app/util/cleanup/cleanupSøknad';
 
 export const findAllAttachments = (
-    object: object,
+    object: any,
     currentKey?: string,
     previousEntries?: Map<string, Attachment[]>
 ): Map<string, Attachment[]> => {

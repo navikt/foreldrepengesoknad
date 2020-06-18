@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
 import Oppsummeringsliste, {
-    OppsummeringslisteelementProps
+    OppsummeringslisteelementProps,
 } from 'app/steg/oppsummering/components/oppsummeringsliste/Oppsummeringsliste';
 import {
     Overføringsperiode,
@@ -10,7 +10,7 @@ import {
     StønadskontoType,
     Utsettelsesperiode,
     Uttaksperiode,
-    Oppholdsperiode
+    Oppholdsperiode,
 } from '../../../../../../types/uttaksplan/periodetyper';
 import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../../../../../../util/dates/dates';
@@ -28,7 +28,7 @@ import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/
 import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import {
     beskrivTilleggsopplysning,
-    TilleggsopplysningMedBeskrivelse
+    TilleggsopplysningMedBeskrivelse,
 } from 'app/util/cleanup/stringifyTilleggsopplysninger';
 import { Søknadsinfo } from 'app/selectors/types';
 import { finnesPeriodeIOpprinneligPlan } from 'app/util/uttaksplan/uttaksplanEndringUtil';
@@ -109,10 +109,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
         }
     }
 
-    createOppsummeringslisteelementPropsForUttaksperiode(
-        periode: Uttaksperiode,
-        periodeErNyEllerEndret: boolean = true
-    ) {
+    createOppsummeringslisteelementPropsForUttaksperiode(periode: Uttaksperiode, periodeErNyEllerEndret = true) {
         const { registrerteArbeidsforhold, søknadsinfo } = this.props;
         return {
             venstrestiltTekst: this.getStønadskontoNavnFromKonto(periode.konto),
@@ -124,14 +121,14 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
                     periodeErNyEllerEndret={periodeErNyEllerEndret}
                     søknadsinfo={søknadsinfo}
                 />
-            )
+            ),
         };
     }
 
     createOppsummeringslisteelementPropsForOppholdsperiode(periode: Oppholdsperiode) {
         return {
             venstrestiltTekst: getPeriodeTittel(this.props.intl, periode, this.props.søknadsinfo.navn.navnPåForeldre),
-            høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode)
+            høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
         };
     }
 
@@ -150,7 +147,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
                     søknadsinfo={søknadsinfo}
                     periodeErNyEllerEndret={periodeErNyEllerEndret}
                 />
-            )
+            ),
         };
     }
 
@@ -162,7 +159,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
         const kontonavn = this.getStønadskontoNavnFromKonto(periode.konto);
         return {
             venstrestiltTekst: getMessage(intl, 'oppsummering.overtakelse.pga', {
-                konto: kontonavn
+                konto: kontonavn,
             }),
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
             content: (
@@ -172,7 +169,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
                     erFarEllerMedmor={erFarEllerMedmor}
                     periodeErNyEllerEndret={periodeErNyEllerEndret}
                 />
-            )
+            ),
         };
     }
 
@@ -193,7 +190,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
                         <OppsummeringAvDokumentasjon vedlegg={this.props.begrunnelseForSenEndringVedlegg || []} />
                     )}
                 </>
-            )
+            ),
         };
     }
 
@@ -206,7 +203,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
         const { intl } = this.props;
         return getMessage(intl, 'tidsintervall', {
             fom: formatDate(tidsperiode.fom),
-            tom: formatDate(tidsperiode.tom)
+            tom: formatDate(tidsperiode.tom),
         });
     }
 

@@ -14,7 +14,7 @@ const bem = BEMHelper('sirkelmaske');
 
 const Sirkelmaske: React.StatelessComponent<Props> = ({ farge, diameter, aktiv = true, children }) => {
     const style: Partial<CSSProperties> = {
-        backgroundColor: farge
+        backgroundColor: farge,
     };
     if (diameter) {
         style.width = diameter;

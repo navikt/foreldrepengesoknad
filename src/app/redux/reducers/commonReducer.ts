@@ -2,7 +2,7 @@ import { CommonActionKeys, CommonActionTypes } from '../actions/common/commonAct
 import { Språkkode } from 'common/intl/types';
 
 export const getDefaultCommonState = (): CommonState => ({
-    språkkode: 'nb'
+    språkkode: 'nb',
 });
 
 export interface CommonState {
