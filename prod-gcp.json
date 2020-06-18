@@ -1,6 +1,5 @@
 {
-    "namespace": "foreldrepenger",
-    "appres": "appres.nav.no",
+    "namespace": "teamforeldrepenger",
     "ingresses": ["https://foreldrepengesoknad.nav.no"],
     "env": {
         "APPRES_CMS_URL": "https://www.nav.no/dekoratoren",
