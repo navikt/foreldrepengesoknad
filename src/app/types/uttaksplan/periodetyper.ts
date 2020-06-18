@@ -18,7 +18,7 @@ export enum Periodetype {
     'Opphold' = 'opphold',
     'Overføring' = 'overføring',
     'Hull' = 'ubegrunnetOpphold',
-    'Info' = 'info'
+    'Info' = 'info',
 }
 
 export enum UtsettelseÅrsakType {
@@ -28,7 +28,7 @@ export enum UtsettelseÅrsakType {
     'InstitusjonSøker' = 'INSTITUSJONSOPPHOLD_SØKER',
     'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET',
     'HvØvelse' = 'HV_OVELSE',
-    'NavTiltak' = 'NAV_TILTAK'
+    'NavTiltak' = 'NAV_TILTAK',
 }
 
 export enum SaksperiodeUtsettelseÅrsakType {
@@ -38,32 +38,32 @@ export enum SaksperiodeUtsettelseÅrsakType {
     'InstitusjonSøker' = 'SØKER_INNLAGT',
     'InstitusjonBarnet' = 'BARN_INNLAGT',
     'HvØvelse' = 'HV_OVELSE',
-    'NavTiltak' = 'NAV_TILTAK'
+    'NavTiltak' = 'NAV_TILTAK',
 }
 
 export enum Arbeidsform {
     'arbeidstaker' = 'ARBEIDSTAKER',
     'frilans' = 'FRILANS',
-    'selvstendignæringsdrivende' = 'SELVSTENDIG_NÆRINGSDRIVENDE'
+    'selvstendignæringsdrivende' = 'SELVSTENDIG_NÆRINGSDRIVENDE',
 }
 
 export enum OppholdÅrsakType {
     'UttakFellesperiodeAnnenForelder' = 'UTTAK_FELLESP_ANNEN_FORELDER',
     'UttakFedrekvoteAnnenForelder' = 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
     'UttakMødrekvoteAnnenForelder' = 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
-    'UttakForelderpengerFørFødsel' = 'UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER'
+    'UttakForelderpengerFørFødsel' = 'UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER',
 }
 
 export enum OverføringÅrsakType {
     'insititusjonsoppholdAnnenForelder' = 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
     'sykdomAnnenForelder' = 'SYKDOM_ANNEN_FORELDER',
     'aleneomsorg' = 'ALENEOMSORG',
-    'ikkeRettAnnenForelder' = 'IKKE_RETT_ANNEN_FORELDER'
+    'ikkeRettAnnenForelder' = 'IKKE_RETT_ANNEN_FORELDER',
 }
 
 export enum PeriodeHullÅrsak {
     'Fridag' = 'Fridag',
-    'avslåttPeriode' = 'avslåttPeriode'
+    'avslåttPeriode' = 'avslåttPeriode',
 }
 
 export enum SenEndringÅrsak {
@@ -74,13 +74,13 @@ export enum SenEndringÅrsak {
     'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET',
     'Arbeid' = 'ARBEID',
     'ArbeidOgUttak' = 'ARBEID_OG_UTTAK',
-    'Ingen' = 'INGEN'
+    'Ingen' = 'INGEN',
 }
 
 export enum PeriodeInfoType {
     'avslåttPeriode' = 'avslåttPeriode',
     'uttakAnnenPart' = 'uttakAnnenPart',
-    'utsettelseAnnenPart' = 'utsettelseAnnenPart'
+    'utsettelseAnnenPart' = 'utsettelseAnnenPart',
 }
 
 export interface Helligdag {
@@ -235,7 +235,7 @@ export enum MorsAktivitet {
     'TrengerHjelp' = 'TRENGER_HJELP',
     'Innlagt' = 'INNLAGT',
     'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING',
-    'Uføre' = 'UFØRE'
+    'Uføre' = 'UFØRE',
 }
 
 export function isUttaksperiode(periode: Periode | RecursivePartial<Periode>): periode is Uttaksperiode {

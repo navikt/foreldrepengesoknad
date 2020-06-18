@@ -11,7 +11,7 @@ import { default as uttaksplanValideringActions } from '../actions/uttaksplanVal
 import { getStønadskontoSortOrder } from '../../util/uttaksplan/stønadskontoer';
 import {
     overstyrAntallTilgjengeligeUkerForBarnFørJuli2018,
-    skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018
+    skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018,
 } from '../../util/uttaksplan/tidsregler/førJuli2018';
 import routeConfig from '../../util/routing/routeConfig';
 import { Dekningsgrad } from 'common/types';
@@ -32,7 +32,6 @@ const getAktivitetsFrieUkerForeldrepenger = (dekningsgrad: Dekningsgrad, startda
 const opprettAktivitetsFriKonto = (
     kontoer: TilgjengeligStønadskonto[],
     dekningsgrad: Dekningsgrad,
-    antallBarn: number,
     startdatoUttak: Date
 ): TilgjengeligStønadskonto[] => {
     const nyeKontoer: TilgjengeligStønadskonto[] = [];
@@ -65,7 +64,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
             .forEach((konto) => {
                 tilgjengeligeStønadskontoer.push({
                     konto: konto as StønadskontoType,
-                    dager: stønadskontoer.kontoer[konto]
+                    dager: stønadskontoer.kontoer[konto],
                 });
             });
 
@@ -73,7 +72,6 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
             tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(
                 tilgjengeligeStønadskontoer,
                 appState.søknad.dekningsgrad,
-                appState.søknad.barn.antallBarn,
                 params.startdatoUttak
             );
 
@@ -101,7 +99,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
         const relevantFamiliehendelseDato = getRelevantFamiliehendelseDato({
             termindato: params.termindato,
             fødselsdato: params.fødselsdato,
-            omsorgsovertakelsesdato: params.omsorgsovertakelsesdato
+            omsorgsovertakelsesdato: params.omsorgsovertakelsesdato,
         });
 
         if (
@@ -124,14 +122,14 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
             yield put(
                 apiActions.updateApi({
                     isLoadingTilgjengeligeStønadskontoer: false,
-                    stønadskontoer100: tilgjengeligeStønadskontoer
+                    stønadskontoer100: tilgjengeligeStønadskontoer,
                 })
             );
         } else {
             yield put(
                 apiActions.updateApi({
                     isLoadingTilgjengeligeStønadskontoer: false,
-                    stønadskontoer80: tilgjengeligeStønadskontoer
+                    stønadskontoer80: tilgjengeligeStønadskontoer,
                 })
             );
         }
@@ -142,11 +140,11 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
             apiActions.updateApi({
                 stønadskontoer100: [],
                 stønadskontoer80: [],
-                isLoadingTilgjengeligeStønadskontoer: false
+                isLoadingTilgjengeligeStønadskontoer: false,
             })
         );
         action.history.push(routeConfig.GENERELL_FEIL_URL, {
-            uuid: extractUUID(error)
+            uuid: extractUUID(error),
         });
     }
 }
@@ -164,6 +162,6 @@ export default function* søknadskontoerSaga() {
         takeEvery(
             ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER_AND_LAG_UTTAKSPLAN_FORSLAG,
             getStønadskontoerAndLagUttaksplan
-        )
+        ),
     ]);
 }

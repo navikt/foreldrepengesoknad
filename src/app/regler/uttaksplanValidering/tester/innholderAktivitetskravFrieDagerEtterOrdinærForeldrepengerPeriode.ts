@@ -28,8 +28,8 @@ export const innholderAktivitetskravFrieDagerEtterOrdinærForeldrepengerPeriode:
         return {
             passerer: !harOverskridetOrdinærPeriode,
             info: {
-                values: { antallUker }
-            }
+                values: { antallUker },
+            },
         };
     }
 

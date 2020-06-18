@@ -70,6 +70,6 @@ export const getUgyldigUttakFørsteSeksUkerForMor = (
         ...gradertePerioder,
         ...ugyldigeUtsettelser,
         ...fellesPerioder,
-        ...samtidigUttaksperioder
+        ...samtidigUttaksperioder,
     ];
 };

@@ -2,7 +2,7 @@ import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 
 export enum InnsendingsType {
-    SEND_SENERE = 'SEND_SENERE'
+    SEND_SENERE = 'SEND_SENERE',
 }
 
 export interface Attachment {

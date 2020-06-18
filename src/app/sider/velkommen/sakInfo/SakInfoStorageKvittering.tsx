@@ -27,7 +27,7 @@ const SakInfoStorageKvittering: React.StatelessComponent<Props> = ({ storageKvit
                         <FormattedMessage
                             id="velkommen.sak.mottatt"
                             values={{
-                                date: moment(storageKvittering.innsendingstidspunkt).format('LL')
+                                date: moment(storageKvittering.innsendingstidspunkt).format('LL'),
                             }}
                         />
                     </Normaltekst>

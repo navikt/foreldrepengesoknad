@@ -32,12 +32,12 @@ export const getOrganisasjonsnummerRegler = (
             hasValueRule(organisasjonsnummer, getMessage(intl, `${intlKey}.required`)),
             {
                 test: () => er9Tall(organisasjonsnummer),
-                failText: getMessage(intl, `${intlKey}.er9tall`)
+                failText: getMessage(intl, `${intlKey}.er9tall`),
             },
             {
                 test: () => erGyldigNorskOrgnummer(organisasjonsnummer),
-                failText: getMessage(intl, `${intlKey}.erUgyldigOrgNummer`)
-            }
+                failText: getMessage(intl, `${intlKey}.erUgyldigOrgNummer`),
+            },
         ];
     }
     return [hasValueRule(organisasjonsnummer, getMessage(intl, `${intlKey}.required`))];

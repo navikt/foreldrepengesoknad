@@ -4,7 +4,7 @@ import { addAttachmentToState, editAttachmentInState, removeAttachmentFromState 
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import {
     getBarnInfoFraRegistrertBarnValg,
-    getUniqueRegistrertAnnenForelderFromBarn
+    getUniqueRegistrertAnnenForelderFromBarn,
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
@@ -14,16 +14,16 @@ export const getDefaultSøknadState = (): SøknadPartial => {
         type: 'foreldrepenger',
         saksnummer: undefined,
         annenForelder: {
-            kanIkkeOppgis: false
+            kanIkkeOppgis: false,
         },
         barn: {},
         informasjonOmUtenlandsopphold: {
             tidligereOpphold: [],
-            senereOpphold: []
+            senereOpphold: [],
         },
         søker: {
             erAleneOmOmsorg: undefined,
-            andreInntekterSiste10Mnd: []
+            andreInntekterSiste10Mnd: [],
         },
         harGodkjentVilkår: false,
         harGodkjentOppsummering: false,
@@ -31,19 +31,19 @@ export const getDefaultSøknadState = (): SøknadPartial => {
             erEnkelEndringssøknad: false,
             uttaksplanSkjema: {
                 startdatoPermisjon: undefined,
-                ønskerTomPlan: false
+                ønskerTomPlan: false,
             },
             currentStegID: undefined,
             søknadenGjelderBarnValg: {
                 valgteBarn: [],
-                gjelderAnnetBarn: undefined
+                gjelderAnnetBarn: undefined,
             },
-            eksisterendeSak: undefined
+            eksisterendeSak: undefined,
         },
         vedleggForSenEndring: undefined,
         tilleggsopplysninger: {},
         sensitivInfoIkkeLagre: {},
-        uttaksplan: []
+        uttaksplan: [],
     };
 };
 
@@ -51,7 +51,7 @@ const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnn
     return {
         fnr: registertForelder.fnr,
         fornavn: registertForelder.fornavn,
-        etternavn: registertForelder.etternavn
+        etternavn: registertForelder.etternavn,
     };
 };
 
@@ -61,7 +61,7 @@ const cloneUttaksplan = (uttaksplan: Periode[] | undefined): Periode[] => {
     }
     return uttaksplan.map((periode) => ({
         ...periode,
-        tidsperiode: { ...periode.tidsperiode }
+        tidsperiode: { ...periode.tidsperiode },
     }));
 };
 
@@ -69,48 +69,48 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
     switch (action.type) {
         case SøknadActionKeys.AVBRYT_SØKNAD:
             return {
-                ...getDefaultSøknadState()
+                ...getDefaultSøknadState(),
             };
         case SøknadActionKeys.UPDATE_SØKNAD:
             return {
                 ...state,
-                ...action.payload
+                ...action.payload,
             };
         case SøknadActionKeys.UPDATE_EKSTRAINFO:
             return {
                 ...state,
-                ekstrainfo: { ...state.ekstrainfo, ...action.payload }
+                ekstrainfo: { ...state.ekstrainfo, ...action.payload },
             };
         case SøknadActionKeys.SET_SØKNAD:
             return {
                 ...getDefaultSøknadState(),
-                ...action.payload
+                ...action.payload,
             };
         case SøknadActionKeys.UPDATE_BARN:
             return {
                 ...state,
-                barn: { ...state.barn, ...action.payload }
+                barn: { ...state.barn, ...action.payload },
             };
         case SøknadActionKeys.UPDATE_ANNEN_FORELDER:
             return {
                 ...state,
-                annenForelder: { ...state.annenForelder, ...action.payload }
+                annenForelder: { ...state.annenForelder, ...action.payload },
             };
         case SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD:
             return {
                 ...state,
                 informasjonOmUtenlandsopphold: {
                     ...state.informasjonOmUtenlandsopphold,
-                    ...action.payload
-                }
+                    ...action.payload,
+                },
             };
         case SøknadActionKeys.UPDATE_SØKER:
             return {
                 ...state,
                 søker: {
                     ...state.søker,
-                    ...action.payload
-                }
+                    ...action.payload,
+                },
             };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
             const { gjelderAnnetBarn, valgteBarn, termindato } = action.payload;
@@ -124,18 +124,18 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                     ? {
                           ...state.annenForelder,
                           ...getAnnenForelderFromRegistrertForelder(registrertAnnenForelder),
-                          kanIkkeOppgis: getDefaultSøknadState().annenForelder.kanIkkeOppgis
+                          kanIkkeOppgis: getDefaultSøknadState().annenForelder.kanIkkeOppgis,
                       }
                     : gjelderAnnetBarn
                     ? { ...state.annenForelder, fnr: undefined, fornavn: undefined, etternavn: undefined }
                     : state.annenForelder,
                 ekstrainfo: {
                     ...state.ekstrainfo,
-                    søknadenGjelderBarnValg: action.payload
+                    søknadenGjelderBarnValg: action.payload,
                 },
                 sensitivInfoIkkeLagre: {
-                    registrertAnnenForelder
-                }
+                    registrertAnnenForelder,
+                },
             };
         }
 
@@ -146,8 +146,8 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 ekstrainfo: {
                     ...state.ekstrainfo,
                     endringstidspunkt: action.endringstidspunkt,
-                    lastAddedPeriodeId: action.lastAddedPeriodeId
-                }
+                    lastAddedPeriodeId: action.lastAddedPeriodeId,
+                },
             };
 
         case SøknadActionKeys.UTTAKSPLAN_RESET_ENDRINGER:
@@ -161,10 +161,10 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                     ...state.ekstrainfo,
                     uttaksplanSkjema: {
                         ...state.ekstrainfo.uttaksplanSkjema,
-                        ønskerTomPlan: false
+                        ønskerTomPlan: false,
                     },
-                    endringstidspunkt: undefined
-                }
+                    endringstidspunkt: undefined,
+                },
             };
 
         case SøknadActionKeys.UTTAKSPLAN_SET_FORSLAG:
@@ -175,9 +175,9 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                     ...state.ekstrainfo,
                     uttaksplanSkjema: {
                         ...state.ekstrainfo.uttaksplanSkjema,
-                        forslagLaget: true
-                    }
-                }
+                        forslagLaget: true,
+                    },
+                },
             };
 
         case SøknadActionKeys.UTTAKSPLAN_UPDATE_SKJEMADATA: {
@@ -187,16 +187,16 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                     ...state.ekstrainfo,
                     uttaksplanSkjema: {
                         ...state.ekstrainfo.uttaksplanSkjema,
-                        ...action.payload
-                    }
-                }
+                        ...action.payload,
+                    },
+                },
             };
         }
 
         case SøknadActionKeys.SET_VEDLEGG_FOR_SEN_ENDRING: {
             return {
                 ...state,
-                vedleggForSenEndring: action.payload
+                vedleggForSenEndring: action.payload,
             };
         }
 
@@ -208,9 +208,9 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                     ...state.tilleggsopplysninger,
                     [opplysning]: {
                         ekstraInformasjon,
-                        tekst
-                    }
-                }
+                        tekst,
+                    },
+                },
             };
         }
 
@@ -220,8 +220,8 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 ...state,
                 ekstrainfo: {
                     ...state.ekstrainfo,
-                    endringstidspunkt
-                }
+                    endringstidspunkt,
+                },
             };
         }
 
@@ -232,8 +232,8 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 ekstrainfo: {
                     ...state.ekstrainfo,
                     lastAddedPeriodeId: undefined,
-                    currentStegID
-                }
+                    currentStegID,
+                },
             };
 
         case SøknadActionKeys.UPLOAD_ATTACHMENT:
@@ -263,8 +263,8 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             return {
                 ...state,
                 informasjonOmUtenlandsopphold: {
-                    ...action.payload
-                }
+                    ...action.payload,
+                },
             };
         default:
             return state;

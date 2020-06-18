@@ -9,34 +9,34 @@ const mockSøknad: RecursivePartial<Søknad> = {
         fnr: '12345678901',
         fornavn: 'Espen',
         etternavn: 'Gabler',
-        harRettPåForeldrepenger: false
+        harRettPåForeldrepenger: false,
     },
     barn: {
         fødselsdatoer: ['2018-03-31T00:00:00.000Z'],
         antallBarn: 1,
-        erBarnetFødt: true
+        erBarnetFødt: true,
     },
     informasjonOmUtenlandsopphold: {
         tidligereOpphold: [],
-        senereOpphold: []
+        senereOpphold: [],
     },
     søker: {
         andreInntekterSiste10Mnd: [],
         rolle: SøkerRolle.MOR,
-        erAleneOmOmsorg: false
+        erAleneOmOmsorg: false,
     },
     ekstrainfo: {
         uttaksplanSkjema: {
             startdatoPermisjon: '2018-03-12T01:00:00.000Z',
             fellesperiodeukerMor: 8,
-            forslagLaget: true
-        }
+            forslagLaget: true,
+        },
     },
     harGodkjentVilkår: true,
     harGodkjentOppsummering: false,
     uttaksplan: [],
     situasjon: Søkersituasjon.FØDSEL,
-    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
 export default mockSøknad;

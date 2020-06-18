@@ -14,7 +14,7 @@ export enum UttaksplanIkonKeys {
     'uttak' = 'uttak',
     'info' = 'info',
     'advarsel' = 'advarsel',
-    'feil' = 'feil'
+    'feil' = 'feil',
 }
 
 export interface Props {

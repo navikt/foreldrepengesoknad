@@ -23,7 +23,8 @@ const InfoToggler = (props: Props) => {
                 evt.preventDefault();
                 onToggle();
             }}
-            aria-expanded={apen}>
+            aria-expanded={apen}
+        >
             <span className={cls.element('content')}>
                 <span className={cls.element('label')}>{children}</span>
                 <span className={cls.element('chevron')}>

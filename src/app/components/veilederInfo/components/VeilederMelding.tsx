@@ -48,7 +48,7 @@ const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean) => {
 const VeilederMelding: React.SFC<VeilederpanelInnholdContentProps> = ({
     message,
     stil = 'default',
-    skjulMeldingIkon = false
+    skjulMeldingIkon = false,
 }) => {
     const bem = BEMHelper('veilederMelding');
     return (

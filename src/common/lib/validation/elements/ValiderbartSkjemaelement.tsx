@@ -45,13 +45,13 @@ class ValiderbartSkjemaelement extends React.Component<FormContextProps, Valider
             tests: [],
             valid: true,
             hasBlurred: false,
-            optional: this.props.optional
+            optional: this.props.optional,
         };
         this.onChange = this.onChange.bind(this);
         this.onBlur = this.onBlur.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (this.props.formContext) {
             this.props.formContext.register(this);
         }
@@ -63,7 +63,7 @@ class ValiderbartSkjemaelement extends React.Component<FormContextProps, Valider
         }
     }
 
-    onChange(e: any) {
+    onChange(e: any, ...args: any[]) {
         if (this.state.hasBlurred) {
             setTimeout(() => {
                 this.validate();
@@ -74,14 +74,13 @@ class ValiderbartSkjemaelement extends React.Component<FormContextProps, Valider
         }
 
         if (this.props.onChange) {
-            const args = Array.prototype.slice.call(arguments);
-            this.props.onChange(...args);
+            this.props.onChange(e, ...args);
         }
     }
 
-    onBlur(e: React.FocusEvent<any>) {
+    onBlur(e: React.FocusEvent<any>, ...args: any[]) {
         this.setState({
-            hasBlurred: true
+            hasBlurred: true,
         });
 
         if (this.props.formContext) {
@@ -93,8 +92,7 @@ class ValiderbartSkjemaelement extends React.Component<FormContextProps, Valider
         }
 
         if (this.props.onBlur) {
-            const args = Array.prototype.slice.call(arguments);
-            this.props.onBlur(...args);
+            this.props.onBlur(e, ...args);
         }
     }
 
@@ -115,12 +113,12 @@ class ValiderbartSkjemaelement extends React.Component<FormContextProps, Valider
     runValidation(): ValidationResult {
         if (!this.props.validators || !this.props.validators.length) {
             this.setState({
-                valid: true
+                valid: true,
             });
             return {
                 valid: true,
                 name: this.props.name,
-                tests: []
+                tests: [],
             };
         }
 
@@ -130,12 +128,12 @@ class ValiderbartSkjemaelement extends React.Component<FormContextProps, Valider
 
         this.setState({
             tests,
-            valid
+            valid,
         });
         return {
             name: this.props.name,
             tests,
-            valid
+            valid,
         };
     }
 

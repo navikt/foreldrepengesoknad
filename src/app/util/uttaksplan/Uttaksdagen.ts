@@ -20,7 +20,7 @@ export const Uttaksdagen = (dato: Date) => ({
         }
         return dato;
     },
-    trekkFra: (uttaksdager: number): Date => trekkUttaksdagerFraDato(dato, uttaksdager)
+    trekkFra: (uttaksdager: number): Date => trekkUttaksdagerFraDato(dato, uttaksdager),
 });
 
 function getUkedag(dato: Date): number {
@@ -32,11 +32,7 @@ export function erUttaksdag(dato: Date): boolean {
 }
 
 function getUttaksdagFørDato(dato: Date): Date {
-    return getUttaksdagTilOgMedDato(
-        moment(dato)
-            .subtract(24, 'hours')
-            .toDate()
-    );
+    return getUttaksdagTilOgMedDato(moment(dato).subtract(24, 'hours').toDate());
 }
 
 /**
@@ -46,13 +42,9 @@ function getUttaksdagFørDato(dato: Date): Date {
 function getUttaksdagTilOgMedDato(dato: Date): Date {
     switch (getUkedag(dato)) {
         case 6:
-            return moment(dato)
-                .subtract(24, 'hours')
-                .toDate();
+            return moment(dato).subtract(24, 'hours').toDate();
         case 7:
-            return moment(dato)
-                .subtract(48, 'hours')
-                .toDate();
+            return moment(dato).subtract(48, 'hours').toDate();
         default:
             return dato;
     }
@@ -63,11 +55,7 @@ function getUttaksdagTilOgMedDato(dato: Date): Date {
  * @param termin
  */
 function getUttaksdagEtterDato(dato: Date): Date {
-    return getUttaksdagFraOgMedDato(
-        moment(dato)
-            .add(24, 'hours')
-            .toDate()
-    );
+    return getUttaksdagFraOgMedDato(moment(dato).add(24, 'hours').toDate());
 }
 
 /**
@@ -77,13 +65,9 @@ function getUttaksdagEtterDato(dato: Date): Date {
 function getUttaksdagFraOgMedDato(dato: Date): Date {
     switch (getUkedag(dato)) {
         case 6:
-            return moment(dato)
-                .add(48, 'hours')
-                .toDate();
+            return moment(dato).add(48, 'hours').toDate();
         case 7:
-            return moment(dato)
-                .add(24, 'hours')
-                .toDate();
+            return moment(dato).add(24, 'hours').toDate();
         default:
             return dato;
     }
@@ -154,7 +138,7 @@ function getUttaksdagerFremTilDato(fom: Date, tom: Date): number {
         -1 *
         (Tidsperioden({
             fom: tom,
-            tom: fom
+            tom: fom,
         }).getAntallUttaksdager() -
             1)
     );

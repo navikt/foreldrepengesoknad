@@ -5,7 +5,7 @@ import {
     Periodetype,
     StønadskontoType,
     Periode,
-    UttaksperiodeBase
+    UttaksperiodeBase,
 } from '../../../types/uttaksplan/periodetyper';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { Forelder } from 'common/types';
@@ -33,7 +33,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             tidsperiode: getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager),
             vedlegg: [],
             ønskerSamtidigUttak: false,
-            gradert: false
+            gradert: false,
         };
 
         perioder.push(periode);
@@ -47,7 +47,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             vedlegg: [],
             ønskerSamtidigUttak: false,
             gradert: false,
-            harIkkeAktivitetskrav: true
+            harIkkeAktivitetskrav: true,
         };
 
         perioder.push(aktivitetsFriPeriode);
@@ -63,7 +63,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             ),
             vedlegg: [],
             ønskerSamtidigUttak: false,
-            gradert: false
+            gradert: false,
         };
 
         perioder.push(aktivitetskravPeriode);
@@ -87,8 +87,8 @@ const ikkeDeltUttakAdopsjonMor = (
             tidsperiode: getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager),
             vedlegg: [],
             ønskerSamtidigUttak: false,
-            gradert: false
-        }
+            gradert: false,
+        },
     ];
     return perioder;
 };
@@ -139,7 +139,7 @@ const ikkeDeltUttakFødselMor = (
                 konto: StønadskontoType.Foreldrepenger,
                 tidsperiode: getTidsperiode(startdatoPermisjon, dagerFørFødsel - 15),
                 vedlegg: [],
-                ønskerSamtidigUttak: false
+                ønskerSamtidigUttak: false,
             };
 
             perioder.push(ekstraPeriodeFørFødsel);
@@ -152,10 +152,10 @@ const ikkeDeltUttakFødselMor = (
             konto: foreldrePengerFørFødselKonto.konto,
             tidsperiode: {
                 fom: startdatoFpFørFødsel,
-                tom: Uttaksdagen(førsteUttaksdag).forrige()
+                tom: Uttaksdagen(førsteUttaksdag).forrige(),
             },
             vedlegg: [],
-            ønskerSamtidigUttak: false
+            ønskerSamtidigUttak: false,
         };
 
         perioder.push(periodeFørFødsel);
@@ -168,7 +168,7 @@ const ikkeDeltUttakFødselMor = (
             skalIkkeHaUttakFørTermin: true,
             tidsperiode: {} as any,
             vedlegg: [],
-            ønskerSamtidigUttak: false
+            ønskerSamtidigUttak: false,
         };
 
         perioder.push(periodeFørFødsel);
@@ -193,7 +193,7 @@ const ikkeDeltUttakFødselMor = (
         tidsperiode: antallDagerIForeldrepenger,
         vedlegg: [],
         ønskerSamtidigUttak: false,
-        gradert: false
+        gradert: false,
     };
 
     perioder.push(foreldrepengerPeriode);
@@ -210,9 +210,7 @@ const ikkeDeltUttakFødsel = (
     erFarEllerMedmor: boolean,
     foreldrepengerKonto: TilgjengeligStønadskonto,
     startdatoPermisjon: DateValue,
-    foreldrePengerFørFødselKonto: TilgjengeligStønadskonto | undefined,
-    erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined
+    foreldrePengerFørFødselKonto: TilgjengeligStønadskonto | undefined
 ) => {
     if (!erFarEllerMedmor) {
         return ikkeDeltUttakFødselMor(famDato, foreldrepengerKonto, startdatoPermisjon, foreldrePengerFørFødselKonto!);
@@ -256,9 +254,7 @@ export const ikkeDeltUttak = (
             erFarEllerMedmor,
             foreldrepengerKonto!,
             startdatoPermisjon,
-            foreldrePengerFørFødselKonto,
-            erMorUfør,
-            aktivitetsfriKvote
+            foreldrePengerFørFødselKonto
         );
     }
 

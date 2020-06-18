@@ -19,13 +19,13 @@ export enum SøkerRolle {
     FAR2 = 'FAR2',
     MEDMOR = 'MEDMOR',
     FORESATT = 'FORESATT',
-    FORESATT2 = 'FORESATT2'
+    FORESATT2 = 'FORESATT2',
 }
 
 export enum Søkersituasjon {
     FØDSEL = 'fødsel',
     ADOPSJON = 'adopsjon',
-    FORELDREANSVAR = 'omsorgsovertakelse'
+    FORELDREANSVAR = 'omsorgsovertakelse',
 }
 
 export interface SøknadenGjelderBarnValg {
@@ -39,7 +39,7 @@ interface SensitivSkjemaInfo {
 }
 
 export enum Opplysning {
-    'BEGRUNNELSE_FOR_SEN_ENDRING' = 'begrunnelseForSenEndring'
+    'BEGRUNNELSE_FOR_SEN_ENDRING' = 'begrunnelseForSenEndring',
 }
 
 export interface Tilleggsopplysning {
@@ -144,7 +144,7 @@ export enum Skjemanummer {
     OMSORGSOVERTAKELSESDATO = 'I000042',
     TERMINBEKREFTELSE = 'I000062',
     HV_ØVELSE = 'I000116',
-    NAV_TILTAK = 'I000117'
+    NAV_TILTAK = 'I000117',
 }
 
 export default Søknad;

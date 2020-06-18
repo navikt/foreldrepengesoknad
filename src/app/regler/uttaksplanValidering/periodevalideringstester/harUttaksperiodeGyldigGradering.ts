@@ -8,7 +8,7 @@ export const harUttaksperiodeGyldigGradering: RegelTest = (grunnlag: UttaksplanR
     return {
         passerer: ugyldigePerioder.length === 0,
         info: ugyldigePerioder.map((periode) => ({
-            periodeId: periode.id
-        }))
+            periodeId: periode.id,
+        })),
     };
 };

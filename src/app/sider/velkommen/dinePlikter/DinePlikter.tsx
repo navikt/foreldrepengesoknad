@@ -22,7 +22,7 @@ const DinePlikter = () => {
                                     <Lenke href={lenker.rettOgPlikt} target="_blank">
                                         <FormattedMessage id="dinePlikter.listeElement.2.link" />
                                     </Lenke>
-                                )
+                                ),
                             }}
                         />
                     </Normaltekst>

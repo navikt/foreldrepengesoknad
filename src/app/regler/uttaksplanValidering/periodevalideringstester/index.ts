@@ -14,12 +14,12 @@ export enum PeriodeValiderRegelKey {
     'erSamtidigUttakGyldig' = 'erSamtidigUttakGyldig',
     'erUtsettelseEtterFamiliehendelsesdato' = 'erUtsettelseEtterFamiliehendelsesdato',
     'erAllePeriodeSkjemaspørsmålBesvart' = 'erAllePeriodeSkjemaspørsmålBesvart',
-    'harUtsettelsePgaArbeidMedDeltidUtenAvtale' = 'harUtsettelsePgaArbeidMedDeltidUtenAvtale'
+    'harUtsettelsePgaArbeidMedDeltidUtenAvtale' = 'harUtsettelsePgaArbeidMedDeltidUtenAvtale',
 }
 
 /** Meldingene skal default kun vises inne i skjema */
 
-const skjulIOppsummering: boolean = true;
+const skjulIOppsummering = true;
 
 const periodevalideringsregler: Regel[] = [
     {
@@ -27,45 +27,45 @@ const periodevalideringsregler: Regel[] = [
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harUttaksperiodeGyldigGradering,
         skjulesIOppsummering: skjulIOppsummering,
-        avvikType: 'skjema'
+        avvikType: 'skjema',
     },
     {
         key: PeriodeValiderRegelKey.periodeHarGyldigTidsperiode,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harPeriodeGyldigTidsperiode,
-        skjulesIOppsummering: skjulIOppsummering
+        skjulesIOppsummering: skjulIOppsummering,
     },
     {
         key: PeriodeValiderRegelKey.uttaksperiodeHarStønadskonto,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harUttaksperiodeStønadskonto,
-        skjulesIOppsummering: skjulIOppsummering
+        skjulesIOppsummering: skjulIOppsummering,
     },
     {
         key: PeriodeValiderRegelKey.erSamtidigUttakGyldig,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erSamtidigUttakGyldig,
-        skjulesIOppsummering: skjulIOppsummering
+        skjulesIOppsummering: skjulIOppsummering,
     },
     {
         key: PeriodeValiderRegelKey.erUtsettelseEtterFamiliehendelsesdato,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erUtsettelseEtterFamiliehendelsesdato,
-        skjulesIOppsummering: skjulIOppsummering
+        skjulesIOppsummering: skjulIOppsummering,
     },
     {
         key: PeriodeValiderRegelKey.erAllePeriodeSkjemaspørsmålBesvart,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erAllePeriodeSkjemaspørsmålBesvart,
         skjulesIOppsummering: skjulIOppsummering,
-        avvikType: 'skjema'
+        avvikType: 'skjema',
     },
     {
         key: PeriodeValiderRegelKey.harUtsettelsePgaArbeidMedDeltidUtenAvtale,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harUtsettelsePgaArbeidMedDeltidUtenAvtale,
-        skjulesIOppsummering: false
-    }
+        skjulesIOppsummering: false,
+    },
 ];
 
 export default periodevalideringsregler;

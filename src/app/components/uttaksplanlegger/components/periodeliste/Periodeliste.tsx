@@ -5,7 +5,7 @@ import {
     isUttaksperiode,
     StønadskontoType,
     PeriodeInfoType,
-    isUttakAnnenPart
+    isUttakAnnenPart,
 } from '../../../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { Tidsperiode } from 'common/types';
@@ -69,7 +69,7 @@ class Periodeliste extends React.Component<Props> {
         }
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         if (
             nextProps.lastAddedPeriodeId !== undefined &&
             nextProps.lastAddedPeriodeId !== this.periodeWhichHaveReceivedFocus
@@ -139,7 +139,7 @@ class Periodeliste extends React.Component<Props> {
             updatePeriode,
             deletePeriode,
             erDeltUttak,
-            harMidlertidigOmsorg
+            harMidlertidigOmsorg,
         } = this.props;
 
         const filteredPerioder = this.shouldRenderHull(perioder)

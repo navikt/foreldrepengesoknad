@@ -42,7 +42,7 @@ const cleanupNæring = (næring: Næring): Næring => {
                 ? kanInnhenteOpplsyningerFraRevisor
                 : undefined,
         endringAvNæringsinntektInformasjon: hattVarigEndring ? endringAvNæringsinntektInformasjon : undefined,
-        ...rest
+        ...rest,
     };
 
     return newNæring as Næring;

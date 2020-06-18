@@ -1,11 +1,9 @@
 import * as React from 'react';
 import Spinner from 'nav-frontend-spinner';
 
-export interface Props {}
-
 import './applicationSpinner.less';
 
-const ApplicationSpinner: React.StatelessComponent<Props> = (props) => (
+const ApplicationSpinner: React.StatelessComponent = () => (
     <div className="applicationSpinner">
         <div className="applicationSpinner__spinner">
             <Spinner type="XXL" />

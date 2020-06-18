@@ -38,14 +38,14 @@ const ensureRegelAvvikIntlKey = (
     intlKey: info ? info.intlKey || getRegelIntlKey(regel, intlRegelPrefix) : getRegelIntlKey(regel, intlRegelPrefix),
 });
 
-const overstyresAvFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelAvvik[]): boolean => {
+const overstyresAvFilter = (avvik: RegelAvvik, _idx: number, alleAvvik: RegelAvvik[]): boolean => {
     return (
         avvik.regel.overstyresAvRegel === undefined &&
         alleAvvik.some((b2) => b2.regel.key === avvik.regel.overstyresAvRegel) === false
     );
 };
 
-const overstyrerAndreFilter = (avvik: RegelAvvik, idx: number, alleAvvik: RegelAvvik[]): boolean => {
+const overstyrerAndreFilter = (avvik: RegelAvvik, _idx: number, alleAvvik: RegelAvvik[]): boolean => {
     const overstyresAvAndre = alleAvvik.some((rb) =>
         rb.regel.overstyrerRegler
             ? rb.regel.overstyrerRegler.some((rbo) => {

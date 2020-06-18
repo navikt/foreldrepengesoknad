@@ -13,7 +13,7 @@ import {
     isOverføringsperiode,
     OverføringÅrsakType,
     isUttakAvFellesperiode,
-    MorsAktivitet
+    MorsAktivitet,
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
 import { dateIsTodayOrInFuture, dateIsNotInFuture } from '../dates/dates';
@@ -71,11 +71,7 @@ const erUttakGrunnetSykdom = (periode: Periode) => {
 
 const erUttakEllerOppholdMerEnnTreMånederSiden = (periode: Periode) =>
     (periode.type === Periodetype.Uttak || periode.type === Periodetype.Opphold) &&
-    moment(periode.tidsperiode.fom).isBefore(
-        moment()
-            .startOf('day')
-            .subtract(3, 'months')
-    );
+    moment(periode.tidsperiode.fom).isBefore(moment().startOf('day').subtract(3, 'months'));
 
 const erUtsettelsePgaSykdom = (periode: Utsettelsesperiode) =>
     periode.årsak === UtsettelseÅrsakType.Sykdom ||
@@ -193,7 +189,7 @@ export const justerAndrePartsUttakAvFellesperiodeOmMulig = (
         if (dagerGjenståendeFellesperiode < 0 && diff > 0) {
             perioder[indexSistePeriode] = {
                 ...sisteFellesperiodeAnnenPart,
-                tidsperiode: Tidsperioden(sisteFellesperiodeAnnenPart.tidsperiode).setUttaksdager(diff) as Tidsperiode
+                tidsperiode: Tidsperioden(sisteFellesperiodeAnnenPart.tidsperiode).setUttaksdager(diff) as Tidsperiode,
             };
             return perioder;
         }

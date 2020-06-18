@@ -3,7 +3,7 @@ import {
     isUttaksperiode,
     isOverføringsperiode,
     isUtsettelsesperiode,
-    isOppholdsperiode
+    isOppholdsperiode,
 } from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from './Perioden';
 import moment from 'moment';

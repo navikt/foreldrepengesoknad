@@ -2,7 +2,7 @@ import {
     StønadskontoType,
     OppholdÅrsakType,
     SaksperiodeUtsettelseÅrsakType,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
 } from '../../types/uttaksplan/periodetyper';
 import { DatoAvgrensninger } from '../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { Avgrensninger, Tidsperiode } from 'common/types';
@@ -80,13 +80,13 @@ export function getDatoavgrensningerForStønadskonto(
     return {
         fra: {
             ...standardAvgrensninger,
-            ugyldigeTidsperioder
+            ugyldigeTidsperioder,
         },
         til: {
             ...standardAvgrensninger,
             minDato: tidsperiode && tidsperiode.fom ? tidsperiode.fom : standardAvgrensninger.minDato,
-            ugyldigeTidsperioder
-        }
+            ugyldigeTidsperioder,
+        },
     };
 }
 
@@ -100,20 +100,20 @@ function getDatoavgrensningerForPeriodeUtenKonto(
         fra: {
             minDato,
             ugyldigeTidsperioder,
-            helgedagerIkkeTillatt: true
+            helgedagerIkkeTillatt: true,
         },
         til: {
             minDato: tidsperiode !== undefined && tidsperiode.fom ? tidsperiode.fom : minDato,
             ugyldigeTidsperioder,
-            helgedagerIkkeTillatt: true
-        }
+            helgedagerIkkeTillatt: true,
+        },
     };
 }
 const standardAvgrensningerForUttakEtterFødsel = (familiehendelsesdato: Date): Avgrensninger => {
     return {
         helgedagerIkkeTillatt: true,
         minDato: Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
-        maksDato: getSisteMuligeUttaksdag(familiehendelsesdato)
+        maksDato: getSisteMuligeUttaksdag(familiehendelsesdato),
     };
 };
 
@@ -124,11 +124,11 @@ function getDatoavgrensningerForForeldrepengerFørFødsel(
     const avgrensninger: Avgrensninger = {
         ...standardAvgrensningerForUttakEtterFødsel,
         ...uttaksplanDatoavgrensninger.startdatoFørTerminForeldrepengerFørFødselKonto(familiehendelsesdato),
-        ugyldigeTidsperioder
+        ugyldigeTidsperioder,
     };
     return {
         fra: avgrensninger,
-        til: avgrensninger
+        til: avgrensninger,
     };
 }
 
@@ -139,10 +139,10 @@ function getDatoavgrensningerForEkstrauttakFørTermin(
     const avgrensninger: Avgrensninger = {
         ...standardAvgrensningerForUttakEtterFødsel,
         ...uttaksplanDatoavgrensninger.ekstrauttakFørFødsel(familiehendelsesdato),
-        ugyldigeTidsperioder
+        ugyldigeTidsperioder,
     };
     return {
         fra: avgrensninger,
-        til: avgrensninger
+        til: avgrensninger,
     };
 }

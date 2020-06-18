@@ -75,6 +75,6 @@ export const Questions = <P, T>(questions: QuestionConfig<P, T>) => ({
     getVisbility: (payload: P): QuestionVisibility<T> => ({
         isVisible: (key: T) => isQuestionVisible(questions, key, payload),
         isAnswered: (key: T) => isQuestionAnswered(questions, key, payload),
-        areAllQuestionsAnswered: () => areAllQuestionsAnswered(questions, payload)
-    })
+        areAllQuestionsAnswered: () => areAllQuestionsAnswered(questions, payload),
+    }),
 });

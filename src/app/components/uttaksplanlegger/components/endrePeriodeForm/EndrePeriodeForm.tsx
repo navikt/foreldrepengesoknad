@@ -60,21 +60,12 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
         this.onCancelDelete = this.onCancelDelete.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.state = {
-            visBekreftSlettDialog: false
+            visBekreftSlettDialog: false,
         };
     }
-    onChange(
-        periodeChanges: RecursivePartial<Periode>,
-        replace: boolean = false,
-        visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
-    ) {
+    onChange(periodeChanges: RecursivePartial<Periode>) {
         const { periode, søknadsinfo, updatePeriode } = this.props;
-        const updatedPeriode = PeriodeCleanup.applyChangesAndCleanPeriode(
-            periode,
-            periodeChanges,
-            søknadsinfo,
-            visibility
-        );
+        const updatedPeriode = PeriodeCleanup.applyChangesAndCleanPeriode(periode, periodeChanges, søknadsinfo);
         if (updatedPeriode !== undefined) {
             if (updatedPeriode.type !== this.props.periode.type) {
                 updatedPeriode.vedlegg = [];
@@ -158,7 +149,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    søknadsinfo: selectSøknadsinfo(state)!
+    søknadsinfo: selectSøknadsinfo(state)!,
 });
 
 export default connect(mapStateToProps)(injectIntl(EndrePeriodeFormRenderer));

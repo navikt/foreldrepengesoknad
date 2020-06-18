@@ -16,7 +16,7 @@ interface Props {
 const TapteUttaksdagerFarMedmor: React.StatelessComponent<Props> = ({ info, onLeggTilOpphold }) => {
     const tidsperiodenOpphold = {
         fom: Uttaksdagen(info.sisteUttaksdagInnenforSeksUker).neste(),
-        tom: Uttaksdagen(info.førsteRegistrerteUttaksdag).forrige()
+        tom: Uttaksdagen(info.førsteRegistrerteUttaksdag).forrige(),
     };
     return (
         <div>
@@ -27,7 +27,7 @@ const TapteUttaksdagerFarMedmor: React.StatelessComponent<Props> = ({ info, onLe
                         dager: info.antallUttaksdagerTapt,
                         fom: formaterDatoUtenDag(tidsperiodenOpphold.fom),
                         tom: formaterDatoUtenDag(tidsperiodenOpphold.tom),
-                        strong: (msg: any) => <strong>{msg}</strong>
+                        strong: (msg: any) => <strong>{msg}</strong>,
                     }}
                 />
             </Block>

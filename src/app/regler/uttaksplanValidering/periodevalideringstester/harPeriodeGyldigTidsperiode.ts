@@ -3,7 +3,7 @@ import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
 
 import {
     uttakTidsperiodeErGyldig,
-    utsettelseTidsperiodeErGyldig
+    utsettelseTidsperiodeErGyldig,
 } from 'app/util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
 import { Periodetype } from 'app/types/uttaksplan/periodetyper';
 
@@ -24,7 +24,7 @@ export const harPeriodeGyldigTidsperiode: RegelTest = (grunnlag: UttaksplanRegel
     return {
         passerer: perioderMedUgyldigTidsperiode.length === 0,
         info: perioderMedUgyldigTidsperiode.map((periode) => ({
-            periodeId: periode.id
-        }))
+            periodeId: periode.id,
+        })),
     };
 };

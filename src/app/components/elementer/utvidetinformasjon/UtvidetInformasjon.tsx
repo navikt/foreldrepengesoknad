@@ -29,7 +29,7 @@ class UtvidetInformasjon extends React.Component<Props, State> {
         super(props);
         this.innholdId = guid();
         this.state = {
-            apen: props.erApen || false
+            apen: props.erApen || false,
         };
     }
     render() {

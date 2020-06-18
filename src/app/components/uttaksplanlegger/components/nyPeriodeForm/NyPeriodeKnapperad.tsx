@@ -14,7 +14,7 @@ const NyPeriodeKnapperad: React.StatelessComponent<Props> = ({
     onCancel,
     periodeKanLeggesTil,
     ariaLabelAvbryt,
-    ariaLabelLeggTil
+    ariaLabelLeggTil,
 }) => (
     <Knapperad>
         {onCancel && (

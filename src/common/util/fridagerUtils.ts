@@ -23,9 +23,7 @@ export const getOffentligeFridager = (tidsperiode: Tidsperiode): Holiday[] => {
         .filter((d) => d.type === 'public')
         .map((d) => ({
             ...d,
-            date: moment(d.date)
-                .utc(true)
-                .toDate()
+            date: moment(d.date).utc(true).toDate(),
         }))
         .filter((d) => moment(d.date).isAfter(start, 'day') && moment(d.date).isBefore(slutt, 'day'));
 };
@@ -41,16 +39,8 @@ export const getOffentligeFridagerIMåned = (måned: Date): Holiday[] => {
 
 /* Default - hente ut helligdager i default tidsrom */
 export const fridager = getOffentligeFridager({
-    fom: new Date(
-        moment()
-            .subtract(4, 'years')
-            .toDate()
-    ),
-    tom: new Date(
-        moment()
-            .add(4, 'years')
-            .toDate()
-    )
+    fom: new Date(moment().subtract(4, 'years').toDate()),
+    tom: new Date(moment().add(4, 'years').toDate()),
 });
 
 export const erFridag = (dato: Date): string | undefined => {

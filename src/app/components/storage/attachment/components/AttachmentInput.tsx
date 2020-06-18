@@ -87,7 +87,7 @@ class AttachmentInput extends React.Component<Props> {
             <label
                 role="button"
                 aria-label={intl.formatMessage({
-                    id: 'vedlegg.lastoppknapp.arialabel'
+                    id: 'vedlegg.lastoppknapp.arialabel',
                 })}
                 id={id}
                 tabIndex={0}

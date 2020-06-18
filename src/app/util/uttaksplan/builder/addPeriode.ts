@@ -37,9 +37,9 @@ const addPeriode = (
     return {
         updatedPlan: builder.leggTilPeriodeOgBuild({
             ...nyPeriode,
-            id
+            id,
         }).perioder,
-        id
+        id,
     };
 };
 

@@ -28,7 +28,7 @@ const HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål = (props: Props) => {
             legend={getMessage(intl, 'hvaergrunnentilatduskalutsettedittuttak.spørsmål')}
             radios={radios}
             name="årsakTilUtsettelse"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: Utsettelsesvariant) => onChange(v)}
+            onChange={(_e: React.ChangeEvent<HTMLInputElement>, v: Utsettelsesvariant) => onChange(v)}
             validators={validatorer}
         />
     );

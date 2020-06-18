@@ -4,7 +4,7 @@ export enum Næringstype {
     'FISKER' = 'FISKE',
     'JORDBRUK' = 'JORDBRUK_SKOGBRUK',
     'DAGMAMMA' = 'DAGMAMMA',
-    'ANNET' = 'ANNEN'
+    'ANNET' = 'ANNEN',
 }
 
 export class Næring {

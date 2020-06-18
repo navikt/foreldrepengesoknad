@@ -22,7 +22,7 @@ export function kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme(
 
     if (sistePeriodeErIkkeUtsettelse || perioder.length === 0) {
         return {
-            passerer: true
+            passerer: true,
         };
     }
 
@@ -30,7 +30,7 @@ export function kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme(
         if (resterendeFedrekvote !== undefined && resterendeFellesperiode !== undefined) {
             if (resterendeFedrekvote.dager > 0 || resterendeFellesperiode.dager > 0) {
                 return {
-                    passerer: true
+                    passerer: true,
                 };
             }
         }
@@ -38,7 +38,7 @@ export function kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme(
         if (resterendeForeldrepenger !== undefined) {
             if (resterendeForeldrepenger.dager > 0) {
                 return {
-                    passerer: true
+                    passerer: true,
                 };
             }
         }
@@ -46,14 +46,14 @@ export function kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme(
         return {
             passerer: false,
             info: {
-                intlKey: 'valideringsfeil.sluttMedUtsettelse'
-            }
+                intlKey: 'valideringsfeil.sluttMedUtsettelse',
+            },
         };
     } else {
         if (resterendeMødrekvote !== undefined && resterendeFellesperiode !== undefined) {
             if (resterendeMødrekvote.dager > 0 || resterendeFellesperiode.dager > 0) {
                 return {
-                    passerer: true
+                    passerer: true,
                 };
             }
         }
@@ -61,7 +61,7 @@ export function kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme(
         if (resterendeForeldrepenger !== undefined) {
             if (resterendeForeldrepenger.dager > 0) {
                 return {
-                    passerer: true
+                    passerer: true,
                 };
             }
         }
@@ -69,8 +69,8 @@ export function kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme(
         return {
             passerer: false,
             info: {
-                intlKey: 'valideringsfeil.sluttMedUtsettelse'
-            }
+                intlKey: 'valideringsfeil.sluttMedUtsettelse',
+            },
         };
     }
 }

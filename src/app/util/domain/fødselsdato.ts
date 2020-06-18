@@ -10,5 +10,5 @@ const trimFødselsdatoer = (antall: number, datoer: Date[] = []): Date[] => {
 };
 
 export default {
-    trimFødselsdatoer
+    trimFødselsdatoer,
 };

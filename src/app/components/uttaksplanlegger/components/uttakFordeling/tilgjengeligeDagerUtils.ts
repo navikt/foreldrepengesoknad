@@ -64,6 +64,6 @@ export const getTilgjengeligeDager = (
         flerbarnsdager,
         maksDagerFar,
         maksDagerMor,
-        stønadskontoer: kontoer
+        stønadskontoer: kontoer,
     };
 };

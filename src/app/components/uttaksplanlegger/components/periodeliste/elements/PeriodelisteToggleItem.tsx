@@ -18,7 +18,7 @@ const PeriodelisteToggleItem: React.StatelessComponent<Props> = ({
     isExpanded,
     onToggle,
     renderHeader,
-    renderContent
+    renderContent,
 }) => {
     return (
         <article arial-label={ariaLabel}>

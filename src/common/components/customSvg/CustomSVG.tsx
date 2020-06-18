@@ -21,7 +21,8 @@ const CustomSVGFromSprite: React.StatelessComponent<Props> = ({ iconRef, size, c
             height={size}
             width={size}
             {...viewBox}
-            {...other}>
+            {...other}
+        >
             <use xlinkHref={`#${iconRef.id}`} />
         </svg>
     );
@@ -44,7 +45,8 @@ export const FlexibleSvg = ({ iconRef, height, width, className, ...other }: Fle
             height={height}
             width={width}
             {...viewBox}
-            {...other}>
+            {...other}
+        >
             <use xlinkHref={`#${iconRef.id}`} />
         </svg>
     );

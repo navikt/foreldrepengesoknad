@@ -20,8 +20,8 @@ export const inneholderForMyeFerie: RegelTest = (grunnlag: UttaksplanRegelgrunnl
         info: ferieUtsettelser.map((periode) => ({
             periodeId: periode.id,
             values: {
-                ukerOgDager: (intl: IntlShape) => getVarighetString(ferieDager, intl)
-            }
-        }))
+                ukerOgDager: (intl: IntlShape) => getVarighetString(ferieDager, intl),
+            },
+        })),
     };
 };

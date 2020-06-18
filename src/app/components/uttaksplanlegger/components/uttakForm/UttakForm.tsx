@@ -10,7 +10,7 @@ import {
     Oppholdsperiode,
     isForeldrepengerFørFødselUttaksperiode,
     Periode,
-    isUttaksperiode
+    isUttaksperiode,
 } from '../../../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode, Feil } from 'common/types';
 import { RecursivePartial } from '../../../../types/Partial';
@@ -40,7 +40,7 @@ import { isValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 import HvemSkalTaForeldrepengerSpørsmål from './partials/HvemSkalTaForeldrepengerSpørsmål';
 import {
     getStønadskontoFromOppholdsårsak,
-    getOppholdsÅrsakFromStønadskonto
+    getOppholdsÅrsakFromStønadskonto,
 } from 'app/util/uttaksplan/uttaksperiodeUtils';
 import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo, NavnISøknaden } from 'app/selectors/types';
@@ -125,9 +125,9 @@ const getOppholdsInfotekst = (
                   type: 'normal',
                   contentIntlKey: 'uttaksplan.infoVedOpphold.førsteSeksUker',
                   values: {
-                      navnFar: navn.farMedmor.fornavn
-                  }
-              }
+                      navnFar: navn.farMedmor.fornavn,
+                  },
+              },
           ]
         : [
               {
@@ -136,12 +136,12 @@ const getOppholdsInfotekst = (
                   values: {
                       navn: navn.annenForelder.fornavn,
                       a: (msg: any) => (
-                          <a href={lenker.viktigeFrister} className="lenke" rel="noopener" target="_blank">
+                          <a href={lenker.viktigeFrister} className="lenke" rel="noreferrer" target="_blank">
                               {msg}
                           </a>
-                      )
-                  }
-              }
+                      ),
+                  },
+              },
           ];
 };
 
@@ -164,7 +164,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                 this.props.søknadsinfo.søker.erFarEllerMedmor,
                 this.props.periode.forelder,
                 this.props.søknadsinfo
-            )
+            ),
         };
     }
 
@@ -190,7 +190,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
         }
     }
 
-    onChange(periode: UttakFormPeriodeType, replace: boolean = false) {
+    onChange(periode: UttakFormPeriodeType, replace = false) {
         this.props.onChange(periode, replace, this.getVisibility());
         if (this.props.formContext) {
             this.timeoutId = setTimeout(() => {
@@ -221,7 +221,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                         tidsperiode: periode.tidsperiode as Tidsperiode,
                         type: Periodetype.Overføring,
                         forelder,
-                        konto
+                        konto,
                     };
 
                     this.onChange({ ...updatedPeriode }, true);
@@ -230,7 +230,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                         tidsperiode: periode.tidsperiode as Tidsperiode,
                         type: Periodetype.Uttak,
                         forelder,
-                        konto
+                        konto,
                     };
 
                     this.onChange({ ...updatedPeriode }, true);
@@ -248,8 +248,8 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
             tidsperiode: {
                 fom:
                     skalIkkeHaUttakFørTermin === false ? getDefaultPermisjonStartdato(familiehendelsesdato) : undefined,
-                tom: skalIkkeHaUttakFørTermin ? undefined : Uttaksdagen(familiehendelsesdato).forrige()
-            }
+                tom: skalIkkeHaUttakFørTermin ? undefined : Uttaksdagen(familiehendelsesdato).forrige(),
+            },
         });
     }
 
@@ -264,7 +264,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                 this.onChange({
                     type: Periodetype.Opphold,
                     forelder: this.state.periodenGjelder,
-                    årsak: getOppholdsÅrsakFromStønadskonto(konto)
+                    årsak: getOppholdsÅrsakFromStønadskonto(konto),
                 });
             }
             // Dersom perioden ikke gjelder den andre forelderen og man velger den andre forelderen sin kvote så betyr det
@@ -273,7 +273,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                 this.onChange({
                     type: Periodetype.Overføring,
                     konto,
-                    forelder: this.state.periodenGjelder
+                    forelder: this.state.periodenGjelder,
                 });
             }
         } else {
@@ -281,7 +281,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                 this.onChange({
                     type: Periodetype.Opphold,
                     forelder: this.state.periodenGjelder,
-                    årsak: getOppholdsÅrsakFromStønadskonto(konto)
+                    årsak: getOppholdsÅrsakFromStønadskonto(konto),
                 });
             } else {
                 this.onChange({
@@ -291,7 +291,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                     harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
                     ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined,
                     morsAktivitetIPerioden:
-                        konto === StønadskontoType.AktivitetsfriKvote ? MorsAktivitet.Uføre : undefined
+                        konto === StønadskontoType.AktivitetsfriKvote ? MorsAktivitet.Uføre : undefined,
                 });
             }
         }
@@ -306,7 +306,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
             kanEndreStønadskonto,
             søknadsinfo,
             skjemaregler: getUttakSkjemaregler(søknadsinfo, periode),
-            søknadsperiode: getSøknadsperiode(søknadsinfo, periode as Periode)
+            søknadsperiode: getSøknadsperiode(søknadsinfo, periode as Periode),
         });
     }
 
@@ -318,7 +318,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
             velgbareStønadskontotyper,
             arbeidsforhold,
             onCancel,
-            intl
+            intl,
         } = this.props;
 
         const visibility = this.getVisibility();
@@ -392,9 +392,9 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                                         uker: getFlerbarnsuker(
                                             søknadsinfo.søknaden.dekningsgrad!,
                                             søknadsinfo.søknaden.antallBarn
-                                        )
-                                    }
-                                }
+                                        ),
+                                    },
+                                },
                             ]}
                         />
                     )}
@@ -433,42 +433,40 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                                 erMorForSyk={periode.erMorForSyk}
                             />
                         </Block>
-                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
-                            periode.erMorForSyk === true && (
-                                <>
-                                    <VeilederInfo
-                                        messages={[
-                                            {
-                                                type: 'normal',
-                                                contentIntlKey: 'uttaksplan.informasjonVedSykdomAnnenForelder',
-                                                values: { navn: navnPåForeldre.mor }
-                                            }
-                                        ]}
-                                    />
+                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) && periode.erMorForSyk === true && (
+                            <>
+                                <VeilederInfo
+                                    messages={[
+                                        {
+                                            type: 'normal',
+                                            contentIntlKey: 'uttaksplan.informasjonVedSykdomAnnenForelder',
+                                            values: { navn: navnPåForeldre.mor },
+                                        },
+                                    ]}
+                                />
 
-                                    <Block>
-                                        <VedleggSpørsmål
-                                            attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-                                            skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
-                                            vedlegg={periode.vedlegg as Attachment[]}
-                                            onChange={(v) => this.onChange({ vedlegg: v })}
-                                        />
-                                    </Block>
-                                </>
-                            )}
-                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
-                            periode.erMorForSyk === false && (
-                                <>
-                                    <VeilederInfo
-                                        messages={[
-                                            {
-                                                type: 'normal',
-                                                contentIntlKey: 'uttaksplan.informasjon.morErForSykNeiSvar'
-                                            }
-                                        ]}
+                                <Block>
+                                    <VedleggSpørsmål
+                                        attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+                                        skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
+                                        vedlegg={periode.vedlegg as Attachment[]}
+                                        onChange={(v) => this.onChange({ vedlegg: v })}
                                     />
-                                </>
-                            )}
+                                </Block>
+                            </>
+                        )}
+                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) && periode.erMorForSyk === false && (
+                            <>
+                                <VeilederInfo
+                                    messages={[
+                                        {
+                                            type: 'normal',
+                                            contentIntlKey: 'uttaksplan.informasjon.morErForSykNeiSvar',
+                                        },
+                                    ]}
+                                />
+                            </>
+                        )}
 
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.samtidigUttak)} margin="none">
                             <SamtidigUttakPart
@@ -565,7 +563,7 @@ const mapStateToProps = (state: AppState): StateProps => {
         uttaksplan: state.søknad.uttaksplan,
         arbeidsforhold,
         søknadsinfo: søknadsinfo!,
-        velgbareStønadskontotyper: getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer)
+        velgbareStønadskontotyper: getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer),
     };
 };
 

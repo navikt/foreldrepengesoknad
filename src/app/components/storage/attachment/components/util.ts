@@ -24,7 +24,7 @@ export const mapFileToAttachment = (
     pending: false,
     type,
     skjemanummer,
-    innsendingsType
+    innsendingsType,
 });
 
 export const isAttachmentWithError = (attachment: Attachment) => {

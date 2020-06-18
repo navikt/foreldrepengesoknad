@@ -12,14 +12,14 @@ export default interface Sak {
 
 export enum SakType {
     SAK = 'SAK', // Indicates that sak is from infotrygd
-    FPSAK = 'FPSAK'
+    FPSAK = 'FPSAK',
 }
 
 export enum FagsakStatus {
     OPPRETTET = 'OPPR',
     UNDER_BEHANDLING = 'UBEH',
     LOPENDE = 'LOP',
-    AVSLUTTET = 'AVSLU'
+    AVSLUTTET = 'AVSLU',
 }
 
 export interface AnnenPart {

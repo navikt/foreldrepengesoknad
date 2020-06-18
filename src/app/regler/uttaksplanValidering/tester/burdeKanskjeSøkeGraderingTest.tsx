@@ -57,8 +57,8 @@ export const burdeKanskjeSøkeGraderingTest: RegelTest = (grunnlag: UttaksplanRe
                 intlKey: 'uttaksplan.validering.info.burdeKanskjeSøkeGradering',
                 renderAsHtml: true,
                 values: {
-                    a: (intl: IntlShape) => (msg: any) => (
-                        <a href={lenker.graderingInfo} className="lenke" rel="noopener" target="_blank">
+                    a: (_intl: IntlShape) => (msg: any) => (
+                        <a href={lenker.graderingInfo} className="lenke" rel="noreferrer" target="_blank">
                             {msg}
                         </a>
                     ),

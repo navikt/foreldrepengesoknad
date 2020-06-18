@@ -9,12 +9,12 @@ export const harUttaksplanForMangeFlerbarnsdagerTest: RegelTest = (
     const {
         perioder,
         søknadsinfo: {
-            søknaden: { dekningsgrad, antallBarn }
-        }
+            søknaden: { dekningsgrad, antallBarn },
+        },
     } = grunnlag;
     return {
         passerer:
             dekningsgrad !== undefined &&
-            uttaksplanHarForMangeFlerbarnsdager(perioder, dekningsgrad, antallBarn) === false
+            uttaksplanHarForMangeFlerbarnsdager(perioder, dekningsgrad, antallBarn) === false,
     };
 };

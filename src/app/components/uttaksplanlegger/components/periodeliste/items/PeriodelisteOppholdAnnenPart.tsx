@@ -5,7 +5,7 @@ import getMessage from 'common/util/i18nUtils';
 import {
     UttakAnnenPartInfoPeriode,
     UtsettelseAnnenPartInfoPeriode,
-    isUttakAnnenPart
+    isUttakAnnenPart,
 } from '../../../../../types/uttaksplan/periodetyper';
 import { NavnPåForeldre, Forelder, Tidsperiode } from 'common/types';
 import { Tidsperioden } from '../../../../../util/uttaksplan/Tidsperioden';
@@ -35,19 +35,19 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props> = ({
     periode,
     navnPåForeldre,
     tidsperiode,
-    intl
+    intl,
 }) => {
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
     const navn = getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale);
 
     let tittel = getMessage(intl, 'periodeliste.oppholdAnnenPart.tittel', {
-        navn
+        navn,
     });
 
     if (isUttakAnnenPart(periode) && periode.samtidigUttakProsent !== undefined) {
         tittel = getMessage(intl, 'periodeliste.oppholdAnnenPart.tittel.gradertEllerSamtidigUttak', {
             navn,
-            prosent: periode.samtidigUttakProsent
+            prosent: periode.samtidigUttakProsent,
         });
     }
 
@@ -55,7 +55,7 @@ const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props> = ({
         const prosent = 100 - getFloatFromString(periode.stillingsprosent)!;
         tittel = getMessage(intl, 'periodeliste.oppholdAnnenPart.tittel.gradertEllerSamtidigUttak', {
             navn,
-            prosent: prosent.toString()
+            prosent: prosent.toString(),
         });
     }
 

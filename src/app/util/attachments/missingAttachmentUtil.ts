@@ -2,7 +2,7 @@ import Søknad, { Skjemanummer } from '../../types/søknad/Søknad';
 import { ApiState } from '../../redux/reducers/apiReducer';
 import {
     AnnenForelderSpørsmålKeys,
-    getAnnenForelderStegVisibility
+    getAnnenForelderStegVisibility,
 } from '../../steg/annenForelder/visibility/annenForelderStegVisibility';
 
 import annenInntektVisibility from '../../steg/andreInntekter/annenInntektModal/visibility';
@@ -16,7 +16,7 @@ import {
     isUttaksperiode,
     StønadskontoType,
     isOverføringsperiode,
-    MorsAktivitet
+    MorsAktivitet,
 } from '../../types/uttaksplan/periodetyper';
 import { spørsmålOmVedleggVisible } from '../../steg/barn/relasjonTilBarnAdopsjonSteg/visibility';
 import {
@@ -24,13 +24,13 @@ import {
     isAttachmentForAnnenInntekt,
     isAttachmentForBarn,
     isAttachmentForPeriode,
-    mapFileToAttachment
+    mapFileToAttachment,
 } from 'app/components/storage/attachment/components/util';
 import {
     dokumentasjonBehøvesForOverføringsperiode,
     dokumentasjonBehøvesForUtsettelsesperiode,
     dokumentasjonBehøvesForUttaksperiode,
-    erÅrsakSykdomEllerInstitusjonsopphold
+    erÅrsakSykdomEllerInstitusjonsopphold,
 } from '../uttaksplan/utsettelsesperiode';
 import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
@@ -57,7 +57,7 @@ const createMissingAttachment = (
         index,
         skjemanummer,
         type,
-        periodeId
+        periodeId,
     };
 };
 
@@ -102,21 +102,21 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, søkerinfo: Søk
     if (isTerminbekreftelseMissing(søknad, søkerinfo.arbeidsforhold)) {
         missingAttachments.push({
             skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
-            type: AttachmentType.TERMINBEKREFTELSE
+            type: AttachmentType.TERMINBEKREFTELSE,
         });
     }
 
     if (isOmsorgsovertakelseMissing(søknad)) {
         missingAttachments.push({
             skjemanummer: Skjemanummer.OMSORGSOVERTAKELSESDATO,
-            type: AttachmentType.OMSORGSOVERTAKELSE
+            type: AttachmentType.OMSORGSOVERTAKELSE,
         });
     }
 
     if (isDokumentasjonAvAleneomsorgMissing(søknad, søkerinfo)) {
         missingAttachments.push({
             skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
-            type: AttachmentType.ALENEOMSORG
+            type: AttachmentType.ALENEOMSORG,
         });
     }
     return missingAttachments;
@@ -249,7 +249,7 @@ export const findMissingAttachmentsForAndreInntekter = (søknad: Søknad): Missi
             missingAttachments.push({
                 index: søknad.søker.andreInntekterSiste10Mnd.indexOf(andreInntekterSiste10MndItem),
                 skjemanummer: getSkjemanummerForAndreInntekter(andreInntekterSiste10MndItem.type),
-                type: AttachmentType.ANNEN_INNTEKT
+                type: AttachmentType.ANNEN_INNTEKT,
             });
         }
     }

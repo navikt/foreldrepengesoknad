@@ -27,19 +27,9 @@ export interface Props extends ModalProps {
 
 const bem = BEMHelper('bekreftDialog');
 
-class BekreftDialog extends React.Component<Props, {}> {
+class BekreftDialog extends React.Component<Props> {
     render() {
-        const {
-            tittel,
-            onAvbryt,
-            onBekreft,
-            avbrytLabel,
-            bekreftLabel,
-            intl,
-            children,
-            størrelse,
-            ...modalProps
-        } = this.props;
+        const { tittel, onAvbryt, onBekreft, intl, children, størrelse, ...modalProps } = this.props;
         return (
             <Modal
                 {...modalProps}

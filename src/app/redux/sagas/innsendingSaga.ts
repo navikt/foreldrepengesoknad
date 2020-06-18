@@ -69,7 +69,7 @@ function* sendSøknad(action: SendSøknad) {
         action.history.push(`${routeConfig.GENERELL_FEIL_URL}`, {
             errorMessage:
                 error && error.response && error.response.status === 413 ? error.response.data.messages : undefined,
-            uuid: extractUUID(error)
+            uuid: extractUUID(error),
         });
     } finally {
         yield put(apiActions.updateApi({ søknadSendingInProgress: false }));

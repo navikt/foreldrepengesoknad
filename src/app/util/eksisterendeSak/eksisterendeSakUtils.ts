@@ -7,7 +7,7 @@ import {
     Saksperiode,
     PeriodeResultatType,
     UttakArbeidType,
-    ArbeidsgiverInfo
+    ArbeidsgiverInfo,
 } from '../../types/EksisterendeSak';
 import { guid } from 'nav-frontend-js-utils';
 import { cloneDeep } from 'lodash';
@@ -23,7 +23,7 @@ import {
     SaksperiodeUtsettelseÅrsakType,
     Arbeidsform,
     MorsAktivitet,
-    OppholdÅrsakType
+    OppholdÅrsakType,
 } from 'app/types/uttaksplan/periodetyper';
 import { UttaksplanDTO, UttaksplanPeriodeDTO, MorsAktivitetDto, OppholdsÅrsak } from 'app/api/types/uttaksplanDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
@@ -73,7 +73,7 @@ export const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakT
 
 export const erEksisterendeSakErDeltUttak = (dto: UttaksplanDTO): boolean => {
     const {
-        grunnlag: { farMedmorErAleneOmOmsorg, farMedmorHarRett, morErAleneOmOmsorg, morHarRett }
+        grunnlag: { farMedmorErAleneOmOmsorg, farMedmorHarRett, morErAleneOmOmsorg, morHarRett },
     } = dto;
     if (farMedmorErAleneOmOmsorg || morErAleneOmOmsorg || farMedmorHarRett === false || morHarRett === false) {
         return false;
@@ -106,14 +106,14 @@ const mapSaksperiodeFromDTO = (p: UttaksplanPeriodeDTO): Saksperiode => {
         uttakArbeidType: [uttakArbeidType as UttakArbeidType],
         tidsperiode: {
             fom: new Date(periode.fom),
-            tom: new Date(periode.tom)
+            tom: new Date(periode.tom),
         },
         gjelderAnnenPart,
         morsAktivitetIPerioden:
             morsAktivitet !== MorsAktivitetDto.samtidigUttak
                 ? ((morsAktivitet as unknown) as MorsAktivitet)
                 : undefined,
-        flerbarnsdager
+        flerbarnsdager,
     };
 
     if (oppholdAarsak !== undefined && gjelderAnnenPart === false) {
@@ -136,13 +136,13 @@ export const getEksisterendeSakFromDTO = (
 ): EksisterendeSak | undefined => {
     const {
         grunnlag: { dekningsgrad, termindato, fødselsdato, omsorgsovertakelsesdato, søkerKjønn, ...restGrunnlag },
-        perioder
+        perioder,
     } = dto;
 
     const familiehendelseDatoer: FamiliehendelseDatoer = {
         termindato: termindato ? moment.utc(termindato).toDate() : undefined,
         fødselsdato: fødselsdato ? moment.utc(fødselsdato).toDate() : undefined,
-        omsorgsovertakelsesdato: omsorgsovertakelsesdato ? moment.utc(omsorgsovertakelsesdato).toDate() : undefined
+        omsorgsovertakelsesdato: omsorgsovertakelsesdato ? moment.utc(omsorgsovertakelsesdato).toDate() : undefined,
     };
 
     if (
@@ -163,7 +163,7 @@ export const getEksisterendeSakFromDTO = (
         familieHendelseDato: getRelevantFamiliehendelseDato(familiehendelseDatoer),
         familieHendelseType: familiehendelseType as FamiliehendelsesType,
         termindato: familiehendelseDatoer.termindato,
-        fødselsdato: familiehendelseDatoer.fødselsdato
+        fødselsdato: familiehendelseDatoer.fødselsdato,
     };
 
     const saksperioder = perioder
@@ -177,7 +177,7 @@ export const getEksisterendeSakFromDTO = (
         erAnnenPartsSak,
         grunnlag,
         saksperioder,
-        uttaksplan
+        uttaksplan,
     };
 };
 
@@ -186,7 +186,7 @@ const saksperiodeErInnvilget = (saksperiode: Saksperiode) =>
 
 const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     periode: Saksperiode,
-    index: number,
+    _index: number,
     saksperioder: Saksperiode[]
 ) => {
     const likePerioder = saksperioder.filter(
@@ -210,7 +210,7 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
 const reduceDuplikateSaksperioderGrunnetArbeidsforhold = (
     resultatPerioder: Saksperiode[],
     periode: Saksperiode,
-    index: number,
+    _index: number,
     saksperioder: Saksperiode[]
 ) => {
     if (inneholderDuplikatSaksperiode(saksperioder, periode)) {
@@ -306,7 +306,7 @@ const getSøkerFromSaksgrunnlag = (
         erAleneOmOmsorg: grunnlag.søkerErFarEllerMedmor
             ? grunnlag.farMedmorErAleneOmOmsorg
             : grunnlag.morErAleneOmOmsorg,
-        rolle: getSøkerrolleFromSaksgrunnlag(person, situasjon, grunnlag)
+        rolle: getSøkerrolleFromSaksgrunnlag(person, situasjon, grunnlag),
     };
 };
 
@@ -316,9 +316,7 @@ const getBarnFromSaksgrunnlag = (
     søkerinfo: Søkerinfo
 ): Partial<Barn> | undefined => {
     const nyesteBarn = søkerinfo.registrerteBarn.sort((a, b) =>
-        moment(b.fødselsdato)
-            .format('YYYY-MM-DD')
-            .localeCompare(moment(a.fødselsdato).format('YYYY-MM-DD'))
+        moment(b.fødselsdato).format('YYYY-MM-DD').localeCompare(moment(a.fødselsdato).format('YYYY-MM-DD'))
     )[0];
 
     if (nyesteBarn === undefined) {
@@ -338,17 +336,17 @@ const getBarnFromSaksgrunnlag = (
                 ...(erBarnetFødt
                     ? {
                           fødselsdatoer: [sak.familieHendelseDato],
-                          termindato: sak.termindato
+                          termindato: sak.termindato,
                       }
                     : {
-                          termindato: sak.familieHendelseDato
-                      })
+                          termindato: sak.familieHendelseDato,
+                      }),
             };
         case Søkersituasjon.ADOPSJON:
             return {
                 antallBarn: sak.antallBarn,
                 adopsjonsdato: sak.familieHendelseDato,
-                fødselsdatoer: [sak.familieHendelseDato]
+                fødselsdatoer: [sak.familieHendelseDato],
             };
         default:
             return undefined;
@@ -371,7 +369,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                     erUfør: grunnlag.morErUfør,
                     harRettPåForeldrepenger: grunnlag.morHarRett,
                     fnr: annenPart.fnr,
-                    kanIkkeOppgis: false
+                    kanIkkeOppgis: false,
                 };
             }
             return {
@@ -379,7 +377,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                 etternavn: annenPart.navn.etternavn,
                 harRettPåForeldrepenger: grunnlag.farMedmorHarRett,
                 fnr: annenPart.fnr,
-                kanIkkeOppgis: false
+                kanIkkeOppgis: false,
             };
         default:
             return undefined;
@@ -421,9 +419,9 @@ const finnAnnenForelderPåFødselsdato = (
             const annenPart: RecursivePartial<AnnenPart> = {
                 navn: {
                     fornavn,
-                    etternavn
+                    etternavn,
                 },
-                fnr
+                fnr,
             };
             return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart as AnnenPart);
         }
@@ -447,7 +445,7 @@ export const opprettSøknadFraEksisterendeSak = (
         etternavn: '',
         fnr: '',
         harRettPåForeldrepenger: false,
-        kanIkkeOppgis: false
+        kanIkkeOppgis: false,
     };
     const søker = getSøkerFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, søkerinfo);
@@ -474,7 +472,7 @@ export const opprettSøknadFraEksisterendeSak = (
         annenForelder: annenForelder as AnnenForelder,
         erEndringssøknad: true,
         dekningsgrad: grunnlag.dekningsgrad,
-        uttaksplan: uttaksplan ? cloneDeep(uttaksplan) : []
+        uttaksplan: uttaksplan ? cloneDeep(uttaksplan) : [],
     };
     return søknad;
 };

@@ -12,7 +12,8 @@ const SpebarnIkon = ({ size = 42 }) => {
             role="presentation"
             viewBox="0 0 41 82"
             width={size}
-            height={size ? size * ratio : undefined}>
+            height={size ? size * ratio : undefined}
+        >
             <title>{'Spebarn'}</title>
             <g fill="none" fillRule="evenodd">
                 <path

@@ -34,13 +34,13 @@ const OversiktBrukteDager: React.StatelessComponent<Props> = ({
     tilgjengeligeStønadskontoer,
     uttaksstatus,
     navnPåForeldre,
-    intl
+    intl,
 }) => {
     const situasjon = getForeldreparSituasjonFraSøknadsinfo(søknadsinfo);
 
     const {
         søker,
-        søknaden: { erDeltUttak, familiehendelsesdato, erEndringssøknad }
+        søknaden: { erDeltUttak, familiehendelsesdato, erEndringssøknad },
     } = søknadsinfo;
 
     const brukteDager = getBrukteDager(tilgjengeligeStønadskontoer, perioder, familiehendelsesdato);

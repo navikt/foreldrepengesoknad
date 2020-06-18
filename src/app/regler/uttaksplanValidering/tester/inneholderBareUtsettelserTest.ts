@@ -21,8 +21,8 @@ export function inneholderBareUtsettelserTest(grunnlag: UttaksplanRegelgrunnlag)
                 sisteDag: formaterDato(
                     Uttaksdagen(Periodene(grunnlag.perioder).getFørsteUttaksdagEtterSistePeriode()!).forrige(),
                     'D. MMMM YYYY'
-                )
-            }
-        }
+                ),
+            },
+        },
     };
 }

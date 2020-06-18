@@ -42,7 +42,7 @@ export const getSøknadsperiode = (søknadsinfo: Søknadsinfo, periode: Periode)
     harAktivitetskrav: () => isUttaksperiode(periode) && harAktivitetskrav(periode.konto),
     harGyldigTidsperiode: () => isValidTidsperiode(periode.tidsperiode),
     harGradering: () => isUttaksperiode(periode) && periode.gradert === true,
-    harSamtidigUttak: () => isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true
+    harSamtidigUttak: () => isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true,
 });
 
 export default getSøknadsperiode;

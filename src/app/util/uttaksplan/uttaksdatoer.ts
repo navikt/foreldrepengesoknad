@@ -8,7 +8,7 @@ export const uttaksdatoer = (familiehendelsesdato: Date) => ({
     førsteUttaksdagForeldrepengerFørFødsel: getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato),
     førsteUttaksdagPåEllerEtterFødsel: Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
     førsteMuligeUttaksdagFørTermin: getFørsteMuligeUttaksdag(familiehendelsesdato),
-    sisteMuligeUttaksdagEtterTermin: getSisteMuligeUttaksdag(familiehendelsesdato)
+    sisteMuligeUttaksdagEtterTermin: getSisteMuligeUttaksdag(familiehendelsesdato),
 });
 
 export const getUttaksdatoer = (familiehendelsesdato: Date): Uttaksdatoer => {
@@ -25,13 +25,13 @@ export const getUttaksdatoer = (familiehendelsesdato: Date): Uttaksdatoer => {
         førFødsel: {
             førsteMuligeUttaksdag,
             sisteUttaksdagFørFødsel,
-            førsteUttaksdagForeldrepengerFørFødsel
+            førsteUttaksdagForeldrepengerFørFødsel,
         },
         etterFødsel: {
             sisteUttaksdagInnenforSeksUker,
             førsteUttaksdagEtterSeksUker: Uttaksdagen(sisteUttaksdagInnenforSeksUker).neste(),
-            sisteMuligeUttaksdag
-        }
+            sisteMuligeUttaksdag,
+        },
     };
 };
 

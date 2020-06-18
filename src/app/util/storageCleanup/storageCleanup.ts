@@ -10,7 +10,7 @@ export const cleanupØnskerFlerbarnsdager = (uttaksplan: Periode[]): Periode[] =
         ) {
             return {
                 ...periode,
-                ønskerFlerbarnsdager: undefined
+                ønskerFlerbarnsdager: undefined,
             };
         }
         return periode;
@@ -24,7 +24,7 @@ const cleanupOrgnr = (uttaksplan: Periode[]): Periode[] => {
         const { orgnr, ...rest } = periode as PeriodeWithOrgnr;
         return {
             ...rest,
-            ...(orgnr ? { orgnumre: [orgnr] } : undefined)
+            ...(orgnr ? { orgnumre: [orgnr] } : undefined),
         };
     });
 };

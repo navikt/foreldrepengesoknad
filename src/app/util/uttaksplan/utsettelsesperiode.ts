@@ -5,7 +5,7 @@ import {
     UtsettelseÅrsakType,
     Uttaksperiode,
     StønadskontoType,
-    MorsAktivitet
+    MorsAktivitet,
 } from '../../types/uttaksplan/periodetyper';
 
 export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakType | OverføringÅrsakType) =>

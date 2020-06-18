@@ -36,7 +36,7 @@ const Sirkelknapp: React.StatelessComponent<SirkelknappProps> = ({
     disabled,
     stil = 'info',
     size = 'normal',
-    posisjoneringFraHøyre
+    posisjoneringFraHøyre,
 }) => {
     const labelId = guid();
     return (
@@ -48,10 +48,11 @@ const Sirkelknapp: React.StatelessComponent<SirkelknappProps> = ({
             aria-labelledby={labelId}
             className={classnames(`sirkelknapp`, `sirkelknapp--${stil}`, `sirkelknapp--${size}`, {
                 'sirkelknapp--pressed': toggle && toggle.pressed,
-                'sirkelknapp--disabled': disabled
+                'sirkelknapp--disabled': disabled,
             })}
             disabled={disabled}
-            aria-pressed={toggle ? toggle.pressed : undefined}>
+            aria-pressed={toggle ? toggle.pressed : undefined}
+        >
             <span className="sirkelknapp__ikon" role="presentation">
                 {ikon}
             </span>

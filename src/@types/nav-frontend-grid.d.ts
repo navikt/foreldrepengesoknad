@@ -18,7 +18,7 @@ declare module 'nav-frontend-grid' {
         className?: string;
     }
 
-    export class Container extends React.Component<ContainerProps, {}> {}
-    export class Row extends React.Component<RowProps, {}> {}
-    export class Column extends React.Component<ColumnProps, {}> {}
+    export class Container extends React.Component<ContainerProps, any> {}
+    export class Row extends React.Component<RowProps, any> {}
+    export class Column extends React.Component<ColumnProps, any> {}
 }

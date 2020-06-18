@@ -48,7 +48,7 @@ export const getDefaultApiState = (): ApiState => ({
     stønadskontoer80: [],
     systemerIkkeTilgjengelig: false,
     søkerinfoLastetCounter: 0,
-    innloggetSomAnnenForelder: false
+    innloggetSomAnnenForelder: false,
 });
 
 const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiStatePartial => {
@@ -56,22 +56,22 @@ const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiSt
         case ApiActionKeys.UPDATE_API:
             return {
                 ...state,
-                ...action.payload
+                ...action.payload,
             };
         case ApiActionKeys.GET_SØKERINFO:
             return {
                 ...state,
-                isLoadingSøkerinfo: true
+                isLoadingSøkerinfo: true,
             };
         case ApiActionKeys.GET_STORAGE_DATA:
             return {
                 ...state,
-                isLoadingStoredAppState: true
+                isLoadingStoredAppState: true,
             };
         case ApiActionKeys.DELETE_STORED_APP_STATE:
             return {
                 ...state,
-                isLoadingStoredAppState: true
+                isLoadingStoredAppState: true,
             };
         case ApiActionKeys.FJERN_INAKTIVE_ARBEIDSFORHOLD:
             if (state.søkerinfo) {
@@ -81,12 +81,12 @@ const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiSt
                     ...state,
                     søkerinfo: {
                         ...state.søkerinfo,
-                        arbeidsforhold: aktiveArbeidsforhold
-                    }
+                        arbeidsforhold: aktiveArbeidsforhold,
+                    },
                 };
             } else {
                 return {
-                    ...state
+                    ...state,
                 };
             }
 

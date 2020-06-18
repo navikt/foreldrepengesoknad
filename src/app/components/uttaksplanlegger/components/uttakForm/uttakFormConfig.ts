@@ -8,7 +8,7 @@ import {
     isUttaksperiode,
     Uttaksperiode,
     isOverføringsperiode,
-    isOppholdsperiode
+    isOppholdsperiode,
 } from '../../../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
 import { getStønadskontoFromOppholdsårsak } from 'app/util/uttaksplan/uttaksperiodeUtils';
@@ -30,7 +30,7 @@ export enum UttakSpørsmålKeys {
     'erMorForSyk' = 'erMorForSyk',
     'samtidigUttakProsent' = 'samtidigUttakProsent',
     'hvemSkalTaUttak' = 'hvemSkalTaUttak',
-    'ønskerFlerbarnsdager' = 'ønskerFlerbarnsdager'
+    'ønskerFlerbarnsdager' = 'ønskerFlerbarnsdager',
 }
 
 export interface UttakFormPayload {
@@ -137,7 +137,7 @@ const hvorSkalDuJobbeErBesvart = (payload: UttakFormPayload): boolean => {
     );
 };
 
-const visErMorForSyk = (payload: UttakFormPayload) => {
+const visErMorForSyk = () => {
     return true;
 };
 
@@ -163,14 +163,14 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     [Sp.tidsperiode]: {
         isAnswered: ({ periode }) =>
             getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined ||
-            (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true)
+            (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true),
     },
     [Sp.kvote]: {
         isAnswered: ({ periode }) =>
             ((isUttaksperiode(periode) || isOverføringsperiode(periode)) && questionValueIsOk(periode.konto)) ||
             (isOppholdsperiode(periode) && questionValueIsOk(getStønadskontoFromOppholdsårsak(periode.årsak))),
         parentQuestion: Sp.tidsperiode,
-        isIncluded: (payload) => visKvote(payload)
+        isIncluded: (payload) => visKvote(payload),
     },
     [Sp.erMorForSyk]: {
         isAnswered: ({ periode }) =>
@@ -180,13 +180,13 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
             isOppholdsperiode(periode),
         parentQuestion: Sp.kvote,
         isIncluded: ({ skjemaregler }) => skjemaregler.erMorForSykSkalBesvares(),
-        visibilityFilter: (payload) => visErMorForSyk(payload)
+        visibilityFilter: () => visErMorForSyk(),
     },
     [Sp.ønskerFlerbarnsdager]: {
         isAnswered: ({ periode }) =>
             (isUttaksperiode(periode) && questionValueIsOk(periode.ønskerFlerbarnsdager)) || isOppholdsperiode(periode),
         isIncluded: ({ skjemaregler }) => skjemaregler.ønskerFlerbarnsdagerSkalBesvares(),
-        visibilityFilter: (payload) => visØnskerFlerbarnsdager(payload)
+        visibilityFilter: (payload) => visØnskerFlerbarnsdager(payload),
     },
     [Sp.aktivitetskravMor]: {
         isAnswered: ({ periode }) =>
@@ -196,48 +196,48 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
             isOppholdsperiode(periode),
         parentQuestion: Sp.tidsperiode,
         isIncluded: ({ skjemaregler }) => skjemaregler.aktivitetskravMorSkalBesvares(),
-        visibilityFilter: (payload) => visAktivitetskravMor(payload)
+        visibilityFilter: (payload) => visAktivitetskravMor(payload),
     },
     [Sp.samtidigUttak]: {
         isAnswered: ({ periode }) =>
             (isUttaksperiode(periode) && questionValueIsOk(periode.ønskerSamtidigUttak)) || isOppholdsperiode(periode),
         parentQuestion: Sp.tidsperiode,
         isIncluded: ({ skjemaregler }) => skjemaregler.samtidigUttakSkalBesvares(),
-        visibilityFilter: (payload) => visSamtidigUttak(payload)
+        visibilityFilter: (payload) => visSamtidigUttak(payload),
     },
     [Sp.samtidigUttakProsent]: {
         isAnswered: ({ periode }) =>
             (isUttaksperiode(periode) && questionValueIsOk(periode.samtidigUttakProsent)) || isOppholdsperiode(periode),
         parentQuestion: Sp.samtidigUttak,
-        isIncluded: ({ periode }) => isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true
+        isIncluded: ({ periode }) => isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true,
     },
     [Sp.overføringsårsak]: {
         isAnswered: ({ periode }) =>
             (periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak)) || isOppholdsperiode(periode),
-        isIncluded: (payload) => payload.skjemaregler.overføringsårsakSkalBesvares()
+        isIncluded: (payload) => payload.skjemaregler.overføringsårsakSkalBesvares(),
     },
     [Sp.overføringsdokumentasjon]: {
         isOptional: () => true,
         isAnswered: ({ periode }) =>
             (periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak)) || isOppholdsperiode(periode),
-        isIncluded: (payload) => visOverføringsdokumentasjon(payload)
+        isIncluded: (payload) => visOverføringsdokumentasjon(payload),
     },
     [Sp.skalHaGradering]: {
         isAnswered: ({ periode }) =>
             (isUttaksperiode(periode) && questionValueIsOk(periode.gradert)) || isOppholdsperiode(periode),
         isIncluded: ({ skjemaregler }) => skjemaregler.graderingSkalBesvares(),
-        visibilityFilter: (payload) => visGradering(payload)
+        visibilityFilter: (payload) => visGradering(payload),
     },
     [Sp.stillingsprosent]: {
         isAnswered: ({ periode }) =>
             (isUttaksperiode(periode) && questionValueIsOk(periode.stillingsprosent)) || isOppholdsperiode(periode),
         parentQuestion: Sp.skalHaGradering,
-        isIncluded: ({ periode }) => isUttaksperiode(periode) && periode.gradert === true
+        isIncluded: ({ periode }) => isUttaksperiode(periode) && periode.gradert === true,
     },
     [Sp.hvorSkalDuJobbe]: {
         isAnswered: (payload) => hvorSkalDuJobbeErBesvart(payload) || isOppholdsperiode(payload.periode),
-        parentQuestion: Sp.stillingsprosent
-    }
+        parentQuestion: Sp.stillingsprosent,
+    },
 };
 
 export const getUttakFormVisibility = (payload: UttakFormPayload): UttakSpørsmålVisibility => {

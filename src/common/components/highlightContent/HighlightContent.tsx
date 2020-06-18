@@ -20,13 +20,13 @@ class HighlightContent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            active: false
+            active: false,
         };
         this.start = this.start.bind(this);
         this.stop = this.stop.bind(this);
         this.shake = this.shake.bind(this);
     }
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         if (`${nextProps.watchValue}` !== `${this.props.watchValue}`) {
             this.start();
         }

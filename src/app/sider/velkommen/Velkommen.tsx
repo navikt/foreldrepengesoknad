@@ -62,11 +62,10 @@ class Velkommen extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.getStartSøknadKnappLabel = this.getStartSøknadKnappLabel.bind(this);
-    }
-    componentWillMount() {
-        this.setState({
-            isDinePersonopplysningerModalOpen: false
-        });
+        this.state = {
+            isDinePersonopplysningerModalOpen: false,
+            skalEndre: undefined,
+        };
     }
 
     getBekreftCheckboksPanelLabelHeader() {
@@ -109,7 +108,7 @@ class Velkommen extends React.Component<Props, State> {
             storageKvittering,
             isLoadingEkisterendeSak,
             dispatch,
-            intl
+            intl,
         } = this.props;
         if (person === undefined) {
             return null;
@@ -136,9 +135,9 @@ class Velkommen extends React.Component<Props, State> {
                 <VeilederMedSnakkeboble
                     dialog={{
                         title: getMessage(intl, 'velkommen.bobletittel', {
-                            name: person.fornavn
+                            name: person.fornavn,
                         }),
-                        text: getMessage(intl, 'velkommen.bobletekst')
+                        text: getMessage(intl, 'velkommen.bobletekst'),
                     }}
                 />
                 <div className={bem.block}>
@@ -170,12 +169,11 @@ class Velkommen extends React.Component<Props, State> {
                                     )}
                                 </Ingress>
                             </Block>
-                            {sakForEndringssøknad !== undefined &&
-                                sakForEndringssøknad.type === SakType.FPSAK && (
-                                    <Block>
-                                        <SakInfo sak={sakForEndringssøknad} />
-                                    </Block>
-                                )}
+                            {sakForEndringssøknad !== undefined && sakForEndringssøknad.type === SakType.FPSAK && (
+                                <Block>
+                                    <SakInfo sak={sakForEndringssøknad} />
+                                </Block>
+                            )}
                             <Block>
                                 <SøknadstypeSpørsmål
                                     harEksisterendeSak={true}
@@ -184,17 +182,16 @@ class Velkommen extends React.Component<Props, State> {
                                     erSakForEndringssøknadFraInfotrygd={erSakForEndringssøknadFraInfotrygd}
                                 />
                             </Block>
-                            {this.state.skalEndre === false &&
-                                !erSakForEndringssøknadFraInfotrygd && (
-                                    <VeilederInfo
-                                        messages={[
-                                            {
-                                                contentIntlKey: 'velkommen.intro.harSak.veileder',
-                                                type: 'normal'
-                                            }
-                                        ]}
-                                    />
-                                )}
+                            {this.state.skalEndre === false && !erSakForEndringssøknadFraInfotrygd && (
+                                <VeilederInfo
+                                    messages={[
+                                        {
+                                            contentIntlKey: 'velkommen.intro.harSak.veileder',
+                                            type: 'normal',
+                                        },
+                                    ]}
+                                />
+                            )}
                             {this.state.skalEndre &&
                                 !erSakForEndringssøknadFraInfotrygd &&
                                 sakForEndringssøknad !== undefined &&
@@ -203,22 +200,21 @@ class Velkommen extends React.Component<Props, State> {
                                         messages={[
                                             {
                                                 contentIntlKey: 'velkommen.intro.harSak.veileder.endring',
-                                                type: 'normal'
-                                            }
+                                                type: 'normal',
+                                            },
                                         ]}
                                     />
                                 )}
-                            {this.state.skalEndre === true &&
-                                erSakForEndringssøknadFraInfotrygd && (
-                                    <VeilederInfo
-                                        messages={[
-                                            {
-                                                contentIntlKey: 'velkommen.intro.harInfotrygdSak.veileder',
-                                                type: 'normal'
-                                            }
-                                        ]}
-                                    />
-                                )}
+                            {this.state.skalEndre === true && erSakForEndringssøknadFraInfotrygd && (
+                                <VeilederInfo
+                                    messages={[
+                                        {
+                                            contentIntlKey: 'velkommen.intro.harInfotrygdSak.veileder',
+                                            type: 'normal',
+                                        },
+                                    ]}
+                                />
+                            )}
                         </>
                     )}
                     {sakUnderBehandling !== undefined && (
@@ -250,8 +246,8 @@ class Velkommen extends React.Component<Props, State> {
                             messages={[
                                 {
                                     contentIntlKey: 'velkommen.endringssøknadIkkeTilgjengelig.veileder',
-                                    type: 'normal'
-                                }
+                                    type: 'normal',
+                                },
                             ]}
                         />
                     </Block>
@@ -294,7 +290,7 @@ class Velkommen extends React.Component<Props, State> {
                     isOpen={this.state.isDinePersonopplysningerModalOpen}
                     onRequestClose={() =>
                         this.setState({
-                            isDinePersonopplysningerModalOpen: false
+                            isDinePersonopplysningerModalOpen: false,
                         })
                     }
                 />
@@ -310,7 +306,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     sakUnderBehandling: state.api.sakUnderBehandling,
     oppslagSakerFeilet: state.api.oppslagSakerFeilet,
     storageKvittering: state.api.storageKvittering,
-    isLoadingEkisterendeSak: state.api.isLoadingEksisterendeSak
+    isLoadingEkisterendeSak: state.api.isLoadingEksisterendeSak,
 });
 
 export default connect<StateProps>(mapStateToProps)(injectIntl(Velkommen));

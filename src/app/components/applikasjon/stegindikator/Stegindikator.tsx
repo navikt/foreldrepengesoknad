@@ -33,7 +33,7 @@ class Stegindikator extends React.Component<Props> {
             }, [])
             .map((stegConfigItem) => ({
                 label: getMessage(this.props.intl, stegConfigItem.tittel),
-                index: stegConfigItem.index
+                index: stegConfigItem.index,
             }));
     }
 

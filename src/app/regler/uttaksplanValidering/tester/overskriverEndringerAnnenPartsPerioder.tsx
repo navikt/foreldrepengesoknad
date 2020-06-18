@@ -14,8 +14,8 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (
     const {
         eksisterendeUttaksplan,
         søknadsinfo: {
-            navn: { navnPåForeldre }
-        }
+            navn: { navnPåForeldre },
+        },
     } = grunnlag;
     if (eksisterendeUttaksplan) {
         const { perioderSomSkalSendesInn } = grunnlag;
@@ -41,11 +41,11 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (
                         forelder: grunnlag.søknadsinfo.navn.annenForelder.fornavn,
                         forelders: (intl: IntlShape) =>
                             getNavnGenitivEierform(grunnlag.søknadsinfo.navn.annenForelder.fornavn, intl.locale),
-                        strong: (intl: IntlShape) => (msg: any) => <strong>{msg}</strong>
-                    }
+                        strong: (_intl: IntlShape) => (msg: any) => <strong>{msg}</strong>,
+                    },
                 };
                 return regelInfo;
-            })
+            }),
         };
     }
 

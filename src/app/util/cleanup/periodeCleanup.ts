@@ -9,12 +9,10 @@ import {
     StønadskontoType,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    Uttaksperiode
+    Uttaksperiode,
 } from '../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
-import { UttakSpørsmålVisibility } from '../../components/uttaksplanlegger/components/uttakForm/uttakFormConfig';
 import { UtsettelseFormPeriodeType } from '../../components/uttaksplanlegger/components/utsettelseForm/UtsettelseForm';
-import { UtsettelseSpørsmålVisibility } from '../../components/uttaksplanlegger/components/utsettelseForm/utsettelseFormConfig';
 import { UttakFormPeriodeType } from '../../components/uttaksplanlegger/components/uttakForm/UttakForm';
 import { RecursivePartial } from '../../types/Partial';
 import { shouldPeriodeHaveAttachment } from '../attachments/missingAttachmentUtil';
@@ -28,7 +26,7 @@ const periodeKontotypeHasAktivitetskrav = (periode: Periode) => {
         const validPeriodeTypes: StønadskontoType[] = [
             StønadskontoType.Fellesperiode,
             StønadskontoType.Foreldrepenger,
-            StønadskontoType.AktivitetsfriKvote
+            StønadskontoType.AktivitetsfriKvote,
         ];
         if (validPeriodeTypes.includes(periode.konto)) {
             return true;
@@ -81,15 +79,11 @@ const cleanupUtsettelse = (periode: Utsettelsesperiode, søknadsinfo: Søknadsin
                   morsAktivitetIPerioden === undefined,
                   !erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak)
               )
-            : undefined
+            : undefined,
     };
 };
 
-const cleanupUttak = (
-    periode: Uttaksperiode,
-    søknadsinfo: Søknadsinfo,
-    visibility?: UttakSpørsmålVisibility
-): Uttaksperiode => {
+const cleanupUttak = (periode: Uttaksperiode, søknadsinfo: Søknadsinfo): Uttaksperiode => {
     const uttaksperiode: Uttaksperiode = {
         type: Periodetype.Uttak,
         id: periode.id,
@@ -112,7 +106,7 @@ const cleanupUttak = (
         orgnumre: periode.gradert === true ? periode.orgnumre : undefined,
         erArbeidstaker: periode.gradert ? periode.erArbeidstaker : undefined,
         ønskerFlerbarnsdager: periode.ønskerFlerbarnsdager,
-        erMorForSyk: periode.ønskerFlerbarnsdager !== true ? periode.erMorForSyk : undefined
+        erMorForSyk: periode.ønskerFlerbarnsdager !== true ? periode.erMorForSyk : undefined,
     };
     if (isForeldrepengerFørFødselUttaksperiode(periode)) {
         (uttaksperiode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin =
@@ -129,7 +123,7 @@ const cleanupOverføring = (periode: Overføringsperiode): Overføringsperiode =
         vedlegg: periode.vedlegg,
         forelder: periode.forelder,
         tidsperiode: periode.tidsperiode,
-        årsak: periode.årsak
+        årsak: periode.årsak,
     };
 };
 
@@ -140,14 +134,13 @@ const cleanupOpphold = (periode: Oppholdsperiode): Oppholdsperiode => {
         tidsperiode: periode.tidsperiode,
         vedlegg: periode.vedlegg,
         årsak: periode.årsak,
-        forelder: periode.forelder
+        forelder: periode.forelder,
     };
 };
 
 export const cleanupNyPeriode = (
     periode: UtsettelseFormPeriodeType | UttakFormPeriodeType | Periode,
-    søknadsinfo: Søknadsinfo,
-    visibility?: UttakSpørsmålVisibility | UtsettelseSpørsmålVisibility
+    søknadsinfo: Søknadsinfo
 ): RecursivePartial<UtsettelseFormPeriodeType | UttakFormPeriodeType> | Periode => {
     switch (periode.type) {
         case Periodetype.Overføring:
@@ -155,7 +148,7 @@ export const cleanupNyPeriode = (
         case Periodetype.Utsettelse:
             return cleanupUtsettelse(periode as Utsettelsesperiode, søknadsinfo);
         case Periodetype.Uttak:
-            return cleanupUttak(periode as Uttaksperiode, søknadsinfo, visibility as UttakSpørsmålVisibility);
+            return cleanupUttak(periode as Uttaksperiode, søknadsinfo);
         case Periodetype.Opphold:
             return cleanupOpphold(periode as Oppholdsperiode);
         default:
@@ -166,31 +159,26 @@ export const cleanupNyPeriode = (
 function applyChangesAndCleanPeriode(
     periode: Periode,
     periodeChanges: RecursivePartial<Periode>,
-    søknadsinfo: Søknadsinfo,
-    visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
+    søknadsinfo: Søknadsinfo
 ): Periode {
     let updatedPeriode = { ...periode };
     const type = periodeChanges.type || periode.type;
     if (type === Periodetype.Utsettelse) {
         updatedPeriode = {
             ...periode,
-            ...(periodeChanges as Utsettelsesperiode)
+            ...(periodeChanges as Utsettelsesperiode),
         };
         updatedPeriode = PeriodeCleanup.cleanupUtsettelse(updatedPeriode, søknadsinfo);
     } else if (type === Periodetype.Uttak) {
         updatedPeriode = {
             ...periode,
-            ...(periodeChanges as Uttaksperiode)
+            ...(periodeChanges as Uttaksperiode),
         };
-        updatedPeriode = PeriodeCleanup.cleanupUttak(
-            updatedPeriode,
-            søknadsinfo,
-            visibility as UttakSpørsmålVisibility
-        );
+        updatedPeriode = PeriodeCleanup.cleanupUttak(updatedPeriode, søknadsinfo);
     } else if (type === Periodetype.Overføring) {
         updatedPeriode = {
             ...periode,
-            ...(periodeChanges as Overføringsperiode)
+            ...(periodeChanges as Overføringsperiode),
         };
         updatedPeriode = PeriodeCleanup.cleanupOverføring(updatedPeriode);
     } else if (type === Periodetype.Opphold) {
@@ -206,7 +194,7 @@ const PeriodeCleanup = {
     cleanupOverføring,
     cleanupOpphold,
     cleanupNyPeriode,
-    applyChangesAndCleanPeriode
+    applyChangesAndCleanPeriode,
 };
 
 export default PeriodeCleanup;

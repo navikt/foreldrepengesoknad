@@ -2,7 +2,7 @@ import {
     TilgjengeligStønadskonto,
     Periode,
     StønadskontoType,
-    Stønadskontouttak
+    Stønadskontouttak,
 } from '../../types/uttaksplan/periodetyper';
 import { beregnGjenståendeUttaksdager } from '../uttaksPlanStatus';
 import { Søknadsinfo } from '../../selectors/types';
@@ -19,7 +19,7 @@ export const getUttaksstatus = (
 ): Uttaksstatus => {
     const {
         søknaden: { erDeltUttak, erEndringssøknad, harKomplettUttaksplan },
-        søker
+        søker,
     } = søknadsinfo;
 
     const gjelderDagerBrukt =
@@ -35,6 +35,6 @@ export const getUttaksstatus = (
         gjelderDagerBrukt,
         uttak: søker.erFarEllerMedmor
             ? uttak.filter((kontouttak) => kontouttak.konto !== StønadskontoType.ForeldrepengerFørFødsel)
-            : uttak
+            : uttak,
     };
 };

@@ -11,8 +11,8 @@ export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: UttaksplanRe
     const {
         perioder,
         søknadsinfo: {
-            navn: { navnPåForeldre }
-        }
+            navn: { navnPåForeldre },
+        },
     } = grunnlag;
     const perioderUtenSamtidigUttakAnnenPart = perioder.filter((p) => !(isUttakAnnenPart(p) && p.ønskerSamtidigUttak));
     const perioderSomHarOverlapp = perioderUtenSamtidigUttakAnnenPart.filter(
@@ -31,10 +31,10 @@ export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: UttaksplanRe
                     periode: (intl: IntlShape) => getPeriodeTittel(intl, periode, navnPåForeldre),
                     tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
                     forelder: (intl: IntlShape) =>
-                        getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale)
-                }
+                        getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale),
+                },
             };
             return info;
-        })
+        }),
     };
 };

@@ -23,7 +23,7 @@ export const getProsentFordelingPerDel = (
     return {
         pstMor,
         pstFarMedmor,
-        pstFelles
+        pstFelles,
     };
 };
 
@@ -63,20 +63,20 @@ export const getFordelingDeltOmsorg = (
             pstAvTotal: pstTildeltMor,
             pstBrukt: (morsDager.dagerEgneKvoter + farMedmorsDager.dagerAnnenForeldersKvote) * pstIMorsDel,
             pstOverførtTilAnnenForelder: 0, // farMedmorsDager.dagerAnnenForeldersKvote * pstIMorsDel,
-            pstForMye: dagerForMyeBruktAvMorsDel * pstIMorsDel
+            pstForMye: dagerForMyeBruktAvMorsDel * pstIMorsDel,
         },
         felles: {
             pstAvTotal: pstTildeltFelles,
             pstBruktMor: morsDager.dagerFellesperiode * pstIFellesdel,
             pstBruktFar: farMedmorsDager.dagerFellesperiode * pstIFellesdel,
-            pstForMye: 0
+            pstForMye: 0,
         },
         farMedmor: {
             pstAvTotal: pstTildeltFarMedmor,
             pstBrukt: (dagerBruktFarMedmorsDel + morsDager.dagerAnnenForeldersKvote) * pstIFarMedmorsDel,
             pstOverførtTilAnnenForelder: 0, // farMedmorsDager.dagerAnnenForeldersKvote * pstIFarMedmorsDel,
-            pstForMye: dagerForMyeBruktAvFarMedmorsDel * pstIFarMedmorsDel
-        }
+            pstForMye: dagerForMyeBruktAvFarMedmorsDel * pstIFarMedmorsDel,
+        },
     };
     return undefined;
 };
@@ -96,6 +96,6 @@ export const getFordelingIkkeDeltOmsorg = (
         type: 'ikkeDeltOmsorg',
         forelder,
         pstBrukt,
-        pstForMye
+        pstForMye,
     };
 };

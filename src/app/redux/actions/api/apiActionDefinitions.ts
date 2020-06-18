@@ -24,7 +24,7 @@ export enum ApiActionKeys {
 
     'SEND_STORAGE_KVITTERING' = 'sendStorageKvittering',
 
-    'FJERN_INAKTIVE_ARBEIDSFORHOLD' = 'fjernInaktiveArbeidsforhold'
+    'FJERN_INAKTIVE_ARBEIDSFORHOLD' = 'fjernInaktiveArbeidsforhold',
 }
 
 interface UpdateApi {

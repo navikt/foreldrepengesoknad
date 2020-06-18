@@ -3,7 +3,7 @@ import { RegelTestresultat } from 'shared/regler/regelTypes';
 
 import {
     tilleggsopplysningerErGyldig,
-    tilleggsopplysningerMaxLength
+    tilleggsopplysningerMaxLength,
 } from '../../../util/validation/uttaksplan/tilleggsopplysningerValidation';
 
 export function erTilleggsopplysningerGyldigTest(grunnlag: UttaksplanRegelgrunnlag): RegelTestresultat {
@@ -15,7 +15,7 @@ export function erTilleggsopplysningerGyldigTest(grunnlag: UttaksplanRegelgrunnl
               passerer: false,
               info: {
                   intlKey: 'valideringsfeil.fritekst.kanIkkeVæreLengreEnn',
-                  values: { maxLength: tilleggsopplysningerMaxLength }
-              }
+                  values: { maxLength: tilleggsopplysningerMaxLength },
+              },
           };
 }

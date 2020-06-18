@@ -11,7 +11,7 @@ export interface OwnProps {
 
 type Props = OwnProps;
 
-class ForeldrepengerFørFødselUttakForm extends React.Component<Props, {}> {
+class ForeldrepengerFørFødselUttakForm extends React.Component<Props> {
     render() {
         const { skalIkkeHaUttakFørTermin, onChange, intl } = this.props;
         return (
