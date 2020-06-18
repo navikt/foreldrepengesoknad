@@ -13,9 +13,8 @@ spec:
 {{#if namespace}}        
   accessPolicy:
     outbound:
-      external:
-        - host: {{appres}}
-        - host: {{uttak}}
+      rules:
+        - application: {{uttak}}
 {{/if}}               
   image: {{image}}
   port: 8080
