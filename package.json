@@ -185,7 +185,7 @@
         "react-transition-group": "^4.4.1",
         "redux": "^4.0.5",
         "redux-saga": "^0.16.2",
-        "reselect": "^3.0.1",
+        "reselect": "^4.0.0",
         "snyk": "^1.343.0"
     },
     "snyk": true
