@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const dateStringToDateObjectMapper = (value: string) => {
+export const dateStringToDateObjectMapper = (_key: string, value: string) => {
     if (moment(value, [moment.HTML5_FMT.DATE, 'YYYY-MM-DDTHH:mm:ss.SSSZ'], true).isValid()) {
         return new Date(value);
     }
@@ -9,6 +9,6 @@ export const dateStringToDateObjectMapper = (value: string) => {
 
 export const storageParser = (storageResponse: string) => {
     if (storageResponse) {
-        return JSON.parse(storageResponse, dateStringToDateObjectMapper);
+        return JSON.parse(storageResponse);
     }
 };
