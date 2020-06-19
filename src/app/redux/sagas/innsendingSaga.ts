@@ -51,14 +51,12 @@ function* sendSøknad(action: SendSøknad) {
         yield put(apiActions.updateApi({ søknadSendingInProgress: true }));
         const state: AppState = yield select(stateSelector);
         const originalSøknad: Søknad = state.søknad;
-        const response = yield call(
-            Api.sendSøknad,
-            getSøknadsdataForInnsending(
-                _.cloneDeep(originalSøknad),
-                action.missingAttachments,
-                _.cloneDeep(selectPerioderSomSkalSendesInn(state))
-            )
+        const søknadForInnsending = getSøknadsdataForInnsending(
+            _.cloneDeep(originalSøknad),
+            action.missingAttachments,
+            _.cloneDeep(selectPerioderSomSkalSendesInn(state))
         );
+        const response = yield call(Api.sendSøknad, søknadForInnsending);
         const kvittering: Kvittering = response.data;
         if (kvittering) {
             action.history.push(`${routeConfig.APP_ROUTE_PREFIX}soknad-sendt`);

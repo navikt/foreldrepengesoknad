@@ -65,6 +65,7 @@ import { getEndringstidspunkt } from 'app/util/dates/dates';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import moment from 'moment';
 import OppgiTilleggsopplysninger from './OppgiTilleggsopplysninger';
+import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 
 interface StateProps {
     stegProps: StegProps;
@@ -221,6 +222,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     onBekreftGåTilbake() {
         this.setState({ bekreftGåTilbakeDialogSynlig: false });
         this.props.history.push(StegID.UTTAKSPLAN_SKJEMA);
+        this.props.dispatch(søknadActionCreators.setCurrentSteg(StegID.UTTAKSPLAN_SKJEMA));
     }
 
     onBekreftSlettUttaksplan() {
