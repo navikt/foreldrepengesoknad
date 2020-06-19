@@ -135,7 +135,7 @@
         "express": "^4.17.1",
         "formik": "^2.1.4",
         "git-revision-webpack-plugin": "^3.0.6",
-        "history": "^4.10.1",
+        "history": "^5.0.0",
         "i18n-iso-countries": "^3.7.8",
         "is-valid-fodselsnummer": "^3.0.5",
         "jsdom": "^16.2.2",
