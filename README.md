@@ -5,10 +5,11 @@ foreldrepengesøknad.
 
 # For å komme i gang
 
-å kjøre opp appen i dev:
+For å kjøre opp appen i dev:
 
 1.  `npm install`.
 2.  `npm run start`.
+3.  `npm run start-mock-api-server`
 
 For å kjøre cypress-tester:
 
@@ -22,7 +23,7 @@ Spørsmål knyttet til koden eller prosjektet kan rettes mot teamforeldrepenger@
 
 ## For NAV-ansatte
 
-Interne henvendelser kan sendes via Slack i kanalen #bris.
+Interne henvendelser kan sendes via Slack i kanalen #team-sagrada-familia.
 
 ### Icon License
 
