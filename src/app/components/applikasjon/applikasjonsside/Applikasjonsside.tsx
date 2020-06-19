@@ -21,6 +21,7 @@ export interface OwnProps {
     visAlertstripe?: boolean;
     margin?: boolean;
     intl: IntlShape;
+    children: React.ReactNode;
 }
 
 interface StateProps {

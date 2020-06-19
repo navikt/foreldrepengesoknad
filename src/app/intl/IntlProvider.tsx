@@ -14,10 +14,16 @@ interface StateProps {
     språkkode: Språkkode;
 }
 
+interface OwnProps {
+    children: React.ReactNode;
+}
+
+type Props = OwnProps & StateProps;
+
 moment.locale('nb');
 
-class IntlProvider extends React.Component<StateProps> {
-    constructor(props: StateProps) {
+class IntlProvider extends React.Component<Props> {
+    constructor(props: Props) {
         super(props);
     }
 

@@ -78,13 +78,11 @@ class Infoboks extends React.Component<Props, InfoboksState> {
                     />
                 </span>
                 <Collapse
-                    hasNestedCollapse={true}
                     className={classNames('infoboks', {
                         'infoboks--open': isExpanded,
                         'infoboks__content--fullWidth': contentFullWidth,
                     })}
                     isOpened={isExpanded}
-                    springConfig={{ stiffness: 250, damping: 30 }}
                 >
                     {isExpanded ? <div className="infoboks__wrapper typo-normal">{tekst}</div> : <span />}
                 </Collapse>
