@@ -59,7 +59,9 @@ function* startEndringssøknad(action: StartSøknad, sak: Sak) {
     const appState: AppState = yield select(stateSelector);
 
     const eksisterendeSak: EksisterendeSak | undefined =
-        sak.type === SakType.FPSAK ? yield call(fetchEksisterendeSak, saksnummer) : undefined;
+        sak.type === SakType.FPSAK && saksnummer !== undefined
+            ? yield call(fetchEksisterendeSak, saksnummer)
+            : undefined;
     const søknad = eksisterendeSak ? opprettSøknadFraEksisterendeSak(søkerinfo, eksisterendeSak, sak) : undefined;
 
     if (eksisterendeSak === undefined || søknad === undefined) {

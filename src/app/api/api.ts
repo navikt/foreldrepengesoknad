@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SøknadForInnsending } from '../types/søknad/Søknad';
+import { SøknadForInnsending, EnkelEndringssøknadForInnsending } from '../types/søknad/Søknad';
 import Environment from '../../app/Environment';
 import { AppState } from '../redux/reducers';
 import { storageParser } from '../util/storage/parser';
@@ -79,7 +79,7 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
     });
 }
 
-function sendSøknad(søknad: SøknadForInnsending) {
+function sendSøknad(søknad: SøknadForInnsending | EnkelEndringssøknadForInnsending) {
     const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
 
     return AxiosInstance.post(url, søknad, {
