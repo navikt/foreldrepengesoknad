@@ -41,7 +41,7 @@
         "@babel/preset-react": "^7.10.1",
         "@types/bytes": "^3.1.0",
         "@types/classnames": "^2.2.10",
-        "@types/detect-browser": "^3.0.0",
+        "@types/detect-browser": "^4.0.0",
         "@types/enzyme": "^3.10.5",
         "@types/enzyme-adapter-react-16": "^1.0.6",
         "@types/history": "^4.7.6",
