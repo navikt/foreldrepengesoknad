@@ -44,6 +44,7 @@ export interface StegProps {
     submitButtonId?: string;
     confirmNavigateToPreviousStep?: (callback: () => void) => void;
     renderProp?: (props: RenderStegContentOptions) => React.ReactNode;
+    children?: React.ReactNode;
 }
 
 interface OwnProps {

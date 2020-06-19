@@ -49,10 +49,6 @@ const webpackConfig = {
                     use: [
                         {
                             loader: 'css-loader',
-                            options: { minimize: true },
-                        },
-                        {
-                            loader: 'postcss-loader',
                         },
                         {
                             loader: 'less-loader',
