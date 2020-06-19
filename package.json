@@ -54,7 +54,7 @@
         "@types/react-collapse": "^4.0.2",
         "@types/react-document-title": "^2.0.4",
         "@types/react-dom": "^16.9.8",
-        "@types/react-redux": "^5.0.21",
+        "@types/react-redux": "^7.1.9",
         "@types/react-router-dom": "^5.1.5",
         "@types/react-scroll": "^1.5.5",
         "@types/react-transition-group": "^2.9.2",
