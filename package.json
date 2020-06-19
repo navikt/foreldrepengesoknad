@@ -57,7 +57,7 @@
         "@types/react-redux": "^5.0.21",
         "@types/react-router-dom": "^5.1.5",
         "@types/react-scroll": "^1.5.5",
-        "@types/react-transition-group": "^2.9.2",
+        "@types/react-transition-group": "^4.4.0",
         "@typescript-eslint/eslint-plugin": "^3.3.0",
         "@typescript-eslint/parser": "^3.3.0",
         "awesome-typescript-loader": "^5.2.1",
