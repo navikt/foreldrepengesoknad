@@ -61,10 +61,7 @@ class Oppsummering extends React.Component<Props> {
                     </Block>
 
                     {visBarn && (
-                        <Oppsummeringspanel
-                            tittel={getMessage(intl, 'oppsummering.relasjonTilBarn')}
-                            tittelProps="undertittel"
-                        >
+                        <Oppsummeringspanel tittel={getMessage(intl, 'oppsummering.relasjonTilBarn')}>
                             <RelasjonTilBarnOppsummering
                                 barn={søknad.barn}
                                 annenForelder={søknad.annenForelder}
@@ -78,10 +75,7 @@ class Oppsummering extends React.Component<Props> {
                     )}
 
                     {visAnnenForelder && (
-                        <Oppsummeringspanel
-                            tittel={getMessage(intl, 'oppsummering.annenForelder')}
-                            tittelProps="undertittel"
-                        >
+                        <Oppsummeringspanel tittel={getMessage(intl, 'oppsummering.annenForelder')}>
                             <AnnenForelderOppsummering
                                 annenForelder={søknad.annenForelder}
                                 erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
@@ -93,10 +87,7 @@ class Oppsummering extends React.Component<Props> {
 
                     {visUtenlandsopphold && (
                         <>
-                            <Oppsummeringspanel
-                                tittel={getMessage(intl, 'oppsummering.utenlandsopphold')}
-                                tittelProps="undertittel"
-                            >
+                            <Oppsummeringspanel tittel={getMessage(intl, 'oppsummering.utenlandsopphold')}>
                                 <UtenlandsoppholdOppsummering
                                     informasjonOmUtenlandsopphold={søknad.informasjonOmUtenlandsopphold}
                                     situasjon={søknad.situasjon}
@@ -105,20 +96,13 @@ class Oppsummering extends React.Component<Props> {
                                 />
                             </Oppsummeringspanel>
 
-                            <Oppsummeringspanel
-                                tittel={getMessage(intl, 'oppsummering.inntekt')}
-                                tittelProps="undertittel"
-                            >
+                            <Oppsummeringspanel tittel={getMessage(intl, 'oppsummering.inntekt')}>
                                 <InntektOppsummering søker={søknad.søker} arbeidsforhold={søkerinfo.arbeidsforhold} />
                             </Oppsummeringspanel>
                         </>
                     )}
 
-                    <Oppsummeringspanel
-                        tittel={getMessage(intl, 'oppsummering.uttak')}
-                        tittelProps="undertittel"
-                        apen={erEnkelEndringssøknad}
-                    >
+                    <Oppsummeringspanel tittel={getMessage(intl, 'oppsummering.uttak')} apen={erEnkelEndringssøknad}>
                         <UttaksplanOppsummering
                             perioder={søknad.uttaksplan}
                             navnPåForeldre={søknadsinfo.navn.navnPåForeldre}

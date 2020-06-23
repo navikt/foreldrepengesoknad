@@ -112,8 +112,6 @@ const getUttaksstatusFunc = (søknadsinfo: Søknadsinfo) => (
     return getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, uttaksplan);
 };
 class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
-    feilOppsummering: (React.Component & HTMLElement) | null;
-
     constructor(props: Props) {
         super(props);
 
@@ -137,7 +135,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.showBekreftTilbakestillUttaksplanDialog = this.showBekreftTilbakestillUttaksplanDialog.bind(this);
         this.hideBekreftTilbakestillUttaksplanDialog = this.hideBekreftTilbakestillUttaksplanDialog.bind(this);
         this.onBekreftSlettUttaksplan = this.onBekreftSlettUttaksplan.bind(this);
-        this.delayedSetFocusOnFeiloppsummering = this.delayedSetFocusOnFeiloppsummering.bind(this);
         this.onBekreftTilbakestillUttaksplan = this.onBekreftTilbakestillUttaksplan.bind(this);
         this.handleAddPeriode = this.handleAddPeriode.bind(this);
         this.handleDeletePeriode = this.handleDeletePeriode.bind(this);
@@ -349,17 +346,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.props.dispatch(søknadActions.setVedleggForSenEndring(vedlegg));
     };
 
-    delayedSetFocusOnFeiloppsummering() {
-        setTimeout(() => {
-            if (this.feilOppsummering) {
-                const el = this.feilOppsummering;
-                if (el) {
-                    el.focus();
-                }
-            }
-        });
-    }
-
     render() {
         const {
             søknad,
@@ -403,15 +389,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         harKlikketFortsett: true,
                         visFeiloppsummering: uttaksplanValidering.erGyldig === false,
                     });
-                    if (uttaksplanValidering.erGyldig === false) {
-                        this.delayedSetFocusOnFeiloppsummering();
-                    }
+
                     return uttaksplanValidering.erGyldig;
                 }}
                 confirmNavigateToPreviousStep={perioderIUttaksplan ? this.showBekreftGåTilbakeDialog : undefined}
                 errorSummaryRenderer={() => (
                     <UttaksplanFeiloppsummering
-                        ref={(c) => (this.feilOppsummering = c)}
                         uttaksplanValidering={uttaksplanValidering}
                         erSynlig={visFeiloppsummering}
                         uttaksplan={søknad.uttaksplan}

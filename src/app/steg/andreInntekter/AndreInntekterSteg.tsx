@@ -153,6 +153,15 @@ class AndreInntekterSteg extends React.Component<Props> {
                     />
                 </Block>
 
+                <Block margin="xs">
+                    <Lenke
+                        target="_blank"
+                        href="https://www.nav.no/no/person/innhold-til-person-forside/nyttig-a-vite/er-jeg-selvstendig-naeringsdrivende-frilanser-eller-arbeidstaker"
+                    >
+                        <FormattedMessage id="andreInntekter.erJegNæringsdrivendeFrilansEllerArbeidstaker" />
+                    </Lenke>
+                </Block>
+
                 <Block hasChildBlocks={true} margin="none" visible={visibility.selvstendigNæringsdrivendeBolk(søker)}>
                     <SelvstendigNæringsdrivendeBolk
                         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={
@@ -167,14 +176,6 @@ class AndreInntekterSteg extends React.Component<Props> {
                         }
                         planInneholderSelvstendignæringaktivitet={planInneholderSelvstendignæringaktivitet}
                     />
-                </Block>
-                <Block margin="xs">
-                    <Lenke
-                        target="_blank"
-                        href="https://www.nav.no/no/person/innhold-til-person-forside/nyttig-a-vite/er-jeg-selvstendig-naeringsdrivende-frilanser-eller-arbeidstaker"
-                    >
-                        <FormattedMessage id="andreInntekter.erJegNæringsdrivendeFrilansEllerArbeidstaker" />
-                    </Lenke>
                 </Block>
 
                 <Block hasChildBlocks={true} margin="none" visible={visibility.andreInntekterBolk(søker)}>
