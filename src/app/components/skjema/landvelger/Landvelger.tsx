@@ -65,9 +65,9 @@ class Landvelger extends React.Component<Props> {
     }
 }
 
-const filteredListEØSCountries = (countryOptionValue: string, shouldFilter?: boolean) => {
+const filteredListEØSCountries = (countryOptionValue: [string, string | string[]], shouldFilter?: boolean) => {
     if (shouldFilter) {
-        switch (countryOptionValue) {
+        switch (countryOptionValue[0]) {
             case 'BE':
             case 'BG':
             case 'DK':
@@ -105,7 +105,7 @@ const filteredListEØSCountries = (countryOptionValue: string, shouldFilter?: bo
         }
     } else {
         // Filter ut Antarktis
-        return countryOptionValue !== 'AQ';
+        return countryOptionValue[0] !== 'AQ';
     }
 };
 
@@ -115,11 +115,13 @@ const createCountryOptions = (visBareEuOgEftaLand: boolean, intl: IntlShape): Re
     const countryNameIndex = 1;
 
     return Object.entries(countries.getNames(språk))
-        .sort((a: string[], b: string[]) => a[1].localeCompare(b[1], språk))
-        .filter((countryOptionValue: string[]) =>
-            filteredListEØSCountries(countryOptionValue[isoCodeIndex], visBareEuOgEftaLand)
+        .sort((a: [string, string | string[]], b: [string, string | string[]]) =>
+            typeof a[1] === 'string' && typeof b[1] === 'string' ? a[1].localeCompare(b[1], språk) : 1
         )
-        .map((countryOptionValue: string[]) => (
+        .filter((countryOptionValue: [string, string | string[]]) =>
+            filteredListEØSCountries(countryOptionValue, visBareEuOgEftaLand)
+        )
+        .map((countryOptionValue: [string, string | string[]]) => (
             <option key={countryOptionValue[isoCodeIndex]} value={countryOptionValue[isoCodeIndex]}>
                 {countryOptionValue[countryNameIndex]}
             </option>
