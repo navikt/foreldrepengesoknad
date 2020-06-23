@@ -17,7 +17,7 @@ export const getStønadskontoParams = (
         farMedmor,
     } = søknadsinfo;
 
-    if (grunnlag && skalKunneViseMorsUttaksplanForFarEllerMedmor(grunnlag, søknadsinfo) && erEndringssøknad) {
+    if (grunnlag && (skalKunneViseMorsUttaksplanForFarEllerMedmor(grunnlag, søknadsinfo) || erEndringssøknad)) {
         const params = {
             antallBarn: grunnlag.antallBarn,
             fødselsdato: undefined,
