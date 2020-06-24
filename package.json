@@ -83,7 +83,7 @@
         "husky": "^4.2.5",
         "jest": "^26.0.1",
         "jest-css-modules": "^2.1.0",
-        "jest-environment-node": "^26.0.1",
+        "jest-environment-node": "^26.1.0",
         "less": "^3.11.3",
         "less-loader": "^6.1.2",
         "multer": "^1.4.2",
