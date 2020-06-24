@@ -92,7 +92,7 @@ export const validateFødselsnummer = (
         return createFieldValidationError('valideringsfeil.fødselsnummer.underSeksten');
     }
 
-    return validFnrResult === 'F'
+    return validFnrResult === 'F' || validFnrResult === 'D'
         ? undefined
         : createFieldValidationError('valideringsfeil.fødselsnummer.ugyldigFødselsnummer');
 };
