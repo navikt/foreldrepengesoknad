@@ -79,10 +79,8 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     name: BostedUtlandFormFields.fom,
                                     label: getMessage(intl, 'fraogmed'),
                                     fullscreenOverlay: true,
-                                    dateLimitations: {
-                                        minDato: minDate,
-                                        maksDato: values.tom || maxDate,
-                                    },
+                                    minDate,
+                                    maxDate: values.tom || maxDate,
                                     validate: (date: Date) =>
                                         dateRangeValidation.validateFromDate(date, minDate, maxDate, values.tom),
                                 }}
@@ -90,10 +88,8 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     name: BostedUtlandFormFields.tom,
                                     label: getMessage(intl, 'tilogmed'),
                                     fullscreenOverlay: true,
-                                    dateLimitations: {
-                                        minDato: values.fom || minDate,
-                                        maksDato: maxDate,
-                                    },
+                                    minDate: values.fom || minDate,
+                                    maxDate,
                                     validate: (date: Date) =>
                                         dateRangeValidation.validateToDate(date, minDate, maxDate, values.fom),
                                 }}

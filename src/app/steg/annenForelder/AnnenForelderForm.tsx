@@ -108,7 +108,7 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                                 <AnnenForelderFormComponents.DatePicker
                                     name={AnnenForelderFieldNames.datoForAleneomsorg}
                                     label={getMessage(intl, 'datoForAleneomsorg.spørsmål')}
-                                    dateLimitations={{ minDato: familiehendelseDato }}
+                                    minDate={familiehendelseDato}
                                     validate={validateRequiredField}
                                 />
                             </Block>
