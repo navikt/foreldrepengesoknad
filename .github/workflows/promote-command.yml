@@ -44,7 +44,7 @@ jobs:
                             issue_number: ${{ github.event.client_payload.github.payload.issue.number }} }
             github.issues.createComment({...issue,
                                     body: '>promote ${{ github.event.client_payload.slash_command.args }} feilet'})
-            github.issues.addLabels({...issue, labels: ['deployment-feil','${{ env.CLUSTER }}-{{ env.NAMESPACE }']})
+            github.issues.addLabels({...issue, labels: ['deployment-feil','${{ env.CLUSTER }}-${{{ env.NAMESPACE }']})
      
  
       - name: Oppdater kommentar med deployment status
@@ -58,6 +58,6 @@ jobs:
                             issue_number: ${{ github.event.client_payload.github.payload.issue.number }} }
             github.issues.createComment({...issue,
                                     body: '>promote ${{ github.event.client_payload.slash_command.args }} var OK'})
-            github.issues.addLabels({...issue, labels: ['${{ env.CLUSTER }}-{{ env.NAMESPACE }']})
+            github.issues.addLabels({...issue, labels: ['${{ env.CLUSTER }}-${{{ env.NAMESPACE }']})
    
                   
