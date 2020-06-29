@@ -72,7 +72,7 @@ jobs:
               const bygg = github.issues.createLabel({
                            owner: context.issue.owner,
                            repo: context.issue.repo,
-                           name : 'jalla',
+                           name: 'jalla',
                            color: 'b7b7ff',
                        });
               github.issues.create( {
