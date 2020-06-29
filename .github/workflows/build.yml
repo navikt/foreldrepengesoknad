@@ -75,6 +75,12 @@ jobs:
                 labels: ['bygg'],
                 title: 'Deploy av ${{ env.TAG }}'})
               .then(response => {
+                      const bygg = github.issues.createLabel({
+                           owner: context.issue.owner,
+                           context.issue.repo,
+                           'jalla',
+                           b7b7ff,
+                       });
                       const issue = { owner: context.issue.owner,
                       repo: context.issue.repo,
                       issue_number: response.data.number }
