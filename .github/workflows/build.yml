@@ -70,13 +70,7 @@ jobs:
           labels: 'bygg'
           token: ${{ secrets.NOTIFICATION }}
           title: Bygg av ${{ env.TAG }}
-          body: |
-            Kommenter med <b>/promote  cluster</b>, hvor <b>cluster</b> er et gyldig clusternavn
-            <table>
-            <tr><th>Cluster</th></tr>
-            <tr><td>dev-sbs</td>
-            <tr><td>prod-sbs</tr>
-            </table>
+          body: Kommenter med <b>/promote cluster namespace</b>
      
       - name: Trigg deploy til dev-sbs og dev-gcp
         if: success()
@@ -89,7 +83,7 @@ jobs:
                             issue_number: ${{ steps.createdeployissue.outputs.number }} }
             github.issues.createComment({...issue,
                                     title: 'Deploy av ${{ env.TAG }}',
-                                    body: '/promote dev-sbs'})
+                                    body: '/promote dev-sbs teamforeldrepenger'})
             github.issues.createComment({...issue,
                                     title: 'Deploy av ${{ env.TAG }}',
-                                    body: '/promote dev-gcp'})
+                                    body: '/promote dev-gcp teamforeldrepenger'})
