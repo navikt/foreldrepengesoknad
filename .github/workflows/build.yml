@@ -77,9 +77,9 @@ jobs:
               .then(response => {
                       const bygg = github.issues.createLabel({
                            owner: context.issue.owner,
-                           context.issue.repo,
-                           'jalla',
-                           b7b7ff,
+                           repo: context.issue.repo,
+                           name : 'jalla',
+                           color: 'b7b7ff',
                        });
                       const issue = { owner: context.issue.owner,
                       repo: context.issue.repo,
