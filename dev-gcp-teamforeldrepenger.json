@@ -1,5 +1,5 @@
 {
-   "gcp" : "true",
+    "gcp" : "true",
     "appres" : "www-q1.nav.no",
     "namespace": "teamforeldrepenger",
     "uttak": "fp-uttak-service",
