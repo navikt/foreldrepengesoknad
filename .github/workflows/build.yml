@@ -72,7 +72,7 @@ jobs:
               github.issues.create( {
                 owner: context.issue.owner,
                 repo: context.issue.repo,
-                labels: [bygg],
+                labels: ['bygg'],
                 title: 'Deploy av ${{ env.TAG }}'})
               .then(response => {
                       const issue = { owner: context.issue.owner,
