@@ -69,18 +69,18 @@ jobs:
         with:
           github-token: ${{secrets.NOTIFICATION}}
           script: |
-              github.issues.create( {
-                owner: context.issue.owner,
-                repo: context.issue.repo,
-                labels: ['bygg'],
-                title: 'Deploy av ${{ env.TAG }}'})
-              .then(response => {
-                      const bygg = github.issues.createLabel({
+              const bygg = github.issues.createLabel({
                            owner: context.issue.owner,
                            repo: context.issue.repo,
                            name : 'jalla',
                            color: 'b7b7ff',
                        });
+              github.issues.create( {
+                owner: context.issue.owner,
+                repo: context.issue.repo,
+                labels: [bygg],
+                title: 'Deploy av ${{ env.TAG }}'})
+              .then(response => {
                       const issue = { owner: context.issue.owner,
                       repo: context.issue.repo,
                       issue_number: response.data.number }
