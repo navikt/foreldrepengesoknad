@@ -69,12 +69,6 @@ jobs:
         with:
           github-token: ${{secrets.NOTIFICATION}}
           script: |
-              const bygg = github.issues.createLabel({
-                           owner: context.issue.owner,
-                           repo: context.issue.repo,
-                           name: 'jalla',
-                           color: 'b7b7ff',
-                       });
               github.issues.create( {
                 owner: context.issue.owner,
                 repo: context.issue.repo,
