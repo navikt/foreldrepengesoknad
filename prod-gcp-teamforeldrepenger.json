@@ -1,4 +1,5 @@
 {
+    "gcp" : "true",
     "appres": "www.nav.no",
     "namespace": "teamforeldrepenger",
     "ingresses": ["https://foreldrepengesoknad.nav.no"],
