@@ -1,4 +1,5 @@
 {
+    "namespace" : "teamforeldrepenger",
     "appres": "appres.nav.no",
     "ingresses": ["https://foreldrepengesoknad.nav.no"],
     "env": {

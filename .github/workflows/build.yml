@@ -13,32 +13,12 @@ jobs:
   kompiler:
     runs-on: ubuntu-latest
     steps:
-      - name: Lukk deployment-issues
-        uses: actions/github-script@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              labels: ['bygg']
-            }).then(response => {
-              response.data.forEach(issue => {
-                github.issues.update({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: issue.number,
-                  state: 'closed'
-                });
-              });
-            }); 
+     
       - name: Sjekk ut kode
         uses: actions/checkout@v2
      
       - name: Hent tag    
-        run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)"  
-             
+        run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)"           
              
       - name: Cache node modules
         uses: actions/cache@v2
@@ -62,34 +42,46 @@ jobs:
           echo  ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} --password-stdin
           docker push ${IMAGE_BASE}   
   
-      - name: Opprett deployment issue
-        if: success()
-        uses: maxkomarychev/oction-create-issue@v0.7.1
-        id: createdeployissue
+      - name: Lukk gamle bygg-issues
+        uses: actions/github-script@v2
         with:
-          labels: 'bygg'
-          token: ${{ secrets.NOTIFICATION }}
-          title: Bygg av ${{ env.TAG }}
-          body: |
-            Kommenter med <b>/promote  cluster</b>, hvor <b>cluster</b> er et gyldig clusternavn
-            <table>
-            <tr><th>Cluster</th></tr>
-            <tr><td>dev-sbs</td>
-            <tr><td>prod-sbs</tr>
-            </table>
-     
-      - name: Trigg deploy til dev-sbs og dev-gcp
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: ['bygg']
+            }).then(response => {
+              response.data.forEach(issue => {
+                github.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed'
+                });
+              });
+            });     
+      
+      - name: Opprett issue, trigg deploy til dev-fss og dev-gcp
         if: success()
         uses: actions/github-script@v2
         with:
           github-token: ${{secrets.NOTIFICATION}}
           script: |
-            const issue = { owner: context.issue.owner,
-                            repo: context.issue.repo,
-                            issue_number: ${{ steps.createdeployissue.outputs.number }} }
-            github.issues.createComment({...issue,
-                                    title: 'Deploy av ${{ env.TAG }}',
-                                    body: '/promote dev-sbs'})
-            github.issues.createComment({...issue,
-                                    title: 'Deploy av ${{ env.TAG }}',
-                                    body: '/promote dev-gcp'})
+              github.issues.create( {
+                owner: context.issue.owner,
+                repo: context.issue.repo,
+                labels: ['bygg'],
+                title: 'Deploy av ${{ env.TAG }}'})
+              .then(response => {
+                      const issue = { owner: context.issue.owner,
+                      repo: context.issue.repo,
+                      issue_number: response.data.number }
+                     github.issues.createComment({...issue,
+                            title: 'Deploy av ${{ env.TAG }}',
+                            body: '/promote dev-sbs teamforeldrepenger'})
+                     github.issues.createComment({...issue,
+                            title: 'Deploy av ${{ env.TAG }}',
+                            body: '/promote dev-gcp teamforeldrepenger'})
+               });
