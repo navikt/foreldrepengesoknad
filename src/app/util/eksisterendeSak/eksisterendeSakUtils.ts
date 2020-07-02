@@ -319,14 +319,19 @@ const getBarnFromSaksgrunnlag = (
         moment(b.fødselsdato).format('YYYY-MM-DD').localeCompare(moment(a.fødselsdato).format('YYYY-MM-DD'))
     )[0];
 
+    let erBarnetFødt;
     if (nyesteBarn === undefined) {
-        return undefined;
+        erBarnetFødt = sak.erBarnetFødt;
+    } else {
+        erBarnetFødt = moment(nyesteBarn.fødselsdato).isBetween(
+            moment(sak.familieHendelseDato).subtract(20, 'weeks'),
+            moment(sak.familieHendelseDato).add(6, 'weeks')
+        );
     }
 
-    const erBarnetFødt = moment(nyesteBarn.fødselsdato).isBetween(
-        moment(sak.familieHendelseDato).subtract(20, 'weeks'),
-        moment(sak.familieHendelseDato).add(6, 'weeks')
-    );
+    if (erBarnetFødt === undefined) {
+        return undefined;
+    }
 
     switch (situasjon) {
         case Søkersituasjon.FØDSEL:
