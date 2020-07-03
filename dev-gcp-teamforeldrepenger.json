@@ -3,12 +3,12 @@
     "appres" : "www-q1.nav.no",
     "namespace": "teamforeldrepenger",
     "uttak": "fp-uttak-service",
-    "ingresses": ["https://foreldrepengesoknad.dev-nav.no","https://foreldrepengesoknad.dev-gcp.nais.io"],
+    "ingresses": ["https://foreldrepengesoknad.dev.nav.no","https://foreldrepengesoknad.dev-gcp.nais.io"],
     "env": {
         "APPRES_CMS_URL": "https://www-q1.nav.no/dekoratoren",
-        "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.dev-nav.no/rest",
-        "LOGINSERVICE_URL": "https://loginservice.dev-nav.no/login",
-        "FP_UTTAK_SERVICE_URL": "https://fp-uttak-service.dev-nav.no",
+        "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.dev.nav.no/rest",
+        "LOGINSERVICE_URL": "https://loginservice.dev.nav.no/login",
+        "FP_UTTAK_SERVICE_URL": "https://fp-uttak-service.dev.nav.no",
         "FEATURE_VIS_PERIODER_SOM_SENDES_INN": "on"
     }
 }
