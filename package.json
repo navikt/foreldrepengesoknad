@@ -120,7 +120,7 @@
     },
     "dependencies": {
         "@formatjs/intl-pluralrules": "^2.2.9",
-        "@formatjs/intl-relativetimeformat": "^5.2.9",
+        "@formatjs/intl-relativetimeformat": "^6.1.0",
         "@navikt/fnrvalidator": "^1.1.2",
         "@navikt/sif-common-formik": "^10.0.3-beta.0",
         "@navikt/sif-common-question-config": "^0.0.6",
