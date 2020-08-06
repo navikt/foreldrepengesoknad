@@ -48,7 +48,7 @@
         "@types/lodash": "^4.14.157",
         "@types/lodash.groupby": "^4.6.6",
         "@types/lodash.throttle": "^4.1.6",
-        "@types/react": "^16.9.41",
+        "@types/react": "^16.9.44",
         "@types/react-aria-menubutton": "^6.2.5",
         "@types/react-collapse": "^5.0.0",
         "@types/react-document-title": "^2.0.4",
