@@ -2,7 +2,7 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: foreldrepengesoknad
-  namespace: {{namespace}}
+  namespace: teamforeldrepenger
   labels:
     team: teamforeldrepenger
 spec:
