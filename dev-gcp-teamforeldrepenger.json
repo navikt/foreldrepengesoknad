@@ -1,7 +1,6 @@
 {
     "gcp" : "true",
     "appres" : "www-q1.nav.no",
-    "namespace": "teamforeldrepenger",
     "uttak": "fp-uttak-service",
     "ingresses": ["https://foreldrepengesoknad.dev.nav.no","https://foreldrepengesoknad.dev-gcp.nais.io"],
     "env": {
