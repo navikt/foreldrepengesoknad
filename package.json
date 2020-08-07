@@ -132,7 +132,7 @@
         "date-holidays": "^1.6.2",
         "detect-browser": "^5.1.1",
         "express": "^4.17.1",
-        "formik": "^2.1.4",
+        "formik": "^2.1.5",
         "git-revision-webpack-plugin": "^3.0.6",
         "history": "^5.0.0",
         "i18n-iso-countries": "^6.0.0",
