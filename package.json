@@ -137,7 +137,7 @@
         "history": "^5.0.0",
         "i18n-iso-countries": "^6.0.0",
         "is-valid-fodselsnummer": "^3.0.5",
-        "jsdom": "^16.2.2",
+        "jsdom": "^16.4.0",
         "lodash": "^4.17.19",
         "lodash.groupby": "^4.6.0",
         "lodash.throttle": "^4.1.1",
