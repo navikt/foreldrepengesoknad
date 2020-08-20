@@ -1,8 +1,8 @@
 {
     "gcp": "true",
-    "appres": "www-q1.nav.no",
+    "appres": dekoratoren.dev.nav.no",
     "uttak": "fp-uttak-service",
-    "ingresses": ["https://foreldrepengesoknad.dev.nav.no", "https://foreldrepengesoknad.dev-gcp.nais.io"],
+    "ingresses": ["https://foreldrepengesoknad.dev.nav.no"],
     "env": {
         "APPRES_CMS_URL": "https://dekoratoren.dev.nav.no/",
         "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.dev.nav.no/rest",
