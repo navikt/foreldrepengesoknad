@@ -9,8 +9,8 @@ spec:
 {{#if gcp}}        
   accessPolicy:
     outbound:
-     external:
-      - host: dekoratoren.dev.nav.no
+      external:
+        - host: dekoratoren.dev.nav.no
       rules:
         - application: {{uttak}}
 {{/if}}               
