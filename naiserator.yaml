@@ -51,4 +51,3 @@ spec:
   {{/each}}
    - name: APP_VERSION
      value: {{image}}
-  webproxy: true
