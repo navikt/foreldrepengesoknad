@@ -1,6 +1,6 @@
 const jsdom = require('jsdom');
 const request = require('request');
-const fs = require('fs-extra');
+// const fs = require('fs-extra');
 
 const { JSDOM } = jsdom;
 
@@ -9,15 +9,15 @@ const requestDecorator = (callback) => {
     return request(`${baseUrl}/?simple=true`, callback);
 };
 
-const loadFallbackDecorator = () => {
-    console.log('Attempt to load fallback decorator');
-    try {
-        return fs.readFileSync('fallback-decorator.html', 'utf8');
-    } catch (err) {
-        console.log(err);
-        return undefined;
-    }
-};
+// const loadFallbackDecorator = () => {
+//     console.log('Attempt to load fallback decorator');
+//     try {
+//         return fs.readFileSync('fallback-decorator.html', 'utf8');
+//     } catch (err) {
+//         console.log(err);
+//         return undefined;
+//     }
+// };
 
 const extractDecoratorFragments = (html) => {
     console.log('Extracting decorator fragments', html);
@@ -39,11 +39,12 @@ const getDecorator = () =>
                 resolve(extractDecoratorFragments(body));
             } else {
                 try {
-                    console.log(error);
-                    resolve(extractDecoratorFragments(loadFallbackDecorator()));
-                } catch (error) {
-                    console.log(error);
-                    reject(error);
+                    // console.log(error);
+                    // resolve(extractDecoratorFragments(loadFallbackDecorator()));
+                    resolve(process.exit());
+                } catch (err) {
+                    console.log(err);
+                    reject(err);
                 }
             }
         };
