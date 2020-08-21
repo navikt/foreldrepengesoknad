@@ -11,8 +11,8 @@ spec:
     outbound:
       rules:
         - application: {{uttak}}
-      external:
-        - host: dekoratoren.dev.nav.no
+        - application: nav-dekoratoren
+          namespace: personbruker
 {{/if}}               
   image: {{image}}
   port: 8080
