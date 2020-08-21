@@ -9,10 +9,10 @@ spec:
 {{#if gcp}}        
   accessPolicy:
     outbound:
+      external:
+        - host:  {{dekoratoren}}
       rules:
         - application: {{uttak}}
-      external:
-        - host: dekoratoren.dev.nav.no
 {{/if}}               
   image: {{image}}
   port: 8080
@@ -51,4 +51,3 @@ spec:
   {{/each}}
    - name: APP_VERSION
      value: {{image}}
-  webproxy: true

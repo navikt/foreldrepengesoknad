@@ -1,6 +1,7 @@
 {
     "gcp": "true",
     "uttak": "fp-uttak-service",
+    "dekoratoren": "dekoratoren.dev.nav.no",
     "ingresses": ["https://foreldrepengesoknad.dev.nav.no"],
     "env": {
         "APPRES_CMS_URL": "https://dekoratoren.dev.nav.no",
