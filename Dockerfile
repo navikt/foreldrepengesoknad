@@ -3,7 +3,7 @@ FROM node:alpine
 WORKDIR /usr/src/app
 
 RUN apk add --no-cache curl
-RUN curl -f -o fallback-decorator.html "https://appres.nav.no/common-html/v4/navno?header=true&styles=true&scripts=true&footer=true"
+RUN curl -f -o fallback-decorator.html "https://www.nav.no/dekoratoren/?simple=true"
 
 COPY dist ./dist
 
