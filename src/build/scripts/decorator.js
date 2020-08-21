@@ -1,6 +1,5 @@
 const jsdom = require('jsdom');
 const request = require('request');
-// const fs = require('fs-extra');
 
 const { JSDOM } = jsdom;
 
@@ -8,16 +7,6 @@ const requestDecorator = (callback) => {
     const baseUrl = process.env.APPRES_CMS_URL;
     return request(`${baseUrl}/?simple=true`, callback);
 };
-
-// const loadFallbackDecorator = () => {
-//     console.log('Attempt to load fallback decorator');
-//     try {
-//         return fs.readFileSync('fallback-decorator.html', 'utf8');
-//     } catch (err) {
-//         console.log(err);
-//         return undefined;
-//     }
-// };
 
 const extractDecoratorFragments = (html) => {
     console.log('Extracting decorator fragments', html);
@@ -39,8 +28,7 @@ const getDecorator = () =>
                 resolve(extractDecoratorFragments(body));
             } else {
                 try {
-                    // console.log(error);
-                    // resolve(extractDecoratorFragments(loadFallbackDecorator()));
+                    console.log('Failed to get decorator. Exiting node.');
                     process.exit(1);
                 } catch (err) {
                     console.log(err);
