@@ -41,7 +41,7 @@ const getDecorator = () =>
                 try {
                     // console.log(error);
                     // resolve(extractDecoratorFragments(loadFallbackDecorator()));
-                    resolve(process.exit());
+                    process.exit(1);
                 } catch (err) {
                     console.log(err);
                     reject(err);
