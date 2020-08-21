@@ -9,10 +9,10 @@ spec:
 {{#if gcp}}        
   accessPolicy:
     outbound:
+     external:
+      - host: dekoratoren.dev.nav.no
       rules:
         - application: {{uttak}}
-        - application: nav-dekoratoren
-          namespace: personbruker
 {{/if}}               
   image: {{image}}
   port: 8080
