@@ -10,7 +10,7 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: dekoratoren.dev.nav.no
+        - host:  {{dekoratoren}}
       rules:
         - application: {{uttak}}
 {{/if}}               
