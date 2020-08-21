@@ -11,7 +11,8 @@ spec:
     outbound:
       rules:
         - application: {{uttak}}
-        - application: dekoratoren
+      external:
+        - host: dekoratoren.dev.nav.no
 {{/if}}               
   image: {{image}}
   port: 8080
