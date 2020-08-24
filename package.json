@@ -105,7 +105,7 @@
         "nav-frontend-typografi-style": "^1.0.22",
         "nav-frontend-veileder-style": "^2.0.15",
         "nav-frontend-veilederpanel-style": "0.0.29",
-        "prettier": "^2.0.5",
+        "prettier": "^2.1.0",
         "pretty-quick": "^2.0.1",
         "react-test-renderer": "^16.13.1",
         "style-loader": "^1.2.1",
