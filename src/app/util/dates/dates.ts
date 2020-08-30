@@ -248,7 +248,7 @@ export const dateRangesCollide = (ranges: DateRange[]): boolean => {
         const sortedDates = ranges.sort(sortDateRange);
         const hasOverlap = ranges.find((d, idx) => {
             if (idx < sortedDates.length - 1) {
-                return moment(d.to).isAfter(sortedDates[idx + 1].from);
+                return moment(d.to).isSameOrAfter(sortedDates[idx + 1].from);
             }
             return false;
         });
