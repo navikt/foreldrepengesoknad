@@ -1,6 +1,6 @@
 {
     "appres": "appres-q1.nav.no",
-    "ingresses": ["https://foreldrepengesoknad-q.nav.no", "https://foreldrepengesoknad.dev-sbs.nais.io"],
+    "ingresses": ["https://foreldrepengesoknad-q.nav.no"],
     "env": {
         "APPRES_CMS_URL": "https://www-q1.nav.no/dekoratoren",
         "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api-q.nav.no/rest",
