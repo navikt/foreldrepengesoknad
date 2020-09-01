@@ -54,8 +54,14 @@ const erUttakGrunnetSykdom = (periode: Periode) => {
         return true;
     }
 
-    if (isUttaksperiode(periode) && periode.erMorForSyk === true) {
-        return true;
+    if (isUttaksperiode(periode)) {
+        if (
+            periode.erMorForSyk === true ||
+            periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
+            periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
+        ) {
+            return true;
+        }
     }
 
     if (
