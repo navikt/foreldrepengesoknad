@@ -20,9 +20,9 @@ import søknadActionCreators from '../../../redux/actions/søknad/søknadActionC
 import DocumentTitle from 'react-document-title';
 import FortsettSøknadSenereDialog from '../../dialoger/fortsettSøknadSenereDialog/FortsettSøknadSenereDialog';
 import Stegindikator from '../stegindikator/Stegindikator';
-import lenker from 'app/util/routing/lenker';
 
 import './steg.less';
+import Environment from 'app/Environment';
 
 interface RenderStegContentOptions {
     onValidFormSubmit: () => void;
@@ -98,7 +98,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 
     handleAvsluttOgFortsettSenere() {
-        (window as any).location = lenker.familie;
+        (window as any).location = Environment.FAMILIE;
     }
 
     handleOnSubmit(event?: FormSubmitEvent) {
