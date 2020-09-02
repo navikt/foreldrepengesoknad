@@ -2,7 +2,7 @@
     "gcp": "true",
     "uttak": "fp-uttak-service",
     "dekoratoren": "dekoratoren.dev.nav.no",
-    "ingresses": ["https://foreldrepengesoknad.dev.nav.no","https://foreldrepengesoknad.dev.adeo.no"],
+    "ingresses": ["https://foreldrepengesoknad.dev.nav.no"],
     "env": {
         "APPRES_CMS_URL": "https://dekoratoren.dev.nav.no",
         "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.dev.nav.no/rest",
