@@ -34,10 +34,19 @@ const erAvslåttBehandling = (behandling: Behandling) => {
     );
 };
 
+const erUrelevantAutomatiskOpprettetBehandling = (behandling: Behandling) => {
+    if (behandling.behandlingResultat === BehandlingResultatType.MERGET_OG_HENLAGT) {
+        return true;
+    }
+
+    return false;
+};
+
 export const harEnAvsluttetBehandling = (sak: Sak): boolean => {
     return sak.behandlinger
         ? sak.behandlinger
               .filter((behandling: Behandling) => !erAvslåttBehandling(behandling))
+              .filter((behandling: Behandling) => !erUrelevantAutomatiskOpprettetBehandling(behandling))
               .some((behandling: Behandling) => behandling.status === BehandlingStatus.AVSLUTTET)
         : false;
 };
