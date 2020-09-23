@@ -104,7 +104,7 @@
     "bekreftTilbakestillUttaksplanDialog.okLabel": "Ja, tilbakestill",
     "bekreftTilbakestillUttaksplanDialog.tekst": "Ønsker du å tilbakestille planen til opprinnelig plan?",
     "bekreftTilbakestillUttaksplanDialog.tittel": "Tilbakestill plan",
-    "blittYrkesaktivSiste3År.hjelpetekst": "Du skal svare ja på spørsmålet hvis du har hatt jobb med lav eller ingen inntekt før du starter virksomheten din.",
+    "blittYrkesaktivSiste3År.hjelpetekst": "Du skal svare ja på spørsmålet hvis du ikke har hatt jobb, eller har hatt jobb med lav inntekt, før du startet virksomheten din.",
     "blittYrkesaktivSiste3År.spørsmål": "Har du begynt å jobbe i løpet av de 3 siste ferdigliknede årene?",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",
     "boddINorgeSiste12Mnd.alternativ.boddIUtlandet": "bodd i utlandet helt eller delvis",
