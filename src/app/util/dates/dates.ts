@@ -9,8 +9,9 @@ import {
     date15YearsAnd3MonthsAgo,
 } from '../validation/values';
 import { FamiliehendelseDatoer } from '../../types/søknad/FamiliehendelseDatoer';
-import { Periode } from 'app/types/uttaksplan/periodetyper';
+import { Periode, Periodetype } from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from '../uttaksplan/Perioden';
+import { Tidsperioden } from '../uttaksplan/Tidsperioden';
 
 const moment = require('moment');
 
@@ -42,28 +43,39 @@ export const getEndringstidspunkt = (
 
     let endringstidspunkt;
     if (opprinneligPlan) {
-        endringstidspunkt = updatedPlan.reduce((currentDate, periode, index) => {
-            if (index < opprinneligPlan.length) {
-                if (currentDate === undefined && !Perioden(periode).erLik(opprinneligPlan[index], true, true)) {
+        endringstidspunkt = updatedPlan
+            .filter((p) => p.type !== Periodetype.Hull)
+            .reduce((currentDate, periode, index) => {
+                const opprinneligPeriode = opprinneligPlan[index];
+
+                if (currentDate !== undefined) {
+                    return currentDate;
+                }
+
+                if (index < opprinneligPlan.length) {
+                    if (!Perioden(periode).erLik(opprinneligPeriode, false, true)) {
+                        return periode.tidsperiode.fom;
+                    }
+
+                    if (
+                        Perioden(periode).erLik(opprinneligPeriode, false, true) &&
+                        !Tidsperioden(periode.tidsperiode).erOmsluttetAv(opprinneligPeriode.tidsperiode)
+                    ) {
+                        return periode.tidsperiode.fom;
+                    }
+                }
+
+                if (index === updatedPlan.length - 1 && updatedPlan.length < opprinneligPlan.length) {
+                    // Siste periode i planen har blitt slettet
+                    return periode.tidsperiode.tom;
+                }
+
+                if (index >= opprinneligPlan.length) {
                     return periode.tidsperiode.fom;
                 }
-            }
 
-            if (
-                index === updatedPlan.length - 1 &&
-                currentDate === undefined &&
-                updatedPlan.length < opprinneligPlan.length
-            ) {
-                // Siste periode i planen har blitt slettet
-                return periode.tidsperiode.tom;
-            }
-
-            if (index >= opprinneligPlan.length && currentDate === undefined) {
-                return periode.tidsperiode.fom;
-            }
-
-            return currentDate;
-        }, undefined);
+                return currentDate;
+            }, undefined);
     } else {
         // Bruker har slettet opprinnelig plan, send med alt
         if (updatedPlan.length > 0) {
