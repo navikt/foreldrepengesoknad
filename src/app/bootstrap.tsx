@@ -23,7 +23,7 @@ countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
 
 if (!Intl.PluralRules) {
     require('@formatjs/intl-pluralrules/polyfill');
-    require('@formatjs/intl-pluralrules/dist/locale-data/nb');
+    require('@formatjs/intl-pluralrules/locale-data/nb');
 }
 
 Modal.setAppElement('#appContainer');
