@@ -58,7 +58,7 @@
         "@types/react-scroll": "^1.8.0",
         "@types/react-transition-group": "^4.4.0",
         "@typescript-eslint/eslint-plugin": "^4.4.0",
-        "@typescript-eslint/parser": "^4.3.0",
+        "@typescript-eslint/parser": "^4.4.0",
         "awesome-typescript-loader": "^5.2.1",
         "babel-jest": "^26.5.2",
         "babel-loader": "^8.1.0",
