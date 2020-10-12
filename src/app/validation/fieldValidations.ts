@@ -3,7 +3,7 @@ import { date1YearAgo, date1YearAhead } from 'app/util/validation/values';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import {
     isFødselsnummerFormatValid,
-    isUtenlandskFødselsnummerValid,
+    // isUtenlandskFødselsnummerValid,
     isSixteenOrOlder,
 } from 'app/util/validation/fødselsnummer';
 import { dateRangesCollide, dateRangesExceedsRange } from 'app/util/dates/dates';
@@ -26,11 +26,11 @@ export const validateAnnenForelderInformert = (answer: YesOrNo, fornavn: string)
 
 export const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
-export const fieldIsRequiredError = () => createFieldValidationError('påkrevd');
+export const fieldIsRequiredError = (errorMsg = 'påkrevd') => createFieldValidationError(errorMsg);
 
-export const validateRequiredField = (value: any): SkjemaelementFeil => {
+export const validateRequiredField = (value: any, errorMsg = 'påkrevd'): SkjemaelementFeil => {
     if (!hasValue(value)) {
-        return fieldIsRequiredError();
+        return fieldIsRequiredError(errorMsg);
     }
     return undefined;
 };
@@ -81,14 +81,18 @@ export const validateFødselsnummer = (
     const validFnrResult = isFødselsnummerFormatValid(fnr);
 
     if (erUtenlandskFnr) {
-        return isUtenlandskFødselsnummerValid(fnr) ? undefined : createFieldValidationError('påkrevd');
+        if (fnr === undefined || fnr === '') {
+            return createFieldValidationError('valideringsfeil.fnrPåkrevd');
+        }
+
+        return validFnrResult === 'D' ? undefined : createFieldValidationError('valideringsfeil.ugyldigUtenlandskFnr');
     }
 
     if (fnr === søkersFødselsnummer) {
         return createFieldValidationError('valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer');
     }
 
-    if (!erUtenlandskFnr && !isSixteenOrOlder(fnr, validFnrResult)) {
+    if (!erUtenlandskFnr && !isSixteenOrOlder(fnr, validFnrResult) && validFnrResult === 'F') {
         return createFieldValidationError('valideringsfeil.fødselsnummer.underSeksten');
     }
 
