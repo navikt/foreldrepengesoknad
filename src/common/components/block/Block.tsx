@@ -4,6 +4,7 @@ import BEMHelper from 'common/util/bem';
 import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 
 import './block.less';
+import { Element } from 'nav-frontend-typografi';
 
 export type BlockPadding = 'xl' | 'l' | 'm' | 's' | 'xs' | 'xxs' | 'none';
 
@@ -47,9 +48,9 @@ const Block: React.StatelessComponent<BlockProps> = ({
     const content =
         header !== undefined ? (
             <section className={contentClass}>
-                <div className="heading">
+                <Element tag="h3" className="heading">
                     <LabelWithInfo info={header.info}>{header.title}</LabelWithInfo>
-                </div>
+                </Element>
                 {children}
             </section>
         ) : (
