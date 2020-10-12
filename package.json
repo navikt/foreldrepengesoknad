@@ -185,7 +185,7 @@
         "redux": "^4.0.5",
         "redux-saga": "^1.1.3",
         "reselect": "^4.0.0",
-        "snyk": "^1.410.0"
+        "snyk": "^1.413.2"
     },
     "snyk": true
 }
