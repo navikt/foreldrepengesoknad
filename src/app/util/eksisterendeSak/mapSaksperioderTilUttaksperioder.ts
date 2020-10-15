@@ -217,6 +217,7 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag:
         tidsperiode: { ...saksperiode.tidsperiode },
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
         erArbeidstaker: false,
+        morsAktivitetIPerioden: saksperiode.morsAktivitetIPerioden,
     };
 
     if (utsettelsesperiode.årsak === UtsettelseÅrsakType.Arbeid) {
