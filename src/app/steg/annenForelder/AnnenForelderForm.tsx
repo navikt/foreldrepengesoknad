@@ -68,7 +68,7 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                 });
                 return (
                     <AnnenForelderFormComponents.Form
-                        includeButtons={true}
+                        includeButtons={visibility.areAllQuestionsAnswered()}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
                         includeValidationSummary={true}
                         submitButtonLabel="Fortsett"
