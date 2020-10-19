@@ -5,7 +5,6 @@ import {
     AnnenForelderFormComponents,
     AnnenForelderFieldNames,
 } from './form/annenforelderFormTypes';
-import { commonFieldErrorRenderer } from '../utenlandsopphold/bostedUtlandListAndDialog/BostedUtlandForm';
 import OppgiPersonalia from './oppgi-personalia/OppgiPersonalia';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
@@ -19,6 +18,7 @@ import {
     validateYesOrNoIsAnswered,
     validateRequiredField,
     validateAnnenForelderInformert,
+    commonFieldErrorRenderer,
 } from 'app/validation/fieldValidations';
 import AvtaleAtFarTarUtForeldrepengerVeileder from './veiledere/AvtaleAtFarTarUtForeldrepengerVeileder';
 import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
@@ -93,7 +93,9 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                                 name={AnnenForelderFieldNames.aleneOmOmsorg}
                                 info={getMessage(intl, 'annenForelder.aleneOmOmsorg.veileder')}
                                 legend={getMessage(intl, 'annenForelder.aleneOmOmsorg')}
-                                validate={validateYesOrNoIsAnswered}
+                                validate={(erAleneOmOmsorg) =>
+                                    validateYesOrNoIsAnswered(erAleneOmOmsorg, 'valideringsfeil.aleneOmOmsorgPåkrevd')
+                                }
                             />
                             <AvtaleAtFarTarUtForeldrepengerVeileder
                                 visible={
@@ -129,7 +131,12 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                                 legend={getMessage(intl, 'annenForelderRettPåForeldrepenger.spørsmål', {
                                     navn: formValues.fornavn,
                                 })}
-                                validate={validateYesOrNoIsAnswered}
+                                validate={(annenForelderHarRett) =>
+                                    validateYesOrNoIsAnswered(
+                                        annenForelderHarRett,
+                                        'valideringsfeil.annenForelderHarRettPåkrevd'
+                                    )
+                                }
                             />
                         </Block>
                         <Block visible={visibility.isVisible(AnnenForelderFieldNames.erInformertOmSøknaden)}>
@@ -152,7 +159,9 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                                 legend={getMessage(intl, 'erMorUfør.spørsmål', {
                                     navn: formValues.fornavn,
                                 })}
-                                validate={validateYesOrNoIsAnswered}
+                                validate={(erMorUfør) =>
+                                    validateYesOrNoIsAnswered(erMorUfør, 'valideringsfeil.erMorUførPåkrevd')
+                                }
                             />
                         </Block>
                     </AnnenForelderFormComponents.Form>

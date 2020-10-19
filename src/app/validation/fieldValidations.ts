@@ -1,17 +1,24 @@
 import { SkjemaelementFeil } from 'common/lib/validation/types';
 import { date1YearAgo, date1YearAhead } from 'app/util/validation/values';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import {
-    isFødselsnummerFormatValid,
-    // isUtenlandskFødselsnummerValid,
-    isSixteenOrOlder,
-} from 'app/util/validation/fødselsnummer';
+import { NavFrontendSkjemaFeil, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { isFødselsnummerFormatValid, isSixteenOrOlder } from 'app/util/validation/fødselsnummer';
 import { dateRangesCollide, dateRangesExceedsRange } from 'app/util/dates/dates';
 import { BostedUtland } from 'app/steg/utenlandsopphold/bostedUtlandListAndDialog/types';
+import { IntlShape } from 'react-intl';
 
-export const validateYesOrNoIsAnswered = (answer: YesOrNo): string | undefined => {
+export const commonFieldErrorRenderer = (intl: IntlShape, error: any): NavFrontendSkjemaFeil => {
+    if (typeof error === 'object' && error.key !== undefined) {
+        return intl.formatMessage({ id: error.key }, error.values);
+    }
+    if (typeof error === 'string') {
+        return error;
+    }
+    return error !== undefined;
+};
+
+export const validateYesOrNoIsAnswered = (answer: YesOrNo, errorIntlKey?: string): SkjemaelementFeil => {
     if (answer === YesOrNo.UNANSWERED || answer === undefined) {
-        return 'Feltet er påkrevd';
+        return fieldIsRequiredError(errorIntlKey);
     }
     return undefined;
 };

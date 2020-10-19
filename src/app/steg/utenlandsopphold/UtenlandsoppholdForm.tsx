@@ -12,11 +12,11 @@ import {
 } from './form/utenlandsoppholdFormTypes';
 import { utenlandsoppholdFormQuestions } from './form/utenlandsoppholdFormQuestions';
 import BostedUtlandListAndDialog from './bostedUtlandListAndDialog/BostedUtlandListAndDialog';
-import { commonFieldErrorRenderer } from './bostedUtlandListAndDialog/BostedUtlandForm';
 import {
     validateUtenlandsoppholdSiste12Mnd,
     validateUtenlandsoppholdNeste12Mnd,
     validateYesOrNoIsAnswered,
+    commonFieldErrorRenderer,
 } from 'app/validation/fieldValidations';
 import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/types/søknad/InformasjonOmUtenlandsopphold';
 import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
