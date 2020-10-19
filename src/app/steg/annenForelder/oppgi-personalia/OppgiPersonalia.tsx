@@ -1,14 +1,12 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { Element } from 'nav-frontend-typografi';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-
-import { AnnenForelderFormComponents, AnnenForelderFieldNames } from '../form/annenforelderFormTypes';
-import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
+import BEMHelper from 'common/util/bem';
 import getMessage from 'common/util/i18nUtils';
+import Fieldset from 'app/temp-components/Fieldset';
 import { validateFødselsnummer, validateRequiredField } from 'app/validation/fieldValidations';
-
+import { AnnenForelderFieldNames, AnnenForelderFormComponents } from '../form/annenforelderFormTypes';
 import './oppgiPersonalia.less';
 
 const bem = BEMHelper('oppgiPersonalia');
@@ -34,27 +32,34 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
 
     return (
         <div className={bem.block}>
-            <Block margin="xxs">
-                <Element>{getMessage(intl, 'annenForelder.spørsmål.navn')}</Element>
-            </Block>
-            <Block margin="xs" visible={visibility.isVisible(AnnenForelderFieldNames.fornavn)}>
-                <div className={bem.element('nameInputsWrapper')}>
-                    <AnnenForelderFormComponents.Input
-                        className={bem.element('nameInput')}
-                        name={AnnenForelderFieldNames.fornavn}
-                        label={getMessage(intl, 'annenForelder.spørsmål.fornavn')}
-                        disabled={kanIkkeOppgis}
-                        validate={(fornavnValue) => (kanIkkeOppgis ? undefined : validateRequiredField(fornavnValue))}
-                    />
-                    <AnnenForelderFormComponents.Input
-                        className={bem.element('nameInput')}
-                        name={AnnenForelderFieldNames.etternavn}
-                        label={getMessage(intl, 'annenForelder.spørsmål.etternavn')}
-                        disabled={kanIkkeOppgis}
-                        validate={(etternavn) => (kanIkkeOppgis ? undefined : validateRequiredField(etternavn))}
-                    />
-                </div>
-            </Block>
+            <Fieldset legend={getMessage(intl, 'annenForelder.spørsmål.navn')}>
+                <Block margin="xs" visible={visibility.isVisible(AnnenForelderFieldNames.fornavn)}>
+                    <div className={bem.element('nameInputsWrapper')}>
+                        <AnnenForelderFormComponents.Input
+                            className={bem.element('nameInput')}
+                            name={AnnenForelderFieldNames.fornavn}
+                            label={getMessage(intl, 'annenForelder.spørsmål.fornavn')}
+                            disabled={kanIkkeOppgis}
+                            validate={(fornavnValue) =>
+                                kanIkkeOppgis
+                                    ? undefined
+                                    : validateRequiredField(fornavnValue, 'valideringsfeil.fornavnPåkrevd')
+                            }
+                        />
+                        <AnnenForelderFormComponents.Input
+                            className={bem.element('nameInput')}
+                            name={AnnenForelderFieldNames.etternavn}
+                            label={getMessage(intl, 'annenForelder.spørsmål.etternavn')}
+                            disabled={kanIkkeOppgis}
+                            validate={(etternavn) =>
+                                kanIkkeOppgis
+                                    ? undefined
+                                    : validateRequiredField(etternavn, 'valideringsfeil.etternavnPåkrevd')
+                            }
+                        />
+                    </div>
+                </Block>
+            </Fieldset>
             <Block visible={visibility.isVisible(AnnenForelderFieldNames.kanIkkeOppgis)}>
                 <AnnenForelderFormComponents.Checkbox
                     name={AnnenForelderFieldNames.kanIkkeOppgis}

@@ -1,11 +1,11 @@
 import React from 'react';
-import { FormattedMessage, useIntl, IntlShape } from 'react-intl';
-import { getTypedFormComponents, NavFrontendSkjemaFeil } from '@navikt/sif-common-formik/lib';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BostedUtland, isValidBostedUtland } from './types';
 import getMessage from 'common/util/i18nUtils';
 import { dateRangeValidation } from 'app/util/dates/dates';
-import { validateRequiredField } from 'app/validation/fieldValidations';
+import { commonFieldErrorRenderer, validateRequiredField } from 'app/validation/fieldValidations';
 import Block from 'common/components/block/Block';
 
 export interface BostedUtlandFormLabels {
@@ -30,16 +30,6 @@ enum BostedUtlandFormFields {
 type FormValues = Partial<BostedUtland>;
 
 const Form = getTypedFormComponents<BostedUtlandFormFields, FormValues>();
-
-export const commonFieldErrorRenderer = (intl: IntlShape, error: any): NavFrontendSkjemaFeil => {
-    if (typeof error === 'object' && error.key !== undefined) {
-        return intl.formatMessage({ id: error.key }, error.values);
-    }
-    if (typeof error === 'string') {
-        return error;
-    }
-    return error !== undefined;
-};
 
 const BostedUtlandForm: React.FunctionComponent<Props> = ({
     maxDate,
@@ -103,7 +93,9 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                         ? getMessage(intl, 'utenlandsopphold.select.spørsmål.senereOpphold')
                                         : getMessage(intl, 'utenlandsopphold.select.spørsmål.tidligereOpphold')
                                 }
-                                validate={validateRequiredField}
+                                validate={(country) =>
+                                    validateRequiredField(country, 'valideringsfeil.utenlandsopphold.landPåkrevd')
+                                }
                                 useAlpha3Code={false}
                             />
                         </Block>
