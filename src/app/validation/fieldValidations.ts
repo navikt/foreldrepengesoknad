@@ -1,17 +1,24 @@
 import { SkjemaelementFeil } from 'common/lib/validation/types';
 import { date1YearAgo, date1YearAhead } from 'app/util/validation/values';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import {
-    isFødselsnummerFormatValid,
-    isUtenlandskFødselsnummerValid,
-    isSixteenOrOlder,
-} from 'app/util/validation/fødselsnummer';
+import { NavFrontendSkjemaFeil, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { isFødselsnummerFormatValid, isSixteenOrOlder } from 'app/util/validation/fødselsnummer';
 import { dateRangesCollide, dateRangesExceedsRange } from 'app/util/dates/dates';
 import { BostedUtland } from 'app/steg/utenlandsopphold/bostedUtlandListAndDialog/types';
+import { IntlShape } from 'react-intl';
 
-export const validateYesOrNoIsAnswered = (answer: YesOrNo): string | undefined => {
+export const commonFieldErrorRenderer = (intl: IntlShape, error: any): NavFrontendSkjemaFeil => {
+    if (typeof error === 'object' && error.key !== undefined) {
+        return intl.formatMessage({ id: error.key }, error.values);
+    }
+    if (typeof error === 'string') {
+        return error;
+    }
+    return error !== undefined;
+};
+
+export const validateYesOrNoIsAnswered = (answer: YesOrNo, errorIntlKey?: string): SkjemaelementFeil => {
     if (answer === YesOrNo.UNANSWERED || answer === undefined) {
-        return 'Feltet er påkrevd';
+        return fieldIsRequiredError(errorIntlKey);
     }
     return undefined;
 };
@@ -26,11 +33,11 @@ export const validateAnnenForelderInformert = (answer: YesOrNo, fornavn: string)
 
 export const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
-export const fieldIsRequiredError = () => createFieldValidationError('påkrevd');
+export const fieldIsRequiredError = (errorMsg = 'påkrevd') => createFieldValidationError(errorMsg);
 
-export const validateRequiredField = (value: any): SkjemaelementFeil => {
+export const validateRequiredField = (value: any, errorMsg = 'påkrevd'): SkjemaelementFeil => {
     if (!hasValue(value)) {
-        return fieldIsRequiredError();
+        return fieldIsRequiredError(errorMsg);
     }
     return undefined;
 };
@@ -81,14 +88,18 @@ export const validateFødselsnummer = (
     const validFnrResult = isFødselsnummerFormatValid(fnr);
 
     if (erUtenlandskFnr) {
-        return isUtenlandskFødselsnummerValid(fnr) ? undefined : createFieldValidationError('påkrevd');
+        if (fnr === undefined || fnr === '') {
+            return createFieldValidationError('valideringsfeil.fnrPåkrevd');
+        }
+
+        return validFnrResult === 'D' ? undefined : createFieldValidationError('valideringsfeil.ugyldigUtenlandskFnr');
     }
 
     if (fnr === søkersFødselsnummer) {
         return createFieldValidationError('valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer');
     }
 
-    if (!erUtenlandskFnr && !isSixteenOrOlder(fnr, validFnrResult)) {
+    if (!erUtenlandskFnr && !isSixteenOrOlder(fnr, validFnrResult) && validFnrResult === 'F') {
         return createFieldValidationError('valideringsfeil.fødselsnummer.underSeksten');
     }
 
