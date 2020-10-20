@@ -153,7 +153,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                     }
                                 >
                                     <DatoInput
-                                        id="terminbekreftelseDato"
+                                        inputId="terminbekreftelseDato"
                                         name="terminbekreftelseDato"
                                         label={getMessage(intl, 'terminbekreftelseDato.spørsmål')}
                                         onChange={(terminbekreftelseDato: Date) => {

@@ -63,7 +63,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props> {
                 <Block>
                     <DatoInput
                         name="foreldreansvar_dato"
-                        id="foreldreansvar_dato"
+                        inputId="foreldreansvar_dato"
                         label={<Labeltekst intlId="foreldreansvar.overtakelsedato" />}
                         onChange={(dato: Date) =>
                             dispatch(

@@ -1,28 +1,28 @@
 import { formaterDatoTall } from 'common/util/datoUtils';
 import { IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { DatovelgerAvgrensninger } from 'nav-datovelger';
+import { DatepickerLimitations } from 'nav-datovelger';
 
 export const getAvgrensningerDescriptionForInput = (
     intl: IntlShape,
-    avgrensninger: DatovelgerAvgrensninger | undefined
+    avgrensninger: DatepickerLimitations | undefined
 ): string | undefined => {
     if (avgrensninger) {
         let str;
-        if (avgrensninger.minDato || avgrensninger.maksDato) {
-            const fraTekst = avgrensninger.minDato
+        if (avgrensninger.minDate || avgrensninger.maxDate) {
+            const fraTekst = avgrensninger.minDate
                 ? getMessage(intl, 'datoinput.avgrensninger.beskrivelse.fraOgMed', {
-                      dato: formaterDatoTall(avgrensninger.minDato),
+                      dato: formaterDatoTall(avgrensninger.minDate),
                   })
                 : undefined;
-            const tilTekst = avgrensninger.maksDato
+            const tilTekst = avgrensninger.maxDate
                 ? getMessage(intl, 'datoinput.avgrensninger.beskrivelse.tilOgMed', {
-                      dato: formaterDatoTall(avgrensninger.maksDato),
+                      dato: formaterDatoTall(avgrensninger.maxDate),
                   })
                 : undefined;
             str = getMessage(intl, 'datoinput.avgrensninger.beskrivelse.fraTil', { fra: fraTekst, til: tilTekst });
         }
-        if (avgrensninger.helgedagerIkkeTillatt) {
+        if (avgrensninger.weekendsNotSelectable) {
             str = `${str} ${getMessage(intl, 'datoinput.avgrensninger.beskrivelse.ikkeHelg')}`;
         }
         if (str) {

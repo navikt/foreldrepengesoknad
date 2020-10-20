@@ -21,7 +21,7 @@ const MorSinSisteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({ visib
             render={(data, onChange) => (
                 <DatoInput
                     name="morSinSisteUttaksdag"
-                    id="morSinSisteUttaksdag"
+                    inputId="morSinSisteUttaksdag"
                     label={getMessage(intl, 'spørsmål.morSinSisteUttaksdag.label', {
                         navnMor: getNavnGenitivEierform(navnMor, intl.locale),
                     })}

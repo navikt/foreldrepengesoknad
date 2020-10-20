@@ -64,7 +64,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                     <Block>
                         <DatoInput
                             name="næring-datoForEndring"
-                            id="datoForEndring"
+                            inputId="datoForEndring"
                             label={getMessage(intl, 'varigEndringAvNæringsinntekt.dato.label')}
                             onChange={(dato: Date) => {
                                 this.updateEndringAvNæringsinntektInformasjon({

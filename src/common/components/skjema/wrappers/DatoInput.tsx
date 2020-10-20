@@ -8,11 +8,11 @@ import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 type DatoInputWrapperProps = SkjemaelementProps & DatoInputProps;
 
 const DatoInput: React.StatelessComponent<DatoInputWrapperProps> = (props: DatoInputWrapperProps) => {
-    const id = props.id || guid();
+    const id = props.inputId || guid();
     return (
         <ValiderbarDatoInput
             {...props}
-            id={id}
+            inputId={id}
             label={<LabelWithInfo info={props.infotekst}>{props.label}</LabelWithInfo>}
         />
     );

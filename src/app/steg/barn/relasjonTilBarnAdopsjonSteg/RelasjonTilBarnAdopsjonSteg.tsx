@@ -98,7 +98,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                 <Block visible={visibility.spørsmålOmAdopsjonsdato(barn)}>
                     <DatoInput
                         name="adopsjonsdato"
-                        id="adopsjonsdato"
+                        inputId="adopsjonsdato"
                         label={getMessage(
                             intl,
                             barn.adopsjonAvEktefellesBarn ? 'stebarnsadopsjonsdato.spørsmål' : 'adopsjonsdato.spørsmål'
@@ -158,7 +158,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
                 <Block visible={visibility.spørsmålOmAnkomstdato(barn)}>
                     <DatoInput
-                        id="ankomstdato"
+                        inputId="ankomstdato"
                         name="ankomstdato"
                         label={getMessage(intl, 'ankomstdato.spørsmål')}
                         onChange={(ankomstdato: Date) => {

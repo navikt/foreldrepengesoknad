@@ -59,7 +59,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
             </Block>
             <Block visible={vis.terminbekreftelseDato}>
                 <DatoInput
-                    id="terminbekreftelseDato"
+                    inputId="terminbekreftelseDato"
                     name="terminbekreftelseDato"
                     label={getMessage(intl, 'terminbekreftelseDato.spørsmål')}
                     onChange={(terminbekreftelseDato: Date) => {

@@ -84,7 +84,7 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
                         visible={data.valgtStartdatoAleneomsorgFarMedmor === ValgalternativerAleneomsorgFarMedmor.annen}
                     >
                         <ValiderbarDatoInput
-                            id="annenStartdatoAleneomsorgFarMedmor"
+                            inputId="annenStartdatoAleneomsorgFarMedmor"
                             name="annenStartdatoAleneomsorgFarMedmor"
                             label={getMessage(
                                 intl,

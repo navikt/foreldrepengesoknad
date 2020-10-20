@@ -172,7 +172,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                         <>
                             <Block visible={visTermindato(valgtBarn.fødselsdato, søker.rolle)}>
                                 <DatoInput
-                                    id={guid()}
+                                    inputId={guid()}
                                     name="termindato"
                                     dato={(barn as FødtBarn).termindato}
                                     onChange={(termindato: Date) => dispatch(søknadActions.updateBarn({ termindato }))}

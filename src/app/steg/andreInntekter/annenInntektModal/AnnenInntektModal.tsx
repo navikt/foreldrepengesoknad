@@ -182,7 +182,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                 },
                             ],
                         }}
-                        kalenderplassering="fullskjerm"
+                        calendarPosition="fullscreen"
                     />
                 </Block>
                 <Block visible={visibility.vedlegg(annenInntekt)}>

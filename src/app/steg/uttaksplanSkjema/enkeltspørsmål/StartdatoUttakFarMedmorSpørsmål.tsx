@@ -22,7 +22,7 @@ const StartdatoPermisjonSpørsmål = (props: Props) => {
             visible={visible}
             render={(data, onChange) => (
                 <ValiderbarDatoInput
-                    id="permisjonStartdato"
+                    inputId="permisjonStartdato"
                     name="permisjonStartdato"
                     label={getMessage(intl, 'spørsmål.startdatoPermisjonFarMedmor.label')}
                     onChange={(startdatoPermisjon: DateValue) => onChange({ startdatoPermisjon })}

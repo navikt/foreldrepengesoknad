@@ -44,7 +44,7 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                         <Block margin="xs">
                             <DatoInput
                                 name="farSinFørsteUttaksdagSpørsmål"
-                                id="farSinFørsteUttaksdagSpørsmål"
+                                inputId="farSinFørsteUttaksdagSpørsmål"
                                 label={getMessage(intl, 'spørsmål.farSinFørsteUttaksdagSpørsmål.label')}
                                 onChange={(farSinFørsteUttaksdag: Date) =>
                                     onChange(

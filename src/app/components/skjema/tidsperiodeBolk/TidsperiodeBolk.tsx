@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import moment from 'moment';
 import { guid } from 'nav-frontend-js-utils';
 import { Checkbox, SkjemaGruppe } from 'nav-frontend-skjema';
-import { KalenderPlassering } from 'nav-datovelger';
+import { CalendarPlacement } from 'nav-datovelger/lib/types/index';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
 
 import getMessage from 'common/util/i18nUtils';
@@ -49,8 +49,8 @@ interface TidsperiodeBolkProps {
     };
     defaultMånedFom?: Date;
     defaultMånedTom?: Date;
-    kalenderplassering?: KalenderPlassering;
-    kanVelgeUgyldigDato?: boolean;
+    calendarPosition?: CalendarPlacement;
+    allowInvalidDateSelection?: boolean;
     visPågåendePeriodeCheckbox?: boolean;
     ukerOgDagerVelgerEnabled?: boolean;
 }
@@ -68,8 +68,8 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
         defaultMånedFom,
         defaultMånedTom,
         datoInputLabelProps,
-        kanVelgeUgyldigDato,
-        kalenderplassering,
+        allowInvalidDateSelection,
+        calendarPosition,
         onChange,
         visVarighet,
         varighetRenderer,
@@ -124,7 +124,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                     <Block margin="none">
                         <DatoInput
                             name="fraDatoInput"
-                            id={guid()}
+                            inputId={guid()}
                             label={datoInputLabelProps ? datoInputLabelProps.fom : getMessage(intl, 'fraogmed')}
                             onChange={(fom: Date) => {
                                 handleOnChange({
@@ -132,13 +132,13 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                     fom,
                                 });
                             }}
-                            kanVelgeUgyldigDato={kanVelgeUgyldigDato}
+                            allowInvalidDateSelection={allowInvalidDateSelection}
                             disabled={startdatoDisabled}
                             dato={tidsperiode.fom}
                             datoAvgrensinger={datoAvgrensninger && datoAvgrensninger.fra}
                             validators={validators.fra}
                             dayPickerProps={{ initialMonth: defaultMånedFom }}
-                            kalender={{ plassering: kalenderplassering }}
+                            calendarSettings={{ position: calendarPosition }}
                         />
                     </Block>
                 </div>
@@ -147,7 +147,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                     <Block margin="none">
                         <DatoInput
                             name="tilDatoInput"
-                            id={guid()}
+                            inputId={guid()}
                             label={datoInputLabelProps ? datoInputLabelProps.tom : getMessage(intl, 'tilogmed')}
                             onChange={(tom: DateValue) => {
                                 handleOnChange({
@@ -155,7 +155,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                     tom,
                                 });
                             }}
-                            kanVelgeUgyldigDato={kanVelgeUgyldigDato}
+                            allowInvalidDateSelection={allowInvalidDateSelection}
                             dato={tidsperiode.tom}
                             disabled={pågående || false}
                             datoAvgrensinger={tilAvgrensninger}
@@ -163,7 +163,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                             dayPickerProps={{
                                 initialMonth: defaultMånedTom || tidsperiode.fom,
                             }}
-                            kalender={{ plassering: kalenderplassering }}
+                            calendarSettings={{ position: calendarPosition }}
                         />
                     </Block>
                 </div>

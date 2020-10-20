@@ -84,7 +84,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                         <Block visible={vis.termindato}>
                             <div className="infoknappfiks">
                                 <DatoInput
-                                    id="termindato"
+                                    inputId="termindato"
                                     name="termindato"
                                     label={getMessage(intl, 'termindato.spørsmål')}
                                     infotekst={getMessage(intl, 'termindato.infotekst')}

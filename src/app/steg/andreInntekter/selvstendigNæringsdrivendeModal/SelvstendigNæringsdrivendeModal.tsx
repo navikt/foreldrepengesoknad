@@ -220,7 +220,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             fom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.fom', { navnPåNæringen }),
                             tom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.tom', { navnPåNæringen }),
                         }}
-                        kalenderplassering="fullskjerm"
+                        calendarPosition="fullscreen"
                     />
                 </Block>
 
@@ -260,14 +260,14 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 </Block>
                 <Block visible={visibility.oppstartsdato(næring)}>
                     <DatoInput
-                        id="oppstartsdato"
+                        inputId="oppstartsdato"
                         name="oppstartsdato"
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.oppstartsdato')}
                         onChange={(oppstartsdato: Date) => {
                             this.updateNæring({ oppstartsdato });
                         }}
                         dato={næring.oppstartsdato}
-                        kalender={{ plassering: 'fullskjerm' }}
+                        calendarSettings={{ position: 'fullscreen' }}
                         validators={[hasValueRule(næring && næring.oppstartsdato, getMessage(intl, 'påkrevd'))]}
                     />
                 </Block>

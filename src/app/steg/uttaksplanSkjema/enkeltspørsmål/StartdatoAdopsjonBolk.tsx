@@ -82,7 +82,7 @@ const StartdatoAdopsjonBolk = (props: Props) => {
                     </Block>
                     <Block visible={data.valgtAdopsjonStartdato === ValgalternativerAdopsjonStartdato.annen}>
                         <DatoInput
-                            id="annenStartdatoAdopsjon"
+                            inputId="annenStartdatoAdopsjon"
                             name="annenStartdatoAdopsjon"
                             label={getMessage(intl, 'uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål')}
                             onChange={(startdatoPermisjon) => onChange({ startdatoPermisjon })}

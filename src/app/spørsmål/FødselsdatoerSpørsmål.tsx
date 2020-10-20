@@ -117,7 +117,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props> {
             <>
                 <Block>
                     <DatoInput
-                        id="fødselsdato"
+                        inputId="fødselsdato"
                         name="fødsesdato"
                         dato={fødselsdatoer[0]}
                         onChange={(d: Date) => this.onFødselsdatoChange(d, 0)}
@@ -128,7 +128,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props> {
                 </Block>
                 <Block visible={this.visTermindato(fødselsdatoer, erFarMedmor, gjelderAdopsjon)}>
                     <DatoInput
-                        id="termindato"
+                        inputId="termindato"
                         name="termindato"
                         dato={termindato}
                         onChange={(d: Date) => this.props.onChangeTermindato!(d)}
@@ -148,7 +148,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props> {
                 {fødselsdatoer.map((dato: DateValue, idx: number) => (
                     <div className="blokk-m" key={getKey(idx)}>
                         <DatoInput
-                            id={getKey(idx)}
+                            inputId={getKey(idx)}
                             name={getKey(idx)}
                             dato={dato}
                             onChange={(d: Date) => this.onFødselsdatoChange(d, idx)}

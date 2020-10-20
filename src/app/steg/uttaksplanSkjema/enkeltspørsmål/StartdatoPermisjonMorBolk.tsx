@@ -70,7 +70,7 @@ const renderContent = (
             <Block margin="xs">
                 <ValiderbarDatoInput
                     name="permisjonStartdato"
-                    id="permisjonStartdato"
+                    inputId="permisjonStartdato"
                     label={spørsmålNår}
                     onChange={(startdatoPermisjon: DateValue) => {
                         onChange({ startdatoPermisjon });
@@ -84,7 +84,7 @@ const renderContent = (
                     dayPickerProps={{
                         initialMonth: data.startdatoPermisjon ? data.startdatoPermisjon : familiehendelsesdato,
                     }}
-                    kanVelgeUgyldigDato={true}
+                    allowInvalidDateSelection={true}
                     validators={startdatoFørTerminValidators(
                         intl,
                         data.startdatoPermisjon,

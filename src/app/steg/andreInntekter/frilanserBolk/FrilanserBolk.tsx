@@ -96,7 +96,7 @@ class FrilanserBolk extends React.Component<Props> {
                         <Block animated={false} visible={visibility.startdatoVisible(søker)} margin="xs">
                             <DatoInput
                                 name="frilansStartDato"
-                                id="frilansStartDato"
+                                inputId="frilansStartDato"
                                 label={getMessage(intl, 'frilans.oppstart')}
                                 onChange={(oppstart: Date) =>
                                     this.handleFrilansinformasjonOnChange({
