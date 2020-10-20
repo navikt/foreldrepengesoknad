@@ -882,6 +882,7 @@
     "valideringsfeil.etternavnPåkrevd": "Etternavn må fylles ut",
     "valideringsfeil.fnrPåkrevd": "Fødselsnummer må fylles ut",
     "valideringsfeil.ugyldigUtenlandskFnr": "D-nummer er ugyldig",
+    "valideringsfeil.aleneOmOmsorgPåkrevd": "Er du alene om omsorg må fylles ut",
     "valideringsfeil.ugyldigDato": "Ugyldig dato. Dato må være på formatet dd.mm.åååå.",
     "valideringsfeil.annenForelderHarRettPåkrevd": "Har annen forelder rett må fylles ut",
     "valideringsfeil.erMorUførPåkrevd": "Er mor uføretrygdet må fylles ut",
