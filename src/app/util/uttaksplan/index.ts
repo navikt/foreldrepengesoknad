@@ -124,7 +124,13 @@ export const getFamiliehendelsedato = (barn: Partial<Barn>, situasjon?: Søkersi
         return undefined;
     }
     if (isFødtBarn(barn, situasjon)) {
-        return findOldestDate(barn.fødselsdatoer.map((d) => d.date!).filter((d) => d !== undefined));
+        const fødselsdatoer: Date[] = [];
+        barn.fødselsdatoer.forEach((fd) => {
+            if (fd.date) {
+                fødselsdatoer.push(fd.date);
+            }
+        });
+        return findOldestDate(fødselsdatoer);
     }
     if (isUfødtBarn(barn, situasjon)) {
         return barn.termindato.date;

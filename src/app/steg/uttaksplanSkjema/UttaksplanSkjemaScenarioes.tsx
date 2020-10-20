@@ -209,9 +209,9 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
         throw new Error('Barn er ikke adopsjonsbarn');
     }
     const latestDate =
-        barn.ankomstdato?.date !== undefined
-            ? createDatoInputVerdi(findOldestDate([barn.adopsjonsdato.date!, barn.ankomstdato.date!]))
-            : barn.adopsjonsdato!;
+        barn.ankomstdato?.date !== undefined && barn.adopsjonsdato?.date
+            ? createDatoInputVerdi(findOldestDate([barn.adopsjonsdato.date, barn.ankomstdato.date]))
+            : barn.adopsjonsdato;
     const startdatoPermisjon = søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon;
     const stebarnsadopsjon = barn.adopsjonAvEktefellesBarn;
     const adoptertIUtlandet = barn.adoptertIUtlandet;
@@ -331,7 +331,7 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({
     erFarEllerMedmor,
     erDeltUttak,
 }) => {
-    const omsorgsDato = søknad.barn.datoForAleneomsorg || familiehendelsesdato;
+    const omsorgsDato: Date = søknad.barn.datoForAleneomsorg.date || familiehendelsesdato;
     return (
         <>
             <DekningsgradSpørsmål />
@@ -371,7 +371,7 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({
             </Block>
             <StartdatoUttakFarMedmorAleneomsorgSpørsmål
                 familiehendelsesdato={familiehendelsesdato}
-                datoForAleneomsorg={omsorgsDato.date!} // todo
+                datoForAleneomsorg={omsorgsDato}
                 visible={søknad.dekningsgrad !== undefined}
             />
         </>
@@ -468,10 +468,10 @@ const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåFo
                 }
                 navnPåForeldre={navnPåForeldre}
             />
-            {uttaksplanSkjema.farSinFørsteUttaksdag && morSinSisteUttaksdag && (
+            {uttaksplanSkjema.farSinFørsteUttaksdag?.date && morSinSisteUttaksdag && (
                 <UtsettelseBegrunnelse
                     visible={skalFarUtsetteEtterMorSinSisteUttaksdag(
-                        uttaksplanSkjema.farSinFørsteUttaksdag.date!, // todo
+                        uttaksplanSkjema.farSinFørsteUttaksdag.date,
                         morSinSisteUttaksdag
                     )}
                     navn={navnPåForeldre.mor}

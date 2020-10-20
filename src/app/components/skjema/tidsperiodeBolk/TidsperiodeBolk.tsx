@@ -205,9 +205,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                         if (date) {
                                             handleOnChange({
                                                 ...tidsperiode,
-                                                tom: createDatoInputVerdi(
-                                                    getTidsperiode(date!, uker * 5 + nyDager).tom
-                                                ),
+                                                tom: createDatoInputVerdi(getTidsperiode(date, uker * 5 + nyDager).tom),
                                             });
                                         }
                                     },

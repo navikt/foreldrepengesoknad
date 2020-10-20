@@ -105,6 +105,8 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
         const { gjelderAnnetBarn, valgteBarn } = søknadenGjelderBarnValg;
         const valgtBarn = valgteBarn[0];
 
+        const fødtBarnTermindato = (barn as FødtBarn).termindato?.date;
+
         return (
             <Steg {...stegProps} onPreSubmit={this.onPresubmit}>
                 <Block visible={vis.hvilketBarnGjelderSøknadenBolk} margin="none">
@@ -182,10 +184,10 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                 />
                             </Block>
                             <Block
-                                visible={this.visInfoOmPrematuruker(
-                                    valgtBarn.fødselsdato,
-                                    (barn as FødtBarn).termindato.date!
-                                )}
+                                visible={
+                                    fødtBarnTermindato &&
+                                    this.visInfoOmPrematuruker(valgtBarn.fødselsdato, fødtBarnTermindato)
+                                }
                             >
                                 <VeilederInfo
                                     messages={[
@@ -197,10 +199,10 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                 />
                             </Block>
                             <Block
-                                visible={this.visInfoOmPrematuruker(
-                                    valgtBarn.fødselsdato,
-                                    (barn as FødtBarn).termindato.date!
-                                )}
+                                visible={
+                                    fødtBarnTermindato &&
+                                    this.visInfoOmPrematuruker(valgtBarn.fødselsdato, fødtBarnTermindato)
+                                }
                             >
                                 <Block margin="xs">
                                     <Element>{getMessage(intl, 'vedlegg.lastoppknapp.terminbekreftelse')}</Element>
