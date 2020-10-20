@@ -887,6 +887,7 @@
     "valideringsfeil.aleneOmOmsorgPåkrevd": "Er du alene om omsorg må fylles ut",
     "valideringsfeil.annenForelderHarRettPåkrevd": "Har annen forelder rett må fylles ut",
     "valideringsfeil.erMorUførPåkrevd": "Er mor uføretrygdet må fylles ut",
+    "valideringsfeil.ugyldigDato": "Ugyldig dato. Dato må være på formatet dd.mm.åååå.",
     "varDuINorgeDaBarnetBleFødt.spørsmål": "Var du i Noreg då barnet blei født?",
     "varigEndringAvNæringsinntekt.dato.label": "Gi opp dato for endringa",
     "varigEndringAvNæringsinntekt.forklaring.label": "Her kan du skrive kort kva som har endra seg i verksemda eller arbeidssituasjonen din",
