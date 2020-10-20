@@ -14,6 +14,8 @@ import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import _ from 'lodash';
 
+import { Språkkode } from 'common/intl/types';
+
 const stateSelector = (state: AppState) => state;
 
 const mapMissingAttachmentsOnEndringer = (
@@ -30,8 +32,10 @@ const mapMissingAttachmentsOnEndringer = (
 const getSøknadsdataForInnsending = (
     originalSøknad: Søknad,
     missingAttachments: MissingAttachment[],
-    endringerIUttaksplan: Periode[]
+    endringerIUttaksplan: Periode[],
+    språkkode: Språkkode
 ): SøknadForInnsending | EnkelEndringssøknadForInnsending => {
+    console.log(språkkode);
     const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
     mapMissingAttachmentsOnSøknad(missingAttachments, søknad);
 
@@ -54,7 +58,8 @@ function* sendSøknad(action: SendSøknad) {
         const søknadForInnsending = getSøknadsdataForInnsending(
             _.cloneDeep(originalSøknad),
             action.missingAttachments,
-            _.cloneDeep(selectPerioderSomSkalSendesInn(state))
+            _.cloneDeep(selectPerioderSomSkalSendesInn(state)),
+            state.common.språkkode
         );
         const response = yield call(Api.sendSøknad, søknadForInnsending);
         const kvittering: Kvittering = response.data;
