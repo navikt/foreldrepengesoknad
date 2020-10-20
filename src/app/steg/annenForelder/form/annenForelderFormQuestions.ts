@@ -26,10 +26,12 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
     [AnnenForelderFieldNames.fornavn]: {
         isAnswered: ({ fornavn }) => hasValue(fornavn),
         isIncluded: ({ skalOppgiPersonalia }) => skalOppgiPersonalia,
+        isOptional: ({ kanIkkeOppgis }) => kanIkkeOppgis,
     },
     [AnnenForelderFieldNames.etternavn]: {
         isAnswered: ({ etternavn }) => hasValue(etternavn),
         isIncluded: ({ skalOppgiPersonalia }) => skalOppgiPersonalia,
+        isOptional: ({ kanIkkeOppgis }) => kanIkkeOppgis,
     },
     [AnnenForelderFieldNames.kanIkkeOppgis]: {
         isAnswered: ({ kanIkkeOppgis }) => hasValue(kanIkkeOppgis),
