@@ -5,6 +5,7 @@ import JaNeiSpørsmål from '../../common/components/skjema/elements/ja-nei-spø
 import EksternUrl from 'common/components/infoboks/EksternUrl';
 import lenker from '../util/routing/lenker';
 import { Validator } from 'common/lib/validation/types';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 interface HarDuJobbetSomFrilansSiste10MndSpørsmålProps {
     harJobbetSomFrilansSiste10Mnd: boolean;
@@ -35,7 +36,9 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
             clsName="frilanseSiste10mnd"
             hjelpetekst={
                 <>
-                    <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.del1" />
+                    <Normaltekst>
+                        <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.del1" />
+                    </Normaltekst>
                     <ul>
                         <li>
                             <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt1" />
@@ -62,8 +65,10 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
                             <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.punkt8" />
                         </li>
                     </ul>
-                    <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.del2" />
-                    <EksternUrl url={lenker.frilanserInfoBoks} lenkeTekst={getMessage(intl, 'hjemmeside')} />
+                    <Normaltekst>
+                        <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.del2" />
+                        <EksternUrl url={lenker.frilanserInfoBoks} lenkeTekst={getMessage(intl, 'hjemmeside')} />
+                    </Normaltekst>
                 </>
             }
             validators={validerFrilans}
