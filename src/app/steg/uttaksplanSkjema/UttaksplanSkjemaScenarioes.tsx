@@ -209,7 +209,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
         throw new Error('Barn er ikke adopsjonsbarn');
     }
     const latestDate =
-        barn.ankomstdato !== undefined
+        barn.ankomstdato?.date !== undefined
             ? createDatoInputVerdi(findOldestDate([barn.adopsjonsdato.date!, barn.ankomstdato.date!]))
             : barn.adopsjonsdato!;
     const startdatoPermisjon = søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon;

@@ -48,7 +48,7 @@ const terminbekreftelsePartialVisible = (
     barn: Partial<UfødtBarn>,
     skalLasteOppTerminbekreftelse: boolean
 ): boolean => {
-    return termindatoVisibleResult && skalLasteOppTerminbekreftelse && barn.termindato !== undefined;
+    return termindatoVisibleResult && skalLasteOppTerminbekreftelse && barn.termindato?.date !== undefined;
 };
 
 const terminbekreftelseDatoVisible = (
@@ -59,7 +59,7 @@ const terminbekreftelseDatoVisible = (
         terminbekreftelsePartialVisibleResult &&
         barn.terminbekreftelse !== undefined &&
         barn.terminbekreftelse.length > 0 &&
-        barn.termindato !== undefined
+        barn.termindato?.date !== undefined
     );
 };
 

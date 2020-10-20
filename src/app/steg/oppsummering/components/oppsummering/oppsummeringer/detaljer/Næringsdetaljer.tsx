@@ -74,7 +74,7 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring }) => {
                 />
             )}
 
-            {oppstartsdato !== undefined && (
+            {oppstartsdato?.date !== undefined && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.oppstartsdato')}
                     verdi={formatDate(oppstartsdato.date)}

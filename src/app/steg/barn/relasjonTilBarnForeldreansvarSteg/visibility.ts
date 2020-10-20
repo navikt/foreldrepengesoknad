@@ -4,7 +4,7 @@ import { getAlderFraDato } from '../../../util/dates/dates';
 
 const antallBarnVisible: VisibilityFunction<Partial<ForeldreansvarBarn>> = (barn: Partial<ForeldreansvarBarn>) => {
     const { foreldreansvarsdato } = barn;
-    return foreldreansvarsdato !== undefined;
+    return foreldreansvarsdato?.date !== undefined;
 };
 
 const fødselsdatoerVisible: VisibilityFunction<Partial<ForeldreansvarBarn>> = (barn: Partial<ForeldreansvarBarn>) => {

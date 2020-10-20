@@ -38,10 +38,10 @@ const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn) => {
         fødselsdatoer &&
         fødselsdatoer.length > 0 &&
         fødselsdatoer[0] !== undefined &&
-        adopsjonsdato !== undefined &&
+        adopsjonsdato.date !== undefined &&
         (adopsjonAvEktefellesBarnTruthy ||
             adoptertIUtlandet === false ||
-            (adoptertIUtlandetTruthy && ankomstdato !== undefined))
+            (adoptertIUtlandetTruthy && ankomstdato?.date !== undefined))
     );
 };
 
@@ -77,7 +77,7 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
         if (harValgtRegistrertBarn(søknad)) {
             const { søknadenGjelderBarnValg } = søknad.ekstrainfo;
             const valgtBarn = søknadenGjelderBarnValg!.valgteBarn[0];
-            return visTermindato(valgtBarn.fødselsdato, søknad.søker.rolle) ? barn.termindato !== undefined : true;
+            return visTermindato(valgtBarn.fødselsdato, søknad.søker.rolle) ? barn.termindato.date !== undefined : true;
         }
         return isFødtBarn(barn, situasjon)
             ? fødtBarnErGyldig(barn)
@@ -94,7 +94,7 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
 
 export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, arbeidsforhold: Arbeidsforhold[]): boolean => {
     const { barn, situasjon } = søknad;
-    return isUfødtBarn(barn, situasjon) && !harAktivtArbeidsforhold(arbeidsforhold, barn.termindato.date);
+    return isUfødtBarn(barn, situasjon) && !harAktivtArbeidsforhold(arbeidsforhold, barn.termindato?.date);
 };
 
 export const getUniqueRegistrertAnnenForelderFromBarn = (
@@ -138,11 +138,15 @@ const barnErFødtFørAnkomstNorge = (fødselsdato: Date, ankomstdato: Date): boo
 };
 
 export const getAdopsjonAnkomstdatoValidatorer = (barn: Adopsjonsbarn, intl: IntlShape): Validator[] | undefined => {
-    const { fødselsdatoer, ankomstdato } = barn;
-    if (fødselsdatoer && fødselsdatoer.length > 0 && ankomstdato !== undefined) {
+    const { fødselsdatoer, ankomstdato: { date: ankomstDate } = {} } = barn;
+
+    if (fødselsdatoer && fødselsdatoer.length > 0 && ankomstDate !== undefined) {
         return [
             {
-                test: () => barnErFødtFørAnkomstNorge(barn.fødselsdatoer[0].date!, ankomstdato.date!),
+                test: () => {
+                    const fødselsdato = barn.fødselsdatoer[0].date;
+                    return fødselsdato ? barnErFødtFørAnkomstNorge(fødselsdato, ankomstDate) : false;
+                },
                 failText: getMessage(intl, 'valideringsfeil.fodselsdato.etterAdopsjonsdato'),
             },
         ];

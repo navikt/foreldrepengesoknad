@@ -70,7 +70,7 @@ const harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneVisible: Visibilit
         næring.tidsperiode !== undefined &&
         (næring.registrertINorge !== undefined ||
             (næring.registrertILand !== undefined && næring.registrertILand !== '')) &&
-        er4ÅrSidenOppstartEllerMindre(næring as Næring) &&
+        er4ÅrSidenOppstartEllerMindre(næring) &&
         module.næringsinntekt(næring) &&
         næring.næringsinntekt !== undefined
     );

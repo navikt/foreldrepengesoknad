@@ -4,7 +4,7 @@ import { fødselsdatoerErFyltUt } from '../../../util/validation/fødselsdato';
 export const utfyltAdoptertIUtlandet = (barn: Partial<Adopsjonsbarn>): boolean => {
     return (
         module.spørsmålOmAdoptertIUtlandet(barn) &&
-        ((barn.adoptertIUtlandet && barn.ankomstdato !== undefined) || barn.adoptertIUtlandet === false)
+        ((barn.adoptertIUtlandet && barn.ankomstdato?.date !== undefined) || barn.adoptertIUtlandet === false)
     );
 };
 
@@ -13,7 +13,7 @@ const spørsmålOmAdopsjonsdatoVisible = (barn: Partial<Adopsjonsbarn>): boolean
 };
 
 const spørsmålOmAntallBarnVisible = (barn: Partial<Adopsjonsbarn>): boolean => {
-    return barn.adopsjonsdato !== undefined;
+    return barn.adopsjonsdato?.date !== undefined;
 };
 
 const spørsmålOmFodselsdatoerVisible = (barn: Partial<Adopsjonsbarn>): boolean => {
