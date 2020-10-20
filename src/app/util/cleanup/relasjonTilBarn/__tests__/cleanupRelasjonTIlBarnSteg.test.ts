@@ -1,6 +1,7 @@
 import cleanupRelasjonTilBarnFødselSteg from '../cleanupRelasjonTilBarnFødselSteg';
 import { Barn } from '../../../../types/søknad/Barn';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import { createDatoInputVerdiFromDate } from '../../../../../common/components/skjema/elements/dato-input/datoInputUtils';
 
 let dirtyBarn: Partial<Barn>;
 describe('cleanupRelasjonTIlBarnFødselSteg', () => {
@@ -9,11 +10,11 @@ describe('cleanupRelasjonTIlBarnFødselSteg', () => {
         dirtyBarn = {
             antallBarn: 1,
             erBarnetFødt: true,
-            termindato: new Date(),
+            termindato: createDatoInputVerdiFromDate(new Date()),
             terminbekreftelse: [],
-            terminbekreftelseDato: new Date(),
+            terminbekreftelseDato: createDatoInputVerdiFromDate(new Date()),
             fødselsattest: [fødselsattest as Attachment],
-            fødselsdatoer: [new Date()],
+            fødselsdatoer: [createDatoInputVerdiFromDate(new Date())],
         };
     });
 

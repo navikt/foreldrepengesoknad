@@ -172,19 +172,19 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                         <>
                             <Block visible={visTermindato(valgtBarn.fødselsdato, søker.rolle)}>
                                 <DatoInput
-                                    inputId={guid()}
+                                    id={guid()}
                                     name="termindato"
-                                    dato={(barn as FødtBarn).termindato}
-                                    onChange={(termindato: Date) => dispatch(søknadActions.updateBarn({ termindato }))}
+                                    datoVerdi={(barn as FødtBarn).termindato}
+                                    onChange={(termindato) => dispatch(søknadActions.updateBarn({ termindato }))}
                                     label={<Labeltekst intlId="fødselsdatoer.termin" />}
                                     datoAvgrensinger={{ ...termindatoAvgrensningerFodsel }}
-                                    validators={{ ...getTermindatoRegler((barn as FødtBarn).termindato, intl) }}
+                                    validators={{ ...getTermindatoRegler((barn as FødtBarn).termindato.date, intl) }}
                                 />
                             </Block>
                             <Block
                                 visible={this.visInfoOmPrematuruker(
                                     valgtBarn.fødselsdato,
-                                    (barn as FødtBarn).termindato
+                                    (barn as FødtBarn).termindato.date!
                                 )}
                             >
                                 <VeilederInfo
@@ -199,7 +199,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                             <Block
                                 visible={this.visInfoOmPrematuruker(
                                     valgtBarn.fødselsdato,
-                                    (barn as FødtBarn).termindato
+                                    (barn as FødtBarn).termindato.date!
                                 )}
                             >
                                 <Block margin="xs">

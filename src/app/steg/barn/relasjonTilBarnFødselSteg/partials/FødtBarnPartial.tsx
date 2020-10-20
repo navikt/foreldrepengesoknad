@@ -17,6 +17,7 @@ import AttachmentsUploaderPure from 'app/components/storage/attachment/component
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { Element } from 'nav-frontend-typografi';
+import { DatoInputVerdi } from '../../../../../common/components/skjema/elements/dato-input/DatoInput';
 
 interface StateProps {
     barn: FødtBarn;
@@ -33,11 +34,12 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const getFødselsdatoer = (fødselsdatoer?: Date[]): Date[] => {
+const getFødselsdatoInputVerdier = (fødselsdatoer?: DatoInputVerdi[]): DatoInputVerdi[] => {
     return fødselsdatoer !== undefined &&
         fødselsdatoer.length > 0 &&
         fødselsdatoer[0] !== null &&
-        fødselsdatoer[0] !== undefined
+        fødselsdatoer[0] !== undefined &&
+        fødselsdatoer[0].date !== undefined
         ? [fødselsdatoer[0]]
         : [];
 };
@@ -48,7 +50,7 @@ class FødtBarnPartial extends React.Component<Props> {
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
         props.dispatch(
             søknadActions.updateBarn({
-                fødselsdatoer: getFødselsdatoer(props.barn.fødselsdatoer),
+                fødselsdatoer: getFødselsdatoInputVerdier(props.barn.fødselsdatoer),
             })
         );
     }
@@ -59,7 +61,7 @@ class FødtBarnPartial extends React.Component<Props> {
             søknadActions.updateBarn({
                 ...barn,
                 antallBarn: antall,
-                fødselsdatoer: getFødselsdatoer(barn.fødselsdatoer),
+                fødselsdatoer: getFødselsdatoInputVerdier(barn.fødselsdatoer),
             })
         );
     }
@@ -83,14 +85,14 @@ class FødtBarnPartial extends React.Component<Props> {
                         termindato={barn.termindato}
                         antallBarn={barn.antallBarn}
                         erFarMedmor={erFarMedmor}
-                        onChangeFødselsdato={(fødselsdatoer: Date[]) =>
+                        onChangeFødselsdato={(fødselsdatoer) =>
                             dispatch(
                                 søknadActions.updateBarn({
                                     fødselsdatoer,
                                 })
                             )
                         }
-                        onChangeTermindato={(termindato: Date) => dispatch(søknadActions.updateBarn({ termindato }))}
+                        onChangeTermindato={(termindato) => dispatch(søknadActions.updateBarn({ termindato }))}
                     />
                 </Block>
                 <Block visible={vis.visInfoOmPrematuruker}>

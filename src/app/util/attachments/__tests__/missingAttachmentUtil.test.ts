@@ -7,6 +7,7 @@ import Person, { RegistrertBarn } from 'app/types/Person';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { InfoPeriode, Periodetype } from 'app/types/uttaksplan/periodetyper';
 import { Søknadsinfo } from 'app/selectors/types';
+import { createDatoInputVerdiFromDate } from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
 
 describe('missingAttachmentUtil', () => {
     describe('barn', () => {
@@ -95,7 +96,7 @@ describe('missingAttachmentUtil', () => {
                             rolle: SøkerRolle.FAR,
                         },
                         barn: {
-                            datoForAleneomsorg: new Date(),
+                            datoForAleneomsorg: createDatoInputVerdiFromDate(new Date()),
                         },
                     } as Søknad,
                     søkerinfo

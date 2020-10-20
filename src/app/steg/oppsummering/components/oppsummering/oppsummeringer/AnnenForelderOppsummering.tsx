@@ -87,7 +87,7 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
             {datoForAleneomsorg && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.annenForelder.datoForAleneomsorg.label')}
-                    verdi={formatDate(datoForAleneomsorg) || ''}
+                    verdi={formatDate(datoForAleneomsorg.date) || ''}
                 />
             )}
             {erAleneOmOmsorg && erFarEllerMedmor && (

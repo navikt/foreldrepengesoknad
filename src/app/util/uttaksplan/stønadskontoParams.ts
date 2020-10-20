@@ -36,13 +36,13 @@ export const getStønadskontoParams = (
                 return {
                     ...params,
                     termindato: grunnlag.termindato,
-                    fødselsdato: (barn as FødtBarn).fødselsdatoer[0],
+                    fødselsdato: (barn as FødtBarn).fødselsdatoer[0].date,
                 };
             } else {
-                return { ...params, termindato: (barn as UfødtBarn).termindato };
+                return { ...params, termindato: (barn as UfødtBarn).termindato.date };
             }
         } else {
-            return { ...params, omsorgsovertakelsesdato: (barn as Adopsjonsbarn).adopsjonsdato };
+            return { ...params, omsorgsovertakelsesdato: (barn as Adopsjonsbarn).adopsjonsdato.date };
         }
     } else {
         const params = {
@@ -63,14 +63,14 @@ export const getStønadskontoParams = (
             if (erBarnFødt) {
                 return {
                     ...params,
-                    termindato: (barn as FødtBarn).termindato,
-                    fødselsdato: (barn as FødtBarn).fødselsdatoer[0],
+                    termindato: (barn as FødtBarn).termindato.date,
+                    fødselsdato: (barn as FødtBarn).fødselsdatoer[0].date,
                 };
             } else {
-                return { ...params, termindato: (barn as UfødtBarn).termindato };
+                return { ...params, termindato: (barn as UfødtBarn).termindato.date };
             }
         } else {
-            return { ...params, omsorgsovertakelsesdato: (barn as Adopsjonsbarn).adopsjonsdato };
+            return { ...params, omsorgsovertakelsesdato: (barn as Adopsjonsbarn).adopsjonsdato.date };
         }
     }
 };

@@ -11,6 +11,8 @@ import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoIn
 import startdatoFarMedmorValidation from '../../../util/validation/uttaksplan/startdatoFarMedmorValidation';
 import { DateValue } from '../../../types/common';
 import { RadioProps } from 'nav-frontend-skjema';
+import { createDatoInputVerdi } from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
+import { DatoInputVerdi } from '../../../../common/components/skjema/elements/dato-input/DatoInput';
 
 interface OwnProps {
     familiehendelsesdato: Date;
@@ -71,10 +73,12 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
                             onChange={(value: ValgalternativerAleneomsorgFarMedmor) =>
                                 onChange({
                                     valgtStartdatoAleneomsorgFarMedmor: value,
-                                    startdatoPermisjon: getStartdatoFromAlternativ(
-                                        value,
-                                        datoForAleneomsorg,
-                                        data.startdatoPermisjon
+                                    startdatoPermisjon: createDatoInputVerdi(
+                                        getStartdatoFromAlternativ(
+                                            value,
+                                            datoForAleneomsorg,
+                                            data.startdatoPermisjon?.date
+                                        )
                                     ),
                                 })
                             }
@@ -84,17 +88,17 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
                         visible={data.valgtStartdatoAleneomsorgFarMedmor === ValgalternativerAleneomsorgFarMedmor.annen}
                     >
                         <ValiderbarDatoInput
-                            inputId="annenStartdatoAleneomsorgFarMedmor"
+                            id="annenStartdatoAleneomsorgFarMedmor"
                             name="annenStartdatoAleneomsorgFarMedmor"
                             label={getMessage(
                                 intl,
                                 'uttaksplan.skjema.startdatoAleneomsorgFarMedmor.annenDato.spørsmål'
                             )}
-                            onChange={(startdatoPermisjon: DateValue) => onChange({ startdatoPermisjon })}
-                            dato={data.startdatoPermisjon}
+                            onChange={(startdatoPermisjon: DatoInputVerdi) => onChange({ startdatoPermisjon })}
+                            datoVerdi={data.startdatoPermisjon}
                             disabled={data.skalIkkeHaUttakFørTermin}
                             datoAvgrensinger={avgrensningerAnnenDato}
-                            validators={startdatoFarMedmorValidation(intl, data.startdatoPermisjon)}
+                            validators={startdatoFarMedmorValidation(intl, data.startdatoPermisjon?.date)}
                         />
                     </Block>
                 </>

@@ -16,9 +16,9 @@ const harBarnOver15ÅrMeldingVisible: VisibilityFunction<Partial<ForeldreansvarB
     barn: Partial<ForeldreansvarBarn>
 ) => {
     const { fødselsdatoer } = barn;
-    const harBarnOver15År = (fødselsdatoer || []).some((dato) => {
-        if (dato) {
-            return getAlderFraDato(dato).år > 15;
+    const harBarnOver15År = (fødselsdatoer || []).some(({ date }) => {
+        if (date) {
+            return getAlderFraDato(date).år > 15;
         }
         return false;
     });

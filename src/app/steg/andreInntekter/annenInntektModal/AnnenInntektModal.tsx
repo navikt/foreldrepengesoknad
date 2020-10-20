@@ -1,7 +1,18 @@
 import * as React from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
 import * as countries from 'i18n-iso-countries';
+import Block from 'common/components/block/Block';
+import ModalForm from 'common/components/modalForm/ModalForm';
+import Input from 'common/components/skjema/wrappers/Input';
+import getMessage from 'common/util/i18nUtils';
+import Landvelger from 'app/components/skjema/landvelger/Landvelger';
+import AttachmentsUploader from 'app/components/storage/attachment/components/AttachmentUploader';
+import { getSkjemanummerForAndreInntekter } from 'app/components/storage/attachment/components/util';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import TidsperiodeBolk from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
+import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
+import InntektstypeSpørsmål from '../../../spørsmål/InntektstypeSpørsmål';
 import {
     AnnenInntekt,
     AnnenInntektPartial,
@@ -9,22 +20,11 @@ import {
     JobbIUtlandetInntekt,
     JobbIUtlandetInntektPartial,
 } from '../../../types/søknad/AnnenInntekt';
-import AttachmentsUploader from 'app/components/storage/attachment/components/AttachmentUploader';
-import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import TidsperiodeBolk from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
-import { TidsperiodeMedValgfriSluttdato } from 'common/types';
+import { mapTidsperiodeDatoInputVerdiToTidsperiode } from '../../../util/tidsperiodeUtils';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
-import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
-import ModalForm from 'common/components/modalForm/ModalForm';
-import visibility from './visibility';
-import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
-import { getSkjemanummerForAndreInntekter } from 'app/components/storage/attachment/components/util';
 import { hasValueRule } from '../../../util/validation/common';
-import InntektstypeSpørsmål from '../../../spørsmål/InntektstypeSpørsmål';
-import Input from 'common/components/skjema/wrappers/Input';
-import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
-import Landvelger from 'app/components/skjema/landvelger/Landvelger';
-import Block from 'common/components/block/Block';
+import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
+import visibility from './visibility';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
@@ -169,10 +169,14 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         tidsperiode={tidsperiode}
                         pågående={tidsperiode.pågående}
                         visPågåendePeriodeCheckbox={true}
-                        onChange={(changedTidsperiode: TidsperiodeMedValgfriSluttdato) =>
-                            this.updateAnnenInntekt({ tidsperiode: changedTidsperiode })
+                        onChange={(changedTidsperiode) => this.updateAnnenInntekt({ tidsperiode: changedTidsperiode })}
+                        datoAvgrensninger={
+                            annenInntekt.tidsperiode
+                                ? getAndreInntekterTidsperiodeAvgrensninger(
+                                      mapTidsperiodeDatoInputVerdiToTidsperiode(annenInntekt.tidsperiode)
+                                  )
+                                : undefined
                         }
-                        datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(annenInntekt.tidsperiode)}
                         datoValidatorer={{
                             fra: [hasValueRule(tidsperiode.fom, getMessage(intl, 'påkrevd'))],
                             til: [

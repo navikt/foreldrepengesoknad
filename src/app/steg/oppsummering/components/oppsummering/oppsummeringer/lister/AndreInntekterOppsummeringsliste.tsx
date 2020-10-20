@@ -35,8 +35,8 @@ class AndreInntekterOppsummeringsliste extends React.Component<Props> {
         return {
             venstrestiltTekst: getMessage(intl, `inntektstype.${type.toLowerCase()}`),
             høyrestiltTekst: getMessage(intl, 'tidsintervall', {
-                fom: formatDate(tidsperiode.fom),
-                tom: pågående ? 'pågående' : formatDate(tidsperiode.tom),
+                fom: formatDate(tidsperiode.fom.date),
+                tom: pågående ? 'pågående' : formatDate(tidsperiode.tom?.date),
             }),
             content: <AnnenInntektDetaljer annenInntekt={annenInntekt} />,
         };

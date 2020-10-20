@@ -31,7 +31,7 @@ const fødselsattestUploaderVisible = (fødselsdatoerSpørsmål: boolean, barn: 
     return (
         barn.fødselsdatoer !== undefined &&
         barn.fødselsdatoer.length > 0 &&
-        barn.fødselsdatoer.every((fødselsdato: Date) => fødselsdato instanceof Date)
+        barn.fødselsdatoer.every((fødselsdato) => fødselsdato.date instanceof Date)
     );
 };
 
@@ -90,7 +90,7 @@ const visInfoOmPrematurukerVisible = (barn: Partial<FødtBarn>): boolean => {
     const fødselsdato = barn.fødselsdatoer !== undefined ? barn.fødselsdatoer[0] : undefined;
     const termindato = barn.termindato;
 
-    return skalViseInfoOmPrematuruker(fødselsdato, termindato);
+    return skalViseInfoOmPrematuruker(fødselsdato?.date, termindato?.date);
 };
 
 export default {

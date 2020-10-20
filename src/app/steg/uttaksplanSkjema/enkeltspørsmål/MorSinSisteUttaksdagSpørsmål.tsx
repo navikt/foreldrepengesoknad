@@ -21,12 +21,12 @@ const MorSinSisteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({ visib
             render={(data, onChange) => (
                 <DatoInput
                     name="morSinSisteUttaksdag"
-                    inputId="morSinSisteUttaksdag"
+                    id="morSinSisteUttaksdag"
                     label={getMessage(intl, 'spørsmål.morSinSisteUttaksdag.label', {
                         navnMor: getNavnGenitivEierform(navnMor, intl.locale),
                     })}
-                    onChange={(morSinSisteUttaksdag: Date) => onChange({ morSinSisteUttaksdag })}
-                    dato={data.morSinSisteUttaksdag}
+                    onChange={(morSinSisteUttaksdag) => onChange({ morSinSisteUttaksdag })}
+                    datoVerdi={data.morSinSisteUttaksdag}
                     datoAvgrensinger={uttaksplanDatoavgrensninger.morsSisteUttaksdag(familiehendelsesdato)}
                 />
             )}

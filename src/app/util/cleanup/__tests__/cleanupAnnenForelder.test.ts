@@ -11,6 +11,7 @@ import {
     AnnenForelderSpørsmålKeys,
 } from '../../../steg/annenForelder/visibility/annenForelderStegVisibility';
 import { Barn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
+import { createDatoInputVerdiFromDate } from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
 
 const annenForelder: AnnenForelder = {
     bostedsland: 'landet',
@@ -38,7 +39,7 @@ const søknad: SøknadPartial = {
     annenForelder,
     barn: {
         fødselsdatoer: [],
-        foreldreansvarsdato: new Date(),
+        foreldreansvarsdato: createDatoInputVerdiFromDate(new Date()),
     },
     informasjonOmUtenlandsopphold: {
         tidligereOpphold: [],
@@ -122,7 +123,7 @@ describe('Cleanup AnnenForelder', () => {
                     },
                     barn: {
                         ...søknad.barn,
-                        datoForAleneomsorg: new Date(),
+                        datoForAleneomsorg: createDatoInputVerdiFromDate(new Date()),
                     },
                 };
             });

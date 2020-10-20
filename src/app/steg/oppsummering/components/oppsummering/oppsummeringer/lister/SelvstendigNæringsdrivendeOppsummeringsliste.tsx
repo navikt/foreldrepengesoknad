@@ -35,8 +35,8 @@ class SelvstendigNæringsdrivendeOppsummeringsliste extends React.Component<Prop
         return {
             venstrestiltTekst: navnPåNæringen,
             høyrestiltTekst: getMessage(intl, 'tidsintervall', {
-                fom: formatDate(tidsperiode.fom),
-                tom: pågående ? 'pågående' : formatDate(tidsperiode.tom),
+                fom: formatDate(tidsperiode.fom?.date),
+                tom: pågående ? 'pågående' : formatDate(tidsperiode.tom?.date),
             }),
             content: <Næringsdetaljer næring={næring} />,
         };

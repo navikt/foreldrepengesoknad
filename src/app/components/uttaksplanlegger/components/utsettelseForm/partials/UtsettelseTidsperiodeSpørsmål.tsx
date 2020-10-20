@@ -1,37 +1,41 @@
 import * as React from 'react';
-import { Tidsperiode, Feil } from 'common/types';
-import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
+import { Feil, Tidsperiode, TidsperiodeDatoInputVerdi } from 'common/types';
 import { getUtsettelseTidsperiodeValidatorer } from 'app/util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
+import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
+import { mapTidsperiodeDatoInputVerdiToTidsperiode } from '../../../../../util/tidsperiodeUtils';
 
 export interface Props {
-    tidsperiode: Partial<Tidsperiode>;
+    tidsperiodeDatoInput: Partial<TidsperiodeDatoInputVerdi>;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder?: Tidsperiode[];
     feil?: Feil;
-    onChange: (tidsperiode: Partial<Tidsperiode>) => void;
+    onChange: (tidsperiode: Partial<TidsperiodeDatoInputVerdi>) => void;
 }
 
 const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     onChange,
     familiehendelsesdato,
-    tidsperiode,
+    tidsperiodeDatoInput,
     feil,
     ugyldigeTidsperioder,
 }) => {
-    const datoValidatorer = getUtsettelseTidsperiodeValidatorer(tidsperiode, familiehendelsesdato);
+    const datoValidatorer = getUtsettelseTidsperiodeValidatorer(
+        mapTidsperiodeDatoInputVerdiToTidsperiode(tidsperiodeDatoInput),
+        familiehendelsesdato
+    );
     return (
         <TidsperiodeBolk
-            onChange={(t: Partial<Tidsperiode>) => onChange(t)}
-            tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
+            onChange={(t) => onChange(t)}
+            tidsperiode={tidsperiodeDatoInput ? (tidsperiodeDatoInput as Partial<TidsperiodeDatoInputVerdi>) : {}}
             datoAvgrensninger={{
                 fra: {
                     minDato: familiehendelsesdato,
-                    maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined,
+                    maksDato: tidsperiodeDatoInput ? tidsperiodeDatoInput.tom?.date : undefined,
                     ugyldigeTidsperioder,
                     helgedagerIkkeTillatt: true,
                 },
                 til: {
-                    minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined,
+                    minDato: tidsperiodeDatoInput ? tidsperiodeDatoInput.fom?.date : undefined,
                     ugyldigeTidsperioder,
                     helgedagerIkkeTillatt: true,
                 },

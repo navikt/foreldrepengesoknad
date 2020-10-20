@@ -74,7 +74,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
 
         let termindato: Date | undefined;
         if (isUfødtBarn(barn, situasjon)) {
-            termindato = barn.termindato;
+            termindato = barn.termindato.date;
         }
 
         if (termindato !== undefined) {
@@ -116,7 +116,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                                         contentIntlKey: 'utenlandsopphold.infoOmFødselsattest',
                                         values: {
                                             land: this.getCountryName(countryNames, relevantUtenlandsopphold),
-                                            termindato: formatDate((barn as UfødtBarn).termindato),
+                                            termindato: formatDate((barn as UfødtBarn).termindato.date),
                                         },
                                     },
                                 ]}

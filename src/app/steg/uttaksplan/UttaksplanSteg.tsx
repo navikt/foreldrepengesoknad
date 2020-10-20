@@ -175,7 +175,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             if (tilgjengeligeStønadskontoer.length === 0) {
                 const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
                     søknadsinfo,
-                    startdatoPermisjon,
+                    startdatoPermisjon?.date,
                     barn,
                     grunnlag
                 );
@@ -545,7 +545,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         const { søknaden, søker, uttaksdatoer, annenForelder } = søknadsinfo;
 
         if (!søknaden.erFødsel && startdatoPermisjon !== undefined) {
-            relevantStartDatoForUttak = startdatoPermisjon;
+            relevantStartDatoForUttak = startdatoPermisjon.date;
         }
 
         if (
@@ -555,7 +555,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
             !søknad.ekstrainfo.erEnkelEndringssøknad
         ) {
             const { morSinSisteUttaksdag } = state.søknad.ekstrainfo.uttaksplanSkjema;
-            const dagEtterMorsSisteDag = morSinSisteUttaksdag ? Uttaksdagen(morSinSisteUttaksdag).neste() : undefined;
+            const dagEtterMorsSisteDag = morSinSisteUttaksdag
+                ? Uttaksdagen(morSinSisteUttaksdag.date!).neste()
+                : undefined;
             const { førsteUttaksdagEtterSeksUker } = uttaksdatoer.etterFødsel;
 
             relevantStartDatoForUttak =

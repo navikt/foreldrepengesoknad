@@ -147,7 +147,7 @@ class Velkommen extends React.Component<Props, State> {
                     {visValgForNySøknadEllerEndring && (
                         <>
                             <Block>
-                                <Ingress>
+                                <Ingress tag="div">
                                     {erSakForEndringssøknadFraInfotrygd ? (
                                         <>
                                             <Block margin="xs">

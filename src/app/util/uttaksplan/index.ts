@@ -124,16 +124,16 @@ export const getFamiliehendelsedato = (barn: Partial<Barn>, situasjon?: Søkersi
         return undefined;
     }
     if (isFødtBarn(barn, situasjon)) {
-        return findOldestDate(barn.fødselsdatoer.filter((d) => d !== undefined));
+        return findOldestDate(barn.fødselsdatoer.map((d) => d.date!).filter((d) => d !== undefined));
     }
     if (isUfødtBarn(barn, situasjon)) {
-        return barn.termindato;
+        return barn.termindato.date;
     }
     if (isAdopsjonsbarn(barn, situasjon)) {
-        return barn.adopsjonsdato;
+        return barn.adopsjonsdato.date;
     }
     if (isForeldreansvarsbarn(barn, situasjon)) {
-        return barn.foreldreansvarsdato;
+        return barn.foreldreansvarsdato.date;
     }
     return undefined;
 };

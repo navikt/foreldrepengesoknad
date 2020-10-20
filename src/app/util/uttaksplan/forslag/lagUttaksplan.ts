@@ -60,16 +60,18 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 familiehendelsesdato,
                 søkerErFarEllerMedmor,
                 tilgjengeligeStønadskontoer,
-                startdatoPermisjon,
+                startdatoPermisjon?.date,
                 fellesperiodeukerMor,
                 harAnnenForelderSøktFP,
                 antallDagerFellesperiodeFarMedmor,
                 antallUkerFellesperiodeFarMedmor,
-                morSinSisteUttaksdag,
-                farSinFørsteUttaksdag,
+                morSinSisteUttaksdag?.date,
+                farSinFørsteUttaksdag?.date,
                 begrunnelseForUtsettelse
             );
-            const dagEtterMorsSisteDag = morSinSisteUttaksdag ? Uttaksdagen(morSinSisteUttaksdag).neste() : undefined;
+            const dagEtterMorsSisteDag = morSinSisteUttaksdag
+                ? Uttaksdagen(morSinSisteUttaksdag.date!).neste()
+                : undefined;
             const relevantStartDatoForUttak = moment(dagEtterMorsSisteDag).isSameOrAfter(
                 moment(førsteUttaksdagEtterSeksUker)
             )
@@ -88,7 +90,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 familiehendelsesdato,
                 søkerErFarEllerMedmor,
                 tilgjengeligeStønadskontoer,
-                startdatoPermisjon,
+                startdatoPermisjon?.date,
                 annenForelderErUfør
             );
 

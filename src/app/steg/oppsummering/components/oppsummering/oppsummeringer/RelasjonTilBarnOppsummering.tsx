@@ -50,7 +50,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 {foreldreansvarsdato && (
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.foreldreansvarsdato.label')}
-                        verdi={formatDate(foreldreansvarsdato) || ''}
+                        verdi={formatDate(foreldreansvarsdato.date) || ''}
                     />
                 )}
                 {antallBarn && (
@@ -62,7 +62,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 {fødselsdatoer && (
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.fødselsdato.label')}
-                        verdi={formatDate(fødselsdatoer[0]) || ''}
+                        verdi={formatDate(fødselsdatoer[0].date) || ''}
                     />
                 )}
                 <OppsummeringAvDokumentasjon
@@ -89,7 +89,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
             <>
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.fødselsdato.label')}
-                    verdi={formatDate(fødselsdatoer[0]) || ''}
+                    verdi={formatDate(fødselsdatoer[0].date) || ''}
                 />
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.adopsjonAvEktefellesBarn.label')}
@@ -104,7 +104,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 {adopsjonsdato && (
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.adopsjonsdato.label')}
-                        verdi={formatDate(adopsjonsdato) || ''}
+                        verdi={formatDate(adopsjonsdato.date) || ''}
                     />
                 )}
                 <Feltoppsummering
@@ -114,7 +114,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 {ankomstdato && (
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.ankomstdato.label')}
-                        verdi={formatDate(ankomstdato) || ''}
+                        verdi={formatDate(ankomstdato.date) || ''}
                     />
                 )}
                 <OppsummeringAvDokumentasjon
@@ -139,7 +139,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 )}
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.fødselsdato.label')}
-                    verdi={formatDate(fødselsdatoer[0]) || ''}
+                    verdi={formatDate(fødselsdatoer[0].date) || ''}
                 />
                 {/*
                     // This has been commented out as users won't have to upload birth certificate
@@ -183,13 +183,13 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 )}
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.termindato')}
-                    verdi={formatDate(termindato) || ''}
+                    verdi={formatDate(termindato.date) || ''}
                 />
                 {skalLasteOppTerminbekreftelse && <OppsummeringAvDokumentasjon vedlegg={terminbekreftelse || []} />}
                 {terminbekreftelseDato && (
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.terminbekreftelseDato.label')}
-                        verdi={formatDate(terminbekreftelseDato) || ''}
+                        verdi={formatDate(terminbekreftelseDato.date) || ''}
                     />
                 )}
             </>

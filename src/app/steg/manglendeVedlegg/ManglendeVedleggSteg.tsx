@@ -1,40 +1,41 @@
 import * as React from 'react';
-import { StegID } from 'app/util/routing/stegConfig';
-import { AppState } from 'app/redux/reducers';
-import { mapMissingAttachmentsOnSøknad } from 'app/util/attachments/missingAttachmentUtil';
-import Steg, { StegProps } from 'app/components/applikasjon/steg/Steg';
 import { injectIntl, IntlShape } from 'react-intl';
-import { DispatchProps } from 'common/redux/types';
-import { HistoryProps } from 'app/types/common';
-import isAvailable from '../../util/steg/isAvailable';
-import { SøkerinfoProps } from 'app/types/søkerinfo';
 import { connect } from 'react-redux';
-import Block from 'common/components/block/Block';
-import VedleggSpørsmål from 'app/components/skjema/vedleggSpørsmål/VedleggSpørsmål';
-import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
-import { Attachment, InnsendingsType } from 'app/components/storage/attachment/types/Attachment';
-import Søknad from 'app/types/søknad/Søknad';
-import { soknadActionCreators } from 'app/redux/actions';
 import _ from 'lodash';
-import { sorterPerioder } from 'app/util/uttaksplan/Periodene';
 import moment from 'moment';
-import { findAllAttachments } from './manglendeVedleggUtil';
-import getMessage from 'common/util/i18nUtils';
-import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
-import { isAttachmentForPeriode } from 'app/components/storage/attachment/components/util';
+import { guid } from 'nav-frontend-js-utils';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { formatDate } from 'app/util/dates/dates';
-import { isInfoPeriode } from 'app/types/uttaksplan/periodetyper';
+import Block from 'common/components/block/Block';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
+import { DispatchProps } from 'common/redux/types';
+import getMessage from 'common/util/i18nUtils';
+import Steg, { StegProps } from 'app/components/applikasjon/steg/Steg';
+import VedleggSpørsmål from 'app/components/skjema/vedleggSpørsmål/VedleggSpørsmål';
+import { isAttachmentForPeriode } from 'app/components/storage/attachment/components/util';
+import { Attachment, InnsendingsType } from 'app/components/storage/attachment/types/Attachment';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
+import { soknadActionCreators } from 'app/redux/actions';
+import søknadActions from 'app/redux/actions/søknad/søknadActionCreators';
+import { AppState } from 'app/redux/reducers';
+import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
+import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
+import { HistoryProps } from 'app/types/common';
+import { SøkerinfoProps } from 'app/types/søkerinfo';
+import { UfødtBarn } from 'app/types/søknad/Barn';
+import Søknad from 'app/types/søknad/Søknad';
+import { isInfoPeriode } from 'app/types/uttaksplan/periodetyper';
+import { mapMissingAttachmentsOnSøknad } from 'app/util/attachments/missingAttachmentUtil';
+import { formatDate } from 'app/util/dates/dates';
+import { StegID } from 'app/util/routing/stegConfig';
+import { sorterPerioder } from 'app/util/uttaksplan/Periodene';
 import {
     getTerminbekreftelsedatoAvgrensninger,
     getTerminbekreftelseDatoRegler,
 } from 'app/util/validation/terminbekreftelsedato';
-import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
-import søknadActions from 'app/redux/actions/søknad/søknadActionCreators';
-import { UfødtBarn } from 'app/types/søknad/Barn';
-import { guid } from 'nav-frontend-js-utils';
-import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
+import isAvailable from '../../util/steg/isAvailable';
+import { findAllAttachments } from './manglendeVedleggUtil';
+import { DatoInputVerdi } from '../../../common/components/skjema/elements/dato-input/DatoInput';
 
 interface ReduxProps {
     stegProps: StegProps;
@@ -153,25 +154,25 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                     }
                                 >
                                     <DatoInput
-                                        inputId="terminbekreftelseDato"
+                                        id="terminbekreftelseDato"
                                         name="terminbekreftelseDato"
                                         label={getMessage(intl, 'terminbekreftelseDato.spørsmål')}
-                                        onChange={(terminbekreftelseDato: Date) => {
+                                        onChange={(terminbekreftelseDato: DatoInputVerdi) => {
                                             dispatch(
                                                 søknadActions.updateBarn({
                                                     terminbekreftelseDato,
                                                 })
                                             );
                                         }}
-                                        dato={(søknad.barn as UfødtBarn).terminbekreftelseDato}
+                                        datoVerdi={(søknad.barn as UfødtBarn).terminbekreftelseDato}
                                         datoAvgrensinger={getTerminbekreftelsedatoAvgrensninger(
-                                            (søknad.barn as UfødtBarn).termindato
+                                            (søknad.barn as UfødtBarn).termindato.date
                                         )}
                                         validators={
                                             attachmentsToRender.length > 0
                                                 ? getTerminbekreftelseDatoRegler(
-                                                      (søknad.barn as UfødtBarn).terminbekreftelseDato,
-                                                      (søknad.barn as UfødtBarn).termindato,
+                                                      (søknad.barn as UfødtBarn).terminbekreftelseDato.date,
+                                                      (søknad.barn as UfødtBarn).termindato.date,
                                                       intl
                                                   )
                                                 : []

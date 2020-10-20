@@ -1,17 +1,18 @@
 import React from 'react';
+import DatoInput, { DatoInputProps } from 'common/components/skjema/elements/dato-input/DatoInput';
 import {
     default as ValiderbartSkjemaelement,
     ValiderbartSkjemaelementProps,
 } from 'common/lib/validation/elements/ValiderbartSkjemaelement';
-import DatoInput, { DatoInputProps } from 'common/components/skjema/elements/dato-input/DatoInput';
 
-type Props = ValiderbartSkjemaelementProps & DatoInputProps;
+type Props = Omit<ValiderbartSkjemaelementProps, 'onChange'> & DatoInputProps;
 
-const ValiderbarDatoInput: React.StatelessComponent<Props> = (props) => {
-    const { validators, optional, validateOnBlur, validateOnChange, ...rest } = props;
+const ValiderbarDatoInput = (props: Props) => {
+    const { validators, optional, validateOnBlur, validateOnChange, onChange, ...rest } = props;
     return (
         <ValiderbartSkjemaelement
             {...props}
+            onChange={onChange}
             render={(onChange, _onBlur, feil) => <DatoInput {...rest} onChange={onChange} feil={feil} />}
         />
     );

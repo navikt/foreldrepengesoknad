@@ -59,6 +59,10 @@ import VedleggSpørsmål from 'app/components/skjema/vedleggSpørsmål/VedleggSp
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Skjemanummer } from 'app/types/søknad/Søknad';
 import { ValidFormContext, ValidFormContextInterface } from 'common/lib/validation/elements/ValiderbarForm';
+import {
+    mapTidsperiodeDatoInputVerdiToTidsperiode,
+    mapTidsperiodeToTidsperiodeDatoInputVerdi,
+} from '../../../../util/tidsperiodeUtils';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -352,8 +356,8 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                         periode={periode}
                         familiehendelsesdato={familiehendelsesdato}
                         ugyldigeTidsperioder={ugyldigeTidsperioder}
-                        onChange={(v: Partial<Tidsperiode>) => this.onChange({ tidsperiode: v })}
-                        tidsperiode={tidsperiode}
+                        onChange={(v) => this.onChange({ tidsperiode: mapTidsperiodeDatoInputVerdiToTidsperiode(v) })}
+                        tidsperiode={mapTidsperiodeToTidsperiodeDatoInputVerdi(tidsperiode)}
                         feil={periodeErNyOgFørFamiliehendelsesdatoFeil}
                     />
                 </Block>

@@ -12,7 +12,7 @@ import {
 } from '../../../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import UtsettelsePgaFerieInfo from './UtsettelsePgaFerieInfo';
-import { Forelder, Tidsperiode } from 'common/types';
+import { Forelder, Tidsperiode, TidsperiodeDatoInputVerdi } from 'common/types';
 import { harAktivtArbeidsforhold } from '../../../../util/domain/arbeidsforhold';
 import { getUtsettelseFormVisibility, UtsettelseSpørsmålKeys } from './utsettelseFormConfig';
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
@@ -43,6 +43,10 @@ import { ValidFormContext, ValidFormContextInterface } from 'common/lib/validati
 import VedleggSpørsmål from 'app/components/skjema/vedleggSpørsmål/VedleggSpørsmål';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Skjemanummer } from 'app/types/søknad/Søknad';
+import {
+    mapTidsperiodeDatoInputVerdiToTidsperiode,
+    mapTidsperiodeToTidsperiodeDatoInputVerdi,
+} from '../../../../util/tidsperiodeUtils';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -67,7 +71,7 @@ type Props = OwnProps & StateProps;
 
 interface State {
     variant?: Utsettelsesvariant;
-    ugyldigTidsperiode?: Tidsperiode;
+    ugyldigTidsperiode?: TidsperiodeDatoInputVerdi;
 }
 
 export enum Utsettelsesvariant {
@@ -283,7 +287,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
         });
     }
 
-    oppdaterTidsperiode(tidsperiode: Partial<Tidsperiode>) {
+    oppdaterTidsperiode(tidsperiode: Partial<TidsperiodeDatoInputVerdi>) {
         const { periode, uttaksplan } = this.props;
         if (isValidTidsperiode(tidsperiode)) {
             const p = { ...periode, tidsperiode };
@@ -296,7 +300,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
             }
         } else {
             this.setState({ ugyldigTidsperiode: undefined });
-            this.onChange({ tidsperiode });
+            this.onChange({ tidsperiode: mapTidsperiodeDatoInputVerdiToTidsperiode(tidsperiode) });
         }
     }
 
@@ -349,7 +353,9 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                 <Block hasChildBlocks={true}>
                     <Block>
                         <UtsettelseTidsperiodeSpørsmål
-                            tidsperiode={this.state.ugyldigTidsperiode || tidsperiode}
+                            tidsperiodeDatoInput={
+                                this.state.ugyldigTidsperiode || mapTidsperiodeToTidsperiodeDatoInputVerdi(tidsperiode)
+                            }
                             familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
                             onChange={this.oppdaterTidsperiode}
                             ugyldigeTidsperioder={ugyldigeTidsperioder}

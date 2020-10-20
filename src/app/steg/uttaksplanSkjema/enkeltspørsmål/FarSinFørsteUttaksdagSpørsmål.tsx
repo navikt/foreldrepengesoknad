@@ -12,10 +12,12 @@ import { NavnPåForeldre } from 'common/types';
 import { formatDate } from 'app/util/dates/dates';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Periodetype } from 'app/types/uttaksplan/periodetyper';
+import { createDatoInputVerdiFromDate } from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
+import { DatoInputVerdi } from '../../../../common/components/skjema/elements/dato-input/DatoInput';
 
 interface FarSinFørsteUttaksdagSpørsmålProps {
     familiehendelsesdato: Date;
-    morSinSisteUttaksdag?: Date;
+    morSinSisteUttaksdag?: DatoInputVerdi;
     eksisterendeSakAnnenPart?: EksisterendeSak;
     navnPåForeldre?: NavnPåForeldre;
 }
@@ -44,16 +46,16 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                         <Block margin="xs">
                             <DatoInput
                                 name="farSinFørsteUttaksdagSpørsmål"
-                                inputId="farSinFørsteUttaksdagSpørsmål"
+                                id="farSinFørsteUttaksdagSpørsmål"
                                 label={getMessage(intl, 'spørsmål.farSinFørsteUttaksdagSpørsmål.label')}
-                                onChange={(farSinFørsteUttaksdag: Date) =>
+                                onChange={(farSinFørsteUttaksdag: DatoInputVerdi) =>
                                     onChange(
                                         morSinSisteUttaksdag
                                             ? { farSinFørsteUttaksdag, morSinSisteUttaksdag }
                                             : { farSinFørsteUttaksdag }
                                     )
                                 }
-                                dato={data.farSinFørsteUttaksdag}
+                                datoVerdi={data.farSinFørsteUttaksdag}
                                 datoAvgrensinger={uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(
                                     familiehendelsesdato
                                 )}
@@ -69,7 +71,7 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                                                 id="spørsmål.farSinFørsteUttaksdagSpørsmål.førsteUttaksdagEtterAnnenPart"
                                                 values={{
                                                     navn: navnPåForeldre.mor,
-                                                    dato: formatDate(Uttaksdagen(morSinSisteUttaksdag).neste()),
+                                                    dato: formatDate(Uttaksdagen(morSinSisteUttaksdag.date!).neste()), //todo
                                                 }}
                                             />
                                         }
@@ -77,7 +79,9 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                                             onChange({
                                                 morSinSisteUttaksdag,
                                                 farSinFørsteUttaksdag: morSinSisteUttaksdag
-                                                    ? Uttaksdagen(morSinSisteUttaksdag).neste()
+                                                    ? createDatoInputVerdiFromDate(
+                                                          Uttaksdagen(morSinSisteUttaksdag.date!).neste()
+                                                      )
                                                     : undefined,
                                             })
                                         }
@@ -88,7 +92,7 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                                         label={
                                             <FormattedMessage
                                                 id="spørsmål.farSinFørsteUttaksdagSpørsmål.ønskerIkkeFlerePerioder.checkbox.label"
-                                                values={{ dato: Uttaksdagen(morSinSisteUttaksdag).neste() }}
+                                                values={{ dato: Uttaksdagen(morSinSisteUttaksdag.date!).neste() }}
                                             />
                                         }
                                         checked={data.ønskerIkkeFlerePerioder || false}

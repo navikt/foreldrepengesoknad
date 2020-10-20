@@ -84,20 +84,20 @@ class UfødtBarnPartial extends React.Component<Props> {
                         <Block visible={vis.termindato}>
                             <div className="infoknappfiks">
                                 <DatoInput
-                                    inputId="termindato"
+                                    id="termindato"
                                     name="termindato"
                                     label={getMessage(intl, 'termindato.spørsmål')}
                                     infotekst={getMessage(intl, 'termindato.infotekst')}
-                                    onChange={(termindato: Date) => {
+                                    onChange={(termindato) => {
                                         dispatch(
                                             søknadActions.updateBarn({
                                                 termindato,
                                             })
                                         );
                                     }}
-                                    dato={barn.termindato}
+                                    datoVerdi={barn.termindato}
                                     datoAvgrensinger={termindatoAvgrensninger}
-                                    validators={getTermindatoRegler(barn.termindato, intl)}
+                                    validators={getTermindatoRegler(barn.termindato.date, intl)}
                                 />
                             </div>
                         </Block>

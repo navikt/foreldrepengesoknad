@@ -1,14 +1,15 @@
-import { TidsperiodeMedValgfriSluttdato } from 'common/types';
+import { TidsperiodeDatoInputVerdiMedValgfriSluttdato } from 'common/types';
+import { DatoInputVerdi } from '../../../common/components/skjema/elements/dato-input/DatoInput';
 
 export interface FrilansOppdrag {
     navnPåArbeidsgiver: string;
-    tidsperiode: Partial<TidsperiodeMedValgfriSluttdato>;
+    tidsperiode: Partial<TidsperiodeDatoInputVerdiMedValgfriSluttdato>;
     pågående: boolean;
 }
 
 export interface FrilansInformasjon {
     jobberFremdelesSomFrilans: boolean;
-    oppstart: Date;
+    oppstart: DatoInputVerdi;
     driverFosterhjem?: boolean;
     harJobbetForNærVennEllerFamilieSiste10Mnd: boolean;
     oppdragForNæreVennerEllerFamilieSiste10Mnd: FrilansOppdrag[];

@@ -1,5 +1,5 @@
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import { TidsperiodeMedValgfriSluttdato } from 'common/types';
+import { TidsperiodeDatoInputVerdiMedValgfriSluttdato } from 'common/types';
 
 export enum AnnenInntektType {
     'SLUTTPAKKE' = 'ETTERLØNN_SLUTTPAKKE',
@@ -11,7 +11,7 @@ export enum AnnenInntektType {
 }
 
 abstract class AnnenInntektBase {
-    tidsperiode: TidsperiodeMedValgfriSluttdato;
+    tidsperiode: TidsperiodeDatoInputVerdiMedValgfriSluttdato;
     pågående: boolean;
     vedlegg: Attachment[];
 }
@@ -38,7 +38,7 @@ export type AnnenInntekt = SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUt
 
 export interface AnnenInntektPartialInterface {
     type: AnnenInntektType;
-    tidsperiode: Partial<TidsperiodeMedValgfriSluttdato>;
+    tidsperiode: Partial<TidsperiodeDatoInputVerdiMedValgfriSluttdato>;
     vedlegg: Attachment[];
 }
 

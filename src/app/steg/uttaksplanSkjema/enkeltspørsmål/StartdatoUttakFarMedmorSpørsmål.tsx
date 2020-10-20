@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useIntl } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
-import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
-import { uttaksplanDatoavgrensninger } from '../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
 import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
+import getMessage from 'common/util/i18nUtils';
 import startdatoFarMedmorValidation from '../../../util/validation/uttaksplan/startdatoFarMedmorValidation';
-import { DateValue } from '../../../types/common';
+import { uttaksplanDatoavgrensninger } from '../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
+import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
+import { DatoInputVerdi } from 'common/components/skjema/elements/dato-input/DatoInput';
 
 interface OwnProps {
     familiehendelsesdato: Date;
@@ -22,14 +22,14 @@ const StartdatoPermisjonSpørsmål = (props: Props) => {
             visible={visible}
             render={(data, onChange) => (
                 <ValiderbarDatoInput
-                    inputId="permisjonStartdato"
+                    id="permisjonStartdato"
                     name="permisjonStartdato"
                     label={getMessage(intl, 'spørsmål.startdatoPermisjonFarMedmor.label')}
-                    onChange={(startdatoPermisjon: DateValue) => onChange({ startdatoPermisjon })}
-                    dato={data.startdatoPermisjon}
+                    onChange={(startdatoPermisjon: DatoInputVerdi) => onChange({ startdatoPermisjon })}
+                    datoVerdi={data.startdatoPermisjon}
                     disabled={data.skalIkkeHaUttakFørTermin}
                     datoAvgrensinger={uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato)}
-                    validators={startdatoFarMedmorValidation(intl, data.startdatoPermisjon)}
+                    validators={startdatoFarMedmorValidation(intl, data.startdatoPermisjon?.date)}
                 />
             )}
         />

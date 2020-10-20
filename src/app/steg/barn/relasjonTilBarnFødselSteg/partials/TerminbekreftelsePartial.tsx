@@ -59,21 +59,25 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
             </Block>
             <Block visible={vis.terminbekreftelseDato}>
                 <DatoInput
-                    inputId="terminbekreftelseDato"
+                    id="terminbekreftelseDato"
                     name="terminbekreftelseDato"
                     label={getMessage(intl, 'terminbekreftelseDato.spørsmål')}
-                    onChange={(terminbekreftelseDato: Date) => {
+                    onChange={(terminbekreftelseDato) => {
                         dispatch(
                             søknadActions.updateBarn({
                                 terminbekreftelseDato,
                             })
                         );
                     }}
-                    dato={barn.terminbekreftelseDato}
-                    datoAvgrensinger={getTerminbekreftelsedatoAvgrensninger(barn.termindato)}
+                    datoVerdi={barn.terminbekreftelseDato}
+                    datoAvgrensinger={getTerminbekreftelsedatoAvgrensninger(barn.termindato.date)}
                     validators={
                         validerDatofelt
-                            ? getTerminbekreftelseDatoRegler(barn.terminbekreftelseDato, barn.termindato, intl)
+                            ? getTerminbekreftelseDatoRegler(
+                                  barn.terminbekreftelseDato.date,
+                                  barn.termindato.date,
+                                  intl
+                              )
                             : []
                     }
                 />

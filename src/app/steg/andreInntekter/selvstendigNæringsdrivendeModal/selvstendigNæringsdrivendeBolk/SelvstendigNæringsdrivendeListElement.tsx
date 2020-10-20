@@ -6,6 +6,7 @@ import { Næring } from '../../../../types/søknad/SelvstendigNæringsdrivendeIn
 import { useIntl } from 'react-intl';
 import { prettifyTidsperiode } from '../../../../util/dates/dates';
 import getMessage from 'common/util/i18nUtils';
+import { mapTidsperiodeDatoInputVerdiToTidsperiode } from '../../../../util/tidsperiodeUtils';
 
 interface NæringListeElementProps extends InteractiveListElementProps {
     næring: Næring;
@@ -21,7 +22,7 @@ const NæringListeElement: React.StatelessComponent<NæringListeElementProps> = 
     return (
         <InteractiveListElement
             title={næring.navnPåNæringen}
-            text={prettifyTidsperiode(næring.tidsperiode)}
+            text={prettifyTidsperiode(mapTidsperiodeDatoInputVerdiToTidsperiode(næring.tidsperiode))}
             deleteLinkText={deleteLinkText}
             {...rest}
         />

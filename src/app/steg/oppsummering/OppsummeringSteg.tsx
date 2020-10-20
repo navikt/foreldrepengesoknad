@@ -98,7 +98,7 @@ class OppsummeringSteg extends React.Component<Props> {
         if (tilgjengeligeStønadskontoer.length === 0 && stegProps.isAvailable) {
             const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
                 søknadsinfo,
-                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon,
+                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon?.date,
                 barn
             );
             dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));

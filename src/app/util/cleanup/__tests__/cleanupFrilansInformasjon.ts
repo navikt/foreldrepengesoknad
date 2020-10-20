@@ -6,12 +6,16 @@ import {
     FrilansOppdrag,
 } from '../../../types/søknad/FrilansInformasjon';
 import visibility from '../../../steg/andreInntekter/frilanserBolk/visibility';
+import {
+    createDatoInputVerdi,
+    createDatoInputVerdiFromDate,
+} from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
 
 const oppdrag: FrilansOppdrag = {
     navnPåArbeidsgiver: 'asdf',
     pågående: true,
     tidsperiode: {
-        fom: new Date(),
+        fom: createDatoInputVerdiFromDate(new Date()),
     },
 };
 
@@ -19,7 +23,7 @@ const frilansInformasjon: FrilansInformasjonPartial = {
     oppdragForNæreVennerEllerFamilieSiste10Mnd: [oppdrag as FrilansOppdrag],
     harJobbetForNærVennEllerFamilieSiste10Mnd: true,
     driverFosterhjem: true,
-    oppstart: new Date(),
+    oppstart: createDatoInputVerdi(new Date()),
     jobberFremdelesSomFrilans: true,
 };
 

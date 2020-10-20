@@ -5,14 +5,14 @@ import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoIn
 import { DatoInputProps } from 'common/components/skjema/elements/dato-input/DatoInput';
 import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 
-type DatoInputWrapperProps = SkjemaelementProps & DatoInputProps;
+type DatoInputWrapperProps = Omit<SkjemaelementProps, 'onChange'> & DatoInputProps;
 
-const DatoInput: React.StatelessComponent<DatoInputWrapperProps> = (props: DatoInputWrapperProps) => {
-    const id = props.inputId || guid();
+const DatoInput = (props: DatoInputWrapperProps) => {
+    const id = props.id || guid();
     return (
         <ValiderbarDatoInput
             {...props}
-            inputId={id}
+            id={id}
             label={<LabelWithInfo info={props.infotekst}>{props.label}</LabelWithInfo>}
         />
     );

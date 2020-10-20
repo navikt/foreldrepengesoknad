@@ -1,38 +1,39 @@
-import moment from 'moment';
-import Søknad, { Søkersituasjon, SøkerRolle } from '../../types/søknad/Søknad';
-import {
-    EksisterendeSak,
-    FamiliehendelsesType,
-    Saksgrunnlag,
-    Saksperiode,
-    PeriodeResultatType,
-    UttakArbeidType,
-    ArbeidsgiverInfo,
-} from '../../types/EksisterendeSak';
-import { guid } from 'nav-frontend-js-utils';
 import { cloneDeep } from 'lodash';
-import { Barn } from '../../types/søknad/Barn';
-import AnnenForelder from '../../types/søknad/AnnenForelder';
-import { Søker } from '../../types/søknad/Søker';
-import { Søkerinfo } from '../../types/søkerinfo';
-import Person, { RegistrertBarn } from '../../types/Person';
-import { Kjønn } from '../../types/common';
+import moment from 'moment';
+import { guid } from 'nav-frontend-js-utils';
+import { Dekningsgrad } from 'common/types';
+import { createDatoInputVerdiFromDate } from '../../../common/components/skjema/elements/dato-input/datoInputUtils';
+import { MorsAktivitetDto, OppholdsÅrsak, UttaksplanDTO, UttaksplanPeriodeDTO } from 'app/api/types/uttaksplanDTO';
+import { RecursivePartial } from 'app/types/Partial';
+import { FamiliehendelseDatoer } from 'app/types/søknad/FamiliehendelseDatoer';
 import Sak, { AnnenPart } from 'app/types/søknad/Sak';
 import {
-    StønadskontoType,
-    SaksperiodeUtsettelseÅrsakType,
     Arbeidsform,
     MorsAktivitet,
     OppholdÅrsakType,
+    SaksperiodeUtsettelseÅrsakType,
+    StønadskontoType,
 } from 'app/types/uttaksplan/periodetyper';
-import { UttaksplanDTO, UttaksplanPeriodeDTO, MorsAktivitetDto, OppholdsÅrsak } from 'app/api/types/uttaksplanDTO';
-import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
-import { Tidsperioden } from '../uttaksplan/Tidsperioden';
+import { Kjønn } from '../../types/common';
+import {
+    ArbeidsgiverInfo,
+    EksisterendeSak,
+    FamiliehendelsesType,
+    PeriodeResultatType,
+    Saksgrunnlag,
+    Saksperiode,
+    UttakArbeidType,
+} from '../../types/EksisterendeSak';
+import Person, { RegistrertBarn } from '../../types/Person';
+import { Søkerinfo } from '../../types/søkerinfo';
+import AnnenForelder from '../../types/søknad/AnnenForelder';
+import { Barn } from '../../types/søknad/Barn';
+import { Søker } from '../../types/søknad/Søker';
+import Søknad, { SøkerRolle, Søkersituasjon } from '../../types/søknad/Søknad';
 import { getRelevantFamiliehendelseDato } from '../dates/dates';
 import { getFamilieHendelseType } from '../domain/getFamilieHendelseType';
-import { FamiliehendelseDatoer } from 'app/types/søknad/FamiliehendelseDatoer';
-import { Dekningsgrad } from 'common/types';
-import { RecursivePartial } from 'app/types/Partial';
+import { Tidsperioden } from '../uttaksplan/Tidsperioden';
+import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -340,7 +341,7 @@ const getBarnFromSaksgrunnlag = (
                 erBarnetFødt,
                 ...(erBarnetFødt
                     ? {
-                          fødselsdatoer: [sak.familieHendelseDato],
+                          fødselsdatoer: [createDatoInputVerdiFromDate(sak.familieHendelseDato)],
                           termindato: sak.termindato,
                       }
                     : {
@@ -350,8 +351,8 @@ const getBarnFromSaksgrunnlag = (
         case Søkersituasjon.ADOPSJON:
             return {
                 antallBarn: sak.antallBarn,
-                adopsjonsdato: sak.familieHendelseDato,
-                fødselsdatoer: [sak.familieHendelseDato],
+                adopsjonsdato: createDatoInputVerdiFromDate(sak.familieHendelseDato),
+                fødselsdatoer: [createDatoInputVerdiFromDate(sak.familieHendelseDato)],
             };
         default:
             return undefined;

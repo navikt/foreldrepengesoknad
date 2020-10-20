@@ -102,7 +102,7 @@ describe('barn.steg.validation', () => {
 
         it('søker med et eller flere løpende arbeidsforhold på termindatoen må ikke laste opp terminbekreftelse', () => {
             const b: Partial<Barn> = { erBarnetFødt: false, termindato: moment().toDate() };
-            const a: Arbeidsforhold = { ...arbeidsforhold, tom: b.termindato };
+            const a: Arbeidsforhold = { ...arbeidsforhold, tom: b.termindato?.date };
             const arbeidsforhold1: Arbeidsforhold[] = [{ ...a }];
             const arbeidsforhold2: Arbeidsforhold[] = [{ ...a }, { ...a }];
             expect(

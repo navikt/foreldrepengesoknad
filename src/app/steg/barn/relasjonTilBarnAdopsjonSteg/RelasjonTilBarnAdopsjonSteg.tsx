@@ -98,19 +98,19 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                 <Block visible={visibility.spørsmålOmAdopsjonsdato(barn)}>
                     <DatoInput
                         name="adopsjonsdato"
-                        inputId="adopsjonsdato"
+                        id="adopsjonsdato"
                         label={getMessage(
                             intl,
                             barn.adopsjonAvEktefellesBarn ? 'stebarnsadopsjonsdato.spørsmål' : 'adopsjonsdato.spørsmål'
                         )}
-                        onChange={(adopsjonsdato: Date) => {
+                        onChange={(adopsjonsdato) => {
                             dispatch(
                                 søknadActions.updateBarn({
                                     adopsjonsdato,
                                 })
                             );
                         }}
-                        dato={barn.adopsjonsdato}
+                        datoVerdi={barn.adopsjonsdato}
                     />
                 </Block>
 
@@ -130,10 +130,10 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         antallBarn={barn.antallBarn}
                         datoavgrensninger={{
                             minDato: DateValues.date15YearsAnd3MonthsAgo.toDate(),
-                            maksDato: barn.adopsjonsdato,
+                            maksDato: barn.adopsjonsdato.date,
                         }}
                         gjelderAdopsjon={true}
-                        onChangeFødselsdato={(fødselsdatoer: Date[]) =>
+                        onChangeFødselsdato={(fødselsdatoer) =>
                             dispatch(
                                 søknadActions.updateBarn({
                                     fødselsdatoer,
@@ -158,17 +158,17 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
                 <Block visible={visibility.spørsmålOmAnkomstdato(barn)}>
                     <DatoInput
-                        inputId="ankomstdato"
+                        id="ankomstdato"
                         name="ankomstdato"
                         label={getMessage(intl, 'ankomstdato.spørsmål')}
-                        onChange={(ankomstdato: Date) => {
+                        onChange={(ankomstdato) => {
                             dispatch(
                                 søknadActions.updateBarn({
                                     ankomstdato,
                                 })
                             );
                         }}
-                        dato={barn.ankomstdato}
+                        datoVerdi={barn.ankomstdato}
                         validators={getAdopsjonAnkomstdatoValidatorer(barn, intl)}
                     />
                 </Block>

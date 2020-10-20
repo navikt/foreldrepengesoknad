@@ -99,7 +99,7 @@ function* applyStoredStateToApp(storedState: AppState, history: History) {
                 yield put(
                     søknadActions.updateSøknadenGjelderBarn({
                         valgteBarn: valgteRegistrerteBarn,
-                        termindato: (barn as FødtBarn).termindato,
+                        termindato: (barn as FødtBarn).termindato.date,
                     })
                 );
             }

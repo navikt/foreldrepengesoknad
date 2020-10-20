@@ -64,14 +64,14 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                     <Block>
                         <DatoInput
                             name="næring-datoForEndring"
-                            inputId="datoForEndring"
+                            id="datoForEndring"
                             label={getMessage(intl, 'varigEndringAvNæringsinntekt.dato.label')}
-                            onChange={(dato: Date) => {
+                            onChange={(dato) => {
                                 this.updateEndringAvNæringsinntektInformasjon({
                                     dato,
                                 });
                             }}
-                            dato={info && info.dato}
+                            datoVerdi={info && info.dato}
                             datoAvgrensinger={getTidsperiodeAvgrensningerSiste4år()}
                             validators={[hasValueRule(info && info.dato, getMessage(intl, 'påkrevd'))]}
                         />

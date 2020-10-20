@@ -164,7 +164,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
     dekningsgrad80AntallUker: getAntallUker(state.api.stønadskontoer80),
     harAnnenForelderSøktFP: state.søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP,
     søknadsinfo: selectSøknadsinfo(state)!,
-    startdatoPermisjon: state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon,
+    startdatoPermisjon: state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon?.date,
 });
 
 export default connect(mapStateToProps)(DekningsgradSpørsmål);

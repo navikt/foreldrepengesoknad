@@ -1,3 +1,5 @@
+import { DatoInputVerdi } from '../components/skjema/elements/dato-input/DatoInput';
+
 export * from '../intl/types';
 
 export enum Dekningsgrad {
@@ -22,6 +24,11 @@ export interface Tidsperiode {
     tom: Date;
 }
 
+export interface TidsperiodeDatoInputVerdi {
+    fom: DatoInputVerdi;
+    tom: DatoInputVerdi;
+}
+
 export interface Avgrensninger {
     minDato?: Date;
     maksDato?: Date;
@@ -32,6 +39,12 @@ export interface Avgrensninger {
 export interface TidsperiodeMedValgfriSluttdato {
     fom: Date;
     tom?: Date;
+    pågående?: boolean;
+}
+
+export interface TidsperiodeDatoInputVerdiMedValgfriSluttdato {
+    fom: DatoInputVerdi;
+    tom?: DatoInputVerdi;
     pågående?: boolean;
 }
 

@@ -1,34 +1,31 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { injectIntl, IntlShape } from 'react-intl';
-
-import { StegID } from '../../../util/routing/stegConfig';
-import Steg from 'app/components/applikasjon/steg/Steg';
-
-import { DispatchProps } from 'common/redux/types';
-import { AppState } from '../../../redux/reducers';
+import { connect } from 'react-redux';
 import Block from 'common/components/block/Block';
-import AntallBarnBolk from '../components/AntallBarnBolk';
-import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
-import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
-
-import utils from '../../../util/domain/fødselsdato';
-import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
-import { HistoryProps } from '../../../types/common';
-import { StegProps } from '../../../components/applikasjon/steg/Steg';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
+import { DispatchProps } from 'common/redux/types';
+import Steg from 'app/components/applikasjon/steg/Steg';
 import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import isAvailable from '../../../util/steg/isAvailable';
-import { barnErGyldig } from '../../../util/validation/steg/barn';
-import { Skjemanummer } from '../../../types/søknad/Søknad';
-import DatoInput from 'common/components/skjema/wrappers/DatoInput';
-import DateValues from '../../../util/validation/values';
-import { fødselsdatoerErFyltUt } from '../../../util/validation/fødselsdato';
-import { SøkerinfoProps } from '../../../types/søkerinfo';
-import visibility from './visibility';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import { StegProps } from '../../../components/applikasjon/steg/Steg';
 import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
+import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
+import { AppState } from '../../../redux/reducers';
+import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
+import { HistoryProps } from '../../../types/common';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
+import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
+import { Skjemanummer } from '../../../types/søknad/Søknad';
+import utils from '../../../util/domain/fødselsdato';
+import { StegID } from '../../../util/routing/stegConfig';
+import isAvailable from '../../../util/steg/isAvailable';
+import { fødselsdatoerErFyltUt } from '../../../util/validation/fødselsdato';
+import { barnErGyldig } from '../../../util/validation/steg/barn';
+import DateValues from '../../../util/validation/values';
+import AntallBarnBolk from '../components/AntallBarnBolk';
+import visibility from './visibility';
 
 export interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
@@ -63,16 +60,16 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props> {
                 <Block>
                     <DatoInput
                         name="foreldreansvar_dato"
-                        inputId="foreldreansvar_dato"
+                        id="foreldreansvar_dato"
                         label={<Labeltekst intlId="foreldreansvar.overtakelsedato" />}
-                        onChange={(dato: Date) =>
+                        onChange={(foreldreansvarsdato) =>
                             dispatch(
                                 søknadActions.updateBarn({
-                                    foreldreansvarsdato: dato,
+                                    foreldreansvarsdato,
                                 })
                             )
                         }
-                        dato={barn.foreldreansvarsdato}
+                        datoVerdi={barn.foreldreansvarsdato}
                     />
                 </Block>
 
@@ -94,7 +91,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props> {
                         datoavgrensninger={{
                             minDato: DateValues.date15YearsAgo.toDate(),
                         }}
-                        onChangeFødselsdato={(fødselsdatoer: Date[]) =>
+                        onChangeFødselsdato={(fødselsdatoer) =>
                             dispatch(
                                 søknadActions.updateBarn({
                                     fødselsdatoer,

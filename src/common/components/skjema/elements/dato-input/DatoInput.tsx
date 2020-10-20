@@ -1,27 +1,36 @@
 import * as React from 'react';
-
-import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
 import { injectIntl, IntlShape } from 'react-intl';
-import AriaText from 'common/components/aria/AriaText';
 import moment from 'moment';
-import { Avgrensninger, Tidsperiode, Feil } from 'common/types';
+import { DatepickerLimitations } from 'nav-datovelger';
+import Datepicker, { DatepickerProps } from 'nav-datovelger/lib/Datepicker';
+import AriaText from 'common/components/aria/AriaText';
+import { Avgrensninger, Feil, Tidsperiode } from 'common/types';
 import BEMHelper from 'common/util/bem';
 import { dateToISOFormattedDateString } from 'common/util/datoUtils';
 import { fridager } from 'common/util/fridagerUtils';
+import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
 import { getAvgrensningerDescriptionForInput } from './datoInputDescription';
-import Datepicker, { DatepickerProps } from 'nav-datovelger/lib/Datepicker';
-import { DatepickerLimitations } from 'nav-datovelger';
-
+import { createDatoInputVerdi } from './datoInputUtils';
 import './datoInput.less';
 
+export type DatoInputVerdi = {
+    date: Date | undefined;
+    dateString: string;
+};
+
+export type ValidDatoInputVerdi = {
+    date: Date;
+    dateString: string;
+};
+
 export interface DatoInputProps extends Omit<DatepickerProps, 'onChange' | 'input' | 'inputId'> {
-    inputId: string;
+    id: string;
     name: string;
     label: React.ReactNode;
-    dato?: Date;
+    datoVerdi?: DatoInputVerdi;
     postfix?: string;
     feil?: Feil;
-    onChange: (dato?: Date) => void;
+    onChange: (datoVerdi: DatoInputVerdi) => void;
     datoAvgrensinger?: Avgrensninger;
 }
 
@@ -49,7 +58,7 @@ const bem = BEMHelper('datoInput');
 class DatoInput extends React.Component<Props> {
     render() {
         const {
-            inputId: id,
+            id,
             label,
             postfix,
             feil,
@@ -58,37 +67,36 @@ class DatoInput extends React.Component<Props> {
             calendarSettings,
             name,
             limitations,
-            dato,
+            datoVerdi,
             datoAvgrensinger,
             ...rest
         } = this.props;
         const avgrensningerTekst = limitations ? getAvgrensningerDescriptionForInput(intl, limitations) : undefined;
         const ariaDescriptionId = avgrensningerTekst ? `${id}_ariaDesc` : undefined;
+        const inputId = `${id}_input`;
+
         const erHelligdag = (d: Date): boolean => {
             return fridager.some((d2) => moment(d2.date).isSame(d, 'day'));
         };
 
         return (
-            <SkjemaInputElement id={id} feil={feil} label={label}>
+            <SkjemaInputElement inputId={inputId} feil={feil} label={label}>
                 <div className={bem.block}>
                     <div className={bem.element('datovelger')}>
                         <Datepicker
                             {...rest}
                             calendarSettings={calendarSettings}
-                            value={dato ? moment.utc(dato).format('YYYY-MM-DD') : undefined}
-                            inputId={id ? id : name}
+                            value={datoVerdi?.dateString}
+                            inputId={inputId}
                             locale={intl.locale}
                             inputProps={{
-                                placeholder: 'dd.mm.åååå',
                                 name,
                                 'aria-describedby': ariaDescriptionId,
                             }}
                             showYearSelector={true}
                             onChange={(datoString: string) => {
-                                const nyDato =
-                                    datoString && datoString !== 'Invalid date' ? new Date(datoString) : undefined;
-                                if (dato !== nyDato) {
-                                    onChange(nyDato);
+                                if (datoVerdi?.dateString !== datoString) {
+                                    onChange(createDatoInputVerdi(datoString));
                                 }
                             }}
                             limitations={datoAvgrensinger ? parseAvgrensinger(datoAvgrensinger) : undefined}

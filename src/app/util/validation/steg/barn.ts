@@ -21,6 +21,7 @@ import { IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import { visTermindato } from 'app/steg/barn/relasjonTilBarnFødselSteg/visibility/visibilityFunctions';
+import { createDatoInputVerdi } from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (
@@ -93,7 +94,7 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
 
 export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, arbeidsforhold: Arbeidsforhold[]): boolean => {
     const { barn, situasjon } = søknad;
-    return isUfødtBarn(barn, situasjon) && !harAktivtArbeidsforhold(arbeidsforhold, barn.termindato);
+    return isUfødtBarn(barn, situasjon) && !harAktivtArbeidsforhold(arbeidsforhold, barn.termindato.date);
 };
 
 export const getUniqueRegistrertAnnenForelderFromBarn = (
@@ -126,7 +127,7 @@ export const getBarnInfoFraRegistrertBarnValg = (
     }
     const fødselsdato = findOldestDate(valgteBarn.map((b: RegistrertBarn) => b.fødselsdato));
     return {
-        fødselsdatoer: fødselsdato ? [fødselsdato] : [],
+        fødselsdatoer: fødselsdato ? [createDatoInputVerdi(fødselsdato)] : [],
         antallBarn: valgteBarn.length > 0 ? valgteBarn.length : undefined,
         erBarnetFødt: valgteBarn.length > 0 || undefined,
     };
@@ -141,7 +142,7 @@ export const getAdopsjonAnkomstdatoValidatorer = (barn: Adopsjonsbarn, intl: Int
     if (fødselsdatoer && fødselsdatoer.length > 0 && ankomstdato !== undefined) {
         return [
             {
-                test: () => barnErFødtFørAnkomstNorge(barn.fødselsdatoer[0], ankomstdato),
+                test: () => barnErFødtFørAnkomstNorge(barn.fødselsdatoer[0].date!, ankomstdato.date!),
                 failText: getMessage(intl, 'valideringsfeil.fodselsdato.etterAdopsjonsdato'),
             },
         ];

@@ -19,8 +19,8 @@ const FrilansoppdragOppsummeringsliste: React.StatelessComponent<Props> = ({ fri
             data={frilansoppdrag.map(({ navnPåArbeidsgiver, tidsperiode, pågående }) => ({
                 venstrestiltTekst: navnPåArbeidsgiver,
                 høyrestiltTekst: getMessage(intl, 'tidsintervall', {
-                    fom: formatDate(tidsperiode.fom),
-                    tom: pågående ? 'pågående' : formatDate(tidsperiode.tom),
+                    fom: formatDate(tidsperiode.fom?.date),
+                    tom: pågående ? 'pågående' : formatDate(tidsperiode.tom?.date),
                 }),
             }))}
         />

@@ -1,4 +1,5 @@
-import { TidsperiodeMedValgfriSluttdato } from 'common/types';
+import { TidsperiodeDatoInputVerdiMedValgfriSluttdato } from 'common/types';
+import { DatoInputVerdi } from '../../../common/components/skjema/elements/dato-input/DatoInput';
 
 export enum Næringstype {
     'FISKER' = 'FISKE',
@@ -9,7 +10,7 @@ export enum Næringstype {
 
 export class Næring {
     næringstyper: Næringstype[];
-    tidsperiode: Partial<TidsperiodeMedValgfriSluttdato>;
+    tidsperiode: Partial<TidsperiodeDatoInputVerdiMedValgfriSluttdato>;
     næringsinntekt: number;
     pågående: boolean;
     navnPåNæringen: string;
@@ -18,7 +19,7 @@ export class Næring {
     registrertILand: string;
     stillingsprosent: string;
     harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene?: boolean;
-    oppstartsdato?: Date;
+    oppstartsdato?: DatoInputVerdi;
     hattVarigEndringAvNæringsinntektSiste4Kalenderår?: boolean;
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjon;
     harRegnskapsfører: boolean;
@@ -29,7 +30,7 @@ export class Næring {
 }
 
 export class EndringAvNæringsinntektInformasjon {
-    dato: Date;
+    dato: DatoInputVerdi;
     næringsinntektEtterEndring: number;
     forklaring: string;
 }

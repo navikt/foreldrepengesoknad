@@ -96,16 +96,16 @@ class FrilanserBolk extends React.Component<Props> {
                         <Block animated={false} visible={visibility.startdatoVisible(søker)} margin="xs">
                             <DatoInput
                                 name="frilansStartDato"
-                                inputId="frilansStartDato"
+                                id="frilansStartDato"
                                 label={getMessage(intl, 'frilans.oppstart')}
-                                onChange={(oppstart: Date) =>
+                                onChange={(oppstart) =>
                                     this.handleFrilansinformasjonOnChange({
                                         oppstart,
                                     })
                                 }
-                                dato={oppstartsdato}
+                                datoVerdi={oppstartsdato}
                                 datoAvgrensinger={notInFutureAvgrensning}
-                                validators={getFrilansOppstartRules(oppstartsdato, intl)}
+                                validators={getFrilansOppstartRules(oppstartsdato?.date, intl)}
                             />
                         </Block>
 

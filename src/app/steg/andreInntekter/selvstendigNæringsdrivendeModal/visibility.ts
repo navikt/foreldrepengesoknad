@@ -57,7 +57,7 @@ const næringsinntektVisible: VisibilityFunction<NæringPartial> = (næring: Næ
     const { tidsperiode } = næring;
     if (tidsperiode && module.tidsperiodeUtfylt(næring)) {
         const { fom } = tidsperiode;
-        return moment(fom).isAfter(date4YearsAgo, 'day') && module.tidsperiode(næring);
+        return moment(fom?.date).isAfter(date4YearsAgo, 'day') && module.tidsperiode(næring);
     }
     return false;
 };
