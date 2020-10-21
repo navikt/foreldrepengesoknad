@@ -16,6 +16,7 @@ import { finnAntallDagerÅTrekke } from '../../../../../util/uttaksPlanStatus';
 import { Perioden } from '../../../../../util/uttaksplan/Perioden';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import ArbeideHelgInfo from './ArbeideHelgInfo';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
@@ -61,7 +62,7 @@ class GradertUttakForm extends React.Component<Props> {
                             onChange({ gradert: ønskerGradering, erArbeidstaker: ønskerGradering ? false : undefined })
                         }
                         hjelpetekst={
-                            <>
+                            <Normaltekst>
                                 <FormattedMessage
                                     id="uttaksperiode.gradert.skalDuHarGradering.hjelpetekst.del1"
                                     values={{
@@ -93,7 +94,7 @@ class GradertUttakForm extends React.Component<Props> {
                                         ),
                                     }}
                                 />
-                            </>
+                            </Normaltekst>
                         }
                         clsName="onskerDuGradertuttak"
                     />
