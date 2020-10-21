@@ -29,7 +29,9 @@ const mapMissingAttachmentsOnEndringer = (
     });
 };
 
-const mapSpråkkodeOnSøknad = (språkkode: Språkkode, søknad: Søknad) => (søknad.søker.språkkode = språkkode);
+const mapSpråkkodeOnSøknad = (språkkode: Språkkode, søknad: Søknad) => {
+    søknad.søker.språkkode = språkkode;
+};
 
 const getSøknadsdataForInnsending = (
     originalSøknad: Søknad,
