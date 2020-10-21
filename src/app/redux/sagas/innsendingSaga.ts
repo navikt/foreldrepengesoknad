@@ -29,15 +29,20 @@ const mapMissingAttachmentsOnEndringer = (
     });
 };
 
+const mapSpråkkodeOnSøknad = (språkkode: Språkkode, søknad: Søknad) => {
+    søknad.søker.språkkode = språkkode;
+    return søknad.søker.språkkode;
+};
+
 const getSøknadsdataForInnsending = (
     originalSøknad: Søknad,
     missingAttachments: MissingAttachment[],
     endringerIUttaksplan: Periode[],
     språkkode: Språkkode
 ): SøknadForInnsending | EnkelEndringssøknadForInnsending => {
-    console.log(språkkode);
     const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
     mapMissingAttachmentsOnSøknad(missingAttachments, søknad);
+    mapSpråkkodeOnSøknad(språkkode, søknad);
 
     if (søknad.ekstrainfo.erEnkelEndringssøknad) {
         const endringerIUttaksplanWithMissingAttachments = mapMissingAttachmentsOnEndringer(
