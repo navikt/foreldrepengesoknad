@@ -1,6 +1,9 @@
 import moment from 'moment';
 
-export const dateStringToDateObjectMapper = (_key: string, value: string) => {
+export const dateStringToDateObjectMapper = (key: string, value: string) => {
+    if (key === 'dateString') {
+        return value;
+    }
     if (moment(value, [moment.HTML5_FMT.DATE, 'YYYY-MM-DDTHH:mm:ss.SSSZ'], true).isValid()) {
         return new Date(value);
     }
