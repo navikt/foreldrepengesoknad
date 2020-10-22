@@ -3,21 +3,22 @@ module.exports = {
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
     moduleNameMapper: {
         '\\.(css|jpg|png|svg|less)$': '<rootDir>/node_modules/jest-css-modules',
+        'nav-(.*)-style': '<rootDir>/node_modules/jest-css-modules',
         '^uttaksplan/(.*)': '<rootDir>/src/uttaksplan/$1',
         '^common/(.*)': '<rootDir>/src/common/$1',
         '^app/(.*)': '<rootDir>/src/app/$1',
-        '^shared/(.*)': '<rootDir>/src/shared/$1'
+        '^shared/(.*)': '<rootDir>/src/shared/$1',
     },
     moduleFileExtensions: ['js', 'json', 'jsx', 'node', 'ts', 'tsx'],
     globals: {
         'ts-jest': {
             tsConfig: './tsconfig.json',
-            babelConfig: true
-        }
+            babelConfig: true,
+        },
     },
     rootDir: '../',
     coverageReporters: ['text-summary'],
     modulePathIgnorePatterns: ['akseptansetest'],
     preset: 'ts-jest/presets/js-with-babel',
-    testMatch: null
+    testMatch: null,
 };
