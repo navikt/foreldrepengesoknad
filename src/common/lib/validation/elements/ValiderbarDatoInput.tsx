@@ -13,7 +13,7 @@ const ValiderbarDatoInput = (props: Props) => {
         <ValiderbartSkjemaelement
             {...props}
             onChange={onChange}
-            render={(onChange, _onBlur, feil) => <DatoInput {...rest} onChange={onChange} feil={feil} />}
+            render={(renderOnChange, _onBlur, feil) => <DatoInput {...rest} onChange={renderOnChange} feil={feil} />}
         />
     );
 };
