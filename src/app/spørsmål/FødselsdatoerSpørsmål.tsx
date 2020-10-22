@@ -90,9 +90,9 @@ class FødselsdatoerSpørsmål extends React.Component<Props> {
         if (gjelderAdopsjon) {
             return false;
         }
-        const fødselsdato = fødselsdatoer.length > 0 ? ISOStringToDate(fødselsdatoer[0]) : undefined;
-        if (fødselsdato) {
-            if (erFarMedmor) {
+        if (fødselsdatoer.length > 0) {
+            const fødselsdato = fødselsdatoer.length > 0 ? ISOStringToDate(fødselsdatoer[0]) : undefined;
+            if (erFarMedmor && fødselsdato) {
                 return moment(fødselsdato).isSameOrAfter(dateMoreThan10WeeksAgo);
             }
             return true;
