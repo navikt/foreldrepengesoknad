@@ -208,7 +208,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                         if (date) {
                                             handleOnChange({
                                                 ...tidsperiode,
-                                                tom: dateToISOString(getTidsperiode(date!, uker * 5 + nyDager).tom),
+                                                tom: dateToISOString(getTidsperiode(date, uker * 5 + nyDager).tom),
                                             });
                                         }
                                     },

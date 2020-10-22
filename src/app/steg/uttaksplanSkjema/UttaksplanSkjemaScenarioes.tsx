@@ -213,9 +213,9 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
     const adopsjonsdatoDate = ISOStringToDate(barn.adopsjonsdato);
 
     const latestDate =
-        ankomstdatoDate !== undefined
-            ? dateToISOString(findOldestDate([ankomstdatoDate, adopsjonsdatoDate!])) // todo - sjekk logikk her
-            : barn.adopsjonsdato!;
+        ankomstdatoDate !== undefined && adopsjonsdatoDate !== undefined
+            ? dateToISOString(findOldestDate([ankomstdatoDate, adopsjonsdatoDate])) // todo - sjekk logikk her
+            : barn.adopsjonsdato;
     const startdatoPermisjon = søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon;
     const stebarnsadopsjon = barn.adopsjonAvEktefellesBarn;
     const adoptertIUtlandet = barn.adoptertIUtlandet;
