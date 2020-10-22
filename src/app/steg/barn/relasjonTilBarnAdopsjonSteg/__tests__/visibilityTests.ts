@@ -11,7 +11,7 @@ describe('Relasjon til barn adopsjon', () => {
 
     it('Skal vise valg om antall barn som adopteres gitt en adopsjonsdato', () => {
         expect(fns.spørsmålOmAntallBarn({ adopsjonsdato: dateToISOString(new Date('2018-01-01')) })).toBe(true);
-        expect(fns.spørsmålOmAntallBarn({ adopsjonsdato: dateToISOString(undefined) })).toBe(false);
+        expect(fns.spørsmålOmAntallBarn({ adopsjonsdato: undefined })).toBe(false);
     });
 
     it('Skal vise felt for fødselsdatoer gitt at et antall barn er valgt', () => {
