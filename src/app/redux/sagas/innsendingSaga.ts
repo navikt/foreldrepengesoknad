@@ -31,9 +31,9 @@ const mapMissingAttachmentsOnEndringer = (
 
 const mapSpråkkodeOnSøknad = (språkkode: Språkkode, søknad: Søknad) => {
     if (språkkode === 'nn') {
-        søknad.søker.språkkode === 'NN';
+        søknad.søker.språkkode = 'NN';
     } else {
-        søknad.søker.språkkode === 'NB';
+        søknad.søker.språkkode = 'NB';
     }
 };
 
