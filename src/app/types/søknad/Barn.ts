@@ -1,38 +1,37 @@
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import { DatoInputVerdi } from '../../../common/components/skjema/elements/dato-input/DatoInput';
 import { Søkersituasjon } from './Søknad';
 
 export interface BarnCommonProps {
     antallBarn: number;
     erBarnetFødt: boolean;
     dokumentasjonAvAleneomsorg: Attachment[];
-    datoForAleneomsorg: DatoInputVerdi;
+    datoForAleneomsorg: string;
     terminbekreftelse: Attachment[];
 }
 
 export interface UfødtBarn extends BarnCommonProps {
-    termindato: DatoInputVerdi;
-    terminbekreftelseDato: DatoInputVerdi;
+    termindato: string;
+    terminbekreftelseDato: string;
 }
 
 export interface FødtBarn extends BarnCommonProps {
-    fødselsdatoer: DatoInputVerdi[];
+    fødselsdatoer: string[];
     fødselsattest: Attachment[];
-    termindato: DatoInputVerdi;
+    termindato: string;
 }
 
 export interface Adopsjonsbarn extends BarnCommonProps {
-    fødselsdatoer: DatoInputVerdi[];
-    adopsjonsdato: DatoInputVerdi;
-    ankomstdato?: DatoInputVerdi;
+    fødselsdatoer: string[];
+    adopsjonsdato: string;
+    ankomstdato?: string;
     adoptertIUtlandet?: boolean;
     omsorgsovertakelse: Attachment[];
     adopsjonAvEktefellesBarn: boolean;
 }
 
 export interface ForeldreansvarBarn extends BarnCommonProps {
-    fødselsdatoer: DatoInputVerdi[];
-    foreldreansvarsdato: DatoInputVerdi;
+    fødselsdatoer: string[];
+    foreldreansvarsdato: string;
     omsorgsovertakelse: Attachment[];
     adopsjonsvedtak: Attachment[];
 }

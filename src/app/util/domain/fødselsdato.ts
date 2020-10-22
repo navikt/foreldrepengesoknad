@@ -1,6 +1,4 @@
-import { DatoInputVerdi } from '../../../common/components/skjema/elements/dato-input/DatoInput';
-
-const trimFødselsdatoer = (antall: number, datoer: DatoInputVerdi[] = []): DatoInputVerdi[] => {
+const trimFødselsdatoer = (antall: number, datoer: string[] = []): string[] => {
     let fødselsdatoer = [...datoer];
     if (datoer.length > antall) {
         fødselsdatoer = datoer.slice(0, antall);

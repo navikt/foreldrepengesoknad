@@ -1,5 +1,4 @@
 import { UtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
-import { DatoInputVerdi } from '../../../common/components/skjema/elements/dato-input/DatoInput';
 
 export enum ValgalternativerAdopsjonStartdato {
     'ankomst' = 'ankomst',
@@ -13,8 +12,8 @@ export enum ValgalternativerAleneomsorgFarMedmor {
 }
 
 export interface UttaksplanSkjemadata {
-    startdatoPermisjon?: DatoInputVerdi;
-    morSinSisteUttaksdag?: DatoInputVerdi;
+    startdatoPermisjon?: string;
+    morSinSisteUttaksdag?: string;
     skalStarteRettEtterMor?: boolean;
     skalIkkeHaUttakFørTermin?: boolean;
     harPlanlagtOppholdIUttak?: boolean;
@@ -26,7 +25,7 @@ export interface UttaksplanSkjemadata {
     planlagtOppholdSkjemaValid?: boolean;
     valgtAdopsjonStartdato?: ValgalternativerAdopsjonStartdato;
     valgtStartdatoAleneomsorgFarMedmor?: ValgalternativerAleneomsorgFarMedmor;
-    farSinFørsteUttaksdag?: DatoInputVerdi;
+    farSinFørsteUttaksdag?: string;
     antallUkerFellesperiodeFarMedmor?: number;
     antallDagerFellesperiodeFarMedmor?: number;
     begrunnelseForUtsettelse?: UtsettelseÅrsakType;

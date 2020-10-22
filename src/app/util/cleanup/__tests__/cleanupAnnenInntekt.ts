@@ -1,7 +1,7 @@
-import cleanup from './../cleanupAnnenInntekt';
-import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from '../../../types/søknad/AnnenInntekt';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import visibility from '../../../steg/andreInntekter/annenInntektModal/visibility';
-import { createDatoInputVerdiFromDate } from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
+import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from '../../../types/søknad/AnnenInntekt';
+import cleanup from '../cleanupAnnenInntekt';
 
 const annenInntekt: AnnenInntekt = {
     type: AnnenInntektType.JOBB_I_UTLANDET,
@@ -10,7 +10,7 @@ const annenInntekt: AnnenInntekt = {
     land: 'some country',
     pågående: true,
     tidsperiode: {
-        fom: createDatoInputVerdiFromDate(new Date()),
+        fom: dateToISOString(new Date()),
     },
 };
 

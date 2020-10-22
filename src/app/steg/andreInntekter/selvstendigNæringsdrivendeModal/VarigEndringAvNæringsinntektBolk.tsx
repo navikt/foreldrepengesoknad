@@ -71,7 +71,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                                     dato,
                                 });
                             }}
-                            datoVerdi={info && info.dato}
+                            dato={info && info.dato}
                             datoAvgrensinger={getTidsperiodeAvgrensningerSiste4år()}
                             validators={[hasValueRule(info && info.dato, getMessage(intl, 'påkrevd'))]}
                         />

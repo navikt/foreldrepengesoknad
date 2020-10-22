@@ -1,21 +1,21 @@
 import * as React from 'react';
-import HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål from '../../../spørsmål/HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål';
+import { injectIntl, IntlShape } from 'react-intl';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import Block from 'common/components/block/Block';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
+import BEMHelper from 'common/util/bem';
+import getMessage from 'common/util/i18nUtils';
 import DriverDuFosterhjemSpørsmål from '../../../spørsmål/DriverDuFosterhjemSpørsmål';
+import HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål from '../../../spørsmål/HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål';
 import HarDuJobbetSomFrilansSiste10MndSpørsmål from '../../../spørsmål/HarDuJobbetSomFrilansSiste10MndSpørsmål';
-import Søker, { SøkerPartial } from '../../../types/søknad/Søker';
 import JobberDuFremdelesSomFrilansSpørsmål from '../../../spørsmål/JobberDuFremdelesSomFrilansSpørsmål';
 import { FrilansInformasjonPartial, FrilansOppdrag } from '../../../types/søknad/FrilansInformasjon';
-import FrilansOppdragBolk from '../frilansOppdragBolk/FrilansOppdragBolk';
-import { injectIntl, IntlShape } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
-import DatoInput from 'common/components/skjema/wrappers/DatoInput';
-import visibility from './visibility';
+import Søker, { SøkerPartial } from '../../../types/søknad/Søker';
 import { notInFutureAvgrensning } from '../../../util/validation/common';
 import { getFrilansOppstartRules } from '../../../util/validation/frilans';
-
+import FrilansOppdragBolk from '../frilansOppdragBolk/FrilansOppdragBolk';
+import visibility from './visibility';
 import './frilanserBolk.less';
-import BEMHelper from 'common/util/bem';
 
 interface FrilanserBolkProps {
     søker: Søker;
@@ -103,9 +103,9 @@ class FrilanserBolk extends React.Component<Props> {
                                         oppstart,
                                     })
                                 }
-                                datoVerdi={oppstartsdato}
+                                dato={oppstartsdato}
                                 datoAvgrensinger={notInFutureAvgrensning}
-                                validators={getFrilansOppstartRules(oppstartsdato?.date, intl)}
+                                validators={getFrilansOppstartRules(ISOStringToDate(oppstartsdato), intl)}
                             />
                         </Block>
 

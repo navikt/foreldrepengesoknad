@@ -1,6 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
-import { Tidsperiode, Feil, TidsperiodeDatoInputVerdi } from 'common/types';
+import { Tidsperiode, Feil, TidsperiodeString } from 'common/types';
 import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { injectIntl, IntlShape } from 'react-intl';
 import {
@@ -24,11 +24,11 @@ import {
 
 export interface Props {
     periode: UttakFormPeriodeType;
-    tidsperiode: Partial<TidsperiodeDatoInputVerdi>;
+    tidsperiode: Partial<TidsperiodeString>;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder: Tidsperiode[];
     feil?: Feil;
-    onChange: (tidsperiode: Partial<TidsperiodeDatoInputVerdi>) => void;
+    onChange: (tidsperiode: Partial<TidsperiodeString>) => void;
     intl: IntlShape;
 }
 

@@ -1,15 +1,16 @@
 import * as React from 'react';
-import * as countries from 'i18n-iso-countries';
 import { useIntl } from 'react-intl';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import * as countries from 'i18n-iso-countries';
 import { Element } from 'nav-frontend-typografi';
-import AnnenForelder from 'app/types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
+import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+import AnnenForelder from 'app/types/søknad/AnnenForelder';
 import { formaterNavn } from 'app/util/domain/personUtil';
 import Barn from '../../../../../types/søknad/Barn';
 import { formatDate } from '../../../../../util/dates/dates';
-import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
-import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 
 interface AnnenForelderOppsummeringProps {
     annenForelder: AnnenForelder;
@@ -87,7 +88,7 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
             {datoForAleneomsorg && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.annenForelder.datoForAleneomsorg.label')}
-                    verdi={formatDate(datoForAleneomsorg.date) || ''}
+                    verdi={formatDate(ISOStringToDate(datoForAleneomsorg)) || ''}
                 />
             )}
             {erAleneOmOmsorg && erFarEllerMedmor && (

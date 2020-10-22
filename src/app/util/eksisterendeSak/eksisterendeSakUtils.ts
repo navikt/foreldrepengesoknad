@@ -1,8 +1,8 @@
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { cloneDeep } from 'lodash';
 import moment from 'moment';
 import { guid } from 'nav-frontend-js-utils';
 import { Dekningsgrad } from 'common/types';
-import { createDatoInputVerdiFromDate } from '../../../common/components/skjema/elements/dato-input/datoInputUtils';
 import { MorsAktivitetDto, OppholdsÅrsak, UttaksplanDTO, UttaksplanPeriodeDTO } from 'app/api/types/uttaksplanDTO';
 import { RecursivePartial } from 'app/types/Partial';
 import { FamiliehendelseDatoer } from 'app/types/søknad/FamiliehendelseDatoer';
@@ -341,7 +341,7 @@ const getBarnFromSaksgrunnlag = (
                 erBarnetFødt,
                 ...(erBarnetFødt
                     ? {
-                          fødselsdatoer: [createDatoInputVerdiFromDate(sak.familieHendelseDato)],
+                          fødselsdatoer: [dateToISOString(sak.familieHendelseDato)],
                           termindato: sak.termindato,
                       }
                     : {
@@ -351,8 +351,8 @@ const getBarnFromSaksgrunnlag = (
         case Søkersituasjon.ADOPSJON:
             return {
                 antallBarn: sak.antallBarn,
-                adopsjonsdato: createDatoInputVerdiFromDate(sak.familieHendelseDato),
-                fødselsdatoer: [createDatoInputVerdiFromDate(sak.familieHendelseDato)],
+                adopsjonsdato: dateToISOString(sak.familieHendelseDato),
+                fødselsdatoer: [dateToISOString(sak.familieHendelseDato)],
             };
         default:
             return undefined;

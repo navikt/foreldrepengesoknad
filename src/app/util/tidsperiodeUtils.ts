@@ -1,20 +1,16 @@
-import { createDatoInputVerdi } from '../../common/components/skjema/elements/dato-input/datoInputUtils';
-import { Tidsperiode, TidsperiodeDatoInputVerdi } from '../../common/types';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { Tidsperiode, TidsperiodeString } from '../../common/types';
 
-export const mapTidsperiodeDatoInputVerdiToTidsperiode = (
-    t: Partial<TidsperiodeDatoInputVerdi>
-): Partial<Tidsperiode> => {
+export const mapTidsperiodeDatoInputVerdiToTidsperiode = (t: Partial<TidsperiodeString>): Partial<Tidsperiode> => {
     return {
-        fom: t.fom?.date,
-        tom: t.tom?.date,
+        fom: ISOStringToDate(t.fom),
+        tom: ISOStringToDate(t.tom),
     };
 };
 
-export const mapTidsperiodeToTidsperiodeDatoInputVerdi = (
-    t: Partial<Tidsperiode>
-): Partial<TidsperiodeDatoInputVerdi> => {
+export const mapTidsperiodeToTidsperiodeDatoInputVerdi = (t: Partial<Tidsperiode>): Partial<TidsperiodeString> => {
     return {
-        fom: createDatoInputVerdi(t.fom),
-        tom: createDatoInputVerdi(t.tom),
+        fom: dateToISOString(t.fom),
+        tom: dateToISOString(t.tom),
     };
 };

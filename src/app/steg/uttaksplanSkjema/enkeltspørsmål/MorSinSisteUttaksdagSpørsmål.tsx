@@ -26,7 +26,7 @@ const MorSinSisteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({ visib
                         navnMor: getNavnGenitivEierform(navnMor, intl.locale),
                     })}
                     onChange={(morSinSisteUttaksdag) => onChange({ morSinSisteUttaksdag })}
-                    datoVerdi={data.morSinSisteUttaksdag}
+                    dato={data.morSinSisteUttaksdag}
                     datoAvgrensinger={uttaksplanDatoavgrensninger.morsSisteUttaksdag(familiehendelsesdato)}
                 />
             )}

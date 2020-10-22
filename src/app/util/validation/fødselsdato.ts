@@ -12,7 +12,7 @@ import {
 } from './common';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import { Avgrensninger } from 'common/types';
-import { DatoInputVerdi } from '../../../common/components/skjema/elements/dato-input/DatoInput';
+import { isISODateString } from 'nav-datovelger';
 
 export const fødselsdatoAvgrensninger: Avgrensninger = {
     minDato: date3YearsAgo.toDate(),
@@ -44,5 +44,7 @@ export const getFødselsdatoRegler = (
     return regler;
 };
 
-export const fødselsdatoerErFyltUt = (fødselsdatoer: DatoInputVerdi[] | undefined): boolean =>
-    fødselsdatoer !== undefined && fødselsdatoer.length > 0 && fødselsdatoer.findIndex((d) => d === undefined) === -1;
+export const fødselsdatoerErFyltUt = (fødselsdatoer: string[] | undefined): boolean =>
+    fødselsdatoer !== undefined &&
+    fødselsdatoer.length > 0 &&
+    fødselsdatoer.findIndex((d) => isISODateString(d) === false) === -1;

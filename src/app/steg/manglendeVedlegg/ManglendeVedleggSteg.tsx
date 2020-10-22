@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
 import { connect } from 'react-redux';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import _ from 'lodash';
 import moment from 'moment';
 import { guid } from 'nav-frontend-js-utils';
@@ -35,7 +36,6 @@ import {
 } from 'app/util/validation/terminbekreftelsedato';
 import isAvailable from '../../util/steg/isAvailable';
 import { findAllAttachments } from './manglendeVedleggUtil';
-import { DatoInputVerdi } from '../../../common/components/skjema/elements/dato-input/DatoInput';
 
 interface ReduxProps {
     stegProps: StegProps;
@@ -157,22 +157,22 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                         id="terminbekreftelseDato"
                                         name="terminbekreftelseDato"
                                         label={getMessage(intl, 'terminbekreftelseDato.spørsmål')}
-                                        onChange={(terminbekreftelseDato: DatoInputVerdi) => {
+                                        onChange={(terminbekreftelseDato) => {
                                             dispatch(
                                                 søknadActions.updateBarn({
                                                     terminbekreftelseDato,
                                                 })
                                             );
                                         }}
-                                        datoVerdi={(søknad.barn as UfødtBarn).terminbekreftelseDato}
+                                        dato={(søknad.barn as UfødtBarn).terminbekreftelseDato}
                                         datoAvgrensinger={getTerminbekreftelsedatoAvgrensninger(
-                                            (søknad.barn as UfødtBarn).termindato.date
+                                            ISOStringToDate((søknad.barn as UfødtBarn).termindato)
                                         )}
                                         validators={
                                             attachmentsToRender.length > 0
                                                 ? getTerminbekreftelseDatoRegler(
-                                                      (søknad.barn as UfødtBarn).terminbekreftelseDato.date,
-                                                      (søknad.barn as UfødtBarn).termindato.date,
+                                                      ISOStringToDate((søknad.barn as UfødtBarn).terminbekreftelseDato),
+                                                      ISOStringToDate((søknad.barn as UfødtBarn).termindato),
                                                       intl
                                                   )
                                                 : []

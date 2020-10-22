@@ -1,4 +1,4 @@
-import { createDatoInputVerdiFromDate } from '../../../../../common/components/skjema/elements/dato-input/datoInputUtils';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Kjønn } from '../../../../types/common';
@@ -83,13 +83,13 @@ describe('RelasjonTilBarnFødselSteg visbility tester', () => {
             expect(visibility.fødselsattestUploader(false, { fødselsdatoer: undefined })).toBeFalsy();
             expect(visibility.fødselsattestUploader(false, { fødselsdatoer: [] })).toBeFalsy();
             expect(
-                visibility.fødselsattestUploader(false, { fødselsdatoer: [createDatoInputVerdiFromDate(new Date())] })
+                visibility.fødselsattestUploader(false, { fødselsdatoer: [dateToISOString(new Date())] })
             ).toBeFalsy();
         });
 
         it('FødselsattestUploader should render if FødeslsdatoerSpørsmål renders and is answered', () => {
             expect(
-                visibility.fødselsattestUploader(true, { fødselsdatoer: [createDatoInputVerdiFromDate(new Date())] })
+                visibility.fødselsattestUploader(true, { fødselsdatoer: [dateToISOString(new Date())] })
             ).toBeTruthy();
         });
 
@@ -138,18 +138,12 @@ describe('RelasjonTilBarnFødselSteg visbility tester', () => {
         it('Terminbekreftelse should not render if Termindato is not rendered', () => {
             expect(visibility.terminbekreftelse(false, { termindato: undefined }, true)).toBeFalsy();
             expect(visibility.terminbekreftelse(false, { termindato: undefined }, false)).toBeFalsy();
-            expect(
-                visibility.terminbekreftelse(false, { termindato: createDatoInputVerdiFromDate(new Date()) }, true)
-            ).toBeFalsy();
-            expect(
-                visibility.terminbekreftelse(false, { termindato: createDatoInputVerdiFromDate(new Date()) }, false)
-            ).toBeFalsy();
+            expect(visibility.terminbekreftelse(false, { termindato: dateToISOString(new Date()) }, true)).toBeFalsy();
+            expect(visibility.terminbekreftelse(false, { termindato: dateToISOString(new Date()) }, false)).toBeFalsy();
         });
 
         it('Terminbekreftelse should render if Termindato renders and is answered', () => {
-            expect(
-                visibility.terminbekreftelse(true, { termindato: createDatoInputVerdiFromDate(new Date()) }, true)
-            ).toBeTruthy();
+            expect(visibility.terminbekreftelse(true, { termindato: dateToISOString(new Date()) }, true)).toBeTruthy();
         });
 
         it('Terminbekreftelse should not render if Termindato is rendered but is unanswered', () => {
@@ -168,7 +162,7 @@ describe('RelasjonTilBarnFødselSteg visbility tester', () => {
             expect(
                 visibility.terminbekreftelseDato(false, {
                     terminbekreftelse: [],
-                    termindato: createDatoInputVerdiFromDate(new Date()),
+                    termindato: dateToISOString(new Date()),
                 })
             ).toBeFalsy();
         });
@@ -177,7 +171,7 @@ describe('RelasjonTilBarnFødselSteg visbility tester', () => {
             expect(
                 visibility.terminbekreftelseDato(true, {
                     terminbekreftelse: [attachment],
-                    termindato: createDatoInputVerdiFromDate(new Date()),
+                    termindato: dateToISOString(new Date()),
                 })
             ).toBeTruthy();
         });
@@ -186,7 +180,7 @@ describe('RelasjonTilBarnFødselSteg visbility tester', () => {
             expect(
                 visibility.terminbekreftelseDato(true, {
                     terminbekreftelse: undefined,
-                    termindato: createDatoInputVerdiFromDate(new Date()),
+                    termindato: dateToISOString(new Date()),
                 })
             ).toBeFalsy();
         });

@@ -1,21 +1,22 @@
 import * as React from 'react';
+import { useIntl } from 'react-intl';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import Block from 'common/components/block/Block';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
+import { DispatchProps } from 'common/redux/types/index';
+import getMessage from 'common/util/i18nUtils';
+import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import VeilederInfo from '../../../../components/veilederInfo/VeilederInfo';
+import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
+import { UfødtBarn } from '../../../../types/søknad/Barn';
+import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import {
     getTerminbekreftelsedatoAvgrensninger,
     getTerminbekreftelseDatoRegler,
 } from '../../../../util/validation/terminbekreftelsedato';
-import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
-import { Skjemanummer } from '../../../../types/søknad/Søknad';
-import { UfødtBarn } from '../../../../types/søknad/Barn';
-import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import { useIntl } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
-import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
-import { DispatchProps } from 'common/redux/types/index';
-import DatoInput from 'common/components/skjema/wrappers/DatoInput';
-import Block from 'common/components/block/Block';
 import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
-import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
-import VeilederInfo from '../../../../components/veilederInfo/VeilederInfo';
 
 export interface OwnProps {
     barn: UfødtBarn;
@@ -69,13 +70,13 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                             })
                         );
                     }}
-                    datoVerdi={barn.terminbekreftelseDato}
-                    datoAvgrensinger={getTerminbekreftelsedatoAvgrensninger(barn.termindato.date)}
+                    dato={barn.terminbekreftelseDato}
+                    datoAvgrensinger={getTerminbekreftelsedatoAvgrensninger(ISOStringToDate(barn.termindato))}
                     validators={
                         validerDatofelt
                             ? getTerminbekreftelseDatoRegler(
-                                  barn.terminbekreftelseDato.date,
-                                  barn.termindato.date,
+                                  ISOStringToDate(barn.terminbekreftelseDato),
+                                  ISOStringToDate(barn.termindato),
                                   intl
                               )
                             : []

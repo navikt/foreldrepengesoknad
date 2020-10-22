@@ -1,10 +1,10 @@
-import fns from '../visibility';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import {
     NæringPartial,
     Næringsrelasjon,
     Næringstype,
 } from '../../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import { createDatoInputVerdiFromDate } from '../../../../../common/components/skjema/elements/dato-input/datoInputUtils';
+import fns from '../visibility';
 
 describe('SelvstendigNæringsdrivendeModal visibility', () => {
     describe('Navn på næringen', () => {
@@ -109,14 +109,14 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
             it('should be complete if fom is defined, and pågående=true or tom !== undefined', () => {
                 expect(
                     fns.tidsperiodeUtfylt({
-                        tidsperiode: { fom: createDatoInputVerdiFromDate(new Date()), pågående: true },
+                        tidsperiode: { fom: dateToISOString(new Date()), pågående: true },
                     })
                 ).toBe(true);
                 expect(
                     fns.tidsperiodeUtfylt({
                         tidsperiode: {
-                            fom: createDatoInputVerdiFromDate(new Date()),
-                            tom: createDatoInputVerdiFromDate(new Date()),
+                            fom: dateToISOString(new Date()),
+                            tom: dateToISOString(new Date()),
                         },
                     })
                 ).toBe(true);
@@ -126,7 +126,7 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
                 expect(fns.tidsperiodeUtfylt({ tidsperiode: {} })).toBe(false);
                 expect(
                     fns.tidsperiodeUtfylt({
-                        tidsperiode: { fom: createDatoInputVerdiFromDate(new Date()) },
+                        tidsperiode: { fom: dateToISOString(new Date()) },
                         pågående: false,
                     })
                 ).toBe(false);

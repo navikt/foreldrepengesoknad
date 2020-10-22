@@ -1,23 +1,22 @@
 import * as React from 'react';
-import DatoInput from 'common/components/skjema/wrappers/DatoInput';
-import getMessage from 'common/util/i18nUtils';
-import { useIntl, FormattedMessage } from 'react-intl';
-import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
-import { uttaksplanDatoavgrensninger } from 'app/util/validation/uttaksplan/uttaksplanDatoavgrensninger';
-import LenkeKnapp from 'common/components/lenkeKnapp/LenkeKnapp';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Checkbox } from 'nav-frontend-skjema';
-import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import Block from 'common/components/block/Block';
+import LenkeKnapp from 'common/components/lenkeKnapp/LenkeKnapp';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { NavnPåForeldre } from 'common/types';
-import { formatDate } from 'app/util/dates/dates';
+import getMessage from 'common/util/i18nUtils';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Periodetype } from 'app/types/uttaksplan/periodetyper';
-import { createDatoInputVerdiFromDate } from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
-import { DatoInputVerdi } from '../../../../common/components/skjema/elements/dato-input/DatoInput';
+import { formatDate } from 'app/util/dates/dates';
+import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
+import { uttaksplanDatoavgrensninger } from 'app/util/validation/uttaksplan/uttaksplanDatoavgrensninger';
+import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
 interface FarSinFørsteUttaksdagSpørsmålProps {
     familiehendelsesdato: Date;
-    morSinSisteUttaksdag?: DatoInputVerdi;
+    morSinSisteUttaksdag?: string;
     eksisterendeSakAnnenPart?: EksisterendeSak;
     navnPåForeldre?: NavnPåForeldre;
 }
@@ -37,6 +36,7 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
         eksisterendeSakAnnenPart.uttaksplan &&
         eksisterendeSakAnnenPart.uttaksplan.filter((p) => p.type !== Periodetype.Info).length > 0;
 
+    const morSinSisteUttaksdagDate = ISOStringToDate(morSinSisteUttaksdag);
     return (
         <UttaksplanSkjemaSpørsmål
             visible={visible}
@@ -48,21 +48,21 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                                 name="farSinFørsteUttaksdagSpørsmål"
                                 id="farSinFørsteUttaksdagSpørsmål"
                                 label={getMessage(intl, 'spørsmål.farSinFørsteUttaksdagSpørsmål.label')}
-                                onChange={(farSinFørsteUttaksdag: DatoInputVerdi) =>
+                                onChange={(farSinFørsteUttaksdag) =>
                                     onChange(
                                         morSinSisteUttaksdag
                                             ? { farSinFørsteUttaksdag, morSinSisteUttaksdag }
                                             : { farSinFørsteUttaksdag }
                                     )
                                 }
-                                datoVerdi={data.farSinFørsteUttaksdag}
+                                dato={data.farSinFørsteUttaksdag}
                                 datoAvgrensinger={uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(
                                     familiehendelsesdato
                                 )}
                                 disabled={data.ønskerIkkeFlerePerioder}
                             />
                         </Block>
-                        {morSinSisteUttaksdag && navnPåForeldre && (
+                        {morSinSisteUttaksdagDate && navnPåForeldre && (
                             <>
                                 <Block margin="xs">
                                     <LenkeKnapp
@@ -71,20 +71,20 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                                                 id="spørsmål.farSinFørsteUttaksdagSpørsmål.førsteUttaksdagEtterAnnenPart"
                                                 values={{
                                                     navn: navnPåForeldre.mor,
-                                                    dato: formatDate(Uttaksdagen(morSinSisteUttaksdag.date!).neste()), //todo
+                                                    dato: formatDate(Uttaksdagen(morSinSisteUttaksdagDate).neste()),
                                                 }}
                                             />
                                         }
-                                        onClick={() =>
+                                        onClick={() => {
+                                            const farSinFørsteUttaksdag: string | undefined = morSinSisteUttaksdagDate
+                                                ? dateToISOString(Uttaksdagen(morSinSisteUttaksdagDate).neste())
+                                                : undefined;
+
                                             onChange({
                                                 morSinSisteUttaksdag,
-                                                farSinFørsteUttaksdag: morSinSisteUttaksdag
-                                                    ? createDatoInputVerdiFromDate(
-                                                          Uttaksdagen(morSinSisteUttaksdag.date!).neste()
-                                                      )
-                                                    : undefined,
-                                            })
-                                        }
+                                                farSinFørsteUttaksdag,
+                                            });
+                                        }}
                                     />
                                 </Block>
                                 {harAnnenPartForeslåttperioder && (
@@ -92,7 +92,7 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                                         label={
                                             <FormattedMessage
                                                 id="spørsmål.farSinFørsteUttaksdagSpørsmål.ønskerIkkeFlerePerioder.checkbox.label"
-                                                values={{ dato: Uttaksdagen(morSinSisteUttaksdag.date!).neste() }}
+                                                values={{ dato: Uttaksdagen(morSinSisteUttaksdagDate).neste() }}
                                             />
                                         }
                                         checked={data.ønskerIkkeFlerePerioder || false}

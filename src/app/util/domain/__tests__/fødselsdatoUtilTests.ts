@@ -1,9 +1,9 @@
-import fødselsdatoUtils from './../fødselsdato';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import DateValues from '../../validation/values';
-import { createDatoInputVerdiFromDate } from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
+import fødselsdatoUtils from '../fødselsdato';
 
 const trimFødselsdatoer = fødselsdatoUtils.trimFødselsdatoer;
-const todaysDateInputVerdi = createDatoInputVerdiFromDate(DateValues.today.toDate());
+const todaysDateInputVerdi = dateToISOString(DateValues.today.toDate());
 
 describe('trimFødselsdatoer', () => {
     it('should ensure the number of dates correspond to the number of children', () => {

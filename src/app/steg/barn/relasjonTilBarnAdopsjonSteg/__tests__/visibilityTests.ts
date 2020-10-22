@@ -1,9 +1,6 @@
-import fns from '../visibility';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import * as util from '../../../../util/validation/fødselsdato';
-import {
-    createDatoInputVerdi,
-    createDatoInputVerdiFromDate,
-} from '../../../../../common/components/skjema/elements/dato-input/datoInputUtils';
+import fns from '../visibility';
 
 describe('Relasjon til barn adopsjon', () => {
     it('Skal vise felt om adopsjonsdato gitt valg om type adopsjon', () => {
@@ -13,10 +10,8 @@ describe('Relasjon til barn adopsjon', () => {
     });
 
     it('Skal vise valg om antall barn som adopteres gitt en adopsjonsdato', () => {
-        expect(fns.spørsmålOmAntallBarn({ adopsjonsdato: createDatoInputVerdiFromDate(new Date('2018-01-01')) })).toBe(
-            true
-        );
-        expect(fns.spørsmålOmAntallBarn({ adopsjonsdato: createDatoInputVerdi(undefined) })).toBe(false);
+        expect(fns.spørsmålOmAntallBarn({ adopsjonsdato: dateToISOString(new Date('2018-01-01')) })).toBe(true);
+        expect(fns.spørsmålOmAntallBarn({ adopsjonsdato: dateToISOString(undefined) })).toBe(false);
     });
 
     it('Skal vise felt for fødselsdatoer gitt at et antall barn er valgt', () => {
@@ -38,13 +33,13 @@ describe('Relasjon til barn adopsjon', () => {
         expect(
             fns.spørsmålOmAdoptertIUtlandet({
                 adopsjonAvEktefellesBarn: false,
-                fødselsdatoer: [createDatoInputVerdiFromDate(new Date('2018-01-01'))],
+                fødselsdatoer: [dateToISOString(new Date('2018-01-01'))],
             })
         ).toBe(false);
         expect(
             fns.spørsmålOmAdoptertIUtlandet({
                 adopsjonAvEktefellesBarn: true,
-                fødselsdatoer: [createDatoInputVerdiFromDate(new Date('2018-01-01'))],
+                fødselsdatoer: [dateToISOString(new Date('2018-01-01'))],
             })
         ).toBe(false);
 
@@ -54,13 +49,13 @@ describe('Relasjon til barn adopsjon', () => {
         expect(
             fns.spørsmålOmAdoptertIUtlandet({
                 adopsjonAvEktefellesBarn: false,
-                fødselsdatoer: [createDatoInputVerdiFromDate(new Date('2018-01-01'))],
+                fødselsdatoer: [dateToISOString(new Date('2018-01-01'))],
             })
         ).toBe(true);
         expect(
             fns.spørsmålOmAdoptertIUtlandet({
                 adopsjonAvEktefellesBarn: true,
-                fødselsdatoer: [createDatoInputVerdiFromDate(new Date('2018-01-01'))],
+                fødselsdatoer: [dateToISOString(new Date('2018-01-01'))],
             })
         ).toBe(false);
     });

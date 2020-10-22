@@ -1,7 +1,7 @@
 import { RecursivePartial } from '../types/Partial';
 import Søknad, { SøkerRolle, Søkersituasjon } from '../types/søknad/Søknad';
 import { Dekningsgrad } from 'common/types';
-import { createDatoInputVerdiFromDate } from '../../common/components/skjema/elements/dato-input/datoInputUtils';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 
 const mockSøknad: RecursivePartial<Søknad> = {
     type: 'foreldrepenger',
@@ -13,7 +13,7 @@ const mockSøknad: RecursivePartial<Søknad> = {
         harRettPåForeldrepenger: false,
     },
     barn: {
-        fødselsdatoer: [createDatoInputVerdiFromDate(new Date('2018-03-31T00:00:00.000Z'))],
+        fødselsdatoer: [dateToISOString(new Date('2018-03-31T00:00:00.000Z'))],
         antallBarn: 1,
         erBarnetFødt: true,
     },
@@ -28,7 +28,7 @@ const mockSøknad: RecursivePartial<Søknad> = {
     },
     ekstrainfo: {
         uttaksplanSkjema: {
-            startdatoPermisjon: createDatoInputVerdiFromDate(new Date('2018-03-12T01:00:00.000Z')),
+            startdatoPermisjon: dateToISOString(new Date('2018-03-12T01:00:00.000Z')),
             fellesperiodeukerMor: 8,
             forslagLaget: true,
         },

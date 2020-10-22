@@ -1,18 +1,17 @@
 import * as React from 'react';
-import FlervalgSpørsmål from '../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
-import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
-import Block from 'common/components/block/Block';
-import { formaterDatoUtenDag } from 'common/util/datoUtils';
-import { useIntl, IntlShape } from 'react-intl';
-import { ValgalternativerAleneomsorgFarMedmor } from '../uttaksplanSkjemadata';
-import getMessage from 'common/util/i18nUtils';
-import { uttaksplanDatoavgrensninger } from '../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
-import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
-import startdatoFarMedmorValidation from '../../../util/validation/uttaksplan/startdatoFarMedmorValidation';
-import { DateValue } from '../../../types/common';
+import { IntlShape, useIntl } from 'react-intl';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { RadioProps } from 'nav-frontend-skjema';
-import { createDatoInputVerdi } from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
-import { DatoInputVerdi } from '../../../../common/components/skjema/elements/dato-input/DatoInput';
+import Block from 'common/components/block/Block';
+import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
+import { formaterDatoUtenDag } from 'common/util/datoUtils';
+import getMessage from 'common/util/i18nUtils';
+import FlervalgSpørsmål from '../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
+import { DateValue } from '../../../types/common';
+import startdatoFarMedmorValidation from '../../../util/validation/uttaksplan/startdatoFarMedmorValidation';
+import { uttaksplanDatoavgrensninger } from '../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
+import { ValgalternativerAleneomsorgFarMedmor } from '../uttaksplanSkjemadata';
+import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 
 interface OwnProps {
     familiehendelsesdato: Date;
@@ -73,11 +72,11 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
                             onChange={(value: ValgalternativerAleneomsorgFarMedmor) =>
                                 onChange({
                                     valgtStartdatoAleneomsorgFarMedmor: value,
-                                    startdatoPermisjon: createDatoInputVerdi(
+                                    startdatoPermisjon: dateToISOString(
                                         getStartdatoFromAlternativ(
                                             value,
                                             datoForAleneomsorg,
-                                            data.startdatoPermisjon?.date
+                                            ISOStringToDate(data.startdatoPermisjon)
                                         )
                                     ),
                                 })
@@ -94,11 +93,11 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
                                 intl,
                                 'uttaksplan.skjema.startdatoAleneomsorgFarMedmor.annenDato.spørsmål'
                             )}
-                            onChange={(startdatoPermisjon: DatoInputVerdi) => onChange({ startdatoPermisjon })}
-                            datoVerdi={data.startdatoPermisjon}
+                            onChange={(startdatoPermisjon) => onChange({ startdatoPermisjon })}
+                            dato={data.startdatoPermisjon}
                             disabled={data.skalIkkeHaUttakFørTermin}
                             datoAvgrensinger={avgrensningerAnnenDato}
-                            validators={startdatoFarMedmorValidation(intl, data.startdatoPermisjon?.date)}
+                            validators={startdatoFarMedmorValidation(intl, ISOStringToDate(data.startdatoPermisjon))}
                         />
                     </Block>
                 </>

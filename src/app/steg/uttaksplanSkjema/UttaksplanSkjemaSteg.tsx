@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
 import { connect } from 'react-redux';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import ApplicationSpinner from 'common/components/applicationSpinner/ApplicationSpinner';
 import Block from 'common/components/block/Block';
 import { DispatchProps } from 'common/redux/types';
 import { Dekningsgrad } from 'common/types';
-import { createDatoInputVerdiFromDate } from '../../../common/components/skjema/elements/dato-input/datoInputUtils';
 import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
 import { getTilgjengeligeDager } from 'app/components/uttaksplanlegger/components/uttakFordeling/tilgjengeligeDagerUtils';
 import uttaksConstants from 'app/constants';
@@ -78,7 +78,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             const grunnlag = eksisterendeSak !== undefined ? eksisterendeSak.grunnlag : undefined;
             const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
                 søknadsinfo,
-                startdatoPermisjon?.date,
+                ISOStringToDate(startdatoPermisjon),
                 barn,
                 grunnlag
             );
@@ -143,7 +143,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         apiActionCreators.getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
                             getStønadskontoParams(
                                 søknadsinfo,
-                                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon?.date,
+                                ISOStringToDate(søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon),
                                 barn,
                                 grunnlag
                             )
@@ -221,7 +221,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         const defaultStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
             uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
         );
-        ekstrainfo.uttaksplanSkjema.startdatoPermisjon = createDatoInputVerdiFromDate(defaultStartdato);
+        ekstrainfo.uttaksplanSkjema.startdatoPermisjon = dateToISOString(defaultStartdato);
     }
 
     return {

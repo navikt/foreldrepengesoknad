@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import getMessage from 'common/util/i18nUtils';
-import { formatDate } from '../../../../../../util/dates/dates';
+import Næringsdetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/Næringsdetaljer';
 import Oppsummeringsliste from 'app/steg/oppsummering/components/oppsummeringsliste/Oppsummeringsliste';
 import { Næring } from '../../../../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import Næringsdetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/Næringsdetaljer';
+import { formatDate } from '../../../../../../util/dates/dates';
 
 interface SelvstendigNæringsdrivendeOppsummeringslisteProps {
     næringer: Næring[];
@@ -35,8 +36,8 @@ class SelvstendigNæringsdrivendeOppsummeringsliste extends React.Component<Prop
         return {
             venstrestiltTekst: navnPåNæringen,
             høyrestiltTekst: getMessage(intl, 'tidsintervall', {
-                fom: formatDate(tidsperiode.fom?.date),
-                tom: pågående ? 'pågående' : formatDate(tidsperiode.tom?.date),
+                fom: formatDate(ISOStringToDate(tidsperiode.fom)),
+                tom: pågående ? 'pågående' : formatDate(ISOStringToDate(tidsperiode.tom)),
             }),
             content: <Næringsdetaljer næring={næring} />,
         };

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { IntlShape, useIntl } from 'react-intl';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { Checkbox } from 'nav-frontend-skjema';
 import Block from 'common/components/block/Block';
 import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
 import { ValidFormContext, ValidFormContextInterface } from 'common/lib/validation/elements/ValiderbarForm';
 import getMessage from 'common/util/i18nUtils';
 import { getVarighetString } from 'common/util/intlUtils';
-import { createDatoInputVerdi } from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
 import uttaksConstants from 'app/constants';
 import { getDefaultPermisjonStartdato } from '../../../util/uttaksplan/permisjonUtils';
 import { getValidTidsperiode, Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
@@ -54,7 +54,7 @@ const renderContent = (
 
     const sisteUttaksdagFørTermin = Uttaksdagen(familiehendelsesdato).forrige();
     const tidsperiode = getValidTidsperiode({
-        fom: data.startdatoPermisjon?.date,
+        fom: ISOStringToDate(data.startdatoPermisjon),
         tom: sisteUttaksdagFørTermin,
     });
     const antallDager = tidsperiode ? Tidsperioden(tidsperiode).getAntallUttaksdager() : 0;
@@ -64,7 +64,6 @@ const renderContent = (
     const startdato = data.skalIkkeHaUttakFørTermin !== true ? data.startdatoPermisjon : undefined;
 
     const visVeileder = antallDager !== antallDagerFørFødselIhtRegler;
-
     return (
         <>
             <Block margin="xs">
@@ -75,21 +74,19 @@ const renderContent = (
                     onChange={(startdatoPermisjon) => {
                         onChange({ startdatoPermisjon });
                     }}
-                    datoVerdi={startdato}
+                    dato={startdato}
                     disabled={data.skalIkkeHaUttakFørTermin}
                     datoAvgrensinger={{
                         ...datoAvgrensninger,
                         minDato: undefined,
                     }}
                     dayPickerProps={{
-                        initialMonth: data.startdatoPermisjon?.date
-                            ? data.startdatoPermisjon.date
-                            : familiehendelsesdato,
+                        initialMonth: ISOStringToDate(data.startdatoPermisjon) || familiehendelsesdato,
                     }}
                     allowInvalidDateSelection={true}
                     validators={startdatoFørTerminValidators(
                         intl,
-                        data.startdatoPermisjon?.date,
+                        ISOStringToDate(data.startdatoPermisjon),
                         familiehendelsesdato,
                         data.skalIkkeHaUttakFørTermin
                     )}
@@ -106,7 +103,7 @@ const renderContent = (
                             skalIkkeHaUttakFørTermin: e.target.checked,
                             startdatoPermisjon: e.target.checked
                                 ? undefined
-                                : createDatoInputVerdi(getDefaultPermisjonStartdato(familiehendelsesdato)),
+                                : dateToISOString(getDefaultPermisjonStartdato(familiehendelsesdato)),
                         });
                         if (formContext) {
                             formContext.validateField('permisjonStartdato');
@@ -116,7 +113,7 @@ const renderContent = (
             </Block>
             <Block margin="none" visible={visVeileder}>
                 <VeilederStartdatoPermisjon
-                    startdato={startdato?.date}
+                    startdato={ISOStringToDate(startdato)}
                     antallDager={antallDager}
                     skalIkkeHaUttakFørTermin={data.skalIkkeHaUttakFørTermin === true}
                     antallDagerFørFødselIhtRegler={antallDagerFørFødselIhtRegler}

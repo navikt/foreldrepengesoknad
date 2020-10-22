@@ -1,5 +1,4 @@
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
-import { DatoInputVerdi } from '../../../../common/components/skjema/elements/dato-input/DatoInput';
 
 export const enum AnnenForelderFieldNames {
     kanIkkeOppgis = 'kanIkkeOppgis',
@@ -25,7 +24,7 @@ export interface AnnenForelderFormValues {
     [AnnenForelderFieldNames.utenlandskFnr]: boolean;
     [AnnenForelderFieldNames.aleneOmOmsorg]: YesOrNo;
     [AnnenForelderFieldNames.erMorUfør]: YesOrNo;
-    [AnnenForelderFieldNames.datoForAleneomsorg]: DatoInputVerdi;
+    [AnnenForelderFieldNames.datoForAleneomsorg]: string;
     [AnnenForelderFieldNames.bostedsland]: string;
 }
 

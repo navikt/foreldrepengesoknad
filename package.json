@@ -124,7 +124,7 @@
         "@formatjs/intl-pluralrules": "^3.4.10",
         "@formatjs/intl-relativetimeformat": "^7.2.10",
         "@navikt/fnrvalidator": "^1.1.3",
-        "@navikt/sif-common-formik": "^11.0.15",
+        "@navikt/sif-common-formik": "^12.0.0",
         "@navikt/sif-common-question-config": "^0.0.6",
         "@sentry/browser": "^5.27.0",
         "axios": "^0.20.0",

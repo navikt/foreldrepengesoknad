@@ -1,11 +1,11 @@
-import fns from '../visibility';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import * as dateUtils from '../../../../util/dates/dates';
-import { createDatoInputVerdiFromDate } from '../../../../../common/components/skjema/elements/dato-input/datoInputUtils';
+import fns from '../visibility';
 
 describe('RelasjonTilBarnForeldreansvar visibility', () => {
     describe('antallBarnVisible', () => {
         it('should return true if foreldreansvarsdato has value', () => {
-            expect(fns.antallBarn({ foreldreansvarsdato: createDatoInputVerdiFromDate(new Date()) })).toBe(true);
+            expect(fns.antallBarn({ foreldreansvarsdato: dateToISOString(new Date()) })).toBe(true);
         });
 
         it('should return false if foreldreansvarsdato is undefined', () => {
@@ -33,25 +33,19 @@ describe('RelasjonTilBarnForeldreansvar visibility', () => {
         it('should return true if fødselsdatoer is visible and doesnt contain undefined, and has children older than 15 years old', () => {
             (dateUtils.getAlderFraDato as any) = jest.fn(() => ({ år: 16 }));
             fns.fødselsdatoer = jest.fn(() => true);
-            expect(fns.harBarnOver15ÅrMelding({ fødselsdatoer: [createDatoInputVerdiFromDate(new Date())] })).toBe(
-                true
-            );
+            expect(fns.harBarnOver15ÅrMelding({ fødselsdatoer: [dateToISOString(new Date())] })).toBe(true);
         });
 
         it('should return false if fødselsdatoer is not visible', () => {
             (dateUtils.getAlderFraDato as any) = jest.fn(() => ({ år: 16 }));
             fns.fødselsdatoer = jest.fn(() => false);
-            expect(fns.harBarnOver15ÅrMelding({ fødselsdatoer: [createDatoInputVerdiFromDate(new Date())] })).toBe(
-                false
-            );
+            expect(fns.harBarnOver15ÅrMelding({ fødselsdatoer: [dateToISOString(new Date())] })).toBe(false);
         });
 
         it('should return false if has no children older than 15 years old', () => {
             (dateUtils.getAlderFraDato as any) = jest.fn(() => ({ år: 15 }));
             fns.fødselsdatoer = jest.fn(() => true);
-            expect(fns.harBarnOver15ÅrMelding({ fødselsdatoer: [createDatoInputVerdiFromDate(new Date())] })).toBe(
-                false
-            );
+            expect(fns.harBarnOver15ÅrMelding({ fødselsdatoer: [dateToISOString(new Date())] })).toBe(false);
         });
     });
 
@@ -60,7 +54,7 @@ describe('RelasjonTilBarnForeldreansvar visibility', () => {
             fns.fødselsdatoer = jest.fn(() => true);
             expect(
                 fns.vedlegg({
-                    fødselsdatoer: [createDatoInputVerdiFromDate(new Date()), createDatoInputVerdiFromDate(new Date())],
+                    fødselsdatoer: [dateToISOString(new Date()), dateToISOString(new Date())],
                 })
             ).toBe(true);
         });
@@ -68,14 +62,12 @@ describe('RelasjonTilBarnForeldreansvar visibility', () => {
         it('should return false if fødselsdatoer is empty or contains undefined-values', () => {
             fns.fødselsdatoer = jest.fn(() => true);
             expect(fns.vedlegg({ fødselsdatoer: [] })).toBe(false);
-            expect(fns.vedlegg({ fødselsdatoer: [createDatoInputVerdiFromDate(new Date()), undefined as any] })).toBe(
-                false
-            );
+            expect(fns.vedlegg({ fødselsdatoer: [dateToISOString(new Date()), undefined as any] })).toBe(false);
         });
 
         it('should return false if fødselsdatoer field is not visible', () => {
             fns.fødselsdatoer = jest.fn(() => false);
-            expect(fns.vedlegg({ fødselsdatoer: [createDatoInputVerdiFromDate(new Date())] })).toBe(false);
+            expect(fns.vedlegg({ fødselsdatoer: [dateToISOString(new Date())] })).toBe(false);
         });
     });
 });

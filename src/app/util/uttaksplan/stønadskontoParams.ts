@@ -1,8 +1,9 @@
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { Dekningsgrad } from 'common/types';
+import { Saksgrunnlag } from 'app/types/EksisterendeSak';
+import Barn, { Adopsjonsbarn, FødtBarn, UfødtBarn } from 'app/types/søknad/Barn';
 import { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
 import { Søknadsinfo } from '../../selectors/types';
-import { Saksgrunnlag } from 'app/types/EksisterendeSak';
-import Barn, { FødtBarn, UfødtBarn, Adopsjonsbarn } from 'app/types/søknad/Barn';
-import { Dekningsgrad } from 'common/types';
 import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from './uttakUtils';
 
 export const getStønadskontoParams = (
@@ -36,13 +37,13 @@ export const getStønadskontoParams = (
                 return {
                     ...params,
                     termindato: grunnlag.termindato,
-                    fødselsdato: (barn as FødtBarn).fødselsdatoer[0].date,
+                    fødselsdato: ISOStringToDate((barn as FødtBarn).fødselsdatoer[0]),
                 };
             } else {
-                return { ...params, termindato: (barn as UfødtBarn).termindato.date };
+                return { ...params, termindato: ISOStringToDate((barn as UfødtBarn).termindato) };
             }
         } else {
-            return { ...params, omsorgsovertakelsesdato: (barn as Adopsjonsbarn).adopsjonsdato.date };
+            return { ...params, omsorgsovertakelsesdato: ISOStringToDate((barn as Adopsjonsbarn).adopsjonsdato) };
         }
     } else {
         const params = {
@@ -63,14 +64,14 @@ export const getStønadskontoParams = (
             if (erBarnFødt) {
                 return {
                     ...params,
-                    termindato: (barn as FødtBarn).termindato.date,
-                    fødselsdato: (barn as FødtBarn).fødselsdatoer[0].date,
+                    termindato: ISOStringToDate((barn as FødtBarn).termindato),
+                    fødselsdato: ISOStringToDate((barn as FødtBarn).fødselsdatoer[0]),
                 };
             } else {
-                return { ...params, termindato: (barn as UfødtBarn).termindato.date };
+                return { ...params, termindato: ISOStringToDate((barn as UfødtBarn).termindato) };
             }
         } else {
-            return { ...params, omsorgsovertakelsesdato: (barn as Adopsjonsbarn).adopsjonsdato.date };
+            return { ...params, omsorgsovertakelsesdato: ISOStringToDate((barn as Adopsjonsbarn).adopsjonsdato) };
         }
     }
 };

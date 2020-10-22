@@ -12,7 +12,7 @@ import {
 } from '../../../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import UtsettelsePgaFerieInfo from './UtsettelsePgaFerieInfo';
-import { Forelder, Tidsperiode, TidsperiodeDatoInputVerdi } from 'common/types';
+import { Forelder, Tidsperiode, TidsperiodeString } from 'common/types';
 import { harAktivtArbeidsforhold } from '../../../../util/domain/arbeidsforhold';
 import { getUtsettelseFormVisibility, UtsettelseSpørsmålKeys } from './utsettelseFormConfig';
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
@@ -71,7 +71,7 @@ type Props = OwnProps & StateProps;
 
 interface State {
     variant?: Utsettelsesvariant;
-    ugyldigTidsperiode?: TidsperiodeDatoInputVerdi;
+    ugyldigTidsperiode?: TidsperiodeString;
 }
 
 export enum Utsettelsesvariant {
@@ -287,7 +287,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
         });
     }
 
-    oppdaterTidsperiode(tidsperiode: Partial<TidsperiodeDatoInputVerdi>) {
+    oppdaterTidsperiode(tidsperiode: Partial<TidsperiodeString>) {
         const { periode, uttaksplan } = this.props;
         if (isValidTidsperiode(tidsperiode)) {
             const p = { ...periode, tidsperiode };

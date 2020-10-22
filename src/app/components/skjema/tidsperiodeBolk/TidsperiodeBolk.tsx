@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useIntl } from 'react-intl';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
 import { CalendarPlacement } from 'nav-datovelger/lib/types/index';
 import { guid } from 'nav-frontend-js-utils';
@@ -9,12 +10,11 @@ import Block from 'common/components/block/Block';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import ValiderbarUkerDagerTeller from 'common/lib/validation/elements/ValiderbarUkerDagerTeller';
 import { Validator } from 'common/lib/validation/types';
-import { Avgrensninger, Feil, TidsperiodeDatoInputVerdiMedValgfriSluttdato } from 'common/types';
+import { Avgrensninger, Feil, TidsperiodeStringMedValgfriSluttdato } from 'common/types';
 import BEMHelper from 'common/util/bem';
 import { getUkerOgDagerFromDager } from 'common/util/datoUtils';
 import getMessage from 'common/util/i18nUtils';
 import { getVarighetString } from 'common/util/intlUtils';
-import { createDatoInputVerdi } from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
 import { InputChangeEvent } from '../../../../common/types/Events';
 import { getTidsperiode, Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
 import { getTidsperiodeRegler } from '../../../util/validation/tidsperiode';
@@ -32,7 +32,7 @@ export interface DatoValidatorer {
 }
 
 interface TidsperiodeBolkProps {
-    tidsperiode: Partial<TidsperiodeDatoInputVerdiMedValgfriSluttdato>;
+    tidsperiode: Partial<TidsperiodeStringMedValgfriSluttdato>;
     pågående?: boolean;
     startdatoDisabled?: boolean;
     datoAvgrensninger?: DatoAvgrensninger;
@@ -40,7 +40,7 @@ interface TidsperiodeBolkProps {
     feil?: Feil;
     visVarighet?: boolean;
     varighetRenderer?: (varighetIDager: number) => React.ReactNode;
-    onChange: (tidsperiode: Partial<TidsperiodeDatoInputVerdiMedValgfriSluttdato>) => void;
+    onChange: (tidsperiode: Partial<TidsperiodeStringMedValgfriSluttdato>) => void;
     datoInputLabelProps?: {
         fom: string;
         tom: string;
@@ -77,13 +77,13 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
 
     const intl = useIntl();
 
-    const handleOnChange = (value: Partial<TidsperiodeDatoInputVerdiMedValgfriSluttdato>) => {
+    const handleOnChange = (value: Partial<TidsperiodeStringMedValgfriSluttdato>) => {
         onChange(value);
     };
 
     const getValidators = () => {
         const tidsperiodeValidators = getTidsperiodeRegler(
-            { fom: tidsperiode?.fom?.date, tom: tidsperiode?.tom?.date },
+            { fom: ISOStringToDate(tidsperiode?.fom), tom: ISOStringToDate(tidsperiode?.tom) },
             intl,
             visPågåendePeriodeCheckbox,
             pågående
@@ -105,15 +105,18 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
         tidsperiode &&
         tidsperiode.fom &&
         tidsperiode.tom &&
-        moment(tidsperiode.fom.date).isSameOrBefore(tidsperiode.tom.date, 'day')
-            ? Tidsperioden({ fom: tidsperiode.fom.date, tom: tidsperiode.tom.date }).getAntallUttaksdager()
+        moment(ISOStringToDate(tidsperiode.fom)).isSameOrBefore(ISOStringToDate(tidsperiode.tom), 'day')
+            ? Tidsperioden({
+                  fom: ISOStringToDate(tidsperiode.fom),
+                  tom: ISOStringToDate(tidsperiode.tom),
+              }).getAntallUttaksdager()
             : undefined;
 
     let tilAvgrensninger: Avgrensninger = {};
     if (datoAvgrensninger && datoAvgrensninger.til) {
         tilAvgrensninger = datoAvgrensninger.til;
     } else if (tidsperiode.fom) {
-        tilAvgrensninger = { minDato: tidsperiode.fom.date };
+        tilAvgrensninger = { minDato: ISOStringToDate(tidsperiode.fom) };
     }
 
     const { uker, dager } = varighetIDager ? getUkerOgDagerFromDager(Math.abs(varighetIDager)) : { uker: 0, dager: 0 };
@@ -137,7 +140,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                             }}
                             allowInvalidDateSelection={allowInvalidDateSelection}
                             disabled={startdatoDisabled}
-                            datoVerdi={tidsperiode.fom}
+                            dato={tidsperiode.fom}
                             datoAvgrensinger={datoAvgrensninger && datoAvgrensninger.fra}
                             validators={validators.fra}
                             dayPickerProps={{ initialMonth: defaultMånedFom }}
@@ -159,12 +162,12 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                 });
                             }}
                             allowInvalidDateSelection={allowInvalidDateSelection}
-                            datoVerdi={tidsperiode.tom}
+                            dato={tidsperiode.tom}
                             disabled={pågående || false}
                             datoAvgrensinger={tilAvgrensninger}
                             validators={validators.til}
                             dayPickerProps={{
-                                initialMonth: defaultMånedTom || tidsperiode.fom?.date,
+                                initialMonth: defaultMånedTom || ISOStringToDate(tidsperiode.fom),
                             }}
                             calendarSettings={{ position: calendarPosition }}
                         />
@@ -186,11 +189,11 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                     min: 0,
                                     max: 100,
                                     onChange: (nyUker: number) => {
-                                        const { date } = tidsperiode.fom || {};
+                                        const date = ISOStringToDate(tidsperiode.fom);
                                         if (date) {
                                             handleOnChange({
                                                 ...tidsperiode,
-                                                tom: createDatoInputVerdi(getTidsperiode(date, nyUker * 5 + dager).tom),
+                                                tom: dateToISOString(getTidsperiode(date, nyUker * 5 + dager).tom),
                                             });
                                         }
                                     },
@@ -201,13 +204,11 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                     min: 0,
                                     max: 5,
                                     onChange: (nyDager: number) => {
-                                        const { date } = tidsperiode.fom || {};
+                                        const date = ISOStringToDate(tidsperiode.fom);
                                         if (date) {
                                             handleOnChange({
                                                 ...tidsperiode,
-                                                tom: createDatoInputVerdi(
-                                                    getTidsperiode(date!, uker * 5 + nyDager).tom
-                                                ),
+                                                tom: dateToISOString(getTidsperiode(date!, uker * 5 + nyDager).tom),
                                             });
                                         }
                                     },

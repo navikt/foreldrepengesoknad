@@ -1,48 +1,49 @@
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import _ from 'lodash';
+import AlertStripe from 'nav-frontend-alertstriper';
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
-import Steg, { StegProps } from '../../components/applikasjon/steg/Steg';
-import { AppState } from '../../redux/reducers';
-import { DispatchProps } from 'common/redux/types';
-import { HistoryProps } from '../../types/common';
-import Person from '../../types/Person';
-import getMessage from 'common/util/i18nUtils';
-import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
-import Søknad from '../../types/søknad/Søknad';
-import { apiActionCreators } from '../../redux/actions';
-import { StegID } from '../../util/routing/stegConfig';
-import { Kvittering } from '../../types/Kvittering';
-import { SøkerinfoProps } from '../../types/søkerinfo';
-import isAvailable from '../../util/steg/isAvailable';
-import Oppsummering from 'app/steg/oppsummering/components/oppsummering/Oppsummering';
-import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
-import { validerUttaksplanAction } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionCreators';
-import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
-import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
+import Veilederpanel from 'nav-frontend-veilederpanel';
 import ApplicationSpinner from 'common/components/applicationSpinner/ApplicationSpinner';
-import { søknadStegPath } from '../StegRoutes';
 import Block from 'common/components/block/Block';
-import { MissingAttachment } from '../../types/MissingAttachment';
-import { mapMissingAttachmentsOnSøknad } from '../../util/attachments/missingAttachmentUtil';
-import { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
+import Veileder from 'common/components/veileder/Veileder';
+import { DispatchProps } from 'common/redux/types';
+import getMessage from 'common/util/i18nUtils';
+import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
+import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
+import LinkButton from 'app/components/elementer/linkButton/LinkButton';
+import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
+import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
+import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
 import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
-import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
-import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
-import { findAllAttachments } from '../manglendeVedlegg/manglendeVedleggUtil';
-import _ from 'lodash';
-import { skalViseManglendeVedleggSteg } from '../../util/steg/navigation';
 import ErAnnenForelderInformertSpørsmål from 'app/spørsmål/ErAnnenForelderInformertSpørsmål';
-import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
-import AlertStripe from 'nav-frontend-alertstriper';
-import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
-import LinkButton from 'app/components/elementer/linkButton/LinkButton';
+import Oppsummering from 'app/steg/oppsummering/components/oppsummering/Oppsummering';
 import Barn from 'app/types/søknad/Barn';
-import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
-import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
+import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
+import { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
+import Steg, { StegProps } from '../../components/applikasjon/steg/Steg';
+import { apiActionCreators } from '../../redux/actions';
+import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
+import { validerUttaksplanAction } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionCreators';
+import { AppState } from '../../redux/reducers';
+import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
+import { HistoryProps } from '../../types/common';
+import { Kvittering } from '../../types/Kvittering';
+import { MissingAttachment } from '../../types/MissingAttachment';
+import Person from '../../types/Person';
+import { SøkerinfoProps } from '../../types/søkerinfo';
+import Søknad from '../../types/søknad/Søknad';
+import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
+import { mapMissingAttachmentsOnSøknad } from '../../util/attachments/missingAttachmentUtil';
+import { StegID } from '../../util/routing/stegConfig';
+import isAvailable from '../../util/steg/isAvailable';
+import { skalViseManglendeVedleggSteg } from '../../util/steg/navigation';
+import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
+import { findAllAttachments } from '../manglendeVedlegg/manglendeVedleggUtil';
+import { søknadStegPath } from '../StegRoutes';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -98,7 +99,7 @@ class OppsummeringSteg extends React.Component<Props> {
         if (tilgjengeligeStønadskontoer.length === 0 && stegProps.isAvailable) {
             const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
                 søknadsinfo,
-                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon?.date,
+                ISOStringToDate(søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon),
                 barn
             );
             dispatch(apiActionCreators.getTilgjengeligeStønadskontoer(params, this.props.history));

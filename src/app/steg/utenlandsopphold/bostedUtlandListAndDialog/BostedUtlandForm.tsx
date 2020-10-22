@@ -1,14 +1,12 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import { dateRangeValidation } from 'app/util/dates/dates';
 import { commonFieldErrorRenderer, validateRequiredField } from 'app/validation/fieldValidations';
 import { BostedUtland, isValidBostedUtland } from './types';
-import { DatoInputVerdi } from '../../../../common/components/skjema/elements/dato-input/DatoInput';
-import { createDatoInputVerdi } from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
 
 export interface BostedUtlandFormLabels {
     tittel: string;
@@ -30,8 +28,8 @@ enum BostedUtlandFormFields {
 }
 
 type FormValues = Partial<{
-    [BostedUtlandFormFields.fom]: DatoInputVerdi;
-    [BostedUtlandFormFields.tom]: DatoInputVerdi;
+    [BostedUtlandFormFields.fom]: string;
+    [BostedUtlandFormFields.tom]: string;
     [BostedUtlandFormFields.landkode]: string;
 }>;
 
@@ -39,8 +37,8 @@ const Form = getTypedFormComponents<BostedUtlandFormFields, FormValues>();
 
 const mapBostedToFormValues = (bosted: BostedUtland): FormValues => {
     return {
-        fom: createDatoInputVerdi(bosted.fom),
-        tom: createDatoInputVerdi(bosted.tom),
+        fom: dateToISOString(bosted.fom),
+        tom: dateToISOString(bosted.tom),
         landkode: bosted.landkode,
     };
 };
@@ -57,8 +55,8 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
     const onFormikSubmit = (formValues: FormValues) => {
         const updatedBosted: Partial<BostedUtland> = {
             ...bosted,
-            fom: formValues.fom?.date,
-            tom: formValues.tom?.date,
+            fom: ISOStringToDate(formValues.fom),
+            tom: ISOStringToDate(formValues.tom),
             landkode: formValues.landkode,
         };
         if (isValidBostedUtland(updatedBosted)) {
@@ -91,28 +89,28 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     fullscreenOverlay: true,
                                     minDate,
                                     invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
-                                    maxDate: values.tom?.date || maxDate,
+                                    maxDate: ISOStringToDate(values.tom) || maxDate,
                                     validate: (value) =>
                                         dateRangeValidation.validateFromDate(
-                                            value?.date,
+                                            ISOStringToDate(value),
                                             minDate,
                                             maxDate,
-                                            values.tom?.date
+                                            ISOStringToDate(values.tom)
                                         ),
                                 }}
                                 toDatepickerProps={{
                                     name: BostedUtlandFormFields.tom,
                                     label: getMessage(intl, 'tilogmed'),
                                     fullscreenOverlay: true,
-                                    minDate: values.fom?.date || minDate,
+                                    minDate: ISOStringToDate(values.fom) || minDate,
                                     maxDate,
                                     invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
                                     validate: (value) =>
                                         dateRangeValidation.validateToDate(
-                                            value?.date,
+                                            ISOStringToDate(value),
                                             minDate,
                                             maxDate,
-                                            values.fom?.date
+                                            ISOStringToDate(values.fom)
                                         ),
                                 }}
                             />

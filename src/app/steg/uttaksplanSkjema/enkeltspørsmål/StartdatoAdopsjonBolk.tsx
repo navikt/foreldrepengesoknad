@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { IntlShape, useIntl } from 'react-intl';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { RadioProps } from 'nav-frontend-skjema';
 import Block from 'common/components/block/Block';
 import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import getMessage from 'common/util/i18nUtils';
-import { createDatoInputVerdi } from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
 import FlervalgSpørsmål from '../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import { DateValue } from '../../../types/common';
 import { Adopsjonsbarn } from '../../../types/søknad/Barn';
@@ -38,9 +38,9 @@ const getStartdatoFromAlternativ = (
     valgtVerdi?: Date
 ): DateValue => {
     if (alternativ === ValgalternativerAdopsjonStartdato.omsorgsovertakelse) {
-        return barn.adopsjonsdato.date;
+        return ISOStringToDate(barn.adopsjonsdato);
     } else if (alternativ === ValgalternativerAdopsjonStartdato.ankomst) {
-        return barn.ankomstdato?.date;
+        return ISOStringToDate(barn.ankomstdato);
     }
     return valgtVerdi;
 };
@@ -51,10 +51,12 @@ const StartdatoAdopsjonBolk = (props: Props) => {
 
     const alternativer: RadioProps[] = [];
     if (barn.adoptertIUtlandet && barn.ankomstdato) {
-        alternativer.push(getAlternativ(intl, ValgalternativerAdopsjonStartdato.ankomst, barn.ankomstdato.date));
+        alternativer.push(
+            getAlternativ(intl, ValgalternativerAdopsjonStartdato.ankomst, ISOStringToDate(barn.ankomstdato))
+        );
     }
     alternativer.push(
-        getAlternativ(intl, ValgalternativerAdopsjonStartdato.omsorgsovertakelse, barn.adopsjonsdato.date)
+        getAlternativ(intl, ValgalternativerAdopsjonStartdato.omsorgsovertakelse, ISOStringToDate(barn.adopsjonsdato))
     );
     alternativer.push(getAlternativ(intl, ValgalternativerAdopsjonStartdato.annen));
 
@@ -74,8 +76,12 @@ const StartdatoAdopsjonBolk = (props: Props) => {
                             onChange={(value: ValgalternativerAdopsjonStartdato) =>
                                 onChange({
                                     valgtAdopsjonStartdato: value,
-                                    startdatoPermisjon: createDatoInputVerdi(
-                                        getStartdatoFromAlternativ(value, barn, data.startdatoPermisjon?.date)
+                                    startdatoPermisjon: dateToISOString(
+                                        getStartdatoFromAlternativ(
+                                            value,
+                                            barn,
+                                            ISOStringToDate(data.startdatoPermisjon)
+                                        )
                                     ),
                                 })
                             }
@@ -87,7 +93,7 @@ const StartdatoAdopsjonBolk = (props: Props) => {
                             name="annenStartdatoAdopsjon"
                             label={getMessage(intl, 'uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål')}
                             onChange={(startdatoPermisjon) => onChange({ startdatoPermisjon })}
-                            datoVerdi={data.startdatoPermisjon}
+                            dato={data.startdatoPermisjon}
                             datoAvgrensinger={uttaksplanDatoavgrensninger.startdatoPermisjonAdopsjon(
                                 familiehendelsesdato
                             )}

@@ -1,21 +1,18 @@
-import cleanup from '../cleanupFrilansInformasjon';
-import { default as Søker, SøkerPartial } from '../../../types/søknad/Søker';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
+import visibility from '../../../steg/andreInntekter/frilanserBolk/visibility';
 import {
     FrilansInformasjon,
     FrilansInformasjonPartial,
     FrilansOppdrag,
 } from '../../../types/søknad/FrilansInformasjon';
-import visibility from '../../../steg/andreInntekter/frilanserBolk/visibility';
-import {
-    createDatoInputVerdi,
-    createDatoInputVerdiFromDate,
-} from '../../../../common/components/skjema/elements/dato-input/datoInputUtils';
+import { default as Søker, SøkerPartial } from '../../../types/søknad/Søker';
+import cleanup from '../cleanupFrilansInformasjon';
 
 const oppdrag: FrilansOppdrag = {
     navnPåArbeidsgiver: 'asdf',
     pågående: true,
     tidsperiode: {
-        fom: createDatoInputVerdiFromDate(new Date()),
+        fom: dateToISOString(new Date()),
     },
 };
 
@@ -23,7 +20,7 @@ const frilansInformasjon: FrilansInformasjonPartial = {
     oppdragForNæreVennerEllerFamilieSiste10Mnd: [oppdrag as FrilansOppdrag],
     harJobbetForNærVennEllerFamilieSiste10Mnd: true,
     driverFosterhjem: true,
-    oppstart: createDatoInputVerdi(new Date()),
+    oppstart: dateToISOString(new Date()),
     jobberFremdelesSomFrilans: true,
 };
 

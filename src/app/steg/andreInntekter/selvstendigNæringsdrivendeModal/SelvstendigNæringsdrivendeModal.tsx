@@ -268,7 +268,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         onChange={(oppstartsdato) => {
                             this.updateNæring({ oppstartsdato });
                         }}
-                        datoVerdi={næring.oppstartsdato}
+                        dato={næring.oppstartsdato}
                         calendarSettings={{ position: 'fullscreen' }}
                         validators={[hasValueRule(næring && næring.oppstartsdato, getMessage(intl, 'påkrevd'))]}
                     />

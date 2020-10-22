@@ -10,27 +10,16 @@ import { dateToISOFormattedDateString } from 'common/util/datoUtils';
 import { fridager } from 'common/util/fridagerUtils';
 import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
 import { getAvgrensningerDescriptionForInput } from './datoInputDescription';
-import { createDatoInputVerdi } from './datoInputUtils';
 import './datoInput.less';
-
-export type DatoInputVerdi = {
-    date: Date | undefined;
-    dateString: string;
-};
-
-export type ValidDatoInputVerdi = {
-    date: Date;
-    dateString: string;
-};
 
 export interface DatoInputProps extends Omit<DatepickerProps, 'onChange' | 'input' | 'inputId'> {
     id: string;
     name: string;
     label: React.ReactNode;
-    datoVerdi?: DatoInputVerdi;
+    dato?: string;
     postfix?: string;
     feil?: Feil;
-    onChange: (datoVerdi: DatoInputVerdi) => void;
+    onChange: (dato: string) => void;
     datoAvgrensinger?: Avgrensninger;
 }
 
@@ -67,7 +56,7 @@ class DatoInput extends React.Component<Props> {
             calendarSettings,
             name,
             limitations,
-            datoVerdi,
+            dato,
             datoAvgrensinger,
             ...rest
         } = this.props;
@@ -86,7 +75,7 @@ class DatoInput extends React.Component<Props> {
                         <Datepicker
                             {...rest}
                             calendarSettings={calendarSettings}
-                            value={datoVerdi?.dateString}
+                            value={dato}
                             inputId={inputId}
                             locale={intl.locale}
                             inputProps={{
@@ -94,9 +83,9 @@ class DatoInput extends React.Component<Props> {
                                 'aria-describedby': ariaDescriptionId,
                             }}
                             showYearSelector={true}
-                            onChange={(datoString: string) => {
-                                if (datoVerdi?.dateString !== datoString) {
-                                    onChange(createDatoInputVerdi(datoString));
+                            onChange={(nyDato: string) => {
+                                if (dato !== nyDato) {
+                                    onChange(nyDato);
                                 }
                             }}
                             limitations={datoAvgrensinger ? parseAvgrensinger(datoAvgrensinger) : undefined}

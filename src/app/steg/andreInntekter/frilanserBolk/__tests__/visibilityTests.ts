@@ -1,4 +1,4 @@
-import { createDatoInputVerdiFromDate } from '../../../../../common/components/skjema/elements/dato-input/datoInputUtils';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import {
     FrilansInformasjon,
     FrilansInformasjonPartial,
@@ -29,13 +29,13 @@ describe('Frilanser-bolk', () => {
     describe('fremdelesFrilansVisible', () => {
         it('should be visible if oppstart !== undefined and startdatoVisible evaluates to true', () => {
             fns.startdatoVisible = jest.fn(() => true);
-            søker.frilansInformasjon.oppstart = createDatoInputVerdiFromDate(new Date());
+            søker.frilansInformasjon.oppstart = dateToISOString(new Date());
             expect(fns.fremdelesFrilansVisible(søker as Søker)).toBe(true);
         });
 
         it('should be hidden if either oppstart is undefined or !startdatoVisible', () => {
             fns.startdatoVisible = jest.fn().mockReturnValueOnce(false).mockReturnValue(true);
-            søker.frilansInformasjon.oppstart = createDatoInputVerdiFromDate(new Date());
+            søker.frilansInformasjon.oppstart = dateToISOString(new Date());
             expect(fns.fremdelesFrilansVisible(søker as Søker)).toBe(false);
             søker.frilansInformasjon.oppstart = undefined;
             expect(fns.fremdelesFrilansVisible(søker as Søker)).toBe(false);

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useIntl } from 'react-intl';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
 import { TilgjengeligeDager } from 'shared/types';
 import Block from 'common/components/block/Block';
 import { NavnPåForeldre } from 'common/types';
-import { createDatoInputVerdi } from '../../../common/components/skjema/elements/dato-input/datoInputUtils';
 import TilgjengeligeDagerGraf from 'app/components/elementer/tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
@@ -118,7 +118,7 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({
             <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
                 visible={
                     farSinFørsteUttaksdag !== undefined &&
-                    !dateIsSameOrAfter(morSinSisteUttaksdag?.date, farSinFørsteUttaksdag.date)
+                    !dateIsSameOrAfter(ISOStringToDate(morSinSisteUttaksdag), ISOStringToDate(farSinFørsteUttaksdag))
                 }
                 antallUkerFellesperiode={antallUkerFellesperiode}
             />
@@ -208,9 +208,13 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
     if (!isAdopsjonsbarn(barn, søknad.situasjon)) {
         throw new Error('Barn er ikke adopsjonsbarn');
     }
+
+    const ankomstdatoDate = ISOStringToDate(barn.ankomstdato);
+    const adopsjonsdatoDate = ISOStringToDate(barn.adopsjonsdato);
+
     const latestDate =
-        barn.ankomstdato !== undefined
-            ? createDatoInputVerdi(findOldestDate([barn.adopsjonsdato.date!, barn.ankomstdato.date!]))
+        ankomstdatoDate !== undefined
+            ? dateToISOString(findOldestDate([ankomstdatoDate, adopsjonsdatoDate!])) // todo - sjekk logikk her
             : barn.adopsjonsdato!;
     const startdatoPermisjon = søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon;
     const stebarnsadopsjon = barn.adopsjonAvEktefellesBarn;
@@ -262,7 +266,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
             <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
                 visible={
                     farSinFørsteUttaksdag !== undefined &&
-                    !dateIsSameOrAfter(morSinSisteUttaksdag?.date, farSinFørsteUttaksdag.date) &&
+                    !dateIsSameOrAfter(ISOStringToDate(morSinSisteUttaksdag), ISOStringToDate(farSinFørsteUttaksdag)) &&
                     skjema.harAnnenForelderSøktFP === true
                 }
                 antallUkerFellesperiode={antallUkerFellesperiode}
@@ -270,7 +274,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
             <Block
                 visible={
                     startdatoPermisjon !== undefined &&
-                    moment(latestDate.date).isBefore(moment(startdatoPermisjon.date)) &&
+                    moment(ISOStringToDate(latestDate)).isBefore(moment(ISOStringToDate(startdatoPermisjon))) &&
                     stebarnsadopsjon !== true
                 }
             >
@@ -331,7 +335,7 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({
     erFarEllerMedmor,
     erDeltUttak,
 }) => {
-    const omsorgsDato = søknad.barn.datoForAleneomsorg || familiehendelsesdato;
+    const omsorgsDato: Date = ISOStringToDate(søknad.barn.datoForAleneomsorg) || familiehendelsesdato;
     return (
         <>
             <DekningsgradSpørsmål />
@@ -371,7 +375,7 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({
             </Block>
             <StartdatoUttakFarMedmorAleneomsorgSpørsmål
                 familiehendelsesdato={familiehendelsesdato}
-                datoForAleneomsorg={omsorgsDato.date!} // todo
+                datoForAleneomsorg={omsorgsDato}
                 visible={søknad.dekningsgrad !== undefined}
             />
         </>
@@ -456,24 +460,22 @@ const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåFo
             : undefined;
 
     const morSinSisteUttaksdag = annenPartsSistePeriode ? annenPartsSistePeriode.tidsperiode.tom : undefined;
+    const farSinFørsteUttaksdagDate = ISOStringToDate(uttaksplanSkjema.farSinFørsteUttaksdag);
 
     return (
         <>
             <FarSinFørsteUttaksdagSpørsmål
                 visible={true}
                 familiehendelsesdato={familiehendelsesdato}
-                morSinSisteUttaksdag={createDatoInputVerdi(morSinSisteUttaksdag)}
+                morSinSisteUttaksdag={dateToISOString(morSinSisteUttaksdag)}
                 eksisterendeSakAnnenPart={
                     eksisterendeSak && eksisterendeSak.erAnnenPartsSak ? eksisterendeSak : undefined
                 }
                 navnPåForeldre={navnPåForeldre}
             />
-            {uttaksplanSkjema.farSinFørsteUttaksdag && morSinSisteUttaksdag && (
+            {farSinFørsteUttaksdagDate && morSinSisteUttaksdag && (
                 <UtsettelseBegrunnelse
-                    visible={skalFarUtsetteEtterMorSinSisteUttaksdag(
-                        uttaksplanSkjema.farSinFørsteUttaksdag.date!, // todo
-                        morSinSisteUttaksdag
-                    )}
+                    visible={skalFarUtsetteEtterMorSinSisteUttaksdag(farSinFørsteUttaksdagDate, morSinSisteUttaksdag)}
                     navn={navnPåForeldre.mor}
                 />
             )}

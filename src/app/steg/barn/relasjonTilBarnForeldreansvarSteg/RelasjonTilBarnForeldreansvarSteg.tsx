@@ -69,7 +69,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props> {
                                 })
                             )
                         }
-                        datoVerdi={barn.foreldreansvarsdato}
+                        dato={barn.foreldreansvarsdato}
                     />
                 </Block>
 

@@ -1,33 +1,34 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { injectIntl, IntlShape } from 'react-intl';
-import { StegID } from '../../../util/routing/stegConfig';
-import { DispatchProps } from 'common/redux/types';
-import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
-import AntallBarnBolk from '../components/AntallBarnBolk';
-import AdoptertIUtlandetSpørsmål from '../../../spørsmål/AdoptertIUtlandetSpørsmål';
-import getMessage from 'common/util/i18nUtils';
+import { connect } from 'react-redux';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import Block from 'common/components/block/Block';
-import { Adopsjonsbarn } from '../../../types/søknad/Barn';
-import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
-import utils from '../../../util/domain/fødselsdato';
-import { AppState } from '../../../redux/reducers';
-import Steg, { StegProps } from '../../../components/applikasjon/steg/Steg';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
+import { DispatchProps } from 'common/redux/types';
+import getMessage from 'common/util/i18nUtils';
 import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import { apiActionCreators } from 'app/redux/actions';
+import Steg, { StegProps } from '../../../components/applikasjon/steg/Steg';
+import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
+import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
+import { AppState } from '../../../redux/reducers';
+import AdopsjonAvEktefellesBarnSpørsmål from '../../../spørsmål/AdopsjonAvEktefellesBarnSpørsmål';
+import AdoptertIUtlandetSpørsmål from '../../../spørsmål/AdoptertIUtlandetSpørsmål';
+import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
+import { HistoryProps } from '../../../types/common';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
+import { Adopsjonsbarn } from '../../../types/søknad/Barn';
+import { Skjemanummer, Søkersituasjon } from '../../../types/søknad/Søknad';
+import cleanupAdopsjonsSteg from '../../../util/cleanup/cleanupAdopsjonsSteg';
+import utils from '../../../util/domain/fødselsdato';
+import { StegID } from '../../../util/routing/stegConfig';
 import isAvailable from '../../../util/steg/isAvailable';
 import { barnErGyldig, getAdopsjonAnkomstdatoValidatorer } from '../../../util/validation/steg/barn';
-import { Skjemanummer, Søkersituasjon } from '../../../types/søknad/Søknad';
-import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
-import AdopsjonAvEktefellesBarnSpørsmål from '../../../spørsmål/AdopsjonAvEktefellesBarnSpørsmål';
-import { SøkerinfoProps } from '../../../types/søkerinfo';
-import { HistoryProps } from '../../../types/common';
+import AntallBarnBolk from '../components/AntallBarnBolk';
 import visibility from './visibility';
-import cleanupAdopsjonsSteg from '../../../util/cleanup/cleanupAdopsjonsSteg';
-import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
-import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
-import { apiActionCreators } from 'app/redux/actions';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -110,7 +111,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                                 })
                             );
                         }}
-                        datoVerdi={barn.adopsjonsdato}
+                        dato={barn.adopsjonsdato}
                     />
                 </Block>
 
@@ -130,7 +131,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         antallBarn={barn.antallBarn}
                         datoavgrensninger={{
                             minDato: DateValues.date15YearsAnd3MonthsAgo.toDate(),
-                            maksDato: barn.adopsjonsdato.date,
+                            maksDato: ISOStringToDate(barn.adopsjonsdato),
                         }}
                         gjelderAdopsjon={true}
                         onChangeFødselsdato={(fødselsdatoer) =>
@@ -168,7 +169,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                                 })
                             );
                         }}
-                        datoVerdi={barn.ankomstdato}
+                        dato={barn.ankomstdato}
                         validators={getAdopsjonAnkomstdatoValidatorer(barn, intl)}
                     />
                 </Block>

@@ -1,18 +1,19 @@
 import * as React from 'react';
-import { useIntl, IntlShape } from 'react-intl';
-import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
-import getMessage from 'common/util/i18nUtils';
-import { Dekningsgrad } from 'common/types';
+import { IntlShape, useIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { DispatchProps } from 'common/redux/types';
-import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
-import { AppState } from '../../../redux/reducers';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import Block from 'common/components/block/Block';
-import { Søkersituasjon } from '../../../types/søknad/Søknad';
+import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
+import { DispatchProps } from 'common/redux/types';
+import { Dekningsgrad } from 'common/types';
+import getMessage from 'common/util/i18nUtils';
 import { selectSøknadsinfo } from 'app/selectors/søknadsinfoSelector';
 import { Søknadsinfo } from 'app/selectors/types';
-import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
 import { getAntallUker } from 'app/util/uttaksplan/stønadskontoer';
+import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
+import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
+import { AppState } from '../../../redux/reducers';
+import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
 interface StateProps {
     dekningsgrad100AntallUker: number | undefined;
@@ -164,7 +165,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
     dekningsgrad80AntallUker: getAntallUker(state.api.stønadskontoer80),
     harAnnenForelderSøktFP: state.søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP,
     søknadsinfo: selectSøknadsinfo(state)!,
-    startdatoPermisjon: state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon?.date,
+    startdatoPermisjon: ISOStringToDate(state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon),
 });
 
 export default connect(mapStateToProps)(DekningsgradSpørsmål);

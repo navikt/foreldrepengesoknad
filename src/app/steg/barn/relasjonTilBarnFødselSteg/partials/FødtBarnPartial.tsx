@@ -17,7 +17,7 @@ import AttachmentsUploaderPure from 'app/components/storage/attachment/component
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { Element } from 'nav-frontend-typografi';
-import { DatoInputVerdi } from '../../../../../common/components/skjema/elements/dato-input/DatoInput';
+import { isISODateString } from 'nav-datovelger';
 
 interface StateProps {
     barn: FødtBarn;
@@ -34,12 +34,12 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const getFødselsdatoInputVerdier = (fødselsdatoer?: DatoInputVerdi[]): DatoInputVerdi[] => {
+const getFødselsdatoer = (fødselsdatoer?: string[]): string[] => {
     return fødselsdatoer !== undefined &&
         fødselsdatoer.length > 0 &&
         fødselsdatoer[0] !== null &&
         fødselsdatoer[0] !== undefined &&
-        fødselsdatoer[0].date !== undefined
+        isISODateString(fødselsdatoer[0]) !== undefined
         ? [fødselsdatoer[0]]
         : [];
 };
@@ -50,7 +50,7 @@ class FødtBarnPartial extends React.Component<Props> {
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
         props.dispatch(
             søknadActions.updateBarn({
-                fødselsdatoer: getFødselsdatoInputVerdier(props.barn.fødselsdatoer),
+                fødselsdatoer: getFødselsdatoer(props.barn.fødselsdatoer),
             })
         );
     }
@@ -61,7 +61,7 @@ class FødtBarnPartial extends React.Component<Props> {
             søknadActions.updateBarn({
                 ...barn,
                 antallBarn: antall,
-                fødselsdatoer: getFødselsdatoInputVerdier(barn.fødselsdatoer),
+                fødselsdatoer: getFødselsdatoer(barn.fødselsdatoer),
             })
         );
     }
