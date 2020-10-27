@@ -71,7 +71,7 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
     },
     [AnnenForelderFieldNames.erMorUfør]: {
         parentQuestion: AnnenForelderFieldNames.harRettPåForeldrepenger,
-        isAnswered: ({ erInformertOmSøknaden }) => erInformertOmSøknaden !== YesOrNo.UNANSWERED,
+        isAnswered: ({ erMorUfør }) => erMorUfør !== YesOrNo.UNANSWERED,
         visibilityFilter: ({ aleneOmOmsorg, harRettPåForeldrepenger, søkerRolle }) =>
             aleneOmOmsorg === YesOrNo.NO &&
             harRettPåForeldrepenger === YesOrNo.NO &&
