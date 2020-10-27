@@ -1,1 +1,1 @@
-export type Språkkode = 'nb' | 'nn';
+export type Språkkode = 'nb' | 'nn' | 'NB' | 'NN';

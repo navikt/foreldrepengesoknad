@@ -4,6 +4,7 @@ import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 import EksternUrl from 'common/components/infoboks/EksternUrl';
 import lenker from '../util/routing/lenker';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 interface HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmålProps {
     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean | undefined;
@@ -39,11 +40,13 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (props: Pr
             onChange={(verdi) => onChange(verdi)}
             clsName="jobbetSomSelvstendigNaringsdrivende"
             hjelpetekst={
-                <EksternUrl
-                    tekst="harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst"
-                    url={lenker.NaringsdrivendeInfoBoks}
-                    lenkeTekst="hjemmeside"
-                />
+                <Normaltekst>
+                    <EksternUrl
+                        tekst="harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst"
+                        url={lenker.NaringsdrivendeInfoBoks}
+                        lenkeTekst="hjemmeside"
+                    />
+                </Normaltekst>
             }
             validators={validerSelvstendignæring}
         />

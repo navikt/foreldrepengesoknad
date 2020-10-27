@@ -26,10 +26,12 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
     [AnnenForelderFieldNames.fornavn]: {
         isAnswered: ({ fornavn }) => hasValue(fornavn),
         isIncluded: ({ skalOppgiPersonalia }) => skalOppgiPersonalia,
+        isOptional: ({ kanIkkeOppgis }) => kanIkkeOppgis,
     },
     [AnnenForelderFieldNames.etternavn]: {
         isAnswered: ({ etternavn }) => hasValue(etternavn),
         isIncluded: ({ skalOppgiPersonalia }) => skalOppgiPersonalia,
+        isOptional: ({ kanIkkeOppgis }) => kanIkkeOppgis,
     },
     [AnnenForelderFieldNames.kanIkkeOppgis]: {
         isAnswered: ({ kanIkkeOppgis }) => hasValue(kanIkkeOppgis),
@@ -69,7 +71,7 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
     },
     [AnnenForelderFieldNames.erMorUfør]: {
         parentQuestion: AnnenForelderFieldNames.harRettPåForeldrepenger,
-        isAnswered: ({ erInformertOmSøknaden }) => erInformertOmSøknaden !== YesOrNo.UNANSWERED,
+        isAnswered: ({ erMorUfør }) => erMorUfør !== YesOrNo.UNANSWERED,
         visibilityFilter: ({ aleneOmOmsorg, harRettPåForeldrepenger, søkerRolle }) =>
             aleneOmOmsorg === YesOrNo.NO &&
             harRettPåForeldrepenger === YesOrNo.NO &&
