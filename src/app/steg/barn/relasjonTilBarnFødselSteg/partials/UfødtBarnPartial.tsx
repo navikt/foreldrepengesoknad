@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import Block from 'common/components/block/Block';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { DispatchProps } from 'common/redux/types/index';
@@ -97,7 +96,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                                     }}
                                     dato={barn.termindato}
                                     datoAvgrensinger={termindatoAvgrensninger}
-                                    validators={getTermindatoRegler(ISOStringToDate(barn.termindato), intl)}
+                                    validators={getTermindatoRegler(barn.termindato, intl)}
                                 />
                             </div>
                         </Block>

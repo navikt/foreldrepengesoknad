@@ -101,7 +101,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
 
         const { gjelderAnnetBarn, valgteBarn } = søknadenGjelderBarnValg;
         const valgtBarn = valgteBarn[0];
-        const fødtBarnTermindato = ISOStringToDate((barn as FødtBarn).termindato);
+        const fødtBarnTermindato = (barn as FødtBarn).termindato;
 
         return (
             <Steg {...stegProps} onPreSubmit={this.onPresubmit}>
@@ -176,10 +176,15 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                     onChange={(termindato) => dispatch(søknadActions.updateBarn({ termindato }))}
                                     label={<Labeltekst intlId="fødselsdatoer.termin" />}
                                     datoAvgrensinger={{ ...termindatoAvgrensningerFodsel }}
-                                    validators={{ ...getTermindatoRegler(fødtBarnTermindato, intl) }}
+                                    validators={[...getTermindatoRegler(fødtBarnTermindato, intl)]}
                                 />
                             </Block>
-                            <Block visible={this.visInfoOmPrematuruker(valgtBarn.fødselsdato, fødtBarnTermindato)}>
+                            <Block
+                                visible={this.visInfoOmPrematuruker(
+                                    valgtBarn.fødselsdato,
+                                    ISOStringToDate(fødtBarnTermindato)
+                                )}
+                            >
                                 <VeilederInfo
                                     messages={[
                                         {
@@ -189,7 +194,12 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                     ]}
                                 />
                             </Block>
-                            <Block visible={this.visInfoOmPrematuruker(valgtBarn.fødselsdato, fødtBarnTermindato)}>
+                            <Block
+                                visible={this.visInfoOmPrematuruker(
+                                    valgtBarn.fødselsdato,
+                                    ISOStringToDate(fødtBarnTermindato)
+                                )}
+                            >
                                 <Block margin="xs">
                                     <Element>{getMessage(intl, 'vedlegg.lastoppknapp.terminbekreftelse')}</Element>
                                 </Block>

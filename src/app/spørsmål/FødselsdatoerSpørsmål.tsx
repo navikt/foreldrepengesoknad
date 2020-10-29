@@ -7,8 +7,7 @@ import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { Validator } from 'common/lib/validation/types';
 import { Avgrensninger } from 'common/types';
-import getMessage from 'common/util/i18nUtils';
-import { getTermindatoRegler, termindatoAvgrensningerFodsel } from 'app/util/validation/termindato';
+import { getTermindatoReglerForFødsel, termindatoAvgrensningerFodsel } from 'app/util/validation/termindato';
 import { dateMoreThan10WeeksAgo } from 'app/util/validation/values';
 import { fødselsdatoAvgrensninger, getFødselsdatoRegler } from '../util/validation/fødselsdato';
 
@@ -20,7 +19,6 @@ export interface FødselsdatoerSpørsmålProps {
     onChangeTermindato?: (termindato: string) => void;
     collapsed?: boolean;
     datoavgrensninger?: Avgrensninger;
-    datovalidatorer?: Validator[];
     gjelderAdopsjon?: boolean;
     erFarMedmor?: boolean;
     intl: IntlShape;
@@ -55,31 +53,13 @@ class FødselsdatoerSpørsmål extends React.Component<Props> {
     }
 
     getTermindatoAvgrensninger() {
-        return {
-            ...termindatoAvgrensningerFodsel,
-        };
+        return termindatoAvgrensningerFodsel;
     }
 
     getValidatorer(): Validator[] {
-        const { fødselsdatoer, datovalidatorer, intl } = this.props;
+        const { fødselsdatoer, intl } = this.props;
         const fødselsdato = fødselsdatoer.length > 0 ? ISOStringToDate(fødselsdatoer[0]) : undefined;
-        return [
-            ...(datovalidatorer || []),
-            ...getFødselsdatoRegler(fødselsdato, this.props.gjelderAdopsjon === true, intl),
-        ];
-    }
-
-    getTermindatoValidatorer(): Validator[] {
-        const { datovalidatorer, intl } = this.props;
-        const termindato = ISOStringToDate(this.props.termindato);
-        const forLangtFremITidRegel: Validator = {
-            test: () => {
-                return moment().add(9, 'months').isSameOrAfter(moment(termindato), 'day');
-            },
-            failText: getMessage(intl, 'valideringsfeil.termindato.forLangtFremITid'),
-        };
-
-        return [...(datovalidatorer || []), getTermindatoRegler(termindato, intl)[0], forLangtFremITidRegel];
+        return getFødselsdatoRegler(fødselsdato, this.props.gjelderAdopsjon === true, intl);
     }
 
     visTermindato(
@@ -101,7 +81,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props> {
     }
 
     renderCollapsedFødselsdatoSpørsmål() {
-        const { fødselsdatoer, antallBarn, termindato, erFarMedmor, gjelderAdopsjon } = this.props;
+        const { fødselsdatoer, antallBarn, termindato, erFarMedmor, gjelderAdopsjon, intl } = this.props;
 
         let intlIdFødsel = 'fødselsdatoer.fødsel';
         let intlIdTermin = 'fødselsdatoer.termin';
@@ -135,7 +115,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props> {
                             onChange={(d) => onChangeTermindato(d)}
                             label={<Labeltekst intlId={intlIdTermin} />}
                             datoAvgrensinger={this.getTermindatoAvgrensninger()}
-                            validators={this.getTermindatoValidatorer()}
+                            validators={getTermindatoReglerForFødsel(termindato, intl)}
                         />
                     </Block>
                 )}
