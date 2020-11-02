@@ -18,7 +18,7 @@ import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import { apiActionCreators } from 'app/redux/actions';
-import { getTermindatoRegler, termindatoAvgrensningerFodsel } from 'app/util/validation/termindato';
+import { getTermindatoReglerForFødsel, termindatoAvgrensningerFodsel } from 'app/util/validation/termindato';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import { AppState } from '../../../redux/reducers';
 import ErBarnetFødtSpørsmål from '../../../spørsmål/ErBarnetFødtSpørsmål';
@@ -176,7 +176,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                     onChange={(termindato) => dispatch(søknadActions.updateBarn({ termindato }))}
                                     label={<Labeltekst intlId="fødselsdatoer.termin" />}
                                     datoAvgrensinger={{ ...termindatoAvgrensningerFodsel }}
-                                    validators={[...getTermindatoRegler(fødtBarnTermindato, intl)]}
+                                    validators={[...getTermindatoReglerForFødsel(fødtBarnTermindato, intl)]}
                                 />
                             </Block>
                             <Block
