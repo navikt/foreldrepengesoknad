@@ -135,8 +135,6 @@ class InngangSteg extends React.Component<Props> {
             return <ResetSoknad history={this.props.history} />;
         }
 
-        console.log('situasjon from IS', situasjon);
-
         return (
             <Steg {...stegProps} onPreSubmit={this.cleanupSøknad} nesteStegID={this.getNextStegID()}>
                 <Block>
