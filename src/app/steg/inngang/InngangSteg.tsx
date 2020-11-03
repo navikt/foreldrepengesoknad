@@ -153,10 +153,20 @@ class InngangSteg extends React.Component<Props> {
                         }
                     />
                 </Block>
+                <Block visible={visibility.adopsjonsøknadInfo(situasjon)}>
+                    <Veilederpanel svg={<Veileder farge="lilla" stil="kompakt" />}>
+                        <Block margin="xs">
+                            <FormattedMessage id="velkommen.foreldreansvar.veileder.adopsjon" />
+                        </Block>
+                        <Lenke href={lenker.adoptere}>
+                            <FormattedMessage id="adoptere.lenke" />
+                        </Lenke>
+                    </Veilederpanel>
+                </Block>
                 <Block visible={visibility.papirsøknadInfo(situasjon)}>
                     <Veilederpanel svg={<Veileder farge="lilla" stil="kompakt" />}>
                         <Block margin="xs">
-                            <FormattedMessage id="velkommen.foreldreansvar.veileder" />
+                            <FormattedMessage id="velkommen.foreldreansvar.veileder.omsorgsovertakelse" />
                         </Block>
                         <Lenke href={lenker.papirsøknad}>
                             <FormattedMessage id="papirsøknad.lenke" />
