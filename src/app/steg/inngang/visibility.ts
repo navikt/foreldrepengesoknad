@@ -6,6 +6,14 @@ interface SøkerRolleSpørsmålVisibleData {
     velgbareRoller: SøkerRolle[];
 }
 
+const adopsjonInfoVisible: VisibilityFunction<Søkersituasjon | undefined> = (situasjon?: Søkersituasjon) => {
+    return situasjon === Søkersituasjon.ADOPSJON;
+};
+
+const papirsøknadInfoVisible: VisibilityFunction<Søkersituasjon | undefined> = (situasjon?: Søkersituasjon) => {
+    return situasjon === Søkersituasjon.FORELDREANSVAR;
+};
+
 const søkerRolleSpørsmålVisible: VisibilityFunction<SøkerRolleSpørsmålVisibleData> = (
     data: SøkerRolleSpørsmålVisibleData
 ) => {
@@ -18,5 +26,7 @@ const søkerRolleSpørsmålVisible: VisibilityFunction<SøkerRolleSpørsmålVisi
 };
 
 export default {
+    adopsjonsøknadInfo: adopsjonInfoVisible,
+    papirsøknadInfo: papirsøknadInfoVisible,
     søkerRolleSpørsmål: søkerRolleSpørsmålVisible,
 };
