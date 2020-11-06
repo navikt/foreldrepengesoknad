@@ -78,7 +78,7 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring }) => {
             {oppstartsdato !== undefined && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.oppstartsdato')}
-                    verdi={formatDate(ISOStringToDate(oppstartsdato))}
+                    verdi={formatDate(ISOStringToDate(oppstartsdato))!}
                 />
             )}
 
@@ -103,7 +103,7 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring }) => {
                             intl,
                             'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt'
                         )}
-                        verdi={formatDate(ISOStringToDate(endringAvNæringsinntektInformasjon?.dato))}
+                        verdi={formatDate(ISOStringToDate(endringAvNæringsinntektInformasjon?.dato))!}
                     />
                     <Feltoppsummering
                         feltnavn={getMessage(

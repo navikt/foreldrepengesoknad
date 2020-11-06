@@ -17,7 +17,7 @@ import { harAktivtArbeidsforhold } from '../../../../util/domain/arbeidsforhold'
 import { getUtsettelseFormVisibility, UtsettelseSpørsmålKeys } from './utsettelseFormConfig';
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import Block from 'common/components/block/Block';
-import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
+// import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
@@ -105,19 +105,19 @@ export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utset
     }
 };
 
-const getTidsperiodeFeilmeldingKey = (
-    harOverlappendePerioder: boolean,
-    overlapperAndreUtsettelser: boolean,
-    erNyPeriode: boolean
-): string | undefined => {
-    if (harOverlappendePerioder) {
-        return 'periodeliste.overlappendePeriode';
-    }
-    if (overlapperAndreUtsettelser) {
-        return `periodeliste.utsettelse.overlappendeTidsperiode.${erNyPeriode ? 'ny' : 'endre'}`;
-    }
-    return undefined;
-};
+// const getTidsperiodeFeilmeldingKey = (
+//     harOverlappendePerioder: boolean,
+//     overlapperAndreUtsettelser: boolean,
+//     erNyPeriode: boolean
+// ): string | undefined => {
+//     if (harOverlappendePerioder) {
+//         return 'periodeliste.overlappendePeriode';
+//     }
+//     if (overlapperAndreUtsettelser) {
+//         return `periodeliste.utsettelse.overlappendeTidsperiode.${erNyPeriode ? 'ny' : 'endre'}`;
+//     }
+//     return undefined;
+// };
 
 const getVeilederForFrilansOgSNVisible = (periode: UtsettelseFormPeriodeType) => {
     const castPeriode = periode as Utsettelsesperiode;
@@ -330,15 +330,16 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
             periode,
             antallFeriedager,
             arbeidsforhold,
-            harOverlappendePerioder,
+            // harOverlappendePerioder,
             onCancel,
             søknadsinfo,
             uttaksplan,
             intl,
-            erNyPeriode,
+            // erNyPeriode,
         } = this.props;
 
-        const { variant, ugyldigTidsperiode } = this.state;
+        // const { variant, ugyldigTidsperiode } = this.state;
+        const { variant } = this.state;
 
         const visibility = this.getVisibility();
 
@@ -364,17 +365,17 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
         const harDeltidUtenAvtaleMedArbeidsgiver =
             isUtsettelsesperiode(periode) && periode.harAvtaleOmFulltidForDeltidsstilling === false;
 
-        const tidsperiodeFeilmeldingKey = getTidsperiodeFeilmeldingKey(
-            harOverlappendePerioder === true,
-            ugyldigTidsperiode !== undefined,
-            periode.id === undefined
-        );
+        // const tidsperiodeFeilmeldingKey = getTidsperiodeFeilmeldingKey(
+        //     harOverlappendePerioder === true,
+        //     ugyldigTidsperiode !== undefined,
+        //     periode.id === undefined
+        // );
 
         return (
             <>
                 <Block hasChildBlocks={true}>
                     <Block>
-                        {erNyPeriode ? (
+                        {/* {erNyPeriode ? (
                             <UtsettelseTidsperiodeSpørsmål
                                 tidsperiodeDatoInput={
                                     this.state.ugyldigTidsperiode || mapTidsperiodeToTidsperiodeString(tidsperiode)
@@ -389,25 +390,25 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                                 }
                             />
                         ) : (
-                            <>
-                                <TidsperiodeDisplay
-                                    tidsperiode={periode.tidsperiode}
-                                    toggleVisTidsperiode={this.toggleVisTidsperiode}
-                                />
-                                <UtsettelseEndreTidsperiodeSpørsmål
-                                    familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
-                                    ugyldigeTidsperioder={ugyldigeTidsperioder}
-                                    onBekreft={(v) => {
-                                        this.oppdaterTidsperiode(v);
-                                        this.toggleVisTidsperiode();
-                                    }}
-                                    changeTidsperiode={(v) => this.oppdaterTidsperiode(v)}
-                                    tidsperiode={mapTidsperiodeToTidsperiodeString(tidsperiode)}
-                                    onAvbryt={this.handleAvbrytTidsperiode}
-                                    visible={this.state.tidsperiodeIsOpen}
-                                />
-                            </>
-                        )}
+                            <> */}
+                        <TidsperiodeDisplay
+                            tidsperiode={periode.tidsperiode}
+                            toggleVisTidsperiode={this.toggleVisTidsperiode}
+                        />
+                        <UtsettelseEndreTidsperiodeSpørsmål
+                            familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
+                            ugyldigeTidsperioder={ugyldigeTidsperioder}
+                            onBekreft={(v) => {
+                                this.oppdaterTidsperiode(v);
+                                this.toggleVisTidsperiode();
+                            }}
+                            changeTidsperiode={(v) => this.oppdaterTidsperiode(v)}
+                            tidsperiode={mapTidsperiodeToTidsperiodeString(tidsperiode)}
+                            onAvbryt={this.handleAvbrytTidsperiode}
+                            visible={this.state.tidsperiodeIsOpen}
+                        />
+                        {/* </>
+                        )} */}
                     </Block>
                     <Block
                         visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}
@@ -433,7 +434,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.ferieinfo)} hasChildBlocks={true}>
                         <UtsettelsePgaFerieInfo
                             antallFeriedager={antallFeriedager}
-                            aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, new Date(tidsperiode.tom!))}
+                            aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, tidsperiode.tom)}
                             forelder={Forelder.mor}
                         />
                     </Block>

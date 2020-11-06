@@ -1,6 +1,6 @@
 import { DatoValidatorer } from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
 import moment from 'moment';
-import { Tidsperiode } from 'common/types';
+import { Tidsperiode, TidsperiodeString } from 'common/types';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 import { isForeldrepengerFørFødselUttaksperiode, Periode } from '../../../types/uttaksplan/periodetyper';
 import { Validator } from 'common/lib/validation/types';
@@ -10,6 +10,9 @@ import { uttaksdatoer, getUttaksdatoer } from '../../uttaksplan/uttaksdatoer';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { periodeErFørDato } from './uttakFarValidation';
 import { UtsettelseFormPeriodeType } from '../../../components/uttaksplanlegger/components/utsettelseForm/UtsettelseForm';
+import { erGyldigDato } from '../common';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { mapTidsperiodeToTidsperiodeString } from 'app/util/tidsperiodeUtils';
 
 const erUtfyltTest = (dato: DateValue): Validator => ({
     test: () => dato !== undefined,
@@ -37,22 +40,28 @@ const slutterInnenforGyldigPermisjonsperiode = (dato: DateValue, familiehendelse
 
 export const getUttakTidsperiodeValidatorer = (
     skalIkkeHaUttak: boolean,
-    tidsperiode: Partial<Tidsperiode>,
+    tidsperiode: Partial<TidsperiodeString>,
     familiehendelsesdato: Date
 ): DatoValidatorer | undefined => {
     if (skalIkkeHaUttak) {
         return undefined;
     }
+
+    const fomDate = ISOStringToDate(tidsperiode.fom);
+    const tomDate = ISOStringToDate(tidsperiode.tom);
+
     return {
         fra: [
-            erUtfyltTest(tidsperiode.fom),
-            erUttaksdagTest(tidsperiode.fom),
-            starterInnenfor12UkerFørTermin(tidsperiode.fom, familiehendelsesdato),
+            erGyldigDato(tidsperiode.fom, 'Fra dato er på ugyldig format'),
+            erUtfyltTest(fomDate),
+            erUttaksdagTest(fomDate),
+            starterInnenfor12UkerFørTermin(fomDate, familiehendelsesdato),
         ],
         til: [
-            erUtfyltTest(tidsperiode.tom),
-            erUttaksdagTest(tidsperiode.tom),
-            slutterInnenforGyldigPermisjonsperiode(tidsperiode.tom, familiehendelsesdato),
+            erGyldigDato(tidsperiode.tom, 'Til dato er på ugyldig format'),
+            erUtfyltTest(tomDate),
+            erUttaksdagTest(tomDate),
+            slutterInnenforGyldigPermisjonsperiode(tomDate, familiehendelsesdato),
         ],
     };
 };
@@ -69,7 +78,11 @@ export const uttakTidsperiodeErGyldig = (uttaksperiode: Periode, familiehendelse
     if (isValidTidsperiode(tidsperiode) === false && !skalIkkeHaUttak) {
         return false;
     }
-    const validators = getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode, familiehendelsesdato);
+    const validators = getUttakTidsperiodeValidatorer(
+        skalIkkeHaUttak,
+        mapTidsperiodeToTidsperiodeString(tidsperiode),
+        familiehendelsesdato
+    );
     if (validators === undefined) {
         return true;
     }

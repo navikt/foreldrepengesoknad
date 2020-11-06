@@ -48,13 +48,6 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const erForeldrepengerFørFødsel = isForeldrepengerFørFødselUttaksperiode(periode);
-
-    const datoAvgrensninger = getDatoavgrensningerForStønadskonto(
-        isUttaksperiode(periode) ? periode.konto : undefined,
-        familiehendelsesdato,
-        mapTidsperiodeStringToTidsperiode(tidsperiode),
-        ugyldigeTidsperioder
-    );
     const initialMonth = erForeldrepengerFørFødsel ? familiehendelsesdato : undefined;
     const varighetIDager =
         tidsperiode &&
@@ -78,48 +71,59 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                     initialValues={{ fom: tidsperiode.fom, tom: tidsperiode.tom }}
                     onSubmit={handleOnSubmit}
                     enableReinitialize={true}
-                    renderForm={({ values }) => (
-                        <Form.Form fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
-                            <Block>
-                                <Form.DateIntervalPicker
-                                    legend="Tidsrom"
-                                    fromDatepickerProps={{
-                                        name: TidsperiodeFormFields.fom,
-                                        label: getMessage(intl, 'fraogmed'),
-                                        fullscreenOverlay: true,
-                                        minDate: datoAvgrensninger.fra.minDato,
-                                        invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
-                                        maxDate: ISOStringToDate(values.fom) || datoAvgrensninger.fra.maksDato,
-                                        validate: (value) =>
-                                            dateRangeValidation.validateFromDate(
-                                                ISOStringToDate(value),
-                                                datoAvgrensninger.fra.minDato!,
-                                                datoAvgrensninger.fra.maksDato!,
-                                                ISOStringToDate(values.tom)
-                                            ),
-                                        dayPickerProps: {
-                                            initialMonth,
-                                        },
-                                    }}
-                                    toDatepickerProps={{
-                                        name: TidsperiodeFormFields.tom,
-                                        label: getMessage(intl, 'tilogmed'),
-                                        fullscreenOverlay: true,
-                                        minDate: ISOStringToDate(values.fom) || datoAvgrensninger.til.minDato,
-                                        maxDate: datoAvgrensninger.til.maksDato,
-                                        invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
-                                        validate: (value) =>
-                                            dateRangeValidation.validateToDate(
-                                                ISOStringToDate(value),
-                                                datoAvgrensninger.til.minDato!,
-                                                datoAvgrensninger.til.maksDato!,
-                                                ISOStringToDate(values.fom)
-                                            ),
-                                    }}
-                                />
-                            </Block>
-                        </Form.Form>
-                    )}
+                    renderForm={({ values }) => {
+                        const datoAvgrensninger = getDatoavgrensningerForStønadskonto(
+                            isUttaksperiode(periode) ? periode.konto : undefined,
+                            familiehendelsesdato,
+                            mapTidsperiodeStringToTidsperiode({ fom: values.fom, tom: values.tom }),
+                            ugyldigeTidsperioder
+                        );
+
+                        return (
+                            <Form.Form fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                                <Block>
+                                    <Form.DateIntervalPicker
+                                        legend="Tidsrom"
+                                        fromDatepickerProps={{
+                                            name: TidsperiodeFormFields.fom,
+                                            label: getMessage(intl, 'fraogmed'),
+                                            fullscreenOverlay: true,
+                                            minDate: datoAvgrensninger.fra.minDato,
+                                            invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
+                                            maxDate: ISOStringToDate(values.fom) || datoAvgrensninger.fra.maksDato,
+                                            disableWeekend: datoAvgrensninger.fra.helgedagerIkkeTillatt,
+                                            validate: (value) =>
+                                                dateRangeValidation.validateFromDateUttak(
+                                                    ISOStringToDate(value),
+                                                    datoAvgrensninger.fra.minDato!,
+                                                    datoAvgrensninger.fra.maksDato!,
+                                                    ISOStringToDate(values.tom)
+                                                ),
+                                            dayPickerProps: {
+                                                initialMonth,
+                                            },
+                                        }}
+                                        toDatepickerProps={{
+                                            name: TidsperiodeFormFields.tom,
+                                            label: getMessage(intl, 'tilogmed'),
+                                            fullscreenOverlay: true,
+                                            minDate: ISOStringToDate(values.fom) || datoAvgrensninger.til.minDato,
+                                            maxDate: datoAvgrensninger.til.maksDato,
+                                            invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
+                                            disableWeekend: datoAvgrensninger.til.helgedagerIkkeTillatt,
+                                            validate: (value) =>
+                                                dateRangeValidation.validateToDateUttak(
+                                                    ISOStringToDate(value),
+                                                    datoAvgrensninger.til.minDato!,
+                                                    datoAvgrensninger.til.maksDato!,
+                                                    ISOStringToDate(values.fom)
+                                                ),
+                                        }}
+                                    />
+                                </Block>
+                            </Form.Form>
+                        );
+                    }}
                 />
             </Modal>
             <UkerDagerTeller
