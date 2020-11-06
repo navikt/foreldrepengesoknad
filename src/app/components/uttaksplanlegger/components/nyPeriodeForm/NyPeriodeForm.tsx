@@ -19,7 +19,6 @@ import { getPeriodeFarge } from '../../../../util/uttaksplan/styleUtils';
 import { getPeriodeIkon } from '../periodeliste/elements/PeriodeHeader';
 import { Søknadsinfo } from 'app/selectors/types';
 import { RecursivePartial } from 'app/types/Partial';
-import { mapTidsperiodeToTidsperiodeString } from 'app/util/tidsperiodeUtils';
 
 interface OwnProps {
     antallFeriedager: number;
@@ -35,7 +34,7 @@ interface OwnProps {
 }
 
 interface State {
-    periode: RecursivePartial<Omit<Periode, 'tidsperiode'>>;
+    periode: RecursivePartial<Periode>;
     utsettelsesvariant?: Utsettelsesvariant;
     visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility | undefined;
 }
@@ -68,7 +67,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
 
         const { periodetype, tidsperiode } = props;
         const periode: RecursivePartial<Periode> = {
-            tidsperiode: tidsperiode ? mapTidsperiodeToTidsperiodeString(tidsperiode) : {},
+            tidsperiode: tidsperiode || {},
         };
         if (
             periodetype === Periodetype.Utsettelse ||

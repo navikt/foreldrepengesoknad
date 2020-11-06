@@ -238,7 +238,7 @@ const validateFromDateUttak = (date: Date | undefined, minDate: Date, maxDate: D
 
     if (toDate && moment(date).isAfter(toDate, 'day')) {
         return {
-            key: 'valideringsfeil.utenlandsopphold.førTilDato',
+            key: 'valideringsfeil.uttakTidsperiode.førTilDato',
         };
     }
 
@@ -273,7 +273,7 @@ const validateToDateUttak = (date: Date | undefined, minDate: Date, maxDate: Dat
 
     if (fromDate && moment(date).isBefore(fromDate, 'day')) {
         return {
-            key: 'valideringsfeil.utenlandsopphold.etterFraDato',
+            key: 'valideringsfeil.uttakTidsperiode.etterFraDato',
         };
     }
 

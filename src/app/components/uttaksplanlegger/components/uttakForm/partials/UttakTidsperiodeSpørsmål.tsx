@@ -77,7 +77,11 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
         ugyldigeTidsperioder
     );
 
-    const datoValidatorer = getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode, familiehendelsesdato);
+    const datoValidatorer = getUttakTidsperiodeValidatorer(
+        skalIkkeHaUttak,
+        mapTidsperiodeStringToTidsperiode(tidsperiode),
+        familiehendelsesdato
+    );
     const initialMonth = erForeldrepengerFørFødsel ? familiehendelsesdato : undefined;
 
     return (

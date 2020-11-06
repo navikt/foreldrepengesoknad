@@ -29,7 +29,6 @@ import SamtidigUttakPart from './partials/SamtidigUttakPart';
 import ForeldrepengerFørFødselPart from './partials/ForeldrepengerFørFødselPart';
 import OverføringUttakPart from './partials/OverføringUttakPart';
 import GradertUttakPart from './partials/GradertUttakPart';
-// import UttakTidsperiodeSpørsmål from './partials/UttakTidsperiodeSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import { erUttakAvAnnenForeldersKvote } from '../../../../util/uttaksplan/uttakUtils';
 import { Uttaksdagen } from '../../../../util/uttaksplan/Uttaksdagen';
@@ -344,7 +343,6 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
             arbeidsforhold,
             onCancel,
             intl,
-            // erNyPeriode,
         } = this.props;
 
         const visibility = this.getVisibility();
@@ -374,17 +372,6 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
         return (
             <React.Fragment>
                 <Block visible={erForeldrepengerFørFødselOgSkalIkkeHaUttakFørTermin === false}>
-                    {/* {erNyPeriode === true ? (
-                        <UttakTidsperiodeSpørsmål
-                            periode={periode}
-                            familiehendelsesdato={familiehendelsesdato}
-                            ugyldigeTidsperioder={ugyldigeTidsperioder}
-                            onChange={(v) => this.onChange({ tidsperiode: mapTidsperiodeStringToTidsperiode(v) })}
-                            tidsperiode={mapTidsperiodeToTidsperiodeString(tidsperiode)}
-                            feil={periodeErNyOgFørFamiliehendelsesdatoFeil}
-                        />
-                    ) : (
-                        <> */}
                     <TidsperiodeDisplay
                         tidsperiode={periode.tidsperiode}
                         toggleVisTidsperiode={this.toggleVisTidsperiode}
@@ -402,8 +389,6 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                         onAvbryt={this.handleAvbrytTidsperiode}
                         visible={this.state.tidsperiodeIsOpen}
                     />
-                    {/* </> */}
-                    {/* )} */}
                 </Block>
                 <Block
                     visible={
