@@ -60,9 +60,11 @@ import { AttachmentType } from 'app/components/storage/attachment/types/Attachme
 import { Skjemanummer } from 'app/types/søknad/Søknad';
 import { ValidFormContext, ValidFormContextInterface } from 'common/lib/validation/elements/ValiderbarForm';
 import {
-    mapTidsperiodeDatoInputVerdiToTidsperiode,
-    mapTidsperiodeToTidsperiodeDatoInputVerdi,
+    mapTidsperiodeStringToTidsperiode,
+    mapTidsperiodeToTidsperiodeString,
 } from '../../../../util/tidsperiodeUtils';
+import UttakTidsperiodeSpørsmålNy from './partials/UttakEndreTidsperiodeSpørsmål';
+import TidsperiodeDisplay from '../tidsperiodeDisplay/TidsperiodeDisplay';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -75,10 +77,12 @@ interface OwnProps {
     onChange: EndrePeriodeChangeEvent;
     onCancel?: () => void;
     intl: IntlShape;
+    erNyPeriode: boolean;
 }
 
 interface ComponentStateProps {
     periodenGjelder: Forelder | undefined;
+    tidsperiodeIsOpen: boolean;
 }
 
 interface StateProps {
@@ -162,6 +166,8 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
         this.updateForeldrepengerFørFødselUttak = this.updateForeldrepengerFørFødselUttak.bind(this);
         this.updatePeriodenGjelder = this.updatePeriodenGjelder.bind(this);
         this.getVisibility = this.getVisibility.bind(this);
+        this.handleAvbrytTidsperiode = this.handleAvbrytTidsperiode.bind(this);
+        this.toggleVisTidsperiode = this.toggleVisTidsperiode.bind(this);
         this.onChange = this.onChange.bind(this);
         this.state = {
             periodenGjelder: getPeriodeGjelder(
@@ -169,6 +175,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                 this.props.periode.forelder,
                 this.props.søknadsinfo
             ),
+            tidsperiodeIsOpen: false,
         };
     }
 
@@ -314,6 +321,20 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
         });
     }
 
+    handleAvbrytTidsperiode() {
+        this.setState({
+            ...this.state,
+            tidsperiodeIsOpen: false,
+        });
+    }
+
+    toggleVisTidsperiode() {
+        this.setState({
+            ...this.state,
+            tidsperiodeIsOpen: !this.state.tidsperiodeIsOpen,
+        });
+    }
+
     render() {
         const {
             periode,
@@ -323,6 +344,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
             arbeidsforhold,
             onCancel,
             intl,
+            erNyPeriode,
         } = this.props;
 
         const visibility = this.getVisibility();
@@ -352,14 +374,36 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
         return (
             <React.Fragment>
                 <Block visible={erForeldrepengerFørFødselOgSkalIkkeHaUttakFørTermin === false}>
-                    <UttakTidsperiodeSpørsmål
-                        periode={periode}
-                        familiehendelsesdato={familiehendelsesdato}
-                        ugyldigeTidsperioder={ugyldigeTidsperioder}
-                        onChange={(v) => this.onChange({ tidsperiode: mapTidsperiodeDatoInputVerdiToTidsperiode(v) })}
-                        tidsperiode={mapTidsperiodeToTidsperiodeDatoInputVerdi(tidsperiode)}
-                        feil={periodeErNyOgFørFamiliehendelsesdatoFeil}
-                    />
+                    {erNyPeriode === true ? (
+                        <UttakTidsperiodeSpørsmål
+                            periode={periode}
+                            familiehendelsesdato={familiehendelsesdato}
+                            ugyldigeTidsperioder={ugyldigeTidsperioder}
+                            onChange={(v) => this.onChange({ tidsperiode: mapTidsperiodeStringToTidsperiode(v) })}
+                            tidsperiode={mapTidsperiodeToTidsperiodeString(tidsperiode)}
+                            feil={periodeErNyOgFørFamiliehendelsesdatoFeil}
+                        />
+                    ) : (
+                        <>
+                            <TidsperiodeDisplay
+                                tidsperiode={periode.tidsperiode}
+                                toggleVisTidsperiode={this.toggleVisTidsperiode}
+                            />
+                            <UttakTidsperiodeSpørsmålNy
+                                periode={periode}
+                                familiehendelsesdato={familiehendelsesdato}
+                                ugyldigeTidsperioder={ugyldigeTidsperioder}
+                                onBekreft={(v) => {
+                                    this.onChange({ tidsperiode: v });
+                                    this.toggleVisTidsperiode();
+                                }}
+                                changeTidsperiode={(v) => this.onChange({ tidsperiode: v })}
+                                tidsperiode={mapTidsperiodeToTidsperiodeString(tidsperiode)}
+                                onAvbryt={this.handleAvbrytTidsperiode}
+                                visible={this.state.tidsperiodeIsOpen}
+                            />
+                        </>
+                    )}
                 </Block>
                 <Block
                     visible={

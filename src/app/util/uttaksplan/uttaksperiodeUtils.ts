@@ -65,7 +65,7 @@ export function getDatoavgrensningerForStønadskonto(
     familiehendelsesdato: Date,
     tidsperiode: Partial<Tidsperiode> | undefined,
     ugyldigeTidsperioder: Tidsperiode[]
-): DatoAvgrensninger | undefined {
+): DatoAvgrensninger {
     if (konto === undefined) {
         return getDatoavgrensningerForPeriodeUtenKonto(familiehendelsesdato, tidsperiode, ugyldigeTidsperioder);
     }

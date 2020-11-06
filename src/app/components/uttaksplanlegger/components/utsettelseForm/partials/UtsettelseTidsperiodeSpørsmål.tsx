@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { Feil, Tidsperiode, TidsperiodeString } from 'common/types';
 import { getUtsettelseTidsperiodeValidatorer } from 'app/util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
-import { mapTidsperiodeDatoInputVerdiToTidsperiode } from '../../../../../util/tidsperiodeUtils';
+import { mapTidsperiodeStringToTidsperiode } from '../../../../../util/tidsperiodeUtils';
 import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
 
 export interface Props {
@@ -21,26 +21,28 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     ugyldigeTidsperioder,
 }) => {
     const datoValidatorer = getUtsettelseTidsperiodeValidatorer(
-        mapTidsperiodeDatoInputVerdiToTidsperiode(tidsperiodeDatoInput),
+        mapTidsperiodeStringToTidsperiode(tidsperiodeDatoInput),
         familiehendelsesdato
     );
+    const datoAvgrensninger = {
+        fra: {
+            minDato: familiehendelsesdato,
+            maksDato: tidsperiodeDatoInput ? ISOStringToDate(tidsperiodeDatoInput.tom) : undefined,
+            ugyldigeTidsperioder,
+            helgedagerIkkeTillatt: true,
+        },
+        til: {
+            minDato: tidsperiodeDatoInput ? ISOStringToDate(tidsperiodeDatoInput.fom) : undefined,
+            ugyldigeTidsperioder,
+            helgedagerIkkeTillatt: true,
+        },
+    };
+
     return (
         <TidsperiodeBolk
             onChange={(t) => onChange(t)}
             tidsperiode={tidsperiodeDatoInput ? (tidsperiodeDatoInput as Partial<TidsperiodeString>) : {}}
-            datoAvgrensninger={{
-                fra: {
-                    minDato: familiehendelsesdato,
-                    maksDato: tidsperiodeDatoInput ? ISOStringToDate(tidsperiodeDatoInput.tom) : undefined,
-                    ugyldigeTidsperioder,
-                    helgedagerIkkeTillatt: true,
-                },
-                til: {
-                    minDato: tidsperiodeDatoInput ? ISOStringToDate(tidsperiodeDatoInput.fom) : undefined,
-                    ugyldigeTidsperioder,
-                    helgedagerIkkeTillatt: true,
-                },
-            }}
+            datoAvgrensninger={datoAvgrensninger}
             datoValidatorer={datoValidatorer}
             feil={feil}
             ukerOgDagerVelgerEnabled={true}

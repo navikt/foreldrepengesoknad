@@ -18,8 +18,8 @@ import {
 } from '../../../../../util/uttaksplan/Tidsperioden';
 import { getDatoavgrensningerForStønadskonto } from 'app/util/uttaksplan/uttaksperiodeUtils';
 import {
-    mapTidsperiodeDatoInputVerdiToTidsperiode,
-    mapTidsperiodeToTidsperiodeDatoInputVerdi,
+    mapTidsperiodeStringToTidsperiode,
+    mapTidsperiodeToTidsperiodeString,
 } from '../../../../../util/tidsperiodeUtils';
 
 export interface Props {
@@ -73,13 +73,13 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     const datoAvgrensninger = getDatoavgrensningerForStønadskonto(
         isUttaksperiode(periode) ? periode.konto : undefined,
         familiehendelsesdato,
-        mapTidsperiodeDatoInputVerdiToTidsperiode(tidsperiode),
+        mapTidsperiodeStringToTidsperiode(tidsperiode),
         ugyldigeTidsperioder
     );
 
     const datoValidatorer = getUttakTidsperiodeValidatorer(
         skalIkkeHaUttak,
-        mapTidsperiodeDatoInputVerdiToTidsperiode(tidsperiode),
+        mapTidsperiodeStringToTidsperiode(tidsperiode),
         familiehendelsesdato
     );
     const initialMonth = erForeldrepengerFørFødsel ? familiehendelsesdato : undefined;
@@ -88,8 +88,8 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
         <TidsperiodeBolk
             onChange={(t) => {
                 onChange(
-                    mapTidsperiodeToTidsperiodeDatoInputVerdi(
-                        resetTidsperiodeTomIfBeforeFom(mapTidsperiodeDatoInputVerdiToTidsperiode(t))
+                    mapTidsperiodeToTidsperiodeString(
+                        resetTidsperiodeTomIfBeforeFom(mapTidsperiodeStringToTidsperiode(t))
                     )
                 );
             }}

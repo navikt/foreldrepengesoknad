@@ -70,8 +70,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
         <Form.FormikWrapper
             initialValues={bosted ? mapBostedToFormValues(bosted) : {}}
             onSubmit={onFormikSubmit}
-            renderForm={(formik) => {
-                const { values } = formik;
+            renderForm={({ values }) => {
                 return (
                     <Form.Form
                         onCancel={onCancel}

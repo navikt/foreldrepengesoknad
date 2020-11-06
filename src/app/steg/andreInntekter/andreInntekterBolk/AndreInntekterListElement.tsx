@@ -6,7 +6,7 @@ import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from '../../../t
 import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { prettifyTidsperiode } from '../../../util/dates/dates';
-import { mapTidsperiodeDatoInputVerdiToTidsperiode } from '../../../util/tidsperiodeUtils';
+import { mapTidsperiodeStringToTidsperiode } from '../../../util/tidsperiodeUtils';
 
 interface AndreInntekterListElementProps extends InteractiveListElementProps {
     annenInntekt: AnnenInntekt;
@@ -36,7 +36,7 @@ const AndreInntekterListElement: React.StatelessComponent<Props> = ({ annenInnte
     return (
         <InteractiveListElement
             title={title}
-            text={prettifyTidsperiode(mapTidsperiodeDatoInputVerdiToTidsperiode(tidsperiode))}
+            text={prettifyTidsperiode(mapTidsperiodeStringToTidsperiode(tidsperiode))}
             deleteLinkText={deleteLinkText}
             etikettProps={
                 inntektstypeSkalHaVedlegg

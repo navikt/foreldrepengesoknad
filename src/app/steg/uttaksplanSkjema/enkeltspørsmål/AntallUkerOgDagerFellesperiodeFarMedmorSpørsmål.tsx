@@ -70,6 +70,8 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: React.StatelessComponen
                                         onChange: (uker: number) =>
                                             onChange({ antallUkerFellesperiodeFarMedmor: uker }),
                                         ariaLabel: 'Antall uker',
+                                        increaseAriaLabel: 'Øk antall uker med en uke',
+                                        decreaseAriaLabel: 'Mink antall uker med en uke',
                                     },
                                     {
                                         value:
@@ -81,6 +83,8 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: React.StatelessComponen
                                         onChange: (dager: number) =>
                                             onChange({ antallDagerFellesperiodeFarMedmor: dager }),
                                         ariaLabel: 'Antall dager',
+                                        increaseAriaLabel: 'Øk antall dager med en dag',
+                                        decreaseAriaLabel: 'Mink antall dager med en dag',
                                     },
                                 ]}
                             />

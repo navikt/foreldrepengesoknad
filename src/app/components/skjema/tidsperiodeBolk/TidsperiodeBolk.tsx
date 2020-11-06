@@ -22,8 +22,8 @@ import './tidsperiodeBolk.less';
 
 export interface DatoAvgrensninger {
     helgedagerIkkeTillatt?: boolean;
-    fra?: Avgrensninger;
-    til?: Avgrensninger;
+    fra: Avgrensninger;
+    til: Avgrensninger;
 }
 
 export interface DatoValidatorer {
@@ -198,6 +198,8 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                         }
                                     },
                                     ariaLabel: 'Antall uker',
+                                    increaseAriaLabel: 'Øk antall uker med en uke',
+                                    decreaseAriaLabel: 'Mink antall uker med en uke',
                                 },
                                 {
                                     value: dager !== undefined && dager !== 5 ? dager : 0,
@@ -213,6 +215,8 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                         }
                                     },
                                     ariaLabel: 'Antall dager',
+                                    increaseAriaLabel: 'Øk antall dager med en dag',
+                                    decreaseAriaLabel: 'Mink antall dager med en dag',
                                 },
                             ]}
                         />

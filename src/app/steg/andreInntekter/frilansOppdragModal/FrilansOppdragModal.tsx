@@ -7,7 +7,7 @@ import Input from 'common/components/skjema/wrappers/Input';
 import getMessage from 'common/util/i18nUtils';
 import TidsperiodeBolk from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { FrilansOppdrag, FrilansOppdragPartial } from '../../../types/søknad/FrilansInformasjon';
-import { mapTidsperiodeDatoInputVerdiToTidsperiode } from '../../../util/tidsperiodeUtils';
+import { mapTidsperiodeStringToTidsperiode } from '../../../util/tidsperiodeUtils';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
 import { hasValueRule } from '../../../util/validation/common';
 import { getFritekstfeltRules } from '../../../util/validation/fritekstfelt';
@@ -116,7 +116,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                         datoAvgrensninger={
                             oppdrag.tidsperiode
                                 ? getAndreInntekterTidsperiodeAvgrensninger(
-                                      mapTidsperiodeDatoInputVerdiToTidsperiode(oppdrag.tidsperiode)
+                                      mapTidsperiodeStringToTidsperiode(oppdrag.tidsperiode)
                                   )
                                 : undefined
                         }

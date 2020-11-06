@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { Holiday } from 'date-holidays';
-import { Tidsperiode } from 'common/types';
+import { Tidsperiode, TidsperiodeString } from 'common/types';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { Uttaksdagen } from './Uttaksdagen';
 import { IntlShape } from 'react-intl';
@@ -35,6 +35,15 @@ export function isValidTidsperiode(tidsperiode: any): tidsperiode is Tidsperiode
         moment(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
     );
 }
+
+export const isValidTidsperiodeString = (tidsperiodeString: any): tidsperiodeString is TidsperiodeString => {
+    return (
+        tidsperiodeString !== undefined &&
+        tidsperiodeString.fom !== undefined &&
+        tidsperiodeString.tom !== undefined &&
+        moment(tidsperiodeString.fom).isSameOrBefore(tidsperiodeString.tom, 'day')
+    );
+};
 
 export function resetTidsperiodeTomIfBeforeFom(tidsperiode: Partial<Tidsperiode>): Partial<Tidsperiode> {
     return {

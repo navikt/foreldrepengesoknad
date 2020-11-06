@@ -17,7 +17,6 @@ import StorageSagaUtils from '../../util/storageSagaUtils';
 import { StorageKvittering } from '../../types/StorageKvittering';
 import moment from 'moment';
 import { FødtBarn } from 'app/types/søknad/Barn';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
 const stateSelector = (state: AppState) => state;
 
@@ -100,7 +99,7 @@ function* applyStoredStateToApp(storedState: AppState, history: History) {
                 yield put(
                     søknadActions.updateSøknadenGjelderBarn({
                         valgteBarn: valgteRegistrerteBarn,
-                        termindato: ISOStringToDate((barn as FødtBarn).termindato),
+                        termindato: (barn as FødtBarn).termindato,
                     })
                 );
             }

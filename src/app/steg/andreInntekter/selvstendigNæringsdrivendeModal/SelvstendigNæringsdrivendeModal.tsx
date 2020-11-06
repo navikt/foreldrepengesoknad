@@ -24,7 +24,7 @@ import {
 } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { default as cleanupNæring } from '../../../util/cleanup/cleanupNæring';
 import { removeSpacesFromString } from '../../../util/stringUtils';
-import { mapTidsperiodeDatoInputVerdiToTidsperiode } from '../../../util/tidsperiodeUtils';
+import { mapTidsperiodeStringToTidsperiode } from '../../../util/tidsperiodeUtils';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
 import { hasValueRule } from '../../../util/validation/common';
 import { getFritekstfeltRules } from '../../../util/validation/fritekstfelt';
@@ -216,7 +216,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         visPågåendePeriodeCheckbox={true}
                         onChange={(v) => this.updateNæring({ tidsperiode: v })}
                         datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
-                            mapTidsperiodeDatoInputVerdiToTidsperiode(tidsperiode)
+                            mapTidsperiodeStringToTidsperiode(tidsperiode)
                         )}
                         datoInputLabelProps={{
                             fom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.fom', { navnPåNæringen }),

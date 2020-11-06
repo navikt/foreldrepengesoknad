@@ -20,7 +20,7 @@ import {
     JobbIUtlandetInntekt,
     JobbIUtlandetInntektPartial,
 } from '../../../types/søknad/AnnenInntekt';
-import { mapTidsperiodeDatoInputVerdiToTidsperiode } from '../../../util/tidsperiodeUtils';
+import { mapTidsperiodeStringToTidsperiode } from '../../../util/tidsperiodeUtils';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
 import { hasValueRule } from '../../../util/validation/common';
 import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
@@ -173,7 +173,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         datoAvgrensninger={
                             annenInntekt.tidsperiode
                                 ? getAndreInntekterTidsperiodeAvgrensninger(
-                                      mapTidsperiodeDatoInputVerdiToTidsperiode(annenInntekt.tidsperiode)
+                                      mapTidsperiodeStringToTidsperiode(annenInntekt.tidsperiode)
                                   )
                                 : undefined
                         }
