@@ -20,9 +20,9 @@ export const hasValueRule = (v: any, failText: string): Validator => ({
     failText,
 });
 
-export const erGyldigDato = (dato: string | undefined, failText: string): Validator => ({
+export const erGyldigDato = (dato: string | undefined, failText: string, isOptional?: boolean): Validator => ({
     test: () => {
-        return isISODateString(dato);
+        return isOptional || isISODateString(dato);
     },
     failText,
 });

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import Block from 'common/components/block/Block';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import BEMHelper from 'common/util/bem';
@@ -105,7 +104,7 @@ class FrilanserBolk extends React.Component<Props> {
                                 }
                                 dato={oppstartsdato}
                                 datoAvgrensinger={notInFutureAvgrensning}
-                                validators={getFrilansOppstartRules(ISOStringToDate(oppstartsdato), intl)}
+                                validators={getFrilansOppstartRules(oppstartsdato, intl)}
                             />
                         </Block>
 

@@ -176,7 +176,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                     onChange={(termindato) => dispatch(søknadActions.updateBarn({ termindato }))}
                                     label={<Labeltekst intlId="fødselsdatoer.termin" />}
                                     datoAvgrensinger={{ ...termindatoAvgrensningerFodsel }}
-                                    validators={[...getTermindatoReglerForFødsel(fødtBarnTermindato, intl)]}
+                                    validators={getTermindatoReglerForFødsel(fødtBarnTermindato, intl)}
                                 />
                             </Block>
                             <Block

@@ -5,13 +5,14 @@ import { getTerminbekreftelseDatoRegler } from '../terminbekreftelsedato';
 import * as commonRules from '../common';
 import { IntlShape } from 'react-intl';
 import { DateValue } from '../../../types/common';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 const intl: Partial<IntlShape> = {};
 
-const todaysDate = today.toDate();
+const todaysDate = dateToISOString(today.toDate());
 const someString = '';
 
-const callUtstedtUke22EllerSenere = (terminbekreftelseDato: DateValue, termindato: DateValue) => {
-    return getTerminbekreftelseDatoRegler(terminbekreftelseDato, termindato, intl as IntlShape)[2].test();
+const callUtstedtUke22EllerSenere = (terminbekreftelseDato: string, termindato: DateValue) => {
+    return getTerminbekreftelseDatoRegler(terminbekreftelseDato, termindato, intl as IntlShape)[3].test();
 };
 
 describe('Terminbekreftelsedato validation', () => {
@@ -24,24 +25,28 @@ describe('Terminbekreftelsedato validation', () => {
 
     it('should call correct validators with given date and string', () => {
         getTerminbekreftelseDatoRegler(todaysDate, moment().toDate(), intl as IntlShape);
-        expect(commonRules.hasValueRule).toHaveBeenCalledWith(todaysDate, expect.any(String));
-        expect(commonRules.dateIsNotInFutureRule).toHaveBeenCalledWith(todaysDate, expect.any(String));
+        expect(commonRules.hasValueRule).toHaveBeenCalled();
+        expect(commonRules.dateIsNotInFutureRule).toHaveBeenCalled();
     });
 
     describe('Specific rules', () => {
         it('should be invalid if termindato is too late for applicant to be in uke22', () => {
             const termindato = moment().toDate();
-            const ugyldigTerminbekreftelse = moment()
-                .subtract(attenUkerPluss3Number * 24, 'hours')
-                .toDate();
+            const ugyldigTerminbekreftelse = dateToISOString(
+                moment()
+                    .subtract(attenUkerPluss3Number * 24, 'hours')
+                    .toDate()
+            );
             expect(callUtstedtUke22EllerSenere(ugyldigTerminbekreftelse, termindato)).toBe(false);
         });
 
         it('should be valid if termindato and terminbekreftelsedato cross-validation is valid', () => {
             const termindato = moment().toDate();
-            const gyldigTerminbekreftelse = moment()
-                .subtract((attenUkerPluss3Number - 1) * 24, 'hours')
-                .toDate();
+            const gyldigTerminbekreftelse = dateToISOString(
+                moment()
+                    .subtract((attenUkerPluss3Number - 1) * 24, 'hours')
+                    .toDate()
+            );
             expect(callUtstedtUke22EllerSenere(gyldigTerminbekreftelse, termindato)).toBe(true);
         });
     });

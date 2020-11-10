@@ -58,7 +58,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props> {
 
     getValidatorer(): Validator[] {
         const { fødselsdatoer, intl } = this.props;
-        const fødselsdato = fødselsdatoer.length > 0 ? ISOStringToDate(fødselsdatoer[0]) : undefined;
+        const fødselsdato = fødselsdatoer.length > 0 ? fødselsdatoer[0] : undefined;
         return getFødselsdatoRegler(fødselsdato, this.props.gjelderAdopsjon === true, intl);
     }
 

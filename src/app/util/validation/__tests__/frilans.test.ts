@@ -3,6 +3,7 @@ import * as getMessage from 'common/util/i18nUtils';
 import { today } from '../values';
 import { getFrilansOppstartRules } from '../frilans';
 import { IntlShape } from 'react-intl';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 const intl = {} as IntlShape;
 
 const todaysDate = today.toDate();
@@ -16,8 +17,8 @@ describe('Frilans oppstartsdato validation', () => {
     });
 
     it('should call correct validators with given date and string', () => {
-        getFrilansOppstartRules(todaysDate, intl);
-        expect(commonRules.hasValueRule).toHaveBeenCalledWith(todaysDate, expect.any(String));
-        expect(commonRules.dateIsNotInFutureRule).toHaveBeenCalledWith(todaysDate, expect.any(String));
+        getFrilansOppstartRules(dateToISOString(todaysDate), intl);
+        expect(commonRules.hasValueRule).toHaveBeenCalled();
+        expect(commonRules.dateIsNotInFutureRule).toHaveBeenCalled();
     });
 });

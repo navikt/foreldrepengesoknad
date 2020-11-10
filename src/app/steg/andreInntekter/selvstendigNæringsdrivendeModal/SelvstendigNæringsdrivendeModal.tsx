@@ -26,7 +26,7 @@ import { default as cleanupNæring } from '../../../util/cleanup/cleanupNæring'
 import { removeSpacesFromString } from '../../../util/stringUtils';
 import { mapTidsperiodeStringToTidsperiode } from '../../../util/tidsperiodeUtils';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
-import { hasValueRule } from '../../../util/validation/common';
+import { erGyldigDato, hasValueRule } from '../../../util/validation/common';
 import { getFritekstfeltRules } from '../../../util/validation/fritekstfelt';
 import { getOrganisasjonsnummerRegler } from '../../../util/validation/organisasjonsnummer';
 import NæringsrelasjonBolk from './næringsrelasjonBolk/NæringsrelasjonBolk';
@@ -270,7 +270,16 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         }}
                         dato={næring.oppstartsdato}
                         calendarSettings={{ position: 'fullscreen' }}
-                        validators={[hasValueRule(næring && næring.oppstartsdato, getMessage(intl, 'påkrevd'))]}
+                        validators={[
+                            hasValueRule(næring && næring.oppstartsdato, getMessage(intl, 'påkrevd')),
+                            erGyldigDato(
+                                næring && næring.oppstartsdato,
+                                getMessage(
+                                    intl,
+                                    'valideringsfeil.selvstendigNæringsdrivende.modal.oppstartsdato.gyldigDato'
+                                )
+                            ),
+                        ]}
                     />
                 </Block>
                 <Block visible={visibility.varigEndringAvNæringsinntekt(næring)}>

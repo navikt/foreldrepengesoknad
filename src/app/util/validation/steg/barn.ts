@@ -23,6 +23,7 @@ import Søknad from '../../../types/søknad/Søknad';
 import { findOldestDate } from '../../dates/dates';
 import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
 import { fødselsdatoerErFyltUt } from '../fødselsdato';
+import { erGyldigDato, hasValueRule } from '../common';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (
@@ -142,13 +143,19 @@ export const getAdopsjonAnkomstdatoValidatorer = (barn: Adopsjonsbarn, intl: Int
     const { fødselsdatoer, ankomstdato } = barn;
     const fødselsdatoDate = fødselsdatoer && fødselsdatoer.length > 0 ? ISOStringToDate(fødselsdatoer[0]) : undefined;
     const ankomstdatoDate = ISOStringToDate(ankomstdato);
+    const regler = [
+        hasValueRule(ankomstdato, getMessage(intl, 'valideringsfeil.adopsjonsdato.ankomstDato.duMåOppgi')),
+        erGyldigDato(ankomstdato, getMessage(intl, 'valideringsfeil.adopsjonsdato.ankomstDato')),
+    ];
+
     if (fødselsdatoDate && ankomstdatoDate) {
-        return [
-            {
-                test: () => barnErFødtFørAnkomstNorge(fødselsdatoDate, ankomstdatoDate),
-                failText: getMessage(intl, 'valideringsfeil.fodselsdato.etterAdopsjonsdato'),
-            },
-        ];
+        regler.push({
+            test: () => barnErFødtFørAnkomstNorge(fødselsdatoDate, ankomstdatoDate),
+            failText: getMessage(intl, 'valideringsfeil.fodselsdato.etterAdopsjonsdato'),
+        });
+
+        return regler;
     }
-    return undefined;
+
+    return regler;
 };

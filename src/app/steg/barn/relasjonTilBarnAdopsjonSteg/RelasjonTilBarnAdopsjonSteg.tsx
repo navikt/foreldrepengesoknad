@@ -29,6 +29,7 @@ import { barnErGyldig, getAdopsjonAnkomstdatoValidatorer } from '../../../util/v
 import DateValues from '../../../util/validation/values';
 import AntallBarnBolk from '../components/AntallBarnBolk';
 import visibility from './visibility';
+import { erGyldigDato, hasValueRule } from 'app/util/validation/common';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -112,6 +113,16 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                             );
                         }}
                         dato={barn.adopsjonsdato}
+                        validators={[
+                            hasValueRule(
+                                barn.adopsjonsdato,
+                                getMessage(intl, 'valideringsfeil.adopsjonsdato.duMåOppgi')
+                            ),
+                            erGyldigDato(
+                                barn.adopsjonsdato,
+                                getMessage(intl, 'valideringsfeil.adopsjonsdato.gyldigDato')
+                            ),
+                        ]}
                     />
                 </Block>
 

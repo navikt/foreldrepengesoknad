@@ -13,6 +13,7 @@ import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import { uttaksplanDatoavgrensninger } from 'app/util/validation/uttaksplan/uttaksplanDatoavgrensninger';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { erGyldigDato } from 'app/util/validation/common';
 
 interface FarSinFørsteUttaksdagSpørsmålProps {
     familiehendelsesdato: Date;
@@ -60,6 +61,19 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
                                     familiehendelsesdato
                                 )}
                                 disabled={data.ønskerIkkeFlerePerioder}
+                                validators={
+                                    data.farSinFørsteUttaksdag
+                                        ? [
+                                              erGyldigDato(
+                                                  data.farSinFørsteUttaksdag,
+                                                  getMessage(
+                                                      intl,
+                                                      'valideringsfeil.spørsmål.farSinFørsteUttaksdagSpørsmål.gyldigDato'
+                                                  )
+                                              ),
+                                          ]
+                                        : undefined
+                                }
                             />
                         </Block>
                         {morSinSisteUttaksdagDate && navnPåForeldre && (

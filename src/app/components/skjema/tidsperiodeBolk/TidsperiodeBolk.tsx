@@ -83,7 +83,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
 
     const getValidators = () => {
         const tidsperiodeValidators = getTidsperiodeRegler(
-            { fom: ISOStringToDate(tidsperiode?.fom), tom: ISOStringToDate(tidsperiode?.tom) },
+            { fom: tidsperiode?.fom, tom: tidsperiode?.tom },
             intl,
             visPågåendePeriodeCheckbox,
             pågående

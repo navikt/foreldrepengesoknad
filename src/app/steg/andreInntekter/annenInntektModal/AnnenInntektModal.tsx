@@ -177,15 +177,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                   )
                                 : undefined
                         }
-                        datoValidatorer={{
-                            fra: [hasValueRule(tidsperiode.fom, getMessage(intl, 'påkrevd'))],
-                            til: [
-                                {
-                                    test: () => tidsperiode.tom !== undefined || tidsperiode.pågående === true,
-                                    failText: getMessage(intl, 'påkrevd'),
-                                },
-                            ],
-                        }}
                         calendarPosition="fullscreen"
                     />
                 </Block>

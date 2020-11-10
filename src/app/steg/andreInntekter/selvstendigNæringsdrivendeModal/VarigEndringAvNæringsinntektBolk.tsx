@@ -12,7 +12,7 @@ import getMessage from 'common/util/i18nUtils';
 import { TextareaChangeEvent } from '../../../../common/types/Events';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { getTidsperiodeAvgrensningerSiste4år } from '../../../util/validation/andreInntekter';
-import { hasValueRule } from '../../../util/validation/common';
+import { erGyldigDato, hasValueRule } from '../../../util/validation/common';
 import Input from 'common/components/skjema/wrappers/Input';
 import Textarea from 'common/components/skjema/wrappers/Textarea';
 import { getFritekstfeltRules } from '../../../util/validation/fritekstfelt';
@@ -73,7 +73,13 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                             }}
                             dato={info && info.dato}
                             datoAvgrensinger={getTidsperiodeAvgrensningerSiste4år()}
-                            validators={[hasValueRule(info && info.dato, getMessage(intl, 'påkrevd'))]}
+                            validators={[
+                                hasValueRule(info && info.dato, getMessage(intl, 'påkrevd')),
+                                erGyldigDato(
+                                    info && info.dato,
+                                    getMessage(intl, 'valideringsfeil.varigEndringAvNæringsinntekt.dato.gyldigDato')
+                                ),
+                            ]}
                         />
                     </Block>
                     <Block>

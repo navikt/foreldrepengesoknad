@@ -171,7 +171,7 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                         validators={
                                             attachmentsToRender.length > 0
                                                 ? getTerminbekreftelseDatoRegler(
-                                                      ISOStringToDate((søknad.barn as UfødtBarn).terminbekreftelseDato),
+                                                      (søknad.barn as UfødtBarn).terminbekreftelseDato,
                                                       ISOStringToDate((søknad.barn as UfødtBarn).termindato),
                                                       intl
                                                   )

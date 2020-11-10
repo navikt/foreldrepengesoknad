@@ -3,7 +3,7 @@ import { IntlShape, useIntl } from 'react-intl';
 import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { RadioProps } from 'nav-frontend-skjema';
 import Block from 'common/components/block/Block';
-import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import getMessage from 'common/util/i18nUtils';
 import FlervalgSpørsmål from '../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
@@ -12,6 +12,7 @@ import { Adopsjonsbarn } from '../../../types/søknad/Barn';
 import { uttaksplanDatoavgrensninger } from '../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
 import { ValgalternativerAdopsjonStartdato } from '../uttaksplanSkjemadata';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
+import { erGyldigDato } from 'app/util/validation/common';
 
 interface OwnProps {
     barn: Adopsjonsbarn;
@@ -97,6 +98,19 @@ const StartdatoAdopsjonBolk = (props: Props) => {
                             datoAvgrensinger={uttaksplanDatoavgrensninger.startdatoPermisjonAdopsjon(
                                 familiehendelsesdato
                             )}
+                            validators={
+                                data.startdatoPermisjon
+                                    ? [
+                                          erGyldigDato(
+                                              data.startdatoPermisjon,
+                                              getMessage(
+                                                  intl,
+                                                  'valideringsfeil.spørsmål.startdatoAdopsjon.annenDato.gyldigDato'
+                                              )
+                                          ),
+                                      ]
+                                    : undefined
+                            }
                         />
                     </Block>
                 </>

@@ -75,7 +75,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                     validators={
                         validerDatofelt
                             ? getTerminbekreftelseDatoRegler(
-                                  ISOStringToDate(barn.terminbekreftelseDato),
+                                  barn.terminbekreftelseDato,
                                   ISOStringToDate(barn.termindato),
                                   intl
                               )
