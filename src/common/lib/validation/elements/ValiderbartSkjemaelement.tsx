@@ -34,7 +34,8 @@ type FormContextProps = Props & {
     formContext: ValidFormContextInterface;
 };
 
-class ValiderbartSkjemaelement extends React.Component<FormContextProps, ValiderbartSkjemaelementState>
+class ValiderbartSkjemaelement
+    extends React.Component<FormContextProps, ValiderbartSkjemaelementState>
     implements ValidatableComponent {
     element: any;
 

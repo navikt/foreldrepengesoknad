@@ -22,6 +22,11 @@ export interface Tidsperiode {
     tom: Date;
 }
 
+export interface TidsperiodeString {
+    fom: string;
+    tom: string;
+}
+
 export interface Avgrensninger {
     minDato?: Date;
     maksDato?: Date;
@@ -32,6 +37,12 @@ export interface Avgrensninger {
 export interface TidsperiodeMedValgfriSluttdato {
     fom: Date;
     tom?: Date;
+    pågående?: boolean;
+}
+
+export interface TidsperiodeStringMedValgfriSluttdato {
+    fom: string;
+    tom?: string;
     pågående?: boolean;
 }
 

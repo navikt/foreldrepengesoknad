@@ -1,6 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
-import { Tidsperiode, Feil } from 'common/types';
+import { Tidsperiode, Feil, TidsperiodeString } from 'common/types';
 import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
 import { injectIntl, IntlShape } from 'react-intl';
 import {
@@ -17,14 +17,18 @@ import {
     resetTidsperiodeTomIfBeforeFom,
 } from '../../../../../util/uttaksplan/Tidsperioden';
 import { getDatoavgrensningerForStønadskonto } from 'app/util/uttaksplan/uttaksperiodeUtils';
+import {
+    mapTidsperiodeStringToTidsperiode,
+    mapTidsperiodeToTidsperiodeString,
+} from '../../../../../util/tidsperiodeUtils';
 
 export interface Props {
     periode: UttakFormPeriodeType;
-    tidsperiode: Partial<Tidsperiode>;
+    tidsperiode: Partial<TidsperiodeString>;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder: Tidsperiode[];
     feil?: Feil;
-    onChange: (tidsperiode: Partial<Tidsperiode>) => void;
+    onChange: (tidsperiode: Partial<TidsperiodeString>) => void;
     intl: IntlShape;
 }
 
@@ -69,20 +73,30 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     const datoAvgrensninger = getDatoavgrensningerForStønadskonto(
         isUttaksperiode(periode) ? periode.konto : undefined,
         familiehendelsesdato,
-        tidsperiode,
+        mapTidsperiodeStringToTidsperiode(tidsperiode),
         ugyldigeTidsperioder
     );
 
-    const datoValidatorer = getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode, familiehendelsesdato);
+    const datoValidatorer = getUttakTidsperiodeValidatorer(
+        skalIkkeHaUttak,
+        mapTidsperiodeStringToTidsperiode(tidsperiode),
+        familiehendelsesdato
+    );
     const initialMonth = erForeldrepengerFørFødsel ? familiehendelsesdato : undefined;
 
     return (
         <TidsperiodeBolk
-            onChange={(t: Partial<Tidsperiode>) => onChange(resetTidsperiodeTomIfBeforeFom(t))}
-            tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
+            onChange={(t) => {
+                onChange(
+                    mapTidsperiodeToTidsperiodeString(
+                        resetTidsperiodeTomIfBeforeFom(mapTidsperiodeStringToTidsperiode(t))
+                    )
+                );
+            }}
+            tidsperiode={tidsperiode ? tidsperiode : {}}
             datoAvgrensninger={datoAvgrensninger}
             datoValidatorer={datoValidatorer}
-            kanVelgeUgyldigDato={erUttakFørForeldrepengerFørFødsel}
+            allowInvalidDateSelection={erUttakFørForeldrepengerFørFødsel}
             feil={feil}
             defaultMånedFom={initialMonth}
             defaultMånedTom={initialMonth}

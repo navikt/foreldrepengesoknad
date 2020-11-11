@@ -1,4 +1,4 @@
-import { TidsperiodeMedValgfriSluttdato } from 'common/types';
+import { Tidsperiode, TidsperiodeStringMedValgfriSluttdato } from '../../../common/types';
 
 export enum Næringstype {
     'FISKER' = 'FISKE',
@@ -7,9 +7,9 @@ export enum Næringstype {
     'ANNET' = 'ANNEN',
 }
 
-export class Næring {
+export interface Næring {
     næringstyper: Næringstype[];
-    tidsperiode: Partial<TidsperiodeMedValgfriSluttdato>;
+    tidsperiode: Partial<TidsperiodeStringMedValgfriSluttdato>;
     næringsinntekt: number;
     pågående: boolean;
     navnPåNæringen: string;
@@ -18,7 +18,7 @@ export class Næring {
     registrertILand: string;
     stillingsprosent: string;
     harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene?: boolean;
-    oppstartsdato?: Date;
+    oppstartsdato?: string;
     hattVarigEndringAvNæringsinntektSiste4Kalenderår?: boolean;
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjon;
     harRegnskapsfører: boolean;
@@ -28,13 +28,24 @@ export class Næring {
     kanInnhenteOpplsyningerFraRevisor: boolean;
 }
 
-export class EndringAvNæringsinntektInformasjon {
-    dato: Date;
+export interface NæringInnsending
+    extends Omit<Næring, 'tidsperiode' | 'endringAvNæringsinntektInformasjon' | 'oppstartsdato'> {
+    tidsperiode: Partial<Tidsperiode>;
+    oppstartsdato?: Date;
+    endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjonInnsending;
+}
+
+export interface EndringAvNæringsinntektInformasjon {
+    dato: string;
     næringsinntektEtterEndring: number;
     forklaring: string;
 }
 
-export class Næringsrelasjon {
+export interface EndringAvNæringsinntektInformasjonInnsending extends Omit<EndringAvNæringsinntektInformasjon, 'dato'> {
+    dato: Date;
+}
+
+export interface Næringsrelasjon {
     navn: string;
     telefonnummer: string;
     erNærVennEllerFamilie: boolean;

@@ -1,26 +1,25 @@
 import * as React from 'react';
-
-import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
 import { injectIntl, IntlShape } from 'react-intl';
-import AriaText from 'common/components/aria/AriaText';
 import moment from 'moment';
-import { Avgrensninger, Tidsperiode, Feil } from 'common/types';
+import { DatepickerLimitations } from 'nav-datovelger';
+import Datepicker, { DatepickerProps } from 'nav-datovelger/lib/Datepicker';
+import AriaText from 'common/components/aria/AriaText';
+import { Avgrensninger, Feil, Tidsperiode } from 'common/types';
 import BEMHelper from 'common/util/bem';
 import { dateToISOFormattedDateString } from 'common/util/datoUtils';
 import { fridager } from 'common/util/fridagerUtils';
+import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
 import { getAvgrensningerDescriptionForInput } from './datoInputDescription';
-import Datovelger, { DatovelgerProps } from 'nav-datovelger/lib/Datovelger';
-import { DatovelgerAvgrensninger } from 'nav-datovelger';
-
 import './datoInput.less';
 
-export interface DatoInputProps extends Omit<DatovelgerProps, 'onChange' | 'input'> {
+export interface DatoInputProps extends Omit<DatepickerProps, 'onChange' | 'input' | 'inputId'> {
+    id: string;
     name: string;
     label: React.ReactNode;
-    dato?: Date;
+    dato?: string;
     postfix?: string;
     feil?: Feil;
-    onChange: (dato?: Date) => void;
+    onChange: (dato: string) => void;
     datoAvgrensinger?: Avgrensninger;
 }
 
@@ -30,16 +29,16 @@ interface IntlProps {
 
 export type Props = DatoInputProps & IntlProps;
 
-const parseAvgrensinger = (avgrensinger: Avgrensninger): DatovelgerAvgrensninger => {
+const parseAvgrensinger = (avgrensinger: Avgrensninger): DatepickerLimitations => {
     return {
-        maksDato: dateToISOFormattedDateString(avgrensinger.maksDato),
-        minDato: dateToISOFormattedDateString(avgrensinger.minDato),
-        helgedagerIkkeTillatt: avgrensinger.helgedagerIkkeTillatt,
-        ugyldigeTidsperioder:
+        maxDate: dateToISOFormattedDateString(avgrensinger.maksDato),
+        minDate: dateToISOFormattedDateString(avgrensinger.minDato),
+        weekendsNotSelectable: avgrensinger.helgedagerIkkeTillatt,
+        invalidDateRanges:
             avgrensinger.ugyldigeTidsperioder &&
             avgrensinger.ugyldigeTidsperioder.map((t: Tidsperiode) => ({
-                fom: dateToISOFormattedDateString(t.fom)!,
-                tom: dateToISOFormattedDateString(t.tom)!,
+                from: dateToISOFormattedDateString(t.fom)!,
+                to: dateToISOFormattedDateString(t.tom)!,
             })),
     };
 };
@@ -54,44 +53,42 @@ class DatoInput extends React.Component<Props> {
             feil,
             intl,
             onChange,
-            kalender,
+            calendarSettings,
             name,
-            avgrensninger,
+            limitations,
             dato,
             datoAvgrensinger,
             ...rest
         } = this.props;
-        const avgrensningerTekst = avgrensninger ? getAvgrensningerDescriptionForInput(intl, avgrensninger) : undefined;
+        const avgrensningerTekst = limitations ? getAvgrensningerDescriptionForInput(intl, limitations) : undefined;
         const ariaDescriptionId = avgrensningerTekst ? `${id}_ariaDesc` : undefined;
+        const inputId = `${id}_input`;
+
         const erHelligdag = (d: Date): boolean => {
             return fridager.some((d2) => moment(d2.date).isSame(d, 'day'));
         };
 
         return (
-            <SkjemaInputElement id={id} feil={feil} label={label}>
+            <SkjemaInputElement inputId={inputId} feil={feil} label={label}>
                 <div className={bem.block}>
                     <div className={bem.element('datovelger')}>
-                        <Datovelger
+                        <Datepicker
                             {...rest}
-                            valgtDato={dato ? moment.utc(dato).format('YYYY-MM-DD') : undefined}
-                            id={id ? id : name}
+                            calendarSettings={calendarSettings}
+                            value={dato}
+                            inputId={inputId}
                             locale={intl.locale}
-                            kalender={kalender}
-                            input={{
-                                id,
-                                placeholder: 'dd.mm.åååå',
+                            inputProps={{
                                 name,
-                                ariaDescribedby: ariaDescriptionId,
+                                'aria-describedby': ariaDescriptionId,
                             }}
-                            visÅrVelger={true}
-                            onChange={(datoString: string) => {
-                                const nyDato =
-                                    datoString && datoString !== 'Invalid date' ? new Date(datoString) : undefined;
+                            showYearSelector={true}
+                            onChange={(nyDato: string) => {
                                 if (dato !== nyDato) {
                                     onChange(nyDato);
                                 }
                             }}
-                            avgrensninger={datoAvgrensinger ? parseAvgrensinger(datoAvgrensinger) : undefined}
+                            limitations={datoAvgrensinger ? parseAvgrensinger(datoAvgrensinger) : undefined}
                             dayPickerProps={{
                                 modifiers: { erHelligdag },
                             }}

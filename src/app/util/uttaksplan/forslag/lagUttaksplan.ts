@@ -1,11 +1,12 @@
-import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
-import { ikkeDeltUttak } from './ikkeDeltUttak';
-import { deltUttak } from './deltUttak';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import moment from 'moment';
 import { UttaksplanSkjemadata } from '../../../steg/uttaksplanSkjema/uttaksplanSkjemadata';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
+import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { finnOgSettInnHull } from '../builder/UttaksplanBuilder';
 import { Uttaksdagen } from '../Uttaksdagen';
-import moment from 'moment';
+import { deltUttak } from './deltUttak';
+import { ikkeDeltUttak } from './ikkeDeltUttak';
 
 export interface LagUttaksplanParams {
     situasjon: Søkersituasjon;
@@ -53,6 +54,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         begrunnelseForUtsettelse,
     } = uttaksplanSkjema;
 
+    const morSinSisteUttaksdagDate = ISOStringToDate(morSinSisteUttaksdag);
     if (familiehendelsesdato) {
         if (erDeltUttak) {
             const forslag = deltUttak(
@@ -60,16 +62,18 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 familiehendelsesdato,
                 søkerErFarEllerMedmor,
                 tilgjengeligeStønadskontoer,
-                startdatoPermisjon,
+                ISOStringToDate(startdatoPermisjon),
                 fellesperiodeukerMor,
                 harAnnenForelderSøktFP,
                 antallDagerFellesperiodeFarMedmor,
                 antallUkerFellesperiodeFarMedmor,
-                morSinSisteUttaksdag,
-                farSinFørsteUttaksdag,
+                morSinSisteUttaksdagDate,
+                ISOStringToDate(farSinFørsteUttaksdag),
                 begrunnelseForUtsettelse
             );
-            const dagEtterMorsSisteDag = morSinSisteUttaksdag ? Uttaksdagen(morSinSisteUttaksdag).neste() : undefined;
+            const dagEtterMorsSisteDag = morSinSisteUttaksdagDate
+                ? Uttaksdagen(morSinSisteUttaksdagDate).neste()
+                : undefined;
             const relevantStartDatoForUttak = moment(dagEtterMorsSisteDag).isSameOrAfter(
                 moment(førsteUttaksdagEtterSeksUker)
             )
@@ -88,7 +92,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 familiehendelsesdato,
                 søkerErFarEllerMedmor,
                 tilgjengeligeStønadskontoer,
-                startdatoPermisjon,
+                ISOStringToDate(startdatoPermisjon),
                 annenForelderErUfør
             );
 

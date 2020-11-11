@@ -1,5 +1,5 @@
+import { TidsperiodeMedValgfriSluttdato, TidsperiodeStringMedValgfriSluttdato } from '../../../common/types';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 
 export enum AnnenInntektType {
     'SLUTTPAKKE' = 'ETTERLØNN_SLUTTPAKKE',
@@ -10,35 +10,63 @@ export enum AnnenInntektType {
     'JOBB_I_UTLANDET' = 'JOBB_I_UTLANDET',
 }
 
-abstract class AnnenInntektBase {
-    tidsperiode: TidsperiodeMedValgfriSluttdato;
+interface AnnenInntektBase {
+    tidsperiode: TidsperiodeStringMedValgfriSluttdato;
     pågående: boolean;
     vedlegg: Attachment[];
 }
 
-export class SluttpakkeInntekt extends AnnenInntektBase {
+export interface SluttpakkeInntekt extends AnnenInntektBase {
     type: AnnenInntektType.SLUTTPAKKE | AnnenInntektType.SLUTTPAKKE_V1;
 }
 
-export class MilitærtjenesteInntekt extends AnnenInntektBase {
+export interface MilitærtjenesteInntekt extends AnnenInntektBase {
     type: AnnenInntektType.MILITÆRTJENESTE;
 }
 
-export class JobbIUtlandetInntekt extends AnnenInntektBase {
+export interface JobbIUtlandetInntekt extends AnnenInntektBase {
     type: AnnenInntektType.JOBB_I_UTLANDET;
     arbeidsgiverNavn: string;
     land: string;
 }
 
-export class VentelønnInntekt extends AnnenInntektBase {
+export interface VentelønnInntekt extends AnnenInntektBase {
     type: AnnenInntektType.VENTELØNN | AnnenInntektType.VENTELØNN_V1;
 }
 
 export type AnnenInntekt = SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUtlandetInntekt | VentelønnInntekt;
 
+export interface AnnenInntektBaseInnsending extends Omit<AnnenInntektBase, 'tidsperiode'> {
+    tidsperiode: TidsperiodeMedValgfriSluttdato;
+}
+
+export interface SluttpakkeInntektInnsending extends AnnenInntektBaseInnsending {
+    type: AnnenInntektType.SLUTTPAKKE | AnnenInntektType.SLUTTPAKKE_V1;
+}
+
+export interface MilitærtjenesteInntektInnsending extends AnnenInntektBaseInnsending {
+    type: AnnenInntektType.MILITÆRTJENESTE;
+}
+
+export interface JobbIUtlandetInntektInnsending extends AnnenInntektBaseInnsending {
+    type: AnnenInntektType.JOBB_I_UTLANDET;
+    arbeidsgiverNavn: string;
+    land: string;
+}
+
+export interface VentelønnInntektInnsending extends AnnenInntektBaseInnsending {
+    type: AnnenInntektType.VENTELØNN | AnnenInntektType.VENTELØNN_V1;
+}
+
+export type AnnenInntektInnsending =
+    | SluttpakkeInntektInnsending
+    | MilitærtjenesteInntektInnsending
+    | JobbIUtlandetInntektInnsending
+    | VentelønnInntektInnsending;
+
 export interface AnnenInntektPartialInterface {
     type: AnnenInntektType;
-    tidsperiode: Partial<TidsperiodeMedValgfriSluttdato>;
+    tidsperiode: Partial<TidsperiodeStringMedValgfriSluttdato>;
     vedlegg: Attachment[];
 }
 
