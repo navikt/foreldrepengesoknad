@@ -1,41 +1,48 @@
 import * as React from 'react';
-import { Tidsperiode, Feil } from 'common/types';
-import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { Feil, Tidsperiode, TidsperiodeString } from 'common/types';
 import { getUtsettelseTidsperiodeValidatorer } from 'app/util/validation/uttaksplan/uttaksplanTidsperiodeValidation';
+import { mapTidsperiodeStringToTidsperiode } from '../../../../../util/tidsperiodeUtils';
+import TidsperiodeBolk from '../../../../skjema/tidsperiodeBolk/TidsperiodeBolk';
 
 export interface Props {
-    tidsperiode: Partial<Tidsperiode>;
+    tidsperiodeDatoInput: Partial<TidsperiodeString>;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder?: Tidsperiode[];
     feil?: Feil;
-    onChange: (tidsperiode: Partial<Tidsperiode>) => void;
+    onChange: (tidsperiode: Partial<TidsperiodeString>) => void;
 }
 
 const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     onChange,
     familiehendelsesdato,
-    tidsperiode,
+    tidsperiodeDatoInput,
     feil,
     ugyldigeTidsperioder,
 }) => {
-    const datoValidatorer = getUtsettelseTidsperiodeValidatorer(tidsperiode, familiehendelsesdato);
+    const datoValidatorer = getUtsettelseTidsperiodeValidatorer(
+        mapTidsperiodeStringToTidsperiode(tidsperiodeDatoInput),
+        familiehendelsesdato
+    );
+    const datoAvgrensninger = {
+        fra: {
+            minDato: familiehendelsesdato,
+            maksDato: tidsperiodeDatoInput ? ISOStringToDate(tidsperiodeDatoInput.tom) : undefined,
+            ugyldigeTidsperioder,
+            helgedagerIkkeTillatt: true,
+        },
+        til: {
+            minDato: tidsperiodeDatoInput ? ISOStringToDate(tidsperiodeDatoInput.fom) : undefined,
+            ugyldigeTidsperioder,
+            helgedagerIkkeTillatt: true,
+        },
+    };
+
     return (
         <TidsperiodeBolk
-            onChange={(t: Partial<Tidsperiode>) => onChange(t)}
-            tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
-            datoAvgrensninger={{
-                fra: {
-                    minDato: familiehendelsesdato,
-                    maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined,
-                    ugyldigeTidsperioder,
-                    helgedagerIkkeTillatt: true,
-                },
-                til: {
-                    minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined,
-                    ugyldigeTidsperioder,
-                    helgedagerIkkeTillatt: true,
-                },
-            }}
+            onChange={(t) => onChange(t)}
+            tidsperiode={tidsperiodeDatoInput ? (tidsperiodeDatoInput as Partial<TidsperiodeString>) : {}}
+            datoAvgrensninger={datoAvgrensninger}
             datoValidatorer={datoValidatorer}
             feil={feil}
             ukerOgDagerVelgerEnabled={true}

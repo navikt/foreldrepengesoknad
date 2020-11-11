@@ -1,6 +1,7 @@
-import cleanupRelasjonTilBarnFødselSteg from '../cleanupRelasjonTilBarnFødselSteg';
-import { Barn } from '../../../../types/søknad/Barn';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import { Barn } from '../../../../types/søknad/Barn';
+import cleanupRelasjonTilBarnFødselSteg from '../cleanupRelasjonTilBarnFødselSteg';
 
 let dirtyBarn: Partial<Barn>;
 describe('cleanupRelasjonTIlBarnFødselSteg', () => {
@@ -9,11 +10,11 @@ describe('cleanupRelasjonTIlBarnFødselSteg', () => {
         dirtyBarn = {
             antallBarn: 1,
             erBarnetFødt: true,
-            termindato: new Date(),
+            termindato: dateToISOString(new Date()),
             terminbekreftelse: [],
-            terminbekreftelseDato: new Date(),
+            terminbekreftelseDato: dateToISOString(new Date()),
             fødselsattest: [fødselsattest as Attachment],
-            fødselsdatoer: [new Date()],
+            fødselsdatoer: [dateToISOString(new Date())],
         };
     });
 

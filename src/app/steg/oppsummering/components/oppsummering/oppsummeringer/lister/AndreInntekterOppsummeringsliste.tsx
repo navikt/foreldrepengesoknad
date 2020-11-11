@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import getMessage from 'common/util/i18nUtils';
-import { formatDate } from '../../../../../../util/dates/dates';
+import AnnenInntektDetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/AnnenInntektDetaljer';
 import Oppsummeringsliste from 'app/steg/oppsummering/components/oppsummeringsliste/Oppsummeringsliste';
 import { AnnenInntekt } from '../../../../../../types/søknad/AnnenInntekt';
-import AnnenInntektDetaljer from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/detaljer/AnnenInntektDetaljer';
+import { formatDate } from '../../../../../../util/dates/dates';
 
 interface AndreInntekterOppsummeringslisteProps {
     andreInntekter: AnnenInntekt[];
@@ -35,8 +36,8 @@ class AndreInntekterOppsummeringsliste extends React.Component<Props> {
         return {
             venstrestiltTekst: getMessage(intl, `inntektstype.${type.toLowerCase()}`),
             høyrestiltTekst: getMessage(intl, 'tidsintervall', {
-                fom: formatDate(tidsperiode.fom),
-                tom: pågående ? 'pågående' : formatDate(tidsperiode.tom),
+                fom: formatDate(ISOStringToDate(tidsperiode.fom)),
+                tom: pågående ? 'pågående' : formatDate(ISOStringToDate(tidsperiode.tom)),
             }),
             content: <AnnenInntektDetaljer annenInntekt={annenInntekt} />,
         };

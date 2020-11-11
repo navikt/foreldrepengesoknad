@@ -65,7 +65,7 @@ export function getDatoavgrensningerForStønadskonto(
     familiehendelsesdato: Date,
     tidsperiode: Partial<Tidsperiode> | undefined,
     ugyldigeTidsperioder: Tidsperiode[]
-): DatoAvgrensninger | undefined {
+): DatoAvgrensninger {
     if (konto === undefined) {
         return getDatoavgrensningerForPeriodeUtenKonto(familiehendelsesdato, tidsperiode, ugyldigeTidsperioder);
     }
@@ -99,11 +99,13 @@ function getDatoavgrensningerForPeriodeUtenKonto(
     return {
         fra: {
             minDato,
+            maksDato: getSisteMuligeUttaksdag(familiehendelsesdato),
             ugyldigeTidsperioder,
             helgedagerIkkeTillatt: true,
         },
         til: {
             minDato: tidsperiode !== undefined && tidsperiode.fom ? tidsperiode.fom : minDato,
+            maksDato: getSisteMuligeUttaksdag(familiehendelsesdato),
             ugyldigeTidsperioder,
             helgedagerIkkeTillatt: true,
         },

@@ -1,9 +1,10 @@
-import fns from '../visibility';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import {
     NæringPartial,
     Næringsrelasjon,
     Næringstype,
 } from '../../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import fns from '../visibility';
 
 describe('SelvstendigNæringsdrivendeModal visibility', () => {
     describe('Navn på næringen', () => {
@@ -106,13 +107,29 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
 
         describe('complete', () => {
             it('should be complete if fom is defined, and pågående=true or tom !== undefined', () => {
-                expect(fns.tidsperiodeUtfylt({ tidsperiode: { fom: new Date(), pågående: true } })).toBe(true);
-                expect(fns.tidsperiodeUtfylt({ tidsperiode: { fom: new Date(), tom: new Date() } })).toBe(true);
+                expect(
+                    fns.tidsperiodeUtfylt({
+                        tidsperiode: { fom: dateToISOString(new Date()), pågående: true },
+                    })
+                ).toBe(true);
+                expect(
+                    fns.tidsperiodeUtfylt({
+                        tidsperiode: {
+                            fom: dateToISOString(new Date()),
+                            tom: dateToISOString(new Date()),
+                        },
+                    })
+                ).toBe(true);
             });
 
             it('should be incomplete if not pågående and fom/tom is undefined', () => {
                 expect(fns.tidsperiodeUtfylt({ tidsperiode: {} })).toBe(false);
-                expect(fns.tidsperiodeUtfylt({ tidsperiode: { fom: new Date() }, pågående: false })).toBe(false);
+                expect(
+                    fns.tidsperiodeUtfylt({
+                        tidsperiode: { fom: dateToISOString(new Date()) },
+                        pågående: false,
+                    })
+                ).toBe(false);
             });
         });
     });

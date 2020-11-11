@@ -1,4 +1,4 @@
-const trimFødselsdatoer = (antall: number, datoer: Date[] = []): Date[] => {
+const trimFødselsdatoer = (antall: number, datoer: string[] = []): string[] => {
     let fødselsdatoer = [...datoer];
     if (datoer.length > antall) {
         fødselsdatoer = datoer.slice(0, antall);

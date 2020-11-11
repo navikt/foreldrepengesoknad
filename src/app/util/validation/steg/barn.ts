@@ -1,26 +1,29 @@
+import { IntlShape } from 'react-intl';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
+import { isISODateString } from 'nav-datovelger';
+import { Validator } from 'common/lib/validation/types';
+import getMessage from 'common/util/i18nUtils';
+import { visTermindato } from 'app/steg/barn/relasjonTilBarnFødselSteg/visibility/visibilityFunctions';
+import Arbeidsforhold from '../../../types/Arbeidsforhold';
+import { RegistrertAnnenForelder, RegistrertBarn } from '../../../types/Person';
+import { Søkerinfo } from '../../../types/søkerinfo';
 import {
     Adopsjonsbarn,
+    Barn,
     ForeldreansvarBarn,
     FødtBarn,
-    UfødtBarn,
-    Barn,
-    isUfødtBarn,
-    isFødtBarn,
     isAdopsjonsbarn,
     isForeldreansvarsbarn,
+    isFødtBarn,
+    isUfødtBarn,
+    UfødtBarn,
 } from '../../../types/søknad/Barn';
 import Søknad from '../../../types/søknad/Søknad';
-import { fødselsdatoerErFyltUt } from '../fødselsdato';
-import { Søkerinfo } from '../../../types/søkerinfo';
-import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
-import { RegistrertBarn, RegistrertAnnenForelder } from '../../../types/Person';
 import { findOldestDate } from '../../dates/dates';
-import { Validator } from 'common/lib/validation/types';
-import { IntlShape } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
-import Arbeidsforhold from '../../../types/Arbeidsforhold';
-import { visTermindato } from 'app/steg/barn/relasjonTilBarnFødselSteg/visibility/visibilityFunctions';
+import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
+import { fødselsdatoerErFyltUt } from '../fødselsdato';
+import { erGyldigDato, hasValueRule } from '../common';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (
@@ -28,7 +31,7 @@ const fødtBarnErGyldig = (barn: FødtBarn) => {
     );
 };
 
-const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn) => {
+const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn): boolean => {
     const { fødselsdatoer, adopsjonsdato, adopsjonAvEktefellesBarn, adoptertIUtlandet, ankomstdato } = barn;
     const adopsjonAvEktefellesBarnTruthy = adopsjonAvEktefellesBarn !== undefined && adopsjonAvEktefellesBarn;
     const adoptertIUtlandetTruthy = adoptertIUtlandet !== undefined && adoptertIUtlandet;
@@ -44,12 +47,12 @@ const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn) => {
     );
 };
 
-const foreldreansvarBarnErGyldig = (barn: ForeldreansvarBarn) => {
+const foreldreansvarBarnErGyldig = (barn: ForeldreansvarBarn): boolean => {
     const { fødselsdatoer, foreldreansvarsdato } = barn;
-    return foreldreansvarsdato && fødselsdatoer && fødselsdatoer.length > 0;
+    return isISODateString(foreldreansvarsdato) && fødselsdatoer && fødselsdatoer.length > 0;
 };
 
-const ufødtBarnErGyldig = (barn: UfødtBarn, skalLasteOppTerminbekreftelse: boolean) => {
+const ufødtBarnErGyldig = (barn: UfødtBarn, skalLasteOppTerminbekreftelse: boolean): boolean => {
     const { termindato, terminbekreftelseDato } = barn;
     if (!termindato) {
         return false;
@@ -93,7 +96,7 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
 
 export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, arbeidsforhold: Arbeidsforhold[]): boolean => {
     const { barn, situasjon } = søknad;
-    return isUfødtBarn(barn, situasjon) && !harAktivtArbeidsforhold(arbeidsforhold, barn.termindato);
+    return isUfødtBarn(barn, situasjon) && !harAktivtArbeidsforhold(arbeidsforhold, ISOStringToDate(barn.termindato));
 };
 
 export const getUniqueRegistrertAnnenForelderFromBarn = (
@@ -126,7 +129,7 @@ export const getBarnInfoFraRegistrertBarnValg = (
     }
     const fødselsdato = findOldestDate(valgteBarn.map((b: RegistrertBarn) => b.fødselsdato));
     return {
-        fødselsdatoer: fødselsdato ? [fødselsdato] : [],
+        fødselsdatoer: fødselsdato ? [dateToISOString(fødselsdato)] : [],
         antallBarn: valgteBarn.length > 0 ? valgteBarn.length : undefined,
         erBarnetFødt: valgteBarn.length > 0 || undefined,
     };
@@ -138,13 +141,21 @@ const barnErFødtFørAnkomstNorge = (fødselsdato: Date, ankomstdato: Date): boo
 
 export const getAdopsjonAnkomstdatoValidatorer = (barn: Adopsjonsbarn, intl: IntlShape): Validator[] | undefined => {
     const { fødselsdatoer, ankomstdato } = barn;
-    if (fødselsdatoer && fødselsdatoer.length > 0 && ankomstdato !== undefined) {
-        return [
-            {
-                test: () => barnErFødtFørAnkomstNorge(barn.fødselsdatoer[0], ankomstdato),
-                failText: getMessage(intl, 'valideringsfeil.fodselsdato.etterAdopsjonsdato'),
-            },
-        ];
+    const fødselsdatoDate = fødselsdatoer && fødselsdatoer.length > 0 ? ISOStringToDate(fødselsdatoer[0]) : undefined;
+    const ankomstdatoDate = ISOStringToDate(ankomstdato);
+    const regler = [
+        hasValueRule(ankomstdato, getMessage(intl, 'valideringsfeil.adopsjonsdato.ankomstDato.duMåOppgi')),
+        erGyldigDato(ankomstdato, getMessage(intl, 'valideringsfeil.adopsjonsdato.ankomstDato')),
+    ];
+
+    if (fødselsdatoDate && ankomstdatoDate) {
+        regler.push({
+            test: () => barnErFødtFørAnkomstNorge(fødselsdatoDate, ankomstdatoDate),
+            failText: getMessage(intl, 'valideringsfeil.fodselsdato.etterAdopsjonsdato'),
+        });
+
+        return regler;
     }
-    return undefined;
+
+    return regler;
 };

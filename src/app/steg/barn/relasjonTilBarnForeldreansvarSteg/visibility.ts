@@ -1,3 +1,4 @@
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import VisibilityFunction from '../../../types/dom/Visibility';
 import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { getAlderFraDato } from '../../../util/dates/dates';
@@ -17,8 +18,9 @@ const harBarnOver15ÅrMeldingVisible: VisibilityFunction<Partial<ForeldreansvarB
 ) => {
     const { fødselsdatoer } = barn;
     const harBarnOver15År = (fødselsdatoer || []).some((dato) => {
-        if (dato) {
-            return getAlderFraDato(dato).år > 15;
+        const date = ISOStringToDate(dato);
+        if (date) {
+            return getAlderFraDato(date).år > 15;
         }
         return false;
     });

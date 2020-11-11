@@ -1,9 +1,11 @@
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import Barn from 'app/types/søknad/Barn';
+import Søknad, { Søkersituasjon } from 'app/types/søknad/Søknad';
+import { Kjønn } from '../../../types/common';
 import { RegistrertAnnenForelder, RegistrertBarn } from '../../../types/Person';
 import { getUniqueRegistrertAnnenForelderFromBarn, skalSøkerLasteOppTerminbekreftelse } from '../steg/barn';
-import { Kjønn } from '../../../types/common';
-import Barn from 'app/types/søknad/Barn';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import Søknad, { Søkersituasjon } from 'app/types/søknad/Søknad';
+
 const moment = require('moment');
 const mor: RegistrertAnnenForelder = {
     fnr: '1',
@@ -102,7 +104,7 @@ describe('barn.steg.validation', () => {
 
         it('søker med et eller flere løpende arbeidsforhold på termindatoen må ikke laste opp terminbekreftelse', () => {
             const b: Partial<Barn> = { erBarnetFødt: false, termindato: moment().toDate() };
-            const a: Arbeidsforhold = { ...arbeidsforhold, tom: b.termindato };
+            const a: Arbeidsforhold = { ...arbeidsforhold, tom: ISOStringToDate(b.termindato) };
             const arbeidsforhold1: Arbeidsforhold[] = [{ ...a }];
             const arbeidsforhold2: Arbeidsforhold[] = [{ ...a }, { ...a }];
             expect(

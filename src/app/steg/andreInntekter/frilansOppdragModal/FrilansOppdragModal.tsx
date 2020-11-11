@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { ModalProps } from 'nav-frontend-modal';
 import { injectIntl, IntlShape } from 'react-intl';
+import { ModalProps } from 'nav-frontend-modal';
+import Block from 'common/components/block/Block';
+import ModalForm from 'common/components/modalForm/ModalForm';
+import Input from 'common/components/skjema/wrappers/Input';
 import getMessage from 'common/util/i18nUtils';
 import TidsperiodeBolk from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
-import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import { FrilansOppdrag, FrilansOppdragPartial } from '../../../types/søknad/FrilansInformasjon';
+import { mapTidsperiodeStringToTidsperiode } from '../../../util/tidsperiodeUtils';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
-import Input from 'common/components/skjema/wrappers/Input';
-import { getFritekstfeltRules } from '../../../util/validation/fritekstfelt';
 import { hasValueRule } from '../../../util/validation/common';
-import ModalForm from 'common/components/modalForm/ModalForm';
-import Block from 'common/components/block/Block';
+import { getFritekstfeltRules } from '../../../util/validation/fritekstfelt';
 
 export interface FrilansOppdragModalProps extends Omit<ModalProps, 'children'> {
     oppdrag?: FrilansOppdrag;
@@ -111,11 +111,15 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                         tidsperiode={tidsperiode || {}}
                         pågående={tidsperiode.pågående}
                         visPågåendePeriodeCheckbox={true}
-                        onChange={(changedTidsperiode: TidsperiodeMedValgfriSluttdato) =>
-                            this.updateOppdrag({ tidsperiode: changedTidsperiode })
+                        onChange={(changedTidsperiode) => this.updateOppdrag({ tidsperiode: changedTidsperiode })}
+                        calendarPosition="fullscreen"
+                        datoAvgrensninger={
+                            oppdrag.tidsperiode
+                                ? getAndreInntekterTidsperiodeAvgrensninger(
+                                      mapTidsperiodeStringToTidsperiode(oppdrag.tidsperiode)
+                                  )
+                                : undefined
                         }
-                        kalenderplassering="fullskjerm"
-                        datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(oppdrag.tidsperiode)}
                     />
                 </Block>
             </ModalForm>

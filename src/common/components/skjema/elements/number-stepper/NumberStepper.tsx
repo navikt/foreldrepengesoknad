@@ -7,6 +7,8 @@ import './numberStepper.less';
 export interface Props {
     value: number;
     ariaLabel: string;
+    increaseAriaLabel: string;
+    decreaseAriaLabel: string;
     stepSize?: number;
     max?: number;
     min?: number;
@@ -15,7 +17,16 @@ export interface Props {
 
 const bem = BEMHelper('numberStepper');
 
-const NumberStepper: React.StatelessComponent<Props> = ({ value, min, max, stepSize = 1, ariaLabel, onChange }) => {
+const NumberStepper: React.FunctionComponent<Props> = ({
+    value,
+    min,
+    max,
+    stepSize = 1,
+    ariaLabel,
+    onChange,
+    increaseAriaLabel,
+    decreaseAriaLabel,
+}) => {
     const canDecrease = min === undefined || value > min;
     const canIncrease = max === undefined || value < max;
     return (
@@ -25,7 +36,7 @@ const NumberStepper: React.StatelessComponent<Props> = ({ value, min, max, stepS
                     direction="previous"
                     disabled={canDecrease === false}
                     onClick={() => onChange(value - stepSize)}
-                    label="decrease"
+                    label={decreaseAriaLabel}
                 />
             </div>
             <div className={bem.element('input')}>
@@ -42,7 +53,7 @@ const NumberStepper: React.StatelessComponent<Props> = ({ value, min, max, stepS
                     direction="next"
                     disabled={canIncrease === false}
                     onClick={() => onChange(value + stepSize)}
-                    label="increase"
+                    label={increaseAriaLabel}
                 />
             </div>
         </div>

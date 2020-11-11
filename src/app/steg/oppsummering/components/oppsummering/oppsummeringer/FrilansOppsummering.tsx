@@ -1,14 +1,15 @@
 import * as React from 'react';
-import getMessage from 'common/util/i18nUtils';
-import { formatDate } from '../../../../../util/dates/dates';
 import { useIntl } from 'react-intl';
-import Søker from '../../../../../types/søknad/Søker';
-import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
-import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
-import KompleksFeltoppsummering from 'app/steg/oppsummering/components/kompleks-feltoppsummering/KompleksFeltoppsummering';
-import Block from 'common/components/block/Block';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import Element from 'nav-frontend-typografi/lib/element';
+import Block from 'common/components/block/Block';
+import getMessage from 'common/util/i18nUtils';
+import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
+import KompleksFeltoppsummering from 'app/steg/oppsummering/components/kompleks-feltoppsummering/KompleksFeltoppsummering';
 import FrilansoppdragOppsummeringsliste from 'app/steg/oppsummering/components/oppsummering/oppsummeringer/lister/FrilansoppdragOppsummeringsliste';
+import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+import Søker from '../../../../../types/søknad/Søker';
+import { formatDate } from '../../../../../util/dates/dates';
 
 interface FrilansOppsummeringProps {
     søker: Søker;
@@ -32,7 +33,7 @@ const FrilansOppsummering = ({ søker }: Props) => {
             <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.frilans.tittel')}>
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.frilans.oppstartsdato')}
-                    verdi={formatDate(oppstart)}
+                    verdi={formatDate(ISOStringToDate(oppstart))!}
                 />
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.frilans.fremdelesFrilans')}

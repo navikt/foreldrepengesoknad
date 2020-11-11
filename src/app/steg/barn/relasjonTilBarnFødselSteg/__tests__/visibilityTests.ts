@@ -1,9 +1,10 @@
-import { RegistrertBarn } from '../../../../types/Person';
-import { Kjønn } from '../../../../types/common';
-import visibility from '../visibility/visibilityFunctions';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import { Kjønn } from '../../../../types/common';
+import { RegistrertBarn } from '../../../../types/Person';
+import { Skjemanummer } from '../../../../types/søknad/Søknad';
+import visibility from '../visibility/visibilityFunctions';
 
 const registrertBarn: RegistrertBarn = {
     fnr: '01010101010',
@@ -81,11 +82,15 @@ describe('RelasjonTilBarnFødselSteg visbility tester', () => {
         it('FødselsattestUploader should not render if FødeslsdatoerSpørsmål is not rendered', () => {
             expect(visibility.fødselsattestUploader(false, { fødselsdatoer: undefined })).toBeFalsy();
             expect(visibility.fødselsattestUploader(false, { fødselsdatoer: [] })).toBeFalsy();
-            expect(visibility.fødselsattestUploader(false, { fødselsdatoer: [new Date()] })).toBeFalsy();
+            expect(
+                visibility.fødselsattestUploader(false, { fødselsdatoer: [dateToISOString(new Date())] })
+            ).toBeFalsy();
         });
 
         it('FødselsattestUploader should render if FødeslsdatoerSpørsmål renders and is answered', () => {
-            expect(visibility.fødselsattestUploader(true, { fødselsdatoer: [new Date()] })).toBeTruthy();
+            expect(
+                visibility.fødselsattestUploader(true, { fødselsdatoer: [dateToISOString(new Date())] })
+            ).toBeTruthy();
         });
 
         it('FødselsattestUploader should not render if FødeslsdatoerSpørsmål is rendered but is unanswered', () => {
@@ -133,12 +138,12 @@ describe('RelasjonTilBarnFødselSteg visbility tester', () => {
         it('Terminbekreftelse should not render if Termindato is not rendered', () => {
             expect(visibility.terminbekreftelse(false, { termindato: undefined }, true)).toBeFalsy();
             expect(visibility.terminbekreftelse(false, { termindato: undefined }, false)).toBeFalsy();
-            expect(visibility.terminbekreftelse(false, { termindato: new Date() }, true)).toBeFalsy();
-            expect(visibility.terminbekreftelse(false, { termindato: new Date() }, false)).toBeFalsy();
+            expect(visibility.terminbekreftelse(false, { termindato: dateToISOString(new Date()) }, true)).toBeFalsy();
+            expect(visibility.terminbekreftelse(false, { termindato: dateToISOString(new Date()) }, false)).toBeFalsy();
         });
 
         it('Terminbekreftelse should render if Termindato renders and is answered', () => {
-            expect(visibility.terminbekreftelse(true, { termindato: new Date() }, true)).toBeTruthy();
+            expect(visibility.terminbekreftelse(true, { termindato: dateToISOString(new Date()) }, true)).toBeTruthy();
         });
 
         it('Terminbekreftelse should not render if Termindato is rendered but is unanswered', () => {
@@ -155,19 +160,28 @@ describe('RelasjonTilBarnFødselSteg visbility tester', () => {
                 visibility.terminbekreftelseDato(false, { terminbekreftelse: [attachment], termindato: undefined })
             ).toBeFalsy();
             expect(
-                visibility.terminbekreftelseDato(false, { terminbekreftelse: [], termindato: new Date() })
+                visibility.terminbekreftelseDato(false, {
+                    terminbekreftelse: [],
+                    termindato: dateToISOString(new Date()),
+                })
             ).toBeFalsy();
         });
 
         it('TerminbekreftelseDato should render if Terminbekreftelse renders and is uploaded', () => {
             expect(
-                visibility.terminbekreftelseDato(true, { terminbekreftelse: [attachment], termindato: new Date() })
+                visibility.terminbekreftelseDato(true, {
+                    terminbekreftelse: [attachment],
+                    termindato: dateToISOString(new Date()),
+                })
             ).toBeTruthy();
         });
 
         it('TerminbekreftelseDato should not render if ErBarnetFødtSpørsmål is rendered but is not uploaded', () => {
             expect(
-                visibility.terminbekreftelseDato(true, { terminbekreftelse: undefined, termindato: new Date() })
+                visibility.terminbekreftelseDato(true, {
+                    terminbekreftelse: undefined,
+                    termindato: dateToISOString(new Date()),
+                })
             ).toBeFalsy();
         });
     });

@@ -1,8 +1,20 @@
 import * as React from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
 import Block from 'common/components/block/Block';
-import getMessage from 'common/util/i18nUtils';
+import ModalForm from 'common/components/modalForm/ModalForm';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Input from 'common/components/skjema/wrappers/Input';
+import getMessage from 'common/util/i18nUtils';
+import { trimNumberFromInput } from 'common/util/numberUtils';
+import Landvelger from 'app/components/skjema/landvelger/Landvelger';
+import TidsperiodeBolk from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
+import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
+import ErNæringenRegistrertINorgeSpørsmål from '../../../spørsmål/ErNæringenRegistrertINorgeSpørsmål';
+import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from '../../../spørsmål/HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål';
+import HarDuRegnskapsførerSpørsmål from '../../../spørsmål/HarDuRegnskapsførerSpørsmål';
+import HarDuRevisorSpørsmål from '../../../spørsmål/HarDuRevisorSpørsmål';
+import KanInnhenteOpplysningerFraRevisorSpørsmål from '../../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
+import NæringstypeSpørsmål from '../../../spørsmål/NæringstypeSpørsmål';
 import {
     Næring,
     NæringPartial,
@@ -10,28 +22,16 @@ import {
     NæringsrelasjonPartial,
     Næringstype,
 } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import NæringstypeSpørsmål from '../../../spørsmål/NæringstypeSpørsmål';
-import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import TidsperiodeBolk from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
-import ErNæringenRegistrertINorgeSpørsmål from '../../../spørsmål/ErNæringenRegistrertINorgeSpørsmål';
-import VarigEndringAvNæringsinntektBolk from './VarigEndringAvNæringsinntektBolk';
-import HarDuRegnskapsførerSpørsmål from '../../../spørsmål/HarDuRegnskapsførerSpørsmål';
-import HarDuRevisorSpørsmål from '../../../spørsmål/HarDuRevisorSpørsmål';
-import KanInnhenteOpplysningerFraRevisorSpørsmål from '../../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
-import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
-import ModalForm from 'common/components/modalForm/ModalForm';
-import { getOrganisasjonsnummerRegler } from '../../../util/validation/organisasjonsnummer';
-import visibility from './visibility';
 import { default as cleanupNæring } from '../../../util/cleanup/cleanupNæring';
-import DatoInput from 'common/components/skjema/wrappers/DatoInput';
-import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from '../../../spørsmål/HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål';
 import { removeSpacesFromString } from '../../../util/stringUtils';
-import { hasValueRule } from '../../../util/validation/common';
+import { mapTidsperiodeStringToTidsperiode } from '../../../util/tidsperiodeUtils';
+import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
+import { erGyldigDato, hasValueRule } from '../../../util/validation/common';
 import { getFritekstfeltRules } from '../../../util/validation/fritekstfelt';
-import { trimNumberFromInput } from 'common/util/numberUtils';
-import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
-import Landvelger from 'app/components/skjema/landvelger/Landvelger';
+import { getOrganisasjonsnummerRegler } from '../../../util/validation/organisasjonsnummer';
 import NæringsrelasjonBolk from './næringsrelasjonBolk/NæringsrelasjonBolk';
+import VarigEndringAvNæringsinntektBolk from './VarigEndringAvNæringsinntektBolk';
+import visibility from './visibility';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -214,13 +214,15 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         tidsperiode={tidsperiode || {}}
                         pågående={tidsperiode.pågående}
                         visPågåendePeriodeCheckbox={true}
-                        onChange={(v: TidsperiodeMedValgfriSluttdato) => this.updateNæring({ tidsperiode: v })}
-                        datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(tidsperiode)}
+                        onChange={(v) => this.updateNæring({ tidsperiode: v })}
+                        datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
+                            mapTidsperiodeStringToTidsperiode(tidsperiode)
+                        )}
                         datoInputLabelProps={{
                             fom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.fom', { navnPåNæringen }),
                             tom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.tom', { navnPåNæringen }),
                         }}
-                        kalenderplassering="fullskjerm"
+                        calendarPosition="fullscreen"
                     />
                 </Block>
 
@@ -263,12 +265,21 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         id="oppstartsdato"
                         name="oppstartsdato"
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.oppstartsdato')}
-                        onChange={(oppstartsdato: Date) => {
+                        onChange={(oppstartsdato) => {
                             this.updateNæring({ oppstartsdato });
                         }}
                         dato={næring.oppstartsdato}
-                        kalender={{ plassering: 'fullskjerm' }}
-                        validators={[hasValueRule(næring && næring.oppstartsdato, getMessage(intl, 'påkrevd'))]}
+                        calendarSettings={{ position: 'fullscreen' }}
+                        validators={[
+                            hasValueRule(næring && næring.oppstartsdato, getMessage(intl, 'påkrevd')),
+                            erGyldigDato(
+                                næring && næring.oppstartsdato,
+                                getMessage(
+                                    intl,
+                                    'valideringsfeil.selvstendigNæringsdrivende.modal.oppstartsdato.gyldigDato'
+                                )
+                            ),
+                        ]}
                     />
                 </Block>
                 <Block visible={visibility.varigEndringAvNæringsinntekt(næring)}>

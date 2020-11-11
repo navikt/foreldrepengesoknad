@@ -1,10 +1,11 @@
 import * as React from 'react';
-import * as countries from 'i18n-iso-countries';
-import { formatDate } from '../../../../../../util/dates/dates';
-import { Næring } from '../../../../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { useIntl } from 'react-intl';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import * as countries from 'i18n-iso-countries';
 import getMessage from 'common/util/i18nUtils';
 import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
+import { Næring } from '../../../../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import { formatDate } from '../../../../../../util/dates/dates';
 
 interface NæringsdetaljerProps {
     næring: Næring;
@@ -77,7 +78,7 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring }) => {
             {oppstartsdato !== undefined && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.oppstartsdato')}
-                    verdi={formatDate(oppstartsdato)}
+                    verdi={formatDate(ISOStringToDate(oppstartsdato))!}
                 />
             )}
 
@@ -102,7 +103,7 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring }) => {
                             intl,
                             'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt'
                         )}
-                        verdi={formatDate(endringAvNæringsinntektInformasjon!.dato)}
+                        verdi={formatDate(ISOStringToDate(endringAvNæringsinntektInformasjon?.dato))!}
                     />
                     <Feltoppsummering
                         feltnavn={getMessage(

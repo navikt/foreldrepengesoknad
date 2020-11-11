@@ -43,16 +43,15 @@ export const getUttakTidsperiodeValidatorer = (
     if (skalIkkeHaUttak) {
         return undefined;
     }
+
+    const { fom, tom } = tidsperiode;
+
     return {
-        fra: [
-            erUtfyltTest(tidsperiode.fom),
-            erUttaksdagTest(tidsperiode.fom),
-            starterInnenfor12UkerFørTermin(tidsperiode.fom, familiehendelsesdato),
-        ],
+        fra: [erUtfyltTest(fom), erUttaksdagTest(fom), starterInnenfor12UkerFørTermin(fom, familiehendelsesdato)],
         til: [
-            erUtfyltTest(tidsperiode.tom),
-            erUttaksdagTest(tidsperiode.tom),
-            slutterInnenforGyldigPermisjonsperiode(tidsperiode.tom, familiehendelsesdato),
+            erUtfyltTest(tom),
+            erUttaksdagTest(tom),
+            slutterInnenforGyldigPermisjonsperiode(tom, familiehendelsesdato),
         ],
     };
 };

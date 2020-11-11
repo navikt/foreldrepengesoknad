@@ -1,41 +1,42 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { injectIntl, IntlShape } from 'react-intl';
-import { AppState } from '../../redux/reducers';
-import { DispatchProps } from 'common/redux/types';
-import Steg, { StegProps } from '../../components/applikasjon/steg/Steg';
-import { StegID } from '../../util/routing/stegConfig';
-import { HistoryProps } from '../../types/common';
-import isAvailable from '../../util/steg/isAvailable';
-import { SøkerinfoProps } from '../../types/søkerinfo';
-import { uttaksplanSkjemaErGyldig } from '../../util/validation/steg/uttaksplanSkjema';
-import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
-import Søknad from '../../types/søknad/Søknad';
-import { getUttaksplanSkjemaScenario, UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
-import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
-import { apiActionCreators } from '../../redux/actions';
-import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
-import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
+import { connect } from 'react-redux';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import ApplicationSpinner from 'common/components/applicationSpinner/ApplicationSpinner';
-import { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
-import { Søknadsinfo } from '../../selectors/types';
-import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
+import Block from 'common/components/block/Block';
+import { DispatchProps } from 'common/redux/types';
+import { Dekningsgrad } from 'common/types';
+import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
+import { getTilgjengeligeDager } from 'app/components/uttaksplanlegger/components/uttakFordeling/tilgjengeligeDagerUtils';
 import uttaksConstants from 'app/constants';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import Barn from 'app/types/søknad/Barn';
 import { TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
 import {
-    getAntallUkerFellesperiode,
     getAntallUkerFedrekvote,
+    getAntallUkerFellesperiode,
     getAntallUkerMødrekvote,
 } from 'app/util/uttaksplan/stønadskontoer';
-import Barn from 'app/types/søknad/Barn';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import Block from 'common/components/block/Block';
-import InfoEksisterendeSak from '../uttaksplan/infoEksisterendeSak/InfoEksisterendeSak';
 import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from 'app/util/uttaksplan/uttakUtils';
-import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
-import { Dekningsgrad } from 'common/types';
-import { getTilgjengeligeDager } from 'app/components/uttaksplanlegger/components/uttakFordeling/tilgjengeligeDagerUtils';
+import { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
+import Steg, { StegProps } from '../../components/applikasjon/steg/Steg';
+import { apiActionCreators } from '../../redux/actions';
+import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
+import { AppState } from '../../redux/reducers';
+import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
+import { Søknadsinfo } from '../../selectors/types';
+import { HistoryProps } from '../../types/common';
+import { SøkerinfoProps } from '../../types/søkerinfo';
+import Søknad from '../../types/søknad/Søknad';
+import { StegID } from '../../util/routing/stegConfig';
+import isAvailable from '../../util/steg/isAvailable';
+import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
+import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
+import { uttaksplanSkjemaErGyldig } from '../../util/validation/steg/uttaksplanSkjema';
+import InfoEksisterendeSak from '../uttaksplan/infoEksisterendeSak/InfoEksisterendeSak';
+import { getUttaksplanSkjemaScenario, UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
+import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
 
 interface StateProps {
     stegProps: StegProps;
@@ -77,7 +78,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             const grunnlag = eksisterendeSak !== undefined ? eksisterendeSak.grunnlag : undefined;
             const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
                 søknadsinfo,
-                startdatoPermisjon,
+                ISOStringToDate(startdatoPermisjon),
                 barn,
                 grunnlag
             );
@@ -142,7 +143,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         apiActionCreators.getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
                             getStønadskontoParams(
                                 søknadsinfo,
-                                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon,
+                                ISOStringToDate(søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon),
                                 barn,
                                 grunnlag
                             )
@@ -220,7 +221,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         const defaultStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
             uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
         );
-        ekstrainfo.uttaksplanSkjema.startdatoPermisjon = defaultStartdato;
+        ekstrainfo.uttaksplanSkjema.startdatoPermisjon = dateToISOString(defaultStartdato);
     }
 
     return {

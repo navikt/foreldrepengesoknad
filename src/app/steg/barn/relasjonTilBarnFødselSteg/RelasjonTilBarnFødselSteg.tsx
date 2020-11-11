@@ -1,51 +1,48 @@
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { guid } from 'nav-frontend-js-utils';
 import Lenke from 'nav-frontend-lenker';
-
-import Steg, { StegProps } from 'app/components/applikasjon/steg/Steg';
-import UfødtBarnPartial from './partials/UfødtBarnPartial';
-import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
-
-import ErBarnetFødtSpørsmål from '../../../spørsmål/ErBarnetFødtSpørsmål';
-
-import { AppState } from '../../../redux/reducers';
-import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
+import { Element } from 'nav-frontend-typografi';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Block from 'common/components/block/Block';
+import Labeltekst from 'common/components/labeltekst/Labeltekst';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
+import Veileder from 'common/components/veileder/Veileder';
 import { DispatchProps } from 'common/redux/types';
-import { RegistrertBarn } from '../../../types/Person';
-import Barn, { isFødtBarn, isUfødtBarn, FødtBarn } from '../../../types/søknad/Barn';
-import Søker from '../../../types/søknad/Søker';
-
-import { StegID } from '../../../util/routing/stegConfig';
-import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
+import getMessage from 'common/util/i18nUtils';
+import Steg, { StegProps } from 'app/components/applikasjon/steg/Steg';
+import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import HvilkeBarnGjelderSøknadenBolk from './HvilkeBarnGjelderSøknadenBolk';
+import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
+import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
+import { apiActionCreators } from 'app/redux/actions';
+import { getTermindatoReglerForFødsel, termindatoAvgrensningerFodsel } from 'app/util/validation/termindato';
+import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
+import { AppState } from '../../../redux/reducers';
+import ErBarnetFødtSpørsmål from '../../../spørsmål/ErBarnetFødtSpørsmål';
+import { HistoryProps } from '../../../types/common';
+import { RegistrertBarn } from '../../../types/Person';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
+import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
+import Barn, { FødtBarn, isFødtBarn, isUfødtBarn } from '../../../types/søknad/Barn';
+import Søker from '../../../types/søknad/Søker';
+import { Skjemanummer, SøkerRolle, Søkersituasjon, SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
+import cleanupRelasjonTilBarnFødselSteg from '../../../util/cleanup/relasjonTilBarn/cleanupRelasjonTilBarnFødselSteg';
+import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
+import lenker from '../../../util/routing/lenker';
+import { StegID } from '../../../util/routing/stegConfig';
 import isAvailable from '../../../util/steg/isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
-import Block from 'common/components/block/Block';
-import { SøkerinfoProps } from '../../../types/søkerinfo';
-import { HistoryProps } from '../../../types/common';
-import cleanupRelasjonTilBarnFødselSteg from '../../../util/cleanup/relasjonTilBarn/cleanupRelasjonTilBarnFødselSteg';
+import HvilkeBarnGjelderSøknadenBolk from './HvilkeBarnGjelderSøknadenBolk';
+import FødtBarnPartial from './partials/FødtBarnPartial';
+import UfødtBarnPartial from './partials/UfødtBarnPartial';
 import {
     getRelasjonTilBarnFødselVisibility,
     RelasjonTilBarnFødselStegVisibility,
 } from './visibility/relasjonTilBarnFødselVisibility';
-import { SøknadenGjelderBarnValg, Søkersituasjon, Skjemanummer, SøkerRolle } from '../../../types/søknad/Søknad';
-import FødtBarnPartial from './partials/FødtBarnPartial';
-import lenker from '../../../util/routing/lenker';
-import { apiActionCreators } from 'app/redux/actions';
-import { guid } from 'nav-frontend-js-utils';
-import DatoInput from 'common/components/skjema/wrappers/DatoInput';
-import Labeltekst from 'common/components/labeltekst/Labeltekst';
-import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
-import { getTermindatoRegler, termindatoAvgrensningerFodsel } from 'app/util/validation/termindato';
-import AttachmentsUploaderPure from 'app/components/storage/attachment/components/AttachmentUploaderPure';
-import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { skalViseInfoOmPrematuruker, visTermindato } from './visibility/visibilityFunctions';
-import { Element } from 'nav-frontend-typografi';
-import getMessage from 'common/util/i18nUtils';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Veileder from 'common/components/veileder/Veileder';
 
 interface RelasjonTilBarnFødselStegProps {
     barn: Barn;
@@ -83,8 +80,8 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
         dispatch(søknadActions.updateBarn(cleanupRelasjonTilBarnFødselSteg(barn)));
     }
 
-    visInfoOmPrematuruker(fødselsdato: Date, termindato: Date) {
-        return skalViseInfoOmPrematuruker(fødselsdato, termindato);
+    visInfoOmPrematuruker(fødselsdato: Date, termindato?: Date) {
+        return termindato !== undefined && skalViseInfoOmPrematuruker(fødselsdato, termindato);
     }
 
     render() {
@@ -104,6 +101,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
 
         const { gjelderAnnetBarn, valgteBarn } = søknadenGjelderBarnValg;
         const valgtBarn = valgteBarn[0];
+        const fødtBarnTermindato = (barn as FødtBarn).termindato;
 
         return (
             <Steg {...stegProps} onPreSubmit={this.onPresubmit}>
@@ -175,16 +173,16 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                     id={guid()}
                                     name="termindato"
                                     dato={(barn as FødtBarn).termindato}
-                                    onChange={(termindato: Date) => dispatch(søknadActions.updateBarn({ termindato }))}
+                                    onChange={(termindato) => dispatch(søknadActions.updateBarn({ termindato }))}
                                     label={<Labeltekst intlId="fødselsdatoer.termin" />}
                                     datoAvgrensinger={{ ...termindatoAvgrensningerFodsel }}
-                                    validators={{ ...getTermindatoRegler((barn as FødtBarn).termindato, intl) }}
+                                    validators={getTermindatoReglerForFødsel(fødtBarnTermindato, intl)}
                                 />
                             </Block>
                             <Block
                                 visible={this.visInfoOmPrematuruker(
                                     valgtBarn.fødselsdato,
-                                    (barn as FødtBarn).termindato
+                                    ISOStringToDate(fødtBarnTermindato)
                                 )}
                             >
                                 <VeilederInfo
@@ -199,7 +197,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                             <Block
                                 visible={this.visInfoOmPrematuruker(
                                     valgtBarn.fødselsdato,
-                                    (barn as FødtBarn).termindato
+                                    ISOStringToDate(fødtBarnTermindato)
                                 )}
                             >
                                 <Block margin="xs">

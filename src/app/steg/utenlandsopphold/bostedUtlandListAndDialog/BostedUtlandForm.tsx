@@ -1,12 +1,12 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { BostedUtland, isValidBostedUtland } from './types';
+import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import { dateRangeValidation } from 'app/util/dates/dates';
 import { commonFieldErrorRenderer, validateRequiredField } from 'app/validation/fieldValidations';
-import Block from 'common/components/block/Block';
+import { BostedUtland, isValidBostedUtland } from './types';
 
 export interface BostedUtlandFormLabels {
     tittel: string;
@@ -27,9 +27,21 @@ enum BostedUtlandFormFields {
     landkode = 'landkode',
 }
 
-type FormValues = Partial<BostedUtland>;
+type FormValues = Partial<{
+    [BostedUtlandFormFields.fom]: string;
+    [BostedUtlandFormFields.tom]: string;
+    [BostedUtlandFormFields.landkode]: string;
+}>;
 
 const Form = getTypedFormComponents<BostedUtlandFormFields, FormValues>();
+
+const mapBostedToFormValues = (bosted: BostedUtland): FormValues => {
+    return {
+        fom: dateToISOString(bosted.fom),
+        tom: dateToISOString(bosted.tom),
+        landkode: bosted.landkode,
+    };
+};
 
 const BostedUtlandForm: React.FunctionComponent<Props> = ({
     maxDate,
@@ -40,9 +52,15 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
     erFremtidigOpphold,
 }) => {
     const intl = useIntl();
-    const onFormikSubmit = (formValues: Partial<BostedUtland>) => {
-        if (isValidBostedUtland(formValues)) {
-            onSubmit(formValues);
+    const onFormikSubmit = (formValues: FormValues) => {
+        const updatedBosted: Partial<BostedUtland> = {
+            ...bosted,
+            fom: ISOStringToDate(formValues.fom),
+            tom: ISOStringToDate(formValues.tom),
+            landkode: formValues.landkode,
+        };
+        if (isValidBostedUtland(updatedBosted)) {
+            onSubmit(updatedBosted);
         } else {
             throw new Error('BostedUtlandForm: Formvalues is not a valid BostedUtland on submit.');
         }
@@ -50,10 +68,9 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
 
     return (
         <Form.FormikWrapper
-            initialValues={bosted || {}}
+            initialValues={bosted ? mapBostedToFormValues(bosted) : {}}
             onSubmit={onFormikSubmit}
-            renderForm={(formik) => {
-                const { values } = formik;
+            renderForm={({ values }) => {
                 return (
                     <Form.Form
                         onCancel={onCancel}
@@ -70,18 +87,30 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     label: getMessage(intl, 'fraogmed'),
                                     fullscreenOverlay: true,
                                     minDate,
-                                    maxDate: values.tom || maxDate,
-                                    validate: (date: Date) =>
-                                        dateRangeValidation.validateFromDate(date, minDate, maxDate, values.tom),
+                                    invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
+                                    maxDate: ISOStringToDate(values.tom) || maxDate,
+                                    validate: (value) =>
+                                        dateRangeValidation.validateFromDate(
+                                            ISOStringToDate(value),
+                                            minDate,
+                                            maxDate,
+                                            ISOStringToDate(values.tom)
+                                        ),
                                 }}
                                 toDatepickerProps={{
                                     name: BostedUtlandFormFields.tom,
                                     label: getMessage(intl, 'tilogmed'),
                                     fullscreenOverlay: true,
-                                    minDate: values.fom || minDate,
+                                    minDate: ISOStringToDate(values.fom) || minDate,
                                     maxDate,
-                                    validate: (date: Date) =>
-                                        dateRangeValidation.validateToDate(date, minDate, maxDate, values.fom),
+                                    invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
+                                    validate: (value) =>
+                                        dateRangeValidation.validateToDate(
+                                            ISOStringToDate(value),
+                                            minDate,
+                                            maxDate,
+                                            ISOStringToDate(values.fom)
+                                        ),
                                 }}
                             />
                         </Block>

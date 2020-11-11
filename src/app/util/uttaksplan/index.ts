@@ -1,23 +1,24 @@
-import { Forelder, NavnPåForeldre, Tidsperiode } from 'common/types';
-import {
-    Periode,
-    Periodetype,
-    StønadskontoType,
-    OppholdÅrsakType,
-    isUttaksperiode,
-    Arbeidsform,
-    isOverskrivbarPeriode,
-    PeriodeInfoType,
-    UtsettelseÅrsakType,
-    isUtsettelsesperiode,
-} from '../../types/uttaksplan/periodetyper';
 import { IntlShape } from 'react-intl';
-import { Søkersituasjon } from '../../types/søknad/Søknad';
-import { findOldestDate } from '../dates/dates';
-import { Barn, isFødtBarn, isUfødtBarn, isAdopsjonsbarn, isForeldreansvarsbarn } from '../../types/søknad/Barn';
-import { formaterNavn } from '../domain/personUtil';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { Forelder, NavnPåForeldre, Tidsperiode } from 'common/types';
 import getMessage from 'common/util/i18nUtils';
 import { Navn } from '../../types/common';
+import { Barn, isAdopsjonsbarn, isForeldreansvarsbarn, isFødtBarn, isUfødtBarn } from '../../types/søknad/Barn';
+import { Søkersituasjon } from '../../types/søknad/Søknad';
+import {
+    Arbeidsform,
+    isOverskrivbarPeriode,
+    isUtsettelsesperiode,
+    isUttaksperiode,
+    OppholdÅrsakType,
+    Periode,
+    PeriodeInfoType,
+    Periodetype,
+    StønadskontoType,
+    UtsettelseÅrsakType,
+} from '../../types/uttaksplan/periodetyper';
+import { findOldestDate } from '../dates/dates';
+import { formaterNavn } from '../domain/personUtil';
 import { getNavnGenitivEierform } from '../tekstUtils';
 import { getStønadskontoFromOppholdsårsak } from './uttaksperiodeUtils';
 
@@ -124,16 +125,23 @@ export const getFamiliehendelsedato = (barn: Partial<Barn>, situasjon?: Søkersi
         return undefined;
     }
     if (isFødtBarn(barn, situasjon)) {
-        return findOldestDate(barn.fødselsdatoer.filter((d) => d !== undefined));
+        const fødselsdatoer: Date[] = [];
+        barn.fødselsdatoer.forEach((fd) => {
+            const date = ISOStringToDate(fd);
+            if (date) {
+                fødselsdatoer.push(date);
+            }
+        });
+        return findOldestDate(fødselsdatoer);
     }
     if (isUfødtBarn(barn, situasjon)) {
-        return barn.termindato;
+        return ISOStringToDate(barn.termindato);
     }
     if (isAdopsjonsbarn(barn, situasjon)) {
-        return barn.adopsjonsdato;
+        return ISOStringToDate(barn.adopsjonsdato);
     }
     if (isForeldreansvarsbarn(barn, situasjon)) {
-        return barn.foreldreansvarsdato;
+        return ISOStringToDate(barn.foreldreansvarsdato);
     }
     return undefined;
 };

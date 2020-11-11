@@ -1,10 +1,11 @@
-import { lagUttaksplan, LagUttaksplanParams } from '../forslag/lagUttaksplan';
-import { TilgjengeligStønadskonto, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
-import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import mockSøknad from '../../../testdata/soknad.data';
-import { finnHullIPerioder } from '../builder/UttaksplanBuilder';
-import { Periodene } from '../Periodene';
 import { FødtBarn } from '../../../types/søknad/Barn';
+import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
+import { StønadskontoType, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
+import { finnHullIPerioder } from '../builder/UttaksplanBuilder';
+import { lagUttaksplan, LagUttaksplanParams } from '../forslag/lagUttaksplan';
+import { Periodene } from '../Periodene';
 
 const tilgjengeligeKontoerDeltUttak: TilgjengeligStønadskonto[] = [
     {
@@ -42,7 +43,7 @@ const lagUttaksplanProps: LagUttaksplanParams = {
     annenForelderErUfør: false,
     erDeltUttak: true,
     erEndringssøknad: false,
-    familiehendelsesdato: (søknad.barn as FødtBarn).fødselsdatoer[0],
+    familiehendelsesdato: ISOStringToDate((søknad.barn as FødtBarn).fødselsdatoer[0])!,
     situasjon: Søkersituasjon.FØDSEL,
     søkerErFarEllerMedmor: false,
     tilgjengeligeStønadskontoer: tilgjengeligeKontoerDeltUttak,
@@ -77,8 +78,8 @@ describe('Forslag til uttaksplan', () => {
             const farSøknad = {
                 antallUkerFellesperiodeFarMedmor: 8,
                 antallDagerFellesperiodeFarMedmor: 0,
-                morSinSisteUttaksdag: new Date('2019-01-01'),
-                farSinFørsteUttaksdag: new Date('2019-01-02'),
+                morSinSisteUttaksdag: dateToISOString(new Date('2019-01-01')),
+                farSinFørsteUttaksdag: dateToISOString(new Date('2019-01-02')),
             };
             const uttaksplan = lagUttaksplan({
                 ...lagUttaksplanProps,

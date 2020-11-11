@@ -1,33 +1,34 @@
 import * as React from 'react';
+import { useIntl } from 'react-intl';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
+import { TilgjengeligeDager } from 'shared/types';
+import Block from 'common/components/block/Block';
+import { NavnPåForeldre } from 'common/types';
+import TilgjengeligeDagerGraf from 'app/components/elementer/tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { Periodene } from 'app/util/uttaksplan/Periodene';
+import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
+import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
+import { isAdopsjonsbarn } from '../../types/søknad/Barn';
 import Søknad, { SøkerRolle } from '../../types/søknad/Søknad';
-import HarAnnenForelderSøktForeldrepengerSpørsmål from './enkeltspørsmål/HarAnnenForelderSøktForeldrepengerSpørsmål';
+import { dateIsSameOrAfter, findOldestDate } from '../../util/dates/dates';
+import { getNavnGenitivEierform } from '../../util/tekstUtils';
+import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
+import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from './enkeltspørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
 import DekningsgradSpørsmål from './enkeltspørsmål/DekningsgradSpørsmål';
+import FarSinFørsteUttaksdagSpørsmål from './enkeltspørsmål/FarSinFørsteUttaksdagSpørsmål';
+import FordelingFellesperiodeSpørsmål from './enkeltspørsmål/FordelingFellesperiodeSpørsmål';
+import HarAnnenForelderSøktForeldrepengerSpørsmål from './enkeltspørsmål/HarAnnenForelderSøktForeldrepengerSpørsmål';
 import MorSinSisteUttaksdagSpørsmål from './enkeltspørsmål/MorSinSisteUttaksdagSpørsmål';
 import SkalHaDelAvFellesperiodeSpørsmål from './enkeltspørsmål/SkalHaDelAvFellesperiodeSpørsmål';
-import { UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
-import StartdatoPermisjonMorBolk from './enkeltspørsmål/StartdatoPermisjonMorBolk';
-import FordelingFellesperiodeSpørsmål from './enkeltspørsmål/FordelingFellesperiodeSpørsmål';
 import StartdatoAdopsjonBolk from './enkeltspørsmål/StartdatoAdopsjonBolk';
-import { isAdopsjonsbarn } from '../../types/søknad/Barn';
-import StartdatoUttakFarMedmorSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorSpørsmål';
+import StartdatoPermisjonMorBolk from './enkeltspørsmål/StartdatoPermisjonMorBolk';
 import StartdatoUttakFarMedmorAleneomsorgSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorAleneomsorgSpørsmål';
-import { NavnPåForeldre } from 'common/types';
-import { findOldestDate, dateIsSameOrAfter } from '../../util/dates/dates';
-import Block from 'common/components/block/Block';
-import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
-import FarSinFørsteUttaksdagSpørsmål from './enkeltspørsmål/FarSinFørsteUttaksdagSpørsmål';
-import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from './enkeltspørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
-import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
-import { getFlerbarnsuker } from 'app/util/validation/uttaksplan/uttaksplanHarForMangeFlerbarnsuker';
-import { getNavnGenitivEierform } from '../../util/tekstUtils';
-import { useIntl } from 'react-intl';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import StartdatoUttakFarMedmorSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorSpørsmål';
 import UtsettelseBegrunnelse from './enkeltspørsmål/UtsettelseBegrunnelse';
-import { Periodene } from 'app/util/uttaksplan/Periodene';
 import { skalFarUtsetteEtterMorSinSisteUttaksdag } from './utils';
-import { TilgjengeligeDager } from 'shared/types';
-import TilgjengeligeDagerGraf from 'app/components/elementer/tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
+import { UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -117,7 +118,7 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({
             <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
                 visible={
                     farSinFørsteUttaksdag !== undefined &&
-                    !dateIsSameOrAfter(morSinSisteUttaksdag, farSinFørsteUttaksdag)
+                    !dateIsSameOrAfter(ISOStringToDate(morSinSisteUttaksdag), ISOStringToDate(farSinFørsteUttaksdag))
                 }
                 antallUkerFellesperiode={antallUkerFellesperiode}
             />
@@ -207,8 +208,14 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
     if (!isAdopsjonsbarn(barn, søknad.situasjon)) {
         throw new Error('Barn er ikke adopsjonsbarn');
     }
+
+    const ankomstdatoDate = ISOStringToDate(barn.ankomstdato);
+    const adopsjonsdatoDate = ISOStringToDate(barn.adopsjonsdato);
+
     const latestDate =
-        barn.ankomstdato !== undefined ? findOldestDate([barn.adopsjonsdato!, barn.ankomstdato!]) : barn.adopsjonsdato;
+        ankomstdatoDate !== undefined && adopsjonsdatoDate !== undefined
+            ? dateToISOString(findOldestDate([ankomstdatoDate, adopsjonsdatoDate])) // todo - sjekk logikk her
+            : barn.adopsjonsdato;
     const startdatoPermisjon = søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon;
     const stebarnsadopsjon = barn.adopsjonAvEktefellesBarn;
     const adoptertIUtlandet = barn.adoptertIUtlandet;
@@ -259,7 +266,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
             <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
                 visible={
                     farSinFørsteUttaksdag !== undefined &&
-                    !dateIsSameOrAfter(morSinSisteUttaksdag, farSinFørsteUttaksdag) &&
+                    !dateIsSameOrAfter(ISOStringToDate(morSinSisteUttaksdag), ISOStringToDate(farSinFørsteUttaksdag)) &&
                     skjema.harAnnenForelderSøktFP === true
                 }
                 antallUkerFellesperiode={antallUkerFellesperiode}
@@ -267,7 +274,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
             <Block
                 visible={
                     startdatoPermisjon !== undefined &&
-                    moment(latestDate).isBefore(moment(startdatoPermisjon)) &&
+                    moment(ISOStringToDate(latestDate)).isBefore(moment(ISOStringToDate(startdatoPermisjon))) &&
                     stebarnsadopsjon !== true
                 }
             >
@@ -328,7 +335,7 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({
     erFarEllerMedmor,
     erDeltUttak,
 }) => {
-    const omsorgsDato = søknad.barn.datoForAleneomsorg || familiehendelsesdato;
+    const omsorgsDato: Date = ISOStringToDate(søknad.barn.datoForAleneomsorg) || familiehendelsesdato;
     return (
         <>
             <DekningsgradSpørsmål />
@@ -453,24 +460,22 @@ const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåFo
             : undefined;
 
     const morSinSisteUttaksdag = annenPartsSistePeriode ? annenPartsSistePeriode.tidsperiode.tom : undefined;
+    const farSinFørsteUttaksdagDate = ISOStringToDate(uttaksplanSkjema.farSinFørsteUttaksdag);
 
     return (
         <>
             <FarSinFørsteUttaksdagSpørsmål
                 visible={true}
                 familiehendelsesdato={familiehendelsesdato}
-                morSinSisteUttaksdag={morSinSisteUttaksdag}
+                morSinSisteUttaksdag={dateToISOString(morSinSisteUttaksdag)}
                 eksisterendeSakAnnenPart={
                     eksisterendeSak && eksisterendeSak.erAnnenPartsSak ? eksisterendeSak : undefined
                 }
                 navnPåForeldre={navnPåForeldre}
             />
-            {uttaksplanSkjema.farSinFørsteUttaksdag && morSinSisteUttaksdag && (
+            {farSinFørsteUttaksdagDate && morSinSisteUttaksdag && (
                 <UtsettelseBegrunnelse
-                    visible={skalFarUtsetteEtterMorSinSisteUttaksdag(
-                        uttaksplanSkjema.farSinFørsteUttaksdag,
-                        morSinSisteUttaksdag
-                    )}
+                    visible={skalFarUtsetteEtterMorSinSisteUttaksdag(farSinFørsteUttaksdagDate, morSinSisteUttaksdag)}
                     navn={navnPåForeldre.mor}
                 />
             )}

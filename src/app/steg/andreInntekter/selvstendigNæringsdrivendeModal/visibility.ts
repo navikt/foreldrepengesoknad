@@ -1,8 +1,9 @@
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import * as moment from 'moment';
-import { Næring, NæringPartial } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import { date4YearsAgo } from '../../../util/validation/values';
-import { er4ÅrSidenOppstartEllerMindre } from '../../../util/domain/næringer';
 import VisibilityFunction from '../../../types/dom/Visibility';
+import { Næring, NæringPartial } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import { er4ÅrSidenOppstartEllerMindre } from '../../../util/domain/næringer';
+import { date4YearsAgo } from '../../../util/validation/values';
 import næringsrelasjonFns from './næringsrelasjonBolk/visibility';
 
 const navnPåNæringenVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
@@ -57,7 +58,7 @@ const næringsinntektVisible: VisibilityFunction<NæringPartial> = (næring: Næ
     const { tidsperiode } = næring;
     if (tidsperiode && module.tidsperiodeUtfylt(næring)) {
         const { fom } = tidsperiode;
-        return moment(fom).isAfter(date4YearsAgo, 'day') && module.tidsperiode(næring);
+        return moment(ISOStringToDate(fom)).isAfter(date4YearsAgo, 'day') && module.tidsperiode(næring);
     }
     return false;
 };

@@ -1,14 +1,18 @@
-import {
-    UfødtBarn,
-    Adopsjonsbarn,
-    ForeldreansvarBarn,
-    Barn,
-    FødtBarn,
+import Barn, {
+    UfødtBarnInnsending,
+    AdopsjonsbarnInnsending,
+    ForeldreansvarBarnInnsending,
+    BarnInnsending,
+    FødtBarnInnsending,
     BarnCommonProps,
-    isFødtBarn,
-    isUfødtBarn,
-    isAdopsjonsbarn,
-    isForeldreansvarsbarn,
+    isFødtBarnInnsending,
+    isUfødtBarnInnsending,
+    isAdopsjonsbarnInnsending,
+    isForeldreansvarsbarnInnsending,
+    UfødtBarn,
+    FødtBarn,
+    ForeldreansvarBarn,
+    Adopsjonsbarn,
 } from '../types/søknad/Barn';
 import { Søkersituasjon } from '../types/søknad/Søknad';
 
@@ -36,9 +40,37 @@ export const getFødtBarnProps = (barn: Partial<FødtBarn>): Partial<FødtBarn> 
         termindato: barn.termindato,
     });
 
-export const getAdopsjonsbarnProps = (barn: Partial<Adopsjonsbarn>): Partial<Adopsjonsbarn> =>
+const getBarnInnsendingProps = (
+    barn: Partial<BarnInnsending | UfødtBarnInnsending | AdopsjonsbarnInnsending | ForeldreansvarBarnInnsending>
+): Partial<BarnCommonProps> =>
     removeUndefinedProps({
-        ...getBarnProps(barn),
+        antallBarn: barn.antallBarn,
+        datoForAleneomsorg: barn.datoForAleneomsorg,
+        dokumentasjonAvAleneomsorg: barn.dokumentasjonAvAleneomsorg,
+        erBarnetFødt: barn.erBarnetFødt,
+    });
+
+export const getUfødtBarnInnsendingProps = (barn: Partial<UfødtBarnInnsending>): Partial<UfødtBarnInnsending> =>
+    removeUndefinedProps({
+        ...getBarnInnsendingProps(barn),
+        terminbekreftelse: barn.terminbekreftelse,
+        terminbekreftelseDato: barn.terminbekreftelseDato,
+        termindato: barn.termindato,
+    });
+
+export const getFødtBarnInnsendingProps = (barn: Partial<FødtBarnInnsending>): Partial<FødtBarnInnsending> =>
+    removeUndefinedProps({
+        ...getBarnInnsendingProps(barn),
+        fødselsattest: barn.fødselsattest,
+        fødselsdatoer: barn.fødselsdatoer,
+        termindato: barn.termindato,
+    });
+
+export const getAdopsjonsbarnInnsendingProps = (
+    barn: Partial<AdopsjonsbarnInnsending>
+): Partial<AdopsjonsbarnInnsending> =>
+    removeUndefinedProps({
+        ...getBarnInnsendingProps(barn),
         adopsjonAvEktefellesBarn: barn.adopsjonAvEktefellesBarn,
         adopsjonsdato: barn.adopsjonsdato,
         adoptertIUtlandet: barn.adoptertIUtlandet,
@@ -47,27 +79,32 @@ export const getAdopsjonsbarnProps = (barn: Partial<Adopsjonsbarn>): Partial<Ado
         omsorgsovertakelse: barn.omsorgsovertakelse,
     });
 
-export const getForeldreansvarsbarnProps = (barn: Partial<ForeldreansvarBarn>): Partial<ForeldreansvarBarn> =>
+export const getForeldreansvarsbarnInnsendingProps = (
+    barn: Partial<ForeldreansvarBarnInnsending>
+): Partial<ForeldreansvarBarnInnsending> =>
     removeUndefinedProps({
-        ...getBarnProps(barn),
+        ...getBarnInnsendingProps(barn),
         adopsjonsvedtak: barn.adopsjonsvedtak,
         foreldreansvarsdato: barn.foreldreansvarsdato,
         fødselsdatoer: barn.fødselsdatoer,
         omsorgsovertakelse: barn.omsorgsovertakelse,
     });
 
-export const cleanupBarn = (barn: Partial<Barn>, situasjon: Søkersituasjon): Partial<Barn> | undefined => {
-    if (isFødtBarn(barn, situasjon)) {
-        return getFødtBarnProps(barn);
+export const cleanupBarn = (
+    barn: Partial<BarnInnsending>,
+    situasjon: Søkersituasjon
+): Partial<BarnInnsending> | undefined => {
+    if (isFødtBarnInnsending(barn, situasjon)) {
+        return getFødtBarnInnsendingProps(barn);
     }
-    if (isUfødtBarn(barn, situasjon)) {
-        return getUfødtBarnProps(barn);
+    if (isUfødtBarnInnsending(barn, situasjon)) {
+        return getUfødtBarnInnsendingProps(barn);
     }
-    if (isAdopsjonsbarn(barn, situasjon)) {
-        return getAdopsjonsbarnProps(barn);
+    if (isAdopsjonsbarnInnsending(barn, situasjon)) {
+        return getAdopsjonsbarnInnsendingProps(barn);
     }
-    if (isForeldreansvarsbarn(barn, situasjon)) {
-        return getForeldreansvarsbarnProps(barn);
+    if (isForeldreansvarsbarnInnsending(barn, situasjon)) {
+        return getForeldreansvarsbarnInnsendingProps(barn);
     }
     return undefined;
 };

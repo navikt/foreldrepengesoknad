@@ -7,6 +7,7 @@ import Person, { RegistrertBarn } from 'app/types/Person';
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { InfoPeriode, Periodetype } from 'app/types/uttaksplan/periodetyper';
 import { Søknadsinfo } from 'app/selectors/types';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 
 describe('missingAttachmentUtil', () => {
     describe('barn', () => {
@@ -95,7 +96,7 @@ describe('missingAttachmentUtil', () => {
                             rolle: SøkerRolle.FAR,
                         },
                         barn: {
-                            datoForAleneomsorg: new Date(),
+                            datoForAleneomsorg: dateToISOString(new Date()),
                         },
                     } as Søknad,
                     søkerinfo

@@ -17,6 +17,7 @@ import AttachmentsUploaderPure from 'app/components/storage/attachment/component
 import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { Element } from 'nav-frontend-typografi';
+import { isISODateString } from 'nav-datovelger';
 
 interface StateProps {
     barn: FødtBarn;
@@ -33,11 +34,12 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const getFødselsdatoer = (fødselsdatoer?: Date[]): Date[] => {
+const getFødselsdatoer = (fødselsdatoer?: string[]): string[] => {
     return fødselsdatoer !== undefined &&
         fødselsdatoer.length > 0 &&
         fødselsdatoer[0] !== null &&
-        fødselsdatoer[0] !== undefined
+        fødselsdatoer[0] !== undefined &&
+        isISODateString(fødselsdatoer[0]) !== undefined
         ? [fødselsdatoer[0]]
         : [];
 };
@@ -83,14 +85,14 @@ class FødtBarnPartial extends React.Component<Props> {
                         termindato={barn.termindato}
                         antallBarn={barn.antallBarn}
                         erFarMedmor={erFarMedmor}
-                        onChangeFødselsdato={(fødselsdatoer: Date[]) =>
+                        onChangeFødselsdato={(fødselsdatoer) =>
                             dispatch(
                                 søknadActions.updateBarn({
                                     fødselsdatoer,
                                 })
                             )
                         }
-                        onChangeTermindato={(termindato: Date) => dispatch(søknadActions.updateBarn({ termindato }))}
+                        onChangeTermindato={(termindato) => dispatch(søknadActions.updateBarn({ termindato }))}
                     />
                 </Block>
                 <Block visible={vis.visInfoOmPrematuruker}>

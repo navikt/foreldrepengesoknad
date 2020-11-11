@@ -1,12 +1,14 @@
 import { IntlShape } from 'react-intl';
-import { dateIsNotInFutureRule, hasValueRule } from './common';
+import { dateIsNotInFutureRule, erGyldigDato, hasValueRule } from './common';
 import getMessage from 'common/util/i18nUtils';
-import { DateValue } from '../../types/common';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
-export const getFrilansOppstartRules = (oppstartsdato: DateValue, intl: IntlShape) => {
+export const getFrilansOppstartRules = (oppstartsdato: string | undefined, intl: IntlShape) => {
     const intlKey = 'valideringsfeil.frilansOppstart';
+
     return [
         hasValueRule(oppstartsdato, getMessage(intl, `${intlKey}.duMåOppgi`)),
-        dateIsNotInFutureRule(oppstartsdato, getMessage(intl, `${intlKey}.måVæreIdagEllerTidligere`)),
+        erGyldigDato(oppstartsdato, getMessage(intl, `${intlKey}.gyldigDato`)),
+        dateIsNotInFutureRule(ISOStringToDate(oppstartsdato), getMessage(intl, `${intlKey}.måVæreIdagEllerTidligere`)),
     ];
 };

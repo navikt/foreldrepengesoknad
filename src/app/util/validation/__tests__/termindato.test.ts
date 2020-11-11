@@ -3,17 +3,18 @@ import * as getMessage from 'common/util/i18nUtils';
 import { getTermindatoRegler } from '../termindato';
 import { date21DaysAgo, date22DaysAgo, attenUkerPluss3, attenUkerPluss4, today } from '../values';
 import * as commonRules from '../common';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 
 const intl: Partial<IntlShape> = {};
 const callIkkeMerEnn3UkerSiden = (termindato: Date) => {
-    return getTermindatoRegler(termindato, intl as IntlShape)[1].test();
+    return getTermindatoRegler(dateToISOString(termindato), intl as IntlShape)[2].test();
 };
 const callIUke22 = (termindato: Date) => {
-    return getTermindatoRegler(termindato, intl as IntlShape)[2].test();
+    return getTermindatoRegler(dateToISOString(termindato), intl as IntlShape)[3].test();
 };
 
 const someString = '';
-const todaysDate = today.toDate();
+const todaysDate = dateToISOString(today.toDate());
 
 describe('Termindato validation', () => {
     beforeEach(() => {

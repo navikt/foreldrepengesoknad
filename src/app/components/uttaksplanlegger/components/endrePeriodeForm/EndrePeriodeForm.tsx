@@ -105,12 +105,14 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
                             periode={periode}
                             onChange={this.onChange}
                             antallFeriedager={antallFeriedager}
+                            erNyPeriode={false}
                         />
                     ) : (
                         <UttakForm
                             periode={periode as Uttaksperiode}
                             onChange={this.onChange}
                             kanEndreStønadskonto={!erForeldrepengerFørFødselPeriode}
+                            erNyPeriode={false}
                         />
                     )}
                     <Block visible={!erForeldrepengerFørFødselPeriode} margin="xs">

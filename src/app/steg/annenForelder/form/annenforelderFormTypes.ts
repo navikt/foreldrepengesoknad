@@ -24,7 +24,7 @@ export interface AnnenForelderFormValues {
     [AnnenForelderFieldNames.utenlandskFnr]: boolean;
     [AnnenForelderFieldNames.aleneOmOmsorg]: YesOrNo;
     [AnnenForelderFieldNames.erMorUfør]: YesOrNo;
-    [AnnenForelderFieldNames.datoForAleneomsorg]: Date;
+    [AnnenForelderFieldNames.datoForAleneomsorg]: string;
     [AnnenForelderFieldNames.bostedsland]: string;
 }
 

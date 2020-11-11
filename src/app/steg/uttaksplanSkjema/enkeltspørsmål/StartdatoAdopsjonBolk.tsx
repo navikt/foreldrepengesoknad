@@ -1,16 +1,18 @@
 import * as React from 'react';
-import FlervalgSpørsmål from '../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
-import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
-import { Adopsjonsbarn } from '../../../types/søknad/Barn';
-import Block from 'common/components/block/Block';
-import { formaterDatoUtenDag } from 'common/util/datoUtils';
-import { useIntl, IntlShape } from 'react-intl';
-import { ValgalternativerAdopsjonStartdato } from '../uttaksplanSkjemadata';
-import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
-import getMessage from 'common/util/i18nUtils';
-import { uttaksplanDatoavgrensninger } from '../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
-import { DateValue } from '../../../types/common';
+import { IntlShape, useIntl } from 'react-intl';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { RadioProps } from 'nav-frontend-skjema';
+import Block from 'common/components/block/Block';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
+import { formaterDatoUtenDag } from 'common/util/datoUtils';
+import getMessage from 'common/util/i18nUtils';
+import FlervalgSpørsmål from '../../../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
+import { DateValue } from '../../../types/common';
+import { Adopsjonsbarn } from '../../../types/søknad/Barn';
+import { uttaksplanDatoavgrensninger } from '../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
+import { ValgalternativerAdopsjonStartdato } from '../uttaksplanSkjemadata';
+import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
+import { erGyldigDato } from 'app/util/validation/common';
 
 interface OwnProps {
     barn: Adopsjonsbarn;
@@ -37,9 +39,9 @@ const getStartdatoFromAlternativ = (
     valgtVerdi?: Date
 ): DateValue => {
     if (alternativ === ValgalternativerAdopsjonStartdato.omsorgsovertakelse) {
-        return barn.adopsjonsdato;
+        return ISOStringToDate(barn.adopsjonsdato);
     } else if (alternativ === ValgalternativerAdopsjonStartdato.ankomst) {
-        return barn.ankomstdato;
+        return ISOStringToDate(barn.ankomstdato);
     }
     return valgtVerdi;
 };
@@ -50,9 +52,13 @@ const StartdatoAdopsjonBolk = (props: Props) => {
 
     const alternativer: RadioProps[] = [];
     if (barn.adoptertIUtlandet && barn.ankomstdato) {
-        alternativer.push(getAlternativ(intl, ValgalternativerAdopsjonStartdato.ankomst, barn.ankomstdato));
+        alternativer.push(
+            getAlternativ(intl, ValgalternativerAdopsjonStartdato.ankomst, ISOStringToDate(barn.ankomstdato))
+        );
     }
-    alternativer.push(getAlternativ(intl, ValgalternativerAdopsjonStartdato.omsorgsovertakelse, barn.adopsjonsdato));
+    alternativer.push(
+        getAlternativ(intl, ValgalternativerAdopsjonStartdato.omsorgsovertakelse, ISOStringToDate(barn.adopsjonsdato))
+    );
     alternativer.push(getAlternativ(intl, ValgalternativerAdopsjonStartdato.annen));
 
     return (
@@ -71,10 +77,12 @@ const StartdatoAdopsjonBolk = (props: Props) => {
                             onChange={(value: ValgalternativerAdopsjonStartdato) =>
                                 onChange({
                                     valgtAdopsjonStartdato: value,
-                                    startdatoPermisjon: getStartdatoFromAlternativ(
-                                        value,
-                                        barn,
-                                        data.startdatoPermisjon
+                                    startdatoPermisjon: dateToISOString(
+                                        getStartdatoFromAlternativ(
+                                            value,
+                                            barn,
+                                            ISOStringToDate(data.startdatoPermisjon)
+                                        )
                                     ),
                                 })
                             }
@@ -90,6 +98,19 @@ const StartdatoAdopsjonBolk = (props: Props) => {
                             datoAvgrensinger={uttaksplanDatoavgrensninger.startdatoPermisjonAdopsjon(
                                 familiehendelsesdato
                             )}
+                            validators={
+                                data.startdatoPermisjon
+                                    ? [
+                                          erGyldigDato(
+                                              data.startdatoPermisjon,
+                                              getMessage(
+                                                  intl,
+                                                  'valideringsfeil.spørsmål.startdatoAdopsjon.annenDato.gyldigDato'
+                                              )
+                                          ),
+                                      ]
+                                    : undefined
+                            }
                         />
                     </Block>
                 </>

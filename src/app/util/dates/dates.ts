@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { Alder, DateValue } from '../../types/common';
 import { Tidsperiode } from 'common/types';
 import {
@@ -12,8 +13,6 @@ import { FamiliehendelseDatoer } from '../../types/søknad/FamiliehendelseDatoer
 import { Periode, Periodetype } from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from '../uttaksplan/Perioden';
 import { Tidsperioden } from '../uttaksplan/Tidsperioden';
-
-const moment = require('moment');
 
 export interface DateRange {
     from: Date;
@@ -230,6 +229,28 @@ const validateFromDate = (date: Date | undefined, minDate: Date, maxDate: Date, 
     return undefined;
 };
 
+const validateFromDateUttak = (date: Date | undefined, minDate: Date, maxDate: Date, toDate?: Date) => {
+    const error = validateDateInRange(date, minDate, maxDate);
+
+    if (error !== undefined) {
+        return error;
+    }
+
+    if (toDate && moment(date).isAfter(toDate, 'day')) {
+        return {
+            key: 'valideringsfeil.uttakTidsperiode.førTilDato',
+        };
+    }
+
+    if (date && (moment(date).isoWeekday() === 6 || moment(date).isoWeekday() === 7)) {
+        return {
+            key: 'valideringsfeil.uttakTidsperiode.erHelgedag',
+        };
+    }
+
+    return undefined;
+};
+
 const validateToDate = (date: Date | undefined, minDate: Date, maxDate: Date, fromDate?: Date) => {
     const error = validateDateInRange(date, minDate, maxDate);
     if (error !== undefined) {
@@ -243,9 +264,33 @@ const validateToDate = (date: Date | undefined, minDate: Date, maxDate: Date, fr
     return undefined;
 };
 
+const validateToDateUttak = (date: Date | undefined, minDate: Date, maxDate: Date, fromDate?: Date) => {
+    const error = validateDateInRange(date, minDate, maxDate);
+
+    if (error !== undefined) {
+        return error;
+    }
+
+    if (fromDate && moment(date).isBefore(fromDate, 'day')) {
+        return {
+            key: 'valideringsfeil.uttakTidsperiode.etterFraDato',
+        };
+    }
+
+    if (date && (moment(date).isoWeekday() === 6 || moment(date).isoWeekday() === 7)) {
+        return {
+            key: 'valideringsfeil.uttakTidsperiode.erHelgedag',
+        };
+    }
+
+    return undefined;
+};
+
 export const dateRangeValidation = {
     validateToDate,
     validateFromDate,
+    validateFromDateUttak,
+    validateToDateUttak,
 };
 
 export const sortDateRange = (d1: DateRange, d2: DateRange): number => {

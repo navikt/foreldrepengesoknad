@@ -13,9 +13,17 @@ import {
     dateIs15YearsAnd3MonthsAgoOrLess,
 } from '../dates/dates';
 import { maxLengthIsGreaterThanOrEqualToStringLength } from '../stringUtils';
+import { isISODateString } from 'nav-datovelger';
 
 export const hasValueRule = (v: any, failText: string): Validator => ({
     test: () => v !== undefined && v !== '',
+    failText,
+});
+
+export const erGyldigDato = (dato: string | undefined, failText: string, isOptional?: boolean): Validator => ({
+    test: () => {
+        return isOptional || isISODateString(dato);
+    },
     failText,
 });
 

@@ -18,7 +18,7 @@ import VeilederInfo from 'app/components/veilederInfo/VeilederInfo';
 import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 import * as countries from 'i18n-iso-countries';
 import UtenlandsoppholdForm from './UtenlandsoppholdForm';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { formatDate } from 'app/util/dates/dates';
 import { UtenlandsoppholdFormValues } from './form/utenlandsoppholdFormTypes';
 import { BostedUtland } from './bostedUtlandListAndDialog/types';
@@ -74,7 +74,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
 
         let termindato: Date | undefined;
         if (isUfødtBarn(barn, situasjon)) {
-            termindato = barn.termindato;
+            termindato = ISOStringToDate(barn.termindato);
         }
 
         if (termindato !== undefined) {
@@ -116,7 +116,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                                         contentIntlKey: 'utenlandsopphold.infoOmFødselsattest',
                                         values: {
                                             land: this.getCountryName(countryNames, relevantUtenlandsopphold),
-                                            termindato: formatDate((barn as UfødtBarn).termindato),
+                                            termindato: formatDate(ISOStringToDate((barn as UfødtBarn).termindato)),
                                         },
                                     },
                                 ]}

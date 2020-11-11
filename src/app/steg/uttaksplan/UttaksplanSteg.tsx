@@ -1,69 +1,69 @@
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { connect } from 'react-redux';
-
-import { AppState } from '../../redux/reducers';
-import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import { default as Steg, StegProps } from '../../components/applikasjon/steg/Steg';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import moment from 'moment';
+import ApplicationSpinner from 'common/components/applicationSpinner/ApplicationSpinner';
+import Block from 'common/components/block/Block';
 import { DispatchProps } from 'common/redux/types';
+import { Forelder } from 'common/types';
+import getMessage from 'common/util/i18nUtils';
+import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
+import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
+import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
+import FeatureBlock from 'app/components/elementer/featureBlock/FeatureBlock';
+import { Attachment } from 'app/components/storage/attachment/types/Attachment';
+import OversiktBrukteDager from 'app/components/uttaksplanlegger/components/oversiktBrukteDager/OversiktBrukteDager';
+import UttaksplanFeiloppsummering from 'app/components/uttaksplanlegger/components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
+import { VeiledermeldingerPerPeriode, VeilederMessage } from 'app/components/veilederInfo/types';
+import { Feature } from 'app/Feature';
+import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
+import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
+import {
+    selectPeriodelisteMeldinger,
+    selectUttaksplanVeilederinfo,
+} from 'app/selectors/uttaksplanVeilederinfoSelector';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { Saksgrunnlag, Saksperiode } from 'app/types/EksisterendeSak';
+import Barn from 'app/types/søknad/Barn';
+import Sak from 'app/types/søknad/Sak';
+import { getEndringstidspunkt } from 'app/util/dates/dates';
+import addPeriode from 'app/util/uttaksplan/builder/addPeriode';
+import deletePeriode from 'app/util/uttaksplan/builder/deletePeriode';
+import updatePeriode from 'app/util/uttaksplan/builder/updatePeriode';
+import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import {
     getSeneEndringerSomKreverBegrunnelse,
     skalKunneViseMorsUttaksplanForFarEllerMedmor,
 } from 'app/util/uttaksplan/uttakUtils';
-import { Forelder } from 'common/types';
+import { default as Steg, StegProps } from '../../components/applikasjon/steg/Steg';
 import { getPeriodelisteElementId } from '../../components/uttaksplanlegger/components/periodeliste/Periodeliste';
+import Uttaksplanlegger from '../../components/uttaksplanlegger/Uttaksplanlegger';
+import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
+import apiActionCreators from '../../redux/actions/api/apiActionCreators';
+import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
+import { AppState } from '../../redux/reducers';
+import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import { selectSøknadsinfo } from '../../selectors/søknadsinfoSelector';
-import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
-import { getUttaksstatus, Uttaksstatus } from '../../util/uttaksplan/uttaksstatus';
+import { Søknadsinfo } from '../../selectors/types';
 import { HistoryProps } from '../../types/common';
+import { SøkerinfoProps } from '../../types/søkerinfo';
+import Søknad, { Opplysning, Tilleggsopplysninger } from '../../types/søknad/Søknad';
 import {
     Periode,
-    TilgjengeligStønadskonto,
     SenEndringÅrsak,
     StønadskontoType,
+    TilgjengeligStønadskonto,
 } from '../../types/uttaksplan/periodetyper';
-import { SøkerinfoProps } from '../../types/søkerinfo';
-import { Søknadsinfo } from '../../selectors/types';
 import { StegID } from '../../util/routing/stegConfig';
-import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
-import apiActionCreators from '../../redux/actions/api/apiActionCreators';
-import ApplicationSpinner from 'common/components/applicationSpinner/ApplicationSpinner';
+import isAvailable from '../../util/steg/isAvailable';
+import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
+import { getUttaksstatus, Uttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjemaDialog';
 import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
 import BekreftTilbakestillUttaksplanDialog from './BekreftTilbakestillUttaksplanDialog';
-import Block from 'common/components/block/Block';
-import isAvailable from '../../util/steg/isAvailable';
-import Søknad, { Tilleggsopplysninger, Opplysning } from '../../types/søknad/Søknad';
-import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
-import Uttaksplanlegger from '../../components/uttaksplanlegger/Uttaksplanlegger';
-import {
-    selectUttaksplanVeilederinfo,
-    selectPeriodelisteMeldinger,
-} from 'app/selectors/uttaksplanVeilederinfoSelector';
-import VeilederInfo from '../../components/veilederInfo/VeilederInfo';
-import { injectIntl, IntlShape } from 'react-intl';
-import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
-import { GetTilgjengeligeStønadskontoerParams } from 'app/api/api';
-import getMessage from 'common/util/i18nUtils';
-import Sak from 'app/types/søknad/Sak';
-import { Saksgrunnlag, Saksperiode } from 'app/types/EksisterendeSak';
-import { selectPerioderSomSkalSendesInn } from 'app/selectors/søknadSelector';
-import { VeilederMessage, VeiledermeldingerPerPeriode } from 'app/components/veilederInfo/types';
-import UttaksplanFeiloppsummering from 'app/components/uttaksplanlegger/components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
-import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
-import Barn from 'app/types/søknad/Barn';
-import OversiktBrukteDager from 'app/components/uttaksplanlegger/components/oversiktBrukteDager/OversiktBrukteDager';
 import DevPerioderSomSendesInn from './DevPerioderSomSendesInn';
-import FeatureBlock from 'app/components/elementer/featureBlock/FeatureBlock';
-import { Feature } from 'app/Feature';
-import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
-import addPeriode from 'app/util/uttaksplan/builder/addPeriode';
-import deletePeriode from 'app/util/uttaksplan/builder/deletePeriode';
-import updatePeriode from 'app/util/uttaksplan/builder/updatePeriode';
-import { getEndringstidspunkt } from 'app/util/dates/dates';
-import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
-import moment from 'moment';
+import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
 import OppgiTilleggsopplysninger from './OppgiTilleggsopplysninger';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 
@@ -175,7 +175,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             if (tilgjengeligeStønadskontoer.length === 0) {
                 const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
                     søknadsinfo,
-                    startdatoPermisjon,
+                    ISOStringToDate(startdatoPermisjon),
                     barn,
                     grunnlag
                 );
@@ -545,7 +545,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         const { søknaden, søker, uttaksdatoer, annenForelder } = søknadsinfo;
 
         if (!søknaden.erFødsel && startdatoPermisjon !== undefined) {
-            relevantStartDatoForUttak = startdatoPermisjon;
+            relevantStartDatoForUttak = ISOStringToDate(startdatoPermisjon);
         }
 
         if (
@@ -554,8 +554,12 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
             søker.erFarEllerMedmor &&
             !søknad.ekstrainfo.erEnkelEndringssøknad
         ) {
-            const { morSinSisteUttaksdag } = state.søknad.ekstrainfo.uttaksplanSkjema;
-            const dagEtterMorsSisteDag = morSinSisteUttaksdag ? Uttaksdagen(morSinSisteUttaksdag).neste() : undefined;
+            const morSinSisteUttaksdagDate = ISOStringToDate(
+                state.søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag
+            );
+            const dagEtterMorsSisteDag = morSinSisteUttaksdagDate
+                ? Uttaksdagen(morSinSisteUttaksdagDate).neste()
+                : undefined;
             const { førsteUttaksdagEtterSeksUker } = uttaksdatoer.etterFødsel;
 
             relevantStartDatoForUttak =

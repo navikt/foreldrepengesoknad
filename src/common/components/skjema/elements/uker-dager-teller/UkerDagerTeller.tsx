@@ -15,8 +15,7 @@ export interface Props {
     dagStepper: NumberStepperProps;
 }
 
-const UkerDagerTeller: React.StatelessComponent<Props> = (props) => {
-    const { ukeLegend, dagLegend, feil, ukeStepper, dagStepper } = props;
+const UkerDagerTeller: React.FunctionComponent<Props> = ({ ukeLegend, dagLegend, feil, ukeStepper, dagStepper }) => {
     const bem = BEMHelper('ukerDagerTeller');
     return (
         <SkjemaGruppe feil={feil}>

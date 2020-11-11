@@ -1,22 +1,23 @@
 import * as React from 'react';
-import getMessage from 'common/util/i18nUtils';
 import { injectIntl, IntlShape } from 'react-intl';
-import { formatDate } from '../../../../../util/dates/dates';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import getMessage from 'common/util/i18nUtils';
+import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
+import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+import AnnenForelder from '../../../../../types/søknad/AnnenForelder';
 import Barn, {
     Adopsjonsbarn,
     ForeldreansvarBarn,
     FødtBarn,
-    UfødtBarn,
-    isFødtBarn,
     isAdopsjonsbarn,
     isForeldreansvarsbarn,
+    isFødtBarn,
     isUfødtBarn,
+    UfødtBarn,
 } from '../../../../../types/søknad/Barn';
 import { Søkersituasjon } from '../../../../../types/søknad/Søknad';
-import AnnenForelder from '../../../../../types/søknad/AnnenForelder';
-import Oppsummeringsseksjon from 'app/steg/oppsummering/components/oppsummeringsseksjon/Oppsummeringsseksjon';
-import Feltoppsummering from 'app/steg/oppsummering/components/feltoppsummering/Feltoppsummering';
-import OppsummeringAvDokumentasjon from 'app/steg/oppsummering/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import { formatDate } from '../../../../../util/dates/dates';
 
 interface RelasjonTilBarnOppsummeringProps {
     barn: Barn;
@@ -50,7 +51,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 {foreldreansvarsdato && (
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.foreldreansvarsdato.label')}
-                        verdi={formatDate(foreldreansvarsdato) || ''}
+                        verdi={formatDate(ISOStringToDate(foreldreansvarsdato)) || ''}
                     />
                 )}
                 {antallBarn && (
@@ -62,7 +63,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 {fødselsdatoer && (
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.fødselsdato.label')}
-                        verdi={formatDate(fødselsdatoer[0]) || ''}
+                        verdi={formatDate(ISOStringToDate(fødselsdatoer[0])) || ''}
                     />
                 )}
                 <OppsummeringAvDokumentasjon
@@ -89,7 +90,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
             <>
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.fødselsdato.label')}
-                    verdi={formatDate(fødselsdatoer[0]) || ''}
+                    verdi={formatDate(ISOStringToDate(fødselsdatoer[0])) || ''}
                 />
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.adopsjonAvEktefellesBarn.label')}
@@ -104,7 +105,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 {adopsjonsdato && (
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.adopsjonsdato.label')}
-                        verdi={formatDate(adopsjonsdato) || ''}
+                        verdi={formatDate(ISOStringToDate(adopsjonsdato)) || ''}
                     />
                 )}
                 <Feltoppsummering
@@ -114,7 +115,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 {ankomstdato && (
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.ankomstdato.label')}
-                        verdi={formatDate(ankomstdato) || ''}
+                        verdi={formatDate(ISOStringToDate(ankomstdato)) || ''}
                     />
                 )}
                 <OppsummeringAvDokumentasjon
@@ -139,7 +140,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 )}
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.fødselsdato.label')}
-                    verdi={formatDate(fødselsdatoer[0]) || ''}
+                    verdi={formatDate(ISOStringToDate(fødselsdatoer[0])) || ''}
                 />
                 {/*
                     // This has been commented out as users won't have to upload birth certificate
@@ -183,13 +184,13 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 )}
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.termindato')}
-                    verdi={formatDate(termindato) || ''}
+                    verdi={formatDate(ISOStringToDate(termindato)) || ''}
                 />
                 {skalLasteOppTerminbekreftelse && <OppsummeringAvDokumentasjon vedlegg={terminbekreftelse || []} />}
                 {terminbekreftelseDato && (
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.terminbekreftelseDato.label')}
-                        verdi={formatDate(terminbekreftelseDato) || ''}
+                        verdi={formatDate(ISOStringToDate(terminbekreftelseDato)) || ''}
                     />
                 )}
             </>

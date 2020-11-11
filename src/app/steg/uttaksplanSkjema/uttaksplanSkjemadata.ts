@@ -12,8 +12,8 @@ export enum ValgalternativerAleneomsorgFarMedmor {
 }
 
 export interface UttaksplanSkjemadata {
-    startdatoPermisjon?: Date;
-    morSinSisteUttaksdag?: Date;
+    startdatoPermisjon?: string;
+    morSinSisteUttaksdag?: string;
     skalStarteRettEtterMor?: boolean;
     skalIkkeHaUttakFørTermin?: boolean;
     harPlanlagtOppholdIUttak?: boolean;
@@ -25,7 +25,7 @@ export interface UttaksplanSkjemadata {
     planlagtOppholdSkjemaValid?: boolean;
     valgtAdopsjonStartdato?: ValgalternativerAdopsjonStartdato;
     valgtStartdatoAleneomsorgFarMedmor?: ValgalternativerAleneomsorgFarMedmor;
-    farSinFørsteUttaksdag?: Date;
+    farSinFørsteUttaksdag?: string;
     antallUkerFellesperiodeFarMedmor?: number;
     antallDagerFellesperiodeFarMedmor?: number;
     begrunnelseForUtsettelse?: UtsettelseÅrsakType;

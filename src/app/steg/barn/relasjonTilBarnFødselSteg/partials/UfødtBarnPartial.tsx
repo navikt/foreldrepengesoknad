@@ -1,22 +1,21 @@
 import * as React from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
-import { UfødtBarn } from '../../../../types/søknad/Barn';
-import MorForSykSpørsmål from '../../../../spørsmål/MorForSykSpørsmål';
-import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
-import AntallBarnBolk from '../../components/AntallBarnBolk';
+import Block from 'common/components/block/Block';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { DispatchProps } from 'common/redux/types/index';
 import getMessage from 'common/util/i18nUtils';
-import Søker from '../../../../types/søknad/Søker';
-import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
-import { getTermindatoRegler, termindatoAvgrensninger } from '../../../../util/validation/termindato';
-import TerminbekreftelsePartial from './TerminbekreftelsePartial';
-import DatoInput from 'common/components/skjema/wrappers/DatoInput';
-import Block from 'common/components/block/Block';
-import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
-import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 import VeilederInfo from '../../../../components/veilederInfo/VeilederInfo';
-
+import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
+import MorForSykSpørsmål from '../../../../spørsmål/MorForSykSpørsmål';
+import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
+import { UfødtBarn } from '../../../../types/søknad/Barn';
+import Søker from '../../../../types/søknad/Søker';
+import { Søkersituasjon } from '../../../../types/søknad/Søknad';
+import { getTermindatoRegler, termindatoAvgrensninger } from '../../../../util/validation/termindato';
+import AntallBarnBolk from '../../components/AntallBarnBolk';
+import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
+import TerminbekreftelsePartial from './TerminbekreftelsePartial';
 import './ufødtBarnPartial.less';
 
 interface UfødtBarnPartialProps {
@@ -88,7 +87,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                                     name="termindato"
                                     label={getMessage(intl, 'termindato.spørsmål')}
                                     infotekst={getMessage(intl, 'termindato.infotekst')}
-                                    onChange={(termindato: Date) => {
+                                    onChange={(termindato) => {
                                         dispatch(
                                             søknadActions.updateBarn({
                                                 termindato,

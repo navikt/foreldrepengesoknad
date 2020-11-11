@@ -1,10 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { Periode, Periodetype, Uttaksperiode, UtsettelseÅrsakType } from '../../../../types/uttaksplan/periodetyper';
-import UtsettelsesperiodeForm, {
-    UtsettelseFormPeriodeType,
-    Utsettelsesvariant,
-} from '../utsettelseForm/UtsettelseForm';
+import UtsettelseForm, { UtsettelseFormPeriodeType, Utsettelsesvariant } from '../utsettelseForm/UtsettelseForm';
 import ValiderbarForm, { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import './nyPeriodeForm.less';
 import Block from 'common/components/block/Block';
@@ -156,12 +153,13 @@ class NyPeriodeForm extends React.Component<Props, State> {
                             tittel={getMessage(intl, 'nyPeriodeForm.utsettelse.tittel')}
                             ikon={this.getUtsettelsePeriodeFormTittelIkon(periode as Periode)}
                         />
-                        <UtsettelsesperiodeForm
+                        <UtsettelseForm
                             antallFeriedager={antallFeriedager}
                             periode={periode as UtsettelseFormPeriodeType}
                             onChange={this.updatePeriode}
                             onCancel={onCancel}
                             onUtsettelsesvariantChange={(utsettelsesvariant) => this.setState({ utsettelsesvariant })}
+                            erNyPeriode={true}
                         />
                     </>
                 )}
@@ -178,6 +176,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                             kanEndreStønadskonto={true}
                             onChange={this.updatePeriode}
                             onCancel={onCancel}
+                            erNyPeriode={true}
                         />
                     </>
                 )}

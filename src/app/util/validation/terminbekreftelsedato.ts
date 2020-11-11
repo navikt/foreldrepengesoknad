@@ -3,9 +3,10 @@ import getMessage from 'common/util/i18nUtils';
 import { IntlShape } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
 import { date1YearAgo, attenUkerPluss3Number, today } from './values';
-import { dateIsNotInFutureRule, hasValueRule } from './common';
+import { dateIsNotInFutureRule, erGyldigDato, hasValueRule } from './common';
 import { DateValue } from '../../types/common';
 import { Avgrensninger } from 'common/types';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
 export const getTerminbekreftelsedatoAvgrensninger = (termindato?: Date): Avgrensninger => ({
     minDato: termindato
@@ -17,7 +18,7 @@ export const getTerminbekreftelsedatoAvgrensninger = (termindato?: Date): Avgren
 });
 
 export const getTerminbekreftelseDatoRegler = (
-    terminbekreftelseDato: DateValue,
+    terminbekreftelseDato: string | undefined,
     termindato: DateValue,
     intl: IntlShape
 ): Validator[] => {
@@ -27,7 +28,8 @@ export const getTerminbekreftelseDatoRegler = (
 
     return [
         hasValueRule(terminbekreftelseDato, getMessage(intl, `${intlKey}.duMåOppgi`)),
-        dateIsNotInFutureRule(terminbekreftelseDato, getMessage(intl, `${intlKey}.forSen`)),
+        erGyldigDato(terminbekreftelseDato, getMessage(intl, `${intlKey}.gyldigDato`)),
+        dateIsNotInFutureRule(ISOStringToDate(terminbekreftelseDato), getMessage(intl, `${intlKey}.forSen`)),
         {
             test: () =>
                 moment
