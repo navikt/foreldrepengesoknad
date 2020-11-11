@@ -89,8 +89,8 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                                             label: getMessage(intl, 'fraogmed'),
                                             fullscreenOverlay: true,
                                             minDate: datoAvgrensninger.fra.minDato,
+                                            maxDate: ISOStringToDate(values.tom) || datoAvgrensninger.fra.maksDato,
                                             invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
-                                            maxDate: ISOStringToDate(values.fom) || datoAvgrensninger.fra.maksDato,
                                             disableWeekend: datoAvgrensninger.fra.helgedagerIkkeTillatt,
                                             validate: (value) =>
                                                 dateRangeValidation.validateFromDateUttak(
