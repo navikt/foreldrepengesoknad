@@ -1,7 +1,7 @@
 import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
 import InformasjonOmUtenlandsopphold, { InformasjonOmUtenlandsoppholdPartial } from './InformasjonOmUtenlandsopphold';
-import { Barn } from './Barn';
-import Søker, { SøkerPartial } from './Søker';
+import { Barn, BarnInnsending } from './Barn';
+import Søker, { SøkerInnsending, SøkerPartial } from './Søker';
 import { Attachment } from 'app/components/storage/attachment/types/Attachment';
 import { RegistrertAnnenForelder, RegistrertBarn } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
@@ -81,6 +81,11 @@ interface Søknad {
     tilleggsopplysninger: Tilleggsopplysninger;
 }
 
+interface SøknadInnsending extends Omit<Søknad, 'søker' | 'barn'> {
+    søker: SøkerInnsending;
+    barn: BarnInnsending;
+}
+
 interface SøknadEndretForInnsending {
     tilleggsopplysninger?: string;
 }
@@ -101,7 +106,7 @@ export type EnkelEndringssøknadForInnsending = Pick<
     SøknadEndretForInnsending;
 
 export type SøknadForInnsending = Omit<
-    Søknad,
+    SøknadInnsending,
     'ekstrainfo' | 'sensitivInfoIkkeLagre' | 'vedleggForSenEndring' | 'tilleggsopplysninger'
 > &
     SøknadEndretForInnsending;

@@ -14,9 +14,12 @@ import {
     Arbeidsform,
 } from '../../types/uttaksplan/periodetyper';
 import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
-import { Barn } from '../../types/søknad/Barn';
+import { Barn, BarnInnsending } from '../../types/søknad/Barn';
 import { cleanupBarn } from '../barnUtils';
 import AnnenForelder from 'app/types/søknad/AnnenForelder';
+import Søker, { SøkerInnsending } from 'app/types/søknad/Søker';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { isISODateString } from 'nav-datovelger';
 
 export const isArrayOfAttachments = (object: any) => {
     return (
@@ -117,9 +120,9 @@ const changeGradertPeriode = (periode: Periode) => {
     }
     return periode;
 };
-const ensureNoNullItemsInFødselsdatoer = (barn: Barn, situasjon: Søkersituasjon): Barn => {
+const ensureNoNullItemsInFødselsdatoer = (barn: BarnInnsending, situasjon: Søkersituasjon): BarnInnsending => {
     const cleanedBarn = cleanupBarn(barn, situasjon);
-    return (cleanedBarn as Barn) || barn;
+    return (cleanedBarn as BarnInnsending) || barn;
 };
 
 const cleanupUttaksplan = (uttaksplan: Periode[], annenForelder?: AnnenForelder): Periode[] => {
@@ -140,9 +143,31 @@ const cleanupTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger)
     return undefined;
 };
 
+const konverterStringDatoerIObjektTilDate = <T, U>(input: T): U => {
+    const inputJSON = JSON.stringify(input);
+
+    return JSON.parse(inputJSON, (_key, value) => {
+        if (isISODateString(value)) {
+            return ISOStringToDate(value);
+        }
+
+        return value;
+    });
+};
+
 export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
-    const { ekstrainfo, sensitivInfoIkkeLagre, vedleggForSenEndring, tilleggsopplysninger, ...rest } = søknad;
-    const cleanedSøknad: SøknadForInnsending = { ...rest };
+    const {
+        ekstrainfo,
+        sensitivInfoIkkeLagre,
+        vedleggForSenEndring,
+        tilleggsopplysninger,
+        søker,
+        barn,
+        ...rest
+    } = søknad;
+    const søkerInnsending = konverterStringDatoerIObjektTilDate<Søker, SøkerInnsending>(søker);
+    const barnInnsending = konverterStringDatoerIObjektTilDate<Barn, BarnInnsending>(barn);
+    const cleanedSøknad: SøknadForInnsending = { søker: søkerInnsending, barn: barnInnsending, ...rest };
 
     cleanedSøknad.barn = ensureNoNullItemsInFødselsdatoer(cleanedSøknad.barn, søknad.situasjon);
     cleanedSøknad.uttaksplan = cleanupUttaksplan(cleanedSøknad.uttaksplan, søknad.annenForelder);

@@ -1,4 +1,4 @@
-import { TidsperiodeStringMedValgfriSluttdato } from '../../../common/types';
+import { Tidsperiode, TidsperiodeStringMedValgfriSluttdato } from '../../../common/types';
 
 export interface FrilansOppdrag {
     navnPåArbeidsgiver: string;
@@ -12,6 +12,15 @@ export interface FrilansInformasjon {
     driverFosterhjem?: boolean;
     harJobbetForNærVennEllerFamilieSiste10Mnd: boolean;
     oppdragForNæreVennerEllerFamilieSiste10Mnd: FrilansOppdrag[];
+}
+
+export interface FrilansOppdragInnsending extends Omit<FrilansOppdrag, 'tidsperiode'> {
+    tidsperiode: Partial<Tidsperiode>;
+}
+
+export interface FrilansInformasjonInnsending
+    extends Omit<FrilansInformasjon, 'oppdragForNæreVennerEllerFamilieSiste10Mnd'> {
+    oppdragForNæreVennerEllerFamilieSiste10Mnd: FrilansOppdragInnsending[];
 }
 
 export type FrilansInformasjonPartial = Partial<FrilansInformasjon>;
