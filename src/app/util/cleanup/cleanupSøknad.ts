@@ -188,9 +188,9 @@ export const cleanEnkelEndringssøknad = (
         type: søknad.type,
         uttaksplan: endringerIUttaksplan,
         vedlegg: søknad.vedlegg,
-        søker: søknad.søker,
+        søker: konverterStringDatoerIObjektTilDate(søknad.søker),
         annenForelder: søknad.annenForelder,
-        barn: søknad.barn,
+        barn: konverterStringDatoerIObjektTilDate(søknad.barn),
         dekningsgrad: søknad.dekningsgrad,
         situasjon: søknad.situasjon,
     };

@@ -91,7 +91,7 @@ interface SøknadEndretForInnsending {
 }
 
 export type EnkelEndringssøknadForInnsending = Pick<
-    Søknad,
+    SøknadInnsending,
     | 'type'
     | 'saksnummer'
     | 'erEndringssøknad'
