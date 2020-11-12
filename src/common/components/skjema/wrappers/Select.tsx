@@ -7,7 +7,7 @@ import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 
 export type SelectWrapperProps = SkjemaelementProps & SelectProps;
 
-const Select: React.StatelessComponent<SelectWrapperProps> = (props: SelectWrapperProps) => {
+const Select: React.FunctionComponent<SelectWrapperProps> = (props: SelectWrapperProps) => {
     const id = props.id || guid();
     return (
         <ValiderbarSelect

@@ -76,7 +76,7 @@ export const getPeriodeIkon = (
     return undefined;
 };
 
-const PeriodeHeader: React.StatelessComponent<Props> = ({
+const PeriodeHeader: React.FunctionComponent<Props> = ({
     periode,
     navnPåForeldre,
     isOpen,

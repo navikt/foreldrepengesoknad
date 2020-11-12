@@ -9,7 +9,7 @@ import RadioPanelGruppeResponsive, {
 
 type Props = ValiderbartSkjemaelementProps & RadioPanelGruppeResponsiveProps;
 
-const ValiderbarRadioPanelGruppeResponsive: React.StatelessComponent<Props> = (props: Props) => {
+const ValiderbarRadioPanelGruppeResponsive: React.FunctionComponent<Props> = (props: Props) => {
     const { validators, optional, validateOnBlur, validateOnChange, ...inputProps } = props;
     return (
         <ValiderbartSkjemaelement

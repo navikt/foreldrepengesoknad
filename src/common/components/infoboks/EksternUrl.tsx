@@ -8,7 +8,7 @@ interface Props {
     lenkeTekst: string;
 }
 
-const EksternUrl: React.StatelessComponent<Props> = ({ tekst, url, lenkeTekst }) => {
+const EksternUrl: React.FunctionComponent<Props> = ({ tekst, url, lenkeTekst }) => {
     const intl = useIntl();
     return (
         <span>

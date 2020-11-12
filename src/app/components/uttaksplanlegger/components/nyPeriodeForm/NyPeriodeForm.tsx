@@ -43,7 +43,7 @@ type Props = OwnProps;
 
 const bem = BEMHelper('nyPeriodeForm');
 
-const PeriodeFormTittel: React.StatelessComponent<{
+const PeriodeFormTittel: React.FunctionComponent<{
     tittel: string;
     ikon?: React.ReactNode;
 }> = ({ tittel, ikon }) => {

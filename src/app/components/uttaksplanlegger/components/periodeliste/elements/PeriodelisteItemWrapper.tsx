@@ -10,7 +10,7 @@ export interface Props {
     border?: boolean;
 }
 
-const PeriodelisteItemWrapper: React.StatelessComponent<Props> = ({
+const PeriodelisteItemWrapper: React.FunctionComponent<Props> = ({
     isExpanded,
     farge,
     periodeFargestrek,

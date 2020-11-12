@@ -7,7 +7,7 @@ import {
 
 export type ValiderbarInputProps = ValiderbartSkjemaelementProps & InputProps;
 
-const ValiderbarInput: React.StatelessComponent<ValiderbarInputProps> = (props: ValiderbarInputProps) => {
+const ValiderbarInput: React.FunctionComponent<ValiderbarInputProps> = (props: ValiderbarInputProps) => {
     const { validators, optional, validateOnBlur, validateOnChange, ...inputProps } = props;
     return (
         <ValiderbartSkjemaelement

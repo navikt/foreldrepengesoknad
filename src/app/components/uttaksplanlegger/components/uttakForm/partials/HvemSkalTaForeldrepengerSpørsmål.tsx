@@ -11,7 +11,7 @@ interface HvemSkalTaForeldrepengerSpørsmålProps {
     onChange: (forelder: Forelder) => void;
 }
 
-const HvemSkalTaForeldrepengerSpørsmål: React.StatelessComponent<HvemSkalTaForeldrepengerSpørsmålProps> = ({
+const HvemSkalTaForeldrepengerSpørsmål: React.FunctionComponent<HvemSkalTaForeldrepengerSpørsmålProps> = ({
     navnPåForeldre,
     valgtForelder,
     onChange,

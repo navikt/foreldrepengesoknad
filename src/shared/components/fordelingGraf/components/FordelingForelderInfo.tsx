@@ -11,7 +11,7 @@ interface Props {
     highlightChanges?: boolean;
 }
 
-const FordelingForelderInfo: React.StatelessComponent<Props> = ({ info, highlightChanges, invertert }) => {
+const FordelingForelderInfo: React.FunctionComponent<Props> = ({ info, highlightChanges, invertert }) => {
     const tittelBem = fordelingGrafBem.child('tittel');
     const { antallDager, ikonRef, navn: navn, tittel, harForMangeDager } = info;
     return (

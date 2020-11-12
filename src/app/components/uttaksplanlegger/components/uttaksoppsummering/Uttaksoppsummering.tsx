@@ -13,7 +13,7 @@ export interface Props {
     erEndringssøknad: boolean;
 }
 
-const Uttaksoppsummering: React.StatelessComponent<Props> = ({
+const Uttaksoppsummering: React.FunctionComponent<Props> = ({
     uttaksstatus,
     navnPåForeldre,
     erDeltUttak,

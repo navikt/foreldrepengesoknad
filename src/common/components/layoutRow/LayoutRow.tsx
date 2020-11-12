@@ -12,7 +12,7 @@ export interface LayoutRowProps extends React.Props<any> {
     padding?: 'none' | 'small' | 'normal';
 }
 
-const LayoutRow: React.StatelessComponent<LayoutRowProps> = ({
+const LayoutRow: React.FunctionComponent<LayoutRowProps> = ({
     left,
     right,
     keepMargins,

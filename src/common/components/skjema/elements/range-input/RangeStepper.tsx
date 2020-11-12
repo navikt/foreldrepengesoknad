@@ -13,7 +13,7 @@ export interface Props {
     disabled?: boolean;
 }
 
-const RangeStepper: React.StatelessComponent<Props> = ({ direction, onClick, label, disabled }) => (
+const RangeStepper: React.FunctionComponent<Props> = ({ direction, onClick, label, disabled }) => (
     <Sirkelknapp
         stil="hvit"
         onClick={() => onClick()}

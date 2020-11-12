@@ -12,7 +12,7 @@ export interface Props {
     intl: IntlShape;
 }
 
-const AvbrytSøknadDialog: React.StatelessComponent<Props> = ({ intl, synlig, onAvbrytSøknad, onFortsettSøknad }) => (
+const AvbrytSøknadDialog: React.FunctionComponent<Props> = ({ intl, synlig, onAvbrytSøknad, onFortsettSøknad }) => (
     <>
         <BekreftDialog
             isOpen={synlig}

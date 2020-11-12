@@ -20,7 +20,7 @@ interface KvitteringSuksessProps {
 
 type Props = KvitteringSuksessProps;
 const cls = BEMHelper('kvittering');
-const KvitteringSuksess: React.StatelessComponent<Props> = ({ missingAttachments, intl }) => {
+const KvitteringSuksess: React.FunctionComponent<Props> = ({ missingAttachments, intl }) => {
     const isMissingAttachments = missingAttachments.length > 0;
     return (
         <div className={cls.block}>

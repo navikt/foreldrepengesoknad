@@ -11,7 +11,7 @@ import BEMHelper from 'common/util/bem';
 
 const bem = BEMHelper('linkButton');
 
-const LinkButton: React.StatelessComponent<LinkButtonProps> = (props) => {
+const LinkButton: React.FunctionComponent<LinkButtonProps> = (props) => {
     const { className, color, ...rest } = props;
     return (
         <button

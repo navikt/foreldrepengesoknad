@@ -15,7 +15,7 @@ interface Props {
     saksNr: string;
 }
 
-const StatusBoks: React.StatelessComponent<Props> = ({ saksNr }) => {
+const StatusBoks: React.FunctionComponent<Props> = ({ saksNr }) => {
     return (
         <Block>
             <Block margin="xs">

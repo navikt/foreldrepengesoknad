@@ -28,7 +28,7 @@ const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
     }
 };
 
-const UtsettelseIkon: React.StatelessComponent<Props> = ({ årsak, gradert, intl }) => (
+const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak, gradert, intl }) => (
     <IconBox color={getUtsettelseFarge()} stripes={gradert}>
         <UttaksplanIkon
             ikon={getIkonForKonto(årsak)}

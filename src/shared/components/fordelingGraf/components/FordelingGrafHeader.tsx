@@ -10,7 +10,7 @@ interface Props {
     statusTekst: string;
 }
 
-const FordelingGrafHeader: React.StatelessComponent<Props> = ({ tittel, status, statusTekst }) => {
+const FordelingGrafHeader: React.FunctionComponent<Props> = ({ tittel, status, statusTekst }) => {
     const bemHeader = fordelingGrafBem.child('statusHeader');
     return (
         <div>

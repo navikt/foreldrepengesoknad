@@ -5,7 +5,7 @@ interface Props {
     transparentBackground?: boolean;
 }
 
-const VeilederNormal: React.StatelessComponent<Props> = ({ svgProps, transparentBackground }) => (
+const VeilederNormal: React.FunctionComponent<Props> = ({ svgProps, transparentBackground }) => (
     <svg
         role="presentation"
         focusable="false"

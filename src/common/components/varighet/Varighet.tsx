@@ -17,7 +17,7 @@ const bem = BEMHelper('varighet');
 
 type Props = OwnProps;
 
-const Varighet: React.StatelessComponent<Props> = ({ dager, layout, separator }) => {
+const Varighet: React.FunctionComponent<Props> = ({ dager, layout, separator }) => {
     const intl = useIntl();
     const ud = getUkerOgDagerFromDager(dager);
     return (

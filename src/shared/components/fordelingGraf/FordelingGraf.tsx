@@ -20,7 +20,7 @@ interface Props {
     farMedmor?: FordelingsinfoEnForelder;
 }
 
-const FordelingGraf: React.StatelessComponent<Props> = ({ tittel, status, statusTekst, fordeling, mor, farMedmor }) => {
+const FordelingGraf: React.FunctionComponent<Props> = ({ tittel, status, statusTekst, fordeling, mor, farMedmor }) => {
     return (
         <div className={fordelingGrafBem.block}>
             <Block margin="s" screenOnly={true}>

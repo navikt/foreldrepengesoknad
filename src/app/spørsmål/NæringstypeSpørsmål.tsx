@@ -16,7 +16,7 @@ type Props = NæringstypeSpørsmålProps;
 
 const næringstypeValues = [Næringstype.DAGMAMMA, Næringstype.FISKER, Næringstype.JORDBRUK, Næringstype.ANNET];
 
-const NæringstypeSpørsmål: React.StatelessComponent<Props> = (props: Props) => {
+const NæringstypeSpørsmål: React.FunctionComponent<Props> = (props: Props) => {
     const { onChange, næringstyper } = props;
     const intl = useIntl();
     const createNæringstypeOptions = (): CheckboksPanelProps[] => {

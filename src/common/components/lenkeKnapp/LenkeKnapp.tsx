@@ -7,7 +7,7 @@ interface Props {
     text: string | React.ReactNode;
 }
 
-const LenkeKnapp: React.StatelessComponent<Props> = ({ text, onClick }) => {
+const LenkeKnapp: React.FunctionComponent<Props> = ({ text, onClick }) => {
     return (
         <button
             className="lenkeKnapp lenke"

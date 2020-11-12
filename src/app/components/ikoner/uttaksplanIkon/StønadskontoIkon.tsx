@@ -16,7 +16,7 @@ export interface Props {
     intl: IntlShape;
 }
 
-const StønadskontoIkon: React.StatelessComponent<Props> = ({
+const StønadskontoIkon: React.FunctionComponent<Props> = ({
     konto,
     forelder,
     gradert,

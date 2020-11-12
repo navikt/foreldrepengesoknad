@@ -12,7 +12,7 @@ interface Dialog {
     text: string | React.ReactNode;
 }
 
-const VeilederMedSnakkeboble: React.StatelessComponent<Props> = ({ dialog, veileder }) => {
+const VeilederMedSnakkeboble: React.FunctionComponent<Props> = ({ dialog, veileder }) => {
     return (
         <PersonMedSnakkeboble fyltBakgrunn={true} dialog={dialog} personRenderer={() => <Veileder {...veileder} />} />
     );

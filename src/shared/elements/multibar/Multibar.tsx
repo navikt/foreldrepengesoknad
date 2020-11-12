@@ -26,7 +26,7 @@ const getBarStyle = ({ width, color, color2 }: BarProps): React.CSSProperties =>
     };
 };
 
-const Multibar: React.StatelessComponent<Props> = ({ leftBar, rightBar, centerBar, borderColor }) => {
+const Multibar: React.FunctionComponent<Props> = ({ leftBar, rightBar, centerBar, borderColor }) => {
     const backgroundStyle: React.CSSProperties = {
         borderColor,
     };

@@ -11,7 +11,7 @@ interface Props {
     onFortsettSenere: () => void;
 }
 
-const StegFooter: React.StatelessComponent<Props> = ({ onAvbryt, onFortsettSenere }) => {
+const StegFooter: React.FunctionComponent<Props> = ({ onAvbryt, onFortsettSenere }) => {
     const bem = BEMHelper('stegFooter');
 
     return (

@@ -28,7 +28,7 @@ interface Props {
 
 const bem = BEMHelper('oversiktBrukteDager');
 
-const OversiktBrukteDager: React.StatelessComponent<Props> = ({
+const OversiktBrukteDager: React.FunctionComponent<Props> = ({
     søknadsinfo,
     perioder,
     tilgjengeligeStønadskontoer,

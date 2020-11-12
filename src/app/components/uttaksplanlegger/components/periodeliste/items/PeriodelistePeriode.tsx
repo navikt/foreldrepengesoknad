@@ -26,7 +26,7 @@ export interface Props {
     intl: IntlShape;
 }
 
-const PeriodelistePeriode: React.StatelessComponent<Props> = ({
+const PeriodelistePeriode: React.FunctionComponent<Props> = ({
     id,
     periode,
     navnPåForeldre,

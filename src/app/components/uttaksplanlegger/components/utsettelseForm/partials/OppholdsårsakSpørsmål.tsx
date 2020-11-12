@@ -67,7 +67,7 @@ const getAlternativer = (
         .map((konto) => createAlternative(konto, søkerErFarEllerMedmor, navnAnnenForelder, intl));
 };
 
-const OppholdsårsakSpørsmål: React.StatelessComponent<Props> = ({
+const OppholdsårsakSpørsmål: React.FunctionComponent<Props> = ({
     oppholdsårsak,
     onChange,
     navnAnnenForelder,

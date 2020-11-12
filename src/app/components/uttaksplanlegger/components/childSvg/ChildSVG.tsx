@@ -10,7 +10,7 @@ export interface Props {
     face?: 'happy' | 'sad' | 'lookLeft' | 'lookRight' | 'animated';
 }
 
-const ChildSVG: React.StatelessComponent<Props> = (props) => {
+const ChildSVG: React.FunctionComponent<Props> = (props) => {
     const { face = 'animated', ...svgProps } = props;
     return (
         <svg

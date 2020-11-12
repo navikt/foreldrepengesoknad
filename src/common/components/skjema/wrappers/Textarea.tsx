@@ -7,7 +7,7 @@ import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 
 export type TextareaWrapperProps = SkjemaelementProps & TextareaProps;
 
-const Textarea: React.StatelessComponent<TextareaWrapperProps> = (props: TextareaWrapperProps) => {
+const Textarea: React.FunctionComponent<TextareaWrapperProps> = (props: TextareaWrapperProps) => {
     const id = props.id || guid();
     return (
         <ValiderbarTextarea

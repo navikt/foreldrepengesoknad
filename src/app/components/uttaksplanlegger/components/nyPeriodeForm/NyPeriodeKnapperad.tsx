@@ -10,7 +10,7 @@ export interface Props {
     onCancel?: () => void;
 }
 
-const NyPeriodeKnapperad: React.StatelessComponent<Props> = ({
+const NyPeriodeKnapperad: React.FunctionComponent<Props> = ({
     onCancel,
     periodeKanLeggesTil,
     ariaLabelAvbryt,

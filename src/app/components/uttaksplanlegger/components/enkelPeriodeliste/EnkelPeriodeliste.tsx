@@ -18,7 +18,7 @@ type Props = OwnProps;
 
 const bem = BEMHelper('enkelPeriodeliste');
 
-const EnkelPeriodeliste: React.StatelessComponent<Props> = ({ perioder, navnPåForeldre, intl }) => (
+const EnkelPeriodeliste: React.FunctionComponent<Props> = ({ perioder, navnPåForeldre, intl }) => (
     <ol className={bem.block}>
         {perioder.map((periode) => (
             <li key={periode.id}>

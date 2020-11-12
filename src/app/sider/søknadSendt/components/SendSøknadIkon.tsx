@@ -10,7 +10,7 @@ interface Props {
 
 export type OppsummeringIkonType = 'koffert' | 'kalender' | 'cash';
 
-const SendSøknadIkon: React.StatelessComponent<Props> = ({ type, className }) => {
+const SendSøknadIkon: React.FunctionComponent<Props> = ({ type, className }) => {
     switch (type) {
         case 'cash':
             return <UtbetalingerIkon className={className} width={48} height={48} />;

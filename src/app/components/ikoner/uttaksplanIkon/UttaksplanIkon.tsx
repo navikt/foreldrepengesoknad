@@ -22,7 +22,7 @@ export interface Props {
     title: string;
 }
 
-const UttaksplanIkon: React.StatelessComponent<Props> = ({ ikon, title }) => {
+const UttaksplanIkon: React.FunctionComponent<Props> = ({ ikon, title }) => {
     switch (ikon) {
         case 'arbeid':
             return <ArbeidIkon title={title} />;

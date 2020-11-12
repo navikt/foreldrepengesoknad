@@ -5,7 +5,7 @@ import ValiderbarRadioPanelGruppeResponsive from 'common/lib/validation/elements
 
 type OwnProps = SkjemaelementProps & RadioPanelGruppeResponsiveProps;
 
-const RadioPanelGruppe: React.StatelessComponent<OwnProps> = (props: OwnProps) => {
+const RadioPanelGruppe: React.FunctionComponent<OwnProps> = (props: OwnProps) => {
     return <ValiderbarRadioPanelGruppeResponsive {...props} />;
 };
 

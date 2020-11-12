@@ -12,7 +12,7 @@ interface Props {
 
 const bem = BEMHelper('sirkelmaske');
 
-const Sirkelmaske: React.StatelessComponent<Props> = ({ farge, diameter, aktiv = true, children }) => {
+const Sirkelmaske: React.FunctionComponent<Props> = ({ farge, diameter, aktiv = true, children }) => {
     const style: Partial<CSSProperties> = {
         backgroundColor: farge,
     };

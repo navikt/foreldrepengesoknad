@@ -28,7 +28,7 @@ export interface SirkelknappProps {
     posisjoneringFraHøyre?: number;
 }
 
-const Sirkelknapp: React.StatelessComponent<SirkelknappProps> = ({
+const Sirkelknapp: React.FunctionComponent<SirkelknappProps> = ({
     onClick,
     ariaLabel,
     ikon,

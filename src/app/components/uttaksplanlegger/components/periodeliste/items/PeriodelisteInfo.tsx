@@ -25,7 +25,7 @@ export interface PeriodelisteInformasjon {
     annenForelderSamtidigUttakPeriode: Periode | undefined;
 }
 
-const PeriodelisteInfo: React.StatelessComponent<Props> = ({
+const PeriodelisteInfo: React.FunctionComponent<Props> = ({
     id,
     isExpanded,
     onToggle,

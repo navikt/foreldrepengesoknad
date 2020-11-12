@@ -14,7 +14,7 @@ interface ValiderbarUkerDagerTellerProps {
 
 type Props = ValiderbartSkjemaelementProps & ValiderbarUkerDagerTellerProps;
 
-const ValiderbarUkerDagerTeller: React.StatelessComponent<Props> = (props) => {
+const ValiderbarUkerDagerTeller: React.FunctionComponent<Props> = (props) => {
     const { stepperProps, ukeLegend, dagLegend } = props;
     return (
         <ValiderbartSkjemaelement

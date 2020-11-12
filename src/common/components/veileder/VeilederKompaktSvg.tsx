@@ -5,7 +5,7 @@ export interface Props {
     transparentBackground?: boolean;
 }
 
-const VeilederKompakt: React.StatelessComponent<Props> = ({ svgProps }) => (
+const VeilederKompakt: React.FunctionComponent<Props> = ({ svgProps }) => (
     <svg
         role="presentation"
         focusable="false"

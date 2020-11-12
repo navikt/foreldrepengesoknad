@@ -12,7 +12,7 @@ interface Props {
 
 const bem = BEMHelper('snakkeboble');
 
-const Snakkeboble: React.StatelessComponent<Props> = ({ tittel, tekst }) => (
+const Snakkeboble: React.FunctionComponent<Props> = ({ tittel, tekst }) => (
     <div className={classnames(bem.block, bem.modifier('hvit'))}>
         <div className={bem.element('innhold')}>
             {tittel && (

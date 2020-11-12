@@ -28,7 +28,7 @@ export interface Props {
     intl: IntlShape;
 }
 
-const PeriodelisteOppholdAnnenPart: React.StatelessComponent<Props> = ({
+const PeriodelisteOppholdAnnenPart: React.FunctionComponent<Props> = ({
     itemId,
     isExpanded,
     onToggle,

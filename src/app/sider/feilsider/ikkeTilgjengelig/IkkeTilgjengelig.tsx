@@ -17,7 +17,7 @@ interface Props {
     intl: IntlShape;
 }
 
-const Feilmeldingsplakat: React.StatelessComponent<Props> = ({ intl }) => (
+const Feilmeldingsplakat: React.FunctionComponent<Props> = ({ intl }) => (
     <Applikasjonsside visSpråkvelger={false} margin={true}>
         <DocumentTitle title={getMessage(intl, 'dokument.tittel.ikkeTilgjengelig')} />
 

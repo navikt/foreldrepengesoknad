@@ -54,7 +54,7 @@ const getTidsperiodeDisabledProps = (
     return undefined;
 };
 
-const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
+const UttakTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     onChange,
     periode,
     tidsperiode,

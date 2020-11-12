@@ -24,7 +24,7 @@ export interface Props {
     uuid?: string;
 }
 
-const Feilsidemelding: React.StatelessComponent<Props> = ({ containerId, illustrasjon, tittel, ingress, uuid }) => {
+const Feilsidemelding: React.FunctionComponent<Props> = ({ containerId, illustrasjon, tittel, ingress, uuid }) => {
     return (
         <div id={containerId}>
             {illustrasjon && (

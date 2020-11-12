@@ -3,7 +3,7 @@ import Spinner from 'nav-frontend-spinner';
 
 import './applicationSpinner.less';
 
-const ApplicationSpinner: React.StatelessComponent = () => (
+const ApplicationSpinner: React.FunctionComponent = () => (
     <div className="applicationSpinner">
         <div className="applicationSpinner__spinner">
             <Spinner type="XXL" />

@@ -10,7 +10,7 @@ export interface Props {
 const bem = BEMHelper('toggleArrow');
 const expandedStyle = bem.modifier('expanded');
 
-const ToggleArrow: React.StatelessComponent<Props> = ({ expanded }) => (
+const ToggleArrow: React.FunctionComponent<Props> = ({ expanded }) => (
     <span className={classnames(`${bem.block}`, { [expandedStyle]: expanded })} />
 );
 

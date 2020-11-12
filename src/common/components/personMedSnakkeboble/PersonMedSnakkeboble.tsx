@@ -20,7 +20,7 @@ interface Dialog {
 
 const bem = BEMHelper('personMedSnakkeboble');
 
-const PersonMedSnakkeboble: React.StatelessComponent<Props> = ({
+const PersonMedSnakkeboble: React.FunctionComponent<Props> = ({
     dialog,
     personRenderer,
     stil,

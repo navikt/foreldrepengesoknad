@@ -14,7 +14,7 @@ interface GenerellFeilProps {
 }
 
 type Props = GenerellFeilProps;
-const GenerellFeil: React.StatelessComponent<Props> = (props: Props) => {
+const GenerellFeil: React.FunctionComponent<Props> = (props: Props) => {
     const errorMessage =
         props.history.location.state && (props.history.location.state as any).errorMessage
             ? (props.history.location.state as any).errorMessage

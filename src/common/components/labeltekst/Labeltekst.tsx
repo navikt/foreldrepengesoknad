@@ -13,7 +13,7 @@ interface OwnProps {
 
 export type Props = OwnProps;
 
-const Labeltekst: React.StatelessComponent<Props> = ({ children, intlId, intlValue }) => {
+const Labeltekst: React.FunctionComponent<Props> = ({ children, intlId, intlValue }) => {
     const intl = useIntl();
 
     return <span className="labeltext">{intlId ? intl.formatMessage({ id: intlId }, intlValue) : children}</span>;
