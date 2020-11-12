@@ -4,22 +4,24 @@ import { Validator } from 'common/lib/validation/types';
 import getMessage from 'common/util/i18nUtils';
 import { uttaksplanDatoavgrensninger } from './uttaksplanDatoavgrensninger';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
-import { DateValue } from '../../../types/common';
 import uttaksConstants from 'app/constants';
+import { erGyldigDato } from '../common';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
 const startdatoFørTerminValidators = (
     intl: IntlShape,
-    dato: DateValue,
+    dato: string | undefined,
     familiehendelsesdato: Date,
     ingenUttakFørTermin: boolean | undefined
 ): Validator[] => {
     const validators: Validator[] = [
+        erGyldigDato(dato, getMessage(intl, 'valideringsfeil.startdatoPermisjon.gyldigDato'), ingenUttakFørTermin),
         {
             test: () => dato === undefined || ingenUttakFørTermin !== true,
             failText: getMessage(intl, 'uttaksplan.skjema.validering.startdatoFørTermin'),
         },
         {
-            test: () => dato === undefined || Uttaksdagen(dato).erUttaksdag(),
+            test: () => dato === undefined || Uttaksdagen(ISOStringToDate(dato)!).erUttaksdag(),
             failText: getMessage(intl, 'uttaksplan.skjema.validering.startdatoHelg'),
         },
     ];
