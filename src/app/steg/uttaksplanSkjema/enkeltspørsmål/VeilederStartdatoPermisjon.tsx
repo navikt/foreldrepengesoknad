@@ -37,7 +37,7 @@ export const getÅrsakDersomUgyldigStartdato = (
     return;
 };
 
-const VeilederStartdatoPermisjon: React.StatelessComponent<Props> = ({
+const VeilederStartdatoPermisjon: React.FunctionComponent<Props> = ({
     startdato,
     antallDager,
     antallDagerFørFødselIhtRegler,

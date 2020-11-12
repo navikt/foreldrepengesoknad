@@ -26,7 +26,7 @@ const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: Støna
     return 'Annen forelder ';
 };
 
-const Overføringsperiodedetaljer: React.StatelessComponent<Props> = ({
+const Overføringsperiodedetaljer: React.FunctionComponent<Props> = ({
     periode,
     navnPåForeldre,
     erFarEllerMedmor,

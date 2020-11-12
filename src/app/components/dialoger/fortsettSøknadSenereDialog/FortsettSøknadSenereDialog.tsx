@@ -12,7 +12,7 @@ export interface Props {
     intl: IntlShape;
 }
 
-const FortsettSøknadSenereDialog: React.StatelessComponent<Props> = ({
+const FortsettSøknadSenereDialog: React.FunctionComponent<Props> = ({
     intl,
     synlig,
     onFortsettSøknadSenere,

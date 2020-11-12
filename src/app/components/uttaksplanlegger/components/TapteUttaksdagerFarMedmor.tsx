@@ -13,7 +13,7 @@ interface Props {
     onLeggTilOpphold: (tidsperiode: Tidsperiode) => void;
 }
 
-const TapteUttaksdagerFarMedmor: React.StatelessComponent<Props> = ({ info, onLeggTilOpphold }) => {
+const TapteUttaksdagerFarMedmor: React.FunctionComponent<Props> = ({ info, onLeggTilOpphold }) => {
     const tidsperiodenOpphold = {
         fom: Uttaksdagen(info.sisteUttaksdagInnenforSeksUker).neste(),
         tom: Uttaksdagen(info.førsteRegistrerteUttaksdag).forrige(),

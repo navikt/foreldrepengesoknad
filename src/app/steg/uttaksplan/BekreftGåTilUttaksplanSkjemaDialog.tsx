@@ -11,7 +11,7 @@ export interface Props {
     onBliVærende: () => void;
 }
 
-const BekreftGåTilUttaksplanSkjemaDialog: React.StatelessComponent<Props> = ({ synlig, onGåTilbake, onBliVærende }) => {
+const BekreftGåTilUttaksplanSkjemaDialog: React.FunctionComponent<Props> = ({ synlig, onGåTilbake, onBliVærende }) => {
     const intl = useIntl();
     return (
         <>

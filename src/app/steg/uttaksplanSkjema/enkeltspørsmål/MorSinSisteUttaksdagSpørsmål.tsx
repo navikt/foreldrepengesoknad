@@ -14,7 +14,7 @@ interface OwnProps {
 
 type Props = OwnProps & UttaksplanSkjemaspørsmålProps;
 
-const MorSinSisteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({ visible, navnMor, familiehendelsesdato }) => {
+const MorSinSisteUttaksdagSpørsmål: React.FunctionComponent<Props> = ({ visible, navnMor, familiehendelsesdato }) => {
     const intl = useIntl();
     return (
         <UttaksplanSkjemaSpørsmål

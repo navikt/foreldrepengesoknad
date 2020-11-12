@@ -11,7 +11,7 @@ interface RegistrerteArbeidsforholdOppsummeringProps {
 
 type Props = RegistrerteArbeidsforholdOppsummeringProps;
 
-const RegistrerteArbeidsforholdOppsummering: React.StatelessComponent<Props> = ({ arbeidsforhold }) => {
+const RegistrerteArbeidsforholdOppsummering: React.FunctionComponent<Props> = ({ arbeidsforhold }) => {
     const intl = useIntl();
     return (
         <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.inntekt.registrerteArbeidsforhold')}>

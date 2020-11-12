@@ -5,7 +5,7 @@ export interface Props {
     visible?: boolean;
 }
 
-const UtsettelseEtterMor: React.StatelessComponent<Props> = ({ visible = false }) => (
+const UtsettelseEtterMor: React.FunctionComponent<Props> = ({ visible = false }) => (
     <Block visible={visible}>Skjema med utsettelse etter mor</Block>
 );
 

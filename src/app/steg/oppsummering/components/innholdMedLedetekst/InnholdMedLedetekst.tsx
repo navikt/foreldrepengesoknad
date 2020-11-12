@@ -10,11 +10,7 @@ interface InnholdMedLedetekstProps {
 
 const hasListOfChildren = (children: string | string[]): boolean => Array.isArray(children);
 
-const InnholdMedLedetekst: React.StatelessComponent<InnholdMedLedetekstProps> = ({
-    ledetekst,
-    children,
-    className,
-}) => {
+const InnholdMedLedetekst: React.FunctionComponent<InnholdMedLedetekstProps> = ({ ledetekst, children, className }) => {
     return (
         <div className={className}>
             <EtikettLiten>{ledetekst}</EtikettLiten>

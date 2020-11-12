@@ -17,7 +17,7 @@ export interface OwnProps {
     antallUkerMødreKvote: number;
 }
 
-const FordelingFellesperiodeSpørsmål: React.StatelessComponent<OwnProps & UttaksplanSkjemaspørsmålProps> = ({
+const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps & UttaksplanSkjemaspørsmålProps> = ({
     visible,
     annenForelderErFarEllerMedmor,
     navnPåForeldre,

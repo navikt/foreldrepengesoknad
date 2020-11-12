@@ -15,7 +15,7 @@ interface Props {
     intl: IntlShape;
 }
 
-const UttakFordeling: React.StatelessComponent<Props> = ({
+const UttakFordeling: React.FunctionComponent<Props> = ({
     søknadsinfo,
     tilgjengeligeStønadskontoer,
     perioder,

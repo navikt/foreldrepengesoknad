@@ -38,7 +38,7 @@ const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (
     );
 };
 
-const UtenlandsoppholdOppsummering: React.StatelessComponent<Props> = (props) => {
+const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = (props) => {
     const { situasjon, farEllerMedmor, familiehendelsedato } = props;
     const intl = useIntl();
     const { iNorgeNeste12Mnd, iNorgeSiste12Mnd, tidligereOpphold, senereOpphold } = props.informasjonOmUtenlandsopphold;

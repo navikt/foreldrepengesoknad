@@ -5,7 +5,7 @@ import PengerIkon from 'common/components/ikoner/PengerIkon';
 
 import './dekningsgradSirkel.less';
 
-const DekningsgradSirkel: React.StatelessComponent = () => {
+const DekningsgradSirkel: React.FunctionComponent = () => {
     const bem = BEMHelper('dekningsgradSirkel');
     return (
         <div className={bem.block}>

@@ -12,7 +12,7 @@ interface Props {
 
 const bem = BEMHelper('dev');
 
-const DevBlock: React.StatelessComponent<Props> = ({ children, title, alwaysActive }) => (
+const DevBlock: React.FunctionComponent<Props> = ({ children, title, alwaysActive }) => (
     <div className={bem.classNames(bem.block, bem.modifierConditional('active', alwaysActive))}>
         {title && (
             <Block margin="xs">

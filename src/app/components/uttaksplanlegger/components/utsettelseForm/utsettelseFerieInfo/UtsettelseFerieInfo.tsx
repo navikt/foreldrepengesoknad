@@ -9,7 +9,7 @@ export interface Props {
     intl: IntlShape;
 }
 
-const Ferieinfo: React.StatelessComponent<Props> = ({ feriedager, intl }) => {
+const Ferieinfo: React.FunctionComponent<Props> = ({ feriedager, intl }) => {
     if (feriedager <= uttaksConstants.MAKS_FERIEDAGER_ETT_ÅR) {
         return (
             <VeilederInfo

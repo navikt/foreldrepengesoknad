@@ -12,7 +12,7 @@ export interface Props {
 
 const BEM = BEMHelper('iconBox');
 
-const IconBox: React.StatelessComponent<Props> = ({ children, color, stripes }) => (
+const IconBox: React.FunctionComponent<Props> = ({ children, color, stripes }) => (
     <div className={classnames(BEM.block, BEM.modifier(`${color}${stripes ? '--striped' : ''}`))}>{children}</div>
 );
 

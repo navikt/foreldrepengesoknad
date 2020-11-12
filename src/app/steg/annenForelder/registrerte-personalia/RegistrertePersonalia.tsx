@@ -12,7 +12,7 @@ interface PersonaliaBoxProps {
 }
 
 type Props = PersonaliaBoxProps;
-const PersonaliaBox: React.StatelessComponent<Props> = ({ person }: Props) => {
+const PersonaliaBox: React.FunctionComponent<Props> = ({ person }: Props) => {
     return (
         <div className="personaliaBox">
             <EtikettLiten className="personaliaBox__fnr">{person.fnr}</EtikettLiten>

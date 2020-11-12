@@ -198,11 +198,13 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                 />
                 {errorSummaryRenderer ? <div role="alert">{errorSummaryRenderer()}</div> : null}
                 <Block margin="xs">
-                    <BackButton
-                        text={getMessage(intl, 'tilbake')}
-                        hidden={this.shouldHideBackButton()}
-                        onClick={this.handleNavigateToPreviousStepClick}
-                    />
+                    <div role="navigation">
+                        <BackButton
+                            text={getMessage(intl, 'tilbake')}
+                            hidden={this.shouldHideBackButton()}
+                            onClick={this.handleNavigateToPreviousStepClick}
+                        />
+                    </div>
                 </Block>
                 <Block>
                     <Stegindikator

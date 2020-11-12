@@ -11,7 +11,7 @@ interface JobbIUtlandetInntektsdetaljerProps {
 
 type Props = JobbIUtlandetInntektsdetaljerProps;
 
-const JobbIUtlandetInntektsdetaljer: React.StatelessComponent<Props> = ({ jobbIUtlandetInntekt }) => {
+const JobbIUtlandetInntektsdetaljer: React.FunctionComponent<Props> = ({ jobbIUtlandetInntekt }) => {
     const { arbeidsgiverNavn, land } = jobbIUtlandetInntekt;
     const intl = useIntl();
 

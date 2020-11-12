@@ -15,7 +15,7 @@ interface InfoEksisterendeSakPerioderProps {
     navnForOverskrift?: string;
 }
 
-const InfoEksisterendeSakPerioder: React.StatelessComponent<InfoEksisterendeSakPerioderProps> = ({
+const InfoEksisterendeSakPerioder: React.FunctionComponent<InfoEksisterendeSakPerioderProps> = ({
     perioder,
     søknadsinfo,
     navnForOverskrift,

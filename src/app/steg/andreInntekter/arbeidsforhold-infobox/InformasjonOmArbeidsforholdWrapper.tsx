@@ -13,7 +13,7 @@ import './arbeidsforhold.less';
 interface ArbeidsforholdInfoWrapperProps {
     arbeidsforhold: Arbeidsforhold[];
 }
-const InformasjonOmArbeidsforholdWrapper: React.StatelessComponent<ArbeidsforholdInfoWrapperProps> = ({
+const InformasjonOmArbeidsforholdWrapper: React.FunctionComponent<ArbeidsforholdInfoWrapperProps> = ({
     arbeidsforhold,
 }) => {
     const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;

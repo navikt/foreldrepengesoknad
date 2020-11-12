@@ -8,7 +8,7 @@ interface OwnProps {
 
 export type Props = OwnProps;
 
-const AnnenInntektVedleggInfo: React.StatelessComponent<Props> = ({ type }) => {
+const AnnenInntektVedleggInfo: React.FunctionComponent<Props> = ({ type }) => {
     if (type === undefined) {
         return null;
     }

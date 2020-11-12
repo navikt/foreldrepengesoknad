@@ -12,7 +12,7 @@ interface LabelMedInfoboxProps {
     tag?: string;
 }
 
-const LabelMedInfobox: React.StatelessComponent<LabelMedInfoboxProps> = ({ title, info, stil, tag = 'strong' }) => {
+const LabelMedInfobox: React.FunctionComponent<LabelMedInfoboxProps> = ({ title, info, stil, tag = 'strong' }) => {
     const cls = BEMHelper('labelMedInfobox');
     return (
         <div className={cls.element('heading', `stil-${stil || 'normal'}`)}>

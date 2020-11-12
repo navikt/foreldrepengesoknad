@@ -14,7 +14,7 @@ interface AndreInntekterListElementProps extends InteractiveListElementProps {
 
 type Props = AndreInntekterListElementProps;
 
-const AndreInntekterListElement: React.StatelessComponent<Props> = ({ annenInntekt, ...rest }) => {
+const AndreInntekterListElement: React.FunctionComponent<Props> = ({ annenInntekt, ...rest }) => {
     const intl = useIntl();
     const { type, tidsperiode, vedlegg } = annenInntekt;
     const inntektstypeSkalHaVedlegg = type !== AnnenInntektType.JOBB_I_UTLANDET;

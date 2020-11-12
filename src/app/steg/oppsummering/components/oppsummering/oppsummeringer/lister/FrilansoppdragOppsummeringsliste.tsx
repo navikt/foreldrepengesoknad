@@ -12,7 +12,7 @@ interface FrilansoppdragOppsummeringslisteProps {
 
 type Props = FrilansoppdragOppsummeringslisteProps;
 
-const FrilansoppdragOppsummeringsliste: React.StatelessComponent<Props> = ({ frilansoppdrag }) => {
+const FrilansoppdragOppsummeringsliste: React.FunctionComponent<Props> = ({ frilansoppdrag }) => {
     const intl = useIntl();
 
     return (

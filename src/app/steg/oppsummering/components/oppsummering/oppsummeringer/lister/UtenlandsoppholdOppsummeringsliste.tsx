@@ -12,7 +12,7 @@ interface UtenlandsoppholdOppsummeringslisteProps {
 
 type Props = UtenlandsoppholdOppsummeringslisteProps;
 
-const UtenlandsoppholdOppsummeringsliste: React.StatelessComponent<Props> = ({ informasjonOmUtenlandsopphold }) => {
+const UtenlandsoppholdOppsummeringsliste: React.FunctionComponent<Props> = ({ informasjonOmUtenlandsopphold }) => {
     const intl = useIntl();
 
     return (

@@ -9,7 +9,7 @@ interface Props {
     uker: number;
 }
 
-const UkerSirkel: React.StatelessComponent<Props> = ({ uker }) => {
+const UkerSirkel: React.FunctionComponent<Props> = ({ uker }) => {
     const bem = BEMHelper('ukerSirkel');
     return (
         <div className={bem.block}>

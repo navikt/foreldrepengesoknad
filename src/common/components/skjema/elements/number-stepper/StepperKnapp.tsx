@@ -12,7 +12,7 @@ export interface Props {
     disabled?: boolean;
 }
 
-const StepperKnapp: React.StatelessComponent<Props> = ({ direction, onClick, label, disabled }) => (
+const StepperKnapp: React.FunctionComponent<Props> = ({ direction, onClick, label, disabled }) => (
     <Sirkelknapp
         stil="hvit"
         onClick={() => onClick()}

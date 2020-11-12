@@ -12,7 +12,7 @@ interface FrilansOppdragListeElementProps extends InteractiveListElementProps {
     oppdrag: FrilansOppdrag;
 }
 
-const FrilansOppdragListElement: React.StatelessComponent<FrilansOppdragListeElementProps> = ({ oppdrag, ...rest }) => {
+const FrilansOppdragListElement: React.FunctionComponent<FrilansOppdragListeElementProps> = ({ oppdrag, ...rest }) => {
     const intl = useIntl();
     const deleteLinkText = getMessage(intl, 'slett.oppdrag');
     return (

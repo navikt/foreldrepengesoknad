@@ -18,7 +18,7 @@ interface UttaksperiodedetaljerProps {
 
 type Props = UttaksperiodedetaljerProps;
 
-const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({
+const Uttaksperiodedetaljer: React.FunctionComponent<Props> = ({
     periode,
     registrerteArbeidsforhold,
     periodeErNyEllerEndret,

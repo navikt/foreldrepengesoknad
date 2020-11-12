@@ -14,7 +14,7 @@ interface Props {
     storageKvittering: StorageKvittering;
 }
 
-const SakInfoStorageKvittering: React.StatelessComponent<Props> = ({ storageKvittering }) => {
+const SakInfoStorageKvittering: React.FunctionComponent<Props> = ({ storageKvittering }) => {
     const bem = BEMHelper('sak-info');
     return (
         <InfoBlock padding="none">

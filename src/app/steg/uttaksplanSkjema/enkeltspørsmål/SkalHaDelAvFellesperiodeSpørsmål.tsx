@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import JaNeiSpørsmål from '../../../../common/components/skjema/elements/ja-nei-spørsmål/JaNeiSpørsmål';
 
-const SkalHaDelAvFellesperiodeSpørsmål: React.StatelessComponent<UttaksplanSkjemaspørsmålProps> = ({
+const SkalHaDelAvFellesperiodeSpørsmål: React.FunctionComponent<UttaksplanSkjemaspørsmålProps> = ({
     visible = true,
 }) => {
     const intl = useIntl();

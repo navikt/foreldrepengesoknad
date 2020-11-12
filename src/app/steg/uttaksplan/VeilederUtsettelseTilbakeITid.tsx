@@ -11,7 +11,7 @@ interface Props {
     uttak: Uttaksperiode[];
 }
 
-const VeilederUtsettelseTilbakeITid: React.StatelessComponent<Props> = ({ utsettelser, uttak }: Props) => {
+const VeilederUtsettelseTilbakeITid: React.FunctionComponent<Props> = ({ utsettelser, uttak }: Props) => {
     const inneholderUtsettelsePgaFerie = utsettelser.some(
         (utsettelse) => utsettelse.årsak === UtsettelseÅrsakType.Ferie
     );

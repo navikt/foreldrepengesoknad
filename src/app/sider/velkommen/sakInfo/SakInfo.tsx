@@ -18,7 +18,7 @@ interface Props {
     sak: Sak;
 }
 
-const SakInfo: React.StatelessComponent<Props> = ({ sak }) => {
+const SakInfo: React.FunctionComponent<Props> = ({ sak }) => {
     const bem = BEMHelper('sak-info');
     const statusTextKey = sak.status ? getIntlKeyForStatus(sak.status) : undefined;
     return (

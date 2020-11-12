@@ -7,7 +7,7 @@ interface AnnenInntektDetaljerProps {
     annenInntekt: AnnenInntekt;
 }
 
-const AnnenInntektDetaljer: React.StatelessComponent<AnnenInntektDetaljerProps> = ({ annenInntekt }) => {
+const AnnenInntektDetaljer: React.FunctionComponent<AnnenInntektDetaljerProps> = ({ annenInntekt }) => {
     const { type, vedlegg } = annenInntekt;
     if (type === AnnenInntektType.JOBB_I_UTLANDET) {
         return <JobbIUtlandetInntektsdetaljer jobbIUtlandetInntekt={annenInntekt as JobbIUtlandetInntekt} />;

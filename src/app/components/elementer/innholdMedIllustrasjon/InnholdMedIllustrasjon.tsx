@@ -12,7 +12,7 @@ interface Props {
 
 const bem = BEMHelper('innholdMedIllustrasjon');
 
-const InnholdMedIllustrasjon: React.StatelessComponent<Props> = ({ tittel, illustrasjoner, infoboks, children }) => (
+const InnholdMedIllustrasjon: React.FunctionComponent<Props> = ({ tittel, illustrasjoner, infoboks, children }) => (
     <div
         className={bem.classNames(
             bem.block,

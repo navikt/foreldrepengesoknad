@@ -10,7 +10,7 @@ import './ytelser.less';
 interface YtelseInfoWrapperProps {
     ytelser: any[];
 }
-const InformasjonOmYtelserWrapper: React.StatelessComponent<YtelseInfoWrapperProps> = ({ ytelser }) => {
+const InformasjonOmYtelserWrapper: React.FunctionComponent<YtelseInfoWrapperProps> = ({ ytelser }) => {
     const intl = useIntl();
     const harYtelser = ytelser !== undefined && ytelser.length > 0;
 

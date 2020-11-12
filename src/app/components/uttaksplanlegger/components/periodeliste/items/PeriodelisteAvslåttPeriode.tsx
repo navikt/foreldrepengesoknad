@@ -24,7 +24,7 @@ export interface Props {
     intl: IntlShape;
 }
 
-const PeriodelisteAvslåttPeriode: React.StatelessComponent<Props> = ({
+const PeriodelisteAvslåttPeriode: React.FunctionComponent<Props> = ({
     itemId,
     isExpanded,
     onToggle,

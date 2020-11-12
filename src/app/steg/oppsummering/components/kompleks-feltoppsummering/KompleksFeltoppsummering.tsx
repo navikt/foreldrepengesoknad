@@ -7,7 +7,7 @@ interface Props {
     children: JSX.Element | JSX.Element[];
 }
 
-const KompleksFeltoppsummering: React.StatelessComponent<Props> = ({ ledetekst, children, className }) => (
+const KompleksFeltoppsummering: React.FunctionComponent<Props> = ({ ledetekst, children, className }) => (
     <InnholdMedLedetekst className={`feltoppsummering ${className}`} ledetekst={ledetekst}>
         {children}
     </InnholdMedLedetekst>

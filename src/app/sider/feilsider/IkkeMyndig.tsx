@@ -15,7 +15,7 @@ interface Props extends SøkerinfoProps {
     intl: IntlShape;
 }
 
-const IkkeMyndig: React.StatelessComponent<Props> = (props: Props) => {
+const IkkeMyndig: React.FunctionComponent<Props> = (props: Props) => {
     const { intl, søkerinfo } = props;
     return (
         <Applikasjonsside visSpråkvelger={false} margin={false}>

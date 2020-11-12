@@ -12,7 +12,7 @@ interface NæringListeElementProps extends InteractiveListElementProps {
     næring: Næring;
 }
 
-const NæringListeElement: React.StatelessComponent<NæringListeElementProps> = ({
+const NæringListeElement: React.FunctionComponent<NæringListeElementProps> = ({
     næring,
 
     ...rest

@@ -49,7 +49,7 @@ export interface OwnProps extends ScenarioProps {
 
 type Props = OwnProps;
 
-const Scenario1: React.StatelessComponent<ScenarioProps> = ({
+const Scenario1: React.FunctionComponent<ScenarioProps> = ({
     søknad,
     antallUkerFellesperiode,
     familiehendelsesdato,
@@ -126,7 +126,7 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({
     );
 };
 
-const Scenario3: React.StatelessComponent<ScenarioProps> = ({
+const Scenario3: React.FunctionComponent<ScenarioProps> = ({
     søknad,
     antallUkerFellesperiode,
     navnPåForeldre,
@@ -190,7 +190,7 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({
     );
 };
 
-const Scenario4: React.StatelessComponent<ScenarioProps> = ({
+const Scenario4: React.FunctionComponent<ScenarioProps> = ({
     søknad,
     antallUkerFellesperiode,
     navnPåForeldre,
@@ -327,7 +327,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
     );
 };
 
-const Scenario5: React.StatelessComponent<ScenarioProps> = ({
+const Scenario5: React.FunctionComponent<ScenarioProps> = ({
     søknad,
     familiehendelsesdato,
     navnPåForeldre,
@@ -382,7 +382,7 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({
     );
 };
 
-const Scenario6: React.StatelessComponent<ScenarioProps> = ({
+const Scenario6: React.FunctionComponent<ScenarioProps> = ({
     søknad,
     familiehendelsesdato,
     navnPåForeldre,
@@ -411,7 +411,7 @@ const Scenario6: React.StatelessComponent<ScenarioProps> = ({
     );
 };
 
-const Scenario7: React.StatelessComponent<ScenarioProps> = ({
+const Scenario7: React.FunctionComponent<ScenarioProps> = ({
     søknad,
     navnPåForeldre,
     familiehendelsesdato,
@@ -444,7 +444,7 @@ const Scenario7: React.StatelessComponent<ScenarioProps> = ({
     </>
 );
 
-const Scenario8: React.StatelessComponent<ScenarioProps> = () => {
+const Scenario8: React.FunctionComponent<ScenarioProps> = () => {
     return (
         <>
             <DekningsgradSpørsmål />
@@ -452,7 +452,7 @@ const Scenario8: React.StatelessComponent<ScenarioProps> = () => {
     );
 };
 
-const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåForeldre, familiehendelsesdato }) => {
+const Scenario9: React.FunctionComponent<ScenarioProps> = ({ søknad, navnPåForeldre, familiehendelsesdato }) => {
     const { uttaksplanSkjema, eksisterendeSak } = søknad.ekstrainfo;
     const annenPartsSistePeriode =
         eksisterendeSak && eksisterendeSak.erAnnenPartsSak && eksisterendeSak.uttaksplan
@@ -483,7 +483,7 @@ const Scenario9: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåFo
     );
 };
 
-const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
+const UttaksplanSkjemaScenarioes: React.FunctionComponent<Props> = (props) => {
     const { scenario, ...scenarioProps } = props;
     switch (scenario) {
         case UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan:

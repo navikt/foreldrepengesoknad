@@ -54,7 +54,7 @@ const getHvem = (
     return getMessage(intl, 'eksisterendeSak.tekst.benevning.aleneomsorg');
 };
 
-const InfoEksisterendeSak: React.StatelessComponent<Props> = ({
+const InfoEksisterendeSak: React.FunctionComponent<Props> = ({
     søknadsinfo,
     tilgjengeligeStønadskontoer,
     eksisterendeSak,

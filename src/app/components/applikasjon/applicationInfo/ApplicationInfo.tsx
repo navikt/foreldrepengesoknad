@@ -10,7 +10,7 @@ declare const BUILD: BUILDInfo;
 
 const bem = BEMHelper('applicationInfo');
 
-const ApplicationInfo: React.StatelessComponent = () => {
+const ApplicationInfo: React.FunctionComponent = () => {
     try {
         return (
             <div className={bem.block} role="presentation" aria-hidden={true}>

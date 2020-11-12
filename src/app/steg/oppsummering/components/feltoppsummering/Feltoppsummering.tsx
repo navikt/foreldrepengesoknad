@@ -9,7 +9,7 @@ interface Props {
     verdi: string | string[];
 }
 
-const Feltoppsummering: React.StatelessComponent<Props> = ({ feltnavn, verdi }) => (
+const Feltoppsummering: React.FunctionComponent<Props> = ({ feltnavn, verdi }) => (
     <InnholdMedLedetekst className="feltoppsummering" ledetekst={feltnavn}>
         <Element className="feltoppsummering__verdi">{verdi}</Element>
     </InnholdMedLedetekst>

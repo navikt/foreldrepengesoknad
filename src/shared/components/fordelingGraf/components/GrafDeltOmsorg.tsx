@@ -4,7 +4,7 @@ import { UttaksplanHexFarge } from 'common/util/colors';
 import { fordelingGrafBem } from '../FordelingGraf';
 import { FordelingDeltOmsorg } from '../types';
 
-const GrafDeltOmsorg: React.StatelessComponent<FordelingDeltOmsorg> = ({ mor, farMedmor, felles }) => {
+const GrafDeltOmsorg: React.FunctionComponent<FordelingDeltOmsorg> = ({ mor, farMedmor, felles }) => {
     const childBem = fordelingGrafBem.child('graf');
     const morsFarge = UttaksplanHexFarge.lilla;
     const farsFarge = UttaksplanHexFarge.blaa;

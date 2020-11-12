@@ -7,7 +7,7 @@ interface OppsummeringsseksjonProps {
     children: React.ReactNode;
 }
 
-const Oppsummeringsseksjon: React.StatelessComponent<OppsummeringsseksjonProps> = ({ ingress, children }) => (
+const Oppsummeringsseksjon: React.FunctionComponent<OppsummeringsseksjonProps> = ({ ingress, children }) => (
     <div className="oppsummeringsseksjon">
         {ingress && <Ingress>{ingress}</Ingress>}
         {children}

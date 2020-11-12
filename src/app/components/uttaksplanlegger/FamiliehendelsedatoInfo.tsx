@@ -9,7 +9,7 @@ export interface Props {
     erBarnetFødt?: boolean;
 }
 
-const FamiliehendelsedatoInfo: React.StatelessComponent<Props> = ({
+const FamiliehendelsedatoInfo: React.FunctionComponent<Props> = ({
     søkersituasjon,
     familiehendelsesdato,
     erBarnetFødt,

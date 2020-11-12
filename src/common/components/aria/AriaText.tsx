@@ -9,7 +9,7 @@ export interface AriaTextProps {
     tag?: string;
 }
 
-const AriaText: React.StatelessComponent<AriaTextProps> = ({ id, children, tag }) => {
+const AriaText: React.FunctionComponent<AriaTextProps> = ({ id, children, tag }) => {
     const tagName = tag || 'span';
     return React.createElement(tagName, { id, className: 'sr-only' }, children);
 };

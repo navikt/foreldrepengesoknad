@@ -27,7 +27,7 @@ const getUkerOgDagerRegler = (uker = 0, maksUker: number, dager = 0, intl: IntlS
     ];
 };
 
-const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: React.StatelessComponent<Props> = ({
+const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: React.FunctionComponent<Props> = ({
     visible,
     antallUkerFellesperiode,
 }) => {

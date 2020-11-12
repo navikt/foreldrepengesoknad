@@ -8,7 +8,7 @@ import Textarea from 'nav-frontend-skjema/lib/textarea';
 
 export type ValiderbarTextareaProps = ValiderbartSkjemaelementProps & TextareaProps;
 
-const ValiderbarTextarea: React.StatelessComponent<ValiderbarTextareaProps> = (props: ValiderbarTextareaProps) => {
+const ValiderbarTextarea: React.FunctionComponent<ValiderbarTextareaProps> = (props: ValiderbarTextareaProps) => {
     const { validators, optional, validateOnBlur, validateOnChange, ...inputProps } = props;
     return (
         <ValiderbartSkjemaelement

@@ -13,7 +13,7 @@ export interface Props {
     onChange: (tidsperiode: Partial<TidsperiodeString>) => void;
 }
 
-const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
+const UtsettelseTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     onChange,
     familiehendelsesdato,
     tidsperiodeDatoInput,

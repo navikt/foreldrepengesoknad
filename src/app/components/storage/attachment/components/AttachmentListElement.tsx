@@ -22,7 +22,7 @@ interface OwnProps {
 
 type Props = OwnProps;
 
-const AttachmentListElement: React.StatelessComponent<Props> = ({ attachment, showFileSize, onDelete, intl }) => {
+const AttachmentListElement: React.FunctionComponent<Props> = ({ attachment, showFileSize, onDelete, intl }) => {
     const BEM = BEMHelper('attachment');
     const cls = classnames(BEM.block, {
         [BEM.modifier('pending')]: attachment.pending,

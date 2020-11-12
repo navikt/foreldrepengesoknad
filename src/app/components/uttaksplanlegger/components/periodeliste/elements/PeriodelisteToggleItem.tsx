@@ -12,7 +12,7 @@ interface Props {
     renderContent: () => JSX.Element;
 }
 
-const PeriodelisteToggleItem: React.StatelessComponent<Props> = ({
+const PeriodelisteToggleItem: React.FunctionComponent<Props> = ({
     id,
     ariaLabel,
     isExpanded,

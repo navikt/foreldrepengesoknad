@@ -11,7 +11,7 @@ interface SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmålProps {
 
 type Props = SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmålProps;
 
-const SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål: React.StatelessComponent<Props> = ({
+const SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål: React.FunctionComponent<Props> = ({
     ønskerSamtidigUttak,
     navnAnnenForelder,
     onChange,

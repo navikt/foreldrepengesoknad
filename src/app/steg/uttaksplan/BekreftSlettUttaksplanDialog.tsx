@@ -11,7 +11,7 @@ export interface Props {
     onAngre: () => void;
 }
 
-const BekreftSlettUttaksplanDialog: React.StatelessComponent<Props> = ({ synlig, onAngre, onSlett }) => {
+const BekreftSlettUttaksplanDialog: React.FunctionComponent<Props> = ({ synlig, onAngre, onSlett }) => {
     const intl = useIntl();
     return (
         <BekreftDialog

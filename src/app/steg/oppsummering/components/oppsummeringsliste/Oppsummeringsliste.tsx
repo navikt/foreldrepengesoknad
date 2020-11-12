@@ -17,7 +17,7 @@ interface OppsummeringslisteProps {
     kompakt?: boolean;
 }
 
-const Oppsummeringsliste: React.StatelessComponent<OppsummeringslisteProps> = (props: OppsummeringslisteProps) => {
+const Oppsummeringsliste: React.FunctionComponent<OppsummeringslisteProps> = (props: OppsummeringslisteProps) => {
     const { data, kompakt } = props;
     return (
         <List
@@ -30,7 +30,7 @@ const Oppsummeringsliste: React.StatelessComponent<OppsummeringslisteProps> = (p
     );
 };
 
-const Oppsummeringslisteelement: React.StatelessComponent<OppsummeringslisteelementProps> = ({
+const Oppsummeringslisteelement: React.FunctionComponent<OppsummeringslisteelementProps> = ({
     venstrestiltTekst,
     høyrestiltTekst,
     content,

@@ -11,7 +11,7 @@ export interface Props {
     children: React.ReactNode;
 }
 
-const SkjemaInputElement: React.StatelessComponent<Props> = (props: Props) => {
+const SkjemaInputElement: React.FunctionComponent<Props> = (props: Props) => {
     const { label, inputId, feil, children } = props;
     return (
         <div

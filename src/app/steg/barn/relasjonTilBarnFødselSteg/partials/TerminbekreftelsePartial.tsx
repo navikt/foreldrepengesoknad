@@ -26,7 +26,7 @@ export interface OwnProps {
 
 export type Props = OwnProps & DispatchProps;
 
-const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
+const Terminbekreftelse: React.FunctionComponent<Props> = (props) => {
     const { barn, terminbekreftelse, dispatch, vis } = props;
     const intl = useIntl();
     const validerDatofelt = barn.terminbekreftelse && barn.terminbekreftelse.length > 0;

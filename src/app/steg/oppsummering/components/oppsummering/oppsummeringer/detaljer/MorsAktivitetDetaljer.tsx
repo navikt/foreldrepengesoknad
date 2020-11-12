@@ -14,7 +14,7 @@ interface MorsAktivitetDetaljerProps {
 
 type Props = MorsAktivitetDetaljerProps;
 
-const MorsAktivitetDetaljer: React.StatelessComponent<Props> = ({
+const MorsAktivitetDetaljer: React.FunctionComponent<Props> = ({
     morsAktivitet,
     dokumentasjonAvMorsAktivitet,
     visOppsummeringAvDokumentasjon,

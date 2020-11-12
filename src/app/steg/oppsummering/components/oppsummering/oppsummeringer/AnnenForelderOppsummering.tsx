@@ -20,7 +20,7 @@ interface AnnenForelderOppsummeringProps {
 }
 
 type Props = AnnenForelderOppsummeringProps;
-const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props) => {
+const AnnenForelderOppsummering: React.FunctionComponent<Props> = (props: Props) => {
     const { erFarEllerMedmor, erAleneOmOmsorg, barn } = props;
     const intl = useIntl();
     const {

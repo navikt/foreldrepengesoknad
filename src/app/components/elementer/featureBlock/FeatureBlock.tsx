@@ -6,7 +6,7 @@ export interface Props {
     render: () => JSX.Element;
 }
 
-const FeatureBlock: React.StatelessComponent<Props> = ({ feature, render }) =>
+const FeatureBlock: React.FunctionComponent<Props> = ({ feature, render }) =>
     isFeatureEnabled(feature) ? render() : null;
 
 export default FeatureBlock;

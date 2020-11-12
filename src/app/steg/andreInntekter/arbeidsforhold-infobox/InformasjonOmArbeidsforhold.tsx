@@ -14,7 +14,7 @@ interface InformasjonOmArbeidsforholdProps {
 }
 
 type Props = InformasjonOmArbeidsforholdProps;
-const InformasjonOmArbeidsforhold: React.StatelessComponent<Props> = ({ arbeidsforhold }: Props) => {
+const InformasjonOmArbeidsforhold: React.FunctionComponent<Props> = ({ arbeidsforhold }: Props) => {
     const intl = useIntl();
     const cls = BEMHelper('arbeidsforholdInfoBox');
     return (

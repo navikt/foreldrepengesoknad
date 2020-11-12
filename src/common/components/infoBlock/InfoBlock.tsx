@@ -12,7 +12,7 @@ export interface Props {
 
 const bem = BEMHelper('infoBlock');
 
-const InfoBlock: React.StatelessComponent<Props> = ({ children, padding = 'xs' }) => (
+const InfoBlock: React.FunctionComponent<Props> = ({ children, padding = 'xs' }) => (
     <div className={classnames(bem.block, bem.modifier(`pad-${padding}`))}>{children}</div>
 );
 

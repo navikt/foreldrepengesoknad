@@ -23,7 +23,7 @@ interface StateProps {
 
 type Props = StateProps & OwnProps & DispatchProps;
 
-const UttaksplanSkjemaSpørsmål: React.StatelessComponent<Props> = ({
+const UttaksplanSkjemaSpørsmål: React.FunctionComponent<Props> = ({
     visible,
     harUnderspørsmål,
     skjemadata,

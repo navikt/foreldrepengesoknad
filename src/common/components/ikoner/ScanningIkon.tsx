@@ -11,7 +11,7 @@ export interface Props extends ScanProps {
     status: ScanIconStatusKey;
 }
 
-const GoodScanning: React.StatelessComponent<ScanProps> = ({ title, height }) => {
+const GoodScanning: React.FunctionComponent<ScanProps> = ({ title, height }) => {
     return (
         <svg role="presentation" focusable="false" viewBox="0 0 83 121" height={height}>
             {title && <title>{title}</title>}
@@ -44,7 +44,7 @@ const GoodScanning: React.StatelessComponent<ScanProps> = ({ title, height }) =>
         </svg>
     );
 };
-const KeystoneScanning: React.StatelessComponent<ScanProps> = ({ title, height }) => {
+const KeystoneScanning: React.FunctionComponent<ScanProps> = ({ title, height }) => {
     return (
         <svg role="presentation" focusable="false" viewBox="0 0 83 121" height={height}>
             {title && <title>{title}</title>}
@@ -78,7 +78,7 @@ const KeystoneScanning: React.StatelessComponent<ScanProps> = ({ title, height }
         </svg>
     );
 };
-const HorizontalScanning: React.StatelessComponent<ScanProps> = ({ title, height }) => {
+const HorizontalScanning: React.FunctionComponent<ScanProps> = ({ title, height }) => {
     return (
         <svg role="presentation" focusable="false" viewBox="0 0 83 121" height={height}>
             {title && <title>{title}</title>}
@@ -112,7 +112,7 @@ const HorizontalScanning: React.StatelessComponent<ScanProps> = ({ title, height
         </svg>
     );
 };
-const ShadowScanning: React.StatelessComponent<ScanProps> = ({ title, height }) => {
+const ShadowScanning: React.FunctionComponent<ScanProps> = ({ title, height }) => {
     return (
         <svg role="presentation" focusable="false" viewBox="0 0 83 121" height={height}>
             {title && <title>{title}</title>}

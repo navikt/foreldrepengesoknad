@@ -9,10 +9,7 @@ interface OwnProps {
 
 type Props = OwnProps & UttaksplanSkjemaspørsmålProps;
 
-const HarAnnenForelderSøktForeldrepengerSpørsmål: React.StatelessComponent<Props> = ({
-    visible,
-    navnAnnenForelder,
-}) => {
+const HarAnnenForelderSøktForeldrepengerSpørsmål: React.FunctionComponent<Props> = ({ visible, navnAnnenForelder }) => {
     const intl = useIntl();
     return (
         <>

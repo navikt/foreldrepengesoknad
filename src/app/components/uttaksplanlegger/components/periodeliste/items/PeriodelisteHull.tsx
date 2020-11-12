@@ -49,7 +49,7 @@ const getTittelOgBeskrivelseForHull = (
     };
 };
 
-const PeriodelisteHullItem: React.StatelessComponent<Props> = ({
+const PeriodelisteHullItem: React.FunctionComponent<Props> = ({
     itemId,
     isExpanded,
     onToggle,

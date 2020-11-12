@@ -10,7 +10,7 @@ export interface GrafAleneomsorgProps {
     pstForMye?: number;
 }
 
-const GrafAleneomsorg: React.StatelessComponent<GrafAleneomsorgProps> = ({ forelder, pstBrukt, pstForMye }) => {
+const GrafAleneomsorg: React.FunctionComponent<GrafAleneomsorgProps> = ({ forelder, pstBrukt, pstForMye }) => {
     const childBem = fordelingGrafBem.child('graf');
     const farge = forelder === Forelder.mor ? UttaksplanHexFarge.lilla : UttaksplanHexFarge.blaa;
     return (

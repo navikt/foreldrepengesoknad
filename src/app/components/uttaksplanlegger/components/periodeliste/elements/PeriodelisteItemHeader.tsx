@@ -45,7 +45,7 @@ const renderDagMnd = (dato: Date, visÅr = true): JSX.Element => {
     );
 };
 
-const PeriodelisteItemHeader: React.StatelessComponent<Props> = ({
+const PeriodelisteItemHeader: React.FunctionComponent<Props> = ({
     type,
     isOpen,
     ikon,

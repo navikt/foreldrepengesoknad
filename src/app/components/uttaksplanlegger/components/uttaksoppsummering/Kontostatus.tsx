@@ -20,7 +20,7 @@ export interface Props {
 
 const BEM = BEMHelper('kontostatus');
 
-const Kontostatus: React.StatelessComponent<Props> = ({ uttak, navnPåForeldre, erEndringssøknad, intl }) => {
+const Kontostatus: React.FunctionComponent<Props> = ({ uttak, navnPåForeldre, erEndringssøknad, intl }) => {
     if (erEndringssøknad && uttak.konto === StønadskontoType.ForeldrepengerFørFødsel) {
         uttak.dager = 0;
     }

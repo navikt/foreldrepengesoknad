@@ -10,7 +10,7 @@ interface Props {
     perioderSomSkalSendesInn: Periode[];
 }
 
-const DevPerioderSomSendesInn: React.StatelessComponent<Props> = ({ søknadsinfo, perioderSomSkalSendesInn }) => (
+const DevPerioderSomSendesInn: React.FunctionComponent<Props> = ({ søknadsinfo, perioderSomSkalSendesInn }) => (
     <DevBlock alwaysActive={true}>
         <Ekspanderbartpanel tittel="Perioder som sendes inn" apen={true}>
             <Periodeliste

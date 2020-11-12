@@ -15,7 +15,7 @@ interface Props {
     children?: React.ReactNode;
 }
 
-const SøknadSendtSectionHeader: React.StatelessComponent<Props> = ({ title, info, type, children }) => {
+const SøknadSendtSectionHeader: React.FunctionComponent<Props> = ({ title, info, type, children }) => {
     return (
         <section className={cls.block}>
             <div className={cls.element('punkt')}>

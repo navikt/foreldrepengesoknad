@@ -20,7 +20,7 @@ interface Props {
 
 const cls = BEMHelper('kvitteringHeader');
 
-const KvitteringHeader: React.StatelessComponent<Props> = ({ søker, kvittering }) => {
+const KvitteringHeader: React.FunctionComponent<Props> = ({ søker, kvittering }) => {
     const { pdf, mottattDato } = kvittering;
     return (
         <div className={cls.block}>

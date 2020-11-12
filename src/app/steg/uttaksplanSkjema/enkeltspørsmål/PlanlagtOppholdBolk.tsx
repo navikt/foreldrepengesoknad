@@ -5,7 +5,7 @@ export interface Props {
     visible?: boolean;
 }
 
-const PlanlagtOppholdBolk: React.StatelessComponent<Props> = ({ visible = false }) => (
+const PlanlagtOppholdBolk: React.FunctionComponent<Props> = ({ visible = false }) => (
     <Block visible={visible}>Skjema for planlagt opphold</Block>
 );
 

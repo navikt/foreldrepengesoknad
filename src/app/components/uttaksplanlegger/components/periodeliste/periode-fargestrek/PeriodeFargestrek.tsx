@@ -12,7 +12,7 @@ export interface Props {
 
 const bem = BEMHelper('periodeFargestrek');
 
-const PeriodeFargestrek: React.StatelessComponent<Props> = ({ farge, gradert }) => {
+const PeriodeFargestrek: React.FunctionComponent<Props> = ({ farge, gradert }) => {
     return (
         <div
             className={classnames(

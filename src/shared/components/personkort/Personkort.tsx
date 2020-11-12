@@ -14,7 +14,7 @@ interface Props {
 
 const bem = BEMHelper('personkort');
 
-const Personkort: React.StatelessComponent<Props> = ({ tittel, children, ikon, invertert, textValign = 'top' }) => {
+const Personkort: React.FunctionComponent<Props> = ({ tittel, children, ikon, invertert, textValign = 'top' }) => {
     return (
         <div
             className={bem.classNames(

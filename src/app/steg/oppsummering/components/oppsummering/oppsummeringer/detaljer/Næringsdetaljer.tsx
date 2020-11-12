@@ -13,7 +13,7 @@ interface NæringsdetaljerProps {
 
 type Props = NæringsdetaljerProps;
 
-const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring }) => {
+const Næringsdetaljer: React.FunctionComponent<Props> = ({ næring }) => {
     const {
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
         registrertILand,

@@ -1,6 +1,6 @@
+import { VenstreChevron } from 'nav-frontend-chevron';
+import { Knapp } from 'nav-frontend-knapper';
 import * as React from 'react';
-const { VenstreChevron } = require('nav-frontend-chevron');
-const { Knapp } = require('nav-frontend-knapper');
 
 import './backButton.less';
 
@@ -10,7 +10,7 @@ interface Props {
     onClick: () => void;
 }
 
-const BackButton: React.StatelessComponent<Props> = ({ onClick, hidden, text = 'Tilbake' }) => {
+const BackButton: React.FunctionComponent<Props> = ({ onClick, hidden, text = 'Tilbake' }) => {
     return hidden ? null : (
         <Knapp className="backButton" onClick={onClick} mini={true} htmlType="button">
             <span className="backButton__chevron">

@@ -9,7 +9,7 @@ interface Props {
     intl: IntlShape;
 }
 
-const LoadingScreen: React.StatelessComponent<Props> = (props: Props) => {
+const LoadingScreen: React.FunctionComponent<Props> = (props: Props) => {
     return (
         <Applikasjonsside visAlertstripe={false}>
             <DocumentTitle title={getMessage(props.intl, 'dokument.tittel.loadingScreen')} />

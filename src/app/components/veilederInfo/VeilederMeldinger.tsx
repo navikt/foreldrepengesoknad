@@ -8,7 +8,7 @@ interface Props {
     skjulMeldingIkon?: boolean;
 }
 
-const VeilederMeldinger: React.StatelessComponent<Props> = ({ meldinger, stil, skjulMeldingIkon }) => {
+const VeilederMeldinger: React.FunctionComponent<Props> = ({ meldinger, stil, skjulMeldingIkon }) => {
     return (
         <div>
             {meldinger.map((melding: VeilederMessage, index: number) => (

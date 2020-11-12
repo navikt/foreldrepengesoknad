@@ -24,7 +24,7 @@ interface FarSinFørsteUttaksdagSpørsmålProps {
 
 type Props = FarSinFørsteUttaksdagSpørsmålProps & UttaksplanSkjemaspørsmålProps;
 
-const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({
+const FarSinFørsteUttaksdagSpørsmål: React.FunctionComponent<Props> = ({
     visible,
     familiehendelsesdato,
     morSinSisteUttaksdag,
