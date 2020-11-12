@@ -203,6 +203,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                             text={getMessage(intl, 'tilbake')}
                             hidden={this.shouldHideBackButton()}
                             onClick={this.handleNavigateToPreviousStepClick}
+                            ariaLabel={stegConfig[id].tilbakeLabel}
                         />
                     </div>
                 </Block>

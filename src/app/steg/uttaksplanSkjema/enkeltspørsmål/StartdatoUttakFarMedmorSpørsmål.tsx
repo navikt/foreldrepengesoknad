@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { useIntl } from 'react-intl';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
-import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
 import getMessage from 'common/util/i18nUtils';
 import startdatoFarMedmorValidation from '../../../util/validation/uttaksplan/startdatoFarMedmorValidation';
 import { uttaksplanDatoavgrensninger } from '../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 
 interface OwnProps {
     familiehendelsesdato: Date;
@@ -21,7 +20,7 @@ const StartdatoPermisjonSpørsmål = (props: Props) => {
         <UttaksplanSkjemaSpørsmål
             visible={visible}
             render={(data, onChange) => (
-                <ValiderbarDatoInput
+                <DatoInput
                     id="permisjonStartdato"
                     name="permisjonStartdato"
                     label={getMessage(intl, 'spørsmål.startdatoPermisjonFarMedmor.label')}
@@ -29,7 +28,7 @@ const StartdatoPermisjonSpørsmål = (props: Props) => {
                     dato={data.startdatoPermisjon}
                     disabled={data.skalIkkeHaUttakFørTermin}
                     datoAvgrensinger={uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato)}
-                    validators={startdatoFarMedmorValidation(intl, ISOStringToDate(data.startdatoPermisjon))}
+                    validators={startdatoFarMedmorValidation(intl, data.startdatoPermisjon)}
                 />
             )}
         />

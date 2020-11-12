@@ -3,7 +3,6 @@ import { IntlShape, useIntl } from 'react-intl';
 import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { Checkbox } from 'nav-frontend-skjema';
 import Block from 'common/components/block/Block';
-import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
 import { ValidFormContext, ValidFormContextInterface } from 'common/lib/validation/elements/ValiderbarForm';
 import getMessage from 'common/util/i18nUtils';
 import { getVarighetString } from 'common/util/intlUtils';
@@ -16,6 +15,7 @@ import { uttaksplanDatoavgrensninger } from '../../../util/validation/uttaksplan
 import { UttaksplanSkjemadata } from '../uttaksplanSkjemadata';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import VeilederStartdatoPermisjon from './VeilederStartdatoPermisjon';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 
 interface OwnProps {
     barnetErFødt: boolean;
@@ -67,7 +67,7 @@ const renderContent = (
     return (
         <>
             <Block margin="xs">
-                <ValiderbarDatoInput
+                <DatoInput
                     name="permisjonStartdato"
                     id="permisjonStartdato"
                     label={spørsmålNår}
@@ -86,7 +86,7 @@ const renderContent = (
                     allowInvalidDateSelection={true}
                     validators={startdatoFørTerminValidators(
                         intl,
-                        ISOStringToDate(data.startdatoPermisjon),
+                        data.startdatoPermisjon,
                         familiehendelsesdato,
                         data.skalIkkeHaUttakFørTermin
                     )}

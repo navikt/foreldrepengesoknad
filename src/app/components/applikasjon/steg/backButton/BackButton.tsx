@@ -8,11 +8,12 @@ interface Props {
     text?: string;
     hidden: boolean;
     onClick: () => void;
+    ariaLabel?: string;
 }
 
-const BackButton: React.FunctionComponent<Props> = ({ onClick, hidden, text = 'Tilbake' }) => {
+const BackButton: React.FunctionComponent<Props> = ({ onClick, hidden, text = 'Tilbake', ariaLabel }) => {
     return hidden ? null : (
-        <Knapp className="backButton" onClick={onClick} mini={true} htmlType="button">
+        <Knapp className="backButton" onClick={onClick} mini={true} htmlType="button" aria-label={ariaLabel}>
             <span className="backButton__chevron">
                 <VenstreChevron />
             </span>

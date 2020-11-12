@@ -22,13 +22,11 @@ import {
 import Søknad from '../../../types/søknad/Søknad';
 import { findOldestDate } from '../../dates/dates';
 import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
-import { fødselsdatoerErFyltUt } from '../fødselsdato';
+// import { fødselsdatoerErFyltUt } from '../fødselsdato';
 import { erGyldigDato, hasValueRule } from '../common';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
-    return (
-        barn.fødselsdatoer !== undefined && barn.fødselsdatoer.length > 0 && fødselsdatoerErFyltUt(barn.fødselsdatoer)
-    );
+    return barn.fødselsdatoer !== undefined && barn.fødselsdatoer.length > 0;
 };
 
 const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn): boolean => {
