@@ -6,13 +6,13 @@ import './numberStepper.less';
 
 export interface Props {
     value: number;
-    ariaLabel: string;
     increaseAriaLabel: string;
     decreaseAriaLabel: string;
     stepSize?: number;
     max?: number;
     min?: number;
     onChange: (value: number) => void;
+    legendId?: string;
 }
 
 const bem = BEMHelper('numberStepper');
@@ -22,7 +22,7 @@ const NumberStepper: React.FunctionComponent<Props> = ({
     min,
     max,
     stepSize = 1,
-    ariaLabel,
+    legendId,
     onChange,
     increaseAriaLabel,
     decreaseAriaLabel,
@@ -42,10 +42,10 @@ const NumberStepper: React.FunctionComponent<Props> = ({
             <div className={bem.element('input')}>
                 <input
                     className="skjemaelement__input input--fullbredde"
-                    aria-label={ariaLabel}
                     type="number"
                     value={value}
                     onChange={(evt) => onChange(parseInt(evt.target.value, 10))}
+                    aria-labelledby={legendId}
                 />
             </div>
             <div className={bem.element('increase')}>
