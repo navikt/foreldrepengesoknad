@@ -6,6 +6,8 @@ import BEMHelper from 'common/util/bem';
 import Fieldset from 'app/temp-components/Fieldset';
 
 import './ukerDagerTeller.less';
+import { Element } from 'nav-frontend-typografi';
+import { guid } from 'nav-frontend-js-utils';
 
 export interface Props {
     ukeLegend: string;
@@ -17,18 +19,20 @@ export interface Props {
 
 const UkerDagerTeller: React.FunctionComponent<Props> = ({ ukeLegend, dagLegend, feil, ukeStepper, dagStepper }) => {
     const bem = BEMHelper('ukerDagerTeller');
+    const ukeLegendId = guid();
+    const dagLegendId = guid();
     return (
-        <SkjemaGruppe feil={feil}>
+        <SkjemaGruppe feil={feil} legend={<Element tag="span">Varighet på perioden</Element>}>
             <div className={bem.block}>
                 <div className={bem.element('ukerFelt')}>
                     <Block margin="xxs">
-                        <Fieldset legend={ukeLegend}>
-                            <NumberStepper {...ukeStepper} />
+                        <Fieldset legend={<span id={ukeLegendId}>{ukeLegend}</span>}>
+                            <NumberStepper {...ukeStepper} legendId={ukeLegendId} />
                         </Fieldset>
                     </Block>
                 </div>
-                <Fieldset legend={dagLegend}>
-                    <NumberStepper {...dagStepper} />
+                <Fieldset legend={<span id={dagLegendId}>{dagLegend}</span>}>
+                    <NumberStepper {...dagStepper} legendId={dagLegendId} />
                 </Fieldset>
             </div>
         </SkjemaGruppe>
