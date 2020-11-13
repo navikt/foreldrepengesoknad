@@ -89,10 +89,10 @@ export const validateFødselsnummer = (
 
     if (erUtenlandskFnr) {
         if (fnr === undefined || fnr === '') {
-            return createFieldValidationError('valideringsfeil.fnrPåkrevd');
+            return createFieldValidationError('valideringsfeil.fødselsnummer.required');
         }
 
-        return validFnrResult === 'D' ? undefined : createFieldValidationError('valideringsfeil.ugyldigUtenlandskFnr');
+        return undefined;
     }
 
     if (fnr === søkersFødselsnummer) {
