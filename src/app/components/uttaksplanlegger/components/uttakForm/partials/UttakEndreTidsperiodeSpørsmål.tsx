@@ -64,6 +64,18 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
         onBekreft(mapTidsperiodeStringToTidsperiode(values));
     };
 
+    const getDagValue = (uker: number, dager: number): number => {
+        if (dager >= 5) {
+            return 0;
+        }
+
+        if (uker === 0 && dager === 0) {
+            return 1;
+        }
+
+        return dager;
+    };
+
     return (
         <>
             <Modal isOpen={visible} closeButton={true} onRequestClose={onAvbryt} contentLabel="Test">
@@ -138,7 +150,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                         if (date) {
                             changeTidsperiode({
                                 fom: date,
-                                tom: getTidsperiode(date, nyUker * 5 + dager).tom,
+                                tom: getTidsperiode(date, nyUker * 5 + getDagValue(nyUker, dager)).tom,
                             });
                         }
                     },
@@ -147,8 +159,8 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                     decreaseAriaLabel: 'Mink antall uker med en uke',
                 }}
                 dagStepper={{
-                    value: dager !== undefined && dager !== 5 ? dager : 0,
-                    min: 0,
+                    value: getDagValue(uker, dager),
+                    min: uker === 0 ? 1 : 0,
                     max: 5,
                     onChange: (nyDager: number) => {
                         const date = ISOStringToDate(tidsperiode.fom);

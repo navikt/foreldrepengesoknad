@@ -119,6 +119,18 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
         tilAvgrensninger = { minDato: ISOStringToDate(tidsperiode.fom) };
     }
 
+    const getDagValue = (uker: number, dager: number): number => {
+        if (dager >= 5) {
+            return 0;
+        }
+
+        if (uker === 0 && dager === 0) {
+            return 1;
+        }
+
+        return dager;
+    };
+
     const { uker, dager } = varighetIDager ? getUkerOgDagerFromDager(Math.abs(varighetIDager)) : { uker: 0, dager: 0 };
 
     const validators = getValidators();
@@ -193,7 +205,9 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                         if (date) {
                                             handleOnChange({
                                                 ...tidsperiode,
-                                                tom: dateToISOString(getTidsperiode(date, nyUker * 5 + dager).tom),
+                                                tom: dateToISOString(
+                                                    getTidsperiode(date, nyUker * 5 + getDagValue(nyUker, dager)).tom
+                                                ),
                                             });
                                         }
                                     },
@@ -202,8 +216,8 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                     decreaseAriaLabel: 'Mink antall uker med en uke',
                                 },
                                 {
-                                    value: dager !== undefined && dager !== 5 ? dager : 0,
-                                    min: 0,
+                                    value: getDagValue(uker, dager),
+                                    min: uker === 0 ? 1 : 0,
                                     max: 5,
                                     onChange: (nyDager: number) => {
                                         const date = ISOStringToDate(tidsperiode.fom);
