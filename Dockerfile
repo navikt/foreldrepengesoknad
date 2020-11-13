@@ -2,7 +2,7 @@ FROM node:14
 
 WORKDIR /usr/src/app
 
-RUN apk add --no-cache curl
+RUN apt-get --no-cache curl
 RUN curl -f -o fallback-decorator.html "https://www.nav.no/dekoratoren/?simple=true"
 
 COPY dist ./dist
