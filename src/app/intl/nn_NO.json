@@ -895,7 +895,6 @@
     "valideringsfeil.utenlandsopphold_utenfor_periode": "Du kan ikke legge inn et utenlandsopphold i valgt tidsperiode",
     "valideringsfeil.fornavnPåkrevd": "Fornavn må fylles ut",
     "valideringsfeil.etternavnPåkrevd": "Etternavn må fylles ut",
-    "valideringsfeil.fnrPåkrevd": "Fødselsnummer må fylles ut",
     "valideringsfeil.ugyldigUtenlandskFnr": "D-nummer er ugyldig",
     "valideringsfeil.aleneOmOmsorgPåkrevd": "Er du alene om omsorg må fylles ut",
     "valideringsfeil.annenForelderHarRettPåkrevd": "Har annen forelder rett må fylles ut",

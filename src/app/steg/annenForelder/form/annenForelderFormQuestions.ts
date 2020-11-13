@@ -39,7 +39,7 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
         isIncluded: (payload) => payload.skalOppgiPersonalia && isAnnenForelderKanIkkeOppgisIncluded(payload),
     },
     [AnnenForelderFieldNames.fnr]: {
-        isAnswered: ({ fnr }) => hasValue(fnr),
+        isAnswered: ({ fnr, utenlandskFnr }) => hasValue(fnr) || utenlandskFnr,
         isIncluded: ({ skalOppgiPersonalia, kanIkkeOppgis }) => skalOppgiPersonalia && kanIkkeOppgis !== true,
         visibilityFilter: ({ fornavn, etternavn }) => hasValue(fornavn) && hasValue(etternavn),
     },
@@ -85,6 +85,7 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
     [AnnenForelderFieldNames.bostedsland]: {
         isAnswered: ({ bostedsland }) => hasValue(bostedsland),
         isIncluded: ({ utenlandskFnr }) => utenlandskFnr === true,
+        visibilityFilter: ({ fnr }) => hasValue(fnr),
     },
 };
 
