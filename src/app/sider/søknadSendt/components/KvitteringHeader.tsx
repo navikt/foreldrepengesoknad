@@ -29,7 +29,7 @@ const KvitteringHeader: React.FunctionComponent<Props> = ({ søker, kvittering }
             </Block>
 
             <Block margin="s">
-                <Sidetittel tag="h4">
+                <Sidetittel tag="h1">
                     <FormattedMessage
                         id="søknadSendt.tittel"
                         values={{
