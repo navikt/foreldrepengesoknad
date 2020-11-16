@@ -37,19 +37,13 @@ class GjelderSøknadenNoenAvDisseBarnaSpørsmål extends React.Component<Props> 
     }
 
     render() {
-        const { intl, disabled, registrerteBarn, onChange } = this.props;
-        const ettBarn = registrerteBarn.length === 1;
+        const { intl, disabled, onChange } = this.props;
         return (
             <React.Fragment>
                 <CheckboksPanelGruppeResponsive
                     checkboxes={this.createRegistrertBarnOptions()}
                     disabled={disabled}
-                    legend={getMessage(
-                        intl,
-                        ettBarn
-                            ? 'gjelderSøknadenNoenAvDisseBarna.spørsmål.ettBarn'
-                            : 'gjelderSøknadenNoenAvDisseBarna.spørsmål'
-                    )}
+                    legend={getMessage(intl, 'gjelderSøknadenNoenAvDisseBarna.registrerteBarn')}
                     onChange={(e: InputChangeEvent, fnr: string) => {
                         onChange(
                             this.props.registrerteBarn.find((b) => b.fnr === fnr) as RegistrertBarn,
