@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { injectIntl, IntlShape } from 'react-intl';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import Block from 'common/components/block/Block';
 import { RegistrertBarn } from '../../../types/Person';
 import GjelderSøknadenNoenAvDisseBarnaSpørsmål from '../../../spørsmål/GjelderSøknadenNoenAvDisseBarnaSpørsmål';
 import Checkbox from 'nav-frontend-skjema/lib/checkbox';
 import getMessage from 'common/util/i18nUtils';
 import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
-
+import Fieldset from 'app/temp-components/Fieldset';
 interface BarnBolkProps {
     søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
     registrerteBarn: RegistrertBarn[];
@@ -39,10 +39,24 @@ class BarnBolk extends React.Component<Props> {
 
     render() {
         const { søknadenGjelderBarnValg, registrerteBarn, intl } = this.props;
+        const ettBarn = registrerteBarn.length === 1;
 
         return (
-            <React.Fragment>
-                <Block>
+            <Fieldset
+                legend={
+                    <span style={{ display: 'inline-block', marginBottom: '.75rem', fontSize: '1.125rem' }}>
+                        <FormattedMessage
+                            tagName="span"
+                            id={
+                                ettBarn
+                                    ? 'hvilketBarnGjelderSøknaden.spørsmål.ettBarn'
+                                    : 'hvilketBarnGjelderSøknaden.spørsmål'
+                            }
+                        />
+                    </span>
+                }
+            >
+                <Block margin="s">
                     <GjelderSøknadenNoenAvDisseBarnaSpørsmål
                         registrerteBarn={registrerteBarn}
                         valgteBarn={søknadenGjelderBarnValg.valgteBarn}
@@ -58,7 +72,7 @@ class BarnBolk extends React.Component<Props> {
                         onChange={(evt) => this.onGjelderAnnetBarnChange(evt.target.checked)}
                     />
                 </Block>
-            </React.Fragment>
+            </Fieldset>
         );
     }
 }
