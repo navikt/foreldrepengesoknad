@@ -36,7 +36,7 @@ const PersonMedSnakkeboble: React.FunctionComponent<Props> = ({
         >
             {dialog && (
                 <Normaltekst tag="div" className={bem.element('snakkeboble')}>
-                    <Snakkeboble tittel={dialog.title} tekst={dialog.text} />
+                    <Snakkeboble tittel={dialog.title} tekst={dialog.text} tittelTag="h2" />
                 </Normaltekst>
             )}
             <div className={bem.element('person')}>{personRenderer()}</div>
