@@ -154,7 +154,6 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                             });
                         }
                     },
-                    ariaLabel: 'Antall uker',
                     increaseAriaLabel: 'Øk antall uker med en uke',
                     decreaseAriaLabel: 'Mink antall uker med en uke',
                 }}
@@ -171,7 +170,6 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                             });
                         }
                     },
-                    ariaLabel: 'Antall dager',
                     increaseAriaLabel: 'Øk antall dager med en dag',
                     decreaseAriaLabel: 'Mink antall dager med en dag',
                 }}

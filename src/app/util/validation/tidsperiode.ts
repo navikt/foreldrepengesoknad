@@ -14,7 +14,7 @@ export const getFomTidsperiodeRegler = (
 ): Validator[] => {
     const intlKey = 'valideringsfeil.utenlandsopphold';
     return [
-        hasValueRule(fom, getMessage(intl, 'påkrevd')),
+        hasValueRule(fom, getMessage(intl, 'valideringsfeil.fraOgMedDato.påkrevd')),
         erGyldigDato(fom, getMessage(intl, 'valideringsfeil.fraOgMedDato.gyldigDato')),
         dateIsSameOrBeforeRule(ISOStringToDate(fom), ISOStringToDate(tom), getMessage(intl, `${intlKey}.førTilDato`)),
     ];
