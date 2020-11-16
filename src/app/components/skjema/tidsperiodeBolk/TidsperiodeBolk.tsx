@@ -211,7 +211,6 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                             });
                                         }
                                     },
-                                    ariaLabel: 'Antall uker',
                                     increaseAriaLabel: 'Øk antall uker med en uke',
                                     decreaseAriaLabel: 'Mink antall uker med en uke',
                                 },
@@ -228,7 +227,6 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                                             });
                                         }
                                     },
-                                    ariaLabel: 'Antall dager',
                                     increaseAriaLabel: 'Øk antall dager med en dag',
                                     decreaseAriaLabel: 'Mink antall dager med en dag',
                                 },
