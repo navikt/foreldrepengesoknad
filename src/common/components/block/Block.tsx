@@ -12,6 +12,7 @@ export interface BlockProps {
     header?: {
         title: string;
         info?: string;
+        tag?: string;
     };
     visible?: boolean;
     /** Animation is set to default true if visible is !undefined, unless animated is set to false */
@@ -47,7 +48,7 @@ const Block: React.FunctionComponent<BlockProps> = ({
     const content =
         header !== undefined ? (
             <section className={contentClass}>
-                <Element tag="h3" className="heading">
+                <Element tag={header.tag || 'h3'} className="heading">
                     <LabelWithInfo info={header.info}>{header.title}</LabelWithInfo>
                 </Element>
                 {children}

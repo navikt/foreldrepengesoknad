@@ -18,7 +18,7 @@ const SelvstendigNæringsdrivendeOppsummering = ({ søker }: Props) => {
 
     if (selvstendigNæringsdrivendeInformasjon && harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) {
         return (
-            <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}>
+            <Oppsummeringsseksjon tittel={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}>
                 <SelvstendigNæringsdrivendeOppsummeringsliste næringer={selvstendigNæringsdrivendeInformasjon} />
             </Oppsummeringsseksjon>
         );

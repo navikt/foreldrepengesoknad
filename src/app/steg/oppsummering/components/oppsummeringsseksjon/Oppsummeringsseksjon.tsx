@@ -1,15 +1,19 @@
 import * as React from 'react';
-import Ingress from 'nav-frontend-typografi/lib/ingress';
+import { Element } from 'nav-frontend-typografi';
 import './oppsummeringsseksjon.less';
 
 interface OppsummeringsseksjonProps {
-    ingress?: string;
+    tittel?: string;
     children: React.ReactNode;
 }
 
-const Oppsummeringsseksjon: React.FunctionComponent<OppsummeringsseksjonProps> = ({ ingress, children }) => (
+const Oppsummeringsseksjon: React.FunctionComponent<OppsummeringsseksjonProps> = ({ tittel, children }) => (
     <div className="oppsummeringsseksjon">
-        {ingress && <Ingress>{ingress}</Ingress>}
+        {tittel && (
+            <Element tag="h3" className="oppsummeringsseksjon__tittel">
+                {tittel}
+            </Element>
+        )}
         {children}
     </div>
 );

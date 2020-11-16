@@ -1,8 +1,8 @@
 import React from 'react';
-import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import Block from 'common/components/block/Block';
 import { FormattedMessage } from 'react-intl';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
+import Block from 'common/components/block/Block';
+import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 import lenker from 'app/util/routing/lenker';
 
 const InfoTilFiskere = () => {
@@ -14,9 +14,9 @@ const InfoTilFiskere = () => {
                         <FormattedMessage id="andreInntekter.infoTilFiskere.del1" />
                     </Normaltekst>
                 </Block>
-                <Undertittel>
+                <Element tag="h3" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="andreInntekter.infoTilFiskere.hyre" />
-                </Undertittel>
+                </Element>
                 <Block margin="xs">
                     <Normaltekst>
                         <FormattedMessage id="andreInntekter.infoTilFiskere.del2" />
@@ -41,9 +41,9 @@ const InfoTilFiskere = () => {
                         />
                     </Normaltekst>
                 </Block>
-                <Undertittel>
+                <Element tag="h3" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="andreInntekter.infoTilFiskere.lott" />
-                </Undertittel>
+                </Element>
                 <Block margin="xs">
                     <Normaltekst>
                         <FormattedMessage id="andreInntekter.infoTilFiskere.del4" />
@@ -63,17 +63,17 @@ const InfoTilFiskere = () => {
                         />
                     </Normaltekst>
                 </Block>
-                <Undertittel>
+                <Element tag="h3" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="andreInntekter.infoTilFiskere.egenBåt" />
-                </Undertittel>
+                </Element>
                 <Block margin="xs">
                     <Normaltekst>
                         <FormattedMessage id="andreInntekter.infoTilFiskere.del6" />
                     </Normaltekst>
                 </Block>
-                <Undertittel>
+                <Element tag="h3" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="andreInntekter.infoTilFiskere.lottOgHyre" />
-                </Undertittel>
+                </Element>
                 <Block margin="xs">
                     <Normaltekst>
                         <FormattedMessage id="andreInntekter.infoTilFiskere.del7" />

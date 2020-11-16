@@ -27,7 +27,7 @@ const StatusBoks: React.FunctionComponent<Props> = ({ saksNr }) => {
                 <div className={cls.block}>
                     <div className={cls.element('left')}>
                         <Block margin="xs">
-                            <Undertittel>
+                            <Undertittel tag="h3">
                                 <FormattedMessage id="søknadSendt.status.undertittel" />
                             </Undertittel>
                         </Block>

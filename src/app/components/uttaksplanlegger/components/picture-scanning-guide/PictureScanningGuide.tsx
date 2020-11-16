@@ -23,7 +23,7 @@ const PictureScanningGuide = () => {
                 <FormattedMessage id="psg.innholdstittel" />
             </Systemtittel>
 
-            <Undertittel className={bem.element('title')}>
+            <Undertittel tag="h3" className={bem.element('title')}>
                 <FormattedMessage id="psg.section1.tittel" />
             </Undertittel>
             <ul>
@@ -36,7 +36,7 @@ const PictureScanningGuide = () => {
                 <FormattedMessage tagName="li" id="psg.section1.liste.punkt3" />
             </ul>
 
-            <Undertittel className={bem.element('title')}>
+            <Undertittel tag="h3" className={bem.element('title')}>
                 <FormattedMessage id="psg.section2.tittel" />
             </Undertittel>
 

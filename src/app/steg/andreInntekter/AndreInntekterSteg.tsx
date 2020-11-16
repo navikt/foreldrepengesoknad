@@ -105,6 +105,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                 <Block
                     header={{
                         title: getMessage(intl, 'annenInntekt.ytelser.label'),
+                        tag: 'h2',
                     }}
                 >
                     <YtelseInfoWrapper ytelser={[]} />
@@ -113,6 +114,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                     header={{
                         title: getMessage(intl, 'annenInntekt.arbeidsforhold.label'),
                         info: getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst'),
+                        tag: 'h2',
                     }}
                     margin="xs"
                 >

@@ -109,10 +109,14 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
         }
     }
 
-    createOppsummeringslisteelementPropsForUttaksperiode(periode: Uttaksperiode, periodeErNyEllerEndret = true) {
+    createOppsummeringslisteelementPropsForUttaksperiode(
+        periode: Uttaksperiode,
+        periodeErNyEllerEndret = true
+    ): OppsummeringslisteelementProps {
         const { registrerteArbeidsforhold, søknadsinfo } = this.props;
         return {
             venstrestiltTekst: this.getStønadskontoNavnFromKonto(periode.konto),
+            venstrestiltTag: 'h3',
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
             content: (
                 <Uttaksperiodedetaljer
@@ -125,9 +129,10 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
         };
     }
 
-    createOppsummeringslisteelementPropsForOppholdsperiode(periode: Oppholdsperiode) {
+    createOppsummeringslisteelementPropsForOppholdsperiode(periode: Oppholdsperiode): OppsummeringslisteelementProps {
         return {
             venstrestiltTekst: getPeriodeTittel(this.props.intl, periode, this.props.søknadsinfo.navn.navnPåForeldre),
+            venstrestiltTag: 'h3',
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
         };
     }
@@ -135,10 +140,11 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
     createOppsummeringslisteelementPropsForUtsettelsesperiode(
         periode: Utsettelsesperiode,
         periodeErNyEllerEndret: boolean
-    ) {
+    ): OppsummeringslisteelementProps {
         const { registrerteArbeidsforhold, søknadsinfo, intl } = this.props;
         return {
             venstrestiltTekst: getMessage(intl, 'oppsummering.utsettelse.pga'),
+            venstrestiltTag: 'h3',
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
             content: (
                 <Utsettelsesperiodedetaljer
@@ -154,13 +160,14 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
     createOppsummeringslisteelementPropsForOverføringsperiode(
         periode: Overføringsperiode,
         periodeErNyEllerEndret: boolean
-    ) {
+    ): OppsummeringslisteelementProps {
         const { navnPåForeldre, erFarEllerMedmor, intl } = this.props;
         const kontonavn = this.getStønadskontoNavnFromKonto(periode.konto);
         return {
             venstrestiltTekst: getMessage(intl, 'oppsummering.overtakelse.pga', {
                 konto: kontonavn,
             }),
+            venstrestiltTag: 'h3',
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
             content: (
                 <Overføringsperiodedetaljer
@@ -173,9 +180,12 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
         };
     }
 
-    createOppsummeringslisteelementPropsForBegrunnelseForSenEndring(begrunnelse: TilleggsopplysningMedBeskrivelse) {
+    createOppsummeringslisteelementPropsForBegrunnelseForSenEndring(
+        begrunnelse: TilleggsopplysningMedBeskrivelse
+    ): OppsummeringslisteelementProps {
         return {
             venstrestiltTekst: begrunnelse.beskrivelse,
+            venstrestiltTag: 'h3',
             høyrestiltTekst: '',
             content: (
                 <>
