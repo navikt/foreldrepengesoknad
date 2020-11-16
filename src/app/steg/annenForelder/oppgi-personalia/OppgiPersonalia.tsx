@@ -59,17 +59,17 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
                         />
                     </div>
                 </Block>
+                <Block visible={visibility.isVisible(AnnenForelderFieldNames.kanIkkeOppgis)}>
+                    <AnnenForelderFormComponents.Checkbox
+                        name={AnnenForelderFieldNames.kanIkkeOppgis}
+                        label={
+                            gjelderAdopsjon
+                                ? getMessage(intl, 'annenForelder.spørsmål.adoptererAlene')
+                                : getMessage(intl, 'annenForelder.spørsmål.kanOppgis')
+                        }
+                    />
+                </Block>
             </Fieldset>
-            <Block visible={visibility.isVisible(AnnenForelderFieldNames.kanIkkeOppgis)}>
-                <AnnenForelderFormComponents.Checkbox
-                    name={AnnenForelderFieldNames.kanIkkeOppgis}
-                    label={
-                        gjelderAdopsjon
-                            ? getMessage(intl, 'annenForelder.spørsmål.adoptererAlene')
-                            : getMessage(intl, 'annenForelder.spørsmål.kanOppgis')
-                    }
-                />
-            </Block>
             <Block margin="xs" visible={visibility.isVisible(AnnenForelderFieldNames.fnr)}>
                 <AnnenForelderFormComponents.Input
                     name={AnnenForelderFieldNames.fnr}
