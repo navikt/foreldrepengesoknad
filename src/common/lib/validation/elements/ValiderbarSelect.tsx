@@ -14,6 +14,7 @@ const ValiderbarSelect: React.FunctionComponent<ValiderbarSelectProps> = (props:
             render={(onChange, onBlur, feil) => (
                 <Select
                     {...rest}
+                    autoComplete="off"
                     onChange={onChange}
                     onBlur={onBlur}
                     feil={feil !== undefined ? feil.feilmelding : undefined}

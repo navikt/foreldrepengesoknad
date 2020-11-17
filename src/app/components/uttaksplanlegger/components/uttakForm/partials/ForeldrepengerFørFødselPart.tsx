@@ -17,6 +17,7 @@ class ForeldrepengerFørFødselUttakForm extends React.Component<Props> {
         return (
             <Checkbox
                 checked={skalIkkeHaUttakFørTermin || false}
+                autoComplete="off"
                 label={getMessage(intl, 'spørsmål.startdatoPermisjon.skalIkkeHaUttak.label')}
                 onChange={(e) => onChange(e.target.checked)}
             />
