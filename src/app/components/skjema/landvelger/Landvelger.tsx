@@ -57,6 +57,7 @@ class Landvelger extends React.Component<Props> {
                 infotekst={infotekst}
                 onChange={(e: SelectChangeEvent) => onChange(e.target.value, e)}
                 validators={validators}
+                autoComplete="off"
             >
                 <option value="" />
                 {this.getCountryOptions()}

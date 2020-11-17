@@ -32,6 +32,7 @@ class GjelderSøknadenNoenAvDisseBarnaSpørsmål extends React.Component<Props> 
                 value: registrertBarn.fnr,
                 checked: erBarnValgt(registrertBarn, valgteBarn),
                 subtext: formatDate(registrertBarn.fødselsdato),
+                autoComplete: 'off',
             };
         });
     }

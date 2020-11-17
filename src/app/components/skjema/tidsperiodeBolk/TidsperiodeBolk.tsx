@@ -248,6 +248,7 @@ const TidsperiodeBolk: React.FunctionComponent<Props> = (props) => {
                         name="pågående"
                         checked={pågående || false}
                         label={getMessage(intl, 'pågående')}
+                        autoComplete="off"
                         onChange={(e: InputChangeEvent) => {
                             handleOnChange({
                                 ...tidsperiode,
