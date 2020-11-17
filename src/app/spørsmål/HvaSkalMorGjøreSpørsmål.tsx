@@ -133,6 +133,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                         label={getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål', {
                             navnMor: navnPåForeldre.mor.fornavn,
                         })}
+                        autoComplete="off"
                         onChange={(e: SelectChangeEvent) => onChange(e.target.value as MorsAktivitet)}
                         validators={[
                             {
