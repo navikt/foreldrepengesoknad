@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
+import { Element } from 'nav-frontend-typografi';
 import Block from 'common/components/block/Block';
+import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 
 const ArbeideHelgInfo = () => {
     const intl = useIntl();
@@ -24,7 +25,9 @@ const ArbeideHelgInfo = () => {
                 <FormattedMessage id="uttaksplan.arbeideHelgInfo.del5" values={{ b: (msg: any) => <b>{msg}</b> }} />
             </Block>
             <Block margin="xs">
-                <FormattedMessage id="uttaksplan.arbeideHelgInfo.del6" values={{ b: (msg: any) => <b>{msg}</b> }} />
+                <Element tag="h2">
+                    <FormattedMessage id="uttaksplan.arbeideHelgInfo.del6" values={{ b: (msg: any) => <b>{msg}</b> }} />
+                </Element>
             </Block>
             <Block margin="xs">
                 <FormattedMessage id="uttaksplan.arbeideHelgInfo.del7" />
