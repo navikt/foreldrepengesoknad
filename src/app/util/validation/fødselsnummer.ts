@@ -1,8 +1,4 @@
-import { IntlShape } from 'react-intl';
 import moment from 'moment';
-import { Validator } from 'common/lib/validation/types/index';
-import getMessage from 'common/util/i18nUtils';
-import { hasValueRule } from './common';
 const isValidFødselsnummer = require('is-valid-fodselsnummer');
 
 const MAKS_FNR_LENGTH = 30;
@@ -36,31 +32,4 @@ export const isSixteenOrOlder = (fnr: string, isFødselsnummerValid: Fødselsnum
     }
 
     return fødselsdato.isBefore(moment().subtract(16, 'year'));
-};
-
-export const getFødselsnummerRegler = (
-    fnr: string,
-    utenlandskFnr: boolean,
-    søkersFødselsnummer: string,
-    intl: IntlShape
-): Validator[] => {
-    const intlKey = 'valideringsfeil.fødselsnummer';
-    const isFødselsnummerValid = isFødselsnummerFormatValid(fnr);
-    return [
-        hasValueRule(fnr, getMessage(intl, `${intlKey}.required`)),
-        {
-            test: () =>
-                (!utenlandskFnr && isFødselsnummerValid !== false) ||
-                (utenlandskFnr === true && isUtenlandskFødselsnummerValid(fnr)),
-            failText: getMessage(intl, `${intlKey}.ugyldigFødselsnummer`),
-        },
-        {
-            test: () => søkersFødselsnummer !== fnr,
-            failText: getMessage(intl, `${intlKey}.ugyldigEgetFødselsnummer`),
-        },
-        {
-            test: () => (!utenlandskFnr && isSixteenOrOlder(fnr, isFødselsnummerValid)) || utenlandskFnr === true,
-            failText: getMessage(intl, `${intlKey}.underSeksten`),
-        },
-    ];
 };
