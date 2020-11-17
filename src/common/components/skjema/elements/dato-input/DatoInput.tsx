@@ -81,6 +81,7 @@ class DatoInput extends React.Component<Props> {
                             inputProps={{
                                 name,
                                 'aria-describedby': ariaDescriptionId,
+                                placeholder: 'DD.MM.ÅÅÅÅ',
                             }}
                             showYearSelector={true}
                             onChange={(nyDato: string) => {
