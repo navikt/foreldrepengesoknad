@@ -70,6 +70,7 @@ class BarnBolk extends React.Component<Props> {
                         label={getMessage(intl, 'søknadenGjelderAnnetBarn.spørsmål')}
                         checked={søknadenGjelderBarnValg.gjelderAnnetBarn === true}
                         onChange={(evt) => this.onGjelderAnnetBarnChange(evt.target.checked)}
+                        autoComplete="off"
                     />
                 </Block>
             </Fieldset>

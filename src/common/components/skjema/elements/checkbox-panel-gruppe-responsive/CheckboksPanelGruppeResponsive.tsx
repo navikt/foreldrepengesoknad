@@ -26,6 +26,7 @@ class CheckboksPanelGruppeResponsive extends React.Component<Props> {
                         ? checkboxes.map((chkbox) => ({
                               ...chkbox,
                               disabled,
+                              autoComplete: 'off',
                           }))
                         : checkboxes
                 }

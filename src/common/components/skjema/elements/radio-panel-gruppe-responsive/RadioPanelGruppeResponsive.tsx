@@ -22,7 +22,7 @@ class RadioPanelGruppeResponsive extends React.Component<RadioPanelGruppeRespons
                 legend={<LabelWithInfo info={infoboksTekst}>{legend}</LabelWithInfo>}
                 className={twoColumns ? 'twoColumnsPanelGruppe' : undefined}
                 feil={feil}
-                radios={radios}
+                radios={radios.map((radio) => ({ ...radio, autoComplete: 'off' }))}
                 name={name}
                 checked={checked}
                 onChange={onChange}
