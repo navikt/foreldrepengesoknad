@@ -18,7 +18,7 @@ const AndreInntekterOppsummering = ({ søker }: Props) => {
 
     if (andreInntekterSiste10Mnd && harHattAnnenInntektSiste10Mnd) {
         return (
-            <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.andreInntekter.tittel')}>
+            <Oppsummeringsseksjon tittel={getMessage(intl, 'oppsummering.andreInntekter.tittel')}>
                 <AndreInntekterOppsummeringsliste andreInntekter={andreInntekterSiste10Mnd} />
             </Oppsummeringsseksjon>
         );

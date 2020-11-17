@@ -6,7 +6,16 @@
         "kjønn": "K",
         "fødselsdato": "1964-06-17",
         "land": "NO",
-        "ikkeNordiskEøsLand": false
+        "ikkeNordiskEøsLand": false,
+        "barn": [
+            {
+                "fødselsdato": "2020-06-05",
+                "fnr": "17066425606",
+                "fornavn": "Edvin",
+                "etternavn": "Hansen",
+                "kjønn": "m"
+            }
+        ]
     },
     "arbeidsforhold": []
 }

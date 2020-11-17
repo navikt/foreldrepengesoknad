@@ -5,8 +5,8 @@ interface Props {
 }
 const Søknadstittel: React.FunctionComponent<Props> = ({ children }) => {
     return (
-        <div className="søknadstittel">
-            <h1 className="typo-undertittel">{children}</h1>
+        <div className="søknadstittel" role="banner">
+            <h2 className="typo-undertittel">{children}</h2>
         </div>
     );
 };

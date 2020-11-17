@@ -22,7 +22,7 @@ const InformasjonOmArbeidsforholdWrapper: React.FunctionComponent<Arbeidsforhold
     return (
         <React.Fragment>
             {!harArbeidsforhold && (
-                <div className="arbeidsforholdInfoBox">
+                <div className="arbeidsforholdInfoBox" style={{ marginBottom: '1rem' }}>
                     <Normaltekst>
                         {getMessage(intl, 'annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold')}
                     </Normaltekst>

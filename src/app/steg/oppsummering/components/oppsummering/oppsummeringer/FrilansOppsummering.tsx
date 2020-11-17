@@ -30,7 +30,7 @@ const FrilansOppsummering = ({ søker }: Props) => {
             oppdragForNæreVennerEllerFamilieSiste10Mnd,
         } = frilansInformasjon;
         return (
-            <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.frilans.tittel')}>
+            <Oppsummeringsseksjon tittel={getMessage(intl, 'oppsummering.frilans.tittel')}>
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.frilans.oppstartsdato')}
                     verdi={formatDate(ISOStringToDate(oppstart))!}
