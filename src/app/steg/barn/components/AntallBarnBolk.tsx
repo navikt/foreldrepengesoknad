@@ -98,6 +98,7 @@ class AntallBarnBolk extends React.Component<Props> {
                     <Select
                         name="antallBarnSelect"
                         bredde="xs"
+                        autoComplete="off"
                         label={<Labeltekst intlId={getSelectText(situasjon, erBarnetFødt)} />}
                         value={antallBarn}
                         onChange={(evt: React.ChangeEvent<HTMLSelectElement>) =>

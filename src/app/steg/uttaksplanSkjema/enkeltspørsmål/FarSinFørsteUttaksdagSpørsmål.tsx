@@ -111,6 +111,7 @@ const FarSinFørsteUttaksdagSpørsmål: React.FunctionComponent<Props> = ({
                                         }
                                         checked={data.ønskerIkkeFlerePerioder || false}
                                         onChange={(e) => onChange({ ønskerIkkeFlerePerioder: e.target.checked })}
+                                        autoComplete="off"
                                     />
                                 )}
                             </>

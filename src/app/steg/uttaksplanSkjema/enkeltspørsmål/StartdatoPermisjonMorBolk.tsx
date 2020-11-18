@@ -98,6 +98,7 @@ const renderContent = (
                     name="skalIkkeHaUttakFørTermin"
                     checked={data.skalIkkeHaUttakFørTermin || false}
                     label={spørsmålHaddeIkke}
+                    autoComplete="off"
                     onChange={(e) => {
                         onChange({
                             skalIkkeHaUttakFørTermin: e.target.checked,
