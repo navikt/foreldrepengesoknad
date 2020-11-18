@@ -205,6 +205,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         previousStegID: resolveStegToRender(state),
         history: props.history,
         isAvailable: isAvailable(StegID.ANNEN_FORELDER, state.søknad, props.søkerinfo),
+        renderAlleSpørsmålMåBesvares: false,
     };
 
     const initialFormValues: AnnenForelderFormValues = {

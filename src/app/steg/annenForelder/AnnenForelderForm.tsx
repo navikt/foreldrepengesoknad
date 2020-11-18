@@ -22,7 +22,7 @@ import {
 } from 'app/validation/fieldValidations';
 import AvtaleAtFarTarUtForeldrepengerVeileder from './veiledere/AvtaleAtFarTarUtForeldrepengerVeileder';
 import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { UnansweredQuestionsInfo, YesOrNo } from '@navikt/sif-common-formik/lib';
 import MåOrientereAnnenForelderVeileder from './veiledere/MåOrientereAnnenForelderVeileder';
 import FarDokumentasjonAleneomsorgVeileder from './veiledere/FarDokumentasjonAleneomsorgVeileder';
 
@@ -66,13 +66,23 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                     søkerRolle,
                     gjelderStebarnsadopsjon,
                 });
+                const allQuestionsAnswered = visibility.areAllQuestionsAnswered();
                 return (
                     <AnnenForelderFormComponents.Form
-                        includeButtons={visibility.areAllQuestionsAnswered()}
+                        includeButtons={allQuestionsAnswered}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
                         includeValidationSummary={true}
                         submitButtonLabel="Fortsett"
                         runDelayedFormValidation={true}
+                        noButtonsContentRenderer={
+                            allQuestionsAnswered
+                                ? undefined
+                                : () => (
+                                      <UnansweredQuestionsInfo>
+                                          {getMessage(intl, 'steg.footer.spørsmålMåBesvares')}
+                                      </UnansweredQuestionsInfo>
+                                  )
+                        }
                     >
                         {skalOppgiPersonalia && (
                             <OppgiPersonalia

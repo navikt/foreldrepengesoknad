@@ -86,7 +86,12 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         return undefined;
     }
 
-    getCountryName(countryNames: countries.LocalizedCountryNames, utenlandsopphold: Utenlandsopphold | undefined) {
+    getCountryName(
+        countryNames: countries.LocalizedCountryNames<{
+            select: 'official';
+        }>,
+        utenlandsopphold: Utenlandsopphold | undefined
+    ) {
         if (utenlandsopphold) {
             return countryNames[utenlandsopphold.land];
         }
@@ -147,6 +152,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         renderFortsettKnapp: false,
         history,
         isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state.søknad, props.søkerinfo, selectSøknadsinfo(state)),
+        renderAlleSpørsmålMåBesvares: false,
     };
 
     return {

@@ -207,6 +207,7 @@ const mapStateToProps = (state: AppState, props: Props): ReduxProps => {
         history: props.history,
         renderFormTag: true,
         isAvailable: isAvailable(StegID.MANGLENDE_VEDLEGG, søknad, props.søkerinfo, selectSøknadsinfo(state)),
+        renderAlleSpørsmålMåBesvares: false,
     };
 
     return {

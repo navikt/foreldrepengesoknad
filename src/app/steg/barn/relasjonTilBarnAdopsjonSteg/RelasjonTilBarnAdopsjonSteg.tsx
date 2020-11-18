@@ -224,6 +224,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFormTag: true,
         history: props.history,
         isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_ADOPSJON, state.søknad, props.søkerinfo),
+        renderAlleSpørsmålMåBesvares: true,
     };
 
     return {

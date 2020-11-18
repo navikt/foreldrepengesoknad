@@ -537,6 +537,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
         renderFormTag: false,
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo, søknadsinfo),
+        renderAlleSpørsmålMåBesvares: false,
     };
     const { startdatoPermisjon } = søknad.ekstrainfo.uttaksplanSkjema;
 

@@ -23,6 +23,7 @@ import Stegindikator from '../stegindikator/Stegindikator';
 
 import './steg.less';
 import Environment from 'app/Environment';
+import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
 
 interface RenderStegContentOptions {
     onValidFormSubmit: () => void;
@@ -33,6 +34,7 @@ export interface StegProps {
     renderFortsettKnapp?: boolean;
     fortsettKnappLabel?: string;
     renderFormTag?: boolean;
+    renderAlleSpørsmålMåBesvares: boolean;
     history: History;
     isAvailable?: boolean;
     nesteStegID?: StegID;
@@ -232,7 +234,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 
     render() {
-        const { renderFormTag, intl } = this.props;
+        const { renderFormTag, renderFortsettKnapp, renderAlleSpørsmålMåBesvares, intl } = this.props;
         const { visAvbrytDialog, visFortsettSenereDialog } = this.state;
 
         const bem = BEMHelper('steg');
@@ -249,6 +251,13 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                 ) : (
                     <div className={bem.block} aria-live="assertive">
                         {this.renderContent()}
+                    </div>
+                )}
+                {renderAlleSpørsmålMåBesvares === true && renderFortsettKnapp === false && (
+                    <div style={{ marginBottom: '1rem' }}>
+                        <UnansweredQuestionsInfo>
+                            {getMessage(intl, 'steg.footer.spørsmålMåBesvares')}
+                        </UnansweredQuestionsInfo>
                     </div>
                 )}
                 <StegFooter

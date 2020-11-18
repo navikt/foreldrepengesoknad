@@ -195,6 +195,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         history: props.history,
         isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
         nesteStegID: resolveStegToRender(state),
+        renderAlleSpørsmålMåBesvares: true,
     };
 
     return {

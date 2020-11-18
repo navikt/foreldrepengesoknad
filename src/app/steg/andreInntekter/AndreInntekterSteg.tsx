@@ -219,6 +219,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         history,
         isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo, søknadsinfo),
         nesteStegID: skalViseManglendeVedleggSteg(attachmentMap) ? StegID.MANGLENDE_VEDLEGG : StegID.OPPSUMMERING,
+        renderAlleSpørsmålMåBesvares: true,
     };
 
     const førsteUttaksDato = Periodene(uttaksplan).getFørsteUttaksdagEksluderInfoperioder();

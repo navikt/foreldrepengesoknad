@@ -266,6 +266,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         history: props.history,
         isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, søknadsinfo),
         previousStegID,
+        renderAlleSpørsmålMåBesvares: true,
     };
 
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);

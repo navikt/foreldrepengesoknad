@@ -227,22 +227,26 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselStegProps => {
     const { registrerteBarn = [] } = props.søkerinfo;
+    const { søknad } = state;
     const {
         barn,
         søker,
         annenForelder,
         ekstrainfo: { søknadenGjelderBarnValg },
-    } = state.søknad;
+    } = søknad;
+
+    const renderFortsettKnapp = barnErGyldig(søknad, props.søkerinfo);
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
         history: props.history,
-        renderFortsettKnapp: barnErGyldig(state.søknad, props.søkerinfo),
+        renderFortsettKnapp,
         renderFormTag: true,
-        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FØDSEL, state.søknad, props.søkerinfo),
+        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FØDSEL, søknad, props.søkerinfo),
+        renderAlleSpørsmålMåBesvares: true,
     };
 
-    const vis = getRelasjonTilBarnFødselVisibility(state.søknad, state.api);
+    const vis = getRelasjonTilBarnFødselVisibility(søknad, state.api);
 
     return {
         søker,
@@ -252,10 +256,10 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
             ? søknadenGjelderBarnValg
             : { gjelderAnnetBarn: undefined, valgteBarn: [] },
         barn,
-        terminbekreftelse: isUfødtBarn(barn, state.søknad.situasjon) ? barn.terminbekreftelse : [],
+        terminbekreftelse: isUfødtBarn(barn, søknad.situasjon) ? barn.terminbekreftelse : [],
         stegProps,
         vis,
-        situasjon: state.søknad.situasjon,
+        situasjon: søknad.situasjon,
     };
 };
 

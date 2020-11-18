@@ -3,7 +3,7 @@ import moment from 'moment';
 import { useIntl } from 'react-intl';
 
 import Block from 'common/components/block/Block';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { UnansweredQuestionsInfo, YesOrNo } from '@navikt/sif-common-formik/lib';
 import getMessage from 'common/util/i18nUtils';
 import {
     UtenlandsoppholdFormValues,
@@ -82,15 +82,25 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
             onSubmit={(values: UtenlandsoppholdFormValues) => onValidSubmit(values)}
             renderForm={({ values: formValues }) => {
                 const visibility = utenlandsoppholdFormQuestions.getVisbility(formValues);
+                const allQuestionsAnswered = visibility.areAllQuestionsAnswered();
                 return (
                     <div>
                         <UtenlandsoppholdFormComponents.Form
-                            includeButtons={visibility.areAllQuestionsAnswered()}
+                            includeButtons={allQuestionsAnswered}
                             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
                             includeValidationSummary={true}
                             submitButtonLabel="Fortsett"
                             runDelayedFormValidation={true}
                             cleanup={(values) => utenlandsoppholdFormCleanup(values)}
+                            noButtonsContentRenderer={
+                                allQuestionsAnswered
+                                    ? undefined
+                                    : () => (
+                                          <UnansweredQuestionsInfo>
+                                              {getMessage(intl, 'steg.footer.spørsmålMåBesvares')}
+                                          </UnansweredQuestionsInfo>
+                                      )
+                            }
                         >
                             <div>
                                 <Block

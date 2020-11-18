@@ -201,6 +201,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         renderFormTag: true,
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo, søknadsinfo),
+        renderAlleSpørsmålMåBesvares: true,
     };
 
     const { familiehendelsesdato } = søknadsinfo.søknaden;
