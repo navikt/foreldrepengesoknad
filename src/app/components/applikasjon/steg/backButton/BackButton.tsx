@@ -13,12 +13,14 @@ interface Props {
 
 const BackButton: React.FunctionComponent<Props> = ({ onClick, hidden, text = 'Tilbake', ariaLabel }) => {
     return hidden ? null : (
-        <Knapp className="backButton" onClick={onClick} mini={true} htmlType="button" aria-label={ariaLabel}>
-            <span className="backButton__chevron">
-                <VenstreChevron />
-            </span>
-            {text}
-        </Knapp>
+        <div role="navigation">
+            <Knapp className="backButton" onClick={onClick} mini={true} htmlType="button" aria-label={ariaLabel}>
+                <span className="backButton__chevron">
+                    <VenstreChevron />
+                </span>
+                {text}
+            </Knapp>
+        </div>
     );
 };
 
