@@ -42,6 +42,8 @@ import { getAktiveArbeidsforhold } from 'app/api/utils/søkerinfoUtils';
 import InfoTilFiskere from './info-til-fiskere/InfoTilFiskere';
 import Lenke from 'nav-frontend-lenker';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
+import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
+import routeConfig from 'app/util/routing/routeConfig';
 
 interface StateProps {
     stegProps: StegProps;
@@ -67,7 +69,11 @@ class AndreInntekterSteg extends React.Component<Props> {
         this.state = {
             harHattAnnenInntekt: undefined,
         };
-        const { arbeidsforhold, førsteUttaksDato, dispatch } = this.props;
+        const { arbeidsforhold, førsteUttaksDato, stegProps, history, dispatch } = this.props;
+        if (!stegProps.isAvailable) {
+            dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+            history.push(routeConfig.APP_ROUTE_PREFIX);
+        }
 
         if (arbeidsforhold.length > 0) {
             dispatch(

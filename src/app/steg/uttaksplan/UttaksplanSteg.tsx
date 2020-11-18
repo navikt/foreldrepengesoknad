@@ -66,6 +66,7 @@ import DevPerioderSomSendesInn from './DevPerioderSomSendesInn';
 import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
 import OppgiTilleggsopplysninger from './OppgiTilleggsopplysninger';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
+import routeConfig from 'app/util/routing/routeConfig';
 
 interface StateProps {
     stegProps: StegProps;
@@ -124,6 +125,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             grunnlag,
             barn,
             arbeidsforhold,
+            history,
         } = this.props;
 
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
@@ -140,6 +142,11 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.handleDeletePeriode = this.handleDeletePeriode.bind(this);
         this.handleUpdatePeriode = this.handleUpdatePeriode.bind(this);
 
+        if (!stegProps.isAvailable) {
+            dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+            history.push(routeConfig.APP_ROUTE_PREFIX);
+        }
+
         this.state = {
             bekreftGåTilbakeDialogSynlig: false,
             bekreftSlettUttaksplanDialogSynlig: false,
@@ -147,7 +154,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             visFeiloppsummering: false,
             harKlikketFortsett: false,
         };
-        if (stegProps.isAvailable && søknadsinfo !== undefined) {
+        if (søknadsinfo !== undefined) {
             const { forslagLaget, startdatoPermisjon } = søknad.ekstrainfo.uttaksplanSkjema;
             const { eksisterendeSak } = søknad.ekstrainfo;
 

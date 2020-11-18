@@ -36,6 +36,8 @@ import {
 } from 'app/util/validation/terminbekreftelsedato';
 import isAvailable from '../../util/steg/isAvailable';
 import { findAllAttachments } from './manglendeVedleggUtil';
+import søknadActionCreators from 'app/redux/actions/søknad/søknadActionCreators';
+import routeConfig from 'app/util/routing/routeConfig';
 
 interface ReduxProps {
     stegProps: StegProps;
@@ -54,6 +56,11 @@ class ManglendeVedleggsteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.handleVedleggSpørsmålOnChange = this.handleVedleggSpørsmålOnChange.bind(this);
+
+        if (!props.stegProps.isAvailable) {
+            props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+            props.history.push(routeConfig.APP_ROUTE_PREFIX);
+        }
     }
 
     handleVedleggSpørsmålOnChange(attachments: Attachment[], key: string) {

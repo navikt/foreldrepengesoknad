@@ -26,6 +26,8 @@ import { barnErGyldig } from '../../../util/validation/steg/barn';
 import DateValues from '../../../util/validation/values';
 import AntallBarnBolk from '../components/AntallBarnBolk';
 import visibility from './visibility';
+import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
+import routeConfig from 'app/util/routing/routeConfig';
 
 export interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
@@ -42,6 +44,11 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
+
+        if (!props.stegProps.isAvailable) {
+            props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+            props.history.push(routeConfig.APP_ROUTE_PREFIX);
+        }
     }
 
     oppdaterAntallBarn(antall: number) {

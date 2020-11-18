@@ -37,11 +37,13 @@ import { uttaksplanSkjemaErGyldig } from '../../util/validation/steg/uttaksplanS
 import InfoEksisterendeSak from '../uttaksplan/infoEksisterendeSak/InfoEksisterendeSak';
 import { getUttaksplanSkjemaScenario, UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
+import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
+import routeConfig from 'app/util/routing/routeConfig';
 
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
-    søknadsinfo: Søknadsinfo;
+    søknadsinfo: Søknadsinfo | undefined;
     scenario: UttaksplanSkjemaScenario;
     isLoadingTilgjengeligeStønadskontoer: boolean;
     isLoadingSakForAnnenPart: boolean;
@@ -72,9 +74,15 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             søknadsinfo,
             barn,
             eksisterendeSak,
+            history,
         } = props;
 
-        if (stegProps.isAvailable) {
+        if (!stegProps.isAvailable) {
+            props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+            history.push(routeConfig.APP_ROUTE_PREFIX);
+        }
+
+        if (stegProps.isAvailable && søknadsinfo) {
             const grunnlag = eksisterendeSak !== undefined ? eksisterendeSak.grunnlag : undefined;
             const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
                 søknadsinfo,
@@ -122,6 +130,11 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             eksisterendeSak,
             isLoadingSakForAnnenPart,
         } = this.props;
+
+        if (!søknadsinfo) {
+            return <ResetSoknad history={this.props.history} />;
+        }
+
         const søknad = this.props.søknad as Søknad;
         const navnPåForeldre = søknadsinfo.navn.navnPåForeldre;
         const grunnlag = eksisterendeSak !== undefined ? eksisterendeSak.grunnlag : undefined;
@@ -130,10 +143,6 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             søknadsinfo.søknaden.erDeltUttak,
             søknadsinfo.søknaden.erDeltUttak ? undefined : søknadsinfo.søker.forelder
         );
-
-        if (!søknadsinfo) {
-            return <ResetSoknad history={this.props.history} />;
-        }
 
         return (
             <Steg
@@ -192,7 +201,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps): StateProps => {
     const { history } = props;
-    const søknadsinfo = selectSøknadsinfo(state)!;
+    const søknadsinfo = selectSøknadsinfo(state);
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN_SKJEMA,
@@ -204,25 +213,29 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         renderAlleSpørsmålMåBesvares: true,
     };
 
-    const { familiehendelsesdato } = søknadsinfo.søknaden;
-    const scenario = getUttaksplanSkjemaScenario(søknadsinfo, state.søknad.ekstrainfo.eksisterendeSak);
+    const søknad = { ...state.søknad };
     const {
         api: { isLoadingTilgjengeligeStønadskontoer, isLoadingSakForAnnenPart },
     } = state;
-    const søknad = { ...state.søknad };
-    const { ekstrainfo } = søknad;
-    const skjemadata = ekstrainfo.uttaksplanSkjema;
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
-    const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
-    if (
-        scenario === UttaksplanSkjemaScenario.s3_morFødsel &&
-        skjemadata.skalIkkeHaUttakFørTermin !== true &&
-        skjemadata.startdatoPermisjon === undefined
-    ) {
-        const defaultStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
-            uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
-        );
-        ekstrainfo.uttaksplanSkjema.startdatoPermisjon = dateToISOString(defaultStartdato);
+    const { ekstrainfo } = søknad;
+    let scenario: UttaksplanSkjemaScenario = {} as UttaksplanSkjemaScenario;
+
+    if (søknadsinfo) {
+        const { familiehendelsesdato } = søknadsinfo.søknaden;
+        scenario = getUttaksplanSkjemaScenario(søknadsinfo, state.søknad.ekstrainfo.eksisterendeSak);
+        const skjemadata = ekstrainfo.uttaksplanSkjema;
+        const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+        if (
+            scenario === UttaksplanSkjemaScenario.s3_morFødsel &&
+            skjemadata.skalIkkeHaUttakFørTermin !== true &&
+            skjemadata.startdatoPermisjon === undefined
+        ) {
+            const defaultStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
+                uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
+            );
+            ekstrainfo.uttaksplanSkjema.startdatoPermisjon = dateToISOString(defaultStartdato);
+        }
     }
 
     return {

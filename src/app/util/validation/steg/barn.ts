@@ -19,14 +19,22 @@ import {
     isUfødtBarn,
     UfødtBarn,
 } from '../../../types/søknad/Barn';
-import Søknad from '../../../types/søknad/Søknad';
+import Søknad, { SøkerRolle } from '../../../types/søknad/Søknad';
 import { findOldestDate } from '../../dates/dates';
 import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
-// import { fødselsdatoerErFyltUt } from '../fødselsdato';
 import { erGyldigDato, hasValueRule } from '../common';
+import { dateMoreThan10WeeksAgo } from '../values';
 
-const fødtBarnErGyldig = (barn: FødtBarn) => {
-    return barn.fødselsdatoer !== undefined && barn.fødselsdatoer.length > 0;
+const fødtBarnErGyldig = (barn: FødtBarn, rolle: SøkerRolle) => {
+    const fødselsdatoErFyltUt = barn.fødselsdatoer !== undefined && barn.fødselsdatoer.length > 0;
+    const gyldigFødselsdato = fødselsdatoErFyltUt ? ISOStringToDate(barn.fødselsdatoer[0]) : undefined;
+    let skalViseTermindato = true;
+
+    if (rolle !== SøkerRolle.MOR && gyldigFødselsdato) {
+        skalViseTermindato = moment(gyldigFødselsdato).isSameOrAfter(dateMoreThan10WeeksAgo);
+    }
+
+    return skalViseTermindato ? fødselsdatoErFyltUt && barn.termindato !== undefined : fødselsdatoErFyltUt;
 };
 
 const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn): boolean => {
@@ -80,7 +88,7 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
             return visTermindato(valgtBarn.fødselsdato, søknad.søker.rolle) ? barn.termindato !== undefined : true;
         }
         return isFødtBarn(barn, situasjon)
-            ? fødtBarnErGyldig(barn)
+            ? fødtBarnErGyldig(barn, søknad.søker.rolle)
             : ufødtBarnErGyldig(barn, skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo.arbeidsforhold) || false);
     }
     if (isAdopsjonsbarn(barn, situasjon)) {

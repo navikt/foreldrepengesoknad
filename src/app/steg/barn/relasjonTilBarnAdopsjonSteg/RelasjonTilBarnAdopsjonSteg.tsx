@@ -30,6 +30,8 @@ import DateValues from '../../../util/validation/values';
 import AntallBarnBolk from '../components/AntallBarnBolk';
 import visibility from './visibility';
 import { erGyldigDato, hasValueRule } from 'app/util/validation/common';
+import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
+import routeConfig from 'app/util/routing/routeConfig';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -49,6 +51,11 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
         this.onPresubmit = this.onPresubmit.bind(this);
         this.cleanupSteg = this.cleanupSteg.bind(this);
+
+        if (!props.stegProps.isAvailable) {
+            props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+            props.history.push(routeConfig.APP_ROUTE_PREFIX);
+        }
 
         if (props.barn.antallBarn) {
             props.dispatch(

@@ -69,12 +69,6 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     constructor(props: Props & DispatchProps) {
         super(props);
 
-        const { isAvailable, history } = props;
-        if (isAvailable === false) {
-            props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
-            history.push(routeConfig.APP_ROUTE_PREFIX);
-        }
-
         this.state = {
             visAvbrytDialog: false,
             visFortsettSenereDialog: false,

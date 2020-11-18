@@ -27,6 +27,7 @@ function* saveAppState() {
         const cleanedAppState = {
             ...appState,
             søknad: søknad as Søknad,
+            version: 1,
         };
 
         yield call(Api.storeAppState, cleanedAppState);
@@ -48,7 +49,7 @@ function* getStorageData(action: GetStorageData) {
         const appState: AppState = appStateResponse.data;
         const storageKvittering: StorageKvittering = storageKvitteringResponse.data;
 
-        if (appState) {
+        if (appState && appState.version && appState.version === 1) {
             yield applyStoredStateToApp(appState, action.history);
         }
 

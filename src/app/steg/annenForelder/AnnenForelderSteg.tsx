@@ -15,7 +15,7 @@ import RegistrertePersonalia from './registrerte-personalia/RegistrertePersonali
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import { getAnnenForelderStegVisibility, AnnenForelderStegVisibility } from './visibility/annenForelderStegVisibility';
 import cleanupAnnenForelderSteg from '../../util/cleanup/cleanupAnnenForelderSteg';
-import { default as søknadActions } from '../../redux/actions/søknad/søknadActionCreators';
+import søknadActionCreators, { default as søknadActions } from '../../redux/actions/søknad/søknadActionCreators';
 import { resolveStegToRender } from '../../util/steg/navigation';
 import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
 import { Barn, isAdopsjonsbarn } from '../../types/søknad/Barn';
@@ -27,6 +27,7 @@ import { getFamiliehendelsedato } from 'app/util/uttaksplan';
 import { AnnenForelderFormValues } from './form/annenforelderFormTypes';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { mapBooleanToYesOrNo } from 'app/util/form/formUtils';
+import routeConfig from 'app/util/routing/routeConfig';
 
 interface StateProps {
     søknad: Partial<Søknad>;
@@ -61,6 +62,11 @@ class AnnenForelderSteg extends React.Component<Props> {
         this.onFileDelete = this.onFileDelete.bind(this);
         this.onFilesSelect = this.onFilesSelect.bind(this);
         this.updateReduxState = this.updateReduxState.bind(this);
+
+        if (!props.stegProps.isAvailable) {
+            props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+            props.history.push(routeConfig.APP_ROUTE_PREFIX);
+        }
     }
 
     updateReduxState(values: AnnenForelderFormValues) {

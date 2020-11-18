@@ -22,6 +22,8 @@ import { ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { formatDate } from 'app/util/dates/dates';
 import { UtenlandsoppholdFormValues } from './form/utenlandsoppholdFormTypes';
 import { BostedUtland } from './bostedUtlandListAndDialog/types';
+import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
+import routeConfig from 'app/util/routing/routeConfig';
 
 interface StateProps {
     søknad: Søknad;
@@ -49,6 +51,11 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
 
         this.hentRelevantUtenlandsopphold = this.hentRelevantUtenlandsopphold.bind(this);
         this.updateReduxState = this.updateReduxState.bind(this);
+
+        if (!props.stegProps.isAvailable) {
+            props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+            props.history.push(routeConfig.APP_ROUTE_PREFIX);
+        }
     }
 
     updateReduxState(values: UtenlandsoppholdFormValues) {

@@ -43,6 +43,8 @@ import {
     RelasjonTilBarnFødselStegVisibility,
 } from './visibility/relasjonTilBarnFødselVisibility';
 import { skalViseInfoOmPrematuruker, visTermindato } from './visibility/visibilityFunctions';
+import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
+import routeConfig from 'app/util/routing/routeConfig';
 
 interface RelasjonTilBarnFødselStegProps {
     barn: Barn;
@@ -68,6 +70,11 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
         this.onPresubmit = this.onPresubmit.bind(this);
         this.cleanupSteg = this.cleanupSteg.bind(this);
         this.visInfoOmPrematuruker = this.visInfoOmPrematuruker.bind(this);
+
+        if (!props.stegProps.isAvailable) {
+            props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+            props.history.push(routeConfig.APP_ROUTE_PREFIX);
+        }
     }
 
     onPresubmit() {

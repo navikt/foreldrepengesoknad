@@ -44,6 +44,8 @@ import { skalViseManglendeVedleggSteg } from '../../util/steg/navigation';
 import { getStønadskontoParams } from '../../util/uttaksplan/stønadskontoParams';
 import { findAllAttachments } from '../manglendeVedlegg/manglendeVedleggUtil';
 import { søknadStegPath } from '../StegRoutes';
+import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
+import routeConfig from 'app/util/routing/routeConfig';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -91,10 +93,16 @@ class OppsummeringSteg extends React.Component<Props> {
             søknadsinfo,
             dispatch,
             barn,
+            history,
         } = this.props;
 
         this.sendSøknad = this.sendSøknad.bind(this);
         this.gotoUttaksplan = this.gotoUttaksplan.bind(this);
+
+        if (!stegProps.isAvailable) {
+            dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
+            history.push(routeConfig.APP_ROUTE_PREFIX);
+        }
 
         if (tilgjengeligeStønadskontoer.length === 0 && stegProps.isAvailable) {
             const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
