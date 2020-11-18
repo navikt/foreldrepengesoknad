@@ -9,6 +9,7 @@ interface MainState {
     common: CommonState;
     api: ApiState;
     uttaksplanValidering: UttaksplanValideringState;
+    version: number;
 }
 
 export type AppState = MainState;

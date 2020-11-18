@@ -65,9 +65,12 @@ class Sidemal extends React.Component<Props> {
                     />
                 )}
                 {visSøknadstittel && (
-                    <Søknadstittel>
-                        {getMessage(this.props.intl, `søknad.pageheading.${erEndringssøknad ? 'endring' : 'ny'}`)}
-                    </Søknadstittel>
+                    <Søknadstittel
+                        tittel={getMessage(
+                            this.props.intl,
+                            `søknad.pageheading.${erEndringssøknad ? 'endring' : 'ny'}`
+                        )}
+                    />
                 )}
 
                 {isFeatureEnabled(Feature.visAlertstripe) && visAlertstripe && (

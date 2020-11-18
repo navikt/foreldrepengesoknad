@@ -1,12 +1,12 @@
 import * as React from 'react';
 import './søknadstittel.less';
 interface Props {
-    children: React.ReactNode;
+    tittel: string;
 }
-const Søknadstittel: React.FunctionComponent<Props> = ({ children }) => {
+const Søknadstittel: React.FunctionComponent<Props> = ({ tittel }) => {
     return (
-        <div className="søknadstittel" role="banner">
-            <h2 className="typo-undertittel">{children}</h2>
+        <div className="søknadstittel" role="main" aria-label={tittel}>
+            <h2 className="typo-undertittel">{tittel}</h2>
         </div>
     );
 };

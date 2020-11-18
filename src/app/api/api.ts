@@ -98,8 +98,8 @@ function getStoredAppState() {
 }
 
 function storeAppState(state: Partial<AppState>) {
-    const { søknad, common } = state;
-    return AxiosInstance.post('/storage', { søknad, common }, { withCredentials: true });
+    const { søknad, common, version } = state;
+    return AxiosInstance.post('/storage', { søknad, common, version }, { withCredentials: true });
 }
 
 function deleteStoredAppState() {
