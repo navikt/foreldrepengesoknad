@@ -12,7 +12,6 @@ import {
 } from './common';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import { Avgrensninger } from 'common/types';
-import { isISODateString } from 'nav-datovelger';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
 export const fødselsdatoAvgrensninger: Avgrensninger = {
@@ -52,6 +51,4 @@ export const getFødselsdatoRegler = (
 };
 
 export const fødselsdatoerErFyltUt = (fødselsdatoer: string[] | undefined): boolean =>
-    fødselsdatoer !== undefined &&
-    fødselsdatoer.length > 0 &&
-    fødselsdatoer.findIndex((d) => isISODateString(d) === false) === -1;
+    fødselsdatoer !== undefined && fødselsdatoer.length > 0;
