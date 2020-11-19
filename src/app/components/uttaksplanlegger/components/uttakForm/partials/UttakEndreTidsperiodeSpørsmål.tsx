@@ -123,6 +123,9 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                                             maxDate: datoAvgrensninger.til.maksDato,
                                             invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
                                             disableWeekend: datoAvgrensninger.til.helgedagerIkkeTillatt,
+                                            dayPickerProps: {
+                                                initialMonth: ISOStringToDate(values.fom),
+                                            },
                                             validate: (value) =>
                                                 dateRangeValidation.validateToDateUttak(
                                                     ISOStringToDate(value),
