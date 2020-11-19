@@ -43,7 +43,7 @@ const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn): boolean => {
     const adoptertIUtlandetTruthy = adoptertIUtlandet !== undefined && adoptertIUtlandet;
 
     return (
-        fødselsdatoer &&
+        fødselsdatoer !== undefined &&
         fødselsdatoer.length > 0 &&
         fødselsdatoer[0] !== undefined &&
         adopsjonsdato !== undefined &&
@@ -65,9 +65,7 @@ const ufødtBarnErGyldig = (barn: UfødtBarn, skalLasteOppTerminbekreftelse: boo
     }
     if (
         skalLasteOppTerminbekreftelse &&
-        barn.terminbekreftelse &&
-        barn.terminbekreftelse.length > 0 &&
-        terminbekreftelseDato === undefined
+        (barn.terminbekreftelse === undefined || terminbekreftelseDato === undefined)
     ) {
         return false;
     }
