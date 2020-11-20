@@ -47,7 +47,7 @@ const TidsperiodeDisplay: React.FunctionComponent<Props> = ({ tidsperiode, toggl
                         toggleVisTidsperiode();
                     }}
                 >
-                    Endre periode
+                    Endre tidsperiode
                 </Lenke>
             </div>
         </Block>
