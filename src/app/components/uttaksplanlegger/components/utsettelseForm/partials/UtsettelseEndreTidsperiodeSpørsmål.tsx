@@ -115,6 +115,9 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                                                     datoAvgrensninger.til.maksDato!,
                                                     ISOStringToDate(values.fom)
                                                 ),
+                                            dayPickerProps: {
+                                                initialMonth: ISOStringToDate(values.fom),
+                                            },
                                         }}
                                     />
                                 </Block>
