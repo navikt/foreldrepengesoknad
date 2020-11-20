@@ -21,6 +21,9 @@ import './styles/app.less';
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
 
+require('../../node_modules/dayjs/locale/nb.js');
+require('../../node_modules/dayjs/locale/nn.js');
+
 if (!Intl.PluralRules) {
     require('@formatjs/intl-pluralrules/polyfill');
     require('@formatjs/intl-pluralrules/locale-data/nb');
