@@ -43,7 +43,7 @@ const ForståttRettigheterForm: React.FunctionComponent<Props> = ({
     return (
         <ForståttRettigheterFormComponents.FormikWrapper
             initialValues={{ harForståttRettigheterOgPlikter: false }}
-            onSubmit={() => onConfirm()}
+            onSubmit={onConfirm}
             renderForm={() => {
                 return (
                     <ForståttRettigheterFormComponents.Form
