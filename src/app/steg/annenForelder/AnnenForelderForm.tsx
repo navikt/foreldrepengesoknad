@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import {
     AnnenForelderFormValues,
     AnnenForelderFormComponents,
@@ -138,6 +138,19 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                         <Block visible={visibility.isVisible(AnnenForelderFieldNames.harRettPåForeldrepenger)}>
                             <AnnenForelderFormComponents.YesOrNoQuestion
                                 name={AnnenForelderFieldNames.harRettPåForeldrepenger}
+                                info={
+                                    <>
+                                        <FormattedMessage
+                                            id="annenForelderRettPåForeldrepenger.veileder.del1"
+                                            values={{ navn: formValues.fornavn }}
+                                        ></FormattedMessage>
+                                        <br />
+                                        <FormattedMessage
+                                            id="annenForelderRettPåForeldrepenger.veileder.del2"
+                                            values={{ navn: formValues.fornavn }}
+                                        ></FormattedMessage>
+                                    </>
+                                }
                                 legend={getMessage(intl, 'annenForelderRettPåForeldrepenger.spørsmål', {
                                     navn: formValues.fornavn,
                                 })}
