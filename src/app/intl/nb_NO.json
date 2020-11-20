@@ -839,6 +839,7 @@
     "uttaksplanSkjema.info.manglerVedlegg": "Du har ikke lastet opp påkrevd dokumentasjon.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig",
     "validering.oppsummeringstittel": "Du må rette opp i følgende feil:",
+    "valideringsfeil.velkommen.bekreftLestOgForståttRettigheter": "Du må bekrefte at du har lest og forstått dine plikter.",
     "valideringsfeil.fodselsdato.duMåOppgi": "Du må oppgi fødselsdato",
     "valideringsfeil.fodselsdato.etterAdopsjonsdato": "Fødselsdato kan ikke være etter adopsjonsdato",
     "valideringsfeil.fodselsdato.ikkeMerEnn15År3MndTilbake": "Du kan ikke søke om foreldrepenger for barn som er eldre enn 15 år og 3 måneder {dato}.",

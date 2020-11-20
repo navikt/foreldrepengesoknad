@@ -3,9 +3,7 @@ import DocumentTitle from 'react-document-title';
 import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 import { Innholdstittel, Normaltekst, Ingress } from 'nav-frontend-typografi';
-import { Hovedknapp } from 'nav-frontend-knapper';
 
 import getMessage from 'common/util/i18nUtils';
 import VeilederMedSnakkeboble from 'common/components/veilederMedSnakkeboble/VeilederMedSnakkeboble';
@@ -21,7 +19,6 @@ import { HistoryProps } from '../../types/common';
 import søknadActions from '../../redux/actions/søknad/søknadActionCreators';
 
 import { SøkerinfoProps } from '../../types/søkerinfo';
-import Knapperad from 'common/components/knapperad/Knapperad';
 import SøknadstypeSpørsmål from '../../spørsmål/SøknadstypeSpørsmål';
 import Block from 'common/components/block/Block';
 import Sak, { SakType, FagsakStatus } from '../../types/søknad/Sak';
@@ -34,6 +31,7 @@ import { StorageKvittering } from '../../types/StorageKvittering';
 import SakInfoStorageKvittering from 'app/sider/velkommen/sakInfo/SakInfoStorageKvittering';
 import DinePlikter from './dinePlikter/DinePlikter';
 import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
+import ForståttRettigheterForm from './ForståttRettigheterForm';
 
 import './velkommen.less';
 
@@ -86,6 +84,7 @@ class Velkommen extends React.Component<Props, State> {
             erEndringssøknad === true && sakForEndringssøknad && sakForEndringssøknad.saksnummer
                 ? sakForEndringssøknad.saksnummer
                 : undefined;
+        dispatch(søknadActions.updateSøknad({ harGodkjentVilkår: true }));
         dispatch(søknadActions.startSøknad(søkerinfo, erEndringssøknad === true, saksnummer, history));
     }
 
@@ -104,10 +103,8 @@ class Velkommen extends React.Component<Props, State> {
             sakForEndringssøknad,
             sakUnderBehandling,
             oppslagSakerFeilet,
-            harGodkjentVilkår,
             storageKvittering,
             isLoadingEkisterendeSak,
-            dispatch,
             intl,
         } = this.props;
         if (person === undefined) {
@@ -252,26 +249,13 @@ class Velkommen extends React.Component<Props, State> {
                         />
                     </Block>
                     <Block visible={visBekreftSkjema}>
-                        <BekreftCheckboksPanel
-                            className="blokk-m"
-                            checked={harGodkjentVilkår}
-                            label={getMessage(intl, 'velkommen.samtykke')}
-                            onChange={() => {
-                                dispatch(søknadActions.updateSøknad({ harGodkjentVilkår: !harGodkjentVilkår }));
-                            }}
-                        >
-                            {this.getBekreftCheckboksPanelLabelHeader()}
-                        </BekreftCheckboksPanel>
-                        <Knapperad>
-                            <Hovedknapp
-                                className={`${bem.element('startSøknadKnapp')} blokk-m`}
-                                spinner={isLoadingEkisterendeSak}
-                                disabled={!harGodkjentVilkår || isLoadingEkisterendeSak}
-                                onClick={() => this.handleStartSøknad(this.state.skalEndre)}
-                            >
-                                {this.getStartSøknadKnappLabel()}
-                            </Hovedknapp>
-                        </Knapperad>
+                        <ForståttRettigheterForm
+                            checkboxLabelHeader={this.getBekreftCheckboksPanelLabelHeader()}
+                            isLoadingEkisterendeSak={isLoadingEkisterendeSak}
+                            knappClassName={`${bem.element('startSøknadKnapp')} blokk-m`}
+                            knappLabel={this.getStartSøknadKnappLabel()}
+                            onConfirm={() => this.handleStartSøknad(this.state.skalEndre)}
+                        />
                         <Normaltekst className={bem.element('personopplysningerLink')}>
                             <a
                                 className="lenke"
