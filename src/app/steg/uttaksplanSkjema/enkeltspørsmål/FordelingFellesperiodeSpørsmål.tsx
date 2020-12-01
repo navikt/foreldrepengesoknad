@@ -47,6 +47,7 @@ const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps & Uttak
                             </Lenke>
                         </Normaltekst>
                     }
+                    hjelpetekstApneLabel="Les mer om fordeling av foreldrepengeperioden"
                     ariaLabelText={getMessage(intl, 'uttaksplan.skjema.fordeling.spørsmål')}
                     value={data.fellesperiodeukerMor!}
                     min={0}

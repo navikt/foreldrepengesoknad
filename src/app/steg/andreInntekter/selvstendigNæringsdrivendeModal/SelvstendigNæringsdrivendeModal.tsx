@@ -230,6 +230,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     <Input
                         name="selvstendigNæringsdrivende-næringsinntekt"
                         infotekst={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt.info')}
+                        apneLabel="Les mer om næringsresultat"
                         label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
                         onChange={(v: string) => {
                             const næringPartial: NæringPartial = {

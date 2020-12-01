@@ -5,7 +5,7 @@ import { Validator } from 'common/lib/validation/types';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import ValiderbarUkerDagerTeller from 'common/lib/validation/elements/ValiderbarUkerDagerTeller';
-import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
+import LabelWithUtvidetInformasjon from 'common/components/labelWithUtvidetInformasjon/LabelWithUtvidetInformasjon';
 
 interface AntallUkerOgDagerFellesperiodeFarMedmorProps {
     antallUkerFellesperiode: number;
@@ -42,11 +42,11 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: React.FunctionComponent
                 return (
                     <>
                         <Block margin="xxs">
-                            <LabelWithInfo
+                            <LabelWithUtvidetInformasjon
                                 info={getMessage(intl, getMessage(intl, 'spørsmål.farFellesperiode.infoboksTekst'))}
                             >
                                 {getMessage(intl, 'spørsmål.farFellesperiode.label')}
-                            </LabelWithInfo>
+                            </LabelWithUtvidetInformasjon>
                         </Block>
                         <Block margin="xxs">
                             <ValiderbarUkerDagerTeller

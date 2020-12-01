@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
 import classNames from 'classnames';
 import { Element } from 'nav-frontend-typografi';
 import BEMHelper from 'common/util/bem';
 import './block.less';
+import LabelWithUtvidetInformasjon from '../labelWithUtvidetInformasjon/LabelWithUtvidetInformasjon';
 
 export type BlockPadding = 'xl' | 'l' | 'm' | 's' | 'xs' | 'xxs' | 'none';
 
@@ -49,7 +49,7 @@ const Block: React.FunctionComponent<BlockProps> = ({
         header !== undefined ? (
             <section className={contentClass}>
                 <Element tag={header.tag || 'h3'} className="heading">
-                    <LabelWithInfo info={header.info}>{header.title}</LabelWithInfo>
+                    <LabelWithUtvidetInformasjon info={header.info}>{header.title}</LabelWithUtvidetInformasjon>
                 </Element>
                 {children}
             </section>

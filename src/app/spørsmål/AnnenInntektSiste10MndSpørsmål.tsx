@@ -26,6 +26,7 @@ class AnnenInntektSiste10MndSpørsmål extends React.Component<Props> {
                 }}
                 clsName="annenInntektSiste10mnd"
                 hjelpetekst={<AnnenInntektSiste10MndHjelpeTekst intl={intl} />}
+                hjelpetekstApneLabel="Les mer om hva som kan telle som annen inntekt"
                 onChange={(verdi) => onChange(verdi)}
             />
         );
@@ -36,7 +37,7 @@ export default injectIntl(AnnenInntektSiste10MndSpørsmål);
 
 const AnnenInntektSiste10MndHjelpeTekst = ({ intl }: { intl: IntlShape }) => {
     return (
-        <div>
+        <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
             <div>{getMessage(intl, 'annenInntekt.infoboksTekst.overskrift')}</div>
             <ul>
                 <li>{getMessage(intl, 'annenInntekt.infoboksTekst.punktEn')}</li>

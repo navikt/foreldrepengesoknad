@@ -34,8 +34,9 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
             valgtVerdi={harJobbetSomFrilansSiste10Mnd}
             onChange={(verdi) => onChange(verdi)}
             clsName="frilanseSiste10mnd"
+            hjelpetekstApneLabel="Les mer om hvem som kan være frilansere"
             hjelpetekst={
-                <>
+                <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
                     <Normaltekst>
                         <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.del1" />
                     </Normaltekst>
@@ -69,7 +70,7 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
                         <FormattedMessage id="harDuJobbetSomFrilansSiste10Mnd.spørsmål.infoboksTekst.del2" />
                         <EksternUrl url={lenker.frilanserInfoBoks} lenkeTekst={getMessage(intl, 'hjemmeside')} />
                     </Normaltekst>
-                </>
+                </div>
             }
             validators={validerFrilans}
         />

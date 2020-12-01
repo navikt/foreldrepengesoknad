@@ -3,7 +3,7 @@ import { TextareaProps } from 'nav-frontend-skjema';
 import { SkjemaelementProps } from 'common/components/skjema/wrappers/types/common';
 import { guid } from 'nav-frontend-js-utils';
 import ValiderbarTextarea from 'common/lib/validation/elements/ValiderbarTextarea';
-import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
+import LabelWithUtvidetInformasjon from 'common/components/labelWithUtvidetInformasjon/LabelWithUtvidetInformasjon';
 
 export type TextareaWrapperProps = SkjemaelementProps & TextareaProps;
 
@@ -13,7 +13,7 @@ const Textarea: React.FunctionComponent<TextareaWrapperProps> = (props: Textarea
         <ValiderbarTextarea
             {...props}
             id={id}
-            label={<LabelWithInfo info={props.infotekst}>{props.label}</LabelWithInfo>}
+            label={<LabelWithUtvidetInformasjon info={props.infotekst}>{props.label}</LabelWithUtvidetInformasjon>}
         />
     );
 };

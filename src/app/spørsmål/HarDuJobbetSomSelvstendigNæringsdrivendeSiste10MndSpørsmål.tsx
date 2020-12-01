@@ -39,14 +39,17 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (props: Pr
             valgtVerdi={harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd}
             onChange={(verdi) => onChange(verdi)}
             clsName="jobbetSomSelvstendigNaringsdrivende"
+            hjelpetekstApneLabel="Les mer om hvem som kan være selvstendig næringsdrivende"
             hjelpetekst={
-                <Normaltekst>
-                    <EksternUrl
-                        tekst="harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst"
-                        url={lenker.NaringsdrivendeInfoBoks}
-                        lenkeTekst="hjemmeside"
-                    />
-                </Normaltekst>
+                <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
+                    <Normaltekst>
+                        <EksternUrl
+                            tekst="harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst"
+                            url={lenker.NaringsdrivendeInfoBoks}
+                            lenkeTekst="hjemmeside"
+                        />
+                    </Normaltekst>
+                </div>
             }
             validators={validerSelvstendignæring}
         />

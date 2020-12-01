@@ -8,7 +8,8 @@ import { RadioProps } from 'nav-frontend-skjema';
 interface FlervalgSpørsmålProps {
     navn: string;
     spørsmål: string;
-    hjelpetekst?: string | React.ReactNode;
+    hjelpetekst?: React.ReactNode;
+    hjelpetekstApneLabel?: React.ReactNode;
     valgtVerdi?: string;
     alternativer: Omit<RadioProps, 'name'>[];
     toKolonner?: boolean;
@@ -35,6 +36,7 @@ const FlervalgSpørsmål = (props: Props) => {
         navn,
         spørsmål,
         hjelpetekst,
+        hjelpetekstApneLabel,
         valgtVerdi,
         alternativer,
         clsName,
@@ -49,6 +51,7 @@ const FlervalgSpørsmål = (props: Props) => {
             checked={valgtVerdi}
             legend={spørsmål}
             infoboksTekst={hjelpetekst}
+            hjelpetekstApneLabel={hjelpetekstApneLabel}
             radios={alternativer}
             fieldsetClassname={clsName}
             onChange={(_e: React.ChangeEvent<HTMLInputElement>, v: string) => onChange(v)}

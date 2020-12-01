@@ -7,7 +7,7 @@ import './rangeInput.less';
 import AriaText from 'common/components/aria/AriaText';
 import BEMHelper from 'common/util/bem';
 import Fieldset from 'app/temp-components/Fieldset';
-import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
+import LabelWithUtvidetInformasjon from 'common/components/labelWithUtvidetInformasjon/LabelWithUtvidetInformasjon';
 
 export interface RangeInputElementRendererOptions {
     value: number;
@@ -23,6 +23,7 @@ interface Props {
     label: string;
     hjelpetekst?: React.ReactNode;
     ariaLabelText: string;
+    hjelpetekstApneLabel: string;
     value: number;
     min: number;
     max: number;
@@ -100,6 +101,7 @@ class RangeInput extends React.Component<Props, State> {
             steppers,
             ariaValueChangedMessage,
             bottomContentRenderer,
+            hjelpetekstApneLabel,
             valueLabelPlacement = 'above',
             ...rest
         } = this.props;
@@ -117,7 +119,11 @@ class RangeInput extends React.Component<Props, State> {
         return (
             <div className={bemWrapper.block}>
                 <Fieldset
-                    legend={<LabelWithInfo info={hjelpetekst}>{label}</LabelWithInfo>}
+                    legend={
+                        <LabelWithUtvidetInformasjon apneLabel={hjelpetekstApneLabel} info={hjelpetekst}>
+                            {label}
+                        </LabelWithUtvidetInformasjon>
+                    }
                     className={'uttakfordeler'}
                 >
                     <div aria-live="polite">
