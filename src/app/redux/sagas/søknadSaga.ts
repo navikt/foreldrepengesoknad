@@ -22,6 +22,7 @@ import { selectSøkerErFarEllerMedmor } from 'app/selectors/utledetSøknadsinfoS
 import { StønadskontoType } from 'common/types';
 import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from 'app/util/uttaksplan/uttakUtils';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
 const stateSelector = (state: AppState) => state;
 
@@ -87,7 +88,7 @@ function* startEndringssøknad(action: StartSøknad, sak: Sak) {
                 getTilgjengeligeStønadskontoer,
                 getStønadskontoParams(
                     søknadsinfo,
-                    eksisterendeSak.grunnlag.familieHendelseDato,
+                    ISOStringToDate(eksisterendeSak.grunnlag.familieHendelseDato),
                     barn,
                     eksisterendeSak.grunnlag
                 ),

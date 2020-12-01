@@ -29,14 +29,14 @@ export const getStønadskontoParams = (
             morHarAleneomsorg: grunnlag.morErAleneOmOmsorg,
             farHarRett: grunnlag.farMedmorHarRett,
             farHarAleneomsorg: grunnlag.farMedmorErAleneOmOmsorg,
-            startdatoUttak: startdatoPermisjon || grunnlag.familieHendelseDato,
+            startdatoUttak: startdatoPermisjon || ISOStringToDate(grunnlag.familieHendelseDato)!,
         };
 
         if (erFødsel) {
             if (erBarnFødt) {
                 return {
                     ...params,
-                    termindato: grunnlag.termindato,
+                    termindato: ISOStringToDate(grunnlag.termindato),
                     fødselsdato: ISOStringToDate((barn as FødtBarn).fødselsdatoer[0]),
                 };
             } else {

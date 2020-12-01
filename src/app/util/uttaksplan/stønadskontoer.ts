@@ -1,6 +1,7 @@
 import { StønadskontoType, TilgjengeligStønadskonto, Stønadskontouttak } from '../../types/uttaksplan/periodetyper';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { getBrukteDager } from 'app/components/uttaksplanlegger/components/uttakFordeling/brukteDagerUtils';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
 export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligStønadskonto[]): StønadskontoType[] =>
     stønadskontoTyper
@@ -58,7 +59,7 @@ export const getResterendeStønadskontoer = (
     const brukteDager = getBrukteDager(
         tilgjengeligStønadskonto,
         eksisterendeSak.uttaksplan!,
-        eksisterendeSak.grunnlag.familieHendelseDato
+        ISOStringToDate(eksisterendeSak.grunnlag.familieHendelseDato)!
     );
 
     return tilgjengeligStønadskonto.map((k) => ({

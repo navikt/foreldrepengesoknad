@@ -41,7 +41,7 @@ export interface ArbeidsgiverInfo {
 
 export interface Saksgrunnlag {
     familieHendelseType: FamiliehendelsesType;
-    familieHendelseDato: Date;
+    familieHendelseDato: string;
     dekningsgrad: Dekningsgrad;
     antallBarn: number;
     søkerErFarEllerMedmor: boolean;
@@ -52,8 +52,8 @@ export interface Saksgrunnlag {
     farMedmorHarRett: boolean;
     erDeltUttak: boolean;
     erBarnetFødt: boolean; // Utledet fra familieHendelseType
-    termindato?: Date;
-    fødselsdato?: Date;
+    termindato?: string;
+    fødselsdato?: string;
 }
 
 export interface Saksperiode {
