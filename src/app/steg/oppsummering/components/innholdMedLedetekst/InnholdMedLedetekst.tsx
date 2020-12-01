@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EtikettLiten, Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { guid } from 'nav-frontend-js-utils';
 
 interface InnholdMedLedetekstProps {
@@ -13,12 +13,12 @@ const hasListOfChildren = (children: string | string[]): boolean => Array.isArra
 const InnholdMedLedetekst: React.FunctionComponent<InnholdMedLedetekstProps> = ({ ledetekst, children, className }) => {
     return (
         <div className={className}>
-            <EtikettLiten>{ledetekst}</EtikettLiten>
+            <Element>{ledetekst}</Element>
             {!Array.isArray(children) && hasListOfChildren((children as JSX.Element).props.children)
                 ? (children as JSX.Element).props.children.map((child: string) => (
-                      <Element className="feltoppsummering__verdi" key={guid()}>
+                      <Normaltekst className="feltoppsummering__verdi" key={guid()}>
                           {child}
-                      </Element>
+                      </Normaltekst>
                   ))
                 : children}
         </div>
