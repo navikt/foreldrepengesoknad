@@ -1,5 +1,5 @@
 export interface FamiliehendelseDatoer {
-    fødselsdato: Date | undefined;
-    termindato: Date | undefined;
-    omsorgsovertakelsesdato: Date | undefined;
+    fødselsdato: string | undefined;
+    termindato: string | undefined;
+    omsorgsovertakelsesdato: string | undefined;
 }

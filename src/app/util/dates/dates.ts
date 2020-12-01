@@ -23,7 +23,7 @@ export const getRelevantFamiliehendelseDato = ({
     termindato,
     fødselsdato,
     omsorgsovertakelsesdato,
-}: FamiliehendelseDatoer): Date => {
+}: FamiliehendelseDatoer): string => {
     if (fødselsdato !== undefined) {
         return fødselsdato;
     } else {

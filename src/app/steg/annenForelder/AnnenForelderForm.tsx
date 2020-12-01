@@ -149,11 +149,6 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                                             id="annenForelderRettPåForeldrepenger.veileder.del2"
                                             values={{ navn: formValues.fornavn }}
                                         ></FormattedMessage>
-                                        <br />
-                                        <FormattedMessage
-                                            id="annenForelderRettPåForeldrepenger.veileder.del3"
-                                            values={{ navn: formValues.fornavn }}
-                                        ></FormattedMessage>
                                     </>
                                 }
                                 legend={getMessage(intl, 'annenForelderRettPåForeldrepenger.spørsmål', {

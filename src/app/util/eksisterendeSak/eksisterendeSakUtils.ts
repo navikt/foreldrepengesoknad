@@ -1,4 +1,4 @@
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { cloneDeep } from 'lodash';
 import moment from 'moment';
 import { guid } from 'nav-frontend-js-utils';
@@ -141,9 +141,9 @@ export const getEksisterendeSakFromDTO = (
     } = dto;
 
     const familiehendelseDatoer: FamiliehendelseDatoer = {
-        termindato: termindato ? moment.utc(termindato).toDate() : undefined,
-        fødselsdato: fødselsdato ? moment.utc(fødselsdato).toDate() : undefined,
-        omsorgsovertakelsesdato: omsorgsovertakelsesdato ? moment.utc(omsorgsovertakelsesdato).toDate() : undefined,
+        termindato: termindato ? termindato : undefined,
+        fødselsdato: fødselsdato ? fødselsdato : undefined,
+        omsorgsovertakelsesdato: omsorgsovertakelsesdato ? omsorgsovertakelsesdato : undefined,
     };
 
     if (
@@ -341,7 +341,7 @@ const getBarnFromSaksgrunnlag = (
                 erBarnetFødt,
                 ...(erBarnetFødt
                     ? {
-                          fødselsdatoer: [dateToISOString(sak.familieHendelseDato)],
+                          fødselsdatoer: [sak.familieHendelseDato],
                           termindato: sak.termindato,
                       }
                     : {
@@ -351,8 +351,8 @@ const getBarnFromSaksgrunnlag = (
         case Søkersituasjon.ADOPSJON:
             return {
                 antallBarn: sak.antallBarn,
-                adopsjonsdato: dateToISOString(sak.familieHendelseDato),
-                fødselsdatoer: [dateToISOString(sak.familieHendelseDato)],
+                adopsjonsdato: sak.familieHendelseDato,
+                fødselsdatoer: [sak.familieHendelseDato],
             };
         default:
             return undefined;
@@ -460,7 +460,7 @@ export const opprettSøknadFraEksisterendeSak = (
         : undefined;
     const annenForelderFraBarn = finnAnnenForelderPåFødselsdato(
         søkerinfo.registrerteBarn,
-        grunnlag.fødselsdato,
+        ISOStringToDate(grunnlag.fødselsdato),
         grunnlag,
         situasjon
     );

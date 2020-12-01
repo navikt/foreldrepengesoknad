@@ -18,6 +18,7 @@ import { Dekningsgrad } from 'common/types';
 import { selectSøkerErFarEllerMedmor } from 'app/selectors/utledetSøknadsinfoSelectors';
 import { extractUUID } from '../../api/utils/errorUtil';
 import { getRelevantFamiliehendelseDato } from 'app/util/dates/dates';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
 const stateSelector = (state: AppState) => state;
 
@@ -97,14 +98,14 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
         }
 
         const relevantFamiliehendelseDato = getRelevantFamiliehendelseDato({
-            termindato: params.termindato,
-            fødselsdato: params.fødselsdato,
-            omsorgsovertakelsesdato: params.omsorgsovertakelsesdato,
+            termindato: dateToISOString(params.termindato),
+            fødselsdato: dateToISOString(params.fødselsdato),
+            omsorgsovertakelsesdato: dateToISOString(params.omsorgsovertakelsesdato),
         });
 
         if (
             skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018(
-                relevantFamiliehendelseDato,
+                ISOStringToDate(relevantFamiliehendelseDato)!,
                 tilgjengeligeStønadskontoer
             )
         ) {

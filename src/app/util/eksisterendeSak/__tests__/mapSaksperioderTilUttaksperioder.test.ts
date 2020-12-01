@@ -8,10 +8,11 @@ import {
 import { StønadskontoType, Dekningsgrad } from 'common/types';
 import { MorsAktivitet, Periodetype, isUttaksperiode } from 'app/types/uttaksplan/periodetyper';
 import { mapUttaksperiodeFromSaksperiode } from '../mapSaksperioderTilUttaksperioder';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 
 const morUfør: Pick<EksisterendeSak, 'grunnlag' | 'saksperioder'> = {
     grunnlag: {
-        familieHendelseDato: new Date('2019-09-01'),
+        familieHendelseDato: dateToISOString(new Date('2019-09-01')),
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
         antallBarn: 1,
         søkerErFarEllerMedmor: true,

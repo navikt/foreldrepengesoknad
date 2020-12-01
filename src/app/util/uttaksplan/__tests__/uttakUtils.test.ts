@@ -4,10 +4,11 @@ import Søknad from '../../../../app/types/søknad/Søknad';
 import { DeepPartial } from 'redux';
 import { Søknadsinfo } from 'app/selectors/types';
 import { Dekningsgrad } from 'common/types';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 
 describe('uttakUtils', () => {
     const grunnlag: Saksgrunnlag = {
-        familieHendelseDato: new Date(),
+        familieHendelseDato: dateToISOString(new Date()),
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
         antallBarn: 1,
         søkerErFarEllerMedmor: true,
