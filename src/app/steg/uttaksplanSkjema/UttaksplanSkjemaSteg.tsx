@@ -11,7 +11,7 @@ import { getTilgjengeligeDager } from 'app/components/uttaksplanlegger/component
 import uttaksConstants from 'app/constants';
 import { selectTilgjengeligeStønadskontoer } from 'app/selectors/apiSelector';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import Barn from 'app/types/søknad/Barn';
+import Barn, { isFødtBarn } from 'app/types/søknad/Barn';
 import { TilgjengeligStønadskonto } from 'app/types/uttaksplan/periodetyper';
 import {
     getAntallUkerFedrekvote,
@@ -39,7 +39,8 @@ import { getUttaksplanSkjemaScenario, UttaksplanSkjemaScenario } from './uttaksp
 import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import routeConfig from 'app/util/routing/routeConfig';
-
+import { skalViseInfoOmPrematuruker } from '../barn/relasjonTilBarnFødselSteg/visibility/visibilityFunctions';
+import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
@@ -52,17 +53,13 @@ interface StateProps {
     eksisterendeSak?: EksisterendeSak;
     eksisterendeSakAnnenPart?: EksisterendeSak;
 }
-
 interface OwnProps {
     intl: IntlShape;
 }
-
 type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps & OwnProps;
-
 class UttaksplanSkjemaSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-
         const {
             dispatch,
             stegProps,
@@ -76,12 +73,10 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             eksisterendeSak,
             history,
         } = props;
-
         if (!stegProps.isAvailable) {
             props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
             history.push(routeConfig.APP_ROUTE_PREFIX);
         }
-
         if (stegProps.isAvailable && søknadsinfo) {
             const grunnlag = eksisterendeSak !== undefined ? eksisterendeSak.grunnlag : undefined;
             const params: GetTilgjengeligeStønadskontoerParams = getStønadskontoParams(
@@ -104,7 +99,6 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             );
         }
     }
-
     UNSAFE_componentWillReceiveProps(nextProps: Props) {
         const dekningsgrad = this.props.søknad.dekningsgrad;
         if (dekningsgrad !== nextProps.søknad.dekningsgrad) {
@@ -117,7 +111,6 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             );
         }
     }
-
     render() {
         const {
             stegProps,
@@ -130,11 +123,10 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             eksisterendeSak,
             isLoadingSakForAnnenPart,
         } = this.props;
-
         if (!søknadsinfo) {
             return <ResetSoknad history={this.props.history} />;
         }
-
+        const { søknaden } = søknadsinfo;
         const søknad = this.props.søknad as Søknad;
         const navnPåForeldre = søknadsinfo.navn.navnPåForeldre;
         const grunnlag = eksisterendeSak !== undefined ? eksisterendeSak.grunnlag : undefined;
@@ -143,7 +135,12 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             søknadsinfo.søknaden.erDeltUttak,
             søknadsinfo.søknaden.erDeltUttak ? undefined : søknadsinfo.søker.forelder
         );
-
+        const fødselsdato = isFødtBarn(barn, søknaden.situasjon) ? ISOStringToDate(barn.fødselsdatoer[0]) : undefined;
+        const termindato = isFødtBarn(barn, søknaden.situasjon) ? ISOStringToDate(barn.termindato) : undefined;
+        const visInfoOmPrematuruker = søknaden.erFødsel ? skalViseInfoOmPrematuruker(fødselsdato, termindato) : false;
+        const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker
+            ? Tidsperioden({ fom: fødselsdato, tom: termindato }).getAntallUttaksdager() - 1
+            : undefined;
         return (
             <Steg
                 {...stegProps}
@@ -191,6 +188,8 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                             eksisterendeSak={eksisterendeSak}
                             tilgjengeligeDager={tilgjengeligeDager}
                             erDeltUttak={søknadsinfo.søknaden.erDeltUttak}
+                            ekstraDagerGrunnetPrematurFødsel={ekstraDagerGrunnetPrematurFødsel}
+                            visInfoOmPrematuruker={visInfoOmPrematuruker}
                         />
                     </>
                 )}
@@ -198,11 +197,9 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
         );
     }
 }
-
 const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps): StateProps => {
     const { history } = props;
     const søknadsinfo = selectSøknadsinfo(state);
-
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN_SKJEMA,
         renderFortsettKnapp: uttaksplanSkjemaErGyldig(state.søknad, søknadsinfo),
@@ -212,7 +209,6 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo, søknadsinfo),
         renderAlleSpørsmålMåBesvares: true,
     };
-
     const søknad = { ...state.søknad };
     const {
         api: { isLoadingTilgjengeligeStønadskontoer, isLoadingSakForAnnenPart },
@@ -220,7 +216,6 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
     const { ekstrainfo } = søknad;
     let scenario: UttaksplanSkjemaScenario = {} as UttaksplanSkjemaScenario;
-
     if (søknadsinfo) {
         const { familiehendelsesdato } = søknadsinfo.søknaden;
         scenario = getUttaksplanSkjemaScenario(søknadsinfo, state.søknad.ekstrainfo.eksisterendeSak);
@@ -237,7 +232,6 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
             ekstrainfo.uttaksplanSkjema.startdatoPermisjon = dateToISOString(defaultStartdato);
         }
     }
-
     return {
         søknadsinfo,
         stegProps,
@@ -250,5 +244,4 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         eksisterendeSak: ekstrainfo.eksisterendeSak,
     };
 };
-
 export default connect<StateProps>(mapStateToProps)(injectIntl(UttaksplanSkjemaSteg));

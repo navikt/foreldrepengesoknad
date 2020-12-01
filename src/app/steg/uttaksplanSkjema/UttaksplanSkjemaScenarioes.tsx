@@ -29,6 +29,7 @@ import StartdatoUttakFarMedmorSpørsmål from './enkeltspørsmål/StartdatoUttak
 import UtsettelseBegrunnelse from './enkeltspørsmål/UtsettelseBegrunnelse';
 import { skalFarUtsetteEtterMorSinSisteUttaksdag } from './utils';
 import { UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
+import { veilederMessageAvsnitt } from '../../components/veilederInfo/utils';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -42,6 +43,8 @@ export interface ScenarioProps {
     søkerHarMidlertidigOmsorg: boolean;
     tilgjengeligeDager: TilgjengeligeDager;
     erDeltUttak: boolean;
+    ekstraDagerGrunnetPrematurFødsel: number | undefined;
+    visInfoOmPrematuruker: boolean;
 }
 export interface OwnProps extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
@@ -58,6 +61,8 @@ const Scenario1: React.FunctionComponent<ScenarioProps> = ({
     tilgjengeligeDager,
     erFarEllerMedmor,
     erDeltUttak,
+    ekstraDagerGrunnetPrematurFødsel,
+    visInfoOmPrematuruker,
 }) => {
     const harSvartPåDekningsgradSpørsmål = søknad.dekningsgrad !== undefined;
     const intl = useIntl();
@@ -92,16 +97,27 @@ const Scenario1: React.FunctionComponent<ScenarioProps> = ({
                 margin="xs"
             >
                 <VeilederInfo
-                    messages={[
-                        {
-                            type: 'normal',
-                            contentIntlKey:
-                                'uttaksplan.skjema.farMedmor.infoOmTidsromMellomMorsSisteDagOgFarsFørsteDag',
-                            values: {
-                                navnMor: navnPåForeldre.mor,
+                    messages={veilederMessageAvsnitt(
+                        [
+                            {
+                                type: 'normal',
+                                contentIntlKey:
+                                    'uttaksplan.skjema.farMedmor.infoOmTidsromMellomMorsSisteDagOgFarsFørsteDag',
+                                values: { navnMor: navnPåForeldre.mor },
                             },
-                        },
-                    ]}
+                        ],
+                        [
+                            {
+                                type: 'normal',
+                                contentIntlKey: 'uttaksplan.informasjon.prematuruker',
+                                values: {
+                                    antallprematuruker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
+                                    antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
+                                },
+                            },
+                        ],
+                        visInfoOmPrematuruker
+                    )}
                 />
             </Block>
             <MorSinSisteUttaksdagSpørsmål
@@ -334,8 +350,11 @@ const Scenario5: React.FunctionComponent<ScenarioProps> = ({
     tilgjengeligeDager,
     erFarEllerMedmor,
     erDeltUttak,
+    ekstraDagerGrunnetPrematurFødsel,
+    visInfoOmPrematuruker,
 }) => {
     const omsorgsDato: Date = ISOStringToDate(søknad.barn.datoForAleneomsorg) || familiehendelsesdato;
+
     return (
         <>
             <DekningsgradSpørsmål />
@@ -349,16 +368,29 @@ const Scenario5: React.FunctionComponent<ScenarioProps> = ({
             )}
             <Block visible={søknad.dekningsgrad !== undefined && søknad.situasjon === 'fødsel'}>
                 <VeilederInfo
-                    messages={[
-                        {
-                            type: 'normal',
-                            contentIntlKey: 'uttaksplan.skjema.aleneomsorgFarMedmor.navSaraVeileder',
-                            values: {
-                                navn: søknad.annenForelder.fornavn,
-                                b: (msg: any) => <b>{msg}</b>,
+                    messages={veilederMessageAvsnitt(
+                        [
+                            {
+                                type: 'normal',
+                                contentIntlKey: 'uttaksplan.skjema.aleneomsorgFarMedmor.navSaraVeileder',
+                                values: {
+                                    navn: søknad.annenForelder.fornavn,
+                                    b: (msg: any) => <b>{msg}</b>,
+                                },
                             },
-                        },
-                    ]}
+                        ],
+                        [
+                            {
+                                type: 'normal',
+                                contentIntlKey: 'uttaksplan.informasjon.prematuruker',
+                                values: {
+                                    antallprematuruker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
+                                    antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
+                                },
+                            },
+                        ],
+                        visInfoOmPrematuruker
+                    )}
                 />
             </Block>
             <Block visible={søknad.dekningsgrad !== undefined && søknad.situasjon === 'adopsjon'}>
@@ -389,6 +421,8 @@ const Scenario6: React.FunctionComponent<ScenarioProps> = ({
     erDeltUttak,
     erFarEllerMedmor,
     tilgjengeligeDager,
+    ekstraDagerGrunnetPrematurFødsel,
+    visInfoOmPrematuruker,
 }) => {
     const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
 
@@ -403,6 +437,20 @@ const Scenario6: React.FunctionComponent<ScenarioProps> = ({
                     erDeltUttak={erDeltUttak}
                 />
             )}
+            <Block visible={visInfoOmPrematuruker === true}>
+                <VeilederInfo
+                    messages={[
+                        {
+                            type: 'normal',
+                            contentIntlKey: 'uttaksplan.informasjon.prematuruker',
+                            values: {
+                                antallprematuruker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
+                                antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
+                            },
+                        },
+                    ]}
+                />
+            </Block>
             <StartdatoUttakFarMedmorSpørsmål
                 visible={søknad.dekningsgrad !== undefined && søknad.annenForelder.erUfør === true}
                 familiehendelsesdato={førsteUttaksdag}
