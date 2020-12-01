@@ -23,6 +23,7 @@ const HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål = (props: Props) => {
     return (
         <ValiderbarRadioPanelGruppeResponsive
             infoboksTekst={infotekst}
+            hjelpetekstApneLabel="Les mer om å utsette på helligdager"
             checked={variant}
             twoColumns={true}
             legend={getMessage(intl, 'hvaergrunnentilatduskalutsettedittuttak.spørsmål')}

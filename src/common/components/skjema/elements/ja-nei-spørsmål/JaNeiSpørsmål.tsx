@@ -12,7 +12,7 @@ enum ValgAlternativer {
 interface JaNeiSpørsmålProps {
     navn: string;
     spørsmål: string;
-    hjelpetekst?: string | React.ReactNode;
+    hjelpetekst?: React.ReactNode;
     valgtVerdi?: boolean;
     toKolonner?: boolean;
     clsName?: string;
@@ -22,12 +22,24 @@ interface JaNeiSpørsmålProps {
     };
     validators?: Validator[];
     onChange: (valgt: boolean) => void;
+    hjelpetekstApneLabel?: React.ReactNode;
 }
 
 type Props = JaNeiSpørsmålProps;
 
 const JaNeiSpørsmål = (props: Props) => {
-    const { onChange, spørsmål, hjelpetekst, navn, valgtVerdi, clsName, toKolonner = true, labels, validators } = props;
+    const {
+        onChange,
+        spørsmål,
+        hjelpetekst,
+        hjelpetekstApneLabel,
+        navn,
+        valgtVerdi,
+        clsName,
+        toKolonner = true,
+        labels,
+        validators,
+    } = props;
     const intl = useIntl();
 
     let checked;
@@ -43,6 +55,7 @@ const JaNeiSpørsmål = (props: Props) => {
             valgtVerdi={checked}
             spørsmål={spørsmål}
             hjelpetekst={hjelpetekst}
+            hjelpetekstApneLabel={hjelpetekstApneLabel}
             toKolonner={toKolonner}
             clsName={clsName}
             alternativer={[

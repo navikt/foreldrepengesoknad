@@ -3,7 +3,7 @@ import { SkjemaelementProps } from 'common/components/skjema/wrappers/types/comm
 import { guid } from 'nav-frontend-js-utils';
 import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
 import { DatoInputProps } from 'common/components/skjema/elements/dato-input/DatoInput';
-import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
+import LabelWithUtvidetInformasjon from 'common/components/labelWithUtvidetInformasjon/LabelWithUtvidetInformasjon';
 
 type DatoInputWrapperProps = Omit<SkjemaelementProps, 'onChange'> & DatoInputProps;
 
@@ -13,7 +13,7 @@ const DatoInput = (props: DatoInputWrapperProps) => {
         <ValiderbarDatoInput
             {...props}
             id={id}
-            label={<LabelWithInfo info={props.infotekst}>{props.label}</LabelWithInfo>}
+            label={<LabelWithUtvidetInformasjon info={props.infotekst}>{props.label}</LabelWithUtvidetInformasjon>}
         />
     );
 };

@@ -3,7 +3,7 @@ import { SelectProps } from 'nav-frontend-skjema';
 import { SkjemaelementProps } from 'common/components/skjema/wrappers/types/common';
 import { guid } from 'nav-frontend-js-utils';
 import ValiderbarSelect from 'common/lib/validation/elements/ValiderbarSelect';
-import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
+import LabelWithUtvidetInformasjon from 'common/components/labelWithUtvidetInformasjon/LabelWithUtvidetInformasjon';
 
 export type SelectWrapperProps = SkjemaelementProps & SelectProps;
 
@@ -13,7 +13,7 @@ const Select: React.FunctionComponent<SelectWrapperProps> = (props: SelectWrappe
         <ValiderbarSelect
             {...props}
             id={id}
-            label={<LabelWithInfo info={props.infotekst}>{props.label}</LabelWithInfo>}
+            label={<LabelWithUtvidetInformasjon info={props.infotekst}>{props.label}</LabelWithUtvidetInformasjon>}
         />
     );
 };

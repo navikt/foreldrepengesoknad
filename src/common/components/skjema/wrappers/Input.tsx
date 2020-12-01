@@ -5,10 +5,11 @@ import ValiderbarInput from 'common/lib/validation/elements/ValiderbarInput';
 import throttle from 'lodash.throttle';
 import { InputChangeEvent } from '../../../types/Events';
 import { InputProps } from 'nav-frontend-skjema';
-import { LabelWithInfo } from '@navikt/sif-common-formik/lib';
+import LabelWithUtvidetInformasjon from 'common/components/labelWithUtvidetInformasjon/LabelWithUtvidetInformasjon';
 
 interface OwnProps {
     throttled?: boolean;
+    apneLabel?: string;
 }
 
 type InputWrapperProps = SkjemaelementProps & InputProps & OwnProps;
@@ -55,7 +56,7 @@ export default class Input extends React.Component<InputWrapperProps, InputWrapp
     }
 
     render() {
-        const { label, infotekst, throttled, ...otherProps } = this.props;
+        const { label, infotekst, throttled, apneLabel, ...otherProps } = this.props;
         const { value } = this.state;
         const id = this.props.id || guid();
 
@@ -63,7 +64,11 @@ export default class Input extends React.Component<InputWrapperProps, InputWrapp
             <ValiderbarInput
                 {...otherProps}
                 id={id}
-                label={<LabelWithInfo info={infotekst}>{label}</LabelWithInfo>}
+                label={
+                    <LabelWithUtvidetInformasjon info={infotekst} apneLabel={apneLabel}>
+                        {label}
+                    </LabelWithUtvidetInformasjon>
+                }
                 onChange={this.handleOnChange}
                 value={value}
                 autoComplete="off"
