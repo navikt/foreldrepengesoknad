@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EtikettLiten, Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 import { RegistrertAnnenForelder } from 'app/types/Person';
 import { getAlderFraDato } from 'app/util/dates/dates';
@@ -15,13 +15,15 @@ type Props = PersonaliaBoxProps;
 const PersonaliaBox: React.FunctionComponent<Props> = ({ person }: Props) => {
     return (
         <div className="personaliaBox">
-            <EtikettLiten className="personaliaBox__fnr">{person.fnr}</EtikettLiten>
-            <EtikettLiten className="personaliaBox__alder">
-                <FormattedMessage id="personalia.år" values={{ år: getAlderFraDato(person.fødselsdato).år }} />
-            </EtikettLiten>
             <Element className="personaliaBox__navn">
                 {formaterNavn(person.fornavn, person.etternavn, person.mellomnavn)}
             </Element>
+            <Normaltekst>
+                <FormattedMessage
+                    id="personalia.fødselsnummerOgÅr"
+                    values={{ fnr: person.fnr, år: getAlderFraDato(person.fødselsdato).år }}
+                />
+            </Normaltekst>
         </div>
     );
 };

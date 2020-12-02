@@ -494,7 +494,7 @@
     "periodetype.info.utsettelse.SYKDOM": "{ navn } utsetjer på grunn av sjukdom",
     "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_SØKER": "{ navn } utsetjer på grunn av innleggelse i helseinstitusjon",
     "periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_BARNET": "{ navn } utsetjer fordi barnet er innlagt i helseinstitusjon",
-    "personalia.år": "{år} år",
+    "personalia.fødselsnummerOgÅr": "Fødselsnummer: {fnr} ({år} år)",
     "pgasykdom": "På grunn av sjukdom",
     "hv_øvelse": "Øvelse eller tjeneste i Heimevernet",
     "navtiltak": "NAV tiltak som utgjør 100% arbeid",

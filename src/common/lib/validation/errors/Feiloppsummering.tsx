@@ -13,7 +13,7 @@ interface Props {
 }
 
 const cls = (show: boolean, className?: string) =>
-    classNames('feil-oppsummering-boks', className, {
+    classNames('feiloppsummering feil-oppsummering-boks', className, {
         'feil-oppsummering-boks--visible': show,
     });
 

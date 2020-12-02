@@ -34,6 +34,7 @@ import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/Utvi
 import ForståttRettigheterForm from './ForståttRettigheterForm';
 
 import './velkommen.less';
+import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
 
 interface StateProps {
     person?: Person;
@@ -179,6 +180,12 @@ class Velkommen extends React.Component<Props, State> {
                                     erSakForEndringssøknadFraInfotrygd={erSakForEndringssøknadFraInfotrygd}
                                 />
                             </Block>
+                            <Block visible={this.state.skalEndre === undefined}>
+                                <UnansweredQuestionsInfo>
+                                    <FormattedMessage id="steg.footer.spørsmålMåBesvares" />
+                                </UnansweredQuestionsInfo>
+                            </Block>
+
                             {this.state.skalEndre === false && !erSakForEndringssøknadFraInfotrygd && (
                                 <VeilederInfo
                                     messages={[

@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { Element } from 'nav-frontend-typografi';
-
-import './feltoppsummering.less';
 import InnholdMedLedetekst from 'app/steg/oppsummering/components/innholdMedLedetekst/InnholdMedLedetekst';
+import './feltoppsummering.less';
 
 interface Props {
     feltnavn: string;
@@ -11,7 +9,7 @@ interface Props {
 
 const Feltoppsummering: React.FunctionComponent<Props> = ({ feltnavn, verdi }) => (
     <InnholdMedLedetekst className="feltoppsummering" ledetekst={feltnavn}>
-        <Element className="feltoppsummering__verdi">{verdi}</Element>
+        <div className="feltoppsummering__verdi">{verdi}</div>
     </InnholdMedLedetekst>
 );
 
