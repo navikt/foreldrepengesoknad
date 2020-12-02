@@ -980,6 +980,7 @@
     "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
     "velkommen.samtykkeIntro.del1": "For å gå videre med søknaden må du bekrefte at du har lest og forstått dine plikter.",
     "velkommen.samtykkeIntro.del2": "Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
+    "velkommen.samtykkeIntro.del3": "Vi ønsker å gjøre det så enkelt som mulig for deg å fylle ut søknaden, derfor vises så få spørsmål som mulig av gangen. Når du svarer på noe, viser vi neste spørsmål. Husk å svare på alle spørsmål på hver side for å komme videre.",
     "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring": "Nei, jeg vil søke om endring",
     "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.nyttbarn": "Ja, start ny søknad",
     "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål": "Vil du begynne med ny foreldrepengesøknad?",
