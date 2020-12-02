@@ -74,7 +74,10 @@ class Velkommen extends React.Component<Props, State> {
                 <UtvidetInformasjon apneLabel="Les om dine plikter">
                     <DinePlikter />
                 </UtvidetInformasjon>
-                <FormattedMessage id="velkommen.samtykkeIntro.del2" />
+                <Block margin="xs">
+                    <FormattedMessage id="velkommen.samtykkeIntro.del2" />
+                </Block>
+                <FormattedMessage id="velkommen.samtykkeIntro.del3" />
             </>
         );
     }
