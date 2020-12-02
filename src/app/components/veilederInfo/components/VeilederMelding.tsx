@@ -56,7 +56,9 @@ const VeilederMelding: React.SFC<VeilederpanelInnholdContentProps> = ({
             {message.type !== 'normal' ? (
                 renderAlert(message, skjulMeldingIkon)
             ) : (
-                <FormattedMessage id={message.contentIntlKey} values={message.values} />
+                <div className="veilederMelding__padding">
+                    <FormattedMessage id={message.contentIntlKey} values={message.values} />
+                </div>
             )}
         </div>
     );
