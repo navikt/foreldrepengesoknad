@@ -3,9 +3,9 @@ import { RecursivePartial } from 'app/types/Partial';
 import Block from 'common/components/block/Block';
 import { Tidsperiode } from 'common/types';
 import BEMHelper from 'common/util/bem';
-import { formaterDato } from 'common/util/datoUtils';
-import { Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
+import { formatDate } from 'app/util/dates/dates';
 
 import './tidsperiodeDisplay.less';
 
@@ -18,7 +18,7 @@ const bem = BEMHelper('tidsperiodeDisplay');
 
 const formaterTidsperiodeDato = (dato: RecursivePartial<Date> | undefined) => {
     if (dato) {
-        return formaterDato(dato as Date);
+        return formatDate(dato as Date);
     }
 
     return 'Ingen valgt dato';
@@ -26,9 +26,22 @@ const formaterTidsperiodeDato = (dato: RecursivePartial<Date> | undefined) => {
 
 const renderTidsperiode = (tidsperiode: RecursivePartial<Tidsperiode> | undefined) => {
     if (tidsperiode) {
-        return `Fra ${formaterTidsperiodeDato(tidsperiode.fom as Date)} til ${formaterTidsperiodeDato(
-            tidsperiode.tom as Date
-        )}`;
+        // return `Fra og med: ${formaterTidsperiodeDato(tidsperiode.fom as Date)}. Til og med: ${formaterTidsperiodeDato(
+        //     tidsperiode.tom as Date
+        // )}`;
+
+        return (
+            <div style={{ display: 'flex', justifyContent: 'space-between', width: '22rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '10rem' }}>
+                    <Element>Fra og med:</Element>
+                    <Normaltekst>{formaterTidsperiodeDato(tidsperiode.fom as Date)}</Normaltekst>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '10rem' }}>
+                    <Element>Til og med:</Element>
+                    <Normaltekst>{formaterTidsperiodeDato(tidsperiode.tom as Date)}</Normaltekst>
+                </div>
+            </div>
+        );
     }
 
     return 'Ingen valgt tidsperiode';
@@ -37,8 +50,9 @@ const renderTidsperiode = (tidsperiode: RecursivePartial<Tidsperiode> | undefine
 const TidsperiodeDisplay: React.FunctionComponent<Props> = ({ tidsperiode, toggleVisTidsperiode }) => {
     return (
         <Block margin="xs">
+            <Element>Tidsrom</Element>
             <div className={bem.block}>
-                <Element>{renderTidsperiode(tidsperiode)}</Element>
+                {renderTidsperiode(tidsperiode)}
                 <Lenke
                     href="#"
                     onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -47,7 +61,7 @@ const TidsperiodeDisplay: React.FunctionComponent<Props> = ({ tidsperiode, toggl
                         toggleVisTidsperiode();
                     }}
                 >
-                    Endre tidsperiode
+                    Endre tidsrom
                 </Lenke>
             </div>
         </Block>

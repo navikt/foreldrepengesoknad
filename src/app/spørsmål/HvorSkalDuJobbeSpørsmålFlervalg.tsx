@@ -111,7 +111,10 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
             <CheckboksPanelGruppeResponsive
                 twoColumns={true}
                 legend={
-                    <LabelWithUtvidetInformasjon info={getMessage(intl, 'utsettelseskjema.info.utsettelseArbeid')}>
+                    <LabelWithUtvidetInformasjon
+                        info={getMessage(intl, 'utsettelseskjema.info.utsettelseArbeid')}
+                        apneLabel="Les mer om hvor skal du jobbe"
+                    >
                         {getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
                     </LabelWithUtvidetInformasjon>
                 }

@@ -196,10 +196,15 @@ const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
     return moment(date).isBetween(minDate, maxDate, 'day', '[]');
 };
 
-const validateDateInRange = (date: Date | undefined, minDate: Date, maxDate: Date) => {
+const validateDateInRange = (date: Date | undefined, minDate: Date, maxDate: Date, isFomDate: boolean) => {
     if (date === undefined) {
+        if (isFomDate) {
+            return {
+                key: 'valideringsfeil.fraOgMedDato.gyldigDato',
+            };
+        }
         return {
-            key: 'påkrevd',
+            key: 'valideringsfeil.tilOgMedDato.gyldigDato',
         };
     }
 
@@ -217,7 +222,7 @@ const validateDateInRange = (date: Date | undefined, minDate: Date, maxDate: Dat
 };
 
 const validateFromDate = (date: Date | undefined, minDate: Date, maxDate: Date, toDate?: Date) => {
-    const error = validateDateInRange(date, minDate, maxDate);
+    const error = validateDateInRange(date, minDate, maxDate, true);
     if (error !== undefined) {
         return error;
     }
@@ -230,7 +235,7 @@ const validateFromDate = (date: Date | undefined, minDate: Date, maxDate: Date, 
 };
 
 const validateFromDateUttak = (date: Date | undefined, minDate: Date, maxDate: Date, toDate?: Date) => {
-    const error = validateDateInRange(date, minDate, maxDate);
+    const error = validateDateInRange(date, minDate, maxDate, true);
 
     if (error !== undefined) {
         return error;
@@ -252,7 +257,7 @@ const validateFromDateUttak = (date: Date | undefined, minDate: Date, maxDate: D
 };
 
 const validateToDate = (date: Date | undefined, minDate: Date, maxDate: Date, fromDate?: Date) => {
-    const error = validateDateInRange(date, minDate, maxDate);
+    const error = validateDateInRange(date, minDate, maxDate, false);
     if (error !== undefined) {
         return error;
     }
@@ -265,7 +270,7 @@ const validateToDate = (date: Date | undefined, minDate: Date, maxDate: Date, fr
 };
 
 const validateToDateUttak = (date: Date | undefined, minDate: Date, maxDate: Date, fromDate?: Date) => {
-    const error = validateDateInRange(date, minDate, maxDate);
+    const error = validateDateInRange(date, minDate, maxDate, false);
 
     if (error !== undefined) {
         return error;

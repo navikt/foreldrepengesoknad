@@ -48,6 +48,7 @@ import {
 } from '../../../../util/tidsperiodeUtils';
 import UtsettelseEndreTidsperiodeSpørsmål from './partials/UtsettelseEndreTidsperiodeSpørsmål';
 import TidsperiodeDisplay from '../tidsperiodeDisplay/TidsperiodeDisplay';
+import TidsperiodeForm from '../tidsperiodeForm/TidsperiodeForm';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -338,17 +339,29 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
         const overlapperAndreUtsettelser = overlapperUtsettelseAndreUtsettelser(periode as Periode, uttaksplan);
         const harDeltidUtenAvtaleMedArbeidsgiver =
             isUtsettelsesperiode(periode) && periode.harAvtaleOmFulltidForDeltidsstilling === false;
+        const { familiehendelsesdato } = søknadsinfo.søknaden;
 
         return (
             <>
-                <Block hasChildBlocks={true}>
+                <Block visible={!isValidTidsperiode(tidsperiode)}>
+                    <TidsperiodeForm
+                        familiehendelsesdato={familiehendelsesdato}
+                        onBekreft={(v) => {
+                            this.oppdaterTidsperiode(v);
+                        }}
+                        ugyldigeTidsperioder={ugyldigeTidsperioder}
+                        tidsperiode={mapTidsperiodeToTidsperiodeString(tidsperiode)}
+                        onCancel={onCancel}
+                    />
+                </Block>
+                <Block visible={isValidTidsperiode(tidsperiode)} hasChildBlocks={true}>
                     <Block>
                         <TidsperiodeDisplay
                             tidsperiode={periode.tidsperiode}
                             toggleVisTidsperiode={this.toggleVisTidsperiode}
                         />
                         <UtsettelseEndreTidsperiodeSpørsmål
-                            familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
+                            familiehendelsesdato={familiehendelsesdato}
                             ugyldigeTidsperioder={ugyldigeTidsperioder}
                             onBekreft={(v) => {
                                 this.oppdaterTidsperiode(v);
