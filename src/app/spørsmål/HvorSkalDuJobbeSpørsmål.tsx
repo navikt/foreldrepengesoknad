@@ -95,7 +95,7 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
                         values={{ b: (msg: any) => <b>{msg}</b> }}
                     />
                 }
-                hjelpetekstApneLabel="Les mer om hvor du skal jobbe"
+                hjelpetekstApneLabel={getMessage(intl, 'hvorSkalDuJobbe.spørsmål.gradering.hjelpetekst.apneLabel')}
             />
         );
     }

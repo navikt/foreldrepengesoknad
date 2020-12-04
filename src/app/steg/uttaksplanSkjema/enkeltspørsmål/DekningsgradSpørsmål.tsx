@@ -131,7 +131,7 @@ const DekningsgradSpørsmål = (props: Props) => {
                     ]}
                     name="dekningsgrad"
                     infoboksTekst={erEndringssøknad ? undefined : getInfoboxText(intl, erAleneOmOmsorg)}
-                    hjelpetekstApneLabel="Les mer om lengden på foreldrepengeperioden"
+                    hjelpetekstApneLabel={getMessage(intl, 'spørsmål.dekningsgrad.apneLabel')}
                     onChange={(_e, v: Dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad: v }))}
                 />
             </Block>

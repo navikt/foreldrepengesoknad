@@ -20,7 +20,7 @@ const HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål = (pr
             spørsmål={spørsmålstekst}
             navn="harBlittYrkesaktivSisteTreÅr"
             hjelpetekst={getMessage(intl, 'blittYrkesaktivSiste3År.hjelpetekst')}
-            hjelpetekstApneLabel="Les mer om hva det betyr å ha blitt yrkesaktiv i løpet av de siste tre år"
+            hjelpetekstApneLabel={getMessage(intl, 'blittYrkesaktivSiste3År.hjelpetekst.apneLabel')}
             onChange={onChange}
             valgtVerdi={harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene}
         />

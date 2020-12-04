@@ -113,7 +113,7 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
                 legend={
                     <LabelWithUtvidetInformasjon
                         info={getMessage(intl, 'utsettelseskjema.info.utsettelseArbeid')}
-                        apneLabel="Les mer om hvor skal du jobbe"
+                        apneLabel={getMessage(intl, 'hvorSkalDuJobbe.spørsmål.gradering.hjelpetekst.apneLabel')}
                     >
                         {getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
                     </LabelWithUtvidetInformasjon>

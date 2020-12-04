@@ -120,7 +120,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                 <Block margin="xs">
                     <LabelWithUtvidetInformasjon
                         info={getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst')}
-                        apneLabel="Les mer om dine arbeidsforhold"
+                        apneLabel={getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst.apneLabel')}
                     >
                         {getMessage(intl, 'annenInntekt.arbeidsforhold.label')}
                     </LabelWithUtvidetInformasjon>
