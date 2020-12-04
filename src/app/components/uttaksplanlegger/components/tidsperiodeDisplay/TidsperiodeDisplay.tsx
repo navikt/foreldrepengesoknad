@@ -8,6 +8,8 @@ import Lenke from 'nav-frontend-lenker';
 import { formatDate } from 'app/util/dates/dates';
 
 import './tidsperiodeDisplay.less';
+import getMessage from 'common/util/i18nUtils';
+import { IntlShape, useIntl } from 'react-intl';
 
 interface Props {
     tidsperiode: RecursivePartial<Tidsperiode> | undefined;
@@ -24,20 +26,16 @@ const formaterTidsperiodeDato = (dato: RecursivePartial<Date> | undefined) => {
     return 'Ingen valgt dato';
 };
 
-const renderTidsperiode = (tidsperiode: RecursivePartial<Tidsperiode> | undefined) => {
+const renderTidsperiode = (tidsperiode: RecursivePartial<Tidsperiode> | undefined, intl: IntlShape) => {
     if (tidsperiode) {
-        // return `Fra og med: ${formaterTidsperiodeDato(tidsperiode.fom as Date)}. Til og med: ${formaterTidsperiodeDato(
-        //     tidsperiode.tom as Date
-        // )}`;
-
         return (
             <div style={{ display: 'flex', justifyContent: 'space-between', width: '22rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '10rem' }}>
-                    <Element>Fra og med:</Element>
+                    <Element>{`${getMessage(intl, 'fraogmed')}:`}</Element>
                     <Normaltekst>{formaterTidsperiodeDato(tidsperiode.fom as Date)}</Normaltekst>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '10rem' }}>
-                    <Element>Til og med:</Element>
+                    <Element>{`${getMessage(intl, 'tilogmed')}:`}</Element>
                     <Normaltekst>{formaterTidsperiodeDato(tidsperiode.tom as Date)}</Normaltekst>
                 </div>
             </div>
@@ -48,11 +46,13 @@ const renderTidsperiode = (tidsperiode: RecursivePartial<Tidsperiode> | undefine
 };
 
 const TidsperiodeDisplay: React.FunctionComponent<Props> = ({ tidsperiode, toggleVisTidsperiode }) => {
+    const intl = useIntl();
+
     return (
         <Block margin="xs">
             <Element>Tidsrom</Element>
             <div className={bem.block}>
-                {renderTidsperiode(tidsperiode)}
+                {renderTidsperiode(tidsperiode, intl)}
                 <Lenke
                     href="#"
                     onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {

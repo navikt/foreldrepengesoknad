@@ -3,7 +3,7 @@ import { commonFieldErrorRenderer } from 'app/validation/fieldValidations';
 import { Tidsperiode, TidsperiodeString } from 'common/types';
 import React from 'react';
 import moment from 'moment';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import { dateRangeValidation } from 'app/util/dates/dates';
@@ -140,7 +140,9 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                 }}
                             />
                         </Block>
-                        <Knapp type="hoved">Gå videre</Knapp>
+                        <Knapp type="hoved">
+                            <FormattedMessage id="gåVidere" />
+                        </Knapp>
                     </Form.Form>
                 );
             }}
