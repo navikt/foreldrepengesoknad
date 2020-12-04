@@ -25,6 +25,7 @@ import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
 import { UnansweredQuestionsInfo, YesOrNo } from '@navikt/sif-common-formik/lib';
 import MåOrientereAnnenForelderVeileder from './veiledere/MåOrientereAnnenForelderVeileder';
 import FarDokumentasjonAleneomsorgVeileder from './veiledere/FarDokumentasjonAleneomsorgVeileder';
+import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 
 interface Props {
     skalOppgiPersonalia: boolean;
@@ -101,7 +102,14 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                         >
                             <AnnenForelderFormComponents.YesOrNoQuestion
                                 name={AnnenForelderFieldNames.aleneOmOmsorg}
-                                info={getMessage(intl, 'annenForelder.aleneOmOmsorg.veileder')}
+                                description={
+                                    <UtvidetInformasjon
+                                        description={true}
+                                        apneLabel={getMessage(intl, 'annenForelder.aleneOmOmsorg.veileder.apneLabel')}
+                                    >
+                                        {getMessage(intl, 'annenForelder.aleneOmOmsorg.veileder')}
+                                    </UtvidetInformasjon>
+                                }
                                 legend={getMessage(intl, 'annenForelder.aleneOmOmsorg')}
                                 validate={(erAleneOmOmsorg) =>
                                     validateYesOrNoIsAnswered(erAleneOmOmsorg, 'valideringsfeil.aleneOmOmsorgPåkrevd')
@@ -138,8 +146,14 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                         <Block visible={visibility.isVisible(AnnenForelderFieldNames.harRettPåForeldrepenger)}>
                             <AnnenForelderFormComponents.YesOrNoQuestion
                                 name={AnnenForelderFieldNames.harRettPåForeldrepenger}
-                                info={
-                                    <>
+                                description={
+                                    <UtvidetInformasjon
+                                        apneLabel={getMessage(
+                                            intl,
+                                            'annenForelderRettPåForeldrepenger.veileder.apneLabel'
+                                        )}
+                                        description={true}
+                                    >
                                         <FormattedMessage
                                             id="annenForelderRettPåForeldrepenger.veileder.del1"
                                             values={{ navn: formValues.fornavn }}
@@ -149,7 +163,7 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                                             id="annenForelderRettPåForeldrepenger.veileder.del2"
                                             values={{ navn: formValues.fornavn }}
                                         ></FormattedMessage>
-                                    </>
+                                    </UtvidetInformasjon>
                                 }
                                 legend={getMessage(intl, 'annenForelderRettPåForeldrepenger.spørsmål', {
                                     navn: formValues.fornavn,

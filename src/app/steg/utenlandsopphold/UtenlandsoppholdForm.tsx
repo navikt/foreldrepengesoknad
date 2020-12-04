@@ -22,6 +22,7 @@ import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/types/søkn
 import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
 import { BostedUtland } from './bostedUtlandListAndDialog/types';
 import utenlandsoppholdFormCleanup from './form/utenlandsoppholdFormCleanup';
+import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 
 const defaultInitialValues: UtenlandsoppholdFormValues = {
     harBoddUtenforNorgeSiste12Mnd: YesOrNo.UNANSWERED,
@@ -112,7 +113,17 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                     <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                         legend={getMessage(intl, 'iNorgeNeste12Mnd.spørsmål')}
                                         name={UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd}
-                                        info={getMessage(intl, 'utenlandsopphold.neste12MånederInfotekst')}
+                                        description={
+                                            <UtvidetInformasjon
+                                                apneLabel={getMessage(
+                                                    intl,
+                                                    'utenlandsopphold.neste12MånederInfotekst.apneLabel'
+                                                )}
+                                                description={true}
+                                            >
+                                                {getMessage(intl, 'utenlandsopphold.neste12MånederInfotekst')}
+                                            </UtvidetInformasjon>
+                                        }
                                         labels={{
                                             no: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boINorge'),
                                             yes: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boIUtlandet'),
@@ -146,7 +157,17 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                     <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                         legend={getMessage(intl, 'boddINorgeSiste12Mnd.spørsmål')}
                                         name={UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd}
-                                        info={getMessage(intl, 'utenlandsopphold.siste12MånederInfotekst')}
+                                        description={
+                                            <UtvidetInformasjon
+                                                apneLabel={getMessage(
+                                                    intl,
+                                                    'utenlandsopphold.siste12MånederInfotekst.apneLabel'
+                                                )}
+                                                description={true}
+                                            >
+                                                {getMessage(intl, 'utenlandsopphold.siste12MånederInfotekst')}
+                                            </UtvidetInformasjon>
+                                        }
                                         labels={{
                                             no: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddINorge'),
                                             yes: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddIUtlandet'),

@@ -7,6 +7,7 @@ import EkspanderbartInnhold from './EkspanderbartInnhold';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
+import BEMHelper from 'common/util/bem';
 
 interface OwnProps {
     children: React.ReactNode;
@@ -14,6 +15,7 @@ interface OwnProps {
     apneLabel?: React.ReactNode;
     lukkLabel?: React.ReactNode;
     intl: IntlShape;
+    description?: boolean;
 }
 
 type Props = OwnProps;
@@ -33,16 +35,21 @@ class UtvidetInformasjon extends React.Component<Props, State> {
         };
     }
     render() {
-        const { lukkLabel = getMessage(this.props.intl, 'utvidetInformasjon.lukkTekst') } = this.props;
+        const {
+            lukkLabel = getMessage(this.props.intl, 'utvidetInformasjon.lukkTekst'),
+            description = false,
+        } = this.props;
+
+        const bem = description ? BEMHelper('utvidetInformasjonDescription') : BEMHelper('utvidetInformasjon');
 
         return (
-            <div className="utvidetInformasjon">
-                <div className="utvidetInformasjon__toggler no-print">
+            <div className={bem.block}>
+                <div className={`${bem.element('toggler')} no-print`}>
                     <InfoToggler onToggle={() => this.setState({ apen: !this.state.apen })} apen={this.state.apen}>
                         <Normaltekst tag="span">{this.state.apen ? lukkLabel : this.props.apneLabel}</Normaltekst>
                     </InfoToggler>
                 </div>
-                <div className="utvidetInformasjon__innhold" id={this.innholdId}>
+                <div className={bem.element('innhold')} id={this.innholdId}>
                     <EkspanderbartInnhold erApen={this.state.apen}>{this.props.children}</EkspanderbartInnhold>
 
                     <div className="print-only">{this.props.children}</div>
