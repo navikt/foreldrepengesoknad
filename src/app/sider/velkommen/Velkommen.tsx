@@ -68,10 +68,12 @@ class Velkommen extends React.Component<Props, State> {
     }
 
     getBekreftCheckboksPanelLabelHeader() {
+        const { intl } = this.props;
+
         return (
             <>
                 <FormattedMessage id="velkommen.samtykkeIntro.del1" />
-                <UtvidetInformasjon apneLabel="Les om dine plikter">
+                <UtvidetInformasjon apneLabel={getMessage(intl, 'velkommen.samtykkeIntro.del1.apneLabel')}>
                     <DinePlikter />
                 </UtvidetInformasjon>
                 <Block margin="xs">

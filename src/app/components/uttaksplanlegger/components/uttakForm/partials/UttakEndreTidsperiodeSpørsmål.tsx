@@ -2,19 +2,16 @@ import React from 'react';
 import moment from 'moment';
 import Modal from 'nav-frontend-modal';
 import { useIntl } from 'react-intl';
-import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { Tidsperiode, TidsperiodeString } from 'common/types';
 import { UttakFormPeriodeType } from '../UttakForm';
-import { isForeldrepengerFørFødselUttaksperiode, isUttaksperiode } from 'app/types/uttaksplan/periodetyper';
+import { isForeldrepengerFørFødselUttaksperiode } from 'app/types/uttaksplan/periodetyper';
 import { Tidsperioden, getTidsperiode } from 'app/util/uttaksplan/Tidsperioden';
-import { getDatoavgrensningerForStønadskonto } from 'app/util/uttaksplan/uttaksperiodeUtils';
 import { mapTidsperiodeStringToTidsperiode } from 'app/util/tidsperiodeUtils';
-import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
-import { dateRangeValidation } from 'app/util/dates/dates';
 import UkerDagerTeller from 'common/components/skjema/elements/uker-dager-teller/UkerDagerTeller';
 import { getUkerOgDagerFromDager } from 'common/util/datoUtils';
-import { commonFieldErrorRenderer } from 'app/validation/fieldValidations';
+import UtsettelseEndreTidsperiodeForm, { TidsperiodeFormValues } from '../../tidsperiodeForm/TidsperiodeForm';
 
 interface Props {
     periode: UttakFormPeriodeType;
@@ -26,15 +23,6 @@ interface Props {
     onBekreft: (tidsperiode: Partial<Tidsperiode>) => void;
     changeTidsperiode: (tidsperiode: Partial<Tidsperiode>) => void;
 }
-
-enum TidsperiodeFormFields {
-    fom = 'fom',
-    tom = 'tom',
-}
-
-type TidsperiodeFormValues = Partial<TidsperiodeString>;
-
-const Form = getTypedFormComponents<TidsperiodeFormFields, TidsperiodeFormValues>();
 
 const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     onBekreft,
@@ -79,66 +67,13 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     return (
         <>
             <Modal isOpen={visible} closeButton={true} onRequestClose={onAvbryt} contentLabel="Test">
-                <Form.FormikWrapper
-                    initialValues={{ fom: tidsperiode.fom, tom: tidsperiode.tom }}
-                    onSubmit={handleOnSubmit}
-                    enableReinitialize={true}
-                    renderForm={({ values }) => {
-                        const datoAvgrensninger = getDatoavgrensningerForStønadskonto(
-                            isUttaksperiode(periode) ? periode.konto : undefined,
-                            familiehendelsesdato,
-                            mapTidsperiodeStringToTidsperiode({ fom: values.fom, tom: values.tom }),
-                            ugyldigeTidsperioder
-                        );
-
-                        return (
-                            <Form.Form fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
-                                <Block>
-                                    <Form.DateIntervalPicker
-                                        legend="Tidsrom"
-                                        fromDatepickerProps={{
-                                            name: TidsperiodeFormFields.fom,
-                                            label: getMessage(intl, 'fraogmed'),
-                                            fullscreenOverlay: true,
-                                            minDate: datoAvgrensninger.fra.minDato,
-                                            maxDate: ISOStringToDate(values.tom) || datoAvgrensninger.fra.maksDato,
-                                            invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
-                                            disableWeekend: datoAvgrensninger.fra.helgedagerIkkeTillatt,
-                                            validate: (value) =>
-                                                dateRangeValidation.validateFromDateUttak(
-                                                    ISOStringToDate(value),
-                                                    datoAvgrensninger.fra.minDato!,
-                                                    datoAvgrensninger.fra.maksDato!,
-                                                    ISOStringToDate(values.tom)
-                                                ),
-                                            dayPickerProps: {
-                                                initialMonth,
-                                            },
-                                        }}
-                                        toDatepickerProps={{
-                                            name: TidsperiodeFormFields.tom,
-                                            label: getMessage(intl, 'tilogmed'),
-                                            fullscreenOverlay: true,
-                                            minDate: ISOStringToDate(values.fom) || datoAvgrensninger.til.minDato,
-                                            maxDate: datoAvgrensninger.til.maksDato,
-                                            invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
-                                            disableWeekend: datoAvgrensninger.til.helgedagerIkkeTillatt,
-                                            dayPickerProps: {
-                                                initialMonth: ISOStringToDate(values.fom),
-                                            },
-                                            validate: (value) =>
-                                                dateRangeValidation.validateToDateUttak(
-                                                    ISOStringToDate(value),
-                                                    datoAvgrensninger.til.minDato!,
-                                                    datoAvgrensninger.til.maksDato!,
-                                                    ISOStringToDate(values.fom)
-                                                ),
-                                        }}
-                                    />
-                                </Block>
-                            </Form.Form>
-                        );
-                    }}
+                <UtsettelseEndreTidsperiodeForm
+                    familiehendelsesdato={familiehendelsesdato}
+                    onBekreft={handleOnSubmit}
+                    periode={periode}
+                    tidsperiode={tidsperiode}
+                    ugyldigeTidsperioder={ugyldigeTidsperioder}
+                    initialMonth={initialMonth}
                 />
             </Modal>
             <UkerDagerTeller
