@@ -13,7 +13,11 @@ const DatoInput = (props: DatoInputWrapperProps) => {
         <ValiderbarDatoInput
             {...props}
             id={id}
-            label={<LabelWithUtvidetInformasjon info={props.infotekst}>{props.label}</LabelWithUtvidetInformasjon>}
+            label={
+                <LabelWithUtvidetInformasjon info={props.infotekst} apneLabel={props.apneLabel}>
+                    {props.label}
+                </LabelWithUtvidetInformasjon>
+            }
         />
     );
 };
