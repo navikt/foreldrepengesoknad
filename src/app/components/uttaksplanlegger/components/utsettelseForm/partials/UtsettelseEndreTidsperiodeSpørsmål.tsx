@@ -42,16 +42,16 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
             : undefined;
     const { uker, dager } = varighetIDager ? getUkerOgDagerFromDager(Math.abs(varighetIDager)) : { uker: 0, dager: 0 };
 
-    const getDagValue = (uker: number, dager: number): number => {
-        if (dager >= 5) {
+    const getDagValue = (antallUker: number, antallDager: number): number => {
+        if (antallDager >= 5) {
             return 0;
         }
 
-        if (uker === 0 && dager === 0) {
+        if (antallUker === 0 && antallDager === 0) {
             return 1;
         }
 
-        return dager;
+        return antallDager;
     };
 
     return (
