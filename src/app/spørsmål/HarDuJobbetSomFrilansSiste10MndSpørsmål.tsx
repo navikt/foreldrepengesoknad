@@ -34,7 +34,7 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
             valgtVerdi={harJobbetSomFrilansSiste10Mnd}
             onChange={(verdi) => onChange(verdi)}
             clsName="frilanseSiste10mnd"
-            hjelpetekstApneLabel="Les mer om hvem som kan være frilansere"
+            hjelpetekstApneLabel={getMessage(intl, 'harDuJobbetSomFrilansSiste10Mnd.spørsmål.apneLabel')}
             hjelpetekst={
                 <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
                     <Normaltekst>

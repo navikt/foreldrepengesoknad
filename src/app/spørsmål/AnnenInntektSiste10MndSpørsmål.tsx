@@ -26,7 +26,7 @@ class AnnenInntektSiste10MndSpørsmål extends React.Component<Props> {
                 }}
                 clsName="annenInntektSiste10mnd"
                 hjelpetekst={<AnnenInntektSiste10MndHjelpeTekst intl={intl} />}
-                hjelpetekstApneLabel="Les mer om hva som kan telle som annen inntekt"
+                hjelpetekstApneLabel={getMessage(intl, 'annenInntekt.spørsmål.apneLabel')}
                 onChange={(verdi) => onChange(verdi)}
             />
         );

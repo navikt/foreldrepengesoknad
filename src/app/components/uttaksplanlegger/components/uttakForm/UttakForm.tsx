@@ -64,6 +64,7 @@ import {
 } from '../../../../util/tidsperiodeUtils';
 import UttakEndreTidsperiodeSpørsmål from './partials/UttakEndreTidsperiodeSpørsmål';
 import TidsperiodeDisplay from '../tidsperiodeDisplay/TidsperiodeDisplay';
+import TidsperiodeForm from '../tidsperiodeForm/TidsperiodeForm';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -370,201 +371,215 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
             isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true;
 
         return (
-            <React.Fragment>
-                <Block visible={erForeldrepengerFørFødselOgSkalIkkeHaUttakFørTermin === false}>
-                    <TidsperiodeDisplay
-                        tidsperiode={periode.tidsperiode}
-                        toggleVisTidsperiode={this.toggleVisTidsperiode}
-                    />
-                    <UttakEndreTidsperiodeSpørsmål
+            <>
+                <Block visible={!isValidTidsperiode(periode.tidsperiode)}>
+                    <TidsperiodeForm
                         periode={periode}
                         familiehendelsesdato={familiehendelsesdato}
                         ugyldigeTidsperioder={ugyldigeTidsperioder}
                         onBekreft={(v) => {
                             this.onChange({ tidsperiode: v });
-                            this.toggleVisTidsperiode();
                         }}
-                        changeTidsperiode={(v) => this.onChange({ tidsperiode: v })}
                         tidsperiode={mapTidsperiodeToTidsperiodeString(tidsperiode)}
-                        onAvbryt={this.handleAvbrytTidsperiode}
-                        visible={this.state.tidsperiodeIsOpen}
+                        onCancel={onCancel}
                     />
                 </Block>
-                <Block
-                    visible={
-                        !isForeldrepengerFørFødselUttaksperiode(periode) &&
-                        !søker.harMidlertidigOmsorg &&
-                        søknadsinfo.søknaden.erDeltUttak &&
-                        isValidTidsperiode(tidsperiode)
-                    }
-                >
-                    <HvemSkalTaForeldrepengerSpørsmål
-                        navnPåForeldre={navnPåForeldre}
-                        valgtForelder={this.state.periodenGjelder}
-                        søkerErFarEllerMedmor={søker.erFarEllerMedmor}
-                        onChange={(forelder: Forelder) => this.updatePeriodenGjelder(forelder)}
-                    />
-                </Block>
-                <Block
-                    visible={
-                        visibility.isVisible(UttakSpørsmålKeys.kvote) &&
-                        this.state.periodenGjelder !== undefined &&
-                        velgbareStønadskontotyper.length > 1
-                    }
-                >
-                    {søknadsinfo.søknaden.erFlerbarnssøknad && (
-                        <VeilederInfo
-                            messages={[
-                                {
-                                    type: 'normal',
-                                    contentIntlKey: søknadsinfo.søknaden.erDeltUttak
-                                        ? 'uttaksplan.informasjon.flerbarnssøknad'
-                                        : 'uttaksplan.informasjon.flerbarnssøknad.ikkeDeltUttak',
-                                    values: {
-                                        navnMor: søknadsinfo.navn.mor.fornavn,
-                                        uker: getFlerbarnsuker(
-                                            søknadsinfo.søknaden.dekningsgrad!,
-                                            søknadsinfo.søknaden.antallBarn
-                                        ),
-                                    },
-                                },
-                            ]}
+                <Block visible={isValidTidsperiode(periode.tidsperiode)}>
+                    <Block visible={erForeldrepengerFørFødselOgSkalIkkeHaUttakFørTermin === false}>
+                        <TidsperiodeDisplay
+                            tidsperiode={periode.tidsperiode}
+                            toggleVisTidsperiode={this.toggleVisTidsperiode}
                         />
-                    )}
-                    <HvilkenKvoteSkalBenyttesSpørsmål
-                        onChange={(stønadskontoType) => this.updateStønadskontoType(stønadskontoType)}
-                        navnPåForeldre={navnPåForeldre}
-                        navnAnnenForelder={søknadsinfo.navn.annenForelder.fornavn}
-                        erOppholdsperiode={periode.type === Periodetype.Opphold}
-                        velgbareStønadskontoer={velgbareStønadskontotyper}
-                        valgtKvote={
-                            periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring
-                                ? periode.konto
-                                : getStønadskontoFromOppholdsårsak((periode as Oppholdsperiode).årsak)
-                        }
-                    />
-                    {søknadsinfo.annenForelder.harRett && <UlønnetPermisjonInfo />}
-                </Block>
-                {periode.type === Periodetype.Uttak && (
-                    <>
-                        {periode.konto === StønadskontoType.ForeldrepengerFørFødsel && (
-                            <ForeldrepengerFørFødselPart
-                                skalIkkeHaUttakFørTermin={
-                                    (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin || false
-                                }
-                                onChange={(skalIkkeHaUttakFørTermin) =>
-                                    this.updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin)
-                                }
-                            />
-                        )}
-                        <Block visible={visibility.isVisible(UttakSpørsmålKeys.ønskerFlerbarnsdager)}>
-                            <FlernbarnsdagerSpørsmål periode={periode} onChange={this.onChange} />
-                        </Block>
-                        <Block visible={visibility.isVisible(UttakSpørsmålKeys.erMorForSyk)}>
-                            <ErMorForSykSpørsmål
-                                onChange={(v) => this.onChange({ erMorForSyk: v })}
-                                erMorForSyk={periode.erMorForSyk}
-                            />
-                        </Block>
-                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) && periode.erMorForSyk === true && (
-                            <>
-                                <VeilederInfo
-                                    messages={[
-                                        {
-                                            type: 'normal',
-                                            contentIntlKey: 'uttaksplan.informasjonVedSykdomAnnenForelder',
-                                            values: { navn: navnPåForeldre.mor },
-                                        },
-                                    ]}
-                                />
-
-                                <Block>
-                                    <VedleggSpørsmål
-                                        attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-                                        skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
-                                        vedlegg={periode.vedlegg as Attachment[]}
-                                        onChange={(v) => this.onChange({ vedlegg: v })}
-                                    />
-                                </Block>
-                            </>
-                        )}
-                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) && periode.erMorForSyk === false && (
-                            <>
-                                <VeilederInfo
-                                    messages={[
-                                        {
-                                            type: 'normal',
-                                            contentIntlKey: 'uttaksplan.informasjon.morErForSykNeiSvar',
-                                        },
-                                    ]}
-                                />
-                            </>
-                        )}
-
-                        <Block visible={visibility.isVisible(UttakSpørsmålKeys.samtidigUttak)} margin="none">
-                            <SamtidigUttakPart
-                                onChange={this.onChange}
-                                ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
-                                visibility={visibility}
-                                navn={søknadsinfo.navn}
-                                erFlerbarnssøknad={søknadsinfo.søknaden.erFlerbarnssøknad}
-                                periode={periode}
-                                søkerErMor={søknadsinfo.søker.erMor}
-                            />
-                        </Block>
-                        <Block
-                            visible={visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)}
-                            hasChildBlocks={true}
-                        >
-                            <AktivitetskravMorBolk
-                                vedlegg={periode.vedlegg as Attachment[]}
-                                morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
-                                navnPåForeldre={søknadsinfo.navn}
-                                onChange={(periodeData) => this.onChange(periodeData)}
-                            />
-                        </Block>
-                        <Block visible={visibility.isVisible(UttakSpørsmålKeys.skalHaGradering)} margin="none">
-                            <GradertUttakPart
-                                visibility={visibility}
-                                periode={periode as Uttaksperiode}
-                                arbeidsforhold={arbeidsforhold}
-                                onChange={this.onChange}
-                                visAntallDagerUttak={periode.ønskerSamtidigUttak !== true}
-                            />
-                        </Block>
-                    </>
-                )}
-                {periode.type === Periodetype.Overføring && (
-                    <Block
-                        visible={visibility.isVisible(UttakSpørsmålKeys.overføringsårsak)}
-                        hasChildBlocks={true}
-                        margin="none"
-                    >
-                        <OverføringUttakPart
-                            erEndringssøknad={søknadsinfo.søknaden.erEndringssøknad}
-                            navnAnnenForelder={søknadsinfo.navn.annenForelder.fornavn}
-                            årsak={periode.årsak}
-                            søkerErFarEllerMedmor={søker.erFarEllerMedmor}
-                            vedlegg={periode.vedlegg as Attachment[]}
-                            onChange={(p) => this.onChange(p)}
+                        <UttakEndreTidsperiodeSpørsmål
+                            periode={periode}
+                            familiehendelsesdato={familiehendelsesdato}
+                            ugyldigeTidsperioder={ugyldigeTidsperioder}
+                            onBekreft={(v) => {
+                                this.onChange({ tidsperiode: v });
+                                this.toggleVisTidsperiode();
+                            }}
+                            changeTidsperiode={(v) => this.onChange({ tidsperiode: v })}
+                            tidsperiode={mapTidsperiodeToTidsperiodeString(tidsperiode)}
+                            onAvbryt={this.handleAvbrytTidsperiode}
+                            visible={this.state.tidsperiodeIsOpen}
                         />
                     </Block>
-                )}
-                {periode.type === Periodetype.Opphold && (
-                    <>
-                        {periode.årsak !== undefined && (
+                    <Block
+                        visible={
+                            !isForeldrepengerFørFødselUttaksperiode(periode) &&
+                            !søker.harMidlertidigOmsorg &&
+                            søknadsinfo.søknaden.erDeltUttak &&
+                            isValidTidsperiode(tidsperiode)
+                        }
+                    >
+                        <HvemSkalTaForeldrepengerSpørsmål
+                            navnPåForeldre={navnPåForeldre}
+                            valgtForelder={this.state.periodenGjelder}
+                            søkerErFarEllerMedmor={søker.erFarEllerMedmor}
+                            onChange={(forelder: Forelder) => this.updatePeriodenGjelder(forelder)}
+                        />
+                    </Block>
+                    <Block
+                        visible={
+                            visibility.isVisible(UttakSpørsmålKeys.kvote) &&
+                            this.state.periodenGjelder !== undefined &&
+                            velgbareStønadskontotyper.length > 1
+                        }
+                    >
+                        {søknadsinfo.søknaden.erFlerbarnssøknad && (
                             <VeilederInfo
-                                messages={getOppholdsInfotekst(
-                                    periode as Periode,
-                                    søknadsinfo.søknaden.familiehendelsesdato,
-                                    søknadsinfo.søker.erMor,
-                                    søknadsinfo.navn
-                                )}
+                                messages={[
+                                    {
+                                        type: 'normal',
+                                        contentIntlKey: søknadsinfo.søknaden.erDeltUttak
+                                            ? 'uttaksplan.informasjon.flerbarnssøknad'
+                                            : 'uttaksplan.informasjon.flerbarnssøknad.ikkeDeltUttak',
+                                        values: {
+                                            navnMor: søknadsinfo.navn.mor.fornavn,
+                                            uker: getFlerbarnsuker(
+                                                søknadsinfo.søknaden.dekningsgrad!,
+                                                søknadsinfo.søknaden.antallBarn
+                                            ),
+                                        },
+                                    },
+                                ]}
                             />
                         )}
-                    </>
-                )}
+                        <HvilkenKvoteSkalBenyttesSpørsmål
+                            onChange={(stønadskontoType) => this.updateStønadskontoType(stønadskontoType)}
+                            navnPåForeldre={navnPåForeldre}
+                            navnAnnenForelder={søknadsinfo.navn.annenForelder.fornavn}
+                            erOppholdsperiode={periode.type === Periodetype.Opphold}
+                            velgbareStønadskontoer={velgbareStønadskontotyper}
+                            valgtKvote={
+                                periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring
+                                    ? periode.konto
+                                    : getStønadskontoFromOppholdsårsak((periode as Oppholdsperiode).årsak)
+                            }
+                        />
+                        {søknadsinfo.annenForelder.harRett && <UlønnetPermisjonInfo />}
+                    </Block>
+                    {periode.type === Periodetype.Uttak && (
+                        <>
+                            {periode.konto === StønadskontoType.ForeldrepengerFørFødsel && (
+                                <ForeldrepengerFørFødselPart
+                                    skalIkkeHaUttakFørTermin={
+                                        (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin ||
+                                        false
+                                    }
+                                    onChange={(skalIkkeHaUttakFørTermin) =>
+                                        this.updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin)
+                                    }
+                                />
+                            )}
+                            <Block visible={visibility.isVisible(UttakSpørsmålKeys.ønskerFlerbarnsdager)}>
+                                <FlernbarnsdagerSpørsmål periode={periode} onChange={this.onChange} />
+                            </Block>
+                            <Block visible={visibility.isVisible(UttakSpørsmålKeys.erMorForSyk)}>
+                                <ErMorForSykSpørsmål
+                                    onChange={(v) => this.onChange({ erMorForSyk: v })}
+                                    erMorForSyk={periode.erMorForSyk}
+                                />
+                            </Block>
+                            {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) && periode.erMorForSyk === true && (
+                                <>
+                                    <VeilederInfo
+                                        messages={[
+                                            {
+                                                type: 'normal',
+                                                contentIntlKey: 'uttaksplan.informasjonVedSykdomAnnenForelder',
+                                                values: { navn: navnPåForeldre.mor },
+                                            },
+                                        ]}
+                                    />
 
+                                    <Block>
+                                        <VedleggSpørsmål
+                                            attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+                                            skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
+                                            vedlegg={periode.vedlegg as Attachment[]}
+                                            onChange={(v) => this.onChange({ vedlegg: v })}
+                                        />
+                                    </Block>
+                                </>
+                            )}
+                            {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) && periode.erMorForSyk === false && (
+                                <>
+                                    <VeilederInfo
+                                        messages={[
+                                            {
+                                                type: 'normal',
+                                                contentIntlKey: 'uttaksplan.informasjon.morErForSykNeiSvar',
+                                            },
+                                        ]}
+                                    />
+                                </>
+                            )}
+
+                            <Block visible={visibility.isVisible(UttakSpørsmålKeys.samtidigUttak)} margin="none">
+                                <SamtidigUttakPart
+                                    onChange={this.onChange}
+                                    ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
+                                    visibility={visibility}
+                                    navn={søknadsinfo.navn}
+                                    erFlerbarnssøknad={søknadsinfo.søknaden.erFlerbarnssøknad}
+                                    periode={periode}
+                                    søkerErMor={søknadsinfo.søker.erMor}
+                                />
+                            </Block>
+                            <Block
+                                visible={visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)}
+                                hasChildBlocks={true}
+                            >
+                                <AktivitetskravMorBolk
+                                    vedlegg={periode.vedlegg as Attachment[]}
+                                    morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
+                                    navnPåForeldre={søknadsinfo.navn}
+                                    onChange={(periodeData) => this.onChange(periodeData)}
+                                />
+                            </Block>
+                            <Block visible={visibility.isVisible(UttakSpørsmålKeys.skalHaGradering)} margin="none">
+                                <GradertUttakPart
+                                    visibility={visibility}
+                                    periode={periode as Uttaksperiode}
+                                    arbeidsforhold={arbeidsforhold}
+                                    onChange={this.onChange}
+                                    visAntallDagerUttak={periode.ønskerSamtidigUttak !== true}
+                                />
+                            </Block>
+                        </>
+                    )}
+                    {periode.type === Periodetype.Overføring && (
+                        <Block
+                            visible={visibility.isVisible(UttakSpørsmålKeys.overføringsårsak)}
+                            hasChildBlocks={true}
+                            margin="none"
+                        >
+                            <OverføringUttakPart
+                                erEndringssøknad={søknadsinfo.søknaden.erEndringssøknad}
+                                navnAnnenForelder={søknadsinfo.navn.annenForelder.fornavn}
+                                årsak={periode.årsak}
+                                søkerErFarEllerMedmor={søker.erFarEllerMedmor}
+                                vedlegg={periode.vedlegg as Attachment[]}
+                                onChange={(p) => this.onChange(p)}
+                            />
+                        </Block>
+                    )}
+                    {periode.type === Periodetype.Opphold && (
+                        <>
+                            {periode.årsak !== undefined && (
+                                <VeilederInfo
+                                    messages={getOppholdsInfotekst(
+                                        periode as Periode,
+                                        søknadsinfo.søknaden.familiehendelsesdato,
+                                        søknadsinfo.søker.erMor,
+                                        søknadsinfo.navn
+                                    )}
+                                />
+                            )}
+                        </>
+                    )}
+                </Block>
                 {periode.id === undefined && (
                     <NyPeriodeKnapperad
                         periodeKanLeggesTil={
@@ -576,7 +591,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                         ariaLabelLeggTil={getMessage(intl, 'uttaksplan.nyperiode.leggTilAriaLabel')}
                     />
                 )}
-            </React.Fragment>
+            </>
         );
     }
 }

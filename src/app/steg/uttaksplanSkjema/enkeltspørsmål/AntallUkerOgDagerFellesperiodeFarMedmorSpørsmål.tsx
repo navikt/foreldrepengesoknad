@@ -44,6 +44,7 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: React.FunctionComponent
                         <Block margin="xxs">
                             <LabelWithUtvidetInformasjon
                                 info={getMessage(intl, getMessage(intl, 'spørsmål.farFellesperiode.infoboksTekst'))}
+                                apneLabel={getMessage(intl, 'spørsmål.farFellesperiode.infoboksTekst.apneLabel')}
                             >
                                 {getMessage(intl, 'spørsmål.farFellesperiode.label')}
                             </LabelWithUtvidetInformasjon>

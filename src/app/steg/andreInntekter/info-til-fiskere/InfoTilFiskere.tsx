@@ -1,13 +1,16 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import Block from 'common/components/block/Block';
 import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 import lenker from 'app/util/routing/lenker';
+import getMessage from 'common/util/i18nUtils';
 
 const InfoTilFiskere = () => {
+    const intl = useIntl();
+
     return (
-        <UtvidetInformasjon apneLabel="Er du fisker? Les hvordan du skal fylle ut søknaden">
+        <UtvidetInformasjon apneLabel={getMessage(intl, 'andreInntekter.infoTilFiskere.apneLabel')}>
             <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
                 <Block margin="xs">
                     <Normaltekst>

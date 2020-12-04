@@ -44,6 +44,7 @@ import Lenke from 'nav-frontend-lenker';
 import { Periodene } from 'app/util/uttaksplan/Periodene';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import routeConfig from 'app/util/routing/routeConfig';
+import LabelWithUtvidetInformasjon from 'common/components/labelWithUtvidetInformasjon/LabelWithUtvidetInformasjon';
 
 interface StateProps {
     stegProps: StegProps;
@@ -116,14 +117,13 @@ class AndreInntekterSteg extends React.Component<Props> {
                 >
                     <YtelseInfoWrapper ytelser={[]} />
                 </Block>
-                <Block
-                    header={{
-                        title: getMessage(intl, 'annenInntekt.arbeidsforhold.label'),
-                        info: getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst'),
-                        tag: 'h2',
-                    }}
-                    margin="xs"
-                >
+                <Block margin="xs">
+                    <LabelWithUtvidetInformasjon
+                        info={getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst')}
+                        apneLabel={getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst.apneLabel')}
+                    >
+                        {getMessage(intl, 'annenInntekt.arbeidsforhold.label')}
+                    </LabelWithUtvidetInformasjon>
                     <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} />
                     {harArbeidsforhold && kunEgetUttak.length > 0 && (
                         <VeilederInfo

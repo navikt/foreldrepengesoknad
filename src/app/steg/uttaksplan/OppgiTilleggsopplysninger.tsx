@@ -32,7 +32,7 @@ const getLabel = (intl: IntlShape) => {
     return (
         <>
             <Element>{getMessage(intl, 'uttaksplan.tilleggsopplysninger.label')}</Element>
-            <UtvidetInformasjon apneLabel="Les mer om hva vi ønsker at du skal gi en forklaring om">
+            <UtvidetInformasjon apneLabel={getMessage(intl, 'uttaksplan.tilleggsopplysninger.apneLabel')}>
                 <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
                     <Block margin="s">
                         <Element>

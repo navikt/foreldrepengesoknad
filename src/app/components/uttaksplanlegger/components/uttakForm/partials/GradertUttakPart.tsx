@@ -61,7 +61,7 @@ class GradertUttakForm extends React.Component<Props> {
                         onChange={(ønskerGradering) =>
                             onChange({ gradert: ønskerGradering, erArbeidstaker: ønskerGradering ? false : undefined })
                         }
-                        hjelpetekstApneLabel="Les mer om å kombinere foreldrepenger med delvis arbeid"
+                        hjelpetekstApneLabel={getMessage(intl, 'uttaksperiode.gradert.skalDuHarGradering.apneLabel')}
                         hjelpetekst={
                             <Normaltekst>
                                 <FormattedMessage
@@ -116,7 +116,7 @@ class GradertUttakForm extends React.Component<Props> {
                                 this.handleStillingsprosentChange(e.target.value)
                             }
                             infotekst={getMessage(intl, 'uttaksperiode.gradert.stillingsprosentInfo')}
-                            apneLabel="Les mer om stillingsprosent"
+                            apneLabel={getMessage(intl, 'uttaksperiode.gradert.stillingsprosentInfo.apneLabel')}
                             value={periode.stillingsprosent || ''}
                             maxLength={4}
                             validators={getStillingsprosentRegler(false, periode.stillingsprosent || '', intl)}
