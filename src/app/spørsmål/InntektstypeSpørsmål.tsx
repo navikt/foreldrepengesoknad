@@ -4,6 +4,7 @@ import { injectIntl, IntlShape } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import FlervalgSpørsmål from '../../common/components/skjema/elements/flervalg-spørsmål/FlervalgSpørsmål';
 import { RadioProps } from 'nav-frontend-skjema';
+import { hasValueRule } from 'app/util/validation/common';
 
 interface InntektstypeSpørsmålProps {
     inntektstype?: AnnenInntektType;
@@ -60,6 +61,9 @@ class InntektstypeSpørsmål extends React.Component<Props> {
                 toKolonner={true}
                 spørsmål={getMessage(intl, 'annenInntekt.modal.velgInntektstype')}
                 onChange={onChange}
+                validators={[
+                    hasValueRule(inntektstype, getMessage(intl, 'annenInntekt.modal.velgInntektstype.påkrevd')),
+                ]}
             />
         );
     }

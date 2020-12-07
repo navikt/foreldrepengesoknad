@@ -100,7 +100,10 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                         }
                         name="oppdragsgiverNavn"
                         validators={[
-                            hasValueRule(oppdrag.navnPåArbeidsgiver, getMessage(intl, 'påkrevd')),
+                            hasValueRule(
+                                oppdrag.navnPåArbeidsgiver,
+                                getMessage(intl, 'frilansOppdrag.modal.oppdragsgiver.påkrevd')
+                            ),
                             ...getFritekstfeltRules({ maxLength: 100 }, intl, oppdrag.navnPåArbeidsgiver),
                         ]}
                     />

@@ -140,7 +140,10 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         }}
                         visBareEuOgEftaLand={true}
                         validators={[
-                            hasValueRule(annenInntekt && (annenInntekt as JobbIUtlandetInntekt).land, 'påkrevd'),
+                            hasValueRule(
+                                annenInntekt && (annenInntekt as JobbIUtlandetInntekt).land,
+                                getMessage(intl, 'annenInntekt.modal.land.påkrevd')
+                            ),
                         ]}
                     />
                 </Block>
@@ -159,7 +162,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         validators={[
                             hasValueRule(
                                 annenInntekt && (annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn,
-                                'påkrevd'
+                                getMessage(intl, 'annenInntekt.modal.arbeidsgiverNavn.påkrevd')
                             ),
                         ]}
                     />
