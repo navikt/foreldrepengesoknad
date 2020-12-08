@@ -152,6 +152,8 @@ const Scenario3: React.FunctionComponent<ScenarioProps> = ({
     tilgjengeligeDager,
     erFarEllerMedmor,
     erDeltUttak,
+    ekstraDagerGrunnetPrematurFødsel,
+    visInfoOmPrematuruker,
 }) => {
     const harSvartPåStartdato =
         søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon !== undefined ||
@@ -167,6 +169,21 @@ const Scenario3: React.FunctionComponent<ScenarioProps> = ({
                     erDeltUttak={erDeltUttak}
                 />
             )}
+            <Block visible={visInfoOmPrematuruker === true}>
+                <VeilederInfo
+                    messages={[
+                        {
+                            type: 'normal',
+                            contentIntlKey: 'uttaksplan.informasjon.prematuruker',
+                            values: {
+                                antallprematuruker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
+                                antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
+                            },
+                        },
+                    ]}
+                />
+            </Block>
+
             <StartdatoPermisjonMorBolk
                 visible={søknad.dekningsgrad !== undefined}
                 familiehendelsesdato={familiehendelsesdato}
