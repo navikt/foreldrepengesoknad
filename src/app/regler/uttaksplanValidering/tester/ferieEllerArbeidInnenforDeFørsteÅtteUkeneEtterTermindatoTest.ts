@@ -1,8 +1,6 @@
 import { UttaksplanRegelgrunnlag } from '../types';
 import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
-
 import { getUgyldigUttak } from '../../../util/validation/uttaksplan/uttakMorValidation';
-//import { getAdvarselPåUttakMellomSyvOgÅtteUkerForMor } from '../../../util/validation/uttaksplan/uttakMorValidation';
 import { UtsettelseÅrsakType } from 'app/types/uttaksplan/periodetyper';
 
 export const ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest: RegelTest = (

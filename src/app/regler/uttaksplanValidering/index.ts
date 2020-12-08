@@ -197,7 +197,6 @@ const uttaksplanValideringRegler: Regel[] = [
         key: UttaksplanRegelKey.ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato,
         alvorlighet: RegelAlvorlighet.ADVARSEL,
         test: ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest,
-        //slåsSammenVedOppsummering: true,
     },
     // {
     //     key: UttaksplanRegelKey.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold,
