@@ -176,7 +176,7 @@
         "react-document-title": "^2.0.3",
         "react-dom": "^16.13.1",
         "react-flip-move": "^3.0.4",
-        "react-intl": "^4.7.6",
+        "react-intl": "^5.10.6",
         "react-modal": "^3.11.2",
         "react-motion": "^0.5.2",
         "react-redux": "^7.2.1",
