@@ -103,6 +103,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                 fromDatepickerProps={{
                                     name: TidsperiodeFormFields.fom,
                                     label: getMessage(intl, 'fraogmed'),
+                                    placeholder: 'dd.mm.åååå',
                                     fullscreenOverlay: true,
                                     minDate: datoAvgrensninger.fra.minDato,
                                     invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
@@ -122,6 +123,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                 toDatepickerProps={{
                                     name: TidsperiodeFormFields.tom,
                                     label: getMessage(intl, 'tilogmed'),
+                                    placeholder: 'dd.mm.åååå',
                                     fullscreenOverlay: true,
                                     minDate: ISOStringToDate(values.fom) || datoAvgrensninger.til.minDato,
                                     maxDate: datoAvgrensninger.til.maksDato,
