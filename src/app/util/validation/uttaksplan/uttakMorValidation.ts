@@ -1,4 +1,10 @@
-import { Periode, UtsettelseÅrsakType, StønadskontoType, Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    UtsettelseÅrsakType,
+    StønadskontoType,
+    Uttaksperiode,
+    Utsettelsesperiode,
+} from '../../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../uttaksplan/Periodene';
 import { isValidTidsperiode, Tidsperioden } from '../../uttaksplan/Tidsperioden';
 import { Forelder } from 'common/types';
@@ -16,51 +22,78 @@ export const harMorSøktUgyldigUttakFørsteSeksUker = (
     situasjon: Søkersituasjon,
     flerbarnsFødsel?: boolean
 ): boolean => {
-    return getUgyldigUttakFørsteSeksUkerForMor(perioder, familiehendelsesdato, situasjon, flerbarnsFødsel).length > 0;
+    return (
+        getUgyldigUttak(perioder, familiehendelsesdato, situasjon, flerbarnsFødsel, 'førsteSeksUkerForMor').length > 0
+    );
 };
 
-export const getUgyldigUttakFørsteSeksUkerForMor = (
+export const getUgyldigUttak = (
     perioder: Periode[],
     familiehendelsesdato: Date,
     situasjon: Søkersituasjon,
-    flerbarnsFødsel?: boolean
+    flerbarnsFødsel?: boolean,
+    value?: string
 ): Periode[] => {
     if (situasjon === Søkersituasjon.ADOPSJON) {
         return [];
     }
+
     const førsteUttaksdag = uttaksdatoer(familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
     const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
+    const førsteUttaksdagEtterÅtteUker = Uttaksdagen(førsteUttaksdag).leggTil(40);
 
-    const perioderInnenforSeksFørsteUker = Periodene(perioder)
-        .getPerioderEtterFamiliehendelsesdato(familiehendelsesdato)
-        .filter((p) => periodeErFørDato(p, førsteUttaksdagEtterSeksUker));
+    let ugyldigUttakRegelFørsteDato: Date;
+    let ugyldigUttakRegelSisteDato: Date;
 
-    const ugyldigeUtsettelser = Periodene(perioderInnenforSeksFørsteUker)
-        .getUtsettelser()
-        .filter(
-            (p) =>
-                p.forelder === Forelder.mor &&
-                p.årsak !== UtsettelseÅrsakType.InstitusjonSøker &&
-                p.årsak !== UtsettelseÅrsakType.InstitusjonBarnet &&
-                p.årsak !== UtsettelseÅrsakType.Sykdom
-        );
+    if (value === 'førsteSeksUkerForMor') {
+        ugyldigUttakRegelFørsteDato = førsteUttaksdag;
+        ugyldigUttakRegelSisteDato = førsteUttaksdagEtterSeksUker;
+    } else if (value === 'mellomSyvOgÅtteUkerForMor') {
+        ugyldigUttakRegelFørsteDato! = førsteUttaksdagEtterSeksUker;
+        ugyldigUttakRegelSisteDato! = førsteUttaksdagEtterÅtteUker;
+    }
 
-    const gradertePerioder = Periodene(perioderInnenforSeksFørsteUker)
+    const ugyldigPeriode = Periodene(perioder)
+        .getPerioderEtterFamiliehendelsesdato(ugyldigUttakRegelFørsteDato!)
+        .filter((p) => periodeErFørDato(p, ugyldigUttakRegelSisteDato));
+
+    let ugyldigeUtsettelser: Utsettelsesperiode[] = [];
+
+    if (value === 'mellomSyvOgÅtteUkerForMor') {
+        ugyldigeUtsettelser = Periodene(ugyldigPeriode)
+            .getUtsettelser()
+            .filter(
+                (p) =>
+                    p.forelder === Forelder.mor &&
+                    (p.årsak === UtsettelseÅrsakType.Ferie || p.årsak === UtsettelseÅrsakType.Arbeid)
+            );
+    } else if (value === 'førsteSeksUkerForMor') {
+        ugyldigeUtsettelser = Periodene(ugyldigPeriode)
+            .getUtsettelser()
+            .filter(
+                (p) =>
+                    p.forelder === Forelder.mor &&
+                    p.årsak !== UtsettelseÅrsakType.InstitusjonSøker &&
+                    p.årsak !== UtsettelseÅrsakType.InstitusjonBarnet &&
+                    p.årsak !== UtsettelseÅrsakType.Sykdom
+            );
+    }
+    const gradertePerioder = Periodene(ugyldigPeriode)
         .getUttak()
         .filter((p) => p.forelder === Forelder.mor && p.gradert === true);
 
-    const flernbarnsPerioder = Periodene(perioderInnenforSeksFørsteUker)
+    const flernbarnsPerioder = Periodene(ugyldigPeriode)
         .getUttak()
         .filter((p) => p.forelder === Forelder.mor && p.ønskerFlerbarnsdager === true);
 
-    const fellesPerioder = Periodene(perioderInnenforSeksFørsteUker)
+    const fellesPerioder = Periodene(ugyldigPeriode)
         .getUttak()
         .filter((p) => p.forelder === Forelder.mor && p.konto === StønadskontoType.Fellesperiode);
 
     let samtidigUttaksperioder: Uttaksperiode[] = [];
 
     if (!flerbarnsFødsel && flerbarnsFødsel !== undefined) {
-        samtidigUttaksperioder = Periodene(perioderInnenforSeksFørsteUker)
+        samtidigUttaksperioder = Periodene(ugyldigPeriode)
             .getUttak()
             .filter((p) => p.forelder === Forelder.mor && p.ønskerSamtidigUttak);
     }

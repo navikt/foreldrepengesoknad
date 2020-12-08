@@ -763,6 +763,7 @@
     "uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode": "Du har lagt inn <strong>{periode}</strong> i perioden {tidsperiode}. {forelder} har foreldrepengar eller utsettelse i same periode. <strong>{periode}</strong> vil erstatte {forelders} foreldrepengar eller utsettelse i denne perioden.",
     "uttaksplan.validering.advarsel.forTidligUtenDokumentasjon": "Det er mer enn 4 uker til du starter foreldrepengene dine. Du må laste opp dokumentasjon for å sende inn søknaden.",
     "uttaksplan.validering.advarsel.forTidligUtenDokumentasjon.tittel": "Manglende vedlegg",
+    "uttaksplan.validering.advarsel.ferieEllerArbeidInnenforDeFørsteÅtte8UkeneEtterTermindato": "Foreldrepenger kan ikkje utsetjast innanfor dei første 6 vekene etter fødsel. Dersom du føder etter termindato blir dei 6 første vekene forskove, og dette kan få innverknad på utsetjinga di. Dersom utsetjinga di ligg innanfor dei første 6 vekene etter forskyvningen blir dissa dagane avslått, og foreldrepenger utbetalt",
     "uttaksplan.validering.etterSistePermisjonsdag": "Du kan ikkje få foreldrepengar etter at barnet er fylt 3 år.",
     "uttaksplan.validering.feil.harSøktOmFerieUtenArbeidsforhold": "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold i valgt tidsperiode.",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må vere ein vekedag.",
