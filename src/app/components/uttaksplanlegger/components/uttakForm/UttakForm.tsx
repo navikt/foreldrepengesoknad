@@ -59,6 +59,7 @@ import { AttachmentType } from 'app/components/storage/attachment/types/Attachme
 import { Skjemanummer } from 'app/types/søknad/Søknad';
 import { ValidFormContext, ValidFormContextInterface } from 'common/lib/validation/elements/ValiderbarForm';
 import {
+    mapTidsperiodeStringToTidsperiode,
     // mapTidsperiodeStringToTidsperiode,
     mapTidsperiodeToTidsperiodeString,
 } from '../../../../util/tidsperiodeUtils';
@@ -378,7 +379,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                         familiehendelsesdato={familiehendelsesdato}
                         ugyldigeTidsperioder={ugyldigeTidsperioder}
                         onBekreft={(v) => {
-                            this.onChange({ tidsperiode: v });
+                            this.onChange({ tidsperiode: mapTidsperiodeStringToTidsperiode(v) });
                         }}
                         tidsperiode={mapTidsperiodeToTidsperiodeString(tidsperiode)}
                         onCancel={onCancel}
