@@ -104,7 +104,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                         if (date) {
                             changeTidsperiode({
                                 fom: date,
-                                tom: getTidsperiode(date, uker * 5 + nyDager).tom,
+                                tom: getTidsperiode(date, uker * 5 + getDagValue(uker, nyDager)).tom,
                             });
                         }
                     },
