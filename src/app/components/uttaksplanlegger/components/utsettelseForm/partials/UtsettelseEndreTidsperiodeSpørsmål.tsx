@@ -92,7 +92,7 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                         if (date) {
                             changeTidsperiode({
                                 fom: dateToISOString(date),
-                                tom: dateToISOString(getTidsperiode(date, uker * 5 + nyDager).tom),
+                                tom: dateToISOString(getTidsperiode(date, uker * 5 + getDagValue(uker, nyDager)).tom),
                             });
                         }
                     },
