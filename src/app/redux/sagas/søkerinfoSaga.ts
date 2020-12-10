@@ -39,7 +39,7 @@ function* getSøkerinfo(action: GetSøkerinfo) {
     } catch (error) {
         if (error.response && error.response.status === 401) {
             redirectToLogin();
-        } else if (error.response && error.response.status === 401) {
+        } else if (error.response && error.response.status === 403) {
             yield put(apiActions.updateApi({ isLoadingInitialAppData: false, påloggingsNivåLavereEnn4: true }));
         } else {
             if (søkerinfoLastetCounter <= 1) {
