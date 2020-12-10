@@ -27,7 +27,6 @@ interface StateProps {
     isSendSøknadInProgress: boolean;
     søknadHasBeenReceived: boolean;
     systemerIkkeTilgjengelig: boolean;
-    påloggingsNivåLavereEnn4: boolean;
 }
 
 type Props = StateProps & DispatchProps & RouteComponentProps<any>;
@@ -92,7 +91,6 @@ class Foreldrepengesøknad extends React.Component<Props> {
             isLoadingSaker,
             søknadHasBeenReceived,
             systemerIkkeTilgjengelig,
-            påloggingsNivåLavereEnn4,
         } = this.props;
 
         if (isLoadingInitialAppData || isSendSøknadInProgress || isLoadingSaker) {
@@ -101,8 +99,6 @@ class Foreldrepengesøknad extends React.Component<Props> {
             return <Route component={() => <IkkeMyndig søkerinfo={søkerinfo} />} />;
         } else if (søknadHasBeenReceived) {
             return <Route component={SøknadSendtSide} />;
-        } else if (påloggingsNivåLavereEnn4) {
-            return <div>Du må logge på med høyere påloggingsnivå</div>;
         } else if (systemerIkkeTilgjengelig) {
             return <IkkeTilgjengelig />;
         }
@@ -128,7 +124,6 @@ const mapStateToProps = (state: AppState): StateProps => ({
     isSendSøknadInProgress: state.api.søknadSendingInProgress,
     søknadHasBeenReceived: state.api.søknadHasBeenReceived,
     systemerIkkeTilgjengelig: state.api.systemerIkkeTilgjengelig,
-    påloggingsNivåLavereEnn4: state.api.påloggingsNivåLavereEnn4,
 });
 
 export default withRouter(connect<StateProps, any, any>(mapStateToProps)(Foreldrepengesøknad));
