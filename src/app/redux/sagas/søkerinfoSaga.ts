@@ -37,10 +37,8 @@ function* getSøkerinfo(action: GetSøkerinfo) {
             yield put(apiActions.deleteStoredAppState());
         }
     } catch (error) {
-        if (error.response && error.response.status === 401) {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
             redirectToLogin();
-        } else if (error.response && error.response.status === 403) {
-            yield put(apiActions.updateApi({ isLoadingInitialAppData: false, påloggingsNivåLavereEnn4: true }));
         } else {
             if (søkerinfoLastetCounter <= 1) {
                 yield put(apiActions.getSøkerinfo(action.history));
