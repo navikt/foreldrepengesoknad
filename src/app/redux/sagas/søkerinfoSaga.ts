@@ -39,6 +39,8 @@ function* getSøkerinfo(action: GetSøkerinfo) {
     } catch (error) {
         if (error.response && error.response.status === 401) {
             redirectToLogin();
+        } else if (error.response && error.response.status === 401) {
+            yield put(apiActions.updateApi({ isLoadingInitialAppData: false, påloggingsNivåLavereEnn4: true }));
         } else {
             if (søkerinfoLastetCounter <= 1) {
                 yield put(apiActions.getSøkerinfo(action.history));
