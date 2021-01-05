@@ -89,10 +89,14 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                     max: 5,
                     onChange: (nyDager: number) => {
                         const date = ISOStringToDate(tidsperiode.fom);
+                        const ekstraUke = nyDager === 5 ? 1 : 0;
+
                         if (date) {
                             changeTidsperiode({
                                 fom: dateToISOString(date),
-                                tom: dateToISOString(getTidsperiode(date, uker * 5 + getDagValue(uker, nyDager)).tom),
+                                tom: dateToISOString(
+                                    getTidsperiode(date, (uker + ekstraUke) * 5 + getDagValue(uker, nyDager)).tom
+                                ),
                             });
                         }
                     },
