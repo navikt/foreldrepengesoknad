@@ -142,6 +142,15 @@ class ManglendeVedleggsteg extends React.Component<Props> {
                                                   }
                                                 : undefined
                                         ),
+                                        apneLabel: getMessage(
+                                            intl,
+                                            `manglendeVedlegg.apneLabel.${a.type}`,
+                                            a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                                                ? {
+                                                      navn: søknad.annenForelder.fornavn,
+                                                  }
+                                                : undefined
+                                        ),
                                     }}
                                 >
                                     {isAttachmentForPeriode(a.type) && this.renderPeriodeinfo(key)}

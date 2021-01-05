@@ -189,7 +189,7 @@ class OppsummeringSteg extends React.Component<Props> {
                         />
                         {uttaksplanValidering.erGyldig && missingAttachments.length > 0 && (
                             <Veilederpanel svg={<Veileder farge="lilla" ansikt="skeptisk" stil="kompakt" />}>
-                                <FormattedMessage id="oppsummering.veileder.manglendeVedlegg " />
+                                <FormattedMessage id="oppsummering.veileder.manglendeVedlegg" />
                             </Veilederpanel>
                         )}
                         {skalSpørreOmAnnenForelderErInformert && (
