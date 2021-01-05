@@ -48,7 +48,7 @@ const erGradering = (periode: Periode) => periode.type === Periodetype.Uttak && 
 const erUttakGrunnetSykdom = (periode: Periode) => {
     if (
         isOverføringsperiode(periode) &&
-        (periode.årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder ||
+        (periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
             periode.årsak === OverføringÅrsakType.sykdomAnnenForelder)
     ) {
         return true;

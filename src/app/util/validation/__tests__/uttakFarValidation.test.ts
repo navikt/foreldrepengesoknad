@@ -50,9 +50,9 @@ const omAnnenForelder: Partial<OmAnnenForelder> = {
 };
 
 describe('Validering av fars uttak første 6 uker', () => {
-    it('skal godta overføring på grunn av insititusjonsoppholdAnnenForelder', () => {
+    it('skal godta overføring på grunn av institusjonsoppholdAnnenForelder', () => {
         const result = harFarMedmorSøktUgyldigUttakFørsteSeksUker(
-            [{ ...overføring, årsak: OverføringÅrsakType.insititusjonsoppholdAnnenForelder }],
+            [{ ...overføring, årsak: OverføringÅrsakType.institusjonsoppholdAnnenForelder }],
             familiehendelsesdato,
             1,
             Søkersituasjon.FØDSEL,

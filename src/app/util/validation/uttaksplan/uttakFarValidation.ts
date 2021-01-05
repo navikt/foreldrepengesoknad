@@ -105,7 +105,7 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
         .getOverføringer()
         .filter(
             (p) =>
-                p.årsak !== OverføringÅrsakType.insititusjonsoppholdAnnenForelder &&
+                p.årsak !== OverføringÅrsakType.institusjonsoppholdAnnenForelder &&
                 p.årsak !== OverføringÅrsakType.sykdomAnnenForelder
         );
 

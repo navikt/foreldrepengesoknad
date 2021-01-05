@@ -12,7 +12,7 @@ export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakT
     årsak === UtsettelseÅrsakType.Sykdom ||
     årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
     årsak === UtsettelseÅrsakType.InstitusjonSøker ||
-    årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder ||
+    årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
     årsak === OverføringÅrsakType.sykdomAnnenForelder;
 
 export const dokumentasjonBehøvesForUtsettelsesperiode = (

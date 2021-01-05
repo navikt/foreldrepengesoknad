@@ -744,7 +744,7 @@
     "uttaksplan.nyttopphold.leggTilAriaLabel": "Ok, legg til ny utsetjing",
     "uttaksplan.periodenGjelder": "Kven skal ha foreldrepengar?",
     "uttaksplan.overføring.vedlegg.info": "Du må leggje ved stadfesting på datoen då du blei åleine om omsorga for barnet.",
-    "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder": "Du må leggje ved stadfesting på innlegginga frå sjukehuset eller helseinstitusjonen, som også viser perioden det gjeld.",
+    "uttaksplan.overføring.vedlegg.info.institusjonsoppholdAnnenForelder": "Du må leggje ved stadfesting på innlegginga frå sjukehuset eller helseinstitusjonen, som også viser perioden det gjeld.",
     "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder": "Du må leggje ved stadfesting som {navnAnnenForelder} får frå sin lege. Den må gjere greie for korleis sjukdommen eller skaden gjer {navnAnnenForelder} heilt avhengig av hjelp til å ta seg av barnet, og kor lenge det kjem til å vare. Det er ikkje nok med vanleg sjukmelding.",
     "uttaksplan.overføring.årsak.spørsmål": "Kvifor skal du overta kvoten til {annenForelderNavn}?",
     "uttaksplan.skjema.flerbarnsInformasjon": "De har {uker} veker med fleirbarnsveker som de kan dele. Disse vekene kan de ta ut når som helt i foreldrepengeperioden. De kan ta de ut samtidig, eller kvar for dere. Det er ikkje krav til kva {navnMor} gjer når {navnFar} tek ut dager med flerbarnsveker.",

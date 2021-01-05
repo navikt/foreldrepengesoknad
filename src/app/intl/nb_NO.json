@@ -743,7 +743,7 @@
     "uttaksplan.nyttopphold.avbrytAriaLabel": "Avbryt, legg til ny utsettelse",
     "uttaksplan.nyttopphold.leggTilAriaLabel": "Ok, legg til ny utsettelse",
     "uttaksplan.overføring.vedlegg.info": "Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet.",
-    "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder": "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
+    "uttaksplan.overføring.vedlegg.info.institusjonsoppholdAnnenForelder": "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
     "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder": "Du må legge ved bekreftelse som {navnAnnenForelder} får fra sin lege. Den må beskrive hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "uttaksplan.overføring.årsak.spørsmål": "Hvorfor skal du overta {annenForelderNavn} kvote?",
     "uttaksplan.skjema.flerbarnsInformasjon": "Dere har {uker} uker med flerbarnsuker som dere kan dele. Disse ukene kan dere ta ut når som helst i foreldrepengeperioden. Dere kan ta de ut samtidig, eller hver for dere. Det er ikke krav til hva {navnMor} gjør når {navnFar} tar ut dager med flerbarnsuker.",

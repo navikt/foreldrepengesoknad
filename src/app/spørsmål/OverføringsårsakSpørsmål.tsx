@@ -32,7 +32,7 @@ const OverføringsårsakSpørsmål = (props: Props) => {
 
     const alternativer = [
         getOverføringsårsakAlternativ(
-            OverføringÅrsakType.insititusjonsoppholdAnnenForelder,
+            OverføringÅrsakType.institusjonsoppholdAnnenForelder,
             annenForelderNavn,
             radioName,
             intl

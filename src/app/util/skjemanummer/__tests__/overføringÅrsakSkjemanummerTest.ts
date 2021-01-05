@@ -3,8 +3,8 @@ import { Skjemanummer } from '../../../types/søknad/Søknad';
 import { OverføringÅrsakType } from '../../../types/uttaksplan/periodetyper';
 
 describe('getOverføringÅrsakSkjemanummer', () => {
-    it('should require Skjemanummer.DOK_INNLEGGELSE if årsak is insititusjonsoppholdAnnenForelder', () => {
-        expect(getOverføringÅrsakSkjemanummer(OverføringÅrsakType.insititusjonsoppholdAnnenForelder)).toBe(
+    it('should require Skjemanummer.DOK_INNLEGGELSE if årsak is institusjonsoppholdAnnenForelder', () => {
+        expect(getOverføringÅrsakSkjemanummer(OverføringÅrsakType.institusjonsoppholdAnnenForelder)).toBe(
             Skjemanummer.DOK_INNLEGGELSE
         );
     });
