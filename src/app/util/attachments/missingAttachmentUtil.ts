@@ -16,7 +16,9 @@ import {
     isUttaksperiode,
     StønadskontoType,
     isOverføringsperiode,
-    MorsAktivitet,
+    OverføringÅrsakType,
+    // isOverføringsperiode,
+    // MorsAktivitet,
 } from '../../types/uttaksplan/periodetyper';
 import { spørsmålOmVedleggVisible } from '../../steg/barn/relasjonTilBarnAdopsjonSteg/visibility';
 import {
@@ -30,7 +32,7 @@ import {
     dokumentasjonBehøvesForOverføringsperiode,
     dokumentasjonBehøvesForUtsettelsesperiode,
     dokumentasjonBehøvesForUttaksperiode,
-    erÅrsakSykdomEllerInstitusjonsopphold,
+    // erÅrsakSykdomEllerInstitusjonsopphold,
 } from '../uttaksplan/utsettelsesperiode';
 import { MissingAttachment } from '../../types/MissingAttachment';
 import { Søknadsinfo } from 'app/selectors/types';
@@ -136,43 +138,41 @@ const missingAttachmentForAktivitetskrav = (periode: Periode, søknadsinfo: Søk
     );
 };
 
-const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): boolean => {
-    if (isUtsettelsesperiode(periode)) {
-        return (
-            erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
-            isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
-        );
-    }
+// const missingAttachmentForSykdomEllerInstitusjonsopphold = (periode: Periode): boolean => {
+//     if (isUtsettelsesperiode(periode)) {
+//         return (
+//             erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
+//             isAttachmentMissing(periode.vedlegg, AttachmentType.UTSETTELSE_SYKDOM)
+//         );
+//     }
 
-    if (isOverføringsperiode(periode)) {
-        return (
-            erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
-            isAttachmentMissing(periode.vedlegg, AttachmentType.OVERFØRING_KVOTE)
-        );
-    }
+//     if (isOverføringsperiode(periode)) {
+//         return (
+//             erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak) &&
+//             isAttachmentMissing(periode.vedlegg, AttachmentType.OVERFØRING_KVOTE)
+//         );
+//     }
 
-    if (isUttaksperiode(periode)) {
-        if (
-            periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
-            periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
-        ) {
-            return isAttachmentMissing(periode.vedlegg);
-        }
+//     if (isUttaksperiode(periode)) {
+//         if (
+//             periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
+//             periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
+//         ) {
+//             return isAttachmentMissing(periode.vedlegg);
+//         }
 
-        if (periode.erMorForSyk) {
-            return isAttachmentMissing(periode.vedlegg);
-        }
-    }
+//         if (periode.erMorForSyk) {
+//             return isAttachmentMissing(periode.vedlegg);
+//         }
+//     }
 
-    return false;
-};
+//     return false;
+// };
 
 export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
     const shouldHave = shouldPeriodeHaveAttachment(periode, søknadsinfo);
-    // Skal fjernes når koronauttak er borte
-    const missingForSykdomEllerInst = missingAttachmentForSykdomEllerInstitusjonsopphold(periode);
 
-    return shouldHave && !missingForSykdomEllerInst && isAttachmentMissing(periode.vedlegg);
+    return shouldHave && isAttachmentMissing(periode.vedlegg);
 };
 
 export const findMissingAttachmentsForPerioder = (
@@ -213,6 +213,47 @@ export const findMissingAttachmentsForPerioder = (
                                 index,
                                 Skjemanummer.NAV_TILTAK,
                                 AttachmentType.NAV_TILTAK,
+                                periode.id
+                            )
+                        );
+                    }
+
+                    if (
+                        periode.årsak === UtsettelseÅrsakType.InstitusjonSøker ||
+                        periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet
+                    ) {
+                        missingAttachments.push(
+                            createMissingAttachment(
+                                index,
+                                Skjemanummer.DOK_INNLEGGELSE,
+                                AttachmentType.UTSETTELSE_SYKDOM,
+                                periode.id
+                            )
+                        );
+                    }
+
+                    if (periode.årsak === UtsettelseÅrsakType.Sykdom) {
+                        missingAttachments.push(
+                            createMissingAttachment(
+                                index,
+                                Skjemanummer.DOK_OVERFØRING_FOR_SYK,
+                                AttachmentType.UTSETTELSE_SYKDOM,
+                                periode.id
+                            )
+                        );
+                    }
+                }
+
+                if (isOverføringsperiode(periode)) {
+                    if (
+                        periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
+                        periode.årsak === OverføringÅrsakType.sykdomAnnenForelder
+                    ) {
+                        missingAttachments.push(
+                            createMissingAttachment(
+                                index,
+                                Skjemanummer.DOK_OVERFØRING_FOR_SYK,
+                                AttachmentType.OVERFØRING_KVOTE,
                                 periode.id
                             )
                         );

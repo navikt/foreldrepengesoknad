@@ -33,7 +33,7 @@ export const visVedlegg = (søkerErFarEllerMedmor: boolean, årsak: Overføring�
 
 const getVeilederInfotekst = (årsak: OverføringÅrsakType, navnAnnenForelder: string): VeilederMessage => {
     if (
-        årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder ||
+        årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
         årsak === OverføringÅrsakType.sykdomAnnenForelder
     ) {
         return {
