@@ -1,7 +1,6 @@
 import Behandling, {
     BehandlingStatus,
     BehandlingTema,
-    BehandlingÅrsak,
     BehandlingResultatType,
     BehandligType
 } from 'app/types/søknad/Behandling';
@@ -15,7 +14,6 @@ export const engangssønadBehandligMock: Behandling = {
     status: BehandlingStatus.OPPRETTET,
     tema: BehandlingTema.ENGANGSTØNAD,
     type: BehandligType.ENGANGSSØNAD,
-    årsak: BehandlingÅrsak.YTELSE,
     behandlingResultat: BehandlingResultatType.INNVILGET,
     inntektsmeldinger: []
 };
@@ -28,7 +26,6 @@ export const foreldrepengesoknadBehandlingMock: Behandling = {
     status: BehandlingStatus.AVSLUTTET,
     tema: BehandlingTema.FORELDREPENGER,
     type: BehandligType.FORELDREPENGESØKNAD,
-    årsak: BehandlingÅrsak.YTELSE,
     behandlingResultat: BehandlingResultatType.INNVILGET,
     inntektsmeldinger: []
 };
@@ -41,7 +38,6 @@ export const svpBehandligMock: Behandling = {
     status: BehandlingStatus.OPPRETTET,
     tema: BehandlingTema.UDEFINERT,
     type: BehandligType.SVANGERSKAPSPENGESØKNAD,
-    årsak: BehandlingÅrsak.YTELSE,
     behandlingResultat: BehandlingResultatType.INNVILGET,
     inntektsmeldinger: []
 };
@@ -54,7 +50,6 @@ export const endringssøknadBehandligMock: Behandling = {
     status: BehandlingStatus.OPPRETTET,
     tema: BehandlingTema.FORELDREPENGER,
     type: BehandligType.FORELDREPENGESØKNAD,
-    årsak: BehandlingÅrsak.ENDRING_FRA_BRUKER,
     behandlingResultat: BehandlingResultatType.INNVILGET,
     inntektsmeldinger: []
 };
