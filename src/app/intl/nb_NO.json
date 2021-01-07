@@ -164,7 +164,7 @@
     "dokumentasjon.vedlagt": "Dokumentasjon er vedlagt",
     "driverFosterhjem.spørsmål": "Har du inntekt som fosterforelder?",
     "egenDelUttakForm.samtidigUttak.flerBarnsuker.veiledertekst": "Dere kan begge ta ut 100 prosent foreldrepenger samtidig når dere får flere barn. Dere velger selv om flerbarnsukene skal tas ut som fellesperiode eller kvote. Det er ikke krav til hva {navnMor} gjør når {navnFar} tar ut flerbarnsuker eller kvote. {link}.",
-    "egenDelUttakForm.samtidigUttak.veiledertekst": "Dere kan ta ut opptil 100 prosent foreldrepenger til sammen, for eksempel ved at dere bytter på å jobbe og å være hjemme med barnet. Hvis en av dere tar ut 100 prosent kvote, kan den andre kombinere arbeid med å ta ut opptil 50 prosent av fellesperioden. {link}.",
+    "egenDelUttakForm.samtidigUttak.veiledertekst": "Dere kan ta ut inntil 100 prosent foreldrepenger til sammen, for eksempel ved at dere bytter på å jobbe og å være hjemme med barnet. Hvis en av dere tar ut inntil 100 prosent kvote, kan den andre kombinere arbeid med å ta ut inntil 50 prosent av fellesperioden. {link}.",
     "egenDelUttakForm.samtidigUttak.veiledertekst.lenke": "Les mer om å være hjemme samtidig her",
     "endrePeriodeForm.bekreftSlettDialog.opphold.melding": "Ønsker du å slette oppholdet?",
     "endrePeriodeForm.bekreftSlettDialog.opphold.tittel": "Slett oppholdet",
