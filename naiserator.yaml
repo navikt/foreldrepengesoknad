@@ -10,9 +10,11 @@ spec:
   accessPolicy:
     outbound:
       external:
+        - host:  {{api}}
+        - host:  {{nav}}
+        - host:  {{loginservice}}
         - host:  {{dekoratoren}}
-      rules:
-        - application: {{uttak}}
+        - host:  {{uttak}}
 {{/if}}               
   image: {{image}}
   port: 8080
