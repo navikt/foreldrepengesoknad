@@ -1,7 +1,12 @@
 {
     "gcp": "true",
     "appres": "www.nav.no",
-    "ingresses": ["https://foreldrepengesoknad.nav.no"],
+    "nav" : "www.nav.no",
+    "loginservice" : "loginservice.nav.no",
+    "api" : "foreldrepengesoknad-api.nav.no",
+    "uttak": "fp-uttak-service.nav.no",
+    "dekoratoren": "dekoratoren.nav.no",
+    "ingresses": ["https://foreldrepenger.prod-gcp.nais.io","https://foreldrepengesoknad.nav.no"],
     "env": {
         "APPRES_CMS_URL": "https://www.nav.no/dekoratoren",
         "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.nav.no/rest",
