@@ -18,7 +18,7 @@ export const sakGjelderAdopsjon = (sak: Sak): boolean => {
     return behandling !== undefined && behandling.tema === BehandlingTema.FORELDREPENGER_ADOPSJON;
 };
 
-export const gjelderSakForeldrepengesøknad = (sak: Sak): boolean => {
+const gjelderSakForeldrepengesøknad = (sak: Sak): boolean => {
     const behandling = getBehandling(sak);
     return behandling ? behandling.type === BehandligType.FORELDREPENGESØKNAD : true;
 };
@@ -42,7 +42,7 @@ const erUrelevantAutomatiskOpprettetBehandling = (behandling: Behandling) => {
     return false;
 };
 
-export const harEnAvsluttetBehandling = (sak: Sak): boolean => {
+const harEnAvsluttetBehandling = (sak: Sak): boolean => {
     return sak.behandlinger
         ? sak.behandlinger
               .filter((behandling: Behandling) => !erAvslåttBehandling(behandling))
@@ -60,14 +60,14 @@ const harEnAktivBehandling = (sak: Sak): boolean => {
         : false;
 };
 
-export const harSakUnderBehandling = (sak: Sak): boolean => {
+const harSakUnderBehandling = (sak: Sak): boolean => {
     return gjelderSakForeldrepengesøknad(sak)
         ? sak.status === FagsakStatus.OPPRETTET ||
               (sak.status === FagsakStatus.UNDER_BEHANDLING && harEnAktivBehandling(sak))
         : false;
 };
 
-export const skalKunneSøkeOmEndring = (sak: Sak): boolean => {
+const skalKunneSøkeOmEndring = (sak: Sak): boolean => {
     return gjelderSakForeldrepengesøknad(sak)
         ? (sak.status !== FagsakStatus.AVSLUTTET && harEnAvsluttetBehandling(sak)) || erInfotrygdSak(sak)
         : false;

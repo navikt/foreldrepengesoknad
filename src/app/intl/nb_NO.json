@@ -940,7 +940,7 @@
     "valideringsfeil.spørsmål.farSinFørsteUttaksdagSpørsmål.gyldigDato": "Dato for første uttaksdag må være en gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.spørsmål.morSinSisteUttaksdag.gyldigDato": "Dato for {navnMor} siste uttaksdag må være en gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.spørsmål.startdatoAdopsjon.annenDato.gyldigDato": "Dato for start av perioden må være en gyldig dato på formatet dd.mm.åååå",
-    "valideringsfeil.fraOgMedDato.påkrevd": "Fra og med dato må fylles ut",
+    "valideringsfeil.fraOgMedDato.påkrevd": "Fra og med dato må fylles ut på formatet dd.mm.åååå",
     "valideringsfeil.fraOgMedDato.gyldigDato": "Fra og med dato må være en gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.tilOgMedDato.gyldigDato": "Til og med dato må være en gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.startdatoPermisjon.gyldigDato": "Startdato for foreldrepengeperioden må være en gyldig dato på formatet dd.mm.åååå",

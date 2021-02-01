@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Element } from 'nav-frontend-typografi';
 
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 
@@ -23,9 +23,9 @@ const InformasjonOmArbeidsforholdWrapper: React.FunctionComponent<Arbeidsforhold
         <React.Fragment>
             {!harArbeidsforhold && (
                 <div className="arbeidsforholdInfoBox" style={{ marginBottom: '1rem' }}>
-                    <Normaltekst>
+                    <Element tag="h2">
                         {getMessage(intl, 'annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold')}
-                    </Normaltekst>
+                    </Element>
                 </div>
             )}
             {harArbeidsforhold && (
