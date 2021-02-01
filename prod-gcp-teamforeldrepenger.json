@@ -6,7 +6,7 @@
     "api" : "foreldrepengesoknad-api.intern.nav.no",
     "uttak": "foreldrepengesoknad-api.intern.nav.no",
     "dekoratoren": "dekoratoren.nav.no",
-    "ingresses": ["https://foreldreengesoknad.intern.nav.no","https://foreldrepengesoknad.nav.no"],
+    "ingresses": ["https://foreldrepengesoknad.intern.nav.no","https://foreldrepengesoknad.nav.no"],
     "env": {
         "APPRES_CMS_URL": "https://www.nav.no/dekoratoren",
         "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.intern.nav.no/rest",
