@@ -1,8 +1,8 @@
 {
     "gcp": "true",
-    "nav" : "www.nav.no",
-    "loginservice" : "loginservice.dev.nav.no",
-    "api" : "foreldrepengesoknad-api.dev.nav.no",
+    "nav": "www.nav.no",
+    "loginservice": "loginservice.dev.nav.no",
+    "api": "foreldrepengesoknad-api.dev.nav.no",
     "uttak": "fp-uttak-service.dev.nav.no",
     "dekoratoren": "dekoratoren.dev.nav.no",
     "ingresses": ["https://foreldrepengesoknad.dev.nav.no"],

@@ -1,11 +1,11 @@
 {
     "gcp": "true",
     "appres": "www.nav.no",
-    "nav" : "www.nav.no",
-    "loginservice" : "loginservice.nav.no",
-    "api" : "foreldrepengesoknad-api.nav.no",
+    "nav": "www.nav.no",
+    "loginservice": "loginservice.nav.no",
+    "api": "foreldrepengesoknad-api.nav.no",
     "uttak": "foreldrepengesoknad-api.nav.no",
-    "dekoratoren": "dekoratoren.nav.no",
+    "dekoratoren": "www.nav.no/dekoratoren",
     "ingresses": ["https://foreldrepengesoknad.nav.no"],
     "env": {
         "APPRES_CMS_URL": "https://www.nav.no/dekoratoren",
