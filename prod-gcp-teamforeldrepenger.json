@@ -6,13 +6,13 @@
     "api" : "foreldrepengesoknad-api.intern.nav.no",
     "uttak": "foreldrepengesoknad-api.intern.nav.no",
     "dekoratoren": "dekoratoren.nav.no",
-    "ingresses": ["https://foreldrepengesoknad.intern.nav.no"],
+    "ingresses": ["https://foreldrepengesoknad.intern.nav.no","https://foreldrepengesoknad.nav.no"],
     "env": {
         "APPRES_CMS_URL": "https://www.nav.no/dekoratoren",
         "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.intern.nav.no/rest",
         "LOGINSERVICE_URL": "https://loginservice.nav.no/login",
         "FP_UTTAK_SERVICE_URL": "https://foreldrepengesoknad-api.intern.nav.no",
         "FEATURE_VIS_PERIODER_SOM_SENDES_INN": "off",
-        "FAMILIE": "https://familie.intern.nav.no"
+        "FAMILIE": "https://familie.nav.no"
     }
 }
