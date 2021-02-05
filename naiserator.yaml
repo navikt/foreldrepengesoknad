@@ -14,7 +14,6 @@ spec:
         - host:  {{nav}}
         - host:  {{loginservice}}
         - host:  {{dekoratoren}}
-        - host:  {{uttak}}
 {{/if}}               
   image: {{image}}
   port: 8080
