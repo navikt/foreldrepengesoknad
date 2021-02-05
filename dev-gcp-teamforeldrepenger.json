@@ -3,9 +3,8 @@
     "nav" : "www.dev.nav.no",
     "loginservice" : "loginservice.dev.nav.no",
     "api" : "foreldrepengesoknad-api.dev.nav.no",
-    "uttak": "fp-uttak-service.dev.nav.no",
     "dekoratoren": "dekoratoren.dev.nav.no",
-    "ingresses": ["https://foreldrepengesoknad.dev.nav.no"],
+    "ingresses": ["https://foreldrepengesoknad.dev.nav.no","https://foreldrepengesoknad.ekstern.dev.nav.no"],
     "env": {
         "APPRES_CMS_URL": "https://dekoratoren.dev.nav.no",
         "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.dev.nav.no/rest",
