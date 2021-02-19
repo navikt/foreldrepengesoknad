@@ -45,6 +45,7 @@ import { Periodene } from 'app/util/uttaksplan/Periodene';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import routeConfig from 'app/util/routing/routeConfig';
 import LabelWithUtvidetInformasjon from 'common/components/labelWithUtvidetInformasjon/LabelWithUtvidetInformasjon';
+import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 
 interface StateProps {
     stegProps: StegProps;
@@ -81,6 +82,12 @@ class AndreInntekterSteg extends React.Component<Props> {
                 apiActionCreators.fjernInaktiveArbeidsforhold(getAktiveArbeidsforhold(arbeidsforhold, førsteUttaksDato))
             );
         }
+
+        logAmplitudeEvent('sidevisning', {
+            app: 'foreldrepengesøknad',
+            team: 'foreldrepenger',
+            pageKey: PageKeys.AndreInntekter,
+        });
     }
 
     updateSøkerAndSave(søker: Partial<Søker>) {

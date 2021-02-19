@@ -67,6 +67,7 @@ import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
 import OppgiTilleggsopplysninger from './OppgiTilleggsopplysninger';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import routeConfig from 'app/util/routing/routeConfig';
+import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 
 interface StateProps {
     stegProps: StegProps;
@@ -198,6 +199,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                 );
             }
         }
+
+        logAmplitudeEvent('sidevisning', {
+            app: 'foreldrepengesøknad',
+            team: 'foreldrepenger',
+            pageKey: PageKeys.Uttaksplan,
+        });
     }
 
     showBekreftGåTilbakeDialog() {

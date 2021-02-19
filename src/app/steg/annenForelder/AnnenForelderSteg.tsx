@@ -28,6 +28,7 @@ import { AnnenForelderFormValues } from './form/annenforelderFormTypes';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { mapBooleanToYesOrNo } from 'app/util/form/formUtils';
 import routeConfig from 'app/util/routing/routeConfig';
+import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 
 interface StateProps {
     søknad: Partial<Søknad>;
@@ -67,6 +68,12 @@ class AnnenForelderSteg extends React.Component<Props> {
             props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
             props.history.push(routeConfig.APP_ROUTE_PREFIX);
         }
+
+        logAmplitudeEvent('sidevisning', {
+            app: 'foreldrepengesøknad',
+            team: 'foreldrepenger',
+            pageKey: PageKeys.AnnenForelder,
+        });
     }
 
     updateReduxState(values: AnnenForelderFormValues) {

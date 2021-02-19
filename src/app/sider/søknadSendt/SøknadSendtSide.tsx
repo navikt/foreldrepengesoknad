@@ -29,6 +29,7 @@ import lenker from 'app/util/routing/lenker';
 import { selectMissingAttachments } from 'app/selectors/attachmentsSelector';
 
 import './søknadSendtSide.less';
+import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 
 interface StateProps {
     søkerinfo: Søkerinfo;
@@ -48,6 +49,12 @@ class SøknadSendtSide extends React.Component<Props> {
         if (!this.props.erEndringssøknad) {
             this.props.dispatch(api.sendStorageKvittering());
         }
+
+        logAmplitudeEvent('sidevisning', {
+            app: 'foreldrepengesøknad',
+            team: 'foreldrepenger',
+            pageKey: PageKeys.SøknadSendt,
+        });
     }
 
     render() {

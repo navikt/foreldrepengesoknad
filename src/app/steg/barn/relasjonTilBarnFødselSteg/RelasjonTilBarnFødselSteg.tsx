@@ -45,6 +45,7 @@ import {
 import { skalViseInfoOmPrematuruker, visTermindato } from './visibility/visibilityFunctions';
 import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
 import routeConfig from 'app/util/routing/routeConfig';
+import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 
 interface RelasjonTilBarnFødselStegProps {
     barn: Barn;
@@ -75,6 +76,12 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
             props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
             props.history.push(routeConfig.APP_ROUTE_PREFIX);
         }
+
+        logAmplitudeEvent('sidevisning', {
+            app: 'foreldrepengesøknad',
+            team: 'foreldrepenger',
+            pageKey: PageKeys.OmBarnetFødsel,
+        });
     }
 
     onPresubmit() {

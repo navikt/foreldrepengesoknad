@@ -35,6 +35,7 @@ import ForståttRettigheterForm from './ForståttRettigheterForm';
 
 import './velkommen.less';
 import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
+import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 
 interface StateProps {
     person?: Person;
@@ -65,6 +66,12 @@ class Velkommen extends React.Component<Props, State> {
             isDinePersonopplysningerModalOpen: false,
             skalEndre: undefined,
         };
+
+        logAmplitudeEvent('sidevisning', {
+            app: 'foreldrepengesøknad',
+            team: 'foreldrepenger',
+            pageKey: PageKeys.Velkommen,
+        });
     }
 
     getBekreftCheckboksPanelLabelHeader() {

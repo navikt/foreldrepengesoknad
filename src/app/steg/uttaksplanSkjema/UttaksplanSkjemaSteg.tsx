@@ -41,6 +41,7 @@ import søknadActionCreators from '../../redux/actions/søknad/søknadActionCrea
 import routeConfig from 'app/util/routing/routeConfig';
 import { skalViseInfoOmPrematuruker } from '../barn/relasjonTilBarnFødselSteg/visibility/visibilityFunctions';
 import { Tidsperioden } from 'app/util/uttaksplan/Tidsperioden';
+import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
@@ -98,6 +99,12 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 )
             );
         }
+
+        logAmplitudeEvent('sidevisning', {
+            app: 'foreldrepengesøknad',
+            team: 'foreldrepenger',
+            pageKey: PageKeys.UttaksplanSkjema,
+        });
     }
     UNSAFE_componentWillReceiveProps(nextProps: Props) {
         const dekningsgrad = this.props.søknad.dekningsgrad;

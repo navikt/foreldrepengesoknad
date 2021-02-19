@@ -32,6 +32,7 @@ import visibility from './visibility';
 import { erGyldigDato, hasValueRule } from 'app/util/validation/common';
 import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
 import routeConfig from 'app/util/routing/routeConfig';
+import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -64,6 +65,12 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                 })
             );
         }
+
+        logAmplitudeEvent('sidevisning', {
+            app: 'foreldrepengesøknad',
+            team: 'foreldrepenger',
+            pageKey: PageKeys.OmBarnetAdopsjon,
+        });
     }
 
     oppdaterAntallBarn(antall: number) {

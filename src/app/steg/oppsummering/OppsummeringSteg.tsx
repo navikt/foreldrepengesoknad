@@ -46,6 +46,7 @@ import { findAllAttachments } from '../manglendeVedlegg/manglendeVedleggUtil';
 import { søknadStegPath } from '../StegRoutes';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import routeConfig from 'app/util/routing/routeConfig';
+import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 
 interface StateProps {
     søknadsinfo: Søknadsinfo;
@@ -121,6 +122,12 @@ class OppsummeringSteg extends React.Component<Props> {
                 )
             );
         }
+
+        logAmplitudeEvent('sidevisning', {
+            app: 'foreldrepengesøknad',
+            team: 'foreldrepenger',
+            pageKey: PageKeys.Oppsummering,
+        });
     }
 
     componentDidMount() {

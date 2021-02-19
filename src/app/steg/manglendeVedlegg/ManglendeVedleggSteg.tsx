@@ -38,6 +38,7 @@ import isAvailable from '../../util/steg/isAvailable';
 import { findAllAttachments } from './manglendeVedleggUtil';
 import søknadActionCreators from 'app/redux/actions/søknad/søknadActionCreators';
 import routeConfig from 'app/util/routing/routeConfig';
+import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 
 interface ReduxProps {
     stegProps: StegProps;
@@ -61,6 +62,12 @@ class ManglendeVedleggsteg extends React.Component<Props> {
             props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
             props.history.push(routeConfig.APP_ROUTE_PREFIX);
         }
+
+        logAmplitudeEvent('sidevisning', {
+            app: 'foreldrepengesøknad',
+            team: 'foreldrepenger',
+            pageKey: PageKeys.ManglendeVedlegg,
+        });
     }
 
     handleVedleggSpørsmålOnChange(attachments: Attachment[], key: string) {

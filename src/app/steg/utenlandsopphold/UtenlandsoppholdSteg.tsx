@@ -24,6 +24,7 @@ import { UtenlandsoppholdFormValues } from './form/utenlandsoppholdFormTypes';
 import { BostedUtland } from './bostedUtlandListAndDialog/types';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import routeConfig from 'app/util/routing/routeConfig';
+import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 
 interface StateProps {
     søknad: Søknad;
@@ -56,6 +57,12 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
             props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
             props.history.push(routeConfig.APP_ROUTE_PREFIX);
         }
+
+        logAmplitudeEvent('sidevisning', {
+            app: 'foreldrepengesøknad',
+            team: 'foreldrepenger',
+            pageKey: PageKeys.Utenlandsopphold,
+        });
     }
 
     updateReduxState(values: UtenlandsoppholdFormValues) {

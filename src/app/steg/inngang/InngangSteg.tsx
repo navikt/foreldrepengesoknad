@@ -27,6 +27,7 @@ import lenker from '../../util/routing/lenker';
 import ResetSoknad from 'app/components/applikasjon/resetSoknad/ResetSoknad';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Veileder from 'common/components/veileder/Veileder';
+import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 
 export interface StateProps {
     kjønn: Kjønn;
@@ -54,6 +55,12 @@ class InngangSteg extends React.Component<Props> {
 
         this.initiellSituasjon = props.situasjon;
         this.initiellSøkerrolle = props.valgtRolle;
+
+        logAmplitudeEvent('sidevisning', {
+            app: 'foreldrepengesøknad',
+            team: 'foreldrepenger',
+            pageKey: PageKeys.Situasjon,
+        });
     }
 
     resolveSøkerRolle(situasjon: Søkersituasjon) {
