@@ -68,7 +68,7 @@ class Velkommen extends React.Component<Props, State> {
         };
 
         logAmplitudeEvent('sidevisning', {
-            app: 'foreldrepengesøknad',
+            app: 'foreldrepengesoknad',
             team: 'foreldrepenger',
             pageKey: PageKeys.Velkommen,
         });
