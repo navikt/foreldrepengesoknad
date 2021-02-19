@@ -1,90 +1,88 @@
 name: Deployment pipeline q1
 
 on:
-  push:
-    branches:
-      - master 
+    push:
+        branches:
+            - master
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/foreldrepengesoknad
-  
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/foreldrepengesoknad
+
 jobs:
- 
-  kompiler:
-    runs-on: ubuntu-latest
-    steps:
-     
-      - name: Sjekk ut kode
-        uses: actions/checkout@v2
-     
-      - name: Hent tag    
-        run: | 
-          echo 'TAG<<EOF' >> $GITHUB_ENV
-          git log -1 --pretty=%ad --date=format:%Y%m%d%H%M%S-`echo $GITHUB_SHA | cut -c1-7`  >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV  
-                  
-      - name: Cache node modules
-        uses: actions/cache@v2
-        with:
-         path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-         restore-keys: |
-           ${{ runner.os }}-build-${{ env.cache-name }}-
-           ${{ runner.os }}-build-
-           ${{ runner.os }}-
-         
-      - run:  npm install
-      - run:  npm run jest
-      - run: |
-          npm run build
-          echo "IMAGE=$IMAGE_BASE:$TAG" >> $GITHUB_ENV
-                   
-      - name: Bygg, tag og push Docker image  
-        run: |
-          docker build --tag ${IMAGE} --tag ${IMAGE_BASE}:latest .
-          echo  ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} --password-stdin
-          docker push ${IMAGE_BASE}   
-  
-      - name: Lukk gamle bygg-issues
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              labels: ['bygg']
-            }).then(response => {
-              response.data.forEach(issue => {
-                github.issues.update({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: issue.number,
-                  state: 'closed'
-                });
-              });
-            });     
-      
-      - name: Opprett issue, trigg deploy til dev-fss og dev-gcp
-        if: success()
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{secrets.NOTIFICATION}}
-          script: |
-              github.issues.create( {
-                owner: context.issue.owner,
-                repo: context.issue.repo,
-                labels: ['bygg'],
-                title: 'Deploy av ${{ env.TAG }}'})
-              .then(response => {
-                      const issue = { owner: context.issue.owner,
-                      repo: context.issue.repo,
-                      issue_number: response.data.number }
-                     github.issues.createComment({...issue,
-                            title: 'Deploy av ${{ env.TAG }}',
-                            body: '/promote dev-sbs '})
-                     github.issues.createComment({...issue,
-                            title: 'Deploy av ${{ env.TAG }}',
-                            body: '/promote dev-gcp '})
-               });
+    kompiler:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Sjekk ut kode
+              uses: actions/checkout@v2
+
+            - name: Hent tag
+              run: |
+                  echo 'TAG<<EOF' >> $GITHUB_ENV
+                  git log -1 --pretty=%ad --date=format:%Y%m%d%H%M%S-`echo $GITHUB_SHA | cut -c1-7`  >> $GITHUB_ENV
+                  echo 'EOF' >> $GITHUB_ENV
+
+            - name: Cache node modules
+              uses: actions/cache@v2
+              with:
+                  path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-build-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-
+                      ${{ runner.os }}-
+
+            - run: npm install
+            - run: npm run jest
+            - run: |
+                  npm run build
+                  echo "IMAGE=$IMAGE_BASE:$TAG" >> $GITHUB_ENV
+
+            - name: Bygg, tag og push Docker image
+              run: |
+                  docker build --tag ${IMAGE_BASE}:${TAG} .
+                  echo  ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} --password-stdin
+                  docker push ${IMAGE_BASE}:${TAG}
+
+            - name: Lukk gamle bygg-issues
+              uses: actions/github-script@v3
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  script: |
+                      github.issues.listForRepo({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        state: 'open',
+                        labels: ['bygg']
+                      }).then(response => {
+                        response.data.forEach(issue => {
+                          github.issues.update({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            issue_number: issue.number,
+                            state: 'closed'
+                          });
+                        });
+                      });
+
+            - name: Opprett issue, trigg deploy til dev-fss og dev-gcp
+              if: success()
+              uses: actions/github-script@v3
+              with:
+                  github-token: ${{secrets.NOTIFICATION}}
+                  script: |
+                      github.issues.create( {
+                        owner: context.issue.owner,
+                        repo: context.issue.repo,
+                        labels: ['bygg'],
+                        title: 'Deploy av ${{ env.TAG }}'})
+                      .then(response => {
+                              const issue = { owner: context.issue.owner,
+                              repo: context.issue.repo,
+                              issue_number: response.data.number }
+                             github.issues.createComment({...issue,
+                                    title: 'Deploy av ${{ env.TAG }}',
+                                    body: '/promote dev-sbs '})
+                             github.issues.createComment({...issue,
+                                    title: 'Deploy av ${{ env.TAG }}',
+                                    body: '/promote dev-gcp '})
+                       });
