@@ -201,7 +201,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         }
 
         logAmplitudeEvent('sidevisning', {
-            app: 'foreldrepengesøknad',
+            app: 'foreldrepengesoknad',
             team: 'foreldrepenger',
             pageKey: PageKeys.Uttaksplan,
         });

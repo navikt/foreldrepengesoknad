@@ -78,7 +78,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
         }
 
         logAmplitudeEvent('sidevisning', {
-            app: 'foreldrepengesøknad',
+            app: 'foreldrepengesoknad',
             team: 'foreldrepenger',
             pageKey: PageKeys.OmBarnetFødsel,
         });

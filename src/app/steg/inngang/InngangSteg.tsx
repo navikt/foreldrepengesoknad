@@ -57,7 +57,7 @@ class InngangSteg extends React.Component<Props> {
         this.initiellSøkerrolle = props.valgtRolle;
 
         logAmplitudeEvent('sidevisning', {
-            app: 'foreldrepengesøknad',
+            app: 'foreldrepengesoknad',
             team: 'foreldrepenger',
             pageKey: PageKeys.Situasjon,
         });

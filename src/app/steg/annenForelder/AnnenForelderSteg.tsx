@@ -70,7 +70,7 @@ class AnnenForelderSteg extends React.Component<Props> {
         }
 
         logAmplitudeEvent('sidevisning', {
-            app: 'foreldrepengesøknad',
+            app: 'foreldrepengesoknad',
             team: 'foreldrepenger',
             pageKey: PageKeys.AnnenForelder,
         });
