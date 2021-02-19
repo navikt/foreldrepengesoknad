@@ -15,6 +15,7 @@ import ApplicationInfo from './components/applikasjon/applicationInfo/Applicatio
 import { registerDevUtils } from 'common/dev/devUtils';
 import ErrorBoundary from './components/applikasjon/errorBoundary/ErrorBoundary';
 import ByttBrowserModal from 'common/components/byttBrowserModal/ByttBrowserModal';
+import { initAmplitude } from './amplitude/amplitude';
 
 import './styles/app.less';
 
@@ -33,6 +34,8 @@ Modal.setAppElement('#appContainer');
 const root = document.getElementById('app');
 
 registerDevUtils();
+
+initAmplitude();
 
 Sentry.init({
     dsn: 'https://8e90481464a4442db8c86bc31b9e41ad@sentry.gc.nav.no/11',
