@@ -86,7 +86,7 @@
         "jest-css-modules": "^2.1.0",
         "jest-environment-node": "^26.6.0",
         "less": "^3.12.2",
-        "less-loader": "^7.0.2",
+        "less-loader": "^7.3.0",
         "multer": "^1.4.2",
         "nav-frontend-alertstriper-style": "^2.0.30",
         "nav-frontend-chevron-style": "^0.3.10",
