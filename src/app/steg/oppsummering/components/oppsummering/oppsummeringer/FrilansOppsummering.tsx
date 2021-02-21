@@ -66,10 +66,9 @@ const FrilansOppsummering = ({ søker }: Props) => {
     }
 
     return (
-        <Feltoppsummering
-            feltnavn={getMessage(intl, 'oppsummering.frilans.tittel')}
-            verdi={getMessage(intl, 'oppsummering.frilans.ikkeFrilans')}
-        />
+        <Oppsummeringsseksjon tittel={getMessage(intl, 'oppsummering.frilans.tittel')}>
+            {getMessage(intl, 'oppsummering.frilans.ikkeFrilans')}
+        </Oppsummeringsseksjon>
     );
 };
 

@@ -10,6 +10,7 @@ import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
 import Knapperad from 'common/components/knapperad/Knapperad';
 
 import './modalForm.less';
+import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
 
 export interface ModalFormProps {
     isOpen: boolean;
@@ -101,6 +102,11 @@ class ModalForm extends React.Component<Props> {
                                     </Hovedknapp>
                                 </Knapperad>
                             </div>
+                        )}
+                        {!renderFormButtons && (
+                            <UnansweredQuestionsInfo>
+                                {intl.formatMessage({ id: 'steg.footer.spørsmålMåBesvares' })}
+                            </UnansweredQuestionsInfo>
                         )}
                     </ValiderbarForm>
                 </div>

@@ -25,11 +25,8 @@ const AndreInntekterOppsummering = ({ søker }: Props) => {
     }
 
     return (
-        <Oppsummeringsseksjon>
-            <Feltoppsummering
-                feltnavn={getMessage(intl, 'oppsummering.andreInntekter.tittel')}
-                verdi={getMessage(intl, 'oppsummering.andreInntekter.ikkeHattAndreInntekter')}
-            />
+        <Oppsummeringsseksjon tittel={getMessage(intl, 'oppsummering.andreInntekter.tittel')}>
+            {getMessage(intl, 'oppsummering.andreInntekter.ikkeHattAndreInntekter')}
         </Oppsummeringsseksjon>
     );
 };
