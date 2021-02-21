@@ -242,7 +242,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         validators={[
                             hasValueRule(
                                 (næringsinntekt && isNaN(næringsinntekt) === false) || '',
-                                getMessage(intl, 'påkrevd')
+                                getMessage(intl, 'valideringsfeil.selvstendignæring.næringsresultatPåkrevd')
                             ),
                         ]}
                     />

@@ -110,12 +110,7 @@ class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, Frilan
                             />
                         </Block>
                         <Block margin="none">
-                            <Knapp
-                                style={{ backgroundColor: '#ffffff' }}
-                                onClick={() => this.openModal()}
-                                htmlType="button"
-                                data-name="leggTilFrilansOppdrag"
-                            >
+                            <Knapp onClick={() => this.openModal()} htmlType="button" data-name="leggTilFrilansOppdrag">
                                 <FormattedMessage id="frilansOppdrag.leggTilOppdrag" />
                             </Knapp>
                         </Block>

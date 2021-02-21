@@ -99,7 +99,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                             validators={[
                                 hasValueRule(
                                     (info && isNaN(info.næringsinntektEtterEndring) === false) || '',
-                                    getMessage(intl, 'påkrevd')
+                                    getMessage(intl, 'valideringsfeil.selvstendignæring.endringNæringsinntektPåkrevd')
                                 ),
                             ]}
                         />
