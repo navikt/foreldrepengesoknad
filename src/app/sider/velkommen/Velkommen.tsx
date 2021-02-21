@@ -139,165 +139,167 @@ class Velkommen extends React.Component<Props, State> {
         const bem = BEMHelper('velkommen');
 
         return (
-            <Applikasjonsside visSpråkvelger={true} margin={false}>
-                <DocumentTitle title={getMessage(intl, 'dokument.tittel.velkommen')} />
+            <div role="main">
+                <Applikasjonsside visSpråkvelger={true} margin={false}>
+                    <DocumentTitle title={getMessage(intl, 'dokument.tittel.velkommen')} />
 
-                <VeilederMedSnakkeboble
-                    dialog={{
-                        title: getMessage(intl, 'velkommen.bobletittel', {
-                            name: person.fornavn,
-                        }),
-                        text: getMessage(intl, 'velkommen.bobletekst'),
-                    }}
-                />
-                <div className={bem.block}>
-                    <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
-                        {getMessage(intl, 'velkommen.tittel')}
-                    </Innholdstittel>
-                    {visValgForNySøknadEllerEndring && (
-                        <>
-                            <Block>
-                                <Ingress tag="div">
-                                    {erSakForEndringssøknadFraInfotrygd ? (
-                                        <>
-                                            <Block margin="xs">
-                                                <FormattedMessage id="velkommen.intro.harInfotrygdSak.del1" />
-                                            </Block>
-                                            <Block margin="xs">
-                                                <FormattedMessage id="velkommen.intro.harInfotrygdSak.del2" />
-                                            </Block>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Block margin="xs">
-                                                <FormattedMessage id="velkommen.intro.harSak.del1" />
-                                            </Block>
-                                            <Block margin="xs">
-                                                <FormattedMessage id="velkommen.intro.harSak.del2" />
-                                            </Block>
-                                        </>
-                                    )}
-                                </Ingress>
-                            </Block>
-                            {sakForEndringssøknad !== undefined && sakForEndringssøknad.type === SakType.FPSAK && (
+                    <VeilederMedSnakkeboble
+                        dialog={{
+                            title: getMessage(intl, 'velkommen.bobletittel', {
+                                name: person.fornavn,
+                            }),
+                            text: getMessage(intl, 'velkommen.bobletekst'),
+                        }}
+                    />
+                    <div className={bem.block}>
+                        <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
+                            {getMessage(intl, 'velkommen.tittel')}
+                        </Innholdstittel>
+                        {visValgForNySøknadEllerEndring && (
+                            <>
                                 <Block>
-                                    <SakInfo sak={sakForEndringssøknad} />
+                                    <Ingress tag="div">
+                                        {erSakForEndringssøknadFraInfotrygd ? (
+                                            <>
+                                                <Block margin="xs">
+                                                    <FormattedMessage id="velkommen.intro.harInfotrygdSak.del1" />
+                                                </Block>
+                                                <Block margin="xs">
+                                                    <FormattedMessage id="velkommen.intro.harInfotrygdSak.del2" />
+                                                </Block>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Block margin="xs">
+                                                    <FormattedMessage id="velkommen.intro.harSak.del1" />
+                                                </Block>
+                                                <Block margin="xs">
+                                                    <FormattedMessage id="velkommen.intro.harSak.del2" />
+                                                </Block>
+                                            </>
+                                        )}
+                                    </Ingress>
                                 </Block>
-                            )}
-                            <Block>
-                                <SøknadstypeSpørsmål
-                                    harEksisterendeSak={true}
-                                    skalEndre={this.state.skalEndre}
-                                    onChange={(skalEndre) => this.setState({ skalEndre })}
-                                    erSakForEndringssøknadFraInfotrygd={erSakForEndringssøknadFraInfotrygd}
-                                />
-                            </Block>
-                            <Block visible={this.state.skalEndre === undefined}>
-                                <UnansweredQuestionsInfo>
-                                    <FormattedMessage id="steg.footer.spørsmålMåBesvares" />
-                                </UnansweredQuestionsInfo>
-                            </Block>
+                                {sakForEndringssøknad !== undefined && sakForEndringssøknad.type === SakType.FPSAK && (
+                                    <Block>
+                                        <SakInfo sak={sakForEndringssøknad} />
+                                    </Block>
+                                )}
+                                <Block>
+                                    <SøknadstypeSpørsmål
+                                        harEksisterendeSak={true}
+                                        skalEndre={this.state.skalEndre}
+                                        onChange={(skalEndre) => this.setState({ skalEndre })}
+                                        erSakForEndringssøknadFraInfotrygd={erSakForEndringssøknadFraInfotrygd}
+                                    />
+                                </Block>
+                                <Block visible={this.state.skalEndre === undefined}>
+                                    <UnansweredQuestionsInfo>
+                                        <FormattedMessage id="steg.footer.spørsmålMåBesvares" />
+                                    </UnansweredQuestionsInfo>
+                                </Block>
 
-                            {this.state.skalEndre === false && !erSakForEndringssøknadFraInfotrygd && (
-                                <VeilederInfo
-                                    messages={[
-                                        {
-                                            contentIntlKey: 'velkommen.intro.harSak.veileder',
-                                            type: 'normal',
-                                        },
-                                    ]}
-                                />
-                            )}
-                            {this.state.skalEndre &&
-                                !erSakForEndringssøknadFraInfotrygd &&
-                                sakForEndringssøknad !== undefined &&
-                                sakForEndringssøknad.status === FagsakStatus.UNDER_BEHANDLING && (
+                                {this.state.skalEndre === false && !erSakForEndringssøknadFraInfotrygd && (
                                     <VeilederInfo
                                         messages={[
                                             {
-                                                contentIntlKey: 'velkommen.intro.harSak.veileder.endring',
+                                                contentIntlKey: 'velkommen.intro.harSak.veileder',
                                                 type: 'normal',
                                             },
                                         ]}
                                     />
                                 )}
-                            {this.state.skalEndre === true && erSakForEndringssøknadFraInfotrygd && (
-                                <VeilederInfo
-                                    messages={[
-                                        {
-                                            contentIntlKey: 'velkommen.intro.harInfotrygdSak.veileder',
-                                            type: 'normal',
-                                        },
-                                    ]}
-                                />
-                            )}
-                        </>
-                    )}
-                    {sakUnderBehandling !== undefined && (
-                        <>
-                            <Block>
-                                <FormattedMessage id="velkommen.intro.harFørstegangssøknadUnderBehandling" />
-                            </Block>
-                            <Block>
-                                <SakInfo sak={sakUnderBehandling} />
-                            </Block>
-                        </>
-                    )}
-                    {!erSakForEndringssøknadFraInfotrygd &&
-                        storageKvittering &&
-                        storageKvittering.innsendingstidspunkt &&
-                        sakUnderBehandling === undefined &&
-                        sakForEndringssøknad === undefined && (
+                                {this.state.skalEndre &&
+                                    !erSakForEndringssøknadFraInfotrygd &&
+                                    sakForEndringssøknad !== undefined &&
+                                    sakForEndringssøknad.status === FagsakStatus.UNDER_BEHANDLING && (
+                                        <VeilederInfo
+                                            messages={[
+                                                {
+                                                    contentIntlKey: 'velkommen.intro.harSak.veileder.endring',
+                                                    type: 'normal',
+                                                },
+                                            ]}
+                                        />
+                                    )}
+                                {this.state.skalEndre === true && erSakForEndringssøknadFraInfotrygd && (
+                                    <VeilederInfo
+                                        messages={[
+                                            {
+                                                contentIntlKey: 'velkommen.intro.harInfotrygdSak.veileder',
+                                                type: 'normal',
+                                            },
+                                        ]}
+                                    />
+                                )}
+                            </>
+                        )}
+                        {sakUnderBehandling !== undefined && (
                             <>
                                 <Block>
                                     <FormattedMessage id="velkommen.intro.harFørstegangssøknadUnderBehandling" />
                                 </Block>
                                 <Block>
-                                    <SakInfoStorageKvittering storageKvittering={storageKvittering} />
+                                    <SakInfo sak={sakUnderBehandling} />
                                 </Block>
                             </>
                         )}
-                    <Block visible={visInfoOmEndringsøknadIkkeTilgjengelig}>
-                        <VeilederInfo
-                            messages={[
-                                {
-                                    contentIntlKey: 'velkommen.endringssøknadIkkeTilgjengelig.veileder',
-                                    type: 'normal',
-                                },
-                            ]}
-                        />
-                    </Block>
-                    <Block visible={visBekreftSkjema}>
-                        <ForståttRettigheterForm
-                            checkboxLabelHeader={this.getBekreftCheckboksPanelLabelHeader()}
-                            isLoadingEkisterendeSak={isLoadingEkisterendeSak}
-                            knappClassName={`${bem.element('startSøknadKnapp')} blokk-m`}
-                            knappLabel={this.getStartSøknadKnappLabel()}
-                            onConfirm={() => this.handleStartSøknad(this.state.skalEndre)}
-                        />
-                        <Normaltekst className={bem.element('personopplysningerLink')}>
-                            <a
-                                className="lenke"
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    this.setState({ isDinePersonopplysningerModalOpen: true });
-                                }}
-                            >
-                                <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
-                            </a>
-                        </Normaltekst>
-                    </Block>
-                </div>
-                <DinePersonopplysningerModal
-                    isOpen={this.state.isDinePersonopplysningerModalOpen}
-                    onRequestClose={() =>
-                        this.setState({
-                            isDinePersonopplysningerModalOpen: false,
-                        })
-                    }
-                />
-            </Applikasjonsside>
+                        {!erSakForEndringssøknadFraInfotrygd &&
+                            storageKvittering &&
+                            storageKvittering.innsendingstidspunkt &&
+                            sakUnderBehandling === undefined &&
+                            sakForEndringssøknad === undefined && (
+                                <>
+                                    <Block>
+                                        <FormattedMessage id="velkommen.intro.harFørstegangssøknadUnderBehandling" />
+                                    </Block>
+                                    <Block>
+                                        <SakInfoStorageKvittering storageKvittering={storageKvittering} />
+                                    </Block>
+                                </>
+                            )}
+                        <Block visible={visInfoOmEndringsøknadIkkeTilgjengelig}>
+                            <VeilederInfo
+                                messages={[
+                                    {
+                                        contentIntlKey: 'velkommen.endringssøknadIkkeTilgjengelig.veileder',
+                                        type: 'normal',
+                                    },
+                                ]}
+                            />
+                        </Block>
+                        <Block visible={visBekreftSkjema}>
+                            <ForståttRettigheterForm
+                                checkboxLabelHeader={this.getBekreftCheckboksPanelLabelHeader()}
+                                isLoadingEkisterendeSak={isLoadingEkisterendeSak}
+                                knappClassName={`${bem.element('startSøknadKnapp')} blokk-m`}
+                                knappLabel={this.getStartSøknadKnappLabel()}
+                                onConfirm={() => this.handleStartSøknad(this.state.skalEndre)}
+                            />
+                            <Normaltekst className={bem.element('personopplysningerLink')}>
+                                <a
+                                    className="lenke"
+                                    href="#"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        this.setState({ isDinePersonopplysningerModalOpen: true });
+                                    }}
+                                >
+                                    <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
+                                </a>
+                            </Normaltekst>
+                        </Block>
+                    </div>
+                    <DinePersonopplysningerModal
+                        isOpen={this.state.isDinePersonopplysningerModalOpen}
+                        onRequestClose={() =>
+                            this.setState({
+                                isDinePersonopplysningerModalOpen: false,
+                            })
+                        }
+                    />
+                </Applikasjonsside>
+            </div>
         );
     }
 }
