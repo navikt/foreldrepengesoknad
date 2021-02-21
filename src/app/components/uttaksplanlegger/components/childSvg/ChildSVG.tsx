@@ -14,6 +14,8 @@ const ChildSVG: React.FunctionComponent<Props> = (props) => {
     const { face = 'animated', ...svgProps } = props;
     return (
         <svg
+            focusable="false"
+            role="presentation"
             width={120}
             height={120}
             viewBox="0 0 120 120"
