@@ -921,7 +921,7 @@
     "valideringsfeil.utenlandsopphold.senere": "Du må legge inn en dato som er innenfor de neste 12 månedene.",
     "valideringsfeil.utenlandsopphold.tidligere": "Du må legge inn en dato som er innenfor de siste 12 månedene.",
     "valideringsfeil.utenlandsopphold.landPåkrevd": "Du må velge et land du skal oppholde deg i.",
-    "valideringsfeil.dateOutsideRange": "Ugyldig dato",
+    "valideringsfeil.dateOutsideRange": "Valgt dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra {fom} til {tom}",
     "valideringsfeil.sluttMedUtsettelse": "Planen kan ikke slutte med en utsettelse fordi du ikke har flere dager igjen.",
     "valideringsfeil.uttaksplanskjema.forMangeUkerPeriodeFarMedmor": "Du kan maksimalt ta ut {uker} uker med fellesperiode.",
     "valideringsfeil.uttakTidsperiode.etterFraDato": "Du må legge inn en dato som er etter fra-datoen",
