@@ -20,6 +20,7 @@ import AnnenForelder from 'app/types/søknad/AnnenForelder';
 import Søker, { SøkerInnsending } from 'app/types/søknad/Søker';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { isISODateString } from 'nav-datovelger';
+import { NæringInnsending } from 'app/types/søknad/SelvstendigNæringsdrivendeInformasjon';
 
 export const isArrayOfAttachments = (object: any) => {
     return (
@@ -155,6 +156,32 @@ const konverterStringDatoerIObjektTilDate = <T, U>(input: T): U => {
     });
 };
 
+const cleanupNæring = (næringsinformasjon: NæringInnsending): NæringInnsending => {
+    const cleanedNæring: NæringInnsending = næringsinformasjon.næringsinntekt
+        ? {
+              ...næringsinformasjon,
+              næringsinntekt: Number(næringsinformasjon.næringsinntekt),
+          }
+        : {
+              ...næringsinformasjon,
+          };
+
+    return cleanedNæring;
+};
+
+const cleanupSøker = (søker: Søker) => {
+    const søkerWithDates = konverterStringDatoerIObjektTilDate<Søker, SøkerInnsending>(søker);
+    const cleanedNæring = søkerWithDates.selvstendigNæringsdrivendeInformasjon
+        ? søkerWithDates.selvstendigNæringsdrivendeInformasjon.map(cleanupNæring)
+        : undefined;
+
+    const cleanedSøker = cleanedNæring
+        ? { ...søkerWithDates, selvstendigNæringsdrivendeInformasjon: cleanedNæring }
+        : { ...søkerWithDates };
+
+    return cleanedSøker;
+};
+
 export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
     const {
         ekstrainfo,
@@ -165,7 +192,7 @@ export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
         barn,
         ...rest
     } = søknad;
-    const søkerInnsending = konverterStringDatoerIObjektTilDate<Søker, SøkerInnsending>(søker);
+    const søkerInnsending = cleanupSøker(søker);
     const barnInnsending = konverterStringDatoerIObjektTilDate<Barn, BarnInnsending>(barn);
     const cleanedSøknad: SøknadForInnsending = { søker: søkerInnsending, barn: barnInnsending, ...rest };
 

@@ -200,35 +200,34 @@ class Periodeliste extends React.Component<Props> {
                                         />
                                     );
                                 case Periodetype.Info:
-                                    switch (periode.infotype) {
-                                        case PeriodeInfoType.avslåttPeriode:
-                                            return (
-                                                <PeriodelisteAvslåttPeriode
-                                                    key={itemId}
-                                                    itemId={itemId}
-                                                    isExpanded={isExpanded}
-                                                    onToggle={onToggle}
-                                                    periode={periode}
-                                                    onReplaceHullWithOpphold={onReplaceHullWithOpphold}
-                                                    onReplaceHullWithPeriode={onReplaceHullWithPeriode}
-                                                    navnPåForeldre={navn.navnPåForeldre}
-                                                />
-                                            );
-                                        default:
-                                            return (
-                                                periode.visPeriodeIPlan && (
-                                                    <PeriodelisteOppholdAnnenPart
-                                                        key={itemId}
-                                                        itemId={itemId}
-                                                        isExpanded={isExpanded}
-                                                        onToggle={onToggle}
-                                                        periode={periode}
-                                                        navnPåForeldre={navn.navnPåForeldre}
-                                                        tidsperiode={periode.tidsperiode}
-                                                    />
-                                                )
-                                            );
+                                    if (periode.infotype === PeriodeInfoType.avslåttPeriode) {
+                                        return (
+                                            <PeriodelisteAvslåttPeriode
+                                                key={itemId}
+                                                itemId={itemId}
+                                                isExpanded={isExpanded}
+                                                onToggle={onToggle}
+                                                periode={periode}
+                                                onReplaceHullWithOpphold={onReplaceHullWithOpphold}
+                                                onReplaceHullWithPeriode={onReplaceHullWithPeriode}
+                                                navnPåForeldre={navn.navnPåForeldre}
+                                            />
+                                        );
                                     }
+
+                                    return (
+                                        periode.visPeriodeIPlan && (
+                                            <PeriodelisteOppholdAnnenPart
+                                                key={itemId}
+                                                itemId={itemId}
+                                                isExpanded={isExpanded}
+                                                onToggle={onToggle}
+                                                periode={periode}
+                                                navnPåForeldre={navn.navnPåForeldre}
+                                                tidsperiode={periode.tidsperiode}
+                                            />
+                                        )
+                                    );
                                 default:
                                     return (
                                         <PeriodelistePeriode

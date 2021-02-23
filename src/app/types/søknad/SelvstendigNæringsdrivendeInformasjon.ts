@@ -29,7 +29,8 @@ export interface Næring {
 }
 
 export interface NæringInnsending
-    extends Omit<Næring, 'tidsperiode' | 'endringAvNæringsinntektInformasjon' | 'oppstartsdato'> {
+    extends Omit<Næring, 'tidsperiode' | 'endringAvNæringsinntektInformasjon' | 'oppstartsdato' | 'næringsinntekt'> {
+    næringsinntekt: number;
     tidsperiode: Partial<Tidsperiode>;
     oppstartsdato?: Date;
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjonInnsending;
