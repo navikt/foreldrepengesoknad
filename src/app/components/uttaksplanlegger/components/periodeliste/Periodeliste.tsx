@@ -214,8 +214,7 @@ class Periodeliste extends React.Component<Props> {
                                                     navnPåForeldre={navn.navnPåForeldre}
                                                 />
                                             );
-                                        case PeriodeInfoType.uttakAnnenPart:
-                                        case PeriodeInfoType.utsettelseAnnenPart:
+                                        default:
                                             return (
                                                 periode.visPeriodeIPlan && (
                                                     <PeriodelisteOppholdAnnenPart
