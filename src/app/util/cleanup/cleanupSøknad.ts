@@ -157,7 +157,7 @@ const konverterStringDatoerIObjektTilDate = <T, U>(input: T): U => {
 };
 
 const cleanupNæring = (næringsinformasjon: NæringInnsending): NæringInnsending => {
-    const cleanedNæring: NæringInnsending = næringsinformasjon.næringsinntekt
+    return næringsinformasjon.næringsinntekt
         ? {
               ...næringsinformasjon,
               næringsinntekt: Number(næringsinformasjon.næringsinntekt),
@@ -165,8 +165,6 @@ const cleanupNæring = (næringsinformasjon: NæringInnsending): NæringInnsendi
         : {
               ...næringsinformasjon,
           };
-
-    return cleanedNæring;
 };
 
 const cleanupSøker = (søker: Søker) => {
@@ -175,11 +173,9 @@ const cleanupSøker = (søker: Søker) => {
         ? søkerWithDates.selvstendigNæringsdrivendeInformasjon.map(cleanupNæring)
         : undefined;
 
-    const cleanedSøker = cleanedNæring
+    return cleanedNæring
         ? { ...søkerWithDates, selvstendigNæringsdrivendeInformasjon: cleanedNæring }
         : { ...søkerWithDates };
-
-    return cleanedSøker;
 };
 
 export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
