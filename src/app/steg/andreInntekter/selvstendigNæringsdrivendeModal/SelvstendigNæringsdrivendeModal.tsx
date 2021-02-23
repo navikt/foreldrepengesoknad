@@ -275,7 +275,13 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         dato={næring.oppstartsdato}
                         calendarSettings={{ position: 'fullscreen' }}
                         validators={[
-                            hasValueRule(næring && næring.oppstartsdato, getMessage(intl, 'påkrevd')),
+                            hasValueRule(
+                                næring && næring.oppstartsdato,
+                                getMessage(
+                                    intl,
+                                    'valideringsfeil.selvstendigNæringsdrivende.modal.oppstartsdato.gyldigDato'
+                                )
+                            ),
                             erGyldigDato(
                                 næring && næring.oppstartsdato,
                                 getMessage(
