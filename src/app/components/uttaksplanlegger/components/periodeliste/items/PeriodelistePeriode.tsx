@@ -19,8 +19,9 @@ export interface Props {
     navnPåForeldre: NavnPåForeldre;
     annenForelderSamtidigUttakPeriode: Periode | undefined;
     meldinger?: VeilederMessage[];
-    onToggle: onToggleItemProp;
     harMidlertidigOmsorg: boolean;
+    periodeHarUbesvarteSpørsmål: boolean;
+    onToggle: onToggleItemProp;
     updatePeriode: (periode: Periode) => void;
     deletePeriode: (periode: Periode) => void;
     intl: IntlShape;
@@ -38,6 +39,7 @@ const PeriodelistePeriode: React.FunctionComponent<Props> = ({
     updatePeriode,
     deletePeriode,
     harMidlertidigOmsorg,
+    periodeHarUbesvarteSpørsmål,
     intl,
 }) => {
     const ariaLabel = getPeriodeTittel(intl, periode, navnPåForeldre);
@@ -70,6 +72,7 @@ const PeriodelistePeriode: React.FunctionComponent<Props> = ({
                         meldinger={meldinger.filter((m) => m.avvikType !== 'skjema')}
                         updatePeriode={updatePeriode}
                         deletePeriode={deletePeriode}
+                        periodeHarUbesvarteSpørsmål={periodeHarUbesvarteSpørsmål}
                         onRequestClose={() => {
                             onToggle(periode.id);
                             if (isExpanded) {

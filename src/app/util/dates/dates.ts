@@ -209,8 +209,18 @@ const validateDateInRange = (date: Date | undefined, minDate: Date, maxDate: Dat
     }
 
     if (!dateIsWithinRange(date, minDate, maxDate)) {
+        if (isFomDate) {
+            return {
+                key: 'valideringsfeil.dateOutsideRange.fom',
+                values: {
+                    fom: prettifyDateExtended(minDate),
+                    tom: prettifyDateExtended(maxDate),
+                },
+            };
+        }
+
         return {
-            key: 'valideringsfeil.dateOutsideRange',
+            key: 'valideringsfeil.dateOutsideRange.tom',
             values: {
                 fom: prettifyDateExtended(minDate),
                 tom: prettifyDateExtended(maxDate),
@@ -223,14 +233,17 @@ const validateDateInRange = (date: Date | undefined, minDate: Date, maxDate: Dat
 
 const validateFromDate = (date: Date | undefined, minDate: Date, maxDate: Date, toDate?: Date) => {
     const error = validateDateInRange(date, minDate, maxDate, true);
+
     if (error !== undefined) {
         return error;
     }
+
     if (toDate && moment(date).isAfter(toDate, 'day')) {
         return {
             key: 'valideringsfeil.utenlandsopphold.førTilDato',
         };
     }
+
     return undefined;
 };
 
@@ -261,11 +274,13 @@ const validateToDate = (date: Date | undefined, minDate: Date, maxDate: Date, fr
     if (error !== undefined) {
         return error;
     }
+
     if (fromDate && moment(date).isBefore(fromDate, 'day')) {
         return {
             key: 'valideringsfeil.utenlandsopphold.etterFraDato',
         };
     }
+
     return undefined;
 };
 

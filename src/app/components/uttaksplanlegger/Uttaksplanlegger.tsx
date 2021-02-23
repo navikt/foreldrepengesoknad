@@ -33,6 +33,7 @@ import { VeiledermeldingerPerPeriode } from '../veilederInfo/types';
 import UttaksplanAdvarselIkon from '../ikoner/uttaksplanIkon/ikoner/AdvarselIkon';
 import HjerteIkon from '../ikoner/uttaksplanIkon/ikoner/HjerteIkon';
 import LinkButton from '../elementer/linkButton/LinkButton';
+import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -42,6 +43,7 @@ interface OwnProps {
     planErEndret: boolean;
     defaultStønadskontoType?: StønadskontoType;
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
+    uttaksplanValidering: UttaksplanValideringState;
     addPeriode: (periode: Periode) => void;
     updatePeriode: (periode: Periode) => void;
     deletePeriode: (periode: Periode) => void;
@@ -167,6 +169,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             uttaksplan,
             planErEndret,
             meldingerPerPeriode,
+            uttaksplanValidering,
             intl,
         } = this.props;
         const { formIsOpen, periodetype } = this.state;
@@ -262,6 +265,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 updatePeriode={this.props.updatePeriode}
                                 antallFeriedager={antallFeriedager}
                                 harMidlertidigOmsorg={søknadsinfo.søker.harMidlertidigOmsorg}
+                                uttaksplanValidering={uttaksplanValidering}
                             />
                         </Block>
                         <Block visible={uttaksplan.length === 0}>

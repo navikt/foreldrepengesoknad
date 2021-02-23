@@ -18,9 +18,10 @@ import PeriodelisteAvslåttPeriode from './items/PeriodelisteAvslåttPeriode';
 import PeriodelisteOppholdAnnenPart from './items/PeriodelisteOppholdAnnenPart';
 import { VeiledermeldingerPerPeriode } from '../../../veilederInfo/types';
 import { NavnISøknaden } from 'app/selectors/types';
+import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
+import moment from 'moment';
 
 import './periodeliste.less';
-import moment from 'moment';
 
 interface OwnProps {
     erDeltUttak: boolean;
@@ -31,6 +32,7 @@ interface OwnProps {
     navn: NavnISøknaden;
     lastAddedPeriodeId: string | undefined;
     harMidlertidigOmsorg: boolean;
+    uttaksplanValidering: UttaksplanValideringState;
     onPeriodeLukk?: (id: string) => void;
     onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
     onReplaceHullWithPeriode?: (tidsperiode: Tidsperiode) => void;
@@ -56,6 +58,7 @@ class Periodeliste extends React.Component<Props> {
         this.handleOnItemToggle = this.handleOnItemToggle.bind(this);
         this.shouldRenderHull = this.shouldRenderHull.bind(this);
         this.annenForelderSamtidigUttak = this.annenForelderSamtidigUttak.bind(this);
+        this.harPeriodeUbesvarteSpørsmål = this.harPeriodeUbesvarteSpørsmål.bind(this);
 
         const { perioder } = props;
         if (perioder.length === 1 && perioder[0].id === props.lastAddedPeriodeId) {
@@ -127,6 +130,17 @@ class Periodeliste extends React.Component<Props> {
             this.props.onPeriodeLukk(id);
         }
     }
+
+    harPeriodeUbesvarteSpørsmål(uttaksplanValidering: UttaksplanValideringState, periode: Periode): boolean {
+        const { id } = periode;
+
+        return uttaksplanValidering.resultat.avvik.some((res) => {
+            if (res.periodeId === id && res.regel.key === 'erAllePeriodeSkjemaspørsmålBesvart') {
+                return true;
+            }
+        });
+    }
+
     render() {
         const {
             perioder,
@@ -140,6 +154,7 @@ class Periodeliste extends React.Component<Props> {
             deletePeriode,
             erDeltUttak,
             harMidlertidigOmsorg,
+            uttaksplanValidering,
         } = this.props;
 
         const filteredPerioder = this.shouldRenderHull(perioder)
@@ -215,7 +230,6 @@ class Periodeliste extends React.Component<Props> {
                                                 )
                                             );
                                     }
-                                    return;
                                 default:
                                     return (
                                         <PeriodelistePeriode
@@ -231,6 +245,10 @@ class Periodeliste extends React.Component<Props> {
                                             deletePeriode={deletePeriode}
                                             annenForelderSamtidigUttakPeriode={this.annenForelderSamtidigUttak(periode)}
                                             harMidlertidigOmsorg={harMidlertidigOmsorg}
+                                            periodeHarUbesvarteSpørsmål={this.harPeriodeUbesvarteSpørsmål(
+                                                uttaksplanValidering,
+                                                periode
+                                            )}
                                         />
                                     );
                             }

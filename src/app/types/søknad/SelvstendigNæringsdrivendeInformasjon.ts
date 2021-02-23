@@ -10,7 +10,7 @@ export enum Næringstype {
 export interface Næring {
     næringstyper: Næringstype[];
     tidsperiode: Partial<TidsperiodeStringMedValgfriSluttdato>;
-    næringsinntekt: number;
+    næringsinntekt: string;
     pågående: boolean;
     navnPåNæringen: string;
     organisasjonsnummer: string;
