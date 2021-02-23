@@ -116,7 +116,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                 }}
                             />
                         </Block>
-                        <Block>
+                        <Block margin="xs">
                             <Form.CountrySelect
                                 name={BostedUtlandFormFields.landkode}
                                 label={
@@ -130,6 +130,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                 useAlpha3Code={false}
                             />
                         </Block>
+                        <Block margin="none">{getMessage(intl, 'utenlandsopphold.måFyllesUt')}</Block>
                     </Form.Form>
                 );
             }}

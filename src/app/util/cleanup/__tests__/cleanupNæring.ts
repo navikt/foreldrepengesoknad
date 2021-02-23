@@ -19,7 +19,7 @@ const næring: NæringPartial = {
     harRegnskapsfører: true,
     regnskapsfører: regnskapsførerMock as Næringsrelasjon,
     kanInnhenteOpplsyningerFraRevisor: true,
-    næringsinntekt: 2000,
+    næringsinntekt: '2000',
 };
 
 describe('cleanupNæring', () => {

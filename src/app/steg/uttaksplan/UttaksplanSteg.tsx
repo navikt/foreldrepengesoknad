@@ -456,6 +456,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 onRequestRevert={() => this.showBekreftTilbakestillUttaksplanDialog()}
                                 meldingerPerPeriode={meldingerPerPeriode}
                                 forelder={søknadsinfo.søker.erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
+                                uttaksplanValidering={uttaksplanValidering}
                             />
                         </Block>
 

@@ -220,6 +220,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         ]}
                     />
                 </Block>
+                <Block margin="none">{getMessage(intl, 'annenInntekt.alternativ.måFyllesUt')}</Block>
             </ModalForm>
         );
     }

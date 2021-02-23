@@ -192,7 +192,6 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                 <DocumentTitle
                     title={getMessage(intl, 'dokument.tittel.steg', { steg: getMessage(intl, stegConfig[id].tittel) })}
                 />
-                {errorSummaryRenderer ? <div role="alert">{errorSummaryRenderer()}</div> : null}
                 <Block margin="xs">
                     <BackButton
                         text={getMessage(intl, 'tilbake')}
@@ -211,6 +210,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                 {this.props.renderProp
                     ? this.props.renderProp({ onValidFormSubmit: () => this.handleFortsett() })
                     : this.props.children}
+                {errorSummaryRenderer ? <div role="alert">{errorSummaryRenderer()}</div> : null}
                 {renderFortsettKnapp === true && (
                     <Block>
                         <FortsettKnapp

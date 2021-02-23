@@ -34,7 +34,7 @@ const RadioPanelGruppeResponsive: React.FunctionComponent<RadioPanelGruppeRespon
             }
             className={twoColumns ? 'twoColumnsPanelGruppe' : undefined}
             feil={feil}
-            radios={radios.map((radio) => ({ ...radio, autoComplete: 'off' }))}
+            radios={radios.map((radio: any) => ({ ...radio, 'aria-invalid': undefined, autoComplete: 'off' }))}
             name={name}
             checked={checked}
             onChange={onChange}

@@ -125,6 +125,8 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                         }
                     />
                 </Block>
+
+                <Block margin="xs">{getMessage(intl, 'frilansOppdrag.måFyllesUt')}</Block>
             </ModalForm>
         );
     }

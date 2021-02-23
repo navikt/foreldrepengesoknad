@@ -5,7 +5,6 @@ import ModalForm from 'common/components/modalForm/ModalForm';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Input from 'common/components/skjema/wrappers/Input';
 import getMessage from 'common/util/i18nUtils';
-import { trimNumberFromInput } from 'common/util/numberUtils';
 import Landvelger from 'app/components/skjema/landvelger/Landvelger';
 import TidsperiodeBolk from '../../../components/skjema/tidsperiodeBolk/TidsperiodeBolk';
 import VeilederInfo from '../../../components/veilederInfo/VeilederInfo';
@@ -26,7 +25,7 @@ import { default as cleanupNæring } from '../../../util/cleanup/cleanupNæring'
 import { removeSpacesFromString } from '../../../util/stringUtils';
 import { mapTidsperiodeStringToTidsperiode } from '../../../util/tidsperiodeUtils';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
-import { erGyldigDato, hasValueRule } from '../../../util/validation/common';
+import { erGyldigDato, hasValueRule, valueIsNumber } from '../../../util/validation/common';
 import { getFritekstfeltRules } from '../../../util/validation/fritekstfelt';
 import { getOrganisasjonsnummerRegler } from '../../../util/validation/organisasjonsnummer';
 import NæringsrelasjonBolk from './næringsrelasjonBolk/NæringsrelasjonBolk';
@@ -229,20 +228,24 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 <Block visible={visibility.næringsinntekt(næring)}>
                     <Input
                         name="selvstendigNæringsdrivende-næringsinntekt"
+                        inputMode="numeric"
                         infotekst={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt.info')}
                         apneLabel={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt.info.apneLabel')}
                         label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
                         onChange={(v: string) => {
-                            const næringPartial: NæringPartial = {
-                                næringsinntekt: trimNumberFromInput(v),
-                            };
-                            this.updateNæring(næringPartial);
+                            this.updateNæring({
+                                næringsinntekt: v,
+                            });
                         }}
-                        value={næringsinntekt === undefined || isNaN(næringsinntekt) ? '' : næringsinntekt}
+                        value={næringsinntekt}
                         validators={[
                             hasValueRule(
-                                (næringsinntekt && isNaN(næringsinntekt) === false) || '',
+                                næringsinntekt,
                                 getMessage(intl, 'valideringsfeil.selvstendignæring.næringsresultatPåkrevd')
+                            ),
+                            valueIsNumber(
+                                næringsinntekt,
+                                getMessage(intl, 'valideringsfeil.selvstendignæring.næringsresultatMåVæreSiffer')
                             ),
                         ]}
                     />

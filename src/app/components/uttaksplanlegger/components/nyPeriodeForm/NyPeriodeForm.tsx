@@ -160,6 +160,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                             onCancel={onCancel}
                             onUtsettelsesvariantChange={(utsettelsesvariant) => this.setState({ utsettelsesvariant })}
                             erNyPeriode={true}
+                            periodeHarUbesvarteSpørsmål={false}
                         />
                     </>
                 )}
@@ -177,6 +178,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                             onChange={this.updatePeriode}
                             onCancel={onCancel}
                             erNyPeriode={true}
+                            periodeHarUbesvarteSpørsmål={false}
                         />
                     </>
                 )}

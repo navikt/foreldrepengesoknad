@@ -42,7 +42,7 @@ class UttaksplanFeiloppsummering extends React.Component<Props> {
     }
     render() {
         const { uttaksplanValidering, erSynlig, intl } = this.props;
-        if (erSynlig === false) {
+        if (erSynlig === false || uttaksplanValidering.erGyldig) {
             return null;
         }
 

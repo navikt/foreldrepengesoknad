@@ -26,6 +26,7 @@ const DevPerioderSomSendesInn: React.FunctionComponent<Props> = ({ søknadsinfo,
                 updatePeriode={() => null}
                 antallFeriedager={0}
                 harMidlertidigOmsorg={false}
+                uttaksplanValidering={undefined as any}
             />
         </Ekspanderbartpanel>
     </DevBlock>

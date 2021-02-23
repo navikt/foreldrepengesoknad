@@ -114,7 +114,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                             ISOStringToDate(value),
                                             datoAvgrensninger.fra.minDato!,
                                             datoAvgrensninger.fra.maksDato!,
-                                            ISOStringToDate(values.fom)
+                                            ISOStringToDate(values.tom)
                                         ),
                                     dayPickerProps: {
                                         initialMonth: initialMonth || familiehendelsesdato,
@@ -134,7 +134,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                             ISOStringToDate(value),
                                             datoAvgrensninger.til.minDato!,
                                             datoAvgrensninger.til.maksDato!,
-                                            ISOStringToDate(values.tom)
+                                            ISOStringToDate(values.fom)
                                         ),
                                     dayPickerProps: {
                                         initialMonth: ISOStringToDate(values.fom),

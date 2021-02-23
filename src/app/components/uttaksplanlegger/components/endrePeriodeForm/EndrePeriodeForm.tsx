@@ -40,6 +40,7 @@ interface OwnProps {
     updatePeriode: (periode: Periode) => void;
     deletePeriode: (periode: Periode) => void;
     intl: IntlShape;
+    periodeHarUbesvarteSpørsmål: boolean;
 }
 
 interface StateProps {
@@ -90,7 +91,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
     }
 
     render() {
-        const { periode, meldinger, intl } = this.props;
+        const { periode, meldinger, periodeHarUbesvarteSpørsmål, intl } = this.props;
         const { antallFeriedager, onRequestClose } = this.props;
         const erForeldrepengerFørFødselPeriode =
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
@@ -106,6 +107,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
                             onChange={this.onChange}
                             antallFeriedager={antallFeriedager}
                             erNyPeriode={false}
+                            periodeHarUbesvarteSpørsmål={periodeHarUbesvarteSpørsmål}
                         />
                     ) : (
                         <UttakForm
@@ -113,6 +115,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
                             onChange={this.onChange}
                             kanEndreStønadskonto={!erForeldrepengerFørFødselPeriode}
                             erNyPeriode={false}
+                            periodeHarUbesvarteSpørsmål={periodeHarUbesvarteSpørsmål}
                         />
                     )}
                     <Block visible={!erForeldrepengerFørFødselPeriode} margin="xs">

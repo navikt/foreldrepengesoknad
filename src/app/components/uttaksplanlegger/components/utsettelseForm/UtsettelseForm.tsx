@@ -49,6 +49,7 @@ import {
 import UtsettelseEndreTidsperiodeSpørsmål from './partials/UtsettelseEndreTidsperiodeSpørsmål';
 import TidsperiodeDisplay from '../tidsperiodeDisplay/TidsperiodeDisplay';
 import TidsperiodeForm from '../tidsperiodeForm/TidsperiodeForm';
+import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -61,6 +62,7 @@ interface OwnProps {
     onUtsettelsesvariantChange?: (utsettelsesvariant: Utsettelsesvariant | undefined) => void;
     intl: IntlShape;
     erNyPeriode: boolean;
+    periodeHarUbesvarteSpørsmål: boolean;
 }
 
 interface StateProps {
@@ -312,7 +314,16 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
     }
 
     render() {
-        const { periode, antallFeriedager, arbeidsforhold, onCancel, søknadsinfo, uttaksplan, intl } = this.props;
+        const {
+            periode,
+            antallFeriedager,
+            arbeidsforhold,
+            onCancel,
+            søknadsinfo,
+            uttaksplan,
+            periodeHarUbesvarteSpørsmål,
+            intl,
+        } = this.props;
 
         const { variant } = this.state;
 
@@ -542,6 +553,13 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                         </>
                     )}
                 </Block>
+                {periodeHarUbesvarteSpørsmål && (
+                    <div style={{ marginBottom: '1rem' }}>
+                        <UnansweredQuestionsInfo>
+                            {getMessage(intl, 'steg.footer.spørsmålMåBesvares')}
+                        </UnansweredQuestionsInfo>
+                    </div>
+                )}
                 {periode.id === undefined && (
                     <NyPeriodeKnapperad
                         periodeKanLeggesTil={

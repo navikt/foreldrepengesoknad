@@ -60,12 +60,12 @@ import { Skjemanummer } from 'app/types/søknad/Søknad';
 import { ValidFormContext, ValidFormContextInterface } from 'common/lib/validation/elements/ValiderbarForm';
 import {
     mapTidsperiodeStringToTidsperiode,
-    // mapTidsperiodeStringToTidsperiode,
     mapTidsperiodeToTidsperiodeString,
 } from '../../../../util/tidsperiodeUtils';
 import UttakEndreTidsperiodeSpørsmål from './partials/UttakEndreTidsperiodeSpørsmål';
 import TidsperiodeDisplay from '../tidsperiodeDisplay/TidsperiodeDisplay';
 import TidsperiodeForm from '../tidsperiodeForm/TidsperiodeForm';
+import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
 
 export type UttakFormPeriodeType =
     | RecursivePartial<Uttaksperiode>
@@ -75,6 +75,7 @@ export type UttakFormPeriodeType =
 interface OwnProps {
     periode: UttakFormPeriodeType;
     kanEndreStønadskonto: boolean;
+    periodeHarUbesvarteSpørsmål: boolean;
     onChange: EndrePeriodeChangeEvent;
     onCancel?: () => void;
     intl: IntlShape;
@@ -343,6 +344,7 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
             uttaksplan,
             velgbareStønadskontotyper,
             arbeidsforhold,
+            periodeHarUbesvarteSpørsmål,
             onCancel,
             intl,
         } = this.props;
@@ -581,6 +583,13 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                         </>
                     )}
                 </Block>
+                {periodeHarUbesvarteSpørsmål && (
+                    <div style={{ marginBottom: '1rem' }}>
+                        <UnansweredQuestionsInfo>
+                            {getMessage(intl, 'steg.footer.spørsmålMåBesvares')}
+                        </UnansweredQuestionsInfo>
+                    </div>
+                )}
                 {periode.id === undefined && (
                     <NyPeriodeKnapperad
                         periodeKanLeggesTil={

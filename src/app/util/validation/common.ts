@@ -15,6 +15,23 @@ import {
 import { maxLengthIsGreaterThanOrEqualToStringLength } from '../stringUtils';
 import { isISODateString } from 'nav-datovelger';
 
+const isNumeric = (str: string | undefined) => {
+    if (typeof str !== 'string') {
+        return false;
+    }
+
+    if (str.includes('.') || str.includes('e')) {
+        return false;
+    }
+
+    return !isNaN(Number(str));
+};
+
+export const valueIsNumber = (value: string | undefined, failText: string): Validator => ({
+    test: () => isNumeric(value),
+    failText,
+});
+
 export const hasValueRule = (v: any, failText: string): Validator => ({
     test: () => v !== undefined && v !== '',
     failText,
