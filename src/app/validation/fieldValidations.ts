@@ -16,7 +16,7 @@ export const commonFieldErrorRenderer = (intl: IntlShape, error: any): NavFronte
     return error !== undefined;
 };
 
-export const validateYesOrNoIsAnswered = (answer: YesOrNo, errorIntlKey?: string): SkjemaelementFeil => {
+export const validateYesOrNoIsAnswered = (answer: YesOrNo, errorIntlKey: string): SkjemaelementFeil => {
     if (answer === YesOrNo.UNANSWERED || answer === undefined) {
         return fieldIsRequiredError(errorIntlKey);
     }
@@ -33,9 +33,9 @@ export const validateAnnenForelderInformert = (answer: YesOrNo, fornavn: string)
 
 export const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
-export const fieldIsRequiredError = (errorMsg = 'påkrevd') => createFieldValidationError(errorMsg);
+export const fieldIsRequiredError = (errorMsg: string) => createFieldValidationError(errorMsg);
 
-export const validateRequiredField = (value: any, errorMsg = 'påkrevd'): SkjemaelementFeil => {
+export const validateRequiredField = (value: any, errorMsg: string): SkjemaelementFeil => {
     if (!hasValue(value)) {
         return fieldIsRequiredError(errorMsg);
     }

@@ -141,7 +141,9 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                                     morsAktivitetIPerioden !== undefined &&
                                     morsAktivitetIPerioden !== MorsAktivitet.Uføre &&
                                     morsAktivitetIPerioden.length > 0,
-                                failText: getMessage(intl, 'påkrevd'),
+                                failText: getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål.påkrevd', {
+                                    navnMor: navnPåForeldre.mor.fornavn,
+                                }),
                             },
                         ]}
                     >
