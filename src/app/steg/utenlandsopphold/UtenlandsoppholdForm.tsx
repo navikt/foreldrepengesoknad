@@ -128,7 +128,12 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                             no: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boINorge'),
                                             yes: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boIUtlandet'),
                                         }}
-                                        validate={validateYesOrNoIsAnswered}
+                                        validate={(value) =>
+                                            validateYesOrNoIsAnswered(
+                                                value,
+                                                getMessage(intl, 'iNorgeNeste12Mnd.spørsmål.påkrevd')
+                                            )
+                                        }
                                     />
                                 </Block>
                                 <Block
@@ -172,7 +177,12 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                             no: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddINorge'),
                                             yes: getMessage(intl, 'boddINorgeSiste12Mnd.alternativ.boddIUtlandet'),
                                         }}
-                                        validate={validateYesOrNoIsAnswered}
+                                        validate={(value) =>
+                                            validateYesOrNoIsAnswered(
+                                                value,
+                                                getMessage(intl, 'boddINorgeSiste12Mnd.spørsmål.påkrevd')
+                                            )
+                                        }
                                     />
                                 </Block>
                                 <Block

@@ -74,7 +74,10 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                             dato={info && info.dato}
                             datoAvgrensinger={getTidsperiodeAvgrensningerSiste4år()}
                             validators={[
-                                hasValueRule(info && info.dato, getMessage(intl, 'påkrevd')),
+                                hasValueRule(
+                                    info && info.dato,
+                                    getMessage(intl, 'varigEndringAvNæringsinntekt.dato.label.påkrevd')
+                                ),
                                 erGyldigDato(
                                     info && info.dato,
                                     getMessage(intl, 'valideringsfeil.varigEndringAvNæringsinntekt.dato.gyldigDato')

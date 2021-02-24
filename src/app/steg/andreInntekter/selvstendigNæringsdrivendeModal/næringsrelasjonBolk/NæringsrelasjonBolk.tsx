@@ -66,7 +66,12 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                                         telefonnummer: v,
                                     })
                                 }
-                                validators={[hasValueRule(telefonnummer, getMessage(intl, 'påkrevd'))]}
+                                validators={[
+                                    hasValueRule(
+                                        telefonnummer,
+                                        getMessage(intl, 'næringsrelasjon.tlfnr.påkrevd', { næringsrelasjonsType })
+                                    ),
+                                ]}
                             />
                         </Block>
                         <Block visible={visibility.erNærVennEllerFamilie(næringsrelasjon)}>

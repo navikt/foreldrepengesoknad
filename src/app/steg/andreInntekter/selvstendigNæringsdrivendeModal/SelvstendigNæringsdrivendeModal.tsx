@@ -188,7 +188,12 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         onChange={(v: string) => this.updateNæring({ registrertILand: v })}
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.registrertILand')}
                         defaultValue={registrertILand}
-                        validators={[hasValueRule(registrertILand, getMessage(intl, 'påkrevd'))]}
+                        validators={[
+                            hasValueRule(
+                                registrertILand,
+                                getMessage(intl, 'selvstendigNæringsdrivende.modal.registrertILand.påkrevd')
+                            ),
+                        ]}
                     />
                 </Block>
 

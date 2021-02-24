@@ -67,7 +67,7 @@ export function getDatoavgrensningerForStønadskonto(
     ugyldigeTidsperioder: Tidsperiode[]
 ): DatoAvgrensninger {
     if (konto === undefined) {
-        return getDatoavgrensningerForPeriodeUtenKonto(familiehendelsesdato, tidsperiode, ugyldigeTidsperioder);
+        return getDatoavgrensningerForPeriodeUtenKonto(familiehendelsesdato, ugyldigeTidsperioder);
     }
     if (konto === StønadskontoType.ForeldrepengerFørFødsel) {
         return getDatoavgrensningerForForeldrepengerFørFødsel(familiehendelsesdato, ugyldigeTidsperioder);
@@ -77,6 +77,7 @@ export function getDatoavgrensningerForStønadskonto(
     }
 
     const standardAvgrensninger = standardAvgrensningerForUttakEtterFødsel(familiehendelsesdato);
+
     return {
         fra: {
             ...standardAvgrensninger,
@@ -90,12 +91,9 @@ export function getDatoavgrensningerForStønadskonto(
     };
 }
 
-function getDatoavgrensningerForPeriodeUtenKonto(
-    familiehendelsesdato: Date,
-    tidsperiode: Partial<Tidsperiode> | undefined,
-    ugyldigeTidsperioder: Tidsperiode[]
-) {
+function getDatoavgrensningerForPeriodeUtenKonto(familiehendelsesdato: Date, ugyldigeTidsperioder: Tidsperiode[]) {
     const minDato = getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato);
+
     return {
         fra: {
             minDato,
@@ -104,13 +102,14 @@ function getDatoavgrensningerForPeriodeUtenKonto(
             helgedagerIkkeTillatt: true,
         },
         til: {
-            minDato: tidsperiode !== undefined && tidsperiode.fom ? tidsperiode.fom : minDato,
+            minDato: minDato,
             maksDato: getSisteMuligeUttaksdag(familiehendelsesdato),
             ugyldigeTidsperioder,
             helgedagerIkkeTillatt: true,
         },
     };
 }
+
 const standardAvgrensningerForUttakEtterFødsel = (familiehendelsesdato: Date): Avgrensninger => {
     return {
         helgedagerIkkeTillatt: true,
@@ -128,6 +127,7 @@ function getDatoavgrensningerForForeldrepengerFørFødsel(
         ...uttaksplanDatoavgrensninger.startdatoFørTerminForeldrepengerFørFødselKonto(familiehendelsesdato),
         ugyldigeTidsperioder,
     };
+
     return {
         fra: avgrensninger,
         til: avgrensninger,
@@ -143,6 +143,7 @@ function getDatoavgrensningerForEkstrauttakFørTermin(
         ...uttaksplanDatoavgrensninger.ekstrauttakFørFødsel(familiehendelsesdato),
         ugyldigeTidsperioder,
     };
+
     return {
         fra: avgrensninger,
         til: avgrensninger,

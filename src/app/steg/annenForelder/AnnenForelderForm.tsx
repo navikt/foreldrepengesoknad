@@ -129,7 +129,12 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                                     name={AnnenForelderFieldNames.datoForAleneomsorg}
                                     label={getMessage(intl, 'datoForAleneomsorg.spørsmål')}
                                     minDate={familiehendelseDato}
-                                    validate={validateRequiredField}
+                                    validate={(value) =>
+                                        validateRequiredField(
+                                            value,
+                                            getMessage(intl, 'datoForAleneomsorg.spørsmål.påkrevd')
+                                        )
+                                    }
                                 />
                             </Block>
 
