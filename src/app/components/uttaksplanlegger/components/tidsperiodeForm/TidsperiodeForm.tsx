@@ -106,7 +106,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                     placeholder: 'dd.mm.åååå',
                                     fullscreenOverlay: true,
                                     minDate: datoAvgrensninger.fra.minDato,
-                                    invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
+                                    invalidFormatErrorKey: 'valideringsfeil.ugyldigDato.fom',
                                     maxDate: ISOStringToDate(values.tom) || datoAvgrensninger.fra.maksDato,
                                     disableWeekend: datoAvgrensninger.fra.helgedagerIkkeTillatt,
                                     validate: (value) =>
@@ -127,7 +127,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                     fullscreenOverlay: true,
                                     minDate: ISOStringToDate(values.fom) || datoAvgrensninger.til.minDato,
                                     maxDate: datoAvgrensninger.til.maksDato,
-                                    invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
+                                    invalidFormatErrorKey: 'valideringsfeil.ugyldigDato.tom',
                                     disableWeekend: datoAvgrensninger.fra.helgedagerIkkeTillatt,
                                     validate: (value) =>
                                         dateRangeValidation.validateToDateUttak(

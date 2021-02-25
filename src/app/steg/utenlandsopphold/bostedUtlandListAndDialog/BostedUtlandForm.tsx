@@ -88,7 +88,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     fullscreenOverlay: true,
                                     placeholder: 'dd.mm.åååå',
                                     minDate,
-                                    invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
+                                    invalidFormatErrorKey: 'valideringsfeil.ugyldigDato.fom',
                                     maxDate: ISOStringToDate(values.tom) || maxDate,
                                     validate: (value) =>
                                         dateRangeValidation.validateFromDate(
@@ -105,7 +105,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     placeholder: 'dd.mm.åååå',
                                     minDate: ISOStringToDate(values.fom) || minDate,
                                     maxDate,
-                                    invalidFormatErrorKey: 'valideringsfeil.ugyldigDato',
+                                    invalidFormatErrorKey: 'valideringsfeil.ugyldigDato.tom',
                                     validate: (value) =>
                                         dateRangeValidation.validateToDate(
                                             ISOStringToDate(value),
