@@ -941,6 +941,7 @@
     "valideringsfeil.uttakTidsperiode.førTilDato": "Du må legge inn en fra og med dato som er før til og med datoen.",
     "valideringsfeil.ugyldigDato.fom": "Ugyldig format på fra og med dato. Bruk formatet dd.mm.åååå",
     "valideringsfeil.ugyldigDato.tom": "Ugyldig format på til og med dato. Bruk formatet dd.mm.åååå",
+    "valideringsfeil.uttakTidsperiode.erHelgedag": "Perioden kan ikke starte eller slutte på en helgedag.",
     "valideringsfeil.utenlandsopphold_ikke_registrert": "Du har ikke lagt inn et utenlandsopphold",
     "valideringsfeil.utenlandsopphold_utenfor_periode": "Du kan ikke legge inn et utenlandsopphold i valgt tidsperiode",
     "valideringsfeil.fornavnPåkrevd": "Fornavn må fylles ut",
