@@ -1,5 +1,5 @@
 import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Element } from 'nav-frontend-typografi';
 import React from 'react';
 
 interface Props {
@@ -20,11 +20,7 @@ const LabelWithUtvidetInformasjon: React.FunctionComponent<Props> = ({ children,
     return (
         <>
             <Element tag="span">{children}</Element>
-            {info && (
-                <UtvidetInformasjon apneLabel={apneLabel}>
-                    <Normaltekst>{info}</Normaltekst>
-                </UtvidetInformasjon>
-            )}
+            {info && <UtvidetInformasjon apneLabel={apneLabel}>{info}</UtvidetInformasjon>}
         </>
     );
 };

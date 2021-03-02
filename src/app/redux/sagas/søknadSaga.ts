@@ -24,7 +24,7 @@ import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from 'app/util/uttaksplan/uttakUtils';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
-const stateSelector = (state: AppState) => state;
+const stateSelector = (state: AppState): AppState => state;
 
 function* updateSøkerAndStorage(action: UpdateSøkerAndStorage) {
     yield put(søknadActions.updateSøker(action.payload));
@@ -80,7 +80,7 @@ function* startEndringssøknad(action: StartSøknad, sak: Sak) {
                 },
             })
         );
-        const updatedAppState = yield select(stateSelector);
+        const updatedAppState: AppState = yield select(stateSelector);
         const søknadsinfo = selectSøknadsinfo(updatedAppState);
         if (søknadsinfo) {
             const barn = updatedAppState.søknad.barn;

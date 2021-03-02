@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
@@ -44,30 +44,26 @@ const webpackConfig = {
             },
             {
                 test: /\.less$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [
-                        {
-                            loader: 'css-loader',
-                        },
-                        {
-                            loader: 'less-loader',
-                        },
-                    ],
-                }),
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                    },
+                    'css-loader',
+                    {
+                        loader: 'less-loader',
+                    },
+                ],
             },
             {
                 test: /\.svg$/,
-                use: 'svg-sprite-loader',
+                use: { loader: 'svg-sprite-loader', options: {} },
             },
         ],
     },
     plugins: [
         new CaseSensitivePathsPlugin(),
-        new ExtractTextPlugin({
-            filename: 'css/[name].css?[hash]-[chunkhash]-[name]',
-            disable: false,
-            allChunks: true,
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].css?[hash]-[chunkhash]-[contenthash]-[name]',
         }),
         new SpriteLoaderPlugin({
             plainSprite: true,

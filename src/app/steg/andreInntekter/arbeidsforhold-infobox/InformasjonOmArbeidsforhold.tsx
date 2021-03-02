@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useIntl } from 'react-intl';
-import { Element, EtikettLiten, Normaltekst } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import { formatDate } from '../../../util/dates/dates';
@@ -21,17 +21,17 @@ const InformasjonOmArbeidsforhold: React.FunctionComponent<Props> = ({ arbeidsfo
         <div className={cls.block}>
             <div className={cls.element('topRow')}>
                 {arbeidsforhold.arbeidsgiverIdType === 'orgnr' && (
-                    <EtikettLiten>
+                    <Normaltekst>
                         {getMessage(intl, 'annenInntekt.arbeidsforhold.organisasjonsnummer', {
                             organisasjonsnummer: arbeidsforhold.arbeidsgiverId,
                         })}
-                    </EtikettLiten>
+                    </Normaltekst>
                 )}
-                <EtikettLiten className={cls.element('stillingsprosent')}>
+                <Normaltekst className={cls.element('stillingsprosent')}>
                     {getMessage(intl, 'annenInntekt.arbeidsforhold.stillingsprosent', {
                         stillingsprosent: arbeidsforhold.stillingsprosent,
                     })}
-                </EtikettLiten>
+                </Normaltekst>
             </div>
             <Element>
                 {arbeidsforhold.arbeidsgiverIdType === 'orgnr'

@@ -45,9 +45,9 @@ function* getStorageData(action: GetStorageData) {
     try {
         put(apiActions.updateApi({ isLoadingStoredAppState: true }));
         const appStateResponse: AxiosResponse = yield call(Api.getStoredAppState);
-        const storageKvitteringResponse = yield call(Api.getStorageKvittering);
+        const storageKvitteringResponse: AxiosResponse<StorageKvittering> = yield call(Api.getStorageKvittering);
         const appState: AppState = appStateResponse.data;
-        const storageKvittering: StorageKvittering = storageKvitteringResponse.data;
+        const storageKvittering = storageKvitteringResponse.data;
 
         if (appState && appState.version && appState.version === 1) {
             yield applyStoredStateToApp(appState, action.history);

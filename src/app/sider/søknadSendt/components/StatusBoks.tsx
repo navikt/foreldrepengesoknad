@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import EtikettBase from 'nav-frontend-etiketter';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
-import { Undertittel, EtikettLiten, Ingress, Systemtittel } from 'nav-frontend-typografi';
+import { Undertittel, Ingress, Systemtittel, Normaltekst } from 'nav-frontend-typografi';
 
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
@@ -37,9 +37,9 @@ const StatusBoks: React.FunctionComponent<Props> = ({ saksNr }) => {
                     </div>
                     {saksNr && (
                         <div className={cls.element('right')}>
-                            <EtikettLiten>
+                            <Normaltekst>
                                 <FormattedMessage id="søknadSendt.status.saksnummer" />
-                            </EtikettLiten>
+                            </Normaltekst>
                             <Ingress>{saksNr}</Ingress>
                         </div>
                     )}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import BEMHelper from 'common/util/bem';
-import { Element, Normaltekst, EtikettLiten } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Tidsperiode, Forelder } from 'common/types';
 import { måned3bokstaver, måned, år } from 'common/util/datoUtils';
 import moment from 'moment';
@@ -35,9 +35,9 @@ const renderDagMnd = (dato: Date, visÅr = true): JSX.Element => {
                 {d.get('date')}. {måned3bokstaver(d)}.
             </span>
             {visÅr && (
-                <EtikettLiten tag="span" className={BEM.element('dagmnd__mnd')}>
+                <Normaltekst tag="span" className={BEM.element('dagmnd__mnd')}>
                     <abbr title={`${måned(d)} ${år(d)}`}>{år(d)}</abbr>
-                </EtikettLiten>
+                </Normaltekst>
             )}
         </div>
     ) : (
@@ -73,7 +73,7 @@ const PeriodelisteItemHeader: React.FunctionComponent<Props> = ({
                 </div>
                 <div className={BEM.element('beskrivelse')}>
                     <div className={BEM.element('beskrivelse__tekst')}>
-                        <Element tag="h1">{tittel}</Element>
+                        <Element tag="h2">{tittel}</Element>
                         {beskrivelse && <Normaltekst>{beskrivelse}</Normaltekst>}
                     </div>
                 </div>

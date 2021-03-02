@@ -19,6 +19,7 @@ import { selectSøkerErFarEllerMedmor } from 'app/selectors/utledetSøknadsinfoS
 import { extractUUID } from '../../api/utils/errorUtil';
 import { getRelevantFamiliehendelseDato } from 'app/util/dates/dates';
 import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { AxiosResponse } from 'axios';
 
 const stateSelector = (state: AppState) => state;
 
@@ -56,8 +57,8 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
         const søkerErFarEllerMedmor = selectSøkerErFarEllerMedmor(appState);
         const morHarIkkeRett = !appState.søknad.annenForelder.harRettPåForeldrepenger && søkerErFarEllerMedmor;
 
-        const response = yield call(Api.getUttakskontoer, params);
-        const stønadskontoer: StønadskontoerDTO = response.data;
+        const response: AxiosResponse<StønadskontoerDTO> = yield call(Api.getUttakskontoer, params);
+        const stønadskontoer = response.data;
         let tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
 
         Object.keys(stønadskontoer.kontoer)
