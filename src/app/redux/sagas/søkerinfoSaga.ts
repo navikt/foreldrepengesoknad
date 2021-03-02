@@ -6,6 +6,8 @@ import { default as apiActions } from '../actions/api/apiActionCreators';
 import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
 import { Søkerinfo } from '../../types/søkerinfo';
 import { AppState } from '../reducers';
+import { AxiosResponse } from 'axios';
+import { SøkerinfoDTO } from 'app/api/types/sokerinfoDTO';
 
 const stateSelector = (state: AppState) => state;
 
@@ -21,7 +23,7 @@ function* getSøkerinfo(action: GetSøkerinfo) {
     const søkerinfoLastetCounter = appState.api.søkerinfoLastetCounter + 1;
     try {
         yield put(apiActions.updateApi({ isLoadingSøkerinfo: true, søkerinfoLastetCounter }));
-        const response = yield call(Api.getSøkerinfo);
+        const response: AxiosResponse<SøkerinfoDTO> = yield call(Api.getSøkerinfo);
         const søkerinfo: Søkerinfo = getSøkerinfoFromDTO(response.data);
         const useStorage = shouldUseStoredDataIfTheyExist(søkerinfo);
 

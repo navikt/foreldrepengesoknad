@@ -15,6 +15,7 @@ import { Periode } from 'app/types/uttaksplan/periodetyper';
 import _ from 'lodash';
 
 import { Språkkode } from 'common/intl/types';
+import { AxiosResponse } from 'axios';
 
 const stateSelector = (state: AppState) => state;
 
@@ -69,8 +70,8 @@ function* sendSøknad(action: SendSøknad) {
             _.cloneDeep(selectPerioderSomSkalSendesInn(state)),
             state.common.språkkode
         );
-        const response = yield call(Api.sendSøknad, søknadForInnsending);
-        const kvittering: Kvittering = response.data;
+        const response: AxiosResponse<Kvittering> = yield call(Api.sendSøknad, søknadForInnsending);
+        const kvittering = response.data;
         if (kvittering) {
             action.history.push(`${routeConfig.APP_ROUTE_PREFIX}soknad-sendt`);
         }

@@ -10,6 +10,8 @@ import { dateToISOFormattedDateString } from 'common/util/datoUtils';
 import { fridager } from 'common/util/fridagerUtils';
 import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
 import { getAvgrensningerDescriptionForInput } from './datoInputDescription';
+import { DatepickerLocales } from 'nav-datovelger/lib/types';
+
 import './datoInput.less';
 
 export interface DatoInputProps extends Omit<DatepickerProps, 'onChange' | 'input' | 'inputId'> {
@@ -77,7 +79,7 @@ class DatoInput extends React.Component<Props> {
                             calendarSettings={calendarSettings}
                             value={dato}
                             inputId={inputId}
-                            locale={intl.locale}
+                            locale={intl.locale as DatepickerLocales}
                             inputProps={{
                                 name,
                                 'aria-describedby': ariaDescriptionId,

@@ -3,7 +3,7 @@ import Lenke from 'nav-frontend-lenker';
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import SpotlightLetter from 'common/components/ikoner/SpotlightLetter';
-import { Sidetittel, EtikettLiten } from 'nav-frontend-typografi';
+import { Normaltekst, Sidetittel } from 'nav-frontend-typografi';
 import { FormattedMessage } from 'react-intl';
 import moment from 'moment';
 import Person from 'app/types/Person';
@@ -57,9 +57,9 @@ const KvitteringHeader: React.FunctionComponent<Props> = ({ søker, kvittering }
 
             <Block>
                 <div className={cls.element('sendtInnTid')}>
-                    <EtikettLiten>
+                    <Normaltekst>
                         <FormattedMessage id="søknadSendt.sendtInn" />
-                    </EtikettLiten>
+                    </Normaltekst>
                     <span style={{ width: '0.25rem' }} />
                     {moment(mottattDato).format('Do MMMM YYYY')}, kl. {moment(mottattDato).format('HH:mm')}
                 </div>

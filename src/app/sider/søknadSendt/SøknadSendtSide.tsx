@@ -3,7 +3,7 @@ import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
 import Lenke from 'nav-frontend-lenker';
-import { EtikettLiten, Ingress, Normaltekst } from 'nav-frontend-typografi';
+import { Ingress, Normaltekst } from 'nav-frontend-typografi';
 import moment from 'moment';
 
 import { Kvittering } from '../../types/Kvittering';
@@ -115,9 +115,9 @@ class SøknadSendtSide extends React.Component<Props> {
                                     {person.bankkonto && person.bankkonto.kontonummer ? (
                                         <>
                                             <Block margin="none">
-                                                <EtikettLiten>
+                                                <Normaltekst>
                                                     <FormattedMessage id="søknadSendt.pengene.kontonummer" />
-                                                </EtikettLiten>
+                                                </Normaltekst>
                                             </Block>
                                             <Block margin="xxs">
                                                 <Ingress>{person.bankkonto && person.bankkonto.kontonummer}</Ingress>

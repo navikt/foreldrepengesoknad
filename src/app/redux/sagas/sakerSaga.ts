@@ -6,12 +6,13 @@ import Sak from '../../types/søknad/Sak';
 import { getSakForEndringssøknad, getSakUnderBehandling } from '../../util/saker/sakerUtils';
 import { getEksisterendeSakFromDTO } from 'app/util/eksisterendeSak/eksisterendeSakUtils';
 import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
+import { AxiosResponse } from 'axios';
 
 function* getSaker() {
     try {
         yield put(apiActions.updateApi({ isLoadingSaker: true }));
-        const response = yield call(Api.getSaker);
-        const saker: Sak[] = response.data;
+        const response: AxiosResponse<Sak[]> = yield call(Api.getSaker);
+        const saker = response.data;
         const sakForEndringssøknad = getSakForEndringssøknad(saker);
 
         yield put(
@@ -43,7 +44,7 @@ function* getSaker() {
 export function* fetchEksisterendeSak(saksnummer: string) {
     try {
         yield put(apiActions.updateApi({ isLoadingEksisterendeSak: true }));
-        const response = yield call(Api.getEksisterendeSak, saksnummer);
+        const response: AxiosResponse<UttaksplanDTO> = yield call(Api.getEksisterendeSak, saksnummer);
         return getEksisterendeSakFromDTO(response.data, false);
     } catch (error) {
         yield put(
@@ -63,8 +64,8 @@ export function* fetchEksisterendeSak(saksnummer: string) {
 export function* fetchEksisterendeSakMedFnr(fnr: string) {
     try {
         yield put(apiActions.updateApi({ isLoadingSakForAnnenPart: true }));
-        const response = yield call(Api.getEksisterendeSakMedFnr, fnr);
-        const uttaksplanDto: UttaksplanDTO = response.data;
+        const response: AxiosResponse<UttaksplanDTO> = yield call(Api.getEksisterendeSakMedFnr, fnr);
+        const uttaksplanDto = response.data;
         uttaksplanDto.grunnlag.søkerErFarEllerMedmor = !uttaksplanDto.grunnlag.søkerErFarEllerMedmor;
         return getEksisterendeSakFromDTO(uttaksplanDto, true);
     } catch (error) {
