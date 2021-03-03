@@ -2,20 +2,21 @@ import * as React from 'react';
 
 import BEMHelper from 'common/util/bem';
 import SendSøknadIkon, { OppsummeringIkonType } from './SendSøknadIkon';
-import LabelMedInfobox from 'app/components/elementer/labelMedInfobox/LabelMedInfobox';
+import LabelWithUtvidetInformasjon from 'common/components/labelWithUtvidetInformasjon/LabelWithUtvidetInformasjon';
 
 import './søknadSendtSectionHeader.less';
 
 const cls = BEMHelper('søknadSendtSectionHeader');
 
 interface Props {
-    title: string | React.ReactNode;
-    info?: string | React.ReactNode;
+    title: React.ReactNode;
+    info?: React.ReactNode;
+    infoApneLabel?: React.ReactNode;
     type: OppsummeringIkonType;
     children?: React.ReactNode;
 }
 
-const SøknadSendtSectionHeader: React.FunctionComponent<Props> = ({ title, info, type, children }) => {
+const SøknadSendtSectionHeader: React.FunctionComponent<Props> = ({ title, info, type, infoApneLabel, children }) => {
     return (
         <section className={cls.block}>
             <div className={cls.element('punkt')}>
@@ -23,7 +24,9 @@ const SøknadSendtSectionHeader: React.FunctionComponent<Props> = ({ title, info
                     <SendSøknadIkon type={type} />
                 </div>
                 <div className={cls.element('content')}>
-                    <LabelMedInfobox title={title} info={info} tag="h2" />
+                    <LabelWithUtvidetInformasjon info={info} apneLabel={infoApneLabel}>
+                        {title}
+                    </LabelWithUtvidetInformasjon>
                     {children}
                 </div>
             </div>
