@@ -1,6 +1,6 @@
 export enum UttaksplanHexFarge {
-    lilla = '#634689',
-    blaa = '#3385d1',
+    lilla = '#544066',
+    blaa = '#0067C5',
     gronn = '#06893a',
     yellow = '#ff9100',
     graa = '#7f756c',

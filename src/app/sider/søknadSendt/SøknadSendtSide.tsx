@@ -78,6 +78,7 @@ class SøknadSendtSide extends React.Component<Props> {
                                     title={getMessage(intl, 'søknadSendt.når.tittel')}
                                     type="kalender"
                                     info={getMessage(intl, 'søknadSendt.når.infoBox')}
+                                    infoApneLabel={getMessage(intl, 'søknadSendt.når.infoBox.apneLabel')}
                                 >
                                     {this.props.behandlingsFrist}
                                 </SøknadSendtSectionHeader>
@@ -89,6 +90,10 @@ class SøknadSendtSide extends React.Component<Props> {
                                         title={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.tittel')}
                                         type="koffert"
                                         info={getMessage(intl, 'søknadSendt.infoFraArbeidsgiver.infoBox')}
+                                        infoApneLabel={getMessage(
+                                            intl,
+                                            'søknadSendt.infoFraArbeidsgiver.infoBox.apneLabel'
+                                        )}
                                     >
                                         <Block margin="xxs">
                                             <FormattedMessage id={'søknadSendt.infoFraArbeidsgiver.del1'} />
@@ -111,6 +116,7 @@ class SøknadSendtSide extends React.Component<Props> {
                                     title={getMessage(intl, 'søknadSendt.pengene.tittel')}
                                     type="cash"
                                     info={getMessage(intl, 'søknadSendt.pengene.infoBox')}
+                                    infoApneLabel={getMessage(intl, 'søknadSendt.pengene.infoBox.apneLabel')}
                                 >
                                     {person.bankkonto && person.bankkonto.kontonummer ? (
                                         <>
