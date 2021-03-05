@@ -56,9 +56,9 @@ class FødselsdatoerSpørsmål extends React.Component<Props> {
         return termindatoAvgrensningerFodsel;
     }
 
-    getValidatorer(): Validator[] {
+    getValidatorer(index: number = 0): Validator[] {
         const { fødselsdatoer, intl } = this.props;
-        const fødselsdato = fødselsdatoer.length > 0 ? fødselsdatoer[0] : undefined;
+        const fødselsdato = fødselsdatoer.length > 0 ? fødselsdatoer[index] : undefined;
         return getFødselsdatoRegler(fødselsdato, this.props.gjelderAdopsjon === true, intl);
     }
 
@@ -136,7 +136,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props> {
                             onChange={(d) => this.onFødselsdatoChange(d, idx)}
                             label={<Labeltekst intlId={`fødselsdatoer.flere.${idx + 1}`} />}
                             datoAvgrensinger={this.getFødselsdatoAvgrensninger()}
-                            validators={this.getValidatorer()}
+                            validators={this.getValidatorer(idx)}
                         />
                     </div>
                 ))}

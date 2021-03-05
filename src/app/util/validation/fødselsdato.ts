@@ -1,7 +1,7 @@
 import { IntlShape } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
-import { date3YearsAgo, date15YearsAnd3MonthsAgo } from './values';
+import { date3YearsAgo } from './values';
 import {
     dateIs15YearsAnd3MonthsAgoOrLaterRule,
     dateIs3YearsAgoOrLaterRule,
@@ -10,7 +10,6 @@ import {
     hasValueRule,
     erGyldigDato,
 } from './common';
-import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import { Avgrensninger } from 'common/types';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
@@ -34,9 +33,7 @@ export const getFødselsdatoRegler = (
         regler.push(
             dateIs15YearsAnd3MonthsAgoOrLaterRule(
                 ISOStringToDate(fødselsdato),
-                getMessage(intl, `${intlKey}.ikkeMerEnn15År3MndTilbake`, {
-                    dato: formaterDatoUtenDag(date15YearsAnd3MonthsAgo.toDate()),
-                })
+                getMessage(intl, `${intlKey}.ikkeMerEnn15År3MndTilbake`)
             )
         );
     } else {
