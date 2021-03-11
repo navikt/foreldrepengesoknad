@@ -134,6 +134,10 @@ class Periodeliste extends React.Component<Props> {
     harPeriodeUbesvarteSpørsmål(uttaksplanValidering: UttaksplanValideringState, periode: Periode): boolean {
         const { id } = periode;
 
+        if (!uttaksplanValidering) {
+            return false;
+        }
+
         return uttaksplanValidering.resultat.avvik.some((res) => {
             if (res.periodeId === id && res.regel.key === 'erAllePeriodeSkjemaspørsmålBesvart') {
                 return true;
