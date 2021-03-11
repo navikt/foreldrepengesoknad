@@ -45,6 +45,14 @@ const parseAvgrensinger = (avgrensinger: Avgrensninger): DatepickerLimitations =
     };
 };
 
+const convertIntlLocalToDateLocale = (locale: string): DatepickerLocales => {
+    if (locale === 'nn') {
+        return 'nn';
+    }
+
+    return 'nb';
+};
+
 const bem = BEMHelper('datoInput');
 class DatoInput extends React.Component<Props> {
     render() {
@@ -79,7 +87,7 @@ class DatoInput extends React.Component<Props> {
                             calendarSettings={calendarSettings}
                             value={dato}
                             inputId={inputId}
-                            locale={intl.locale as DatepickerLocales}
+                            locale={convertIntlLocalToDateLocale(intl.locale)}
                             inputProps={{
                                 name,
                                 'aria-describedby': ariaDescriptionId,
