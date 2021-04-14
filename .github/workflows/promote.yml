@@ -1,0 +1,77 @@
+name: Promote
+on:
+    issue_comment:
+        types: [created]
+env:
+    NAMESPACE: teamforeldrepenger
+    IMAGE_BASE: ghcr.io/${{ github.repository }}
+
+jobs:
+    promote:
+        if: contains(github.event.comment.html_url, '/issues/') && startsWith( github.event.comment.body, '/promote ' )
+        runs-on: ubuntu-latest
+        steps:
+            - name: Acknowledge command
+              uses: actions/github-script@v3
+              with:
+                  script: |
+                      github.reactions.createForIssueComment({
+                        comment_id: context.payload.comment.id,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        content: '+1',
+                      });
+
+            - name: Sett variabler for cluster og tag
+              run: |
+                  echo "TAG=$(echo '${{ github.event.issue.title }}' | awk '{print $NF}' | awk -F- '{print $NF}')" >> $GITHUB_ENV
+                  echo "IMAGE=$IMAGE_BASE:$(echo '${{  github.event.issue.title }}' | awk '{print $NF}')" >> $GITHUB_ENV
+                  echo "CLUSTER=$(echo '${{github.event.comment.body}}' | cut -d' ' -f2)" >> $GITHUB_ENV
+
+            - name: Sjekk ut kode
+              uses: actions/checkout@v1
+              with:
+                  ref: ${{ env.TAG }}
+
+            - name: naislint
+              uses: nais/naislinter@v1.0.3
+              env:
+                  RESOURCE: naiserator.yaml
+                  PRINT_PAYLOAD: true
+                  VARS: .deploy/${{ env.CLUSTER }}-${{ env.NAMESPACE }}.json
+
+            - name: Promoter til cluster og namespace
+              uses: nais/deploy/actions/deploy@v1
+              env:
+                  PRINT_PAYLOAD: true
+                  APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+                  CLUSTER: ${{ env.CLUSTER }}
+                  RESOURCE: .deploy/naiserator.yaml
+                  VARS: .deploy/${{ env.CLUSTER }}-${{ env.NAMESPACE }}.json
+
+            - name: Oppdater kommentar med deployment status ved feil
+              if: failure()
+              uses: actions/github-script@v3
+              with:
+                  github-token: ${{secrets.GITHUB_TOKEN}}
+                  script: |
+                      const issue = { owner: context.issue.owner,
+                                      repo: context.issue.repo,
+                                      issue_number: ${{ github.event.issue.number }} }
+                      github.issues.createComment({...issue,
+                                              title: 'Deploy av ${{ env.TAG }}',
+                                              body: 'promote til ${{ env.CLUSTER }} ${{ env.NAMESPACE }} feilet'})
+                      github.issues.addLabels({...issue, labels: ['deployment-failed','${{ env.CLUSTER }}:${{ env.NAMESPACE }}']})
+
+            - name: Oppdater kommentar med deployment status
+              if: success()
+              uses: actions/github-script@v3
+              with:
+                  github-token: ${{secrets.GITHUB_TOKEN}}
+                  script: |
+                      const issue = { owner: context.issue.owner,
+                                      repo: context.issue.repo,
+                                      issue_number: ${{ github.event.issue.number }} }
+                      github.issues.createComment({...issue,
+                                              body: 'promote til  ${{ env.CLUSTER }} ${{ env.NAMESPACE }} utført'})
+                      github.issues.addLabels({...issue, labels: ['deployment','${{ env.CLUSTER }}-${{ env.NAMESPACE }}']})
