@@ -28,6 +28,7 @@
         "useCache": false
     },
     "exclude": [
+        "old",
         "node_modules",
         "build",
         "scripts",

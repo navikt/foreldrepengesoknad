@@ -1,4 +1,4 @@
-import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
+// import UtvidetInformasjon from 'app/components/elementer/utvidetinformasjon/UtvidetInformasjon';
 import { Element } from 'nav-frontend-typografi';
 import React from 'react';
 
@@ -20,7 +20,7 @@ const LabelWithUtvidetInformasjon: React.FunctionComponent<Props> = ({ children,
     return (
         <>
             <Element tag="span">{children}</Element>
-            {info && <UtvidetInformasjon apneLabel={apneLabel}>{info}</UtvidetInformasjon>}
+            {info && <div>{info}</div>}
         </>
     );
 };

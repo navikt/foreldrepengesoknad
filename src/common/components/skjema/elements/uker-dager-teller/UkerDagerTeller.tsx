@@ -3,7 +3,7 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 import NumberStepper, { Props as NumberStepperProps } from '../number-stepper/NumberStepper';
 import Block from 'common/components/block/Block';
 import BEMHelper from 'common/util/bem';
-import Fieldset from 'app/temp-components/Fieldset';
+// import Fieldset from 'app/temp-components/Fieldset';
 
 import './ukerDagerTeller.less';
 import { Element } from 'nav-frontend-typografi';
@@ -26,14 +26,14 @@ const UkerDagerTeller: React.FunctionComponent<Props> = ({ ukeLegend, dagLegend,
             <div className={bem.block}>
                 <div className={bem.element('ukerFelt')}>
                     <Block margin="xxs">
-                        <Fieldset legend={<span id={ukeLegendId}>{ukeLegend}</span>}>
-                            <NumberStepper {...ukeStepper} legendId={ukeLegendId} />
-                        </Fieldset>
+                        {/* <Fieldset legend={<span id={ukeLegendId}>{ukeLegend}</span>}> */}
+                        <NumberStepper {...ukeStepper} legendId={ukeLegendId} />
+                        {/* </Fieldset> */}
                     </Block>
                 </div>
-                <Fieldset legend={<span id={dagLegendId}>{dagLegend}</span>}>
-                    <NumberStepper {...dagStepper} legendId={dagLegendId} />
-                </Fieldset>
+                {/* <Fieldset legend={<span id={dagLegendId}>{dagLegend}</span>}> */}
+                <NumberStepper {...dagStepper} legendId={dagLegendId} />
+                {/* </Fieldset> */}
             </div>
         </SkjemaGruppe>
     );
