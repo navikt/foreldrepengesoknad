@@ -46,7 +46,7 @@ jobs:
                   docker push ${IMAGE_BASE} --all-tags
 
             - name: Lukk gamle bygg-issues
-              uses: actions/github-script@v3
+              uses: actions/github-script@v4.0.1
               with:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   script: |
@@ -68,7 +68,7 @@ jobs:
 
             - name: Opprett issue, trigg deploy til dev-fss og dev-gcp
               if: success()
-              uses: actions/github-script@v3
+              uses: actions/github-script@v4.0.1
               with:
                   github-token: ${{secrets.NOTIFICATION}}
                   script: |
