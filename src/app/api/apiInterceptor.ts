@@ -5,7 +5,7 @@ const apiBaseUrl = Environment.REST_API_URL;
 
 const AxiosInstance = axios.create({ baseURL: apiBaseUrl });
 
-const createAxiosInstance = (fnr?: string) => {
+const getAxiosInstance = (fnr?: string) => {
     AxiosInstance.interceptors.request.use(
         (config: AxiosRequestConfig): AxiosRequestConfig => {
             config.withCredentials = true;
@@ -32,4 +32,4 @@ const createAxiosInstance = (fnr?: string) => {
     return AxiosInstance;
 };
 
-export default createAxiosInstance;
+export default getAxiosInstance;

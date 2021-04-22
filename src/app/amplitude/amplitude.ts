@@ -28,7 +28,7 @@ export const initAmplitude = () => {
     }
 };
 
-export const logAmplitudeEvent = (eventName: string, eventData?: any, logToConsoleOnly = false) => {
+export const logAmplitudeEvent = (eventName: string, eventData?: any, logToConsoleOnly = true) => {
     if (logToConsoleOnly) {
         console.log({ eventName, eventData });
         return;

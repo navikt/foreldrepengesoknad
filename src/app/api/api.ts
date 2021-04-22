@@ -1,6 +1,6 @@
 // import axios from 'axios';
 // import Environment from 'app/Environment';
-import createAxiosInstance from './apiInterceptor';
+import getAxiosInstance from './apiInterceptor';
 import { storageParser } from './storageParser';
 
 // export interface GetTilgjengeligeStønadskontoerParams {
@@ -21,24 +21,24 @@ import { storageParser } from './storageParser';
 // const sendEndringssøknadUrl = '/soknad/endre';
 
 function getSøkerinfo(url: string) {
-    return createAxiosInstance()
+    return getAxiosInstance()
         .get(url)
         .then((res) => res.data);
 }
 
 const getSaker = () => {
-    return createAxiosInstance('123').get('/innsyn/saker');
+    return getAxiosInstance('123').get('/innsyn/saker');
 };
 
 const getEksisterendeSak = (saksnummer: string) => {
-    return createAxiosInstance('123').get('/innsyn/uttaksplan', {
+    return getAxiosInstance('123').get('/innsyn/uttaksplan', {
         withCredentials: true,
         params: { saksnummer },
     });
 };
 
 const getEksisterendeSakMedFnr = (annenPartFnr: string) => {
-    return createAxiosInstance('123').get('/innsyn/uttaksplanannen', {
+    return getAxiosInstance('123').get('/innsyn/uttaksplanannen', {
         params: { annenPart: annenPartFnr },
     });
 };
@@ -79,7 +79,7 @@ const getEksisterendeSakMedFnr = (annenPartFnr: string) => {
 // function sendSøknad(søknad: SøknadForInnsending | EnkelEndringssøknadForInnsending) {
 //     const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
 
-//     return createAxiosInstance('123').post(url, søknad, {
+//     return getAxiosInstance('123').post(url, søknad, {
 //         withCredentials: true,
 //         timeout: 120 * 1000,
 //         headers: {
@@ -89,29 +89,29 @@ const getEksisterendeSakMedFnr = (annenPartFnr: string) => {
 // }
 
 function getStoredAppState() {
-    return createAxiosInstance('123').get('/storage', {
+    return getAxiosInstance('123').get('/storage', {
         transformResponse: storageParser,
     });
 }
 
 function storeAppState(state: Partial<any>) {
     const { søknad, common, version } = state;
-    return createAxiosInstance('123').post('/storage', { søknad, common, version }, { withCredentials: true });
+    return getAxiosInstance('123').post('/storage', { søknad, common, version }, { withCredentials: true });
 }
 
 function deleteStoredAppState() {
-    return createAxiosInstance('123').delete('/storage', { withCredentials: true });
+    return getAxiosInstance('123').delete('/storage', { withCredentials: true });
 }
 
 // function sendStorageKvittering(storageKvittering: StorageKvittering) {
-//     return createAxiosInstance('123').post('/storage/kvittering/foreldrepenger', storageKvittering, {
+//     return getAxiosInstance('123').post('/storage/kvittering/foreldrepenger', storageKvittering, {
 //         withCredentials: true,
 //         timeout: 15 * 1000,
 //     });
 // }
 
 // function getStorageKvittering() {
-//     return createAxiosInstance('123').get('/storage/kvittering/foreldrepenger', {
+//     return getAxiosInstance('123').get('/storage/kvittering/foreldrepenger', {
 //         withCredentials: true,
 //         timeout: 15 * 1000,
 //     });

@@ -4,8 +4,6 @@ import Modal from 'nav-frontend-modal';
 import * as Sentry from '@sentry/browser';
 
 import * as countries from 'i18n-iso-countries';
-import { registerDevUtils } from 'common/dev/devUtils';
-import ByttBrowserModal from 'common/components/byttBrowserModal/ByttBrowserModal';
 import { initAmplitude } from './amplitude/amplitude';
 import AppContainer from './AppContainer';
 
@@ -26,8 +24,6 @@ if (!Intl.PluralRules) {
 Modal.setAppElement('#appContainer');
 const root = document.getElementById('app');
 
-registerDevUtils();
-
 initAmplitude();
 
 Sentry.init({
@@ -39,7 +35,6 @@ Sentry.init({
 
 render(
     <ErrorBoundary>
-        <ByttBrowserModal />
         <AppContainer />
     </ErrorBoundary>,
     root

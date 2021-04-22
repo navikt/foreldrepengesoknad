@@ -1,11 +1,9 @@
 import { Locale } from '@navikt/fp-common';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import React from 'react';
-import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
 import useSWR from 'swr';
 import Api from './api/api';
-import { useForeldrepengesøknadContext } from './context/hooks/useForeldrepengesøknadContext';
-import Velkommen from './pages/velkommen/Velkommen';
+import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
 
 interface Props {
     locale: Locale;
@@ -20,36 +18,20 @@ const renderSpinner = () => (
 
 const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const { data } = useSWR('/sokerinfo', (url) => Api.getSøkerinfo(url));
-    const { state } = useForeldrepengesøknadContext();
-
-    console.log(data);
 
     if (!data) {
         return renderSpinner();
     }
 
+    console.log(data);
+
     return (
-        <Router>
-            <Route
-                path="/"
-                exact={true}
-                component={() => (
-                    <Velkommen fornavn={data.søker.fornavn} locale={locale} onChangeLocale={onChangeLocale} />
-                )}
-            />
-            {!state.søknad.velkommen.harForståttRettigheterOgPlikter ? (
-                <Redirect to="/" exact={true} />
-            ) : (
-                <>
-                    <Route
-                        path="/soknad/søkersituasjon"
-                        component={() => (
-                            <Velkommen fornavn={data.søker.fornavn} locale={locale} onChangeLocale={onChangeLocale} />
-                        )}
-                    />
-                </>
-            )}
-        </Router>
+        <ForeldrepengesøknadRoutes
+            fornavn={data.søker.fornavn}
+            kjønn={data.søker.kjønn}
+            locale={locale}
+            onChangeLocale={onChangeLocale}
+        />
     );
 };
 
