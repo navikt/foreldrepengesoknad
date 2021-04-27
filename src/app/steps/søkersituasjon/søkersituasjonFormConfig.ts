@@ -1,4 +1,5 @@
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import SøkersituasjonState from 'app/context/types/SøkersituasjonState';
 
 export enum SøkersituasjonFormField {
     situasjon = 'situasjon',
@@ -7,12 +8,27 @@ export enum SøkersituasjonFormField {
 
 export interface SøkersituasjonFormData {
     [SøkersituasjonFormField.situasjon]?: string;
-    [SøkersituasjonFormField.rolle]?: 'K' | 'M';
+    [SøkersituasjonFormField.rolle]?: string;
 }
 
-export const initialSøkersituasjonValues: SøkersituasjonFormData = {
+const initialSøkersituasjonValues: SøkersituasjonFormData = {
     [SøkersituasjonFormField.situasjon]: undefined,
     [SøkersituasjonFormField.situasjon]: undefined,
 };
 
-export const SøkersituasjonFormComponents = getTypedFormComponents<SøkersituasjonFormField, SøkersituasjonFormData>();
+export const getInitialSøkerSituasjonValues = (stateValues: SøkersituasjonState): SøkersituasjonFormData => {
+    if (stateValues.rolle !== undefined && stateValues.situasjon !== undefined) {
+        return {
+            rolle: stateValues.rolle,
+            situasjon: stateValues.situasjon,
+        };
+    }
+
+    return initialSøkersituasjonValues;
+};
+
+export const SøkersituasjonFormComponents = getTypedFormComponents<
+    SøkersituasjonFormField,
+    SøkersituasjonFormData,
+    string
+>();

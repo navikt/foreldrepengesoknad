@@ -1,4 +1,5 @@
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
+import Api from 'app/api/api';
 import actionCreator, { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
 import { History } from 'history';
 
@@ -14,5 +15,6 @@ export const onAvbrytSøknad = (dispatch: React.Dispatch<ForeldrepengesøknadCon
     });
 
     dispatch(actionCreator.avbrytSøknad());
+    Api.deleteStoredAppState();
     history.push('/');
 };

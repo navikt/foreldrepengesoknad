@@ -18,16 +18,16 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({ fornavn, locale,
 
     return (
         <Router>
-            <Route
-                path={SøknadRoutes.VELKOMMEN}
-                exact={true}
-                component={() => <Velkommen fornavn={fornavn} locale={locale} onChangeLocale={onChangeLocale} />}
-            />
-            {!state.søknad.velkommen.harForståttRettigheterOgPlikter ? (
+            <Route path={SøknadRoutes.VELKOMMEN} exact={true}>
+                <Velkommen fornavn={fornavn} locale={locale} onChangeLocale={onChangeLocale} />
+            </Route>
+            {!state.søknad.harGodkjentVilkår ? (
                 <Redirect to={SøknadRoutes.VELKOMMEN} exact={true} />
             ) : (
                 <>
-                    <Route path={SøknadRoutes.SØKERSITUASJON} component={() => <Søkersituasjon kjønn={kjønn} />} />
+                    <Route path={SøknadRoutes.SØKERSITUASJON}>
+                        <Søkersituasjon kjønn={kjønn} />
+                    </Route>
                 </>
             )}
         </Router>

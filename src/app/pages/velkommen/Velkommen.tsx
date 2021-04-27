@@ -1,11 +1,10 @@
 import { bemUtils, Block, intlUtils, LanguageToggle, Locale, Sidebanner } from '@navikt/fp-common';
-import { getFieldErrorRenderer } from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
-    initialVelkommenValues,
+    getInitialVelkommenValues,
     VelkommenFormComponents,
     VelkommenFormData,
     VelkommenFormField,
@@ -18,6 +17,9 @@ import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal'
 import './velkommen.less';
 import { useHistory } from 'react-router';
 import { validateHarForståttRettigheterOgPlikter } from './validation/velkommenValidation';
+import { getFieldErrorRenderer } from 'app/utils/validationUtil';
+import SøknadRoutes from 'app/routes/routes';
+import Api from 'app/api/api';
 
 interface Props {
     fornavn: string;
@@ -29,28 +31,32 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, onChangeLo
     const intl = useIntl();
     const history = useHistory();
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
-    const { dispatch } = useForeldrepengesøknadContext();
+    const { dispatch, state } = useForeldrepengesøknadContext();
     const bem = bemUtils('velkommen');
+    const hasSubmitted = useRef(false);
+
+    useEffect(() => {
+        if (hasSubmitted.current === true) {
+            Api.storeAppState(state);
+            history.push(SøknadRoutes.SØKERSITUASJON);
+        }
+    }, [state]);
 
     const onValidSubmit = (values: Partial<VelkommenFormData>) => {
-        dispatch(
-            actionCreator.setVelkommen({
-                harForståttRettigheterOgPlikter: values.harForståttRettigheterOgPlikter!!,
-            })
-        );
+        dispatch(actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!!));
 
-        history.push('/soknad/sokersituasjon');
+        hasSubmitted.current = true;
     };
 
     return (
         <VelkommenFormComponents.FormikWrapper
-            initialValues={initialVelkommenValues}
+            initialValues={getInitialVelkommenValues(state.søknad.harGodkjentVilkår)}
             onSubmit={(values) => onValidSubmit(values)}
             renderForm={() => {
                 return (
                     <VelkommenFormComponents.Form
                         includeButtons={false}
-                        fieldErrorRenderer={getFieldErrorRenderer(intl, 'valideringsfeil.velkommen')}
+                        fieldErrorHandler={getFieldErrorRenderer(intl)}
                     >
                         <LanguageToggle
                             locale={locale}

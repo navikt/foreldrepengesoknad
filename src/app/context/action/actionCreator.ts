@@ -1,19 +1,18 @@
 import SøkersituasjonState from '../types/SøkersituasjonState';
-import VelkommenState from '../types/VelkommenState';
 
 export enum ForeldrepengesøknadContextActionKeys {
-    'SET_VELKOMMEN' = 'setVelkommen',
+    'SET_HARGODKJENTVILKÅR' = 'setVelkommen',
     'SET_SØKERSITUASJON' = 'setSøkersituasjon',
     'AVBRYT_SØKNAD' = 'avbrytSøknad',
 }
 
 interface SetVelkommen {
-    type: ForeldrepengesøknadContextActionKeys.SET_VELKOMMEN;
-    payload: VelkommenState;
+    type: ForeldrepengesøknadContextActionKeys.SET_HARGODKJENTVILKÅR;
+    payload: boolean;
 }
 
-const setVelkommen = (payload: VelkommenState): SetVelkommen => ({
-    type: ForeldrepengesøknadContextActionKeys.SET_VELKOMMEN,
+const setVelkommen = (payload: boolean): SetVelkommen => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_HARGODKJENTVILKÅR,
     payload,
 });
 

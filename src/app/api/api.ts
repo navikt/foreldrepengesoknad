@@ -1,5 +1,8 @@
 // import axios from 'axios';
 // import Environment from 'app/Environment';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import { useRequest } from 'app/utils/hooks/useRequest';
 import getAxiosInstance from './apiInterceptor';
 import { storageParser } from './storageParser';
 
@@ -20,11 +23,14 @@ import { storageParser } from './storageParser';
 // const sendSøknadUrl = '/soknad';
 // const sendEndringssøknadUrl = '/soknad/endre';
 
-function getSøkerinfo(url: string) {
-    return getAxiosInstance()
-        .get(url)
-        .then((res) => res.data);
-}
+const getSøkerinfo = () => {
+    const { data, error } = useRequest<SøkerinfoDTO>(getAxiosInstance().get('/sokerinfo'));
+
+    return {
+        søkerinfoData: data,
+        søkerinfoError: error,
+    };
+};
 
 const getSaker = () => {
     return getAxiosInstance('123').get('/innsyn/saker');
@@ -89,14 +95,21 @@ const getEksisterendeSakMedFnr = (annenPartFnr: string) => {
 // }
 
 function getStoredAppState() {
-    return getAxiosInstance('123').get('/storage', {
-        transformResponse: storageParser,
-    });
+    const { data, error } = useRequest(
+        getAxiosInstance('123').get('/storage', {
+            transformResponse: storageParser,
+        })
+    );
+
+    return {
+        storageData: data,
+        storageError: error,
+    };
 }
 
-function storeAppState(state: Partial<any>) {
-    const { søknad, common, version } = state;
-    return getAxiosInstance('123').post('/storage', { søknad, common, version }, { withCredentials: true });
+function storeAppState(state: ForeldrepengesøknadContextState) {
+    const { søknad, version } = state;
+    return getAxiosInstance('123').post('/storage', { søknad, version }, { withCredentials: true });
 }
 
 function deleteStoredAppState() {

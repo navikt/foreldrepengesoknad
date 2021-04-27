@@ -1,7 +1,6 @@
 import { Locale } from '@navikt/fp-common';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import React from 'react';
-import useSWR from 'swr';
 import Api from './api/api';
 import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
 
@@ -17,18 +16,20 @@ const renderSpinner = () => (
 );
 
 const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
-    const { data } = useSWR('/sokerinfo', (url) => Api.getSøkerinfo(url));
+    const { søkerinfoData } = Api.getSøkerinfo();
+    const { storageData } = Api.getStoredAppState();
 
-    if (!data) {
+    if (!søkerinfoData || !storageData) {
         return renderSpinner();
     }
 
-    console.log(data);
+    console.log(søkerinfoData);
+    console.log(storageData);
 
     return (
         <ForeldrepengesøknadRoutes
-            fornavn={data.søker.fornavn}
-            kjønn={data.søker.kjønn}
+            fornavn={søkerinfoData.søker.fornavn}
+            kjønn={søkerinfoData.søker.kjønn}
             locale={locale}
             onChangeLocale={onChangeLocale}
         />

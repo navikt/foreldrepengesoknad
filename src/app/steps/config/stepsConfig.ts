@@ -1,4 +1,4 @@
-import { assertUnreachable } from 'app/util/globalUtil';
+import { assertUnreachable } from 'app/utils/globalUtil';
 
 type SøkersituasjonStepId = 'søkersituasjon';
 type OmBarnetStepId = 'omBarnet';

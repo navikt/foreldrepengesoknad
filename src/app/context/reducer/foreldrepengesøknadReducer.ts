@@ -6,16 +6,20 @@ const foreldrepengesøknadReducer = (
     action: ForeldrepengesøknadContextAction
 ): ForeldrepengesøknadContextState => {
     switch (action.type) {
-        case ForeldrepengesøknadContextActionKeys.SET_VELKOMMEN:
+        case ForeldrepengesøknadContextActionKeys.SET_HARGODKJENTVILKÅR:
             return {
                 ...state,
                 søknad: {
-                    velkommen: {
-                        ...action.payload,
-                    },
-                    søkersituasjon: {
-                        ...state.søknad.søkersituasjon,
-                    },
+                    ...state.søknad,
+                    harGodkjentVilkår: action.payload,
+                },
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_SØKERSITUASJON:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    søkersituasjon: action.payload,
                 },
             };
         case ForeldrepengesøknadContextActionKeys.AVBRYT_SØKNAD:

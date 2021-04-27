@@ -1,18 +1,18 @@
-import SøkersituasjonState from './types/SøkersituasjonState';
-import VelkommenState from './types/VelkommenState';
+import SøknadRoutes from 'app/routes/routes';
+import { Søknad } from './types/Søknad';
 
 export interface ForeldrepengesøknadContextState {
-    søknad: {
-        velkommen: VelkommenState;
-        søkersituasjon: SøkersituasjonState;
-    };
+    version: number;
+    currentRoute: SøknadRoutes;
+    søknad: Søknad;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
+    version: 2,
+    currentRoute: SøknadRoutes.VELKOMMEN,
     søknad: {
-        velkommen: {
-            harForståttRettigheterOgPlikter: false,
-        },
+        type: 'foreldrepenger',
+        harGodkjentVilkår: false,
         søkersituasjon: {
             rolle: undefined as any,
             situasjon: undefined as any,

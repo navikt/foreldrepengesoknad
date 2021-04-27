@@ -8,8 +8,10 @@ export interface VelkommenFormData {
     [VelkommenFormField.harForståttRettigheterOgPlikter]: boolean;
 }
 
-export const initialVelkommenValues: VelkommenFormData = {
-    [VelkommenFormField.harForståttRettigheterOgPlikter]: false,
+export const getInitialVelkommenValues = (harForståttRettigheterOgPlikter: boolean): VelkommenFormData => {
+    return {
+        harForståttRettigheterOgPlikter,
+    };
 };
 
-export const VelkommenFormComponents = getTypedFormComponents<VelkommenFormField, VelkommenFormData>();
+export const VelkommenFormComponents = getTypedFormComponents<VelkommenFormField, VelkommenFormData, string>();

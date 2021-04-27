@@ -1,15 +1,20 @@
-import { bemUtils, Block, commonFieldErrorRenderer, intlUtils, Kjønn, Step } from '@navikt/fp-common';
+import { bemUtils, Block, intlUtils, Kjønn, Step } from '@navikt/fp-common';
+import Api from 'app/api/api';
+// import Api from 'app/api/api';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import { onAvbrytSøknad } from 'app/util/globalUtil';
+import SøknadRoutes from 'app/routes/routes';
+// import SøknadRoutes from 'app/routes/routes';
+import { onAvbrytSøknad } from 'app/utils/globalUtil';
+import { getFieldErrorRenderer } from 'app/utils/validationUtil';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router';
 import stepConfig from '../config/stepsConfig';
 import VelgRolle from './components/VelgRolle';
 import {
-    initialSøkersituasjonValues,
+    getInitialSøkerSituasjonValues,
     SøkersituasjonFormComponents,
     SøkersituasjonFormData,
     SøkersituasjonFormField,
@@ -25,16 +30,27 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
     const intl = useIntl();
     const bem = bemUtils('søkersituasjon');
     const history = useHistory();
-    const { dispatch } = useForeldrepengesøknadContext();
+    const { state, dispatch } = useForeldrepengesøknadContext();
+    const hasSubmitted = useRef(false);
+
+    useEffect(() => {
+        if (hasSubmitted.current === true) {
+            Api.storeAppState(state);
+            history.push(SøknadRoutes.OMBARNET);
+        }
+    }, [state]);
 
     const onValidSubmit = (values: Partial<SøkersituasjonFormData>) => {
-        dispatch(actionCreator.setSøkersituasjon(mapSøkersituasjonFormDataToState(values)));
-        history.push('/soknad/om-barnet');
+        const søkersituasjon = mapSøkersituasjonFormDataToState(values);
+
+        dispatch(actionCreator.setSøkersituasjon(søkersituasjon));
+
+        hasSubmitted.current = true;
     };
 
     return (
         <SøkersituasjonFormComponents.FormikWrapper
-            initialValues={initialSøkersituasjonValues}
+            initialValues={getInitialSøkerSituasjonValues(state.søknad.søkersituasjon)}
             onSubmit={(values) => onValidSubmit(values)}
             renderForm={({ values: formValues }) => {
                 const visibility = søkersituasjonQuestionsConfig.getVisbility(formValues);
@@ -51,7 +67,7 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
                     >
                         <SøkersituasjonFormComponents.Form
                             includeButtons={false}
-                            fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
+                            fieldErrorHandler={getFieldErrorRenderer(intl)}
                         >
                             <div className={bem.block}>
                                 <Block margin="xl">
@@ -59,12 +75,12 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
                                         name={SøkersituasjonFormField.situasjon}
                                         radios={[
                                             {
-                                                label: intlUtils(intl, 'søkersituasjon.radioButton.adopsjon'),
-                                                value: 'adopsjon',
-                                            },
-                                            {
                                                 label: intlUtils(intl, 'søkersituasjon.radioButton.fødsel'),
                                                 value: 'fødsel',
+                                            },
+                                            {
+                                                label: intlUtils(intl, 'søkersituasjon.radioButton.adopsjon'),
+                                                value: 'adopsjon',
                                             },
                                         ]}
                                         useTwoColumns={true}
