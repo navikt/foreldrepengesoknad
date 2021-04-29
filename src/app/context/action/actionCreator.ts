@@ -1,8 +1,10 @@
-import SøkersituasjonState from '../types/SøkersituasjonState';
+import Barn from '../types/Barn';
+import Søkersituasjon from '../types/Søkersituasjon';
 
 export enum ForeldrepengesøknadContextActionKeys {
     'SET_HARGODKJENTVILKÅR' = 'setVelkommen',
     'SET_SØKERSITUASJON' = 'setSøkersituasjon',
+    'SET_OMBARNET' = 'setOmBarnet',
     'AVBRYT_SØKNAD' = 'avbrytSøknad',
 }
 
@@ -18,11 +20,21 @@ const setVelkommen = (payload: boolean): SetVelkommen => ({
 
 interface SetSøkersituasjon {
     type: ForeldrepengesøknadContextActionKeys.SET_SØKERSITUASJON;
-    payload: SøkersituasjonState;
+    payload: Søkersituasjon;
 }
 
-const setSøkersituasjon = (payload: SøkersituasjonState): SetSøkersituasjon => ({
+const setSøkersituasjon = (payload: Søkersituasjon): SetSøkersituasjon => ({
     type: ForeldrepengesøknadContextActionKeys.SET_SØKERSITUASJON,
+    payload,
+});
+
+interface SetOmBarnet {
+    type: ForeldrepengesøknadContextActionKeys.SET_OMBARNET;
+    payload: Barn;
+}
+
+const setOmBarnet = (payload: Barn): SetOmBarnet => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_OMBARNET,
     payload,
 });
 
@@ -34,10 +46,11 @@ const avbrytSøknad = (): AvbrytSøknad => ({
     type: ForeldrepengesøknadContextActionKeys.AVBRYT_SØKNAD,
 });
 
-export type ForeldrepengesøknadContextAction = SetVelkommen | SetSøkersituasjon | AvbrytSøknad;
+export type ForeldrepengesøknadContextAction = SetVelkommen | SetSøkersituasjon | SetOmBarnet | AvbrytSøknad;
 
 export default {
     setVelkommen,
     setSøkersituasjon,
+    setOmBarnet,
     avbrytSøknad,
 };

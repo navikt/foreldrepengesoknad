@@ -1,10 +1,8 @@
-import { bemUtils, Block, intlUtils, Kjønn, Step } from '@navikt/fp-common';
+import { Block, intlUtils, Kjønn, Step } from '@navikt/fp-common';
 import Api from 'app/api/api';
-// import Api from 'app/api/api';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import SøknadRoutes from 'app/routes/routes';
-// import SøknadRoutes from 'app/routes/routes';
 import { onAvbrytSøknad } from 'app/utils/globalUtil';
 import { getFieldErrorRenderer } from 'app/utils/validationUtil';
 import { Hovedknapp } from 'nav-frontend-knapper';
@@ -28,7 +26,6 @@ interface Props {
 
 const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
     const intl = useIntl();
-    const bem = bemUtils('søkersituasjon');
     const history = useHistory();
     const { state, dispatch } = useForeldrepengesøknadContext();
     const hasSubmitted = useRef(false);
@@ -69,7 +66,7 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
                             includeButtons={false}
                             fieldErrorHandler={getFieldErrorRenderer(intl)}
                         >
-                            <div className={bem.block}>
+                            <div>
                                 <Block margin="xl">
                                     <SøkersituasjonFormComponents.RadioPanelGroup
                                         name={SøkersituasjonFormField.situasjon}

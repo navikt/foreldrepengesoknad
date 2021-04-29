@@ -1,7 +1,7 @@
-import SøkersituasjonState from './SøkersituasjonState';
+import Søkersituasjon from './Søkersituasjon';
 
 export interface Søknad {
     type: 'foreldrepenger';
     harGodkjentVilkår: boolean;
-    søkersituasjon: SøkersituasjonState;
+    søkersituasjon: Søkersituasjon;
 }

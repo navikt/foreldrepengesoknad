@@ -22,6 +22,10 @@ const foreldrepengesøknadReducer = (
                     søkersituasjon: action.payload,
                 },
             };
+        case ForeldrepengesøknadContextActionKeys.SET_OMBARNET:
+            return {
+                ...state,
+            };
         case ForeldrepengesøknadContextActionKeys.AVBRYT_SØKNAD:
             return {
                 ...foreldrepengesøknadInitialState,

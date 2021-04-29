@@ -6,7 +6,7 @@ const MockStorage = require('./mock-storage');
 
 require('dotenv').config();
 
-const allowCrossDomain = function(req, res, next) {
+const allowCrossDomain = function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-XSRF-TOKEN,Location');
@@ -14,8 +14,8 @@ const allowCrossDomain = function(req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 };
-const delayAllResponses = function(millis) {
-    return function(req, res, next) {
+const delayAllResponses = function (millis) {
+    return function (req, res, next) {
         setTimeout(next, millis);
     };
 };
@@ -56,6 +56,7 @@ router.post('/rest/storage', (req, res) => {
 });
 
 router.delete('/rest/storage', (req, res) => {
+    MockStorage.deleteSoknad();
     return res.sendStatus(200);
 });
 
@@ -76,7 +77,7 @@ router.delete('/rest/storage', (req, res) => {
 });
 
 const vedleggUpload = multer({
-    dest: './dist/vedlegg/'
+    dest: './dist/vedlegg/',
 });
 router.post('/rest/storage/vedlegg', vedleggUpload.single('vedlegg'), (req, res) => {
     res.setHeader('Location', `http://localhost:8080/foreldrepengesoknad/dist/vedlegg/${req.body.id}`);

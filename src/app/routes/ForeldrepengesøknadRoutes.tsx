@@ -1,6 +1,7 @@
 import { Kjønn, Locale } from '@navikt/fp-common';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Velkommen from 'app/pages/velkommen/Velkommen';
+import OmBarnet from 'app/steps/om-barnet/OmBarnet';
 import Søkersituasjon from 'app/steps/søkersituasjon/Søkersituasjon';
 import React, { FunctionComponent } from 'react';
 import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
@@ -27,6 +28,9 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({ fornavn, locale,
                 <>
                     <Route path={SøknadRoutes.SØKERSITUASJON}>
                         <Søkersituasjon kjønn={kjønn} />
+                    </Route>
+                    <Route path={SøknadRoutes.OMBARNET}>
+                        <OmBarnet />
                     </Route>
                 </>
             )}
