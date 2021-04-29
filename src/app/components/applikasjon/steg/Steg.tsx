@@ -24,6 +24,7 @@ import Stegindikator from '../stegindikator/Stegindikator';
 import './steg.less';
 import Environment from 'app/Environment';
 import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
+import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 
 interface RenderStegContentOptions {
     onValidFormSubmit: () => void;
@@ -89,11 +90,23 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 
     handleAvbrytSøknad() {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'foreldrepengesoknad',
+            team: 'foreldrepenger',
+            hendelse: 'avbrutt',
+        });
+
         this.props.dispatch(søknadActionCreators.avbrytSøknad());
         this.props.history.push(routeConfig.APP_ROUTE_PREFIX);
     }
 
     handleAvsluttOgFortsettSenere() {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'foreldrepengesoknad',
+            team: 'foreldrepenger',
+            hendelse: 'fortsettSenere',
+        });
+
         (window as any).location = Environment.FAMILIE;
     }
 
