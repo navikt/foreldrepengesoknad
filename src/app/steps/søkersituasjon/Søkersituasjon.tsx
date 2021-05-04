@@ -9,7 +9,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router';
-import stepConfig from '../config/stepsConfig';
+import stepConfig from '../stepsConfig';
 import VelgRolle from './components/VelgRolle';
 import {
     getInitialSøkerSituasjonValues,
@@ -33,7 +33,7 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
     useEffect(() => {
         if (hasSubmitted.current === true) {
             Api.storeAppState(state);
-            history.push(SøknadRoutes.OMBARNET);
+            history.push(SøknadRoutes.OM_BARNET);
         }
     }, [state]);
 

@@ -17,5 +17,6 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
             rolle: undefined as any,
             situasjon: undefined as any,
         },
+        barn: undefined as any,
     },
 };

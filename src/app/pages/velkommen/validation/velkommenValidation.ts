@@ -1,7 +1,7 @@
 export const validateHarForståttRettigheterOgPlikter = (value: boolean) => {
-    let result;
     if (value !== true) {
-        result = 'valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd';
+        return 'valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd';
     }
-    return result;
+
+    return undefined;
 };

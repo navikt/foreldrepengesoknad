@@ -1,4 +1,5 @@
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
+import Barn from 'app/context/types/Barn';
 
 export enum OmBarnetFormField {
     erBarnetFødt = 'erBarnetFødt',
@@ -31,15 +32,23 @@ export interface OmBarnetFormData {
 export const initialOmBarnetValues: OmBarnetFormData = {
     [OmBarnetFormField.erBarnetFødt]: YesOrNo.UNANSWERED,
     [OmBarnetFormField.adopsjonAvEktefellesBarn]: YesOrNo.UNANSWERED,
-    [OmBarnetFormField.antallBarn]: undefined,
-    [OmBarnetFormField.adopsjonsdato]: undefined,
+    [OmBarnetFormField.antallBarn]: '',
+    [OmBarnetFormField.adopsjonsdato]: '',
     [OmBarnetFormField.søkerAdopsjonAlene]: YesOrNo.UNANSWERED,
     [OmBarnetFormField.fødselsdatoer]: [],
-    [OmBarnetFormField.termindato]: undefined,
+    [OmBarnetFormField.termindato]: '',
     [OmBarnetFormField.omsorgsovertakelse]: [],
     [OmBarnetFormField.terminbekreftelse]: [],
-    [OmBarnetFormField.terminbekreftelsedato]: undefined,
-    [OmBarnetFormField.adoptertIUtlandet]: undefined,
+    [OmBarnetFormField.terminbekreftelsedato]: '',
+    [OmBarnetFormField.adoptertIUtlandet]: YesOrNo.UNANSWERED,
 };
 
 export const OmBarnetFormComponents = getTypedFormComponents<OmBarnetFormField, OmBarnetFormData, string>();
+
+export const getOmBarnetInitialValues = (stateValues: Barn): OmBarnetFormData => {
+    if (!stateValues) {
+        return initialOmBarnetValues;
+    }
+
+    return initialOmBarnetValues;
+};

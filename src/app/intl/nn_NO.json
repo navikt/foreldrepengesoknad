@@ -6,6 +6,7 @@
     "søknad.pageheading": "Foreldrepengesøknad",
     "søknad.gåVidere": "Gå videre",
     "søknad.søkersituasjon": "Din situasjon",
+    "søknad.omBarnet": "Om barnet",
     "søkersituasjon.text.situasjon": "Velg det som gjelder for deg",
     "søkersituasjon.text.rolle": "Hva søker du som?",
     "søkersituasjon.radioButton.adopsjon": "Adopsjon",
@@ -48,5 +49,11 @@
     "velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt3": "korleis du kan klage dersom du er ueinig",
     "velkommen.dinePersonopplysninger.behandling.html": "NAV hentar inn og mottar opplysningar om deg når du sender inn ein søknad. Det er nødvendig for at du skal kunne få rett teneste og rette ytingar. Du har valt å søkje om foreldrepengar. Det er ei yting frå folketrygda som du kan få dersom du fyller vilkåra. Vilkåra står på <a>nav.no/foreldrepenger</a>.",
     "velkommen.dinePersonopplysninger.sectionheading": "Slik behandlar NAV personopplysningane dine",
+    "omBarnet.erBarnetFødt": "Er barnet født?",
+    "omBarnet.radiobutton.ettBarn": "Ett barn",
+    "omBarnet.radiobutton.tvillinger": "Tvillinger",
+    "omBarnet.radiobutton.flere": "Flere barn",
+    "omBarnet.antallBarn": "Hvor mange barn har du fått?",
+    "omBarnet.fødselsdato": "Når ble barnet født?",
     "valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd": "Du må stadfeste at du har lese og forstått dine plikter."
 }

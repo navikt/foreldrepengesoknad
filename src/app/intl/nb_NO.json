@@ -4,8 +4,9 @@
     "byttBrowser.tittel": "Vi ser du bruker en utdatert nettleser",
     "byttBrowser.ingress": "For å få den beste brukeropplevelsen anbefaler vi at du bytter til en moderne nettleser som støtter moderne webstandarder.",
     "søknad.pageheading": "Foreldrepengesøknad",
-    "søknad.søkersituasjon": "Din situasjon",
     "søknad.gåVidere": "Gå videre",
+    "søknad.søkersituasjon": "Din situasjon",
+    "søknad.omBarnet": "Om barnet",
     "søkersituasjon.text.situasjon": "Velg det som gjelder for deg",
     "søkersituasjon.text.rolle": "Hva søker du som?",
     "søkersituasjon.radioButton.adopsjon": "Adopsjon",
@@ -48,5 +49,11 @@
     "velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt3": "hvordan du kan klage hvis du er uenig",
     "velkommen.dinePersonopplysninger.behandling.html": "NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser. Du har valgt å søke om foreldrepenger. Det er en ytelse fra folketrygden som du kan få hvis du fyller vilkårene. Vilkårene står på <a>nav.no/foreldrepenger</a>.",
     "velkommen.dinePersonopplysninger.sectionheading": "Slik behandler NAV personopplysningene dine",
+    "omBarnet.erBarnetFødt": "Er barnet født?",
+    "omBarnet.radiobutton.ettBarn": "Ett barn",
+    "omBarnet.radiobutton.tvillinger": "Tvillinger",
+    "omBarnet.radiobutton.flere": "Flere barn",
+    "omBarnet.antallBarn": "Hvor mange barn har du fått?",
+    "omBarnet.fødselsdato": "Når ble barnet født?",
     "valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd": "Du må bekrefte at du har lest og forstått dine plikter."
 }
