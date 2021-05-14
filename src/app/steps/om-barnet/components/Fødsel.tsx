@@ -26,7 +26,7 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
 
     return (
         <>
-            <Block margin="xl" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
+            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
                 <OmBarnetFormComponents.RadioPanelGroup
                     name={OmBarnetFormField.antallBarn}
                     radios={[
@@ -48,7 +48,7 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                 />
             </Block>
             <Block
-                margin="xl"
+                padBottom="l"
                 visible={formValues.antallBarn !== undefined && parseInt(formValues.antallBarn, 10) >= 3}
             >
                 <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarn}>
@@ -61,7 +61,7 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                     <option value="9">9</option>
                 </OmBarnetFormComponents.Select>
             </Block>
-            <Block margin="xl" visible={visibility.isVisible(OmBarnetFormField.fødselsdatoer)}>
+            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.fødselsdatoer)}>
                 <FieldArray
                     name={OmBarnetFormField.fødselsdatoer}
                     render={() => [
@@ -75,6 +75,14 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                             placeholder={'dd.mm.åååå'}
                         />,
                     ]}
+                />
+            </Block>
+            <Block visible={visibility.isVisible(OmBarnetFormField.termindato)}>
+                <OmBarnetFormComponents.DatePicker
+                    name={OmBarnetFormField.termindato}
+                    label={intlUtils(intl, 'omBarnet.termindato')}
+                    minDate={dayjs().subtract(6, 'month').toDate()}
+                    placeholder={'dd.mm.åååå'}
                 />
             </Block>
         </>

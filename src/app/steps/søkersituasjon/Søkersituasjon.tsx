@@ -37,6 +37,10 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
         }
     }, [state]);
 
+    useEffect(() => {
+        dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.SØKERSITUASJON));
+    }, []);
+
     const onValidSubmit = (values: Partial<SøkersituasjonFormData>) => {
         const søkersituasjon = mapSøkersituasjonFormDataToState(values);
 

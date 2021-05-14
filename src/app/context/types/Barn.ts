@@ -3,25 +3,28 @@ export enum BarnType {
     'UFØDT' = 'ufødt',
     'ADOPTERT_STEBARN' = 'adoptertStebarn',
     'ADOPTERT' = 'adoptert',
+    'IKKE_UTFYLT' = 'ikkeUtfylt',
 }
 
 interface Common {
     antallBarn: string;
-    dokumentasjonAvAleneomsorg: any[];
-    datoForAleneomsorg: string;
+    dokumentasjonAvAleneomsorg?: any[];
+    datoForAleneomsorg?: string;
     type: BarnType;
+}
+
+interface IkkeUtfyltBarn extends Common {
+    type: BarnType.IKKE_UTFYLT;
 }
 
 interface FødtBarn extends Common {
     type: BarnType.FØDT;
-    erBarnetFødt: boolean;
     fødselsdatoer: string[];
     termindato?: string;
 }
 
 interface UfødtBarn extends Common {
     type: BarnType.UFØDT;
-    erBarnetFødt: boolean;
     termindato: string;
     terminbekreftelse: any[];
     terminbekreftelsedato?: string;
@@ -33,23 +36,17 @@ interface AdoptertStebarn extends Common {
     fødselsdatoer: string[];
 }
 
-type Barn = FødtBarn | UfødtBarn | AdoptertStebarn;
+type Barn = FødtBarn | UfødtBarn | AdoptertStebarn | IkkeUtfyltBarn;
 
-interface IsFødtBarnOverloads {
-    (barn: FødtBarn): boolean;
-    (barn: UfødtBarn): boolean;
-    (barn: AdoptertStebarn): boolean;
-}
-
-export const isFødtBarn: IsFødtBarnOverloads = (barn: Barn): barn is FødtBarn => {
+export const isFødtBarn = (barn: Barn): barn is FødtBarn => {
     return barn.type === BarnType.FØDT;
 };
 
-export const isUfødtBarn: IsFødtBarnOverloads = (barn: Barn): barn is UfødtBarn => {
+export const isUfødtBarn = (barn: Barn): barn is UfødtBarn => {
     return barn.type === BarnType.UFØDT;
 };
 
-export const isAdoptertStebarn: IsFødtBarnOverloads = (barn: Barn): barn is AdoptertStebarn => {
+export const isAdoptertStebarn = (barn: Barn): barn is AdoptertStebarn => {
     return barn.type === BarnType.ADOPTERT_STEBARN;
 };
 

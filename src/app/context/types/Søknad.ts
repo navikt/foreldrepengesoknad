@@ -1,3 +1,4 @@
+import AnnenForelder from './AnnenForelder';
 import Barn from './Barn';
 import Søkersituasjon from './Søkersituasjon';
 
@@ -6,4 +7,5 @@ export interface Søknad {
     harGodkjentVilkår: boolean;
     søkersituasjon: Søkersituasjon;
     barn: Barn;
+    annenForelder: AnnenForelder;
 }

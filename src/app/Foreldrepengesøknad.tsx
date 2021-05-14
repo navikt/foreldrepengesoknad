@@ -1,7 +1,10 @@
 import { Locale } from '@navikt/fp-common';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Api from './api/api';
+import actionCreator from './context/action/actionCreator';
+import { useForeldrepengesøknadContext } from './context/hooks/useForeldrepengesøknadContext';
 import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
 
 interface Props {
@@ -18,6 +21,13 @@ const renderSpinner = () => (
 const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const { søkerinfoData } = Api.getSøkerinfo();
     const { storageData } = Api.getStoredAppState();
+    const { dispatch } = useForeldrepengesøknadContext();
+
+    useEffect(() => {
+        if (storageData) {
+            dispatch(actionCreator.applyStoredState(storageData));
+        }
+    }, [storageData]);
 
     if (!søkerinfoData || !storageData) {
         return renderSpinner();
@@ -27,12 +37,15 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
     console.log(storageData);
 
     return (
-        <ForeldrepengesøknadRoutes
-            fornavn={søkerinfoData.søker.fornavn}
-            kjønn={søkerinfoData.søker.kjønn}
-            locale={locale}
-            onChangeLocale={onChangeLocale}
-        />
+        <Router>
+            <ForeldrepengesøknadRoutes
+                fornavn={søkerinfoData.søker.fornavn}
+                kjønn={søkerinfoData.søker.kjønn}
+                locale={locale}
+                onChangeLocale={onChangeLocale}
+                currentRoute={storageData.currentRoute}
+            />
+        </Router>
     );
 };
 

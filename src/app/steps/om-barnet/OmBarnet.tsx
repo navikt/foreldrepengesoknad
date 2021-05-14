@@ -4,6 +4,7 @@ import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import SøknadRoutes from 'app/routes/routes';
 import { onAvbrytSøknad } from 'app/utils/globalUtil';
+import { getFieldErrorRenderer } from 'app/utils/validationUtil';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
@@ -37,6 +38,10 @@ const OmBarnet: React.FunctionComponent<Props> = () => {
         }
     }, [state]);
 
+    useEffect(() => {
+        dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.OM_BARNET));
+    }, []);
+
     const onValidSubmit = (values: Partial<OmBarnetFormData>) => {
         const barn = mapOmBarnetFormDataToState(values);
 
@@ -53,7 +58,7 @@ const OmBarnet: React.FunctionComponent<Props> = () => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({
                     ...formValues,
                     situasjon: søkersituasjon.situasjon,
-                    kjønn: søkersituasjon.rolle,
+                    rolle: søkersituasjon.rolle,
                 });
 
                 return (
@@ -67,16 +72,23 @@ const OmBarnet: React.FunctionComponent<Props> = () => {
                         steps={stepConfig}
                         kompakt={true}
                     >
-                        <OmBarnetFormComponents.YesOrNoQuestion
-                            name={OmBarnetFormField.erBarnetFødt}
-                            legend={intlUtils(intl, 'omBarnet.erBarnetFødt')}
-                        />
-                        <Adopsjon søkersituasjon={søkersituasjon} />
-                        <Termin søkersituasjon={søkersituasjon} erBarnetFødt={formValues.erBarnetFødt} />
-                        <Fødsel søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
-                        <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
-                        </Block>
+                        <OmBarnetFormComponents.Form
+                            includeButtons={false}
+                            fieldErrorHandler={getFieldErrorRenderer(intl)}
+                        >
+                            <Block padBottom="l">
+                                <OmBarnetFormComponents.YesOrNoQuestion
+                                    name={OmBarnetFormField.erBarnetFødt}
+                                    legend={intlUtils(intl, 'omBarnet.erBarnetFødt')}
+                                />
+                            </Block>
+                            <Adopsjon søkersituasjon={søkersituasjon} />
+                            <Termin søkersituasjon={søkersituasjon} erBarnetFødt={formValues.erBarnetFødt} />
+                            <Fødsel søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
+                            <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
+                                <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                            </Block>
+                        </OmBarnetFormComponents.Form>
                     </Step>
                 );
             }}

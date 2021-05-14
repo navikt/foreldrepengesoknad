@@ -4,6 +4,6 @@ import { SøkersituasjonFormData } from './søkersituasjonFormConfig';
 export const mapSøkersituasjonFormDataToState = (formData: SøkersituasjonFormData): Søkersituasjon => {
     return {
         situasjon: formData.situasjon!,
-        rolle: formData.rolle!,
+        rolle: formData.rolle ? formData.rolle : 'far',
     };
 };

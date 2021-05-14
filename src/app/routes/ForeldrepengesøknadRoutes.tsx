@@ -9,8 +9,8 @@ import Søkersituasjon from 'app/steps/søkersituasjon/Søkersituasjon';
 import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
 import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import Uttaksplan from 'app/steps/uttaksplan/Uttaksplan';
-import React, { FunctionComponent } from 'react';
-import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
+import React, { FunctionComponent, useEffect } from 'react';
+import { Route, Redirect, useHistory } from 'react-router-dom';
 import SøknadRoutes from './routes';
 
 interface Props {
@@ -18,13 +18,25 @@ interface Props {
     locale: Locale;
     kjønn: Kjønn;
     onChangeLocale: any;
+    currentRoute: SøknadRoutes;
 }
 
-const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({ fornavn, locale, kjønn, onChangeLocale }) => {
+const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
+    fornavn,
+    locale,
+    kjønn,
+    onChangeLocale,
+    currentRoute,
+}) => {
     const { state } = useForeldrepengesøknadContext();
+    const history = useHistory();
+
+    useEffect(() => {
+        history.push(currentRoute);
+    }, []);
 
     return (
-        <Router>
+        <>
             <Route path={SøknadRoutes.VELKOMMEN} exact={true}>
                 <Velkommen fornavn={fornavn} locale={locale} onChangeLocale={onChangeLocale} />
             </Route>
@@ -58,7 +70,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({ fornavn, locale,
                     </Route>
                 </>
             )}
-        </Router>
+        </>
     );
 };
 

@@ -6,25 +6,19 @@ const mapOmBarnetFormDataToState = (values: Partial<OmBarnetFormData>): Barn => 
     if (values.erBarnetFødt === YesOrNo.YES) {
         return {
             type: BarnType.FØDT,
-            erBarnetFødt: true,
             fødselsdatoer: values.fødselsdatoer!,
             antallBarn: values.antallBarn!,
             termindato: values.termindato,
-            dokumentasjonAvAleneomsorg: [],
-            datoForAleneomsorg: '',
         };
     }
 
     if (values.erBarnetFødt === YesOrNo.NO) {
         return {
             type: BarnType.UFØDT,
-            erBarnetFødt: false,
             terminbekreftelse: values.terminbekreftelse!,
             terminbekreftelsedato: values.terminbekreftelsedato,
             antallBarn: values.antallBarn!,
             termindato: values.termindato!,
-            dokumentasjonAvAleneomsorg: [],
-            datoForAleneomsorg: '',
         };
     }
 
@@ -33,8 +27,6 @@ const mapOmBarnetFormDataToState = (values: Partial<OmBarnetFormData>): Barn => 
         fødselsdatoer: values.fødselsdatoer!,
         adopsjonsdato: values.adopsjonsdato!,
         antallBarn: values.antallBarn!,
-        dokumentasjonAvAleneomsorg: [],
-        datoForAleneomsorg: '',
     };
 };
 

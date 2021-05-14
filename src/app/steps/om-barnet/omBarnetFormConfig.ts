@@ -1,5 +1,6 @@
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
-import Barn from 'app/context/types/Barn';
+import Barn, { isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
+import { Attachment } from 'app/types/Attachment';
 
 export enum OmBarnetFormField {
     erBarnetFødt = 'erBarnetFødt',
@@ -16,15 +17,14 @@ export enum OmBarnetFormField {
 }
 
 export interface OmBarnetFormData {
-    [OmBarnetFormField.erBarnetFødt]: YesOrNo;
-    [OmBarnetFormField.adopsjonAvEktefellesBarn]: YesOrNo;
-    [OmBarnetFormField.antallBarn]?: string;
+    [OmBarnetFormField.erBarnetFødt]?: YesOrNo;
+    [OmBarnetFormField.adopsjonAvEktefellesBarn]?: YesOrNo;
+    [OmBarnetFormField.antallBarn]: string;
     [OmBarnetFormField.adopsjonsdato]?: string;
-    [OmBarnetFormField.søkerAdopsjonAlene]: YesOrNo;
-    [OmBarnetFormField.fødselsdatoer]: string[];
+    [OmBarnetFormField.fødselsdatoer]?: string[];
+    [OmBarnetFormField.omsorgsovertakelse]?: string;
     [OmBarnetFormField.termindato]?: string;
-    [OmBarnetFormField.omsorgsovertakelse]: any[];
-    [OmBarnetFormField.terminbekreftelse]: any[];
+    [OmBarnetFormField.terminbekreftelse]?: Attachment[];
     [OmBarnetFormField.terminbekreftelsedato]?: string;
     [OmBarnetFormField.adoptertIUtlandet]?: YesOrNo;
 }
@@ -34,10 +34,9 @@ export const initialOmBarnetValues: OmBarnetFormData = {
     [OmBarnetFormField.adopsjonAvEktefellesBarn]: YesOrNo.UNANSWERED,
     [OmBarnetFormField.antallBarn]: '',
     [OmBarnetFormField.adopsjonsdato]: '',
-    [OmBarnetFormField.søkerAdopsjonAlene]: YesOrNo.UNANSWERED,
     [OmBarnetFormField.fødselsdatoer]: [],
+    [OmBarnetFormField.omsorgsovertakelse]: '',
     [OmBarnetFormField.termindato]: '',
-    [OmBarnetFormField.omsorgsovertakelse]: [],
     [OmBarnetFormField.terminbekreftelse]: [],
     [OmBarnetFormField.terminbekreftelsedato]: '',
     [OmBarnetFormField.adoptertIUtlandet]: YesOrNo.UNANSWERED,
@@ -45,9 +44,30 @@ export const initialOmBarnetValues: OmBarnetFormData = {
 
 export const OmBarnetFormComponents = getTypedFormComponents<OmBarnetFormField, OmBarnetFormData, string>();
 
-export const getOmBarnetInitialValues = (stateValues: Barn): OmBarnetFormData => {
-    if (!stateValues) {
+export const getOmBarnetInitialValues = (barn: Barn): OmBarnetFormData => {
+    if (!barn) {
         return initialOmBarnetValues;
+    }
+
+    if (isFødtBarn(barn)) {
+        return {
+            ...initialOmBarnetValues,
+            erBarnetFødt: YesOrNo.YES,
+            fødselsdatoer: barn.fødselsdatoer,
+            termindato: barn.termindato,
+            antallBarn: barn.antallBarn,
+        };
+    }
+
+    if (isUfødtBarn(barn)) {
+        return {
+            ...initialOmBarnetValues,
+            erBarnetFødt: YesOrNo.NO,
+            terminbekreftelse: barn.terminbekreftelse,
+            terminbekreftelsedato: barn.terminbekreftelsedato,
+            termindato: barn.termindato,
+            antallBarn: barn.antallBarn,
+        };
     }
 
     return initialOmBarnetValues;

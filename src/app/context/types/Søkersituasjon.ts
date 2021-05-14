@@ -1,6 +1,9 @@
+import { Situasjon } from 'app/types/Situasjon';
+import { Søkerrolle } from 'app/types/Søkerrolle';
+
 interface Søkersituasjon {
-    situasjon: string;
-    rolle: string;
+    situasjon: Situasjon;
+    rolle: Søkerrolle;
 }
 
 export default Søkersituasjon;

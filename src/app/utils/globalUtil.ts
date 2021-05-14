@@ -2,6 +2,7 @@ import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import Api from 'app/api/api';
 import actionCreator, { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
 import { History } from 'history';
+import Bytes from 'bytes';
 
 export const assertUnreachable = (_x: never): never => {
     throw new Error('This should never happen');
@@ -17,4 +18,13 @@ export const onAvbrytSøknad = (dispatch: React.Dispatch<ForeldrepengesøknadCon
     dispatch(actionCreator.avbrytSøknad());
     Api.deleteStoredAppState();
     history.push('/');
+};
+
+export const bytesString = (bytes: number): string => {
+    return Bytes(bytes, {
+        unitSeparator: ' ',
+        thousandsSeparator: ' ',
+        decimalPlaces: 1,
+        fixedDecimals: false,
+    });
 };

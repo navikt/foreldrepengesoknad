@@ -8,7 +8,7 @@ const updateSoknad = function (soknadsdata) {
 
 const deleteSoknad = function () {
     const fileName = getFilePath('soknad.json');
-    fs.writeFileSync(fileName, JSON.stringify());
+    fs.openSync(fileName, 'w');
 };
 
 const getSoknad = function () {

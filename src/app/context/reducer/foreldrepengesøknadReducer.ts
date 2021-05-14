@@ -25,10 +25,36 @@ const foreldrepengesøknadReducer = (
         case ForeldrepengesøknadContextActionKeys.SET_OMBARNET:
             return {
                 ...state,
+                søknad: {
+                    ...state.søknad,
+                    barn: {
+                        ...action.payload,
+                    },
+                },
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_ANNENFORELDER:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    annenForelder: {
+                        ...action.payload,
+                    },
+                },
             };
         case ForeldrepengesøknadContextActionKeys.AVBRYT_SØKNAD:
             return {
                 ...foreldrepengesøknadInitialState,
+            };
+        case ForeldrepengesøknadContextActionKeys.UPDATE_CURRENT_ROUTE:
+            return {
+                ...state,
+                currentRoute: action.payload,
+            };
+        case ForeldrepengesøknadContextActionKeys.APPLY_STORED_STATE:
+            return {
+                ...state,
+                ...action.payload,
             };
         default:
             return state;

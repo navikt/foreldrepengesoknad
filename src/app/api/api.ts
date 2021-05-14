@@ -95,7 +95,7 @@ const getEksisterendeSakMedFnr = (annenPartFnr: string) => {
 // }
 
 function getStoredAppState() {
-    const { data, error } = useRequest(
+    const { data, error } = useRequest<ForeldrepengesøknadContextState>(
         getAxiosInstance('123').get('/storage', {
             transformResponse: storageParser,
         })
@@ -108,8 +108,8 @@ function getStoredAppState() {
 }
 
 function storeAppState(state: ForeldrepengesøknadContextState) {
-    const { søknad, version } = state;
-    return getAxiosInstance('123').post('/storage', { søknad, version }, { withCredentials: true });
+    const { søknad, version, currentRoute } = state;
+    return getAxiosInstance('123').post('/storage', { søknad, version, currentRoute }, { withCredentials: true });
 }
 
 function deleteStoredAppState() {

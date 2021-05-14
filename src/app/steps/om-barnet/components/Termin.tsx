@@ -4,7 +4,7 @@ import React, { FunctionComponent } from 'react';
 
 interface Props {
     søkersituasjon: Søkersituasjon;
-    erBarnetFødt: YesOrNo;
+    erBarnetFødt: YesOrNo | undefined;
 }
 
 const Termin: FunctionComponent<Props> = ({ søkersituasjon, erBarnetFødt }) => {

@@ -1,3 +1,6 @@
+import SøknadRoutes from 'app/routes/routes';
+import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
+import AnnenForelder from '../types/AnnenForelder';
 import Barn from '../types/Barn';
 import Søkersituasjon from '../types/Søkersituasjon';
 
@@ -6,6 +9,9 @@ export enum ForeldrepengesøknadContextActionKeys {
     'SET_SØKERSITUASJON' = 'setSøkersituasjon',
     'SET_OMBARNET' = 'setOmBarnet',
     'AVBRYT_SØKNAD' = 'avbrytSøknad',
+    'UPDATE_CURRENT_ROUTE' = 'updateCurrentRoute',
+    'APPLY_STORED_STATE' = 'applyStoredState',
+    'SET_ANNENFORELDER' = 'setAnnenForelder',
 }
 
 interface SetVelkommen {
@@ -46,11 +52,51 @@ const avbrytSøknad = (): AvbrytSøknad => ({
     type: ForeldrepengesøknadContextActionKeys.AVBRYT_SØKNAD,
 });
 
-export type ForeldrepengesøknadContextAction = SetVelkommen | SetSøkersituasjon | SetOmBarnet | AvbrytSøknad;
+interface UpdateCurrentRoute {
+    type: ForeldrepengesøknadContextActionKeys.UPDATE_CURRENT_ROUTE;
+    payload: SøknadRoutes;
+}
+
+const updateCurrentRoute = (payload: SøknadRoutes): UpdateCurrentRoute => ({
+    type: ForeldrepengesøknadContextActionKeys.UPDATE_CURRENT_ROUTE,
+    payload,
+});
+
+interface ApplyStoredState {
+    type: ForeldrepengesøknadContextActionKeys.APPLY_STORED_STATE;
+    payload: ForeldrepengesøknadContextState;
+}
+
+const applyStoredState = (payload: ForeldrepengesøknadContextState): ApplyStoredState => ({
+    type: ForeldrepengesøknadContextActionKeys.APPLY_STORED_STATE,
+    payload,
+});
+
+interface SetAnnenForelder {
+    type: ForeldrepengesøknadContextActionKeys.SET_ANNENFORELDER;
+    payload: AnnenForelder;
+}
+
+const setAnnenForelder = (payload: AnnenForelder): SetAnnenForelder => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_ANNENFORELDER,
+    payload,
+});
+
+export type ForeldrepengesøknadContextAction =
+    | SetVelkommen
+    | SetSøkersituasjon
+    | SetOmBarnet
+    | AvbrytSøknad
+    | UpdateCurrentRoute
+    | SetAnnenForelder
+    | ApplyStoredState;
 
 export default {
     setVelkommen,
     setSøkersituasjon,
     setOmBarnet,
     avbrytSøknad,
+    updateCurrentRoute,
+    applyStoredState,
+    setAnnenForelder,
 };

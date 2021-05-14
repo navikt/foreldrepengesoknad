@@ -1,4 +1,5 @@
 import SøknadRoutes from 'app/routes/routes';
+import { BarnType } from './types/Barn';
 import { Søknad } from './types/Søknad';
 
 export interface ForeldrepengesøknadContextState {
@@ -14,9 +15,15 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
         type: 'foreldrepenger',
         harGodkjentVilkår: false,
         søkersituasjon: {
-            rolle: undefined as any,
-            situasjon: undefined as any,
+            rolle: '',
+            situasjon: '',
         },
-        barn: undefined as any,
+        barn: {
+            type: BarnType.IKKE_UTFYLT,
+            antallBarn: '',
+        },
+        annenForelder: {
+            kanIkkeOppgis: false,
+        },
     },
 };

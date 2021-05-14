@@ -9,7 +9,7 @@ import {
     VelkommenFormData,
     VelkommenFormField,
 } from './velkommenFormConfig';
-import DinePlikter from 'app/components/DinePlikter';
+import DinePlikter from 'app/components/dine-plikter/DinePlikter';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Normaltekst } from 'nav-frontend-typografi';
 import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal';
