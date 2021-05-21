@@ -44,7 +44,10 @@ const foreldrepengesøknadReducer = (
             };
         case ForeldrepengesøknadContextActionKeys.AVBRYT_SØKNAD:
             return {
-                ...foreldrepengesøknadInitialState,
+                ...state,
+                søknad: {
+                    ...foreldrepengesøknadInitialState.søknad,
+                },
             };
         case ForeldrepengesøknadContextActionKeys.UPDATE_CURRENT_ROUTE:
             return {
@@ -55,6 +58,11 @@ const foreldrepengesøknadReducer = (
             return {
                 ...state,
                 ...action.payload,
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_SØKERINFO:
+            return {
+                ...state,
+                søkerinfo: { ...action.payload },
             };
         default:
             return state;

@@ -6,6 +6,7 @@ import Api from './api/api';
 import actionCreator from './context/action/actionCreator';
 import { useForeldrepengesøknadContext } from './context/hooks/useForeldrepengesøknadContext';
 import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
+import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 
 interface Props {
     locale: Locale;
@@ -21,26 +22,28 @@ const renderSpinner = () => (
 const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const { søkerinfoData } = Api.getSøkerinfo();
     const { storageData } = Api.getStoredAppState();
-    const { dispatch } = useForeldrepengesøknadContext();
+    const { dispatch, state } = useForeldrepengesøknadContext();
 
     useEffect(() => {
         if (storageData) {
             dispatch(actionCreator.applyStoredState(storageData));
         }
-    }, [storageData]);
+        if (søkerinfoData) {
+            dispatch(actionCreator.setSøkerinfo(mapSøkerinfoDTOToSøkerinfo(søkerinfoData)));
+        }
+    }, [storageData, søkerinfoData]);
 
-    if (!søkerinfoData || !storageData) {
+    if (!state.søkerinfo || !storageData) {
         return renderSpinner();
     }
 
-    console.log(søkerinfoData);
     console.log(storageData);
 
     return (
         <Router>
             <ForeldrepengesøknadRoutes
-                fornavn={søkerinfoData.søker.fornavn}
-                kjønn={søkerinfoData.søker.kjønn}
+                fornavn={state.søkerinfo.person.fornavn}
+                kjønn={state.søkerinfo.person.kjønn}
                 locale={locale}
                 onChangeLocale={onChangeLocale}
                 currentRoute={storageData.currentRoute}

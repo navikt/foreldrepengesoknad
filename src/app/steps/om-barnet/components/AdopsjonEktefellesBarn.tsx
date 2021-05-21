@@ -1,11 +1,16 @@
 import { Block, intlUtils } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
+import { AttachmentType } from 'app/types/AttachmentType';
+import { Skjemanummer } from 'app/types/Skjemanummer';
+import VeilederNormal from 'common/components/veileder/VeilederNormalSvg';
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
+import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
 import { validateFødselDate } from '../validation/omBarnetValidering';
 
@@ -15,10 +20,8 @@ interface Props {
     visibility: QuestionVisibility<OmBarnetFormField, undefined>;
 }
 
-const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibility }) => {
-    const { erBarnetFødt } = formValues;
-
-    if (søkersituasjon.situasjon === 'adopsjon' || erBarnetFødt !== YesOrNo.YES) {
+const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibility }) => {
+    if (søkersituasjon.situasjon === 'fødsel' || formValues.adopsjonAvEktefellesBarn !== YesOrNo.YES) {
         return null;
     }
 
@@ -26,6 +29,12 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
 
     return (
         <>
+            <Block padBottom="l">
+                <OmBarnetFormComponents.DatePicker
+                    label={intlUtils(intl, 'omBarnet.adopsjonsdato.stebarn')}
+                    name={OmBarnetFormField.adopsjonsdato}
+                />
+            </Block>
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
                 <OmBarnetFormComponents.RadioPanelGroup
                     name={OmBarnetFormField.antallBarn}
@@ -77,16 +86,22 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                     ]}
                 />
             </Block>
-            <Block visible={visibility.isVisible(OmBarnetFormField.termindato)}>
-                <OmBarnetFormComponents.DatePicker
-                    name={OmBarnetFormField.termindato}
-                    label={intlUtils(intl, 'omBarnet.termindato.født')}
-                    minDate={dayjs().subtract(6, 'month').toDate()}
-                    placeholder={'dd.mm.åååå'}
+            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
+                <Veilederpanel fargetema="normal" svg={<VeilederNormal />}>
+                    <FormattedMessage id="omBarnet.veileder.omsorgsovertakelse.stebarn" />
+                </Veilederpanel>
+            </Block>
+            <Block visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
+                <FormikFileUploader
+                    label={intlUtils(intl, 'omBarnet.adopsjon.vedlegg')}
+                    name={OmBarnetFormField.omsorgsovertakelse}
+                    attachments={formValues.omsorgsovertakelse || []}
+                    attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
+                    skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
                 />
             </Block>
         </>
     );
 };
 
-export default Fødsel;
+export default AdopsjonEktefellesBarn;

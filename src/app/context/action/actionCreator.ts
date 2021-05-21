@@ -1,4 +1,5 @@
 import SøknadRoutes from 'app/routes/routes';
+import { Søkerinfo } from 'app/types/Søkerinfo';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
 import AnnenForelder from '../types/AnnenForelder';
 import Barn from '../types/Barn';
@@ -12,6 +13,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     'UPDATE_CURRENT_ROUTE' = 'updateCurrentRoute',
     'APPLY_STORED_STATE' = 'applyStoredState',
     'SET_ANNENFORELDER' = 'setAnnenForelder',
+    'SET_SØKERINFO' = 'setSøkerinfo',
 }
 
 interface SetVelkommen {
@@ -82,6 +84,16 @@ const setAnnenForelder = (payload: AnnenForelder): SetAnnenForelder => ({
     payload,
 });
 
+interface SetSøkerinfo {
+    type: ForeldrepengesøknadContextActionKeys.SET_SØKERINFO;
+    payload: Søkerinfo;
+}
+
+const setSøkerinfo = (payload: Søkerinfo): SetSøkerinfo => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_SØKERINFO,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetSøkersituasjon
@@ -89,6 +101,7 @@ export type ForeldrepengesøknadContextAction =
     | AvbrytSøknad
     | UpdateCurrentRoute
     | SetAnnenForelder
+    | SetSøkerinfo
     | ApplyStoredState;
 
 export default {
@@ -99,4 +112,5 @@ export default {
     updateCurrentRoute,
     applyStoredState,
     setAnnenForelder,
+    setSøkerinfo,
 };

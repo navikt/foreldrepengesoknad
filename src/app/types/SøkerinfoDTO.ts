@@ -1,4 +1,5 @@
 import { Kjønn } from '@navikt/fp-common';
+import Bankkonto from './Bankkonto';
 
 export interface SøkerinfoDTOPerson {
     fnr: string;
@@ -14,7 +15,8 @@ export interface SøkerinfoDTOBarn extends SøkerinfoDTOPerson {
 }
 
 export interface SøkerinfoDTOSøker extends SøkerinfoDTOPerson {
-    ikkeNordiskEøsLand?: boolean;
+    ikkeNordiskEøsLand: boolean;
+    bankkonto?: Bankkonto;
     barn?: SøkerinfoDTOBarn[];
 }
 

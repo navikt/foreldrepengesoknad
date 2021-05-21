@@ -1,6 +1,7 @@
 import { hasValue } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Søkerrolle } from 'app/types/Søkerrolle';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import dayjs from 'dayjs';
@@ -9,6 +10,7 @@ import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 export interface OmBarnetQuestionPayload extends OmBarnetFormData {
     situasjon: string;
     rolle: Søkerrolle;
+    arbeidsforhold: Arbeidsforhold[];
 }
 
 const includeTermindato = (rolle: Søkerrolle, fødselsdato: string | undefined): boolean => {
@@ -51,40 +53,46 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
     [OmBarnetFormField.fødselsdatoer]: {
         isIncluded: ({ erBarnetFødt, adopsjonAvEktefellesBarn }) =>
             erBarnetFødt === YesOrNo.YES || adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED,
-        isAnswered: ({ fødselsdatoer }) =>
-            fødselsdatoer !== undefined && fødselsdatoer.length > 0 && hasValue(fødselsdatoer[0]),
+        isAnswered: ({ fødselsdatoer }) => fødselsdatoer.length > 0 && hasValue(fødselsdatoer[0]),
         visibilityFilter: ({ antallBarn }) => {
             return hasValue(antallBarn);
         },
     },
     [OmBarnetFormField.omsorgsovertakelse]: {
         isIncluded: ({ adopsjonAvEktefellesBarn }) => adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED,
-        isAnswered: ({ omsorgsovertakelse }) => omsorgsovertakelse !== undefined && omsorgsovertakelse.length > 0,
-        visibilityFilter: ({ adopsjonAvEktefellesBarn, fødselsdatoer, rolle }) =>
-            (adopsjonAvEktefellesBarn === YesOrNo.YES &&
-                fødselsdatoer !== undefined &&
-                fødselsdatoer.length > 0 &&
-                hasValue(fødselsdatoer[0])) ||
-            adopsjonAvEktefellesBarn === YesOrNo.NO ||
-            (rolle === 'mor' && fødselsdatoer !== undefined && fødselsdatoer.length > 0 && hasValue(fødselsdatoer[0])),
+        isAnswered: () => true,
+        visibilityFilter: ({ adoptertIUtlandet, adopsjonAvEktefellesBarn, fødselsdatoer }) =>
+            adoptertIUtlandet !== YesOrNo.UNANSWERED ||
+            (adopsjonAvEktefellesBarn === YesOrNo.YES && hasValue(fødselsdatoer[0])),
     },
     [OmBarnetFormField.termindato]: {
-        isIncluded: ({ rolle, fødselsdatoer }) =>
-            fødselsdatoer !== undefined && includeTermindato(rolle, fødselsdatoer[0]),
+        isIncluded: ({ rolle, fødselsdatoer, erBarnetFødt }) =>
+            (includeTermindato(rolle, fødselsdatoer[0]) && erBarnetFødt !== YesOrNo.UNANSWERED) ||
+            erBarnetFødt === YesOrNo.NO,
         isAnswered: ({ termindato }) => hasValue(termindato),
-        visibilityFilter: ({ fødselsdatoer }) => {
-            return fødselsdatoer !== undefined && hasValue(fødselsdatoer[0]);
+        visibilityFilter: ({ fødselsdatoer, erBarnetFødt, antallBarn }) => {
+            return hasValue(fødselsdatoer[0]) || (erBarnetFødt === YesOrNo.NO && hasValue(antallBarn));
         },
     },
     [OmBarnetFormField.terminbekreftelse]: {
-        isIncluded: ({ erBarnetFødt }) => erBarnetFødt === YesOrNo.NO,
-        isAnswered: ({ terminbekreftelse }) => terminbekreftelse !== undefined && terminbekreftelse.length > 0,
+        isIncluded: ({ erBarnetFødt, arbeidsforhold }) => erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0,
+        isAnswered: () => true,
         visibilityFilter: ({ termindato }) => hasValue(termindato),
     },
     [OmBarnetFormField.terminbekreftelsedato]: {
-        isIncluded: ({ erBarnetFødt }) => erBarnetFødt === YesOrNo.NO,
+        isIncluded: ({ erBarnetFødt, arbeidsforhold }) => erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0,
         isAnswered: ({ terminbekreftelsedato }) => hasValue(terminbekreftelsedato),
-        visibilityFilter: ({ terminbekreftelse }) => terminbekreftelse !== undefined && terminbekreftelse.length > 0,
+        visibilityFilter: ({ termindato }) => hasValue(termindato),
+    },
+    [OmBarnetFormField.adoptertIUtlandet]: {
+        isIncluded: ({ adopsjonAvEktefellesBarn }) => adopsjonAvEktefellesBarn === YesOrNo.NO,
+        isAnswered: ({ adoptertIUtlandet }) => adoptertIUtlandet !== YesOrNo.UNANSWERED,
+        visibilityFilter: ({ fødselsdatoer }) => hasValue(fødselsdatoer[0]),
+    },
+    [OmBarnetFormField.ankomstdato]: {
+        isIncluded: ({ adopsjonAvEktefellesBarn }) => adopsjonAvEktefellesBarn === YesOrNo.NO,
+        isAnswered: ({ ankomstdato }) => hasValue(ankomstdato),
+        visibilityFilter: ({ adoptertIUtlandet }) => adoptertIUtlandet === YesOrNo.YES,
     },
 };
 

@@ -10,17 +10,14 @@ import React, { useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
-import Adopsjon from './components/Adopsjon';
+import AdopsjonAnnetBarn from './components/AdopsjonAnnetBarn';
+import AdopsjonEktefellesBarn from './components/AdopsjonEktefellesBarn';
+import BarnFødtEllerAdoptert from './components/BarnFødtEllerAdoptert';
 import Fødsel from './components/Fødsel';
 import Termin from './components/Termin';
-import {
-    getOmBarnetInitialValues,
-    OmBarnetFormComponents,
-    OmBarnetFormData,
-    OmBarnetFormField,
-} from './omBarnetFormConfig';
+import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig from './omBarnetQuestionsConfig';
-import mapOmBarnetFormDataToState from './omBarnetUtils';
+import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
 
 interface Props {}
 
@@ -30,6 +27,7 @@ const OmBarnet: React.FunctionComponent<Props> = () => {
     const { state, dispatch } = useForeldrepengesøknadContext();
     const hasSubmitted = useRef(false);
     const { søkersituasjon } = state.søknad;
+    const { arbeidsforhold } = state.søkerinfo;
 
     useEffect(() => {
         if (hasSubmitted.current === true) {
@@ -57,6 +55,7 @@ const OmBarnet: React.FunctionComponent<Props> = () => {
             renderForm={({ values: formValues }) => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({
                     ...formValues,
+                    arbeidsforhold,
                     situasjon: søkersituasjon.situasjon,
                     rolle: søkersituasjon.rolle,
                 });
@@ -76,14 +75,18 @@ const OmBarnet: React.FunctionComponent<Props> = () => {
                             includeButtons={false}
                             fieldErrorHandler={getFieldErrorRenderer(intl)}
                         >
-                            <Block padBottom="l">
-                                <OmBarnetFormComponents.YesOrNoQuestion
-                                    name={OmBarnetFormField.erBarnetFødt}
-                                    legend={intlUtils(intl, 'omBarnet.erBarnetFødt')}
-                                />
-                            </Block>
-                            <Adopsjon søkersituasjon={søkersituasjon} />
-                            <Termin søkersituasjon={søkersituasjon} erBarnetFødt={formValues.erBarnetFødt} />
+                            <BarnFødtEllerAdoptert søkersituasjon={søkersituasjon} />
+                            <AdopsjonAnnetBarn
+                                søkersituasjon={søkersituasjon}
+                                formValues={formValues}
+                                visibility={visibility}
+                            />
+                            <AdopsjonEktefellesBarn
+                                søkersituasjon={søkersituasjon}
+                                formValues={formValues}
+                                visibility={visibility}
+                            />
+                            <Termin søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
                             <Fødsel søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
                                 <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>

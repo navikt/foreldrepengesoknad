@@ -1,4 +1,5 @@
 import SøknadRoutes from 'app/routes/routes';
+import { Søkerinfo } from 'app/types/Søkerinfo';
 import { BarnType } from './types/Barn';
 import { Søknad } from './types/Søknad';
 
@@ -6,6 +7,7 @@ export interface ForeldrepengesøknadContextState {
     version: number;
     currentRoute: SøknadRoutes;
     søknad: Søknad;
+    søkerinfo: Søkerinfo;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
@@ -26,4 +28,5 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
             kanIkkeOppgis: false,
         },
     },
+    søkerinfo: undefined!,
 };

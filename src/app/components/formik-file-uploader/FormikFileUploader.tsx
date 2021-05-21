@@ -8,6 +8,7 @@ import { Skjemanummer } from 'app/types/Skjemanummer';
 import AttachmentApi from 'app/api/attachmentApi';
 import AttachmentList from '../attachment/AttachmentList';
 import { isAttachmentWithError, mapFileToAttachment } from '../attachment/attachmentUtils';
+import { deleteAttachment } from 'app/utils/globalUtil';
 
 export type FieldArrayReplaceFn = (index: number, value: any) => void;
 export type FieldArrayPushFn = (obj: any) => void;
@@ -47,8 +48,6 @@ const fileExtensionIsValid = (filename: string): boolean => {
     return VALID_EXTENSIONS.includes(`.${ext!.toLowerCase()}`);
 };
 
-let removeFn: FieldArrayRemoveFn;
-
 const FormikFileUploader: React.FunctionComponent<Props> = ({
     attachments,
     name,
@@ -57,7 +56,7 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
     skjemanummer,
     ...otherProps
 }) => {
-    const { values } = useFormikContext<any>();
+    const { values, setFieldValue } = useFormikContext<any>();
 
     async function uploadAttachment(attachment: Attachment) {
         try {
@@ -109,23 +108,24 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <FormikFileInput
-                name={name}
-                acceptedExtensions={VALID_EXTENSIONS.join(', ')}
-                onFilesSelect={async (files: File[], { push, replace, remove }: ArrayHelpers) => {
-                    removeFn = remove;
-                    const atts = files.map((file) => addPendingAttachmentToFieldArray(file, push));
-                    await uploadAttachments([...values[name], ...atts], replace);
-                }}
-                onClick={onFileInputClick}
-                {...otherProps}
-            />
-            <Block margin="xl">
+            <Block padBottom="l">
+                <FormikFileInput
+                    name={name}
+                    acceptedExtensions={VALID_EXTENSIONS.join(', ')}
+                    onFilesSelect={async (files: File[], { push, replace }: ArrayHelpers) => {
+                        const atts = files.map((file) => addPendingAttachmentToFieldArray(file, push));
+                        await uploadAttachments([...values[name], ...atts], replace);
+                    }}
+                    onClick={onFileInputClick}
+                    {...otherProps}
+                />
+            </Block>
+            <Block padBottom="l">
                 <AttachmentList
                     attachments={attachments.filter((a) => !isAttachmentWithError(a))}
                     showFileSize={true}
                     onDelete={(file: Attachment) => {
-                        removeFn(attachments.indexOf(file));
+                        setFieldValue(name, deleteAttachment(attachments, file));
                     }}
                 />
             </Block>
