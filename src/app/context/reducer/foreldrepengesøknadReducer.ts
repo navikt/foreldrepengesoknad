@@ -38,6 +38,25 @@ const foreldrepengesøknadReducer = (
                 søknad: {
                     ...state.søknad,
                     annenForelder: {
+                        ...action.payload.forelder,
+                    },
+                    barn: {
+                        ...state.søknad.barn,
+                        ...action.payload.barn,
+                    },
+                    søker: {
+                        ...state.søknad.søker,
+                        ...action.payload.søker,
+                    },
+                },
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    informasjonOmUtenlandsopphold: {
+                        ...state.søknad.informasjonOmUtenlandsopphold,
                         ...action.payload,
                     },
                 },
@@ -63,6 +82,16 @@ const foreldrepengesøknadReducer = (
             return {
                 ...state,
                 søkerinfo: { ...action.payload },
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_SØKER:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    søker: {
+                        ...action.payload,
+                    },
+                },
             };
         default:
             return state;

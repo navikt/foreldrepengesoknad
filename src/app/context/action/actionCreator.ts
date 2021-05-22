@@ -3,6 +3,8 @@ import { Søkerinfo } from 'app/types/Søkerinfo';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
 import AnnenForelder from '../types/AnnenForelder';
 import Barn from '../types/Barn';
+import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
+import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
 
 export enum ForeldrepengesøknadContextActionKeys {
@@ -14,6 +16,8 @@ export enum ForeldrepengesøknadContextActionKeys {
     'APPLY_STORED_STATE' = 'applyStoredState',
     'SET_ANNENFORELDER' = 'setAnnenForelder',
     'SET_SØKERINFO' = 'setSøkerinfo',
+    'SET_SØKER' = 'setSøker',
+    'SET_INFORMASJON_OM_UTENLANDSOPPHOLD' = 'setInformasjonOmUtenlandsopphold',
 }
 
 interface SetVelkommen {
@@ -74,12 +78,18 @@ const applyStoredState = (payload: ForeldrepengesøknadContextState): ApplyStore
     payload,
 });
 
-interface SetAnnenForelder {
-    type: ForeldrepengesøknadContextActionKeys.SET_ANNENFORELDER;
-    payload: AnnenForelder;
+interface SetAnnenForelderPayload {
+    forelder: AnnenForelder;
+    barn: Barn;
+    søker: Søker;
 }
 
-const setAnnenForelder = (payload: AnnenForelder): SetAnnenForelder => ({
+interface SetAnnenForelder {
+    type: ForeldrepengesøknadContextActionKeys.SET_ANNENFORELDER;
+    payload: SetAnnenForelderPayload;
+}
+
+const setAnnenForelder = (payload: SetAnnenForelderPayload): SetAnnenForelder => ({
     type: ForeldrepengesøknadContextActionKeys.SET_ANNENFORELDER,
     payload,
 });
@@ -94,6 +104,28 @@ const setSøkerinfo = (payload: Søkerinfo): SetSøkerinfo => ({
     payload,
 });
 
+interface SetSøker {
+    type: ForeldrepengesøknadContextActionKeys.SET_SØKER;
+    payload: Søker;
+}
+
+const setSøker = (payload: Søker): SetSøker => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_SØKER,
+    payload,
+});
+
+interface SetInformasjonOmUtenlandsopphold {
+    type: ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD;
+    payload: InformasjonOmUtenlandsopphold;
+}
+
+const setInformasjonOmUtenlandsopphold = (
+    payload: InformasjonOmUtenlandsopphold
+): SetInformasjonOmUtenlandsopphold => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetSøkersituasjon
@@ -102,6 +134,8 @@ export type ForeldrepengesøknadContextAction =
     | UpdateCurrentRoute
     | SetAnnenForelder
     | SetSøkerinfo
+    | SetSøker
+    | SetInformasjonOmUtenlandsopphold
     | ApplyStoredState;
 
 export default {
@@ -113,4 +147,6 @@ export default {
     applyStoredState,
     setAnnenForelder,
     setSøkerinfo,
+    setSøker,
+    setInformasjonOmUtenlandsopphold,
 };

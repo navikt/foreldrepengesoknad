@@ -1,5 +1,7 @@
 import AnnenForelder from './AnnenForelder';
 import Barn from './Barn';
+import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
+import Søker from './Søker';
 import Søkersituasjon from './Søkersituasjon';
 
 export interface Søknad {
@@ -8,4 +10,6 @@ export interface Søknad {
     søkersituasjon: Søkersituasjon;
     barn: Barn;
     annenForelder: AnnenForelder;
+    søker: Søker;
+    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
 }

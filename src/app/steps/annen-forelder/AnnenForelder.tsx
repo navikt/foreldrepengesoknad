@@ -4,9 +4,12 @@ import Api from 'app/api/api';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import Barn from 'app/context/types/Barn';
+import Søker from 'app/context/types/Søker';
 import SøknadRoutes from 'app/routes/routes';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
+import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { onAvbrytSøknad } from 'app/utils/globalUtil';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getFieldErrorRenderer } from 'app/utils/validationUtil';
@@ -27,7 +30,7 @@ const AnnenForelder = () => {
     const intl = useIntl();
     const { dispatch, state } = useForeldrepengesøknadContext();
     const { rolle } = state.søknad.søkersituasjon;
-    const { annenForelder, barn } = state.søknad;
+    const { annenForelder, barn, søker } = state.søknad;
     const hasSubmitted = useRef(false);
     const history = useHistory();
     const skalOppgiPersonalia = !annenForelder.kanIkkeOppgis;
@@ -45,12 +48,26 @@ const AnnenForelder = () => {
 
     const onValidSubmit = (values: Partial<AnnenForelderFormData>) => {
         hasSubmitted.current = true;
-        dispatch(actionCreator.setAnnenForelder(mapAnnenForelderFormToState(values)));
+        const newSøker: Søker = {
+            ...søker,
+            erAleneOmOmsorg: convertYesOrNoOrUndefinedToBoolean(values.aleneOmOmsorg),
+        };
+        const newBarn: Barn = {
+            ...barn,
+            datoForAleneomsorg: values.datoForAleneomsorg,
+        };
+        dispatch(
+            actionCreator.setAnnenForelder({
+                forelder: mapAnnenForelderFormToState(values),
+                søker: newSøker,
+                barn: newBarn,
+            })
+        );
     };
 
     return (
         <AnnenForelderFormComponents.FormikWrapper
-            initialValues={getAnnenForelderFormInitialValues(annenForelder, barn)}
+            initialValues={getAnnenForelderFormInitialValues(annenForelder, barn, søker)}
             onSubmit={(values: AnnenForelderFormData) => onValidSubmit(values)}
             renderForm={({ values: formValues }) => {
                 const visibility = annenForelderQuestionsConfig.getVisbility({

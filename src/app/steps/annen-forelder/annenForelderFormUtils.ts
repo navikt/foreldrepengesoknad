@@ -1,6 +1,7 @@
 import { hasValue } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Barn from 'app/context/types/Barn';
+import Søker from 'app/context/types/Søker';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { AnnenForelderFormData, initialAnnenForelderValues } from './annenforelderFormConfig';
 
@@ -24,9 +25,11 @@ export const mapAnnenForelderFormToState = (values: Partial<AnnenForelderFormDat
     };
 };
 
-export const getAnnenForelderFormInitialValues = (annenForelder: AnnenForelder, barn: Barn): AnnenForelderFormData => {
-    const erAleneOmOmsorg = barn.datoForAleneomsorg !== undefined ? true : undefined;
-
+export const getAnnenForelderFormInitialValues = (
+    annenForelder: AnnenForelder,
+    barn: Barn,
+    søker: Søker
+): AnnenForelderFormData => {
     if (isAnnenForelderOppgitt(annenForelder)) {
         return {
             ...initialAnnenForelderValues,
@@ -38,7 +41,7 @@ export const getAnnenForelderFormInitialValues = (annenForelder: AnnenForelder, 
             fornavn: annenForelder.fornavn,
             kanIkkeOppgis: annenForelder.kanIkkeOppgis,
             fnr: annenForelder.fnr,
-            aleneOmOmsorg: convertBooleanOrUndefinedToYesOrNo(erAleneOmOmsorg),
+            aleneOmOmsorg: convertBooleanOrUndefinedToYesOrNo(søker.erAleneOmOmsorg),
             utenlandskFnr: annenForelder.utenlandskFnr || false,
         };
     }

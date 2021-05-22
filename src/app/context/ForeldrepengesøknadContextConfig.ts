@@ -27,6 +27,16 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
         annenForelder: {
             kanIkkeOppgis: false,
         },
+        søker: {
+            erAleneOmOmsorg: undefined!,
+            språkkode: 'nb',
+        },
+        informasjonOmUtenlandsopphold: {
+            iNorgeNeste12Mnd: undefined!,
+            iNorgeSiste12Mnd: undefined!,
+            tidligereOpphold: [],
+            senereOpphold: [],
+        },
     },
     søkerinfo: undefined!,
 };

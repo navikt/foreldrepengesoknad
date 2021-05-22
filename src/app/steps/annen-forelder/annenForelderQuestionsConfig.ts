@@ -61,7 +61,7 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
     [AnnenForelderFormField.dokumentasjonAvAleneomsorg]: {
         isAnswered: ({ dokumentasjonAvAleneomsorg }) =>
             dokumentasjonAvAleneomsorg !== undefined && dokumentasjonAvAleneomsorg.length > 0,
-        isIncluded: ({ aleneOmOmsorg }) => aleneOmOmsorg === YesOrNo.YES,
+        isIncluded: ({ aleneOmOmsorg, søkerRolle }) => aleneOmOmsorg === YesOrNo.YES && søkerRolle !== 'mor',
         visibilityFilter: ({ aleneOmOmsorg }) => aleneOmOmsorg === YesOrNo.YES,
     },
     [AnnenForelderFormField.harRettPåForeldrepenger]: {
