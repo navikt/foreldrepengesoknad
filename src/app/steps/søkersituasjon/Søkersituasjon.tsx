@@ -52,7 +52,7 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
     return (
         <SøkersituasjonFormComponents.FormikWrapper
             initialValues={getInitialSøkerSituasjonValues(state.søknad.søkersituasjon)}
-            onSubmit={(values) => onValidSubmit(values)}
+            onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = søkersituasjonQuestionsConfig.getVisbility(formValues);
                 const allQuestionsAnswered = visibility.areAllQuestionsAnswered();

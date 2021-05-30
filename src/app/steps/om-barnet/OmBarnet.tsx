@@ -51,7 +51,7 @@ const OmBarnet: React.FunctionComponent<Props> = () => {
     return (
         <OmBarnetFormComponents.FormikWrapper
             initialValues={getOmBarnetInitialValues(state.søknad.barn)}
-            onSubmit={(values: Partial<OmBarnetFormData>) => onValidSubmit(values)}
+            onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({
                     ...formValues,

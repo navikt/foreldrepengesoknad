@@ -38,7 +38,7 @@ const mapSøkerinfoDTOSøkerToPerson = (personDTO: SøkerinfoDTOSøker): Person 
 };
 
 const mapSøkerinfoDTOToSøkerinfo = (søkerinfoDTO: SøkerinfoDTO): Søkerinfo => {
-    const arbeidsforhold = mapArbeidsforholdDTOToArbeidsforhold(søkerinfoDTO.arbeidsforhold);
+    const arbeidsforhold = mapArbeidsforholdDTOToArbeidsforhold(søkerinfoDTO.søker.arbeidsforhold);
     const person = mapSøkerinfoDTOSøkerToPerson(søkerinfoDTO.søker);
 
     return {

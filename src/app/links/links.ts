@@ -11,7 +11,7 @@ export default {
     morsAktivitetskrav: 'https://familie.nav.no/om-foreldrepenger',
     frilanserInfoBoks:
         'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/',
-    NaringsdrivendeInfoBoks:
+    næringsdrivendeInfoBoks:
         'https://www.skatteetaten.no/bedrift-og-organisasjon/starte-og-drive/er-jeg-naringsdrivende/',
     brukerprofil: 'https://tjenester.nav.no/brukerprofil/',
     familie: 'https://familie.nav.no/',

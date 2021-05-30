@@ -3,6 +3,7 @@ import { Søkerinfo } from 'app/types/Søkerinfo';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
 import AnnenForelder from '../types/AnnenForelder';
 import Barn from '../types/Barn';
+import { FrilansOppdrag } from '../types/Frilans';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
 import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
@@ -18,6 +19,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     'SET_SØKERINFO' = 'setSøkerinfo',
     'SET_SØKER' = 'setSøker',
     'SET_INFORMASJON_OM_UTENLANDSOPPHOLD' = 'setInformasjonOmUtenlandsopphold',
+    'SET_FRILANSOPPDRAG' = 'setFrilansoppdrag',
 }
 
 interface SetVelkommen {
@@ -126,6 +128,16 @@ const setInformasjonOmUtenlandsopphold = (
     payload,
 });
 
+interface SetFrilansOppdrag {
+    type: ForeldrepengesøknadContextActionKeys.SET_FRILANSOPPDRAG;
+    payload: FrilansOppdrag[];
+}
+
+const setFrilansOppdrag = (payload: FrilansOppdrag[]): SetFrilansOppdrag => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_FRILANSOPPDRAG,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetSøkersituasjon
@@ -136,6 +148,7 @@ export type ForeldrepengesøknadContextAction =
     | SetSøkerinfo
     | SetSøker
     | SetInformasjonOmUtenlandsopphold
+    | SetFrilansOppdrag
     | ApplyStoredState;
 
 export default {
@@ -149,4 +162,5 @@ export default {
     setSøkerinfo,
     setSøker,
     setInformasjonOmUtenlandsopphold,
+    setFrilansOppdrag,
 };

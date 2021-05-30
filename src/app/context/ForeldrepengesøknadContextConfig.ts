@@ -28,6 +28,9 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
             kanIkkeOppgis: false,
         },
         søker: {
+            harHattAnnenInntektSiste10Mnd: undefined!,
+            harJobbetSomFrilansSiste10Mnd: undefined!,
+            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined!,
             erAleneOmOmsorg: undefined!,
             språkkode: 'nb',
         },

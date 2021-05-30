@@ -68,7 +68,7 @@ const AnnenForelder = () => {
     return (
         <AnnenForelderFormComponents.FormikWrapper
             initialValues={getAnnenForelderFormInitialValues(annenForelder, barn, søker)}
-            onSubmit={(values: AnnenForelderFormData) => onValidSubmit(values)}
+            onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = annenForelderQuestionsConfig.getVisbility({
                     ...formValues,

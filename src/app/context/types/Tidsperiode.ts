@@ -1,6 +1,10 @@
-interface Tidsperiode {
+export interface Tidsperiode {
     fom: string;
-    tom?: string;
+    tom: string;
 }
 
-export default Tidsperiode;
+export interface TidsperiodeMedValgfriSluttdato {
+    fom: string;
+    tom?: string;
+    pågående?: boolean;
+}

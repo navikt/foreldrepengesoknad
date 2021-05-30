@@ -1,4 +1,4 @@
-import Tidsperiode from './Tidsperiode';
+import { Tidsperiode } from './Tidsperiode';
 
 export interface Utenlandsopphold {
     land: string;

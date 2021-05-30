@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
     Block,
     date1YearAgo,
@@ -27,24 +27,39 @@ import {
     getInitialUtenlandsoppholdValuesFromState,
     mapUtenlandsoppholdFormDataToState,
 } from './utenlandsoppholdFormUtils';
+import SøknadRoutes from 'app/routes/routes';
+import Api from 'app/api/api';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
     const history = useHistory();
-
+    const hasSubmitted = useRef(false);
     const { state, dispatch } = useForeldrepengesøknadContext();
     const initialValues = state.søknad.informasjonOmUtenlandsopphold;
+
+    useEffect(() => {
+        if (hasSubmitted.current === true) {
+            Api.storeAppState(state);
+            history.push(SøknadRoutes.INNTEKTSINFORMASJON);
+        }
+    }, [state]);
+
+    useEffect(() => {
+        dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.UTENLANDSOPPHOLD));
+    }, []);
 
     const onValidSubmit = (values: Partial<UtenlandsoppholdFormData>) => {
         const utenlandsopphold = mapUtenlandsoppholdFormDataToState(values);
 
         dispatch(actionCreator.setInformasjonOmUtenlandsopphold(utenlandsopphold));
+
+        hasSubmitted.current = true;
     };
 
     return (
         <UtenlandsoppholdFormComponents.FormikWrapper
             initialValues={getInitialUtenlandsoppholdValuesFromState(initialValues)}
-            onSubmit={(values) => onValidSubmit(values)}
+            onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = utenlandsoppholdFormQuestions.getVisbility(formValues);
 
