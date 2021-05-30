@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import Modal from 'nav-frontend-modal';
-import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
-import { Undertittel } from 'nav-frontend-typografi';
+import { bemUtils, Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     EgenNæringModalFormComponents,
@@ -14,17 +14,20 @@ import egenNæringModalQuestionsConfig from './egenNæringModalQuestionsConfig';
 
 import './egenNæringModal.less';
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
+import Regnskapsfører from './components/Regnskapsfører';
+import Revisor from './components/Revisor';
+import { Hovedknapp } from 'nav-frontend-knapper';
 
 interface Props {
     isOpen: boolean;
     title: string;
     onRequestClose: () => void;
-    selectedEgenNæring?: Næring;
-    // addFrilansoppdrag: (oppdrag: Næring) => void;
-    // editFrilansoppdrag: (oppdrag: Næring) => void;
+    selectedNæring?: Næring;
+    // addNæring: (oppdrag: Næring) => void;
+    // editNæring: (oppdrag: Næring) => void;
 }
 
-const EgenNæringModal: FunctionComponent<Props> = ({ isOpen, title, onRequestClose, selectedEgenNæring }) => {
+const EgenNæringModal: FunctionComponent<Props> = ({ isOpen, title, onRequestClose, selectedNæring }) => {
     const intl = useIntl();
     const bem = bemUtils('egenNæringModal');
 
@@ -40,7 +43,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({ isOpen, title, onRequestCl
             className={bem.block}
         >
             <EgenNæringModalFormComponents.FormikWrapper
-                initialValues={getInitialEgenNæringModalValues(selectedEgenNæring)}
+                initialValues={getInitialEgenNæringModalValues(selectedNæring)}
                 onSubmit={(values: Partial<EgenNæringModalFormData>) => onValidSubmit(values)}
                 renderForm={({ values: formValues }) => {
                     const visibility = egenNæringModalQuestionsConfig.getVisbility(formValues);
@@ -121,6 +124,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({ isOpen, title, onRequestCl
                                     })}
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
+                                    showYearSelector={true}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.pågående)}>
@@ -143,7 +147,125 @@ const EgenNæringModal: FunctionComponent<Props> = ({ isOpen, title, onRequestCl
                                     })}
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
+                                    showYearSelector={true}
                                 />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(EgenNæringModalFormField.næringsresultat)}
+                            >
+                                <EgenNæringModalFormComponents.Input
+                                    name={EgenNæringModalFormField.næringsresultat}
+                                    label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.næringsinntekt')}
+                                    description={
+                                        <UtvidetInformasjon
+                                            apneLabel={intlUtils(
+                                                intl,
+                                                'inntektsinformasjon.egenNæringModal.næringsinntekt.info.apneLabel'
+                                            )}
+                                        >
+                                            <Normaltekst>
+                                                <FormattedMessage id="inntektsinformasjon.egenNæringModal.næringsinntekt.info" />
+                                            </Normaltekst>
+                                        </UtvidetInformasjon>
+                                    }
+                                />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(
+                                    EgenNæringModalFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+                                )}
+                            >
+                                <EgenNæringModalFormComponents.YesOrNoQuestion
+                                    name={
+                                        EgenNæringModalFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+                                    }
+                                    legend={intlUtils(
+                                        intl,
+                                        'inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År'
+                                    )}
+                                    description={
+                                        <UtvidetInformasjon
+                                            apneLabel={intlUtils(
+                                                intl,
+                                                'inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info.apneLabel'
+                                            )}
+                                        >
+                                            <Normaltekst>
+                                                <FormattedMessage id="inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info" />
+                                            </Normaltekst>
+                                        </UtvidetInformasjon>
+                                    }
+                                />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(EgenNæringModalFormField.yrkesAktivDato)}
+                            >
+                                <EgenNæringModalFormComponents.DatePicker
+                                    name={EgenNæringModalFormField.yrkesAktivDato}
+                                    label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.yrkesaktivDato')}
+                                    placeholder="dd.mm.åååå"
+                                    fullscreenOverlay={true}
+                                    showYearSelector={true}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(
+                                    EgenNæringModalFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår
+                                )}
+                            >
+                                <EgenNæringModalFormComponents.YesOrNoQuestion
+                                    name={EgenNæringModalFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår}
+                                    legend={intlUtils(
+                                        intl,
+                                        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntekt'
+                                    )}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(EgenNæringModalFormField.datoForEndring)}
+                            >
+                                <EgenNæringModalFormComponents.DatePicker
+                                    name={EgenNæringModalFormField.datoForEndring}
+                                    label={intlUtils(
+                                        intl,
+                                        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektDato'
+                                    )}
+                                    placeholder="dd.mm.åååå"
+                                    fullscreenOverlay={true}
+                                    showYearSelector={true}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(EgenNæringModalFormField.inntektEtterEndring)}
+                            >
+                                <EgenNæringModalFormComponents.Input
+                                    name={EgenNæringModalFormField.inntektEtterEndring}
+                                    label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.inntektEtterEndring')}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(EgenNæringModalFormField.forklaringEndring)}
+                            >
+                                <EgenNæringModalFormComponents.Textarea
+                                    name={EgenNæringModalFormField.forklaringEndring}
+                                    label={intlUtils(
+                                        intl,
+                                        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektForklaring'
+                                    )}
+                                    maxLength={1000}
+                                />
+                            </Block>
+                            <Regnskapsfører visibility={visibility} />
+                            <Revisor visibility={visibility} />
+                            <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
+                                <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
                             </Block>
                         </EgenNæringModalFormComponents.Form>
                     );

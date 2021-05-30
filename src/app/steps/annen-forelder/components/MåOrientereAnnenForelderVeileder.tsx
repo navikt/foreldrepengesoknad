@@ -1,9 +1,9 @@
 import React from 'react';
 import Veilederpanel from 'nav-frontend-veilederpanel';
-import VeilederNormal from 'common/components/veileder/VeilederNormalSvg';
 import { FormattedMessage } from 'react-intl';
 
 import './annenForelderVeileder.less';
+import VeilederNormal from 'app/assets/VeilederNormal';
 
 interface Props {
     visible: boolean;
@@ -17,7 +17,7 @@ const MåOrientereAnnenForelderVeileder: React.FunctionComponent<Props> = ({ vis
 
     return (
         <div className="annenForelderVeileder">
-            <Veilederpanel fargetema="normal" svg={<VeilederNormal />}>
+            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
                 <FormattedMessage
                     id="erAnnenForelderInformert.veilederIkkeInformert"
                     values={{ navn: annenForelderNavn }}

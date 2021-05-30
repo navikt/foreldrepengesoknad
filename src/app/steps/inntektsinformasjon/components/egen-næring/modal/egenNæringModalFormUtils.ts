@@ -1,5 +1,7 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Næring } from 'app/context/types/Næring';
+import { date4YearsAgo } from 'app/utils/dateUtils';
+import dayjs from 'dayjs';
 import { EgenNæringModalFormData, EgenNæringModalFormField } from './egenNæringModalFormConfig';
 
 export const initialEgenNæringModalValues: EgenNæringModalFormData = {
@@ -29,8 +31,8 @@ export const initialEgenNæringModalValues: EgenNæringModalFormData = {
     [EgenNæringModalFormField.revisorOpplysningerFullmakt]: YesOrNo.UNANSWERED,
 };
 
-export const getInitialEgenNæringModalValues = (oppdrag: Næring | undefined): EgenNæringModalFormData => {
-    if (!oppdrag) {
+export const getInitialEgenNæringModalValues = (næring: Næring | undefined): EgenNæringModalFormData => {
+    if (!næring) {
         return {
             ...initialEgenNæringModalValues,
         };
@@ -39,4 +41,12 @@ export const getInitialEgenNæringModalValues = (oppdrag: Næring | undefined): 
     return {
         ...initialEgenNæringModalValues,
     };
+};
+
+export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefined): boolean => {
+    if (!oppstartsdato) {
+        return true;
+    }
+
+    return dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo);
 };

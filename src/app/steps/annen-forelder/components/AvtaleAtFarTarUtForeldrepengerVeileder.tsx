@@ -1,4 +1,4 @@
-import VeilederNormal from 'common/components/veileder/VeilederNormalSvg';
+import VeilederNormal from 'app/assets/VeilederNormal';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -17,7 +17,7 @@ const AvtaleAtFarTarUtForeldrepengerVeileder: React.FunctionComponent<Props> = (
 
     return (
         <div className="annenForelderVeileder">
-            <Veilederpanel fargetema="normal" svg={<VeilederNormal />}>
+            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
                 <FormattedMessage
                     id="annenForelder.veileder.aleneOmsorg.forBarnet"
                     values={{ navn: annenForelderNavn }}

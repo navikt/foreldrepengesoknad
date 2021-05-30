@@ -184,6 +184,18 @@
     "inntektsinformasjon.egenNæringModal.startetNæring.tom": "Oppgi sluttdato for {navnPåNæringen}",
     "inntektsinformasjon.egenNæringModal.startetNæring.pågående": "Er {navnPåNæringen} pågående?",
     "inntektsinformasjon.egenNæringModal.erNæringenRegistrertINorge": "Er {navnPåNæringen} registrert i Norge?",
+    "inntektsinformasjon.egenNæringModal.næringsinntekt": "Hva har du hatt i næringsresultat før skatt de siste 12 månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.        ",
+    "inntektsinformasjon.egenNæringModal.næringsinntekt.info": "Næringsresultatet er inntekter du har i næringen din, minus utgifter og avskrivninger.",
+    "inntektsinformasjon.egenNæringModal.næringsinntekt.info.apneLabel": "Les mer om næringsresultat",
+    "inntektsinformasjon.egenNæringModal.veileder.revisorRegnskapsfører": "Vi henter inn opplysninger om virksomheten og inntekten din fra offentlige registre. Vi tar kontakt med deg hvis vi trenger flere opplysninger.",
+    "inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info": "Du skal svare ja på spørsmålet hvis du ikke har hatt jobb, eller har hatt jobb med lav inntekt, før du startet virksomheten din.",
+    "inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info.apneLabel": "Les mer om hva det betyr å ha blitt yrkesaktiv i løpet av de siste tre år",
+    "inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År": "Har du begynt å jobbe i løpet av de 3 siste ferdigliknede årene?",
+    "inntektsinformasjon.egenNæringModal.yrkesaktivDato": "Oppgi dato for når du ble yrkesaktiv",
+    "inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntekt": "Har du hatt en varig endring i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din de siste 4 årene?",
+    "inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektDato": "Oppgi dato for endringen",
+    "inntektsinformasjon.egenNæringModal.inntektEtterEndring": "Oppgi næringsinntekten din etter endringen. Oppgi årsinntekten i hele kroner.",
+    "inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektForklaring": "Her kan du skrive kort hva som har endret seg i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din",
     "valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd": "Du må bekrefte at du har lest og forstått dine plikter.",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}"
 }

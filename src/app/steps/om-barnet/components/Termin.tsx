@@ -1,11 +1,11 @@
 import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import VeilederNormal from 'app/assets/VeilederNormal';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
-import VeilederNormal from 'common/components/veileder/VeilederNormalSvg';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -74,7 +74,7 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                 />
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelse)}>
-                <Veilederpanel fargetema="normal" svg={<VeilederNormal />}>
+                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
                     <FormattedMessage id="omBarnet.veileder.terminbekreftelse" />
                 </Veilederpanel>
             </Block>

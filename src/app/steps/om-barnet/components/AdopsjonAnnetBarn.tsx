@@ -1,11 +1,11 @@
 import { Block, intlUtils } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import VeilederNormal from 'app/assets/VeilederNormal';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
-import VeilederNormal from 'common/components/veileder/VeilederNormalSvg';
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
 import Veilederpanel from 'nav-frontend-veilederpanel';
@@ -103,7 +103,7 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({ søkersituasjon, formValu
                 />
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
-                <Veilederpanel fargetema="normal" svg={<VeilederNormal />}>
+                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
                     <FormattedMessage id="omBarnet.veileder.omsorgsovertakelse.annetBarn" />
                 </Veilederpanel>
             </Block>

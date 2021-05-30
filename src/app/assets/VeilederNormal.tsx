@@ -1,18 +1,11 @@
 import * as React from 'react';
 
 interface Props {
-    svgProps: any;
     transparentBackground?: boolean;
 }
 
-const VeilederNormal: React.FunctionComponent<Props> = ({ svgProps, transparentBackground }) => (
-    <svg
-        role="presentation"
-        focusable="false"
-        viewBox="0 0 184 184"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        {...svgProps}
-    >
+const VeilederNormal: React.FunctionComponent<Props> = ({ transparentBackground }) => (
+    <svg role="presentation" focusable="false" viewBox="0 0 184 184" xmlnsXlink="http://www.w3.org/1999/xlink">
         <title>NAV veileder</title>
         <defs>
             <circle id="path-veileder-1" cx="92" cy="92" r="92" />
