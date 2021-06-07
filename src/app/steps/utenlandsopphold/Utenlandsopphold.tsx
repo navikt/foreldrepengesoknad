@@ -41,6 +41,8 @@ const Utenlandsopphold: React.FunctionComponent = () => {
         if (hasSubmitted.current === true) {
             Api.storeAppState(state);
             history.push(SøknadRoutes.INNTEKTSINFORMASJON);
+        } else {
+            Api.storeAppState(state);
         }
     }, [state]);
 
@@ -71,6 +73,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         stepTitle={intlUtils(intl, 'søknad.utenlandsopphold')}
                         backLinkHref={getPreviousStepHref('utenlandsopphold')}
                         onCancel={() => onAvbrytSøknad(dispatch, history)}
+                        onContinueLater={() => null}
                         steps={stepConfig}
                         kompakt={true}
                     >
@@ -79,12 +82,12 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                             fieldErrorHandler={getFieldErrorRenderer(intl)}
                         >
                             <Block
-                                visible={visibility.isVisible(UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd)}
+                                visible={visibility.isVisible(UtenlandsoppholdFieldNames.skalBoINorgeNeste12Mnd)}
                                 padBottom="l"
                             >
                                 <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                     legend={intlUtils(intl, 'utenlandsopphold.neste12Måneder.spørsmål')}
-                                    name={UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd}
+                                    name={UtenlandsoppholdFieldNames.skalBoINorgeNeste12Mnd}
                                     description={
                                         <UtvidetInformasjon
                                             apneLabel={intlUtils(
@@ -96,11 +99,11 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                         </UtvidetInformasjon>
                                     }
                                     labels={{
-                                        no: intlUtils(
+                                        yes: intlUtils(
                                             intl,
                                             'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge'
                                         ),
-                                        yes: intlUtils(
+                                        no: intlUtils(
                                             intl,
                                             'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet'
                                         ),
@@ -126,11 +129,11 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                             </Block>
                             <Block
                                 padBottom="l"
-                                visible={visibility.isVisible(UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd)}
+                                visible={visibility.isVisible(UtenlandsoppholdFieldNames.harBoddINorgeSiste12Mnd)}
                             >
                                 <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                     legend={intlUtils(intl, 'utenlandsopphold.siste12Måneder.spørsmål')}
-                                    name={UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd}
+                                    name={UtenlandsoppholdFieldNames.harBoddINorgeSiste12Mnd}
                                     description={
                                         <UtvidetInformasjon
                                             apneLabel={intlUtils(
@@ -142,11 +145,11 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                         </UtvidetInformasjon>
                                     }
                                     labels={{
-                                        no: intlUtils(
+                                        yes: intlUtils(
                                             intl,
                                             'utenlandsopphold.siste12MånederInfotekst.radiobutton.boddINorge'
                                         ),
-                                        yes: intlUtils(
+                                        no: intlUtils(
                                             intl,
                                             'utenlandsopphold.siste12MånederInfotekst.radiobutton.boddIUtlandet'
                                         ),

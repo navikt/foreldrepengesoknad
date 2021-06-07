@@ -24,6 +24,4 @@ export interface RegistrertAnnenForelder extends Omit<PersonBase, 'kjønn'> {
     harOpplystOmSinPågåendeSak?: boolean;
 }
 
-export type PersonPartial = Partial<Person>;
-
 export default Person;

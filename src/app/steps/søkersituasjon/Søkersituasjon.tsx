@@ -63,6 +63,7 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
                         pageTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         stepTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         onCancel={() => onAvbrytSøknad(dispatch, history)}
+                        onContinueLater={() => null}
                         steps={stepConfig}
                         kompakt={true}
                     >

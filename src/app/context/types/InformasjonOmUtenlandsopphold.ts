@@ -1,4 +1,4 @@
-import { Tidsperiode } from './Tidsperiode';
+import { Tidsperiode } from '@navikt/fp-common';
 
 export interface Utenlandsopphold {
     land: string;

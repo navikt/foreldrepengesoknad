@@ -1,13 +1,11 @@
+import { TidsperiodeMedValgfriSluttdato } from '@navikt/fp-common';
 import { Attachment } from 'app/types/Attachment';
-import { TidsperiodeMedValgfriSluttdato } from './Tidsperiode';
 
 export enum AnnenInntektType {
-    'SLUTTPAKKE' = 'ETTERLØNN_SLUTTPAKKE',
-    'SLUTTPAKKE_V1' = 'ETTERLØNN_ARBEIDSGIVER',
-    'MILITÆRTJENESTE' = 'MILITÆR_ELLER_SIVILTJENESTE',
-    'VENTELØNN' = 'VENTELØNN_VARTPENGER',
-    'VENTELØNN_V1' = 'VENTELØNN',
-    'JOBB_I_UTLANDET' = 'JOBB_I_UTLANDET',
+    SLUTTPAKKE = 'ETTERLØNN_SLUTTPAKKE',
+    MILITÆRTJENESTE = 'MILITÆR_ELLER_SIVILTJENESTE',
+    VENTELØNN = 'VENTELØNN_VARTPENGER',
+    JOBB_I_UTLANDET = 'JOBB_I_UTLANDET',
 }
 
 interface AnnenInntektBase {
@@ -18,7 +16,7 @@ interface AnnenInntektBase {
 }
 
 export interface SluttpakkeInntekt extends AnnenInntektBase {
-    type: AnnenInntektType.SLUTTPAKKE | AnnenInntektType.SLUTTPAKKE_V1;
+    type: AnnenInntektType.SLUTTPAKKE;
 }
 
 export interface MilitærtjenesteInntekt extends AnnenInntektBase {
@@ -32,7 +30,7 @@ export interface JobbIUtlandetInntekt extends AnnenInntektBase {
 }
 
 export interface VentelønnInntekt extends AnnenInntektBase {
-    type: AnnenInntektType.VENTELØNN | AnnenInntektType.VENTELØNN_V1;
+    type: AnnenInntektType.VENTELØNN;
 }
 
 export type AnnenInntekt = SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUtlandetInntekt | VentelønnInntekt;
@@ -42,7 +40,7 @@ export interface AnnenInntektBaseInnsending extends Omit<AnnenInntektBase, 'tids
 }
 
 export interface SluttpakkeInntektInnsending extends AnnenInntektBaseInnsending {
-    type: AnnenInntektType.SLUTTPAKKE | AnnenInntektType.SLUTTPAKKE_V1;
+    type: AnnenInntektType.SLUTTPAKKE;
 }
 
 export interface MilitærtjenesteInntektInnsending extends AnnenInntektBaseInnsending {
@@ -56,7 +54,7 @@ export interface JobbIUtlandetInntektInnsending extends AnnenInntektBaseInnsendi
 }
 
 export interface VentelønnInntektInnsending extends AnnenInntektBaseInnsending {
-    type: AnnenInntektType.VENTELØNN | AnnenInntektType.VENTELØNN_V1;
+    type: AnnenInntektType.VENTELØNN;
 }
 
 export type AnnenInntektInnsending =

@@ -9,7 +9,7 @@ const SøkersituasjonFormConfig: QuestionConfig<SøkersituasjonFormData, Søkers
     },
     [SøkersituasjonFormField.rolle]: {
         isIncluded: () => true,
-        isAnswered: ({ rolle }) => rolle !== undefined,
+        isAnswered: ({ rolle }) => hasValue(rolle),
         visibilityFilter: ({ situasjon }) => hasValue(situasjon),
     },
 };

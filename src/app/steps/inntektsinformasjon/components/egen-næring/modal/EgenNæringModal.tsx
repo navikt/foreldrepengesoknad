@@ -8,30 +8,48 @@ import {
     EgenNæringModalFormData,
     EgenNæringModalFormField,
 } from './egenNæringModalFormConfig';
-import { getInitialEgenNæringModalValues } from './egenNæringModalFormUtils';
+import {
+    cleanupEgenNæringForm,
+    getInitialEgenNæringModalValues,
+    mapEgenNæringModalFormValuesToState,
+} from './egenNæringModalFormUtils';
 import { Næring, Næringstype } from 'app/context/types/Næring';
 import egenNæringModalQuestionsConfig from './egenNæringModalQuestionsConfig';
-
-import './egenNæringModal.less';
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import Regnskapsfører from './components/Regnskapsfører';
 import Revisor from './components/Revisor';
 import { Hovedknapp } from 'nav-frontend-knapper';
+
+import './egenNæringModal.less';
 
 interface Props {
     isOpen: boolean;
     title: string;
     onRequestClose: () => void;
     selectedNæring?: Næring;
-    // addNæring: (oppdrag: Næring) => void;
-    // editNæring: (oppdrag: Næring) => void;
+    addNæring: (næring: Næring) => void;
+    editNæring: (næring: Næring) => void;
 }
 
-const EgenNæringModal: FunctionComponent<Props> = ({ isOpen, title, onRequestClose, selectedNæring }) => {
+const EgenNæringModal: FunctionComponent<Props> = ({
+    isOpen,
+    title,
+    onRequestClose,
+    selectedNæring,
+    addNæring,
+    editNæring,
+}) => {
     const intl = useIntl();
     const bem = bemUtils('egenNæringModal');
 
-    const onValidSubmit = (values: Partial<EgenNæringModalFormData>) => {};
+    const onValidSubmit = (values: Partial<EgenNæringModalFormData>) => {
+        if (!selectedNæring) {
+            addNæring(mapEgenNæringModalFormValuesToState(values));
+        } else {
+            editNæring(mapEgenNæringModalFormValuesToState(values));
+        }
+        onRequestClose();
+    };
 
     return (
         <Modal
@@ -49,17 +67,21 @@ const EgenNæringModal: FunctionComponent<Props> = ({ isOpen, title, onRequestCl
                     const visibility = egenNæringModalQuestionsConfig.getVisbility(formValues);
 
                     return (
-                        <EgenNæringModalFormComponents.Form includeButtons={false}>
+                        <EgenNæringModalFormComponents.Form
+                            includeButtons={false}
+                            cleanup={(values) => cleanupEgenNæringForm(values, visibility)}
+                            includeValidationSummary={true}
+                        >
                             <Block padBottom="l">
                                 <Undertittel className={bem.element('tittel')}>
                                     <FormattedMessage id="inntektsinformasjon.egenNæringModal.tittel" />
                                 </Undertittel>
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.type)}>
-                                <EgenNæringModalFormComponents.RadioPanelGroup
-                                    name={EgenNæringModalFormField.type}
+                            <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.typer)}>
+                                <EgenNæringModalFormComponents.CheckboxPanelGroup
+                                    name={EgenNæringModalFormField.typer}
                                     legend={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.næringstype')}
-                                    radios={[
+                                    checkboxes={[
                                         {
                                             label: intlUtils(
                                                 intl,

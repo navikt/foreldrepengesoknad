@@ -19,7 +19,7 @@ const MåOrientereAnnenForelderVeileder: React.FunctionComponent<Props> = ({ vis
         <div className="annenForelderVeileder">
             <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
                 <FormattedMessage
-                    id="erAnnenForelderInformert.veilederIkkeInformert"
+                    id="annenForelder.erAnnenForelderInformert.veileder"
                     values={{ navn: annenForelderNavn }}
                 />
             </Veilederpanel>

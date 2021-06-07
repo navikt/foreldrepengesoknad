@@ -30,18 +30,4 @@ export interface OmBarnetFormData {
     [OmBarnetFormField.ankomstdato]: string;
 }
 
-export const initialOmBarnetValues: OmBarnetFormData = {
-    [OmBarnetFormField.erBarnetFødt]: YesOrNo.UNANSWERED,
-    [OmBarnetFormField.adopsjonAvEktefellesBarn]: YesOrNo.UNANSWERED,
-    [OmBarnetFormField.antallBarn]: '',
-    [OmBarnetFormField.adopsjonsdato]: '',
-    [OmBarnetFormField.fødselsdatoer]: [],
-    [OmBarnetFormField.omsorgsovertakelse]: [],
-    [OmBarnetFormField.termindato]: '',
-    [OmBarnetFormField.terminbekreftelse]: [],
-    [OmBarnetFormField.terminbekreftelsedato]: '',
-    [OmBarnetFormField.adoptertIUtlandet]: YesOrNo.UNANSWERED,
-    [OmBarnetFormField.ankomstdato]: '',
-};
-
 export const OmBarnetFormComponents = getTypedFormComponents<OmBarnetFormField, OmBarnetFormData, string>();

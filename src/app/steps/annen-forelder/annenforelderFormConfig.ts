@@ -36,18 +36,3 @@ export const AnnenForelderFormComponents = getTypedFormComponents<
     AnnenForelderFormData,
     string
 >();
-
-export const initialAnnenForelderValues: AnnenForelderFormData = {
-    [AnnenForelderFormField.kanIkkeOppgis]: false,
-    [AnnenForelderFormField.harRettPåForeldrepenger]: YesOrNo.UNANSWERED,
-    [AnnenForelderFormField.erInformertOmSøknaden]: YesOrNo.UNANSWERED,
-    [AnnenForelderFormField.fornavn]: '',
-    [AnnenForelderFormField.etternavn]: '',
-    [AnnenForelderFormField.fnr]: '',
-    [AnnenForelderFormField.utenlandskFnr]: false,
-    [AnnenForelderFormField.aleneOmOmsorg]: YesOrNo.UNANSWERED,
-    [AnnenForelderFormField.erMorUfør]: YesOrNo.UNANSWERED,
-    [AnnenForelderFormField.datoForAleneomsorg]: '',
-    [AnnenForelderFormField.bostedsland]: '',
-    [AnnenForelderFormField.dokumentasjonAvAleneomsorg]: [],
-};

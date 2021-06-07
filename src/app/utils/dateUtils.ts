@@ -1,5 +1,8 @@
 import dayjs from 'dayjs';
 import { isISODateString } from 'nav-datovelger';
+import isBetween from 'dayjs/plugin/isBetween';
+
+dayjs.extend(isBetween);
 
 export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();
 

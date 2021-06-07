@@ -10,6 +10,7 @@ import {
     InntektsinformasjonFormData,
     InntektsinformasjonFormField,
 } from '../../inntektsinformasjonFormConfig';
+import EgenNæringListe from './EgenNæringListe';
 import HvemKanDriveMedEgenNæring from './HvemKanDriveMedEgenNæring';
 import EgenNæringModal from './modal/EgenNæringModal';
 
@@ -28,11 +29,36 @@ const EgenNæring: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [_, setSelectedNæring] = useState<Næring>();
+    const [selectedNæring, setSelectedNæring] = useState<Næring>();
 
     const handleOnLeggTil = () => {
         setIsModalOpen(true);
         setSelectedNæring(undefined);
+    };
+
+    const addNæring = (næring: Næring) => {
+        const updatedEgenNæringInformasjon = egenNæringInformasjon.concat(næring);
+
+        setEgenNæringsInformasjon(updatedEgenNæringInformasjon);
+    };
+
+    const deleteNæring = (næring: Næring) => {
+        const updatedEgenNæringInformasjon = egenNæringInformasjon.filter((nær) => nær !== næring);
+
+        setEgenNæringsInformasjon(updatedEgenNæringInformasjon);
+    };
+
+    const editNæring = (næring: Næring) => {
+        const updatedEgenNæringInformasjon = egenNæringInformasjon
+            .filter((nær) => nær !== selectedNæring)
+            .concat(næring);
+
+        setEgenNæringsInformasjon(updatedEgenNæringInformasjon);
+    };
+
+    const selectNæring = (næring: Næring) => {
+        setSelectedNæring(næring);
+        setIsModalOpen(true);
     };
 
     return (
@@ -49,14 +75,24 @@ const EgenNæring: FunctionComponent<Props> = ({
             </Block>
             {formValues.hattInntektSomNæringsdrivende === YesOrNo.YES && (
                 <div style={{ backgroundColor: '#e9e7e7', marginBottom: '1rem', padding: '1rem' }}>
-                    <Knapp onClick={handleOnLeggTil}>
-                        <FormattedMessage id="inntektsinformasjon.leggTilOppdrag" />
-                    </Knapp>
                     <EgenNæringModal
                         isOpen={isModalOpen}
                         title="Næringsinformasjon"
                         onRequestClose={() => setIsModalOpen(false)}
+                        selectedNæring={selectedNæring}
+                        addNæring={addNæring}
+                        editNæring={editNæring}
                     />
+                    <Block padBottom="l" visible={egenNæringInformasjon.length > 0}>
+                        <EgenNæringListe
+                            næringsInformasjon={egenNæringInformasjon}
+                            deleteNæring={deleteNæring}
+                            selectNæring={selectNæring}
+                        />
+                    </Block>
+                    <Knapp htmlType="button" onClick={handleOnLeggTil}>
+                        <FormattedMessage id="inntektsinformasjon.leggTilVirksomhet" />
+                    </Knapp>
                 </div>
             )}
         </>

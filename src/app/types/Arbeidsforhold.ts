@@ -7,5 +7,4 @@ interface Arbeidsforhold {
     stillingsprosent: number;
 }
 
-export type ArbeidsforholdPartial = Partial<Arbeidsforhold>;
 export default Arbeidsforhold;

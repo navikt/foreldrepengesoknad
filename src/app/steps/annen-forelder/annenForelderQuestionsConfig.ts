@@ -39,7 +39,7 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
         isIncluded: (payload) => payload.skalOppgiPersonalia && isAnnenForelderKanIkkeOppgisIncluded(payload),
     },
     [AnnenForelderFormField.fnr]: {
-        isAnswered: ({ fnr, utenlandskFnr }) => hasValue(fnr) || utenlandskFnr === true,
+        isAnswered: ({ fnr, utenlandskFnr }) => hasValue(fnr) || (utenlandskFnr === true && hasValue(fnr)),
         isIncluded: ({ skalOppgiPersonalia, kanIkkeOppgis }) => skalOppgiPersonalia && kanIkkeOppgis !== true,
         visibilityFilter: ({ fornavn, etternavn }) => hasValue(fornavn) && hasValue(etternavn),
     },

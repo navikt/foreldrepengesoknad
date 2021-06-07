@@ -3,24 +3,24 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { UtenlandsoppholdFormData, UtenlandsoppholdFieldNames } from './utenlandsoppholdFormTypes';
 
 const UtenlandsoppholdFormConfig: QuestionConfig<UtenlandsoppholdFormData, UtenlandsoppholdFieldNames> = {
-    [UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd]: {
-        isAnswered: ({ harBoddUtenforNorgeSiste12Mnd }) => harBoddUtenforNorgeSiste12Mnd !== YesOrNo.UNANSWERED,
+    [UtenlandsoppholdFieldNames.harBoddINorgeSiste12Mnd]: {
+        isAnswered: ({ harBoddINorgeSiste12Mnd }) => harBoddINorgeSiste12Mnd !== YesOrNo.UNANSWERED,
         isIncluded: () => true,
-        visibilityFilter: ({ skalBoUtenforNorgeNeste12Mnd }) => skalBoUtenforNorgeNeste12Mnd !== YesOrNo.UNANSWERED,
+        visibilityFilter: ({ skalBoINorgeNeste12Mnd }) => skalBoINorgeNeste12Mnd !== YesOrNo.UNANSWERED,
     },
     [UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd]: {
         isAnswered: ({ utenlandsoppholdSiste12Mnd }) => utenlandsoppholdSiste12Mnd.length > 0,
         isOptional: () => true,
-        isIncluded: ({ harBoddUtenforNorgeSiste12Mnd }) => harBoddUtenforNorgeSiste12Mnd === YesOrNo.YES,
+        isIncluded: ({ harBoddINorgeSiste12Mnd }) => harBoddINorgeSiste12Mnd === YesOrNo.NO,
     },
-    [UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd]: {
-        isAnswered: ({ skalBoUtenforNorgeNeste12Mnd }) => skalBoUtenforNorgeNeste12Mnd !== YesOrNo.UNANSWERED,
+    [UtenlandsoppholdFieldNames.skalBoINorgeNeste12Mnd]: {
+        isAnswered: ({ skalBoINorgeNeste12Mnd }) => skalBoINorgeNeste12Mnd !== YesOrNo.UNANSWERED,
         isIncluded: () => true,
     },
     [UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd]: {
         isAnswered: ({ utenlandsoppholdNeste12Mnd }) => utenlandsoppholdNeste12Mnd.length > 0,
         isOptional: () => true,
-        isIncluded: ({ skalBoUtenforNorgeNeste12Mnd }) => skalBoUtenforNorgeNeste12Mnd === YesOrNo.YES,
+        isIncluded: ({ skalBoINorgeNeste12Mnd }) => skalBoINorgeNeste12Mnd === YesOrNo.NO,
     },
 };
 

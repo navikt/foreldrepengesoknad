@@ -1,32 +1,30 @@
-import { TidsperiodeMedValgfriSluttdato } from './Tidsperiode';
-import { TidsperiodeMedValgfriSluttdatoDate } from './TidsperiodeDate';
+import { TidsperiodeMedValgfriSluttdato, TidsperiodeMedValgfriSluttdatoDate } from '@navikt/fp-common';
 
 export enum Næringstype {
-    'FISKER' = 'FISKE',
-    'JORDBRUK' = 'JORDBRUK_SKOGBRUK',
-    'DAGMAMMA' = 'DAGMAMMA',
-    'ANNET' = 'ANNEN',
+    FISKER = 'FISKE',
+    JORDBRUK = 'JORDBRUK_SKOGBRUK',
+    DAGMAMMA = 'DAGMAMMA',
+    ANNET = 'ANNEN',
 }
 
 export interface Næring {
     næringstyper: Næringstype[];
     tidsperiode: TidsperiodeMedValgfriSluttdato;
-    næringsinntekt: string;
+    næringsinntekt?: string;
     pågående: boolean;
     navnPåNæringen: string;
-    organisasjonsnummer: string;
+    organisasjonsnummer?: string;
     registrertINorge: boolean;
-    registrertILand: string;
-    stillingsprosent: string;
+    registrertILand?: string;
     harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene?: boolean;
     oppstartsdato?: string;
     hattVarigEndringAvNæringsinntektSiste4Kalenderår?: boolean;
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjon;
     harRegnskapsfører: boolean;
-    regnskapsfører: Næringsrelasjon;
+    regnskapsfører?: Næringsrelasjon;
     harRevisor: boolean;
-    revisor: Næringsrelasjon;
-    kanInnhenteOpplsyningerFraRevisor: boolean;
+    revisor?: Næringsrelasjon;
+    kanInnhenteOpplysningerFraRevisor?: boolean;
 }
 
 export interface NæringInnsending

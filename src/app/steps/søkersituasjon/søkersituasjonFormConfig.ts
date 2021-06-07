@@ -10,13 +10,13 @@ export enum SøkersituasjonFormField {
 }
 
 export interface SøkersituasjonFormData {
-    [SøkersituasjonFormField.situasjon]?: Situasjon;
-    [SøkersituasjonFormField.rolle]?: Søkerrolle;
+    [SøkersituasjonFormField.situasjon]: Situasjon;
+    [SøkersituasjonFormField.rolle]: Søkerrolle;
 }
 
 const initialSøkersituasjonValues: SøkersituasjonFormData = {
     [SøkersituasjonFormField.situasjon]: '',
-    [SøkersituasjonFormField.situasjon]: '',
+    [SøkersituasjonFormField.rolle]: '',
 };
 
 export const getInitialSøkerSituasjonValues = (stateValues: Søkersituasjon): SøkersituasjonFormData => {

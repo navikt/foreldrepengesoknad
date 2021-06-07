@@ -33,6 +33,8 @@ const OmBarnet: React.FunctionComponent<Props> = () => {
         if (hasSubmitted.current === true) {
             Api.storeAppState(state);
             history.push(SøknadRoutes.ANNEN_FORELDER);
+        } else {
+            Api.storeAppState(state);
         }
     }, [state]);
 
@@ -68,6 +70,7 @@ const OmBarnet: React.FunctionComponent<Props> = () => {
                         pageTitle={intlUtils(intl, 'søknad.omBarnet')}
                         stepTitle={intlUtils(intl, 'søknad.omBarnet')}
                         onCancel={() => onAvbrytSøknad(dispatch, history)}
+                        onContinueLater={() => null}
                         steps={stepConfig}
                         kompakt={true}
                     >

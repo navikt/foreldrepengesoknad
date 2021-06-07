@@ -1,0 +1,93 @@
+import { doesTidsperiodeContainDate, intlUtils } from '@navikt/fp-common';
+import Barn, { isAdoptertAnnetBarn, isAdoptertStebarn } from 'app/context/types/Barn';
+import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import React, { FunctionComponent } from 'react';
+import { useIntl } from 'react-intl';
+import OppsummeringsPunkt from '../OppsummeringsPunkt';
+import UtenlandsoppholdListe from './UtenlandsoppholdOppsummeringListe';
+
+interface Props {
+    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
+    barn: Barn;
+}
+
+const getErINorgePåFamiliehendelsedato = (
+    familiehendelsedato: string,
+    tidligereOpphold: Utenlandsopphold[],
+    senereOpphold: Utenlandsopphold[]
+): boolean => {
+    let erINorge = true;
+
+    tidligereOpphold.forEach((tidOpphold) => {
+        if (doesTidsperiodeContainDate(tidOpphold.tidsperiode, familiehendelsedato)) {
+            erINorge = false;
+        }
+    });
+
+    senereOpphold.forEach((senOpphold) => {
+        if (doesTidsperiodeContainDate(senOpphold.tidsperiode, familiehendelsedato)) {
+            erINorge = false;
+        }
+    });
+
+    return erINorge;
+};
+
+const erAdoptertBarn = (barn: Barn): boolean => {
+    return isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn);
+};
+
+const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({ informasjonOmUtenlandsopphold, barn }) => {
+    const intl = useIntl();
+    const { senereOpphold, tidligereOpphold } = informasjonOmUtenlandsopphold;
+    const familiehendelsedato = getFamiliehendelsedato(barn);
+    const erINorgePåFamiliehendelsedato = getErINorgePåFamiliehendelsedato(
+        familiehendelsedato,
+        tidligereOpphold,
+        senereOpphold
+    );
+
+    return (
+        <>
+            <OppsummeringsPunkt
+                title={intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge')}
+                text={
+                    informasjonOmUtenlandsopphold.iNorgeSiste12Mnd
+                        ? intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge.norge')
+                        : undefined
+                }
+            >
+                <UtenlandsoppholdListe
+                    utenlandsopphold={informasjonOmUtenlandsopphold.tidligereOpphold}
+                    tidligereOpphold={true}
+                />
+            </OppsummeringsPunkt>
+
+            <OppsummeringsPunkt
+                title={intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge')}
+                text={
+                    informasjonOmUtenlandsopphold.iNorgeNeste12Mnd
+                        ? intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge.norge')
+                        : undefined
+                }
+            >
+                <UtenlandsoppholdListe
+                    utenlandsopphold={informasjonOmUtenlandsopphold.senereOpphold}
+                    tidligereOpphold={false}
+                />
+            </OppsummeringsPunkt>
+
+            <OppsummeringsPunkt
+                title={
+                    erAdoptertBarn(barn)
+                        ? intlUtils(intl, 'oppsummering.utenlandsopphold.erINorgeOmsorgsovertakelsesdato')
+                        : intlUtils(intl, 'oppsummering.utenlandsopphold.erINorgePåFødselstidspunkt')
+                }
+                text={erINorgePåFamiliehendelsedato ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}
+            />
+        </>
+    );
+};
+
+export default UtenlandsoppholdOppsummering;

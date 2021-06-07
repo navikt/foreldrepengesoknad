@@ -15,8 +15,8 @@ export const getInitialUtenlandsoppholdValuesFromState = (
 ): UtenlandsoppholdFormData => {
     return {
         ...initialUtenlandsoppholdFormData,
-        harBoddUtenforNorgeSiste12Mnd: convertBooleanOrUndefinedToYesOrNo(init.iNorgeSiste12Mnd),
-        skalBoUtenforNorgeNeste12Mnd: convertBooleanOrUndefinedToYesOrNo(init.iNorgeNeste12Mnd),
+        harBoddINorgeSiste12Mnd: convertBooleanOrUndefinedToYesOrNo(init.iNorgeSiste12Mnd),
+        skalBoINorgeNeste12Mnd: convertBooleanOrUndefinedToYesOrNo(init.iNorgeNeste12Mnd),
         utenlandsoppholdNeste12Mnd: init.senereOpphold.map(mapUtenlandsoppholdTilBostedUtland),
         utenlandsoppholdSiste12Mnd: init.tidligereOpphold.map(mapUtenlandsoppholdTilBostedUtland),
     };
@@ -36,21 +36,19 @@ export const mapUtenlandsoppholdFormDataToState = (
     formValues: Partial<UtenlandsoppholdFormData>
 ): InformasjonOmUtenlandsopphold => {
     const {
-        harBoddUtenforNorgeSiste12Mnd,
-        skalBoUtenforNorgeNeste12Mnd,
+        harBoddINorgeSiste12Mnd,
+        skalBoINorgeNeste12Mnd,
         utenlandsoppholdNeste12Mnd,
         utenlandsoppholdSiste12Mnd,
     } = formValues;
 
     return {
-        iNorgeSiste12Mnd: convertYesOrNoOrUndefinedToBoolean(harBoddUtenforNorgeSiste12Mnd),
-        iNorgeNeste12Mnd: convertYesOrNoOrUndefinedToBoolean(skalBoUtenforNorgeNeste12Mnd),
+        iNorgeSiste12Mnd: convertYesOrNoOrUndefinedToBoolean(harBoddINorgeSiste12Mnd)!,
+        iNorgeNeste12Mnd: convertYesOrNoOrUndefinedToBoolean(skalBoINorgeNeste12Mnd)!,
         senereOpphold:
-            skalBoUtenforNorgeNeste12Mnd === YesOrNo.YES
-                ? mapBostedUtlandToUtenlandsopphold(utenlandsoppholdNeste12Mnd!)
-                : [],
+            skalBoINorgeNeste12Mnd === YesOrNo.NO ? mapBostedUtlandToUtenlandsopphold(utenlandsoppholdNeste12Mnd!) : [],
         tidligereOpphold:
-            harBoddUtenforNorgeSiste12Mnd === YesOrNo.YES
+            harBoddINorgeSiste12Mnd === YesOrNo.NO
                 ? mapBostedUtlandToUtenlandsopphold(utenlandsoppholdSiste12Mnd!)
                 : [],
     };

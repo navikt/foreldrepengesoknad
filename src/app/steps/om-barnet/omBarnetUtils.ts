@@ -7,7 +7,21 @@ import Barn, {
     isUfødtBarn,
 } from 'app/context/types/Barn';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { initialOmBarnetValues, OmBarnetFormData } from './omBarnetFormConfig';
+import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
+
+export const initialOmBarnetValues: OmBarnetFormData = {
+    [OmBarnetFormField.erBarnetFødt]: YesOrNo.UNANSWERED,
+    [OmBarnetFormField.adopsjonAvEktefellesBarn]: YesOrNo.UNANSWERED,
+    [OmBarnetFormField.antallBarn]: '',
+    [OmBarnetFormField.adopsjonsdato]: '',
+    [OmBarnetFormField.fødselsdatoer]: [],
+    [OmBarnetFormField.omsorgsovertakelse]: [],
+    [OmBarnetFormField.termindato]: '',
+    [OmBarnetFormField.terminbekreftelse]: [],
+    [OmBarnetFormField.terminbekreftelsedato]: '',
+    [OmBarnetFormField.adoptertIUtlandet]: YesOrNo.UNANSWERED,
+    [OmBarnetFormField.ankomstdato]: '',
+};
 
 export const mapOmBarnetFormDataToState = (values: Partial<OmBarnetFormData>): Barn => {
     if (values.erBarnetFødt === YesOrNo.YES) {
@@ -44,9 +58,9 @@ export const mapOmBarnetFormDataToState = (values: Partial<OmBarnetFormData>): B
         fødselsdatoer: values.fødselsdatoer!,
         adopsjonsdato: values.adopsjonsdato!,
         antallBarn: values.antallBarn!,
-        adoptertIUtlandet: convertYesOrNoOrUndefinedToBoolean(values.adoptertIUtlandet),
+        adoptertIUtlandet: convertYesOrNoOrUndefinedToBoolean(values.adoptertIUtlandet)!,
         omsorgsovertakelse: values.omsorgsovertakelse!,
-        ankomstdato: values.ankomstdato!,
+        ankomstdato: values.adoptertIUtlandet! === YesOrNo.YES ? values.ankomstdato! : undefined,
     };
 };
 

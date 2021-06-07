@@ -17,7 +17,10 @@ import EgenNæring from './components/egen-næring/EgenNæring';
 import Frilans from './components/frilans/Frilans';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import { InntektsinformasjonFormComponents, InntektsinformasjonFormData } from './inntektsinformasjonFormConfig';
-import { initialInntektsinformasjonFormValues } from './inntektsinformasjonFormUtils';
+import {
+    getInitialInntektsinformasjonFormValues,
+    mapInntektsinformasjonFormDataToState,
+} from './inntektsinformasjonFormUtils';
 import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsConfig';
 
 const Inntektsinformasjon = () => {
@@ -26,17 +29,17 @@ const Inntektsinformasjon = () => {
     const history = useHistory();
     const { arbeidsforhold } = state.søkerinfo;
     const hasSubmitted = useRef(false);
+    const { søker } = state.søknad;
+
     const [frilansoppdrag, setFrilansoppdrag] = useState(
-        state.søknad.søker.frilansInformasjon
-            ? state.søknad.søker.frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd
-            : []
+        søker.frilansInformasjon ? søker.frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd : []
     );
     const [egenNæringInformasjon, setEgenNæringsInformasjon] = useState(
-        state.søknad.søker.selvstendigNæringsdrivendeInformasjon
-            ? state.søknad.søker.selvstendigNæringsdrivendeInformasjon
-            : []
+        søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : []
     );
-    const [andreInntekterInformasjon, setAndreInntekterInformasjon] = useState([]);
+    const [andreInntekterInformasjon, setAndreInntekterInformasjon] = useState(
+        søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : []
+    );
 
     useEffect(() => {
         if (hasSubmitted.current === true) {
@@ -51,16 +54,22 @@ const Inntektsinformasjon = () => {
         dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.INNTEKTSINFORMASJON));
     }, []);
 
-    const onValidSubmit = (_values: Partial<InntektsinformasjonFormData>) => {
-        // const barn = mapOmBarnetFormDataToState(values);
-        // dispatch(actionCreator.setOmBarnet(barn));
-        // hasSubmitted.current = true;
+    const onValidSubmit = (values: Partial<InntektsinformasjonFormData>) => {
+        const updatedSøker = mapInntektsinformasjonFormDataToState(
+            values,
+            søker,
+            andreInntekterInformasjon,
+            frilansoppdrag,
+            egenNæringInformasjon
+        );
+
+        dispatch(actionCreator.setSøker(updatedSøker));
         hasSubmitted.current = true;
     };
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
-            initialValues={initialInntektsinformasjonFormValues}
+            initialValues={getInitialInntektsinformasjonFormValues(søker)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(formValues);
@@ -73,6 +82,7 @@ const Inntektsinformasjon = () => {
                         pageTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
                         stepTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
                         onCancel={() => onAvbrytSøknad(dispatch, history)}
+                        onContinueLater={() => null}
                         steps={stepConfig}
                         kompakt={true}
                     >
@@ -114,10 +124,11 @@ const Inntektsinformasjon = () => {
                                     andreInntekterInformasjon={andreInntekterInformasjon}
                                     setAndreInntekterInformasjon={setAndreInntekterInformasjon}
                                     visibility={visibility}
+                                    formValues={formValues}
                                 />
                             </Block>
 
-                            <Block textAlignCenter={true}>
+                            <Block textAlignCenter={true} visible={visibility.areAllQuestionsAnswered()}>
                                 <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
                             </Block>
                         </InntektsinformasjonFormComponents.Form>

@@ -1,5 +1,4 @@
-import { TidsperiodeMedValgfriSluttdato } from './Tidsperiode';
-import { TidsperiodeDate } from './TidsperiodeDate';
+import { TidsperiodeDate, TidsperiodeMedValgfriSluttdato } from '@navikt/fp-common';
 
 export interface Frilans {
     jobberFremdelesSomFrilans: boolean;

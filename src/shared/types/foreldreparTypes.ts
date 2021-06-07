@@ -7,10 +7,10 @@ export type ForeldreparIllustrasjonsvariant =
     | 'foreldreNærmere';
 
 export enum ForeldreparSituasjon {
-    'farOgMor' = 'farOgMor',
-    'bareFar' = 'bareFar',
-    'bareMor' = 'bareMor',
-    'aleneomsorg' = 'aleneomsorg',
-    'farOgFar' = 'farOgFar',
-    'morOgMedmor' = 'morOgMedmor',
+    farOgMor = 'farOgMor',
+    bareFar = 'bareFar',
+    bareMor = 'bareMor',
+    aleneomsorg = 'aleneomsorg',
+    farOgFar = 'farOgFar',
+    morOgMedmor = 'morOgMedmor',
 }

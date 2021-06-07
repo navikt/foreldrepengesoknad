@@ -93,11 +93,6 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                         />
                     </Block>
                     <Block padBottom="l" visible={formValues.oppdragForNæreVennerEllerFamilie === YesOrNo.YES}>
-                        <Block padBottom="l">
-                            <Knapp onClick={handleOnLeggTil}>
-                                <FormattedMessage id="inntektsinformasjon.leggTilOppdrag" />
-                            </Knapp>
-                        </Block>
                         <FrilansoppdragModal
                             isOpen={isModalOpen}
                             title="Test"
@@ -106,11 +101,16 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                             addFrilansoppdrag={addFrilansoppdrag}
                             editFrilansoppdrag={editFrilansoppdrag}
                         />
-                        <FrilansoppdragListe
-                            frilansoppdrag={frilansoppdrag}
-                            deleteFrilansoppdrag={deleteFrilansoppdrag}
-                            selectOppdrag={selectOppdrag}
-                        />
+                        <Block padBottom="l" visible={frilansoppdrag.length > 0}>
+                            <FrilansoppdragListe
+                                frilansoppdrag={frilansoppdrag}
+                                deleteFrilansoppdrag={deleteFrilansoppdrag}
+                                selectOppdrag={selectOppdrag}
+                            />
+                        </Block>
+                        <Knapp htmlType="button" onClick={handleOnLeggTil}>
+                            <FormattedMessage id="inntektsinformasjon.leggTilOppdrag" />
+                        </Knapp>
                     </Block>
                     <Block
                         padBottom="l"

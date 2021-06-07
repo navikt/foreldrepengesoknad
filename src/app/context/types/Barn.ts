@@ -1,11 +1,11 @@
 import { Attachment } from 'app/types/Attachment';
 
 export enum BarnType {
-    'FØDT' = 'født',
-    'UFØDT' = 'ufødt',
-    'ADOPTERT_STEBARN' = 'adoptertStebarn',
-    'ADOPTERT_ANNET_BARN' = 'adoptertAnnetBarn',
-    'IKKE_UTFYLT' = 'ikkeUtfylt',
+    FØDT = 'født',
+    UFØDT = 'ufødt',
+    ADOPTERT_STEBARN = 'adoptertStebarn',
+    ADOPTERT_ANNET_BARN = 'adoptertAnnetBarn',
+    IKKE_UTFYLT = 'ikkeUtfylt',
 }
 
 interface Common {
@@ -13,10 +13,6 @@ interface Common {
     antallBarn: string;
     dokumentasjonAvAleneomsorg?: any[];
     datoForAleneomsorg?: string;
-}
-
-interface IkkeUtfyltBarn extends Common {
-    type: BarnType.IKKE_UTFYLT;
 }
 
 interface FødtBarn extends Common {
@@ -32,23 +28,23 @@ interface UfødtBarn extends Common {
     terminbekreftelsedato?: string;
 }
 
-interface AdoptertStebarn extends Common {
+export interface AdoptertStebarn extends Common {
     type: BarnType.ADOPTERT_STEBARN;
     adopsjonsdato: string;
     fødselsdatoer: string[];
     omsorgsovertakelse: Attachment[];
 }
 
-interface AdoptertAnnetBarn extends Common {
+export interface AdoptertAnnetBarn extends Common {
     type: BarnType.ADOPTERT_ANNET_BARN;
     adopsjonsdato: string;
     fødselsdatoer: string[];
     omsorgsovertakelse: Attachment[];
     adoptertIUtlandet: boolean;
-    ankomstdato: string;
+    ankomstdato?: string;
 }
 
-type Barn = FødtBarn | UfødtBarn | AdoptertStebarn | AdoptertAnnetBarn | IkkeUtfyltBarn;
+type Barn = FødtBarn | UfødtBarn | AdoptertStebarn | AdoptertAnnetBarn;
 
 export const isFødtBarn = (barn: Barn): barn is FødtBarn => {
     return barn.type === BarnType.FØDT;

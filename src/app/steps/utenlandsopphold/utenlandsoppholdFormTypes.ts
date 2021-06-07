@@ -2,23 +2,23 @@ import { BostedUtland } from './bostedUtlandListAndDialog/types';
 import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 
 export const enum UtenlandsoppholdFieldNames {
-    harBoddUtenforNorgeSiste12Mnd = 'harBoddUtenforNorgeSiste12Mnd',
+    harBoddINorgeSiste12Mnd = 'harBoddINorgeSiste12Mnd',
     utenlandsoppholdSiste12Mnd = 'utenlandsoppholdSiste12Mnd',
-    skalBoUtenforNorgeNeste12Mnd = 'skalBoUtenforNorgeNeste12Mnd',
+    skalBoINorgeNeste12Mnd = 'skalBoINorgeNeste12Mnd',
     utenlandsoppholdNeste12Mnd = 'utenlandsoppholdNeste12Mnd',
 }
 
 export interface UtenlandsoppholdFormData {
-    [UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd]: YesOrNo;
+    [UtenlandsoppholdFieldNames.harBoddINorgeSiste12Mnd]: YesOrNo;
     [UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd]: BostedUtland[];
-    [UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd]: YesOrNo;
+    [UtenlandsoppholdFieldNames.skalBoINorgeNeste12Mnd]: YesOrNo;
     [UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd]: BostedUtland[];
 }
 
 export const initialUtenlandsoppholdFormData: UtenlandsoppholdFormData = {
-    [UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd]: YesOrNo.UNANSWERED,
+    [UtenlandsoppholdFieldNames.harBoddINorgeSiste12Mnd]: YesOrNo.UNANSWERED,
     [UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd]: [],
-    [UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd]: YesOrNo.UNANSWERED,
+    [UtenlandsoppholdFieldNames.skalBoINorgeNeste12Mnd]: YesOrNo.UNANSWERED,
     [UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd]: [],
 };
 

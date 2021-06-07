@@ -1,4 +1,6 @@
+import { hasValue } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FrilansOppdrag } from 'app/context/types/Frilans';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { FrilansoppdragModalFormData, FrilansoppdragModalFormField } from './frilansoppdragModalFormConfig';
@@ -10,13 +12,29 @@ export const initialFrilansoppdragModalValues: FrilansoppdragModalFormData = {
     [FrilansoppdragModalFormField.pågående]: YesOrNo.UNANSWERED,
 };
 
+export const cleanupFrilansoppdragForm = (
+    values: FrilansoppdragModalFormData,
+    visibility: QuestionVisibility<FrilansoppdragModalFormField, undefined>
+): FrilansoppdragModalFormData => {
+    return {
+        navnOppdragsgiver: visibility.isVisible(FrilansoppdragModalFormField.navnOppdragsgiver)
+            ? values.navnOppdragsgiver
+            : initialFrilansoppdragModalValues.navnOppdragsgiver,
+        fom: visibility.isVisible(FrilansoppdragModalFormField.fom) ? values.fom : initialFrilansoppdragModalValues.fom,
+        tom: visibility.isVisible(FrilansoppdragModalFormField.tom) ? values.tom : initialFrilansoppdragModalValues.tom,
+        pågående: visibility.isVisible(FrilansoppdragModalFormField.pågående)
+            ? values.pågående
+            : initialFrilansoppdragModalValues.pågående,
+    };
+};
+
 export const mapFrilansoppdragModalValuesToState = (values: Partial<FrilansoppdragModalFormData>): FrilansOppdrag => {
     return {
         navnPåArbeidsgiver: values.navnOppdragsgiver!,
-        pågående: convertYesOrNoOrUndefinedToBoolean(values.pågående),
+        pågående: convertYesOrNoOrUndefinedToBoolean(values.pågående)!,
         tidsperiode: {
             fom: values.fom!,
-            tom: values.pågående === YesOrNo.NO ? values.tom : undefined,
+            tom: hasValue(values.tom) ? values.tom : undefined,
         },
     };
 };

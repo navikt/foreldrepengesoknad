@@ -17,5 +17,9 @@ export const convertYesOrNoOrUndefinedToBoolean = (value: YesOrNo | undefined) =
         return true;
     }
 
+    if (value === YesOrNo.UNANSWERED) {
+        return undefined;
+    }
+
     return false;
 };

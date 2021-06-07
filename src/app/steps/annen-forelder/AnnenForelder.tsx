@@ -19,7 +19,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import { AnnenForelderFormComponents, AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
-import { getAnnenForelderFormInitialValues, mapAnnenForelderFormToState } from './annenForelderFormUtils';
+import {
+    cleanAnnenForelderFormData,
+    getAnnenForelderFormInitialValues,
+    mapAnnenForelderFormToState,
+} from './annenForelderFormUtils';
 import { annenForelderQuestionsConfig } from './annenForelderQuestionsConfig';
 import AvtaleAtFarTarUtForeldrepengerVeileder from './components/AvtaleAtFarTarUtForeldrepengerVeileder';
 import FarDokumentasjonAleneomsorgVeileder from './components/FarDokumentasjonAleneomsorgVeileder';
@@ -33,7 +37,7 @@ const AnnenForelder = () => {
     const { annenForelder, barn, søker } = state.søknad;
     const hasSubmitted = useRef(false);
     const history = useHistory();
-    const skalOppgiPersonalia = !annenForelder.kanIkkeOppgis;
+    const skalOppgiPersonalia = true;
 
     useEffect(() => {
         if (hasSubmitted.current === true) {
@@ -48,6 +52,7 @@ const AnnenForelder = () => {
 
     const onValidSubmit = (values: Partial<AnnenForelderFormData>) => {
         hasSubmitted.current = true;
+
         const newSøker: Søker = {
             ...søker,
             erAleneOmOmsorg: convertYesOrNoOrUndefinedToBoolean(values.aleneOmOmsorg),
@@ -55,7 +60,9 @@ const AnnenForelder = () => {
         const newBarn: Barn = {
             ...barn,
             datoForAleneomsorg: values.datoForAleneomsorg,
+            dokumentasjonAvAleneomsorg: values.dokumentasjonAvAleneomsorg,
         };
+
         dispatch(
             actionCreator.setAnnenForelder({
                 forelder: mapAnnenForelderFormToState(values),
@@ -85,12 +92,14 @@ const AnnenForelder = () => {
                         pageTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         stepTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         onCancel={() => onAvbrytSøknad(dispatch, history)}
+                        onContinueLater={() => null}
                         steps={stepConfig}
                         kompakt={true}
                     >
                         <AnnenForelderFormComponents.Form
                             includeButtons={false}
                             fieldErrorHandler={getFieldErrorRenderer(intl)}
+                            cleanup={(values) => cleanAnnenForelderFormData(values, visibility)}
                         >
                             {skalOppgiPersonalia && (
                                 <OppgiPersonalia
@@ -176,21 +185,21 @@ const AnnenForelder = () => {
                                         <UtvidetInformasjon
                                             apneLabel={intlUtils(
                                                 intl,
-                                                'annenForelderRettPåForeldrepenger.veileder.apneLabel'
+                                                'annenForelder.annenForelderRettPåForeldrepenger.veileder.apneLabel'
                                             )}
                                         >
                                             <FormattedMessage
-                                                id="annenForelderRettPåForeldrepenger.veileder.del1"
+                                                id="annenForelder.annenForelderRettPåForeldrepenger.veileder.del1"
                                                 values={{ navn: formValues.fornavn }}
                                             ></FormattedMessage>
                                             <br />
                                             <FormattedMessage
-                                                id="annenForelderRettPåForeldrepenger.veileder.del2"
+                                                id="annenForelder.annenForelderRettPåForeldrepenger.veileder.del2"
                                                 values={{ navn: formValues.fornavn }}
                                             ></FormattedMessage>
                                         </UtvidetInformasjon>
                                     }
-                                    legend={intlUtils(intl, 'annenForelderRettPåForeldrepenger.spørsmål', {
+                                    legend={intlUtils(intl, 'annenForelder.annenForelderRettPåForeldrepenger', {
                                         navn: formValues.fornavn,
                                     })}
                                     // validate={(annenForelderHarRett) =>

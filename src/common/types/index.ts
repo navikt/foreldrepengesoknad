@@ -6,8 +6,8 @@ export enum Dekningsgrad {
 }
 
 export enum Forelder {
-    'mor' = 'mor',
-    'farMedmor' = 'farMedmor',
+    mor = 'mor',
+    farMedmor = 'farMedmor',
 }
 
 export type StatusKey = 'suksess' | 'advarsel' | 'feil';
@@ -52,11 +52,11 @@ export interface Feil {
 }
 
 export enum StønadskontoType {
-    'Mødrekvote' = 'MØDREKVOTE',
-    'Fedrekvote' = 'FEDREKVOTE',
-    'Fellesperiode' = 'FELLESPERIODE',
-    'Foreldrepenger' = 'FORELDREPENGER',
-    'ForeldrepengerFørFødsel' = 'FORELDREPENGER_FØR_FØDSEL',
-    'Flerbarnsdager' = 'FLERBARNSDAGER', // Ikke brukt som egen type i periodene
-    'AktivitetsfriKvote' = 'AKTIVITETSFRI_KVOTE', // Foreldrepenger
+    Mødrekvote = 'MØDREKVOTE',
+    Fedrekvote = 'FEDREKVOTE',
+    Fellesperiode = 'FELLESPERIODE',
+    Foreldrepenger = 'FORELDREPENGER',
+    ForeldrepengerFørFødsel = 'FORELDREPENGER_FØR_FØDSEL',
+    Flerbarnsdager = 'FLERBARNSDAGER', // Ikke brukt som egen type i periodene
+    AktivitetsfriKvote = 'AKTIVITETSFRI_KVOTE', // Foreldrepenger
 }

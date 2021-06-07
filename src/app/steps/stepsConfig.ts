@@ -8,6 +8,7 @@ type Uttaksplan = 'uttaksplan';
 type UtenlandsoppholdStepId = 'utenlandsopphold';
 type Inntektsinformasjon = 'inntektsinformasjon';
 type OppsummeringStepId = 'oppsummering';
+
 type StepIdWithBackHref =
     | OmBarnetStepId
     | AnnenForelderId

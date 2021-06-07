@@ -6,14 +6,14 @@ import { EgenNæringModalFormData, EgenNæringModalFormField } from './egenNæri
 import { erVirksomhetRegnetSomNyoppstartet } from './egenNæringModalFormUtils';
 
 const EgenNæringModalFormConfig: QuestionConfig<EgenNæringModalFormData, EgenNæringModalFormField> = {
-    [EgenNæringModalFormField.type]: {
+    [EgenNæringModalFormField.typer]: {
         isIncluded: () => true,
-        isAnswered: ({ type }) => hasValue(type),
+        isAnswered: ({ typer }) => typer.length > 0,
     },
     [EgenNæringModalFormField.navnPåNæringen]: {
         isIncluded: () => true,
         isAnswered: ({ navnPåNæringen }) => hasValue(navnPåNæringen),
-        visibilityFilter: ({ type }) => hasValue(type),
+        visibilityFilter: ({ typer }) => typer.length > 0,
     },
     [EgenNæringModalFormField.registrertINorge]: {
         isIncluded: () => true,

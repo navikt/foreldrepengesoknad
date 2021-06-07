@@ -6,6 +6,7 @@ import {
     FrilansoppdragModalFormField,
 } from './frilansoppdragModalFormConfig';
 import {
+    cleanupFrilansoppdragForm,
     getInitialFrilansoppdragModalValues,
     mapFrilansoppdragModalValuesToState,
 } from './frilansoppdragModalFormUtils';
@@ -63,7 +64,9 @@ const FrilansoppdragModal: FunctionComponent<Props> = ({
                     const visibility = frilansoppdragModalQuestionsConfig.getVisbility(formValues);
 
                     return (
-                        <FrilansoppdragModalFormComponents.Form>
+                        <FrilansoppdragModalFormComponents.Form
+                            cleanup={(values) => cleanupFrilansoppdragForm(values, visibility)}
+                        >
                             <Undertittel className={bem.element('tittel')}>
                                 <FormattedMessage id="inntektsinformasjon.frilansOppdrag.tittel" />
                             </Undertittel>

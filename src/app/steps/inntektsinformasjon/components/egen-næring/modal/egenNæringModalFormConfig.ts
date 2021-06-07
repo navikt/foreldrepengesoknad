@@ -2,7 +2,7 @@ import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Næringstype } from 'app/context/types/Næring';
 
 export const enum EgenNæringModalFormField {
-    type = 'type',
+    typer = 'typer',
     navnPåNæringen = 'navnPåNæringen',
     registrertINorge = 'registrertINorge',
     orgnr = 'orgnr',
@@ -29,7 +29,7 @@ export const enum EgenNæringModalFormField {
 }
 
 export interface EgenNæringModalFormData {
-    [EgenNæringModalFormField.type]: Næringstype | undefined;
+    [EgenNæringModalFormField.typer]: Næringstype[];
     [EgenNæringModalFormField.navnPåNæringen]: string;
     [EgenNæringModalFormField.registrertINorge]: YesOrNo;
     [EgenNæringModalFormField.orgnr]: string;
