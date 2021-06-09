@@ -12,7 +12,7 @@ import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
-import { validateFødselDate } from '../validation/omBarnetValidering';
+import { validateAdopsjonsdato, validateFødselsdatoAdopsjon } from '../validation/omBarnetValidering';
 
 interface Props {
     søkersituasjon: Søkersituasjon;
@@ -33,6 +33,7 @@ const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({ søkersituasjon, for
                 <OmBarnetFormComponents.DatePicker
                     label={intlUtils(intl, 'omBarnet.adopsjonsdato.stebarn')}
                     name={OmBarnetFormField.adopsjonsdato}
+                    validate={validateAdopsjonsdato(intl)}
                 />
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
@@ -80,7 +81,7 @@ const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({ søkersituasjon, for
                             label={intlUtils(intl, 'omBarnet.fødselsdato')}
                             minDate={dayjs().subtract(6, 'month').toDate()}
                             maxDate={dayjs().toDate()}
-                            validate={validateFødselDate}
+                            validate={(value) => validateFødselsdatoAdopsjon(intl)(value, formValues.adopsjonsdato)}
                             placeholder={'dd.mm.åååå'}
                         />,
                     ]}

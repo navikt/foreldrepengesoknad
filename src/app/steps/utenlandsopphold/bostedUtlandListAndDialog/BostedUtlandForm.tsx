@@ -4,8 +4,9 @@ import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-form
 import { Systemtittel } from 'nav-frontend-typografi';
 import getMessage from 'common/util/i18nUtils';
 import { BostedUtland, isValidBostedUtland } from './types';
-import { Block } from '@navikt/fp-common';
+import { Block, validateRequiredField } from '@navikt/fp-common';
 import { getFieldErrorRenderer } from 'app/utils/validationUtil';
+import { dateRangeValidation } from '../utenlandsoppholdValidering';
 
 export interface BostedUtlandFormLabels {
     tittel: string;
@@ -71,7 +72,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
             onSubmit={onFormikSubmit}
             renderForm={({ values }) => {
                 return (
-                    <Form.Form onCancel={onCancel} fieldErrorHandler={getFieldErrorRenderer(intl)}>
+                    <Form.Form onCancel={onCancel} fieldErrorHandler={getFieldErrorRenderer()}>
                         <Systemtittel tag="h1">
                             <FormattedMessage id={'utenlandsopphold.leggTilUtenlandsopphold.tittel'} />
                         </Systemtittel>
@@ -85,13 +86,14 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     placeholder: 'dd.mm.åååå',
                                     minDate,
                                     maxDate: ISOStringToDate(values.tom) || maxDate,
-                                    // validate: (value) =>
-                                    //     dateRangeValidation.validateFromDate(
-                                    //         ISOStringToDate(value),
-                                    //         minDate,
-                                    //         maxDate,
-                                    //         ISOStringToDate(values.tom)
-                                    //     ),
+                                    validate: (value) =>
+                                        dateRangeValidation.validateFromDate(
+                                            intl,
+                                            ISOStringToDate(value),
+                                            minDate,
+                                            maxDate,
+                                            ISOStringToDate(values.tom)
+                                        ),
                                 }}
                                 toDatepickerProps={{
                                     name: BostedUtlandFormFields.tom,
@@ -100,13 +102,14 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     placeholder: 'dd.mm.åååå',
                                     minDate: ISOStringToDate(values.fom) || minDate,
                                     maxDate,
-                                    // validate: (value) =>
-                                    //     dateRangeValidation.validateToDate(
-                                    //         ISOStringToDate(value),
-                                    //         minDate,
-                                    //         maxDate,
-                                    //         ISOStringToDate(values.fom)
-                                    //     ),
+                                    validate: (value) =>
+                                        dateRangeValidation.validateToDate(
+                                            intl,
+                                            ISOStringToDate(value),
+                                            minDate,
+                                            maxDate,
+                                            ISOStringToDate(values.fom)
+                                        ),
                                 }}
                             />
                         </Block>
@@ -124,14 +127,16 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                               'utenlandsopphold.leggTilUtenlandsopphold.spørsmål.hvilketLandHarDuBoddI'
                                           )
                                 }
-                                // validate={(country) =>
-                                //     validateRequiredField(
-                                //         country,
-                                //         erFremtidigOpphold
-                                //             ? 'valideringsfeil.leggTilUtenlandsopphold.landDuSkalBoIPåkreved'
-                                //             : 'valideringsfeil.leggTilUtenlandsopphold.landDuHarBoddIPåkrevd'
-                                //     )
-                                // }
+                                validate={(country) =>
+                                    validateRequiredField(
+                                        country,
+                                        intl.formatMessage({
+                                            id: erFremtidigOpphold
+                                                ? 'valideringsfeil.utenlandsopphold.landDuSkalBoIPåkrevd'
+                                                : 'valideringsfeil.utenlandsopphold.landDuHarBoddIPåkrevd',
+                                        })
+                                    )
+                                }
                                 useAlpha3Code={false}
                             />
                         </Block>

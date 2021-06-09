@@ -4,7 +4,6 @@ import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import SøknadRoutes from 'app/routes/routes';
 import { onAvbrytSøknad } from 'app/utils/globalUtil';
-import { getFieldErrorRenderer } from 'app/utils/validationUtil';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import React, { useEffect, useRef, useState } from 'react';
@@ -86,10 +85,7 @@ const Inntektsinformasjon = () => {
                         steps={stepConfig}
                         kompakt={true}
                     >
-                        <InntektsinformasjonFormComponents.Form
-                            includeButtons={false}
-                            fieldErrorHandler={getFieldErrorRenderer(intl)}
-                        >
+                        <InntektsinformasjonFormComponents.Form includeButtons={false}>
                             <Block padBottom="l">
                                 <Element>Utbetalinger fra NAV</Element>
                                 <Normaltekst>

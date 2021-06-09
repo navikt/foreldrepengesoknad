@@ -17,7 +17,6 @@ import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal'
 import './velkommen.less';
 import { useHistory } from 'react-router';
 import { validateHarForståttRettigheterOgPlikter } from './validation/velkommenValidation';
-import { getFieldErrorRenderer } from 'app/utils/validationUtil';
 import SøknadRoutes from 'app/routes/routes';
 import Api from 'app/api/api';
 
@@ -54,10 +53,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, onChangeLo
             onSubmit={(values) => onValidSubmit(values)}
             renderForm={() => {
                 return (
-                    <VelkommenFormComponents.Form
-                        includeButtons={false}
-                        fieldErrorHandler={getFieldErrorRenderer(intl)}
-                    >
+                    <VelkommenFormComponents.Form includeButtons={false}>
                         <LanguageToggle
                             locale={locale}
                             availableLocales={['nb', 'nn']}
@@ -80,7 +76,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, onChangeLo
                                 <VelkommenFormComponents.ConfirmationCheckbox
                                     name={VelkommenFormField.harForståttRettigheterOgPlikter}
                                     label={intlUtils(intl, 'velkommen.samtykke')}
-                                    validate={validateHarForståttRettigheterOgPlikter}
+                                    validate={validateHarForståttRettigheterOgPlikter(intl)}
                                 >
                                     <>
                                         <Block padBottom="l">

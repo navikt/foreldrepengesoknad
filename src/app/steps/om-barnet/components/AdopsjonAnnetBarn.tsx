@@ -12,7 +12,11 @@ import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
-import { validateFødselDate } from '../validation/omBarnetValidering';
+import {
+    validateAdopsjonsdato,
+    validateAnkomstdato,
+    validateFødselsdatoAdopsjon,
+} from '../validation/omBarnetValidering';
 
 interface Props {
     søkersituasjon: Søkersituasjon;
@@ -33,6 +37,7 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({ søkersituasjon, formValu
                 <OmBarnetFormComponents.DatePicker
                     label={intlUtils(intl, 'omBarnet.adopsjonsdato.annetBarn')}
                     name={OmBarnetFormField.adopsjonsdato}
+                    validate={validateAdopsjonsdato(intl)}
                 />
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
@@ -78,10 +83,11 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({ søkersituasjon, formValu
                             key={`${OmBarnetFormField.fødselsdatoer}.0`}
                             name={`${OmBarnetFormField.fødselsdatoer}.0` as OmBarnetFormField}
                             label={intlUtils(intl, 'omBarnet.fødselsdato')}
-                            minDate={dayjs().subtract(6, 'month').toDate()}
+                            minDate={dayjs(formValues.adopsjonsdato).subtract(15, 'years').toDate()}
                             maxDate={dayjs().toDate()}
-                            validate={validateFødselDate}
+                            validate={(value) => validateFødselsdatoAdopsjon(intl)(value, formValues.adopsjonsdato)}
                             placeholder={'dd.mm.åååå'}
+                            showYearSelector={true}
                         />,
                     ]}
                 />
@@ -96,9 +102,9 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({ søkersituasjon, formValu
                 <OmBarnetFormComponents.DatePicker
                     name={OmBarnetFormField.ankomstdato}
                     label={intlUtils(intl, 'omBarnet.ankomstDato')}
-                    minDate={dayjs().subtract(6, 'month').toDate()}
-                    maxDate={dayjs().toDate()}
-                    validate={validateFødselDate}
+                    minDate={dayjs(formValues.fødselsdatoer[0]).toDate()}
+                    maxDate={dayjs().add(6, 'months').toDate()}
+                    validate={(value) => validateAnkomstdato(intl)(value, formValues.fødselsdatoer[0])}
                     placeholder={'dd.mm.åååå'}
                 />
             </Block>

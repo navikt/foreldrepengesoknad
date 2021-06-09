@@ -5,7 +5,6 @@ import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import SøknadRoutes from 'app/routes/routes';
 import { onAvbrytSøknad } from 'app/utils/globalUtil';
-import { getFieldErrorRenderer } from 'app/utils/validationUtil';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { useEffect, useRef } from 'react';
@@ -53,10 +52,7 @@ const Oppsummering = () => {
             onSubmit={() => null}
             renderForm={() => {
                 return (
-                    <OppsummeringFormComponents.Form
-                        includeButtons={false}
-                        fieldErrorHandler={getFieldErrorRenderer(intl)}
-                    >
+                    <OppsummeringFormComponents.Form includeButtons={false}>
                         <Step
                             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                             backLinkHref={getPreviousStepHref('oppsummering')}
@@ -99,7 +95,7 @@ const Oppsummering = () => {
                                 <OppsummeringFormComponents.ConfirmationCheckbox
                                     name={OppsummeringFormField.harGodkjentOppsummering}
                                     label={intlUtils(intl, 'oppsummering.harGodkjentOppsummering')}
-                                    validate={validateHarGodkjentOppsummering}
+                                    validate={validateHarGodkjentOppsummering(intl)}
                                 />
                             </Block>
                             <Block padBottom="l">

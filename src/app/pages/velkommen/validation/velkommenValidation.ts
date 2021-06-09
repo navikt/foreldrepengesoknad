@@ -1,6 +1,8 @@
-export const validateHarForståttRettigheterOgPlikter = (value: boolean) => {
+import { IntlShape } from 'react-intl';
+
+export const validateHarForståttRettigheterOgPlikter = (intl: IntlShape) => (value: boolean) => {
     if (value !== true) {
-        return 'valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd';
+        return intl.formatMessage({ id: 'valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd' });
     }
 
     return undefined;

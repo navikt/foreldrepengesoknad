@@ -4,7 +4,6 @@ import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import SøknadRoutes from 'app/routes/routes';
 import { onAvbrytSøknad } from 'app/utils/globalUtil';
-import { getFieldErrorRenderer } from 'app/utils/validationUtil';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
@@ -74,10 +73,7 @@ const OmBarnet: React.FunctionComponent<Props> = () => {
                         steps={stepConfig}
                         kompakt={true}
                     >
-                        <OmBarnetFormComponents.Form
-                            includeButtons={false}
-                            fieldErrorHandler={getFieldErrorRenderer(intl)}
-                        >
+                        <OmBarnetFormComponents.Form includeButtons={false}>
                             <BarnFødtEllerAdoptert søkersituasjon={søkersituasjon} />
                             <AdopsjonAnnetBarn
                                 søkersituasjon={søkersituasjon}

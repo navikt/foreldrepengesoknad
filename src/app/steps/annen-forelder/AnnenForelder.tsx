@@ -12,7 +12,6 @@ import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { onAvbrytSøknad } from 'app/utils/globalUtil';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import { getFieldErrorRenderer } from 'app/utils/validationUtil';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { useEffect, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -98,7 +97,6 @@ const AnnenForelder = () => {
                     >
                         <AnnenForelderFormComponents.Form
                             includeButtons={false}
-                            fieldErrorHandler={getFieldErrorRenderer(intl)}
                             cleanup={(values) => cleanAnnenForelderFormData(values, visibility)}
                         >
                             {skalOppgiPersonalia && (

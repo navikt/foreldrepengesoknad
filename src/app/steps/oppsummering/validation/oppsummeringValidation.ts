@@ -1,6 +1,8 @@
-export const validateHarGodkjentOppsummering = (value: boolean) => {
+import { IntlShape } from 'react-intl';
+
+export const validateHarGodkjentOppsummering = (intl: IntlShape) => (value: boolean) => {
     if (value !== true) {
-        return 'valideringsfeil.oppsummering.harGodkjentOppsummering.påkrevd';
+        return intl.formatMessage({ id: 'valideringsfeil.oppsummering.harGodkjentOppsummering.påkrevd' });
     }
 
     return undefined;

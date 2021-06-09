@@ -7,6 +7,7 @@ import {
     intlUtils,
     Step,
     UtvidetInformasjon,
+    validateYesOrNoIsAnswered,
 } from '@navikt/fp-common';
 import {
     UtenlandsoppholdFieldNames,
@@ -21,7 +22,6 @@ import BostedUtlandListAndDialog from './bostedUtlandListAndDialog/BostedUtlandL
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import { onAvbrytSøknad } from 'app/utils/globalUtil';
-import { getFieldErrorRenderer } from 'app/utils/validationUtil';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import {
     getInitialUtenlandsoppholdValuesFromState,
@@ -29,6 +29,7 @@ import {
 } from './utenlandsoppholdFormUtils';
 import SøknadRoutes from 'app/routes/routes';
 import Api from 'app/api/api';
+import { validateUtenlandsoppholdNeste12Mnd, validateUtenlandsoppholdSiste12Mnd } from './utenlandsoppholdValidering';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -77,10 +78,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         steps={stepConfig}
                         kompakt={true}
                     >
-                        <UtenlandsoppholdFormComponents.Form
-                            includeButtons={false}
-                            fieldErrorHandler={getFieldErrorRenderer(intl)}
-                        >
+                        <UtenlandsoppholdFormComponents.Form includeButtons={false}>
                             <Block
                                 visible={visibility.isVisible(UtenlandsoppholdFieldNames.skalBoINorgeNeste12Mnd)}
                                 padBottom="l"
@@ -108,7 +106,12 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                             'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet'
                                         ),
                                     }}
-                                    // validate={validateYesOrNoIsAnswered}
+                                    validate={(skalBoINorgeNeste12Mnd) =>
+                                        validateYesOrNoIsAnswered(
+                                            skalBoINorgeNeste12Mnd,
+                                            'valideringsfeil.utenlandsopphold.skalBoINorgePåkrevd'
+                                        )
+                                    }
                                 />
                             </Block>
                             <Block
@@ -124,7 +127,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                         modalTitle: 'Utenlandsopphold neste 12 måneder',
                                     }}
                                     erFremtidigOpphold={true}
-                                    // validate={validateUtenlandsoppholdNeste12Mnd}
+                                    validate={validateUtenlandsoppholdNeste12Mnd(intl)}
                                 />
                             </Block>
                             <Block
@@ -154,7 +157,12 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                             'utenlandsopphold.siste12MånederInfotekst.radiobutton.boddIUtlandet'
                                         ),
                                     }}
-                                    // validate={validateYesOrNoIsAnswered}
+                                    validate={(harBoddINorgeSiste12Mnd) =>
+                                        validateYesOrNoIsAnswered(
+                                            harBoddINorgeSiste12Mnd,
+                                            'valideringsfeil.utenlandsopphold.harBoddINorgePåkrevd'
+                                        )
+                                    }
                                 />
                             </Block>
                             <Block
@@ -170,7 +178,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                         modalTitle: 'Utenlandsopphold siste 12 måneder',
                                     }}
                                     erFremtidigOpphold={false}
-                                    // validate={validateUtenlandsoppholdSiste12Mnd}
+                                    validate={validateUtenlandsoppholdSiste12Mnd(intl)}
                                 />
                             </Block>
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>

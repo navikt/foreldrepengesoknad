@@ -7,7 +7,7 @@ import { FieldArray } from 'formik';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
-import { validateFødselDate } from '../validation/omBarnetValidering';
+import { validateFødselsdato, validateTermindatoFødsel } from '../validation/omBarnetValidering';
 
 interface Props {
     søkersituasjon: Søkersituasjon;
@@ -69,9 +69,9 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                             key={`${OmBarnetFormField.fødselsdatoer}.0`}
                             name={`${OmBarnetFormField.fødselsdatoer}.0` as OmBarnetFormField}
                             label={intlUtils(intl, 'omBarnet.fødselsdato')}
-                            minDate={dayjs().subtract(6, 'month').toDate()}
+                            minDate={dayjs().subtract(6, 'months').toDate()}
                             maxDate={dayjs().toDate()}
-                            validate={validateFødselDate}
+                            validate={validateFødselsdato(intl)}
                             placeholder={'dd.mm.åååå'}
                         />,
                     ]}
@@ -81,8 +81,10 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                 <OmBarnetFormComponents.DatePicker
                     name={OmBarnetFormField.termindato}
                     label={intlUtils(intl, 'omBarnet.termindato.født')}
-                    minDate={dayjs().subtract(6, 'month').toDate()}
+                    minDate={dayjs().subtract(6, 'months').toDate()}
+                    maxDate={dayjs().add(9, 'months').toDate()}
                     placeholder={'dd.mm.åååå'}
+                    validate={validateTermindatoFødsel(intl)}
                 />
             </Block>
         </>
