@@ -2,8 +2,9 @@ import { doesTidsperiodeContainDate, intlUtils } from '@navikt/fp-common';
 import Barn, { isAdoptertAnnetBarn, isAdoptertStebarn } from 'app/context/types/Barn';
 import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import UtenlandsoppholdListe from './UtenlandsoppholdOppsummeringListe';
 
@@ -50,28 +51,20 @@ const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({ informasjonOmU
 
     return (
         <>
-            <OppsummeringsPunkt
-                title={intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge')}
-                text={
-                    informasjonOmUtenlandsopphold.iNorgeSiste12Mnd
-                        ? intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge.norge')
-                        : undefined
-                }
-            >
+            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge')}>
+                {informasjonOmUtenlandsopphold.iNorgeSiste12Mnd
+                    ? intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge.norge')
+                    : null}
                 <UtenlandsoppholdListe
                     utenlandsopphold={informasjonOmUtenlandsopphold.tidligereOpphold}
                     tidligereOpphold={true}
                 />
             </OppsummeringsPunkt>
 
-            <OppsummeringsPunkt
-                title={intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge')}
-                text={
-                    informasjonOmUtenlandsopphold.iNorgeNeste12Mnd
-                        ? intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge.norge')
-                        : undefined
-                }
-            >
+            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge')}>
+                {informasjonOmUtenlandsopphold.iNorgeNeste12Mnd
+                    ? intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge.norge')
+                    : null}
                 <UtenlandsoppholdListe
                     utenlandsopphold={informasjonOmUtenlandsopphold.senereOpphold}
                     tidligereOpphold={false}
@@ -84,8 +77,11 @@ const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({ informasjonOmU
                         ? intlUtils(intl, 'oppsummering.utenlandsopphold.erINorgeOmsorgsovertakelsesdato')
                         : intlUtils(intl, 'oppsummering.utenlandsopphold.erINorgePåFødselstidspunkt')
                 }
-                text={erINorgePåFamiliehendelsedato ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}
-            />
+            >
+                <Normaltekst>
+                    <FormattedMessage id={erINorgePåFamiliehendelsedato ? 'ja' : 'nei'} />
+                </Normaltekst>
+            </OppsummeringsPunkt>
         </>
     );
 };
