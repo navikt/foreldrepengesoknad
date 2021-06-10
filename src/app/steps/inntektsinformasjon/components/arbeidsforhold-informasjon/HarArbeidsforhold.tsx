@@ -10,11 +10,12 @@ interface Props {
 }
 
 const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeidsforhold }: Props) => {
+    const intl = useIntl();
+
     if (!harArbeidsforhold) {
         return null;
     }
 
-    const intl = useIntl();
     const bem = bemUtils('arbeidsforholdInfoBox');
 
     return (

@@ -19,11 +19,11 @@ interface Props {
 }
 
 const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formValues }) => {
+    const intl = useIntl();
+
     if (søkersituasjon.situasjon === 'adopsjon' || formValues.erBarnetFødt !== YesOrNo.NO) {
         return null;
     }
-
-    const intl = useIntl();
 
     return (
         <>

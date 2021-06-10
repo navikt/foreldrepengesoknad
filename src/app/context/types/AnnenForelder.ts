@@ -14,7 +14,7 @@ export interface AnnenForelderOppgitt extends Common {
     erUfør?: boolean;
 }
 
-export interface AnnenForelderIkkeOppgitt extends Common {}
+export type AnnenForelderIkkeOppgitt = Common;
 
 type AnnenForelder = AnnenForelderIkkeOppgitt | AnnenForelderOppgitt;
 

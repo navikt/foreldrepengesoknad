@@ -28,9 +28,9 @@ const Oppsummering = () => {
     const intl = useIntl();
     const bem = bemUtils('oppsummering');
     const { barn, annenForelder, søker, informasjonOmUtenlandsopphold } = useSøknad();
-    const søkerinfo = useSøkerinfo()
+    const søkerinfo = useSøkerinfo();
 
-    const onValidSubmitHandler = () => { return [] };
+    const onValidSubmitHandler = () => [];
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.SØKNAD_SENDT);
     const onAvbrytSøknad = useAvbrytSøknad();

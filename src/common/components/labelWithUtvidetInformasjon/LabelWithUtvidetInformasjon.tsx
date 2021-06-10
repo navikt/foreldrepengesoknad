@@ -8,7 +8,7 @@ interface Props {
     apneLabel?: React.ReactNode;
 }
 
-const LabelWithUtvidetInformasjon: React.FunctionComponent<Props> = ({ children, info, apneLabel }) => {
+const LabelWithUtvidetInformasjon: React.FunctionComponent<Props> = ({ children, info }) => {
     if (!children) {
         return null;
     }

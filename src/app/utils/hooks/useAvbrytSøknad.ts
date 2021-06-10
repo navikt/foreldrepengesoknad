@@ -19,9 +19,9 @@ const useAvbrytSøknad = () => {
         dispatch(actionCreator.avbrytSøknad());
         Api.deleteStoredAppState();
         history.push('/');
-    }, [history]);
+    }, [history, dispatch]);
 
     return avbrytSøknadHandler;
-}
+};
 
 export default useAvbrytSøknad;

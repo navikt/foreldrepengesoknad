@@ -10,7 +10,7 @@ import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 const UttaksplanInfo = () => {
     const intl = useIntl();
 
-    const onValidSubmitHandler = () => { return [] };
+    const onValidSubmitHandler = () => [];
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
     const onAvbrytSøknad = useAvbrytSøknad();

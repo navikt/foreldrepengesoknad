@@ -42,23 +42,28 @@ const AnnenForelder = () => {
     const skalOppgiPersonalia = true;
     const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
 
-    const onValidSubmitHandler = useCallback((values: Partial<AnnenForelderFormData>) => {
-        const newSøker: Søker = {
-            ...søker,
-            erAleneOmOmsorg: convertYesOrNoOrUndefinedToBoolean(values.aleneOmOmsorg),
-        };
-        const newBarn: Barn = {
-            ...barn,
-            datoForAleneomsorg: values.datoForAleneomsorg,
-            dokumentasjonAvAleneomsorg: values.dokumentasjonAvAleneomsorg,
-        };
+    const onValidSubmitHandler = useCallback(
+        (values: Partial<AnnenForelderFormData>) => {
+            const newSøker: Søker = {
+                ...søker,
+                erAleneOmOmsorg: convertYesOrNoOrUndefinedToBoolean(values.aleneOmOmsorg),
+            };
+            const newBarn: Barn = {
+                ...barn,
+                datoForAleneomsorg: values.datoForAleneomsorg,
+                dokumentasjonAvAleneomsorg: values.dokumentasjonAvAleneomsorg,
+            };
 
-        return [actionCreator.setAnnenForelder({
-            forelder: mapAnnenForelderFormToState(values),
-            søker: newSøker,
-            barn: newBarn,
-        })];
-    }, [søker, barn]);
+            return [
+                actionCreator.setAnnenForelder({
+                    forelder: mapAnnenForelderFormToState(values),
+                    søker: newSøker,
+                    barn: newBarn,
+                }),
+            ];
+        },
+        [søker, barn]
+    );
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN_INFO);
     const onAvbrytSøknad = useAvbrytSøknad();

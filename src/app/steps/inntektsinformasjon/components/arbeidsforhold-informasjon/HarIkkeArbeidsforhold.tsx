@@ -8,11 +8,11 @@ interface Props {
 }
 
 const HarIkkeArbeidsforhold: FunctionComponent<Props> = ({ harArbeidsforhold }) => {
+    const intl = useIntl();
+
     if (harArbeidsforhold) {
         return null;
     }
-
-    const intl = useIntl();
 
     return (
         <div className="arbeidsforholdInfoBox" style={{ marginBottom: '1rem' }}>

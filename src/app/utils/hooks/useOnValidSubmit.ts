@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import Api from 'app/api/api';
 import actionCreator from 'app/context/action/actionCreator';
@@ -6,28 +6,30 @@ import SøknadRoutes from 'app/routes/routes';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
 
-const useOnValidSubmit = <T, >(
-  submitHandler: (values: T) => ForeldrepengesøknadContextAction[],
-  nextRoute: SøknadRoutes,
+const useOnValidSubmit = <T>(
+    submitHandler: (values: T) => ForeldrepengesøknadContextAction[],
+    nextRoute: SøknadRoutes
 ) => {
-  const { dispatch, state } = useForeldrepengesøknadContext();
-  const history = useHistory();
-  const [harSubmitted, setSubmitted] = useState(false);
+    const { dispatch, state } = useForeldrepengesøknadContext();
+    const history = useHistory();
+    const [harSubmitted, setSubmitted] = useState(false);
 
-  useEffect(() => {
-    if (harSubmitted) {
-        Api.storeAppState(state);
-        history.push(nextRoute);
-    }
-  }, [harSubmitted]);
+    useEffect(() => {
+        if (harSubmitted) {
+            Api.storeAppState(state);
+            history.push(nextRoute);
+        }
+    }, [harSubmitted, history, nextRoute, state]);
 
-  const setSubmitAndHandleSubmit = useCallback((values: T) => {
-    const actions = submitHandler(values);
-    Promise.all([dispatch(actionCreator.updateCurrentRoute(nextRoute)), ...actions.map((a) => dispatch(a))])
-      .then(() => setSubmitted(true));
-  }, [])
+    const setSubmitAndHandleSubmit = (values: T) => {
+        const actions = submitHandler(values);
+        Promise.all([
+            dispatch(actionCreator.updateCurrentRoute(nextRoute)),
+            ...actions.map((a) => dispatch(a)),
+        ]).then(() => setSubmitted(true));
+    };
 
-  return setSubmitAndHandleSubmit;
-}
+    return setSubmitAndHandleSubmit;
+};
 
 export default useOnValidSubmit;

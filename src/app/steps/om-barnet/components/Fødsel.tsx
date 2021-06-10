@@ -18,11 +18,11 @@ interface Props {
 const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibility }) => {
     const { erBarnetFødt } = formValues;
 
+    const intl = useIntl();
+
     if (søkersituasjon.situasjon === 'adopsjon' || erBarnetFødt !== YesOrNo.YES) {
         return null;
     }
-
-    const intl = useIntl();
 
     return (
         <>

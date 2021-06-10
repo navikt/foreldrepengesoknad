@@ -32,7 +32,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, onChangeLo
     const bem = bemUtils('velkommen');
 
     const onValidSubmitHandler = (values: Partial<VelkommenFormData>) => {
-        return [actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!!)];
+        return [actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!)];
     };
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.SØKERSITUASJON);

@@ -27,11 +27,11 @@ const getTitle = (type: AnnenInntektType, intl: IntlShape): string => {
 };
 
 const AndreInntekterListe: FunctionComponent<Props> = ({ andreInntekter, deleteAnnenInntekt, selectAnnenInntekt }) => {
+    const intl = useIntl();
+
     if (andreInntekter.length === 0) {
         return null;
     }
-
-    const intl = useIntl();
 
     return (
         <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>

@@ -18,9 +18,7 @@ import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig from './omBarnetQuestionsConfig';
 import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
 
-interface Props {}
-
-const OmBarnet: React.FunctionComponent<Props> = () => {
+const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
     const { søkersituasjon, barn } = useSøknad();
     const { arbeidsforhold } = useSøkerinfo();

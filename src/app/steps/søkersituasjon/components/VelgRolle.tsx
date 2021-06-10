@@ -8,11 +8,11 @@ interface Props {
 }
 
 const VelgRolle: FunctionComponent<Props> = ({ kjønn }) => {
+    const intl = useIntl();
+
     if (kjønn === 'M') {
         return null;
     }
-
-    const intl = useIntl();
 
     return (
         <Block margin="xl">

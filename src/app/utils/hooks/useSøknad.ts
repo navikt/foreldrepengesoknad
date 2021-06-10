@@ -2,8 +2,8 @@ import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepen
 import { Søknad } from 'app/context/types/Søknad';
 
 const useSøknad = (): Søknad => {
-  const { state } = useForeldrepengesøknadContext();
-  return state.søknad;
-}
+    const { state } = useForeldrepengesøknadContext();
+    return state.søknad;
+};
 
 export default useSøknad;

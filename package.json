@@ -13,6 +13,7 @@
         "docker-rmi": "npm run docker-kill && docker rmi foreldrepengesoknad",
         "lint": "eslint --quiet \"./src/**/*.{js,ts,tsx}\"",
         "lint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
+        "tsc": "tsc  --pretty",
         "start-express": "node ./server.js",
         "dev-api": "node ./mock-api-server.js",
         "dev": "node ./src/build/scripts/start-dev-nodecorator.js",

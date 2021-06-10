@@ -25,11 +25,11 @@ interface Props {
 }
 
 const AdopsjonAnnetBarn: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibility }) => {
+    const intl = useIntl();
+
     if (søkersituasjon.situasjon === 'fødsel' || formValues.adopsjonAvEktefellesBarn !== YesOrNo.NO) {
         return null;
     }
-
-    const intl = useIntl();
 
     return (
         <>
