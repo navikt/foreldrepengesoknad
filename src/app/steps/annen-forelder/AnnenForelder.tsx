@@ -1,23 +1,19 @@
 import { Block, intlUtils, Step, UtvidetInformasjon } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
-import Api from 'app/api/api';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import actionCreator from 'app/context/action/actionCreator';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Barn from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
 import SøknadRoutes from 'app/routes/routes';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { onAvbrytSøknad } from 'app/utils/globalUtil';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useHistory } from 'react-router';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import { AnnenForelderFormComponents, AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 import {
@@ -31,37 +27,25 @@ import FarDokumentasjonAleneomsorgVeileder from './components/FarDokumentasjonAl
 import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenForelderVeileder';
 import OppgiPersonalia from './components/OppgiPersonalia';
 import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
+import useOnValidSubmit from './useOnValidSubmit';
+import useSetCurrentRoute from './useSetCurrentRoute';
+import useSoknad from './useSoknad';
+import useAvbrytSøknad from './useAvbrytSøknad';
 
 const AnnenForelder = () => {
     const intl = useIntl();
-    const { dispatch, state } = useForeldrepengesøknadContext();
     const {
         annenForelder,
         barn,
         søker,
         søkersituasjon: { rolle },
-    } = state.søknad;
-    const hasSubmitted = useRef(false);
-    const history = useHistory();
+    } = useSoknad();
     const skalOppgiPersonalia = true;
     const familiehendelsedato = useMemo(() => dayjs(getFamiliehendelsedato(barn)), [barn]);
 
-    useEffect(() => {
-        if (hasSubmitted.current === true) {
-            Api.storeAppState(state);
-            history.push(SøknadRoutes.UTTAKSPLAN_INFO);
-        } else {
-            Api.storeAppState(state);
-        }
-    }, [state]);
+    useSetCurrentRoute(SøknadRoutes.ANNEN_FORELDER);
 
-    useEffect(() => {
-        dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.ANNEN_FORELDER));
-    }, []);
-
-    const onValidSubmit = (values: Partial<AnnenForelderFormData>) => {
-        hasSubmitted.current = true;
-
+    const onValidSubmitHandler = useCallback((values: Partial<AnnenForelderFormData>) => {
         const newSøker: Søker = {
             ...søker,
             erAleneOmOmsorg: convertYesOrNoOrUndefinedToBoolean(values.aleneOmOmsorg),
@@ -72,14 +56,16 @@ const AnnenForelder = () => {
             dokumentasjonAvAleneomsorg: values.dokumentasjonAvAleneomsorg,
         };
 
-        dispatch(
-            actionCreator.setAnnenForelder({
-                forelder: mapAnnenForelderFormToState(values),
-                søker: newSøker,
-                barn: newBarn,
-            })
-        );
-    };
+        return [actionCreator.setAnnenForelder({
+            forelder: mapAnnenForelderFormToState(values),
+            søker: newSøker,
+            barn: newBarn,
+        })];
+    }, [søker, barn]);
+
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN_INFO);
+
+    const onAvbrytSøknad = useAvbrytSøknad();
 
     return (
         <AnnenForelderFormComponents.FormikWrapper
@@ -100,7 +86,7 @@ const AnnenForelder = () => {
                         activeStepId="annenForelder"
                         pageTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         stepTitle={intlUtils(intl, 'søknad.søkersituasjon')}
-                        onCancel={() => onAvbrytSøknad(dispatch, history)}
+                        onCancel={onAvbrytSøknad}
                         onContinueLater={() => null}
                         steps={stepConfig}
                         kompakt={true}
