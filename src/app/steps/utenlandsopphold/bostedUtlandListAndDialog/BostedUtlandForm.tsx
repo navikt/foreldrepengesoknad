@@ -92,7 +92,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                             ISOStringToDate(value),
                                             minDate,
                                             maxDate,
-                                            'valideringsfeil.dato.førTilDato',
+                                            'valideringsfeil.fraOgMedDato.førTilDato',
                                             ISOStringToDate(values.tom)
                                         ),
                                 }}
@@ -109,7 +109,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                             ISOStringToDate(value),
                                             minDate,
                                             maxDate,
-                                            'valideringsfeil.dato.etterFraDato',
+                                            'valideringsfeil.tilOgMedDato.etterFraDato',
                                             ISOStringToDate(values.fom)
                                         ),
                                 }}

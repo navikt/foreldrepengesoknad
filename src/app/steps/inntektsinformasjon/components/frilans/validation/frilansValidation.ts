@@ -14,15 +14,15 @@ export const validateNavnPåOppdragsgiver = (intl: IntlShape) => (navn: string) 
 
 export const validateOppdragFom = (intl: IntlShape, tom: string, oppstartsdato: string) => (fom: string) => {
     if (!hasValue(fom)) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.fom.påkrevd');
+        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd');
     }
 
     if (!isISODateString(fom)) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.fom.ugyldigDatoFormat');
+        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
     }
 
     if (isDateInTheFuture(fom)) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.fom.erIFremtiden');
+        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
     }
 
     if (isDateABeforeDateB(fom, oppstartsdato)) {
@@ -30,7 +30,7 @@ export const validateOppdragFom = (intl: IntlShape, tom: string, oppstartsdato: 
     }
 
     if (isDateABeforeDateB(tom, fom)) {
-        return intlUtils(intl, 'valideringsfeil.dato.førTilDato');
+        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
     }
 
     return undefined;
@@ -52,15 +52,15 @@ export const validateOppdragTom = (intl: IntlShape, pågående: YesOrNo, fom: st
     }
 
     if (!hasValue(tom)) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.tom.påkrevd');
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
     }
 
     if (!isISODateString(tom)) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.tom.ugyldigDatoFormat');
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
     }
 
     if (isDateInTheFuture(tom)) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.tom.erIFremtiden');
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
     }
 
     if (isDateABeforeDateB(tom, oppstartsdato)) {
@@ -68,7 +68,7 @@ export const validateOppdragTom = (intl: IntlShape, pågående: YesOrNo, fom: st
     }
 
     if (isDateABeforeDateB(tom, fom)) {
-        return intlUtils(intl, 'valideringsfeil.dato.etterFraDato');
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.etterFraDato');
     }
 
     return undefined;

@@ -48,7 +48,7 @@ export const getInitialAndreInntekterFormValues = (annenInntekt: AnnenInntekt | 
             navnPåArbeidsgiver: annenInntekt.arbeidsgiverNavn,
             land: annenInntekt.land,
             fom: annenInntekt.tidsperiode.fom,
-            tom: annenInntekt.tidsperiode.tom,
+            tom: annenInntekt.tidsperiode.tom || '',
             dokumentasjon: annenInntekt.vedlegg,
             pågående: convertBooleanOrUndefinedToYesOrNo(annenInntekt.pågående),
             type: annenInntekt.type,
@@ -58,7 +58,7 @@ export const getInitialAndreInntekterFormValues = (annenInntekt: AnnenInntekt | 
     return {
         ...initialAndreInntekterFormValues,
         fom: annenInntekt.tidsperiode.fom,
-        tom: annenInntekt.tidsperiode.tom,
+        tom: annenInntekt.tidsperiode.tom || '',
         dokumentasjon: annenInntekt.vedlegg,
         pågående: convertBooleanOrUndefinedToYesOrNo(annenInntekt.pågående),
         type: annenInntekt.type,

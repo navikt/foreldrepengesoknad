@@ -14,8 +14,6 @@ import {
     mapAnnenInntektModalValuesToState,
 } from './andreInntekterModalFormUtils';
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
-
-import './andreInntekterModal.less';
 import andreInntekterModalQuestionsConfig from './andreInntekterModalQuestionsConfig';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { AttachmentType } from 'app/types/AttachmentType';
@@ -23,6 +21,10 @@ import { Skjemanummer } from 'app/types/Skjemanummer';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import { validateAnnenInntektFom, validateAnnenInntektTom } from './../validation/andreInntekterValidation';
+
+import './andreInntekterModal.less';
+import dayjs from 'dayjs';
 
 interface Props {
     isOpen: boolean;
@@ -135,6 +137,8 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
+                                    validate={validateAnnenInntektFom(intl, formValues.tom)}
+                                    maxDate={dayjs().toDate()}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.pågående)}>
@@ -150,6 +154,8 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
+                                    validate={validateAnnenInntektTom(intl, formValues.fom)}
+                                    maxDate={dayjs().toDate()}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.dokumentasjon)}>

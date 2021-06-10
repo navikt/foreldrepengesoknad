@@ -17,7 +17,7 @@ export interface AndreInntekterFormData {
     [AndreInntekterFormField.navnPåArbeidsgiver]: string;
     [AndreInntekterFormField.land]: string;
     [AndreInntekterFormField.fom]: string;
-    [AndreInntekterFormField.tom]?: string;
+    [AndreInntekterFormField.tom]: string;
     [AndreInntekterFormField.pågående]: YesOrNo;
     [AndreInntekterFormField.dokumentasjon]: Attachment[];
 }

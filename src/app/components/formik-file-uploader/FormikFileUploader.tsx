@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ArrayHelpers, useFormikContext } from 'formik';
 import FormikFileInput from '@navikt/sif-common-formik/lib/components/formik-file-input/FormikFileInput';
-import { Block } from '@navikt/fp-common';
+import { Block, intlUtils, PictureScanningGuide, UtvidetInformasjon } from '@navikt/fp-common';
 import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
@@ -9,6 +9,7 @@ import AttachmentApi from 'app/api/attachmentApi';
 import AttachmentList from '../attachment/AttachmentList';
 import { isAttachmentWithError, mapFileToAttachment } from '../attachment/attachmentUtils';
 import { deleteAttachment } from 'app/utils/globalUtil';
+import { useIntl } from 'react-intl';
 
 export type FieldArrayReplaceFn = (index: number, value: any) => void;
 export type FieldArrayPushFn = (obj: any) => void;
@@ -56,6 +57,7 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
     skjemanummer,
     ...otherProps
 }) => {
+    const intl = useIntl();
     const { values, setFieldValue } = useFormikContext<any>();
 
     async function uploadAttachment(attachment: Attachment) {
@@ -120,7 +122,7 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
                     {...otherProps}
                 />
             </Block>
-            <Block padBottom="l">
+            <Block padBottom="l" visible={attachments.length > 0}>
                 <AttachmentList
                     attachments={attachments.filter((a) => !isAttachmentWithError(a))}
                     showFileSize={true}
@@ -128,6 +130,11 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
                         setFieldValue(name, deleteAttachment(attachments, file));
                     }}
                 />
+            </Block>
+            <Block>
+                <UtvidetInformasjon apneLabel={intlUtils(intl, 'pictureScanninGuide.apneLabel')}>
+                    <PictureScanningGuide />
+                </UtvidetInformasjon>
             </Block>
         </>
     );
