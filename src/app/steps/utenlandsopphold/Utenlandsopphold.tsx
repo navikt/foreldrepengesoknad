@@ -17,7 +17,6 @@ import {
 import { useIntl } from 'react-intl';
 import actionCreator from 'app/context/action/actionCreator';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import useSetCurrentRoute from 'app/utils/hooks/useSetCurrentRoute';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { utenlandsoppholdFormQuestions } from './utenlandsoppholdFormQuestions';
@@ -34,8 +33,6 @@ import { validateUtenlandsoppholdNeste12Mnd, validateUtenlandsoppholdSiste12Mnd 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
     const { informasjonOmUtenlandsopphold } = useSøknad();
-
-    useSetCurrentRoute(SøknadRoutes.UTENLANDSOPPHOLD);
 
     const onValidSubmitHandler = (values: Partial<UtenlandsoppholdFormData>) => {
         const utenlandsopphold = mapUtenlandsoppholdFormDataToState(values);

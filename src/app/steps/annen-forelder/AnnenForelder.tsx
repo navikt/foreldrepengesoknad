@@ -14,7 +14,6 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { useCallback } from 'react';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import useSetCurrentRoute from 'app/utils/hooks/useSetCurrentRoute';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -42,8 +41,6 @@ const AnnenForelder = () => {
     } = useSøknad();
     const skalOppgiPersonalia = true;
     const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
-
-    useSetCurrentRoute(SøknadRoutes.ANNEN_FORELDER);
 
     const onValidSubmitHandler = useCallback((values: Partial<AnnenForelderFormData>) => {
         const newSøker: Søker = {

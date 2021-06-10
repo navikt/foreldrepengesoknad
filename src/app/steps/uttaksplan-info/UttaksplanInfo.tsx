@@ -1,7 +1,6 @@
 import { Block, intlUtils, Step } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import useSetCurrentRoute from 'app/utils/hooks/useSetCurrentRoute';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React from 'react';
@@ -10,8 +9,6 @@ import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
-
-    useSetCurrentRoute(SøknadRoutes.UTTAKSPLAN_INFO);
 
     const onValidSubmitHandler = () => { return [] };
 

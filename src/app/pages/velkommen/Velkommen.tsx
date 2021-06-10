@@ -1,8 +1,9 @@
 import { bemUtils, Block, intlUtils, LanguageToggle, Locale, Sidebanner } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import useSøknad from 'app/utils/hooks/useSøknad';
 import {
     getInitialVelkommenValues,
     VelkommenFormComponents,
@@ -15,10 +16,8 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal';
 
 import './velkommen.less';
-import { useHistory } from 'react-router';
 import { validateHarForståttRettigheterOgPlikter } from './validation/velkommenValidation';
 import SøknadRoutes from 'app/routes/routes';
-import Api from 'app/api/api';
 
 interface Props {
     fornavn: string;
@@ -28,29 +27,20 @@ interface Props {
 
 const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }) => {
     const intl = useIntl();
-    const history = useHistory();
+    const søknad = useSøknad();
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
-    const { dispatch, state } = useForeldrepengesøknadContext();
     const bem = bemUtils('velkommen');
-    const hasSubmitted = useRef(false);
 
-    useEffect(() => {
-        if (hasSubmitted.current === true) {
-            Api.storeAppState(state);
-            history.push(SøknadRoutes.SØKERSITUASJON);
-        }
-    }, [state]);
-
-    const onValidSubmit = (values: Partial<VelkommenFormData>) => {
-        dispatch(actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!!));
-
-        hasSubmitted.current = true;
+    const onValidSubmitHandler = (values: Partial<VelkommenFormData>) => {
+        return [actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!!)];
     };
+
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.SØKERSITUASJON);
 
     return (
         <VelkommenFormComponents.FormikWrapper
-            initialValues={getInitialVelkommenValues(state.søknad.harGodkjentVilkår)}
-            onSubmit={(values) => onValidSubmit(values)}
+            initialValues={getInitialVelkommenValues(søknad.harGodkjentVilkår)}
+            onSubmit={onValidSubmit}
             renderForm={() => {
                 return (
                     <VelkommenFormComponents.Form includeButtons={false}>

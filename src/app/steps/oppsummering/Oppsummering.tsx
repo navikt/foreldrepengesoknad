@@ -5,7 +5,6 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import React from 'react';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import useSetCurrentRoute from 'app/utils/hooks/useSetCurrentRoute';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -30,8 +29,6 @@ const Oppsummering = () => {
     const bem = bemUtils('oppsummering');
     const { barn, annenForelder, søker, informasjonOmUtenlandsopphold } = useSøknad();
     const søkerinfo = useSøkerinfo()
-
-    useSetCurrentRoute(SøknadRoutes.OPPSUMMERING);
 
     const onValidSubmitHandler = () => { return [] };
 

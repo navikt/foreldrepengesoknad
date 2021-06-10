@@ -4,7 +4,6 @@ import SøknadRoutes from 'app/routes/routes';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React from 'react';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import useSetCurrentRoute from 'app/utils/hooks/useSetCurrentRoute';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { useIntl } from 'react-intl';
@@ -26,8 +25,6 @@ interface Props {
 const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
     const intl = useIntl();
     const søknad = useSøknad();
-
-    useSetCurrentRoute(SøknadRoutes.SØKERSITUASJON);
 
     const onValidSubmitHandler = (values: Partial<SøkersituasjonFormData>) => {
         const søkersituasjon = mapSøkersituasjonFormDataToState(values);

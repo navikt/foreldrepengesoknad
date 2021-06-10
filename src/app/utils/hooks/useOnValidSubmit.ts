@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import Api from 'app/api/api';
+import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
@@ -22,7 +23,7 @@ const useOnValidSubmit = <T, >(
 
   const setSubmitAndHandleSubmit = useCallback((values: T) => {
     const actions = submitHandler(values);
-    Promise.all(actions.map((a) => dispatch(a)))
+    Promise.all([dispatch(actionCreator.updateCurrentRoute(nextRoute)), ...actions.map((a) => dispatch(a))])
       .then(() => setSubmitted(true));
   }, [])
 

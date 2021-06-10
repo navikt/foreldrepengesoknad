@@ -5,7 +5,6 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import useSetCurrentRoute from 'app/utils/hooks/useSetCurrentRoute';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -25,8 +24,6 @@ const OmBarnet: React.FunctionComponent<Props> = () => {
     const intl = useIntl();
     const { søkersituasjon, barn } = useSøknad();
     const { arbeidsforhold } = useSøkerinfo();
-
-    useSetCurrentRoute(SøknadRoutes.OM_BARNET);
 
     const onValidSubmitHandler = (values: Partial<OmBarnetFormData>) => {
         const barn = mapOmBarnetFormDataToState(values);
