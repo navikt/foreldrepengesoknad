@@ -6,6 +6,8 @@ import Fieldset from 'app/components/fieldset/Fieldset';
 import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
 
 import './oppgiPersonalia.less';
+import { validateEtternavn, validateFornavn } from '../validation/annenForelderValidering';
+import { validateFødselsnummer } from 'app/utils/validationUtil';
 
 const bem = bemUtils('oppgiPersonalia');
 
@@ -38,22 +40,14 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
                             name={AnnenForelderFormField.fornavn}
                             label={intlUtils(intl, 'annenForelder.spørsmål.fornavn')}
                             disabled={kanIkkeOppgis}
-                            // validate={(fornavnValue) =>
-                            //     kanIkkeOppgis
-                            //         ? undefined
-                            //         : validateRequiredField(fornavnValue, 'valideringsfeil.fornavnPåkrevd')
-                            // }
+                            validate={validateFornavn(intl, kanIkkeOppgis)}
                         />
                         <AnnenForelderFormComponents.Input
                             className={bem.element('nameInput')}
                             name={AnnenForelderFormField.etternavn}
                             label={intlUtils(intl, 'annenForelder.spørsmål.etternavn')}
                             disabled={kanIkkeOppgis}
-                            // validate={(etternavn) =>
-                            //     kanIkkeOppgis
-                            //         ? undefined
-                            //         : validateRequiredField(etternavn, 'valideringsfeil.etternavnPåkrevd')
-                            // }
+                            validate={validateEtternavn(intl, kanIkkeOppgis)}
                         />
                     </div>
                 </Block>
@@ -72,7 +66,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
                 <AnnenForelderFormComponents.Input
                     name={AnnenForelderFormField.fnr}
                     label={intlUtils(intl, 'annenForelder.spørsmål.fnr', { navn: fornavn })}
-                    // validate={(fnr: string) => validateFødselsnummer(fnr, erUtenlandskFnr, søkersFødselsnummer)}
+                    validate={validateFødselsnummer(intl, søkersFødselsnummer, erUtenlandskFnr)}
                 />
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(AnnenForelderFormField.utenlandskFnr)}>

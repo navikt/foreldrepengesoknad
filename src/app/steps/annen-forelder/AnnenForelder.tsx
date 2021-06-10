@@ -1,5 +1,6 @@
 import { Block, intlUtils, Step, UtvidetInformasjon } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import dayjs from 'dayjs';
 import Api from 'app/api/api';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import actionCreator from 'app/context/action/actionCreator';
@@ -12,8 +13,9 @@ import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { onAvbrytSøknad } from 'app/utils/globalUtil';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
@@ -28,15 +30,16 @@ import AvtaleAtFarTarUtForeldrepengerVeileder from './components/AvtaleAtFarTarU
 import FarDokumentasjonAleneomsorgVeileder from './components/FarDokumentasjonAleneomsorgVeileder';
 import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenForelderVeileder';
 import OppgiPersonalia from './components/OppgiPersonalia';
+import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
 
 const AnnenForelder = () => {
     const intl = useIntl();
     const { dispatch, state } = useForeldrepengesøknadContext();
-    const { rolle } = state.søknad.søkersituasjon;
-    const { annenForelder, barn, søker } = state.søknad;
+    const { annenForelder, barn, søker, søkersituasjon: { rolle } } = state.søknad;
     const hasSubmitted = useRef(false);
     const history = useHistory();
     const skalOppgiPersonalia = true;
+    const familiehendelsedato = useMemo(() => dayjs(getFamiliehendelsedato(barn)), [barn]);
 
     useEffect(() => {
         if (hasSubmitted.current === true) {
@@ -128,13 +131,6 @@ const AnnenForelder = () => {
                                         </UtvidetInformasjon>
                                     }
                                     legend={intlUtils(intl, 'annenForelder.aleneOmOmsorg')}
-                                    // validate={(erAleneOmOmsorg) =>
-                                    //     validateYesOrNoIsAnswered(
-                                    //         erAleneOmOmsorg,
-                                    //         'valideringsfeil.aleneOmOmsorgPåkrevd'
-                                    //     )
-                                    // }
-                                    validate={() => undefined}
                                 />
                                 <AvtaleAtFarTarUtForeldrepengerVeileder
                                     visible={!isFarEllerMedmor(rolle) && formValues.aleneOmOmsorg === YesOrNo.YES}
@@ -150,13 +146,8 @@ const AnnenForelder = () => {
                                     <AnnenForelderFormComponents.DatePicker
                                         name={AnnenForelderFormField.datoForAleneomsorg}
                                         label={intlUtils(intl, 'annenForelder.datoForAleneomsorg')}
-                                        // minDate={familiehendelseDato}
-                                        // validate={(value) =>
-                                        //     validateRequiredField(
-                                        //         value,
-                                        //         intlUtils(intl, 'datoForAleneomsorg.spørsmål.påkrevd')
-                                        //     )
-                                        // }
+                                        minDate={familiehendelsedato.toDate()}
+                                        validate={validateDatoForAleneomsorg(intl, familiehendelsedato)}
                                     />
                                 </Block>
 
@@ -200,12 +191,6 @@ const AnnenForelder = () => {
                                     legend={intlUtils(intl, 'annenForelder.annenForelderRettPåForeldrepenger', {
                                         navn: formValues.fornavn,
                                     })}
-                                    // validate={(annenForelderHarRett) =>
-                                    //     validateYesOrNoIsAnswered(
-                                    //         annenForelderHarRett,
-                                    //         'valideringsfeil.annenForelderHarRettPåkrevd'
-                                    //     )
-                                    // }
                                 />
                             </Block>
                             <Block
@@ -217,7 +202,6 @@ const AnnenForelder = () => {
                                     legend={intlUtils(intl, 'annenForelder.spørsmål.erAnnenForelderInformert', {
                                         navn: formValues.fornavn,
                                     })}
-                                    // validate={(value) => validateAnnenForelderInformert(value, formValues.fornavn)}
                                 />
                                 <MåOrientereAnnenForelderVeileder
                                     visible={formValues.erInformertOmSøknaden === YesOrNo.NO}
@@ -231,9 +215,6 @@ const AnnenForelder = () => {
                                     legend={intlUtils(intl, 'annenForelder.erMorUfør', {
                                         navn: formValues.fornavn,
                                     })}
-                                    // validate={(erMorUfør) =>
-                                    //     validateYesOrNoIsAnswered(erMorUfør, 'valideringsfeil.erMorUførPåkrevd')
-                                    // }
                                 />
                             </Block>
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>

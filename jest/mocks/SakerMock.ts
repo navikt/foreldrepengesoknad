@@ -12,8 +12,8 @@ export const engangssønadBehandligMock: Behandling = {
     behandlendeEnhet: '4833',
     behandlendeEnhetNavn: 'NAV Familie- og pensjonsytelser Oslo 1',
     status: BehandlingStatus.OPPRETTET,
-    tema: BehandlingTema.ENGANGSTØNAD,
-    type: BehandlingType.ENGANGSSØNAD,
+    tema: BehandlingTema.ENGANGSSTØNAD,
+    type: BehandlingType.ENGANGSSTØNAD,
     behandlingResultat: BehandlingResultatType.INNVILGET,
     inntektsmeldinger: [],
 };

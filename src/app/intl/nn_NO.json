@@ -238,6 +238,11 @@
     "oppsummering.annenForelder.rettPåForeldrepenger": "Har {navn} rett til foreldrepenger",
     "oppsummering.harGodkjentOppsummering": "Eg har gjort meg kjent med vilkårene for å motta foreldrepenger, og skal ha omsorgen for barnet i perioden eg søker om.",
     "valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd": "Du må stadfeste at du har lese og forstått dine plikter.",
+    "valideringsfeil.annenForelder.datoForAleneomsorg.duMåOppgi": "Du må oppgi dato for når du vart åleine om omsorga",
+    "valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat": "Dato for aleneomsorg må være ein gyldig dato på formatet dd.mm.åååå",
+    "valideringsfeil.annenForelder.datoForAleneomsorg.førFamiliehendelsedato": "Dato for aleneomsorg kan ikkje vere tidlegare enn {dato}",
+    "valideringsfeil.annenForelder.fornavnPåkrevd": "Fornavn må fylles ut",
+    "valideringsfeil.annenForelder.etternavnPåkrevd": "Etternavn må fylles ut",
     "valideringsfeil.omBarnet.termindato.duMåOppgi": "Du må oppgi termindatoen",
     "valideringsfeil.omBarnet.termindato.duMåVæreIUke22": "Du kan tidlegast søkje når du er i 22. svangerskapsveke",
     "valideringsfeil.omBarnet.termindato.forTidlig": "Termindatoen kan ikkje vere tidlegare enn 3 veker frå i dag",
@@ -272,5 +277,9 @@
     "valideringsfeil.fraOgMedDato.gyldigDato": "Frå og med dato må være en gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.tilOgMedDato.gyldigDato": "Til og med dato må være en gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.oppsummering.harGodkjentOppsummering.påkrevd": "Du må bekrefte at du har gjort deg kjent med vilkårene.",
+    "valideringsfeil.fødselsnummer.required": "Fødselsnummer må fyllast ut",
+    "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikkje oppgi ditt eige fødselsnummer",
+    "valideringsfeil.fødselsnummer.underSeksten": "Feil i fødselsnummer. Den andre forelderen må vera over seksten år gammal",
+    "valideringsfeil.fødselsnummer.ugyldigFødselsnummer": "Du må skrive eit gyldig fødselsnummer",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}"
 }
