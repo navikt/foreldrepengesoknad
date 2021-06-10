@@ -1,7 +1,8 @@
 import { formatDate, hasValue, intlUtils } from '@navikt/fp-common';
 import { AdoptertAnnetBarn, AdoptertStebarn, isAdoptertStebarn } from 'app/context/types/Barn';
+import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 
 interface Props {
@@ -17,15 +18,17 @@ const BarnAdoptertIUtlandetDetaljer: FunctionComponent<Props> = ({ barn }) => {
 
     return (
         <>
-            <OppsummeringsPunkt
-                title={intlUtils(intl, 'oppsummering.barn.adoptertIUtlandet')}
-                text={barn.adoptertIUtlandet ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}
-            />
+            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.barn.adoptertIUtlandet')}>
+                <Normaltekst>
+                    <FormattedMessage id={barn.adoptertIUtlandet ? 'ja' : 'nei'} />
+                </Normaltekst>
+            </OppsummeringsPunkt>
             <OppsummeringsPunkt
                 title={intlUtils(intl, 'oppsummering.barn.ankomstdato')}
-                text={formatDate(barn.ankomstdato!)}
                 visible={hasValue(barn.ankomstdato)}
-            />
+            >
+                <Normaltekst>{formatDate(barn.ankomstdato!)}</Normaltekst>
+            </OppsummeringsPunkt>
         </>
     );
 };
