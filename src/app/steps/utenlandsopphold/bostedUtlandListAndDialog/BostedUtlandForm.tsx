@@ -4,7 +4,7 @@ import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-form
 import { Systemtittel } from 'nav-frontend-typografi';
 import getMessage from 'common/util/i18nUtils';
 import { BostedUtland, isValidBostedUtland } from './types';
-import { Block, validateRequiredField } from '@navikt/fp-common';
+import { Block, intlUtils, validateRequiredField } from '@navikt/fp-common';
 import { getFieldErrorRenderer } from 'app/utils/validationUtil';
 import { dateRangeValidation } from '../utenlandsoppholdValidering';
 
@@ -130,11 +130,12 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                 validate={(country) =>
                                     validateRequiredField(
                                         country,
-                                        intl.formatMessage({
-                                            id: erFremtidigOpphold
+                                        intlUtils(
+                                            intl,
+                                            erFremtidigOpphold
                                                 ? 'valideringsfeil.utenlandsopphold.landDuSkalBoIPåkrevd'
-                                                : 'valideringsfeil.utenlandsopphold.landDuHarBoddIPåkrevd',
-                                        })
+                                                : 'valideringsfeil.utenlandsopphold.landDuHarBoddIPåkrevd'
+                                        )
                                     )
                                 }
                                 useAlpha3Code={false}

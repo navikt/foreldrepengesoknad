@@ -1,3 +1,4 @@
+import { intlUtils } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
 import { isFødselsnummerFormatValid, isSixteenOrOlder } from './validation/fødselsnummer';
 
@@ -7,30 +8,28 @@ export const getFieldErrorRenderer = (): FormikFieldErrorRender => (errorMessage
     return errorMessage;
 };
 
-export const validateFødselsnummer = (
-    intl: IntlShape,
-    søkersFødselsnummer: string,
-    erUtenlandskFnr?: boolean,
-) => (fnr: string): string | undefined => {
+export const validateFødselsnummer = (intl: IntlShape, søkersFødselsnummer: string, erUtenlandskFnr?: boolean) => (
+    fnr: string
+): string | undefined => {
     const validFnrResult = isFødselsnummerFormatValid(fnr);
 
     if (erUtenlandskFnr) {
         if (fnr === undefined || fnr === '') {
-            return intl.formatMessage({ id: 'valideringsfeil.fødselsnummer.required' });
+            return intlUtils(intl, 'valideringsfeil.fødselsnummer.required');
         }
 
         return undefined;
     }
 
     if (fnr === søkersFødselsnummer) {
-        return intl.formatMessage({id: 'valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer' });
+        return intlUtils(intl, 'valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer');
     }
 
     if (!erUtenlandskFnr && !isSixteenOrOlder(fnr, validFnrResult) && validFnrResult === 'F') {
-        return intl.formatMessage({id: 'valideringsfeil.fødselsnummer.underSeksten' });
+        return intlUtils(intl, 'valideringsfeil.fødselsnummer.underSeksten');
     }
 
     return validFnrResult === 'F' || validFnrResult === 'D'
         ? undefined
-        : intl.formatMessage({id: 'valideringsfeil.fødselsnummer.ugyldigFødselsnummer' });
+        : intlUtils(intl, 'valideringsfeil.fødselsnummer.ugyldigFødselsnummer');
 };

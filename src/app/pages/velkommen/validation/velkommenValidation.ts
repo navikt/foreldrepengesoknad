@@ -1,8 +1,9 @@
+import { intlUtils } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
 
 export const validateHarForståttRettigheterOgPlikter = (intl: IntlShape) => (value: boolean) => {
     if (value !== true) {
-        return intl.formatMessage({ id: 'valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd' });
+        return intlUtils(intl, 'valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd');
     }
 
     return undefined;

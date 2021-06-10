@@ -10,6 +10,7 @@ import {
     InntektsinformasjonFormData,
     InntektsinformasjonFormField,
 } from '../../inntektsinformasjonFormConfig';
+import { validateFrilansoppstartsDato } from '../../validation/inntektsinformasjonValidering';
 import FrilansoppdragListe from './FrilansoppdragListe';
 import HvemKanVæreFrilanser from './HvemKanVæreFrilanser';
 import FrilansoppdragModal from './modal/FrilansoppdragModal';
@@ -72,6 +73,7 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                         <InntektsinformasjonFormComponents.DatePicker
                             name={InntektsinformasjonFormField.frilansOppstartsDato}
                             label={intlUtils(intl, 'inntektsinformasjon.frilans.oppstart')}
+                            validate={validateFrilansoppstartsDato(intl)}
                         />
                     </Block>
                     <Block

@@ -5,11 +5,11 @@ import { useIntl } from 'react-intl';
 
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import Lenke from 'nav-frontend-lenker';
-import { bemUtils, SlettKnapp, VedleggIkon } from '@navikt/fp-common';
+import { bemUtils, intlUtils, SlettKnapp, VedleggIkon } from '@navikt/fp-common';
 import { Attachment } from 'app/types/Attachment';
+import { bytesString } from 'app/utils/globalUtil';
 
 import './attachment.less';
-import { bytesString } from 'app/utils/globalUtil';
 
 interface OwnProps {
     attachment: Attachment;
@@ -48,7 +48,7 @@ const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, 
                 <span className={bem.element('deleteButton')}>
                     <SlettKnapp
                         onClick={() => onDelete(attachment)}
-                        ariaLabel={intl.formatMessage({ id: 'vedlegg.arialabel.slett' }, { navn: attachment.filename })}
+                        ariaLabel={intlUtils(intl, 'vedlegg.arialabel.slett', { navn: attachment.filename })}
                     />
                 </span>
             )}

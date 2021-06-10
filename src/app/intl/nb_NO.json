@@ -283,5 +283,7 @@
     "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikke oppgi ditt eget fødselsnummer",
     "valideringsfeil.fødselsnummer.underSeksten": "Feil i fødselsnummer. Den andre forelderen må være over seksten år gammel",
     "valideringsfeil.fødselsnummer.ugyldigFødselsnummer": "Du må skrive et gyldig fødselsnummer",
+    "valideringsfeil.inntektsinformasjon.frilansoppstartsDato.påkrevd": "Du må oppgi oppstartsdato for når du startet som frilans",
+    "valideringsfeil.inntektsinformasjon.frilansoppstartsDato.ugyldigDatoFormat": "Oppstartsdato for når du startet som frilans må være en gyldig dato på formatet dd.mm.åååå",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}"
 }

@@ -4,6 +4,7 @@ import {
     dateRangesCollide,
     dateRangesExceedsRange,
     formatDateExtended,
+    intlUtils,
 } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { BostedUtland } from './bostedUtlandListAndDialog/types';
@@ -28,33 +29,23 @@ const validateDateInRange = (
 ) => {
     if (date === undefined) {
         if (isFomDate) {
-            return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.gyldigDato' });
+            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
         }
-        return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.gyldigDato' });
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
     }
 
     if (!dateIsWithinRange(date, minDate, maxDate)) {
         if (isFomDate) {
-            return intl.formatMessage(
-                {
-                    id: 'valideringsfeil.dateOutsideRange.fom',
-                },
-                {
-                    fom: formatDateExtended(minDate),
-                    tom: formatDateExtended(maxDate),
-                }
-            );
-        }
-
-        return intl.formatMessage(
-            {
-                id: 'valideringsfeil.dateOutsideRange.tom',
-            },
-            {
+            return intlUtils(intl, 'valideringsfeil.dateOutsideRange.fom', {
                 fom: formatDateExtended(minDate),
                 tom: formatDateExtended(maxDate),
-            }
-        );
+            });
+        }
+
+        return intlUtils(intl, 'valideringsfeil.dateOutsideRange.tom', {
+            fom: formatDateExtended(minDate),
+            tom: formatDateExtended(maxDate),
+        });
     }
 
     return undefined;
@@ -68,7 +59,7 @@ const validateFromDate = (intl: IntlShape, date: Date | undefined, minDate: Date
     }
 
     if (toDate && dayjs(date).isAfter(toDate, 'day')) {
-        return intl.formatMessage({ id: 'valideringsfeil.utenlandsopphold.førTilDato' });
+        return intlUtils(intl, 'valideringsfeil.utenlandsopphold.førTilDato');
     }
 
     return undefined;
@@ -82,7 +73,7 @@ const validateToDate = (intl: IntlShape, date: Date | undefined, minDate: Date, 
     }
 
     if (fromDate && dayjs(date).isBefore(fromDate, 'day')) {
-        return intl.formatMessage({ id: 'valideringsfeil.utenlandsopphold.etterFraDato' });
+        return intlUtils(intl, 'valideringsfeil.utenlandsopphold.etterFraDato');
     }
 
     return undefined;
@@ -97,17 +88,17 @@ export const validateUtenlandsoppholdNeste12Mnd = (intl: IntlShape) => (
     utenlandsopphold: BostedUtland[]
 ): SkjemaelementFeil => {
     if (utenlandsopphold.length === 0) {
-        return intl.formatMessage({ id: 'valideringsfeil.utenlandsopphold.neste12Måneder.ikkeRegistrert' });
+        return intlUtils(intl, 'valideringsfeil.utenlandsopphold.neste12Måneder.ikkeRegistrert');
     }
 
     const dateRanges = utenlandsopphold.map((u) => ({ from: dayjs(u.fom).toDate(), to: dayjs(u.tom).toDate() }));
 
     if (dateRangesCollide(dateRanges)) {
-        return intl.formatMessage({ id: 'valideringsfeil.utenlandsopphold.overlapp' });
+        return intlUtils(intl, 'valideringsfeil.utenlandsopphold.overlapp');
     }
 
     if (dateRangesExceedsRange(dateRanges, { from: new Date(), to: date1YearFromNow })) {
-        return intl.formatMessage({ id: 'valideringsfeil.utenlandsoppholdUtenforPeriode' });
+        return intlUtils(intl, 'valideringsfeil.utenlandsoppholdUtenforPeriode');
     }
 
     return undefined;
@@ -117,17 +108,17 @@ export const validateUtenlandsoppholdSiste12Mnd = (intl: IntlShape) => (
     utenlandsopphold: BostedUtland[]
 ): SkjemaelementFeil => {
     if (utenlandsopphold.length === 0) {
-        return intl.formatMessage({ id: 'valideringsfeil.utenlandsopphold.siste12Måneder.ikkeRegistrert' });
+        return intlUtils(intl, 'valideringsfeil.utenlandsopphold.siste12Måneder.ikkeRegistrert');
     }
 
     const dateRanges = utenlandsopphold.map((u) => ({ from: dayjs(u.fom).toDate(), to: dayjs(u.tom).toDate() }));
 
     if (dateRangesCollide(dateRanges)) {
-        return intl.formatMessage({ id: 'valideringsfeil.utenlandsopphold.overlapp' });
+        return intlUtils(intl, 'valideringsfeil.utenlandsopphold.overlapp');
     }
 
     if (dateRangesExceedsRange(dateRanges, { from: date1YearAgo, to: new Date() })) {
-        return intl.formatMessage({ id: 'valideringsfeil.utenlandsoppholdUtenforPeriode' });
+        return intlUtils(intl, 'valideringsfeil.utenlandsoppholdUtenforPeriode');
     }
 
     return undefined;
