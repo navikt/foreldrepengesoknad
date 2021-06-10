@@ -35,7 +35,12 @@ import { validateDatoForAleneomsorg } from './validation/annenForelderValidering
 const AnnenForelder = () => {
     const intl = useIntl();
     const { dispatch, state } = useForeldrepengesøknadContext();
-    const { annenForelder, barn, søker, søkersituasjon: { rolle } } = state.søknad;
+    const {
+        annenForelder,
+        barn,
+        søker,
+        søkersituasjon: { rolle },
+    } = state.søknad;
     const hasSubmitted = useRef(false);
     const history = useHistory();
     const skalOppgiPersonalia = true;
@@ -45,6 +50,8 @@ const AnnenForelder = () => {
         if (hasSubmitted.current === true) {
             Api.storeAppState(state);
             history.push(SøknadRoutes.UTTAKSPLAN_INFO);
+        } else {
+            Api.storeAppState(state);
         }
     }, [state]);
 
