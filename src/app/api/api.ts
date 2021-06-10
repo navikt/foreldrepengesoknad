@@ -3,6 +3,7 @@
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { useRequest } from 'app/utils/hooks/useRequest';
+import { useEffect, useState } from 'react';
 import getAxiosInstance from './apiInterceptor';
 import { storageParser } from './storageParser';
 
@@ -33,7 +34,18 @@ const getSøkerinfo = () => {
 };
 
 const useSøkerinfo = () => {
-    const { data, error } = useRequest<SøkerinfoDTO>(getAxiosInstance().get('/sokerinfo'));
+    const [data, setData] = useState();
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        getAxiosInstance().get('/sokerinfo')
+        .then((res) => {
+            setData(res.data);
+        })
+        .catch((err) => {
+            setError(err);
+        });
+    }, []);
 
     return {
         søkerinfoData: data,
@@ -118,11 +130,21 @@ function getStoredAppState() {
 }
 
 function useStoredAppState() {
-    const { data, error } = useRequest<ForeldrepengesøknadContextState>(
+    const [data, setData] = useState();
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
         getAxiosInstance('123').get('/storage', {
             transformResponse: storageParser,
         })
-    );
+        .then((res) => {
+            setData(res.data);
+        })
+        .catch((err) => {
+            setError(err);
+        });
+    }, []);
+
 
     return {
         storageData: data,
@@ -166,7 +188,7 @@ const Api = {
     getEksisterendeSak,
     getEksisterendeSakMedFnr,
     useStoredAppState,
-    useSøkerinfo,
+    useSøkerinfo
 };
 
 export default Api;
