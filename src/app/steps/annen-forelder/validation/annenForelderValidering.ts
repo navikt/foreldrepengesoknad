@@ -1,4 +1,4 @@
-import { hasValue, intlUtils } from '@navikt/fp-common';
+import { formatDate, hasValue, intlUtils } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { isISODateString } from 'nav-datovelger';
 import { IntlShape } from 'react-intl';
@@ -16,7 +16,7 @@ export const validateDatoForAleneomsorg = (intl: IntlShape, familiehendelsedato:
 
     if (dayjs(datoForAleneomsorg).isBefore(familiehendelsedato)) {
         return intlUtils(intl, 'valideringsfeil.annenForelder.datoForAleneomsorg.førFamiliehendelsedato', {
-            dato: familiehendelsedato.format('DD.MM.YYYY'),
+            dato: formatDate(familiehendelsedato.toDate()),
         });
     }
 

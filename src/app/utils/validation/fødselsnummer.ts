@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 const isValidFødselsnummer = require('is-valid-fodselsnummer');
 
 const MAKS_FNR_LENGTH = 30;
@@ -21,9 +21,9 @@ export const isSixteenOrOlder = (fnr: string, isFødselsnummerValid: Fødselsnum
     const mnd = fnr.substr(2, 2);
     const år = fnr.substr(4, 2);
 
-    const fødselsdato = moment(`${dato}-${mnd}-${år}`, 'DD-MM-YY');
+    const fødselsdato = dayjs(`${dato}-${mnd}-${år}`, 'DD-MM-YY');
 
-    if (fødselsdato.get('year') > moment().get('year')) {
+    if (fødselsdato.get('year') > dayjs().get('year')) {
         fødselsdato.subtract(100, 'year');
     }
 
@@ -31,5 +31,5 @@ export const isSixteenOrOlder = (fnr: string, isFødselsnummerValid: Fødselsnum
         return false;
     }
 
-    return fødselsdato.isBefore(moment().subtract(16, 'year'));
+    return fødselsdato.isBefore(dayjs().subtract(16, 'year'));
 };
