@@ -10,7 +10,7 @@ export const enum FrilansoppdragModalFormField {
 export interface FrilansoppdragModalFormData {
     [FrilansoppdragModalFormField.navnOppdragsgiver]: string;
     [FrilansoppdragModalFormField.fom]: string;
-    [FrilansoppdragModalFormField.tom]?: string;
+    [FrilansoppdragModalFormField.tom]: string;
     [FrilansoppdragModalFormField.pågående]: YesOrNo;
 }
 

@@ -6,7 +6,7 @@ import getMessage from 'common/util/i18nUtils';
 import { BostedUtland, isValidBostedUtland } from './types';
 import { Block, intlUtils, validateRequiredField } from '@navikt/fp-common';
 import { getFieldErrorRenderer } from 'app/utils/validationUtil';
-import { dateRangeValidation } from '../utenlandsoppholdValidering';
+import { dateRangeValidation } from 'app/utils/dateUtils';
 
 export interface BostedUtlandFormLabels {
     tittel: string;
@@ -87,11 +87,12 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     minDate,
                                     maxDate: ISOStringToDate(values.tom) || maxDate,
                                     validate: (value) =>
-                                        dateRangeValidation.validateFromDate(
+                                        dateRangeValidation.validateFromDateInRange(
                                             intl,
                                             ISOStringToDate(value),
                                             minDate,
                                             maxDate,
+                                            'valideringsfeil.dato.førTilDato',
                                             ISOStringToDate(values.tom)
                                         ),
                                 }}
@@ -103,11 +104,12 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     minDate: ISOStringToDate(values.fom) || minDate,
                                     maxDate,
                                     validate: (value) =>
-                                        dateRangeValidation.validateToDate(
+                                        dateRangeValidation.validateToDateInRange(
                                             intl,
                                             ISOStringToDate(value),
                                             minDate,
                                             maxDate,
+                                            'valideringsfeil.dato.etterFraDato',
                                             ISOStringToDate(values.fom)
                                         ),
                                 }}

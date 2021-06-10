@@ -16,6 +16,13 @@ import { Undertittel } from 'nav-frontend-typografi';
 import frilansoppdragModalQuestionsConfig from './frilansoppdragModalQuestionsConfig';
 import { FormattedMessage } from 'react-intl';
 import { FrilansOppdrag } from 'app/context/types/Frilans';
+import {
+    validateNavnPåOppdragsgiver,
+    validateOppdragFom,
+    validateOppdragTom,
+    validatePågåendeOppdrag,
+} from '../validation/frilansValidation';
+import dayjs from 'dayjs';
 
 import './frilansoppdragModal.less';
 
@@ -26,6 +33,7 @@ interface Props {
     selectedFrilansoppdrag?: FrilansOppdrag;
     addFrilansoppdrag: (oppdrag: FrilansOppdrag) => void;
     editFrilansoppdrag: (oppdrag: FrilansOppdrag) => void;
+    oppstartsdato: string;
 }
 
 const FrilansoppdragModal: FunctionComponent<Props> = ({
@@ -35,6 +43,7 @@ const FrilansoppdragModal: FunctionComponent<Props> = ({
     selectedFrilansoppdrag,
     addFrilansoppdrag,
     editFrilansoppdrag,
+    oppstartsdato,
 }) => {
     const bem = bemUtils('frilansoppdragModal');
     const intl = useIntl();
@@ -74,6 +83,7 @@ const FrilansoppdragModal: FunctionComponent<Props> = ({
                                 <FrilansoppdragModalFormComponents.Input
                                     name={FrilansoppdragModalFormField.navnOppdragsgiver}
                                     label={intlUtils(intl, 'inntektsinformasjon.frilansOppdrag.oppdragsgiver')}
+                                    validate={validateNavnPåOppdragsgiver(intl)}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(FrilansoppdragModalFormField.fom)}>
@@ -82,12 +92,16 @@ const FrilansoppdragModal: FunctionComponent<Props> = ({
                                     label={intlUtils(intl, 'fom')}
                                     placeholder={'dd.mm.åååå'}
                                     fullscreenOverlay={true}
+                                    validate={validateOppdragFom(intl, formValues.tom, oppstartsdato)}
+                                    minDate={dayjs(oppstartsdato).toDate()}
+                                    maxDate={dayjs().toDate()}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(FrilansoppdragModalFormField.pågående)}>
                                 <FrilansoppdragModalFormComponents.YesOrNoQuestion
                                     name={FrilansoppdragModalFormField.pågående}
                                     legend={intlUtils(intl, 'inntektsinformasjon.frilansOppdrag.pågående')}
+                                    validate={validatePågåendeOppdrag(intl)}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(FrilansoppdragModalFormField.tom)}>
@@ -96,6 +110,14 @@ const FrilansoppdragModal: FunctionComponent<Props> = ({
                                     label={intlUtils(intl, 'tom')}
                                     placeholder={'dd.mm.åååå'}
                                     fullscreenOverlay={true}
+                                    validate={validateOppdragTom(
+                                        intl,
+                                        formValues.pågående,
+                                        formValues.fom,
+                                        oppstartsdato
+                                    )}
+                                    minDate={dayjs(formValues.fom).toDate()}
+                                    maxDate={dayjs().toDate()}
                                 />
                             </Block>
                         </FrilansoppdragModalFormComponents.Form>

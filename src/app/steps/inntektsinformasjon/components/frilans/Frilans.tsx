@@ -97,11 +97,12 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                     <Block padBottom="l" visible={formValues.oppdragForNæreVennerEllerFamilie === YesOrNo.YES}>
                         <FrilansoppdragModal
                             isOpen={isModalOpen}
-                            title="Test"
+                            title={intlUtils(intl, 'inntektsinformasjon.frilansOppdrag.tittel')}
                             onRequestClose={() => setIsModalOpen(false)}
                             selectedFrilansoppdrag={selectedOppdrag}
                             addFrilansoppdrag={addFrilansoppdrag}
                             editFrilansoppdrag={editFrilansoppdrag}
+                            oppstartsdato={formValues.frilansOppstartsDato}
                         />
                         <Block padBottom="l" visible={frilansoppdrag.length > 0}>
                             <FrilansoppdragListe

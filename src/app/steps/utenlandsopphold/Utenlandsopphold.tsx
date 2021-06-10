@@ -61,7 +61,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         steps={stepConfig}
                         kompakt={true}
                     >
-                        <UtenlandsoppholdFormComponents.Form includeButtons={false}>
+                        <UtenlandsoppholdFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block
                                 visible={visibility.isVisible(UtenlandsoppholdFieldNames.skalBoINorgeNeste12Mnd)}
                                 padBottom="l"

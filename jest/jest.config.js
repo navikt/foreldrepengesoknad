@@ -12,13 +12,13 @@ module.exports = {
     moduleFileExtensions: ['js', 'json', 'jsx', 'node', 'ts', 'tsx'],
     globals: {
         'ts-jest': {
-            tsConfig: './tsconfig.json',
+            tsconfig: './tsconfig.json',
             babelConfig: true,
         },
     },
     rootDir: '../',
     coverageReporters: ['text-summary'],
-    modulePathIgnorePatterns: ['akseptansetest'],
+    modulePathIgnorePatterns: ['akseptansetest', '<rootDir>/old/', '<rootDir>/src/common/'],
     preset: 'ts-jest/presets/js-with-babel',
     testMatch: null,
 };
