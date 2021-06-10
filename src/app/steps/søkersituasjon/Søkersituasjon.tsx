@@ -1,13 +1,13 @@
 import { Block, intlUtils, Kjønn, Step } from '@navikt/fp-common';
-import Api from 'app/api/api';
 import actionCreator from 'app/context/action/actionCreator';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import SøknadRoutes from 'app/routes/routes';
-import { onAvbrytSøknad } from 'app/utils/globalUtil';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
+import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import useSetCurrentRoute from 'app/utils/hooks/useSetCurrentRoute';
+import useSøknad from 'app/utils/hooks/useSøknad';
+import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { useIntl } from 'react-intl';
-import { useHistory } from 'react-router';
 import stepConfig from '../stepsConfig';
 import VelgRolle from './components/VelgRolle';
 import {
@@ -25,32 +25,21 @@ interface Props {
 
 const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
     const intl = useIntl();
-    const history = useHistory();
-    const { state, dispatch } = useForeldrepengesøknadContext();
-    const hasSubmitted = useRef(false);
+    const søknad = useSøknad();
 
-    useEffect(() => {
-        if (hasSubmitted.current === true) {
-            Api.storeAppState(state);
-            history.push(SøknadRoutes.OM_BARNET);
-        }
-    }, [state]);
+    useSetCurrentRoute(SøknadRoutes.SØKERSITUASJON);
 
-    useEffect(() => {
-        dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.SØKERSITUASJON));
-    }, []);
-
-    const onValidSubmit = (values: Partial<SøkersituasjonFormData>) => {
+    const onValidSubmitHandler = (values: Partial<SøkersituasjonFormData>) => {
         const søkersituasjon = mapSøkersituasjonFormDataToState(values);
-
-        dispatch(actionCreator.setSøkersituasjon(søkersituasjon));
-
-        hasSubmitted.current = true;
+        return [actionCreator.setSøkersituasjon(søkersituasjon)];
     };
+
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.OM_BARNET);
+    const onAvbrytSøknad = useAvbrytSøknad();
 
     return (
         <SøkersituasjonFormComponents.FormikWrapper
-            initialValues={getInitialSøkerSituasjonValues(state.søknad.søkersituasjon)}
+            initialValues={getInitialSøkerSituasjonValues(søknad.søkersituasjon)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = søkersituasjonQuestionsConfig.getVisbility(formValues);
@@ -61,7 +50,7 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
                         activeStepId="søkersituasjon"
                         pageTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         stepTitle={intlUtils(intl, 'søknad.søkersituasjon')}
-                        onCancel={() => onAvbrytSøknad(dispatch, history)}
+                        onCancel={onAvbrytSøknad}
                         onContinueLater={() => null}
                         steps={stepConfig}
                         kompakt={true}

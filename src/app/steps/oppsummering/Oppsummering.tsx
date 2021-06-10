@@ -1,15 +1,15 @@
 import { bemUtils, Block, intlUtils, Step } from '@navikt/fp-common';
-import Api from 'app/api/api';
 import VeilederNormal from 'app/assets/VeilederNormal';
-import actionCreator from 'app/context/action/actionCreator';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import SøknadRoutes from 'app/routes/routes';
-import { onAvbrytSøknad } from 'app/utils/globalUtil';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Veilederpanel from 'nav-frontend-veilederpanel';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
+import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import useSetCurrentRoute from 'app/utils/hooks/useSetCurrentRoute';
+import useSøknad from 'app/utils/hooks/useSøknad';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useHistory } from 'react-router';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import AnnenForelderOppsummering from './components/annen-forelder-oppsummering/AnnenForelderOppsummering';
 import BarnOppsummering from './components/barn-oppsummering/BarnOppsummering';
@@ -27,29 +27,21 @@ import { validateHarGodkjentOppsummering } from './validation/oppsummeringValida
 
 const Oppsummering = () => {
     const intl = useIntl();
-    const { state, dispatch } = useForeldrepengesøknadContext();
-    const history = useHistory();
-    const hasSubmitted = useRef(false);
     const bem = bemUtils('oppsummering');
-    const { barn, annenForelder, søker, informasjonOmUtenlandsopphold } = state.søknad;
+    const { barn, annenForelder, søker, informasjonOmUtenlandsopphold } = useSøknad();
+    const søkerinfo = useSøkerinfo()
 
-    useEffect(() => {
-        if (hasSubmitted.current === true) {
-            Api.storeAppState(state);
-            history.push(SøknadRoutes.SØKNAD_SENDT);
-        } else {
-            Api.storeAppState(state);
-        }
-    }, [state]);
+    useSetCurrentRoute(SøknadRoutes.OPPSUMMERING);
 
-    useEffect(() => {
-        dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.OPPSUMMERING));
-    }, []);
+    const onValidSubmitHandler = () => { return [] };
+
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.SØKNAD_SENDT);
+    const onAvbrytSøknad = useAvbrytSøknad();
 
     return (
         <OppsummeringFormComponents.FormikWrapper
             initialValues={getInitialOppsummeringValues()}
-            onSubmit={() => null}
+            onSubmit={onValidSubmit}
             renderForm={() => {
                 return (
                     <OppsummeringFormComponents.Form includeButtons={false}>
@@ -59,7 +51,7 @@ const Oppsummering = () => {
                             activeStepId="oppsummering"
                             pageTitle={intlUtils(intl, 'søknad.oppsummering')}
                             stepTitle={intlUtils(intl, 'søknad.oppsummering')}
-                            onCancel={() => onAvbrytSøknad(dispatch, history)}
+                            onCancel={onAvbrytSøknad}
                             onContinueLater={() => null}
                             steps={stepConfig}
                             kompakt={true}
@@ -72,7 +64,7 @@ const Oppsummering = () => {
                             <Block padBottom="l">
                                 <div className={bem.block}>
                                     <Block padBottom="l">
-                                        <Personalia søkerinfo={state.søkerinfo} />
+                                        <Personalia søkerinfo={søkerinfo} />
                                     </Block>
                                     <OppsummeringsPanel title="Om barnet">
                                         <BarnOppsummering barn={barn} />

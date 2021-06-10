@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import {
     Block,
     date1YearAgo,
@@ -16,52 +16,38 @@ import {
 } from './utenlandsoppholdFormTypes';
 import { useIntl } from 'react-intl';
 import actionCreator from 'app/context/action/actionCreator';
-import { useHistory } from 'react-router-dom';
+import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import useSetCurrentRoute from 'app/utils/hooks/useSetCurrentRoute';
+import useSøknad from 'app/utils/hooks/useSøknad';
+import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { utenlandsoppholdFormQuestions } from './utenlandsoppholdFormQuestions';
 import BostedUtlandListAndDialog from './bostedUtlandListAndDialog/BostedUtlandListAndDialog';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
-import { onAvbrytSøknad } from 'app/utils/globalUtil';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import {
     getInitialUtenlandsoppholdValuesFromState,
     mapUtenlandsoppholdFormDataToState,
 } from './utenlandsoppholdFormUtils';
 import SøknadRoutes from 'app/routes/routes';
-import Api from 'app/api/api';
 import { validateUtenlandsoppholdNeste12Mnd, validateUtenlandsoppholdSiste12Mnd } from './utenlandsoppholdValidering';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
-    const history = useHistory();
-    const hasSubmitted = useRef(false);
-    const { state, dispatch } = useForeldrepengesøknadContext();
-    const initialValues = state.søknad.informasjonOmUtenlandsopphold;
+    const { informasjonOmUtenlandsopphold } = useSøknad();
 
-    useEffect(() => {
-        if (hasSubmitted.current === true) {
-            Api.storeAppState(state);
-            history.push(SøknadRoutes.INNTEKTSINFORMASJON);
-        } else {
-            Api.storeAppState(state);
-        }
-    }, [state]);
+    useSetCurrentRoute(SøknadRoutes.UTENLANDSOPPHOLD);
 
-    useEffect(() => {
-        dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.UTENLANDSOPPHOLD));
-    }, []);
-
-    const onValidSubmit = (values: Partial<UtenlandsoppholdFormData>) => {
+    const onValidSubmitHandler = (values: Partial<UtenlandsoppholdFormData>) => {
         const utenlandsopphold = mapUtenlandsoppholdFormDataToState(values);
-
-        dispatch(actionCreator.setInformasjonOmUtenlandsopphold(utenlandsopphold));
-
-        hasSubmitted.current = true;
+        return [actionCreator.setInformasjonOmUtenlandsopphold(utenlandsopphold)];
     };
+
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.INNTEKTSINFORMASJON);
+    const onAvbrytSøknad = useAvbrytSøknad();
 
     return (
         <UtenlandsoppholdFormComponents.FormikWrapper
-            initialValues={getInitialUtenlandsoppholdValuesFromState(initialValues)}
+            initialValues={getInitialUtenlandsoppholdValuesFromState(informasjonOmUtenlandsopphold)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = utenlandsoppholdFormQuestions.getVisbility(formValues);
@@ -73,7 +59,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         pageTitle={intlUtils(intl, 'søknad.utenlandsopphold')}
                         stepTitle={intlUtils(intl, 'søknad.utenlandsopphold')}
                         backLinkHref={getPreviousStepHref('utenlandsopphold')}
-                        onCancel={() => onAvbrytSøknad(dispatch, history)}
+                        onCancel={onAvbrytSøknad}
                         onContinueLater={() => null}
                         steps={stepConfig}
                         kompakt={true}

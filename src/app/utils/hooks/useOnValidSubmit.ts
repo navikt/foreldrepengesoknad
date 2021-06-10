@@ -7,18 +7,18 @@ import { ForeldrepengesøknadContextAction } from 'app/context/action/actionCrea
 
 const useOnValidSubmit = <T, >(
   submitHandler: (values: T) => ForeldrepengesøknadContextAction[],
-  route: SøknadRoutes,
+  nextRoute: SøknadRoutes,
 ) => {
   const { dispatch, state } = useForeldrepengesøknadContext();
   const history = useHistory();
   const [harSubmitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    Api.storeAppState(state);
     if (harSubmitted) {
-        history.push(route);
-    } 
-  }, [state, harSubmitted]);
+        Api.storeAppState(state);
+        history.push(nextRoute);
+    }
+  }, [harSubmitted]);
 
   const setSubmitAndHandleSubmit = useCallback((values: T) => {
     const actions = submitHandler(values);

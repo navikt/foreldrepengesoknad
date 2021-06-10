@@ -1,14 +1,15 @@
 import { Block, intlUtils, Step } from '@navikt/fp-common';
-import Api from 'app/api/api';
 import actionCreator from 'app/context/action/actionCreator';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import SøknadRoutes from 'app/routes/routes';
-import { onAvbrytSøknad } from 'app/utils/globalUtil';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useHistory } from 'react-router';
+import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import useSetCurrentRoute from 'app/utils/hooks/useSetCurrentRoute';
+import useSøknad from 'app/utils/hooks/useSøknad';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import AndreInntekter from './components/andre-inntekter/AndreInntekter';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
@@ -24,11 +25,8 @@ import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsCo
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
-    const { dispatch, state } = useForeldrepengesøknadContext();
-    const history = useHistory();
-    const { arbeidsforhold } = state.søkerinfo;
-    const hasSubmitted = useRef(false);
-    const { søker } = state.søknad;
+    const { arbeidsforhold } = useSøkerinfo();
+    const { søker } = useSøknad();
 
     const [frilansoppdrag, setFrilansoppdrag] = useState(
         søker.frilansInformasjon ? søker.frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd : []
@@ -40,20 +38,9 @@ const Inntektsinformasjon = () => {
         søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : []
     );
 
-    useEffect(() => {
-        if (hasSubmitted.current === true) {
-            Api.storeAppState(state);
-            history.push(SøknadRoutes.OPPSUMMERING);
-        } else {
-            Api.storeAppState(state);
-        }
-    }, [state]);
+    useSetCurrentRoute(SøknadRoutes.INNTEKTSINFORMASJON);
 
-    useEffect(() => {
-        dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.INNTEKTSINFORMASJON));
-    }, []);
-
-    const onValidSubmit = (values: Partial<InntektsinformasjonFormData>) => {
+    const onValidSubmitHandler = (values: Partial<InntektsinformasjonFormData>) => {
         const updatedSøker = mapInntektsinformasjonFormDataToState(
             values,
             søker,
@@ -62,9 +49,11 @@ const Inntektsinformasjon = () => {
             egenNæringInformasjon
         );
 
-        dispatch(actionCreator.setSøker(updatedSøker));
-        hasSubmitted.current = true;
+        return [actionCreator.setSøker(updatedSøker)];
     };
+
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.OPPSUMMERING);
+    const onAvbrytSøknad = useAvbrytSøknad();
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
@@ -80,7 +69,7 @@ const Inntektsinformasjon = () => {
                         activeStepId="inntektsinformasjon"
                         pageTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
                         stepTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
-                        onCancel={() => onAvbrytSøknad(dispatch, history)}
+                        onCancel={onAvbrytSøknad}
                         onContinueLater={() => null}
                         steps={stepConfig}
                         kompakt={true}

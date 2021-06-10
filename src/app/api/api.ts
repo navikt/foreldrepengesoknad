@@ -32,6 +32,16 @@ const getSøkerinfo = () => {
     };
 };
 
+const useSøkerinfo = () => {
+    const { data, error } = useRequest<SøkerinfoDTO>(getAxiosInstance().get('/sokerinfo'));
+
+    return {
+        søkerinfoData: data,
+        søkerinfoError: error,
+    };
+};
+
+
 const getSaker = () => {
     return getAxiosInstance('123').get('/innsyn/saker');
 };
@@ -107,6 +117,19 @@ function getStoredAppState() {
     };
 }
 
+function useStoredAppState() {
+    const { data, error } = useRequest<ForeldrepengesøknadContextState>(
+        getAxiosInstance('123').get('/storage', {
+            transformResponse: storageParser,
+        })
+    );
+
+    return {
+        storageData: data,
+        storageError: error,
+    };
+}
+
 function storeAppState(state: ForeldrepengesøknadContextState) {
     const { søknad, version, currentRoute } = state;
     return getAxiosInstance('123').post('/storage', { søknad, version, currentRoute }, { withCredentials: true });
@@ -142,6 +165,8 @@ const Api = {
     // getStorageKvittering,
     getEksisterendeSak,
     getEksisterendeSakMedFnr,
+    useStoredAppState,
+    useSøkerinfo,
 };
 
 export default Api;

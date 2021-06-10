@@ -12,7 +12,11 @@ import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
+import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import useSetCurrentRoute from 'app/utils/hooks/useSetCurrentRoute';
+import useSøknad from 'app/utils/hooks/useSøknad';
+import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import { AnnenForelderFormComponents, AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
@@ -27,10 +31,6 @@ import FarDokumentasjonAleneomsorgVeileder from './components/FarDokumentasjonAl
 import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenForelderVeileder';
 import OppgiPersonalia from './components/OppgiPersonalia';
 import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
-import useOnValidSubmit from './useOnValidSubmit';
-import useSetCurrentRoute from './useSetCurrentRoute';
-import useSoknad from './useSoknad';
-import useAvbrytSøknad from './useAvbrytSøknad';
 
 const AnnenForelder = () => {
     const intl = useIntl();
@@ -39,9 +39,9 @@ const AnnenForelder = () => {
         barn,
         søker,
         søkersituasjon: { rolle },
-    } = useSoknad();
+    } = useSøknad();
     const skalOppgiPersonalia = true;
-    const familiehendelsedato = useMemo(() => dayjs(getFamiliehendelsedato(barn)), [barn]);
+    const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
 
     useSetCurrentRoute(SøknadRoutes.ANNEN_FORELDER);
 
@@ -64,7 +64,6 @@ const AnnenForelder = () => {
     }, [søker, barn]);
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN_INFO);
-
     const onAvbrytSøknad = useAvbrytSøknad();
 
     return (

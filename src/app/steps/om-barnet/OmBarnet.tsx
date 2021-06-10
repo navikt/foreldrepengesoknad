@@ -1,13 +1,14 @@
 import { Block, intlUtils, Step } from '@navikt/fp-common';
-import Api from 'app/api/api';
 import actionCreator from 'app/context/action/actionCreator';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import SøknadRoutes from 'app/routes/routes';
-import { onAvbrytSøknad } from 'app/utils/globalUtil';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { useIntl } from 'react-intl';
-import { useHistory } from 'react-router';
+import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import useSetCurrentRoute from 'app/utils/hooks/useSetCurrentRoute';
+import useSøknad from 'app/utils/hooks/useSøknad';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import AdopsjonAnnetBarn from './components/AdopsjonAnnetBarn';
 import AdopsjonEktefellesBarn from './components/AdopsjonEktefellesBarn';
@@ -22,36 +23,22 @@ interface Props {}
 
 const OmBarnet: React.FunctionComponent<Props> = () => {
     const intl = useIntl();
-    const history = useHistory();
-    const { state, dispatch } = useForeldrepengesøknadContext();
-    const hasSubmitted = useRef(false);
-    const { søkersituasjon } = state.søknad;
-    const { arbeidsforhold } = state.søkerinfo;
+    const { søkersituasjon, barn } = useSøknad();
+    const { arbeidsforhold } = useSøkerinfo();
 
-    useEffect(() => {
-        if (hasSubmitted.current === true) {
-            Api.storeAppState(state);
-            history.push(SøknadRoutes.ANNEN_FORELDER);
-        } else {
-            Api.storeAppState(state);
-        }
-    }, [state]);
+    useSetCurrentRoute(SøknadRoutes.OM_BARNET);
 
-    useEffect(() => {
-        dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.OM_BARNET));
-    }, []);
-
-    const onValidSubmit = (values: Partial<OmBarnetFormData>) => {
+    const onValidSubmitHandler = (values: Partial<OmBarnetFormData>) => {
         const barn = mapOmBarnetFormDataToState(values);
-
-        dispatch(actionCreator.setOmBarnet(barn));
-
-        hasSubmitted.current = true;
+        return [actionCreator.setOmBarnet(barn)];
     };
+
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.ANNEN_FORELDER);
+    const onAvbrytSøknad = useAvbrytSøknad();
 
     return (
         <OmBarnetFormComponents.FormikWrapper
-            initialValues={getOmBarnetInitialValues(state.søknad.barn)}
+            initialValues={getOmBarnetInitialValues(barn)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({
@@ -68,7 +55,7 @@ const OmBarnet: React.FunctionComponent<Props> = () => {
                         activeStepId="omBarnet"
                         pageTitle={intlUtils(intl, 'søknad.omBarnet')}
                         stepTitle={intlUtils(intl, 'søknad.omBarnet')}
-                        onCancel={() => onAvbrytSøknad(dispatch, history)}
+                        onCancel={onAvbrytSøknad}
                         onContinueLater={() => null}
                         steps={stepConfig}
                         kompakt={true}
