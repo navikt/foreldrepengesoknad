@@ -7,8 +7,8 @@ const cache = createIntlCache();
 const getIntlMock = () => {
     return createIntl(
         {
-            locale: 'nb-NO',
-            defaultLocale: 'nb-NO',
+            locale: 'no',
+            defaultLocale: 'no',
             messages,
         },
         cache
