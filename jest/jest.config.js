@@ -8,6 +8,7 @@ module.exports = {
         '^common/(.*)': '<rootDir>/src/common/$1',
         '^app/(.*)': '<rootDir>/src/app/$1',
         '^shared/(.*)': '<rootDir>/src/shared/$1',
+        '^utils-test/(.*)': '<rootDir>/src/utils-test/$1',
     },
     moduleFileExtensions: ['js', 'json', 'jsx', 'node', 'ts', 'tsx'],
     globals: {

@@ -21,7 +21,8 @@
         "typeRoots": ["./node_modules/@types", "./src/@types"],
         "paths": {
             "common/*": ["./common/*"],
-            "shared/*": ["./shared/*"]
+            "shared/*": ["./shared/*"],
+            "utils-test/*": ["./utils-test/*"]
         }
     },
     "awesomeTypescriptLoaderOptions": {

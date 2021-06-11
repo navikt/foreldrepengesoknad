@@ -5,7 +5,6 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import getMessage from 'common/util/i18nUtils';
 import { BostedUtland, isValidBostedUtland } from './types';
 import { Block, intlUtils, validateRequiredField } from '@navikt/fp-common';
-import { getFieldErrorRenderer } from 'app/utils/validationUtil';
 import { dateRangeValidation } from 'app/utils/dateUtils';
 
 export interface BostedUtlandFormLabels {
@@ -72,7 +71,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
             onSubmit={onFormikSubmit}
             renderForm={({ values }) => {
                 return (
-                    <Form.Form onCancel={onCancel} fieldErrorHandler={getFieldErrorRenderer()}>
+                    <Form.Form onCancel={onCancel}>
                         <Systemtittel tag="h1">
                             <FormattedMessage id={'utenlandsopphold.leggTilUtenlandsopphold.tittel'} />
                         </Systemtittel>
