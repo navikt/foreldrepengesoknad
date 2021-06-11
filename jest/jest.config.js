@@ -18,7 +18,7 @@ module.exports = {
     },
     rootDir: '../',
     coverageReporters: ['text-summary'],
-    modulePathIgnorePatterns: ['akseptansetest', '<rootDir>/old/', '<rootDir>/src/common/'],
+    modulePathIgnorePatterns: ['akseptansetest', '<rootDir>/old/', '<rootDir>/src/common/', '<rootDir>/build/'],
     preset: 'ts-jest/presets/js-with-babel',
     testMatch: null,
 };
