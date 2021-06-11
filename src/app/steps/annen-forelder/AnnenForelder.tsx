@@ -55,11 +55,9 @@ const AnnenForelder = () => {
             };
 
             return [
-                actionCreator.setAnnenForelder({
-                    forelder: mapAnnenForelderFormToState(values),
-                    søker: newSøker,
-                    barn: newBarn,
-                }),
+                actionCreator.setAnnenForelder(mapAnnenForelderFormToState(values)),
+                actionCreator.setSøker(newSøker),
+                actionCreator.setOmBarnet(newBarn),
             ];
         },
         [søker, barn]

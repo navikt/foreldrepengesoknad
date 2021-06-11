@@ -79,18 +79,12 @@ const applyStoredState = (payload: ForeldrepengesøknadContextState): ApplyStore
     payload,
 });
 
-interface SetAnnenForelderPayload {
-    forelder: AnnenForelder;
-    barn: Barn;
-    søker: Søker;
-}
-
 interface SetAnnenForelder {
     type: ForeldrepengesøknadContextActionKeys.SET_ANNENFORELDER;
-    payload: SetAnnenForelderPayload;
+    payload: AnnenForelder;
 }
 
-const setAnnenForelder = (payload: SetAnnenForelderPayload): SetAnnenForelder => ({
+const setAnnenForelder = (payload: AnnenForelder): SetAnnenForelder => ({
     type: ForeldrepengesøknadContextActionKeys.SET_ANNENFORELDER,
     payload,
 });

@@ -103,15 +103,6 @@ const getEksisterendeSakMedFnr = (annenPartFnr: string) => {
 //     });
 // }
 
-function getStoredAppState() {
-    const { data, error } = useRequest<ForeldrepengesøknadContextState>('/storage', storageParser);
-
-    return {
-        storageData: data,
-        storageError: error,
-    };
-}
-
 function useStoredAppState() {
     const { data, error } = useRequest<ForeldrepengesøknadContextState>('/storage', storageParser);
 
@@ -149,7 +140,6 @@ const Api = {
     getSaker,
     // getUttakskontoer,
     // sendSøknad,
-    getStoredAppState,
     storeAppState,
     deleteStoredAppState,
     // sendStorageKvittering,

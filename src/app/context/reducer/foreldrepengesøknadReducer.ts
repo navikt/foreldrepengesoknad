@@ -37,17 +37,7 @@ const foreldrepengesøknadReducer = (
                 ...state,
                 søknad: {
                     ...state.søknad,
-                    annenForelder: {
-                        ...action.payload.forelder,
-                    },
-                    barn: {
-                        ...state.søknad.barn,
-                        ...action.payload.barn,
-                    },
-                    søker: {
-                        ...state.søknad.søker,
-                        ...action.payload.søker,
-                    },
+                    annenForelder: action.payload,
                 },
             };
         case ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD:
