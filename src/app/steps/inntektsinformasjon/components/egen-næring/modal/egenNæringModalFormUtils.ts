@@ -27,11 +27,6 @@ export const initialEgenNæringModalValues: EgenNæringModalFormData = {
     [EgenNæringModalFormField.navnRegnskapsfører]: '',
     [EgenNæringModalFormField.telefonRegnskapsfører]: '',
     [EgenNæringModalFormField.regnskapsførerNærVennEllerFamilie]: YesOrNo.UNANSWERED,
-    [EgenNæringModalFormField.harRevisor]: YesOrNo.UNANSWERED,
-    [EgenNæringModalFormField.navnRevisor]: '',
-    [EgenNæringModalFormField.telefonRevisor]: '',
-    [EgenNæringModalFormField.revisorNærVennEllerFamilie]: YesOrNo.UNANSWERED,
-    [EgenNæringModalFormField.revisorOpplysningerFullmakt]: YesOrNo.UNANSWERED,
 };
 
 export const cleanupEgenNæringForm = (
@@ -92,21 +87,6 @@ export const cleanupEgenNæringForm = (
         )
             ? values.regnskapsførerNærVennEllerFamilie
             : initialEgenNæringModalValues.regnskapsførerNærVennEllerFamilie,
-        harRevisor: visibility.isVisible(EgenNæringModalFormField.harRevisor)
-            ? values.harRevisor
-            : initialEgenNæringModalValues.harRevisor,
-        navnRevisor: visibility.isVisible(EgenNæringModalFormField.navnRevisor)
-            ? values.navnRevisor
-            : initialEgenNæringModalValues.navnRevisor,
-        telefonRevisor: visibility.isVisible(EgenNæringModalFormField.telefonRevisor)
-            ? values.telefonRevisor
-            : initialEgenNæringModalValues.telefonRevisor,
-        revisorNærVennEllerFamilie: visibility.isVisible(EgenNæringModalFormField.revisorNærVennEllerFamilie)
-            ? values.revisorNærVennEllerFamilie
-            : initialEgenNæringModalValues.revisorNærVennEllerFamilie,
-        revisorOpplysningerFullmakt: visibility.isVisible(EgenNæringModalFormField.revisorOpplysningerFullmakt)
-            ? values.revisorOpplysningerFullmakt
-            : initialEgenNæringModalValues.revisorOpplysningerFullmakt,
     };
 };
 
@@ -148,19 +128,11 @@ export const getInitialEgenNæringModalValues = (næring: Næring | undefined): 
         regnskapsførerNærVennEllerFamilie: convertBooleanOrUndefinedToYesOrNo(
             næring.regnskapsfører ? næring.regnskapsfører.erNærVennEllerFamilie : undefined
         ),
-        harRevisor: convertBooleanOrUndefinedToYesOrNo(næring.harRevisor),
-        navnRevisor: næring.revisor ? næring.revisor.navn : '',
-        telefonRevisor: næring.revisor ? næring.revisor.telefonnummer : '',
-        revisorNærVennEllerFamilie: convertBooleanOrUndefinedToYesOrNo(
-            næring.revisor ? næring.revisor.erNærVennEllerFamilie : undefined
-        ),
-        revisorOpplysningerFullmakt: convertBooleanOrUndefinedToYesOrNo(næring.kanInnhenteOpplysningerFraRevisor),
     };
 };
 
 export const mapEgenNæringModalFormValuesToState = (values: Partial<EgenNæringModalFormData>): Næring => {
     let endringAvNæringsinntektInformasjon: EndringAvNæringsinntektInformasjon | undefined = undefined;
-    let revisor: Næringsrelasjon | undefined = undefined;
     let regnskapsfører: Næringsrelasjon | undefined = undefined;
 
     if (values.hattVarigEndringAvNæringsinntektSiste4Kalenderår === YesOrNo.YES) {
@@ -176,14 +148,6 @@ export const mapEgenNæringModalFormValuesToState = (values: Partial<EgenNæring
             navn: values.navnRegnskapsfører!,
             telefonnummer: values.telefonRegnskapsfører!,
             erNærVennEllerFamilie: convertYesOrNoOrUndefinedToBoolean(values.regnskapsførerNærVennEllerFamilie)!,
-        };
-    }
-
-    if (values.harRevisor === YesOrNo.YES) {
-        revisor = {
-            navn: values.navnRevisor!,
-            telefonnummer: values.telefonRevisor!,
-            erNærVennEllerFamilie: convertYesOrNoOrUndefinedToBoolean(values.revisorNærVennEllerFamilie)!,
         };
     }
 
@@ -209,10 +173,6 @@ export const mapEgenNæringModalFormValuesToState = (values: Partial<EgenNæring
         endringAvNæringsinntektInformasjon: endringAvNæringsinntektInformasjon,
         harRegnskapsfører: convertYesOrNoOrUndefinedToBoolean(values.harRegnskapsfører)!,
         regnskapsfører: regnskapsfører,
-        harRevisor: convertYesOrNoOrUndefinedToBoolean(values.harRevisor) || false,
-        revisor: revisor,
-        kanInnhenteOpplysningerFraRevisor:
-            revisor !== undefined ? convertYesOrNoOrUndefinedToBoolean(values.revisorOpplysningerFullmakt) : undefined,
     };
 };
 

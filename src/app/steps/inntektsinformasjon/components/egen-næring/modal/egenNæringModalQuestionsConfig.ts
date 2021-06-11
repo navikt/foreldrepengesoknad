@@ -116,31 +116,6 @@ const EgenNæringModalFormConfig: QuestionConfig<EgenNæringModalFormData, EgenN
         isAnswered: ({ regnskapsførerNærVennEllerFamilie }) => regnskapsførerNærVennEllerFamilie !== YesOrNo.UNANSWERED,
         visibilityFilter: ({ telefonRegnskapsfører }) => hasValue(telefonRegnskapsfører),
     },
-    [EgenNæringModalFormField.harRevisor]: {
-        isIncluded: ({ harRegnskapsfører }) => harRegnskapsfører === YesOrNo.NO,
-        isAnswered: ({ harRevisor }) => harRevisor !== YesOrNo.UNANSWERED,
-        visibilityFilter: ({ harRegnskapsfører }) => harRegnskapsfører === YesOrNo.NO,
-    },
-    [EgenNæringModalFormField.navnRevisor]: {
-        isIncluded: ({ harRegnskapsfører }) => harRegnskapsfører === YesOrNo.NO,
-        isAnswered: ({ navnRevisor }) => hasValue(navnRevisor),
-        visibilityFilter: ({ harRevisor }) => harRevisor === YesOrNo.YES,
-    },
-    [EgenNæringModalFormField.telefonRevisor]: {
-        isIncluded: ({ harRegnskapsfører }) => harRegnskapsfører === YesOrNo.NO,
-        isAnswered: ({ telefonRevisor }) => hasValue(telefonRevisor),
-        visibilityFilter: ({ navnRevisor }) => hasValue(navnRevisor),
-    },
-    [EgenNæringModalFormField.revisorNærVennEllerFamilie]: {
-        isIncluded: ({ harRegnskapsfører }) => harRegnskapsfører === YesOrNo.NO,
-        isAnswered: ({ revisorNærVennEllerFamilie }) => revisorNærVennEllerFamilie !== YesOrNo.UNANSWERED,
-        visibilityFilter: ({ telefonRevisor }) => hasValue(telefonRevisor),
-    },
-    [EgenNæringModalFormField.revisorOpplysningerFullmakt]: {
-        isIncluded: ({ harRegnskapsfører }) => harRegnskapsfører === YesOrNo.NO,
-        isAnswered: ({ revisorOpplysningerFullmakt }) => revisorOpplysningerFullmakt !== YesOrNo.UNANSWERED,
-        visibilityFilter: ({ revisorNærVennEllerFamilie }) => revisorNærVennEllerFamilie !== YesOrNo.UNANSWERED,
-    },
 };
 
 const egenNæringModalQuestionsConfig = Questions<EgenNæringModalFormData, EgenNæringModalFormField>(

@@ -1,33 +1,42 @@
 import React, { FunctionComponent } from 'react';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { EgenNæringModalFormComponents, EgenNæringModalFormField } from '../egenNæringModalFormConfig';
-import { Block } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederNormal from 'app/assets/VeilederNormal';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Normaltekst } from 'nav-frontend-typografi';
+import { validateNumber } from '../validation/egenNæringValidation';
 
 interface Props {
     visibility: QuestionVisibility<EgenNæringModalFormField, undefined>;
 }
 
 const Regnskapsfører: FunctionComponent<Props> = ({ visibility }) => {
+    const intl = useIntl();
+
     return (
         <>
             <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.harRegnskapsfører)}>
                 <EgenNæringModalFormComponents.YesOrNoQuestion
                     name={EgenNæringModalFormField.harRegnskapsfører}
-                    legend="Har du regnskapsfører?"
+                    legend={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.harRegnskapsfører')}
                 />
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.navnRegnskapsfører)}>
                 <EgenNæringModalFormComponents.Input
                     name={EgenNæringModalFormField.navnRegnskapsfører}
-                    label="Oppgi navnet til regnskapsfører"
+                    label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.regnskapsførerNavn')}
                 />
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.telefonRegnskapsfører)}>
-                <EgenNæringModalFormComponents.Input
+                <EgenNæringModalFormComponents.NumberInput
                     name={EgenNæringModalFormField.telefonRegnskapsfører}
-                    label="Oppgi telefonnummeret til regnskapsfører"
+                    label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.regnskapsførerTlf')}
+                    validate={validateNumber(
+                        intl,
+                        'valideringsfeil.inntektsinformasjon.regnskapsførerTelefonnummer.ugyldigFormat'
+                    )}
                 />
             </Block>
             <Block
@@ -36,7 +45,7 @@ const Regnskapsfører: FunctionComponent<Props> = ({ visibility }) => {
             >
                 <EgenNæringModalFormComponents.YesOrNoQuestion
                     name={EgenNæringModalFormField.regnskapsførerNærVennEllerFamilie}
-                    legend="Er dere nære venner eller i familie?"
+                    legend={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.regnskapsførerNærVennEllerFamilie')}
                 />
             </Block>
             <Block
@@ -44,8 +53,9 @@ const Regnskapsfører: FunctionComponent<Props> = ({ visibility }) => {
                 visible={visibility.isVisible(EgenNæringModalFormField.regnskapsførerNærVennEllerFamilie)}
             >
                 <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                    Vi henter inn opplysninger om virksomheten og inntekten din fra offentlige registre. Vi tar kontakt
-                    med deg hvis vi trenger flere opplysninger.
+                    <Normaltekst>
+                        <FormattedMessage id="inntektsinformasjon.egenNæringModal.regnskapsførerVeileder" />
+                    </Normaltekst>
                 </Veilederpanel>
             </Block>
         </>

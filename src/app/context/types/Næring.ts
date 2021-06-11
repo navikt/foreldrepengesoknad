@@ -22,9 +22,6 @@ export interface Næring {
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjon;
     harRegnskapsfører: boolean;
     regnskapsfører?: Næringsrelasjon;
-    harRevisor: boolean;
-    revisor?: Næringsrelasjon;
-    kanInnhenteOpplysningerFraRevisor?: boolean;
 }
 
 export interface NæringInnsending

@@ -17,10 +17,18 @@ import { Næring, Næringstype } from 'app/context/types/Næring';
 import egenNæringModalQuestionsConfig from './egenNæringModalQuestionsConfig';
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import Regnskapsfører from './components/Regnskapsfører';
-import Revisor from './components/Revisor';
 import { Hovedknapp } from 'nav-frontend-knapper';
 
 import './egenNæringModal.less';
+import {
+    validateEgenNæringFom,
+    validateEgenNæringTom,
+    validateEgenNæringForklaringTilEndring,
+    validateEgenNæringEndringAvInntektsDato,
+    validateEgenNæringYrkesAktivDatoDato,
+    validateNumber,
+} from './validation/egenNæringValidation';
+import dayjs from 'dayjs';
 
 interface Props {
     isOpen: boolean;
@@ -147,6 +155,8 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
+                                    validate={validateEgenNæringFom(intl, formValues.tom)}
+                                    maxDate={dayjs().toDate()}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.pågående)}>
@@ -170,13 +180,16 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
+                                    validate={validateEgenNæringTom(intl, formValues.fom)}
+                                    maxDate={dayjs().toDate()}
+                                    minDate={dayjs(formValues.fom).toDate()}
                                 />
                             </Block>
                             <Block
                                 padBottom="l"
                                 visible={visibility.isVisible(EgenNæringModalFormField.næringsresultat)}
                             >
-                                <EgenNæringModalFormComponents.Input
+                                <EgenNæringModalFormComponents.NumberInput
                                     name={EgenNæringModalFormField.næringsresultat}
                                     label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.næringsinntekt')}
                                     description={
@@ -191,6 +204,10 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                             </Normaltekst>
                                         </UtvidetInformasjon>
                                     }
+                                    validate={validateNumber(
+                                        intl,
+                                        'valideringsfeil.inntektsinformasjon.næringsinntekt.ugyldigFormat'
+                                    )}
                                 />
                             </Block>
                             <Block
@@ -231,6 +248,8 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
+                                    validate={validateEgenNæringYrkesAktivDatoDato(intl)}
+                                    maxDate={dayjs().toDate()}
                                 />
                             </Block>
                             <Block
@@ -260,15 +279,21 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
+                                    validate={validateEgenNæringEndringAvInntektsDato(intl)}
+                                    maxDate={dayjs().toDate()}
                                 />
                             </Block>
                             <Block
                                 padBottom="l"
                                 visible={visibility.isVisible(EgenNæringModalFormField.inntektEtterEndring)}
                             >
-                                <EgenNæringModalFormComponents.Input
+                                <EgenNæringModalFormComponents.NumberInput
                                     name={EgenNæringModalFormField.inntektEtterEndring}
                                     label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.inntektEtterEndring')}
+                                    validate={validateNumber(
+                                        intl,
+                                        'valideringsfeil.inntektsinformasjon.varigEndringAvInntekt.ugyldigFormat'
+                                    )}
                                 />
                             </Block>
                             <Block
@@ -282,10 +307,10 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                         'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektForklaring'
                                     )}
                                     maxLength={1000}
+                                    validate={validateEgenNæringForklaringTilEndring(intl)}
                                 />
                             </Block>
                             <Regnskapsfører visibility={visibility} />
-                            <Revisor visibility={visibility} />
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
                                 <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
                             </Block>
