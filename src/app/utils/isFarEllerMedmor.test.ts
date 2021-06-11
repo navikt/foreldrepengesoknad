@@ -1,6 +1,6 @@
 import isFarEllerMedmor from './isFarEllerMedmor';
 
-describe('<isFarEllerMedmor>', () => {
+describe('isFarEllerMedmor', () => {
     it('skal returnere true når rolle er far', () => {
         expect(isFarEllerMedmor('far')).toBe(true);
     });

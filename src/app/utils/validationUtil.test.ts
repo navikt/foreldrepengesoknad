@@ -1,11 +1,11 @@
 import { validateFødselsnummer } from './validationUtil';
 import getIntlMock from 'utils-test/intl-test-helper';
 
-describe('<validationUtil>', () => {
+describe('validationUtil', () => {
     const intl = getIntlMock();
 
     it('skal ikke gi feilmelding når søker oppgir gyldige fnr for seg og annen part', () => {
-        const søkerFnr = '05030676639';
+        const søkerFnr = '21091981146';
         const andrePartFnr = '08088620241';
 
         const resultat = validateFødselsnummer(intl, søkerFnr)(andrePartFnr);
@@ -33,7 +33,7 @@ describe('<validationUtil>', () => {
 
     it('skal gi feilmelding når annen part er under seksten', () => {
         const søkerFnr = '08088620241';
-        const andrePartFnr = '05030676639';
+        const andrePartFnr = '21091981146';
 
         const resultat = validateFødselsnummer(intl, søkerFnr)(andrePartFnr);
 

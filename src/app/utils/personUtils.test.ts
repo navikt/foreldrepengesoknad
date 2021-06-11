@@ -1,6 +1,6 @@
 import { formaterNavn } from './personUtils';
 
-describe('<personUtils>', () => {
+describe('personUtils', () => {
     it('skal formatere navn med mellomnavn', () => {
         const verdi = formaterNavn('Espen', 'Utvikler', 'Senior');
         expect(verdi).toBe('Espen Senior Utvikler');

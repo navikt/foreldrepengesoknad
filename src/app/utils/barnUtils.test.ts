@@ -1,7 +1,7 @@
 import { getFamiliehendelsedato } from './barnUtils';
 import Barn, { BarnType } from 'app/context/types/Barn';
 
-describe('<barnUtils>', () => {
+describe('barnUtils', () => {
     it('skal returnere fødselsdato når barn er født', () => {
         const barn = {
             type: BarnType.FØDT,

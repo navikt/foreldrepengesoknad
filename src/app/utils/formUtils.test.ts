@@ -1,7 +1,7 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from './formUtils';
 
-describe('<formUtils>', () => {
+describe('formUtils', () => {
     it('skal konvertere boolsk true verdi til enum YES', () => {
         const verdi = convertBooleanOrUndefinedToYesOrNo(true);
         expect(verdi).toBe(YesOrNo.YES);

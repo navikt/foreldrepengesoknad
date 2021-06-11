@@ -1,8 +1,6 @@
 import dayjs from 'dayjs';
 const isValidFødselsnummer = require('is-valid-fodselsnummer');
 
-const MAKS_FNR_LENGTH = 30;
-
 type FødselsnummerValidationResult = false | 'F' | 'D';
 export const isFødselsnummerFormatValid = (fnr: string): FødselsnummerValidationResult => {
     try {
@@ -10,10 +8,6 @@ export const isFødselsnummerFormatValid = (fnr: string): FødselsnummerValidati
     } catch (e) {
         return false;
     }
-};
-
-export const isUtenlandskFødselsnummerValid = (fnr: string): boolean => {
-    return fnr !== undefined && fnr !== '' && fnr.length <= MAKS_FNR_LENGTH;
 };
 
 export const isSixteenOrOlder = (fnr: string, isFødselsnummerValid: FødselsnummerValidationResult): boolean => {

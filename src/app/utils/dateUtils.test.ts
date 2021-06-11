@@ -2,7 +2,7 @@ import { getDateFromDateString, dateRangeValidation, isDateABeforeDateB, isDateI
 
 import getIntlMock from 'utils-test/intl-test-helper';
 
-describe('<dateUtils>', () => {
+describe('dateUtils', () => {
     const intl = getIntlMock();
 
     it('skal konvertere string til Date', () => {
