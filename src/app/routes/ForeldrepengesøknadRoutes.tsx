@@ -69,7 +69,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
                     <Route path={SøknadRoutes.OPPSUMMERING}>
                         <Oppsummering />
                     </Route>
-                    <Route>
+                    <Route path={SøknadRoutes.SØKNAD_SENDT}>
                         <SøknadSendt />
                     </Route>
                 </>

@@ -23,10 +23,9 @@ const useOnValidSubmit = <T>(
 
     const setSubmitAndHandleSubmit = (values: T) => {
         const actions = submitHandler(values);
-        Promise.all([
-            dispatch(actionCreator.updateCurrentRoute(nextRoute)),
-            ...actions.map((a) => dispatch(a)),
-        ]).then(() => setSubmitted(true));
+        const dispatchRouteChange =
+            nextRoute === SøknadRoutes.SØKNAD_SENDT ? undefined : dispatch(actionCreator.updateCurrentRoute(nextRoute));
+        Promise.all([dispatchRouteChange, ...actions.map((a) => dispatch(a))]).then(() => setSubmitted(true));
     };
 
     return setSubmitAndHandleSubmit;
