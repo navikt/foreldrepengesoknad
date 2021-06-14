@@ -1,4 +1,27 @@
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import '@testing-library/jest-dom';
+import 'regenerator-runtime/runtime';
 
-Enzyme.configure({ adapter: new Adapter() });
+(window as any).appSettings = {
+    REST_API_URL: '',
+};
+window.scrollTo = () => ({});
+
+// jest.mock('react-intl', () => {
+//     const reactIntl = jest.requireActual('react-intl');
+//     const messages = jest.requireActual('../src/app/intl/nb_NO.json');
+//     const cache = reactIntl.createIntlCache();
+//     const intl = new reactIntl.createIntl(
+//         {
+//             locale: 'no',
+//             messages,
+//         },
+//         cache
+//     );
+
+//     return {
+//         ...reactIntl,
+//         useIntl: () => {
+//             return intl;
+//         },
+//     };
+// });

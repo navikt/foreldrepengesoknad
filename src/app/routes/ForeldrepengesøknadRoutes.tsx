@@ -17,7 +17,7 @@ interface Props {
     fornavn: string;
     locale: Locale;
     kjønn: Kjønn;
-    onChangeLocale: any;
+    onChangeLocale: (locale: Locale) => void;
     currentRoute: SøknadRoutes;
 }
 

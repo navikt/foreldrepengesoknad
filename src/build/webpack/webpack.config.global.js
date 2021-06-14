@@ -8,7 +8,7 @@ const gitRevisionPlugin = new GitRevisionPlugin();
 
 const webpackConfig = {
     entry: {
-        bundle: ['babel-polyfill', `${__dirname}/../../app/bootstrap.tsx`],
+        bundle: [`${__dirname}/../../app/bootstrap.tsx`],
     },
     output: {
         path: path.resolve(__dirname, './../../../dist'),
