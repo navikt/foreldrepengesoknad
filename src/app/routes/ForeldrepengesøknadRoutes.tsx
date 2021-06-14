@@ -11,6 +11,7 @@ import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import Uttaksplan from 'app/steps/uttaksplan/Uttaksplan';
 import React, { FunctionComponent, useEffect } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
+import SøknadSendt from '../pages/søknadSendt/SøknadSendt';
 import SøknadRoutes from './routes';
 
 interface Props {
@@ -67,6 +68,9 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
                     </Route>
                     <Route path={SøknadRoutes.OPPSUMMERING}>
                         <Oppsummering />
+                    </Route>
+                    <Route>
+                        <SøknadSendt />
                     </Route>
                 </>
             )}

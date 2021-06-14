@@ -64,6 +64,10 @@ router.get('/rest/storage/kvittering/foreldrepenger', (req, res) => {
     res.send(MockStorage.getStorageKvittering());
 });
 
+router.post('/rest/storage/kvittering/foreldrepenger', (req, res) => {
+    res.send(MockStorage.getStorageKvittering());
+});
+
 router.post('/rest/soknad', (req, res) => {
     return res.send(MockStorage.getSoknadSendt());
 });

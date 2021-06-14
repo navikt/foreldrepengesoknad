@@ -1,8 +1,11 @@
 // import axios from 'axios';
 // import Environment from 'app/Environment';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { Kvittering } from 'app/types/Kvittering';
+import { StorageKvittering } from 'app/types/StorageKvittering';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { useRequest } from 'app/utils/hooks/useRequest';
+import { AxiosResponse } from 'axios';
 import getAxiosInstance from './apiInterceptor';
 import { storageParser } from './storageParser';
 
@@ -58,6 +61,34 @@ const getEksisterendeSakMedFnr = (annenPartFnr: string) => {
     });
 };
 
+const useStoredAppState = () => {
+    const { data, error } = useRequest<ForeldrepengesøknadContextState>('/storage', storageParser);
+
+    return {
+        storageData: data,
+        storageError: error,
+    };
+};
+
+const storeAppState = (state: ForeldrepengesøknadContextState) => {
+    const { søknad, version, currentRoute } = state;
+    return getAxiosInstance('123').post('/storage', { søknad, version, currentRoute }, { withCredentials: true });
+};
+
+const deleteStoredAppState = () => {
+    return getAxiosInstance('123').delete('/storage', { withCredentials: true });
+};
+
+const sendStorageKvittering = (
+    storageKvittering: StorageKvittering,
+    fnr: string
+): Promise<AxiosResponse<Kvittering>> => {
+    return getAxiosInstance(fnr).post('/storage/kvittering/foreldrepenger', storageKvittering, {
+        withCredentials: true,
+        timeout: 15 * 1000,
+    });
+};
+
 // function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
 //     const {
 //         antallBarn,
@@ -103,24 +134,6 @@ const getEksisterendeSakMedFnr = (annenPartFnr: string) => {
 //     });
 // }
 
-function useStoredAppState() {
-    const { data, error } = useRequest<ForeldrepengesøknadContextState>('/storage', storageParser);
-
-    return {
-        storageData: data,
-        storageError: error,
-    };
-}
-
-function storeAppState(state: ForeldrepengesøknadContextState) {
-    const { søknad, version, currentRoute } = state;
-    return getAxiosInstance('123').post('/storage', { søknad, version, currentRoute }, { withCredentials: true });
-}
-
-function deleteStoredAppState() {
-    return getAxiosInstance('123').delete('/storage', { withCredentials: true });
-}
-
 // function sendStorageKvittering(storageKvittering: StorageKvittering) {
 //     return getAxiosInstance('123').post('/storage/kvittering/foreldrepenger', storageKvittering, {
 //         withCredentials: true,
@@ -142,7 +155,7 @@ const Api = {
     // sendSøknad,
     storeAppState,
     deleteStoredAppState,
-    // sendStorageKvittering,
+    sendStorageKvittering,
     // getStorageKvittering,
     getEksisterendeSak,
     getEksisterendeSakMedFnr,
