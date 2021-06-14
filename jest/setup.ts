@@ -3,6 +3,8 @@ import 'regenerator-runtime/runtime';
 
 (window as any).appSettings = {
     REST_API_URL: '',
+    FEATURE_VIS_FEILSIDE: 'off',
+    FEATURE_VIS_ALERTSTRIPE: 'on',
 };
 window.scrollTo = () => ({});
 
