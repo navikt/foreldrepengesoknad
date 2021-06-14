@@ -157,19 +157,4 @@ const SøknadSendt = () => {
     );
 };
 
-// const mapStateToProps = (state: any) => {
-//     const førsteBehandlingsfrist = dayjs(Periodene(state.søknad.uttaksplan).getFørsteUttaksdag()).subtract(4, 'weeks');
-//     const førsteMuligeBehandlingsfrist = dayjs(new Date()).isSameOrAfter(førsteBehandlingsfrist)
-//         ? dayjs(new Date())
-//         : førsteBehandlingsfrist;
-
-//     return {
-//         søkerinfo: state.api.søkerinfo,
-//         kvittering: state.api.kvittering,
-//         erEndringssøknad: state.søknad.erEndringssøknad,
-//         missingAttachments: selectMissingAttachments(state),
-//         behandlingsFrist: førsteMuligeBehandlingsfrist.format('dddd Do MMM YYYY'),
-//     };
-// };
-
 export default SøknadSendt;
