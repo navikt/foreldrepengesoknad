@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Api from './api/api';
 import Foreldrepengesøknad from './Foreldrepengesøknad';
 import { SøkerinfoDTO } from './types/SøkerinfoDTO';
@@ -22,15 +22,13 @@ describe('<Foreldrepengesøknad>', () => {
             storageError: null,
         }));
 
-        act(() => {
-            render(
-                <ForeldrepengesøknadContextProvider>
-                    <IntlProvider locale="nb">
-                        <Foreldrepengesøknad locale="nb" onChangeLocale={() => ''} />
-                    </IntlProvider>
-                </ForeldrepengesøknadContextProvider>
-            );
-        });
+        render(
+            <ForeldrepengesøknadContextProvider>
+                <IntlProvider locale="nb">
+                    <Foreldrepengesøknad locale="nb" onChangeLocale={() => ''} />
+                </IntlProvider>
+            </ForeldrepengesøknadContextProvider>
+        );
 
         expect(screen.queryByText('Venter...')).toBeInTheDocument();
     });
@@ -56,15 +54,13 @@ describe('<Foreldrepengesøknad>', () => {
         jest.spyOn(Api, 'useSøkerinfo').mockImplementation(() => søkerinfoData);
         jest.spyOn(Api, 'useStoredAppState').mockImplementation(() => storageDAta);
 
-        act(() => {
-            render(
-                <ForeldrepengesøknadContextProvider>
-                    <IntlProvider locale="nb">
-                        <Foreldrepengesøknad locale="nb" onChangeLocale={() => ''} />
-                    </IntlProvider>
-                </ForeldrepengesøknadContextProvider>
-            );
-        });
+        render(
+            <ForeldrepengesøknadContextProvider>
+                <IntlProvider locale="nb">
+                    <Foreldrepengesøknad locale="nb" onChangeLocale={() => ''} />
+                </IntlProvider>
+            </ForeldrepengesøknadContextProvider>
+        );
 
         expect(screen.queryByText('Hei, Olga!')).toBeInTheDocument();
         expect(screen.queryByText('Jeg vil hjelpe deg med å fylle ut søknaden.')).toBeInTheDocument();

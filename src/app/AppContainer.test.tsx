@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Api from './api/api';
 import AppContainer from './AppContainer';
 
@@ -18,9 +18,7 @@ describe('<AppContainer>', () => {
             storageError: null,
         }));
 
-        act(() => {
-            render(<AppContainer />);
-        });
+        render(<AppContainer />);
 
         expect(screen.queryByText('Venter...')).toBeInTheDocument();
     });
