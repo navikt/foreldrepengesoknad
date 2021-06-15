@@ -31,7 +31,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         if (søkerinfoData) {
             dispatch(actionCreator.setSøkerinfo(mapSøkerinfoDTOToSøkerinfo(søkerinfoData)));
         }
-    }, [storageData, søkerinfoData]);
+    }, [dispatch, storageData, søkerinfoData]);
 
     if (!state.søkerinfo || !storageData) {
         return renderSpinner();
