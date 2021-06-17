@@ -3,17 +3,15 @@ import Modal from 'nav-frontend-modal';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
-
-import BEMHelper from 'common/util/bem';
-import { shouldChangeBrowser } from 'common/util/browserUtils';
-import { AdvarselIkon, intlUtils } from '@navikt/fp-common';
+import { AdvarselIkon, bemUtils, intlUtils } from '@navikt/fp-common';
+import { shouldChangeBrowser } from 'app/utils/browserUtils';
 
 import './byttBrowserModal.less';
 
 const ByttBrowserModal = () => {
     const [isOpen, toggleIsOpen] = React.useState(shouldChangeBrowser());
     const intl = useIntl();
-    const cls = BEMHelper('bytt-browser-modal');
+    const cls = bemUtils('bytt-browser-modal');
     return (
         <Modal
             className={cls.block}

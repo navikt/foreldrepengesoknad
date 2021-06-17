@@ -21,6 +21,10 @@ describe('<Foreldrepengesøknad>', () => {
             storageData: undefined,
             storageError: null,
         }));
+        jest.spyOn(Api, 'useGetSaker').mockImplementationOnce(() => ({
+            sakerData: undefined,
+            sakerError: null,
+        }));
 
         render(
             <ForeldrepengesøknadContextProvider>
@@ -47,12 +51,12 @@ describe('<Foreldrepengesøknad>', () => {
             } as SøkerinfoDTO,
             søkerinfoError: null,
         };
-        const storageDAta = {
+        const storageData = {
             storageData: {} as ForeldrepengesøknadContextState,
             storageError: null,
         };
         jest.spyOn(Api, 'useSøkerinfo').mockImplementation(() => søkerinfoData);
-        jest.spyOn(Api, 'useStoredAppState').mockImplementation(() => storageDAta);
+        jest.spyOn(Api, 'useStoredAppState').mockImplementation(() => storageData);
 
         render(
             <ForeldrepengesøknadContextProvider>

@@ -2,7 +2,6 @@ import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import getMessage from 'common/util/i18nUtils';
 import { BostedUtland, isValidBostedUtland } from './types';
 import { Block, intlUtils, validateRequiredField } from '@navikt/fp-common';
 import { dateRangeValidation } from 'app/utils/dateUtils';
@@ -77,10 +76,10 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                         </Systemtittel>
                         <Block>
                             <Form.DateIntervalPicker
-                                legend={getMessage(intl, 'utenlandsopphold.leggTilUtenlandsopphold.tidsrom')}
+                                legend={intlUtils(intl, 'utenlandsopphold.leggTilUtenlandsopphold.tidsrom')}
                                 fromDatepickerProps={{
                                     name: BostedUtlandFormFields.fom,
-                                    label: getMessage(intl, 'utenlandsopphold.leggTilUtenlandsopphold.fraogmed'),
+                                    label: intlUtils(intl, 'utenlandsopphold.leggTilUtenlandsopphold.fraogmed'),
                                     fullscreenOverlay: true,
                                     placeholder: 'dd.mm.åååå',
                                     minDate,
@@ -97,7 +96,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                 }}
                                 toDatepickerProps={{
                                     name: BostedUtlandFormFields.tom,
-                                    label: getMessage(intl, 'utenlandsopphold.leggTilUtenlandsopphold.tilogmed'),
+                                    label: intlUtils(intl, 'utenlandsopphold.leggTilUtenlandsopphold.tilogmed'),
                                     fullscreenOverlay: true,
                                     placeholder: 'dd.mm.åååå',
                                     minDate: ISOStringToDate(values.fom) || minDate,
@@ -119,11 +118,11 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                 name={BostedUtlandFormFields.landkode}
                                 label={
                                     erFremtidigOpphold
-                                        ? getMessage(
+                                        ? intlUtils(
                                               intl,
                                               'utenlandsopphold.leggTilUtenlandsopphold.spørsmål.hvilketLandSkalDuBoI'
                                           )
-                                        : getMessage(
+                                        : intlUtils(
                                               intl,
                                               'utenlandsopphold.leggTilUtenlandsopphold.spørsmål.hvilketLandHarDuBoddI'
                                           )
