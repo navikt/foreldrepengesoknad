@@ -24,7 +24,9 @@
         "jest-watch": "jest --watch --verbose --config ./jest/jest.config.js",
         "snyk-protect": "snyk protect",
         "prepare": "npm run snyk-protect",
-        "postinstall": "husky install"
+        "postinstall": "husky install",
+        "storybook": "start-storybook -p 9001",
+        "deploy-storybook": "build-storybook -o .static_storybook && storybook-to-ghpages --existing-output-dir=.static_storybook"
     },
     "husky": {
         "hooks": {
@@ -41,6 +43,16 @@
         "@babel/preset-env": "^7.14.5",
         "@babel/preset-react": "^7.14.5",
         "@babel/preset-typescript": "^7.14.5",
+        "@storybook/addon-actions": "^6.3.0-rc.10",
+        "@storybook/addon-docs": "^6.3.0-rc.10",
+        "@storybook/addon-storyshots": "^6.3.0-rc.10",
+        "@storybook/addons": "^6.3.0-rc.10",
+        "@storybook/builder-webpack5": "^6.3.0-rc.10",
+        "@storybook/cli": "^6.3.0-rc.10",
+        "@storybook/manager-webpack5": "^6.3.0-rc.10",
+        "@storybook/react": "^6.3.0-rc.10",
+        "@storybook/storybook-deployer": "^2.8.10",
+        "@storybook/theming": "^6.3.0-rc.10",
         "@testing-library/jest-dom": "^5.14.1",
         "@testing-library/react": "^11.2.7",
         "@testing-library/react-hooks": "^7.0.0",
@@ -67,6 +79,7 @@
         "case-sensitive-paths-webpack-plugin": "^2.4.0",
         "css-loader": "^5.2.6",
         "dotenv": "^10.0.0",
+        "dotenv-webpack": "^7.0.3",
         "eslint": "^7.28.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-import-resolver-webpack": "^0.13.1",
@@ -125,6 +138,7 @@
         "bytes": "^3.1.0",
         "classnames": "^2.3.1",
         "compression": "^1.7.4",
+        "core-js": "^3.14.0",
         "date-holidays": "^3.5.1",
         "dayjs": "^1.10.5",
         "detect-browser": "^5.2.0",
