@@ -11,6 +11,7 @@ import useSøknad from 'app/utils/hooks/useSøknad';
 import { isFødtBarn } from 'app/context/types/Barn';
 import dayjs from 'dayjs';
 import Api from 'app/api/api';
+import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -49,7 +50,7 @@ const UttaksplanInfo = () => {
             steps={stepConfig}
             kompakt={true}
         >
-            <div>Uttaksplaninfo</div>
+            <UttaksplanInfoScenarios />
             <Block textAlignCenter={true}>
                 <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
             </Block>

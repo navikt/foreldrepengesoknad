@@ -15,7 +15,7 @@ export interface Saksperiode {
     flerbarnsdager: boolean;
     gjelderAnnenPart: boolean;
     graderingInnvilget: boolean;
-    morsAktivitetIPerioden?: MorsAktivitet;
+    morsAktivitet?: MorsAktivitet;
     overfoeringAarsak?: OverføringÅrsakType;
     periode: Tidsperiode;
     periodeResultatType: PeriodeResultatType;

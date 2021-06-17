@@ -121,6 +121,7 @@
     "annenForelder.annenForelderRettPåForeldrepenger.veileder.del2": "Du krysser nei dersom {navn} ikke mottar, har mottatt eller skal motta foreldrepenger fra Norge.",
     "annenForelder.annenForelderRettPåForeldrepenger.veileder.del3": "Dette gjelder også dersom mor har mottatt engangsstønad. Er du usikker på om {navn} har foreldrepenger fra Norge må du spørre {navn}.",
     "annenForelder.erAnnenForelderInformert.veileder": "Du må orientere {navn} om søknaden, før du kan gå videre.",
+    "uttaksplaninfo.veileder.informasjonTilAnnenForelder": "Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i {navn} søknad.",
     "utenlandsopphold.infoOmFødselsattest": "Du har opplyst at du skal være i {land} når du har termin {termindato}. Hvis du føder i utlandet må du ettersende fødselsattest til oss slik at vi får registrert fødselsdatoen til barnet. Grunnen til at du må sende inn fødselsattest er at vi ikke får inn opplysninger om fødselen automatisk når du ikke føder i Norge.",
     "utenlandsopphold.knapp.leggTilLand": "Legg til nytt utenlandsopphold",
     "utenlandsopphold.leggTilUtenlandsopphold.fraogmed": "Fra og med",

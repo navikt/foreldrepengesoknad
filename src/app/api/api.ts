@@ -1,6 +1,7 @@
 // import axios from 'axios';
 // import Environment from 'app/Environment';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
 import Sak from 'app/types/Sak';
 import { StorageKvittering } from 'app/types/StorageKvittering';
@@ -55,7 +56,7 @@ const useGetSaker = () => {
 };
 
 const useGetEksisterendeSak = (saksnummer: string) => {
-    const { data, error } = useRequest<any>('/innsyn/uttaksplan', {
+    const { data, error } = useRequest<EksisterendeSak>('/innsyn/uttaksplan', {
         fnr: '123',
         config: { withCredentials: true, params: saksnummer },
     });
@@ -67,7 +68,7 @@ const useGetEksisterendeSak = (saksnummer: string) => {
 };
 
 const useGetEksisterendeSakMedFnr = (søkerFnr: string, annenPartFnr: string | undefined) => {
-    const { data, error } = useRequest<any>('/innsyn/uttaksplanannen', {
+    const { data, error } = useRequest<EksisterendeSak>('/innsyn/uttaksplanannen', {
         fnr: søkerFnr,
         config: { params: { annenPart: annenPartFnr } },
         isSuspended: annenPartFnr ? false : true,

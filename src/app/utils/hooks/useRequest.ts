@@ -29,7 +29,7 @@ export const useRequest = <T>(url: string, options: Options = DEFAULT_OPTIONS) =
                     setError(err);
                 });
         }
-    }, [options.isSuspended]);
+    }, [options.isSuspended, url, axiosInstance]);
 
     return { data, error };
 };
