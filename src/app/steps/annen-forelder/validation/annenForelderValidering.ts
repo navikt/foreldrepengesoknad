@@ -3,25 +3,24 @@ import dayjs from 'dayjs';
 import { isISODateString } from 'nav-datovelger';
 import { IntlShape } from 'react-intl';
 
-export const validateDatoForAleneomsorg = (intl: IntlShape, familiehendelsedato: dayjs.Dayjs) => (
-    datoForAleneomsorg: string
-) => {
-    if (!hasValue(datoForAleneomsorg)) {
-        return intlUtils(intl, 'valideringsfeil.annenForelder.datoForAleneomsorg.duMåOppgi');
-    }
+export const validateDatoForAleneomsorg =
+    (intl: IntlShape, familiehendelsedato: dayjs.Dayjs) => (datoForAleneomsorg: string) => {
+        if (!hasValue(datoForAleneomsorg)) {
+            return intlUtils(intl, 'valideringsfeil.annenForelder.datoForAleneomsorg.duMåOppgi');
+        }
 
-    if (!isISODateString(datoForAleneomsorg)) {
-        return intlUtils(intl, 'valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat');
-    }
+        if (!isISODateString(datoForAleneomsorg)) {
+            return intlUtils(intl, 'valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat');
+        }
 
-    if (dayjs(datoForAleneomsorg).isBefore(familiehendelsedato)) {
-        return intlUtils(intl, 'valideringsfeil.annenForelder.datoForAleneomsorg.førFamiliehendelsedato', {
-            dato: formatDate(familiehendelsedato.toDate()),
-        });
-    }
+        if (dayjs(datoForAleneomsorg).isBefore(familiehendelsedato)) {
+            return intlUtils(intl, 'valideringsfeil.annenForelder.datoForAleneomsorg.førFamiliehendelsedato', {
+                dato: formatDate(familiehendelsedato.toDate()),
+            });
+        }
 
-    return undefined;
-};
+        return undefined;
+    };
 
 export const validateFornavn = (intl: IntlShape, kanIkkeOppgis?: boolean) => (fornavn: string) => {
     if (!kanIkkeOppgis && !hasValue(fornavn)) {

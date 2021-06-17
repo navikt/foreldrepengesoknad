@@ -35,12 +35,8 @@ const mapBostedUtlandToUtenlandsopphold = (bostedUtland: BostedUtland[]): Utenla
 export const mapUtenlandsoppholdFormDataToState = (
     formValues: Partial<UtenlandsoppholdFormData>
 ): InformasjonOmUtenlandsopphold => {
-    const {
-        harBoddINorgeSiste12Mnd,
-        skalBoINorgeNeste12Mnd,
-        utenlandsoppholdNeste12Mnd,
-        utenlandsoppholdSiste12Mnd,
-    } = formValues;
+    const { harBoddINorgeSiste12Mnd, skalBoINorgeNeste12Mnd, utenlandsoppholdNeste12Mnd, utenlandsoppholdSiste12Mnd } =
+        formValues;
 
     return {
         iNorgeSiste12Mnd: convertYesOrNoOrUndefinedToBoolean(harBoddINorgeSiste12Mnd)!,

@@ -44,32 +44,31 @@ export const validatePågåendeOppdrag = (intl: IntlShape) => (pågående: YesOr
     return undefined;
 };
 
-export const validateOppdragTom = (intl: IntlShape, pågående: YesOrNo, fom: string, oppstartsdato: string) => (
-    tom: string
-) => {
-    if (pågående === YesOrNo.YES) {
+export const validateOppdragTom =
+    (intl: IntlShape, pågående: YesOrNo, fom: string, oppstartsdato: string) => (tom: string) => {
+        if (pågående === YesOrNo.YES) {
+            return undefined;
+        }
+
+        if (!hasValue(tom)) {
+            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
+        }
+
+        if (!isISODateString(tom)) {
+            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
+        }
+
+        if (isDateInTheFuture(tom)) {
+            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
+        }
+
+        if (isDateABeforeDateB(tom, oppstartsdato)) {
+            return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.tom.førOppstartsdato');
+        }
+
+        if (isDateABeforeDateB(tom, fom)) {
+            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.etterFraDato');
+        }
+
         return undefined;
-    }
-
-    if (!hasValue(tom)) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
-    }
-
-    if (!isISODateString(tom)) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
-    }
-
-    if (isDateInTheFuture(tom)) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
-    }
-
-    if (isDateABeforeDateB(tom, oppstartsdato)) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.tom.førOppstartsdato');
-    }
-
-    if (isDateABeforeDateB(tom, fom)) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.etterFraDato');
-    }
-
-    return undefined;
-};
+    };

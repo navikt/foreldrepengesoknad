@@ -6,53 +6,59 @@ import { erGyldigNorskOrgnummer } from 'app/utils/numberUtils';
 import { isISODateString } from 'nav-datovelger';
 import { IntlShape } from 'react-intl';
 
-export const validateEgenNæringFom = (intl: IntlShape, tom: string) => (fom: string): SkjemaelementFeil => {
-    if (!hasValue(fom)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd');
-    }
+export const validateEgenNæringFom =
+    (intl: IntlShape, tom: string) =>
+    (fom: string): SkjemaelementFeil => {
+        if (!hasValue(fom)) {
+            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd');
+        }
 
-    if (!isISODateString(fom)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
-    }
+        if (!isISODateString(fom)) {
+            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
+        }
 
-    if (isDateInTheFuture(fom)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
-    }
+        if (isDateInTheFuture(fom)) {
+            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
+        }
 
-    if (isDateABeforeDateB(tom, fom)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
-    }
+        if (isDateABeforeDateB(tom, fom)) {
+            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
+        }
 
-    return undefined;
-};
+        return undefined;
+    };
 
-export const validateEgenNæringTom = (intl: IntlShape, fom: string) => (tom: string): SkjemaelementFeil => {
-    if (!hasValue(tom)) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
-    }
+export const validateEgenNæringTom =
+    (intl: IntlShape, fom: string) =>
+    (tom: string): SkjemaelementFeil => {
+        if (!hasValue(tom)) {
+            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
+        }
 
-    if (!isISODateString(tom)) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
-    }
+        if (!isISODateString(tom)) {
+            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
+        }
 
-    if (isDateInTheFuture(tom)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
-    }
+        if (isDateInTheFuture(tom)) {
+            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
+        }
 
-    if (isDateABeforeDateB(tom, fom)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
-    }
+        if (isDateABeforeDateB(tom, fom)) {
+            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
+        }
 
-    return undefined;
-};
+        return undefined;
+    };
 
-export const validateEgenNæringOrgnr = (intl: IntlShape) => (orgnr: string): SkjemaelementFeil => {
-    if (!erGyldigNorskOrgnummer(orgnr)) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.orgnr.ugyldigFormat');
-    }
+export const validateEgenNæringOrgnr =
+    (intl: IntlShape) =>
+    (orgnr: string): SkjemaelementFeil => {
+        if (!erGyldigNorskOrgnummer(orgnr)) {
+            return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.orgnr.ugyldigFormat');
+        }
 
-    return undefined;
-};
+        return undefined;
+    };
 
 export const validateEgenNæringForklaringTilEndring = (intl: IntlShape) => (forklaring: string) => {
     if (forklaring.length < 25) {
