@@ -1,6 +1,6 @@
 {
     "plugins": ["@babel/plugin-proposal-object-rest-spread"],
-    "presets": ["@babel/env", "@babel/react"],
+    "presets": ["@babel/preset-typescript", "@babel/preset-env", "@babel/react"],
     "env": {
         "test": {
             "plugins": ["@babel/plugin-transform-modules-commonjs"]

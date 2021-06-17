@@ -1,6 +1,6 @@
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 
-export const enum InntektsinformasjonFormField {
+export enum InntektsinformasjonFormField {
     hattInntektSomFrilans = 'hattInntektSomFrilans',
     hattInntektSomNæringsdrivende = 'hattInntektSomNæringsdrivende',
     hattAndreInntekter = 'hattAndreInntekter',

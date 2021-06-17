@@ -2,7 +2,7 @@ import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import { Attachment } from 'app/types/Attachment';
 
-export const enum AndreInntekterFormField {
+export enum AndreInntekterFormField {
     type = 'type',
     navnPåArbeidsgiver = 'navnPåArbeidsgiver',
     land = 'land',

@@ -1,7 +1,7 @@
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Næringstype } from 'app/context/types/Næring';
 
-export const enum EgenNæringModalFormField {
+export enum EgenNæringModalFormField {
     typer = 'typer',
     navnPåNæringen = 'navnPåNæringen',
     registrertINorge = 'registrertINorge',

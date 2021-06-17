@@ -1,20 +1,20 @@
 import * as React from 'react';
-import * as classnames from 'classnames';
+import classnames from 'classnames';
 
 import { useIntl } from 'react-intl';
 
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import Lenke from 'nav-frontend-lenker';
 import { bemUtils, intlUtils, SlettKnapp, VedleggIkon } from '@navikt/fp-common';
-import { Attachment } from 'app/types/Attachment';
+import { Attachment as AttachmentType } from 'app/types/Attachment';
 import { bytesString } from 'app/utils/globalUtil';
 
 import './attachment.less';
 
 interface OwnProps {
-    attachment: Attachment;
+    attachment: AttachmentType;
     showFileSize?: boolean;
-    onDelete?: (file: Attachment) => void;
+    onDelete?: (file: AttachmentType) => void;
 }
 
 type Props = OwnProps;

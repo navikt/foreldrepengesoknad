@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const GitRevisionPlugin = require('git-revision-webpack-plugin');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
 const gitRevisionPlugin = new GitRevisionPlugin();
 
 const webpackConfig = {
@@ -27,18 +27,7 @@ const webpackConfig = {
     module: {
         rules: [
             {
-                test: /\.(ts|tsx)$/,
-                include: [
-                    path.resolve(__dirname, './../../app'),
-                    path.resolve(__dirname, './../../common'),
-                    path.resolve(__dirname, './../../storage'),
-                    path.resolve(__dirname, './../../shared'),
-                ],
-                loader: require.resolve('awesome-typescript-loader'),
-            },
-
-            {
-                test: /\.js$/,
+                test: /\.(ts|tsx|js)$/,
                 use: [{ loader: 'babel-loader' }],
                 exclude: /node_modules/,
             },
