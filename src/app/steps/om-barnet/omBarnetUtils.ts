@@ -1,4 +1,4 @@
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import Barn, {
     BarnType,
     isAdoptertAnnetBarn,
@@ -6,10 +6,13 @@ import Barn, {
     isFødtBarn,
     isUfødtBarn,
 } from 'app/context/types/Barn';
+import { RegistrertBarn } from 'app/types/Person';
+import { velgEldsteBarn } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import dayjs from 'dayjs';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 
-export const initialOmBarnetValues: OmBarnetFormData = {
+const getInitValues = (): Readonly<OmBarnetFormData> => ({
     [OmBarnetFormField.erBarnetFødt]: YesOrNo.UNANSWERED,
     [OmBarnetFormField.adopsjonAvEktefellesBarn]: YesOrNo.UNANSWERED,
     [OmBarnetFormField.antallBarn]: '',
@@ -21,9 +24,25 @@ export const initialOmBarnetValues: OmBarnetFormData = {
     [OmBarnetFormField.terminbekreftelsedato]: '',
     [OmBarnetFormField.adoptertIUtlandet]: YesOrNo.UNANSWERED,
     [OmBarnetFormField.ankomstdato]: '',
-};
+    [OmBarnetFormField.gjelderAnnetBarn]: false,
+    [OmBarnetFormField.valgteBarn]: [],
+});
 
-export const mapOmBarnetFormDataToState = (values: Partial<OmBarnetFormData>): Barn => {
+export const mapOmBarnetFormDataToState = (
+    values: Partial<OmBarnetFormData>,
+    registrerteBarn: RegistrertBarn[]
+): Barn => {
+    if (!values.gjelderAnnetBarn && values.valgteBarn && values.valgteBarn.length > 0) {
+        const eldsteBarn = velgEldsteBarn(registrerteBarn, values.valgteBarn);
+
+        return {
+            type: BarnType.FØDT,
+            fødselsdatoer: [dateToISOString(eldsteBarn.fødselsdato)!],
+            antallBarn: values.valgteBarn.length.toString(),
+            termindato: values.termindato,
+        };
+    }
+
     if (values.erBarnetFødt === YesOrNo.YES) {
         return {
             type: BarnType.FØDT,
@@ -64,9 +83,27 @@ export const mapOmBarnetFormDataToState = (values: Partial<OmBarnetFormData>): B
     };
 };
 
-export const getOmBarnetInitialValues = (barn: Barn): OmBarnetFormData => {
+export const getOmBarnetInitialValues = (barn: Barn, registrerteBarn: RegistrertBarn[]): OmBarnetFormData => {
+    const initialOmBarnetValues = getInitValues();
+
     if (!barn) {
         return initialOmBarnetValues;
+    }
+
+    if (registrerteBarn.length > 0 && isFødtBarn(barn)) {
+        const registrertBarn = registrerteBarn.find((regBarn) =>
+            dayjs(regBarn.fødselsdato).isSame(barn.fødselsdatoer[0])
+        );
+
+        if (registrertBarn) {
+            return {
+                ...initialOmBarnetValues,
+                fødselsdatoer: barn.fødselsdatoer,
+                termindato: barn.termindato || '',
+                antallBarn: barn.antallBarn,
+                valgteBarn: [registrertBarn.fnr],
+            };
+        }
     }
 
     if (isFødtBarn(barn)) {

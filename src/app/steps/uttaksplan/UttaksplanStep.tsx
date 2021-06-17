@@ -7,7 +7,7 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 
-const Uttaksplan = () => {
+const UttaksplanStep = () => {
     const intl = useIntl();
 
     const onValidSubmitHandler = () => [];
@@ -34,4 +34,4 @@ const Uttaksplan = () => {
     );
 };
 
-export default Uttaksplan;
+export default UttaksplanStep;

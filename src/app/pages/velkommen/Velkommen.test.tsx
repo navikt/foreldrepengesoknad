@@ -53,6 +53,7 @@ describe('<Velkommen>', () => {
             currentRoute: SøknadRoutes.VELKOMMEN,
             søkerinfo: {} as Søkerinfo,
             søknad: {} as Søknad,
+            saker: [],
         };
         const dispatchMock = jest.fn();
         jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({

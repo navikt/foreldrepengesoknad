@@ -7,13 +7,19 @@ import ForeldrepengesøknadRoutes from './ForeldrepengesøknadRoutes';
 import { Søknad } from 'app/context/types/Søknad';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import IntlProvider from '../intl/IntlProvider';
+import Person from 'app/types/Person';
 
 describe('<ForeldrepengesøknadRoutes>', () => {
     const state = {
         version: 1,
         currentRoute: SøknadRoutes.VELKOMMEN,
-        søkerinfo: {} as Søkerinfo,
+        søkerinfo: {
+            arbeidsforhold: [],
+            person: {} as Person,
+            registrerteBarn: [],
+        } as Søkerinfo,
         søknad: {} as Søknad,
+        saker: [],
     };
 
     it('skal vise velkommen-side når denne ruten er valgt', () => {
@@ -51,6 +57,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                         rolle: 'mor',
                     },
                 } as Søknad,
+                saker: [],
             },
             dispatch: () => jest.fn(),
         }));

@@ -62,6 +62,8 @@
     "velkommen.dinePersonopplysninger.behandling.html": "NAV hentar inn og mottar opplysningar om deg når du sender inn ein søknad. Det er nødvendig for at du skal kunne få rett teneste og rette ytingar. Du har valt å søkje om foreldrepengar. Det er ei yting frå folketrygda som du kan få dersom du fyller vilkåra. Vilkåra står på <a>nav.no/foreldrepenger</a>.",
     "velkommen.dinePersonopplysninger.sectionheading": "Slik behandlar NAV personopplysningane dine",
     "omBarnet.erBarnetFødt": "Er barnet født?",
+    "omBarnet.barnRegistrert": "Barn registrert på deg:",
+    "omBarnet.gjelderAnnetBarn": "Søknaden min gjeld eit anna barn",
     "omBarnet.adopsjonGjelder": "Gjelder søknaden din stebarnsadopsjon?",
     "omBarnet.adopsjonsdato.stebarn": "Oppgi datoen for stebarnsadopsjon",
     "omBarnet.adopsjonsdato.annetBarn": "Når overtar du omsorgen?",

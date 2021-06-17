@@ -1,21 +1,35 @@
 import { useState, useEffect } from 'react';
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosRequestConfig } from 'axios';
 import getAxiosInstance from 'app/api/apiInterceptor';
 
-export const useRequest = <T>(url: string, responseTransformer?: any, fnr?: string) => {
+type Options = {
+    config?: AxiosRequestConfig;
+    fnr?: string;
+    isSuspended?: boolean;
+};
+
+const DEFAULT_OPTIONS: Options = {
+    config: {},
+    isSuspended: false,
+};
+
+export const useRequest = <T>(url: string, options: Options = DEFAULT_OPTIONS) => {
     const [data, setData] = useState<T>();
     const [error, setError] = useState<AxiosError<any> | null>(null);
-    const axiosInstance = fnr ? getAxiosInstance(fnr) : getAxiosInstance();
+    const axiosInstance = options.fnr ? getAxiosInstance(options.fnr) : getAxiosInstance();
 
     useEffect(() => {
-        axiosInstance
-            .get(url, { transformResponse: responseTransformer })
-            .then((res) => {
-                setData(res.data);
-            })
-            .catch((err) => {
-                setError(err);
-            });
-    }, []);
+        if (!options.isSuspended) {
+            axiosInstance
+                .get(url, options.config)
+                .then((res) => {
+                    setData(res.data);
+                })
+                .catch((err) => {
+                    setError(err);
+                });
+        }
+    }, [options.isSuspended]);
+
     return { data, error };
 };

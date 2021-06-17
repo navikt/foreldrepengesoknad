@@ -1,4 +1,5 @@
 import SøknadRoutes from 'app/routes/routes';
+import Sak from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
 import AnnenForelder from '../types/AnnenForelder';
@@ -19,6 +20,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_SØKER = 'setSøker',
     SET_INFORMASJON_OM_UTENLANDSOPPHOLD = 'setInformasjonOmUtenlandsopphold',
     SET_INFORMASJON_OM_ANDRE_INNTEKTER = 'setInformasjonOmAndreInntekter',
+    SET_SAKER = 'setSaker',
 }
 
 interface SetVelkommen {
@@ -121,6 +123,16 @@ const setInformasjonOmUtenlandsopphold = (
     payload,
 });
 
+interface SetSaker {
+    type: ForeldrepengesøknadContextActionKeys.SET_SAKER;
+    payload: Sak[];
+}
+
+const setSaker = (payload: Sak[]): SetSaker => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_SAKER,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetSøkersituasjon
@@ -131,6 +143,7 @@ export type ForeldrepengesøknadContextAction =
     | SetSøkerinfo
     | SetSøker
     | SetInformasjonOmUtenlandsopphold
+    | SetSaker
     | ApplyStoredState;
 
 export default {
@@ -144,4 +157,5 @@ export default {
     setSøkerinfo,
     setSøker,
     setInformasjonOmUtenlandsopphold,
+    setSaker,
 };

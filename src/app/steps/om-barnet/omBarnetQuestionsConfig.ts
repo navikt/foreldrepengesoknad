@@ -2,6 +2,7 @@ import { hasValue } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { RegistrertBarn } from 'app/types/Person';
 import { Søkerrolle } from 'app/types/Søkerrolle';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import dayjs from 'dayjs';
@@ -11,6 +12,7 @@ export interface OmBarnetQuestionPayload extends OmBarnetFormData {
     situasjon: string;
     rolle: Søkerrolle;
     arbeidsforhold: Arbeidsforhold[];
+    registrerteBarn: RegistrertBarn[];
 }
 
 const includeTermindato = (rolle: Søkerrolle, fødselsdato: string | undefined): boolean => {
@@ -27,7 +29,33 @@ const includeTermindato = (rolle: Søkerrolle, fødselsdato: string | undefined)
     return true;
 };
 
+const skalViseErBarnFødt = (
+    situasjon: string,
+    registrerteBarn: RegistrertBarn[],
+    gjelderAnnetBarn: boolean
+): boolean => {
+    if (situasjon === 'fødsel') {
+        if (registrerteBarn.length > 0) {
+            return gjelderAnnetBarn;
+        }
+
+        return true;
+    }
+
+    return false;
+};
+
 const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormField> = {
+    [OmBarnetFormField.gjelderAnnetBarn]: {
+        isIncluded: ({ registrerteBarn }) => registrerteBarn.length > 0,
+        isAnswered: () => true,
+        visibilityFilter: ({ situasjon }) => situasjon === 'fødsel',
+    },
+    [OmBarnetFormField.valgteBarn]: {
+        isIncluded: ({ registrerteBarn }) => registrerteBarn.length > 0,
+        isAnswered: ({ valgteBarn }) => valgteBarn.length > 0,
+        visibilityFilter: ({ registrerteBarn }) => registrerteBarn.length > 0,
+    },
     [OmBarnetFormField.adopsjonAvEktefellesBarn]: {
         isIncluded: ({ situasjon }) => situasjon === 'adopsjon',
         isAnswered: ({ adopsjonAvEktefellesBarn }) => adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED,
@@ -36,7 +64,8 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
     [OmBarnetFormField.erBarnetFødt]: {
         isIncluded: ({ situasjon }) => situasjon === 'fødsel',
         isAnswered: ({ erBarnetFødt }) => erBarnetFødt !== YesOrNo.UNANSWERED,
-        visibilityFilter: ({ situasjon }) => situasjon === 'fødsel',
+        visibilityFilter: ({ situasjon, registrerteBarn, gjelderAnnetBarn }) =>
+            skalViseErBarnFødt(situasjon, registrerteBarn, gjelderAnnetBarn),
     },
     [OmBarnetFormField.antallBarn]: {
         isIncluded: () => true,
