@@ -17,14 +17,15 @@ import Termin from './components/Termin';
 import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig from './omBarnetQuestionsConfig';
 import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
+import RegistrertBarn from './components/RegistrertBarn';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
     const { søkersituasjon, barn } = useSøknad();
-    const { arbeidsforhold } = useSøkerinfo();
+    const { arbeidsforhold, registrerteBarn } = useSøkerinfo();
 
     const onValidSubmitHandler = (values: Partial<OmBarnetFormData>) => {
-        const barn = mapOmBarnetFormDataToState(values);
+        const barn = mapOmBarnetFormDataToState(values, registrerteBarn);
         return [actionCreator.setOmBarnet(barn)];
     };
 
@@ -33,14 +34,15 @@ const OmBarnet: React.FunctionComponent = () => {
 
     return (
         <OmBarnetFormComponents.FormikWrapper
-            initialValues={getOmBarnetInitialValues(barn)}
+            initialValues={getOmBarnetInitialValues(barn, registrerteBarn)}
             onSubmit={onValidSubmit}
-            renderForm={({ values: formValues }) => {
+            renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({
                     ...formValues,
                     arbeidsforhold,
                     situasjon: søkersituasjon.situasjon,
                     rolle: søkersituasjon.rolle,
+                    registrerteBarn,
                 });
 
                 return (
@@ -56,7 +58,13 @@ const OmBarnet: React.FunctionComponent = () => {
                         kompakt={true}
                     >
                         <OmBarnetFormComponents.Form includeButtons={false}>
-                            <BarnFødtEllerAdoptert søkersituasjon={søkersituasjon} />
+                            <RegistrertBarn
+                                registrerteBarn={registrerteBarn}
+                                visibility={visibility}
+                                formValues={formValues}
+                                setFieldValue={setFieldValue}
+                            />
+                            <BarnFødtEllerAdoptert visibility={visibility} />
                             <AdopsjonAnnetBarn
                                 søkersituasjon={søkersituasjon}
                                 formValues={formValues}

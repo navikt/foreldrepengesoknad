@@ -1,6 +1,13 @@
-import { getDateFromDateString, dateRangeValidation, isDateABeforeDateB, isDateInTheFuture } from './dateUtils';
+import {
+    getDateFromDateString,
+    dateRangeValidation,
+    isDateABeforeDateB,
+    isDateInTheFuture,
+    velgEldsteBarn,
+} from './dateUtils';
 
 import getIntlMock from 'utils-test/intl-test-helper';
+import { RegistrertBarn } from 'app/types/Person';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();
@@ -176,5 +183,31 @@ describe('dateUtils', () => {
     it('skal returnere false når dato er i fortiden', () => {
         const erIFremtiden = isDateInTheFuture('06.05.2020');
         expect(erIFremtiden).toBe(false);
+    });
+
+    it('skal finne det eldste barnet', () => {
+        const eldsteBarn: RegistrertBarn = {
+            etternavn: 'test',
+            fnr: '123123',
+            fornavn: 'test',
+            fødselsdato: new Date('2020-01-01'),
+            kjønn: 'K',
+        };
+
+        const yngsteBarn: RegistrertBarn = {
+            etternavn: 'test',
+            fnr: '234234',
+            fornavn: 'test',
+            fødselsdato: new Date('2021-01-01'),
+            kjønn: 'K',
+        };
+
+        const registrerteBarn = [eldsteBarn, yngsteBarn];
+        const valgteBarn = [eldsteBarn.fnr, yngsteBarn.fnr];
+
+        const result = velgEldsteBarn(registrerteBarn, valgteBarn);
+
+        console.log(result.fnr);
+        expect(result.fnr).toBe(eldsteBarn.fnr);
     });
 });

@@ -12,4 +12,5 @@ export interface Søknad {
     annenForelder: AnnenForelder;
     søker: Søker;
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
+    erEndringssøknad: boolean;
 }

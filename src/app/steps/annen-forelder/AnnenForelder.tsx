@@ -93,6 +93,7 @@ const AnnenForelder = () => {
                         <AnnenForelderFormComponents.Form
                             includeButtons={false}
                             cleanup={(values) => cleanAnnenForelderFormData(values, visibility)}
+                            includeValidationSummary={true}
                         >
                             {skalOppgiPersonalia && (
                                 <OppgiPersonalia

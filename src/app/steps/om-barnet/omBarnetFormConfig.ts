@@ -14,6 +14,8 @@ export enum OmBarnetFormField {
     terminbekreftelse = 'terminbekreftelse',
     terminbekreftelsedato = 'terminbekreftelsedato',
     ankomstdato = 'ankomstdato',
+    gjelderAnnetBarn = 'gjelderAnnetBarn',
+    valgteBarn = 'valgteBarn',
 }
 
 export interface OmBarnetFormData {
@@ -28,6 +30,8 @@ export interface OmBarnetFormData {
     [OmBarnetFormField.terminbekreftelsedato]: string;
     [OmBarnetFormField.adoptertIUtlandet]: YesOrNo;
     [OmBarnetFormField.ankomstdato]: string;
+    [OmBarnetFormField.gjelderAnnetBarn]: boolean;
+    [OmBarnetFormField.valgteBarn]: string[];
 }
 
 export const OmBarnetFormComponents = getTypedFormComponents<OmBarnetFormField, OmBarnetFormData, string>();

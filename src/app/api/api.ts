@@ -2,6 +2,7 @@
 // import Environment from 'app/Environment';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { Kvittering } from 'app/types/Kvittering';
+import Sak from 'app/types/Sak';
 import { StorageKvittering } from 'app/types/StorageKvittering';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { useRequest } from 'app/utils/hooks/useRequest';
@@ -44,25 +45,44 @@ const useSøkerinfo = () => {
     };
 };
 
-const getSaker = () => {
-    return getAxiosInstance('123').get('/innsyn/saker');
+const useGetSaker = () => {
+    const { data, error } = useRequest<Sak[]>('/innsyn/saker', { fnr: '123' });
+
+    return {
+        sakerData: data,
+        sakerError: error,
+    };
 };
 
-const getEksisterendeSak = (saksnummer: string) => {
-    return getAxiosInstance('123').get('/innsyn/uttaksplan', {
-        withCredentials: true,
-        params: { saksnummer },
+const useGetEksisterendeSak = (saksnummer: string) => {
+    const { data, error } = useRequest<any>('/innsyn/uttaksplan', {
+        fnr: '123',
+        config: { withCredentials: true, params: saksnummer },
     });
+
+    return {
+        eksisterendeSakData: data,
+        eksisterendeSakError: error,
+    };
 };
 
-const getEksisterendeSakMedFnr = (annenPartFnr: string) => {
-    return getAxiosInstance('123').get('/innsyn/uttaksplanannen', {
-        params: { annenPart: annenPartFnr },
+const useGetEksisterendeSakMedFnr = (søkerFnr: string, annenPartFnr: string | undefined) => {
+    const { data, error } = useRequest<any>('/innsyn/uttaksplanannen', {
+        fnr: søkerFnr,
+        config: { params: { annenPart: annenPartFnr } },
+        isSuspended: annenPartFnr ? false : true,
     });
+
+    return {
+        eksisterendeSakAnnenPartData: data,
+        eksisterendeSakAnnenPartError: error,
+    };
 };
 
 const useStoredAppState = () => {
-    const { data, error } = useRequest<ForeldrepengesøknadContextState>('/storage', storageParser);
+    const { data, error } = useRequest<ForeldrepengesøknadContextState>('/storage', {
+        config: { transformResponse: storageParser },
+    });
 
     return {
         storageData: data,
@@ -150,17 +170,17 @@ const sendStorageKvittering = (
 
 const Api = {
     // getSøkerinfo,
-    getSaker,
+    useGetSaker,
     // getUttakskontoer,
     // sendSøknad,
     storeAppState,
     deleteStoredAppState,
     sendStorageKvittering,
     // getStorageKvittering,
-    getEksisterendeSak,
-    getEksisterendeSakMedFnr,
+    useGetEksisterendeSakMedFnr,
     useStoredAppState,
     useSøkerinfo,
+    useGetEksisterendeSak,
 };
 
 export default Api;

@@ -1,8 +1,8 @@
 import { erMyndig } from '@navikt/fp-common';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import Person from 'app/types/Person';
+import Person, { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import { Søkerinfo } from 'app/types/Søkerinfo';
-import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold, SøkerinfoDTOSøker } from 'app/types/SøkerinfoDTO';
+import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold, SøkerinfoDTOBarn, SøkerinfoDTOSøker } from 'app/types/SøkerinfoDTO';
 import dayjs from 'dayjs';
 
 const mapArbeidsforholdDTOToArbeidsforhold = (
@@ -37,14 +37,42 @@ const mapSøkerinfoDTOSøkerToPerson = (personDTO: SøkerinfoDTOSøker): Person 
     };
 };
 
+const mapSøkerinfoDTOBarnToRegistrertBarn = (registrerteBarn: SøkerinfoDTOBarn[] | undefined): RegistrertBarn[] => {
+    if (!registrerteBarn) {
+        return [];
+    }
+
+    return registrerteBarn.map((barn) => {
+        const { annenForelder } = barn;
+        const oppgittAnnenForelder: RegistrertAnnenForelder | undefined = annenForelder
+            ? {
+                  etternavn: annenForelder.etternavn,
+                  fnr: annenForelder.fnr,
+                  fornavn: annenForelder.fornavn,
+                  fødselsdato: dayjs(annenForelder.fødselsdato).toDate(),
+              }
+            : undefined;
+
+        return {
+            etternavn: barn.etternavn,
+            fnr: barn.fnr,
+            fornavn: barn.fornavn,
+            fødselsdato: dayjs(barn.fødselsdato).toDate(),
+            kjønn: barn.kjønn,
+            annenForelder: oppgittAnnenForelder,
+        };
+    });
+};
+
 const mapSøkerinfoDTOToSøkerinfo = (søkerinfoDTO: SøkerinfoDTO): Søkerinfo => {
     const arbeidsforhold = mapArbeidsforholdDTOToArbeidsforhold(søkerinfoDTO.søker.arbeidsforhold);
     const person = mapSøkerinfoDTOSøkerToPerson(søkerinfoDTO.søker);
+    const registrerteBarn = mapSøkerinfoDTOBarnToRegistrertBarn(søkerinfoDTO.søker.barn);
 
     return {
         arbeidsforhold,
         person,
-        registrerteBarn: [],
+        registrerteBarn,
     };
 };
 

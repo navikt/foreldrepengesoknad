@@ -22,6 +22,7 @@ const renderSpinner = () => (
 const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const { søkerinfoData } = Api.useSøkerinfo();
     const { storageData } = Api.useStoredAppState();
+    const { sakerData } = Api.useGetSaker();
     const { dispatch, state } = useForeldrepengesøknadContext();
 
     useEffect(() => {
@@ -31,13 +32,15 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         if (søkerinfoData) {
             dispatch(actionCreator.setSøkerinfo(mapSøkerinfoDTOToSøkerinfo(søkerinfoData)));
         }
+
+        if (sakerData) {
+            dispatch(actionCreator.setSaker(sakerData));
+        }
     }, [dispatch, storageData, søkerinfoData]);
 
     if (!state.søkerinfo || !storageData) {
         return renderSpinner();
     }
-
-    console.log(storageData);
 
     return (
         <Router>

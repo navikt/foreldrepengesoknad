@@ -8,7 +8,7 @@ import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import Søkersituasjon from 'app/steps/søkersituasjon/Søkersituasjon';
 import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
 import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
-import Uttaksplan from 'app/steps/uttaksplan/Uttaksplan';
+import UttaksplanStep from 'app/steps/uttaksplan/UttaksplanStep';
 import React, { FunctionComponent, useEffect } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
 import SøknadSendt from '../pages/søknadSendt/SøknadSendt';
@@ -58,7 +58,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
                         <UttaksplanInfo />
                     </Route>
                     <Route path={SøknadRoutes.UTTAKSPLAN}>
-                        <Uttaksplan />
+                        <UttaksplanStep />
                     </Route>
                     <Route path={SøknadRoutes.UTENLANDSOPPHOLD}>
                         <Utenlandsopphold />

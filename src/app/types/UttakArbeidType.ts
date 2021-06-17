@@ -1,0 +1,6 @@
+export enum UttakArbeidType {
+    'ORDINÆRT_ARBEID' = 'ORDINÆRT_ARBEID',
+    'SELVSTENDIG_NÆRINGSDRIVENDE' = 'SELVSTENDIG_NÆRINGSDRIVENDE',
+    'FRILANS' = 'FRILANS',
+    'ANNET' = 'ANNET',
+}

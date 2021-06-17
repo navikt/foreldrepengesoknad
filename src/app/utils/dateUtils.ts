@@ -4,6 +4,8 @@ import isBetween from 'dayjs/plugin/isBetween';
 import { IntlShape } from 'react-intl';
 import { formatDateExtended, hasValue, intlUtils } from '@navikt/fp-common';
 import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
+import { RegistrertBarn } from 'app/types/Person';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 
 dayjs.extend(isBetween);
 
@@ -119,4 +121,12 @@ export const isDateInTheFuture = (date: string): boolean => {
     }
 
     return false;
+};
+
+export const velgEldsteBarn = (registrerteBarn: RegistrertBarn[], valgteBarn: string[]) => {
+    const filteredBarn = registrerteBarn.filter((regBarn) => valgteBarn.includes(regBarn.fnr));
+
+    return filteredBarn.sort((a, b) =>
+        isDateABeforeDateB(dateToISOString(a.fødselsdato)!, dateToISOString(b.fødselsdato)!) ? 1 : -1
+    )[filteredBarn.length - 1];
 };

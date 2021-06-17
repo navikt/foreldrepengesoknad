@@ -1,4 +1,5 @@
 import SøknadRoutes from 'app/routes/routes';
+import Sak from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Søknad } from './types/Søknad';
 
@@ -7,6 +8,10 @@ export interface ForeldrepengesøknadContextState {
     currentRoute: SøknadRoutes;
     søknad: Søknad;
     søkerinfo: Søkerinfo;
+    harEksisterendeSak?: boolean;
+    harAnnenPartEksisterendeSak?: boolean;
+    annenPartEksisterendeSakSaksnummer?: string;
+    saker: Sak[];
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
@@ -36,6 +41,8 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
             tidligereOpphold: [],
             senereOpphold: [],
         },
+        erEndringssøknad: false,
     },
     søkerinfo: undefined!,
+    saker: [],
 };
