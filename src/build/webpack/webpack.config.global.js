@@ -28,8 +28,17 @@ const webpackConfig = {
     module: {
         rules: [
             {
-                test: /\.(ts|tsx|js)$/,
-                use: [{ loader: 'babel-loader' }],
+                test: /\.(ts|tsx)$/,
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            cacheDirectory: true,
+                            presets: [['@babel/preset-env', { targets: { node: '8' } }]],
+                        },
+                    },
+                    'ts-loader',
+                ],
                 exclude: /node_modules/,
             },
             {
