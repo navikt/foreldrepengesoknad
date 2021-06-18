@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import DateHolidays, { Holiday } from 'date-holidays';
 import { Tidsperiode } from 'app/types/Tidsperiode';
 
@@ -17,33 +17,33 @@ export const getOffentligeFridager = (tidsperiode: Tidsperiode): Holiday[] => {
             år++;
         }
     }
-    const start = moment(tidsperiode.fom).subtract(24, 'hours');
-    const slutt = moment(tidsperiode.tom).add(24, 'hours');
+    const start = dayjs(tidsperiode.fom).subtract(24, 'hours');
+    const slutt = dayjs(tidsperiode.tom).add(24, 'hours');
     return days
         .filter((d) => d.type === 'public')
         .map((d) => ({
             ...d,
-            date: moment(d.date).utc(true).toDate(),
+            date: dayjs(d.date).utc(true).toDate().toString(),
         }))
-        .filter((d) => moment(d.date).isAfter(start, 'day') && moment(d.date).isBefore(slutt, 'day'));
+        .filter((d) => dayjs(d.date).isAfter(start, 'day') && dayjs(d.date).isBefore(slutt, 'day'));
 };
 
 export const getOffentligeFridagerIMåned = (måned: Date): Holiday[] => {
     const days: Holiday[] = holidays.getHolidays(måned.getFullYear());
-    const start = moment(måned).startOf('month');
-    const slutt = moment(måned).endOf('month');
+    const start = dayjs(måned).startOf('month');
+    const slutt = dayjs(måned).endOf('month');
     return days
         .filter((d) => d.type === 'public')
-        .filter((d) => moment(d.date).isAfter(start, 'day') && moment(d.date).isBefore(slutt, 'day'));
+        .filter((d) => dayjs(d.date).isAfter(start, 'day') && dayjs(d.date).isBefore(slutt, 'day'));
 };
 
 /* Default - hente ut helligdager i default tidsrom */
 export const fridager = getOffentligeFridager({
-    fom: new Date(moment().subtract(4, 'years').toDate()),
-    tom: new Date(moment().add(4, 'years').toDate()),
+    fom: new Date(dayjs().subtract(4, 'years').toDate()),
+    tom: new Date(dayjs().add(4, 'years').toDate()),
 });
 
 export const erFridag = (dato: Date): string | undefined => {
-    const fridag = fridager.find((fr) => moment(new Date(fr.date)).isSame(dato, 'day'));
+    const fridag = fridager.find((fr) => dayjs(new Date(fr.date)).isSame(dato, 'day'));
     return fridag ? fridag.name : undefined;
 };
