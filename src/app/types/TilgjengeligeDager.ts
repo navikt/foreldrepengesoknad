@@ -1,4 +1,4 @@
-import { TilgjengeligStønadskonto } from './TilgjengeligeStønadskonto';
+import { TilgjengeligStønadskonto } from './TilgjengeligStønadskonto';
 
 export interface TilgjengeligeDager {
     dagerTotalt: number;

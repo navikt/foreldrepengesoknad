@@ -166,3 +166,22 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
 export function formaterStønadskontoParamsDatoer(dato: string | undefined, datoformat?: string): string | undefined {
     return dato !== undefined ? dayjs.utc(dato).format(datoformat || 'dddd D. MMMM YYYY') : undefined;
 }
+
+export function formaterDatoUtenDag(dato: Date): string {
+    return dayjs.utc(dato).format('D. MMMM YYYY');
+}
+
+type DateValue = Date | undefined;
+
+export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boolean => {
+    if (date && otherDate) {
+        return dayjs(date).isSameOrBefore(dayjs(otherDate, 'day'));
+    }
+    return true;
+};
+export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolean => {
+    if (date && otherDate) {
+        return dayjs(date).isSameOrAfter(otherDate, 'day');
+    }
+    return true;
+};

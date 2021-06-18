@@ -136,6 +136,7 @@
     "annenForelder.annenForelderRettPåForeldrepenger.veileder.del3": "Dette gjeld òg dersom mor har fått engangsstønad. Er du usikker på om {navn} har foreldrepenger frå Noreg må du spørja {navn}",
     "annenForelder.erAnnenForelderInformert.veileder": "Du må orientere {navn} om søknaden, før du kan gå videre.",
     "uttaksplaninfo.veileder.informasjonTilAnnenForelder": "Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i {navn} søknad.",
+    "uttaksplaninfo.veileder.informasjonPrematuruker": "Stønadsperioden din er forlenget med {antallprematuruker} uker og {antallprematurdager} dager siden du har født før svangerskapsuke 33. ",
     "utenlandsopphold.infoOmFødselsattest": "Du har opplyst at du skal være i {land} når du har termin {termindato}. Hvis du føder i utlandet må du ettersende fødselsattest til oss slik at vi får registrert fødselsdatoen til barnet. Grunnen til at du må sende inn fødselsattest er at vi ikke får inn opplysninger om fødselen automatisk når du ikke føder i Norge.",
     "utenlandsopphold.knapp.leggTilLand": "Legg til nytt utenlandsopphold",
     "utenlandsopphold.leggTilUtenlandsopphold.fraogmed": "Frå og med",
