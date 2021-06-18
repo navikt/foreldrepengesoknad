@@ -1,8 +1,8 @@
 import * as React from 'react';
-import BEMHelper from 'common/util/bem';
 import { Normaltekst } from 'nav-frontend-typografi';
 
 import './personkort.less';
+import { bemUtils } from '@navikt/fp-common';
 
 interface Props {
     tittel?: string;
@@ -12,9 +12,9 @@ interface Props {
     textValign?: 'top' | 'center' | 'bottom';
 }
 
-const bem = BEMHelper('personkort');
-
 const Personkort: React.FunctionComponent<Props> = ({ tittel, children, ikon, invertert, textValign = 'top' }) => {
+    const bem = bemUtils('personkort');
+
     return (
         <div
             className={bem.classNames(
