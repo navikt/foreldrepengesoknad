@@ -18,6 +18,7 @@ import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengelig
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { Tidsperioden } from '../../../utils/Tidsperioden';
 import { getInitialMorFødselValues } from './morFødselUtils';
+import StartdatoPermisjonMor from './StartdatoPermisjonMor';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -119,6 +120,10 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 />
                             </Veilederpanel>
                         </Block>
+                        <StartdatoPermisjonMor
+                            permisjonStartdato={formValues.permisjonStartdato}
+                            skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin}
+                        />
                     </MorFødselFormComponents.Form>
                 );
             }}
