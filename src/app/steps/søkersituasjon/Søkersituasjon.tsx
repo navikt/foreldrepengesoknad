@@ -17,6 +17,7 @@ import {
 } from './søkersituasjonFormConfig';
 import søkersituasjonQuestionsConfig from './søkersituasjonQuestionsConfig';
 import { mapSøkersituasjonFormDataToState } from './søkersituasjonUtils';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
 interface Props {
     kjønn: Kjønn;
@@ -25,6 +26,7 @@ interface Props {
 const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
     const intl = useIntl();
     const søknad = useSøknad();
+    const søkerinfo = useSøkerinfo();
 
     const onValidSubmitHandler = (values: Partial<SøkersituasjonFormData>) => {
         const søkersituasjon = mapSøkersituasjonFormDataToState(values);
@@ -39,7 +41,10 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
             initialValues={getInitialSøkerSituasjonValues(søknad.søkersituasjon)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
-                const visibility = søkersituasjonQuestionsConfig.getVisbility(formValues);
+                const visibility = søkersituasjonQuestionsConfig.getVisbility({
+                    ...formValues,
+                    søkerKjønn: søkerinfo.person.kjønn,
+                });
                 const allQuestionsAnswered = visibility.areAllQuestionsAnswered();
                 return (
                     <Step
