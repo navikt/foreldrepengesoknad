@@ -207,7 +207,6 @@ describe('dateUtils', () => {
 
         const result = velgEldsteBarn(registrerteBarn, valgteBarn);
 
-        console.log(result.fnr);
         expect(result.fnr).toBe(eldsteBarn.fnr);
     });
 });
