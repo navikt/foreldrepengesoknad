@@ -21,10 +21,6 @@ export const getOffentligeFridager = (tidsperiode: Tidsperiode): Holiday[] => {
     const slutt = dayjs(tidsperiode.tom).add(24, 'hours');
     return days
         .filter((d) => d.type === 'public')
-        .map((d) => ({
-            ...d,
-            date: dayjs(d.date).utc(true).toDate().toString(),
-        }))
         .filter((d) => dayjs(d.date).isAfter(start, 'day') && dayjs(d.date).isBefore(slutt, 'day'));
 };
 
