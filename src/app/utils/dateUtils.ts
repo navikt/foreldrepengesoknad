@@ -1,12 +1,14 @@
 import dayjs from 'dayjs';
 import { isISODateString } from 'nav-datovelger';
 import isBetween from 'dayjs/plugin/isBetween';
+import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
 import { formatDateExtended, hasValue, intlUtils } from '@navikt/fp-common';
 import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
 import { RegistrertBarn } from 'app/types/Person';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 
+dayjs.extend(utc);
 dayjs.extend(isBetween);
 
 export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();
@@ -130,3 +132,37 @@ export const velgEldsteBarn = (registrerteBarn: RegistrertBarn[], valgteBarn: st
         isDateABeforeDateB(dateToISOString(a.fødselsdato)!, dateToISOString(b.fødselsdato)!) ? 1 : -1
     )[filteredBarn.length - 1];
 };
+
+type VarighetFormat = 'full' | 'normal';
+
+export const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: number } => {
+    const uker = Math.floor(dager / 5);
+    return {
+        dager: dager - uker * 5,
+        uker,
+    };
+};
+
+export const getVarighetString = (antallDager: number, intl: IntlShape, format: VarighetFormat = 'full'): string => {
+    const { uker, dager } = getUkerOgDagerFromDager(Math.abs(antallDager));
+    const dagerStr = intl.formatMessage(
+        { id: 'varighet.dager' },
+        {
+            dager,
+        }
+    );
+    if (uker === 0) {
+        return dagerStr;
+    }
+    const ukerStr = intl.formatMessage({ id: 'varighet.uker' }, { uker });
+    if (dager > 0) {
+        return `${ukerStr}${intl.formatMessage({
+            id: `varighet.separator--${format}`,
+        })}${dagerStr}`;
+    }
+    return ukerStr;
+};
+
+export function formaterStønadskontoParamsDatoer(dato: string | undefined, datoformat?: string): string | undefined {
+    return dato !== undefined ? dayjs.utc(dato).format(datoformat || 'dddd D. MMMM YYYY') : undefined;
+}

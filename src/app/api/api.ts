@@ -1,6 +1,5 @@
-// import axios from 'axios';
-// import Environment from 'app/Environment';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
 import Sak from 'app/types/Sak';
@@ -10,35 +9,29 @@ import { useRequest } from 'app/utils/hooks/useRequest';
 import { AxiosResponse } from 'axios';
 import getAxiosInstance from './apiInterceptor';
 import { storageParser } from './storageParser';
+import Environment from 'app/Environment';
+import { formaterStønadskontoParamsDatoer } from 'app/utils/dateUtils';
+import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 
-// export interface GetTilgjengeligeStønadskontoerParams {
-//     antallBarn: number;
-//     morHarRett: boolean;
-//     farHarRett: boolean;
-//     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT | Dekningsgrad.ÅTTI_PROSENT;
-//     termindato?: Date;
-//     fødselsdato?: Date;
-//     omsorgsovertakelsesdato?: Date;
-//     morHarAleneomsorg?: boolean;
-//     farHarAleneomsorg?: boolean;
-//     startdatoUttak: Date;
-// }
+export interface TilgjengeligeStønadskontoerParams {
+    antallBarn: string;
+    morHarRett: boolean;
+    farHarRett: boolean;
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT | Dekningsgrad.ÅTTI_PROSENT;
+    termindato: string | undefined;
+    fødselsdato: string | undefined;
+    omsorgsovertakelsesdato: string | undefined;
+    morHarAleneomsorg: boolean | undefined;
+    farHarAleneomsorg: boolean | undefined;
+    startdatoUttak: string;
+}
 
-// const uttakBaseUrl = Environment.UTTAK_API_URL;
+const uttakBaseUrl = Environment.UTTAK_API_URL;
 // const sendSøknadUrl = '/soknad';
 // const sendEndringssøknadUrl = '/soknad/endre';
 
-// const getSøkerinfo = () => {
-//     const { data, error } = useRequest<SøkerinfoDTO>(getAxiosInstance().get('/sokerinfo'));
-
-//     return {
-//         søkerinfoData: data,
-//         søkerinfoError: error,
-//     };
-// };
-
 const useSøkerinfo = () => {
-    const { data, error } = useRequest<SøkerinfoDTO>('/sokerinfo');
+    const { data, error } = useRequest<SøkerinfoDTO>('/sokerinfo', { config: { withCredentials: true } });
 
     return {
         søkerinfoData: data,
@@ -47,7 +40,7 @@ const useSøkerinfo = () => {
 };
 
 const useGetSaker = () => {
-    const { data, error } = useRequest<Sak[]>('/innsyn/saker', { fnr: '123' });
+    const { data, error } = useRequest<Sak[]>('/innsyn/saker', { fnr: '123', config: { withCredentials: true } });
 
     return {
         sakerData: data,
@@ -70,7 +63,7 @@ const useGetEksisterendeSak = (saksnummer: string) => {
 const useGetEksisterendeSakMedFnr = (søkerFnr: string, annenPartFnr: string | undefined) => {
     const { data, error } = useRequest<EksisterendeSak>('/innsyn/uttaksplanannen', {
         fnr: søkerFnr,
-        config: { params: { annenPart: annenPartFnr } },
+        config: { params: { annenPart: annenPartFnr }, withCredentials: true },
         isSuspended: annenPartFnr ? false : true,
     });
 
@@ -82,7 +75,7 @@ const useGetEksisterendeSakMedFnr = (søkerFnr: string, annenPartFnr: string | u
 
 const useStoredAppState = () => {
     const { data, error } = useRequest<ForeldrepengesøknadContextState>('/storage', {
-        config: { transformResponse: storageParser },
+        config: { transformResponse: storageParser, withCredentials: true },
     });
 
     return {
@@ -110,38 +103,49 @@ const sendStorageKvittering = (
     });
 };
 
-// function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
-//     const {
-//         antallBarn,
-//         farHarRett,
-//         morHarRett,
-//         dekningsgrad,
-//         fødselsdato,
-//         termindato,
-//         omsorgsovertakelsesdato,
-//         morHarAleneomsorg,
-//         farHarAleneomsorg,
-//         startdatoUttak,
-//     } = params;
-//     const fpUttakServiceDateFormat = 'YYYYMMDD';
-//     const urlParams = {
-//         farHarRett,
-//         morHarRett,
-//         morHarAleneomsorg: morHarAleneomsorg || false,
-//         farHarAleneomsorg: farHarAleneomsorg || false,
-//         dekningsgrad,
-//         antallBarn,
-//         fødselsdato: formaterStønadskontoParamsDatoer(fødselsdato, fpUttakServiceDateFormat),
-//         termindato: formaterStønadskontoParamsDatoer(termindato, fpUttakServiceDateFormat),
-//         omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(omsorgsovertakelsesdato, fpUttakServiceDateFormat),
-//         startdatoUttak: formaterDato(startdatoUttak, fpUttakServiceDateFormat),
-//     };
+const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams) => {
+    const {
+        antallBarn,
+        farHarRett,
+        morHarRett,
+        dekningsgrad,
+        fødselsdato,
+        termindato,
+        omsorgsovertakelsesdato,
+        morHarAleneomsorg,
+        farHarAleneomsorg,
+        startdatoUttak,
+    } = params;
 
-//     return axios.get(`${uttakBaseUrl}/konto`, {
-//         timeout: 15 * 1000,
-//         params: urlParams,
-//     });
-// }
+    const fpUttakServiceDateFormat = 'YYYYMMDD';
+
+    const urlParams = {
+        farHarRett,
+        morHarRett,
+        morHarAleneomsorg: morHarAleneomsorg || false,
+        farHarAleneomsorg: farHarAleneomsorg || false,
+        dekningsgrad,
+        antallBarn,
+        fødselsdato: formaterStønadskontoParamsDatoer(fødselsdato, fpUttakServiceDateFormat),
+        termindato: formaterStønadskontoParamsDatoer(termindato, fpUttakServiceDateFormat),
+        omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(omsorgsovertakelsesdato, fpUttakServiceDateFormat),
+        startdatoUttak: formaterStønadskontoParamsDatoer(startdatoUttak, fpUttakServiceDateFormat),
+    };
+
+    const { data, error } = useRequest<TilgjengeligeStønadskontoerDTO>(`${uttakBaseUrl}/konto`, {
+        config: {
+            timeout: 15 * 1000,
+            params: urlParams,
+            withCredentials: false,
+        },
+        isSuspended: false,
+    });
+
+    return {
+        tilgjengeligeStønadskontoerData: data,
+        tilgjengeligeStønadskontoerError: error,
+    };
+};
 
 // function sendSøknad(søknad: SøknadForInnsending | EnkelEndringssøknadForInnsending) {
 //     const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
@@ -170,18 +174,17 @@ const sendStorageKvittering = (
 // }
 
 const Api = {
-    // getSøkerinfo,
     useGetSaker,
-    // getUttakskontoer,
-    // sendSøknad,
+    useGetUttakskontoer,
     storeAppState,
     deleteStoredAppState,
     sendStorageKvittering,
-    // getStorageKvittering,
     useGetEksisterendeSakMedFnr,
     useStoredAppState,
     useSøkerinfo,
     useGetEksisterendeSak,
+    // sendSøknad,
+    // getStorageKvittering,
 };
 
 export default Api;

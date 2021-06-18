@@ -4,14 +4,15 @@
         "baseUrl": "./src",
         "forceConsistentCasingInFileNames": true,
         "jsx": "react",
-		"module": "ESNext",
+        "module": "ESNext",
         "moduleResolution": "node",
         "noImplicitAny": true,
         "noImplicitReturns": false,
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "paths": {
-            "utils-test/*": ["./utils-test/*"]
+            "utils-test/*": ["./utils-test/*"],
+            "uttaksplan/*": ["./uttaksplan/*"]
         },
         "outDir": "build/dist",
         "sourceMap": true,
@@ -21,8 +22,5 @@
         "target": "ESNext",
         "typeRoots": ["./node_modules/@types", "./src/@types"]
     },
-    "include": [
-		"src/app/**/*",
-		"src/@types",
-	],
+    "include": ["src/app/**/*", "src/@types", "src/uttaksplan/types"]
 }

@@ -1,3 +1,4 @@
+import { hasValue } from '@navikt/fp-common';
 import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import Barn, {
     BarnType,
@@ -39,7 +40,7 @@ export const mapOmBarnetFormDataToState = (
             type: BarnType.FØDT,
             fødselsdatoer: [dateToISOString(eldsteBarn.fødselsdato)!],
             antallBarn: values.valgteBarn.length.toString(),
-            termindato: values.termindato,
+            termindato: hasValue(values.termindato) ? values.termindato : undefined,
         };
     }
 

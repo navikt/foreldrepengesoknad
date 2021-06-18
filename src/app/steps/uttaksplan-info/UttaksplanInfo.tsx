@@ -12,6 +12,10 @@ import { isFødtBarn } from 'app/context/types/Barn';
 import dayjs from 'dayjs';
 import Api from 'app/api/api';
 import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
+import getStønadskontoParams from 'app/api/getStønadskontoParams';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import NavFrontendSpinner from 'nav-frontend-spinner';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -20,7 +24,7 @@ const UttaksplanInfo = () => {
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
 
-    const { barn } = søknad;
+    const { barn, søker, annenForelder } = søknad;
     const { registrerteBarn } = søkerinfo;
 
     let registrertBarn = undefined;
@@ -33,11 +37,40 @@ const UttaksplanInfo = () => {
         søkerinfo.person.fnr,
         registrertBarn?.annenForelder?.fnr
     );
-
-    console.log(eksisterendeSakAnnenPartData);
-
+    const { tilgjengeligeStønadskontoerData: stønadskontoer100 } = Api.useGetUttakskontoer(
+        getStønadskontoParams(
+            getFamiliehendelsedato(barn),
+            Dekningsgrad.HUNDRE_PROSENT,
+            '1',
+            false,
+            barn,
+            søker,
+            annenForelder
+        )
+    );
+    const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
+        getStønadskontoParams(
+            getFamiliehendelsedato(barn),
+            Dekningsgrad.ÅTTI_PROSENT,
+            '1',
+            false,
+            barn,
+            søker,
+            annenForelder
+        )
+    );
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
     const onAvbrytSøknad = useAvbrytSøknad();
+
+    if (!stønadskontoer100 || !stønadskontoer80) {
+        return (
+            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+                <NavFrontendSpinner type="XXL" />
+            </div>
+        );
+    }
+
+    console.log(eksisterendeSakAnnenPartData);
 
     return (
         <Step
@@ -50,7 +83,10 @@ const UttaksplanInfo = () => {
             steps={stepConfig}
             kompakt={true}
         >
-            <UttaksplanInfoScenarios />
+            <UttaksplanInfoScenarios
+                tilgjengeligeStønadskontoer100DTO={stønadskontoer100}
+                tilgjengeligeStønadskontoer80DTO={stønadskontoer80}
+            />
             <Block textAlignCenter={true}>
                 <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
             </Block>

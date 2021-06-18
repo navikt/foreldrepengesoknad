@@ -7,7 +7,6 @@ const AxiosInstance = axios.create({ baseURL: apiBaseUrl });
 
 const getAxiosInstance = (fnr?: string) => {
     AxiosInstance.interceptors.request.use((config: AxiosRequestConfig): AxiosRequestConfig => {
-        config.withCredentials = true;
         config.timeout = 60 * 1000;
 
         if (process.env.NODE_ENV !== 'development' && fnr) {

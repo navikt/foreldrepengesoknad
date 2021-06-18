@@ -22,6 +22,7 @@ const webpackConfig = {
             app: path.resolve(__dirname, './../../app'),
             common: path.resolve(__dirname, './../../common'),
             shared: path.resolve(__dirname, './../../shared'),
+            uttaksplan: path.resolve(__dirname, './../../uttaksplan'),
         },
     },
     module: {

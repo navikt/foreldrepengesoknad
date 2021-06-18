@@ -1,12 +1,22 @@
+import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import React, { FunctionComponent } from 'react';
-import FarMedmorFødselFørsteganggsøknadBeggeHarRett from './scenarios/far-medmor-fødsel-førstegangssøknad-begge-har-rett/FarMedmorFødselFørsteganggsøknadBeggeHarRett';
+import FarMedmorFødselFørsteganggsøknadBeggeHarRett from './scenarios/far-medmor-fødsel-begge-har-rett/FarMedmorFødselBeggeHarRett';
 
-interface Props {}
+interface Props {
+    tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
+    tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
+}
 
-const UttaksplanInfoScenarios: FunctionComponent<Props> = () => {
+const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
+    tilgjengeligeStønadskontoer100DTO,
+    tilgjengeligeStønadskontoer80DTO,
+}) => {
     return (
         <>
-            <FarMedmorFødselFørsteganggsøknadBeggeHarRett />
+            <FarMedmorFødselFørsteganggsøknadBeggeHarRett
+                tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+            />
         </>
     );
 };
