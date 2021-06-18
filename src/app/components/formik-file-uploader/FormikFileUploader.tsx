@@ -21,7 +21,6 @@ interface Props {
     label: string;
     attachmentType: AttachmentType;
     skjemanummer: Skjemanummer;
-    validate?: () => string;
     onFileInputClick?: () => void;
 }
 
