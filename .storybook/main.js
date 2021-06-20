@@ -47,8 +47,7 @@ module.exports = {
     config.resolve.alias = {
         ...config.resolve.alias,
         app: path.resolve(__dirname, './../src/app'),
-        common: path.resolve(__dirname, './../src/common'),
-        shared: path.resolve(__dirname, './../src/shared'),
+        uttaksplan: path.resolve(__dirname, './../src/uttaksplan'),
     }
 
     // Return the altered config
