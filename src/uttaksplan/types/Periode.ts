@@ -136,3 +136,15 @@ export type Periode =
     | Overføringsperiode
     | PeriodeHull
     | InfoPeriode;
+
+export type RecursivePartial<T> = { [P in keyof T]?: RecursivePartial<T[P]> };
+
+export function isUttaksperiode(periode: Periode | RecursivePartial<Periode>): periode is Uttaksperiode {
+    return periode.type === Periodetype.Uttak;
+}
+
+export function isForeldrepengerFørFødselUttaksperiode(
+    periode: Periode | RecursivePartial<Periode>
+): periode is ForeldrepengerFørFødselUttaksperiode {
+    return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
+}

@@ -189,3 +189,7 @@ export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolea
     }
     return true;
 };
+
+export function formaterDatoKompakt(dato: Date): string {
+    return formaterDato(dato, 'DD.MM.YYYY');
+}

@@ -143,6 +143,7 @@
     "uttaksplaninfo.spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ikke ha foreldrepenger før termin",
     "uttaksplaninfo.veileder.forTidligStartdato": "Startdatoen av foreldrepengene dine må være innen de 12 første ukene før termin eller fødsel. Den første mulige startdato er {dato}.",
     "uttaksplaninfo.veileder.helgedag": "Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag.",
+    "uttaksplaninfo.veileder.flerbarnsInformasjon": "Dere har {uker} uker med flerbarnsuker som dere kan dele. Disse ukene kan dere ta ut når som helst i foreldrepengeperioden. Dere kan ta de ut samtidig, eller hver for dere. Det er ikke krav til hva {navnMor} gjør når {navnFar} tar ut dager med flerbarnsuker.",
     "uttaksplaninfo.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
     "uttaksplaninfo.informasjon.foreldrepengerFørFødselMindreEnnTreUker": "{varighet} du ikke bruker før termin faller bort",
     "uttaksplaninfo.informasjon.foreldrepengerFørFødselSkalIkkeHa": "Når du ikke starter foreldrepengeperioden 3 uker før termindato mister du rett til foreldrepenger disse dagene.",

@@ -13,12 +13,15 @@ import { getValgtStønadskontoMengde } from 'app/utils/stønadskontoUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { isFødtBarn } from 'app/context/types/Barn';
+import { getFlerbarnsuker } from '../../../utils/uttaksplanHarForMangeFlerbarnsuker';
 import { MorFødselFormComponents, MorFødselFormField } from './morFødselFormConfig';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { Tidsperioden } from '../../../utils/Tidsperioden';
 import { getInitialMorFødselValues } from './morFødselUtils';
 import StartdatoPermisjonMor from './StartdatoPermisjonMor';
+import { formaterNavn } from 'app/utils/personUtils';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -43,6 +46,9 @@ const MorFødsel: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
 }) => {
     const { annenForelder, søkersituasjon, barn } = useSøknad();
+    const {
+        person: { fornavn, mellomnavn, etternavn },
+    } = useSøkerinfo();
     const erMor = !isFarEllerMedmor(søkersituasjon.rolle);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
 
@@ -61,6 +67,10 @@ const MorFødsel: FunctionComponent<Props> = ({
         : undefined;
 
     const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
+    const navnMor = formaterNavn(fornavn, etternavn, mellomnavn);
+    const navnFarMedmor = isAnnenForelderOppgitt(annenForelder)
+        ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn)
+        : '';
     const familiehendelsesdato = getFamiliehendelsedato(barn);
 
     return (
@@ -75,6 +85,8 @@ const MorFødsel: FunctionComponent<Props> = ({
                     familiehendelsesdato,
                     erMorUfør
                 );
+                const harSvartPåStartdato =
+                    formValues.permisjonStartdato !== undefined || formValues.skalIkkeHaUttakFørTermin === true;
                 return (
                     <MorFødselFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                         <Block padBottom="l">
@@ -120,10 +132,24 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 />
                             </Veilederpanel>
                         </Block>
-                        <StartdatoPermisjonMor
-                            permisjonStartdato={formValues.permisjonStartdato}
-                            skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin}
-                        />
+                        {formValues.dekningsgrad !== '' && (
+                            <StartdatoPermisjonMor
+                                permisjonStartdato={formValues.permisjonStartdato}
+                                skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin}
+                            />
+                        )}
+                        <Block padBottom="l" visible={parseInt(barn.antallBarn, 10) > 1 && harSvartPåStartdato}>
+                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                                <FormattedMessage
+                                    id="uttaksplaninfo.veileder.flerbarnsInformasjon"
+                                    values={{
+                                        uker: getFlerbarnsuker(formValues.dekningsgrad!, parseInt(barn.antallBarn, 10)),
+                                        navnFar: navnFarMedmor,
+                                        navnMor: navnMor,
+                                    }}
+                                />
+                            </Veilederpanel>
+                        </Block>
                     </MorFødselFormComponents.Form>
                 );
             }}
