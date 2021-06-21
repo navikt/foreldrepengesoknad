@@ -26,16 +26,12 @@ interface Props {
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 
-const getAttachmentFromFile = (file: File, attachmentType: AttachmentType, skjemanummer: Skjemanummer): Attachment => {
-    return mapFileToAttachment(file, attachmentType, skjemanummer);
-};
-
 const getPendingAttachmentFromFile = (
     file: File,
     attachmentType: AttachmentType,
     skjemanummer: Skjemanummer
 ): Attachment => {
-    const newAttachment = getAttachmentFromFile(file, attachmentType, skjemanummer);
+    const newAttachment = mapFileToAttachment(file, attachmentType, skjemanummer);
     newAttachment.pending = true;
     return newAttachment;
 };

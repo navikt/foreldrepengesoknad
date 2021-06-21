@@ -1,4 +1,4 @@
-import { Tidsperiode } from '@navikt/fp-common';
+import { TidsperiodeDate } from '@navikt/fp-common';
 import { Attachment } from 'app/types/Attachment';
 import { MorsAktivitet } from './MorsAktivitet';
 import { OppholdÅrsakType } from './OppholdÅrsakType';
@@ -27,7 +27,7 @@ export enum Arbeidsform {
 export interface PeriodeBase {
     id: string;
     type: Periodetype;
-    tidsperiode: Tidsperiode;
+    tidsperiode: TidsperiodeDate;
     vedlegg?: Attachment[];
 }
 
@@ -82,7 +82,7 @@ export interface Overføringsperiode extends PeriodeBase {
 
 export interface PeriodeHull extends PeriodeBase {
     type: Periodetype.Hull;
-    tidsperiode: Tidsperiode;
+    tidsperiode: TidsperiodeDate;
     årsak?: PeriodeHullÅrsak;
 }
 

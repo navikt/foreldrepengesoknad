@@ -4,7 +4,7 @@ import React, { FunctionComponent } from 'react';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import { getNavnGenitivEierform } from 'app/utils/personUtils';
-import { Block, UtvidetInformasjon } from '@navikt/fp-common';
+import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -18,6 +18,11 @@ import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengelig
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getValgtStønadskontoMengde } from 'app/utils/stønadskontoUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import farMedmorFødselBeggeHarRettQuestionsConfig from './farMedmorFødselBeggeHarRettQuestionsConfig';
+import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
+import dayjs from 'dayjs';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -30,13 +35,16 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
 }) => {
     const intl = useIntl();
     const { annenForelder, søkersituasjon, barn } = useSøknad();
+    const { person } = useSøkerinfo();
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
         ? !!annenForelder.harRettPåForeldrepenger
         : false;
-    const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const navnMor = erFarEllerMedmor && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : person.fornavn;
+    const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
+    const familiehendelsesdatoDate = dayjs(familiehendelsesdato).toDate();
 
     const shouldRender = erFarEllerMedmor && erFødsel && annenForelderHarRett;
 
@@ -56,6 +64,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                     familiehendelsesdato,
                     erMorUfør
                 );
+                const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility(formValues);
 
                 return (
                     <FarMedmorFødselBeggeHarRettFormComponents.Form
@@ -79,11 +88,11 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 name={FarMedmorFødselBeggeHarRettFormField.dekningsgrad}
                                 radios={[
                                     {
-                                        label: '49 uker med 100 prosent foreldrepenger',
+                                        label: intlUtils(intl, 'uttaksplaninfo.49Uker'),
                                         value: Dekningsgrad.HUNDRE_PROSENT,
                                     },
                                     {
-                                        label: '59 uker med 80 prosent foreldrepenger',
+                                        label: intlUtils(intl, 'uttaksplaninfo.59Uker'),
                                         value: Dekningsgrad.ÅTTI_PROSENT,
                                     },
                                 ]}
@@ -104,6 +113,48 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 navnFarMedmor="Ola"
                                 navnMor="Kari"
                                 tilgjengeligeDager={getTilgjengeligeDager(tilgjengeligeStønadskontoer, true, undefined)}
+                            />
+                        </Block>
+                        <Block padBottom="l" visible={erFarEllerMedmor && formValues.dekningsgrad !== ''}>
+                            <Veilederpanel svg={<VeilederNormal transparentBackground={true} />}>
+                                <FormattedMessage
+                                    id="uttaksplaninfo.veileder.farMedmor.infoOmTidsromMellomMorsSisteDagOgFarsFørsteDag"
+                                    values={{ navnMor }}
+                                />
+                            </Veilederpanel>
+                        </Block>
+                        <Block
+                            padBottom="l"
+                            visible={visibility.isVisible(FarMedmorFødselBeggeHarRettFormField.morsSisteDag)}
+                        >
+                            <FarMedmorFødselBeggeHarRettFormComponents.DatePicker
+                                name={FarMedmorFødselBeggeHarRettFormField.morsSisteDag}
+                                label={intlUtils(intl, 'uttaksplaninfo.morSinSisteUttaksdag.label')}
+                                maxDate={ISOStringToDate(
+                                    uttaksplanDatoavgrensninger.morsSisteUttaksdag(familiehendelsesdatoDate).maxDate
+                                )}
+                                minDate={ISOStringToDate(
+                                    uttaksplanDatoavgrensninger.morsSisteUttaksdag(familiehendelsesdatoDate).minDate
+                                )}
+                                showYearSelector={true}
+                            />
+                        </Block>
+                        <Block
+                            padBottom="l"
+                            visible={visibility.isVisible(FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag)}
+                        >
+                            <FarMedmorFødselBeggeHarRettFormComponents.DatePicker
+                                name={FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag}
+                                label={intlUtils(intl, 'uttaksplaninfo.farSinFørsteUttaksdagSpørsmål.label')}
+                                maxDate={ISOStringToDate(
+                                    uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdatoDate)
+                                        .maxDate
+                                )}
+                                minDate={ISOStringToDate(
+                                    uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdatoDate)
+                                        .minDate
+                                )}
+                                showYearSelector={true}
                             />
                         </Block>
                     </FarMedmorFødselBeggeHarRettFormComponents.Form>

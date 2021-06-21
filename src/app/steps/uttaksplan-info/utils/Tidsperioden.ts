@@ -6,7 +6,7 @@ import { formaterDatoUtenDag, dateIsSameOrBefore, dateIsSameOrAfter } from 'app/
 import { Uttaksdagen } from './Uttaksdagen';
 import { TidsperiodeDate } from '@navikt/fp-common';
 
-export const Tidsperioden = (tidsperiode: Partial<TidsperiodeDate>) => ({
+export const Tidsperioden = (tidsperiode: TidsperiodeDate) => ({
     erLik: (tidsperiode2: TidsperiodeDate) => erTidsperioderLike(tidsperiode, tidsperiode2),
     erOmsluttetAv: (tidsperiode2: TidsperiodeDate) => erTidsperiodeOmsluttetAvTidsperiode(tidsperiode, tidsperiode2),
     erUtenfor: (tidsperiode2: TidsperiodeDate) => erTidsperiodeUtenforTidsperiode(tidsperiode, tidsperiode2),
@@ -22,7 +22,7 @@ export const Tidsperioden = (tidsperiode: Partial<TidsperiodeDate>) => ({
     inneholderDato: (dato: Date) => inneholderTidsperiodeDato(tidsperiode, dato),
 });
 
-function inneholderTidsperiodeDato(tidsperiode: Partial<TidsperiodeDate>, dato: Date): boolean {
+function inneholderTidsperiodeDato(tidsperiode: TidsperiodeDate, dato: Date): boolean {
     if (!tidsperiode.fom || !tidsperiode.tom) {
         return false;
     }
@@ -38,7 +38,7 @@ export function isValidTidsperiode(tidsperiode: any): tidsperiode is Tidsperiode
     );
 }
 
-export function resetTidsperiodeTomIfBeforeFom(tidsperiode: Partial<TidsperiodeDate>): Partial<TidsperiodeDate> {
+export function resetTidsperiodeTomIfBeforeFom(tidsperiode: TidsperiodeDate): TidsperiodeDate {
     return {
         fom: tidsperiode.fom,
         tom:
@@ -48,7 +48,7 @@ export function resetTidsperiodeTomIfBeforeFom(tidsperiode: Partial<TidsperiodeD
     };
 }
 
-export function getValidTidsperiode(tidsperiode: Partial<TidsperiodeDate> | undefined): TidsperiodeDate | undefined {
+export function getValidTidsperiode(tidsperiode: TidsperiodeDate | undefined): TidsperiodeDate | undefined {
     if (tidsperiode === undefined) {
         return undefined;
     }
@@ -76,7 +76,7 @@ export function datoErInnenforTidsperiode(dato: Date, tidsperiode: TidsperiodeDa
     return dayjs(dato).isBetween(fom, tom, 'days', '[]');
 }
 
-function getAntallUttaksdagerITidsperiode(tidsperiode: Partial<TidsperiodeDate>): number {
+function getAntallUttaksdagerITidsperiode(tidsperiode: TidsperiodeDate): number {
     if (!isValidTidsperiode(tidsperiode)) {
         return 0;
     }
@@ -92,7 +92,7 @@ function getAntallUttaksdagerITidsperiode(tidsperiode: Partial<TidsperiodeDate>)
     return antall;
 }
 
-function getUttaksdagerSomErFridager(tidsperiode: Partial<TidsperiodeDate>): Holiday[] {
+function getUttaksdagerSomErFridager(tidsperiode: TidsperiodeDate): Holiday[] {
     return isValidTidsperiode(tidsperiode)
         ? getOffentligeFridager(tidsperiode).filter((dag) => Uttaksdagen(new Date(dag.date)).erUttaksdag())
         : [];
@@ -103,17 +103,14 @@ function flyttTidsperiode(tidsperiode: TidsperiodeDate, fom: Date): TidsperiodeD
     return getTidsperiode(fom, uttaksdager);
 }
 
-export function erTidsperioderLike(t1: Partial<TidsperiodeDate>, t2: Partial<TidsperiodeDate>) {
+export function erTidsperioderLike(t1: TidsperiodeDate, t2: TidsperiodeDate) {
     if (isValidTidsperiode(t1) && isValidTidsperiode(t2)) {
         return dayjs(t1.fom).isSame(t2.fom, 'day') && dayjs(t1.tom).isSame(t2.tom, 'day');
     }
     return JSON.stringify(t1) === JSON.stringify(t2);
 }
 
-function erTidsperiodeOmsluttetAvTidsperiode(
-    tidsperiode1: Partial<TidsperiodeDate>,
-    tidsperiode2: Partial<TidsperiodeDate>
-): boolean {
+function erTidsperiodeOmsluttetAvTidsperiode(tidsperiode1: TidsperiodeDate, tidsperiode2: TidsperiodeDate): boolean {
     if (isValidTidsperiode(tidsperiode1) && isValidTidsperiode(tidsperiode2)) {
         return (
             dateIsSameOrAfter(tidsperiode1.fom, tidsperiode2.fom) &&
@@ -123,10 +120,7 @@ function erTidsperiodeOmsluttetAvTidsperiode(
     return false;
 }
 
-function erTidsperiodeUtenforTidsperiode(
-    tidsperiode1: Partial<TidsperiodeDate>,
-    tidsperiode2: Partial<TidsperiodeDate>
-): boolean {
+function erTidsperiodeUtenforTidsperiode(tidsperiode1: TidsperiodeDate, tidsperiode2: TidsperiodeDate): boolean {
     if (isValidTidsperiode(tidsperiode1) && isValidTidsperiode(tidsperiode2)) {
         return (
             dayjs(tidsperiode1.fom).isAfter(tidsperiode2.tom, 'day') ||
@@ -136,7 +130,7 @@ function erTidsperiodeUtenforTidsperiode(
     return false;
 }
 
-function tidsperiodeToString(tidsperiode: Partial<TidsperiodeDate>, intl: IntlShape) {
+function tidsperiodeToString(tidsperiode: TidsperiodeDate, intl: IntlShape) {
     const { fom, tom } = tidsperiode;
     if (fom && tom && dayjs(fom).isSame(tom, 'day')) {
         return formaterDatoUtenDag(fom ? fom : tom);
@@ -150,7 +144,7 @@ function tidsperiodeToString(tidsperiode: Partial<TidsperiodeDate>, intl: IntlSh
     );
 }
 
-function tidsperiodeToStringKort(tidsperiode: Partial<TidsperiodeDate>, intl: IntlShape) {
+function tidsperiodeToStringKort(tidsperiode: TidsperiodeDate, intl: IntlShape) {
     const { fom, tom } = tidsperiode;
     if (fom && tom && dayjs(fom).isSame(tom, 'day')) {
         return formaterDatoUtenDag(fom ? fom : tom);
@@ -164,7 +158,7 @@ function tidsperiodeToStringKort(tidsperiode: Partial<TidsperiodeDate>, intl: In
     );
 }
 
-const erTidsperiodeFomEllerEtterDato = (tidsperiode: Partial<TidsperiodeDate>, dato: Date): boolean => {
+const erTidsperiodeFomEllerEtterDato = (tidsperiode: TidsperiodeDate, dato: Date): boolean => {
     return (
         tidsperiode.fom !== undefined &&
         tidsperiode.tom !== undefined &&

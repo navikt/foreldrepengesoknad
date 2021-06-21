@@ -3,10 +3,10 @@ import Barn, { isAdoptertAnnetBarn, isAdoptertStebarn, isFødtBarn, isUfødtBarn
 import Søker from 'app/context/types/Søker';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { Saksgrunnlag } from 'app/types/Saksgrunnlag';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { TilgjengeligeStønadskontoerParams } from './api';
 
 const getStønadskontoParams = (
-    familiehendelsesdato: string,
     dekningsgrad: Dekningsgrad,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     antallBarn: string,
@@ -22,7 +22,7 @@ const getStønadskontoParams = (
 ): TilgjengeligeStønadskontoerParams => {
     return {
         antallBarn: barn.antallBarn,
-        startdatoUttak: familiehendelsesdato,
+        startdatoUttak: getFamiliehendelsedato(barn),
         dekningsgrad: dekningsgrad,
         farHarRett: true,
         morHarRett: true,

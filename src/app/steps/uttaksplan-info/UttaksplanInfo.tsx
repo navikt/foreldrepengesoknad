@@ -13,7 +13,6 @@ import dayjs from 'dayjs';
 import Api from 'app/api/api';
 import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
 import getStønadskontoParams from 'app/api/getStønadskontoParams';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 
@@ -38,26 +37,10 @@ const UttaksplanInfo = () => {
         registrertBarn?.annenForelder?.fnr
     );
     const { tilgjengeligeStønadskontoerData: stønadskontoer100 } = Api.useGetUttakskontoer(
-        getStønadskontoParams(
-            getFamiliehendelsedato(barn),
-            Dekningsgrad.HUNDRE_PROSENT,
-            '1',
-            false,
-            barn,
-            søker,
-            annenForelder
-        )
+        getStønadskontoParams(Dekningsgrad.HUNDRE_PROSENT, '1', false, barn, søker, annenForelder)
     );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
-        getStønadskontoParams(
-            getFamiliehendelsedato(barn),
-            Dekningsgrad.ÅTTI_PROSENT,
-            '1',
-            false,
-            barn,
-            søker,
-            annenForelder
-        )
+        getStønadskontoParams(Dekningsgrad.ÅTTI_PROSENT, '1', false, barn, søker, annenForelder)
     );
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
     const onAvbrytSøknad = useAvbrytSøknad();

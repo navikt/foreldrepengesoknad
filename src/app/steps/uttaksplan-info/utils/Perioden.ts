@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import { Periode, Periodetype, isForeldrepengerFørFødselUttaksperiode } from 'uttaksplan/types/Periode';
 import { getTidsperiode, Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
-import { Tidsperiode } from 'app/types/Tidsperiode';
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
 
 export const Perioden = (periode: Periode) => ({
@@ -21,7 +20,7 @@ export const Perioden = (periode: Periode) => ({
 });
 
 function erPerioderSammenhengende(p1: Periode, p2: Periode) {
-    const p1NesteUttaksdato = Uttaksdagen(p1.tidsperiode.tom).neste();
+    const p1NesteUttaksdato = Uttaksdagen(dayjs(p1.tidsperiode.tom).toDate()).neste();
     const p2Startdato = p2.tidsperiode.fom;
     return dayjs(p1NesteUttaksdato).isSame(p2Startdato, 'day');
 }
@@ -71,8 +70,13 @@ function getPeriodeFootprint(periode: Periode, inkluderTidsperiode = false) {
 }
 
 function flyttPeriode(periode: Periode, fom: Date): Periode {
+    const { tidsperiode } = periode;
+
     return {
         ...periode,
-        tidsperiode: Tidsperioden(periode.tidsperiode).setStartdato(fom) as Tidsperiode,
+        tidsperiode: Tidsperioden({
+            fom: tidsperiode.fom,
+            tom: tidsperiode.tom,
+        }).setStartdato(fom),
     };
 }

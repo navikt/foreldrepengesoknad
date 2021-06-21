@@ -5,7 +5,7 @@ import {
     FarMedmorFødselBeggeHarRettFormField,
 } from './farMedmorFødselBeggeHarRettFormConfig';
 
-const SøkersituasjonFormConfig: QuestionConfig<
+const FarMedmorFødselBeggeHarRettFormConfig: QuestionConfig<
     FarMedmorFødselBeggeHarRettFormData,
     FarMedmorFødselBeggeHarRettFormField
 > = {
@@ -15,17 +15,18 @@ const SøkersituasjonFormConfig: QuestionConfig<
     },
     [FarMedmorFødselBeggeHarRettFormField.morsSisteDag]: {
         isIncluded: () => true,
-        isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
+        isAnswered: ({ morsSisteDag }) => hasValue(morsSisteDag),
+        visibilityFilter: ({ dekningsgrad }) => hasValue(dekningsgrad),
     },
     [FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag]: {
-        isIncluded: () => true,
-        isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
+        isIncluded: ({ morsSisteDag }) => hasValue(morsSisteDag),
+        isAnswered: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
     },
 };
 
-const søkersituasjonQuestionsConfig = Questions<
+const farMedmorFødselBeggeHarRettQuestionsConfig = Questions<
     FarMedmorFødselBeggeHarRettFormData,
     FarMedmorFødselBeggeHarRettFormField
->(SøkersituasjonFormConfig);
+>(FarMedmorFødselBeggeHarRettFormConfig);
 
-export default søkersituasjonQuestionsConfig;
+export default farMedmorFødselBeggeHarRettQuestionsConfig;
