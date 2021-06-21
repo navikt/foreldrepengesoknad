@@ -11,6 +11,8 @@ import uttaksConstants from 'app/constants';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { validateErStartdatoFørTermindato } from 'app/steps/uttaksplan-info/validation/uttaksplanInfoValidering';
+import VeilederStartdatoPermisjon from './VeilederStartdatoPermisjon';
+import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
 
 interface Props {
     permisjonStartdato: string;
@@ -40,6 +42,9 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
     const antallDagerFørFødselIhtRegler = uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5;
     const visVeileder = antallDager !== antallDagerFørFødselIhtRegler;
 
+    const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato);
+    const startdato = skalIkkeHaUttakFørTermin !== true ? permisjonStartdato : undefined;
+
     const maksDato = Uttaksdagen(familiehendelsesdato).forrige();
 
     return (
@@ -61,6 +66,15 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
                     name={MorFødselFormField.skalIkkeHaUttakFørTermin}
                     label={spørsmålHaddeIkke}
                     autoComplete="off"
+                />
+            </Block>
+            <Block margin={visVeileder ? 's' : 'm'} visible={visVeileder}>
+                <VeilederStartdatoPermisjon
+                    startdato={ISOStringToDate(startdato)}
+                    antallDager={antallDager}
+                    skalIkkeHaUttakFørTermin={skalIkkeHaUttakFørTermin === true}
+                    antallDagerFørFødselIhtRegler={antallDagerFørFødselIhtRegler}
+                    førsteMuligeStartdato={datoAvgrensninger.minDate ? new Date(datoAvgrensninger.minDate) : undefined}
                 />
             </Block>
         </>

@@ -167,6 +167,10 @@ export function formaterStønadskontoParamsDatoer(dato: string | undefined, dato
     return dato !== undefined ? dayjs.utc(dato).format(datoformat || 'dddd D. MMMM YYYY') : undefined;
 }
 
+export function formaterDato(dato: Date | undefined, datoformat?: string): string {
+    return dayjs.utc(dato).format(datoformat || 'dddd D. MMMM YYYY');
+}
+
 export function formaterDatoUtenDag(dato: Date): string {
     return dayjs.utc(dato).format('D. MMMM YYYY');
 }
