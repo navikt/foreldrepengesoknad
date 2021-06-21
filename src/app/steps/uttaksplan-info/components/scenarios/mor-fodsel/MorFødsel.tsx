@@ -63,7 +63,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     const visInfoOmPrematuruker =
         søkersituasjon.situasjon === 'fødsel' ? skalViseInfoOmPrematuruker(fødselsdato, termindato) : false;
     const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker
-        ? Tidsperioden({ fom: fødselsdato, tom: termindato }).getAntallUttaksdager() - 1
+        ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
         : undefined;
 
     const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;

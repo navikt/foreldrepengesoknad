@@ -35,7 +35,7 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
     const familiehendelsesdato = dayjs(getFamiliehendelsedato(barn)).toDate();
     const sisteUttaksdagFørTermin = Uttaksdagen(familiehendelsesdato).forrige();
     const tidsperiode = getValidTidsperiode({
-        fom: ISOStringToDate(permisjonStartdato),
+        fom: ISOStringToDate(permisjonStartdato)!,
         tom: sisteUttaksdagFørTermin,
     });
     const antallDager = tidsperiode ? Tidsperioden(tidsperiode).getAntallUttaksdager() : 0;
