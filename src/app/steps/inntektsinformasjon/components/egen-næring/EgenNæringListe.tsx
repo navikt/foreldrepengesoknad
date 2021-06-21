@@ -16,7 +16,7 @@ const EgenNæringListe: FunctionComponent<Props> = ({ næringsInformasjon, delet
 
     return (
         <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
-            {næringsInformasjon.map((næring) => (
+            {næringsInformasjon.map((næring, index) => (
                 <InteractiveListElement
                     deleteLinkText="Slett næring"
                     onDelete={() => deleteNæring(næring)}
@@ -27,6 +27,7 @@ const EgenNæringListe: FunctionComponent<Props> = ({ næringsInformasjon, delet
                     title={næring.navnPåNæringen}
                     deleteButtonAriaText={`Slett næring`}
                     editButtonAriaText={`Rediger næring`}
+                    key={`${næring.navnPåNæringen}${index}`}
                 />
             ))}
         </ul>

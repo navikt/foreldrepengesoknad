@@ -16,7 +16,7 @@ const FrilansoppdragListe: FunctionComponent<Props> = ({ frilansoppdrag, deleteF
 
     return (
         <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
-            {frilansoppdrag.map((oppdrag) => (
+            {frilansoppdrag.map((oppdrag, index) => (
                 <InteractiveListElement
                     deleteLinkText="Slett oppdrag"
                     onDelete={() => deleteFrilansoppdrag(oppdrag)}
@@ -27,6 +27,7 @@ const FrilansoppdragListe: FunctionComponent<Props> = ({ frilansoppdrag, deleteF
                     title={oppdrag.navnPåArbeidsgiver}
                     deleteButtonAriaText={`Slett oppdrag for ${oppdrag.navnPåArbeidsgiver}`}
                     editButtonAriaText={`Rediger oppdrag for ${oppdrag.navnPåArbeidsgiver}`}
+                    key={`${oppdrag.navnPåArbeidsgiver}+${index}`}
                 />
             ))}
         </ul>

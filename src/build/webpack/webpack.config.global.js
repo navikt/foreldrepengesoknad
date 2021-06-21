@@ -5,6 +5,7 @@ const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
 const gitRevisionPlugin = new GitRevisionPlugin();
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const webpackConfig = {
     entry: {
@@ -64,6 +65,9 @@ const webpackConfig = {
             BUILD: {
                 VERSION: JSON.stringify(gitRevisionPlugin.version()),
             },
+        }),
+        new ESLintPlugin({
+            extensions: ['js', 'jsx', 'ts', 'tsx'],
         }),
     ],
 };

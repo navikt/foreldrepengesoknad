@@ -35,7 +35,7 @@ const AndreInntekterListe: FunctionComponent<Props> = ({ andreInntekter, deleteA
 
     return (
         <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
-            {andreInntekter.map((annenInntekt) => (
+            {andreInntekter.map((annenInntekt, index) => (
                 <InteractiveListElement
                     deleteLinkText="Slett annen inntekt"
                     onDelete={() => deleteAnnenInntekt(annenInntekt)}
@@ -47,6 +47,7 @@ const AndreInntekterListe: FunctionComponent<Props> = ({ andreInntekter, deleteA
                     missingDocumentation={
                         annenInntekt.vedlegg.length === 0 && annenInntekt.type !== AnnenInntektType.JOBB_I_UTLANDET
                     }
+                    key={`${annenInntekt.type}${annenInntekt.tidsperiode.fom}${index}`}
                 />
             ))}
         </ul>

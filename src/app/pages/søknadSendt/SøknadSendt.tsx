@@ -42,7 +42,7 @@ const SøknadSendt = () => {
             team: 'foreldrepenger',
             pageKey: PageKeys.SøknadSendt,
         });
-    }, []);
+    }, [søkerinfo.person.fnr]);
 
     if (!kvittering) {
         return (

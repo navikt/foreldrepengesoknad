@@ -20,7 +20,10 @@ const UtenlandsoppholdOppsummeringListe: FunctionComponent<Props> = ({ utenlands
         <ul className={bem.block}>
             {utenlandsopphold.map((opphold) => {
                 return (
-                    <li className={bem.element('listElement')}>
+                    <li
+                        className={bem.element('listElement')}
+                        key={`${opphold.land}${opphold.tidsperiode.fom}${opphold.tidsperiode.tom}`}
+                    >
                         <Normaltekst>
                             {tidligereOpphold
                                 ? intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge.utenlands', {
