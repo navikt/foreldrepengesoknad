@@ -8,11 +8,16 @@ import { TilgjengeligeStønadskontoerParams } from './api';
 const getStønadskontoParams = (
     familiehendelsesdato: string,
     dekningsgrad: Dekningsgrad,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     antallBarn: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     erEndringssøknad: boolean,
     barn: Barn,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     søker: Søker,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     annenForelder: AnnenForelder,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     grunnlag?: Saksgrunnlag
 ): TilgjengeligeStønadskontoerParams => {
     return {

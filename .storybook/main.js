@@ -5,7 +5,7 @@ module.exports = {
   core: {
     builder: "webpack5",
   },
-  stories: ['../src/storybook/stories/**/*.stories.@(js|tsx)'],
+  stories: ['../src/storybook/stories/**/*.stories.@(tsx)'],
   addons: ['@storybook/addon-docs/preset', '@storybook/addon-actions/register', 'storybook-formik/register'],
   webpackFinal: async (config, { configType }) => {
     //Fjern default svg-loader
@@ -20,6 +20,18 @@ module.exports = {
 
     // Make whatever fine-grained changes you need
     config.module.rules = config.module.rules.concat({
+      test: /\.(tsx?|ts?)$/,
+      enforce: 'pre',
+      loader: 'eslint-loader',
+      options: {
+        failOnWarning: false,
+        failOnError: false,
+        configFile: path.resolve(__dirname, '../.eslintrc.js'),
+        fix: true,
+        cache: true,
+      },
+      include: [path.resolve(__dirname, '../src')],
+    }, {
       test: /\.(ts|tsx|js)$/,
       use: [{ loader: 'babel-loader' }],
       exclude: /node_modules/,
