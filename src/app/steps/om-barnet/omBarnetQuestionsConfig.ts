@@ -53,7 +53,7 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
     },
     [OmBarnetFormField.valgteBarn]: {
         isIncluded: ({ registrerteBarn }) => registrerteBarn.length > 0,
-        isAnswered: ({ valgteBarn }) => valgteBarn.length > 0,
+        isAnswered: ({ valgteBarn, gjelderAnnetBarn }) => valgteBarn.length > 0 || gjelderAnnetBarn,
         visibilityFilter: ({ registrerteBarn }) => registrerteBarn.length > 0,
     },
     [OmBarnetFormField.adopsjonAvEktefellesBarn]: {
