@@ -149,20 +149,27 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin}
                             />
                         )}
-                        {erAleneOmOmsorg === false && harRettPåForeldrepenger && formValues.dekningsgrad !== undefined && (
-                            <Block padBottom="l" visible={antallBarn > 1 && harSvartPåStartdato}>
-                                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                                    <FormattedMessage
-                                        id="uttaksplaninfo.veileder.flerbarnsInformasjon"
-                                        values={{
-                                            uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
-                                            navnFar: navnFarMedmor,
-                                            navnMor: navnMor,
-                                        }}
-                                    />
-                                </Veilederpanel>
-                            </Block>
-                        )}
+                        <Block
+                            padBottom="l"
+                            visible={
+                                erAleneOmOmsorg === false &&
+                                harRettPåForeldrepenger &&
+                                formValues.dekningsgrad !== '' &&
+                                antallBarn > 1 &&
+                                harSvartPåStartdato
+                            }
+                        >
+                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                                <FormattedMessage
+                                    id="uttaksplaninfo.veileder.flerbarnsInformasjon"
+                                    values={{
+                                        uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
+                                        navnFar: navnFarMedmor,
+                                        navnMor: navnMor,
+                                    }}
+                                />
+                            </Veilederpanel>
+                        </Block>
                     </MorFødselFormComponents.Form>
                 );
             }}

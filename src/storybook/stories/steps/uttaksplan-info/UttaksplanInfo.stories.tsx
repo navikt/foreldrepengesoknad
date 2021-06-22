@@ -72,3 +72,44 @@ export const visUttaksplanMorFødselMedPrematurFødsel = () => {
         </AxiosMock>
     );
 };
+
+export const visUttaksplanMorFødselMedFlerbarnsuker = () => {
+    const restMock = (apiMock: MockAdapter) => {
+        apiMock.onGet(UTTAKSPLAN_ANNEN_URL).replyOnce(200, {});
+        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskontoSøker);
+        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskontoAnnenPart);
+    };
+    const originalContext = context as ForeldrepengesøknadContextState;
+    return (
+        <AxiosMock mock={restMock}>
+            <ForeldrepengerStateMock
+                søknad={
+                    {
+                        ...originalContext,
+                        søknad: {
+                            ...originalContext.søknad,
+                            søker: {
+                                ...originalContext.søknad.søker,
+                                erAleneOmOmsorg: false,
+                            },
+                            barn: {
+                                ...originalContext.søknad.barn,
+                                antallBarn: '2',
+                            },
+                            annenForelder: {
+                                fornavn: 'Espen',
+                                etternavn: 'Utvikler',
+                                fnr: '1212121313',
+                                harRettPåForeldrepenger: true,
+                                kanIkkeOppgis: false,
+                            },
+                        },
+                    } as ForeldrepengesøknadContextState
+                }
+                søkerinfo={søkerinfo as SøkerinfoDTO}
+            >
+                <UttaksplanInfo />
+            </ForeldrepengerStateMock>
+        </AxiosMock>
+    );
+};
