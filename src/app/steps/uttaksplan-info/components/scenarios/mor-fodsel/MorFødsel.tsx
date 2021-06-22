@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import dayjs from 'dayjs';
-import { FormattedMessage } from 'react-intl';
-import { Block, UtvidetInformasjon } from '@navikt/fp-common';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
@@ -45,7 +45,13 @@ const MorFødsel: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     tilgjengeligeStønadskontoer80DTO,
 }) => {
-    const { annenForelder, søkersituasjon, barn } = useSøknad();
+    const intl = useIntl();
+    const {
+        annenForelder,
+        søkersituasjon,
+        barn,
+        søker: { erAleneOmOmsorg },
+    } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
     } = useSøkerinfo();
@@ -58,6 +64,8 @@ const MorFødsel: FunctionComponent<Props> = ({
         return null;
     }
 
+    const antallBarn = parseInt(barn.antallBarn, 10);
+
     const fødselsdato = isFødtBarn(barn) ? ISOStringToDate(barn.fødselsdatoer[0]) : undefined;
     const termindato = isFødtBarn(barn) ? ISOStringToDate(barn.termindato) : undefined;
     const visInfoOmPrematuruker =
@@ -67,6 +75,9 @@ const MorFødsel: FunctionComponent<Props> = ({
         : undefined;
 
     const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
+    const harRettPåForeldrepenger = isAnnenForelderOppgitt(annenForelder)
+        ? annenForelder.harRettPåForeldrepenger
+        : false;
     const navnMor = formaterNavn(fornavn, etternavn, mellomnavn);
     const navnFarMedmor = isAnnenForelderOppgitt(annenForelder)
         ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn)
@@ -94,11 +105,11 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 name={MorFødselFormField.dekningsgrad}
                                 radios={[
                                     {
-                                        label: '49 uker med 100 prosent foreldrepenger',
+                                        label: intlUtils(intl, 'uttaksplaninfo.49Uker'),
                                         value: Dekningsgrad.HUNDRE_PROSENT,
                                     },
                                     {
-                                        label: '59 uker med 80 prosent foreldrepenger',
+                                        label: intlUtils(intl, 'uttaksplaninfo.59Uker'),
                                         value: Dekningsgrad.ÅTTI_PROSENT,
                                     },
                                 ]}
@@ -138,18 +149,20 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin}
                             />
                         )}
-                        <Block padBottom="l" visible={parseInt(barn.antallBarn, 10) > 1 && harSvartPåStartdato}>
-                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                                <FormattedMessage
-                                    id="uttaksplaninfo.veileder.flerbarnsInformasjon"
-                                    values={{
-                                        uker: getFlerbarnsuker(formValues.dekningsgrad!, parseInt(barn.antallBarn, 10)),
-                                        navnFar: navnFarMedmor,
-                                        navnMor: navnMor,
-                                    }}
-                                />
-                            </Veilederpanel>
-                        </Block>
+                        {erAleneOmOmsorg === false && harRettPåForeldrepenger && formValues.dekningsgrad !== undefined && (
+                            <Block padBottom="l" visible={antallBarn > 1 && harSvartPåStartdato}>
+                                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                                    <FormattedMessage
+                                        id="uttaksplaninfo.veileder.flerbarnsInformasjon"
+                                        values={{
+                                            uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
+                                            navnFar: navnFarMedmor,
+                                            navnMor: navnMor,
+                                        }}
+                                    />
+                                </Veilederpanel>
+                            </Block>
+                        )}
                     </MorFødselFormComponents.Form>
                 );
             }}
