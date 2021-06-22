@@ -8,7 +8,7 @@ import RangeInput from './range-input/RangeInput';
 
 export interface OwnProps {
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
-    fellesperiodeukerMor: string;
+    fellesperiodeukerMor: number;
     mor: string;
     farMedmor: string;
     ukerFellesperiode: number;
@@ -48,7 +48,7 @@ const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps> = ({
             }
             hjelpetekstApneLabel={intlUtils(intl, 'uttaksplaninfo.fordeling.veiledning.lenketekst.apneLabel')}
             ariaLabelText={intlUtils(intl, 'uttaksplaninfo.spørsmål.fordeling')}
-            value={parseInt(fellesperiodeukerMor, 10)!}
+            value={fellesperiodeukerMor!}
             min={0}
             max={ukerFellesperiode}
             onChange={(fellesperiodeukerMor) => setFieldValue('fellesperiodeukerMor', fellesperiodeukerMor)}

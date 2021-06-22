@@ -66,14 +66,14 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
                     )}
                 />
             </Block>
-            <Block margin={visVeileder ? 's' : 'm'}>
+            <Block padBottom={visVeileder ? 'l' : 'm'}>
                 <MorFødselFormComponents.Checkbox
                     name={MorFødselFormField.skalIkkeHaUttakFørTermin}
                     label={spørsmålHaddeIkke}
                     autoComplete="off"
                 />
             </Block>
-            <Block margin={visVeileder ? 's' : 'm'} visible={visVeileder}>
+            <Block padBottom={visVeileder ? 'l' : 'm'} visible={visVeileder}>
                 <VeilederStartdatoPermisjon
                     startdato={ISOStringToDate(startdato)}
                     antallDager={antallDager}

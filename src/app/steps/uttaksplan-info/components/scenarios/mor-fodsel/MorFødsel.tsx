@@ -23,6 +23,11 @@ import { Tidsperioden } from '../../../utils/Tidsperioden';
 import { getInitialMorFødselValues } from './morFødselUtils';
 import StartdatoPermisjonMor from './StartdatoPermisjonMor';
 import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
+import {
+    getAntallUkerFedrekvote,
+    getAntallUkerFellesperiode,
+    getAntallUkerMødrekvote,
+} from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -98,6 +103,9 @@ const MorFødsel: FunctionComponent<Props> = ({
                     familiehendelsesdato,
                     erMorUfør
                 );
+                const fellesperiodeukerMor = Math.round(
+                    (getAntallUkerFellesperiode(tilgjengeligeStønadskontoer) || 0) / 2
+                );
                 const harSvartPåStartdato =
                     formValues.permisjonStartdato !== undefined || formValues.skalIkkeHaUttakFørTermin === true;
                 return (
@@ -168,18 +176,20 @@ const MorFødsel: FunctionComponent<Props> = ({
                                         />
                                     </Veilederpanel>
                                 </Block>
-                                {harSvartPåStartdato && (
+                                <Block padBottom="l" visible={harSvartPåStartdato}>
                                     <FordelingFellesperiodeSpørsmål
                                         setFieldValue={setFieldValue}
-                                        fellesperiodeukerMor={formValues.fellesperiodeukerMor}
-                                        ukerFellesperiode={Math.floor(12 /*antallUkerFellesperiode*/)}
+                                        fellesperiodeukerMor={formValues.fellesperiodeukerMor || fellesperiodeukerMor}
+                                        ukerFellesperiode={Math.floor(
+                                            getAntallUkerFellesperiode(tilgjengeligeStønadskontoer)
+                                        )}
                                         mor={navnMor}
                                         farMedmor={navnFarMedmor}
                                         annenForelderErFarEllerMedmor={navnFarMedmor === annenForelderFornavn}
-                                        antallUkerFedreKvote={4 /*antallUkerFedreKvote!*/}
-                                        antallUkerMødreKvote={6 /*antallUkerMødreKvote!*/}
+                                        antallUkerFedreKvote={getAntallUkerFedrekvote(tilgjengeligeStønadskontoer)}
+                                        antallUkerMødreKvote={getAntallUkerMødrekvote(tilgjengeligeStønadskontoer)}
                                     />
-                                )}
+                                </Block>
                             </>
                         )}
                     </MorFødselFormComponents.Form>

@@ -11,7 +11,7 @@ export interface MorFødselFormData {
     [MorFødselFormField.dekningsgrad]: string;
     [MorFødselFormField.permisjonStartdato]: string;
     [MorFødselFormField.skalIkkeHaUttakFørTermin]: boolean;
-    [MorFødselFormField.fellesperiodeukerMor]: string;
+    [MorFødselFormField.fellesperiodeukerMor]: number | undefined;
 }
 
 export const MorFødselFormComponents = getTypedFormComponents<MorFødselFormField, MorFødselFormData, string>();

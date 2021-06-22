@@ -156,7 +156,7 @@
     "uttaksplaninfo.fordeling.veiledning": "Av perioden med foreldrepenger er {pakrevdForelder1} uker satt av til {navnForelder1}, mens {pakrevdForelder2} uker er satt av til {navnForelder2}. Resten av ukene er fellesperiode som dere kan dele. Husk at det er aktivitetskrav til {navnForelder1} når {navnForelder2} har fellesperiode.",
     "uttaksplaninfo.fordeling.veiledning.lenketekst": "Les mer om aktivitetskravet her.",
     "uttaksplaninfo.fordeling.veiledning.lenketekst.apneLabel": "Les mer om fordeling av foreldrepengeperioden",
-    "uttaksplaninfo.spørsmål.fordeling": "Kor mange veker skal du ha av fellesperioden?",
+    "uttaksplaninfo.spørsmål.fordeling": "Hvor mange uker skal du ha av fellesperioden?",
     "uttaksplaninfo.fordeling.reduser.tooltip": "En uke mindre",
     "uttaksplaninfo.fordeling.øk.tooltip": "En uke mer",
     "uttaksplaninfo.fordeling.valgtVerdi": "{ukerForelder} av {ukerTotalt, plural, one {# uke} other {# uker}} med fellesperiode",

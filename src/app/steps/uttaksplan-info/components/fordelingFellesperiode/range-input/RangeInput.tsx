@@ -1,9 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
 import { guid } from 'nav-frontend-js-utils';
-import { bemUtils } from '@navikt/fp-common';
+import { Element } from 'nav-frontend-typografi';
+import { bemUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import Fieldset from 'app/components/fieldset/Fieldset';
-import LabelWithUtvidetInformasjon from './LabelWithUtvidetInformasjon';
 import AriaText from './AriaText';
 import RangeStepper from './RangeStepper';
 import './rangeInput.less';
@@ -119,9 +119,10 @@ class RangeInput extends React.Component<Props, State> {
             <div className={bemWrapper.block}>
                 <Fieldset
                     legend={
-                        <LabelWithUtvidetInformasjon apneLabel={hjelpetekstApneLabel} info={hjelpetekst}>
-                            {label}
-                        </LabelWithUtvidetInformasjon>
+                        <>
+                            <Element>{label}</Element>
+                            <UtvidetInformasjon apneLabel={hjelpetekstApneLabel}>{hjelpetekst}</UtvidetInformasjon>
+                        </>
                     }
                     className={'uttakfordeler'}
                 >

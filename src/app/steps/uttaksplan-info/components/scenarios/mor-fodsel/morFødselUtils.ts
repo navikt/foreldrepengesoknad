@@ -4,7 +4,7 @@ const initialMorFødselValues: MorFødselFormData = {
     [MorFødselFormField.dekningsgrad]: '',
     [MorFødselFormField.permisjonStartdato]: '',
     [MorFødselFormField.skalIkkeHaUttakFørTermin]: false,
-    [MorFødselFormField.fellesperiodeukerMor]: '',
+    [MorFødselFormField.fellesperiodeukerMor]: undefined,
 };
 
 export const getInitialMorFødselValues = (): MorFødselFormData => {
