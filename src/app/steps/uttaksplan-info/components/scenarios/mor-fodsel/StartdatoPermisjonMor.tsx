@@ -32,8 +32,9 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
         ? intlUtils(intl, 'uttaksplaninfo.spørsmål.startdatoPermisjon.skalIkkeHaUttak.barnetErFødt.label')
         : intlUtils(intl, 'uttaksplaninfo.spørsmål.startdatoPermisjon.skalIkkeHaUttak.label');
 
-    const familiehendelsesdato = dayjs(getFamiliehendelsedato(barn)).toDate();
-    const sisteUttaksdagFørTermin = Uttaksdagen(familiehendelsesdato).forrige();
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const familiehendelsesdatoDate = dayjs(familiehendelsesdato).toDate();
+    const sisteUttaksdagFørTermin = Uttaksdagen(familiehendelsesdatoDate).forrige();
     const tidsperiode = getValidTidsperiode({
         fom: ISOStringToDate(permisjonStartdato)!,
         tom: sisteUttaksdagFørTermin,
@@ -45,7 +46,7 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
     const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato);
     const startdato = skalIkkeHaUttakFørTermin !== true ? permisjonStartdato : undefined;
 
-    const maksDato = Uttaksdagen(familiehendelsesdato).forrige();
+    const maksDato = Uttaksdagen(familiehendelsesdatoDate).forrige();
 
     return (
         <>
@@ -56,9 +57,13 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
                     disabled={skalIkkeHaUttakFørTermin}
                     maxDate={maksDato}
                     dayPickerProps={{
-                        initialMonth: ISOStringToDate(permisjonStartdato) || familiehendelsesdato,
+                        initialMonth: ISOStringToDate(permisjonStartdato) || familiehendelsesdatoDate,
                     }}
-                    validate={validateErStartdatoFørTermindato(intl, familiehendelsesdato, skalIkkeHaUttakFørTermin)}
+                    validate={validateErStartdatoFørTermindato(
+                        intl,
+                        familiehendelsesdatoDate,
+                        skalIkkeHaUttakFørTermin
+                    )}
                 />
             </Block>
             <Block margin={visVeileder ? 's' : 'm'}>

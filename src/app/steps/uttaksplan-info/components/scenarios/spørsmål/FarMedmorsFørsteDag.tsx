@@ -11,7 +11,7 @@ interface Props {
     familiehendelsesdato: string;
 }
 
-const MorsSisteDagSpørsmål: FunctionComponent<Props> = ({
+const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
     FormComponents,
     fieldName,
     familiehendelsesdato,
@@ -19,13 +19,17 @@ const MorsSisteDagSpørsmål: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
 
-    const maxDate = ISOStringToDate(uttaksplanDatoavgrensninger.morsSisteUttaksdag(familiehendelsesdato).maxDate);
-    const minDate = ISOStringToDate(uttaksplanDatoavgrensninger.morsSisteUttaksdag(familiehendelsesdato).minDate);
+    const maxDate = ISOStringToDate(
+        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato).maxDate
+    );
+    const minDate = ISOStringToDate(
+        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato).minDate
+    );
 
     return (
         <FormComponents.DatePicker
             name={fieldName}
-            label={intlUtils(intl, 'uttaksplaninfo.morSinSisteUttaksdag.label', { navnMor })}
+            label={intlUtils(intl, 'uttaksplaninfo.farSinFørsteUttaksdagSpørsmål.label', { navnMor })}
             maxDate={maxDate}
             minDate={minDate}
             showYearSelector={true}
@@ -33,4 +37,4 @@ const MorsSisteDagSpørsmål: FunctionComponent<Props> = ({
     );
 };
 
-export default MorsSisteDagSpørsmål;
+export default FarMedmorsFørsteDag;

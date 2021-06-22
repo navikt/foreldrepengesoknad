@@ -2,7 +2,7 @@ import { intlUtils } from '@navikt/fp-common';
 import { isISODateString } from 'nav-datovelger';
 import { IntlShape } from 'react-intl';
 import { Uttaksdagen } from '../utils/Uttaksdagen';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { uttaksplanDatoavgrensninger } from '../utils/uttaksplanDatoavgrensninger';
 import dayjs from 'dayjs';
 import uttaksConstants from 'app/constants';
@@ -22,7 +22,7 @@ export const validateErStartdatoFørTermindato =
         }
 
         if (skalIkkeHaUttakFørTermin !== true) {
-            const avgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsedato);
+            const avgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(dateToISOString(familiehendelsedato));
 
             if (
                 avgrensninger.minDate &&
