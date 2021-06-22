@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Uttaksdagen } from './Uttaksdagen';
 import uttaksConstants from 'app/constants';
 import { DatepickerLimitations } from 'nav-datovelger';
@@ -7,7 +7,7 @@ import { dateToISOString } from '@navikt/sif-common-formik/lib';
 function sisteMuligePermisjonsdag(familiehendelsedato: Date): Date {
     const startDato = Uttaksdagen(familiehendelsedato).denneEllerNeste();
     return Uttaksdagen(
-        moment(startDato).add(uttaksConstants.MAKS_PERMISJONSLENGDE_I_ÅR, 'years').toDate()
+        dayjs(startDato).add(uttaksConstants.MAKS_PERMISJONSLENGDE_I_ÅR, 'years').toDate()
     ).denneEllerNeste();
 }
 
