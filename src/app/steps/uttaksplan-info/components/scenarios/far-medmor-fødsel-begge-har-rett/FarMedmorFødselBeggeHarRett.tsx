@@ -23,6 +23,7 @@ import farMedmorFødselBeggeHarRettQuestionsConfig from './farMedmorFødselBegge
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
 import dayjs from 'dayjs';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -127,16 +128,11 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                             padBottom="l"
                             visible={visibility.isVisible(FarMedmorFødselBeggeHarRettFormField.morsSisteDag)}
                         >
-                            <FarMedmorFødselBeggeHarRettFormComponents.DatePicker
-                                name={FarMedmorFødselBeggeHarRettFormField.morsSisteDag}
-                                label={intlUtils(intl, 'uttaksplaninfo.morSinSisteUttaksdag.label')}
-                                maxDate={ISOStringToDate(
-                                    uttaksplanDatoavgrensninger.morsSisteUttaksdag(familiehendelsesdatoDate).maxDate
-                                )}
-                                minDate={ISOStringToDate(
-                                    uttaksplanDatoavgrensninger.morsSisteUttaksdag(familiehendelsesdatoDate).minDate
-                                )}
-                                showYearSelector={true}
+                            <MorsSisteDagSpørsmål
+                                FormComponents={FarMedmorFødselBeggeHarRettFormComponents}
+                                fieldName={FarMedmorFødselBeggeHarRettFormField.morsSisteDag}
+                                navnMor="Kari"
+                                familiehendelsesdatoDate={familiehendelsesdatoDate}
                             />
                         </Block>
                         <Block

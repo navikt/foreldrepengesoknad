@@ -135,7 +135,7 @@
         "@formatjs/intl-relativetimeformat": "^9.1.6",
         "@navikt/fnrvalidator": "^1.1.4",
         "@navikt/fp-common": "^2.3.0",
-        "@navikt/sif-common-formik": "^19.4.2",
+        "@navikt/sif-common-formik": "^19.5.1",
         "@navikt/sif-common-question-config": "^0.0.7",
         "@sentry/browser": "^6.7.1",
         "amplitude-js": "^8.3.1",
