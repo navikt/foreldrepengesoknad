@@ -121,7 +121,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 tilgjengeligeDager={getTilgjengeligeDager(tilgjengeligeStønadskontoer, true, undefined)}
                             />
                         </Block>
-                        <Block padBottom="l">
+                        <Block padBottom="l" visible={visInfoOmPrematuruker === true}>
                             <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.informasjonPrematuruker"

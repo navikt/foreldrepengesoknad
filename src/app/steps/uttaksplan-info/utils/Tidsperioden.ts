@@ -80,14 +80,14 @@ function getAntallUttaksdagerITidsperiode(tidsperiode: TidsperiodeDate): number 
     if (!isValidTidsperiode(tidsperiode)) {
         return 0;
     }
-    const fom = dayjs(tidsperiode.fom);
+    let fom = dayjs(tidsperiode.fom);
     const tom = dayjs(tidsperiode.tom);
     let antall = 0;
     while (fom.isSameOrBefore(tom, 'day')) {
         if (Uttaksdagen(fom.toDate()).erUttaksdag()) {
             antall++;
         }
-        fom.add(24, 'hours');
+        fom = fom.add(24, 'hours');
     }
     return antall;
 }
