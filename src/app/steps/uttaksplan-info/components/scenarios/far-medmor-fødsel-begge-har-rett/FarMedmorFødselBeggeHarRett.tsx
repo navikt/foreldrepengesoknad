@@ -21,7 +21,6 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import farMedmorFødselBeggeHarRettQuestionsConfig from './farMedmorFødselBeggeHarRettQuestionsConfig';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
-import dayjs from 'dayjs';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
 
@@ -45,7 +44,6 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const navnMor = erFarEllerMedmor && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : person.fornavn;
     const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
-    const familiehendelsesdatoDate = dayjs(familiehendelsesdato).toDate();
 
     const shouldRender = erFarEllerMedmor && erFødsel && annenForelderHarRett;
 
@@ -131,8 +129,8 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                             <MorsSisteDagSpørsmål
                                 FormComponents={FarMedmorFødselBeggeHarRettFormComponents}
                                 fieldName={FarMedmorFødselBeggeHarRettFormField.morsSisteDag}
-                                navnMor="Kari"
-                                familiehendelsesdatoDate={familiehendelsesdatoDate}
+                                navnMor={navnMor}
+                                familiehendelsesdato={familiehendelsesdato}
                             />
                         </Block>
                         <Block
@@ -143,11 +141,11 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 name={FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag}
                                 label={intlUtils(intl, 'uttaksplaninfo.farSinFørsteUttaksdagSpørsmål.label')}
                                 maxDate={ISOStringToDate(
-                                    uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdatoDate)
+                                    uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato)
                                         .maxDate
                                 )}
                                 minDate={ISOStringToDate(
-                                    uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdatoDate)
+                                    uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato)
                                         .minDate
                                 )}
                                 showYearSelector={true}

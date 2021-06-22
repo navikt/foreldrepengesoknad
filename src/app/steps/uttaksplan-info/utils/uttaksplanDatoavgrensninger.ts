@@ -25,8 +25,8 @@ const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): Datepi
     };
 };
 
-const startdatoFørTermin = (familiehendelsesdato: Date): DatepickerLimitations => {
-    const maksDato = Uttaksdagen(familiehendelsesdato).forrige();
+const startdatoFørTermin = (familiehendelsesdato: string): DatepickerLimitations => {
+    const maksDato = Uttaksdagen(dayjs(familiehendelsesdato).toDate()).forrige();
     const minDato = Uttaksdagen(maksDato).trekkFra(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1);
     return {
         ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
@@ -34,8 +34,8 @@ const startdatoFørTermin = (familiehendelsesdato: Date): DatepickerLimitations 
     };
 };
 
-const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato: Date): DatepickerLimitations => {
-    const maksDato = Uttaksdagen(familiehendelsesdato).forrige();
+const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato: string): DatepickerLimitations => {
+    const maksDato = Uttaksdagen(dayjs(familiehendelsesdato).toDate()).forrige();
     const minDato = Uttaksdagen(maksDato).trekkFra(uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1);
     return {
         ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
@@ -43,8 +43,8 @@ const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato:
     };
 };
 
-const ekstrauttakFørFødsel = (familiehendelsesdato: Date): DatepickerLimitations => {
-    const sisteDagFørFødsel = Uttaksdagen(familiehendelsesdato).forrige();
+const ekstrauttakFørFødsel = (familiehendelsesdato: string): DatepickerLimitations => {
+    const sisteDagFørFødsel = Uttaksdagen(dayjs(familiehendelsesdato).toDate()).forrige();
     const minDato = Uttaksdagen(sisteDagFørFødsel).trekkFra(
         uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1
     );
@@ -58,27 +58,27 @@ const ekstrauttakFørFødsel = (familiehendelsesdato: Date): DatepickerLimitatio
 };
 
 const startdatoPermisjonAleneomsorgFarMedmor = (
-    datoForAleneomsorg: Date,
-    familiehendelsesdato: Date
+    datoForAleneomsorg: string,
+    familiehendelsesdato: string
 ): DatepickerLimitations => {
-    const minDato = Uttaksdagen(datoForAleneomsorg).denneEllerNeste();
-    const maksDato = sisteMuligePermisjonsdag(familiehendelsesdato);
+    const minDato = Uttaksdagen(dayjs(datoForAleneomsorg).toDate()).denneEllerNeste();
+    const maksDato = sisteMuligePermisjonsdag(dayjs(familiehendelsesdato).toDate());
     return {
         ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
         weekendsNotSelectable: true,
     };
 };
 
-const startdatoPermisjonAdopsjon = (familiehendelsesdato: Date): DatepickerLimitations => {
-    return defaultPermisjonsperiodeAvgrensning(familiehendelsesdato);
+const startdatoPermisjonAdopsjon = (familiehendelsesdato: string): DatepickerLimitations => {
+    return defaultPermisjonsperiodeAvgrensning(dayjs(familiehendelsesdato).toDate());
 };
 
-const morsSisteUttaksdag = (familiehendelsesdato: Date): DatepickerLimitations => {
-    return defaultPermisjonsperiodeAvgrensning(familiehendelsesdato);
+const morsSisteUttaksdag = (familiehendelsesdato: string): DatepickerLimitations => {
+    return defaultPermisjonsperiodeAvgrensning(dayjs(familiehendelsesdato).toDate());
 };
 
-const startdatoPermisjonFarMedmor = (familiehendelsesdato: Date): DatepickerLimitations => {
-    return defaultPermisjonsperiodeAvgrensning(familiehendelsesdato);
+const startdatoPermisjonFarMedmor = (familiehendelsesdato: string): DatepickerLimitations => {
+    return defaultPermisjonsperiodeAvgrensning(dayjs(familiehendelsesdato).toDate());
 };
 
 export const uttaksplanDatoavgrensninger = {
