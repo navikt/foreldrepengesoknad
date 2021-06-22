@@ -8,16 +8,16 @@ import dayjs from 'dayjs';
 import uttaksConstants from 'app/constants';
 
 export const validateErStartdatoFørTermindato =
-    (intl: IntlShape, familiehendelsedato: Date, skalIkkeHaUttakFørTermin: boolean) => (datoForAleneomsorg: string) => {
-        if (!isISODateString(skalIkkeHaUttakFørTermin)) {
+    (intl: IntlShape, familiehendelsedato: Date, skalIkkeHaUttakFørTermin: boolean) => (permisjonStartdato: string) => {
+        if (!isISODateString(permisjonStartdato)) {
             return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoPermisjon.gyldigDato');
         }
 
-        if (datoForAleneomsorg === undefined || skalIkkeHaUttakFørTermin !== true) {
+        if (permisjonStartdato === undefined || skalIkkeHaUttakFørTermin !== true) {
             return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoFørTermin');
         }
 
-        if (datoForAleneomsorg === undefined || Uttaksdagen(ISOStringToDate(datoForAleneomsorg)!).erUttaksdag()) {
+        if (permisjonStartdato === undefined || Uttaksdagen(ISOStringToDate(permisjonStartdato)!).erUttaksdag()) {
             return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoHelg');
         }
 
@@ -27,8 +27,8 @@ export const validateErStartdatoFørTermindato =
             if (
                 avgrensninger.minDate &&
                 avgrensninger.maxDate &&
-                dayjs(datoForAleneomsorg).isSameOrAfter(avgrensninger.minDate, 'day') &&
-                dayjs(datoForAleneomsorg).isSameOrBefore(avgrensninger.maxDate, 'day')
+                dayjs(permisjonStartdato).isSameOrAfter(avgrensninger.minDate, 'day') &&
+                dayjs(permisjonStartdato).isSameOrBefore(avgrensninger.maxDate, 'day')
             ) {
                 return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoUtenforGyldigTidsrom', {
                     uker: uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL,

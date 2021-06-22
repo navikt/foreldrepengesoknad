@@ -13,6 +13,8 @@ import { getValgtStønadskontoMengde } from 'app/utils/stønadskontoUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { isFødtBarn } from 'app/context/types/Barn';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import { formaterNavn } from 'app/utils/personUtils';
 import { getFlerbarnsuker } from '../../../utils/uttaksplanHarForMangeFlerbarnsuker';
 import { MorFødselFormComponents, MorFødselFormField } from './morFødselFormConfig';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
@@ -20,8 +22,7 @@ import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDa
 import { Tidsperioden } from '../../../utils/Tidsperioden';
 import { getInitialMorFødselValues } from './morFødselUtils';
 import StartdatoPermisjonMor from './StartdatoPermisjonMor';
-import { formaterNavn } from 'app/utils/personUtils';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -75,6 +76,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         : undefined;
 
     const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
+    const annenForelderFornavn = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : undefined;
     const harRettPåForeldrepenger = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepenger
         : false;
@@ -88,7 +90,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         <MorFødselFormComponents.FormikWrapper
             initialValues={getInitialMorFødselValues()}
             onSubmit={() => null}
-            renderForm={({ values: formValues }) => {
+            renderForm={({ values: formValues, setFieldValue }) => {
                 const tilgjengeligeStønadskontoer = getValgtStønadskontoMengde(
                     formValues.dekningsgrad as Dekningsgrad,
                     tilgjengeligeStønadskontoer80DTO,
@@ -149,27 +151,37 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin}
                             />
                         )}
-                        <Block
-                            padBottom="l"
-                            visible={
-                                erAleneOmOmsorg === false &&
-                                harRettPåForeldrepenger &&
-                                formValues.dekningsgrad !== '' &&
-                                antallBarn > 1 &&
-                                harSvartPåStartdato
-                            }
-                        >
-                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                                <FormattedMessage
-                                    id="uttaksplaninfo.veileder.flerbarnsInformasjon"
-                                    values={{
-                                        uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
-                                        navnFar: navnFarMedmor,
-                                        navnMor: navnMor,
-                                    }}
-                                />
-                            </Veilederpanel>
-                        </Block>
+                        {erAleneOmOmsorg === false && harRettPåForeldrepenger && formValues.dekningsgrad !== '' && (
+                            <>
+                                <Block padBottom="l" visible={antallBarn > 1 && harSvartPåStartdato}>
+                                    <Veilederpanel
+                                        fargetema="normal"
+                                        svg={<VeilederNormal transparentBackground={true} />}
+                                    >
+                                        <FormattedMessage
+                                            id="uttaksplaninfo.veileder.flerbarnsInformasjon"
+                                            values={{
+                                                uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
+                                                navnFar: navnFarMedmor,
+                                                navnMor: navnMor,
+                                            }}
+                                        />
+                                    </Veilederpanel>
+                                </Block>
+                                {harSvartPåStartdato && (
+                                    <FordelingFellesperiodeSpørsmål
+                                        setFieldValue={setFieldValue}
+                                        fellesperiodeukerMor={formValues.fellesperiodeukerMor}
+                                        ukerFellesperiode={Math.floor(12 /*antallUkerFellesperiode*/)}
+                                        mor={navnMor}
+                                        farMedmor={navnFarMedmor}
+                                        annenForelderErFarEllerMedmor={navnFarMedmor === annenForelderFornavn}
+                                        antallUkerFedreKvote={4 /*antallUkerFedreKvote!*/}
+                                        antallUkerMødreKvote={6 /*antallUkerMødreKvote!*/}
+                                    />
+                                )}
+                            </>
+                        )}
                     </MorFødselFormComponents.Form>
                 );
             }}
