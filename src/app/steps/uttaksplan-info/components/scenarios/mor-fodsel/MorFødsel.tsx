@@ -36,6 +36,7 @@ import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import SøknadRoutes from 'app/routes/routes';
 import UttaksplanInfo from 'app/context/types/UttaksplanInfo';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import { morFødselQuestionsConfig } from './morFødselQuestionsConfig';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -121,6 +122,10 @@ const MorFødsel: FunctionComponent<Props> = ({
             initialValues={getInitialMorFødselValues(defaultPermisjonStartdato)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
+                const visibility = morFødselQuestionsConfig.getVisbility({
+                    ...formValues,
+                });
+
                 const tilgjengeligeStønadskontoer = getValgtStønadskontoMengde(
                     formValues.dekningsgrad as Dekningsgrad,
                     tilgjengeligeStønadskontoer80DTO,
@@ -158,7 +163,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 useTwoColumns={true}
                             />
                         </Block>
-                        <Block padBottom="l" visible={formValues.dekningsgrad !== ''}>
+                        <Block padBottom="l" visible={visibility.isAnswered(MorFødselFormField.dekningsgrad)}>
                             <TilgjengeligeDagerGraf
                                 erDeltUttak={erDeltUttak}
                                 erFarEllerMedmor={false}
@@ -182,7 +187,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 />
                             </Veilederpanel>
                         </Block>
-                        <Block visible={formValues.dekningsgrad !== ''}>
+                        <Block visible={visibility.isAnswered(MorFødselFormField.dekningsgrad)}>
                             <StartdatoPermisjonMor
                                 permisjonStartdato={formValues.permisjonStartdato}
                                 skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin}
@@ -190,7 +195,9 @@ const MorFødsel: FunctionComponent<Props> = ({
                         </Block>
                         <Block
                             visible={
-                                erAleneOmOmsorg === false && harRettPåForeldrepenger && formValues.dekningsgrad !== ''
+                                erAleneOmOmsorg === false &&
+                                harRettPåForeldrepenger &&
+                                visibility.isAnswered(MorFødselFormField.dekningsgrad)
                             }
                         >
                             <Block padBottom="l" visible={antallBarn > 1 && harSvartPåStartdato}>
@@ -220,7 +227,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 />
                             </Block>
                         </Block>
-                        <Block visible={true} textAlignCenter={true}>
+                        <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
                             <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
                         </Block>
                     </MorFødselFormComponents.Form>
