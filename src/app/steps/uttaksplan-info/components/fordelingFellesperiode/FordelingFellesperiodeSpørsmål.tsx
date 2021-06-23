@@ -6,6 +6,8 @@ import { Block, intlUtils } from '@navikt/fp-common';
 import lenker from 'app/links/links';
 import RangeInput from './range-input/RangeInput';
 
+import './fordelingFellesperiodeSpørsmål.less';
+
 export interface OwnProps {
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     fellesperiodeukerMor: number;
