@@ -1,5 +1,4 @@
 import React from 'react';
-import withFormik from 'storybook-formik';
 import MockAdapter from 'axios-mock-adapter/types';
 
 import søkerinfo from './testdata/søkerinfoMorFødsel.json';
@@ -21,7 +20,7 @@ const STØNADSKONTO_URL = '/uttak-url/konto';
 export default {
     title: 'steps/UttaksplanInfo',
     component: UttaksplanInfo,
-    decorators: [withFormik, withRouter, withIntl, withForeldrepengersøknadContext],
+    decorators: [withRouter, withIntl, withForeldrepengersøknadContext],
 };
 
 export const visUttaksplanMorFødsel = () => {
