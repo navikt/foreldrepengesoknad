@@ -155,22 +155,22 @@ const AnnenForelderForm: React.FunctionComponent<Props> = ({
                                     <UtvidetInformasjon
                                         apneLabel={getMessage(
                                             intl,
-                                            'annenForelderRettPåForeldrepenger.veileder.apneLabel'
+                                            'annenForelder.annenForelderRettPåForeldrepenger.veileder.apneLabel'
                                         )}
                                         description={true}
                                     >
                                         <FormattedMessage
-                                            id="annenForelderRettPåForeldrepenger.veileder.del1"
+                                            id="annenForelder.annenForelderRettPåForeldrepenger.veileder.del1"
                                             values={{ navn: formValues.fornavn }}
                                         ></FormattedMessage>
                                         <br />
                                         <FormattedMessage
-                                            id="annenForelderRettPåForeldrepenger.veileder.del2"
+                                            id="annenForelder.annenForelderRettPåForeldrepenger.veileder.del2"
                                             values={{ navn: formValues.fornavn }}
                                         ></FormattedMessage>
                                     </UtvidetInformasjon>
                                 }
-                                legend={getMessage(intl, 'annenForelderRettPåForeldrepenger.spørsmål', {
+                                legend={getMessage(intl, 'annenForelder.annenForelderRettPåForeldrepenger', {
                                     navn: formValues.fornavn,
                                 })}
                                 validate={(annenForelderHarRett) =>

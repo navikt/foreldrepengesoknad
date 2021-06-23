@@ -1,1 +1,109 @@
-{}
+{
+    "grunnlag": {
+        "termindato": "2021-06-14",
+        "fødselsdato": "2021-06-14",
+        "dekningsgrad": 100,
+        "antallBarn": 1,
+        "søkerErFarEllerMedmor": false,
+        "morErAleneOmOmsorg": false,
+        "morHarRett": true,
+        "morErUfør": false,
+        "farMedmorErAleneOmOmsorg": false,
+        "farMedmorHarRett": true,
+        "annenForelderErInformert": true
+    },
+    "perioder": [
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FORELDREPENGER_FØR_FØDSEL",
+            "trekkDager": 15,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "972674818",
+                "type": "ORGANISASJON",
+                "navn": "PENGELØS SPAREBANK"
+            },
+            "periodeResultatÅrsak": "2006",
+            "periode": {
+                "fom": "2021-05-24",
+                "tom": "2021-06-11"
+            }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": 30,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "972674818",
+                "type": "ORGANISASJON",
+                "navn": "PENGELØS SPAREBANK"
+            },
+            "periodeResultatÅrsak": "2003",
+            "periode": {
+                "fom": "2021-06-14",
+                "tom": "2021-07-25"
+            }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": 45,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "972674818",
+                "type": "ORGANISASJON",
+                "navn": "PENGELØS SPAREBANK"
+            },
+            "periodeResultatÅrsak": "2003",
+            "periode": {
+                "fom": "2021-07-26",
+                "tom": "2021-09-24"
+            }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FELLESPERIODE",
+            "trekkDager": 80,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": true,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "972674818",
+                "type": "ORGANISASJON",
+                "navn": "PENGELØS SPAREBANK"
+            },
+            "periodeResultatÅrsak": "2002",
+            "periode": {
+                "fom": "2021-09-27",
+                "tom": "2022-01-14"
+            }
+        }
+    ]
+}

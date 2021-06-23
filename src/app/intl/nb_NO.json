@@ -163,6 +163,8 @@
     "uttaksplaninfo.fordeling.annenForeldersFellesperiode": "{annenForeldersNavn} kan ta ut {antallUker} uker av fellesperioden",
     "uttaksplaninfo.spørsmål.startdatoPermisjon.barnetErFødt.varighet": "{varighet} før fødsel",
     "uttaksplaninfo.spørsmål.startdatoPermisjon.varighet": "{varighet} før termin",
+    "uttaksplaninfo.veileder.dekningsgrad80": "Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan ikke endres senere.",
+    "uttaksplaninfo.dekningsgrad.label.deltUttak": "Hvor lang periode med foreldrepenger har dere valgt?",
     "utenlandsopphold.infoOmFødselsattest": "Du har opplyst at du skal være i {land} når du har termin {termindato}. Hvis du føder i utlandet må du ettersende fødselsattest til oss slik at vi får registrert fødselsdatoen til barnet. Grunnen til at du må sende inn fødselsattest er at vi ikke får inn opplysninger om fødselen automatisk når du ikke føder i Norge.",
     "utenlandsopphold.knapp.leggTilLand": "Legg til nytt utenlandsopphold",
     "utenlandsopphold.leggTilUtenlandsopphold.fraogmed": "Fra og med",

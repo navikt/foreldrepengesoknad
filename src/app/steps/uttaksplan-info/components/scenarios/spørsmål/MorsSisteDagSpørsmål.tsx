@@ -29,6 +29,7 @@ const MorsSisteDagSpørsmål: FunctionComponent<Props> = ({
             maxDate={maxDate}
             minDate={minDate}
             showYearSelector={true}
+            disableWeekend={true}
         />
     );
 };

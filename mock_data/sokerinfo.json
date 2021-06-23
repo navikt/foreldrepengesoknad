@@ -1,24 +1,33 @@
 {
     "søker": {
-        "fnr": "19047815714",
-        "fornavn": "TALENTFULL",
-        "etternavn": "MYGG",
-        "kjønn": "K",
-        "fødselsdato": "1978-04-19",
+        "fnr": "10119222112",
+        "fornavn": "GUL",
+        "etternavn": "DORULL",
+        "kjønn": "M",
+        "fødselsdato": "1992-11-10",
         "ikkeNordiskEøsLand": false,
         "barn": [
             {
-                "fnr": "21091981146",
-                "fødselsdato": "2021-03-15",
+                "fnr": "14062151871",
+                "fødselsdato": "2021-06-14",
                 "annenForelder": {
-                    "fnr": "12038517080",
-                    "fødselsdato": "1985-03-12",
-                    "fornavn": "LEALAUS",
-                    "etternavn": "BÆREPOSE"
+                    "fnr": "08129222205",
+                    "fødselsdato": "1992-12-08",
+                    "fornavn": "RAUS",
+                    "etternavn": "KAKKERLAKK"
                 },
-                "fornavn": "KLØKTIG",
-                "etternavn": "MIDTPUNKT",
-                "kjønn": "M"
+                "fornavn": "ROBUST",
+                "etternavn": "RHODODENRON",
+                "kjønn": "K"
+            }
+        ],
+        "arbeidsforhold": [
+            {
+                "arbeidsgiverId": "824771332",
+                "arbeidsgiverIdType": "orgnr",
+                "arbeidsgiverNavn": "SJOKKERENDE ELEKTRIKER",
+                "stillingsprosent": 100,
+                "fom": "2000-09-09"
             }
         ]
     }

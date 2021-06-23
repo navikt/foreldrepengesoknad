@@ -70,7 +70,7 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
         fødselsdato: formaterStønadskontoParamsDatoer(fødselsdato, fpUttakServiceDateFormat),
         termindato: formaterStønadskontoParamsDatoer(termindato, fpUttakServiceDateFormat),
         omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(omsorgsovertakelsesdato, fpUttakServiceDateFormat),
-        startdatoUttak: formaterDato(startdatoUttak, fpUttakServiceDateFormat),
+        startdatoUttak: formaterStønadskontoParamsDatoer(startdatoUttak, fpUttakServiceDateFormat),
     };
 
     return axios.get(`${uttakBaseUrl}/konto`, {
