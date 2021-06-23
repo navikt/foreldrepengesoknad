@@ -1,8 +1,9 @@
-import { bemUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { bemUtils, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import { getNumberFromNumberInputValue, TypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { Element } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import RangeIcon from '../../fordelingFellesperiode/range-input/RangeIcon';
 import Sirkelknapp from '../../fordelingFellesperiode/range-input/sirkelknapp/Sirkelknapp';
 
@@ -15,12 +16,13 @@ interface Props {
     antallUker: string;
     antallDager: string;
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
+    ukerMedFellesperiode: number;
 }
 
-const getAntallUker = (currentAntall: string, max: number): string => {
+const leggTilUke = (currentAntall: string, max: number): string => {
     const number = getNumberFromNumberInputValue(currentAntall);
 
-    if (!number || Math.round(number) !== number) {
+    if (number === undefined || Math.round(number) !== number) {
         return currentAntall;
     }
 
@@ -31,6 +33,48 @@ const getAntallUker = (currentAntall: string, max: number): string => {
     return (number + 1).toString();
 };
 
+const trekkFraUke = (currentAntall: string, min: number): string => {
+    const number = getNumberFromNumberInputValue(currentAntall);
+
+    if (number === undefined || Math.round(number) !== number) {
+        return currentAntall;
+    }
+
+    if (number - 1 < min) {
+        return min.toString();
+    }
+
+    return (number - 1).toString();
+};
+
+const leggTilDag = (currentAntall: string, max: number): string => {
+    const number = getNumberFromNumberInputValue(currentAntall);
+
+    if (number === undefined || Math.round(number) !== number) {
+        return currentAntall;
+    }
+
+    if (number + 1 > max) {
+        return max.toString();
+    }
+
+    return (number + 1).toString();
+};
+
+const trekkFraDag = (currentAntall: string, min: number): string => {
+    const number = getNumberFromNumberInputValue(currentAntall);
+
+    if (number === undefined || Math.round(number) !== number) {
+        return currentAntall;
+    }
+
+    if (number - 1 < min) {
+        return min.toString();
+    }
+
+    return (number - 1).toString();
+};
+
 const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props> = ({
     FormComponents,
     ukerFieldName,
@@ -38,15 +82,21 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
     antallDager,
     antallUker,
     setFieldValue,
+    ukerMedFellesperiode,
 }) => {
     const bem = bemUtils('antallUkerOgDagerFellesperiodeFarMedmorSpørsmål');
+    const intl = useIntl();
 
     return (
         <SkjemaGruppe
-            legend={<Element>Hvor mye fellesperiode skal du ha?</Element>}
+            legend={
+                <Element>
+                    <FormattedMessage id="uttaksplaninfo.fellesperiode.tittel" />
+                </Element>
+            }
             description={
-                <UtvidetInformasjon apneLabel="Les mer om fellesperioden">
-                    Fellesperioden er ukene med foreldrepenger som dere kan dele.
+                <UtvidetInformasjon apneLabel={intlUtils(intl, 'uttaksplaninfo.fellesperiode.apneLabel')}>
+                    <FormattedMessage id="uttaksplaninfo.fellesperiode.lesMerInfo" />
                 </UtvidetInformasjon>
             }
         >
@@ -58,7 +108,7 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                             ariaLabel="Mink antall uker med en uke"
                             ikon={<RangeIcon type="minus" />}
                             disabled={parseInt(antallUker, 10) === 0 ? true : false}
-                            onClick={() => setFieldValue(ukerFieldName, getAntallUker(antallUker, 16))}
+                            onClick={() => setFieldValue(ukerFieldName, trekkFraUke(antallUker, 0))}
                         />
                     </div>
                     <FormComponents.NumberInput
@@ -74,7 +124,8 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                             stil="hvit"
                             ariaLabel="Øk antall uker med en uke"
                             ikon={<RangeIcon type="plus" />}
-                            onClick={() => null}
+                            disabled={parseInt(antallUker, 10) >= ukerMedFellesperiode ? true : false}
+                            onClick={() => setFieldValue(ukerFieldName, leggTilUke(antallUker, ukerMedFellesperiode))}
                         />
                     </div>
                 </div>
@@ -84,7 +135,7 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                             stil="hvit"
                             ariaLabel="Mink antall dager med en dag"
                             ikon={<RangeIcon type="minus" />}
-                            onClick={() => null}
+                            onClick={() => setFieldValue(dagerFieldName, trekkFraDag(antallDager, 0))}
                             disabled={parseInt(antallDager, 10) === 0 ? true : false}
                         />
                     </div>
@@ -101,7 +152,8 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                             stil="hvit"
                             ariaLabel="Øk antall dager med en dag"
                             ikon={<RangeIcon type="plus" />}
-                            onClick={() => null}
+                            onClick={() => setFieldValue(dagerFieldName, leggTilDag(antallDager, 4))}
+                            disabled={parseInt(antallDager, 10) === 4 ? true : false}
                         />
                     </div>
                 </div>
