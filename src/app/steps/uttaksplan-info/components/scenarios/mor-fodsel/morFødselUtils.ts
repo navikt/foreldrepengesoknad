@@ -1,3 +1,4 @@
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
 
 const initialMorFødselValues: MorFødselFormData = {
@@ -7,6 +8,9 @@ const initialMorFødselValues: MorFødselFormData = {
     [MorFødselFormField.fellesperiodeukerMor]: undefined,
 };
 
-export const getInitialMorFødselValues = (): MorFødselFormData => {
-    return initialMorFødselValues;
+export const getInitialMorFødselValues = (defaultPermisjonStartdato: Date): MorFødselFormData => {
+    return {
+        ...initialMorFødselValues,
+        [MorFødselFormField.permisjonStartdato]: dateToISOString(defaultPermisjonStartdato),
+    };
 };

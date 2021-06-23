@@ -28,6 +28,8 @@ import {
     getAntallUkerFellesperiode,
     getAntallUkerMødrekvote,
 } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+import uttaksConstants from 'app/constants';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -91,9 +93,14 @@ const MorFødsel: FunctionComponent<Props> = ({
         : '';
     const familiehendelsesdato = getFamiliehendelsedato(barn);
 
+    const førsteUttaksdag = Uttaksdagen(dayjs(familiehendelsesdato).toDate()).denneEllerNeste();
+    const defaultPermisjonStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
+        uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
+    );
+
     return (
         <MorFødselFormComponents.FormikWrapper
-            initialValues={getInitialMorFødselValues()}
+            initialValues={getInitialMorFødselValues(defaultPermisjonStartdato)}
             onSubmit={() => null}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const tilgjengeligeStønadskontoer = getValgtStønadskontoMengde(
@@ -136,9 +143,9 @@ const MorFødsel: FunctionComponent<Props> = ({
                         <Block padBottom="l" visible={formValues.dekningsgrad !== ''}>
                             <TilgjengeligeDagerGraf
                                 erDeltUttak={true}
-                                erFarEllerMedmor={true}
-                                navnFarMedmor="Ola"
-                                navnMor="Kari"
+                                erFarEllerMedmor={false}
+                                navnFarMedmor={navnFarMedmor}
+                                navnMor={navnMor}
                                 tilgjengeligeDager={getTilgjengeligeDager(tilgjengeligeStønadskontoer, true, undefined)}
                             />
                         </Block>

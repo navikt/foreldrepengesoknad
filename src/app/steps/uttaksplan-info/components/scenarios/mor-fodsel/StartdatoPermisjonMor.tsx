@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block, intlUtils, bemUtils } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { MorFødselFormComponents, MorFødselFormField } from './morFødselFormConfig';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -13,6 +13,20 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { validateErStartdatoFørTermindato } from 'app/steps/uttaksplan-info/validation/uttaksplanInfoValidering';
 import VeilederStartdatoPermisjon from './VeilederStartdatoPermisjon';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
+import { getVarighetString } from 'app/utils/dateUtils';
+
+import './startdatoPermisjonMor.less';
+
+const getVarighetForStartdato = (antallDager: number, barnetErFødt: boolean, intl: IntlShape): string | undefined =>
+    antallDager > 0
+        ? barnetErFødt
+            ? intlUtils(intl, 'uttaksplaninfo.spørsmål.startdatoPermisjon.barnetErFødt.varighet', {
+                  varighet: getVarighetString(antallDager, intl),
+              })
+            : intlUtils(intl, 'uttaksplaninfo.spørsmål.startdatoPermisjon.varighet', {
+                  varighet: getVarighetString(antallDager, intl),
+              })
+        : undefined;
 
 interface Props {
     permisjonStartdato: string;
@@ -22,6 +36,7 @@ interface Props {
 const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, skalIkkeHaUttakFørTermin }) => {
     const intl = useIntl();
     const { barn } = useSøknad();
+    const bem = bemUtils('datoInput');
 
     const erBarnFødt = isFødtBarn(barn);
     const spørsmålNår = erBarnFødt
@@ -51,20 +66,25 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
     return (
         <>
             <Block padBottom="l">
-                <MorFødselFormComponents.DatePicker
-                    name={MorFødselFormField.permisjonStartdato}
-                    label={spørsmålNår}
-                    disabled={skalIkkeHaUttakFørTermin}
-                    maxDate={maksDato}
-                    dayPickerProps={{
-                        initialMonth: ISOStringToDate(permisjonStartdato) || familiehendelsesdatoDate,
-                    }}
-                    validate={validateErStartdatoFørTermindato(
-                        intl,
-                        familiehendelsesdatoDate,
-                        skalIkkeHaUttakFørTermin
-                    )}
-                />
+                <div className={bem.block}>
+                    <MorFødselFormComponents.DatePicker
+                        name={MorFødselFormField.permisjonStartdato}
+                        label={spørsmålNår}
+                        disabled={skalIkkeHaUttakFørTermin}
+                        maxDate={maksDato}
+                        dayPickerProps={{
+                            initialMonth: ISOStringToDate(permisjonStartdato) || familiehendelsesdatoDate,
+                        }}
+                        validate={validateErStartdatoFørTermindato(
+                            intl,
+                            familiehendelsesdatoDate,
+                            skalIkkeHaUttakFørTermin
+                        )}
+                    />
+                    <div className={bem.element('postfix')}>
+                        {getVarighetForStartdato(antallDager, erBarnFødt, intl)}
+                    </div>
+                </div>
             </Block>
             <Block padBottom={visVeileder ? 'l' : 'm'}>
                 <MorFødselFormComponents.Checkbox
