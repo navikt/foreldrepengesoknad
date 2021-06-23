@@ -2,7 +2,7 @@ import { QuestionConfig, Questions } from '@navikt/sif-common-question-config';
 import { hasValue } from '@navikt/fp-common';
 import { MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
 
-const AnnenForelderFormConfig: QuestionConfig<MorFødselFormData, MorFødselFormField> = {
+const MorFødselFormConfig: QuestionConfig<MorFødselFormData, MorFødselFormField> = {
     [MorFødselFormField.dekningsgrad]: {
         isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
         isIncluded: () => true,
@@ -25,4 +25,4 @@ const AnnenForelderFormConfig: QuestionConfig<MorFødselFormData, MorFødselForm
     },
 };
 
-export const morFødselQuestionsConfig = Questions<MorFødselFormData, MorFødselFormField>(AnnenForelderFormConfig);
+export const morFødselQuestionsConfig = Questions<MorFødselFormData, MorFødselFormField>(MorFødselFormConfig);

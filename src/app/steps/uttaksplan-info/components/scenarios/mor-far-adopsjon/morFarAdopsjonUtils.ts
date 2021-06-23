@@ -3,6 +3,7 @@ import { MorFarAdopsjonFormData, MorFarAdopsjonFormField } from './morFarAdopsjo
 
 const initialMorFødselValues: MorFarAdopsjonFormData = {
     [MorFarAdopsjonFormField.harAnnenForelderSøktFP]: YesOrNo.UNANSWERED,
+    [MorFarAdopsjonFormField.dekningsgrad]: '',
 };
 
 export const getInitialMorFarAdopsjonValues = (): MorFarAdopsjonFormData => {

@@ -43,7 +43,45 @@ export const visUttaksplanAleneomsorg = () => {
     );
 };
 
-export const visUttaksplanMedDeltUttak = () => {
+export const visUttaksplanMedDeltUttakDerMorSøker = () => {
+    const restMock = (apiMock: MockAdapter) => {
+        apiMock.onGet(UTTAKSPLAN_ANNEN_URL).replyOnce(200, {});
+        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskontoDeltUttak100);
+        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskontoDeltUttak80);
+    };
+    const originalContext = context as ForeldrepengesøknadContextState;
+    return (
+        <AxiosMock mock={restMock}>
+            <ForeldrepengerStateMock
+                søknad={
+                    {
+                        ...originalContext,
+                        søknad: {
+                            ...originalContext.søknad,
+                            søker: {
+                                ...originalContext.søknad.søker,
+                                erAleneOmOmsorg: false,
+                            },
+                            annenForelder: {
+                                fornavn: 'Espen',
+                                etternavn: 'Utvikler',
+                                fnr: '1212121313',
+                                harRettPåForeldrepenger: true,
+                                kanIkkeOppgis: false,
+                            },
+                        },
+                    } as ForeldrepengesøknadContextState
+                }
+                søkerinfo={søkerinfo as SøkerinfoDTO}
+            >
+                <UttaksplanInfo />
+            </ForeldrepengerStateMock>
+        </AxiosMock>
+    );
+};
+
+//TODO Skriv ferdig
+export const visUttaksplanMedDeltUttakDerFarSøker = () => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onGet(UTTAKSPLAN_ANNEN_URL).replyOnce(200, {});
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskontoDeltUttak100);

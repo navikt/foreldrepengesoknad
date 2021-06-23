@@ -166,6 +166,7 @@
     "uttaksplaninfo.veileder.dekningsgrad80": "Den totale utbetalinga blir høgare dersom du vel 100 prosent. Valet gjeld dykk begge, og de kan ikkje endre det seinare.",
     "uttaksplaninfo.dekningsgrad.label.deltUttak": "Hvor lang periode med foreldrepengar har dykk valt?",
     "uttaksplaninfo.spørsmål.harAnnenForelderSøktFP.label": "Har {navnAnnenForelder} foreldrepengar?",
+    "uttaksplaninfo.informasjon.tilAnnenForelder": "Du må velje den same lengda på perioden med foreldrepengar som de valde i søknaden til {navn}.",
     "utenlandsopphold.infoOmFødselsattest": "Du har opplyst at du skal være i {land} når du har termin {termindato}. Hvis du føder i utlandet må du ettersende fødselsattest til oss slik at vi får registrert fødselsdatoen til barnet. Grunnen til at du må sende inn fødselsattest er at vi ikke får inn opplysninger om fødselen automatisk når du ikke føder i Norge.",
     "utenlandsopphold.knapp.leggTilLand": "Legg til nytt utenlandsopphold",
     "utenlandsopphold.leggTilUtenlandsopphold.fraogmed": "Frå og med",
