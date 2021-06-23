@@ -2,6 +2,7 @@ import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønads
 import React, { FunctionComponent } from 'react';
 import FarMedmorFødselFørsteganggsøknadBeggeHarRett from './scenarios/far-medmor-fødsel-begge-har-rett/FarMedmorFødselBeggeHarRett';
 import MorFødsel from './scenarios/mor-fodsel/MorFødsel';
+import MorFarAdopsjon from './scenarios/mor-far-adopsjon/MorFarAdopsjon';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -19,6 +20,10 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                 tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
             />
             <MorFødsel
+                tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+            />
+            <MorFarAdopsjon
                 tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                 tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
             />
