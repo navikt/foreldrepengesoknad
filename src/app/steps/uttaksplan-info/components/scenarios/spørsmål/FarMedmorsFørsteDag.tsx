@@ -7,16 +7,10 @@ import { useIntl } from 'react-intl';
 interface Props {
     FormComponents: TypedFormComponents<any, any, string>;
     fieldName: string;
-    navnMor: string;
     familiehendelsesdato: string;
 }
 
-const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
-    FormComponents,
-    fieldName,
-    familiehendelsesdato,
-    navnMor,
-}) => {
+const FarMedmorsFørsteDag: FunctionComponent<Props> = ({ FormComponents, fieldName, familiehendelsesdato }) => {
     const intl = useIntl();
 
     const maxDate = ISOStringToDate(
@@ -29,10 +23,11 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
     return (
         <FormComponents.DatePicker
             name={fieldName}
-            label={intlUtils(intl, 'uttaksplaninfo.farSinFørsteUttaksdagSpørsmål.label', { navnMor })}
+            label={intlUtils(intl, 'uttaksplaninfo.farSinFørsteUttaksdagSpørsmål.label')}
             maxDate={maxDate}
             minDate={minDate}
             showYearSelector={true}
+            disableWeekend={true}
         />
     );
 };

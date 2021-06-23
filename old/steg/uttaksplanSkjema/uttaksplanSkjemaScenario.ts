@@ -1,6 +1,6 @@
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { Søknadsinfo } from '../../selectors/types';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { EksisterendeSak } from './../../../old/types/EksisterendeSak';
 import { skalKunneViseMorsUttaksplanForFarEllerMedmor } from 'app/util/uttaksplan/uttakUtils';
 
 export enum UttaksplanSkjemaScenario {
@@ -39,7 +39,7 @@ export const getUttaksplanSkjemaScenario = (
     } else if (søker.erMor && søknaden.erFødsel) {
         scenario = UttaksplanSkjemaScenario.s3_morFødsel;
     } else if (
-        søknaden.situasjon === Søkersituasjon.ADOPSJON &&
+        søknaden.erAdopsjon &&
         ((annenForelder.kanIkkeOppgis !== true && annenForelder.harRett !== undefined) ||
             annenForelder.kanIkkeOppgis === true ||
             søker.erAleneOmOmsorg)

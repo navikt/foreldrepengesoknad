@@ -2,14 +2,13 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { AnnenForelderFormComponents, AnnenForelderFormField } from '../annenforelderFormConfig';
-import Fieldset from 'app/components/fieldset/Fieldset';
+import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
-
-import './oppgiPersonalia.less';
 import { validateEtternavn, validateFornavn } from '../validation/annenForelderValidering';
 import { validateFødselsnummer } from 'app/utils/validationUtil';
+import { Element } from 'nav-frontend-typografi';
 
-const bem = bemUtils('oppgiPersonalia');
+import './oppgiPersonalia.less';
 
 interface Props {
     fornavn: string | undefined;
@@ -29,10 +28,11 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
     søkersFødselsnummer,
 }) => {
     const intl = useIntl();
+    const bem = bemUtils('oppgiPersonalia');
 
     return (
         <div className={bem.block}>
-            <Fieldset legend={intlUtils(intl, 'annenForelder.spørsmål.navn')}>
+            <SkjemaGruppe legend={<Element>{intlUtils(intl, 'annenForelder.spørsmål.navn')}</Element>}>
                 <Block padBottom="l" visible={visibility.isVisible(AnnenForelderFormField.fornavn)}>
                     <div className={bem.element('nameInputsWrapper')}>
                         <AnnenForelderFormComponents.Input
@@ -61,7 +61,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
                         }
                     />
                 </Block>
-            </Fieldset>
+            </SkjemaGruppe>
             <Block padBottom="l" visible={visibility.isVisible(AnnenForelderFormField.fnr)}>
                 <AnnenForelderFormComponents.Input
                     name={AnnenForelderFormField.fnr}

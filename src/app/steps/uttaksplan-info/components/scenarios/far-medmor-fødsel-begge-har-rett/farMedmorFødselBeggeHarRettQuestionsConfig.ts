@@ -22,6 +22,14 @@ const FarMedmorFødselBeggeHarRettFormConfig: QuestionConfig<
         isIncluded: ({ morsSisteDag }) => hasValue(morsSisteDag),
         isAnswered: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
     },
+    [FarMedmorFødselBeggeHarRettFormField.antallDagerFellesperiode]: {
+        isIncluded: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
+        isAnswered: ({ antallDagerFellesperiode }) => hasValue(antallDagerFellesperiode),
+    },
+    [FarMedmorFødselBeggeHarRettFormField.antallUkerFellesperiode]: {
+        isIncluded: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
+        isAnswered: ({ antallUkerFellesperiode }) => hasValue(antallUkerFellesperiode),
+    },
 };
 
 const farMedmorFødselBeggeHarRettQuestionsConfig = Questions<
