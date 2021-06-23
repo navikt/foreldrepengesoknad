@@ -1,0 +1,9 @@
+{
+  "kontoer": {
+      "MØDREKVOTE": 95,
+      "FEDREKVOTE": 95,
+      "FELLESPERIODE": 195,
+      "FORELDREPENGER_FØR_FØDSEL": 15,
+      "FLERBARNSDAGER": 105
+  }
+}

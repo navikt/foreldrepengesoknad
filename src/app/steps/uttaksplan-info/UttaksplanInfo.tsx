@@ -1,8 +1,5 @@
-import { Block, intlUtils, Step } from '@navikt/fp-common';
-import SøknadRoutes from 'app/routes/routes';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import { intlUtils, Step } from '@navikt/fp-common';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
@@ -19,7 +16,6 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 const UttaksplanInfo = () => {
     const intl = useIntl();
 
-    const onValidSubmitHandler = () => [];
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
 
@@ -42,7 +38,6 @@ const UttaksplanInfo = () => {
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(Dekningsgrad.ÅTTI_PROSENT, '1', false, barn, søker, annenForelder)
     );
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
     const onAvbrytSøknad = useAvbrytSøknad();
 
     if (!stønadskontoer100 || !stønadskontoer80) {
@@ -70,9 +65,6 @@ const UttaksplanInfo = () => {
                 tilgjengeligeStønadskontoer100DTO={stønadskontoer100}
                 tilgjengeligeStønadskontoer80DTO={stønadskontoer80}
             />
-            <Block textAlignCenter={true}>
-                <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
-            </Block>
         </Step>
     );
 };

@@ -2,6 +2,7 @@ import SøknadRoutes from 'app/routes/routes';
 import Sak from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Søknad } from './types/Søknad';
+import UttaksplanInfo from './types/UttaksplanInfo';
 
 export interface ForeldrepengesøknadContextState {
     version: number;
@@ -12,6 +13,7 @@ export interface ForeldrepengesøknadContextState {
     harAnnenPartEksisterendeSak?: boolean;
     annenPartEksisterendeSakSaksnummer?: string;
     saker: Sak[];
+    uttaksplanInfo?: UttaksplanInfo;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
@@ -45,4 +47,5 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
     },
     søkerinfo: undefined!,
     saker: [],
+    uttaksplanInfo: undefined,
 };

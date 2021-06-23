@@ -7,6 +7,7 @@ import Barn from '../types/Barn';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
 import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
+import UttaksplanInfo from '../types/UttaksplanInfo';
 
 export enum ForeldrepengesøknadContextActionKeys {
     SET_HARGODKJENTVILKÅR = 'setVelkommen',
@@ -21,6 +22,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_INFORMASJON_OM_UTENLANDSOPPHOLD = 'setInformasjonOmUtenlandsopphold',
     SET_INFORMASJON_OM_ANDRE_INNTEKTER = 'setInformasjonOmAndreInntekter',
     SET_SAKER = 'setSaker',
+    SET_UTTAKSPLAN_INFO = 'setUttaksplanInfo',
 }
 
 interface SetVelkommen {
@@ -133,6 +135,16 @@ const setSaker = (payload: Sak[]): SetSaker => ({
     payload,
 });
 
+interface SetUttaksplanInfo {
+    type: ForeldrepengesøknadContextActionKeys.SET_UTTAKSPLAN_INFO;
+    payload: UttaksplanInfo;
+}
+
+const setUttaksplanInfo = (payload: UttaksplanInfo): SetUttaksplanInfo => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_UTTAKSPLAN_INFO,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetSøkersituasjon
@@ -144,6 +156,7 @@ export type ForeldrepengesøknadContextAction =
     | SetSøker
     | SetInformasjonOmUtenlandsopphold
     | SetSaker
+    | SetUttaksplanInfo
     | ApplyStoredState;
 
 export default {
@@ -158,4 +171,5 @@ export default {
     setSøker,
     setInformasjonOmUtenlandsopphold,
     setSaker,
+    setUttaksplanInfo,
 };
