@@ -83,6 +83,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const navnAnnenPart = isAnnenForelderOppgitt(annenForelder)
         ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn)
         : '';
+    const navnMor = erSøkerMor ? navnSøker : navnAnnenPart;
+    const navnFarMedmor = erSøkerMor ? navnAnnenPart : navnSøker;
 
     const erAdoptertIUtlandet = isAdoptertAnnetBarn(barn) ? barn.adoptertIUtlandet : false;
     const antallBarn = parseInt(barn.antallBarn, 10);
@@ -102,6 +104,11 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer100DTO,
                     familiehendelsesdato,
                     erMorUfør
+                );
+                const tilgjengeligeDager = getTilgjengeligeDager(
+                    tilgjengeligeStønadskontoer,
+                    erDeltUttak,
+                    erSøkerMor ? Forelder.mor : Forelder.farMedmor
                 );
 
                 const fellesperiodeukerMor = Math.round(
@@ -162,13 +169,9 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             <TilgjengeligeDagerGraf
                                 erDeltUttak={erDeltUttak}
                                 erFarEllerMedmor={!erSøkerMor}
-                                navnFarMedmor={erSøkerMor ? navnAnnenPart : navnSøker}
-                                navnMor={erSøkerMor ? navnSøker : navnAnnenPart}
-                                tilgjengeligeDager={getTilgjengeligeDager(
-                                    tilgjengeligeStønadskontoer,
-                                    erDeltUttak,
-                                    erSøkerMor ? Forelder.mor : Forelder.farMedmor
-                                )}
+                                navnFarMedmor={navnFarMedmor}
+                                navnMor={navnMor}
+                                tilgjengeligeDager={tilgjengeligeDager}
                             />
                         </Block>
                         <Block
@@ -189,7 +192,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             <MorsSisteDagSpørsmål
                                 FormComponents={MorFarAdopsjonFormComponents}
                                 fieldName={MorFarAdopsjonFormField.morsSisteDag}
-                                navnMor={erSøkerMor ? navnSøker : navnAnnenPart}
+                                navnMor={navnMor}
                                 familiehendelsesdato={familiehendelsesdato}
                             />
                         </Block>
@@ -204,6 +207,10 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 FormComponents={MorFarAdopsjonFormComponents}
                                 fieldName={MorFarAdopsjonFormField.farMedmorsFørsteDag}
                                 familiehendelsesdato={familiehendelsesdato}
+                                setFieldValue={setFieldValue}
+                                farMedmorsFørsteDag={MorFarAdopsjonFormField.farMedmorsFørsteDag}
+                                morsSisteDag={ISOStringToDate(formValues.morsSisteDag)}
+                                navnMor={navnMor}
                             />
                         </Block>
                         <Block
@@ -224,6 +231,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 antallDager={formValues.antallDagerFellesperiode}
                                 antallUker={formValues.antallUkerFellesperiode}
                                 setFieldValue={setFieldValue}
+                                ukerMedFellesperiode={tilgjengeligeDager.dagerFelles / 5}
                             />
                         </Block>
                         <Block
@@ -260,8 +268,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                         id="uttaksplaninfo.veileder.flerbarnsInformasjon"
                                         values={{
                                             uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
-                                            navnFar: erSøkerMor ? navnAnnenPart : navnSøker,
-                                            navnMor: erSøkerMor ? navnSøker : navnAnnenPart,
+                                            navnFar: navnFarMedmor,
+                                            navnMor: navnMor,
                                         }}
                                     />
                                 </Veilederpanel>
@@ -270,8 +278,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 setFieldValue={setFieldValue}
                                 fellesperiodeukerMor={formValues.fellesperiodeukerMor || fellesperiodeukerMor}
                                 ukerFellesperiode={Math.floor(getAntallUkerFellesperiode(tilgjengeligeStønadskontoer))}
-                                mor={erSøkerMor ? navnSøker : navnAnnenPart}
-                                farMedmor={erSøkerMor ? navnAnnenPart : navnSøker}
+                                mor={navnMor}
+                                farMedmor={navnFarMedmor}
                                 annenForelderErFarEllerMedmor={!erSøkerMor}
                                 antallUkerFedreKvote={getAntallUkerFedrekvote(tilgjengeligeStønadskontoer)}
                                 antallUkerMødreKvote={getAntallUkerMødrekvote(tilgjengeligeStønadskontoer)}
