@@ -7,8 +7,8 @@ const initialFarMedmorFødselBeggeHarRettValues: FarMedmorFødselBeggeHarRettFor
     [FarMedmorFødselBeggeHarRettFormField.dekningsgrad]: '',
     [FarMedmorFødselBeggeHarRettFormField.morsSisteDag]: '',
     [FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag]: '',
-    [FarMedmorFødselBeggeHarRettFormField.antallUkerFellesperiode]: '',
-    [FarMedmorFødselBeggeHarRettFormField.antallDagerFellesperiode]: '',
+    [FarMedmorFødselBeggeHarRettFormField.antallUkerFellesperiode]: '0',
+    [FarMedmorFødselBeggeHarRettFormField.antallDagerFellesperiode]: '0',
 };
 
 export const getInitialFarMedmorFødselBeggeHarRettValues = (): FarMedmorFødselBeggeHarRettFormData => {

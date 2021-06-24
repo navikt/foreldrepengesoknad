@@ -23,6 +23,7 @@ import farMedmorFødselBeggeHarRettQuestionsConfig from './farMedmorFødselBegge
 import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -69,6 +70,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                     erMorUfør
                 );
                 const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility(formValues);
+                const tilgjengeligeDager = getTilgjengeligeDager(tilgjengeligeStønadskontoer, true, undefined);
 
                 return (
                     <FarMedmorFødselBeggeHarRettFormComponents.Form
@@ -115,7 +117,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 erFarEllerMedmor={true}
                                 navnFarMedmor={navnFar}
                                 navnMor={navnMor}
-                                tilgjengeligeDager={getTilgjengeligeDager(tilgjengeligeStønadskontoer, true, undefined)}
+                                tilgjengeligeDager={tilgjengeligeDager}
                             />
                         </Block>
                         <Block padBottom="l" visible={erFarEllerMedmor && formValues.dekningsgrad !== ''}>
@@ -145,6 +147,10 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 FormComponents={FarMedmorFødselBeggeHarRettFormComponents}
                                 fieldName={FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag}
                                 familiehendelsesdato={familiehendelsesdato}
+                                setFieldValue={setFieldValue}
+                                farMedmorsFørsteDag={FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag}
+                                morsSisteDag={ISOStringToDate(formValues.morsSisteDag)}
+                                navnMor={navnMor}
                             />
                         </Block>
                         <Block
@@ -160,6 +166,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 antallDager={formValues.antallDagerFellesperiode}
                                 antallUker={formValues.antallUkerFellesperiode}
                                 setFieldValue={setFieldValue}
+                                ukerMedFellesperiode={tilgjengeligeDager.dagerFelles / 5}
                             />
                         </Block>
                     </FarMedmorFødselBeggeHarRettFormComponents.Form>
