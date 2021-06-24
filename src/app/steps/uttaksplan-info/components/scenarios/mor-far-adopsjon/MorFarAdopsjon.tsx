@@ -54,7 +54,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         person: { fornavn, mellomnavn, etternavn },
     } = useSøkerinfo();
 
-    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon' || isAdoptertBarn(barn);
+    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const søkerErAleneOmOmsorg = !!erAleneOmOmsorg;
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepenger !== undefined
