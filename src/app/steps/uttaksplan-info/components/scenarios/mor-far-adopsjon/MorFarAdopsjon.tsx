@@ -24,7 +24,11 @@ import {
 import { isAdoptertAnnetBarn, isAdoptertBarn, isAdoptertStebarn } from 'app/context/types/Barn';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { dateIsSameOrAfter, findEldsteDato } from 'app/utils/dateUtils';
-import { MorFarAdopsjonFormComponents, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
+import {
+    MorFarAdopsjonFormComponents,
+    MorFarAdopsjonFormData,
+    MorFarAdopsjonFormField,
+} from './morFarAdopsjonFormConfig';
 import { morFarAdopsjonQuestionsConfig } from './morFarAdopsjonQuestionsConfig';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
@@ -33,6 +37,11 @@ import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
 import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
+import SøknadRoutes from 'app/routes/routes';
+import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import actionCreator from 'app/context/action/actionCreator';
+import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
+import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -53,6 +62,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const {
         person: { fornavn, mellomnavn, etternavn },
     } = useSøkerinfo();
+    const lagretUttaksplanInfo = useUttaksplanInfo<MorFarAdopsjonUttaksplanInfo>();
 
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const søkerErAleneOmOmsorg = !!erAleneOmOmsorg;
@@ -62,6 +72,16 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     const shouldRender =
         erAdopsjon && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelder.kanIkkeOppgis || søkerErAleneOmOmsorg);
+
+    const onValidSubmitHandler = (values: MorFarAdopsjonFormData) => {
+        const uttaksplanInfo: MorFarAdopsjonUttaksplanInfo = {
+            ...values,
+            dekningsgrad: parseInt(values.dekningsgrad, 10),
+        };
+        return [actionCreator.setUttaksplanInfo(uttaksplanInfo)];
+    };
+
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
 
     if (!shouldRender || !isAdoptertBarn(barn)) {
         return null;
@@ -100,8 +120,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     return (
         <MorFarAdopsjonFormComponents.FormikWrapper
-            initialValues={getInitialMorFarAdopsjonValues()}
-            onSubmit={() => undefined}
+            initialValues={getInitialMorFarAdopsjonValues(lagretUttaksplanInfo)}
+            onSubmit={onValidSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFarAdopsjonQuestionsConfig.getVisbility({
                     ...formValues,

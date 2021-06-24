@@ -18,7 +18,7 @@ const FarMedmorFødselOgMorHarIkkeRett = () => {
         return null;
     }
 
-    return <div>Far medmor fødsel og mor har ikke rett</div>;
+    return <div>Far medmor fødsel og mor har ikke rett Scenario6</div>;
 };
 
 export default FarMedmorFødselOgMorHarIkkeRett;

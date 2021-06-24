@@ -20,7 +20,7 @@ const FørstegangssøknadMedAnnenPart = () => {
     //     return null;
     // }
 
-    return <div>Førstegangsøknad med annen part</div>;
+    return <div>Førstegangsøknad med annen part Scenario9</div>;
 };
 
 export default FørstegangssøknadMedAnnenPart;

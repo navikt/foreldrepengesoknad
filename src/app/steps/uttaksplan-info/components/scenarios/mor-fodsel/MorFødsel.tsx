@@ -34,9 +34,10 @@ import uttaksConstants from 'app/constants';
 import { Forelder } from 'app/types/Forelder';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import SøknadRoutes from 'app/routes/routes';
-import UttaksplanInfo from 'app/context/types/UttaksplanInfo';
+import { MorFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { morFødselQuestionsConfig } from './morFødselQuestionsConfig';
+import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -70,13 +71,15 @@ const MorFødsel: FunctionComponent<Props> = ({
     const {
         person: { fornavn, mellomnavn, etternavn },
     } = useSøkerinfo();
+    const lagretUttaksplanInfo = useUttaksplanInfo<MorFødselUttaksplanInfo>();
+
     const erMor = !isFarEllerMedmor(søkersituasjon.rolle);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
 
     const shouldRender = erMor && erFødsel;
 
     const onValidSubmitHandler = (values: MorFødselFormData) => {
-        const uttaksplanInfo: UttaksplanInfo = {
+        const uttaksplanInfo: MorFødselUttaksplanInfo = {
             ...values,
             dekningsgrad: parseInt(values.dekningsgrad, 10),
         };
@@ -118,7 +121,7 @@ const MorFødsel: FunctionComponent<Props> = ({
 
     return (
         <MorFødselFormComponents.FormikWrapper
-            initialValues={getInitialMorFødselValues(defaultPermisjonStartdato)}
+            initialValues={getInitialMorFødselValues(defaultPermisjonStartdato, lagretUttaksplanInfo)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFødselQuestionsConfig.getVisbility({
