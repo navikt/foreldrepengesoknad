@@ -1,25 +1,37 @@
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { Hovedknapp } from 'nav-frontend-knapper';
+import Veilederpanel from 'nav-frontend-veilederpanel';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { getNavnGenitivEierform } from 'app/utils/personUtils';
+import { getNavnGenitivEierform, formaterNavn } from 'app/utils/personUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoMengde } from 'app/utils/stønadskontoUtils';
-import { formaterNavn } from 'app/utils/personUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getInitialMorFarAdopsjonValues } from './morFarAdopsjonUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import { MorFarAdopsjonFormComponents, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederNormal from 'app/assets/VeilederNormal';
-import { morFarAdopsjonQuestionsConfig } from './morFarAdopsjonQuestionsConfig';
-import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
-import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { Forelder } from 'app/types/Forelder';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import { MorFarAdopsjonFormComponents, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
+import { morFarAdopsjonQuestionsConfig } from './morFarAdopsjonQuestionsConfig';
+import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
+import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
+import StartdatoAdopsjon from './StartdatoAdopsjon';
+import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
+import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
+import { dateIsSameOrAfter } from 'app/utils/dateUtils';
+import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
+import { isAdoptertAnnetBarn } from 'app/context/types/Barn';
+import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
+import { getFlerbarnsuker } from 'app/steps/uttaksplan-info/utils/uttaksplanHarForMangeFlerbarnsuker';
+import {
+    getAntallUkerFedrekvote,
+    getAntallUkerFellesperiode,
+    getAntallUkerMødrekvote,
+} from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -72,11 +84,14 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn)
         : '';
 
+    const erAdoptertIUtlandet = isAdoptertAnnetBarn(barn) ? barn.adoptertIUtlandet : false;
+    const antallBarn = parseInt(barn.antallBarn, 10);
+
     return (
         <MorFarAdopsjonFormComponents.FormikWrapper
             initialValues={getInitialMorFarAdopsjonValues()}
             onSubmit={() => undefined}
-            renderForm={({ values: formValues }) => {
+            renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFarAdopsjonQuestionsConfig.getVisbility({
                     ...formValues,
                 });
@@ -89,6 +104,10 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                     erMorUfør
                 );
 
+                const fellesperiodeukerMor = Math.round(
+                    (getAntallUkerFellesperiode(tilgjengeligeStønadskontoer) || 0) / 2
+                );
+
                 return (
                     <MorFarAdopsjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                         <Block padBottom="l" visible={harAnnenForeldreRettPåForeldrepenger} textAlignCenter={true}>
@@ -99,16 +118,18 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 })}
                             />
                         </Block>
-                        <Block padBottom="l" visible={formValues.harAnnenForelderSøktFP === YesOrNo.YES}>
-                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                                <FormattedMessage
-                                    id="uttaksplaninfo.informasjon.tilAnnenForelder"
-                                    values={{
-                                        navn: getNavnGenitivEierform(fornavnAnnenForeldre!, intl.locale),
-                                    }}
-                                />
-                            </Veilederpanel>
-                        </Block>
+                        {formValues.harAnnenForelderSøktFP === YesOrNo.YES && (
+                            <Block padBottom="l">
+                                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                                    <FormattedMessage
+                                        id="uttaksplaninfo.informasjon.tilAnnenForelder"
+                                        values={{
+                                            navn: getNavnGenitivEierform(fornavnAnnenForeldre!, intl.locale),
+                                        }}
+                                    />
+                                </Veilederpanel>
+                            </Block>
+                        )}
                         <Block
                             padBottom="l"
                             visible={
@@ -148,6 +169,112 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                     erDeltUttak,
                                     erSøkerMor ? Forelder.mor : Forelder.farMedmor
                                 )}
+                            />
+                        </Block>
+                        <Block
+                            visible={
+                                visibility.isAnswered(MorFarAdopsjonFormField.dekningsgrad) &&
+                                formValues.harAnnenForelderSøktFP !== YesOrNo.YES
+                            }
+                        >
+                            <StartdatoAdopsjon />
+                        </Block>
+                        <Block
+                            padBottom="l"
+                            visible={
+                                visibility.isAnswered(MorFarAdopsjonFormField.dekningsgrad) &&
+                                formValues.harAnnenForelderSøktFP === YesOrNo.YES
+                            }
+                        >
+                            <MorsSisteDagSpørsmål
+                                FormComponents={MorFarAdopsjonFormComponents}
+                                fieldName={MorFarAdopsjonFormField.morsSisteDag}
+                                navnMor={erSøkerMor ? navnSøker : navnAnnenPart}
+                                familiehendelsesdato={familiehendelsesdato}
+                            />
+                        </Block>
+                        <Block
+                            padBottom="l"
+                            visible={
+                                visibility.isAnswered(MorFarAdopsjonFormField.morsSisteDag) &&
+                                formValues.harAnnenForelderSøktFP === YesOrNo.YES
+                            }
+                        >
+                            <FarMedmorsFørsteDag
+                                FormComponents={MorFarAdopsjonFormComponents}
+                                fieldName={MorFarAdopsjonFormField.farMedmorsFørsteDag}
+                                familiehendelsesdato={familiehendelsesdato}
+                            />
+                        </Block>
+                        <Block
+                            padBottom="l"
+                            visible={
+                                visibility.isAnswered(MorFarAdopsjonFormField.farMedmorsFørsteDag) &&
+                                !dateIsSameOrAfter(
+                                    ISOStringToDate(formValues.morsSisteDag),
+                                    ISOStringToDate(formValues.farMedmorsFørsteDag)
+                                ) &&
+                                formValues.harAnnenForelderSøktFP === YesOrNo.YES
+                            }
+                        >
+                            <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
+                                FormComponents={MorFarAdopsjonFormComponents}
+                                ukerFieldName={MorFarAdopsjonFormField.antallUkerFellesperiode}
+                                dagerFieldName={MorFarAdopsjonFormField.antallDagerFellesperiode}
+                                antallDager={formValues.antallDagerFellesperiode}
+                                antallUker={formValues.antallUkerFellesperiode}
+                                setFieldValue={setFieldValue}
+                            />
+                        </Block>
+                        <Block
+                            padBottom="l"
+                            /* visible={
+                                startdatoPermisjon !== undefined &&
+                                moment(ISOStringToDate(latestDate)).isBefore(
+                                    moment(ISOStringToDate(startdatoPermisjon))
+                                ) &&
+                                stebarnsadopsjon !== true
+                            }*/
+                        >
+                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                                <FormattedMessage
+                                    id={
+                                        erAdoptertIUtlandet === false
+                                            ? 'uttaksplaninfo.info.ikkeAdoptertIUtlandet'
+                                            : 'uttaksplaninfo.info.adoptertIUtlandet'
+                                    }
+                                />
+                            </Veilederpanel>
+                        </Block>
+                        <Block visible={erAleneOmOmsorg === false && harAnnenForeldreRettPåForeldrepenger}>
+                            <Block
+                                padBottom="l"
+                                visible={
+                                    antallBarn > 1 &&
+                                    /*skjema.startdatoPermisjon !== undefined && */ formValues.harAnnenForelderSøktFP ===
+                                        YesOrNo.YES
+                                }
+                            >
+                                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                                    <FormattedMessage
+                                        id="uttaksplaninfo.veileder.flerbarnsInformasjon"
+                                        values={{
+                                            uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
+                                            navnFar: erSøkerMor ? navnAnnenPart : navnSøker,
+                                            navnMor: erSøkerMor ? navnSøker : navnAnnenPart,
+                                        }}
+                                    />
+                                </Veilederpanel>
+                            </Block>
+                            <FordelingFellesperiodeSpørsmål
+                                setFieldValue={setFieldValue}
+                                fellesperiodeukerMor={formValues.fellesperiodeukerMor || fellesperiodeukerMor}
+                                ukerFellesperiode={Math.floor(getAntallUkerFellesperiode(tilgjengeligeStønadskontoer))}
+                                mor={erSøkerMor ? navnSøker : navnAnnenPart}
+                                farMedmor={erSøkerMor ? navnAnnenPart : navnSøker}
+                                annenForelderErFarEllerMedmor={!erSøkerMor}
+                                antallUkerFedreKvote={getAntallUkerFedrekvote(tilgjengeligeStønadskontoer)}
+                                antallUkerMødreKvote={getAntallUkerMødrekvote(tilgjengeligeStønadskontoer)}
                             />
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>

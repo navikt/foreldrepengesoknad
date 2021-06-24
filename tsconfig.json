@@ -22,5 +22,5 @@
         "target": "ESNext",
         "typeRoots": ["./node_modules/@types", "./src/@types"]
     },
-    "include": ["src/app/**/*", "src/@types", "src/uttaksplan/types"]
+    "include": ["src/app/**/*", "src/@types", "src/uttaksplan/types", "src/storybook"]
 }

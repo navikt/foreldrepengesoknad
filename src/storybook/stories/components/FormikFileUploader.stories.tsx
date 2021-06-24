@@ -1,6 +1,6 @@
 import React from 'react';
 import withFormik from 'storybook-formik';
-
+import { AttachmentType } from 'app/types/AttachmentType';
 import withIntlProvider from '../../decorators/withIntl';
 import FormikFileUploader from '../../../app/components/formik-file-uploader/FormikFileUploader';
 import { Attachment } from '../../../app/types/Attachment';
@@ -17,7 +17,7 @@ export const visFilOpplaster = () => (
         attachments={[]}
         name="field_name"
         label="Last opp vedlegg"
-        attachmentType={{} as Attachment}
+        attachmentType={AttachmentType.ADOPSJONSVEDTAK}
         skjemanummer={Skjemanummer.ANNET}
     />
 );
@@ -35,13 +35,7 @@ export const visFilSomErLastetOpp = () => (
         }
         name="field_name"
         label="Last opp vedlegg"
-        attachmentType={
-            {
-                id: '1',
-                pending: false,
-                filename: 'Fil som er lastet opp',
-            } as Attachment
-        }
+        attachmentType={AttachmentType.ADOPSJONSVEDTAK}
         skjemanummer={Skjemanummer.ANNET}
     />
 );

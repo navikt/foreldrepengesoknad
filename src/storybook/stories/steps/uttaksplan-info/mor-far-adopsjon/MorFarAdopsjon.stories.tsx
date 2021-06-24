@@ -1,20 +1,22 @@
 import React from 'react';
 import MockAdapter from 'axios-mock-adapter/types';
 
-import søkerinfo from './testdata/søkerinfo.json';
-import context from './testdata/context.json';
+import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import søkerinfoMorSøker from './testdata/søkerinfoMorSøker.json';
+import contextMorSøker from './testdata/contextMorSøker.json';
+import søkerinfoFarSøker from './testdata/søkerinfoFarSøker.json';
+import contextFarSøker from './testdata/contextFarSøker.json';
 import stønadskonto100 from './../testdata/stønadskonto100.json';
 import stønadskonto80 from './../testdata/stønadskonto80.json';
 import stønadskontoDeltUttak80 from './../testdata/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak100 from './../testdata/stønadskontoDeltUttak100.json';
-import UttaksplanInfo from '../../../../../app/steps/uttaksplan-info/UttaksplanInfo';
 import withIntl from '../../../../decorators/withIntl';
 import withRouter from '../../../../decorators/withRouter';
 import withForeldrepengersøknadContext from '../../../../decorators/withForeldrepengersøknadContext';
 import AxiosMock from '../../../../utils/AxiosMock';
 import ForeldrepengerStateMock from '../../../../utils/ForeldrepengerStateMock';
-import { ForeldrepengesøknadContextState } from '../../../../../app/context/ForeldrepengesøknadContextConfig';
-import { SøkerinfoDTO } from '../../../../../app/types/SøkerinfoDTO';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/uttaksplanannen';
 const STØNADSKONTO_URL = '/uttak-url/konto';
@@ -34,8 +36,8 @@ export const visUttaksplanAleneomsorg = () => {
     return (
         <AxiosMock mock={restMock}>
             <ForeldrepengerStateMock
-                søknad={context as ForeldrepengesøknadContextState}
-                søkerinfo={søkerinfo as SøkerinfoDTO}
+                søknad={contextMorSøker as ForeldrepengesøknadContextState}
+                søkerinfo={søkerinfoMorSøker as SøkerinfoDTO}
             >
                 <UttaksplanInfo />
             </ForeldrepengerStateMock>
@@ -49,7 +51,7 @@ export const visUttaksplanMedDeltUttakDerMorSøker = () => {
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskontoDeltUttak100);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskontoDeltUttak80);
     };
-    const originalContext = context as ForeldrepengesøknadContextState;
+    const originalContext = contextMorSøker as ForeldrepengesøknadContextState;
     return (
         <AxiosMock mock={restMock}>
             <ForeldrepengerStateMock
@@ -72,7 +74,7 @@ export const visUttaksplanMedDeltUttakDerMorSøker = () => {
                         },
                     } as ForeldrepengesøknadContextState
                 }
-                søkerinfo={søkerinfo as SøkerinfoDTO}
+                søkerinfo={søkerinfoMorSøker as SøkerinfoDTO}
             >
                 <UttaksplanInfo />
             </ForeldrepengerStateMock>
@@ -80,14 +82,13 @@ export const visUttaksplanMedDeltUttakDerMorSøker = () => {
     );
 };
 
-//TODO Skriv ferdig
 export const visUttaksplanMedDeltUttakDerFarSøker = () => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onGet(UTTAKSPLAN_ANNEN_URL).replyOnce(200, {});
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskontoDeltUttak100);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskontoDeltUttak80);
     };
-    const originalContext = context as ForeldrepengesøknadContextState;
+    const originalContext = contextFarSøker as ForeldrepengesøknadContextState;
     return (
         <AxiosMock mock={restMock}>
             <ForeldrepengerStateMock
@@ -101,16 +102,16 @@ export const visUttaksplanMedDeltUttakDerFarSøker = () => {
                                 erAleneOmOmsorg: false,
                             },
                             annenForelder: {
-                                fornavn: 'Espen',
-                                etternavn: 'Utvikler',
-                                fnr: '1212121313',
+                                fornavn: 'TALENTFULL',
+                                etternavn: 'MYGG',
+                                fnr: '19047815714',
                                 harRettPåForeldrepenger: true,
                                 kanIkkeOppgis: false,
                             },
                         },
                     } as ForeldrepengesøknadContextState
                 }
-                søkerinfo={søkerinfo as SøkerinfoDTO}
+                søkerinfo={søkerinfoFarSøker as SøkerinfoDTO}
             >
                 <UttaksplanInfo />
             </ForeldrepengerStateMock>

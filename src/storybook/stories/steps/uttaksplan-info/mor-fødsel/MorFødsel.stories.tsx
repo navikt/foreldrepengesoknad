@@ -1,6 +1,9 @@
 import React from 'react';
 import MockAdapter from 'axios-mock-adapter/types';
 
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import søkerinfo from './testdata/søkerinfo.json';
 import context from './testdata/context.json';
 import stønadskonto100 from './../testdata/stønadskonto100.json';
@@ -11,14 +14,11 @@ import stønadskontoDeltUttak80 from './../testdata/stønadskontoDeltUttak80.jso
 import stønadskontoDeltUttak100 from './../testdata/stønadskontoDeltUttak100.json';
 import stønadskontoFlerbarnsuker80 from './../testdata/stønadskontoFlerbarnsuker80.json';
 import stønadskontoFlerbarnsuker100 from './../testdata/stønadskontoFlerbarnsuker100.json';
-import UttaksplanInfo from '../../../../../app/steps/uttaksplan-info/UttaksplanInfo';
 import withIntl from '../../../../decorators/withIntl';
 import withRouter from '../../../../decorators/withRouter';
 import withForeldrepengersøknadContext from '../../../../decorators/withForeldrepengersøknadContext';
 import AxiosMock from '../../../../utils/AxiosMock';
 import ForeldrepengerStateMock from '../../../../utils/ForeldrepengerStateMock';
-import { ForeldrepengesøknadContextState } from '../../../../../app/context/ForeldrepengesøknadContextConfig';
-import { SøkerinfoDTO } from '../../../../../app/types/SøkerinfoDTO';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/uttaksplanannen';
 const STØNADSKONTO_URL = '/uttak-url/konto';
