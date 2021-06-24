@@ -25,6 +25,7 @@ import { getInitialMorFødselValues } from './morFødselUtils';
 import StartdatoPermisjonMor from './StartdatoPermisjonMor';
 import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
 import {
+    getAntallUker,
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
     getAntallUkerMødrekvote,
@@ -128,16 +129,29 @@ const MorFødsel: FunctionComponent<Props> = ({
                     ...formValues,
                 });
 
-                const tilgjengeligeStønadskontoer = getValgtStønadskontoMengde(
-                    formValues.dekningsgrad as Dekningsgrad,
+                const tilgjengeligeStønadskontoer100 = getValgtStønadskontoMengde(
+                    Dekningsgrad.HUNDRE_PROSENT,
                     tilgjengeligeStønadskontoer80DTO,
                     tilgjengeligeStønadskontoer100DTO,
                     familiehendelsesdato,
                     erMorUfør
                 );
-                const fellesperiodeukerMor = Math.round(
-                    (getAntallUkerFellesperiode(tilgjengeligeStønadskontoer) || 0) / 2
+                const tilgjengeligeStønadskontoer80 = getValgtStønadskontoMengde(
+                    Dekningsgrad.ÅTTI_PROSENT,
+                    tilgjengeligeStønadskontoer80DTO,
+                    tilgjengeligeStønadskontoer100DTO,
+                    familiehendelsesdato,
+                    erMorUfør
                 );
+
+                const valgtStønadskonto =
+                    formValues.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+                        ? tilgjengeligeStønadskontoer100
+                        : tilgjengeligeStønadskontoer80;
+                const tilgjengeligeDager = getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor);
+
+                const fellesperiodeukerMor = Math.round((getAntallUkerFellesperiode(valgtStønadskonto) || 0) / 2);
+
                 const harSvartPåStartdato =
                     formValues.permisjonStartdato !== undefined || formValues.skalIkkeHaUttakFørTermin === true;
                 return (
@@ -147,11 +161,15 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 name={MorFødselFormField.dekningsgrad}
                                 radios={[
                                     {
-                                        label: intlUtils(intl, 'uttaksplaninfo.49Uker'),
+                                        label: intlUtils(intl, 'uttaksplaninfo.49Uker', {
+                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer100),
+                                        }),
                                         value: Dekningsgrad.HUNDRE_PROSENT,
                                     },
                                     {
-                                        label: intlUtils(intl, 'uttaksplaninfo.59Uker'),
+                                        label: intlUtils(intl, 'uttaksplaninfo.59Uker', {
+                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer80),
+                                        }),
                                         value: Dekningsgrad.ÅTTI_PROSENT,
                                     },
                                 ]}
@@ -171,11 +189,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 erFarEllerMedmor={false}
                                 navnFarMedmor={navnFarMedmor}
                                 navnMor={navnMor}
-                                tilgjengeligeDager={getTilgjengeligeDager(
-                                    tilgjengeligeStønadskontoer,
-                                    erDeltUttak,
-                                    Forelder.mor
-                                )}
+                                tilgjengeligeDager={tilgjengeligeDager}
                             />
                         </Block>
                         <Block padBottom="l" visible={visInfoOmPrematuruker === true}>
@@ -218,14 +232,12 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 <FordelingFellesperiodeSpørsmål
                                     setFieldValue={setFieldValue}
                                     fellesperiodeukerMor={formValues.fellesperiodeukerMor || fellesperiodeukerMor}
-                                    ukerFellesperiode={Math.floor(
-                                        getAntallUkerFellesperiode(tilgjengeligeStønadskontoer)
-                                    )}
+                                    ukerFellesperiode={Math.floor(getAntallUkerFellesperiode(valgtStønadskonto))}
                                     mor={navnMor}
                                     farMedmor={navnFarMedmor}
                                     annenForelderErFarEllerMedmor={navnFarMedmor === annenForelderFornavn}
-                                    antallUkerFedreKvote={getAntallUkerFedrekvote(tilgjengeligeStønadskontoer)}
-                                    antallUkerMødreKvote={getAntallUkerMødrekvote(tilgjengeligeStønadskontoer)}
+                                    antallUkerFedreKvote={getAntallUkerFedrekvote(valgtStønadskonto)}
+                                    antallUkerMødreKvote={getAntallUkerMødrekvote(valgtStønadskonto)}
                                 />
                             </Block>
                         </Block>

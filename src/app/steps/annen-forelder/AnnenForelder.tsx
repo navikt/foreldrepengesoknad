@@ -1,9 +1,9 @@
-import { Block, intlUtils, Step, UtvidetInformasjon } from '@navikt/fp-common';
+import { Block, hasValue, intlUtils, Step, UtvidetInformasjon } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import actionCreator from 'app/context/action/actionCreator';
-import Barn from 'app/context/types/Barn';
+import Barn, { isAdoptertStebarn } from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
 import SøknadRoutes from 'app/routes/routes';
 import { AttachmentType } from 'app/types/AttachmentType';
@@ -50,8 +50,11 @@ const AnnenForelder = () => {
             };
             const newBarn: Barn = {
                 ...barn,
-                datoForAleneomsorg: values.datoForAleneomsorg,
-                dokumentasjonAvAleneomsorg: values.dokumentasjonAvAleneomsorg,
+                datoForAleneomsorg: hasValue(values.datoForAleneomsorg) ? values.datoForAleneomsorg : undefined,
+                dokumentasjonAvAleneomsorg:
+                    values.dokumentasjonAvAleneomsorg && values.dokumentasjonAvAleneomsorg.length > 0
+                        ? values.dokumentasjonAvAleneomsorg
+                        : undefined,
             };
 
             return [
@@ -75,7 +78,7 @@ const AnnenForelder = () => {
                     ...formValues,
                     skalOppgiPersonalia,
                     søkerRolle: rolle,
-                    gjelderStebarnsadopsjon: false,
+                    gjelderStebarnsadopsjon: isAdoptertStebarn(barn) ? true : false,
                 });
 
                 return (

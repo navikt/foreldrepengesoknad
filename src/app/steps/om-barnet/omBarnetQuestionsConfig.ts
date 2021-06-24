@@ -52,7 +52,7 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
         visibilityFilter: ({ situasjon }) => situasjon === 'fødsel',
     },
     [OmBarnetFormField.valgteBarn]: {
-        isIncluded: ({ registrerteBarn }) => registrerteBarn.length > 0,
+        isIncluded: ({ registrerteBarn, situasjon }) => registrerteBarn.length > 0 && situasjon === 'fødsel',
         isAnswered: ({ valgteBarn, gjelderAnnetBarn }) => valgteBarn.length > 0 || gjelderAnnetBarn,
         visibilityFilter: ({ registrerteBarn }) => registrerteBarn.length > 0,
     },

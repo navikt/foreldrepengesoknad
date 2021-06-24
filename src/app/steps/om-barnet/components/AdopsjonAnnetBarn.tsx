@@ -1,5 +1,5 @@
 import { Block, intlUtils } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
@@ -84,7 +84,7 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({ søkersituasjon, formValu
                             name={`${OmBarnetFormField.fødselsdatoer}.0` as OmBarnetFormField}
                             label={intlUtils(intl, 'omBarnet.fødselsdato')}
                             minDate={dayjs(formValues.adopsjonsdato).subtract(15, 'years').toDate()}
-                            maxDate={dayjs().toDate()}
+                            maxDate={ISOStringToDate(formValues.adopsjonsdato)}
                             validate={(value) => validateFødselsdatoAdopsjon(intl)(value, formValues.adopsjonsdato)}
                             placeholder={'dd.mm.åååå'}
                             showYearSelector={true}

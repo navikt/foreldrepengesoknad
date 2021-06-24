@@ -24,6 +24,9 @@ import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { getErMorUfør } from 'app/utils/annenForelderUtils';
+import { Forelder } from 'app/types/Forelder';
+import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -49,7 +52,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
         : isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.fornavn
         : '';
-    const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
+    const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
 
     const shouldRender = erFarEllerMedmor && erFødsel && annenForelderHarRett;
 
@@ -62,15 +65,26 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
             initialValues={getInitialFarMedmorFødselBeggeHarRettValues()}
             onSubmit={() => null}
             renderForm={({ values: formValues, setFieldValue }) => {
-                const tilgjengeligeStønadskontoer = getValgtStønadskontoMengde(
-                    formValues.dekningsgrad as Dekningsgrad,
+                const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility(formValues);
+                const tilgjengeligeStønadskontoer100 = getValgtStønadskontoMengde(
+                    Dekningsgrad.HUNDRE_PROSENT,
                     tilgjengeligeStønadskontoer80DTO,
                     tilgjengeligeStønadskontoer100DTO,
                     familiehendelsesdato,
                     erMorUfør
                 );
-                const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility(formValues);
-                const tilgjengeligeDager = getTilgjengeligeDager(tilgjengeligeStønadskontoer, true, undefined);
+                const tilgjengeligeStønadskontoer80 = getValgtStønadskontoMengde(
+                    Dekningsgrad.ÅTTI_PROSENT,
+                    tilgjengeligeStønadskontoer80DTO,
+                    tilgjengeligeStønadskontoer100DTO,
+                    familiehendelsesdato,
+                    erMorUfør
+                );
+                const valgtStønadskonto =
+                    formValues.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+                        ? tilgjengeligeStønadskontoer100
+                        : tilgjengeligeStønadskontoer80;
+                const tilgjengeligeDager = getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor);
 
                 return (
                     <FarMedmorFødselBeggeHarRettFormComponents.Form
@@ -94,11 +108,15 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 name={FarMedmorFødselBeggeHarRettFormField.dekningsgrad}
                                 radios={[
                                     {
-                                        label: intlUtils(intl, 'uttaksplaninfo.49Uker'),
+                                        label: intlUtils(intl, 'uttaksplaninfo.49Uker', {
+                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer100),
+                                        }),
                                         value: Dekningsgrad.HUNDRE_PROSENT,
                                     },
                                     {
-                                        label: intlUtils(intl, 'uttaksplaninfo.59Uker'),
+                                        label: intlUtils(intl, 'uttaksplaninfo.59Uker', {
+                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer80),
+                                        }),
                                         value: Dekningsgrad.ÅTTI_PROSENT,
                                     },
                                 ]}

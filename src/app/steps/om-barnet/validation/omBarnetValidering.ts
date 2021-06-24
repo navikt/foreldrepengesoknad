@@ -11,6 +11,7 @@ import { isISODateString } from 'nav-datovelger';
 import { IntlShape } from 'react-intl';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { isDateABeforeDateB } from 'app/utils/dateUtils';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -42,6 +43,10 @@ export const validateFødselsdatoAdopsjon = (intl: IntlShape) => (fødselsdato: 
 
     if (etterDagensDato(fødselsdato)) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.fødselsdato.måVæreIdagEllerTidligere');
+    }
+
+    if (isDateABeforeDateB(adopsjonsdato, fødselsdato)) {
+        return intlUtils(intl, 'valideringsfeil.omBarnet.fødselsdato.måVæreFørAdopsjonsdato');
     }
 
     if (!barnetErUnder15årPåAdopsjonsdato(fødselsdato, adopsjonsdato)) {

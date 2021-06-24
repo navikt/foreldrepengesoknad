@@ -33,7 +33,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
     return (
         <div className={bem.block}>
             <SkjemaGruppe legend={<Element>{intlUtils(intl, 'annenForelder.spørsmål.navn')}</Element>}>
-                <Block padBottom="l" visible={visibility.isVisible(AnnenForelderFormField.fornavn)}>
+                <Block visible={visibility.isVisible(AnnenForelderFormField.fornavn)}>
                     <div className={bem.element('nameInputsWrapper')}>
                         <AnnenForelderFormComponents.Input
                             className={bem.element('nameInput')}

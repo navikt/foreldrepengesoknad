@@ -90,6 +90,7 @@ export const getAnnenForelderFormInitialValues = (
             kanIkkeOppgis: annenForelder.kanIkkeOppgis,
             fnr: annenForelder.fnr,
             aleneOmOmsorg: convertBooleanOrUndefinedToYesOrNo(søker.erAleneOmOmsorg),
+            datoForAleneomsorg: barn.datoForAleneomsorg || '',
             utenlandskFnr: annenForelder.utenlandskFnr || false,
         };
     }

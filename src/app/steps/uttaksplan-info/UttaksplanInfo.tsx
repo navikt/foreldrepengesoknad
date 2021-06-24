@@ -19,7 +19,7 @@ const UttaksplanInfo = () => {
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
 
-    const { barn, søker, annenForelder } = søknad;
+    const { barn, annenForelder, søkersituasjon } = søknad;
     const { registrerteBarn } = søkerinfo;
 
     let registrertBarn = undefined;
@@ -33,10 +33,10 @@ const UttaksplanInfo = () => {
         registrertBarn?.annenForelder?.fnr
     );
     const { tilgjengeligeStønadskontoerData: stønadskontoer100 } = Api.useGetUttakskontoer(
-        getStønadskontoParams(Dekningsgrad.HUNDRE_PROSENT, '1', false, barn, søker, annenForelder)
+        getStønadskontoParams(Dekningsgrad.HUNDRE_PROSENT, barn, annenForelder, søkersituasjon)
     );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
-        getStønadskontoParams(Dekningsgrad.ÅTTI_PROSENT, '1', false, barn, søker, annenForelder)
+        getStønadskontoParams(Dekningsgrad.ÅTTI_PROSENT, barn, annenForelder, søkersituasjon)
     );
     const onAvbrytSøknad = useAvbrytSøknad();
 

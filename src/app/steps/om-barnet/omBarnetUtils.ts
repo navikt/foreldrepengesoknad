@@ -114,6 +114,7 @@ export const getOmBarnetInitialValues = (barn: Barn, registrerteBarn: Registrert
             fødselsdatoer: barn.fødselsdatoer,
             termindato: barn.termindato || '',
             antallBarn: barn.antallBarn,
+            gjelderAnnetBarn: true,
         };
     }
 

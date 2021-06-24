@@ -17,6 +17,7 @@ import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { Forelder } from 'app/types/Forelder';
 import { getFlerbarnsuker } from 'app/steps/uttaksplan-info/utils/uttaksplanHarForMangeFlerbarnsuker';
 import {
+    getAntallUker,
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
     getAntallUkerMødrekvote,
@@ -127,26 +128,31 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                     ...formValues,
                 });
 
-                const tilgjengeligeStønadskontoer = getValgtStønadskontoMengde(
-                    formValues.dekningsgrad as Dekningsgrad,
+                const tilgjengeligeStønadskontoer100 = getValgtStønadskontoMengde(
+                    Dekningsgrad.HUNDRE_PROSENT,
                     tilgjengeligeStønadskontoer80DTO,
                     tilgjengeligeStønadskontoer100DTO,
                     familiehendelsesdato,
                     erMorUfør
                 );
-                const tilgjengeligeDager = getTilgjengeligeDager(
-                    tilgjengeligeStønadskontoer,
-                    erDeltUttak,
-                    erSøkerMor ? Forelder.mor : Forelder.farMedmor
+                const tilgjengeligeStønadskontoer80 = getValgtStønadskontoMengde(
+                    Dekningsgrad.ÅTTI_PROSENT,
+                    tilgjengeligeStønadskontoer80DTO,
+                    tilgjengeligeStønadskontoer100DTO,
+                    familiehendelsesdato,
+                    erMorUfør
                 );
+                const valgtStønadskonto =
+                    formValues.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+                        ? tilgjengeligeStønadskontoer100
+                        : tilgjengeligeStønadskontoer80;
+                const tilgjengeligeDager = getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor);
 
-                const fellesperiodeukerMor = Math.round(
-                    (getAntallUkerFellesperiode(tilgjengeligeStønadskontoer) || 0) / 2
-                );
+                const fellesperiodeukerMor = Math.round((getAntallUkerFellesperiode(valgtStønadskonto) || 0) / 2);
 
                 return (
                     <MorFarAdopsjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
-                        <Block padBottom="l" visible={harAnnenForeldreRettPåForeldrepenger} textAlignCenter={true}>
+                        <Block padBottom="l" visible={harAnnenForeldreRettPåForeldrepenger}>
                             <MorFarAdopsjonFormComponents.YesOrNoQuestion
                                 name={MorFarAdopsjonFormField.harAnnenForelderSøktFP}
                                 legend={intlUtils(intl, 'uttaksplaninfo.spørsmål.harAnnenForelderSøktFP.label', {
@@ -177,11 +183,15 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 name={MorFarAdopsjonFormField.dekningsgrad}
                                 radios={[
                                     {
-                                        label: intlUtils(intl, 'uttaksplaninfo.49Uker'),
+                                        label: intlUtils(intl, 'uttaksplaninfo.49Uker', {
+                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer100),
+                                        }),
                                         value: Dekningsgrad.HUNDRE_PROSENT,
                                     },
                                     {
-                                        label: intlUtils(intl, 'uttaksplaninfo.59Uker'),
+                                        label: intlUtils(intl, 'uttaksplaninfo.59Uker', {
+                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer80),
+                                        }),
                                         value: Dekningsgrad.ÅTTI_PROSENT,
                                     },
                                 ]}
@@ -320,14 +330,12 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 <FordelingFellesperiodeSpørsmål
                                     setFieldValue={setFieldValue}
                                     fellesperiodeukerMor={formValues.fellesperiodeukerMor || fellesperiodeukerMor}
-                                    ukerFellesperiode={Math.floor(
-                                        getAntallUkerFellesperiode(tilgjengeligeStønadskontoer)
-                                    )}
+                                    ukerFellesperiode={Math.floor(getAntallUkerFellesperiode(valgtStønadskonto))}
                                     mor={navnMor}
                                     farMedmor={navnFarMedmor}
                                     annenForelderErFarEllerMedmor={!erSøkerMor}
-                                    antallUkerFedreKvote={getAntallUkerFedrekvote(tilgjengeligeStønadskontoer)}
-                                    antallUkerMødreKvote={getAntallUkerMødrekvote(tilgjengeligeStønadskontoer)}
+                                    antallUkerFedreKvote={getAntallUkerFedrekvote(valgtStønadskonto)}
+                                    antallUkerMødreKvote={getAntallUkerMødrekvote(valgtStønadskonto)}
                                 />
                             </Block>
                         </Block>

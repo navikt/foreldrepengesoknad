@@ -11,14 +11,15 @@ interface AnnenForelderQuestionsPayload extends AnnenForelderFormData {
     gjelderStebarnsadopsjon: boolean;
 }
 
-const isAnnenForelderKanIkkeOppgisIncluded = (payload: AnnenForelderQuestionsPayload): boolean => {
-    const { søkerRolle, gjelderStebarnsadopsjon } = payload;
+const isAnnenForelderKanIkkeOppgisIncluded = (søkerRolle: Søkerrolle, gjelderStebarnsadopsjon: boolean): boolean => {
     if (gjelderStebarnsadopsjon) {
         return false;
     }
+
     if (søkerRolle === 'medmor') {
         return false;
     }
+
     return true;
 };
 
@@ -36,7 +37,8 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
     [AnnenForelderFormField.kanIkkeOppgis]: {
         isAnswered: ({ kanIkkeOppgis }) => hasValue(kanIkkeOppgis),
         isOptional: () => true,
-        isIncluded: (payload) => payload.skalOppgiPersonalia && isAnnenForelderKanIkkeOppgisIncluded(payload),
+        isIncluded: ({ skalOppgiPersonalia, søkerRolle, gjelderStebarnsadopsjon }) =>
+            skalOppgiPersonalia && isAnnenForelderKanIkkeOppgisIncluded(søkerRolle, gjelderStebarnsadopsjon),
     },
     [AnnenForelderFormField.fnr]: {
         isAnswered: ({ fnr, utenlandskFnr }) => hasValue(fnr) || (utenlandskFnr === true && hasValue(fnr)),
@@ -59,10 +61,10 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
             (skalOppgiPersonalia && hasValue(bostedsland) && utenlandskFnr === true),
     },
     [AnnenForelderFormField.dokumentasjonAvAleneomsorg]: {
-        isAnswered: ({ dokumentasjonAvAleneomsorg }) =>
-            dokumentasjonAvAleneomsorg !== undefined && dokumentasjonAvAleneomsorg.length > 0,
+        isAnswered: () => true,
         isIncluded: ({ aleneOmOmsorg, søkerRolle }) => aleneOmOmsorg === YesOrNo.YES && søkerRolle !== 'mor',
-        visibilityFilter: ({ aleneOmOmsorg }) => aleneOmOmsorg === YesOrNo.YES,
+        visibilityFilter: ({ aleneOmOmsorg, datoForAleneomsorg }) =>
+            aleneOmOmsorg === YesOrNo.YES || hasValue(datoForAleneomsorg),
     },
     [AnnenForelderFormField.harRettPåForeldrepenger]: {
         parentQuestion: AnnenForelderFormField.aleneOmOmsorg,

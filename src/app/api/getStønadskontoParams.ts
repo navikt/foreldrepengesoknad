@@ -1,33 +1,51 @@
-import AnnenForelder from 'app/context/types/AnnenForelder';
+import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Barn, { isAdoptertAnnetBarn, isAdoptertStebarn, isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
-import Søker from 'app/context/types/Søker';
+import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
-import { Saksgrunnlag } from 'app/types/Saksgrunnlag';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { TilgjengeligeStønadskontoerParams } from './api';
+
+const getFarHarRett = (erFarMedmor: boolean, annenForelder: AnnenForelder) => {
+    if (erFarMedmor) {
+        return true;
+    }
+
+    if (isAnnenForelderOppgitt(annenForelder)) {
+        return !!annenForelder.harRettPåForeldrepenger;
+    }
+
+    return false;
+};
+
+const getMorHarRett = (erFarMedmor: boolean, annenForelder: AnnenForelder) => {
+    if (!erFarMedmor) {
+        return true;
+    }
+
+    if (isAnnenForelderOppgitt(annenForelder)) {
+        return !!annenForelder.harRettPåForeldrepenger;
+    }
+
+    return false;
+};
 
 const getStønadskontoParams = (
     dekningsgrad: Dekningsgrad,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    antallBarn: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    erEndringssøknad: boolean,
     barn: Barn,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    søker: Søker,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     annenForelder: AnnenForelder,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    grunnlag?: Saksgrunnlag
+    søkersituasjon: Søkersituasjon
 ): TilgjengeligeStønadskontoerParams => {
+    const erFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+
     return {
         antallBarn: barn.antallBarn,
         startdatoUttak: getFamiliehendelsedato(barn),
         dekningsgrad: dekningsgrad,
-        farHarRett: true,
-        morHarRett: true,
-        morHarAleneomsorg: false,
-        farHarAleneomsorg: false,
+        farHarRett: getFarHarRett(erFarMedmor, annenForelder),
+        morHarRett: getMorHarRett(erFarMedmor, annenForelder),
+        morHarAleneomsorg: !erFarMedmor && barn.datoForAleneomsorg !== undefined,
+        farHarAleneomsorg: erFarMedmor && barn.datoForAleneomsorg !== undefined,
         fødselsdato: isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined,
         omsorgsovertakelsesdato: isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? barn.adopsjonsdato : undefined,
         termindato: isFødtBarn(barn) || isUfødtBarn(barn) ? barn.termindato : undefined,
