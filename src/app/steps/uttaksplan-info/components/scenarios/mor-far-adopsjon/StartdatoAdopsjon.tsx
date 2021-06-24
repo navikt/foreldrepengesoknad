@@ -9,6 +9,23 @@ import { formaterDatoUtenDag } from 'app/utils/dateUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
 import { DatepickerDateRange } from 'nav-datovelger';
+import { validateErAnnenStartdatoAdopsjonGyldig } from 'app/steps/uttaksplan-info/validation/uttaksplanInfoValidering';
+import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
+
+export const finnStartdatoAdopsjon = (
+    startdatoAdopsjonValg: AdopsjonStartdatoValg,
+    annenStartdatoAdopsjon?: string,
+    adopsjonsdato?: string,
+    ankomstdato?: string
+): string => {
+    if (startdatoAdopsjonValg === AdopsjonStartdatoValg.ANKOMST) {
+        return ankomstdato!;
+    }
+    if (startdatoAdopsjonValg === AdopsjonStartdatoValg.OMSORGSOVERTAKELSE) {
+        return adopsjonsdato!;
+    }
+    return annenStartdatoAdopsjon!;
+};
 
 const konverterStringTilDate = (invalidDateRanges?: DatepickerDateRange[]): DateRange[] | undefined => {
     if (!invalidDateRanges) {
@@ -21,7 +38,11 @@ const konverterStringTilDate = (invalidDateRanges?: DatepickerDateRange[]): Date
     }));
 };
 
-const StartdatoAdopsjon: FunctionComponent = () => {
+interface Props {
+    valgtStartdatoAdopsjon?: AdopsjonStartdatoValg;
+}
+
+const StartdatoAdopsjon: FunctionComponent<Props> = ({ valgtStartdatoAdopsjon }) => {
     const intl = useIntl();
     const { barn } = useSøknad();
     const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -32,7 +53,7 @@ const StartdatoAdopsjon: FunctionComponent = () => {
             label: intlUtils(intl, 'uttaksplaninfo.startdatoAdopsjon.alternativ.ankomst', {
                 dato: formaterDatoUtenDag(ISOStringToDate(barn.ankomstdato)!),
             }),
-            value: barn.ankomstdato,
+            value: AdopsjonStartdatoValg.ANKOMST,
         });
     }
 
@@ -41,13 +62,13 @@ const StartdatoAdopsjon: FunctionComponent = () => {
             label: intlUtils(intl, 'uttaksplaninfo.startdatoAdopsjon.alternativ.omsorgsovertakelse', {
                 dato: formaterDatoUtenDag(ISOStringToDate(barn.adopsjonsdato)!),
             }),
-            value: barn.adopsjonsdato,
+            value: AdopsjonStartdatoValg.OMSORGSOVERTAKELSE,
         });
     }
 
     radios.push({
         label: intlUtils(intl, 'uttaksplaninfo.startdatoAdopsjon.alternativ.annen'),
-        value: 'startdatoPermisjon',
+        value: AdopsjonStartdatoValg.ANNEN,
     });
 
     const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoPermisjonAdopsjon(familiehendelsesdato);
@@ -56,13 +77,13 @@ const StartdatoAdopsjon: FunctionComponent = () => {
         <>
             <Block padBottom="l">
                 <MorFarAdopsjonFormComponents.RadioPanelGroup
-                    name={MorFarAdopsjonFormField.startdatoAdopsjon}
+                    name={MorFarAdopsjonFormField.startdatoAdopsjonValg}
                     radios={radios}
                     legend={intlUtils(intl, 'uttaksplaninfo.startdatoAdopsjon.spørsmål')}
                     useTwoColumns={true}
                 />
             </Block>
-            <Block padBottom="l">
+            <Block padBottom="l" visible={valgtStartdatoAdopsjon === AdopsjonStartdatoValg.ANNEN}>
                 <MorFarAdopsjonFormComponents.DatePicker
                     name={MorFarAdopsjonFormField.annenStartdatoAdopsjon}
                     label={intlUtils(intl, 'uttaksplaninfo.startdatoAdopsjon.annenDato.spørsmål')}
@@ -70,6 +91,7 @@ const StartdatoAdopsjon: FunctionComponent = () => {
                     maxDate={datoAvgrensninger.maxDate ? ISOStringToDate(datoAvgrensninger.maxDate) : undefined}
                     disabledDateRanges={konverterStringTilDate(datoAvgrensninger.invalidDateRanges)}
                     disableWeekend={datoAvgrensninger.weekendsNotSelectable}
+                    validate={validateErAnnenStartdatoAdopsjonGyldig(intl)}
                 />
             </Block>
         </>

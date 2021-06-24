@@ -109,8 +109,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn)
         : '';
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const test = ISOStringToDate(familiehendelsesdato);
-    const førsteUttaksdag = Uttaksdagen(test!).denneEllerNeste();
+    const førsteUttaksdag = Uttaksdagen(ISOStringToDate(familiehendelsesdato)!).denneEllerNeste();
     const defaultPermisjonStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
         uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
     );

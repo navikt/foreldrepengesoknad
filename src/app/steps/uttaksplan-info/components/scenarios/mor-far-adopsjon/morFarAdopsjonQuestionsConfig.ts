@@ -13,8 +13,8 @@ const MorFarAdopsjonFormConfig: QuestionConfig<MorFarAdopsjonFormData, MorFarAdo
         isIncluded: () => true,
         isOptional: () => false,
     },
-    [MorFarAdopsjonFormField.startdatoAdopsjon]: {
-        isAnswered: ({ startdatoAdopsjon }) => hasValue(startdatoAdopsjon),
+    [MorFarAdopsjonFormField.startdatoAdopsjonValg]: {
+        isAnswered: ({ startdatoAdopsjonValg }) => hasValue(startdatoAdopsjonValg),
         isIncluded: () => true,
         isOptional: () => false,
     },

@@ -423,5 +423,6 @@
     "valideringsfeil.uttaksplaninfo.startdatoFørTermin": "Du må oppgi når du skal starte foreldrepengane, eller krysse av for at du ikkje skal ha foreldrepengar før termindato ",
     "valideringsfeil.uttaksplaninfo.startdatoHelg": "Startdato kan ikkje vere på ein laurdag eller søndag, du må velje ein vekedag",
     "valideringsfeil.uttaksplaninfo.startdatoUtenforGyldigTidsrom": "Startdato må vere innan dei {uker} første vekene etter termin eller fødsel",
+    "valideringsfeil.uttaksplaninfo.startdatoAdopsjon.annenDato.gyldigDato": "Dato for start av perioden må være en gyldig dato på formatet dd.mm.åååå",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}"
 }

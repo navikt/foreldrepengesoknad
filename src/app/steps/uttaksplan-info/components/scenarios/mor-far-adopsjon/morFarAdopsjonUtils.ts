@@ -4,12 +4,12 @@ import { MorFarAdopsjonFormData, MorFarAdopsjonFormField } from './morFarAdopsjo
 const initialMorFødselValues: MorFarAdopsjonFormData = {
     [MorFarAdopsjonFormField.harAnnenForelderSøktFP]: YesOrNo.UNANSWERED,
     [MorFarAdopsjonFormField.dekningsgrad]: '',
-    [MorFarAdopsjonFormField.startdatoAdopsjon]: '',
+    [MorFarAdopsjonFormField.startdatoAdopsjonValg]: undefined,
     [MorFarAdopsjonFormField.annenStartdatoAdopsjon]: '',
     [MorFarAdopsjonFormField.morsSisteDag]: '',
     [MorFarAdopsjonFormField.farMedmorsFørsteDag]: '',
-    [MorFarAdopsjonFormField.antallUkerFellesperiode]: '',
-    [MorFarAdopsjonFormField.antallDagerFellesperiode]: '',
+    [MorFarAdopsjonFormField.antallUkerFellesperiode]: '0',
+    [MorFarAdopsjonFormField.antallDagerFellesperiode]: '0',
     [MorFarAdopsjonFormField.fellesperiodeukerMor]: undefined,
 };
 

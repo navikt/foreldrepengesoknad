@@ -38,3 +38,11 @@ export const validateErStartdatoFørTermindato =
 
         return undefined;
     };
+
+export const validateErAnnenStartdatoAdopsjonGyldig = (intl: IntlShape) => (annenStartdatoAdopsjon: string) => {
+    if (!isISODateString(annenStartdatoAdopsjon)) {
+        return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoAdopsjon.annenDato.gyldigDato');
+    }
+
+    return undefined;
+};

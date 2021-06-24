@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { isISODateString } from 'nav-datovelger';
 import isBetween from 'dayjs/plugin/isBetween';
+import minMax from 'dayjs/plugin/minMax';
 import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
 import { formatDateExtended, hasValue, intlUtils } from '@navikt/fp-common';
@@ -10,6 +11,7 @@ import { dateToISOString } from '@navikt/sif-common-formik/lib';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
+dayjs.extend(minMax);
 
 export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();
 
@@ -193,3 +195,10 @@ export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolea
 export function formaterDatoKompakt(dato: Date): string {
     return formaterDato(dato, 'DD.MM.YYYY');
 }
+
+export const findEldsteDato = (dateArray: Date[]): DateValue => {
+    if (dateArray.length > 0) {
+        return dayjs.min(dateArray.map((date: Date) => dayjs(date))).toDate();
+    }
+    return undefined;
+};
