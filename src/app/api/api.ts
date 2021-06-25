@@ -85,8 +85,12 @@ const useStoredAppState = () => {
 };
 
 const storeAppState = (state: ForeldrepengesøknadContextState) => {
-    const { søknad, version, currentRoute } = state;
-    return getAxiosInstance('123').post('/storage', { søknad, version, currentRoute }, { withCredentials: true });
+    const { søknad, version, currentRoute, uttaksplanInfo } = state;
+    return getAxiosInstance('123').post(
+        '/storage',
+        { søknad, version, currentRoute, uttaksplanInfo },
+        { withCredentials: true }
+    );
 };
 
 const deleteStoredAppState = () => {
