@@ -77,7 +77,10 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const onValidSubmitHandler = (values: MorFarAdopsjonFormData) => {
         const uttaksplanInfo: MorFarAdopsjonUttaksplanInfo = {
             ...values,
-            dekningsgrad: parseInt(values.dekningsgrad, 10),
+            dekningsgrad:
+                values.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+                    ? Dekningsgrad.HUNDRE_PROSENT
+                    : Dekningsgrad.ÅTTI_PROSENT,
         };
         return [actionCreator.setUttaksplanInfo(uttaksplanInfo)];
     };

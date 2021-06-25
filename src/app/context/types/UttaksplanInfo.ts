@@ -1,5 +1,7 @@
+import { Dekningsgrad } from 'app/types/Dekningsgrad';
+
 interface UttaksplanInfo {
-    dekningsgrad: number;
+    dekningsgrad: Dekningsgrad;
     fellesperiodeukerMor: number | undefined;
 }
 
@@ -16,6 +18,10 @@ export interface MorFarAdopsjonUttaksplanInfo extends UttaksplanInfo {
     farMedmorsFørsteDag: string;
     antallUkerFellesperiode: string;
     antallDagerFellesperiode: string;
+}
+
+export interface FarMedmorAleneomsorgFødselUttaksplanInfo extends UttaksplanInfo {
+    startdatoUttak: string;
 }
 
 export default UttaksplanInfo;

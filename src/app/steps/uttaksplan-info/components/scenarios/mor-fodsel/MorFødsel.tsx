@@ -82,7 +82,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     const onValidSubmitHandler = (values: MorFødselFormData) => {
         const uttaksplanInfo: MorFødselUttaksplanInfo = {
             ...values,
-            dekningsgrad: parseInt(values.dekningsgrad, 10),
+            dekningsgrad: values.dekningsgrad === '100' ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
         };
         return [actionCreator.setUttaksplanInfo(uttaksplanInfo)];
     };

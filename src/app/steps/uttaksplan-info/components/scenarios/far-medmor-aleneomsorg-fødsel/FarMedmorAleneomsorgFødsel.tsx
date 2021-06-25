@@ -1,6 +1,9 @@
 import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import actionCreator from 'app/context/action/actionCreator';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
+import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import SøknadRoutes from 'app/routes/routes';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { Forelder } from 'app/types/Forelder';
@@ -8,8 +11,10 @@ import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønads
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { formaterDatoUtenDag } from 'app/utils/dateUtils';
+import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSøknad from 'app/utils/hooks/useSøknad';
+import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getValgtStønadskontoMengde } from 'app/utils/stønadskontoUtils';
 import { Hovedknapp } from 'nav-frontend-knapper';
@@ -19,10 +24,14 @@ import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDa
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import {
     FarMedmorAleneomsorgFødselFormComponents,
+    FarMedmorAleneomsorgFødselFormData,
     FarMedmorAleneomsorgFødselFormField,
 } from './farMedmorAleneomsorgFødselFormConfig';
 import farMedmorAleneomsorgFødselAdopsjonQuestionsConfig from './farMedmorAleneomsorgFødselQuestionsConfig';
-import { getInitialFarMedmorAleneomsorgFødselValues } from './farMedmorAleneomsorgFødselUtils';
+import {
+    getInitialFarMedmorAleneomsorgFødselValues,
+    mapFarMedmorAleneomsorgFødselFormToState,
+} from './farMedmorAleneomsorgFødselUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -45,6 +54,18 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         ? annenForelder.fornavn
         : '';
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
+    const lagretUttaksplanInfo = useUttaksplanInfo<FarMedmorAleneomsorgFødselUttaksplanInfo>();
+
+    const onValidSubmitHandler = (values: Partial<FarMedmorAleneomsorgFødselFormData>) => {
+        const uttaksplanInfo: FarMedmorAleneomsorgFødselUttaksplanInfo = mapFarMedmorAleneomsorgFødselFormToState(
+            values,
+            familiehendelsesdato
+        );
+        console.log(uttaksplanInfo);
+        return [actionCreator.setUttaksplanInfo(uttaksplanInfo)];
+    };
+
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
 
     const shouldRender = erFødsel && erFarEllerMedmor && (!!søker.erAleneOmOmsorg || annenForelder.kanIkkeOppgis);
 
@@ -54,8 +75,8 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
 
     return (
         <FarMedmorAleneomsorgFødselFormComponents.FormikWrapper
-            initialValues={getInitialFarMedmorAleneomsorgFødselValues()}
-            onSubmit={() => null}
+            initialValues={getInitialFarMedmorAleneomsorgFødselValues(lagretUttaksplanInfo, familiehendelsesdato)}
+            onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = farMedmorAleneomsorgFødselAdopsjonQuestionsConfig.getVisbility(formValues);
                 const tilgjengeligeStønadskontoer100 = getValgtStønadskontoMengde(
