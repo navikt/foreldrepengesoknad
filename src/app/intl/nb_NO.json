@@ -427,5 +427,8 @@
     "valideringsfeil.uttaksplaninfo.startdatoHelg": "Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag",
     "valideringsfeil.uttaksplaninfo.startdatoUtenforGyldigTidsrom": "Startdatoen må være innen de {uker} første ukene før termin eller fødsel",
     "valideringsfeil.uttaksplaninfo.startdatoAdopsjon.annenDato.gyldigDato": "Dato for start av perioden må være en gyldig dato på formatet dd.mm.åååå",
+    "valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.gyldigDato": "Dato for start av perioden må være en gyldig dato på formatet dd.mm.åååå",
+    "valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.påkrevd": "Du må oppgi dato for start av perioden",
+    "valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.etterFamiliehendelsesdato": "Perioden må starte på eller etter {familiehendelsesdato}",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}"
 }

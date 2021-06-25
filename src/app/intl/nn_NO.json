@@ -427,5 +427,8 @@
     "valideringsfeil.uttaksplaninfo.startdatoHelg": "Startdato kan ikkje vere på ein laurdag eller søndag, du må velje ein vekedag",
     "valideringsfeil.uttaksplaninfo.startdatoUtenforGyldigTidsrom": "Startdato må vere innan dei {uker} første vekene etter termin eller fødsel",
     "valideringsfeil.uttaksplaninfo.startdatoAdopsjon.annenDato.gyldigDato": "Dato for start av perioden må være en gyldig dato på formatet dd.mm.åååå",
+    "valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.gyldigDato": "Dato for start av perioden må være en gyldig dato på formatet dd.mm.åååå",
+    "valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.påkrevd": "Du må oppgi dato for start av perioden",
+    "valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.etterFamiliehendelsesdato": "Perioden må starte på eller etter {familiehendelsesdato}",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}"
 }

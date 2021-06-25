@@ -32,6 +32,7 @@ import {
     getInitialFarMedmorAleneomsorgFødselValues,
     mapFarMedmorAleneomsorgFødselFormToState,
 } from './farMedmorAleneomsorgFødselUtils';
+import { validateStartdatoUttakFarMedmorAleneomsorgFødsel } from './validation/farMedmorAleneomsorgFødselValidation';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -170,6 +171,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                             <FarMedmorAleneomsorgFødselFormComponents.DatePicker
                                 name={FarMedmorAleneomsorgFødselFormField.startdatoUttak}
                                 label="Startdato"
+                                validate={validateStartdatoUttakFarMedmorAleneomsorgFødsel(intl, familiehendelsesdato)}
                                 minDate={ISOStringToDate(familiehendelsesdato)}
                             />
                         </Block>
