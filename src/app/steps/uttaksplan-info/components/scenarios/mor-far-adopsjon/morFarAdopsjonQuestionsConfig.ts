@@ -1,53 +1,60 @@
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config';
 import { hasValue } from '@navikt/fp-common';
 import { MorFarAdopsjonFormData, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
 
-const MorFarAdopsjonFormConfig: QuestionConfig<MorFarAdopsjonFormData, MorFarAdopsjonFormField> = {
+interface MorFarAdopsjonQuestionsPayload extends MorFarAdopsjonFormData {
+    harAnnenForeldreRettPåForeldrepenger: boolean | undefined;
+}
+
+const MorFarAdopsjonFormConfig: QuestionConfig<MorFarAdopsjonQuestionsPayload, MorFarAdopsjonFormField> = {
     [MorFarAdopsjonFormField.harAnnenForelderSøktFP]: {
         isAnswered: ({ harAnnenForelderSøktFP }) => hasValue(harAnnenForelderSøktFP),
-        isIncluded: () => true,
-        isOptional: () => false,
+        isIncluded: ({ harAnnenForeldreRettPåForeldrepenger }) => !!harAnnenForeldreRettPåForeldrepenger,
     },
     [MorFarAdopsjonFormField.dekningsgrad]: {
         isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
-        isIncluded: () => true,
-        isOptional: () => false,
+        isIncluded: ({ harAnnenForelderSøktFP, harAnnenForeldreRettPåForeldrepenger }) =>
+            harAnnenForelderSøktFP !== YesOrNo.UNANSWERED || !harAnnenForeldreRettPåForeldrepenger,
     },
     [MorFarAdopsjonFormField.startdatoAdopsjonValg]: {
         isAnswered: ({ startdatoAdopsjonValg }) => hasValue(startdatoAdopsjonValg),
-        isIncluded: () => true,
-        isOptional: () => false,
+        isIncluded: ({ dekningsgrad, harAnnenForelderSøktFP }) =>
+            hasValue(dekningsgrad) && harAnnenForelderSøktFP !== YesOrNo.YES,
     },
     [MorFarAdopsjonFormField.annenStartdatoAdopsjon]: {
         isAnswered: ({ annenStartdatoAdopsjon }) => hasValue(annenStartdatoAdopsjon),
-        isIncluded: () => true,
-        isOptional: () => false,
+        isIncluded: ({ dekningsgrad, harAnnenForelderSøktFP, startdatoAdopsjonValg }) =>
+            startdatoAdopsjonValg === AdopsjonStartdatoValg.ANNEN &&
+            hasValue(dekningsgrad) &&
+            harAnnenForelderSøktFP !== YesOrNo.YES,
     },
     [MorFarAdopsjonFormField.morsSisteDag]: {
         isAnswered: ({ morsSisteDag }) => hasValue(morsSisteDag),
-        isIncluded: () => true,
-        isOptional: () => false,
+        isIncluded: ({ dekningsgrad, harAnnenForelderSøktFP }) =>
+            hasValue(dekningsgrad) && harAnnenForelderSøktFP === YesOrNo.YES,
     },
     [MorFarAdopsjonFormField.farMedmorsFørsteDag]: {
         isAnswered: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
-        isIncluded: () => true,
-        isOptional: () => false,
+        isIncluded: ({ morsSisteDag, harAnnenForelderSøktFP }) =>
+            hasValue(morsSisteDag) && harAnnenForelderSøktFP === YesOrNo.YES,
     },
     [MorFarAdopsjonFormField.antallDagerFellesperiode]: {
-        isIncluded: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
         isAnswered: ({ antallDagerFellesperiode }) => hasValue(antallDagerFellesperiode),
+        isIncluded: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
     },
     [MorFarAdopsjonFormField.antallUkerFellesperiode]: {
-        isIncluded: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
         isAnswered: ({ antallUkerFellesperiode }) => hasValue(antallUkerFellesperiode),
+        isIncluded: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
     },
     [MorFarAdopsjonFormField.fellesperiodeukerMor]: {
         isAnswered: ({ fellesperiodeukerMor }) => hasValue(fellesperiodeukerMor),
-        isIncluded: () => true,
-        isOptional: () => true,
+        isIncluded: ({ startdatoAdopsjonValg, harAnnenForelderSøktFP }) =>
+            startdatoAdopsjonValg !== undefined && harAnnenForelderSøktFP !== YesOrNo.YES,
     },
 };
 
-export const morFarAdopsjonQuestionsConfig = Questions<MorFarAdopsjonFormData, MorFarAdopsjonFormField>(
+export const morFarAdopsjonQuestionsConfig = Questions<MorFarAdopsjonQuestionsPayload, MorFarAdopsjonFormField>(
     MorFarAdopsjonFormConfig
 );

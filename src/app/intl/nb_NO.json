@@ -180,6 +180,7 @@
     "uttaksplaninfo.info.ikkeAdoptertIUtlandet": "Starter du foreldrepengene senere enn omsorgsovertakelsen vil du miste dager.",
     "uttaksplaninfo.startdatoAleneomsorgFarMedmor.spørsmål": "Når skal du starte foreldrepengene dine?",
     "uttaksplaninfo.startdatoAleneomsorgFarMedmor.annenDato": "Annen dato",
+    "uttaksplaninfo.spørsmål.startdatoPermisjonFarMedmor.label": "Når ønsker du å starte perioden?",
     "utenlandsopphold.infoOmFødselsattest": "Du har opplyst at du skal være i {land} når du har termin {termindato}. Hvis du føder i utlandet må du ettersende fødselsattest til oss slik at vi får registrert fødselsdatoen til barnet. Grunnen til at du må sende inn fødselsattest er at vi ikke får inn opplysninger om fødselen automatisk når du ikke føder i Norge.",
     "utenlandsopphold.knapp.leggTilLand": "Legg til nytt utenlandsopphold",
     "utenlandsopphold.leggTilUtenlandsopphold.fraogmed": "Fra og med",

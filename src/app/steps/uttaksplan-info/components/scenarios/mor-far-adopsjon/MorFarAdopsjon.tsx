@@ -129,6 +129,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFarAdopsjonQuestionsConfig.getVisbility({
                     ...formValues,
+                    harAnnenForeldreRettPåForeldrepenger,
                 });
 
                 const tilgjengeligeStønadskontoer100 = getValgtStønadskontoMengde(
@@ -155,7 +156,10 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
                 return (
                     <MorFarAdopsjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
-                        <Block padBottom="l" visible={harAnnenForeldreRettPåForeldrepenger}>
+                        <Block
+                            padBottom="l"
+                            visible={visibility.isIncluded(MorFarAdopsjonFormField.harAnnenForelderSøktFP)}
+                        >
                             <MorFarAdopsjonFormComponents.YesOrNoQuestion
                                 name={MorFarAdopsjonFormField.harAnnenForelderSøktFP}
                                 legend={intlUtils(intl, 'uttaksplaninfo.spørsmål.harAnnenForelderSøktFP.label', {
@@ -175,13 +179,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 </Veilederpanel>
                             </Block>
                         )}
-                        <Block
-                            padBottom="l"
-                            visible={
-                                formValues.harAnnenForelderSøktFP !== YesOrNo.UNANSWERED ||
-                                !harAnnenForeldreRettPåForeldrepenger
-                            }
-                        >
+                        <Block padBottom="l" visible={visibility.isIncluded(MorFarAdopsjonFormField.dekningsgrad)}>
                             <MorFarAdopsjonFormComponents.RadioPanelGroup
                                 name={MorFarAdopsjonFormField.dekningsgrad}
                                 radios={[
@@ -216,21 +214,10 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 tilgjengeligeDager={tilgjengeligeDager}
                             />
                         </Block>
-                        <Block
-                            visible={
-                                visibility.isAnswered(MorFarAdopsjonFormField.dekningsgrad) &&
-                                formValues.harAnnenForelderSøktFP !== YesOrNo.YES
-                            }
-                        >
+                        <Block visible={visibility.isIncluded(MorFarAdopsjonFormField.startdatoAdopsjonValg)}>
                             <StartdatoAdopsjon valgtStartdatoAdopsjon={formValues.startdatoAdopsjonValg} />
                         </Block>
-                        <Block
-                            padBottom="l"
-                            visible={
-                                visibility.isAnswered(MorFarAdopsjonFormField.dekningsgrad) &&
-                                formValues.harAnnenForelderSøktFP === YesOrNo.YES
-                            }
-                        >
+                        <Block padBottom="l" visible={visibility.isIncluded(MorFarAdopsjonFormField.morsSisteDag)}>
                             <MorsSisteDagSpørsmål
                                 FormComponents={MorFarAdopsjonFormComponents}
                                 fieldName={MorFarAdopsjonFormField.morsSisteDag}
@@ -240,10 +227,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                         </Block>
                         <Block
                             padBottom="l"
-                            visible={
-                                visibility.isAnswered(MorFarAdopsjonFormField.morsSisteDag) &&
-                                formValues.harAnnenForelderSøktFP === YesOrNo.YES
-                            }
+                            visible={visibility.isIncluded(MorFarAdopsjonFormField.farMedmorsFørsteDag)}
                         >
                             <FarMedmorsFørsteDag
                                 FormComponents={MorFarAdopsjonFormComponents}
@@ -325,10 +309,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             </Block>
                             <Block
                                 padBottom="l"
-                                visible={
-                                    formValues.startdatoAdopsjonValg !== undefined &&
-                                    formValues.harAnnenForelderSøktFP !== YesOrNo.YES
-                                }
+                                visible={visibility.isIncluded(MorFarAdopsjonFormField.fellesperiodeukerMor)}
                             >
                                 <FordelingFellesperiodeSpørsmål
                                     setFieldValue={setFieldValue}

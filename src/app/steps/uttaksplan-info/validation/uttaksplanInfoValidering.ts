@@ -46,3 +46,17 @@ export const validateErAnnenStartdatoAdopsjonGyldig = (intl: IntlShape) => (anne
 
     return undefined;
 };
+
+export const validateStartdatoFarMedmor = (intl: IntlShape) => (permisjonStartdato: string) => {
+    if (!isISODateString(permisjonStartdato)) {
+        return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoPermisjon.gyldigDato');
+    }
+    if (
+        ISOStringToDate(permisjonStartdato) !== undefined &&
+        !Uttaksdagen(ISOStringToDate(permisjonStartdato)!).erUttaksdag()
+    ) {
+        return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoHelg');
+    }
+
+    return undefined;
+};

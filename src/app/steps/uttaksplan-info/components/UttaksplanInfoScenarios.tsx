@@ -4,6 +4,7 @@ import FarMedmorFødselFørsteganggsøknadBeggeHarRett from './scenarios/far-med
 import MorFødsel from './scenarios/mor-fodsel/MorFødsel';
 import MorFarAdopsjon from './scenarios/mor-far-adopsjon/MorFarAdopsjon';
 import FarMedmorAleneomsorgFødselAdopsjon from './scenarios/far-medmor-aleneomsorg-fødsel/FarMedmorAleneomsorgFødsel';
+import FarMedmorFødselOgMorHarIkkeRett from './scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -29,6 +30,10 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                 tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
             />
             <FarMedmorAleneomsorgFødselAdopsjon
+                tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+            />
+            <FarMedmorFødselOgMorHarIkkeRett
                 tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                 tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
             />

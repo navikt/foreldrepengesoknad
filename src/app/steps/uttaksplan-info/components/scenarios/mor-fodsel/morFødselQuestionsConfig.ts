@@ -6,22 +6,21 @@ const MorFødselFormConfig: QuestionConfig<MorFødselFormData, MorFødselFormFie
     [MorFødselFormField.dekningsgrad]: {
         isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
         isIncluded: () => true,
-        isOptional: () => false,
     },
     [MorFødselFormField.permisjonStartdato]: {
         isAnswered: ({ permisjonStartdato }) => hasValue(permisjonStartdato),
         isIncluded: () => true,
-        isOptional: () => false,
+        visibilityFilter: ({ dekningsgrad }) => hasValue(dekningsgrad),
     },
     [MorFødselFormField.skalIkkeHaUttakFørTermin]: {
         isAnswered: ({ skalIkkeHaUttakFørTermin }) => hasValue(skalIkkeHaUttakFørTermin),
         isIncluded: () => true,
-        isOptional: () => false,
+        visibilityFilter: ({ dekningsgrad }) => hasValue(dekningsgrad),
     },
     [MorFødselFormField.fellesperiodeukerMor]: {
         isAnswered: ({ fellesperiodeukerMor }) => hasValue(fellesperiodeukerMor),
         isIncluded: () => true,
-        isOptional: () => true,
+        visibilityFilter: ({ dekningsgrad }) => hasValue(dekningsgrad),
     },
 };
 

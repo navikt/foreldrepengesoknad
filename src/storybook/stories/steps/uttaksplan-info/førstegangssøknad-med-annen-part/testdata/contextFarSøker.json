@@ -1,0 +1,33 @@
+{
+    "søknad": {
+        "type": "foreldrepenger",
+        "harGodkjentVilkår": true,
+        "søkersituasjon": {
+            "situasjon": "fødsel",
+            "rolle": "far"
+        },
+        "barn": {
+            "type": "adoptertAnnetBarn",
+            "adopsjonsdato": "2021-03-15",
+            "adoptertIUtlandet": false,
+            "dokumentasjonAvAleneomsorg": []
+        },
+        "annenForelder": {
+            "fornavn": "Olga",
+            "etternavn": "Utvikler",
+            "fnr": "1212121313",
+            "harRettPåForeldrepenger": false,
+            "kanIkkeOppgis": false
+        },
+        "søker": {
+            "språkkode": "nb"
+        },
+        "informasjonOmUtenlandsopphold": {
+            "tidligereOpphold": [],
+            "senereOpphold": []
+        },
+        "erEndringssøknad": false
+    },
+    "version": 2,
+    "currentRoute": "/soknad/uttaksplan-info"
+}
