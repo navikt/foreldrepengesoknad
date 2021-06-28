@@ -36,7 +36,7 @@ import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/utt
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { DatepickerDateRange } from 'nav-datovelger';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { validateStartdatoFarMedmor } from 'app/steps/uttaksplan-info/validation/uttaksplanInfoValidering';
+import { validateStartdatoFarMedmor } from './validation/uttaksplanInfoValidering';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -227,8 +227,6 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                                 maxDate={ISOStringToDate(datoAvgrensinger.maxDate)}
                                 disabledDateRanges={konverterStringTilDate(datoAvgrensinger.invalidDateRanges)}
                                 disableWeekend={datoAvgrensinger.weekendsNotSelectable}
-                                // FIXME (TOR) Kor kjem denen frå?
-                                //disabled={data.skalIkkeHaUttakFørTermin}
                                 validate={validateStartdatoFarMedmor(intl)}
                             />
                         </Block>

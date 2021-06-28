@@ -9,7 +9,7 @@ import { formaterDatoUtenDag } from 'app/utils/dateUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
 import { DatepickerDateRange } from 'nav-datovelger';
-import { validateErAnnenStartdatoAdopsjonGyldig } from 'app/steps/uttaksplan-info/validation/uttaksplanInfoValidering';
+import { validateErAnnenStartdatoAdopsjonGyldig } from './validation/uttaksplanInfoValidering';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
 
 export const finnStartdatoAdopsjon = (

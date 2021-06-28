@@ -1,11 +1,11 @@
 import { intlUtils } from '@navikt/fp-common';
-import { isISODateString } from 'nav-datovelger';
-import { IntlShape } from 'react-intl';
-import { Uttaksdagen } from '../utils/Uttaksdagen';
-import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
-import { uttaksplanDatoavgrensninger } from '../utils/uttaksplanDatoavgrensninger';
 import dayjs from 'dayjs';
+import { IntlShape } from 'react-intl';
+import { isISODateString } from 'nav-datovelger';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import uttaksConstants from 'app/constants';
+import { Uttaksdagen } from '../../../../utils/Uttaksdagen';
+import { uttaksplanDatoavgrensninger } from '../../../../utils/uttaksplanDatoavgrensninger';
 
 export const validateErStartdatoFørTermindato =
     (intl: IntlShape, familiehendelsedato: Date, skalIkkeHaUttakFørTermin: boolean) => (permisjonStartdato: string) => {
@@ -38,25 +38,3 @@ export const validateErStartdatoFørTermindato =
 
         return undefined;
     };
-
-export const validateErAnnenStartdatoAdopsjonGyldig = (intl: IntlShape) => (annenStartdatoAdopsjon: string) => {
-    if (!isISODateString(annenStartdatoAdopsjon)) {
-        return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoAdopsjon.annenDato.gyldigDato');
-    }
-
-    return undefined;
-};
-
-export const validateStartdatoFarMedmor = (intl: IntlShape) => (permisjonStartdato: string) => {
-    if (!isISODateString(permisjonStartdato)) {
-        return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoPermisjon.gyldigDato');
-    }
-    if (
-        ISOStringToDate(permisjonStartdato) !== undefined &&
-        !Uttaksdagen(ISOStringToDate(permisjonStartdato)!).erUttaksdag()
-    ) {
-        return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoHelg');
-    }
-
-    return undefined;
-};
