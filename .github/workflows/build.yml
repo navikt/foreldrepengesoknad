@@ -22,7 +22,7 @@ jobs:
                   echo 'EOF' >> $GITHUB_ENV
 
             - name: Cache node modules
-              uses: actions/cache@v2.1.5
+              uses: actions/cache@v2.1.6
               with:
                   path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
                   key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
