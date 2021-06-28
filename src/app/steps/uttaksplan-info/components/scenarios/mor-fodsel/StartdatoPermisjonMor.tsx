@@ -10,7 +10,7 @@ import { Tidsperioden, getValidTidsperiode } from 'app/steps/uttaksplan-info/uti
 import uttaksConstants from 'app/constants';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { validateErStartdatoFørTermindato } from 'app/steps/uttaksplan-info/validation/uttaksplanInfoValidering';
+import { validateErStartdatoFørTermindato } from './validation/uttaksplanInfoValidering';
 import VeilederStartdatoPermisjon from './VeilederStartdatoPermisjon';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
 import { getVarighetString } from 'app/utils/dateUtils';

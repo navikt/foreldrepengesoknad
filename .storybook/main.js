@@ -6,7 +6,7 @@ module.exports = {
     builder: "webpack5",
   },
   stories: ['../src/storybook/stories/**/*.stories.@(tsx)'],
-  addons: ['@storybook/addon-docs/preset', '@storybook/addon-actions/register', 'storybook-formik/register'],
+  addons: ['@storybook/addon-docs/preset', 'storybook-formik/register'],
   webpackFinal: async (config, { configType }) => {
     //Fjern default svg-loader
     config.module.rules = config.module.rules.map( data => {
