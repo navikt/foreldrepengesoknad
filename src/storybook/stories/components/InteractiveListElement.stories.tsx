@@ -7,7 +7,7 @@ export default {
     component: InteractiveListElement,
 };
 
-export const visInteraktivListElement = () => (
+export const Default = () => (
     <InteractiveListElement
         title="Dette er en tittel"
         text="tekst"

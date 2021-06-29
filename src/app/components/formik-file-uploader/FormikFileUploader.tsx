@@ -15,7 +15,7 @@ export type FieldArrayReplaceFn = (index: number, value: any) => void;
 export type FieldArrayPushFn = (obj: any) => void;
 export type FieldArrayRemoveFn = (index: number) => undefined;
 
-interface Props {
+export interface Props {
     attachments: Attachment[];
     name: any;
     label: string;

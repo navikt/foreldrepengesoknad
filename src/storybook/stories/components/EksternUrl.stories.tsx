@@ -1,7 +1,7 @@
 import React from 'react';
 
 import withIntlProvider from '../../decorators/withIntl';
-import EksternUrl from '../../../app/components/ekstern-url/EksternUrl';
+import EksternUrl, { Props } from '../../../app/components/ekstern-url/EksternUrl';
 
 export default {
     title: 'components/EksternUrl',
@@ -9,8 +9,17 @@ export default {
     decorators: [withIntlProvider],
 };
 
-export const visLenketekst = () => <EksternUrl url="www.test.no" lenkeTekst="Dette er en lenketekst" />;
+const Template = (args: Props) => <EksternUrl {...args} />;
 
-export const visEkstraTekst = () => (
-    <EksternUrl url="www.test.no" lenkeTekst="Dette er en lenketekst" tekst="hjemmeside" />
-);
+export const Lenketekst = Template.bind({});
+Lenketekst.args = {
+    url: 'www.test.no',
+    lenkeTekst: 'Dette er en lenketekst',
+};
+
+export const EkstraTekst = Template.bind({});
+EkstraTekst.args = {
+    url: 'www.test.no',
+    lenkeTekst: 'Dette er en lenketekst',
+    tekst: 'hjemmeside',
+};

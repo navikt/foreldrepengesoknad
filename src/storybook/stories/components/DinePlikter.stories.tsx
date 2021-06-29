@@ -9,4 +9,4 @@ export default {
     decorators: [withIntlProvider],
 };
 
-export const visDinePlikterInfo = () => <DinePlikter />;
+export const Default = () => <DinePlikter />;

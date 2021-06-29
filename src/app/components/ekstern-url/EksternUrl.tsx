@@ -2,7 +2,7 @@ import { intlUtils } from '@navikt/fp-common';
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-interface Props {
+export interface Props {
     tekst?: string;
     url: string;
     lenkeTekst: string;

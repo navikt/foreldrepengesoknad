@@ -7,7 +7,7 @@ export default {
     component: Fieldset,
 };
 
-export const visFieldset = () => (
+export const Default = () => (
     <Fieldset legend="Dette er header">
         <div>Dette er innhold</div>
     </Fieldset>

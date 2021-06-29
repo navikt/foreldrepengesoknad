@@ -11,13 +11,11 @@ import { bytesString } from 'app/utils/globalUtil';
 
 import './attachment.less';
 
-interface OwnProps {
+export interface Props {
     attachment: AttachmentType;
     showFileSize?: boolean;
     onDelete?: (file: AttachmentType) => void;
 }
-
-type Props = OwnProps;
 
 const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, onDelete }) => {
     const intl = useIntl();

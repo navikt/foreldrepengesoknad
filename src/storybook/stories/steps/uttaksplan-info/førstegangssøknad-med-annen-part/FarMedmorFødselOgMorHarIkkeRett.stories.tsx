@@ -14,6 +14,7 @@ import withForeldrepengersøknadContext from '../../../../decorators/withForeldr
 import AxiosMock from '../../../../utils/AxiosMock';
 import ForeldrepengerStateMock from '../../../../utils/ForeldrepengerStateMock';
 import FarMedmorFødselOgMorHarIkkeRett from 'app/steps/uttaksplan-info/components/scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
+import UttaksplanInfoTestData from '../uttaksplanInfoTestData';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/uttaksplanannen';
 const STØNADSKONTO_URL = '/uttak-url/konto';
@@ -24,17 +25,17 @@ export default {
     decorators: [withRouter, withIntl, withForeldrepengersøknadContext],
 };
 
-export const visUttaksplanDerMorIkkeHarRettPåForeldrepenger = () => {
+const Template = (args: UttaksplanInfoTestData) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onGet(UTTAKSPLAN_ANNEN_URL).replyOnce(200, {});
-        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskonto100);
-        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskonto80);
+        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
+        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
     };
     return (
         <AxiosMock mock={restMock}>
             <ForeldrepengerStateMock
-                søknad={contextFarSøker as ForeldrepengesøknadContextState}
-                søkerinfo={søkerinfoFarSøker as SøkerinfoDTO}
+                søknad={args.context as ForeldrepengesøknadContextState}
+                søkerinfo={args.søkerinfo as SøkerinfoDTO}
             >
                 <UttaksplanInfo />
             </ForeldrepengerStateMock>
@@ -42,32 +43,27 @@ export const visUttaksplanDerMorIkkeHarRettPåForeldrepenger = () => {
     );
 };
 
-export const visUttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør = () => {
-    const restMock = (apiMock: MockAdapter) => {
-        apiMock.onGet(UTTAKSPLAN_ANNEN_URL).replyOnce(200, {});
-        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskonto100);
-        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskonto80);
-    };
-    const originalContext = contextFarSøker as ForeldrepengesøknadContextState;
-    return (
-        <AxiosMock mock={restMock}>
-            <ForeldrepengerStateMock
-                søknad={
-                    {
-                        ...originalContext,
-                        søknad: {
-                            ...originalContext.søknad,
-                            annenForelder: {
-                                ...originalContext.søknad.annenForelder,
-                                erUfør: true,
-                            },
-                        },
-                    } as ForeldrepengesøknadContextState
-                }
-                søkerinfo={søkerinfoFarSøker as SøkerinfoDTO}
-            >
-                <UttaksplanInfo />
-            </ForeldrepengerStateMock>
-        </AxiosMock>
-    );
+export const UttaksplanDerMorIkkeHarRettPåForeldrepenger = Template.bind({});
+UttaksplanDerMorIkkeHarRettPåForeldrepenger.args = {
+    stønadskonto100,
+    stønadskonto80,
+    context: contextFarSøker,
+    søkerinfo: søkerinfoFarSøker,
+};
+
+export const UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør = Template.bind({});
+UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør.args = {
+    stønadskonto100,
+    stønadskonto80,
+    context: {
+        ...contextFarSøker,
+        søknad: {
+            ...contextFarSøker.søknad,
+            annenForelder: {
+                ...contextFarSøker.søknad.annenForelder,
+                erUfør: true,
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo: søkerinfoFarSøker,
 };
