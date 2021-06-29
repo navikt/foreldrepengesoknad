@@ -1,4 +1,5 @@
 import React from 'react';
+import { Story } from '@storybook/react';
 import withFormik from 'storybook-formik';
 import { AttachmentType } from 'app/types/AttachmentType';
 import withIntlProvider from '../../decorators/withIntl';
@@ -12,7 +13,7 @@ export default {
     decorators: [withIntlProvider, withFormik],
 };
 
-const Template = (args: Props) => <FormikFileUploader {...args} />;
+const Template: Story<Props> = (args) => <FormikFileUploader {...args} />;
 
 export const FilOpplaster = Template.bind({});
 FilOpplaster.args = {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Story } from '@storybook/react';
 
 import withIntlProvider from '../../decorators/withIntl';
 import EksternUrl, { Props } from '../../../app/components/ekstern-url/EksternUrl';
@@ -9,7 +10,7 @@ export default {
     decorators: [withIntlProvider],
 };
 
-const Template = (args: Props) => <EksternUrl {...args} />;
+const Template: Story<Props> = (args) => <EksternUrl {...args} />;
 
 export const Lenketekst = Template.bind({});
 Lenketekst.args = {

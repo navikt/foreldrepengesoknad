@@ -40,7 +40,7 @@ export const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
     let tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
 
     Object.keys(stønadskontoerDTO.kontoer)
-        .filter((konto: StønadskontoType) => konto !== StønadskontoType.Flerbarnsdager)
+        .filter((konto: string) => konto !== StønadskontoType.Flerbarnsdager)
         .forEach((konto) => {
             tilgjengeligeStønadskontoer.push({
                 konto: konto as StønadskontoType,

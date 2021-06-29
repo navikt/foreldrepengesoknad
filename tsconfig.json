@@ -17,6 +17,7 @@
         "outDir": "build/dist",
         "sourceMap": true,
         "skipLibCheck": true,
+        "strict": true,
         "strictNullChecks": true,
         "suppressImplicitAnyIndexErrors": true,
         "target": "ESNext",

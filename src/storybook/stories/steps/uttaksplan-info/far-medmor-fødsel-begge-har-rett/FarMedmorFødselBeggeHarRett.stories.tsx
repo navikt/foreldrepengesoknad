@@ -1,4 +1,5 @@
 import React from 'react';
+import { Story } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
 import søkerinfo from './testdata/søkerinfo.json';
@@ -24,7 +25,7 @@ export default {
     decorators: [withRouter, withIntl, withForeldrepengersøknadContext],
 };
 
-const Template = (args: UttaksplanInfoTestData) => {
+const Template: Story<UttaksplanInfoTestData> = (args) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onGet(UTTAKSPLAN_ANNEN_URL).replyOnce(200, {});
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
