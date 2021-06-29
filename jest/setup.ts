@@ -3,6 +3,7 @@ import 'regenerator-runtime/runtime';
 
 (window as any).appSettings = {
     REST_API_URL: '',
+    UTTAK_API_URL: 'uttak-url',
     FEATURE_VIS_FEILSIDE: 'off',
     FEATURE_VIS_ALERTSTRIPE: 'on',
 };

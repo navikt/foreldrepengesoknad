@@ -9,9 +9,6 @@ describe('<UttaksplanInfo>', () => {
     it('skal returnere spinner når data blir hentet', () => {
         render(<UttaksplanMedAleneomsorg />);
 
-        console.log('screen.debug()');
-        console.log(screen.debug());
-
-        expect(screen.queryByText('Vente...')).toBeInTheDocument();
+        expect(screen.findByText('Vente...dfdfg')).toBeInTheDocument();
     });
 });

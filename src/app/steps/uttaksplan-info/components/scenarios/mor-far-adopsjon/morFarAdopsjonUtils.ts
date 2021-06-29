@@ -1,9 +1,10 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { finnEnum } from './adopsjonStartdatoValg';
 import { MorFarAdopsjonFormData, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
 
-const initialMorFødselValues: MorFarAdopsjonFormData = {
+const initialMorFarAdopsjonValues: MorFarAdopsjonFormData = {
     [MorFarAdopsjonFormField.harAnnenForelderSøktFP]: YesOrNo.UNANSWERED,
     [MorFarAdopsjonFormField.dekningsgrad]: '',
     [MorFarAdopsjonFormField.startdatoAdopsjonValg]: undefined,
@@ -13,6 +14,23 @@ const initialMorFødselValues: MorFarAdopsjonFormData = {
     [MorFarAdopsjonFormField.antallUkerFellesperiode]: '0',
     [MorFarAdopsjonFormField.antallDagerFellesperiode]: '0',
     [MorFarAdopsjonFormField.fellesperiodeukerMor]: undefined,
+};
+
+export const mapMorFarAdopsjonFormToState = (values: Partial<MorFarAdopsjonFormData>): MorFarAdopsjonUttaksplanInfo => {
+    return {
+        dekningsgrad:
+            values.dekningsgrad! === Dekningsgrad.HUNDRE_PROSENT
+                ? Dekningsgrad.HUNDRE_PROSENT
+                : Dekningsgrad.ÅTTI_PROSENT,
+        harAnnenForelderSøktFP: values.harAnnenForelderSøktFP!,
+        startdatoAdopsjonValg: values.startdatoAdopsjonValg!,
+        annenStartdatoAdopsjon: values.annenStartdatoAdopsjon!,
+        morsSisteDag: values.morsSisteDag!,
+        farMedmorsFørsteDag: values.farMedmorsFørsteDag!,
+        antallUkerFellesperiode: values.antallUkerFellesperiode!,
+        antallDagerFellesperiode: values.antallDagerFellesperiode!,
+        fellesperiodeukerMor: values.fellesperiodeukerMor,
+    };
 };
 
 export const getInitialMorFarAdopsjonValues = (
@@ -29,5 +47,5 @@ export const getInitialMorFarAdopsjonValues = (
         };
     }
 
-    return initialMorFødselValues;
+    return initialMorFarAdopsjonValues;
 };

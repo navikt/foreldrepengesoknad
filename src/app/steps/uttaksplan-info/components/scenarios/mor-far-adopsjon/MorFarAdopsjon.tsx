@@ -10,7 +10,7 @@ import { getNavnGenitivEierform, formaterNavn } from 'app/utils/personUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoMengde } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { getInitialMorFarAdopsjonValues } from './morFarAdopsjonUtils';
+import { getInitialMorFarAdopsjonValues, mapMorFarAdopsjonFormToState } from './morFarAdopsjonUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
@@ -74,15 +74,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const shouldRender =
         erAdopsjon && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelder.kanIkkeOppgis || søkerErAleneOmOmsorg);
 
-    const onValidSubmitHandler = (values: MorFarAdopsjonFormData) => {
-        const uttaksplanInfo: MorFarAdopsjonUttaksplanInfo = {
-            ...values,
-            dekningsgrad:
-                values.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-                    ? Dekningsgrad.HUNDRE_PROSENT
-                    : Dekningsgrad.ÅTTI_PROSENT,
-        };
-        return [actionCreator.setUttaksplanInfo(uttaksplanInfo)];
+    const onValidSubmitHandler = (values: Partial<MorFarAdopsjonFormData>) => {
+        return [actionCreator.setUttaksplanInfo(mapMorFarAdopsjonFormToState(values))];
     };
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);

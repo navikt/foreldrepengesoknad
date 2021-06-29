@@ -1,4 +1,5 @@
 import { FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import {
     FarMedmorFødselOgMorHarIkkeRettFormData,
     FarMedmorFødselOgMorHarIkkeRettFormField,
@@ -7,6 +8,18 @@ import {
 const initialFarMedmorFødselOgMorHarIkkeRettValues: FarMedmorFødselOgMorHarIkkeRettFormData = {
     [FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad]: '',
     [FarMedmorFødselOgMorHarIkkeRettFormField.permisjonStartdato]: '',
+};
+
+export const mapFarMedmorFødselOgMorHarIkkeRettFormToState = (
+    values: Partial<FarMedmorFødselOgMorHarIkkeRettFormData>
+): FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo => {
+    return {
+        dekningsgrad:
+            values.dekningsgrad! === Dekningsgrad.HUNDRE_PROSENT
+                ? Dekningsgrad.HUNDRE_PROSENT
+                : Dekningsgrad.ÅTTI_PROSENT,
+        permisjonStartdato: values.permisjonStartdato!,
+    };
 };
 
 export const getInitialFarMedmorFødselOgMorHarIkkeRettValues = (

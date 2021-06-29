@@ -10,7 +10,10 @@ import {
 } from './farMedmorFødselOgMorHarIkkeRettFormConfig';
 import { getValgtStønadskontoMengde } from 'app/utils/stønadskontoUtils';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { getInitialFarMedmorFødselOgMorHarIkkeRettValues } from './farMedmorFødselOgMorHarIkkeRettUtils';
+import {
+    getInitialFarMedmorFødselOgMorHarIkkeRettValues,
+    mapFarMedmorFødselOgMorHarIkkeRettFormToState,
+} from './farMedmorFødselOgMorHarIkkeRettUtils';
 import { FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import actionCreator from 'app/context/action/actionCreator';
@@ -89,15 +92,8 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         ? annenForelder.harRettPåForeldrepenger === false
         : false;
 
-    const onValidSubmitHandler = (values: FarMedmorFødselOgMorHarIkkeRettFormData) => {
-        const uttaksplanInfo: FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo = {
-            ...values,
-            dekningsgrad:
-                values.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-                    ? Dekningsgrad.HUNDRE_PROSENT
-                    : Dekningsgrad.ÅTTI_PROSENT,
-        };
-        return [actionCreator.setUttaksplanInfo(uttaksplanInfo)];
+    const onValidSubmitHandler = (values: Partial<FarMedmorFødselOgMorHarIkkeRettFormData>) => {
+        return [actionCreator.setUttaksplanInfo(mapFarMedmorFødselOgMorHarIkkeRettFormToState(values))];
     };
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);

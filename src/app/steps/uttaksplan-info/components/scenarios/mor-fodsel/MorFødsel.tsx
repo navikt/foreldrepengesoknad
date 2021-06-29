@@ -21,7 +21,7 @@ import { MorFødselFormComponents, MorFødselFormData, MorFødselFormField } fro
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { Tidsperioden } from '../../../utils/Tidsperioden';
-import { getInitialMorFødselValues } from './morFødselUtils';
+import { getInitialMorFødselValues, mapMorFødselFormToState } from './morFødselUtils';
 import StartdatoPermisjonMor from './StartdatoPermisjonMor';
 import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
 import {
@@ -79,12 +79,8 @@ const MorFødsel: FunctionComponent<Props> = ({
 
     const shouldRender = erMor && erFødsel;
 
-    const onValidSubmitHandler = (values: MorFødselFormData) => {
-        const uttaksplanInfo: MorFødselUttaksplanInfo = {
-            ...values,
-            dekningsgrad: values.dekningsgrad === '100' ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
-        };
-        return [actionCreator.setUttaksplanInfo(uttaksplanInfo)];
+    const onValidSubmitHandler = (values: Partial<MorFødselFormData>) => {
+        return [actionCreator.setUttaksplanInfo(mapMorFødselFormToState(values))];
     };
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
