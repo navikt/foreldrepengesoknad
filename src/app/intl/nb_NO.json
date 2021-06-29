@@ -136,6 +136,7 @@
     "annenForelder.annenForelderRettPåForeldrepenger.veileder.del2": "Du krysser nei dersom {navn} ikke mottar, har mottatt eller skal motta foreldrepenger fra Norge.",
     "annenForelder.annenForelderRettPåForeldrepenger.veileder.del3": "Dette gjelder også dersom mor har mottatt engangsstønad. Er du usikker på om {navn} har foreldrepenger fra Norge må du spørre {navn}.",
     "annenForelder.erAnnenForelderInformert.veileder": "Du må orientere {navn} om søknaden, før du kan gå videre.",
+    "annenForelder.registrertePersonalia.fødselsnummerOgÅr": "Fødselsnummer: {fnr} ({år} år)",
     "uttaksplaninfo.veileder.informasjonTilAnnenForelder": "Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i {navn} søknad.",
     "uttaksplaninfo.veileder.informasjonPrematuruker": "Stønadsperioden din er forlenget med {antallprematuruker} uker og {antallprematurdager} dager siden du har født før svangerskapsuke 33.",
     "uttaksplaninfo.veileder.farMedmor.infoOmTidsromMellomMorsSisteDagOgFarsFørsteDag": "Du skal legge inn siste dagen {navnMor} får utbetalt foreldrepenger fra NAV. Hvis {navnMor} har ulønnet permisjon eller ferie så er ikke dette en del av foreldrepengeperioden, du skal derfor legge inn siste dag {navnMor} får utbetalt foreldrepenger. Er du usikker på hva som er riktig dato kan dere se i vedtaket {navnMor} har fått fra NAV.",

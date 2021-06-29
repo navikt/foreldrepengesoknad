@@ -10,7 +10,7 @@ import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getRegistrertBarnOmDetFinnes } from 'app/utils/barnUtils';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { useCallback } from 'react';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
@@ -30,6 +30,8 @@ import FarDokumentasjonAleneomsorgVeileder from './components/FarDokumentasjonAl
 import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenForelderVeileder';
 import OppgiPersonalia from './components/OppgiPersonalia';
 import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
+import RegistrertePersonalia from './components/registrerte-personalia/RegistrertePersonalia';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
 const AnnenForelder = () => {
     const intl = useIntl();
@@ -39,8 +41,11 @@ const AnnenForelder = () => {
         søker,
         søkersituasjon: { rolle },
     } = useSøknad();
-    const skalOppgiPersonalia = true;
     const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
+    const søkerinfo = useSøkerinfo();
+    const registrertBarn = getRegistrertBarnOmDetFinnes(barn, søkerinfo.registrerteBarn);
+    const skalOppgiPersonalia =
+        registrertBarn === undefined || (registrertBarn !== undefined && registrertBarn.annenForelder === undefined);
 
     const onValidSubmitHandler = useCallback(
         (values: Partial<AnnenForelderFormData>) => {
@@ -71,7 +76,7 @@ const AnnenForelder = () => {
 
     return (
         <AnnenForelderFormComponents.FormikWrapper
-            initialValues={getAnnenForelderFormInitialValues(annenForelder, barn, søker)}
+            initialValues={getAnnenForelderFormInitialValues(annenForelder, barn, søker, registrertBarn)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = annenForelderQuestionsConfig.getVisbility({
@@ -95,7 +100,7 @@ const AnnenForelder = () => {
                     >
                         <AnnenForelderFormComponents.Form
                             includeButtons={false}
-                            cleanup={(values) => cleanAnnenForelderFormData(values, visibility)}
+                            cleanup={(values) => cleanAnnenForelderFormData(values, visibility, registrertBarn)}
                             includeValidationSummary={true}
                         >
                             {skalOppgiPersonalia && (
@@ -107,6 +112,11 @@ const AnnenForelder = () => {
                                     gjelderAdopsjon={false}
                                     søkersFødselsnummer={'søkersFødselsnummer'}
                                 />
+                            )}
+                            {registrertBarn !== undefined && registrertBarn.annenForelder && (
+                                <Block padBottom="l">
+                                    <RegistrertePersonalia person={registrertBarn.annenForelder} />
+                                </Block>
                             )}
                             <Block
                                 visible={

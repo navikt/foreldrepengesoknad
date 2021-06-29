@@ -60,11 +60,11 @@ const useGetEksisterendeSak = (saksnummer: string) => {
     };
 };
 
-const useGetEksisterendeSakMedFnr = (søkerFnr: string, annenPartFnr: string | undefined) => {
+const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolean, annenPartFnr: string | undefined) => {
     const { data, error } = useRequest<EksisterendeSak>('/innsyn/uttaksplanannen', {
         fnr: søkerFnr,
         config: { params: { annenPart: annenPartFnr }, withCredentials: true },
-        isSuspended: annenPartFnr ? false : true,
+        isSuspended: annenPartFnr && erFarEllerMedmor ? false : true,
     });
 
     return {

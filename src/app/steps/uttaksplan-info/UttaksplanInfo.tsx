@@ -5,13 +5,13 @@ import { useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { isFødtBarn } from 'app/context/types/Barn';
-import dayjs from 'dayjs';
 import Api from 'app/api/api';
 import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
 import getStønadskontoParams from 'app/api/getStønadskontoParams';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import NavFrontendSpinner from 'nav-frontend-spinner';
+import { getRegistrertBarnOmDetFinnes } from 'app/utils/barnUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -21,15 +21,13 @@ const UttaksplanInfo = () => {
 
     const { barn, annenForelder, søkersituasjon } = søknad;
     const { registrerteBarn } = søkerinfo;
+    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
-    let registrertBarn = undefined;
-
-    if (isFødtBarn(barn)) {
-        registrertBarn = registrerteBarn.find((regBarn) => dayjs(regBarn.fødselsdato).isSame(barn.fødselsdatoer[0]));
-    }
+    const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
 
     const { eksisterendeSakAnnenPartData } = Api.useGetEksisterendeSakMedFnr(
         søkerinfo.person.fnr,
+        erFarEllerMedmor,
         registrertBarn?.annenForelder?.fnr
     );
     const { tilgjengeligeStønadskontoerData: stønadskontoer100 } = Api.useGetUttakskontoer(
@@ -40,7 +38,11 @@ const UttaksplanInfo = () => {
     );
     const onAvbrytSøknad = useAvbrytSøknad();
 
-    if (!stønadskontoer100 || !stønadskontoer80) {
+    if (
+        !stønadskontoer100 ||
+        !stønadskontoer80 ||
+        (!!registrertBarn && !eksisterendeSakAnnenPartData && erFarEllerMedmor)
+    ) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <NavFrontendSpinner type="XXL" />
@@ -64,6 +66,7 @@ const UttaksplanInfo = () => {
             <UttaksplanInfoScenarios
                 tilgjengeligeStønadskontoer100DTO={stønadskontoer100}
                 tilgjengeligeStønadskontoer80DTO={stønadskontoer80}
+                eksisterendeSakAnnenPart={eksisterendeSakAnnenPartData}
             />
         </Step>
     );
