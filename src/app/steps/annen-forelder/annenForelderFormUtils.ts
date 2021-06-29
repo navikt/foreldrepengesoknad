@@ -4,6 +4,7 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import AnnenForelder, { isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Barn from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
+import { RegistrertBarn } from 'app/types/Person';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 
@@ -24,9 +25,10 @@ export const initialAnnenForelderValues: AnnenForelderFormData = {
 
 export const cleanAnnenForelderFormData = (
     values: AnnenForelderFormData,
-    visibility: QuestionVisibility<AnnenForelderFormField, undefined>
+    visibility: QuestionVisibility<AnnenForelderFormField, undefined>,
+    registrertBarn: RegistrertBarn | undefined
 ): AnnenForelderFormData => {
-    return {
+    const cleanedData: AnnenForelderFormData = {
         aleneOmOmsorg: visibility.isVisible(AnnenForelderFormField.aleneOmOmsorg)
             ? values.aleneOmOmsorg
             : YesOrNo.UNANSWERED,
@@ -50,6 +52,17 @@ export const cleanAnnenForelderFormData = (
         kanIkkeOppgis: visibility.isVisible(AnnenForelderFormField.kanIkkeOppgis) ? values.kanIkkeOppgis : false,
         utenlandskFnr: visibility.isVisible(AnnenForelderFormField.utenlandskFnr) ? values.utenlandskFnr : false,
     };
+
+    if (!!registrertBarn && !!registrertBarn.annenForelder) {
+        return {
+            ...cleanedData,
+            fornavn: registrertBarn.annenForelder.fornavn,
+            etternavn: registrertBarn.annenForelder.etternavn,
+            fnr: registrertBarn.annenForelder.fnr,
+        };
+    }
+
+    return cleanedData;
 };
 
 export const mapAnnenForelderFormToState = (values: Partial<AnnenForelderFormData>): AnnenForelder => {
@@ -75,9 +88,10 @@ export const mapAnnenForelderFormToState = (values: Partial<AnnenForelderFormDat
 export const getAnnenForelderFormInitialValues = (
     annenForelder: AnnenForelder,
     barn: Barn,
-    søker: Søker
+    søker: Søker,
+    registrertBarn: RegistrertBarn | undefined
 ): AnnenForelderFormData => {
-    if (isAnnenForelderOppgitt(annenForelder)) {
+    if (isAnnenForelderOppgitt(annenForelder) && hasValue(annenForelder.fornavn)) {
         return {
             ...initialAnnenForelderValues,
             harRettPåForeldrepenger: convertBooleanOrUndefinedToYesOrNo(annenForelder.harRettPåForeldrepenger),
@@ -92,6 +106,15 @@ export const getAnnenForelderFormInitialValues = (
             aleneOmOmsorg: convertBooleanOrUndefinedToYesOrNo(søker.erAleneOmOmsorg),
             datoForAleneomsorg: barn.datoForAleneomsorg || '',
             utenlandskFnr: annenForelder.utenlandskFnr || false,
+        };
+    }
+
+    if (!!registrertBarn && !!registrertBarn.annenForelder) {
+        return {
+            ...initialAnnenForelderValues,
+            fornavn: registrertBarn.annenForelder.fornavn,
+            etternavn: registrertBarn.annenForelder.etternavn,
+            fnr: registrertBarn.annenForelder.fnr,
         };
     }
 

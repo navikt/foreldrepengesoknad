@@ -8,9 +8,9 @@ import Barn, {
     isUfødtBarn,
 } from 'app/context/types/Barn';
 import { RegistrertBarn } from 'app/types/Person';
+import { getRegistrertBarnOmDetFinnes } from 'app/utils/barnUtils';
 import { velgEldsteBarn } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import dayjs from 'dayjs';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 
 const getInitValues = (): Readonly<OmBarnetFormData> => ({
@@ -91,10 +91,8 @@ export const getOmBarnetInitialValues = (barn: Barn, registrerteBarn: Registrert
         return initialOmBarnetValues;
     }
 
-    if (registrerteBarn.length > 0 && isFødtBarn(barn)) {
-        const registrertBarn = registrerteBarn.find((regBarn) =>
-            dayjs(regBarn.fødselsdato).isSame(barn.fødselsdatoer[0])
-        );
+    if (isFødtBarn(barn)) {
+        const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
 
         if (registrertBarn) {
             return {

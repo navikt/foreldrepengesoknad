@@ -8,6 +8,7 @@ import { formatDateExtended, hasValue, intlUtils } from '@navikt/fp-common';
 import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
 import { RegistrertBarn } from 'app/types/Person';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
+import { Alder } from 'app/types/Alder';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -201,4 +202,21 @@ export const findEldsteDato = (dateArray: Date[]): DateValue => {
         return dayjs.min(dateArray.map((date: Date) => dayjs(date))).toDate();
     }
     return undefined;
+};
+
+export const getAlderFraDato = (fødselsdato: Date): Alder => {
+    const idag = dayjs();
+    const dato = dayjs(fødselsdato);
+
+    const år = idag.diff(dato, 'year');
+    dato.add(år, 'years');
+    const måneder = idag.diff(dato, 'months');
+    dato.add(måneder, 'months');
+    const dager = idag.diff(dato, 'days');
+
+    return {
+        år,
+        måneder,
+        dager,
+    };
 };

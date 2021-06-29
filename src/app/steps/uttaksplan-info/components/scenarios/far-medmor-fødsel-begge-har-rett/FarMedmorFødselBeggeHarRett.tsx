@@ -27,15 +27,18 @@ import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { Forelder } from 'app/types/Forelder';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
+    eksisterendeSakAnnenPart: EksisterendeSak | undefined;
 }
 
 const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     tilgjengeligeStønadskontoer80DTO,
+    eksisterendeSakAnnenPart,
 }) => {
     const intl = useIntl();
     const { annenForelder, søkersituasjon, barn } = useSøknad();
@@ -54,7 +57,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
         : '';
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
 
-    const shouldRender = erFarEllerMedmor && erFødsel && annenForelderHarRett;
+    const shouldRender = erFarEllerMedmor && erFødsel && annenForelderHarRett && eksisterendeSakAnnenPart === undefined;
 
     if (!shouldRender) {
         return null;

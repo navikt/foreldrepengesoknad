@@ -1,4 +1,6 @@
 import Barn, { isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
+import { RegistrertBarn } from 'app/types/Person';
+import dayjs from 'dayjs';
 
 export const getFamiliehendelsedato = (barn: Barn): string => {
     if (isFødtBarn(barn)) {
@@ -9,4 +11,17 @@ export const getFamiliehendelsedato = (barn: Barn): string => {
     }
 
     return barn.adopsjonsdato;
+};
+
+export const getRegistrertBarnOmDetFinnes = (
+    barn: Barn,
+    registrerteBarn: RegistrertBarn[]
+): RegistrertBarn | undefined => {
+    let registrertBarn;
+
+    if (registrerteBarn.length > 0 && isFødtBarn(barn)) {
+        registrertBarn = registrerteBarn.find((regBarn) => dayjs(regBarn.fødselsdato).isSame(barn.fødselsdatoer[0]));
+    }
+
+    return registrertBarn;
 };
