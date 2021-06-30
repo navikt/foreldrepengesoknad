@@ -37,6 +37,7 @@ const Template: Story<UttaksplanInfoTestData> = (args) => {
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
     };
+
     return (
         <AxiosMock mock={restMock}>
             <ForeldrepengerStateMock

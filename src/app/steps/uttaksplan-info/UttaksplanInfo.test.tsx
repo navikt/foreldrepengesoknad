@@ -6,9 +6,9 @@ import * as stories from '../../../storybook/stories/steps/uttaksplan-info/mor-f
 const { UttaksplanMedAleneomsorg } = composeStories(stories);
 
 describe('<UttaksplanInfo>', () => {
-    it('skal returnere spinner når data blir hentet', () => {
+    it('skal returnere spinner når data blir hentet', async () => {
         render(<UttaksplanMedAleneomsorg />);
 
-        expect(screen.findByText('Vente...dfdfg')).toBeInTheDocument();
+        expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
     });
 });

@@ -37,8 +37,7 @@ const UttaksplanInfo = () => {
         getStønadskontoParams(Dekningsgrad.ÅTTI_PROSENT, barn, annenForelder, søkersituasjon)
     );
     const onAvbrytSøknad = useAvbrytSøknad();
-    console.log('1');
-    console.log(stønadskontoer100);
+
     if (
         !stønadskontoer100 ||
         !stønadskontoer80 ||
@@ -50,8 +49,6 @@ const UttaksplanInfo = () => {
             </div>
         );
     }
-
-    console.log(eksisterendeSakAnnenPartData);
 
     return (
         <Step

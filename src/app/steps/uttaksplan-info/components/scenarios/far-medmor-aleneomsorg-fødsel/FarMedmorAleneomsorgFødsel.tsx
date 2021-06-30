@@ -62,7 +62,6 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
             values,
             familiehendelsesdato
         );
-        console.log(uttaksplanInfo);
         return [actionCreator.setUttaksplanInfo(uttaksplanInfo)];
     };
 
