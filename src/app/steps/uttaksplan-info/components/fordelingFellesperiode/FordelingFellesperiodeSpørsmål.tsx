@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
 import { Ingress, Normaltekst } from 'nav-frontend-typografi';
@@ -36,6 +36,11 @@ const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps> = ({
         navnForelder1: mor,
         navnForelder2: farMedmor,
     });
+
+    useEffect(() => {
+        setFieldValue('fellesperiodeukerMor', fellesperiodeukerMor);
+    }, []);
+
     const annenForeldersNavn = annenForelderErFarEllerMedmor ? farMedmor : mor;
     return (
         <RangeInput

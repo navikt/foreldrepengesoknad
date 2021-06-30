@@ -6,6 +6,7 @@ import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
 
 interface MorFarAdopsjonQuestionsPayload extends MorFarAdopsjonFormData {
     harAnnenForeldreRettPåForeldrepenger: boolean | undefined;
+    erAleneOmOmsorg: boolean | undefined;
 }
 
 const MorFarAdopsjonFormConfig: QuestionConfig<MorFarAdopsjonQuestionsPayload, MorFarAdopsjonFormField> = {
@@ -50,8 +51,16 @@ const MorFarAdopsjonFormConfig: QuestionConfig<MorFarAdopsjonQuestionsPayload, M
     },
     [MorFarAdopsjonFormField.fellesperiodeukerMor]: {
         isAnswered: ({ fellesperiodeukerMor }) => hasValue(fellesperiodeukerMor),
-        isIncluded: ({ startdatoAdopsjonValg, harAnnenForelderSøktFP }) =>
-            startdatoAdopsjonValg !== undefined && harAnnenForelderSøktFP !== YesOrNo.YES,
+        isIncluded: ({
+            startdatoAdopsjonValg,
+            harAnnenForelderSøktFP,
+            harAnnenForeldreRettPåForeldrepenger,
+            erAleneOmOmsorg,
+        }) =>
+            startdatoAdopsjonValg !== undefined &&
+            harAnnenForelderSøktFP !== YesOrNo.YES &&
+            !!harAnnenForeldreRettPåForeldrepenger &&
+            erAleneOmOmsorg === false,
     },
 };
 

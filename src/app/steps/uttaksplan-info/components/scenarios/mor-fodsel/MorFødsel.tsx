@@ -123,6 +123,8 @@ const MorFødsel: FunctionComponent<Props> = ({
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFødselQuestionsConfig.getVisbility({
                     ...formValues,
+                    harRettPåForeldrepenger,
+                    erAleneOmOmsorg,
                 });
 
                 const tilgjengeligeStønadskontoer100 = getValgtStønadskontoMengde(
@@ -224,7 +226,10 @@ const MorFødsel: FunctionComponent<Props> = ({
                                     />
                                 </Veilederpanel>
                             </Block>
-                            <Block padBottom="l" visible={harSvartPåStartdato}>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(MorFødselFormField.fellesperiodeukerMor)}
+                            >
                                 <FordelingFellesperiodeSpørsmål
                                     setFieldValue={setFieldValue}
                                     fellesperiodeukerMor={formValues.fellesperiodeukerMor || fellesperiodeukerMor}

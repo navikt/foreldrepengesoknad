@@ -2,7 +2,12 @@ import { QuestionConfig, Questions } from '@navikt/sif-common-question-config';
 import { hasValue } from '@navikt/fp-common';
 import { MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
 
-const MorFødselFormConfig: QuestionConfig<MorFødselFormData, MorFødselFormField> = {
+interface MorFødselQuestionsPayload extends MorFødselFormData {
+    harRettPåForeldrepenger: boolean | undefined;
+    erAleneOmOmsorg: boolean | undefined;
+}
+
+const MorFødselFormConfig: QuestionConfig<MorFødselQuestionsPayload, MorFødselFormField> = {
     [MorFødselFormField.dekningsgrad]: {
         isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
         isIncluded: () => true,
@@ -19,9 +24,11 @@ const MorFødselFormConfig: QuestionConfig<MorFødselFormData, MorFødselFormFie
     },
     [MorFødselFormField.fellesperiodeukerMor]: {
         isAnswered: ({ fellesperiodeukerMor }) => hasValue(fellesperiodeukerMor),
-        isIncluded: () => true,
-        visibilityFilter: ({ dekningsgrad }) => hasValue(dekningsgrad),
+        isIncluded: ({ harRettPåForeldrepenger, erAleneOmOmsorg }) =>
+            !!harRettPåForeldrepenger && erAleneOmOmsorg === false,
+        visibilityFilter: ({ dekningsgrad, permisjonStartdato, skalIkkeHaUttakFørTermin }) =>
+            hasValue(dekningsgrad) && (hasValue(permisjonStartdato) || skalIkkeHaUttakFørTermin === true),
     },
 };
 
-export const morFødselQuestionsConfig = Questions<MorFødselFormData, MorFødselFormField>(MorFødselFormConfig);
+export const morFødselQuestionsConfig = Questions<MorFødselQuestionsPayload, MorFødselFormField>(MorFødselFormConfig);

@@ -123,6 +123,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                 const visibility = morFarAdopsjonQuestionsConfig.getVisbility({
                     ...formValues,
                     harAnnenForeldreRettPåForeldrepenger,
+                    erAleneOmOmsorg,
                 });
 
                 const tilgjengeligeStønadskontoer100 = getValgtStønadskontoMengde(
