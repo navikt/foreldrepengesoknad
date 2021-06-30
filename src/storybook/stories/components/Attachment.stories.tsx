@@ -1,9 +1,9 @@
 import React from 'react';
 import { Story } from '@storybook/react';
 
+import Attachment, { Props } from 'app/components/attachment/Attachment';
+import { Attachment as AttachmentType } from 'app/types/Attachment';
 import withIntlProvider from '../../decorators/withIntl';
-import Attachment, { Props } from '../../../app/components/attachment/Attachment';
-import { Attachment as AttachmentType } from '../../../app/types/Attachment';
 
 export default {
     title: 'components/Attachment',

@@ -8,8 +8,12 @@ import { shouldChangeBrowser } from 'app/utils/browserUtils';
 
 import './byttBrowserModal.less';
 
-const ByttBrowserModal = () => {
-    const [isOpen, toggleIsOpen] = React.useState(shouldChangeBrowser());
+interface Props {
+    skalEndreNettleser: boolean;
+}
+
+export const ByttBrowserModalImpl: React.FunctionComponent<Props> = ({ skalEndreNettleser }) => {
+    const [isOpen, toggleIsOpen] = React.useState(skalEndreNettleser);
     const intl = useIntl();
     const cls = bemUtils('bytt-browser-modal');
     return (
@@ -31,4 +35,7 @@ const ByttBrowserModal = () => {
         </Modal>
     );
 };
+
+const ByttBrowserModal = () => <ByttBrowserModalImpl skalEndreNettleser={shouldChangeBrowser()} />;
+
 export default ByttBrowserModal;
