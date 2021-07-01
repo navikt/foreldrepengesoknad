@@ -23,6 +23,7 @@ import {
     OppsummeringFormField,
 } from './oppsummeringFormConfig';
 import { validateHarGodkjentOppsummering } from './validation/oppsummeringValidation';
+import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-inntekter-oppsummering/ArbeidsforholdOgAndreInntekterOppsummering';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -76,7 +77,7 @@ const Oppsummering = () => {
                                         />
                                     </OppsummeringsPanel>
                                     <OppsummeringsPanel title="Arbeidsforhold og andre inntektskilder">
-                                        <BarnOppsummering barn={barn} />
+                                        <ArbeidsforholdOgAndreInntekterOppsummering />
                                     </OppsummeringsPanel>
                                 </div>
                             </Block>
