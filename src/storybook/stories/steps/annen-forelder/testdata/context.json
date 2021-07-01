@@ -1,0 +1,32 @@
+{
+    "søknad": {
+        "type": "foreldrepenger",
+        "harGodkjentVilkår": true,
+        "søkersituasjon": {
+            "situasjon": "fødsel",
+            "rolle": "mor"
+        },
+        "barn": {
+            "type": "født",
+            "fødselsdatoer": [
+                "2021-03-15"
+            ],
+            "antallBarn": "1",
+            "datoForAleneomsorg": "",
+            "dokumentasjonAvAleneomsorg": []
+        },
+        "annenForelder": {
+            "kanIkkeOppgis": true
+        },
+        "søker": {
+            "språkkode": "nb"
+        },
+        "informasjonOmUtenlandsopphold": {
+            "tidligereOpphold": [],
+            "senereOpphold": []
+        },
+        "erEndringssøknad": false
+    },
+    "version": 2,
+    "currentRoute": "/soknad/uttaksplan-info"
+}

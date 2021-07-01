@@ -1,0 +1,12 @@
+{
+    "søknad": {
+        "type": "foreldrepenger",
+        "harGodkjentVilkår": true,
+        "søkersituasjon": {
+            "rolle": "",
+            "situasjon": ""
+        }
+    },
+    "version": 2,
+    "currentRoute": "/soknad/uttaksplan-info"
+}
