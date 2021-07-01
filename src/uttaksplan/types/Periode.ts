@@ -1,5 +1,6 @@
 import { TidsperiodeDate } from '@navikt/fp-common';
 import { Attachment } from 'app/types/Attachment';
+import { Forelder } from 'app/types/Forelder';
 import { MorsAktivitet } from './MorsAktivitet';
 import { OppholdÅrsakType } from './OppholdÅrsakType';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
@@ -39,7 +40,7 @@ export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBas
 export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: StønadskontoType;
-    forelder: 'mor' | 'farMedmor';
+    forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak?: boolean;
     samtidigUttakProsent?: string;
@@ -59,7 +60,7 @@ export type Uttaksperiode = UttaksperiodeBase | ForeldrepengerFørFødselUttaksp
 export interface Utsettelsesperiode extends PeriodeBase {
     type: Periodetype.Utsettelse;
     årsak: UtsettelseÅrsakType;
-    forelder: 'mor' | 'farMedmor';
+    forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
     orgnumre?: string[];
     erArbeidstaker: boolean;
@@ -70,13 +71,13 @@ export interface Utsettelsesperiode extends PeriodeBase {
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
     årsak: OppholdÅrsakType;
-    forelder: 'mor' | 'farMedmor';
+    forelder: Forelder;
 }
 
 export interface Overføringsperiode extends PeriodeBase {
     type: Periodetype.Overføring;
     konto: StønadskontoType;
-    forelder: 'mor' | 'farMedmor';
+    forelder: Forelder;
     årsak: OverføringÅrsakType;
 }
 
@@ -98,7 +99,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     infotype: PeriodeInfoType.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
     stønadskonto: StønadskontoType;
-    forelder: 'mor' | 'farMedmor';
+    forelder: Forelder;
     overskrives: true;
     visPeriodeIPlan: boolean;
 }
@@ -107,7 +108,7 @@ export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.uttakAnnenPart;
     årsak: OppholdÅrsakType;
-    forelder: 'mor' | 'farMedmor';
+    forelder: Forelder;
     overskrives: true;
     resultatType: PeriodeResultatType;
     visPeriodeIPlan: boolean;
@@ -121,7 +122,7 @@ export interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.utsettelseAnnenPart;
     årsak: UtsettelseÅrsakType;
-    forelder: 'mor' | 'farMedmor';
+    forelder: Forelder;
     overskrives: true;
     resultatType: PeriodeResultatType;
     visPeriodeIPlan: boolean;
@@ -139,12 +140,44 @@ export type Periode =
 
 export type RecursivePartial<T> = { [P in keyof T]?: RecursivePartial<T[P]> };
 
-export function isUttaksperiode(periode: Periode | RecursivePartial<Periode>): periode is Uttaksperiode {
+export function isUttaksperiode(periode: Periode): periode is Uttaksperiode {
     return periode.type === Periodetype.Uttak;
 }
 
-export function isForeldrepengerFørFødselUttaksperiode(
-    periode: Periode | RecursivePartial<Periode>
-): periode is ForeldrepengerFørFødselUttaksperiode {
+export const isForeldrepengerFørFødselUttaksperiode = (
+    periode: Periode
+): periode is ForeldrepengerFørFødselUttaksperiode => {
     return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
-}
+};
+
+export const isUttakAvFellesperiode = (periode: Periode | RecursivePartial<Periode>): periode is Uttaksperiode => {
+    return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.Fellesperiode;
+};
+
+export const isUtsettelsesperiode = (periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode => {
+    return periode.type === Periodetype.Utsettelse;
+};
+
+export const isUtsettelsePgaFerie = (periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode => {
+    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Ferie;
+};
+
+export const isUtsettelsePgaArbeid = (periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode => {
+    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Arbeid;
+};
+
+export const isOverføringsperiode = (periode: Periode | RecursivePartial<Periode>): periode is Overføringsperiode => {
+    return periode.type === Periodetype.Overføring;
+};
+
+export const isOppholdsperiode = (periode: Periode | RecursivePartial<Periode>): periode is Oppholdsperiode => {
+    return periode.type === Periodetype.Opphold;
+};
+
+export const isInfoPeriode = (periode: Periode): periode is InfoPeriode => {
+    return periode.type === Periodetype.Info && periode.overskrives === true;
+};
+
+export const isHull = (periode: Periode): periode is PeriodeHull => {
+    return periode.type === Periodetype.Hull;
+};

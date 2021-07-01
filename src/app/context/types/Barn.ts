@@ -15,13 +15,13 @@ interface Common {
     datoForAleneomsorg?: string;
 }
 
-interface FødtBarn extends Common {
+export interface FødtBarn extends Common {
     type: BarnType.FØDT;
     fødselsdatoer: string[];
     termindato?: string;
 }
 
-interface UfødtBarn extends Common {
+export interface UfødtBarn extends Common {
     type: BarnType.UFØDT;
     termindato: string;
     terminbekreftelse: any[];

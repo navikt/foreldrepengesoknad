@@ -6,6 +6,7 @@ import MorFarAdopsjon from './scenarios/mor-far-adopsjon/MorFarAdopsjon';
 import FarMedmorAleneomsorgFødselAdopsjon from './scenarios/far-medmor-aleneomsorg-fødsel/FarMedmorAleneomsorgFødsel';
 import FarMedmorFødselOgMorHarIkkeRett from './scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import FarMedmorFørstegangssøknadMedAnnenPart from './scenarios/farMedmor-førstegangssøknad-med-annen-part/FarMedmorFørstegangssøknadMedAnnenPart';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -40,6 +41,11 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
             <FarMedmorFødselOgMorHarIkkeRett
                 tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                 tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+            />
+            <FarMedmorFørstegangssøknadMedAnnenPart
+                tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
             />
         </>
     );

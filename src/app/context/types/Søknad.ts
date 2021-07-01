@@ -1,3 +1,4 @@
+import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import AnnenForelder from './AnnenForelder';
 import Barn from './Barn';
 import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
@@ -13,4 +14,6 @@ export interface Søknad {
     søker: Søker;
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
     erEndringssøknad: boolean;
+    dekningsgrad: Dekningsgrad;
+    uttaksplan: any;
 }

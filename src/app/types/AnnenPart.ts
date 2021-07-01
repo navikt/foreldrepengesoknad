@@ -6,6 +6,6 @@ export interface AnnenPart {
     navn: {
         fornavn: string;
         etternavn: string;
-        kjønn: Kjønn;
     };
+    kjønn: Kjønn;
 }

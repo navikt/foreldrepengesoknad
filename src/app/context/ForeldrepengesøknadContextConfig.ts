@@ -44,6 +44,8 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
             senereOpphold: [],
         },
         erEndringssøknad: false,
+        dekningsgrad: undefined!,
+        uttaksplan: [],
     },
     søkerinfo: undefined!,
     saker: [],
