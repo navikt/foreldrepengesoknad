@@ -108,7 +108,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
     );
 
-    const erDeltUttak = erAleneOmOmsorg === false || !annenForelder.kanIkkeOppgis;
+    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,

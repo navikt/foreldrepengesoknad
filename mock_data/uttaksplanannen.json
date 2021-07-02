@@ -1,7 +1,7 @@
 {
     "grunnlag": {
-        "termindato": "2021-06-14",
-        "fødselsdato": "2021-06-14",
+        "termindato": "2021-06-27",
+        "fødselsdato": "2021-06-27",
         "dekningsgrad": 100,
         "antallBarn": 1,
         "søkerErFarEllerMedmor": false,
@@ -32,8 +32,8 @@
             },
             "periodeResultatÅrsak": "2006",
             "periode": {
-                "fom": "2021-05-24",
-                "tom": "2021-06-11"
+                "fom": "2021-06-07",
+                "tom": "2021-06-25"
             }
         },
         {
@@ -55,8 +55,8 @@
             },
             "periodeResultatÅrsak": "2003",
             "periode": {
-                "fom": "2021-06-14",
-                "tom": "2021-07-25"
+                "fom": "2021-06-28",
+                "tom": "2021-08-07"
             }
         },
         {
@@ -78,8 +78,8 @@
             },
             "periodeResultatÅrsak": "2003",
             "periode": {
-                "fom": "2021-07-26",
-                "tom": "2021-09-24"
+                "fom": "2021-08-08",
+                "tom": "2021-10-08"
             }
         },
         {
@@ -101,8 +101,8 @@
             },
             "periodeResultatÅrsak": "2002",
             "periode": {
-                "fom": "2021-09-27",
-                "tom": "2022-01-14"
+                "fom": "2021-10-11",
+                "tom": "2022-01-28"
             }
         }
     ]

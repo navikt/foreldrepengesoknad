@@ -7,8 +7,8 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import søkerinfoFarSøker from './testdata/søkerinfoFarSøker.json';
 import contextFarSøker from './testdata/contextFarSøker.json';
-import stønadskonto100 from './../testdata/stønadskonto100.json';
-import stønadskonto80 from './../testdata/stønadskonto80.json';
+import stønadskonto100MorHarIkkeRett from './../testdata/stønadskonto100MorHarIkkeRett.json';
+import stønadskonto80MorHarIkkeRett from './../testdata/stønadskonto80MorHarIkkeRett.json';
 import withIntl from '../../../../decorators/withIntl';
 import withRouter from '../../../../decorators/withRouter';
 import withForeldrepengersøknadContext from '../../../../decorators/withForeldrepengersøknadContext';
@@ -46,16 +46,16 @@ const Template: Story<UttaksplanInfoTestData> = (args) => {
 
 export const UttaksplanDerMorIkkeHarRettPåForeldrepenger = Template.bind({});
 UttaksplanDerMorIkkeHarRettPåForeldrepenger.args = {
-    stønadskonto100,
-    stønadskonto80,
+    stønadskonto100: stønadskonto100MorHarIkkeRett,
+    stønadskonto80: stønadskonto80MorHarIkkeRett,
     context: contextFarSøker,
     søkerinfo: søkerinfoFarSøker,
 };
 
 export const UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør = Template.bind({});
 UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør.args = {
-    stønadskonto100,
-    stønadskonto80,
+    stønadskonto100: stønadskonto100MorHarIkkeRett,
+    stønadskonto80: stønadskonto80MorHarIkkeRett,
     context: {
         ...contextFarSøker,
         søknad: {

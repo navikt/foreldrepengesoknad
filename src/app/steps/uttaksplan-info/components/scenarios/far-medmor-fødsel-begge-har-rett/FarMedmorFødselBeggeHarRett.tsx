@@ -4,7 +4,7 @@ import React, { FunctionComponent } from 'react';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import { getNavnGenitivEierform } from 'app/utils/personUtils';
-import { Block } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -27,6 +27,7 @@ import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { Forelder } from 'app/types/Forelder';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
+import { Hovedknapp } from 'nav-frontend-knapper';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -167,6 +168,9 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                     ukerMedFellesperiode={tilgjengeligeDager.dagerFelles / 5}
                                 />
                             )}
+                        </Block>
+                        <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
+                            <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
                         </Block>
                     </FarMedmorFødselBeggeHarRettFormComponents.Form>
                 );

@@ -1,33 +1,24 @@
 {
     "søker": {
-        "fnr": "10119222112",
-        "fornavn": "GUL",
-        "etternavn": "DORULL",
+        "fnr": "08128222368",
+        "fornavn": "SEDAT",
+        "etternavn": "TRANE",
         "kjønn": "M",
-        "fødselsdato": "1992-11-10",
+        "fødselsdato": "1982-12-08",
         "ikkeNordiskEøsLand": false,
         "barn": [
             {
-                "fnr": "14062151871",
-                "fødselsdato": "2021-06-14",
+                "fnr": "27062153275",
+                "fødselsdato": "2021-06-27",
                 "annenForelder": {
-                    "fnr": "08129222205",
-                    "fødselsdato": "1992-12-08",
-                    "fornavn": "RAUS",
-                    "etternavn": "KAKKERLAKK"
+                    "fnr": "28118221607",
+                    "fødselsdato": "1982-11-28",
+                    "fornavn": "SMIDIG",
+                    "etternavn": "KOPP"
                 },
-                "fornavn": "ROBUST",
-                "etternavn": "RHODODENRON",
+                "fornavn": "TALENTFULL",
+                "etternavn": "MIDTPUNKT",
                 "kjønn": "K"
-            }
-        ],
-        "arbeidsforhold": [
-            {
-                "arbeidsgiverId": "824771332",
-                "arbeidsgiverIdType": "orgnr",
-                "arbeidsgiverNavn": "SJOKKERENDE ELEKTRIKER",
-                "stillingsprosent": 100,
-                "fom": "2000-09-09"
             }
         ]
     }
