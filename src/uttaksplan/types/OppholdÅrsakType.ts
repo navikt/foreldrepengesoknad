@@ -3,4 +3,5 @@ export enum OppholdÅrsakType {
     UttakFedrekvoteAnnenForelder = 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
     UttakMødrekvoteAnnenForelder = 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
     UttakForelderpengerFørFødsel = 'UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER',
+    Ingen = 'INGEN',
 }

@@ -1,6 +1,14 @@
-import React from 'react';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
+import React, { FunctionComponent } from 'react';
 
-const FarMedmorFørstegangssøknadMedAnnenPart = () => {
+interface Props {
+    tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
+    tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
+    eksisterendeSakAnnenPart: EksisterendeSak | undefined;
+}
+
+const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = () => {
     return <div>Hello world</div>;
 };
 

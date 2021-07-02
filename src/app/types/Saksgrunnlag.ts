@@ -1,16 +1,19 @@
 import { Dekningsgrad } from './Dekningsgrad';
+import { FamiliehendelseType } from './FamiliehendelseType';
 
 export interface Saksgrunnlag {
-    annenForelderErInformert: boolean;
-    antallBarn: number;
     dekningsgrad: Dekningsgrad;
-    farMedmorErAleneOmOmsorg: boolean;
-    farMedmorHarRett: boolean;
-    fødselsdato?: string;
+    antallBarn: number;
     morErAleneOmOmsorg: boolean;
     morErUfør: boolean;
     morHarRett: boolean;
-    omsorgsovertakelsesdato?: string;
-    søkerErFarEllerMedmor: boolean;
+    farMedmorErAleneOmOmsorg: boolean;
+    farMedmorHarRett: boolean;
     termindato?: string;
+    fødselsdato?: string;
+    omsorgsovertakelsesdato?: string;
+    erDeltUttak: boolean;
+    erBarnetFødt: boolean;
+    familiehendelseDato: string;
+    familiehendelseType: FamiliehendelseType;
 }

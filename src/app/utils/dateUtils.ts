@@ -4,7 +4,7 @@ import isBetween from 'dayjs/plugin/isBetween';
 import minMax from 'dayjs/plugin/minMax';
 import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
-import { formatDateExtended, hasValue, intlUtils } from '@navikt/fp-common';
+import { formatDateExtended, hasValue, intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
 import { RegistrertBarn } from 'app/types/Person';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
@@ -219,4 +219,23 @@ export const getAlderFraDato = (fødselsdato: Date): Alder => {
         måneder,
         dager,
     };
+};
+
+export const convertTidsperiodeToTidsperiodeDate = (tidsperiode: Tidsperiode): TidsperiodeDate => {
+    return {
+        fom: dayjs(tidsperiode.fom).toDate(),
+        tom: dayjs(tidsperiode.tom).toDate(),
+    };
+};
+
+export const getRelevantFamiliehendelseDato = (
+    termindato: string | undefined,
+    fødselsdato: string | undefined,
+    omsorgsovertakelsesdato: string | undefined
+): string => {
+    if (fødselsdato !== undefined) {
+        return fødselsdato;
+    } else {
+        return termindato !== undefined ? termindato : omsorgsovertakelsesdato!;
+    }
 };

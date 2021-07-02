@@ -8,8 +8,7 @@ import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { ArbeidsgiverInfo } from './ArbeidsgiverInfo';
 import { UttakArbeidType } from './UttakArbeidType';
 
-export interface Saksperiode {
-    guid: string;
+export interface SaksperiodeDTO {
     angittAvAnnenPart?: boolean;
     arbeidsgiverInfo: ArbeidsgiverInfo;
     arbeidstidprosent: number;

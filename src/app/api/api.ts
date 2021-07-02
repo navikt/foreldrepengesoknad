@@ -1,6 +1,5 @@
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
 import Sak from 'app/types/Sak';
 import { StorageKvittering } from 'app/types/StorageKvittering';
@@ -12,6 +11,8 @@ import { storageParser } from './storageParser';
 import Environment from 'app/Environment';
 import { formaterStønadskontoParamsDatoer } from 'app/utils/dateUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
+import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
+import { mapEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
@@ -49,7 +50,7 @@ const useGetSaker = () => {
 };
 
 const useGetEksisterendeSak = (saksnummer: string) => {
-    const { data, error } = useRequest<EksisterendeSak>('/innsyn/uttaksplan', {
+    const { data, error } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplan', {
         fnr: '123',
         config: { withCredentials: true, params: saksnummer },
     });
@@ -61,14 +62,14 @@ const useGetEksisterendeSak = (saksnummer: string) => {
 };
 
 const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolean, annenPartFnr: string | undefined) => {
-    const { data, error } = useRequest<EksisterendeSak>('/innsyn/uttaksplanannen', {
+    const { data, error } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplanannen', {
         fnr: søkerFnr,
         config: { params: { annenPart: annenPartFnr }, withCredentials: true },
         isSuspended: annenPartFnr && erFarEllerMedmor ? false : true,
     });
 
     return {
-        eksisterendeSakAnnenPartData: data,
+        eksisterendeSakAnnenPartData: mapEksisterendeSakFromDTO(data, erFarEllerMedmor, true),
         eksisterendeSakAnnenPartError: error,
     };
 };
