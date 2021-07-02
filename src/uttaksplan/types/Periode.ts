@@ -138,8 +138,6 @@ export type Periode =
     | PeriodeHull
     | InfoPeriode;
 
-export type RecursivePartial<T> = { [P in keyof T]?: RecursivePartial<T[P]> };
-
 export function isUttaksperiode(periode: Periode): periode is Uttaksperiode {
     return periode.type === Periodetype.Uttak;
 }
@@ -150,27 +148,27 @@ export const isForeldrepengerFørFødselUttaksperiode = (
     return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
 };
 
-export const isUttakAvFellesperiode = (periode: Periode | RecursivePartial<Periode>): periode is Uttaksperiode => {
+export const isUttakAvFellesperiode = (periode: Periode): periode is Uttaksperiode => {
     return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.Fellesperiode;
 };
 
-export const isUtsettelsesperiode = (periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode => {
+export const isUtsettelsesperiode = (periode: Periode): periode is Utsettelsesperiode => {
     return periode.type === Periodetype.Utsettelse;
 };
 
-export const isUtsettelsePgaFerie = (periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode => {
+export const isUtsettelsePgaFerie = (periode: Periode): periode is Utsettelsesperiode => {
     return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Ferie;
 };
 
-export const isUtsettelsePgaArbeid = (periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode => {
+export const isUtsettelsePgaArbeid = (periode: Periode): periode is Utsettelsesperiode => {
     return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Arbeid;
 };
 
-export const isOverføringsperiode = (periode: Periode | RecursivePartial<Periode>): periode is Overføringsperiode => {
+export const isOverføringsperiode = (periode: Periode): periode is Overføringsperiode => {
     return periode.type === Periodetype.Overføring;
 };
 
-export const isOppholdsperiode = (periode: Periode | RecursivePartial<Periode>): periode is Oppholdsperiode => {
+export const isOppholdsperiode = (periode: Periode): periode is Oppholdsperiode => {
     return periode.type === Periodetype.Opphold;
 };
 

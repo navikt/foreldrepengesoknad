@@ -1,7 +1,7 @@
 import { SaksgrunnlagDTO } from './SaksgrunnlagDTO';
-import { Saksperiode } from './Saksperiode';
+import { SaksperiodeDTO } from './SaksperiodeDTO';
 
 export interface EksisterendeSakDTO {
     grunnlag: SaksgrunnlagDTO;
-    perioder: Saksperiode[];
+    perioder: SaksperiodeDTO[];
 }

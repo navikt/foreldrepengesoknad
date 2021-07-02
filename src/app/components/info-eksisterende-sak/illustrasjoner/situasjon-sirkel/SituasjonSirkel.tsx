@@ -1,40 +1,40 @@
-// import * as React from 'react';
-// import { Forelder } from 'common/types';
-// import BEMHelper from 'common/util/bem';
-// import Sirkelmaske from 'common/components/sirkelmaske/Sirkelmaske';
+import React from 'react';
+import { Forelder } from 'app/types/Forelder';
+import { bemUtils } from '@navikt/fp-common';
+import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
+import Sirkelmaske from 'app/components/sirkelmaske/Sirkelmaske';
+import { getAntallForeldreISituasjon, getSituasjonForelderSvg } from 'app/utils/foreldreparSituasjonUtils';
+import Foreldrepar from 'app/components/foreldrepar/Foreldrepar';
 
-// import './situasjonSirkel.less';
-// import Foreldrepar from 'shared/components/foreldrepar/Foreldrepar';
-// import { ForeldreparSituasjon } from 'shared/types';
-// import { getSituasjonForelderSvg, getAntallForeldreISituasjon } from 'shared/components/foreldrepar/foreldreparUtils';
+import './situasjonSirkel.less';
 
-// interface Props {
-//     situasjon: ForeldreparSituasjon;
-//     valgtForelder?: Forelder;
-// }
+interface Props {
+    situasjon: ForeldreparSituasjon;
+    valgtForelder?: Forelder;
+}
 
-// const bem = BEMHelper('situasjonSirkel');
+const SituasjonSirkel: React.FunctionComponent<Props> = ({ situasjon, valgtForelder }) => {
+    const info = getSituasjonForelderSvg(situasjon);
+    const bem = bemUtils('situasjonSirkel');
 
-// const SituasjonSirkel: React.FunctionComponent<Props> = ({ situasjon, valgtForelder }) => {
-//     const info = getSituasjonForelderSvg(situasjon);
-//     return (
-//         <div className={bem.block}>
-//             <div className={bem.element('ikon')}>
-//                 <Sirkelmaske diameter="5rem">
-//                     {getAntallForeldreISituasjon(situasjon) === 1 && valgtForelder ? (
-//                         <Foreldrepar forelder1={valgtForelder === Forelder.mor ? info.mor : info.farMedmor} />
-//                     ) : (
-//                         <Foreldrepar
-//                             forelder1={info.mor}
-//                             forelder2={info.farMedmor}
-//                             variant={info.variant}
-//                             kompakt={true}
-//                         />
-//                     )}
-//                 </Sirkelmaske>
-//             </div>
-//         </div>
-//     );
-// };
+    return (
+        <div className={bem.block}>
+            <div className={bem.element('ikon')}>
+                <Sirkelmaske diameter="5rem">
+                    {getAntallForeldreISituasjon(situasjon) === 1 && valgtForelder ? (
+                        <Foreldrepar forelder1={valgtForelder === Forelder.mor ? info.mor : info.farMedmor} />
+                    ) : (
+                        <Foreldrepar
+                            forelder1={info.mor}
+                            forelder2={info.farMedmor}
+                            variant={info.variant}
+                            kompakt={true}
+                        />
+                    )}
+                </Sirkelmaske>
+            </div>
+        </div>
+    );
+};
 
-// export default SituasjonSirkel;
+export default SituasjonSirkel;
