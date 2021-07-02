@@ -8,19 +8,17 @@ import {
     FarMedmorFødselOgMorHarIkkeRettFormData,
     FarMedmorFødselOgMorHarIkkeRettFormField,
 } from './farMedmorFødselOgMorHarIkkeRettFormConfig';
-import { getValgtStønadskontoMengde } from 'app/utils/stønadskontoUtils';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import {
     getInitialFarMedmorFødselOgMorHarIkkeRettValues,
     mapFarMedmorFødselOgMorHarIkkeRettFormToState,
 } from './farMedmorFødselOgMorHarIkkeRettUtils';
 import { FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import actionCreator from 'app/context/action/actionCreator';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import SøknadRoutes from 'app/routes/routes';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
-import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { farMedmorFødselOgMorHarIkkeRettQuestionsConfig } from './farMedmorFødselOgMorHarIkkeRettQuestionsConfig';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
@@ -40,6 +38,7 @@ import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { DatepickerDateRange } from 'nav-datovelger';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { validateStartdatoFarMedmor } from './validation/uttaksplanInfoValidering';
+import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -124,6 +123,13 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
         : undefined;
 
+    const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
+        tilgjengeligeStønadskontoer80DTO,
+        tilgjengeligeStønadskontoer100DTO,
+        familiehendelsesdato,
+        erMorUfør
+    );
+
     return (
         <FarMedmorFødselOgMorHarIkkeRettFormComponents.FormikWrapper
             initialValues={getInitialFarMedmorFødselOgMorHarIkkeRettValues(lagretUttaksplanInfo)}
@@ -134,26 +140,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                     erMorUfør,
                 });
 
-                const tilgjengeligeStønadskontoer100 = getValgtStønadskontoMengde(
-                    Dekningsgrad.HUNDRE_PROSENT,
-                    tilgjengeligeStønadskontoer80DTO,
-                    tilgjengeligeStønadskontoer100DTO,
-                    familiehendelsesdato,
-                    erMorUfør
-                );
-                const tilgjengeligeStønadskontoer80 = getValgtStønadskontoMengde(
-                    Dekningsgrad.ÅTTI_PROSENT,
-                    tilgjengeligeStønadskontoer80DTO,
-                    tilgjengeligeStønadskontoer100DTO,
-                    familiehendelsesdato,
-                    erMorUfør
-                );
-
-                const valgtStønadskonto =
-                    formValues.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-                        ? tilgjengeligeStønadskontoer100
-                        : tilgjengeligeStønadskontoer80;
-                const tilgjengeligeDager = getTilgjengeligeDager(valgtStønadskonto, erDeltUttak, Forelder.farMedmor);
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];
 
                 return (
                     <FarMedmorFødselOgMorHarIkkeRettFormComponents.Form
@@ -164,42 +151,29 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                             padBottom="l"
                             visible={visibility.isIncluded(FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad)}
                         >
-                            <FarMedmorFødselOgMorHarIkkeRettFormComponents.RadioPanelGroup
-                                name={FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad}
-                                radios={[
-                                    {
-                                        label: intlUtils(intl, 'uttaksplaninfo.49Uker', {
-                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer100),
-                                        }),
-                                        value: Dekningsgrad.HUNDRE_PROSENT,
-                                    },
-                                    {
-                                        label: intlUtils(intl, 'uttaksplaninfo.59Uker', {
-                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer80),
-                                        }),
-                                        value: Dekningsgrad.ÅTTI_PROSENT,
-                                    },
-                                ]}
-                                legend={intlUtils(intl, 'uttaksplaninfo.dekningsgrad.label.deltUttak')}
-                                description={
-                                    <UtvidetInformasjon apneLabel="Les mer om lengden på foreldrepengeperioden">
-                                        <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad80" />
-                                    </UtvidetInformasjon>
-                                }
-                                useTwoColumns={true}
+                            <DekningsgradSpørsmål
+                                FormKomponent={FarMedmorFødselOgMorHarIkkeRettFormComponents}
+                                dekningsgradFeltNavn={FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad}
+                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                             />
                         </Block>
                         <Block
                             padBottom="l"
                             visible={visibility.isAnswered(FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad)}
                         >
-                            <TilgjengeligeDagerGraf
-                                erDeltUttak={erDeltUttak}
-                                erFarEllerMedmor
-                                navnFarMedmor={navnFarMedmor}
-                                navnMor={navnMor}
-                                tilgjengeligeDager={tilgjengeligeDager}
-                            />
+                            {valgtStønadskonto && (
+                                <TilgjengeligeDagerGraf
+                                    erDeltUttak={erDeltUttak}
+                                    erFarEllerMedmor
+                                    navnFarMedmor={navnFarMedmor}
+                                    navnMor={navnMor}
+                                    tilgjengeligeDager={getTilgjengeligeDager(
+                                        valgtStønadskonto,
+                                        erDeltUttak,
+                                        Forelder.farMedmor
+                                    )}
+                                />
+                            )}
                         </Block>
                         <Block padBottom="l" visible={visInfoOmPrematuruker === true}>
                             <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>

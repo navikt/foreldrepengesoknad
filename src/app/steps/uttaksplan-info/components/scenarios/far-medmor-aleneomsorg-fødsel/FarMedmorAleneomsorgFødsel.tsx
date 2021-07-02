@@ -1,11 +1,9 @@
-import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import actionCreator from 'app/context/action/actionCreator';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import SøknadRoutes from 'app/routes/routes';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { Forelder } from 'app/types/Forelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
@@ -16,12 +14,13 @@ import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import { getValgtStønadskontoMengde } from 'app/utils/stønadskontoUtils';
+import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
+import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import {
     FarMedmorAleneomsorgFødselFormComponents,
     FarMedmorAleneomsorgFødselFormData,
@@ -47,13 +46,8 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const { person } = useSøkerinfo();
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const intl = useIntl();
-    const navnFar = erFarEllerMedmor
-        ? person.fornavn
-        : isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.fornavn
-        : '';
+
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const lagretUttaksplanInfo = useUttaksplanInfo<FarMedmorAleneomsorgFødselUttaksplanInfo>();
 
@@ -73,31 +67,28 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         return null;
     }
 
+    const navnFar = erFarEllerMedmor
+        ? person.fornavn
+        : isAnnenForelderOppgitt(annenForelder)
+        ? annenForelder.fornavn
+        : '';
+
+    const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
+    const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
+        tilgjengeligeStønadskontoer80DTO,
+        tilgjengeligeStønadskontoer100DTO,
+        familiehendelsesdato,
+        erMorUfør
+    );
+
     return (
         <FarMedmorAleneomsorgFødselFormComponents.FormikWrapper
             initialValues={getInitialFarMedmorAleneomsorgFødselValues(lagretUttaksplanInfo, familiehendelsesdato)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = farMedmorAleneomsorgFødselAdopsjonQuestionsConfig.getVisbility(formValues);
-                const tilgjengeligeStønadskontoer100 = getValgtStønadskontoMengde(
-                    Dekningsgrad.HUNDRE_PROSENT,
-                    tilgjengeligeStønadskontoer80DTO,
-                    tilgjengeligeStønadskontoer100DTO,
-                    familiehendelsesdato,
-                    erMorUfør
-                );
-                const tilgjengeligeStønadskontoer80 = getValgtStønadskontoMengde(
-                    Dekningsgrad.ÅTTI_PROSENT,
-                    tilgjengeligeStønadskontoer80DTO,
-                    tilgjengeligeStønadskontoer100DTO,
-                    familiehendelsesdato,
-                    erMorUfør
-                );
-                const valgtStønadskonto =
-                    formValues.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-                        ? tilgjengeligeStønadskontoer100
-                        : tilgjengeligeStønadskontoer80;
-                const tilgjengeligeDager = getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor);
+
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];
 
                 return (
                     <FarMedmorAleneomsorgFødselFormComponents.Form
@@ -108,39 +99,26 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                             padBottom="xxl"
                             visible={visibility.isVisible(FarMedmorAleneomsorgFødselFormField.dekningsgrad)}
                         >
-                            <FarMedmorAleneomsorgFødselFormComponents.RadioPanelGroup
-                                name={FarMedmorAleneomsorgFødselFormField.dekningsgrad}
-                                radios={[
-                                    {
-                                        label: intlUtils(intl, 'uttaksplaninfo.49Uker', {
-                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer100),
-                                        }),
-                                        value: Dekningsgrad.HUNDRE_PROSENT,
-                                    },
-                                    {
-                                        label: intlUtils(intl, 'uttaksplaninfo.59Uker', {
-                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer80),
-                                        }),
-                                        value: Dekningsgrad.ÅTTI_PROSENT,
-                                    },
-                                ]}
-                                legend={intlUtils(intl, 'uttaksplaninfo.dekningsgrad.label.deltUttak')}
-                                description={
-                                    <UtvidetInformasjon apneLabel="Les mer om lengden på foreldrepengeperioden">
-                                        <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad80" />
-                                    </UtvidetInformasjon>
-                                }
-                                useTwoColumns={true}
+                            <DekningsgradSpørsmål
+                                FormKomponent={FarMedmorAleneomsorgFødselFormComponents}
+                                dekningsgradFeltNavn={FarMedmorAleneomsorgFødselFormField.dekningsgrad}
+                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                             />
                         </Block>
                         <Block visible={formValues.dekningsgrad !== ''}>
-                            <TilgjengeligeDagerGraf
-                                erDeltUttak={false}
-                                erFarEllerMedmor={true}
-                                navnFarMedmor={navnFar}
-                                navnMor=""
-                                tilgjengeligeDager={tilgjengeligeDager}
-                            />
+                            {valgtStønadskonto && (
+                                <TilgjengeligeDagerGraf
+                                    erDeltUttak={false}
+                                    erFarEllerMedmor={true}
+                                    navnFarMedmor={navnFar}
+                                    navnMor=""
+                                    tilgjengeligeDager={getTilgjengeligeDager(
+                                        valgtStønadskonto,
+                                        false,
+                                        Forelder.farMedmor
+                                    )}
+                                />
+                            )}
                         </Block>
                         <Block
                             padBottom="l"

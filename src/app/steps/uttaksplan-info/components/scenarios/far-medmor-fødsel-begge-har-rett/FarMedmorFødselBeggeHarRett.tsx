@@ -4,7 +4,7 @@ import React, { FunctionComponent } from 'react';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import { getNavnGenitivEierform } from 'app/utils/personUtils';
-import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -12,11 +12,10 @@ import {
     FarMedmorFødselBeggeHarRettFormField,
 } from './farMedmorFødselBeggeHarRettFormConfig';
 import { getInitialFarMedmorFødselBeggeHarRettValues } from './farMedmorFødselBeggeHarRettUtils';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { getValgtStønadskontoMengde } from 'app/utils/stønadskontoUtils';
+import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import farMedmorFødselBeggeHarRettQuestionsConfig from './farMedmorFødselBeggeHarRettQuestionsConfig';
@@ -26,8 +25,8 @@ import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/Ant
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { Forelder } from 'app/types/Forelder';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -48,14 +47,6 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
         ? !!annenForelder.harRettPåForeldrepenger
         : false;
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const navnMor = erFarEllerMedmor && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : person.fornavn;
-    const navnFar = erFarEllerMedmor
-        ? person.fornavn
-        : isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.fornavn
-        : '';
-    const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
 
     const shouldRender = erFarEllerMedmor && erFødsel && annenForelderHarRett && eksisterendeSakAnnenPart === undefined;
 
@@ -63,31 +54,33 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
         return null;
     }
 
+    const navnFar = erFarEllerMedmor
+        ? person.fornavn
+        : isAnnenForelderOppgitt(annenForelder)
+        ? annenForelder.fornavn
+        : '';
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const navnMor = erFarEllerMedmor && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : person.fornavn;
+
+    const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
+    const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
+        tilgjengeligeStønadskontoer80DTO,
+        tilgjengeligeStønadskontoer100DTO,
+        familiehendelsesdato,
+        erMorUfør
+    );
+
     return (
         <FarMedmorFødselBeggeHarRettFormComponents.FormikWrapper
             initialValues={getInitialFarMedmorFødselBeggeHarRettValues()}
             onSubmit={() => null}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility(formValues);
-                const tilgjengeligeStønadskontoer100 = getValgtStønadskontoMengde(
-                    Dekningsgrad.HUNDRE_PROSENT,
-                    tilgjengeligeStønadskontoer80DTO,
-                    tilgjengeligeStønadskontoer100DTO,
-                    familiehendelsesdato,
-                    erMorUfør
-                );
-                const tilgjengeligeStønadskontoer80 = getValgtStønadskontoMengde(
-                    Dekningsgrad.ÅTTI_PROSENT,
-                    tilgjengeligeStønadskontoer80DTO,
-                    tilgjengeligeStønadskontoer100DTO,
-                    familiehendelsesdato,
-                    erMorUfør
-                );
-                const valgtStønadskonto =
-                    formValues.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-                        ? tilgjengeligeStønadskontoer100
-                        : tilgjengeligeStønadskontoer80;
-                const tilgjengeligeDager = getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor);
+
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];
+                const tilgjengeligeDager = valgtStønadskonto
+                    ? getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor)
+                    : undefined;
 
                 return (
                     <FarMedmorFødselBeggeHarRettFormComponents.Form
@@ -107,39 +100,22 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                             </Veilederpanel>
                         </Block>
                         <Block padBottom="l">
-                            <FarMedmorFødselBeggeHarRettFormComponents.RadioPanelGroup
-                                name={FarMedmorFødselBeggeHarRettFormField.dekningsgrad}
-                                radios={[
-                                    {
-                                        label: intlUtils(intl, 'uttaksplaninfo.49Uker', {
-                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer100),
-                                        }),
-                                        value: Dekningsgrad.HUNDRE_PROSENT,
-                                    },
-                                    {
-                                        label: intlUtils(intl, 'uttaksplaninfo.59Uker', {
-                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer80),
-                                        }),
-                                        value: Dekningsgrad.ÅTTI_PROSENT,
-                                    },
-                                ]}
-                                legend={intlUtils(intl, 'uttaksplaninfo.dekningsgrad.label.deltUttak')}
-                                description={
-                                    <UtvidetInformasjon apneLabel="Les mer om lengden på foreldrepengeperioden">
-                                        <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad80" />
-                                    </UtvidetInformasjon>
-                                }
-                                useTwoColumns={true}
+                            <DekningsgradSpørsmål
+                                FormKomponent={FarMedmorFødselBeggeHarRettFormComponents}
+                                dekningsgradFeltNavn={FarMedmorFødselBeggeHarRettFormField.dekningsgrad}
+                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                             />
                         </Block>
                         <Block visible={formValues.dekningsgrad !== ''}>
-                            <TilgjengeligeDagerGraf
-                                erDeltUttak={true}
-                                erFarEllerMedmor={true}
-                                navnFarMedmor={navnFar}
-                                navnMor={navnMor}
-                                tilgjengeligeDager={tilgjengeligeDager}
-                            />
+                            {tilgjengeligeDager && (
+                                <TilgjengeligeDagerGraf
+                                    erDeltUttak={true}
+                                    erFarEllerMedmor={true}
+                                    navnFarMedmor={navnFar}
+                                    navnMor={navnMor}
+                                    tilgjengeligeDager={tilgjengeligeDager}
+                                />
+                            )}
                         </Block>
                         <Block padBottom="l" visible={erFarEllerMedmor && formValues.dekningsgrad !== ''}>
                             <Veilederpanel svg={<VeilederNormal transparentBackground={true} />}>
@@ -180,15 +156,17 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 FarMedmorFødselBeggeHarRettFormField.antallDagerFellesperiode
                             )}
                         >
-                            <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
-                                FormComponents={FarMedmorFødselBeggeHarRettFormComponents}
-                                ukerFieldName={FarMedmorFødselBeggeHarRettFormField.antallUkerFellesperiode}
-                                dagerFieldName={FarMedmorFødselBeggeHarRettFormField.antallDagerFellesperiode}
-                                antallDager={formValues.antallDagerFellesperiode}
-                                antallUker={formValues.antallUkerFellesperiode}
-                                setFieldValue={setFieldValue}
-                                ukerMedFellesperiode={tilgjengeligeDager.dagerFelles / 5}
-                            />
+                            {tilgjengeligeDager && (
+                                <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
+                                    FormComponents={FarMedmorFødselBeggeHarRettFormComponents}
+                                    ukerFieldName={FarMedmorFødselBeggeHarRettFormField.antallUkerFellesperiode}
+                                    dagerFieldName={FarMedmorFødselBeggeHarRettFormField.antallDagerFellesperiode}
+                                    antallDager={formValues.antallDagerFellesperiode}
+                                    antallUker={formValues.antallUkerFellesperiode}
+                                    setFieldValue={setFieldValue}
+                                    ukerMedFellesperiode={tilgjengeligeDager.dagerFelles / 5}
+                                />
+                            )}
                         </Block>
                     </FarMedmorFødselBeggeHarRettFormComponents.Form>
                 );
