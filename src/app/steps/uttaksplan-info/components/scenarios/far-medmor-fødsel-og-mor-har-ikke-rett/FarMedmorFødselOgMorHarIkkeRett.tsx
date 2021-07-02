@@ -39,6 +39,7 @@ import { DatepickerDateRange } from 'nav-datovelger';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { validateStartdatoFarMedmor } from './validation/uttaksplanInfoValidering';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
+import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -74,7 +75,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
 }) => {
     const intl = useIntl();
-    const { søkersituasjon, annenForelder, barn } = useSøknad();
+    const { søkersituasjon, annenForelder, barn, dekningsgrad } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
     } = useSøkerinfo();
@@ -87,7 +88,10 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         : false;
 
     const onValidSubmitHandler = (values: Partial<FarMedmorFødselOgMorHarIkkeRettFormData>) => {
-        return [actionCreator.setUttaksplanInfo(mapFarMedmorFødselOgMorHarIkkeRettFormToState(values))];
+        return [
+            actionCreator.setUttaksplanInfo(mapFarMedmorFødselOgMorHarIkkeRettFormToState(values)),
+            actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
+        ];
     };
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
@@ -127,7 +131,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
 
     return (
         <FarMedmorFødselOgMorHarIkkeRettFormComponents.FormikWrapper
-            initialValues={getInitialFarMedmorFødselOgMorHarIkkeRettValues(lagretUttaksplanInfo)}
+            initialValues={getInitialFarMedmorFødselOgMorHarIkkeRettValues(dekningsgrad, lagretUttaksplanInfo)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = farMedmorFødselOgMorHarIkkeRettQuestionsConfig.getVisbility({

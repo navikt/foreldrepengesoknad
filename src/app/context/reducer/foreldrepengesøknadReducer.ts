@@ -57,6 +57,7 @@ const foreldrepengesøknadReducer = (
                 søknad: {
                     ...foreldrepengesøknadInitialState.søknad,
                 },
+                uttaksplanInfo: undefined,
             };
         case ForeldrepengesøknadContextActionKeys.UPDATE_CURRENT_ROUTE:
             return {
@@ -87,6 +88,14 @@ const foreldrepengesøknadReducer = (
             return {
                 ...state,
                 uttaksplanInfo: { ...action.payload },
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_DEKNINGSGRAD:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    dekningsgrad: action.dekningsgrad,
+                },
             };
         default:
             return state;

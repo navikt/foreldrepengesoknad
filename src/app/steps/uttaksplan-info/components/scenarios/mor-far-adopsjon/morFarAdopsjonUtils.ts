@@ -18,10 +18,6 @@ const initialMorFarAdopsjonValues: MorFarAdopsjonFormData = {
 
 export const mapMorFarAdopsjonFormToState = (values: Partial<MorFarAdopsjonFormData>): MorFarAdopsjonUttaksplanInfo => {
     return {
-        dekningsgrad:
-            values.dekningsgrad! === Dekningsgrad.HUNDRE_PROSENT
-                ? Dekningsgrad.HUNDRE_PROSENT
-                : Dekningsgrad.ÅTTI_PROSENT,
         harAnnenForelderSøktFP: values.harAnnenForelderSøktFP!,
         startdatoAdopsjonValg: values.startdatoAdopsjonValg!,
         annenStartdatoAdopsjon: values.annenStartdatoAdopsjon!,
@@ -34,12 +30,13 @@ export const mapMorFarAdopsjonFormToState = (values: Partial<MorFarAdopsjonFormD
 };
 
 export const getInitialMorFarAdopsjonValues = (
-    lagretUttaksplanInfo?: MorFarAdopsjonUttaksplanInfo
+    lagretUttaksplanInfo: MorFarAdopsjonUttaksplanInfo | undefined,
+    dekningsgrad: Dekningsgrad
 ): MorFarAdopsjonFormData => {
     if (lagretUttaksplanInfo) {
         return {
             ...lagretUttaksplanInfo,
-            [MorFarAdopsjonFormField.dekningsgrad]: lagretUttaksplanInfo.dekningsgrad.toString(),
+            [MorFarAdopsjonFormField.dekningsgrad]: dekningsgrad,
             [MorFarAdopsjonFormField.startdatoAdopsjonValg]: finnEnum(lagretUttaksplanInfo.startdatoAdopsjonValg),
             [MorFarAdopsjonFormField.harAnnenForelderSøktFP]: lagretUttaksplanInfo.harAnnenForelderSøktFP
                 ? YesOrNo.YES

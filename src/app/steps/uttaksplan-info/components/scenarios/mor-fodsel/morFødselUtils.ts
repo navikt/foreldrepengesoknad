@@ -12,10 +12,6 @@ const initialMorFødselValues: MorFødselFormData = {
 
 export const mapMorFødselFormToState = (values: Partial<MorFødselFormData>): MorFødselUttaksplanInfo => {
     return {
-        dekningsgrad:
-            values.dekningsgrad! === Dekningsgrad.HUNDRE_PROSENT
-                ? Dekningsgrad.HUNDRE_PROSENT
-                : Dekningsgrad.ÅTTI_PROSENT,
         permisjonStartdato: values.permisjonStartdato!,
         skalIkkeHaUttakFørTermin: values.skalIkkeHaUttakFørTermin!,
         fellesperiodeukerMor: values.fellesperiodeukerMor,
@@ -24,12 +20,13 @@ export const mapMorFødselFormToState = (values: Partial<MorFødselFormData>): M
 
 export const getInitialMorFødselValues = (
     defaultPermisjonStartdato: Date,
-    lagretUttaksplanInfo?: MorFødselUttaksplanInfo
+    lagretUttaksplanInfo: MorFødselUttaksplanInfo | undefined,
+    dekningsgrad: Dekningsgrad
 ): MorFødselFormData => {
     if (lagretUttaksplanInfo) {
         return {
             ...lagretUttaksplanInfo,
-            [MorFødselFormField.dekningsgrad]: lagretUttaksplanInfo.dekningsgrad.toString(),
+            [MorFødselFormField.dekningsgrad]: dekningsgrad,
         };
     }
 

@@ -1,8 +1,4 @@
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
-
-interface UttaksplanInfo {
-    dekningsgrad: Dekningsgrad;
-}
+interface UttaksplanInfo {}
 
 export interface MorFødselUttaksplanInfo extends UttaksplanInfo {
     permisjonStartdato: string;
@@ -32,6 +28,13 @@ export interface FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo extends Uttakspl
 
 export interface FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo extends UttaksplanInfo {
     permisjonStartdato: string;
+}
+
+export interface FarMedmorFødselBeggeHarRettUttaksplanInfo extends UttaksplanInfo {
+    morsSisteDag: string;
+    farMedmorsFørsteDag: string;
+    antallUkerFellesperiode: string;
+    antallDagerFellesperiode: string;
 }
 
 export default UttaksplanInfo;

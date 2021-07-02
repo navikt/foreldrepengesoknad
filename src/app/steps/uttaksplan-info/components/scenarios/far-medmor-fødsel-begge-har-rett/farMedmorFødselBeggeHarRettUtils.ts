@@ -1,3 +1,5 @@
+import { FarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import {
     FarMedmorFødselBeggeHarRettFormData,
     FarMedmorFødselBeggeHarRettFormField,
@@ -11,6 +13,31 @@ const initialFarMedmorFødselBeggeHarRettValues: FarMedmorFødselBeggeHarRettFor
     [FarMedmorFødselBeggeHarRettFormField.antallDagerFellesperiode]: '0',
 };
 
-export const getInitialFarMedmorFødselBeggeHarRettValues = (): FarMedmorFødselBeggeHarRettFormData => {
-    return initialFarMedmorFødselBeggeHarRettValues;
+export const mapFarMedmorFødselBeggeHarRettToState = (
+    values: Partial<FarMedmorFødselBeggeHarRettFormData>
+): FarMedmorFødselBeggeHarRettUttaksplanInfo => {
+    return {
+        antallDagerFellesperiode: values.antallDagerFellesperiode!,
+        antallUkerFellesperiode: values.antallUkerFellesperiode!,
+        farMedmorsFørsteDag: values.farMedmorsFørsteDag!,
+        morsSisteDag: values.morsSisteDag!,
+    };
+};
+
+export const getInitialFarMedmorFødselBeggeHarRettValues = (
+    state: FarMedmorFødselBeggeHarRettUttaksplanInfo | undefined,
+    dekningsgrad: Dekningsgrad
+): FarMedmorFødselBeggeHarRettFormData => {
+    if (!state) {
+        return initialFarMedmorFødselBeggeHarRettValues;
+    }
+
+    return {
+        ...initialFarMedmorFødselBeggeHarRettValues,
+        antallDagerFellesperiode: state.antallDagerFellesperiode,
+        antallUkerFellesperiode: state.antallUkerFellesperiode,
+        morsSisteDag: state.morsSisteDag,
+        farMedmorsFørsteDag: state.farMedmorsFørsteDag,
+        dekningsgrad,
+    };
 };

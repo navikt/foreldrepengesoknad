@@ -9,6 +9,7 @@ import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønads
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { formaterDatoUtenDag } from 'app/utils/dateUtils';
+import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -42,7 +43,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     tilgjengeligeStønadskontoer80DTO,
 }) => {
-    const { søkersituasjon, søker, annenForelder, barn } = useSøknad();
+    const { søkersituasjon, søker, annenForelder, barn, dekningsgrad } = useSøknad();
     const { person } = useSøkerinfo();
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -56,7 +57,10 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
             values,
             familiehendelsesdato
         );
-        return [actionCreator.setUttaksplanInfo(uttaksplanInfo)];
+        return [
+            actionCreator.setUttaksplanInfo(uttaksplanInfo),
+            actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
+        ];
     };
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
@@ -83,7 +87,11 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
 
     return (
         <FarMedmorAleneomsorgFødselFormComponents.FormikWrapper
-            initialValues={getInitialFarMedmorAleneomsorgFødselValues(lagretUttaksplanInfo, familiehendelsesdato)}
+            initialValues={getInitialFarMedmorAleneomsorgFødselValues(
+                lagretUttaksplanInfo,
+                familiehendelsesdato,
+                dekningsgrad
+            )}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = farMedmorAleneomsorgFødselAdopsjonQuestionsConfig.getVisbility(formValues);

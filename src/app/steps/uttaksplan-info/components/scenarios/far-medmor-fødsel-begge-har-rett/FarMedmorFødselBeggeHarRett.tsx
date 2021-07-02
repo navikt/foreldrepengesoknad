@@ -9,9 +9,13 @@ import useSøknad from 'app/utils/hooks/useSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     FarMedmorFødselBeggeHarRettFormComponents,
+    FarMedmorFødselBeggeHarRettFormData,
     FarMedmorFødselBeggeHarRettFormField,
 } from './farMedmorFødselBeggeHarRettFormConfig';
-import { getInitialFarMedmorFødselBeggeHarRettValues } from './farMedmorFødselBeggeHarRettUtils';
+import {
+    getInitialFarMedmorFødselBeggeHarRettValues,
+    mapFarMedmorFødselBeggeHarRettToState,
+} from './farMedmorFødselBeggeHarRettUtils';
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
@@ -28,6 +32,12 @@ import { Forelder } from 'app/types/Forelder';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import actionCreator from 'app/context/action/actionCreator';
+import SøknadRoutes from 'app/routes/routes';
+import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
+import { FarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -41,14 +51,23 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     eksisterendeSakAnnenPart,
 }) => {
     const intl = useIntl();
-    const { annenForelder, søkersituasjon, barn } = useSøknad();
+    const { annenForelder, søkersituasjon, barn, dekningsgrad } = useSøknad();
     const { person } = useSøkerinfo();
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
         ? !!annenForelder.harRettPåForeldrepenger
         : false;
+    const lagretUttaksplanInfo = useUttaksplanInfo<FarMedmorFødselBeggeHarRettUttaksplanInfo>();
 
+    const onValidSubmitHandler = (values: Partial<FarMedmorFødselBeggeHarRettFormData>) => {
+        return [
+            actionCreator.setUttaksplanInfo(mapFarMedmorFødselBeggeHarRettToState(values)),
+            actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
+        ];
+    };
+
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
     const shouldRender = erFarEllerMedmor && erFødsel && annenForelderHarRett && eksisterendeSakAnnenPart === undefined;
 
     if (!shouldRender) {
@@ -73,8 +92,8 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
 
     return (
         <FarMedmorFødselBeggeHarRettFormComponents.FormikWrapper
-            initialValues={getInitialFarMedmorFødselBeggeHarRettValues()}
-            onSubmit={() => null}
+            initialValues={getInitialFarMedmorFødselBeggeHarRettValues(lagretUttaksplanInfo, dekningsgrad)}
+            onSubmit={onValidSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility(formValues);
 

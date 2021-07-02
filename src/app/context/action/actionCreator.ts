@@ -1,4 +1,5 @@
 import SøknadRoutes from 'app/routes/routes';
+import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import Sak from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
@@ -23,6 +24,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_INFORMASJON_OM_ANDRE_INNTEKTER = 'setInformasjonOmAndreInntekter',
     SET_SAKER = 'setSaker',
     SET_UTTAKSPLAN_INFO = 'setUttaksplanInfo',
+    SET_DEKNINGSGRAD = 'setDekningsgrad',
 }
 
 interface SetVelkommen {
@@ -145,6 +147,16 @@ const setUttaksplanInfo = (payload: UttaksplanInfo): SetUttaksplanInfo => ({
     payload,
 });
 
+interface SetDekningsgrad {
+    type: ForeldrepengesøknadContextActionKeys.SET_DEKNINGSGRAD;
+    dekningsgrad: Dekningsgrad;
+}
+
+const setDekningsgrad = (dekningsgrad: Dekningsgrad): SetDekningsgrad => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_DEKNINGSGRAD,
+    dekningsgrad,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetSøkersituasjon
@@ -157,6 +169,7 @@ export type ForeldrepengesøknadContextAction =
     | SetInformasjonOmUtenlandsopphold
     | SetSaker
     | SetUttaksplanInfo
+    | SetDekningsgrad
     | ApplyStoredState;
 
 export default {
@@ -172,4 +185,5 @@ export default {
     setInformasjonOmUtenlandsopphold,
     setSaker,
     setUttaksplanInfo,
+    setDekningsgrad,
 };

@@ -37,6 +37,7 @@ import actionCreator from 'app/context/action/actionCreator';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
+import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -53,6 +54,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         annenForelder,
         barn,
         søker: { erAleneOmOmsorg },
+        dekningsgrad,
     } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
@@ -69,7 +71,10 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         erAdopsjon && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelder.kanIkkeOppgis || søkerErAleneOmOmsorg);
 
     const onValidSubmitHandler = (values: Partial<MorFarAdopsjonFormData>) => {
-        return [actionCreator.setUttaksplanInfo(mapMorFarAdopsjonFormToState(values))];
+        return [
+            actionCreator.setUttaksplanInfo(mapMorFarAdopsjonFormToState(values)),
+            actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
+        ];
     };
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
@@ -115,7 +120,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     return (
         <MorFarAdopsjonFormComponents.FormikWrapper
-            initialValues={getInitialMorFarAdopsjonValues(lagretUttaksplanInfo)}
+            initialValues={getInitialMorFarAdopsjonValues(lagretUttaksplanInfo, dekningsgrad)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFarAdopsjonQuestionsConfig.getVisbility({

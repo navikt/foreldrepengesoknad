@@ -33,6 +33,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { morFødselQuestionsConfig } from './morFødselQuestionsConfig';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
+import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -62,6 +63,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         søkersituasjon,
         barn,
         søker: { erAleneOmOmsorg },
+        dekningsgrad,
     } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
@@ -74,7 +76,10 @@ const MorFødsel: FunctionComponent<Props> = ({
     const shouldRender = erMor && erFødsel;
 
     const onValidSubmitHandler = (values: Partial<MorFødselFormData>) => {
-        return [actionCreator.setUttaksplanInfo(mapMorFødselFormToState(values))];
+        return [
+            actionCreator.setUttaksplanInfo(mapMorFødselFormToState(values)),
+            actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
+        ];
     };
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
@@ -119,7 +124,7 @@ const MorFødsel: FunctionComponent<Props> = ({
 
     return (
         <MorFødselFormComponents.FormikWrapper
-            initialValues={getInitialMorFødselValues(defaultPermisjonStartdato, lagretUttaksplanInfo)}
+            initialValues={getInitialMorFødselValues(defaultPermisjonStartdato, lagretUttaksplanInfo, dekningsgrad)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFødselQuestionsConfig.getVisbility({

@@ -47,10 +47,9 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const onValidSubmitHandler = (values: Partial<FarMedmorFørstegangssøknadMedAnnenPartFormData>) => {
         const uttaksplanInfo: FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo = {
             permisjonStartdato: values.permisjonStartdato!,
-            dekningsgrad: grunnlag.dekningsgrad,
         };
 
-        return [actionCreator.setUttaksplanInfo(uttaksplanInfo)];
+        return [actionCreator.setUttaksplanInfo(uttaksplanInfo), actionCreator.setDekningsgrad(grunnlag.dekningsgrad)];
     };
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);

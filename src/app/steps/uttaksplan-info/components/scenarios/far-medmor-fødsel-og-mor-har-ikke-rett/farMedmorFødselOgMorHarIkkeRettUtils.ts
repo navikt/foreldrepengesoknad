@@ -14,21 +14,18 @@ export const mapFarMedmorFødselOgMorHarIkkeRettFormToState = (
     values: Partial<FarMedmorFødselOgMorHarIkkeRettFormData>
 ): FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo => {
     return {
-        dekningsgrad:
-            values.dekningsgrad! === Dekningsgrad.HUNDRE_PROSENT
-                ? Dekningsgrad.HUNDRE_PROSENT
-                : Dekningsgrad.ÅTTI_PROSENT,
         permisjonStartdato: values.permisjonStartdato!,
     };
 };
 
 export const getInitialFarMedmorFødselOgMorHarIkkeRettValues = (
-    lagretUttaksplanInfo?: FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo
+    dekningsgrad: Dekningsgrad,
+    lagretUttaksplanInfo: FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo | undefined
 ): FarMedmorFødselOgMorHarIkkeRettFormData => {
     if (lagretUttaksplanInfo) {
         return {
             ...lagretUttaksplanInfo,
-            [FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad]: lagretUttaksplanInfo.dekningsgrad.toString(),
+            [FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad]: dekningsgrad,
         };
     }
 

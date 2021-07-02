@@ -18,10 +18,6 @@ export const mapFarMedmorAleneomsorgFødselFormToState = (
     familiehendelsesdato: string
 ): FarMedmorAleneomsorgFødselUttaksplanInfo => {
     return {
-        dekningsgrad:
-            values.dekningsgrad! === Dekningsgrad.HUNDRE_PROSENT
-                ? Dekningsgrad.HUNDRE_PROSENT
-                : Dekningsgrad.ÅTTI_PROSENT,
         fellesperiodeukerMor: undefined,
         startdatoUttak:
             values.startPåOmsorgsovertakelse === YesOrNo.YES ? familiehendelsesdato : values.startdatoUttak!,
@@ -30,7 +26,8 @@ export const mapFarMedmorAleneomsorgFødselFormToState = (
 
 export const getInitialFarMedmorAleneomsorgFødselValues = (
     lagretUttaksplanInfo: FarMedmorAleneomsorgFødselUttaksplanInfo | undefined,
-    familiehendelsesdato: string
+    familiehendelsesdato: string,
+    dekningsgrad: Dekningsgrad
 ): FarMedmorAleneomsorgFødselFormData => {
     if (lagretUttaksplanInfo) {
         const startetPåOmsorgsovertakelse = dayjs(lagretUttaksplanInfo.startdatoUttak).isSame(
@@ -38,10 +35,7 @@ export const getInitialFarMedmorAleneomsorgFødselValues = (
         );
 
         return {
-            dekningsgrad:
-                lagretUttaksplanInfo.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-                    ? Dekningsgrad.HUNDRE_PROSENT
-                    : Dekningsgrad.ÅTTI_PROSENT,
+            dekningsgrad,
             startPåOmsorgsovertakelse: startetPåOmsorgsovertakelse ? YesOrNo.YES : YesOrNo.NO,
             startdatoUttak: startetPåOmsorgsovertakelse ? '' : lagretUttaksplanInfo.startdatoUttak,
         };
