@@ -19,7 +19,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
-        expect(await screen.findByText('3 + 0 uker')).toBeInTheDocument();
+        expect(await screen.findByText('3 + 56 uker')).toBeInTheDocument();
         //FIXME (TOR) Denne teksten er feil. Gjeld fødsel
         expect(
             screen.getByText(
@@ -42,7 +42,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
-        expect(await screen.findByText('3 + 0 uker')).toBeInTheDocument();
+        expect(await screen.findByText('3 + 56 uker')).toBeInTheDocument();
         //FIXME (TOR) Denne teksten er feil. Gjeld fødsel
         expect(
             screen.getByText(
@@ -58,6 +58,6 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         userEvent.type(screen.getByText(VELG_DATO_DATOFELT), '2021-06-17');
 
         //FIXME (TOR) Kvifor funkar ikkje denne?
-        //expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        // expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 });

@@ -25,7 +25,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
 
         userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
-        expect(await screen.findByText('3 + 0 uker')).toBeInTheDocument();
+        expect(await screen.findByText('3 + 56 uker')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel'
@@ -47,9 +47,9 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
             )
         ).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('63 uker med 80 prosent foreldrepenger'));
+        userEvent.click(screen.getByText('67.6 uker med 80 prosent foreldrepenger'));
 
-        expect(await screen.findByText('3 + 60 uker')).toBeInTheDocument();
+        expect(await screen.findByText('3 + 64.6 uker')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel'
@@ -92,14 +92,14 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('58 uker med 80 prosent foreldrepenger'));
+        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
-        expect(screen.getByText('3 + 18 uker')).toBeInTheDocument();
+        expect(screen.getByText('3 + 19 uker')).toBeInTheDocument();
         expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
-        expect(screen.getByText('19 uker')).toBeInTheDocument();
-        expect(screen.getByText('Espen Utviklers del')).toBeInTheDocument();
         expect(screen.getByText('18 uker')).toBeInTheDocument();
+        expect(screen.getByText('Espen Utviklers del')).toBeInTheDocument();
+        expect(screen.getByText('19 uker')).toBeInTheDocument();
 
         expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
         expect(screen.getAllByText(UKER_FELLESPERIODE_LABEL)[0]).toBeInTheDocument();
