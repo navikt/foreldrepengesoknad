@@ -1,12 +1,11 @@
 import { Block, formatDate, intlUtils } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
-
-import './frilansOppsummering.less';
+import InntekterTabell from './InntekterTabell';
 
 const FrilansOppsummering: FunctionComponent = () => {
     const intl = useIntl();
@@ -53,27 +52,18 @@ const FrilansOppsummering: FunctionComponent = () => {
                     </Normaltekst>
                 </Block>
                 <Block visible={harJobbetForNærVennEllerFamilieSiste10Mnd} margin="none">
-                    <ul className="oppsummeringsliste">
-                        {oppdragForNæreVennerEllerFamilieSiste10Mnd.map(
-                            ({ navnPåArbeidsgiver, tidsperiode, pågående }) => (
-                                <li key={navnPåArbeidsgiver + tidsperiode} className="oppsummeringsliste__element">
-                                    <div className="oppsummeringsliste__element__heading">
-                                        <Element>{navnPåArbeidsgiver}</Element>
-                                        <div className="høyrestiltTekst">
-                                            <Normaltekst>
-                                                {intlUtils(intl, 'tidsintervall', {
-                                                    fom: formatDate(ISOStringToDate(tidsperiode.fom)!),
-                                                    tom: pågående
-                                                        ? 'pågående'
-                                                        : formatDate(ISOStringToDate(tidsperiode.tom)!),
-                                                })}
-                                            </Normaltekst>
-                                        </div>
-                                    </div>
-                                </li>
-                            )
+                    <InntekterTabell
+                        list={oppdragForNæreVennerEllerFamilieSiste10Mnd.map(
+                            ({ navnPåArbeidsgiver, tidsperiode, pågående }) => ({
+                                key: navnPåArbeidsgiver + tidsperiode,
+                                headerVenstre: navnPåArbeidsgiver,
+                                headerHøyre: intlUtils(intl, 'tidsintervall', {
+                                    fom: formatDate(ISOStringToDate(tidsperiode.fom)!),
+                                    tom: pågående ? 'pågående' : formatDate(ISOStringToDate(tidsperiode.tom)!),
+                                }),
+                            })
                         )}
-                    </ul>
+                    />
                 </Block>
             </OppsummeringsPunkt>
         </>

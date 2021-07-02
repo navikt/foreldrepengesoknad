@@ -7,8 +7,6 @@ import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 
-import './frilansOppsummering.less';
-
 interface Props {
     næring: Næring;
 }
