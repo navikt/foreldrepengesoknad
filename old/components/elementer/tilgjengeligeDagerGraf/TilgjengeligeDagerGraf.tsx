@@ -30,9 +30,11 @@ const DeltOmsorgGraf: React.FunctionComponent<Props> = ({ tilgjengeligeDager, na
     const fordeling = getProsentFordelingPerDel(tilgjengeligeDager, true);
     const txtMor =
         tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0
-            ? `${tilgjengeligeDager.dagerForeldrepengerFørFødsel / 5} + ${
-                  tilgjengeligeDager.dagerMor / 5
-              } ${getMessage(intl, 'uker', { uker: 15 })}`
+            ? `${tilgjengeligeDager.dagerForeldrepengerFørFødsel / 5} + ${tilgjengeligeDager.dagerMor / 5} ${getMessage(
+                  intl,
+                  'uker',
+                  { uker: 15 }
+              )}`
             : getVarighetString(tilgjengeligeDager.dagerMor, intl);
     return (
         <div className={bem.classNames(bem.block, bem.modifier('flereForeldre'))}>
@@ -134,7 +136,7 @@ const AleneomsorgGraf: React.FunctionComponent<Props> = ({ tilgjengeligeDager, e
             : getVarighetString(tilgjengeligeDager.dagerEtterTermin, intl);
     return (
         <div className={bem.block}>
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', paddingTop: '2rem' }}>
                 <div className={bem.element('barTitle')}>
                     <Element>
                         <FormattedMessage id="tilgjengeligeDagerGraf.periodeMedForeldrepenger" />

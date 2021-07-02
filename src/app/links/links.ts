@@ -4,7 +4,7 @@ export default {
     fleksibeltuttak: 'https://familie.nav.no/om-foreldrepenger#hjemme-samtidig',
     papirsøknad: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
     viktigeFrister: 'https://familie.nav.no/om-foreldrepenger#nar-kan-du-soke',
-    nav_aktivitetskrav: 'https://familie.nav.no/om-foreldrepenger#hvor-lenge-kan-jeg-fa-foreldrepenger',
+    nav_aktivitetskrav: 'https://familie.nav.no/om-foreldrepenger#hvor-lenge-kan-du-fa-foreldrepenger',
     brukerstøtte:
         'https://www.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Teknisk+brukerstotte/hjelp-til-personbruker?kap=398749',
     innsyn: 'https://foreldrepenger.nav.no',

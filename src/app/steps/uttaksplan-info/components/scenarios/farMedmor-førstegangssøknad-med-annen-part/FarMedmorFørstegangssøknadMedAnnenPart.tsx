@@ -27,6 +27,10 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
 
+    if (!eksisterendeSakAnnenPart) {
+        return null;
+    }
+
     const tilgjengeligeStønadskontoer100 = getValgtStønadskontoMengde(
         Dekningsgrad.HUNDRE_PROSENT,
         tilgjengeligeStønadskontoer80DTO,

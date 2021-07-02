@@ -75,12 +75,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
 }) => {
     const intl = useIntl();
-    const {
-        søkersituasjon,
-        annenForelder,
-        barn,
-        søker: { erAleneOmOmsorg },
-    } = useSøknad();
+    const { søkersituasjon, annenForelder, barn } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
     } = useSøkerinfo();
@@ -104,7 +99,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         return null;
     }
 
-    const erDeltUttak = erAleneOmOmsorg === false || !annenForelder.kanIkkeOppgis;
+    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
 
     const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
     const navnMor = isAnnenForelderOppgitt(annenForelder)

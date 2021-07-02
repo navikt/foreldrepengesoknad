@@ -89,7 +89,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn)
         : '';
 
-    const erDeltUttak = erAleneOmOmsorg === false || !annenForelder.kanIkkeOppgis;
+    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
     const erMorUfør = erSøkerMor ? false : erAnnenPartUfør;
 
     const navnSøker = formaterNavn(fornavn, etternavn, mellomnavn);

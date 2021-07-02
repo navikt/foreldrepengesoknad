@@ -28,6 +28,7 @@ import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { Forelder } from 'app/types/Forelder';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { Hovedknapp } from 'nav-frontend-knapper';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -189,6 +190,9 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 setFieldValue={setFieldValue}
                                 ukerMedFellesperiode={tilgjengeligeDager.dagerFelles / 5}
                             />
+                        </Block>
+                        <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
+                            <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
                         </Block>
                     </FarMedmorFødselBeggeHarRettFormComponents.Form>
                 );

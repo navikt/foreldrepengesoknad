@@ -1,6 +1,6 @@
 {
-  "kontoer": {
-      "FORELDREPENGER": 273,
-      "FORELDREPENGER_FØR_FØDSEL": 15
-  }
+    "kontoer": {
+        "FORELDREPENGER": 273,
+        "FORELDREPENGER_FØR_FØDSEL": 15
+    }
 }
