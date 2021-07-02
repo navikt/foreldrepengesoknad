@@ -9,7 +9,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 interface Props {
     FormComponents: TypedFormComponents<any, any, string>;
     fieldName: string;
-    farMedmorsFørsteDag: string;
     familiehendelsesdato: string;
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     morsSisteDag: Date | undefined;
@@ -20,7 +19,6 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
     FormComponents,
     fieldName,
     familiehendelsesdato,
-    farMedmorsFørsteDag,
     morsSisteDag,
     setFieldValue,
     navnMor,
@@ -61,7 +59,7 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
                         ? dateToISOString(Uttaksdagen(morsSisteDag).neste())
                         : undefined;
 
-                    setFieldValue(farMedmorsFørsteDag, farSinFørsteUttaksdag);
+                    setFieldValue(fieldName, farSinFørsteUttaksdag);
                 }}
             />
         </>

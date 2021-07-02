@@ -193,7 +193,6 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 fieldName={MorFarAdopsjonFormField.farMedmorsFørsteDag}
                                 familiehendelsesdato={familiehendelsesdato}
                                 setFieldValue={setFieldValue}
-                                farMedmorsFørsteDag={MorFarAdopsjonFormField.farMedmorsFørsteDag}
                                 morsSisteDag={ISOStringToDate(formValues.morsSisteDag)}
                                 navnMor={navnMor}
                             />

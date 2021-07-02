@@ -146,7 +146,6 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 fieldName={FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag}
                                 familiehendelsesdato={familiehendelsesdato}
                                 setFieldValue={setFieldValue}
-                                farMedmorsFørsteDag={FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag}
                                 morsSisteDag={ISOStringToDate(formValues.morsSisteDag)}
                                 navnMor={navnMor}
                             />

@@ -30,4 +30,8 @@ export interface FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo extends Uttakspl
     permisjonStartdato: string;
 }
 
+export interface FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo extends UttaksplanInfo {
+    permisjonStartdato: string;
+}
+
 export default UttaksplanInfo;
