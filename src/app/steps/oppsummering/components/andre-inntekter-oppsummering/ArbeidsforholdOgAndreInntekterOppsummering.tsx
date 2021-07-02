@@ -5,7 +5,9 @@ import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
+import AndreInntekterOppsummering from './AndreInntekterOppsummering';
 import FrilansOppsummering from './FrilansOppsummering';
+import SelvstendigNæringsdrivendeOppsummering from './SelvstendigNæringsdrivendeOppsummering';
 
 const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent = () => {
     const intl = useIntl();
@@ -19,6 +21,8 @@ const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent = () => {
                 <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             </OppsummeringsPunkt>
             <FrilansOppsummering />
+            <SelvstendigNæringsdrivendeOppsummering />
+            <AndreInntekterOppsummering />
         </>
     );
 };

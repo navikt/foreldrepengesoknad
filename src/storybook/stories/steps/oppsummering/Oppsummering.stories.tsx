@@ -10,6 +10,8 @@ import withIntlProvider from '../../../decorators/withIntl';
 import withRouter from '../../../decorators/withRouter';
 import withForeldrepengersøknadContext from '../../../decorators/withForeldrepengersøknadContext';
 import ForeldrepengerStateMock from '../../../utils/ForeldrepengerStateMock';
+import { Næringstype } from 'app/context/types/Næring';
+import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
 
 export default {
     title: 'steps/Oppsummering',
@@ -185,6 +187,137 @@ MedArbeidsforholdOgAndreInntekterJobbetForNærFamilie.args = {
                         },
                     ],
                 },
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+};
+
+export const MedSelvstendigNæringsdrivende = Template.bind({});
+MedSelvstendigNæringsdrivende.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søker: {
+                ...context.søknad.søker,
+                harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true,
+                selvstendigNæringsdrivendeInformasjon: [
+                    {
+                        navnPåNæringen: 'Fiske',
+                        pågående: false,
+                        tidsperiode: {
+                            fom: '2018-01-01',
+                            tom: '2021-01-01',
+                        },
+                        næringstyper: [Næringstype.FISKER],
+                        organisasjonsnummer: '123',
+                        næringsinntekt: 1000000,
+                        registrertINorge: true,
+                        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true,
+                        hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
+                        endringAvNæringsinntektInformasjon: {
+                            dato: '2019-01-01',
+                            næringsinntektEtterEndring: 1000000,
+                            forklaring: 'Jobbar beinhardt!',
+                        },
+                        harRegnskapsfører: true,
+                        regnskapsfører: {
+                            navn: 'Espen Utvikler',
+                            telefonnummer: 555904233,
+                            erNærVennEllerFamilie: true,
+                        },
+                    },
+                ],
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+};
+
+export const MedSelvstendigNæringsdrivendeUtenDiverse = Template.bind({});
+MedSelvstendigNæringsdrivendeUtenDiverse.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søker: {
+                ...context.søknad.søker,
+                harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true,
+                selvstendigNæringsdrivendeInformasjon: [
+                    {
+                        navnPåNæringen: 'Fiske',
+                        pågående: false,
+                        tidsperiode: {
+                            fom: '2018-01-01',
+                            tom: '2021-01-01',
+                        },
+                        næringstyper: [Næringstype.FISKER],
+                        registrertILand: 'SE',
+                        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
+                        hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
+                        harRegnskapsfører: false,
+                    },
+                ],
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+};
+
+export const MedAndreInntekterJobbIUtlandet = Template.bind({});
+MedAndreInntekterJobbIUtlandet.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søker: {
+                ...context.søknad.søker,
+                harHattAnnenInntektSiste10Mnd: true,
+                andreInntekterSiste10Mnd: [
+                    {
+                        type: AnnenInntektType.JOBB_I_UTLANDET,
+                        pågående: false,
+                        tidsperiode: {
+                            fom: '2018-01-01',
+                            tom: '2021-01-01',
+                        },
+                        arbeidsgiverNavn: 'Statoil',
+                        land: 'SE',
+                    },
+                ],
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+};
+
+export const MedAndreInntekterMilitærtjeneste = Template.bind({});
+MedAndreInntekterMilitærtjeneste.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søker: {
+                ...context.søknad.søker,
+                harHattAnnenInntektSiste10Mnd: true,
+                andreInntekterSiste10Mnd: [
+                    {
+                        type: AnnenInntektType.MILITÆRTJENESTE,
+                        pågående: false,
+                        tidsperiode: {
+                            fom: '2018-01-01',
+                            tom: '2021-01-01',
+                        },
+                        vedlegg: [
+                            {
+                                id: '1',
+                                url: 'Dette er en url',
+                                filename: 'Filnavn',
+                            },
+                        ],
+                    },
+                ],
             },
         },
     } as ForeldrepengesøknadContextState,

@@ -60,12 +60,14 @@ const FrilansOppsummering: FunctionComponent = () => {
                                     <div className="oppsummeringsliste__element__heading">
                                         <Element>{navnPåArbeidsgiver}</Element>
                                         <div className="høyrestiltTekst">
-                                            {intlUtils(intl, 'tidsintervall', {
-                                                fom: formatDate(ISOStringToDate(tidsperiode.fom)!),
-                                                tom: pågående
-                                                    ? 'pågående'
-                                                    : formatDate(ISOStringToDate(tidsperiode.tom)!),
-                                            })}
+                                            <Normaltekst>
+                                                {intlUtils(intl, 'tidsintervall', {
+                                                    fom: formatDate(ISOStringToDate(tidsperiode.fom)!),
+                                                    tom: pågående
+                                                        ? 'pågående'
+                                                        : formatDate(ISOStringToDate(tidsperiode.tom)!),
+                                                })}
+                                            </Normaltekst>
                                         </div>
                                     </div>
                                 </li>
