@@ -7,39 +7,55 @@ import lenker from 'app/links/links';
 import RangeInput from './range-input/RangeInput';
 
 import './fordelingFellesperiodeSpørsmål.less';
+import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
+import {
+    getAntallUkerFedrekvote,
+    getAntallUkerFellesperiode,
+    getAntallUkerMødrekvote,
+} from '../../utils/stønadskontoer';
 
 export interface OwnProps {
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
-    fellesperiodeukerMor: number;
+    valgtFellesperiodeukerMor: number | undefined;
     mor: string;
     farMedmor: string;
-    ukerFellesperiode: number;
     annenForelderErFarEllerMedmor: boolean;
-    antallUkerFedreKvote: number;
-    antallUkerMødreKvote: number;
+    valgtStønadskonto: TilgjengeligStønadskonto[] | undefined;
 }
 
 const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps> = ({
     setFieldValue,
-    fellesperiodeukerMor,
+    valgtFellesperiodeukerMor,
     annenForelderErFarEllerMedmor,
     mor,
     farMedmor,
-    ukerFellesperiode,
-    antallUkerFedreKvote,
-    antallUkerMødreKvote,
+    valgtStønadskonto,
 }) => {
     const intl = useIntl();
+
+    const fellesperiodeukerMor =
+        valgtFellesperiodeukerMor || !valgtStønadskonto
+            ? valgtFellesperiodeukerMor
+            : Math.round((getAntallUkerFellesperiode(valgtStønadskonto) || 0) / 2);
+
+    useEffect(() => {
+        setFieldValue('fellesperiodeukerMor', fellesperiodeukerMor);
+    }, []);
+
+    if (!valgtStønadskonto) {
+        return null;
+    }
+
+    const ukerFellesperiode = Math.floor(getAntallUkerFellesperiode(valgtStønadskonto));
+    const antallUkerFedreKvote = getAntallUkerFedrekvote(valgtStønadskonto);
+    const antallUkerMødreKvote = getAntallUkerMødrekvote(valgtStønadskonto);
+
     const infotekst = intlUtils(intl, 'uttaksplaninfo.fordeling.veiledning', {
         pakrevdForelder1: antallUkerMødreKvote,
         pakrevdForelder2: antallUkerFedreKvote,
         navnForelder1: mor,
         navnForelder2: farMedmor,
     });
-
-    useEffect(() => {
-        setFieldValue('fellesperiodeukerMor', fellesperiodeukerMor);
-    }, []);
 
     const annenForeldersNavn = annenForelderErFarEllerMedmor ? farMedmor : mor;
     return (

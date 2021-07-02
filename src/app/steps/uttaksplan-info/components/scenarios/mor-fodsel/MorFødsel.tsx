@@ -1,16 +1,15 @@
 import React, { FunctionComponent } from 'react';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import actionCreator from 'app/context/action/actionCreator';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { getValgtStønadskontoMengde } from 'app/utils/stønadskontoUtils';
+import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { isFødtBarn } from 'app/context/types/Barn';
@@ -24,12 +23,6 @@ import { Tidsperioden } from '../../../utils/Tidsperioden';
 import { getInitialMorFødselValues, mapMorFødselFormToState } from './morFødselUtils';
 import StartdatoPermisjonMor from './StartdatoPermisjonMor';
 import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
-import {
-    getAntallUker,
-    getAntallUkerFedrekvote,
-    getAntallUkerFellesperiode,
-    getAntallUkerMødrekvote,
-} from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import uttaksConstants from 'app/constants';
 import { Forelder } from 'app/types/Forelder';
@@ -39,6 +32,7 @@ import { MorFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { morFødselQuestionsConfig } from './morFødselQuestionsConfig';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
+import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -99,15 +93,15 @@ const MorFødsel: FunctionComponent<Props> = ({
         ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
         : undefined;
 
-    const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
-    const annenForelderFornavn = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : undefined;
-    const harRettPåForeldrepenger = isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.harRettPåForeldrepenger
-        : false;
-    const navnMor = formaterNavn(fornavn, etternavn, mellomnavn);
-    const navnFarMedmor = isAnnenForelderOppgitt(annenForelder)
-        ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn)
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+    const erMorUfør = !!oppgittAnnenForelder?.erUfør;
+    const annenForelderFornavn = oppgittAnnenForelder?.fornavn;
+    const harRettPåForeldrepenger = !!oppgittAnnenForelder?.harRettPåForeldrepenger;
+    const navnFarMedmor = oppgittAnnenForelder
+        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn)
         : '';
+
+    const navnMor = formaterNavn(fornavn, etternavn, mellomnavn);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdag = Uttaksdagen(ISOStringToDate(familiehendelsesdato)!).denneEllerNeste();
     const defaultPermisjonStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
@@ -115,6 +109,13 @@ const MorFødsel: FunctionComponent<Props> = ({
     );
 
     const erDeltUttak = erAleneOmOmsorg === false || !annenForelder.kanIkkeOppgis;
+
+    const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
+        tilgjengeligeStønadskontoer80DTO,
+        tilgjengeligeStønadskontoer100DTO,
+        familiehendelsesdato,
+        erMorUfør
+    );
 
     return (
         <MorFødselFormComponents.FormikWrapper
@@ -127,68 +128,31 @@ const MorFødsel: FunctionComponent<Props> = ({
                     erAleneOmOmsorg,
                 });
 
-                const tilgjengeligeStønadskontoer100 = getValgtStønadskontoMengde(
-                    Dekningsgrad.HUNDRE_PROSENT,
-                    tilgjengeligeStønadskontoer80DTO,
-                    tilgjengeligeStønadskontoer100DTO,
-                    familiehendelsesdato,
-                    erMorUfør
-                );
-                const tilgjengeligeStønadskontoer80 = getValgtStønadskontoMengde(
-                    Dekningsgrad.ÅTTI_PROSENT,
-                    tilgjengeligeStønadskontoer80DTO,
-                    tilgjengeligeStønadskontoer100DTO,
-                    familiehendelsesdato,
-                    erMorUfør
-                );
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];
 
-                const valgtStønadskonto =
-                    formValues.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-                        ? tilgjengeligeStønadskontoer100
-                        : tilgjengeligeStønadskontoer80;
-                const tilgjengeligeDager = getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor);
-
-                const fellesperiodeukerMor = Math.round((getAntallUkerFellesperiode(valgtStønadskonto) || 0) / 2);
-
-                const harSvartPåStartdato =
-                    formValues.permisjonStartdato !== undefined || formValues.skalIkkeHaUttakFørTermin === true;
                 return (
                     <MorFødselFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                         <Block padBottom="l">
-                            <MorFødselFormComponents.RadioPanelGroup
-                                name={MorFødselFormField.dekningsgrad}
-                                radios={[
-                                    {
-                                        label: intlUtils(intl, 'uttaksplaninfo.49Uker', {
-                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer100),
-                                        }),
-                                        value: Dekningsgrad.HUNDRE_PROSENT,
-                                    },
-                                    {
-                                        label: intlUtils(intl, 'uttaksplaninfo.59Uker', {
-                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer80),
-                                        }),
-                                        value: Dekningsgrad.ÅTTI_PROSENT,
-                                    },
-                                ]}
-                                legend="Hvor lang periode med foreldrepenger har dere valgt?"
-                                description={
-                                    <UtvidetInformasjon apneLabel="Les mer om lengden på foreldrepengeperioden">
-                                        Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder
-                                        dere begge, og kan ikke endres senere.
-                                    </UtvidetInformasjon>
-                                }
-                                useTwoColumns={true}
+                            <DekningsgradSpørsmål
+                                FormKomponent={MorFødselFormComponents}
+                                dekningsgradFeltNavn={MorFødselFormField.dekningsgrad}
+                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                             />
                         </Block>
                         <Block padBottom="l" visible={visibility.isAnswered(MorFødselFormField.dekningsgrad)}>
-                            <TilgjengeligeDagerGraf
-                                erDeltUttak={erDeltUttak}
-                                erFarEllerMedmor={false}
-                                navnFarMedmor={navnFarMedmor}
-                                navnMor={navnMor}
-                                tilgjengeligeDager={tilgjengeligeDager}
-                            />
+                            {valgtStønadskonto && (
+                                <TilgjengeligeDagerGraf
+                                    erDeltUttak={erDeltUttak}
+                                    erFarEllerMedmor={false}
+                                    navnFarMedmor={navnFarMedmor}
+                                    navnMor={navnMor}
+                                    tilgjengeligeDager={getTilgjengeligeDager(
+                                        valgtStønadskonto,
+                                        false,
+                                        Forelder.farMedmor
+                                    )}
+                                />
+                            )}
                         </Block>
                         <Block padBottom="l" visible={visInfoOmPrematuruker === true}>
                             <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
@@ -214,7 +178,14 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 visibility.isAnswered(MorFødselFormField.dekningsgrad)
                             }
                         >
-                            <Block padBottom="l" visible={antallBarn > 1 && harSvartPåStartdato}>
+                            <Block
+                                padBottom="l"
+                                visible={
+                                    antallBarn > 1 &&
+                                    (formValues.permisjonStartdato !== undefined ||
+                                        formValues.skalIkkeHaUttakFørTermin === true)
+                                }
+                            >
                                 <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
                                     <FormattedMessage
                                         id="uttaksplaninfo.veileder.flerbarnsInformasjon"
@@ -232,13 +203,11 @@ const MorFødsel: FunctionComponent<Props> = ({
                             >
                                 <FordelingFellesperiodeSpørsmål
                                     setFieldValue={setFieldValue}
-                                    fellesperiodeukerMor={formValues.fellesperiodeukerMor || fellesperiodeukerMor}
-                                    ukerFellesperiode={Math.floor(getAntallUkerFellesperiode(valgtStønadskonto))}
+                                    valgtStønadskonto={valgtStønadskonto}
+                                    valgtFellesperiodeukerMor={formValues.fellesperiodeukerMor}
                                     mor={navnMor}
                                     farMedmor={navnFarMedmor}
                                     annenForelderErFarEllerMedmor={navnFarMedmor === annenForelderFornavn}
-                                    antallUkerFedreKvote={getAntallUkerFedrekvote(valgtStønadskonto)}
-                                    antallUkerMødreKvote={getAntallUkerMødrekvote(valgtStønadskonto)}
                                 />
                             </Block>
                         </Block>

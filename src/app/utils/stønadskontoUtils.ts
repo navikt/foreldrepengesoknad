@@ -74,3 +74,27 @@ export const getValgtStønadskontoMengde = (
         erMorUfør
     );
 };
+
+export const getValgtStønadskontoFor80Og100Prosent = (
+    kontoer80: TilgjengeligeStønadskontoerDTO,
+    kontoer100: TilgjengeligeStønadskontoerDTO,
+    familiehendelsesdato: string,
+    erMorUfør: boolean
+) => {
+    const åttiProsent = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
+        kontoer80,
+        Dekningsgrad.ÅTTI_PROSENT,
+        familiehendelsesdato,
+        erMorUfør
+    );
+    const hundreProsent = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
+        kontoer100,
+        Dekningsgrad.HUNDRE_PROSENT,
+        familiehendelsesdato,
+        erMorUfør
+    );
+    return {
+        [Dekningsgrad.ÅTTI_PROSENT]: åttiProsent,
+        [Dekningsgrad.HUNDRE_PROSENT]: hundreProsent,
+    };
+};

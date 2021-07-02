@@ -2,26 +2,19 @@ import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { dateToISOString, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
-import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { getNavnGenitivEierform, formaterNavn } from 'app/utils/personUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { getValgtStønadskontoMengde } from 'app/utils/stønadskontoUtils';
+import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getInitialMorFarAdopsjonValues, mapMorFarAdopsjonFormToState } from './morFarAdopsjonUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import VeilederNormal from 'app/assets/VeilederNormal';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { Forelder } from 'app/types/Forelder';
 import { getFlerbarnsuker } from 'app/steps/uttaksplan-info/utils/uttaksplanHarForMangeFlerbarnsuker';
-import {
-    getAntallUker,
-    getAntallUkerFedrekvote,
-    getAntallUkerFellesperiode,
-    getAntallUkerMødrekvote,
-} from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { isAdoptertAnnetBarn, isAdoptertBarn, isAdoptertStebarn } from 'app/context/types/Barn';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { dateIsSameOrAfter, findEldsteDato } from 'app/utils/dateUtils';
@@ -43,6 +36,7 @@ import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -87,33 +81,37 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const erSøkerMor = søkersituasjon.rolle === 'mor';
     const familiehendelsesdato = getFamiliehendelsedato(barn);
 
-    const harAnnenForeldreRettPåForeldrepenger = isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.harRettPåForeldrepenger
-        : false;
-    const fornavnAnnenForeldre = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : undefined;
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+    const harAnnenForeldreRettPåForeldrepenger = !!oppgittAnnenForelder?.harRettPåForeldrepenger;
+    const fornavnAnnenForeldre = oppgittAnnenForelder?.fornavn;
+    const erAnnenPartUfør = !!oppgittAnnenForelder?.erUfør;
+    const navnAnnenPart = oppgittAnnenForelder
+        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn)
+        : '';
 
     const erDeltUttak = erAleneOmOmsorg === false || !annenForelder.kanIkkeOppgis;
-
-    const erAnnenPartUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
     const erMorUfør = erSøkerMor ? false : erAnnenPartUfør;
 
     const navnSøker = formaterNavn(fornavn, etternavn, mellomnavn);
-    const navnAnnenPart = isAnnenForelderOppgitt(annenForelder)
-        ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn)
-        : '';
     const navnMor = erSøkerMor ? navnSøker : navnAnnenPart;
     const navnFarMedmor = erSøkerMor ? navnAnnenPart : navnSøker;
 
     const erAdoptertIUtlandet = isAdoptertAnnetBarn(barn) ? barn.adoptertIUtlandet : false;
-    const antallBarn = parseInt(barn.antallBarn, 10);
-
     const ankomstdato = isAdoptertAnnetBarn(barn) ? barn.ankomstdato : undefined;
     const ankomstdatoDate = ankomstdato ? ISOStringToDate(ankomstdato) : undefined;
+    const antallBarn = parseInt(barn.antallBarn, 10);
     const adopsjonsdatoDate = ISOStringToDate(barn.adopsjonsdato);
     const latestDate =
         ankomstdatoDate !== undefined && adopsjonsdatoDate !== undefined
             ? dateToISOString(findEldsteDato([ankomstdatoDate, adopsjonsdatoDate])) // todo - sjekk logikk her
             : barn.adopsjonsdato;
+
+    const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
+        tilgjengeligeStønadskontoer80DTO,
+        tilgjengeligeStønadskontoer100DTO,
+        familiehendelsesdato,
+        erMorUfør
+    );
 
     return (
         <MorFarAdopsjonFormComponents.FormikWrapper
@@ -126,27 +124,11 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                     erAleneOmOmsorg,
                 });
 
-                const tilgjengeligeStønadskontoer100 = getValgtStønadskontoMengde(
-                    Dekningsgrad.HUNDRE_PROSENT,
-                    tilgjengeligeStønadskontoer80DTO,
-                    tilgjengeligeStønadskontoer100DTO,
-                    familiehendelsesdato,
-                    erMorUfør
-                );
-                const tilgjengeligeStønadskontoer80 = getValgtStønadskontoMengde(
-                    Dekningsgrad.ÅTTI_PROSENT,
-                    tilgjengeligeStønadskontoer80DTO,
-                    tilgjengeligeStønadskontoer100DTO,
-                    familiehendelsesdato,
-                    erMorUfør
-                );
-                const valgtStønadskonto =
-                    formValues.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-                        ? tilgjengeligeStønadskontoer100
-                        : tilgjengeligeStønadskontoer80;
-                const tilgjengeligeDager = getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor);
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];
 
-                const fellesperiodeukerMor = Math.round((getAntallUkerFellesperiode(valgtStønadskonto) || 0) / 2);
+                const tilgjengeligeDager = valgtStønadskonto
+                    ? getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor)
+                    : undefined;
 
                 return (
                     <MorFarAdopsjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
@@ -174,39 +156,22 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             </Block>
                         )}
                         <Block padBottom="l" visible={visibility.isIncluded(MorFarAdopsjonFormField.dekningsgrad)}>
-                            <MorFarAdopsjonFormComponents.RadioPanelGroup
-                                name={MorFarAdopsjonFormField.dekningsgrad}
-                                radios={[
-                                    {
-                                        label: intlUtils(intl, 'uttaksplaninfo.49Uker', {
-                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer100),
-                                        }),
-                                        value: Dekningsgrad.HUNDRE_PROSENT,
-                                    },
-                                    {
-                                        label: intlUtils(intl, 'uttaksplaninfo.59Uker', {
-                                            antallUker: getAntallUker(tilgjengeligeStønadskontoer80),
-                                        }),
-                                        value: Dekningsgrad.ÅTTI_PROSENT,
-                                    },
-                                ]}
-                                legend={intlUtils(intl, 'uttaksplaninfo.dekningsgrad.label.deltUttak')}
-                                description={
-                                    <UtvidetInformasjon apneLabel="Les mer om lengden på foreldrepengeperioden">
-                                        <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad80" />
-                                    </UtvidetInformasjon>
-                                }
-                                useTwoColumns={true}
+                            <DekningsgradSpørsmål
+                                FormKomponent={MorFarAdopsjonFormComponents}
+                                dekningsgradFeltNavn={MorFarAdopsjonFormField.dekningsgrad}
+                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                             />
                         </Block>
                         <Block padBottom="l" visible={visibility.isAnswered(MorFarAdopsjonFormField.dekningsgrad)}>
-                            <TilgjengeligeDagerGraf
-                                erDeltUttak={erDeltUttak}
-                                erFarEllerMedmor={!erSøkerMor}
-                                navnFarMedmor={navnFarMedmor}
-                                navnMor={navnMor}
-                                tilgjengeligeDager={tilgjengeligeDager}
-                            />
+                            {tilgjengeligeDager && (
+                                <TilgjengeligeDagerGraf
+                                    erDeltUttak={erDeltUttak}
+                                    erFarEllerMedmor={!erSøkerMor}
+                                    navnFarMedmor={navnFarMedmor}
+                                    navnMor={navnMor}
+                                    tilgjengeligeDager={tilgjengeligeDager}
+                                />
+                            )}
                         </Block>
                         <Block visible={visibility.isIncluded(MorFarAdopsjonFormField.startdatoAdopsjonValg)}>
                             <StartdatoAdopsjon valgtStartdatoAdopsjon={formValues.startdatoAdopsjonValg} />
@@ -244,15 +209,17 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 formValues.harAnnenForelderSøktFP === YesOrNo.YES
                             }
                         >
-                            <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
-                                FormComponents={MorFarAdopsjonFormComponents}
-                                ukerFieldName={MorFarAdopsjonFormField.antallUkerFellesperiode}
-                                dagerFieldName={MorFarAdopsjonFormField.antallDagerFellesperiode}
-                                antallDager={formValues.antallDagerFellesperiode}
-                                antallUker={formValues.antallUkerFellesperiode}
-                                setFieldValue={setFieldValue}
-                                ukerMedFellesperiode={tilgjengeligeDager.dagerFelles / 5}
-                            />
+                            {tilgjengeligeDager && (
+                                <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
+                                    FormComponents={MorFarAdopsjonFormComponents}
+                                    ukerFieldName={MorFarAdopsjonFormField.antallUkerFellesperiode}
+                                    dagerFieldName={MorFarAdopsjonFormField.antallDagerFellesperiode}
+                                    antallDager={formValues.antallDagerFellesperiode}
+                                    antallUker={formValues.antallUkerFellesperiode}
+                                    setFieldValue={setFieldValue}
+                                    ukerMedFellesperiode={tilgjengeligeDager.dagerFelles / 5}
+                                />
+                            )}
                         </Block>
                         <Block
                             padBottom="l"
@@ -307,13 +274,11 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             >
                                 <FordelingFellesperiodeSpørsmål
                                     setFieldValue={setFieldValue}
-                                    fellesperiodeukerMor={formValues.fellesperiodeukerMor || fellesperiodeukerMor}
-                                    ukerFellesperiode={Math.floor(getAntallUkerFellesperiode(valgtStønadskonto))}
+                                    valgtStønadskonto={valgtStønadskonto}
+                                    valgtFellesperiodeukerMor={formValues.fellesperiodeukerMor}
                                     mor={navnMor}
                                     farMedmor={navnFarMedmor}
                                     annenForelderErFarEllerMedmor={!erSøkerMor}
-                                    antallUkerFedreKvote={getAntallUkerFedrekvote(valgtStønadskonto)}
-                                    antallUkerMødreKvote={getAntallUkerMødrekvote(valgtStønadskonto)}
                                 />
                             </Block>
                         </Block>
