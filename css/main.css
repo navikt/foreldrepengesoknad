@@ -1,0 +1,3773 @@
+@media screen {
+  .print-only {
+    display: none;
+  }
+}
+@media print {
+  .no-print {
+    display: none;
+  }
+  .print-only {
+    display: block;
+  }
+}
+#app {
+  background-color: white;
+  min-width: 320px;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.attachmentButton {
+  display: flex;
+  height: 4rem;
+  border: 2px dashed #c6c2bf;
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+  padding-left: 0;
+}
+.attachmentButton__icon {
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+.attachmentButton__label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-left: 12px;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+.attachmentButton input {
+  display: none;
+}
+.attachmentButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #ffbd66;
+}
+.attachmentList {
+  margin: 0;
+  padding: 0;
+}
+.attachmentList li {
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  list-style-type: none;
+}
+.attachmentList li:last-child {
+  margin-bottom: 0;
+}
+.attachment {
+  position: relative;
+  padding-left: 1rem;
+}
+.attachment__spinner {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.attachment__icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.attachment__filename {
+  margin-left: 1rem;
+  margin-right: 3rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.attachment__deleteButton {
+  position: absolute;
+  right: 0;
+  top: -0.5rem;
+}
+.attachment--pending .attachment__icon {
+  display: none;
+}
+
+.dinePlikter li:not(:last-child) {
+  padding-bottom: 0.375rem;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.interactiveListElement {
+  border-radius: 4px;
+  border: solid 1px #7f756c;
+  padding: 1rem;
+  position: relative;
+  margin-bottom: 1rem;
+  background-color: #ffffff;
+}
+.interactiveListElement:last-child {
+  margin-bottom: 0;
+}
+.interactiveListElement__top .title {
+  display: inline-block;
+  font-weight: bold;
+  width: 95%;
+}
+.interactiveListElement__editButton {
+  border-radius: 4px;
+  background-color: #fff;
+  border: 1px solid #c9c9c9;
+  transition: border-color 200ms cubic-bezier(0.465, 0.183, 0.153, 0.946);
+  cursor: pointer;
+  border: none;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+.interactiveListElement__editButton:hover {
+  border-color: #0067c5;
+}
+.interactiveListElement__editButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #254b6d;
+}
+.interactiveListElement__bottom {
+  margin-top: 0.5rem;
+  min-height: 1rem;
+}
+.interactiveListElement__deleteButton {
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  color: #ba3a26;
+}
+.interactiveListElement__deleteButton:hover {
+  border-bottom-color: #ba3a26;
+}
+.interactiveListElement__deleteButton:active {
+  border-bottom-color: #ba3a26;
+}
+@media (max-width: 400px) {
+  .interactiveListElement__deleteButton {
+    display: block;
+    margin-top: 0.5rem;
+    padding: 0;
+  }
+}
+@media (min-width: 400px) {
+  .interactiveListElement__deleteButton {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+  }
+}
+.interactiveListElement__text {
+  margin-top: 0.5rem;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.lenkeKnapp {
+  position: relative;
+  border: none !important;
+  background: transparent;
+  padding: 0;
+  display: inline-block;
+}
+.lenkeKnapp:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #254b6d;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.personkort {
+  display: flex;
+  flex-basis: 50%;
+  align-items: center;
+}
+.personkort__ikon {
+  padding-right: 0.5rem;
+  flex-grow: 0;
+  line-height: 0;
+}
+.personkort__ikon svg {
+  height: 2.25rem;
+}
+.personkort__innhold {
+  line-height: 1.375rem;
+}
+.personkort--valign-center .personkort__innhold {
+  display: flex;
+  align-items: center;
+}
+.personkort--valign-bottom .personkort__innhold {
+  display: flex;
+  align-items: flex-end;
+}
+@media (min-width: 576px) {
+  .personkort--invertert {
+    text-align: right;
+    justify-content: flex-end;
+  }
+  .personkort--invertert .personkort__ikon {
+    order: 2;
+    padding-right: 0;
+    padding-left: 0.5rem;
+  }
+  .personkort--invertert .personkort__innhold {
+    order: 1;
+    text-align: right;
+  }
+}
+
+.veileder {
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0) scale(1, 1);
+  width: 100%;
+  transform: translate3d();
+}
+.veileder .nose {
+  stroke: #d1bfa3;
+  stroke-width: 0.2;
+  vector-effect: non-scaling-stroke;
+  animation: noseUp 6s infinite;
+  animation-timing-function: ease;
+}
+.veileder .eye {
+  animation: eyeBlink 6s infinite;
+  animation-timing-function: ease;
+}
+.veileder--stil-iNavVeilederPanel {
+  height: 100% !important;
+}
+.veileder .Mouth-happy {
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.veileder .Mouth-unsure {
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.veileder .Mouth-hesitant {
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.veileder .Mouth-hesitant .mouth,
+.veileder .Mouth-hesitant .nose {
+  stroke-width: 2;
+}
+.veileder--glad .Mouth-happy {
+  opacity: 1;
+}
+.veileder--skeptisk .Mouth-unsure {
+  opacity: 1;
+}
+.veileder--undrende .Mouth-hesitant {
+  opacity: 1;
+}
+.veileder .Background-veileder {
+  transition: fill 0.5s ease;
+}
+.veileder--tema-lilla .Background-veileder {
+  fill: #c1b5d0;
+}
+.veileder--tema-gronn .Background-veileder {
+  fill: #9bd0b0;
+}
+.veileder--tema-transparent .Background-veileder {
+  fill: none;
+}
+.veileder--tema-bla .Background-veileder {
+  fill: #c2eaf7;
+}
+.m-relative {
+  position: relative;
+}
+@keyframes eyeBlink {
+  0% {
+    transform: scaleY(1);
+  }
+  79% {
+    transform: scaleY(1);
+  }
+  80% {
+    transform: translateY(3px) scaleY(0.1);
+  }
+  81.5% {
+    transform: scaleY(1);
+  }
+}
+@keyframes noseUp {
+  0% {
+    transform: scaleY(1);
+  }
+  79% {
+    transform: scaleY(1);
+  }
+  80% {
+    transform: translate(0, -0.4px);
+  }
+  81.5% {
+    transform: scaleY(1);
+  }
+}
+@keyframes mouth {
+  0% {
+    transform: scaleY(1);
+  }
+  30% {
+    transform: scaleY(1);
+  }
+  60% {
+    transform: translateX(0) scaleY(0.8) scaleX(0.92);
+  }
+  89% {
+    transform: translateX(0) scaleY(0.9) scaleX(0.97);
+  }
+  96% {
+    transform: scaleY(1);
+  }
+}
+
+.bytt-browser-modal {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.bytt-browser-modal__ikon {
+  width: 100%;
+  justify-self: center;
+  margin-bottom: 1rem;
+}
+
+.dinePersonopplysningerModal {
+  padding: 2.5rem;
+}
+.dinePersonopplysningerModal ul {
+  margin: 0.5rem 0;
+}
+.dinePersonopplysningerModal li {
+  padding: 0.125rem 0;
+}
+
+.kvitteringHeader {
+  text-align: center;
+}
+.kvitteringHeader__spotlightLetter {
+  margin-top: 2rem;
+}
+.kvitteringHeader__sendtInnTid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.kvitteringHeader__vedleggWrapper {
+  display: flex;
+  justify-content: center;
+}
+.kvitteringHeader__vedleggLink {
+  padding-left: 0.5rem;
+}
+.kvitteringHeader__vedleggIkon {
+  color: #000;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.kvittering {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+.kvittering__suksess {
+  border: 1px solid #9bd0b0;
+  border-radius: 4px;
+  background-color: #9bd0b0;
+  display: flex;
+  padding: 1rem;
+  align-items: center;
+  width: 100%;
+}
+.kvittering--mangler-vedlegg {
+  border: 1px solid #ffe9cc;
+  background-color: #ffe9cc;
+}
+.kvittering__ikon {
+  min-width: 3rem;
+  height: 24px;
+}
+
+.statusBoks {
+  padding: 0.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+}
+.statusBoks__right {
+  padding-top: 0.125rem;
+}
+.statusBoks__lenkepanel.lenkepanel--border {
+  border: 1px solid #c6c2bf;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.søknadSendtSectionHeader {
+  display: flex;
+  flex-flow: column;
+}
+.søknadSendtSectionHeader__punkt {
+  display: flex;
+  flex-flow: row;
+}
+.søknadSendtSectionHeader__ikon {
+  margin-right: 2rem;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.søknadSendt {
+  display: flex;
+  flex-direction: column;
+  max-width: 704px;
+  padding: 0 1rem;
+  margin: 0 auto;
+}
+.søknadSendt__foreldrepengerPanel {
+  background-color: #e0f5fb;
+}
+.søknadSendt__tittel {
+  overflow: hidden;
+  text-align: center;
+}
+.søknadSendt__tittel:after {
+  content: '';
+  display: inline-block;
+  height: 0.75rem;
+  vertical-align: bottom;
+  width: 100%;
+  margin-right: -100%;
+  padding-right: 0.5rem;
+  margin-left: 1rem;
+  border-top: 1px solid #c6c2bf;
+}
+.søknadSendt__tittel:before {
+  content: '';
+  display: inline-block;
+  height: 0.75rem;
+  vertical-align: bottom;
+  width: 100%;
+  margin-left: -100%;
+  padding-left: 0.5rem;
+  margin-right: 1rem;
+  border-top: 1px solid #c6c2bf;
+}
+
+.søknadSendtTittel {
+  background-color: #c1b5d0;
+  padding: 1rem 1.25rem 1rem 1.25rem;
+  text-align: center;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.velkommen {
+  max-width: 704px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+@media (max-width: 768px) {
+  .velkommen {
+    max-width: 100%;
+  }
+}
+@media (max-width: 576px) {
+  .velkommen {
+    padding: 1rem;
+  }
+}
+.velkommen__personopplysningerLink {
+  text-align: center;
+}
+
+.annenForelderVeileder {
+  margin: 1.5rem 0;
+}
+
+.oppgiPersonalia__nameInputsWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.oppgiPersonalia__nameInput {
+  width: 49%;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.registrertePersonalia {
+  padding: 1rem;
+  background: #efefef;
+}
+.registrertePersonalia__navn {
+  padding-bottom: 0.125rem;
+}
+
+.andreInntekterModal {
+  max-width: 48rem;
+  width: 100%;
+  padding: 2rem 1rem 1rem 1rem;
+}
+.andreInntekterModal__tittel {
+  text-align: center;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.arbeidsforholdList {
+  list-style: none;
+  padding: 0;
+}
+.arbeidsforholdList li {
+  margin-bottom: 1rem;
+}
+.arbeidsforholdList li:last-child {
+  margin-bottom: 0;
+}
+.arbeidsforholdInfoBox {
+  padding: 1rem;
+  background-color: #f1f1f1;
+  border-radius: 0.25rem;
+}
+@media (max-width: 576px) {
+  .arbeidsforholdInfoBox {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-radius: 0;
+  }
+}
+.arbeidsforholdInfoBox__topRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+.arbeidsforholdInfoBox__stillingsprosent {
+  margin-left: auto;
+}
+
+.egenNæringModal {
+  max-width: 48rem;
+  width: 100%;
+  padding: 2rem 1rem 1rem 1rem;
+}
+.egenNæringModal__tittel {
+  text-align: center;
+}
+
+.frilansoppdragModal {
+  max-width: 48rem;
+  width: 100%;
+  padding: 2rem 1rem 1rem 1rem;
+}
+.frilansoppdragModal__tittel {
+  text-align: center;
+}
+
+.oppsummeringsPanel {
+  margin-bottom: 1rem;
+}
+.oppsummeringsPanel__content {
+  border-top: 1px solid #c6c2bf;
+  padding-top: 1rem;
+}
+
+.personalia {
+  display: flex;
+}
+.personalia__icon {
+  margin-right: 1rem;
+}
+
+.utenlandsoppholdOppsummeringListe {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.utenlandsoppholdOppsummeringListe__listElement {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
+}
+
+.oppsummering {
+  background-color: #e9e7e7;
+  padding: 2rem;
+  padding-bottom: 1rem;
+}
+
+.oppsummeringsliste {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+.oppsummeringsliste__element {
+  margin-top: 1.5rem;
+}
+.oppsummeringsliste__element--kompakt {
+  margin-top: 0.5rem;
+}
+.oppsummeringsliste__element__heading {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+.oppsummeringsliste__element__heading .høyrestiltTekst {
+  font-weight: normal;
+}
+.oppsummeringsliste__element__content {
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.bostedUtlandList__land {
+  display: block;
+  margin-bottom: 0.125rem;
+}
+@media (min-width: 650px) {
+  .bostedUtlandList__label {
+    display: flex;
+  }
+  .bostedUtlandList__land {
+    flex: 2 1 0;
+    display: block;
+    margin-bottom: 0;
+  }
+  .bostedUtlandList__dato {
+    padding-right: 1rem;
+  }
+}
+
+.multibar {
+  height: 2.5rem;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+}
+.multibar__background {
+  background-color: transparent;
+  border-radius: 0.25rem;
+  border: 1px dashed transparent;
+  height: 2.5rem;
+  width: 100%;
+  z-index: 1;
+}
+.multibar__bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  height: 2.5rem;
+  border-radius: 0.25rem;
+}
+.multibar__bar--left:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.multibar__bar--right {
+  right: 0;
+  left: auto;
+}
+.multibar__bar--right:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.multibar__bar--center {
+  z-index: 3;
+  top: -2px;
+  height: calc(100% + 4px);
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.tilgjengeligeDagerGraf {
+  padding-bottom: 1rem;
+  padding-top: 1.5rem;
+}
+.tilgjengeligeDagerGraf__bars {
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+.tilgjengeligeDagerGraf__barTitle {
+  position: absolute;
+  bottom: calc(100% + 0.25rem);
+  margin-bottom: 0.25rem;
+}
+.tilgjengeligeDagerGraf__felles .tilgjengeligeDagerGraf__barTitle {
+  width: 100%;
+  text-align: center;
+}
+.tilgjengeligeDagerGraf__felles,
+.tilgjengeligeDagerGraf__forelder1,
+.tilgjengeligeDagerGraf__forelder2 {
+  transform: translate3d();
+  transition: width 0.2s ease-out;
+  will-change: width;
+}
+.tilgjengeligeDagerGraf__felles {
+  margin: 0 0.25rem;
+  position: relative;
+}
+.tilgjengeligeDagerGraf__forelder2 .tilgjengeligeDagerGraf__barTitle {
+  right: 0;
+}
+.tilgjengeligeDagerGraf__barTekst {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1.25rem;
+  text-shadow: 0 0 rgba(0, 0, 0, 0.2);
+}
+.tilgjengeligeDagerGraf .multibar__background {
+  border: none;
+}
+@media (max-width: 576px) {
+  .tilgjengeligeDagerGraf {
+    padding-top: 0rem;
+  }
+  .tilgjengeligeDagerGraf__bars {
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+  .tilgjengeligeDagerGraf__felles,
+  .tilgjengeligeDagerGraf__forelder1,
+  .tilgjengeligeDagerGraf__forelder2 {
+    width: 100% !important;
+    margin-bottom: 1rem;
+  }
+  .tilgjengeligeDagerGraf__forelder1 {
+    order: 1;
+  }
+  .tilgjengeligeDagerGraf__forelder2 {
+    order: 2;
+  }
+  .tilgjengeligeDagerGraf__felles {
+    order: 3;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .tilgjengeligeDagerGraf__barTitle {
+    position: relative;
+    text-align: left !important;
+  }
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.sirkelknapp {
+  border-radius: 4px;
+  background-color: #fff;
+  border: 1px solid #c9c9c9;
+  transition: border-color 200ms cubic-bezier(0.465, 0.183, 0.153, 0.946);
+  cursor: pointer;
+  background-color: #0067c5;
+  color: white;
+  border-color: #0067c5;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  touch-action: none;
+}
+.sirkelknapp:hover {
+  border-color: #0067c5;
+}
+.sirkelknapp:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #254b6d;
+}
+.sirkelknapp__ikon {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  margin-left: -1px;
+}
+.sirkelknapp--info {
+  background-color: #a3e0f4;
+  border: none;
+}
+.sirkelknapp--stor {
+  width: 32px;
+  height: 32px;
+}
+.sirkelknapp--disabled {
+  background-color: #b7b1a9;
+  border-color: #b7b1a9;
+  color: #b7b1a9;
+}
+
+.antallUkerOgDagerFellesperiodeFarMedmorSpørsmål {
+  display: flex;
+}
+.antallUkerOgDagerFellesperiodeFarMedmorSpørsmål__uker {
+  margin-right: 0.625rem;
+}
+.antallUkerOgDagerFellesperiodeFarMedmorSpørsmål__stepper {
+  display: flex;
+  align-items: baseline;
+  margin-right: 1.625rem;
+}
+.antallUkerOgDagerFellesperiodeFarMedmorSpørsmål__icon {
+  align-self: center;
+  padding-right: 0.625rem;
+  padding-top: 1rem;
+}
+
+.datoInput {
+  display: flex;
+  align-items: baseline;
+}
+.datoInput__postfix {
+  align-self: center;
+  margin-left: -2rem;
+  padding-top: 1.6rem;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.rangeStepper {
+  border-radius: 4px;
+  background-color: #fff;
+  border: 1px solid #c9c9c9;
+  transition: border-color 200ms cubic-bezier(0.465, 0.183, 0.153, 0.946);
+  cursor: pointer;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+.rangeStepper:hover {
+  border-color: #0067c5;
+}
+.rangeStepper:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #254b6d;
+}
+.rangeStepper__chevron--previous {
+  left: -1px;
+}
+.rangeStepper__chevron--next {
+  left: 1px;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+/** Sett default styling på slider */
+input[type='range'] {
+  -webkit-appearance: none;
+  /** removes default webkit styles */
+  border: 1px solid white;
+  /** fix for FF unable to apply focus style bug */
+  width: 100%;
+  /** required for proper track sizing in FF */
+  margin: 0;
+  padding: 0;
+  /*hide the outline behind the border*/
+}
+input[type='range']::-webkit-slider-runnable-track {
+  height: 7px;
+  width: 100%;
+  background: #66cbec;
+  border: none;
+  border-radius: 3px;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #0067c5;
+  height: 32px;
+  width: 32px;
+  margin-top: -32px / 2 + 3px;
+  cursor: pointer;
+}
+input[type='range']::-moz-range-track {
+  height: 7px;
+  width: 100%;
+  background: #66cbec;
+  border: none;
+  border-radius: 3px;
+}
+input[type='range']::-moz-range-thumb {
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #0067c5;
+  height: 32px;
+  width: 32px;
+  margin-top: -32px / 2 + 3px;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+}
+input[type='range']:focus {
+  outline: none;
+}
+input[type='range']:focus::-webkit-slider-thumb {
+  border-color: #254b6d;
+  box-shadow: 0 0 2px #254b6d;
+}
+input[type='range']:focus::-moz-range-thumb {
+  border-color: #254b6d;
+  box-shadow: 0 0 2px #254b6d;
+}
+input[type='range']:focus::-webkit-slider-runnable-track {
+  background: #66cbec;
+}
+input[type='range']:-moz-focusring {
+  outline: 1px solid white;
+  outline-offset: -1px;
+}
+/** Ms */
+input[type='range']::-ms-track {
+  height: 7px;
+  background: #66cbec;
+  border: none;
+  border-radius: 3px;
+  width: 100%;
+  height: 10px;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  padding: 0;
+  /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+  background: transparent;
+  /*leave room for the larger thumb to overflow with a transparent border */
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  /*remove default tick marks*/
+  color: transparent;
+}
+input[type='range']::-ms-fill-lower {
+  overflow: visible;
+  background: #66cbec;
+  border-radius: 10px;
+}
+input[type='range']::-ms-fill-upper {
+  overflow: visible;
+  background: #66cbec;
+  border-radius: 10px;
+}
+input[type='range']::-ms-thumb {
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #0067c5;
+  height: 32px;
+  width: 32px;
+  margin-top: -32px / 2 + 3px;
+  cursor: pointer;
+  overflow: visible;
+  margin-top: 0;
+  width: 26px;
+  height: 26px;
+}
+input[type='range']:focus::-ms-fill-lower {
+  background: #66cbec;
+}
+input[type='range']:focus::-ms-fill-upper {
+  background: #66cbec;
+}
+.rangeInputWrapper {
+  position: relative;
+}
+.rangeInputWrapper .infoboks_sirkel {
+  position: absolute;
+  top: 0;
+  right: 0.5rem;
+}
+.rangeInputWrapper span > .sirkelknapp {
+  position: absolute;
+  top: 0;
+  right: 0.5rem;
+}
+.rangeInput {
+  width: 100%;
+  padding-top: 0.5rem;
+  position: relative;
+}
+.rangeInput--withSteppers {
+  display: flex;
+  align-items: center;
+}
+.rangeInput--withSteppers .rangeInput__range {
+  padding: 0 0.5rem;
+}
+.rangeInput__range {
+  width: 100%;
+  flex-basis: 100%;
+}
+.rangeInput__stepper {
+  flex-basis: 0;
+  min-width: 2rem;
+}
+.rangeInput__valueLabels {
+  display: flex;
+}
+.rangeInput__valueLabels__left {
+  flex-grow: 1;
+  flex-basis: 1;
+}
+.rangeInput__valueLabels__right {
+  flex-grow: 1;
+  flex-basis: 1;
+  text-align: right;
+}
+
+.fordelingFellesperiode--valgtVerdi {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.fordelingFellesperiode--bottomContent {
+  margin-top: 0.75rem;
+}
+.m-text-center {
+  text-align: center;
+}
+
+.sirkelmaske {
+  border-radius: 100%;
+  overflow: hidden;
+  background: white;
+  display: inline-block;
+}
+.sirkelmaske__content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sirkelmaske--inaktiv {
+  border-radius: 0;
+  overflow: visible;
+  background: none !important;
+}
+
+.foreldrepar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.foreldrepar--halfOpacity {
+  opacity: 0.4;
+  zoom: 0.7;
+}
+.foreldrepar__parentSeparator {
+  width: 0.5rem;
+}
+.foreldrepar--kompakt .foreldrepar__firstParent {
+  position: relative;
+  left: 3px;
+}
+.foreldrepar--kompakt .foreldrepar__secondParent {
+  position: relative;
+  right: 3px;
+}
+.foreldrepar__closerParents .foreldrepar__firstParent {
+  position: relative;
+  left: 3px;
+}
+.foreldrepar__closerParents .foreldrepar__secondParent {
+  position: relative;
+  right: 3px;
+}
+
+.situasjonSirkel .foreldrepar {
+  margin-top: 0.9rem;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  zoom: 1.5;
+}
+
+.antallUkerKalenderIkon {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 42px;
+}
+.antallUkerKalenderIkon__uker {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  bottom: 0.4rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #337c9b;
+}
+.antallUkerKalenderIkon--over99 .antallUkerKalenderIkon__uker {
+  font-size: 1.5rem;
+}
+
+.ukerSirkel__uker {
+  font-size: 2rem;
+  color: #337c9b;
+  font-weight: bold;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.innholdMedIllustrasjon__tittel {
+  display: inline-block;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+.innholdMedIllustrasjon__headerWrapper {
+  display: flex;
+}
+.innholdMedIllustrasjon__headerWrapper .sirkelknapp {
+  display: inline-block;
+}
+.innholdMedIllustrasjon__infoboks {
+  padding-top: 0.25rem;
+}
+.innholdMedIllustrasjon--medIllustrasjoner {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.innholdMedIllustrasjon--medIllustrasjoner .innholdMedIllustrasjon__contentWrapper {
+  flex: 2 1 60%;
+}
+.innholdMedIllustrasjon__illustrasjoner {
+  flex: 1 1 40%;
+  text-align: right;
+}
+.innholdMedIllustrasjon__illustrasjon {
+  display: inline-block;
+  margin-left: 1rem;
+}
+@media (max-width: 576px) {
+  .innholdMedIllustrasjon .innholdMedIllustrasjon__illustrasjoner {
+    display: none;
+  }
+  .innholdMedIllustrasjon .innholdMedIllustrasjon__tittel {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.infoEksisterendePerioder {
+  margin-top: 1rem;
+}
+.infoEksisterendePerioder__list {
+  list-style: inside;
+  padding-left: 0;
+  min-width: 400px;
+}
+.infoEksisterendePerioder__list li:not(:last-child) {
+  margin-bottom: 0.25rem;
+}
+.infoEksisterendePerioder__listInfo {
+  display: inline-flex;
+  justify-content: space-between;
+}
+.infoEksisterendePerioder__listInfoPeriode {
+  padding-right: 0.5rem;
+}
+
+:export {
+  navRod: #c30000;
+  navOransje: #ff9100;
+  navLimeGronn: #a2ad00;
+  navGronn: #06893a;
+  navLilla: #634689;
+  navDypBla: #005b82;
+  navBla: #0067c5;
+  navLysBla: #66cbec;
+  navMorkGra: #262626;
+  navGra80: #4f4f4f;
+  navGra60: #6a6a6a;
+  navGra40: #a0a0a0;
+  navGra20: #c9c9c9;
+  navLysGra: #f1f1f1;
+  navBakgrunn: #ffffff;
+  navGraBakgrunn: #f1f1f1;
+  fokusFarge: #254b6d;
+  orangeFocus: #ffbd66;
+  redError: #ba3a26;
+  white: #fff;
+  grayBackground: #f1f1f1;
+  grayIcon: #a0a0a0;
+  grayModia: #333333;
+  grayInactive: #6a6a6a;
+  pinkErrorBg: #f3e3e3;
+  navGronnLighten20: #38a161;
+  navGronnLighten40: #6ab889;
+  navGronnLighten60: #9bd0b0;
+  navGronnLighten80: #cde7d8;
+  navGronnDarken20: #117938;
+  navGronnDarken40: #1c6937;
+  navGronnDarken60: #285835;
+  navGronnDarken80: #334834;
+  navLimeGronnLighten20: #b5bd33;
+  navLimeGronnLighten40: #c7ce66;
+  navLimeGronnLighten60: #dade99;
+  navLimeGronnLighten80: #ecefcc;
+  navLimeGronnDarken20: #8e960a;
+  navLimeGronnDarken40: #7a7e14;
+  navLimeGronnDarken60: #66671e;
+  navLimeGronnDarken80: #524f28;
+  navLysBlaLighten20: #85d5f0;
+  navLysBlaLighten40: #a3e0f4;
+  navLysBlaLighten60: #c2eaf7;
+  navLysBlaLighten80: #e0f5fb;
+  navLysBlaDarken20: #5eaec7;
+  navLysBlaDarken40: #5690a2;
+  navLysBlaDarken60: #4e737c;
+  navLysBlaDarken80: #465557;
+  navBlaLighten20: #3385d1;
+  navBlaLighten40: #66a4dc;
+  navBlaLighten60: #99c2e8;
+  navBlaLighten80: #cce1f3;
+  navBlaDarken20: #0c5ea8;
+  navBlaDarken40: #19548a;
+  navBlaDarken60: #254b6d;
+  navBlaDarken80: #32414f;
+  navDypBlaLighten20: #337c9b;
+  navDypBlaLighten40: #669db4;
+  navDypBlaLighten60: #99bdcd;
+  navDypBlaLighten80: #ccdee6;
+  navDypBlaDarken20: #0c5472;
+  navDypBlaDarken40: #194d62;
+  navDypBlaDarken60: #254652;
+  navDypBlaDarken80: #323f42;
+  navLillaLighten20: #826ba1;
+  navLillaLighten40: #a190b8;
+  navLillaLighten60: #c1b5d0;
+  navLillaLighten80: #e0dae7;
+  navLillaDarken20: #5c4378;
+  navLillaDarken40: #544066;
+  navLillaDarken60: #4d3e55;
+  navLillaDarken80: #453b43;
+  navRodLighten20: #cf3333;
+  navRodLighten40: #db6666;
+  navRodLighten60: #e79999;
+  navRodLighten80: #f3cccc;
+  navRodDarken20: #a80b0a;
+  navRodDarken40: #8e1614;
+  navRodDarken60: #73221e;
+  navRodDarken80: #592d28;
+  navOransjeLighten20: #ffa733;
+  navOransjeLighten40: #ffbd66;
+  navOransjeLighten60: #ffd399;
+  navOransjeLighten80: #ffe9cc;
+  navOransjeDarken20: #d87f0a;
+  navOransjeDarken40: #b26d14;
+  navOransjeDarken60: #8b5c1e;
+  navOransjeDarken80: #654a28;
+  orangeFocusLighten20: #ffca85;
+  orangeFocusLighten40: #ffd7a3;
+  orangeFocusLighten60: #ffe5c2;
+  orangeFocusLighten80: #fff2e0;
+  orangeFocusDarken20: #d8a25c;
+  orangeFocusDarken40: #b28851;
+  orangeFocusDarken60: #8b6d47;
+  orangeFocusDarken80: #65533c;
+  redErrorLighten20: #c86151;
+  redErrorLighten40: #d6897d;
+  redErrorLighten60: #e3b0a8;
+  redErrorLighten80: #f1d8d4;
+  redErrorDarken20: #a13a28;
+  redErrorDarken40: #88392b;
+  redErrorDarken60: #70392d;
+  redErrorDarken80: #573830;
+  screenSm: 768px;
+  screenSmMin: 768px;
+  screenTablet: 768px;
+  screenMd: 992px;
+  screenMdMin: 992px;
+  screenDesktop: 992px;
+  screenLg: 1200px;
+  screenLgMin: 1200px;
+  screenLgDesktop: 1200px;
+  screenXsMax: 767px;
+  screenSmMax: 991px;
+  screenMdMax: 1199px;
+  containerTablet: 736px;
+  containerSm: 736px;
+  containerDesktop: 956px;
+  containerMd: 956px;
+  containerLargeDesktop: 1156px;
+  containerLg: 1156px;
+  gridColumns: 12;
+  gridGutterWidth: 16px;
+  gridFloatBreakpoint: 768px;
+  gridFloatBreakpointMax: 767px;
+  paddingBaseVertical: 6px;
+  paddingBaseHorizontal: 12px;
+  paddingLargeVertical: 10px;
+  paddingLargeHorizontal: 16px;
+  paddingSmallVertical: 5px;
+  paddingSmallHorizontal: 10px;
+  paddingXsVertical: 1px;
+  paddingXsHorizontal: 5px;
+  lineHeightLarge: 1.3333333;
+  lineHeightSmall: 1.5;
+  borderRadiusSmall: 2px;
+  borderRadiusBase: 4px;
+  borderRadiusLarge: 6px;
+}
+/*
+---------------
+FARGER
+---------------
+*/
+/*
+---------------
+BREKKPUNKTER
+---------------
+*/
+/*
+--------------
+CONTAINER
+--------------
+*/
+/*
+---------------
+GRID
+---------------
+*/
+@c-orangelighten :mix (#ff9100,#fff,80%);
+.infoOmSøknaden {
+  background-color: #efefef;
+  border-radius: 0.25rem;
+  padding: 2rem;
+}
+@media (max-width: 576px) {
+  .infoOmSøknaden {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-radius: 0;
+  }
+}
+
