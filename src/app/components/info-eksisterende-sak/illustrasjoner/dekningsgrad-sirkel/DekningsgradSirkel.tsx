@@ -1,7 +1,7 @@
 import React from 'react';
-import PengerIkon from 'common/components/ikoner/PengerIkon';
 import { bemUtils } from '@navikt/fp-common';
 import Sirkelmaske from 'app/components/sirkelmaske/Sirkelmaske';
+import PengerIkon from 'app/assets/PengerIkon';
 
 import './dekningsgradSirkel.less';
 
