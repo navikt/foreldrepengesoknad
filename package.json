@@ -96,7 +96,7 @@
         "jest-transform-stub": "^2.0.0",
         "less": "^4.1.1",
         "less-loader": "^10.0.1",
-        "mini-css-extract-plugin": "^1.6.2",
+        "mini-css-extract-plugin": "^2.0.0",
         "multer": "^1.4.2",
         "nav-frontend-alertstriper-style": "^3.0.1",
         "nav-frontend-chevron-style": "^1.0.4",
