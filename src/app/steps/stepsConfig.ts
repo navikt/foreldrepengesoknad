@@ -7,6 +7,7 @@ type UttaksplanInfo = 'uttaksplanInfo';
 type Uttaksplan = 'uttaksplan';
 type UtenlandsoppholdStepId = 'utenlandsopphold';
 type Inntektsinformasjon = 'inntektsinformasjon';
+type PåkrevdDokumentasjonStepId = 'dokumentasjon';
 type OppsummeringStepId = 'oppsummering';
 
 type StepIdWithBackHref =
@@ -16,6 +17,7 @@ type StepIdWithBackHref =
     | Uttaksplan
     | UtenlandsoppholdStepId
     | Inntektsinformasjon
+    | PåkrevdDokumentasjonStepId
     | OppsummeringStepId;
 
 export type StepId = SøkersituasjonStepId | StepIdWithBackHref;
@@ -63,8 +65,13 @@ const stepConfig: StepConfig[] = [
         label: 'Fyll ut informasjon om barnet',
     },
     {
+        id: 'dokumentasjon',
+        index: 7,
+        label: 'Fyll ut informasjon om barnet',
+    },
+    {
         id: 'oppsummering',
-        index: 6,
+        index: 8,
         label: 'Fyll ut informasjon om barnet',
     },
 ];
@@ -89,6 +96,9 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
             break;
         case 'inntektsinformasjon':
             href = '/soknad/utenlandsopphold';
+            break;
+        case 'dokumentasjon':
+            href = '/soknad/dokumentasjon';
             break;
         case 'oppsummering':
             href = '/soknad/inntektsinformasjon';
