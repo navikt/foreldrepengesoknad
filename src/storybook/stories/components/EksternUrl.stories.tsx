@@ -12,8 +12,8 @@ export default {
 
 const Template: Story<Props> = (args) => <EksternUrl {...args} />;
 
-export const Lenketekst = Template.bind({});
-Lenketekst.args = {
+export const Default = Template.bind({});
+Default.args = {
     url: 'www.test.no',
     lenkeTekst: 'Dette er en lenketekst',
 };

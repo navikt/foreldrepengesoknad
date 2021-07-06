@@ -18,6 +18,9 @@ module.exports = {
 
     config.devtool = 'eval-cheap-source-map';
 
+    //TODO Dette er ein temp fiks... kan sikkert fjernast når storybook/webpack kjem i nye versjonar
+    config.cache = false;
+
     // Make whatever fine-grained changes you need
     config.module.rules = config.module.rules.concat({
       test: /\.(tsx?|ts?)$/,
