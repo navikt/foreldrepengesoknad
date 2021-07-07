@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from '../../../storybook/stories/components/EksternUrl.stories';
+import * as stories from 'stories/components/EksternUrl.stories';
 
 const { Default, EkstraTekst } = composeStories(stories);
 

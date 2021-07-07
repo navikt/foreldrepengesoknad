@@ -15,8 +15,8 @@ export default {
 
 const Template: Story<Props> = (args) => <FormikFileUploader {...args} />;
 
-export const FilOpplaster = Template.bind({});
-FilOpplaster.args = {
+export const Default = Template.bind({});
+Default.args = {
     attachments: [],
     name: 'field_name',
     label: 'Last opp vedlegg',

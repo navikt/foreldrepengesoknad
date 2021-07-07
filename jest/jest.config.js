@@ -7,6 +7,7 @@ module.exports = {
         '^uttaksplan/(.*)': '<rootDir>/src/uttaksplan/$1',
         '^app/(.*)': '<rootDir>/src/app/$1',
         '^utils-test/(.*)': '<rootDir>/src/utils-test/$1',
+        '^stories/(.*)': '<rootDir>/src/storybook/stories/$1',
     },
     rootDir: '../',
     roots: ['<rootDir>/src/app/'],

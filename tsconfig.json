@@ -12,7 +12,8 @@
         "noUnusedLocals": true,
         "paths": {
             "utils-test/*": ["./utils-test/*"],
-            "uttaksplan/*": ["./uttaksplan/*"]
+            "uttaksplan/*": ["./uttaksplan/*"],
+            "stories/*": ["./storybook/stories/*"]
         },
         "outDir": "build/dist",
         "sourceMap": true,

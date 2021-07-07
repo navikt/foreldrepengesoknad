@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from '../../../storybook/stories/components/AttachmentList.stories';
+import * as stories from 'stories/components/AttachmentList.stories';
 
 const { Default, VedleggListeMedFilstørrelse } = composeStories(stories);
 
