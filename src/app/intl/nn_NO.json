@@ -8,6 +8,7 @@
     "dag": "dag",
     "dager": "dagar",
     "uker": "veker",
+    "ok": "Ok",
     "tidsintervall": "{fom} - {tom}",
     "gradering.prosent": "{stillingsprosent}%",
     "varighet.dager": "{dager, plural, one {# dag} other {# dagar}}",

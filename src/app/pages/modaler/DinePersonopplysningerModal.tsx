@@ -56,20 +56,30 @@ const DinePersonopplysningerModal = (props: Props) => {
                     </Ingress>
                     <Normaltekst>
                         <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.del1" />
-                        <ul>
-                            <li>
+                    </Normaltekst>
+                    <ul>
+                        <li>
+                            <Normaltekst>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt1" />
-                            </li>
-                            <li>
+                            </Normaltekst>
+                        </li>
+                        <li>
+                            <Normaltekst>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt2" />
-                            </li>
-                            <li>
+                            </Normaltekst>
+                        </li>
+                        <li>
+                            <Normaltekst>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt3" />
-                            </li>
-                            <li>
+                            </Normaltekst>
+                        </li>
+                        <li>
+                            <Normaltekst>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt4" />
-                            </li>
-                        </ul>
+                            </Normaltekst>
+                        </li>
+                    </ul>
+                    <Normaltekst>
                         <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.del2" />
                     </Normaltekst>
                 </Block>
@@ -79,24 +89,34 @@ const DinePersonopplysningerModal = (props: Props) => {
                     </Ingress>
                     <Normaltekst>
                         <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.del1" />
-                        <ul>
-                            <li>
-                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt1" />
-                            </li>
-                            <li>
-                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt2" />
-                            </li>
-                            <li>
-                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt3" />
-                            </li>
-                            <li>
-                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt4" />
-                            </li>
-                            <li>
-                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt5" />
-                            </li>
-                        </ul>
                     </Normaltekst>
+                    <ul>
+                        <li>
+                            <Normaltekst>
+                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt1" />
+                            </Normaltekst>
+                        </li>
+                        <li>
+                            <Normaltekst>
+                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt2" />
+                            </Normaltekst>
+                        </li>
+                        <li>
+                            <Normaltekst>
+                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt3" />
+                            </Normaltekst>
+                        </li>
+                        <li>
+                            <Normaltekst>
+                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt4" />
+                            </Normaltekst>
+                        </li>
+                        <li>
+                            <Normaltekst>
+                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt5" />
+                            </Normaltekst>
+                        </li>
+                    </ul>
                 </Block>
                 <Block padBottom="s">
                     <Ingress>
@@ -104,18 +124,24 @@ const DinePersonopplysningerModal = (props: Props) => {
                     </Ingress>
                     <Normaltekst>
                         <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.del1" />
-                        <ul>
-                            <li>
-                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt1" />
-                            </li>
-                            <li>
-                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt2" />
-                            </li>
-                            <li>
-                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt3" />
-                            </li>
-                        </ul>
                     </Normaltekst>
+                    <ul>
+                        <li>
+                            <Normaltekst>
+                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt1" />
+                            </Normaltekst>
+                        </li>
+                        <li>
+                            <Normaltekst>
+                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt2" />
+                            </Normaltekst>
+                        </li>
+                        <li>
+                            <Normaltekst>
+                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt3" />
+                            </Normaltekst>
+                        </li>
+                    </ul>
                 </Block>
                 <Block padBottom="s">
                     <Ingress tag="h2">
