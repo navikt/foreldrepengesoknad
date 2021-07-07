@@ -12,6 +12,9 @@ import Søker from 'app/context/types/Søker';
 import InformasjonOmUtenlandsopphold from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import dayjs from 'dayjs';
+import { Periode, Periodetype } from 'uttaksplan/types/Periode';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 
 const context = {
     søknad: {
@@ -77,9 +80,11 @@ export default {
 interface Props {
     context: ForeldrepengesøknadContextState;
     søkerinfo: SøkerinfoDTO;
+    erIUttaksplanenSteg: boolean;
+    ekisterendeSak?: EksisterendeSak;
 }
 
-const Template: Story<Props> = ({ context, søkerinfo }) => {
+const Template: Story<Props> = ({ context, søkerinfo, erIUttaksplanenSteg = true, ekisterendeSak }) => {
     return (
         <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
             <InfoOmSøknaden
@@ -89,8 +94,8 @@ const Template: Story<Props> = ({ context, søkerinfo }) => {
                         dager: 50,
                     },
                 ]}
-                eksisterendeSak={undefined}
-                erIUttaksplanenSteg
+                eksisterendeSak={ekisterendeSak}
+                erIUttaksplanenSteg={erIUttaksplanenSteg}
             />
         </ForeldrepengerStateMock>
     );
@@ -122,4 +127,47 @@ AnnenForelder.args = {
         },
     } as ForeldrepengesøknadContextState,
     søkerinfo,
+};
+
+export const InfoOmMorsSak = Template.bind({});
+InfoOmMorsSak.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søker: {
+                ...context.søknad.søker,
+                erAleneOmOmsorg: false,
+            },
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'far',
+            },
+            annenForelder: {
+                fornavn: 'Olga',
+                etternavn: 'Utvikler',
+                fnr: '1212121313',
+                harRettPåForeldrepenger: true,
+                kanIkkeOppgis: false,
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+    ekisterendeSak: {
+        erAnnenPartsSak: true,
+        uttaksplan: [
+            {
+                type: Periodetype.Uttak,
+                gradert: true,
+                stillingsprosent: '100',
+                ønskerSamtidigUttak: true,
+                samtidigUttakProsent: '50',
+                tidsperiode: {
+                    fom: dayjs('2021-01-01').toDate(),
+                    tom: dayjs('2021-01-10').toDate(),
+                },
+            } as Periode,
+        ],
+    } as EksisterendeSak,
+    erIUttaksplanenSteg: false,
 };
