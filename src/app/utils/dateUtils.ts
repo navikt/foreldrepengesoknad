@@ -166,17 +166,13 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
     return ukerStr;
 };
 
-export function formaterStønadskontoParamsDatoer(dato: string | undefined, datoformat?: string): string | undefined {
-    return dato !== undefined ? dayjs.utc(dato).format(datoformat || 'dddd D. MMMM YYYY') : undefined;
-}
-
-export function formaterDato(dato: Date | undefined, datoformat?: string): string {
+export const formaterDato = (dato: string | Date | undefined, datoformat?: string): string => {
     return dayjs.utc(dato).format(datoformat || 'dddd D. MMMM YYYY');
-}
+};
 
-export function formaterDatoUtenDag(dato: Date): string {
+export const formaterDatoUtenDag = (dato: string | Date): string => {
     return dayjs.utc(dato).format('D. MMMM YYYY');
-}
+};
 
 type DateValue = Date | undefined;
 
@@ -193,9 +189,9 @@ export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolea
     return true;
 };
 
-export function formaterDatoKompakt(dato: Date): string {
+export const formaterDatoKompakt = (dato: Date): string => {
     return formaterDato(dato, 'DD.MM.YYYY');
-}
+};
 
 export const findEldsteDato = (dateArray: Date[]): DateValue => {
     if (dateArray.length > 0) {

@@ -17,11 +17,7 @@ export const getRegistrertBarnOmDetFinnes = (
     barn: Barn,
     registrerteBarn: RegistrertBarn[]
 ): RegistrertBarn | undefined => {
-    let registrertBarn;
-
-    if (registrerteBarn.length > 0 && isFødtBarn(barn)) {
-        registrertBarn = registrerteBarn.find((regBarn) => dayjs(regBarn.fødselsdato).isSame(barn.fødselsdatoer[0]));
-    }
-
-    return registrertBarn;
+    return registrerteBarn.length > 0 && isFødtBarn(barn)
+        ? registrerteBarn.find((regBarn) => dayjs(regBarn.fødselsdato).isSame(barn.fødselsdatoer[0]))
+        : undefined;
 };

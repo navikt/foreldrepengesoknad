@@ -31,7 +31,7 @@ const opprettAktivitetsFriKonto = (
     return nyeKontoer;
 };
 
-export const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
+const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
     stønadskontoerDTO: TilgjengeligeStønadskontoerDTO,
     dekningsgrad: Dekningsgrad,
     startdatoUttak: string,
@@ -56,23 +56,6 @@ export const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
     );
 
     return tilgjengeligeStønadskontoer;
-};
-
-export const getValgtStønadskontoMengde = (
-    dekningsgrad: Dekningsgrad,
-    kontoer80: TilgjengeligeStønadskontoerDTO,
-    kontoer100: TilgjengeligeStønadskontoerDTO,
-    familiehendelsesdato: string,
-    erMorUfør: boolean
-) => {
-    const valgtStønadskontoMengde = dekningsgrad === Dekningsgrad.ÅTTI_PROSENT ? kontoer80 : kontoer100;
-
-    return mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-        valgtStønadskontoMengde,
-        dekningsgrad as Dekningsgrad,
-        familiehendelsesdato,
-        erMorUfør
-    );
 };
 
 export const getValgtStønadskontoFor80Og100Prosent = (

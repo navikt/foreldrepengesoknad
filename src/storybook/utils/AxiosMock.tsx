@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect } from 'react';
 import MockAdapter from 'axios-mock-adapter';
-import getAxiosInstance from '../../app/api/apiInterceptor'; // This is an AxiosInstance
+import getAxiosInstance from '../../app/api/apiInterceptor';
 
 interface Props {
     children: any;

@@ -1,5 +1,3 @@
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
-import dayjs from 'dayjs';
 import { guid } from 'nav-frontend-js-utils';
 import { UttakArbeidType } from 'app/types/UttakArbeidType';
 import { Arbeidsform } from 'uttaksplan/types/Periode';
@@ -10,24 +8,12 @@ import { Saksperiode } from 'app/types/Saksperiode';
 import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 import { Saksgrunnlag } from 'app/types/Saksgrunnlag';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
-import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
-import { Situasjon } from 'app/types/Situasjon';
 import { getFamiliehendelseType } from './getFamiliehendelseType';
 import { convertTidsperiodeToTidsperiodeDate, getRelevantFamiliehendelseDato } from './dateUtils';
 import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
 import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import Søker from 'app/context/types/Søker';
-import Barn, { BarnType } from 'app/context/types/Barn';
-import { Søkerinfo } from 'app/types/Søkerinfo';
-import { AnnenPart } from 'app/types/AnnenPart';
-import AnnenForelder from 'app/context/types/AnnenForelder';
-import { RegistrertBarn } from 'app/types/Person';
-import Sak from 'app/types/Sak';
-import { Søknad } from 'app/context/types/Søknad';
-import { Søkerrolle } from 'app/types/Søkerrolle';
-import isFarEllerMedmor from './isFarEllerMedmor';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -40,7 +26,7 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType)
     }
 };
 
-export const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): StønadskontoType | undefined => {
+const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): StønadskontoType | undefined => {
     switch (årsak) {
         case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
             return StønadskontoType.Fedrekvote;
@@ -55,7 +41,7 @@ export const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakT
     }
 };
 
-export const erEksisterendeSakErDeltUttak = (eksisterendeSak: EksisterendeSakDTO): boolean => {
+const erEksisterendeSakErDeltUttak = (eksisterendeSak: EksisterendeSakDTO): boolean => {
     const {
         grunnlag: { farMedmorErAleneOmOmsorg, farMedmorHarRett, morErAleneOmOmsorg, morHarRett },
     } = eksisterendeSak;
@@ -85,54 +71,6 @@ const mapSaksperiodeFromDTO = (p: SaksperiodeDTO): Saksperiode => {
     }
 
     return returnPeriode as Saksperiode;
-};
-
-export const mapEksisterendeSakFromDTO = (
-    eksisterendeSak: EksisterendeSakDTO | undefined,
-    erFarEllerMedmor: boolean,
-    erAnnenPartsSak: boolean
-): EksisterendeSak | undefined => {
-    if (eksisterendeSak === undefined) {
-        return undefined;
-    }
-
-    const {
-        grunnlag: {
-            dekningsgrad,
-            termindato,
-            fødselsdato,
-            omsorgsovertakelsesdato,
-            søkerErFarEllerMedmor,
-            ...restGrunnlag
-        },
-        perioder,
-    } = eksisterendeSak;
-
-    const grunnlag: Saksgrunnlag = {
-        ...restGrunnlag,
-        erDeltUttak: erEksisterendeSakErDeltUttak(eksisterendeSak),
-        erBarnetFødt: fødselsdato !== undefined,
-        dekningsgrad: dekningsgrad === 100 ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
-        familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelsesdato),
-        familiehendelseType: getFamiliehendelseType(fødselsdato, termindato),
-        termindato,
-        fødselsdato,
-        omsorgsovertakelsesdato,
-    };
-
-    const saksperioder = perioder
-        .map(mapSaksperiodeFromDTO)
-        .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode)
-        .reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
-
-    const uttaksplan = mapSaksperioderTilUttaksperioder(saksperioder, grunnlag, erFarEllerMedmor, false);
-
-    return {
-        erAnnenPartsSak,
-        grunnlag,
-        saksperioder,
-        uttaksplan,
-    };
 };
 
 const saksperiodeErInnvilget = (saksperiode: Saksperiode) =>
@@ -227,7 +165,56 @@ const inneholderDuplikatSaksperiode = (saksperioder: Saksperiode[], saksperiode:
     );
 };
 
-const getSøkersituasjonFromSaksgrunnlag = (familiehendelseType: FamiliehendelseType): Situasjon | undefined => {
+export const mapEksisterendeSakFromDTO = (
+    eksisterendeSak: EksisterendeSakDTO | undefined,
+    erFarEllerMedmor: boolean,
+    erAnnenPartsSak: boolean
+): EksisterendeSak | undefined => {
+    if (eksisterendeSak === undefined) {
+        return undefined;
+    }
+
+    const {
+        grunnlag: {
+            dekningsgrad,
+            termindato,
+            fødselsdato,
+            omsorgsovertakelsesdato,
+            søkerErFarEllerMedmor,
+            ...restGrunnlag
+        },
+        perioder,
+    } = eksisterendeSak;
+
+    const grunnlag: Saksgrunnlag = {
+        ...restGrunnlag,
+        erDeltUttak: erEksisterendeSakErDeltUttak(eksisterendeSak),
+        erBarnetFødt: fødselsdato !== undefined,
+        dekningsgrad: dekningsgrad === 100 ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
+        familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelsesdato),
+        familiehendelseType: getFamiliehendelseType(fødselsdato, termindato),
+        termindato,
+        fødselsdato,
+        omsorgsovertakelsesdato,
+    };
+
+    const saksperioder = perioder
+        .map(mapSaksperiodeFromDTO)
+        .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode)
+        .reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
+
+    const uttaksplan = mapSaksperioderTilUttaksperioder(saksperioder, grunnlag, erFarEllerMedmor, false);
+
+    return {
+        erAnnenPartsSak,
+        grunnlag,
+        saksperioder,
+        uttaksplan,
+    };
+};
+
+//TODO Fjern?
+/*const getSøkersituasjonFromSaksgrunnlag = (familiehendelseType: FamiliehendelseType): Situasjon | undefined => {
     if (familiehendelseType === FamiliehendelseType.TERM || familiehendelseType === FamiliehendelseType.FØDSEL) {
         return 'fødsel';
     }
@@ -422,3 +409,4 @@ export const opprettSøknadFraEksisterendeSak = (
 
     return søknad;
 };
+*/

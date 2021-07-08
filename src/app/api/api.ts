@@ -9,10 +9,10 @@ import { AxiosResponse } from 'axios';
 import getAxiosInstance from './apiInterceptor';
 import { storageParser } from './storageParser';
 import Environment from 'app/Environment';
-import { formaterStønadskontoParamsDatoer } from 'app/utils/dateUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
 import { mapEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
+import { formaterDato } from 'app/utils/dateUtils';
 
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
@@ -26,6 +26,10 @@ export interface TilgjengeligeStønadskontoerParams {
     farHarAleneomsorg: boolean | undefined;
     startdatoUttak: string;
 }
+
+const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
+    return dato !== undefined ? formaterDato(dato, datoformat) : undefined;
+};
 
 const uttakBaseUrl = Environment.UTTAK_API_URL;
 // const sendSøknadUrl = '/soknad';
