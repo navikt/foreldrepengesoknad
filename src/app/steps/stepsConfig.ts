@@ -28,6 +28,7 @@ interface StepConfig {
     label: string;
 }
 
+//TODO Her er vel både labels feil og burde hentast fra i18n-fila
 const stepConfig: StepConfig[] = [
     {
         id: 'søkersituasjon',

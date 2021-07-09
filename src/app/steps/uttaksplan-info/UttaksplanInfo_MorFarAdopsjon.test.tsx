@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from '../../../storybook/stories/steps/uttaksplan-info/mor-far-adopsjon/MorFarAdopsjon.stories';
+import * as stories from 'stories/steps/uttaksplan-info/mor-far-adopsjon/MorFarAdopsjon.stories';
 
 const { UttaksplanMedAleneomsorg } = composeStories(stories);
 
