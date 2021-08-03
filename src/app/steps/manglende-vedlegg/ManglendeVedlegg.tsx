@@ -26,8 +26,8 @@ import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { Attachment, InnsendingsType } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { guid } from 'nav-frontend-js-utils';
-import VedleggSpørsmål from './VedleggSpørsmål';
 import { Normaltekst } from 'nav-frontend-typografi';
+import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 
 export const attenUkerPluss3Number = 18 * 7 + 3;
 
@@ -96,7 +96,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                 ? attachments.filter(
                                       (vedlegg: Attachment) => vedlegg.innsendingsType !== InnsendingsType.SEND_SENERE
                                   )
-                                : [];
+                                : ([] as Attachment[]);
 
                             const periode = _.get(søknad, key.replace('.vedlegg', '').split('.'));
 
@@ -147,14 +147,15 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                                     </Normaltekst>
                                                 </Block>
                                             )}
-                                            <VedleggSpørsmål
-                                                vedlegg={attachmentsToRender}
+                                            <FormikFileUploader
+                                                label={intlUtils(
+                                                    intl,
+                                                    'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp'
+                                                )}
+                                                name={ManglendeVedleggFormField.vedlegg}
+                                                attachments={attachmentsToRender || []}
                                                 attachmentType={a.type}
                                                 skjemanummer={a.skjemanummer}
-                                                onChange={() => {
-                                                    //this.handleVedleggSpørsmålOnChange(updatedAttachments, key)
-                                                    return undefined;
-                                                }}
                                             />
                                         </Block>
                                         <Block visible={a.type === AttachmentType.TERMINBEKREFTELSE}>
