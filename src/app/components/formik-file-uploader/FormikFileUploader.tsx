@@ -7,9 +7,9 @@ import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import AttachmentApi from 'app/api/attachmentApi';
 import AttachmentList from '../attachment/AttachmentList';
-import { isAttachmentWithError, mapFileToAttachment } from '../attachment/attachmentUtils';
 import { deleteAttachment } from 'app/utils/globalUtil';
 import { useIntl } from 'react-intl';
+import { isAttachmentWithError, mapFilTilVedlegg } from 'app/utils/vedleggUtils';
 
 export type FieldArrayReplaceFn = (index: number, value: any) => void;
 export type FieldArrayPushFn = (obj: any) => void;
@@ -31,7 +31,7 @@ const getPendingAttachmentFromFile = (
     attachmentType: AttachmentType,
     skjemanummer: Skjemanummer
 ): Attachment => {
-    const newAttachment = mapFileToAttachment(file, attachmentType, skjemanummer);
+    const newAttachment = mapFilTilVedlegg(file, attachmentType, skjemanummer);
     newAttachment.pending = true;
     return newAttachment;
 };

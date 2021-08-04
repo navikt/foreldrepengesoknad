@@ -148,17 +148,19 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                                 </Block>
                                             )}
                                             <FormikFileUploader
-                                                label={intlUtils(
-                                                    intl,
-                                                    'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp'
-                                                )}
+                                                label={intlUtils(intl, 'manglendeVedlegg.lastopp.manglende.vedlegg')}
                                                 name={ManglendeVedleggFormField.vedlegg}
                                                 attachments={attachmentsToRender || []}
                                                 attachmentType={a.type}
                                                 skjemanummer={a.skjemanummer}
                                             />
                                         </Block>
-                                        <Block visible={a.type === AttachmentType.TERMINBEKREFTELSE}>
+                                        <Block
+                                            visible={
+                                                a.type === AttachmentType.TERMINBEKREFTELSE &&
+                                                attachmentsToRender.length > 0
+                                            }
+                                        >
                                             <ManglendeVedleggFormComponents.DatePicker
                                                 name={ManglendeVedleggFormField.terminbekreftelseDato}
                                                 label={intlUtils(

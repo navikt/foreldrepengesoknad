@@ -1,4 +1,3 @@
-import { guid } from 'nav-frontend-js-utils';
 import { Søknad } from 'app/context/types/Søknad';
 import { Attachment, InnsendingsType } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
@@ -16,6 +15,7 @@ import Barn, {
 } from 'app/context/types/Barn';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
+import { lagSendSenereDokument } from 'app/utils/vedleggUtils';
 
 const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], fraDato?: Date): Arbeidsforhold[] => {
     return arbeidsforhold.filter(
@@ -131,25 +131,6 @@ const isArrayOfAttachments = (object: any) => {
     );
 };
 
-const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
-
-const mapFileToAttachment = (
-    file: File,
-    type: AttachmentType,
-    skjemanummer: Skjemanummer,
-    innsendingsType?: InnsendingsType
-): Attachment => ({
-    id: generateAttachmentId(),
-    file,
-    filename: file.name,
-    filesize: file.size,
-    uploaded: false,
-    pending: false,
-    type,
-    skjemanummer,
-    innsendingsType,
-});
-
 const isAttachmentForBarn = (type: AttachmentType) =>
     type === AttachmentType.TERMINBEKREFTELSE ||
     type === AttachmentType.FØDSELSATTEST ||
@@ -168,12 +149,7 @@ const isAttachmentForAnnenInntekt = (type: AttachmentType) => type === Attachmen
 
 export const mapManglendeVedleggTilSøknad = (missingAttachments: MissingAttachment[], søknad: Søknad): Søknad => {
     missingAttachments.forEach((missingAttachment: MissingAttachment) => {
-        const attachment = mapFileToAttachment(
-            { name: '', size: '' } as any,
-            missingAttachment.type,
-            missingAttachment.skjemanummer,
-            InnsendingsType.SEND_SENERE
-        );
+        const attachment = lagSendSenereDokument(missingAttachment.type, missingAttachment.skjemanummer);
 
         if (isAttachmentForBarn(attachment.type)) {
             søknad.barn[attachment.type] = [attachment];

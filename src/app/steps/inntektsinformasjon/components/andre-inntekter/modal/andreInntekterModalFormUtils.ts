@@ -1,7 +1,10 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
+import { AttachmentType } from 'app/types/AttachmentType';
+import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import { lagSendSenereDokument } from 'app/utils/vedleggUtils';
 import { AndreInntekterFormData, AndreInntekterFormField } from './andreInntekterModalFormConfig';
 
 const initialAndreInntekterFormValues: AndreInntekterFormData = {
@@ -14,14 +17,30 @@ const initialAndreInntekterFormValues: AndreInntekterFormData = {
     [AndreInntekterFormField.dokumentasjon]: [],
 };
 
+export const getSkjemanummer = (values: AndreInntekterFormData): Skjemanummer => {
+    if (values.type === AnnenInntektType.MILITÆRTJENESTE) {
+        return Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE;
+    }
+
+    if (values.type === AnnenInntektType.SLUTTPAKKE) {
+        return Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG;
+    }
+
+    return Skjemanummer.ANNET;
+};
+
 export const cleanupAndreInntekterForm = (
     values: AndreInntekterFormData,
     visibility: QuestionVisibility<AndreInntekterFormField, undefined>
 ): AndreInntekterFormData => {
+    const dokumentasjon = values.dokumentasjon || [
+        lagSendSenereDokument(AttachmentType.ANNEN_INNTEKT, getSkjemanummer(values)),
+    ];
+
     return {
         type: visibility.isVisible(AndreInntekterFormField.type) ? values.type : initialAndreInntekterFormValues.type,
         dokumentasjon: visibility.isVisible(AndreInntekterFormField.dokumentasjon)
-            ? values.dokumentasjon
+            ? dokumentasjon
             : initialAndreInntekterFormValues.dokumentasjon,
         fom: visibility.isVisible(AndreInntekterFormField.fom) ? values.fom : initialAndreInntekterFormValues.fom,
         tom: visibility.isVisible(AndreInntekterFormField.tom) ? values.tom : initialAndreInntekterFormValues.tom,

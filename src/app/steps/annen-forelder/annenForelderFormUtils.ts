@@ -4,8 +4,11 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import AnnenForelder, { isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Barn from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
+import { AttachmentType } from 'app/types/AttachmentType';
 import { RegistrertBarn } from 'app/types/Person';
+import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import { lagSendSenereDokument } from 'app/utils/vedleggUtils';
 import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 
 export const initialAnnenForelderValues: AnnenForelderFormData = {
@@ -20,7 +23,9 @@ export const initialAnnenForelderValues: AnnenForelderFormData = {
     [AnnenForelderFormField.erMorUfør]: YesOrNo.UNANSWERED,
     [AnnenForelderFormField.datoForAleneomsorg]: '',
     [AnnenForelderFormField.bostedsland]: '',
-    [AnnenForelderFormField.dokumentasjonAvAleneomsorg]: [],
+    [AnnenForelderFormField.dokumentasjonAvAleneomsorg]: [
+        lagSendSenereDokument(AttachmentType.ALENEOMSORG, Skjemanummer.DOK_AV_ALENEOMSORG),
+    ],
 };
 
 export const cleanAnnenForelderFormData = (
@@ -98,7 +103,8 @@ export const getAnnenForelderFormInitialValues = (
             bostedsland: annenForelder.bostedsland || '',
             erInformertOmSøknaden: convertBooleanOrUndefinedToYesOrNo(annenForelder.erInformertOmSøknaden),
             erMorUfør: convertBooleanOrUndefinedToYesOrNo(annenForelder.erUfør),
-            dokumentasjonAvAleneomsorg: barn.dokumentasjonAvAleneomsorg || [],
+            dokumentasjonAvAleneomsorg:
+                barn.dokumentasjonAvAleneomsorg || initialAnnenForelderValues.dokumentasjonAvAleneomsorg,
             etternavn: annenForelder.etternavn,
             fornavn: annenForelder.fornavn,
             kanIkkeOppgis: annenForelder.kanIkkeOppgis,

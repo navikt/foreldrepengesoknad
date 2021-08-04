@@ -291,6 +291,7 @@
     "manglendeVedlegg.veileder": "Før du kan senda inn søknaden så treng vi at du lastar opp dei vedleggen som er lista opp nedanfor. Utan dei har vi ikkje moglegheit at behandla søknaden din.",
     "manglendevedlegg.uttaksplan.advarsel.forTidligUtenDokumentasjon": "Det er mer enn 4 uker til du starter foreldrepengene dine. Du må laste opp dokumentasjon for å sende inn søknaden.",
     "manglendeVedlegg.periode.tidsperiode": "Gjelder perioden med { type } fra { fom } til { tom }",
+    "manglendeVedlegg.lastopp.manglende.vedlegg": "Last opp dokumentasjon her",
     "oppsummering.veileder": "Les gjennom oppsummeringa før du sender inn søknaden. Dersom du treng å gjere endringar, kan du gå tilbake.",
     "oppsummering.barn.søknadenGjelder": "Søknaden gjeld",
     "oppsummering.barn.termindato": "Termindato",

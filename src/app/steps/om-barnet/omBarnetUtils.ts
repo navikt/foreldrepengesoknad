@@ -7,10 +7,13 @@ import Barn, {
     isFødtBarn,
     isUfødtBarn,
 } from 'app/context/types/Barn';
+import { AttachmentType } from 'app/types/AttachmentType';
 import { RegistrertBarn } from 'app/types/Person';
+import { Skjemanummer } from 'app/types/Skjemanummer';
 import { getRegistrertBarnOmDetFinnes } from 'app/utils/barnUtils';
 import { velgEldsteBarn } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import { lagSendSenereDokument } from 'app/utils/vedleggUtils';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 
 const getInitValues = (): Readonly<OmBarnetFormData> => ({
@@ -19,9 +22,13 @@ const getInitValues = (): Readonly<OmBarnetFormData> => ({
     [OmBarnetFormField.antallBarn]: '',
     [OmBarnetFormField.adopsjonsdato]: '',
     [OmBarnetFormField.fødselsdatoer]: [],
-    [OmBarnetFormField.omsorgsovertakelse]: [],
+    [OmBarnetFormField.omsorgsovertakelse]: [
+        lagSendSenereDokument(AttachmentType.OMSORGSOVERTAKELSE, Skjemanummer.OMSORGSOVERTAKELSESDATO),
+    ],
     [OmBarnetFormField.termindato]: '',
-    [OmBarnetFormField.terminbekreftelse]: [],
+    [OmBarnetFormField.terminbekreftelse]: [
+        lagSendSenereDokument(AttachmentType.TERMINBEKREFTELSE, Skjemanummer.TERMINBEKREFTELSE),
+    ],
     [OmBarnetFormField.terminbekreftelsedato]: '',
     [OmBarnetFormField.adoptertIUtlandet]: YesOrNo.UNANSWERED,
     [OmBarnetFormField.ankomstdato]: '',

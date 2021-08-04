@@ -7,8 +7,8 @@ import { useIntl } from 'react-intl';
 import { intlUtils } from '@navikt/fp-common';
 import { Attachment } from 'app/types/Attachment';
 import EtikettBase from 'nav-frontend-etiketter';
-import { isAttachmentWithError } from 'app/components/attachment/attachmentUtils';
 import Lenke from 'nav-frontend-lenker';
+import { isAttachmentWithError } from 'app/utils/vedleggUtils';
 
 interface Props {
     annenInntekt: AnnenInntekt;

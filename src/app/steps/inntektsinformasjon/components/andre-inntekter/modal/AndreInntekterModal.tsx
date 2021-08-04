@@ -11,13 +11,13 @@ import {
 import {
     cleanupAndreInntekterForm,
     getInitialAndreInntekterFormValues,
+    getSkjemanummer,
     mapAnnenInntektModalValuesToState,
 } from './andreInntekterModalFormUtils';
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import andreInntekterModalQuestionsConfig from './andreInntekterModalQuestionsConfig';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import { Hovedknapp } from 'nav-frontend-knapper';
@@ -53,18 +53,6 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
             editAnnenInntekt(mapAnnenInntektModalValuesToState(values));
         }
         onRequestClose();
-    };
-
-    const getSkjemanummer = (values: AndreInntekterFormData): Skjemanummer => {
-        if (values.type === AnnenInntektType.MILITÆRTJENESTE) {
-            return Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE;
-        }
-
-        if (values.type === AnnenInntektType.SLUTTPAKKE) {
-            return Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG;
-        }
-
-        return Skjemanummer.ANNET;
     };
 
     const getVeilederMessageId = (values: AndreInntekterFormData): string => {

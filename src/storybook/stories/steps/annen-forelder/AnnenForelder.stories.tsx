@@ -54,3 +54,40 @@ SkalOppgiPersonalia.args = {
         },
     } as SøkerinfoDTO,
 };
+
+export const ForFar = Template.bind({});
+ForFar.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'far',
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo: {
+        søker: {
+            ...søkerinfo.søker,
+            fornavn: 'LEALAUS',
+            etternavn: 'BÆREPOSE',
+            kjønn: 'M',
+            barn: [
+                {
+                    fnr: '21091981146',
+                    fødselsdato: '2021-03-15',
+                    annenForelder: {
+                        fnr: '12038517080',
+                        fødselsdato: '1985-03-12',
+                        fornavn: 'TALENTFULL',
+                        etternavn: 'MYGG',
+                    },
+                    fornavn: 'KLØKTIG',
+                    etternavn: 'MIDTPUNKT',
+                    kjønn: 'K',
+                },
+            ],
+        },
+    } as SøkerinfoDTO,
+};
