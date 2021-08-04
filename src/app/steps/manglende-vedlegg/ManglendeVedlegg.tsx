@@ -1,4 +1,4 @@
-import { Block, formatDate, intlUtils, Step } from '@navikt/fp-common';
+import { Block, formatDate, intlUtils, Step, UtvidetInformasjon } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import _ from 'lodash';
@@ -26,10 +26,19 @@ import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { Attachment, InnsendingsType } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { guid } from 'nav-frontend-js-utils';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst, Element } from 'nav-frontend-typografi';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
+import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 
 export const attenUkerPluss3Number = 18 * 7 + 3;
+
+const getManglendeVedleggValues = (type: AttachmentType, fornavnAnnenForelder: string) => {
+    return type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+        ? {
+              navn: fornavnAnnenForelder,
+          }
+        : undefined;
+};
 
 const ManglendeVedlegg: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -45,6 +54,8 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
     const onAvbrytSøknad = useAvbrytSøknad();
 
     const termindato = (barn as UfødtBarn).termindato;
+
+    const fornavnAnnenForelder = isAnnenForelderOppgitt(søknad.annenForelder) ? søknad.annenForelder.fornavn : '';
 
     const førsteUttaksEllerUttsettelsesPeriode = uttaksplan
         .filter((p: Periode) => p.tidsperiode.fom !== undefined && !isInfoPeriode(p))
@@ -105,37 +116,31 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                 .filter((v) => v.type !== AttachmentType.SEN_ENDRING && !!v.filesize === false)
                                 .map((a) => (
                                     <div key={guid()}>
-                                        <Block
-                                        /* header={{
-                                                title: intlUtils(
+                                        <Block>
+                                            <Element>
+                                                {intlUtils(
                                                     intl,
                                                     `manglendeVedlegg.title.${a.type}`,
-                                                    a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
-                                                        ? {
-                                                              navn: søknad.annenForelder.fornavn,
-                                                          }
-                                                        : undefined
-                                                ),
-                                                info: intlUtils(
-                                                    intl,
-                                                    `manglendeVedlegg.info.${a.type}`,
-                                                    a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
-                                                        ? {
-                                                              navn: søknad.annenForelder.fornavn,
-                                                          }
-                                                        : undefined
-                                                ),
-                                                apneLabel: intlUtils(
+                                                    getManglendeVedleggValues(a.type, fornavnAnnenForelder)
+                                                )}
+                                            </Element>
+                                            <UtvidetInformasjon
+                                                apneLabel={intlUtils(
                                                     intl,
                                                     `manglendeVedlegg.apneLabel.${a.type}`,
-                                                    a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
-                                                        ? {
-                                                              navn: søknad.annenForelder.fornavn,
-                                                          }
-                                                        : undefined
-                                                ),
-                                            }}*/
-                                        >
+                                                    getManglendeVedleggValues(a.type, fornavnAnnenForelder)
+                                                )}
+                                            >
+                                                <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
+                                                    <Normaltekst>
+                                                        {intlUtils(
+                                                            intl,
+                                                            `manglendeVedlegg.info.${a.type}`,
+                                                            getManglendeVedleggValues(a.type, fornavnAnnenForelder)
+                                                        )}
+                                                    </Normaltekst>
+                                                </div>
+                                            </UtvidetInformasjon>
                                             {isAttachmentForPeriode(a.type) && (
                                                 <Block margin="l">
                                                     <Normaltekst>
