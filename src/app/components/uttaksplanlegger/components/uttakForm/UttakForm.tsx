@@ -381,7 +381,6 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                         familiehendelsesdato={familiehendelsesdato}
                         ugyldigeTidsperioder={ugyldigeTidsperioder}
                         onBekreft={(v) => {
-                            console.log(v);
                             this.onChange({ tidsperiode: mapTidsperiodeStringToTidsperiode(v) });
                         }}
                         tidsperiode={mapTidsperiodeToTidsperiodeString(tidsperiode)}

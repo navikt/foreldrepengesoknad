@@ -19,6 +19,7 @@ export enum Periodetype {
     'Overføring' = 'overføring',
     'Hull' = 'ubegrunnetOpphold',
     'Info' = 'info',
+    'PeriodeUtenUttak' = 'periodeUtenUttak',
 }
 
 export enum UtsettelseÅrsakType {
@@ -166,8 +167,17 @@ export interface PeriodeHull extends PeriodeBase {
     årsak?: PeriodeHullÅrsak;
 }
 
+export interface PeriodeUtenUttak extends PeriodeBase {
+    type: Periodetype.PeriodeUtenUttak;
+    tidsperiode: Tidsperiode;
+}
+
 export const isHull = (periode: Periode): periode is PeriodeHull => {
     return periode.type === Periodetype.Hull;
+};
+
+export const isPeriodeUtenUttak = (periode: Periode): periode is PeriodeUtenUttak => {
+    return periode.type === Periodetype.PeriodeUtenUttak;
 };
 
 export interface UttaksperiodeBase extends PeriodeBase {
@@ -225,6 +235,7 @@ export type Periode =
     | Oppholdsperiode
     | Overføringsperiode
     | PeriodeHull
+    | PeriodeUtenUttak
     | InfoPeriode;
 
 export enum MorsAktivitet {

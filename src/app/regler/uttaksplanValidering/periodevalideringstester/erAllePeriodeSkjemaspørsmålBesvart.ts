@@ -19,6 +19,7 @@ const erAlleSpørsmålBesvart = (
 ): boolean => {
     switch (periode.type) {
         case Periodetype.Hull:
+        case Periodetype.PeriodeUtenUttak:
         case Periodetype.Info:
             return true;
         case Periodetype.Overføring:

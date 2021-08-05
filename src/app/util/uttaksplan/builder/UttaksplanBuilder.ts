@@ -15,6 +15,7 @@ import {
     TilgjengeligStønadskonto,
     isOppholdsperiode,
     isUtsettelsesperiode,
+    PeriodeUtenUttak,
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -113,14 +114,16 @@ class UttaksplanAutoBuilder {
 
         const utsettelser = Periodene(perioderEtterFamDato).getUtsettelser();
         const opphold = Periodene(perioderEtterFamDato).getOpphold();
-        const hullOgInfo = Periodene(perioderEtterFamDato).getHullOgInfo();
+        const hullOgInfoOgPerioderUtenUttak = Periodene(perioderEtterFamDato).getHullOgInfoOgPerioderUtenUttak();
         const uttaksperioder = Periodene(perioderEtterFamDato).getUttak();
         const overføringer = Periodene(perioderEtterFamDato).getOverføringer();
         const foreldrepengerFørTermin = Periodene(perioderFørFamDato).getForeldrepengerFørTermin();
 
         this.perioder = resetTidsperioder([...uttaksperioder, ...overføringer]);
 
-        const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hullOgInfo].sort(sorterPerioder);
+        const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hullOgInfoOgPerioderUtenUttak].sort(
+            sorterPerioder
+        );
         this.perioder = [
             ...settInnPerioder(
                 this.perioder,
@@ -415,7 +418,7 @@ class UttaksplanAutoBuilder {
         }
         this.justerOverskrivbarePerioderRundtPeriode(periode);
         const nyePeriodehull = periodeHasValidTidsrom(periode)
-            ? finnHullVedEndretTidsperiode(oldPeriode, periode)
+            ? finnHullVedEndretTidsperiode(oldPeriode, periode, true)
             : undefined;
         if (nyePeriodehull) {
             this.perioder = this.perioder.concat(nyePeriodehull);
@@ -612,9 +615,11 @@ export function finnHullIPerioder(
     perioder: Periode[],
     erEndringsøknadUtenEkisterendeSak: boolean,
     harMidlertidigOmsorg: boolean,
+    skalLeggeInnPerioderUtenUttak: boolean,
     startDato?: Date
-): PeriodeHull[] {
+): PeriodeHull[] | PeriodeUtenUttak[] {
     const hull: PeriodeHull[] = [];
+    const perioderUtenUttak: PeriodeUtenUttak[] = [];
     const perioderLength = perioder.length;
     const shouldHullBeInsertedBetweenFamiliehendelsedatoAndFirstPeriode =
         startDato !== undefined &&
@@ -631,7 +636,11 @@ export function finnHullIPerioder(
         }).getAntallUttaksdager();
 
         if (uttaksdagerMellomStartOgFørstePeriode > 0) {
-            hull.push(getNyttPeriodehull(getTidsperiode(fom, uttaksdagerMellomStartOgFørstePeriode)));
+            const tidsperiode = getTidsperiode(fom, uttaksdagerMellomStartOgFørstePeriode);
+
+            skalLeggeInnPerioderUtenUttak
+                ? perioderUtenUttak.push(getNyPeriodeUtenUttak(tidsperiode))
+                : hull.push(getNyttPeriodehull(tidsperiode));
         }
     }
     perioder.forEach((periode, idx) => {
@@ -651,10 +660,13 @@ export function finnHullIPerioder(
         const uttaksdagerITidsperiode = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
 
         if (uttaksdagerITidsperiode > 0) {
-            hull.push(getNyttPeriodehull(tidsperiodeMellomPerioder));
+            skalLeggeInnPerioderUtenUttak
+                ? perioderUtenUttak.push(getNyPeriodeUtenUttak(tidsperiodeMellomPerioder))
+                : hull.push(getNyttPeriodehull(tidsperiodeMellomPerioder));
         }
     });
-    return hull;
+
+    return hull.length > 0 ? hull : perioderUtenUttak;
 }
 
 function resetTidsperioder(perioder: Periode[]): Periode[] {
@@ -782,7 +794,11 @@ function splittPeriodeMedPeriode(periode: Periode, nyPeriode: Periode): Periode[
     return [forste, midt, siste];
 }
 
-function finnHullVedEndretTidsperiode(oldPeriode: Periode, periode: Periode): PeriodeHull[] | undefined {
+function finnHullVedEndretTidsperiode(
+    oldPeriode: Periode,
+    periode: Periode,
+    skalLeggeInnPerioderUtenUttak: boolean
+): PeriodeHull[] | PeriodeUtenUttak[] | undefined {
     if (periodeHasValidTidsrom(periode) === false || periodeHasValidTidsrom(oldPeriode) === false) {
         return undefined;
     }
@@ -790,11 +806,19 @@ function finnHullVedEndretTidsperiode(oldPeriode: Periode, periode: Periode): Pe
      TODO - sjekk at ikke opphold kolliderer med andre perioder
      */
     const periodehull: PeriodeHull[] = [];
+    const periodeUtenUttak: PeriodeUtenUttak[] = [];
     const diffStartdato = Uttaksdagen(oldPeriode.tidsperiode.fom).getUttaksdagerFremTilDato(periode.tidsperiode.fom);
+
     if (diffStartdato > 0) {
-        periodehull.push(getNyttPeriodehull(getTidsperiode(oldPeriode.tidsperiode.fom, diffStartdato)));
+        const tidsperiode = getTidsperiode(oldPeriode.tidsperiode.fom, diffStartdato);
+
+        skalLeggeInnPerioderUtenUttak
+            ? periodeUtenUttak.push(getNyPeriodeUtenUttak(tidsperiode))
+            : periodehull.push(getNyttPeriodehull(tidsperiode));
     }
+
     const diffSluttdato = Uttaksdagen(oldPeriode.tidsperiode.tom).getUttaksdagerFremTilDato(periode.tidsperiode.tom);
+
     if (diffSluttdato < 0) {
         periodehull.push(
             getNyttPeriodehull({
@@ -803,7 +827,10 @@ function finnHullVedEndretTidsperiode(oldPeriode: Periode, periode: Periode): Pe
             })
         );
     }
-    return periodehull.length > 0 ? periodehull : undefined;
+
+    const returnValue = skalLeggeInnPerioderUtenUttak ? periodeUtenUttak : periodehull;
+
+    return returnValue.length > 0 ? returnValue : undefined;
 }
 
 function skalSlettetPeriodeErstattesMedHull(periode: Periode, perioder: Periode[]): boolean {
@@ -823,7 +850,14 @@ export function finnOgSettInnHull(
     harMidlertidigOmsorg: boolean,
     startdato?: Date
 ): Periode[] {
-    const hull = finnHullIPerioder(perioder, erEndringsøknadUtenEkisterendeSak, harMidlertidigOmsorg, startdato);
+    const skalLeggeInnPerioderUtenUttak = true;
+    const hull = finnHullIPerioder(
+        perioder,
+        erEndringsøknadUtenEkisterendeSak,
+        harMidlertidigOmsorg,
+        skalLeggeInnPerioderUtenUttak,
+        startdato
+    );
     return [...perioder, ...hull].sort(sorterPerioder);
 }
 
@@ -848,6 +882,12 @@ const getNyttPeriodehull = (tidsperiode: Tidsperiode, årsak?: PeriodeHullÅrsak
     type: Periodetype.Hull,
     tidsperiode,
     årsak,
+});
+
+const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): PeriodeUtenUttak => ({
+    id: guid(),
+    type: Periodetype.PeriodeUtenUttak,
+    tidsperiode,
 });
 
 export function splittPeriodeMedHelligdager(periode: Periode): Periode[] {
