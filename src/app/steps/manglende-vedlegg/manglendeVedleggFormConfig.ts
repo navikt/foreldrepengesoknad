@@ -8,7 +8,7 @@ export enum ManglendeVedleggFormField {
 
 export interface ManglendeVedleggFormData {
     [ManglendeVedleggFormField.terminbekreftelseDato]: string;
-    [ManglendeVedleggFormField.vedlegg]: Attachment[];
+    [ManglendeVedleggFormField.vedlegg]: Attachment[][];
 }
 
 export const ManglendeVedleggFormComponents = getTypedFormComponents<

@@ -7,10 +7,10 @@
             "rolle": "mor"
         },
         "barn": {
-            "type": "født",
-            "fødselsdatoer": [
-                "2021-03-15"
-            ],
+            "type": "ufødt",
+            "terminbekreftelse": [],
+            "termindato": "2021-03-15",
+            "terminbekreftelsedato": "2021-03-15",
             "antallBarn": "1",
             "datoForAleneomsorg": "",
             "dokumentasjonAvAleneomsorg": []
