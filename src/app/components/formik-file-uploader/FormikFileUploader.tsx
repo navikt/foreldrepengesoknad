@@ -26,6 +26,15 @@ export interface Props {
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 
+const findOldValues = (name: string, values: any) => {
+    if (name.includes('.')) {
+        const parts = name.split('.');
+        const fieldValue = values[parts[0]];
+        return fieldValue && fieldValue.length > parseInt(parts[1], 10) ? fieldValue[parts[1]] : [];
+    }
+    return values[name];
+};
+
 const getPendingAttachmentFromFile = (
     file: File,
     attachmentType: AttachmentType,
@@ -111,7 +120,8 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
                     acceptedExtensions={VALID_EXTENSIONS.join(', ')}
                     onFilesSelect={async (files: File[], { push, replace }: ArrayHelpers) => {
                         const atts = files.map((file) => addPendingAttachmentToFieldArray(file, push));
-                        await uploadAttachments([...values[name], ...atts], replace);
+                        const oldValues = findOldValues(name, values);
+                        await uploadAttachments([...oldValues, ...atts], replace);
                     }}
                     onClick={onFileInputClick}
                     {...otherProps}

@@ -23,6 +23,7 @@ import { guid } from 'nav-frontend-js-utils';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
+import { getInitValues } from './manglendeVedleggFormUtils';
 import { FieldArray } from 'formik';
 
 export const attenUkerPluss3Number = 18 * 7 + 3;
@@ -63,7 +64,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
     const alleVedlegg = finnAlleVedlegg(søknad);
     return (
         <ManglendeVedleggFormComponents.FormikWrapper
-            initialValues={{}}
+            initialValues={getInitValues()}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = manglendeVedleggQuestionsConfig.getVisbility({
@@ -94,7 +95,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                     />
                                 </Veilederpanel>
                             </Block>
-                            {[...Array.from(alleVedlegg.entries())].map((am: [string, Attachment[]]) => {
+                            {[...Array.from(alleVedlegg.entries())].map((am: [string, Attachment[]], index) => {
                                 const key = am[0].replace('søknad.', '');
                                 const attachments = _.get(søknad, key.split('.'));
                                 const attachmentsToRender = Array.isArray(attachments)
@@ -109,7 +110,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                 const attachmentMapValue = am[1];
                                 return attachmentMapValue
                                     .filter((v) => v.type !== AttachmentType.SEN_ENDRING && !!v.filesize === false)
-                                    .map((a, index) => (
+                                    .map((a) => (
                                         <div key={guid()}>
                                             <Block>
                                                 <Element>
@@ -149,9 +150,8 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                                 )}
                                                 <FieldArray
                                                     name={ManglendeVedleggFormField.vedlegg}
-                                                    render={(test) => {
-                                                        console.log(test);
-                                                        return [
+                                                    render={() => {
+                                                        return (
                                                             <FormikFileUploader
                                                                 key={`${ManglendeVedleggFormField.vedlegg}.${index}`}
                                                                 name={`${ManglendeVedleggFormField.vedlegg}.${index}`}
@@ -160,12 +160,14 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                                                     'manglendeVedlegg.lastopp.manglende.vedlegg'
                                                                 )}
                                                                 attachments={
-                                                                    formValues.vedlegg ? formValues.vedlegg[index] : []
+                                                                    formValues.vedlegg.length > index
+                                                                        ? formValues.vedlegg[index]
+                                                                        : []
                                                                 }
                                                                 attachmentType={a.type}
                                                                 skjemanummer={a.skjemanummer}
-                                                            />,
-                                                        ];
+                                                            />
+                                                        );
                                                     }}
                                                 />
                                             </Block>

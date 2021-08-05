@@ -1,6 +1,6 @@
 import Environment from 'app/Environment';
 import { Attachment } from 'app/types/Attachment';
-import axios from 'axios';
+import getAxiosInstance from './apiInterceptor';
 
 function saveAttachment(attachment: Attachment) {
     const config = {
@@ -16,7 +16,7 @@ function saveAttachment(attachment: Attachment) {
     formData.append('vedlegg', attachment.file, attachment.filename);
 
     const url = `${Environment.REST_API_URL}/storage/vedlegg`;
-    return axios.post(url, formData, config);
+    return getAxiosInstance().post(url, formData, config);
 }
 
 const AttachmentApi = { saveAttachment };

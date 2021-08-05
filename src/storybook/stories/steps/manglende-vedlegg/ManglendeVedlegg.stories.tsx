@@ -1,5 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/react';
+import MockAdapter from 'axios-mock-adapter/types';
 
 import søkerinfo from './testdata/søkerinfo.json';
 import context from './testdata/context.json';
@@ -13,6 +14,7 @@ import ForeldrepengerStateMock from '../../../utils/ForeldrepengerStateMock';
 import { lagSendSenereDokument } from 'app/utils/vedleggUtils';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
+import AxiosMock from '../../../utils/AxiosMock';
 
 export default {
     title: 'steps/ManglendeVedlegg',
@@ -26,10 +28,21 @@ interface Props {
 }
 
 const Template: Story<Props> = ({ context, søkerinfo }) => {
+    const restMock = (apiMock: MockAdapter) => {
+        apiMock.onPost('/storage/vedlegg').reply(
+            200,
+            { data: {} },
+            {
+                location: '',
+            }
+        );
+    };
     return (
-        <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
-            <ManglendeVedlegg />
-        </ForeldrepengerStateMock>
+        <AxiosMock mock={restMock}>
+            <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
+                <ManglendeVedlegg />
+            </ForeldrepengerStateMock>
+        </AxiosMock>
     );
 };
 
