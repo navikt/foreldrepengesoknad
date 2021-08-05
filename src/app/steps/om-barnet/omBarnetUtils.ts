@@ -13,7 +13,7 @@ import { Skjemanummer } from 'app/types/Skjemanummer';
 import { getRegistrertBarnOmDetFinnes } from 'app/utils/barnUtils';
 import { velgEldsteBarn } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { lagSendSenereDokument } from 'app/utils/vedleggUtils';
+import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 
 const getInitValues = (): Readonly<OmBarnetFormData> => ({
@@ -22,13 +22,9 @@ const getInitValues = (): Readonly<OmBarnetFormData> => ({
     [OmBarnetFormField.antallBarn]: '',
     [OmBarnetFormField.adopsjonsdato]: '',
     [OmBarnetFormField.fødselsdatoer]: [],
-    [OmBarnetFormField.omsorgsovertakelse]: [
-        lagSendSenereDokument(AttachmentType.OMSORGSOVERTAKELSE, Skjemanummer.OMSORGSOVERTAKELSESDATO),
-    ],
+    [OmBarnetFormField.omsorgsovertakelse]: [],
     [OmBarnetFormField.termindato]: '',
-    [OmBarnetFormField.terminbekreftelse]: [
-        lagSendSenereDokument(AttachmentType.TERMINBEKREFTELSE, Skjemanummer.TERMINBEKREFTELSE),
-    ],
+    [OmBarnetFormField.terminbekreftelse]: [],
     [OmBarnetFormField.terminbekreftelsedato]: '',
     [OmBarnetFormField.adoptertIUtlandet]: YesOrNo.UNANSWERED,
     [OmBarnetFormField.ankomstdato]: '',
@@ -61,14 +57,25 @@ export const mapOmBarnetFormDataToState = (
     }
 
     if (values.erBarnetFødt === YesOrNo.NO) {
+        const terminbekreftelse = lagSendSenereDokumentNårIngenAndreFinnes(
+            values.terminbekreftelse!,
+            AttachmentType.TERMINBEKREFTELSE,
+            Skjemanummer.TERMINBEKREFTELSE
+        );
         return {
             type: BarnType.UFØDT,
-            terminbekreftelse: values.terminbekreftelse!,
+            terminbekreftelse: terminbekreftelse!,
             terminbekreftelsedato: values.terminbekreftelsedato,
             antallBarn: values.antallBarn!,
             termindato: values.termindato!,
         };
     }
+
+    const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
+        values.omsorgsovertakelse!,
+        AttachmentType.OMSORGSOVERTAKELSE,
+        Skjemanummer.OMSORGSOVERTAKELSESDATO
+    );
 
     if (values.adopsjonAvEktefellesBarn === YesOrNo.YES) {
         return {
@@ -76,7 +83,7 @@ export const mapOmBarnetFormDataToState = (
             adopsjonsdato: values.adopsjonsdato!,
             antallBarn: values.antallBarn!,
             fødselsdatoer: values.fødselsdatoer!,
-            omsorgsovertakelse: values.omsorgsovertakelse!,
+            omsorgsovertakelse: omsorgsovertakelse!,
         };
     }
 
@@ -86,7 +93,7 @@ export const mapOmBarnetFormDataToState = (
         adopsjonsdato: values.adopsjonsdato!,
         antallBarn: values.antallBarn!,
         adoptertIUtlandet: convertYesOrNoOrUndefinedToBoolean(values.adoptertIUtlandet)!,
-        omsorgsovertakelse: values.omsorgsovertakelse!,
+        omsorgsovertakelse: omsorgsovertakelse!,
         ankomstdato: values.adoptertIUtlandet! === YesOrNo.YES ? values.ankomstdato! : undefined,
     };
 };

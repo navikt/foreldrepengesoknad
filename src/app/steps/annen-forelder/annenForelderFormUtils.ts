@@ -8,7 +8,7 @@ import { AttachmentType } from 'app/types/AttachmentType';
 import { RegistrertBarn } from 'app/types/Person';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { lagSendSenereDokument } from 'app/utils/vedleggUtils';
+import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 
 export const initialAnnenForelderValues: AnnenForelderFormData = {
@@ -23,9 +23,7 @@ export const initialAnnenForelderValues: AnnenForelderFormData = {
     [AnnenForelderFormField.erMorUfør]: YesOrNo.UNANSWERED,
     [AnnenForelderFormField.datoForAleneomsorg]: '',
     [AnnenForelderFormField.bostedsland]: '',
-    [AnnenForelderFormField.dokumentasjonAvAleneomsorg]: [
-        lagSendSenereDokument(AttachmentType.ALENEOMSORG, Skjemanummer.DOK_AV_ALENEOMSORG),
-    ],
+    [AnnenForelderFormField.dokumentasjonAvAleneomsorg]: [],
 };
 
 export const cleanAnnenForelderFormData = (
@@ -42,7 +40,11 @@ export const cleanAnnenForelderFormData = (
             ? values.datoForAleneomsorg
             : '',
         dokumentasjonAvAleneomsorg: visibility.isVisible(AnnenForelderFormField.dokumentasjonAvAleneomsorg)
-            ? values.dokumentasjonAvAleneomsorg
+            ? lagSendSenereDokumentNårIngenAndreFinnes(
+                  values.dokumentasjonAvAleneomsorg,
+                  AttachmentType.ALENEOMSORG,
+                  Skjemanummer.DOK_AV_ALENEOMSORG
+              )
             : [],
         erInformertOmSøknaden: visibility.isVisible(AnnenForelderFormField.erInformertOmSøknaden)
             ? values.erInformertOmSøknaden
@@ -103,8 +105,7 @@ export const getAnnenForelderFormInitialValues = (
             bostedsland: annenForelder.bostedsland || '',
             erInformertOmSøknaden: convertBooleanOrUndefinedToYesOrNo(annenForelder.erInformertOmSøknaden),
             erMorUfør: convertBooleanOrUndefinedToYesOrNo(annenForelder.erUfør),
-            dokumentasjonAvAleneomsorg:
-                barn.dokumentasjonAvAleneomsorg || initialAnnenForelderValues.dokumentasjonAvAleneomsorg,
+            dokumentasjonAvAleneomsorg: barn.dokumentasjonAvAleneomsorg || [],
             etternavn: annenForelder.etternavn,
             fornavn: annenForelder.fornavn,
             kanIkkeOppgis: annenForelder.kanIkkeOppgis,

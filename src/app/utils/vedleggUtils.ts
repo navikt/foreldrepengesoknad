@@ -28,3 +28,17 @@ export const isAttachmentWithError = ({ pending, uploaded, filesize }: Attachmen
 export const lagSendSenereDokument = (type: AttachmentType, skjemanummer: Skjemanummer) => {
     return mapFilTilVedlegg({ name: '', size: '' } as any, type, skjemanummer, InnsendingsType.SEND_SENERE);
 };
+
+export const lagSendSenereDokumentNårIngenAndreFinnes = (
+    dokumenter: Attachment[],
+    type: AttachmentType,
+    skjema: Skjemanummer
+): Attachment[] => {
+    if (dokumenter.length === 0) {
+        return [lagSendSenereDokument(type, skjema)];
+    }
+    if (dokumenter.length === 1) {
+        return dokumenter;
+    }
+    return dokumenter.filter((dok) => dok.innsendingsType !== InnsendingsType.SEND_SENERE);
+};

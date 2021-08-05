@@ -4,7 +4,7 @@ import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { lagSendSenereDokument } from 'app/utils/vedleggUtils';
+import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { AndreInntekterFormData, AndreInntekterFormField } from './andreInntekterModalFormConfig';
 
 const initialAndreInntekterFormValues: AndreInntekterFormData = {
@@ -33,14 +33,14 @@ export const cleanupAndreInntekterForm = (
     values: AndreInntekterFormData,
     visibility: QuestionVisibility<AndreInntekterFormField, undefined>
 ): AndreInntekterFormData => {
-    const dokumentasjon = values.dokumentasjon || [
-        lagSendSenereDokument(AttachmentType.ANNEN_INNTEKT, getSkjemanummer(values)),
-    ];
-
     return {
         type: visibility.isVisible(AndreInntekterFormField.type) ? values.type : initialAndreInntekterFormValues.type,
         dokumentasjon: visibility.isVisible(AndreInntekterFormField.dokumentasjon)
-            ? dokumentasjon
+            ? lagSendSenereDokumentNårIngenAndreFinnes(
+                  values.dokumentasjon,
+                  AttachmentType.ANNEN_INNTEKT,
+                  getSkjemanummer(values)
+              )
             : initialAndreInntekterFormValues.dokumentasjon,
         fom: visibility.isVisible(AndreInntekterFormField.fom) ? values.fom : initialAndreInntekterFormValues.fom,
         tom: visibility.isVisible(AndreInntekterFormField.tom) ? values.tom : initialAndreInntekterFormValues.tom,
