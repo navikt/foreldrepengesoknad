@@ -5,9 +5,7 @@ const isArrayOfAttachments = (object: any) => {
     return (
         Array.isArray(object) &&
         object[0] !== null &&
-        object.some(
-            (element) => element && (element.filename || element.innsendingsType === InnsendingsType.SEND_SENERE)
-        )
+        object.some((element) => element && element.innsendingsType === InnsendingsType.SEND_SENERE)
     );
 };
 
@@ -18,11 +16,11 @@ export const isAttachmentForPeriode = (type: AttachmentType) =>
     type === AttachmentType.NAV_TILTAK ||
     type === AttachmentType.OVERFØRING_KVOTE;
 
-export const finnAlleVedlegg = (
+export const finnSendSenereVedlegg = (
     object: any,
     currentKey?: string,
     previousEntries?: Map<string, Attachment[]>
-): Map<string, Attachment[]> => {
+): Map<string, Attachment> => {
     if (object === null || object === undefined) {
         return new Map();
     }
@@ -32,9 +30,9 @@ export const finnAlleVedlegg = (
     Object.keys(object).forEach((key: string) => {
         if (typeof object[key] === 'object') {
             if (isArrayOfAttachments(object[key])) {
-                foundAttachments.set(path + '.' + key, Array.from(object[key]));
+                foundAttachments.set(path + '.' + key, object[key][0]);
             } else {
-                foundAttachments = finnAlleVedlegg(object[key], path + '.' + key, foundAttachments);
+                foundAttachments = finnSendSenereVedlegg(object[key], path + '.' + key, foundAttachments);
             }
         }
     });

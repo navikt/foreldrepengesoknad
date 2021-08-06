@@ -1,5 +1,12 @@
+import { Attachment } from 'app/types/Attachment';
+import { AttachmentType } from 'app/types/AttachmentType';
 import { ForeldrepengesøknadContextAction, ForeldrepengesøknadContextActionKeys } from '../action/actionCreator';
 import { ForeldrepengesøknadContextState, foreldrepengesøknadInitialState } from '../ForeldrepengesøknadContextConfig';
+
+const finnVedleggAvType = (type: AttachmentType, alleVedlegg: Attachment[]): Attachment[] | undefined => {
+    const vedleggAvType = alleVedlegg.filter((v) => v.type === type);
+    return vedleggAvType.length > 0 ? vedleggAvType : undefined;
+};
 
 const foreldrepengesøknadReducer = (
     state: ForeldrepengesøknadContextState,
@@ -95,6 +102,20 @@ const foreldrepengesøknadReducer = (
                 søknad: {
                     ...state.søknad,
                     dekningsgrad: action.dekningsgrad,
+                },
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_VEDLEGG:
+            //TODO Legg til håndtering av fleire vedlegg
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    barn: {
+                        ...state.søknad.barn,
+                        dokumentasjonAvAleneomsorg:
+                            finnVedleggAvType(AttachmentType.ALENEOMSORG, action.vedlegg) ||
+                            state.søknad.barn.dokumentasjonAvAleneomsorg,
+                    },
                 },
             };
         default:

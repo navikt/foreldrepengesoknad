@@ -1,4 +1,5 @@
 import SøknadRoutes from 'app/routes/routes';
+import { Attachment } from 'app/types/Attachment';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import Sak from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
@@ -25,6 +26,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_SAKER = 'setSaker',
     SET_UTTAKSPLAN_INFO = 'setUttaksplanInfo',
     SET_DEKNINGSGRAD = 'setDekningsgrad',
+    SET_VEDLEGG = 'setVedlegg',
 }
 
 interface SetVelkommen {
@@ -157,6 +159,16 @@ const setDekningsgrad = (dekningsgrad: Dekningsgrad): SetDekningsgrad => ({
     dekningsgrad,
 });
 
+interface SetVedlegg {
+    type: ForeldrepengesøknadContextActionKeys.SET_VEDLEGG;
+    vedlegg: Attachment[];
+}
+
+const setVedlegg = (vedlegg: Attachment[]): SetVedlegg => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_VEDLEGG,
+    vedlegg,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetSøkersituasjon
@@ -170,7 +182,8 @@ export type ForeldrepengesøknadContextAction =
     | SetSaker
     | SetUttaksplanInfo
     | SetDekningsgrad
-    | ApplyStoredState;
+    | ApplyStoredState
+    | SetVedlegg;
 
 export default {
     setVelkommen,
@@ -186,4 +199,5 @@ export default {
     setSaker,
     setUttaksplanInfo,
     setDekningsgrad,
+    setVedlegg,
 };

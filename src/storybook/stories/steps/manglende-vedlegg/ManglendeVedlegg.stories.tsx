@@ -48,12 +48,6 @@ const Template: Story<Props> = ({ context, søkerinfo }) => {
 
 export const Default = Template.bind({});
 Default.args = {
-    context,
-    søkerinfo,
-};
-
-export const MedManglendeDokumentasjon = Template.bind({});
-MedManglendeDokumentasjon.args = {
     context: {
         ...context,
         søknad: {
