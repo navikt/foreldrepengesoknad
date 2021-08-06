@@ -4,12 +4,15 @@ import { AttachmentType } from 'app/types/AttachmentType';
 
 interface ManglendeVedleggQuestionsPayload extends ManglendeVedleggFormData {
     manglendeVedleggTyper: AttachmentType[];
+    erLikEllerMindreEnnFireUkerTilUttaketStarter: boolean;
 }
 
 const ManglendeVedleggFormConfig: QuestionConfig<ManglendeVedleggQuestionsPayload, ManglendeVedleggFormField> = {
     [ManglendeVedleggFormField.vedlegg]: {
-        isAnswered: ({ vedlegg, manglendeVedleggTyper }) =>
-            manglendeVedleggTyper.every((type) => vedlegg.flat().some((v) => v.type === type)),
+        isAnswered: ({ vedlegg, manglendeVedleggTyper, erLikEllerMindreEnnFireUkerTilUttaketStarter }) =>
+            erLikEllerMindreEnnFireUkerTilUttaketStarter
+                ? true
+                : manglendeVedleggTyper.every((type) => vedlegg.flat().some((v) => v.type === type)),
         isIncluded: () => true,
     },
 };

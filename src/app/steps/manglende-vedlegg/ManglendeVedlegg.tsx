@@ -73,6 +73,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                 const visibility = manglendeVedleggQuestionsConfig.getVisbility({
                     ...formValues,
                     manglendeVedleggTyper,
+                    erLikEllerMindreEnnFireUkerTilUttaketStarter,
                 });
 
                 return (
