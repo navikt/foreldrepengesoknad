@@ -12,7 +12,12 @@ const ManglendeVedleggFormConfig: QuestionConfig<ManglendeVedleggQuestionsPayloa
         isAnswered: ({ vedlegg, manglendeVedleggTyper, erLikEllerMindreEnnFireUkerTilUttaketStarter }) =>
             erLikEllerMindreEnnFireUkerTilUttaketStarter
                 ? true
-                : manglendeVedleggTyper.every((type) => vedlegg.flat().some((v) => v.type === type)),
+                : manglendeVedleggTyper.every((type) =>
+                      vedlegg
+                          .filter((vedlegg) => !!vedlegg)
+                          .flat()
+                          .some((v) => v.type === type)
+                  ),
         isIncluded: () => true,
     },
 };

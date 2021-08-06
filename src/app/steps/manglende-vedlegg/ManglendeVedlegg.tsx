@@ -22,7 +22,6 @@ import VeilederNormal from 'app/assets/VeilederNormal';
 import { sorterPerioder } from '../uttaksplan-info/utils/Periodene';
 import { finnSendSenereVedlegg, isAttachmentForPeriode } from './util';
 import { AttachmentType } from 'app/types/AttachmentType';
-import { guid } from 'nav-frontend-js-utils';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
@@ -109,7 +108,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                     return null;
                                 }
                                 return (
-                                    <Block key={guid()}>
+                                    <Block key={sendSenereVedlegg.type}>
                                         <Element>
                                             {intlUtils(
                                                 intl,

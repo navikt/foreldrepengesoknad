@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { ArrayHelpers, useFormikContext } from 'formik';
 import FormikFileInput from '@navikt/sif-common-formik/lib/components/formik-file-input/FormikFileInput';
 import { Block, intlUtils, PictureScanningGuide, UtvidetInformasjon } from '@navikt/fp-common';
@@ -8,8 +8,9 @@ import { Skjemanummer } from 'app/types/Skjemanummer';
 import AttachmentApi from 'app/api/attachmentApi';
 import AttachmentList from '../attachment/AttachmentList';
 import { deleteAttachment } from 'app/utils/globalUtil';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import { isAttachmentWithError, mapFilTilVedlegg } from 'app/utils/vedleggUtils';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 export type FieldArrayReplaceFn = (index: number, value: any) => void;
 export type FieldArrayPushFn = (obj: any) => void;
@@ -26,31 +27,64 @@ export interface Props {
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 
-const findOldValues = (name: string, values: any) => {
-    if (name.includes('.')) {
-        const parts = name.split('.');
-        const fieldValue = values[parts[0]];
-        return fieldValue && fieldValue.length > parseInt(parts[1], 10) ? fieldValue[parts[1]] : [];
-    }
-    return values[name];
-};
-
-const getPendingAttachmentFromFile = (
-    file: File,
+const mapFilerTilPendingVedlegg = (
+    filer: File[],
     attachmentType: AttachmentType,
     skjemanummer: Skjemanummer
-): Attachment => {
-    const newAttachment = mapFilTilVedlegg(file, attachmentType, skjemanummer);
-    newAttachment.pending = true;
-    return newAttachment;
+): Attachment[] => {
+    return filer.map((fil) => {
+        const nyttVedlegg = mapFilTilVedlegg(fil, attachmentType, skjemanummer);
+        nyttVedlegg.pending = true;
+        return nyttVedlegg;
+    });
 };
-
-const attachmentUploadHasFailed = ({ pending, uploaded, file: { name } }: Attachment): boolean =>
-    (!pending && !uploaded) || !fileExtensionIsValid(name);
 
 const fileExtensionIsValid = (filename: string): boolean => {
     const ext = filename.split('.').pop();
     return VALID_EXTENSIONS.includes(`.${ext!.toLowerCase()}`);
+};
+
+const sjekkFiltypeVedlegg = (
+    alleNyeVedlegg: Attachment[],
+    setErrors: React.Dispatch<React.SetStateAction<string[]>>,
+    intl: IntlShape
+): Attachment[] => {
+    return alleNyeVedlegg.filter((vedlegg) => {
+        const erGyldig = fileExtensionIsValid(vedlegg.filename);
+        if (!erGyldig) {
+            setErrors((oldState) =>
+                oldState.concat(intlUtils(intl, 'vedlegg.feilmelding.ugyldig.type', { filename: vedlegg.filename }))
+            );
+        }
+        return erGyldig;
+    });
+};
+
+const lastOppVedlegg = (
+    alleNyeVedlegg: Attachment[],
+    replaceFn: FieldArrayReplaceFn,
+    removeFn: FieldArrayRemoveFn,
+    setErrors: React.Dispatch<React.SetStateAction<string[]>>,
+    antallEksisterendeVedlegg: number,
+    intl: IntlShape
+): void => {
+    alleNyeVedlegg.forEach(async (vedlegg, index) => {
+        try {
+            const response = await AttachmentApi.saveAttachment(vedlegg);
+            vedlegg.pending = false;
+            vedlegg.url = response.headers.location;
+            vedlegg.uploaded = true;
+            vedlegg.uuid = response.data;
+            replaceFn(antallEksisterendeVedlegg + index, vedlegg);
+        } catch (error) {
+            removeFn(antallEksisterendeVedlegg + index);
+            setErrors((oldState) =>
+                oldState.concat(
+                    intlUtils(intl, 'vedlegg.feilmelding.opplasting.feilet', { filename: vedlegg.filename })
+                )
+            );
+        }
+    });
 };
 
 const FormikFileUploader: React.FunctionComponent<Props> = ({
@@ -62,55 +96,8 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
     ...otherProps
 }) => {
     const intl = useIntl();
-    const { values, setFieldValue } = useFormikContext<any>();
-
-    async function uploadAttachment(attachment: Attachment) {
-        try {
-            const response = await AttachmentApi.saveAttachment(attachment);
-            attachment = setAttachmentPendingToFalse(attachment);
-            attachment.url = response.headers.location;
-            attachment.uploaded = true;
-            attachment.uuid = response.data;
-        } catch (error) {
-            setAttachmentPendingToFalse(attachment);
-        }
-    }
-
-    async function uploadAttachments(allAttachments: Attachment[], replaceFn: FieldArrayReplaceFn) {
-        for (const attachment of allAttachments) {
-            await uploadAttachment(attachment);
-            updateAttachmentListElement(allAttachments, attachment, replaceFn);
-        }
-
-        const failedAttachments = [...allAttachments.filter(attachmentUploadHasFailed)];
-        updateFailedAttachments(allAttachments, failedAttachments, replaceFn);
-    }
-
-    function updateFailedAttachments(
-        allAttachments: Attachment[],
-        failedAttachments: Attachment[],
-        replaceFn: FieldArrayReplaceFn
-    ) {
-        failedAttachments.forEach((attachment) => {
-            attachment = setAttachmentPendingToFalse(attachment);
-            updateAttachmentListElement(allAttachments, attachment, replaceFn);
-        });
-    }
-
-    function updateAttachmentListElement(atts: Attachment[], attachment: Attachment, replaceFn: FieldArrayReplaceFn) {
-        replaceFn(atts.indexOf(attachment), attachment);
-    }
-
-    function setAttachmentPendingToFalse(attachment: Attachment) {
-        attachment.pending = false;
-        return attachment;
-    }
-
-    function addPendingAttachmentToFieldArray(file: File, pushFn: FieldArrayPushFn) {
-        const attachment = getPendingAttachmentFromFile(file, attachmentType, skjemanummer);
-        pushFn(attachment);
-        return attachment;
-    }
+    const { setFieldValue } = useFormikContext<any>();
+    const [errors, setErrors] = useState<string[]>([]);
 
     return (
         <>
@@ -118,12 +105,18 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
                 <FormikFileInput
                     name={name}
                     acceptedExtensions={VALID_EXTENSIONS.join(', ')}
-                    onFilesSelect={async (files: File[], { push, replace }: ArrayHelpers) => {
-                        const atts = files.map((file) => addPendingAttachmentToFieldArray(file, push));
-                        const oldValues = findOldValues(name, values);
-                        await uploadAttachments([...oldValues, ...atts], replace);
+                    onFilesSelect={(files: File[], { push, replace, remove }: ArrayHelpers) => {
+                        const alleNyeVedlegg = mapFilerTilPendingVedlegg(files, attachmentType, skjemanummer);
+                        const alleNyeGyldigeVedlegg = sjekkFiltypeVedlegg(alleNyeVedlegg, setErrors, intl);
+                        alleNyeGyldigeVedlegg.forEach((nyttVedlegg) => push(nyttVedlegg));
+                        lastOppVedlegg(alleNyeGyldigeVedlegg, replace, remove, setErrors, attachments.length, intl);
                     }}
                     onClick={onFileInputClick}
+                    feil={
+                        errors.length > 0
+                            ? errors.map((error) => <Normaltekst key={error}>{error}</Normaltekst>)
+                            : undefined
+                    }
                     {...otherProps}
                 />
             </Block>
