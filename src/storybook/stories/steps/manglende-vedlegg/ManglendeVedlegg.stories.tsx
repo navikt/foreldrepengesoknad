@@ -65,3 +65,47 @@ Default.args = {
     } as ForeldrepengesøknadContextState,
     søkerinfo,
 };
+
+export const ManglerVedleggForUlikePerioder = Template.bind({});
+ManglerVedleggForUlikePerioder.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søker: {
+                ...context.søknad.søker,
+                andreInntekterSiste10Mnd: [
+                    {
+                        pågående: true,
+                        tidsperiode: {
+                            fom: '2021-08-01',
+                            tom: '',
+                        },
+                        type: 'ETTERLØNN_SLUTTPAKKE',
+                        vedlegg: [
+                            lagSendSenereDokument(
+                                AttachmentType.ANNEN_INNTEKT,
+                                Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+                            ),
+                        ],
+                    },
+                    {
+                        pågående: true,
+                        tidsperiode: {
+                            fom: '2021-09-01',
+                            tom: '',
+                        },
+                        type: 'ETTERLØNN_SLUTTPAKKE',
+                        vedlegg: [
+                            lagSendSenereDokument(
+                                AttachmentType.ANNEN_INNTEKT,
+                                Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+                            ),
+                        ],
+                    },
+                ],
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+};

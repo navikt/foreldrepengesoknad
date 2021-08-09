@@ -136,14 +136,27 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                                 </Normaltekst>
                                             </div>
                                         </UtvidetInformasjon>
-                                        {isAttachmentForPeriode(sendSenereVedlegg.type) && (
+                                        {periode?.tidsperiode && periode?.type && (
                                             <Block margin="l">
                                                 <Normaltekst>
-                                                    {intlUtils(intl, 'manglendeVedlegg.periode.tidsperiode', {
-                                                        type: periode.type,
-                                                        fom: formatDate(periode.tidsperiode.fom),
-                                                        tom: formatDate(periode.tidsperiode.tom),
-                                                    })}
+                                                    {intlUtils(
+                                                        intl,
+                                                        isAttachmentForPeriode(sendSenereVedlegg.type)
+                                                            ? 'manglendeVedlegg.uttak.periode.tidsperiode'
+                                                            : 'manglendeVedlegg.periode.tidsperiode',
+                                                        {
+                                                            type: intlUtils(
+                                                                intl,
+                                                                sendSenereVedlegg.type === AttachmentType.ANNEN_INNTEKT
+                                                                    ? `inntektstype.${periode.type.toLowerCase()}`
+                                                                    : periode.type
+                                                            ),
+                                                            fom: formatDate(periode.tidsperiode.fom),
+                                                            tom: periode.tidsperiode.tom
+                                                                ? formatDate(periode.tidsperiode.tom)
+                                                                : '-',
+                                                        }
+                                                    )}
                                                 </Normaltekst>
                                             </Block>
                                         )}
