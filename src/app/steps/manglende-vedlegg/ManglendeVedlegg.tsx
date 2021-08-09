@@ -38,13 +38,34 @@ const getManglendeVedleggValues = (type: AttachmentType, fornavnAnnenForelder: s
         : undefined;
 };
 
+const lagSti = (stiDeler: string[]) => {
+    const sti = stiDeler.reduce((formatertSti, del) => {
+        return isNaN(+del) ? formatertSti + '.' + del : formatertSti + '[' + del + ']';
+    }, '');
+    return sti.replace('.søknad.', '');
+};
+
 const ManglendeVedlegg: React.FunctionComponent = () => {
     const intl = useIntl();
     const søknad = useSøknad();
     const { uttaksplan } = søknad;
 
+    const alleSendSenereVedlegg = finnSendSenereVedlegg(søknad);
+    const alleStierMedManglendeVedlegg = Array.from(alleSendSenereVedlegg.keys());
+
     const onValidSubmitHandler = (values: Partial<ManglendeVedleggFormData>) => {
-        return [actionCreator.setVedlegg(values.vedlegg!.flat())];
+        values.vedlegg!.forEach((vedlegg, index) => {
+            if (!!vedlegg) {
+                const sti = lagSti(alleStierMedManglendeVedlegg[index].split('.'));
+                _.set(søknad, sti, vedlegg);
+            }
+        });
+
+        //TODO (TOR) Om ein skal gjera det på denne måten må ein laga ei djup klone av søknad og så ein updateSøknad actionCreator
+        //Utan djup klone gir det liten meining å kalla actionCreator
+        return [
+            /*actionCreator.setVedlegg(stiOgVedlegg)*/
+        ];
     };
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.OPPSUMMERING);
@@ -61,7 +82,6 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
         førsteUttaksEllerUttsettelsesPeriode !== undefined &&
         dayjs(førsteUttaksEllerUttsettelsesPeriode.tidsperiode.fom).isSameOrBefore(dayjs().add(4, 'weeks'));
 
-    const alleSendSenereVedlegg = finnSendSenereVedlegg(søknad);
     const manglendeVedleggTyper = Array.from(alleSendSenereVedlegg.values()).map((v) => v.type);
 
     return (
@@ -99,7 +119,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                     />
                                 </Veilederpanel>
                             </Block>
-                            {Array.from(alleSendSenereVedlegg.keys()).map((keyISoknad, index) => {
+                            {alleStierMedManglendeVedlegg.map((keyISoknad, index) => {
                                 const key = keyISoknad.replace('søknad.', '');
                                 const periode = _.get(søknad, key.replace('.vedlegg', '').split('.'));
 
