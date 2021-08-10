@@ -13,7 +13,7 @@ export const getForeldreparSituasjon = (
         if (søkerKjønn !== annenForelderKjønn) {
             return ForeldreparSituasjon.farOgMor;
         }
-        return søkerKjønn === 'K' ? ForeldreparSituasjon.farOgFar : ForeldreparSituasjon.morOgMedmor;
+        return søkerKjønn === 'M' ? ForeldreparSituasjon.farOgFar : ForeldreparSituasjon.morOgMedmor;
     } else {
         if (søkerKjønn === 'K') {
             return morErAleneOmOmsorg ? ForeldreparSituasjon.aleneomsorg : ForeldreparSituasjon.bareMor;

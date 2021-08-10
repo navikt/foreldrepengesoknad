@@ -24,8 +24,7 @@ describe('foreldreparSituasjonUtils', () => {
         expect(situasjon).toBe(ForeldreparSituasjon.farOgMor);
     });
 
-    //TODO Rett opp resultatet
-    xit('skal finne situasjon der det er delt uttak og søker og annen forelder er begge kvinner', () => {
+    it('skal finne situasjon der det er delt uttak og søker og annen forelder er begge kvinner', () => {
         const søkerKjønn = 'K';
         const annenForelderKjønn = 'K';
         const erDeltUttak = true;
@@ -43,8 +42,7 @@ describe('foreldreparSituasjonUtils', () => {
         expect(situasjon).toBe(ForeldreparSituasjon.morOgMedmor);
     });
 
-    //TODO Rett opp resultatet
-    xit('skal finne situasjon der det er delt uttak og søker og annen forelder er begge menn', () => {
+    it('skal finne situasjon der det er delt uttak og søker og annen forelder er begge menn', () => {
         const søkerKjønn = 'M';
         const annenForelderKjønn = 'M';
         const erDeltUttak = true;
