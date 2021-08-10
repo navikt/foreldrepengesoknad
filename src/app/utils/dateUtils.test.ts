@@ -260,8 +260,7 @@ describe('dateUtils', () => {
         expect(formatertDato).toBe('1. January 2021');
     });
 
-    //TODO Kvifor feilar denne?
-    xit('skal returnere true når dato er før annen dato', () => {
+    it('skal returnere true når dato er før annen dato', () => {
         const erDatoFørAnnenDato = dateIsSameOrBefore(ISOStringToDate('2021-01-01'), ISOStringToDate('2021-01-02'));
         expect(erDatoFørAnnenDato).toBe(true);
     });

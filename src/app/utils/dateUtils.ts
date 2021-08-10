@@ -178,7 +178,7 @@ type DateValue = Date | undefined;
 
 export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boolean => {
     if (date && otherDate) {
-        return dayjs(date).isSameOrBefore(dayjs(otherDate, 'day'));
+        return dayjs(date).isSameOrBefore(otherDate, 'day');
     }
     return true;
 };
