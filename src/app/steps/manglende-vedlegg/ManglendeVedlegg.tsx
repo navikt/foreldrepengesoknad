@@ -7,7 +7,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { isInfoPeriode, Periode } from 'uttaksplan/types/Periode';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import actionCreator from 'app/context/action/actionCreator';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import {
