@@ -5,7 +5,10 @@ module.exports = {
         'plugin:prettier/recommended',
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',
+        'plugin:jest-dom/recommended',
+        'plugin:testing-library/react',
     ],
+    plugins: ['jest-dom', 'testing-library'],
     parserOptions: {
         ecmaVersion: 2018,
         sourceType: 'module',

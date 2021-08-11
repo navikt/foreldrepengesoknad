@@ -74,8 +74,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
-    //TODO FIks
-    xit('skal ikke ha arbeidsforhold men velger at en har jobbet som frilanser for nær venn', async () => {
+    it('skal ikke ha arbeidsforhold men velger at en har jobbet som frilanser for nær venn', async () => {
         const utils = render(<Default />);
 
         expect(await screen.findByText(IKKE_ARBEIDSFORHOLD_INFO)).toBeInTheDocument();
@@ -109,7 +108,7 @@ describe('<Inntektsinformasjon>', () => {
         fireEvent.blur(fraOgMedInput);
 
         expect(await screen.findByText('Er oppdraget pågående?')).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[3]);
+        userEvent.click(screen.getAllByText(NEI)[5]);
 
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
         const tilOgMedInput = utils.getByLabelText('Til og med');
@@ -120,13 +119,13 @@ describe('<Inntektsinformasjon>', () => {
         userEvent.click(screen.getByText('Ok'));
 
         expect(await screen.findByText('Har du inntekt som fosterforelder?')).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[4]);
+        userEvent.click(screen.getAllByText(NEI)[3]);
 
         expect(await screen.findByText(SELVSTENDIG_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[5]);
+        userEvent.click(screen.getAllByText(NEI)[4]);
 
         expect(await screen.findByText(ANDRE_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[6]);
+        userEvent.click(screen.getAllByText(NEI)[5]);
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
