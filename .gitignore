@@ -13,3 +13,4 @@ cypress/screenshots
 cypress/videos
 akseptansetest/config.js
 akseptansetest/20*/
+.static_storybook
