@@ -17,8 +17,12 @@ export const isUtenlandskFødselsnummerValid = (fnr: string): boolean => {
 };
 
 export const isSixteenOrOlder = (fnr: string, isFødselsnummerValid: FødselsnummerValidationResult): boolean => {
-    if (!fnr) {
+    if (fnr === undefined) {
         return true;
+    }
+
+    if (fnr === '') {
+        return false;
     }
 
     const dato = isFødselsnummerValid === 'D' ? `${Number(fnr.substr(0, 1)) - 4}${fnr.substr(1, 1)}` : fnr.substr(0, 2);
