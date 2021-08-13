@@ -210,7 +210,7 @@ class UttaksplanAutoBuilder {
     }
 
     slettPeriodeOgBuild(periode: Periode) {
-        this.slettPeriode(periode, skalSlettetPeriodeErstattesMedHull(periode, this.perioder)).buildUttaksplan();
+        this.slettPeriode(periode, skalSlettetPeriodeErstattesMedHull(periode, this.perioder, true)).buildUttaksplan();
         return this;
     }
 
@@ -409,6 +409,7 @@ class UttaksplanAutoBuilder {
 
         const idx = this.perioder.findIndex((p) => p.id === periode.id);
         this.perioder = [...this.perioder.slice(0, idx), ...periodeSomSkalSettesInn, ...this.perioder.slice(idx + 1)];
+
         return this;
     }
 
@@ -416,14 +417,17 @@ class UttaksplanAutoBuilder {
         if (Tidsperioden(periode.tidsperiode).erLik(oldPeriode.tidsperiode)) {
             return this;
         }
+
         this.justerOverskrivbarePerioderRundtPeriode(periode);
         const nyePeriodehull = periodeHasValidTidsrom(periode)
             ? finnHullVedEndretTidsperiode(oldPeriode, periode, true)
             : undefined;
+
         if (nyePeriodehull) {
             this.perioder = this.perioder.concat(nyePeriodehull);
             this.sort();
         }
+
         return this;
     }
 
@@ -833,7 +837,15 @@ function finnHullVedEndretTidsperiode(
     return returnValue.length > 0 ? returnValue : undefined;
 }
 
-function skalSlettetPeriodeErstattesMedHull(periode: Periode, perioder: Periode[]): boolean {
+function skalSlettetPeriodeErstattesMedHull(
+    periode: Periode,
+    perioder: Periode[],
+    skalLeggeInnPerioderUtenUttak: boolean
+): boolean {
+    if (skalLeggeInnPerioderUtenUttak) {
+        return false;
+    }
+
     if (periode.type === Periodetype.Hull) {
         return false;
     }

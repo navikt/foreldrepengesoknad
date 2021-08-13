@@ -22,6 +22,7 @@ import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideri
 import moment from 'moment';
 
 import './periodeliste.less';
+import PeriodelistePeriodeUtenUttak from './items/PeriodelistePeriodeUtenUttak';
 
 interface OwnProps {
     erDeltUttak: boolean;
@@ -201,6 +202,17 @@ class Periodeliste extends React.Component<Props> {
                                             onReplaceHullWithPeriode={onReplaceHullWithPeriode}
                                             navn={navn}
                                             erDeltUttak={erDeltUttak}
+                                        />
+                                    );
+                                case Periodetype.PeriodeUtenUttak:
+                                    return (
+                                        <PeriodelistePeriodeUtenUttak
+                                            key={itemId}
+                                            itemId={itemId}
+                                            isExpanded={isExpanded}
+                                            onToggle={onToggle}
+                                            periode={periode}
+                                            onReplaceHullWithPeriode={onReplaceHullWithPeriode}
                                         />
                                     );
                                 case Periodetype.Info:

@@ -163,13 +163,12 @@ export const isInfoPeriode = (periode: Periode): periode is InfoPeriode => {
 
 export interface PeriodeHull extends PeriodeBase {
     type: Periodetype.Hull;
-    tidsperiode: Tidsperiode;
     årsak?: PeriodeHullÅrsak;
 }
 
 export interface PeriodeUtenUttak extends PeriodeBase {
     type: Periodetype.PeriodeUtenUttak;
-    tidsperiode: Tidsperiode;
+    morsAktivitetIPerioden?: MorsAktivitet;
 }
 
 export const isHull = (periode: Periode): periode is PeriodeHull => {
@@ -284,7 +283,11 @@ export function isForeldrepengerFørFødselUttaksperiode(
 }
 
 export const isOverskrivbarPeriode = (periode: Periode): boolean => {
-    return (periode.type === Periodetype.Info && periode.overskrives === true) || periode.type === Periodetype.Hull;
+    return (
+        (periode.type === Periodetype.Info && periode.overskrives === true) ||
+        periode.type === Periodetype.Hull ||
+        periode.type === Periodetype.PeriodeUtenUttak
+    );
 };
 
 export const isUttakAnnenPart = (periode: Periode): periode is UttakAnnenPartInfoPeriode => {
