@@ -900,6 +900,7 @@ const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): PeriodeUtenUttak => ({
     id: guid(),
     type: Periodetype.PeriodeUtenUttak,
     tidsperiode,
+    årsak: UtsettelseÅrsakType.Fri,
 });
 
 export function splittPeriodeMedHelligdager(periode: Periode): Periode[] {

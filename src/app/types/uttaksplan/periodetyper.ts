@@ -30,6 +30,7 @@ export enum UtsettelseÅrsakType {
     'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET',
     'HvØvelse' = 'HV_OVELSE',
     'NavTiltak' = 'NAV_TILTAK',
+    'Fri' = 'FRI',
 }
 
 export enum SaksperiodeUtsettelseÅrsakType {
@@ -169,6 +170,7 @@ export interface PeriodeHull extends PeriodeBase {
 export interface PeriodeUtenUttak extends PeriodeBase {
     type: Periodetype.PeriodeUtenUttak;
     morsAktivitetIPerioden?: MorsAktivitet;
+    årsak: UtsettelseÅrsakType.Fri;
 }
 
 export const isHull = (periode: Periode): periode is PeriodeHull => {

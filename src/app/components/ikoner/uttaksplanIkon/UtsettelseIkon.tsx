@@ -25,6 +25,8 @@ const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
         case UtsettelseÅrsakType.InstitusjonSøker:
         case UtsettelseÅrsakType.Sykdom:
             return UttaksplanIkonKeys.sykdom;
+        case UtsettelseÅrsakType.Fri:
+            return UttaksplanIkonKeys.info;
     }
 };
 
