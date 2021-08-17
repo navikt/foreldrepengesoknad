@@ -375,7 +375,8 @@ const gyldigeSaksperioder = (saksperiode: Saksperiode): boolean => {
 const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
-    erEndringsøknadUtenEkisterendeSak: boolean
+    erEndringsøknadUtenEkisterendeSak: boolean,
+    erArbeidstaker: boolean
 ): Periode[] | undefined => {
     const innvilgedePerioder = saksperioder.filter(gyldigeSaksperioder);
     const perioder = innvilgedePerioder.map((periode) =>
@@ -395,7 +396,7 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harUttaksdager)
     );
 
-    return finnOgSettInnHull(sammenslåddePerioder, erEndringsøknadUtenEkisterendeSak, false);
+    return finnOgSettInnHull(sammenslåddePerioder, erEndringsøknadUtenEkisterendeSak, false, erArbeidstaker);
 };
 
 export default mapSaksperioderTilUttaksperioder;
