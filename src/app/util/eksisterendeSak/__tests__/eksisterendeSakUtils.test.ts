@@ -49,7 +49,7 @@ describe('eksisterendeSakUtils', () => {
                 },
                 perioder: [utsettelse, utsettelse2, utsettelse3],
             };
-            const result = getEksisterendeSakFromDTO(uttaksplanDTO as UttaksplanDTO, false);
+            const result = getEksisterendeSakFromDTO(uttaksplanDTO as UttaksplanDTO, false, true);
 
             expect(result).toBeDefined();
 

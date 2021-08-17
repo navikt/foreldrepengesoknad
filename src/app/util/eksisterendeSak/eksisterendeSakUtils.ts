@@ -133,7 +133,8 @@ const mapSaksperiodeFromDTO = (p: UttaksplanPeriodeDTO): Saksperiode => {
 
 export const getEksisterendeSakFromDTO = (
     dto: UttaksplanDTO,
-    erAnnenPartsSak: boolean
+    erAnnenPartsSak: boolean,
+    erArbeidstaker: boolean
 ): EksisterendeSak | undefined => {
     const {
         grunnlag: { dekningsgrad, termindato, fødselsdato, omsorgsovertakelsesdato, søkerKjønn, ...restGrunnlag },
@@ -172,7 +173,7 @@ export const getEksisterendeSakFromDTO = (
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode)
         .reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
 
-    const uttaksplan = mapSaksperioderTilUttaksperioder(saksperioder, grunnlag, false);
+    const uttaksplan = mapSaksperioderTilUttaksperioder(saksperioder, grunnlag, false, erArbeidstaker);
 
     return {
         erAnnenPartsSak,

@@ -171,6 +171,7 @@ export interface PeriodeUtenUttak extends PeriodeBase {
     type: Periodetype.PeriodeUtenUttak;
     morsAktivitetIPerioden?: MorsAktivitet;
     årsak: UtsettelseÅrsakType.Fri;
+    erArbeidstaker: boolean;
 }
 
 export const isHull = (periode: Periode): periode is PeriodeHull => {

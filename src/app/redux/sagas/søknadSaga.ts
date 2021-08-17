@@ -135,6 +135,8 @@ function* startFallbackEndringssøknad(action: StartSøknad) {
 
 function* lagUttaksplanForslag() {
     const appState: AppState = yield select(stateSelector);
+    const erArbeidstaker =
+        appState.api.søkerinfo !== undefined ? appState.api.søkerinfo.arbeidsforhold.length > 0 : false;
     const søknadsinfo = selectSøknadsinfo(appState);
     const { uttaksplanSkjema, eksisterendeSak } = appState.søknad.ekstrainfo;
     let tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(appState);
@@ -175,6 +177,7 @@ function* lagUttaksplanForslag() {
             erEnkelEndringssøknad,
             førsteUttaksdagEtterSeksUker,
             søkerHarMidlertidigOmsorg: søker.harMidlertidigOmsorg,
+            erArbeidstaker,
         });
 
         if (
