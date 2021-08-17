@@ -1,10 +1,11 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/steps/annen-forelder/AnnenForelder.stories';
+import dayjs from 'dayjs';
 
-const { Default, SkalOppgiPersonalia } = composeStories(stories);
+const { Default, SkalOppgiPersonalia, ForFar } = composeStories(stories);
 
 const GÅ_VIDERE_KNAPP = 'Gå videre';
 const ALENE_OMSORG_LABEL = 'Er du alene om omsorgen av barnet?';
@@ -114,7 +115,7 @@ describe('<AnnenForelder>', () => {
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
-    it('skal oppgi personalia til den andre forelderen men velge at han har utenlandsk fødselsnummer', async () => {
+    it('skal oppgi personalia til den andre forelderen og velge at han har utenlandsk fødselsnummer', async () => {
         const utils = render(<SkalOppgiPersonalia />);
 
         expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
@@ -139,6 +140,9 @@ describe('<AnnenForelder>', () => {
         userEvent.selectOptions(hvorBorSelect, 'Oman');
 
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
+        userEvent.click(screen.getByText(JA));
+
+        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
     it('skal oppgi personalia til den andre forelderen men ikke velge at han har utenlandsk fødselsnummer', async () => {
@@ -159,5 +163,33 @@ describe('<AnnenForelder>', () => {
         userEvent.type(fødselsnrInput, '05057923424');
 
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
+        userEvent.click(screen.getByText(JA));
+
+        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+    });
+
+    it('skal søke som far og ha aleneomsorg for barnet', async () => {
+        const utils = render(<ForFar />);
+
+        expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
+        expect(screen.getByText('Fødselsnummer: 12038517080 (36 år)')).toBeInTheDocument();
+        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+        expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
+
+        userEvent.click(screen.getByText(JA));
+
+        expect(await screen.findByText('Dato du ble alene om omsorgen')).toBeInTheDocument();
+        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+
+        const datoAleneInput = utils.getByLabelText('Dato du ble alene om omsorgen');
+        userEvent.type(datoAleneInput, dayjs().format('DD.MM.YYYY'));
+        fireEvent.blur(datoAleneInput);
+
+        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+
+        expect(
+            screen.getByText('Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet.')
+        ).toBeInTheDocument();
+        expect(screen.getByText('Trykk her for å laste opp dokumentasjon om aleneomsorg')).toBeInTheDocument();
     });
 });
