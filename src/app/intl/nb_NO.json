@@ -312,6 +312,8 @@
     "manglendeVedlegg.info.dokumentasjonOverføringAvKvote": "Du må legge ved dokumentasjon av hvorfor du søker om å overta kvoten til den andre forelderen.",
     "manglendeVedlegg.apneLabel.dokumentasjonOverføringAvKvote": "Les mer om dokumentasjon om overtakelse av kvote",
     "manglendeVedlegg.title.dokumentasjonAvAleneomsorg": "Dokumentasjon av datoen du ble alene om omsorgen for barnet.",
+    "manglendeVedlegg.info.dokumentasjonAvAleneomsorg": "Du må legge ved dokumentasjon om datoen du ble alene om omsorgen for barnet.",
+    "manglendeVedlegg.apneLabel.dokumentasjonAvAleneomsorg": "Les mer om dokumentasjon om datoen du ble alene om omsorgen",
     "manglendeVedlegg.title.morsaktivitetdokumentasjon": "Du må legge ved dokumentasjon av hva {navn} skal gjøre i perioden",
     "manglendeVedlegg.info.morsaktivitetdokumentasjon": "Du må legge ved dokumentasjon på aktivitetskravet til {navn} når du skal være hjemme i fellesperioden eller ha foreldrepenger.",
     "manglendeVedlegg.apneLabel.morsaktivitetdokumentasjon": "Les mer om dokumentasjon av aktivitetskravet",

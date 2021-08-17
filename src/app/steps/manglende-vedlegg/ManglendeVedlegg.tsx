@@ -127,7 +127,13 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                     return null;
                                 }
                                 return (
-                                    <Block key={sendSenereVedlegg.type}>
+                                    <Block
+                                        key={
+                                            sendSenereVedlegg.type +
+                                            periode?.tidsperiode?.fom +
+                                            periode?.tidsperiode?.tom
+                                        }
+                                    >
                                         <Element>
                                             {intlUtils(
                                                 intl,
