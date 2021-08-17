@@ -19,7 +19,7 @@ export enum Periodetype {
     'Overføring' = 'overføring',
     'Hull' = 'ubegrunnetOpphold',
     'Info' = 'info',
-    'PeriodeUtenUttak' = 'periodeUtenUttak',
+    'PeriodeUtenUttak' = 'fri',
 }
 
 export enum UtsettelseÅrsakType {
