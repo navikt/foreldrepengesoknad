@@ -134,7 +134,7 @@ MedArbeidsforholdOgAndreInntekter.args = {
     } as ForeldrepengesøknadContextState,
     søkerinfo: {
         søker: {
-            ...søkerinfo,
+            ...søkerinfo.søker,
             arbeidsforhold: [
                 {
                     arbeidsgiverId: '1',
