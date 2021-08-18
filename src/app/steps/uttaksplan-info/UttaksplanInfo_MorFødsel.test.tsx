@@ -78,12 +78,14 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.getByText('Espen Utviklers del')).toBeInTheDocument();
         expect(screen.getByText('15 uker')).toBeInTheDocument();
 
+        expect(screen.getByText('8 av 16 uker med fellesperiode')).toBeInTheDocument();
+
         expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
         expect(screen.getAllByText(UKER_FELLESPERIODE_LABEL)[0]).toBeInTheDocument();
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
-    it('skal vise info om delt uttak ved valg av 100 prosent foreldrepenger', async () => {
+    it('skal vise info om delt uttak ved valg av 80 prosent foreldrepenger', async () => {
         render(<UttaksplanMedDeltUttak />);
 
         expect(await screen.findByText(PERIODE_LENGDE_LABEL)).toBeInTheDocument();
@@ -100,6 +102,8 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.getByText('18 uker')).toBeInTheDocument();
         expect(screen.getByText('Espen Utviklers del')).toBeInTheDocument();
         expect(screen.getByText('19 uker')).toBeInTheDocument();
+
+        expect(screen.getByText('9 av 18 uker med fellesperiode')).toBeInTheDocument();
 
         expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
         expect(screen.getAllByText(UKER_FELLESPERIODE_LABEL)[0]).toBeInTheDocument();
@@ -127,6 +131,8 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(
             screen.getByText('Dere har 17 uker med flerbarnsuker som dere kan dele', { exact: false })
         ).toBeInTheDocument();
+        expect(screen.getByText('17 av 33 uker med fellesperiode')).toBeInTheDocument();
+
         expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
         expect(screen.getAllByText(UKER_FELLESPERIODE_LABEL)[0]).toBeInTheDocument();
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
@@ -153,6 +159,8 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(
             screen.getByText('Dere har 21 uker med flerbarnsuker som dere kan dele', { exact: false })
         ).toBeInTheDocument();
+        expect(screen.getByText('20 av 39 uker med fellesperiode')).toBeInTheDocument();
+
         expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
         expect(screen.getAllByText(UKER_FELLESPERIODE_LABEL)[0]).toBeInTheDocument();
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
