@@ -8,10 +8,7 @@ export const validateStartdatoFarMedmor = (intl: IntlShape) => (permisjonStartda
     if (!isISODateString(permisjonStartdato)) {
         return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoPermisjon.gyldigDato');
     }
-    if (
-        ISOStringToDate(permisjonStartdato) !== undefined &&
-        !Uttaksdagen(ISOStringToDate(permisjonStartdato)!).erUttaksdag()
-    ) {
+    if (!Uttaksdagen(ISOStringToDate(permisjonStartdato)!).erUttaksdag()) {
         return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoHelg');
     }
 

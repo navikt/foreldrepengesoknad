@@ -37,7 +37,7 @@ import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/utt
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { DatepickerDateRange } from 'nav-datovelger';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { validateStartdatoFarMedmor } from './validation/uttaksplanInfoValidering';
+import { validateStartdatoFarMedmor } from './validation/farMedmorFødselOgMorHarIkkeRettValidering';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 

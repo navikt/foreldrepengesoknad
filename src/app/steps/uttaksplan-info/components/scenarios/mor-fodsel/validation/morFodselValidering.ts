@@ -9,21 +9,22 @@ import { uttaksplanDatoavgrensninger } from '../../../../utils/uttaksplanDatoavg
 
 export const validateErStartdatoFørTermindato =
     (intl: IntlShape, familiehendelsedato: Date, skalIkkeHaUttakFørTermin: boolean) => (permisjonStartdato: string) => {
-        if (!isISODateString(permisjonStartdato)) {
-            return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoPermisjon.gyldigDato');
+        if (!(permisjonStartdato === undefined && skalIkkeHaUttakFørTermin)) {
+            if (!isISODateString(permisjonStartdato)) {
+                return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoPermisjon.gyldigDato');
+            }
         }
 
-        if (permisjonStartdato === undefined || skalIkkeHaUttakFørTermin !== true) {
+        if (permisjonStartdato !== undefined && skalIkkeHaUttakFørTermin) {
             return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoFørTermin');
         }
 
-        if (permisjonStartdato === undefined || Uttaksdagen(ISOStringToDate(permisjonStartdato)!).erUttaksdag()) {
+        if (permisjonStartdato !== undefined && !Uttaksdagen(ISOStringToDate(permisjonStartdato)!).erUttaksdag()) {
             return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoHelg');
         }
 
-        if (skalIkkeHaUttakFørTermin !== true) {
+        if (!skalIkkeHaUttakFørTermin) {
             const avgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(dateToISOString(familiehendelsedato));
-
             if (
                 avgrensninger.minDate &&
                 avgrensninger.maxDate &&
