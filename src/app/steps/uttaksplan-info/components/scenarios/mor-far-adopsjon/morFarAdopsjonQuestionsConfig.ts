@@ -11,7 +11,7 @@ interface MorFarAdopsjonQuestionsPayload extends MorFarAdopsjonFormData {
 
 const MorFarAdopsjonFormConfig: QuestionConfig<MorFarAdopsjonQuestionsPayload, MorFarAdopsjonFormField> = {
     [MorFarAdopsjonFormField.harAnnenForelderSøktFP]: {
-        isAnswered: ({ harAnnenForelderSøktFP }) => hasValue(harAnnenForelderSøktFP),
+        isAnswered: ({ harAnnenForelderSøktFP }) => harAnnenForelderSøktFP !== YesOrNo.UNANSWERED,
         isIncluded: ({ harAnnenForeldreRettPåForeldrepenger }) => !!harAnnenForeldreRettPåForeldrepenger,
     },
     [MorFarAdopsjonFormField.dekningsgrad]: {
