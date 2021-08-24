@@ -6,6 +6,8 @@ import {
     Uttaksperiode,
     MorsAktivitet,
     UtsettelseÅrsakType,
+    isPeriodeUtenUttakUtsettelse,
+    isPeriodeUtenUttak,
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../uttaksplan/Periodene';
 import { isValidTidsperiode, Tidsperioden } from '../../uttaksplan/Tidsperioden';
@@ -98,7 +100,8 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
         .filter(
             (p) =>
                 p.type !== Periodetype.Hull &&
-                p.type !== Periodetype.PeriodeUtenUttak &&
+                !isPeriodeUtenUttakUtsettelse(p) &&
+                !isPeriodeUtenUttak(p) &&
                 p.forelder === Forelder.farMedmor
         );
 

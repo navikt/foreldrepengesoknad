@@ -44,6 +44,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
     }
 
     const erEndringssøknadUtenEksisterendeSak = erEndringssøknad && !erEnkelEndringssøknad;
+    const kunFarMedmorHarRett = søkerErFarEllerMedmor && !erDeltUttak;
 
     const {
         harAnnenForelderSøktFP,
@@ -87,6 +88,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 erEndringssøknadUtenEksisterendeSak,
                 søkerHarMidlertidigOmsorg,
                 erArbeidstaker,
+                kunFarMedmorHarRett,
                 relevantStartDatoForUttak
             );
         } else {
@@ -104,6 +106,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 erEndringssøknadUtenEksisterendeSak,
                 søkerHarMidlertidigOmsorg,
                 erArbeidstaker,
+                kunFarMedmorHarRett,
                 familiehendelsesdato
             );
         }

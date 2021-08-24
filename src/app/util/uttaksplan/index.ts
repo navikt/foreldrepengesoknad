@@ -8,6 +8,7 @@ import { Søkersituasjon } from '../../types/søknad/Søknad';
 import {
     Arbeidsform,
     isOverskrivbarPeriode,
+    isPeriodeUtenUttakUtsettelse,
     isUtsettelsesperiode,
     isUttaksperiode,
     OppholdÅrsakType,
@@ -66,7 +67,7 @@ export const getNavnFromObject = ({
 
 export const getPeriodeForelderNavn = (periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
     if (
-        periode.type === Periodetype.Utsettelse ||
+        (periode.type === Periodetype.Utsettelse && !isPeriodeUtenUttakUtsettelse(periode)) ||
         periode.type === Periodetype.Uttak ||
         periode.type === Periodetype.Overføring ||
         periode.type === Periodetype.Opphold ||

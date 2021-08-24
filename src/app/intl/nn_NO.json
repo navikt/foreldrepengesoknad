@@ -700,6 +700,7 @@
     "utsettelsesårsak.SYKDOM": "Sjukdom",
     "utsettelsesårsak.HV_OVELSE": "Øvelse eller tjeneste i Heimevernet",
     "utsettelsesårsak.NAV_TILTAK": "NAV tiltak som utgjør 100% arbeid",
+    "utsettelsesårsak.FRI": "Periode uten uttak",
     "utsettelsesårsak.ukjent": "Utsetjing - årsak ikkje vald",
     "uttaksoppsummering.forbrukt": "Foreldrepengar du har brukt",
     "uttaksoppsummering.gjenstående": "Foreldrepengar du har igjen",

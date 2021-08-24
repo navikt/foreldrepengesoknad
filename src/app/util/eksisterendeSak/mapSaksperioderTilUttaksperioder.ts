@@ -396,7 +396,15 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harUttaksdager)
     );
 
-    return finnOgSettInnHull(sammenslåddePerioder, erEndringsøknadUtenEkisterendeSak, false, erArbeidstaker);
+    const kunFarMedmorHarRett = !grunnlag.morHarRett && grunnlag.farMedmorHarRett;
+
+    return finnOgSettInnHull(
+        sammenslåddePerioder,
+        erEndringsøknadUtenEkisterendeSak,
+        false,
+        erArbeidstaker,
+        kunFarMedmorHarRett
+    );
 };
 
 export default mapSaksperioderTilUttaksperioder;

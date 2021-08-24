@@ -8,6 +8,7 @@ import {
     StønadskontoType,
     isForeldrepengerFørFødselUttaksperiode,
     isUtsettelseAnnenPart,
+    isPeriodeUtenUttakUtsettelse,
 } from '../../../../../types/uttaksplan/periodetyper';
 import { Tidsperioden, getValidTidsperiode } from '../../../../../util/uttaksplan/Tidsperioden';
 import getMessage from 'common/util/i18nUtils';
@@ -113,7 +114,7 @@ const PeriodeHeader: React.FunctionComponent<Props> = ({
 
     let navnAnnenForelder;
     if (
-        periode.type === Periodetype.Utsettelse ||
+        (periode.type === Periodetype.Utsettelse && !isPeriodeUtenUttakUtsettelse(periode)) ||
         periode.type === Periodetype.Uttak ||
         periode.type === Periodetype.Overføring ||
         periode.type === Periodetype.Opphold ||

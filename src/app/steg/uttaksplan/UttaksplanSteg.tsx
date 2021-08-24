@@ -274,6 +274,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         } = søknadsinfo.søknaden;
 
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
+        const { mor, farMedmor } = søknadsinfo;
+        const kunFarMedmorHarRett = !mor.harRett && farMedmor.harRett;
         const erArbeidstaker = arbeidsforhold.length > 0;
 
         const { updatedPlan, id } = addPeriode(
@@ -287,6 +289,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             relevantStartDatoForUttak,
             harMidlertidigOmsorg,
             erArbeidstaker,
+            kunFarMedmorHarRett,
             opprinneligPlan
         );
 
@@ -305,6 +308,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
         const erArbeidstaker = arbeidsforhold.length > 0;
+        const { mor, farMedmor } = søknadsinfo;
+        const kunFarMedmorHarRett = !mor.harRett && farMedmor.harRett;
 
         const updatedPlan = deletePeriode(
             getUttaksstatusFunc(søknadsinfo),
@@ -317,6 +322,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             relevantStartDatoForUttak,
             harMidlertidigOmsorg,
             erArbeidstaker,
+            kunFarMedmorHarRett,
             opprinneligPlan
         );
 
@@ -334,6 +340,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         } = søknadsinfo.søknaden;
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
         const erArbeidstaker = arbeidsforhold.length > 0;
+        const { mor, farMedmor } = søknadsinfo;
+        const kunFarMedmorHarRett = !mor.harRett && farMedmor.harRett;
 
         const updatedPlan = updatePeriode(
             getUttaksstatusFunc(søknadsinfo),
@@ -346,6 +354,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             relevantStartDatoForUttak,
             harMidlertidigOmsorg,
             erArbeidstaker,
+            kunFarMedmorHarRett,
             opprinneligPlan
         );
 

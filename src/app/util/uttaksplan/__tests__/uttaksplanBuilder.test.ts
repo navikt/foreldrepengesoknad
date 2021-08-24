@@ -155,7 +155,8 @@ describe('UttaksplanBuilder', () => {
                 false,
                 undefined,
                 false,
-                true
+                true,
+                false
             ).leggTilPeriodeOgBuild(nyPeriode as Periode);
 
             expect(Perioden(result.perioder[0]).erLik(nyPeriode as Periode));
@@ -210,6 +211,7 @@ describe('UttaksplanBuilder', () => {
                 undefined,
                 false,
                 true,
+                false,
                 [
                     {
                         type: Periodetype.Info,
@@ -248,7 +250,7 @@ describe('UttaksplanBuilder', () => {
             };
             const perioderMedHull = [...perioder, nyPeriode];
 
-            const hull = finnHullIPerioder(perioderMedHull as Periode[], false, false, false, true);
+            const hull = finnHullIPerioder(perioderMedHull as Periode[], false, false, false, true, false);
             expect(hull.length).toBe(1);
             expect(hull[0].tidsperiode.fom).toEqual(new Date('2019-01-31'));
             expect(hull[0].tidsperiode.tom).toEqual(new Date('2019-02-08'));
@@ -273,17 +275,17 @@ describe('UttaksplanBuilder', () => {
             };
             const perioderMedHull = [...perioder, nyPeriode, nyPeriode2];
 
-            const hull = finnHullIPerioder(perioderMedHull as Periode[], false, false, false, true);
+            const hull = finnHullIPerioder(perioderMedHull as Periode[], false, false, false, true, false);
             expect(hull.length).toBe(0);
         });
 
         it('Skal ikke finne hull i en uttaksplan uten hull', () => {
-            const hull = finnHullIPerioder(perioder as Periode[], false, false, false, true);
+            const hull = finnHullIPerioder(perioder as Periode[], false, false, false, true, false);
             expect(hull.length).toBe(0);
         });
 
         it('Skal ikke finne hull i en tom uttaksplan', () => {
-            const hull = finnHullIPerioder([], false, false, false, true);
+            const hull = finnHullIPerioder([], false, false, false, true, false);
             expect(hull.length).toBe(0);
         });
 
@@ -303,6 +305,7 @@ describe('UttaksplanBuilder', () => {
                 false,
                 false,
                 true,
+                false,
                 moment('2018-01-01').toDate()
             );
             expect(hull.length).toEqual(0);
@@ -324,6 +327,7 @@ describe('UttaksplanBuilder', () => {
                 false,
                 false,
                 true,
+                false,
                 new Date('2019-01-30')
             );
 

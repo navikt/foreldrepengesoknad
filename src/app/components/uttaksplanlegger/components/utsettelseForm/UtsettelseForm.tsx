@@ -86,6 +86,7 @@ export enum Utsettelsesvariant {
     Sykdom = 'sykdom',
     HvØvelse = 'hv_øvelse',
     NavTiltak = 'nav_tiltak',
+    Fri = 'fri',
 }
 
 export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utsettelsesvariant | undefined => {
@@ -102,6 +103,8 @@ export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utset
         case UtsettelseÅrsakType.InstitusjonBarnet:
         case UtsettelseÅrsakType.InstitusjonSøker:
             return Utsettelsesvariant.Sykdom;
+        case UtsettelseÅrsakType.Fri:
+            return Utsettelsesvariant.Fri;
         default:
             return undefined;
     }
@@ -187,6 +190,11 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                 value: Utsettelsesvariant.NavTiltak,
                 name: 'utsettelseÅrsak',
             },
+            {
+                label: getMessage(intl, 'fri'),
+                value: Utsettelsesvariant.Fri,
+                name: 'utsettelseÅrsak',
+            },
         ];
 
         const defaultRadios = allRadios.filter((option) => {
@@ -194,7 +202,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                 return true;
             }
 
-            return option.value === Utsettelsesvariant.Sykdom;
+            return option.value === Utsettelsesvariant.Sykdom || option.value === Utsettelsesvariant.Fri;
         });
 
         if (
@@ -245,6 +253,12 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                     type: Periodetype.Utsettelse,
                     årsak: UtsettelseÅrsakType.NavTiltak,
                     forelder,
+                    erArbeidstaker: this.props.arbeidsforhold.length > 0,
+                });
+            } else if (variant === Utsettelsesvariant.Fri) {
+                this.onChange({
+                    type: Periodetype.Utsettelse,
+                    årsak: UtsettelseÅrsakType.Fri,
                     erArbeidstaker: this.props.arbeidsforhold.length > 0,
                 });
             }
