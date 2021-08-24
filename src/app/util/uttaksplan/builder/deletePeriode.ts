@@ -13,6 +13,7 @@ const deletePeriode = (
     relevantStartDatoForUttak: Date | undefined,
     harMidlertidigOmsorg: boolean,
     erArbeidstaker: boolean,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
     opprinneligPlan?: Periode[]
 ): Periode[] => {
     const builder = UttaksplanBuilder(
@@ -25,6 +26,7 @@ const deletePeriode = (
         relevantStartDatoForUttak,
         harMidlertidigOmsorg,
         erArbeidstaker,
+        harAktivitetskravIPeriodeUtenUttak,
         opprinneligPlan
     );
 

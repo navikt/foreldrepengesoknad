@@ -19,7 +19,7 @@ export enum Periodetype {
     'Overføring' = 'overføring',
     'Hull' = 'ubegrunnetOpphold',
     'Info' = 'info',
-    'PeriodeUtenUttak' = 'fri', // Backend ønsker at denne verdien skal være fri, så annerledes navngiving enn de andre
+    'PeriodeUtenUttak' = 'periodeUtenUttak',
 }
 
 export enum UtsettelseÅrsakType {
@@ -169,6 +169,10 @@ export interface PeriodeHull extends PeriodeBase {
 
 export interface PeriodeUtenUttak extends PeriodeBase {
     type: Periodetype.PeriodeUtenUttak;
+}
+
+export interface PeriodeUtenUttakUtsettelse extends Omit<Utsettelsesperiode, 'forelder'> {
+    type: Periodetype.Utsettelse;
     morsAktivitetIPerioden?: MorsAktivitet;
     årsak: UtsettelseÅrsakType.Fri;
     erArbeidstaker: boolean;
@@ -176,6 +180,10 @@ export interface PeriodeUtenUttak extends PeriodeBase {
 
 export const isHull = (periode: Periode): periode is PeriodeHull => {
     return periode.type === Periodetype.Hull;
+};
+
+export const isPeriodeUtenUttakUtsettelse = (periode: Periode): periode is PeriodeUtenUttakUtsettelse => {
+    return periode.type === Periodetype.Utsettelse && periode.årsak === UtsettelseÅrsakType.Fri;
 };
 
 export const isPeriodeUtenUttak = (periode: Periode): periode is PeriodeUtenUttak => {
@@ -237,6 +245,7 @@ export type Periode =
     | Oppholdsperiode
     | Overføringsperiode
     | PeriodeHull
+    | PeriodeUtenUttakUtsettelse
     | PeriodeUtenUttak
     | InfoPeriode;
 
@@ -289,7 +298,7 @@ export const isOverskrivbarPeriode = (periode: Periode): boolean => {
     return (
         (periode.type === Periodetype.Info && periode.overskrives === true) ||
         periode.type === Periodetype.Hull ||
-        periode.type === Periodetype.PeriodeUtenUttak
+        isPeriodeUtenUttak(periode)
     );
 };
 

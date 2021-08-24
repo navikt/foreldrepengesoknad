@@ -20,9 +20,9 @@ import { VeiledermeldingerPerPeriode } from '../../../veilederInfo/types';
 import { NavnISøknaden } from 'app/selectors/types';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 import moment from 'moment';
+import PeriodelistePeriodeUtenUttak from './items/PeriodelistePeriodeUtenUttak';
 
 import './periodeliste.less';
-import PeriodelistePeriodeUtenUttak from './items/PeriodelistePeriodeUtenUttak';
 
 interface OwnProps {
     erDeltUttak: boolean;
@@ -213,6 +213,7 @@ class Periodeliste extends React.Component<Props> {
                                             onToggle={onToggle}
                                             periode={periode}
                                             onReplaceHullWithPeriode={onReplaceHullWithPeriode}
+                                            onReplaceHullWithOpphold={onReplaceHullWithOpphold}
                                         />
                                     );
                                 case Periodetype.Info:

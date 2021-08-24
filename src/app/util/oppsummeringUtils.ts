@@ -1,4 +1,10 @@
-import { Arbeidsform, Overføringsperiode, Periodetype, Utsettelsesperiode } from '../types/uttaksplan/periodetyper';
+import {
+    Arbeidsform,
+    Overføringsperiode,
+    Periodetype,
+    PeriodeUtenUttakUtsettelse,
+    Utsettelsesperiode,
+} from '../types/uttaksplan/periodetyper';
 import getMessage from 'common/util/i18nUtils';
 import { IntlShape } from 'react-intl';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
@@ -46,7 +52,7 @@ export const getArbeidsformTekst = (
 
 export const getÅrsakTekst = (
     intl: IntlShape,
-    { type, årsak }: Utsettelsesperiode | Overføringsperiode,
+    { type, årsak }: Utsettelsesperiode | Overføringsperiode | PeriodeUtenUttakUtsettelse,
     messageValues?: { [key: string]: MessageValue }
 ) => {
     const intlKeyPrefix = type === Periodetype.Utsettelse ? 'utsettelsesårsak.' : 'overføringsårsaktype.';

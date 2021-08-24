@@ -17,6 +17,7 @@ export interface Props {
     onToggle: onToggleItemProp;
     periode: PeriodeUtenUttak;
     onReplaceHullWithPeriode?: (tidsperiode: Tidsperiode) => void;
+    onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
     intl: IntlShape;
 }
 
@@ -33,11 +34,21 @@ const PeriodelistePeriodeUtenUttak: React.FunctionComponent<Props> = ({
     onToggle,
     periode,
     onReplaceHullWithPeriode,
+    onReplaceHullWithOpphold,
     intl,
 }) => {
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
 
     const knapper: React.ReactNode[] = [];
+
+    if (onReplaceHullWithOpphold) {
+        knapper.unshift(
+            <LinkButton key="periode" onClick={() => onReplaceHullWithOpphold(periode.tidsperiode)}>
+                {getMessage(intl, 'uttaksplan.hull.leggTil.opphold')}
+            </LinkButton>
+        );
+    }
+
     if (onReplaceHullWithPeriode) {
         knapper.unshift(
             <LinkButton key="periode" onClick={() => onReplaceHullWithPeriode(periode.tidsperiode)}>
