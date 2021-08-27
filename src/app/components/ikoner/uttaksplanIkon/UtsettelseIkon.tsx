@@ -20,13 +20,12 @@ const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
         case UtsettelseÅrsakType.Arbeid:
         case UtsettelseÅrsakType.HvØvelse:
         case UtsettelseÅrsakType.NavTiltak:
+        case UtsettelseÅrsakType.Fri:
             return UttaksplanIkonKeys.arbeid;
         case UtsettelseÅrsakType.InstitusjonBarnet:
         case UtsettelseÅrsakType.InstitusjonSøker:
         case UtsettelseÅrsakType.Sykdom:
             return UttaksplanIkonKeys.sykdom;
-        case UtsettelseÅrsakType.Fri:
-            return UttaksplanIkonKeys.info;
     }
 };
 
