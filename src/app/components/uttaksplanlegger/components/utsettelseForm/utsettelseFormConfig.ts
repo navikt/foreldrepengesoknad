@@ -39,6 +39,8 @@ const Sp = UtsettelseSpørsmålKeys;
 
 const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): boolean => {
     const { variant, søknadsinfo, periode } = payload;
+    const { mor, farMedmor } = søknadsinfo;
+    const kunFarMedmorHarRett = !mor.harRett && farMedmor.harRett;
     const erRelevant = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
         søknadsinfo.søker.erFarEllerMedmor,
         søknadsinfo.annenForelder
@@ -57,7 +59,8 @@ const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): bool
         if (
             variant === Utsettelsesvariant.Ferie ||
             (variant === Utsettelsesvariant.Arbeid && harRegistrertArbeidOk(variant, periode as Utsettelsesperiode)) ||
-            (variant === Utsettelsesvariant.Sykdom && questionValueIsOk(periode.årsak))
+            (variant === Utsettelsesvariant.Sykdom && questionValueIsOk(periode.årsak)) ||
+            kunFarMedmorHarRett
         ) {
             return true;
         }
