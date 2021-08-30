@@ -81,6 +81,10 @@ export const isNotPeriodetypeInfo = (periode: Periode): boolean => {
     return periode.type !== Periodetype.Info;
 };
 
+export const isNotPeriodeUtenUttak = (periode: Periode): boolean => {
+    return periode.type !== Periodetype.PeriodeUtenUttak;
+};
+
 export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
     uttaksplan.forEach((p1: Periode) => {
         if (p1.vedlegg) {
@@ -99,7 +103,7 @@ export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
 };
 
 const skalPeriodeSendesInn = (periode: Periode) => {
-    return isNotPeriodetypeHull(periode) && isNotPeriodetypeInfo(periode);
+    return isNotPeriodetypeHull(periode) && isNotPeriodetypeInfo(periode) && isNotPeriodeUtenUttak(periode);
 };
 
 const getArbeidstakerFrilansSN = (arbeidsformer: Arbeidsform[] | undefined) => {
