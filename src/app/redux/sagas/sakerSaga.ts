@@ -1,4 +1,4 @@
-import { all, call, put, select, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { default as apiActions } from '../actions/api/apiActionCreators';
@@ -7,9 +7,6 @@ import { getSakForEndringssøknad, getSakUnderBehandling } from '../../util/sake
 import { getEksisterendeSakFromDTO } from 'app/util/eksisterendeSak/eksisterendeSakUtils';
 import { UttaksplanDTO } from 'app/api/types/uttaksplanDTO';
 import { AxiosResponse } from 'axios';
-import { AppState } from '../reducers';
-
-const stateSelector = (state: AppState) => state;
 
 function* getSaker() {
     try {
@@ -46,12 +43,10 @@ function* getSaker() {
 
 export function* fetchEksisterendeSak(saksnummer: string) {
     try {
-        const state: AppState = yield select(stateSelector);
         yield put(apiActions.updateApi({ isLoadingEksisterendeSak: true }));
         const response: AxiosResponse<UttaksplanDTO> = yield call(Api.getEksisterendeSak, saksnummer);
-        const erArbeidstaker =
-            state.api.søkerinfo !== undefined ? state.api.søkerinfo.arbeidsforhold.length > 0 : false;
-        return getEksisterendeSakFromDTO(response.data, false, erArbeidstaker);
+
+        return getEksisterendeSakFromDTO(response.data, false);
     } catch (error) {
         yield put(
             apiActions.updateApi({
@@ -69,14 +64,12 @@ export function* fetchEksisterendeSak(saksnummer: string) {
 
 export function* fetchEksisterendeSakMedFnr(fnr: string) {
     try {
-        const state: AppState = yield select(stateSelector);
         yield put(apiActions.updateApi({ isLoadingSakForAnnenPart: true }));
         const response: AxiosResponse<UttaksplanDTO> = yield call(Api.getEksisterendeSakMedFnr, fnr);
         const uttaksplanDto = response.data;
         uttaksplanDto.grunnlag.søkerErFarEllerMedmor = !uttaksplanDto.grunnlag.søkerErFarEllerMedmor;
-        const erArbeidstaker =
-            state.api.søkerinfo !== undefined ? state.api.søkerinfo.arbeidsforhold.length > 0 : false;
-        return getEksisterendeSakFromDTO(uttaksplanDto, true, erArbeidstaker);
+
+        return getEksisterendeSakFromDTO(uttaksplanDto, true);
     } catch (error) {
         yield put(
             apiActions.updateApi({

@@ -12,7 +12,6 @@ const deletePeriode = (
     erEndringsøknadUtenEkisterendeSak: boolean,
     relevantStartDatoForUttak: Date | undefined,
     harMidlertidigOmsorg: boolean,
-    erArbeidstaker: boolean,
     harAktivitetskravIPeriodeUtenUttak: boolean,
     opprinneligPlan?: Periode[]
 ): Periode[] => {
@@ -25,7 +24,6 @@ const deletePeriode = (
         erEndringsøknadUtenEkisterendeSak,
         relevantStartDatoForUttak,
         harMidlertidigOmsorg,
-        erArbeidstaker,
         harAktivitetskravIPeriodeUtenUttak,
         opprinneligPlan
     );
