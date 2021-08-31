@@ -18,7 +18,6 @@ const addPeriode = (
     erEndringsøknadUtenEkisterendeSak: boolean,
     relevantStartDatoForUttak: Date | undefined,
     harMidlertidigOmsorg: boolean,
-    erArbeidstaker: boolean,
     harAktivitetskravIPeriodeUtenUttak: boolean,
     opprinneligPlan?: Periode[]
 ): AddPeriodeResult => {
@@ -32,7 +31,6 @@ const addPeriode = (
         erEndringsøknadUtenEkisterendeSak,
         relevantStartDatoForUttak,
         harMidlertidigOmsorg,
-        erArbeidstaker,
         harAktivitetskravIPeriodeUtenUttak,
         opprinneligPlan
     );
