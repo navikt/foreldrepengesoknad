@@ -397,7 +397,13 @@ const mapSaksperioderTilUttaksperioder = (
 
     const kunFarMedmorHarRett = !grunnlag.morHarRett && grunnlag.farMedmorHarRett;
 
-    return finnOgSettInnHull(sammenslåddePerioder, erEndringsøknadUtenEkisterendeSak, false, kunFarMedmorHarRett);
+    return finnOgSettInnHull(
+        sammenslåddePerioder,
+        erEndringsøknadUtenEkisterendeSak,
+        false,
+        kunFarMedmorHarRett,
+        new Date(grunnlag.familieHendelseDato)
+    );
 };
 
 export default mapSaksperioderTilUttaksperioder;
