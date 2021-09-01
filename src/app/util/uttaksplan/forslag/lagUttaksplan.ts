@@ -86,6 +86,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 erEndringssøknadUtenEksisterendeSak,
                 søkerHarMidlertidigOmsorg,
                 kunFarMedmorHarRett,
+                familiehendelsesdato,
                 relevantStartDatoForUttak
             );
         } else {
@@ -103,6 +104,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 erEndringssøknadUtenEksisterendeSak,
                 søkerHarMidlertidigOmsorg,
                 kunFarMedmorHarRett,
+                familiehendelsesdato,
                 familiehendelsesdato
             );
         }
