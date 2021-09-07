@@ -1007,7 +1007,10 @@ const getNyttPeriodehull = (
 ): Array<PeriodeHull | PeriodeUtenUttak> => {
     if (skalLeggeInnPerioderUtenUttak) {
         const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
-        const førsteUttaksdagEtterSeksUker = Uttaksdagen(familiehendelsesdato).leggTil(ANTALL_UTTAKSDAGER_SEKS_UKER);
+        const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+        const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdagFamiliehendelsesdato).leggTil(
+            ANTALL_UTTAKSDAGER_SEKS_UKER
+        );
         const tidsperiodeErInnenFørsteSeksUker = Tidsperioden(tidsperiode).erInnenforFørsteSeksUker(
             familiehendelsesdato
         );
