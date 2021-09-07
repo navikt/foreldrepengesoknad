@@ -271,6 +271,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erFlerbarnssøknad,
             erEndringssøknad,
             erEnkelEndringssøknad,
+            erAdopsjon,
         } = søknadsinfo.søknaden;
 
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
@@ -288,6 +289,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             relevantStartDatoForUttak,
             harMidlertidigOmsorg,
             kunFarMedmorHarRett,
+            erAdopsjon!!,
             opprinneligPlan
         );
 
@@ -302,6 +304,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erFlerbarnssøknad,
             erEndringssøknad,
             erEnkelEndringssøknad,
+            erAdopsjon,
         } = søknadsinfo.søknaden;
 
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
@@ -319,6 +322,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             relevantStartDatoForUttak,
             harMidlertidigOmsorg,
             kunFarMedmorHarRett,
+            erAdopsjon!!,
             opprinneligPlan
         );
 
@@ -333,6 +337,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erFlerbarnssøknad,
             erEndringssøknad,
             erEnkelEndringssøknad,
+            erAdopsjon,
         } = søknadsinfo.søknaden;
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
         const { mor, farMedmor } = søknadsinfo;
@@ -349,6 +354,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             relevantStartDatoForUttak,
             harMidlertidigOmsorg,
             kunFarMedmorHarRett,
+            erAdopsjon!!,
             opprinneligPlan
         );
 

@@ -26,6 +26,7 @@ const updatePeriode = (
     relevantStartDatoForUttak: Date | undefined,
     harMidlertidigOmsorg: boolean,
     harAktivitetskravIPeriodeUtenUttak: boolean,
+    erAdopsjon: boolean,
     opprinneligPlan?: Periode[]
 ): Periode[] => {
     const familiehendelsedato = familiehendelsesdato;
@@ -45,6 +46,7 @@ const updatePeriode = (
         relevantStartDatoForUttak,
         harMidlertidigOmsorg,
         harAktivitetskravIPeriodeUtenUttak,
+        erAdopsjon,
         opprinneligPlan
     );
 

@@ -87,6 +87,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 søkerHarMidlertidigOmsorg,
                 kunFarMedmorHarRett,
                 familiehendelsesdato,
+                situasjon === Søkersituasjon.ADOPSJON,
                 relevantStartDatoForUttak
             );
         } else {
@@ -105,6 +106,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 søkerHarMidlertidigOmsorg,
                 kunFarMedmorHarRett,
                 familiehendelsesdato,
+                situasjon === Søkersituasjon.ADOPSJON,
                 familiehendelsesdato
             );
         }

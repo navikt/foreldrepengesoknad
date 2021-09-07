@@ -62,8 +62,15 @@ describe('Forslag til uttaksplan', () => {
         it('mor: skal ikke ha hull', () => {
             const uttaksplan = lagUttaksplan(lagUttaksplanProps);
             expect(
-                finnHullIPerioder(uttaksplan, false, false, false, false, lagUttaksplanProps.familiehendelsesdato)
-                    .length
+                finnHullIPerioder(
+                    uttaksplan,
+                    false,
+                    false,
+                    false,
+                    false,
+                    lagUttaksplanProps.familiehendelsesdato,
+                    false
+                ).length
             ).toBe(0);
         });
         it('mor: skal ikke ha overlappende perioder', () => {
@@ -112,8 +119,15 @@ describe('Forslag til uttaksplan', () => {
                 tilgjengeligeStønadskontoer: tilgjengeligeKontoerIkkeDeltUttak,
             });
             expect(
-                finnHullIPerioder(uttaksplan, false, false, false, false, lagUttaksplanProps.familiehendelsesdato)
-                    .length
+                finnHullIPerioder(
+                    uttaksplan,
+                    false,
+                    false,
+                    false,
+                    false,
+                    lagUttaksplanProps.familiehendelsesdato,
+                    false
+                ).length
             ).toBe(0);
         });
         it('mor: skal ikke ha overlappende perioder', () => {
