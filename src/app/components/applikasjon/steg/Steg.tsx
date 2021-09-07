@@ -220,10 +220,15 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                         erEnkelEndringssøknad={erEnkelEndringssøknad}
                     />
                 </Block>
+                {errorSummaryRenderer !== undefined && id === 'uttaksplan' ? (
+                    <div role="alert">{errorSummaryRenderer()}</div>
+                ) : null}
                 {this.props.renderProp
                     ? this.props.renderProp({ onValidFormSubmit: () => this.handleFortsett() })
                     : this.props.children}
-                {errorSummaryRenderer ? <div role="alert">{errorSummaryRenderer()}</div> : null}
+                {errorSummaryRenderer !== undefined && id !== 'uttaksplan' ? (
+                    <div role="alert">{errorSummaryRenderer()}</div>
+                ) : null}
                 {renderFortsettKnapp === true && (
                     <Block>
                         <FortsettKnapp
