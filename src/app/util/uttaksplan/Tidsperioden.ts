@@ -29,7 +29,10 @@ export const Tidsperioden = (tidsperiode: Partial<Tidsperiode>) => ({
 });
 
 const erTidsperiodeInnenforFørsteSeksUker = (tidsperiode: any, familiehendelsesdato: Date) => {
-    const førsteUttaksdagEtterSeksUker = Uttaksdagen(familiehendelsesdato).leggTil(ANTALL_UTTAKSDAGER_SEKS_UKER);
+    const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+    const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdagFamiliehendelsesdato).leggTil(
+        ANTALL_UTTAKSDAGER_SEKS_UKER
+    );
     return erTidsperiodeFomEllerEtterDato(tidsperiode, førsteUttaksdagEtterSeksUker) === false;
 };
 
