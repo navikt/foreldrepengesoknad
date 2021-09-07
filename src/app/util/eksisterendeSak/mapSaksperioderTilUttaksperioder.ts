@@ -21,7 +21,7 @@ import { sorterPerioder } from '../uttaksplan/Periodene';
 import { Perioden } from '../uttaksplan/Perioden';
 import { Uttaksdagen, erUttaksdag } from '../uttaksplan/Uttaksdagen';
 import { getUtsettelseÅrsakFromSaksperiode } from '../uttaksplan/uttaksperiodeUtils';
-import { Saksperiode, Saksgrunnlag, PeriodeResultatType } from '../../types/EksisterendeSak';
+import { Saksperiode, Saksgrunnlag, PeriodeResultatType, FamiliehendelsesType } from '../../types/EksisterendeSak';
 import { Forelder } from 'common/types';
 import { isValidTidsperiode, Tidsperioden } from '../uttaksplan/Tidsperioden';
 import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
@@ -396,13 +396,15 @@ const mapSaksperioderTilUttaksperioder = (
     );
 
     const kunFarMedmorHarRett = !grunnlag.morHarRett && grunnlag.farMedmorHarRett;
+    const erAdopsjon = grunnlag.familieHendelseType === FamiliehendelsesType.ADOPSJON;
 
     return finnOgSettInnHull(
         sammenslåddePerioder,
         erEndringsøknadUtenEkisterendeSak,
         false,
         kunFarMedmorHarRett,
-        new Date(grunnlag.familieHendelseDato)
+        new Date(grunnlag.familieHendelseDato),
+        erAdopsjon
     );
 };
 
