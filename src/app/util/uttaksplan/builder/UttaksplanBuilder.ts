@@ -1020,18 +1020,21 @@ const getNyttPeriodehull = (
         }
 
         if (tidsperiodeErInnenFørsteSeksUker && !erAdopsjon) {
-            const lengdePåOpphold = Tidsperioden(tidsperiode).getAntallUttaksdager();
-
-            if (lengdePåOpphold <= ANTALL_UTTAKSDAGER_SEKS_UKER) {
+            if (moment(tidsperiode.tom).isSameOrBefore(førsteUttaksdagEtterSeksUker)) {
                 return [getPeriodeHull(tidsperiode, årsak)];
             }
 
+            const antallDagerFraFomTilFørsteUttaksdagSeksUker =
+                Tidsperioden({ fom: tidsperiode.fom, tom: førsteUttaksdagEtterSeksUker }).getAntallUttaksdager() - 2;
+
             const nyPeriodeUtenUttakTidsperiodeLengde =
-                Tidsperioden(tidsperiode).getAntallUttaksdager() - ANTALL_UTTAKSDAGER_SEKS_UKER - 1;
+                Tidsperioden(tidsperiode).getAntallUttaksdager() - antallDagerFraFomTilFørsteUttaksdagSeksUker;
+
             const førsteSeksUkerTidsperiode: Tidsperiode = {
-                fom: familiehendelsesdato,
+                fom: tidsperiode.fom,
                 tom: Uttaksdagen(førsteUttaksdagEtterSeksUker).leggTil(-1),
             };
+
             const periodeUtenUttakTidsperiode: Tidsperiode = {
                 fom: førsteUttaksdagEtterSeksUker,
                 tom: Uttaksdagen(førsteUttaksdagEtterSeksUker).leggTil(nyPeriodeUtenUttakTidsperiodeLengde),
