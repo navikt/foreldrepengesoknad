@@ -15,7 +15,7 @@ server.set('views', `${__dirname}/dist`);
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
 
-createEnvSettingsFile(path.resolve(`${__dirname}/dist/js/settings.js`));
+createEnvSettingsFile(path.resolve(`${__dirname}/tmp/settings.js`));
 
 server.use((req, res, next) => {
     res.removeHeader('X-Powered-By');
@@ -42,8 +42,8 @@ const startServer = (html) => {
     server.use('/dist/js', express.static(path.resolve(__dirname, 'dist/js')));
     server.use('/dist/css', express.static(path.resolve(__dirname, 'dist/css')));
 
-    server.get(['/dist/js/settings.js'], (req, res) => {
-        res.sendFile(path.resolve(`../../dist/js/settings.js`));
+    server.get(['/tmp/settings.js'], (req, res) => {
+        res.sendFile(path.resolve(`../../tmp/settings.js`));
     });
 
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
