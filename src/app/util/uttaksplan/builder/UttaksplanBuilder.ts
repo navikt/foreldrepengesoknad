@@ -1022,7 +1022,7 @@ const getNyttPeriodehull = (
         }
 
         if (tidsperiodeErInnenFørsteSeksUker && !erAdopsjon) {
-            if (moment(tidsperiode.tom).isSameOrBefore(førsteUttaksdagEtterSeksUker)) {
+            if (moment(tidsperiode.tom).isBefore(førsteUttaksdagEtterSeksUker)) {
                 return [getPeriodeHull(tidsperiode, årsak)];
             }
 
@@ -1039,7 +1039,7 @@ const getNyttPeriodehull = (
 
             const periodeUtenUttakTidsperiode: Tidsperiode = {
                 fom: førsteUttaksdagEtterSeksUker,
-                tom: Uttaksdagen(førsteUttaksdagEtterSeksUker).leggTil(nyPeriodeUtenUttakTidsperiodeLengde),
+                tom: Uttaksdagen(førsteUttaksdagEtterSeksUker).leggTil(nyPeriodeUtenUttakTidsperiodeLengde - 2),
             };
 
             const periodeHull = getPeriodeHull(førsteSeksUkerTidsperiode, årsak);
