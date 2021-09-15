@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html lang="no">
-<head>
-    <title>Foreldrepenger - www.nav.no</title>
-    <meta charSet="utf-8" />
-    <meta name="description" content="Her kan du søke om foreldrepenger." />
-    <meta property="og:title" content="Foreldrepengesøknad - www.nav.no" />
-    <meta property="og:description" content="Her kan du søke om foreldrepenger." />
-    <meta property="og:image" content="http://familie.nav.no/dist/assets/foreldrepenger.png" />
-    <meta property="og:url" content="https://foreldrepengesoknad.nav.no" />
-    <meta name="twitter:card" content="http://familie.nav.no/dist/assets/foreldrepenger.png" />
-    <meta http-equiv="X-UA-Compatible" content="IE=11" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <script charset="UTF-8">
-        try {
-            window['adrum-start-time'] = new Date().getTime();
-            (function(config) {
-                if (window.location.href.indexOf('foreldrepengesoknad.nav.no') > -1) {
-                    config.adrumExtUrlHttps = 'https://jsagent.nav.no';
-                    config.beaconUrlHttps = 'https://eumgw.nav.no';
-                    config.appKey = 'EUM-AAB-AXK';
-                    config.xd = { enable: false };
-                }
-            })(window['adrum-config'] || (window['adrum-config'] = {}));
-        } catch {}
-    </script>
-    <script src='https://jsagent.nav.no/adrum/adrum.js'></script>
-    {{{NAV_SCRIPTS}}} {{{NAV_STYLES}}}
-</head>
-<body>
-    <div id="appContainer">
-        {{{NAV_HEADING}}}
-        <div id="app"></div>
-        <script type="text/javascript" src="/dist/js/settings.js"></script> {{{NAV_FOOTER}}}
-    </div>
-</body>
-
+    <head>
+        <title>Foreldrepenger - www.nav.no</title>
+        <meta charset="utf-8" />
+        <meta name="description" content="Her kan du søke om foreldrepenger." />
+        <meta property="og:title" content="Foreldrepengesøknad - www.nav.no" />
+        <meta property="og:description" content="Her kan du søke om foreldrepenger." />
+        <meta property="og:image" content="http://familie.nav.no/dist/assets/foreldrepenger.png" />
+        <meta property="og:url" content="https://foreldrepengesoknad.nav.no" />
+        <meta name="twitter:card" content="http://familie.nav.no/dist/assets/foreldrepenger.png" />
+        <meta http-equiv="X-UA-Compatible" content="IE=11" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script charset="UTF-8">
+            try {
+                window['adrum-start-time'] = new Date().getTime();
+                (function (config) {
+                    if (window.location.href.indexOf('foreldrepengesoknad.nav.no') > -1) {
+                        config.adrumExtUrlHttps = 'https://jsagent.nav.no';
+                        config.beaconUrlHttps = 'https://eumgw.nav.no';
+                        config.appKey = 'EUM-AAB-AXK';
+                        config.xd = { enable: false };
+                    }
+                })(window['adrum-config'] || (window['adrum-config'] = {}));
+            } catch {}
+        </script>
+        <script src="https://jsagent.nav.no/adrum/adrum.js"></script>
+        {{{NAV_SCRIPTS}}} {{{NAV_STYLES}}}
+    </head>
+    <body>
+        <div id="appContainer">
+            {{{NAV_HEADING}}}
+            <div id="app"></div>
+            <script type="text/javascript" src="/dist/settings.js"></script>
+            {{{NAV_FOOTER}}}
+        </div>
+    </body>
 </html>
