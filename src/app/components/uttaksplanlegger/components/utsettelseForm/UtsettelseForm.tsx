@@ -50,6 +50,7 @@ import UtsettelseEndreTidsperiodeSpørsmål from './partials/UtsettelseEndreTids
 import TidsperiodeDisplay from '../tidsperiodeDisplay/TidsperiodeDisplay';
 import TidsperiodeForm from '../tidsperiodeForm/TidsperiodeForm';
 import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
+import { førsteOktober2021ReglerGjelder } from 'app/util/dates/dates';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -373,7 +374,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
         const harDeltidUtenAvtaleMedArbeidsgiver =
             isUtsettelsesperiode(periode) && periode.harAvtaleOmFulltidForDeltidsstilling === false;
         const { familiehendelsesdato } = søknadsinfo.søknaden;
-        const skalViseGamleUtsettelseÅrsaker = false; // Utsettelseårsaker som gjelder for søknader sendt før 1. oktober 2021
+        const skalViseGamleUtsettelseÅrsaker = førsteOktober2021ReglerGjelder(familiehendelsesdato) === false; // Utsettelseårsaker som gjelder for søknader sendt før 1. oktober 2021
 
         return (
             <>
