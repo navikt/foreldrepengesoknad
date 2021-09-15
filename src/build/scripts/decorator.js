@@ -4,12 +4,11 @@ const request = require('request');
 const { JSDOM } = jsdom;
 
 const requestDecorator = (callback) => {
-    const baseUrl = process.env.APPRES_CMS_URL;
+    const baseUrl = 'https://www.nav.no/dekoratoren';
     return request(`${baseUrl}/?simple=true`, callback);
 };
 
 const extractDecoratorFragments = (html) => {
-    console.log('Extracting decorator fragments', html);
     const { document } = new JSDOM(html).window;
     const prop = 'innerHTML';
 
