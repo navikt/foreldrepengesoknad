@@ -5,8 +5,6 @@ metadata:
   namespace: teamforeldrepenger
   labels:
     team: teamforeldrepenger
-  annotations:
-    nais.io/read-only-file-system: "false"
 spec:
 {{#if gcp}}        
   accessPolicy:
