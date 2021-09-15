@@ -1,4 +1,5 @@
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { førsteOktober2021ReglerGjelder } from 'app/util/dates/dates';
 import moment from 'moment';
 import { UttaksplanSkjemadata } from '../../../steg/uttaksplanSkjema/uttaksplanSkjemadata';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
@@ -42,7 +43,8 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
     }
 
     const erEndringssøknadUtenEksisterendeSak = erEndringssøknad && !erEnkelEndringssøknad;
-    const kunFarMedmorHarRett = søkerErFarEllerMedmor && !erDeltUttak;
+    const kunFarMedmorHarRett =
+        søkerErFarEllerMedmor && !erDeltUttak && førsteOktober2021ReglerGjelder(familiehendelsesdato);
 
     const {
         harAnnenForelderSøktFP,

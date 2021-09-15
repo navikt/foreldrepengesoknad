@@ -27,6 +27,7 @@ import { Tidsperiode, StønadskontoType, Dekningsgrad } from 'common/types';
 import { Uttaksstatus } from '../uttaksstatus';
 import { justerAndrePartsUttakAvFellesperiodeOmMulig } from '../uttakUtils';
 import { getFloatFromString } from 'common/util/numberUtils';
+import { førsteOktober2021ReglerGjelder } from 'app/util/dates/dates';
 
 export const UttaksplanBuilder = (
     getUttaksstatusFunc: (tilgjengStønadskontoer: TilgjengeligStønadskonto[], uttaksplan: Periode[]) => Uttaksstatus,
@@ -449,7 +450,7 @@ class UttaksplanAutoBuilder {
             ? finnHullVedEndretTidsperiode(
                   oldPeriode,
                   periode,
-                  true,
+                  førsteOktober2021ReglerGjelder(this.familiehendelsesdato),
                   this.harAktivitetskravIPeriodeUtenUttak,
                   this.familiehendelsesdato,
                   this.erAdopsjon
@@ -961,7 +962,8 @@ export function finnOgSettInnHull(
     erAdopsjon: boolean,
     startdato?: Date
 ): Periode[] {
-    const skalLeggeInnPerioderUtenUttak = true;
+    const skalLeggeInnPerioderUtenUttak = førsteOktober2021ReglerGjelder(familiehendelsesdato);
+
     const hull = finnHullIPerioder(
         perioder,
         erEndringsøknadUtenEkisterendeSak,

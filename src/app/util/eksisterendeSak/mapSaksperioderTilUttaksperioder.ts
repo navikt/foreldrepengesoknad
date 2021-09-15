@@ -27,6 +27,7 @@ import { isValidTidsperiode, Tidsperioden } from '../uttaksplan/Tidsperioden';
 import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
 import moment from 'moment';
 import { finnOgSettInnHull } from '../uttaksplan/builder/UttaksplanBuilder';
+import { førsteOktober2021ReglerGjelder } from '../dates/dates';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;
@@ -401,7 +402,7 @@ const mapSaksperioderTilUttaksperioder = (
     return finnOgSettInnHull(
         sammenslåddePerioder,
         erEndringsøknadUtenEkisterendeSak,
-        false,
+        førsteOktober2021ReglerGjelder(new Date(grunnlag.familieHendelseDato)),
         kunFarMedmorHarRett,
         new Date(grunnlag.familieHendelseDato),
         erAdopsjon

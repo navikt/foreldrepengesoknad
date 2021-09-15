@@ -350,3 +350,12 @@ export const dateRangesExceedsRange = (ranges: DateRange[], allowedRange: DateRa
     }
     return false;
 };
+
+export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boolean => {
+    const førsteOktober2021 = new Date('2021-10-01');
+
+    return (
+        moment(familiehendelsesdato).isSameOrAfter(førsteOktober2021) &&
+        moment(new Date()).isSameOrAfter(førsteOktober2021)
+    );
+};
