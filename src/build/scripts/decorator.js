@@ -4,7 +4,7 @@ const request = require('request');
 const { JSDOM } = jsdom;
 
 const requestDecorator = (callback) => {
-    const baseUrl = 'https://www.nav.no/dekoratoren';
+    const baseUrl = process.env.APPRES_CMS_URL;
     return request(`${baseUrl}/?simple=true`, callback);
 };
 
