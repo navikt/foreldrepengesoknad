@@ -42,16 +42,18 @@ export const getEndringstidspunkt = (
 
     let endringstidspunkt;
     if (opprinneligPlan) {
+        const opprinneligPlanUtenHull = opprinneligPlan.filter((p) => p.type !== Periodetype.Hull);
+
         endringstidspunkt = updatedPlan
             .filter((p) => p.type !== Periodetype.Hull)
             .reduce((currentDate, periode, index) => {
-                const opprinneligPeriode = opprinneligPlan[index];
+                const opprinneligPeriode = opprinneligPlanUtenHull[index];
 
                 if (currentDate !== undefined) {
                     return currentDate;
                 }
 
-                if (index < opprinneligPlan.length) {
+                if (index < opprinneligPlanUtenHull.length) {
                     if (!Perioden(periode).erLik(opprinneligPeriode, false, true)) {
                         return periode.tidsperiode.fom;
                     }
@@ -64,12 +66,12 @@ export const getEndringstidspunkt = (
                     }
                 }
 
-                if (index === updatedPlan.length - 1 && updatedPlan.length < opprinneligPlan.length) {
+                if (index === updatedPlan.length - 1 && updatedPlan.length < opprinneligPlanUtenHull.length) {
                     // Siste periode i planen har blitt slettet
                     return periode.tidsperiode.tom;
                 }
 
-                if (index >= opprinneligPlan.length) {
+                if (index >= opprinneligPlanUtenHull.length) {
                     return periode.tidsperiode.fom;
                 }
 
