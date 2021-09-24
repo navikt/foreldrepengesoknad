@@ -55,7 +55,7 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
     const { periode, skjemaregler } = payload;
 
     if (isUttaksperiode(periode)) {
-        if (skjemaregler.erMorForSykSkalBesvares() && periode.erMorForSyk !== true) {
+        if (skjemaregler.erMorForSykSkalBesvares() && periode.erMorForSyk !== undefined) {
             return false;
         }
 
