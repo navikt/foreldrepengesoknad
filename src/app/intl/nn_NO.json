@@ -502,6 +502,7 @@
     "periodeliste.hull.info.helligdagerOgUttaksdager.ikkeDeltUttak": "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar.",
     "periodeliste.hull.info.helligdagerOgUttaksdager.deltUttak": "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar. Viss {navn} skal vera heime eller utsetja må {navn} sende inn sin eigen søknad.",
     "periodeliste.hull.info.uttaksdager.ikkeDeltUttak": "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar.",
+    "periodeliste.hull.info.uttaksdager.ikkeDeltUttak.nyeRegler": "For å ikke miste dager med foreldrepenger må du dokumentere at mor er i godkjent aktivitet også når du ikke tar ut foreldrepenger. Du laster opp dokumentasjon på mors aktivitet under utsettelse her i planen.",
     "periodeliste.hull.info.uttaksdager.deltUttak": "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar. Viss {navn} skal vera heime eller utsetja må {navn} sende inn sin eigen søknad.",
     "periodeliste.hull.tittel": "Mista foreldrepengar",
     "periodeliste.periodeUtenUttak.tittel": "Ikkje uttak av foreldrepengar",

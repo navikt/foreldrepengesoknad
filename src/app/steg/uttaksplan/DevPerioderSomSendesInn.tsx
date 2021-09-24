@@ -27,6 +27,8 @@ const DevPerioderSomSendesInn: React.FunctionComponent<Props> = ({ søknadsinfo,
                 antallFeriedager={0}
                 harMidlertidigOmsorg={false}
                 uttaksplanValidering={undefined as any}
+                familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
+                erFarEllerMedmor={søknadsinfo.søker.erFarEllerMedmor}
             />
         </Ekspanderbartpanel>
     </DevBlock>
