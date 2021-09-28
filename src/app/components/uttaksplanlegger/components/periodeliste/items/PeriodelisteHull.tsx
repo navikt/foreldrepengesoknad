@@ -27,6 +27,7 @@ export interface Props {
     intl: IntlShape;
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
+    erAleneOmOmsorg: boolean;
 }
 
 const getTittelOgBeskrivelseForHull = (
@@ -63,6 +64,7 @@ const PeriodelisteHullItem: React.FunctionComponent<Props> = ({
     erDeltUttak,
     familiehendelsesdato,
     erFarEllerMedmor,
+    erAleneOmOmsorg,
     intl,
 }) => {
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
@@ -126,7 +128,7 @@ const PeriodelisteHullItem: React.FunctionComponent<Props> = ({
                                 ) : (
                                     <FormattedMessage
                                         id={
-                                            nyeRegler && erFarEllerMedmor
+                                            nyeRegler && erFarEllerMedmor && !erAleneOmOmsorg
                                                 ? 'periodeliste.hull.info.uttaksdager.ikkeDeltUttak.nyeRegler'
                                                 : 'periodeliste.hull.info.uttaksdager.ikkeDeltUttak'
                                         }
