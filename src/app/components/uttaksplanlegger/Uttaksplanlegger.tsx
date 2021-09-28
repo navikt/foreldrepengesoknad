@@ -268,6 +268,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 uttaksplanValidering={uttaksplanValidering}
                                 familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
                                 erFarEllerMedmor={forelder === Forelder.farMedmor}
+                                erAleneOmOmsorg={søknadsinfo.søker.erAleneOmOmsorg}
                             />
                         </Block>
                         <Block visible={uttaksplan.length === 0}>

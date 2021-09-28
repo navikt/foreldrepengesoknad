@@ -36,6 +36,7 @@ interface OwnProps {
     uttaksplanValidering: UttaksplanValideringState;
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
+    erAleneOmOmsorg: boolean;
     onPeriodeLukk?: (id: string) => void;
     onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
     onReplaceHullWithPeriode?: (tidsperiode: Tidsperiode) => void;
@@ -164,6 +165,7 @@ class Periodeliste extends React.Component<Props> {
             uttaksplanValidering,
             familiehendelsesdato,
             erFarEllerMedmor,
+            erAleneOmOmsorg,
         } = this.props;
 
         const filteredPerioder = this.shouldRenderHull(perioder)
@@ -208,6 +210,7 @@ class Periodeliste extends React.Component<Props> {
                                             erDeltUttak={erDeltUttak}
                                             familiehendelsesdato={familiehendelsesdato}
                                             erFarEllerMedmor={erFarEllerMedmor}
+                                            erAleneOmOmsorg={erAleneOmOmsorg}
                                         />
                                     );
                                 case Periodetype.PeriodeUtenUttak:
