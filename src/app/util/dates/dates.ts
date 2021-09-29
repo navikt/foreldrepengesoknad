@@ -354,7 +354,7 @@ export const dateRangesExceedsRange = (ranges: DateRange[], allowedRange: DateRa
 };
 
 export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boolean => {
-    const førsteOktober2021 = new Date('2021-06-19');
+    const førsteOktober2021 = new Date('2021-09-22');
 
     return (
         moment(familiehendelsesdato).isSameOrAfter(førsteOktober2021) &&
