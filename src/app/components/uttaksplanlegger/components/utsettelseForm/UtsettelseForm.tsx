@@ -199,6 +199,10 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
         ];
 
         const defaultRadios = allRadios.filter((option) => {
+            if (skalViseGamleUtsettelseÅrsaker && option.value === Utsettelsesvariant.Fri) {
+                return false;
+            }
+
             if (skalViseGamleUtsettelseÅrsaker) {
                 return true;
             }
