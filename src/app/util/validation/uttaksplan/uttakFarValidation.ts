@@ -29,7 +29,8 @@ export const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigO
         if (periode.konto === StønadskontoType.Fellesperiode || periode.konto === StønadskontoType.Foreldrepenger) {
             return (
                 periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
-                periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp
+                periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
+                periode.erMorForSyk === true
             );
         }
 
