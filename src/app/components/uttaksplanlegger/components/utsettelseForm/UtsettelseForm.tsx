@@ -264,6 +264,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                 this.onChange({
                     type: Periodetype.Utsettelse,
                     årsak: UtsettelseÅrsakType.Fri,
+                    forelder,
                     erArbeidstaker: this.props.arbeidsforhold.length > 0,
                 });
             }

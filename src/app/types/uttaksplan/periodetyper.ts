@@ -176,6 +176,7 @@ export interface PeriodeUtenUttakUtsettelse extends Omit<Utsettelsesperiode, 'fo
     morsAktivitetIPerioden?: MorsAktivitet;
     årsak: UtsettelseÅrsakType.Fri;
     erArbeidstaker: boolean;
+    forelder: Forelder;
 }
 
 export const isHull = (periode: Periode): periode is PeriodeHull => {
