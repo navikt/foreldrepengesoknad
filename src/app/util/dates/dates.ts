@@ -10,9 +10,9 @@ import {
     date15YearsAnd3MonthsAgo,
 } from '../validation/values';
 import { FamiliehendelseDatoer } from '../../types/søknad/FamiliehendelseDatoer';
-import { Periode, Periodetype } from 'app/types/uttaksplan/periodetyper';
+import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from '../uttaksplan/Perioden';
-import { Tidsperioden } from '../uttaksplan/Tidsperioden';
+// import { Tidsperioden } from '../uttaksplan/Tidsperioden';
 
 export interface DateRange {
     from: Date;
@@ -40,43 +40,52 @@ export const getEndringstidspunkt = (
         return undefined;
     }
 
-    let endringstidspunkt;
+    let endringstidspunkt: Date | undefined;
     if (opprinneligPlan) {
-        const opprinneligPlanUtenHull = opprinneligPlan.filter((p) => p.type !== Periodetype.Hull);
+        updatedPlan.forEach((periode, index) => {
+            if (endringstidspunkt) {
+                return endringstidspunkt;
+            }
 
-        endringstidspunkt = updatedPlan
-            .filter((p) => p.type !== Periodetype.Hull)
-            .reduce((currentDate, periode, index) => {
-                const opprinneligPeriode = opprinneligPlanUtenHull[index];
+            const { fom } = periode.tidsperiode;
+            const opprinneligPeriodeMedSammeFom = opprinneligPlan.find((opprinneligPeriode) =>
+                moment(opprinneligPeriode.tidsperiode.fom).isSame(fom)
+            );
 
-                if (currentDate !== undefined) {
-                    return currentDate;
+            if (
+                opprinneligPeriodeMedSammeFom !== undefined &&
+                !Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, false, true)
+            ) {
+                endringstidspunkt = fom;
+            }
+
+            if (opprinneligPeriodeMedSammeFom === undefined) {
+                endringstidspunkt = fom;
+            }
+
+            if (opprinneligPeriodeMedSammeFom !== undefined && updatedPlan.length - 1 === index) {
+                if (!Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, true, true)) {
+                    endringstidspunkt = fom;
                 }
+            }
+        });
 
-                if (index < opprinneligPlanUtenHull.length) {
-                    if (!Perioden(periode).erLik(opprinneligPeriode, false, true)) {
-                        return periode.tidsperiode.fom;
-                    }
+        opprinneligPlan.forEach((periode) => {
+            if (endringstidspunkt) {
+                return endringstidspunkt;
+            }
 
-                    if (
-                        Perioden(periode).erLik(opprinneligPeriode, false, true) &&
-                        !Tidsperioden(periode.tidsperiode).erOmsluttetAv(opprinneligPeriode.tidsperiode)
-                    ) {
-                        return periode.tidsperiode.fom;
-                    }
-                }
+            const { fom } = periode.tidsperiode;
+            const nyPeriodeMedSammeFom = updatedPlan.find((nyPeriode) => moment(nyPeriode.tidsperiode.fom).isSame(fom));
 
-                if (index === updatedPlan.length - 1 && updatedPlan.length < opprinneligPlanUtenHull.length) {
-                    // Siste periode i planen har blitt slettet
-                    return periode.tidsperiode.tom;
-                }
+            if (nyPeriodeMedSammeFom !== undefined && !Perioden(periode).erLik(nyPeriodeMedSammeFom, false, true)) {
+                endringstidspunkt = nyPeriodeMedSammeFom.tidsperiode.fom;
+            }
 
-                if (index >= opprinneligPlanUtenHull.length) {
-                    return periode.tidsperiode.fom;
-                }
-
-                return currentDate;
-            }, undefined);
+            if (nyPeriodeMedSammeFom === undefined) {
+                endringstidspunkt = fom;
+            }
+        });
     } else {
         // Bruker har slettet opprinnelig plan, send med alt
         if (updatedPlan.length > 0) {
