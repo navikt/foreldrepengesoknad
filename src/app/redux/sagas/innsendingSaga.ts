@@ -42,7 +42,8 @@ const getSøknadsdataForInnsending = (
     originalSøknad: Søknad,
     missingAttachments: MissingAttachment[],
     endringerIUttaksplan: Periode[],
-    språkkode: Språkkode
+    språkkode: Språkkode,
+    endringstidspunkt?: Date
 ): SøknadForInnsending | EnkelEndringssøknadForInnsending => {
     const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
     mapMissingAttachmentsOnSøknad(missingAttachments, søknad);
@@ -53,7 +54,7 @@ const getSøknadsdataForInnsending = (
             søknad.uttaksplan,
             endringerIUttaksplan
         );
-        return cleanEnkelEndringssøknad(søknad, endringerIUttaksplanWithMissingAttachments);
+        return cleanEnkelEndringssøknad(søknad, endringerIUttaksplanWithMissingAttachments, endringstidspunkt);
     } else {
         return cleanUpSøknad(søknad);
     }
@@ -63,12 +64,14 @@ function* sendSøknad(action: SendSøknad) {
     try {
         yield put(apiActions.updateApi({ søknadSendingInProgress: true }));
         const state: AppState = yield select(stateSelector);
+        const endringstidspunkt = state.søknad.ekstrainfo.endringstidspunkt;
         const originalSøknad: Søknad = state.søknad;
         const søknadForInnsending = getSøknadsdataForInnsending(
             _.cloneDeep(originalSøknad),
             action.missingAttachments,
             _.cloneDeep(selectPerioderSomSkalSendesInn(state)),
-            state.common.språkkode
+            state.common.språkkode,
+            endringstidspunkt
         );
         const response: AxiosResponse<Kvittering> = yield call(Api.sendSøknad, søknadForInnsending);
         const kvittering = response.data;
