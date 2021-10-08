@@ -576,10 +576,15 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
 
     let relevantStartDatoForUttak: Date | undefined;
     if (søknadsinfo) {
-        const { søknaden, søker, uttaksdatoer, annenForelder } = søknadsinfo;
+        const { søknaden, søker, uttaksdatoer, annenForelder, farMedmor, mor } = søknadsinfo;
+        const { førsteUttaksdagEtterSeksUker } = uttaksdatoer.etterFødsel;
 
         if (!søknaden.erFødsel && startdatoPermisjon !== undefined) {
             relevantStartDatoForUttak = ISOStringToDate(startdatoPermisjon);
+        }
+
+        if (søknaden.erEndringssøknad && farMedmor.harRett && !mor.harRett && !farMedmor.erAleneOmOmsorg) {
+            relevantStartDatoForUttak = førsteUttaksdagEtterSeksUker;
         }
 
         if (
@@ -594,7 +599,6 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
             const dagEtterMorsSisteDag = morSinSisteUttaksdagDate
                 ? Uttaksdagen(morSinSisteUttaksdagDate).neste()
                 : undefined;
-            const { førsteUttaksdagEtterSeksUker } = uttaksdatoer.etterFødsel;
 
             relevantStartDatoForUttak =
                 dagEtterMorsSisteDag && moment(dagEtterMorsSisteDag).isSameOrAfter(moment(førsteUttaksdagEtterSeksUker))
