@@ -1,9 +1,9 @@
 const fsExtra = require('fs-extra');
 
-function createEnvSettingsFile(settingsFile) {
-    fsExtra.ensureFile(settingsFile).then(() => {
+function createEnvSettingsFile(settingsFilePath) {
+    fsExtra.ensureFile(settingsFilePath).then(() => {
         fsExtra.writeFileSync(
-            settingsFile,
+            settingsFilePath,
             `window.appSettings = {
                 APP_VERSION: '${process.env.APP_VERSION}',
                 REST_API_URL: '${process.env.FORELDREPENGESOKNAD_API_URL}',

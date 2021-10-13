@@ -27,7 +27,7 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Saksgrunnlag, Saksperiode } from 'app/types/EksisterendeSak';
 import Barn from 'app/types/søknad/Barn';
 import Sak from 'app/types/søknad/Sak';
-import { getEndringstidspunkt } from 'app/util/dates/dates';
+import { førsteOktober2021ReglerGjelder, getEndringstidspunkt } from 'app/util/dates/dates';
 import addPeriode from 'app/util/uttaksplan/builder/addPeriode';
 import deletePeriode from 'app/util/uttaksplan/builder/deletePeriode';
 import updatePeriode from 'app/util/uttaksplan/builder/updatePeriode';
@@ -271,9 +271,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erFlerbarnssøknad,
             erEndringssøknad,
             erEnkelEndringssøknad,
+            erAdopsjon,
         } = søknadsinfo.søknaden;
 
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
+        const { mor, farMedmor } = søknadsinfo;
+        const kunFarMedmorHarRett =
+            !mor.harRett && farMedmor.harRett && førsteOktober2021ReglerGjelder(familiehendelsesdato);
 
         const { updatedPlan, id } = addPeriode(
             getUttaksstatusFunc(søknadsinfo),
@@ -285,6 +289,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erEndringssøknad && !erEnkelEndringssøknad,
             relevantStartDatoForUttak,
             harMidlertidigOmsorg,
+            kunFarMedmorHarRett,
+            erAdopsjon!!,
             opprinneligPlan
         );
 
@@ -299,9 +305,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erFlerbarnssøknad,
             erEndringssøknad,
             erEnkelEndringssøknad,
+            erAdopsjon,
         } = søknadsinfo.søknaden;
 
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
+        const { mor, farMedmor } = søknadsinfo;
+        const kunFarMedmorHarRett =
+            !mor.harRett && farMedmor.harRett && førsteOktober2021ReglerGjelder(familiehendelsesdato);
 
         const updatedPlan = deletePeriode(
             getUttaksstatusFunc(søknadsinfo),
@@ -313,6 +323,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erEndringssøknad && !erEnkelEndringssøknad,
             relevantStartDatoForUttak,
             harMidlertidigOmsorg,
+            kunFarMedmorHarRett,
+            erAdopsjon!!,
             opprinneligPlan
         );
 
@@ -327,8 +339,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erFlerbarnssøknad,
             erEndringssøknad,
             erEnkelEndringssøknad,
+            erAdopsjon,
         } = søknadsinfo.søknaden;
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
+        const { mor, farMedmor } = søknadsinfo;
+        const kunFarMedmorHarRett =
+            !mor.harRett && farMedmor.harRett && førsteOktober2021ReglerGjelder(familiehendelsesdato);
 
         const updatedPlan = updatePeriode(
             getUttaksstatusFunc(søknadsinfo),
@@ -340,6 +356,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             erEndringssøknad && !erEnkelEndringssøknad,
             relevantStartDatoForUttak,
             harMidlertidigOmsorg,
+            kunFarMedmorHarRett,
+            erAdopsjon!!,
             opprinneligPlan
         );
 
@@ -558,10 +576,15 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
 
     let relevantStartDatoForUttak: Date | undefined;
     if (søknadsinfo) {
-        const { søknaden, søker, uttaksdatoer, annenForelder } = søknadsinfo;
+        const { søknaden, søker, uttaksdatoer, annenForelder, farMedmor, mor } = søknadsinfo;
+        const { førsteUttaksdagEtterSeksUker } = uttaksdatoer.etterFødsel;
 
         if (!søknaden.erFødsel && startdatoPermisjon !== undefined) {
             relevantStartDatoForUttak = ISOStringToDate(startdatoPermisjon);
+        }
+
+        if (søknaden.erEndringssøknad && farMedmor.harRett && !mor.harRett && !farMedmor.erAleneOmOmsorg) {
+            relevantStartDatoForUttak = førsteUttaksdagEtterSeksUker;
         }
 
         if (
@@ -576,7 +599,6 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
             const dagEtterMorsSisteDag = morSinSisteUttaksdagDate
                 ? Uttaksdagen(morSinSisteUttaksdagDate).neste()
                 : undefined;
-            const { førsteUttaksdagEtterSeksUker } = uttaksdatoer.etterFødsel;
 
             relevantStartDatoForUttak =
                 dagEtterMorsSisteDag && moment(dagEtterMorsSisteDag).isSameOrAfter(moment(førsteUttaksdagEtterSeksUker))

@@ -20,6 +20,7 @@ import { VeiledermeldingerPerPeriode } from '../../../veilederInfo/types';
 import { NavnISøknaden } from 'app/selectors/types';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 import moment from 'moment';
+import PeriodelistePeriodeUtenUttak from './items/PeriodelistePeriodeUtenUttak';
 
 import './periodeliste.less';
 
@@ -33,6 +34,9 @@ interface OwnProps {
     lastAddedPeriodeId: string | undefined;
     harMidlertidigOmsorg: boolean;
     uttaksplanValidering: UttaksplanValideringState;
+    familiehendelsesdato: Date;
+    erFarEllerMedmor: boolean;
+    erAleneOmOmsorg: boolean;
     onPeriodeLukk?: (id: string) => void;
     onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
     onReplaceHullWithPeriode?: (tidsperiode: Tidsperiode) => void;
@@ -159,6 +163,9 @@ class Periodeliste extends React.Component<Props> {
             erDeltUttak,
             harMidlertidigOmsorg,
             uttaksplanValidering,
+            familiehendelsesdato,
+            erFarEllerMedmor,
+            erAleneOmOmsorg,
         } = this.props;
 
         const filteredPerioder = this.shouldRenderHull(perioder)
@@ -201,6 +208,21 @@ class Periodeliste extends React.Component<Props> {
                                             onReplaceHullWithPeriode={onReplaceHullWithPeriode}
                                             navn={navn}
                                             erDeltUttak={erDeltUttak}
+                                            familiehendelsesdato={familiehendelsesdato}
+                                            erFarEllerMedmor={erFarEllerMedmor}
+                                            erAleneOmOmsorg={erAleneOmOmsorg}
+                                        />
+                                    );
+                                case Periodetype.PeriodeUtenUttak:
+                                    return (
+                                        <PeriodelistePeriodeUtenUttak
+                                            key={itemId}
+                                            itemId={itemId}
+                                            isExpanded={isExpanded}
+                                            onToggle={onToggle}
+                                            periode={periode}
+                                            onReplaceHullWithPeriode={onReplaceHullWithPeriode}
+                                            onReplaceHullWithOpphold={onReplaceHullWithOpphold}
                                         />
                                     );
                                 case Periodetype.Info:

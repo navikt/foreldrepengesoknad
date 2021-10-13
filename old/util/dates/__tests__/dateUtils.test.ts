@@ -162,7 +162,7 @@ describe('dateUtils', () => {
             expect(endringstidspunkt).toEqual(gradertPeriode.tidsperiode!.fom);
         });
 
-        it('Hvis uttaksplanlogikken setter hull inn i planen skal ikke det telle som en endring', () => {
+        it('Hvis uttaksplanlogikken setter hull inn i planen skal det telle som en endring', () => {
             const hullPeriode: Partial<PeriodeHull> = {
                 type: Periodetype.Hull,
                 tidsperiode: {
@@ -173,7 +173,7 @@ describe('dateUtils', () => {
             const endretPlan = [hullPeriode, ...opprinneligPlan];
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
 
-            expect(endringstidspunkt).toBe(undefined);
+            expect(endringstidspunkt).toBe(hullPeriode.tidsperiode!.fom);
         });
 
         it('Hvis uttaksplanlogikken deler en periode skal endringstidspunkt være fra delingen og fremover ikke ta med tidligere del av perioden', () => {

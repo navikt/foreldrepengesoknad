@@ -13,6 +13,7 @@ import { getStønadskontoNavn } from 'app/util/uttaksplan';
 import LinkButton from 'app/components/elementer/linkButton/LinkButton';
 import UttaksplanAdvarselIkon from 'app/components/ikoner/uttaksplanIkon/ikoner/AdvarselIkon';
 import { NavnISøknaden } from 'app/selectors/types';
+import { førsteOktober2021ReglerGjelder } from 'app/util/dates/dates';
 
 export interface Props {
     itemId: string;
@@ -24,6 +25,9 @@ export interface Props {
     onReplaceHullWithOpphold?: (tidsperiode: Tidsperiode) => void;
     erDeltUttak: boolean;
     intl: IntlShape;
+    familiehendelsesdato: Date;
+    erFarEllerMedmor: boolean;
+    erAleneOmOmsorg: boolean;
 }
 
 const getTittelOgBeskrivelseForHull = (
@@ -58,6 +62,9 @@ const PeriodelisteHullItem: React.FunctionComponent<Props> = ({
     onReplaceHullWithOpphold,
     navn,
     erDeltUttak,
+    familiehendelsesdato,
+    erFarEllerMedmor,
+    erAleneOmOmsorg,
     intl,
 }) => {
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
@@ -84,6 +91,7 @@ const PeriodelisteHullItem: React.FunctionComponent<Props> = ({
     }
 
     const { tittel, beskrivelse } = getTittelOgBeskrivelseForHull(periode, antallDager, navn.navnPåForeldre, intl);
+    const nyeRegler = førsteOktober2021ReglerGjelder(familiehendelsesdato);
 
     return (
         <PeriodelisteInfo
@@ -119,7 +127,11 @@ const PeriodelisteHullItem: React.FunctionComponent<Props> = ({
                                     />
                                 ) : (
                                     <FormattedMessage
-                                        id="periodeliste.hull.info.uttaksdager.ikkeDeltUttak"
+                                        id={
+                                            nyeRegler && erFarEllerMedmor && !erAleneOmOmsorg
+                                                ? 'periodeliste.hull.info.uttaksdager.ikkeDeltUttak.nyeRegler'
+                                                : 'periodeliste.hull.info.uttaksdager.ikkeDeltUttak'
+                                        }
                                         values={{
                                             dager: antallDager,
                                         }}

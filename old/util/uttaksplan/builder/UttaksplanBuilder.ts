@@ -15,6 +15,8 @@ import {
     TilgjengeligStønadskonto,
     isOppholdsperiode,
     isUtsettelsesperiode,
+    PeriodeUtenUttak,
+    isPeriodeUtenUttak,
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
@@ -25,6 +27,7 @@ import { Tidsperiode, StønadskontoType, Dekningsgrad } from 'common/types';
 import { Uttaksstatus } from '../uttaksstatus';
 import { justerAndrePartsUttakAvFellesperiodeOmMulig } from '../uttakUtils';
 import { getFloatFromString } from 'common/util/numberUtils';
+import { førsteOktober2021ReglerGjelder } from 'app/util/dates/dates';
 
 export const UttaksplanBuilder = (
     getUttaksstatusFunc: (tilgjengStønadskontoer: TilgjengeligStønadskonto[], uttaksplan: Periode[]) => Uttaksstatus,
@@ -35,6 +38,8 @@ export const UttaksplanBuilder = (
     erEndringsøknadUtenEkisterendeSak: boolean,
     relevantStartDatoForUttak: Date | undefined,
     harMidlertidigOmsorg: boolean,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    erAdopsjon: boolean,
     opprinneligPlan?: Periode[]
 ) => {
     return new UttaksplanAutoBuilder(
@@ -46,6 +51,8 @@ export const UttaksplanBuilder = (
         erEndringsøknadUtenEkisterendeSak,
         relevantStartDatoForUttak,
         harMidlertidigOmsorg,
+        harAktivitetskravIPeriodeUtenUttak,
+        erAdopsjon,
         opprinneligPlan
     );
 };
@@ -67,6 +74,8 @@ class UttaksplanAutoBuilder {
     protected erEndringsøknadUtenEkisterendeSak: boolean;
     protected relevantStartDatoForUttak: Date | undefined;
     protected harMidlertidigOmsorg: boolean;
+    protected harAktivitetskravIPeriodeUtenUttak: boolean;
+    protected erAdopsjon: boolean;
 
     public constructor(
         public perioder: Periode[],
@@ -80,6 +89,8 @@ class UttaksplanAutoBuilder {
         erEndringsøknadUtenEkisterendeSak: boolean,
         relevantStartDatoForUttak: Date | undefined,
         harMidlertidigOmsorg: boolean,
+        harAktivitetskravIPeriodeUtenUttak: boolean,
+        erAdopsjon: boolean,
         opprinneligPlan?: Periode[]
     ) {
         this.perioder = perioder;
@@ -91,6 +102,8 @@ class UttaksplanAutoBuilder {
         this.relevantStartDatoForUttak = relevantStartDatoForUttak;
         this.erEndringsøknadUtenEkisterendeSak = erEndringsøknadUtenEkisterendeSak;
         this.harMidlertidigOmsorg = harMidlertidigOmsorg;
+        this.harAktivitetskravIPeriodeUtenUttak = harAktivitetskravIPeriodeUtenUttak;
+        this.erAdopsjon = erAdopsjon;
     }
 
     buildUttaksplan() {
@@ -106,6 +119,9 @@ class UttaksplanAutoBuilder {
                 .sort(sorterPerioder),
             this.erEndringsøknadUtenEkisterendeSak,
             this.harMidlertidigOmsorg,
+            this.harAktivitetskravIPeriodeUtenUttak,
+            this.familiehendelsesdato,
+            this.erAdopsjon,
             this.relevantStartDatoForUttak || this.familiehendelsesdato
         );
 
@@ -113,20 +129,25 @@ class UttaksplanAutoBuilder {
 
         const utsettelser = Periodene(perioderEtterFamDato).getUtsettelser();
         const opphold = Periodene(perioderEtterFamDato).getOpphold();
-        const hullOgInfo = Periodene(perioderEtterFamDato).getHullOgInfo();
+        const hullOgInfoOgPerioderUtenUttak = Periodene(perioderEtterFamDato).getHullOgInfoOgPerioderUtenUttak();
         const uttaksperioder = Periodene(perioderEtterFamDato).getUttak();
         const overføringer = Periodene(perioderEtterFamDato).getOverføringer();
         const foreldrepengerFørTermin = Periodene(perioderFørFamDato).getForeldrepengerFørTermin();
 
         this.perioder = resetTidsperioder([...uttaksperioder, ...overføringer]);
 
-        const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hullOgInfo].sort(sorterPerioder);
+        const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hullOgInfoOgPerioderUtenUttak].sort(
+            sorterPerioder
+        );
         this.perioder = [
             ...settInnPerioder(
                 this.perioder,
                 fastePerioder,
                 this.erEndringsøknadUtenEkisterendeSak,
-                this.harMidlertidigOmsorg
+                this.harMidlertidigOmsorg,
+                this.harAktivitetskravIPeriodeUtenUttak,
+                this.familiehendelsesdato,
+                this.erAdopsjon
             ),
         ];
 
@@ -171,7 +192,10 @@ class UttaksplanAutoBuilder {
                 this.perioder,
                 periode,
                 this.erEndringsøknadUtenEkisterendeSak,
-                this.harMidlertidigOmsorg
+                this.harMidlertidigOmsorg,
+                this.familiehendelsesdato,
+                this.harAktivitetskravIPeriodeUtenUttak,
+                this.erAdopsjon
             );
         } else {
             this.perioder = settInnPeriode(
@@ -180,7 +204,10 @@ class UttaksplanAutoBuilder {
                     ...periode,
                 },
                 this.erEndringsøknadUtenEkisterendeSak,
-                this.harMidlertidigOmsorg
+                this.harMidlertidigOmsorg,
+                this.harAktivitetskravIPeriodeUtenUttak,
+                this.familiehendelsesdato,
+                this.erAdopsjon
             );
         }
         this.buildUttaksplan();
@@ -207,7 +234,7 @@ class UttaksplanAutoBuilder {
     }
 
     slettPeriodeOgBuild(periode: Periode) {
-        this.slettPeriode(periode, skalSlettetPeriodeErstattesMedHull(periode, this.perioder)).buildUttaksplan();
+        this.slettPeriode(periode, skalSlettetPeriodeErstattesMedHull(periode, this.perioder, true)).buildUttaksplan();
         return this;
     }
 
@@ -333,7 +360,10 @@ class UttaksplanAutoBuilder {
                 nyPlan,
                 opprinneligePerioderSomSkalLeggesInnIPlan,
                 this.erEndringsøknadUtenEkisterendeSak,
-                this.harMidlertidigOmsorg
+                this.harMidlertidigOmsorg,
+                this.harAktivitetskravIPeriodeUtenUttak,
+                this.familiehendelsesdato,
+                this.erAdopsjon
             );
             this.finnOgSettInnHull();
         }
@@ -406,6 +436,7 @@ class UttaksplanAutoBuilder {
 
         const idx = this.perioder.findIndex((p) => p.id === periode.id);
         this.perioder = [...this.perioder.slice(0, idx), ...periodeSomSkalSettesInn, ...this.perioder.slice(idx + 1)];
+
         return this;
     }
 
@@ -413,14 +444,24 @@ class UttaksplanAutoBuilder {
         if (Tidsperioden(periode.tidsperiode).erLik(oldPeriode.tidsperiode)) {
             return this;
         }
+
         this.justerOverskrivbarePerioderRundtPeriode(periode);
         const nyePeriodehull = periodeHasValidTidsrom(periode)
-            ? finnHullVedEndretTidsperiode(oldPeriode, periode)
+            ? finnHullVedEndretTidsperiode(
+                  oldPeriode,
+                  periode,
+                  førsteOktober2021ReglerGjelder(this.familiehendelsesdato),
+                  this.harAktivitetskravIPeriodeUtenUttak,
+                  this.familiehendelsesdato,
+                  this.erAdopsjon
+              )
             : undefined;
+
         if (nyePeriodehull) {
             this.perioder = this.perioder.concat(nyePeriodehull);
             this.sort();
         }
+
         return this;
     }
 
@@ -435,7 +476,9 @@ class UttaksplanAutoBuilder {
     }
 
     private fjernHullPåStarten() {
-        while (this.perioder.findIndex((p) => p.type === Periodetype.Hull) === 0) {
+        while (
+            this.perioder.findIndex((p) => p.type === Periodetype.Hull || p.type === Periodetype.PeriodeUtenUttak) === 0
+        ) {
             this.perioder.shift();
         }
         return this;
@@ -453,6 +496,9 @@ class UttaksplanAutoBuilder {
             this.perioder,
             this.erEndringsøknadUtenEkisterendeSak,
             this.harMidlertidigOmsorg,
+            this.harAktivitetskravIPeriodeUtenUttak,
+            this.familiehendelsesdato,
+            this.erAdopsjon,
             this.relevantStartDatoForUttak || this.familiehendelsesdato
         );
         return this;
@@ -538,14 +584,25 @@ function settInnPerioder(
     perioder: Periode[],
     fastePerioder: Periode[],
     erEndringssøknad: boolean,
-    harMidlertidigOmsorg: boolean
+    harMidlertidigOmsorg: boolean,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    familiehendelsesdato: Date,
+    erAdopsjon: boolean
 ): Periode[] {
     if (perioder.length === 0) {
         return fastePerioder;
     }
     let nyePerioder: Periode[] = [...perioder];
     [...fastePerioder].sort(sorterPerioder).forEach((periode) => {
-        nyePerioder = settInnPeriode(nyePerioder, periode, erEndringssøknad, harMidlertidigOmsorg);
+        nyePerioder = settInnPeriode(
+            nyePerioder,
+            periode,
+            erEndringssøknad,
+            harMidlertidigOmsorg,
+            harAktivitetskravIPeriodeUtenUttak,
+            familiehendelsesdato,
+            erAdopsjon
+        );
     });
     return nyePerioder.sort(sorterPerioder);
 }
@@ -555,7 +612,10 @@ function settInnPerioderInnITidsrom(
     perioderSomSkalSettesInn: Periode[],
     tidsperiode: Tidsperiode,
     erEndringsøknadUtenEkisterendeSak: boolean,
-    harMidlertidigOmsorg: boolean
+    harMidlertidigOmsorg: boolean,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    familiehendelsesdato: Date,
+    erAdopsjon: boolean
 ): Periode[] {
     const placeholderPeriode: PeriodeHull = {
         id: guid(),
@@ -566,7 +626,10 @@ function settInnPerioderInnITidsrom(
         perioder,
         placeholderPeriode,
         erEndringsøknadUtenEkisterendeSak,
-        harMidlertidigOmsorg
+        harMidlertidigOmsorg,
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsesdato,
+        erAdopsjon
     );
     return [...nyePerioder.filter((p) => p.id !== placeholderPeriode.id), ...perioderSomSkalSettesInn];
 }
@@ -575,7 +638,10 @@ function settInnPeriode(
     perioder: Periode[],
     nyPeriode: Periode,
     erEndringsøknadUtenEkisterendeSak: boolean,
-    harMidlertidigOmsorg: boolean
+    harMidlertidigOmsorg: boolean,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    familiehendelsesdato: Date,
+    erAdopsjon: boolean
 ): Periode[] {
     if (perioder.length === 0) {
         return [nyPeriode];
@@ -585,7 +651,14 @@ function settInnPeriode(
     if (berørtePerioder.length === 0 && !periodeSomMåSplittes) {
         const nyPeriodeliste = [...perioder, nyPeriode].sort(sorterPerioder);
         if (nyPeriodeliste[nyPeriodeliste.length - 1].id === nyPeriode.id) {
-            return finnOgSettInnHull(nyPeriodeliste, erEndringsøknadUtenEkisterendeSak, harMidlertidigOmsorg);
+            return finnOgSettInnHull(
+                nyPeriodeliste,
+                erEndringsøknadUtenEkisterendeSak,
+                harMidlertidigOmsorg,
+                harAktivitetskravIPeriodeUtenUttak,
+                familiehendelsesdato,
+                erAdopsjon
+            );
         }
         return nyPeriodeliste;
     }
@@ -598,9 +671,14 @@ function settInnPeriode(
         return leggTilPeriodeFørPeriode(perioder, perioder[0], nyPeriode);
     }
 
-    if (isUtsettelsesperiode(periodeSomMåSplittes)) {
+    if (isUtsettelsesperiode(periodeSomMåSplittes) && !isPeriodeUtenUttak(periodeSomMåSplittes)) {
         throw new Error('Kan ikke dele opp en utsettelse');
     }
+
+    if (isPeriodeUtenUttak(periodeSomMåSplittes)) {
+        return perioder;
+    }
+
     if (moment(periodeSomMåSplittes.tidsperiode.fom).isSame(nyPeriode.tidsperiode.fom, 'day')) {
         return leggTilPeriodeEtterPeriode(perioder, periodeSomMåSplittes, nyPeriode);
     } else {
@@ -612,9 +690,13 @@ export function finnHullIPerioder(
     perioder: Periode[],
     erEndringsøknadUtenEkisterendeSak: boolean,
     harMidlertidigOmsorg: boolean,
+    skalLeggeInnPerioderUtenUttak: boolean,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    familiehendelsesdato: Date,
+    erAdopsjon: boolean,
     startDato?: Date
-): PeriodeHull[] {
-    const hull: PeriodeHull[] = [];
+): Array<PeriodeHull | PeriodeUtenUttak> {
+    const hullEllerPeriodeUtenUttak: Array<PeriodeHull | PeriodeUtenUttak> = [];
     const perioderLength = perioder.length;
     const shouldHullBeInsertedBetweenFamiliehendelsedatoAndFirstPeriode =
         startDato !== undefined &&
@@ -631,7 +713,17 @@ export function finnHullIPerioder(
         }).getAntallUttaksdager();
 
         if (uttaksdagerMellomStartOgFørstePeriode > 0) {
-            hull.push(getNyttPeriodehull(getTidsperiode(fom, uttaksdagerMellomStartOgFørstePeriode)));
+            const tidsperiode = getTidsperiode(fom, uttaksdagerMellomStartOgFørstePeriode);
+
+            hullEllerPeriodeUtenUttak.push(
+                ...getNyttPeriodehull(
+                    tidsperiode,
+                    skalLeggeInnPerioderUtenUttak,
+                    harAktivitetskravIPeriodeUtenUttak,
+                    familiehendelsesdato,
+                    erAdopsjon
+                )
+            );
         }
     }
     perioder.forEach((periode, idx) => {
@@ -651,10 +743,19 @@ export function finnHullIPerioder(
         const uttaksdagerITidsperiode = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
 
         if (uttaksdagerITidsperiode > 0) {
-            hull.push(getNyttPeriodehull(tidsperiodeMellomPerioder));
+            hullEllerPeriodeUtenUttak.push(
+                ...getNyttPeriodehull(
+                    tidsperiodeMellomPerioder,
+                    skalLeggeInnPerioderUtenUttak,
+                    harAktivitetskravIPeriodeUtenUttak,
+                    familiehendelsesdato,
+                    erAdopsjon
+                )
+            );
         }
     });
-    return hull;
+
+    return hullEllerPeriodeUtenUttak;
 }
 
 function resetTidsperioder(perioder: Periode[]): Periode[] {
@@ -782,31 +883,66 @@ function splittPeriodeMedPeriode(periode: Periode, nyPeriode: Periode): Periode[
     return [forste, midt, siste];
 }
 
-function finnHullVedEndretTidsperiode(oldPeriode: Periode, periode: Periode): PeriodeHull[] | undefined {
+function finnHullVedEndretTidsperiode(
+    oldPeriode: Periode,
+    periode: Periode,
+    skalLeggeInnPerioderUtenUttak: boolean,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    familiehendelsesdato: Date,
+    erAdopsjon: boolean
+): Array<PeriodeHull | PeriodeUtenUttak> | undefined {
     if (periodeHasValidTidsrom(periode) === false || periodeHasValidTidsrom(oldPeriode) === false) {
         return undefined;
     }
     /*
      TODO - sjekk at ikke opphold kolliderer med andre perioder
      */
-    const periodehull: PeriodeHull[] = [];
+    const periodehull: Array<PeriodeHull | PeriodeUtenUttak> = [];
     const diffStartdato = Uttaksdagen(oldPeriode.tidsperiode.fom).getUttaksdagerFremTilDato(periode.tidsperiode.fom);
+
     if (diffStartdato > 0) {
-        periodehull.push(getNyttPeriodehull(getTidsperiode(oldPeriode.tidsperiode.fom, diffStartdato)));
-    }
-    const diffSluttdato = Uttaksdagen(oldPeriode.tidsperiode.tom).getUttaksdagerFremTilDato(periode.tidsperiode.tom);
-    if (diffSluttdato < 0) {
+        const tidsperiode = getTidsperiode(oldPeriode.tidsperiode.fom, diffStartdato);
+
         periodehull.push(
-            getNyttPeriodehull({
-                fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
-                tom: oldPeriode.tidsperiode.tom,
-            })
+            ...getNyttPeriodehull(
+                tidsperiode,
+                skalLeggeInnPerioderUtenUttak,
+                harAktivitetskravIPeriodeUtenUttak,
+                familiehendelsesdato,
+                erAdopsjon
+            )
         );
     }
+
+    const diffSluttdato = Uttaksdagen(oldPeriode.tidsperiode.tom).getUttaksdagerFremTilDato(periode.tidsperiode.tom);
+
+    if (diffSluttdato < 0) {
+        periodehull.push(
+            ...getNyttPeriodehull(
+                {
+                    fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
+                    tom: oldPeriode.tidsperiode.tom,
+                },
+                skalLeggeInnPerioderUtenUttak,
+                harAktivitetskravIPeriodeUtenUttak,
+                familiehendelsesdato,
+                erAdopsjon
+            )
+        );
+    }
+
     return periodehull.length > 0 ? periodehull : undefined;
 }
 
-function skalSlettetPeriodeErstattesMedHull(periode: Periode, perioder: Periode[]): boolean {
+function skalSlettetPeriodeErstattesMedHull(
+    periode: Periode,
+    perioder: Periode[],
+    skalLeggeInnPerioderUtenUttak: boolean
+): boolean {
+    if (skalLeggeInnPerioderUtenUttak) {
+        return false;
+    }
+
     if (periode.type === Periodetype.Hull) {
         return false;
     }
@@ -821,9 +957,23 @@ export function finnOgSettInnHull(
     perioder: Periode[],
     erEndringsøknadUtenEkisterendeSak: boolean,
     harMidlertidigOmsorg: boolean,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    familiehendelsesdato: Date,
+    erAdopsjon: boolean,
     startdato?: Date
 ): Periode[] {
-    const hull = finnHullIPerioder(perioder, erEndringsøknadUtenEkisterendeSak, harMidlertidigOmsorg, startdato);
+    const skalLeggeInnPerioderUtenUttak = førsteOktober2021ReglerGjelder(familiehendelsesdato);
+
+    const hull = finnHullIPerioder(
+        perioder,
+        erEndringsøknadUtenEkisterendeSak,
+        harMidlertidigOmsorg,
+        skalLeggeInnPerioderUtenUttak,
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsesdato,
+        erAdopsjon,
+        startdato
+    );
     return [...perioder, ...hull].sort(sorterPerioder);
 }
 
@@ -831,7 +981,10 @@ function settInnFerieMedHelligdager(
     perioder: Periode[],
     periode: Periode,
     erEndringsøknadUtenEkisterendeSak: boolean,
-    harMidlertidigOmsorg: boolean
+    harMidlertidigOmsorg: boolean,
+    familiehendelsesdato: Date,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    erAdopsjon: boolean
 ) {
     const splittetPeriode = splittPeriodeMedHelligdager(periode);
     return settInnPerioderInnITidsrom(
@@ -839,15 +992,79 @@ function settInnFerieMedHelligdager(
         splittetPeriode,
         periode.tidsperiode,
         erEndringsøknadUtenEkisterendeSak,
-        harMidlertidigOmsorg
+        harMidlertidigOmsorg,
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsesdato,
+        erAdopsjon
     );
 }
 
-const getNyttPeriodehull = (tidsperiode: Tidsperiode, årsak?: PeriodeHullÅrsak): PeriodeHull => ({
+const getNyttPeriodehull = (
+    tidsperiode: Tidsperiode,
+    skalLeggeInnPerioderUtenUttak: boolean,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    familiehendelsesdato: Date,
+    erAdopsjon: boolean,
+    årsak?: PeriodeHullÅrsak
+): Array<PeriodeHull | PeriodeUtenUttak> => {
+    if (skalLeggeInnPerioderUtenUttak) {
+        const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
+        const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+        const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdagFamiliehendelsesdato).leggTil(
+            ANTALL_UTTAKSDAGER_SEKS_UKER
+        );
+        const tidsperiodeErInnenFørsteSeksUker = Tidsperioden(tidsperiode).erInnenforFørsteSeksUker(
+            familiehendelsesdato
+        );
+
+        if (harAktivitetskravIPeriodeUtenUttak) {
+            return [getPeriodeHull(tidsperiode, årsak)];
+        }
+
+        if (tidsperiodeErInnenFørsteSeksUker && !erAdopsjon) {
+            if (moment(tidsperiode.tom).isBefore(førsteUttaksdagEtterSeksUker)) {
+                return [getPeriodeHull(tidsperiode, årsak)];
+            }
+
+            const antallDagerFraFomTilFørsteUttaksdagSeksUker =
+                Tidsperioden({ fom: tidsperiode.fom, tom: førsteUttaksdagEtterSeksUker }).getAntallUttaksdager() - 2;
+
+            const nyPeriodeUtenUttakTidsperiodeLengde =
+                Tidsperioden(tidsperiode).getAntallUttaksdager() - antallDagerFraFomTilFørsteUttaksdagSeksUker;
+
+            const førsteSeksUkerTidsperiode: Tidsperiode = {
+                fom: tidsperiode.fom,
+                tom: Uttaksdagen(førsteUttaksdagEtterSeksUker).leggTil(-1),
+            };
+
+            const periodeUtenUttakTidsperiode: Tidsperiode = {
+                fom: førsteUttaksdagEtterSeksUker,
+                tom: Uttaksdagen(førsteUttaksdagEtterSeksUker).leggTil(nyPeriodeUtenUttakTidsperiodeLengde - 2),
+            };
+
+            const periodeHull = getPeriodeHull(førsteSeksUkerTidsperiode, årsak);
+            const periodeUtenUttak = getNyPeriodeUtenUttak(periodeUtenUttakTidsperiode);
+
+            return [periodeHull, periodeUtenUttak];
+        }
+
+        return [getNyPeriodeUtenUttak(tidsperiode)];
+    }
+
+    return [getPeriodeHull(tidsperiode, årsak)];
+};
+
+const getPeriodeHull = (tidsperiode: Tidsperiode, årsak?: PeriodeHullÅrsak): PeriodeHull => ({
     id: guid(),
     type: Periodetype.Hull,
     tidsperiode,
     årsak,
+});
+
+const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): PeriodeUtenUttak => ({
+    id: guid(),
+    type: Periodetype.PeriodeUtenUttak,
+    tidsperiode,
 });
 
 export function splittPeriodeMedHelligdager(periode: Periode): Periode[] {
@@ -857,7 +1074,7 @@ export function splittPeriodeMedHelligdager(periode: Periode): Periode[] {
     let fom = periode.tidsperiode.fom;
     friperioder.forEach((friperiode) => {
         if (moment(friperiode.fom).isSame(fom, 'day')) {
-            nyePerioder.push(getNyttPeriodehull(friperiode, PeriodeHullÅrsak.Fridag));
+            nyePerioder.push(getPeriodeHull(friperiode, PeriodeHullÅrsak.Fridag));
             fom = Uttaksdagen(friperiode.tom).neste();
         } else {
             nyePerioder.push({
@@ -868,7 +1085,7 @@ export function splittPeriodeMedHelligdager(periode: Periode): Periode[] {
                     tom: Uttaksdagen(friperiode.fom).forrige(),
                 },
             });
-            nyePerioder.push(getNyttPeriodehull(friperiode, PeriodeHullÅrsak.Fridag));
+            nyePerioder.push(getPeriodeHull(friperiode, PeriodeHullÅrsak.Fridag));
             fom = Uttaksdagen(friperiode.tom).neste();
         }
     });

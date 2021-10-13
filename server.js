@@ -6,7 +6,6 @@ const path = require('path');
 const mustacheExpress = require('mustache-express');
 const Promise = require('promise');
 const getDecorator = require('./src/build/scripts/decorator');
-const createEnvSettingsFile = require('./src/build/scripts/envSettings');
 var compression = require('compression');
 
 server.use(compression());
@@ -14,8 +13,6 @@ server.use(compression());
 server.set('views', `${__dirname}/dist`);
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
-
-createEnvSettingsFile(path.resolve(`${__dirname}/dist/js/settings.js`));
 
 server.use((req, res, next) => {
     res.removeHeader('X-Powered-By');
@@ -42,14 +39,24 @@ const startServer = (html) => {
     server.use('/dist/js', express.static(path.resolve(__dirname, 'dist/js')));
     server.use('/dist/css', express.static(path.resolve(__dirname, 'dist/css')));
 
-    server.get(['/dist/js/settings.js'], (req, res) => {
-        res.sendFile(path.resolve(`../../dist/js/settings.js`));
+    server.get(['/dist/settings.js'], (_req, res) => {
+        res.set('content-type', 'application/javascript');
+        res.send(`window.appSettings = {
+            APP_VERSION: '${process.env.APP_VERSION}',
+            REST_API_URL: '${process.env.FORELDREPENGESOKNAD_API_URL}',
+            UTTAK_API_URL: '${process.env.FP_UTTAK_SERVICE_URL}',
+            LOGIN_URL: '${process.env.LOGINSERVICE_URL}',
+            FAMILIE: '${process.env.FAMILIE}',
+            FEATURE_VIS_PERIODER_SOM_SENDES_INN:  '${process.env.FEATURE_VIS_PERIODER_SOM_SENDES_INN}',
+            FEATURE_VIS_FEILSIDE:  '${process.env.FEATURE_VIS_FEILSIDE}',
+            FEATURE_VIS_ALERTSTRIPE:  '${process.env.FEATURE_VIS_ALERTSTRIPE}',
+        };`);
     });
 
-    server.get('/health/isAlive', (req, res) => res.sendStatus(200));
-    server.get('/health/isReady', (req, res) => res.sendStatus(200));
+    server.get('/health/isAlive', (_req, res) => res.sendStatus(200));
+    server.get('/health/isReady', (_req, res) => res.sendStatus(200));
 
-    server.get(/^\/(?!.*dist).*$/, (req, res) => {
+    server.get(/^\/(?!.*dist).*$/, (_req, res) => {
         res.send(html);
     });
 

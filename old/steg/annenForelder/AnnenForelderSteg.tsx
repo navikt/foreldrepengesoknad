@@ -80,7 +80,7 @@ class AnnenForelderSteg extends React.Component<Props> {
         const annenForelder: Partial<AnnenForelder> = {
             fornavn: values.fornavn,
             etternavn: values.etternavn,
-            fnr: values.fnr,
+            fnr: values.fnr !== undefined ? values.fnr.trimEnd() : values.fnr,
             erInformertOmSøknaden: values.erInformertOmSøknaden === YesOrNo.YES,
             harRettPåForeldrepenger: values.harRettPåForeldrepenger === YesOrNo.YES,
             kanIkkeOppgis: values.kanIkkeOppgis,

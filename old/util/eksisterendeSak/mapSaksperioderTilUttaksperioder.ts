@@ -21,12 +21,13 @@ import { sorterPerioder } from '../uttaksplan/Periodene';
 import { Perioden } from '../uttaksplan/Perioden';
 import { Uttaksdagen, erUttaksdag } from '../uttaksplan/Uttaksdagen';
 import { getUtsettelseÅrsakFromSaksperiode } from '../uttaksplan/uttaksperiodeUtils';
-import { Saksperiode, Saksgrunnlag, PeriodeResultatType } from '../../types/EksisterendeSak';
+import { Saksperiode, Saksgrunnlag, PeriodeResultatType, FamiliehendelsesType } from '../../types/EksisterendeSak';
 import { Forelder } from 'common/types';
 import { isValidTidsperiode, Tidsperioden } from '../uttaksplan/Tidsperioden';
 import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
 import moment from 'moment';
 import { finnOgSettInnHull } from '../uttaksplan/builder/UttaksplanBuilder';
+import { førsteOktober2021ReglerGjelder } from '../dates/dates';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;
@@ -395,7 +396,17 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harUttaksdager)
     );
 
-    return finnOgSettInnHull(sammenslåddePerioder, erEndringsøknadUtenEkisterendeSak, false);
+    const kunFarMedmorHarRett = !grunnlag.morHarRett && grunnlag.farMedmorHarRett;
+    const erAdopsjon = grunnlag.familieHendelseType === FamiliehendelsesType.ADOPSJON;
+
+    return finnOgSettInnHull(
+        sammenslåddePerioder,
+        erEndringsøknadUtenEkisterendeSak,
+        førsteOktober2021ReglerGjelder(new Date(grunnlag.familieHendelseDato)),
+        kunFarMedmorHarRett,
+        new Date(grunnlag.familieHendelseDato),
+        erAdopsjon
+    );
 };
 
 export default mapSaksperioderTilUttaksperioder;

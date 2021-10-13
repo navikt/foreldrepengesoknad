@@ -17,6 +17,8 @@ import {
     isOverføringsperiode,
     isUtsettelsesperiode,
     isUttaksperiode,
+    isPeriodeUtenUttak,
+    PeriodeUtenUttak,
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import { Perioden } from './Perioden';
@@ -29,7 +31,7 @@ export const Periodene = (perioder: Periode[]) => ({
     getUttak: () => getUttaksperioder(perioder),
     getOverføringer: () => getOverføringer(perioder),
     getHull: () => getHull(perioder),
-    getHullOgInfo: () => getHullOgInfo(perioder),
+    getHullOgInfoOgPerioderUtenUttak: () => getHullOgInfoOgPerioderUtenUttak(perioder),
     getInfoperioder: () => getInfoperioder(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
     getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
@@ -98,8 +100,12 @@ function getHull(perioder: Periode[]): PeriodeHull[] {
     return perioder.filter((periode) => isHull(periode)) as PeriodeHull[];
 }
 
-function getHullOgInfo(perioder: Periode[]): (PeriodeHull | InfoPeriode)[] {
-    return perioder.filter((periode) => isHull(periode) || isInfoPeriode(periode)) as (PeriodeHull | InfoPeriode)[];
+function getHullOgInfoOgPerioderUtenUttak(perioder: Periode[]): (PeriodeHull | InfoPeriode | PeriodeUtenUttak)[] {
+    return perioder.filter((periode) => isHull(periode) || isInfoPeriode(periode) || isPeriodeUtenUttak(periode)) as (
+        | PeriodeHull
+        | InfoPeriode
+        | PeriodeUtenUttak
+    )[];
 }
 
 function getInfoperioder(perioder: Periode[]): InfoPeriode[] {

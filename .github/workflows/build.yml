@@ -6,14 +6,14 @@ on:
             - master
 env:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/foreldrepengesoknad
+    IMAGE_BASE: ghcr.io/${{ github.repository }}
 
 jobs:
     kompiler:
         runs-on: ubuntu-latest
         steps:
             - name: Sjekk ut kode
-              uses: actions/checkout@v2
+              uses: actions/checkout@v2.3.4
 
             - name: Hent tag
               run: |
@@ -22,7 +22,7 @@ jobs:
                   echo 'EOF' >> $GITHUB_ENV
 
             - name: Cache node modules
-              uses: actions/cache@v2
+              uses: actions/cache@v2.1.6
               with:
                   path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
                   key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -37,14 +37,20 @@ jobs:
                   npm run build
                   echo "IMAGE=$IMAGE_BASE:$TAG" >> $GITHUB_ENV
 
+            - name: Login to GitHub Packages Docker Registry
+              uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9 # Use commit-sha1 instead of tag for security concerns
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
             - name: Bygg, tag og push Docker image
               run: |
-                  docker build --tag ${IMAGE_BASE}:${TAG} .
-                  echo  ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} --password-stdin
-                  docker push ${IMAGE_BASE}:${TAG}
+                  docker build --pull --tag ${IMAGE_BASE}:${TAG} .
+                  docker push ${IMAGE_BASE} --all-tags
 
             - name: Lukk gamle bygg-issues
-              uses: actions/github-script@v3
+              uses: actions/github-script@v4.0.2
               with:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   script: |
@@ -64,24 +70,23 @@ jobs:
                         });
                       });
 
-            - name: Opprett issue, trigg deploy til dev-fss og dev-gcp
+            - name: Opprett issue, trigg deploy til dev-gcp
               if: success()
-              uses: actions/github-script@v3
+              uses: actions/github-script@v4.0.2
               with:
                   github-token: ${{secrets.NOTIFICATION}}
                   script: |
-                      github.issues.create( {
+                      github.issues.create({
                         owner: context.issue.owner,
                         repo: context.issue.repo,
                         labels: ['bygg'],
-                        title: 'Deploy av ${{ env.TAG }}'})
+                        title: 'Deploy av ${{ env.TAG }}',
+                        body: '${{ github.sha }}',
+                      })
                       .then(response => {
                               const issue = { owner: context.issue.owner,
                               repo: context.issue.repo,
                               issue_number: response.data.number }
-                             github.issues.createComment({...issue,
-                                    title: 'Deploy av ${{ env.TAG }}',
-                                    body: '/promote dev-sbs '})
                              github.issues.createComment({...issue,
                                     title: 'Deploy av ${{ env.TAG }}',
                                     body: '/promote dev-gcp '})

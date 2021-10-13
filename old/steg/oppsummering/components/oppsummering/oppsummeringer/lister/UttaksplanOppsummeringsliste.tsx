@@ -11,6 +11,7 @@ import {
     Utsettelsesperiode,
     Uttaksperiode,
     Oppholdsperiode,
+    PeriodeUtenUttakUtsettelse,
 } from '../../../../../../types/uttaksplan/periodetyper';
 import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../../../../../../util/dates/dates';
@@ -138,7 +139,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
     }
 
     createOppsummeringslisteelementPropsForUtsettelsesperiode(
-        periode: Utsettelsesperiode,
+        periode: Utsettelsesperiode | PeriodeUtenUttakUtsettelse,
         periodeErNyEllerEndret: boolean
     ): OppsummeringslisteelementProps {
         const { registrerteArbeidsforhold, søknadsinfo, intl } = this.props;

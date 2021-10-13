@@ -9,7 +9,6 @@ const requestDecorator = (callback) => {
 };
 
 const extractDecoratorFragments = (html) => {
-    console.log('Extracting decorator fragments', html);
     const { document } = new JSDOM(html).window;
     const prop = 'innerHTML';
 

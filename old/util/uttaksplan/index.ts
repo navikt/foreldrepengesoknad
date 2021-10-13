@@ -195,6 +195,8 @@ export const getPeriodeTittel = (intl: IntlShape, periode: Periode, navnPåForel
             );
         case Periodetype.Hull:
             return getMessage(intl, `periodetype.hull.tittel`);
+        case Periodetype.PeriodeUtenUttak:
+            return getMessage(intl, 'periodetype.periodeUtenUttak.tittel');
         case Periodetype.Info:
             switch (periode.infotype) {
                 case PeriodeInfoType.uttakAnnenPart:

@@ -81,10 +81,11 @@ export const validateUtenlandsoppholdNeste12Mnd = (utenlandsopphold: BostedUtlan
 };
 
 export const validateFødselsnummer = (
-    fnr: string,
+    fnrInput: string,
     erUtenlandskFnr: boolean,
     søkersFødselsnummer: string
 ): SkjemaelementFeil => {
+    const fnr = fnrInput !== undefined ? fnrInput.trimEnd() : fnrInput;
     const validFnrResult = isFødselsnummerFormatValid(fnr);
 
     if (erUtenlandskFnr) {

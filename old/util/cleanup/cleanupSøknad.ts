@@ -12,6 +12,8 @@ import {
     StønadskontoType,
     Periodetype,
     Arbeidsform,
+    Utsettelsesperiode,
+    UtsettelseÅrsakType,
 } from '../../types/uttaksplan/periodetyper';
 import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
 import { Barn, BarnInnsending } from '../../types/søknad/Barn';
@@ -21,6 +23,11 @@ import Søker, { SøkerInnsending } from 'app/types/søknad/Søker';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { isISODateString } from 'nav-datovelger';
 import { NæringInnsending } from 'app/types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import { guid } from 'nav-frontend-js-utils';
+import { Forelder } from 'common/types';
+import { sorterPerioder } from '../uttaksplan/Periodene';
+import moment from 'moment';
+import { Uttaksdagen } from '../uttaksplan/Uttaksdagen';
 
 export const isArrayOfAttachments = (object: any) => {
     return (
@@ -81,6 +88,10 @@ export const isNotPeriodetypeInfo = (periode: Periode): boolean => {
     return periode.type !== Periodetype.Info;
 };
 
+export const isNotPeriodeUtenUttak = (periode: Periode): boolean => {
+    return periode.type !== Periodetype.PeriodeUtenUttak;
+};
+
 export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
     uttaksplan.forEach((p1: Periode) => {
         if (p1.vedlegg) {
@@ -99,7 +110,7 @@ export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
 };
 
 const skalPeriodeSendesInn = (periode: Periode) => {
-    return isNotPeriodetypeHull(periode) && isNotPeriodetypeInfo(periode);
+    return isNotPeriodetypeHull(periode) && isNotPeriodetypeInfo(periode) && isNotPeriodeUtenUttak(periode);
 };
 
 const getArbeidstakerFrilansSN = (arbeidsformer: Arbeidsform[] | undefined) => {
@@ -126,14 +137,54 @@ const ensureNoNullItemsInFødselsdatoer = (barn: BarnInnsending, situasjon: Søk
     return (cleanedBarn as BarnInnsending) || barn;
 };
 
-const cleanupUttaksplan = (uttaksplan: Periode[], annenForelder?: AnnenForelder): Periode[] => {
-    return uttaksplan
+const cleanupUttaksplan = (
+    uttaksplan: Periode[],
+    annenForelder?: AnnenForelder,
+    endringstidspunkt?: Date
+): Periode[] => {
+    const cleanedUttaksplan = uttaksplan
         .filter((periode: Periode) => isValidTidsperiode(periode.tidsperiode))
         .filter(skalPeriodeSendesInn)
         .map((periode) =>
             annenForelder ? changeClientonlyKontotype(periode, annenForelder.harRettPåForeldrepenger) : periode
         )
         .map(changeGradertPeriode);
+
+    if (endringstidspunkt) {
+        const periodeVedEndringstidspunkt = cleanedUttaksplan.find((periode) =>
+            moment(endringstidspunkt).isBetween(periode.tidsperiode.fom, periode.tidsperiode.fom, 'day', '[]')
+        );
+
+        if (!periodeVedEndringstidspunkt) {
+            const førstePeriodeEtterEndringstidspunkt = cleanedUttaksplan.find((periode) =>
+                moment(periode.tidsperiode.fom).isAfter(endringstidspunkt)
+            );
+
+            const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt
+                ? Uttaksdagen(førstePeriodeEtterEndringstidspunkt.tidsperiode.fom).forrige()
+                : endringstidspunkt;
+
+            const endringsTidspunktPeriode: Utsettelsesperiode = {
+                type: Periodetype.Utsettelse,
+                årsak: UtsettelseÅrsakType.Fri,
+                id: guid(),
+                tidsperiode: {
+                    fom: endringstidspunkt,
+                    tom: endringsTidspunktPeriodeTom,
+                },
+                erArbeidstaker: false,
+                forelder: Forelder.farMedmor,
+            };
+
+            cleanedUttaksplan.push(endringsTidspunktPeriode);
+
+            cleanedUttaksplan.sort(sorterPerioder);
+
+            return cleanedUttaksplan;
+        }
+    }
+
+    return cleanedUttaksplan;
 };
 
 const cleanupTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string | undefined => {
@@ -203,7 +254,8 @@ export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
 
 export const cleanEnkelEndringssøknad = (
     søknad: Søknad,
-    endringerIUttaksplan: Periode[]
+    endringerIUttaksplan: Periode[],
+    endringstidspunkt?: Date
 ): EnkelEndringssøknadForInnsending => {
     const cleanedSøknad: EnkelEndringssøknadForInnsending = {
         erEndringssøknad: true,
@@ -217,7 +269,7 @@ export const cleanEnkelEndringssøknad = (
         dekningsgrad: søknad.dekningsgrad,
         situasjon: søknad.situasjon,
     };
-    cleanedSøknad.uttaksplan = cleanupUttaksplan(cleanedSøknad.uttaksplan, søknad.annenForelder);
+    cleanedSøknad.uttaksplan = cleanupUttaksplan(cleanedSøknad.uttaksplan, søknad.annenForelder, endringstidspunkt);
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
     cleanedSøknad.vedlegg = cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring: søknad.vedleggForSenEndring });
     cleanedSøknad.tilleggsopplysninger = cleanupTilleggsopplysninger(søknad.tilleggsopplysninger);

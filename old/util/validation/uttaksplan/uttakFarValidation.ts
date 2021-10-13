@@ -6,6 +6,7 @@ import {
     Uttaksperiode,
     MorsAktivitet,
     UtsettelseÅrsakType,
+    isPeriodeUtenUttak,
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../uttaksplan/Periodene';
 import { isValidTidsperiode, Tidsperioden } from '../../uttaksplan/Tidsperioden';
@@ -28,7 +29,8 @@ export const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigO
         if (periode.konto === StønadskontoType.Fellesperiode || periode.konto === StønadskontoType.Foreldrepenger) {
             return (
                 periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
-                periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp
+                periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
+                periode.erMorForSyk === true
             );
         }
 
@@ -95,7 +97,7 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
     const farsPerioderInnenforSeksFørsteUker = Periodene(perioder)
         .getPerioderEtterFamiliehendelsesdato(familiehendelsesdato)
         .filter((p) => periodeErFørDato(p, førsteUttaksdagEtterSeksUker))
-        .filter((p) => p.type !== Periodetype.Hull && p.forelder === Forelder.farMedmor);
+        .filter((p) => p.type !== Periodetype.Hull && !isPeriodeUtenUttak(p) && p.forelder === Forelder.farMedmor);
 
     const ugyldigeUttak = Periodene(farsPerioderInnenforSeksFørsteUker)
         .getUttak()

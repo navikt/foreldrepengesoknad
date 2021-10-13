@@ -19,6 +19,7 @@ export enum Periodetype {
     'Overføring' = 'overføring',
     'Hull' = 'ubegrunnetOpphold',
     'Info' = 'info',
+    'PeriodeUtenUttak' = 'periodeUtenUttak',
 }
 
 export enum UtsettelseÅrsakType {
@@ -29,6 +30,7 @@ export enum UtsettelseÅrsakType {
     'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET',
     'HvØvelse' = 'HV_OVELSE',
     'NavTiltak' = 'NAV_TILTAK',
+    'Fri' = 'FRI',
 }
 
 export enum SaksperiodeUtsettelseÅrsakType {
@@ -162,12 +164,31 @@ export const isInfoPeriode = (periode: Periode): periode is InfoPeriode => {
 
 export interface PeriodeHull extends PeriodeBase {
     type: Periodetype.Hull;
-    tidsperiode: Tidsperiode;
     årsak?: PeriodeHullÅrsak;
+}
+
+export interface PeriodeUtenUttak extends PeriodeBase {
+    type: Periodetype.PeriodeUtenUttak;
+}
+
+export interface PeriodeUtenUttakUtsettelse extends Omit<Utsettelsesperiode, 'forelder'> {
+    type: Periodetype.Utsettelse;
+    morsAktivitetIPerioden?: MorsAktivitet;
+    årsak: UtsettelseÅrsakType.Fri;
+    erArbeidstaker: boolean;
+    forelder: Forelder;
 }
 
 export const isHull = (periode: Periode): periode is PeriodeHull => {
     return periode.type === Periodetype.Hull;
+};
+
+export const isPeriodeUtenUttakUtsettelse = (periode: Periode): periode is PeriodeUtenUttakUtsettelse => {
+    return periode.type === Periodetype.Utsettelse && periode.årsak === UtsettelseÅrsakType.Fri;
+};
+
+export const isPeriodeUtenUttak = (periode: Periode): periode is PeriodeUtenUttak => {
+    return periode.type === Periodetype.PeriodeUtenUttak;
 };
 
 export interface UttaksperiodeBase extends PeriodeBase {
@@ -225,6 +246,8 @@ export type Periode =
     | Oppholdsperiode
     | Overføringsperiode
     | PeriodeHull
+    | PeriodeUtenUttakUtsettelse
+    | PeriodeUtenUttak
     | InfoPeriode;
 
 export enum MorsAktivitet {
@@ -273,7 +296,11 @@ export function isForeldrepengerFørFødselUttaksperiode(
 }
 
 export const isOverskrivbarPeriode = (periode: Periode): boolean => {
-    return (periode.type === Periodetype.Info && periode.overskrives === true) || periode.type === Periodetype.Hull;
+    return (
+        (periode.type === Periodetype.Info && periode.overskrives === true) ||
+        periode.type === Periodetype.Hull ||
+        isPeriodeUtenUttak(periode)
+    );
 };
 
 export const isUttakAnnenPart = (periode: Periode): periode is UttakAnnenPartInfoPeriode => {

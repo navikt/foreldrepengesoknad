@@ -7,8 +7,18 @@ const configureDevServer = (decoratorFragments) => ({
         app.engine('html', mustacheExpress());
         app.set('views', `${__dirname}/../../../dist/dev`);
         app.set('view engine', 'mustache');
-        app.get('/dist/js/settings.js', (_req, res) => {
-            res.sendFile(path.resolve(`${__dirname}/../../../dist/js/settings.js`));
+        app.get(['/dist/settings.js'], (_req, res) => {
+            res.set('content-type', 'application/javascript');
+            res.send(`window.appSettings = {
+                APP_VERSION: '${process.env.APP_VERSION}',
+                REST_API_URL: '${process.env.FORELDREPENGESOKNAD_API_URL}',
+                UTTAK_API_URL: '${process.env.FP_UTTAK_SERVICE_URL}',
+                LOGIN_URL: '${process.env.LOGINSERVICE_URL}',
+                FAMILIE: '${process.env.FAMILIE}',
+                FEATURE_VIS_PERIODER_SOM_SENDES_INN:  '${process.env.FEATURE_VIS_PERIODER_SOM_SENDES_INN}',
+                FEATURE_VIS_FEILSIDE:  '${process.env.FEATURE_VIS_FEILSIDE}',
+                FEATURE_VIS_ALERTSTRIPE:  '${process.env.FEATURE_VIS_ALERTSTRIPE}',
+            };`);
         });
         app.get(/^\/(?!.*dist).*$/, (_req, res) => {
             res.render('index.html', Object.assign(decoratorFragments));

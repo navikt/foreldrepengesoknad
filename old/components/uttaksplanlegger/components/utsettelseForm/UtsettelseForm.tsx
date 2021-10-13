@@ -50,6 +50,7 @@ import UtsettelseEndreTidsperiodeSpørsmål from './partials/UtsettelseEndreTids
 import TidsperiodeDisplay from '../tidsperiodeDisplay/TidsperiodeDisplay';
 import TidsperiodeForm from '../tidsperiodeForm/TidsperiodeForm';
 import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
+import { førsteOktober2021ReglerGjelder } from 'app/util/dates/dates';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -86,6 +87,7 @@ export enum Utsettelsesvariant {
     Sykdom = 'sykdom',
     HvØvelse = 'hv_øvelse',
     NavTiltak = 'nav_tiltak',
+    Fri = 'fri',
 }
 
 export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utsettelsesvariant | undefined => {
@@ -102,6 +104,8 @@ export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utset
         case UtsettelseÅrsakType.InstitusjonBarnet:
         case UtsettelseÅrsakType.InstitusjonSøker:
             return Utsettelsesvariant.Sykdom;
+        case UtsettelseÅrsakType.Fri:
+            return Utsettelsesvariant.Fri;
         default:
             return undefined;
     }
@@ -157,10 +161,10 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
         }
     }
 
-    getUtsettelseÅrsakRadios(disableFerie: boolean): RadioProps[] {
+    getUtsettelseÅrsakRadios(disableFerie: boolean, skalViseGamleUtsettelseÅrsaker: boolean): RadioProps[] {
         const { søknadsinfo, intl } = this.props;
 
-        const defaultRadios: RadioProps[] = [
+        const allRadios: RadioProps[] = [
             {
                 label: getMessage(intl, 'jegskalhaferie'),
                 value: Utsettelsesvariant.Ferie,
@@ -187,7 +191,24 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                 value: Utsettelsesvariant.NavTiltak,
                 name: 'utsettelseÅrsak',
             },
+            {
+                label: getMessage(intl, 'fri'),
+                value: Utsettelsesvariant.Fri,
+                name: 'utsettelseÅrsak',
+            },
         ];
+
+        const defaultRadios = allRadios.filter((option) => {
+            if (skalViseGamleUtsettelseÅrsaker && option.value === Utsettelsesvariant.Fri) {
+                return false;
+            }
+
+            if (skalViseGamleUtsettelseÅrsaker) {
+                return true;
+            }
+
+            return option.value === Utsettelsesvariant.Sykdom || option.value === Utsettelsesvariant.Fri;
+        });
 
         if (
             søknadsinfo.søker.erAleneOmOmsorg ||
@@ -236,6 +257,13 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                 this.onChange({
                     type: Periodetype.Utsettelse,
                     årsak: UtsettelseÅrsakType.NavTiltak,
+                    forelder,
+                    erArbeidstaker: this.props.arbeidsforhold.length > 0,
+                });
+            } else if (variant === Utsettelsesvariant.Fri) {
+                this.onChange({
+                    type: Periodetype.Utsettelse,
+                    årsak: UtsettelseÅrsakType.Fri,
                     forelder,
                     erArbeidstaker: this.props.arbeidsforhold.length > 0,
                 });
@@ -351,6 +379,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
         const harDeltidUtenAvtaleMedArbeidsgiver =
             isUtsettelsesperiode(periode) && periode.harAvtaleOmFulltidForDeltidsstilling === false;
         const { familiehendelsesdato } = søknadsinfo.søknaden;
+        const skalViseGamleUtsettelseÅrsaker = førsteOktober2021ReglerGjelder(familiehendelsesdato) === false; // Utsettelseårsaker som gjelder for søknader sendt før 1. oktober 2021
 
         return (
             <>
@@ -390,7 +419,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                     >
                         <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
                             variant={variant}
-                            radios={this.getUtsettelseÅrsakRadios(kunHelligdager)}
+                            radios={this.getUtsettelseÅrsakRadios(kunHelligdager, skalViseGamleUtsettelseÅrsaker)}
                             onChange={(v: Utsettelsesvariant) => this.onVariantChange(v)}
                             infotekst={
                                 kunHelligdager
