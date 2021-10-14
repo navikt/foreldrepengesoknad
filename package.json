@@ -133,7 +133,7 @@
         "bytes": "^3.1.0",
         "classnames": "^2.2.6",
         "compression": "^1.7.4",
-        "date-holidays": "^2.0.0",
+        "date-holidays": "^3.11.0",
         "dayjs": "^1.10.4",
         "detect-browser": "^5.2.0",
         "express": "^4.17.1",
