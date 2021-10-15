@@ -12,7 +12,6 @@ import {
 import { FamiliehendelseDatoer } from '../../types/søknad/FamiliehendelseDatoer';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from '../uttaksplan/Perioden';
-// import { Tidsperioden } from '../uttaksplan/Tidsperioden';
 
 export interface DateRange {
     from: Date;
@@ -363,7 +362,7 @@ export const dateRangesExceedsRange = (ranges: DateRange[], allowedRange: DateRa
 };
 
 export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boolean => {
-    const førsteOktober2021 = new Date('2021-06-19');
+    const førsteOktober2021 = new Date('2021-10-01');
 
     return (
         moment(familiehendelsesdato).isSameOrAfter(førsteOktober2021) &&
