@@ -16,6 +16,7 @@ import _ from 'lodash';
 
 import { Språkkode } from 'common/intl/types';
 import { AxiosResponse } from 'axios';
+import { getFamiliehendelsedato } from 'app/util/uttaksplan';
 
 const stateSelector = (state: AppState) => state;
 
@@ -43,6 +44,7 @@ const getSøknadsdataForInnsending = (
     missingAttachments: MissingAttachment[],
     endringerIUttaksplan: Periode[],
     språkkode: Språkkode,
+    familiehendelsesdato: Date,
     endringstidspunkt?: Date
 ): SøknadForInnsending | EnkelEndringssøknadForInnsending => {
     const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
@@ -54,9 +56,14 @@ const getSøknadsdataForInnsending = (
             søknad.uttaksplan,
             endringerIUttaksplan
         );
-        return cleanEnkelEndringssøknad(søknad, endringerIUttaksplanWithMissingAttachments, endringstidspunkt);
+        return cleanEnkelEndringssøknad(
+            søknad,
+            endringerIUttaksplanWithMissingAttachments,
+            familiehendelsesdato,
+            endringstidspunkt
+        );
     } else {
-        return cleanUpSøknad(søknad);
+        return cleanUpSøknad(søknad, familiehendelsesdato);
     }
 };
 
@@ -66,11 +73,13 @@ function* sendSøknad(action: SendSøknad) {
         const state: AppState = yield select(stateSelector);
         const endringstidspunkt = state.søknad.ekstrainfo.endringstidspunkt;
         const originalSøknad: Søknad = state.søknad;
+        const familiehendelsesdato = getFamiliehendelsedato(originalSøknad.barn, originalSøknad.situasjon);
         const søknadForInnsending = getSøknadsdataForInnsending(
             _.cloneDeep(originalSøknad),
             action.missingAttachments,
             _.cloneDeep(selectPerioderSomSkalSendesInn(state)),
             state.common.språkkode,
+            familiehendelsesdato!,
             endringstidspunkt
         );
         const response: AxiosResponse<Kvittering> = yield call(Api.sendSøknad, søknadForInnsending);
