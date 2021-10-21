@@ -163,6 +163,7 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
 
     getUtsettelseÅrsakRadios(disableFerie: boolean, skalViseGamleUtsettelseÅrsaker: boolean): RadioProps[] {
         const { søknadsinfo, intl } = this.props;
+        const erMor = søknadsinfo.søker.erMor;
 
         const allRadios: RadioProps[] = [
             {
@@ -207,7 +208,11 @@ class UtsettelsesperiodeForm extends React.Component<FormContextProps, State> {
                 return true;
             }
 
-            return option.value === Utsettelsesvariant.Sykdom || option.value === Utsettelsesvariant.Fri;
+            if (erMor) {
+                return option.value === Utsettelsesvariant.Sykdom || option.value === Utsettelsesvariant.Fri;
+            }
+
+            return option.value === Utsettelsesvariant.Fri;
         });
 
         if (
