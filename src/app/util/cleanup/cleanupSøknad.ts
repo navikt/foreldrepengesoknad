@@ -28,6 +28,7 @@ import { Forelder } from 'common/types';
 import { sorterPerioder } from '../uttaksplan/Periodene';
 import moment from 'moment';
 import { Uttaksdagen } from '../uttaksplan/Uttaksdagen';
+import { førsteOktober2021ReglerGjelder } from '../dates/dates';
 
 export const isArrayOfAttachments = (object: any) => {
     return (
@@ -139,6 +140,7 @@ const ensureNoNullItemsInFødselsdatoer = (barn: BarnInnsending, situasjon: Søk
 
 const cleanupUttaksplan = (
     uttaksplan: Periode[],
+    familiehendelsesdato: Date,
     annenForelder?: AnnenForelder,
     endringstidspunkt?: Date
 ): Periode[] => {
@@ -150,7 +152,7 @@ const cleanupUttaksplan = (
         )
         .map(changeGradertPeriode);
 
-    if (endringstidspunkt) {
+    if (endringstidspunkt && førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
         const periodeVedEndringstidspunkt = cleanedUttaksplan.find((periode) =>
             moment(endringstidspunkt).isBetween(periode.tidsperiode.fom, periode.tidsperiode.fom, 'day', '[]')
         );
@@ -229,7 +231,7 @@ const cleanupSøker = (søker: Søker) => {
         : { ...søkerWithDates };
 };
 
-export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
+export const cleanUpSøknad = (søknad: Søknad, familiehendelsesdato: Date): SøknadForInnsending => {
     const {
         ekstrainfo,
         sensitivInfoIkkeLagre,
@@ -244,7 +246,7 @@ export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
     const cleanedSøknad: SøknadForInnsending = { søker: søkerInnsending, barn: barnInnsending, ...rest };
 
     cleanedSøknad.barn = ensureNoNullItemsInFødselsdatoer(cleanedSøknad.barn, søknad.situasjon);
-    cleanedSøknad.uttaksplan = cleanupUttaksplan(cleanedSøknad.uttaksplan, søknad.annenForelder);
+    cleanedSøknad.uttaksplan = cleanupUttaksplan(cleanedSøknad.uttaksplan, familiehendelsesdato, søknad.annenForelder);
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
     cleanedSøknad.vedlegg = cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring });
     cleanedSøknad.tilleggsopplysninger = cleanupTilleggsopplysninger(søknad.tilleggsopplysninger);
@@ -255,6 +257,7 @@ export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
 export const cleanEnkelEndringssøknad = (
     søknad: Søknad,
     endringerIUttaksplan: Periode[],
+    familiehendelsesdato: Date,
     endringstidspunkt?: Date
 ): EnkelEndringssøknadForInnsending => {
     const cleanedSøknad: EnkelEndringssøknadForInnsending = {
@@ -269,7 +272,12 @@ export const cleanEnkelEndringssøknad = (
         dekningsgrad: søknad.dekningsgrad,
         situasjon: søknad.situasjon,
     };
-    cleanedSøknad.uttaksplan = cleanupUttaksplan(cleanedSøknad.uttaksplan, søknad.annenForelder, endringstidspunkt);
+    cleanedSøknad.uttaksplan = cleanupUttaksplan(
+        cleanedSøknad.uttaksplan,
+        familiehendelsesdato,
+        søknad.annenForelder,
+        endringstidspunkt
+    );
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
     cleanedSøknad.vedlegg = cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring: søknad.vedleggForSenEndring });
     cleanedSøknad.tilleggsopplysninger = cleanupTilleggsopplysninger(søknad.tilleggsopplysninger);
