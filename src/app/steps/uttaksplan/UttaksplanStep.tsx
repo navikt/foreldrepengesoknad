@@ -6,6 +6,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
+import Uttaksplan from 'uttaksplan/Uttaksplan';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -26,7 +27,7 @@ const UttaksplanStep = () => {
             steps={stepConfig}
             kompakt={true}
         >
-            <div>Uttaksplan</div>
+            <Uttaksplan />
             <Block textAlignCenter={true}>
                 <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
             </Block>
