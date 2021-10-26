@@ -49,10 +49,10 @@ describe('morFodselValidering', () => {
         expect(resultat).toBe('Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag');
     });
 
-    it('skal feile validering når ikke skal ha uttak før termin og persmisjonsdatoen er utenfor familiehendelse-avgrensingene', () => {
+    it('skal feile validering når persmisjonsdatoen er utenfor familiehendelse-avgrensingene', () => {
         const familiehendelsedato = dayjs('2021-08-24').toDate();
         const skalIkkeHaUttakFørTermin = false;
-        const permisjonStartdato = '2021-08-20';
+        const permisjonStartdato = '2021-05-31';
 
         const resultat = validateErStartdatoFørTermindato(
             intlMock,
@@ -66,7 +66,7 @@ describe('morFodselValidering', () => {
     it('skal ikke feile validering', () => {
         const familiehendelsedato = dayjs('2021-03-24').toDate();
         const skalIkkeHaUttakFørTermin = false;
-        const permisjonStartdato = '2021-08-20';
+        const permisjonStartdato = '2021-03-03';
 
         const resultat = validateErStartdatoFørTermindato(
             intlMock,

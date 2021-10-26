@@ -7,14 +7,42 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import Uttaksplan from 'uttaksplan/Uttaksplan';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import useSøknad from 'app/utils/hooks/useSøknad';
+import { getFarMedmorErAleneOmOmsorg, getKjønnFromFnr, getMorErAleneOmOmsorg } from 'app/utils/personUtils';
+import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
+import { Forelder } from 'app/types/Forelder';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
 
     const onValidSubmitHandler = () => [];
-
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTENLANDSOPPHOLD);
     const onAvbrytSøknad = useAvbrytSøknad();
+
+    const søkerinfo = useSøkerinfo();
+    const søknad = useSøknad();
+
+    const { person } = søkerinfo;
+    const { annenForelder, søker } = søknad;
+
+    const annenForelderKjønn = getKjønnFromFnr(annenForelder);
+    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
+    const erFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
+    const erAleneOmOmsorg = søker.erAleneOmOmsorg;
+    const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
+    const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
+    const forelderVedAleneomsorg = erDeltUttak ? undefined : erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+
+    const situasjon = getForeldreparSituasjon(
+        person.kjønn,
+        annenForelderKjønn,
+        erDeltUttak,
+        morErAleneOmOmsorg,
+        farMedmorErAleneOmOmsorg
+    );
 
     return (
         <Step
@@ -27,7 +55,11 @@ const UttaksplanStep = () => {
             steps={stepConfig}
             kompakt={true}
         >
-            <Uttaksplan />
+            <Uttaksplan
+                situasjon={situasjon}
+                forelderVedAleneomsorg={forelderVedAleneomsorg}
+                erDeltUttak={erDeltUttak}
+            />
             <Block textAlignCenter={true}>
                 <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
             </Block>

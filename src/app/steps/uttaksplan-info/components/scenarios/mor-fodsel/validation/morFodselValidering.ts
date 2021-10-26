@@ -26,10 +26,10 @@ export const validateErStartdatoFørTermindato =
         if (!skalIkkeHaUttakFørTermin) {
             const avgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(dateToISOString(familiehendelsedato));
             if (
-                avgrensninger.minDate &&
-                avgrensninger.maxDate &&
-                dayjs(permisjonStartdato).isSameOrAfter(avgrensninger.minDate, 'day') &&
-                dayjs(permisjonStartdato).isSameOrBefore(avgrensninger.maxDate, 'day')
+                (avgrensninger.minDate &&
+                    avgrensninger.maxDate &&
+                    dayjs(permisjonStartdato).isBefore(avgrensninger.minDate, 'day')) ||
+                dayjs(permisjonStartdato).isAfter(avgrensninger.maxDate, 'day')
             ) {
                 return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoUtenforGyldigTidsrom', {
                     uker: uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL,
