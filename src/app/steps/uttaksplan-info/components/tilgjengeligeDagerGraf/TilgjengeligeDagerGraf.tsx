@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Element } from 'nav-frontend-typografi';
 import { getNavnGenitivEierform } from 'app/utils/personUtils';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
-import { UttaksplanHexFarge } from 'uttaksplan/types/UttaksplanHexFarge';
+import { UttaksplanHexColor } from 'uttaksplan/types/UttaksplanHexColor';
 import { getVarighetString } from 'app/utils/dateUtils';
 import Multibar from './multibar/Multibar';
 import { TilgjengeligeDager } from 'app/types/TilgjengeligeDager';
@@ -73,9 +73,9 @@ const DeltOmsorgGraf: React.FunctionComponent<Props> = ({
                         </Personkort>
                     </div>
                     <Multibar
-                        borderColor={UttaksplanHexFarge.graa}
+                        borderColor={UttaksplanHexColor.graa}
                         leftBar={{
-                            color: UttaksplanHexFarge.lilla,
+                            color: UttaksplanHexColor.lilla,
                             width: 100,
                             text: <div className={bem.element('barTekst')}>{txtMor}</div>,
                         }}
@@ -86,10 +86,10 @@ const DeltOmsorgGraf: React.FunctionComponent<Props> = ({
                         <FormattedMessage id="tilgjengeligeDagerGraf.fellesperiode" />
                     </div>
                     <Multibar
-                        borderColor={UttaksplanHexFarge.graa}
+                        borderColor={UttaksplanHexColor.graa}
                         leftBar={{
-                            color: UttaksplanHexFarge.lilla,
-                            color2: UttaksplanHexFarge.blaa,
+                            color: UttaksplanHexColor.lilla,
+                            color2: UttaksplanHexColor.blaa,
                             width: 100,
                             text: (
                                 <div className={bem.element('barTekst')}>
@@ -112,9 +112,9 @@ const DeltOmsorgGraf: React.FunctionComponent<Props> = ({
                             </Personkort>
                         </div>
                         <Multibar
-                            borderColor={UttaksplanHexFarge.graa}
+                            borderColor={UttaksplanHexColor.graa}
                             leftBar={{
-                                color: UttaksplanHexFarge.blaa,
+                                color: UttaksplanHexColor.blaa,
                                 width: 100,
                                 text: (
                                     <div className={bem.element('barTekst')}>
@@ -166,9 +166,9 @@ const AleneomsorgGraf: React.FunctionComponent<Props> = ({ tilgjengeligeDager, e
                 </div>
             </div>
             <Multibar
-                borderColor={UttaksplanHexFarge.graa}
+                borderColor={UttaksplanHexColor.graa}
                 leftBar={{
-                    color: erFarEllerMedmor ? UttaksplanHexFarge.blaa : UttaksplanHexFarge.lilla,
+                    color: erFarEllerMedmor ? UttaksplanHexColor.blaa : UttaksplanHexColor.lilla,
                     width: 100,
                     text: <div className={bem.element('barTekst')}>{txt}</div>,
                 }}

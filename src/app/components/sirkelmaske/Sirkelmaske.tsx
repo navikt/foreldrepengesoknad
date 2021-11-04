@@ -1,12 +1,12 @@
 import React, { CSSProperties } from 'react';
 import { bemUtils } from '@navikt/fp-common';
-import { UttaksplanHexFarge } from 'uttaksplan/types/UttaksplanHexFarge';
+import { UttaksplanHexColor } from 'uttaksplan/types/UttaksplanHexColor';
 
 import './sirkelmaske.less';
 
 interface Props {
     aktiv?: boolean;
-    farge?: UttaksplanHexFarge;
+    farge?: UttaksplanHexColor;
     diameter: string;
 }
 

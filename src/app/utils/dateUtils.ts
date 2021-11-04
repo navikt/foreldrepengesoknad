@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { isISODateString } from 'nav-datovelger';
 import isBetween from 'dayjs/plugin/isBetween';
 import minMax from 'dayjs/plugin/minMax';
@@ -215,6 +215,18 @@ export const getAlderFraDato = (fødselsdato: Date): Alder => {
         måneder,
         dager,
     };
+};
+
+export const måned = (dato: Dayjs): string => {
+    return dato.format('MMMM');
+};
+
+export const måned3bokstaver = (dato: Dayjs): string => {
+    return dato.format('MMM').substr(0, 3);
+};
+
+export const år = (dato: Dayjs): string => {
+    return dato.format('YYYY');
 };
 
 export const convertTidsperiodeToTidsperiodeDate = (tidsperiode: Tidsperiode): TidsperiodeDate => {

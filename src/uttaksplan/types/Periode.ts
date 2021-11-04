@@ -179,3 +179,7 @@ export const isInfoPeriode = (periode: Periode): periode is InfoPeriode => {
 export const isHull = (periode: Periode): periode is PeriodeHull => {
     return periode.type === Periodetype.Hull;
 };
+
+export const isUtsettelseAnnenPart = (periode: Periode): periode is UtsettelseAnnenPartInfoPeriode => {
+    return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.utsettelseAnnenPart;
+};

@@ -6,4 +6,5 @@ export enum UtsettelseÅrsakType {
     InstitusjonBarnet = 'BARN_INNLAGT',
     HvØvelse = 'HV_OVELSE',
     NavTiltak = 'NAV_TILTAK',
+    Fri = 'FRI',
 }

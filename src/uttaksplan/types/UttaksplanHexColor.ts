@@ -1,4 +1,4 @@
-export enum UttaksplanHexFarge {
+export enum UttaksplanHexColor {
     lilla = '#544066',
     blaa = '#0067C5',
     gronn = '#06893a',

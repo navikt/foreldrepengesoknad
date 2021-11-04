@@ -1,0 +1,132 @@
+@import './../../styles/variables.less';
+
+.periodelisteItemHeader {
+    display: flex;
+    overflow: hidden;
+    border-radius: 0.25rem;
+
+    &:hover {
+        box-shadow: #b7b1a9 0 2px 1px 0;
+        color: #0067c5;
+    }
+
+    &--transparent {
+        border: 1px dotted #c6c2bf;
+    }
+
+    abbr[title] {
+        text-decoration: none;
+        border-bottom: none;
+        cursor: inherit;
+    }
+
+    &__sidebar {
+        width: 0.5rem;
+    }
+
+    &__content {
+        display: flex;
+        padding: 1rem;
+        width: 100%;
+    }
+
+    &__ikon {
+        flex-grow: 2;
+        align-self: center;
+    }
+
+    &__tittel {
+        flex-grow: 20;
+        min-width: 225px;
+    }
+
+    &__dato-container {
+        flex-grow: 8;
+        display: flex;
+    }
+
+    &__chevron {
+        align-self: center;
+        flex-grow: 1;
+    }
+
+    &--annenPart {
+        background-color: transparent;
+    }
+
+    &--egenPeriode {
+        background-color: white;
+    }
+
+    &--lilla {
+        background-color: @c-periodefarge-lilla;
+    }
+
+    &__dagmnd {
+        width: 45%;
+        flex-grow: 0;
+        text-align: center;
+
+        &__dato {
+            display: block;
+        }
+
+        &__mnd {
+            letter-spacing: 0.4px;
+            color: #7f756c;
+            &--kort {
+                display: none;
+            }
+        }
+    }
+
+    @media (max-width: @mobile-breakpoint) {
+        flex-wrap: wrap;
+
+        &__advarsel {
+            width: 2.5rem;
+            order: 1;
+            padding-left: 1rem;
+        }
+
+        &__tittel {
+            width: 80%;
+            order: 2;
+        }
+
+        &__dato {
+            padding-left: 1rem;
+            padding-bottom: 1rem;
+            width: 100%;
+            order: 3;
+        }
+
+        &__chevron {
+            width: 2.5rem;
+            order: 4;
+            padding-left: 1rem;
+        }
+
+        &__dagmnd {
+            width: initial;
+            text-align: left;
+            padding-right: 0.5rem;
+            &:last-child {
+                padding-left: 0.5rem;
+            }
+
+            &__dato {
+                display: inline;
+            }
+            &__mnd {
+                letter-spacing: normal;
+                color: inherit;
+                font-size: inherit;
+            }
+        }
+
+        &__ikon {
+            display: none;
+        }
+    }
+}
