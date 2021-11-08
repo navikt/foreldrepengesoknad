@@ -1,0 +1,16 @@
+name: Slash command dispatch
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  dispatcher:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slash command dispatch
+        uses: peter-evans/slash-command-dispatch@v2.3.0
+        with:
+          token: ${{ secrets.NOTIFICATION }} # Må ha PAT for å sjekke tilgang for denne actionen.. Bytte?
+          commands: promote # matcher repository dispatch med navent 'promote-command'
+          issue-type: issue
+          allow-edits: true
