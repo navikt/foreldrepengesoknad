@@ -247,3 +247,12 @@ export const getRelevantFamiliehendelseDato = (
         return termindato !== undefined ? termindato : omsorgsovertakelsesdato!;
     }
 };
+
+export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boolean => {
+    const førsteOktober2021 = new Date('2021-10-01');
+
+    return (
+        dayjs(familiehendelsesdato).isSameOrAfter(førsteOktober2021) &&
+        dayjs(new Date()).isSameOrAfter(førsteOktober2021)
+    );
+};
