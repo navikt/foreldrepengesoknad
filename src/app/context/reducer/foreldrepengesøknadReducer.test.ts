@@ -208,9 +208,9 @@ describe('<foreldrepengesøknadReducer>', () => {
         );
     });
 
-    it('skal legge uttaksplan i state', () => {
+    it('skal legge uttaksplan info i state', () => {
         const payload = {
-            test: true,
+            test: '100',
         } as UttaksplanInfo;
 
         const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {

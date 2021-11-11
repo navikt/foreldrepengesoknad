@@ -3,6 +3,7 @@ import { Attachment } from 'app/types/Attachment';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import Sak from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
+import { Periode } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
 import AnnenForelder from '../types/AnnenForelder';
 import Barn from '../types/Barn';
@@ -27,6 +28,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_UTTAKSPLAN_INFO = 'setUttaksplanInfo',
     SET_DEKNINGSGRAD = 'setDekningsgrad',
     SET_VEDLEGG = 'setVedlegg',
+    LAG_UTTAKSPLANFORSLAG = 'lagUttaksplanforslag',
 }
 
 interface SetVelkommen {
@@ -169,6 +171,16 @@ const setVedlegg = (vedlegg: Attachment[]): SetVedlegg => ({
     vedlegg,
 });
 
+interface LagUttaksplanforslag {
+    type: ForeldrepengesøknadContextActionKeys.LAG_UTTAKSPLANFORSLAG;
+    payload: Periode[];
+}
+
+const lagUttaksplanforslag = (payload: Periode[]): LagUttaksplanforslag => ({
+    type: ForeldrepengesøknadContextActionKeys.LAG_UTTAKSPLANFORSLAG,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetSøkersituasjon
@@ -183,7 +195,8 @@ export type ForeldrepengesøknadContextAction =
     | SetUttaksplanInfo
     | SetDekningsgrad
     | ApplyStoredState
-    | SetVedlegg;
+    | SetVedlegg
+    | LagUttaksplanforslag;
 
 export default {
     setVelkommen,
@@ -200,4 +213,5 @@ export default {
     setUttaksplanInfo,
     setDekningsgrad,
     setVedlegg,
+    lagUttaksplanforslag,
 };

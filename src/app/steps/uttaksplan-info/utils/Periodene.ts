@@ -15,6 +15,7 @@ import {
     Overføringsperiode,
     Periode,
     PeriodeHull,
+    PeriodeUtenUttak,
     Utsettelsesperiode,
     Uttaksperiode,
 } from 'uttaksplan/types/Periode';
@@ -29,7 +30,7 @@ export const Periodene = (perioder: Periode[]) => ({
     getUttak: () => getUttaksperioder(perioder),
     getOverføringer: () => getOverføringer(perioder),
     getHull: () => getHull(perioder),
-    getHullOgInfo: () => getHullOgInfo(perioder),
+    getHullOgInfoOgPerioderUtenUttak: () => getHullOgInfoOgPerioderUtenUttak(perioder),
     getInfoperioder: () => getInfoperioder(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
     getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
@@ -98,8 +99,10 @@ function getHull(perioder: Periode[]): PeriodeHull[] {
     return perioder.filter((periode) => isHull(periode)) as PeriodeHull[];
 }
 
-function getHullOgInfo(perioder: Periode[]): (PeriodeHull | InfoPeriode)[] {
-    return perioder.filter((periode) => isHull(periode) || isInfoPeriode(periode)) as (PeriodeHull | InfoPeriode)[];
+function getHullOgInfoOgPerioderUtenUttak(perioder: Periode[]): Array<PeriodeHull | InfoPeriode | PeriodeUtenUttak> {
+    return perioder.filter((periode) => isHull(periode) || isInfoPeriode(periode)) as Array<
+        PeriodeHull | InfoPeriode | PeriodeUtenUttak
+    >;
 }
 
 function getInfoperioder(perioder: Periode[]): InfoPeriode[] {

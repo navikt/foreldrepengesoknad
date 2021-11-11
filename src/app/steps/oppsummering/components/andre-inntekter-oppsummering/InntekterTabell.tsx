@@ -4,12 +4,12 @@ import React, { FunctionComponent, ReactElement } from 'react';
 import './inntekterTabell.less';
 
 interface Props {
-    list: {
+    list: Array<{
         key: string;
         headerVenstre: string;
         headerHøyre: string;
         content?: ReactElement;
-    }[];
+    }>;
 }
 
 const InntekterTabell: FunctionComponent<Props> = ({ list }) => {

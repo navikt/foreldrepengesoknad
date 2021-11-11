@@ -6,6 +6,8 @@ import { formaterDatoUtenDag, dateIsSameOrBefore, dateIsSameOrAfter } from 'app/
 import { Uttaksdagen } from './Uttaksdagen';
 import { TidsperiodeDate } from '@navikt/fp-common';
 
+const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
+
 export const Tidsperioden = (tidsperiode: TidsperiodeDate) => ({
     erLik: (tidsperiode2: TidsperiodeDate) => erTidsperioderLike(tidsperiode, tidsperiode2),
     erOmsluttetAv: (tidsperiode2: TidsperiodeDate) => erTidsperiodeOmsluttetAvTidsperiode(tidsperiode, tidsperiode2),
@@ -20,7 +22,17 @@ export const Tidsperioden = (tidsperiode: TidsperiodeDate) => ({
     erFomEllerEtterDato: (dato: Date) => erTidsperiodeFomEllerEtterDato(tidsperiode, dato),
     erFørDato: (dato: Date) => erTidsperiodeFomEllerEtterDato(tidsperiode, dato) === false,
     inneholderDato: (dato: Date) => inneholderTidsperiodeDato(tidsperiode, dato),
+    erInnenforFørsteSeksUker: (familiehendelsesdato: Date) =>
+        erTidsperiodeInnenforFørsteSeksUker(tidsperiode, familiehendelsesdato),
 });
+
+const erTidsperiodeInnenforFørsteSeksUker = (tidsperiode: any, familiehendelsesdato: Date) => {
+    const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+    const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdagFamiliehendelsesdato).leggTil(
+        ANTALL_UTTAKSDAGER_SEKS_UKER
+    );
+    return erTidsperiodeFomEllerEtterDato(tidsperiode, førsteUttaksdagEtterSeksUker) === false;
+};
 
 function inneholderTidsperiodeDato(tidsperiode: TidsperiodeDate, dato: Date): boolean {
     if (!tidsperiode.fom || !tidsperiode.tom) {

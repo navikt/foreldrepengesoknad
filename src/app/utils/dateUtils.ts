@@ -9,6 +9,7 @@ import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
 import { RegistrertBarn } from 'app/types/Person';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Alder } from 'app/types/Alder';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -167,11 +168,11 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
 };
 
 export const formaterDato = (dato: string | Date | undefined, datoformat?: string): string => {
-    return dayjs.utc(dato).format(datoformat || 'dddd D. MMMM YYYY');
+    return dayjs(dato).format(datoformat || 'dddd D. MMMM YYYY');
 };
 
 export const formaterDatoUtenDag = (dato: string | Date): string => {
-    return dayjs.utc(dato).format('D. MMMM YYYY');
+    return dayjs(dato).format('D. MMMM YYYY');
 };
 
 type DateValue = Date | undefined;
@@ -255,4 +256,11 @@ export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boo
         dayjs(familiehendelsesdato).isSameOrAfter(førsteOktober2021) &&
         dayjs(new Date()).isSameOrAfter(førsteOktober2021)
     );
+};
+
+export const skalFarUtsetteEtterMorSinSisteUttaksdag = (
+    farSinFørsteUttaksdag: Date,
+    morsSisteUttaksdag: Date
+): boolean => {
+    return dayjs(farSinFørsteUttaksdag).isAfter(Uttaksdagen(morsSisteUttaksdag).neste());
 };

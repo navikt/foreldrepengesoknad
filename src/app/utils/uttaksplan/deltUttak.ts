@@ -1,30 +1,14 @@
-// import { Søkersituasjon } from '../../../types/søknad/Søknad';
-// import {
-//     TilgjengeligStønadskonto,
-//     Periode,
-//     StønadskontoType,
-//     Periodetype,
-//     UttaksperiodeBase,
-//     isUttaksperiode,
-//     UtsettelseÅrsakType,
-// } from '../../../types/uttaksplan/periodetyper';
-// import { Uttaksdagen } from '../Uttaksdagen';
-// import { guid } from 'nav-frontend-js-utils';
-// import { Forelder } from 'common/types';
-// import { getTidsperiode, Tidsperioden } from '../Tidsperioden';
-// import { sorterPerioder } from '../Periodene';
-// import { DateValue } from '../../../types/common';
-// import { dateIsSameOrAfter } from '../../../../app/util/dates/dates';
-// import { skalFarUtsetteEtterMorSinSisteUttaksdag } from 'app/steg/uttaksplanSkjema/utils';
-
 import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Forelder } from 'app/types/Forelder';
+import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
+import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { guid } from 'nav-frontend-js-utils';
 import { isUttaksperiode, Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { dateIsSameOrAfter, skalFarUtsetteEtterMorSinSisteUttaksdag } from '../dateUtils';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,
@@ -389,11 +373,11 @@ const deltUttakFødsel = (
 };
 
 export const deltUttak = (
-    situasjon: Søkersituasjon,
+    situasjon: Situasjon,
     famDato: Date,
     erFarEllerMedmor: boolean,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    startdatoPermisjon: DateValue,
+    startdatoPermisjon: Date | undefined,
     fellesperiodeukerMor: number | undefined,
     harAnnenForelderSøktFP: boolean | undefined,
     antallDagerFellesperiodeFarMedmor: number | undefined,
@@ -402,7 +386,7 @@ export const deltUttak = (
     farSinFørsteUttaksdag: Date | undefined,
     begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
 ) => {
-    if (situasjon === Søkersituasjon.ADOPSJON) {
+    if (situasjon === 'adopsjon') {
         return deltUttakAdopsjon(
             famDato,
             erFarEllerMedmor,
@@ -418,7 +402,7 @@ export const deltUttak = (
         );
     }
 
-    if (situasjon === Søkersituasjon.FØDSEL) {
+    if (situasjon === 'fødsel') {
         return deltUttakFødsel(
             famDato,
             erFarEllerMedmor,
@@ -432,5 +416,6 @@ export const deltUttak = (
             begrunnelseForUtsettelse
         );
     }
+
     return [];
 };

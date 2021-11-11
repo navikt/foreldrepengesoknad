@@ -59,6 +59,7 @@ const UttaksplanStep = () => {
                 situasjon={situasjon}
                 forelderVedAleneomsorg={forelderVedAleneomsorg}
                 erDeltUttak={erDeltUttak}
+                uttaksplan={søknad.uttaksplan}
             />
             <Block textAlignCenter={true}>
                 <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>

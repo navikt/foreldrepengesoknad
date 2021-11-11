@@ -38,7 +38,7 @@ const context = {
         informasjonOmUtenlandsopphold: {} as InformasjonOmUtenlandsopphold,
         erEndringssøknad: false,
         dekningsgrad: '100',
-        uttaksplan: {},
+        uttaksplan: [],
     },
     version: 2,
     currentRoute: '/soknad/uttaksplan-info',

@@ -6,7 +6,6 @@ import Veilederpanel from 'nav-frontend-veilederpanel';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import actionCreator from 'app/context/action/actionCreator';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
@@ -34,6 +33,8 @@ import { morFødselQuestionsConfig } from './morFødselQuestionsConfig';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
+import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -70,24 +71,6 @@ const MorFødsel: FunctionComponent<Props> = ({
     } = useSøkerinfo();
     const lagretUttaksplanInfo = useUttaksplanInfo<MorFødselUttaksplanInfo>();
 
-    const erMor = !isFarEllerMedmor(søkersituasjon.rolle);
-    const erFødsel = søkersituasjon.situasjon === 'fødsel';
-
-    const shouldRender = erMor && erFødsel;
-
-    const onValidSubmitHandler = (values: Partial<MorFødselFormData>) => {
-        return [
-            actionCreator.setUttaksplanInfo(mapMorFødselFormToState(values)),
-            actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
-        ];
-    };
-
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
-
-    if (!shouldRender) {
-        return null;
-    }
-
     const antallBarn = parseInt(barn.antallBarn, 10);
 
     const fødselsdato = isFødtBarn(barn) ? ISOStringToDate(barn.fødselsdatoer[0]) : undefined;
@@ -112,6 +95,8 @@ const MorFødsel: FunctionComponent<Props> = ({
     const defaultPermisjonStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
         uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
     );
+    const erFødsel = søkersituasjon.situasjon === 'fødsel';
+    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
 
@@ -121,6 +106,38 @@ const MorFødsel: FunctionComponent<Props> = ({
         familiehendelsesdato,
         erMorUfør
     );
+
+    const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
+
+    const onValidSubmitHandler = (values: Partial<MorFødselFormData>) => {
+        const submissionValues = mapMorFødselFormToState(values);
+
+        return [
+            actionCreator.setUttaksplanInfo(submissionValues),
+            actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
+            actionCreator.lagUttaksplanforslag(
+                lagUttaksplan({
+                    annenForelderErUfør: erMorUfør,
+                    erDeltUttak: true,
+                    erEndringssøknad: false,
+                    erEnkelEndringssøknad: false,
+                    familiehendelsesdato: familiehendelsesdatoDate!,
+                    førsteUttaksdagEtterSeksUker: Uttaksdagen(familiehendelsesdatoDate!).leggTil(30),
+                    situasjon: erFødsel ? 'fødsel' : 'adopsjon',
+                    søkerErFarEllerMedmor: erFarEllerMedmor,
+                    søkerHarMidlertidigOmsorg: false,
+                    tilgjengeligeStønadskontoer:
+                        tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+                    uttaksplanSkjema: {
+                        fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
+                        startdatoPermisjon: submissionValues.permisjonStartdato,
+                        skalIkkeHaUttakFørTermin: submissionValues.skalIkkeHaUttakFørTermin,
+                    },
+                })
+            ),
+        ];
+    };
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
 
     return (
         <MorFødselFormComponents.FormikWrapper

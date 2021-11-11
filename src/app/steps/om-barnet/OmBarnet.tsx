@@ -16,7 +16,7 @@ import Fødsel from './components/Fødsel';
 import Termin from './components/Termin';
 import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig from './omBarnetQuestionsConfig';
-import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
+import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
 import RegistrertBarn from './components/RegistrertBarn';
 
 const OmBarnet: React.FunctionComponent = () => {
@@ -57,7 +57,11 @@ const OmBarnet: React.FunctionComponent = () => {
                         steps={stepConfig}
                         kompakt={true}
                     >
-                        <OmBarnetFormComponents.Form includeButtons={false}>
+                        <OmBarnetFormComponents.Form
+                            includeButtons={false}
+                            includeValidationSummary={true}
+                            cleanup={(values) => cleanupOmBarnetFormData(values, visibility)}
+                        >
                             <RegistrertBarn
                                 registrerteBarn={registrerteBarn}
                                 visibility={visibility}

@@ -4,14 +4,16 @@ import Planlegger from './components/planlegger/Planlegger';
 import PlanleggerInfo from './components/planlegger-info/PlanleggerInfo';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
 import { Forelder } from 'app/types/Forelder';
+import { Periode } from './types/Periode';
 
 interface Props {
     situasjon: ForeldreparSituasjon;
     forelderVedAleneomsorg: Forelder | undefined;
     erDeltUttak: boolean;
+    uttaksplan: Periode[];
 }
 
-const Uttaksplan: FunctionComponent<Props> = ({ situasjon, forelderVedAleneomsorg, erDeltUttak }) => {
+const Uttaksplan: FunctionComponent<Props> = ({ situasjon, forelderVedAleneomsorg, erDeltUttak, uttaksplan }) => {
     return (
         <>
             <Block padBottom="l">
@@ -22,7 +24,7 @@ const Uttaksplan: FunctionComponent<Props> = ({ situasjon, forelderVedAleneomsor
                 />
             </Block>
             <Block padBottom="l">
-                <Planlegger />
+                <Planlegger uttaksplan={uttaksplan} />
             </Block>
         </>
     );

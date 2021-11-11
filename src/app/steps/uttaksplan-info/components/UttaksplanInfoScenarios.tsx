@@ -7,6 +7,10 @@ import FarMedmorAleneomsorgFødselAdopsjon from './scenarios/far-medmor-aleneoms
 import FarMedmorFødselOgMorHarIkkeRett from './scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import FarMedmorFørstegangssøknadMedAnnenPart from './scenarios/farMedmor-førstegangssøknad-med-annen-part/FarMedmorFørstegangssøknadMedAnnenPart';
+import { getUttaksplanScenario } from './scenarios/scenarios';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
+import useSøknad from 'app/utils/hooks/useSøknad';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -19,36 +23,74 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     eksisterendeSakAnnenPart,
 }) => {
-    return (
-        <>
-            <FarMedmorFødselFørsteganggsøknadBeggeHarRett
-                tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
-                tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
-                eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
-            />
-            <MorFødsel
-                tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
-                tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
-            />
-            <MorFarAdopsjon
-                tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
-                tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
-            />
-            <FarMedmorAleneomsorgFødselAdopsjon
-                tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
-                tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
-            />
-            <FarMedmorFødselOgMorHarIkkeRett
-                tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
-                tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
-            />
-            <FarMedmorFørstegangssøknadMedAnnenPart
-                tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
-                tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
-                eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
-            />
-        </>
-    );
+    const { søkersituasjon, søker, annenForelder } = useSøknad();
+    const erFødsel = søkersituasjon.situasjon === 'fødsel';
+    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
+    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
+        ? !!annenForelder.harRettPåForeldrepenger
+        : false;
+    const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
+        ? annenForelder.harRettPåForeldrepenger !== undefined
+        : false;
+
+    const scenario = getUttaksplanScenario({
+        erFødsel,
+        erFarEllerMedmor,
+        søkerErAleneOmOmsorg: !!søker.erAleneOmOmsorg,
+        annenForelderKanIkkeOppgis: annenForelder.kanIkkeOppgis,
+        annenForelderHarRett: annenForelderHarRett,
+        erAdopsjon,
+        eksisterendeSakAnnenPart,
+        annenForelderOppgittIkkeAleneOmOmsorg,
+    });
+
+    switch (scenario) {
+        case 'farMedmorAleneomsorgFødselAdopsjon':
+            return (
+                <FarMedmorAleneomsorgFødselAdopsjon
+                    tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                    tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                />
+            );
+        case 'farMedmorFødselBeggeHarRett':
+            return (
+                <FarMedmorFødselFørsteganggsøknadBeggeHarRett
+                    tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                    tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                    eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
+                />
+            );
+        case 'farMedmorFødselMorHarIkkeRett':
+            return (
+                <FarMedmorFødselOgMorHarIkkeRett
+                    tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                    tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                />
+            );
+        case 'farMedmorFørstegangssøknadMedAnnenPart':
+            return (
+                <FarMedmorFørstegangssøknadMedAnnenPart
+                    tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                    tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                    eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
+                />
+            );
+        case 'morFarAdopsjon':
+            return (
+                <MorFarAdopsjon
+                    tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                    tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                />
+            );
+        case 'morFødsel':
+            return (
+                <MorFødsel
+                    tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                    tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                />
+            );
+    }
 };
 
 export default UttaksplanInfoScenarios;

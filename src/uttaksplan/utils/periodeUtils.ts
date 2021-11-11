@@ -3,10 +3,14 @@ import { IntlShape } from 'react-intl';
 import { OppholdÅrsakType } from '../types/OppholdÅrsakType';
 import { PeriodeInfoType } from '../types/PeriodeInfoType';
 import { StønadskontoType } from '../types/StønadskontoType';
-import { Periode, Periodetype } from './../types/Periode';
+import { isAnnenPartInfoPeriode, Periode, Periodetype, UttakAnnenPartInfoPeriode } from './../types/Periode';
 import { getNavnGenitivEierform } from './../../app/utils/personUtils';
 import { NavnPåForeldre } from './../../app/types/NavnPåForeldre';
 import { Forelder } from './../../app/types/Forelder';
+import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
+import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
+import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { getFloatFromString } from 'app/utils/numberUtils';
 
 const isValidStillingsprosent = (pst: string | undefined): boolean =>
     pst !== undefined && isNaN(parseFloat(pst)) === false;
@@ -40,7 +44,7 @@ export const getStønadskontoNavn = (intl: IntlShape, konto: StønadskontoType, 
     }
     if (navn) {
         return intl.formatMessage(
-            { id: `stønadskontotype.foreldernavn.kvote` },
+            { id: 'stønadskontotype.foreldernavn.kvote' },
             { navn: getNavnGenitivEierform(navn, intl.locale) }
         );
     }
@@ -111,16 +115,17 @@ export const getPeriodeTittel = (intl: IntlShape, periode: Periode, navnPåForel
             }
 
             return tittel;
-
+        case Periodetype.PeriodeUtenUttak:
+            return intlUtils(intl, 'periodetype.periodeUtenUttak.tittel');
         case Periodetype.Overføring:
             return getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
         case Periodetype.Utsettelse:
             if (periode.årsak) {
-                return intlUtils(intl, `periodeliste.utsettelsesårsak`, {
+                return intlUtils(intl, 'periodeliste.utsettelsesårsak', {
                     årsak: intlUtils(intl, `utsettelsesårsak.${periode.årsak}`),
                 });
             }
-            return intlUtils(intl, `periodeliste.utsettelsesårsak.ukjent`);
+            return intlUtils(intl, 'periodeliste.utsettelsesårsak.ukjent');
         case Periodetype.Opphold:
             return getOppholdskontoNavn(
                 intl,
@@ -129,7 +134,7 @@ export const getPeriodeTittel = (intl: IntlShape, periode: Periode, navnPåForel
                 periode.forelder === 'mor'
             );
         case Periodetype.Hull:
-            return intlUtils(intl, `periodetype.hull.tittel`);
+            return intlUtils(intl, 'periodetype.hull.tittel');
         case Periodetype.Info:
             switch (periode.infotype) {
                 case PeriodeInfoType.uttakAnnenPart:
@@ -142,4 +147,55 @@ export const getPeriodeTittel = (intl: IntlShape, periode: Periode, navnPåForel
                     return intlUtils(intl, `periodetype.info.${periode.infotype}`);
             }
     }
+};
+
+export const getSamtidigUttakEllerGraderingsProsent = (periode: UttakAnnenPartInfoPeriode): number | undefined => {
+    const periodeErGradert = periode.stillingsprosent !== undefined;
+    const periodeErSamtidigUttak = periode.samtidigUttakProsent !== undefined;
+
+    if (periodeErSamtidigUttak) {
+        return (100 - getFloatFromString(periode.samtidigUttakProsent)!) / 100;
+    }
+
+    if (periodeErGradert) {
+        return getFloatFromString(periode.stillingsprosent)! / 100;
+    }
+
+    return undefined;
+};
+
+export const justerAndrePartsUttakAvFellesperiodeOmMulig = (
+    perioder: Periode[],
+    uttakFellesperiode: StønadskontoUttak | undefined
+): Periode[] => {
+    if (uttakFellesperiode === undefined || uttakFellesperiode.dager >= 0 || perioder.length === 0) {
+        return perioder;
+    }
+
+    const dagerGjenståendeFellesperiode = uttakFellesperiode.dager;
+
+    const sisteFellesperiodeAnnenPart = [...perioder]
+        .reverse()
+        .find((p) => isAnnenPartInfoPeriode(p) && p.årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder);
+
+    if (sisteFellesperiodeAnnenPart !== undefined && isAnnenPartInfoPeriode(sisteFellesperiodeAnnenPart)) {
+        const dagerMedFellesperiodeISistePeriode = Perioden(sisteFellesperiodeAnnenPart).getAntallUttaksdager();
+        const justeringsProsent = getSamtidigUttakEllerGraderingsProsent(sisteFellesperiodeAnnenPart) || 1;
+        const diff = dagerGjenståendeFellesperiode / justeringsProsent + dagerMedFellesperiodeISistePeriode;
+        const indexSistePeriode = perioder.findIndex((p) => p.id === sisteFellesperiodeAnnenPart.id);
+
+        if (dagerGjenståendeFellesperiode < 0 && diff > 0) {
+            perioder[indexSistePeriode] = {
+                ...sisteFellesperiodeAnnenPart,
+                tidsperiode: Tidsperioden(sisteFellesperiodeAnnenPart.tidsperiode).setUttaksdager(diff),
+            };
+            return perioder;
+        }
+
+        if (dagerGjenståendeFellesperiode < 0 && diff === 0) {
+            return perioder.splice(indexSistePeriode, 1);
+        }
+    }
+
+    return perioder;
 };

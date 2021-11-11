@@ -1,5 +1,6 @@
 import { hasValue } from '@navikt/fp-common';
 import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import Barn, {
     BarnType,
     isAdoptertAnnetBarn,
@@ -31,6 +32,35 @@ const getInitValues = (): Readonly<OmBarnetFormData> => ({
     [OmBarnetFormField.gjelderAnnetBarn]: false,
     [OmBarnetFormField.valgteBarn]: [],
 });
+
+export const cleanupOmBarnetFormData = (
+    values: OmBarnetFormData,
+    visibility: QuestionVisibility<OmBarnetFormField, undefined>
+): OmBarnetFormData => {
+    const cleanedData: OmBarnetFormData = {
+        erBarnetFødt: visibility.isVisible(OmBarnetFormField.erBarnetFødt) ? values.erBarnetFødt : YesOrNo.UNANSWERED,
+        adopsjonAvEktefellesBarn: visibility.isVisible(OmBarnetFormField.adopsjonAvEktefellesBarn)
+            ? values.adopsjonAvEktefellesBarn
+            : YesOrNo.UNANSWERED,
+        antallBarn: visibility.isVisible(OmBarnetFormField.antallBarn) ? values.antallBarn : '',
+        adopsjonsdato: visibility.isVisible(OmBarnetFormField.adopsjonsdato) ? values.adopsjonsdato : '',
+        fødselsdatoer: visibility.isVisible(OmBarnetFormField.fødselsdatoer) ? values.fødselsdatoer : [],
+        omsorgsovertakelse: visibility.isVisible(OmBarnetFormField.omsorgsovertakelse) ? values.omsorgsovertakelse : [],
+        termindato: visibility.isVisible(OmBarnetFormField.termindato) ? values.termindato : '',
+        terminbekreftelse: visibility.isVisible(OmBarnetFormField.terminbekreftelse) ? values.terminbekreftelse : [],
+        terminbekreftelsedato: visibility.isVisible(OmBarnetFormField.terminbekreftelsedato)
+            ? values.terminbekreftelsedato
+            : '',
+        adoptertIUtlandet: visibility.isVisible(OmBarnetFormField.adoptertIUtlandet)
+            ? values.adoptertIUtlandet
+            : YesOrNo.UNANSWERED,
+        ankomstdato: visibility.isVisible(OmBarnetFormField.ankomstdato) ? values.ankomstdato : '',
+        gjelderAnnetBarn: visibility.isVisible(OmBarnetFormField.gjelderAnnetBarn) ? values.gjelderAnnetBarn : false,
+        valgteBarn: visibility.isVisible(OmBarnetFormField.valgteBarn) ? values.valgteBarn : [],
+    };
+
+    return cleanedData;
+};
 
 export const mapOmBarnetFormDataToState = (
     values: Partial<OmBarnetFormData>,

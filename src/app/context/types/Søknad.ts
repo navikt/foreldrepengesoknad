@@ -1,4 +1,5 @@
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import { Periode } from 'uttaksplan/types/Periode';
 import AnnenForelder from './AnnenForelder';
 import Barn from './Barn';
 import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
@@ -15,5 +16,5 @@ export interface Søknad {
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
     erEndringssøknad: boolean;
     dekningsgrad: Dekningsgrad;
-    uttaksplan: any;
+    uttaksplan: Periode[];
 }

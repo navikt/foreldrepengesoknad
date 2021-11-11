@@ -1,22 +1,29 @@
-import { bemUtils, Tidsperiode } from '@navikt/fp-common';
-import { Forelder } from 'app/types/Forelder';
+import { bemUtils, intlUtils } from '@navikt/fp-common';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-import { måned, måned3bokstaver, år } from 'app/utils/dateUtils';
+import { getUkerOgDagerFromDager, måned, måned3bokstaver, år } from 'app/utils/dateUtils';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
-import { isUtsettelseAnnenPart, Periode, Periodetype } from 'uttaksplan/types/Periode';
+import {
+    isForeldrepengerFørFødselUttaksperiode,
+    isUtsettelseAnnenPart,
+    Periode,
+    Periodetype,
+} from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import StønadskontoIkon from '../stønadskonto-ikon/StønadskontoIkon';
 import UtsettelseIkon from '../utsettelse-ikon/UtsettelseIkon';
 import { OppChevron } from 'nav-frontend-chevron';
 
 import './periodelisteItemHeader.less';
+import { IntlShape, useIntl } from 'react-intl';
+import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { getPeriodeTittel } from 'uttaksplan/utils/periodeUtils';
 
 interface Props {
     egenPeriode: boolean;
-    tidsperiode: Tidsperiode;
+    periode: Periode;
 }
 
 const bem = bemUtils('periodelisteItemHeader');
@@ -67,8 +74,30 @@ export const getPeriodeIkon = (
     return undefined;
 };
 
-const renderDagMnd = (dato: string, visÅr = true): JSX.Element => {
-    const d = dayjs.utc(dato);
+type VarighetFormat = 'full' | 'normal';
+
+export const getVarighetString = (antallDager: number, intl: IntlShape, format: VarighetFormat = 'full'): string => {
+    const { uker, dager } = getUkerOgDagerFromDager(Math.abs(antallDager));
+    const dagerStr = intl.formatMessage(
+        { id: 'common.varighet.dager' },
+        {
+            dager,
+        }
+    );
+    if (uker === 0) {
+        return dagerStr;
+    }
+    const ukerStr = intl.formatMessage({ id: 'common.varighet.uker' }, { uker });
+    if (dager > 0) {
+        return `${ukerStr}${intl.formatMessage({
+            id: `common.varighet.separator--${format}`,
+        })}${dagerStr}`;
+    }
+    return ukerStr;
+};
+
+const renderDagMnd = (dato: Date, visÅr = true): JSX.Element => {
+    const d = dayjs(dato);
 
     return (
         <div className={bem.element('dagmnd')}>
@@ -94,8 +123,18 @@ const getSidebarColor = (egenPeriode: boolean): string | undefined => {
     return 'lilla';
 };
 
-const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, tidsperiode }) => {
+const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, periode }) => {
+    const intl = useIntl();
     const sidebarClassname = bem.element('sidebar');
+
+    let varighetString;
+    const erFpFørTerminUtenUttak =
+        isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true;
+    if (erFpFørTerminUtenUttak) {
+        varighetString = intlUtils(intl, 'periodeliste.header.skalIkkeHaUttakFørTermin');
+    } else {
+        varighetString = getVarighetString(Tidsperioden(periode.tidsperiode).getAntallUttaksdager(), intl);
+    }
 
     return (
         <div className={classNames(bem.block, egenPeriode ? undefined : bem.modifier('transparent'))}>
@@ -107,30 +146,15 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, tidsper
                 )}
             >
                 <div className={bem.element('ikon')}>
-                    {getPeriodeIkon(
-                        {
-                            forelder: Forelder.mor,
-                            id: '123',
-                            konto: StønadskontoType.Mødrekvote,
-                            erArbeidstaker: true,
-                            overskrives: false,
-                            type: Periodetype.Uttak,
-                            tidsperiode: {
-                                fom: new Date('12-10-2021'),
-                                tom: new Date('12-10-2022'),
-                            },
-                            gradert: false,
-                        } as Periode,
-                        { farMedmor: 'Truls', mor: 'Kari' }
-                    )}
+                    {getPeriodeIkon(periode, { farMedmor: 'Truls', mor: 'Kari' })}
                 </div>
                 <div className={bem.element('tittel')}>
-                    <Element tag="h2">KARI sin periode</Element>
-                    <Normaltekst>3 uker</Normaltekst>
+                    <Element tag="h2">{getPeriodeTittel(intl, periode, { farMedmor: 'Truls', mor: 'Kari' })}</Element>
+                    <Normaltekst>{varighetString}</Normaltekst>
                 </div>
                 <div className={bem.element('dato-container')}>
-                    {renderDagMnd(tidsperiode.fom)}
-                    {renderDagMnd(tidsperiode.tom)}
+                    {renderDagMnd(periode.tidsperiode.fom)}
+                    {renderDagMnd(periode.tidsperiode.tom)}
                 </div>
                 <div className={bem.element('chevron')}>
                     <OppChevron />

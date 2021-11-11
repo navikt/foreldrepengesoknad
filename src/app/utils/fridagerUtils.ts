@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 import DateHolidays, { Holiday } from 'date-holidays';
-import { Tidsperiode } from 'app/types/Tidsperiode';
+import { TidsperiodeDate } from '@navikt/fp-common';
 
 const holidays = new DateHolidays('no');
 
-export const getOffentligeFridager = (tidsperiode: Tidsperiode): Holiday[] => {
+export const getOffentligeFridager = (tidsperiode: TidsperiodeDate): Holiday[] => {
     const fraÅr = tidsperiode.fom.getFullYear();
     const tilÅr = tidsperiode.tom.getFullYear();
     let days = [] as Holiday[];

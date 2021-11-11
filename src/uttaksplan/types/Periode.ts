@@ -17,6 +17,7 @@ export enum Periodetype {
     Overføring = 'overføring',
     Hull = 'ubegrunnetOpphold',
     Info = 'info',
+    'PeriodeUtenUttak' = 'periodeUtenUttak',
 }
 
 export enum Arbeidsform {
@@ -130,12 +131,26 @@ export interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
 
 export type InfoPeriode = AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode;
 
+export interface PeriodeUtenUttak extends PeriodeBase {
+    type: Periodetype.PeriodeUtenUttak;
+}
+
+export interface PeriodeUtenUttakUtsettelse extends Omit<Utsettelsesperiode, 'forelder'> {
+    type: Periodetype.Utsettelse;
+    morsAktivitetIPerioden?: MorsAktivitet;
+    årsak: UtsettelseÅrsakType.Fri;
+    erArbeidstaker: boolean;
+    forelder: Forelder;
+}
+
 export type Periode =
     | Uttaksperiode
     | Utsettelsesperiode
     | Oppholdsperiode
     | Overføringsperiode
     | PeriodeHull
+    | PeriodeUtenUttakUtsettelse
+    | PeriodeUtenUttak
     | InfoPeriode;
 
 export function isUttaksperiode(periode: Periode): periode is Uttaksperiode {
@@ -182,4 +197,43 @@ export const isHull = (periode: Periode): periode is PeriodeHull => {
 
 export const isUtsettelseAnnenPart = (periode: Periode): periode is UtsettelseAnnenPartInfoPeriode => {
     return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.utsettelseAnnenPart;
+};
+
+export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode => {
+    return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.avslåttPeriode;
+};
+
+export const isUttakAnnenPart = (periode: Periode): periode is UttakAnnenPartInfoPeriode => {
+    return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.uttakAnnenPart;
+};
+
+export const isPeriodeUtenUttakUtsettelse = (periode: Periode): periode is PeriodeUtenUttakUtsettelse => {
+    return periode.type === Periodetype.Utsettelse && periode.årsak === UtsettelseÅrsakType.Fri;
+};
+
+export const isPeriodeUtenUttak = (periode: Periode): periode is PeriodeUtenUttak => {
+    return periode.type === Periodetype.PeriodeUtenUttak;
+};
+
+export const isOverskrivbarPeriode = (periode: Periode): boolean => {
+    return (
+        (periode.type === Periodetype.Info && periode.overskrives === true) ||
+        periode.type === Periodetype.Hull ||
+        isPeriodeUtenUttak(periode)
+    );
+};
+
+const isAnnenPartInfoPeriodeOppholdUttak = (periode: InfoPeriode) => {
+    return periode.infotype === PeriodeInfoType.uttakAnnenPart;
+};
+
+const isAnnenPartInfoPeriodeOppholdUtsettelse = (periode: InfoPeriode) => {
+    return periode.infotype === PeriodeInfoType.utsettelseAnnenPart;
+};
+
+export const isAnnenPartInfoPeriode = (periode: Periode): periode is UttakAnnenPartInfoPeriode => {
+    return (
+        periode.type === Periodetype.Info &&
+        (isAnnenPartInfoPeriodeOppholdUttak(periode) || isAnnenPartInfoPeriodeOppholdUtsettelse(periode))
+    );
 };

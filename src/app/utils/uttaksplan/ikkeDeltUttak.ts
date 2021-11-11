@@ -1,23 +1,17 @@
-import { Søkersituasjon } from '../../../types/søknad/Søknad';
-import {
-    TilgjengeligStønadskonto,
-    Uttaksperiode,
-    Periodetype,
-    StønadskontoType,
-    Periode,
-    UttaksperiodeBase,
-} from '../../../types/uttaksplan/periodetyper';
-import { Uttaksdagen } from '../Uttaksdagen';
-import { Forelder } from 'common/types';
+import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
+import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+import { Forelder } from 'app/types/Forelder';
+import { Situasjon } from 'app/types/Situasjon';
+import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { guid } from 'nav-frontend-js-utils';
-import { getTidsperiode, Tidsperioden } from '../Tidsperioden';
-import { sorterPerioder } from '../Periodene';
-import { DateValue } from '../../../types/common';
+import { isUttaksperiode, Periode, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
+import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: Date,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: DateValue,
+    startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
     aktivitetsfriKvote: TilgjengeligStønadskonto | undefined
 ) => {
@@ -75,7 +69,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
 const ikkeDeltUttakAdopsjonMor = (
     famDato: Date,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: DateValue
+    startdatoPermisjon: Date | undefined
 ) => {
     const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const perioder: Uttaksperiode[] = [
@@ -97,7 +91,7 @@ const ikkeDeltUttakAdopsjon = (
     famDato: Date,
     erFarEllerMedmor: boolean,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: DateValue,
+    startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
     aktivitetsfriKvote: TilgjengeligStønadskonto | undefined
 ) => {
@@ -117,7 +111,7 @@ const ikkeDeltUttakAdopsjon = (
 const ikkeDeltUttakFødselMor = (
     famDato: Date,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: DateValue,
+    startdatoPermisjon: Date | undefined,
     foreldrePengerFørFødselKonto: TilgjengeligStønadskonto
 ) => {
     const førsteUttaksdag = Uttaksdagen(famDato).denneEllerNeste();
@@ -175,7 +169,7 @@ const ikkeDeltUttakFødselMor = (
     }
 
     const ekstraPermisjonFørFødsel = perioder.find(
-        (p: UttaksperiodeBase) => p.konto === StønadskontoType.Foreldrepenger
+        (p) => isUttaksperiode(p) && p.konto === StønadskontoType.Foreldrepenger
     );
 
     const antallDagerIForeldrepenger = ekstraPermisjonFørFødsel
@@ -209,7 +203,7 @@ const ikkeDeltUttakFødsel = (
     famDato: Date,
     erFarEllerMedmor: boolean,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: DateValue,
+    startdatoPermisjon: Date | undefined,
     foreldrePengerFørFødselKonto: TilgjengeligStønadskonto | undefined
 ) => {
     if (!erFarEllerMedmor) {
@@ -220,11 +214,11 @@ const ikkeDeltUttakFødsel = (
 };
 
 export const ikkeDeltUttak = (
-    situasjon: Søkersituasjon,
+    situasjon: Situasjon,
     famDato: Date,
     erFarEllerMedmor: boolean,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    startdatoPermisjon: DateValue,
+    startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined
 ) => {
     const foreldrepengerKonto = tilgjengeligeStønadskontoer.find(
@@ -237,7 +231,7 @@ export const ikkeDeltUttak = (
         (konto) => konto.konto === StønadskontoType.AktivitetsfriKvote
     );
 
-    if (situasjon === Søkersituasjon.ADOPSJON) {
+    if (situasjon === 'adopsjon') {
         return ikkeDeltUttakAdopsjon(
             famDato,
             erFarEllerMedmor,
@@ -248,7 +242,7 @@ export const ikkeDeltUttak = (
         );
     }
 
-    if (situasjon === Søkersituasjon.FØDSEL) {
+    if (situasjon === 'fødsel') {
         return ikkeDeltUttakFødsel(
             famDato,
             erFarEllerMedmor,

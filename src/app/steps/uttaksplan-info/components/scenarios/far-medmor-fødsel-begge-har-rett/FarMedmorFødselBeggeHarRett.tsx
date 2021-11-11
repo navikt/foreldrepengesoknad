@@ -38,6 +38,8 @@ import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import { FarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
+import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -48,31 +50,13 @@ interface Props {
 const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     tilgjengeligeStønadskontoer80DTO,
-    eksisterendeSakAnnenPart,
 }) => {
     const intl = useIntl();
     const { annenForelder, søkersituasjon, barn, dekningsgrad } = useSøknad();
     const { person } = useSøkerinfo();
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
-    const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
-        ? !!annenForelder.harRettPåForeldrepenger
-        : false;
     const lagretUttaksplanInfo = useUttaksplanInfo<FarMedmorFødselBeggeHarRettUttaksplanInfo>();
-
-    const onValidSubmitHandler = (values: Partial<FarMedmorFødselBeggeHarRettFormData>) => {
-        return [
-            actionCreator.setUttaksplanInfo(mapFarMedmorFødselBeggeHarRettToState(values)),
-            actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
-        ];
-    };
-
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
-    const shouldRender = erFarEllerMedmor && erFødsel && annenForelderHarRett && eksisterendeSakAnnenPart === undefined;
-
-    if (!shouldRender) {
-        return null;
-    }
 
     const navnFar = erFarEllerMedmor
         ? person.fornavn
@@ -89,6 +73,32 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
         familiehendelsesdato,
         erMorUfør
     );
+
+    const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
+
+    const onValidSubmitHandler = (values: Partial<FarMedmorFødselBeggeHarRettFormData>) => {
+        return [
+            actionCreator.setUttaksplanInfo(mapFarMedmorFødselBeggeHarRettToState(values)),
+            actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
+            actionCreator.lagUttaksplanforslag(
+                lagUttaksplan({
+                    annenForelderErUfør: erMorUfør,
+                    erDeltUttak: true,
+                    erEndringssøknad: false,
+                    erEnkelEndringssøknad: false,
+                    familiehendelsesdato: familiehendelsesdatoDate!,
+                    førsteUttaksdagEtterSeksUker: Uttaksdagen(familiehendelsesdatoDate!).leggTil(30),
+                    situasjon: erFødsel ? 'fødsel' : 'adopsjon',
+                    søkerErFarEllerMedmor: erFarEllerMedmor,
+                    søkerHarMidlertidigOmsorg: false,
+                    tilgjengeligeStønadskontoer:
+                        tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+                    uttaksplanSkjema: {},
+                })
+            ),
+        ];
+    };
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
 
     return (
         <FarMedmorFødselBeggeHarRettFormComponents.FormikWrapper

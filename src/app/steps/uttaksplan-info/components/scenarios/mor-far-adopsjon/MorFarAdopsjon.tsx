@@ -71,9 +71,33 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         erAdopsjon && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelder.kanIkkeOppgis || søkerErAleneOmOmsorg);
 
     const onValidSubmitHandler = (values: Partial<MorFarAdopsjonFormData>) => {
+        const submissionValues = mapMorFarAdopsjonFormToState(values);
+
         return [
-            actionCreator.setUttaksplanInfo(mapMorFarAdopsjonFormToState(values)),
+            actionCreator.setUttaksplanInfo(submissionValues),
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
+            // actionCreator.lagUttaksplanforslag(
+            //     lagUttaksplan({
+            //         annenForelderErUfør: erMorUfør,
+            //         erDeltUttak: true,
+            //         erEndringssøknad: false,
+            //         erEnkelEndringssøknad: false,
+            //         familiehendelsesdato: familiehendelsesdatoDate!,
+            //         førsteUttaksdagEtterSeksUker: Uttaksdagen(familiehendelsesdatoDate!).leggTil(30),
+            //         situasjon: søkersituasjon.situasjon,
+            //         søkerErFarEllerMedmor: erFarEllerMedmor,
+            //         søkerHarMidlertidigOmsorg: false,
+            //         tilgjengeligeStønadskontoer:
+            //             tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+            //         uttaksplanSkjema: {
+            //             fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
+            //             startdatoPermisjon: submissionValues.annenStartdatoAdopsjon,
+            //             antallDagerFellesperiodeFarMedmor: submissionValues.antallDagerFellesperiode,
+            //             antallUkerFellesperiodeFarMedmor: submissionValues.antallDagerFellesperiode,
+            //             begrunnelseForUtsettelse: submissionValues.
+            //         },
+            //     })
+            // ),
         ];
     };
 

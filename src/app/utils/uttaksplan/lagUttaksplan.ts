@@ -4,6 +4,7 @@ import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { UttaksplanSkjemadata } from 'app/types/UttaksplanSkjemaData';
 import dayjs from 'dayjs';
+import { finnOgSettInnHull } from 'uttaksplan/builder/UttaksplanBuilder';
 import { Periode } from 'uttaksplan/types/Periode';
 import { førsteOktober2021ReglerGjelder } from '../dateUtils';
 import { deltUttak } from './deltUttak';
@@ -101,8 +102,6 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 ISOStringToDate(startdatoPermisjon),
                 annenForelderErUfør
             );
-
-            return forslag;
 
             return finnOgSettInnHull(
                 forslag,
