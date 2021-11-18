@@ -46,13 +46,14 @@ describe('dateUtils', () => {
             const minDate = new Date('2021-05-09');
             const maxDate = new Date('2021-05-11');
 
-            const dato = dateRangeValidation.validateToDateInRange(
+            const dato = dateRangeValidation.validateToDateInRange({
                 intl,
                 date,
                 minDate,
                 maxDate,
-                'valideringsfeil.tilOgMedDato.etterFraDato'
-            );
+                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
+                disableWeekend: false,
+            });
 
             expect(dato).toBeUndefined;
         });
@@ -62,13 +63,14 @@ describe('dateUtils', () => {
             const minDate = new Date('2021-05-05');
             const maxDate = new Date('2021-05-07');
 
-            const dato = dateRangeValidation.validateToDateInRange(
+            const dato = dateRangeValidation.validateToDateInRange({
                 intl,
                 date,
                 minDate,
                 maxDate,
-                'valideringsfeil.tilOgMedDato.etterFraDato'
-            );
+                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
+                disableWeekend: false,
+            });
 
             expect(dato).toBe(
                 'Til og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 05. May 2021 til 07. May 2021'
@@ -80,14 +82,15 @@ describe('dateUtils', () => {
             const maxDate = new Date('2021-05-11');
             const fromDate = new Date('2021-05-11');
 
-            const dato = dateRangeValidation.validateToDateInRange(
+            const dato = dateRangeValidation.validateToDateInRange({
                 intl,
-                undefined,
+                date: undefined,
                 minDate,
                 maxDate,
-                'valideringsfeil.tilOgMedDato.etterFraDato',
-                fromDate
-            );
+                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
+                fromDate,
+                disableWeekend: false,
+            });
 
             expect(dato).toBe('Til og med dato må være en gyldig dato på formatet dd.mm.åååå');
         });
@@ -98,14 +101,15 @@ describe('dateUtils', () => {
             const maxDate = new Date('2021-05-11');
             const fromDate = new Date('2021-05-11');
 
-            const dato = dateRangeValidation.validateToDateInRange(
+            const dato = dateRangeValidation.validateToDateInRange({
                 intl,
                 date,
                 minDate,
                 maxDate,
-                'valideringsfeil.tilOgMedDato.etterFraDato',
-                fromDate
-            );
+                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
+                disableWeekend: false,
+                fromDate,
+            });
 
             expect(dato).toBe('Du må legge inn en til og med dato som er etter fra og med datoen.');
         });
@@ -117,13 +121,14 @@ describe('dateUtils', () => {
             const minDate = new Date('2021-05-09');
             const maxDate = new Date('2021-05-11');
 
-            const dato = dateRangeValidation.validateFromDateInRange(
+            const dato = dateRangeValidation.validateFromDateInRange({
                 intl,
                 date,
                 minDate,
                 maxDate,
-                'valideringsfeil.tilOgMedDato.etterFraDato'
-            );
+                disableWeekend: false,
+                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
+            });
 
             expect(dato).toBeUndefined;
         });
@@ -133,13 +138,14 @@ describe('dateUtils', () => {
             const minDate = new Date('2021-05-05');
             const maxDate = new Date('2021-05-07');
 
-            const dato = dateRangeValidation.validateFromDateInRange(
+            const dato = dateRangeValidation.validateFromDateInRange({
                 intl,
                 date,
                 minDate,
                 maxDate,
-                'valideringsfeil.tilOgMedDato.etterFraDato'
-            );
+                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
+                disableWeekend: false,
+            });
 
             expect(dato).toBe(
                 'Fra og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 05. May 2021 til 07. May 2021'
@@ -151,14 +157,15 @@ describe('dateUtils', () => {
             const maxDate = new Date('2021-05-11');
             const toDate = new Date('2021-05-11');
 
-            const dato = dateRangeValidation.validateFromDateInRange(
+            const dato = dateRangeValidation.validateFromDateInRange({
                 intl,
-                undefined,
+                date: undefined,
                 minDate,
                 maxDate,
-                'valideringsfeil.tilOgMedDato.etterFraDato',
-                toDate
-            );
+                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
+                toDate,
+                disableWeekend: false,
+            });
 
             expect(dato).toBe('Fra og med dato må være en gyldig dato på formatet dd.mm.åååå');
         });
@@ -169,14 +176,15 @@ describe('dateUtils', () => {
             const maxDate = new Date('2021-05-11');
             const toDate = new Date('2021-05-05');
 
-            const dato = dateRangeValidation.validateFromDateInRange(
+            const dato = dateRangeValidation.validateFromDateInRange({
                 intl,
                 date,
                 minDate,
                 maxDate,
-                'valideringsfeil.tilOgMedDato.etterFraDato',
-                toDate
-            );
+                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
+                toDate,
+                disableWeekend: false,
+            });
 
             expect(dato).toBe('Du må legge inn en til og med dato som er etter fra og med datoen.');
         });

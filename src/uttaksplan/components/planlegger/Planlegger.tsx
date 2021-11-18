@@ -8,9 +8,10 @@ import './planlegger.less';
 
 interface Props {
     uttaksplan: Periode[];
+    familiehendelsesdato: string;
 }
 
-const Planlegger: FunctionComponent<Props> = ({ uttaksplan }) => {
+const Planlegger: FunctionComponent<Props> = ({ uttaksplan, familiehendelsesdato }) => {
     const bem = bemUtils('planlegger');
 
     return (
@@ -19,7 +20,7 @@ const Planlegger: FunctionComponent<Props> = ({ uttaksplan }) => {
                 <div className={bem.element('tittel')}>
                     <Systemtittel>Din plan</Systemtittel>
                 </div>
-                <Periodeliste uttaksplan={uttaksplan} />
+                <Periodeliste uttaksplan={uttaksplan} familiehendelsesdato={familiehendelsesdato} />
             </section>
         </InfoBlock>
     );

@@ -9,6 +9,8 @@
     "dager": "dager",
     "uker": "uker",
     "ok": "Ok",
+    "fraogmed": "Fra og med",
+    "tilogmed": "Til og med",
     "common.varighet.dager": "{dager, plural, one {# dag} other {# dager}}",
     "common.varighet.uker": "{uker, plural, one {# uke} other {# uker}}",
     "common.varighet.ukerogdager": "{uker, plural, zero {} one {# uke} other {# uker}} {dager, plural, =0 {} one {og # dag} other {og # dager}}",
@@ -535,6 +537,7 @@
     "valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.gyldigDato": "Dato for start av perioden må være en gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.påkrevd": "Du må oppgi dato for start av perioden",
     "valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.etterFamiliehendelsesdato": "Perioden må starte på eller etter {familiehendelsesdato}",
+    "valideringsfeil.erHelgedag": "Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noe gikk galt prøv igjen",
     "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikke av gyldig type"

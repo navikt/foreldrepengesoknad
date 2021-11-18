@@ -14,6 +14,7 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
 import { Forelder } from 'app/types/Forelder';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -26,7 +27,7 @@ const UttaksplanStep = () => {
     const søknad = useSøknad();
 
     const { person } = søkerinfo;
-    const { annenForelder, søker } = søknad;
+    const { annenForelder, søker, barn } = søknad;
 
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
@@ -35,6 +36,7 @@ const UttaksplanStep = () => {
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const forelderVedAleneomsorg = erDeltUttak ? undefined : erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
 
     const situasjon = getForeldreparSituasjon(
         person.kjønn,
@@ -60,6 +62,7 @@ const UttaksplanStep = () => {
                 forelderVedAleneomsorg={forelderVedAleneomsorg}
                 erDeltUttak={erDeltUttak}
                 uttaksplan={søknad.uttaksplan}
+                familiehendelsesdato={familiehendelsesdato}
             />
             <Block textAlignCenter={true}>
                 <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>

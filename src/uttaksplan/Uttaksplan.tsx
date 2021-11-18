@@ -11,9 +11,16 @@ interface Props {
     forelderVedAleneomsorg: Forelder | undefined;
     erDeltUttak: boolean;
     uttaksplan: Periode[];
+    familiehendelsesdato: string;
 }
 
-const Uttaksplan: FunctionComponent<Props> = ({ situasjon, forelderVedAleneomsorg, erDeltUttak, uttaksplan }) => {
+const Uttaksplan: FunctionComponent<Props> = ({
+    situasjon,
+    forelderVedAleneomsorg,
+    erDeltUttak,
+    uttaksplan,
+    familiehendelsesdato,
+}) => {
     return (
         <>
             <Block padBottom="l">
@@ -24,7 +31,7 @@ const Uttaksplan: FunctionComponent<Props> = ({ situasjon, forelderVedAleneomsor
                 />
             </Block>
             <Block padBottom="l">
-                <Planlegger uttaksplan={uttaksplan} />
+                <Planlegger uttaksplan={uttaksplan} familiehendelsesdato={familiehendelsesdato} />
             </Block>
         </>
     );

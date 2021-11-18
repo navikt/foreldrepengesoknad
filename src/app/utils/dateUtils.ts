@@ -62,15 +62,28 @@ const validateDateInRange = (
     return undefined;
 };
 
-const validateFromDateInRange = (
-    intl: IntlShape,
-    date: Date | undefined,
-    minDate: Date,
-    maxDate: Date,
-    errorKey: string,
-    toDate?: Date
-): SkjemaelementFeil => {
+const validateFromDateInRange = ({
+    intl,
+    date,
+    minDate,
+    maxDate,
+    errorKey,
+    disableWeekend,
+    toDate,
+}: {
+    intl: IntlShape;
+    date: Date | undefined;
+    minDate: Date;
+    maxDate: Date;
+    errorKey: string;
+    disableWeekend: boolean;
+    toDate?: Date;
+}): SkjemaelementFeil => {
     const error = validateDateInRange(intl, date, minDate, maxDate, true);
+
+    if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
+        return intlUtils(intl, 'valideringsfeil.erHelgedag');
+    }
 
     if (error !== undefined) {
         return error;
@@ -83,15 +96,28 @@ const validateFromDateInRange = (
     return undefined;
 };
 
-const validateToDateInRange = (
-    intl: IntlShape,
-    date: Date | undefined,
-    minDate: Date,
-    maxDate: Date,
-    errorKey: string,
-    fromDate?: Date
-): SkjemaelementFeil => {
+const validateToDateInRange = ({
+    intl,
+    date,
+    minDate,
+    maxDate,
+    errorKey,
+    disableWeekend,
+    fromDate,
+}: {
+    intl: IntlShape;
+    date: Date | undefined;
+    minDate: Date;
+    maxDate: Date;
+    errorKey: string;
+    disableWeekend: boolean;
+    fromDate?: Date;
+}): SkjemaelementFeil => {
     const error = validateDateInRange(intl, date, minDate, maxDate, false);
+
+    if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
+        return intlUtils(intl, 'valideringsfeil.erHelgedag');
+    }
 
     if (error !== undefined) {
         return error;

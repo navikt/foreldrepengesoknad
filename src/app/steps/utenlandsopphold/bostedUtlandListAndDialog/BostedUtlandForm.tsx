@@ -85,14 +85,15 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     minDate,
                                     maxDate: ISOStringToDate(values.tom) || maxDate,
                                     validate: (value) =>
-                                        dateRangeValidation.validateFromDateInRange(
+                                        dateRangeValidation.validateFromDateInRange({
                                             intl,
-                                            ISOStringToDate(value),
+                                            date: ISOStringToDate(value),
                                             minDate,
                                             maxDate,
-                                            'valideringsfeil.fraOgMedDato.førTilDato',
-                                            ISOStringToDate(values.tom)
-                                        ),
+                                            errorKey: 'valideringsfeil.fraOgMedDato.førTilDato',
+                                            toDate: ISOStringToDate(values.tom),
+                                            disableWeekend: false,
+                                        }),
                                 }}
                                 toDatepickerProps={{
                                     name: BostedUtlandFormFields.tom,
@@ -102,14 +103,15 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     minDate: ISOStringToDate(values.fom) || minDate,
                                     maxDate,
                                     validate: (value) =>
-                                        dateRangeValidation.validateToDateInRange(
+                                        dateRangeValidation.validateToDateInRange({
                                             intl,
-                                            ISOStringToDate(value),
+                                            date: ISOStringToDate(value),
                                             minDate,
                                             maxDate,
-                                            'valideringsfeil.tilOgMedDato.etterFraDato',
-                                            ISOStringToDate(values.fom)
-                                        ),
+                                            errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
+                                            fromDate: ISOStringToDate(values.fom),
+                                            disableWeekend: false,
+                                        }),
                                 }}
                             />
                         </Block>

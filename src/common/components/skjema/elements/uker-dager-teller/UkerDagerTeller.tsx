@@ -17,7 +17,7 @@ export interface Props {
     dagStepper: NumberStepperProps;
 }
 
-const UkerDagerTeller: React.FunctionComponent<Props> = ({ ukeLegend, dagLegend, feil, ukeStepper, dagStepper }) => {
+const UkerDagerTeller: React.FunctionComponent<Props> = ({ feil, ukeStepper, dagStepper }) => {
     const bem = BEMHelper('ukerDagerTeller');
     const ukeLegendId = guid();
     const dagLegendId = guid();

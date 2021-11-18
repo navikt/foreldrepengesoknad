@@ -1,14 +1,9 @@
 @import './../../styles/variables.less';
 
-.periodelisteItemHeader {
+.periodelisteItemHeader2 {
     display: flex;
     overflow: hidden;
     border-radius: 0.25rem;
-
-    &:hover {
-        box-shadow: #b7b1a9 0 2px 1px 0;
-        color: #0067c5;
-    }
 
     &--transparent {
         border: 1px dotted #c6c2bf;
@@ -20,24 +15,19 @@
         cursor: inherit;
     }
 
-    &__sidebar {
-        width: 0.5rem;
-    }
-
     &__content {
-        display: flex;
-        padding: 1rem;
+        display: grid;
         width: 100%;
+        grid-template-columns: 1fr 7fr 2fr;
     }
 
     &__ikon {
-        flex-grow: 1;
-        min-width: 50px;
         align-self: center;
+        padding-right: 1rem;
     }
 
     &__tittel {
-        flex-grow: 18;
+        align-self: center;
         min-width: 225px;
     }
 
@@ -46,21 +36,12 @@
         min-width: 130px;
     }
 
-    &__chevron {
-        align-self: center;
-        flex-grow: 1;
-    }
-
     &--annenPart {
         background-color: transparent;
     }
 
     &--egenPeriode {
         background-color: white;
-    }
-
-    &--lilla {
-        background-color: @c-periodefarge-lilla;
     }
 
     &__dagmnd {
@@ -100,12 +81,6 @@
             padding-bottom: 1rem;
             width: 100%;
             order: 3;
-        }
-
-        &__chevron {
-            width: 2.5rem;
-            order: 4;
-            padding-left: 1rem;
         }
 
         &__dagmnd {

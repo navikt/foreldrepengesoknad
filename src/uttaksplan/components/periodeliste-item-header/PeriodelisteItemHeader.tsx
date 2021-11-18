@@ -14,19 +14,18 @@ import {
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import StønadskontoIkon from '../stønadskonto-ikon/StønadskontoIkon';
 import UtsettelseIkon from '../utsettelse-ikon/UtsettelseIkon';
-import { OppChevron } from 'nav-frontend-chevron';
-
-import './periodelisteItemHeader.less';
+import { getPeriodeTittel } from 'uttaksplan/utils/periodeUtils';
 import { IntlShape, useIntl } from 'react-intl';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { getPeriodeTittel } from 'uttaksplan/utils/periodeUtils';
+
+import './periodelisteItemHeader.less';
 
 interface Props {
     egenPeriode: boolean;
     periode: Periode;
 }
 
-const bem = bemUtils('periodelisteItemHeader');
+const bem = bemUtils('periodelisteItemHeader2');
 
 export const getPeriodeIkon = (
     periode: Periode,
@@ -115,17 +114,8 @@ const renderDagMnd = (dato: Date, visÅr = true): JSX.Element => {
     );
 };
 
-const getSidebarColor = (egenPeriode: boolean): string | undefined => {
-    if (!egenPeriode) {
-        return undefined;
-    }
-
-    return 'lilla';
-};
-
 const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, periode }) => {
     const intl = useIntl();
-    const sidebarClassname = bem.element('sidebar');
 
     let varighetString;
     const erFpFørTerminUtenUttak =
@@ -138,7 +128,6 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, periode
 
     return (
         <div className={classNames(bem.block, egenPeriode ? undefined : bem.modifier('transparent'))}>
-            <div className={classNames(sidebarClassname, bem.modifier(getSidebarColor(egenPeriode)))} />
             <div
                 className={classNames(
                     bem.element('content'),
@@ -155,9 +144,6 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, periode
                 <div className={bem.element('dato-container')}>
                     {renderDagMnd(periode.tidsperiode.fom)}
                     {renderDagMnd(periode.tidsperiode.tom)}
-                </div>
-                <div className={bem.element('chevron')}>
-                    <OppChevron />
                 </div>
             </div>
         </div>

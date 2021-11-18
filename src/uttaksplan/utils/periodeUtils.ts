@@ -1,4 +1,4 @@
-import { intlUtils } from '@navikt/fp-common';
+import { intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
 import { OppholdÅrsakType } from '../types/OppholdÅrsakType';
 import { PeriodeInfoType } from '../types/PeriodeInfoType';
@@ -11,6 +11,21 @@ import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { getFloatFromString } from 'app/utils/numberUtils';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+
+export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
+    return {
+        fom: ISOStringToDate(t.fom),
+        tom: ISOStringToDate(t.tom),
+    };
+};
+
+export const mapTidsperiodeToTidsperiodeString = (t: Partial<TidsperiodeDate>): Partial<Tidsperiode> => {
+    return {
+        fom: dateToISOString(t.fom),
+        tom: dateToISOString(t.tom),
+    };
+};
 
 const isValidStillingsprosent = (pst: string | undefined): boolean =>
     pst !== undefined && isNaN(parseFloat(pst)) === false;
