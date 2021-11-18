@@ -50,6 +50,7 @@ import { HistoryProps } from '../../types/common';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import Søknad, { Opplysning, Tilleggsopplysninger } from '../../types/søknad/Søknad';
 import {
+    isForeldrepengerFørFødselUttaksperiode,
     Periode,
     SenEndringÅrsak,
     StønadskontoType,
@@ -68,6 +69,8 @@ import OppgiTilleggsopplysninger from './OppgiTilleggsopplysninger';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import routeConfig from 'app/util/routing/routeConfig';
 import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
+import { getFamiliehendelsedato } from 'app/util/uttaksplan';
+import { erPeriodeSomSkalSendesInn } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 interface StateProps {
     stegProps: StegProps;
@@ -563,10 +566,18 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
     const perioderSomSkalSendesInn = selectPerioderSomSkalSendesInn(state);
     const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderSomSkalSendesInn);
     const grunnlag = søknad.ekstrainfo.eksisterendeSak ? søknad.ekstrainfo.eksisterendeSak.grunnlag : undefined;
+    const { erEndringssøknad, barn, situasjon, uttaksplan } = søknad;
+    const familiehendelsesdato = getFamiliehendelsedato(barn, situasjon)!;
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
-        renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true && perioderSomSkalSendesInn.length > 0,
+        renderFortsettKnapp:
+            (isLoadingTilgjengeligeStønadskontoer !== true && perioderSomSkalSendesInn.length > 0) ||
+            (erEndringssøknad &&
+                førsteOktober2021ReglerGjelder(familiehendelsesdato) &&
+                perioderSomSkalSendesInn.length === 0 &&
+                uttaksplan.filter((p) => erPeriodeSomSkalSendesInn(p) && !isForeldrepengerFørFødselUttaksperiode(p))
+                    .length === 0),
         renderFormTag: false,
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo, søknadsinfo),
