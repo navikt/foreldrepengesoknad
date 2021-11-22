@@ -15,6 +15,8 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
 import { Forelder } from 'app/types/Forelder';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { Periode } from 'uttaksplan/types/Periode';
+import actionCreator from 'app/context/action/actionCreator';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -46,6 +48,10 @@ const UttaksplanStep = () => {
         farMedmorErAleneOmOmsorg
     );
 
+    const handleOnPlanChange = (plan: Periode[]) => {
+        actionCreator.setUttaksplan(plan);
+    };
+
     return (
         <Step
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -63,6 +69,7 @@ const UttaksplanStep = () => {
                 erDeltUttak={erDeltUttak}
                 uttaksplan={søknad.uttaksplan}
                 familiehendelsesdato={familiehendelsesdato}
+                handleOnPlanChange={handleOnPlanChange}
             />
             <Block textAlignCenter={true}>
                 <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>

@@ -59,7 +59,7 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
                     >
                         <SøkersituasjonFormComponents.Form includeButtons={false}>
                             <div>
-                                <Block margin="xl">
+                                <Block>
                                     <SøkersituasjonFormComponents.RadioPanelGroup
                                         name={SøkersituasjonFormField.situasjon}
                                         radios={[
@@ -76,11 +76,11 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
                                         legend={intlUtils(intl, 'søkersituasjon.text.situasjon')}
                                     />
                                 </Block>
-                                <Block visible={visibility.isVisible(SøkersituasjonFormField.rolle)} margin="xl">
+                                <Block visible={visibility.isVisible(SøkersituasjonFormField.rolle)}>
                                     <VelgRolle kjønn={kjønn} />
                                 </Block>
                                 {allQuestionsAnswered && (
-                                    <Block margin="xl" textAlignCenter={true}>
+                                    <Block textAlignCenter={true} margin="l">
                                         <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
                                     </Block>
                                 )}

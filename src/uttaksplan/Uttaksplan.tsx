@@ -12,6 +12,7 @@ interface Props {
     erDeltUttak: boolean;
     uttaksplan: Periode[];
     familiehendelsesdato: string;
+    handleOnPlanChange: (plan: Periode[]) => void;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -20,6 +21,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     erDeltUttak,
     uttaksplan,
     familiehendelsesdato,
+    handleOnPlanChange,
 }) => {
     return (
         <>
@@ -31,7 +33,11 @@ const Uttaksplan: FunctionComponent<Props> = ({
                 />
             </Block>
             <Block padBottom="l">
-                <Planlegger uttaksplan={uttaksplan} familiehendelsesdato={familiehendelsesdato} />
+                <Planlegger
+                    uttaksplan={uttaksplan}
+                    familiehendelsesdato={familiehendelsesdato}
+                    handleOnPlanChange={handleOnPlanChange}
+                />
             </Block>
         </>
     );

@@ -29,6 +29,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_DEKNINGSGRAD = 'setDekningsgrad',
     SET_VEDLEGG = 'setVedlegg',
     LAG_UTTAKSPLANFORSLAG = 'lagUttaksplanforslag',
+    SET_UTTAKSPLAN = 'setUttaksplan',
 }
 
 interface SetVelkommen {
@@ -181,6 +182,16 @@ const lagUttaksplanforslag = (payload: Periode[]): LagUttaksplanforslag => ({
     payload,
 });
 
+interface SetUttaksplan {
+    type: ForeldrepengesøknadContextActionKeys.SET_UTTAKSPLAN;
+    payload: Periode[];
+}
+
+const setUttaksplan = (payload: Periode[]): SetUttaksplan => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_UTTAKSPLAN,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetSøkersituasjon
@@ -196,7 +207,8 @@ export type ForeldrepengesøknadContextAction =
     | SetDekningsgrad
     | ApplyStoredState
     | SetVedlegg
-    | LagUttaksplanforslag;
+    | LagUttaksplanforslag
+    | SetUttaksplan;
 
 export default {
     setVelkommen,
@@ -214,4 +226,5 @@ export default {
     setDekningsgrad,
     setVedlegg,
     lagUttaksplanforslag,
+    setUttaksplan,
 };

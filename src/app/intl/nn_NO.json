@@ -540,5 +540,6 @@
     "valideringsfeil.erHelgedag": "Startdato kan ikkje vere på ein laurdag eller søndag, du må velje ein vekedag",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noko gjekk gale prøv igjen",
-    "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikkje av gyldig type"
+    "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikkje av gyldig type",
+    "uttaksplan.dinPlan": "Din plan"
 }

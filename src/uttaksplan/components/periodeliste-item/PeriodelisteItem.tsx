@@ -15,16 +15,33 @@ interface Props {
     isOpen: boolean;
     toggleIsOpen: (id: string) => void;
     familiehendelsesdato: string;
+    handleOnPlanChange: (plan: Periode) => void;
 }
 
-const renderPeriodeListeInnhold = (periode: Periode, familiehendelsesdato: string) => {
+const renderPeriodeListeInnhold = (
+    periode: Periode,
+    familiehendelsesdato: string,
+    handleOnPlanChange: (plan: Periode) => void
+) => {
     switch (periode.type) {
         case Periodetype.Uttak:
-            return <PeriodeUttakForm periode={periode} familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!} />;
+            return (
+                <PeriodeUttakForm
+                    periode={periode}
+                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    handleOnPlanChange={handleOnPlanChange}
+                />
+            );
         case Periodetype.Utsettelse:
             return <PeriodeUtsettelseForm />;
         default:
-            return <PeriodeUttakForm periode={periode} familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!} />;
+            return (
+                <PeriodeUttakForm
+                    periode={periode}
+                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    handleOnPlanChange={handleOnPlanChange}
+                />
+            );
     }
 };
 
@@ -34,6 +51,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     isOpen,
     toggleIsOpen,
     familiehendelsesdato,
+    handleOnPlanChange,
 }) => {
     const bem = bemUtils('periodelisteItem');
 
@@ -45,7 +63,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                 apen={isOpen}
                 onClick={() => toggleIsOpen(periode.id)}
             >
-                {renderPeriodeListeInnhold(periode, familiehendelsesdato)}
+                {renderPeriodeListeInnhold(periode, familiehendelsesdato, handleOnPlanChange)}
             </EkspanderbartpanelBase>
         </article>
     );

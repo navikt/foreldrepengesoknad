@@ -8,9 +8,10 @@ import './periodeliste.less';
 interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: string;
+    handleOnPlanChange: (plan: Periode) => void;
 }
 
-const Periodeliste: FunctionComponent<Props> = ({ uttaksplan, familiehendelsesdato }) => {
+const Periodeliste: FunctionComponent<Props> = ({ uttaksplan, familiehendelsesdato, handleOnPlanChange }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
 
@@ -32,6 +33,7 @@ const Periodeliste: FunctionComponent<Props> = ({ uttaksplan, familiehendelsesda
                     isOpen={openPeriodeId === p.id}
                     toggleIsOpen={toggleIsOpen}
                     familiehendelsesdato={familiehendelsesdato}
+                    handleOnPlanChange={handleOnPlanChange}
                 />
             ))}
         </div>

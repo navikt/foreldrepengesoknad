@@ -11,9 +11,10 @@ import { PeriodeUttakFormComponents } from './periodeUttakFormConfig';
 interface Props {
     periode: Periode;
     familiehendelsesdato: Date;
+    handleOnPlanChange: (plan: Periode) => void;
 }
 
-const PeriodeUttakForm: FunctionComponent<Props> = ({ familiehendelsesdato, periode }) => {
+const PeriodeUttakForm: FunctionComponent<Props> = ({ familiehendelsesdato, periode, handleOnPlanChange }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const { tidsperiode } = periode;
 
@@ -27,7 +28,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({ familiehendelsesdato, peri
                 fom: dateToISOString(tidsperiode.fom),
                 tom: dateToISOString(tidsperiode.tom),
             }}
-            onSubmit={() => null}
+            onSubmit={(values) => handleOnPlanChange(values)}
             renderForm={() => {
                 return (
                     <>
