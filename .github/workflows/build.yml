@@ -59,16 +59,17 @@ jobs:
                         repo: context.repo.repo,
                         state: 'open',
                         labels: ['bygg']
-                      }).then(response => {
-                        response.data.forEach(issue => {
-                          github.issues.update({
-                            owner: context.repo.owner,
-                            repo: context.repo.repo,
-                            issue_number: issue.number,
-                            state: 'closed'
-                          });
                         });
-                      });
+#                      }).then(response => {
+#                        response.data.forEach(issue => {
+#                          github.issues.update({
+#                            owner: context.repo.owner,
+#                            repo: context.repo.repo,
+#                            issue_number: issue.number,
+#                            state: 'closed'
+#                          });
+#                        });
+#                      });
 
             - name: Opprett issue, trigg deploy til dev-gcp
               if: success()
