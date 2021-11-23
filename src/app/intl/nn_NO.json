@@ -939,6 +939,7 @@
     "valideringsfeil.termindato.duMåVæreIUke22": "Du kan tidlegast søkje når du er i 22. svangerskapsveke",
     "valideringsfeil.termindato.forTidlig": "Termindatoen kan ikkje vere tidlegare enn 3 veker frå i dag",
     "valideringsfeil.termindato.forLangtFremITid": "Termindatoen kan ikkje vere lengre enn 9 månader fram i tid",
+    "valideringsfeil.termindato.forLangtTilbakeITidFødsel": "Termindatoen kan ikkje vere lengre enn 9 månader tilbake i tid",
     "valideringsfeil.termindato.ugyldigDatoFormat": "Termindato må være ein gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.utenlandsopphold.dagensEllerSenere": "Du må leggje inn dagens dato eller seinare.",
     "valideringsfeil.utenlandsopphold.etterFraDato": "Du må leggje inn ein til og med dato som er etter frå og med datoen",

@@ -2,7 +2,7 @@ import moment from 'moment';
 import { IntlShape } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
-import { date21DaysAgo, attenUkerPluss3, attenUkerPluss3Number, today, date3YearsAgo } from './values';
+import { date21DaysAgo, attenUkerPluss3, attenUkerPluss3Number, today, date9MonthsAgo } from './values';
 import { erGyldigDato, hasValueRule } from './common';
 import { Avgrensninger } from 'common/types';
 
@@ -12,7 +12,7 @@ export const termindatoAvgrensninger: Avgrensninger = {
 };
 
 export const termindatoAvgrensningerFodsel: Avgrensninger = {
-    minDato: date3YearsAgo.toDate(),
+    minDato: date9MonthsAgo.toDate(),
     maksDato: attenUkerPluss3.subtract(24, 'hours').toDate(),
 };
 
@@ -47,9 +47,17 @@ export const getTermindatoReglerForFødsel = (termindato: string | undefined, in
         failText: getMessage(intl, 'valideringsfeil.termindato.forLangtFremITid'),
     };
 
+    const forLangtTilbakeITidRegel: Validator = {
+        test: () => {
+            return moment().subtract(9, 'months').isSameOrBefore(moment(termindato), 'day');
+        },
+        failText: getMessage(intl, 'valideringsfeil.termindato.forLangtTilbakeITidFødsel'),
+    };
+
     return [
         hasValueRule(termindato, getMessage(intl, 'valideringsfeil.termindato.duMåOppgi')),
         erGyldigDato(termindato, getMessage(intl, 'valideringsfeil.termindato.ugyldigDatoFormat')),
         forLangtFremITidRegel,
+        forLangtTilbakeITidRegel,
     ];
 };
