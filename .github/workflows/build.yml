@@ -59,17 +59,16 @@ jobs:
                         repo: context.repo.repo,
                         state: 'open',
                         labels: ['bygg']
+                      }).then(response => {
+                        response.data.forEach(issue => {
+                          github.issues.update({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            issue_number: issue.number,
+                            state: 'closed'
+                          });
                         });
-#                      }).then(response => {
-#                        response.data.forEach(issue => {
-#                          github.issues.update({
-#                            owner: context.repo.owner,
-#                            repo: context.repo.repo,
-#                            issue_number: issue.number,
-#                            state: 'closed'
-#                          });
-#                        });
-#                      });
+                      });
 
             - name: Opprett issue, trigg deploy til dev-gcp
               if: success()
@@ -83,12 +82,12 @@ jobs:
                         labels: ['bygg'],
                         title: 'Deploy av ${{ env.TAG }}',
                         body: '${{ github.sha }}',
-                      })
-                      .then(response => {
-                              const issue = { owner: context.issue.owner,
-                              repo: context.issue.repo,
-                              issue_number: response.data.number }
-                             github.issues.createComment({...issue,
-                                    title: 'Deploy av ${{ env.TAG }}',
-                                    body: '/promote dev-gcp '})
-                       });
+                      });
+#                      .then(response => {
+#                              const issue = { owner: context.issue.owner,
+#                              repo: context.issue.repo,
+#                              issue_number: response.data.number }
+#                             github.issues.createComment({...issue,
+#                                    title: 'Deploy av ${{ env.TAG }}',
+#                                    body: '/promote dev-gcp '})
+#                       });
