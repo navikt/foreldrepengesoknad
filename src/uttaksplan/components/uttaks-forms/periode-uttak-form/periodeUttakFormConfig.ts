@@ -3,6 +3,7 @@ import { Attachment } from 'app/types/Attachment';
 import { Forelder } from 'app/types/Forelder';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
+import { Arbeidsform } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 
 export enum PeriodeUttakFormField {
@@ -24,20 +25,20 @@ export enum PeriodeUttakFormField {
 }
 
 export interface PeriodeUttakFormData {
-    [PeriodeUttakFormField.fom]: string;
-    [PeriodeUttakFormField.tom]: string;
-    [PeriodeUttakFormField.kvote]: StønadskontoType;
+    [PeriodeUttakFormField.fom]: Date | undefined;
+    [PeriodeUttakFormField.tom]: Date | undefined;
+    [PeriodeUttakFormField.kvote]?: StønadskontoType | '';
     [PeriodeUttakFormField.samtidigUttak]?: YesOrNo;
-    [PeriodeUttakFormField.aktivitetskravMor]?: MorsAktivitet;
+    [PeriodeUttakFormField.aktivitetskravMor]?: MorsAktivitet | '';
     [PeriodeUttakFormField.aktivitetskravMorDokumentasjon]?: Attachment[];
-    [PeriodeUttakFormField.overføringsårsak]?: OverføringÅrsakType;
+    [PeriodeUttakFormField.overføringsårsak]?: OverføringÅrsakType | '';
     [PeriodeUttakFormField.overføringsdokumentasjon]?: Attachment[];
     [PeriodeUttakFormField.skalHaGradering]: YesOrNo;
     [PeriodeUttakFormField.stillingsprosent]?: string;
-    [PeriodeUttakFormField.hvorSkalDuJobbe]?: string;
+    [PeriodeUttakFormField.hvorSkalDuJobbe]?: Arbeidsform[];
     [PeriodeUttakFormField.erMorForSyk]?: YesOrNo;
     [PeriodeUttakFormField.samtidigUttakProsent]?: string;
-    [PeriodeUttakFormField.hvemSkalTaUttak]?: Forelder;
+    [PeriodeUttakFormField.hvemSkalTaUttak]?: Forelder | '';
     [PeriodeUttakFormField.ønskerFlerbarnsdager]?: YesOrNo;
 }
 

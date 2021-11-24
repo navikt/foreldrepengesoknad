@@ -1,4 +1,5 @@
 import { bemUtils, InfoBlock, intlUtils } from '@navikt/fp-common';
+import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Systemtittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
@@ -10,10 +11,16 @@ import './planlegger.less';
 interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: string;
-    handleOnPlanChange: (plan: Periode[]) => void;
+    handleOnPeriodeChange: (periode: Periode) => void;
+    stønadskontoer: TilgjengeligStønadskonto[];
 }
 
-const Planlegger: FunctionComponent<Props> = ({ uttaksplan, familiehendelsesdato, handleOnPlanChange }) => {
+const Planlegger: FunctionComponent<Props> = ({
+    uttaksplan,
+    familiehendelsesdato,
+    handleOnPeriodeChange,
+    stønadskontoer,
+}) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
 
@@ -26,7 +33,8 @@ const Planlegger: FunctionComponent<Props> = ({ uttaksplan, familiehendelsesdato
                 <Periodeliste
                     uttaksplan={uttaksplan}
                     familiehendelsesdato={familiehendelsesdato}
-                    handleOnPlanChange={handleOnPlanChange}
+                    handleOnPeriodeChange={handleOnPeriodeChange}
+                    stønadskontoer={stønadskontoer}
                 />
             </section>
         </InfoBlock>

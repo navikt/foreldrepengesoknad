@@ -3,8 +3,14 @@ import { IntlShape } from 'react-intl';
 import { OppholdÅrsakType } from '../types/OppholdÅrsakType';
 import { PeriodeInfoType } from '../types/PeriodeInfoType';
 import { StønadskontoType } from '../types/StønadskontoType';
-import { isAnnenPartInfoPeriode, Periode, Periodetype, UttakAnnenPartInfoPeriode } from './../types/Periode';
-import { getNavnGenitivEierform } from './../../app/utils/personUtils';
+import {
+    isAnnenPartInfoPeriode,
+    isHull,
+    isPeriodeUtenUttak,
+    Periode,
+    Periodetype,
+    UttakAnnenPartInfoPeriode,
+} from './../types/Periode';
 import { NavnPåForeldre } from './../../app/types/NavnPåForeldre';
 import { Forelder } from './../../app/types/Forelder';
 import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
@@ -12,6 +18,7 @@ import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { getStønadskontoNavn } from './stønadskontoerUtils';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {
@@ -43,27 +50,6 @@ const prettifyProsent = (pst: string | undefined): number | undefined => {
         return Math.round(nbr);
     }
     return nbr;
-};
-
-export const getStønadskontoNavn = (intl: IntlShape, konto: StønadskontoType, navnPåForeldre: NavnPåForeldre) => {
-    let navn;
-    switch (konto) {
-        case StønadskontoType.Mødrekvote:
-            navn = navnPåForeldre.mor;
-            break;
-        case StønadskontoType.Fedrekvote:
-            navn = navnPåForeldre.farMedmor;
-            break;
-        default:
-            navn = undefined;
-    }
-    if (navn) {
-        return intl.formatMessage(
-            { id: 'stønadskontotype.foreldernavn.kvote' },
-            { navn: getNavnGenitivEierform(navn, intl.locale) }
-        );
-    }
-    return intl.formatMessage({ id: `stønadskontotype.${konto}` });
 };
 
 export const getUttaksprosentFromStillingsprosent = (
@@ -104,6 +90,14 @@ export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): S
     }
 
     return StønadskontoType.ForeldrepengerFørFødsel;
+};
+
+export const getForelderFromPeriode = (periode: Periode): Forelder | undefined => {
+    if (!isHull(periode) && !isPeriodeUtenUttak(periode)) {
+        return periode.forelder;
+    }
+
+    return undefined;
 };
 
 export const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåForeldre): string => {

@@ -11,7 +11,7 @@ import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperi
 
 interface Props {
     periode: Periode;
-    tidsperiode: Partial<TidsperiodeDate>;
+    tidsperiode: TidsperiodeDate;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder: Tidsperiode[];
     visible: boolean;
@@ -20,7 +20,7 @@ interface Props {
     changeTidsperiode: (tidsperiode: Partial<TidsperiodeDate>) => void;
 }
 
-const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
+const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     onBekreft,
     onAvbryt,
     changeTidsperiode,
@@ -73,8 +73,8 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                 />
             </Modal>
             <UkerDagerTeller
-                ukeLegend={intlUtils(intl, 'spørsmål.farFellesperiode.uker.label')}
-                dagLegend={intlUtils(intl, 'spørsmål.farFellesperiode.dager.label')}
+                ukeLegend={intlUtils(intl, 'uker.label')}
+                dagLegend={intlUtils(intl, 'dager.label')}
                 ukeStepper={{
                     value: uker !== undefined ? uker : 0,
                     min: 0,
@@ -114,4 +114,4 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     );
 };
 
-export default UttakEndreTidsperiodeSpørsmål;
+export default UtsettelseEndreTidsperiodeSpørsmål;

@@ -2,16 +2,23 @@ import React, { FunctionComponent, useState } from 'react';
 import { bemUtils } from '@navikt/fp-common';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
 import { isInfoPeriode, Periode } from 'uttaksplan/types/Periode';
+import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 
 import './periodeliste.less';
 
 interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: string;
-    handleOnPlanChange: (plan: Periode) => void;
+    handleOnPeriodeChange: (periode: Periode) => void;
+    stønadskontoer: TilgjengeligStønadskonto[];
 }
 
-const Periodeliste: FunctionComponent<Props> = ({ uttaksplan, familiehendelsesdato, handleOnPlanChange }) => {
+const Periodeliste: FunctionComponent<Props> = ({
+    uttaksplan,
+    familiehendelsesdato,
+    handleOnPeriodeChange,
+    stønadskontoer,
+}) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
 
@@ -33,7 +40,8 @@ const Periodeliste: FunctionComponent<Props> = ({ uttaksplan, familiehendelsesda
                     isOpen={openPeriodeId === p.id}
                     toggleIsOpen={toggleIsOpen}
                     familiehendelsesdato={familiehendelsesdato}
-                    handleOnPlanChange={handleOnPlanChange}
+                    handleOnPeriodeChange={handleOnPeriodeChange}
+                    stønadskontoer={stønadskontoer}
                 />
             ))}
         </div>

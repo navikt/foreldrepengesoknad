@@ -1,3 +1,4 @@
+import { Element } from 'nav-frontend-typografi';
 import React from 'react';
 
 interface Props {
@@ -12,7 +13,9 @@ const Fieldset: React.FunctionComponent<Props> = ({ legend, className, children 
             className={className}
             style={{ display: 'flex', flexDirection: 'column', border: 'none', padding: '0', margin: '0' }}
         >
-            <legend style={{ margin: '0 0 0.5rem 0' }}>{legend}</legend>
+            <legend style={{ margin: '0 0 0.5rem 0' }}>
+                <Element>{legend}</Element>
+            </legend>
             {children}
         </fieldset>
     );

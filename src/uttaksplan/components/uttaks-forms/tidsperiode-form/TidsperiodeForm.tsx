@@ -12,7 +12,7 @@ import { mapTidsperiodeStringToTidsperiode } from 'uttaksplan/utils/periodeUtils
 
 interface Props {
     periode?: Periode;
-    tidsperiode: Partial<TidsperiodeDate>;
+    tidsperiode: TidsperiodeDate;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder: Tidsperiode[] | undefined;
     onBekreft: (tidsperiode: Partial<Tidsperiode>) => void;

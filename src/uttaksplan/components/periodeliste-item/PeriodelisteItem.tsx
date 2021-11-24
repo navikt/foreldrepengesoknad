@@ -1,5 +1,6 @@
 import { bemUtils } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-common/node_modules/@navikt/sif-common-formik/lib';
+import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 import React, { FunctionComponent } from 'react';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
@@ -15,33 +16,32 @@ interface Props {
     isOpen: boolean;
     toggleIsOpen: (id: string) => void;
     familiehendelsesdato: string;
-    handleOnPlanChange: (plan: Periode) => void;
+    handleOnPeriodeChange: (periode: Periode) => void;
+    stønadskontoer: TilgjengeligStønadskonto[];
 }
 
 const renderPeriodeListeInnhold = (
     periode: Periode,
     familiehendelsesdato: string,
-    handleOnPlanChange: (plan: Periode) => void
+    handleOnPeriodeChange: (periode: Periode) => void,
+    stønadskontoer: TilgjengeligStønadskonto[]
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
+        case Periodetype.Overføring:
+        case Periodetype.Opphold:
             return (
                 <PeriodeUttakForm
                     periode={periode}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
-                    handleOnPlanChange={handleOnPlanChange}
+                    handleOnPeriodeChange={handleOnPeriodeChange}
+                    stønadskontoer={stønadskontoer}
                 />
             );
         case Periodetype.Utsettelse:
             return <PeriodeUtsettelseForm />;
         default:
-            return (
-                <PeriodeUttakForm
-                    periode={periode}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
-                    handleOnPlanChange={handleOnPlanChange}
-                />
-            );
+            return <div>Whatever</div>;
     }
 };
 
@@ -51,7 +51,8 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     isOpen,
     toggleIsOpen,
     familiehendelsesdato,
-    handleOnPlanChange,
+    handleOnPeriodeChange,
+    stønadskontoer,
 }) => {
     const bem = bemUtils('periodelisteItem');
 
@@ -63,7 +64,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                 apen={isOpen}
                 onClick={() => toggleIsOpen(periode.id)}
             >
-                {renderPeriodeListeInnhold(periode, familiehendelsesdato, handleOnPlanChange)}
+                {renderPeriodeListeInnhold(periode, familiehendelsesdato, handleOnPeriodeChange, stønadskontoer)}
             </EkspanderbartpanelBase>
         </article>
     );

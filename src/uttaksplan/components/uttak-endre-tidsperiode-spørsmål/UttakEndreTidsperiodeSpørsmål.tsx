@@ -12,7 +12,7 @@ import { Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 
 interface Props {
     periode: Periode;
-    tidsperiode: Partial<TidsperiodeDate>;
+    tidsperiode: TidsperiodeDate;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder: Tidsperiode[];
     visible: boolean;
@@ -74,8 +74,8 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                 />
             </Modal>
             <UkerDagerTeller
-                ukeLegend={getMessage(intl, 'spørsmål.farFellesperiode.uker.label')}
-                dagLegend={getMessage(intl, 'spørsmål.farFellesperiode.dager.label')}
+                ukeLegend={getMessage(intl, 'uker.label')}
+                dagLegend={getMessage(intl, 'dager.label')}
                 ukeStepper={{
                     value: uker !== undefined ? uker : 0,
                     min: 0,

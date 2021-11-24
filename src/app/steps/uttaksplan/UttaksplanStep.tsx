@@ -17,6 +17,13 @@ import { Forelder } from 'app/types/Forelder';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { Periode } from 'uttaksplan/types/Periode';
 import actionCreator from 'app/context/action/actionCreator';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import Api from 'app/api/api';
+import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import getStønadskontoParams from 'app/api/getStønadskontoParams';
+import NavFrontendSpinner from 'nav-frontend-spinner';
+import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
+import { getErMorUfør } from 'app/utils/annenForelderUtils';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -24,12 +31,13 @@ const UttaksplanStep = () => {
     const onValidSubmitHandler = () => [];
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTENLANDSOPPHOLD);
     const onAvbrytSøknad = useAvbrytSøknad();
+    const { dispatch } = useForeldrepengesøknadContext();
 
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
 
     const { person } = søkerinfo;
-    const { annenForelder, søker, barn } = søknad;
+    const { annenForelder, søker, barn, søkersituasjon, dekningsgrad } = søknad;
 
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
@@ -39,6 +47,7 @@ const UttaksplanStep = () => {
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const forelderVedAleneomsorg = erDeltUttak ? undefined : erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
 
     const situasjon = getForeldreparSituasjon(
         person.kjønn,
@@ -48,9 +57,31 @@ const UttaksplanStep = () => {
         farMedmorErAleneOmOmsorg
     );
 
+    const { tilgjengeligeStønadskontoerData: stønadskontoer100 } = Api.useGetUttakskontoer(
+        getStønadskontoParams(Dekningsgrad.HUNDRE_PROSENT, barn, annenForelder, søkersituasjon)
+    );
+    const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
+        getStønadskontoParams(Dekningsgrad.ÅTTI_PROSENT, barn, annenForelder, søkersituasjon)
+    );
+
     const handleOnPlanChange = (plan: Periode[]) => {
-        actionCreator.setUttaksplan(plan);
+        dispatch(actionCreator.setUttaksplan(plan));
     };
+
+    if (!stønadskontoer100 || !stønadskontoer80) {
+        return (
+            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+                <NavFrontendSpinner type="XXL" />
+            </div>
+        );
+    }
+
+    const stønadskontoer = getValgtStønadskontoFor80Og100Prosent(
+        stønadskontoer80,
+        stønadskontoer100,
+        familiehendelsesdato,
+        erMorUfør
+    );
 
     return (
         <Step
@@ -70,6 +101,7 @@ const UttaksplanStep = () => {
                 uttaksplan={søknad.uttaksplan}
                 familiehendelsesdato={familiehendelsesdato}
                 handleOnPlanChange={handleOnPlanChange}
+                stønadskontoer={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80]}
             />
             <Block textAlignCenter={true}>
                 <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>

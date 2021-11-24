@@ -11,6 +11,8 @@
     "ok": "Ok",
     "fraogmed": "Fra og med",
     "tilogmed": "Til og med",
+    "uker.label": "Antall uker",
+    "dager.label": "Antall dager",
     "common.varighet.dager": "{dager, plural, one {# dag} other {# dager}}",
     "common.varighet.uker": "{uker, plural, one {# uke} other {# uker}}",
     "common.varighet.ukerogdager": "{uker, plural, zero {} one {# uke} other {# uker}} {dager, plural, =0 {} one {og # dag} other {og # dager}}",
@@ -459,7 +461,7 @@
     "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
     "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
     "stønadskontotype.MØDREKVOTE": "Mors kvote",
-    "stønadskontotype.foreldernavn.kvote": "{navn} kvote",
+    "uttaksplan.stønadskontotype.foreldernavn.kvote": "{navn} kvote",
     "stønadskontotype.undefined": "Ny periode uten kvote",
     "uttaksplan.informasjon.lesMer": "Du kan lese mer om viktige frister på våre <a>nettsider</a>",
     "valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd": "Du må bekrefte at du har lest og forstått dine plikter.",
@@ -541,5 +543,7 @@
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noe gikk galt prøv igjen",
     "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikke av gyldig type",
-    "uttaksplan.dinPlan": "Din plan"
+    "uttaksplan.dinPlan": "Din plan",
+    "uttaksplan.hvilkenKvote": "Hvilken del av foreldrepengene skal du ta ut?",
+    "uttaksplan.hvilkenKvote.annenForelder": "Hvilken del av foreldrepengene skal {navnAnnenForelder} ta ut?"
 }
