@@ -199,6 +199,7 @@
         "react-scroll": "^1.8.3",
         "react-transition-group": "^4.4.2",
         "regenerator-runtime": "^0.13.9",
+        "request": "^2.88.2",
         "snyk": "^1.675.0"
     },
     "snyk": true

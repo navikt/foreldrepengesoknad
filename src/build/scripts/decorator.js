@@ -27,6 +27,7 @@ const getDecorator = () =>
                 resolve(extractDecoratorFragments(body));
             } else {
                 try {
+                    console.log(error);
                     console.log('Failed to get decorator. Exiting node.');
                     process.exit(1);
                 } catch (err) {
