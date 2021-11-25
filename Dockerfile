@@ -1,5 +1,5 @@
 FROM node:14
-
+LABEL org.opencontainers.image.source https://github.com/navikt/foreldrepengesoknad
 WORKDIR /usr/src/app
 
 COPY dist ./dist
