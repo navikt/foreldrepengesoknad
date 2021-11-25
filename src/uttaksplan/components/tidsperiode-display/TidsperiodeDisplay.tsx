@@ -1,21 +1,17 @@
 import React from 'react';
-import Block from 'common/components/block/Block';
-import { Tidsperiode } from 'common/types';
-import BEMHelper from 'common/util/bem';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
+import { IntlShape, useIntl } from 'react-intl';
+import { formatDate, Block, intlUtils, TidsperiodeDate, bemUtils } from '@navikt/fp-common';
 
 import './tidsperiodeDisplay.less';
-import getMessage from 'common/util/i18nUtils';
-import { IntlShape, useIntl } from 'react-intl';
-import { formatDate } from '@navikt/fp-common';
 
 interface Props {
-    tidsperiode: Partial<Tidsperiode> | undefined;
+    tidsperiode: Partial<TidsperiodeDate> | undefined;
     toggleVisTidsperiode: () => void;
 }
 
-const bem = BEMHelper('tidsperiodeDisplay');
+const bem = bemUtils('tidsperiodeDisplay');
 
 const formaterTidsperiodeDato = (dato: Date | undefined) => {
     if (dato) {
@@ -25,16 +21,16 @@ const formaterTidsperiodeDato = (dato: Date | undefined) => {
     return 'Ingen valgt dato';
 };
 
-const renderTidsperiode = (tidsperiode: Partial<Tidsperiode> | undefined, intl: IntlShape) => {
+const renderTidsperiode = (tidsperiode: Partial<TidsperiodeDate> | undefined, intl: IntlShape) => {
     if (tidsperiode) {
         return (
             <div style={{ display: 'flex', justifyContent: 'space-between', width: '22rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '10rem' }}>
-                    <Element>{`${getMessage(intl, 'fraogmed')}:`}</Element>
+                    <Element>{`${intlUtils(intl, 'fraogmed')}:`}</Element>
                     <Normaltekst>{formaterTidsperiodeDato(tidsperiode.fom)}</Normaltekst>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '10rem' }}>
-                    <Element>{`${getMessage(intl, 'tilogmed')}:`}</Element>
+                    <Element>{`${intlUtils(intl, 'tilogmed')}:`}</Element>
                     <Normaltekst>{formaterTidsperiodeDato(tidsperiode.tom)}</Normaltekst>
                 </div>
             </div>
@@ -48,7 +44,7 @@ const TidsperiodeDisplay: React.FunctionComponent<Props> = ({ tidsperiode, toggl
     const intl = useIntl();
 
     return (
-        <Block margin="xs">
+        <Block padBottom="l">
             <Element>Tidsrom</Element>
             <div className={bem.block}>
                 {renderTidsperiode(tidsperiode, intl)}

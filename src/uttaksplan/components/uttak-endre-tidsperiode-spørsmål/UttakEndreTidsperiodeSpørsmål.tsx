@@ -1,14 +1,13 @@
 import React from 'react';
 import Modal from 'nav-frontend-modal';
 import { useIntl } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
-import UkerDagerTeller from 'common/components/skjema/elements/uker-dager-teller/UkerDagerTeller';
-import { getUkerOgDagerFromDager } from 'common/util/datoUtils';
 import { isForeldrepengerFørFødselUttaksperiode, Periode } from 'uttaksplan/types/Periode';
 import dayjs from 'dayjs';
 import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
-import { Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
+import { intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
+import { getUkerOgDagerFromDager } from 'app/utils/dateUtils';
+import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
 
 interface Props {
     periode: Periode;
@@ -74,8 +73,8 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                 />
             </Modal>
             <UkerDagerTeller
-                ukeLegend={getMessage(intl, 'uker.label')}
-                dagLegend={getMessage(intl, 'dager.label')}
+                ukeLegend={intlUtils(intl, 'uker.label')}
+                dagLegend={intlUtils(intl, 'dager.label')}
                 ukeStepper={{
                     value: uker !== undefined ? uker : 0,
                     min: 0,

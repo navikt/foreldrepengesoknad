@@ -2,7 +2,7 @@ import { intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import Modal from 'nav-frontend-modal';
 import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { getUkerOgDagerFromDager } from 'app/utils/dateUtils';
-import UkerDagerTeller from 'common/components/skjema/elements/uker-dager-teller/UkerDagerTeller';
+import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
 import dayjs from 'dayjs';
 import React from 'react';
 import { useIntl } from 'react-intl';
