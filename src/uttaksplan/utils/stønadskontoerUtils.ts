@@ -37,7 +37,7 @@ export const getStønadskontoNavn = (intl: IntlShape, konto: StønadskontoType, 
         );
     }
 
-    return intl.formatMessage({ id: `stønadskontotype.${konto}` });
+    return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
 };
 
 const navnSlutterPåSLyd = (navn: string): boolean => {

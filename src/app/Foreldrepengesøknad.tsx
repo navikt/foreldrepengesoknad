@@ -22,7 +22,7 @@ const renderSpinner = () => (
 const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const { søkerinfoData } = Api.useSøkerinfo();
     const { storageData } = Api.useStoredAppState();
-    const { sakerData } = Api.useGetSaker();
+    const { sakerData } = Api.useGetSaker(søkerinfoData ? søkerinfoData.søker.fnr : undefined);
     const { dispatch, state } = useForeldrepengesøknadContext();
 
     useEffect(() => {

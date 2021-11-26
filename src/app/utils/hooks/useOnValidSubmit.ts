@@ -11,12 +11,13 @@ const useOnValidSubmit = <T>(
     nextRoute: SøknadRoutes
 ) => {
     const { dispatch, state } = useForeldrepengesøknadContext();
+    const { søkerinfo } = state;
     const history = useHistory();
     const [harSubmitted, setSubmitted] = useState(false);
 
     useEffect(() => {
         if (harSubmitted) {
-            Api.storeAppState(state);
+            Api.storeAppState(state, søkerinfo.person.fnr);
             history.push(nextRoute);
         }
     }, [harSubmitted, history, nextRoute, state]);

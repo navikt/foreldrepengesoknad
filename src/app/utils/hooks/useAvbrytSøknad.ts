@@ -7,7 +7,8 @@ import { useCallback } from 'react';
 
 const useAvbrytSøknad = () => {
     const history = useHistory();
-    const { dispatch } = useForeldrepengesøknadContext();
+    const { dispatch, state } = useForeldrepengesøknadContext();
+    const { søkerinfo } = state;
 
     const avbrytSøknadHandler = useCallback(() => {
         logAmplitudeEvent('applikasjon-hendelse', {
@@ -17,9 +18,9 @@ const useAvbrytSøknad = () => {
         });
 
         dispatch(actionCreator.avbrytSøknad());
-        Api.deleteStoredAppState();
+        Api.deleteStoredAppState(søkerinfo.person.fnr);
         history.push('/');
-    }, [history, dispatch]);
+    }, [history, dispatch, søkerinfo.person.fnr]);
 
     return avbrytSøknadHandler;
 };

@@ -44,8 +44,12 @@ const useSøkerinfo = () => {
     };
 };
 
-const useGetSaker = () => {
-    const { data, error } = useRequest<Sak[]>('/innsyn/saker', { fnr: '123', config: { withCredentials: true } });
+const useGetSaker = (fnr: string | undefined) => {
+    const { data, error } = useRequest<Sak[]>('/innsyn/saker', {
+        fnr,
+        config: { withCredentials: true },
+        isSuspended: fnr === undefined,
+    });
 
     return {
         sakerData: data,
@@ -53,9 +57,9 @@ const useGetSaker = () => {
     };
 };
 
-const useGetEksisterendeSak = (saksnummer: string) => {
+const useGetEksisterendeSak = (saksnummer: string, fnr: string) => {
     const { data, error } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplan', {
-        fnr: '123',
+        fnr,
         config: { withCredentials: true, params: saksnummer },
     });
 
@@ -89,17 +93,17 @@ const useStoredAppState = () => {
     };
 };
 
-const storeAppState = (state: ForeldrepengesøknadContextState) => {
+const storeAppState = (state: ForeldrepengesøknadContextState, fnr: string) => {
     const { søknad, version, currentRoute, uttaksplanInfo } = state;
-    return getAxiosInstance('123').post(
+    return getAxiosInstance(fnr).post(
         '/storage',
         { søknad, version, currentRoute, uttaksplanInfo },
         { withCredentials: true }
     );
 };
 
-const deleteStoredAppState = () => {
-    return getAxiosInstance('123').delete('/storage', { withCredentials: true });
+const deleteStoredAppState = (fnr: string) => {
+    return getAxiosInstance(fnr).delete('/storage', { withCredentials: true });
 };
 
 const sendStorageKvittering = (

@@ -7,6 +7,7 @@ import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-t
 import { Periode } from 'uttaksplan/types/Periode';
 import { getForelderFromPeriode } from 'uttaksplan/utils/periodeUtils';
 import { getVelgbareStønadskontotyper } from 'uttaksplan/utils/stønadskontoerUtils';
+import HvemSkalHaUttakSpørsmål from '../spørsmål/hvem-skal-ha-uttak/HvemSkalHaUttakSpørsmål';
 import HvilkenKvoteSpørsmål from '../spørsmål/hvilken-kvote/HvilkenKvoteSpørsmål';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
@@ -78,9 +79,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block padBottom="l">
-                            <PeriodeUttakFormComponents.YesOrNoQuestion
-                                name={PeriodeUttakFormField.skalHaGradering}
-                                legend="Skal du kombinere foreldrepengene med delvis arbeid?"
+                            <HvemSkalHaUttakSpørsmål
+                                fieldName={PeriodeUttakFormField.hvemSkalTaUttak}
+                                erFarEllerMedmor={false}
+                                navnPåForeldre={{ farMedmor: 'Tom', mor: 'Kari' }}
                             />
                         </Block>
                         <Block padBottom="l">
@@ -88,7 +90,13 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 fieldName={PeriodeUttakFormField.kvote}
                                 velgbareStønadskontoer={velgbareStønadskontoer}
                                 erOppholdsperiode={false}
-                                navnPåForeldre={{ farMedmor: 'Far', mor: 'Mor' }}
+                                navnPåForeldre={{ farMedmor: 'Tom', mor: 'Kari' }}
+                            />
+                        </Block>
+                        <Block padBottom="l">
+                            <PeriodeUttakFormComponents.YesOrNoQuestion
+                                name={PeriodeUttakFormField.skalHaGradering}
+                                legend="Skal du kombinere foreldrepengene med delvis arbeid?"
                             />
                         </Block>
                     </PeriodeUttakFormComponents.Form>
