@@ -20,7 +20,7 @@ const useOnValidSubmit = <T>(
             Api.storeAppState(state, søkerinfo.person.fnr);
             history.push(nextRoute);
         }
-    }, [harSubmitted, history, nextRoute, state]);
+    }, [harSubmitted, history, nextRoute, state, søkerinfo.person.fnr]);
 
     const setSubmitAndHandleSubmit = (values: T) => {
         const actions = submitHandler(values);

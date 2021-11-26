@@ -40,7 +40,7 @@ const context = {
         dekningsgrad: '100',
         uttaksplan: [],
     },
-    version: 2,
+    version: 3,
     currentRoute: '/soknad/uttaksplan-info',
     søkerinfo: {} as Søkerinfo,
     saker: [],

@@ -6,6 +6,7 @@ import Api from './api/api';
 import actionCreator from './context/action/actionCreator';
 import { useForeldrepengesøknadContext } from './context/hooks/useForeldrepengesøknadContext';
 import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
+import SøknadRoutes from './routes/routes';
 import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 
 interface Props {
@@ -27,7 +28,9 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
 
     useEffect(() => {
         if (storageData) {
-            dispatch(actionCreator.applyStoredState(storageData));
+            if (storageData.version === 3) {
+                dispatch(actionCreator.applyStoredState(storageData));
+            }
         }
         if (søkerinfoData) {
             dispatch(actionCreator.setSøkerinfo(mapSøkerinfoDTOToSøkerinfo(søkerinfoData)));
@@ -38,7 +41,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         }
     }, [dispatch, storageData, søkerinfoData, sakerData]);
 
-    if (!state.søkerinfo || !storageData) {
+    if (!state.søkerinfo || !sakerData) {
         return renderSpinner();
     }
 
@@ -49,7 +52,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
                 kjønn={state.søkerinfo.person.kjønn}
                 locale={locale}
                 onChangeLocale={onChangeLocale}
-                currentRoute={storageData.currentRoute}
+                currentRoute={storageData ? storageData.currentRoute : SøknadRoutes.VELKOMMEN}
             />
         </Router>
     );
