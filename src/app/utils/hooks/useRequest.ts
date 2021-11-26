@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { AxiosError, AxiosRequestConfig } from 'axios';
 import getAxiosInstance from 'app/api/apiInterceptor';
+import { redirectToLogin } from './../../utils/redirectToLogin';
 
 type Options = {
     config?: AxiosRequestConfig;
@@ -26,6 +27,10 @@ export const useRequest = <T>(url: string, options: Options = DEFAULT_OPTIONS) =
                     setData(res.data);
                 })
                 .catch((err) => {
+                    if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+                        redirectToLogin();
+                    }
+
                     setError(err);
                 });
         }
