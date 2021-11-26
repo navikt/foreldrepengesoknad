@@ -23,6 +23,7 @@ import './periodelisteItemHeader.less';
 interface Props {
     egenPeriode: boolean;
     periode: Periode;
+    navnPåForeldre: NavnPåForeldre;
 }
 
 const bem = bemUtils('periodelisteItemHeader2');
@@ -114,7 +115,7 @@ const renderDagMnd = (dato: Date, visÅr = true): JSX.Element => {
     );
 };
 
-const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, periode }) => {
+const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, periode, navnPåForeldre }) => {
     const intl = useIntl();
 
     let varighetString;
@@ -134,11 +135,9 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, periode
                     egenPeriode ? bem.modifier('egenPeriode') : bem.modifier('annenPart')
                 )}
             >
-                <div className={bem.element('ikon')}>
-                    {getPeriodeIkon(periode, { farMedmor: 'Truls', mor: 'Kari' })}
-                </div>
+                <div className={bem.element('ikon')}>{getPeriodeIkon(periode, navnPåForeldre)}</div>
                 <div className={bem.element('tittel')}>
-                    <Element tag="h2">{getPeriodeTittel(intl, periode, { farMedmor: 'Truls', mor: 'Kari' })}</Element>
+                    <Element tag="h2">{getPeriodeTittel(intl, periode, navnPåForeldre)}</Element>
                     <Normaltekst>{varighetString}</Normaltekst>
                 </div>
                 <div className={bem.element('dato-container')}>

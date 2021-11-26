@@ -9,7 +9,12 @@ import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import Uttaksplan from 'uttaksplan/Uttaksplan';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { getFarMedmorErAleneOmOmsorg, getKjønnFromFnr, getMorErAleneOmOmsorg } from 'app/utils/personUtils';
+import {
+    getFarMedmorErAleneOmOmsorg,
+    getKjønnFromFnr,
+    getMorErAleneOmOmsorg,
+    getNavnPåForeldre,
+} from 'app/utils/personUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
@@ -48,6 +53,7 @@ const UttaksplanStep = () => {
     const forelderVedAleneomsorg = erDeltUttak ? undefined : erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
+    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
 
     const situasjon = getForeldreparSituasjon(
         person.kjønn,
@@ -102,6 +108,7 @@ const UttaksplanStep = () => {
                 familiehendelsesdato={familiehendelsesdato}
                 handleOnPlanChange={handleOnPlanChange}
                 stønadskontoer={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80]}
+                navnPåForeldre={navnPåForeldre}
             />
             <Block textAlignCenter={true}>
                 <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>

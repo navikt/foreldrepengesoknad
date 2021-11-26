@@ -1,5 +1,6 @@
 import { Block } from '@navikt/fp-common';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import React, { FunctionComponent, useState } from 'react';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
@@ -7,8 +8,11 @@ import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-t
 import { Periode } from 'uttaksplan/types/Periode';
 import { getForelderFromPeriode } from 'uttaksplan/utils/periodeUtils';
 import { getVelgbareStønadskontotyper } from 'uttaksplan/utils/stønadskontoerUtils';
+import ErMorForSykSpørsmål from '../spørsmål/er-mor-for-syk/ErMorForSykSpørsmål';
+import FlerbarnsdagerSpørsmål from '../spørsmål/flerbarnsdager/FlerbarnsdagerSpørsmål';
 import HvemSkalHaUttakSpørsmål from '../spørsmål/hvem-skal-ha-uttak/HvemSkalHaUttakSpørsmål';
 import HvilkenKvoteSpørsmål from '../spørsmål/hvilken-kvote/HvilkenKvoteSpørsmål';
+import SamtidigUttakSpørsmål from '../spørsmål/samtidig-uttak/SamtidigUttakSpørsmål';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from './periodeUttakFormConfig';
@@ -19,6 +23,7 @@ interface Props {
     familiehendelsesdato: Date;
     handleOnPeriodeChange: (periode: Periode) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
+    navnPåForeldre: NavnPåForeldre;
 }
 
 const PeriodeUttakForm: FunctionComponent<Props> = ({
@@ -26,6 +31,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     periode,
     handleOnPeriodeChange,
     stønadskontoer,
+    navnPåForeldre,
 }) => {
     const { tidsperiode } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
@@ -43,7 +49,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
             onSubmit={(values: any) =>
                 handleOnPeriodeChange(mapPeriodeUttakFormToPeriode(values, periode.id, periode.type, forelder))
             }
-            renderForm={({ setFieldValue }) => {
+            renderForm={({ setFieldValue, values }) => {
                 return (
                     <PeriodeUttakFormComponents.Form includeButtons={false}>
                         <SubmitListener />
@@ -82,7 +88,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             <HvemSkalHaUttakSpørsmål
                                 fieldName={PeriodeUttakFormField.hvemSkalTaUttak}
                                 erFarEllerMedmor={false}
-                                navnPåForeldre={{ farMedmor: 'Tom', mor: 'Kari' }}
+                                navnPåForeldre={navnPåForeldre}
                             />
                         </Block>
                         <Block padBottom="l">
@@ -90,7 +96,20 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 fieldName={PeriodeUttakFormField.kvote}
                                 velgbareStønadskontoer={velgbareStønadskontoer}
                                 erOppholdsperiode={false}
-                                navnPåForeldre={{ farMedmor: 'Tom', mor: 'Kari' }}
+                                navnPåForeldre={navnPåForeldre}
+                            />
+                        </Block>
+                        <Block padBottom="l">
+                            <FlerbarnsdagerSpørsmål fieldName={PeriodeUttakFormField.ønskerFlerbarnsdager} />
+                        </Block>
+                        <Block padBottom="l">
+                            <ErMorForSykSpørsmål fieldName={PeriodeUttakFormField.erMorForSyk} />
+                        </Block>
+                        <Block padBottom="l">
+                            <SamtidigUttakSpørsmål
+                                samtidigUttakValue={values.samtidigUttak}
+                                erFlerbarnssøknad={true}
+                                navnPåForeldre={navnPåForeldre}
                             />
                         </Block>
                         <Block padBottom="l">

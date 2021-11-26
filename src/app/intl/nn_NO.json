@@ -546,5 +546,11 @@
     "uttaksplan.stønadskontotype.MØDREKVOTE": "Mors kvote",
     "uttaksplan.stønadskontotype.foreldernavn.kvote": "{navn} kvote",
     "uttaksplan.stønadskontotype.undefined": "Ny periode uten kvote",
-    "uttaksplan.hvemSkalHaUttak": "Kven skal ha foreldrepengar?"
+    "uttaksplan.hvemSkalHaUttak": "Kven skal ha foreldrepengar?",
+    "uttaksplan.flerbarnsdager": "Ønsker du å benytte deg av flerbarnsdagene?",
+    "uttaksplan.erMorForSyk": "Er mor for sjuk til å ta seg av barnet eller innlagd i helseinstitusjon?",
+    "uttaksplan.samtidigUttak.veiledertekst": "Dere kan ta ut inntil 100 prosent foreldrepenger til sammen, for eksempel ved at dere bytter på å jobbe og å være hjemme med barnet. Hvis en av dere tar ut inntil 100 prosent kvote, kan den andre kombinere arbeid med å ta ut inntil 50 prosent av fellesperioden. {link}.",
+    "uttaksplan.samtidigUttak.veiledertekst.lenke": "Les mer om å være hjemme samtidig her",
+    "uttaksplan.samtidigUttak.flerBarnsuker.veiledertekst": "De kan begge ta ut 100 prosent foreldrepengar samstundes når de får fleire barn. De vel sjølv om de tek ut fleirbarnsvekene som fellesperiode eller kvote. Det er ikkje krav til kva {navnMor} gjer når {navnFar} tek ut flerbarnsveker eller kvote. {link}.",
+    "uttaksplan.samtidigUttakProsent": "Oppgi kor mange prosent foreldrepengar du tek ut"
 }

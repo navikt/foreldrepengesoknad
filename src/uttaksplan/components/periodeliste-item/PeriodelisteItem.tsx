@@ -1,5 +1,6 @@
 import { bemUtils } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-common/node_modules/@navikt/sif-common-formik/lib';
+import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 import React, { FunctionComponent } from 'react';
@@ -18,13 +19,15 @@ interface Props {
     familiehendelsesdato: string;
     handleOnPeriodeChange: (periode: Periode) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
+    navnPåForeldre: NavnPåForeldre;
 }
 
 const renderPeriodeListeInnhold = (
     periode: Periode,
     familiehendelsesdato: string,
     handleOnPeriodeChange: (periode: Periode) => void,
-    stønadskontoer: TilgjengeligStønadskonto[]
+    stønadskontoer: TilgjengeligStønadskonto[],
+    navnPåForeldre: NavnPåForeldre
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -36,6 +39,7 @@ const renderPeriodeListeInnhold = (
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     handleOnPeriodeChange={handleOnPeriodeChange}
                     stønadskontoer={stønadskontoer}
+                    navnPåForeldre={navnPåForeldre}
                 />
             );
         case Periodetype.Utsettelse:
@@ -53,6 +57,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     familiehendelsesdato,
     handleOnPeriodeChange,
     stønadskontoer,
+    navnPåForeldre,
 }) => {
     const bem = bemUtils('periodelisteItem');
 
@@ -60,11 +65,23 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
         <article className={bem.block}>
             <EkspanderbartpanelBase
                 className={bem.element('header')}
-                tittel={<PeriodelisteItemHeader egenPeriode={egenPeriode} periode={periode} />}
+                tittel={
+                    <PeriodelisteItemHeader
+                        egenPeriode={egenPeriode}
+                        periode={periode}
+                        navnPåForeldre={navnPåForeldre}
+                    />
+                }
                 apen={isOpen}
                 onClick={() => toggleIsOpen(periode.id)}
             >
-                {renderPeriodeListeInnhold(periode, familiehendelsesdato, handleOnPeriodeChange, stønadskontoer)}
+                {renderPeriodeListeInnhold(
+                    periode,
+                    familiehendelsesdato,
+                    handleOnPeriodeChange,
+                    stønadskontoer,
+                    navnPåForeldre
+                )}
             </EkspanderbartpanelBase>
         </article>
     );

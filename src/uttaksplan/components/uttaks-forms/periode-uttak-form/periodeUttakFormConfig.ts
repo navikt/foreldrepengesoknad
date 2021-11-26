@@ -27,19 +27,19 @@ export enum PeriodeUttakFormField {
 export interface PeriodeUttakFormData {
     [PeriodeUttakFormField.fom]: Date | undefined;
     [PeriodeUttakFormField.tom]: Date | undefined;
-    [PeriodeUttakFormField.kvote]?: StønadskontoType | '';
-    [PeriodeUttakFormField.samtidigUttak]?: YesOrNo;
-    [PeriodeUttakFormField.aktivitetskravMor]?: MorsAktivitet | '';
-    [PeriodeUttakFormField.aktivitetskravMorDokumentasjon]?: Attachment[];
-    [PeriodeUttakFormField.overføringsårsak]?: OverføringÅrsakType | '';
-    [PeriodeUttakFormField.overføringsdokumentasjon]?: Attachment[];
+    [PeriodeUttakFormField.kvote]: StønadskontoType | '';
+    [PeriodeUttakFormField.samtidigUttak]: YesOrNo;
+    [PeriodeUttakFormField.aktivitetskravMor]: MorsAktivitet | '';
+    [PeriodeUttakFormField.aktivitetskravMorDokumentasjon]: Attachment[];
+    [PeriodeUttakFormField.overføringsårsak]: OverføringÅrsakType | '';
+    [PeriodeUttakFormField.overføringsdokumentasjon]: Attachment[];
     [PeriodeUttakFormField.skalHaGradering]: YesOrNo;
-    [PeriodeUttakFormField.stillingsprosent]?: string;
-    [PeriodeUttakFormField.hvorSkalDuJobbe]?: Arbeidsform[];
-    [PeriodeUttakFormField.erMorForSyk]?: YesOrNo;
-    [PeriodeUttakFormField.samtidigUttakProsent]?: string;
-    [PeriodeUttakFormField.hvemSkalTaUttak]?: Forelder | '';
-    [PeriodeUttakFormField.ønskerFlerbarnsdager]?: YesOrNo;
+    [PeriodeUttakFormField.stillingsprosent]: string;
+    [PeriodeUttakFormField.hvorSkalDuJobbe]: Arbeidsform[];
+    [PeriodeUttakFormField.erMorForSyk]: YesOrNo;
+    [PeriodeUttakFormField.samtidigUttakProsent]: string;
+    [PeriodeUttakFormField.hvemSkalTaUttak]: Forelder | '';
+    [PeriodeUttakFormField.ønskerFlerbarnsdager]: YesOrNo;
 }
 
 export const PeriodeUttakFormComponents = getTypedFormComponents<PeriodeUttakFormField, PeriodeUttakFormData, string>();
