@@ -1,6 +1,8 @@
+import { TidsperiodeDate } from '@navikt/fp-common';
 import uttaksConstants from 'app/constants';
-import { getTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { getTidsperiode, isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+import { Situasjon } from 'app/types/Situasjon';
 import dayjs from 'dayjs';
 
 export interface Uttaksdatoer {
@@ -71,3 +73,20 @@ export function getSisteMuligeUttaksdag(familiehendelsesdato: Date): Date {
             .toDate()
     ).denneEllerNeste();
 }
+
+export const erInnenFørsteSeksUkerFødselFarMedmor = (
+    tidsperiode: TidsperiodeDate,
+    situasjon: Situasjon,
+    søkerErFarEllerMedmor: boolean,
+    førsteUttaksdagEtterSeksUker: Date
+): boolean => {
+    if (
+        situasjon !== 'fødsel' ||
+        !søkerErFarEllerMedmor ||
+        tidsperiode === undefined ||
+        isValidTidsperiode(tidsperiode) === false
+    ) {
+        return false;
+    }
+    return dayjs(tidsperiode.fom).isBefore(dayjs(førsteUttaksdagEtterSeksUker), 'day');
+};
