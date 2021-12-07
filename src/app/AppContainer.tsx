@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import { getLocaleFromSessionStorage, Locale, setLocaleInSessionStorage } from '@navikt/fp-common';
 import IntlProvider from './intl/IntlProvider';
@@ -11,7 +11,7 @@ const localeFromSessionStorage = getLocaleFromSessionStorage();
 dayjs.locale(localeFromSessionStorage);
 
 const AppContainer = () => {
-    const [locale, setLocale] = React.useState<Locale>(localeFromSessionStorage);
+    const [locale, setLocale] = useState<Locale>(localeFromSessionStorage);
 
     return (
         <ForeldrepengesøknadContextProvider>

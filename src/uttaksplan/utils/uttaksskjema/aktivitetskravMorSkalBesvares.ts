@@ -1,8 +1,12 @@
-import { isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import { PeriodeUttakFormData } from 'uttaksplan/components/uttaks-forms/periode-uttak-form/periodeUttakFormConfig';
+import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 
 export const aktivitetskravMorSkalBesvares = (
-    periode: Periode,
+    formValues: PeriodeUttakFormData,
+    periodetype: Periodetype,
+    kontotype: StønadskontoType,
     søkerErMor: boolean,
     erAleneOmOmsorg: boolean,
     annenForelderKanIkkeOppgis: boolean,
@@ -11,7 +15,7 @@ export const aktivitetskravMorSkalBesvares = (
     if (
         søkerErMor ||
         erAleneOmOmsorg ||
-        !isUttaksperiode(periode) ||
+        periodetype !== Periodetype.Uttak ||
         annenForelderKanIkkeOppgis ||
         søkerHarMidlertidigOmsorg
     ) {
@@ -20,12 +24,12 @@ export const aktivitetskravMorSkalBesvares = (
 
     if (
         !erAleneOmOmsorg &&
-        (periode.konto === StønadskontoType.Fellesperiode || periode.konto === StønadskontoType.Foreldrepenger)
+        (kontotype === StønadskontoType.Fellesperiode || kontotype === StønadskontoType.Foreldrepenger)
     ) {
         if (
-            (isUttaksperiode(periode) && periode.ønskerFlerbarnsdager) ||
-            (isUttaksperiode(periode) && periode.ønskerSamtidigUttak) ||
-            (isUttaksperiode(periode) && periode.erMorForSyk && periode.konto === StønadskontoType.Fellesperiode)
+            convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager) ||
+            convertYesOrNoOrUndefinedToBoolean(formValues.samtidigUttak) ||
+            (convertYesOrNoOrUndefinedToBoolean(formValues.erMorForSyk) && kontotype === StønadskontoType.Fellesperiode)
         ) {
             return false;
         }

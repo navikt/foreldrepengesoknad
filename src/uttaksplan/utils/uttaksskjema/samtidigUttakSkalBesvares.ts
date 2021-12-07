@@ -1,27 +1,30 @@
-import { isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 
 const samtidigUttakSkalBesvares = (
-    periode: Periode,
+    periodetype: Periodetype,
+    konto: StønadskontoType,
     erUttakInnenFørsteSeksUkerFødselFarMedmor: boolean,
     erUttakFørFødsel: boolean,
     erAleneOmsorg: boolean,
     erDeltUttak: boolean,
-    søkerHarMidlertidigOmsorg: boolean
+    søkerHarMidlertidigOmsorg: boolean,
+    erMorForSyk: boolean | undefined,
+    ønskerFlerbarnsdager: boolean | undefined
 ): boolean => {
     if (erAleneOmsorg || !erDeltUttak || søkerHarMidlertidigOmsorg) {
         return false;
     }
 
-    if (isUttaksperiode(periode)) {
-        if (periode.erMorForSyk) {
+    if (periodetype === Periodetype.Uttak) {
+        if (erMorForSyk) {
             return false;
         }
 
         const erUttakEgenKvoteFarMedmorFørsteSeksUkerUtenFlerbarnsdager: boolean =
             erUttakInnenFørsteSeksUkerFødselFarMedmor &&
-            (periode.konto === StønadskontoType.Fedrekvote || periode.konto === StønadskontoType.Foreldrepenger) &&
-            periode.ønskerFlerbarnsdager !== true;
+            (konto === StønadskontoType.Fedrekvote || konto === StønadskontoType.Foreldrepenger) &&
+            ønskerFlerbarnsdager !== true;
 
         return !(erUttakFørFødsel || erUttakEgenKvoteFarMedmorFørsteSeksUkerUtenFlerbarnsdager);
     }

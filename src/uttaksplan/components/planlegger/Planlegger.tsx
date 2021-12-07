@@ -1,4 +1,5 @@
 import { bemUtils, InfoBlock, intlUtils } from '@navikt/fp-common';
+import AnnenForelder from 'app/context/types/AnnenForelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -15,6 +16,7 @@ interface Props {
     handleOnPeriodeChange: (periode: Periode) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
+    annenForelder: AnnenForelder;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -23,6 +25,7 @@ const Planlegger: FunctionComponent<Props> = ({
     handleOnPeriodeChange,
     stønadskontoer,
     navnPåForeldre,
+    annenForelder,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -39,6 +42,7 @@ const Planlegger: FunctionComponent<Props> = ({
                     handleOnPeriodeChange={handleOnPeriodeChange}
                     stønadskontoer={stønadskontoer}
                     navnPåForeldre={navnPåForeldre}
+                    annenForelder={annenForelder}
                 />
             </section>
         </InfoBlock>

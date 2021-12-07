@@ -9,7 +9,7 @@ import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 export enum PeriodeUttakFormField {
     fom = 'fom',
     tom = 'tom',
-    kvote = 'kvote',
+    konto = 'konto',
     samtidigUttak = 'samtidigUttak',
     aktivitetskravMor = 'aktivitetskravMor',
     aktivitetskravMorDokumentasjon = 'aktivitetskravMorDokumentasjon',
@@ -27,7 +27,7 @@ export enum PeriodeUttakFormField {
 export interface PeriodeUttakFormData {
     [PeriodeUttakFormField.fom]: Date | undefined;
     [PeriodeUttakFormField.tom]: Date | undefined;
-    [PeriodeUttakFormField.kvote]: StønadskontoType | '';
+    [PeriodeUttakFormField.konto]: StønadskontoType | '';
     [PeriodeUttakFormField.samtidigUttak]: YesOrNo;
     [PeriodeUttakFormField.aktivitetskravMor]: MorsAktivitet | '';
     [PeriodeUttakFormField.aktivitetskravMorDokumentasjon]: Attachment[];

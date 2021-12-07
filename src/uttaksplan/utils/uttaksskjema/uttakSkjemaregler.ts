@@ -1,13 +1,15 @@
+import { TidsperiodeDate } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Situasjon } from 'app/types/Situasjon';
-import { Periode, Periodetype } from 'uttaksplan/types/Periode';
+import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import { PeriodeUttakFormData } from 'uttaksplan/components/uttaks-forms/periode-uttak-form/periodeUttakFormConfig';
+import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getUttaksdatoer } from '../uttaksdatoerUtils';
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';
 import { graderingSkalBesvares } from './graderingSkalBesvares';
-import overføringsårsakSkalBesvares from './overføringsårsakSkalBesvares';
 import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
 import { ønskerFlerbarnsdagerSkalBesvares } from './ønskerFlerbarnsdagerSkalBesvares';
 
@@ -28,9 +30,13 @@ export interface UttakSkjemaReglerProps {
     erFlerbarnssøknad: boolean;
     erDeltUttak: boolean;
     familiehendelsesdato: Date;
+    periodetype: Periodetype;
 }
 
-export const getUttakSkjemaregler = (periode: Periode, regelProps: UttakSkjemaReglerProps): UttakSkjemaregler => {
+export const getUttakSkjemaregler = (
+    formValues: PeriodeUttakFormData,
+    regelProps: UttakSkjemaReglerProps
+): UttakSkjemaregler => {
     const {
         erFarEllerMedmor,
         erAleneOmOmsorg,
@@ -39,13 +45,20 @@ export const getUttakSkjemaregler = (periode: Periode, regelProps: UttakSkjemaRe
         erFlerbarnssøknad,
         erDeltUttak,
         familiehendelsesdato,
+        periodetype,
     } = regelProps;
+
+    const { konto } = formValues;
+
     const uttaksdatoer = getUttaksdatoer(familiehendelsesdato);
+    const tidsperiode: TidsperiodeDate = { fom: formValues.fom!, tom: formValues.tom! };
 
     return {
         aktivitetskravMorSkalBesvares: () =>
             aktivitetskravMorSkalBesvares(
-                periode as Periode,
+                formValues,
+                periodetype,
+                konto as StønadskontoType,
                 !erFarEllerMedmor,
                 erAleneOmOmsorg,
                 annenForelder.kanIkkeOppgis,
@@ -53,34 +66,37 @@ export const getUttakSkjemaregler = (periode: Periode, regelProps: UttakSkjemaRe
             ),
         erMorForSykSkalBesvares: (): boolean =>
             erMorForForSykSkalBesvares(
-                periode,
+                periodetype,
+                konto as StønadskontoType,
+                tidsperiode,
                 situasjon,
                 erFarEllerMedmor,
                 uttaksdatoer,
                 erFlerbarnssøknad,
                 erAleneOmOmsorg,
                 annenForelder.kanIkkeOppgis,
-                false // TODO Midlertidig omsorg
+                convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager),
+                false // TODO Midlertidig omsorg,
             ),
-        samtidigUttakSkalBesvares: (): boolean => {
-            return samtidigUttakSkalBesvares(
-                periode,
-                Tidsperioden(periode.tidsperiode).erInnenforFørsteSeksUker(familiehendelsesdato),
-                periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel,
+        samtidigUttakSkalBesvares: (): boolean =>
+            samtidigUttakSkalBesvares(
+                periodetype,
+                konto as StønadskontoType,
+                Tidsperioden(tidsperiode).erInnenforFørsteSeksUker(familiehendelsesdato),
+                periodetype === Periodetype.Uttak && konto === StønadskontoType.ForeldrepengerFørFødsel,
                 erAleneOmOmsorg,
                 erDeltUttak,
-                false // TODO Midlertidig omsorg
-            );
-        },
+                false, // TODO Midlertidig omsorg,
+                convertYesOrNoOrUndefinedToBoolean(formValues.erMorForSyk),
+                convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager)
+            ),
         ønskerFlerbarnsdagerSkalBesvares: (): boolean => {
-            return ønskerFlerbarnsdagerSkalBesvares(periode, erFlerbarnssøknad, erFarEllerMedmor);
+            return ønskerFlerbarnsdagerSkalBesvares(periodetype, erFlerbarnssøknad, erFarEllerMedmor);
         },
         graderingSkalBesvares: (): boolean => {
-            return graderingSkalBesvares(
-                periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel
-            );
+            return graderingSkalBesvares(periodetype, konto as StønadskontoType);
         },
-        overføringsårsakSkalBesvares: () => overføringsårsakSkalBesvares(periode),
+        overføringsårsakSkalBesvares: () => periodetype === Periodetype.Overføring,
     };
 };
 

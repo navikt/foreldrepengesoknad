@@ -1,9 +1,9 @@
-import { isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { Periodetype } from 'uttaksplan/types/Periode';
 
 export const ønskerFlerbarnsdagerSkalBesvares = (
-    periode: Periode,
+    periodetype: Periodetype,
     erFlerbarnssøknad: boolean,
     søkerErFarEllerMedmor: boolean
 ): boolean => {
-    return isUttaksperiode(periode) && erFlerbarnssøknad && søkerErFarEllerMedmor;
+    return periodetype === Periodetype.Uttak && erFlerbarnssøknad && søkerErFarEllerMedmor;
 };

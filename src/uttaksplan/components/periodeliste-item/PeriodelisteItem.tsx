@@ -1,5 +1,6 @@
 import { bemUtils } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-common/node_modules/@navikt/sif-common-formik/lib';
+import AnnenForelder from 'app/context/types/AnnenForelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
@@ -20,6 +21,7 @@ interface Props {
     handleOnPeriodeChange: (periode: Periode) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
+    annenForelder: AnnenForelder;
 }
 
 const renderPeriodeListeInnhold = (
@@ -27,7 +29,9 @@ const renderPeriodeListeInnhold = (
     familiehendelsesdato: string,
     handleOnPeriodeChange: (periode: Periode) => void,
     stønadskontoer: TilgjengeligStønadskonto[],
-    navnPåForeldre: NavnPåForeldre
+    navnPåForeldre: NavnPåForeldre,
+    annenForelder: AnnenForelder,
+    toggleIsOpen: (id: string) => void
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -40,6 +44,8 @@ const renderPeriodeListeInnhold = (
                     handleOnPeriodeChange={handleOnPeriodeChange}
                     stønadskontoer={stønadskontoer}
                     navnPåForeldre={navnPåForeldre}
+                    annenForelder={annenForelder}
+                    toggleIsOpen={toggleIsOpen}
                 />
             );
         case Periodetype.Utsettelse:
@@ -58,6 +64,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     handleOnPeriodeChange,
     stønadskontoer,
     navnPåForeldre,
+    annenForelder,
 }) => {
     const bem = bemUtils('periodelisteItem');
 
@@ -80,7 +87,9 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     familiehendelsesdato,
                     handleOnPeriodeChange,
                     stønadskontoer,
-                    navnPåForeldre
+                    navnPåForeldre,
+                    annenForelder,
+                    toggleIsOpen
                 )}
             </EkspanderbartpanelBase>
         </article>

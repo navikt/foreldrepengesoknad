@@ -97,6 +97,7 @@ const UttaksplanStep = () => {
             pageTitle={intlUtils(intl, 'søknad.uttaksplan')}
             stepTitle={intlUtils(intl, 'søknad.uttaksplan')}
             onCancel={onAvbrytSøknad}
+            onContinueLater={() => null}
             steps={stepConfig}
             kompakt={true}
         >
@@ -109,6 +110,7 @@ const UttaksplanStep = () => {
                 handleOnPlanChange={handleOnPlanChange}
                 stønadskontoer={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80]}
                 navnPåForeldre={navnPåForeldre}
+                annenForelder={annenForelder}
             />
             <Block textAlignCenter={true}>
                 <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>

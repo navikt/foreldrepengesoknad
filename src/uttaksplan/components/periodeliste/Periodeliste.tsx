@@ -6,6 +6,7 @@ import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 
 import './periodeliste.less';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
+import AnnenForelder from 'app/context/types/AnnenForelder';
 
 interface Props {
     uttaksplan: Periode[];
@@ -13,6 +14,7 @@ interface Props {
     handleOnPeriodeChange: (periode: Periode) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
+    annenForelder: AnnenForelder;
 }
 
 const Periodeliste: FunctionComponent<Props> = ({
@@ -21,6 +23,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     handleOnPeriodeChange,
     stønadskontoer,
     navnPåForeldre,
+    annenForelder,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -46,6 +49,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                     handleOnPeriodeChange={handleOnPeriodeChange}
                     stønadskontoer={stønadskontoer}
                     navnPåForeldre={navnPåForeldre}
+                    annenForelder={annenForelder}
                 />
             ))}
         </div>

@@ -3,19 +3,24 @@ import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
 import { Block, intlUtils } from '@navikt/fp-common';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
 import links from 'app/links/links';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 
 interface Props {
-    samtidigUttakValue: YesOrNo;
     erFlerbarnssøknad: boolean;
     navnPåForeldre: NavnPåForeldre;
+    navnPåAnnenForelder: string | undefined;
+    samtidigUttakProsentVisible: boolean;
 }
 
-const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({ samtidigUttakValue, erFlerbarnssøknad, navnPåForeldre }) => {
+const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
+    erFlerbarnssøknad,
+    navnPåForeldre,
+    navnPåAnnenForelder,
+    samtidigUttakProsentVisible,
+}) => {
     const intl = useIntl();
 
     return (
@@ -23,10 +28,10 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({ samtidigUttakValue,
             <Block padBottom="l">
                 <PeriodeUttakFormComponents.YesOrNoQuestion
                     name={PeriodeUttakFormField.samtidigUttak}
-                    legend="Skal dere ha samtidig uttak?"
+                    legend={intlUtils(intl, 'uttaksplan.samtidigUttak', { navnAnnenForelder: navnPåAnnenForelder })}
                 />
             </Block>
-            <Block visible={samtidigUttakValue === YesOrNo.YES} padBottom="l">
+            <Block visible={samtidigUttakProsentVisible} padBottom="l">
                 <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
                     <FormattedMessage
                         id={
@@ -46,10 +51,11 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({ samtidigUttakValue,
                     />
                 </Veilederpanel>
             </Block>
-            <Block>
+            <Block visible={samtidigUttakProsentVisible}>
                 <PeriodeUttakFormComponents.NumberInput
                     name={PeriodeUttakFormField.samtidigUttakProsent}
                     label={intlUtils(intl, 'uttaksplan.samtidigUttakProsent')}
+                    maxLength={4}
                 />
             </Block>
         </>

@@ -1,0 +1,62 @@
+import { hasValue } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
+import getUttakSkjemaregler, { UttakSkjemaReglerProps } from 'uttaksplan/utils/uttaksskjema/uttakSkjemaregler';
+import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
+
+interface PeriodeUttakFormQuestionsPayload {
+    values: PeriodeUttakFormData;
+    regelProps: UttakSkjemaReglerProps;
+}
+
+const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, PeriodeUttakFormField> = {
+    [PeriodeUttakFormField.hvemSkalTaUttak]: {
+        isAnswered: ({ values }) => hasValue(values.hvemSkalTaUttak),
+        isIncluded: ({ regelProps }) => regelProps.erDeltUttak,
+    },
+    [PeriodeUttakFormField.konto]: {
+        isAnswered: ({ values }) => hasValue(values.konto),
+        isIncluded: ({ regelProps }) => regelProps.erDeltUttak,
+        visibilityFilter: ({ values }) => hasValue(values.hvemSkalTaUttak),
+    },
+    [PeriodeUttakFormField.ønskerFlerbarnsdager]: {
+        isAnswered: ({ values }) => values.ønskerFlerbarnsdager !== YesOrNo.UNANSWERED,
+        isIncluded: ({ values, regelProps }) =>
+            getUttakSkjemaregler(values, regelProps).ønskerFlerbarnsdagerSkalBesvares(),
+        visibilityFilter: ({ values }) => hasValue(values.konto),
+    },
+    [PeriodeUttakFormField.erMorForSyk]: {
+        isAnswered: ({ values }) => values.erMorForSyk !== YesOrNo.UNANSWERED,
+        isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).erMorForSykSkalBesvares(),
+        visibilityFilter: ({ values }) => values.ønskerFlerbarnsdager !== YesOrNo.UNANSWERED || hasValue(values.konto),
+    },
+    [PeriodeUttakFormField.samtidigUttak]: {
+        isAnswered: ({ values }) => values.samtidigUttak !== YesOrNo.UNANSWERED,
+        isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).samtidigUttakSkalBesvares(),
+        visibilityFilter: ({ values }) => hasValue(values.konto),
+    },
+    [PeriodeUttakFormField.samtidigUttakProsent]: {
+        isAnswered: ({ values }) => hasValue(values.samtidigUttakProsent),
+        isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).samtidigUttakSkalBesvares(),
+        visibilityFilter: ({ values }) => values.samtidigUttak === YesOrNo.YES,
+    },
+    [PeriodeUttakFormField.skalHaGradering]: {
+        isAnswered: ({ values }) => values.skalHaGradering !== YesOrNo.UNANSWERED,
+        isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).graderingSkalBesvares(),
+        visibilityFilter: ({ values }) => values.samtidigUttak !== YesOrNo.UNANSWERED,
+    },
+    [PeriodeUttakFormField.stillingsprosent]: {
+        isAnswered: ({ values }) => hasValue(values.stillingsprosent),
+        isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).graderingSkalBesvares(),
+        visibilityFilter: ({ values }) => values.skalHaGradering === YesOrNo.YES,
+    },
+    [PeriodeUttakFormField.overføringsårsak]: {
+        isAnswered: ({ values }) => hasValue(values.overføringsårsak),
+        isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).overføringsårsakSkalBesvares(),
+        visibilityFilter: ({ values }) => hasValue(values.konto),
+    },
+};
+
+export const periodeUttakFormQuestionsConfig = Questions<PeriodeUttakFormQuestionsPayload, PeriodeUttakFormField>(
+    PeriodeUttakFormConfig
+);

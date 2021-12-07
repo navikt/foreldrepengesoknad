@@ -25,7 +25,7 @@ const getSpørsmålsTekst = (erOppholdsperiode: boolean, intl: IntlShape, navnAn
     }
 };
 
-const HvilkenKvoteSpørsmål: FunctionComponent<Props> = ({
+const HvilkenKontoSpørsmål: FunctionComponent<Props> = ({
     velgbareStønadskontoer,
     erOppholdsperiode,
     navnAnnenForelder,
@@ -52,4 +52,4 @@ const HvilkenKvoteSpørsmål: FunctionComponent<Props> = ({
     );
 };
 
-export default HvilkenKvoteSpørsmål;
+export default HvilkenKontoSpørsmål;

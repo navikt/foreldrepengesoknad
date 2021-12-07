@@ -1,22 +1,32 @@
 import { Block } from '@navikt/fp-common';
+import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
+import { Knapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent, useState } from 'react';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
-import { Periode } from 'uttaksplan/types/Periode';
-import { getForelderFromPeriode } from 'uttaksplan/utils/periodeUtils';
+import { Periode, Periodetype } from 'uttaksplan/types/Periode';
+import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getVelgbareStønadskontotyper } from 'uttaksplan/utils/stønadskontoerUtils';
 import ErMorForSykSpørsmål from '../spørsmål/er-mor-for-syk/ErMorForSykSpørsmål';
 import FlerbarnsdagerSpørsmål from '../spørsmål/flerbarnsdager/FlerbarnsdagerSpørsmål';
 import HvemSkalHaUttakSpørsmål from '../spørsmål/hvem-skal-ha-uttak/HvemSkalHaUttakSpørsmål';
-import HvilkenKvoteSpørsmål from '../spørsmål/hvilken-kvote/HvilkenKvoteSpørsmål';
+import HvilkenKontoSpørsmål from '../spørsmål/hvilken-konto/HvilkenKontoSpørsmål';
+import OverføringsårsakSpørsmål from '../spørsmål/overføringsårsak/OverføringsårsakSpørsmål';
 import SamtidigUttakSpørsmål from '../spørsmål/samtidig-uttak/SamtidigUttakSpørsmål';
+import SkalHaGraderingSpørsmål from '../spørsmål/skal-ha-gradering/SkalHaGraderingSpørsmål';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
-import { PeriodeUttakFormComponents, PeriodeUttakFormField } from './periodeUttakFormConfig';
-import { getPeriodeUttakFormInitialValues, mapPeriodeUttakFormToPeriode } from './periodeUttakFormUtils';
+import { PeriodeUttakFormComponents, PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
+import { periodeUttakFormQuestionsConfig } from './periodeUttakFormQuestionsConfig';
+import {
+    cleanPeriodeUttakFormData,
+    getPeriodeUttakFormInitialValues,
+    mapPeriodeUttakFormToPeriode,
+} from './periodeUttakFormUtils';
 
 interface Props {
     periode: Periode;
@@ -24,7 +34,42 @@ interface Props {
     handleOnPeriodeChange: (periode: Periode) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
+    annenForelder: AnnenForelder;
+    toggleIsOpen: (id: string) => void;
 }
+
+const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
+    return (erFarEllerMedmor && forelder === Forelder.farMedmor) || (!erFarEllerMedmor && forelder === Forelder.mor)
+        ? false
+        : true;
+};
+
+const erUttakAvAnnenForeldersKvote = (konto: StønadskontoType | '', søkerErFarEllerMedmor: boolean): boolean => {
+    return (
+        (konto === StønadskontoType.Mødrekvote && søkerErFarEllerMedmor) ||
+        (konto === StønadskontoType.Fedrekvote && !søkerErFarEllerMedmor)
+    );
+};
+
+const getPeriodeType = (
+    periodenGjelder: Forelder | '',
+    erFarEllerMedmor: boolean,
+    konto: StønadskontoType | ''
+): Periodetype => {
+    if (periodenGjelder === '' || konto === '') {
+        return Periodetype.Uttak;
+    }
+
+    if (periodenGjelderAnnenForelder(erFarEllerMedmor, periodenGjelder)) {
+        return Periodetype.Opphold;
+    }
+
+    if (erUttakAvAnnenForeldersKvote(konto, erFarEllerMedmor)) {
+        return Periodetype.Overføring;
+    }
+
+    return Periodetype.Uttak;
+};
 
 const PeriodeUttakForm: FunctionComponent<Props> = ({
     familiehendelsesdato,
@@ -32,6 +77,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     handleOnPeriodeChange,
     stønadskontoer,
     navnPåForeldre,
+    annenForelder,
+    toggleIsOpen,
 }) => {
     const { tidsperiode } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
@@ -41,17 +88,40 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     };
 
     const velgbareStønadskontoer = getVelgbareStønadskontotyper(stønadskontoer);
-    const forelder = getForelderFromPeriode(periode);
+    const navnPåAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : undefined;
 
     return (
         <PeriodeUttakFormComponents.FormikWrapper
             initialValues={getPeriodeUttakFormInitialValues(periode)}
-            onSubmit={(values: any) =>
-                handleOnPeriodeChange(mapPeriodeUttakFormToPeriode(values, periode.id, periode.type, forelder))
+            onSubmit={(values: Partial<PeriodeUttakFormData>) =>
+                handleOnPeriodeChange(
+                    mapPeriodeUttakFormToPeriode(
+                        values,
+                        periode.id,
+                        getPeriodeType(values.hvemSkalTaUttak!, false, values.konto!)
+                    )
+                )
             }
             renderForm={({ setFieldValue, values }) => {
+                const visibility = periodeUttakFormQuestionsConfig.getVisbility({
+                    values,
+                    regelProps: {
+                        annenForelder,
+                        erAleneOmOmsorg: false,
+                        erDeltUttak: true,
+                        erFarEllerMedmor: false,
+                        erFlerbarnssøknad: false,
+                        familiehendelsesdato,
+                        periodetype: getPeriodeType(values.hvemSkalTaUttak, false, values.konto),
+                        situasjon: 'fødsel',
+                    },
+                });
+
                 return (
-                    <PeriodeUttakFormComponents.Form includeButtons={false}>
+                    <PeriodeUttakFormComponents.Form
+                        includeButtons={false}
+                        cleanup={(values) => cleanPeriodeUttakFormData(values, visibility)}
+                    >
                         <SubmitListener />
                         <Block visible={!isValidTidsperiode(tidsperiode)} padBottom="l">
                             <TidsperiodeForm
@@ -84,39 +154,54 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 visible={tidsperiodeIsOpen}
                             />
                         </Block>
-                        <Block padBottom="l">
+                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.hvemSkalTaUttak)}>
                             <HvemSkalHaUttakSpørsmål
                                 fieldName={PeriodeUttakFormField.hvemSkalTaUttak}
                                 erFarEllerMedmor={false}
                                 navnPåForeldre={navnPåForeldre}
                             />
                         </Block>
-                        <Block padBottom="l">
-                            <HvilkenKvoteSpørsmål
-                                fieldName={PeriodeUttakFormField.kvote}
+                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.konto)}>
+                            <HvilkenKontoSpørsmål
+                                fieldName={PeriodeUttakFormField.konto}
                                 velgbareStønadskontoer={velgbareStønadskontoer}
                                 erOppholdsperiode={false}
                                 navnPåForeldre={navnPåForeldre}
                             />
                         </Block>
-                        <Block padBottom="l">
+                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.overføringsårsak)}>
+                            <OverføringsårsakSpørsmål
+                                vedlegg={values.overføringsdokumentasjon}
+                                navnAnnenForelder={navnPåAnnenForelder!}
+                            />
+                        </Block>
+                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.ønskerFlerbarnsdager)}>
                             <FlerbarnsdagerSpørsmål fieldName={PeriodeUttakFormField.ønskerFlerbarnsdager} />
                         </Block>
-                        <Block padBottom="l">
+                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
                             <ErMorForSykSpørsmål fieldName={PeriodeUttakFormField.erMorForSyk} />
                         </Block>
-                        <Block padBottom="l">
+                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
                             <SamtidigUttakSpørsmål
-                                samtidigUttakValue={values.samtidigUttak}
                                 erFlerbarnssøknad={true}
                                 navnPåForeldre={navnPåForeldre}
+                                navnPåAnnenForelder={navnPåAnnenForelder}
+                                samtidigUttakProsentVisible={visibility.isVisible(
+                                    PeriodeUttakFormField.samtidigUttakProsent
+                                )}
                             />
                         </Block>
-                        <Block padBottom="l">
-                            <PeriodeUttakFormComponents.YesOrNoQuestion
-                                name={PeriodeUttakFormField.skalHaGradering}
-                                legend="Skal du kombinere foreldrepengene med delvis arbeid?"
+                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.skalHaGradering)}>
+                            <SkalHaGraderingSpørsmål
+                                graderingsprosentVisible={visibility.isVisible(PeriodeUttakFormField.stillingsprosent)}
                             />
+                        </Block>
+                        <Block>
+                            <div style={{ textAlign: 'center' }}>
+                                <Knapp htmlType="button" onClick={() => toggleIsOpen(periode.id)}>
+                                    Lukk
+                                </Knapp>
+                            </div>
                         </Block>
                     </PeriodeUttakFormComponents.Form>
                 );

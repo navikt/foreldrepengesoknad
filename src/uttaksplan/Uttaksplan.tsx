@@ -7,6 +7,7 @@ import { Forelder } from 'app/types/Forelder';
 import { Periode } from './types/Periode';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
+import AnnenForelder from 'app/context/types/AnnenForelder';
 
 interface Props {
     situasjon: ForeldreparSituasjon;
@@ -17,6 +18,7 @@ interface Props {
     handleOnPlanChange: (plan: Periode[]) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
+    annenForelder: AnnenForelder;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -28,8 +30,9 @@ const Uttaksplan: FunctionComponent<Props> = ({
     stønadskontoer,
     handleOnPlanChange,
     navnPåForeldre,
+    annenForelder,
 }) => {
-    const handleOnPeriodeChange = (periode: Periode) => {
+    const handleOnPeriodeUpdated = (periode: Periode) => {
         const updatedPlan = uttaksplan.map((p) => {
             if (p.id === periode.id) {
                 return periode;
@@ -54,9 +57,10 @@ const Uttaksplan: FunctionComponent<Props> = ({
                 <Planlegger
                     uttaksplan={uttaksplan}
                     familiehendelsesdato={familiehendelsesdato}
-                    handleOnPeriodeChange={handleOnPeriodeChange}
+                    handleOnPeriodeChange={handleOnPeriodeUpdated}
                     stønadskontoer={stønadskontoer}
                     navnPåForeldre={navnPåForeldre}
+                    annenForelder={annenForelder}
                 />
             </Block>
         </>

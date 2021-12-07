@@ -72,8 +72,8 @@ export const getOppholdskontoNavn = (
     erMor: boolean
 ) => {
     return erMor
-        ? intlUtils(intl, `oppholdsårsaktype.foreldernavn.far.${årsak}`, { foreldernavn })
-        : intlUtils(intl, `oppholdsårsaktype.foreldernavn.mor.${årsak}`, { foreldernavn });
+        ? intlUtils(intl, `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}`, { foreldernavn })
+        : intlUtils(intl, `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}`, { foreldernavn });
 };
 
 export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): StønadskontoType => {
@@ -90,6 +90,19 @@ export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): S
     }
 
     return StønadskontoType.ForeldrepengerFørFødsel;
+};
+
+export const getOppholdsÅrsakFromStønadskonto = (konto: StønadskontoType): OppholdÅrsakType | undefined => {
+    switch (konto) {
+        case StønadskontoType.Fedrekvote:
+            return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
+        case StønadskontoType.Mødrekvote:
+            return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+        case StønadskontoType.Fellesperiode:
+            return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+        default:
+            return undefined;
+    }
 };
 
 export const getForelderFromPeriode = (periode: Periode): Forelder | undefined => {

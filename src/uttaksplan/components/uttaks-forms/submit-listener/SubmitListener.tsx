@@ -7,18 +7,20 @@ export const SubmitListener: FunctionComponent = () => {
     const [lastValues, updateState] = React.useState(formik.values);
 
     React.useEffect(() => {
-        const valuesEqualLastValues = JSON.stringify(lastValues) === JSON.stringify(formik.values);
-        const valuesEqualInitialValues = JSON.stringify(formik.values) === JSON.stringify(formik.initialValues);
+        if (!formik.isSubmitting && !formik.isValidating) {
+            const valuesEqualLastValues = JSON.stringify(lastValues) === JSON.stringify(formik.values);
+            const valuesEqualInitialValues = JSON.stringify(formik.values) === JSON.stringify(formik.initialValues);
 
-        if (!valuesEqualLastValues) {
-            updateState(formik.values);
-        }
+            if (!valuesEqualLastValues) {
+                updateState(formik.values);
+            }
 
-        if (!valuesEqualLastValues && !valuesEqualInitialValues && formik.isValid) {
-            console.log('Submitted form');
-            formik.submitForm();
+            if (!valuesEqualLastValues && !valuesEqualInitialValues) {
+                console.log('Submitted form');
+                formik.submitForm();
+            }
         }
-    }, [formik.values, formik.isValid, formik.initialValues, formik, lastValues]);
+    }, [formik.values, formik.isValid, formik.initialValues, formik]);
 
     return null;
 };

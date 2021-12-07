@@ -122,7 +122,9 @@ const MorFødsel: FunctionComponent<Props> = ({
                     erEndringssøknad: false,
                     erEnkelEndringssøknad: false,
                     familiehendelsesdato: familiehendelsesdatoDate!,
-                    førsteUttaksdagEtterSeksUker: Uttaksdagen(familiehendelsesdatoDate!).leggTil(30),
+                    førsteUttaksdagEtterSeksUker: Uttaksdagen(
+                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
+                    ).leggTil(30),
                     situasjon: erFødsel ? 'fødsel' : 'adopsjon',
                     søkerErFarEllerMedmor: erFarEllerMedmor,
                     søkerHarMidlertidigOmsorg: false,
