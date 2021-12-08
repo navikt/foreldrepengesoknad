@@ -21,6 +21,14 @@ const foreldrepengesøknadReducer = (
                     harGodkjentVilkår: action.payload,
                 },
             };
+        case ForeldrepengesøknadContextActionKeys.SET_ER_ENDRINGSSØKNAD:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    erEndringssøknad: action.payload,
+                },
+            };
         case ForeldrepengesøknadContextActionKeys.SET_SØKERSITUASJON:
             return {
                 ...state,
@@ -75,6 +83,12 @@ const foreldrepengesøknadReducer = (
             return {
                 ...state,
                 ...action.payload,
+            };
+
+        case ForeldrepengesøknadContextActionKeys.SET_SAKER:
+            return {
+                ...state,
+                saker: [...action.payload],
             };
         case ForeldrepengesøknadContextActionKeys.SET_SØKERINFO:
             return {

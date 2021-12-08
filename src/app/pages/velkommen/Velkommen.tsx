@@ -2,6 +2,7 @@ import { bemUtils, Block, intlUtils, LanguageToggle, Locale, Sidebanner } from '
 import actionCreator from 'app/context/action/actionCreator';
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { assertUnreachable } from 'app/utils/globalUtil';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import {
@@ -9,30 +10,63 @@ import {
     VelkommenFormComponents,
     VelkommenFormData,
     VelkommenFormField,
+    velkommenFormQuestions,
 } from './velkommenFormConfig';
 import DinePlikter from 'app/components/dine-plikter/DinePlikter';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal';
 
 import './velkommen.less';
 import { validateHarForståttRettigheterOgPlikter } from './validation/velkommenValidation';
+import Sak, { FagsakStatus } from 'app/types/Sak';
 import SøknadRoutes from 'app/routes/routes';
+import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import SøknadStatus from './components/SøknadStatus';
 
 interface Props {
     fornavn: string;
     onChangeLocale: (locale: Locale) => void;
     locale: Locale;
+    saker: Sak[];
 }
 
-const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }) => {
+const erSakAvsluttet = (sak: Sak | undefined): boolean => {
+    if (sak === undefined) {
+        return false;
+    } else {
+        switch (sak.status) {
+            case FagsakStatus.LOPENDE:
+            case FagsakStatus.AVSLUTTET:
+                return true;
+            case FagsakStatus.OPPRETTET:
+            case FagsakStatus.UNDER_BEHANDLING:
+            case undefined:
+                return false;
+            default:
+                return assertUnreachable(sak.status, `Ugyldig sak status: {$sak.status}`);
+        }
+    }
+};
+
+const getSisteSak = (saker: Sak[]): Sak | undefined => {
+    const sakerSortert = [...saker].sort((a, b) => b.opprettet.localeCompare(a.opprettet));
+    return sakerSortert[0];
+};
+
+const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onChangeLocale }) => {
+    const sak = getSisteSak(saker);
     const intl = useIntl();
     const søknad = useSøknad();
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
     const bem = bemUtils('velkommen');
+    const sakErAvsluttet = erSakAvsluttet(sak);
 
     const onValidSubmitHandler = (values: Partial<VelkommenFormData>) => {
-        return [actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!)];
+        return [
+            actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!),
+            actionCreator.setErEndringssøknad(!!convertYesOrNoOrUndefinedToBoolean(values.vilSøkeOmEndring)),
+        ];
     };
 
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.SØKERSITUASJON);
@@ -41,7 +75,11 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, onChangeLo
         <VelkommenFormComponents.FormikWrapper
             initialValues={getInitialVelkommenValues(søknad.harGodkjentVilkår)}
             onSubmit={onValidSubmit}
-            renderForm={() => {
+            renderForm={({ values }) => {
+                const visibility = velkommenFormQuestions.getVisbility({
+                    ...values,
+                    sakErAvsluttet,
+                });
                 return (
                     <VelkommenFormComponents.Form includeButtons={false}>
                         <LanguageToggle
@@ -62,7 +100,23 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, onChangeLo
                             }}
                         />
                         <div className={bem.block}>
-                            <Block padBottom="xl">
+                            <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
+                                {intlUtils(intl, 'velkommen.tittel')}
+                            </Innholdstittel>
+                            {sak && (
+                                <Block padBottom="l">
+                                    <SøknadStatus
+                                        sakOpprettetDato={new Date(sak.opprettet)}
+                                        sakErAvsluttet={sakErAvsluttet}
+                                        values={values}
+                                        visibility={visibility}
+                                    />
+                                </Block>
+                            )}
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(VelkommenFormField.harForståttRettigheterOgPlikter)}
+                            >
                                 <VelkommenFormComponents.ConfirmationCheckbox
                                     name={VelkommenFormField.harForståttRettigheterOgPlikter}
                                     label={intlUtils(intl, 'velkommen.samtykke')}

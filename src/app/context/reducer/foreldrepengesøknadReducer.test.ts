@@ -1,5 +1,6 @@
 import SøknadRoutes from 'app/routes/routes';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import Sak, { FagsakStatus, SakType } from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { ForeldrepengesøknadContextActionKeys } from '../action/actionCreator';
 import { ForeldrepengesøknadContextState, foreldrepengesøknadInitialState } from '../ForeldrepengesøknadContextConfig';
@@ -33,6 +34,21 @@ describe('<foreldrepengesøknadReducer>', () => {
         expect(resultState).toStrictEqual(
             leggTil({
                 harGodkjentVilkår: payload,
+            })
+        );
+    });
+
+    it('skal legge til er endringssøknad i state', () => {
+        const payload = true;
+
+        const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
+            type: ForeldrepengesøknadContextActionKeys.SET_ER_ENDRINGSSØKNAD,
+            payload,
+        });
+
+        expect(resultState).toStrictEqual(
+            leggTil({
+                erEndringssøknad: payload,
             })
         );
     });
@@ -206,6 +222,26 @@ describe('<foreldrepengesøknadReducer>', () => {
                 søker: payload,
             })
         );
+    });
+
+    it('skal legge saker i state', () => {
+        const sak = {
+            type: SakType.FPSAK,
+            status: FagsakStatus.AVSLUTTET,
+            saksnummer: '1234',
+            opprettet: '2020-01-01',
+        } as Sak;
+        const payload = [sak];
+
+        const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
+            type: ForeldrepengesøknadContextActionKeys.SET_SAKER,
+            payload,
+        });
+
+        expect(resultState).toStrictEqual({
+            ...foreldrepengesøknadInitialState,
+            saker: payload,
+        });
     });
 
     it('skal legge uttaksplan info i state', () => {

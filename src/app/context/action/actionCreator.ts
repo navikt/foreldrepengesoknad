@@ -14,6 +14,7 @@ import UttaksplanInfo from '../types/UttaksplanInfo';
 
 export enum ForeldrepengesøknadContextActionKeys {
     SET_HARGODKJENTVILKÅR = 'setVelkommen',
+    SET_ER_ENDRINGSSØKNAD = 'setErEndringssøknad',
     SET_SØKERSITUASJON = 'setSøkersituasjon',
     SET_OMBARNET = 'setOmBarnet',
     AVBRYT_SØKNAD = 'avbrytSøknad',
@@ -39,6 +40,16 @@ interface SetVelkommen {
 
 const setVelkommen = (payload: boolean): SetVelkommen => ({
     type: ForeldrepengesøknadContextActionKeys.SET_HARGODKJENTVILKÅR,
+    payload,
+});
+
+interface SetErEndringssøknad {
+    type: ForeldrepengesøknadContextActionKeys.SET_ER_ENDRINGSSØKNAD;
+    payload: boolean;
+}
+
+const setErEndringssøknad = (payload: boolean): SetErEndringssøknad => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_ER_ENDRINGSSØKNAD,
     payload,
 });
 
@@ -194,6 +205,7 @@ const setUttaksplan = (payload: Periode[]): SetUttaksplan => ({
 
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
+    | SetErEndringssøknad
     | SetSøkersituasjon
     | SetOmBarnet
     | AvbrytSøknad
@@ -212,6 +224,7 @@ export type ForeldrepengesøknadContextAction =
 
 export default {
     setVelkommen,
+    setErEndringssøknad,
     setSøkersituasjon,
     setOmBarnet,
     avbrytSøknad,
