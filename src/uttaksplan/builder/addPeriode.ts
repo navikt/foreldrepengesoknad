@@ -10,7 +10,7 @@ interface AddPeriodeResult {
 }
 
 const addPeriode = (
-    getUttaksstatusFunc: (tilgjengStønadskontoer: TilgjengeligStønadskonto[], uttaksplan: Periode[]) => Uttaksstatus,
+    getUttaksstatusFunc: () => Uttaksstatus,
     uttaksplan: Periode[],
     nyPeriode: Periode,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],

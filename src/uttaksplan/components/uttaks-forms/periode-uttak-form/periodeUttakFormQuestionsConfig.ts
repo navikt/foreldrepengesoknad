@@ -50,10 +50,32 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
         isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).graderingSkalBesvares(),
         visibilityFilter: ({ values }) => values.skalHaGradering === YesOrNo.YES,
     },
+    [PeriodeUttakFormField.arbeidsformer]: {
+        isAnswered: ({ values }) => values.arbeidsformer.length > 0,
+        isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).graderingSkalBesvares(),
+        visibilityFilter: ({ values }) => values.skalHaGradering === YesOrNo.YES,
+    },
     [PeriodeUttakFormField.overføringsårsak]: {
         isAnswered: ({ values }) => hasValue(values.overføringsårsak),
         isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).overføringsårsakSkalBesvares(),
         visibilityFilter: ({ values }) => hasValue(values.konto),
+    },
+    [PeriodeUttakFormField.overføringsdokumentasjon]: {
+        isAnswered: ({ values }) => values.overføringsdokumentasjon.length >= 0,
+        isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).overføringsårsakSkalBesvares(),
+        visibilityFilter: ({ values }) => hasValue(values.overføringsårsak),
+    },
+    [PeriodeUttakFormField.aktivitetskravMor]: {
+        isAnswered: ({ values }) => hasValue(values.aktivitetskravMor),
+        isIncluded: ({ values, regelProps }) =>
+            getUttakSkjemaregler(values, regelProps).aktivitetskravMorSkalBesvares(),
+        visibilityFilter: ({ values }) => hasValue(values.konto),
+    },
+    [PeriodeUttakFormField.aktivitetskravMorDokumentasjon]: {
+        isAnswered: ({ values }) => values.aktivitetskravMorDokumentasjon.length >= 0,
+        isIncluded: ({ values, regelProps }) =>
+            getUttakSkjemaregler(values, regelProps).aktivitetskravMorSkalBesvares(),
+        visibilityFilter: ({ values }) => values.samtidigUttak !== YesOrNo.UNANSWERED,
     },
 };
 

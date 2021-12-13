@@ -1,6 +1,7 @@
 import { bemUtils } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-common/node_modules/@navikt/sif-common-formik/lib';
 import AnnenForelder from 'app/context/types/AnnenForelder';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
@@ -22,6 +23,8 @@ interface Props {
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
+    arbeidsforhold: Arbeidsforhold[];
+    handleDeletePeriode: (periodeId: string) => void;
 }
 
 const renderPeriodeListeInnhold = (
@@ -31,7 +34,9 @@ const renderPeriodeListeInnhold = (
     stønadskontoer: TilgjengeligStønadskonto[],
     navnPåForeldre: NavnPåForeldre,
     annenForelder: AnnenForelder,
-    toggleIsOpen: (id: string) => void
+    toggleIsOpen: (id: string) => void,
+    arbeidsforhold: Arbeidsforhold[],
+    handleDeletePeriode: (periodeId: string) => void
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -46,6 +51,8 @@ const renderPeriodeListeInnhold = (
                     navnPåForeldre={navnPåForeldre}
                     annenForelder={annenForelder}
                     toggleIsOpen={toggleIsOpen}
+                    arbeidsforhold={arbeidsforhold}
+                    handleDeletePeriode={handleDeletePeriode}
                 />
             );
         case Periodetype.Utsettelse:
@@ -65,6 +72,8 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     stønadskontoer,
     navnPåForeldre,
     annenForelder,
+    arbeidsforhold,
+    handleDeletePeriode,
 }) => {
     const bem = bemUtils('periodelisteItem');
 
@@ -89,7 +98,9 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     stønadskontoer,
                     navnPåForeldre,
                     annenForelder,
-                    toggleIsOpen
+                    toggleIsOpen,
+                    arbeidsforhold,
+                    handleDeletePeriode
                 )}
             </EkspanderbartpanelBase>
         </article>

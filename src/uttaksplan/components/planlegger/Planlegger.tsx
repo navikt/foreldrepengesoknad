@@ -1,5 +1,6 @@
 import { bemUtils, InfoBlock, intlUtils } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -17,6 +18,8 @@ interface Props {
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
+    arbeidsforhold: Arbeidsforhold[];
+    handleDeletePeriode: (periodeId: string) => void;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -26,6 +29,8 @@ const Planlegger: FunctionComponent<Props> = ({
     stønadskontoer,
     navnPåForeldre,
     annenForelder,
+    arbeidsforhold,
+    handleDeletePeriode,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -43,6 +48,8 @@ const Planlegger: FunctionComponent<Props> = ({
                     stønadskontoer={stønadskontoer}
                     navnPåForeldre={navnPåForeldre}
                     annenForelder={annenForelder}
+                    arbeidsforhold={arbeidsforhold}
+                    handleDeletePeriode={handleDeletePeriode}
                 />
             </section>
         </InfoBlock>

@@ -32,7 +32,7 @@ import { getOffentligeFridager } from 'app/utils/fridagerUtils';
 import { justerAndrePartsUttakAvFellesperiodeOmMulig } from 'uttaksplan/utils/periodeUtils';
 
 export const UttaksplanBuilder = (
-    getUttaksstatusFunc: (tilgjengStønadskontoer: TilgjengeligStønadskonto[], uttaksplan: Periode[]) => Uttaksstatus,
+    getUttaksstatusFunc: () => Uttaksstatus,
     perioder: Periode[],
     familiehendelsesdato: Date,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
@@ -68,10 +68,7 @@ class UttaksplanAutoBuilder {
     protected familiehendelsesdato: Date;
     protected opprinneligPlan: Periode[] | undefined;
     protected tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    protected getUttaksstatusFunc: (
-        tilgjengStønadskontoer: TilgjengeligStønadskonto[],
-        uttaksplan: Periode[]
-    ) => Uttaksstatus;
+    protected getUttaksstatusFunc: () => Uttaksstatus;
     protected erFlerbarnssøknad: boolean;
     protected erEndringsøknadUtenEkisterendeSak: boolean;
     protected relevantStartDatoForUttak: Date | undefined;
@@ -83,10 +80,7 @@ class UttaksplanAutoBuilder {
         public perioder: Periode[],
         familiehendelsesdato: Date,
         tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-        getUttaksstatusFunc: (
-            tilgjengStønadskontoer: TilgjengeligStønadskonto[],
-            uttaksplan: Periode[]
-        ) => Uttaksstatus,
+        getUttaksstatusFunc: () => Uttaksstatus,
         erFlerbarnssøknad: boolean,
         erEndringsøknadUtenEkisterendeSak: boolean,
         relevantStartDatoForUttak: Date | undefined,
@@ -166,7 +160,7 @@ class UttaksplanAutoBuilder {
         this.sort();
         this.konverterAnnenPartsPlanTilSamtidigUttakHvisSøkerHarLagtInnSamtidigUttak();
         this.settInnSamtidigUttakAnnenPartFraOpprinneligPlan();
-        const uttaksstatus = this.getUttaksstatusFunc(this.tilgjengeligeStønadskontoer, this.perioder);
+        const uttaksstatus = this.getUttaksstatusFunc();
         this.perioder = justerAndrePartsUttakAvFellesperiodeOmMulig(
             this.perioder,
             uttaksstatus.uttak.find((u) => u.konto === StønadskontoType.Fellesperiode)

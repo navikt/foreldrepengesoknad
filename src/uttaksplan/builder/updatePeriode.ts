@@ -13,7 +13,7 @@ const removeEkstrauttakFørTermin = (uttaksplan: Periode[], familiehendelsedato:
 };
 
 const updatePeriode = (
-    getUttaksstatusFunc: (tilgjengStønadskontoer: TilgjengeligStønadskonto[], uttaksplan: Periode[]) => Uttaksstatus,
+    getUttaksstatusFunc: () => Uttaksstatus,
     uttaksplan: Periode[],
     oppdatertPeriode: Periode,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],

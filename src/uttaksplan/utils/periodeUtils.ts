@@ -138,7 +138,7 @@ export const getPeriodeTittel = (intl: IntlShape, periode: Periode, navnPåForel
 
             return tittel;
         case Periodetype.PeriodeUtenUttak:
-            return intlUtils(intl, 'periodetype.periodeUtenUttak.tittel');
+            return intlUtils(intl, 'uttaksplan.periodetype.periodeUtenUttak.tittel');
         case Periodetype.Overføring:
             return getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
         case Periodetype.Utsettelse:
@@ -156,7 +156,7 @@ export const getPeriodeTittel = (intl: IntlShape, periode: Periode, navnPåForel
                 periode.forelder === 'mor'
             );
         case Periodetype.Hull:
-            return intlUtils(intl, 'periodetype.hull.tittel');
+            return intlUtils(intl, 'uttaksplan.periodetype.hull.tittel');
         case Periodetype.Info:
             switch (periode.infotype) {
                 case PeriodeInfoType.uttakAnnenPart:
@@ -220,4 +220,19 @@ export const justerAndrePartsUttakAvFellesperiodeOmMulig = (
     }
 
     return perioder;
+};
+
+export const getSlettPeriodeTekst = (periodetype: Periodetype): string => {
+    switch (periodetype) {
+        case Periodetype.Uttak:
+            return 'uttaksplan.slettPeriode.uttak';
+        case Periodetype.Overføring:
+            return 'uttaksplan.slettPeriode.overføring';
+        case Periodetype.Opphold:
+            return 'uttaksplan.slettPeriode.opphold';
+        case Periodetype.Utsettelse:
+            return 'uttaksplan.slettPeriode.utsettelse';
+        default:
+            return '';
+    }
 };

@@ -546,6 +546,8 @@
     "uttaksplan.stønadskontotype.MØDREKVOTE": "Mors kvote",
     "uttaksplan.stønadskontotype.foreldernavn.kvote": "{navn} kvote",
     "uttaksplan.stønadskontotype.undefined": "Ny periode uten kvote",
+    "uttaksplan.periodetype.hull.tittel": "Ubrukt tidsperiode",
+    "uttaksplan.periodetype.periodeUtenUttak.tittel": "Periode uten uttak",
     "uttaksplan.hvemSkalHaUttak": "Hvem skal ha foreldrepenger?",
     "uttaksplan.flerbarnsdager": "Ønsker du å benytte deg av flerbarnsdagene?",
     "uttaksplan.erMorForSyk": "Er mor for syk til å ta seg av barnet eller innlagt i helseinstitusjon?",
@@ -555,6 +557,11 @@
     "uttaksplan.samtidigUttak.flerBarnsuker.veiledertekst": "Dere kan begge ta ut 100 prosent foreldrepenger samtidig når dere får flere barn. Dere velger selv om flerbarnsukene skal tas ut som fellesperiode eller kvote. Det er ikke krav til hva {navnMor} gjør når {navnFar} tar ut flerbarnsuker eller kvote. {link}.",
     "uttaksplan.samtidigUttakProsent": "Oppgi hvor mange prosent foreldrepenger du skal ta ut",
     "uttaksplan.stillingsprosent": "Oppgi stillingsprosenten du skal jobbe",
+    "uttaksplan.stillingsprosent.lesMer.tittel": "Les mer om stillingsprosent",
+    "uttaksplan.stillingsprosent.lesMer.innhold": "Du skal oppgi hvor mye du skal jobbe ut ifra en 100 % stilling.",
+    "uttaksplan.arbeidsformer": "Hvor skal du jobbe?",
+    "uttaksplan.arbeidsformer.lesMer.tittel": "Les mer om hvor du skal jobbe",
+    "uttaksplan.arbeidsformer.lesMer.innhold": "Hvis du ikke finner arbeidsforholdet ditt her, har ikke arbeidsgiveren din meldt deg inn som ansatt i Arbeids- og arbeidsgiverregisteret. Du må være registrert som ansatt for å bruke den digitale søknaden. Du må be arbeidsgiveren din oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
     "uttaksplan.skalHaGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
     "uttaksplan.overføringsårsak": "Hvorfor skal du overta {navnAnnenForelder} kvote?",
     "uttaksplan.overføringsårsaktype.ALENEOMSORG": "Jeg har blitt alene om omsorgen",
@@ -570,5 +577,10 @@
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.UTTAK_FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten din",
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperioden",
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flerbarnsuker",
-    "uttaksplan.oppholdsårsaktype.foreldernavn.far.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin"
+    "uttaksplan.oppholdsårsaktype.foreldernavn.far.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin",
+    "uttaksplan.slettPeriode.uttak": "Slett periode",
+    "uttaksplan.slettPeriode.overføring": "Slett overføring",
+    "uttaksplan.slettPeriode.opphold": "Slett opphold",
+    "uttaksplan.slettPeriode.utsettelse": "Slett utsettelse",
+    "uttaksplan.validering.stillingsprosent": "Stillingsprosenten må være større enn 0 og mindre enn 100"
 }

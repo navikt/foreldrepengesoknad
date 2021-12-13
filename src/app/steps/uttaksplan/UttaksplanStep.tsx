@@ -41,8 +41,8 @@ const UttaksplanStep = () => {
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
 
-    const { person } = søkerinfo;
-    const { annenForelder, søker, barn, søkersituasjon, dekningsgrad } = søknad;
+    const { person, arbeidsforhold } = søkerinfo;
+    const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad } = søknad;
 
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
@@ -54,6 +54,7 @@ const UttaksplanStep = () => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
+    const erFlerbarnssøknad = parseInt(barn.antallBarn, 10) > 1;
 
     const situasjon = getForeldreparSituasjon(
         person.kjønn,
@@ -111,6 +112,10 @@ const UttaksplanStep = () => {
                 stønadskontoer={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80]}
                 navnPåForeldre={navnPåForeldre}
                 annenForelder={annenForelder}
+                arbeidsforhold={arbeidsforhold}
+                erEndringssøknad={erEndringssøknad}
+                erFarEllerMedmor={erFarEllerMedmor}
+                erFlerbarnssøknad={erFlerbarnssøknad}
             />
             <Block textAlignCenter={true}>
                 <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>

@@ -17,7 +17,13 @@ describe('useAvbrytSøknad', () => {
         const dispatchMock = jest.fn();
 
         jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
-            state: {} as ForeldrepengesøknadContextState,
+            state: {
+                søkerinfo: {
+                    person: {
+                        fnr: '123',
+                    },
+                },
+            } as ForeldrepengesøknadContextState,
             dispatch: dispatchMock,
         }));
 

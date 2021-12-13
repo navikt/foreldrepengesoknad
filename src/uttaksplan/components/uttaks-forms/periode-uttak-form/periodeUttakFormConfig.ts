@@ -17,7 +17,7 @@ export enum PeriodeUttakFormField {
     overføringsdokumentasjon = 'overføringsdokumentasjon',
     skalHaGradering = 'skalHaGradering',
     stillingsprosent = 'stillingsprosent',
-    hvorSkalDuJobbe = 'hvorSkalDuJobbe',
+    arbeidsformer = 'arbeidsformer',
     erMorForSyk = 'erMorForSyk',
     samtidigUttakProsent = 'samtidigUttakProsent',
     hvemSkalTaUttak = 'hvemSkalTaUttak',
@@ -35,7 +35,7 @@ export interface PeriodeUttakFormData {
     [PeriodeUttakFormField.overføringsdokumentasjon]: Attachment[];
     [PeriodeUttakFormField.skalHaGradering]: YesOrNo;
     [PeriodeUttakFormField.stillingsprosent]: string;
-    [PeriodeUttakFormField.hvorSkalDuJobbe]: Arbeidsform[];
+    [PeriodeUttakFormField.arbeidsformer]: Arbeidsform[];
     [PeriodeUttakFormField.erMorForSyk]: YesOrNo;
     [PeriodeUttakFormField.samtidigUttakProsent]: string;
     [PeriodeUttakFormField.hvemSkalTaUttak]: Forelder | '';

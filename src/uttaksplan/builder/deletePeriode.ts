@@ -4,7 +4,7 @@ import { Uttaksstatus } from 'uttaksplan/utils/uttaksstatus';
 import { UttaksplanBuilder } from './UttaksplanBuilder';
 
 const deletePeriode = (
-    getUttaksstatusFunc: (tilgjengStønadskontoer: TilgjengeligStønadskonto[], uttaksplan: Periode[]) => Uttaksstatus,
+    getUttaksstatusFunc: () => Uttaksstatus,
     uttaksplan: Periode[],
     slettetPeriode: Periode,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],

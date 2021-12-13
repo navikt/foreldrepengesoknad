@@ -32,7 +32,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         ).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('Omsorgsovertakelsen 15. March 2021'));
+        userEvent.click(screen.getByText('Omsorgsovertakelsen 15. mars 2021'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         expect(screen.queryByText(VELG_DATO_DATOFELT)).not.toBeInTheDocument();
@@ -55,7 +55,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         ).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('Omsorgsovertakelsen 15. March 2021'));
+        userEvent.click(screen.getByText('Omsorgsovertakelsen 15. mars 2021'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         expect(screen.queryByText(VELG_DATO_DATOFELT)).not.toBeInTheDocument();

@@ -1,3 +1,4 @@
+import { hasValue } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Forelder } from 'app/types/Forelder';
@@ -30,7 +31,7 @@ const initialValues: PeriodeUttakFormData = {
     [PeriodeUttakFormField.overføringsdokumentasjon]: [],
     [PeriodeUttakFormField.skalHaGradering]: YesOrNo.UNANSWERED,
     [PeriodeUttakFormField.stillingsprosent]: '',
-    [PeriodeUttakFormField.hvorSkalDuJobbe]: [],
+    [PeriodeUttakFormField.arbeidsformer]: [],
     [PeriodeUttakFormField.erMorForSyk]: YesOrNo.UNANSWERED,
     [PeriodeUttakFormField.samtidigUttakProsent]: '',
     [PeriodeUttakFormField.hvemSkalTaUttak]: '',
@@ -54,7 +55,7 @@ export const cleanPeriodeUttakFormData = (
         erMorForSyk: visibility.isVisible(PeriodeUttakFormField.erMorForSyk)
             ? values.erMorForSyk
             : initialValues.erMorForSyk,
-        hvorSkalDuJobbe: visibility.isVisible(PeriodeUttakFormField.hvorSkalDuJobbe) ? values.hvorSkalDuJobbe : [],
+        arbeidsformer: visibility.isVisible(PeriodeUttakFormField.arbeidsformer) ? values.arbeidsformer : [],
         konto: values.konto,
         overføringsdokumentasjon: visibility.isVisible(PeriodeUttakFormField.overføringsdokumentasjon)
             ? values.overføringsdokumentasjon
@@ -93,7 +94,7 @@ export const getPeriodeUttakFormInitialValues = (periode?: Periode): PeriodeUtta
                 aktivitetskravMorDokumentasjon: periode.vedlegg || [],
                 erMorForSyk: convertBooleanOrUndefinedToYesOrNo(periode.erMorForSyk),
                 hvemSkalTaUttak: periode.forelder,
-                hvorSkalDuJobbe: periode.arbeidsformer || [],
+                arbeidsformer: periode.arbeidsformer || [],
                 konto: periode.konto,
                 samtidigUttak: convertBooleanOrUndefinedToYesOrNo(periode.ønskerSamtidigUttak),
                 samtidigUttakProsent: periode.samtidigUttakProsent || '',
@@ -135,6 +136,24 @@ export const getPeriodeUttakFormInitialValues = (periode?: Periode): PeriodeUtta
     return {
         ...initialValues,
     };
+};
+
+const getArbeidsform = (arbeidsformer: Arbeidsform[]): Arbeidsform[] => {
+    return arbeidsformer.includes(Arbeidsform.frilans) || arbeidsformer.includes(Arbeidsform.selvstendignæringsdrivende)
+        ? arbeidsformer
+        : [Arbeidsform.arbeidstaker];
+};
+
+const getOrgnummer = (arbeidsformer: Arbeidsform[]): string[] => {
+    return arbeidsformer.includes(Arbeidsform.frilans) || arbeidsformer.includes(Arbeidsform.selvstendignæringsdrivende)
+        ? []
+        : arbeidsformer;
+};
+
+const getErArbeidstaker = (arbeidsformer: Arbeidsform[]): boolean => {
+    return (
+        arbeidsformer.includes(Arbeidsform.frilans) || arbeidsformer.includes(Arbeidsform.selvstendignæringsdrivende)
+    );
 };
 
 export const mapPeriodeUttakFormToPeriode = (
@@ -183,17 +202,19 @@ export const mapPeriodeUttakFormToPeriode = (
             tom: values.tom!,
         },
         type: Periodetype.Uttak,
-        arbeidsformer: [Arbeidsform.arbeidstaker],
-        morsAktivitetIPerioden: values.aktivitetskravMor as MorsAktivitet,
-        erArbeidstaker: true,
+        arbeidsformer: values.arbeidsformer!.length > 0 ? getArbeidsform(values.arbeidsformer!) : undefined,
+        morsAktivitetIPerioden: hasValue(values.aktivitetskravMor)
+            ? (values.aktivitetskravMor as MorsAktivitet)
+            : undefined,
+        erArbeidstaker: getErArbeidstaker(values.arbeidsformer || []),
         erMorForSyk: convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk),
         gradert: convertYesOrNoOrUndefinedToBoolean(values.skalHaGradering),
-        harIkkeAktivitetskrav: true,
-        orgnumre: [],
-        stillingsprosent: values.stillingsprosent,
+        harIkkeAktivitetskrav: values.konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
+        orgnumre: getOrgnummer(values.arbeidsformer || []),
+        stillingsprosent: hasValue(values.stillingsprosent) ? values.stillingsprosent : undefined,
         ønskerFlerbarnsdager: convertYesOrNoOrUndefinedToBoolean(values.ønskerFlerbarnsdager),
         ønskerSamtidigUttak: convertYesOrNoOrUndefinedToBoolean(values.samtidigUttak),
-        samtidigUttakProsent: values.samtidigUttakProsent,
+        samtidigUttakProsent: hasValue(values.samtidigUttakProsent) ? values.samtidigUttakProsent : undefined,
     };
 
     return periode;

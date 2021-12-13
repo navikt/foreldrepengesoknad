@@ -1,0 +1,25 @@
+@import './../../../styles/variables.less';
+
+.periodeUttakForm {
+    &__slettPeriode {
+        background: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        color: @redError;
+
+        &:hover {
+            border-bottom-color: @redError;
+        }
+
+        &:active {
+            border-bottom-color: @redError;
+        }
+    }
+
+    &__slettPeriodeWrapper {
+        position: absolute;
+        right: 0.5rem;
+        top: 0.5rem;
+    }
+}

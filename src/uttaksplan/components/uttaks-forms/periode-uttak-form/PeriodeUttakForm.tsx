@@ -1,11 +1,13 @@
-import { Block } from '@navikt/fp-common';
+import { bemUtils, Block } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Knapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent, useState } from 'react';
+import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
@@ -28,6 +30,10 @@ import {
     mapPeriodeUttakFormToPeriode,
 } from './periodeUttakFormUtils';
 
+import './periodeUttakForm.less';
+import { FormattedMessage } from 'react-intl';
+import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
+
 interface Props {
     periode: Periode;
     familiehendelsesdato: Date;
@@ -36,6 +42,8 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     toggleIsOpen: (id: string) => void;
+    arbeidsforhold: Arbeidsforhold[];
+    handleDeletePeriode: (periodeId: string) => void;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -79,9 +87,12 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     navnPåForeldre,
     annenForelder,
     toggleIsOpen,
+    arbeidsforhold,
+    handleDeletePeriode,
 }) => {
     const { tidsperiode } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
+    const bem = bemUtils('periodeUttakForm');
 
     const toggleVisTidsperiode = () => {
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
@@ -118,11 +129,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                 });
 
                 return (
-                    <PeriodeUttakFormComponents.Form
-                        includeButtons={false}
-                        cleanup={(values) => cleanPeriodeUttakFormData(values, visibility)}
-                    >
-                        <SubmitListener />
+                    <PeriodeUttakFormComponents.Form includeButtons={false}>
+                        <SubmitListener cleanup={cleanPeriodeUttakFormData} visibility={visibility} />
                         <Block visible={!isValidTidsperiode(tidsperiode)} padBottom="l">
                             <TidsperiodeForm
                                 tidsperiode={tidsperiode}
@@ -194,13 +202,22 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.skalHaGradering)}>
                             <SkalHaGraderingSpørsmål
                                 graderingsprosentVisible={visibility.isVisible(PeriodeUttakFormField.stillingsprosent)}
+                                arbeidsforhold={arbeidsforhold}
                             />
                         </Block>
                         <Block>
-                            <div style={{ textAlign: 'center' }}>
+                            <div style={{ textAlign: 'center', position: 'relative' }}>
                                 <Knapp htmlType="button" onClick={() => toggleIsOpen(periode.id)}>
                                     Lukk
                                 </Knapp>
+                                <div className={bem.element('slettPeriodeWrapper')}>
+                                    <LinkButton
+                                        onClick={() => handleDeletePeriode(periode.id)}
+                                        className={bem.element('slettPeriode')}
+                                    >
+                                        <FormattedMessage id={getSlettPeriodeTekst(periode.type)} />
+                                    </LinkButton>
+                                </div>
                             </div>
                         </Block>
                     </PeriodeUttakFormComponents.Form>

@@ -17,7 +17,13 @@ describe('useOnValidSubmit', () => {
     it('skal returnere funksjon for å lagre data til state og så til server', () => {
         const dispatchMock = jest.fn();
         jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
-            state: {} as ForeldrepengesøknadContextState,
+            state: {
+                søkerinfo: {
+                    person: {
+                        fnr: '123',
+                    },
+                },
+            } as ForeldrepengesøknadContextState,
             dispatch: dispatchMock,
         }));
 
@@ -33,7 +39,13 @@ describe('useOnValidSubmit', () => {
     it('skal returnere og så kjøre funksjon for å lagre data til state og så til server', async () => {
         const dispatchMock = jest.fn();
         jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
-            state: {} as ForeldrepengesøknadContextState,
+            state: {
+                søkerinfo: {
+                    person: {
+                        fnr: '123',
+                    },
+                },
+            } as ForeldrepengesøknadContextState,
             dispatch: dispatchMock,
         }));
 
