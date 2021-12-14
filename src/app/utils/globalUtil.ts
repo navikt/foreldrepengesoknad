@@ -1,8 +1,8 @@
 import Bytes from 'bytes';
 import { Attachment } from 'app/types/Attachment';
 
-export const assertUnreachable = (_x: never): never => {
-    throw new Error('This should never happen');
+export const assertUnreachable = (_x: never, message?: string): never => {
+    throw new Error(message === undefined ? 'This should never happen.' : message);
 };
 
 export const bytesString = (bytes: number): string => {
