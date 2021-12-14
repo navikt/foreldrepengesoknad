@@ -11,8 +11,8 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 interface Props {
     uttaksplan: Periode[];
-    familiehendelsesdato: string;
-    handleOnPeriodeChange: (periode: Periode) => void;
+    familiehendelsesdato: Date;
+    handleUpdatePeriode: (periode: Periode) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
@@ -23,7 +23,7 @@ interface Props {
 const Periodeliste: FunctionComponent<Props> = ({
     uttaksplan,
     familiehendelsesdato,
-    handleOnPeriodeChange,
+    handleUpdatePeriode,
     stønadskontoer,
     navnPåForeldre,
     annenForelder,
@@ -51,7 +51,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                     isOpen={openPeriodeId === p.id}
                     toggleIsOpen={toggleIsOpen}
                     familiehendelsesdato={familiehendelsesdato}
-                    handleOnPeriodeChange={handleOnPeriodeChange}
+                    handleUpdatePeriode={handleUpdatePeriode}
                     stønadskontoer={stønadskontoer}
                     navnPåForeldre={navnPåForeldre}
                     annenForelder={annenForelder}

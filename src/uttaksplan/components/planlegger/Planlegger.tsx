@@ -1,58 +1,107 @@
-import { bemUtils, InfoBlock, intlUtils } from '@navikt/fp-common';
+import { bemUtils, InfoBlock, intlUtils, Block } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
+import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Periode } from 'uttaksplan/types/Periode';
+import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
 import Periodeliste from './../periodeliste/Periodeliste';
 
 import './planlegger.less';
 
 interface Props {
     uttaksplan: Periode[];
-    familiehendelsesdato: string;
-    handleOnPeriodeChange: (periode: Periode) => void;
+    familiehendelsesdato: Date;
+    handleUpdatePeriode: (periode: Periode) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];
     handleDeletePeriode: (periodeId: string) => void;
+    handleAddPeriode: (nyPeriode: Periode) => void;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
     uttaksplan,
     familiehendelsesdato,
-    handleOnPeriodeChange,
+    handleUpdatePeriode,
     stønadskontoer,
     navnPåForeldre,
     annenForelder,
     arbeidsforhold,
     handleDeletePeriode,
+    handleAddPeriode,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
+    const [nyPeriodeFormIsVisible, setNyPeriodeFormIsVisible] = useState(false);
+    const [isUtsettelse, setIsUtsettelse] = useState(false);
 
     return (
-        <InfoBlock>
-            <section>
-                <div className={bem.element('tittel')}>
-                    <Systemtittel>{intlUtils(intl, 'uttaksplan.dinPlan')}</Systemtittel>
-                </div>
-                <Periodeliste
-                    uttaksplan={uttaksplan}
-                    familiehendelsesdato={familiehendelsesdato}
-                    handleOnPeriodeChange={handleOnPeriodeChange}
-                    stønadskontoer={stønadskontoer}
-                    navnPåForeldre={navnPåForeldre}
-                    annenForelder={annenForelder}
-                    arbeidsforhold={arbeidsforhold}
-                    handleDeletePeriode={handleDeletePeriode}
-                />
-            </section>
-        </InfoBlock>
+        <>
+            <Block padBottom="l">
+                <InfoBlock>
+                    <Block padBottom="xl">
+                        <section>
+                            <div className={bem.element('tittel')}>
+                                <Systemtittel>{intlUtils(intl, 'uttaksplan.dinPlan')}</Systemtittel>
+                            </div>
+
+                            <Periodeliste
+                                uttaksplan={uttaksplan}
+                                familiehendelsesdato={familiehendelsesdato}
+                                handleUpdatePeriode={handleUpdatePeriode}
+                                stønadskontoer={stønadskontoer}
+                                navnPåForeldre={navnPåForeldre}
+                                annenForelder={annenForelder}
+                                arbeidsforhold={arbeidsforhold}
+                                handleDeletePeriode={handleDeletePeriode}
+                            />
+                        </section>
+                    </Block>
+                    {nyPeriodeFormIsVisible && (
+                        <div style={{ backgroundColor: 'white', padding: '1rem' }}>
+                            <NyPeriode
+                                setNyPeriodeFormIsVisible={setNyPeriodeFormIsVisible}
+                                annenForelder={annenForelder}
+                                arbeidsforhold={arbeidsforhold}
+                                familiehendelsesdato={familiehendelsesdato}
+                                isUtsettelse={isUtsettelse}
+                                navnPåForeldre={navnPåForeldre}
+                                stønadskontoer={stønadskontoer}
+                                handleAddPeriode={handleAddPeriode}
+                            />
+                        </div>
+                    )}
+                </InfoBlock>
+            </Block>
+            {!nyPeriodeFormIsVisible && (
+                <Block padBottom="l">
+                    <div className={bem.element('knapperad')}>
+                        <Knapp
+                            onClick={() => {
+                                setNyPeriodeFormIsVisible(true);
+                                setIsUtsettelse(false);
+                            }}
+                        >
+                            Legg til ny periode
+                        </Knapp>
+                        <Knapp
+                            onClick={() => {
+                                setNyPeriodeFormIsVisible(true);
+                                setIsUtsettelse(true);
+                            }}
+                        >
+                            Legg til utsettelse
+                        </Knapp>
+                    </div>
+                </Block>
+            )}
+        </>
     );
 };
 

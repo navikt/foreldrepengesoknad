@@ -5,8 +5,8 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { Knapp } from 'nav-frontend-knapper';
-import React, { FunctionComponent, useState } from 'react';
+import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import React, { Dispatch, FunctionComponent, useState } from 'react';
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
@@ -37,13 +37,16 @@ import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 interface Props {
     periode: Periode;
     familiehendelsesdato: Date;
-    handleOnPeriodeChange: (periode: Periode) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
-    toggleIsOpen: (id: string) => void;
     arbeidsforhold: Arbeidsforhold[];
-    handleDeletePeriode: (periodeId: string) => void;
+    handleUpdatePeriode: (periode: Periode) => void;
+    handleAddPeriode?: (nyPeriode: Periode) => void;
+    setNyPeriodeFormIsVisible?: Dispatch<React.SetStateAction<boolean>>;
+    toggleIsOpen?: (id: string) => void;
+    handleDeletePeriode?: (periodeId: string) => void;
+    isNyPeriode?: boolean;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -82,13 +85,16 @@ const getPeriodeType = (
 const PeriodeUttakForm: FunctionComponent<Props> = ({
     familiehendelsesdato,
     periode,
-    handleOnPeriodeChange,
+    handleUpdatePeriode,
     stønadskontoer,
     navnPåForeldre,
     annenForelder,
     toggleIsOpen,
     arbeidsforhold,
     handleDeletePeriode,
+    setNyPeriodeFormIsVisible,
+    handleAddPeriode,
+    isNyPeriode = false,
 }) => {
     const { tidsperiode } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
@@ -105,7 +111,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         <PeriodeUttakFormComponents.FormikWrapper
             initialValues={getPeriodeUttakFormInitialValues(periode)}
             onSubmit={(values: Partial<PeriodeUttakFormData>) =>
-                handleOnPeriodeChange(
+                handleUpdatePeriode(
                     mapPeriodeUttakFormToPeriode(
                         values,
                         periode.id,
@@ -129,8 +135,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                 });
 
                 return (
-                    <PeriodeUttakFormComponents.Form includeButtons={false}>
-                        <SubmitListener cleanup={cleanPeriodeUttakFormData} visibility={visibility} />
+                    <>
                         <Block visible={!isValidTidsperiode(tidsperiode)} padBottom="l">
                             <TidsperiodeForm
                                 tidsperiode={tidsperiode}
@@ -142,85 +147,131 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 ugyldigeTidsperioder={undefined}
                             />
                         </Block>
-                        <Block visible={isValidTidsperiode(tidsperiode)} padBottom="l">
-                            <TidsperiodeDisplay tidsperiode={tidsperiode} toggleVisTidsperiode={toggleVisTidsperiode} />
-                            <UttakEndreTidsperiodeSpørsmål
-                                periode={periode}
-                                familiehendelsesdato={familiehendelsesdato}
-                                ugyldigeTidsperioder={[]}
-                                onBekreft={(values) => {
-                                    toggleVisTidsperiode();
-                                    setFieldValue(PeriodeUttakFormField.fom, values.fom);
-                                    setFieldValue(PeriodeUttakFormField.tom, values.tom);
-                                }}
-                                changeTidsperiode={(values) => {
-                                    setFieldValue(PeriodeUttakFormField.fom, values.fom);
-                                    setFieldValue(PeriodeUttakFormField.tom, values.tom);
-                                }}
-                                tidsperiode={tidsperiode}
-                                onAvbryt={() => toggleVisTidsperiode()}
-                                visible={tidsperiodeIsOpen}
-                            />
-                        </Block>
-                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.hvemSkalTaUttak)}>
-                            <HvemSkalHaUttakSpørsmål
-                                fieldName={PeriodeUttakFormField.hvemSkalTaUttak}
-                                erFarEllerMedmor={false}
-                                navnPåForeldre={navnPåForeldre}
-                            />
-                        </Block>
-                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.konto)}>
-                            <HvilkenKontoSpørsmål
-                                fieldName={PeriodeUttakFormField.konto}
-                                velgbareStønadskontoer={velgbareStønadskontoer}
-                                erOppholdsperiode={false}
-                                navnPåForeldre={navnPåForeldre}
-                            />
-                        </Block>
-                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.overføringsårsak)}>
-                            <OverføringsårsakSpørsmål
-                                vedlegg={values.overføringsdokumentasjon}
-                                navnAnnenForelder={navnPåAnnenForelder!}
-                            />
-                        </Block>
-                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.ønskerFlerbarnsdager)}>
-                            <FlerbarnsdagerSpørsmål fieldName={PeriodeUttakFormField.ønskerFlerbarnsdager} />
-                        </Block>
-                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
-                            <ErMorForSykSpørsmål fieldName={PeriodeUttakFormField.erMorForSyk} />
-                        </Block>
-                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
-                            <SamtidigUttakSpørsmål
-                                erFlerbarnssøknad={true}
-                                navnPåForeldre={navnPåForeldre}
-                                navnPåAnnenForelder={navnPåAnnenForelder}
-                                samtidigUttakProsentVisible={visibility.isVisible(
-                                    PeriodeUttakFormField.samtidigUttakProsent
-                                )}
-                            />
-                        </Block>
-                        <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.skalHaGradering)}>
-                            <SkalHaGraderingSpørsmål
-                                graderingsprosentVisible={visibility.isVisible(PeriodeUttakFormField.stillingsprosent)}
-                                arbeidsforhold={arbeidsforhold}
-                            />
-                        </Block>
-                        <Block>
-                            <div style={{ textAlign: 'center', position: 'relative' }}>
-                                <Knapp htmlType="button" onClick={() => toggleIsOpen(periode.id)}>
-                                    Lukk
-                                </Knapp>
-                                <div className={bem.element('slettPeriodeWrapper')}>
-                                    <LinkButton
-                                        onClick={() => handleDeletePeriode(periode.id)}
-                                        className={bem.element('slettPeriode')}
-                                    >
-                                        <FormattedMessage id={getSlettPeriodeTekst(periode.type)} />
-                                    </LinkButton>
+                        <PeriodeUttakFormComponents.Form includeButtons={false}>
+                            <SubmitListener cleanup={cleanPeriodeUttakFormData} visibility={visibility} />
+
+                            <Block visible={isValidTidsperiode(tidsperiode)} padBottom="l">
+                                <TidsperiodeDisplay
+                                    tidsperiode={tidsperiode}
+                                    toggleVisTidsperiode={toggleVisTidsperiode}
+                                />
+                                <UttakEndreTidsperiodeSpørsmål
+                                    periode={periode}
+                                    familiehendelsesdato={familiehendelsesdato}
+                                    ugyldigeTidsperioder={[]}
+                                    onBekreft={(values) => {
+                                        toggleVisTidsperiode();
+                                        setFieldValue(PeriodeUttakFormField.fom, values.fom);
+                                        setFieldValue(PeriodeUttakFormField.tom, values.tom);
+                                    }}
+                                    changeTidsperiode={(values) => {
+                                        setFieldValue(PeriodeUttakFormField.fom, values.fom);
+                                        setFieldValue(PeriodeUttakFormField.tom, values.tom);
+                                    }}
+                                    tidsperiode={tidsperiode}
+                                    onAvbryt={() => toggleVisTidsperiode()}
+                                    visible={tidsperiodeIsOpen}
+                                />
+                            </Block>
+                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.hvemSkalTaUttak)}>
+                                <HvemSkalHaUttakSpørsmål
+                                    fieldName={PeriodeUttakFormField.hvemSkalTaUttak}
+                                    erFarEllerMedmor={false}
+                                    navnPåForeldre={navnPåForeldre}
+                                />
+                            </Block>
+                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.konto)}>
+                                <HvilkenKontoSpørsmål
+                                    fieldName={PeriodeUttakFormField.konto}
+                                    velgbareStønadskontoer={velgbareStønadskontoer}
+                                    erOppholdsperiode={false}
+                                    navnPåForeldre={navnPåForeldre}
+                                />
+                            </Block>
+                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.overføringsårsak)}>
+                                <OverføringsårsakSpørsmål
+                                    vedlegg={values.overføringsdokumentasjon}
+                                    navnAnnenForelder={navnPåAnnenForelder!}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(PeriodeUttakFormField.ønskerFlerbarnsdager)}
+                            >
+                                <FlerbarnsdagerSpørsmål fieldName={PeriodeUttakFormField.ønskerFlerbarnsdager} />
+                            </Block>
+                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
+                                <ErMorForSykSpørsmål fieldName={PeriodeUttakFormField.erMorForSyk} />
+                            </Block>
+                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
+                                <SamtidigUttakSpørsmål
+                                    erFlerbarnssøknad={true}
+                                    navnPåForeldre={navnPåForeldre}
+                                    navnPåAnnenForelder={navnPåAnnenForelder}
+                                    samtidigUttakProsentVisible={visibility.isVisible(
+                                        PeriodeUttakFormField.samtidigUttakProsent
+                                    )}
+                                />
+                            </Block>
+                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.skalHaGradering)}>
+                                <SkalHaGraderingSpørsmål
+                                    graderingsprosentVisible={visibility.isVisible(
+                                        PeriodeUttakFormField.stillingsprosent
+                                    )}
+                                    arbeidsforhold={arbeidsforhold}
+                                />
+                            </Block>
+                            <Block
+                                visible={
+                                    !isNyPeriode && handleDeletePeriode !== undefined && toggleIsOpen !== undefined
+                                }
+                            >
+                                <div style={{ textAlign: 'center', position: 'relative' }}>
+                                    <Knapp htmlType="button" onClick={() => toggleIsOpen!(periode.id)}>
+                                        Lukk
+                                    </Knapp>
+                                    <div className={bem.element('slettPeriodeWrapper')}>
+                                        <LinkButton
+                                            onClick={() => handleDeletePeriode!(periode.id)}
+                                            className={bem.element('slettPeriode')}
+                                        >
+                                            <FormattedMessage id={getSlettPeriodeTekst(periode.type)} />
+                                        </LinkButton>
+                                    </div>
                                 </div>
-                            </div>
-                        </Block>
-                    </PeriodeUttakFormComponents.Form>
+                            </Block>
+                            <Block
+                                visible={
+                                    isNyPeriode &&
+                                    setNyPeriodeFormIsVisible !== undefined &&
+                                    handleAddPeriode !== undefined
+                                }
+                            >
+                                <div className={bem.element('knapperad')}>
+                                    <Knapp htmlType="button" onClick={() => setNyPeriodeFormIsVisible!(false)}>
+                                        Avbryt
+                                    </Knapp>
+                                    {visibility.areAllQuestionsAnswered() ? (
+                                        <Hovedknapp
+                                            htmlType="button"
+                                            onClick={() => {
+                                                handleAddPeriode!(
+                                                    mapPeriodeUttakFormToPeriode(
+                                                        values,
+                                                        periode.id,
+                                                        getPeriodeType(values.hvemSkalTaUttak!, false, values.konto!)
+                                                    )
+                                                );
+                                                setNyPeriodeFormIsVisible!(false);
+                                            }}
+                                        >
+                                            Legg til
+                                        </Hovedknapp>
+                                    ) : null}
+                                </div>
+                            </Block>
+                        </PeriodeUttakFormComponents.Form>
+                    </>
                 );
             }}
         />

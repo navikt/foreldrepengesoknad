@@ -12,6 +12,8 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import deletePeriode from './builder/deletePeriode';
 import { getUttaksstatusFunc } from './utils/uttaksstatus';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import updatePeriode from './builder/updatePeriode';
+import addPeriode from './builder/addPeriode';
 
 interface Props {
     situasjon: ForeldreparSituasjon;
@@ -44,25 +46,13 @@ const Uttaksplan: FunctionComponent<Props> = ({
     erFarEllerMedmor,
     erFlerbarnssøknad,
 }) => {
-    const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
-
-    const handleOnPeriodeUpdated = (periode: Periode) => {
-        const updatedPlan = uttaksplan.map((p) => {
-            if (p.id === periode.id) {
-                return periode;
-            }
-
-            return p;
-        });
-
-        handleOnPlanChange(updatedPlan);
-    };
+    const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
 
     const handleDeletePeriode = (periodeId: string) => {
         const slettetPeriode = uttaksplan.find((p) => p.id === periodeId);
 
-        const updatedPlan = deletePeriode(
-            getUttaksstatusFunc({
+        const updatedPlan = deletePeriode({
+            getUttaksstatusFunc: getUttaksstatusFunc({
                 erDeltUttak,
                 erEndringssøknad,
                 harKomplettUttaksplan: false,
@@ -71,18 +61,68 @@ const Uttaksplan: FunctionComponent<Props> = ({
                 uttaksplan,
             }),
             uttaksplan,
-            slettetPeriode!,
-            stønadskontoer,
-            familiehendelsesdatoDate!,
+            slettetPeriode: slettetPeriode!,
+            tilgjengeligeStønadskontoer: stønadskontoer,
+            familiehendelsesdato: familiehendelsesdatoDate!,
             erFlerbarnssøknad,
-            false,
-            familiehendelsesdatoDate,
-            false,
-            false,
-            false
-        );
+            erEndringsøknadUtenEkisterendeSak: false,
+            relevantStartDatoForUttak: familiehendelsesdatoDate,
+            harMidlertidigOmsorg: false,
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         handleOnPlanChange(updatedPlan);
+    };
+
+    const handleUpdatePeriode = (oppdatertPeriode: Periode) => {
+        const updatedPlan = updatePeriode({
+            getUttaksstatusFunc: getUttaksstatusFunc({
+                erDeltUttak,
+                erEndringssøknad,
+                harKomplettUttaksplan: false,
+                erFarEllerMedmor,
+                tilgjengeligeStønadskontoer: stønadskontoer,
+                uttaksplan,
+            }),
+            uttaksplan,
+            oppdatertPeriode,
+            tilgjengeligeStønadskontoer: stønadskontoer,
+            familiehendelsesdato: familiehendelsesdatoDate!,
+            erFlerbarnssøknad,
+            erEndringsøknadUtenEkisterendeSak: false,
+            relevantStartDatoForUttak: familiehendelsesdatoDate,
+            harMidlertidigOmsorg: false,
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
+
+        handleOnPlanChange(updatedPlan);
+    };
+
+    const handleAddPeriode = (nyPeriode: Periode) => {
+        const addPeriodeResult = addPeriode({
+            getUttaksstatusFunc: getUttaksstatusFunc({
+                erDeltUttak,
+                erEndringssøknad,
+                harKomplettUttaksplan: false,
+                erFarEllerMedmor,
+                tilgjengeligeStønadskontoer: stønadskontoer,
+                uttaksplan,
+            }),
+            uttaksplan,
+            nyPeriode,
+            tilgjengeligeStønadskontoer: stønadskontoer,
+            familiehendelsesdato: familiehendelsesdatoDate!,
+            erFlerbarnssøknad,
+            erEndringsøknadUtenEkisterendeSak: false,
+            relevantStartDatoForUttak: familiehendelsesdatoDate,
+            harMidlertidigOmsorg: false,
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
+
+        handleOnPlanChange(addPeriodeResult.updatedPlan);
     };
 
     return (
@@ -97,13 +137,14 @@ const Uttaksplan: FunctionComponent<Props> = ({
             <Block padBottom="l">
                 <Planlegger
                     uttaksplan={uttaksplan}
-                    familiehendelsesdato={familiehendelsesdato}
-                    handleOnPeriodeChange={handleOnPeriodeUpdated}
+                    familiehendelsesdato={familiehendelsesdatoDate}
+                    handleUpdatePeriode={handleUpdatePeriode}
                     stønadskontoer={stønadskontoer}
                     navnPåForeldre={navnPåForeldre}
                     annenForelder={annenForelder}
                     arbeidsforhold={arbeidsforhold}
                     handleDeletePeriode={handleDeletePeriode}
+                    handleAddPeriode={handleAddPeriode}
                 />
             </Block>
         </>

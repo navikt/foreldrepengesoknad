@@ -1,6 +1,7 @@
 import { hasValue } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
+import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import getUttakSkjemaregler, { UttakSkjemaReglerProps } from 'uttaksplan/utils/uttaksskjema/uttakSkjemaregler';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 
@@ -10,9 +11,18 @@ interface PeriodeUttakFormQuestionsPayload {
 }
 
 const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, PeriodeUttakFormField> = {
+    [PeriodeUttakFormField.fom]: {
+        isAnswered: ({ values }) => hasValue(values.fom),
+        isIncluded: () => true,
+    },
+    [PeriodeUttakFormField.tom]: {
+        isAnswered: ({ values }) => hasValue(values.tom),
+        isIncluded: () => true,
+    },
     [PeriodeUttakFormField.hvemSkalTaUttak]: {
         isAnswered: ({ values }) => hasValue(values.hvemSkalTaUttak),
         isIncluded: ({ regelProps }) => regelProps.erDeltUttak,
+        visibilityFilter: ({ values }) => isValidTidsperiode({ fom: values.fom, tom: values.tom }),
     },
     [PeriodeUttakFormField.konto]: {
         isAnswered: ({ values }) => hasValue(values.konto),

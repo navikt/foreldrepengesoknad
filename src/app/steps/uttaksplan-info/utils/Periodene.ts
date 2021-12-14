@@ -8,6 +8,7 @@ import {
     isInfoPeriode,
     isOppholdsperiode,
     isOverføringsperiode,
+    isPeriodeUtenUttak,
     isUtsettelsePgaFerie,
     isUtsettelsesperiode,
     isUttaksperiode,
@@ -100,9 +101,9 @@ function getHull(perioder: Periode[]): PeriodeHull[] {
 }
 
 function getHullOgInfoOgPerioderUtenUttak(perioder: Periode[]): Array<PeriodeHull | InfoPeriode | PeriodeUtenUttak> {
-    return perioder.filter((periode) => isHull(periode) || isInfoPeriode(periode)) as Array<
-        PeriodeHull | InfoPeriode | PeriodeUtenUttak
-    >;
+    return perioder.filter(
+        (periode) => isHull(periode) || isInfoPeriode(periode) || isPeriodeUtenUttak(periode)
+    ) as Array<PeriodeHull | InfoPeriode | PeriodeUtenUttak>;
 }
 
 function getInfoperioder(perioder: Periode[]): InfoPeriode[] {

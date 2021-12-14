@@ -1,22 +1,21 @@
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Periode } from 'uttaksplan/types/Periode';
-import { Uttaksstatus } from 'uttaksplan/utils/uttaksstatus';
 import { UttaksplanBuilder } from './UttaksplanBuilder';
+import { DeletePeriodeParams } from './ModifyPeriodeParams';
 
-const deletePeriode = (
-    getUttaksstatusFunc: () => Uttaksstatus,
-    uttaksplan: Periode[],
-    slettetPeriode: Periode,
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    familiehendelsesdato: Date,
-    erFlerbarnssøknad: boolean,
-    erEndringsøknadUtenEkisterendeSak: boolean,
-    relevantStartDatoForUttak: Date | undefined,
-    harMidlertidigOmsorg: boolean,
-    harAktivitetskravIPeriodeUtenUttak: boolean,
-    erAdopsjon: boolean,
-    opprinneligPlan?: Periode[]
-): Periode[] => {
+const deletePeriode = ({
+    getUttaksstatusFunc,
+    uttaksplan,
+    slettetPeriode,
+    tilgjengeligeStønadskontoer,
+    familiehendelsesdato,
+    erFlerbarnssøknad,
+    erEndringsøknadUtenEkisterendeSak,
+    relevantStartDatoForUttak,
+    harMidlertidigOmsorg,
+    harAktivitetskravIPeriodeUtenUttak,
+    erAdopsjon,
+    opprinneligPlan,
+}: DeletePeriodeParams): Periode[] => {
     const builder = UttaksplanBuilder(
         getUttaksstatusFunc,
         uttaksplan,

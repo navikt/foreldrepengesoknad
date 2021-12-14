@@ -1,5 +1,4 @@
 import { bemUtils } from '@navikt/fp-common';
-import { ISOStringToDate } from '@navikt/fp-common/node_modules/@navikt/sif-common-formik/lib';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
@@ -18,8 +17,8 @@ interface Props {
     periode: Periode;
     isOpen: boolean;
     toggleIsOpen: (id: string) => void;
-    familiehendelsesdato: string;
-    handleOnPeriodeChange: (periode: Periode) => void;
+    familiehendelsesdato: Date;
+    handleUpdatePeriode: (periode: Periode) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
@@ -29,8 +28,8 @@ interface Props {
 
 const renderPeriodeListeInnhold = (
     periode: Periode,
-    familiehendelsesdato: string,
-    handleOnPeriodeChange: (periode: Periode) => void,
+    familiehendelsesdato: Date,
+    handleUpdatePeriode: (periode: Periode) => void,
     stønadskontoer: TilgjengeligStønadskonto[],
     navnPåForeldre: NavnPåForeldre,
     annenForelder: AnnenForelder,
@@ -45,8 +44,8 @@ const renderPeriodeListeInnhold = (
             return (
                 <PeriodeUttakForm
                     periode={periode}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
-                    handleOnPeriodeChange={handleOnPeriodeChange}
+                    familiehendelsesdato={familiehendelsesdato}
+                    handleUpdatePeriode={handleUpdatePeriode}
                     stønadskontoer={stønadskontoer}
                     navnPåForeldre={navnPåForeldre}
                     annenForelder={annenForelder}
@@ -68,7 +67,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     isOpen,
     toggleIsOpen,
     familiehendelsesdato,
-    handleOnPeriodeChange,
+    handleUpdatePeriode,
     stønadskontoer,
     navnPåForeldre,
     annenForelder,
@@ -94,7 +93,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                 {renderPeriodeListeInnhold(
                     periode,
                     familiehendelsesdato,
-                    handleOnPeriodeChange,
+                    handleUpdatePeriode,
                     stønadskontoer,
                     navnPåForeldre,
                     annenForelder,
