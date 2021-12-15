@@ -52,8 +52,8 @@ class FødselsdatoerSpørsmål extends React.Component<Props> {
         };
     }
 
-    getTermindatoAvgrensninger() {
-        return termindatoAvgrensningerFodsel;
+    getTermindatoAvgrensninger(fødselsdato: string) {
+        return termindatoAvgrensningerFodsel(fødselsdato);
     }
 
     getValidatorer(index: number = 0): Validator[] {
@@ -114,8 +114,8 @@ class FødselsdatoerSpørsmål extends React.Component<Props> {
                             dato={termindato}
                             onChange={(d) => onChangeTermindato(d)}
                             label={<Labeltekst intlId={intlIdTermin} />}
-                            datoAvgrensinger={this.getTermindatoAvgrensninger()}
-                            validators={getTermindatoReglerForFødsel(termindato, intl)}
+                            datoAvgrensinger={this.getTermindatoAvgrensninger(fødselsdatoer[0])}
+                            validators={getTermindatoReglerForFødsel(termindato, fødselsdatoer[0], intl)}
                         />
                     </Block>
                 )}
