@@ -2,7 +2,7 @@ import moment from 'moment';
 import { IntlShape } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
-import { date21DaysAgo, attenUkerPluss3, attenUkerPluss3Number, today, date9MonthsAgo } from './values';
+import { date21DaysAgo, attenUkerPluss3, attenUkerPluss3Number, today } from './values';
 import { erGyldigDato, hasValueRule } from './common';
 import { Avgrensninger } from 'common/types';
 
@@ -11,9 +11,11 @@ export const termindatoAvgrensninger: Avgrensninger = {
     maksDato: attenUkerPluss3.subtract(24, 'hours').toDate(),
 };
 
-export const termindatoAvgrensningerFodsel: Avgrensninger = {
-    minDato: date9MonthsAgo.toDate(),
-    maksDato: attenUkerPluss3.subtract(24, 'hours').toDate(),
+export const termindatoAvgrensningerFodsel = (fødselsdato: string): Avgrensninger => {
+    return {
+        minDato: moment(fødselsdato).subtract(1, 'months').add(24, 'hours').toDate(),
+        maksDato: moment(fødselsdato).add(6, 'months').add(24, 'hours').toDate(),
+    };
 };
 
 export const getTermindatoRegler = (dato: string | undefined, intl: IntlShape): Validator[] => {
@@ -39,17 +41,21 @@ export const getTermindatoRegler = (dato: string | undefined, intl: IntlShape): 
     ];
 };
 
-export const getTermindatoReglerForFødsel = (termindato: string | undefined, intl: IntlShape): Validator[] => {
-    const forLangtFremITidRegel: Validator = {
+export const getTermindatoReglerForFødsel = (
+    termindato: string | undefined,
+    fødselsdato: string,
+    intl: IntlShape
+): Validator[] => {
+    const forLangtFremITidFraFødselsdatoRegel: Validator = {
         test: () => {
-            return moment().add(9, 'months').isSameOrAfter(moment(termindato), 'day');
+            return moment(termindato).subtract(6, 'months').isSameOrBefore(moment(fødselsdato), 'day');
         },
         failText: getMessage(intl, 'valideringsfeil.termindato.forLangtFremITid'),
     };
 
-    const forLangtTilbakeITidRegel: Validator = {
+    const forLangtTilbakeITidFraFødselsdatoRegel: Validator = {
         test: () => {
-            return moment().subtract(9, 'months').isSameOrBefore(moment(termindato), 'day');
+            return moment(termindato).add(1, 'months').isSameOrAfter(moment(fødselsdato), 'day');
         },
         failText: getMessage(intl, 'valideringsfeil.termindato.forLangtTilbakeITidFødsel'),
     };
@@ -57,7 +63,7 @@ export const getTermindatoReglerForFødsel = (termindato: string | undefined, in
     return [
         hasValueRule(termindato, getMessage(intl, 'valideringsfeil.termindato.duMåOppgi')),
         erGyldigDato(termindato, getMessage(intl, 'valideringsfeil.termindato.ugyldigDatoFormat')),
-        forLangtFremITidRegel,
-        forLangtTilbakeITidRegel,
+        forLangtFremITidFraFødselsdatoRegel,
+        forLangtTilbakeITidFraFødselsdatoRegel,
     ];
 };
