@@ -12,8 +12,6 @@ export const date21DaysAgo = moment().subtract(daysToHours(21), 'hours');
 
 export const date22DaysAgo = moment().subtract(daysToHours(22), 'hours');
 
-export const date9MonthsAgo = moment().subtract(9, 'months');
-
 export const date1YearAgo = moment().subtract(1, 'years');
 
 export const date1YearAhead = moment().add(1, 'years');
