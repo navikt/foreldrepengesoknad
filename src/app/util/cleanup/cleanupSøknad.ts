@@ -138,6 +138,40 @@ const ensureNoNullItemsInFødselsdatoer = (barn: BarnInnsending, situasjon: Søk
     return (cleanedBarn as BarnInnsending) || barn;
 };
 
+export const getPeriodeVedTidspunkt = (uttaksplan: Periode[], tidspunkt: Date): Periode | undefined => {
+    return uttaksplan.find((periode) =>
+        moment(tidspunkt).isBetween(periode.tidsperiode.fom, periode.tidsperiode.fom, 'day', '[]')
+    );
+};
+
+export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], endringstidspunkt: Date): Periode[] => {
+    const førstePeriodeEtterEndringstidspunkt = uttaksplan.find((periode) =>
+        moment(periode.tidsperiode.fom).isAfter(endringstidspunkt)
+    );
+
+    const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt
+        ? Uttaksdagen(førstePeriodeEtterEndringstidspunkt.tidsperiode.fom).forrige()
+        : endringstidspunkt;
+
+    const endringsTidspunktPeriode: Utsettelsesperiode = {
+        type: Periodetype.Utsettelse,
+        årsak: UtsettelseÅrsakType.Fri,
+        id: guid(),
+        tidsperiode: {
+            fom: endringstidspunkt,
+            tom: endringsTidspunktPeriodeTom,
+        },
+        erArbeidstaker: false,
+        forelder: Forelder.farMedmor,
+    };
+
+    uttaksplan.push(endringsTidspunktPeriode);
+
+    uttaksplan.sort(sorterPerioder);
+
+    return uttaksplan;
+};
+
 const cleanupUttaksplan = (
     uttaksplan: Periode[],
     familiehendelsesdato: Date,
@@ -153,36 +187,10 @@ const cleanupUttaksplan = (
         .map(changeGradertPeriode);
 
     if (endringstidspunkt && førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
-        const periodeVedEndringstidspunkt = cleanedUttaksplan.find((periode) =>
-            moment(endringstidspunkt).isBetween(periode.tidsperiode.fom, periode.tidsperiode.fom, 'day', '[]')
-        );
+        const periodeVedEndringstidspunkt = getPeriodeVedTidspunkt(cleanedUttaksplan, endringstidspunkt);
 
         if (!periodeVedEndringstidspunkt) {
-            const førstePeriodeEtterEndringstidspunkt = cleanedUttaksplan.find((periode) =>
-                moment(periode.tidsperiode.fom).isAfter(endringstidspunkt)
-            );
-
-            const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt
-                ? Uttaksdagen(førstePeriodeEtterEndringstidspunkt.tidsperiode.fom).forrige()
-                : endringstidspunkt;
-
-            const endringsTidspunktPeriode: Utsettelsesperiode = {
-                type: Periodetype.Utsettelse,
-                årsak: UtsettelseÅrsakType.Fri,
-                id: guid(),
-                tidsperiode: {
-                    fom: endringstidspunkt,
-                    tom: endringsTidspunktPeriodeTom,
-                },
-                erArbeidstaker: false,
-                forelder: Forelder.farMedmor,
-            };
-
-            cleanedUttaksplan.push(endringsTidspunktPeriode);
-
-            cleanedUttaksplan.sort(sorterPerioder);
-
-            return cleanedUttaksplan;
+            return getUttaksplanMedFriUtsettelsesperiode(cleanedUttaksplan, endringstidspunkt);
         }
     }
 
