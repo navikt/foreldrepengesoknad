@@ -41,9 +41,7 @@ const getEksisterendeSak = (saksnummer: string) => {
 };
 
 const getEksisterendeSakMedFnr = (fnr: string) => {
-    return AxiosInstance.get('/innsyn/uttaksplanannen', {
-        params: { annenPart: fnr },
-    });
+    return AxiosInstance.post('/innsyn/uttaksplanannen1', { annenPart: fnr });
 };
 
 function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
