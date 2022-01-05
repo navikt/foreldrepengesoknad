@@ -214,5 +214,66 @@ describe('dateUtils', () => {
 
             expect(endringstidspunkt).toBe(periodeSomDeltePeriode.tidsperiode!.fom);
         });
+        it('Hvis uttaksplanlogikken deler to perioder skal endringstidspunkt være fra delingen og fremover', () => {
+            const deltPeriode2: Partial<Uttaksperiode> = {
+                id: '3105926427-6496-7446-7246-02332065872239',
+                tidsperiode: {
+                    fom: new Date('2019-10-01T00:00:00.000Z'),
+                    tom: new Date('2020-01-09T00:00:00.000Z'),
+                },
+                type: Periodetype.Uttak,
+            };
+
+            const nyPeriode: Partial<Utsettelsesperiode> = {
+                id: '3105926427-6496-7446-7246-02332065872239',
+                tidsperiode: {
+                    fom: new Date('2020-01-10T00:00:00.000Z'),
+                    tom: new Date('2020-04-02T00:00:00.000Z'),
+                },
+                type: Periodetype.Utsettelse,
+                årsak: UtsettelseÅrsakType.Fri,
+            };
+            const deltPeriode3: Partial<Uttaksperiode> = {
+                id: '3105926427-6496-7446-7246-02332065872239',
+                tidsperiode: {
+                    fom: new Date('2020-04-05T00:00:00.000Z'),
+                    tom: new Date('2020-05-04T00:00:00.000Z'),
+                },
+                type: Periodetype.Uttak,
+            };
+
+            const endretPlan = [opprinneligPlan[0], deltPeriode2, nyPeriode, deltPeriode3];
+            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
+
+            expect(endringstidspunkt).toBe(nyPeriode.tidsperiode!.fom);
+        });
+        it('Hvis endret periode er siste, har samme startdato som i opprinnelig plan men ulik sluttdato, skal endringstidspunkt være starten på perioden .', () => {
+            const nySistePeriode = {
+                id: opprinneligPlan[2].id,
+                tidsperiode: {
+                    fom: opprinneligPlan[2].tidsperiode!.fom,
+                    tom: new Date('2020-05-14T00:00:00.000Z'),
+                },
+                type: opprinneligPlan[2].type,
+            };
+            const endretPlan = [opprinneligPlan[0], opprinneligPlan[1], nySistePeriode];
+            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
+
+            expect(endringstidspunkt).toBe(nySistePeriode.tidsperiode.fom);
+        });
+        it('Hvis ingen opprinnelig plan, skal endringstidspunkt være startdatoen på første periode i endret plan.', () => {
+            const tomOpprinneligPlan = [] as Periode[];
+            const endretPlan = [opprinneligPlan[2], opprinneligPlan[3]];
+            const endringstidspunkt = getEndringstidspunkt(tomOpprinneligPlan, endretPlan as Periode[], true);
+
+            expect(endringstidspunkt).toBe(opprinneligPlan[2].tidsperiode!.fom);
+        });
+
+        it('Hvis periode er slettet i den nye planen skal endringstidspunkt være startdatoen på slettet periode.', () => {
+            const endretPlan = [opprinneligPlan[0], opprinneligPlan[1]];
+            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
+
+            expect(endringstidspunkt).toBe(opprinneligPlan[2].tidsperiode!.fom);
+        });
     });
 });
