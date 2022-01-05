@@ -7,6 +7,8 @@ import { Undertittel } from 'nav-frontend-typografi';
 import React, { Dispatch, FunctionComponent, useState } from 'react';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
+import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
+import { FormattedMessage } from 'react-intl';
 
 interface Props {
     familiehendelsesdato: Date;
@@ -17,6 +19,7 @@ interface Props {
     arbeidsforhold: Arbeidsforhold[];
     isUtsettelse: boolean;
     handleAddPeriode: (nyPeriode: Periode) => void;
+    erFarEllerMedmor: boolean;
 }
 
 const NyPeriode: FunctionComponent<Props> = ({
@@ -28,6 +31,7 @@ const NyPeriode: FunctionComponent<Props> = ({
     stønadskontoer,
     familiehendelsesdato,
     handleAddPeriode,
+    erFarEllerMedmor,
 }) => {
     const [periode, setPeriode] = useState<Periode>({
         type: isUtsettelse ? Periodetype.Utsettelse : Periodetype.Uttak,
@@ -37,7 +41,9 @@ const NyPeriode: FunctionComponent<Props> = ({
     return !isUtsettelse ? (
         <>
             <Block padBottom="l">
-                <Undertittel>Ny periode med foreldrepenger</Undertittel>
+                <Undertittel>
+                    <FormattedMessage id="uttaksplan.nyPeriode.tittel" />
+                </Undertittel>
             </Block>
             <PeriodeUttakForm
                 periode={periode}
@@ -53,7 +59,15 @@ const NyPeriode: FunctionComponent<Props> = ({
             />
         </>
     ) : (
-        <div>Utsettelse skjema her</div>
+        <PeriodeUtsettelseForm
+            periode={periode}
+            familiehendelsesdato={familiehendelsesdato}
+            handleUpdatePeriode={setPeriode}
+            erFarEllerMedmor={erFarEllerMedmor}
+            handleAddPeriode={handleAddPeriode}
+            setNyPeriodeFormIsVisible={setNyPeriodeFormIsVisible}
+            isNyPeriode={true}
+        />
     );
 };
 

@@ -33,6 +33,8 @@ import {
 import './periodeUttakForm.less';
 import { FormattedMessage } from 'react-intl';
 import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
 interface Props {
     periode: Periode;
@@ -104,6 +106,13 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
     };
 
+    const handleCleanup = (
+        values: PeriodeUttakFormData,
+        visibility: QuestionVisibility<PeriodeUttakFormField, undefined>
+    ): PeriodeUttakFormData => {
+        return cleanPeriodeUttakFormData(values, visibility);
+    };
+
     const velgbareStønadskontoer = getVelgbareStønadskontotyper(stønadskontoer);
     const navnPåAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : undefined;
 
@@ -141,14 +150,14 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 tidsperiode={tidsperiode}
                                 familiehendelsesdato={familiehendelsesdato}
                                 onBekreft={(values) => {
-                                    setFieldValue(PeriodeUttakFormField.fom, values.fom);
-                                    setFieldValue(PeriodeUttakFormField.tom, values.tom);
+                                    setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
+                                    setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
                             />
                         </Block>
                         <PeriodeUttakFormComponents.Form includeButtons={false}>
-                            <SubmitListener cleanup={cleanPeriodeUttakFormData} visibility={visibility} />
+                            <SubmitListener cleanup={() => handleCleanup(values, visibility)} />
 
                             <Block visible={isValidTidsperiode(tidsperiode)} padBottom="l">
                                 <TidsperiodeDisplay
@@ -228,7 +237,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             >
                                 <div style={{ textAlign: 'center', position: 'relative' }}>
                                     <Knapp htmlType="button" onClick={() => toggleIsOpen!(periode.id)}>
-                                        Lukk
+                                        <FormattedMessage id="uttaksplan.lukk" />
                                     </Knapp>
                                     <div className={bem.element('slettPeriodeWrapper')}>
                                         <LinkButton
@@ -249,7 +258,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             >
                                 <div className={bem.element('knapperad')}>
                                     <Knapp htmlType="button" onClick={() => setNyPeriodeFormIsVisible!(false)}>
-                                        Avbryt
+                                        <FormattedMessage id="uttaksplan.avbryt" />
                                     </Knapp>
                                     {visibility.areAllQuestionsAnswered() ? (
                                         <Hovedknapp
@@ -265,7 +274,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                                 setNyPeriodeFormIsVisible!(false);
                                             }}
                                         >
-                                            Legg til
+                                            <FormattedMessage id="uttaksplan.leggTil" />
                                         </Hovedknapp>
                                     ) : null}
                                 </div>

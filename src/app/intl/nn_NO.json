@@ -547,6 +547,10 @@
     "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noko gjekk gale prøv igjen",
     "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikkje av gyldig type",
     "uttaksplan.dinPlan": "Din plan",
+    "uttaksplan.lukk": "Lukk",
+    "uttaksplan.avbryt": "Avbryt",
+    "uttaksplan.leggTil": "Legg til",
+    "uttaksplan.gåVidere": "Gå videre",
     "uttaksplan.hvilkenKvote": "Hvilken del av foreldrepengene skal du ta ut?",
     "uttaksplan.hvilkenKvote.annenForelder": "Hvilken del av foreldrepengene skal {navnAnnenForelder} ta ut?",
     "uttaksplan.stønadskontotype.AKTIVITETSFRI_FLERBARNSDAGER": "Flerbarnsuker uten aktivitetskrav",
@@ -596,5 +600,12 @@
     "uttaksplan.slettPeriode.overføring": "Slett overføring",
     "uttaksplan.slettPeriode.opphold": "Slett opphold",
     "uttaksplan.slettPeriode.utsettelse": "Slett utsettelse",
-    "uttaksplan.validering.stillingsprosent": "Stillingsprosenten må være større enn 0 og mindre enn 100"
+    "uttaksplan.validering.stillingsprosent": "Stillingsprosenten må være større enn 0 og mindre enn 100",
+    "uttaksplan.nyPeriode.tittel": "Ny periode med foreldrepenger",
+    "uttaksplan.utsettelseårsak.pgasykdom": "På grunn av sykdom",
+    "uttaksplan.utsettelseårsak.hv_øvelse": "Øvelse eller tjeneste i Heimevernet",
+    "uttaksplan.utsettelseårsak.navtiltak": "NAV tiltak som utgjør 100% arbeid",
+    "uttaksplan.utsettelseårsak.jegskalhaferie": "Jeg skal ha ferie",
+    "uttaksplan.utsettelseårsak.jegskaljobbeheltid": "Jeg skal jobbe heltid",
+    "uttaksplan.utsettelseårsak.fri": "Fritt uttak"
 }

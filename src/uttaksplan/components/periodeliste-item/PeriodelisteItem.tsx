@@ -24,6 +24,7 @@ interface Props {
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];
     handleDeletePeriode: (periodeId: string) => void;
+    erFarEllerMedmor: boolean;
 }
 
 const renderPeriodeListeInnhold = (
@@ -35,7 +36,8 @@ const renderPeriodeListeInnhold = (
     annenForelder: AnnenForelder,
     toggleIsOpen: (id: string) => void,
     arbeidsforhold: Arbeidsforhold[],
-    handleDeletePeriode: (periodeId: string) => void
+    handleDeletePeriode: (periodeId: string) => void,
+    erFarEllerMedmor: boolean
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -55,7 +57,16 @@ const renderPeriodeListeInnhold = (
                 />
             );
         case Periodetype.Utsettelse:
-            return <PeriodeUtsettelseForm />;
+            return (
+                <PeriodeUtsettelseForm
+                    periode={periode}
+                    familiehendelsesdato={familiehendelsesdato}
+                    handleUpdatePeriode={handleUpdatePeriode}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    handleDeletePeriode={handleDeletePeriode}
+                    toggleIsOpen={toggleIsOpen}
+                />
+            );
         default:
             return <div>Whatever</div>;
     }
@@ -73,6 +84,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     annenForelder,
     arbeidsforhold,
     handleDeletePeriode,
+    erFarEllerMedmor,
 }) => {
     const bem = bemUtils('periodelisteItem');
 
@@ -99,7 +111,8 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     annenForelder,
                     toggleIsOpen,
                     arbeidsforhold,
-                    handleDeletePeriode
+                    handleDeletePeriode,
+                    erFarEllerMedmor
                 )}
             </EkspanderbartpanelBase>
         </article>

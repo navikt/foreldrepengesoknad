@@ -23,6 +23,7 @@ interface Props {
     arbeidsforhold: Arbeidsforhold[];
     handleDeletePeriode: (periodeId: string) => void;
     handleAddPeriode: (nyPeriode: Periode) => void;
+    erFarEllerMedmor: boolean;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -35,6 +36,7 @@ const Planlegger: FunctionComponent<Props> = ({
     arbeidsforhold,
     handleDeletePeriode,
     handleAddPeriode,
+    erFarEllerMedmor,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -60,6 +62,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 annenForelder={annenForelder}
                                 arbeidsforhold={arbeidsforhold}
                                 handleDeletePeriode={handleDeletePeriode}
+                                erFarEllerMedmor={erFarEllerMedmor}
                             />
                         </section>
                     </Block>
@@ -74,6 +77,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 navnPåForeldre={navnPåForeldre}
                                 stønadskontoer={stønadskontoer}
                                 handleAddPeriode={handleAddPeriode}
+                                erFarEllerMedmor={erFarEllerMedmor}
                             />
                         </div>
                     )}

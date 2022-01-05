@@ -145,6 +145,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     arbeidsforhold={arbeidsforhold}
                     handleDeletePeriode={handleDeletePeriode}
                     handleAddPeriode={handleAddPeriode}
+                    erFarEllerMedmor={erFarEllerMedmor}
                 />
             </Block>
         </>

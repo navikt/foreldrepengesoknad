@@ -140,7 +140,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Knapp type="hoved">
-                            <FormattedMessage id="gåVidere" />
+                            <FormattedMessage id="uttaksplan.gåVidere" />
                         </Knapp>
                     </Form.Form>
                 );

@@ -18,6 +18,7 @@ interface Props {
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];
     handleDeletePeriode: (periodeId: string) => void;
+    erFarEllerMedmor: boolean;
 }
 
 const Periodeliste: FunctionComponent<Props> = ({
@@ -29,6 +30,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     annenForelder,
     arbeidsforhold,
     handleDeletePeriode,
+    erFarEllerMedmor,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -57,6 +59,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                     annenForelder={annenForelder}
                     arbeidsforhold={arbeidsforhold}
                     handleDeletePeriode={handleDeletePeriode}
+                    erFarEllerMedmor={erFarEllerMedmor}
                 />
             ))}
         </div>

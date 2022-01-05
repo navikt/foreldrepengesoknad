@@ -1,20 +1,16 @@
 import React, { FunctionComponent } from 'react';
 import { useFormikContext } from 'formik';
-import { PeriodeUttakFormData, PeriodeUttakFormField } from '../periode-uttak-form/periodeUttakFormConfig';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { PeriodeUttakFormData } from '../periode-uttak-form/periodeUttakFormConfig';
+import { PeriodeUtsettelseFormData } from '../periode-utsettelse-form/periodeUtsettelseFormConfig';
 
 interface Props {
-    cleanup: (
-        values: PeriodeUttakFormData,
-        visibility: QuestionVisibility<PeriodeUttakFormField, undefined>
-    ) => PeriodeUttakFormData;
-    visibility: QuestionVisibility<PeriodeUttakFormField, undefined>;
+    cleanup: () => PeriodeUttakFormData | PeriodeUtsettelseFormData;
 }
 
-export const SubmitListener: FunctionComponent<Props> = ({ cleanup, visibility }) => {
-    const formik = useFormikContext<PeriodeUttakFormData>();
+export const SubmitListener: FunctionComponent<Props> = ({ cleanup }) => {
+    const formik = useFormikContext<PeriodeUttakFormData | PeriodeUtsettelseFormData>();
     const { isSubmitting, isValidating, values, submitForm, setValues } = formik;
-    const cleanedValues = cleanup(values, visibility);
+    const cleanedValues = cleanup();
     const [lastValues, updateState] = React.useState(cleanedValues);
 
     React.useEffect(() => {
