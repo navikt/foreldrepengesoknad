@@ -566,6 +566,8 @@
     "uttaksplan.stønadskontotype.undefined": "Ny periode uten kvote",
     "uttaksplan.periodetype.hull.tittel": "Ubrukt tidsperiode",
     "uttaksplan.periodetype.periodeUtenUttak.tittel": "Periode uten uttak",
+    "uttaksplan.periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
+    "uttaksplan.periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
     "uttaksplan.hvemSkalHaUttak": "Hvem skal ha foreldrepenger?",
     "uttaksplan.flerbarnsdager": "Ønsker du å benytte deg av flerbarnsdagene?",
     "uttaksplan.erMorForSyk": "Er mor for syk til å ta seg av barnet eller innlagt i helseinstitusjon?",
@@ -607,5 +609,16 @@
     "uttaksplan.utsettelseårsak.navtiltak": "NAV tiltak som utgjør 100% arbeid",
     "uttaksplan.utsettelseårsak.jegskalhaferie": "Jeg skal ha ferie",
     "uttaksplan.utsettelseårsak.jegskaljobbeheltid": "Jeg skal jobbe heltid",
-    "uttaksplan.utsettelseårsak.fri": "Fritt uttak"
+    "uttaksplan.utsettelseårsak.fri": "Fritt uttak",
+    "uttaksplan.veileder.trengerIkkeUtsettelse.del1": "Fra og med {dato} er det fritt uttak og du trenger ikke dokumentere hvorfor du ikke skal ta ut foreldrepenger.",
+    "uttaksplan.veileder.trengerIkkeUtsettelse.del2": "Utsettelser og opphold mellom perioder vil vises i din plan som periode uten uttak.",
+    "uttaksplan.veileder.trengerIkkeUtsettelse.del3": "Skal du ta ut ulønnet permisjon må du huske å avtale dette med din arbeidsgiver.",
+    "uttaksplan.utsettelsesårsak.ARBEID": "Arbeid",
+    "uttaksplan.utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt",
+    "uttaksplan.utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt",
+    "uttaksplan.utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",
+    "uttaksplan.utsettelsesårsak.SYKDOM": "Sykdom",
+    "uttaksplan.utsettelsesårsak.HV_OVELSE": "Øvelse eller tjeneste i Heimevernet",
+    "uttaksplan.utsettelsesårsak.NAV_TILTAK": "NAV tiltak som utgjør 100% arbeid",
+    "uttaksplan.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt"
 }

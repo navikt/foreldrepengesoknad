@@ -93,8 +93,8 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     ugyldigeTidsperioder={[]}
                                     onBekreft={(values) => {
                                         toggleVisTidsperiode();
-                                        setFieldValue(PeriodeUtsettelseFormField.fom, values.fom);
-                                        setFieldValue(PeriodeUtsettelseFormField.tom, values.tom);
+                                        setFieldValue(PeriodeUtsettelseFormField.fom, ISOStringToDate(values.fom));
+                                        setFieldValue(PeriodeUtsettelseFormField.tom, ISOStringToDate(values.tom));
                                     }}
                                     changeTidsperiode={(values) => {
                                         setFieldValue(PeriodeUtsettelseFormField.fom, values.fom);
@@ -109,6 +109,11 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 <UtsettelseÅrsakSpørsmål
                                     periodenErKunHelligdager={periodenErKunHelligdager}
                                     skalViseGamleUtsettelseÅrsaker={skalViseGamleUtsettelseÅrsaker}
+                                    erFarEllerMedmor={erFarEllerMedmor}
+                                    tidsperiodenErInnenforFørsteSeksUker={Tidsperioden(
+                                        tidsperiode
+                                    ).erInnenforFørsteSeksUker(familiehendelsesdato)}
+                                    familiehendelsesdato={familiehendelsesdato}
                                 />
                             </Block>
                             <Block

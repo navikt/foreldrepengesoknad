@@ -143,11 +143,11 @@ export const getPeriodeTittel = (intl: IntlShape, periode: Periode, navnPåForel
             return getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
         case Periodetype.Utsettelse:
             if (periode.årsak) {
-                return intlUtils(intl, 'periodeliste.utsettelsesårsak', {
-                    årsak: intlUtils(intl, `utsettelsesårsak.${periode.årsak}`),
+                return intlUtils(intl, 'uttaksplan.periodeliste.utsettelsesårsak', {
+                    årsak: intlUtils(intl, `uttaksplan.utsettelsesårsak.${periode.årsak}`),
                 });
             }
-            return intlUtils(intl, 'periodeliste.utsettelsesårsak.ukjent');
+            return intlUtils(intl, 'uttaksplan.periodeliste.utsettelsesårsak.ukjent');
         case Periodetype.Opphold:
             return getOppholdskontoNavn(
                 intl,

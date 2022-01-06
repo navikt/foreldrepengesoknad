@@ -1,7 +1,11 @@
-import { intlUtils } from '@navikt/fp-common';
+import { Block, formatDateExtended, intlUtils } from '@navikt/fp-common';
+import VeilederNormal from 'app/assets/VeilederNormal';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { RadioProps } from 'nav-frontend-skjema';
+import { Normaltekst } from 'nav-frontend-typografi';
+import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
-import { IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import {
     PeriodeUtsettelseFormComponents,
@@ -11,12 +15,17 @@ import {
 interface Props {
     periodenErKunHelligdager: boolean;
     skalViseGamleUtsettelseÅrsaker: boolean;
+    erFarEllerMedmor: boolean;
+    tidsperiodenErInnenforFørsteSeksUker: boolean;
+    familiehendelsesdato: Date;
 }
 
 const getUtsettelseÅrsakOptions = (
     intl: IntlShape,
     periodenErKunHelligdager: boolean,
-    skalViseGamleUtsettelseÅrsaker: boolean
+    skalViseGamleUtsettelseÅrsaker: boolean,
+    erFarEllerMedmor: boolean,
+    tidsperiodenErInnenforFørsteSeksUker: boolean
 ) => {
     const allRadios: RadioProps[] = [
         {
@@ -53,12 +62,20 @@ const getUtsettelseÅrsakOptions = (
     ];
 
     const defaultRadios = allRadios.filter((option) => {
-        if (skalViseGamleUtsettelseÅrsaker && option.value === UtsettelseÅrsakType.Fri) {
-            return false;
+        if (skalViseGamleUtsettelseÅrsaker) {
+            if (option.value === UtsettelseÅrsakType.Fri) {
+                return false;
+            }
+
+            return true;
         }
 
-        if (skalViseGamleUtsettelseÅrsaker) {
-            return true;
+        if (!skalViseGamleUtsettelseÅrsaker && !erFarEllerMedmor) {
+            if (tidsperiodenErInnenforFørsteSeksUker) {
+                return option.value === UtsettelseÅrsakType.Sykdom;
+            }
+
+            return false;
         }
 
         return option.value === UtsettelseÅrsakType.Sykdom || option.value === UtsettelseÅrsakType.Fri;
@@ -70,14 +87,51 @@ const getUtsettelseÅrsakOptions = (
 const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
     periodenErKunHelligdager,
     skalViseGamleUtsettelseÅrsaker,
+    erFarEllerMedmor,
+    tidsperiodenErInnenforFørsteSeksUker,
+    familiehendelsesdato,
 }) => {
     const intl = useIntl();
-    const årsakOptions = getUtsettelseÅrsakOptions(intl, periodenErKunHelligdager, skalViseGamleUtsettelseÅrsaker);
+    const årsakOptions = getUtsettelseÅrsakOptions(
+        intl,
+        periodenErKunHelligdager,
+        skalViseGamleUtsettelseÅrsaker,
+        erFarEllerMedmor,
+        tidsperiodenErInnenforFørsteSeksUker
+    );
+
+    if (årsakOptions.length === 0) {
+        return (
+            <Veilederpanel fargetema="normal" type="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                <Block padBottom="l">
+                    <Normaltekst>
+                        <b>
+                            <FormattedMessage
+                                id="uttaksplan.veileder.trengerIkkeUtsettelse.del1"
+                                values={{ dato: formatDateExtended(Uttaksdagen(familiehendelsesdato).leggTil(30)) }}
+                            />
+                        </b>
+                    </Normaltekst>
+                </Block>
+                <Block padBottom="l">
+                    <Normaltekst>
+                        <FormattedMessage id="uttaksplan.veileder.trengerIkkeUtsettelse.del2" />
+                    </Normaltekst>
+                </Block>
+                <Block padBottom="l">
+                    <Normaltekst>
+                        <FormattedMessage id="uttaksplan.veileder.trengerIkkeUtsettelse.del3" />
+                    </Normaltekst>
+                </Block>
+            </Veilederpanel>
+        );
+    }
 
     return (
         <PeriodeUtsettelseFormComponents.RadioPanelGroup
             name={PeriodeUtsettelseFormField.årsak}
             radios={årsakOptions}
+            useTwoColumns={true}
         />
     );
 };
