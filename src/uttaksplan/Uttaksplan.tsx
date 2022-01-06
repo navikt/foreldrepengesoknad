@@ -14,9 +14,10 @@ import { getUttaksstatusFunc } from './utils/uttaksstatus';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import updatePeriode from './builder/updatePeriode';
 import addPeriode from './builder/addPeriode';
+import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
-    situasjon: ForeldreparSituasjon;
+    foreldreSituasjon: ForeldreparSituasjon;
     forelderVedAleneomsorg: Forelder | undefined;
     erDeltUttak: boolean;
     uttaksplan: Periode[];
@@ -29,10 +30,12 @@ interface Props {
     erEndringssøknad: boolean;
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;
+    erAleneOmOmsorg: boolean;
+    situasjon: Situasjon;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
-    situasjon,
+    foreldreSituasjon,
     forelderVedAleneomsorg,
     erDeltUttak,
     uttaksplan,
@@ -45,6 +48,8 @@ const Uttaksplan: FunctionComponent<Props> = ({
     erEndringssøknad,
     erFarEllerMedmor,
     erFlerbarnssøknad,
+    erAleneOmOmsorg,
+    situasjon,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
 
@@ -129,7 +134,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         <>
             <Block padBottom="l">
                 <PlanleggerInfo
-                    situasjon={situasjon}
+                    foreldreSituasjon={foreldreSituasjon}
                     forelderVedAleneomsorg={forelderVedAleneomsorg}
                     erDeltUttak={erDeltUttak}
                 />
@@ -146,6 +151,10 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     handleDeletePeriode={handleDeletePeriode}
                     handleAddPeriode={handleAddPeriode}
                     erFarEllerMedmor={erFarEllerMedmor}
+                    erFlerbarnssøknad={erFlerbarnssøknad}
+                    erDeltUttak={erDeltUttak}
+                    erAleneOmOmsorg={erAleneOmOmsorg}
+                    situasjon={situasjon}
                 />
             </Block>
         </>

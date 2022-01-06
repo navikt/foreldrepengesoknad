@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UtsettelseEndreTidsperiodeSpørsmål from 'uttaksplan/components/utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
-import { Periode, Periodetype } from 'uttaksplan/types/Periode';
+import { Periode } from 'uttaksplan/types/Periode';
 import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
@@ -19,7 +19,6 @@ import {
 
 import './periodeUtsettelseForm.less';
 import { periodeUtsettelseFormQuestionsConfig } from './periodeUtsettelseFormQuestionsConfig';
-import AnnenForelder from 'app/context/types/AnnenForelder';
 import UtsettelseÅrsakSpørsmål from '../spørsmål/utsettelse-årsak/UtsettelseÅrsakSpørsmål';
 import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
@@ -65,19 +64,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
             initialValues={getPeriodeUtsettelseFormInitialValues()}
             onSubmit={(values) => handleUpdatePeriode(mapPeriodeUtsettelseFormToPeriode(values, id, erFarEllerMedmor))}
             renderForm={({ setFieldValue, values }) => {
-                const visibility = periodeUtsettelseFormQuestionsConfig.getVisbility({
-                    values,
-                    regelProps: {
-                        annenForelder: {} as AnnenForelder,
-                        erAleneOmOmsorg: false,
-                        erDeltUttak: true,
-                        erFarEllerMedmor: false,
-                        erFlerbarnssøknad: false,
-                        familiehendelsesdato,
-                        periodetype: Periodetype.Utsettelse,
-                        situasjon: 'fødsel',
-                    },
-                });
+                const visibility = periodeUtsettelseFormQuestionsConfig.getVisbility(values);
 
                 return (
                     <>

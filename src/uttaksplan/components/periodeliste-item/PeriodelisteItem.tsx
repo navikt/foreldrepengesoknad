@@ -2,6 +2,7 @@ import { bemUtils } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
+import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 import React, { FunctionComponent } from 'react';
@@ -25,6 +26,10 @@ interface Props {
     arbeidsforhold: Arbeidsforhold[];
     handleDeletePeriode: (periodeId: string) => void;
     erFarEllerMedmor: boolean;
+    erFlerbarnssøknad: boolean;
+    erAleneOmOmsorg: boolean;
+    erDeltUttak: boolean;
+    situasjon: Situasjon;
 }
 
 const renderPeriodeListeInnhold = (
@@ -37,7 +42,11 @@ const renderPeriodeListeInnhold = (
     toggleIsOpen: (id: string) => void,
     arbeidsforhold: Arbeidsforhold[],
     handleDeletePeriode: (periodeId: string) => void,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
+    erFlerbarnssøknad: boolean,
+    erAleneOmOmsorg: boolean,
+    erDeltUttak: boolean,
+    situasjon: Situasjon
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -54,6 +63,11 @@ const renderPeriodeListeInnhold = (
                     toggleIsOpen={toggleIsOpen}
                     arbeidsforhold={arbeidsforhold}
                     handleDeletePeriode={handleDeletePeriode}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    erFlerbarnssøknad={erFlerbarnssøknad}
+                    erAleneOmOmsorg={erAleneOmOmsorg}
+                    erDeltUttak={erDeltUttak}
+                    situasjon={situasjon}
                 />
             );
         case Periodetype.Utsettelse:
@@ -85,6 +99,10 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     arbeidsforhold,
     handleDeletePeriode,
     erFarEllerMedmor,
+    erFlerbarnssøknad,
+    erAleneOmOmsorg,
+    erDeltUttak,
+    situasjon,
 }) => {
     const bem = bemUtils('periodelisteItem');
 
@@ -112,7 +130,11 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     toggleIsOpen,
                     arbeidsforhold,
                     handleDeletePeriode,
-                    erFarEllerMedmor
+                    erFarEllerMedmor,
+                    erFlerbarnssøknad,
+                    erAleneOmOmsorg,
+                    erDeltUttak,
+                    situasjon
                 )}
             </EkspanderbartpanelBase>
         </article>

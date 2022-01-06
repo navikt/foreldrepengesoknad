@@ -35,6 +35,7 @@ import { FormattedMessage } from 'react-intl';
 import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
     periode: Periode;
@@ -43,6 +44,11 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];
+    erFarEllerMedmor: boolean;
+    erFlerbarnssøknad: boolean;
+    erAleneOmOmsorg: boolean;
+    erDeltUttak: boolean;
+    situasjon: Situasjon;
     handleUpdatePeriode: (periode: Periode) => void;
     handleAddPeriode?: (nyPeriode: Periode) => void;
     setNyPeriodeFormIsVisible?: Dispatch<React.SetStateAction<boolean>>;
@@ -97,6 +103,11 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     setNyPeriodeFormIsVisible,
     handleAddPeriode,
     isNyPeriode = false,
+    erFarEllerMedmor,
+    erFlerbarnssøknad,
+    erAleneOmOmsorg,
+    erDeltUttak,
+    situasjon,
 }) => {
     const { tidsperiode } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
@@ -133,13 +144,13 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     values,
                     regelProps: {
                         annenForelder,
-                        erAleneOmOmsorg: false,
-                        erDeltUttak: true,
-                        erFarEllerMedmor: false,
-                        erFlerbarnssøknad: false,
+                        erAleneOmOmsorg,
+                        erDeltUttak,
+                        erFarEllerMedmor,
+                        erFlerbarnssøknad,
                         familiehendelsesdato,
-                        periodetype: getPeriodeType(values.hvemSkalTaUttak, false, values.konto),
-                        situasjon: 'fødsel',
+                        periodetype: getPeriodeType(values.hvemSkalTaUttak, erFarEllerMedmor, values.konto),
+                        situasjon,
                     },
                 });
 

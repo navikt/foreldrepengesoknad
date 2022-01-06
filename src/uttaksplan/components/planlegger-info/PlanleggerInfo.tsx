@@ -10,12 +10,12 @@ import { useIntl } from 'react-intl';
 import './planleggerInfo.less';
 
 interface Props {
-    situasjon: ForeldreparSituasjon;
+    foreldreSituasjon: ForeldreparSituasjon;
     forelderVedAleneomsorg: Forelder | undefined;
     erDeltUttak: boolean;
 }
 
-const PlanleggerInfo: FunctionComponent<Props> = ({ situasjon, forelderVedAleneomsorg, erDeltUttak }) => {
+const PlanleggerInfo: FunctionComponent<Props> = ({ foreldreSituasjon, forelderVedAleneomsorg, erDeltUttak }) => {
     const intl = useIntl();
     const tittelKey = erDeltUttak ? 'eksisterendeSak.tittel.deltUttak' : 'eksisterendeSak.tittel.aleneomsorg';
 
@@ -24,7 +24,11 @@ const PlanleggerInfo: FunctionComponent<Props> = ({ situasjon, forelderVedAleneo
             <InnholdMedIllustrasjon
                 tittel={intlUtils(intl, tittelKey)}
                 illustrasjoner={[
-                    <SituasjonSirkel key="situasjon" situasjon={situasjon} valgtForelder={forelderVedAleneomsorg} />,
+                    <SituasjonSirkel
+                        key="situasjon"
+                        situasjon={foreldreSituasjon}
+                        valgtForelder={forelderVedAleneomsorg}
+                    />,
                     <UkerSirkel key="uker" uker={49} />,
                 ]}
             >

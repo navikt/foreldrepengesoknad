@@ -2,6 +2,7 @@ import { bemUtils, InfoBlock, intlUtils, Block } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
+import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -24,6 +25,10 @@ interface Props {
     handleDeletePeriode: (periodeId: string) => void;
     handleAddPeriode: (nyPeriode: Periode) => void;
     erFarEllerMedmor: boolean;
+    erFlerbarnssøknad: boolean;
+    erAleneOmOmsorg: boolean;
+    erDeltUttak: boolean;
+    situasjon: Situasjon;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -37,6 +42,10 @@ const Planlegger: FunctionComponent<Props> = ({
     handleDeletePeriode,
     handleAddPeriode,
     erFarEllerMedmor,
+    erFlerbarnssøknad,
+    erAleneOmOmsorg,
+    erDeltUttak,
+    situasjon,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -63,6 +72,10 @@ const Planlegger: FunctionComponent<Props> = ({
                                 arbeidsforhold={arbeidsforhold}
                                 handleDeletePeriode={handleDeletePeriode}
                                 erFarEllerMedmor={erFarEllerMedmor}
+                                erFlerbarnssøknad={erFlerbarnssøknad}
+                                erAleneOmOmsorg={erAleneOmOmsorg}
+                                erDeltUttak={erDeltUttak}
+                                situasjon={situasjon}
                             />
                         </section>
                     </Block>
@@ -78,6 +91,10 @@ const Planlegger: FunctionComponent<Props> = ({
                                 stønadskontoer={stønadskontoer}
                                 handleAddPeriode={handleAddPeriode}
                                 erFarEllerMedmor={erFarEllerMedmor}
+                                erFlerbarnssøknad={erFlerbarnssøknad}
+                                erAleneOmOmsorg={erAleneOmOmsorg}
+                                erDeltUttak={erDeltUttak}
+                                situasjon={situasjon}
                             />
                         </div>
                     )}

@@ -9,6 +9,7 @@ import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
 import { FormattedMessage } from 'react-intl';
+import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
     familiehendelsesdato: Date;
@@ -20,6 +21,10 @@ interface Props {
     isUtsettelse: boolean;
     handleAddPeriode: (nyPeriode: Periode) => void;
     erFarEllerMedmor: boolean;
+    erFlerbarnssøknad: boolean;
+    erAleneOmOmsorg: boolean;
+    erDeltUttak: boolean;
+    situasjon: Situasjon;
 }
 
 const NyPeriode: FunctionComponent<Props> = ({
@@ -32,6 +37,10 @@ const NyPeriode: FunctionComponent<Props> = ({
     familiehendelsesdato,
     handleAddPeriode,
     erFarEllerMedmor,
+    erFlerbarnssøknad,
+    erAleneOmOmsorg,
+    erDeltUttak,
+    situasjon,
 }) => {
     const [periode, setPeriode] = useState<Periode>({
         type: isUtsettelse ? Periodetype.Utsettelse : Periodetype.Uttak,
@@ -56,6 +65,11 @@ const NyPeriode: FunctionComponent<Props> = ({
                 stønadskontoer={stønadskontoer}
                 setNyPeriodeFormIsVisible={setNyPeriodeFormIsVisible}
                 isNyPeriode={true}
+                erFarEllerMedmor={erFarEllerMedmor}
+                erFlerbarnssøknad={erFlerbarnssøknad}
+                erAleneOmOmsorg={erAleneOmOmsorg}
+                erDeltUttak={erDeltUttak}
+                situasjon={situasjon}
             />
         </>
     ) : (

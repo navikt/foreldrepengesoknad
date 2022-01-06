@@ -43,11 +43,12 @@ const UttaksplanStep = () => {
 
     const { person, arbeidsforhold } = søkerinfo;
     const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad } = søknad;
+    const { erAleneOmOmsorg } = søker;
+    const { situasjon } = søkersituasjon;
 
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
     const erFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
-    const erAleneOmOmsorg = søker.erAleneOmOmsorg;
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const forelderVedAleneomsorg = erDeltUttak ? undefined : erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
@@ -56,7 +57,7 @@ const UttaksplanStep = () => {
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
     const erFlerbarnssøknad = parseInt(barn.antallBarn, 10) > 1;
 
-    const situasjon = getForeldreparSituasjon(
+    const foreldreSituasjon = getForeldreparSituasjon(
         person.kjønn,
         annenForelderKjønn,
         erDeltUttak,
@@ -103,7 +104,7 @@ const UttaksplanStep = () => {
             kompakt={true}
         >
             <Uttaksplan
-                situasjon={situasjon}
+                foreldreSituasjon={foreldreSituasjon}
                 forelderVedAleneomsorg={forelderVedAleneomsorg}
                 erDeltUttak={erDeltUttak}
                 uttaksplan={søknad.uttaksplan}
@@ -116,6 +117,8 @@ const UttaksplanStep = () => {
                 erEndringssøknad={erEndringssøknad}
                 erFarEllerMedmor={erFarEllerMedmor}
                 erFlerbarnssøknad={erFlerbarnssøknad}
+                erAleneOmOmsorg={erAleneOmOmsorg}
+                situasjon={situasjon}
             />
             <Block textAlignCenter={true}>
                 <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
