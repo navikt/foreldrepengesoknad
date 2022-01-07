@@ -15,6 +15,7 @@ import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import updatePeriode from './builder/updatePeriode';
 import addPeriode from './builder/addPeriode';
 import { Situasjon } from 'app/types/Situasjon';
+import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -155,6 +156,15 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     erDeltUttak={erDeltUttak}
                     erAleneOmOmsorg={erAleneOmOmsorg}
                     situasjon={situasjon}
+                />
+            </Block>
+            <Block padBottom="l">
+                <OversiktKvoter
+                    tilgjengeligeStønadskontoer={stønadskontoer}
+                    uttaksplan={uttaksplan}
+                    erDeltUttak={erDeltUttak}
+                    foreldreparSituasjon={foreldreSituasjon}
+                    familiehendelsesdato={familiehendelsesdatoDate}
                 />
             </Block>
         </>
