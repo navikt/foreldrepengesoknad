@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Henter informasjon fra issuet
         id: issue_comment
-        uses: actions/github-script@v5
+        uses: actions/github-script@v5.1.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -45,7 +45,7 @@ jobs:
 
       - name: Oppdater kommentar med deployment status ved feil
         if: failure()
-        uses: actions/github-script@v5
+        uses: actions/github-script@v5.1.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -59,7 +59,7 @@ jobs:
 
       - name: Oppdater kommentar med deployment status
         if: success()
-        uses: actions/github-script@v5
+        uses: actions/github-script@v5.1.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
