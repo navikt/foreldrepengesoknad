@@ -63,6 +63,15 @@ export const getEndringstidspunkt = (
                 endringstidspunktNyPlan = fom;
             }
 
+            if (opprinneligPeriodeMedSammeFom !== undefined) {
+                if (
+                    Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, false, true) &&
+                    Perioden(periode).slutterEtter(opprinneligPeriodeMedSammeFom.tidsperiode.tom)
+                ) {
+                    endringstidspunktNyPlan = fom;
+                }
+            }
+
             if (opprinneligPeriodeMedSammeFom !== undefined && updatedPlan.length - 1 === index) {
                 if (!Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, true, true)) {
                     endringstidspunktNyPlan = fom;

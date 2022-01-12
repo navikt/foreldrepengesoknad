@@ -247,7 +247,50 @@ describe('dateUtils', () => {
 
             expect(endringstidspunkt).toBe(nyPeriode.tidsperiode!.fom);
         });
-        it('Hvis endret periode er siste, har samme startdato som i opprinnelig plan men ulik sluttdato, skal endringstidspunkt være starten på perioden .', () => {
+        it('Hvis endrer en periode til å ha senere sluttdato fra opprinnelig plan, skal endringstidspunkt være starten på perioden .', () => {
+            const nyMidterstePeriode = {
+                id: opprinneligPlan[1].id,
+                tidsperiode: {
+                    fom: opprinneligPlan[1].tidsperiode!.fom,
+                    tom: new Date('2020-01-14T00:00:00.000Z'),
+                },
+                type: opprinneligPlan[1].type,
+            };
+            const nyEndretSistePeriode = {
+                ...opprinneligPlan[2],
+                tidsperiode: {
+                    fom: new Date('2020-01-15T00:00:00.000Z'),
+                    tom: new Date('2020-05-05T00:00:00.000Z'),
+                },
+            };
+            const endretPlan = [opprinneligPlan[0], nyMidterstePeriode, nyEndretSistePeriode];
+            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
+
+            expect(endringstidspunkt).toBe(opprinneligPlan[1].tidsperiode!.fom);
+        });
+
+        it('Hvis endrer en periode til å ha tidligere sluttdato fra opprinnelig plan, skal endringstidspunkt være starten på neste periode i den nye planen .', () => {
+            const nyMidterstePeriode = {
+                id: opprinneligPlan[1].id,
+                tidsperiode: {
+                    fom: opprinneligPlan[1].tidsperiode!.fom,
+                    tom: new Date('2020-01-08T00:00:00.000Z'),
+                },
+                type: opprinneligPlan[1].type,
+            };
+            const nyHullPeriode = {
+                ...opprinneligPlan[2],
+                tidsperiode: {
+                    fom: new Date('2020-01-09T00:00:00.000Z'),
+                    tom: new Date('2020-01-13T00:00:00.000Z'),
+                },
+            };
+            const endretPlan = [opprinneligPlan[0], nyMidterstePeriode, nyHullPeriode, opprinneligPlan[2]];
+            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
+
+            expect(endringstidspunkt).toBe(nyHullPeriode.tidsperiode.fom);
+        });
+        it('Hvis endret periode er siste i planen, har samme startdato som i opprinnelig plan men ulik sluttdato, skal endringstidspunkt være starten på perioden .', () => {
             const nySistePeriode = {
                 id: opprinneligPlan[2].id,
                 tidsperiode: {
