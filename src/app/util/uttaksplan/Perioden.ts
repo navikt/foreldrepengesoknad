@@ -17,6 +17,7 @@ export const Perioden = (periode: Periode) => ({
     inneholderFridager: () => Tidsperioden(periode.tidsperiode).getAntallFridager() > 0,
     starterFør: (dato: Date) => moment(periode.tidsperiode.fom).isBefore(dato, 'day'),
     slutterEtter: (dato: Date) => moment(periode.tidsperiode.tom).isAfter(dato, 'day'),
+    starterEtter: (dato: Date) => moment(periode.tidsperiode.fom).isAfter(dato, 'day'),
     slutterSammeDagEllerEtter: (dato: Date) => moment(periode.tidsperiode.tom).isSameOrAfter(dato, 'day'),
 });
 

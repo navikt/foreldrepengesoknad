@@ -46,53 +46,32 @@ export const getEndringstidspunkt = (
             if (endringstidspunktNyPlan) {
                 return endringstidspunktNyPlan;
             }
-
-            const { fom } = periode.tidsperiode;
+            const { fom, tom } = periode.tidsperiode;
             const opprinneligPeriodeMedSammeFom = opprinneligPlan.find((opprinneligPeriode) =>
                 moment(opprinneligPeriode.tidsperiode.fom).isSame(fom)
             );
 
-            if (
-                opprinneligPeriodeMedSammeFom !== undefined &&
-                !Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, false, true)
-            ) {
-                endringstidspunktNyPlan = fom;
-            }
-
-            if (opprinneligPeriodeMedSammeFom === undefined) {
-                endringstidspunktNyPlan = fom;
-            }
-
             if (opprinneligPeriodeMedSammeFom !== undefined) {
+                //Hvis forandringer i perioden (utenom tid), eller perioden har blitt forlenget, eller forandringer i siste periode (inkludert tid)
                 if (
-                    Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, false, true) &&
-                    Perioden(periode).slutterEtter(opprinneligPeriodeMedSammeFom.tidsperiode.tom)
+                    !Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, false, true) ||
+                    Perioden(periode).slutterEtter(opprinneligPeriodeMedSammeFom.tidsperiode.tom) ||
+                    (updatedPlan.length - 1 === index &&
+                        !Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, true, true))
                 ) {
                     endringstidspunktNyPlan = fom;
                 }
             }
+            if (opprinneligPeriodeMedSammeFom === undefined) {
+                endringstidspunktNyPlan = fom;
+            }
 
-            if (opprinneligPeriodeMedSammeFom !== undefined && updatedPlan.length - 1 === index) {
-                if (!Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, true, true)) {
-                    endringstidspunktNyPlan = fom;
+            //Sjekk om siste periode er blitt slettet
+            if (index === updatedPlan.length - 1) {
+                const senerePeriodeIOpprinneligPlan = opprinneligPlan.find((p) => Perioden(p).starterEtter(tom));
+                if (senerePeriodeIOpprinneligPlan) {
+                    endringstidspunktNyPlan = senerePeriodeIOpprinneligPlan.tidsperiode.fom;
                 }
-            }
-        });
-
-        opprinneligPlan.forEach((periode) => {
-            if (endringstidspunktOpprinneligPlan) {
-                return endringstidspunktOpprinneligPlan;
-            }
-
-            const { fom } = periode.tidsperiode;
-            const nyPeriodeMedSammeFom = updatedPlan.find((nyPeriode) => moment(nyPeriode.tidsperiode.fom).isSame(fom));
-
-            if (nyPeriodeMedSammeFom !== undefined && !Perioden(periode).erLik(nyPeriodeMedSammeFom, false, true)) {
-                endringstidspunktOpprinneligPlan = nyPeriodeMedSammeFom.tidsperiode.fom;
-            }
-
-            if (nyPeriodeMedSammeFom === undefined) {
-                endringstidspunktOpprinneligPlan = fom;
             }
         });
     } else {

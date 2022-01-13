@@ -149,8 +149,8 @@ describe('dateUtils', () => {
             const gradertPeriode: Partial<Uttaksperiode> = {
                 id: guid(),
                 tidsperiode: {
-                    fom: new Date('2019-05-05'),
-                    tom: new Date('2019-05-08'),
+                    fom: new Date('2020-05-05'),
+                    tom: new Date('2020-05-08'),
                 },
                 type: Periodetype.Uttak,
                 gradert: true,
