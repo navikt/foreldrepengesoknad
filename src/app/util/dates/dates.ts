@@ -40,13 +40,25 @@ export const getEndringstidspunkt = (
     }
 
     let endringstidspunktNyPlan: Date | undefined;
-    let endringstidspunktOpprinneligPlan: Date | undefined;
-    if (opprinneligPlan) {
+    if (opprinneligPlan && opprinneligPlan.length > 0) {
         updatedPlan.forEach((periode, index) => {
+            const { fom, tom } = periode.tidsperiode;
+
+            //Sjekk om første periode har fått senere startdato:
+            if (index === 0) {
+                const førstePeriodeIOpprinneligPlan = opprinneligPlan[0];
+                if (
+                    førstePeriodeIOpprinneligPlan &&
+                    moment(førstePeriodeIOpprinneligPlan.tidsperiode.fom).isBefore(fom)
+                ) {
+                    endringstidspunktNyPlan = førstePeriodeIOpprinneligPlan.tidsperiode.fom;
+                }
+            }
+
             if (endringstidspunktNyPlan) {
                 return endringstidspunktNyPlan;
             }
-            const { fom, tom } = periode.tidsperiode;
+
             const opprinneligPeriodeMedSammeFom = opprinneligPlan.find((opprinneligPeriode) =>
                 moment(opprinneligPeriode.tidsperiode.fom).isSame(fom)
             );
@@ -62,15 +74,22 @@ export const getEndringstidspunkt = (
                     endringstidspunktNyPlan = fom;
                 }
             }
+
             if (opprinneligPeriodeMedSammeFom === undefined) {
                 endringstidspunktNyPlan = fom;
             }
 
             //Sjekk om siste periode er blitt slettet
             if (index === updatedPlan.length - 1) {
-                const senerePeriodeIOpprinneligPlan = opprinneligPlan.find((p) => Perioden(p).starterEtter(tom));
-                if (senerePeriodeIOpprinneligPlan) {
-                    endringstidspunktNyPlan = senerePeriodeIOpprinneligPlan.tidsperiode.fom;
+                const slettetPeriodeIOpprinneligPlan = opprinneligPlan.find((p) => Perioden(p).starterEtter(tom));
+                if (slettetPeriodeIOpprinneligPlan) {
+                    const slettetPeriodeFom = slettetPeriodeIOpprinneligPlan.tidsperiode.fom;
+                    if (
+                        endringstidspunktNyPlan === undefined ||
+                        moment(endringstidspunktNyPlan).isAfter(moment(slettetPeriodeFom))
+                    ) {
+                        endringstidspunktNyPlan = slettetPeriodeFom;
+                    }
                 }
             }
         });
@@ -81,28 +100,7 @@ export const getEndringstidspunkt = (
         }
     }
 
-    return getOldestDate(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
-};
-
-const getOldestDate = (
-    endringstidspunktNyPlan: Date | undefined,
-    endringstidspunktOpprinneligPlan: Date | undefined
-): Date | undefined => {
-    if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan === undefined) {
-        return undefined;
-    }
-
-    if (endringstidspunktNyPlan !== undefined && endringstidspunktOpprinneligPlan === undefined) {
-        return endringstidspunktNyPlan;
-    }
-
-    if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan !== undefined) {
-        return endringstidspunktOpprinneligPlan;
-    }
-
-    return moment(endringstidspunktNyPlan).isSameOrBefore(moment(endringstidspunktOpprinneligPlan))
-        ? endringstidspunktNyPlan
-        : endringstidspunktOpprinneligPlan;
+    return endringstidspunktNyPlan;
 };
 
 export const getDateFromString = (dato?: string) => {
