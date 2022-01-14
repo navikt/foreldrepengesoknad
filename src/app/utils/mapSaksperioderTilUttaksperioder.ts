@@ -27,6 +27,7 @@ import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
 import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 import { convertTidsperiodeToTidsperiodeDate, getRelevantFamiliehendelseDato } from './dateUtils';
+import { UtsettelseÅrsakTypeDTO } from 'app/types/UtsettelseÅrsakTypeDTO';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;
@@ -113,6 +114,29 @@ const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor:
         return søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;
     }
     return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+};
+
+export const getUtsettelseÅrsakFromSaksperiode = (
+    årsak: UtsettelseÅrsakTypeDTO | undefined
+): UtsettelseÅrsakType | undefined => {
+    switch (årsak) {
+        case UtsettelseÅrsakTypeDTO.Arbeid:
+            return UtsettelseÅrsakType.Arbeid;
+        case UtsettelseÅrsakTypeDTO.Ferie:
+            return UtsettelseÅrsakType.Ferie;
+        case UtsettelseÅrsakTypeDTO.InstitusjonBarnet:
+            return UtsettelseÅrsakType.InstitusjonBarnet;
+        case UtsettelseÅrsakTypeDTO.InstitusjonSøker:
+            return UtsettelseÅrsakType.InstitusjonSøker;
+        case UtsettelseÅrsakTypeDTO.Sykdom:
+            return UtsettelseÅrsakType.Sykdom;
+        case UtsettelseÅrsakTypeDTO.HvØvelse:
+            return UtsettelseÅrsakType.HvØvelse;
+        case UtsettelseÅrsakTypeDTO.NavTiltak:
+            return UtsettelseÅrsakType.NavTiltak;
+        default:
+            return undefined;
+    }
 };
 
 const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsakType | undefined => {
@@ -220,7 +244,7 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, erFarElle
     const utsettelsesperiode: Utsettelsesperiode = {
         id: guid(),
         type: Periodetype.Utsettelse,
-        årsak: saksperiode.utsettelsePeriodeType!,
+        årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelsePeriodeType)!,
         tidsperiode: convertTidsperiodeToTidsperiodeDate(saksperiode.periode),
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         erArbeidstaker: false,
@@ -269,7 +293,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             type: Periodetype.Info,
             infotype: PeriodeInfoType.utsettelseAnnenPart,
             id: guid(),
-            årsak: saksperiode.utsettelsePeriodeType,
+            årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelsePeriodeType)!,
             tidsperiode: tidsperiodeDate,
             forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
             overskrives: true,
@@ -382,7 +406,7 @@ const gyldigeSaksperioder = (saksperiode: Saksperiode): boolean => {
     if (
         saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT &&
         saksperiode.utsettelsePeriodeType !== undefined &&
-        saksperiode.utsettelsePeriodeType === UtsettelseÅrsakType.InstitusjonBarnet
+        saksperiode.utsettelsePeriodeType === UtsettelseÅrsakTypeDTO.InstitusjonBarnet
     ) {
         return true;
     }

@@ -4,8 +4,8 @@ import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { ArbeidsgiverInfo } from './ArbeidsgiverInfo';
+import { UtsettelseÅrsakTypeDTO } from './UtsettelseÅrsakTypeDTO';
 import { UttakArbeidType } from './UttakArbeidType';
 
 export interface SaksperiodeDTO {
@@ -26,5 +26,5 @@ export interface SaksperiodeDTO {
     trekkDager: number;
     utbetalingsprosent: number;
     uttakArbeidType: UttakArbeidType[];
-    utsettelsePeriodeType?: UtsettelseÅrsakType;
+    utsettelsePeriodeType?: UtsettelseÅrsakTypeDTO;
 }
