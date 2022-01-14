@@ -7,6 +7,7 @@ export const initialValues: PeriodeUtsettelseFormData = {
     [PeriodeUtsettelseFormField.fom]: undefined,
     [PeriodeUtsettelseFormField.tom]: undefined,
     [PeriodeUtsettelseFormField.årsak]: '',
+    [PeriodeUtsettelseFormField.vedlegg]: [],
 };
 
 export const getPeriodeUtsettelseFormInitialValues = (): PeriodeUtsettelseFormData => {

@@ -17,6 +17,11 @@ const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormData, Per
         isIncluded: () => true,
         visibilityFilter: ({ fom, tom }) => isValidTidsperiode({ fom, tom }),
     },
+    [PeriodeUtsettelseFormField.vedlegg]: {
+        isAnswered: () => true,
+        isIncluded: ({ årsak }) => hasValue(årsak),
+        visibilityFilter: ({ årsak }) => hasValue(årsak),
+    },
 };
 
 export const periodeUtsettelseFormQuestionsConfig = Questions<PeriodeUtsettelseFormData, PeriodeUtsettelseFormField>(

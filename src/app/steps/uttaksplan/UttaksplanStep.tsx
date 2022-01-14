@@ -3,7 +3,7 @@ import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import Uttaksplan from 'uttaksplan/Uttaksplan';
@@ -29,6 +29,7 @@ import getStønadskontoParams from 'app/api/getStønadskontoParams';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
+import useDebounce from 'app/utils/hooks/useDebounce';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -36,7 +37,7 @@ const UttaksplanStep = () => {
     const onValidSubmitHandler = () => [];
     const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTENLANDSOPPHOLD);
     const onAvbrytSøknad = useAvbrytSøknad();
-    const { dispatch } = useForeldrepengesøknadContext();
+    const { dispatch, state } = useForeldrepengesøknadContext();
 
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
@@ -45,6 +46,11 @@ const UttaksplanStep = () => {
     const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad } = søknad;
     const { erAleneOmOmsorg } = søker;
     const { situasjon } = søkersituasjon;
+    const debouncedState = useDebounce(state, 3000);
+
+    useEffect(() => {
+        Api.storeAppState(debouncedState, person.fnr);
+    }, [person.fnr, debouncedState]);
 
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
