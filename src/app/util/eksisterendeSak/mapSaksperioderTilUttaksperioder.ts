@@ -28,6 +28,7 @@ import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
 import moment from 'moment';
 import { finnOgSettInnHull } from '../uttaksplan/builder/UttaksplanBuilder';
 import { førsteOktober2021ReglerGjelder } from '../dates/dates';
+import { OppholdsÅrsak } from 'app/api/types/uttaksplanDTO';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;
@@ -316,6 +317,26 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
     return undefined;
 };
 
+const erOppholdsPeriodeEgentligOverføring = (saksperiode: Saksperiode, søkerErFarEllerMedmor: boolean): boolean => {
+    if (
+        søkerErFarEllerMedmor &&
+        saksperiode.oppholdAarsak === OppholdsÅrsak.UTTAK_MØDREKVOTE_ANNEN_FORELDER &&
+        saksperiode.angittAvAnnenPart
+    ) {
+        return true;
+    }
+
+    if (
+        !søkerErFarEllerMedmor &&
+        saksperiode.oppholdAarsak === OppholdsÅrsak.UTTAK_FEDREKVOTE_ANNEN_FORELDER &&
+        saksperiode.angittAvAnnenPart
+    ) {
+        return true;
+    }
+
+    return false;
+};
+
 const mapOverføringsperiodeFromSaksperiode = (saksperiode: Saksperiode, grunnlag: Saksgrunnlag): Overføringsperiode => {
     return {
         id: guid(),
@@ -347,7 +368,10 @@ const mapPeriodeFromSaksperiode = (
     ) {
         return mapUtsettelseperiodeFromSaksperiode(saksperiode, grunnlag);
     }
-    if (saksperiode.overfoeringAarsak !== undefined) {
+    if (
+        saksperiode.overfoeringAarsak !== undefined ||
+        erOppholdsPeriodeEgentligOverføring(saksperiode, grunnlag.søkerErFarEllerMedmor)
+    ) {
         return mapOverføringsperiodeFromSaksperiode(saksperiode, grunnlag);
     }
     return mapUttaksperiodeFromSaksperiode(saksperiode, grunnlag, innvilgedePerioder);
