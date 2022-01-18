@@ -1,3 +1,4 @@
+import { OppholdsÅrsak } from 'app/api/types/uttaksplanDTO';
 import { Dekningsgrad, Tidsperiode } from 'common/types';
 import {
     StønadskontoType,
@@ -75,6 +76,7 @@ export interface Saksperiode {
     morsAktivitetIPerioden?: MorsAktivitet;
     overfoeringAarsak?: OverføringÅrsakType;
     angittAvAnnenPart?: boolean;
+    oppholdAarsak?: OppholdsÅrsak;
 }
 
 export interface EksisterendeSak {
