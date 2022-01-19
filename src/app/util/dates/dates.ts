@@ -52,11 +52,15 @@ export const getEndringstidspunkt = (
                 moment(opprinneligPeriode.tidsperiode.fom).isSame(fom)
             );
 
-            if (
-                opprinneligPeriodeMedSammeFom !== undefined &&
-                !Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, false, true)
-            ) {
-                endringstidspunktNyPlan = fom;
+            if (opprinneligPeriodeMedSammeFom !== undefined) {
+                const perioderErLikeUtenTidSjekk = Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, false, true);
+                if (
+                    !perioderErLikeUtenTidSjekk ||
+                    (perioderErLikeUtenTidSjekk &&
+                        Perioden(periode).slutterEtter(opprinneligPeriodeMedSammeFom.tidsperiode.tom))
+                ) {
+                    endringstidspunktNyPlan = fom;
+                }
             }
 
             if (opprinneligPeriodeMedSammeFom === undefined) {
