@@ -39,9 +39,9 @@ export const numberHasValue = (num: string): boolean => {
     return true;
 };
 
-const numberRegExp = RegExp(/^[0-9,.\s]*$/);
+const numberRegExp = RegExp(/^[-]?[0-9,.\s]*$/);
 
-const trimNumberValue = (value: string): string => {
+export const trimNumberValue = (value: string): string => {
     return value.replace(/,/g, '.').replace(/\s/g, '');
 };
 

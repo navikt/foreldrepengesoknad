@@ -3,22 +3,15 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { RadioPanelProps } from 'nav-frontend-skjema';
 import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsform } from 'uttaksplan/types/Periode';
+import { prosentValideringGradering } from 'uttaksplan/utils/prosentValidering';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 
 interface Props {
     graderingsprosentVisible: boolean;
     arbeidsforhold: Arbeidsforhold[];
 }
-
-const validateGraderingsProsent = (intl: IntlShape) => (value: string) => {
-    if (parseInt(value, 10) >= 100 || parseInt(value, 10) <= 0) {
-        return intlUtils(intl, 'uttaksplan.validering.stillingsprosent');
-    }
-
-    return undefined;
-};
 
 const getArbeidsOptions = (arbeidsforhold: Arbeidsforhold[]): RadioPanelProps[] => {
     const defaultOptions: RadioPanelProps[] = [
@@ -65,7 +58,7 @@ const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({ graderingsprosent
                         </UtvidetInformasjon>
                     }
                     maxLength={4}
-                    validate={validateGraderingsProsent(intl)}
+                    validate={prosentValideringGradering(intl)}
                 />
             </Block>
             <Block visible={graderingsprosentVisible}>

@@ -7,6 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
 import links from 'app/links/links';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
+import { prosentValideringSamtidigUttak } from 'uttaksplan/utils/prosentValidering';
 
 interface Props {
     erFlerbarnssøknad: boolean;
@@ -56,6 +57,7 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
                     name={PeriodeUttakFormField.samtidigUttakProsent}
                     label={intlUtils(intl, 'uttaksplan.samtidigUttakProsent')}
                     maxLength={4}
+                    validate={prosentValideringSamtidigUttak(intl)}
                 />
             </Block>
         </>

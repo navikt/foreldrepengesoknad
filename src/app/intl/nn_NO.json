@@ -628,5 +628,13 @@
     "uttaksplan.utsettelsesårsak.SYKDOM": "Sykdom",
     "uttaksplan.utsettelsesårsak.HV_OVELSE": "Øvelse eller tjeneste i Heimevernet",
     "uttaksplan.utsettelsesårsak.NAV_TILTAK": "NAV tiltak som utgjør 100% arbeid",
-    "uttaksplan.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt"
+    "uttaksplan.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
+    "uttaksplan.validering.samtidigUttaksprosent.required": "Du må oppgi hvor mange prosent med foreldrepenger du skal ta ut",
+    "uttaksplan.validering.samtidigUttaksprosent.måVæreEtTall": "Prosent med foreldrepenger må være et tall",
+    "uttaksplan.validering.samtidigUttaksprosent.måVæreStørreEnn0": "Prosent med foreldrepenger må være et tall større enn 0",
+    "uttaksplan.validering.samtidigUttaksprosent.måVæreMindreEnn100": "Prosent med foreldrepenger kan ikke være mer enn 100",
+    "uttaksplan.validering.stillingsprosent.required": "Du må oppgi stillingsprosenten du skal jobbe",
+    "uttaksplan.validering.stillingsprosent.måVæreEtTall": "Stillingsprosenten må være et tall",
+    "uttaksplan.validering.stillingsprosent.måVæreStørreEnn0": "Stillingsprosenten må være et tall større enn 0",
+    "uttaksplan.validering.stillingsprosent.måVæreMindreEnn100": "Stillingsprosenten kan ikke være mer enn 100"
 }

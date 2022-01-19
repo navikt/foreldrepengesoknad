@@ -3,6 +3,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Forelder } from 'app/types/Forelder';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import { trimNumberValue } from 'app/utils/numberUtils';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import {
@@ -211,10 +212,12 @@ export const mapPeriodeUttakFormToPeriode = (
         gradert: convertYesOrNoOrUndefinedToBoolean(values.skalHaGradering),
         harIkkeAktivitetskrav: values.konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
         orgnumre: getOrgnummer(values.arbeidsformer || []),
-        stillingsprosent: hasValue(values.stillingsprosent) ? values.stillingsprosent : undefined,
+        stillingsprosent: hasValue(values.stillingsprosent) ? trimNumberValue(values.stillingsprosent!) : undefined,
         ønskerFlerbarnsdager: convertYesOrNoOrUndefinedToBoolean(values.ønskerFlerbarnsdager),
         ønskerSamtidigUttak: convertYesOrNoOrUndefinedToBoolean(values.samtidigUttak),
-        samtidigUttakProsent: hasValue(values.samtidigUttakProsent) ? values.samtidigUttakProsent : undefined,
+        samtidigUttakProsent: hasValue(values.samtidigUttakProsent)
+            ? trimNumberValue(values.samtidigUttakProsent!)
+            : undefined,
     };
 
     return periode;
