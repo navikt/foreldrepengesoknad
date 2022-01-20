@@ -11,6 +11,7 @@ import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/utt
 import { DatepickerDateRange } from 'nav-datovelger';
 import { validateErAnnenStartdatoAdopsjonGyldig } from './validation/morFarAdopsjonValidering';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
+import { assertUnreachable } from 'app/utils/globalUtil';
 
 export const finnStartdatoAdopsjon = (
     startdatoAdopsjonValg: AdopsjonStartdatoValg,
@@ -18,13 +19,16 @@ export const finnStartdatoAdopsjon = (
     adopsjonsdato?: string,
     ankomstdato?: string
 ): string => {
-    if (startdatoAdopsjonValg === AdopsjonStartdatoValg.ANKOMST) {
-        return ankomstdato!;
+    switch (startdatoAdopsjonValg) {
+        case AdopsjonStartdatoValg.ANKOMST:
+            return ankomstdato!;
+        case AdopsjonStartdatoValg.OMSORGSOVERTAKELSE:
+            return adopsjonsdato!;
+        case AdopsjonStartdatoValg.ANNEN:
+            return annenStartdatoAdopsjon!;
+        default:
+            return assertUnreachable(startdatoAdopsjonValg, 'Startdato for adopsjon er ikke valgt');
     }
-    if (startdatoAdopsjonValg === AdopsjonStartdatoValg.OMSORGSOVERTAKELSE) {
-        return adopsjonsdato!;
-    }
-    return annenStartdatoAdopsjon!;
 };
 
 const konverterStringTilDate = (invalidDateRanges?: DatepickerDateRange[]): DateRange[] | undefined => {

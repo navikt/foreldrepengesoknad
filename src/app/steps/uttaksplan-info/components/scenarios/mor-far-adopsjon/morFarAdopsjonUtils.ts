@@ -2,8 +2,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { assertUnreachable } from 'app/utils/globalUtil';
-import AdopsjonStartdatoValg, { finnEnum } from './adopsjonStartdatoValg';
+import { finnEnum } from './adopsjonStartdatoValg';
 import { MorFarAdopsjonFormData, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
 
 const initialMorFarAdopsjonValues: MorFarAdopsjonFormData = {
@@ -16,19 +15,6 @@ const initialMorFarAdopsjonValues: MorFarAdopsjonFormData = {
     [MorFarAdopsjonFormField.antallUkerFellesperiode]: '0',
     [MorFarAdopsjonFormField.antallDagerFellesperiode]: '0',
     [MorFarAdopsjonFormField.fellesperiodeukerMor]: undefined,
-};
-
-export const getValgtStartdatoForAdopsjon = (adopsjonStartdatoValg: AdopsjonStartdatoValg) => {
-    switch (adopsjonStartdatoValg) {
-        case AdopsjonStartdatoValg.ANKOMST:
-            return '';
-        case AdopsjonStartdatoValg.OMSORGSOVERTAKELSE:
-            return '';
-        case AdopsjonStartdatoValg.ANNEN:
-            return '';
-        default:
-            return assertUnreachable(adopsjonStartdatoValg, 'Startdato for adopsjon er ikke valgt');
-    }
 };
 
 export const mapMorFarAdopsjonFormToState = (values: Partial<MorFarAdopsjonFormData>): MorFarAdopsjonUttaksplanInfo => {
