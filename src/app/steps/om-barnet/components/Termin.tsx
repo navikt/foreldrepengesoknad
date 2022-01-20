@@ -1,4 +1,4 @@
-import { attenUkerTreDager, Block, date21DaysAgo, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { attenUkerTreDager, Block, date21DaysAgo, dateToday, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import VeilederNormal from 'app/assets/VeilederNormal';
@@ -10,7 +10,7 @@ import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
-import { validateTermindato } from '../validation/omBarnetValidering';
+import { validateTerminbekreftelse, validateTermindato } from '../validation/omBarnetValidering';
 
 interface Props {
     søkersituasjon: Søkersituasjon;
@@ -96,6 +96,8 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                     name={OmBarnetFormField.terminbekreftelsedato}
                     label={intlUtils(intl, 'omBarnet.terminbekreftelseDato')}
                     placeholder={'dd.mm.åååå'}
+                    validate={validateTerminbekreftelse(intl)}
+                    maxDate={dateToday}
                 />
             </Block>
         </>

@@ -111,3 +111,17 @@ export const validateAnkomstdato = (intl: IntlShape) => (ankomstdato: string, f�
         return intlUtils(intl, 'valideringsfeil.omBarnet.ankomstDato.førFødselsdato');
     }
 };
+
+export const validateTerminbekreftelse = (intl: IntlShape) => (terminbekreftelseDato: string) => {
+    if (!hasValue(terminbekreftelseDato)) {
+        return intlUtils(intl, 'valideringsfeil.omBarnet.terminbekreftelseDato.duMåOppgi');
+    }
+
+    if (!isISODateString(terminbekreftelseDato)) {
+        return intlUtils(intl, 'valideringsfeil.omBarnet.terminbekreftelseDato.ugyldigDatoFormat');
+    }
+
+    if (dayjs().isBefore(dayjs(terminbekreftelseDato))) {
+        return intlUtils(intl, 'valideringsfeil.omBarnet.terminbekreftelseDato.kanIkkeVæreFremITid');
+    }
+};

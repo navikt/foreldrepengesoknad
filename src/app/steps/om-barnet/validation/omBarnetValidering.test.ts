@@ -5,6 +5,7 @@ import {
     validateAnkomstdato,
     validateFødselsdato,
     validateFødselsdatoAdopsjon,
+    validateTerminbekreftelse,
     validateTermindato,
     validateTermindatoFødsel,
 } from './omBarnetValidering';
@@ -36,42 +37,42 @@ describe('omBarnetValidering', () => {
         expect(resultat).toBeUndefined();
     });
 
-    it('skal feile fødsel&adopsjonsvalidering når fødselsdato ikke er oppgitt', () => {
+    it('skal feile fødsel & adopsjonsvalidering når fødselsdato ikke er oppgitt', () => {
         const fødselsdato = undefined;
         const adopsjonsdato = undefined;
         const resultat = validateFødselsdatoAdopsjon(intlMock)(fødselsdato!, adopsjonsdato!);
         expect(resultat).toBe('Du må oppgi fødselsdato');
     });
 
-    it('skal feile fødsel&adopsjonsvalidering når fødselsdato ikke er en gyldig dato', () => {
+    it('skal feile fødsel & adopsjonsvalidering når fødselsdato ikke er en gyldig dato', () => {
         const fødselsdato = '202-01-01';
         const adopsjonsdato = undefined;
         const resultat = validateFødselsdatoAdopsjon(intlMock)(fødselsdato, adopsjonsdato!);
         expect(resultat).toBe('Fødselsdato må være en gyldig dato på formatet dd.mm.åååå');
     });
 
-    it('skal feile fødsel&adopsjonsvalidering når fødselsdato er etter dagens dato', () => {
+    it('skal feile fødsel & adopsjonsvalidering når fødselsdato er etter dagens dato', () => {
         const fødselsdato = '2060-01-01';
         const adopsjonsdato = undefined;
         const resultat = validateFødselsdatoAdopsjon(intlMock)(fødselsdato, adopsjonsdato!);
         expect(resultat).toBe('Fødselsdato må være i dag eller tidligere');
     });
 
-    it('skal feile fødsel&adopsjonsvalidering når adopsjonsdato er før fødselsdato', () => {
+    it('skal feile fødsel & adopsjonsvalidering når adopsjonsdato er før fødselsdato', () => {
         const fødselsdato = '2021-01-01';
         const adopsjonsdato = '2020-12-12';
         const resultat = validateFødselsdatoAdopsjon(intlMock)(fødselsdato, adopsjonsdato!);
         expect(resultat).toBe('Fødselsdato må være før adopsjonsdato');
     });
 
-    it('skal feile fødsel&adopsjonsvalidering når barnet er over 15 år på adopsjonsdato', () => {
+    it('skal feile fødsel & adopsjonsvalidering når barnet er over 15 år på adopsjonsdato', () => {
         const fødselsdato = '2004-01-01';
         const adopsjonsdato = '2020-12-12';
         const resultat = validateFødselsdatoAdopsjon(intlMock)(fødselsdato, adopsjonsdato!);
         expect(resultat).toBe('Du kan ikke søke om foreldrepenger for barn som er eldre enn 15 år');
     });
 
-    it('skal ikke feile fødsel&adopsjonsvalidering når fødselsdato og adopsjonsdato er gyldige', () => {
+    it('skal ikke feile fødsel & adopsjonsvalidering når fødselsdato og adopsjonsdato er gyldige', () => {
         const fødselsdato = '2020-01-01';
         const adopsjonsdato = '2020-01-01';
         const resultat = validateFødselsdatoAdopsjon(intlMock)(fødselsdato, adopsjonsdato);
@@ -176,5 +177,38 @@ describe('omBarnetValidering', () => {
         const fødselsdato = '2021-01-01';
         const resultat = validateAnkomstdato(intlMock)(ankomstdato, fødselsdato);
         expect(resultat).toBeUndefined();
+    });
+
+    it('skal feile hvis terminbekreftelsedato ikke er satt', () => {
+        const terminbekreftelseDato = '';
+
+        const resultat = validateTerminbekreftelse(intlMock)(terminbekreftelseDato);
+        expect(resultat).toBe('Dato på terminbekreftelsedato må fylles ut');
+    });
+
+    it('skal feile hvis terminbekreftelsedato er en ugyldig dato', () => {
+        let terminbekreftelseDato = '12.01.202a'; // ugyldig dato blir ikke parset til formatet YYYY-MM-DD
+
+        const resultat = validateTerminbekreftelse(intlMock)(terminbekreftelseDato);
+        expect(resultat).toBe('Dato på terminbekreftelse må være en gyldig dato på formatet dd.mm.åååå');
+
+        terminbekreftelseDato = '30.30.2021'; // ugyldig dato blir ikke parset til formatet YYYY-MM-DD
+
+        const resultat2 = validateTerminbekreftelse(intlMock)(terminbekreftelseDato);
+        expect(resultat2).toBe('Dato på terminbekreftelse må være en gyldig dato på formatet dd.mm.åååå');
+    });
+
+    it('skal feile hvis terminbekreftelsedato er i fremtiden', () => {
+        const terminbekreftelseDato = dayjs().add(1, 'day').format('YYYY-MM-DD');
+
+        const resultat = validateTerminbekreftelse(intlMock)(terminbekreftelseDato);
+        expect(resultat).toBe('Dato på terminbekreftelse kan ikke være frem i tid');
+    });
+
+    it('skal ikke feile dersom terminbekreftelsedato er gyldig', () => {
+        const terminbekreftelseDato = dayjs().format('YYYY-MM-DD');
+
+        const resultat = validateTerminbekreftelse(intlMock)(terminbekreftelseDato);
+        expect(resultat).toBe(undefined);
     });
 });
