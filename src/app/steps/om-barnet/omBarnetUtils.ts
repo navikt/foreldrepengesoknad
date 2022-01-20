@@ -168,6 +168,7 @@ export const getOmBarnetInitialValues = (barn: Barn, registrerteBarn: Registrert
             terminbekreftelsedato: barn.terminbekreftelsedato || '',
             termindato: barn.termindato,
             antallBarn: barn.antallBarn,
+            gjelderAnnetBarn: true,
         };
     }
 
