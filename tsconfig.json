@@ -19,7 +19,6 @@
         "sourceMap": true,
         "skipLibCheck": true,
         "strict": true,
-        "strictNullChecks": true,
         "suppressImplicitAnyIndexErrors": true,
         "target": "ESNext",
         "typeRoots": ["./node_modules/@types", "./src/@types"]
