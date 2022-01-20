@@ -1,4 +1,4 @@
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block, dateToday, intlUtils } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FrilansOppdrag } from 'app/context/types/Frilans';
@@ -74,6 +74,7 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                             name={InntektsinformasjonFormField.frilansOppstartsDato}
                             label={intlUtils(intl, 'inntektsinformasjon.frilans.oppstart')}
                             validate={validateFrilansoppstartsDato(intl)}
+                            maxDate={dateToday}
                         />
                     </Block>
                     <Block

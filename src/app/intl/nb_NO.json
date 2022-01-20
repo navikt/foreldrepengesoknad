@@ -521,6 +521,7 @@
     "valideringsfeil.fødselsnummer.ugyldigFødselsnummer": "Du må skrive et gyldig fødselsnummer",
     "valideringsfeil.inntektsinformasjon.frilansoppstartsDato.påkrevd": "Du må oppgi oppstartsdato for når du startet som frilans",
     "valideringsfeil.inntektsinformasjon.frilansoppstartsDato.ugyldigDatoFormat": "Oppstartsdato for når du startet som frilans må være en gyldig dato på formatet dd.mm.åååå",
+    "valideringsfeil.inntektsinformasjon.frilansoppstartsDato.kanIkkeVæreFremITid": "Oppstartsdato for når du startet som frilans kan ikke være frem i tid",
     "valideringsfeil.inntektsinformasjon.frilansoppdrag.fom.påkrevd": "Du må oppgi en fra og med dato",
     "valideringsfeil.inntektsinformasjon.frilansoppdrag.fom.ugyldigDatoFormat": "Fra og med dato må være en gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.inntektsinformasjon.frilansoppdrag.fom.erIFremtiden": "Fra og med dato må være før eller lik dagens dato",
