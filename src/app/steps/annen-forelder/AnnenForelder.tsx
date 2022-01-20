@@ -110,7 +110,7 @@ const AnnenForelder = () => {
                                     kanIkkeOppgis={formValues.kanIkkeOppgis}
                                     visibility={visibility}
                                     gjelderAdopsjon={false}
-                                    søkersFødselsnummer={'søkersFødselsnummer'}
+                                    søkersFødselsnummer={søkerinfo.person.fnr}
                                 />
                             )}
                             {registrertBarn !== undefined && registrertBarn.annenForelder && (
