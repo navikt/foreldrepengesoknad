@@ -38,6 +38,9 @@ import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
+import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -55,6 +58,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         barn,
         søker: { erAleneOmOmsorg },
         dekningsgrad,
+        erEndringssøknad,
     } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
@@ -66,38 +70,50 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepenger !== undefined
         : false;
+    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
 
     const shouldRender =
         erAdopsjon && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelder.kanIkkeOppgis || søkerErAleneOmOmsorg);
 
     const onValidSubmitHandler = (values: Partial<MorFarAdopsjonFormData>) => {
         const submissionValues = mapMorFarAdopsjonFormToState(values);
+        const barnAdopsjonsdato = isAdoptertBarn(barn) ? barn.adopsjonsdato : undefined;
+
+        const startdato = finnStartdatoAdopsjon(
+            values.startdatoAdopsjonValg!,
+            values.annenStartdatoAdopsjon,
+            barnAdopsjonsdato,
+            ankomstdato
+        );
 
         return [
             actionCreator.setUttaksplanInfo(submissionValues),
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
-            // actionCreator.lagUttaksplanforslag(
-            //     lagUttaksplan({
-            //         annenForelderErUfør: erMorUfør,
-            //         erDeltUttak: true,
-            //         erEndringssøknad: false,
-            //         erEnkelEndringssøknad: false,
-            //         familiehendelsesdato: familiehendelsesdatoDate!,
-            //         førsteUttaksdagEtterSeksUker: Uttaksdagen(familiehendelsesdatoDate!).leggTil(30),
-            //         situasjon: søkersituasjon.situasjon,
-            //         søkerErFarEllerMedmor: erFarEllerMedmor,
-            //         søkerHarMidlertidigOmsorg: false,
-            //         tilgjengeligeStønadskontoer:
-            //             tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
-            //         uttaksplanSkjema: {
-            //             fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
-            //             startdatoPermisjon: submissionValues.annenStartdatoAdopsjon,
-            //             antallDagerFellesperiodeFarMedmor: submissionValues.antallDagerFellesperiode,
-            //             antallUkerFellesperiodeFarMedmor: submissionValues.antallDagerFellesperiode,
-            //             begrunnelseForUtsettelse: submissionValues.
-            //         },
-            //     })
-            // ),
+            actionCreator.lagUttaksplanforslag(
+                lagUttaksplan({
+                    annenForelderErUfør: erMorUfør,
+                    erDeltUttak: true,
+                    erEndringssøknad,
+                    erEnkelEndringssøknad: erEndringssøknad,
+                    familiehendelsesdato: ISOStringToDate(familiehendelsesdato)!,
+                    førsteUttaksdagEtterSeksUker: Uttaksdagen(ISOStringToDate(familiehendelsesdato)!).leggTil(30),
+                    situasjon: søkersituasjon.situasjon,
+                    søkerErFarEllerMedmor: erFarEllerMedmor,
+                    søkerHarMidlertidigOmsorg: false,
+                    tilgjengeligeStønadskontoer:
+                        tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+                    uttaksplanSkjema: {
+                        fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
+                        startdatoPermisjon: startdato,
+                        antallDagerFellesperiodeFarMedmor: parseInt(submissionValues.antallDagerFellesperiode),
+                        antallUkerFellesperiodeFarMedmor: parseInt(submissionValues.antallUkerFellesperiode),
+                        harAnnenForelderSøktFP: submissionValues.harAnnenForelderSøktFP,
+                        morSinSisteUttaksdag: submissionValues.morsSisteDag,
+                        farSinFørsteUttaksdag: submissionValues.farMedmorsFørsteDag,
+                    },
+                })
+            ),
         ];
     };
 
@@ -107,8 +123,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         return null;
     }
 
-    const erSøkerMor = søkersituasjon.rolle === 'mor';
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const erSøkerMor = !erFarEllerMedmor;
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const harAnnenForeldreRettPåForeldrepenger = !!oppgittAnnenForelder?.harRettPåForeldrepenger;

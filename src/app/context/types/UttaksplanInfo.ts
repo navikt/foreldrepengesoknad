@@ -1,3 +1,5 @@
+import AdopsjonStartdatoValg from 'app/steps/uttaksplan-info/components/scenarios/mor-far-adopsjon/adopsjonStartdatoValg';
+
 interface UttaksplanInfo {}
 
 export interface MorFødselUttaksplanInfo extends UttaksplanInfo {
@@ -7,8 +9,8 @@ export interface MorFødselUttaksplanInfo extends UttaksplanInfo {
 }
 
 export interface MorFarAdopsjonUttaksplanInfo extends UttaksplanInfo {
-    harAnnenForelderSøktFP: string;
-    startdatoAdopsjonValg: string | undefined;
+    harAnnenForelderSøktFP: boolean;
+    startdatoAdopsjonValg: AdopsjonStartdatoValg;
     annenStartdatoAdopsjon: string;
     morsSisteDag: string;
     farMedmorsFørsteDag: string;

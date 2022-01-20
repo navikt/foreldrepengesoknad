@@ -7,6 +7,28 @@ interface Props {
     cleanup: () => PeriodeUttakFormData | PeriodeUtsettelseFormData;
 }
 
+export const jsonSort = (json: any): string => {
+    function isObject(v: any) {
+        return '[object Object]' === Object.prototype.toString.call(v);
+    }
+
+    const sort = (o: any): any => {
+        if (Array.isArray(o)) {
+            return o.sort().map(sort);
+        } else if (isObject(o)) {
+            return Object.keys(o)
+                .sort()
+                .reduce((a, k) => {
+                    a[k] = sort(o[k]);
+                    return a;
+                }, {});
+        }
+
+        return o;
+    };
+    return sort(json);
+};
+
 export const SubmitListener: FunctionComponent<Props> = ({ cleanup }) => {
     const formik = useFormikContext<PeriodeUttakFormData | PeriodeUtsettelseFormData>();
     const { isSubmitting, isValidating, values, submitForm, setValues } = formik;
@@ -15,7 +37,7 @@ export const SubmitListener: FunctionComponent<Props> = ({ cleanup }) => {
 
     React.useEffect(() => {
         if (!isSubmitting && !isValidating) {
-            const valuesEqualLastValues = JSON.stringify(lastValues) === JSON.stringify(values);
+            const valuesEqualLastValues = JSON.stringify(jsonSort(lastValues)) === JSON.stringify(jsonSort(values));
 
             if (!valuesEqualLastValues) {
                 updateState(values);
