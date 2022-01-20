@@ -110,25 +110,40 @@ describe('omBarnetValidering', () => {
 
     it('skal feile validering når termindato (fødsel) ikke er oppgitt', () => {
         const termindato = undefined;
-        const resultat = validateTermindatoFødsel(intlMock)(termindato!);
+        const resultat = validateTermindatoFødsel('2021-01-01', intlMock)(termindato!);
         expect(resultat).toBe('Du må oppgi termindato');
     });
 
     it('skal feile validering når termindato (fødsel) ikke er en gyldig dato', () => {
         const termindato = '202-01-01';
-        const resultat = validateTermindatoFødsel(intlMock)(termindato);
+        const resultat = validateTermindatoFødsel('2021-01-01', intlMock)(termindato);
         expect(resultat).toBe('Termindato må være en gyldig dato på formatet dd.mm.åååå');
     });
 
-    it('skal feile validering når termindato (fødsel) er mer enn ni måneder frem i tid', () => {
-        const termindato = dayjs().add(10, 'months').format('YYYY-MM-DD');
-        const resultat = validateTermindatoFødsel(intlMock)(termindato);
-        expect(resultat).toBe('Termindatoen kan ikke være lenger enn 9 måneder frem i tid');
+    it('skal feile validering når termindato (fødsel) er mer enn seks måneder etterfødselsdato', () => {
+        const fødselsdato = '2022-01-01';
+        const termindato = dayjs(fødselsdato).add(6, 'months').add(1, 'days').format('YYYY-MM-DD');
+        const resultat = validateTermindatoFødsel(fødselsdato, intlMock)(termindato);
+        expect(resultat).toBe('Termindatoen kan ikke være senere enn 6 måneder etter fødselsdatoen');
     });
 
-    it('skal ikke feile validering når termindato (fødsel) er før dagens dato', () => {
-        const termindato = '2020-01-01';
-        const resultat = validateTermindatoFødsel(intlMock)(termindato);
+    it('skal feile validering når termindato (fødsel) er tidligere enn 1 måned før fødselsdatoen', () => {
+        const fødselsdato = '2022-02-01';
+        const termindato = dayjs(fødselsdato).subtract(1, 'months').subtract(1, 'days').format('YYYY-MM-DD');
+        const resultat = validateTermindatoFødsel(fødselsdato, intlMock)(termindato);
+        expect(resultat).toBe('Termindatoen kan ikke være tidligere enn 1 måned før fødselsdatoen');
+    });
+    it('skal ikke feile validering når termindato (fødsel) er seks måneder etterfødselsdato', () => {
+        const fødselsdato = '2022-03-01';
+        const termindato = dayjs(fødselsdato).add(6, 'months').format('YYYY-MM-DD');
+        const resultat = validateTermindatoFødsel(fødselsdato, intlMock)(termindato);
+        expect(resultat).toBeUndefined();
+    });
+
+    it('skal ikke feile validering når termindato (fødsel) er 1 måned før fødselsdatoen', () => {
+        const fødselsdato = '2022-04-01';
+        const termindato = dayjs(fødselsdato).subtract(1, 'months').format('YYYY-MM-DD');
+        const resultat = validateTermindatoFødsel(fødselsdato, intlMock)(termindato);
         expect(resultat).toBeUndefined();
     });
 

@@ -74,7 +74,7 @@ export const validateTermindato = (intl: IntlShape) => (termindato: string) => {
     }
 };
 
-export const validateTermindatoFødsel = (intl: IntlShape) => (termindato: string) => {
+export const validateTermindatoFødsel = (fødselsdato: string, intl: IntlShape) => (termindato: string) => {
     if (!hasValue(termindato)) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.duMåOppgi');
     }
@@ -83,8 +83,11 @@ export const validateTermindatoFødsel = (intl: IntlShape) => (termindato: strin
         return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.ugyldigDatoFormat');
     }
 
-    if (!dayjs().add(9, 'months').isSameOrAfter(dayjs(termindato), 'day')) {
+    if (!dayjs(termindato).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.forLangtFremITid');
+    }
+    if (!dayjs(termindato).add(1, 'months').isSameOrAfter(dayjs(fødselsdato), 'day')) {
+        return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.forLangtTilbakeITid');
     }
 };
 
