@@ -4,8 +4,14 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/steps/oppsummering/Oppsummering.stories';
 
-const { Default, MedAnnenForelder, MedAdoptertBarn, MedUtenlandsopphold, MedArbeidsforholdOgAndreInntekter } =
-    composeStories(stories);
+const {
+    Default,
+    MedAnnenForelder,
+    FarMedUførMor,
+    MedAdoptertBarn,
+    MedUtenlandsopphold,
+    MedArbeidsforholdOgAndreInntekter,
+} = composeStories(stories);
 
 const OPPSUMMERING_HEADER =
     'Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.';
@@ -74,6 +80,14 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Vi har')).toBeInTheDocument();
         expect(screen.getByText('Felles omsorg')).toBeInTheDocument();
         expect(screen.getByText('Har Espen rett til foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Ja')).toBeInTheDocument();
+        expect(screen.queryByText('Har Espen uføretrygd?')).not.toBeInTheDocument();
+    });
+    it('skal vise informasjon om at mor er ufør', async () => {
+        render(<FarMedUførMor />);
+        expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
+        userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
+        expect(screen.getByText('Har Eline uføretrygd?')).toBeInTheDocument();
         expect(screen.getByText('Ja')).toBeInTheDocument();
     });
 

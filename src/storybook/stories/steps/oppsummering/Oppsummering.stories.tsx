@@ -60,6 +60,30 @@ MedAnnenForelder.args = {
     søkerinfo,
 };
 
+export const FarMedUførMor = Template.bind({});
+FarMedUførMor.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
+            søker: {
+                ...context.søknad.søker,
+                erAleneOmOmsorg: false,
+            },
+            annenForelder: {
+                fornavn: 'Eline',
+                etternavn: 'Utvikler',
+                fnr: '1515151616',
+                harRettPåForeldrepenger: false,
+                kanIkkeOppgis: false,
+                erUfør: true,
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+};
+
 export const MedAdoptertBarn = Template.bind({});
 MedAdoptertBarn.args = {
     context: {
