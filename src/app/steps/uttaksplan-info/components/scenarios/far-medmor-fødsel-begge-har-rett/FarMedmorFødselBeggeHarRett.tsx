@@ -52,7 +52,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     tilgjengeligeStønadskontoer80DTO,
 }) => {
     const intl = useIntl();
-    const { annenForelder, søkersituasjon, barn, dekningsgrad } = useSøknad();
+    const { annenForelder, søkersituasjon, barn, dekningsgrad, erEndringssøknad } = useSøknad();
     const { person } = useSøkerinfo();
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
@@ -84,8 +84,8 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                 lagUttaksplan({
                     annenForelderErUfør: erMorUfør,
                     erDeltUttak: true,
-                    erEndringssøknad: false,
-                    erEnkelEndringssøknad: false,
+                    erEndringssøknad,
+                    erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
                     førsteUttaksdagEtterSeksUker: Uttaksdagen(familiehendelsesdatoDate!).leggTil(30),
                     situasjon: erFødsel ? 'fødsel' : 'adopsjon',
@@ -93,7 +93,12 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                     søkerHarMidlertidigOmsorg: false,
                     tilgjengeligeStønadskontoer:
                         tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
-                    uttaksplanSkjema: {},
+                    uttaksplanSkjema: {
+                        morSinSisteUttaksdag: values.morsSisteDag,
+                        farSinFørsteUttaksdag: values.farMedmorsFørsteDag,
+                        antallDagerFellesperiodeFarMedmor: parseInt(values.antallDagerFellesperiode || '0', 10),
+                        antallUkerFellesperiodeFarMedmor: parseInt(values.antallUkerFellesperiode || '0', 10),
+                    },
                 })
             ),
         ];

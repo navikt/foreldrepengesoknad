@@ -4,6 +4,7 @@ import actionCreator from 'app/context/action/actionCreator';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import SøknadRoutes from 'app/routes/routes';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Forelder } from 'app/types/Forelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
@@ -16,6 +17,7 @@ import useSøknad from 'app/utils/hooks/useSøknad';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
+import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
@@ -43,10 +45,11 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     tilgjengeligeStønadskontoer80DTO,
 }) => {
-    const { søkersituasjon, søker, annenForelder, barn, dekningsgrad } = useSøknad();
+    const { søkersituasjon, søker, annenForelder, barn, dekningsgrad, erEndringssøknad } = useSøknad();
     const { person } = useSøkerinfo();
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const intl = useIntl();
 
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
@@ -60,6 +63,24 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         return [
             actionCreator.setUttaksplanInfo(uttaksplanInfo),
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
+            actionCreator.lagUttaksplanforslag(
+                lagUttaksplan({
+                    annenForelderErUfør: erMorUfør,
+                    erDeltUttak: false,
+                    erEndringssøknad,
+                    erEnkelEndringssøknad: erEndringssøknad,
+                    familiehendelsesdato: familiehendelsesdatoDate!,
+                    førsteUttaksdagEtterSeksUker: Uttaksdagen(familiehendelsesdatoDate!).leggTil(30),
+                    situasjon: erFødsel ? 'fødsel' : 'adopsjon',
+                    søkerErFarEllerMedmor: erFarEllerMedmor,
+                    søkerHarMidlertidigOmsorg: false,
+                    tilgjengeligeStønadskontoer:
+                        tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+                    uttaksplanSkjema: {
+                        startdatoPermisjon: uttaksplanInfo.startdatoUttak,
+                    },
+                })
+            ),
         ];
     };
 

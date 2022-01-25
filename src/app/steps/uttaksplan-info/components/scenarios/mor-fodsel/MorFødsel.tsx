@@ -65,6 +65,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         barn,
         søker: { erAleneOmOmsorg },
         dekningsgrad,
+        erEndringssøknad,
     } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
@@ -119,8 +120,8 @@ const MorFødsel: FunctionComponent<Props> = ({
                 lagUttaksplan({
                     annenForelderErUfør: erMorUfør,
                     erDeltUttak: true,
-                    erEndringssøknad: false,
-                    erEnkelEndringssøknad: false,
+                    erEndringssøknad,
+                    erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
                     førsteUttaksdagEtterSeksUker: Uttaksdagen(
                         Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
