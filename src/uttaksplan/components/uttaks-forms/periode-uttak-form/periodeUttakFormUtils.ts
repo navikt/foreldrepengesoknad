@@ -84,7 +84,7 @@ export const cleanPeriodeUttakFormData = (
     return cleanedData;
 };
 
-export const getPeriodeUttakFormInitialValues = (periode?: Periode): PeriodeUttakFormData => {
+export const getPeriodeUttakFormInitialValues = (periode: Periode): PeriodeUttakFormData => {
     if (periode !== undefined) {
         if (isUttaksperiode(periode)) {
             return {

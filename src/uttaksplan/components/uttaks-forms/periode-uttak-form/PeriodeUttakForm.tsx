@@ -135,7 +135,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     mapPeriodeUttakFormToPeriode(
                         values,
                         periode.id,
-                        getPeriodeType(values.hvemSkalTaUttak!, false, values.konto!)
+                        getPeriodeType(values.hvemSkalTaUttak!, erFarEllerMedmor, values.konto!)
                     )
                 )
             }

@@ -40,6 +40,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { validateStartdatoFarMedmor } from './validation/farMedmorFødselOgMorHarIkkeRettValidering';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
+import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -75,7 +76,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
 }) => {
     const intl = useIntl();
-    const { søkersituasjon, annenForelder, barn, dekningsgrad } = useSøknad();
+    const { søkersituasjon, annenForelder, barn, dekningsgrad, erEndringssøknad } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
     } = useSøkerinfo();
@@ -86,11 +87,31 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const annenForelderHarIkkeRett = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepenger === false
         : false;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
     const onValidSubmitHandler = (values: Partial<FarMedmorFødselOgMorHarIkkeRettFormData>) => {
         return [
             actionCreator.setUttaksplanInfo(mapFarMedmorFødselOgMorHarIkkeRettFormToState(values)),
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
+            actionCreator.lagUttaksplanforslag(
+                lagUttaksplan({
+                    annenForelderErUfør: erMorUfør,
+                    erDeltUttak: false,
+                    erEndringssøknad,
+                    erEnkelEndringssøknad: erEndringssøknad,
+                    familiehendelsesdato: familiehendelsesdatoDate!,
+                    førsteUttaksdagEtterSeksUker: Uttaksdagen(familiehendelsesdatoDate!).leggTil(30),
+                    situasjon: erFødsel ? 'fødsel' : 'adopsjon',
+                    søkerErFarEllerMedmor: erFarEllerMedmor,
+                    søkerHarMidlertidigOmsorg: false,
+                    tilgjengeligeStønadskontoer:
+                        tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+                    uttaksplanSkjema: {
+                        startdatoPermisjon: dateToISOString(Uttaksdagen(familiehendelsesdatoDate!).leggTil(30)),
+                    },
+                })
+            ),
         ];
     };
 
@@ -109,9 +130,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn)
         : '';
     const navnFarMedmor = formaterNavn(fornavn, etternavn, mellomnavn);
-
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const førsteUttaksdag = Uttaksdagen(ISOStringToDate(familiehendelsesdato)!).denneEllerNeste();
+    const førsteUttaksdag = Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste();
     const datoAvgrensinger = uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(dateToISOString(førsteUttaksdag));
 
     const fødselsdato = isFødtBarn(barn) ? ISOStringToDate(barn.fødselsdatoer[0]) : undefined;
