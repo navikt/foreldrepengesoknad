@@ -1,6 +1,8 @@
 import { intlUtils } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Søker from 'app/context/types/Søker';
+import { Søkerrolle } from 'app/types/Søkerrolle';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -9,11 +11,12 @@ import OppsummeringsPunkt from '../OppsummeringsPunkt';
 interface Props {
     annenForelder: AnnenForelder;
     søker: Søker;
+    søkerrolle: Søkerrolle;
 }
 
-const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, søker }) => {
+const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, søker, søkerrolle }) => {
     const intl = useIntl();
-
+    const erFarEllerMedMor = isFarEllerMedmor(søkerrolle);
     return (
         <>
             {isAnnenForelderIkkeOppgitt(annenForelder) && (
@@ -53,6 +56,17 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                             <FormattedMessage id={annenForelder.harRettPåForeldrepenger ? 'ja' : 'nei'} />
                         </Normaltekst>
                     </OppsummeringsPunkt>
+                    {erFarEllerMedMor && (
+                        <OppsummeringsPunkt
+                            title={intlUtils(intl, 'annenForelder.erMorUfør', {
+                                navn: annenForelder.fornavn,
+                            })}
+                        >
+                            <Normaltekst>
+                                <FormattedMessage id={annenForelder.erUfør ? 'ja' : 'nei'} />
+                            </Normaltekst>
+                        </OppsummeringsPunkt>
+                    )}
                 </>
             )}
         </>

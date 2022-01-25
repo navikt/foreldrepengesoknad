@@ -28,7 +28,7 @@ import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-innte
 const Oppsummering = () => {
     const intl = useIntl();
     const bem = bemUtils('oppsummering');
-    const { barn, annenForelder, søker, informasjonOmUtenlandsopphold } = useSøknad();
+    const { barn, annenForelder, søker, informasjonOmUtenlandsopphold, søkersituasjon } = useSøknad();
     const søkerinfo = useSøkerinfo();
 
     const onValidSubmitHandler = () => [];
@@ -68,7 +68,11 @@ const Oppsummering = () => {
                                         <BarnOppsummering barn={barn} />
                                     </OppsummeringsPanel>
                                     <OppsummeringsPanel title="Den andre forelderen">
-                                        <AnnenForelderOppsummering annenForelder={annenForelder} søker={søker} />
+                                        <AnnenForelderOppsummering
+                                            annenForelder={annenForelder}
+                                            søker={søker}
+                                            søkerrolle={søkersituasjon.rolle}
+                                        />
                                     </OppsummeringsPanel>
                                     <OppsummeringsPanel title="Utenlandsopphold">
                                         <UtenlandsoppholdOppsummering
