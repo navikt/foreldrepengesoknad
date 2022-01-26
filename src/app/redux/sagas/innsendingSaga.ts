@@ -47,7 +47,10 @@ const getSøknadsdataForInnsending = (
     familiehendelsesdato: Date,
     endringstidspunkt?: Date
 ): SøknadForInnsending | EnkelEndringssøknadForInnsending => {
-    const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
+    const { erUfør, ...annenForelderRest } = originalSøknad.annenForelder;
+    const annenForelderForInnsending = { harMorUføretrygd: erUfør, ...annenForelderRest };
+    const søknadForInnsending = { ...originalSøknad, annenForelder: annenForelderForInnsending };
+    const søknad: Søknad = JSON.parse(JSON.stringify(søknadForInnsending));
     mapMissingAttachmentsOnSøknad(missingAttachments, søknad);
     mapSpråkkodeOnSøknad(språkkode, søknad);
 
