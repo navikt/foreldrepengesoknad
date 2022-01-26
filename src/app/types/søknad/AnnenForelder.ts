@@ -8,7 +8,7 @@ interface AnnenForelder {
     harRettPåForeldrepenger: boolean;
     erInformertOmSøknaden: boolean;
     erForSyk: boolean;
-    erUfør: boolean;
+    harMorUføretrygd : boolean;
 }
 
 export type AnnenForelderPartial = Partial<AnnenForelder>;

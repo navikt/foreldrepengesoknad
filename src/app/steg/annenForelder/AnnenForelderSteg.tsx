@@ -85,7 +85,7 @@ class AnnenForelderSteg extends React.Component<Props> {
             harRettPåForeldrepenger: values.harRettPåForeldrepenger === YesOrNo.YES,
             kanIkkeOppgis: values.kanIkkeOppgis,
             utenlandskFnr: values.utenlandskFnr,
-            erUfør: values.erMorUfør === YesOrNo.YES,
+            harMorUføretrygd : values.erMorUfør === YesOrNo.YES,
             bostedsland: values.bostedsland,
         };
 
@@ -226,7 +226,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         bostedsland: annenForelder.bostedsland,
         datoForAleneomsorg: barn.datoForAleneomsorg,
         erInformertOmSøknaden: mapBooleanToYesOrNo(annenForelder.erInformertOmSøknaden),
-        erMorUfør: mapBooleanToYesOrNo(annenForelder.erUfør),
+        erMorUfør: mapBooleanToYesOrNo(annenForelder.harMorUføretrygd ),
         etternavn: annenForelder.etternavn,
         fornavn: annenForelder.fornavn,
         fnr: annenForelder.fnr,

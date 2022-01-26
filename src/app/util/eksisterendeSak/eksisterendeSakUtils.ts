@@ -373,7 +373,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                 return {
                     fornavn: annenPart.navn.fornavn,
                     etternavn: annenPart.navn.etternavn,
-                    erUfør: grunnlag.morErUfør,
+                    harMorUføretrygd : grunnlag.morErUfør,
                     harRettPåForeldrepenger: grunnlag.morHarRett,
                     fnr: annenPart.fnr,
                     kanIkkeOppgis: false,

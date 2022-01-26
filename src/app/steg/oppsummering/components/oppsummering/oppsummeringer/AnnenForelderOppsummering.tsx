@@ -33,7 +33,7 @@ const AnnenForelderOppsummering: React.FunctionComponent<Props> = (props: Props)
         harRettPåForeldrepenger,
         erInformertOmSøknaden,
         erForSyk,
-        erUfør,
+        harMorUføretrygd,
     } = props.annenForelder;
 
     const { datoForAleneomsorg, dokumentasjonAvAleneomsorg } = barn;
@@ -115,10 +115,10 @@ const AnnenForelderOppsummering: React.FunctionComponent<Props> = (props: Props)
                     verdi={erForSyk ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
             )}
-            {erUfør !== undefined && (
+            {harMorUføretrygd !== undefined && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.annenForelder.erUfør.label', { navn })}
-                    verdi={erUfør ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                    verdi={harMorUføretrygd ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
             )}
         </Oppsummeringsseksjon>

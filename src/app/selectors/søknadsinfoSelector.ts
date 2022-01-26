@@ -172,7 +172,7 @@ const selectOmAnnenForelder = createSelector(
             harRett: annenForelder.harRettPåForeldrepenger === true,
             erFarEllerMedmor: søkerErFarEllerMedmor === false,
             erMor: søkerErFarEllerMedmor === true,
-            erUfør: annenForelder.erUfør === true,
+            erUfør: annenForelder.harMorUføretrygd === true,
             kanIkkeOppgis: annenForelder.kanIkkeOppgis === true,
             kjønn,
         };

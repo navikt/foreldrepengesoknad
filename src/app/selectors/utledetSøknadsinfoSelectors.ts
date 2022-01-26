@@ -93,7 +93,7 @@ export const selectMorErUfør = createSelector(
     [selectAnnenForelder, selectSøkerErFarEllerMedmor],
     (annenForelder, erFarEllerMedmor): boolean | undefined => {
         if (annenForelder !== undefined) {
-            return erFarEllerMedmor === true && annenForelder.erUfør === true;
+            return erFarEllerMedmor === true && annenForelder.harMorUføretrygd === true;
         }
         return undefined;
     }

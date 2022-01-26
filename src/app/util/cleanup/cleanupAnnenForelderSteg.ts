@@ -27,7 +27,7 @@ export const cleanupAnnenForelder = (
         utenlandskFnr,
         harRettPåForeldrepenger,
         erInformertOmSøknaden,
-        erUfør,
+        harMorUføretrygd,
         kanIkkeOppgis,
         ...rest
     } = annenForelder;
@@ -52,7 +52,7 @@ export const cleanupAnnenForelder = (
         erInformertOmSøknaden: visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)
             ? erInformertOmSøknaden
             : undefined,
-        erUfør: visibility.isVisible(AnnenForelderSpørsmålKeys.erMorUfør) ? erUfør : undefined,
+        harMorUføretrygd : visibility.isVisible(AnnenForelderSpørsmålKeys.erMorUfør) ? harMorUføretrygd : undefined,
     };
     return cleanedAnnenForelder;
 };

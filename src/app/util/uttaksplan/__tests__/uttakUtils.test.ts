@@ -30,7 +30,7 @@ describe('uttakUtils', () => {
         },
         annenForelder: {
             harRett: true,
-            erUfør: false,
+            harMorUføretrygd : false,
         },
     } as DeepPartial<Søknad>;
 

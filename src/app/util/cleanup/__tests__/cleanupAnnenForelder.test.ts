@@ -16,7 +16,7 @@ import { dateToISOString } from '@navikt/sif-common-formik/lib';
 const annenForelder: AnnenForelder = {
     bostedsland: 'landet',
     erForSyk: false,
-    erUfør: false,
+    harMorUføretrygd : false,
     erInformertOmSøknaden: false,
     fnr: '123',
     harRettPåForeldrepenger: false,
@@ -139,7 +139,7 @@ describe('Cleanup AnnenForelder', () => {
                     testSøknad.barn as ForeldreansvarBarn
                 ) as ForeldreansvarBarn;
                 expect(af.harRettPåForeldrepenger).toBeUndefined();
-                expect(af.erUfør).toBeUndefined();
+                expect(af.harMorUføretrygd ).toBeUndefined();
                 expect(af.erInformertOmSøknaden).toBeUndefined();
                 expect(b.datoForAleneomsorg).toBeDefined();
             });
@@ -153,7 +153,7 @@ describe('Cleanup AnnenForelder', () => {
                     testVisibility,
                     testSøknad.barn as ForeldreansvarBarn
                 ) as ForeldreansvarBarn;
-                expect(af.erUfør).toBeUndefined();
+                expect(af.harMorUføretrygd ).toBeUndefined();
                 expect(af.erInformertOmSøknaden).toBeUndefined();
                 expect(af.harRettPåForeldrepenger).toBeUndefined();
                 expect(b.datoForAleneomsorg).toBeUndefined();

@@ -71,7 +71,7 @@ const mapStateToProps = (state: AppState): StateProps => {
             annenForelder: {
                 harRettPåForeldrepenger: annenForelder.harRettPåForeldrepenger,
                 erForSyk: annenForelder.erForSyk,
-                erUfør: annenForelder.erUfør,
+                harMorUføretrygd : annenForelder.harMorUføretrygd ,
             },
             barn: {
                 antallBarn: barn.antallBarn,

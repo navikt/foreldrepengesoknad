@@ -114,7 +114,7 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
         },
     },
     [AnnenForelderSpørsmålKeys.erMorUfør]: {
-        isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.erUfør),
+        isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.harMorUføretrygd ),
         parentQuestion: AnnenForelderSpørsmålKeys.harRettPåForeldrepenger,
         isIncluded: (payload) =>
             payload.søker.erAleneOmOmsorg === false &&

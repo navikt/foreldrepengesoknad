@@ -34,7 +34,7 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søknadsinfo?: Søkna
         case UttaksplanSkjemaScenario.s6_bareFarMedmorRettTilFpFødsel:
             return (
                 skjema.startdatoPermisjon !== undefined ||
-                (søknad.dekningsgrad !== undefined && søknad.annenForelder.erUfør === false)
+                (søknad.dekningsgrad !== undefined && søknad.annenForelder.harMorUføretrygd  === false)
             );
 
         case UttaksplanSkjemaScenario.s7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan:

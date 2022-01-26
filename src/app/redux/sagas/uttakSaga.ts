@@ -52,7 +52,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
 
         const appState: AppState = yield select(stateSelector);
         const annenForelderErUkjent = appState.søknad.annenForelder.kanIkkeOppgis;
-        const erMorUfør = appState.søknad.annenForelder.erUfør;
+        const erMorUfør = appState.søknad.annenForelder.harMorUføretrygd;
         const erAleneOmsorg = appState.søknad.søker.erAleneOmOmsorg;
         const søkerErFarEllerMedmor = selectSøkerErFarEllerMedmor(appState);
         const morHarIkkeRett = !appState.søknad.annenForelder.harRettPåForeldrepenger && søkerErFarEllerMedmor;

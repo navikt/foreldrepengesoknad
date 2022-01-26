@@ -469,7 +469,7 @@ const Scenario6: React.FunctionComponent<ScenarioProps> = ({
                 />
             </Block>
             <StartdatoUttakFarMedmorSpørsmål
-                visible={søknad.dekningsgrad !== undefined && søknad.annenForelder.erUfør === true}
+                visible={søknad.dekningsgrad !== undefined && søknad.annenForelder.harMorUføretrygd  === true}
                 familiehendelsesdato={førsteUttaksdag}
             />
         </>
