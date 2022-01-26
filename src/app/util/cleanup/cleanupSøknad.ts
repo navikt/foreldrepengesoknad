@@ -110,7 +110,7 @@ export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
     });
 };
 
-const skalPeriodeSendesInn = (periode: Periode) => {
+export const skalPeriodeSendesInn = (periode: Periode) => {
     return isNotPeriodetypeHull(periode) && isNotPeriodetypeInfo(periode) && isNotPeriodeUtenUttak(periode);
 };
 
