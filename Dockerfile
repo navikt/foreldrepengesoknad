@@ -1,5 +1,5 @@
 FROM node:17.4-slim
-LABEL org.opencontainers.image.source https://github.com/navikt/foreldrepengesoknad
+LABEL org.opencontainers.image.source=https://github.com/navikt/foreldrepengesoknad
 WORKDIR /usr/src/app
 
 COPY dist ./dist
