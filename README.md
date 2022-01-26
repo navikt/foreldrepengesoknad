@@ -19,11 +19,11 @@ For å kjøre cypress-tester:
 
 # Henvendelser
 
-Spørsmål knyttet til koden eller prosjektet kan rettes mot teamforeldrepenger@nav.no.
+Spørsmål knyttet til koden eller prosjektet kan rettes mot nav.team.foreldrepenger@nav.n.
 
 ## For NAV-ansatte
 
-Interne henvendelser kan sendes via Slack i kanalen #team-sagrada-familia.
+Interne henvendelser kan sendes via Slack i kanalen #teamforeldrepenger.
 
 ### Icon License
 
