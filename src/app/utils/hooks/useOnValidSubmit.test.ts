@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import SøknadRoutes from 'app/routes/routes';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import * as apiUtils from 'app/api/apiUtils';
 import * as context from 'app/context/hooks/useForeldrepengesøknadContext';
 import useOnValidSubmit from './useOnValidSubmit';
 
@@ -26,6 +27,7 @@ describe('useOnValidSubmit', () => {
             } as ForeldrepengesøknadContextState,
             dispatch: dispatchMock,
         }));
+        jest.spyOn(apiUtils, 'cleanUpSøknadsdataForInnsending').mockImplementation((any) => any);
 
         const submitHandler = (): any => [Promise.resolve()];
 
@@ -48,6 +50,7 @@ describe('useOnValidSubmit', () => {
             } as ForeldrepengesøknadContextState,
             dispatch: dispatchMock,
         }));
+        jest.spyOn(apiUtils, 'cleanUpSøknadsdataForInnsending').mockImplementation((any) => any);
 
         const formVerdier = {};
         const submitHandler = (): any => [Promise.resolve()];

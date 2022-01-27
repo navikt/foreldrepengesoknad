@@ -13,6 +13,7 @@ import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønads
 import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
 import { mapEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { formaterDato } from 'app/utils/dateUtils';
+import { cleanUpSøknadsdataForInnsending } from './apiUtils';
 
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
@@ -95,9 +96,10 @@ const useStoredAppState = () => {
 
 const storeAppState = (state: ForeldrepengesøknadContextState, fnr: string) => {
     const { søknad, version, currentRoute, uttaksplanInfo } = state;
+    const cleanedSøknad = cleanUpSøknadsdataForInnsending(søknad);
     return getAxiosInstance(fnr).post(
         '/storage',
-        { søknad, version, currentRoute, uttaksplanInfo },
+        { cleanedSøknad, version, currentRoute, uttaksplanInfo },
         { withCredentials: true }
     );
 };
