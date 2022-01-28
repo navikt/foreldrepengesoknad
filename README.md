@@ -19,7 +19,7 @@ For å kjøre cypress-tester:
 
 # Henvendelser
 
-Spørsmål knyttet til koden eller prosjektet kan rettes mot nav.team.foreldrepenger@nav.n.
+Spørsmål knyttet til koden eller prosjektet kan rettes mot nav.team.foreldrepenger@nav.no.
 
 ## For NAV-ansatte
 
