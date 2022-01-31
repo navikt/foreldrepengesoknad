@@ -6,6 +6,10 @@ metadata:
   labels:
     team: teamforeldrepenger
 spec:
+  accessPolicy:
+    outbound:
+      external:
+        - host: {{dekoratoren}}
   image: {{image}}
   port: 8080
   replicas:
@@ -17,7 +21,7 @@ spec:
       initialDelay: 60
   readiness:
       path: /health/isReady
-      initialDelay: 60  
+      initialDelay: 60
   prometheus:
       enabled: false
       path: /internal/actuator/prometheus
@@ -32,7 +36,7 @@ spec:
     requests:
       cpu: 200m
       memory: 256Mi
-  env: 
+  env:
   {{#each env}}
    - name: {{@key}}
      value: "{{this}}"
