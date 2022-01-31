@@ -30,14 +30,20 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import useDebounce from 'app/utils/hooks/useDebounce';
+import { storeAppState } from 'app/utils/submitUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
+    const { dispatch, state } = useForeldrepengesøknadContext();
 
     const onValidSubmitHandler = () => [];
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTENLANDSOPPHOLD);
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.UTENLANDSOPPHOLD,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+    );
     const onAvbrytSøknad = useAvbrytSøknad();
-    const { dispatch, state } = useForeldrepengesøknadContext();
 
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();

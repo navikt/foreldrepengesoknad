@@ -1,6 +1,7 @@
 import { Block, intlUtils } from '@navikt/fp-common';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import actionCreator from 'app/context/action/actionCreator';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import SøknadRoutes from 'app/routes/routes';
@@ -14,6 +15,7 @@ import useSøknad from 'app/utils/hooks/useSøknad';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
+import { storeAppState } from 'app/utils/submitUtils';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
@@ -52,7 +54,11 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         return [actionCreator.setUttaksplanInfo(uttaksplanInfo), actionCreator.setDekningsgrad(grunnlag.dekningsgrad)];
     };
 
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.UTTAKSPLAN,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+    );
 
     if (!eksisterendeSakAnnenPart || !erFarEllerMedmor) {
         return null;

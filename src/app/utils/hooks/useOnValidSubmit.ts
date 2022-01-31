@@ -1,33 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import Api from 'app/api/api';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
-import { cleanUpSøknadsdataForInnsending } from 'app/api/apiUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 const useOnValidSubmit = <T>(
     submitHandler: (values: T) => ForeldrepengesøknadContextAction[],
     nextRoute: SøknadRoutes,
-    erInnsendingAvSøknad = false
+    postSubmit: (state: ForeldrepengesøknadContextState) => void
 ) => {
     const { dispatch, state } = useForeldrepengesøknadContext();
-    const { søkerinfo } = state;
     const history = useHistory();
     const [harSubmitted, setSubmitted] = useState(false);
 
     useEffect(() => {
-        if (harSubmitted && !erInnsendingAvSøknad) {
-            Api.storeAppState(state, søkerinfo.person.fnr);
+        if (harSubmitted) {
+            postSubmit(state);
             history.push(nextRoute);
         }
-        if (harSubmitted && erInnsendingAvSøknad) {
-            const cleanSøknad = cleanUpSøknadsdataForInnsending(state.søknad);
-            Api.sendSøknad(cleanSøknad, søkerinfo.person.fnr);
-            history.push(nextRoute);
-        }
-    }, [harSubmitted, history, nextRoute, state, søkerinfo.person.fnr, erInnsendingAvSøknad]);
+    }, [harSubmitted, history, nextRoute, state, postSubmit]);
 
     const setSubmitAndHandleSubmit = (values: T) => {
         const actions = submitHandler(values);

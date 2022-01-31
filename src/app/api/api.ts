@@ -57,10 +57,11 @@ const useGetSaker = (fnr: string | undefined) => {
     };
 };
 
-const useGetEksisterendeSak = (saksnummer: string, fnr: string) => {
+const useGetEksisterendeSak = (saksnummer: string | undefined, fnr: string, erEndringssøknad: boolean) => {
     const { data, error } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplan', {
         fnr,
         config: { withCredentials: true, params: saksnummer },
+        isSuspended: saksnummer === undefined || fnr === undefined || !erEndringssøknad,
     });
 
     return {

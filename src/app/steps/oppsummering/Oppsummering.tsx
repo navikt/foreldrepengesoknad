@@ -24,6 +24,8 @@ import {
 } from './oppsummeringFormConfig';
 import { validateHarGodkjentOppsummering } from './validation/oppsummeringValidation';
 import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-inntekter-oppsummering/ArbeidsforholdOgAndreInntekterOppsummering';
+import { sendInnSøknad } from 'app/utils/submitUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -33,7 +35,11 @@ const Oppsummering = () => {
 
     const onValidSubmitHandler = () => [];
 
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.SØKNAD_SENDT, true);
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.SØKNAD_SENDT,
+        (state: ForeldrepengesøknadContextState) => sendInnSøknad(state)
+    );
     const onAvbrytSøknad = useAvbrytSøknad();
 
     return (

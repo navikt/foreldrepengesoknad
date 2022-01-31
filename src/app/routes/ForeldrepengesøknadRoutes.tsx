@@ -22,6 +22,60 @@ interface Props {
     currentRoute: SøknadRoutes;
 }
 
+const renderSøknadRoutes = (harGodkjentVilkår: boolean, erEndringssøknad: boolean, kjønn: Kjønn) => {
+    if (!harGodkjentVilkår) {
+        return <Redirect to={SøknadRoutes.VELKOMMEN} exact={true} />;
+    }
+
+    if (erEndringssøknad) {
+        return (
+            <>
+                <Route path={SøknadRoutes.UTTAKSPLAN}>
+                    <UttaksplanStep />
+                </Route>
+                <Route path={SøknadRoutes.OPPSUMMERING}>
+                    <Oppsummering />
+                </Route>
+                <Route path={SøknadRoutes.SØKNAD_SENDT}>
+                    <SøknadSendt />
+                </Route>
+            </>
+        );
+    }
+
+    return (
+        <>
+            <Route path={SøknadRoutes.SØKERSITUASJON}>
+                <Søkersituasjon kjønn={kjønn} />
+            </Route>
+            <Route path={SøknadRoutes.OM_BARNET}>
+                <OmBarnet />
+            </Route>
+            <Route path={SøknadRoutes.ANNEN_FORELDER}>
+                <AnnenForelder />
+            </Route>
+            <Route path={SøknadRoutes.UTTAKSPLAN_INFO}>
+                <UttaksplanInfo />
+            </Route>
+            <Route path={SøknadRoutes.UTTAKSPLAN}>
+                <UttaksplanStep />
+            </Route>
+            <Route path={SøknadRoutes.UTENLANDSOPPHOLD}>
+                <Utenlandsopphold />
+            </Route>
+            <Route path={SøknadRoutes.INNTEKTSINFORMASJON}>
+                <Inntektsinformasjon />
+            </Route>
+            <Route path={SøknadRoutes.OPPSUMMERING}>
+                <Oppsummering />
+            </Route>
+            <Route path={SøknadRoutes.SØKNAD_SENDT}>
+                <SøknadSendt />
+            </Route>
+        </>
+    );
+};
+
 const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
     fornavn,
     locale,
@@ -41,39 +95,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
             <Route path={SøknadRoutes.VELKOMMEN} exact={true}>
                 <Velkommen fornavn={fornavn} locale={locale} saker={state.saker} onChangeLocale={onChangeLocale} />
             </Route>
-            {!state.søknad.harGodkjentVilkår ? (
-                <Redirect to={SøknadRoutes.VELKOMMEN} exact={true} />
-            ) : (
-                <>
-                    <Route path={SøknadRoutes.SØKERSITUASJON}>
-                        <Søkersituasjon kjønn={kjønn} />
-                    </Route>
-                    <Route path={SøknadRoutes.OM_BARNET}>
-                        <OmBarnet />
-                    </Route>
-                    <Route path={SøknadRoutes.ANNEN_FORELDER}>
-                        <AnnenForelder />
-                    </Route>
-                    <Route path={SøknadRoutes.UTTAKSPLAN_INFO}>
-                        <UttaksplanInfo />
-                    </Route>
-                    <Route path={SøknadRoutes.UTTAKSPLAN}>
-                        <UttaksplanStep />
-                    </Route>
-                    <Route path={SøknadRoutes.UTENLANDSOPPHOLD}>
-                        <Utenlandsopphold />
-                    </Route>
-                    <Route path={SøknadRoutes.INNTEKTSINFORMASJON}>
-                        <Inntektsinformasjon />
-                    </Route>
-                    <Route path={SøknadRoutes.OPPSUMMERING}>
-                        <Oppsummering />
-                    </Route>
-                    <Route path={SøknadRoutes.SØKNAD_SENDT}>
-                        <SøknadSendt />
-                    </Route>
-                </>
-            )}
+            {renderSøknadRoutes(state.søknad.harGodkjentVilkår, state.søknad.erEndringssøknad, kjønn)}
         </>
     );
 };

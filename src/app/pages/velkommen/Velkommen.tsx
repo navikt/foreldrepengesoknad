@@ -23,6 +23,8 @@ import Sak, { FagsakStatus } from 'app/types/Sak';
 import SøknadRoutes from 'app/routes/routes';
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import SøknadStatus from './components/SøknadStatus';
+import { storeAppState } from 'app/utils/submitUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 interface Props {
     fornavn: string;
@@ -61,6 +63,8 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
     const bem = bemUtils('velkommen');
     const sakErAvsluttet = erSakAvsluttet(sak);
+    const { erEndringssøknad } = søknad;
+    const nextRoute = erEndringssøknad ? SøknadRoutes.UTTAKSPLAN : SøknadRoutes.SØKERSITUASJON;
 
     const onValidSubmitHandler = (values: Partial<VelkommenFormData>) => {
         return [
@@ -69,7 +73,9 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
         ];
     };
 
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.SØKERSITUASJON);
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, nextRoute, (state: ForeldrepengesøknadContextState) =>
+        storeAppState(state)
+    );
 
     return (
         <VelkommenFormComponents.FormikWrapper

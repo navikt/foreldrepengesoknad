@@ -26,6 +26,8 @@ import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUp
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { getInitValues } from './manglendeVedleggFormUtils';
 import { FieldArray } from 'formik';
+import { storeAppState } from 'app/utils/submitUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 export const attenUkerPluss3Number = 18 * 7 + 3;
 
@@ -67,7 +69,11 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
         ];
     };
 
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.OPPSUMMERING);
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.OPPSUMMERING,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+    );
     const onAvbrytSøknad = useAvbrytSøknad();
 
     const fornavnAnnenForelder = isAnnenForelderOppgitt(søknad.annenForelder) ? søknad.annenForelder.fornavn : '';

@@ -35,6 +35,8 @@ import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { storeAppState } from 'app/utils/submitUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -140,7 +142,11 @@ const MorFødsel: FunctionComponent<Props> = ({
             ),
         ];
     };
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.UTTAKSPLAN,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+    );
 
     return (
         <MorFødselFormComponents.FormikWrapper

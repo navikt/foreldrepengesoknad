@@ -21,6 +21,8 @@ import {
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
 import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsConfig';
+import { storeAppState } from 'app/utils/submitUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -49,7 +51,11 @@ const Inntektsinformasjon = () => {
         return [actionCreator.setSøker(updatedSøker)];
     };
 
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.OPPSUMMERING);
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.OPPSUMMERING,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+    );
     const onAvbrytSøknad = useAvbrytSøknad();
 
     return (

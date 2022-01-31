@@ -18,6 +18,8 @@ import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig from './omBarnetQuestionsConfig';
 import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
 import RegistrertBarn from './components/RegistrertBarn';
+import { storeAppState } from 'app/utils/submitUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -29,7 +31,11 @@ const OmBarnet: React.FunctionComponent = () => {
         return [actionCreator.setOmBarnet(barn)];
     };
 
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.ANNEN_FORELDER);
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.ANNEN_FORELDER,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+    );
     const onAvbrytSøknad = useAvbrytSøknad();
 
     return (

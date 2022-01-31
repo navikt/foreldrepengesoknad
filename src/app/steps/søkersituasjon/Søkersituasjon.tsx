@@ -18,6 +18,8 @@ import {
 import søkersituasjonQuestionsConfig from './søkersituasjonQuestionsConfig';
 import { mapSøkersituasjonFormDataToState } from './søkersituasjonUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import { storeAppState } from 'app/utils/submitUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 interface Props {
     kjønn: Kjønn;
@@ -33,7 +35,11 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
         return [actionCreator.setSøkersituasjon(søkersituasjon)];
     };
 
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.OM_BARNET);
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.OM_BARNET,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+    );
     const onAvbrytSøknad = useAvbrytSøknad();
 
     return (

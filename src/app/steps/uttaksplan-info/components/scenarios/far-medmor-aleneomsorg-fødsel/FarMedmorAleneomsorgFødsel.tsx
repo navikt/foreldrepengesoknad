@@ -1,6 +1,7 @@
 import { Block, intlUtils } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import actionCreator from 'app/context/action/actionCreator';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import SøknadRoutes from 'app/routes/routes';
@@ -17,6 +18,7 @@ import useSøknad from 'app/utils/hooks/useSøknad';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
+import { storeAppState } from 'app/utils/submitUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent } from 'react';
@@ -84,7 +86,11 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         ];
     };
 
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.UTTAKSPLAN,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+    );
 
     const shouldRender = erFødsel && erFarEllerMedmor && (!!søker.erAleneOmOmsorg || annenForelder.kanIkkeOppgis);
 

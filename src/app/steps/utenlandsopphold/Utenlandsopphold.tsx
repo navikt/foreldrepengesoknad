@@ -29,6 +29,8 @@ import {
 } from './utenlandsoppholdFormUtils';
 import SøknadRoutes from 'app/routes/routes';
 import { validateUtenlandsoppholdNeste12Mnd, validateUtenlandsoppholdSiste12Mnd } from './utenlandsoppholdValidering';
+import { storeAppState } from 'app/utils/submitUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -39,7 +41,11 @@ const Utenlandsopphold: React.FunctionComponent = () => {
         return [actionCreator.setInformasjonOmUtenlandsopphold(utenlandsopphold)];
     };
 
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.INNTEKTSINFORMASJON);
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.INNTEKTSINFORMASJON,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+    );
     const onAvbrytSøknad = useAvbrytSøknad();
 
     return (

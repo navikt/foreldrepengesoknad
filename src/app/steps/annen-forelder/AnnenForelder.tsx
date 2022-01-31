@@ -32,6 +32,8 @@ import OppgiPersonalia from './components/OppgiPersonalia';
 import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
 import RegistrertePersonalia from './components/registrerte-personalia/RegistrertePersonalia';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import { storeAppState } from 'app/utils/submitUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 const AnnenForelder = () => {
     const intl = useIntl();
@@ -71,7 +73,11 @@ const AnnenForelder = () => {
         [søker, barn]
     );
 
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN_INFO);
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.UTTAKSPLAN_INFO,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+    );
     const onAvbrytSøknad = useAvbrytSøknad();
 
     return (

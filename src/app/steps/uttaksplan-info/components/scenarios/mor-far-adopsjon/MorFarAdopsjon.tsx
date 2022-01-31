@@ -41,6 +41,8 @@ import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+import { storeAppState } from 'app/utils/submitUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -117,7 +119,11 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         ];
     };
 
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.UTTAKSPLAN,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+    );
 
     if (!shouldRender || !isAdoptertBarn(barn)) {
         return null;

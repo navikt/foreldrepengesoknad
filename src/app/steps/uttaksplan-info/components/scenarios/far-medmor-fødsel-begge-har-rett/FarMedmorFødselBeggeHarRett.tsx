@@ -40,6 +40,8 @@ import { FarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/Ut
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+import { storeAppState } from 'app/utils/submitUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -103,7 +105,11 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
             ),
         ];
     };
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTTAKSPLAN);
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.UTTAKSPLAN,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+    );
 
     return (
         <FarMedmorFødselBeggeHarRettFormComponents.FormikWrapper
