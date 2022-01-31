@@ -15,7 +15,7 @@ type UttaksPeriodeForInnsending = Omit<UttaksperiodeBase, 'erMorForSyk'>;
 
 type PeriodeForInnsending = Exclude<Periode, 'Uttaksperiode'> | UttaksPeriodeForInnsending;
 
-interface SøknadForInnsending extends Omit<Søknad, 'barn' | 'annenForelder' | 'uttaksplan'> {
+export interface SøknadForInnsending extends Omit<Søknad, 'barn' | 'annenForelder' | 'uttaksplan'> {
     barn: BarnForInnsending;
     annenForelder: AnnenForelderForInnsending;
     uttaksplan: PeriodeForInnsending[];

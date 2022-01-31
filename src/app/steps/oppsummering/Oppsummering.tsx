@@ -33,7 +33,7 @@ const Oppsummering = () => {
 
     const onValidSubmitHandler = () => [];
 
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.SØKNAD_SENDT);
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.SØKNAD_SENDT, true);
     const onAvbrytSøknad = useAvbrytSøknad();
 
     return (

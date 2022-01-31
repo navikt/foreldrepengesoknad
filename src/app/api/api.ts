@@ -13,8 +13,7 @@ import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønads
 import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
 import { mapEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { formaterDato } from 'app/utils/dateUtils';
-import { cleanUpSøknadsdataForInnsending } from './apiUtils';
-
+import { SøknadForInnsending } from './apiUtils';
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
     morHarRett: boolean;
@@ -33,8 +32,8 @@ const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?
 };
 
 const uttakBaseUrl = Environment.UTTAK_API_URL;
-// const sendSøknadUrl = '/soknad';
-// const sendEndringssøknadUrl = '/soknad/endre';
+const sendSøknadUrl = '/soknad';
+const sendEndringssøknadUrl = '/soknad/endre';
 
 const useSøkerinfo = () => {
     const { data, error } = useRequest<SøkerinfoDTO>('/sokerinfo', { config: { withCredentials: true } });
@@ -96,10 +95,9 @@ const useStoredAppState = () => {
 
 const storeAppState = (state: ForeldrepengesøknadContextState, fnr: string) => {
     const { søknad, version, currentRoute, uttaksplanInfo } = state;
-    const cleanedSøknad = cleanUpSøknadsdataForInnsending(søknad);
     return getAxiosInstance(fnr).post(
         '/storage',
-        { cleanedSøknad, version, currentRoute, uttaksplanInfo },
+        { søknad, version, currentRoute, uttaksplanInfo },
         { withCredentials: true }
     );
 };
@@ -162,17 +160,17 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams) => {
     };
 };
 
-// function sendSøknad(søknad: SøknadForInnsending | EnkelEndringssøknadForInnsending) {
-//     const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
+function sendSøknad(søknad: SøknadForInnsending, fnr: string) {
+    const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
 
-//     return getAxiosInstance('123').post(url, søknad, {
-//         withCredentials: true,
-//         timeout: 120 * 1000,
-//         headers: {
-//             'content-type': 'application/json;',
-//         },
-//     });
-// }
+    return getAxiosInstance(fnr).post(url, søknad, {
+        withCredentials: true,
+        timeout: 120 * 1000,
+        headers: {
+            'content-type': 'application/json;',
+        },
+    });
+}
 
 // function sendStorageKvittering(storageKvittering: StorageKvittering) {
 //     return getAxiosInstance('123').post('/storage/kvittering/foreldrepenger', storageKvittering, {
@@ -198,7 +196,7 @@ const Api = {
     useStoredAppState,
     useSøkerinfo,
     useGetEksisterendeSak,
-    // sendSøknad,
+    sendSøknad,
     // getStorageKvittering,
 };
 
