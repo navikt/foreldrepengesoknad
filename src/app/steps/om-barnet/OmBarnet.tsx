@@ -3,7 +3,7 @@ import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -15,11 +15,12 @@ import BarnFødtEllerAdoptert from './components/BarnFødtEllerAdoptert';
 import Fødsel from './components/Fødsel';
 import Termin from './components/Termin';
 import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
-import omBarnetQuestionsConfig from './omBarnetQuestionsConfig';
+import omBarnetQuestionsConfig, { kanSøkePåTermin } from './omBarnetQuestionsConfig';
 import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
 import RegistrertBarn from './components/RegistrertBarn';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { UnansweredQuestionsInfo, YesOrNo } from '@navikt/sif-common-formik/lib';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -87,8 +88,20 @@ const OmBarnet: React.FunctionComponent = () => {
                             />
                             <Termin søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
                             <Fødsel søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
-                            <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
+                            <Block
+                                visible={
+                                    visibility.areAllQuestionsAnswered() &&
+                                    (formValues.erBarnetFødt === YesOrNo.YES ||
+                                        kanSøkePåTermin(søkersituasjon.rolle, formValues.termindato))
+                                }
+                                textAlignCenter={true}
+                            >
                                 <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                            </Block>
+                            <Block visible={!visibility.areAllQuestionsAnswered()}>
+                                <UnansweredQuestionsInfo>
+                                    <FormattedMessage id="steg.footer.spørsmålMåBesvares" />
+                                </UnansweredQuestionsInfo>
                             </Block>
                         </OmBarnetFormComponents.Form>
                     </Step>

@@ -63,3 +63,33 @@ ForAdopsjon.args = {
     } as ForeldrepengesøknadContextState,
     søkerinfo,
 };
+
+export const FarSøker = Template.bind({});
+FarSøker.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'far',
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo: { ...søkerinfo, kjønn: 'M' },
+};
+
+export const MedmorSøker = Template.bind({});
+MedmorSøker.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'medmor',
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+};

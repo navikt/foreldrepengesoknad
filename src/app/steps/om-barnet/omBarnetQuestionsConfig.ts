@@ -4,6 +4,7 @@ import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/li
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { RegistrertBarn } from 'app/types/Person';
 import { Søkerrolle } from 'app/types/Søkerrolle';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import dayjs from 'dayjs';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
@@ -27,6 +28,13 @@ const includeTermindato = (rolle: Søkerrolle, fødselsdato: string | undefined)
     }
 
     return true;
+};
+
+export const kanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
+    if (!isFarEllerMedmor(rolle)) {
+        return true;
+    }
+    return hasValue(termindato) ? andreAugust2022ReglerGjelder(new Date(termindato)) : false;
 };
 
 const skalViseErBarnFødt = (
@@ -104,12 +112,15 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
         },
     },
     [OmBarnetFormField.terminbekreftelse]: {
-        isIncluded: ({ erBarnetFødt, arbeidsforhold }) => erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0,
-        isAnswered: () => true,
+        isIncluded: ({ rolle, erBarnetFødt, arbeidsforhold, termindato }) =>
+            erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0 && kanSøkePåTermin(rolle, termindato),
+        isAnswered: ({ rolle, termindato, terminbekreftelse }) =>
+            kanSøkePåTermin(rolle, termindato) && hasValue(terminbekreftelse),
         visibilityFilter: ({ termindato }) => hasValue(termindato),
     },
     [OmBarnetFormField.terminbekreftelsedato]: {
-        isIncluded: ({ erBarnetFødt, arbeidsforhold }) => erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0,
+        isIncluded: ({ rolle, erBarnetFødt, arbeidsforhold, termindato }) =>
+            erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0 && kanSøkePåTermin(rolle, termindato),
         isAnswered: ({ terminbekreftelsedato }) => hasValue(terminbekreftelsedato),
         visibilityFilter: ({ termindato }) => hasValue(termindato),
     },

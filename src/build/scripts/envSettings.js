@@ -13,6 +13,7 @@ function createEnvSettingsFile(settingsFilePath) {
                 FEATURE_VIS_PERIODER_SOM_SENDES_INN:  '${process.env.FEATURE_VIS_PERIODER_SOM_SENDES_INN}',
                 FEATURE_VIS_FEILSIDE:  '${process.env.FEATURE_VIS_FEILSIDE}',
                 FEATURE_VIS_ALERTSTRIPE:  '${process.env.FEATURE_VIS_ALERTSTRIPE}',
+                FEATURE_TEST_WLB_REGLER:  '${process.env.FEATURE_TEST_WLB_REGLER}',
             };`
         );
     });

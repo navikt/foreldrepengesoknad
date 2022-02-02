@@ -10,6 +10,8 @@ import { RegistrertBarn } from 'app/types/Person';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Alder } from 'app/types/Alder';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+import FeatureToggle from 'app/FeatureToggle';
+import isFeatureEnabled from './toggleUtils';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -281,6 +283,19 @@ export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boo
     return (
         dayjs(familiehendelsesdato).isSameOrAfter(førsteOktober2021) &&
         dayjs(new Date()).isSameOrAfter(førsteOktober2021)
+    );
+};
+
+export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolean => {
+    const andreAugust2022 = new Date('2022-08-02');
+
+    //For testing av WLB regler i dev: WLB start-dato settes til 02.06.2022.
+    if (isFeatureEnabled(FeatureToggle.testWLBRegler)) {
+        return dayjs(familiehendelsesdato).isSameOrAfter('2022-06-02');
+    }
+
+    return (
+        dayjs(familiehendelsesdato).isSameOrAfter(andreAugust2022) && dayjs(new Date()).isSameOrAfter(andreAugust2022)
     );
 };
 
