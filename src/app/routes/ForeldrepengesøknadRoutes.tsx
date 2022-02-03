@@ -93,7 +93,13 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
     return (
         <>
             <Route path={SøknadRoutes.VELKOMMEN} exact={true}>
-                <Velkommen fornavn={fornavn} locale={locale} saker={state.saker} onChangeLocale={onChangeLocale} />
+                <Velkommen
+                    fornavn={fornavn}
+                    locale={locale}
+                    saker={state.saker}
+                    onChangeLocale={onChangeLocale}
+                    fnr={state.søkerinfo.person.fnr}
+                />
             </Route>
             {renderSøknadRoutes(state.søknad.harGodkjentVilkår, state.søknad.erEndringssøknad, kjønn)}
         </>

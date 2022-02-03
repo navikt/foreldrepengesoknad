@@ -9,6 +9,7 @@ export interface Saksgrunnlag {
     morHarRett: boolean;
     farMedmorErAleneOmOmsorg: boolean;
     farMedmorHarRett: boolean;
+    søkerErFarEllerMedmor: boolean;
     termindato?: string;
     fødselsdato?: string;
     omsorgsovertakelsesdato?: string;

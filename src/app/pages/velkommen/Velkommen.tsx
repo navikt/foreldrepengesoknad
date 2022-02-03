@@ -1,5 +1,5 @@
 import { bemUtils, Block, intlUtils, LanguageToggle, Locale, Sidebanner } from '@navikt/fp-common';
-import actionCreator from 'app/context/action/actionCreator';
+import actionCreator, { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { assertUnreachable } from 'app/utils/globalUtil';
@@ -25,12 +25,17 @@ import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import SøknadStatus from './components/SøknadStatus';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import Api from 'app/api/api';
+import { mapEksisterendeSakFromDTO, opprettSøknadFraEksisterendeSak } from 'app/utils/eksisterendeSakUtils';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { Søknad } from 'app/context/types/Søknad';
 
 interface Props {
     fornavn: string;
     onChangeLocale: (locale: Locale) => void;
     locale: Locale;
     saker: Sak[];
+    fnr: string;
 }
 
 const erSakAvsluttet = (sak: Sak | undefined): boolean => {
@@ -56,25 +61,42 @@ const getSisteSak = (saker: Sak[]): Sak | undefined => {
     return sakerSortert[0];
 };
 
-const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onChangeLocale }) => {
+const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr, onChangeLocale }) => {
     const sak = getSisteSak(saker);
     const intl = useIntl();
     const søknad = useSøknad();
+    const { state } = useForeldrepengesøknadContext();
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
     const bem = bemUtils('velkommen');
     const sakErAvsluttet = erSakAvsluttet(sak);
-    const { erEndringssøknad } = søknad;
-    const nextRoute = erEndringssøknad ? SøknadRoutes.UTTAKSPLAN : SøknadRoutes.SØKERSITUASJON;
+    const { eksisterendeSakData } = Api.useGetEksisterendeSak(sak?.saksnummer, fnr);
 
     const onValidSubmitHandler = (values: Partial<VelkommenFormData>) => {
-        return [
+        const actionsToDispatch: ForeldrepengesøknadContextAction[] = [
             actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!),
             actionCreator.setErEndringssøknad(!!convertYesOrNoOrUndefinedToBoolean(values.vilSøkeOmEndring)),
         ];
+
+        if (eksisterendeSakData && sak) {
+            const eksisterendeSak = mapEksisterendeSakFromDTO(
+                eksisterendeSakData,
+                eksisterendeSakData.grunnlag.søkerErFarEllerMedmor,
+                false
+            );
+
+            const søknad: Søknad = opprettSøknadFraEksisterendeSak(state.søkerinfo, eksisterendeSak!, sak) as Søknad;
+
+            actionsToDispatch.push(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));
+            actionsToDispatch.push(actionCreator.setSøknad(søknad));
+        }
+
+        return actionsToDispatch;
     };
 
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, nextRoute, (state: ForeldrepengesøknadContextState) =>
-        storeAppState(state)
+    const onValidSubmit = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.SØKERSITUASJON,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
 
     return (

@@ -9,18 +9,34 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 const useOnValidSubmit = <T>(
     submitHandler: (values: T) => ForeldrepengesøknadContextAction[],
     nextRoute: SøknadRoutes,
-    postSubmit: (state: ForeldrepengesøknadContextState) => void
+    postSubmit: (state: ForeldrepengesøknadContextState) => Promise<any>
 ) => {
     const { dispatch, state } = useForeldrepengesøknadContext();
     const history = useHistory();
     const [harSubmitted, setSubmitted] = useState(false);
+    const [submitError, setSubmitError] = useState(undefined);
 
     useEffect(() => {
         if (harSubmitted) {
-            postSubmit(state);
-            history.push(nextRoute);
+            postSubmit(state)
+                .then(() => {
+                    if (nextRoute === SøknadRoutes.SØKERSITUASJON && state.søknad.erEndringssøknad) {
+                        history.push(SøknadRoutes.UTTAKSPLAN);
+                    } else {
+                        history.push(nextRoute);
+                    }
+                })
+                .catch((error) => {
+                    setSubmitError(error);
+                });
         }
     }, [harSubmitted, history, nextRoute, state, postSubmit]);
+
+    useEffect(() => {
+        if (submitError) {
+            throw new Error(submitError);
+        }
+    }, [submitError]);
 
     const setSubmitAndHandleSubmit = (values: T) => {
         const actions = submitHandler(values);

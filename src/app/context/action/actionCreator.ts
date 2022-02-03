@@ -10,6 +10,7 @@ import Barn from '../types/Barn';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
 import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
+import { Søknad } from '../types/Søknad';
 import UttaksplanInfo from '../types/UttaksplanInfo';
 
 export enum ForeldrepengesøknadContextActionKeys {
@@ -31,6 +32,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_VEDLEGG = 'setVedlegg',
     LAG_UTTAKSPLANFORSLAG = 'lagUttaksplanforslag',
     SET_UTTAKSPLAN = 'setUttaksplan',
+    SET_SØKNAD = 'setSøknad',
 }
 
 interface SetVelkommen {
@@ -203,6 +205,16 @@ const setUttaksplan = (payload: Periode[]): SetUttaksplan => ({
     payload,
 });
 
+interface SetSøknad {
+    type: ForeldrepengesøknadContextActionKeys.SET_SØKNAD;
+    payload: Søknad;
+}
+
+const setSøknad = (payload: Søknad): SetSøknad => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_SØKNAD,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetErEndringssøknad
@@ -219,6 +231,7 @@ export type ForeldrepengesøknadContextAction =
     | SetDekningsgrad
     | ApplyStoredState
     | SetVedlegg
+    | SetSøknad
     | LagUttaksplanforslag
     | SetUttaksplan;
 
@@ -240,4 +253,5 @@ export default {
     setVedlegg,
     lagUttaksplanforslag,
     setUttaksplan,
+    setSøknad,
 };
