@@ -20,11 +20,7 @@ const useOnValidSubmit = <T>(
         if (harSubmitted) {
             postSubmit(state)
                 .then(() => {
-                    if (nextRoute === SøknadRoutes.SØKERSITUASJON && state.søknad.erEndringssøknad) {
-                        history.push(SøknadRoutes.UTTAKSPLAN);
-                    } else {
-                        history.push(nextRoute);
-                    }
+                    history.push(state.currentRoute);
                 })
                 .catch((error) => {
                     setSubmitError(error);
