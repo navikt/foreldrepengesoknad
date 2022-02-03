@@ -20,7 +20,11 @@ const useOnValidSubmit = <T>(
         if (harSubmitted) {
             postSubmit(state)
                 .then(() => {
-                    history.push(state.currentRoute);
+                    if (nextRoute === SøknadRoutes.SØKNAD_SENDT) {
+                        history.push(nextRoute);
+                    } else {
+                        history.push(state.currentRoute);
+                    }
                 })
                 .catch((error) => {
                     setSubmitError(error);

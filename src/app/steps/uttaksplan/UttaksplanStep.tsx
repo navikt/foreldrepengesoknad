@@ -35,18 +35,16 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 
 const UttaksplanStep = () => {
     const intl = useIntl();
-    const { dispatch, state } = useForeldrepengesøknadContext();
-
-    const onValidSubmitHandler = () => [];
-    const onValidSubmit = useOnValidSubmit(
-        onValidSubmitHandler,
-        SøknadRoutes.UTENLANDSOPPHOLD,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
-    );
-    const onAvbrytSøknad = useAvbrytSøknad();
-
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
+    const { dispatch, state } = useForeldrepengesøknadContext();
+    const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
+
+    const onValidSubmitHandler = () => [];
+    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, nextRoute, (state: ForeldrepengesøknadContextState) =>
+        storeAppState(state)
+    );
+    const onAvbrytSøknad = useAvbrytSøknad();
 
     const { person, arbeidsforhold } = søkerinfo;
     const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad } = søknad;
