@@ -72,12 +72,14 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
     const { eksisterendeSakData } = Api.useGetEksisterendeSak(sak?.saksnummer, fnr);
 
     const onValidSubmitHandler = (values: Partial<VelkommenFormData>) => {
+        const vilSøkeOmEndring = !!convertYesOrNoOrUndefinedToBoolean(values.vilSøkeOmEndring);
+
         const actionsToDispatch: ForeldrepengesøknadContextAction[] = [
             actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!),
-            actionCreator.setErEndringssøknad(!!convertYesOrNoOrUndefinedToBoolean(values.vilSøkeOmEndring)),
+            actionCreator.setErEndringssøknad(vilSøkeOmEndring),
         ];
 
-        if (eksisterendeSakData && sak) {
+        if (eksisterendeSakData && sak && vilSøkeOmEndring) {
             const eksisterendeSak = mapEksisterendeSakFromDTO(
                 eksisterendeSakData,
                 eksisterendeSakData.grunnlag.søkerErFarEllerMedmor,
