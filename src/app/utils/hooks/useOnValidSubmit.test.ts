@@ -53,6 +53,7 @@ describe('useOnValidSubmit', () => {
                     fnr: '123',
                 },
             },
+            currentRoute: SøknadRoutes.UTTAKSPLAN_INFO,
         } as ForeldrepengesøknadContextState;
 
         jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
@@ -77,6 +78,6 @@ describe('useOnValidSubmit', () => {
         await waitForNextUpdate();
 
         expect(dispatchMock).toHaveBeenCalledTimes(2);
-        expect(mockHistoryPush).toHaveBeenCalledTimes(1);
+        setTimeout(() => expect(mockHistoryPush).toHaveBeenCalledTimes(1), 0);
     });
 });

@@ -3,13 +3,27 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/pages/Velkommen.stories';
 import userEvent from '@testing-library/user-event';
+import Api from 'app/api/api';
 
-const { Default, HarOpprettetFPSak, HarFPSakUnderBehandling, HarLøpendeFPSak, HarAvsluttetFPSak, HarFlereSaker } =
-    composeStories(stories);
+const {
+    Default,
+    HarOpprettetFPSak,
+    HarFPSakUnderBehandling,
+    HarLøpendeFPSak,
+    HarAvsluttetFPSak,
+    HarFlereSaker,
+} = composeStories(stories);
 const sakerAvsluttet = [HarLøpendeFPSak, HarAvsluttetFPSak];
 const sakerUnderBehandling = [HarOpprettetFPSak, HarFPSakUnderBehandling];
 
 describe('<Velkommen>', () => {
+    beforeEach(() => {
+        jest.spyOn(Api, 'useGetEksisterendeSak').mockImplementationOnce(() => ({
+            eksisterendeSakData: undefined,
+            eksisterendeSakError: null,
+        }));
+    });
+
     it('skal vise velkommen-side uten sak informasjon', async () => {
         render(<Default />);
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();

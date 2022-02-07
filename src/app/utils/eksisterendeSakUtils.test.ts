@@ -99,6 +99,7 @@ describe('eksisterendeSakUtils', () => {
                 morHarRett: true,
                 omsorgsovertakelsesdato: undefined,
                 termindato: '2021-01-02',
+                søkerErFarEllerMedmor: false,
             },
             saksperioder: [
                 {
