@@ -159,24 +159,24 @@ MedArbeidsforholdOgAndreInntekter.args = {
     søkerinfo: {
         søker: {
             ...søkerinfo.søker,
-            arbeidsforhold: [
-                {
-                    arbeidsgiverId: '1',
-                    arbeidsgiverIdType: 'orgnr',
-                    arbeidsgiverNavn: 'Auto Joachim Bilpleie',
-                    stillingsprosent: 80,
-                    fom: '2015-01-01',
-                },
-                {
-                    arbeidsgiverId: '2',
-                    arbeidsgiverIdType: 'orgnr',
-                    arbeidsgiverNavn: 'Taco Express',
-                    stillingsprosent: 20,
-                    fom: '2019-01-01',
-                    tom: '2021-01-01',
-                },
-            ],
         },
+        arbeidsforhold: [
+            {
+                arbeidsgiverId: '1',
+                arbeidsgiverIdType: 'orgnr',
+                arbeidsgiverNavn: 'Auto Joachim Bilpleie',
+                stillingsprosent: 80,
+                fom: '2015-01-01',
+            },
+            {
+                arbeidsgiverId: '2',
+                arbeidsgiverIdType: 'orgnr',
+                arbeidsgiverNavn: 'Taco Express',
+                stillingsprosent: 20,
+                fom: '2019-01-01',
+                tom: '2021-01-01',
+            },
+        ],
     } as SøkerinfoDTO,
 };
 

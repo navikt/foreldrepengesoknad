@@ -41,6 +41,9 @@ const getSøknadMock = (annenForelderInput: AnnenForelder, barnInput: Barn, utta
         annenForelder: annenForelderInput,
         barn: barnInput,
         uttaksplan: uttaksplanInput,
+        søker: {
+            språkkode: 'nb',
+        },
     } as Søknad;
 };
 
@@ -49,15 +52,18 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     const annenForelderMock = getAnnenForelderUførMock(true, false);
     const søknadMedMorErUfør = getSøknadMock(annenForelderMock, barnMock, []);
     const cleanedSøknad = cleanUpSøknadsdataForInnsending(søknadMedMorErUfør);
+
     it('skal bytte navn på annenForelder.erUfør til annenForelder.harMorUføretrygd', () => {
         expect(cleanedSøknad.annenForelder.hasOwnProperty('harMorUføretrygd')).toBe(true);
         expect(cleanedSøknad.annenForelder.hasOwnProperty('erUfør')).toBe(false);
         const { harMorUføretrygd } = cleanedSøknad.annenForelder as AnnenForelderOppgittForInnsending;
         expect(harMorUføretrygd).toBe(true);
     });
+
     it('skal fjerne input om annenForelder.erForSyk fra søknad for innsending', () => {
         expect(cleanedSøknad.annenForelder.hasOwnProperty('erForSyk')).toBe(false);
     });
+
     it('skal ikke feile for ikke oppgitt forelder', () => {
         const søknadMedIkkeOppgitForelder = getSøknadMock(getAnnenForelderIkkeOppgittMock(), barnMock, []);
         const cleanedSøknadUtenForelder = cleanUpSøknadsdataForInnsending(søknadMedIkkeOppgitForelder);
@@ -87,9 +93,14 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         expect(cleanedSøknadUtenUførInfo.uttaksplan[0]).toEqual(expectedPeriodeUttak);
         expect(cleanedSøknadUtenUførInfo.uttaksplan[1]).toEqual(periodeHull);
     });
+
     it('skal fjerne datoForAleneomsorg fra barn men ikke endre resten av objektet', () => {
         const { datoForAleneomsorg, ...barnRest } = barnMock;
         expect(cleanedSøknad.barn.hasOwnProperty('datoForAleneomsorg')).toBe(false);
         expect(cleanedSøknad.barn).toEqual(barnRest);
+    });
+
+    it('skal konvertere språkkode til upper case', () => {
+        expect(cleanedSøknad.søker.språkkode).toEqual('NB');
     });
 });

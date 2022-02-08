@@ -1,10 +1,11 @@
 import dayjs from 'dayjs';
 import { Kjønn } from '@navikt/fp-common';
 import mapSøkerinfoDTOToSøkerinfo from './mapSøkerinfoDTO';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 
 describe('mapSøkerinfoDTO', () => {
     it('skal konvertere dto til app-format', () => {
-        const søkerinfoDTO = {
+        const søkerinfoDTO: SøkerinfoDTO = {
             søker: {
                 fødselsdato: '2000-01-01',
                 fornavn: 'Espen',
@@ -16,17 +17,17 @@ describe('mapSøkerinfoDTO', () => {
                     kontonummer: '123',
                     banknavn: 'DNB',
                 },
-                arbeidsforhold: [
-                    {
-                        arbeidsgiverId: 'ID',
-                        arbeidsgiverIdType: 'Type',
-                        arbeidsgiverNavn: 'OBOS',
-                        fom: '2021-01-02',
-                        tom: '2021-01-05',
-                        stillingsprosent: 100,
-                    },
-                ],
             },
+            arbeidsforhold: [
+                {
+                    arbeidsgiverId: 'ID',
+                    arbeidsgiverIdType: 'Type',
+                    arbeidsgiverNavn: 'OBOS',
+                    fom: '2021-01-02',
+                    tom: '2021-01-05',
+                    stillingsprosent: 100,
+                },
+            ],
         };
 
         const søkerinfo = mapSøkerinfoDTOToSøkerinfo(søkerinfoDTO);
