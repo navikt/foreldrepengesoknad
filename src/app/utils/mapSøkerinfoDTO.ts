@@ -65,7 +65,7 @@ const mapSøkerinfoDTOBarnToRegistrertBarn = (registrerteBarn: SøkerinfoDTOBarn
 };
 
 const mapSøkerinfoDTOToSøkerinfo = (søkerinfoDTO: SøkerinfoDTO): Søkerinfo => {
-    const arbeidsforhold = mapArbeidsforholdDTOToArbeidsforhold(søkerinfoDTO.søker.arbeidsforhold);
+    const arbeidsforhold = mapArbeidsforholdDTOToArbeidsforhold(søkerinfoDTO.arbeidsforhold);
     const person = mapSøkerinfoDTOSøkerToPerson(søkerinfoDTO.søker);
     const registrerteBarn = mapSøkerinfoDTOBarnToRegistrertBarn(søkerinfoDTO.søker.barn);
 

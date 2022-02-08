@@ -36,7 +36,8 @@ const Template: Story<Props> = ({ erFerdig, bankkonto, arbeidsforhold }) => {
                 søknad={{} as ForeldrepengesøknadContextState}
                 søkerinfo={
                     {
-                        søker: { fnr: '1233434', fornavn: 'Espen', etternavn: 'Utvikler', bankkonto, arbeidsforhold },
+                        søker: { fnr: '1233434', fornavn: 'Espen', etternavn: 'Utvikler', bankkonto },
+                        arbeidsforhold,
                     } as SøkerinfoDTO
                 }
             >

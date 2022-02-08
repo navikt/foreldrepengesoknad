@@ -42,12 +42,12 @@ describe('<Foreldrepengesøknad>', () => {
             søkerinfoData: {
                 søker: {
                     fornavn: 'Olga',
-                    arbeidsforhold: [
-                        {
-                            arbeidsgiverId: '',
-                        },
-                    ],
                 },
+                arbeidsforhold: [
+                    {
+                        arbeidsgiverId: '',
+                    },
+                ],
             } as SøkerinfoDTO,
             søkerinfoError: null,
         };
