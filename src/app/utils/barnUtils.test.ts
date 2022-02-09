@@ -1,30 +1,29 @@
 import { getFamiliehendelsedato, getRegistrertBarnOmDetFinnes } from './barnUtils';
 import Barn, { BarnType } from 'app/context/types/Barn';
 import { RegistrertBarn } from 'app/types/Person';
-import dayjs from 'dayjs';
 
 describe('barnUtils', () => {
     it('skal returnere fødselsdato når barn er født', () => {
         const barn = {
             type: BarnType.FØDT,
-            fødselsdatoer: ['10.05.2021', '10.06.2021'],
-            termindato: '09.05.2021',
+            fødselsdatoer: [new Date('2021-10-05'), new Date('2021-10-06')],
+            termindato: new Date('2021-09-05'),
         } as Barn;
 
         const dato = getFamiliehendelsedato(barn);
 
-        expect(dato).toBe('10.05.2021');
+        expect(new Date(dato)).toEqual(new Date('2021-10-05'));
     });
 
     it('skal returnere termindato når barn ikke er født', () => {
         const barn = {
             type: BarnType.UFØDT,
-            termindato: '09.05.2021',
+            termindato: new Date('2021-09-05'),
         } as Barn;
 
         const dato = getFamiliehendelsedato(barn);
 
-        expect(dato).toBe('09.05.2021');
+        expect(new Date(dato)).toEqual(new Date('2021-09-05'));
     });
 
     it('skal returnere undefined når barn er adoptert', () => {
@@ -40,11 +39,11 @@ describe('barnUtils', () => {
     it('skal finne registrert barn når barn er født og er registrert fra før med samme fødselsdato', () => {
         const barn = {
             type: BarnType.FØDT,
-            fødselsdatoer: ['2021-01-01'],
+            fødselsdatoer: [new Date('2021-01-01')],
         } as Barn;
         const registrerteBarn = [
             {
-                fødselsdato: dayjs('2021-01-01').toDate(),
+                fødselsdato: new Date('2021-01-01'),
             },
         ] as RegistrertBarn[];
 
@@ -59,7 +58,7 @@ describe('barnUtils', () => {
         } as Barn;
         const registrerteBarn = [
             {
-                fødselsdato: dayjs('2021-01-01').toDate(),
+                fødselsdato: new Date('2021-01-01'),
             },
         ] as RegistrertBarn[];
 
@@ -71,11 +70,11 @@ describe('barnUtils', () => {
     it('skal ikke finne registrert barn når barn har forsjellig fødselsdato', () => {
         const barn = {
             type: BarnType.FØDT,
-            fødselsdatoer: ['2021-01-01'],
+            fødselsdatoer: [new Date('2021-01-01')],
         } as Barn;
         const registrerteBarn = [
             {
-                fødselsdato: dayjs('2017-01-01').toDate(),
+                fødselsdato: new Date('2017-01-01'),
             },
         ] as RegistrertBarn[];
 
@@ -87,11 +86,11 @@ describe('barnUtils', () => {
     it('skal ikke finne registrert barn når barn har forsjellig fødselsdato', () => {
         const barn = {
             type: BarnType.FØDT,
-            fødselsdatoer: ['2021-01-01'],
+            fødselsdatoer: [new Date('2021-01-01')],
         } as Barn;
         const registrerteBarn = [
             {
-                fødselsdato: dayjs('2017-01-01').toDate(),
+                fødselsdato: new Date('2017-01-01'),
             },
         ] as RegistrertBarn[];
 
@@ -103,7 +102,7 @@ describe('barnUtils', () => {
     it('skal ikke finne registrert barn når ingen barn er registrert fra før', () => {
         const barn = {
             type: BarnType.FØDT,
-            fødselsdatoer: ['2021-01-01'],
+            fødselsdatoer: [new Date('2021-01-01')],
         } as Barn;
         const registrerteBarn = [] as RegistrertBarn[];
 

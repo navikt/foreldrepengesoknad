@@ -1,5 +1,5 @@
 import { hasValue } from '@navikt/fp-common';
-import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import Barn, {
     BarnType,
@@ -71,18 +71,18 @@ export const mapOmBarnetFormDataToState = (
 
         return {
             type: BarnType.FØDT,
-            fødselsdatoer: [dateToISOString(eldsteBarn.fødselsdato)!],
+            fødselsdatoer: [eldsteBarn.fødselsdato],
             antallBarn: values.valgteBarn.length.toString(),
-            termindato: hasValue(values.termindato) ? values.termindato : undefined,
+            termindato: hasValue(values.termindato) ? ISOStringToDate(values.termindato) : undefined,
         };
     }
 
     if (values.erBarnetFødt === YesOrNo.YES) {
         return {
             type: BarnType.FØDT,
-            fødselsdatoer: values.fødselsdatoer!,
+            fødselsdatoer: values.fødselsdatoer!.map((fødselsdato) => ISOStringToDate(fødselsdato)!),
             antallBarn: values.antallBarn!,
-            termindato: values.termindato,
+            termindato: ISOStringToDate(values.termindato),
         };
     }
 
@@ -95,9 +95,9 @@ export const mapOmBarnetFormDataToState = (
         return {
             type: BarnType.UFØDT,
             terminbekreftelse: terminbekreftelse!,
-            terminbekreftelsedato: values.terminbekreftelsedato,
+            terminbekreftelsedato: ISOStringToDate(values.terminbekreftelsedato),
             antallBarn: values.antallBarn!,
-            termindato: values.termindato!,
+            termindato: ISOStringToDate(values.termindato)!,
         };
     }
 
@@ -110,21 +110,21 @@ export const mapOmBarnetFormDataToState = (
     if (values.adopsjonAvEktefellesBarn === YesOrNo.YES) {
         return {
             type: BarnType.ADOPTERT_STEBARN,
-            adopsjonsdato: values.adopsjonsdato!,
+            adopsjonsdato: ISOStringToDate(values.adopsjonsdato)!,
             antallBarn: values.antallBarn!,
-            fødselsdatoer: values.fødselsdatoer!,
-            omsorgsovertakelse: omsorgsovertakelse!,
+            fødselsdatoer: values.fødselsdatoer!.map((fødselsdato) => ISOStringToDate(fødselsdato)!),
+            omsorgsovertakelse,
         };
     }
 
     return {
         type: BarnType.ADOPTERT_ANNET_BARN,
-        fødselsdatoer: values.fødselsdatoer!,
-        adopsjonsdato: values.adopsjonsdato!,
+        fødselsdatoer: values.fødselsdatoer!.map((fødselsdato) => ISOStringToDate(fødselsdato)!),
+        adopsjonsdato: ISOStringToDate(values.adopsjonsdato)!,
         antallBarn: values.antallBarn!,
         adoptertIUtlandet: convertYesOrNoOrUndefinedToBoolean(values.adoptertIUtlandet)!,
-        omsorgsovertakelse: omsorgsovertakelse!,
-        ankomstdato: values.adoptertIUtlandet! === YesOrNo.YES ? values.ankomstdato! : undefined,
+        ankomstdato: values.adoptertIUtlandet === YesOrNo.YES ? ISOStringToDate(values.ankomstdato) : undefined,
+        omsorgsovertakelse,
     };
 };
 
@@ -141,8 +141,8 @@ export const getOmBarnetInitialValues = (barn: Barn, registrerteBarn: Registrert
         if (registrertBarn) {
             return {
                 ...initialOmBarnetValues,
-                fødselsdatoer: barn.fødselsdatoer,
-                termindato: barn.termindato || '',
+                fødselsdatoer: barn.fødselsdatoer.map((fødselsdato) => dateToISOString(fødselsdato)),
+                termindato: dateToISOString(barn.termindato),
                 antallBarn: barn.antallBarn,
                 valgteBarn: [registrertBarn.fnr],
             };
@@ -153,8 +153,8 @@ export const getOmBarnetInitialValues = (barn: Barn, registrerteBarn: Registrert
         return {
             ...initialOmBarnetValues,
             erBarnetFødt: YesOrNo.YES,
-            fødselsdatoer: barn.fødselsdatoer,
-            termindato: barn.termindato || '',
+            fødselsdatoer: barn.fødselsdatoer.map((fødselsdato) => dateToISOString(fødselsdato)),
+            termindato: dateToISOString(barn.termindato),
             antallBarn: barn.antallBarn,
             gjelderAnnetBarn: true,
         };
@@ -165,8 +165,8 @@ export const getOmBarnetInitialValues = (barn: Barn, registrerteBarn: Registrert
             ...initialOmBarnetValues,
             erBarnetFødt: YesOrNo.NO,
             terminbekreftelse: barn.terminbekreftelse,
-            terminbekreftelsedato: barn.terminbekreftelsedato || '',
-            termindato: barn.termindato,
+            terminbekreftelsedato: dateToISOString(barn.terminbekreftelsedato),
+            termindato: dateToISOString(barn.termindato),
             antallBarn: barn.antallBarn,
             gjelderAnnetBarn: true,
         };
@@ -176,12 +176,12 @@ export const getOmBarnetInitialValues = (barn: Barn, registrerteBarn: Registrert
         return {
             ...initialOmBarnetValues,
             adopsjonAvEktefellesBarn: YesOrNo.NO,
-            fødselsdatoer: barn.fødselsdatoer,
-            adopsjonsdato: barn.adopsjonsdato,
+            fødselsdatoer: barn.fødselsdatoer.map((fødselsdato) => dateToISOString(fødselsdato)),
+            adopsjonsdato: dateToISOString(barn.adopsjonsdato),
             antallBarn: barn.antallBarn!,
             adoptertIUtlandet: convertBooleanOrUndefinedToYesOrNo(barn.adoptertIUtlandet),
             omsorgsovertakelse: barn.omsorgsovertakelse!,
-            ankomstdato: barn.ankomstdato!,
+            ankomstdato: dateToISOString(barn.ankomstdato),
         };
     }
 
@@ -189,9 +189,9 @@ export const getOmBarnetInitialValues = (barn: Barn, registrerteBarn: Registrert
         return {
             ...initialOmBarnetValues,
             adopsjonAvEktefellesBarn: YesOrNo.YES,
-            adopsjonsdato: barn.adopsjonsdato,
+            adopsjonsdato: dateToISOString(barn.adopsjonsdato),
             antallBarn: barn.antallBarn,
-            fødselsdatoer: barn.fødselsdatoer,
+            fødselsdatoer: barn.fødselsdatoer.map((fødselsdato) => dateToISOString(fødselsdato)),
             omsorgsovertakelse: barn.omsorgsovertakelse,
         };
     }

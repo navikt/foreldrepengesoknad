@@ -26,9 +26,9 @@ const context = {
         },
         barn: {
             type: 'født',
-            fødselsdatoer: ['2021-03-15'],
+            fødselsdatoer: [new Date('2021-03-15')],
             antallBarn: '1',
-            datoForAleneomsorg: '',
+            datoForAleneomsorg: undefined,
             dokumentasjonAvAleneomsorg: [],
         },
         annenForelder: {

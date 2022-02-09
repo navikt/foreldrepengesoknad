@@ -44,6 +44,10 @@ const getSøknadMock = (annenForelderInput: AnnenForelder, barnInput: Barn, utta
         søker: {
             språkkode: 'nb',
         },
+        søkersituasjon: {
+            rolle: 'mor',
+            situasjon: 'fødsel',
+        },
     } as Søknad;
 };
 
@@ -102,5 +106,17 @@ describe('cleanUpSøknadsdataForInnsending', () => {
 
     it('skal konvertere språkkode til upper case', () => {
         expect(cleanedSøknad.søker.språkkode).toEqual('NB');
+    });
+
+    it('skal konvertere rolle til upper case', () => {
+        expect(cleanedSøknad.søker.rolle).toEqual('MOR');
+    });
+
+    it('skal legge situasjon på søknadsobjektet', () => {
+        expect(cleanedSøknad.situasjon).toEqual('fødsel');
+    });
+
+    it('skal ikke ha søkersituasjon objektet ved innsending', () => {
+        expect(cleanedSøknad.hasOwnProperty('søkersituasjon')).toBe(false);
     });
 });

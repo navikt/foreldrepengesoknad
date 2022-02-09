@@ -139,8 +139,8 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const førsteUttaksdag = Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste();
     const datoAvgrensinger = uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(dateToISOString(førsteUttaksdag));
 
-    const fødselsdato = isFødtBarn(barn) ? ISOStringToDate(barn.fødselsdatoer[0]) : undefined;
-    const termindato = isFødtBarn(barn) ? ISOStringToDate(barn.termindato) : undefined;
+    const fødselsdato = isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
+    const termindato = isFødtBarn(barn) ? barn.termindato : undefined;
     const visInfoOmPrematuruker =
         søkersituasjon.situasjon === 'fødsel' ? skalViseInfoOmPrematuruker(fødselsdato, termindato) : false;
     const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker

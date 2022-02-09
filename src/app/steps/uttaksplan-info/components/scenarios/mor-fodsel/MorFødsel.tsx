@@ -76,8 +76,8 @@ const MorFødsel: FunctionComponent<Props> = ({
 
     const antallBarn = parseInt(barn.antallBarn, 10);
 
-    const fødselsdato = isFødtBarn(barn) ? ISOStringToDate(barn.fødselsdatoer[0]) : undefined;
-    const termindato = isFødtBarn(barn) ? ISOStringToDate(barn.termindato) : undefined;
+    const fødselsdato = isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
+    const termindato = isFødtBarn(barn) ? barn.termindato : undefined;
     const visInfoOmPrematuruker =
         søkersituasjon.situasjon === 'fødsel' ? skalViseInfoOmPrematuruker(fødselsdato, termindato) : false;
     const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker

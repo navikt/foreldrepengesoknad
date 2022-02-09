@@ -1,5 +1,5 @@
 import { Block, hasValue, intlUtils, Step, UtvidetInformasjon } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import actionCreator from 'app/context/action/actionCreator';
@@ -57,7 +57,9 @@ const AnnenForelder = () => {
             };
             const newBarn: Barn = {
                 ...barn,
-                datoForAleneomsorg: hasValue(values.datoForAleneomsorg) ? values.datoForAleneomsorg : undefined,
+                datoForAleneomsorg: hasValue(values.datoForAleneomsorg)
+                    ? ISOStringToDate(values.datoForAleneomsorg)
+                    : undefined,
                 dokumentasjonAvAleneomsorg:
                     values.dokumentasjonAvAleneomsorg && values.dokumentasjonAvAleneomsorg.length > 0
                         ? values.dokumentasjonAvAleneomsorg

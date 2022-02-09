@@ -11,27 +11,27 @@ export enum BarnType {
 interface Common {
     type: BarnType;
     antallBarn: string;
-    dokumentasjonAvAleneomsorg?: any[];
-    datoForAleneomsorg?: string;
+    dokumentasjonAvAleneomsorg?: Attachment[];
+    datoForAleneomsorg?: Date;
 }
 
 export interface FødtBarn extends Common {
     type: BarnType.FØDT;
-    fødselsdatoer: string[];
-    termindato?: string;
+    fødselsdatoer: Date[];
+    termindato?: Date;
 }
 
 export interface UfødtBarn extends Common {
     type: BarnType.UFØDT;
-    termindato: string;
-    terminbekreftelse: any[];
-    terminbekreftelsedato?: string;
+    termindato: Date;
+    terminbekreftelse: Attachment[];
+    terminbekreftelsedato?: Date;
 }
 
 export interface AdoptertBarn extends Common {
     type: BarnType.ADOPTERT_STEBARN | BarnType.ADOPTERT_ANNET_BARN;
-    adopsjonsdato: string;
-    fødselsdatoer: string[];
+    adopsjonsdato: Date;
+    fødselsdatoer: Date[];
     omsorgsovertakelse: Attachment[];
 }
 
@@ -42,7 +42,7 @@ export interface AdoptertStebarn extends AdoptertBarn {
 export interface AdoptertAnnetBarn extends AdoptertBarn {
     type: BarnType.ADOPTERT_ANNET_BARN;
     adoptertIUtlandet: boolean;
-    ankomstdato?: string;
+    ankomstdato?: Date;
 }
 
 type Barn = FødtBarn | UfødtBarn | AdoptertBarn | AdoptertStebarn | AdoptertAnnetBarn;

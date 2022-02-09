@@ -1,16 +1,17 @@
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import Barn, { isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
 import { RegistrertBarn } from 'app/types/Person';
 import dayjs from 'dayjs';
 
 export const getFamiliehendelsedato = (barn: Barn): string => {
     if (isFødtBarn(barn)) {
-        return barn.fødselsdatoer[0];
+        return dateToISOString(barn.fødselsdatoer[0]);
     }
     if (isUfødtBarn(barn)) {
-        return barn.termindato;
+        return dateToISOString(barn.termindato);
     }
 
-    return barn.adopsjonsdato;
+    return dateToISOString(barn.adopsjonsdato);
 };
 
 export const getRegistrertBarnOmDetFinnes = (

@@ -1,5 +1,5 @@
 import { hasValue } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import AnnenForelder, { isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Barn from 'app/context/types/Barn';
@@ -111,7 +111,7 @@ export const getAnnenForelderFormInitialValues = (
             kanIkkeOppgis: annenForelder.kanIkkeOppgis,
             fnr: annenForelder.fnr,
             aleneOmOmsorg: convertBooleanOrUndefinedToYesOrNo(søker.erAleneOmOmsorg),
-            datoForAleneomsorg: barn.datoForAleneomsorg || '',
+            datoForAleneomsorg: dateToISOString(barn.datoForAleneomsorg) || '',
             utenlandskFnr: annenForelder.utenlandskFnr || false,
         };
     }

@@ -1,3 +1,4 @@
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Barn, { isAdoptertAnnetBarn, isAdoptertStebarn, isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
@@ -46,9 +47,10 @@ const getStønadskontoParams = (
         morHarRett: getMorHarRett(erFarMedmor, annenForelder),
         morHarAleneomsorg: !erFarMedmor && barn.datoForAleneomsorg !== undefined,
         farHarAleneomsorg: erFarMedmor && barn.datoForAleneomsorg !== undefined,
-        fødselsdato: isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined,
-        omsorgsovertakelsesdato: isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? barn.adopsjonsdato : undefined,
-        termindato: isFødtBarn(barn) || isUfødtBarn(barn) ? barn.termindato : undefined,
+        fødselsdato: isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined,
+        omsorgsovertakelsesdato:
+            isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? dateToISOString(barn.adopsjonsdato) : undefined,
+        termindato: isFødtBarn(barn) || isUfødtBarn(barn) ? dateToISOString(barn.termindato) : undefined,
     };
 };
 

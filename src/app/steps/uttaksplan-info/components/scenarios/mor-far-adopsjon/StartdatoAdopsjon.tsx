@@ -55,7 +55,7 @@ const StartdatoAdopsjon: FunctionComponent<Props> = ({ valgtStartdatoAdopsjon })
     if (isAdoptertAnnetBarn(barn) && barn.ankomstdato) {
         radios.push({
             label: intlUtils(intl, 'uttaksplaninfo.startdatoAdopsjon.alternativ.ankomst', {
-                dato: formaterDatoUtenDag(ISOStringToDate(barn.ankomstdato)!),
+                dato: formaterDatoUtenDag(barn.ankomstdato),
             }),
             value: AdopsjonStartdatoValg.ANKOMST,
         });
@@ -64,7 +64,7 @@ const StartdatoAdopsjon: FunctionComponent<Props> = ({ valgtStartdatoAdopsjon })
     if (isAdoptertBarn(barn)) {
         radios.push({
             label: intlUtils(intl, 'uttaksplaninfo.startdatoAdopsjon.alternativ.omsorgsovertakelse', {
-                dato: formaterDatoUtenDag(ISOStringToDate(barn.adopsjonsdato)!),
+                dato: formaterDatoUtenDag(barn.adopsjonsdato),
             }),
             value: AdopsjonStartdatoValg.OMSORGSOVERTAKELSE,
         });

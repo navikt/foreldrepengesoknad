@@ -85,8 +85,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         const startdato = finnStartdatoAdopsjon(
             values.startdatoAdopsjonValg!,
             values.annenStartdatoAdopsjon,
-            barnAdopsjonsdato,
-            ankomstdato
+            dateToISOString(barnAdopsjonsdato),
+            dateToISOString(ankomstdato)
         );
 
         return [
@@ -148,12 +148,10 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     const erAdoptertIUtlandet = isAdoptertAnnetBarn(barn) ? barn.adoptertIUtlandet : false;
     const ankomstdato = isAdoptertAnnetBarn(barn) ? barn.ankomstdato : undefined;
-    const ankomstdatoDate = ankomstdato ? ISOStringToDate(ankomstdato) : undefined;
     const antallBarn = parseInt(barn.antallBarn, 10);
-    const adopsjonsdatoDate = ISOStringToDate(barn.adopsjonsdato);
     const latestDate =
-        ankomstdatoDate !== undefined && adopsjonsdatoDate !== undefined
-            ? dateToISOString(findEldsteDato([ankomstdatoDate, adopsjonsdatoDate])) // todo - sjekk logikk her
+        ankomstdato !== undefined && barn.adopsjonsdato !== undefined
+            ? dateToISOString(findEldsteDato([ankomstdato, barn.adopsjonsdato])) // todo - sjekk logikk her
             : barn.adopsjonsdato;
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
@@ -274,13 +272,13 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             padBottom="l"
                             visible={
                                 formValues.startdatoAdopsjonValg !== undefined &&
-                                dayjs(ISOStringToDate(latestDate)).isBefore(
+                                dayjs(latestDate).isBefore(
                                     dayjs(
                                         finnStartdatoAdopsjon(
                                             formValues.startdatoAdopsjonValg,
                                             formValues.annenStartdatoAdopsjon,
-                                            barn.adopsjonsdato,
-                                            ankomstdato
+                                            dateToISOString(barn.adopsjonsdato),
+                                            dateToISOString(ankomstdato)
                                         )
                                     )
                                 ) &&
