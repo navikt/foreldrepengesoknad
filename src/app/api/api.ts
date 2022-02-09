@@ -2,7 +2,6 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { Kvittering } from 'app/types/Kvittering';
 import Sak from 'app/types/Sak';
-import { StorageKvittering } from 'app/types/StorageKvittering';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { useRequest } from 'app/utils/hooks/useRequest';
 import { AxiosResponse } from 'axios';
@@ -107,11 +106,8 @@ const deleteStoredAppState = (fnr: string) => {
     return getAxiosInstance(fnr).delete('/storage', { withCredentials: true });
 };
 
-const sendStorageKvittering = (
-    storageKvittering: StorageKvittering,
-    fnr: string
-): Promise<AxiosResponse<Kvittering>> => {
-    return getAxiosInstance(fnr).post('/storage/kvittering/foreldrepenger', storageKvittering, {
+const getStorageKvittering = (fnr: string): Promise<AxiosResponse<Kvittering>> => {
+    return getAxiosInstance(fnr).get('/storage/kvittering/foreldrepenger', {
         withCredentials: true,
         timeout: 15 * 1000,
     });
@@ -173,32 +169,17 @@ function sendSøknad(søknad: SøknadForInnsending, fnr: string) {
     });
 }
 
-// function sendStorageKvittering(storageKvittering: StorageKvittering) {
-//     return getAxiosInstance('123').post('/storage/kvittering/foreldrepenger', storageKvittering, {
-//         withCredentials: true,
-//         timeout: 15 * 1000,
-//     });
-// }
-
-// function getStorageKvittering() {
-//     return getAxiosInstance('123').get('/storage/kvittering/foreldrepenger', {
-//         withCredentials: true,
-//         timeout: 15 * 1000,
-//     });
-// }
-
 const Api = {
     useGetSaker,
     useGetUttakskontoer,
     storeAppState,
     deleteStoredAppState,
-    sendStorageKvittering,
+    getStorageKvittering,
     useGetEksisterendeSakMedFnr,
     useStoredAppState,
     useSøkerinfo,
     useGetEksisterendeSak,
     sendSøknad,
-    // getStorageKvittering,
 };
 
 export default Api;

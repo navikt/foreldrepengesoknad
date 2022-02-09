@@ -33,9 +33,7 @@ const SøknadSendt = () => {
     const bem = bemUtils('søknadSendt');
 
     useEffect(() => {
-        Api.sendStorageKvittering({ innsendingstidspunkt: dayjs().format('YYYY-MM-DD') }, søkerinfo.person.fnr).then(
-            (response) => setKvittering(response.data)
-        );
+        Api.getStorageKvittering(søkerinfo.person.fnr).then((response) => setKvittering(response.data));
 
         logAmplitudeEvent('sidevisning', {
             app: 'foreldrepengesoknad',
