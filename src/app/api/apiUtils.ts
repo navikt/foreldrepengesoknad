@@ -3,6 +3,9 @@ import AnnenForelder, { AnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 
 import { Periode, UttaksperiodeBase, Periodetype } from 'uttaksplan/types/Periode';
 import Barn from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
+import Søkersituasjon from 'app/context/types/Søkersituasjon';
+import { Søkerrolle } from 'app/types/Søkerrolle';
+import { Situasjon } from 'app/types/Situasjon';
 
 export interface AnnenForelderOppgittForInnsending extends Omit<AnnenForelder, 'erUfør'> {
     harMorUføretrygd?: boolean;
@@ -20,13 +23,16 @@ type LocaleForInnsending = 'NB' | 'NN';
 
 interface SøkerForInnsending extends Omit<Søker, 'språkkode'> {
     språkkode: LocaleForInnsending;
+    rolle: Søkerrolle;
 }
 
-export interface SøknadForInnsending extends Omit<Søknad, 'barn' | 'annenForelder' | 'uttaksplan' | 'søker'> {
+export interface SøknadForInnsending
+    extends Omit<Søknad, 'barn' | 'annenForelder' | 'uttaksplan' | 'søker' | 'søkersituasjon'> {
     barn: BarnForInnsending;
     annenForelder: AnnenForelderForInnsending;
     uttaksplan: PeriodeForInnsending[];
     søker: SøkerForInnsending;
+    situasjon: Situasjon;
 }
 
 const cleanUttaksperiode = (uttaksPeriode: UttaksperiodeBase): UttaksPeriodeForInnsending => {
@@ -56,24 +62,25 @@ const cleanBarn = (barn: Barn): BarnForInnsending => {
     return barnRest;
 };
 
-const cleanSøker = (søker: Søker): SøkerForInnsending => {
+const cleanSøker = (søker: Søker, søkersituasjon: Søkersituasjon): SøkerForInnsending => {
     const cleanedSpråkkode = søker.språkkode === 'nb' ? 'NB' : 'NN';
 
-    return { ...søker, språkkode: cleanedSpråkkode };
+    return { ...søker, rolle: søkersituasjon.rolle, språkkode: cleanedSpråkkode };
 };
 
 export const cleanUpSøknadsdataForInnsending = (søknad: Søknad): SøknadForInnsending => {
-    const { annenForelder, barn, uttaksplan, søker } = søknad;
+    const { annenForelder, barn, uttaksplan, søker, søkersituasjon, ...rest } = søknad;
     const cleanedAnnenForelder = cleanAnnenForelder(annenForelder);
     const cleanedUttaksplan = cleanPerioder(uttaksplan);
     const cleanedBarn = cleanBarn(barn);
-    const cleanedSøker = cleanSøker(søker);
+    const cleanedSøker = cleanSøker(søker, søkersituasjon);
 
     return {
-        ...søknad,
+        ...rest,
         annenForelder: cleanedAnnenForelder,
         barn: cleanedBarn,
         uttaksplan: cleanedUttaksplan,
         søker: cleanedSøker,
+        situasjon: søkersituasjon.situasjon,
     };
 };
