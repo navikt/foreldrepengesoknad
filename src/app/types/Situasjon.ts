@@ -1,1 +1,1 @@
-export type Situasjon = 'fødsel' | 'adopsjon' | 'omsorgsovertakelse' | '';
+export type Situasjon = 'fødsel' | 'adopsjon' | 'omsorgsovertakelse';

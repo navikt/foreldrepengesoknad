@@ -1,6 +1,8 @@
 import SøknadRoutes from 'app/routes/routes';
 import Sak from 'app/types/Sak';
+import { Situasjon } from 'app/types/Situasjon';
 import { Søkerinfo } from 'app/types/Søkerinfo';
+import { Søkerrolle } from 'app/types/Søkerrolle';
 import { Søknad } from './types/Søknad';
 import UttaksplanInfo from './types/UttaksplanInfo';
 
@@ -23,8 +25,8 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
         type: 'foreldrepenger',
         harGodkjentVilkår: false,
         søkersituasjon: {
-            rolle: '',
-            situasjon: '',
+            rolle: '' as Søkerrolle,
+            situasjon: '' as Situasjon,
         },
         barn: undefined!,
         annenForelder: {

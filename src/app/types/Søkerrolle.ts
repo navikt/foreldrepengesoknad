@@ -1,1 +1,1 @@
-export type Søkerrolle = 'far' | 'medmor' | 'mor' | '';
+export type Søkerrolle = 'far' | 'medmor' | 'mor';
