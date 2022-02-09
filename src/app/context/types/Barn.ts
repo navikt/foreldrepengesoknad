@@ -24,7 +24,7 @@ export interface FødtBarn extends Common {
 export interface UfødtBarn extends Common {
     type: BarnType.UFØDT;
     termindato: Date;
-    terminbekreftelse: Attachment[];
+    terminbekreftelse?: Attachment[];
     terminbekreftelsedato?: Date;
 }
 

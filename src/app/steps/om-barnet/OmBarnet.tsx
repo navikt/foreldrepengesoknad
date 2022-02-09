@@ -27,7 +27,7 @@ const OmBarnet: React.FunctionComponent = () => {
     const { arbeidsforhold, registrerteBarn } = useSøkerinfo();
 
     const onValidSubmitHandler = (values: Partial<OmBarnetFormData>) => {
-        const barn = mapOmBarnetFormDataToState(values, registrerteBarn);
+        const barn = mapOmBarnetFormDataToState(values, registrerteBarn, arbeidsforhold);
         return [actionCreator.setOmBarnet(barn)];
     };
 
@@ -40,7 +40,7 @@ const OmBarnet: React.FunctionComponent = () => {
 
     return (
         <OmBarnetFormComponents.FormikWrapper
-            initialValues={getOmBarnetInitialValues(barn, registrerteBarn)}
+            initialValues={getOmBarnetInitialValues(barn, registrerteBarn, arbeidsforhold)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({

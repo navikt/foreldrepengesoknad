@@ -8,6 +8,7 @@ import Barn, {
     isFødtBarn,
     isUfødtBarn,
 } from 'app/context/types/Barn';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { RegistrertBarn } from 'app/types/Person';
 import { Skjemanummer } from 'app/types/Skjemanummer';
@@ -64,7 +65,8 @@ export const cleanupOmBarnetFormData = (
 
 export const mapOmBarnetFormDataToState = (
     values: Partial<OmBarnetFormData>,
-    registrerteBarn: RegistrertBarn[]
+    registrerteBarn: RegistrertBarn[],
+    arbeidsforhold: Arbeidsforhold[]
 ): Barn => {
     if (!values.gjelderAnnetBarn && values.valgteBarn && values.valgteBarn.length > 0) {
         const eldsteBarn = velgEldsteBarn(registrerteBarn, values.valgteBarn);
@@ -92,10 +94,18 @@ export const mapOmBarnetFormDataToState = (
             AttachmentType.TERMINBEKREFTELSE,
             Skjemanummer.TERMINBEKREFTELSE
         );
+
+        if (arbeidsforhold.length === 0) {
+            return {
+                type: BarnType.UFØDT,
+                terminbekreftelse: terminbekreftelse!,
+                terminbekreftelsedato: ISOStringToDate(values.terminbekreftelsedato),
+                antallBarn: values.antallBarn!,
+                termindato: ISOStringToDate(values.termindato)!,
+            };
+        }
         return {
             type: BarnType.UFØDT,
-            terminbekreftelse: terminbekreftelse!,
-            terminbekreftelsedato: ISOStringToDate(values.terminbekreftelsedato),
             antallBarn: values.antallBarn!,
             termindato: ISOStringToDate(values.termindato)!,
         };
@@ -128,7 +138,11 @@ export const mapOmBarnetFormDataToState = (
     };
 };
 
-export const getOmBarnetInitialValues = (barn: Barn, registrerteBarn: RegistrertBarn[]): OmBarnetFormData => {
+export const getOmBarnetInitialValues = (
+    barn: Barn,
+    registrerteBarn: RegistrertBarn[],
+    arbeidsforhold: Arbeidsforhold[]
+): OmBarnetFormData => {
     const initialOmBarnetValues = getInitValues();
 
     if (!barn) {
@@ -161,11 +175,21 @@ export const getOmBarnetInitialValues = (barn: Barn, registrerteBarn: Registrert
     }
 
     if (isUfødtBarn(barn)) {
+        if (arbeidsforhold.length === 0) {
+            return {
+                ...initialOmBarnetValues,
+                erBarnetFødt: YesOrNo.NO,
+                terminbekreftelse: barn.terminbekreftelse || [],
+                terminbekreftelsedato: dateToISOString(barn.terminbekreftelsedato),
+                termindato: dateToISOString(barn.termindato),
+                antallBarn: barn.antallBarn,
+                gjelderAnnetBarn: true,
+            };
+        }
+
         return {
             ...initialOmBarnetValues,
             erBarnetFødt: YesOrNo.NO,
-            terminbekreftelse: barn.terminbekreftelse,
-            terminbekreftelsedato: dateToISOString(barn.terminbekreftelsedato),
             termindato: dateToISOString(barn.termindato),
             antallBarn: barn.antallBarn,
             gjelderAnnetBarn: true,
