@@ -156,6 +156,19 @@ const foreldrepengesøknadReducer = (
                     ...action.payload,
                 },
             };
+        case ForeldrepengesøknadContextActionKeys.SET_GODKJENT_OPPSUMMERING:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    harGodkjentOppsummering: action.payload,
+                },
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_KVITTERING:
+            return {
+                ...state,
+                kvittering: action.payload,
+            };
         default:
             return state;
     }

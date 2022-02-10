@@ -1,15 +1,15 @@
-import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 
 export enum OppsummeringFormField {
     harGodkjentOppsummering = 'harGodkjentOppsummering',
 }
 
 export interface OppsummeringFormData {
-    [OppsummeringFormField.harGodkjentOppsummering]: YesOrNo;
+    [OppsummeringFormField.harGodkjentOppsummering]: boolean;
 }
 
 const initialOppsummeringValues: OppsummeringFormData = {
-    [OppsummeringFormField.harGodkjentOppsummering]: YesOrNo.UNANSWERED,
+    [OppsummeringFormField.harGodkjentOppsummering]: false,
 };
 
 export const getInitialOppsummeringValues = (): OppsummeringFormData => {

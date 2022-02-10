@@ -17,4 +17,5 @@ export interface Søknad {
     erEndringssøknad: boolean;
     dekningsgrad: Dekningsgrad;
     uttaksplan: Periode[];
+    harGodkjentOppsummering: boolean;
 }

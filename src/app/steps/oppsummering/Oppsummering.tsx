@@ -1,10 +1,8 @@
 import { bemUtils, Block, intlUtils, Step } from '@navikt/fp-common';
 import VeilederNormal from 'app/assets/VeilederNormal';
-import SøknadRoutes from 'app/routes/routes';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Veilederpanel from 'nav-frontend-veilederpanel';
-import React from 'react';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import React, { useEffect, useState } from 'react';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -15,32 +13,56 @@ import BarnOppsummering from './components/barn-oppsummering/BarnOppsummering';
 import OppsummeringsPanel from './components/OppsummeringsPanel';
 import Personalia from './components/Personalia';
 import UtenlandsoppholdOppsummering from './components/utenlandsopphold-oppsummering/UtenlandsoppholdOppsummering';
-
-import './oppsummering.less';
 import {
     getInitialOppsummeringValues,
     OppsummeringFormComponents,
+    OppsummeringFormData,
     OppsummeringFormField,
 } from './oppsummeringFormConfig';
 import { validateHarGodkjentOppsummering } from './validation/oppsummeringValidation';
 import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-inntekter-oppsummering/ArbeidsforholdOgAndreInntekterOppsummering';
-import { sendInnSøknad } from 'app/utils/submitUtils';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import Api from 'app/api/api';
+import actionCreator from 'app/context/action/actionCreator';
+import { cleanUpSøknadsdataForInnsending } from 'app/api/apiUtils';
+import { useHistory } from 'react-router-dom';
+
+import './oppsummering.less';
+import SøknadRoutes from 'app/routes/routes';
 
 const Oppsummering = () => {
     const intl = useIntl();
+    const { dispatch, state } = useForeldrepengesøknadContext();
+    const history = useHistory();
+    const { kvittering } = state;
     const bem = bemUtils('oppsummering');
     const { barn, annenForelder, søker, informasjonOmUtenlandsopphold, søkersituasjon } = useSøknad();
     const søkerinfo = useSøkerinfo();
-
-    const onValidSubmitHandler = () => [];
-
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(
-        onValidSubmitHandler,
-        SøknadRoutes.SØKNAD_SENDT,
-        (state: ForeldrepengesøknadContextState) => sendInnSøknad(state)
-    );
+    const søknad = useSøknad();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const onAvbrytSøknad = useAvbrytSøknad();
+
+    useEffect(() => {
+        if (isSubmitting) {
+            const cleanedSøknad = cleanUpSøknadsdataForInnsending(søknad);
+
+            Api.sendSøknad(cleanedSøknad, søkerinfo.person.fnr).then((response) => {
+                dispatch(actionCreator.setKvittering(response.data));
+            });
+        }
+    }, [søknad, dispatch, søkerinfo.person.fnr, isSubmitting]);
+
+    useEffect(() => {
+        if (kvittering !== undefined) {
+            setIsSubmitting(false);
+            history.push(SøknadRoutes.SØKNAD_SENDT);
+        }
+    }, [kvittering, history]);
+
+    const handleSubmit = (values: Partial<OppsummeringFormData>) => {
+        dispatch(actionCreator.setGodkjentOppsummering(values.harGodkjentOppsummering!));
+        setIsSubmitting(true);
+    };
 
     return (
         <OppsummeringFormComponents.FormikWrapper

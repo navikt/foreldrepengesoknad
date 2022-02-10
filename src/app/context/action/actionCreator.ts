@@ -1,6 +1,7 @@
 import SøknadRoutes from 'app/routes/routes';
 import { Attachment } from 'app/types/Attachment';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import { Kvittering } from 'app/types/Kvittering';
 import Sak from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Periode } from 'uttaksplan/types/Periode';
@@ -33,6 +34,8 @@ export enum ForeldrepengesøknadContextActionKeys {
     LAG_UTTAKSPLANFORSLAG = 'lagUttaksplanforslag',
     SET_UTTAKSPLAN = 'setUttaksplan',
     SET_SØKNAD = 'setSøknad',
+    SET_GODKJENT_OPPSUMMERING = 'setGodkjentOppsummering',
+    SET_KVITTERING = 'setKvittering',
 }
 
 interface SetVelkommen {
@@ -215,6 +218,26 @@ const setSøknad = (payload: Søknad): SetSøknad => ({
     payload,
 });
 
+interface SetGodkjentOppsummering {
+    type: ForeldrepengesøknadContextActionKeys.SET_GODKJENT_OPPSUMMERING;
+    payload: boolean;
+}
+
+const setGodkjentOppsummering = (payload: boolean): SetGodkjentOppsummering => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_GODKJENT_OPPSUMMERING,
+    payload,
+});
+
+interface SetKvittering {
+    type: ForeldrepengesøknadContextActionKeys.SET_KVITTERING;
+    payload: Kvittering;
+}
+
+const setKvittering = (payload: Kvittering): SetKvittering => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_KVITTERING,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetErEndringssøknad
@@ -233,6 +256,8 @@ export type ForeldrepengesøknadContextAction =
     | SetVedlegg
     | SetSøknad
     | LagUttaksplanforslag
+    | SetGodkjentOppsummering
+    | SetKvittering
     | SetUttaksplan;
 
 export default {
@@ -254,4 +279,6 @@ export default {
     lagUttaksplanforslag,
     setUttaksplan,
     setSøknad,
+    setGodkjentOppsummering,
+    setKvittering,
 };

@@ -39,11 +39,13 @@ const context = {
         erEndringssøknad: false,
         dekningsgrad: '100',
         uttaksplan: [],
+        harGodkjentOppsummering: false,
     },
     version: 3,
     currentRoute: '/soknad/uttaksplan-info',
     søkerinfo: {} as Søkerinfo,
     saker: [],
+    kvittering: undefined!,
 } as ForeldrepengesøknadContextState;
 const søkerinfo = {
     søker: {

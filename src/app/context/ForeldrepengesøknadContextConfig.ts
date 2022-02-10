@@ -1,4 +1,5 @@
 import SøknadRoutes from 'app/routes/routes';
+import { Kvittering } from 'app/types/Kvittering';
 import Sak from 'app/types/Sak';
 import { Situasjon } from 'app/types/Situasjon';
 import { Søkerinfo } from 'app/types/Søkerinfo';
@@ -16,6 +17,7 @@ export interface ForeldrepengesøknadContextState {
     annenPartEksisterendeSakSaksnummer?: string;
     saker: Sak[];
     uttaksplanInfo?: UttaksplanInfo;
+    kvittering: Kvittering;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
@@ -48,8 +50,10 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
         erEndringssøknad: false,
         dekningsgrad: undefined!,
         uttaksplan: [],
+        harGodkjentOppsummering: false,
     },
     søkerinfo: undefined!,
     saker: [],
     uttaksplanInfo: undefined,
+    kvittering: undefined!,
 };

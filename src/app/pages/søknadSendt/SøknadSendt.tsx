@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import DocumentTitle from 'react-document-title';
 import Lenke from 'nav-frontend-lenker';
@@ -8,12 +8,10 @@ import KvitteringHeader from './components/KvitteringHeader';
 import KvitteringSuksess from './components/KvitteringSuksess';
 import StatusBoks from './components/StatusBoks';
 import SøknadSendtSectionHeader from './components/SøknadSendtSectionHeader';
-import { Kvittering } from 'app/types/Kvittering';
 import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
 import { openPdfPreview } from 'app/utils/pdfUtils';
 import links from 'app/links/links';
 import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
-import Api from 'app/api/api';
 import dayjs from 'dayjs';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -21,10 +19,12 @@ import { MissingAttachment } from 'app/types/MissingAttachment';
 
 import './søknadSendt.less';
 import SøknadSendtTittel from './components/SøknadSendtTittel';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 
 const SøknadSendt = () => {
-    const [kvittering, setKvittering] = useState<Kvittering>();
     const søkerinfo = useSøkerinfo();
+    const { state } = useForeldrepengesøknadContext();
+    const { kvittering } = state;
     const missingAttachments: MissingAttachment[] = [];
     const erEndringssøknad = false;
     const behandlingsFrist = '2021-06-14';
@@ -33,14 +33,12 @@ const SøknadSendt = () => {
     const bem = bemUtils('søknadSendt');
 
     useEffect(() => {
-        Api.getStorageKvittering(søkerinfo.person.fnr).then((response) => setKvittering(response.data));
-
         logAmplitudeEvent('sidevisning', {
             app: 'foreldrepengesoknad',
             team: 'foreldrepenger',
             pageKey: PageKeys.SøknadSendt,
         });
-    }, [søkerinfo.person.fnr]);
+    }, []);
 
     if (!kvittering) {
         return (

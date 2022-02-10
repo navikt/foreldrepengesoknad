@@ -20,6 +20,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
         } as Søkerinfo,
         søknad: {} as Søknad,
         saker: [],
+        kvittering: undefined!,
     };
 
     it('skal vise velkommen-side når denne ruten er valgt', () => {
