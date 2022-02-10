@@ -116,12 +116,13 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     const toggleVisTidsperiode = () => {
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
     };
+    const forelder = erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
 
     const handleCleanup = (
         values: PeriodeUttakFormData,
         visibility: QuestionVisibility<PeriodeUttakFormField, undefined>
     ): PeriodeUttakFormData => {
-        return cleanPeriodeUttakFormData(values, visibility);
+        return cleanPeriodeUttakFormData(values, visibility, erDeltUttak, forelder);
     };
 
     const velgbareStønadskontoer = getVelgbareStønadskontotyper(stønadskontoer);
@@ -129,7 +130,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
 
     return (
         <PeriodeUttakFormComponents.FormikWrapper
-            initialValues={getPeriodeUttakFormInitialValues(periode)}
+            initialValues={getPeriodeUttakFormInitialValues(periode, erDeltUttak, forelder)}
             onSubmit={(values: Partial<PeriodeUttakFormData>) =>
                 handleUpdatePeriode(
                     mapPeriodeUttakFormToPeriode(

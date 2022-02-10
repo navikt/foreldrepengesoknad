@@ -53,7 +53,9 @@ const AnnenForelder = () => {
         (values: Partial<AnnenForelderFormData>) => {
             const newSøker: Søker = {
                 ...søker,
-                erAleneOmOmsorg: !!convertYesOrNoOrUndefinedToBoolean(values.aleneOmOmsorg),
+                erAleneOmOmsorg: values.kanIkkeOppgis
+                    ? true
+                    : !!convertYesOrNoOrUndefinedToBoolean(values.aleneOmOmsorg),
             };
             const newBarn: Barn = {
                 ...barn,

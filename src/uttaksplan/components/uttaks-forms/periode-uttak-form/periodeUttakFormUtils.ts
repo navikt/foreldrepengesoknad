@@ -21,28 +21,37 @@ import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getOppholdsÅrsakFromStønadskonto, getStønadskontoFromOppholdsårsak } from 'uttaksplan/utils/periodeUtils';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 
-const initialValues: PeriodeUttakFormData = {
-    [PeriodeUttakFormField.fom]: undefined,
-    [PeriodeUttakFormField.tom]: undefined,
-    [PeriodeUttakFormField.konto]: '',
-    [PeriodeUttakFormField.samtidigUttak]: YesOrNo.UNANSWERED,
-    [PeriodeUttakFormField.aktivitetskravMor]: '',
-    [PeriodeUttakFormField.aktivitetskravMorDokumentasjon]: [],
-    [PeriodeUttakFormField.overføringsårsak]: '',
-    [PeriodeUttakFormField.overføringsdokumentasjon]: [],
-    [PeriodeUttakFormField.skalHaGradering]: YesOrNo.UNANSWERED,
-    [PeriodeUttakFormField.stillingsprosent]: '',
-    [PeriodeUttakFormField.arbeidsformer]: [],
-    [PeriodeUttakFormField.erMorForSyk]: YesOrNo.UNANSWERED,
-    [PeriodeUttakFormField.samtidigUttakProsent]: '',
-    [PeriodeUttakFormField.hvemSkalTaUttak]: '',
-    [PeriodeUttakFormField.ønskerFlerbarnsdager]: YesOrNo.UNANSWERED,
+const getInitialValues = (erDeltUttak: boolean, forelder: Forelder): PeriodeUttakFormData => {
+    const hvemSkalTaUttak = erDeltUttak ? '' : forelder;
+    const konto = erDeltUttak ? '' : StønadskontoType.Foreldrepenger;
+
+    return {
+        [PeriodeUttakFormField.fom]: undefined,
+        [PeriodeUttakFormField.tom]: undefined,
+        [PeriodeUttakFormField.konto]: konto,
+        [PeriodeUttakFormField.samtidigUttak]: YesOrNo.UNANSWERED,
+        [PeriodeUttakFormField.aktivitetskravMor]: '',
+        [PeriodeUttakFormField.aktivitetskravMorDokumentasjon]: [],
+        [PeriodeUttakFormField.overføringsårsak]: '',
+        [PeriodeUttakFormField.overføringsdokumentasjon]: [],
+        [PeriodeUttakFormField.skalHaGradering]: YesOrNo.UNANSWERED,
+        [PeriodeUttakFormField.stillingsprosent]: '',
+        [PeriodeUttakFormField.arbeidsformer]: [],
+        [PeriodeUttakFormField.erMorForSyk]: YesOrNo.UNANSWERED,
+        [PeriodeUttakFormField.samtidigUttakProsent]: '',
+        [PeriodeUttakFormField.hvemSkalTaUttak]: hvemSkalTaUttak,
+        [PeriodeUttakFormField.ønskerFlerbarnsdager]: YesOrNo.UNANSWERED,
+    };
 };
 
 export const cleanPeriodeUttakFormData = (
     values: PeriodeUttakFormData,
-    visibility: QuestionVisibility<PeriodeUttakFormField, undefined>
+    visibility: QuestionVisibility<PeriodeUttakFormField, undefined>,
+    erDeltUttak: boolean,
+    forelder: Forelder
 ): PeriodeUttakFormData => {
+    const initialValues = getInitialValues(erDeltUttak, forelder);
+
     const cleanedData: PeriodeUttakFormData = {
         fom: values.fom,
         tom: values.tom,
@@ -84,7 +93,13 @@ export const cleanPeriodeUttakFormData = (
     return cleanedData;
 };
 
-export const getPeriodeUttakFormInitialValues = (periode: Periode): PeriodeUttakFormData => {
+export const getPeriodeUttakFormInitialValues = (
+    periode: Periode,
+    erDeltUttak: boolean,
+    forelder: Forelder
+): PeriodeUttakFormData => {
+    const initialValues = getInitialValues(erDeltUttak, forelder);
+
     if (periode !== undefined) {
         if (isUttaksperiode(periode)) {
             return {
@@ -94,9 +109,9 @@ export const getPeriodeUttakFormInitialValues = (periode: Periode): PeriodeUttak
                 aktivitetskravMor: periode.morsAktivitetIPerioden || '',
                 aktivitetskravMorDokumentasjon: periode.vedlegg || [],
                 erMorForSyk: convertBooleanOrUndefinedToYesOrNo(periode.erMorForSyk),
-                hvemSkalTaUttak: periode.forelder,
+                hvemSkalTaUttak: periode.forelder || initialValues.hvemSkalTaUttak,
                 arbeidsformer: periode.arbeidsformer || [],
-                konto: periode.konto,
+                konto: periode.konto || initialValues.konto,
                 samtidigUttak: convertBooleanOrUndefinedToYesOrNo(periode.ønskerSamtidigUttak),
                 samtidigUttakProsent: periode.samtidigUttakProsent || '',
                 skalHaGradering: convertBooleanOrUndefinedToYesOrNo(periode.gradert),

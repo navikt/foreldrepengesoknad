@@ -121,7 +121,7 @@ const MorFødsel: FunctionComponent<Props> = ({
             actionCreator.lagUttaksplanforslag(
                 lagUttaksplan({
                     annenForelderErUfør: erMorUfør,
-                    erDeltUttak: true,
+                    erDeltUttak: !erAleneOmOmsorg,
                     erEndringssøknad,
                     erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
