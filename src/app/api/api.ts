@@ -13,6 +13,7 @@ import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
 import { mapEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { formaterDato } from 'app/utils/dateUtils';
 import { SøknadForInnsending } from './apiUtils';
+import { hasValue } from '@navikt/fp-common';
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
     morHarRett: boolean;
@@ -27,7 +28,7 @@ export interface TilgjengeligeStønadskontoerParams {
 }
 
 const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
-    return dato !== undefined ? formaterDato(dato, datoformat) : undefined;
+    return hasValue(dato) ? formaterDato(dato, datoformat) : undefined;
 };
 
 const uttakBaseUrl = Environment.UTTAK_API_URL;
