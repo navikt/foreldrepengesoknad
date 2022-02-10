@@ -14,6 +14,7 @@ const useOnValidSubmit = <T>(
     const { dispatch, state } = useForeldrepengesøknadContext();
     const history = useHistory();
     const [harSubmitted, setSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState(undefined);
 
     useEffect(() => {
@@ -38,14 +39,15 @@ const useOnValidSubmit = <T>(
         }
     }, [submitError]);
 
-    const setSubmitAndHandleSubmit = (values: T) => {
+    const handleSubmit = (values: T) => {
+        setIsSubmitting(true);
         const actions = submitHandler(values);
         const dispatchRouteChange =
             nextRoute === SøknadRoutes.SØKNAD_SENDT ? undefined : dispatch(actionCreator.updateCurrentRoute(nextRoute));
         Promise.all([dispatchRouteChange, ...actions.map((a) => dispatch(a))]).then(() => setSubmitted(true));
     };
 
-    return setSubmitAndHandleSubmit;
+    return { handleSubmit, isSubmitting };
 };
 
 export default useOnValidSubmit;

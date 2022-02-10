@@ -41,7 +41,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
         return [actionCreator.setInformasjonOmUtenlandsopphold(utenlandsopphold)];
     };
 
-    const onValidSubmit = useOnValidSubmit(
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.INNTEKTSINFORMASJON,
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
@@ -51,7 +51,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
     return (
         <UtenlandsoppholdFormComponents.FormikWrapper
             initialValues={getInitialUtenlandsoppholdValuesFromState(informasjonOmUtenlandsopphold)}
-            onSubmit={onValidSubmit}
+            onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = utenlandsoppholdFormQuestions.getVisbility(formValues);
 
@@ -171,7 +171,9 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                 />
                             </Block>
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                                <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                                <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                    {intlUtils(intl, 'søknad.gåVidere')}
+                                </Hovedknapp>
                             </Block>
                         </UtenlandsoppholdFormComponents.Form>
                     </Step>

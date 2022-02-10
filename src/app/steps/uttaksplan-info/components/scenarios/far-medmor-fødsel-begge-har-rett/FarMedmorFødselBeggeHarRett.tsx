@@ -105,7 +105,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
             ),
         ];
     };
-    const onValidSubmit = useOnValidSubmit(
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
@@ -114,7 +114,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     return (
         <FarMedmorFødselBeggeHarRettFormComponents.FormikWrapper
             initialValues={getInitialFarMedmorFødselBeggeHarRettValues(lagretUttaksplanInfo, dekningsgrad)}
-            onSubmit={onValidSubmit}
+            onSubmit={handleSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility(formValues);
 
@@ -209,7 +209,9 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                             )}
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                            <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                {intlUtils(intl, 'søknad.gåVidere')}
+                            </Hovedknapp>
                         </Block>
                     </FarMedmorFødselBeggeHarRettFormComponents.Form>
                 );

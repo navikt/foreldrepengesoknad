@@ -35,7 +35,7 @@ const Oppsummering = () => {
 
     const onValidSubmitHandler = () => [];
 
-    const onValidSubmit = useOnValidSubmit(
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.SØKNAD_SENDT,
         (state: ForeldrepengesøknadContextState) => sendInnSøknad(state)
@@ -45,7 +45,7 @@ const Oppsummering = () => {
     return (
         <OppsummeringFormComponents.FormikWrapper
             initialValues={getInitialOppsummeringValues()}
-            onSubmit={onValidSubmit}
+            onSubmit={handleSubmit}
             renderForm={() => {
                 return (
                     <OppsummeringFormComponents.Form includeButtons={false}>
@@ -100,7 +100,9 @@ const Oppsummering = () => {
                             </Block>
                             <Block padBottom="l">
                                 <div style={{ textAlign: 'center' }}>
-                                    <Hovedknapp>Send inn søknad</Hovedknapp>
+                                    <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                        Send inn søknad
+                                    </Hovedknapp>
                                 </div>
                             </Block>
                         </Step>

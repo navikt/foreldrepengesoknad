@@ -4,6 +4,7 @@ import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/li
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { RegistrertBarn } from 'app/types/Person';
 import { Søkerrolle } from 'app/types/Søkerrolle';
+import { velgEldsteBarn } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import dayjs from 'dayjs';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
@@ -15,13 +16,28 @@ export interface OmBarnetQuestionPayload extends OmBarnetFormData {
     registrerteBarn: RegistrertBarn[];
 }
 
-const includeTermindato = (rolle: Søkerrolle, fødselsdato: string | undefined): boolean => {
-    if (!fødselsdato) {
+const includeTermindato = (
+    rolle: Søkerrolle,
+    fødselsdato: string | undefined,
+    valgteBarn: string[],
+    registrerteBarn: RegistrertBarn[]
+): boolean => {
+    let eldsteBarnFødselsdato = undefined;
+
+    if (valgteBarn.length > 0) {
+        const eldsteBarn = velgEldsteBarn(registrerteBarn, valgteBarn);
+
+        eldsteBarnFødselsdato = eldsteBarn.fødselsdato;
+    }
+
+    if (!fødselsdato && !eldsteBarnFødselsdato) {
         return false;
     }
 
+    const relevantFødselsdato = eldsteBarnFødselsdato || fødselsdato;
+
     if (isFarEllerMedmor(rolle)) {
-        const sixWeeksAfterBirthday = dayjs(fødselsdato).add(6, 'weeks');
+        const sixWeeksAfterBirthday = dayjs(relevantFødselsdato).add(6, 'weeks');
 
         return dayjs(sixWeeksAfterBirthday).isAfter(new Date());
     }
@@ -95,12 +111,15 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
             (adopsjonAvEktefellesBarn === YesOrNo.YES && hasValue(fødselsdatoer[0])),
     },
     [OmBarnetFormField.termindato]: {
-        isIncluded: ({ rolle, fødselsdatoer, erBarnetFødt }) =>
-            (includeTermindato(rolle, fødselsdatoer[0]) && erBarnetFødt !== YesOrNo.UNANSWERED) ||
-            erBarnetFødt === YesOrNo.NO,
+        isIncluded: ({ rolle, fødselsdatoer, erBarnetFødt, valgteBarn, registrerteBarn }) =>
+            includeTermindato(rolle, fødselsdatoer[0], valgteBarn, registrerteBarn) || erBarnetFødt === YesOrNo.NO,
         isAnswered: ({ termindato }) => hasValue(termindato),
-        visibilityFilter: ({ fødselsdatoer, erBarnetFødt, antallBarn }) => {
-            return hasValue(fødselsdatoer[0]) || (erBarnetFødt === YesOrNo.NO && hasValue(antallBarn));
+        visibilityFilter: ({ fødselsdatoer, erBarnetFødt, antallBarn, valgteBarn, rolle }) => {
+            return (
+                hasValue(fødselsdatoer[0]) ||
+                (erBarnetFødt === YesOrNo.NO && hasValue(antallBarn)) ||
+                (valgteBarn.length > 0 && rolle === 'mor')
+            );
         },
     },
     [OmBarnetFormField.terminbekreftelse]: {

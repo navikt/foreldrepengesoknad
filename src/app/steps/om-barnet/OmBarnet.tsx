@@ -31,7 +31,7 @@ const OmBarnet: React.FunctionComponent = () => {
         return [actionCreator.setOmBarnet(barn)];
     };
 
-    const onValidSubmit = useOnValidSubmit(
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.ANNEN_FORELDER,
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
@@ -41,7 +41,7 @@ const OmBarnet: React.FunctionComponent = () => {
     return (
         <OmBarnetFormComponents.FormikWrapper
             initialValues={getOmBarnetInitialValues(barn, registrerteBarn, arbeidsforhold)}
-            onSubmit={onValidSubmit}
+            onSubmit={handleSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({
                     ...formValues,
@@ -88,7 +88,9 @@ const OmBarnet: React.FunctionComponent = () => {
                             <Termin søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
                             <Fødsel søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                                <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                                <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                    {intlUtils(intl, 'søknad.gåVidere')}
+                                </Hovedknapp>
                             </Block>
                         </OmBarnetFormComponents.Form>
                     </Step>

@@ -75,7 +75,7 @@ const AnnenForelder = () => {
         [søker, barn]
     );
 
-    const onValidSubmit = useOnValidSubmit(
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN_INFO,
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
@@ -85,7 +85,7 @@ const AnnenForelder = () => {
     return (
         <AnnenForelderFormComponents.FormikWrapper
             initialValues={getAnnenForelderFormInitialValues(annenForelder, barn, søker, registrertBarn)}
-            onSubmit={onValidSubmit}
+            onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = annenForelderQuestionsConfig.getVisbility({
                     ...formValues,
@@ -232,7 +232,9 @@ const AnnenForelder = () => {
                                 />
                             </Block>
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                                <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                                <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                    {intlUtils(intl, 'søknad.gåVidere')}
+                                </Hovedknapp>
                             </Block>
                         </AnnenForelderFormComponents.Form>
                     </Step>

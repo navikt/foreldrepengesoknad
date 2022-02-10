@@ -35,7 +35,7 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
         return [actionCreator.setSøkersituasjon(søkersituasjon)];
     };
 
-    const onValidSubmit = useOnValidSubmit(
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.OM_BARNET,
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
@@ -45,7 +45,7 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
     return (
         <SøkersituasjonFormComponents.FormikWrapper
             initialValues={getInitialSøkerSituasjonValues(søknad.søkersituasjon)}
-            onSubmit={onValidSubmit}
+            onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = søkersituasjonQuestionsConfig.getVisbility({
                     ...formValues,
@@ -87,7 +87,9 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
                                 </Block>
                                 {allQuestionsAnswered && (
                                     <Block textAlignCenter={true} margin="l">
-                                        <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                                        <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Hovedknapp>
                                     </Block>
                                 )}
                             </div>

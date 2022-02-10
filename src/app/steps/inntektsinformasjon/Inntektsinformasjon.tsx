@@ -51,7 +51,7 @@ const Inntektsinformasjon = () => {
         return [actionCreator.setSøker(updatedSøker)];
     };
 
-    const onValidSubmit = useOnValidSubmit(
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.OPPSUMMERING,
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
@@ -61,7 +61,7 @@ const Inntektsinformasjon = () => {
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
             initialValues={getInitialInntektsinformasjonFormValues(søker)}
-            onSubmit={onValidSubmit}
+            onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(formValues);
 
@@ -117,7 +117,9 @@ const Inntektsinformasjon = () => {
                             </Block>
 
                             <Block textAlignCenter={true} visible={visibility.areAllQuestionsAnswered()}>
-                                <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                                <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                    {intlUtils(intl, 'søknad.gåVidere')}
+                                </Hovedknapp>
                             </Block>
                         </InntektsinformasjonFormComponents.Form>
                     </Step>

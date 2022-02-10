@@ -69,7 +69,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
         ];
     };
 
-    const onValidSubmit = useOnValidSubmit(
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.OPPSUMMERING,
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
@@ -92,7 +92,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
     return (
         <ManglendeVedleggFormComponents.FormikWrapper
             initialValues={getInitValues()}
-            onSubmit={onValidSubmit}
+            onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = manglendeVedleggQuestionsConfig.getVisbility({
                     ...formValues,
@@ -218,7 +218,9 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                 );
                             })}
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                                <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                                <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                    {intlUtils(intl, 'søknad.gåVidere')}
+                                </Hovedknapp>
                             </Block>
                         </ManglendeVedleggFormComponents.Form>
                     </Step>

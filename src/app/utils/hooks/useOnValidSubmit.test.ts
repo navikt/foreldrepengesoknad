@@ -69,7 +69,7 @@ describe('useOnValidSubmit', () => {
         );
 
         act(() => {
-            result.current(formVerdier);
+            result.current.handleSubmit(formVerdier);
         });
 
         await waitForNextUpdate();

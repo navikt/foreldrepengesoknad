@@ -117,7 +117,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         ];
     };
 
-    const onValidSubmit = useOnValidSubmit(
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
@@ -157,7 +157,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     return (
         <FarMedmorFødselOgMorHarIkkeRettFormComponents.FormikWrapper
             initialValues={getInitialFarMedmorFødselOgMorHarIkkeRettValues(dekningsgrad, lagretUttaksplanInfo)}
-            onSubmit={onValidSubmit}
+            onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = farMedmorFødselOgMorHarIkkeRettQuestionsConfig.getVisbility({
                     ...formValues,
@@ -225,7 +225,9 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                            <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                {intlUtils(intl, 'søknad.gåVidere')}
+                            </Hovedknapp>
                         </Block>
                     </FarMedmorFødselOgMorHarIkkeRettFormComponents.Form>
                 );

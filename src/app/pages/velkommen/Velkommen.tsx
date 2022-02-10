@@ -95,7 +95,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
         return actionsToDispatch;
     };
 
-    const onValidSubmit = useOnValidSubmit(
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.SØKERSITUASJON,
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
@@ -104,7 +104,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
     return (
         <VelkommenFormComponents.FormikWrapper
             initialValues={getInitialVelkommenValues(søknad.harGodkjentVilkår)}
-            onSubmit={onValidSubmit}
+            onSubmit={handleSubmit}
             renderForm={({ values }) => {
                 const visibility = velkommenFormQuestions.getVisbility({
                     ...values,
@@ -168,7 +168,9 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                             </Block>
                             <Block padBottom="l">
                                 <div style={{ textAlign: 'center' }}>
-                                    <Hovedknapp>Begynn med søknad</Hovedknapp>
+                                    <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                        Begynn med søknad
+                                    </Hovedknapp>
                                 </div>
                             </Block>
                             <Normaltekst className={bem.element('personopplysningerLink')}>

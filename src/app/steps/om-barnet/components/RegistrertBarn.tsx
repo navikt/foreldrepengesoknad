@@ -1,11 +1,14 @@
 import { Block, formatDate, intlUtils } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { RegistrertBarn as RegistrertBarnType } from 'app/types/Person';
+import { RegistrertBarn, RegistrertBarn as RegistrertBarnType } from 'app/types/Person';
+import { velgEldsteBarn } from 'app/utils/dateUtils';
 import { formaterNavn } from 'app/utils/personUtils';
+import dayjs from 'dayjs';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
+import { validateTermindatoFødsel } from '../validation/omBarnetValidering';
 
 interface Props {
     registrerteBarn: RegistrertBarnType[];
@@ -14,8 +17,23 @@ interface Props {
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
 }
 
+const getFødselsdato = (registrerteBarn: RegistrertBarn[], valgteBarn: string[]): Date => {
+    if (valgteBarn.length > 0) {
+        return velgEldsteBarn(registrerteBarn, valgteBarn).fødselsdato;
+    }
+
+    return new Date();
+};
+
 const RegistrertBarn: FunctionComponent<Props> = ({ registrerteBarn, visibility, formValues, setFieldValue }) => {
     const intl = useIntl();
+
+    const { valgteBarn } = formValues;
+    const antallBarn = valgteBarn.length;
+
+    const intlIdTermin =
+        antallBarn !== undefined && antallBarn > 1 ? 'omBarnet.termindato.fødtFlereBarn' : 'omBarnet.termindato.født';
+    const fødselsdato = getFødselsdato(registrerteBarn, valgteBarn);
 
     return (
         <>
@@ -43,6 +61,19 @@ const RegistrertBarn: FunctionComponent<Props> = ({ registrerteBarn, visibility,
                             setFieldValue(OmBarnetFormField.erBarnetFødt, YesOrNo.UNANSWERED);
                         }
                     }}
+                />
+            </Block>
+            <Block visible={visibility.isVisible(OmBarnetFormField.termindato) && valgteBarn.length > 0}>
+                <OmBarnetFormComponents.DatePicker
+                    name={OmBarnetFormField.termindato}
+                    label={intlUtils(intl, intlIdTermin)}
+                    dayPickerProps={{
+                        initialMonth: fødselsdato,
+                    }}
+                    minDate={dayjs(fødselsdato).subtract(1, 'months').toDate()}
+                    maxDate={dayjs(fødselsdato).add(6, 'months').toDate()}
+                    placeholder={'dd.mm.åååå'}
+                    validate={validateTermindatoFødsel(dateToISOString(fødselsdato), intl)}
                 />
             </Block>
         </>

@@ -41,8 +41,10 @@ const UttaksplanStep = () => {
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
 
     const onValidSubmitHandler = () => [];
-    const onValidSubmit = useOnValidSubmit(onValidSubmitHandler, nextRoute, (state: ForeldrepengesøknadContextState) =>
-        storeAppState(state)
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
+        onValidSubmitHandler,
+        nextRoute,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
     const onAvbrytSøknad = useAvbrytSøknad();
 
@@ -131,7 +133,9 @@ const UttaksplanStep = () => {
                 situasjon={situasjon}
             />
             <Block textAlignCenter={true}>
-                <Hovedknapp onClick={onValidSubmit}>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                <Hovedknapp onClick={handleSubmit} disabled={isSubmitting} spinner={isSubmitting}>
+                    {intlUtils(intl, 'søknad.gåVidere')}
+                </Hovedknapp>
             </Block>
         </Step>
     );

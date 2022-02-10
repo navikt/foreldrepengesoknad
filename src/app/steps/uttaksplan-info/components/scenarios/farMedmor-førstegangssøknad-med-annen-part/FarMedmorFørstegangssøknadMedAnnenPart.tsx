@@ -54,7 +54,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         return [actionCreator.setUttaksplanInfo(uttaksplanInfo), actionCreator.setDekningsgrad(grunnlag.dekningsgrad)];
     };
 
-    const onValidSubmit = useOnValidSubmit(
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
@@ -81,7 +81,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     return (
         <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.FormikWrapper
             initialValues={getFarMedmorFørstegangssøknadMedAnnenPartInitialValues(lagretUttaksplanInfo)}
-            onSubmit={onValidSubmit}
+            onSubmit={handleSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig.getVisbility(formValues);
                 const valgtMengdeStønadskonto = tilgjengeligeStønadskontoer[grunnlag.dekningsgrad];
@@ -109,7 +109,9 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                            <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                {intlUtils(intl, 'søknad.gåVidere')}
+                            </Hovedknapp>
                         </Block>
                     </FarMedmorFørstegangssøknadMedAnnenPartFormComponents.Form>
                 );
