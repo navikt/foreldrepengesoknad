@@ -31,7 +31,7 @@ export const ISOStringToDate = (dateString: string | undefined): Date | undefine
     return undefined;
 };
 
-const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
+export const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
     return dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
 };
 

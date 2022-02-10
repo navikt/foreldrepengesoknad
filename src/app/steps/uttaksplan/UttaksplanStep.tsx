@@ -3,8 +3,9 @@ import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import React, { useEffect } from 'react';
-import { useIntl } from 'react-intl';
+import React, { useEffect, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import AlertStripe from 'nav-frontend-alertstriper';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import Uttaksplan from 'uttaksplan/Uttaksplan';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -13,6 +14,7 @@ import {
     getFarMedmorErAleneOmOmsorg,
     getKjønnFromFnr,
     getMorErAleneOmOmsorg,
+    getMorHarRettPåForeldrepenger,
     getNavnPåForeldre,
 } from 'app/utils/personUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
@@ -37,21 +39,37 @@ const UttaksplanStep = () => {
     const intl = useIntl();
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
+    const [uttaksplanErGyldig, setUttaksplanErGyldig] = useState(true);
+    const [submitIsClicked, setSubmitIsClicked] = useState(false);
     const { dispatch, state } = useForeldrepengesøknadContext();
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
 
-    const onValidSubmitHandler = () => [];
+    const onValidSubmitHandler = () => {
+        setSubmitIsClicked(true);
+        return [];
+    };
+
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         nextRoute,
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
+
+    //TODO: what's the type here?
+    const clickHandler = (values: any) => {
+        setSubmitIsClicked(true);
+        if (uttaksplanErGyldig) {
+            handleSubmit(values);
+        }
+    };
+
     const onAvbrytSøknad = useAvbrytSøknad();
 
     const { person, arbeidsforhold } = søkerinfo;
     const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad } = søknad;
     const { erAleneOmOmsorg } = søker;
     const { situasjon } = søkersituasjon;
+    const { rolle } = søkersituasjon;
     const debouncedState = useDebounce(state, 3000);
 
     useEffect(() => {
@@ -67,7 +85,9 @@ const UttaksplanStep = () => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
-    const erFlerbarnssøknad = parseInt(barn.antallBarn, 10) > 1;
+    const antallBarn = parseInt(barn.antallBarn, 10);
+    const erFlerbarnssøknad = antallBarn > 1;
+    const harMorRett = getMorHarRettPåForeldrepenger(rolle, erFarEllerMedmor, annenForelder);
 
     const foreldreSituasjon = getForeldreparSituasjon(
         person.kjønn,
@@ -85,6 +105,7 @@ const UttaksplanStep = () => {
     );
 
     const handleOnPlanChange = (plan: Periode[]) => {
+        setSubmitIsClicked(false);
         dispatch(actionCreator.setUttaksplan(plan));
     };
 
@@ -131,12 +152,25 @@ const UttaksplanStep = () => {
                 erFlerbarnssøknad={erFlerbarnssøknad}
                 erAleneOmOmsorg={erAleneOmOmsorg}
                 situasjon={situasjon}
+                erMorUfør={erMorUfør}
+                harMorRett={harMorRett}
+                søkersituasjon={søkersituasjon}
+                dekningsgrad={dekningsgrad}
+                antallBarn={antallBarn}
+                setUttaksplanErGyldig={setUttaksplanErGyldig}
             />
-            <Block textAlignCenter={true}>
-                <Hovedknapp onClick={handleSubmit} disabled={isSubmitting} spinner={isSubmitting}>
+            <Block textAlignCenter={true} padBottom="l">
+                <Hovedknapp onClick={clickHandler} disabled={isSubmitting} spinner={isSubmitting}>
                     {intlUtils(intl, 'søknad.gåVidere')}
                 </Hovedknapp>
             </Block>
+            {!uttaksplanErGyldig && submitIsClicked && (
+                <Block textAlignCenter={true} padBottom="l">
+                    <AlertStripe type="feil">
+                        <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidere" />
+                    </AlertStripe>
+                </Block>
+            )}
         </Step>
     );
 };

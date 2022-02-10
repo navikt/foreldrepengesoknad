@@ -7,6 +7,7 @@ import {
     isAnnenPartInfoPeriode,
     isHull,
     isPeriodeUtenUttak,
+    // isUttaksperiode,
     Periode,
     Periodetype,
     UttakAnnenPartInfoPeriode,
@@ -15,11 +16,12 @@ import { NavnPåForeldre } from './../../app/types/NavnPåForeldre';
 import { Forelder } from './../../app/types/Forelder';
 import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
-import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { getStønadskontoNavn } from './stønadskontoerUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import dayjs from 'dayjs';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {
@@ -33,6 +35,32 @@ export const mapTidsperiodeToTidsperiodeString = (t: Partial<TidsperiodeDate>): 
         fom: dateToISOString(t.fom),
         tom: dateToISOString(t.tom),
     };
+};
+
+export const stillingsprosentIsMoreThan0 = (stillingsprosent: string): boolean => {
+    const pst = getFloatFromString(stillingsprosent);
+    if (pst) {
+        return pst > 0;
+    }
+    return false;
+};
+
+export const samtidigUttakProsentIsMax100 = (samtidigUttakProsent: string): boolean => {
+    const pst = getFloatFromString(samtidigUttakProsent);
+
+    if (pst) {
+        return pst <= 100;
+    }
+
+    return false;
+};
+
+export const stillingsprosentIsLessThan100 = (stillingsprosent: string): boolean => {
+    const pst = getFloatFromString(stillingsprosent);
+    if (pst) {
+        return pst < 100;
+    }
+    return false;
 };
 
 const isValidStillingsprosent = (pst: string | undefined): boolean =>
@@ -172,6 +200,33 @@ export const getPeriodeTittel = (intl: IntlShape, periode: Periode, navnPåForel
     }
 };
 
+// export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: EksisterendeSak): boolean => {
+//     if (eksisterendeSak === undefined) {
+//         return false;
+//     }
+//     const saksperiode = getSaksperiode(periode, eksisterendeSak);
+//     return saksperiode ? saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET : false;
+// };
+
+// const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
+//     return ekisterendeSak.saksperioder.find((saksperiode) =>
+//         erTidsperioderLike(saksperiode.tidsperiode, periode.tidsperiode)
+//     );
+// };
+
+export const getPeriodeForelderNavn = (periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
+    if (
+        periode.type === Periodetype.Utsettelse ||
+        periode.type === Periodetype.Uttak ||
+        periode.type === Periodetype.Overføring ||
+        periode.type === Periodetype.Opphold ||
+        periode.type === Periodetype.Info
+    ) {
+        return getForelderNavn(periode.forelder, navnPåForeldre);
+    }
+    return 'Ingen forelder registrert';
+};
+
 export const getSamtidigUttakEllerGraderingsProsent = (periode: UttakAnnenPartInfoPeriode): number | undefined => {
     const periodeErGradert = periode.stillingsprosent !== undefined;
     const periodeErSamtidigUttak = periode.samtidigUttakProsent !== undefined;
@@ -237,3 +292,81 @@ export const getSlettPeriodeTekst = (periodetype: Periodetype): string => {
             return '';
     }
 };
+
+export const erPeriodeFørDato = (periode: Periode, dato: Date) => {
+    return (
+        isValidTidsperiode(periode.tidsperiode) &&
+        dayjs(periode.tidsperiode.fom).isBefore(dato, 'day') &&
+        dayjs(periode.tidsperiode.tom).isBefore(dato, 'day')
+    );
+};
+
+// const erUtsettelsePgaSykdom = (periode: Utsettelsesperiode) =>
+//     periode.årsak === UtsettelseÅrsakType.Sykdom ||
+//     periode.årsak === UtsettelseÅrsakType.InstitusjonSøker ||
+//     periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet;
+
+// const erUttakGrunnetSykdom = (periode: Periode) => {
+//     if (
+//         isOverføringsperiode(periode) &&
+//         (periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
+//             periode.årsak === OverføringÅrsakType.sykdomAnnenForelder)
+//     ) {
+//         return true;
+//     }
+
+//     if (isUttaksperiode(periode)) {
+//         if (
+//             periode.erMorForSyk === true ||
+//             periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
+//             periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
+//         ) {
+//             return true;
+//         }
+//     }
+
+//     if (
+//         isUttakAvFellesperiode(periode) &&
+//         (periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
+//             periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp)
+//     ) {
+//         return true;
+//     }
+
+//     return false;
+// };
+
+// const erUttakTilbakeITid = (periode: Periode) => isUttaksperiode(periode) && dateIsNotInFuture(periode.tidsperiode.fom);
+// const erUtsettelseTilbakeITid = (periode: Periode) =>
+//     periode.type === Periodetype.Utsettelse && dateIsNotInFuture(periode.tidsperiode.fom);
+
+// const erUtsettelseGrunnetPgaArbeid = (periode: Utsettelsesperiode) => periode.årsak === UtsettelseÅrsakType.Arbeid;
+
+// export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): SenEndringÅrsak => {
+//     const utsettelseSykdomKreverBegrunnelse = uttaksplan.some(erUtsettelsePgaSykdom);
+//     const uttakSykdomKreverBegrunnelse = uttaksplan.some(erUttakGrunnetSykdom);
+//     const utsettelseSykdomKreverBegrunnelsePgaSøktSent = uttaksplan
+//         .filter(erUtsettelseTilbakeITid)
+//         .some(erUtsettelsePgaSykdom);
+//     const uttakSykdomKreverBegrunnelsePgaSøktSent = uttaksplan.filter(erUttakTilbakeITid).some(erUttakGrunnetSykdom);
+//     const utsettelseArbeidKreverBegrunnelsePgaSøktSent = uttaksplan
+//         .filter(erUtsettelseTilbakeITid)
+//         .some(erUtsettelseGrunnetPgaArbeid);
+//     const uttakArbeidKreverBegrunnelsePgaSøktSent = uttaksplan.filter(erUttakTilbakeITid).some(erGradering);
+//     const uttakKreverBegrunnelsePgaSøktSent = uttaksplan.some(erUttakEllerOppholdMerEnnTreMånederSiden);
+
+//     if (utsettelseArbeidKreverBegrunnelsePgaSøktSent || uttakArbeidKreverBegrunnelsePgaSøktSent) {
+//         return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.ArbeidOgUttak : SenEndringÅrsak.Arbeid;
+//     }
+
+//     if (
+//         utsettelseSykdomKreverBegrunnelse ||
+//         utsettelseSykdomKreverBegrunnelsePgaSøktSent ||
+//         uttakSykdomKreverBegrunnelsePgaSøktSent ||
+//         uttakSykdomKreverBegrunnelse
+//     ) {
+//         return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.SykdomOgUttak : SenEndringÅrsak.Sykdom;
+//     }
+
+//     return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.Uttak : SenEndringÅrsak.Ingen;
+// };

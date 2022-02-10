@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react';
-import { Block } from '@navikt/fp-common';
+import React, { FunctionComponent, useEffect } from 'react';
+import { Block, intlUtils } from '@navikt/fp-common';
 import Planlegger from './components/planlegger/Planlegger';
 import PlanleggerInfo from './components/planlegger-info/PlanleggerInfo';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
@@ -16,6 +16,13 @@ import addPeriode from './builder/addPeriode';
 import { Situasjon } from 'app/types/Situasjon';
 import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import { validerUttaksplan } from './validering/validerUttaksplan';
+import Søkersituasjon from 'app/context/types/Søkersituasjon';
+import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import VeilederInfo from './validering/veilederInfo/VeilederInfo';
+import { useIntl } from 'react-intl';
+import { getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
+//import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -33,6 +40,13 @@ interface Props {
     erFlerbarnssøknad: boolean;
     erAleneOmOmsorg: boolean;
     situasjon: Situasjon;
+    erMorUfør: boolean;
+    harMorRett: boolean;
+    søkersituasjon: Søkersituasjon;
+    dekningsgrad: Dekningsgrad;
+    antallBarn: number;
+    //tilleggsopplysninger: Tilleggsopplysninger;
+    setUttaksplanErGyldig: (planErGyldig: boolean) => void;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -51,9 +65,16 @@ const Uttaksplan: FunctionComponent<Props> = ({
     erFlerbarnssøknad,
     erAleneOmOmsorg,
     situasjon,
+    erMorUfør,
+    harMorRett,
+    søkersituasjon,
+    dekningsgrad,
+    antallBarn,
+    //tilleggsopplysninger,
+    setUttaksplanErGyldig,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
-
+    const intl = useIntl();
     const handleDeletePeriode = (periodeId: string) => {
         const slettetPeriode = uttaksplan.find((p) => p.id === periodeId);
 
@@ -131,6 +152,38 @@ const Uttaksplan: FunctionComponent<Props> = ({
         handleOnPlanChange(addPeriodeResult.updatedPlan);
     };
 
+    const uttaksplanValidering = validerUttaksplan(
+        søkersituasjon,
+        arbeidsforhold,
+        dekningsgrad,
+        erEndringssøknad,
+        antallBarn,
+        annenForelder,
+        navnPåForeldre,
+        erFarEllerMedmor,
+        erAleneOmOmsorg,
+        erDeltUttak,
+        erMorUfør,
+        harMorRett,
+        erFlerbarnssøknad,
+        familiehendelsesdatoDate,
+        stønadskontoer,
+        uttaksplan,
+        //TODO: Fiks harKomplettUttaksplan
+        false
+        //tilleggsopplysninger
+    );
+
+    useEffect(() => {
+        //TODO: Er det riktig å også sjekke lengde på advarsel her eller er det kun feil som skal stoppe brukeren fra neste steg?
+        const uttaksplanErGyldig = !uttaksplanValidering.harFeil; // && !(uttaksplanValidering.avvik.length > 0);
+        setUttaksplanErGyldig(uttaksplanErGyldig);
+        console.log('VALIDERING: Satte setUttaksplanErGyldig til: ', uttaksplanErGyldig);
+    });
+
+    //TODO: trenges grupperAvvik i det hele tatt? Sendes inn som false her.
+    const uttaksplanVeilederInfo = getUttaksplanVeilederinfo(uttaksplanValidering.avvik, intl, false);
+
     return (
         <>
             <Block padBottom="l">
@@ -156,6 +209,15 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     erDeltUttak={erDeltUttak}
                     erAleneOmOmsorg={erAleneOmOmsorg}
                     situasjon={situasjon}
+                />
+            </Block>
+            <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">
+                <VeilederInfo
+                    messages={uttaksplanVeilederInfo}
+                    paneltype="plakat"
+                    kompakt={true}
+                    veilederStil={'normal'}
+                    ariaTittel={intlUtils(intl, 'uttaksplan.regelAvvik.ariaTittel')}
                 />
             </Block>
             <Block padBottom="l">
