@@ -15,10 +15,10 @@ export const isSixteenOrOlder = (fnr: string, isFødselsnummerValid: Fødselsnum
     const mnd = fnr.substr(2, 2);
     const år = fnr.substr(4, 2);
 
-    const fødselsdato = dayjs(`${dato}-${mnd}-${år}`, 'DD-MM-YY');
+    let fødselsdato = dayjs(`${dato}-${mnd}-${år}`, 'DD-MM-YY');
 
     if (fødselsdato.get('year') > dayjs().get('year')) {
-        fødselsdato.subtract(100, 'year');
+        fødselsdato = fødselsdato.subtract(100, 'year');
     }
 
     if (!fødselsdato.isValid()) {
