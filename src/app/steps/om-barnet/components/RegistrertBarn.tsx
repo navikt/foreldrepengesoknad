@@ -1,7 +1,7 @@
 import { Block, formatDate, intlUtils } from '@navikt/fp-common';
 import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { RegistrertBarn, RegistrertBarn as RegistrertBarnType } from 'app/types/Person';
+import { RegistrertBarn as RegistrertBarnType } from 'app/types/Person';
 import { velgEldsteBarn } from 'app/utils/dateUtils';
 import { formaterNavn } from 'app/utils/personUtils';
 import dayjs from 'dayjs';
@@ -17,7 +17,7 @@ interface Props {
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
 }
 
-const getFødselsdato = (registrerteBarn: RegistrertBarn[], valgteBarn: string[]): Date => {
+const getFødselsdato = (registrerteBarn: RegistrertBarnType[], valgteBarn: string[]): Date => {
     if (valgteBarn.length > 0) {
         return velgEldsteBarn(registrerteBarn, valgteBarn).fødselsdato;
     }

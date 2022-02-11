@@ -1,6 +1,5 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import MockAdapter from 'axios-mock-adapter/types';
 
 import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
@@ -8,7 +7,6 @@ import SøknadSendt from 'app/pages/søknadSendt/SøknadSendt';
 import withIntlProvider from '../../decorators/withIntl';
 import ForeldrepengerStateMock from '../../utils/ForeldrepengerStateMock';
 import withForeldrepengersøknadContext from '../../decorators/withForeldrepengersøknadContext';
-import AxiosMock from '../../utils/AxiosMock';
 
 export default {
     title: 'pages/SøknadSendt',
@@ -24,26 +22,19 @@ interface Props {
     arbeidsforhold: SøkerinfoDTOArbeidsforhold[];
 }
 
-const Template: Story<Props> = ({ erFerdig, bankkonto, arbeidsforhold }) => {
-    const restMock = (apiMock: MockAdapter) => {
-        if (erFerdig) {
-            apiMock.onPost('/storage/kvittering/foreldrepenger').replyOnce(200, {});
-        }
-    };
+const Template: Story<Props> = ({ bankkonto, arbeidsforhold }) => {
     return (
-        <AxiosMock mock={restMock}>
-            <ForeldrepengerStateMock
-                søknad={{} as ForeldrepengesøknadContextState}
-                søkerinfo={
-                    {
-                        søker: { fnr: '1233434', fornavn: 'Espen', etternavn: 'Utvikler', bankkonto },
-                        arbeidsforhold,
-                    } as SøkerinfoDTO
-                }
-            >
-                <SøknadSendt />
-            </ForeldrepengerStateMock>
-        </AxiosMock>
+        <ForeldrepengerStateMock
+            søknad={{ kvittering: {} } as ForeldrepengesøknadContextState}
+            søkerinfo={
+                {
+                    søker: { fnr: '1233434', fornavn: 'Espen', etternavn: 'Utvikler', bankkonto },
+                    arbeidsforhold,
+                } as SøkerinfoDTO
+            }
+        >
+            <SøknadSendt />
+        </ForeldrepengerStateMock>
     );
 };
 

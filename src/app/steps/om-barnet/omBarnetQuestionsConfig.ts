@@ -20,8 +20,13 @@ const includeTermindato = (
     rolle: Søkerrolle,
     fødselsdato: string | undefined,
     valgteBarn: string[],
-    registrerteBarn: RegistrertBarn[]
+    registrerteBarn: RegistrertBarn[],
+    erAdopsjon: boolean
 ): boolean => {
+    if (erAdopsjon) {
+        return false;
+    }
+
     let eldsteBarnFødselsdato = undefined;
 
     if (valgteBarn.length > 0) {
@@ -111,8 +116,14 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
             (adopsjonAvEktefellesBarn === YesOrNo.YES && hasValue(fødselsdatoer[0])),
     },
     [OmBarnetFormField.termindato]: {
-        isIncluded: ({ rolle, fødselsdatoer, erBarnetFødt, valgteBarn, registrerteBarn }) =>
-            includeTermindato(rolle, fødselsdatoer[0], valgteBarn, registrerteBarn) || erBarnetFødt === YesOrNo.NO,
+        isIncluded: ({ rolle, fødselsdatoer, erBarnetFødt, valgteBarn, registrerteBarn, adopsjonAvEktefellesBarn }) =>
+            includeTermindato(
+                rolle,
+                fødselsdatoer[0],
+                valgteBarn,
+                registrerteBarn,
+                adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED
+            ) || erBarnetFødt === YesOrNo.NO,
         isAnswered: ({ termindato }) => hasValue(termindato),
         visibilityFilter: ({ fødselsdatoer, erBarnetFødt, antallBarn, valgteBarn, rolle }) => {
             return (
