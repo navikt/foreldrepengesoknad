@@ -55,7 +55,7 @@ jobs:
             github.rest.issues.createComment({...issue,
                             body: 'promote til ${{ env.CLUSTER }} ${{ env.NAMESPACE }} feilet'})
             github.rest.issues.addLabels({...issue,
-                            labels: ['deployment-failed','${{ env.CLUSTER }}-${{ env.NAMESPACE }}']})
+                            labels: ['deployment-failed']})
 
       - name: Oppdater kommentar med deployment status
         if: success()
