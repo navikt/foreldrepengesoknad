@@ -1,4 +1,3 @@
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
@@ -6,7 +5,7 @@ import { UttaksplanSkjemadata } from 'app/types/UttaksplanSkjemaData';
 import dayjs from 'dayjs';
 import { finnOgSettInnHull } from 'uttaksplan/builder/UttaksplanBuilder';
 import { Periode } from 'uttaksplan/types/Periode';
-import { førsteOktober2021ReglerGjelder } from '../dateUtils';
+import { førsteOktober2021ReglerGjelder, ISOStringToDate } from '../dateUtils';
 import { deltUttak } from './deltUttak';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
 

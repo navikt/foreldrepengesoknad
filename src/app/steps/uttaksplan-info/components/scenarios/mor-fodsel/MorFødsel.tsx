@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Block, intlUtils } from '@navikt/fp-common';
 import Veilederpanel from 'nav-frontend-veilederpanel';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import actionCreator from 'app/context/action/actionCreator';
@@ -37,6 +36,7 @@ import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {

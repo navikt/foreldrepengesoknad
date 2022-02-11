@@ -1,10 +1,10 @@
 import React from 'react';
 import { intlUtils, Tidsperiode, Block, TidsperiodeDate } from '@navikt/fp-common';
-import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isUtsettelsesperiode, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
-import { dateRangeValidation } from 'app/utils/dateUtils';
+import { dateRangeValidation, ISOStringToDate } from 'app/utils/dateUtils';
 import { Knapp } from 'nav-frontend-knapper';
 import { dateToISOString } from '@navikt/fp-common/node_modules/@navikt/sif-common-formik/lib';
 import { DatoAvgrensninger, getDatoavgrensningerForStønadskonto } from 'uttaksplan/utils/datoAvgrensningerUtils';

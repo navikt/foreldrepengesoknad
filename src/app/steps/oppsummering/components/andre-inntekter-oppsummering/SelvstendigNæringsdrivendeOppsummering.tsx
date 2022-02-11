@@ -1,5 +1,5 @@
 import { formatDate, intlUtils } from '@navikt/fp-common';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';

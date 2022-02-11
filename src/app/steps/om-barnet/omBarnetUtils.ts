@@ -1,5 +1,5 @@
 import { hasValue } from '@navikt/fp-common';
-import { dateToISOString, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import Barn, {
     BarnType,
@@ -13,7 +13,7 @@ import { AttachmentType } from 'app/types/AttachmentType';
 import { RegistrertBarn } from 'app/types/Person';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { getRegistrertBarnOmDetFinnes } from 'app/utils/barnUtils';
-import { velgEldsteBarn } from 'app/utils/dateUtils';
+import { ISOStringToDate, velgEldsteBarn } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';

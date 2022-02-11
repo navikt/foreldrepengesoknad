@@ -1,5 +1,5 @@
 import { Block, hasValue, intlUtils, Step, UtvidetInformasjon } from '@navikt/fp-common';
-import { ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import actionCreator from 'app/context/action/actionCreator';
@@ -34,6 +34,7 @@ import RegistrertePersonalia from './components/registrerte-personalia/Registrer
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 const AnnenForelder = () => {
     const intl = useIntl();

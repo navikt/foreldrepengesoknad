@@ -1,11 +1,12 @@
 import { Block, intlUtils } from '@navikt/fp-common';
-import { ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
 import Veilederpanel from 'nav-frontend-veilederpanel';

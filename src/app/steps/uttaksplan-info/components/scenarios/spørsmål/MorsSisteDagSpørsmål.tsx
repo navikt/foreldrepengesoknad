@@ -1,6 +1,7 @@
 import { intlUtils } from '@navikt/fp-common';
-import { ISOStringToDate, TypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { TypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 

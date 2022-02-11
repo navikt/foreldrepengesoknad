@@ -1,8 +1,9 @@
 import { Block, formatDate, intlUtils } from '@navikt/fp-common';
-import { dateToISOString, ISOStringToDate, TypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, TypedFormComponents } from '@navikt/sif-common-formik/lib';
 import LenkeKnapp from 'app/components/lenke-knapp/LenkeKnapp';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 

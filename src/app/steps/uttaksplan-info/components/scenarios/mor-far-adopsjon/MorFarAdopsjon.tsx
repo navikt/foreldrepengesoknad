@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
-import { dateToISOString, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Block, intlUtils } from '@navikt/fp-common';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Veilederpanel from 'nav-frontend-veilederpanel';
@@ -17,7 +17,7 @@ import { Forelder } from 'app/types/Forelder';
 import { getFlerbarnsuker } from 'app/steps/uttaksplan-info/utils/uttaksplanHarForMangeFlerbarnsuker';
 import { isAdoptertAnnetBarn, isAdoptertBarn, isAdoptertStebarn } from 'app/context/types/Barn';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { dateIsSameOrAfter, findEldsteDato } from 'app/utils/dateUtils';
+import { dateIsSameOrAfter, findEldsteDato, ISOStringToDate } from 'app/utils/dateUtils';
 import {
     MorFarAdopsjonFormComponents,
     MorFarAdopsjonFormData,

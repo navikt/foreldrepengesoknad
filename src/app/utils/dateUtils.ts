@@ -3,6 +3,8 @@ import { isISODateString } from 'nav-datovelger';
 import isBetween from 'dayjs/plugin/isBetween';
 import minMax from 'dayjs/plugin/minMax';
 import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import advanced from 'dayjs/plugin/advancedFormat';
 import { IntlShape } from 'react-intl';
 import { formatDateExtended, hasValue, intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
@@ -14,6 +16,8 @@ import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 dayjs.extend(utc);
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
+dayjs.extend(timezone);
+dayjs.extend(advanced);
 
 export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();
 
@@ -22,6 +26,16 @@ export const getDateFromDateString = (dateString: string | undefined): Date | un
         return undefined;
     }
     if (isISODateString(dateString)) {
+        return new Date(dateString);
+    }
+    return undefined;
+};
+
+export const ISOStringToDate = (dateString: string | undefined): Date | undefined => {
+    if (dateString === undefined) {
+        return undefined;
+    }
+    if (isISODateString(dateString) && dayjs(dateString, 'YYYY-MM-DD', true).isValid()) {
         return new Date(dateString);
     }
     return undefined;

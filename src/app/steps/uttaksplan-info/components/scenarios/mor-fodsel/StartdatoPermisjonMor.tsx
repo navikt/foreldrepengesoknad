@@ -2,7 +2,6 @@ import React, { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { Block, intlUtils, bemUtils } from '@navikt/fp-common';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { MorFødselFormComponents, MorFødselFormField } from './morFødselFormConfig';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { isFødtBarn } from 'app/context/types/Barn';
@@ -13,7 +12,7 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { validateErStartdatoFørTermindato } from './validation/morFodselValidering';
 import VeilederStartdatoPermisjon from './VeilederStartdatoPermisjon';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
-import { getVarighetString } from 'app/utils/dateUtils';
+import { getVarighetString, ISOStringToDate } from 'app/utils/dateUtils';
 
 import './startdatoPermisjonMor.less';
 

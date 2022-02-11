@@ -20,8 +20,7 @@ import {
 import './periodeUtsettelseForm.less';
 import { periodeUtsettelseFormQuestionsConfig } from './periodeUtsettelseFormQuestionsConfig';
 import UtsettelseÅrsakSpørsmål from '../spørsmål/utsettelse-årsak/UtsettelseÅrsakSpørsmål';
-import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { førsteOktober2021ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 
 interface Props {
     periode: Periode;

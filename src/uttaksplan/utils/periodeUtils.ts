@@ -17,8 +17,9 @@ import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { getFloatFromString } from 'app/utils/numberUtils';
-import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { getStønadskontoNavn } from './stønadskontoerUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {

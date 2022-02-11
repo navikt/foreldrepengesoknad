@@ -1,5 +1,4 @@
 import { Block, intlUtils } from '@navikt/fp-common';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import actionCreator from 'app/context/action/actionCreator';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
@@ -10,7 +9,7 @@ import { Forelder } from 'app/types/Forelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { formaterDatoUtenDag } from 'app/utils/dateUtils';
+import { formaterDatoUtenDag, ISOStringToDate } from 'app/utils/dateUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';

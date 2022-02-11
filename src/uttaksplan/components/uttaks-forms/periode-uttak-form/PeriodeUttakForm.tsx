@@ -34,8 +34,8 @@ import './periodeUttakForm.less';
 import { FormattedMessage } from 'react-intl';
 import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { Situasjon } from 'app/types/Situasjon';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 interface Props {
     periode: Periode;

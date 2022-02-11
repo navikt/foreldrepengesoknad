@@ -11,11 +11,11 @@ import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import deletePeriode from './builder/deletePeriode';
 import { getUttaksstatusFunc } from './utils/uttaksstatus';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import updatePeriode from './builder/updatePeriode';
 import addPeriode from './builder/addPeriode';
 import { Situasjon } from 'app/types/Situasjon';
 import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;

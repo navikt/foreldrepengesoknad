@@ -1,10 +1,10 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BostedUtland, isValidBostedUtland } from './types';
 import { Block, intlUtils, validateRequiredField } from '@navikt/fp-common';
-import { dateRangeValidation } from 'app/utils/dateUtils';
+import { dateRangeValidation, ISOStringToDate } from 'app/utils/dateUtils';
 
 export interface BostedUtlandFormLabels {
     tittel: string;

@@ -17,11 +17,11 @@ import {
     getAlderFraDato,
     convertTidsperiodeToTidsperiodeDate,
     getRelevantFamiliehendelseDato,
+    ISOStringToDate,
 } from './dateUtils';
 
 import getIntlMock from 'utils-test/intl-test-helper';
 import { RegistrertBarn } from 'app/types/Person';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();

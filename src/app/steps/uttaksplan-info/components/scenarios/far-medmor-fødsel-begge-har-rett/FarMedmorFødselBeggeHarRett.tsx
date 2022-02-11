@@ -26,7 +26,6 @@ import farMedmorFødselBeggeHarRettQuestionsConfig from './farMedmorFødselBegge
 import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { Forelder } from 'app/types/Forelder';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
@@ -42,6 +41,7 @@ import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
