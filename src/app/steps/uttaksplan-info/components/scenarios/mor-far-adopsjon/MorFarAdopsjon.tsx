@@ -74,6 +74,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         : false;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
     const shouldRender =
         erAdopsjon && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelder.kanIkkeOppgis || søkerErAleneOmOmsorg);
@@ -86,7 +87,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
             values.startdatoAdopsjonValg!,
             values.annenStartdatoAdopsjon,
             dateToISOString(barnAdopsjonsdato),
-            dateToISOString(ankomstdato)
+            dateToISOString(ankomstdato),
+            values.søkersFørsteDag
         );
 
         return [
@@ -98,8 +100,10 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                     erDeltUttak: true,
                     erEndringssøknad,
                     erEnkelEndringssøknad: erEndringssøknad,
-                    familiehendelsesdato: ISOStringToDate(familiehendelsesdato)!,
-                    førsteUttaksdagEtterSeksUker: Uttaksdagen(ISOStringToDate(familiehendelsesdato)!).leggTil(30),
+                    familiehendelsesdato: familiehendelsesdatoDate!,
+                    førsteUttaksdagEtterSeksUker: Uttaksdagen(
+                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
+                    ).leggTil(30),
                     situasjon: søkersituasjon.situasjon,
                     søkerErFarEllerMedmor: erFarEllerMedmor,
                     søkerHarMidlertidigOmsorg: false,
@@ -111,8 +115,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                         antallDagerFellesperiodeFarMedmor: parseInt(submissionValues.antallDagerFellesperiode),
                         antallUkerFellesperiodeFarMedmor: parseInt(submissionValues.antallUkerFellesperiode),
                         harAnnenForelderSøktFP: submissionValues.harAnnenForelderSøktFP,
-                        morSinSisteUttaksdag: submissionValues.morsSisteDag,
-                        farSinFørsteUttaksdag: submissionValues.farMedmorsFørsteDag,
+                        morSinSisteUttaksdag: submissionValues.annenForeldersSisteDag,
+                        farSinFørsteUttaksdag: submissionValues.søkersFørsteDag,
                     },
                 })
             ),
@@ -224,34 +228,34 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                         <Block visible={visibility.isIncluded(MorFarAdopsjonFormField.startdatoAdopsjonValg)}>
                             <StartdatoAdopsjon valgtStartdatoAdopsjon={formValues.startdatoAdopsjonValg} />
                         </Block>
-                        <Block padBottom="l" visible={visibility.isIncluded(MorFarAdopsjonFormField.morsSisteDag)}>
+                        <Block
+                            padBottom="l"
+                            visible={visibility.isIncluded(MorFarAdopsjonFormField.annenForeldersSisteDag)}
+                        >
                             <MorsSisteDagSpørsmål
                                 FormComponents={MorFarAdopsjonFormComponents}
-                                fieldName={MorFarAdopsjonFormField.morsSisteDag}
+                                fieldName={MorFarAdopsjonFormField.annenForeldersSisteDag}
                                 navnMor={navnMor}
                                 familiehendelsesdato={familiehendelsesdato}
                             />
                         </Block>
-                        <Block
-                            padBottom="l"
-                            visible={visibility.isIncluded(MorFarAdopsjonFormField.farMedmorsFørsteDag)}
-                        >
+                        <Block padBottom="l" visible={visibility.isIncluded(MorFarAdopsjonFormField.søkersFørsteDag)}>
                             <FarMedmorsFørsteDag
                                 FormComponents={MorFarAdopsjonFormComponents}
-                                fieldName={MorFarAdopsjonFormField.farMedmorsFørsteDag}
+                                fieldName={MorFarAdopsjonFormField.søkersFørsteDag}
                                 familiehendelsesdato={familiehendelsesdato}
                                 setFieldValue={setFieldValue}
-                                morsSisteDag={ISOStringToDate(formValues.morsSisteDag)}
+                                morsSisteDag={ISOStringToDate(formValues.annenForeldersSisteDag)}
                                 navnMor={navnMor}
                             />
                         </Block>
                         <Block
                             padBottom="l"
                             visible={
-                                visibility.isAnswered(MorFarAdopsjonFormField.farMedmorsFørsteDag) &&
+                                visibility.isAnswered(MorFarAdopsjonFormField.søkersFørsteDag) &&
                                 !dateIsSameOrAfter(
-                                    ISOStringToDate(formValues.morsSisteDag),
-                                    ISOStringToDate(formValues.farMedmorsFørsteDag)
+                                    ISOStringToDate(formValues.annenForeldersSisteDag),
+                                    ISOStringToDate(formValues.søkersFørsteDag)
                                 ) &&
                                 formValues.harAnnenForelderSøktFP === YesOrNo.YES
                             }
@@ -278,7 +282,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                             formValues.startdatoAdopsjonValg,
                                             formValues.annenStartdatoAdopsjon,
                                             dateToISOString(barn.adopsjonsdato),
-                                            dateToISOString(ankomstdato)
+                                            dateToISOString(ankomstdato),
+                                            formValues.søkersFørsteDag
                                         )
                                     )
                                 ) &&

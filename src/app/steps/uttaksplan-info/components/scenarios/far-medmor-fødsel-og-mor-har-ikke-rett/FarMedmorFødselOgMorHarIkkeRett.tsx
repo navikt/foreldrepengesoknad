@@ -104,14 +104,18 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                     erEndringssøknad,
                     erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
-                    førsteUttaksdagEtterSeksUker: Uttaksdagen(familiehendelsesdatoDate!).leggTil(30),
+                    førsteUttaksdagEtterSeksUker: Uttaksdagen(
+                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
+                    ).leggTil(30),
                     situasjon: erFødsel ? 'fødsel' : 'adopsjon',
                     søkerErFarEllerMedmor: erFarEllerMedmor,
                     søkerHarMidlertidigOmsorg: false,
                     tilgjengeligeStønadskontoer:
                         tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
                     uttaksplanSkjema: {
-                        startdatoPermisjon: dateToISOString(Uttaksdagen(familiehendelsesdatoDate!).leggTil(30)),
+                        startdatoPermisjon: dateToISOString(
+                            Uttaksdagen(Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()).leggTil(30)
+                        ),
                     },
                 })
             ),

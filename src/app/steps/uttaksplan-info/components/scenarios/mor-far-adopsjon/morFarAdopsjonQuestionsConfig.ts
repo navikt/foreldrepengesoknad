@@ -31,23 +31,23 @@ const MorFarAdopsjonFormConfig: QuestionConfig<MorFarAdopsjonQuestionsPayload, M
             hasValue(dekningsgrad) &&
             harAnnenForelderSøktFP !== YesOrNo.YES,
     },
-    [MorFarAdopsjonFormField.morsSisteDag]: {
-        isAnswered: ({ morsSisteDag }) => hasValue(morsSisteDag),
+    [MorFarAdopsjonFormField.annenForeldersSisteDag]: {
+        isAnswered: ({ annenForeldersSisteDag }) => hasValue(annenForeldersSisteDag),
         isIncluded: ({ dekningsgrad, harAnnenForelderSøktFP }) =>
             hasValue(dekningsgrad) && harAnnenForelderSøktFP === YesOrNo.YES,
     },
-    [MorFarAdopsjonFormField.farMedmorsFørsteDag]: {
-        isAnswered: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
-        isIncluded: ({ morsSisteDag, harAnnenForelderSøktFP }) =>
-            hasValue(morsSisteDag) && harAnnenForelderSøktFP === YesOrNo.YES,
+    [MorFarAdopsjonFormField.søkersFørsteDag]: {
+        isAnswered: ({ søkersFørsteDag }) => hasValue(søkersFørsteDag),
+        isIncluded: ({ annenForeldersSisteDag, harAnnenForelderSøktFP }) =>
+            hasValue(annenForeldersSisteDag) && harAnnenForelderSøktFP === YesOrNo.YES,
     },
     [MorFarAdopsjonFormField.antallDagerFellesperiode]: {
         isAnswered: ({ antallDagerFellesperiode }) => hasValue(antallDagerFellesperiode),
-        isIncluded: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
+        isIncluded: ({ søkersFørsteDag }) => hasValue(søkersFørsteDag),
     },
     [MorFarAdopsjonFormField.antallUkerFellesperiode]: {
         isAnswered: ({ antallUkerFellesperiode }) => hasValue(antallUkerFellesperiode),
-        isIncluded: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
+        isIncluded: ({ søkersFørsteDag }) => hasValue(søkersFørsteDag),
     },
     [MorFarAdopsjonFormField.fellesperiodeukerMor]: {
         isAnswered: ({ fellesperiodeukerMor }) => hasValue(fellesperiodeukerMor),

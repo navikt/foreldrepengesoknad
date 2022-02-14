@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block, hasValue, intlUtils } from '@navikt/fp-common';
 import { MorFarAdopsjonFormComponents, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { isAdoptertAnnetBarn, isAdoptertBarn } from 'app/context/types/Barn';
@@ -17,8 +17,13 @@ export const finnStartdatoAdopsjon = (
     startdatoAdopsjonValg: AdopsjonStartdatoValg,
     annenStartdatoAdopsjon?: string,
     adopsjonsdato?: string,
-    ankomstdato?: string
+    ankomstdato?: string,
+    søkersFørsteDag?: string
 ): string => {
+    if (hasValue(søkersFørsteDag)) {
+        return søkersFørsteDag!;
+    }
+
     switch (startdatoAdopsjonValg) {
         case AdopsjonStartdatoValg.ANKOMST:
             return ankomstdato!;

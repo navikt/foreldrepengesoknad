@@ -6,8 +6,8 @@ export enum MorFarAdopsjonFormField {
     dekningsgrad = 'dekningsgrad',
     startdatoAdopsjonValg = 'startdatoAdopsjonValg',
     annenStartdatoAdopsjon = 'annenStartdatoAdopsjon',
-    morsSisteDag = 'morsSisteDag',
-    farMedmorsFørsteDag = 'farMedmorsFørsteDag',
+    annenForeldersSisteDag = 'annenForeldersSisteDag',
+    søkersFørsteDag = 'søkersFørsteDag',
     antallUkerFellesperiode = 'antallUkerFellesperiode',
     antallDagerFellesperiode = 'antallDagerFellesperiode',
     fellesperiodeukerMor = 'fellesperiodeukerMor',
@@ -18,8 +18,8 @@ export interface MorFarAdopsjonFormData {
     [MorFarAdopsjonFormField.dekningsgrad]: string;
     [MorFarAdopsjonFormField.startdatoAdopsjonValg]: AdopsjonStartdatoValg | undefined;
     [MorFarAdopsjonFormField.annenStartdatoAdopsjon]: string;
-    [MorFarAdopsjonFormField.morsSisteDag]: string;
-    [MorFarAdopsjonFormField.farMedmorsFørsteDag]: string;
+    [MorFarAdopsjonFormField.annenForeldersSisteDag]: string;
+    [MorFarAdopsjonFormField.søkersFørsteDag]: string;
     [MorFarAdopsjonFormField.antallUkerFellesperiode]: string;
     [MorFarAdopsjonFormField.antallDagerFellesperiode]: string;
     [MorFarAdopsjonFormField.fellesperiodeukerMor]: number | undefined;

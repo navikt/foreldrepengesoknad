@@ -12,8 +12,8 @@ export interface MorFarAdopsjonUttaksplanInfo extends UttaksplanInfo {
     harAnnenForelderSøktFP: boolean;
     startdatoAdopsjonValg: AdopsjonStartdatoValg;
     annenStartdatoAdopsjon: string;
-    morsSisteDag: string;
-    farMedmorsFørsteDag: string;
+    annenForeldersSisteDag: string;
+    søkersFørsteDag: string;
     antallUkerFellesperiode: string;
     antallDagerFellesperiode: string;
     fellesperiodeukerMor: number | undefined;
