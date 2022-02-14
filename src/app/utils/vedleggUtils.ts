@@ -2,7 +2,6 @@ import { SøknadForInnsending } from 'app/api/apiUtils';
 import { Attachment, InnsendingsType } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
-import _ from 'lodash';
 import { guid } from 'nav-frontend-js-utils';
 
 const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
@@ -45,43 +44,69 @@ export const lagSendSenereDokumentNårIngenAndreFinnes = (
     return dokumenter.filter((dok) => dok.innsendingsType !== InnsendingsType.SEND_SENERE);
 };
 
-export const isArrayOfAttachments = (object: any) => {
+export const isArrayOfAttachments = (object: any): object is readonly Attachment[] => {
     return (
         Array.isArray(object) &&
         object[0] !== null &&
-        object.some(
+        object.every(
             (element) => element && (element.filename || element.innsendingsType === InnsendingsType.SEND_SENERE)
         )
     );
 };
 
-export const removeAttachmentsWithUploadError = (attachments: Attachment[]) =>
+export const removeAttachmentsWithUploadError = (attachments: readonly Attachment[]) =>
     attachments.filter((a: Attachment) => !isAttachmentWithError(a));
 
-const mutateSøknadAndReturnAttachments = (object: any): Attachment[] => {
-    const foundAttachments = [] as Attachment[];
+const isPOJO = (arg: unknown): arg is Record<string, unknown> => {
+    if (arg == null || typeof arg !== 'object') {
+        return false;
+    }
 
-    Object.keys(object).forEach((key: string) => {
-        if (typeof object[key] === 'object') {
-            if (isArrayOfAttachments(object[key])) {
-                const attachmentWithoutUploadError = [...removeAttachmentsWithUploadError(object[key])];
+    const proto = Object.getPrototypeOf(arg);
+
+    if (proto == null) {
+        return true; // Object.create(null)
+    }
+
+    return proto === Object.prototype;
+};
+
+const extractAttachments = (søknad: unknown, foundAttachments: Attachment[]): any => {
+    if (Array.isArray(søknad)) {
+        return søknad.map((v) => extractAttachments(v, foundAttachments));
+    }
+
+    if (!isPOJO(søknad)) {
+        return søknad;
+    }
+
+    const ret = {};
+
+    Object.keys(søknad).forEach((key: string) => {
+        const value = søknad[key];
+        if (typeof value === 'object') {
+            if (isArrayOfAttachments(value)) {
+                const attachmentWithoutUploadError = removeAttachmentsWithUploadError(value);
                 foundAttachments.push(...attachmentWithoutUploadError);
-                object[key] = (object[key] as Attachment[])
+                ret[key] = (value as Attachment[])
                     .filter((attachment: Attachment) => attachmentWithoutUploadError.includes(attachment))
                     .map((attachment: Attachment) => attachment.id);
+            } else if (Array.isArray(value)) {
+                ret[key] = value.map((v) => extractAttachments(v, foundAttachments));
             } else {
-                foundAttachments.push(...mutateSøknadAndReturnAttachments(object[key]));
+                ret[key] = extractAttachments(value, foundAttachments);
             }
+        } else {
+            ret[key] = value;
         }
     });
 
-    return foundAttachments;
+    return ret;
 };
 
-export const mapAttachmentsToSøknadForInnsending = (søknad: SøknadForInnsending) => {
-    const søknadCopy = _.cloneDeep(søknad);
-
-    const vedlegg = mutateSøknadAndReturnAttachments(søknadCopy);
+export const mapAttachmentsToSøknadForInnsending = (søknad: SøknadForInnsending): SøknadForInnsending => {
+    const vedlegg: Attachment[] = [];
+    const søknadCopy = extractAttachments(søknad, vedlegg);
 
     return {
         ...søknadCopy,
