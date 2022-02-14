@@ -13,19 +13,19 @@ export interface AnnenForelderOppgittForInnsending extends Omit<AnnenForelder, '
     harMorUføretrygd?: boolean;
 }
 
-type AnnenForelderForInnsending = AnnenForelderIkkeOppgitt | AnnenForelderOppgittForInnsending;
+export type AnnenForelderForInnsending = AnnenForelderIkkeOppgitt | AnnenForelderOppgittForInnsending;
 
-type BarnForInnsending = Omit<Barn, 'datoForAleneomsorg'>;
+export type BarnForInnsending = Omit<Barn, 'datoForAleneomsorg'>;
 
-type UttaksPeriodeForInnsending = Omit<UttaksperiodeBase, 'erMorForSyk'>;
+export type UttaksPeriodeForInnsending = Omit<UttaksperiodeBase, 'erMorForSyk'>;
 
-type PeriodeForInnsending = Exclude<Periode, 'Uttaksperiode'> | UttaksPeriodeForInnsending;
+export type PeriodeForInnsending = Exclude<Periode, 'Uttaksperiode'> | UttaksPeriodeForInnsending;
 
-type LocaleForInnsending = 'NB' | 'NN';
+export type LocaleForInnsending = 'NB' | 'NN';
 
-type SøkerrolleInnsending = 'MOR' | 'FAR' | 'MEDMOR';
+export type SøkerrolleInnsending = 'MOR' | 'FAR' | 'MEDMOR';
 
-interface SøkerForInnsending extends Omit<Søker, 'språkkode'> {
+export interface SøkerForInnsending extends Omit<Søker, 'språkkode'> {
     språkkode: LocaleForInnsending;
     rolle: SøkerrolleInnsending;
 }

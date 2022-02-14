@@ -1,7 +1,16 @@
-import { mapFilTilVedlegg, isAttachmentWithError, lagSendSenereDokumentNårIngenAndreFinnes } from './vedleggUtils';
+import {
+    mapFilTilVedlegg,
+    isAttachmentWithError,
+    lagSendSenereDokumentNårIngenAndreFinnes,
+    mapAttachmentsToSøknadForInnsending,
+} from './vedleggUtils';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { Attachment, InnsendingsType } from 'app/types/Attachment';
+import { BarnForInnsending, SøkerForInnsending, SøknadForInnsending } from 'app/api/apiUtils';
+import { BarnType } from 'app/context/types/Barn';
+import InformasjonOmUtenlandsopphold from 'app/context/types/InformasjonOmUtenlandsopphold';
+import { Dekningsgrad } from 'app/types/Dekningsgrad';
 
 describe('vedleggUtils', () => {
     it('skal mappe fil til vedlegg', () => {
@@ -120,5 +129,114 @@ describe('vedleggUtils', () => {
         expect(dokument.innsendingsType).toBeUndefined();
         expect(dokument.filename).toBe('test');
         expect(dokument.filesize).toBe(123);
+    });
+
+    it('skal flytte vedlegg fra der de ligger til rot i søknadsobjektet og kun beholde referanse ID der de var', () => {
+        const vedleggId = 'V965800832305819623633073432860601988';
+
+        const søknad: SøknadForInnsending = {
+            type: 'foreldrepenger',
+            harGodkjentVilkår: true,
+            situasjon: 'adopsjon',
+            annenForelder: {
+                kanIkkeOppgis: true,
+            },
+            barn: {
+                type: BarnType.ADOPTERT_STEBARN,
+                adopsjonsdato: '2022-02-10T00:00:00.000Z',
+                antallBarn: ' 1',
+                fødselsdatoer: ['2022-02-10T00:00:00.000Z'],
+                dokumentasjonAvAleneomsorg: [
+                    {
+                        id: vedleggId,
+                        filename: 'test.png',
+                    } as Attachment,
+                ],
+            } as BarnForInnsending,
+            søker: {} as SøkerForInnsending,
+            informasjonOmUtenlandsopphold: {} as InformasjonOmUtenlandsopphold,
+            erEndringssøknad: false,
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            uttaksplan: [],
+            harGodkjentOppsummering: false,
+            vedlegg: [],
+        };
+
+        const søknadForInnsending = mapAttachmentsToSøknadForInnsending(søknad);
+
+        expect(søknadForInnsending).toHaveProperty('vedlegg');
+        expect(søknadForInnsending.vedlegg).toHaveLength(1);
+        expect(søknadForInnsending.vedlegg[0].id).toEqual(vedleggId);
+        expect(søknadForInnsending.barn.dokumentasjonAvAleneomsorg![0]).toEqual(vedleggId);
+    });
+
+    it('skal ikke gjøre noe dersom det ikke er noen vedlegg', () => {
+        const søknad: SøknadForInnsending = {
+            type: 'foreldrepenger',
+            harGodkjentVilkår: true,
+            situasjon: 'adopsjon',
+            annenForelder: {
+                kanIkkeOppgis: true,
+            },
+            barn: {
+                type: BarnType.ADOPTERT_STEBARN,
+                adopsjonsdato: '2022-02-10T00:00:00.000Z',
+                antallBarn: ' 1',
+                fødselsdatoer: ['2022-02-10T00:00:00.000Z'],
+                dokumentasjonAvAleneomsorg: [],
+            } as BarnForInnsending,
+            søker: {} as SøkerForInnsending,
+            informasjonOmUtenlandsopphold: {} as InformasjonOmUtenlandsopphold,
+            erEndringssøknad: false,
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            uttaksplan: [],
+            harGodkjentOppsummering: false,
+            vedlegg: [],
+        };
+
+        const søknadForInnsending = mapAttachmentsToSøknadForInnsending(søknad);
+
+        expect(søknadForInnsending).toHaveProperty('vedlegg');
+        expect(søknadForInnsending.vedlegg).toHaveLength(0);
+        expect(søknadForInnsending.barn.dokumentasjonAvAleneomsorg![0]).toEqual(undefined);
+    });
+
+    it('skal også mappe vedlegg av typen send senere', () => {
+        const vedleggId = 'V2929901281987521738302824422140500220';
+
+        const søknad: SøknadForInnsending = {
+            type: 'foreldrepenger',
+            harGodkjentVilkår: true,
+            situasjon: 'adopsjon',
+            annenForelder: {
+                kanIkkeOppgis: true,
+            },
+            barn: {
+                type: BarnType.ADOPTERT_STEBARN,
+                adopsjonsdato: '2022-02-10T00:00:00.000Z',
+                antallBarn: ' 1',
+                fødselsdatoer: ['2022-02-10T00:00:00.000Z'],
+                dokumentasjonAvAleneomsorg: [
+                    {
+                        id: vedleggId,
+                        innsendingsType: 'SEND_SENERE',
+                    } as Attachment,
+                ],
+            } as BarnForInnsending,
+            søker: {} as SøkerForInnsending,
+            informasjonOmUtenlandsopphold: {} as InformasjonOmUtenlandsopphold,
+            erEndringssøknad: false,
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            uttaksplan: [],
+            harGodkjentOppsummering: false,
+            vedlegg: [],
+        };
+
+        const søknadForInnsending = mapAttachmentsToSøknadForInnsending(søknad);
+
+        expect(søknadForInnsending).toHaveProperty('vedlegg');
+        expect(søknadForInnsending.vedlegg).toHaveLength(1);
+        expect(søknadForInnsending.vedlegg[0].id).toEqual(vedleggId);
+        expect(søknadForInnsending.barn.dokumentasjonAvAleneomsorg![0]).toEqual(vedleggId);
     });
 });
