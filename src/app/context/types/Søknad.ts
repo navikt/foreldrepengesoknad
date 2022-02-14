@@ -1,3 +1,4 @@
+import { Attachment } from 'app/types/Attachment';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { Periode } from 'uttaksplan/types/Periode';
 import AnnenForelder from './AnnenForelder';
@@ -18,4 +19,5 @@ export interface Søknad {
     dekningsgrad: Dekningsgrad;
     uttaksplan: Periode[];
     harGodkjentOppsummering: boolean;
+    vedlegg: Attachment[];
 }

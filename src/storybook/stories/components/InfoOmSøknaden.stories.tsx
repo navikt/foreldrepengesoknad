@@ -40,6 +40,7 @@ const context = {
         dekningsgrad: '100',
         uttaksplan: [],
         harGodkjentOppsummering: false,
+        vedlegg: [],
     },
     version: 3,
     currentRoute: '/soknad/uttaksplan-info',

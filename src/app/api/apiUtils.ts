@@ -7,6 +7,7 @@ import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { Situasjon } from 'app/types/Situasjon';
 import { Søkerrolle } from 'app/types/Søkerrolle';
 import { assertUnreachable } from 'app/utils/globalUtil';
+import { mapAttachmentsToSøknadForInnsending } from 'app/utils/vedleggUtils';
 
 export interface AnnenForelderOppgittForInnsending extends Omit<AnnenForelder, 'erUfør'> {
     harMorUføretrygd?: boolean;
@@ -91,7 +92,7 @@ export const cleanUpSøknadsdataForInnsending = (søknad: Søknad): SøknadForIn
     const cleanedBarn = cleanBarn(barn);
     const cleanedSøker = cleanSøker(søker, søkersituasjon);
 
-    return {
+    const cleanedSøknad: SøknadForInnsending = {
         ...rest,
         annenForelder: cleanedAnnenForelder,
         barn: cleanedBarn,
@@ -99,4 +100,8 @@ export const cleanUpSøknadsdataForInnsending = (søknad: Søknad): SøknadForIn
         søker: cleanedSøker,
         situasjon: søkersituasjon.situasjon,
     };
+
+    const søknadForInnsending = mapAttachmentsToSøknadForInnsending(cleanedSøknad);
+
+    return søknadForInnsending;
 };
