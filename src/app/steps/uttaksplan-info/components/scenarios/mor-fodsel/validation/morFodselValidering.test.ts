@@ -19,22 +19,6 @@ describe('morFodselValidering', () => {
         expect(resultat).toBe('Startdato for foreldrepengeperioden må være en gyldig dato på formatet dd.mm.åååå');
     });
 
-    it('skal feile validering når en har permisjonsdato og ikke skal ha uttak før termin', () => {
-        const familiehendelsedato = dayjs().toDate();
-        const skalIkkeHaUttakFørTermin = true;
-        const permisjonStartdato = '2021-01-01';
-
-        const resultat = validateErStartdatoFørTermindato(
-            intlMock,
-            familiehendelsedato,
-            skalIkkeHaUttakFørTermin
-        )(permisjonStartdato!);
-
-        expect(resultat).toBe(
-            'Du må oppgi når du skal starte foreldrepengene, eller krysse av for at du ikke skal ha foreldrepenger før termindato'
-        );
-    });
-
     it('skal feile validering når en har er permisjonsdato og uttaksdatoen er en helgedag', () => {
         const familiehendelsedato = dayjs().toDate();
         const skalIkkeHaUttakFørTermin = false;

@@ -122,7 +122,7 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, periode
     const erFpFørTerminUtenUttak =
         isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true;
     if (erFpFørTerminUtenUttak) {
-        varighetString = intlUtils(intl, 'periodeliste.header.skalIkkeHaUttakFørTermin');
+        varighetString = intlUtils(intl, 'uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin');
     } else {
         varighetString = getVarighetString(Tidsperioden(periode.tidsperiode).getAntallUttaksdager(), intl);
     }

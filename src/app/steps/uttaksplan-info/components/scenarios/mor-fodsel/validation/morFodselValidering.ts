@@ -16,10 +16,6 @@ export const validateErStartdatoFørTermindato =
             }
         }
 
-        if (permisjonStartdato !== undefined && skalIkkeHaUttakFørTermin) {
-            return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoFørTermin');
-        }
-
         if (permisjonStartdato !== undefined && !Uttaksdagen(ISOStringToDate(permisjonStartdato)!).erUttaksdag()) {
             return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoHelg');
         }

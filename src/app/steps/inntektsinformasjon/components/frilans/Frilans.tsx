@@ -75,6 +75,7 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                             label={intlUtils(intl, 'inntektsinformasjon.frilans.oppstart')}
                             validate={validateFrilansoppstartsDato(intl)}
                             maxDate={dateToday}
+                            showYearSelector={true}
                         />
                     </Block>
                     <Block

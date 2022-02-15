@@ -135,7 +135,9 @@ const MorFødsel: FunctionComponent<Props> = ({
                         tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
                     uttaksplanSkjema: {
                         fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
-                        startdatoPermisjon: submissionValues.permisjonStartdato,
+                        startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin
+                            ? undefined
+                            : submissionValues.permisjonStartdato,
                         skalIkkeHaUttakFørTermin: submissionValues.skalIkkeHaUttakFørTermin,
                     },
                 })

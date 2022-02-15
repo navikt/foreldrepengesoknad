@@ -118,6 +118,7 @@ const FrilansoppdragModal: FunctionComponent<Props> = ({
                                     )}
                                     minDate={dayjs(formValues.fom).toDate()}
                                     maxDate={dayjs().toDate()}
+                                    showYearSelector={true}
                                 />
                             </Block>
                         </FrilansoppdragModalFormComponents.Form>
