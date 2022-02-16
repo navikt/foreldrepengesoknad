@@ -3,7 +3,7 @@ import { harMorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harMorSøkt
 // import { stønadskontoInneholderForMyeUttakKunSøkerTest } from './tester/stønadskontoInneholderForMyeUttakKunSøkerTest';
 // import { harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest } from './tester/harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest';
 import { erUttaksplanBareOppholdTest } from './tester/erUttaksplanBareOppholdTest';
-// import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOppholdTest';
+import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOppholdTest';
 import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOppholdTest';
 import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUttaksplanGraderingStørreEnnSamtidigUttakTest';
 import { erTilleggsopplysningerGyldigTest } from './tester/erTilleggsopplysningerGyldigTest';
@@ -34,7 +34,7 @@ export enum UttaksplanRegelKey {
     // 'stønadskontoInneholderForMyeUttakKunSøker' = 'stønadskontoInneholderForMyeUttakKunSøker',
     'uttaksplanErBareOpphold' = 'uttaksplanErBareOpphold',
     'uttaksplanStarterMedOpphold' = 'uttaksplanStarterMedOpphold',
-    // 'uttaksplanSlutterMedOpphold' = 'uttaksplanSlutterMedOpphold',
+    'uttaksplanSlutterMedOpphold' = 'uttaksplanSlutterMedOpphold',
     'uttaksplanGraderingStørreEnnSamtidigUttak' = 'uttaksplanGraderingStørreEnnSamtidigUttak',
     'begrunnelseVedForSenEndringErUgyldig' = 'begrunnelseVedForSenEndringErUgyldig',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
@@ -94,11 +94,11 @@ const uttaksplanValideringRegler: Regel[] = [
         alvorlighet: RegelAlvorlighet.FEIL,
         test: starterUttaksplanMedOppholdTest,
     },
-    // {
-    //     key: UttaksplanRegelKey.uttaksplanSlutterMedOpphold,
-    //     alvorlighet: RegelAlvorlighet.FEIL,
-    //     test: slutterUttaksplanMedOppholdTest,
-    // },
+    {
+        key: UttaksplanRegelKey.uttaksplanSlutterMedOpphold,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: slutterUttaksplanMedOppholdTest,
+    },
     {
         key: UttaksplanRegelKey.uttaksplanGraderingStørreEnnSamtidigUttak,
         alvorlighet: RegelAlvorlighet.FEIL,
