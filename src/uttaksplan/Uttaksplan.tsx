@@ -22,7 +22,11 @@ import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import VeilederInfo from './validering/veilederInfo/VeilederInfo';
 import { useIntl } from 'react-intl';
 import { getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
-//import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
+import OppgiTilleggsopplysninger from './components/oppgi-tilleggsopplysninger/OppgiTilleggsopplysninger';
+import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
+import { SenEndringÅrsak } from './types/SenEndringÅrsak';
+import { getSeneEndringerSomKreverBegrunnelse } from 'app/steps/uttaksplan-info/utils/Periodene';
+// import { Attachment } from 'app/types/Attachment';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -45,8 +49,9 @@ interface Props {
     søkersituasjon: Søkersituasjon;
     dekningsgrad: Dekningsgrad;
     antallBarn: number;
-    //tilleggsopplysninger: Tilleggsopplysninger;
+    tilleggsopplysninger: Tilleggsopplysninger;
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
+    handleBegrunnelseChange: (begrunnelse: string) => void;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -70,8 +75,9 @@ const Uttaksplan: FunctionComponent<Props> = ({
     søkersituasjon,
     dekningsgrad,
     antallBarn,
-    //tilleggsopplysninger,
+    tilleggsopplysninger,
     setUttaksplanErGyldig,
+    handleBegrunnelseChange,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -152,6 +158,17 @@ const Uttaksplan: FunctionComponent<Props> = ({
         handleOnPlanChange(addPeriodeResult.updatedPlan);
     };
 
+    const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(uttaksplan);
+
+    //TODO:
+    const vedleggForSenEndring = []!;
+    // handleBegrunnelseVedleggChange = (vedlegg: Attachment[]) => {
+    //     vedlegg.forEach((v) => {
+    //         v.beskrivelse = getMessage(this.props.intl, 'vedlegg.beskrivelse.begrunnelseForSenEndring');
+    //     });
+    //     this.props.dispatch(søknadActions.setVedleggForSenEndring(vedlegg));
+    // };
+
     const uttaksplanValidering = validerUttaksplan(
         søkersituasjon,
         arbeidsforhold,
@@ -170,8 +187,8 @@ const Uttaksplan: FunctionComponent<Props> = ({
         stønadskontoer,
         uttaksplan,
         //TODO: Fiks harKomplettUttaksplan
-        false
-        //tilleggsopplysninger
+        false,
+        tilleggsopplysninger
     );
 
     useEffect(() => {
@@ -211,15 +228,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     situasjon={situasjon}
                 />
             </Block>
-            <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">
-                <VeilederInfo
-                    messages={uttaksplanVeilederInfo}
-                    paneltype="plakat"
-                    kompakt={true}
-                    veilederStil={'normal'}
-                    ariaTittel={intlUtils(intl, 'uttaksplan.regelAvvik.ariaTittel')}
-                />
-            </Block>
             <Block padBottom="l">
                 <OversiktKvoter
                     tilgjengeligeStønadskontoer={stønadskontoer}
@@ -229,6 +237,27 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     familiehendelsesdato={familiehendelsesdatoDate}
                 />
             </Block>
+            <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">
+                <VeilederInfo
+                    messages={uttaksplanVeilederInfo}
+                    paneltype="plakat"
+                    kompakt={true}
+                    veilederStil={'normal'}
+                    ariaTittel={intlUtils(intl, 'uttaksplan.regelAvvik.ariaTittel')}
+                />
+            </Block>
+            {årsakTilSenEndring && årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
+                <OppgiTilleggsopplysninger
+                    begrunnelse={
+                        tilleggsopplysninger.begrunnelseForSenEndring
+                            ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
+                            : ''
+                    }
+                    vedlegg={vedleggForSenEndring}
+                    onBegrunnelseChange={handleBegrunnelseChange}
+                    //onVedleggChange={handleBegrunnelseVedleggChange}
+                />
+            )}
         </>
     );
 };

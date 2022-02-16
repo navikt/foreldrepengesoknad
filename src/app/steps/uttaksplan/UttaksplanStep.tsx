@@ -46,7 +46,15 @@ const UttaksplanStep = () => {
 
     const onValidSubmitHandler = () => {
         setSubmitIsClicked(true);
-        return [];
+        return [actionCreator.setTilleggsopplysninger(tilleggsopplysninger)];
+    };
+
+    const handleBegrunnelseChange = (begrunnelse: string) => {
+        const opplysninger = {
+            ...tilleggsopplysninger,
+            begrunnelseForSenEndring: { ...tilleggsopplysninger.begrunnelseForSenEndring, tekst: begrunnelse },
+        };
+        dispatch(actionCreator.setTilleggsopplysninger(opplysninger));
     };
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
@@ -66,7 +74,7 @@ const UttaksplanStep = () => {
     const onAvbrytSøknad = useAvbrytSøknad();
 
     const { person, arbeidsforhold } = søkerinfo;
-    const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad } = søknad;
+    const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
     const { erAleneOmOmsorg } = søker;
     const { situasjon } = søkersituasjon;
     const { rolle } = søkersituasjon;
@@ -157,7 +165,9 @@ const UttaksplanStep = () => {
                 søkersituasjon={søkersituasjon}
                 dekningsgrad={dekningsgrad}
                 antallBarn={antallBarn}
+                tilleggsopplysninger={tilleggsopplysninger}
                 setUttaksplanErGyldig={setUttaksplanErGyldig}
+                handleBegrunnelseChange={handleBegrunnelseChange}
             />
             <Block textAlignCenter={true} padBottom="l">
                 <Hovedknapp onClick={clickHandler} disabled={isSubmitting} spinner={isSubmitting}>

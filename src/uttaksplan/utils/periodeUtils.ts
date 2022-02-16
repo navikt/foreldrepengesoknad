@@ -6,10 +6,13 @@ import { StønadskontoType } from '../types/StønadskontoType';
 import {
     isAnnenPartInfoPeriode,
     isHull,
+    isOverføringsperiode,
     isPeriodeUtenUttak,
-    // isUttaksperiode,
+    isUttakAvFellesperiode,
+    isUttaksperiode,
     Periode,
     Periodetype,
+    Utsettelsesperiode,
     UttakAnnenPartInfoPeriode,
 } from './../types/Periode';
 import { NavnPåForeldre } from './../../app/types/NavnPåForeldre';
@@ -20,8 +23,11 @@ import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/util
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { getStønadskontoNavn } from './stønadskontoerUtils';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { isDateInTheFuture, ISOStringToDate } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
+import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
+import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
+import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {
@@ -301,72 +307,54 @@ export const erPeriodeFørDato = (periode: Periode, dato: Date) => {
     );
 };
 
-// const erUtsettelsePgaSykdom = (periode: Utsettelsesperiode) =>
-//     periode.årsak === UtsettelseÅrsakType.Sykdom ||
-//     periode.årsak === UtsettelseÅrsakType.InstitusjonSøker ||
-//     periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet;
+export const erGradering = (periode: Periode) => periode.type === Periodetype.Uttak && periode.gradert === true;
 
-// const erUttakGrunnetSykdom = (periode: Periode) => {
-//     if (
-//         isOverføringsperiode(periode) &&
-//         (periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
-//             periode.årsak === OverføringÅrsakType.sykdomAnnenForelder)
-//     ) {
-//         return true;
-//     }
+export const erUttakEllerOppholdMerEnnTreMånederSiden = (periode: Periode) =>
+    (periode.type === Periodetype.Uttak || periode.type === Periodetype.Opphold) &&
+    dayjs(periode.tidsperiode.fom).isBefore(dayjs().startOf('day').subtract(3, 'months'));
 
-//     if (isUttaksperiode(periode)) {
-//         if (
-//             periode.erMorForSyk === true ||
-//             periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
-//             periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
-//         ) {
-//             return true;
-//         }
-//     }
+export const erUtsettelsePgaSykdom = (periode: Utsettelsesperiode) =>
+    periode.årsak === UtsettelseÅrsakType.Sykdom ||
+    periode.årsak === UtsettelseÅrsakType.InstitusjonSøker ||
+    periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet;
 
-//     if (
-//         isUttakAvFellesperiode(periode) &&
-//         (periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
-//             periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp)
-//     ) {
-//         return true;
-//     }
+export const erUttakGrunnetSykdom = (periode: Periode) => {
+    if (
+        isOverføringsperiode(periode) &&
+        (periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
+            periode.årsak === OverføringÅrsakType.sykdomAnnenForelder)
+    ) {
+        return true;
+    }
 
-//     return false;
-// };
+    if (isUttaksperiode(periode)) {
+        if (
+            periode.erMorForSyk === true ||
+            periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
+            periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
+        ) {
+            return true;
+        }
+    }
 
-// const erUttakTilbakeITid = (periode: Periode) => isUttaksperiode(periode) && dateIsNotInFuture(periode.tidsperiode.fom);
-// const erUtsettelseTilbakeITid = (periode: Periode) =>
-//     periode.type === Periodetype.Utsettelse && dateIsNotInFuture(periode.tidsperiode.fom);
+    if (
+        isUttakAvFellesperiode(periode) &&
+        (periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
+            periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp)
+    ) {
+        return true;
+    }
 
-// const erUtsettelseGrunnetPgaArbeid = (periode: Utsettelsesperiode) => periode.årsak === UtsettelseÅrsakType.Arbeid;
+    return false;
+};
 
-// export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): SenEndringÅrsak => {
-//     const utsettelseSykdomKreverBegrunnelse = uttaksplan.some(erUtsettelsePgaSykdom);
-//     const uttakSykdomKreverBegrunnelse = uttaksplan.some(erUttakGrunnetSykdom);
-//     const utsettelseSykdomKreverBegrunnelsePgaSøktSent = uttaksplan
-//         .filter(erUtsettelseTilbakeITid)
-//         .some(erUtsettelsePgaSykdom);
-//     const uttakSykdomKreverBegrunnelsePgaSøktSent = uttaksplan.filter(erUttakTilbakeITid).some(erUttakGrunnetSykdom);
-//     const utsettelseArbeidKreverBegrunnelsePgaSøktSent = uttaksplan
-//         .filter(erUtsettelseTilbakeITid)
-//         .some(erUtsettelseGrunnetPgaArbeid);
-//     const uttakArbeidKreverBegrunnelsePgaSøktSent = uttaksplan.filter(erUttakTilbakeITid).some(erGradering);
-//     const uttakKreverBegrunnelsePgaSøktSent = uttaksplan.some(erUttakEllerOppholdMerEnnTreMånederSiden);
+export const erUttakTilbakeITid = (periode: Periode) =>
+    isUttaksperiode(periode) && !isDateInTheFuture(dateToISOString(periode.tidsperiode.fom));
 
-//     if (utsettelseArbeidKreverBegrunnelsePgaSøktSent || uttakArbeidKreverBegrunnelsePgaSøktSent) {
-//         return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.ArbeidOgUttak : SenEndringÅrsak.Arbeid;
-//     }
+export const erUtsettelseTilbakeITid = (periode: Periode) =>
+    periode.type === Periodetype.Utsettelse && !isDateInTheFuture(dateToISOString(periode.tidsperiode.fom));
 
-//     if (
-//         utsettelseSykdomKreverBegrunnelse ||
-//         utsettelseSykdomKreverBegrunnelsePgaSøktSent ||
-//         uttakSykdomKreverBegrunnelsePgaSøktSent ||
-//         uttakSykdomKreverBegrunnelse
-//     ) {
-//         return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.SykdomOgUttak : SenEndringÅrsak.Sykdom;
-//     }
+export const erUtsettelseGrunnetPgaArbeid = (periode: Utsettelsesperiode) =>
+    periode.årsak === UtsettelseÅrsakType.Arbeid;
 
-//     return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.Uttak : SenEndringÅrsak.Ingen;
-// };
+export const erUtsettelse = (periode: Periode) => periode.type === Periodetype.Utsettelse;

@@ -1,5 +1,6 @@
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
+import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
@@ -24,4 +25,5 @@ export interface Søknadsinfo {
     stønadskontoer: TilgjengeligStønadskonto[];
     perioder: Periode[];
     harKomplettUttaksplan: boolean;
+    tilleggsopplysninger: Tilleggsopplysninger;
 }

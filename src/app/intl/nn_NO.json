@@ -552,6 +552,7 @@
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noko gjekk gale prøv igjen",
     "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikkje av gyldig type",
+    "vedlegg.lastoppknapp.senEndring": "Last opp dokumentasjon ...",
     "uttaksplan.dinPlan": "Din plan",
     "uttaksplan.lukk": "Lukk",
     "uttaksplan.avbryt": "Avbryt",
@@ -613,6 +614,16 @@
     "uttaksplan.slettPeriode.overføring": "Slett overføring",
     "uttaksplan.slettPeriode.opphold": "Slett opphold",
     "uttaksplan.slettPeriode.utsettelse": "Slett utsettelse",
+    "uttaksplan.tilleggsopplysninger.label": "Hva er grunnen til at du søker tilbake i tid eller gi en forklaring av sykdomssituasjonen",
+    "uttaksplan.tilleggsopplysninger.apneLabel": "Les meir om kva vi ønsker at du skal gi ei forklaring om",
+    "uttaksplan.tilleggsopplysninger.sykdomTilbakeITid.overskrift": "Søker du om utsettelse på grunn av sykdom tilbake i tid?",
+    "uttaksplan.tilleggsopplysninger.sykdomTilbakeITid": "Søker du om  utsette på grunn av sykdom tilbake i tid. Så kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.tilleggsopplysninger.uttak.overskrift": "Søker du om en perioden med foreldrepenger mer enn 3 måneder tilbake i tid?",
+    "uttaksplan.tilleggsopplysninger.uttak": "Du kan søke om foreldrepenger 3 måneder tilbake i tid fra den dagen NAV mottar søknaden fra deg. Når du søker mer enn 3 måneder tilbake i tid må vi vurdere rettighetene dine. Her kan du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering.overskrift": "Søker du om utsettelse på grunn av arbeid eller kombinere arbeid og foreldrepenger tilbake i tid?",
+    "uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering": "Som hovedregel må du søke om å kombinere foreldrepenger og arbeid eller utsettelse på grunn av arbeid før du skal begynne å jobbe. Har du blitt beordret ut i jobb på grunn av korona kan du skrive en forklaring til oss her.",
+    "uttaksplan.tilleggsopplysninger.sykdom.overskrift": "Er du eller den andre forelderen for syk til å ta seg av barnet eller innlagt i helseinstitusjon?",
+    "uttaksplan.tilleggsopplysninger.sykdom": "Her skal du skrive hvordan du eller den andre forelderen er helt avhengig av hjelp til å ta seg av barnet. Er du eller den andre forelderen innlagt i helseinstitusjon, skriver du hvor du eller den andre forelderen  er innlagt.",
     "uttaksplan.validering.stillingsprosent": "Stillingsprosenten må være større enn 0 og mindre enn 100",
     "uttaksplan.nyPeriode.tittel": "Ny periode med foreldrepenger",
     "uttaksplan.utsettelseårsak.pgasykdom": "Jeg er for syk til å ta av meg barnet",
@@ -702,5 +713,6 @@
     "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Planen din inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Hugs at du må søkja om foreldrepengar seinast {sisteDag}.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad.tittel": "Planen din inneholder kun utsettelser",
-    "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad": "Hugs at du må legge inn alle nye periodar du skal ha foreldrepenger eller utsetje etter {sisteDag}, då denne endringssøknaden erstattar den tidlegare planen din."
+    "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad": "Hugs at du må legge inn alle nye periodar du skal ha foreldrepenger eller utsetje etter {sisteDag}, då denne endringssøknaden erstattar den tidlegare planen din.",
+    "uttaksplan.veileder.fritekst.kanIkkeVæreLengreEnn": "Svaret kan ikkje være lengre enn {maxLength} tegn."
 }

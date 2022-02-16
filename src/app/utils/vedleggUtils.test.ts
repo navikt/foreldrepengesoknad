@@ -160,6 +160,7 @@ describe('vedleggUtils', () => {
             uttaksplan: [],
             harGodkjentOppsummering: false,
             vedlegg: [],
+            tilleggsopplysninger: undefined!,
         };
 
         const søknadForInnsending = mapAttachmentsToSøknadForInnsending(søknad);
@@ -192,6 +193,7 @@ describe('vedleggUtils', () => {
             uttaksplan: [],
             harGodkjentOppsummering: false,
             vedlegg: [],
+            tilleggsopplysninger: undefined!,
         };
 
         const søknadForInnsending = mapAttachmentsToSøknadForInnsending(søknad);
@@ -230,6 +232,7 @@ describe('vedleggUtils', () => {
             uttaksplan: [],
             harGodkjentOppsummering: false,
             vedlegg: [],
+            tilleggsopplysninger: undefined!,
         };
 
         const søknadForInnsending = mapAttachmentsToSøknadForInnsending(søknad);

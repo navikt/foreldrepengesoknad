@@ -6,7 +6,7 @@ import { erUttaksplanBareOppholdTest } from './tester/erUttaksplanBareOppholdTes
 // import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOppholdTest';
 import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOppholdTest';
 import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUttaksplanGraderingStørreEnnSamtidigUttakTest';
-// import { erTilleggsopplysningerGyldigTest } from './tester/erTilleggsopplysningerGyldigTest';
+import { erTilleggsopplysningerGyldigTest } from './tester/erTilleggsopplysningerGyldigTest';
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
 // import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
@@ -36,7 +36,7 @@ export enum UttaksplanRegelKey {
     'uttaksplanStarterMedOpphold' = 'uttaksplanStarterMedOpphold',
     // 'uttaksplanSlutterMedOpphold' = 'uttaksplanSlutterMedOpphold',
     'uttaksplanGraderingStørreEnnSamtidigUttak' = 'uttaksplanGraderingStørreEnnSamtidigUttak',
-    // 'begrunnelseVedForSenEndringErUgyldig' = 'begrunnelseVedForSenEndringErUgyldig',
+    'begrunnelseVedForSenEndringErUgyldig' = 'begrunnelseVedForSenEndringErUgyldig',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
     // 'perioderManglerVedlegg' = 'manglendeVedlegg',
@@ -104,11 +104,11 @@ const uttaksplanValideringRegler: Regel[] = [
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erUttaksplanGraderingStørreEnnSamtidigUttakTest,
     },
-    // {
-    //     key: UttaksplanRegelKey.begrunnelseVedForSenEndringErUgyldig,
-    //     alvorlighet: RegelAlvorlighet.FEIL,
-    //     test: erTilleggsopplysningerGyldigTest,
-    // },
+    {
+        key: UttaksplanRegelKey.begrunnelseVedForSenEndringErUgyldig,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: erTilleggsopplysningerGyldigTest,
+    },
     {
         key: UttaksplanRegelKey.uttaksplanHarForMangeFlerbarnsdager,
         alvorlighet: RegelAlvorlighet.FEIL,

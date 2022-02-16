@@ -164,6 +164,15 @@ const foreldrepengesøknadReducer = (
                     harGodkjentOppsummering: action.payload,
                 },
             };
+
+        case ForeldrepengesøknadContextActionKeys.SET_TILLEGGSOPPLYSNINGER:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    tilleggsopplysninger: action.payload,
+                },
+            };
         case ForeldrepengesøknadContextActionKeys.SET_KVITTERING:
             return {
                 ...state,

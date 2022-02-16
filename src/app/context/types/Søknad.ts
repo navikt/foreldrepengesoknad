@@ -6,6 +6,7 @@ import Barn from './Barn';
 import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
 import Søker from './Søker';
 import Søkersituasjon from './Søkersituasjon';
+import { Tilleggsopplysninger } from './Tilleggsopplysninger';
 
 export interface Søknad {
     type: 'foreldrepenger';
@@ -20,4 +21,5 @@ export interface Søknad {
     uttaksplan: Periode[];
     harGodkjentOppsummering: boolean;
     vedlegg: Attachment[];
+    tilleggsopplysninger: Tilleggsopplysninger;
 }

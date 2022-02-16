@@ -13,6 +13,7 @@ import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphol
 import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
 import { Søknad } from '../types/Søknad';
+import { Tilleggsopplysninger } from '../types/Tilleggsopplysninger';
 import UttaksplanInfo from '../types/UttaksplanInfo';
 
 export enum ForeldrepengesøknadContextActionKeys {
@@ -38,6 +39,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_GODKJENT_OPPSUMMERING = 'setGodkjentOppsummering',
     SET_KVITTERING = 'setKvittering',
     SET_SPRÅKKODE = 'setSpråkkode',
+    SET_TILLEGGSOPPLYSNINGER = 'setTilleggsopplysninger',
 }
 
 interface SetVelkommen {
@@ -170,6 +172,16 @@ const setUttaksplanInfo = (payload: UttaksplanInfo): SetUttaksplanInfo => ({
     payload,
 });
 
+interface SetTilleggsopplysninger {
+    type: ForeldrepengesøknadContextActionKeys.SET_TILLEGGSOPPLYSNINGER;
+    payload: Tilleggsopplysninger;
+}
+
+const setTilleggsopplysninger = (payload: Tilleggsopplysninger): SetTilleggsopplysninger => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_TILLEGGSOPPLYSNINGER,
+    payload,
+});
+
 interface SetDekningsgrad {
     type: ForeldrepengesøknadContextActionKeys.SET_DEKNINGSGRAD;
     dekningsgrad: Dekningsgrad;
@@ -263,6 +275,7 @@ export type ForeldrepengesøknadContextAction =
     | SetInformasjonOmUtenlandsopphold
     | SetSaker
     | SetUttaksplanInfo
+    | SetTilleggsopplysninger
     | SetDekningsgrad
     | ApplyStoredState
     | SetVedlegg
@@ -287,6 +300,7 @@ export default {
     setInformasjonOmUtenlandsopphold,
     setSaker,
     setUttaksplanInfo,
+    setTilleggsopplysninger,
     setDekningsgrad,
     setVedlegg,
     lagUttaksplanforslag,

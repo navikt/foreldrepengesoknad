@@ -21,9 +21,20 @@ import {
     Uttaksperiode,
 } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import {
+    erGradering,
+    erUtsettelse,
+    erUtsettelseGrunnetPgaArbeid,
+    erUtsettelsePgaSykdom,
+    erUtsettelseTilbakeITid,
+    erUttakEllerOppholdMerEnnTreMånederSiden,
+    erUttakGrunnetSykdom,
+    erUttakTilbakeITid,
+} from 'uttaksplan/utils/periodeUtils';
 import { Perioden } from './Perioden';
 import { datoErInnenforTidsperiode, isValidTidsperiode, Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
+import { SenEndringÅrsak } from 'uttaksplan/types/SenEndringÅrsak';
 
 export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),
@@ -321,3 +332,33 @@ function finnSisteInfoperiode(perioder: Periode[]) {
         .sort(sorterPerioder)
         .reverse()[0];
 }
+
+export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): SenEndringÅrsak => {
+    const utsettelsesPerioder = uttaksplan.filter(erUtsettelse) as Utsettelsesperiode[];
+    const utsettelseSykdomKreverBegrunnelse = utsettelsesPerioder.some(erUtsettelsePgaSykdom);
+    const uttakSykdomKreverBegrunnelse = uttaksplan.some(erUttakGrunnetSykdom);
+    const utsettelseSykdomKreverBegrunnelsePgaSøktSent = utsettelsesPerioder
+        .filter(erUtsettelseTilbakeITid)
+        .some(erUtsettelsePgaSykdom);
+    const uttakSykdomKreverBegrunnelsePgaSøktSent = uttaksplan.filter(erUttakTilbakeITid).some(erUttakGrunnetSykdom);
+    const utsettelseArbeidKreverBegrunnelsePgaSøktSent = utsettelsesPerioder
+        .filter(erUtsettelseTilbakeITid)
+        .some(erUtsettelseGrunnetPgaArbeid);
+    const uttakArbeidKreverBegrunnelsePgaSøktSent = uttaksplan.filter(erUttakTilbakeITid).some(erGradering);
+    const uttakKreverBegrunnelsePgaSøktSent = uttaksplan.some(erUttakEllerOppholdMerEnnTreMånederSiden);
+
+    if (utsettelseArbeidKreverBegrunnelsePgaSøktSent || uttakArbeidKreverBegrunnelsePgaSøktSent) {
+        return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.ArbeidOgUttak : SenEndringÅrsak.Arbeid;
+    }
+
+    if (
+        utsettelseSykdomKreverBegrunnelse ||
+        utsettelseSykdomKreverBegrunnelsePgaSøktSent ||
+        uttakSykdomKreverBegrunnelsePgaSøktSent ||
+        uttakSykdomKreverBegrunnelse
+    ) {
+        return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.SykdomOgUttak : SenEndringÅrsak.Sykdom;
+    }
+
+    return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.Uttak : SenEndringÅrsak.Ingen;
+};
