@@ -1,4 +1,4 @@
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils, Block } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
@@ -7,6 +7,8 @@ import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 import React, { FunctionComponent } from 'react';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
+import { VeilederMessage } from 'uttaksplan/validering/veilederInfo/types';
+import VeilederMeldinger from 'uttaksplan/validering/veilederInfo/VeilederMeldinger';
 import PeriodelisteItemHeader from '../periodeliste-item-header/PeriodelisteItemHeader';
 import PeriodeUtsettelseForm from '../uttaks-forms/periode-utsettelse-form/PeriodeUtsettelseForm';
 import PeriodeUttakForm from '../uttaks-forms/periode-uttak-form/PeriodeUttakForm';
@@ -30,6 +32,7 @@ interface Props {
     erAleneOmOmsorg: boolean;
     erDeltUttak: boolean;
     situasjon: Situasjon;
+    meldinger?: VeilederMessage[];
 }
 
 const renderPeriodeListeInnhold = (
@@ -103,9 +106,10 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     erAleneOmOmsorg,
     erDeltUttak,
     situasjon,
+    meldinger = [],
 }) => {
     const bem = bemUtils('periodelisteItem');
-
+    const melding = meldinger.length > 0 ? meldinger[0] : undefined;
     return (
         <article className={bem.block}>
             <EkspanderbartpanelBase
@@ -115,11 +119,15 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                         egenPeriode={egenPeriode}
                         periode={periode}
                         navnPåForeldre={navnPåForeldre}
+                        melding={melding}
                     />
                 }
                 apen={isOpen}
                 onClick={() => toggleIsOpen(periode.id)}
             >
+                <Block visible={meldinger.length > 0}>
+                    <VeilederMeldinger meldinger={meldinger.filter((m) => m.avvikType !== 'skjema')} />
+                </Block>
                 {renderPeriodeListeInnhold(
                     periode,
                     familiehendelsesdato,

@@ -6,6 +6,7 @@ import { Element } from 'nav-frontend-typografi';
 
 import './veilederMelding.less';
 import { bemUtils } from '@navikt/fp-common';
+import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplan-ikon/UttaksplanIkon';
 
 export type VeilederMeldingStil = 'transparent' | 'default';
 
@@ -24,6 +25,17 @@ const getAlertStripeTypeFromMessageType = (message: VeilederMessage): AlertStrip
             return 'advarsel';
         case 'feil':
             return 'feil';
+    }
+};
+
+export const getIkonForVeilederMelding = (melding: VeilederMessage): UttaksplanIkonKeys => {
+    switch (melding.type) {
+        case 'feil':
+            return UttaksplanIkonKeys.feil;
+        case 'advarsel':
+            return UttaksplanIkonKeys.advarsel;
+        default:
+            return UttaksplanIkonKeys.info;
     }
 };
 

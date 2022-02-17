@@ -9,6 +9,7 @@ import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Situasjon } from 'app/types/Situasjon';
+import { VeiledermeldingerPerPeriode } from 'uttaksplan/validering/veilederInfo/types';
 
 interface Props {
     uttaksplan: Periode[];
@@ -24,6 +25,7 @@ interface Props {
     erAleneOmOmsorg: boolean;
     erDeltUttak: boolean;
     situasjon: Situasjon;
+    meldingerPerPeriode: VeiledermeldingerPerPeriode;
 }
 
 const Periodeliste: FunctionComponent<Props> = ({
@@ -40,6 +42,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     erAleneOmOmsorg,
     erDeltUttak,
     situasjon,
+    meldingerPerPeriode,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -73,6 +76,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                     erAleneOmOmsorg={erAleneOmOmsorg}
                     erDeltUttak={erDeltUttak}
                     situasjon={situasjon}
+                    meldinger={meldingerPerPeriode[p.id]}
                 />
             ))}
         </div>

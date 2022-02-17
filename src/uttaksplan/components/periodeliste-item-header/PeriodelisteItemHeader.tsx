@@ -19,11 +19,15 @@ import { IntlShape, useIntl } from 'react-intl';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 
 import './periodelisteItemHeader.less';
+import UttaksplanIkon from '../uttaksplan-ikon/UttaksplanIkon';
+import { getIkonForVeilederMelding } from 'uttaksplan/validering/veilederInfo/components/VeilederMelding';
+import { VeilederMessage } from 'uttaksplan/validering/veilederInfo/types';
 
 interface Props {
     egenPeriode: boolean;
     periode: Periode;
     navnPåForeldre: NavnPåForeldre;
+    melding: VeilederMessage | undefined;
 }
 
 const bem = bemUtils('periodelisteItemHeader2');
@@ -115,7 +119,7 @@ const renderDagMnd = (dato: Date, visÅr = true): JSX.Element => {
     );
 };
 
-const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, periode, navnPåForeldre }) => {
+const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, periode, navnPåForeldre, melding }) => {
     const intl = useIntl();
 
     let varighetString;
@@ -140,6 +144,14 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, periode
                     <Element tag="h2">{getPeriodeTittel(intl, periode, navnPåForeldre)}</Element>
                     <Normaltekst>{varighetString}</Normaltekst>
                 </div>
+                <div className={bem.element('advarsel')}>
+                    {melding && (
+                        <span role="presentation">
+                            <UttaksplanIkon ikon={getIkonForVeilederMelding(melding)} title={melding.contentIntlKey} />
+                        </span>
+                    )}
+                </div>
+
                 <div className={bem.element('dato-container')}>
                     {renderDagMnd(periode.tidsperiode.fom)}
                     {renderDagMnd(periode.tidsperiode.tom)}

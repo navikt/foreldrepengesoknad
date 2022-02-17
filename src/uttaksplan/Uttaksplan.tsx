@@ -21,7 +21,7 @@ import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import VeilederInfo from './validering/veilederInfo/VeilederInfo';
 import { useIntl } from 'react-intl';
-import { getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
+import { getPeriodelisteMeldinger, getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
 import OppgiTilleggsopplysninger from './components/oppgi-tilleggsopplysninger/OppgiTilleggsopplysninger';
 import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import { SenEndringÅrsak } from './types/SenEndringÅrsak';
@@ -204,6 +204,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
 
     //TODO: trenges grupperAvvik i det hele tatt? Sendes inn som false her.
     const uttaksplanVeilederInfo = getUttaksplanVeilederinfo(uttaksplanValidering.avvik, intl, false);
+    const meldingerPerPeriode = getPeriodelisteMeldinger(uttaksplanVeilederInfo);
 
     return (
         <>
@@ -230,6 +231,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     erDeltUttak={erDeltUttak}
                     erAleneOmOmsorg={erAleneOmOmsorg}
                     situasjon={situasjon}
+                    meldingerPerPeriode={meldingerPerPeriode}
                 />
             </Block>
             <Block padBottom="l">

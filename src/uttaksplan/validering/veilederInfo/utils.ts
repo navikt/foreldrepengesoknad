@@ -1,9 +1,10 @@
-import { VeilederMessage } from './types';
+import { VeiledermeldingerPerPeriode, VeilederMessage } from './types';
 import { IntlShape } from 'react-intl';
 import { RegelAvvik } from '../utils/types/regelTypes';
 import { intlHasKey } from 'app/intl/utils';
 import { getRegelIntlValues, trimRelaterteRegelAvvik } from '../utils/regelUtils';
 import { UttaksplanAvvikType } from '../utils/types/UttaksplanAvvikType';
+import { groupBy } from 'lodash';
 
 export const veilederMessageAvsnitt = (
     førsteTekst: VeilederMessage[],
@@ -35,4 +36,9 @@ export const getUttaksplanVeilederinfo = (
     grupperAvvik: boolean
 ): VeilederMessage[] => {
     return trimRelaterteRegelAvvik(avvik, grupperAvvik).map((a) => mapAvvikTilMessage(a, intl));
+};
+
+export const getPeriodelisteMeldinger = (veilederinfo: VeilederMessage[]): VeiledermeldingerPerPeriode => {
+    const meldinger = veilederinfo.filter((info) => info.periodeId !== undefined);
+    return groupBy(meldinger, (info) => info.periodeId);
 };

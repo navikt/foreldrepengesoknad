@@ -9,6 +9,7 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Periode } from 'uttaksplan/types/Periode';
+import { VeiledermeldingerPerPeriode } from 'uttaksplan/validering/veilederInfo/types';
 import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
 import Periodeliste from './../periodeliste/Periodeliste';
 
@@ -29,6 +30,7 @@ interface Props {
     erAleneOmOmsorg: boolean;
     erDeltUttak: boolean;
     situasjon: Situasjon;
+    meldingerPerPeriode: VeiledermeldingerPerPeriode;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -46,6 +48,7 @@ const Planlegger: FunctionComponent<Props> = ({
     erAleneOmOmsorg,
     erDeltUttak,
     situasjon,
+    meldingerPerPeriode,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -76,6 +79,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 erAleneOmOmsorg={erAleneOmOmsorg}
                                 erDeltUttak={erDeltUttak}
                                 situasjon={situasjon}
+                                meldingerPerPeriode={meldingerPerPeriode}
                             />
                         </section>
                     </Block>
