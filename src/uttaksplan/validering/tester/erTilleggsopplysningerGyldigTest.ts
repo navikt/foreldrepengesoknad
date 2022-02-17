@@ -12,8 +12,8 @@ export const tilleggsopplysningerErGyldig = (begrunnelse?: string) =>
 
 export function erTilleggsopplysningerGyldigTest(grunnlag: Søknadsinfo): RegelTestresultat {
     const { begrunnelseForSenEndring } = grunnlag.tilleggsopplysninger;
-
-    return tilleggsopplysningerErGyldig(begrunnelseForSenEndring ? begrunnelseForSenEndring.tekst : '')
+    const begrunnelseTekst = begrunnelseForSenEndring ? begrunnelseForSenEndring.tekst : '';
+    return tilleggsopplysningerErGyldig(begrunnelseTekst)
         ? { passerer: true }
         : {
               passerer: false,

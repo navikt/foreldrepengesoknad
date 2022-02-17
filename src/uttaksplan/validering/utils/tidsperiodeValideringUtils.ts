@@ -95,7 +95,7 @@ export const utsettelseTidsperiodeErGyldig = (
     familiehendelsesdato: Date
 ): boolean => {
     const { tidsperiode } = utsettelesperiode;
-    const validators = getUtsettelseTidsperiodeValidatorer(tidsperiode as TidsperiodeDate, familiehendelsesdato);
+    const validators = getUtsettelseTidsperiodeValidatorer(tidsperiode, familiehendelsesdato);
     if (validators === undefined) {
         return true;
     }

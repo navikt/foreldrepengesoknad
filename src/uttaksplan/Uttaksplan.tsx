@@ -27,7 +27,6 @@ import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import { SenEndringÅrsak } from './types/SenEndringÅrsak';
 import { getSeneEndringerSomKreverBegrunnelse } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
-// import { Attachment } from 'app/types/Attachment';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -165,48 +164,42 @@ const Uttaksplan: FunctionComponent<Props> = ({
 
     const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(uttaksplan);
 
-    //TODO:
-    const vedleggForSenEndring = []!;
-    // handleBegrunnelseVedleggChange = (vedlegg: Attachment[]) => {
-    //     vedlegg.forEach((v) => {
-    //         v.beskrivelse = getMessage(this.props.intl, 'vedlegg.beskrivelse.begrunnelseForSenEndring');
-    //     });
-    //     this.props.dispatch(søknadActions.setVedleggForSenEndring(vedlegg));
-    // };
+    const vedleggForSenEndring = []!; //TODO: handleBegrunnelseVedleggChange
 
     //TODO: get perioderSomSkalSendesInn
     const perioderSomSkalSendesInn = uttaksplan;
 
-    const uttaksplanValidering = validerUttaksplan(
-        søkersituasjon,
-        arbeidsforhold,
-        dekningsgrad,
-        erEndringssøknad,
-        antallBarn,
-        annenForelder,
-        navnPåForeldre,
-        erFarEllerMedmor,
-        erAleneOmOmsorg,
-        harMidlertidigOmsorg,
-        erDeltUttak,
-        erMorUfør,
-        harMorRett,
-        erFlerbarnssøknad,
-        familiehendelsesdatoDate,
-        stønadskontoer,
-        uttaksplan,
-        //TODO: Fiks harKomplettUttaksplan
-        false,
-        tilleggsopplysninger,
-        eksisterendeSak,
-        perioderSomSkalSendesInn
-    );
+    //TODO: harKomplettuttaksplan
+    const harKomplettUttaksplan = false;
+
+    const uttaksplanValidering = validerUttaksplan({
+        søkersituasjon: søkersituasjon,
+        arbeidsforhold: arbeidsforhold,
+        dekningsgrad: dekningsgrad,
+        erEndringssøknad: erEndringssøknad,
+        antallBarn: antallBarn,
+        annenForelder: annenForelder,
+        navnPåForeldre: navnPåForeldre,
+        søkerErFarEllerMedmor: erFarEllerMedmor,
+        søkerErAleneOmOmsorg: erAleneOmOmsorg,
+        søkerHarMidlertidigOmsorg: harMidlertidigOmsorg,
+        erDeltUttak: erDeltUttak,
+        morErUfør: erMorUfør,
+        morHarRett: harMorRett,
+        erFlerbarnssøknad: erFlerbarnssøknad,
+        familiehendelsesdato: familiehendelsesdatoDate,
+        stønadskontoer: stønadskontoer,
+        perioder: uttaksplan,
+        harKomplettUttaksplan: harKomplettUttaksplan,
+        tilleggsopplysninger: tilleggsopplysninger,
+        eksisterendeSak: eksisterendeSak,
+        perioderSomSkalSendesInn: perioderSomSkalSendesInn,
+    });
 
     useEffect(() => {
         //TODO: Er det riktig å også sjekke lengde på advarsel her eller er det kun feil som skal stoppe brukeren fra neste steg?
         const uttaksplanErGyldig = !uttaksplanValidering.harFeil; // && !(uttaksplanValidering.avvik.length > 0);
         setUttaksplanErGyldig(uttaksplanErGyldig);
-        console.log('VALIDERING: Satte setUttaksplanErGyldig til: ', uttaksplanErGyldig);
     });
 
     //TODO: trenges grupperAvvik i det hele tatt? Sendes inn som false her.

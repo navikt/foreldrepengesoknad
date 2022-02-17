@@ -2,18 +2,11 @@ import React from 'react';
 
 import throttle from 'lodash.throttle';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-// import { Attachment as AttachmentType } from 'app/types/Attachment';
 import { injectIntl, IntlShape } from 'react-intl';
-// import Attachment from 'app/components/attachment/Attachment';
 import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import { tilleggsopplysningerMaxLength } from 'uttaksplan/validering/tester/erTilleggsopplysningerGyldigTest';
-// import { AttachmentType as AttachmentTypeEnum } from 'pp/types/AttachmentType';
-// import { Skjemanummer } from 'app/types/Skjemanummer';
 import { Textarea } from 'nav-frontend-skjema';
-// import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-// import { AttachmentType, AttachmentType } from 'app/types/AttachmentType';
-// import { Skjemanummer } from 'app/types/Skjemanummer';
-// import { AttachmentType } from 'app/types/AttachmentType';
+
 import { Attachment } from 'app/types/Attachment';
 
 interface OwnProps {
@@ -94,7 +87,6 @@ class OppgiTilleggsopplysninger extends React.Component<Props, State> {
     };
 
     render() {
-        // const { vedlegg, intl, onVedleggChange } = this.props;
         const { intl } = this.props;
 
         return (
@@ -108,23 +100,6 @@ class OppgiTilleggsopplysninger extends React.Component<Props, State> {
                         onChange={this.handleBegrunnelseChange}
                     />
                 </Block>
-                {/* <Block>
-                    <FormikFileUploader
-                        label={intlUtils(intl, 'vedlegg.lastoppknapp.senEndring')}
-                        name={'vedleggForSenEndring'}
-                        attachments={vedlegg || []}
-                        attachmentType={AttachmentType.SEN_ENDRING}
-                        skjemanummer={Skjemanummer.DOK_BEGRUNNELSE_SØKE_TILBAKE_I_TID}
-                    />
-                </Block> */}
-                {/* <VedleggSpørsmål
-                    vedlegg={vedlegg || []}
-                    attachmentType={AttachmentType.SEN_ENDRING}
-                    onChange={(endredeVedlegg: Attachment[]) => {
-                        onVedleggChange(endredeVedlegg);
-                    }}
-                    skjemanummer={Skjemanummer.DOK_BEGRUNNELSE_SØKE_TILBAKE_I_TID}
-                /> */}
             </div>
         );
     }

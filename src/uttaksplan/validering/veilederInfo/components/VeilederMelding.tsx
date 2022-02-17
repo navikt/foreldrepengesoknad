@@ -32,7 +32,7 @@ const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean) => {
         <>
             {message.titleIntlKey !== undefined && (
                 <Element>
-                    <FormattedMessage id={message.titleIntlKey!} />
+                    <FormattedMessage id={message.titleIntlKey} />
                 </Element>
             )}
             <FormattedMessage id={message.contentIntlKey} values={message.values} />

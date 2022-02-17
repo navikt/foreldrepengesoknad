@@ -84,8 +84,8 @@ export const getUgyldigUttakMor = (
         ugyldigUttakRegelFørsteDato = førsteUttaksdag;
         ugyldigUttakRegelSisteDato = førsteUttaksdagEtterSeksUker;
     } else if (value === 'mellomSyvOgÅtteUkerForMor') {
-        ugyldigUttakRegelFørsteDato! = førsteUttaksdagEtterSeksUker;
-        ugyldigUttakRegelSisteDato! = førsteUttaksdagEtterÅtteUker;
+        ugyldigUttakRegelFørsteDato = førsteUttaksdagEtterSeksUker;
+        ugyldigUttakRegelSisteDato = førsteUttaksdagEtterÅtteUker;
     }
 
     const ugyldigPeriode = Periodene(perioder)
