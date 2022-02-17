@@ -26,7 +26,6 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager),
             vedlegg: [],
-            ønskerSamtidigUttak: false,
             gradert: false,
         };
 
@@ -39,7 +38,6 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             konto: StønadskontoType.AktivitetsfriKvote,
             tidsperiode: getTidsperiode(førsteUttaksdag, aktivitetsfriKvote!.dager),
             vedlegg: [],
-            ønskerSamtidigUttak: false,
             gradert: false,
             harIkkeAktivitetskrav: true,
         };
@@ -56,7 +54,6 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
                 foreldrepengerKonto.dager
             ),
             vedlegg: [],
-            ønskerSamtidigUttak: false,
             gradert: false,
         };
 
@@ -80,7 +77,6 @@ const ikkeDeltUttakAdopsjonMor = (
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager),
             vedlegg: [],
-            ønskerSamtidigUttak: false,
             gradert: false,
         },
     ];
@@ -133,7 +129,6 @@ const ikkeDeltUttakFødselMor = (
                 konto: StønadskontoType.Foreldrepenger,
                 tidsperiode: getTidsperiode(startdatoPermisjon, dagerFørFødsel - 15),
                 vedlegg: [],
-                ønskerSamtidigUttak: false,
             };
 
             perioder.push(ekstraPeriodeFørFødsel);
@@ -149,7 +144,6 @@ const ikkeDeltUttakFødselMor = (
                 tom: Uttaksdagen(førsteUttaksdag).forrige(),
             },
             vedlegg: [],
-            ønskerSamtidigUttak: false,
         };
 
         perioder.push(periodeFørFødsel);
@@ -162,7 +156,6 @@ const ikkeDeltUttakFødselMor = (
             skalIkkeHaUttakFørTermin: true,
             tidsperiode: {} as any,
             vedlegg: [],
-            ønskerSamtidigUttak: false,
         };
 
         perioder.push(periodeFørFødsel);
@@ -186,7 +179,6 @@ const ikkeDeltUttakFødselMor = (
         konto: foreldrepengerKonto.konto,
         tidsperiode: antallDagerIForeldrepenger,
         vedlegg: [],
-        ønskerSamtidigUttak: false,
         gradert: false,
     };
 
@@ -214,7 +206,6 @@ const ikkeDeltUttakFødselFarMedmor = (
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(startDato, foreldrepengerKonto.dager),
             vedlegg: [],
-            ønskerSamtidigUttak: false,
             gradert: false,
         };
 
@@ -227,7 +218,6 @@ const ikkeDeltUttakFødselFarMedmor = (
             konto: StønadskontoType.AktivitetsfriKvote,
             tidsperiode: getTidsperiode(startDato, aktivitetsfriKvote!.dager),
             vedlegg: [],
-            ønskerSamtidigUttak: false,
             gradert: false,
             harIkkeAktivitetskrav: true,
         };
@@ -244,7 +234,6 @@ const ikkeDeltUttakFødselFarMedmor = (
                 foreldrepengerKonto.dager
             ),
             vedlegg: [],
-            ønskerSamtidigUttak: false,
             gradert: false,
         };
 
