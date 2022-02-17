@@ -19,15 +19,22 @@ import { NavnPåForeldre } from './../../app/types/NavnPåForeldre';
 import { Forelder } from './../../app/types/Forelder';
 import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
-import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { erTidsperioderLike, isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { getStønadskontoNavn } from './stønadskontoerUtils';
-import { isDateInTheFuture, ISOStringToDate } from 'app/utils/dateUtils';
+import {
+    convertTidsperiodeToTidsperiodeDate,
+    isDateInTheFuture,
+    isDateTodayOrInTheFuture,
+    ISOStringToDate,
+} from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {
@@ -206,19 +213,24 @@ export const getPeriodeTittel = (intl: IntlShape, periode: Periode, navnPåForel
     }
 };
 
-// export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: EksisterendeSak): boolean => {
-//     if (eksisterendeSak === undefined) {
-//         return false;
-//     }
-//     const saksperiode = getSaksperiode(periode, eksisterendeSak);
-//     return saksperiode ? saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET : false;
-// };
+export const erSentGradertUttak = (periode: Periode) =>
+    periode.type === Periodetype.Uttak &&
+    !isDateTodayOrInTheFuture(dateToISOString(periode.tidsperiode.fom)) &&
+    periode.gradert;
 
-// const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
-//     return ekisterendeSak.saksperioder.find((saksperiode) =>
-//         erTidsperioderLike(saksperiode.tidsperiode, periode.tidsperiode)
-//     );
-// };
+export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: EksisterendeSak): boolean => {
+    if (eksisterendeSak === undefined) {
+        return false;
+    }
+    const saksperiode = getSaksperiode(periode, eksisterendeSak);
+    return saksperiode ? saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET : false;
+};
+
+const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
+    return ekisterendeSak.saksperioder.find((saksperiode) =>
+        erTidsperioderLike(convertTidsperiodeToTidsperiodeDate(saksperiode.periode), periode.tidsperiode)
+    );
+};
 
 export const getPeriodeForelderNavn = (periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
     if (
@@ -358,3 +370,10 @@ export const erUtsettelseGrunnetPgaArbeid = (periode: Utsettelsesperiode) =>
     periode.årsak === UtsettelseÅrsakType.Arbeid;
 
 export const erUtsettelse = (periode: Periode) => periode.type === Periodetype.Utsettelse;
+
+const erUtsettelsePgaFerieEllerArbeid = (periode: Periode) =>
+    periode.type === Periodetype.Utsettelse &&
+    (periode.årsak === UtsettelseÅrsakType.Ferie || periode.årsak === UtsettelseÅrsakType.Arbeid);
+
+export const erSenUtsettelsePgaFerieEllerArbeid = (periode: Periode) =>
+    erUtsettelseTilbakeITid(periode) && erUtsettelsePgaFerieEllerArbeid(periode);

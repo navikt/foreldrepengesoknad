@@ -3,6 +3,7 @@ import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Periode } from 'uttaksplan/types/Periode';
@@ -26,4 +27,5 @@ export interface Søknadsinfo {
     perioder: Periode[];
     harKomplettUttaksplan: boolean;
     tilleggsopplysninger: Tilleggsopplysninger;
+    eksisterendeSak: EksisterendeSak | undefined;
 }

@@ -1,7 +1,7 @@
 import { RegelTestresultat } from 'shared/regler/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 
-export const tilleggsopplysningerMaxLength = 3; //1000;
+export const tilleggsopplysningerMaxLength = 1000;
 
 export const maxLengthIsGreaterThanOrEqualToStringLength = (maxLength: number, value: string) => {
     return value.length <= maxLength;

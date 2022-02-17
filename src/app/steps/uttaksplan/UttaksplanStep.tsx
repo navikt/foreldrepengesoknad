@@ -96,6 +96,7 @@ const UttaksplanStep = () => {
     const antallBarn = parseInt(barn.antallBarn, 10);
     const erFlerbarnssøknad = antallBarn > 1;
     const harMorRett = getMorHarRettPåForeldrepenger(rolle, erFarEllerMedmor, annenForelder);
+    const eksisterendeSak = state.eksisterendeSak;
 
     const foreldreSituasjon = getForeldreparSituasjon(
         person.kjønn,
@@ -168,6 +169,7 @@ const UttaksplanStep = () => {
                 tilleggsopplysninger={tilleggsopplysninger}
                 setUttaksplanErGyldig={setUttaksplanErGyldig}
                 handleBegrunnelseChange={handleBegrunnelseChange}
+                eksisterendeSak={eksisterendeSak}
             />
             <Block textAlignCenter={true} padBottom="l">
                 <Hovedknapp onClick={clickHandler} disabled={isSubmitting} spinner={isSubmitting}>

@@ -26,6 +26,7 @@ import OppgiTilleggsopplysninger from './components/oppgi-tilleggsopplysninger/O
 import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import { SenEndringÅrsak } from './types/SenEndringÅrsak';
 import { getSeneEndringerSomKreverBegrunnelse } from 'app/steps/uttaksplan-info/utils/Periodene';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 // import { Attachment } from 'app/types/Attachment';
 
 interface Props {
@@ -50,6 +51,7 @@ interface Props {
     dekningsgrad: Dekningsgrad;
     antallBarn: number;
     tilleggsopplysninger: Tilleggsopplysninger;
+    eksisterendeSak: EksisterendeSak | undefined;
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleBegrunnelseChange: (begrunnelse: string) => void;
 }
@@ -76,6 +78,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     dekningsgrad,
     antallBarn,
     tilleggsopplysninger,
+    eksisterendeSak,
     setUttaksplanErGyldig,
     handleBegrunnelseChange,
 }) => {
@@ -188,7 +191,8 @@ const Uttaksplan: FunctionComponent<Props> = ({
         uttaksplan,
         //TODO: Fiks harKomplettUttaksplan
         false,
-        tilleggsopplysninger
+        tilleggsopplysninger,
+        eksisterendeSak
     );
 
     useEffect(() => {

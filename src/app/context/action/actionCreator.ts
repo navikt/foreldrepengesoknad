@@ -2,6 +2,7 @@ import { Locale } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import { Attachment } from 'app/types/Attachment';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
 import Sak from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
@@ -36,6 +37,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     LAG_UTTAKSPLANFORSLAG = 'lagUttaksplanforslag',
     SET_UTTAKSPLAN = 'setUttaksplan',
     SET_SØKNAD = 'setSøknad',
+    SET_EKSISTERENDE_SAK = 'setEksisterendeSak',
     SET_GODKJENT_OPPSUMMERING = 'setGodkjentOppsummering',
     SET_KVITTERING = 'setKvittering',
     SET_SPRÅKKODE = 'setSpråkkode',
@@ -232,6 +234,16 @@ const setSøknad = (payload: Søknad): SetSøknad => ({
     payload,
 });
 
+interface SetEksisterendeSak {
+    type: ForeldrepengesøknadContextActionKeys.SET_EKSISTERENDE_SAK;
+    payload: EksisterendeSak | undefined;
+}
+
+const setEksisterendeSak = (payload: EksisterendeSak | undefined): SetEksisterendeSak => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_EKSISTERENDE_SAK,
+    payload,
+});
+
 interface SetGodkjentOppsummering {
     type: ForeldrepengesøknadContextActionKeys.SET_GODKJENT_OPPSUMMERING;
     payload: boolean;
@@ -280,6 +292,7 @@ export type ForeldrepengesøknadContextAction =
     | ApplyStoredState
     | SetVedlegg
     | SetSøknad
+    | SetEksisterendeSak
     | LagUttaksplanforslag
     | SetGodkjentOppsummering
     | SetKvittering
@@ -306,6 +319,7 @@ export default {
     lagUttaksplanforslag,
     setUttaksplan,
     setSøknad,
+    setEksisterendeSak,
     setGodkjentOppsummering,
     setKvittering,
     setSpråkkode,

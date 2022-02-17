@@ -10,12 +10,12 @@ import { erTilleggsopplysningerGyldigTest } from './tester/erTilleggsopplysninge
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
 // import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
-// import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtsettelsePgaFerieTest';
+import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtsettelsePgaFerieTest';
 import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
 
 import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
-// import { inneholderSenUtsettelsePgaArbeidTest } from './tester/inneholderSenUtsettelsePgaArbeidTest';
-// import { inneholderSeneGraderteUttakTest } from './tester/inneholderSeneGraderteUttakTest';
+import { inneholderSenUtsettelsePgaArbeidTest } from './tester/inneholderSenUtsettelsePgaArbeidTest';
+import { inneholderSeneGraderteUttakTest } from './tester/inneholderSeneGraderteUttakTest';
 // import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
 import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndrePerioderTest';
 import periodevalideringsregler, { PeriodeValiderRegelKey } from './tester/periodevalideringstester';
@@ -40,9 +40,9 @@ export enum UttaksplanRegelKey {
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
     // 'perioderManglerVedlegg' = 'manglendeVedlegg',
-    // 'inneholderSenUtsettelsePgaFerie' = 'inneholderSenUtsettelsePgaFerieTest',
-    // 'inneholderSenUtsettelsePgaArbeid' = 'inneholderSenUtsettelsePgaArbeidTest',
-    // 'inneholderSeneGraderteUttak' = 'inneholderSeneGraderteUttakTest',
+    'inneholderSenUtsettelsePgaFerie' = 'inneholderSenUtsettelsePgaFerieTest',
+    'inneholderSenUtsettelsePgaArbeid' = 'inneholderSenUtsettelsePgaArbeidTest',
+    'inneholderSeneGraderteUttak' = 'inneholderSeneGraderteUttakTest',
     'inneholderTapteDager' = 'inneholderTapteDager',
     'inneholderBareUtsettelser' = 'inneholderBareUtsettelser',
     'inneholderForMyeFerie' = 'inneholderForMyeFerie',
@@ -125,24 +125,24 @@ const uttaksplanValideringRegler: Regel[] = [
     //     test: harPerioderManglendeVedleggTest,
     //     slåsSammenVedOppsummering: true,
     // },
-    // {
-    //     key: UttaksplanRegelKey.inneholderSenUtsettelsePgaFerie,
-    //     alvorlighet: RegelAlvorlighet.INFO,
-    //     test: inneholderSenUtsettelsePgaFerieTest,
-    //     slåsSammenVedOppsummering: true,
-    // },
-    // {
-    //     key: UttaksplanRegelKey.inneholderSenUtsettelsePgaArbeid,
-    //     alvorlighet: RegelAlvorlighet.INFO,
-    //     test: inneholderSenUtsettelsePgaArbeidTest,
-    //     slåsSammenVedOppsummering: true,
-    // },
-    // {
-    //     key: UttaksplanRegelKey.inneholderSeneGraderteUttak,
-    //     alvorlighet: RegelAlvorlighet.INFO,
-    //     test: inneholderSeneGraderteUttakTest,
-    //     skjulesIPeriode: true,
-    // },
+    {
+        key: UttaksplanRegelKey.inneholderSenUtsettelsePgaFerie,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: inneholderSenUtsettelsePgaFerieTest,
+        slåsSammenVedOppsummering: true,
+    },
+    {
+        key: UttaksplanRegelKey.inneholderSenUtsettelsePgaArbeid,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: inneholderSenUtsettelsePgaArbeidTest,
+        slåsSammenVedOppsummering: true,
+    },
+    {
+        key: UttaksplanRegelKey.inneholderSeneGraderteUttak,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: inneholderSeneGraderteUttakTest,
+        skjulesIPeriode: true,
+    },
     {
         key: UttaksplanRegelKey.inneholderTapteDager,
         alvorlighet: RegelAlvorlighet.INFO,

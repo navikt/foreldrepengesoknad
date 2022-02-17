@@ -12,6 +12,7 @@ import { getRegelAvvik, hasRegelFeil, regelHarAvvik, regelPasserer } from './uti
 import { Søknadsinfo } from './utils/types/Søknadsinfo';
 import { RegelStatus, UttaksplanRegelTestresultat } from './utils/types/regelTypes';
 import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 
 const REGEL_INTL_PREFIX = 'uttaksplan.validering';
 
@@ -42,7 +43,8 @@ export const validerUttaksplan = (
     stønadskontoer: TilgjengeligStønadskonto[],
     perioder: Periode[],
     harKomplettUttaksplan: boolean,
-    tilleggsopplysninger: Tilleggsopplysninger
+    tilleggsopplysninger: Tilleggsopplysninger,
+    eksisterendeSak: EksisterendeSak | undefined
 ): UttaksplanRegelTestresultat => {
     const uttaksstatus = getUttaksstatus({
         erDeltUttak: erDeltUttak,
@@ -73,6 +75,7 @@ export const validerUttaksplan = (
         uttaksstatus: uttaksstatus,
         harKomplettUttaksplan: harKomplettUttaksplan,
         tilleggsopplysninger: tilleggsopplysninger,
+        eksisterendeSak: eksisterendeSak,
     };
 
     return kjørUttaksplanRegler(søknadsinfoForValidering);
