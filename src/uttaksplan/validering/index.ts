@@ -1,6 +1,6 @@
 import { inneholderUttaksplanPerioderTest } from './tester/inneholderUttaksplanPerioderTest';
 import { harMorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harMorSøktUgyldigUttakFørsteSeksUkerTest';
-// import { stønadskontoInneholderForMyeUttakKunSøkerTest } from './tester/stønadskontoInneholderForMyeUttakKunSøkerTest';
+import { stønadskontoInneholderForMyeUttakKunSøkerTest } from './tester/stønadskontoInneholderForMyeUttakKunSøkerTest';
 // import { harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest } from './tester/harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest';
 import { erUttaksplanBareOppholdTest } from './tester/erUttaksplanBareOppholdTest';
 import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOppholdTest';
@@ -31,7 +31,7 @@ export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
     'morHarSøktUgyldigUttakFørsteSeksUker' = 'morHarSøktUgyldigUttakFørsteSeksUker',
     // 'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker' = 'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker',
-    // 'stønadskontoInneholderForMyeUttakKunSøker' = 'stønadskontoInneholderForMyeUttakKunSøker',
+    'stønadskontoInneholderForMyeUttakKunSøker' = 'stønadskontoInneholderForMyeUttakKunSøker',
     'uttaksplanErBareOpphold' = 'uttaksplanErBareOpphold',
     'uttaksplanStarterMedOpphold' = 'uttaksplanStarterMedOpphold',
     'uttaksplanSlutterMedOpphold' = 'uttaksplanSlutterMedOpphold',
@@ -64,11 +64,11 @@ const uttaksplanValideringRegler: Regel[] = [
         alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderUttaksplanPerioderTest,
     },
-    // {
-    //     key: UttaksplanRegelKey.stønadskontoInneholderForMyeUttakKunSøker,
-    //     alvorlighet: RegelAlvorlighet.FEIL,
-    //     test: stønadskontoInneholderForMyeUttakKunSøkerTest,
-    // },
+    {
+        key: UttaksplanRegelKey.stønadskontoInneholderForMyeUttakKunSøker,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: stønadskontoInneholderForMyeUttakKunSøkerTest,
+    },
     {
         key: UttaksplanRegelKey.morHarSøktUgyldigUttakFørsteSeksUker,
         alvorlighet: RegelAlvorlighet.FEIL,
