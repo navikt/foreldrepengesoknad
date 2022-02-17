@@ -169,6 +169,17 @@ const foreldrepengesøknadReducer = (
                 ...state,
                 kvittering: action.payload,
             };
+        case ForeldrepengesøknadContextActionKeys.SET_SPRÅKKODE:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    søker: {
+                        ...state.søknad.søker,
+                        språkkode: action.payload,
+                    },
+                },
+            };
         default:
             return state;
     }

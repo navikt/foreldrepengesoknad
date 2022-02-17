@@ -1,3 +1,4 @@
+import { Locale } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import { Attachment } from 'app/types/Attachment';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
@@ -36,6 +37,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_SØKNAD = 'setSøknad',
     SET_GODKJENT_OPPSUMMERING = 'setGodkjentOppsummering',
     SET_KVITTERING = 'setKvittering',
+    SET_SPRÅKKODE = 'setSpråkkode',
 }
 
 interface SetVelkommen {
@@ -238,6 +240,16 @@ const setKvittering = (payload: Kvittering): SetKvittering => ({
     payload,
 });
 
+interface SetSpråkkode {
+    type: ForeldrepengesøknadContextActionKeys.SET_SPRÅKKODE;
+    payload: Locale;
+}
+
+const setSpråkkode = (payload: Locale): SetSpråkkode => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_SPRÅKKODE,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetErEndringssøknad
@@ -258,6 +270,7 @@ export type ForeldrepengesøknadContextAction =
     | LagUttaksplanforslag
     | SetGodkjentOppsummering
     | SetKvittering
+    | SetSpråkkode
     | SetUttaksplan;
 
 export default {
@@ -281,4 +294,5 @@ export default {
     setSøknad,
     setGodkjentOppsummering,
     setKvittering,
+    setSpråkkode,
 };
