@@ -118,6 +118,11 @@ const foreldrepengesøknadReducer = (
                     dekningsgrad: action.dekningsgrad,
                 },
             };
+        case ForeldrepengesøknadContextActionKeys.SET_EKSISTERENDE_SAK:
+            return {
+                ...state,
+                eksisterendeSak: action.payload,
+            };
         case ForeldrepengesøknadContextActionKeys.SET_VEDLEGG:
             //TODO Legg til håndtering av fleire vedlegg
             return {

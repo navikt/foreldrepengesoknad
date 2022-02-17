@@ -14,12 +14,12 @@ import {
     Periodetype,
     Utsettelsesperiode,
     UttakAnnenPartInfoPeriode,
-} from './../types/Periode';
-import { NavnPåForeldre } from './../../app/types/NavnPåForeldre';
-import { Forelder } from './../../app/types/Forelder';
+} from '../types/Periode';
+import { NavnPåForeldre } from '../../app/types/NavnPåForeldre';
+import { Forelder } from '../../app/types/Forelder';
 import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
-import { erTidsperioderLike, isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { erTidsperioderLike, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { getStønadskontoNavn } from './stønadskontoerUtils';
@@ -311,12 +311,17 @@ export const getSlettPeriodeTekst = (periodetype: Periodetype): string => {
     }
 };
 
-export const erPeriodeFørDato = (periode: Periode, dato: Date) => {
+const erPeriodeFomEllerEtterDato = (periode: Periode, dato: Date): boolean => {
     return (
-        isValidTidsperiode(periode.tidsperiode) &&
-        dayjs(periode.tidsperiode.fom).isBefore(dato, 'day') &&
-        dayjs(periode.tidsperiode.tom).isBefore(dato, 'day')
+        periode.tidsperiode.fom !== undefined &&
+        periode.tidsperiode.tom !== undefined &&
+        dayjs(periode.tidsperiode.fom).isSameOrAfter(dato, 'day') &&
+        dayjs(periode.tidsperiode.tom).isSameOrAfter(dato, 'day')
     );
+};
+
+export const erPeriodeFørDato = (periode: Periode, dato: Date) => {
+    return erPeriodeFomEllerEtterDato(periode, dato) === false;
 };
 
 export const erGradering = (periode: Periode) => periode.type === Periodetype.Uttak && periode.gradert === true;

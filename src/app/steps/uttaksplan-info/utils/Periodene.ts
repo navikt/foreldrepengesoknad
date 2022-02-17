@@ -16,6 +16,7 @@ import {
     Overføringsperiode,
     Periode,
     PeriodeHull,
+    Periodetype,
     PeriodeUtenUttak,
     Utsettelsesperiode,
     Uttaksperiode,
@@ -361,4 +362,26 @@ export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): Sen
     }
 
     return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.Uttak : SenEndringÅrsak.Ingen;
+};
+
+export const uttaksplanErBareOpphold = (perioder: Periode[]): boolean => {
+    if (perioder.length === 0) {
+        return false;
+    }
+
+    return perioder.filter((p) => !isInfoPeriode(p)).every((periode) => periode.type === Periodetype.Opphold);
+};
+
+export const uttaksplanSlutterMedOpphold = (perioder: Periode[]): boolean => {
+    return (
+        perioder
+            .filter((p) => !isInfoPeriode(p))
+            .slice()
+            .reverse()
+            .findIndex((periode) => periode.type === Periodetype.Opphold) === 0
+    );
+};
+
+export const uttaksplanStarterMedOpphold = (perioder: Periode[]): boolean => {
+    return perioder.filter((p) => !isInfoPeriode(p)).findIndex((periode) => periode.type === Periodetype.Opphold) === 0;
 };

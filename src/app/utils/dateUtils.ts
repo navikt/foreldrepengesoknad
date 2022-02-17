@@ -151,8 +151,12 @@ export const isDateABeforeDateB = (a: string, b: string): boolean => {
     return false;
 };
 
-const isDateToday = (date: string): boolean => {
-    return dayjs().isSame(date);
+export const isDateToday = (date: string): boolean => {
+    if (dayjs().isSame(date, 'day')) {
+        return true;
+    }
+
+    return false;
 };
 
 export const isDateTodayOrInTheFuture = (date: string): boolean => {

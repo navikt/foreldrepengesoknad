@@ -17,10 +17,12 @@ import {
     convertTidsperiodeToTidsperiodeDate,
     getRelevantFamiliehendelseDato,
     ISOStringToDate,
+    isDateToday,
 } from './dateUtils';
 
 import getIntlMock from 'utils-test/intl-test-helper';
 import { RegistrertBarn } from 'app/types/Person';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();
@@ -212,6 +214,16 @@ describe('dateUtils', () => {
     it('skal returnere false når dato er i fortiden', () => {
         const erIFremtiden = isDateInTheFuture('06.05.2020');
         expect(erIFremtiden).toBe(false);
+    });
+
+    it('skal returnere true når dato er i dag', () => {
+        const erIDag = isDateToday(dateToISOString(new Date()));
+        expect(erIDag).toBe(true);
+    });
+
+    it('skal returnere false når dato ikke er i dag', () => {
+        const erIDag = isDateToday('17-01-2022');
+        expect(erIDag).toBe(false);
     });
 
     it('skal finne det eldste barnet', () => {
