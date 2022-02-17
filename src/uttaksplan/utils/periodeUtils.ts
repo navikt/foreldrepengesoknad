@@ -377,3 +377,10 @@ const erUtsettelsePgaFerieEllerArbeid = (periode: Periode) =>
 
 export const erSenUtsettelsePgaFerieEllerArbeid = (periode: Periode) =>
     erUtsettelseTilbakeITid(periode) && erUtsettelsePgaFerieEllerArbeid(periode);
+
+export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakType | OverføringÅrsakType) =>
+    årsak === UtsettelseÅrsakType.Sykdom ||
+    årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
+    årsak === UtsettelseÅrsakType.InstitusjonSøker ||
+    årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
+    årsak === OverføringÅrsakType.sykdomAnnenForelder;

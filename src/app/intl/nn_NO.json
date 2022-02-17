@@ -714,6 +714,8 @@
     "uttaksplan.validering.info.burdeKanskjeSøkeGradering.tittel": "Informasjon om å kombinere foreldrepenger med arbeid",
     "uttaksplan.validering.info.planenInneholderHull.tittel": "Hull i planen",
     "uttaksplan.validering.info.planenInneholderHull": "Planen din inneheld periodar med tapte foreldrepengar. Du står i fare for å miste dagar om du ikkje legg inn ei utsetjing eller ein periode med foreldrepengar.",
+    "uttaksplan.validering.info.manglendeVedlegg.tittel": "Manglande vedlegg",
+    "uttaksplan.validering.info.manglendeVedlegg": "Du må sende inn manglande vedlegg innan 3 veker. Dersom vi ikkje får vedlegga innan fristen, manglar vi nødvendige opplysningar for å behandle saka di. Vi kan då avgjere saka di med dei opplysningane vi har tilgjengeleg, og du kan risikere å få avslag.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Planen din inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Hugs at du må søkja om foreldrepengar seinast {sisteDag}.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad.tittel": "Planen din inneholder kun utsettelser",

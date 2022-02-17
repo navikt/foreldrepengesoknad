@@ -9,10 +9,9 @@ import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUtt
 import { erTilleggsopplysningerGyldigTest } from './tester/erTilleggsopplysningerGyldigTest';
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
-// import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
+import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
 import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtsettelsePgaFerieTest';
 import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
-
 import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
 import { inneholderSenUtsettelsePgaArbeidTest } from './tester/inneholderSenUtsettelsePgaArbeidTest';
 import { inneholderSeneGraderteUttakTest } from './tester/inneholderSeneGraderteUttakTest';
@@ -39,7 +38,7 @@ export enum UttaksplanRegelKey {
     'begrunnelseVedForSenEndringErUgyldig' = 'begrunnelseVedForSenEndringErUgyldig',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
-    // 'perioderManglerVedlegg' = 'manglendeVedlegg',
+    'perioderManglerVedlegg' = 'manglendeVedlegg',
     'inneholderSenUtsettelsePgaFerie' = 'inneholderSenUtsettelsePgaFerieTest',
     'inneholderSenUtsettelsePgaArbeid' = 'inneholderSenUtsettelsePgaArbeidTest',
     'inneholderSeneGraderteUttak' = 'inneholderSeneGraderteUttakTest',
@@ -118,12 +117,12 @@ const uttaksplanValideringRegler: Regel[] = [
         alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderUttaksplanDatoSomIkkeErUttaksdag,
     },
-    // {
-    //     key: UttaksplanRegelKey.perioderManglerVedlegg,
-    //     alvorlighet: RegelAlvorlighet.ADVARSEL,
-    //     test: harPerioderManglendeVedleggTest,
-    //     slåsSammenVedOppsummering: true,
-    // },
+    {
+        key: UttaksplanRegelKey.perioderManglerVedlegg,
+        alvorlighet: RegelAlvorlighet.ADVARSEL,
+        test: harPerioderManglendeVedleggTest,
+        slåsSammenVedOppsummering: true,
+    },
     {
         key: UttaksplanRegelKey.inneholderSenUtsettelsePgaFerie,
         alvorlighet: RegelAlvorlighet.INFO,
