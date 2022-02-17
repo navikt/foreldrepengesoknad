@@ -174,6 +174,9 @@ const Uttaksplan: FunctionComponent<Props> = ({
     //     this.props.dispatch(søknadActions.setVedleggForSenEndring(vedlegg));
     // };
 
+    //TODO: get perioderSomSkalSendesInn
+    const perioderSomSkalSendesInn = uttaksplan;
+
     const uttaksplanValidering = validerUttaksplan(
         søkersituasjon,
         arbeidsforhold,
@@ -195,7 +198,8 @@ const Uttaksplan: FunctionComponent<Props> = ({
         //TODO: Fiks harKomplettUttaksplan
         false,
         tilleggsopplysninger,
-        eksisterendeSak
+        eksisterendeSak,
+        perioderSomSkalSendesInn
     );
 
     useEffect(() => {

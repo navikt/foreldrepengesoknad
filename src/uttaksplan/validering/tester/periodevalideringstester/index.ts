@@ -53,6 +53,7 @@ const periodevalideringsregler: Regel[] = [
         test: erUtsettelseEtterFamiliehendelsesdato,
         skjulesIOppsummering: skjulIOppsummering,
     },
+    //TODO: visibility.areAllQuestionsAnswered() burde sendes oppover fra periodeUttakFormQuestionsConfig/Legg til periode formen.
     // {
     //     key: PeriodeValiderRegelKey.erAllePeriodeSkjemaspørsmålBesvart,
     //     alvorlighet: RegelAlvorlighet.FEIL,

@@ -29,4 +29,5 @@ export interface Søknadsinfo {
     harKomplettUttaksplan: boolean;
     tilleggsopplysninger: Tilleggsopplysninger;
     eksisterendeSak: EksisterendeSak | undefined;
+    perioderSomSkalSendesInn: Periode[];
 }

@@ -45,7 +45,8 @@ export const validerUttaksplan = (
     perioder: Periode[],
     harKomplettUttaksplan: boolean,
     tilleggsopplysninger: Tilleggsopplysninger,
-    eksisterendeSak: EksisterendeSak | undefined
+    eksisterendeSak: EksisterendeSak | undefined,
+    perioderSomSkalSendesInn: Periode[]
 ): UttaksplanRegelTestresultat => {
     const uttaksstatus = getUttaksstatus({
         erDeltUttak: erDeltUttak,
@@ -78,6 +79,7 @@ export const validerUttaksplan = (
         harKomplettUttaksplan: harKomplettUttaksplan,
         tilleggsopplysninger: tilleggsopplysninger,
         eksisterendeSak: eksisterendeSak,
+        perioderSomSkalSendesInn: perioderSomSkalSendesInn,
     };
 
     return kjørUttaksplanRegler(søknadsinfoForValidering);

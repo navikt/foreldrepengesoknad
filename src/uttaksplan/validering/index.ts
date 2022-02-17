@@ -1,7 +1,7 @@
 import { inneholderUttaksplanPerioderTest } from './tester/inneholderUttaksplanPerioderTest';
 import { harMorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harMorSøktUgyldigUttakFørsteSeksUkerTest';
 import { stønadskontoInneholderForMyeUttakKunSøkerTest } from './tester/stønadskontoInneholderForMyeUttakKunSøkerTest';
-// import { harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest } from './tester/harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest';
+import { harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest } from './tester/harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest';
 import { erUttaksplanBareOppholdTest } from './tester/erUttaksplanBareOppholdTest';
 import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOppholdTest';
 import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOppholdTest';
@@ -16,7 +16,7 @@ import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
 import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
 import { inneholderSenUtsettelsePgaArbeidTest } from './tester/inneholderSenUtsettelsePgaArbeidTest';
 import { inneholderSeneGraderteUttakTest } from './tester/inneholderSeneGraderteUttakTest';
-// import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
+import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
 import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndrePerioderTest';
 import periodevalideringsregler, { PeriodeValiderRegelKey } from './tester/periodevalideringstester';
 import { harSøktOmFerieUtenArbeidsforhold } from './tester/harSøktOmFerieUtenArbeidsforholdTest';
@@ -30,7 +30,7 @@ import { Regel, RegelAlvorlighet } from './utils/types/regelTypes';
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
     'morHarSøktUgyldigUttakFørsteSeksUker' = 'morHarSøktUgyldigUttakFørsteSeksUker',
-    // 'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker' = 'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker',
+    'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker' = 'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker',
     'stønadskontoInneholderForMyeUttakKunSøker' = 'stønadskontoInneholderForMyeUttakKunSøker',
     'uttaksplanErBareOpphold' = 'uttaksplanErBareOpphold',
     'uttaksplanStarterMedOpphold' = 'uttaksplanStarterMedOpphold',
@@ -46,13 +46,12 @@ export enum UttaksplanRegelKey {
     'inneholderTapteDager' = 'inneholderTapteDager',
     'inneholderBareUtsettelser' = 'inneholderBareUtsettelser',
     'inneholderForMyeFerie' = 'inneholderForMyeFerie',
-    // 'endringerOverskriverAnnenPartsPerioder' = 'endringerOverskriverAnnenPartsPerioder',
+    'endringerOverskriverAnnenPartsPerioder' = 'endringerOverskriverAnnenPartsPerioder',
     'periodeOverlapperAndrePerioder' = 'periodeOverlapperAndrePerioder',
     'harSøktOmFerieUtenArbeidsforhold' = 'harSøktOmFerieUtenArbeidsforhold',
     'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme' = 'kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme',
     'uttaksmengdeForFarMedmorErForHøy' = 'uttaksmengdeForFarMedmorErForHøy',
     'burdeKanskjeSøkeGradering' = 'burdeKanskjeSøkeGradering',
-    // 'inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold' = 'inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold',
     'ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato' = 'ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato',
 }
 
@@ -74,11 +73,11 @@ const uttaksplanValideringRegler: Regel[] = [
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harMorSøktUgyldigUttakFørsteSeksUkerTest,
     },
-    // {
-    //     key: UttaksplanRegelKey.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker,
-    //     alvorlighet: RegelAlvorlighet.FEIL,
-    //     test: harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest,
-    // },
+    {
+        key: UttaksplanRegelKey.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest,
+    },
     {
         key: UttaksplanRegelKey.uttaksmengdeForFarMedmorErForHøy,
         alvorlighet: RegelAlvorlighet.FEIL,
@@ -158,12 +157,12 @@ const uttaksplanValideringRegler: Regel[] = [
         alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderForMyeFerie,
     },
-    // {
-    //     key: UttaksplanRegelKey.endringerOverskriverAnnenPartsPerioder,
-    //     alvorlighet: RegelAlvorlighet.INFO,
-    //     test: overskriverEndringerAnnenPartsPerioder,
-    //     slåsSammenVedOppsummering: false,
-    // },
+    {
+        key: UttaksplanRegelKey.endringerOverskriverAnnenPartsPerioder,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: overskriverEndringerAnnenPartsPerioder,
+        slåsSammenVedOppsummering: false,
+    },
     {
         key: UttaksplanRegelKey.periodeOverlapperAndrePerioder,
         alvorlighet: RegelAlvorlighet.FEIL,
