@@ -97,6 +97,7 @@ const UttaksplanStep = () => {
     const erFlerbarnssøknad = antallBarn > 1;
     const harMorRett = getMorHarRettPåForeldrepenger(rolle, erFarEllerMedmor, annenForelder);
     const eksisterendeSak = state.eksisterendeSak;
+    const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
 
     const foreldreSituasjon = getForeldreparSituasjon(
         person.kjønn,
@@ -160,6 +161,7 @@ const UttaksplanStep = () => {
                 erFarEllerMedmor={erFarEllerMedmor}
                 erFlerbarnssøknad={erFlerbarnssøknad}
                 erAleneOmOmsorg={erAleneOmOmsorg}
+                harMidlertidigOmsorg={harMidlertidigOmsorg}
                 situasjon={situasjon}
                 erMorUfør={erMorUfør}
                 harMorRett={harMorRett}

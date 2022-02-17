@@ -44,6 +44,7 @@ interface Props {
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;
     erAleneOmOmsorg: boolean;
+    harMidlertidigOmsorg: boolean;
     situasjon: Situasjon;
     erMorUfør: boolean;
     harMorRett: boolean;
@@ -71,6 +72,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     erFarEllerMedmor,
     erFlerbarnssøknad,
     erAleneOmOmsorg,
+    harMidlertidigOmsorg,
     situasjon,
     erMorUfør,
     harMorRett,
@@ -182,6 +184,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         navnPåForeldre,
         erFarEllerMedmor,
         erAleneOmOmsorg,
+        harMidlertidigOmsorg,
         erDeltUttak,
         erMorUfør,
         harMorRett,

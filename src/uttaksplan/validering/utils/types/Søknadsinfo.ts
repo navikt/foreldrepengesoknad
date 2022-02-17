@@ -18,6 +18,7 @@ export interface Søknadsinfo {
     navnPåForeldre: NavnPåForeldre;
     søkerErFarEllerMedmor: boolean;
     søkerErAleneOmOmsorg: boolean;
+    søkerHarMidlertidigOmsorg: boolean;
     erDeltUttak: boolean;
     morErUfør: boolean;
     morHarRett: boolean;

@@ -3,14 +3,14 @@ import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { Forelder } from 'app/types/Forelder';
 import { Situasjon } from 'app/types/Situasjon';
-import { Periode, Utsettelsesperiode, Uttaksperiode } from 'uttaksplan/types/Periode';
+import { isPeriodeUtenUttak, Periode, Periodetype, Utsettelsesperiode, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { uttaksdatoer } from 'uttaksplan/utils/uttaksdatoerUtils';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
-// import AnnenForelder from 'app/context/types/AnnenForelder';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
-// import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
+import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import { erPeriodeFørDato } from 'uttaksplan/utils/periodeUtils';
+import AnnenForelder from 'app/context/types/AnnenForelder';
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
@@ -167,53 +167,53 @@ export const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigO
     },
 });
 
-// const erFarsUttakFørsteSeksUkerGyldig = (
-//     periode: Uttaksperiode,
-//     antallBarn: number,
-//     harMidlertidigOmsorg: boolean
-// ): boolean => {
-//     const unntak = unntakFarFørsteSeksUker(periode, harMidlertidigOmsorg);
-//     return (
-//         unntak.erMorForSykDeFørsteSeksUker() || unntak.erFlerbarnsukerOgUttakAvFlerbarnsdagerEllerFedrekvote(antallBarn)
-//     );
-// };
+const erFarsUttakFørsteSeksUkerGyldig = (
+    periode: Uttaksperiode,
+    antallBarn: number,
+    harMidlertidigOmsorg: boolean
+): boolean => {
+    const unntak = unntakFarFørsteSeksUker(periode, harMidlertidigOmsorg);
+    return (
+        unntak.erMorForSykDeFørsteSeksUker() || unntak.erFlerbarnsukerOgUttakAvFlerbarnsdagerEllerFedrekvote(antallBarn)
+    );
+};
 
-// export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
-//     perioder: Periode[],
-//     familiehendelsesdato: Date,
-//     antallBarn: number,
-//     situasjon: Situasjon,
-//     annenForelder: AnnenForelder,
-//     erAleneOmOmsorg: boolean,
-//     harMidlertidigOmsorg: boolean
-// ): Periode[] => {
-//     if (situasjon === 'adopsjon' || annenForelder.kanIkkeOppgis || erAleneOmOmsorg) {
-//         return [];
-//     }
+export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
+    perioder: Periode[],
+    familiehendelsesdato: Date,
+    antallBarn: number,
+    situasjon: Situasjon,
+    annenForelder: AnnenForelder,
+    erAleneOmOmsorg: boolean,
+    harMidlertidigOmsorg: boolean
+): Periode[] => {
+    if (situasjon === 'adopsjon' || annenForelder.kanIkkeOppgis || erAleneOmOmsorg) {
+        return [];
+    }
 
-//     const førsteUttaksdag = uttaksdatoer(familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
-//     const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
+    const førsteUttaksdag = uttaksdatoer(familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
+    const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
 
-//     const farsPerioderInnenforSeksFørsteUker = Periodene(perioder)
-//         .getPerioderEtterFamiliehendelsesdato(familiehendelsesdato)
-//         .filter((p) => erPeriodeFørDato(p, førsteUttaksdagEtterSeksUker))
-//         .filter((p) => p.type !== Periodetype.Hull && !isPeriodeUtenUttak(p) && p.forelder === Forelder.farMedmor);
+    const farsPerioderInnenforSeksFørsteUker = Periodene(perioder)
+        .getPerioderEtterFamiliehendelsesdato(familiehendelsesdato)
+        .filter((p) => erPeriodeFørDato(p, førsteUttaksdagEtterSeksUker))
+        .filter((p) => p.type !== Periodetype.Hull && !isPeriodeUtenUttak(p) && p.forelder === Forelder.farMedmor);
 
-//     const ugyldigeUttak = Periodene(farsPerioderInnenforSeksFørsteUker)
-//         .getUttak()
-//         .filter((p) => erFarsUttakFørsteSeksUkerGyldig(p, antallBarn, harMidlertidigOmsorg) === false);
+    const ugyldigeUttak = Periodene(farsPerioderInnenforSeksFørsteUker)
+        .getUttak()
+        .filter((p) => erFarsUttakFørsteSeksUkerGyldig(p, antallBarn, harMidlertidigOmsorg) === false);
 
-//     const ugyldigeOverføringer = Periodene(farsPerioderInnenforSeksFørsteUker)
-//         .getOverføringer()
-//         .filter(
-//             (p) =>
-//                 p.årsak !== OverføringÅrsakType.institusjonsoppholdAnnenForelder &&
-//                 p.årsak !== OverføringÅrsakType.sykdomAnnenForelder
-//         );
+    const ugyldigeOverføringer = Periodene(farsPerioderInnenforSeksFørsteUker)
+        .getOverføringer()
+        .filter(
+            (p) =>
+                p.årsak !== OverføringÅrsakType.institusjonsoppholdAnnenForelder &&
+                p.årsak !== OverføringÅrsakType.sykdomAnnenForelder
+        );
 
-//     const ugyldigeUtsettelser = Periodene(farsPerioderInnenforSeksFørsteUker)
-//         .getUtsettelser()
-//         .filter((utsettelse) => utsettelse.årsak !== UtsettelseÅrsakType.InstitusjonBarnet);
+    const ugyldigeUtsettelser = Periodene(farsPerioderInnenforSeksFørsteUker)
+        .getUtsettelser()
+        .filter((utsettelse) => utsettelse.årsak !== UtsettelseÅrsakType.InstitusjonBarnet);
 
-//     return [...ugyldigeUttak, ...ugyldigeOverføringer, ...ugyldigeUtsettelser];
-// };
+    return [...ugyldigeUttak, ...ugyldigeOverføringer, ...ugyldigeUtsettelser];
+};

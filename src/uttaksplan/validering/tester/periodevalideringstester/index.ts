@@ -13,7 +13,7 @@ export enum PeriodeValiderRegelKey {
     'uttaksperiodeHarStønadskonto' = 'uttaksperiodeHarStønadskonto',
     'erSamtidigUttakGyldig' = 'erSamtidigUttakGyldig',
     'erUtsettelseEtterFamiliehendelsesdato' = 'erUtsettelseEtterFamiliehendelsesdato',
-    'erAllePeriodeSkjemaspørsmålBesvart' = 'erAllePeriodeSkjemaspørsmålBesvart',
+    // 'erAllePeriodeSkjemaspørsmålBesvart' = 'erAllePeriodeSkjemaspørsmålBesvart',
     'harUtsettelsePgaArbeidMedDeltidUtenAvtale' = 'harUtsettelsePgaArbeidMedDeltidUtenAvtale',
 }
 
