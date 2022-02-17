@@ -30,7 +30,6 @@ export const useRequest = <T>(url: string, options: Options = DEFAULT_OPTIONS) =
                     if (err.response && (err.response.status === 401 || err.response.status === 403)) {
                         redirectToLogin();
                     }
-
                     setError(err);
                 });
         }

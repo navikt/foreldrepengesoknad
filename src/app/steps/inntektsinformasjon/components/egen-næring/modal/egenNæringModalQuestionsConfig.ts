@@ -1,7 +1,7 @@
 import { hasValue } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import { getDateFromDateString } from 'app/utils/dateUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 import { EgenNæringModalFormData, EgenNæringModalFormField } from './egenNæringModalFormConfig';
 import { erVirksomhetRegnetSomNyoppstartet } from './egenNæringModalFormUtils';
 
@@ -46,24 +46,24 @@ const EgenNæringModalFormConfig: QuestionConfig<EgenNæringModalFormData, EgenN
         visibilityFilter: ({ pågående }) => pågående === YesOrNo.NO,
     },
     [EgenNæringModalFormField.næringsresultat]: {
-        isIncluded: ({ fom }) => erVirksomhetRegnetSomNyoppstartet(getDateFromDateString(fom)),
+        isIncluded: ({ fom }) => erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(fom)),
         isAnswered: ({ næringsresultat }) => hasValue(næringsresultat),
         visibilityFilter: ({ pågående, tom }) => pågående === YesOrNo.YES || hasValue(tom),
     },
     [EgenNæringModalFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene]: {
-        isIncluded: ({ fom }) => erVirksomhetRegnetSomNyoppstartet(getDateFromDateString(fom)),
+        isIncluded: ({ fom }) => erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(fom)),
         isAnswered: ({ harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene }) =>
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene !== YesOrNo.UNANSWERED,
         visibilityFilter: ({ næringsresultat }) => hasValue(næringsresultat),
     },
     [EgenNæringModalFormField.yrkesAktivDato]: {
-        isIncluded: ({ fom }) => erVirksomhetRegnetSomNyoppstartet(getDateFromDateString(fom)),
+        isIncluded: ({ fom }) => erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(fom)),
         isAnswered: ({ yrkesAktivDato }) => hasValue(yrkesAktivDato),
         visibilityFilter: ({ harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene }) =>
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene === YesOrNo.YES,
     },
     [EgenNæringModalFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår]: {
-        isIncluded: ({ fom }) => !erVirksomhetRegnetSomNyoppstartet(getDateFromDateString(fom)),
+        isIncluded: ({ fom }) => !erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(fom)),
         isAnswered: ({ hattVarigEndringAvNæringsinntektSiste4Kalenderår }) =>
             hattVarigEndringAvNæringsinntektSiste4Kalenderår !== YesOrNo.UNANSWERED,
         visibilityFilter: ({ pågående, tom }) => pågående === YesOrNo.YES || hasValue(tom),

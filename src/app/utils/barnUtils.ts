@@ -2,6 +2,9 @@ import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import Barn, { isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
 import { RegistrertBarn } from 'app/types/Person';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 export const getFamiliehendelsedato = (barn: Barn): string => {
     if (isFødtBarn(barn)) {
@@ -19,6 +22,8 @@ export const getRegistrertBarnOmDetFinnes = (
     registrerteBarn: RegistrertBarn[]
 ): RegistrertBarn | undefined => {
     return registrerteBarn.length > 0 && isFødtBarn(barn)
-        ? registrerteBarn.find((regBarn) => dayjs(regBarn.fødselsdato).isSame(barn.fødselsdatoer[0]))
+        ? registrerteBarn.find((regBarn) =>
+              dayjs.utc(regBarn.fødselsdato).isSame(dayjs.utc(barn.fødselsdatoer[0]).toDate())
+          )
         : undefined;
 };

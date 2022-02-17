@@ -1,6 +1,6 @@
 import { bemUtils, Block, intlUtils, LanguageToggle, Locale, Sidebanner } from '@navikt/fp-common';
 import actionCreator, { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { assertUnreachable } from 'app/utils/globalUtil';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
@@ -65,11 +65,17 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
     const sak = getSisteSak(saker);
     const intl = useIntl();
     const søknad = useSøknad();
-    const { state } = useForeldrepengesøknadContext();
+    const { dispatch, state } = useForeldrepengesøknadContext();
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
     const bem = bemUtils('velkommen');
     const sakErAvsluttet = erSakAvsluttet(sak);
     const { eksisterendeSakData } = Api.useGetEksisterendeSak(sak?.saksnummer, fnr);
+
+    useEffect(() => {
+        if (state.søknad.søker.språkkode !== locale) {
+            dispatch(actionCreator.setSpråkkode(locale));
+        }
+    }, [dispatch, locale, state.søknad.søker.språkkode]);
 
     const onValidSubmitHandler = (values: Partial<VelkommenFormData>) => {
         const vilSøkeOmEndring = !!convertYesOrNoOrUndefinedToBoolean(values.vilSøkeOmEndring);

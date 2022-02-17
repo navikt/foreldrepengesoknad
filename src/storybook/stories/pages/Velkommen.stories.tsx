@@ -23,7 +23,7 @@ interface Props {
 const Template: Story<Props> = ({ harGodkjentVilkår, saker }) => {
     return (
         <ForeldrepengerStateMock
-            søknad={{ søknad: { harGodkjentVilkår } } as ForeldrepengesøknadContextState}
+            søknad={{ søknad: { harGodkjentVilkår, søker: { språkkode: 'nb' } } } as ForeldrepengesøknadContextState}
             søkerinfo={{ søker: { fnr: '1233434' } } as SøkerinfoDTO}
         >
             <Velkommen fornavn="Espen" onChangeLocale={() => undefined} locale="nb" saker={saker} fnr={'123'} />

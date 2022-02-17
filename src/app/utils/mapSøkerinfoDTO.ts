@@ -4,6 +4,11 @@ import Person, { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Perso
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold, SøkerinfoDTOBarn, SøkerinfoDTOSøker } from 'app/types/SøkerinfoDTO';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const mapArbeidsforholdDTOToArbeidsforhold = (
     arbeidsforhold: SøkerinfoDTOArbeidsforhold[] | undefined
@@ -17,9 +22,9 @@ const mapArbeidsforholdDTOToArbeidsforhold = (
             arbeidsgiverId: arbforhold.arbeidsgiverId,
             arbeidsgiverIdType: arbforhold.arbeidsgiverIdType,
             arbeidsgiverNavn: arbforhold.arbeidsgiverNavn,
-            fom: dayjs(arbforhold.fom).toDate(),
+            fom: dayjs.utc(arbforhold.fom).toDate(),
             stillingsprosent: arbforhold.stillingsprosent,
-            tom: arbforhold.tom ? dayjs(arbforhold.tom).toDate() : undefined,
+            tom: arbforhold.tom ? dayjs.utc(arbforhold.tom).toDate() : undefined,
         };
     });
 };
@@ -30,7 +35,7 @@ const mapSøkerinfoDTOSøkerToPerson = (personDTO: SøkerinfoDTOSøker): Person 
         etternavn: personDTO.etternavn,
         fornavn: personDTO.fornavn,
         fnr: personDTO.fnr,
-        fødselsdato: dayjs(personDTO.fødselsdato).toDate(),
+        fødselsdato: dayjs.utc(personDTO.fødselsdato).toDate(),
         ikkeNordiskEøsLand: personDTO.ikkeNordiskEøsLand,
         kjønn: personDTO.kjønn,
         bankkonto: personDTO.bankkonto,
@@ -49,7 +54,7 @@ const mapSøkerinfoDTOBarnToRegistrertBarn = (registrerteBarn: SøkerinfoDTOBarn
                   etternavn: annenForelder.etternavn,
                   fnr: annenForelder.fnr,
                   fornavn: annenForelder.fornavn,
-                  fødselsdato: dayjs(annenForelder.fødselsdato).toDate(),
+                  fødselsdato: dayjs.utc(annenForelder.fødselsdato).toDate(),
               }
             : undefined;
 
@@ -57,7 +62,7 @@ const mapSøkerinfoDTOBarnToRegistrertBarn = (registrerteBarn: SøkerinfoDTOBarn
             etternavn: barn.etternavn,
             fnr: barn.fnr,
             fornavn: barn.fornavn,
-            fødselsdato: dayjs(barn.fødselsdato).toDate(),
+            fødselsdato: dayjs.utc(barn.fødselsdato).toDate(),
             kjønn: barn.kjønn,
             annenForelder: oppgittAnnenForelder,
         };

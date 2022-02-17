@@ -1,7 +1,7 @@
-import dayjs from 'dayjs';
 import { Kjønn } from '@navikt/fp-common';
 import mapSøkerinfoDTOToSøkerinfo from './mapSøkerinfoDTO';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import { ISOStringToDate } from './dateUtils';
 
 describe('mapSøkerinfoDTO', () => {
     it('skal konvertere dto til app-format', () => {
@@ -38,8 +38,8 @@ describe('mapSøkerinfoDTO', () => {
                     arbeidsgiverId: 'ID',
                     arbeidsgiverIdType: 'Type',
                     arbeidsgiverNavn: 'OBOS',
-                    fom: dayjs('2021-01-02').toDate(),
-                    tom: dayjs('2021-01-05').toDate(),
+                    fom: ISOStringToDate('2021-01-02'),
+                    tom: ISOStringToDate('2021-01-05'),
                     stillingsprosent: 100,
                 },
             ],
@@ -48,7 +48,7 @@ describe('mapSøkerinfoDTO', () => {
                 etternavn: 'Utvikler',
                 fornavn: 'Espen',
                 fnr: '08088620241',
-                fødselsdato: dayjs('2000-01-01').toDate(),
+                fødselsdato: ISOStringToDate('2000-01-01'),
                 ikkeNordiskEøsLand: false,
                 kjønn: 'M' as Kjønn,
                 bankkonto: {

@@ -1,7 +1,6 @@
 import MockDate from 'mockdate';
 import dayjs from 'dayjs';
 import {
-    getDateFromDateString,
     dateRangeValidation,
     isDateABeforeDateB,
     isDateInTheFuture,
@@ -35,7 +34,7 @@ describe('dateUtils', () => {
     });
 
     it('skal konvertere string til Date', () => {
-        const dato = getDateFromDateString('2021-05-05');
+        const dato = ISOStringToDate('2021-05-05');
 
         expect(dato?.getTime()).toBe(new Date('2021-05-05').getTime());
     });

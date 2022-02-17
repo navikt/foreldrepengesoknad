@@ -5,14 +5,8 @@ import * as stories from 'stories/pages/Velkommen.stories';
 import userEvent from '@testing-library/user-event';
 import Api from 'app/api/api';
 
-const {
-    Default,
-    HarOpprettetFPSak,
-    HarFPSakUnderBehandling,
-    HarLøpendeFPSak,
-    HarAvsluttetFPSak,
-    HarFlereSaker,
-} = composeStories(stories);
+const { Default, HarOpprettetFPSak, HarFPSakUnderBehandling, HarLøpendeFPSak, HarAvsluttetFPSak, HarFlereSaker } =
+    composeStories(stories);
 const sakerAvsluttet = [HarLøpendeFPSak, HarAvsluttetFPSak];
 const sakerUnderBehandling = [HarOpprettetFPSak, HarFPSakUnderBehandling];
 

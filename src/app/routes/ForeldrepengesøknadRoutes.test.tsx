@@ -18,7 +18,11 @@ describe('<ForeldrepengesøknadRoutes>', () => {
             person: {} as Person,
             registrerteBarn: [],
         } as Søkerinfo,
-        søknad: {} as Søknad,
+        søknad: {
+            søker: {
+                språkkode: 'nb',
+            },
+        } as Søknad,
         saker: [],
         kvittering: undefined!,
     };
@@ -56,6 +60,9 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                     søkersituasjon: {
                         situasjon: 'fødsel',
                         rolle: 'mor',
+                    },
+                    søker: {
+                        språkkode: 'nb',
                     },
                 } as Søknad,
                 saker: [],

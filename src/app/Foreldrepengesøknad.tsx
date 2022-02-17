@@ -41,10 +41,6 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         }
     }, [dispatch, storageData, søkerinfoData, sakerData]);
 
-    useEffect(() => {
-        dispatch(actionCreator.setSpråkkode(locale));
-    }, [dispatch, locale]);
-
     if (!state.søkerinfo || !sakerData) {
         return renderSpinner();
     }

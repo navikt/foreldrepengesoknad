@@ -21,22 +21,12 @@ dayjs.extend(advanced);
 
 export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();
 
-export const getDateFromDateString = (dateString: string | undefined): Date | undefined => {
-    if (dateString === undefined) {
-        return undefined;
-    }
-    if (isISODateString(dateString)) {
-        return new Date(dateString);
-    }
-    return undefined;
-};
-
 export const ISOStringToDate = (dateString: string | undefined): Date | undefined => {
     if (dateString === undefined) {
         return undefined;
     }
     if (isISODateString(dateString) && dayjs(dateString, 'YYYY-MM-DD', true).isValid()) {
-        return new Date(dateString);
+        return dayjs.utc(dateString).toDate();
     }
     return undefined;
 };
