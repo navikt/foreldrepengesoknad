@@ -55,10 +55,7 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
         harGodkjentOppsummering: false,
         vedlegg: [],
         tilleggsopplysninger: {
-            begrunnelseForSenEndring: {
-                tekst: '',
-                ekstraInformasjon: '',
-            },
+            begrunnelseForSenEndring: undefined!,
         },
     },
     søkerinfo: undefined!,

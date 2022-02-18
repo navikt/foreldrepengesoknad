@@ -53,7 +53,7 @@ interface Props {
     tilleggsopplysninger: Tilleggsopplysninger;
     eksisterendeSak: EksisterendeSak | undefined;
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
-    handleBegrunnelseChange: (begrunnelse: string) => void;
+    handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -162,12 +162,15 @@ const Uttaksplan: FunctionComponent<Props> = ({
         handleOnPlanChange(addPeriodeResult.updatedPlan);
     };
 
-    const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(uttaksplan);
-
     const vedleggForSenEndring = []!; //TODO: handleBegrunnelseVedleggChange
 
     //TODO: get perioderSomSkalSendesInn
     const perioderSomSkalSendesInn = uttaksplan;
+    const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderSomSkalSendesInn);
+
+    const handleBegrunnelseTekstChange = (begrunnelse: string) => {
+        handleBegrunnelseChange(årsakTilSenEndring, begrunnelse);
+    };
 
     //TODO: harKomplettuttaksplan
     const harKomplettUttaksplan = false;
@@ -197,8 +200,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     });
 
     useEffect(() => {
-        //TODO: Er det riktig å også sjekke lengde på advarsel her eller er det kun feil som skal stoppe brukeren fra neste steg?
-        const uttaksplanErGyldig = !uttaksplanValidering.harFeil; // && !(uttaksplanValidering.avvik.length > 0);
+        const uttaksplanErGyldig = !uttaksplanValidering.harFeil;
         setUttaksplanErGyldig(uttaksplanErGyldig);
     });
 
@@ -260,7 +262,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                             : ''
                     }
                     vedlegg={vedleggForSenEndring}
-                    onBegrunnelseChange={handleBegrunnelseChange}
+                    onBegrunnelseTekstChange={handleBegrunnelseTekstChange}
                     //onVedleggChange={handleBegrunnelseVedleggChange}
                 />
             )}

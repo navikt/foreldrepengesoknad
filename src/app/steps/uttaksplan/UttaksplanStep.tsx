@@ -34,6 +34,7 @@ import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import useDebounce from 'app/utils/hooks/useDebounce';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { SenEndringÅrsak } from 'uttaksplan/types/SenEndringÅrsak';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -49,10 +50,15 @@ const UttaksplanStep = () => {
         return [actionCreator.setTilleggsopplysninger(tilleggsopplysninger)];
     };
 
-    const handleBegrunnelseChange = (begrunnelse: string) => {
+    const handleBegrunnelseChange = (årsak: SenEndringÅrsak, begrunnelse: string) => {
+        const ekstraInformasjon = årsak !== SenEndringÅrsak.Ingen ? årsak : undefined;
         const opplysninger = {
             ...tilleggsopplysninger,
-            begrunnelseForSenEndring: { ...tilleggsopplysninger.begrunnelseForSenEndring, tekst: begrunnelse },
+            begrunnelseForSenEndring: {
+                ...tilleggsopplysninger.begrunnelseForSenEndring,
+                tekst: begrunnelse,
+                ekstraInformasjon: ekstraInformasjon,
+            },
         };
         dispatch(actionCreator.setTilleggsopplysninger(opplysninger));
     };
