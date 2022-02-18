@@ -31,7 +31,7 @@ export const ISOStringToDate = (dateString: string | undefined): Date | undefine
     return undefined;
 };
 
-const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
+export const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
     return dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
 };
 
@@ -149,6 +149,18 @@ export const isDateABeforeDateB = (a: string, b: string): boolean => {
     }
 
     return false;
+};
+
+export const isDateToday = (date: string): boolean => {
+    if (dayjs().isSame(date, 'day')) {
+        return true;
+    }
+
+    return false;
+};
+
+export const isDateTodayOrInTheFuture = (date: string): boolean => {
+    return isDateInTheFuture(date) || isDateToday(date);
 };
 
 export const isDateInTheFuture = (date: string): boolean => {

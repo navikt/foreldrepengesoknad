@@ -2,6 +2,7 @@ import { Locale } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import { Attachment } from 'app/types/Attachment';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
 import Sak from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
@@ -13,6 +14,7 @@ import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphol
 import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
 import { Søknad } from '../types/Søknad';
+import { Tilleggsopplysninger } from '../types/Tilleggsopplysninger';
 import UttaksplanInfo from '../types/UttaksplanInfo';
 
 export enum ForeldrepengesøknadContextActionKeys {
@@ -35,9 +37,11 @@ export enum ForeldrepengesøknadContextActionKeys {
     LAG_UTTAKSPLANFORSLAG = 'lagUttaksplanforslag',
     SET_UTTAKSPLAN = 'setUttaksplan',
     SET_SØKNAD = 'setSøknad',
+    SET_EKSISTERENDE_SAK = 'setEksisterendeSak',
     SET_GODKJENT_OPPSUMMERING = 'setGodkjentOppsummering',
     SET_KVITTERING = 'setKvittering',
     SET_SPRÅKKODE = 'setSpråkkode',
+    SET_TILLEGGSOPPLYSNINGER = 'setTilleggsopplysninger',
 }
 
 interface SetVelkommen {
@@ -170,6 +174,16 @@ const setUttaksplanInfo = (payload: UttaksplanInfo): SetUttaksplanInfo => ({
     payload,
 });
 
+interface SetTilleggsopplysninger {
+    type: ForeldrepengesøknadContextActionKeys.SET_TILLEGGSOPPLYSNINGER;
+    payload: Tilleggsopplysninger;
+}
+
+const setTilleggsopplysninger = (payload: Tilleggsopplysninger): SetTilleggsopplysninger => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_TILLEGGSOPPLYSNINGER,
+    payload,
+});
+
 interface SetDekningsgrad {
     type: ForeldrepengesøknadContextActionKeys.SET_DEKNINGSGRAD;
     dekningsgrad: Dekningsgrad;
@@ -220,6 +234,16 @@ const setSøknad = (payload: Søknad): SetSøknad => ({
     payload,
 });
 
+interface SetEksisterendeSak {
+    type: ForeldrepengesøknadContextActionKeys.SET_EKSISTERENDE_SAK;
+    payload: EksisterendeSak | undefined;
+}
+
+const setEksisterendeSak = (payload: EksisterendeSak | undefined): SetEksisterendeSak => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_EKSISTERENDE_SAK,
+    payload,
+});
+
 interface SetGodkjentOppsummering {
     type: ForeldrepengesøknadContextActionKeys.SET_GODKJENT_OPPSUMMERING;
     payload: boolean;
@@ -263,10 +287,12 @@ export type ForeldrepengesøknadContextAction =
     | SetInformasjonOmUtenlandsopphold
     | SetSaker
     | SetUttaksplanInfo
+    | SetTilleggsopplysninger
     | SetDekningsgrad
     | ApplyStoredState
     | SetVedlegg
     | SetSøknad
+    | SetEksisterendeSak
     | LagUttaksplanforslag
     | SetGodkjentOppsummering
     | SetKvittering
@@ -287,11 +313,13 @@ export default {
     setInformasjonOmUtenlandsopphold,
     setSaker,
     setUttaksplanInfo,
+    setTilleggsopplysninger,
     setDekningsgrad,
     setVedlegg,
     lagUttaksplanforslag,
     setUttaksplan,
     setSøknad,
+    setEksisterendeSak,
     setGodkjentOppsummering,
     setKvittering,
     setSpråkkode,

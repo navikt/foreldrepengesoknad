@@ -56,7 +56,9 @@ export const getUttakSkjemaregler = (
     return {
         aktivitetskravMorSkalBesvares: () =>
             aktivitetskravMorSkalBesvares(
-                formValues,
+                convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager),
+                convertYesOrNoOrUndefinedToBoolean(formValues.samtidigUttak),
+                convertYesOrNoOrUndefinedToBoolean(formValues.erMorForSyk),
                 periodetype,
                 konto as StønadskontoType,
                 !erFarEllerMedmor,

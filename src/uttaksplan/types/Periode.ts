@@ -58,6 +58,7 @@ export interface UttaksperiodeBase extends PeriodeBase {
 
 export type Uttaksperiode = UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode;
 
+export type UtsettelseFormPeriodeType = Utsettelsesperiode | Oppholdsperiode;
 export interface Utsettelsesperiode extends PeriodeBase {
     type: Periodetype.Utsettelse;
     årsak: UtsettelseÅrsakType;

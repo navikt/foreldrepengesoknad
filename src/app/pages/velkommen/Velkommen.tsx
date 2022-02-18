@@ -96,6 +96,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
 
             actionsToDispatch.push(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));
             actionsToDispatch.push(actionCreator.setSøknad(søknad));
+            actionsToDispatch.push(actionCreator.setEksisterendeSak(eksisterendeSak));
         }
 
         return actionsToDispatch;

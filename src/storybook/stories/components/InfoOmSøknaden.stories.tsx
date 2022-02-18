@@ -41,6 +41,7 @@ const context = {
         uttaksplan: [],
         harGodkjentOppsummering: false,
         vedlegg: [],
+        tilleggsopplysninger: undefined!,
     },
     version: 3,
     currentRoute: '/soknad/uttaksplan-info',

@@ -34,7 +34,7 @@ const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak, gradert }) => 
         <IconBox color={getUtsettelseFarge()} stripes={gradert}>
             <UttaksplanIkon
                 ikon={getIkonForKonto(årsak)}
-                title={intlUtils(intl, `utsettelsesårsak.${årsak || 'ukjent'}`)}
+                title={intlUtils(intl, `uttaksplan.utsettelsesårsak.${årsak || 'ukjent'}`)}
             />
         </IconBox>
     );

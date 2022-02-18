@@ -1,7 +1,9 @@
 import SøknadRoutes from 'app/routes/routes';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import Sak, { FagsakStatus, SakType } from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
+import { Periode } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextActionKeys } from '../action/actionCreator';
 import { ForeldrepengesøknadContextState, foreldrepengesøknadInitialState } from '../ForeldrepengesøknadContextConfig';
 import { AnnenForelderOppgitt } from '../types/AnnenForelder';
@@ -9,6 +11,7 @@ import Barn from '../types/Barn';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
 import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
+import { Tilleggsopplysning, Tilleggsopplysninger } from '../types/Tilleggsopplysninger';
 import UttaksplanInfo from '../types/UttaksplanInfo';
 import foreldrepengesøknadReducer from './foreldrepengesøknadReducer';
 
@@ -273,5 +276,41 @@ describe('<foreldrepengesøknadReducer>', () => {
                 dekningsgrad: dekningsgrad,
             })
         );
+    });
+    it('skal sette eksisterendeSak i state', () => {
+        const payload = {
+            erAnnenPartsSak: true,
+            uttaksplan: [] as Periode[],
+        } as EksisterendeSak;
+
+        const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
+            type: ForeldrepengesøknadContextActionKeys.SET_EKSISTERENDE_SAK,
+            payload,
+        });
+
+        expect(resultState).toStrictEqual({
+            ...foreldrepengesøknadInitialState,
+            eksisterendeSak: payload,
+        });
+    });
+    it('skal sette tilleggsopplysninger i søknad i state', () => {
+        const payload = {
+            begrunnelseForSenEndring: {
+                tekst: 'test',
+            } as Tilleggsopplysning,
+        } as Tilleggsopplysninger;
+
+        const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
+            type: ForeldrepengesøknadContextActionKeys.SET_TILLEGGSOPPLYSNINGER,
+            payload,
+        });
+
+        expect(resultState).toStrictEqual({
+            ...foreldrepengesøknadInitialState,
+            søknad: {
+                ...foreldrepengesøknadInitialState.søknad,
+                tilleggsopplysninger: payload,
+            },
+        });
     });
 });

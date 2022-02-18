@@ -2,6 +2,7 @@ import { Kjønn } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import Person from 'app/types/Person';
+import { Søkerrolle } from 'app/types/Søkerrolle';
 
 export const formaterNavn = (fornavn: string, etternavn: string, mellomnavn?: string) => {
     return mellomnavn ? `${fornavn} ${mellomnavn} ${etternavn}` : `${fornavn} ${etternavn}`;
@@ -43,6 +44,17 @@ export const getMorErAleneOmOmsorg = (
     return søkerErMor && (søkerErAleneOmOmsorg || annenForelder.kanIkkeOppgis === true);
 };
 
+export const getMorHarRettPåForeldrepenger = (
+    rolle: Søkerrolle,
+    søkerErFarEllerMedmor: boolean,
+    annenForelder: AnnenForelder
+) => {
+    if (søkerErFarEllerMedmor === true && isAnnenForelderOppgitt(annenForelder)) {
+        return annenForelder.harRettPåForeldrepenger === true;
+    }
+    return rolle === 'mor';
+};
+
 export const getFarMedmorErAleneOmOmsorg = (
     søkerErFarMedmor: boolean,
     søkerErAleneOmOmsorg: boolean,
@@ -66,3 +78,6 @@ export const getNavnPåForeldre = (
         farMedmor: navnFarMedmor,
     };
 };
+
+export const getErSøkerFarEllerMedmor = (søkerRolle: Søkerrolle): boolean =>
+    søkerRolle === 'far' || søkerRolle === 'medmor';

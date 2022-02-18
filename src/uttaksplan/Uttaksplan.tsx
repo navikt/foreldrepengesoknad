@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react';
-import { Block } from '@navikt/fp-common';
+import React, { FunctionComponent, useEffect } from 'react';
+import { Block, intlUtils } from '@navikt/fp-common';
 import Planlegger from './components/planlegger/Planlegger';
 import PlanleggerInfo from './components/planlegger-info/PlanleggerInfo';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
@@ -16,6 +16,17 @@ import addPeriode from './builder/addPeriode';
 import { Situasjon } from 'app/types/Situasjon';
 import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import { validerUttaksplan } from './validering/validerUttaksplan';
+import Søkersituasjon from 'app/context/types/Søkersituasjon';
+import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import VeilederInfo from './validering/veilederInfo/VeilederInfo';
+import { useIntl } from 'react-intl';
+import { getPeriodelisteMeldinger, getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
+import OppgiTilleggsopplysninger from './components/oppgi-tilleggsopplysninger/OppgiTilleggsopplysninger';
+import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
+import { SenEndringÅrsak } from './types/SenEndringÅrsak';
+import { getSeneEndringerSomKreverBegrunnelse } from 'app/steps/uttaksplan-info/utils/Periodene';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -32,7 +43,17 @@ interface Props {
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;
     erAleneOmOmsorg: boolean;
+    harMidlertidigOmsorg: boolean;
     situasjon: Situasjon;
+    erMorUfør: boolean;
+    harMorRett: boolean;
+    søkersituasjon: Søkersituasjon;
+    dekningsgrad: Dekningsgrad;
+    antallBarn: number;
+    tilleggsopplysninger: Tilleggsopplysninger;
+    eksisterendeSak: EksisterendeSak | undefined;
+    setUttaksplanErGyldig: (planErGyldig: boolean) => void;
+    handleBegrunnelseChange: (begrunnelse: string) => void;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -50,10 +71,20 @@ const Uttaksplan: FunctionComponent<Props> = ({
     erFarEllerMedmor,
     erFlerbarnssøknad,
     erAleneOmOmsorg,
+    harMidlertidigOmsorg,
     situasjon,
+    erMorUfør,
+    harMorRett,
+    søkersituasjon,
+    dekningsgrad,
+    antallBarn,
+    tilleggsopplysninger,
+    eksisterendeSak,
+    setUttaksplanErGyldig,
+    handleBegrunnelseChange,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
-
+    const intl = useIntl();
     const handleDeletePeriode = (periodeId: string) => {
         const slettetPeriode = uttaksplan.find((p) => p.id === periodeId);
 
@@ -131,6 +162,50 @@ const Uttaksplan: FunctionComponent<Props> = ({
         handleOnPlanChange(addPeriodeResult.updatedPlan);
     };
 
+    const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(uttaksplan);
+
+    const vedleggForSenEndring = []!; //TODO: handleBegrunnelseVedleggChange
+
+    //TODO: get perioderSomSkalSendesInn
+    const perioderSomSkalSendesInn = uttaksplan;
+
+    //TODO: harKomplettuttaksplan
+    const harKomplettUttaksplan = false;
+
+    const uttaksplanValidering = validerUttaksplan({
+        søkersituasjon: søkersituasjon,
+        arbeidsforhold: arbeidsforhold,
+        dekningsgrad: dekningsgrad,
+        erEndringssøknad: erEndringssøknad,
+        antallBarn: antallBarn,
+        annenForelder: annenForelder,
+        navnPåForeldre: navnPåForeldre,
+        søkerErFarEllerMedmor: erFarEllerMedmor,
+        søkerErAleneOmOmsorg: erAleneOmOmsorg,
+        søkerHarMidlertidigOmsorg: harMidlertidigOmsorg,
+        erDeltUttak: erDeltUttak,
+        morErUfør: erMorUfør,
+        morHarRett: harMorRett,
+        erFlerbarnssøknad: erFlerbarnssøknad,
+        familiehendelsesdato: familiehendelsesdatoDate,
+        stønadskontoer: stønadskontoer,
+        perioder: uttaksplan,
+        harKomplettUttaksplan: harKomplettUttaksplan,
+        tilleggsopplysninger: tilleggsopplysninger,
+        eksisterendeSak: eksisterendeSak,
+        perioderSomSkalSendesInn: perioderSomSkalSendesInn,
+    });
+
+    useEffect(() => {
+        //TODO: Er det riktig å også sjekke lengde på advarsel her eller er det kun feil som skal stoppe brukeren fra neste steg?
+        const uttaksplanErGyldig = !uttaksplanValidering.harFeil; // && !(uttaksplanValidering.avvik.length > 0);
+        setUttaksplanErGyldig(uttaksplanErGyldig);
+    });
+
+    //TODO: trenges grupperAvvik i det hele tatt? Sendes inn som false her.
+    const uttaksplanVeilederInfo = getUttaksplanVeilederinfo(uttaksplanValidering.avvik, intl, false);
+    const meldingerPerPeriode = getPeriodelisteMeldinger(uttaksplanVeilederInfo);
+
     return (
         <>
             <Block padBottom="l">
@@ -156,6 +231,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     erDeltUttak={erDeltUttak}
                     erAleneOmOmsorg={erAleneOmOmsorg}
                     situasjon={situasjon}
+                    meldingerPerPeriode={meldingerPerPeriode}
                 />
             </Block>
             <Block padBottom="l">
@@ -167,6 +243,27 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     familiehendelsesdato={familiehendelsesdatoDate}
                 />
             </Block>
+            <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">
+                <VeilederInfo
+                    messages={uttaksplanVeilederInfo}
+                    paneltype="plakat"
+                    kompakt={true}
+                    veilederStil={'normal'}
+                    ariaTittel={intlUtils(intl, 'uttaksplan.regelAvvik.ariaTittel')}
+                />
+            </Block>
+            {årsakTilSenEndring && årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
+                <OppgiTilleggsopplysninger
+                    begrunnelse={
+                        tilleggsopplysninger.begrunnelseForSenEndring
+                            ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
+                            : ''
+                    }
+                    vedlegg={vedleggForSenEndring}
+                    onBegrunnelseChange={handleBegrunnelseChange}
+                    //onVedleggChange={handleBegrunnelseVedleggChange}
+                />
+            )}
         </>
     );
 };

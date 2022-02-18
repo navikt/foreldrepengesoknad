@@ -1,4 +1,5 @@
 import SøknadRoutes from 'app/routes/routes';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
 import Sak from 'app/types/Sak';
 import { Situasjon } from 'app/types/Situasjon';
@@ -18,6 +19,7 @@ export interface ForeldrepengesøknadContextState {
     saker: Sak[];
     uttaksplanInfo?: UttaksplanInfo;
     kvittering: Kvittering;
+    eksisterendeSak?: EksisterendeSak;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
@@ -52,6 +54,12 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
         uttaksplan: [],
         harGodkjentOppsummering: false,
         vedlegg: [],
+        tilleggsopplysninger: {
+            begrunnelseForSenEndring: {
+                tekst: '',
+                ekstraInformasjon: '',
+            },
+        },
     },
     søkerinfo: undefined!,
     saker: [],

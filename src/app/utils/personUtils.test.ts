@@ -2,6 +2,7 @@ import AnnenForelder from 'app/context/types/AnnenForelder';
 import Person from 'app/types/Person';
 import {
     formaterNavn,
+    getErSøkerFarEllerMedmor,
     getKjønnFromFnr,
     getMorErAleneOmOmsorg,
     getNavnGenitivEierform,
@@ -125,5 +126,14 @@ describe('personUtils', () => {
 
         expect(navnPåForeldre.mor).toBe('Olga');
         expect(navnPåForeldre.farMedmor).toBe('Espen');
+    });
+
+    it('should return true if SøkerRolle is FAR r MEDMOR ', () => {
+        expect(getErSøkerFarEllerMedmor('far')).toBe(true);
+        expect(getErSøkerFarEllerMedmor('medmor')).toBe(true);
+    });
+
+    it('should return false if SøkerRolle is neither FAR, nor MEDMOR', () => {
+        expect(getErSøkerFarEllerMedmor('mor')).toBe(false);
     });
 });
