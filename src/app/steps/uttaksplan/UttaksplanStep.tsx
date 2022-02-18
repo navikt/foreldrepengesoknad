@@ -173,11 +173,6 @@ const UttaksplanStep = () => {
                 handleBegrunnelseChange={handleBegrunnelseChange}
                 eksisterendeSak={eksisterendeSak}
             />
-            <Block textAlignCenter={true} padBottom="l">
-                <Hovedknapp onClick={clickHandler} disabled={isSubmitting} spinner={isSubmitting}>
-                    {intlUtils(intl, 'søknad.gåVidere')}
-                </Hovedknapp>
-            </Block>
             {!uttaksplanErGyldig && submitIsClicked && (
                 <Block textAlignCenter={true} padBottom="l">
                     <AlertStripe type="feil">
@@ -185,6 +180,11 @@ const UttaksplanStep = () => {
                     </AlertStripe>
                 </Block>
             )}
+            <Block textAlignCenter={true} padBottom="l">
+                <Hovedknapp onClick={clickHandler} disabled={isSubmitting} spinner={isSubmitting}>
+                    {intlUtils(intl, 'søknad.gåVidere')}
+                </Hovedknapp>
+            </Block>
         </Step>
     );
 };
