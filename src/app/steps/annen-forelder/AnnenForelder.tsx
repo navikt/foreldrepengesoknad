@@ -115,14 +115,16 @@ const AnnenForelder = () => {
                             includeValidationSummary={true}
                         >
                             {skalOppgiPersonalia && (
-                                <OppgiPersonalia
-                                    fornavn={formValues.fornavn}
-                                    erUtenlandskFnr={formValues.utenlandskFnr}
-                                    kanIkkeOppgis={formValues.kanIkkeOppgis}
-                                    visibility={visibility}
-                                    gjelderAdopsjon={false}
-                                    søkersFødselsnummer={søkerinfo.person.fnr}
-                                />
+                                <Block padBottom="xl">
+                                    <OppgiPersonalia
+                                        fornavn={formValues.fornavn}
+                                        erUtenlandskFnr={formValues.utenlandskFnr}
+                                        kanIkkeOppgis={formValues.kanIkkeOppgis}
+                                        visibility={visibility}
+                                        gjelderAdopsjon={false}
+                                        søkersFødselsnummer={søkerinfo.person.fnr}
+                                    />
+                                </Block>
                             )}
                             {registrertBarn !== undefined && registrertBarn.annenForelder && (
                                 <Block padBottom="l">

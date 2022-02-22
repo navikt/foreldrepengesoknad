@@ -51,7 +51,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
                         />
                     </div>
                 </Block>
-                <Block padBottom="l" visible={visibility.isVisible(AnnenForelderFormField.kanIkkeOppgis)}>
+                <Block visible={visibility.isVisible(AnnenForelderFormField.kanIkkeOppgis)}>
                     <AnnenForelderFormComponents.Checkbox
                         name={AnnenForelderFormField.kanIkkeOppgis}
                         label={

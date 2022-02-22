@@ -4,6 +4,7 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
+import classNames from 'classnames';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 import React, { FunctionComponent } from 'react';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
@@ -113,7 +114,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     return (
         <article className={bem.block}>
             <EkspanderbartpanelBase
-                className={bem.element('header')}
+                className={classNames(bem.element('header'), egenPeriode ? undefined : bem.modifier('transparent'))}
                 tittel={
                     <PeriodelisteItemHeader
                         egenPeriode={egenPeriode}

@@ -1,6 +1,6 @@
 import { intlUtils, Step } from '@navikt/fp-common';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -12,12 +12,15 @@ import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { getRegistrertBarnOmDetFinnes } from 'app/utils/barnUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import actionCreator from 'app/context/action/actionCreator';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
 
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
+    const { dispatch } = useForeldrepengesøknadContext();
 
     const { barn, annenForelder, søkersituasjon } = søknad;
     const { registrerteBarn } = søkerinfo;
@@ -30,6 +33,13 @@ const UttaksplanInfo = () => {
         erFarEllerMedmor,
         registrertBarn?.annenForelder?.fnr
     );
+
+    useEffect(() => {
+        if (eksisterendeSakAnnenPartData !== undefined) {
+            dispatch(actionCreator.setUttaksplan(eksisterendeSakAnnenPartData.uttaksplan));
+        }
+    }, [eksisterendeSakAnnenPartData, dispatch]);
+
     const { tilgjengeligeStønadskontoerData: stønadskontoer100 } = Api.useGetUttakskontoer(
         getStønadskontoParams(Dekningsgrad.HUNDRE_PROSENT, barn, annenForelder, søkersituasjon)
     );

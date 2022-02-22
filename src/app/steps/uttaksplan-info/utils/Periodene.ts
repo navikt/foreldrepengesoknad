@@ -365,11 +365,13 @@ export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): Sen
 };
 
 export const uttaksplanErBareOpphold = (perioder: Periode[]): boolean => {
-    if (perioder.length === 0) {
+    const perioderUtenInfoPerioder = perioder.filter((p) => !isInfoPeriode(p));
+
+    if (perioderUtenInfoPerioder.length === 0) {
         return false;
     }
 
-    return perioder.filter((p) => !isInfoPeriode(p)).every((periode) => periode.type === Periodetype.Opphold);
+    return perioderUtenInfoPerioder.every((periode) => periode.type === Periodetype.Opphold);
 };
 
 export const uttaksplanSlutterMedOpphold = (perioder: Periode[]): boolean => {

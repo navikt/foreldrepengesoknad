@@ -74,7 +74,7 @@ const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolea
     const { data, error } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplanannen', {
         fnr: søkerFnr,
         config: { params: { annenPart: annenPartFnr }, withCredentials: true },
-        isSuspended: annenPartFnr && erFarEllerMedmor ? false : true,
+        isSuspended: annenPartFnr !== undefined && erFarEllerMedmor ? false : true,
     });
 
     return {

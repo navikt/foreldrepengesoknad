@@ -141,6 +141,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                 )
             }
             renderForm={({ setFieldValue, values }) => {
+                const periodetype = getPeriodeType(values.hvemSkalTaUttak!, erFarEllerMedmor, values.konto!);
+
                 const visibility = periodeUttakFormQuestionsConfig.getVisbility({
                     values,
                     regelProps: {
@@ -150,7 +152,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         erFarEllerMedmor,
                         erFlerbarnssøknad,
                         familiehendelsesdato,
-                        periodetype: getPeriodeType(values.hvemSkalTaUttak, erFarEllerMedmor, values.konto),
+                        periodetype,
                         situasjon,
                     },
                 });
@@ -277,11 +279,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                             htmlType="button"
                                             onClick={() => {
                                                 handleAddPeriode!(
-                                                    mapPeriodeUttakFormToPeriode(
-                                                        values,
-                                                        periode.id,
-                                                        getPeriodeType(values.hvemSkalTaUttak!, false, values.konto!)
-                                                    )
+                                                    mapPeriodeUttakFormToPeriode(values, periode.id, periodetype)
                                                 );
                                                 setNyPeriodeFormIsVisible!(false);
                                             }}

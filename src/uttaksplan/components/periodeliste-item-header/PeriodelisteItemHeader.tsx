@@ -30,7 +30,7 @@ interface Props {
     melding: VeilederMessage | undefined;
 }
 
-const bem = bemUtils('periodelisteItemHeader2');
+const bem = bemUtils('periodelisteItemHeader');
 
 export const getPeriodeIkon = (
     periode: Periode,
@@ -132,7 +132,7 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, periode
     }
 
     return (
-        <div className={classNames(bem.block, egenPeriode ? undefined : bem.modifier('transparent'))}>
+        <div className={bem.block}>
             <div
                 className={classNames(
                     bem.element('content'),
@@ -151,11 +151,12 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({ egenPeriode, periode
                         </span>
                     )}
                 </div>
-
-                <div className={bem.element('dato-container')}>
-                    {renderDagMnd(periode.tidsperiode.fom)}
-                    {renderDagMnd(periode.tidsperiode.tom)}
-                </div>
+                {!erFpFørTerminUtenUttak && (
+                    <div className={bem.element('dato-container')}>
+                        {renderDagMnd(periode.tidsperiode.fom)}
+                        {renderDagMnd(periode.tidsperiode.tom)}
+                    </div>
+                )}
             </div>
         </div>
     );
