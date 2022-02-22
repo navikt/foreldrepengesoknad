@@ -8,6 +8,7 @@ import { Situasjon } from 'app/types/Situasjon';
 import { Søkerrolle } from 'app/types/Søkerrolle';
 import { assertUnreachable } from 'app/utils/globalUtil';
 import { mapAttachmentsToSøknadForInnsending } from 'app/utils/vedleggUtils';
+import stringifyTilleggsopplysninger from 'app/utils/tilleggsopplysninger.utils';
 
 export interface AnnenForelderOppgittForInnsending extends Omit<AnnenForelder, 'erUfør'> {
     harMorUføretrygd?: boolean;
@@ -31,12 +32,16 @@ export interface SøkerForInnsending extends Omit<Søker, 'språkkode'> {
 }
 
 export interface SøknadForInnsending
-    extends Omit<Søknad, 'barn' | 'annenForelder' | 'uttaksplan' | 'søker' | 'søkersituasjon'> {
+    extends Omit<
+        Søknad,
+        'barn' | 'annenForelder' | 'uttaksplan' | 'søker' | 'søkersituasjon' | 'tilleggsopplysninger'
+    > {
     barn: BarnForInnsending;
     annenForelder: AnnenForelderForInnsending;
     uttaksplan: PeriodeForInnsending[];
     søker: SøkerForInnsending;
     situasjon: Situasjon;
+    tilleggsopplysninger: string;
 }
 
 const cleanUttaksperiode = (uttaksPeriode: UttaksperiodeBase): UttaksPeriodeForInnsending => {
@@ -86,11 +91,12 @@ const cleanSøker = (søker: Søker, søkersituasjon: Søkersituasjon): SøkerFo
 };
 
 export const cleanUpSøknadsdataForInnsending = (søknad: Søknad): SøknadForInnsending => {
-    const { annenForelder, barn, uttaksplan, søker, søkersituasjon, ...rest } = søknad;
+    const { annenForelder, barn, uttaksplan, søker, søkersituasjon, tilleggsopplysninger, ...rest } = søknad;
     const cleanedAnnenForelder = cleanAnnenForelder(annenForelder);
     const cleanedUttaksplan = cleanPerioder(uttaksplan);
     const cleanedBarn = cleanBarn(barn);
     const cleanedSøker = cleanSøker(søker, søkersituasjon);
+    const tilleggsopplysningerString = stringifyTilleggsopplysninger(tilleggsopplysninger);
 
     const cleanedSøknad: SøknadForInnsending = {
         ...rest,
@@ -99,6 +105,7 @@ export const cleanUpSøknadsdataForInnsending = (søknad: Søknad): SøknadForIn
         uttaksplan: cleanedUttaksplan,
         søker: cleanedSøker,
         situasjon: søkersituasjon.situasjon,
+        tilleggsopplysninger: tilleggsopplysningerString,
     };
 
     const søknadForInnsending = mapAttachmentsToSøknadForInnsending(cleanedSøknad);

@@ -6,13 +6,12 @@ import { injectIntl, IntlShape } from 'react-intl';
 import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import { tilleggsopplysningerMaxLength } from 'uttaksplan/validering/tester/erTilleggsopplysningerGyldigTest';
 import { Textarea } from 'nav-frontend-skjema';
-
 import { Attachment } from 'app/types/Attachment';
 
 interface OwnProps {
     begrunnelse?: string;
     vedlegg?: Attachment[];
-    onBegrunnelseChange: (begrunnelse: string) => void;
+    onBegrunnelseTekstChange: (begrunnelse: string) => void;
     //onVedleggChange: (vedlegg: AttachmentType[]) => void;
     intl: IntlShape;
 }
@@ -74,7 +73,7 @@ class OppgiTilleggsopplysninger extends React.Component<Props, State> {
     }
 
     throttledOnChange = () => {
-        this.props.onBegrunnelseChange(this.state.begrunnelse);
+        this.props.onBegrunnelseTekstChange(this.state.begrunnelse);
     };
 
     handleBegrunnelseChange = (e: TextareaChangeEvent) => {
