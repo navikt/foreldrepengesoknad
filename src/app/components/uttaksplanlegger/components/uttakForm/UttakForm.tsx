@@ -460,7 +460,9 @@ class UttaksperiodeForm extends React.Component<FormContextProps, ComponentState
                                     : getStønadskontoFromOppholdsårsak((periode as Oppholdsperiode).årsak)
                             }
                         />
-                        {søknadsinfo.annenForelder.harRett && <UlønnetPermisjonInfo />}
+                        {søknadsinfo.annenForelder.harRett && (
+                            <UlønnetPermisjonInfo familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato} />
+                        )}
                     </Block>
                     {periode.type === Periodetype.Uttak && (
                         <>
