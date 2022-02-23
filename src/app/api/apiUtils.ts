@@ -49,8 +49,24 @@ const cleanUttaksperiode = (uttaksPeriode: UttaksperiodeBase): UttaksPeriodeForI
     return periodeRest;
 };
 
+const isNotPeriodetypeHull = (periode: Periode): boolean => {
+    return periode.type !== Periodetype.Hull;
+};
+
+const isNotPeriodetypeInfo = (periode: Periode): boolean => {
+    return periode.type !== Periodetype.Info;
+};
+
+const isNotPeriodeUtenUttak = (periode: Periode): boolean => {
+    return periode.type !== Periodetype.PeriodeUtenUttak;
+};
+
+const skalPeriodeSendesInn = (periode: Periode) => {
+    return isNotPeriodetypeHull(periode) && isNotPeriodetypeInfo(periode) && isNotPeriodeUtenUttak(periode);
+};
+
 const cleanPerioder = (uttaksplan: Periode[]): PeriodeForInnsending[] => {
-    return uttaksplan.map((periode) => {
+    return uttaksplan.filter(skalPeriodeSendesInn).map((periode) => {
         if (periode.type === Periodetype.Uttak) {
             return cleanUttaksperiode(periode);
         }
