@@ -36,6 +36,7 @@ import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Situasjon } from 'app/types/Situasjon';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 
 interface Props {
     periode: Periode;
@@ -234,6 +235,17 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     samtidigUttakProsentVisible={visibility.isVisible(
                                         PeriodeUttakFormField.samtidigUttakProsent
                                     )}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(PeriodeUttakFormField.aktivitetskravMor)}
+                            >
+                                <AktivitetskravSpørsmål
+                                    fieldName={PeriodeUttakFormField.aktivitetskravMor}
+                                    navnPåForeldre={navnPåForeldre}
+                                    aktivitetskravMorValue={values.aktivitetskravMor}
+                                    aktivitetskravVedlegg={values.aktivitetskravMorDokumentasjon}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.skalHaGradering)}>

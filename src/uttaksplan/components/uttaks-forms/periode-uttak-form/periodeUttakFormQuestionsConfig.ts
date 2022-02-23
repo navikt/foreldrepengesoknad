@@ -53,7 +53,8 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
     [PeriodeUttakFormField.skalHaGradering]: {
         isAnswered: ({ values }) => values.skalHaGradering !== YesOrNo.UNANSWERED,
         isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).graderingSkalBesvares(),
-        visibilityFilter: ({ values }) => values.samtidigUttak !== YesOrNo.UNANSWERED,
+        visibilityFilter: ({ values, regelProps }) =>
+            (regelProps.erFarEllerMedmor && hasValue(values.aktivitetskravMor)) || !regelProps.erFarEllerMedmor,
     },
     [PeriodeUttakFormField.stillingsprosent]: {
         isAnswered: ({ values }) => hasValue(values.stillingsprosent),
@@ -79,7 +80,7 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
         isAnswered: ({ values }) => hasValue(values.aktivitetskravMor),
         isIncluded: ({ values, regelProps }) =>
             getUttakSkjemaregler(values, regelProps).aktivitetskravMorSkalBesvares(),
-        visibilityFilter: ({ values }) => hasValue(values.konto),
+        visibilityFilter: ({ values }) => values.samtidigUttak !== YesOrNo.UNANSWERED,
     },
     [PeriodeUttakFormField.aktivitetskravMorDokumentasjon]: {
         isAnswered: ({ values }) => values.aktivitetskravMorDokumentasjon.length >= 0,

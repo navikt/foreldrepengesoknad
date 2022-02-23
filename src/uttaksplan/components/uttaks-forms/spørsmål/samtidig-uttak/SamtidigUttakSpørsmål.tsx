@@ -26,7 +26,7 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
 
     return (
         <>
-            <Block padBottom="l">
+            <Block padBottom={samtidigUttakProsentVisible ? 'l' : 'none'}>
                 <PeriodeUttakFormComponents.YesOrNoQuestion
                     name={PeriodeUttakFormField.samtidigUttak}
                     legend={intlUtils(intl, 'uttaksplan.samtidigUttak', { navnAnnenForelder: navnPåAnnenForelder })}

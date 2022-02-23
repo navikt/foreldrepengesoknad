@@ -91,11 +91,10 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         } as PeriodeHull;
         const søknadMedUttaksPlan = getSøknadMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
         const cleanedSøknadUtenUførInfo = cleanUpSøknadsdataForInnsending(søknadMedUttaksPlan);
-        expect(cleanedSøknadUtenUførInfo.uttaksplan.length).toBe(2);
+        expect(cleanedSøknadUtenUførInfo.uttaksplan.length).toBe(1);
         expect(cleanedSøknadUtenUførInfo.uttaksplan[0].hasOwnProperty('erMorForSyk')).toBe(false);
         const { erMorForSyk, ...expectedPeriodeUttak } = periodeUttak;
         expect(cleanedSøknadUtenUførInfo.uttaksplan[0]).toEqual(expectedPeriodeUttak);
-        expect(cleanedSøknadUtenUførInfo.uttaksplan[1]).toEqual(periodeHull);
     });
 
     it('skal fjerne datoForAleneomsorg fra barn men ikke endre resten av objektet', () => {

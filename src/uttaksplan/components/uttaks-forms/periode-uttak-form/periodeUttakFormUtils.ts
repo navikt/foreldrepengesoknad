@@ -233,6 +233,10 @@ export const mapPeriodeUttakFormToPeriode = (
         samtidigUttakProsent: hasValue(values.samtidigUttakProsent)
             ? trimNumberValue(values.samtidigUttakProsent!)
             : undefined,
+        vedlegg:
+            values.aktivitetskravMorDokumentasjon!.length > 0
+                ? values.aktivitetskravMorDokumentasjon
+                : values.overføringsdokumentasjon,
     };
 
     return periode;
