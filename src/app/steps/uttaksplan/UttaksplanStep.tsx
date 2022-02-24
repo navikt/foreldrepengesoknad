@@ -35,6 +35,7 @@ import useDebounce from 'app/utils/hooks/useDebounce';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SenEndringÅrsak } from 'uttaksplan/types/SenEndringÅrsak';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -78,6 +79,7 @@ const UttaksplanStep = () => {
     };
 
     const onAvbrytSøknad = useAvbrytSøknad();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     const { person, arbeidsforhold } = søkerinfo;
     const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
@@ -148,7 +150,7 @@ const UttaksplanStep = () => {
             pageTitle={intlUtils(intl, 'søknad.uttaksplan')}
             stepTitle={intlUtils(intl, 'søknad.uttaksplan')}
             onCancel={onAvbrytSøknad}
-            onContinueLater={() => null}
+            onContinueLater={onFortsettSøknadSenere}
             steps={stepConfig}
             kompakt={true}
         >

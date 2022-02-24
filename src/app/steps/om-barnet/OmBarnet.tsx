@@ -20,6 +20,7 @@ import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataT
 import RegistrertBarn from './components/RegistrertBarn';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -37,6 +38,7 @@ const OmBarnet: React.FunctionComponent = () => {
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
     const onAvbrytSøknad = useAvbrytSøknad();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     return (
         <OmBarnetFormComponents.FormikWrapper
@@ -59,7 +61,7 @@ const OmBarnet: React.FunctionComponent = () => {
                         pageTitle={intlUtils(intl, 'søknad.omBarnet')}
                         stepTitle={intlUtils(intl, 'søknad.omBarnet')}
                         onCancel={onAvbrytSøknad}
-                        onContinueLater={() => null}
+                        onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig}
                         kompakt={true}
                     >

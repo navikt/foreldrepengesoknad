@@ -23,6 +23,7 @@ import {
 import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsConfig';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -57,6 +58,7 @@ const Inntektsinformasjon = () => {
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
     const onAvbrytSøknad = useAvbrytSøknad();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
@@ -73,7 +75,7 @@ const Inntektsinformasjon = () => {
                         pageTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
                         stepTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
                         onCancel={onAvbrytSøknad}
-                        onContinueLater={() => null}
+                        onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig}
                         kompakt={true}
                     >

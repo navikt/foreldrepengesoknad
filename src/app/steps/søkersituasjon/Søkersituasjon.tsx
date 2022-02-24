@@ -20,6 +20,7 @@ import { mapSøkersituasjonFormDataToState } from './søkersituasjonUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 interface Props {
     kjønn: Kjønn;
@@ -41,6 +42,7 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
     const onAvbrytSøknad = useAvbrytSøknad();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     return (
         <SøkersituasjonFormComponents.FormikWrapper
@@ -59,7 +61,7 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
                         pageTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         stepTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         onCancel={onAvbrytSøknad}
-                        onContinueLater={() => null}
+                        onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig}
                         kompakt={true}
                     >

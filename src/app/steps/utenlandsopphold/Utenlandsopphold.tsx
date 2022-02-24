@@ -31,6 +31,7 @@ import SøknadRoutes from 'app/routes/routes';
 import { validateUtenlandsoppholdNeste12Mnd, validateUtenlandsoppholdSiste12Mnd } from './utenlandsoppholdValidering';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -47,6 +48,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
     const onAvbrytSøknad = useAvbrytSøknad();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     return (
         <UtenlandsoppholdFormComponents.FormikWrapper
@@ -63,7 +65,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         stepTitle={intlUtils(intl, 'søknad.utenlandsopphold')}
                         backLinkHref={getPreviousStepHref('utenlandsopphold')}
                         onCancel={onAvbrytSøknad}
-                        onContinueLater={() => null}
+                        onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig}
                         kompakt={true}
                     >

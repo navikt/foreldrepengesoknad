@@ -37,6 +37,7 @@ const UttaksplanInfo = () => {
     useEffect(() => {
         if (eksisterendeSakAnnenPartData !== undefined) {
             dispatch(actionCreator.setUttaksplan(eksisterendeSakAnnenPartData.uttaksplan));
+            dispatch(actionCreator.setEksisterendeSak(eksisterendeSakAnnenPartData));
         }
     }, [eksisterendeSakAnnenPartData, dispatch]);
 

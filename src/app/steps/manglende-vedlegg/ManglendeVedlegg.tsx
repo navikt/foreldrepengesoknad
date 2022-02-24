@@ -28,6 +28,7 @@ import { getInitValues } from './manglendeVedleggFormUtils';
 import { FieldArray } from 'formik';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 export const attenUkerPluss3Number = 18 * 7 + 3;
 
@@ -75,6 +76,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
     const onAvbrytSøknad = useAvbrytSøknad();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     const fornavnAnnenForelder = isAnnenForelderOppgitt(søknad.annenForelder) ? søknad.annenForelder.fornavn : '';
 
@@ -108,7 +110,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                         pageTitle={intlUtils(intl, 'søknad.manglendeVedlegg')}
                         stepTitle={intlUtils(intl, 'søknad.manglendeVedlegg')}
                         onCancel={onAvbrytSøknad}
-                        onContinueLater={() => null}
+                        onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig}
                         kompakt={true}
                     >

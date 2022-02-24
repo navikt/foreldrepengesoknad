@@ -553,6 +553,8 @@
     "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noko gjekk gale prøv igjen",
     "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikkje av gyldig type",
     "vedlegg.lastoppknapp.senEndring": "Last opp dokumentasjon ...",
+    "uttaksplan.tidsperiode": "Frå {fom} til {tom}",
+    "uttaksplan.tidsperiode.kort": "{fom} - {tom}",
     "uttaksplan.dinPlan": "Din plan",
     "uttaksplan.lukk": "Lukk",
     "uttaksplan.avbryt": "Avbryt",

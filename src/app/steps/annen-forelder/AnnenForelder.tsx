@@ -35,6 +35,7 @@ import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 const AnnenForelder = () => {
     const intl = useIntl();
@@ -84,6 +85,7 @@ const AnnenForelder = () => {
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
     const onAvbrytSøknad = useAvbrytSøknad();
+    const onForstettSøknadSenere = useFortsettSøknadSenere();
 
     return (
         <AnnenForelderFormComponents.FormikWrapper
@@ -105,7 +107,7 @@ const AnnenForelder = () => {
                         pageTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         stepTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         onCancel={onAvbrytSøknad}
-                        onContinueLater={() => null}
+                        onContinueLater={onForstettSøknadSenere}
                         steps={stepConfig}
                         kompakt={true}
                     >
