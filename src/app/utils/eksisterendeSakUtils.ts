@@ -178,11 +178,11 @@ const inneholderDuplikatSaksperiode = (saksperioder: Saksperiode[], saksperiode:
 };
 
 export const mapEksisterendeSakFromDTO = (
-    eksisterendeSak: EksisterendeSakDTO | undefined,
+    eksisterendeSak: EksisterendeSakDTO | undefined | '',
     erFarEllerMedmor: boolean,
     erAnnenPartsSak: boolean
 ): EksisterendeSak | undefined => {
-    if (eksisterendeSak === undefined) {
+    if (eksisterendeSak === undefined || eksisterendeSak === '') {
         return undefined;
     }
 
