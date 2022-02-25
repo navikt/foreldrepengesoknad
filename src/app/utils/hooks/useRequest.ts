@@ -17,6 +17,7 @@ const DEFAULT_OPTIONS: Options = {
 export const useRequest = <T>(url: string, options: Options = DEFAULT_OPTIONS) => {
     const [data, setData] = useState<T>();
     const [error, setError] = useState<AxiosError<any> | null>(null);
+    const [requestFinished, setRequestFinished] = useState(false);
     const axiosInstance = options.fnr ? getAxiosInstance(options.fnr) : getAxiosInstance();
 
     useEffect(() => {
@@ -25,15 +26,17 @@ export const useRequest = <T>(url: string, options: Options = DEFAULT_OPTIONS) =
                 .get(url, options.config)
                 .then((res) => {
                     setData(res.data);
+                    setRequestFinished(true);
                 })
                 .catch((err) => {
                     if (err.response && (err.response.status === 401 || err.response.status === 403)) {
                         redirectToLogin();
                     }
                     setError(err);
+                    setRequestFinished(true);
                 });
         }
     }, [options.isSuspended, url, axiosInstance]);
 
-    return { data, error };
+    return { data, error, requestFinished };
 };

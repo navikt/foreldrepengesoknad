@@ -28,7 +28,7 @@ const UttaksplanInfo = () => {
 
     const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
 
-    const { eksisterendeSakAnnenPartData } = Api.useGetEksisterendeSakMedFnr(
+    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestFinished } = Api.useGetEksisterendeSakMedFnr(
         søkerinfo.person.fnr,
         erFarEllerMedmor,
         registrertBarn?.annenForelder?.fnr
@@ -52,7 +52,7 @@ const UttaksplanInfo = () => {
     if (
         !stønadskontoer100 ||
         !stønadskontoer80 ||
-        (!!registrertBarn && !eksisterendeSakAnnenPartData && erFarEllerMedmor)
+        (!!registrertBarn && erFarEllerMedmor && !eksisterendeSakAnnenPartRequestFinished)
     ) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>

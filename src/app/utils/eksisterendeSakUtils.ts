@@ -182,7 +182,7 @@ export const mapEksisterendeSakFromDTO = (
     erFarEllerMedmor: boolean,
     erAnnenPartsSak: boolean
 ): EksisterendeSak | undefined => {
-    if (eksisterendeSak === undefined || eksisterendeSak === '') {
+    if (eksisterendeSak === undefined || eksisterendeSak === '' || Object.keys(eksisterendeSak).length === 0) {
         return undefined;
     }
 
