@@ -23,10 +23,6 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
         antallBarn !== undefined && parseInt(antallBarn, 10) > 1
             ? 'omBarnet.fødselsdato.flereBarn'
             : 'omBarnet.fødselsdato';
-    const intlIdTermin =
-        antallBarn !== undefined && parseInt(antallBarn, 10) > 1
-            ? 'omBarnet.termindato.fødtFlereBarn'
-            : 'omBarnet.termindato.født';
 
     if (søkersituasjon.situasjon === 'adopsjon' || erBarnetFødt !== YesOrNo.YES) {
         return null;
@@ -85,7 +81,7 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
             <Block visible={visibility.isVisible(OmBarnetFormField.termindato)}>
                 <OmBarnetFormComponents.DatePicker
                     name={OmBarnetFormField.termindato}
-                    label={intlUtils(intl, intlIdTermin)}
+                    label={intlUtils(intl, 'omBarnet.termindato.født')}
                     minDate={dayjs(fødselsdatoer[0]).subtract(1, 'months').toDate()}
                     maxDate={dayjs(fødselsdatoer[0]).add(6, 'months').toDate()}
                     placeholder={'dd.mm.åååå'}

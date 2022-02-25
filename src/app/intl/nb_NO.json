@@ -124,7 +124,6 @@
     "omBarnet.fødselsdato": "Når ble barnet født?",
     "omBarnet.fødselsdato.flereBarn": "Når ble det eldste barnet født?",
     "omBarnet.termindato.født": "Hva var termindatoen?",
-    "omBarnet.termindato.fødtFlereBarn": "Hva var termindatoen til det eldste barnet?",
     "omBarnet.termindato.termin": "Når er termindatoen?",
     "omBarnet.termindato.åpneLabel": "Les mer om termindato",
     "omBarnet.termindato.infotekst": "Hvis du har fått en dato for planlagt keisersnitt, legger du inn denne datoen som termindato. Du skal legge ved bekreftelse på keisersnitt hvis du kun mottar utbetalinger fra NAV, er selvstendig næringsdrivende eller frilanser.",
