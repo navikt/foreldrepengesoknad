@@ -79,18 +79,32 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({ søkersituasjon, formValu
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.fødselsdatoer)}>
                 <FieldArray
                     name={OmBarnetFormField.fødselsdatoer}
-                    render={() => [
-                        <OmBarnetFormComponents.DatePicker
-                            key={`${OmBarnetFormField.fødselsdatoer}.0`}
-                            name={`${OmBarnetFormField.fødselsdatoer}.0` as OmBarnetFormField}
-                            label={intlUtils(intl, 'omBarnet.fødselsdato')}
-                            minDate={dayjs(formValues.adopsjonsdato).subtract(15, 'years').toDate()}
-                            maxDate={ISOStringToDate(formValues.adopsjonsdato)}
-                            validate={(value) => validateFødselsdatoAdopsjon(intl)(value, formValues.adopsjonsdato)}
-                            placeholder={'dd.mm.åååå'}
-                            showYearSelector={true}
-                        />,
-                    ]}
+                    render={() =>
+                        [...Array(parseInt(formValues.antallBarn!, 10))].map((_, index) => {
+                            return (
+                                <Block key={index} padBottom="l">
+                                    <OmBarnetFormComponents.DatePicker
+                                        key={`${OmBarnetFormField.fødselsdatoer}.${index}`}
+                                        name={
+                                            `${OmBarnetFormField.fødselsdatoer}.${index}` as unknown as OmBarnetFormField
+                                        }
+                                        label={
+                                            formValues.antallBarn === '1'
+                                                ? intlUtils(intl, 'omBarnet.fødselsdato')
+                                                : intlUtils(intl, `omBarnet.fødselsdato.adopsjon.${index + 1}`)
+                                        }
+                                        minDate={dayjs(formValues.adopsjonsdato).subtract(15, 'years').toDate()}
+                                        maxDate={ISOStringToDate(formValues.adopsjonsdato)}
+                                        validate={(value) =>
+                                            validateFødselsdatoAdopsjon(intl)(value, formValues.adopsjonsdato)
+                                        }
+                                        placeholder={'dd.mm.åååå'}
+                                        showYearSelector={true}
+                                    />
+                                </Block>
+                            );
+                        })
+                    }
                 />
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.adoptertIUtlandet)}>
