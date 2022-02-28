@@ -11,4 +11,5 @@ export interface SaksgrunnlagDTO {
     omsorgsovertakelsesdato?: string;
     søkerErFarEllerMedmor: boolean;
     termindato?: string;
+    gjelderAnnenPart: boolean;
 }

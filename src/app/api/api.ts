@@ -10,7 +10,6 @@ import { storageParser } from './storageParser';
 import Environment from 'app/Environment';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
-import { mapEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { formaterDato } from 'app/utils/dateUtils';
 import { SøknadForInnsending } from './apiUtils';
 import { hasValue } from '@navikt/fp-common';
@@ -78,7 +77,7 @@ const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolea
     });
 
     return {
-        eksisterendeSakAnnenPartData: mapEksisterendeSakFromDTO(data, erFarEllerMedmor, true),
+        eksisterendeSakAnnenPartData: data,
         eksisterendeSakAnnenPartError: error,
         eksisterendeSakAnnenPartRequestFinished: requestFinished,
     };

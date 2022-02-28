@@ -1,6 +1,6 @@
 import { intlUtils, Step } from '@navikt/fp-common';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -14,6 +14,7 @@ import { getRegistrertBarnOmDetFinnes } from 'app/utils/barnUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import actionCreator from 'app/context/action/actionCreator';
+import { mapEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -34,12 +35,19 @@ const UttaksplanInfo = () => {
         registrertBarn?.annenForelder?.fnr
     );
 
+    const erAnnenPartsSak =
+        eksisterendeSakAnnenPartData !== undefined ? eksisterendeSakAnnenPartData.grunnlag.gjelderAnnenPart : false;
+    const eksisterendeSak = useMemo(
+        () => mapEksisterendeSakFromDTO(eksisterendeSakAnnenPartData, erFarEllerMedmor, erAnnenPartsSak),
+        [erAnnenPartsSak, eksisterendeSakAnnenPartData, erFarEllerMedmor]
+    );
+
     useEffect(() => {
-        if (eksisterendeSakAnnenPartData !== undefined) {
-            dispatch(actionCreator.setUttaksplan(eksisterendeSakAnnenPartData.uttaksplan));
-            dispatch(actionCreator.setEksisterendeSak(eksisterendeSakAnnenPartData));
+        if (eksisterendeSak !== undefined) {
+            dispatch(actionCreator.setUttaksplan(eksisterendeSak!.uttaksplan));
+            dispatch(actionCreator.setEksisterendeSak(eksisterendeSak));
         }
-    }, [eksisterendeSakAnnenPartData, dispatch]);
+    }, [eksisterendeSak, dispatch]);
 
     const { tilgjengeligeStønadskontoerData: stønadskontoer100 } = Api.useGetUttakskontoer(
         getStønadskontoParams(Dekningsgrad.HUNDRE_PROSENT, barn, annenForelder, søkersituasjon)
@@ -75,7 +83,7 @@ const UttaksplanInfo = () => {
             <UttaksplanInfoScenarios
                 tilgjengeligeStønadskontoer100DTO={stønadskontoer100}
                 tilgjengeligeStønadskontoer80DTO={stønadskontoer80}
-                eksisterendeSakAnnenPart={eksisterendeSakAnnenPartData}
+                eksisterendeSakAnnenPart={eksisterendeSak}
             />
         </Step>
     );
