@@ -183,6 +183,11 @@ const foreldrepengesøknadReducer = (
                 ...state,
                 kvittering: action.payload,
             };
+        case ForeldrepengesøknadContextActionKeys.SET_ANTALL_UKER_I_UTTAKSPLAN:
+            return {
+                ...state,
+                antallUkerIUttaksplan: action.payload,
+            };
         case ForeldrepengesøknadContextActionKeys.SET_SPRÅKKODE:
             return {
                 ...state,

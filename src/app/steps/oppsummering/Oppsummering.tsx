@@ -29,18 +29,25 @@ import { useHistory } from 'react-router-dom';
 
 import './oppsummering.less';
 import SøknadRoutes from 'app/routes/routes';
+import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
+import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'app/utils/personUtils';
 
 const Oppsummering = () => {
     const intl = useIntl();
     const { dispatch, state } = useForeldrepengesøknadContext();
     const history = useHistory();
-    const { kvittering } = state;
+    const { kvittering, eksisterendeSak } = state;
     const bem = bemUtils('oppsummering');
-    const { barn, annenForelder, søker, informasjonOmUtenlandsopphold, søkersituasjon } = useSøknad();
+    const { barn, annenForelder, søker, informasjonOmUtenlandsopphold, søkersituasjon, dekningsgrad, uttaksplan } =
+        useSøknad();
     const søkerinfo = useSøkerinfo();
+    const { person, arbeidsforhold } = søkerinfo;
     const søknad = useSøknad();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const onAvbrytSøknad = useAvbrytSøknad();
+    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
+    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, søkerErFarEllerMedmor);
+    const antallUkerUttaksplan = state.antallUkerIUttaksplan;
 
     useEffect(() => {
         if (isSubmitting) {
@@ -110,6 +117,26 @@ const Oppsummering = () => {
                                     </OppsummeringsPanel>
                                     <OppsummeringsPanel title="Arbeidsforhold og andre inntektskilder">
                                         <ArbeidsforholdOgAndreInntekterOppsummering />
+                                    </OppsummeringsPanel>
+                                    <OppsummeringsPanel title={intlUtils(intl, 'oppsummering.uttak')}>
+                                        <UttaksplanOppsummering
+                                            perioder={uttaksplan}
+                                            navnPåForeldre={navnPåForeldre}
+                                            annenForelder={annenForelder}
+                                            erFarEllerMedmor={søkerErFarEllerMedmor}
+                                            registrerteArbeidsforhold={arbeidsforhold}
+                                            dekningsgrad={dekningsgrad}
+                                            antallUkerUttaksplan={antallUkerUttaksplan}
+                                            begrunnelseForSenEndring={
+                                                søknad.tilleggsopplysninger
+                                                    ? søknad.tilleggsopplysninger.begrunnelseForSenEndring
+                                                    : undefined
+                                            }
+                                            //begrunnelseForSenEndringVedlegg={søknad.vedleggForSenEndring}
+                                            eksisterendeUttaksplan={
+                                                eksisterendeSak ? eksisterendeSak.uttaksplan : undefined
+                                            }
+                                        />
                                     </OppsummeringsPanel>
                                 </div>
                             </Block>

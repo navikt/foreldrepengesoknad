@@ -43,6 +43,7 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -82,6 +83,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const onValidSubmitHandler = (values: Partial<MorFarAdopsjonFormData>) => {
         const submissionValues = mapMorFarAdopsjonFormToState(values);
         const barnAdopsjonsdato = isAdoptertBarn(barn) ? barn.adopsjonsdato : undefined;
+        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
 
         const startdato = finnStartdatoAdopsjon(
             values.startdatoAdopsjonValg!,
@@ -92,6 +94,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         );
 
         return [
+            actionCreator.setAntallUkerIUttaksplan(antallUker),
             actionCreator.setUttaksplanInfo(submissionValues),
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
             actionCreator.lagUttaksplanforslag(

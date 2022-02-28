@@ -42,6 +42,7 @@ import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -79,7 +80,9 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
     const onValidSubmitHandler = (values: Partial<FarMedmorFødselBeggeHarRettFormData>) => {
+        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
         return [
+            actionCreator.setAntallUkerIUttaksplan(antallUker),
             actionCreator.setUttaksplanInfo(mapFarMedmorFødselBeggeHarRettToState(values)),
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
             actionCreator.lagUttaksplanforslag(

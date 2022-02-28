@@ -37,6 +37,7 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -114,8 +115,10 @@ const MorFødsel: FunctionComponent<Props> = ({
 
     const onValidSubmitHandler = (values: Partial<MorFødselFormData>) => {
         const submissionValues = mapMorFødselFormToState(values);
+        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
 
         return [
+            actionCreator.setAntallUkerIUttaksplan(antallUker),
             actionCreator.setUttaksplanInfo(submissionValues),
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
             actionCreator.lagUttaksplanforslag(

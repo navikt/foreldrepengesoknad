@@ -389,3 +389,7 @@ export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakT
     årsak === UtsettelseÅrsakType.InstitusjonSøker ||
     årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
     årsak === OverføringÅrsakType.sykdomAnnenForelder;
+
+export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan: Periode[]): boolean => {
+    return opprinneligPlan.some((op) => Perioden(periode).erLik(op, true, true));
+};

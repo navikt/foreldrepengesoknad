@@ -40,6 +40,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_EKSISTERENDE_SAK = 'setEksisterendeSak',
     SET_GODKJENT_OPPSUMMERING = 'setGodkjentOppsummering',
     SET_KVITTERING = 'setKvittering',
+    SET_ANTALL_UKER_I_UTTAKSPLAN = 'setAntallUkerIUttaksplan',
     SET_SPRÅKKODE = 'setSpråkkode',
     SET_TILLEGGSOPPLYSNINGER = 'setTilleggsopplysninger',
 }
@@ -254,6 +255,16 @@ const setGodkjentOppsummering = (payload: boolean): SetGodkjentOppsummering => (
     payload,
 });
 
+interface SetAntallUkerIUttaksplan {
+    type: ForeldrepengesøknadContextActionKeys.SET_ANTALL_UKER_I_UTTAKSPLAN;
+    payload: number;
+}
+
+const setAntallUkerIUttaksplan = (payload: number): SetAntallUkerIUttaksplan => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_ANTALL_UKER_I_UTTAKSPLAN,
+    payload,
+});
+
 interface SetKvittering {
     type: ForeldrepengesøknadContextActionKeys.SET_KVITTERING;
     payload: Kvittering;
@@ -295,6 +306,7 @@ export type ForeldrepengesøknadContextAction =
     | SetEksisterendeSak
     | LagUttaksplanforslag
     | SetGodkjentOppsummering
+    | SetAntallUkerIUttaksplan
     | SetKvittering
     | SetSpråkkode
     | SetUttaksplan;
@@ -322,5 +334,6 @@ export default {
     setEksisterendeSak,
     setGodkjentOppsummering,
     setKvittering,
+    setAntallUkerIUttaksplan,
     setSpråkkode,
 };
