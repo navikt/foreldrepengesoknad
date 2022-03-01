@@ -313,4 +313,17 @@ describe('<foreldrepengesøknadReducer>', () => {
             },
         });
     });
+    it('skal sette antallUker i state', () => {
+        const payload = 50;
+
+        const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
+            type: ForeldrepengesøknadContextActionKeys.SET_ANTALL_UKER_I_UTTAKSPLAN,
+            payload,
+        });
+
+        expect(resultState).toStrictEqual({
+            ...foreldrepengesøknadInitialState,
+            antallUkerIUttaksplan: payload,
+        });
+    });
 });

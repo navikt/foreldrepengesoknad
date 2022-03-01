@@ -48,6 +48,7 @@ const context = {
     søkerinfo: {} as Søkerinfo,
     saker: [],
     kvittering: undefined!,
+    antallUkerIUttaksplan: undefined!,
 } as ForeldrepengesøknadContextState;
 const søkerinfo = {
     søker: {

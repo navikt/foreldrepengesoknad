@@ -1,5 +1,5 @@
+import AnnenForelder from 'app/context/types/AnnenForelder';
 import { InfoPeriode, Periodetype } from 'uttaksplan/types/Periode';
-import { Søknadsinfo } from 'uttaksplan/validering/utils/types/Søknadsinfo';
 import { shouldPeriodeHaveAttachment } from './manglendeVedleggUtils';
 
 describe('manglendeVedleggUtil', () => {
@@ -8,7 +8,7 @@ describe('manglendeVedleggUtil', () => {
             const infoperiode = {
                 type: Periodetype.Info,
             } as InfoPeriode;
-            expect(shouldPeriodeHaveAttachment(infoperiode, {} as Søknadsinfo)).toBeFalsy();
+            expect(shouldPeriodeHaveAttachment(infoperiode, false, {} as AnnenForelder)).toBeFalsy();
         });
     });
 });

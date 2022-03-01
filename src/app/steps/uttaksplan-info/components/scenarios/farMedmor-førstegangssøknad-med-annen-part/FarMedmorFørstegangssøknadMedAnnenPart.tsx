@@ -5,6 +5,7 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import SøknadRoutes from 'app/routes/routes';
+import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Forelder } from 'app/types/Forelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
@@ -50,8 +51,12 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         const uttaksplanInfo: FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo = {
             permisjonStartdato: values.permisjonStartdato!,
         };
-
-        return [actionCreator.setUttaksplanInfo(uttaksplanInfo), actionCreator.setDekningsgrad(grunnlag.dekningsgrad)];
+        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[grunnlag.dekningsgrad]);
+        return [
+            actionCreator.setAntallUkerIUttaksplan(antallUker),
+            actionCreator.setUttaksplanInfo(uttaksplanInfo),
+            actionCreator.setDekningsgrad(grunnlag.dekningsgrad),
+        ];
     };
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(

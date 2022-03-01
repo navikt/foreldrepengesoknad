@@ -21,6 +21,7 @@ const OM_BARNET_PANEL = 'Om barnet';
 const ANDRE_FORELDER_PANEL = 'Den andre forelderen';
 const UTENLANDSOPPHOLD_PANEL = 'Utenlandsopphold';
 const ARBEIDSFORHOLD_OG_INNTEKTER_PANEL = 'Arbeidsforhold og andre inntektskilder';
+const UTTAKSPLAN_PANEL = 'Din plan';
 
 describe('<Oppsummering>', () => {
     it('skal bekrefte vilkårene før innsending', async () => {
@@ -149,5 +150,16 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Ja')).toBeInTheDocument();
         expect(screen.getByText('Jeg driver fosterhjem')).toBeInTheDocument();
         expect(screen.getByText('Nei')).toBeInTheDocument();
+    });
+    it('skal vise informasjon om uttaksplan', async () => {
+        render(<FarMedUførMor />);
+        expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
+        userEvent.click(screen.getByText(UTTAKSPLAN_PANEL));
+        expect(screen.getByText('Lengde med foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Foreldrepenger før fødsel')).toBeInTheDocument();
+        expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
+        expect(screen.getByText('Utsettelse')).toBeInTheDocument();
+        expect(screen.getByText('Begrunnelse for å søke om utsettelse')).toBeInTheDocument();
+        expect(screen.getByText('Utsettelsesgrunn', { exact: false })).toBeInTheDocument();
     });
 });

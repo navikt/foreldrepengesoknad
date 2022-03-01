@@ -1,3 +1,4 @@
+import AnnenForelder from 'app/context/types/AnnenForelder';
 import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { MissingAttachment } from 'app/types/MissingAttachment';
@@ -41,17 +42,18 @@ const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType):
     attachments.length === 0 ||
     (type !== undefined && attachments.find((a) => a.type === type) === undefined);
 
-export const shouldPeriodeHaveAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
+export const shouldPeriodeHaveAttachment = (
+    periode: Periode,
+    søkerErFarEllerMedmor: boolean,
+    annenForelder: AnnenForelder
+): boolean => {
     switch (periode.type) {
         case Periodetype.Overføring:
-            return dokumentasjonBehøvesForOverføringsperiode(søknadsinfo.søkerErFarEllerMedmor, periode);
+            return dokumentasjonBehøvesForOverføringsperiode(søkerErFarEllerMedmor, periode);
         case Periodetype.Utsettelse:
             return dokumentasjonBehøvesForUtsettelsesperiode(
                 periode,
-                aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-                    søknadsinfo.søkerErFarEllerMedmor,
-                    søknadsinfo.annenForelder
-                )
+                aktivitetskravMorUtil.skalBesvaresVedUtsettelse(søkerErFarEllerMedmor, annenForelder)
             );
         case Periodetype.Uttak:
             return dokumentasjonBehøvesForUttaksperiode(periode);
@@ -61,7 +63,11 @@ export const shouldPeriodeHaveAttachment = (periode: Periode, søknadsinfo: Søk
 };
 
 export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søknadsinfo): boolean => {
-    const shouldHave = shouldPeriodeHaveAttachment(periode, søknadsinfo);
+    const shouldHave = shouldPeriodeHaveAttachment(
+        periode,
+        søknadsinfo.søkerErFarEllerMedmor,
+        søknadsinfo.annenForelder
+    );
 
     return shouldHave && isAttachmentMissing(periode.vedlegg);
 };
@@ -189,7 +195,10 @@ const dokumentasjonBehøvesForUtsettelsesperiode = (
     );
 };
 
-const dokumentasjonBehøvesForOverføringsperiode = (erFarEllerMedmor: boolean, periode: Overføringsperiode): boolean =>
+export const dokumentasjonBehøvesForOverføringsperiode = (
+    erFarEllerMedmor: boolean,
+    periode: Overføringsperiode
+): boolean =>
     (erFarEllerMedmor || periode.årsak !== OverføringÅrsakType.aleneomsorg) &&
     periode.årsak !== OverføringÅrsakType.ikkeRettAnnenForelder;
 

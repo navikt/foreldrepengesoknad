@@ -4,6 +4,7 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import SøknadRoutes from 'app/routes/routes';
+import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Forelder } from 'app/types/Forelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
@@ -55,13 +56,24 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
 
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const lagretUttaksplanInfo = useUttaksplanInfo<FarMedmorAleneomsorgFødselUttaksplanInfo>();
+    const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
+    const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
+        tilgjengeligeStønadskontoer80DTO,
+        tilgjengeligeStønadskontoer100DTO,
+        familiehendelsesdato,
+        erMorUfør
+    );
 
     const onValidSubmitHandler = (values: Partial<FarMedmorAleneomsorgFødselFormData>) => {
         const uttaksplanInfo: FarMedmorAleneomsorgFødselUttaksplanInfo = mapFarMedmorAleneomsorgFødselFormToState(
             values,
             familiehendelsesdato
         );
+        const kontoerForValgtDekningsgrad = tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)];
+        const antallUker = getAntallUker(kontoerForValgtDekningsgrad);
+
         return [
+            actionCreator.setAntallUkerIUttaksplan(antallUker),
             actionCreator.setUttaksplanInfo(uttaksplanInfo),
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
             actionCreator.lagUttaksplanforslag(
@@ -104,14 +116,6 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         : isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.fornavn
         : '';
-
-    const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
-    const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
-        tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO,
-        familiehendelsesdato,
-        erMorUfør
-    );
 
     return (
         <FarMedmorAleneomsorgFødselFormComponents.FormikWrapper

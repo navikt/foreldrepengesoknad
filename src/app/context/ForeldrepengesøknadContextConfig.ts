@@ -20,6 +20,7 @@ export interface ForeldrepengesøknadContextState {
     uttaksplanInfo?: UttaksplanInfo;
     kvittering: Kvittering;
     eksisterendeSak?: EksisterendeSak;
+    antallUkerIUttaksplan: number;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
@@ -61,5 +62,6 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
     søkerinfo: undefined!,
     saker: [],
     uttaksplanInfo: undefined,
+    antallUkerIUttaksplan: undefined!,
     kvittering: undefined!,
 };
