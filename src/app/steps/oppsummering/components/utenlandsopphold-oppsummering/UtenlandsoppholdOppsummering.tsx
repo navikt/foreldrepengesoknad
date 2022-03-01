@@ -52,9 +52,10 @@ const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({ informasjonOmU
     return (
         <>
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge')}>
-                {informasjonOmUtenlandsopphold.iNorgeSiste12Mnd
-                    ? intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge.norge')
-                    : null}
+                {informasjonOmUtenlandsopphold.iNorgeSiste12Mnd ? (
+                    <Normaltekst>{intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge.norge')}</Normaltekst>
+                ) : null}
+
                 <UtenlandsoppholdListe
                     utenlandsopphold={informasjonOmUtenlandsopphold.tidligereOpphold}
                     tidligereOpphold={true}
@@ -62,9 +63,10 @@ const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({ informasjonOmU
             </OppsummeringsPunkt>
 
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge')}>
-                {informasjonOmUtenlandsopphold.iNorgeNeste12Mnd
-                    ? intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge.norge')
-                    : null}
+                {informasjonOmUtenlandsopphold.iNorgeNeste12Mnd ? (
+                    <Normaltekst>{intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge.norge')}</Normaltekst>
+                ) : null}
+
                 <UtenlandsoppholdListe
                     utenlandsopphold={informasjonOmUtenlandsopphold.senereOpphold}
                     tidligereOpphold={false}

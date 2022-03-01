@@ -8,9 +8,7 @@
         },
         "barn": {
             "type": "født",
-            "fødselsdatoer": [
-                "2021-03-15"
-            ],
+            "fødselsdatoer": ["2021-03-15"],
             "antallBarn": "1",
             "datoForAleneomsorg": "",
             "dokumentasjonAvAleneomsorg": []
@@ -40,6 +38,7 @@
             {
                 "id": "1",
                 "type": "utsettelse",
+                "årsak": "INSTITUSJONSOPPHOLD_SØKER",
                 "tidsperiode": {
                     "fom": "2021-12-14T23:00:00.000Z",
                     "tom": "2022-01-24T23:00:00.000Z"

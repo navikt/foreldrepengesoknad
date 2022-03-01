@@ -130,9 +130,6 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     const createOppsummeringslisteelementPropsForBegrunnelseForSenEndring = (
         begrunnelse: TilleggsopplysningMedBeskrivelse
     ): OppsummeringslisteelementProps => {
-        const a = begrunnelse.ekstraInformasjon;
-        const cc = begrunnelse.tekst;
-        console.log(a, cc);
         return {
             venstrestiltTekst: begrunnelse.beskrivelse,
             venstrestiltTag: 'h3',

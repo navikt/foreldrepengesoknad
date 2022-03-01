@@ -95,10 +95,10 @@ const useStoredAppState = () => {
 };
 
 const storeAppState = (state: ForeldrepengesøknadContextState, fnr: string) => {
-    const { søknad, version, currentRoute, uttaksplanInfo } = state;
+    const { søknad, version, currentRoute, uttaksplanInfo, antallUkerIUttaksplan } = state;
     return getAxiosInstance(fnr).post(
         '/storage',
-        { søknad, version, currentRoute, uttaksplanInfo },
+        { søknad, version, currentRoute, uttaksplanInfo, antallUkerIUttaksplan },
         { withCredentials: true }
     );
 };

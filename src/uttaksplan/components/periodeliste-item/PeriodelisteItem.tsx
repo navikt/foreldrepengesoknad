@@ -7,10 +7,11 @@ import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import classNames from 'classnames';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 import React, { FunctionComponent } from 'react';
-import { Periode, Periodetype } from 'uttaksplan/types/Periode';
+import { isForeldrepengerFørFødselUttaksperiode, Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { VeilederMessage } from 'uttaksplan/validering/veilederInfo/types';
 import VeilederMeldinger from 'uttaksplan/validering/veilederInfo/VeilederMeldinger';
 import PeriodelisteItemHeader from '../periodeliste-item-header/PeriodelisteItemHeader';
+import PeriodeFørFødselForm from '../uttaks-forms/periode-før-fødsel-form/PeriodeFørFødselForm';
 import PeriodeUtsettelseForm from '../uttaks-forms/periode-utsettelse-form/PeriodeUtsettelseForm';
 import PeriodeUttakForm from '../uttaks-forms/periode-uttak-form/PeriodeUttakForm';
 
@@ -56,6 +57,16 @@ const renderPeriodeListeInnhold = (
         case Periodetype.Uttak:
         case Periodetype.Overføring:
         case Periodetype.Opphold:
+            if (isForeldrepengerFørFødselUttaksperiode(periode)) {
+                return (
+                    <PeriodeFørFødselForm
+                        periode={periode}
+                        familiehendelsesdato={familiehendelsesdato}
+                        handleUpdatePeriode={handleUpdatePeriode}
+                    />
+                );
+            }
+
             return (
                 <PeriodeUttakForm
                     periode={periode}

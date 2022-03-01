@@ -99,13 +99,13 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                     label: intlUtils(intl, 'utenlandsopphold.leggTilUtenlandsopphold.fraogmed'),
                                     fullscreenOverlay: true,
                                     placeholder: 'dd.mm.åååå',
-                                    minDate: familiehendelsesdato,
-                                    maxDate: ISOStringToDate(values.tom) || datoAvgrensninger.fra.maksDato,
+                                    minDate: datoAvgrensninger.fra.minDato,
+                                    maxDate: datoAvgrensninger.fra.maksDato,
                                     validate: (value) =>
                                         dateRangeValidation.validateFromDateInRange({
                                             intl,
                                             date: ISOStringToDate(value),
-                                            minDate: familiehendelsesdato,
+                                            minDate: datoAvgrensninger.fra.minDato,
                                             maxDate: datoAvgrensninger.fra.maksDato,
                                             errorKey: 'valideringsfeil.fraOgMedDato.førTilDato',
                                             toDate: ISOStringToDate(values.tom),
@@ -127,7 +127,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                         dateRangeValidation.validateToDateInRange({
                                             intl,
                                             date: ISOStringToDate(value),
-                                            minDate: familiehendelsesdato,
+                                            minDate: datoAvgrensninger.til.minDato,
                                             maxDate: datoAvgrensninger.til.maksDato,
                                             errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                                             fromDate: ISOStringToDate(values.fom),

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { guid } from 'nav-frontend-js-utils';
-import { Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import * as React from 'react';
 import List from './list/List';
 
@@ -44,7 +44,9 @@ const Oppsummeringslisteelement: React.FunctionComponent<Oppsummeringslisteeleme
     >
         <div className="oppsummeringsliste__element__heading">
             <Element tag={venstrestiltTag}>{venstrestiltTekst}</Element>
-            <div className="høyrestiltTekst">{høyrestiltTekst}</div>
+            <div className="høyrestiltTekst">
+                <Normaltekst>{høyrestiltTekst}</Normaltekst>
+            </div>
         </div>
         {content && <div className="oppsummeringsliste__element__content">{content}</div>}
     </li>

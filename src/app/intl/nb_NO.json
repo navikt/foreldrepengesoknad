@@ -705,6 +705,7 @@
     "uttaksplan.utsettelsesårsak.HV_OVELSE": "Øvelse eller tjeneste i Heimevernet",
     "uttaksplan.utsettelsesårsak.NAV_TILTAK": "NAV tiltak som utgjør 100% arbeid",
     "uttaksplan.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
+    "uttaksplan.periodeFørFødselForm.skalIkkeHaUttakFørTermin": "Jeg skal ikke ha foreldrepenger før fødsel",
     "uttaksplan.validering.kanIkkeGåVidere": "Planen din inneholder feil som du må rette opp i før du kan gå videre",
     "uttaksplan.validering.samtidigUttaksprosent.required": "Du må oppgi hvor mange prosent med foreldrepenger du skal ta ut",
     "uttaksplan.validering.samtidigUttaksprosent.måVæreEtTall": "Prosent med foreldrepenger må være et tall",

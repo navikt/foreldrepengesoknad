@@ -2,9 +2,10 @@ import React, { FunctionComponent } from 'react';
 import { useFormikContext } from 'formik';
 import { PeriodeUttakFormData } from '../periode-uttak-form/periodeUttakFormConfig';
 import { PeriodeUtsettelseFormData } from '../periode-utsettelse-form/periodeUtsettelseFormConfig';
+import { PeriodeFørFødselFormData } from '../periode-før-fødsel-form/periodeFørFødselFormConfig';
 
 interface Props {
-    cleanup: () => PeriodeUttakFormData | PeriodeUtsettelseFormData;
+    cleanup: () => PeriodeUttakFormData | PeriodeUtsettelseFormData | PeriodeFørFødselFormData;
 }
 
 export const jsonSort = (json: any): string => {
@@ -30,7 +31,7 @@ export const jsonSort = (json: any): string => {
 };
 
 export const SubmitListener: FunctionComponent<Props> = ({ cleanup }) => {
-    const formik = useFormikContext<PeriodeUttakFormData | PeriodeUtsettelseFormData>();
+    const formik = useFormikContext<PeriodeUttakFormData | PeriodeUtsettelseFormData | PeriodeFørFødselFormData>();
     const { isSubmitting, isValidating, values, submitForm, setValues } = formik;
     const cleanedValues = cleanup();
     const [lastValues, updateState] = React.useState(cleanedValues);

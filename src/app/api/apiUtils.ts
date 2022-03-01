@@ -1,6 +1,11 @@
 import { Søknad } from 'app/context/types/Søknad';
 import AnnenForelder, { AnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import { Periode, UttaksperiodeBase, Periodetype } from 'uttaksplan/types/Periode';
+import {
+    Periode,
+    UttaksperiodeBase,
+    Periodetype,
+    isForeldrepengerFørFødselUttaksperiode,
+} from 'uttaksplan/types/Periode';
 import Barn from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
@@ -62,6 +67,10 @@ const isNotPeriodeUtenUttak = (periode: Periode): boolean => {
 };
 
 const skalPeriodeSendesInn = (periode: Periode) => {
+    if (isForeldrepengerFørFødselUttaksperiode(periode)) {
+        return !periode.skalIkkeHaUttakFørTermin;
+    }
+
     return isNotPeriodetypeHull(periode) && isNotPeriodetypeInfo(periode) && isNotPeriodeUtenUttak(periode);
 };
 
