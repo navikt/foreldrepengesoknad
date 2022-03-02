@@ -15,6 +15,7 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import actionCreator from 'app/context/action/actionCreator';
 import { mapEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -56,6 +57,7 @@ const UttaksplanInfo = () => {
         getStønadskontoParams(Dekningsgrad.ÅTTI_PROSENT, barn, annenForelder, søkersituasjon)
     );
     const onAvbrytSøknad = useAvbrytSøknad();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     if (
         !stønadskontoer100 ||
@@ -77,6 +79,7 @@ const UttaksplanInfo = () => {
             pageTitle={intlUtils(intl, 'søknad.søkersituasjon')}
             stepTitle={intlUtils(intl, 'søknad.søkersituasjon')}
             onCancel={onAvbrytSøknad}
+            onContinueLater={onFortsettSøknadSenere}
             steps={stepConfig}
             kompakt={true}
         >
