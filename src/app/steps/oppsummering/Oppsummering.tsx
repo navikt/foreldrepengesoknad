@@ -38,6 +38,7 @@ const Oppsummering = () => {
     const history = useHistory();
     const { kvittering, eksisterendeSak } = state;
     const bem = bemUtils('oppsummering');
+    const [submitError, setSubmitError] = useState(undefined);
     const { barn, annenForelder, søker, informasjonOmUtenlandsopphold, søkersituasjon, dekningsgrad, uttaksplan } =
         useSøknad();
     const søkerinfo = useSøkerinfo();
@@ -53,9 +54,11 @@ const Oppsummering = () => {
         if (isSubmitting) {
             const cleanedSøknad = cleanUpSøknadsdataForInnsending(søknad);
 
-            Api.sendSøknad(cleanedSøknad, søkerinfo.person.fnr).then((response) => {
-                dispatch(actionCreator.setKvittering(response.data));
-            });
+            Api.sendSøknad(cleanedSøknad, søkerinfo.person.fnr)
+                .then((response) => {
+                    dispatch(actionCreator.setKvittering(response.data));
+                })
+                .catch((error) => setSubmitError(error));
         }
     }, [søknad, dispatch, søkerinfo.person.fnr, isSubmitting]);
 
@@ -65,6 +68,12 @@ const Oppsummering = () => {
             history.push(SøknadRoutes.SØKNAD_SENDT);
         }
     }, [kvittering, history]);
+
+    useEffect(() => {
+        if (submitError !== undefined) {
+            throw new Error(submitError);
+        }
+    }, [submitError]);
 
     const handleSubmit = (values: Partial<OppsummeringFormData>) => {
         dispatch(actionCreator.setGodkjentOppsummering(values.harGodkjentOppsummering!));
