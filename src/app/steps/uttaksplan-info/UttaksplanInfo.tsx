@@ -37,7 +37,9 @@ const UttaksplanInfo = () => {
     );
 
     const erAnnenPartsSak =
-        eksisterendeSakAnnenPartData !== undefined ? eksisterendeSakAnnenPartData.grunnlag.gjelderAnnenPart : false;
+        eksisterendeSakAnnenPartData !== undefined && eksisterendeSakAnnenPartData !== ''
+            ? eksisterendeSakAnnenPartData.grunnlag.gjelderAnnenPart
+            : false;
     const eksisterendeSak = useMemo(
         () => mapEksisterendeSakFromDTO(eksisterendeSakAnnenPartData, erFarEllerMedmor, erAnnenPartsSak),
         [erAnnenPartsSak, eksisterendeSakAnnenPartData, erFarEllerMedmor]
