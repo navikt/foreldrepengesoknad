@@ -28,8 +28,8 @@ jobs:
 
       - name: Setter IMAGE som brukes i deploy filen
         run: |
-          echo "nysoknad=$(echo ${{ steps.issue_comment.outputs.title }} | awk '{print $NF}')" >> $GITHUB_ENV
-          if [ $(echo ${{ steps.issue_comment.outputs.title }} | awk '{print $NF}') == 'new-soknad' ]; then
+          if [ $(echo ${{ steps.issue_comment.outputs.title }} | awk '{print $4}') == 'new-soknad' ]; then
+           echo "Branch!
            echo "IMAGE=$IMAGE_BASE/test:$(echo ${{ steps.issue_comment.outputs.title }} | awk '{print $NF}')" >> $GITHUB_ENV
           else
            echo "IMAGE=$IMAGE_BASE:$(echo ${{ steps.issue_comment.outputs.title }} | awk '{print $NF}')" >> $GITHUB_ENV
