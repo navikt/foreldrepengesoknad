@@ -706,6 +706,7 @@
     "uttaksplan.utsettelsesårsak.NAV_TILTAK": "NAV tiltak som utgjør 100% arbeid",
     "uttaksplan.utsettelsesårsak.ukjent": "Utsetjing - årsak ikkje vald",
     "uttaksplan.leggInnNyPeriode": "Legg inn ny periode",
+    "uttaksplan.leggInnNyUtsettelse": "Legg inn ny utsettelse",
     "uttaksplan.periodeFørFødselForm.skalIkkeHaUttakFørTermin": "Jeg skal ikke ha foreldrepenger før fødsel",
     "uttaksplan.validering.kanIkkeGåVidere": "Planen din inneheld feil som du må rette opp i før du kan gå vidare",
     "uttaksplan.validering.samtidigUttaksprosent.required": "Du må oppgi hvor mange prosent med foreldrepenger du skal ta ut",

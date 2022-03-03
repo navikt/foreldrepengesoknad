@@ -11,6 +11,8 @@ import { isForeldrepengerFørFødselUttaksperiode, Periode, Periodetype } from '
 import { VeilederMessage } from 'uttaksplan/validering/veilederInfo/types';
 import VeilederMeldinger from 'uttaksplan/validering/veilederInfo/VeilederMeldinger';
 import PeriodelisteItemHeader from '../periodeliste-item-header/PeriodelisteItemHeader';
+import PeriodeHull from '../perioder/PeriodeHull';
+import PeriodeUtenUttak from '../perioder/PeriodeUtenUttak';
 import PeriodeFørFødselForm from '../uttaks-forms/periode-før-fødsel-form/PeriodeFørFødselForm';
 import PeriodeUtsettelseForm from '../uttaks-forms/periode-utsettelse-form/PeriodeUtsettelseForm';
 import PeriodeUttakForm from '../uttaks-forms/periode-uttak-form/PeriodeUttakForm';
@@ -96,6 +98,10 @@ const renderPeriodeListeInnhold = (
                     toggleIsOpen={toggleIsOpen}
                 />
             );
+        case Periodetype.Hull:
+            return <PeriodeHull periode={periode} handleUpdatePeriode={handleUpdatePeriode} />;
+        case Periodetype.PeriodeUtenUttak:
+            return <PeriodeUtenUttak periode={periode} handleUpdatePeriode={handleUpdatePeriode} />;
         default:
             return <div>Whatever</div>;
     }

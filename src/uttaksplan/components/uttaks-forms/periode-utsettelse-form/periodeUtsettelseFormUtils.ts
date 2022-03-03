@@ -1,5 +1,5 @@
 import { Forelder } from 'app/types/Forelder';
-import { Periode, Periodetype } from 'uttaksplan/types/Periode';
+import { isUtsettelsesperiode, Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
 
@@ -10,7 +10,17 @@ export const initialValues: PeriodeUtsettelseFormData = {
     [PeriodeUtsettelseFormField.vedlegg]: [],
 };
 
-export const getPeriodeUtsettelseFormInitialValues = (): PeriodeUtsettelseFormData => {
+export const getPeriodeUtsettelseFormInitialValues = (periode: Periode): PeriodeUtsettelseFormData => {
+    if (isUtsettelsesperiode(periode)) {
+        return {
+            ...initialValues,
+            fom: periode.tidsperiode.fom,
+            tom: periode.tidsperiode.tom,
+            årsak: periode.årsak,
+            vedlegg: periode.vedlegg || [],
+        };
+    }
+
     return initialValues;
 };
 
@@ -29,6 +39,7 @@ export const mapPeriodeUtsettelseFormToPeriode = (
             fom: values.fom!,
             tom: values.tom!,
         },
+        vedlegg: values.vedlegg,
     };
 };
 

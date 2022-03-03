@@ -22,6 +22,7 @@ import './periodelisteItemHeader.less';
 import UttaksplanIkon from '../uttaksplan-ikon/UttaksplanIkon';
 import { getIkonForVeilederMelding } from 'uttaksplan/validering/veilederInfo/components/VeilederMelding';
 import { VeilederMessage } from 'uttaksplan/validering/veilederInfo/types';
+import UttaksplanAdvarselIkon from 'uttaksplan/assets/UttaksplanAdvarselIkon';
 
 interface Props {
     egenPeriode: boolean;
@@ -74,6 +75,8 @@ export const getPeriodeIkon = (
                     />
                 );
             }
+        case Periodetype.Hull:
+            return <UttaksplanAdvarselIkon />;
     }
     return undefined;
 };

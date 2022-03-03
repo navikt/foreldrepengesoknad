@@ -60,7 +60,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
 
     return (
         <PeriodeUtsettelseFormComponents.FormikWrapper
-            initialValues={getPeriodeUtsettelseFormInitialValues()}
+            initialValues={getPeriodeUtsettelseFormInitialValues(periode)}
             onSubmit={(values) => handleUpdatePeriode(mapPeriodeUtsettelseFormToPeriode(values, id, erFarEllerMedmor))}
             renderForm={({ setFieldValue, values }) => {
                 const visibility = periodeUtsettelseFormQuestionsConfig.getVisbility(values);
