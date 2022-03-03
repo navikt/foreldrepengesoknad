@@ -25,7 +25,7 @@ export const useRequest = <T>(url: string, options: Options = DEFAULT_OPTIONS) =
             axiosInstance
                 .get(url, options.config)
                 .then((res) => {
-                    setData(res.data);
+                    res.data === '' ? setData(undefined) : setData(res.data);
                     setRequestFinished(true);
                 })
                 .catch((err) => {
