@@ -735,7 +735,7 @@
     "uttaksplan.validering.feil.erUtsettelseEtterFamiliehendelsesdato": "Du kan ikke utsette foreldrepengene før barnet er født",
     "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering": "Stillingsprosenten du skal jobbe kan bare inneholde tall, og være mellom 1 og 99",
     "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden har ikke gyldig tidsperiode. Du må korrigere datoene",
-    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden mangler informasjon om hvilken del av foreldrepengene skal du ta ut",
+    "uttaksplan.validering.feil.uttaksperiodeHarStønadskonto": "Perioden mangler informasjon om hvilken del av foreldrepengene du skal ta ut",
     "uttaksplan.validering.feil.periodeOverlapperAndrePerioder": "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene slik at de ikke overlapper.",
     "uttaksplan.validering.feil.harUtsettelsePgaArbeidMedDeltidUtenAvtale": "Du må ha en skriftlig avtale med {antall, plural, one{arbeidsgiveren} other {arbeidsgiverene}} {antall, plural, one{din} other {dine}} om at du skal jobbe 100 prosent i perioden du oppgir.",
     "uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.medTom": "Arbeidsgiveren din {navn} har registrert at du er ansatt fra {fom} til {tom}. For å kunne utsette eller kombinere foreldrepenger med arbeid må du være ansatt. Du må endre datoen for å gå videre.",
