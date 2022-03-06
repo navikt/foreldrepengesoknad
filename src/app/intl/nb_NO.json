@@ -913,6 +913,8 @@
     "valideringsfeil.frilansOppstart.måVæreIdagEllerTidligere": "Oppstartsdato må være i dag eller tidligere",
     "valideringsfeil.frilans.måBesvares": "Du har planlagt at du skal kombinere foreldrepenger med at du skal jobbe som frilanser. Du må derfor oppgi informasjon om frilansforholdet ditt.",
     "valideringsfeil.fritekst.kanIkkeVæreLengreEnn": "Feltet kan maks være {maxLength} tegn.",
+    "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige tegn i feltet \"{feltNavn}\".",
+    "valideringsfeil.begrunnelseForSenEnding.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige tegn i feltet  \"Hva er grunnen til at du søker tilbake i tid eller gi en forklaring av sykdomssituasjonen\".",
     "valideringsfeil.fødselsnummer.required": "Fødselsnummer må fylles ut",
     "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikke oppgi ditt eget fødselsnummer",
     "valideringsfeil.fødselsnummer.ugyldigFødselsnummer": "Du må skrive et gyldig fødselsnummer",

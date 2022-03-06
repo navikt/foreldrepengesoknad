@@ -27,11 +27,11 @@ type Props = OwnProps;
 interface State {
     begrunnelse: string;
 }
-
+const getTilleggsopplysningerLabel = (intl: IntlShape) => getMessage(intl, 'uttaksplan.tilleggsopplysninger.label');
 const getLabel = (intl: IntlShape) => {
     return (
         <>
-            <Element>{getMessage(intl, 'uttaksplan.tilleggsopplysninger.label')}</Element>
+            <Element>{getTilleggsopplysningerLabel(intl)}</Element>
             <UtvidetInformasjon apneLabel={getMessage(intl, 'uttaksplan.tilleggsopplysninger.apneLabel')}>
                 <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
                     <Block margin="s">
@@ -100,6 +100,7 @@ class OppgiTilleggsopplysninger extends React.Component<Props, State> {
                         maxLength={tilleggsopplysningerMaxLength}
                         validators={getFritekstfeltRules(
                             { maxLength: tilleggsopplysningerMaxLength },
+                            getTilleggsopplysningerLabel(intl),
                             intl,
                             this.state.begrunnelse
                         )}

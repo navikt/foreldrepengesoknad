@@ -77,7 +77,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
         const { intl, onRequestClose, ...modalProps } = this.props;
         const { oppdrag } = this.state;
         const tidsperiode = oppdrag.tidsperiode !== undefined ? oppdrag.tidsperiode : {};
-
+        const oppdragsgiverLabel = getMessage(intl, 'frilansOppdrag.modal.oppdragsgiver');
         return (
             <ModalForm
                 title={getMessage(intl, 'frilansOppdrag.modal.tittel')}
@@ -91,7 +91,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
             >
                 <Block margin="xs">
                     <Input
-                        label={getMessage(intl, 'frilansOppdrag.modal.oppdragsgiver')}
+                        label={oppdragsgiverLabel}
                         value={oppdrag.navnPåArbeidsgiver || ''}
                         onChange={(value: string) =>
                             this.updateOppdrag({
@@ -104,7 +104,12 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                                 oppdrag.navnPåArbeidsgiver,
                                 getMessage(intl, 'frilansOppdrag.modal.oppdragsgiver.påkrevd')
                             ),
-                            ...getFritekstfeltRules({ maxLength: 100 }, intl, oppdrag.navnPåArbeidsgiver),
+                            ...getFritekstfeltRules(
+                                { maxLength: 100 },
+                                oppdragsgiverLabel,
+                                intl,
+                                oppdrag.navnPåArbeidsgiver
+                            ),
                         ]}
                     />
                 </Block>
