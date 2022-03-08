@@ -163,7 +163,8 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
         isAnswered: ({ values }) => values.aktivitetskravMorDokumentasjon.length >= 0,
         isIncluded: ({ values, regelProps }) =>
             getUttakSkjemaregler(values, regelProps).aktivitetskravMorSkalBesvares(),
-        visibilityFilter: ({ values }) => values.samtidigUttak !== YesOrNo.UNANSWERED,
+        visibilityFilter: ({ values, regelProps }) =>
+            skalViseAktivitetskrav(getUttakSkjemaregler(values, regelProps), values),
     },
 };
 
