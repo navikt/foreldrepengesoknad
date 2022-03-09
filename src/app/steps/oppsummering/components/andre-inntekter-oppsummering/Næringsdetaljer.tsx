@@ -60,7 +60,7 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
                     title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.blittYrkesaktivSiste3År')}
                 >
                     <Normaltekst>
-                        {hattVarigEndringAvNæringsinntektSiste4Kalenderår
+                        {harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
                             ? intlUtils(intl, 'ja')
                             : intlUtils(intl, 'nei')}
                     </Normaltekst>
