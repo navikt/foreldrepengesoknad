@@ -1,5 +1,6 @@
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Attachment } from 'app/types/Attachment';
+import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 
 export enum PeriodeUtsettelseFormField {
@@ -7,12 +8,14 @@ export enum PeriodeUtsettelseFormField {
     tom = 'tom',
     årsak = 'årsak',
     vedlegg = 'vedlegg',
+    morsAktivitetIPerioden = 'morsAktivitetIPerioden',
 }
 
 export interface PeriodeUtsettelseFormData {
     [PeriodeUtsettelseFormField.fom]: Date | undefined;
     [PeriodeUtsettelseFormField.tom]: Date | undefined;
     [PeriodeUtsettelseFormField.årsak]: UtsettelseÅrsakType | '';
+    [PeriodeUtsettelseFormField.morsAktivitetIPerioden]: MorsAktivitet | '';
     [PeriodeUtsettelseFormField.vedlegg]: Attachment[];
 }
 

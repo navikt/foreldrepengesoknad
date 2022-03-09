@@ -7,6 +7,7 @@ export const initialValues: PeriodeUtsettelseFormData = {
     [PeriodeUtsettelseFormField.fom]: undefined,
     [PeriodeUtsettelseFormField.tom]: undefined,
     [PeriodeUtsettelseFormField.årsak]: '',
+    [PeriodeUtsettelseFormField.morsAktivitetIPerioden]: '',
     [PeriodeUtsettelseFormField.vedlegg]: [],
 };
 
@@ -17,6 +18,7 @@ export const getPeriodeUtsettelseFormInitialValues = (periode: Periode): Periode
             fom: periode.tidsperiode.fom,
             tom: periode.tidsperiode.tom,
             årsak: periode.årsak,
+            morsAktivitetIPerioden: periode.morsAktivitetIPerioden ? periode.morsAktivitetIPerioden : '',
             vedlegg: periode.vedlegg || [],
         };
     }
@@ -34,6 +36,7 @@ export const mapPeriodeUtsettelseFormToPeriode = (
         type: Periodetype.Utsettelse,
         årsak: values.årsak as UtsettelseÅrsakType,
         erArbeidstaker: false,
+        morsAktivitetIPerioden: values.morsAktivitetIPerioden ? values.morsAktivitetIPerioden : undefined,
         forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
         tidsperiode: {
             fom: values.fom!,

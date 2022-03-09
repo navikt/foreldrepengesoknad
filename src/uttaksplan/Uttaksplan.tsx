@@ -105,7 +105,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             erEndringsøknadUtenEkisterendeSak: false,
             relevantStartDatoForUttak: familiehendelsesdatoDate,
             harMidlertidigOmsorg: false,
-            harAktivitetskravIPeriodeUtenUttak: false,
+            harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
             erAdopsjon: false,
         });
 
@@ -130,7 +130,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             erEndringsøknadUtenEkisterendeSak: false,
             relevantStartDatoForUttak: familiehendelsesdatoDate,
             harMidlertidigOmsorg: false,
-            harAktivitetskravIPeriodeUtenUttak: false,
+            harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
             erAdopsjon: false,
         });
 
@@ -155,7 +155,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             erEndringsøknadUtenEkisterendeSak: false,
             relevantStartDatoForUttak: familiehendelsesdatoDate,
             harMidlertidigOmsorg: false,
-            harAktivitetskravIPeriodeUtenUttak: false,
+            harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
             erAdopsjon: false,
         });
 

@@ -98,6 +98,18 @@ const getUtsettelseÅrsakOptions = (
             return false;
         }
 
+        if (!skalViseGamleUtsettelseÅrsaker && erFarEllerMedmor) {
+            if (tidsperiodenErInnenforFørsteSeksUker) {
+                return (
+                    option.value === UtsettelseÅrsakType.Sykdom ||
+                    option.value === UtsettelseÅrsakType.InstitusjonBarnet ||
+                    option.value === UtsettelseÅrsakType.InstitusjonSøker
+                );
+            }
+
+            return option.value === UtsettelseÅrsakType.Fri;
+        }
+
         return option.value === UtsettelseÅrsakType.Sykdom || option.value === UtsettelseÅrsakType.Fri;
     });
 
