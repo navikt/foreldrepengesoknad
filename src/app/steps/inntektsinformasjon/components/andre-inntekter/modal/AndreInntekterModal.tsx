@@ -107,6 +107,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                 <AndreInntekterModalFormComponents.CountrySelect
                                     name={AndreInntekterFormField.land}
                                     label={'Hvilket land har du jobbet i?'}
+                                    useAlpha3Code={false}
                                 />
                             </Block>
                             <Block
