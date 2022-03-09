@@ -80,6 +80,10 @@ const Oppsummering = () => {
         setIsSubmitting(true);
     };
 
+    const submitKnappTekst = isSubmitting
+        ? intlUtils(intl, 'oppsummering.senderInnSøknad')
+        : intlUtils(intl, 'oppsummering.sendInnSøknad');
+
     return (
         <OppsummeringFormComponents.FormikWrapper
             initialValues={getInitialOppsummeringValues()}
@@ -159,7 +163,7 @@ const Oppsummering = () => {
                             <Block padBottom="l">
                                 <div style={{ textAlign: 'center' }}>
                                     <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
-                                        Send inn søknad
+                                        {submitKnappTekst}
                                     </Hovedknapp>
                                 </div>
                             </Block>

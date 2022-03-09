@@ -430,6 +430,8 @@
     "oppsummering.andreInntekter.arbeidsgiverNavn": "Namnet til arbeidsgjevaren",
     "oppsummering.andreInntekter.vedlagtdokumentasjon": "Vedlagd dokumentasjon",
     "oppsummering.andreInntekter.dokumentasjon.mangler": "Dokumentasjon manglar",
+    "oppsummering.sendInnSøknad": "Send inn søknad",
+    "oppsummering.senderInnSøknad": "Sender inn søknad",
     "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
     "inntektstype.militær_eller_siviltjeneste": "Førstegongsteneste i forsvaret",
     "inntektstype.ventelønn_vartpenger": "Vartpengar og ventelønn",
