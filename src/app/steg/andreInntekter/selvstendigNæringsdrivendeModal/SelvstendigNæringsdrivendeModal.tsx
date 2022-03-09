@@ -119,7 +119,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             regnskapsfører,
             revisor,
         } = næring;
-
+        const virksomhetNavnLabel = getMessage(intl, 'selvstendigNæringsdrivende.modal.navn');
         return (
             <ModalForm
                 title={intl.formatMessage({
@@ -140,7 +140,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 <Block visible={visibility.navnPåNæringen(næring)}>
                     <Input
                         name="selvstendigNæringsdrivende-navn"
-                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.navn')}
+                        label={virksomhetNavnLabel}
                         required={true}
                         onChange={(v: string) =>
                             this.updateNæring({
@@ -149,7 +149,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         }
                         value={navnPåNæringen || ''}
                         throttled={false}
-                        validators={getFritekstfeltRules({ maxLength: 100 }, intl, navnPåNæringen)}
+                        validators={getFritekstfeltRules({ maxLength: 100 }, virksomhetNavnLabel, intl, navnPåNæringen)}
                     />
                 </Block>
 

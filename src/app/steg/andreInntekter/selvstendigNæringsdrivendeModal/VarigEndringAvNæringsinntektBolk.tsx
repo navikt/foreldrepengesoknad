@@ -42,7 +42,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
         const { næring, onChange, intl } = this.props;
         const { hattVarigEndringAvNæringsinntektSiste4Kalenderår } = næring;
         const info = næring.endringAvNæringsinntektInformasjon;
-
+        const inntektEtterEndringLabel = getMessage(intl, 'varigEndringAvNæringsinntekt.inntektEtterEndring.label');
         return (
             <React.Fragment>
                 <Block>
@@ -88,7 +88,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                     <Block>
                         <Input
                             name="inntektEtterEndring"
-                            label={getMessage(intl, 'varigEndringAvNæringsinntekt.inntektEtterEndring.label')}
+                            label={inntektEtterEndringLabel}
                             value={
                                 info && info.næringsinntektEtterEndring !== undefined
                                     ? info.næringsinntektEtterEndring
@@ -117,7 +117,12 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                                     forklaring: e.target.value,
                                 });
                             }}
-                            validators={getFritekstfeltRules({ maxLength: 1000 }, intl, info && info.forklaring)}
+                            validators={getFritekstfeltRules(
+                                { maxLength: 1000 },
+                                inntektEtterEndringLabel,
+                                intl,
+                                info && info.forklaring
+                            )}
                             maxLength={1000}
                         />
                     </Block>

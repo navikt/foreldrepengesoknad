@@ -7,6 +7,7 @@ import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOp
 import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOppholdTest';
 import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUttaksplanGraderingStørreEnnSamtidigUttakTest';
 import { erTilleggsopplysningerGyldigTest } from './tester/erTilleggsopplysningerGyldigTest';
+import { harTilleggsopplysningerGyldigeCharsTest } from './tester/harTilleggsopplysningerGyldigeCharsTest';
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
 import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
@@ -39,6 +40,7 @@ export enum UttaksplanRegelKey {
     'uttaksplanSlutterMedOpphold' = 'uttaksplanSlutterMedOpphold',
     'uttaksplanGraderingStørreEnnSamtidigUttak' = 'uttaksplanGraderingStørreEnnSamtidigUttak',
     'begrunnelseVedForSenEndringErUgyldig' = 'begrunnelseVedForSenEndringErUgyldig',
+    'begrunnelseVedForSenEndringHarUgyldigeChars' = 'begrunnelseVedForSenEndringHarUgyldigeChars',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
     'perioderManglerVedlegg' = 'manglendeVedlegg',
@@ -112,6 +114,11 @@ const uttaksplanValideringRegler: Regel[] = [
         key: UttaksplanRegelKey.begrunnelseVedForSenEndringErUgyldig,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erTilleggsopplysningerGyldigTest,
+    },
+    {
+        key: UttaksplanRegelKey.begrunnelseVedForSenEndringHarUgyldigeChars,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: harTilleggsopplysningerGyldigeCharsTest,
     },
     {
         key: UttaksplanRegelKey.uttaksplanHarForMangeFlerbarnsdager,
