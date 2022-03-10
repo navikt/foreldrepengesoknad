@@ -96,6 +96,7 @@ const renderPeriodeListeInnhold = (
                     erFarEllerMedmor={erFarEllerMedmor}
                     handleDeletePeriode={handleDeletePeriode}
                     toggleIsOpen={toggleIsOpen}
+                    navnPåForeldre={navnPåForeldre}
                 />
             );
         case Periodetype.Hull:
@@ -103,7 +104,7 @@ const renderPeriodeListeInnhold = (
         case Periodetype.PeriodeUtenUttak:
             return <PeriodeUtenUttak periode={periode} handleUpdatePeriode={handleUpdatePeriode} />;
         default:
-            return <div>Whatever</div>;
+            return <div>Ingen visning</div>;
     }
 };
 

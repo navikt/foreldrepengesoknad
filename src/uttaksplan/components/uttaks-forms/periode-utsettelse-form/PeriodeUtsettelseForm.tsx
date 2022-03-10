@@ -21,6 +21,8 @@ import './periodeUtsettelseForm.less';
 import { periodeUtsettelseFormQuestionsConfig } from './periodeUtsettelseFormQuestionsConfig';
 import UtsettelseÅrsakSpørsmål from '../spørsmål/utsettelse-årsak/UtsettelseÅrsakSpørsmål';
 import { førsteOktober2021ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
+import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
+import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 
 interface Props {
     periode: Periode;
@@ -32,6 +34,7 @@ interface Props {
     toggleIsOpen?: (id: string) => void;
     handleDeletePeriode?: (periodeId: string) => void;
     isNyPeriode?: boolean;
+    navnPåForeldre: NavnPåForeldre;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -44,6 +47,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     toggleIsOpen,
     isNyPeriode = false,
     setNyPeriodeFormIsVisible,
+    navnPåForeldre,
 }) => {
     const { tidsperiode, id } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
@@ -63,7 +67,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
             initialValues={getPeriodeUtsettelseFormInitialValues(periode)}
             onSubmit={(values) => handleUpdatePeriode(mapPeriodeUtsettelseFormToPeriode(values, id, erFarEllerMedmor))}
             renderForm={({ setFieldValue, values }) => {
-                const visibility = periodeUtsettelseFormQuestionsConfig.getVisbility(values);
+                const visibility = periodeUtsettelseFormQuestionsConfig.getVisbility({ values, erFarEllerMedmor });
 
                 return (
                     <>
@@ -115,6 +119,18 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     familiehendelsesdato={familiehendelsesdato}
                                     utsettelseårsak={values.årsak}
                                     vedlegg={values.vedlegg}
+                                />
+                            </Block>
+                            <Block
+                                visible={visibility.isVisible(PeriodeUtsettelseFormField.morsAktivitetIPerioden)}
+                                padBottom="l"
+                            >
+                                <AktivitetskravSpørsmål
+                                    aktivitetskravMorValue={values.morsAktivitetIPerioden}
+                                    aktivitetskravVedlegg={values.vedlegg}
+                                    fieldName={PeriodeUtsettelseFormField.morsAktivitetIPerioden}
+                                    navnPåForeldre={navnPåForeldre}
+                                    FormComponents={PeriodeUtsettelseFormComponents}
                                 />
                             </Block>
                             <Block

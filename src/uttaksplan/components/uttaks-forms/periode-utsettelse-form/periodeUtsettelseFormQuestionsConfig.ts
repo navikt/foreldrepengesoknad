@@ -3,27 +3,38 @@ import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/li
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
 
-const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormData, PeriodeUtsettelseFormField> = {
+interface PeriodeUtsettelseFormConfigPayload {
+    values: PeriodeUtsettelseFormData;
+    erFarEllerMedmor: boolean;
+}
+
+const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormConfigPayload, PeriodeUtsettelseFormField> = {
     [PeriodeUtsettelseFormField.fom]: {
-        isAnswered: ({ fom }) => hasValue(fom),
+        isAnswered: ({ values }) => hasValue(values.fom),
         isIncluded: () => true,
     },
     [PeriodeUtsettelseFormField.tom]: {
-        isAnswered: ({ tom }) => hasValue(tom),
+        isAnswered: ({ values }) => hasValue(values.tom),
         isIncluded: () => true,
     },
     [PeriodeUtsettelseFormField.årsak]: {
-        isAnswered: ({ årsak }) => hasValue(årsak),
+        isAnswered: ({ values }) => hasValue(values.årsak),
         isIncluded: () => true,
-        visibilityFilter: ({ fom, tom }) => isValidTidsperiode({ fom, tom }),
+        visibilityFilter: ({ values }) => isValidTidsperiode({ fom: values.fom, tom: values.tom }),
     },
     [PeriodeUtsettelseFormField.vedlegg]: {
         isAnswered: () => true,
-        isIncluded: ({ årsak }) => hasValue(årsak),
-        visibilityFilter: ({ årsak }) => hasValue(årsak),
+        isIncluded: ({ values }) => hasValue(values.årsak),
+        visibilityFilter: ({ values }) => hasValue(values.årsak),
+    },
+    [PeriodeUtsettelseFormField.morsAktivitetIPerioden]: {
+        isAnswered: ({ values }) => hasValue(values.morsAktivitetIPerioden),
+        isIncluded: ({ erFarEllerMedmor }) => erFarEllerMedmor,
+        visibilityFilter: ({ values }) => hasValue(values.årsak),
     },
 };
 
-export const periodeUtsettelseFormQuestionsConfig = Questions<PeriodeUtsettelseFormData, PeriodeUtsettelseFormField>(
-    PeriodeUtsettelseFormConfig
-);
+export const periodeUtsettelseFormQuestionsConfig = Questions<
+    PeriodeUtsettelseFormConfigPayload,
+    PeriodeUtsettelseFormField
+>(PeriodeUtsettelseFormConfig);

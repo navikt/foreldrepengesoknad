@@ -12,10 +12,12 @@ import React, { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { getNavnGenitivEierform } from 'uttaksplan/utils/stønadskontoerUtils';
-import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+import { PeriodeUtsettelseFormField } from '../../periode-utsettelse-form/periodeUtsettelseFormConfig';
+import { PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 
 interface Props {
-    fieldName: PeriodeUttakFormField;
+    fieldName: PeriodeUttakFormField | PeriodeUtsettelseFormField;
+    FormComponents: any;
     navnPåForeldre: NavnPåForeldre;
     aktivitetskravMorValue: MorsAktivitet | '';
     aktivitetskravVedlegg: Attachment[];
@@ -156,19 +158,20 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
     navnPåForeldre,
     aktivitetskravMorValue,
     aktivitetskravVedlegg,
+    FormComponents,
 }) => {
     const intl = useIntl();
 
     return (
         <>
             <Block padBottom="l">
-                <PeriodeUttakFormComponents.Select
+                <FormComponents.Select
                     name={fieldName}
                     label={intlUtils(intl, 'uttaksplan.aktivitetskrav', { navnMor: navnPåForeldre.mor })}
                 >
                     <option value="" />
                     {renderOptions(intl)}
-                </PeriodeUttakFormComponents.Select>
+                </FormComponents.Select>
             </Block>
             <Block padBottom="l" visible={hasValue(aktivitetskravMorValue)}>
                 <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>

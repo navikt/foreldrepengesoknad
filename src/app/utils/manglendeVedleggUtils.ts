@@ -101,6 +101,22 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
+                    if (
+                        periode.årsak === UtsettelseÅrsakType.Fri &&
+                        søknadsinfo.søkerErFarEllerMedmor &&
+                        !søknadsinfo.morErUfør &&
+                        !søknadsinfo.morHarRett
+                    ) {
+                        missingAttachments.push(
+                            createMissingAttachment(
+                                index,
+                                Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM,
+                                AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                                periode.id
+                            )
+                        );
+                    }
+
                     if (periode.årsak === UtsettelseÅrsakType.NavTiltak) {
                         missingAttachments.push(
                             createMissingAttachment(

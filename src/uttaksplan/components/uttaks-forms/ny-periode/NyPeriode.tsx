@@ -81,6 +81,7 @@ const NyPeriode: FunctionComponent<Props> = ({
             handleAddPeriode={handleAddPeriode}
             setNyPeriodeFormIsVisible={setNyPeriodeFormIsVisible}
             isNyPeriode={true}
+            navnPåForeldre={navnPåForeldre}
         />
     );
 };
