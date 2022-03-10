@@ -25,6 +25,7 @@ interface Props {
     erAleneOmOmsorg: boolean;
     erDeltUttak: boolean;
     situasjon: Situasjon;
+    erMorUfør: boolean;
 }
 
 const NyPeriode: FunctionComponent<Props> = ({
@@ -41,6 +42,7 @@ const NyPeriode: FunctionComponent<Props> = ({
     erAleneOmOmsorg,
     erDeltUttak,
     situasjon,
+    erMorUfør,
 }) => {
     const [periode, setPeriode] = useState<Periode>({
         type: isUtsettelse ? Periodetype.Utsettelse : Periodetype.Uttak,
@@ -70,6 +72,7 @@ const NyPeriode: FunctionComponent<Props> = ({
                 erAleneOmOmsorg={erAleneOmOmsorg}
                 erDeltUttak={erDeltUttak}
                 situasjon={situasjon}
+                erMorUfør={erMorUfør}
             />
         </>
     ) : (

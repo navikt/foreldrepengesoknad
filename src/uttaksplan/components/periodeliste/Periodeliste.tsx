@@ -26,6 +26,7 @@ interface Props {
     erDeltUttak: boolean;
     situasjon: Situasjon;
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
+    erMorUfør: boolean;
 }
 
 const Periodeliste: FunctionComponent<Props> = ({
@@ -43,6 +44,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     erDeltUttak,
     situasjon,
     meldingerPerPeriode,
+    erMorUfør,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -77,6 +79,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                     erDeltUttak={erDeltUttak}
                     situasjon={situasjon}
                     meldinger={meldingerPerPeriode[p.id]}
+                    erMorUfør={erMorUfør}
                 />
             ))}
         </div>

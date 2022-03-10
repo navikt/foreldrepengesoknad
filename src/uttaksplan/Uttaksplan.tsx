@@ -106,7 +106,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             relevantStartDatoForUttak: familiehendelsesdatoDate,
             harMidlertidigOmsorg: false,
             harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
-            erAdopsjon: false,
+            erAdopsjon: situasjon === 'adopsjon',
         });
 
         handleOnPlanChange(updatedPlan);
@@ -131,7 +131,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             relevantStartDatoForUttak: familiehendelsesdatoDate,
             harMidlertidigOmsorg: false,
             harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
-            erAdopsjon: false,
+            erAdopsjon: situasjon === 'adopsjon',
         });
 
         handleOnPlanChange(updatedPlan);
@@ -156,7 +156,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             relevantStartDatoForUttak: familiehendelsesdatoDate,
             harMidlertidigOmsorg: false,
             harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
-            erAdopsjon: false,
+            erAdopsjon: situasjon === 'adopsjon',
         });
 
         handleOnPlanChange(addPeriodeResult.updatedPlan);
@@ -234,6 +234,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     erAleneOmOmsorg={erAleneOmOmsorg}
                     situasjon={situasjon}
                     meldingerPerPeriode={meldingerPerPeriode}
+                    erMorUfør={erMorUfør}
                 />
             </Block>
             <Block padBottom="l">

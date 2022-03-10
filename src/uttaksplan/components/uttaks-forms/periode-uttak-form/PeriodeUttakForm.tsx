@@ -56,6 +56,7 @@ interface Props {
     toggleIsOpen?: (id: string) => void;
     handleDeletePeriode?: (periodeId: string) => void;
     isNyPeriode?: boolean;
+    erMorUfør: boolean;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -109,6 +110,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     erAleneOmOmsorg,
     erDeltUttak,
     situasjon,
+    erMorUfør,
 }) => {
     const { tidsperiode } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
@@ -123,7 +125,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         values: PeriodeUttakFormData,
         visibility: QuestionVisibility<PeriodeUttakFormField, undefined>
     ): PeriodeUttakFormData => {
-        return cleanPeriodeUttakFormData(values, visibility, erDeltUttak, forelder);
+        return cleanPeriodeUttakFormData(values, visibility, erDeltUttak, forelder, erMorUfør);
     };
 
     const velgbareStønadskontoer = getVelgbareStønadskontotyper(stønadskontoer);
@@ -131,7 +133,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
 
     return (
         <PeriodeUttakFormComponents.FormikWrapper
-            initialValues={getPeriodeUttakFormInitialValues(periode, erDeltUttak, forelder)}
+            initialValues={getPeriodeUttakFormInitialValues(periode, erDeltUttak, forelder, erMorUfør)}
             onSubmit={(values: Partial<PeriodeUttakFormData>) =>
                 handleUpdatePeriode(
                     mapPeriodeUttakFormToPeriode(
@@ -156,6 +158,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         periodetype,
                         situasjon,
                     },
+                    stønadskontoer,
                 });
 
                 return (

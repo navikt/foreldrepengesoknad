@@ -21,9 +21,9 @@ import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getOppholdsÅrsakFromStønadskonto, getStønadskontoFromOppholdsårsak } from 'uttaksplan/utils/periodeUtils';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 
-const getInitialValues = (erDeltUttak: boolean, forelder: Forelder): PeriodeUttakFormData => {
+const getInitialValues = (erDeltUttak: boolean, forelder: Forelder, erMorUfør: boolean): PeriodeUttakFormData => {
     const hvemSkalTaUttak = erDeltUttak ? '' : forelder;
-    const konto = erDeltUttak ? '' : StønadskontoType.Foreldrepenger;
+    const konto = erDeltUttak ? '' : erMorUfør ? '' : StønadskontoType.Foreldrepenger;
 
     return {
         [PeriodeUttakFormField.fom]: undefined,
@@ -48,9 +48,10 @@ export const cleanPeriodeUttakFormData = (
     values: PeriodeUttakFormData,
     visibility: QuestionVisibility<PeriodeUttakFormField, undefined>,
     erDeltUttak: boolean,
-    forelder: Forelder
+    forelder: Forelder,
+    erMorUfør: boolean
 ): PeriodeUttakFormData => {
-    const initialValues = getInitialValues(erDeltUttak, forelder);
+    const initialValues = getInitialValues(erDeltUttak, forelder, erMorUfør);
 
     const cleanedData: PeriodeUttakFormData = {
         fom: values.fom,
@@ -96,9 +97,10 @@ export const cleanPeriodeUttakFormData = (
 export const getPeriodeUttakFormInitialValues = (
     periode: Periode,
     erDeltUttak: boolean,
-    forelder: Forelder
+    forelder: Forelder,
+    erMorUfør: boolean
 ): PeriodeUttakFormData => {
-    const initialValues = getInitialValues(erDeltUttak, forelder);
+    const initialValues = getInitialValues(erDeltUttak, forelder, erMorUfør);
 
     if (periode !== undefined) {
         if (isUttaksperiode(periode)) {

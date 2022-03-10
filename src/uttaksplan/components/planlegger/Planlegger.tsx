@@ -31,6 +31,7 @@ interface Props {
     erDeltUttak: boolean;
     situasjon: Situasjon;
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
+    erMorUfør: boolean;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -49,6 +50,7 @@ const Planlegger: FunctionComponent<Props> = ({
     erDeltUttak,
     situasjon,
     meldingerPerPeriode,
+    erMorUfør,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -80,6 +82,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 erDeltUttak={erDeltUttak}
                                 situasjon={situasjon}
                                 meldingerPerPeriode={meldingerPerPeriode}
+                                erMorUfør={erMorUfør}
                             />
                         </section>
                     </Block>
@@ -99,6 +102,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 erAleneOmOmsorg={erAleneOmOmsorg}
                                 erDeltUttak={erDeltUttak}
                                 situasjon={situasjon}
+                                erMorUfør={erMorUfør}
                             />
                         </div>
                     )}

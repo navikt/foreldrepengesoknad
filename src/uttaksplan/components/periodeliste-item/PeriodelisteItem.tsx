@@ -37,6 +37,7 @@ interface Props {
     erDeltUttak: boolean;
     situasjon: Situasjon;
     meldinger?: VeilederMessage[];
+    erMorUfør: boolean;
 }
 
 const renderPeriodeListeInnhold = (
@@ -53,7 +54,8 @@ const renderPeriodeListeInnhold = (
     erFlerbarnssøknad: boolean,
     erAleneOmOmsorg: boolean,
     erDeltUttak: boolean,
-    situasjon: Situasjon
+    situasjon: Situasjon,
+    erMorUfør: boolean
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -85,6 +87,7 @@ const renderPeriodeListeInnhold = (
                     erAleneOmOmsorg={erAleneOmOmsorg}
                     erDeltUttak={erDeltUttak}
                     situasjon={situasjon}
+                    erMorUfør={erMorUfør}
                 />
             );
         case Periodetype.Utsettelse:
@@ -126,6 +129,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     erDeltUttak,
     situasjon,
     meldinger = [],
+    erMorUfør,
 }) => {
     const bem = bemUtils('periodelisteItem');
     const melding = meldinger.length > 0 ? meldinger[0] : undefined;
@@ -161,7 +165,8 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     erFlerbarnssøknad,
                     erAleneOmOmsorg,
                     erDeltUttak,
-                    situasjon
+                    situasjon,
+                    erMorUfør
                 )}
             </EkspanderbartpanelBase>
         </article>

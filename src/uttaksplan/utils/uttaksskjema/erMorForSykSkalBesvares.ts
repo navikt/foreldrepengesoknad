@@ -23,7 +23,9 @@ const erMorForForSykSkalBesvares = (
 
     if (periodetype === Periodetype.Uttak && søkerErFarEllerMedmor) {
         if (
-            (konto === StønadskontoType.Fedrekvote || konto === StønadskontoType.Foreldrepenger) &&
+            (konto === StønadskontoType.Fedrekvote ||
+                konto === StønadskontoType.Foreldrepenger ||
+                konto === StønadskontoType.AktivitetsfriKvote) &&
             erInnenFørsteSeksUkerFødselFarMedmor(
                 tidsperiode,
                 situasjon,

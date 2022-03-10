@@ -3,6 +3,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 import getUttakSkjemaregler, {
     UttakSkjemaregler,
     UttakSkjemaReglerProps,
@@ -12,6 +13,7 @@ import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormC
 interface PeriodeUttakFormQuestionsPayload {
     values: PeriodeUttakFormData;
     regelProps: UttakSkjemaReglerProps;
+    stønadskontoer: StønadskontoUttak[];
 }
 
 const skalViseGradering = (regler: UttakSkjemaregler, values: PeriodeUttakFormData): boolean => {
@@ -101,7 +103,8 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
     },
     [PeriodeUttakFormField.konto]: {
         isAnswered: ({ values }) => hasValue(values.konto),
-        isIncluded: ({ regelProps }) => regelProps.erDeltUttak,
+        isIncluded: ({ stønadskontoer, values }) =>
+            isValidTidsperiode({ fom: values.fom, tom: values.tom }) && stønadskontoer.length > 0,
         visibilityFilter: ({ values }) => hasValue(values.hvemSkalTaUttak),
     },
     [PeriodeUttakFormField.ønskerFlerbarnsdager]: {
