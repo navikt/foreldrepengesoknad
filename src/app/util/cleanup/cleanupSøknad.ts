@@ -29,6 +29,7 @@ import { sorterPerioder } from '../uttaksplan/Periodene';
 import moment from 'moment';
 import { Uttaksdagen } from '../uttaksplan/Uttaksdagen';
 import { førsteOktober2021ReglerGjelder } from '../dates/dates';
+import { replaceInvisibleCharsWithSpace } from '../stringUtils';
 
 export const isArrayOfAttachments = (object: any) => {
     return (
@@ -200,7 +201,7 @@ const cleanupUttaksplan = (
 const cleanupTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string | undefined => {
     const tilleggsopplysningerTilSaksbehandler = tilleggsopplysninger.begrunnelseForSenEndring?.tekst;
     if (tilleggsopplysningerTilSaksbehandler !== undefined && tilleggsopplysningerTilSaksbehandler.length > 0) {
-        return tilleggsopplysningerTilSaksbehandler;
+        return replaceInvisibleCharsWithSpace(tilleggsopplysningerTilSaksbehandler);
     }
     return undefined;
 };

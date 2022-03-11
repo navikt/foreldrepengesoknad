@@ -1,3 +1,4 @@
+import { usynligeCharsRegex } from 'app/validation/fieldValidations';
 import { FagsakStatus } from '../types/søknad/Sak';
 
 export const removeSpacesFromString = (value: string) => {
@@ -17,4 +18,8 @@ export const getIntlKeyForStatus = (status: FagsakStatus): string => {
         case FagsakStatus.AVSLUTTET:
             return 'velkommen.sak.status.ferdigBehandlet';
     }
+};
+
+export const replaceInvisibleCharsWithSpace = (inputString: string): string  => {
+    return inputString.replace(usynligeCharsRegex, '\u0020');
 };
