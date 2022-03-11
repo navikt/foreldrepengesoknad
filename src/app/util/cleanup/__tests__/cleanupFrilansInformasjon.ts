@@ -33,7 +33,7 @@ describe('cleanupFrilansInformasjon', () => {
         const frilans = cleanup(søker as Søker);
         expect(frilans).toBeDefined();
         if (frilans) {
-            expect(frilans.oppdragForNæreVennerEllerFamilieSiste10Mnd[0]).toBe(oppdrag);
+            expect(frilans.oppdragForNæreVennerEllerFamilieSiste10Mnd[0]).toEqual(oppdrag);
         }
     });
 

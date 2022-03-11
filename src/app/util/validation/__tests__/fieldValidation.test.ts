@@ -9,9 +9,18 @@ describe('getIllegalChars', () => {
         const result = getIllegalChars('¤Special !@#%^&*()`~');
         expect(result).toEqual('¤#^*`~');
     });
-    it('should return tabulator as invalid char', () => {
-        const result = getIllegalChars('\tSome text');
-        expect(result).toEqual('\t');
+    it('should return \u2f8a (glyphen) as invalid char', () => {
+        const result = getIllegalChars('\u2f8aSome text');
+        expect(result).toEqual('\u2f8a');
+    });
+    it('should return \uFFFD (replacement char) as invalid char', () => {
+        const result = getIllegalChars(
+            'Albert Åberg og/å Prøysen beholder sine nordiske tegn, mens replacement character \uFFFDer ikke lov'
+        );
+        expect(result).toEqual('\uFFFD');
+    });
+    it('should return empty string if all input is valid', () => {
+        const result = getIllegalChars('Lovlig input.');
+        expect(result).toEqual('');
     });
 });
-
