@@ -1,5 +1,18 @@
-import { Næring } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import { EndringAvNæringsinntektInformasjon, Næring } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import visibility from '../../steg/andreInntekter/selvstendigNæringsdrivendeModal/visibility';
+import { replaceInvisibleCharsWithSpace } from '../stringUtils';
+
+const cleanupEndringAvNæringsinntektInformasjon = (
+    endringsinformasjon: EndringAvNæringsinntektInformasjon | undefined
+): EndringAvNæringsinntektInformasjon | undefined => {
+    if (endringsinformasjon !== undefined) {
+        return {
+            ...endringsinformasjon,
+            forklaring: replaceInvisibleCharsWithSpace(endringsinformasjon.forklaring),
+        };
+    }
+    return undefined;
+};
 
 const cleanupNæring = (næring: Næring): Næring => {
     const {
@@ -15,6 +28,7 @@ const cleanupNæring = (næring: Næring): Næring => {
         revisor,
         organisasjonsnummer,
         endringAvNæringsinntektInformasjon,
+        navnPåNæringen,
         ...rest
     } = næring;
 
@@ -34,14 +48,19 @@ const cleanupNæring = (næring: Næring): Næring => {
         oppstartsdato: visibility.oppstartsdato(næring) ? oppstartsdato : undefined,
         hattVarigEndringAvNæringsinntektSiste4Kalenderår: hattVarigEndring,
         harRevisor: visibility.revisorBolk(næring) ? harRevisor : undefined,
-        regnskapsfører: harRegnskapsfører ? regnskapsfører : undefined,
+        regnskapsfører: harRegnskapsfører
+            ? { ...regnskapsfører, navn: replaceInvisibleCharsWithSpace(regnskapsfører.navn) }
+            : undefined,
         harRegnskapsfører,
-        revisor: harRevisor ? revisor : undefined,
+        revisor: harRevisor ? { ...revisor, navn: replaceInvisibleCharsWithSpace(revisor.navn) } : undefined,
         kanInnhenteOpplsyningerFraRevisor:
             harRevisor && visibility.kanInnhenteOpplysningerFraRevisor(næring)
                 ? kanInnhenteOpplsyningerFraRevisor
                 : undefined,
-        endringAvNæringsinntektInformasjon: hattVarigEndring ? endringAvNæringsinntektInformasjon : undefined,
+        endringAvNæringsinntektInformasjon: hattVarigEndring
+            ? cleanupEndringAvNæringsinntektInformasjon(endringAvNæringsinntektInformasjon)
+            : undefined,
+        navnPåNæringen: replaceInvisibleCharsWithSpace(navnPåNæringen),
         ...rest,
     };
 

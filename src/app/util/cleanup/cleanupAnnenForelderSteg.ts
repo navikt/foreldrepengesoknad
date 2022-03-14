@@ -5,6 +5,7 @@ import {
     AnnenForelderStegVisibility,
     AnnenForelderSpørsmålKeys,
 } from '../../steg/annenForelder/visibility/annenForelderStegVisibility';
+import { replaceInvisibleCharsWithSpace } from '../stringUtils';
 
 interface CleanedAnnenForelderSteg {
     annenForelder: Partial<AnnenForelder>;
@@ -35,8 +36,8 @@ export const cleanupAnnenForelder = (
     const cleanedAnnenForelder: Partial<AnnenForelder> = {
         ...rest,
         kanIkkeOppgis,
-        fornavn: kanIkkeOppgis === true ? undefined : fornavn,
-        etternavn: kanIkkeOppgis === true ? undefined : etternavn,
+        fornavn: kanIkkeOppgis === true ? undefined : replaceInvisibleCharsWithSpace(fornavn),
+        etternavn: kanIkkeOppgis === true ? undefined : replaceInvisibleCharsWithSpace(etternavn),
         fnr: kanIkkeOppgis === true ? undefined : fnr,
         utenlandskFnr:
             visibility.isVisible(AnnenForelderSpørsmålKeys.fødselsnummer) && annenForelder.utenlandskFnr
