@@ -43,6 +43,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
         const { hattVarigEndringAvNæringsinntektSiste4Kalenderår } = næring;
         const info = næring.endringAvNæringsinntektInformasjon;
         const inntektEtterEndringLabel = getMessage(intl, 'varigEndringAvNæringsinntekt.inntektEtterEndring.label');
+        const forklaringEndringLabel = getMessage(intl, 'varigEndringAvNæringsinntekt.forklaring.label');
         return (
             <React.Fragment>
                 <Block>
@@ -111,7 +112,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                         <Textarea
                             name="forklaring"
                             value={(info && info.forklaring) || ''}
-                            label={getMessage(intl, 'varigEndringAvNæringsinntekt.forklaring.label')}
+                            label={forklaringEndringLabel}
                             onChange={(e: TextareaChangeEvent) => {
                                 this.updateEndringAvNæringsinntektInformasjon({
                                     forklaring: e.target.value,
@@ -119,7 +120,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                             }}
                             validators={getFritekstfeltRules(
                                 { maxLength: 1000 },
-                                inntektEtterEndringLabel,
+                                forklaringEndringLabel,
                                 intl,
                                 info && info.forklaring
                             )}
