@@ -36,14 +36,16 @@ describe('barnUtils', () => {
         expect(dato).toBeUndefined;
     });
 
-    it('skal finne registrert barn når barn er født og er registrert fra før med samme fødselsdato', () => {
+    it('skal finne registrert barn når barn er født og er registrert fra før med samme fnr', () => {
         const barn = {
             type: BarnType.FØDT,
             fødselsdatoer: [new Date('2021-01-01')],
+            fnr: '123',
         } as Barn;
         const registrerteBarn = [
             {
                 fødselsdato: new Date('2021-01-01'),
+                fnr: '123',
             },
         ] as RegistrertBarn[];
 
@@ -59,6 +61,7 @@ describe('barnUtils', () => {
         const registrerteBarn = [
             {
                 fødselsdato: new Date('2021-01-01'),
+                fnr: '123',
             },
         ] as RegistrertBarn[];
 
@@ -67,7 +70,7 @@ describe('barnUtils', () => {
         expect(registrert).toBeUndefined();
     });
 
-    it('skal ikke finne registrert barn når barn har forsjellig fødselsdato', () => {
+    it('skal ikke finne registrert barn når barn har forskjellig fødselsdato', () => {
         const barn = {
             type: BarnType.FØDT,
             fødselsdatoer: [new Date('2021-01-01')],
@@ -75,22 +78,7 @@ describe('barnUtils', () => {
         const registrerteBarn = [
             {
                 fødselsdato: new Date('2017-01-01'),
-            },
-        ] as RegistrertBarn[];
-
-        const registrert = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
-
-        expect(registrert).toBeUndefined();
-    });
-
-    it('skal ikke finne registrert barn når barn har forsjellig fødselsdato', () => {
-        const barn = {
-            type: BarnType.FØDT,
-            fødselsdatoer: [new Date('2021-01-01')],
-        } as Barn;
-        const registrerteBarn = [
-            {
-                fødselsdato: new Date('2017-01-01'),
+                fnr: '123',
             },
         ] as RegistrertBarn[];
 

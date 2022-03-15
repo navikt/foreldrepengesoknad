@@ -45,7 +45,13 @@ const Template: Story<Props> = ({ context, søkerinfo }) => {
 
 export const Default = Template.bind({});
 Default.args = {
-    context,
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            barn: undefined,
+        },
+    },
     søkerinfo,
 };
 

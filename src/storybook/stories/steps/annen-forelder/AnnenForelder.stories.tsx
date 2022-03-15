@@ -45,7 +45,16 @@ const Template: Story<Props> = ({ context, søkerinfo }) => {
 
 export const Default = Template.bind({});
 Default.args = {
-    context,
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            barn: {
+                ...context.søknad.barn,
+                fnr: '21091981146',
+            },
+        },
+    },
     søkerinfo,
 };
 
@@ -74,12 +83,16 @@ ForFar.args = {
         ...context,
         søknad: {
             ...context.søknad,
+            barn: {
+                ...context.søknad.barn,
+                fnr: '21091981146',
+            },
             søkersituasjon: {
                 situasjon: 'fødsel',
                 rolle: 'far',
             },
         },
-    } as ForeldrepengesøknadContextState,
+    },
     søkerinfo: {
         søker: {
             ...søkerinfo.søker,
@@ -102,5 +115,5 @@ ForFar.args = {
                 },
             ],
         },
-    } as SøkerinfoDTO,
+    },
 };

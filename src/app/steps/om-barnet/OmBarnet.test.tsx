@@ -86,7 +86,7 @@ describe('<OmBarnet>', () => {
         userEvent.type(stebarnsadopsjonInput, dayjs().format('DD.MM.YYYY'));
         fireEvent.blur(stebarnsadopsjonInput);
 
-        expect(await screen.findByText('Hvor mange barn har du fått?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
         userEvent.click(screen.getByText('Ett barn'));
 
         expect(await screen.findByText('Når ble barnet født?')).toBeInTheDocument();
@@ -115,7 +115,7 @@ describe('<OmBarnet>', () => {
         userEvent.type(overtaOmsorgDatoInput, dayjs().format('DD.MM.YYYY'));
         fireEvent.blur(overtaOmsorgDatoInput);
 
-        expect(await screen.findByText('Hvor mange barn har du fått?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
         userEvent.click(screen.getByText('Ett barn'));
 
         expect(await screen.findByText('Når ble barnet født?')).toBeInTheDocument();

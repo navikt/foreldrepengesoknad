@@ -55,7 +55,7 @@ const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({ søkersituasjon, for
                         },
                     ]}
                     useTwoColumns={true}
-                    legend={intlUtils(intl, 'omBarnet.antallBarn.født')}
+                    legend={intlUtils(intl, 'omBarnet.antallBarn.adopsjon.født')}
                 />
             </Block>
             <Block
