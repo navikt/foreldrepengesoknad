@@ -79,7 +79,7 @@ const Inntektsinformasjon = () => {
                         steps={stepConfig}
                         kompakt={true}
                     >
-                        <InntektsinformasjonFormComponents.Form includeButtons={false}>
+                        <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="l">
                                 <Element>Utbetalinger fra NAV</Element>
                                 <Normaltekst>

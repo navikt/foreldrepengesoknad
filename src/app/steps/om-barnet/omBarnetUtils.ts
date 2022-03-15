@@ -76,6 +76,7 @@ export const mapOmBarnetFormDataToState = (
             fødselsdatoer: [eldsteBarn.fødselsdato],
             antallBarn: values.valgteBarn.length.toString(),
             termindato: hasValue(values.termindato) ? ISOStringToDate(values.termindato) : undefined,
+            fnr: eldsteBarn.fnr,
         };
     }
 

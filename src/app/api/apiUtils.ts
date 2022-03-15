@@ -6,7 +6,7 @@ import {
     Periodetype,
     isForeldrepengerFørFødselUttaksperiode,
 } from 'uttaksplan/types/Periode';
-import Barn from 'app/context/types/Barn';
+import Barn, { isFødtBarn } from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { Situasjon } from 'app/types/Situasjon';
@@ -92,7 +92,14 @@ const cleanAnnenForelder = (annenForelder: AnnenForelder): AnnenForelderForInnse
 };
 
 const cleanBarn = (barn: Barn): BarnForInnsending => {
+    if (isFødtBarn(barn)) {
+        const { datoForAleneomsorg, fnr, ...barnRest } = barn;
+
+        return barnRest;
+    }
+
     const { datoForAleneomsorg, ...barnRest } = barn;
+
     return barnRest;
 };
 

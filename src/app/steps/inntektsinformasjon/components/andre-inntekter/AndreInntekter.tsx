@@ -67,6 +67,18 @@ const AndreInntekter: FunctionComponent<Props> = ({
                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                     name={InntektsinformasjonFormField.hattAndreInntekter}
                     legend={intlUtils(intl, 'inntektsinformasjon.annenInntekt')}
+                    validate={(hattAndreInntekter) => {
+                        if (hattAndreInntekter === YesOrNo.YES) {
+                            if (andreInntekterInformasjon.length === 0) {
+                                return intlUtils(
+                                    intl,
+                                    'valideringsfeil.inntektsinformasjon.andreInntekter.måHaOppdrag'
+                                );
+                            }
+                        }
+
+                        return undefined;
+                    }}
                 />
             </Block>
             {formValues.hattAndreInntekter === YesOrNo.YES && (

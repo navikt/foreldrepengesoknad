@@ -94,6 +94,18 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                         <InntektsinformasjonFormComponents.YesOrNoQuestion
                             name={InntektsinformasjonFormField.oppdragForNæreVennerEllerFamilie}
                             legend={intlUtils(intl, 'inntektsinformasjon.harJobbetForNærVennEllerFamilieSiste10Mnd')}
+                            validate={(oppdragForNæreVennerEllerFamilie) => {
+                                if (oppdragForNæreVennerEllerFamilie === YesOrNo.YES) {
+                                    if (frilansoppdrag.length === 0) {
+                                        return intlUtils(
+                                            intl,
+                                            'valideringsfeil.inntektsinformasjon.andreInntekter.måHaFrilansOppdrag'
+                                        );
+                                    }
+                                }
+
+                                return undefined;
+                            }}
                         />
                     </Block>
                     <Block padBottom="l" visible={formValues.oppdragForNæreVennerEllerFamilie === YesOrNo.YES}>

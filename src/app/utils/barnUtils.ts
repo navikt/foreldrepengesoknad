@@ -22,8 +22,6 @@ export const getRegistrertBarnOmDetFinnes = (
     registrerteBarn: RegistrertBarn[]
 ): RegistrertBarn | undefined => {
     return registrerteBarn.length > 0 && isFødtBarn(barn)
-        ? registrerteBarn.find((regBarn) =>
-              dayjs.utc(regBarn.fødselsdato).isSame(dayjs.utc(barn.fødselsdatoer[0]).toDate())
-          )
+        ? registrerteBarn.find((regBarn) => regBarn.fnr === barn.fnr)
         : undefined;
 };

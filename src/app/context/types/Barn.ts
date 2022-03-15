@@ -19,6 +19,7 @@ export interface FødtBarn extends Common {
     type: BarnType.FØDT;
     fødselsdatoer: Date[];
     termindato?: Date;
+    fnr?: string;
 }
 
 export interface UfødtBarn extends Common {

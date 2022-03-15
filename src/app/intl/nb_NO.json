@@ -580,6 +580,8 @@
     "valideringsfeil.inntektsinformasjon.orgnr.ugyldigFormat": "Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer",
     "valideringsfeil.inntektsinformasjon.forklaringTilEndring.forKort": "Forklaring av endring må være minst 25 tegn",
     "valideringsfeil.inntektsinformasjon.forklaringTilEndring.forLang": "Forklaring av endring kan maksimalt inneholde 1000 tegn",
+    "valideringsfeil.inntektsinformasjon.andreInntekter.måHaFrilansOppdrag": "Du må legge til minst et frilansoppdrag",
+    "valideringsfeil.inntektsinformasjon.andreInntekter.måHaOppdrag": "Du må legge til minst et oppdrag",
     "valideringsfeil.uttaksplaninfo.startdatoPermisjon.gyldigDato": "Startdato for foreldrepengeperioden må være en gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.uttaksplaninfo.startdatoHelg": "Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag",
     "valideringsfeil.uttaksplaninfo.startdatoUtenforGyldigTidsrom": "Startdatoen må være innen de {uker} første ukene før termin eller fødsel",
