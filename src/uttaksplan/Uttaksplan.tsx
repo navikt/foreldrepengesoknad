@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { Block, intlUtils } from '@navikt/fp-common';
 import Planlegger from './components/planlegger/Planlegger';
-import PlanleggerInfo from './components/planlegger-info/PlanleggerInfo';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
 import { Forelder } from 'app/types/Forelder';
 import { Periode } from './types/Periode';
@@ -28,6 +27,7 @@ import { SenEndringÅrsak } from './types/SenEndringÅrsak';
 import { getSeneEndringerSomKreverBegrunnelse } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -73,7 +73,6 @@ const getRelevantStartdato = (familiehendelsesdato: Date, erFarEllerMedmor: bool
 
 const Uttaksplan: FunctionComponent<Props> = ({
     foreldreSituasjon,
-    forelderVedAleneomsorg,
     erDeltUttak,
     uttaksplan,
     familiehendelsesdato,
@@ -232,10 +231,10 @@ const Uttaksplan: FunctionComponent<Props> = ({
     return (
         <>
             <Block padBottom="l">
-                <PlanleggerInfo
-                    foreldreSituasjon={foreldreSituasjon}
-                    forelderVedAleneomsorg={forelderVedAleneomsorg}
-                    erDeltUttak={erDeltUttak}
+                <InfoOmSøknaden
+                    eksisterendeSak={eksisterendeSak}
+                    erIUttaksplanenSteg={true}
+                    tilgjengeligeStønadskontoer={stønadskontoer}
                 />
             </Block>
             <Block padBottom="l">

@@ -127,16 +127,18 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                     <UkerSirkel key="uker" uker={uker} />,
                 ]}
             >
-                <Normaltekst>
-                    <FormattedMessage
-                        id="eksisterendeSak.tekst.html"
-                        values={{
-                            uker: <strong>{getVarighetString(uker * 5, intl)}</strong>,
-                            dekningsgrad: <strong>{dekningsgrad}</strong>,
-                            navn: hvem,
-                        }}
-                    />
-                </Normaltekst>
+                <Block padBottom="l">
+                    <Normaltekst>
+                        <FormattedMessage
+                            id="eksisterendeSak.tekst.html"
+                            values={{
+                                uker: <strong>{getVarighetString(uker * 5, intl)}</strong>,
+                                dekningsgrad: <strong>{dekningsgrad}</strong>,
+                                navn: hvem,
+                            }}
+                        />
+                    </Normaltekst>
+                </Block>
                 {skalViseInfoOmMorsSak && hasValue(annenForelderNavn) && nesteMuligeUttaksdagEtterAnnenPart && (
                     <Normaltekst>
                         <FormattedMessage

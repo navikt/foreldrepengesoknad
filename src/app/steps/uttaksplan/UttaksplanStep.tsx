@@ -142,6 +142,9 @@ const UttaksplanStep = () => {
         erMorUfør
     );
 
+    const valgteStønadskontoer =
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80];
+
     return (
         <Step
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -161,7 +164,7 @@ const UttaksplanStep = () => {
                 uttaksplan={søknad.uttaksplan}
                 familiehendelsesdato={familiehendelsesdato}
                 handleOnPlanChange={handleOnPlanChange}
-                stønadskontoer={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80]}
+                stønadskontoer={valgteStønadskontoer}
                 navnPåForeldre={navnPåForeldre}
                 annenForelder={annenForelder}
                 arbeidsforhold={arbeidsforhold}
