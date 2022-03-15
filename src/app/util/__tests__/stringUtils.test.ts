@@ -33,7 +33,7 @@ describe('stringUtils', () => {
             expect(replaceInvisibleCharsWithSpace(dirtyTextTab)).toEqual(cleanTextTab);
         });
         it('erstatter blanke tegn med vanlig space', () => {
-            const dirtyTextBlankeTegn = 'Blankt tegn\u00A0erstattes\u00A0med space';
+            const dirtyTextBlankeTegn = 'Blankt tegn\u00A0erstattes\u00A0med\u034fspace';
             const cleanTextBlankeTegn = 'Blankt tegn erstattes med space';
             expect(replaceInvisibleCharsWithSpace(dirtyTextBlankeTegn)).toEqual(cleanTextBlankeTegn);
         });
