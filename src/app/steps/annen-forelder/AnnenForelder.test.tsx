@@ -23,7 +23,7 @@ describe('<AnnenForelder>', () => {
         render(<Default />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
-        expect(screen.getByText('Fødselsnummer: 12038517080 (36 år)')).toBeInTheDocument();
+        expect(screen.getByText('Fødselsnummer: 12038517080 (37 år)')).toBeInTheDocument();
         expect(screen.queryByText(INFO_TEKST)).not.toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
@@ -38,7 +38,7 @@ describe('<AnnenForelder>', () => {
         render(<Default />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
-        expect(screen.getByText('Fødselsnummer: 12038517080 (36 år)')).toBeInTheDocument();
+        expect(screen.getByText('Fødselsnummer: 12038517080 (37 år)')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
@@ -57,7 +57,7 @@ describe('<AnnenForelder>', () => {
         render(<Default />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
-        expect(screen.getByText('Fødselsnummer: 12038517080 (36 år)')).toBeInTheDocument();
+        expect(screen.getByText('Fødselsnummer: 12038517080 (37 år)')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
@@ -82,7 +82,7 @@ describe('<AnnenForelder>', () => {
         render(<Default />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
-        expect(screen.getByText('Fødselsnummer: 12038517080 (36 år)')).toBeInTheDocument();
+        expect(screen.getByText('Fødselsnummer: 12038517080 (37 år)')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
@@ -172,7 +172,7 @@ describe('<AnnenForelder>', () => {
         const utils = render(<ForFar />);
 
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
-        expect(screen.getByText('Fødselsnummer: 12038517080 (36 år)')).toBeInTheDocument();
+        expect(screen.getByText('Fødselsnummer: 12038517080 (37 år)')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 

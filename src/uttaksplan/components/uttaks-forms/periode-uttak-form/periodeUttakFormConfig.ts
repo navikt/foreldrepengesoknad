@@ -35,7 +35,7 @@ export interface PeriodeUttakFormData {
     [PeriodeUttakFormField.overføringsdokumentasjon]: Attachment[];
     [PeriodeUttakFormField.skalHaGradering]: YesOrNo;
     [PeriodeUttakFormField.stillingsprosent]: string;
-    [PeriodeUttakFormField.arbeidsformer]: Arbeidsform[];
+    [PeriodeUttakFormField.arbeidsformer]: Arbeidsform | '';
     [PeriodeUttakFormField.erMorForSyk]: YesOrNo;
     [PeriodeUttakFormField.samtidigUttakProsent]: string;
     [PeriodeUttakFormField.hvemSkalTaUttak]: Forelder | '';

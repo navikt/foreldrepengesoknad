@@ -36,7 +36,7 @@ const getInitialValues = (erDeltUttak: boolean, forelder: Forelder, erMorUfør: 
         [PeriodeUttakFormField.overføringsdokumentasjon]: [],
         [PeriodeUttakFormField.skalHaGradering]: YesOrNo.UNANSWERED,
         [PeriodeUttakFormField.stillingsprosent]: '',
-        [PeriodeUttakFormField.arbeidsformer]: [],
+        [PeriodeUttakFormField.arbeidsformer]: '',
         [PeriodeUttakFormField.erMorForSyk]: YesOrNo.UNANSWERED,
         [PeriodeUttakFormField.samtidigUttakProsent]: '',
         [PeriodeUttakFormField.hvemSkalTaUttak]: hvemSkalTaUttak,
@@ -66,7 +66,7 @@ export const cleanPeriodeUttakFormData = (
         erMorForSyk: visibility.isVisible(PeriodeUttakFormField.erMorForSyk)
             ? values.erMorForSyk
             : initialValues.erMorForSyk,
-        arbeidsformer: visibility.isVisible(PeriodeUttakFormField.arbeidsformer) ? values.arbeidsformer : [],
+        arbeidsformer: visibility.isVisible(PeriodeUttakFormField.arbeidsformer) ? values.arbeidsformer : '',
         konto: values.konto,
         overføringsdokumentasjon: visibility.isVisible(PeriodeUttakFormField.overføringsdokumentasjon)
             ? values.overføringsdokumentasjon
@@ -112,7 +112,8 @@ export const getPeriodeUttakFormInitialValues = (
                 aktivitetskravMorDokumentasjon: periode.vedlegg || [],
                 erMorForSyk: convertBooleanOrUndefinedToYesOrNo(periode.erMorForSyk),
                 hvemSkalTaUttak: periode.forelder || initialValues.hvemSkalTaUttak,
-                arbeidsformer: periode.arbeidsformer || [],
+                arbeidsformer:
+                    periode.arbeidsformer && periode.arbeidsformer.length > 0 ? periode.arbeidsformer[0] : '',
                 konto: periode.konto || initialValues.konto,
                 samtidigUttak: convertBooleanOrUndefinedToYesOrNo(periode.ønskerSamtidigUttak),
                 samtidigUttakProsent: periode.samtidigUttakProsent || '',
@@ -220,15 +221,21 @@ export const mapPeriodeUttakFormToPeriode = (
             tom: values.tom!,
         },
         type: Periodetype.Uttak,
-        arbeidsformer: values.arbeidsformer!.length > 0 ? getArbeidsform(values.arbeidsformer!) : undefined,
+        arbeidsformer: hasValue(values.arbeidsformer)
+            ? getArbeidsform([values.arbeidsformer as Arbeidsform])
+            : undefined,
         morsAktivitetIPerioden: hasValue(values.aktivitetskravMor)
             ? (values.aktivitetskravMor as MorsAktivitet)
             : undefined,
-        erArbeidstaker: getErArbeidstaker(values.arbeidsformer || []),
+        erArbeidstaker: getErArbeidstaker(
+            hasValue(values.arbeidsformer) ? getArbeidsform([values.arbeidsformer as Arbeidsform]) : []
+        ),
         erMorForSyk: convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk),
         gradert: convertYesOrNoOrUndefinedToBoolean(values.skalHaGradering),
         harIkkeAktivitetskrav: values.konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
-        orgnumre: getOrgnummer(values.arbeidsformer || []),
+        orgnumre: getOrgnummer(
+            hasValue(values.arbeidsformer) ? getArbeidsform([values.arbeidsformer as Arbeidsform]) : []
+        ),
         stillingsprosent: hasValue(values.stillingsprosent) ? trimNumberValue(values.stillingsprosent!) : undefined,
         ønskerFlerbarnsdager: convertYesOrNoOrUndefinedToBoolean(values.ønskerFlerbarnsdager),
         ønskerSamtidigUttak: convertYesOrNoOrUndefinedToBoolean(values.samtidigUttak),
