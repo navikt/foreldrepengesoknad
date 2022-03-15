@@ -62,7 +62,7 @@ const OmBarnet: React.FunctionComponent = () => {
                         stepTitle={intlUtils(intl, 'søknad.omBarnet')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig}
+                        steps={stepConfig(intl)}
                         kompakt={true}
                     >
                         <OmBarnetFormComponents.Form

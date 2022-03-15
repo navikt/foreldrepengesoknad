@@ -108,7 +108,7 @@ const AnnenForelder = () => {
                         stepTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onForstettSøknadSenere}
-                        steps={stepConfig}
+                        steps={stepConfig(intl)}
                         kompakt={true}
                     >
                         <AnnenForelderFormComponents.Form

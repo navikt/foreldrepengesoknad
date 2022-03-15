@@ -99,7 +99,7 @@ const Oppsummering = () => {
                             stepTitle={intlUtils(intl, 'søknad.oppsummering')}
                             onCancel={onAvbrytSøknad}
                             onContinueLater={() => null}
-                            steps={stepConfig}
+                            steps={stepConfig(intl)}
                             kompakt={true}
                         >
                             <Block padBottom="l">

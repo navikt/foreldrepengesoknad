@@ -80,7 +80,7 @@ const UttaksplanInfo = () => {
             stepTitle={intlUtils(intl, 'søknad.søkersituasjon')}
             onCancel={onAvbrytSøknad}
             onContinueLater={onFortsettSøknadSenere}
-            steps={stepConfig}
+            steps={stepConfig(intl)}
             kompakt={true}
         >
             <UttaksplanInfoScenarios

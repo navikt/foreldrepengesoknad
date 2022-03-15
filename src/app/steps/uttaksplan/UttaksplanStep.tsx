@@ -151,7 +151,7 @@ const UttaksplanStep = () => {
             stepTitle={intlUtils(intl, 'søknad.uttaksplan')}
             onCancel={onAvbrytSøknad}
             onContinueLater={onFortsettSøknadSenere}
-            steps={stepConfig}
+            steps={stepConfig(intl)}
             kompakt={true}
         >
             <Uttaksplan

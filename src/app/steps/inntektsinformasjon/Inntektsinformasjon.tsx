@@ -76,7 +76,7 @@ const Inntektsinformasjon = () => {
                         stepTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig}
+                        steps={stepConfig(intl)}
                         kompakt={true}
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>

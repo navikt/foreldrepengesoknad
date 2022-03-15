@@ -1,4 +1,6 @@
+import { intlUtils } from '@navikt/fp-common';
 import { assertUnreachable } from 'app/utils/globalUtil';
+import { IntlShape } from 'react-intl';
 
 type SøkersituasjonStepId = 'søkersituasjon';
 type OmBarnetStepId = 'omBarnet';
@@ -28,52 +30,51 @@ interface StepConfig {
     label: string;
 }
 
-//TODO Her er vel både labels feil og burde hentast fra i18n-fila
-const stepConfig: StepConfig[] = [
+const stepConfig = (intl: IntlShape): StepConfig[] => [
     {
         id: 'søkersituasjon',
         index: 0,
-        label: 'Fyll ut informasjon om barnet',
+        label: intlUtils(intl, 'steps.label.søkersituasjon'),
     },
     {
         id: 'omBarnet',
         index: 1,
-        label: 'Fyll ut informasjon om barnet',
+        label: intlUtils(intl, 'steps.label.omBarnet'),
     },
     {
         id: 'annenForelder',
         index: 2,
-        label: 'Fyll ut informasjon om barnet',
+        label: intlUtils(intl, 'steps.label.annenForelder'),
     },
     {
         id: 'uttaksplanInfo',
         index: 3,
-        label: 'Fyll ut informasjon om barnet',
+        label: intlUtils(intl, 'steps.label.uttaksplanInfo'),
     },
     {
         id: 'uttaksplan',
         index: 4,
-        label: 'Fyll ut informasjon om barnet',
+        label: intlUtils(intl, 'steps.label.uttaksplan'),
     },
     {
         id: 'utenlandsopphold',
         index: 5,
-        label: 'Fyll ut informasjon om barnet',
+        label: intlUtils(intl, 'steps.label.utenlandsopphold'),
     },
     {
         id: 'inntektsinformasjon',
         index: 6,
-        label: 'Fyll ut informasjon om barnet',
+        label: intlUtils(intl, 'steps.label.inntektsinformasjon'),
     },
     {
         id: 'dokumentasjon',
         index: 7,
-        label: 'Fyll ut informasjon om barnet',
+        label: intlUtils(intl, 'steps.label.dokumentasjon'),
     },
     {
         id: 'oppsummering',
         index: 8,
-        label: 'Fyll ut informasjon om barnet',
+        label: intlUtils(intl, 'steps.label.oppsummering'),
     },
 ];
 
@@ -109,4 +110,5 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
     }
     return href;
 };
+
 export default stepConfig;
