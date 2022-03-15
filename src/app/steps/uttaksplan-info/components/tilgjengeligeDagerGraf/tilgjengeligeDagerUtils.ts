@@ -16,13 +16,8 @@ const getFarsStønadskontoer = (kontoer: TilgjengeligStønadskonto[]): Tilgjenge
 const getForeldrepengeKontoer = (kontoer: TilgjengeligStønadskonto[]): TilgjengeligStønadskonto[] =>
     kontoer.filter((konto) => konto.konto === StønadskontoType.Foreldrepenger);
 
-const getFlerbarnskonto = (kontoer: TilgjengeligStønadskonto[]): TilgjengeligStønadskonto[] =>
-    kontoer.filter((konto) => konto.konto === StønadskontoType.Flerbarnsdager);
-
 const getFellesStønadskontoer = (kontoer: TilgjengeligStønadskonto[]): TilgjengeligStønadskonto[] =>
-    kontoer.filter(
-        (konto) => konto.konto === StønadskontoType.Fellesperiode || konto.konto === StønadskontoType.Flerbarnsdager
-    );
+    kontoer.filter((konto) => konto.konto === StønadskontoType.Fellesperiode);
 
 const kontoErFørTermin = (konto: TilgjengeligStønadskonto): boolean => {
     return konto.konto === StønadskontoType.ForeldrepengerFørFødsel;
@@ -46,7 +41,6 @@ export const getTilgjengeligeDager = (
     const dagerMor = summerAntallDagerIKontoer(getMorsStønadskontoer(kontoerEtterTermin));
     const dagerFar = summerAntallDagerIKontoer(getFarsStønadskontoer(kontoerEtterTermin));
     const dagerFelles = summerAntallDagerIKontoer(getFellesStønadskontoer(kontoerEtterTermin));
-    const flerbarnsdager = summerAntallDagerIKontoer(getFlerbarnskonto(kontoerEtterTermin));
 
     const dagerKunTilMor = erDeltUttak === false && forelderVedAleneomsorg === Forelder.mor;
     const dagerKunTilFar = erDeltUttak === false && forelderVedAleneomsorg === Forelder.farMedmor;
@@ -62,7 +56,6 @@ export const getTilgjengeligeDager = (
         dagerMor,
         dagerFarMedmor: dagerFar,
         dagerFelles,
-        flerbarnsdager,
         maksDagerFar,
         maksDagerMor,
         stønadskontoer: kontoer,

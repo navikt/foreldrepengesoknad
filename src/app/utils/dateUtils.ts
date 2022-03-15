@@ -12,6 +12,8 @@ import { RegistrertBarn } from 'app/types/Person';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Alder } from 'app/types/Alder';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+import { Periode } from 'uttaksplan/types/Periode';
+import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -305,4 +307,95 @@ export const skalFarUtsetteEtterMorSinSisteUttaksdag = (
     morsSisteUttaksdag: Date
 ): boolean => {
     return dayjs(farSinFørsteUttaksdag).isAfter(Uttaksdagen(morsSisteUttaksdag).neste());
+};
+
+export const getEndringstidspunkt = (
+    opprinneligPlan: Periode[] | undefined,
+    updatedPlan: Periode[],
+    erEndringssøknad: boolean
+): Date | undefined => {
+    if (!erEndringssøknad) {
+        return undefined;
+    }
+
+    let endringstidspunktNyPlan: Date | undefined;
+    let endringstidspunktOpprinneligPlan: Date | undefined;
+    if (opprinneligPlan) {
+        updatedPlan.forEach((periode, index) => {
+            if (endringstidspunktNyPlan) {
+                return endringstidspunktNyPlan;
+            }
+
+            const { fom } = periode.tidsperiode;
+            const opprinneligPeriodeMedSammeFom = opprinneligPlan.find((opprinneligPeriode) =>
+                dayjs(opprinneligPeriode.tidsperiode.fom).isSame(fom)
+            );
+
+            if (opprinneligPeriodeMedSammeFom !== undefined) {
+                const perioderErLikeUtenTidSjekk = Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, false, true);
+                if (
+                    !perioderErLikeUtenTidSjekk ||
+                    (perioderErLikeUtenTidSjekk &&
+                        Perioden(periode).slutterEtter(opprinneligPeriodeMedSammeFom.tidsperiode.tom))
+                ) {
+                    endringstidspunktNyPlan = fom;
+                }
+            }
+
+            if (opprinneligPeriodeMedSammeFom === undefined) {
+                endringstidspunktNyPlan = fom;
+            }
+
+            if (opprinneligPeriodeMedSammeFom !== undefined && updatedPlan.length - 1 === index) {
+                if (!Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, true, true)) {
+                    endringstidspunktNyPlan = fom;
+                }
+            }
+        });
+
+        opprinneligPlan.forEach((periode) => {
+            if (endringstidspunktOpprinneligPlan) {
+                return endringstidspunktOpprinneligPlan;
+            }
+
+            const { fom } = periode.tidsperiode;
+            const nyPeriodeMedSammeFom = updatedPlan.find((nyPeriode) => dayjs(nyPeriode.tidsperiode.fom).isSame(fom));
+
+            if (nyPeriodeMedSammeFom !== undefined && !Perioden(periode).erLik(nyPeriodeMedSammeFom, false, true)) {
+                endringstidspunktOpprinneligPlan = nyPeriodeMedSammeFom.tidsperiode.fom;
+            }
+
+            if (nyPeriodeMedSammeFom === undefined) {
+                endringstidspunktOpprinneligPlan = fom;
+            }
+        });
+    } else {
+        // Bruker har slettet opprinnelig plan, send med alt
+        if (updatedPlan.length > 0) {
+            return updatedPlan[0].tidsperiode.fom;
+        }
+    }
+
+    return getOldestDate(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
+};
+
+const getOldestDate = (
+    endringstidspunktNyPlan: Date | undefined,
+    endringstidspunktOpprinneligPlan: Date | undefined
+): Date | undefined => {
+    if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan === undefined) {
+        return undefined;
+    }
+
+    if (endringstidspunktNyPlan !== undefined && endringstidspunktOpprinneligPlan === undefined) {
+        return endringstidspunktNyPlan;
+    }
+
+    if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan !== undefined) {
+        return endringstidspunktOpprinneligPlan;
+    }
+
+    return dayjs(endringstidspunktNyPlan).isSameOrBefore(dayjs(endringstidspunktOpprinneligPlan))
+        ? endringstidspunktNyPlan
+        : endringstidspunktOpprinneligPlan;
 };

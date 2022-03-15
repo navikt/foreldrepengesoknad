@@ -9,7 +9,7 @@
         "barn": {
             "type": "født",
             "fødselsdatoer": ["2021-03-15"],
-            "antallBarn": "1",
+            "antallBarn": 1,
             "datoForAleneomsorg": "",
             "dokumentasjonAvAleneomsorg": []
         },
@@ -64,7 +64,8 @@
                 "ønskerSamtidigUttak": false,
                 "gradert": false
             }
-        ]
+        ],
+        "tilleggsopplysninger": {}
     },
     "version": 2,
     "currentRoute": "/soknad/uttaksplan-info"

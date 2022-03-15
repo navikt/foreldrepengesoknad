@@ -28,7 +28,7 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 const Inntektsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
-    const { søker } = useSøknad();
+    const { søker, erEndringssøknad } = useSøknad();
 
     const [frilansoppdrag, setFrilansoppdrag] = useState(
         søker.frilansInformasjon ? søker.frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd : []
@@ -70,7 +70,7 @@ const Inntektsinformasjon = () => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
-                        backLinkHref={getPreviousStepHref('inntektsinformasjon')}
+                        backLinkHref={getPreviousStepHref('inntektsinformasjon', erEndringssøknad)}
                         activeStepId="inntektsinformasjon"
                         pageTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
                         stepTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}

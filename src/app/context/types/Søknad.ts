@@ -22,4 +22,5 @@ export interface Søknad {
     harGodkjentOppsummering: boolean;
     vedlegg: Attachment[];
     tilleggsopplysninger: Tilleggsopplysninger;
+    saksnummer?: string;
 }

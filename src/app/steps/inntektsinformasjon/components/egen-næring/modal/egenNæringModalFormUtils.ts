@@ -1,8 +1,8 @@
 import { hasValue } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Næring, EndringAvNæringsinntektInformasjon, Næringsrelasjon } from 'app/context/types/Næring';
-import { date4YearsAgo } from 'app/utils/dateUtils';
+import { date4YearsAgo, ISOStringToDate } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import dayjs from 'dayjs';
 import { EgenNæringModalFormData, EgenNæringModalFormField } from './egenNæringModalFormConfig';
@@ -103,19 +103,21 @@ export const getInitialEgenNæringModalValues = (næring: Næring | undefined): 
         navnPåNæringen: næring.navnPåNæringen,
         registrertINorge: convertBooleanOrUndefinedToYesOrNo(næring.registrertINorge),
         land: næring.registrertILand || '',
-        fom: næring.tidsperiode.fom,
-        tom: næring.tidsperiode.tom || '',
+        fom: dateToISOString(næring.tidsperiode.fom),
+        tom: dateToISOString(næring.tidsperiode.tom) || '',
         orgnr: næring.organisasjonsnummer || '',
         pågående: convertBooleanOrUndefinedToYesOrNo(næring.pågående),
-        næringsresultat: næring.næringsinntekt || '',
+        næringsresultat: næring.næringsinntekt?.toString() || '',
         hattVarigEndringAvNæringsinntektSiste4Kalenderår: convertBooleanOrUndefinedToYesOrNo(
             næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår
         ),
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: convertBooleanOrUndefinedToYesOrNo(
             næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
         ),
-        yrkesAktivDato: næring.oppstartsdato || '',
-        datoForEndring: næring.endringAvNæringsinntektInformasjon ? næring.endringAvNæringsinntektInformasjon.dato : '',
+        yrkesAktivDato: dateToISOString(næring.oppstartsdato) || '',
+        datoForEndring: næring.endringAvNæringsinntektInformasjon
+            ? dateToISOString(næring.endringAvNæringsinntektInformasjon.dato)
+            : '',
         inntektEtterEndring: næring.endringAvNæringsinntektInformasjon
             ? næring.endringAvNæringsinntektInformasjon.næringsinntektEtterEndring.toString()
             : '',
@@ -137,7 +139,7 @@ export const mapEgenNæringModalFormValuesToState = (values: Partial<EgenNæring
 
     if (values.hattVarigEndringAvNæringsinntektSiste4Kalenderår === YesOrNo.YES) {
         endringAvNæringsinntektInformasjon = {
-            dato: values.datoForEndring!,
+            dato: ISOStringToDate(values.datoForEndring)!,
             forklaring: values.forklaringEndring!,
             næringsinntektEtterEndring: parseInt(values.inntektEtterEndring!),
         };
@@ -158,18 +160,18 @@ export const mapEgenNæringModalFormValuesToState = (values: Partial<EgenNæring
         organisasjonsnummer: hasValue(values.orgnr) ? values.orgnr : undefined,
         registrertILand: hasValue(values.land) ? values.land : undefined,
         tidsperiode: {
-            fom: values.fom!,
-            tom: values.tom,
+            fom: ISOStringToDate(values.fom)!,
+            tom: ISOStringToDate(values.tom),
         },
         pågående: convertYesOrNoOrUndefinedToBoolean(values.pågående)!,
-        næringsinntekt: hasValue(values.næringsresultat) ? values.næringsresultat : undefined,
+        næringsinntekt: hasValue(values.næringsresultat) ? parseInt(values.næringsresultat!, 10) : undefined,
         hattVarigEndringAvNæringsinntektSiste4Kalenderår: convertYesOrNoOrUndefinedToBoolean(
             values.hattVarigEndringAvNæringsinntektSiste4Kalenderår
         ),
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: convertYesOrNoOrUndefinedToBoolean(
             values.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
         ),
-        oppstartsdato: hasValue(values.yrkesAktivDato) ? values.yrkesAktivDato : undefined,
+        oppstartsdato: hasValue(values.yrkesAktivDato) ? ISOStringToDate(values.yrkesAktivDato) : undefined,
         endringAvNæringsinntektInformasjon: endringAvNæringsinntektInformasjon,
         harRegnskapsfører: convertYesOrNoOrUndefinedToBoolean(values.harRegnskapsfører)!,
         regnskapsfører: regnskapsfører,

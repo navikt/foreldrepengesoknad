@@ -114,7 +114,7 @@ UttaksplanMedFlerbarnsukerTvillinger.args = {
             },
             barn: {
                 ...context.søknad.barn,
-                antallBarn: '2',
+                antallBarn: 2,
             },
             annenForelder: {
                 fornavn: 'Espen',

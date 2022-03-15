@@ -8,14 +8,12 @@ describe('<stønadskontoUtils>', () => {
         kontoer: {
             [StønadskontoType.Mødrekvote]: 65,
             [StønadskontoType.Fedrekvote]: 55,
-            [StønadskontoType.Flerbarnsdager]: 45,
         },
     } as TilgjengeligeStønadskontoerDTO;
     const kontoer100 = {
         kontoer: {
             [StønadskontoType.Mødrekvote]: 60,
             [StønadskontoType.Fedrekvote]: 50,
-            [StønadskontoType.Flerbarnsdager]: 40,
         },
     } as TilgjengeligeStønadskontoerDTO;
 

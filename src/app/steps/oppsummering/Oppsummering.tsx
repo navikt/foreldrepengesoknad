@@ -24,13 +24,14 @@ import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-innte
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Api from 'app/api/api';
 import actionCreator from 'app/context/action/actionCreator';
-import { cleanUpSøknadsdataForInnsending } from 'app/api/apiUtils';
+import { getSøknadsdataForInnsending } from 'app/api/apiUtils';
 import { useHistory } from 'react-router-dom';
 
 import './oppsummering.less';
 import SøknadRoutes from 'app/routes/routes';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
 import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'app/utils/personUtils';
+import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysninger.utils';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -38,9 +39,19 @@ const Oppsummering = () => {
     const history = useHistory();
     const { kvittering, eksisterendeSak } = state;
     const bem = bemUtils('oppsummering');
+
     const [submitError, setSubmitError] = useState(undefined);
-    const { barn, annenForelder, søker, informasjonOmUtenlandsopphold, søkersituasjon, dekningsgrad, uttaksplan } =
-        useSøknad();
+    const {
+        barn,
+        annenForelder,
+        søker,
+        informasjonOmUtenlandsopphold,
+        søkersituasjon,
+        dekningsgrad,
+        uttaksplan,
+        tilleggsopplysninger,
+    } = useSøknad();
+
     const søkerinfo = useSøkerinfo();
     const { person, arbeidsforhold } = søkerinfo;
     const søknad = useSøknad();
@@ -49,10 +60,17 @@ const Oppsummering = () => {
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, søkerErFarEllerMedmor);
     const antallUkerUttaksplan = state.antallUkerIUttaksplan;
+    const begrunnelseForSenEndring = tilleggsopplysninger.begrunnelseForSenEndring
+        ? beskrivTilleggsopplysning(tilleggsopplysninger.begrunnelseForSenEndring)
+        : undefined;
 
     useEffect(() => {
         if (isSubmitting) {
-            const cleanedSøknad = cleanUpSøknadsdataForInnsending(søknad);
+            const cleanedSøknad = getSøknadsdataForInnsending(
+                søknad,
+                state.perioderSomSkalSendesInn,
+                state.endringstidspunkt
+            );
 
             Api.sendSøknad(cleanedSøknad, søkerinfo.person.fnr)
                 .then((response) => {
@@ -93,7 +111,7 @@ const Oppsummering = () => {
                     <OppsummeringFormComponents.Form includeButtons={false}>
                         <Step
                             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                            backLinkHref={getPreviousStepHref('oppsummering')}
+                            backLinkHref={getPreviousStepHref('oppsummering', søknad.erEndringssøknad)}
                             activeStepId="oppsummering"
                             pageTitle={intlUtils(intl, 'søknad.oppsummering')}
                             stepTitle={intlUtils(intl, 'søknad.oppsummering')}
@@ -140,11 +158,7 @@ const Oppsummering = () => {
                                             registrerteArbeidsforhold={arbeidsforhold}
                                             dekningsgrad={dekningsgrad}
                                             antallUkerUttaksplan={antallUkerUttaksplan}
-                                            begrunnelseForSenEndring={
-                                                søknad.tilleggsopplysninger
-                                                    ? søknad.tilleggsopplysninger.begrunnelseForSenEndring
-                                                    : undefined
-                                            }
+                                            begrunnelseForSenEndring={begrunnelseForSenEndring}
                                             //begrunnelseForSenEndringVedlegg={søknad.vedleggForSenEndring}
                                             eksisterendeUttaksplan={
                                                 eksisterendeSak ? eksisterendeSak.uttaksplan : undefined

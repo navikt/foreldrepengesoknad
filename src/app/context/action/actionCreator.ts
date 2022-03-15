@@ -36,11 +36,13 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_VEDLEGG = 'setVedlegg',
     LAG_UTTAKSPLANFORSLAG = 'lagUttaksplanforslag',
     SET_UTTAKSPLAN = 'setUttaksplan',
+    SET_PERIODER_SOM_SKAL_SENDES_INN = 'setPerioderSomSkalSendesInn',
     SET_SØKNAD = 'setSøknad',
     SET_EKSISTERENDE_SAK = 'setEksisterendeSak',
     SET_GODKJENT_OPPSUMMERING = 'setGodkjentOppsummering',
     SET_KVITTERING = 'setKvittering',
     SET_ANTALL_UKER_I_UTTAKSPLAN = 'setAntallUkerIUttaksplan',
+    SET_ENDRINGSTIDSPUNKT = 'setEndringstidspunkt',
     SET_SPRÅKKODE = 'setSpråkkode',
     SET_TILLEGGSOPPLYSNINGER = 'setTilleggsopplysninger',
 }
@@ -225,6 +227,16 @@ const setUttaksplan = (payload: Periode[]): SetUttaksplan => ({
     payload,
 });
 
+interface SetPerioderSomSkalSendesInn {
+    type: ForeldrepengesøknadContextActionKeys.SET_PERIODER_SOM_SKAL_SENDES_INN;
+    payload: Periode[];
+}
+
+const setPerioderSomSkalSendesInn = (payload: Periode[]): SetPerioderSomSkalSendesInn => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_PERIODER_SOM_SKAL_SENDES_INN,
+    payload,
+});
+
 interface SetSøknad {
     type: ForeldrepengesøknadContextActionKeys.SET_SØKNAD;
     payload: Søknad;
@@ -262,6 +274,16 @@ interface SetAntallUkerIUttaksplan {
 
 const setAntallUkerIUttaksplan = (payload: number): SetAntallUkerIUttaksplan => ({
     type: ForeldrepengesøknadContextActionKeys.SET_ANTALL_UKER_I_UTTAKSPLAN,
+    payload,
+});
+
+interface SetEndringstidspunkt {
+    type: ForeldrepengesøknadContextActionKeys.SET_ENDRINGSTIDSPUNKT;
+    payload: Date | undefined;
+}
+
+const setEndringstidspunkt = (payload: Date | undefined): SetEndringstidspunkt => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_ENDRINGSTIDSPUNKT,
     payload,
 });
 
@@ -307,9 +329,11 @@ export type ForeldrepengesøknadContextAction =
     | LagUttaksplanforslag
     | SetGodkjentOppsummering
     | SetAntallUkerIUttaksplan
+    | SetEndringstidspunkt
     | SetKvittering
     | SetSpråkkode
-    | SetUttaksplan;
+    | SetUttaksplan
+    | SetPerioderSomSkalSendesInn;
 
 export default {
     setVelkommen,
@@ -335,5 +359,7 @@ export default {
     setGodkjentOppsummering,
     setKvittering,
     setAntallUkerIUttaksplan,
+    setEndringstidspunkt,
     setSpråkkode,
+    setPerioderSomSkalSendesInn,
 };

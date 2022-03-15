@@ -35,7 +35,7 @@ interface Props {
     erDeltUttak: boolean;
     uttaksplan: Periode[];
     familiehendelsesdato: string;
-    handleOnPlanChange: (plan: Periode[]) => void;
+    handleOnPlanChange: (nyPlan: Periode[]) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
@@ -53,6 +53,7 @@ interface Props {
     antallBarn: number;
     tilleggsopplysninger: Tilleggsopplysninger;
     eksisterendeSak: EksisterendeSak | undefined;
+    perioderSomSkalSendesInn: Periode[];
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
 }
@@ -94,6 +95,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     antallBarn,
     tilleggsopplysninger,
     eksisterendeSak,
+    perioderSomSkalSendesInn,
     setUttaksplanErGyldig,
     handleBegrunnelseChange,
 }) => {
@@ -153,7 +155,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
             harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
             erAdopsjon: situasjon === 'adopsjon',
         });
-
         handleOnPlanChange(updatedPlan);
     };
 
@@ -184,8 +185,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
 
     const vedleggForSenEndring = []!; //TODO: handleBegrunnelseVedleggChange
 
-    //TODO: get perioderSomSkalSendesInn
-    const perioderSomSkalSendesInn = uttaksplan;
     const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderSomSkalSendesInn);
 
     const handleBegrunnelseTekstChange = (begrunnelse: string) => {

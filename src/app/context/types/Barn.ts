@@ -10,11 +10,10 @@ export enum BarnType {
 
 interface Common {
     type: BarnType;
-    antallBarn: string;
+    antallBarn: number;
     dokumentasjonAvAleneomsorg?: Attachment[];
     datoForAleneomsorg?: Date;
 }
-
 export interface FødtBarn extends Common {
     type: BarnType.FØDT;
     fødselsdatoer: Date[];

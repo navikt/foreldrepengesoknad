@@ -7,7 +7,6 @@ export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligSt
     stønadskontoTyper
         .filter(
             (kontoType) =>
-                kontoType.konto === StønadskontoType.Flerbarnsdager ||
                 kontoType.konto === StønadskontoType.Fellesperiode ||
                 kontoType.konto === StønadskontoType.Fedrekvote ||
                 kontoType.konto === StønadskontoType.Mødrekvote ||

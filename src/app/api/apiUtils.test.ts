@@ -1,8 +1,8 @@
 import AnnenForelder from 'app/context/types/AnnenForelder';
-import Barn, { BarnType } from 'app/context/types/Barn';
+import Barn, { BarnType, FødtBarn } from 'app/context/types/Barn';
 import { Søknad } from 'app/context/types/Søknad';
 import { Periode, PeriodeHull, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
-import { AnnenForelderOppgittForInnsending, cleanUpSøknadsdataForInnsending } from './apiUtils';
+import { AnnenForelderOppgittForInnsending, cleanSøknad } from './apiUtils';
 
 const getAnnenForelderUførMock = (
     urUførInput: boolean | undefined,
@@ -32,7 +32,13 @@ const getAnnenForelderIkkeOppgittMock = (): AnnenForelder => {
 };
 
 const getBarnMock = (datoForAleneomsorgInput: string | undefined) => {
-    return { type: BarnType.FØDT, datoForAleneomsorg: datoForAleneomsorgInput } as Barn;
+    return {
+        type: BarnType.FØDT,
+        datoForAleneomsorg: datoForAleneomsorgInput,
+        fødselsdatoer: [new Date('01-01-2022')],
+        termindato: new Date('01-02-2022'),
+        fnr: '01010111111',
+    } as FødtBarn;
 };
 
 const getSøknadMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaksplanInput: Periode[]) => {
@@ -48,6 +54,7 @@ const getSøknadMock = (annenForelderInput: AnnenForelder, barnInput: Barn, utta
             rolle: 'mor',
             situasjon: 'fødsel',
         },
+        tilleggsopplysninger: {},
     } as Søknad;
 };
 
@@ -55,7 +62,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     const barnMock = getBarnMock('2021-01-01');
     const annenForelderMock = getAnnenForelderUførMock(true, false);
     const søknadMedMorErUfør = getSøknadMock(annenForelderMock, barnMock, []);
-    const cleanedSøknad = cleanUpSøknadsdataForInnsending(søknadMedMorErUfør);
+    const cleanedSøknad = cleanSøknad(søknadMedMorErUfør);
 
     it('skal bytte navn på annenForelder.erUfør til annenForelder.harMorUføretrygd', () => {
         expect(cleanedSøknad.annenForelder.hasOwnProperty('harMorUføretrygd')).toBe(true);
@@ -70,37 +77,44 @@ describe('cleanUpSøknadsdataForInnsending', () => {
 
     it('skal ikke feile for ikke oppgitt forelder', () => {
         const søknadMedIkkeOppgitForelder = getSøknadMock(getAnnenForelderIkkeOppgittMock(), barnMock, []);
-        const cleanedSøknadUtenForelder = cleanUpSøknadsdataForInnsending(søknadMedIkkeOppgitForelder);
+        const cleanedSøknadUtenForelder = cleanSøknad(søknadMedIkkeOppgitForelder);
         expect(cleanedSøknadUtenForelder.annenForelder.kanIkkeOppgis).toBe(true);
     });
 
     it('skal ikke feile når ingen input om erUfør eller erForSyk på annenForelder', () => {
         const annenForelderUtenUførInfo = getAnnenForelderMock();
         const søknadMedAnnenForelderUtenUførInfo = getSøknadMock(annenForelderUtenUførInfo, barnMock, []);
-        const cleanedSøknadUtenUførInfo = cleanUpSøknadsdataForInnsending(søknadMedAnnenForelderUtenUførInfo);
+        const cleanedSøknadUtenUførInfo = cleanSøknad(søknadMedAnnenForelderUtenUførInfo);
         expect(cleanedSøknadUtenUførInfo.annenForelder.hasOwnProperty('erUfør')).toBe(false);
     });
 
     it('skal fjerne info om erMorForSyk fra periodene men ikke endre resten av uttaksplanen', () => {
         const periodeUttak = {
+            id: '0',
             type: Periodetype.Uttak,
             erMorForSyk: true,
+            tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
         } as Uttaksperiode;
         const periodeHull = {
+            id: '1',
             type: Periodetype.Hull,
+            tidsperiode: { fom: new Date('2021-01-04'), tom: new Date('2021-01-11') },
         } as PeriodeHull;
         const søknadMedUttaksPlan = getSøknadMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
-        const cleanedSøknadUtenUførInfo = cleanUpSøknadsdataForInnsending(søknadMedUttaksPlan);
+        const cleanedSøknadUtenUførInfo = cleanSøknad(søknadMedUttaksPlan);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.length).toBe(1);
         expect(cleanedSøknadUtenUførInfo.uttaksplan[0].hasOwnProperty('erMorForSyk')).toBe(false);
         const { erMorForSyk, ...expectedPeriodeUttak } = periodeUttak;
         expect(cleanedSøknadUtenUførInfo.uttaksplan[0]).toEqual(expectedPeriodeUttak);
     });
 
-    it('skal fjerne datoForAleneomsorg fra barn men ikke endre resten av objektet', () => {
-        const { datoForAleneomsorg, ...barnRest } = barnMock;
-        expect(cleanedSøknad.barn.hasOwnProperty('datoForAleneomsorg')).toBe(false);
-        expect(cleanedSøknad.barn).toEqual(barnRest);
+    it('skal fjerne datoForAleneomsorg, type og fnr fra født barn objektet og beholde fødsel og termindato', () => {
+        const barn = cleanedSøknad.barn as FødtBarn;
+        expect(barn.hasOwnProperty('datoForAleneomsorg')).toBe(false);
+        expect(barn.hasOwnProperty('type')).toBe(false);
+        expect(barn.hasOwnProperty('fnr')).toBe(false);
+        expect(barn.fødselsdatoer).toEqual(barnMock.fødselsdatoer);
+        expect(barn.termindato).toEqual(barnMock.termindato);
     });
 
     it('skal konvertere språkkode til upper case', () => {

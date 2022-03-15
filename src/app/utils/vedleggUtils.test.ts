@@ -135,6 +135,7 @@ describe('vedleggUtils', () => {
         const vedleggId = 'V965800832305819623633073432860601988';
 
         const søknad: SøknadForInnsending = {
+            saksnummer: undefined,
             type: 'foreldrepenger',
             harGodkjentVilkår: true,
             situasjon: 'adopsjon',
@@ -143,16 +144,18 @@ describe('vedleggUtils', () => {
             },
             barn: {
                 type: BarnType.ADOPTERT_STEBARN,
-                adopsjonsdato: '2022-02-10T00:00:00.000Z',
-                antallBarn: ' 1',
-                fødselsdatoer: ['2022-02-10T00:00:00.000Z'],
+                adopsjonsdato: new Date('2022-02-10'),
+                antallBarn: 1,
+                fødselsdatoer: [new Date('2022-02-10')],
                 dokumentasjonAvAleneomsorg: [
                     {
                         id: vedleggId,
                         filename: 'test.png',
                     } as Attachment,
                 ],
+                omsorgsovertakelse: [],
             } as BarnForInnsending,
+
             søker: {} as SøkerForInnsending,
             informasjonOmUtenlandsopphold: {} as InformasjonOmUtenlandsopphold,
             erEndringssøknad: false,
@@ -173,6 +176,7 @@ describe('vedleggUtils', () => {
 
     it('skal ikke gjøre noe dersom det ikke er noen vedlegg', () => {
         const søknad: SøknadForInnsending = {
+            saksnummer: undefined,
             type: 'foreldrepenger',
             harGodkjentVilkår: true,
             situasjon: 'adopsjon',
@@ -181,10 +185,13 @@ describe('vedleggUtils', () => {
             },
             barn: {
                 type: BarnType.ADOPTERT_STEBARN,
-                adopsjonsdato: '2022-02-10T00:00:00.000Z',
-                antallBarn: ' 1',
-                fødselsdatoer: ['2022-02-10T00:00:00.000Z'],
+                adopsjonsdato: new Date('2022-02-10'),
+                termindato: new Date('2022-02-01'),
+                antallBarn: 1,
+                fødselsdatoer: [new Date('2022-02-10')],
                 dokumentasjonAvAleneomsorg: [],
+                omsorgsovertakelse: [],
+                terminbekreftelse: [],
             } as BarnForInnsending,
             søker: {} as SøkerForInnsending,
             informasjonOmUtenlandsopphold: {} as InformasjonOmUtenlandsopphold,
@@ -207,6 +214,7 @@ describe('vedleggUtils', () => {
         const vedleggId = 'V2929901281987521738302824422140500220';
 
         const søknad: SøknadForInnsending = {
+            saksnummer: undefined,
             type: 'foreldrepenger',
             harGodkjentVilkår: true,
             situasjon: 'adopsjon',
@@ -215,15 +223,18 @@ describe('vedleggUtils', () => {
             },
             barn: {
                 type: BarnType.ADOPTERT_STEBARN,
-                adopsjonsdato: '2022-02-10T00:00:00.000Z',
-                antallBarn: ' 1',
-                fødselsdatoer: ['2022-02-10T00:00:00.000Z'],
+                adopsjonsdato: new Date('2022-02-10'),
+                antallBarn: 1,
+                fødselsdatoer: [new Date('2022-02-10')],
                 dokumentasjonAvAleneomsorg: [
                     {
                         id: vedleggId,
                         innsendingsType: 'SEND_SENERE',
                     } as Attachment,
                 ],
+                omsorgsovertakelse: [],
+                adopsjonsvedtak: [],
+                adopsjonAvEktefellesBarn: false,
             } as BarnForInnsending,
             søker: {} as SøkerForInnsending,
             informasjonOmUtenlandsopphold: {} as InformasjonOmUtenlandsopphold,

@@ -5,6 +5,7 @@ import Sak from 'app/types/Sak';
 import { Situasjon } from 'app/types/Situasjon';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Søkerrolle } from 'app/types/Søkerrolle';
+import { Periode } from 'uttaksplan/types/Periode';
 import { Søknad } from './types/Søknad';
 import UttaksplanInfo from './types/UttaksplanInfo';
 
@@ -21,6 +22,8 @@ export interface ForeldrepengesøknadContextState {
     kvittering: Kvittering;
     eksisterendeSak?: EksisterendeSak;
     antallUkerIUttaksplan: number;
+    endringstidspunkt?: Date;
+    perioderSomSkalSendesInn: Periode[];
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
@@ -58,10 +61,13 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
         tilleggsopplysninger: {
             begrunnelseForSenEndring: undefined!,
         },
+        saksnummer: undefined,
     },
     søkerinfo: undefined!,
     saker: [],
     uttaksplanInfo: undefined,
     antallUkerIUttaksplan: undefined!,
     kvittering: undefined!,
+    endringstidspunkt: undefined,
+    perioderSomSkalSendesInn: [],
 };

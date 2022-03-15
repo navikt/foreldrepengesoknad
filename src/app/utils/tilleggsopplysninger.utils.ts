@@ -1,4 +1,4 @@
-import { Tilleggsopplysning, Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
+import { Tilleggsopplysning } from 'app/context/types/Tilleggsopplysninger';
 
 const TIL_SAKSBEHANDLER = {
     'tilleggsopplysning.begrunnelseForSenEndring': 'Begrunnelse for å søke om utsettelse',
@@ -27,18 +27,3 @@ export const beskrivTilleggsopplysning = (tilleggsopplysning: Tilleggsopplysning
         tekst,
     };
 };
-
-const stringifyTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string => {
-    if (tilleggsopplysninger === undefined || tilleggsopplysninger.begrunnelseForSenEndring === undefined) {
-        return '';
-    }
-
-    const medBeskrivelse = beskrivTilleggsopplysning(tilleggsopplysninger.begrunnelseForSenEndring);
-    let tilSaksbehandler = medBeskrivelse.beskrivelse;
-    if (medBeskrivelse.ekstraInformasjon) {
-        tilSaksbehandler += ` ${medBeskrivelse.ekstraInformasjon}`;
-    }
-    return `${tilSaksbehandler}: ${medBeskrivelse.tekst}`;
-};
-
-export default stringifyTilleggsopplysninger;

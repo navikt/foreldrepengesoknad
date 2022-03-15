@@ -50,7 +50,7 @@ const lagSti = (stiDeler: string[]) => {
 const ManglendeVedlegg: React.FunctionComponent = () => {
     const intl = useIntl();
     const søknad = useSøknad();
-    const { uttaksplan } = søknad;
+    const { uttaksplan, erEndringssøknad } = søknad;
 
     const alleSendSenereVedlegg = finnSendSenereVedlegg(søknad);
     const alleStierMedManglendeVedlegg = Array.from(alleSendSenereVedlegg.keys());
@@ -105,7 +105,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        backLinkHref={getPreviousStepHref('omBarnet')}
+                        backLinkHref={getPreviousStepHref('omBarnet', erEndringssøknad)}
                         activeStepId="dokumentasjon"
                         pageTitle={intlUtils(intl, 'søknad.manglendeVedlegg')}
                         stepTitle={intlUtils(intl, 'søknad.manglendeVedlegg')}

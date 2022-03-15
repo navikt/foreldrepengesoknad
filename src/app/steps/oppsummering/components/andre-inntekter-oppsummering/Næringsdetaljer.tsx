@@ -1,6 +1,5 @@
 import { formatDate, intlUtils } from '@navikt/fp-common';
 import { Næring } from 'app/context/types/Næring';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import * as countries from 'i18n-iso-countries';
 import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
@@ -74,9 +73,7 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
                             'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt'
                         )}
                     >
-                        <Normaltekst>
-                            {formatDate(ISOStringToDate(endringAvNæringsinntektInformasjon?.dato)!)}
-                        </Normaltekst>
+                        <Normaltekst>{formatDate(endringAvNæringsinntektInformasjon!.dato)}</Normaltekst>
                     </OppsummeringsPunkt>
                     <OppsummeringsPunkt
                         title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring')}

@@ -155,7 +155,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     const erAdoptertIUtlandet = isAdoptertAnnetBarn(barn) ? barn.adoptertIUtlandet : false;
     const ankomstdato = isAdoptertAnnetBarn(barn) ? barn.ankomstdato : undefined;
-    const antallBarn = parseInt(barn.antallBarn, 10);
+    const antallBarn = barn.antallBarn;
     const latestDate =
         ankomstdato !== undefined && barn.adopsjonsdato !== undefined
             ? dateToISOString(findEldsteDato([ankomstdato, barn.adopsjonsdato])) // todo - sjekk logikk her

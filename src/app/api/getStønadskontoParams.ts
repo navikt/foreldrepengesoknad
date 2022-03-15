@@ -40,7 +40,7 @@ const getStønadskontoParams = (
     const erFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
     return {
-        antallBarn: barn.antallBarn,
+        antallBarn: barn.antallBarn.toString(),
         startdatoUttak: getFamiliehendelsedato(barn),
         dekningsgrad: dekningsgrad,
         farHarRett: getFarHarRett(erFarMedmor, annenForelder),
