@@ -107,7 +107,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                     førsteUttaksdagEtterSeksUker: Uttaksdagen(
                         Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
                     ).leggTil(30),
-                    situasjon: erFødsel ? 'fødsel' : 'adopsjon',
+                    situasjon: søkersituasjon.situasjon,
                     søkerErFarEllerMedmor: erFarEllerMedmor,
                     søkerHarMidlertidigOmsorg: false,
                     tilgjengeligeStønadskontoer:

@@ -27,6 +27,7 @@ import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import { SenEndringÅrsak } from './types/SenEndringÅrsak';
 import { getSeneEndringerSomKreverBegrunnelse } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -55,6 +56,20 @@ interface Props {
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
 }
+
+const getRelevantStartdato = (familiehendelsesdato: Date, erFarEllerMedmor: boolean, erAdopsjon: boolean) => {
+    const førsteUttaksdagEtterSeksUker = Uttaksdagen(Uttaksdagen(familiehendelsesdato).denneEllerNeste()).leggTil(30);
+
+    if (erFarEllerMedmor) {
+        if (erAdopsjon) {
+            return familiehendelsesdato;
+        }
+
+        return førsteUttaksdagEtterSeksUker;
+    }
+
+    return familiehendelsesdato;
+};
 
 const Uttaksplan: FunctionComponent<Props> = ({
     foreldreSituasjon,
@@ -85,6 +100,12 @@ const Uttaksplan: FunctionComponent<Props> = ({
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
+    const relevantStartdato = getRelevantStartdato(
+        familiehendelsesdatoDate,
+        erFarEllerMedmor,
+        situasjon === 'adopsjon'
+    );
+
     const handleDeletePeriode = (periodeId: string) => {
         const slettetPeriode = uttaksplan.find((p) => p.id === periodeId);
 
@@ -103,7 +124,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             familiehendelsesdato: familiehendelsesdatoDate!,
             erFlerbarnssøknad,
             erEndringsøknadUtenEkisterendeSak: false,
-            relevantStartDatoForUttak: familiehendelsesdatoDate,
+            relevantStartDatoForUttak: relevantStartdato,
             harMidlertidigOmsorg: false,
             harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
             erAdopsjon: situasjon === 'adopsjon',
@@ -128,7 +149,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             familiehendelsesdato: familiehendelsesdatoDate!,
             erFlerbarnssøknad,
             erEndringsøknadUtenEkisterendeSak: false,
-            relevantStartDatoForUttak: familiehendelsesdatoDate,
+            relevantStartDatoForUttak: relevantStartdato,
             harMidlertidigOmsorg: false,
             harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
             erAdopsjon: situasjon === 'adopsjon',
@@ -153,7 +174,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             familiehendelsesdato: familiehendelsesdatoDate!,
             erFlerbarnssøknad,
             erEndringsøknadUtenEkisterendeSak: false,
-            relevantStartDatoForUttak: familiehendelsesdatoDate,
+            relevantStartDatoForUttak: relevantStartdato,
             harMidlertidigOmsorg: false,
             harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
             erAdopsjon: situasjon === 'adopsjon',

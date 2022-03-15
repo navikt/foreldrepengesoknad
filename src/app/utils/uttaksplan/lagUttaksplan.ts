@@ -109,7 +109,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 kunFarMedmorHarRett,
                 familiehendelsesdato,
                 situasjon === 'adopsjon',
-                familiehendelsesdato
+                startdatoPermisjon ? ISOStringToDate(startdatoPermisjon) : familiehendelsesdato
             );
         }
     }
