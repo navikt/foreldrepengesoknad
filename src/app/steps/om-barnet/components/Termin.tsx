@@ -29,18 +29,20 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
 
     if (søkersituasjon.rolle !== 'mor') {
         return (
-            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                <FormattedMessage
-                    id="omBarnet.veileder.medMorEllerFarTermin"
-                    values={{
-                        lenke: (
-                            <Lenke href={links.papirsøknad}>
-                                <FormattedMessage id="omBarnet.papirsøknad.lenke" />
-                            </Lenke>
-                        ),
-                    }}
-                />
-            </Veilederpanel>
+            <Block padBottom="l">
+                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                    <FormattedMessage
+                        id="omBarnet.veileder.medMorEllerFarTermin"
+                        values={{
+                            lenke: (
+                                <Lenke href={links.papirsøknad}>
+                                    <FormattedMessage id="omBarnet.papirsøknad.lenke" />
+                                </Lenke>
+                            ),
+                        }}
+                    />
+                </Veilederpanel>
+            </Block>
         );
     }
 
