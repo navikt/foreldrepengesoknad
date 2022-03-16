@@ -4,8 +4,10 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
+import links from 'app/links/links';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
+import Lenke from 'nav-frontend-lenker';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -23,6 +25,23 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
 
     if (søkersituasjon.situasjon === 'adopsjon' || formValues.erBarnetFødt !== YesOrNo.NO) {
         return null;
+    }
+
+    if (søkersituasjon.rolle !== 'mor') {
+        return (
+            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                <FormattedMessage
+                    id="omBarnet.veileder.medMorEllerFarTermin"
+                    values={{
+                        lenke: (
+                            <Lenke href={links.papirsøknad}>
+                                <FormattedMessage id="omBarnet.papirsøknad.lenke" />
+                            </Lenke>
+                        ),
+                    }}
+                />
+            </Veilederpanel>
+        );
     }
 
     return (

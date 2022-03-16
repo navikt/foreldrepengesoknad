@@ -148,6 +148,8 @@
     "omBarnet.termindato.infotekst": "Hvis du har fått en dato for planlagt keisersnitt, legger du inn denne datoen som termindato. Du skal legge ved bekreftelse på keisersnitt hvis du kun mottar utbetalinger fra NAV, er selvstendig næringsdrivende eller frilanser.",
     "omBarnet.veileder.terminbekreftelse": "Du må legge ved en bekreftelse på termindato. Denne må være datert og signert av lege eller jordmor når du er i 22. svangerskapsuke eller senere.",
     "omBarnet.terminbekreftelseDato": "Når er terminbekreftelsen datert?",
+    "omBarnet.veileder.medMorEllerFarTermin": "Du kan dessverre ikke søke om foreldrepenger før barnet er født. Unntaket er hvis mor er syk eller innlagt på sykehus eller helseinstitusjon. Du må fylle ut søknaden på papir og sender den i posten. { lenke }",
+    "omBarnet.papirsøknad.lenke": "Her finner du papirsøknaden.",
     "annenForelder.aleneOmOmsorg": "Er du alene om omsorgen av barnet?",
     "annenForelder.aleneOmOmsorg.veileder": "Du har omsorgen for barnet alene, og du bor ikke sammen med den andre forelderen.",
     "annenForelder.aleneOmOmsorg.veileder.apneLabel": "Les mer om å være alene om omsorg for barnet",

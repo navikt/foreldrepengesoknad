@@ -148,6 +148,8 @@
     "omBarnet.termindato.infotekst": "Dersom du har fått ein dato for planlagd keisarsnitt, legg du inn denne datoen som termindato. Du skal leggje ved stadfesting på keisarsnitt dersom du kun mottar utbetaling fra NAV, er sjølvstendig næringsdrivande eller frilansar.",
     "omBarnet.veileder.terminbekreftelse": "Du må leggje ved ei stadfesting på termin. Stadfestinga må vere datert og signert av lege eller jordmor når du er i 22. svangerskapsveke eller seinare.",
     "omBarnet.terminbekreftelseDato": "Når er terminstadfestinga datert?",
+    "omBarnet.veileder.medMorEllerFarTermin": "Du kan dessverre ikkje søkje før barnet er født. Unntaket er dersom mor er sjuk eller innlagd på sjukehus eller helseinstitusjon. Du må fylle ut søknaden på papir og sende han i posten.{ lenke }",
+    "omBarnet.papirsøknad.lenke": "Her finn du papirsøknaden",
     "annenForelder.aleneOmOmsorg": "Er du åleine om omsorga av barnet?",
     "annenForelder.aleneOmOmsorg.veileder": "Du har omsorga for barnet åleine, og du bur ikkje saman med den andre forelderen.",
     "annenForelder.aleneOmOmsorg.veileder.apneLabel": "Les meir om å vera åleine om omsorg for barnet",
