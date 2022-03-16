@@ -113,7 +113,9 @@ export const getPeriodeUttakFormInitialValues = (
                 erMorForSyk: convertBooleanOrUndefinedToYesOrNo(periode.erMorForSyk),
                 hvemSkalTaUttak: periode.forelder || initialValues.hvemSkalTaUttak,
                 arbeidsformer:
-                    periode.arbeidsformer && periode.arbeidsformer.length > 0 ? periode.arbeidsformer[0] : '',
+                    periode.arbeidsformer && periode.arbeidsformer.length > 0
+                        ? getFrilansSNEllerOrgnr(periode.arbeidsformer, periode.orgnumre)
+                        : '',
                 konto: periode.konto || initialValues.konto,
                 samtidigUttak: convertBooleanOrUndefinedToYesOrNo(periode.ønskerSamtidigUttak),
                 samtidigUttakProsent: periode.samtidigUttakProsent || '',
@@ -155,6 +157,14 @@ export const getPeriodeUttakFormInitialValues = (
     return {
         ...initialValues,
     };
+};
+
+const getFrilansSNEllerOrgnr = (arbeidsformer: Arbeidsform[], orgnumre?: string[]): Arbeidsform => {
+    if (arbeidsformer.includes(Arbeidsform.frilans) || arbeidsformer.includes(Arbeidsform.selvstendignæringsdrivende)) {
+        return arbeidsformer[0];
+    }
+
+    return orgnumre![0] as Arbeidsform;
 };
 
 const getArbeidsform = (arbeidsformer: Arbeidsform[]): Arbeidsform[] => {
@@ -233,9 +243,7 @@ export const mapPeriodeUttakFormToPeriode = (
         erMorForSyk: convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk),
         gradert: convertYesOrNoOrUndefinedToBoolean(values.skalHaGradering),
         harIkkeAktivitetskrav: values.konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
-        orgnumre: getOrgnummer(
-            hasValue(values.arbeidsformer) ? getArbeidsform([values.arbeidsformer as Arbeidsform]) : []
-        ),
+        orgnumre: getOrgnummer(hasValue(values.arbeidsformer) ? [values.arbeidsformer as Arbeidsform] : []),
         stillingsprosent: hasValue(values.stillingsprosent) ? trimNumberValue(values.stillingsprosent!) : undefined,
         ønskerFlerbarnsdager: convertYesOrNoOrUndefinedToBoolean(values.ønskerFlerbarnsdager),
         ønskerSamtidigUttak: convertYesOrNoOrUndefinedToBoolean(values.samtidigUttak),
