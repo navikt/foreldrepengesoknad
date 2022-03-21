@@ -1,7 +1,8 @@
 import { hasValue } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FrilansOppdrag } from 'app/context/types/Frilans';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { FrilansoppdragModalFormData, FrilansoppdragModalFormField } from './frilansoppdragModalFormConfig';
 
@@ -33,8 +34,8 @@ export const mapFrilansoppdragModalValuesToState = (values: Partial<Frilansoppdr
         navnPåArbeidsgiver: values.navnOppdragsgiver!,
         pågående: convertYesOrNoOrUndefinedToBoolean(values.pågående)!,
         tidsperiode: {
-            fom: values.fom!,
-            tom: hasValue(values.tom) ? values.tom : undefined,
+            fom: ISOStringToDate(values.fom)!,
+            tom: hasValue(values.tom) ? ISOStringToDate(values.tom) : undefined,
         },
     };
 };
@@ -50,8 +51,8 @@ export const getInitialFrilansoppdragModalValues = (
 
     return {
         ...initialFrilansoppdragModalValues,
-        fom: oppdrag.tidsperiode.fom,
-        tom: oppdrag.tidsperiode.tom || '',
+        fom: dateToISOString(oppdrag.tidsperiode.fom),
+        tom: dateToISOString(oppdrag.tidsperiode.tom) || '',
         navnOppdragsgiver: oppdrag.navnPåArbeidsgiver,
         pågående: convertBooleanOrUndefinedToYesOrNo(oppdrag.pågående),
     };

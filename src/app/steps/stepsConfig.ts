@@ -78,8 +78,21 @@ const stepConfig = (intl: IntlShape): StepConfig[] => [
     },
 ];
 
-export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
+export const getPreviousStepHref = (id: StepIdWithBackHref, erEndringssøknad: boolean): string => {
     let href;
+    if (erEndringssøknad) {
+        switch (id) {
+            case 'dokumentasjon':
+                href = '/soknad/dokumentasjon';
+                break;
+            case 'oppsummering':
+                href = '/soknad/uttaksplan';
+                break;
+            default:
+                return id;
+        }
+        return href;
+    }
     switch (id) {
         case 'omBarnet':
             href = '/soknad/sokersituasjon';

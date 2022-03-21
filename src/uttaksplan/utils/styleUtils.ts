@@ -13,7 +13,7 @@ export const getStønadskontoFarge = (
     forIkon?: boolean,
     harMidlertidigOmsorg?: boolean
 ): UttaksplanColor => {
-    if (forIkon && (konto === StønadskontoType.Fellesperiode || konto === StønadskontoType.Flerbarnsdager)) {
+    if (forIkon && konto === StønadskontoType.Fellesperiode) {
         return UttaksplanColor.purpleBlue;
     }
 
@@ -31,7 +31,6 @@ export const getStønadskontoFarge = (
             case StønadskontoType.ForeldrepengerFørFødsel:
                 return UttaksplanColor.purple;
             case StønadskontoType.Fellesperiode:
-            case StønadskontoType.Flerbarnsdager:
                 return UttaksplanColor.purpleBlue;
             default:
                 return UttaksplanColor.transparent;

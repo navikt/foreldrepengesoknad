@@ -75,7 +75,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     } = useSøkerinfo();
     const lagretUttaksplanInfo = useUttaksplanInfo<MorFødselUttaksplanInfo>();
 
-    const antallBarn = parseInt(barn.antallBarn, 10);
+    const antallBarn = barn.antallBarn;
 
     const fødselsdato = isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
     const termindato = isFødtBarn(barn) ? barn.termindato : undefined;

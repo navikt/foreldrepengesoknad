@@ -153,6 +153,11 @@ const foreldrepengesøknadReducer = (
                     uttaksplan: action.payload,
                 },
             };
+        case ForeldrepengesøknadContextActionKeys.SET_PERIODER_SOM_SKAL_SENDES_INN:
+            return {
+                ...state,
+                perioderSomSkalSendesInn: action.payload,
+            };
         case ForeldrepengesøknadContextActionKeys.SET_SØKNAD:
             return {
                 ...state,
@@ -187,6 +192,11 @@ const foreldrepengesøknadReducer = (
             return {
                 ...state,
                 antallUkerIUttaksplan: action.payload,
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_ENDRINGSTIDSPUNKT:
+            return {
+                ...state,
+                endringstidspunkt: action.payload,
             };
         case ForeldrepengesøknadContextActionKeys.SET_SPRÅKKODE:
             return {

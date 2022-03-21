@@ -1,8 +1,8 @@
-import { TidsperiodeDate, TidsperiodeMedValgfriSluttdato } from '@navikt/fp-common';
+import { TidsperiodeMedValgfriSluttdatoDate } from '@navikt/fp-common';
 
 export interface Frilans {
     jobberFremdelesSomFrilans: boolean;
-    oppstart: string;
+    oppstart: Date;
     driverFosterhjem?: boolean;
     harJobbetForNærVennEllerFamilieSiste10Mnd: boolean;
     oppdragForNæreVennerEllerFamilieSiste10Mnd: FrilansOppdrag[];
@@ -10,14 +10,6 @@ export interface Frilans {
 
 export interface FrilansOppdrag {
     navnPåArbeidsgiver: string;
-    tidsperiode: TidsperiodeMedValgfriSluttdato;
+    tidsperiode: TidsperiodeMedValgfriSluttdatoDate;
     pågående: boolean;
-}
-
-export interface FrilansInnsending extends Omit<Frilans, 'oppdragForNæreVennerEllerFamilieSiste10Mnd'> {
-    oppdragForNæreVennerEllerFamilieSiste10Mnd: FrilansOppdragInnsending[];
-}
-
-export interface FrilansOppdragInnsending extends Omit<FrilansOppdrag, 'tidsperiode'> {
-    tidsperiode: Partial<TidsperiodeDate>;
 }

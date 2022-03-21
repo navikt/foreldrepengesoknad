@@ -3,7 +3,7 @@ import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import Sak, { FagsakStatus, SakType } from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
-import { Periode } from 'uttaksplan/types/Periode';
+import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextActionKeys } from '../action/actionCreator';
 import { ForeldrepengesøknadContextState, foreldrepengesøknadInitialState } from '../ForeldrepengesøknadContextConfig';
 import { AnnenForelderOppgitt } from '../types/AnnenForelder';
@@ -75,7 +75,7 @@ describe('<foreldrepengesøknadReducer>', () => {
 
     it('skal legge til barn i state', () => {
         const payload = {
-            antallBarn: '1',
+            antallBarn: 1,
         } as Barn;
 
         const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
@@ -324,6 +324,49 @@ describe('<foreldrepengesøknadReducer>', () => {
         expect(resultState).toStrictEqual({
             ...foreldrepengesøknadInitialState,
             antallUkerIUttaksplan: payload,
+        });
+    });
+    it('skal sette endringstidspunkt i state', () => {
+        const payload = new Date('2021-03-01');
+
+        const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
+            type: ForeldrepengesøknadContextActionKeys.SET_ENDRINGSTIDSPUNKT,
+            payload,
+        });
+
+        expect(resultState).toStrictEqual({
+            ...foreldrepengesøknadInitialState,
+            endringstidspunkt: payload,
+        });
+    });
+    it('skal sette perioderSomSkalSendes inn i state', () => {
+        const payload = [
+            {
+                id: '2',
+                tidsperiode: {
+                    fom: new Date('2021-10-10'),
+                    tom: new Date('2021-10-31'),
+                },
+                type: Periodetype.Utsettelse,
+            },
+            {
+                id: '3',
+                tidsperiode: {
+                    fom: new Date('2022-11-01'),
+                    tom: new Date('2022-2-13'),
+                },
+                type: Periodetype.Uttak,
+            },
+        ] as Periode[];
+
+        const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
+            type: ForeldrepengesøknadContextActionKeys.SET_PERIODER_SOM_SKAL_SENDES_INN,
+            payload,
+        });
+
+        expect(resultState).toStrictEqual({
+            ...foreldrepengesøknadInitialState,
+            perioderSomSkalSendesInn: payload,
         });
     });
 });

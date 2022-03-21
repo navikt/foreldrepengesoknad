@@ -7,7 +7,6 @@ export interface TilgjengeligeDager {
     dagerMor: number;
     dagerFarMedmor: number;
     dagerFelles: number;
-    flerbarnsdager: number;
     maksDagerMor: number;
     maksDagerFar: number;
     stønadskontoer: TilgjengeligStønadskonto[];

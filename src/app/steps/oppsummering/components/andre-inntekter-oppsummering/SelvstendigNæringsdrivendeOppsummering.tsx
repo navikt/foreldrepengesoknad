@@ -1,5 +1,4 @@
 import { formatDate, intlUtils } from '@navikt/fp-common';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
@@ -31,8 +30,8 @@ const SelvstendigNæringsdrivendeOppsummering: FunctionComponent = () => {
                     key: næring.navnPåNæringen + næring.tidsperiode,
                     headerVenstre: næring.navnPåNæringen,
                     headerHøyre: intlUtils(intl, 'tidsintervall', {
-                        fom: formatDate(ISOStringToDate(næring.tidsperiode.fom)!),
-                        tom: næring.pågående ? 'pågående' : formatDate(ISOStringToDate(næring.tidsperiode.tom)!),
+                        fom: formatDate(næring.tidsperiode.fom)!,
+                        tom: næring.pågående ? 'pågående' : formatDate(næring.tidsperiode.tom!),
                     }),
                     content: <Næringsdetaljer næring={næring} />,
                 }))}

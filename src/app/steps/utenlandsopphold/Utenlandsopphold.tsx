@@ -35,7 +35,7 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
-    const { informasjonOmUtenlandsopphold } = useSøknad();
+    const { informasjonOmUtenlandsopphold, erEndringssøknad } = useSøknad();
 
     const onValidSubmitHandler = (values: Partial<UtenlandsoppholdFormData>) => {
         const utenlandsopphold = mapUtenlandsoppholdFormDataToState(values);
@@ -63,7 +63,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         activeStepId="utenlandsopphold"
                         pageTitle={intlUtils(intl, 'søknad.utenlandsopphold')}
                         stepTitle={intlUtils(intl, 'søknad.utenlandsopphold')}
-                        backLinkHref={getPreviousStepHref('utenlandsopphold')}
+                        backLinkHref={getPreviousStepHref('utenlandsopphold', erEndringssøknad)}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}

@@ -10,9 +10,7 @@ interface Props {
     barn: Barn;
 }
 
-const getAntallBarnTekst = (antallBarnString: string, intl: IntlShape): string => {
-    const antallBarn = parseInt(antallBarnString, 10);
-
+const getAntallBarnTekst = (antallBarn: number, intl: IntlShape): string => {
     if (antallBarn === 1) {
         return intlUtils(intl, 'oppsummering.barn.antallBarn.ettBarn');
     }

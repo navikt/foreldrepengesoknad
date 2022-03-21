@@ -3,6 +3,7 @@ import { Attachment, InnsendingsType } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { guid } from 'nav-frontend-js-utils';
+import { Periode } from 'uttaksplan/types/Periode';
 
 const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
 
@@ -112,4 +113,21 @@ export const mapAttachmentsToSøknadForInnsending = (søknad: SøknadForInnsendi
         ...søknadCopy,
         vedlegg,
     };
+};
+
+export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
+    uttaksplan.forEach((p1: Periode) => {
+        if (p1.vedlegg) {
+            const vedleggIdRefs = p1.vedlegg.map((a: Attachment) => a.id);
+            uttaksplan.forEach((p2) => {
+                if (p1 !== p2 && p1.vedlegg && p2.vedlegg) {
+                    p2.vedlegg.forEach((a2) => {
+                        if (vedleggIdRefs.includes(a2.id)) {
+                            p2.vedlegg!.splice(p2.vedlegg!.indexOf(a2), 1);
+                        }
+                    });
+                }
+            });
+        }
+    });
 };

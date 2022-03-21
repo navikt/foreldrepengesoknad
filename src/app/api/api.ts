@@ -11,7 +11,7 @@ import Environment from 'app/Environment';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
 import { formaterDato } from 'app/utils/dateUtils';
-import { SøknadForInnsending } from './apiUtils';
+import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { hasValue } from '@navikt/fp-common';
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
@@ -158,7 +158,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams) => {
     };
 };
 
-function sendSøknad(søknad: SøknadForInnsending, fnr: string) {
+function sendSøknad(søknad: SøknadForInnsending | EndringssøknadForInnsending, fnr: string) {
     const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
 
     return getAxiosInstance(fnr).post(url, søknad, {

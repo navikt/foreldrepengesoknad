@@ -11,7 +11,7 @@
             "fødselsdatoer": [
                 "2021-03-15"
             ],
-            "antallBarn": "1",
+            "antallBarn": 1,
             "datoForAleneomsorg": "",
             "dokumentasjonAvAleneomsorg": []
         },
@@ -25,7 +25,8 @@
             "tidligereOpphold": [],
             "senereOpphold": []
         },
-        "erEndringssøknad": false
+        "erEndringssøknad": false,
+        "tilleggsopplysninger": {}
     },
     "version": 2,
     "currentRoute": "/soknad/uttaksplan-info"

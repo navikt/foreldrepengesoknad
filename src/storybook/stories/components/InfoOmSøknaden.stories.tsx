@@ -18,6 +18,7 @@ import { EksisterendeSak } from 'app/types/EksisterendeSak';
 
 const context = {
     søknad: {
+        saksnummer: undefined,
         type: 'foreldrepenger',
         harGodkjentVilkår: true,
         søkersituasjon: {
@@ -27,7 +28,7 @@ const context = {
         barn: {
             type: 'født',
             fødselsdatoer: [new Date('2021-03-15')],
-            antallBarn: '1',
+            antallBarn: 1,
             datoForAleneomsorg: undefined,
             dokumentasjonAvAleneomsorg: [],
         },
@@ -49,6 +50,8 @@ const context = {
     saker: [],
     kvittering: undefined!,
     antallUkerIUttaksplan: undefined!,
+    endringstidspunkt: undefined!,
+    perioderSomSkalSendesInn: [],
 } as ForeldrepengesøknadContextState;
 const søkerinfo = {
     søker: {

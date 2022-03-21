@@ -24,7 +24,7 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
-    const { søkersituasjon, barn } = useSøknad();
+    const { søkersituasjon, barn, erEndringssøknad } = useSøknad();
     const { arbeidsforhold, registrerteBarn } = useSøkerinfo();
 
     const onValidSubmitHandler = (values: Partial<OmBarnetFormData>) => {
@@ -56,7 +56,7 @@ const OmBarnet: React.FunctionComponent = () => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        backLinkHref={getPreviousStepHref('omBarnet')}
+                        backLinkHref={getPreviousStepHref('omBarnet', erEndringssøknad)}
                         activeStepId="omBarnet"
                         pageTitle={intlUtils(intl, 'søknad.omBarnet')}
                         stepTitle={intlUtils(intl, 'søknad.omBarnet')}

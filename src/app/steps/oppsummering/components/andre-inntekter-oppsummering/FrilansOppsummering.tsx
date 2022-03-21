@@ -1,5 +1,4 @@
 import { Block, formatDate, intlUtils } from '@navikt/fp-common';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
@@ -32,7 +31,7 @@ const FrilansOppsummering: FunctionComponent = () => {
         <>
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.frilans.tittel')} />
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.frilans.oppstartsdato')}>
-                <Normaltekst>{formatDate(ISOStringToDate(oppstart)!)}</Normaltekst>
+                <Normaltekst>{formatDate(oppstart)}</Normaltekst>
             </OppsummeringsPunkt>
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.frilans.fremdelesFrilans')}>
                 <Normaltekst>{jobberFremdelesSomFrilans ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}</Normaltekst>
@@ -58,8 +57,8 @@ const FrilansOppsummering: FunctionComponent = () => {
                                 key: navnPåArbeidsgiver + tidsperiode,
                                 headerVenstre: navnPåArbeidsgiver,
                                 headerHøyre: intlUtils(intl, 'tidsintervall', {
-                                    fom: formatDate(ISOStringToDate(tidsperiode.fom)!),
-                                    tom: pågående ? 'pågående' : formatDate(ISOStringToDate(tidsperiode.tom)!),
+                                    fom: formatDate(tidsperiode.fom!),
+                                    tom: pågående ? 'pågående' : formatDate(tidsperiode.tom!),
                                 }),
                             })
                         )}

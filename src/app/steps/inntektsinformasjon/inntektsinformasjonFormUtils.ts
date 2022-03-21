@@ -3,6 +3,7 @@ import { AnnenInntekt } from 'app/context/types/AnnenInntekt';
 import { Frilans, FrilansOppdrag } from 'app/context/types/Frilans';
 import { Næring } from 'app/context/types/Næring';
 import Søker from 'app/context/types/Søker';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { InntektsinformasjonFormData, InntektsinformasjonFormField } from './inntektsinformasjonFormConfig';
 
@@ -28,7 +29,7 @@ export const mapInntektsinformasjonFormDataToState = (
 
     if (values.hattInntektSomFrilans === YesOrNo.YES) {
         frilansInformasjon = {
-            oppstart: values.frilansOppstartsDato!,
+            oppstart: ISOStringToDate(values.frilansOppstartsDato)!,
             jobberFremdelesSomFrilans: convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser)!,
             harJobbetForNærVennEllerFamilieSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(
                 values.oppdragForNæreVennerEllerFamilie
@@ -60,7 +61,7 @@ export const getInitialInntektsinformasjonFormValues = (søker: Søker): Inntekt
             søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
         ),
         hattInntektSomFrilans: convertBooleanOrUndefinedToYesOrNo(søker.harJobbetSomFrilansSiste10Mnd),
-        frilansOppstartsDato: søker.frilansInformasjon ? søker.frilansInformasjon.oppstart : '',
+        frilansOppstartsDato: søker.frilansInformasjon ? søker.frilansInformasjon.oppstart.toString() : '',
         inntektSomFosterforelder: søker.frilansInformasjon
             ? convertBooleanOrUndefinedToYesOrNo(søker.frilansInformasjon.driverFosterhjem)
             : YesOrNo.UNANSWERED,

@@ -275,7 +275,7 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, søker
             if (sak.fødselsdato) {
                 return {
                     type: BarnType.FØDT,
-                    antallBarn: sak.antallBarn.toString(),
+                    antallBarn: sak.antallBarn,
                     fødselsdatoer: [new Date(sak.familiehendelseDato)],
                     termindato: sak.termindato ? new Date(sak.termindato) : undefined,
                 };
@@ -283,7 +283,7 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, søker
 
             return {
                 type: BarnType.UFØDT,
-                antallBarn: sak.antallBarn.toString(),
+                antallBarn: sak.antallBarn,
                 termindato: new Date(sak.familiehendelseDato),
                 terminbekreftelse: [],
             };
@@ -291,7 +291,7 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, søker
             return {
                 type: BarnType.ADOPTERT_STEBARN,
                 adopsjonsdato: new Date(sak.familiehendelseDato),
-                antallBarn: sak.antallBarn.toString(),
+                antallBarn: sak.antallBarn,
                 fødselsdatoer: [new Date(sak.familiehendelseDato)],
                 omsorgsovertakelse: [],
             };
@@ -427,6 +427,7 @@ export const opprettSøknadFraEksisterendeSak = (
         erEndringssøknad: true,
         dekningsgrad,
         uttaksplan,
+        saksnummer: sak.saksnummer,
     };
 
     return søknad;

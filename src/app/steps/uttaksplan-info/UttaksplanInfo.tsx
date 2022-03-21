@@ -24,7 +24,7 @@ const UttaksplanInfo = () => {
     const søknad = useSøknad();
     const { dispatch } = useForeldrepengesøknadContext();
 
-    const { barn, annenForelder, søkersituasjon } = søknad;
+    const { barn, annenForelder, søkersituasjon, erEndringssøknad } = søknad;
     const { registrerteBarn } = søkerinfo;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
@@ -74,7 +74,7 @@ const UttaksplanInfo = () => {
     return (
         <Step
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            backLinkHref={getPreviousStepHref('uttaksplanInfo')}
+            backLinkHref={getPreviousStepHref('uttaksplanInfo', erEndringssøknad)}
             activeStepId="uttaksplanInfo"
             pageTitle={intlUtils(intl, 'søknad.uttaksplanInfo')}
             stepTitle={intlUtils(intl, 'søknad.uttaksplanInfo')}

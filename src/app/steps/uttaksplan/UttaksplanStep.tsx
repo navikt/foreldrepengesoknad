@@ -32,10 +32,11 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import useDebounce from 'app/utils/hooks/useDebounce';
-import { storeAppState } from 'app/utils/submitUtils';
+import { getPerioderSomSkalSendesInn, storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SenEndringÅrsak } from 'uttaksplan/types/SenEndringÅrsak';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { getEndringstidspunkt } from 'app/utils/dateUtils';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -44,11 +45,17 @@ const UttaksplanStep = () => {
     const [uttaksplanErGyldig, setUttaksplanErGyldig] = useState(true);
     const [submitIsClicked, setSubmitIsClicked] = useState(false);
     const { dispatch, state } = useForeldrepengesøknadContext();
+    const [endringstidspunkt, setEndringstidspunkt] = useState(state.endringstidspunkt);
+    const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(state.perioderSomSkalSendesInn);
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
 
     const onValidSubmitHandler = () => {
         setSubmitIsClicked(true);
-        return [actionCreator.setTilleggsopplysninger(tilleggsopplysninger)];
+        return [
+            actionCreator.setTilleggsopplysninger(tilleggsopplysninger),
+            actionCreator.setEndringstidspunkt(endringstidspunkt),
+            actionCreator.setPerioderSomSkalSendesInn(perioderSomSkalSendesInn),
+        ];
     };
 
     const handleBegrunnelseChange = (årsak: SenEndringÅrsak, begrunnelse: string) => {
@@ -101,10 +108,11 @@ const UttaksplanStep = () => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
-    const antallBarn = parseInt(barn.antallBarn, 10);
+    const antallBarn = barn.antallBarn;
     const erFlerbarnssøknad = antallBarn > 1;
     const harMorRett = getMorHarRettPåForeldrepenger(rolle, erFarEllerMedmor, annenForelder);
     const eksisterendeSak = state.eksisterendeSak;
+    const opprinneligPlan = state.eksisterendeSak?.uttaksplan;
     const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
 
     const foreldreSituasjon = getForeldreparSituasjon(
@@ -122,9 +130,20 @@ const UttaksplanStep = () => {
         getStønadskontoParams(Dekningsgrad.ÅTTI_PROSENT, barn, annenForelder, søkersituasjon)
     );
 
-    const handleOnPlanChange = (plan: Periode[]) => {
+    const handleOnPlanChange = (nyPlan: Periode[]) => {
         setSubmitIsClicked(false);
-        dispatch(actionCreator.setUttaksplan(plan));
+        dispatch(actionCreator.setUttaksplan(nyPlan));
+        const tidspunktForEndring = getEndringstidspunkt(opprinneligPlan, nyPlan, erEndringssøknad);
+        console.log('Endringstidspkt: ', tidspunktForEndring);
+        setEndringstidspunkt(tidspunktForEndring);
+
+        const perioderForÅSendeInn = getPerioderSomSkalSendesInn(
+            nyPlan,
+            erEndringssøknad,
+            opprinneligPlan,
+            endringstidspunkt
+        );
+        setPerioderSomSkalSendesInn(perioderForÅSendeInn);
     };
 
     if (!stønadskontoer100 || !stønadskontoer80) {
@@ -148,7 +167,7 @@ const UttaksplanStep = () => {
     return (
         <Step
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            backLinkHref={getPreviousStepHref('uttaksplan')}
+            backLinkHref={getPreviousStepHref('uttaksplan', erEndringssøknad)}
             activeStepId="uttaksplan"
             pageTitle={intlUtils(intl, 'søknad.uttaksplan')}
             stepTitle={intlUtils(intl, 'søknad.uttaksplan')}
@@ -183,6 +202,7 @@ const UttaksplanStep = () => {
                 setUttaksplanErGyldig={setUttaksplanErGyldig}
                 handleBegrunnelseChange={handleBegrunnelseChange}
                 eksisterendeSak={eksisterendeSak}
+                perioderSomSkalSendesInn={perioderSomSkalSendesInn}
             />
             {!uttaksplanErGyldig && submitIsClicked && (
                 <Block textAlignCenter={true} padBottom="l">

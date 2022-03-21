@@ -1,4 +1,4 @@
-import { TidsperiodeMedValgfriSluttdato } from '@navikt/fp-common';
+import { TidsperiodeMedValgfriSluttdato, TidsperiodeMedValgfriSluttdatoDate } from '@navikt/fp-common';
 import { Attachment } from 'app/types/Attachment';
 
 export enum AnnenInntektType {
@@ -36,7 +36,7 @@ export interface VentelønnInntekt extends AnnenInntektBase {
 export type AnnenInntekt = SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUtlandetInntekt | VentelønnInntekt;
 
 export interface AnnenInntektBaseInnsending extends Omit<AnnenInntektBase, 'tidsperiode'> {
-    tidsperiode: TidsperiodeMedValgfriSluttdato;
+    tidsperiode: TidsperiodeMedValgfriSluttdatoDate;
 }
 
 export interface SluttpakkeInntektInnsending extends AnnenInntektBaseInnsending {
