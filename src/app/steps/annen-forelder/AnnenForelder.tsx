@@ -104,8 +104,8 @@ const AnnenForelder = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         backLinkHref={getPreviousStepHref('annenForelder')}
                         activeStepId="annenForelder"
-                        pageTitle={intlUtils(intl, 'søknad.søkersituasjon')}
-                        stepTitle={intlUtils(intl, 'søknad.søkersituasjon')}
+                        pageTitle={intlUtils(intl, 'søknad.annenForelder')}
+                        stepTitle={intlUtils(intl, 'søknad.annenForelder')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onForstettSøknadSenere}
                         steps={stepConfig(intl)}

@@ -6,7 +6,7 @@ import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
-import React, { FunctionComponent, useState } from 'react';
+import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Periode } from 'uttaksplan/types/Periode';
 import { VeiledermeldingerPerPeriode } from 'uttaksplan/validering/veilederInfo/types';
@@ -33,6 +33,7 @@ interface Props {
     situasjon: Situasjon;
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
     erMorUfør: boolean;
+    setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -52,6 +53,7 @@ const Planlegger: FunctionComponent<Props> = ({
     situasjon,
     meldingerPerPeriode,
     erMorUfør,
+    setPeriodeErGyldig,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -88,6 +90,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 situasjon={situasjon}
                                 meldingerPerPeriode={meldingerPerPeriode}
                                 erMorUfør={erMorUfør}
+                                setPeriodeErGyldig={setPeriodeErGyldig}
                             />
                         </section>
                     </Block>
@@ -108,6 +111,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 erDeltUttak={erDeltUttak}
                                 situasjon={situasjon}
                                 erMorUfør={erMorUfør}
+                                setPeriodeErGyldig={setPeriodeErGyldig}
                             />
                         </div>
                     )}

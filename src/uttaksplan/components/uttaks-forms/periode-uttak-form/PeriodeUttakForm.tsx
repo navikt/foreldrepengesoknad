@@ -6,7 +6,7 @@ import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import React, { Dispatch, FunctionComponent, useState } from 'react';
+import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
@@ -52,11 +52,12 @@ interface Props {
     situasjon: Situasjon;
     handleUpdatePeriode: (periode: Periode) => void;
     handleAddPeriode?: (nyPeriode: Periode) => void;
-    setNyPeriodeFormIsVisible?: Dispatch<React.SetStateAction<boolean>>;
+    setNyPeriodeFormIsVisible?: Dispatch<SetStateAction<boolean>>;
     toggleIsOpen?: (id: string) => void;
     handleDeletePeriode?: (periodeId: string) => void;
     isNyPeriode?: boolean;
     erMorUfør: boolean;
+    setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -111,6 +112,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     erDeltUttak,
     situasjon,
     erMorUfør,
+    setPeriodeErGyldig,
 }) => {
     const { tidsperiode } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
@@ -134,6 +136,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     return (
         <PeriodeUttakFormComponents.FormikWrapper
             initialValues={getPeriodeUttakFormInitialValues(periode, erDeltUttak, forelder, erMorUfør)}
+            enableReinitialize={false}
             onSubmit={(values: Partial<PeriodeUttakFormData>) =>
                 handleUpdatePeriode(
                     mapPeriodeUttakFormToPeriode(
@@ -143,8 +146,9 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     )
                 )
             }
-            renderForm={({ setFieldValue, values }) => {
+            renderForm={({ setFieldValue, values, isValid }) => {
                 const periodetype = getPeriodeType(values.hvemSkalTaUttak!, erFarEllerMedmor, values.konto!);
+                setPeriodeErGyldig(isValid);
 
                 const visibility = periodeUttakFormQuestionsConfig.getVisbility({
                     values,

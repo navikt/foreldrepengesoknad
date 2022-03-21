@@ -101,7 +101,6 @@ export const getPeriodeUttakFormInitialValues = (
     erMorUfør: boolean
 ): PeriodeUttakFormData => {
     const initialValues = getInitialValues(erDeltUttak, forelder, erMorUfør);
-
     if (periode !== undefined) {
         if (isUttaksperiode(periode)) {
             return {

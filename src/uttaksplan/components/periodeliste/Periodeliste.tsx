@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import { bemUtils } from '@navikt/fp-common';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
 import { isInfoPeriode, Periode } from 'uttaksplan/types/Periode';
@@ -27,6 +27,7 @@ interface Props {
     situasjon: Situasjon;
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
     erMorUfør: boolean;
+    setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
 }
 
 const Periodeliste: FunctionComponent<Props> = ({
@@ -45,6 +46,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     situasjon,
     meldingerPerPeriode,
     erMorUfør,
+    setPeriodeErGyldig,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -80,6 +82,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                     situasjon={situasjon}
                     meldinger={meldingerPerPeriode[p.id]}
                     erMorUfør={erMorUfør}
+                    setPeriodeErGyldig={setPeriodeErGyldig}
                 />
             ))}
         </div>

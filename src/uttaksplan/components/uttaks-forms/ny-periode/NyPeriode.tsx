@@ -4,7 +4,7 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Undertittel } from 'nav-frontend-typografi';
-import React, { Dispatch, FunctionComponent, useState } from 'react';
+import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
@@ -16,7 +16,7 @@ interface Props {
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
-    setNyPeriodeFormIsVisible: Dispatch<React.SetStateAction<boolean>>;
+    setNyPeriodeFormIsVisible: Dispatch<SetStateAction<boolean>>;
     arbeidsforhold: Arbeidsforhold[];
     isUtsettelse: boolean;
     handleAddPeriode: (nyPeriode: Periode) => void;
@@ -26,6 +26,7 @@ interface Props {
     erDeltUttak: boolean;
     situasjon: Situasjon;
     erMorUfør: boolean;
+    setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
 }
 
 const NyPeriode: FunctionComponent<Props> = ({
@@ -43,6 +44,7 @@ const NyPeriode: FunctionComponent<Props> = ({
     erDeltUttak,
     situasjon,
     erMorUfør,
+    setPeriodeErGyldig,
 }) => {
     const [periode, setPeriode] = useState<Periode>({
         type: isUtsettelse ? Periodetype.Utsettelse : Periodetype.Uttak,
@@ -73,6 +75,7 @@ const NyPeriode: FunctionComponent<Props> = ({
                 erDeltUttak={erDeltUttak}
                 situasjon={situasjon}
                 erMorUfør={erMorUfør}
+                setPeriodeErGyldig={setPeriodeErGyldig}
             />
         </>
     ) : (

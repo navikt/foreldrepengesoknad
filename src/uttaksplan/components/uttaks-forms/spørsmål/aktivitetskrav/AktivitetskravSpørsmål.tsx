@@ -168,6 +168,13 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
                 <FormComponents.Select
                     name={fieldName}
                     label={intlUtils(intl, 'uttaksplan.aktivitetskrav', { navnMor: navnPåForeldre.mor })}
+                    validate={(value: MorsAktivitet | '') => {
+                        if (!hasValue(value)) {
+                            return 'Aktivitetskrav må oppgis';
+                        }
+
+                        return undefined;
+                    }}
                 >
                     <option value="" />
                     {renderOptions(intl)}

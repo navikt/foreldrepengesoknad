@@ -6,7 +6,7 @@ import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import classNames from 'classnames';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
-import React, { FunctionComponent } from 'react';
+import React, { Dispatch, FunctionComponent, SetStateAction } from 'react';
 import { isForeldrepengerFørFødselUttaksperiode, Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { VeilederMessage } from 'uttaksplan/validering/veilederInfo/types';
 import VeilederMeldinger from 'uttaksplan/validering/veilederInfo/VeilederMeldinger';
@@ -38,6 +38,7 @@ interface Props {
     situasjon: Situasjon;
     meldinger?: VeilederMessage[];
     erMorUfør: boolean;
+    setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
 }
 
 const renderPeriodeListeInnhold = (
@@ -55,7 +56,8 @@ const renderPeriodeListeInnhold = (
     erAleneOmOmsorg: boolean,
     erDeltUttak: boolean,
     situasjon: Situasjon,
-    erMorUfør: boolean
+    erMorUfør: boolean,
+    setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -88,6 +90,7 @@ const renderPeriodeListeInnhold = (
                     erDeltUttak={erDeltUttak}
                     situasjon={situasjon}
                     erMorUfør={erMorUfør}
+                    setPeriodeErGyldig={setPeriodeErGyldig}
                 />
             );
         case Periodetype.Utsettelse:
@@ -130,6 +133,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     situasjon,
     meldinger = [],
     erMorUfør,
+    setPeriodeErGyldig,
 }) => {
     const bem = bemUtils('periodelisteItem');
     const melding = meldinger.length > 0 ? meldinger[0] : undefined;
@@ -166,7 +170,8 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     erAleneOmOmsorg,
                     erDeltUttak,
                     situasjon,
-                    erMorUfør
+                    erMorUfør,
+                    setPeriodeErGyldig
                 )}
             </EkspanderbartpanelBase>
         </article>

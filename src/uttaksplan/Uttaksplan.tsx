@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Block, intlUtils } from '@navikt/fp-common';
 import Planlegger from './components/planlegger/Planlegger';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
@@ -104,6 +104,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         erFarEllerMedmor,
         situasjon === 'adopsjon'
     );
+    const [periodeErGyldig, setPeriodeErGyldig] = useState(true);
 
     const handleDeletePeriode = (periodeId: string) => {
         const slettetPeriode = uttaksplan.find((p) => p.id === periodeId);
@@ -220,8 +221,13 @@ const Uttaksplan: FunctionComponent<Props> = ({
     });
 
     useEffect(() => {
-        const uttaksplanErGyldig = !uttaksplanValidering.harFeil;
-        setUttaksplanErGyldig(uttaksplanErGyldig);
+        if (!periodeErGyldig) {
+            setUttaksplanErGyldig(false);
+        } else if (uttaksplanValidering.harFeil) {
+            setUttaksplanErGyldig(false);
+        } else {
+            setUttaksplanErGyldig(true);
+        }
     });
 
     //TODO: trenges grupperAvvik i det hele tatt? Sendes inn som false her.
@@ -255,6 +261,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     situasjon={situasjon}
                     meldingerPerPeriode={meldingerPerPeriode}
                     erMorUfør={erMorUfør}
+                    setPeriodeErGyldig={setPeriodeErGyldig}
                 />
             </Block>
             <Block padBottom="l">
