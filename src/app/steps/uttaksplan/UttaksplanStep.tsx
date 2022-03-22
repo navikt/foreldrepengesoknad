@@ -80,7 +80,7 @@ const UttaksplanStep = () => {
     //TODO: what's the type here?
     const clickHandler = (values: any) => {
         setSubmitIsClicked(true);
-        if (uttaksplanErGyldig) {
+        if (uttaksplanErGyldig && !erTomEndringssøknad) {
             handleSubmit(values);
         }
     };
@@ -134,14 +134,13 @@ const UttaksplanStep = () => {
         setSubmitIsClicked(false);
         dispatch(actionCreator.setUttaksplan(nyPlan));
         const tidspunktForEndring = getEndringstidspunkt(opprinneligPlan, nyPlan, erEndringssøknad);
-        console.log('Endringstidspkt: ', tidspunktForEndring);
         setEndringstidspunkt(tidspunktForEndring);
 
         const perioderForÅSendeInn = getPerioderSomSkalSendesInn(
             nyPlan,
             erEndringssøknad,
             opprinneligPlan,
-            endringstidspunkt
+            tidspunktForEndring
         );
         setPerioderSomSkalSendesInn(perioderForÅSendeInn);
     };
@@ -163,6 +162,9 @@ const UttaksplanStep = () => {
 
     const valgteStønadskontoer =
         dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80];
+
+    const erTomEndringssøknad =
+        erEndringssøknad && (perioderSomSkalSendesInn === undefined || perioderSomSkalSendesInn.length === 0);
 
     return (
         <Step
@@ -208,6 +210,13 @@ const UttaksplanStep = () => {
                 <Block textAlignCenter={true} padBottom="l">
                     <AlertStripe type="feil">
                         <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidere" />
+                    </AlertStripe>
+                </Block>
+            )}
+            {erTomEndringssøknad && submitIsClicked && (
+                <Block textAlignCenter={true} padBottom="l">
+                    <AlertStripe type="feil">
+                        <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
                     </AlertStripe>
                 </Block>
             )}

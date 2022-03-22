@@ -738,6 +738,7 @@
     "uttaksplan.familiehendelsesdato.termin": "Termin {dato}",
     "uttaksplan.familiehendelsesdato.adopsjon": "Barnet er adoptert {dato}",
     "uttaksplan.validering.kanIkkeGåVidere": "Planen din inneheld feil som du må rette opp i før du kan gå vidare",
+    "uttaksplan.validering.kanIkkeGåVidereEndringssøknad": "Planen din inneheld ingen endringar. Du må gjøra ei endring for å gå vidare.",
     "uttaksplan.validering.samtidigUttaksprosent.required": "Du må oppgi hvor mange prosent med foreldrepenger du skal ta ut",
     "uttaksplan.validering.samtidigUttaksprosent.måVæreEtTall": "Prosent med foreldrepenger må være et tall",
     "uttaksplan.validering.samtidigUttaksprosent.måVæreStørreEnn0": "Prosent med foreldrepenger må være et tall større enn 0",
