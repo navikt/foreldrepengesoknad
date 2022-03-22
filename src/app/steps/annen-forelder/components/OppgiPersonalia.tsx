@@ -29,7 +29,8 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const bem = bemUtils('oppgiPersonalia');
-
+    const fornavnLabel = intlUtils(intl, 'annenForelder.spørsmål.fornavn');
+    const etternavnLabel = intlUtils(intl, 'annenForelder.spørsmål.etternavn');
     return (
         <div className={bem.block}>
             <SkjemaGruppe legend={<Element>{intlUtils(intl, 'annenForelder.spørsmål.navn')}</Element>}>
@@ -38,16 +39,16 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
                         <AnnenForelderFormComponents.Input
                             className={bem.element('nameInput')}
                             name={AnnenForelderFormField.fornavn}
-                            label={intlUtils(intl, 'annenForelder.spørsmål.fornavn')}
+                            label={fornavnLabel}
                             disabled={kanIkkeOppgis}
-                            validate={validateFornavn(intl, kanIkkeOppgis)}
+                            validate={validateFornavn(intl, fornavnLabel, kanIkkeOppgis)}
                         />
                         <AnnenForelderFormComponents.Input
                             className={bem.element('nameInput')}
                             name={AnnenForelderFormField.etternavn}
                             label={intlUtils(intl, 'annenForelder.spørsmål.etternavn')}
                             disabled={kanIkkeOppgis}
-                            validate={validateEtternavn(intl, kanIkkeOppgis)}
+                            validate={validateEtternavn(intl, etternavnLabel, kanIkkeOppgis)}
                         />
                     </div>
                 </Block>

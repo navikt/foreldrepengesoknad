@@ -8,6 +8,7 @@ import { AttachmentType } from 'app/types/AttachmentType';
 import { RegistrertBarn } from 'app/types/Person';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import { replaceInvisibleCharsWithSpace } from 'app/utils/stringUtils';
 import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 
@@ -75,8 +76,8 @@ export const cleanAnnenForelderFormData = (
 export const mapAnnenForelderFormToState = (values: Partial<AnnenForelderFormData>): AnnenForelder => {
     if (values.kanIkkeOppgis === false) {
         return {
-            etternavn: hasValue(values.etternavn) ? values.etternavn : undefined,
-            fornavn: hasValue(values.fornavn) ? values.fornavn : undefined,
+            etternavn: hasValue(values.etternavn) ? replaceInvisibleCharsWithSpace(values.etternavn!) : undefined,
+            fornavn: hasValue(values.fornavn) ? replaceInvisibleCharsWithSpace(values.fornavn!) : undefined,
             fnr: hasValue(values.fnr) ? values.fnr : undefined,
             bostedsland: hasValue(values.bostedsland) ? values.bostedsland : undefined,
             utenlandskFnr: hasValue(values.utenlandskFnr) ? values.utenlandskFnr : undefined,

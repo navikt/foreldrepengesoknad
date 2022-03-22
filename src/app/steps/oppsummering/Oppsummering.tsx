@@ -31,7 +31,7 @@ import './oppsummering.less';
 import SøknadRoutes from 'app/routes/routes';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
 import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'app/utils/personUtils';
-import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysninger.utils';
+import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
 
 const Oppsummering = () => {
     const intl = useIntl();

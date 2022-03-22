@@ -2,6 +2,9 @@ import dayjs from 'dayjs';
 import getIntlMock from 'utils-test/intl-test-helper';
 import { validateDatoForAleneomsorg, validateFornavn, validateEtternavn } from './annenForelderValidering';
 
+const fornavnLabel = 'Fornavn';
+const etternavnLabel = 'Etternavn';
+
 describe('annenForelderValidering', () => {
     const intlMock = getIntlMock();
 
@@ -45,7 +48,7 @@ describe('annenForelderValidering', () => {
         const kanIkkeOppgis = false;
         const fornavn = undefined;
 
-        const resultat = validateFornavn(intlMock, kanIkkeOppgis)(fornavn!);
+        const resultat = validateFornavn(intlMock, fornavnLabel, kanIkkeOppgis)(fornavn!);
 
         expect(resultat).toBe('Fornavn må fylles ut');
     });
@@ -54,7 +57,7 @@ describe('annenForelderValidering', () => {
         const kanIkkeOppgis = false;
         const fornavn = 'Solstråle';
 
-        const resultat = validateFornavn(intlMock, kanIkkeOppgis)(fornavn);
+        const resultat = validateFornavn(intlMock, fornavnLabel, kanIkkeOppgis)(fornavn);
 
         expect(resultat).toBeUndefined();
     });
@@ -63,7 +66,7 @@ describe('annenForelderValidering', () => {
         const kanIkkeOppgis = true;
         const fornavn = undefined;
 
-        const resultat = validateFornavn(intlMock, kanIkkeOppgis)(fornavn!);
+        const resultat = validateFornavn(intlMock, fornavnLabel, kanIkkeOppgis)(fornavn!);
 
         expect(resultat).toBeUndefined();
     });
@@ -72,7 +75,7 @@ describe('annenForelderValidering', () => {
         const kanIkkeOppgis = false;
         const etternavn = undefined;
 
-        const resultat = validateEtternavn(intlMock, kanIkkeOppgis)(etternavn!);
+        const resultat = validateEtternavn(intlMock, etternavnLabel, kanIkkeOppgis)(etternavn!);
 
         expect(resultat).toBe('Etternavn må fylles ut');
     });
@@ -81,7 +84,7 @@ describe('annenForelderValidering', () => {
         const kanIkkeOppgis = false;
         const etternavn = 'Solstråle';
 
-        const resultat = validateEtternavn(intlMock, kanIkkeOppgis)(etternavn);
+        const resultat = validateEtternavn(intlMock, etternavnLabel, kanIkkeOppgis)(etternavn);
 
         expect(resultat).toBeUndefined();
     });
@@ -90,7 +93,7 @@ describe('annenForelderValidering', () => {
         const kanIkkeOppgis = true;
         const etternavn = undefined;
 
-        const resultat = validateEtternavn(intlMock, kanIkkeOppgis)(etternavn!);
+        const resultat = validateEtternavn(intlMock, etternavnLabel, kanIkkeOppgis)(etternavn!);
 
         expect(resultat).toBeUndefined();
     });

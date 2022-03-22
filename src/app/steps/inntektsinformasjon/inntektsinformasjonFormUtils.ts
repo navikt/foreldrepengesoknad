@@ -1,10 +1,11 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { AnnenInntekt } from 'app/context/types/AnnenInntekt';
+import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import { Frilans, FrilansOppdrag } from 'app/context/types/Frilans';
 import { Næring } from 'app/context/types/Næring';
 import Søker from 'app/context/types/Søker';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import { replaceInvisibleCharsWithSpace } from 'app/utils/stringUtils';
 import { InntektsinformasjonFormData, InntektsinformasjonFormField } from './inntektsinformasjonFormConfig';
 
 export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData = {
@@ -16,6 +17,57 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
     [InntektsinformasjonFormField.inntektSomFosterforelder]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.hattAndreInntekter]: YesOrNo.UNANSWERED,
+};
+
+const cleanUpRegnskapsførerNæring = (næring: Næring): Næring => {
+    if (næring.harRegnskapsfører) {
+        return {
+            ...næring,
+            regnskapsfører: {
+                ...næring.regnskapsfører!,
+                navn: replaceInvisibleCharsWithSpace(næring.regnskapsfører!.navn),
+            },
+        };
+    }
+    return næring;
+};
+
+export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
+    const cleanedNavn = replaceInvisibleCharsWithSpace(næring.navnPåNæringen);
+    if (næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår) {
+        const cleanedEndringInformasjon = {
+            ...næring.endringAvNæringsinntektInformasjon!,
+            forklaring: replaceInvisibleCharsWithSpace(næring.endringAvNæringsinntektInformasjon!.forklaring),
+        };
+
+        return {
+            ...cleanUpRegnskapsførerNæring(næring),
+            navnPåNæringen: cleanedNavn,
+            endringAvNæringsinntektInformasjon: cleanedEndringInformasjon,
+        };
+    }
+    return {
+        ...cleanUpRegnskapsførerNæring(næring),
+        navnPåNæringen: cleanedNavn,
+    };
+};
+
+export const cleanupInvisibleCharsFromFrilansinformasjon = (frilansoppdrag: FrilansOppdrag[]): FrilansOppdrag[] => {
+    return frilansoppdrag.map((oppdrag: FrilansOppdrag) => ({
+        ...oppdrag,
+        navnPåArbeidsgiver: replaceInvisibleCharsWithSpace(oppdrag.navnPåArbeidsgiver),
+    }));
+};
+
+export const cleanupInvisibleCharsFromAndreInntekter = (andreInntekter: AnnenInntekt[]): AnnenInntekt[] => {
+    return andreInntekter!.map((inntekt) =>
+        inntekt.type === AnnenInntektType.JOBB_I_UTLANDET
+            ? {
+                  ...inntekt,
+                  arbeidsgiverNavn: replaceInvisibleCharsWithSpace(inntekt.arbeidsgiverNavn),
+              }
+            : inntekt
+    );
 };
 
 export const mapInntektsinformasjonFormDataToState = (
@@ -35,7 +87,7 @@ export const mapInntektsinformasjonFormDataToState = (
                 values.oppdragForNæreVennerEllerFamilie
             )!,
             driverFosterhjem: convertYesOrNoOrUndefinedToBoolean(values.inntektSomFosterforelder),
-            oppdragForNæreVennerEllerFamilieSiste10Mnd: frilansoppdrag!,
+            oppdragForNæreVennerEllerFamilieSiste10Mnd: cleanupInvisibleCharsFromFrilansinformasjon(frilansoppdrag!),
         };
     }
 
@@ -47,8 +99,12 @@ export const mapInntektsinformasjonFormDataToState = (
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(
             values.hattInntektSomNæringsdrivende
         )!,
-        andreInntekterSiste10Mnd: values.hattAndreInntekter === YesOrNo.YES ? andreInntekter : [],
-        selvstendigNæringsdrivendeInformasjon: values.hattInntektSomNæringsdrivende === YesOrNo.YES ? næringer : [],
+        andreInntekterSiste10Mnd:
+            values.hattAndreInntekter === YesOrNo.YES ? cleanupInvisibleCharsFromAndreInntekter(andreInntekter!) : [],
+        selvstendigNæringsdrivendeInformasjon:
+            values.hattInntektSomNæringsdrivende === YesOrNo.YES
+                ? næringer!.map((næring) => cleanupInvisibleCharsFromNæring(næring))
+                : [],
         frilansInformasjon: values.hattInntektSomFrilans === YesOrNo.YES ? frilansInformasjon : undefined,
     };
 };

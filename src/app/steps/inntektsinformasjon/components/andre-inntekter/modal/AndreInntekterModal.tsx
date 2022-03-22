@@ -25,6 +25,7 @@ import { validateAnnenInntektFom, validateAnnenInntektTom } from './../validatio
 
 import './andreInntekterModal.less';
 import dayjs from 'dayjs';
+import { validateRequiredTextInputField } from 'app/utils/validationUtil';
 
 interface Props {
     isOpen: boolean;
@@ -67,6 +68,8 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
         return 'inntektsinformasjon.andreInntekterModal.veileder.ventelønn';
     };
 
+    const navnPåArbeidsgiverLabel = intlUtils(intl, 'annenInntekt.spørsmål.arbeidsgiver');
+
     return (
         <Modal
             isOpen={isOpen}
@@ -106,7 +109,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                             <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.land)}>
                                 <AndreInntekterModalFormComponents.CountrySelect
                                     name={AndreInntekterFormField.land}
-                                    label={'Hvilket land har du jobbet i?'}
+                                    label={intlUtils(intl, 'annenInntekt.spørsmål.land')}
                                     useAlpha3Code={false}
                                 />
                             </Block>
@@ -116,7 +119,8 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                             >
                                 <AndreInntekterModalFormComponents.Input
                                     name={AndreInntekterFormField.navnPåArbeidsgiver}
-                                    label={'Oppgi navnet på arbeidsgiveren'}
+                                    label={navnPåArbeidsgiverLabel}
+                                    validate={validateRequiredTextInputField(navnPåArbeidsgiverLabel, intl)}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.fom)}>

@@ -57,6 +57,8 @@ const FrilansoppdragModal: FunctionComponent<Props> = ({
         onRequestClose();
     };
 
+    const oppdragsgiverNavnLabel = intlUtils(intl, 'inntektsinformasjon.frilansOppdrag.oppdragsgiver');
+
     return (
         <Modal
             isOpen={isOpen}
@@ -82,8 +84,8 @@ const FrilansoppdragModal: FunctionComponent<Props> = ({
                             <Block padBottom="l">
                                 <FrilansoppdragModalFormComponents.Input
                                     name={FrilansoppdragModalFormField.navnOppdragsgiver}
-                                    label={intlUtils(intl, 'inntektsinformasjon.frilansOppdrag.oppdragsgiver')}
-                                    validate={validateNavnPåOppdragsgiver(intl)}
+                                    label={oppdragsgiverNavnLabel}
+                                    validate={validateNavnPåOppdragsgiver(intl, oppdragsgiverNavnLabel)}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(FrilansoppdragModalFormField.fom)}>
