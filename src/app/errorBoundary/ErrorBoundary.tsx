@@ -1,5 +1,7 @@
 import React from 'react';
 import * as Sentry from '@sentry/browser';
+import Feilside from 'app/pages/feilside/Feilside';
+import links from 'app/links/links';
 
 interface State {
     eventId: string | null;
@@ -24,7 +26,21 @@ class ErrorBoundary extends React.Component<any, State> {
 
     render() {
         if (this.state.hasError) {
-            return <h1>Something went wrong.</h1>;
+            return (
+                <Feilside
+                    dokumenttittel="NAV Engangsstønad"
+                    ingress="Noe ingress her"
+                    tittel="Superkul tekst"
+                    illustrasjon={{
+                        tittel: 'Test',
+                        tekst: 'Noe annet',
+                        veileder: {
+                            ansikt: 'skeptisk',
+                        },
+                        lenke: { tekst: 'Lenke her', url: links.brukerstøtte },
+                    }}
+                />
+            );
         }
 
         return this.props.children;

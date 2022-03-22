@@ -21,7 +21,7 @@ const renderSpinner = () => (
 );
 
 const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
-    const { søkerinfoData } = Api.useSøkerinfo();
+    const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
     const { storageData } = Api.useStoredAppState();
     const { sakerData } = Api.useGetSaker(søkerinfoData ? søkerinfoData.søker.fnr : undefined);
     const { dispatch, state } = useForeldrepengesøknadContext();
@@ -40,6 +40,12 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
             dispatch(actionCreator.setSaker(sakerData));
         }
     }, [dispatch, storageData, søkerinfoData, sakerData]);
+
+    useEffect(() => {
+        if (søkerinfoError) {
+            throw new Error('Noe gikk galt med kallet til søkerinfo');
+        }
+    }, [søkerinfoError]);
 
     if (!state.søkerinfo || !sakerData) {
         return renderSpinner();
