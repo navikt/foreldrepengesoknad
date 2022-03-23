@@ -43,7 +43,9 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
 
     useEffect(() => {
         if (søkerinfoError) {
-            throw new Error('Noe gikk galt med kallet til søkerinfo');
+            throw new Error(
+                'Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.'
+            );
         }
     }, [søkerinfoError]);
 

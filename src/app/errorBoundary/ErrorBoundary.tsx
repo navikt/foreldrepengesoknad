@@ -6,16 +6,17 @@ import links from 'app/links/links';
 interface State {
     eventId: string | null;
     hasError: boolean;
+    error: Error | null;
 }
 
 class ErrorBoundary extends React.Component<any, State> {
     constructor(props: unknown) {
         super(props);
-        this.state = { eventId: null, hasError: false };
+        this.state = { eventId: null, hasError: false, error: null };
     }
 
     componentDidCatch(error: Error | null, errorInfo: any): void {
-        this.setState({ ...this.state, hasError: true });
+        this.setState({ ...this.state, hasError: true, error });
 
         Sentry.withScope((scope) => {
             scope.setExtras(errorInfo);
@@ -28,16 +29,16 @@ class ErrorBoundary extends React.Component<any, State> {
         if (this.state.hasError) {
             return (
                 <Feilside
-                    dokumenttittel="NAV Engangsstønad"
-                    ingress="Noe ingress her"
-                    tittel="Superkul tekst"
+                    dokumenttittel="NAV Foreldrepengesøknad"
+                    ingress={`${this.state.error?.message}`}
+                    tittel="Informasjon om feilen"
                     illustrasjon={{
-                        tittel: 'Test',
-                        tekst: 'Noe annet',
+                        tittel: 'Hei!',
+                        tekst: 'Noe har gått galt med søknaden.',
                         veileder: {
                             ansikt: 'skeptisk',
                         },
-                        lenke: { tekst: 'Lenke her', url: links.brukerstøtte },
+                        lenke: { tekst: 'Her finner du en lenke til brukerstøtte', url: links.brukerstøtte },
                     }}
                 />
             );
