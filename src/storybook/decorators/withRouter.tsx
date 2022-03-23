@@ -1,13 +1,10 @@
 import React from 'react';
-import { Router } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
-
-const history = createBrowserHistory();
+import { BrowserRouter } from 'react-router-dom';
 
 const withRouterProvider = (Story: any) => (
-    <Router history={history}>
+    <BrowserRouter>
         <Story />
-    </Router>
+    </BrowserRouter>
 );
 
 export default withRouterProvider;

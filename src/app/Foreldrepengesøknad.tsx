@@ -1,7 +1,7 @@
 import { Locale } from '@navikt/fp-common';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
 import actionCreator from './context/action/actionCreator';
 import { useForeldrepengesøknadContext } from './context/hooks/useForeldrepengesøknadContext';
@@ -54,7 +54,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
     }
 
     return (
-        <Router>
+        <BrowserRouter>
             <ForeldrepengesøknadRoutes
                 fornavn={state.søkerinfo.person.fornavn}
                 kjønn={state.søkerinfo.person.kjønn}
@@ -62,7 +62,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
                 onChangeLocale={onChangeLocale}
                 currentRoute={storageData ? storageData.currentRoute : SøknadRoutes.VELKOMMEN}
             />
-        </Router>
+        </BrowserRouter>
     );
 };
 

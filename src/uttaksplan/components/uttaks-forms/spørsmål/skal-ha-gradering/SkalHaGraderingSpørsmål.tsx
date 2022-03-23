@@ -16,11 +16,11 @@ interface Props {
 const getArbeidsOptions = (arbeidsforhold: Arbeidsforhold[]): RadioPanelProps[] => {
     const defaultOptions: RadioPanelProps[] = [
         {
-            label: 'Selvstendig',
+            label: 'Selvstendig næringsdrivende',
             value: Arbeidsform.selvstendignæringsdrivende,
         },
         {
-            label: ' Frilans',
+            label: 'Frilans',
             value: Arbeidsform.frilans,
         },
     ];

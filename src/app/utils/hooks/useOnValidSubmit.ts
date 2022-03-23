@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
@@ -12,7 +12,7 @@ const useOnValidSubmit = <T>(
     postSubmit: (state: ForeldrepengesøknadContextState) => Promise<any>
 ) => {
     const { dispatch, state } = useForeldrepengesøknadContext();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [harSubmitted, setSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState(undefined);
@@ -22,16 +22,16 @@ const useOnValidSubmit = <T>(
             postSubmit(state)
                 .then(() => {
                     if (nextRoute === SøknadRoutes.SØKNAD_SENDT) {
-                        history.push(nextRoute);
+                        navigate(nextRoute);
                     } else {
-                        history.push(state.currentRoute);
+                        navigate(state.currentRoute);
                     }
                 })
                 .catch((error) => {
                     setSubmitError(error);
                 });
         }
-    }, [harSubmitted, history, nextRoute, state, postSubmit]);
+    }, [harSubmitted, navigate, nextRoute, state, postSubmit]);
 
     useEffect(() => {
         if (submitError) {

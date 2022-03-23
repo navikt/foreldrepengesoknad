@@ -190,6 +190,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                                 label="Startdato"
                                 validate={validateStartdatoUttakFarMedmorAleneomsorgFødsel(intl, familiehendelsesdato)}
                                 minDate={ISOStringToDate(familiehendelsesdato)}
+                                placeholder={'dd.mm.åååå'}
                             />
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>

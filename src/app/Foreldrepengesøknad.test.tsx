@@ -42,6 +42,7 @@ describe('<Foreldrepengesøknad>', () => {
             søkerinfoData: {
                 søker: {
                     fornavn: 'Olga',
+                    fnr: '12117212090',
                 },
                 arbeidsforhold: [
                     {

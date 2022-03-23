@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import SøknadRoutes from './routes';
 import * as context from 'app/context/hooks/useForeldrepengesøknadContext';
@@ -15,7 +15,9 @@ describe('<ForeldrepengesøknadRoutes>', () => {
         currentRoute: SøknadRoutes.VELKOMMEN,
         søkerinfo: {
             arbeidsforhold: [],
-            person: {} as Person,
+            person: {
+                fornavn: 'Ola',
+            } as Person,
             registrerteBarn: [],
         } as Søkerinfo,
         søknad: {
@@ -36,7 +38,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
             dispatch: () => jest.fn(),
         }));
         render(
-            <Router>
+            <BrowserRouter>
                 <IntlProvider locale="nb">
                     <ForeldrepengesøknadRoutes
                         fornavn="Espen"
@@ -46,7 +48,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                         currentRoute={SøknadRoutes.VELKOMMEN}
                     />
                 </IntlProvider>
-            </Router>
+            </BrowserRouter>
         );
 
         expect(screen.queryByText('Hei, Espen!')).toBeInTheDocument();
@@ -68,12 +70,20 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                         språkkode: 'nb',
                     },
                 } as Søknad,
+                søkerinfo: {
+                    person: {
+                        erMyndig: true,
+                        fornavn: 'Ola',
+                    } as Person,
+                    arbeidsforhold: [],
+                    registrerteBarn: [],
+                } as Søkerinfo,
                 saker: [],
             },
             dispatch: () => jest.fn(),
         }));
         render(
-            <Router>
+            <BrowserRouter>
                 <IntlProvider locale="nb">
                     <ForeldrepengesøknadRoutes
                         fornavn="Espen"
@@ -83,7 +93,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                         currentRoute={SøknadRoutes.OM_BARNET}
                     />
                 </IntlProvider>
-            </Router>
+            </BrowserRouter>
         );
 
         expect(screen.queryByText('Om barnet')).toBeInTheDocument();

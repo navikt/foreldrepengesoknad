@@ -3,13 +3,11 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import * as context from 'app/context/hooks/useForeldrepengesøknadContext';
 import useAvbrytSøknad from './useAvbrytSøknad';
 
-const mockHistoryPush = jest.fn();
+const mockedNavigator = jest.fn();
 
 jest.mock('react-router', () => ({
     ...(jest.requireActual('react-router') as any),
-    useHistory: () => ({
-        push: mockHistoryPush,
-    }),
+    useNavigate: () => mockedNavigator,
 }));
 
 describe('useAvbrytSøknad', () => {
@@ -31,7 +29,7 @@ describe('useAvbrytSøknad', () => {
 
         result.current();
 
-        expect(mockHistoryPush).toHaveBeenCalledTimes(1);
+        expect(mockedNavigator).toHaveBeenCalledTimes(1);
         expect(dispatchMock).toHaveBeenCalledTimes(1);
     });
 });

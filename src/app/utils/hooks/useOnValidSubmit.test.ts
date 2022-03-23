@@ -5,13 +5,11 @@ import * as context from 'app/context/hooks/useForeldrepengesøknadContext';
 import useOnValidSubmit from './useOnValidSubmit';
 import { storeAppState } from '../submitUtils';
 
-const mockHistoryPush = jest.fn();
+const mockedNavigator = jest.fn();
 
 jest.mock('react-router', () => ({
     ...(jest.requireActual('react-router') as any),
-    useHistory: () => ({
-        push: mockHistoryPush,
-    }),
+    useNavigate: () => mockedNavigator,
 }));
 
 describe('useOnValidSubmit', () => {
@@ -40,7 +38,7 @@ describe('useOnValidSubmit', () => {
 
         expect(lagre).not.toBeUndefined;
         expect(dispatchMock).toHaveBeenCalledTimes(0);
-        expect(mockHistoryPush).toHaveBeenCalledTimes(0);
+        expect(mockedNavigator).toHaveBeenCalledTimes(0);
     });
 
     it('skal returnere og så kjøre funksjon for å lagre data til state og så til server', async () => {
@@ -75,6 +73,6 @@ describe('useOnValidSubmit', () => {
         await waitForNextUpdate();
 
         expect(dispatchMock).toHaveBeenCalledTimes(2);
-        setTimeout(() => expect(mockHistoryPush).toHaveBeenCalledTimes(1), 0);
+        setTimeout(() => expect(mockedNavigator).toHaveBeenCalledTimes(1), 0);
     });
 });

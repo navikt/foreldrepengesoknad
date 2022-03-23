@@ -25,7 +25,7 @@ import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepen
 import Api from 'app/api/api';
 import actionCreator from 'app/context/action/actionCreator';
 import { getSøknadsdataForInnsending } from 'app/api/apiUtils';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import './oppsummering.less';
 import SøknadRoutes from 'app/routes/routes';
@@ -36,7 +36,7 @@ import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysninger.utils'
 const Oppsummering = () => {
     const intl = useIntl();
     const { dispatch, state } = useForeldrepengesøknadContext();
-    const history = useHistory();
+    const navigate = useNavigate();
     const { kvittering, eksisterendeSak } = state;
     const bem = bemUtils('oppsummering');
 
@@ -83,9 +83,9 @@ const Oppsummering = () => {
     useEffect(() => {
         if (kvittering !== undefined) {
             setIsSubmitting(false);
-            history.push(SøknadRoutes.SØKNAD_SENDT);
+            navigate(SøknadRoutes.SØKNAD_SENDT);
         }
-    }, [kvittering, history]);
+    }, [kvittering, navigate]);
 
     useEffect(() => {
         if (submitError !== undefined) {

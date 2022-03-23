@@ -4,6 +4,7 @@ import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/pages/Velkommen.stories';
 import userEvent from '@testing-library/user-event';
 import Api from 'app/api/api';
+import { MemoryRouter } from 'react-router-dom';
 
 const { Default, HarOpprettetFPSak, HarFPSakUnderBehandling, HarLøpendeFPSak, HarAvsluttetFPSak, HarFlereSaker } =
     composeStories(stories);
@@ -19,7 +20,7 @@ describe('<Velkommen>', () => {
     });
 
     it('skal vise velkommen-side uten sak informasjon', async () => {
-        render(<Default />);
+        render(<Default />, { wrapper: MemoryRouter });
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
         expect(screen.getByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
@@ -29,7 +30,7 @@ describe('<Velkommen>', () => {
     });
 
     it('skal vise velkommen-side med siste opprettede sak hvis har flere saker', async () => {
-        render(<HarFlereSaker />);
+        render(<HarFlereSaker />, { wrapper: MemoryRouter });
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
         expect(screen.getByText('Foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Sist endret: 5', { exact: false })).toBeInTheDocument();
@@ -37,7 +38,7 @@ describe('<Velkommen>', () => {
     });
 
     it.each(sakerUnderBehandling)(`skal vise velkommen-side med opprettet/under behandling sak status`, async (Sak) => {
-        render(<Sak />);
+        render(<Sak />, { wrapper: MemoryRouter });
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
         expect(screen.getByText('Foreldrepenger')).toBeInTheDocument();
@@ -52,7 +53,7 @@ describe('<Velkommen>', () => {
     });
 
     it.each(sakerAvsluttet)('skal vise velkommen-side med avsluttet/løpende behandling sak status', async (Sak) => {
-        render(<Sak />);
+        render(<Sak />, { wrapper: MemoryRouter });
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
         expect(screen.queryByText('Jeg bekrefter at jeg har lest og forstått')).not.toBeInTheDocument();
