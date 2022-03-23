@@ -1,5 +1,4 @@
 import Api from 'app/api/api';
-import { getSøknadsdataForInnsending } from 'app/api/apiUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 import { AxiosResponse } from 'axios';
@@ -55,15 +54,4 @@ const getEndretUttaksplanForInnsending = (nyPlan: Periode[], endringstidspunkt: 
     }
 
     return finnEndringerIUttaksplan(nyPlan, endringstidspunkt).filter(erPeriodeSomSkalSendesInn);
-};
-
-export const sendInnSøknad = (state: ForeldrepengesøknadContextState): Promise<AxiosResponse<any>> => {
-    const cleanedSøknad = getSøknadsdataForInnsending(
-        state.søknad,
-        //action.missingAttachments,
-        state.perioderSomSkalSendesInn,
-        state.endringstidspunkt
-    );
-
-    return Api.sendSøknad(cleanedSøknad, state.søkerinfo.person.fnr);
 };

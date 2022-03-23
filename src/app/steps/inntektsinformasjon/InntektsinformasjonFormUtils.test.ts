@@ -105,7 +105,7 @@ describe('InntektsinformasjonFormUtils', () => {
         const cleanedAndreInntekter = cleanupInvisibleCharsFromAndreInntekter(andreInntekter);
         expect(cleanedAndreInntekter.length).toEqual(2);
         const inntektIUtlandet = cleanedAndreInntekter[0] as JobbIUtlandetInntekt;
-        expect(inntektIUtlandet.arbeidsgiverNavn!).toEqual(cleanedNavnPåArbeidsgiver);
+        expect(inntektIUtlandet.arbeidsgiverNavn).toEqual(cleanedNavnPåArbeidsgiver);
         expect(inntektIUtlandet.pågående).toEqual(andreInntekter[0].pågående);
         expect(cleanedAndreInntekter[1]).toEqual(andreInntekter[1]);
     });

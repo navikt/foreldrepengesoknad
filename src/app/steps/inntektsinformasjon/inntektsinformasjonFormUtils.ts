@@ -60,7 +60,7 @@ export const cleanupInvisibleCharsFromFrilansinformasjon = (frilansoppdrag: Fril
 };
 
 export const cleanupInvisibleCharsFromAndreInntekter = (andreInntekter: AnnenInntekt[]): AnnenInntekt[] => {
-    return andreInntekter!.map((inntekt) =>
+    return andreInntekter.map((inntekt) =>
         inntekt.type === AnnenInntektType.JOBB_I_UTLANDET
             ? {
                   ...inntekt,
