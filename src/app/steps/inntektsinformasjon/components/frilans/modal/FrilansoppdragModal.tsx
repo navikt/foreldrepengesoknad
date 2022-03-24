@@ -36,6 +36,10 @@ interface Props {
     oppstartsdato: string;
 }
 
+const startetSomFrilansIForrigeKalenderårEllerTidligere = (oppstartsdato: string) => {
+    return dayjs(oppstartsdato).year() < dayjs().year();
+};
+
 const FrilansoppdragModal: FunctionComponent<Props> = ({
     isOpen,
     title,
@@ -97,6 +101,7 @@ const FrilansoppdragModal: FunctionComponent<Props> = ({
                                     validate={validateOppdragFom(intl, formValues.tom, oppstartsdato)}
                                     minDate={dayjs(oppstartsdato).toDate()}
                                     maxDate={dayjs().toDate()}
+                                    showYearSelector={startetSomFrilansIForrigeKalenderårEllerTidligere(oppstartsdato)}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(FrilansoppdragModalFormField.pågående)}>
