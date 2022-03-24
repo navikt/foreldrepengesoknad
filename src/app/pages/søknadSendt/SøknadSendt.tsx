@@ -16,18 +16,35 @@ import dayjs from 'dayjs';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { MissingAttachment } from 'app/types/MissingAttachment';
-
-import './søknadSendt.less';
+import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import SøknadSendtTittel from './components/SøknadSendtTittel';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { Periode } from 'uttaksplan/types/Periode';
+
+import './søknadSendt.less';
+import { formaterDato } from 'app/utils/dateUtils';
+
+const getBehandlingsFrist = (uttaksplan: Periode[]): string => {
+    const førsteUttaksdag = dayjs(Periodene(uttaksplan).getFørsteUttaksdagEksluderInfoperioderOgFrittUttak()).subtract(
+        4,
+        'weeks'
+    );
+
+    const førsteMuligeBehandlingsfrist = dayjs(new Date()).isSameOrAfter(førsteUttaksdag)
+        ? new Date()
+        : førsteUttaksdag.toDate();
+
+    return formaterDato(førsteMuligeBehandlingsfrist);
+};
 
 const SøknadSendt = () => {
     const søkerinfo = useSøkerinfo();
     const { state } = useForeldrepengesøknadContext();
-    const { kvittering } = state;
+    const { kvittering, søknad } = state;
+    const { uttaksplan } = søknad;
     const missingAttachments: MissingAttachment[] = [];
     const erEndringssøknad = false;
-    const behandlingsFrist = '2021-06-14';
+    const behandlingsFrist = getBehandlingsFrist(uttaksplan);
     const intl = useIntl();
     const { person, arbeidsforhold } = søkerinfo;
     const bem = bemUtils('søknadSendt');
@@ -68,7 +85,7 @@ const SøknadSendt = () => {
                                 info={intlUtils(intl, 'søknadSendt.når.infoBox')}
                                 infoApneLabel={intlUtils(intl, 'søknadSendt.når.infoBox.apneLabel')}
                             >
-                                <Normaltekst>{dayjs(behandlingsFrist).format('D. MMMM YYYY')}</Normaltekst>
+                                <Normaltekst>{behandlingsFrist}</Normaltekst>
                             </SøknadSendtSectionHeader>
                         </Block>
 

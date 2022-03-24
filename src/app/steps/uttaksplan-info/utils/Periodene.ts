@@ -9,6 +9,7 @@ import {
     isOppholdsperiode,
     isOverføringsperiode,
     isPeriodeUtenUttak,
+    isPeriodeUtenUttakUtsettelse,
     isUtsettelsePgaFerie,
     isUtsettelsesperiode,
     isUttaksperiode,
@@ -55,7 +56,8 @@ export const Periodene = (perioder: Periode[]) => ({
     getForeldrepengerFørTermin: () => getForeldrepengerFørTermin(perioder),
     getFørsteUttaksdag: () => getFørsteUttaksdag(perioder),
     getFørsteUttaksdagEtterSistePeriode: () => getFørsteUttaksdagEtterSistePeriode(perioder),
-    getFørsteUttaksdagEksluderInfoperioder: () => getFørsteUttaksdagEksluderInfoperioder(perioder),
+    getFørsteUttaksdagEksluderInfoperioderOgFrittUttak: () =>
+        getFørsteUttaksdagEksluderInfoperioderOgFrittUttak(perioder),
     getAntallUttaksdager: () => getAntallUttaksdager(perioder),
     getAntallFeriedager: (forelder?: Forelder) => getAntallFeriedager(perioder, forelder),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
@@ -281,9 +283,15 @@ function getFørsteUttaksdag(perioder: Periode[]): Date | undefined {
     return undefined;
 }
 
-function getFørsteUttaksdagEksluderInfoperioder(perioder: Periode[]): Date | undefined {
+function getFørsteUttaksdagEksluderInfoperioderOgFrittUttak(perioder: Periode[]): Date | undefined {
     const førstePeriode = perioder
-        .filter((p) => p.tidsperiode.fom !== undefined && !isInfoPeriode(p))
+        .filter(
+            (p) =>
+                p.tidsperiode.fom !== undefined &&
+                !isInfoPeriode(p) &&
+                !isPeriodeUtenUttak(p) &&
+                !isPeriodeUtenUttakUtsettelse(p)
+        )
         .sort(sorterPerioder)
         .shift();
     if (førstePeriode) {
