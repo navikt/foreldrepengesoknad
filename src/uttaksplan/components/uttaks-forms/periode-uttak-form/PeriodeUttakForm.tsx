@@ -114,7 +114,6 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     erMorUfør,
     setPeriodeErGyldig,
 }) => {
-    const { tidsperiode } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUttakForm');
 
@@ -167,9 +166,9 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
 
                 return (
                     <>
-                        <Block visible={!isValidTidsperiode(tidsperiode)} padBottom="l">
+                        <Block visible={!isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="l">
                             <TidsperiodeForm
-                                tidsperiode={tidsperiode}
+                                tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                 familiehendelsesdato={familiehendelsesdato}
                                 onBekreft={(values) => {
                                     setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
@@ -181,9 +180,9 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         <PeriodeUttakFormComponents.Form includeButtons={false}>
                             <SubmitListener cleanup={() => handleCleanup(values, visibility)} />
 
-                            <Block visible={isValidTidsperiode(tidsperiode)} padBottom="l">
+                            <Block visible={isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="l">
                                 <TidsperiodeDisplay
-                                    tidsperiode={tidsperiode}
+                                    tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     toggleVisTidsperiode={toggleVisTidsperiode}
                                 />
                                 <UttakEndreTidsperiodeSpørsmål
@@ -199,7 +198,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                         setFieldValue(PeriodeUttakFormField.fom, values.fom);
                                         setFieldValue(PeriodeUttakFormField.tom, values.tom);
                                     }}
-                                    tidsperiode={tidsperiode}
+                                    tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     onAvbryt={() => toggleVisTidsperiode()}
                                     visible={tidsperiodeIsOpen}
                                 />
@@ -231,8 +230,12 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             >
                                 <FlerbarnsdagerSpørsmål fieldName={PeriodeUttakFormField.ønskerFlerbarnsdager} />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
-                                <ErMorForSykSpørsmål fieldName={PeriodeUttakFormField.erMorForSyk} />
+                            <Block visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
+                                <ErMorForSykSpørsmål
+                                    fieldName={PeriodeUttakFormField.erMorForSyk}
+                                    erMorForSyk={values.erMorForSyk}
+                                    navnMor={navnPåForeldre.mor}
+                                />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
                                 <SamtidigUttakSpørsmål

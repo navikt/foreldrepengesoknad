@@ -645,6 +645,7 @@
     "uttaksplan.hvemSkalHaUttak": "Kven skal ha foreldrepengar?",
     "uttaksplan.flerbarnsdager": "Ønsker du å benytte deg av flerbarnsdagene?",
     "uttaksplan.erMorForSyk": "Er mor for sjuk til å ta seg av barnet eller innlagd i helseinstitusjon?",
+    "uttaksplan.erMorForSykVeileder": "Når {navn} er sjuk må legen dokumentera at {navn} er heilt avhengig av hjelp til å ta seg av barnet eller vi må få ei stadfesting på innlegginga i helseinstitusjonen. Det er no ikkje eit krav til at du må legga ved dokumentasjon for 4 veker. For 4 veker kan du skriva ein egenerklæring til oss nedst i søknaden. Du må fortelja oss korleis skaden eller sjukdommen til {navn} gjer {navn} heilt avhengig av hjelp til å ta deg av barnet. Er {navn} innlagt i helseinstitusjon skriv du der {namn} er innlagt. Viss du har dokumentasjon frå lege eller helseinstitusjon, kan du lasta vedlegg opp til søknaden.",
     "uttaksplan.aktivitetskrav": "Hva skal {navnMor} gjøre i denne perioden?",
     "uttaksplan.morsAktivitet.Arbeid": "Arbeid",
     "uttaksplan.morsAktivitet.ArbeidOgUtdanning": "Arbeid og utdanning",

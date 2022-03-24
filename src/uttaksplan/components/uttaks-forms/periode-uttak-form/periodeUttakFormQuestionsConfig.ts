@@ -38,7 +38,7 @@ const skalViseAktivitetskrav = (regler: UttakSkjemaregler, values: PeriodeUttakF
         return false;
     }
 
-    if (regler.erMorForSykSkalBesvares() && values.erMorForSyk !== YesOrNo.UNANSWERED) {
+    if (regler.erMorForSykSkalBesvares() && values.erMorForSyk !== YesOrNo.NO) {
         return false;
     }
 

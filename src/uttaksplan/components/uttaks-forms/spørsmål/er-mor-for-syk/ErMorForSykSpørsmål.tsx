@@ -1,20 +1,34 @@
-import { intlUtils } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import VeilederNormal from 'app/assets/VeilederNormal';
+import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 
 interface Props {
     fieldName: PeriodeUttakFormField;
+    erMorForSyk: YesOrNo;
+    navnMor: string;
 }
 
-const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName }) => {
+const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName, erMorForSyk, navnMor }) => {
     const intl = useIntl();
 
     return (
-        <PeriodeUttakFormComponents.YesOrNoQuestion
-            name={fieldName}
-            legend={intlUtils(intl, 'uttaksplan.erMorForSyk')}
-        />
+        <>
+            <Block padBottom="l">
+                <PeriodeUttakFormComponents.YesOrNoQuestion
+                    name={fieldName}
+                    legend={intlUtils(intl, 'uttaksplan.erMorForSyk')}
+                />
+            </Block>
+            <Block padBottom="l" visible={erMorForSyk === YesOrNo.YES}>
+                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                    <FormattedMessage id="uttaksplan.erMorForSykVeileder" values={{ navn: navnMor }} />
+                </Veilederpanel>
+            </Block>
+        </>
     );
 };
 
