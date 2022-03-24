@@ -1,4 +1,5 @@
-import { Tilleggsopplysning } from 'app/context/types/Tilleggsopplysninger';
+import { Tilleggsopplysning, Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
+import { replaceInvisibleCharsWithSpace } from './stringUtils';
 
 const TIL_SAKSBEHANDLER = {
     'tilleggsopplysning.begrunnelseForSenEndring': 'Begrunnelse for å søke om utsettelse',
@@ -26,4 +27,18 @@ export const beskrivTilleggsopplysning = (tilleggsopplysning: Tilleggsopplysning
         ekstraInformasjon: ekstraInfoTilSaksbehandling,
         tekst,
     };
+};
+
+export const cleanupInvisibleCharsFromTilleggsopplysninger = (
+    tilleggsopplysninger: Tilleggsopplysninger
+): Tilleggsopplysninger => {
+    return tilleggsopplysninger.begrunnelseForSenEndring
+        ? {
+              ...tilleggsopplysninger,
+              begrunnelseForSenEndring: {
+                  ...tilleggsopplysninger.begrunnelseForSenEndring,
+                  tekst: replaceInvisibleCharsWithSpace(tilleggsopplysninger.begrunnelseForSenEndring.tekst),
+              },
+          }
+        : tilleggsopplysninger;
 };

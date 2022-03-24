@@ -1,4 +1,5 @@
 import { formatDate, hasValue, intlUtils } from '@navikt/fp-common';
+import { validateTextInputField } from 'app/utils/validationUtil';
 import dayjs from 'dayjs';
 import { isISODateString } from 'nav-datovelger';
 import { IntlShape } from 'react-intl';
@@ -22,18 +23,17 @@ export const validateDatoForAleneomsorg =
         return undefined;
     };
 
-export const validateFornavn = (intl: IntlShape, kanIkkeOppgis?: boolean) => (fornavn: string) => {
+export const validateFornavn = (intl: IntlShape, label: string, kanIkkeOppgis?: boolean) => (fornavn: string) => {
     if (!kanIkkeOppgis && !hasValue(fornavn)) {
         return intlUtils(intl, 'valideringsfeil.annenForelder.fornavnPåkrevd');
     }
 
-    return undefined;
+    return validateTextInputField(fornavn, label, intl);
 };
 
-export const validateEtternavn = (intl: IntlShape, kanIkkeOppgis?: boolean) => (etternavn: string) => {
+export const validateEtternavn = (intl: IntlShape, label: string, kanIkkeOppgis?: boolean) => (etternavn: string) => {
     if (!kanIkkeOppgis && !hasValue(etternavn)) {
         return intlUtils(intl, 'valideringsfeil.annenForelder.etternavnPåkrevd');
     }
-
-    return undefined;
+    return validateTextInputField(etternavn, label, intl);
 };

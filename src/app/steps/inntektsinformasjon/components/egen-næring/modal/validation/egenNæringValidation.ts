@@ -3,6 +3,7 @@ import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik/lib';
 import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
 import { isDateABeforeDateB, isDateInTheFuture } from 'app/utils/dateUtils';
 import { erGyldigNorskOrgnummer } from 'app/utils/numberUtils';
+import { validateTextInputField } from 'app/utils/validationUtil';
 import { isISODateString } from 'nav-datovelger';
 import { IntlShape } from 'react-intl';
 
@@ -60,7 +61,7 @@ export const validateEgenNæringOrgnr =
         return undefined;
     };
 
-export const validateEgenNæringForklaringTilEndring = (intl: IntlShape) => (forklaring: string) => {
+export const validateEgenNæringForklaringTilEndring = (intl: IntlShape, label: string) => (forklaring: string) => {
     if (forklaring.length < 25) {
         return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.forklaringTilEndring.forKort');
     }
@@ -68,6 +69,8 @@ export const validateEgenNæringForklaringTilEndring = (intl: IntlShape) => (for
     if (forklaring.length > 1000) {
         return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.forklaringTilEndring.forLang');
     }
+
+    return validateTextInputField(forklaring, label, intl);
 };
 
 export const validateEgenNæringEndringAvInntektsDato = (intl: IntlShape) => (dato: string) => {

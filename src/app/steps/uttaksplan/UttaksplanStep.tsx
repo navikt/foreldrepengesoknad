@@ -37,6 +37,7 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { SenEndringÅrsak } from 'uttaksplan/types/SenEndringÅrsak';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getEndringstidspunkt } from 'app/utils/dateUtils';
+import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tilleggsopplysningerUtils';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -51,8 +52,9 @@ const UttaksplanStep = () => {
 
     const onValidSubmitHandler = () => {
         setSubmitIsClicked(true);
+        const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(tilleggsopplysninger);
         return [
-            actionCreator.setTilleggsopplysninger(tilleggsopplysninger),
+            actionCreator.setTilleggsopplysninger(cleanedTilleggsopplysninger),
             actionCreator.setEndringstidspunkt(endringstidspunkt),
             actionCreator.setPerioderSomSkalSendesInn(perioderSomSkalSendesInn),
         ];

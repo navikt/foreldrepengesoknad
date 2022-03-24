@@ -29,6 +29,7 @@ import {
     validateNumber,
 } from './validation/egenNæringValidation';
 import dayjs from 'dayjs';
+import { validateRequiredTextInputField } from 'app/utils/validationUtil';
 
 interface Props {
     isOpen: boolean;
@@ -58,6 +59,12 @@ const EgenNæringModal: FunctionComponent<Props> = ({
         }
         onRequestClose();
     };
+
+    const navnPåNæringLabel = intlUtils(intl, 'inntektsinformasjon.egenNæringModal.navnPåNæring');
+    const varigEndringForklaringLabel = intlUtils(
+        intl,
+        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektForklaring'
+    );
 
     return (
         <Modal
@@ -127,7 +134,8 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                             >
                                 <EgenNæringModalFormComponents.Input
                                     name={EgenNæringModalFormField.navnPåNæringen}
-                                    label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.navnPåNæring')}
+                                    label={navnPåNæringLabel}
+                                    validate={validateRequiredTextInputField(navnPåNæringLabel, intl)}
                                 />
                             </Block>
                             <Block
@@ -302,12 +310,9 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                             >
                                 <EgenNæringModalFormComponents.Textarea
                                     name={EgenNæringModalFormField.forklaringEndring}
-                                    label={intlUtils(
-                                        intl,
-                                        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektForklaring'
-                                    )}
+                                    label={varigEndringForklaringLabel}
                                     maxLength={1000}
-                                    validate={validateEgenNæringForklaringTilEndring(intl)}
+                                    validate={validateEgenNæringForklaringTilEndring(intl, varigEndringForklaringLabel)}
                                 />
                             </Block>
                             <Regnskapsfører visibility={visibility} />

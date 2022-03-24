@@ -1,15 +1,16 @@
 import { hasValue, intlUtils } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { isDateInTheFuture, isDateABeforeDateB } from 'app/utils/dateUtils';
+import { validateTextInputField } from 'app/utils/validationUtil';
 import { isISODateString } from 'nav-datovelger';
 import { IntlShape } from 'react-intl';
 
-export const validateNavnPåOppdragsgiver = (intl: IntlShape) => (navn: string) => {
+export const validateNavnPåOppdragsgiver = (intl: IntlShape, label: string) => (navn: string) => {
     if (!hasValue(navn)) {
         return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.navnPåOppdragsgiver.påkrevd');
     }
 
-    return undefined;
+    return validateTextInputField(navn, label, intl);
 };
 
 export const validateOppdragFom = (intl: IntlShape, tom: string, oppstartsdato: string) => (fom: string) => {

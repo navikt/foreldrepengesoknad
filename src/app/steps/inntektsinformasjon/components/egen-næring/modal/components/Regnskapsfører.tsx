@@ -7,6 +7,7 @@ import VeilederNormal from 'app/assets/VeilederNormal';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { validateNumber } from '../validation/egenNæringValidation';
+import { validateRequiredTextInputField } from 'app/utils/validationUtil';
 
 interface Props {
     visibility: QuestionVisibility<EgenNæringModalFormField, undefined>;
@@ -14,6 +15,7 @@ interface Props {
 
 const Regnskapsfører: FunctionComponent<Props> = ({ visibility }) => {
     const intl = useIntl();
+    const regnskapsførerNavnLabel = intlUtils(intl, 'inntektsinformasjon.egenNæringModal.regnskapsførerNavn');
 
     return (
         <>
@@ -26,7 +28,8 @@ const Regnskapsfører: FunctionComponent<Props> = ({ visibility }) => {
             <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.navnRegnskapsfører)}>
                 <EgenNæringModalFormComponents.Input
                     name={EgenNæringModalFormField.navnRegnskapsfører}
-                    label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.regnskapsførerNavn')}
+                    label={regnskapsførerNavnLabel}
+                    validate={validateRequiredTextInputField(regnskapsførerNavnLabel, intl)}
                 />
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.telefonRegnskapsfører)}>

@@ -4,7 +4,7 @@ import AnnenForelder from 'app/context/types/AnnenForelder';
 import { Tilleggsopplysning } from 'app/context/types/Tilleggsopplysninger';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-import { beskrivTilleggsopplysning, TilleggsopplysningMedBeskrivelse } from 'app/utils/tilleggsopplysninger.utils';
+import { beskrivTilleggsopplysning, TilleggsopplysningMedBeskrivelse } from 'app/utils/tilleggsopplysningerUtils';
 import { useIntl } from 'react-intl';
 import {
     Oppholdsperiode,
