@@ -1,7 +1,6 @@
-import { intlUtils, Kjønn, Locale } from '@navikt/fp-common';
+import { Kjønn, Locale } from '@navikt/fp-common';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import links from 'app/links/links';
-import Feilside from 'app/pages/feilside/Feilside';
+import IkkeMyndig from 'app/pages/ikkeMyndig/IkkeMyndig';
 import Velkommen from 'app/pages/velkommen/Velkommen';
 import AnnenForelder from 'app/steps/annen-forelder/AnnenForelder';
 import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
@@ -12,7 +11,6 @@ import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
 import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import UttaksplanStep from 'app/steps/uttaksplan/UttaksplanStep';
 import React, { FunctionComponent, useEffect } from 'react';
-import { useIntl } from 'react-intl';
 import { Route, useNavigate, Navigate, Routes } from 'react-router-dom';
 import SøknadSendt from '../pages/søknadSendt/SøknadSendt';
 import SøknadRoutes from './routes';
@@ -73,13 +71,14 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
 }) => {
     const { state } = useForeldrepengesøknadContext();
     const navigate = useNavigate();
-    const intl = useIntl();
+    const harGodkjentVilkår = state.søknad.harGodkjentVilkår;
+    const erMyndig = state.søkerinfo.person.erMyndig;
 
     useEffect(() => {
-        if (currentRoute) {
+        if (currentRoute && erMyndig && harGodkjentVilkår) {
             navigate(currentRoute);
         }
-    }, [navigate, currentRoute]);
+    }, []);
 
     return (
         <Routes>
@@ -95,36 +94,9 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
                     />
                 }
             />
-            <Route
-                path={SøknadRoutes.IKKE_MYNDIG}
-                element={
-                    <Feilside
-                        dokumenttittel="NAV Foreldrepengesøknad"
-                        ingress={intlUtils(intl, 'velkommen.ingress')}
-                        tittel={intlUtils(intl, 'velkommen.tittel')}
-                        illustrasjon={{
-                            tittel: intlUtils(intl, 'velkommen.ikkeMyndig.tittel', {
-                                navn: state.søkerinfo.person.fornavn.toLowerCase(),
-                            }),
-                            tekst: intlUtils(intl, 'velkommen.ikkeMyndig.ingress'),
-                            veileder: {
-                                ansikt: 'skeptisk',
-                            },
-                            lenke: {
-                                tekst: intlUtils(intl, 'velkommen.ikkeMyndig.boblelenketekst'),
-                                url: links.papirsøknad,
-                            },
-                        }}
-                    />
-                }
-            />
+            <Route path={SøknadRoutes.IKKE_MYNDIG} element={<IkkeMyndig fornavn={state.søkerinfo.person.fornavn} />} />
 
-            {renderSøknadRoutes(
-                state.søknad.harGodkjentVilkår,
-                state.søknad.erEndringssøknad,
-                state.søkerinfo.person.erMyndig,
-                kjønn
-            )}
+            {renderSøknadRoutes(harGodkjentVilkår, state.søknad.erEndringssøknad, erMyndig, kjønn)}
         </Routes>
     );
 };
