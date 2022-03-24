@@ -13,6 +13,8 @@
     "tilogmed": "Til og med",
     "uker.label": "Antall uker",
     "dager.label": "Antall dager",
+    "uker.fellesperiode": "Uker",
+    "dager.fellesperiode": "Dager",
     "common.varighet.dager": "{dager, plural, one {# dag} other {# dager}}",
     "common.varighet.uker": "{uker, plural, one {# uke} other {# uker}}",
     "common.varighet.ukerogdager": "{uker, plural, zero {} one {# uke} other {# uker}} {dager, plural, =0 {} one {og # dag} other {og # dager}}",

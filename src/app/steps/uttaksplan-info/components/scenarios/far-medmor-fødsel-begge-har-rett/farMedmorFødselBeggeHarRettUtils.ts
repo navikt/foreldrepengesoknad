@@ -17,8 +17,10 @@ export const mapFarMedmorFødselBeggeHarRettToState = (
     values: Partial<FarMedmorFødselBeggeHarRettFormData>
 ): FarMedmorFødselBeggeHarRettUttaksplanInfo => {
     return {
-        antallDagerFellesperiode: values.antallDagerFellesperiode!,
-        antallUkerFellesperiode: values.antallUkerFellesperiode!,
+        antallDagerFellesperiode:
+            values.antallDagerFellesperiode!.trim().length === 0 ? '0' : values.antallDagerFellesperiode!,
+        antallUkerFellesperiode:
+            values.antallUkerFellesperiode!.trim().length === 0 ? '0' : values.antallUkerFellesperiode!,
         farMedmorsFørsteDag: values.farMedmorsFørsteDag!,
         morsSisteDag: values.morsSisteDag!,
     };
