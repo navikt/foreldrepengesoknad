@@ -1,4 +1,4 @@
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import { Frilans, FrilansOppdrag } from 'app/context/types/Frilans';
 import { Næring } from 'app/context/types/Næring';
@@ -117,7 +117,7 @@ export const getInitialInntektsinformasjonFormValues = (søker: Søker): Inntekt
             søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
         ),
         hattInntektSomFrilans: convertBooleanOrUndefinedToYesOrNo(søker.harJobbetSomFrilansSiste10Mnd),
-        frilansOppstartsDato: søker.frilansInformasjon ? søker.frilansInformasjon.oppstart.toString() : '',
+        frilansOppstartsDato: søker.frilansInformasjon ? dateToISOString(søker.frilansInformasjon.oppstart) : '',
         inntektSomFosterforelder: søker.frilansInformasjon
             ? convertBooleanOrUndefinedToYesOrNo(søker.frilansInformasjon.driverFosterhjem)
             : YesOrNo.UNANSWERED,
