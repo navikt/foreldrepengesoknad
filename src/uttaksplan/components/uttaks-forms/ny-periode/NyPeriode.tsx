@@ -27,6 +27,7 @@ interface Props {
     situasjon: Situasjon;
     erMorUfør: boolean;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
+    nesteLedigeUttaksdato: Date | undefined;
 }
 
 const NyPeriode: FunctionComponent<Props> = ({
@@ -45,10 +46,11 @@ const NyPeriode: FunctionComponent<Props> = ({
     situasjon,
     erMorUfør,
     setPeriodeErGyldig,
+    nesteLedigeUttaksdato,
 }) => {
     const [periode, setPeriode] = useState<Periode>({
         type: isUtsettelse ? Periodetype.Utsettelse : Periodetype.Uttak,
-        tidsperiode: {},
+        tidsperiode: { fom: isUtsettelse ? undefined : nesteLedigeUttaksdato },
     } as Periode);
 
     return !isUtsettelse ? (

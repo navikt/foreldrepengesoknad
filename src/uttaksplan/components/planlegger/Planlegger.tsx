@@ -1,5 +1,6 @@
 import { bemUtils, InfoBlock, intlUtils, Block } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
+import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Situasjon } from 'app/types/Situasjon';
@@ -59,6 +60,7 @@ const Planlegger: FunctionComponent<Props> = ({
     const bem = bemUtils('planlegger');
     const [nyPeriodeFormIsVisible, setNyPeriodeFormIsVisible] = useState(false);
     const [isUtsettelse, setIsUtsettelse] = useState(false);
+    const nesteLedigeUttaksdato = Periodene(uttaksplan).getFørsteUttaksdagEtterSistePeriode();
 
     return (
         <>
@@ -112,6 +114,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 situasjon={situasjon}
                                 erMorUfør={erMorUfør}
                                 setPeriodeErGyldig={setPeriodeErGyldig}
+                                nesteLedigeUttaksdato={nesteLedigeUttaksdato}
                             />
                         </div>
                     )}
