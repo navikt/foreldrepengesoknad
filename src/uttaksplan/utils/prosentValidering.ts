@@ -6,7 +6,7 @@ export const prosentValideringSamtidigUttak = (intl: IntlShape) => (value: strin
     const samtidigUttakProsent = getFloatFromString(value);
 
     if (!hasValue(value)) {
-        return intlUtils(intl, 'uttaksplan.validering.stillingsprosent.required');
+        return intlUtils(intl, 'uttaksplan.validering.samtidigUttaksprosent.required');
     }
 
     if (samtidigUttakProsent === undefined) {
