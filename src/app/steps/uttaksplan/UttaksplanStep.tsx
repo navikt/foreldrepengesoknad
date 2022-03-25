@@ -173,11 +173,15 @@ const UttaksplanStep = () => {
     return (
         <Step
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            backLinkHref={getPreviousStepHref('uttaksplan', erEndringssøknad)}
-            backLinkOnClick={(_href, event) => {
-                event.preventDefault();
-                setGåTilbakeIsOpen(true);
-            }}
+            backLinkHref={erEndringssøknad ? undefined : getPreviousStepHref('uttaksplan', erEndringssøknad)}
+            backLinkOnClick={
+                erEndringssøknad
+                    ? undefined
+                    : (_href, event) => {
+                          event.preventDefault();
+                          setGåTilbakeIsOpen(true);
+                      }
+            }
             activeStepId="uttaksplan"
             pageTitle={intlUtils(intl, 'søknad.uttaksplan')}
             stepTitle={intlUtils(intl, 'søknad.uttaksplan')}
