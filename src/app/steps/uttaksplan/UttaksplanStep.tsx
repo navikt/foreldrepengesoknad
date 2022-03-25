@@ -38,11 +38,13 @@ import { SenEndringÅrsak } from 'uttaksplan/types/SenEndringÅrsak';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getEndringstidspunkt } from 'app/utils/dateUtils';
 import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tilleggsopplysningerUtils';
+import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
+    const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);
     const [uttaksplanErGyldig, setUttaksplanErGyldig] = useState(true);
     const [submitIsClicked, setSubmitIsClicked] = useState(false);
     const { dispatch, state } = useForeldrepengesøknadContext();
@@ -172,6 +174,10 @@ const UttaksplanStep = () => {
         <Step
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
             backLinkHref={getPreviousStepHref('uttaksplan', erEndringssøknad)}
+            backLinkOnClick={(_href, event) => {
+                event.preventDefault();
+                setGåTilbakeIsOpen(true);
+            }}
             activeStepId="uttaksplan"
             pageTitle={intlUtils(intl, 'søknad.uttaksplan')}
             stepTitle={intlUtils(intl, 'søknad.uttaksplan')}
@@ -208,6 +214,7 @@ const UttaksplanStep = () => {
                 eksisterendeSak={eksisterendeSak}
                 perioderSomSkalSendesInn={perioderSomSkalSendesInn}
             />
+            <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
             {!uttaksplanErGyldig && submitIsClicked && (
                 <Block textAlignCenter={true} padBottom="l">
                     <AlertStripe type="feil">
