@@ -1,4 +1,4 @@
-import { Kjønn, Locale } from '@navikt/fp-common';
+import { Locale } from '@navikt/fp-common';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import IkkeMyndig from 'app/pages/ikkeMyndig/IkkeMyndig';
 import Velkommen from 'app/pages/velkommen/Velkommen';
@@ -18,17 +18,11 @@ import SøknadRoutes from './routes';
 interface Props {
     fornavn: string;
     locale: Locale;
-    kjønn: Kjønn;
     onChangeLocale: (locale: Locale) => void;
     currentRoute: SøknadRoutes;
 }
 
-const renderSøknadRoutes = (
-    harGodkjentVilkår: boolean,
-    erEndringssøknad: boolean,
-    søkerErMyndig: boolean,
-    kjønn: Kjønn
-) => {
+const renderSøknadRoutes = (harGodkjentVilkår: boolean, erEndringssøknad: boolean, søkerErMyndig: boolean) => {
     if (!harGodkjentVilkår) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
     }
@@ -49,7 +43,7 @@ const renderSøknadRoutes = (
 
     return (
         <>
-            <Route path={SøknadRoutes.SØKERSITUASJON} element={<Søkersituasjon kjønn={kjønn} />} />
+            <Route path={SøknadRoutes.SØKERSITUASJON} element={<Søkersituasjon />} />
             <Route path={SøknadRoutes.OM_BARNET} element={<OmBarnet />} />
             <Route path={SøknadRoutes.ANNEN_FORELDER} element={<AnnenForelder />} />
             <Route path={SøknadRoutes.UTTAKSPLAN_INFO} element={<UttaksplanInfo />} />
@@ -62,13 +56,7 @@ const renderSøknadRoutes = (
     );
 };
 
-const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
-    fornavn,
-    locale,
-    kjønn,
-    onChangeLocale,
-    currentRoute,
-}) => {
+const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale, currentRoute }) => {
     const { state } = useForeldrepengesøknadContext();
     const navigate = useNavigate();
     const harGodkjentVilkår = state.søknad.harGodkjentVilkår;
@@ -96,7 +84,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
             />
             <Route path={SøknadRoutes.IKKE_MYNDIG} element={<IkkeMyndig fornavn={state.søkerinfo.person.fornavn} />} />
 
-            {renderSøknadRoutes(harGodkjentVilkår, state.søknad.erEndringssøknad, erMyndig, kjønn)}
+            {renderSøknadRoutes(harGodkjentVilkår, state.søknad.erEndringssøknad, erMyndig)}
         </Routes>
     );
 };

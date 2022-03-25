@@ -43,7 +43,6 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                     <ForeldrepengesøknadRoutes
                         fornavn="Espen"
                         locale="nb"
-                        kjønn="M"
                         onChangeLocale={() => ({})}
                         currentRoute={SøknadRoutes.VELKOMMEN}
                     />
@@ -88,7 +87,6 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                     <ForeldrepengesøknadRoutes
                         fornavn="Espen"
                         locale="nb"
-                        kjønn="M"
                         onChangeLocale={() => ({})}
                         currentRoute={SøknadRoutes.OM_BARNET}
                     />

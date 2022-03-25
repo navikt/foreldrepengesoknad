@@ -57,7 +57,6 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         <BrowserRouter>
             <ForeldrepengesøknadRoutes
                 fornavn={state.søkerinfo.person.fornavn}
-                kjønn={state.søkerinfo.person.kjønn}
                 locale={locale}
                 onChangeLocale={onChangeLocale}
                 currentRoute={storageData ? storageData.currentRoute : SøknadRoutes.VELKOMMEN}

@@ -23,10 +23,10 @@ interface Props {
     kjønn: Kjønn;
 }
 
-const Template: Story<Props> = ({ context, søkerinfo, kjønn }) => {
+const Template: Story<Props> = ({ context, søkerinfo }) => {
     return (
         <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
-            <Søkersituasjon kjønn={kjønn} />
+            <Søkersituasjon />
         </ForeldrepengerStateMock>
     );
 };

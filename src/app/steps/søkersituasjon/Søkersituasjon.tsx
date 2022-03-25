@@ -1,4 +1,4 @@
-import { Block, intlUtils, Kjønn, Step } from '@navikt/fp-common';
+import { Block, intlUtils, Step } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 import { Hovedknapp } from 'nav-frontend-knapper';
@@ -22,14 +22,11 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
-interface Props {
-    kjønn: Kjønn;
-}
-
-const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
+const Søkersituasjon = () => {
     const intl = useIntl();
     const søknad = useSøknad();
     const søkerinfo = useSøkerinfo();
+    const { kjønn } = søkerinfo.person;
 
     const onValidSubmitHandler = (values: Partial<SøkersituasjonFormData>) => {
         const søkersituasjon = mapSøkersituasjonFormDataToState(values);
@@ -51,7 +48,7 @@ const Søkersituasjon: React.FunctionComponent<Props> = ({ kjønn }) => {
             renderForm={({ values: formValues }) => {
                 const visibility = søkersituasjonQuestionsConfig.getVisbility({
                     ...formValues,
-                    søkerKjønn: søkerinfo.person.kjønn,
+                    søkerKjønn: kjønn,
                 });
                 const allQuestionsAnswered = visibility.areAllQuestionsAnswered();
                 return (

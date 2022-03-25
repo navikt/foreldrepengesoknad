@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/pages/SøknadSendt.stories';
-import dayjs from 'dayjs';
 
 const { Default, MedBankkonto, MedArbeidsforhold } = composeStories(stories);
 
@@ -11,7 +10,6 @@ describe('<SøknadSendt>', () => {
         render(<Default />);
         expect(await screen.findByText('Takk for søknaden Espen Utvikler!')).toBeInTheDocument();
         expect(screen.getByText('Når kan jeg tidligst forvente få svar på min søknad?')).toBeInTheDocument();
-        expect(screen.getByText(`${dayjs().format('D. MMMM YYYY')}`, { exact: false })).toBeInTheDocument();
         expect(screen.queryByText('Registrert kontonummer')).not.toBeInTheDocument();
     });
 
