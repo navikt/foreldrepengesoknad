@@ -109,6 +109,8 @@ const renderPeriodeListeInnhold = (
             return <PeriodeHull periode={periode} handleUpdatePeriode={handleUpdatePeriode} />;
         case Periodetype.PeriodeUtenUttak:
             return <PeriodeUtenUttak periode={periode} handleUpdatePeriode={handleUpdatePeriode} />;
+        case Periodetype.Info:
+            return <div>Info periode</div>;
         default:
             return <div>Ingen visning</div>;
     }
