@@ -100,6 +100,14 @@ const AnnenForelder = () => {
                     gjelderStebarnsadopsjon: isAdoptertStebarn(barn) ? true : false,
                 });
 
+                const farErInformert =
+                    convertYesOrNoOrUndefinedToBoolean(formValues.aleneOmOmsorg) ||
+                    !convertYesOrNoOrUndefinedToBoolean(formValues.harRettPåForeldrepenger) ||
+                    (convertYesOrNoOrUndefinedToBoolean(formValues.harRettPåForeldrepenger) &&
+                        convertYesOrNoOrUndefinedToBoolean(formValues.erInformertOmSøknaden));
+
+                const kanGåVidereMedSøknaden = visibility.areAllQuestionsAnswered() && farErInformert;
+
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -239,7 +247,7 @@ const AnnenForelder = () => {
                                     })}
                                 />
                             </Block>
-                            <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
+                            <Block visible={kanGåVidereMedSøknaden} textAlignCenter={true}>
                                 <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
                                     {intlUtils(intl, 'søknad.gåVidere')}
                                 </Hovedknapp>
