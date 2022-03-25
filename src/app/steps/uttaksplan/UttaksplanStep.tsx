@@ -173,7 +173,7 @@ const UttaksplanStep = () => {
     return (
         <Step
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            backLinkHref={erEndringssøknad ? undefined : getPreviousStepHref('uttaksplan', erEndringssøknad)}
+            backLinkHref={erEndringssøknad ? undefined : getPreviousStepHref('uttaksplan')}
             backLinkOnClick={
                 erEndringssøknad
                     ? undefined

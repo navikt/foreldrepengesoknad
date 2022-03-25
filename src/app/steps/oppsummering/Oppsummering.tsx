@@ -7,7 +7,7 @@ import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
-import stepConfig, { getPreviousStepHref } from '../stepsConfig';
+import stepConfig, { getPreviousStepHref, getPreviousStepHrefEndringssøknad } from '../stepsConfig';
 import AnnenForelderOppsummering from './components/annen-forelder-oppsummering/AnnenForelderOppsummering';
 import BarnOppsummering from './components/barn-oppsummering/BarnOppsummering';
 import OppsummeringsPanel from './components/OppsummeringsPanel';
@@ -111,7 +111,11 @@ const Oppsummering = () => {
                     <OppsummeringFormComponents.Form includeButtons={false}>
                         <Step
                             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                            backLinkHref={getPreviousStepHref('oppsummering', søknad.erEndringssøknad)}
+                            backLinkHref={
+                                søknad.erEndringssøknad
+                                    ? getPreviousStepHrefEndringssøknad('oppsummering')
+                                    : getPreviousStepHref('oppsummering')
+                            }
                             activeStepId="oppsummering"
                             pageTitle={intlUtils(intl, 'søknad.oppsummering')}
                             stepTitle={intlUtils(intl, 'søknad.oppsummering')}

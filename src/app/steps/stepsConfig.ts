@@ -22,6 +22,8 @@ type StepIdWithBackHref =
     | PåkrevdDokumentasjonStepId
     | OppsummeringStepId;
 
+type StepIdWithBackHrefEndringssøknad = PåkrevdDokumentasjonStepId | OppsummeringStepId;
+
 export type StepId = SøkersituasjonStepId | StepIdWithBackHref;
 
 interface StepConfig {
@@ -78,21 +80,26 @@ const stepConfig = (intl: IntlShape): StepConfig[] => [
     },
 ];
 
-export const getPreviousStepHref = (id: StepIdWithBackHref, erEndringssøknad: boolean): string => {
+export const getPreviousStepHrefEndringssøknad = (id: StepIdWithBackHrefEndringssøknad): string => {
     let href;
-    if (erEndringssøknad) {
-        switch (id) {
-            case 'dokumentasjon':
-                href = '/soknad/dokumentasjon';
-                break;
-            case 'oppsummering':
-                href = '/soknad/uttaksplan';
-                break;
-            default:
-                return id;
-        }
-        return href;
+
+    switch (id) {
+        case 'dokumentasjon':
+            href = '/soknad/dokumentasjon';
+            break;
+        case 'oppsummering':
+            href = '/soknad/uttaksplan';
+            break;
+        default:
+            return assertUnreachable(id, `Forsøkt å nå en side som ikke er tilgjengelig i endringssøknaden: ${id}`);
     }
+
+    return href;
+};
+
+export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
+    let href;
+
     switch (id) {
         case 'omBarnet':
             href = '/soknad/sokersituasjon';
@@ -119,8 +126,9 @@ export const getPreviousStepHref = (id: StepIdWithBackHref, erEndringssøknad: b
             href = '/soknad/inntektsinformasjon';
             break;
         default:
-            return assertUnreachable(id);
+            return assertUnreachable(id, `Forsøkt å nå en side som ikke er tilgjengelig i søknaden: ${id}`);
     }
+
     return href;
 };
 

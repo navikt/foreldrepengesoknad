@@ -8,7 +8,7 @@ import { isInfoPeriode, Periode } from 'uttaksplan/types/Periode';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import stepConfig, { getPreviousStepHref } from '../stepsConfig';
+import stepConfig, { getPreviousStepHref, getPreviousStepHrefEndringssøknad } from '../stepsConfig';
 import {
     ManglendeVedleggFormComponents,
     ManglendeVedleggFormData,
@@ -105,7 +105,11 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        backLinkHref={getPreviousStepHref('omBarnet', erEndringssøknad)}
+                        backLinkHref={
+                            erEndringssøknad
+                                ? getPreviousStepHrefEndringssøknad('dokumentasjon')
+                                : getPreviousStepHref('dokumentasjon')
+                        }
                         activeStepId="dokumentasjon"
                         pageTitle={intlUtils(intl, 'søknad.manglendeVedlegg')}
                         stepTitle={intlUtils(intl, 'søknad.manglendeVedlegg')}

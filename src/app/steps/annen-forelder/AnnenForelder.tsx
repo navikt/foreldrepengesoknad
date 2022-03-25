@@ -44,7 +44,6 @@ const AnnenForelder = () => {
         barn,
         søker,
         søkersituasjon: { rolle },
-        erEndringssøknad,
     } = useSøknad();
     const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
     const søkerinfo = useSøkerinfo();
@@ -103,7 +102,7 @@ const AnnenForelder = () => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        backLinkHref={getPreviousStepHref('annenForelder', erEndringssøknad)}
+                        backLinkHref={getPreviousStepHref('annenForelder')}
                         activeStepId="annenForelder"
                         pageTitle={intlUtils(intl, 'søknad.annenForelder')}
                         stepTitle={intlUtils(intl, 'søknad.annenForelder')}
