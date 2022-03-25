@@ -1,0 +1,37 @@
+{
+    "søknad": {
+        "type": "foreldrepenger",
+        "harGodkjentVilkår": true,
+        "søkersituasjon": {
+            "situasjon": "fødsel",
+            "rolle": "far"
+        },
+        "barn": {
+            "type": "født",
+            "fødselsdatoer": ["2022-03-01"],
+            "antallBarn": "1",
+            "datoForAleneomsorg": "2022-03-24",
+            "dokumentasjonAvAleneomsorg": []
+        },
+        "annenForelder": {
+            "etternavn": "dfg",
+            "fornavn": "dfg",
+            "fnr": "02068629902",
+            "utenlandskFnr": false,
+            "kanIkkeOppgis": false,
+            "harRettPåForeldrepenger": true,
+            "erInformertOmSøknaden": true
+        },
+        "søker": {
+            "erAleneOmOmsorg": true,
+            "språkkode": "nb"
+        },
+        "informasjonOmUtenlandsopphold": {
+            "tidligereOpphold": [],
+            "senereOpphold": []
+        },
+        "erEndringssøknad": false
+    },
+    "version": 2,
+    "currentRoute": "/soknad/uttaksplan-info"
+}

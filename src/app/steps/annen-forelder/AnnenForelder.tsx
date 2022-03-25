@@ -168,32 +168,34 @@ const AnnenForelder = () => {
                                 />
                             </Block>
 
-                            <Block
-                                padBottom="l"
-                                visible={visibility.isVisible(AnnenForelderFormField.datoForAleneomsorg)}
-                            >
-                                <Block>
-                                    <AnnenForelderFormComponents.DatePicker
-                                        name={AnnenForelderFormField.datoForAleneomsorg}
-                                        label={intlUtils(intl, 'annenForelder.datoForAleneomsorg')}
-                                        minDate={familiehendelsedato.toDate()}
-                                        validate={validateDatoForAleneomsorg(intl, familiehendelsedato)}
+                            {!formValues.kanIkkeOppgis && (
+                                <Block
+                                    padBottom="l"
+                                    visible={visibility.isVisible(AnnenForelderFormField.datoForAleneomsorg)}
+                                >
+                                    <Block>
+                                        <AnnenForelderFormComponents.DatePicker
+                                            name={AnnenForelderFormField.datoForAleneomsorg}
+                                            label={intlUtils(intl, 'annenForelder.datoForAleneomsorg')}
+                                            minDate={familiehendelsedato.toDate()}
+                                            validate={validateDatoForAleneomsorg(intl, familiehendelsedato)}
+                                        />
+                                    </Block>
+
+                                    <FarDokumentasjonAleneomsorgVeileder />
+
+                                    <FormikFileUploader
+                                        label={intlUtils(
+                                            intl,
+                                            'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp'
+                                        )}
+                                        name={AnnenForelderFormField.dokumentasjonAvAleneomsorg}
+                                        attachments={formValues.dokumentasjonAvAleneomsorg || []}
+                                        attachmentType={AttachmentType.ALENEOMSORG}
+                                        skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
                                     />
                                 </Block>
-
-                                <FarDokumentasjonAleneomsorgVeileder />
-
-                                <FormikFileUploader
-                                    label={intlUtils(
-                                        intl,
-                                        'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp'
-                                    )}
-                                    name={AnnenForelderFormField.dokumentasjonAvAleneomsorg}
-                                    attachments={formValues.dokumentasjonAvAleneomsorg || []}
-                                    attachmentType={AttachmentType.ALENEOMSORG}
-                                    skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
-                                />
-                            </Block>
+                            )}
                             <Block
                                 padBottom="l"
                                 visible={visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepenger)}
