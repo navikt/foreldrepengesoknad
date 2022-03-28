@@ -111,7 +111,13 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                             stil="hvit"
                             ariaLabel="Mink antall uker med en uke"
                             ikon={<RangeIcon type="minus" />}
-                            disabled={parseInt(antallUker, 10) === 0 || antallUker.trim().length === 0 ? true : false}
+                            disabled={
+                                antallUker === undefined ||
+                                parseInt(antallUker, 10) === 0 ||
+                                antallUker.trim().length === 0
+                                    ? true
+                                    : false
+                            }
                             onClick={() => setFieldValue(ukerFieldName, trekkFraUke(antallUker, 0))}
                         />
                     </div>
@@ -140,7 +146,13 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                             ariaLabel="Mink antall dager med en dag"
                             ikon={<RangeIcon type="minus" />}
                             onClick={() => setFieldValue(dagerFieldName, trekkFraDag(antallDager, 0))}
-                            disabled={parseInt(antallDager, 10) === 0 || antallDager.trim().length === 0 ? true : false}
+                            disabled={
+                                antallDager === undefined ||
+                                parseInt(antallDager, 10) === 0 ||
+                                antallDager.trim().length === 0
+                                    ? true
+                                    : false
+                            }
                         />
                     </div>
                     <FormComponents.NumberInput
