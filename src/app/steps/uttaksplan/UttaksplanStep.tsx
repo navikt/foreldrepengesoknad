@@ -108,6 +108,7 @@ const UttaksplanStep = () => {
     const erFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
+    const søkerErAleneOmOmsorg = morErAleneOmOmsorg || farMedmorErAleneOmOmsorg;
     const forelderVedAleneomsorg = erDeltUttak ? undefined : erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
@@ -204,7 +205,7 @@ const UttaksplanStep = () => {
                 erEndringssøknad={erEndringssøknad}
                 erFarEllerMedmor={erFarEllerMedmor}
                 erFlerbarnssøknad={erFlerbarnssøknad}
-                erAleneOmOmsorg={erAleneOmOmsorg}
+                erAleneOmOmsorg={søkerErAleneOmOmsorg}
                 harMidlertidigOmsorg={harMidlertidigOmsorg}
                 situasjon={situasjon}
                 erMorUfør={erMorUfør}

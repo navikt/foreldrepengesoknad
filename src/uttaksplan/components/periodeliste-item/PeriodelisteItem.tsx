@@ -7,11 +7,17 @@ import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import classNames from 'classnames';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 import React, { Dispatch, FunctionComponent, SetStateAction } from 'react';
-import { isForeldrepengerFørFødselUttaksperiode, Periode, Periodetype } from 'uttaksplan/types/Periode';
+import {
+    isAvslåttPeriode,
+    isForeldrepengerFørFødselUttaksperiode,
+    Periode,
+    Periodetype,
+} from 'uttaksplan/types/Periode';
 import { VeilederMessage } from 'uttaksplan/validering/veilederInfo/types';
 import VeilederMeldinger from 'uttaksplan/validering/veilederInfo/VeilederMeldinger';
 import PeriodelisteItemHeader from '../periodeliste-item-header/PeriodelisteItemHeader';
 import PeriodeHull from '../perioder/PeriodeHull';
+import PeriodeInfo from '../perioder/PeriodeInfo';
 import PeriodeUtenUttak from '../perioder/PeriodeUtenUttak';
 import PeriodeFørFødselForm from '../uttaks-forms/periode-før-fødsel-form/PeriodeFørFødselForm';
 import PeriodeUtsettelseForm from '../uttaks-forms/periode-utsettelse-form/PeriodeUtsettelseForm';
@@ -106,11 +112,24 @@ const renderPeriodeListeInnhold = (
                 />
             );
         case Periodetype.Hull:
-            return <PeriodeHull periode={periode} handleUpdatePeriode={handleUpdatePeriode} />;
+            return (
+                <PeriodeHull
+                    erAleneOmOmsorg={erAleneOmOmsorg}
+                    erDeltUttak={erDeltUttak}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    periode={periode}
+                    familiehendelsesdato={familiehendelsesdato}
+                    navnAnnenForelder={erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor}
+                    handleUpdatePeriode={handleUpdatePeriode}
+                />
+            );
         case Periodetype.PeriodeUtenUttak:
             return <PeriodeUtenUttak periode={periode} handleUpdatePeriode={handleUpdatePeriode} />;
         case Periodetype.Info:
-            return <div>Info periode</div>;
+            return (
+                periode.visPeriodeIPlan &&
+                !isAvslåttPeriode(periode) && <PeriodeInfo periode={periode} navnPåForeldre={navnPåForeldre} />
+            );
         default:
             return <div>Ingen visning</div>;
     }

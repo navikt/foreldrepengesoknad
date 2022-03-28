@@ -1,7 +1,7 @@
 import { ActionLink, Block, intlUtils } from '@navikt/fp-common';
 import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 
 interface Props {
@@ -21,7 +21,14 @@ const PeriodeUtenUttak: FunctionComponent<Props> = ({ periode, handleUpdatePerio
     return (
         <div>
             <Block padBottom="l">
-                <Normaltekst>Her har vi en eller annen forklarende tekst</Normaltekst>
+                <Normaltekst>
+                    <FormattedMessage id="uttaksplan.periodeUtenUttak.info.del1" />
+                </Normaltekst>
+            </Block>
+            <Block padBottom="l">
+                <Normaltekst>
+                    <FormattedMessage id="uttaksplan.periodeUtenUttak.info.del2" />
+                </Normaltekst>
             </Block>
             <ActionLink onClick={onLeggTilNyPeriode}>{intlUtils(intl, 'uttaksplan.leggInnNyPeriode')}</ActionLink>
         </div>
