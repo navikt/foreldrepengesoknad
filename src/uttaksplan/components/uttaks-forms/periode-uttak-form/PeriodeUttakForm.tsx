@@ -257,6 +257,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     aktivitetskravMorValue={values.aktivitetskravMor}
                                     aktivitetskravVedlegg={values.aktivitetskravMorDokumentasjon}
                                     FormComponents={PeriodeUttakFormComponents}
+                                    vedleggFieldName={PeriodeUttakFormField.aktivitetskravMorDokumentasjon}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.skalHaGradering)}>

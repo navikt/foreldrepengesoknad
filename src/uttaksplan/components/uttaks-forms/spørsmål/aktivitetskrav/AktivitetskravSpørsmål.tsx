@@ -17,6 +17,7 @@ import { PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakForm
 
 interface Props {
     fieldName: PeriodeUttakFormField | PeriodeUtsettelseFormField;
+    vedleggFieldName: PeriodeUttakFormField.aktivitetskravMorDokumentasjon | PeriodeUtsettelseFormField.vedlegg;
     FormComponents: any;
     navnPåForeldre: NavnPåForeldre;
     aktivitetskravMorValue: MorsAktivitet | '';
@@ -155,6 +156,7 @@ const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet): Skjemanumm
 
 const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
     fieldName,
+    vedleggFieldName,
     navnPåForeldre,
     aktivitetskravMorValue,
     aktivitetskravVedlegg,
@@ -205,7 +207,7 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
             <Block padBottom="l" visible={hasValue(aktivitetskravMorValue)}>
                 <FormikFileUploader
                     label="Last opp dokumentasjon for mors aktivitet"
-                    name={PeriodeUttakFormField.aktivitetskravMorDokumentasjon}
+                    name={vedleggFieldName}
                     attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                     skjemanummer={getMorsAktivitetSkjemanummer(aktivitetskravMorValue as MorsAktivitet)}
                     attachments={aktivitetskravVedlegg}

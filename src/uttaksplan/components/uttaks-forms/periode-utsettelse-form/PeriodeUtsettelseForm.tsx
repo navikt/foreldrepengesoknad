@@ -131,6 +131,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     fieldName={PeriodeUtsettelseFormField.morsAktivitetIPerioden}
                                     navnPåForeldre={navnPåForeldre}
                                     FormComponents={PeriodeUtsettelseFormComponents}
+                                    vedleggFieldName={PeriodeUtsettelseFormField.vedlegg}
                                 />
                             </Block>
                             <Block
