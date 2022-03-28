@@ -49,8 +49,9 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = dayjs(familiehendelsesdato).toDate();
     const sisteUttaksdagFørTermin = Uttaksdagen(familiehendelsesdatoDate).forrige();
+    const startdato = skalIkkeHaUttakFørTermin !== true ? permisjonStartdato : undefined;
     const tidsperiode = getValidTidsperiode({
-        fom: ISOStringToDate(permisjonStartdato)!,
+        fom: ISOStringToDate(startdato)!,
         tom: sisteUttaksdagFørTermin,
     });
     const antallDager = tidsperiode ? Tidsperioden(tidsperiode).getAntallUttaksdager() : 0;
@@ -58,8 +59,6 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
     const visVeileder = antallDager !== antallDagerFørFødselIhtRegler;
 
     const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato);
-    const startdato = skalIkkeHaUttakFørTermin !== true ? permisjonStartdato : undefined;
-
     const maksDato = Uttaksdagen(familiehendelsesdatoDate).forrige();
 
     return (

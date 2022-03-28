@@ -1,4 +1,5 @@
 import { Block, intlUtils } from '@navikt/fp-common';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import actionCreator from 'app/context/action/actionCreator';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
@@ -52,6 +53,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
+    const datoForAleneomsorg = annenForelder.kanIkkeOppgis ? familiehendelsesdatoDate : barn.datoForAleneomsorg;
     const intl = useIntl();
 
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
@@ -67,7 +69,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const onValidSubmitHandler = (values: Partial<FarMedmorAleneomsorgFødselFormData>) => {
         const uttaksplanInfo: FarMedmorAleneomsorgFødselUttaksplanInfo = mapFarMedmorAleneomsorgFødselFormToState(
             values,
-            familiehendelsesdato
+            dateToISOString(datoForAleneomsorg)
         );
         const kontoerForValgtDekningsgrad = tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)];
         const antallUker = getAntallUker(kontoerForValgtDekningsgrad);
@@ -121,7 +123,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         <FarMedmorAleneomsorgFødselFormComponents.FormikWrapper
             initialValues={getInitialFarMedmorAleneomsorgFødselValues(
                 lagretUttaksplanInfo,
-                familiehendelsesdato,
+                dateToISOString(datoForAleneomsorg),
                 dekningsgrad
             )}
             onSubmit={handleSubmit}
@@ -174,7 +176,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                                         intl,
                                         'uttaksplaninfo.startdatoAdopsjon.alternativ.omsorgsovertakelse',
                                         {
-                                            dato: formaterDatoUtenDag(ISOStringToDate(familiehendelsesdato)!),
+                                            dato: formaterDatoUtenDag(datoForAleneomsorg!),
                                         }
                                     ),
                                     no: intlUtils(intl, 'uttaksplaninfo.startdatoAleneomsorgFarMedmor.annenDato'),

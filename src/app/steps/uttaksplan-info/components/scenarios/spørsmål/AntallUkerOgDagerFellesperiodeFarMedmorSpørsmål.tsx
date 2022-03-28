@@ -19,8 +19,12 @@ interface Props {
     ukerMedFellesperiode: number;
 }
 
+const getNumberFromStringInput = (input: string): number | undefined => {
+    return input.trim().length === 0 ? 0 : getNumberFromNumberInputValue(input);
+};
+
 const leggTilUke = (currentAntall: string, max: number): string => {
-    const number = getNumberFromNumberInputValue(currentAntall);
+    const number = getNumberFromStringInput(currentAntall);
 
     if (number === undefined || Math.round(number) !== number) {
         return currentAntall;
@@ -34,9 +38,9 @@ const leggTilUke = (currentAntall: string, max: number): string => {
 };
 
 const trekkFraUke = (currentAntall: string, min: number): string => {
-    const number = getNumberFromNumberInputValue(currentAntall);
+    const number = getNumberFromStringInput(currentAntall);
 
-    if (number === undefined || Math.round(number) !== number) {
+    if (number === undefined || number === 0 || Math.round(number) !== number) {
         return currentAntall;
     }
 
@@ -48,7 +52,7 @@ const trekkFraUke = (currentAntall: string, min: number): string => {
 };
 
 const leggTilDag = (currentAntall: string, max: number): string => {
-    const number = getNumberFromNumberInputValue(currentAntall);
+    const number = getNumberFromStringInput(currentAntall);
 
     if (number === undefined || Math.round(number) !== number) {
         return currentAntall;
@@ -62,9 +66,9 @@ const leggTilDag = (currentAntall: string, max: number): string => {
 };
 
 const trekkFraDag = (currentAntall: string, min: number): string => {
-    const number = getNumberFromNumberInputValue(currentAntall);
+    const number = getNumberFromStringInput(currentAntall);
 
-    if (number === undefined || Math.round(number) !== number) {
+    if (number === undefined || number === 0 || Math.round(number) !== number) {
         return currentAntall;
     }
 
@@ -107,7 +111,7 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                             stil="hvit"
                             ariaLabel="Mink antall uker med en uke"
                             ikon={<RangeIcon type="minus" />}
-                            disabled={parseInt(antallUker, 10) === 0 ? true : false}
+                            disabled={parseInt(antallUker, 10) === 0 || antallUker.trim().length === 0 ? true : false}
                             onClick={() => setFieldValue(ukerFieldName, trekkFraUke(antallUker, 0))}
                         />
                     </div>
@@ -115,7 +119,7 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                         className={bem.element('uker')}
                         integerValue={true}
                         name={ukerFieldName}
-                        label="Uker"
+                        label={intlUtils(intl, 'uker.fellesperiode')}
                         bredde="XS"
                         step="1"
                     />
@@ -136,14 +140,14 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                             ariaLabel="Mink antall dager med en dag"
                             ikon={<RangeIcon type="minus" />}
                             onClick={() => setFieldValue(dagerFieldName, trekkFraDag(antallDager, 0))}
-                            disabled={parseInt(antallDager, 10) === 0 ? true : false}
+                            disabled={parseInt(antallDager, 10) === 0 || antallDager.trim().length === 0 ? true : false}
                         />
                     </div>
                     <FormComponents.NumberInput
                         className={bem.element('uker')}
                         integerValue={true}
                         name={dagerFieldName}
-                        label="Dager"
+                        label={intlUtils(intl, 'dager.fellesperiode')}
                         bredde="XS"
                         step="1"
                     />

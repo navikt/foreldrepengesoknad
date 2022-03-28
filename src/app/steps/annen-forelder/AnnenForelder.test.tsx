@@ -74,7 +74,7 @@ describe('<AnnenForelder>', () => {
         userEvent.click(screen.getAllByText(NEI)[2]);
 
         expect(await screen.findByText(DU_MÅ_INFORMERE_INFO_TEKST)).toBeInTheDocument();
-        expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.queryByText(INFO_TEKST)).not.toBeInTheDocument();
     });
 

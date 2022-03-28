@@ -15,23 +15,22 @@ const initialFarMedmorAleneomsorgFødselValues: FarMedmorAleneomsorgFødselFormD
 
 export const mapFarMedmorAleneomsorgFødselFormToState = (
     values: Partial<FarMedmorAleneomsorgFødselFormData>,
-    familiehendelsesdato: string
+    datoForAleneomsorg: string
 ): FarMedmorAleneomsorgFødselUttaksplanInfo => {
     return {
         fellesperiodeukerMor: undefined,
-        startdatoUttak:
-            values.startPåOmsorgsovertakelse === YesOrNo.YES ? familiehendelsesdato : values.startdatoUttak!,
+        startdatoUttak: values.startPåOmsorgsovertakelse === YesOrNo.YES ? datoForAleneomsorg : values.startdatoUttak!,
     };
 };
 
 export const getInitialFarMedmorAleneomsorgFødselValues = (
     lagretUttaksplanInfo: FarMedmorAleneomsorgFødselUttaksplanInfo | undefined,
-    familiehendelsesdato: string,
+    datoForAleneomsorg: string,
     dekningsgrad: Dekningsgrad
 ): FarMedmorAleneomsorgFødselFormData => {
     if (lagretUttaksplanInfo) {
         const startetPåOmsorgsovertakelse = dayjs(lagretUttaksplanInfo.startdatoUttak).isSame(
-            dayjs(familiehendelsesdato)
+            dayjs(datoForAleneomsorg)
         );
 
         return {
