@@ -1,4 +1,5 @@
 import { intlUtils, Block, UtvidetInformasjon } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { RadioPanelProps } from 'nav-frontend-skjema';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -44,6 +45,11 @@ const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({ graderingsprosent
                 <PeriodeUttakFormComponents.YesOrNoQuestion
                     name={PeriodeUttakFormField.skalHaGradering}
                     legend={intlUtils(intl, 'uttaksplan.skalHaGradering')}
+                    validate={(value: YesOrNo) => {
+                        if (value === YesOrNo.UNANSWERED) {
+                            return intlUtils(intl, 'uttaksplan.validering.skalHaGradering');
+                        }
+                    }}
                 />
             </Block>
             <Block padBottom="l" visible={graderingsprosentVisible}>

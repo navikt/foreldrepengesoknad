@@ -21,6 +21,11 @@ const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName, erMorForSy
                 <PeriodeUttakFormComponents.YesOrNoQuestion
                     name={fieldName}
                     legend={intlUtils(intl, 'uttaksplan.erMorForSyk')}
+                    validate={(value: YesOrNo) => {
+                        if (value === YesOrNo.UNANSWERED) {
+                            return intlUtils(intl, 'uttaksplan.validering.erMorForSyk');
+                        }
+                    }}
                 />
             </Block>
             <Block padBottom="l" visible={erMorForSyk === YesOrNo.YES}>

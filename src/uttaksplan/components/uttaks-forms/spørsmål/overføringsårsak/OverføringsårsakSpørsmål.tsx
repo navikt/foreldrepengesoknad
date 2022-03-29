@@ -1,4 +1,4 @@
-import { intlUtils, Block } from '@navikt/fp-common';
+import { intlUtils, Block, hasValue } from '@navikt/fp-common';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { Attachment } from 'app/types/Attachment';
@@ -44,6 +44,11 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ vedlegg, navnA
                         },
                     ]}
                     useTwoColumns={true}
+                    validate={(value) => {
+                        if (!hasValue(value)) {
+                            return intlUtils(intl, 'uttaksplan.validering.overføringsårsak');
+                        }
+                    }}
                 />
             </Block>
             <Block padBottom="l">

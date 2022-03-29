@@ -174,10 +174,8 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
                     label={intlUtils(intl, 'uttaksplan.aktivitetskrav', { navnMor: navnPåForeldre.mor })}
                     validate={(value: MorsAktivitet | '') => {
                         if (!hasValue(value)) {
-                            return 'Aktivitetskrav må oppgis';
+                            return intlUtils(intl, 'uttaksplan.validering.aktivitetskrav');
                         }
-
-                        return undefined;
                     }}
                 >
                     <option value="" />
