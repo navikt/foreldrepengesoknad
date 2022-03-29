@@ -18,9 +18,13 @@ export const mapFarMedmorFødselBeggeHarRettToState = (
 ): FarMedmorFødselBeggeHarRettUttaksplanInfo => {
     return {
         antallDagerFellesperiode:
-            values.antallDagerFellesperiode!.trim().length === 0 ? '0' : values.antallDagerFellesperiode!,
+            values.antallDagerFellesperiode === undefined || values.antallDagerFellesperiode.trim().length === 0
+                ? '0'
+                : values.antallDagerFellesperiode,
         antallUkerFellesperiode:
-            values.antallUkerFellesperiode!.trim().length === 0 ? '0' : values.antallUkerFellesperiode!,
+            values.antallUkerFellesperiode === undefined || values.antallUkerFellesperiode.trim().length === 0
+                ? '0'
+                : values.antallUkerFellesperiode,
         farMedmorsFørsteDag: values.farMedmorsFørsteDag!,
         morsSisteDag: values.morsSisteDag!,
     };
