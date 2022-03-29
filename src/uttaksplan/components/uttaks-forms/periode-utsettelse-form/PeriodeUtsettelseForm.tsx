@@ -28,6 +28,7 @@ interface Props {
     periode: Periode;
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
+    erAleneOmOmsorg: boolean;
     handleUpdatePeriode: (periode: Periode) => void;
     handleAddPeriode?: (nyPeriode: Periode) => void;
     setNyPeriodeFormIsVisible?: Dispatch<React.SetStateAction<boolean>>;
@@ -43,6 +44,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     familiehendelsesdato,
     handleUpdatePeriode,
     erFarEllerMedmor,
+    erAleneOmOmsorg,
     handleAddPeriode,
     handleDeletePeriode,
     toggleIsOpen,
@@ -69,7 +71,11 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
             initialValues={getPeriodeUtsettelseFormInitialValues(periode)}
             onSubmit={(values) => handleUpdatePeriode(mapPeriodeUtsettelseFormToPeriode(values, id, erFarEllerMedmor))}
             renderForm={({ setFieldValue, values }) => {
-                const visibility = periodeUtsettelseFormQuestionsConfig.getVisbility({ values, erFarEllerMedmor });
+                const visibility = periodeUtsettelseFormQuestionsConfig.getVisbility({
+                    values,
+                    erFarEllerMedmor,
+                    erAleneOmOmsorg,
+                });
 
                 return (
                     <>

@@ -20,7 +20,7 @@ interface Props {
 }
 
 const getNumberFromStringInput = (input: string): number | undefined => {
-    return input.trim().length === 0 ? 0 : getNumberFromNumberInputValue(input);
+    return input === undefined || input.trim().length === 0 ? 0 : getNumberFromNumberInputValue(input);
 };
 
 const leggTilUke = (currentAntall: string, max: number): string => {

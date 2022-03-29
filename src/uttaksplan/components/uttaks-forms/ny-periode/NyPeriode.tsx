@@ -86,6 +86,7 @@ const NyPeriode: FunctionComponent<Props> = ({
             familiehendelsesdato={familiehendelsesdato}
             handleUpdatePeriode={setPeriode}
             erFarEllerMedmor={erFarEllerMedmor}
+            erAleneOmOmsorg={erAleneOmOmsorg}
             handleAddPeriode={handleAddPeriode}
             setNyPeriodeFormIsVisible={setNyPeriodeFormIsVisible}
             isNyPeriode={true}
