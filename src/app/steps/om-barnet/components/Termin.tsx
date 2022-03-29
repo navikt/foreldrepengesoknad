@@ -105,7 +105,7 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelse)}>
                 <FormikFileUploader
-                    label={intlUtils(intl, 'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp')}
+                    label={intlUtils(intl, 'omBarnet.terminbekreftelse.lastOpp')}
                     name={OmBarnetFormField.terminbekreftelse}
                     attachments={formValues.terminbekreftelse || []}
                     attachmentType={AttachmentType.TERMINBEKREFTELSE}
