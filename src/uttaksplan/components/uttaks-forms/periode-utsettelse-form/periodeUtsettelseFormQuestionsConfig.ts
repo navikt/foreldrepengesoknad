@@ -6,6 +6,7 @@ import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periode
 interface PeriodeUtsettelseFormConfigPayload {
     values: PeriodeUtsettelseFormData;
     erFarEllerMedmor: boolean;
+    erAleneOmOmsorg: boolean;
 }
 
 const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormConfigPayload, PeriodeUtsettelseFormField> = {
@@ -29,7 +30,7 @@ const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormConfigPay
     },
     [PeriodeUtsettelseFormField.morsAktivitetIPerioden]: {
         isAnswered: ({ values }) => hasValue(values.morsAktivitetIPerioden),
-        isIncluded: ({ erFarEllerMedmor }) => erFarEllerMedmor,
+        isIncluded: ({ erFarEllerMedmor, erAleneOmOmsorg }) => erFarEllerMedmor && !erAleneOmOmsorg,
         visibilityFilter: ({ values }) => hasValue(values.årsak),
     },
 };
