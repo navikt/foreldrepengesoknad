@@ -90,6 +90,7 @@ const NyPeriode: FunctionComponent<Props> = ({
             setNyPeriodeFormIsVisible={setNyPeriodeFormIsVisible}
             isNyPeriode={true}
             navnPåForeldre={navnPåForeldre}
+            erMorUfør={erMorUfør}
         />
     );
 };

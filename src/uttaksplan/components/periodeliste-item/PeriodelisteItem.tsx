@@ -109,6 +109,7 @@ const renderPeriodeListeInnhold = (
                     handleDeletePeriode={handleDeletePeriode}
                     toggleIsOpen={toggleIsOpen}
                     navnPåForeldre={navnPåForeldre}
+                    erMorUfør={erMorUfør}
                 />
             );
         case Periodetype.Hull:
