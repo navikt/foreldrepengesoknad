@@ -17,7 +17,9 @@ import { PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakForm
 
 interface Props {
     fieldName: PeriodeUttakFormField | PeriodeUtsettelseFormField;
-    vedleggFieldName: PeriodeUttakFormField.aktivitetskravMorDokumentasjon | PeriodeUtsettelseFormField.vedlegg;
+    vedleggFieldName:
+        | PeriodeUttakFormField.aktivitetskravMorDokumentasjon
+        | PeriodeUtsettelseFormField.morsAktivitetIPeriodenDokumentasjon;
     FormComponents: any;
     navnPåForeldre: NavnPåForeldre;
     aktivitetskravMorValue: MorsAktivitet | '';

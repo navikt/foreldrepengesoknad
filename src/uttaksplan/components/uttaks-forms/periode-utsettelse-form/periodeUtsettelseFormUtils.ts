@@ -1,3 +1,5 @@
+import { Attachment } from 'app/types/Attachment';
+import { AttachmentType } from 'app/types/AttachmentType';
 import { Forelder } from 'app/types/Forelder';
 import { isUtsettelsesperiode, Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
@@ -8,7 +10,14 @@ export const initialValues: PeriodeUtsettelseFormData = {
     [PeriodeUtsettelseFormField.tom]: undefined,
     [PeriodeUtsettelseFormField.årsak]: '',
     [PeriodeUtsettelseFormField.morsAktivitetIPerioden]: '',
+    [PeriodeUtsettelseFormField.morsAktivitetIPeriodenDokumentasjon]: [],
     [PeriodeUtsettelseFormField.vedlegg]: [],
+};
+
+const getFormStateFraVedlegg = (vedlegg: Attachment[], gjelderMorsAktivitet: boolean): Attachment[] => {
+    return gjelderMorsAktivitet
+        ? vedlegg.filter((v) => v.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON)
+        : vedlegg.filter((v) => v.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON);
 };
 
 export const getPeriodeUtsettelseFormInitialValues = (periode: Periode): PeriodeUtsettelseFormData => {
@@ -19,11 +28,19 @@ export const getPeriodeUtsettelseFormInitialValues = (periode: Periode): Periode
             tom: periode.tidsperiode.tom,
             årsak: periode.årsak,
             morsAktivitetIPerioden: periode.morsAktivitetIPerioden ? periode.morsAktivitetIPerioden : '',
-            vedlegg: periode.vedlegg || [],
+            morsAktivitetIPeriodenDokumentasjon: getFormStateFraVedlegg(periode.vedlegg || [], true),
+            vedlegg: getFormStateFraVedlegg(periode.vedlegg || [], false),
         };
     }
 
     return initialValues;
+};
+
+const getVedleggFraFormState = (
+    morsAktivitetIPeriodenDokumentasjon: Attachment[],
+    vedlegg: Attachment[]
+): Attachment[] => {
+    return [...morsAktivitetIPeriodenDokumentasjon, ...vedlegg];
 };
 
 export const mapPeriodeUtsettelseFormToPeriode = (
@@ -42,7 +59,7 @@ export const mapPeriodeUtsettelseFormToPeriode = (
             fom: values.fom!,
             tom: values.tom!,
         },
-        vedlegg: values.vedlegg,
+        vedlegg: getVedleggFraFormState(values.morsAktivitetIPeriodenDokumentasjon || [], values.vedlegg || []),
     };
 };
 

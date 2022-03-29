@@ -8,6 +8,7 @@ export enum PeriodeUtsettelseFormField {
     tom = 'tom',
     årsak = 'årsak',
     vedlegg = 'vedlegg',
+    morsAktivitetIPeriodenDokumentasjon = 'morsAktivitetIPeriodenDokumentasjon',
     morsAktivitetIPerioden = 'morsAktivitetIPerioden',
 }
 
@@ -16,6 +17,7 @@ export interface PeriodeUtsettelseFormData {
     [PeriodeUtsettelseFormField.tom]: Date | undefined;
     [PeriodeUtsettelseFormField.årsak]: UtsettelseÅrsakType | '';
     [PeriodeUtsettelseFormField.morsAktivitetIPerioden]: MorsAktivitet | '';
+    [PeriodeUtsettelseFormField.morsAktivitetIPeriodenDokumentasjon]: Attachment[];
     [PeriodeUtsettelseFormField.vedlegg]: Attachment[];
 }
 
