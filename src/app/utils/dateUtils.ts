@@ -14,6 +14,7 @@ import { Alder } from 'app/types/Alder';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Periode } from 'uttaksplan/types/Periode';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
+import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -398,4 +399,14 @@ const getOldestDate = (
     return dayjs(endringstidspunktNyPlan).isSameOrBefore(dayjs(endringstidspunktOpprinneligPlan))
         ? endringstidspunktNyPlan
         : endringstidspunktOpprinneligPlan;
+};
+
+export const getMorsSisteDag = (uttaksplanInfo: UttaksplanInfo | undefined): Date | undefined => {
+    if (!uttaksplanInfo) {
+        return undefined;
+    }
+
+    if (isFarMedmorFødselBeggeHarRettUttaksplanInfo(uttaksplanInfo)) {
+        return ISOStringToDate(uttaksplanInfo.morsSisteDag);
+    }
 };
