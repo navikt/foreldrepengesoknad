@@ -1,4 +1,4 @@
-import { intlUtils, Block, UtvidetInformasjon } from '@navikt/fp-common';
+import { intlUtils, Block, UtvidetInformasjon, hasValue } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { RadioPanelProps } from 'nav-frontend-skjema';
@@ -80,6 +80,11 @@ const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({ graderingsprosent
                     }
                     useTwoColumns={true}
                     radios={getArbeidsOptions(arbeidsforhold)}
+                    validate={(value) => {
+                        if (!hasValue(value)) {
+                            return intlUtils(intl, 'uttaksplan.validering.arbeidsformer');
+                        }
+                    }}
                 />
             </Block>
         </>
