@@ -95,6 +95,14 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
             erBarnetFødt !== YesOrNo.UNANSWERED ||
             (adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED && hasValue(adopsjonsdato)),
     },
+    [OmBarnetFormField.antallBarnSelect]: {
+        isIncluded: ({ antallBarn }) => parseInt(antallBarn, 10) >= 3,
+        isAnswered: ({ antallBarnSelect }) => hasValue(antallBarnSelect),
+        visibilityFilter: ({ adopsjonAvEktefellesBarn, erBarnetFødt, adopsjonsdato, antallBarn }) =>
+            parseInt(antallBarn, 10) >= 3 &&
+            (erBarnetFødt !== YesOrNo.UNANSWERED ||
+                (adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED && hasValue(adopsjonsdato))),
+    },
     [OmBarnetFormField.adopsjonsdato]: {
         isIncluded: ({ adopsjonAvEktefellesBarn }) => adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED,
         isAnswered: ({ adopsjonsdato }) => hasValue(adopsjonsdato),

@@ -27,10 +27,6 @@ describe('fridagerUtils', () => {
         expect(kalkFridager.length).toBe(4);
     });
 
-    it('skal finne offentlige fridager i en åtte års periode', () => {
-        expect(fridager.length).toBe(104);
-    });
-
     it('skal finne ut at dato er en fridag', () => {
         expect(erFridag(dayjs('2021-05-01').toDate())).toBe('Arbeidernes dag');
     });

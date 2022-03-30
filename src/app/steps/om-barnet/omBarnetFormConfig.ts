@@ -5,6 +5,7 @@ export enum OmBarnetFormField {
     erBarnetFødt = 'erBarnetFødt',
     adopsjonAvEktefellesBarn = 'adopsjonAvEktefellesBarn',
     antallBarn = 'antallBarn',
+    antallBarnSelect = 'antallBarnSelect',
     adopsjonsdato = 'adopsjonsdato',
     søkerAdopsjonAlene = 'søkerAdopsjonAlene',
     adoptertIUtlandet = 'adoptertIUtlandet',
@@ -22,6 +23,7 @@ export interface OmBarnetFormData {
     [OmBarnetFormField.erBarnetFødt]: YesOrNo;
     [OmBarnetFormField.adopsjonAvEktefellesBarn]: YesOrNo;
     [OmBarnetFormField.antallBarn]: string;
+    [OmBarnetFormField.antallBarnSelect]: string;
     [OmBarnetFormField.adopsjonsdato]: string;
     [OmBarnetFormField.fødselsdatoer]: string[];
     [OmBarnetFormField.omsorgsovertakelse]: Attachment[];

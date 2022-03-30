@@ -52,7 +52,8 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                 />
             </Block>
             <Block padBottom="l" visible={antallBarn !== undefined && parseInt(antallBarn, 10) >= 3}>
-                <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarn}>
+                <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarnSelect}>
+                    <option value="" />
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
