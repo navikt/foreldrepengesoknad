@@ -44,6 +44,7 @@ import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import { getErMorUfør } from 'app/utils/annenForelderUtils';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -94,6 +95,9 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
     const onValidSubmitHandler = (values: Partial<FarMedmorFødselOgMorHarIkkeRettFormData>) => {
+        const startDatoUttaksplan = getErMorUfør(annenForelder, erFarEllerMedmor)
+            ? values.permisjonStartdato
+            : dateToISOString(Uttaksdagen(Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()).leggTil(30));
         return [
             actionCreator.setUttaksplanInfo(mapFarMedmorFødselOgMorHarIkkeRettFormToState(values)),
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
@@ -113,9 +117,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer:
                         tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
                     uttaksplanSkjema: {
-                        startdatoPermisjon: dateToISOString(
-                            Uttaksdagen(Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()).leggTil(30)
-                        ),
+                        startdatoPermisjon: startDatoUttaksplan,
                     },
                 })
             ),
