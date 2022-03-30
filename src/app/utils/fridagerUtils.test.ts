@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
-import { getOffentligeFridager, getOffentligeFridagerIMåned, fridager, erFridag } from './fridagerUtils';
+import { getOffentligeFridager, getOffentligeFridagerIMåned, erFridag } from './fridagerUtils';
 
 describe('fridagerUtils', () => {
     beforeAll(() => {
