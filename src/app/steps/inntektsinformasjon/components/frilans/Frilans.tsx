@@ -76,6 +76,7 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                             validate={validateFrilansoppstartsDato(intl)}
                             maxDate={dateToday}
                             showYearSelector={true}
+                            placeholder={'dd.mm.åååå'}
                         />
                     </Block>
                     <Block

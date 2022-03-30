@@ -101,6 +101,7 @@ const StartdatoAdopsjon: FunctionComponent<Props> = ({ valgtStartdatoAdopsjon })
                     disabledDateRanges={konverterStringTilDate(datoAvgrensninger.invalidDateRanges)}
                     disableWeekend={datoAvgrensninger.weekendsNotSelectable}
                     validate={validateErAnnenStartdatoAdopsjonGyldig(intl)}
+                    placeholder={'dd.mm.åååå'}
                 />
             </Block>
         </>

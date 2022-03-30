@@ -229,6 +229,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                                 disabledDateRanges={konverterStringTilDate(datoAvgrensinger.invalidDateRanges)}
                                 disableWeekend={datoAvgrensinger.weekendsNotSelectable}
                                 validate={validateStartdatoFarMedmor(intl)}
+                                placeholder={'dd.mm.åååå'}
                             />
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>

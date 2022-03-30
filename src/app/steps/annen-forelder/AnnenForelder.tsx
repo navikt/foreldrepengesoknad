@@ -178,6 +178,7 @@ const AnnenForelder = () => {
                                             label={intlUtils(intl, 'annenForelder.datoForAleneomsorg')}
                                             minDate={familiehendelsedato.toDate()}
                                             validate={validateDatoForAleneomsorg(intl, familiehendelsedato)}
+                                            placeholder={'dd.mm.åååå'}
                                         />
                                     </Block>
 

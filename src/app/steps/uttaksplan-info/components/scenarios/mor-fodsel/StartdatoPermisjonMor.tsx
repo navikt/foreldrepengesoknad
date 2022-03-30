@@ -79,6 +79,7 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
                             skalIkkeHaUttakFørTermin
                         )}
                         disableWeekend
+                        placeholder={'dd.mm.åååå'}
                     />
                     <div className={bem.element('postfix')}>
                         {getVarighetForStartdato(antallDager, erBarnFødt, intl)}

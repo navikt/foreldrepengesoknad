@@ -42,6 +42,7 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
                     minDate={minDate}
                     showYearSelector={true}
                     disableWeekend={true}
+                    placeholder={'dd.mm.åååå'}
                 />
             </Block>
             <LenkeKnapp

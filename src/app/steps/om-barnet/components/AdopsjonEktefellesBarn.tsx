@@ -35,6 +35,7 @@ const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({ søkersituasjon, for
                     label={intlUtils(intl, 'omBarnet.adopsjonsdato.stebarn')}
                     name={OmBarnetFormField.adopsjonsdato}
                     validate={validateAdopsjonsdato(intl)}
+                    placeholder={'dd.mm.åååå'}
                 />
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
