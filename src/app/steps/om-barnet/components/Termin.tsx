@@ -73,7 +73,8 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                 padBottom="l"
                 visible={formValues.antallBarn !== undefined && parseInt(formValues.antallBarn, 10) >= 3}
             >
-                <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarn}>
+                <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarnSelect}>
+                    <option value="" />
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>

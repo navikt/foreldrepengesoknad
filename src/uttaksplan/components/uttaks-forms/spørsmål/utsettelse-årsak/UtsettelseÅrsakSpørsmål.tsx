@@ -224,7 +224,11 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
                         <b>
                             <FormattedMessage
                                 id="uttaksplan.veileder.trengerIkkeUtsettelse.del1"
-                                values={{ dato: formatDateExtended(Uttaksdagen(familiehendelsesdato).leggTil(30)) }}
+                                values={{
+                                    dato: formatDateExtended(
+                                        Uttaksdagen(Uttaksdagen(familiehendelsesdato).denneEllerNeste()).leggTil(30)
+                                    ),
+                                }}
                             />
                         </b>
                     </Normaltekst>

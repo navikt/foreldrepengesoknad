@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
-import { getOffentligeFridager, getOffentligeFridagerIMåned, fridager, erFridag } from './fridagerUtils';
+import { getOffentligeFridager, getOffentligeFridagerIMåned, erFridag } from './fridagerUtils';
 
 describe('fridagerUtils', () => {
     beforeAll(() => {
@@ -25,10 +25,6 @@ describe('fridagerUtils', () => {
         const førsteDagIMai = dayjs('2021-05-01').toDate();
         const kalkFridager = getOffentligeFridagerIMåned(førsteDagIMai);
         expect(kalkFridager.length).toBe(4);
-    });
-
-    it('skal finne offentlige fridager i en åtte års periode', () => {
-        expect(fridager.length).toBe(104);
     });
 
     it('skal finne ut at dato er en fridag', () => {
