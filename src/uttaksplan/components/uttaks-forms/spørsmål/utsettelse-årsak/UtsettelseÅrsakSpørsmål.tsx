@@ -24,6 +24,7 @@ interface Props {
     familiehendelsesdato: Date;
     utsettelseårsak: UtsettelseÅrsakType | '';
     vedlegg: Attachment[];
+    erMorUfør: boolean;
 }
 
 const getUtsettelseÅrsakOptions = (
@@ -31,7 +32,8 @@ const getUtsettelseÅrsakOptions = (
     periodenErKunHelligdager: boolean,
     skalViseGamleUtsettelseÅrsaker: boolean,
     erFarEllerMedmor: boolean,
-    tidsperiodenErInnenforFørsteSeksUker: boolean
+    tidsperiodenErInnenforFørsteSeksUker: boolean,
+    erMorUfør: boolean
 ) => {
     const allRadios: RadioProps[] = [
         {
@@ -99,6 +101,10 @@ const getUtsettelseÅrsakOptions = (
         }
 
         if (!skalViseGamleUtsettelseÅrsaker && erFarEllerMedmor) {
+            if (!erMorUfør) {
+                return false;
+            }
+
             if (tidsperiodenErInnenforFørsteSeksUker) {
                 return (
                     option.value === UtsettelseÅrsakType.Sykdom ||
@@ -198,6 +204,7 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
     familiehendelsesdato,
     utsettelseårsak,
     vedlegg,
+    erMorUfør,
 }) => {
     const intl = useIntl();
     const årsakOptions = getUtsettelseÅrsakOptions(
@@ -205,7 +212,8 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
         periodenErKunHelligdager,
         skalViseGamleUtsettelseÅrsaker,
         erFarEllerMedmor,
-        tidsperiodenErInnenforFørsteSeksUker
+        tidsperiodenErInnenforFørsteSeksUker,
+        erMorUfør
     );
 
     if (årsakOptions.length === 0) {

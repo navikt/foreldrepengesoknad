@@ -178,7 +178,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <PeriodeUttakFormComponents.Form includeButtons={false}>
-                            <SubmitListener cleanup={() => handleCleanup(values, visibility)} />
+                            {!isNyPeriode && <SubmitListener cleanup={() => handleCleanup(values, visibility)} />}
 
                             <Block visible={isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="l">
                                 <TidsperiodeDisplay

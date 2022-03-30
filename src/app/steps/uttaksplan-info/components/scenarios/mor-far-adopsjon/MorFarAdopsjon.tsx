@@ -44,6 +44,7 @@ import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -100,7 +101,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
             actionCreator.lagUttaksplanforslag(
                 lagUttaksplan({
                     annenForelderErUfør: erMorUfør,
-                    erDeltUttak: true,
+                    erDeltUttak,
                     erEndringssøknad,
                     erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
@@ -278,7 +279,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                         <Block
                             padBottom="l"
                             visible={
-                                formValues.startdatoAdopsjonValg !== undefined &&
+                                formValues.startdatoAdopsjonValg === AdopsjonStartdatoValg.ANNEN &&
                                 dayjs(latestDate).isBefore(
                                     dayjs(
                                         finnStartdatoAdopsjon(

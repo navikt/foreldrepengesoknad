@@ -36,7 +36,7 @@ import { getPerioderSomSkalSendesInn, storeAppState } from 'app/utils/submitUtil
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SenEndringÅrsak } from 'uttaksplan/types/SenEndringÅrsak';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { getEndringstidspunkt } from 'app/utils/dateUtils';
+import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
 import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tilleggsopplysningerUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 
@@ -92,6 +92,7 @@ const UttaksplanStep = () => {
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
+    const { uttaksplanInfo } = state;
     const { person, arbeidsforhold } = søkerinfo;
     const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
     const { erAleneOmOmsorg } = søker;
@@ -119,6 +120,7 @@ const UttaksplanStep = () => {
     const eksisterendeSak = state.eksisterendeSak;
     const opprinneligPlan = state.eksisterendeSak?.uttaksplan;
     const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
+    const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
 
     const foreldreSituasjon = getForeldreparSituasjon(
         person.kjønn,
@@ -218,6 +220,7 @@ const UttaksplanStep = () => {
                 handleBegrunnelseChange={handleBegrunnelseChange}
                 eksisterendeSak={eksisterendeSak}
                 perioderSomSkalSendesInn={perioderSomSkalSendesInn}
+                morsSisteDag={morsSisteDag}
             />
             <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
             {!uttaksplanErGyldig && submitIsClicked && (

@@ -16,8 +16,8 @@ export interface Props {
 
 const getUtsettelseTekst = (intl: IntlShape, årsak: UtsettelseÅrsakType, foreldernavn: string, erMor: boolean) => {
     return erMor
-        ? intlUtils(intl, `utsettelseårsaktype.foreldernavn.far.${årsak}`, { foreldernavn })
-        : intlUtils(intl, `utsettelseårsaktype.foreldernavn.mor.${årsak}`, { foreldernavn });
+        ? intlUtils(intl, `uttaksplan.utsettelseårsaktype.foreldernavn.far.${årsak}`, { foreldernavn })
+        : intlUtils(intl, `uttaksplan.utsettelseårsaktype.foreldernavn.mor.${årsak}`, { foreldernavn });
 };
 
 const PeriodeInfo: FunctionComponent<Props> = ({ periode, navnPåForeldre }) => {

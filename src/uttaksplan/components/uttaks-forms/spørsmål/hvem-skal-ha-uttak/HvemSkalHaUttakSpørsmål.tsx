@@ -1,4 +1,4 @@
-import { intlUtils } from '@navikt/fp-common';
+import { hasValue, intlUtils } from '@navikt/fp-common';
 import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import React, { FunctionComponent } from 'react';
@@ -29,6 +29,11 @@ const HvemSkalHaUttakSpørsmål: FunctionComponent<Props> = ({ fieldName, navnP�
                 },
             ]}
             useTwoColumns={true}
+            validate={(value) => {
+                if (!hasValue(value)) {
+                    return intlUtils(intl, 'uttaksplan.validering.hvemSkalHaUttak');
+                }
+            }}
         />
     );
 };

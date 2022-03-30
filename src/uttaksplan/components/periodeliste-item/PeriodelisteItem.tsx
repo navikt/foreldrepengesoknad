@@ -106,9 +106,11 @@ const renderPeriodeListeInnhold = (
                     familiehendelsesdato={familiehendelsesdato}
                     handleUpdatePeriode={handleUpdatePeriode}
                     erFarEllerMedmor={erFarEllerMedmor}
+                    erAleneOmOmsorg={erAleneOmOmsorg}
                     handleDeletePeriode={handleDeletePeriode}
                     toggleIsOpen={toggleIsOpen}
                     navnPåForeldre={navnPåForeldre}
+                    erMorUfør={erMorUfør}
                 />
             );
         case Periodetype.Hull:

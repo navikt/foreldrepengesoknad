@@ -8,6 +8,7 @@ import Lenke from 'nav-frontend-lenker';
 import links from 'app/links/links';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { prosentValideringSamtidigUttak } from 'uttaksplan/utils/prosentValidering';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 interface Props {
     erFlerbarnssøknad: boolean;
@@ -30,6 +31,11 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
                 <PeriodeUttakFormComponents.YesOrNoQuestion
                     name={PeriodeUttakFormField.samtidigUttak}
                     legend={intlUtils(intl, 'uttaksplan.samtidigUttak', { navnAnnenForelder: navnPåAnnenForelder })}
+                    validate={(value: YesOrNo) => {
+                        if (value === YesOrNo.UNANSWERED) {
+                            return intlUtils(intl, 'uttaksplan.validering.samtidigUttak');
+                        }
+                    }}
                 />
             </Block>
             <Block visible={samtidigUttakProsentVisible} padBottom="l">

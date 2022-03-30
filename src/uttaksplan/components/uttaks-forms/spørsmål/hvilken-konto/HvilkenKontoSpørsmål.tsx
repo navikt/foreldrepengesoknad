@@ -1,4 +1,4 @@
-import { intlUtils } from '@navikt/fp-common';
+import { hasValue, intlUtils } from '@navikt/fp-common';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { RadioPanelProps } from 'nav-frontend-skjema';
 import React, { FunctionComponent } from 'react';
@@ -48,6 +48,11 @@ const HvilkenKontoSpørsmål: FunctionComponent<Props> = ({
             radios={radios}
             legend={legend}
             useTwoColumns={true}
+            validate={(value) => {
+                if (!hasValue(value)) {
+                    return intlUtils(intl, 'uttaksplan.validering.hvilkenKonto');
+                }
+            }}
         />
     );
 };

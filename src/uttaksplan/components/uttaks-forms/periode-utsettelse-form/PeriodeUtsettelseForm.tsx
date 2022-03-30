@@ -28,6 +28,7 @@ interface Props {
     periode: Periode;
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
+    erAleneOmOmsorg: boolean;
     handleUpdatePeriode: (periode: Periode) => void;
     handleAddPeriode?: (nyPeriode: Periode) => void;
     setNyPeriodeFormIsVisible?: Dispatch<React.SetStateAction<boolean>>;
@@ -35,6 +36,7 @@ interface Props {
     handleDeletePeriode?: (periodeId: string) => void;
     isNyPeriode?: boolean;
     navnPåForeldre: NavnPåForeldre;
+    erMorUfør: boolean;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -42,12 +44,14 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     familiehendelsesdato,
     handleUpdatePeriode,
     erFarEllerMedmor,
+    erAleneOmOmsorg,
     handleAddPeriode,
     handleDeletePeriode,
     toggleIsOpen,
     isNyPeriode = false,
     setNyPeriodeFormIsVisible,
     navnPåForeldre,
+    erMorUfør,
 }) => {
     const { tidsperiode, id } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
@@ -67,7 +71,11 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
             initialValues={getPeriodeUtsettelseFormInitialValues(periode)}
             onSubmit={(values) => handleUpdatePeriode(mapPeriodeUtsettelseFormToPeriode(values, id, erFarEllerMedmor))}
             renderForm={({ setFieldValue, values }) => {
-                const visibility = periodeUtsettelseFormQuestionsConfig.getVisbility({ values, erFarEllerMedmor });
+                const visibility = periodeUtsettelseFormQuestionsConfig.getVisbility({
+                    values,
+                    erFarEllerMedmor,
+                    erAleneOmOmsorg,
+                });
 
                 return (
                     <>
@@ -119,6 +127,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     familiehendelsesdato={familiehendelsesdato}
                                     utsettelseårsak={values.årsak}
                                     vedlegg={values.vedlegg}
+                                    erMorUfør={erMorUfør}
                                 />
                             </Block>
                             <Block

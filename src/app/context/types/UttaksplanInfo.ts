@@ -1,5 +1,6 @@
 import AdopsjonStartdatoValg from 'app/steps/uttaksplan-info/components/scenarios/mor-far-adopsjon/adopsjonStartdatoValg';
 
+/* eslint-disable @typescript-eslint/no-empty-interface */
 interface UttaksplanInfo {}
 
 export interface MorFødselUttaksplanInfo extends UttaksplanInfo {
@@ -38,5 +39,11 @@ export interface FarMedmorFødselBeggeHarRettUttaksplanInfo extends UttaksplanIn
     antallUkerFellesperiode: string;
     antallDagerFellesperiode: string;
 }
+
+export const isFarMedmorFødselBeggeHarRettUttaksplanInfo = (
+    uttaksplanInfo: UttaksplanInfo
+): uttaksplanInfo is FarMedmorFødselBeggeHarRettUttaksplanInfo => {
+    return 'morsSisteDag' in uttaksplanInfo;
+};
 
 export default UttaksplanInfo;

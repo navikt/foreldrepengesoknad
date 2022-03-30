@@ -65,7 +65,7 @@ describe('<OmBarnet>', () => {
                 'Du må legge ved en bekreftelse på termindato. Denne må være datert og signert av lege eller jordmor når du er i 22. svangerskapsuke eller senere.'
             )
         ).toBeInTheDocument();
-        expect(screen.getByText('Trykk her for å laste opp dokumentasjon om aleneomsorg')).toBeInTheDocument();
+        expect(screen.getByText('Trykk her for å laste opp dokumentasjon om terminbekreftelse')).toBeInTheDocument();
 
         expect(await screen.findByText('Når er terminbekreftelsen datert?')).toBeInTheDocument();
         const termindatoDatertInput = utils.getByLabelText('Når er terminbekreftelsen datert?');

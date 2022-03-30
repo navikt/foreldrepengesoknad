@@ -54,14 +54,24 @@ interface Props {
     tilleggsopplysninger: Tilleggsopplysninger;
     eksisterendeSak: EksisterendeSak | undefined;
     perioderSomSkalSendesInn: Periode[];
+    morsSisteDag: Date | undefined;
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
 }
 
-const getRelevantStartdato = (familiehendelsesdato: Date, erFarEllerMedmor: boolean, erAdopsjon: boolean) => {
+const getRelevantStartdato = (
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    erAdopsjon: boolean,
+    morsSisteDag: Date | undefined
+) => {
     const førsteUttaksdagEtterSeksUker = Uttaksdagen(Uttaksdagen(familiehendelsesdato).denneEllerNeste()).leggTil(30);
 
     if (erFarEllerMedmor) {
+        if (morsSisteDag) {
+            return Uttaksdagen(morsSisteDag).neste();
+        }
+
         if (erAdopsjon) {
             return familiehendelsesdato;
         }
@@ -96,6 +106,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     tilleggsopplysninger,
     eksisterendeSak,
     perioderSomSkalSendesInn,
+    morsSisteDag,
     setUttaksplanErGyldig,
     handleBegrunnelseChange,
 }) => {
@@ -104,7 +115,8 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const relevantStartdato = getRelevantStartdato(
         familiehendelsesdatoDate,
         erFarEllerMedmor,
-        situasjon === 'adopsjon'
+        situasjon === 'adopsjon',
+        morsSisteDag
     );
     const [periodeErGyldig, setPeriodeErGyldig] = useState(true);
 
