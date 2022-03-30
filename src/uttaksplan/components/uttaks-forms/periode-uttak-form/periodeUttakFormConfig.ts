@@ -19,6 +19,7 @@ export enum PeriodeUttakFormField {
     stillingsprosent = 'stillingsprosent',
     arbeidsformer = 'arbeidsformer',
     erMorForSyk = 'erMorForSyk',
+    erMorForSykDokumentasjon = 'erMorForSykDokumentasjon',
     samtidigUttakProsent = 'samtidigUttakProsent',
     hvemSkalTaUttak = 'hvemSkalTaUttak',
     ønskerFlerbarnsdager = 'ønskerFlerbarnsdager',
@@ -37,6 +38,7 @@ export interface PeriodeUttakFormData {
     [PeriodeUttakFormField.stillingsprosent]: string;
     [PeriodeUttakFormField.arbeidsformer]: Arbeidsform | '';
     [PeriodeUttakFormField.erMorForSyk]: YesOrNo;
+    [PeriodeUttakFormField.erMorForSykDokumentasjon]: Attachment[];
     [PeriodeUttakFormField.samtidigUttakProsent]: string;
     [PeriodeUttakFormField.hvemSkalTaUttak]: Forelder | '';
     [PeriodeUttakFormField.ønskerFlerbarnsdager]: YesOrNo;

@@ -235,6 +235,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     fieldName={PeriodeUttakFormField.erMorForSyk}
                                     erMorForSyk={values.erMorForSyk}
                                     navnMor={navnPåForeldre.mor}
+                                    vedlegg={values.erMorForSykDokumentasjon}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>

@@ -1,6 +1,7 @@
 import { hasValue } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { Attachment } from 'app/types/Attachment';
 import { Forelder } from 'app/types/Forelder';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { trimNumberValue } from 'app/utils/numberUtils';
@@ -38,6 +39,7 @@ const getInitialValues = (erDeltUttak: boolean, forelder: Forelder, erMorUfør: 
         [PeriodeUttakFormField.stillingsprosent]: '',
         [PeriodeUttakFormField.arbeidsformer]: '',
         [PeriodeUttakFormField.erMorForSyk]: YesOrNo.UNANSWERED,
+        [PeriodeUttakFormField.erMorForSykDokumentasjon]: [],
         [PeriodeUttakFormField.samtidigUttakProsent]: '',
         [PeriodeUttakFormField.hvemSkalTaUttak]: hvemSkalTaUttak,
         [PeriodeUttakFormField.ønskerFlerbarnsdager]: YesOrNo.UNANSWERED,
@@ -66,6 +68,9 @@ export const cleanPeriodeUttakFormData = (
         erMorForSyk: visibility.isVisible(PeriodeUttakFormField.erMorForSyk)
             ? values.erMorForSyk
             : initialValues.erMorForSyk,
+        erMorForSykDokumentasjon: visibility.isVisible(PeriodeUttakFormField.erMorForSyk)
+            ? values.erMorForSykDokumentasjon
+            : initialValues.erMorForSykDokumentasjon,
         arbeidsformer: visibility.isVisible(PeriodeUttakFormField.arbeidsformer) ? values.arbeidsformer : '',
         konto: values.konto,
         overføringsdokumentasjon: visibility.isVisible(PeriodeUttakFormField.overføringsdokumentasjon)
@@ -110,6 +115,7 @@ export const getPeriodeUttakFormInitialValues = (
                 aktivitetskravMor: periode.morsAktivitetIPerioden || '',
                 aktivitetskravMorDokumentasjon: periode.vedlegg || [],
                 erMorForSyk: convertBooleanOrUndefinedToYesOrNo(periode.erMorForSyk),
+                erMorForSykDokumentasjon: periode.vedlegg || [],
                 hvemSkalTaUttak: periode.forelder || initialValues.hvemSkalTaUttak,
                 arbeidsformer:
                     periode.arbeidsformer && periode.arbeidsformer.length > 0
@@ -184,6 +190,22 @@ const getErArbeidstaker = (arbeidsformer: Arbeidsform[]): boolean => {
     );
 };
 
+const velgVedleggSomSkalBrukes = (
+    aktivitetskravMorDokumentasjon: Attachment[],
+    overføringsdokumentasjon: Attachment[],
+    erMorForSykDokumentasjon: Attachment[]
+): Attachment[] => {
+    if (aktivitetskravMorDokumentasjon.length > 0) {
+        return aktivitetskravMorDokumentasjon;
+    }
+
+    if (overføringsdokumentasjon.length > 0) {
+        return overføringsdokumentasjon;
+    }
+
+    return erMorForSykDokumentasjon;
+};
+
 export const mapPeriodeUttakFormToPeriode = (
     values: Partial<PeriodeUttakFormData>,
     id: string,
@@ -249,10 +271,11 @@ export const mapPeriodeUttakFormToPeriode = (
         samtidigUttakProsent: hasValue(values.samtidigUttakProsent)
             ? trimNumberValue(values.samtidigUttakProsent!)
             : undefined,
-        vedlegg:
-            values.aktivitetskravMorDokumentasjon!.length > 0
-                ? values.aktivitetskravMorDokumentasjon
-                : values.overføringsdokumentasjon,
+        vedlegg: velgVedleggSomSkalBrukes(
+            values.aktivitetskravMorDokumentasjon!,
+            values.overføringsdokumentasjon!,
+            values.erMorForSykDokumentasjon!
+        ),
     };
 
     return periode;
