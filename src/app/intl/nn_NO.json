@@ -825,6 +825,8 @@
     "uttaksplan.validering.advarsel.ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato": "Foreldrepenger kan ikkje utsetjast innanfor dei første 6 vekene etter fødsel. Dersom du føder etter termindato blir dei 6 første vekene forskove, og dette kan få innverknad på utsetjinga di. Dersom utsetjinga di ligg innanfor dei første 6 vekene etter forskyvningen blir dissa dagane avslått, og foreldrepenger utbetalt",
     "uttaksplan.validering.advarsel.planenAdvarerOmUttak.tittel": "Søkja om å kombinere foreldrepengar med arbeid tilbake i tid",
     "uttaksplan.validering.advarsel.planenAdvarerOmUttak": "Du må søkje om å kombinere foreldrepengane med delvis arbeid seinast dagen før du begynner å jobbe. Når du søkjer etter at du har begynt å jobbe, mistar du dagar med foreldrepengar ut frå stillingsprosenten du har jobba i, fram til vi får søknaden din. Dersom du melder frå til NAV før du begynner å jobbe, mistar du ikkje dagar med foreldrepengar. Er du blitt beordret ut i delvis arbeid kan vi i slike tilfeller innvilge foreldrepenger kombinert med arbeid tilbake i tid. Skriv en forklaring til oss nederst i søknaden.",
+    "uttaksplan.validering.feil.inneholderPerioderUtenAktivitetskrav.tittel": "Manglende aktivitetskrav",
+    "uttaksplan.validering.feil.inneholderPerioderUtenAktivitetskrav": "Du må oppgi mors aktivitet for perioden.",
     "uttaksplan.validering.feil.før12UkerFørTermin": "Du kan tidlegast ta ut foreldrepengar 12 veker før termin eller fødsel",
     "uttaksplan.validering.feil.etterSistePermisjonsdag": "Du kan ikkje få foreldrepengar etter at barnet er fylt 3 år.",
     "uttaksplan.validering.feil.erAllePeriodeSkjemaspørsmålBesvart": "Nokon av spørsmåla for perioden manglar svar",

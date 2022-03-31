@@ -27,6 +27,7 @@ import { burdeKanskjeSøkeGraderingTest } from './tester/burdeKanskjeSøkeGrader
 import { ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest } from './tester/ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest';
 import { Regel, RegelAlvorlighet } from './utils/types/regelTypes';
 import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
+import { inneholderPerioderUtenAktivitetskrav } from './tester/inneholderPerioderUtenAktivitetskrav';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -55,6 +56,7 @@ export enum UttaksplanRegelKey {
     'uttaksmengdeForFarMedmorErForHøy' = 'uttaksmengdeForFarMedmorErForHøy',
     'burdeKanskjeSøkeGradering' = 'burdeKanskjeSøkeGradering',
     'ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato' = 'ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato',
+    'inneholderPerioderUtenAktivitetskrav' = 'inneholderPerioderUtenAktivitetskrav',
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -198,6 +200,11 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato,
         alvorlighet: RegelAlvorlighet.ADVARSEL,
         test: ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest,
+    },
+    {
+        key: UttaksplanRegelKey.inneholderPerioderUtenAktivitetskrav,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: inneholderPerioderUtenAktivitetskrav,
     },
 ];
 
