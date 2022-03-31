@@ -22,7 +22,7 @@ import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { erTidsperioderLike, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
-import { getStønadskontoNavn } from './stønadskontoerUtils';
+import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
 import {
     convertTidsperiodeToTidsperiodeDate,
     isDateInTheFuture,
@@ -202,7 +202,13 @@ export const getPeriodeTittel = (intl: IntlShape, periode: Periode, navnPåForel
         case Periodetype.Info:
             switch (periode.infotype) {
                 case PeriodeInfoType.uttakAnnenPart:
-                    return getStønadskontoNavn(intl, getStønadskontoFromOppholdsårsak(periode.årsak), navnPåForeldre);
+                    return getUttakAnnenPartStønadskontoNavn(
+                        intl,
+                        getStønadskontoFromOppholdsårsak(periode.årsak),
+                        periode.forelder,
+                        navnPåForeldre,
+                        periode.samtidigUttakProsent
+                    );
                 case PeriodeInfoType.utsettelseAnnenPart:
                     return intlUtils(intl, `uttaksplan.periodetype.info.utsettelse.${periode.årsak}`, {
                         navn: getForelderNavn(periode.forelder, navnPåForeldre),
