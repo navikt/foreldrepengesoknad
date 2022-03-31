@@ -45,6 +45,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
     const erEndringssøknadUtenEksisterendeSak = erEndringssøknad && !erEnkelEndringssøknad;
     const kunFarMedmorHarRett =
         søkerErFarEllerMedmor && !erDeltUttak && førsteOktober2021ReglerGjelder(familiehendelsesdato);
+    const erAdopsjon = situasjon === 'adopsjon';
 
     const {
         harAnnenForelderSøktFP,
@@ -89,7 +90,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 søkerHarMidlertidigOmsorg,
                 kunFarMedmorHarRett,
                 familiehendelsesdato,
-                situasjon === 'adopsjon',
+                erAdopsjon,
                 relevantStartDatoForUttak
             );
         } else {
@@ -102,14 +103,28 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 annenForelderErUfør
             );
 
+            const førsteUttaksdagEtterSeksUker = Uttaksdagen(
+                Uttaksdagen(familiehendelsesdato).denneEllerNeste()
+            ).leggTil(30);
+
+            let relevantStartDatoForUttak = familiehendelsesdato;
+
+            if (søkerErFarEllerMedmor) {
+                if (erAdopsjon) {
+                    relevantStartDatoForUttak = familiehendelsesdato;
+                }
+
+                relevantStartDatoForUttak = førsteUttaksdagEtterSeksUker;
+            }
+
             return finnOgSettInnHull(
                 forslag,
                 erEndringssøknadUtenEksisterendeSak,
                 søkerHarMidlertidigOmsorg,
                 kunFarMedmorHarRett,
                 familiehendelsesdato,
-                situasjon === 'adopsjon',
-                startdatoPermisjon ? ISOStringToDate(startdatoPermisjon) : familiehendelsesdato
+                erAdopsjon,
+                relevantStartDatoForUttak
             );
         }
     }
