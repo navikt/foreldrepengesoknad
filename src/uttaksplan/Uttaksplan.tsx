@@ -204,9 +204,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
         handleBegrunnelseChange(årsakTilSenEndring, begrunnelse);
     };
 
-    //TODO: harKomplettuttaksplan
-    const harKomplettUttaksplan = false;
-
     const uttaksplanValidering = validerUttaksplan({
         søkersituasjon: søkersituasjon,
         arbeidsforhold: arbeidsforhold,
@@ -225,7 +222,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         familiehendelsesdato: familiehendelsesdatoDate,
         stønadskontoer: stønadskontoer,
         perioder: uttaksplan,
-        harKomplettUttaksplan: harKomplettUttaksplan,
+        harKomplettUttaksplan: true,
         tilleggsopplysninger: tilleggsopplysninger,
         eksisterendeSak: eksisterendeSak,
         perioderSomSkalSendesInn: perioderSomSkalSendesInn,
