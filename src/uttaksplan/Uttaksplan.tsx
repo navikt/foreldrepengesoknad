@@ -55,6 +55,7 @@ interface Props {
     eksisterendeSak: EksisterendeSak | undefined;
     perioderSomSkalSendesInn: Periode[];
     morsSisteDag: Date | undefined;
+    harKomplettUttaksplan: boolean;
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
 }
@@ -107,6 +108,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     eksisterendeSak,
     perioderSomSkalSendesInn,
     morsSisteDag,
+    harKomplettUttaksplan,
     setUttaksplanErGyldig,
     handleBegrunnelseChange,
 }) => {
@@ -127,7 +129,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             getUttaksstatusFunc: getUttaksstatusFunc({
                 erDeltUttak,
                 erEndringssøknad,
-                harKomplettUttaksplan: false,
+                harKomplettUttaksplan,
                 erFarEllerMedmor,
                 tilgjengeligeStønadskontoer: stønadskontoer,
                 uttaksplan,
@@ -152,7 +154,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             getUttaksstatusFunc: getUttaksstatusFunc({
                 erDeltUttak,
                 erEndringssøknad,
-                harKomplettUttaksplan: false,
+                harKomplettUttaksplan,
                 erFarEllerMedmor,
                 tilgjengeligeStønadskontoer: stønadskontoer,
                 uttaksplan,
@@ -176,7 +178,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             getUttaksstatusFunc: getUttaksstatusFunc({
                 erDeltUttak,
                 erEndringssøknad,
-                harKomplettUttaksplan: false,
+                harKomplettUttaksplan,
                 erFarEllerMedmor,
                 tilgjengeligeStønadskontoer: stønadskontoer,
                 uttaksplan,
@@ -222,7 +224,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         familiehendelsesdato: familiehendelsesdatoDate,
         stønadskontoer: stønadskontoer,
         perioder: uttaksplan,
-        harKomplettUttaksplan: true,
+        harKomplettUttaksplan,
         tilleggsopplysninger: tilleggsopplysninger,
         eksisterendeSak: eksisterendeSak,
         perioderSomSkalSendesInn: perioderSomSkalSendesInn,

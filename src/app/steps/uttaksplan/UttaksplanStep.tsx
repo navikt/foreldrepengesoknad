@@ -92,7 +92,7 @@ const UttaksplanStep = () => {
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
-    const { uttaksplanInfo } = state;
+    const { uttaksplanInfo, eksisterendeSak } = state;
     const { person, arbeidsforhold } = søkerinfo;
     const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
     const { erAleneOmOmsorg } = søker;
@@ -117,8 +117,8 @@ const UttaksplanStep = () => {
     const antallBarn = barn.antallBarn;
     const erFlerbarnssøknad = antallBarn > 1;
     const harMorRett = getMorHarRettPåForeldrepenger(rolle, erFarEllerMedmor, annenForelder);
-    const eksisterendeSak = state.eksisterendeSak;
-    const opprinneligPlan = state.eksisterendeSak?.uttaksplan;
+    const opprinneligPlan = eksisterendeSak?.uttaksplan;
+    const harKomplettUttaksplan = eksisterendeSak ? eksisterendeSak.uttaksplan !== undefined : false;
     const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
     const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
 
@@ -221,6 +221,7 @@ const UttaksplanStep = () => {
                 eksisterendeSak={eksisterendeSak}
                 perioderSomSkalSendesInn={perioderSomSkalSendesInn}
                 morsSisteDag={morsSisteDag}
+                harKomplettUttaksplan={harKomplettUttaksplan}
             />
             <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
             {!uttaksplanErGyldig && submitIsClicked && (
