@@ -25,6 +25,7 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility }) => {
                 <EgenNæringModalFormComponents.CountrySelect
                     name={EgenNæringModalFormField.land}
                     label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.registrertILand')}
+                    useAlpha3Code={false}
                 />
             </Block>
         </>
