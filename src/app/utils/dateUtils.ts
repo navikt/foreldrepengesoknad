@@ -277,8 +277,8 @@ export const år = (dato: Dayjs): string => {
 
 export const convertTidsperiodeToTidsperiodeDate = (tidsperiode: Tidsperiode): TidsperiodeDate => {
     return {
-        fom: dayjs(tidsperiode.fom).toDate(),
-        tom: dayjs(tidsperiode.tom).toDate(),
+        fom: ISOStringToDate(tidsperiode.fom)!,
+        tom: ISOStringToDate(tidsperiode.tom)!,
     };
 };
 

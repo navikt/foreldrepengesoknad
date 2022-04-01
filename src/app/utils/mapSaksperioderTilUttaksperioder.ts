@@ -26,8 +26,14 @@ import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
 import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
-import { convertTidsperiodeToTidsperiodeDate, getRelevantFamiliehendelseDato } from './dateUtils';
+import {
+    convertTidsperiodeToTidsperiodeDate,
+    førsteOktober2021ReglerGjelder,
+    getRelevantFamiliehendelseDato,
+} from './dateUtils';
 import { UtsettelseÅrsakTypeDTO } from 'app/types/UtsettelseÅrsakTypeDTO';
+import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
+import { finnOgSettInnHull } from 'uttaksplan/builder/UttaksplanBuilder';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;
@@ -418,7 +424,7 @@ const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
     erFarEllerMedmor: boolean,
-    _erEndringsøknadUtenEkisterendeSak: boolean
+    erEndringsøknadUtenEkisterendeSak: boolean
 ): Periode[] => {
     const innvilgedePerioder = saksperioder.filter(gyldigeSaksperioder);
     const perioder = innvilgedePerioder.map((periode) =>
@@ -434,7 +440,17 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harUttaksdager)
     );
 
-    return sammenslåddePerioder;
+    const kunFarMedmorHarRett = !grunnlag.morHarRett && grunnlag.farMedmorHarRett;
+    const erAdopsjon = grunnlag.familiehendelseType === FamiliehendelseType.ADOPSJON;
+
+    return finnOgSettInnHull(
+        sammenslåddePerioder,
+        erEndringsøknadUtenEkisterendeSak,
+        førsteOktober2021ReglerGjelder(new Date(grunnlag.familiehendelseDato)),
+        kunFarMedmorHarRett,
+        new Date(grunnlag.familiehendelseDato),
+        erAdopsjon
+    );
 };
 
 export default mapSaksperioderTilUttaksperioder;

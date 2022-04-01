@@ -5,9 +5,9 @@ import { isUttaksperiode } from 'uttaksplan/types/Periode';
 import { hasValue } from '@navikt/fp-common';
 
 export const inneholderPerioderUtenAktivitetskrav = (grunnlag: Søknadsinfo): RegelTestresultat => {
-    const { perioder, søkerErFarEllerMedmor, søkerErAleneOmOmsorg, søkerHarMidlertidigOmsorg } = grunnlag;
+    const { perioder, søkerErFarEllerMedmor, søkerErAleneOmOmsorg, søkerHarMidlertidigOmsorg, morHarRett } = grunnlag;
 
-    if (!søkerErFarEllerMedmor || søkerErAleneOmOmsorg || søkerHarMidlertidigOmsorg) {
+    if (!søkerErFarEllerMedmor || søkerErAleneOmOmsorg || søkerHarMidlertidigOmsorg || morHarRett) {
         return {
             passerer: true,
         };

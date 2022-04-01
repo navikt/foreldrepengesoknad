@@ -222,6 +222,7 @@ const UttaksplanStep = () => {
                 perioderSomSkalSendesInn={perioderSomSkalSendesInn}
                 morsSisteDag={morsSisteDag}
                 harKomplettUttaksplan={harKomplettUttaksplan}
+                opprinneligPlan={opprinneligPlan}
             />
             <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
             {!uttaksplanErGyldig && submitIsClicked && (

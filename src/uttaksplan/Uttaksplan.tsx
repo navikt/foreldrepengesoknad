@@ -56,6 +56,7 @@ interface Props {
     perioderSomSkalSendesInn: Periode[];
     morsSisteDag: Date | undefined;
     harKomplettUttaksplan: boolean;
+    opprinneligPlan: Periode[] | undefined;
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
 }
@@ -109,6 +110,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     perioderSomSkalSendesInn,
     morsSisteDag,
     harKomplettUttaksplan,
+    opprinneligPlan,
     setUttaksplanErGyldig,
     handleBegrunnelseChange,
 }) => {
@@ -144,6 +146,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             harMidlertidigOmsorg: false,
             harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
             erAdopsjon: situasjon === 'adopsjon',
+            opprinneligPlan,
         });
 
         handleOnPlanChange(updatedPlan);
@@ -169,6 +172,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             harMidlertidigOmsorg: false,
             harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
             erAdopsjon: situasjon === 'adopsjon',
+            opprinneligPlan,
         });
         handleOnPlanChange(updatedPlan);
     };
@@ -193,6 +197,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             harMidlertidigOmsorg: false,
             harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
             erAdopsjon: situasjon === 'adopsjon',
+            opprinneligPlan,
         });
 
         handleOnPlanChange(addPeriodeResult.updatedPlan);

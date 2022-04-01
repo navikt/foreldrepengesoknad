@@ -10,6 +10,7 @@ import React, { Dispatch, FunctionComponent, SetStateAction } from 'react';
 import {
     isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,
+    isInfoPeriode,
     Periode,
     Periodetype,
 } from 'uttaksplan/types/Periode';
@@ -160,6 +161,11 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
 }) => {
     const bem = bemUtils('periodelisteItem');
     const melding = meldinger.length > 0 ? meldinger[0] : undefined;
+
+    if (isInfoPeriode(periode) && !periode.visPeriodeIPlan) {
+        return null;
+    }
+
     return (
         <article className={bem.block}>
             <EkspanderbartpanelBase
