@@ -1,5 +1,4 @@
 import MockDate from 'mockdate';
-import dayjs from 'dayjs';
 import {
     dateRangeValidation,
     isDateABeforeDateB,
@@ -320,8 +319,8 @@ describe('dateUtils', () => {
             tom: '2021-02-02',
         };
         const tidsperiodeDato = convertTidsperiodeToTidsperiodeDate(tidsperiodeStreng);
-        expect(tidsperiodeDato.fom).toEqual(dayjs('2021-01-01').toDate());
-        expect(tidsperiodeDato.tom).toEqual(dayjs('2021-02-02').toDate());
+        expect(tidsperiodeDato.fom).toEqual(ISOStringToDate('2021-01-01'));
+        expect(tidsperiodeDato.tom).toEqual(ISOStringToDate('2021-02-02'));
     });
 
     it('skal hente fødselsdato når denne finnes', () => {
