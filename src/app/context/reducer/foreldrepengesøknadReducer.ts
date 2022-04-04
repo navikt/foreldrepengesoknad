@@ -68,11 +68,9 @@ const foreldrepengesøknadReducer = (
             };
         case ForeldrepengesøknadContextActionKeys.AVBRYT_SØKNAD:
             return {
-                ...state,
-                søknad: {
-                    ...foreldrepengesøknadInitialState.søknad,
-                },
-                uttaksplanInfo: undefined,
+                ...foreldrepengesøknadInitialState,
+                søkerinfo: state.søkerinfo,
+                saker: state.saker,
             };
         case ForeldrepengesøknadContextActionKeys.UPDATE_CURRENT_ROUTE:
             return {
