@@ -70,6 +70,7 @@ export function getSisteMuligeUttaksdag(familiehendelsesdato: Date): Date {
     return Uttaksdagen(
         dayjs(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato))
             .add(uttaksConstants.MAKS_PERMISJONSLENGDE_I_ÅR, 'year')
+            .subtract(1, 'day')
             .toDate()
     ).denneEllerNeste();
 }

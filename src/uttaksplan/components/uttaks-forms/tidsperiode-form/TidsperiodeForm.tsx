@@ -49,13 +49,15 @@ const getDatoAvgrensninger = (
     return {
         fra: {
             minDato: familiehendelsesdato,
-            maksDato: tidsperiode ? ISOStringToDate(tom)! : dayjs(familiehendelsesdato).add(3, 'years').toDate(),
+            maksDato: tidsperiode
+                ? ISOStringToDate(tom)!
+                : dayjs(familiehendelsesdato).add(3, 'years').subtract(1, 'day').toDate(),
             ugyldigeTidsperioder,
             helgedagerIkkeTillatt: true,
         },
         til: {
             minDato: tidsperiode ? ISOStringToDate(fom)! : familiehendelsesdato,
-            maksDato: dayjs(familiehendelsesdato).add(3, 'years').toDate(),
+            maksDato: dayjs(familiehendelsesdato).add(3, 'years').subtract(1, 'day').toDate(),
             ugyldigeTidsperioder,
             helgedagerIkkeTillatt: true,
         },
