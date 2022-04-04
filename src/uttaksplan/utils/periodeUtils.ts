@@ -8,6 +8,7 @@ import {
     isHull,
     isOverføringsperiode,
     isPeriodeUtenUttak,
+    isUttakAnnenPart,
     isUttakAvFellesperiode,
     isUttaksperiode,
     Periode,
@@ -398,4 +399,22 @@ export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakT
 
 export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan: Periode[]): boolean => {
     return opprinneligPlan.some((op) => Perioden(periode).erLik(op, true, true));
+};
+
+export const getAnnenForelderSamtidigUttakPeriode = (periode: Periode, perioder: Periode[]): Periode | undefined => {
+    if (isUttaksperiode(periode)) {
+        const samtidigUttak = perioder
+            .filter((p) => isUttakAnnenPart(p))
+            .find(
+                (p) =>
+                    isUttakAnnenPart(p) &&
+                    dayjs(periode.tidsperiode.fom).isSame(p.tidsperiode.fom) &&
+                    p.ønskerSamtidigUttak === true &&
+                    p.id !== periode.id
+            );
+
+        return samtidigUttak !== undefined ? samtidigUttak : undefined;
+    }
+
+    return undefined;
 };

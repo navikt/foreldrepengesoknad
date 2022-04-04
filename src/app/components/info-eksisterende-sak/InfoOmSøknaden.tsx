@@ -2,7 +2,7 @@ import React from 'react';
 import { useIntl, IntlShape, FormattedMessage } from 'react-intl';
 import SituasjonSirkel from './illustrasjoner/situasjon-sirkel/SituasjonSirkel';
 import UkerSirkel from './illustrasjoner/uker-sirkel/UkerSirkel';
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { bemUtils, Block, hasValue, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
@@ -176,7 +176,6 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                     infoboks={
                         erIUttaksplanenSteg === false ? (
                             <>
-                                <Systemtittel>Dine dager med foreldrepenger</Systemtittel>
                                 <UtvidetInformasjon apneLabel="Se perioder oppgitt av annen forelder">
                                     Periodene med foreldrepenger oppgitt av annen forelder
                                     <InfoEksisterendePerioder

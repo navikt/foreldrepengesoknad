@@ -45,6 +45,7 @@ interface Props {
     situasjon: Situasjon;
     meldinger?: VeilederMessage[];
     erMorUfør: boolean;
+    annenForelderSamtidigUttakPeriode: Periode | undefined;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -157,6 +158,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     situasjon,
     meldinger = [],
     erMorUfør,
+    annenForelderSamtidigUttakPeriode,
     setPeriodeErGyldig,
 }) => {
     const bem = bemUtils('periodelisteItem');
@@ -176,6 +178,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                         periode={periode}
                         navnPåForeldre={navnPåForeldre}
                         melding={melding}
+                        annenForelderSamtidigUttakPeriode={annenForelderSamtidigUttakPeriode}
                     />
                 }
                 apen={isOpen}
