@@ -1,5 +1,6 @@
 import { intlUtils } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
+import Barn from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
 import { Søkerrolle } from 'app/types/Søkerrolle';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
@@ -7,16 +8,27 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
+import OppsummeringAvDokumentasjon from '../uttaksplan-oppsummering/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 
 interface Props {
     annenForelder: AnnenForelder;
     søker: Søker;
     søkerrolle: Søkerrolle;
+    barn: Barn;
+    farMedmorErAleneOmOmsorg: boolean;
 }
 
-const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, søker, søkerrolle }) => {
+const AnnenForelderOppsummering: FunctionComponent<Props> = ({
+    annenForelder,
+    søker,
+    søkerrolle,
+    barn,
+    farMedmorErAleneOmOmsorg,
+}) => {
     const intl = useIntl();
-    const erFarEllerMedMor = isFarEllerMedmor(søkerrolle);
+    const erFarEllerMedmor = isFarEllerMedmor(søkerrolle);
+    const { dokumentasjonAvAleneomsorg } = barn;
+
     return (
         <>
             {isAnnenForelderIkkeOppgitt(annenForelder) && (
@@ -56,7 +68,7 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                             <FormattedMessage id={annenForelder.harRettPåForeldrepenger ? 'ja' : 'nei'} />
                         </Normaltekst>
                     </OppsummeringsPunkt>
-                    {erFarEllerMedMor && (
+                    {erFarEllerMedmor && (
                         <OppsummeringsPunkt
                             title={intlUtils(intl, 'annenForelder.erMorUfør', {
                                 navn: annenForelder.fornavn,
@@ -68,6 +80,12 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                         </OppsummeringsPunkt>
                     )}
                 </>
+            )}
+            {farMedmorErAleneOmOmsorg && erFarEllerMedmor && (
+                <OppsummeringAvDokumentasjon
+                    vedlegg={dokumentasjonAvAleneomsorg || []}
+                    ledetekst={intlUtils(intl, 'oppsummering.annenForelder.dokumentasjonAvAleneomsorg')}
+                />
             )}
         </>
     );

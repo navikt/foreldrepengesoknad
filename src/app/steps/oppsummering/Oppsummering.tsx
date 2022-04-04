@@ -30,7 +30,7 @@ import { useNavigate } from 'react-router-dom';
 import './oppsummering.less';
 import SøknadRoutes from 'app/routes/routes';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
-import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'app/utils/personUtils';
+import { getErSøkerFarEllerMedmor, getFarMedmorErAleneOmOmsorg, getNavnPåForeldre } from 'app/utils/personUtils';
 import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
 
 const Oppsummering = () => {
@@ -54,6 +54,7 @@ const Oppsummering = () => {
 
     const søkerinfo = useSøkerinfo();
     const { person, arbeidsforhold } = søkerinfo;
+    const { erAleneOmOmsorg } = søker;
     const søknad = useSøknad();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const onAvbrytSøknad = useAvbrytSøknad();
@@ -63,6 +64,7 @@ const Oppsummering = () => {
     const begrunnelseForSenEndring = tilleggsopplysninger.begrunnelseForSenEndring
         ? beskrivTilleggsopplysning(tilleggsopplysninger.begrunnelseForSenEndring)
         : undefined;
+    const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(søkerErFarEllerMedmor, erAleneOmOmsorg, annenForelder);
 
     useEffect(() => {
         if (isSubmitting) {
@@ -78,7 +80,7 @@ const Oppsummering = () => {
                 })
                 .catch((error) => setSubmitError(error));
         }
-    }, [søknad, dispatch, søkerinfo.person.fnr, isSubmitting]);
+    }, [søknad, dispatch, søkerinfo.person.fnr, isSubmitting, state.endringstidspunkt, state.perioderSomSkalSendesInn]);
 
     useEffect(() => {
         if (kvittering !== undefined) {
@@ -142,6 +144,8 @@ const Oppsummering = () => {
                                             annenForelder={annenForelder}
                                             søker={søker}
                                             søkerrolle={søkersituasjon.rolle}
+                                            barn={barn}
+                                            farMedmorErAleneOmOmsorg={farMedmorErAleneOmOmsorg}
                                         />
                                     </OppsummeringsPanel>
                                     <OppsummeringsPanel title="Utenlandsopphold">
