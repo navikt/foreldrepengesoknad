@@ -5,32 +5,25 @@ import { isUttaksperiode } from 'uttaksplan/types/Periode';
 import { hasValue } from '@navikt/fp-common';
 
 export const inneholderPerioderUtenAktivitetskrav = (grunnlag: Søknadsinfo): RegelTestresultat => {
-    const { perioder, søkerErFarEllerMedmor, søkerErAleneOmOmsorg, søkerHarMidlertidigOmsorg, morHarRett } = grunnlag;
+    const { perioder, søkerErFarEllerMedmor, søkerErAleneOmOmsorg, søkerHarMidlertidigOmsorg } = grunnlag;
 
-    if (!søkerErFarEllerMedmor || søkerErAleneOmOmsorg || søkerHarMidlertidigOmsorg || morHarRett) {
+    if (!søkerErFarEllerMedmor || søkerErAleneOmOmsorg || søkerHarMidlertidigOmsorg) {
         return {
             passerer: true,
         };
     }
-
-    let periodeId = undefined;
-    const passerer = perioder
-        .filter(
-            (p) =>
-                isUttaksperiode(p) &&
-                (p.konto === StønadskontoType.Fellesperiode || p.konto === StønadskontoType.Foreldrepenger)
-        )
-        .some((p) => {
-            if (isUttaksperiode(p) && !hasValue(p.morsAktivitetIPerioden)) {
-                periodeId = p.id;
-            }
-        });
+    const perioderUtenAktivitetskrav = perioder.filter(
+        (p) =>
+            isUttaksperiode(p) &&
+            !hasValue(p.morsAktivitetIPerioden) &&
+            (p.konto === StønadskontoType.Fellesperiode || p.konto === StønadskontoType.Foreldrepenger)
+    );
 
     return {
-        passerer,
-        info: {
+        passerer: perioderUtenAktivitetskrav.length === 0,
+        info: perioderUtenAktivitetskrav.map((p) => ({
             intlKey: 'uttaksplan.validering.feil.inneholderPerioderUtenAktivitetskrav',
-            periodeId,
-        },
+            periodeId: p.id,
+        })),
     };
 };
