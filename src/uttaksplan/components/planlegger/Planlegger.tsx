@@ -1,5 +1,5 @@
 import { bemUtils, InfoBlock, intlUtils, Block } from '@navikt/fp-common';
-import AnnenForelder from 'app/context/types/AnnenForelder';
+import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
@@ -61,6 +61,10 @@ const Planlegger: FunctionComponent<Props> = ({
     const [nyPeriodeFormIsVisible, setNyPeriodeFormIsVisible] = useState(false);
     const [isUtsettelse, setIsUtsettelse] = useState(false);
     const nesteLedigeUttaksdato = Periodene(uttaksplan).getFørsteUttaksdagEtterSistePeriode();
+    const annenForelderErOppgitMenHarIkkeRett =
+        isAnnenForelderOppgitt(annenForelder) && !annenForelder.harRettPåForeldrepenger;
+    const søkerErFarEllerMedmorOgKunDeHarRett =
+        erFarEllerMedmor && !erAleneOmOmsorg && annenForelderErOppgitMenHarIkkeRett;
 
     return (
         <>
@@ -92,6 +96,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 situasjon={situasjon}
                                 meldingerPerPeriode={meldingerPerPeriode}
                                 erMorUfør={erMorUfør}
+                                søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                                 setPeriodeErGyldig={setPeriodeErGyldig}
                             />
                         </section>
@@ -115,6 +120,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 erMorUfør={erMorUfør}
                                 setPeriodeErGyldig={setPeriodeErGyldig}
                                 nesteLedigeUttaksdato={nesteLedigeUttaksdato}
+                                søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                             />
                         </div>
                     )}

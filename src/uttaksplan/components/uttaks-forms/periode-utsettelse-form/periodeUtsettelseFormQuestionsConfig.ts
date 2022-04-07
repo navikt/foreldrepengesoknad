@@ -7,6 +7,7 @@ interface PeriodeUtsettelseFormConfigPayload {
     values: PeriodeUtsettelseFormData;
     erFarEllerMedmor: boolean;
     erAleneOmOmsorg: boolean;
+    søkerErFarEllerMedmorOgKunDeHarRett: boolean;
 }
 
 const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormConfigPayload, PeriodeUtsettelseFormField> = {
@@ -29,8 +30,9 @@ const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormConfigPay
         visibilityFilter: ({ values }) => hasValue(values.årsak),
     },
     [PeriodeUtsettelseFormField.morsAktivitetIPerioden]: {
-        isAnswered: ({ values }) => hasValue(values.morsAktivitetIPerioden),
-        isIncluded: ({ erFarEllerMedmor, erAleneOmOmsorg }) => erFarEllerMedmor && !erAleneOmOmsorg,
+        isAnswered: ({ values, søkerErFarEllerMedmorOgKunDeHarRett }) =>
+            hasValue(values.morsAktivitetIPerioden) || !søkerErFarEllerMedmorOgKunDeHarRett,
+        isIncluded: ({ søkerErFarEllerMedmorOgKunDeHarRett }) => søkerErFarEllerMedmorOgKunDeHarRett,
         visibilityFilter: ({ values }) => hasValue(values.årsak),
     },
 };

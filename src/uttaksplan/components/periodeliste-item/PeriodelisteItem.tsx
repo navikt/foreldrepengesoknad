@@ -46,6 +46,7 @@ interface Props {
     meldinger?: VeilederMessage[];
     erMorUfør: boolean;
     annenForelderSamtidigUttakPeriode: Periode | undefined;
+    søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -65,6 +66,7 @@ const renderPeriodeListeInnhold = (
     erDeltUttak: boolean,
     situasjon: Situasjon,
     erMorUfør: boolean,
+    søkerErFarEllerMedmorOgKunDeHarRett: boolean,
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>
 ) => {
     switch (periode.type) {
@@ -113,6 +115,7 @@ const renderPeriodeListeInnhold = (
                     toggleIsOpen={toggleIsOpen}
                     navnPåForeldre={navnPåForeldre}
                     erMorUfør={erMorUfør}
+                    søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                 />
             );
         case Periodetype.Hull:
@@ -159,6 +162,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     meldinger = [],
     erMorUfør,
     annenForelderSamtidigUttakPeriode,
+    søkerErFarEllerMedmorOgKunDeHarRett,
     setPeriodeErGyldig,
 }) => {
     const bem = bemUtils('periodelisteItem');
@@ -203,6 +207,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     erDeltUttak,
                     situasjon,
                     erMorUfør,
+                    søkerErFarEllerMedmorOgKunDeHarRett,
                     setPeriodeErGyldig
                 )}
             </EkspanderbartpanelBase>

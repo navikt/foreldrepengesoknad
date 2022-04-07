@@ -843,7 +843,7 @@
     "uttaksplan.validering.feil.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold.utenTom": "Arbeidsgiveren din {navn} har registrert at du er ansatt fra {fom}. For å kunne utsette eller kombinere foreldrepenger med arbeid må du være ansatt. Du må endre datoen for å gå videre.",
     "uttaksplan.validering.feil.harSøktOmFerieUtenArbeidsforhold": "Du kan dessverre ikke legge inn utsettelse på grunn av lovbestemt ferie fordi du ikke er registrert med et arbeidsforhold i valgt tidsperiode.",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag.",
-    "uttaksplan.validering.feil.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker": "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Unntaket er om mor er for syk eller innlagt i helseinstitusjon.",
+    "uttaksplan.validering.feil.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker": "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Unntaket er om du tar ut foreldrepenger fordi mor er for syk eller innlagt i helseinstitusjon.",
     "uttaksplan.validering.feil.uttaksmengdeForFarMedmorErForHøy": "Du har lagt inn flere dager enn du har tilgjengelig.",
     "uttaksplan.validering.feil.forMyeUttak.tittel": "Lagt inn for mange dager i planen",
     "uttaksplan.validering.feil.forMyeUttak": "Du har tatt {dager } for mye av {konto}",
