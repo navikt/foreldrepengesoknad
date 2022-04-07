@@ -10,6 +10,7 @@ import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Situasjon } from 'app/types/Situasjon';
 import { VeiledermeldingerPerPeriode } from 'uttaksplan/validering/veilederInfo/types';
+import { getAnnenForelderSamtidigUttakPeriode } from 'uttaksplan/utils/periodeUtils';
 
 interface Props {
     uttaksplan: Periode[];
@@ -82,6 +83,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                     situasjon={situasjon}
                     meldinger={meldingerPerPeriode[p.id]}
                     erMorUfør={erMorUfør}
+                    annenForelderSamtidigUttakPeriode={getAnnenForelderSamtidigUttakPeriode(p, uttaksplan)}
                     setPeriodeErGyldig={setPeriodeErGyldig}
                 />
             ))}

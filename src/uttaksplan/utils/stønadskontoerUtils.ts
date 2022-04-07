@@ -1,7 +1,10 @@
+import { intlUtils } from '@navikt/fp-common';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
+import { Forelder } from 'common/types';
 import { IntlShape } from 'react-intl';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { getForelderNavn } from './periodeUtils';
 
 export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligStønadskonto[]): StønadskontoType[] =>
     stønadskontoTyper
@@ -37,6 +40,28 @@ export const getStønadskontoNavn = (intl: IntlShape, konto: StønadskontoType, 
     }
 
     return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
+};
+
+export const getUttakAnnenPartStønadskontoNavn = (
+    intl: IntlShape,
+    konto: StønadskontoType,
+    periodeForelder: Forelder,
+    navnPåForeldre: NavnPåForeldre,
+    samtidigUttakProsent: string | undefined
+) => {
+    const forelderNavn = getForelderNavn(periodeForelder, navnPåForeldre);
+    if (samtidigUttakProsent !== undefined) {
+        const navn = getNavnGenitivEierform(forelderNavn, intl.locale);
+        const intlTekst =
+            konto === StønadskontoType.Fellesperiode
+                ? 'uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttakFellesperiode'
+                : 'uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttak';
+        return intlUtils(intl, intlTekst, {
+            navn,
+            prosent: samtidigUttakProsent,
+        });
+    }
+    return getStønadskontoNavn(intl, konto, navnPåForeldre);
 };
 
 const navnSlutterPåSLyd = (navn: string): boolean => {

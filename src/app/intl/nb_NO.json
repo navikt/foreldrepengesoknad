@@ -646,6 +646,8 @@
     "uttaksplan.stønadskontotype.MØDREKVOTE": "Mors kvote",
     "uttaksplan.stønadskontotype.foreldernavn.kvote": "{navn} kvote",
     "uttaksplan.stønadskontotype.undefined": "Ny periode uten kvote",
+    "uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttak": "{navn} periode {prosent}%",
+    "uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttakFellesperiode": "{navn} fellesperiode {prosent}%",
     "uttaksplan.periodetype.hull.tittel": "Tapte dager",
     "uttaksplan.periodetype.periodeUtenUttak.tittel": "Periode uten uttak",
     "uttaksplan.periodetype.info.utsettelse.LOVBESTEMT_FERIE": "{ navn } utsetter på grunn av ferie",

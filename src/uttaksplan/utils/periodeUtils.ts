@@ -8,6 +8,7 @@ import {
     isHull,
     isOverføringsperiode,
     isPeriodeUtenUttak,
+    isUttakAnnenPart,
     isUttakAvFellesperiode,
     isUttaksperiode,
     Periode,
@@ -22,7 +23,7 @@ import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { erTidsperioderLike, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
-import { getStønadskontoNavn } from './stønadskontoerUtils';
+import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
 import {
     convertTidsperiodeToTidsperiodeDate,
     isDateInTheFuture,
@@ -202,7 +203,13 @@ export const getPeriodeTittel = (intl: IntlShape, periode: Periode, navnPåForel
         case Periodetype.Info:
             switch (periode.infotype) {
                 case PeriodeInfoType.uttakAnnenPart:
-                    return getStønadskontoNavn(intl, getStønadskontoFromOppholdsårsak(periode.årsak), navnPåForeldre);
+                    return getUttakAnnenPartStønadskontoNavn(
+                        intl,
+                        getStønadskontoFromOppholdsårsak(periode.årsak),
+                        periode.forelder,
+                        navnPåForeldre,
+                        periode.samtidigUttakProsent
+                    );
                 case PeriodeInfoType.utsettelseAnnenPart:
                     return intlUtils(intl, `uttaksplan.periodetype.info.utsettelse.${periode.årsak}`, {
                         navn: getForelderNavn(periode.forelder, navnPåForeldre),
@@ -392,4 +399,22 @@ export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakT
 
 export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan: Periode[]): boolean => {
     return opprinneligPlan.some((op) => Perioden(periode).erLik(op, true, true));
+};
+
+export const getAnnenForelderSamtidigUttakPeriode = (periode: Periode, perioder: Periode[]): Periode | undefined => {
+    if (isUttaksperiode(periode)) {
+        const samtidigUttak = perioder
+            .filter((p) => isUttakAnnenPart(p))
+            .find(
+                (p) =>
+                    isUttakAnnenPart(p) &&
+                    dayjs(periode.tidsperiode.fom).isSame(p.tidsperiode.fom) &&
+                    p.ønskerSamtidigUttak === true &&
+                    p.id !== periode.id
+            );
+
+        return samtidigUttak !== undefined ? samtidigUttak : undefined;
+    }
+
+    return undefined;
 };
