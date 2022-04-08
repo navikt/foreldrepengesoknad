@@ -28,6 +28,7 @@ interface Props {
     situasjon: Situasjon;
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
     erMorUfør: boolean;
+    søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -47,6 +48,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     situasjon,
     meldingerPerPeriode,
     erMorUfør,
+    søkerErFarEllerMedmorOgKunDeHarRett,
     setPeriodeErGyldig,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
@@ -84,6 +86,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                     meldinger={meldingerPerPeriode[p.id]}
                     erMorUfør={erMorUfør}
                     annenForelderSamtidigUttakPeriode={getAnnenForelderSamtidigUttakPeriode(p, uttaksplan)}
+                    søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                     setPeriodeErGyldig={setPeriodeErGyldig}
                 />
             ))}

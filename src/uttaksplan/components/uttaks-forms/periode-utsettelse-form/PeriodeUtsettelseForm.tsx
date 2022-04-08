@@ -37,6 +37,7 @@ interface Props {
     isNyPeriode?: boolean;
     navnPåForeldre: NavnPåForeldre;
     erMorUfør: boolean;
+    søkerErFarEllerMedmorOgKunDeHarRett: boolean;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -52,6 +53,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     setNyPeriodeFormIsVisible,
     navnPåForeldre,
     erMorUfør,
+    søkerErFarEllerMedmorOgKunDeHarRett,
 }) => {
     const { tidsperiode, id } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
@@ -75,6 +77,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                     values,
                     erFarEllerMedmor,
                     erAleneOmOmsorg,
+                    søkerErFarEllerMedmorOgKunDeHarRett,
                 });
 
                 return (
