@@ -34,7 +34,7 @@ const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps> = ({
     const intl = useIntl();
 
     const fellesperiodeukerMor =
-        valgtFellesperiodeukerMor || !valgtStønadskonto
+        valgtFellesperiodeukerMor !== undefined || !valgtStønadskonto
             ? valgtFellesperiodeukerMor
             : Math.round((getAntallUkerFellesperiode(valgtStønadskonto) || 0) / 2);
 
