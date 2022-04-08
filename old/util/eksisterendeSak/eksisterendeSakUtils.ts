@@ -125,6 +125,7 @@ const mapSaksperiodeFromDTO = (p: UttaksplanPeriodeDTO): Saksperiode => {
     if (oppholdAarsak !== undefined && gjelderAnnenPart) {
         returnPeriode.gjelderAnnenPart = false;
         returnPeriode.angittAvAnnenPart = true;
+        returnPeriode.oppholdAarsak = oppholdAarsak;
         returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdsÅrsak(oppholdAarsak);
     }
 

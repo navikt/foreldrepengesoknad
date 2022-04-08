@@ -7,10 +7,11 @@ import {
 } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import visibility from '../../../steg/andreInntekter/selvstendigNæringsdrivendeModal/visibility';
 
-const revisorMock: NæringsrelasjonPartial = {};
-const regnskapsførerMock: NæringsrelasjonPartial = {};
+const revisorMock: NæringsrelasjonPartial = { navn: 'RevisorNavn' };
+const regnskapsførerMock: NæringsrelasjonPartial = { navn: 'RegnsapsførerNavn' };
 
 const næring: NæringPartial = {
+    navnPåNæringen: 'Næring',
     registrertILand: 'testland',
     harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true,
     hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
@@ -20,6 +21,26 @@ const næring: NæringPartial = {
     regnskapsfører: regnskapsførerMock as Næringsrelasjon,
     kanInnhenteOpplsyningerFraRevisor: true,
     næringsinntekt: '2000',
+};
+
+const næringUtenRevisorRegnskapsfører: NæringPartial = {
+    navnPåNæringen: 'NæringUtenRevisorEllerRegnskapsfører',
+    harRevisor: false,
+    harRegnskapsfører: false,
+};
+
+const næringWithInvisibleChars: NæringPartial = {
+    hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
+    navnPåNæringen: 'Navn med\u00ad(soft hyphen)som skal erstattes med space.',
+    endringAvNæringsinntektInformasjon: {
+        dato: '20.01.2010',
+        næringsinntektEtterEndring: 102000,
+        forklaring: 'Forklaring med\u0009(tab)som skal erstattes med space.',
+    },
+    harRevisor: true,
+    revisor: { navn: 'Revisor\u0009Olsen\u200a' } as Næringsrelasjon,
+    harRegnskapsfører: true,
+    regnskapsfører: { navn: 'Regnskapsfører\u2009Nilsen' } as Næringsrelasjon,
 };
 
 describe('cleanupNæring', () => {
@@ -111,7 +132,8 @@ describe('cleanupNæring', () => {
 
         it('should be set to its assigned value if harRevisor is true', () => {
             const result = cleanup(næring as Næring);
-            expect(result.revisor).toBe(næring.revisor);
+            expect(result.revisor).toEqual(næring.revisor);
+            expect(result.revisor).toEqual(næring.revisor);
         });
     });
 
@@ -125,7 +147,24 @@ describe('cleanupNæring', () => {
 
         it('should be set to its assigned value if harRegnskapsfører is true', () => {
             const result = cleanup(næring as Næring);
-            expect(result.regnskapsfører).toBe(næring.regnskapsfører);
+            expect(result.regnskapsfører).toEqual(næring.regnskapsfører);
+        });
+    });
+
+    describe('should replace invisible chars with space i navn på næringen og forklaring', () => {
+        it('should replace invisible chars with space', () => {
+            const result = cleanup(næringWithInvisibleChars as Næring);
+            expect(result.navnPåNæringen).toEqual('Navn med (soft hyphen)som skal erstattes med space.');
+            expect(result.endringAvNæringsinntektInformasjon?.forklaring).toEqual(
+                'Forklaring med (tab)som skal erstattes med space.'
+            );
+            expect(result.regnskapsfører.navn).toEqual('Regnskapsfører Nilsen');
+            expect(result.revisor.navn).toEqual('Revisor Olsen ');
+        });
+        it('should not give an error on undefined revisor and regnskapsfører', () => {
+            const result = cleanup(næringUtenRevisorRegnskapsfører as Næring);
+            expect(result.revisor).toBeUndefined();
+            expect(result.regnskapsfører).toBeUndefined();
         });
     });
 });

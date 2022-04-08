@@ -28,6 +28,8 @@ import { Forelder } from 'common/types';
 import { sorterPerioder } from '../uttaksplan/Periodene';
 import moment from 'moment';
 import { Uttaksdagen } from '../uttaksplan/Uttaksdagen';
+import { førsteOktober2021ReglerGjelder } from '../dates/dates';
+import { replaceInvisibleCharsWithSpace } from '../stringUtils';
 
 export const isArrayOfAttachments = (object: any) => {
     return (
@@ -109,7 +111,7 @@ export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
     });
 };
 
-const skalPeriodeSendesInn = (periode: Periode) => {
+export const skalPeriodeSendesInn = (periode: Periode) => {
     return isNotPeriodetypeHull(periode) && isNotPeriodetypeInfo(periode) && isNotPeriodeUtenUttak(periode);
 };
 
@@ -137,8 +139,43 @@ const ensureNoNullItemsInFødselsdatoer = (barn: BarnInnsending, situasjon: Søk
     return (cleanedBarn as BarnInnsending) || barn;
 };
 
+export const getPeriodeVedTidspunkt = (uttaksplan: Periode[], tidspunkt: Date): Periode | undefined => {
+    return uttaksplan.find((periode) =>
+        moment(tidspunkt).isBetween(periode.tidsperiode.fom, periode.tidsperiode.fom, 'day', '[]')
+    );
+};
+
+export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], endringstidspunkt: Date): Periode[] => {
+    const førstePeriodeEtterEndringstidspunkt = uttaksplan.find((periode) =>
+        moment(periode.tidsperiode.fom).isAfter(endringstidspunkt)
+    );
+
+    const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt
+        ? Uttaksdagen(førstePeriodeEtterEndringstidspunkt.tidsperiode.fom).forrige()
+        : endringstidspunkt;
+
+    const endringsTidspunktPeriode: Utsettelsesperiode = {
+        type: Periodetype.Utsettelse,
+        årsak: UtsettelseÅrsakType.Fri,
+        id: guid(),
+        tidsperiode: {
+            fom: endringstidspunkt,
+            tom: endringsTidspunktPeriodeTom,
+        },
+        erArbeidstaker: false,
+        forelder: Forelder.farMedmor,
+    };
+
+    uttaksplan.push(endringsTidspunktPeriode);
+
+    uttaksplan.sort(sorterPerioder);
+
+    return uttaksplan;
+};
+
 const cleanupUttaksplan = (
     uttaksplan: Periode[],
+    familiehendelsesdato: Date,
     annenForelder?: AnnenForelder,
     endringstidspunkt?: Date
 ): Periode[] => {
@@ -150,37 +187,11 @@ const cleanupUttaksplan = (
         )
         .map(changeGradertPeriode);
 
-    if (endringstidspunkt) {
-        const periodeVedEndringstidspunkt = cleanedUttaksplan.find((periode) =>
-            moment(endringstidspunkt).isBetween(periode.tidsperiode.fom, periode.tidsperiode.fom, 'day', '[]')
-        );
+    if (endringstidspunkt && førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
+        const periodeVedEndringstidspunkt = getPeriodeVedTidspunkt(cleanedUttaksplan, endringstidspunkt);
 
         if (!periodeVedEndringstidspunkt) {
-            const førstePeriodeEtterEndringstidspunkt = cleanedUttaksplan.find((periode) =>
-                moment(periode.tidsperiode.fom).isAfter(endringstidspunkt)
-            );
-
-            const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt
-                ? Uttaksdagen(førstePeriodeEtterEndringstidspunkt.tidsperiode.fom).forrige()
-                : endringstidspunkt;
-
-            const endringsTidspunktPeriode: Utsettelsesperiode = {
-                type: Periodetype.Utsettelse,
-                årsak: UtsettelseÅrsakType.Fri,
-                id: guid(),
-                tidsperiode: {
-                    fom: endringstidspunkt,
-                    tom: endringsTidspunktPeriodeTom,
-                },
-                erArbeidstaker: false,
-                forelder: Forelder.farMedmor,
-            };
-
-            cleanedUttaksplan.push(endringsTidspunktPeriode);
-
-            cleanedUttaksplan.sort(sorterPerioder);
-
-            return cleanedUttaksplan;
+            return getUttaksplanMedFriUtsettelsesperiode(cleanedUttaksplan, endringstidspunkt);
         }
     }
 
@@ -190,7 +201,7 @@ const cleanupUttaksplan = (
 const cleanupTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string | undefined => {
     const tilleggsopplysningerTilSaksbehandler = tilleggsopplysninger.begrunnelseForSenEndring?.tekst;
     if (tilleggsopplysningerTilSaksbehandler !== undefined && tilleggsopplysningerTilSaksbehandler.length > 0) {
-        return tilleggsopplysningerTilSaksbehandler;
+        return replaceInvisibleCharsWithSpace(tilleggsopplysningerTilSaksbehandler);
     }
     return undefined;
 };
@@ -229,22 +240,15 @@ const cleanupSøker = (søker: Søker) => {
         : { ...søkerWithDates };
 };
 
-export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
-    const {
-        ekstrainfo,
-        sensitivInfoIkkeLagre,
-        vedleggForSenEndring,
-        tilleggsopplysninger,
-        søker,
-        barn,
-        ...rest
-    } = søknad;
+export const cleanUpSøknad = (søknad: Søknad, familiehendelsesdato: Date): SøknadForInnsending => {
+    const { ekstrainfo, sensitivInfoIkkeLagre, vedleggForSenEndring, tilleggsopplysninger, søker, barn, ...rest } =
+        søknad;
     const søkerInnsending = cleanupSøker(søker);
     const barnInnsending = konverterStringDatoerIObjektTilDate<Barn, BarnInnsending>(barn);
     const cleanedSøknad: SøknadForInnsending = { søker: søkerInnsending, barn: barnInnsending, ...rest };
 
     cleanedSøknad.barn = ensureNoNullItemsInFødselsdatoer(cleanedSøknad.barn, søknad.situasjon);
-    cleanedSøknad.uttaksplan = cleanupUttaksplan(cleanedSøknad.uttaksplan, søknad.annenForelder);
+    cleanedSøknad.uttaksplan = cleanupUttaksplan(cleanedSøknad.uttaksplan, familiehendelsesdato, søknad.annenForelder);
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
     cleanedSøknad.vedlegg = cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring });
     cleanedSøknad.tilleggsopplysninger = cleanupTilleggsopplysninger(søknad.tilleggsopplysninger);
@@ -255,6 +259,7 @@ export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
 export const cleanEnkelEndringssøknad = (
     søknad: Søknad,
     endringerIUttaksplan: Periode[],
+    familiehendelsesdato: Date,
     endringstidspunkt?: Date
 ): EnkelEndringssøknadForInnsending => {
     const cleanedSøknad: EnkelEndringssøknadForInnsending = {
@@ -269,7 +274,12 @@ export const cleanEnkelEndringssøknad = (
         dekningsgrad: søknad.dekningsgrad,
         situasjon: søknad.situasjon,
     };
-    cleanedSøknad.uttaksplan = cleanupUttaksplan(cleanedSøknad.uttaksplan, søknad.annenForelder, endringstidspunkt);
+    cleanedSøknad.uttaksplan = cleanupUttaksplan(
+        cleanedSøknad.uttaksplan,
+        familiehendelsesdato,
+        søknad.annenForelder,
+        endringstidspunkt
+    );
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
     cleanedSøknad.vedlegg = cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring: søknad.vedleggForSenEndring });
     cleanedSøknad.tilleggsopplysninger = cleanupTilleggsopplysninger(søknad.tilleggsopplysninger);

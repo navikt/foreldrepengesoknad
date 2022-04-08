@@ -5,7 +5,7 @@ import Block from 'common/components/block/Block';
 import BEMHelper from 'common/util/bem';
 import getMessage from 'common/util/i18nUtils';
 import Fieldset from 'app/temp-components/Fieldset';
-import { validateFødselsnummer, validateRequiredField } from 'app/validation/fieldValidations';
+import { validateFødselsnummer, validateRequiredTextInputField } from 'app/validation/fieldValidations';
 import { AnnenForelderFieldNames, AnnenForelderFormComponents } from '../form/annenforelderFormTypes';
 import './oppgiPersonalia.less';
 
@@ -30,6 +30,9 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
 
+    const fornavnLabel = getMessage(intl, 'annenForelder.spørsmål.fornavn');
+    const etternavnLabel = getMessage(intl, 'annenForelder.spørsmål.etternavn');
+
     return (
         <div className={bem.block}>
             <Fieldset legend={getMessage(intl, 'annenForelder.spørsmål.navn')}>
@@ -38,23 +41,33 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
                         <AnnenForelderFormComponents.Input
                             className={bem.element('nameInput')}
                             name={AnnenForelderFieldNames.fornavn}
-                            label={getMessage(intl, 'annenForelder.spørsmål.fornavn')}
+                            label={fornavnLabel}
                             disabled={kanIkkeOppgis}
                             validate={(fornavnValue) =>
                                 kanIkkeOppgis
                                     ? undefined
-                                    : validateRequiredField(fornavnValue, 'valideringsfeil.fornavnPåkrevd')
+                                    : validateRequiredTextInputField(
+                                          fornavnValue,
+                                          fornavnLabel.replace(':', ''),
+                                          'valideringsfeil.fornavnPåkrevd',
+                                          intl
+                                      )
                             }
                         />
                         <AnnenForelderFormComponents.Input
                             className={bem.element('nameInput')}
                             name={AnnenForelderFieldNames.etternavn}
-                            label={getMessage(intl, 'annenForelder.spørsmål.etternavn')}
+                            label={etternavnLabel}
                             disabled={kanIkkeOppgis}
                             validate={(etternavn) =>
                                 kanIkkeOppgis
                                     ? undefined
-                                    : validateRequiredField(etternavn, 'valideringsfeil.etternavnPåkrevd')
+                                    : validateRequiredTextInputField(
+                                          etternavn,
+                                          etternavnLabel.replace(':', ''),
+                                          'valideringsfeil.etternavnPåkrevd',
+                                          intl
+                                      )
                             }
                         />
                     </div>

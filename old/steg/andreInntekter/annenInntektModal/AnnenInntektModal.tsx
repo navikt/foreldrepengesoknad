@@ -22,9 +22,10 @@ import {
 } from '../../../types/søknad/AnnenInntekt';
 import { mapTidsperiodeStringToTidsperiode } from '../../../util/tidsperiodeUtils';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../../util/validation/andreInntekter';
-import { hasValueRule } from '../../../util/validation/common';
+import { hasValueRule, noIllegalCharactersRule } from '../../../util/validation/common';
 import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
 import visibility from './visibility';
+import { getIllegalCharsErrorMessage } from 'app/validation/fieldValidations';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
@@ -108,7 +109,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
         const { intl, isOpen, onCancel } = this.props;
         const { annenInntekt } = this.state;
         const tidsperiode = annenInntekt.tidsperiode !== undefined ? annenInntekt.tidsperiode : {};
-
+        const navnPåArbeidsGiverLabel = getMessage(intl, 'annenInntekt.spørsmål.arbeidsgiver');
         return (
             <ModalForm
                 isOpen={isOpen}
@@ -151,7 +152,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 <Block visible={visibility.arbeidsgiverNavn(annenInntekt)}>
                     <Input
                         name="arbeidsgiverNavn"
-                        label={getMessage(intl, 'annenInntekt.spørsmål.arbeidsgiver')}
+                        label={navnPåArbeidsGiverLabel}
                         onChange={(arbeidsgiverNavn: string) => {
                             const utlandInntekt: JobbIUtlandetInntektPartial = {
                                 arbeidsgiverNavn,
@@ -163,6 +164,14 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             hasValueRule(
                                 annenInntekt && (annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn,
                                 getMessage(intl, 'annenInntekt.modal.arbeidsgiverNavn.påkrevd')
+                            ),
+                            noIllegalCharactersRule(
+                                (annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn || '',
+                                getIllegalCharsErrorMessage(
+                                    (annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn || '',
+                                    navnPåArbeidsGiverLabel,
+                                    intl
+                                )
                             ),
                         ]}
                     />

@@ -158,6 +158,14 @@ describe('Cleanup AnnenForelder', () => {
                 expect(af.harRettPåForeldrepenger).toBeUndefined();
                 expect(b.datoForAleneomsorg).toBeUndefined();
             });
+            it('erstatter invisible chars med space i annenforelder navn of fornavn', () => {
+                const af: AnnenForelder = cleanupAnnenForelder(testVisibility, {
+                    ...testSøknad,
+                    annenForelder: { ...testSøknad.annenForelder, fornavn: 'Navn\u200d', etternavn: 'Etternavn\u2009' },
+                } as Søknad) as AnnenForelder;
+                expect(af.fornavn).toEqual('Navn ');
+                expect(af.etternavn).toEqual('Etternavn ');
+            });
         });
     });
 });

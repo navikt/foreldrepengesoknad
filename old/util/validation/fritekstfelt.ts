@@ -1,7 +1,8 @@
 import { IntlShape } from 'react-intl';
-import { maxLengthIsGreaterThanOrEqualToStringLengthRule } from './common';
+import { maxLengthIsGreaterThanOrEqualToStringLengthRule, noIllegalCharactersRule } from './common';
 import getMessage from 'common/util/i18nUtils';
 import { Validator } from 'common/lib/validation/types';
+import { getIllegalCharsErrorMessage } from 'app/validation/fieldValidations';
 
 interface FritekstfeltValidationOptions {
     maxLength?: number;
@@ -12,11 +13,12 @@ export const getFritekstErrorMessage = (intl: IntlShape, maxLength: number) =>
 
 export const getFritekstfeltRules = (
     options: FritekstfeltValidationOptions,
+    label: string,
     intl: IntlShape,
     value?: string
 ): Validator[] => {
     const rules = [];
-
+    
     if (value) {
         if (options.maxLength !== undefined) {
             rules.push(
@@ -27,6 +29,7 @@ export const getFritekstfeltRules = (
                 )
             );
         }
+        rules.push(noIllegalCharactersRule(value, getIllegalCharsErrorMessage(value, label, intl)));
     }
 
     return rules;

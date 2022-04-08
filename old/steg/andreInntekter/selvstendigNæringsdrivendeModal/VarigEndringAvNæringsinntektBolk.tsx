@@ -42,7 +42,8 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
         const { næring, onChange, intl } = this.props;
         const { hattVarigEndringAvNæringsinntektSiste4Kalenderår } = næring;
         const info = næring.endringAvNæringsinntektInformasjon;
-
+        const inntektEtterEndringLabel = getMessage(intl, 'varigEndringAvNæringsinntekt.inntektEtterEndring.label');
+        const forklaringEndringLabel = getMessage(intl, 'varigEndringAvNæringsinntekt.forklaring.label');
         return (
             <React.Fragment>
                 <Block>
@@ -88,7 +89,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                     <Block>
                         <Input
                             name="inntektEtterEndring"
-                            label={getMessage(intl, 'varigEndringAvNæringsinntekt.inntektEtterEndring.label')}
+                            label={inntektEtterEndringLabel}
                             value={
                                 info && info.næringsinntektEtterEndring !== undefined
                                     ? info.næringsinntektEtterEndring
@@ -111,13 +112,18 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                         <Textarea
                             name="forklaring"
                             value={(info && info.forklaring) || ''}
-                            label={getMessage(intl, 'varigEndringAvNæringsinntekt.forklaring.label')}
+                            label={forklaringEndringLabel}
                             onChange={(e: TextareaChangeEvent) => {
                                 this.updateEndringAvNæringsinntektInformasjon({
                                     forklaring: e.target.value,
                                 });
                             }}
-                            validators={getFritekstfeltRules({ maxLength: 1000 }, intl, info && info.forklaring)}
+                            validators={getFritekstfeltRules(
+                                { maxLength: 1000 },
+                                forklaringEndringLabel,
+                                intl,
+                                info && info.forklaring
+                            )}
                             maxLength={1000}
                         />
                     </Block>

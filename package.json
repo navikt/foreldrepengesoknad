@@ -191,15 +191,19 @@
         "react-collapse": "^5.0.1",
         "react-day-picker": "^7.4.10",
         "react-document-title": "^2.0.3",
-        "react-dom": "^17.0.2",
-        "react-intl": "^5.20.6",
-        "react-modal": "^3.14.3",
-        "react-router-dom": "^6.2.2",
-        "react-scroll": "^1.8.3",
-        "react-transition-group": "^4.4.2",
-        "regenerator-runtime": "^0.13.9",
-        "request": "^2.88.2",
-        "snyk": "^1.891.0"
+        "react-dom": "^16.13.1",
+        "react-flip-move": "^3.0.4",
+        "react-intl": "^5.13.2",
+        "react-modal": "^3.12.1",
+        "react-motion": "^0.5.2",
+        "react-redux": "^7.2.2",
+        "react-router-dom": "^5.2.0",
+        "react-scroll": "^1.8.1",
+        "react-transition-group": "^4.4.1",
+        "redux": "^4.0.5",
+        "redux-saga": "^1.1.3",
+        "reselect": "^4.0.0",
+        "snyk": "^1.817.0"
     },
     "snyk": true
 }

@@ -82,12 +82,13 @@ jobs:
                         labels: ['bygg'],
                         title: 'Deploy av ${{ env.TAG }}',
                         body: '${{ github.sha }}',
-                      })
-                      .then(response => {
-                              const issue = { owner: context.issue.owner,
-                              repo: context.issue.repo,
-                              issue_number: response.data.number }
-                             github.issues.createComment({...issue,
-                                    title: 'Deploy av ${{ env.TAG }}',
-                                    body: '/promote dev-gcp '})
-                       });
+                      });
+
+#                      .then(response => {
+#                              const issue = { owner: context.issue.owner,
+#                              repo: context.issue.repo,
+#                              issue_number: response.data.number }
+#                             github.issues.createComment({...issue,
+#                                    title: 'Deploy av ${{ env.TAG }}',
+#                                    body: '/promote dev-gcp '})
+#                       });

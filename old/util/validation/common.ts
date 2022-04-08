@@ -14,6 +14,7 @@ import {
 } from '../dates/dates';
 import { maxLengthIsGreaterThanOrEqualToStringLength } from '../stringUtils';
 import { isISODateString } from 'nav-datovelger';
+import { validateTextHasLegalChars } from 'app/validation/fieldValidations';
 
 const isNumeric = (str: string | undefined) => {
     if (typeof str !== 'string') {
@@ -50,6 +51,11 @@ export const maxLengthIsGreaterThanOrEqualToStringLengthRule = (
     failText: string
 ): Validator => ({
     test: () => maxLengthIsGreaterThanOrEqualToStringLength(maxLength, v),
+    failText,
+});
+
+export const noIllegalCharactersRule = (v: string | undefined, failText: string): Validator => ({
+    test: () => (v ? validateTextHasLegalChars(v) : true),
     failText,
 });
 

@@ -12,7 +12,6 @@ import {
 import { FamiliehendelseDatoer } from '../../types/søknad/FamiliehendelseDatoer';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { Perioden } from '../uttaksplan/Perioden';
-// import { Tidsperioden } from '../uttaksplan/Tidsperioden';
 
 export interface DateRange {
     from: Date;
@@ -40,11 +39,12 @@ export const getEndringstidspunkt = (
         return undefined;
     }
 
-    let endringstidspunkt: Date | undefined;
+    let endringstidspunktNyPlan: Date | undefined;
+    let endringstidspunktOpprinneligPlan: Date | undefined;
     if (opprinneligPlan) {
         updatedPlan.forEach((periode, index) => {
-            if (endringstidspunkt) {
-                return endringstidspunkt;
+            if (endringstidspunktNyPlan) {
+                return endringstidspunktNyPlan;
             }
 
             const { fom } = periode.tidsperiode;
@@ -52,38 +52,42 @@ export const getEndringstidspunkt = (
                 moment(opprinneligPeriode.tidsperiode.fom).isSame(fom)
             );
 
-            if (
-                opprinneligPeriodeMedSammeFom !== undefined &&
-                !Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, false, true)
-            ) {
-                endringstidspunkt = fom;
+            if (opprinneligPeriodeMedSammeFom !== undefined) {
+                const perioderErLikeUtenTidSjekk = Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, false, true);
+                if (
+                    !perioderErLikeUtenTidSjekk ||
+                    (perioderErLikeUtenTidSjekk &&
+                        Perioden(periode).slutterEtter(opprinneligPeriodeMedSammeFom.tidsperiode.tom))
+                ) {
+                    endringstidspunktNyPlan = fom;
+                }
             }
 
             if (opprinneligPeriodeMedSammeFom === undefined) {
-                endringstidspunkt = fom;
+                endringstidspunktNyPlan = fom;
             }
 
             if (opprinneligPeriodeMedSammeFom !== undefined && updatedPlan.length - 1 === index) {
                 if (!Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, true, true)) {
-                    endringstidspunkt = fom;
+                    endringstidspunktNyPlan = fom;
                 }
             }
         });
 
         opprinneligPlan.forEach((periode) => {
-            if (endringstidspunkt) {
-                return endringstidspunkt;
+            if (endringstidspunktOpprinneligPlan) {
+                return endringstidspunktOpprinneligPlan;
             }
 
             const { fom } = periode.tidsperiode;
             const nyPeriodeMedSammeFom = updatedPlan.find((nyPeriode) => moment(nyPeriode.tidsperiode.fom).isSame(fom));
 
             if (nyPeriodeMedSammeFom !== undefined && !Perioden(periode).erLik(nyPeriodeMedSammeFom, false, true)) {
-                endringstidspunkt = nyPeriodeMedSammeFom.tidsperiode.fom;
+                endringstidspunktOpprinneligPlan = nyPeriodeMedSammeFom.tidsperiode.fom;
             }
 
             if (nyPeriodeMedSammeFom === undefined) {
-                endringstidspunkt = fom;
+                endringstidspunktOpprinneligPlan = fom;
             }
         });
     } else {
@@ -93,7 +97,28 @@ export const getEndringstidspunkt = (
         }
     }
 
-    return endringstidspunkt;
+    return getOldestDate(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
+};
+
+const getOldestDate = (
+    endringstidspunktNyPlan: Date | undefined,
+    endringstidspunktOpprinneligPlan: Date | undefined
+): Date | undefined => {
+    if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan === undefined) {
+        return undefined;
+    }
+
+    if (endringstidspunktNyPlan !== undefined && endringstidspunktOpprinneligPlan === undefined) {
+        return endringstidspunktNyPlan;
+    }
+
+    if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan !== undefined) {
+        return endringstidspunktOpprinneligPlan;
+    }
+
+    return moment(endringstidspunktNyPlan).isSameOrBefore(moment(endringstidspunktOpprinneligPlan))
+        ? endringstidspunktNyPlan
+        : endringstidspunktOpprinneligPlan;
 };
 
 export const getDateFromString = (dato?: string) => {
@@ -363,7 +388,7 @@ export const dateRangesExceedsRange = (ranges: DateRange[], allowedRange: DateRa
 };
 
 export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boolean => {
-    const førsteOktober2021 = new Date('2021-06-19');
+    const førsteOktober2021 = new Date('2021-10-01');
 
     return (
         moment(familiehendelsesdato).isSameOrAfter(førsteOktober2021) &&

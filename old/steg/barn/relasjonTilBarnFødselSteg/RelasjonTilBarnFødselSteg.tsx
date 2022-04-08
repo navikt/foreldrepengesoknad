@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { guid } from 'nav-frontend-js-utils';
 import Lenke from 'nav-frontend-lenker';
 import { Element } from 'nav-frontend-typografi';
@@ -189,8 +189,14 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                     dato={(barn as FødtBarn).termindato}
                                     onChange={(termindato) => dispatch(søknadActions.updateBarn({ termindato }))}
                                     label={<Labeltekst intlId="fødselsdatoer.termin" />}
-                                    datoAvgrensinger={{ ...termindatoAvgrensningerFodsel }}
-                                    validators={getTermindatoReglerForFødsel(fødtBarnTermindato, intl)}
+                                    datoAvgrensinger={{
+                                        ...termindatoAvgrensningerFodsel(dateToISOString(valgtBarn.fødselsdato)),
+                                    }}
+                                    validators={getTermindatoReglerForFødsel(
+                                        fødtBarnTermindato,
+                                        dateToISOString(valgtBarn.fødselsdato),
+                                        intl
+                                    )}
                                 />
                             </Block>
                             <Block

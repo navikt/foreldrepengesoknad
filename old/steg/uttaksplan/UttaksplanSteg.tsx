@@ -50,6 +50,7 @@ import { HistoryProps } from '../../types/common';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import Søknad, { Opplysning, Tilleggsopplysninger } from '../../types/søknad/Søknad';
 import {
+    isForeldrepengerFørFødselUttaksperiode,
     Periode,
     SenEndringÅrsak,
     StønadskontoType,
@@ -67,7 +68,9 @@ import InfoEksisterendeSak from './infoEksisterendeSak/InfoEksisterendeSak';
 import OppgiTilleggsopplysninger from './OppgiTilleggsopplysninger';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import routeConfig from 'app/util/routing/routeConfig';
-import { logAmplitudeEvent, PageKeys } from '../old/amplitude/amplitude';
+import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
+import { getFamiliehendelsedato } from 'app/util/uttaksplan';
+import { erPeriodeSomSkalSendesInn } from 'app/util/uttaksplan/uttaksplanEndringUtil';
 
 interface StateProps {
     stegProps: StegProps;
@@ -107,12 +110,10 @@ interface UttaksplanStegState {
 
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps & OwnProps;
 
-const getUttaksstatusFunc = (søknadsinfo: Søknadsinfo) => (
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    uttaksplan: Periode[]
-) => {
-    return getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, uttaksplan);
-};
+const getUttaksstatusFunc =
+    (søknadsinfo: Søknadsinfo) => (tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[], uttaksplan: Periode[]) => {
+        return getUttaksstatus(søknadsinfo, tilgjengeligeStønadskontoer, uttaksplan);
+    };
 class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     constructor(props: Props) {
         super(props);
@@ -266,13 +267,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     handleAddPeriode(nyPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
         const { søknad, tilgjengeligeStønadskontoer, relevantStartDatoForUttak } = this.props;
-        const {
-            familiehendelsesdato,
-            erFlerbarnssøknad,
-            erEndringssøknad,
-            erEnkelEndringssøknad,
-            erAdopsjon,
-        } = søknadsinfo.søknaden;
+        const { familiehendelsesdato, erFlerbarnssøknad, erEndringssøknad, erEnkelEndringssøknad, erAdopsjon } =
+            søknadsinfo.søknaden;
 
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
         const { mor, farMedmor } = søknadsinfo;
@@ -300,13 +296,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     handleDeletePeriode(slettetPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
         const { søknad, tilgjengeligeStønadskontoer, relevantStartDatoForUttak } = this.props;
-        const {
-            familiehendelsesdato,
-            erFlerbarnssøknad,
-            erEndringssøknad,
-            erEnkelEndringssøknad,
-            erAdopsjon,
-        } = søknadsinfo.søknaden;
+        const { familiehendelsesdato, erFlerbarnssøknad, erEndringssøknad, erEnkelEndringssøknad, erAdopsjon } =
+            søknadsinfo.søknaden;
 
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
         const { mor, farMedmor } = søknadsinfo;
@@ -334,13 +325,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     handleUpdatePeriode(oppdatertPeriode: Periode, opprinneligPlan: Periode[] | undefined, søknadsinfo: Søknadsinfo) {
         const { søknad, tilgjengeligeStønadskontoer, relevantStartDatoForUttak } = this.props;
-        const {
-            familiehendelsesdato,
-            erFlerbarnssøknad,
-            erEndringssøknad,
-            erEnkelEndringssøknad,
-            erAdopsjon,
-        } = søknadsinfo.søknaden;
+        const { familiehendelsesdato, erFlerbarnssøknad, erEndringssøknad, erEnkelEndringssøknad, erAdopsjon } =
+            søknadsinfo.søknaden;
         const { harMidlertidigOmsorg } = søknadsinfo.søker;
         const { mor, farMedmor } = søknadsinfo;
         const kunFarMedmorHarRett =
@@ -563,10 +549,18 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps 
     const perioderSomSkalSendesInn = selectPerioderSomSkalSendesInn(state);
     const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderSomSkalSendesInn);
     const grunnlag = søknad.ekstrainfo.eksisterendeSak ? søknad.ekstrainfo.eksisterendeSak.grunnlag : undefined;
+    const { erEndringssøknad, barn, situasjon, uttaksplan } = søknad;
+    const familiehendelsesdato = getFamiliehendelsedato(barn, situasjon)!;
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
-        renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true && perioderSomSkalSendesInn.length > 0,
+        renderFortsettKnapp:
+            (isLoadingTilgjengeligeStønadskontoer !== true && perioderSomSkalSendesInn.length > 0) ||
+            (erEndringssøknad &&
+                førsteOktober2021ReglerGjelder(familiehendelsesdato) &&
+                perioderSomSkalSendesInn.length === 0 &&
+                uttaksplan.filter((p) => erPeriodeSomSkalSendesInn(p) && !isForeldrepengerFørFødselUttaksperiode(p))
+                    .length === 0),
         renderFormTag: false,
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo, søknadsinfo),

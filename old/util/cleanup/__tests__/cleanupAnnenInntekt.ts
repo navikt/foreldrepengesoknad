@@ -14,6 +14,11 @@ const annenInntekt: AnnenInntekt = {
     },
 };
 
+const annenInntektWithInvisibleChars: AnnenInntekt = {
+    type: AnnenInntektType.JOBB_I_UTLANDET,
+    arbeidsgiverNavn: 'Navn med\u00AD soft hyphen som skal erstattes med space',
+} as JobbIUtlandetInntekt;
+
 describe('cleanupAnnenInntekt', () => {
     describe('when fields are not visible', () => {
         beforeEach(() => {
@@ -37,13 +42,18 @@ describe('cleanupAnnenInntekt', () => {
             visibility.arbeidsgiverNavn = jest.fn(() => true);
             visibility.land = jest.fn(() => true);
         });
-
         it('should set fields to their given values', () => {
-            const resultInntekt = cleanup(annenInntekt);
+            const annenInntektIUtland = { ...annenInntekt, arbeidsgiverNavn: "Navn" };
+            const resultInntekt = cleanup(annenInntektIUtland);
             const { vedlegg, arbeidsgiverNavn, land } = resultInntekt as JobbIUtlandetInntekt;
-            expect(vedlegg).toBe(annenInntekt.vedlegg);
-            expect(arbeidsgiverNavn).toBe(annenInntekt.arbeidsgiverNavn);
-            expect(land).toBe(annenInntekt.land);
+            expect(vedlegg).toBe(annenInntektIUtland.vedlegg);
+            expect(arbeidsgiverNavn).toEqual(annenInntektIUtland.arbeidsgiverNavn);
+            expect(land).toBe(annenInntektIUtland.land);
+        });
+        it('should replace invisible chars in arbeidsgivernavn', () => {
+            const resultInntekt = cleanup(annenInntektWithInvisibleChars);
+            const { arbeidsgiverNavn } = resultInntekt as JobbIUtlandetInntekt;
+            expect(arbeidsgiverNavn).toBe('Navn med  soft hyphen som skal erstattes med space');
         });
     });
 });

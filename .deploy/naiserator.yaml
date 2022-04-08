@@ -6,34 +6,25 @@ metadata:
   labels:
     team: teamforeldrepenger
 spec:
-{{#if gcp}}        
   accessPolicy:
     outbound:
       external:
-        - host:  {{api}}
-        - host:  {{nav}}
-        - host:  {{loginservice}}
-        - host:  {{dekoratoren}}
-{{/if}}               
+        - host: {{dekoratoren}}
   image: {{image}}
   port: 8080
   replicas:
       min: 2
       max: 2
-      cpuThresholdPercentage: 50  
+      disableAutoScaling: true
   liveness:
       path: /health/isAlive
       initialDelay: 60
   readiness:
       path: /health/isReady
-      initialDelay: 60  
+      initialDelay: 60
   prometheus:
       enabled: false
       path: /internal/actuator/prometheus
-  replicas:
-      min: 2
-      max: 2
-      cpuThresholdPercentage: 50
   ingresses:
   {{#each ingresses as |url|}}
     - {{url}}
@@ -45,7 +36,7 @@ spec:
     requests:
       cpu: 200m
       memory: 256Mi
-  env: 
+  env:
   {{#each env}}
    - name: {{@key}}
      value: "{{this}}"

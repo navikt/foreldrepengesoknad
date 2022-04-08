@@ -7,7 +7,8 @@ import Input from 'common/components/skjema/wrappers/Input';
 import { NæringsrelasjonPartial } from 'app/types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import ErNærVennEllerFamilieAvPersonSpørsmål from 'app/spørsmål/ErNærVennEllerFamilieAvPersonSpørsmål';
 import { getFritekstfeltRules } from 'app/util/validation/fritekstfelt';
-import { hasValueRule } from 'app/util/validation/common';
+import { hasValueRule, noIllegalCharactersRule } from 'app/util/validation/common';
+import { getIllegalCharsErrorMessage } from 'app/validation/fieldValidations';
 
 interface NæringsrelasjonBolkProps {
     næringsrelasjon: NæringsrelasjonPartial;
@@ -37,7 +38,8 @@ class NæringsrelasjonBolk extends React.Component<Props> {
     render() {
         const { næringsrelasjon, renderSpørsmål, oppfølgingsspørsmålSynlig, næringsrelasjonsType, intl } = this.props;
         const { navn, telefonnummer, erNærVennEllerFamilie } = næringsrelasjon;
-
+        const næringsrelasjonNavnLabel = getMessage(intl, 'næringsrelasjon.navn', { næringsrelasjonsType });
+        const næringsrelasjonTelefonNrLabel = getMessage(intl, 'næringsrelasjon.tlfnr', { næringsrelasjonsType });
         return (
             <React.Fragment>
                 <Block margin={oppfølgingsspørsmålSynlig ? 'm' : 'none'}>{renderSpørsmål()}</Block>
@@ -47,20 +49,25 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                             <Input
                                 value={navn || ''}
                                 name="næringsrelasjon-navn"
-                                label={getMessage(intl, 'næringsrelasjon.navn', { næringsrelasjonsType })}
+                                label={næringsrelasjonNavnLabel}
                                 onChange={(v: string) =>
                                     this.handleOnChange({
                                         navn: v,
                                     })
                                 }
-                                validators={getFritekstfeltRules({ maxLength: 100 }, intl, navn)}
+                                validators={getFritekstfeltRules(
+                                    { maxLength: 100 },
+                                    næringsrelasjonNavnLabel,
+                                    intl,
+                                    navn
+                                )}
                             />
                         </Block>
                         <Block visible={visibility.tlfnr(næringsrelasjon)}>
                             <Input
                                 value={telefonnummer || ''}
                                 name="telefonnr"
-                                label={getMessage(intl, 'næringsrelasjon.tlfnr', { næringsrelasjonsType })}
+                                label={næringsrelasjonTelefonNrLabel}
                                 onChange={(v: string) =>
                                     this.handleOnChange({
                                         telefonnummer: v,
@@ -70,6 +77,10 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                                     hasValueRule(
                                         telefonnummer,
                                         getMessage(intl, 'næringsrelasjon.tlfnr.påkrevd', { næringsrelasjonsType })
+                                    ),
+                                    noIllegalCharactersRule(
+                                        telefonnummer,
+                                        getIllegalCharsErrorMessage(telefonnummer, næringsrelasjonTelefonNrLabel, intl)
                                     ),
                                 ]}
                             />

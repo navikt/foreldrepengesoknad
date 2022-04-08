@@ -7,6 +7,7 @@ import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOp
 import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOppholdTest';
 import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUttaksplanGraderingStørreEnnSamtidigUttakTest';
 import { erTilleggsopplysningerGyldigTest } from './tester/erTilleggsopplysningerGyldigTest';
+import { harTilleggsopplysningerGyldigeCharsTest } from './tester/harTilleggsopplysningerGyldigeCharsTest';
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
 import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
@@ -27,6 +28,7 @@ import { erUttaksmengdeForFarMedmorForHøyTest } from './tester/erUttaksmengdeFo
 import { burdeKanskjeSøkeGraderingTest } from './tester/burdeKanskjeSøkeGraderingTest';
 // import { inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold } from './tester/inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold';
 import { ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest } from './tester/ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest';
+import { kanIkkeBareVæreUtsettelserUtenUttak } from './tester/kanIkkeBareVæreUtsettelserUtenUttak';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -38,6 +40,7 @@ export enum UttaksplanRegelKey {
     'uttaksplanSlutterMedOpphold' = 'uttaksplanSlutterMedOpphold',
     'uttaksplanGraderingStørreEnnSamtidigUttak' = 'uttaksplanGraderingStørreEnnSamtidigUttak',
     'begrunnelseVedForSenEndringErUgyldig' = 'begrunnelseVedForSenEndringErUgyldig',
+    'begrunnelseVedForSenEndringHarUgyldigeChars' = 'begrunnelseVedForSenEndringHarUgyldigeChars',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
     'perioderManglerVedlegg' = 'manglendeVedlegg',
@@ -56,6 +59,7 @@ export enum UttaksplanRegelKey {
     'burdeKanskjeSøkeGradering' = 'burdeKanskjeSøkeGradering',
     'inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold' = 'inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold',
     'ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato' = 'ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato',
+    'kanIkkeBareVæreUtsettelserUtenUttak' = 'kanIkkeBareVæreUtsettelserUtenUttak',
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -110,6 +114,11 @@ const uttaksplanValideringRegler: Regel[] = [
         key: UttaksplanRegelKey.begrunnelseVedForSenEndringErUgyldig,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erTilleggsopplysningerGyldigTest,
+    },
+    {
+        key: UttaksplanRegelKey.begrunnelseVedForSenEndringHarUgyldigeChars,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: harTilleggsopplysningerGyldigeCharsTest,
     },
     {
         key: UttaksplanRegelKey.uttaksplanHarForMangeFlerbarnsdager,
@@ -197,6 +206,11 @@ const uttaksplanValideringRegler: Regel[] = [
         key: UttaksplanRegelKey.ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato,
         alvorlighet: RegelAlvorlighet.ADVARSEL,
         test: ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest,
+    },
+    {
+        key: UttaksplanRegelKey.kanIkkeBareVæreUtsettelserUtenUttak,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: kanIkkeBareVæreUtsettelserUtenUttak,
     },
     // {
     //     key: UttaksplanRegelKey.inneholderUtsettelseGrunnetArbeidUtenArbeidsforhold,

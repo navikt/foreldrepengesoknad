@@ -3,7 +3,7 @@ import { createIntl } from 'react-intl';
 import nbMessagesCommon from '../../intl/nb_NO.json';
 
 describe('intlUtils', () => {
-    const intl = createIntl({ locale: 'nb', messages: nbMessagesCommon });
+    const intl = createIntl({ locale: 'no-nb', messages: nbMessagesCommon });
 
     describe('getVarighetString', () => {
         it('returns correctly when 0 days', () => {
