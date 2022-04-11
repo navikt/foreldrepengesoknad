@@ -36,7 +36,7 @@ jobs:
           
 
       - name: Sjekk ut kode
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.0.0
         with:
           ref: ${{ steps.issue_comment.outputs.sha }}
 
