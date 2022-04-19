@@ -4,7 +4,7 @@ import SendSøknadIkon, { OppsummeringIkonType } from './SendSøknadIkon';
 import { bemUtils, UtvidetInformasjon } from '@navikt/fp-common';
 
 import './søknadSendtSectionHeader.less';
-import { Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 interface Props {
     title: ReactNode;
@@ -25,7 +25,9 @@ const SøknadSendtSectionHeader: FunctionComponent<Props> = ({ title, info, type
                 </div>
                 <div className={bem.element('content')}>
                     <Element>{title}</Element>
-                    <UtvidetInformasjon apneLabel={infoApneLabel}>{info}</UtvidetInformasjon>
+                    <UtvidetInformasjon apneLabel={infoApneLabel}>
+                        <Normaltekst>{info}</Normaltekst>
+                    </UtvidetInformasjon>
                     {children}
                 </div>
             </div>

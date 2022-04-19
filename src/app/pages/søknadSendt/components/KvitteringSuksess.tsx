@@ -65,7 +65,9 @@ const KvitteringSuksess: FunctionComponent<Props> = ({ missingAttachments }) => 
                                 <UtvidetInformasjon
                                     apneLabel={intlUtils(intl, 'søknadSendt.info.missingAttachment.lesMer')}
                                 >
-                                    <FormattedMessage id="søknadSendt.info.missingAttachment.lesMer.content" />
+                                    <Normaltekst>
+                                        <FormattedMessage id="søknadSendt.info.missingAttachment.lesMer.content" />
+                                    </Normaltekst>
                                 </UtvidetInformasjon>
                             </>
                         )}

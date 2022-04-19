@@ -136,7 +136,7 @@
         "@formatjs/intl-pluralrules": "^4.1.0",
         "@formatjs/intl-relativetimeformat": "^9.2.0",
         "@navikt/fnrvalidator": "^1.1.4",
-        "@navikt/fp-common": "^4.0.0",
+        "@navikt/fp-common": "^4.0.2",
         "@navikt/sif-common-formik": "^20.9.2",
         "@navikt/sif-common-question-config": "^0.0.7",
         "@sentry/browser": "^6.10.0",

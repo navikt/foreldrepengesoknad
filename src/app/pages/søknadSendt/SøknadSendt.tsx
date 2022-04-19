@@ -15,7 +15,6 @@ import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 import dayjs from 'dayjs';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { MissingAttachment } from 'app/types/MissingAttachment';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import SøknadSendtTittel from './components/SøknadSendtTittel';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
@@ -23,6 +22,7 @@ import { Periode } from 'uttaksplan/types/Periode';
 
 import './søknadSendt.less';
 import { formaterDato } from 'app/utils/dateUtils';
+import { finnSendSenereVedlegg } from 'app/steps/manglende-vedlegg/util';
 
 const getBehandlingsFrist = (uttaksplan: Periode[]): string => {
     const førsteUttaksdag = dayjs(Periodene(uttaksplan).getFørsteUttaksdagEksluderInfoperioderOgFrittUttak()).subtract(
@@ -42,7 +42,8 @@ const SøknadSendt = () => {
     const { state } = useForeldrepengesøknadContext();
     const { kvittering, søknad } = state;
     const { uttaksplan } = søknad;
-    const missingAttachments: MissingAttachment[] = [];
+    const alleSendSenereVedlegg = finnSendSenereVedlegg(søknad);
+    const missingAttachments = Array.from(alleSendSenereVedlegg.values());
     const erEndringssøknad = false;
     const behandlingsFrist = getBehandlingsFrist(uttaksplan);
     const intl = useIntl();
