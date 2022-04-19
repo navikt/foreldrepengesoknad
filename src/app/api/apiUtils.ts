@@ -31,6 +31,7 @@ import { Forelder } from 'app/types/Forelder';
 import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { Attachment } from 'app/types/Attachment';
 import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
+import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 
 export interface AnnenForelderOppgittForInnsending extends Omit<AnnenForelder, 'erUfør'> {
     harMorUføretrygd?: boolean;
@@ -152,6 +153,7 @@ const changeAktivitetsfriKvoteKontotype = (periode: Periode) => {
     if (isUttaksperiode(periode)) {
         if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
             periode.konto = StønadskontoType.Foreldrepenger;
+            periode.morsAktivitetIPerioden = MorsAktivitet.Uføre;
         }
     }
     return periode;
