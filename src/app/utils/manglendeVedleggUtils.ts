@@ -1,5 +1,5 @@
 import AnnenForelder from 'app/context/types/AnnenForelder';
-import { Attachment } from 'app/types/Attachment';
+import { Attachment, InnsendingsType } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { MissingAttachment } from 'app/types/MissingAttachment';
 import { Skjemanummer } from 'app/types/Skjemanummer';
@@ -69,7 +69,10 @@ export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søk
         søknadsinfo.annenForelder
     );
 
-    return shouldHave && isAttachmentMissing(periode.vedlegg);
+    return (
+        shouldHave &&
+        isAttachmentMissing(periode.vedlegg?.filter((p) => p.innsendingsType !== InnsendingsType.SEND_SENERE))
+    );
 };
 
 export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): MissingAttachment[] => {
@@ -238,6 +241,10 @@ const missingAttachmentForAktivitetskrav = (
             søknadsinfo.søkerErAleneOmOmsorg,
             søknadsinfo.annenForelder.kanIkkeOppgis,
             søknadsinfo.søkerHarMidlertidigOmsorg
-        ) && isAttachmentMissing(periode.vedlegg, AttachmentType.MORS_AKTIVITET_DOKUMENTASJON)
+        ) &&
+        isAttachmentMissing(
+            periode.vedlegg?.filter((p) => p.innsendingsType !== InnsendingsType.SEND_SENERE),
+            AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+        )
     );
 };
