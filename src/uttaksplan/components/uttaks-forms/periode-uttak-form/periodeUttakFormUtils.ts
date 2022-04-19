@@ -2,9 +2,13 @@ import { hasValue } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Attachment } from 'app/types/Attachment';
+import { AttachmentType } from 'app/types/AttachmentType';
 import { Forelder } from 'app/types/Forelder';
+import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import { getMorsAktivitetSkjemanummer } from 'app/utils/morsAktivitetUtils';
 import { trimNumberValue } from 'app/utils/numberUtils';
+import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import {
@@ -192,15 +196,10 @@ const getErArbeidstaker = (arbeidsformer: Arbeidsform[]): boolean => {
 
 const velgVedleggSomSkalBrukes = (
     aktivitetskravMorDokumentasjon: Attachment[],
-    overføringsdokumentasjon: Attachment[],
     erMorForSykDokumentasjon: Attachment[]
 ): Attachment[] => {
     if (aktivitetskravMorDokumentasjon.length > 0) {
         return aktivitetskravMorDokumentasjon;
-    }
-
-    if (overføringsdokumentasjon.length > 0) {
-        return overføringsdokumentasjon;
     }
 
     return erMorForSykDokumentasjon;
@@ -222,7 +221,11 @@ export const mapPeriodeUttakFormToPeriode = (
                 tom: values.tom!,
             },
             årsak: values.overføringsårsak as OverføringÅrsakType,
-            vedlegg: values.overføringsdokumentasjon,
+            vedlegg: lagSendSenereDokumentNårIngenAndreFinnes(
+                values.overføringsdokumentasjon!,
+                AttachmentType.OVERFØRING_KVOTE,
+                Skjemanummer.DOK_OVERFØRING_FOR_SYK
+            ),
         };
 
         return periode;
@@ -242,6 +245,19 @@ export const mapPeriodeUttakFormToPeriode = (
 
         return periode;
     }
+
+    const attachmentType = hasValue(values.aktivitetskravMor)
+        ? AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+        : AttachmentType.UTSETTELSE_SYKDOM;
+
+    const skjemanummer = hasValue(values.aktivitetskravMor)
+        ? getMorsAktivitetSkjemanummer(values.aktivitetskravMor as MorsAktivitet)
+        : Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM;
+
+    const relevantVedlegg = velgVedleggSomSkalBrukes(
+        values.aktivitetskravMorDokumentasjon!,
+        values.erMorForSykDokumentasjon!
+    );
 
     const periode: Uttaksperiode = {
         id,
@@ -271,11 +287,7 @@ export const mapPeriodeUttakFormToPeriode = (
         samtidigUttakProsent: hasValue(values.samtidigUttakProsent)
             ? trimNumberValue(values.samtidigUttakProsent!)
             : undefined,
-        vedlegg: velgVedleggSomSkalBrukes(
-            values.aktivitetskravMorDokumentasjon!,
-            values.overføringsdokumentasjon!,
-            values.erMorForSykDokumentasjon!
-        ),
+        vedlegg: lagSendSenereDokumentNårIngenAndreFinnes(relevantVedlegg, attachmentType, skjemanummer),
     };
 
     return periode;

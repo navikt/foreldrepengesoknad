@@ -137,7 +137,7 @@ const renderOptions = (intl: IntlShape) => {
         ));
 };
 
-const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet): Skjemanummer => {
+export const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet): Skjemanummer => {
     switch (morsAktivitet) {
         case MorsAktivitet.Innlagt:
             return Skjemanummer.DOK_INNLEGGELSE;
