@@ -1,0 +1,72 @@
+{
+    "søknad": {
+        "type": "foreldrepenger",
+        "harGodkjentVilkår": true,
+        "søkersituasjon": {
+            "situasjon": "fødsel",
+            "rolle": "mor"
+        },
+        "barn": {
+            "type": "født",
+            "fødselsdatoer": ["2021-03-15"],
+            "antallBarn": 1,
+            "datoForAleneomsorg": "",
+            "dokumentasjonAvAleneomsorg": []
+        },
+        "annenForelder": {
+            "kanIkkeOppgis": true
+        },
+        "søker": {
+            "språkkode": "nb"
+        },
+        "informasjonOmUtenlandsopphold": {
+            "tidligereOpphold": [],
+            "senereOpphold": []
+        },
+        "erEndringssøknad": false,
+        "uttaksplan": [
+            {
+                "id": "0",
+                "type": "uttak",
+                "forelder": "mor",
+                "konto": "FORELDREPENGER_FØR_FØDSEL",
+                "tidsperiode": {
+                    "fom": "2021-11-23T23:00:00.000Z",
+                    "tom": "2021-12-13T23:00:00.000Z"
+                }
+            },
+            {
+                "id": "1",
+                "type": "utsettelse",
+                "årsak": "INSTITUSJONSOPPHOLD_SØKER",
+                "tidsperiode": {
+                    "fom": "2021-12-14T23:00:00.000Z",
+                    "tom": "2022-01-24T23:00:00.000Z"
+                }
+            },
+            {
+                "id": "2",
+                "type": "periodeUtenUttak",
+                "tidsperiode": {
+                    "fom": "2022-01-25T23:00:00.000Z",
+                    "tom": "2022-03-28T23:00:00.000Z"
+                }
+            },
+            {
+                "id": "3",
+                "type": "uttak",
+                "forelder": "mor",
+                "konto": "FELLESPERIODE",
+                "tidsperiode": {
+                    "fom": "2022-03-29T23:00:00.000Z",
+                    "tom": "2022-06-06T23:00:00.000Z"
+                },
+                "ønskerSamtidigUttak": false,
+                "gradert": false
+            }
+        ],
+        "tilleggsopplysninger": {}
+    },
+    "version": 2,
+    "currentRoute": "/soknad/uttaksplan-info"
+}

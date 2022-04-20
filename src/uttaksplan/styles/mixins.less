@@ -1,0 +1,25 @@
+@import 'variables';
+
+.iconButton() {
+    .borderButton();
+    border: none;
+}
+
+.borderButton(@hideBorder: false) {
+    border-radius: 4px;
+    background-color: @white;
+    border: 1px solid @navGra20;
+    transition: border-color 200ms cubic-bezier(0.465, 0.183, 0.153, 0.946);
+    cursor: pointer;
+    &:hover {
+        border-color: @c-buttonBlue;
+    }
+    &:focus {
+        .focusOutline();
+    }
+}
+
+.focusOutline() {
+    outline: none;
+    box-shadow: 0 0 0 3px @fokusFarge;
+}

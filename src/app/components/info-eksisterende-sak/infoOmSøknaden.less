@@ -1,0 +1,11 @@
+@import '../../styles/variables.less';
+@import '../../styles/mixins.less';
+
+.infoOmSøknaden {
+    .grayBlock();
+    padding: 2rem;
+
+    @media (max-width: @mobile-breakpoint) {
+        .grayBlockMobileFullWidth();
+    }
+}

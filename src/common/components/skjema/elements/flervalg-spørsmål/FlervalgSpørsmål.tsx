@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import RadioPanelGruppe from 'common/components/skjema/wrappers/RadioPanelGruppe';
 import getMessage from 'common/util/i18nUtils';
 import { Validator } from 'common/lib/validation/types';
@@ -20,8 +20,7 @@ interface FlervalgSpørsmålProps {
 
 type Props = FlervalgSpørsmålProps;
 
-const getDefaultValidator = (valgtVerdi?: string): Validator[] => {
-    const intl = useIntl();
+const getDefaultValidator = (intl: IntlShape, valgtVerdi?: string): Validator[] => {
     return [
         {
             test: () => valgtVerdi !== undefined,
@@ -31,6 +30,7 @@ const getDefaultValidator = (valgtVerdi?: string): Validator[] => {
 };
 
 const FlervalgSpørsmål = (props: Props) => {
+    const intl = useIntl();
     const {
         onChange,
         navn,
@@ -55,7 +55,7 @@ const FlervalgSpørsmål = (props: Props) => {
             radios={alternativer}
             fieldsetClassname={clsName}
             onChange={(_e: React.ChangeEvent<HTMLInputElement>, v: string) => onChange(v)}
-            validators={validators !== undefined ? validators : getDefaultValidator(valgtVerdi)}
+            validators={validators !== undefined ? validators : getDefaultValidator(intl, valgtVerdi)}
         />
     );
 };

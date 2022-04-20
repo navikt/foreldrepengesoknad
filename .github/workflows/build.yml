@@ -83,6 +83,7 @@ jobs:
                         title: 'Deploy av ${{ env.TAG }}',
                         body: '${{ github.sha }}',
                       });
+
 #                      .then(response => {
 #                              const issue = { owner: context.issue.owner,
 #                              repo: context.issue.repo,

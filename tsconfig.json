@@ -1,43 +1,28 @@
 {
     "compilerOptions": {
-        "outDir": "build/dist",
-        "module": "esnext",
-        "target": "es5",
-        "lib": ["es6", "dom", "es2017"],
-        "sourceMap": true,
-        "allowJs": true,
         "allowSyntheticDefaultImports": true,
-        "jsx": "react",
-        "moduleResolution": "node",
+        "baseUrl": "./src",
         "forceConsistentCasingInFileNames": true,
+        "jsx": "react",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
         "noImplicitReturns": false,
         "noImplicitThis": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "skipLibCheck": true,
-        "suppressImplicitAnyIndexErrors": true,
         "noUnusedLocals": true,
-        "baseUrl": "./src",
-        "typeRoots": ["./node_modules/@types", "./src/@types"],
         "paths": {
-            "common/*": ["./common/*"],
-            "shared/*": ["./shared/*"]
-        }
+            "utils-test/*": ["./utils-test/*"],
+            "uttaksplan/*": ["./uttaksplan/*"],
+            "stories/*": ["./storybook/stories/*"]
+        },
+        "outDir": "build/dist",
+        "sourceMap": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "target": "ESNext",
+        "typeRoots": ["./node_modules/@types", "./src/@types"]
     },
-    "awesomeTypescriptLoaderOptions": {
-        "useCache": false
-    },
-    "exclude": [
-        "node_modules",
-        "build",
-        "scripts",
-        "config",
-        "jest/__tests__/unit",
-        "src/build",
-        "src/config",
-        "cypress",
-        "dist",
-        "**.js",
-        "akseptansetest"
-    ]
+    "include": ["src/app/**/*", "src/@types", "src/uttaksplan/**/*", "src/storybook"],
+    "exclude": ["src/common/**/*"]
 }

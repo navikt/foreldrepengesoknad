@@ -1,0 +1,173 @@
+@import './../../styles/variables.less';
+
+.periodelisteItemHeader {
+    display: flex;
+    overflow: hidden;
+    border-radius: 0.25rem;
+
+    abbr[title] {
+        text-decoration: none;
+        border-bottom: none;
+        cursor: inherit;
+    }
+
+    &__hvem {
+        color: #7f756c;
+    }
+
+    &__content {
+        display: grid;
+        width: 100%;
+        grid-template-columns: 1fr 4fr 1fr 2fr;
+    }
+
+    &__ikon {
+        align-self: center;
+        padding-right: 1rem;
+    }
+    
+
+
+    &__beskrivelse {
+        display: flex;
+        padding-left: 1rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        flex-grow: 3;
+    }
+    &__beskrivelse__tekst {
+        min-width: 125px;
+        font-size: 1rem;
+        font-weight: 400;
+    }
+
+    &__tittel {
+        align-self: center;
+        min-width: 225px;
+    }
+
+    &__dato-container {
+        display: flex;
+        min-width: 130px;
+    }
+
+    &__advarsel {
+        align-self: center;
+    }
+
+    &__samtidig-uttak {
+        align-items: center;
+        display: grid;
+        width: 100%;
+        grid-template-columns: 20fr 1fr 1fr 2fr;
+        margin-left: 2rem;
+        padding-left: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        margin-right: 1rem;
+        border: 1px dotted #c6c2bf;
+        border-radius: 0.25rem;
+    }
+
+    &__samtidig-uttak-mor {
+        border-left: 8px solid @c-periodefarge-lilla;
+    }
+
+    &__samtidig-uttak-far {
+        border-left: 8px solid @c-periodefarge-blaa;
+    }
+
+    &__tidsrom {
+        min-width: 11rem;
+        @media (max-width: @tablet-breakpoint) {
+            width: 10rem;
+        }
+        flex-grow: 0;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: stretch;
+        flex-wrap: nowrap;
+    }
+
+    &--annenPart {
+        background-color: transparent;
+    }
+
+    &--egenPeriode {
+        background-color: white;
+    }
+
+    &__dagmnd {
+        width: 45%;
+        flex-grow: 0;
+        text-align: center;
+
+        &__dato {
+            display: block;
+        }
+
+        &__mnd {
+            letter-spacing: 0.4px;
+            color: #7f756c;
+            &--kort {
+                display: none;
+            }
+        }
+    }
+
+    @media (max-width: @mobile-breakpoint) {
+        flex-wrap: wrap;
+
+        &__beskrivelse {
+            width: 80%;
+            order: 2;
+        }
+
+        &__tidsrom {
+            padding-left: 1rem;
+            padding-bottom: 1rem;
+            width: 100%;
+            order: 3;
+        }
+
+        &__advarsel {
+            width: 2.5rem;
+            order: 1;
+            padding-left: 1rem;
+        }
+
+        &__tittel {
+            width: 80%;
+            order: 2;
+        }
+
+        &__dato {
+            padding-left: 1rem;
+            padding-bottom: 1rem;
+            width: 100%;
+            order: 3;
+        }
+
+        &__dagmnd {
+            width: initial;
+            text-align: left;
+            padding-right: 0.5rem;
+            &:last-child {
+                padding-left: 0.5rem;
+            }
+
+            &__dato {
+                display: inline;
+            }
+            &__mnd {
+                letter-spacing: normal;
+                color: inherit;
+                font-size: inherit;
+            }
+        }
+
+        &__ikon {
+            display: none;
+        }
+    }
+}

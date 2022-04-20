@@ -1,0 +1,30 @@
+{
+    "søknad": {
+        "type": "foreldrepenger",
+        "harGodkjentVilkår": true,
+        "søkersituasjon": {
+            "situasjon": "adopsjon",
+            "rolle": "mor"
+        },
+        "barn": {
+            "antallBarn": 1,
+            "type": "adoptertAnnetBarn",
+            "adopsjonsdato": "2021-03-15",
+            "adoptertIUtlandet": false,
+            "dokumentasjonAvAleneomsorg": []
+        },
+        "annenForelder": {
+            "kanIkkeOppgis": true
+        },
+        "søker": {
+            "språkkode": "nb"
+        },
+        "informasjonOmUtenlandsopphold": {
+            "tidligereOpphold": [],
+            "senereOpphold": []
+        },
+        "erEndringssøknad": false
+    },
+    "version": 2,
+    "currentRoute": "/soknad/uttaksplan-info"
+}

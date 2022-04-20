@@ -1,4 +1,4 @@
-import { Kjønn } from './common';
+import { Kjønn } from '@navikt/fp-common';
 import Bankkonto from './Bankkonto';
 
 export interface PersonBase {
@@ -23,7 +23,5 @@ export interface RegistrertBarn extends PersonBase {
 export interface RegistrertAnnenForelder extends Omit<PersonBase, 'kjønn'> {
     harOpplystOmSinPågåendeSak?: boolean;
 }
-
-export type PersonPartial = Partial<Person>;
 
 export default Person;

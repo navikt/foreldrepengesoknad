@@ -1,0 +1,35 @@
+@import '../../../app/styles/variables.less';
+
+.oversiktKvoter {
+    display: flex;
+    justify-content: stretch;
+    &__perForelder {
+        min-width: 14rem;
+        flex-grow: 0;
+        padding-right: 1rem;
+        border-right: 1px solid #979797;
+        .personkort {
+            min-width: 10rem;
+        }
+    }
+    &__perKvote {
+        padding-left: 1rem;
+        flex-grow: 2;
+        width: 100%;
+    }
+    @media screen and (max-width: @tablet-breakpoint) {
+        display: block;
+        &__perForelder {
+            margin-bottom: 2rem;
+            border-right: none;
+            padding: 0;
+        }
+        &__perKvote {
+            padding: 0;
+        }
+    }
+    @media screen and (max-width: @mobile-breakpoint) {
+        min-width: 100%;
+        max-width: 100%;
+    }
+}

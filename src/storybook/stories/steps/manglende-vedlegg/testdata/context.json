@@ -1,0 +1,33 @@
+{
+    "søknad": {
+        "type": "foreldrepenger",
+        "harGodkjentVilkår": true,
+        "søkersituasjon": {
+            "situasjon": "fødsel",
+            "rolle": "mor"
+        },
+        "barn": {
+            "type": "ufødt",
+            "terminbekreftelse": [],
+            "termindato": "2021-03-15",
+            "terminbekreftelsedato": "2021-03-15",
+            "antallBarn": "1",
+            "datoForAleneomsorg": "",
+            "dokumentasjonAvAleneomsorg": []
+        },
+        "annenForelder": {
+            "kanIkkeOppgis": true
+        },
+        "søker": {
+            "språkkode": "nb"
+        },
+        "informasjonOmUtenlandsopphold": {
+            "tidligereOpphold": [],
+            "senereOpphold": []
+        },
+        "erEndringssøknad": false,
+        "uttaksplan": []
+    },
+    "version": 2,
+    "currentRoute": "/soknad/uttaksplan-info"
+}

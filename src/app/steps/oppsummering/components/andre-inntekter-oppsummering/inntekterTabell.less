@@ -1,0 +1,28 @@
+.oppsummeringsliste {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+
+    &__element {
+        margin-top: 1.5rem;
+
+        &--kompakt {
+            margin-top: 0.5rem;
+        }
+
+        &__heading {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+
+            .høyrestiltTekst {
+                font-weight: normal;
+            }
+        }
+
+        &__content {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+    }
+}
