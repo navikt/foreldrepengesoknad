@@ -247,7 +247,7 @@ export const cleanSøknad = (søknad: Søknad): SøknadForInnsending => {
 
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
 
-    return mapAttachmentsToSøknadForInnsending(cleanedSøknad); //TODO vedleggForSenEndring
+    return mapAttachmentsToSøknadForInnsending(cleanedSøknad) as SøknadForInnsending; //TODO vedleggForSenEndring
 };
 
 const cleanSøker = (søker: Søker, søkersituasjon: Søkersituasjon): SøkerForInnsending => {
@@ -316,8 +316,10 @@ export const cleanEndringssøknad = (
         situasjon: søknad.søkersituasjon.situasjon,
         tilleggsopplysninger: cleanTilleggsopplysninger(søknad.tilleggsopplysninger),
     };
+
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
-    return cleanedSøknad;
+
+    return mapAttachmentsToSøknadForInnsending(cleanedSøknad);
 };
 
 const cleanTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string | undefined => {
