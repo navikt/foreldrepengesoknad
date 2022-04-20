@@ -28,7 +28,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
 
     useEffect(() => {
         if (storageData) {
-            if (storageData.version === 3) {
+            if (storageData.version === 4) {
                 dispatch(actionCreator.applyStoredState(storageData));
             }
         }
