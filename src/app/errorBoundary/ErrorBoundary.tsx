@@ -16,13 +16,15 @@ class ErrorBoundary extends React.Component<any, State> {
     }
 
     componentDidCatch(error: Error | null, errorInfo: any): void {
-        this.setState({ ...this.state, hasError: true, error });
+        if (error && error.message !== 'window.hasFocus is not a function') {
+            this.setState({ ...this.state, hasError: true, error });
 
-        Sentry.withScope((scope) => {
-            scope.setExtras(errorInfo);
-            const eventId = Sentry.captureException(error);
-            this.setState({ eventId });
-        });
+            Sentry.withScope((scope) => {
+                scope.setExtras(errorInfo);
+                const eventId = Sentry.captureException(error);
+                this.setState({ eventId });
+            });
+        }
     }
 
     render() {
