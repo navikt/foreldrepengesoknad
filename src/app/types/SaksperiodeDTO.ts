@@ -6,7 +6,6 @@ import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { ArbeidsgiverInfo } from './ArbeidsgiverInfo';
 import { UtsettelseÅrsakTypeDTO } from './UtsettelseÅrsakTypeDTO';
-import { UttakArbeidType } from './UttakArbeidType';
 
 export interface SaksperiodeDTO {
     angittAvAnnenPart?: boolean;
@@ -25,6 +24,6 @@ export interface SaksperiodeDTO {
     stønadskontotype: StønadskontoType;
     trekkDager: number;
     utbetalingsprosent: number;
-    uttakArbeidType: UttakArbeidType[];
+    uttakArbeidType: string;
     utsettelsePeriodeType?: UtsettelseÅrsakTypeDTO;
 }
