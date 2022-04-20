@@ -1,4 +1,4 @@
-import { SøknadForInnsending } from 'app/api/apiUtils';
+import { EndringssøknadForInnsending, SøknadForInnsending } from 'app/api/apiUtils';
 import { Attachment, InnsendingsType } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
@@ -105,7 +105,9 @@ const extractAttachments = (søknad: unknown, foundAttachments: Attachment[]): a
     return ret;
 };
 
-export const mapAttachmentsToSøknadForInnsending = (søknad: SøknadForInnsending): SøknadForInnsending => {
+export const mapAttachmentsToSøknadForInnsending = (
+    søknad: SøknadForInnsending | EndringssøknadForInnsending
+): SøknadForInnsending | EndringssøknadForInnsending => {
     const vedlegg: Attachment[] = [];
     const søknadCopy = extractAttachments(søknad, vedlegg);
 
