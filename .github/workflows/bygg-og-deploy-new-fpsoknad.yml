@@ -82,8 +82,7 @@ jobs:
                         labels: ['new-soknad-branch'],
                         title: 'Deploy av branch new-soknad med tag ${{ env.TAG }}',
                         body: '${{ github.sha }}',
-                      });
-                      .then(response => {
+                      }).then(response => {
                               const issue = { owner: context.issue.owner,
                               repo: context.issue.repo,
                               issue_number: response.data.number }

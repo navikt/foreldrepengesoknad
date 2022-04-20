@@ -1,12 +1,17 @@
 const path = require('path');
 const fs = require('fs');
 
-const updateSoknad = function(soknadsdata) {
+const updateSoknad = function (soknadsdata) {
     const fileName = getFilePath('soknad.json');
     fs.writeFileSync(fileName, JSON.stringify(soknadsdata, null, 4));
 };
 
-const getSoknad = function() {
+const deleteSoknad = function () {
+    const fileName = getFilePath('soknad.json');
+    fs.openSync(fileName, 'w');
+};
+
+const getSoknad = function () {
     const fileName = getFilePath('soknad.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -19,12 +24,12 @@ const getSoknad = function() {
     }
 };
 
-const getFilePath = function(filnavn) {
+const getFilePath = function (filnavn) {
     var directories = ['.', 'mock_data', filnavn];
     return directories.join(path.sep);
 };
 
-const getSokerInfo = function() {
+const getSokerInfo = function () {
     const fileName = getFilePath('sokerinfo.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -37,7 +42,7 @@ const getSokerInfo = function() {
     }
 };
 
-const getStønadskontoer = function() {
+const getStønadskontoer = function () {
     const fileName = getFilePath('stønadskontoer.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -49,7 +54,7 @@ const getStønadskontoer = function() {
         }
     }
 };
-const getSoknadSendt = function() {
+const getSoknadSendt = function () {
     const fileName = getFilePath('soknad_sendt.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -62,7 +67,7 @@ const getSoknadSendt = function() {
     }
 };
 
-const getSaker = function() {
+const getSaker = function () {
     const fileName = getFilePath('saker.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -75,7 +80,7 @@ const getSaker = function() {
     }
 };
 
-const getUttaksplan = function() {
+const getUttaksplan = function () {
     const fileName = getFilePath('uttaksplan.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -88,7 +93,7 @@ const getUttaksplan = function() {
     }
 };
 
-const getUttaksplanannen = function() {
+const getUttaksplanannen = function () {
     const fileName = getFilePath('uttaksplanannen.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -101,7 +106,7 @@ const getUttaksplanannen = function() {
     }
 };
 
-const getStorageKvittering = function() {
+const getStorageKvittering = function () {
     const fileName = getFilePath('storage_kvittering.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -116,6 +121,7 @@ const getStorageKvittering = function() {
 
 module.exports = {
     updateSoknad,
+    deleteSoknad,
     getSoknad,
     getSokerInfo,
     getStønadskontoer,
@@ -123,5 +129,5 @@ module.exports = {
     getSaker,
     getStorageKvittering,
     getUttaksplan,
-    getUttaksplanannen
+    getUttaksplanannen,
 };

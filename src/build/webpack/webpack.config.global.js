@@ -3,12 +3,13 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const GitRevisionPlugin = require('git-revision-webpack-plugin');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
 const gitRevisionPlugin = new GitRevisionPlugin();
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const webpackConfig = {
     entry: {
-        bundle: ['babel-polyfill', `${__dirname}/../../app/bootstrap.tsx`],
+        bundle: [`${__dirname}/../../app/bootstrap.tsx`],
     },
     output: {
         path: path.resolve(__dirname, './../../../dist'),
@@ -22,24 +23,14 @@ const webpackConfig = {
             app: path.resolve(__dirname, './../../app'),
             common: path.resolve(__dirname, './../../common'),
             shared: path.resolve(__dirname, './../../shared'),
+            uttaksplan: path.resolve(__dirname, './../../uttaksplan'),
         },
     },
     module: {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
-                include: [
-                    path.resolve(__dirname, './../../app'),
-                    path.resolve(__dirname, './../../common'),
-                    path.resolve(__dirname, './../../storage'),
-                    path.resolve(__dirname, './../../shared'),
-                ],
-                loader: require.resolve('awesome-typescript-loader'),
-            },
-
-            {
-                test: /\.js$/,
-                use: [{ loader: 'babel-loader' }],
+                use: 'ts-loader',
                 exclude: /node_modules/,
             },
             {
@@ -56,7 +47,7 @@ const webpackConfig = {
             },
             {
                 test: /\.svg$/,
-                use: { loader: 'svg-sprite-loader', options: {} },
+                use: [{ loader: 'svg-sprite-loader' }],
             },
         ],
     },
@@ -74,6 +65,9 @@ const webpackConfig = {
             BUILD: {
                 VERSION: JSON.stringify(gitRevisionPlugin.version()),
             },
+        }),
+        new ESLintPlugin({
+            extensions: ['js', 'jsx', 'ts', 'tsx'],
         }),
     ],
 };

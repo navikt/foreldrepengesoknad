@@ -1,0 +1,37 @@
+{
+    "søknad": {
+        "type": "foreldrepenger",
+        "harGodkjentVilkår": true,
+        "søkersituasjon": {
+            "situasjon": "fødsel",
+            "rolle": "far"
+        },
+        "barn": {
+            "type": "født",
+            "fødselsdatoer": ["2021-07-01"],
+            "antallBarn": "1",
+            "termindato": "2021-07-01"
+        },
+        "annenForelder": {
+            "etternavn": "dfg",
+            "fornavn": "dsgdfg",
+            "fnr": "123123123",
+            "utenlandskFnr": false,
+            "erUfør": false,
+            "kanIkkeOppgis": false,
+            "harRettPåForeldrepenger": false
+        },
+        "søker": {
+            "erAleneOmOmsorg": false,
+            "språkkode": "nb"
+        },
+        "informasjonOmUtenlandsopphold": {
+            "tidligereOpphold": [],
+            "senereOpphold": []
+        },
+        "erEndringssøknad": false,
+        "uttaksplan": []
+    },
+    "version": 2,
+    "currentRoute": "/soknad/uttaksplan-info"
+}

@@ -4,9 +4,9 @@ import { IntlShape } from 'react-intl';
 type FeilIntlMessage = (intl: IntlShape) => string;
 
 export enum RegelAlvorlighet {
-    'FEIL' = 'feil',
-    'ADVARSEL' = 'advarsel',
-    'INFO' = 'info',
+    FEIL = 'feil',
+    ADVARSEL = 'advarsel',
+    INFO = 'info',
 }
 
 export interface UttaksplanRegelTestresultat {

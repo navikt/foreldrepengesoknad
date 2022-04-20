@@ -1,7 +1,7 @@
 {
     "grunnlag": {
-        "termindato": "2019-10-01",
-        "fødselsdato": "2019-10-01",
+        "termindato": "2021-06-27",
+        "fødselsdato": "2021-06-27",
         "dekningsgrad": 100,
         "antallBarn": 1,
         "søkerErFarEllerMedmor": false,
@@ -26,35 +26,14 @@
             "flerbarnsdager": false,
             "uttakArbeidType": "ORDINÆRT_ARBEID",
             "arbeidsgiverInfo": {
-                "id": "973135678",
+                "id": "972674818",
                 "type": "ORGANISASJON",
-                "navn": "COLOR LINE CREW AS"
+                "navn": "PENGELØS SPAREBANK"
             },
+            "periodeResultatÅrsak": "2006",
             "periode": {
-                "fom": "2019-09-10",
-                "tom": "2019-09-30"
-            }
-        },
-        {
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FORELDREPENGER_FØR_FØDSEL",
-            "trekkDager": 15,
-            "arbeidstidprosent": 0,
-            "utbetalingsprosent": 100,
-            "gjelderAnnenPart": true,
-            "manueltBehandlet": false,
-            "flerbarnsdager": false,
-            "uttakArbeidType": "ORDINÆRT_ARBEID",
-            "arbeidsgiverInfo": {
-                "id": "973861778",
-                "type": "ORGANISASJON",
-                "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
-            },
-            "periode": {
-                "fom": "2019-09-10",
-                "tom": "2019-09-30"
+                "fom": "2021-06-07",
+                "tom": "2021-06-25"
             }
         },
         {
@@ -70,35 +49,14 @@
             "flerbarnsdager": false,
             "uttakArbeidType": "ORDINÆRT_ARBEID",
             "arbeidsgiverInfo": {
-                "id": "973135678",
+                "id": "972674818",
                 "type": "ORGANISASJON",
-                "navn": "COLOR LINE CREW AS"
+                "navn": "PENGELØS SPAREBANK"
             },
+            "periodeResultatÅrsak": "2003",
             "periode": {
-                "fom": "2019-10-01",
-                "tom": "2019-11-11"
-            }
-        },
-        {
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": 30,
-            "arbeidstidprosent": 0,
-            "utbetalingsprosent": 100,
-            "gjelderAnnenPart": true,
-            "manueltBehandlet": false,
-            "flerbarnsdager": false,
-            "uttakArbeidType": "ORDINÆRT_ARBEID",
-            "arbeidsgiverInfo": {
-                "id": "973861778",
-                "type": "ORGANISASJON",
-                "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
-            },
-            "periode": {
-                "fom": "2019-10-01",
-                "tom": "2019-11-11"
+                "fom": "2021-06-28",
+                "tom": "2021-08-07"
             }
         },
         {
@@ -114,35 +72,14 @@
             "flerbarnsdager": false,
             "uttakArbeidType": "ORDINÆRT_ARBEID",
             "arbeidsgiverInfo": {
-                "id": "973135678",
+                "id": "972674818",
                 "type": "ORGANISASJON",
-                "navn": "COLOR LINE CREW AS"
+                "navn": "PENGELØS SPAREBANK"
             },
+            "periodeResultatÅrsak": "2003",
             "periode": {
-                "fom": "2019-11-12",
-                "tom": "2020-01-13"
-            }
-        },
-        {
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": 45,
-            "arbeidstidprosent": 0,
-            "utbetalingsprosent": 100,
-            "gjelderAnnenPart": true,
-            "manueltBehandlet": false,
-            "flerbarnsdager": false,
-            "uttakArbeidType": "ORDINÆRT_ARBEID",
-            "arbeidsgiverInfo": {
-                "id": "973861778",
-                "type": "ORGANISASJON",
-                "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
-            },
-            "periode": {
-                "fom": "2019-11-12",
-                "tom": "2020-01-13"
+                "fom": "2021-08-08",
+                "tom": "2021-10-08"
             }
         },
         {
@@ -158,35 +95,14 @@
             "flerbarnsdager": false,
             "uttakArbeidType": "ORDINÆRT_ARBEID",
             "arbeidsgiverInfo": {
-                "id": "973135678",
+                "id": "972674818",
                 "type": "ORGANISASJON",
-                "navn": "COLOR LINE CREW AS"
+                "navn": "PENGELØS SPAREBANK"
             },
+            "periodeResultatÅrsak": "2002",
             "periode": {
-                "fom": "2020-01-14",
-                "tom": "2020-05-04"
-            }
-        },
-        {
-            "periodeResultatType": "INNVILGET",
-            "graderingInnvilget": false,
-            "samtidigUttak": false,
-            "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": 80,
-            "arbeidstidprosent": 0,
-            "utbetalingsprosent": 100,
-            "gjelderAnnenPart": true,
-            "manueltBehandlet": false,
-            "flerbarnsdager": false,
-            "uttakArbeidType": "ORDINÆRT_ARBEID",
-            "arbeidsgiverInfo": {
-                "id": "973861778",
-                "type": "ORGANISASJON",
-                "navn": "EQUINOR ASA, AVD STATOIL SOKKELVIRKSOMHET"
-            },
-            "periode": {
-                "fom": "2020-01-14",
-                "tom": "2020-05-04"
+                "fom": "2021-10-11",
+                "tom": "2022-01-28"
             }
         }
     ]

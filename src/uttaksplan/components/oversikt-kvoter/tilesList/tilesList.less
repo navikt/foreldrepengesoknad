@@ -1,0 +1,46 @@
+@import '../../../../app/styles/variables.less';
+.tilesList {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-evenly;
+    margin: -0.5rem;
+    &__tile {
+        flex-grow: 1;
+        min-width: (100% / 3);
+        max-width: (100% / 3);
+        margin: 0;
+        padding: 0.5rem;
+        @media screen and (max-width: @tablet-breakpoint) {
+            min-width: (100% / 2);
+            max-width: (100% / 2);
+        }
+        @media screen and (max-width: @mobile-breakpoint) {
+            min-width: 100%;
+            max-width: 100%;
+        }
+    }
+    &--columns-2 {
+        .tilesList__tile {
+            min-width: (100% / 2);
+            max-width: (100% / 2);
+            @media screen and (max-width: @mobile-breakpoint) {
+                min-width: 100%;
+                max-width: 100%;
+            }
+        }
+    }
+    &--columns-1 {
+        .tilesList__tile {
+            min-width: 100%;
+            max-width: 100%;
+        }
+    }
+    &--columns-flex {
+        .tilesList__tile {
+            min-width: 0;
+            max-width: 100%;
+        }
+    }
+}

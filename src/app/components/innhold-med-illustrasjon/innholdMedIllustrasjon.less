@@ -1,0 +1,50 @@
+@import './../../styles/variables.less';
+
+.innholdMedIllustrasjon {
+    &__tittel {
+        display: inline-block;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    &__headerWrapper {
+        display: flex;
+
+        .sirkelknapp {
+            display: inline-block;
+        }
+    }
+
+    &__infoboks {
+        padding-top: 0.25rem;
+    }
+
+    &--medIllustrasjoner {
+        display: flex;
+        flex-wrap: nowrap;
+
+        .innholdMedIllustrasjon__contentWrapper {
+            flex: 2 1 60%;
+        }
+    }
+
+    &__illustrasjoner {
+        flex: 1 1 40%;
+        text-align: right;
+    }
+
+    &__illustrasjon {
+        display: inline-block;
+        margin-left: 1rem;
+    }
+
+    @media (max-width: @mobile-breakpoint) {
+        .innholdMedIllustrasjon__illustrasjoner {
+            display: none;
+        }
+
+        .innholdMedIllustrasjon__tittel {
+            margin-bottom: 0.5rem;
+        }
+    }
+}

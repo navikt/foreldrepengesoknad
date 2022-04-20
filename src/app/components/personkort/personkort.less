@@ -1,0 +1,58 @@
+@import '../../styles/variables.less';
+
+.personkort {
+    display: flex;
+    flex-basis: 50%;
+    align-items: center;
+
+    &__ikon {
+        padding-right: 0.5rem;
+        flex-grow: 0;
+        line-height: 0;
+        svg {
+            height: 2.25rem;
+        }
+    }
+
+    &__innhold {
+        line-height: 1.375rem;
+    }
+
+    &--valign-center {
+        .personkort {
+            &__innhold {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+
+    &--valign-bottom {
+        .personkort {
+            &__innhold {
+                display: flex;
+                align-items: flex-end;
+            }
+        }
+    }
+
+    @media (min-width: @mobile-breakpoint) {
+        &--invertert {
+            text-align: right;
+            justify-content: flex-end;
+
+            .personkort {
+                &__ikon {
+                    order: 2;
+                    padding-right: 0;
+                    padding-left: 0.5rem;
+                }
+
+                &__innhold {
+                    order: 1;
+                    text-align: right;
+                }
+            }
+        }
+    }
+}

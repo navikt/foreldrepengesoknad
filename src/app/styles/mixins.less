@@ -1,1 +1,87 @@
-@import './../../common/styles/mixins.less';
+@import 'variables';
+
+.contentWrapper() {
+    max-width: 704px;
+    margin: 0 auto;
+    padding: 2rem;
+
+    @media (max-width: @tablet-breakpoint) {
+        max-width: 100%;
+    }
+
+    @media (max-width: @mobile-breakpoint) {
+        padding: 1rem;
+    }
+}
+
+.grayBlock() {
+    background-color: #efefef;
+    border-radius: 0.25rem;
+}
+
+.grayBlockMobileFullWidth() {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-radius: 0;
+}
+
+.buttonFocus() {
+    .focusOutline();
+}
+
+.deleteButton() {
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    color: @redError;
+
+    &:hover {
+        border-bottom-color: @redError;
+    }
+
+    &:active {
+        border-bottom-color: @redError;
+    }
+}
+
+.grayBlockMobileFullWidth() {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-radius: 0;
+}
+
+.focusOutline() {
+    outline: none;
+    box-shadow: 0 0 0 3px @fokusFarge;
+}
+
+.iconButton() {
+    .borderButton();
+    border: none;
+}
+
+.borderButton(@hideBorder: false) {
+    border-radius: 4px;
+    background-color: @white;
+    border: 1px solid @navGra20;
+    transition: border-color 200ms cubic-bezier(0.465, 0.183, 0.153, 0.946);
+    cursor: pointer;
+    &:hover {
+        border-color: @c-buttonBlue;
+    }
+    &:focus {
+        .focusOutline();
+    }
+}
+
+.knappeLenke() {
+    position: relative;
+    border: none !important;
+    background: transparent;
+    padding: 0;
+    display: inline-block;
+    &:focus {
+        .buttonFocus();
+    }
+}

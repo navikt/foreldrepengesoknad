@@ -7,9 +7,10 @@ export interface Props {
 
 const ValiderbarControl: React.FunctionComponent<Props> = ({ render }) => {
     const formContext = React.useContext(ValidFormContext);
-    const validateField = React.useCallback((componentId: string) => formContext.validateField(componentId, true), [
-        formContext,
-    ]);
+    const validateField = React.useCallback(
+        (componentId: string) => formContext.validateField(componentId, true),
+        [formContext]
+    );
 
     return render(validateField, formContext.validateAll);
 };

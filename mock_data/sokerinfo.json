@@ -1,20 +1,25 @@
 {
     "søker": {
-        "fnr": "17066425606",
-        "fornavn": "LUNKEN",
+        "fnr": "08128222368",
+        "fornavn": "SEDAT",
         "etternavn": "TRANE",
         "kjønn": "K",
         "fødselsdato": "1982-12-08",
         "ikkeNordiskEøsLand": false,
         "barn": [
             {
-                "fødselsdato": "2020-06-05",
-                "fnr": "17066425606",
-                "fornavn": "Edvin",
-                "etternavn": "Hansen",
-                "kjønn": "m"
+                "fnr": "27062153275",
+                "fødselsdato": "2021-06-27",
+                "annenForelder": {
+                    "fnr": "28118221607",
+                    "fødselsdato": "1982-11-28",
+                    "fornavn": "SMIDIG",
+                    "etternavn": "KOPP"
+                },
+                "fornavn": "TALENTFULL",
+                "etternavn": "MIDTPUNKT",
+                "kjønn": "K"
             }
         ]
-    },
-    "arbeidsforhold": []
+    }
 }

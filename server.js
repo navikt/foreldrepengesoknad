@@ -70,6 +70,7 @@ const logError = (errorMessage, details) => console.log(errorMessage, details);
 
 getDecorator()
     .then(renderApp, (error) => {
+        console.log(error);
         logError('Failed to get decorator', error);
         process.exit(1);
     })

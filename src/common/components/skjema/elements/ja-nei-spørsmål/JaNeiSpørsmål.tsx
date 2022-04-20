@@ -5,8 +5,8 @@ import FlervalgSpørsmål from '../flervalg-spørsmål/FlervalgSpørsmål';
 import { Validator } from 'common/lib/validation/types';
 
 enum ValgAlternativer {
-    'JA' = 'ja',
-    'NEI' = 'nei',
+    JA = 'ja',
+    NEI = 'nei',
 }
 
 interface JaNeiSpørsmålProps {

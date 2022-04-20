@@ -1,5 +1,5 @@
-import { AttachmentType } from 'app/components/storage/attachment/types/AttachmentType';
-import { Skjemanummer } from './søknad/Søknad';
+import { AttachmentType } from './AttachmentType';
+import { Skjemanummer } from './Skjemanummer';
 
 export interface MissingAttachment {
     index?: number;

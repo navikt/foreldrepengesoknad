@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 
-import VeilederNormal from './VeilederNormalSvg';
 import VeilederKompakt from './VeilederKompaktSvg';
+import VeilederNormal from 'app/assets/VeilederNormal';
 
 import './veileder.less';
 
@@ -41,7 +41,7 @@ const Veileder = (props: Props) => {
     return stil === 'kompakt' ? (
         <VeilederKompakt svgProps={svgProps} transparentBackground={farge === 'transparent'} />
     ) : (
-        <VeilederNormal svgProps={svgProps} transparentBackground={farge === 'transparent'} />
+        <VeilederNormal transparentBackground={farge === 'transparent'} />
     );
 };
 
