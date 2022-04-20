@@ -72,7 +72,7 @@ describe('eksisterendeSakUtils', () => {
                     stønadskontotype: StønadskontoType.Mødrekvote,
                     trekkDager: 1,
                     utbetalingsprosent: 100,
-                    uttakArbeidType: [UttakArbeidType.ANNET],
+                    uttakArbeidType: UttakArbeidType.ANNET,
                 },
             ],
         } as EksisterendeSakDTO;

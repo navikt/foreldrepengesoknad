@@ -64,11 +64,12 @@ const erEksisterendeSakErDeltUttak = (eksisterendeSak: EksisterendeSakDTO): bool
 };
 
 const mapSaksperiodeFromDTO = (p: SaksperiodeDTO): Saksperiode => {
-    const { oppholdAarsak, gjelderAnnenPart } = p;
+    const { oppholdAarsak, gjelderAnnenPart, uttakArbeidType } = p;
 
     const returnPeriode: Saksperiode = {
         ...p,
         guid: guid(),
+        uttakArbeidType: [uttakArbeidType as UttakArbeidType],
     };
 
     if (oppholdAarsak !== undefined && gjelderAnnenPart === false) {
