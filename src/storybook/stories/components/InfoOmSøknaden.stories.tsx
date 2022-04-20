@@ -44,7 +44,7 @@ const context = {
         vedlegg: [],
         tilleggsopplysninger: undefined!,
     },
-    version: 3,
+    version: 4,
     currentRoute: '/soknad/uttaksplan-info',
     søkerinfo: {} as Søkerinfo,
     saker: [],

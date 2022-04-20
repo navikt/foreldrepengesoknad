@@ -27,7 +27,7 @@ export interface ForeldrepengesøknadContextState {
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
-    version: 3,
+    version: 4,
     currentRoute: SøknadRoutes.VELKOMMEN,
     søknad: {
         type: 'foreldrepenger',

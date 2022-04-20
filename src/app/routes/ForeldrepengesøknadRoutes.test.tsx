@@ -11,7 +11,7 @@ import Person from 'app/types/Person';
 
 describe('<ForeldrepengesøknadRoutes>', () => {
     const state = {
-        version: 1,
+        version: 4,
         currentRoute: SøknadRoutes.VELKOMMEN,
         søkerinfo: {
             arbeidsforhold: [],
