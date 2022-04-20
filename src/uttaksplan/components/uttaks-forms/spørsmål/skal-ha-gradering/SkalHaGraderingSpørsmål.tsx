@@ -28,7 +28,7 @@ const getArbeidsOptions = (arbeidsforhold: Arbeidsforhold[]): RadioPanelProps[] 
     const eksisterendeArbeidsforhold: RadioPanelProps[] = [];
 
     if (arbeidsforhold.length > 0) {
-        arbeidsforhold.map((arb) =>
+        arbeidsforhold.forEach((arb) =>
             eksisterendeArbeidsforhold.push({ label: `${arb.arbeidsgiverNavn}`, value: `${arb.arbeidsgiverId}` })
         );
     }
