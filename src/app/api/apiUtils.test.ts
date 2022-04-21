@@ -60,9 +60,10 @@ const getSøknadMock = (annenForelderInput: AnnenForelder, barnInput: Barn, utta
 
 describe('cleanUpSøknadsdataForInnsending', () => {
     const barnMock = getBarnMock('2021-01-01');
+    const fødselsdato = barnMock.fødselsdatoer[0];
     const annenForelderMock = getAnnenForelderUførMock(true, false);
     const søknadMedMorErUfør = getSøknadMock(annenForelderMock, barnMock, []);
-    const cleanedSøknad = cleanSøknad(søknadMedMorErUfør);
+    const cleanedSøknad = cleanSøknad(søknadMedMorErUfør, fødselsdato);
 
     it('skal bytte navn på annenForelder.erUfør til annenForelder.harMorUføretrygd', () => {
         expect(cleanedSøknad.annenForelder.hasOwnProperty('harMorUføretrygd')).toBe(true);
@@ -77,14 +78,14 @@ describe('cleanUpSøknadsdataForInnsending', () => {
 
     it('skal ikke feile for ikke oppgitt forelder', () => {
         const søknadMedIkkeOppgitForelder = getSøknadMock(getAnnenForelderIkkeOppgittMock(), barnMock, []);
-        const cleanedSøknadUtenForelder = cleanSøknad(søknadMedIkkeOppgitForelder);
+        const cleanedSøknadUtenForelder = cleanSøknad(søknadMedIkkeOppgitForelder, fødselsdato);
         expect(cleanedSøknadUtenForelder.annenForelder.kanIkkeOppgis).toBe(true);
     });
 
     it('skal ikke feile når ingen input om erUfør eller erForSyk på annenForelder', () => {
         const annenForelderUtenUførInfo = getAnnenForelderMock();
         const søknadMedAnnenForelderUtenUførInfo = getSøknadMock(annenForelderUtenUførInfo, barnMock, []);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(søknadMedAnnenForelderUtenUførInfo);
+        const cleanedSøknadUtenUførInfo = cleanSøknad(søknadMedAnnenForelderUtenUførInfo, fødselsdato);
         expect(cleanedSøknadUtenUførInfo.annenForelder.hasOwnProperty('erUfør')).toBe(false);
     });
 
@@ -101,7 +102,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             tidsperiode: { fom: new Date('2021-01-04'), tom: new Date('2021-01-11') },
         } as PeriodeHull;
         const søknadMedUttaksPlan = getSøknadMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(søknadMedUttaksPlan);
+        const cleanedSøknadUtenUførInfo = cleanSøknad(søknadMedUttaksPlan, fødselsdato);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.length).toBe(1);
         expect(cleanedSøknadUtenUførInfo.uttaksplan[0].hasOwnProperty('erMorForSyk')).toBe(false);
         const { erMorForSyk, ...expectedPeriodeUttak } = periodeUttak;

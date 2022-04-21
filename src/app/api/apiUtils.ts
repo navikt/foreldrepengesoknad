@@ -32,6 +32,7 @@ import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { Attachment } from 'app/types/Attachment';
 import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
+import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
 
 export interface AnnenForelderOppgittForInnsending extends Omit<AnnenForelder, 'erUfør'> {
     harMorUføretrygd?: boolean;
@@ -149,8 +150,13 @@ const konverterRolle = (rolle: Søkerrolle): SøkerrolleInnsending => {
     }
 };
 
-const changeAktivitetsfriKvoteKontotype = (periode: Periode) => {
+const changeClientonlyKontotype = (periode: Periode, annenForelderHarRettPåForeldrepenger: boolean) => {
     if (isUttaksperiode(periode)) {
+        if (periode.konto === StønadskontoType.Flerbarnsdager) {
+            periode.konto = !annenForelderHarRettPåForeldrepenger
+                ? StønadskontoType.Foreldrepenger
+                : StønadskontoType.Fellesperiode;
+        }
         if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
             periode.konto = StønadskontoType.Foreldrepenger;
             periode.morsAktivitetIPerioden = MorsAktivitet.Uføre;
@@ -179,61 +185,74 @@ const changeGradertPeriode = (periode: Periode) => {
     return periode;
 };
 
-const cleanUttaksplan = (uttaksplan: Periode[], annenForelder?: AnnenForelder, endringstidspunkt?: Date): Periode[] => {
+const cleanUttaksplan = (
+    uttaksplan: Periode[],
+    familiehendelsesdato: Date,
+    annenForelder?: AnnenForelder,
+    endringstidspunkt?: Date
+): Periode[] => {
     const cleanedUttaksplan = uttaksplan
         .filter((periode: Periode) => isValidTidsperiode(periode.tidsperiode))
         .filter(skalPeriodeSendesInn)
         .map((periode) =>
             annenForelder && isAnnenForelderOppgitt(annenForelder)
-                ? changeAktivitetsfriKvoteKontotype(periode)
+                ? changeClientonlyKontotype(periode, !!annenForelder.harRettPåForeldrepenger)
                 : periode
         )
         .map((periode) => (periode.type === Periodetype.Uttak ? cleanUttaksperiode(periode) : periode))
         .map(changeGradertPeriode);
 
-    if (endringstidspunkt) {
-        const periodeVedEndringstidspunkt = cleanedUttaksplan.find((periode) =>
-            dayjs(endringstidspunkt).isBetween(periode.tidsperiode.fom, periode.tidsperiode.fom, 'day', '[]')
-        );
+    if (endringstidspunkt && førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
+        const periodeVedEndringstidspunkt = getPeriodeVedTidspunkt(cleanedUttaksplan, endringstidspunkt);
 
         if (!periodeVedEndringstidspunkt) {
-            const førstePeriodeEtterEndringstidspunkt = cleanedUttaksplan.find((periode) =>
-                dayjs(periode.tidsperiode.fom).isAfter(endringstidspunkt)
-            );
-
-            const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt
-                ? Uttaksdagen(førstePeriodeEtterEndringstidspunkt.tidsperiode.fom).forrige()
-                : endringstidspunkt;
-
-            const endringsTidspunktPeriode: Utsettelsesperiode = {
-                type: Periodetype.Utsettelse,
-                årsak: UtsettelseÅrsakType.Fri,
-                id: guid(),
-                tidsperiode: {
-                    fom: endringstidspunkt,
-                    tom: endringsTidspunktPeriodeTom,
-                },
-                erArbeidstaker: false,
-                forelder: Forelder.farMedmor,
-            };
-
-            cleanedUttaksplan.push(endringsTidspunktPeriode);
-
-            cleanedUttaksplan.sort(sorterPerioder);
-
-            return cleanedUttaksplan;
+            return getUttaksplanMedFriUtsettelsesperiode(cleanedUttaksplan, endringstidspunkt);
         }
     }
 
     return cleanedUttaksplan;
 };
 
-export const cleanSøknad = (søknad: Søknad): SøknadForInnsending => {
+export const getPeriodeVedTidspunkt = (uttaksplan: Periode[], tidspunkt: Date): Periode | undefined => {
+    return uttaksplan.find((periode) =>
+        dayjs(tidspunkt).isBetween(periode.tidsperiode.fom, periode.tidsperiode.fom, 'day', '[]')
+    );
+};
+
+export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], endringstidspunkt: Date): Periode[] => {
+    const førstePeriodeEtterEndringstidspunkt = uttaksplan.find((periode) =>
+        dayjs(periode.tidsperiode.fom).isAfter(endringstidspunkt)
+    );
+
+    const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt
+        ? Uttaksdagen(førstePeriodeEtterEndringstidspunkt.tidsperiode.fom).forrige()
+        : endringstidspunkt;
+
+    const endringsTidspunktPeriode: Utsettelsesperiode = {
+        type: Periodetype.Utsettelse,
+        årsak: UtsettelseÅrsakType.Fri,
+        id: guid(),
+        tidsperiode: {
+            fom: endringstidspunkt,
+            tom: endringsTidspunktPeriodeTom,
+        },
+        erArbeidstaker: false,
+        forelder: Forelder.farMedmor,
+    };
+
+    uttaksplan.push(endringsTidspunktPeriode);
+
+    uttaksplan.sort(sorterPerioder);
+
+    return uttaksplan;
+};
+
+export const cleanSøknad = (søknad: Søknad, familiehendelsesdato: Date): SøknadForInnsending => {
     const { søker, barn, annenForelder, søkersituasjon, tilleggsopplysninger, uttaksplan, ...rest } = søknad;
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
     const søkerInnsending = cleanSøker(søker, søknad.søkersituasjon);
     const barnInnsending = cleanBarn(barn);
-    const uttaksplanInnsending = cleanUttaksplan(uttaksplan, annenForelder);
+    const uttaksplanInnsending = cleanUttaksplan(uttaksplan, familiehendelsesdato, annenForelder);
     const tilleggsopplysningerInnsending = cleanTilleggsopplysninger(søknad.tilleggsopplysninger);
     const cleanedSøknad: SøknadForInnsending = {
         søker: søkerInnsending,
@@ -262,21 +281,22 @@ const cleanSøker = (søker: Søker, søkersituasjon: Søkersituasjon): SøkerFo
 
 export const getSøknadsdataForInnsending = (
     originalSøknad: Søknad,
-    //missingAttachments: MissingAttachment[],
     endringerIUttaksplan: Periode[],
+    familiehendelsesdato: Date,
     endringstidspunkt?: Date
 ): SøknadForInnsending | EndringssøknadForInnsending => {
     const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
-    //mapMissingAttachmentsOnSøknad(missingAttachments, søknad);
     if (søknad.erEndringssøknad) {
-        const endringerIUttaksplanWithMissingAttachments = endringerIUttaksplan; //TODO: Fix missing attachments
-        // const endringerIUttaksplanWithMissingAttachments = mapMissingAttachmentsOnEndringer(
-        //     søknad.uttaksplan,
-        //     endringerIUttaksplan
-        // );
-        return cleanEndringssøknad(søknad, endringerIUttaksplanWithMissingAttachments, endringstidspunkt);
+        const endringerIUttaksplanWithMissingAttachments = endringerIUttaksplan;
+
+        return cleanEndringssøknad(
+            søknad,
+            endringerIUttaksplanWithMissingAttachments,
+            familiehendelsesdato,
+            endringstidspunkt
+        );
     } else {
-        return cleanSøknad(søknad);
+        return cleanSøknad(søknad, familiehendelsesdato);
     }
 };
 
@@ -301,13 +321,19 @@ export const cleanAttachments = (object: any): Attachment[] => {
 export const cleanEndringssøknad = (
     søknad: Søknad,
     endringerIUttaksplan: Periode[],
+    familiehendelsesdato: Date,
     endringstidspunkt?: Date
 ): EndringssøknadForInnsending => {
     const cleanedSøknad: EndringssøknadForInnsending = {
         erEndringssøknad: true,
         saksnummer: søknad.saksnummer,
         type: søknad.type,
-        uttaksplan: cleanUttaksplan(endringerIUttaksplan, søknad.annenForelder, endringstidspunkt),
+        uttaksplan: cleanUttaksplan(
+            endringerIUttaksplan,
+            familiehendelsesdato,
+            søknad.annenForelder,
+            endringstidspunkt
+        ),
         vedlegg: cleanAttachments({ søknad }), //TODO: cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring: søknad.vedleggForSenEndring });
         søker: cleanSøker(søknad.søker, søknad.søkersituasjon),
         annenForelder: cleanAnnenForelder(søknad.annenForelder),

@@ -32,6 +32,8 @@ import SøknadRoutes from 'app/routes/routes';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
 import { getErSøkerFarEllerMedmor, getFarMedmorErAleneOmOmsorg, getNavnPåForeldre } from 'app/utils/personUtils';
 import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -65,12 +67,13 @@ const Oppsummering = () => {
         ? beskrivTilleggsopplysning(tilleggsopplysninger.begrunnelseForSenEndring)
         : undefined;
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(søkerErFarEllerMedmor, erAleneOmOmsorg, annenForelder);
-
+    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(søknad.barn));
     useEffect(() => {
         if (isSubmitting) {
             const cleanedSøknad = getSøknadsdataForInnsending(
                 søknad,
                 state.perioderSomSkalSendesInn,
+                familiehendelsesdato!,
                 state.endringstidspunkt
             );
 
@@ -80,7 +83,15 @@ const Oppsummering = () => {
                 })
                 .catch((error) => setSubmitError(error));
         }
-    }, [søknad, dispatch, søkerinfo.person.fnr, isSubmitting, state.endringstidspunkt, state.perioderSomSkalSendesInn]);
+    }, [
+        søknad,
+        dispatch,
+        søkerinfo.person.fnr,
+        isSubmitting,
+        state.endringstidspunkt,
+        state.perioderSomSkalSendesInn,
+        familiehendelsesdato,
+    ]);
 
     useEffect(() => {
         if (kvittering !== undefined) {
