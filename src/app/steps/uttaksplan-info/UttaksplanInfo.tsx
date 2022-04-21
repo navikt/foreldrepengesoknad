@@ -36,11 +36,9 @@ const UttaksplanInfo = () => {
         registrertBarn?.annenForelder?.fnr
     );
 
-    const erAnnenPartsSak =
-        eksisterendeSakAnnenPartData !== undefined ? eksisterendeSakAnnenPartData.grunnlag.gjelderAnnenPart : false;
     const eksisterendeSak = useMemo(
-        () => mapEksisterendeSakFromDTO(eksisterendeSakAnnenPartData, erFarEllerMedmor, erAnnenPartsSak),
-        [erAnnenPartsSak, eksisterendeSakAnnenPartData, erFarEllerMedmor]
+        () => mapEksisterendeSakFromDTO(eksisterendeSakAnnenPartData, erFarEllerMedmor, true),
+        [eksisterendeSakAnnenPartData, erFarEllerMedmor]
     );
 
     useEffect(() => {
