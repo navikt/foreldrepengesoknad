@@ -30,6 +30,7 @@ interface Props {
     erMorUfør: boolean;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
+    erEndringssøknad: boolean;
 }
 
 const Periodeliste: FunctionComponent<Props> = ({
@@ -50,6 +51,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     erMorUfør,
     søkerErFarEllerMedmorOgKunDeHarRett,
     setPeriodeErGyldig,
+    erEndringssøknad,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -88,6 +90,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                     annenForelderSamtidigUttakPeriode={getAnnenForelderSamtidigUttakPeriode(p, uttaksplan)}
                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                     setPeriodeErGyldig={setPeriodeErGyldig}
+                    erEndringssøknad={erEndringssøknad}
                 />
             ))}
         </div>

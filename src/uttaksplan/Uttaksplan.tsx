@@ -277,6 +277,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     meldingerPerPeriode={meldingerPerPeriode}
                     erMorUfør={erMorUfør}
                     setPeriodeErGyldig={setPeriodeErGyldig}
+                    erEndringssøknad={erEndringssøknad}
                 />
             </Block>
             <Block padBottom="l">

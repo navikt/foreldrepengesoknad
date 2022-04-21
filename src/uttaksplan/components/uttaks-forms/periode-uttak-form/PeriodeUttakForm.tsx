@@ -40,6 +40,7 @@ import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/Aktivitetskra
 
 interface Props {
     periode: Periode;
+    erEndringssøknad: boolean;
     familiehendelsesdato: Date;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
@@ -112,6 +113,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     erDeltUttak,
     situasjon,
     erMorUfør,
+    erEndringssøknad,
     setPeriodeErGyldig,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
@@ -222,6 +224,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 <OverføringsårsakSpørsmål
                                     vedlegg={values.overføringsdokumentasjon}
                                     navnAnnenForelder={navnPåAnnenForelder!}
+                                    erEndringssøknad={erEndringssøknad}
                                 />
                             </Block>
                             <Block

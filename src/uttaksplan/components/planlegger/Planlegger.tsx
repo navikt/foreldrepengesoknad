@@ -35,6 +35,7 @@ interface Props {
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
     erMorUfør: boolean;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
+    erEndringssøknad: boolean;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -55,6 +56,7 @@ const Planlegger: FunctionComponent<Props> = ({
     meldingerPerPeriode,
     erMorUfør,
     setPeriodeErGyldig,
+    erEndringssøknad,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -98,6 +100,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 erMorUfør={erMorUfør}
                                 søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                                 setPeriodeErGyldig={setPeriodeErGyldig}
+                                erEndringssøknad={erEndringssøknad}
                             />
                         </section>
                     </Block>
@@ -121,6 +124,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 setPeriodeErGyldig={setPeriodeErGyldig}
                                 nesteLedigeUttaksdato={nesteLedigeUttaksdato}
                                 søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
+                                erEndringssøknad={erEndringssøknad}
                             />
                         </div>
                     )}
