@@ -810,24 +810,45 @@ export function slåSammenLikePerioder(perioder: Periode[]): Periode[] {
     return nyePerioder;
 }
 
+const getAntallOverlappendeUttaksdager = (periode: Periode, nyPeriode: Periode): number => {
+    if (Periodene([periode]).finnOverlappendePerioder(nyPeriode).length > 0) {
+        const dateArray = [
+            dayjs(periode.tidsperiode.fom),
+            dayjs(periode.tidsperiode.tom),
+            dayjs(nyPeriode.tidsperiode.fom),
+            dayjs(nyPeriode.tidsperiode.tom),
+        ];
+        const minDate = dayjs.min(dateArray);
+        const maxDate = dayjs.max(dateArray);
+        const overlappendeTidsperiode = dateArray.filter((date) => date !== minDate && date !== maxDate);
+        return Tidsperioden({
+            fom: dayjs.min(overlappendeTidsperiode).toDate(),
+            tom: dayjs.max(overlappendeTidsperiode).toDate(),
+        }).getAntallUttaksdager();
+    }
+    return 0;
+};
+
 function leggTilPeriodeEtterPeriode(perioder: Periode[], periode: Periode, nyPeriode: Periode): Periode[] {
     const perioderFør = Periodene(perioder).finnAlleForegåendePerioder(periode);
     const perioderEtter = Periodene(perioder).finnAllePåfølgendePerioder(periode);
+    const antallOverlappendeUttaksdager = getAntallOverlappendeUttaksdager(periode, nyPeriode);
     const uttaksdager: number =
         (isUttakAnnenPart(nyPeriode) && nyPeriode.ønskerSamtidigUttak) ||
         (isUttaksperiode(nyPeriode) && nyPeriode.ønskerSamtidigUttak)
             ? 0
-            : Tidsperioden(nyPeriode.tidsperiode).getAntallUttaksdager();
+            : antallOverlappendeUttaksdager;
     return [...perioderFør, ...[nyPeriode], ...Periodene([periode, ...perioderEtter]).forskyvPerioder(uttaksdager)];
 }
 
 function leggTilPeriodeFørPeriode(perioder: Periode[], periode: Periode, nyPeriode: Periode): Periode[] {
     const perioderEtter = Periodene(perioder).finnAllePåfølgendePerioder(periode);
+    const antallOverlappendeUttaksdager = getAntallOverlappendeUttaksdager(periode, nyPeriode);
     const uttaksdager: number =
         (isUttakAnnenPart(nyPeriode) && nyPeriode.ønskerSamtidigUttak) ||
         (isUttaksperiode(nyPeriode) && nyPeriode.ønskerSamtidigUttak)
             ? 0
-            : Tidsperioden(nyPeriode.tidsperiode).getAntallUttaksdager();
+            : antallOverlappendeUttaksdager;
     return [...[nyPeriode], ...Periodene([periode, ...perioderEtter]).forskyvPerioder(uttaksdager)];
 }
 
