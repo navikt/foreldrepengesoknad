@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:17-alpine
 LABEL org.opencontainers.image.source=https://github.com/navikt/foreldrepengesoknad
 WORKDIR /usr/src/app
 
