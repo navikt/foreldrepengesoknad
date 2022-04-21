@@ -14,10 +14,39 @@ import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode
 interface Props {
     vedlegg: Attachment[];
     navnAnnenForelder: string;
+    erEndringssøknad: boolean;
 }
 
-const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ vedlegg, navnAnnenForelder }) => {
+const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ vedlegg, navnAnnenForelder, erEndringssøknad }) => {
     const intl = useIntl();
+
+    const radios = [
+        {
+            label: intlUtils(intl, 'uttaksplan.overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER', {
+                navnAnnenForelder,
+            }),
+            value: OverføringÅrsakType.institusjonsoppholdAnnenForelder,
+        },
+        {
+            label: intlUtils(intl, 'uttaksplan.overføringsårsaktype.SYKDOM_ANNEN_FORELDER', {
+                navnAnnenForelder,
+            }),
+            value: OverføringÅrsakType.sykdomAnnenForelder,
+        },
+    ];
+
+    if (erEndringssøknad) {
+        radios.push({
+            label: intlUtils(intl, 'uttaksplan.overføringsårsaktype.ALENEOMSORG'),
+            value: OverføringÅrsakType.aleneomsorg,
+        });
+        radios.push({
+            label: intlUtils(intl, 'uttaksplan.overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER', {
+                navnAnnenForelder,
+            }),
+            value: OverføringÅrsakType.ikkeRettAnnenForelder,
+        });
+    }
 
     return (
         <>
@@ -27,22 +56,7 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ vedlegg, navnA
                     legend={intlUtils(intl, 'uttaksplan.overføringsårsak', {
                         navnAnnenForelder: getNavnGenitivEierform(navnAnnenForelder, intl.locale),
                     })}
-                    radios={[
-                        {
-                            label: intlUtils(
-                                intl,
-                                'uttaksplan.overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
-                                { navnAnnenForelder }
-                            ),
-                            value: OverføringÅrsakType.institusjonsoppholdAnnenForelder,
-                        },
-                        {
-                            label: intlUtils(intl, 'uttaksplan.overføringsårsaktype.SYKDOM_ANNEN_FORELDER', {
-                                navnAnnenForelder,
-                            }),
-                            value: OverføringÅrsakType.sykdomAnnenForelder,
-                        },
-                    ]}
+                    radios={radios}
                     useTwoColumns={true}
                     validate={(value) => {
                         if (!hasValue(value)) {
