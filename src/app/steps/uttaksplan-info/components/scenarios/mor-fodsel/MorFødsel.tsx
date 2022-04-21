@@ -87,7 +87,6 @@ const MorFødsel: FunctionComponent<Props> = ({
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erMorUfør = !!oppgittAnnenForelder?.erUfør;
-    const annenForelderFornavn = oppgittAnnenForelder?.fornavn;
     const harRettPåForeldrepenger = !!oppgittAnnenForelder?.harRettPåForeldrepenger;
     const navnFarMedmor = oppgittAnnenForelder
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn)
@@ -243,7 +242,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                     valgtFellesperiodeukerMor={formValues.fellesperiodeukerMor}
                                     mor={navnMor}
                                     farMedmor={navnFarMedmor}
-                                    annenForelderErFarEllerMedmor={navnFarMedmor === annenForelderFornavn}
+                                    annenForelderErFarEllerMedmor={!erFarEllerMedmor}
                                 />
                             </Block>
                         </Block>
