@@ -56,7 +56,9 @@ export const isArrayOfAttachments = (object: any): object is readonly Attachment
 };
 
 export const removeAttachmentsWithUploadError = (attachments: readonly Attachment[]) =>
-    attachments.filter((a: Attachment) => !isAttachmentWithError(a));
+    attachments.filter(
+        (a: Attachment) => !isAttachmentWithError(a) || a.innsendingsType === InnsendingsType.SEND_SENERE
+    );
 
 const isPOJO = (arg: unknown): arg is Record<string, unknown> => {
     if (arg == null || typeof arg !== 'object') {
