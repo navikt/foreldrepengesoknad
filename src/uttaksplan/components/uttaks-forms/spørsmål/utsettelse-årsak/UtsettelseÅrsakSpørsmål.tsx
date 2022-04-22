@@ -102,6 +102,10 @@ const getUtsettelseÅrsakOptions = (
 
         if (!skalViseGamleUtsettelseÅrsaker && erFarEllerMedmor) {
             if (!erMorUfør) {
+                if (option.value === UtsettelseÅrsakType.Fri) {
+                    return true;
+                }
+
                 return false;
             }
 
