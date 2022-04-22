@@ -143,7 +143,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                                 <AlertStripe type="info">
                                     <Normaltekst>
                                         22. april: Vi opplever noen ustabiliteter i søknaden for tiden. Dersom du
-                                        opplever problemer forsøke igjen senere. Får du fortsatt problemer kan du ta
+                                        opplever problemer forsøk igjen senere. Får du fortsatt problemer kan du ta
                                         kontakt med oss på mandag.
                                     </Normaltekst>
                                 </AlertStripe>
