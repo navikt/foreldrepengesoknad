@@ -87,7 +87,7 @@ const Oppsummering = () => {
                 })
                 .catch((error) => setSubmitError(error));
         }
-    }, [dispatch, søkerinfo.person.fnr, isSubmitting, cleanedSøknad]);
+    }, [dispatch, søkerinfo.person.fnr, isSubmitting]);
 
     useEffect(() => {
         if (kvittering !== undefined) {
