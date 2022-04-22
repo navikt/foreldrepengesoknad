@@ -24,6 +24,7 @@ import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsCo
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -78,6 +79,15 @@ const Inntektsinformasjon = () => {
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
                         kompakt={true}
+                        infoMessage={
+                            <AlertStripe type="info">
+                                <Normaltekst>
+                                    22. april: Vi opplever noen ustabiliteter i søknaden for tiden. Dersom du opplever
+                                    problemer forsøke igjen senere. Får du fortsatt problemer kan du ta kontakt med oss
+                                    på mandag.
+                                </Normaltekst>
+                            </AlertStripe>
+                        }
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="l">

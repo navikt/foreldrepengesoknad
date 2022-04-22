@@ -39,6 +39,7 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
 import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tilleggsopplysningerUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -192,6 +193,14 @@ const UttaksplanStep = () => {
             onContinueLater={onFortsettSøknadSenere}
             steps={stepConfig(intl)}
             kompakt={true}
+            infoMessage={
+                <AlertStripe type="info">
+                    <Normaltekst>
+                        22. april: Vi opplever noen ustabiliteter i søknaden for tiden. Dersom du opplever problemer
+                        forsøke igjen senere. Får du fortsatt problemer kan du ta kontakt med oss på mandag.
+                    </Normaltekst>
+                </AlertStripe>
+            }
         >
             <Uttaksplan
                 foreldreSituasjon={foreldreSituasjon}

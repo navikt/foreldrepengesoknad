@@ -34,6 +34,8 @@ import { getErSøkerFarEllerMedmor, getFarMedmorErAleneOmOmsorg, getNavnPåForel
 import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import AlertStripe from 'nav-frontend-alertstriper';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -132,6 +134,15 @@ const Oppsummering = () => {
                             onContinueLater={() => null}
                             steps={stepConfig(intl)}
                             kompakt={true}
+                            infoMessage={
+                                <AlertStripe type="info">
+                                    <Normaltekst>
+                                        22. april: Vi opplever noen ustabiliteter i søknaden for tiden. Dersom du
+                                        opplever problemer forsøke igjen senere. Får du fortsatt problemer kan du ta
+                                        kontakt med oss på mandag.
+                                    </Normaltekst>
+                                </AlertStripe>
+                            }
                         >
                             <Block padBottom="l">
                                 <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>

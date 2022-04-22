@@ -29,6 +29,7 @@ import Api from 'app/api/api';
 import { mapEksisterendeSakFromDTO, opprettSøknadFraEksisterendeSak } from 'app/utils/eksisterendeSakUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Søknad } from 'app/context/types/Søknad';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 interface Props {
     fornavn: string;
@@ -136,7 +137,17 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                                 ),
                             }}
                         />
+
                         <div className={bem.block}>
+                            <div style={{ marginBottom: '1rem' }}>
+                                <AlertStripe type="info">
+                                    <Normaltekst>
+                                        22. april: Vi opplever noen ustabiliteter i søknaden for tiden. Dersom du
+                                        opplever problemer forsøke igjen senere. Får du fortsatt problemer kan du ta
+                                        kontakt med oss på mandag.
+                                    </Normaltekst>
+                                </AlertStripe>
+                            </div>
                             <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
                                 {intlUtils(intl, 'velkommen.tittel')}
                             </Innholdstittel>
