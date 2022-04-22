@@ -25,6 +25,7 @@ interface Props {
     utsettelseårsak: UtsettelseÅrsakType | '';
     vedlegg: Attachment[];
     erMorUfør: boolean;
+    søkerErFarEllerMedmorOgKunDeHarRett: boolean;
 }
 
 const getUtsettelseÅrsakOptions = (
@@ -33,7 +34,8 @@ const getUtsettelseÅrsakOptions = (
     skalViseGamleUtsettelseÅrsaker: boolean,
     erFarEllerMedmor: boolean,
     tidsperiodenErInnenforFørsteSeksUker: boolean,
-    erMorUfør: boolean
+    erMorUfør: boolean,
+    søkerErFarEllerMedmorOgKunDeHarRett: boolean
 ) => {
     const allRadios: RadioProps[] = [
         {
@@ -102,7 +104,7 @@ const getUtsettelseÅrsakOptions = (
 
         if (!skalViseGamleUtsettelseÅrsaker && erFarEllerMedmor) {
             if (!erMorUfør) {
-                if (option.value === UtsettelseÅrsakType.Fri) {
+                if (option.value === UtsettelseÅrsakType.Fri && søkerErFarEllerMedmorOgKunDeHarRett) {
                     return true;
                 }
 
@@ -209,6 +211,7 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
     utsettelseårsak,
     vedlegg,
     erMorUfør,
+    søkerErFarEllerMedmorOgKunDeHarRett,
 }) => {
     const intl = useIntl();
     const årsakOptions = getUtsettelseÅrsakOptions(
@@ -217,7 +220,8 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
         skalViseGamleUtsettelseÅrsaker,
         erFarEllerMedmor,
         tidsperiodenErInnenforFørsteSeksUker,
-        erMorUfør
+        erMorUfør,
+        søkerErFarEllerMedmorOgKunDeHarRett
     );
 
     if (årsakOptions.length === 0) {

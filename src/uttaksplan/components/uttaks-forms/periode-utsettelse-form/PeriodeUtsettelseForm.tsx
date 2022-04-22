@@ -131,6 +131,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     utsettelseårsak={values.årsak}
                                     vedlegg={values.vedlegg}
                                     erMorUfør={erMorUfør}
+                                    søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                                 />
                             </Block>
                             <Block
