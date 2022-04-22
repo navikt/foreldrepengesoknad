@@ -60,7 +60,7 @@ jobs:
                         labels: ['bygg']
                       }).then(response => {
                         response.data.forEach(issue => {
-                          github.issues.update({
+                          github.rest.issues.update({
                             owner: context.repo.owner,
                             repo: context.repo.repo,
                             issue_number: issue.number,
@@ -85,7 +85,7 @@ jobs:
                               const issue = { owner: context.issue.owner,
                               repo: context.issue.repo,
                               issue_number: response.data.number }
-                             github.issues.createComment({...issue,
+                              github.rest.issues.createComment({...issue,
                                     title: 'Deploy av ${{ env.TAG }}',
-                                    body: '/promote dev-gcp '})
+                                    body: '/promote dev-gcp'})
                        });
