@@ -119,6 +119,7 @@ const renderPeriodeListeInnhold = (
                     navnPåForeldre={navnPåForeldre}
                     erMorUfør={erMorUfør}
                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
+                    arbeidsforhold={arbeidsforhold}
                 />
             );
         case Periodetype.Hull:

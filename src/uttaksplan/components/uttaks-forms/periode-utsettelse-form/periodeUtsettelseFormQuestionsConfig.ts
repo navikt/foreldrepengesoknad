@@ -2,6 +2,7 @@ import { hasValue } from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
+import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 
 interface PeriodeUtsettelseFormConfigPayload {
     values: PeriodeUtsettelseFormData;
@@ -23,6 +24,13 @@ const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormConfigPay
         isAnswered: ({ values }) => hasValue(values.årsak),
         isIncluded: () => true,
         visibilityFilter: ({ values }) => isValidTidsperiode({ fom: values.fom, tom: values.tom }),
+    },
+    [PeriodeUtsettelseFormField.arbeidsformer]: {
+        isAnswered: ({ values }) =>
+            values.årsak !== UtsettelseÅrsakType.Arbeid ||
+            (hasValue(values.arbeidsformer) && values.arbeidsformer !== undefined && values.arbeidsformer?.length > 0),
+        isIncluded: ({ values }) => hasValue(values.årsak) && values.årsak === UtsettelseÅrsakType.Arbeid,
+        visibilityFilter: ({ values }) => hasValue(values.årsak),
     },
     [PeriodeUtsettelseFormField.vedlegg]: {
         isAnswered: () => true,

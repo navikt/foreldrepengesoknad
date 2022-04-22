@@ -1,12 +1,12 @@
-import { bemUtils, Block } from '@navikt/fp-common';
+import { bemUtils, Block, hasValue, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import React, { Dispatch, FunctionComponent, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UtsettelseEndreTidsperiodeSpørsmål from 'uttaksplan/components/utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
-import { Periode } from 'uttaksplan/types/Periode';
+import { Arbeidsform, Periode } from 'uttaksplan/types/Periode';
 import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
@@ -23,7 +23,9 @@ import UtsettelseÅrsakSpørsmål from '../spørsmål/utsettelse-årsak/Utsettel
 import { førsteOktober2021ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { Normaltekst } from 'nav-frontend-typografi';
+import { CheckboksPanelProps } from 'nav-frontend-skjema';
 interface Props {
     periode: Periode;
     familiehendelsesdato: Date;
@@ -38,6 +40,7 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
     erMorUfør: boolean;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
+    arbeidsforhold: Arbeidsforhold[];
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -54,7 +57,9 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     navnPåForeldre,
     erMorUfør,
     søkerErFarEllerMedmorOgKunDeHarRett,
+    arbeidsforhold,
 }) => {
+    const intl = useIntl();
     const { tidsperiode, id } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUtsettelseForm');
@@ -66,6 +71,29 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
 
     const toggleVisTidsperiode = () => {
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
+    };
+
+    const getArbeidUnderUtsettelseOptions = (arbeidsgivere: Arbeidsforhold[]): CheckboksPanelProps[] => {
+        const defaultOptions: CheckboksPanelProps[] = [
+            {
+                label: 'Selvstendig næringsdrivende',
+                value: Arbeidsform.selvstendignæringsdrivende,
+            },
+            {
+                label: 'Frilans',
+                value: Arbeidsform.frilans,
+            },
+        ];
+        const eksisterendeArbeidsforhold: CheckboksPanelProps[] = [];
+
+        if (arbeidsgivere.length > 0) {
+            arbeidsgivere.forEach((arb) =>
+                eksisterendeArbeidsforhold.push({ label: `${arb.arbeidsgiverNavn}`, value: `${arb.arbeidsgiverId}` })
+            );
+        }
+        const unikeEksisterendeArbeidsforholdUnike = [...new Set(eksisterendeArbeidsforhold)];
+
+        return [...unikeEksisterendeArbeidsforholdUnike, ...defaultOptions];
     };
 
     return (
@@ -132,6 +160,31 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     vedlegg={values.vedlegg}
                                     erMorUfør={erMorUfør}
                                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
+                                />
+                            </Block>
+                            <Block
+                                visible={visibility.isVisible(PeriodeUtsettelseFormField.arbeidsformer)}
+                                padBottom="l"
+                            >
+                                <PeriodeUtsettelseFormComponents.CheckboxPanelGroup
+                                    name={PeriodeUtsettelseFormField.arbeidsformer}
+                                    legend={intlUtils(intl, 'uttaksplan.arbeidsformer')}
+                                    description={
+                                        <UtvidetInformasjon
+                                            apneLabel={intlUtils(intl, 'uttaksplan.arbeidsformer.lesMer.tittel')}
+                                        >
+                                            <Normaltekst>
+                                                <FormattedMessage id="uttaksplan.arbeidsformer.lesMer.innhold" />
+                                            </Normaltekst>
+                                        </UtvidetInformasjon>
+                                    }
+                                    useTwoColumns={true}
+                                    checkboxes={getArbeidUnderUtsettelseOptions(arbeidsforhold)}
+                                    validate={(value) => {
+                                        if (!hasValue(value) || value === undefined || value.length === 0) {
+                                            return intlUtils(intl, 'uttaksplan.validering.arbeidsformer');
+                                        }
+                                    }}
                                 />
                             </Block>
                             <Block

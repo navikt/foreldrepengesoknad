@@ -98,6 +98,7 @@ const NyPeriode: FunctionComponent<Props> = ({
             navnPåForeldre={navnPåForeldre}
             erMorUfør={erMorUfør}
             søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
+            arbeidsforhold={arbeidsforhold}
         />
     );
 };

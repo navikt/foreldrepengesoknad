@@ -14,7 +14,7 @@ interface Props {
     arbeidsforhold: Arbeidsforhold[];
 }
 
-const getArbeidsOptions = (arbeidsforhold: Arbeidsforhold[]): RadioPanelProps[] => {
+export const getArbeidsOptions = (arbeidsforhold: Arbeidsforhold[]): RadioPanelProps[] => {
     const defaultOptions: RadioPanelProps[] = [
         {
             label: 'Selvstendig næringsdrivende',
