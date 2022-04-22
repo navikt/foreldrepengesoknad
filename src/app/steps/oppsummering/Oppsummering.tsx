@@ -2,7 +2,7 @@ import { bemUtils, Block, intlUtils, Step } from '@navikt/fp-common';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Veilederpanel from 'nav-frontend-veilederpanel';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -68,30 +68,26 @@ const Oppsummering = () => {
         : undefined;
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(søkerErFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(søknad.barn));
-    useEffect(() => {
-        if (isSubmitting) {
-            const cleanedSøknad = getSøknadsdataForInnsending(
+    const cleanedSøknad = useMemo(
+        () =>
+            getSøknadsdataForInnsending(
                 søknad,
                 state.perioderSomSkalSendesInn,
                 familiehendelsesdato!,
                 state.endringstidspunkt
-            );
+            ),
+        [søknad, state.perioderSomSkalSendesInn, familiehendelsesdato, state.endringstidspunkt]
+    );
 
+    useEffect(() => {
+        if (isSubmitting) {
             Api.sendSøknad(cleanedSøknad, søkerinfo.person.fnr)
                 .then((response) => {
                     dispatch(actionCreator.setKvittering(response.data));
                 })
                 .catch((error) => setSubmitError(error));
         }
-    }, [
-        søknad,
-        dispatch,
-        søkerinfo.person.fnr,
-        isSubmitting,
-        state.endringstidspunkt,
-        state.perioderSomSkalSendesInn,
-        familiehendelsesdato,
-    ]);
+    }, [dispatch, søkerinfo.person.fnr, isSubmitting, cleanedSøknad]);
 
     useEffect(() => {
         if (kvittering !== undefined) {
