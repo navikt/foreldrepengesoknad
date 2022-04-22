@@ -14,7 +14,7 @@ server.set('views', `${__dirname}/dist`);
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
 
-server.use((req, res, next) => {
+server.use((_req, res, next) => {
     res.removeHeader('X-Powered-By');
     res.set('X-Frame-Options', 'SAMEORIGIN');
     res.set('X-XSS-Protection', '1; mode=block');
