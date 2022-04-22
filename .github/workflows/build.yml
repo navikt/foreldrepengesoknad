@@ -53,7 +53,7 @@ jobs:
               with:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   script: |
-                      github.issues.listForRepo({
+                      github.rest.issues.listForRepo({
                         owner: context.repo.owner,
                         repo: context.repo.repo,
                         state: 'open',
@@ -75,7 +75,7 @@ jobs:
               with:
                   github-token: ${{ secrets.NOTIFICATION }}
                   script: |
-                      github.issues.create({
+                      github.rest.issues.create( {
                         owner: context.issue.owner,
                         repo: context.issue.repo,
                         labels: ['bygg'],
