@@ -21,6 +21,8 @@ import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import AlertStripe from 'nav-frontend-alertstriper';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 const Søkersituasjon = () => {
     const intl = useIntl();
@@ -61,6 +63,15 @@ const Søkersituasjon = () => {
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
                         kompakt={true}
+                        infoMessage={
+                            <AlertStripe type="info">
+                                <Normaltekst>
+                                    22. april: Vi opplever noen ustabiliteter i søknaden for tiden. Dersom du opplever
+                                    problemer forsøke igjen senere. Får du fortsatt problemer kan du ta kontakt med oss
+                                    på mandag.
+                                </Normaltekst>
+                            </AlertStripe>
+                        }
                     >
                         <SøkersituasjonFormComponents.Form includeButtons={false}>
                             <div>
