@@ -4,9 +4,7 @@ const router = express.Router();
 const multer = require('multer');
 const MockStorage = require('./mock-storage');
 
-require('dotenv').config();
-
-const allowCrossDomain = function (req, res, next) {
+const allowCrossDomain = function (_req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-XSRF-TOKEN,Location');
@@ -15,7 +13,7 @@ const allowCrossDomain = function (req, res, next) {
     next();
 };
 const delayAllResponses = function (millis) {
-    return function (req, res, next) {
+    return function (_req, _res, next) {
         setTimeout(next, millis);
     };
 };
@@ -24,29 +22,29 @@ app.use(allowCrossDomain);
 app.use(delayAllResponses(500));
 app.use(express.json());
 
-router.get(['/rest/sokerinfo'], (req, res) => {
+router.get(['/rest/sokerinfo'], (_req, res) => {
     res.send(MockStorage.getSokerInfo());
 });
 
-router.post('/rest/engangsstonad', (req, res) => res.sendStatus(200));
+router.post('/rest/engangsstonad', (_req, res) => res.sendStatus(200));
 
-router.get('/rest/storage', (req, res) => {
+router.get('/rest/storage', (_req, res) => {
     res.send(MockStorage.getSoknad());
 });
 
-router.get('/rest/innsyn/saker', (req, res) => {
+router.get('/rest/innsyn/saker', (_req, res) => {
     res.send(MockStorage.getSaker());
 });
 
-router.get('/rest/innsyn/uttaksplan', (req, res) => {
+router.get('/rest/innsyn/uttaksplan', (_req, res) => {
     res.send(MockStorage.getUttaksplan());
 });
 
-router.get('/rest/innsyn/uttaksplanannen', (req, res) => {
+router.get('/rest/innsyn/uttaksplanannen', (_req, res) => {
     res.send(MockStorage.getUttaksplanannen());
 });
 
-router.get('/rest/konto', (req, res) => {
+router.get('/rest/konto', (_req, res) => {
     res.send(MockStorage.getStønadskontoer());
 });
 
@@ -55,28 +53,28 @@ router.post('/rest/storage', (req, res) => {
     return res.sendStatus(200);
 });
 
-router.delete('/rest/storage', (req, res) => {
+router.delete('/rest/storage', (_req, res) => {
     MockStorage.deleteSoknad();
     return res.sendStatus(200);
 });
 
-router.get('/rest/storage/kvittering/foreldrepenger', (req, res) => {
+router.get('/rest/storage/kvittering/foreldrepenger', (_req, res) => {
     res.send(MockStorage.getStorageKvittering());
 });
 
-router.post('/rest/storage/kvittering/foreldrepenger', (req, res) => {
+router.post('/rest/storage/kvittering/foreldrepenger', (_req, res) => {
     res.send(MockStorage.getStorageKvittering());
 });
 
-router.post('/rest/soknad', (req, res) => {
+router.post('/rest/soknad', (_req, res) => {
     return res.send(MockStorage.getSoknadSendt());
 });
 
-router.post('/rest/soknad/endre', (req, res) => {
+router.post('/rest/soknad/endre', (_req, res) => {
     return res.send(MockStorage.getSoknadSendt());
 });
 
-router.delete('/rest/storage', (req, res) => {
+router.delete('/rest/storage', (_req, res) => {
     res.sendStatus(204);
 });
 
@@ -88,15 +86,14 @@ router.post('/rest/storage/vedlegg', vedleggUpload.single('vedlegg'), (req, res)
     res.sendStatus(201);
 });
 
-router.delete('/rest/storage/vedlegg/:id', (req, res) => {
+router.delete('/rest/storage/vedlegg/:id', (_req, res) => {
     res.sendStatus(204);
 });
 
 app.use('', router);
 
 const port = process.env.PORT || 8888;
+
 app.listen(port, () => {
     console.log(`Mock-api listening on port: ${port}`);
 });
-
-const logError = (errorMessage, details) => console.log(errorMessage, details);
