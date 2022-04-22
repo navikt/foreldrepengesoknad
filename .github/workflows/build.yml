@@ -12,8 +12,7 @@ jobs:
     kompiler:
         runs-on: ubuntu-latest
         steps:
-            - name: Sjekk ut kode
-              uses: actions/checkout@v2.3.4
+            - uses: actions/checkout@v3
 
             - name: Hent tag
               run: |
@@ -50,7 +49,7 @@ jobs:
                   docker push ${IMAGE_BASE} --all-tags
 
             - name: Lukk gamle bygg-issues
-              uses: actions/github-script@v4.0.2
+              uses: actions/github-script@v6
               with:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   script: |
@@ -72,23 +71,21 @@ jobs:
 
             - name: Opprett issue, trigg deploy til dev-gcp
               if: success()
-              uses: actions/github-script@v4.0.2
+              uses: actions/github-script@v6
               with:
-                  github-token: ${{secrets.NOTIFICATION}}
+                  github-token: ${{ secrets.NOTIFICATION }}
                   script: |
                       github.issues.create({
                         owner: context.issue.owner,
                         repo: context.issue.repo,
                         labels: ['bygg'],
                         title: 'Deploy av ${{ env.TAG }}',
-                        body: '${{ github.sha }}',
-                      });
-
-#                      .then(response => {
-#                              const issue = { owner: context.issue.owner,
-#                              repo: context.issue.repo,
-#                              issue_number: response.data.number }
-#                             github.issues.createComment({...issue,
-#                                    title: 'Deploy av ${{ env.TAG }}',
-#                                    body: '/promote dev-gcp '})
-#                       });
+                        body: '${{ github.sha }}'})
+                      .then(response => {
+                              const issue = { owner: context.issue.owner,
+                              repo: context.issue.repo,
+                              issue_number: response.data.number }
+                             github.issues.createComment({...issue,
+                                    title: 'Deploy av ${{ env.TAG }}',
+                                    body: '/promote dev-gcp '})
+                       });

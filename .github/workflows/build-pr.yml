@@ -1,22 +1,19 @@
 name: Bygg branch eller PR
 
-on: 
+on:
   pull_request:
   push:
-    branches-ignore:   
-      - master   
+    branches-ignore:
+      - master
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
 jobs:
   kompiler:
     runs-on: ubuntu-latest
     steps:
-    
-      - name: Sjekk ut kode
-        uses: actions/checkout@v2.3.4
-     
+      - uses: actions/checkout@v3
       - name: Cache node modules
         uses: actions/cache@v2.1.6
         with:
@@ -26,8 +23,8 @@ jobs:
            ${{ runner.os }}-build-${{ env.cache-name }}-
            ${{ runner.os }}-build-
            ${{ runner.os }}-
-         
+
       - run:  npm install
       - run:  npm run jest
       - run:  npm run build
-                   
+
