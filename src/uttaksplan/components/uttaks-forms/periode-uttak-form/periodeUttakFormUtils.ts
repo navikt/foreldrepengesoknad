@@ -205,6 +205,14 @@ const velgVedleggSomSkalBrukes = (
     return erMorForSykDokumentasjon;
 };
 
+const skalVedleggPåkreves = (morsAktivitetIPerioden: '' | MorsAktivitet | undefined, erMorForSyk: boolean): boolean => {
+    if (hasValue(morsAktivitetIPerioden) || erMorForSyk) {
+        return true;
+    }
+
+    return false;
+};
+
 export const mapPeriodeUttakFormToPeriode = (
     values: Partial<PeriodeUttakFormData>,
     id: string,
@@ -287,7 +295,12 @@ export const mapPeriodeUttakFormToPeriode = (
         samtidigUttakProsent: hasValue(values.samtidigUttakProsent)
             ? trimNumberValue(values.samtidigUttakProsent!)
             : undefined,
-        vedlegg: lagSendSenereDokumentNårIngenAndreFinnes(relevantVedlegg, attachmentType, skjemanummer),
+        vedlegg: skalVedleggPåkreves(
+            values.aktivitetskravMor,
+            convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk) || false
+        )
+            ? lagSendSenereDokumentNårIngenAndreFinnes(relevantVedlegg, attachmentType, skjemanummer)
+            : [],
     };
 
     return periode;
