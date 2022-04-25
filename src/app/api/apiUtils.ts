@@ -112,13 +112,16 @@ const skalPeriodeSendesInn = (periode: Periode) => {
     return isNotPeriodetypeHull(periode) && isNotPeriodetypeInfo(periode) && isNotPeriodeUtenUttak(periode);
 };
 
-const cleanAnnenForelder = (annenForelder: AnnenForelder): AnnenForelderForInnsending => {
+const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad?: boolean): AnnenForelderForInnsending => {
     if (isAnnenForelderOppgitt(annenForelder)) {
         const { erUfør, erForSyk, ...annenForelderRest } = annenForelder;
-        return { harMorUføretrygd: erUfør, ...annenForelderRest };
+        return erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepenger
+            ? { harMorUføretrygd: erUfør, erInformertOmSøknaden: true, ...annenForelderRest }
+            : { harMorUføretrygd: erUfør, ...annenForelderRest };
     }
     return annenForelder;
 };
+
 const cleanBarn = (barn: Barn): BarnForInnsending => {
     if (isFødtBarn(barn)) {
         const { datoForAleneomsorg, type, fnr, ...barnRest } = barn;
@@ -336,7 +339,7 @@ export const cleanEndringssøknad = (
         ),
         vedlegg: cleanAttachments({ søknad }), //TODO: cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring: søknad.vedleggForSenEndring });
         søker: cleanSøker(søknad.søker, søknad.søkersituasjon),
-        annenForelder: cleanAnnenForelder(søknad.annenForelder),
+        annenForelder: cleanAnnenForelder(søknad.annenForelder, true),
         barn: søknad.barn,
         dekningsgrad: søknad.dekningsgrad,
         situasjon: søknad.søkersituasjon.situasjon,
