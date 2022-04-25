@@ -833,11 +833,16 @@ function leggTilPeriodeEtterPeriode(perioder: Periode[], periode: Periode, nyPer
     const perioderFør = Periodene(perioder).finnAlleForegåendePerioder(periode);
     const perioderEtter = Periodene(perioder).finnAllePåfølgendePerioder(periode);
     const antallOverlappendeUttaksdager = getAntallOverlappendeUttaksdager(periode, nyPeriode);
+    const antallUttaksdagerNyPeriode = Tidsperioden(nyPeriode.tidsperiode).getAntallUttaksdager();
+    const antallDagerForskyvning = Tidsperioden(periode.tidsperiode).erOmsluttetAv(nyPeriode.tidsperiode)
+        ? antallUttaksdagerNyPeriode
+        : antallOverlappendeUttaksdager;
+
     const uttaksdager: number =
         (isUttakAnnenPart(nyPeriode) && nyPeriode.ønskerSamtidigUttak) ||
         (isUttaksperiode(nyPeriode) && nyPeriode.ønskerSamtidigUttak)
             ? 0
-            : antallOverlappendeUttaksdager;
+            : antallDagerForskyvning;
     return [...perioderFør, ...[nyPeriode], ...Periodene([periode, ...perioderEtter]).forskyvPerioder(uttaksdager)];
 }
 
