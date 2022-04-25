@@ -36,6 +36,7 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -54,6 +55,7 @@ const Oppsummering = () => {
         dekningsgrad,
         uttaksplan,
         tilleggsopplysninger,
+        erEndringssøknad,
     } = useSøknad();
 
     const søkerinfo = useSøkerinfo();
@@ -70,6 +72,16 @@ const Oppsummering = () => {
         : undefined;
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(søkerErFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(søknad.barn));
+    const erEndringssøknadOgAnnenForelderHarRett =
+        erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepenger;
+    const erklæringOmAnnenForelderInformert = erEndringssøknadOgAnnenForelderHarRett
+        ? intlUtils(intl, 'oppsummering.harGodkjentOppsummering.endringssøknadMedAnnenForelder', {
+              navnAnnenForelder: annenForelder.fornavn,
+          })
+        : '';
+    const egenerklæringTekst = intlUtils(intl, 'oppsummering.harGodkjentOppsummering').concat(
+        erklæringOmAnnenForelderInformert
+    );
     const cleanedSøknad = useMemo(
         () =>
             getSøknadsdataForInnsending(
@@ -196,7 +208,7 @@ const Oppsummering = () => {
                             <Block padBottom="l">
                                 <OppsummeringFormComponents.ConfirmationCheckbox
                                     name={OppsummeringFormField.harGodkjentOppsummering}
-                                    label={intlUtils(intl, 'oppsummering.harGodkjentOppsummering')}
+                                    label={egenerklæringTekst}
                                     validate={validateHarGodkjentOppsummering(intl)}
                                 />
                             </Block>

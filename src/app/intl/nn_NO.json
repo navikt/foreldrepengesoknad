@@ -433,6 +433,7 @@
     "oppsummering.uttak.dekningsgrad.verdi80": "{antallUker} veker med 80 prosent foreldrepengar",
     "oppsummering.annenForelder.rettPåForeldrepenger": "Har {navn} rett til foreldrepenger",
     "oppsummering.harGodkjentOppsummering": "Eg har gjort meg kjent med vilkårene for å motta foreldrepenger, og skal ha omsorgen for barnet i perioden eg søker om.",
+    "oppsummering.harGodkjentOppsummering.endringssøknadMedAnnenForelder": " Eg bekreftar at eg har informert {navnAnnenForelder} om søknaden",
     "oppsummering.inntekt.registrerteArbeidsforhold": "Registrerte arbeidsforhold",
     "oppsummering.frilans.tittel": "Frilansarbeid",
     "oppsummering.frilans.oppstartsdato": "Oppstartsdato som frilansar",
