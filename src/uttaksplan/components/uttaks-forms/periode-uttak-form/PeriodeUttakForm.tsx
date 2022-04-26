@@ -193,8 +193,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     ugyldigeTidsperioder={[]}
                                     onBekreft={(values) => {
                                         toggleVisTidsperiode();
-                                        setFieldValue(PeriodeUttakFormField.fom, values.fom);
-                                        setFieldValue(PeriodeUttakFormField.tom, values.tom);
+                                        setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
+                                        setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
                                     }}
                                     changeTidsperiode={(values) => {
                                         setFieldValue(PeriodeUttakFormField.fom, values.fom);
