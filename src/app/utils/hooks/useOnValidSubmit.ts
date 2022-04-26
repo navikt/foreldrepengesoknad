@@ -5,6 +5,7 @@ import SøknadRoutes from 'app/routes/routes';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { redirectToLogin } from '../redirectToLogin';
 
 const useOnValidSubmit = <T>(
     submitHandler: (values: T) => ForeldrepengesøknadContextAction[],
@@ -28,6 +29,10 @@ const useOnValidSubmit = <T>(
                     }
                 })
                 .catch((error) => {
+                    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                        redirectToLogin();
+                    }
+
                     setSubmitError(error);
                 });
         }
