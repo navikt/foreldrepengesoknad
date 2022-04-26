@@ -112,7 +112,7 @@ const skalPeriodeSendesInn = (periode: Periode) => {
     return isNotPeriodetypeHull(periode) && isNotPeriodetypeInfo(periode) && isNotPeriodeUtenUttak(periode);
 };
 
-const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad?: boolean): AnnenForelderForInnsending => {
+const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = false): AnnenForelderForInnsending => {
     if (isAnnenForelderOppgitt(annenForelder)) {
         const { erUfør, erForSyk, ...annenForelderRest } = annenForelder;
         return erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepenger
