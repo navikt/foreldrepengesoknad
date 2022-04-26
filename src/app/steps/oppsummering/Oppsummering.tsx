@@ -37,6 +37,7 @@ import { ISOStringToDate } from 'app/utils/dateUtils';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
+import { redirectToLogin } from 'app/utils/redirectToLogin';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -99,7 +100,13 @@ const Oppsummering = () => {
                 .then((response) => {
                     dispatch(actionCreator.setKvittering(response.data));
                 })
-                .catch((error) => setSubmitError(error));
+                .catch((error) => {
+                    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                        redirectToLogin();
+                    }
+
+                    setSubmitError(error);
+                });
         }
     }, [dispatch, søkerinfo.person.fnr, isSubmitting]);
 
