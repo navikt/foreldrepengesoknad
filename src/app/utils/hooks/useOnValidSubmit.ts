@@ -31,9 +31,9 @@ const useOnValidSubmit = <T>(
                 .catch((error) => {
                     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
                         redirectToLogin();
+                    } else {
+                        setSubmitError(error);
                     }
-
-                    setSubmitError(error);
                 });
         }
     }, [harSubmitted, navigate, nextRoute, state, postSubmit]);

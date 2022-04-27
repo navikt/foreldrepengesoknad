@@ -103,9 +103,9 @@ const Oppsummering = () => {
                 .catch((error) => {
                     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
                         redirectToLogin();
+                    } else {
+                        setSubmitError(error);
                     }
-
-                    setSubmitError(error);
                 });
         }
     }, [dispatch, søkerinfo.person.fnr, isSubmitting]);
