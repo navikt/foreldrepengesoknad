@@ -72,11 +72,9 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         kompakt={true}
                         infoMessage={
                             <AlertStripe type="info">
-                                <Normaltekst>
-                                    25. april: Vi opplever noen ustabiliteter i søknaden for tiden. Dersom du opplever
-                                    problemer, forsøke igjen senere. Om søknaden din ikke haster, vent gjerne et par
-                                    dager før du kontakter oss.
-                                </Normaltekst>
+                                <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.1')}</Normaltekst>
+                                <br />
+                                <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.2')}</Normaltekst>
                             </AlertStripe>
                         }
                     >
