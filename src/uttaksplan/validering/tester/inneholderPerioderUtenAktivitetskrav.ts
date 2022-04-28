@@ -16,6 +16,7 @@ export const inneholderPerioderUtenAktivitetskrav = (grunnlag: Søknadsinfo): Re
         (p) =>
             isUttaksperiode(p) &&
             !hasValue(p.morsAktivitetIPerioden) &&
+            !p.erMorForSyk &&
             !p.ønskerSamtidigUttak &&
             !p.ønskerFlerbarnsdager &&
             (p.konto === StønadskontoType.Fellesperiode || p.konto === StønadskontoType.Foreldrepenger)
