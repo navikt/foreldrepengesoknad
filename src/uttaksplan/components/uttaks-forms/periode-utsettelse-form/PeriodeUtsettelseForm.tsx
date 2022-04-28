@@ -155,7 +155,6 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     tidsperiodenErInnenforFørsteSeksUker={Tidsperioden(
                                         tidsperiode
                                     ).erInnenforFørsteSeksUker(familiehendelsesdato)}
-                                    familiehendelsesdato={familiehendelsesdato}
                                     utsettelseårsak={values.årsak}
                                     vedlegg={values.vedlegg}
                                     erMorUfør={erMorUfør}

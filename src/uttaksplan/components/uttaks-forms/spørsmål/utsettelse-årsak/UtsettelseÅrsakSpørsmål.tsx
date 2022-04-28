@@ -1,7 +1,6 @@
-import { Block, formatDateExtended, intlUtils } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
@@ -21,7 +20,6 @@ interface Props {
     skalViseGamleUtsettelseÅrsaker: boolean;
     erFarEllerMedmor: boolean;
     tidsperiodenErInnenforFørsteSeksUker: boolean;
-    familiehendelsesdato: Date;
     utsettelseårsak: UtsettelseÅrsakType | '';
     vedlegg: Attachment[];
     erMorUfør: boolean;
@@ -207,7 +205,6 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
     skalViseGamleUtsettelseÅrsaker,
     erFarEllerMedmor,
     tidsperiodenErInnenforFørsteSeksUker,
-    familiehendelsesdato,
     utsettelseårsak,
     vedlegg,
     erMorUfør,
@@ -230,14 +227,7 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <Normaltekst>
                         <b>
-                            <FormattedMessage
-                                id="uttaksplan.veileder.trengerIkkeUtsettelse.del1"
-                                values={{
-                                    dato: formatDateExtended(
-                                        Uttaksdagen(Uttaksdagen(familiehendelsesdato).denneEllerNeste()).leggTil(30)
-                                    ),
-                                }}
-                            />
+                            <FormattedMessage id="uttaksplan.veileder.trengerIkkeUtsettelse.del1" />
                         </b>
                     </Normaltekst>
                 </Block>
@@ -249,6 +239,16 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <Normaltekst>
                         <FormattedMessage id="uttaksplan.veileder.trengerIkkeUtsettelse.del3" />
+                    </Normaltekst>
+                </Block>
+                <Block padBottom="l">
+                    <Normaltekst>
+                        <FormattedMessage id="uttaksplan.veileder.trengerIkkeUtsettelse.del4" />
+                    </Normaltekst>
+                </Block>
+                <Block padBottom="l">
+                    <Normaltekst>
+                        <FormattedMessage id="uttaksplan.veileder.trengerIkkeUtsettelse.del5" />
                     </Normaltekst>
                 </Block>
             </Veilederpanel>
