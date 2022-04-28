@@ -305,6 +305,11 @@ export const getSøknadsdataForInnsending = (
 
 export const cleanAttachments = (object: any): Attachment[] => {
     const foundAttachments = [] as Attachment[];
+
+    if (object === null || object === undefined) {
+        return foundAttachments;
+    }
+
     Object.keys(object).forEach((key: string) => {
         if (typeof object[key] === 'object') {
             if (isArrayOfAttachments(object[key])) {
