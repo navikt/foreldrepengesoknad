@@ -44,7 +44,7 @@ const SøknadSendt = () => {
     const { uttaksplan } = søknad;
     const alleSendSenereVedlegg = finnSendSenereVedlegg(søknad);
     const missingAttachments = Array.from(alleSendSenereVedlegg.values());
-    const erEndringssøknad = false;
+    const { erEndringssøknad } = søknad;
     const behandlingsFrist = getBehandlingsFrist(uttaksplan);
     const intl = useIntl();
     const { person, arbeidsforhold } = søkerinfo;
