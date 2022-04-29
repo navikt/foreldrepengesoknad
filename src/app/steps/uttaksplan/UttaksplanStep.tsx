@@ -174,6 +174,10 @@ const UttaksplanStep = () => {
     const erTomEndringssøknad =
         erEndringssøknad && (perioderSomSkalSendesInn === undefined || perioderSomSkalSendesInn.length === 0);
 
+    const handleSlettUttaksplan = () => {
+        dispatch(actionCreator.slettUttaksplan());
+    };
+
     return (
         <Step
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -231,6 +235,7 @@ const UttaksplanStep = () => {
                 morsSisteDag={morsSisteDag}
                 harKomplettUttaksplan={harKomplettUttaksplan}
                 opprinneligPlan={opprinneligPlan}
+                handleSlettUttaksplan={handleSlettUttaksplan}
             />
             <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
             {!uttaksplanErGyldig && submitIsClicked && (

@@ -1,4 +1,4 @@
-import { bemUtils, InfoBlock, intlUtils, Block } from '@navikt/fp-common';
+import { bemUtils, InfoBlock, intlUtils, Block, ActionLink } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
@@ -8,7 +8,7 @@ import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Periode } from 'uttaksplan/types/Periode';
 import { VeiledermeldingerPerPeriode } from 'uttaksplan/validering/veilederInfo/types';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
@@ -36,6 +36,7 @@ interface Props {
     erMorUfør: boolean;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
     erEndringssøknad: boolean;
+    setSlettUttaksplanModalOpen: (isOpen: boolean) => void;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -57,6 +58,7 @@ const Planlegger: FunctionComponent<Props> = ({
     erMorUfør,
     setPeriodeErGyldig,
     erEndringssøknad,
+    setSlettUttaksplanModalOpen,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -75,7 +77,15 @@ const Planlegger: FunctionComponent<Props> = ({
                     <Block padBottom="xl">
                         <section>
                             <div className={bem.element('tittel')}>
-                                <Systemtittel>{intlUtils(intl, 'uttaksplan.dinPlan')}</Systemtittel>
+                                <div className={bem.element('tittelLinkWrapper')}>
+                                    <Systemtittel>{intlUtils(intl, 'uttaksplan.dinPlan')}</Systemtittel>
+                                    <ActionLink
+                                        onClick={() => setSlettUttaksplanModalOpen(true)}
+                                        className={bem.element('slettPlan')}
+                                    >
+                                        <FormattedMessage id="uttaksplan.slettPlan.tittel" />
+                                    </ActionLink>
+                                </div>
                                 <FamiliehendelsedatoDisplay
                                     familiehendelsedato={familiehendelsesdato}
                                     erAdopsjon={situasjon === 'adopsjon'}

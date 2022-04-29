@@ -1,3 +1,5 @@
+@import './../../styles/variables.less';
+
 .planlegger {
     &__tittel {
         display: flex;
@@ -10,6 +12,22 @@
 
         &:first-child button {
             margin-right: 1rem;
+        }
+    }
+
+    &__tittelLinkWrapper {
+        display: flex;
+        align-items: baseline;
+
+        :nth-child(1) {
+            margin-right: 1rem;
+        }
+    }
+
+    &__slettPlan {
+        color: @navRodLighten20;
+        &:focus {
+            color: white;
         }
     }
 }

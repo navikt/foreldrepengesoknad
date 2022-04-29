@@ -62,7 +62,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <Modal isOpen={visible} closeButton={true} onRequestClose={onAvbryt} contentLabel="Test">
+            <Modal isOpen={visible} closeButton={true} onRequestClose={onAvbryt} contentLabel="Endre tidsperiode">
                 <TidsperiodeForm
                     familiehendelsesdato={familiehendelsesdato}
                     onBekreft={handleOnSubmit}
