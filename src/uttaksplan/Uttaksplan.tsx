@@ -28,6 +28,7 @@ import { getSeneEndringerSomKreverBegrunnelse } from 'app/steps/uttaksplan-info/
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
+import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -59,6 +60,7 @@ interface Props {
     opprinneligPlan: Periode[] | undefined;
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
+    handleSlettUttaksplan: () => void;
 }
 
 const getRelevantStartdato = (
@@ -113,6 +115,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     opprinneligPlan,
     setUttaksplanErGyldig,
     handleBegrunnelseChange,
+    handleSlettUttaksplan,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -123,6 +126,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         morsSisteDag
     );
     const [periodeErGyldig, setPeriodeErGyldig] = useState(true);
+    const [slettUttaksplanModalOpen, setSlettUttaksplanModalOpen] = useState(false);
 
     const handleDeletePeriode = (periodeId: string) => {
         const slettetPeriode = uttaksplan.find((p) => p.id === periodeId);
@@ -245,6 +249,15 @@ const Uttaksplan: FunctionComponent<Props> = ({
         }
     });
 
+    const handleSlettUttaksplanModalClose = () => {
+        setSlettUttaksplanModalOpen(false);
+    };
+
+    const handleSlettUttaksplanModalBekreft = () => {
+        setSlettUttaksplanModalOpen(false);
+        handleSlettUttaksplan();
+    };
+
     //TODO: trenges grupperAvvik i det hele tatt? Sendes inn som false her.
     const uttaksplanVeilederInfo = getUttaksplanVeilederinfo(uttaksplanValidering.avvik, intl, false);
     const meldingerPerPeriode = getPeriodelisteMeldinger(uttaksplanVeilederInfo);
@@ -278,6 +291,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     erMorUfør={erMorUfør}
                     setPeriodeErGyldig={setPeriodeErGyldig}
                     erEndringssøknad={erEndringssøknad}
+                    setSlettUttaksplanModalOpen={setSlettUttaksplanModalOpen}
                 />
             </Block>
             <Block padBottom="l">
@@ -310,6 +324,11 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     //onVedleggChange={handleBegrunnelseVedleggChange}
                 />
             )}
+            <SlettUttaksplanModal
+                isOpen={slettUttaksplanModalOpen}
+                onClose={handleSlettUttaksplanModalClose}
+                handleSlettUttaksplanModalBekreft={handleSlettUttaksplanModalBekreft}
+            />
         </>
     );
 };
