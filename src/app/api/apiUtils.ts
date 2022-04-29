@@ -290,14 +290,7 @@ export const getSøknadsdataForInnsending = (
 ): SøknadForInnsending | EndringssøknadForInnsending => {
     const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
     if (søknad.erEndringssøknad) {
-        const endringerIUttaksplanWithMissingAttachments = endringerIUttaksplan;
-
-        return cleanEndringssøknad(
-            søknad,
-            endringerIUttaksplanWithMissingAttachments,
-            familiehendelsesdato,
-            endringstidspunkt
-        );
+        return cleanEndringssøknad(søknad, endringerIUttaksplan, familiehendelsesdato, endringstidspunkt);
     } else {
         return cleanSøknad(søknad, familiehendelsesdato);
     }
