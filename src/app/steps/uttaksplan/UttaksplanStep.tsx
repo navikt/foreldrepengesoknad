@@ -151,6 +151,7 @@ const UttaksplanStep = () => {
             tidspunktForEndring
         );
         setPerioderSomSkalSendesInn(perioderForÅSendeInn);
+        dispatch(actionCreator.setPerioderSomSkalSendesInn(perioderForÅSendeInn));
     };
 
     if (!stønadskontoer100 || !stønadskontoer80) {
