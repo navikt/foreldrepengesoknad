@@ -10,7 +10,7 @@ module.exports = {
         '^stories/(.*)': '<rootDir>/src/storybook/stories/$1',
     },
     rootDir: '../',
-    roots: ['<rootDir>/src/app/'],
+    roots: ['<rootDir>/src/app/', '<rootDir>/src/uttaksplan'],
     setupFilesAfterEnv: ['<rootDir>/jest/setup.ts'],
     testEnvironment: 'jsdom',
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
