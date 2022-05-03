@@ -19,18 +19,18 @@ export const getInitialVelkommenValues = (harForståttRettigheterOgPlikter: bool
 };
 
 interface VelkommenQuestionsPayload extends VelkommenFormData {
-    sakErAvsluttet: boolean;
+    kanSøkeOmEndring: boolean;
 }
 
 export const VelkommenFormConfig: QuestionConfig<VelkommenQuestionsPayload, VelkommenFormField> = {
     [VelkommenFormField.harForståttRettigheterOgPlikter]: {
         isAnswered: ({ harForståttRettigheterOgPlikter }) => harForståttRettigheterOgPlikter === true,
-        isIncluded: ({ sakErAvsluttet, vilSøkeOmEndring }) =>
-            !sakErAvsluttet || vilSøkeOmEndring !== YesOrNo.UNANSWERED,
+        isIncluded: ({ kanSøkeOmEndring, vilSøkeOmEndring }) =>
+            !kanSøkeOmEndring || vilSøkeOmEndring !== YesOrNo.UNANSWERED,
     },
     [VelkommenFormField.vilSøkeOmEndring]: {
         isAnswered: ({ vilSøkeOmEndring }) => vilSøkeOmEndring !== YesOrNo.UNANSWERED,
-        isIncluded: ({ sakErAvsluttet }) => sakErAvsluttet,
+        isIncluded: ({ kanSøkeOmEndring }) => kanSøkeOmEndring,
     },
 };
 
