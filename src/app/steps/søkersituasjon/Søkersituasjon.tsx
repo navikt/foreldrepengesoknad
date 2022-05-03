@@ -21,8 +21,6 @@ import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import AlertStripe from 'nav-frontend-alertstriper';
-import { Normaltekst } from 'nav-frontend-typografi';
 
 const Søkersituasjon = () => {
     const intl = useIntl();
@@ -63,13 +61,6 @@ const Søkersituasjon = () => {
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
                         kompakt={true}
-                        infoMessage={
-                            <AlertStripe type="info">
-                                <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.1')}</Normaltekst>
-                                <br />
-                                <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.2')}</Normaltekst>
-                            </AlertStripe>
-                        }
                     >
                         <SøkersituasjonFormComponents.Form includeButtons={false}>
                             <div>

@@ -34,8 +34,6 @@ import { getErSøkerFarEllerMedmor, getFarMedmorErAleneOmOmsorg, getNavnPåForel
 import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
-import AlertStripe from 'nav-frontend-alertstriper';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
 
@@ -153,13 +151,6 @@ const Oppsummering = () => {
                             onContinueLater={() => null}
                             steps={stepConfig(intl)}
                             kompakt={true}
-                            infoMessage={
-                                <AlertStripe type="info">
-                                    <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.1')}</Normaltekst>
-                                    <br />
-                                    <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.2')}</Normaltekst>
-                                </AlertStripe>
-                            }
                         >
                             <Block padBottom="l">
                                 <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
