@@ -24,6 +24,7 @@ export const initAmplitude = () => {
             includeUtm: true,
             includeReferrer: true,
             platform: window.location.toString(),
+            onError: () => console.log('Amplitude klarte ikke å starte opp'),
         });
     }
 };

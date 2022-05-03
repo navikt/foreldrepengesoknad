@@ -6,7 +6,7 @@ import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
+import React, { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
@@ -118,6 +118,12 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUttakForm');
+
+    useEffect(() => {
+        return () => {
+            setPeriodeErGyldig(true);
+        };
+    }, [setPeriodeErGyldig]);
 
     const toggleVisTidsperiode = () => {
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
