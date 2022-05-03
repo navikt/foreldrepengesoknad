@@ -29,7 +29,6 @@ import Api from 'app/api/api';
 import { mapEksisterendeSakFromDTO, opprettSøknadFraEksisterendeSak } from 'app/utils/eksisterendeSakUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Søknad } from 'app/context/types/Søknad';
-import AlertStripe from 'nav-frontend-alertstriper';
 
 interface Props {
     fornavn: string;
@@ -139,13 +138,6 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                         />
 
                         <div className={bem.block}>
-                            <div style={{ marginBottom: '1rem' }}>
-                                <AlertStripe type="info">
-                                    <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.1')}</Normaltekst>
-                                    <br />
-                                    <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.2')}</Normaltekst>
-                                </AlertStripe>
-                            </div>
                             <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
                                 {intlUtils(intl, 'velkommen.tittel')}
                             </Innholdstittel>

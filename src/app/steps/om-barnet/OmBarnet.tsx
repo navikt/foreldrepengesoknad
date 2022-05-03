@@ -21,8 +21,6 @@ import RegistrertBarn from './components/RegistrertBarn';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import AlertStripe from 'nav-frontend-alertstriper';
-import { Normaltekst } from 'nav-frontend-typografi';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -66,13 +64,6 @@ const OmBarnet: React.FunctionComponent = () => {
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
                         kompakt={true}
-                        infoMessage={
-                            <AlertStripe type="info">
-                                <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.1')}</Normaltekst>
-                                <br />
-                                <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.2')}</Normaltekst>
-                            </AlertStripe>
-                        }
                     >
                         <OmBarnetFormComponents.Form
                             includeButtons={false}

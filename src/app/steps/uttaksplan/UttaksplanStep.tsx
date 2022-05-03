@@ -39,7 +39,6 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
 import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tilleggsopplysningerUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
-import { Normaltekst } from 'nav-frontend-typografi';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -198,13 +197,6 @@ const UttaksplanStep = () => {
             onContinueLater={onFortsettSøknadSenere}
             steps={stepConfig(intl)}
             kompakt={true}
-            infoMessage={
-                <AlertStripe type="info">
-                    <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.1')}</Normaltekst>
-                    <br />
-                    <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.2')}</Normaltekst>
-                </AlertStripe>
-            }
         >
             <Uttaksplan
                 foreldreSituasjon={foreldreSituasjon}

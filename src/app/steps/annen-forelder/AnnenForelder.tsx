@@ -36,8 +36,6 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import AlertStripe from 'nav-frontend-alertstriper';
-import { Normaltekst } from 'nav-frontend-typografi';
 
 const AnnenForelder = () => {
     const intl = useIntl();
@@ -120,13 +118,6 @@ const AnnenForelder = () => {
                         onContinueLater={onForstettSøknadSenere}
                         steps={stepConfig(intl)}
                         kompakt={true}
-                        infoMessage={
-                            <AlertStripe type="info">
-                                <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.1')}</Normaltekst>
-                                <br />
-                                <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.2')}</Normaltekst>
-                            </AlertStripe>
-                        }
                     >
                         <AnnenForelderFormComponents.Form
                             includeButtons={false}

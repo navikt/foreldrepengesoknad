@@ -16,8 +16,6 @@ import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepen
 import actionCreator from 'app/context/action/actionCreator';
 import { mapEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import AlertStripe from 'nav-frontend-alertstriper';
-import { Normaltekst } from 'nav-frontend-typografi';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -82,13 +80,6 @@ const UttaksplanInfo = () => {
             onContinueLater={onFortsettSøknadSenere}
             steps={stepConfig(intl)}
             kompakt={true}
-            infoMessage={
-                <AlertStripe type="info">
-                    <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.1')}</Normaltekst>
-                    <br />
-                    <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.2')}</Normaltekst>
-                </AlertStripe>
-            }
         >
             <UttaksplanInfoScenarios
                 tilgjengeligeStønadskontoer100DTO={stønadskontoer100}
