@@ -18,21 +18,26 @@ import './søknadStatus.less';
 import './wrapper.less';
 interface SøknadStatusProps {
     sakOpprettetDato: Date;
-    sakErAvsluttet: boolean;
+    sakErFerdigbehandlet: boolean;
 }
 
 interface SøknadProps {
     sakOpprettetDato: Date;
-    sakErAvsluttet: boolean;
+    sakErFerdigbehandlet: boolean;
+    kanSøkeOmEndring: boolean;
+    harSakTilBehandling: boolean;
     values: VelkommenFormData;
     visibility: QuestionVisibility<VelkommenFormField, undefined>;
 }
 
-const SøknadStatusInfoBlokk: React.FunctionComponent<SøknadStatusProps> = ({ sakOpprettetDato, sakErAvsluttet }) => {
+const SøknadStatusInfoBlokk: React.FunctionComponent<SøknadStatusProps> = ({
+    sakOpprettetDato,
+    sakErFerdigbehandlet,
+}) => {
     const bem = bemUtils('søknad-status');
     const intl = useIntl();
-    const etikettType = sakErAvsluttet ? 'suksess' : 'fokus';
-    const statusTekst = sakErAvsluttet
+    const etikettType = sakErFerdigbehandlet ? 'suksess' : 'fokus';
+    const statusTekst = sakErFerdigbehandlet
         ? 'velkommen.sak.status.ferdigBehandlet'
         : 'velkommen.sak.status.underBehandling';
     return (
@@ -64,29 +69,41 @@ const SøknadStatusInfoBlokk: React.FunctionComponent<SøknadStatusProps> = ({ s
 
 const SøknadStatus: React.FunctionComponent<SøknadProps> = ({
     sakOpprettetDato,
-    sakErAvsluttet,
+    sakErFerdigbehandlet,
+    kanSøkeOmEndring,
+    harSakTilBehandling,
     values,
     visibility,
 }) => {
     const intl = useIntl();
-    const statusTekstDel1 = sakErAvsluttet
-        ? 'velkommen.intro.harSak.del1'
-        : 'velkommen.intro.harFørstegangssøknadUnderBehandling';
 
     return (
         <>
             <Block padBottom="xl">
-                <Normaltekst>{intlUtils(intl, statusTekstDel1)}</Normaltekst>
-                {sakErAvsluttet && (
-                    <Block margin="l">
-                        <Normaltekst>{intlUtils(intl, 'velkommen.intro.harSak.del2')}</Normaltekst>
-                    </Block>
+                {kanSøkeOmEndring && (
+                    <>
+                        <Block margin="l">
+                            <Normaltekst>{intlUtils(intl, 'velkommen.intro.harSak.del1')}</Normaltekst>
+                        </Block>
+                        <Block margin="l">
+                            <Normaltekst>{intlUtils(intl, 'velkommen.intro.harSak.del2')}</Normaltekst>
+                        </Block>
+                    </>
+                )}
+                {harSakTilBehandling && (
+                    <>
+                        <Block margin="l">
+                            <Normaltekst>
+                                {intlUtils(intl, 'velkommen.intro.harFørstegangssøknadUnderBehandling')}
+                            </Normaltekst>
+                        </Block>
+                    </>
                 )}
             </Block>
 
             <SøknadStatusInfoBlokk
                 sakOpprettetDato={sakOpprettetDato}
-                sakErAvsluttet={sakErAvsluttet}
+                sakErFerdigbehandlet={sakErFerdigbehandlet}
             ></SøknadStatusInfoBlokk>
 
             <Block visible={visibility.isVisible(VelkommenFormField.vilSøkeOmEndring)} padBottom="l" margin="l">
