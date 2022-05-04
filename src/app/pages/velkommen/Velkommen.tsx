@@ -2,7 +2,6 @@ import { bemUtils, Block, intlUtils, LanguageToggle, Locale, Sidebanner } from '
 import actionCreator, { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { assertUnreachable } from 'app/utils/globalUtil';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import {
@@ -29,6 +28,12 @@ import Api from 'app/api/api';
 import { mapEksisterendeSakFromDTO, opprettSøknadFraEksisterendeSak } from 'app/utils/eksisterendeSakUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Søknad } from 'app/context/types/Søknad';
+import {
+    erSakFerdigbehandlet,
+    getSakUnderBehandling,
+    getSisteForeldrepengeSak,
+    skalKunneSøkeOmEndring,
+} from 'app/utils/sakerUtils';
 
 interface Props {
     fornavn: string;
@@ -38,37 +43,18 @@ interface Props {
     fnr: string;
 }
 
-const erSakAvsluttet = (sak: Sak | undefined): boolean => {
-    if (sak === undefined) {
-        return false;
-    } else {
-        switch (sak.status) {
-            case FagsakStatus.LOPENDE:
-            case FagsakStatus.AVSLUTTET:
-                return true;
-            case FagsakStatus.OPPRETTET:
-            case FagsakStatus.UNDER_BEHANDLING:
-            case undefined:
-                return false;
-            default:
-                return assertUnreachable(sak.status, `Ugyldig sak status: {$sak.status}`);
-        }
-    }
-};
-
-const getSisteSak = (saker: Sak[]): Sak | undefined => {
-    const sakerSortert = [...saker].sort((a, b) => b.opprettet.localeCompare(a.opprettet));
-    return sakerSortert[0];
-};
-
 const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr, onChangeLocale }) => {
-    const sak = getSisteSak(saker);
+    const sakTilBehandling = getSakUnderBehandling(saker);
+    const harSakTilBehandling = !!sakTilBehandling;
+    const sak = sakTilBehandling || getSisteForeldrepengeSak(saker);
     const intl = useIntl();
     const søknad = useSøknad();
     const { dispatch, state } = useForeldrepengesøknadContext();
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
     const bem = bemUtils('velkommen');
-    const sakErAvsluttet = erSakAvsluttet(sak);
+    const kanSøkeOmEndring = sak !== undefined ? skalKunneSøkeOmEndring(sak) : false;
+    const sakErFerdigbehandlet = erSakFerdigbehandlet(sak);
+    const sakErAvsluttet = sak !== undefined ? sak.status === FagsakStatus.AVSLUTTET : false;
     const { eksisterendeSakData } = Api.useGetEksisterendeSak(sak?.saksnummer, fnr);
 
     useEffect(() => {
@@ -115,7 +101,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
             renderForm={({ values }) => {
                 const visibility = velkommenFormQuestions.getVisbility({
                     ...values,
-                    sakErAvsluttet,
+                    kanSøkeOmEndring,
                 });
                 return (
                     <VelkommenFormComponents.Form includeButtons={false}>
@@ -141,11 +127,13 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                             <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
                                 {intlUtils(intl, 'velkommen.tittel')}
                             </Innholdstittel>
-                            {sak && (
+                            {sak && !sakErAvsluttet && (
                                 <Block padBottom="l">
                                     <SøknadStatus
                                         sakOpprettetDato={new Date(sak.opprettet)}
-                                        sakErAvsluttet={sakErAvsluttet}
+                                        sakErFerdigbehandlet={sakErFerdigbehandlet}
+                                        kanSøkeOmEndring={kanSøkeOmEndring}
+                                        harSakTilBehandling={harSakTilBehandling}
                                         values={values}
                                         visibility={visibility}
                                     />
