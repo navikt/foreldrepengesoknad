@@ -53,7 +53,9 @@ describe('<Foreldrepengesøknad>', () => {
             søkerinfoError: null,
         };
         const storageData = {
-            storageData: {} as ForeldrepengesøknadContextState,
+            storageData: {
+                søknad: {},
+            } as ForeldrepengesøknadContextState,
             storageError: null,
         };
         const sakerData = {
