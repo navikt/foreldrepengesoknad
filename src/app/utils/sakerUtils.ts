@@ -40,16 +40,6 @@ const erUrelevantAutomatiskOpprettetBehandling = (behandling: Behandling) => {
 };
 
 const harEnAvsluttetBehandling = (sak: Sak): boolean => {
-    const ikkeAvslåtte = sak.behandlinger
-        ? sak.behandlinger.filter((behandling: Behandling) => !erAvslåttBehandling(behandling))
-        : undefined;
-    const ikkeUrelevante = sak.behandlinger
-        ? sak.behandlinger.filter((behandling: Behandling) => !erUrelevantAutomatiskOpprettetBehandling(behandling))
-        : undefined;
-    const harBehandlingAvsluttet = sak.behandlinger
-        ? sak.behandlinger.some((behandling: Behandling) => behandling.status === BehandlingStatus.AVSLUTTET)
-        : undefined;
-    console.log(ikkeAvslåtte, ikkeUrelevante, harBehandlingAvsluttet);
     return sak.behandlinger
         ? sak.behandlinger
               .filter((behandling: Behandling) => !erAvslåttBehandling(behandling))
