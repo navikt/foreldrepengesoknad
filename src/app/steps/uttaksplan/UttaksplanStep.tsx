@@ -51,6 +51,30 @@ const UttaksplanStep = () => {
     const [endringstidspunkt, setEndringstidspunkt] = useState(state.endringstidspunkt);
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(state.perioderSomSkalSendesInn);
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
+    const { uttaksplanInfo, eksisterendeSak } = state;
+    const { person, arbeidsforhold } = søkerinfo;
+    const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
+    const { erAleneOmOmsorg } = søker;
+    const { situasjon } = søkersituasjon;
+    const { rolle } = søkersituasjon;
+    const debouncedState = useDebounce(state, 3000);
+    const annenForelderKjønn = getKjønnFromFnr(annenForelder);
+    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
+    const erFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
+    const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
+    const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
+    const søkerErAleneOmOmsorg = morErAleneOmOmsorg || farMedmorErAleneOmOmsorg;
+    const forelderVedAleneomsorg = erDeltUttak ? undefined : erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
+    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
+    const antallBarn = barn.antallBarn;
+    const erFlerbarnssøknad = antallBarn > 1;
+    const harMorRett = getMorHarRettPåForeldrepenger(rolle, erFarEllerMedmor, annenForelder);
+    const opprinneligPlan = eksisterendeSak?.uttaksplan;
+    const harKomplettUttaksplan = eksisterendeSak ? eksisterendeSak.uttaksplan !== undefined : false;
+    const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
+    const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
 
     const onValidSubmitHandler = () => {
         setSubmitIsClicked(true);
@@ -92,35 +116,9 @@ const UttaksplanStep = () => {
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
-    const { uttaksplanInfo, eksisterendeSak } = state;
-    const { person, arbeidsforhold } = søkerinfo;
-    const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
-    const { erAleneOmOmsorg } = søker;
-    const { situasjon } = søkersituasjon;
-    const { rolle } = søkersituasjon;
-    const debouncedState = useDebounce(state, 3000);
-
     useEffect(() => {
         Api.storeAppState(debouncedState, person.fnr);
     }, [person.fnr, debouncedState]);
-
-    const annenForelderKjønn = getKjønnFromFnr(annenForelder);
-    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
-    const erFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
-    const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
-    const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
-    const søkerErAleneOmOmsorg = morErAleneOmOmsorg || farMedmorErAleneOmOmsorg;
-    const forelderVedAleneomsorg = erDeltUttak ? undefined : erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
-    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
-    const antallBarn = barn.antallBarn;
-    const erFlerbarnssøknad = antallBarn > 1;
-    const harMorRett = getMorHarRettPåForeldrepenger(rolle, erFarEllerMedmor, annenForelder);
-    const opprinneligPlan = eksisterendeSak?.uttaksplan;
-    const harKomplettUttaksplan = eksisterendeSak ? eksisterendeSak.uttaksplan !== undefined : false;
-    const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
-    const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
 
     const foreldreSituasjon = getForeldreparSituasjon(
         person.kjønn,
