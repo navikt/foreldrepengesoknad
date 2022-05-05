@@ -18,6 +18,7 @@ import {
     ISOStringToDate,
     isDateToday,
     getEndringstidspunkt,
+    andreAugust2022ReglerGjelder,
 } from './dateUtils';
 
 import getIntlMock from 'utils-test/intl-test-helper';
@@ -460,5 +461,47 @@ describe('dateUtils', () => {
 
             expect(endringstidspunkt).toBe(periodeSomDeltePeriode.tidsperiode!.fom);
         });
+    });
+});
+
+describe('dateUtils - skal returnere at WLB regler ikke gjelder for dagens dato 1. august 2022', () => {
+    beforeAll(() => {
+        MockDate.set('2022-08-01');
+    });
+
+    afterAll(() => {
+        MockDate.reset();
+    });
+
+    it('skal returnere at WLB regler ikke gjelder med familiehendelsesdato før 2. august 2022', () => {
+        const gjelderWLB = andreAugust2022ReglerGjelder(new Date('2022-08-01'));
+
+        expect(gjelderWLB).toEqual(false);
+    });
+    it('skal returnere at WLB regler ikke gjelder med familiehendelsesdato etter 2. august 2022', () => {
+        const gjelderWLB = andreAugust2022ReglerGjelder(new Date('2022-08-02'));
+
+        expect(gjelderWLB).toEqual(false);
+    });
+});
+
+describe('dateUtils - WLB regler  for dagens dato fom 2. august 2022', () => {
+    beforeAll(() => {
+        MockDate.set('2022-08-02');
+    });
+
+    afterAll(() => {
+        MockDate.reset();
+    });
+
+    it('skal returnere at WLB regler ikke gjelder med familiehendelsesdato før 2. august 2022', () => {
+        const gjelderWLB = andreAugust2022ReglerGjelder(new Date('2022-08-01'));
+
+        expect(gjelderWLB).toEqual(false);
+    });
+    it('skal returnere at WLB regler gjelder med familiehendelsesdato etter 2. august 2022', () => {
+        const gjelderWLB = andreAugust2022ReglerGjelder(new Date('2022-08-02'));
+
+        expect(gjelderWLB).toEqual(true);
     });
 });
