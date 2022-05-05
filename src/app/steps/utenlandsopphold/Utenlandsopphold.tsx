@@ -32,8 +32,6 @@ import { validateUtenlandsoppholdNeste12Mnd, validateUtenlandsoppholdSiste12Mnd 
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { Normaltekst } from 'nav-frontend-typografi';
-import AlertStripe from 'nav-frontend-alertstriper';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -70,13 +68,6 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
                         kompakt={true}
-                        infoMessage={
-                            <AlertStripe type="info">
-                                <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.1')}</Normaltekst>
-                                <br />
-                                <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.2')}</Normaltekst>
-                            </AlertStripe>
-                        }
                     >
                         <UtenlandsoppholdFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block

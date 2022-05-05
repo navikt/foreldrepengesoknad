@@ -24,7 +24,6 @@ import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsCo
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import AlertStripe from 'nav-frontend-alertstriper';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -79,13 +78,6 @@ const Inntektsinformasjon = () => {
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
                         kompakt={true}
-                        infoMessage={
-                            <AlertStripe type="info">
-                                <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.1')}</Normaltekst>
-                                <br />
-                                <Normaltekst>{intlUtils(intl, 'informasjon.til.bruker.2')}</Normaltekst>
-                            </AlertStripe>
-                        }
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="l">

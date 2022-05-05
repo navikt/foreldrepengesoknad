@@ -8,6 +8,7 @@ import { useForeldrepengesøknadContext } from './context/hooks/useForeldrepenge
 import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
 import SøknadRoutes from './routes/routes';
 import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
+import { shouldApplyStorage } from './utils/mellomlagringUtils';
 
 interface Props {
     locale: Locale;
@@ -28,7 +29,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
 
     useEffect(() => {
         if (storageData) {
-            if (storageData.version === 4) {
+            if (shouldApplyStorage(storageData)) {
                 dispatch(actionCreator.applyStoredState(storageData));
             }
         }
