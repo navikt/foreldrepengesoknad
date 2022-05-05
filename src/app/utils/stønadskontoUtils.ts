@@ -3,8 +3,13 @@ import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønads
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import dayjs from 'dayjs';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { andreAugust2022ReglerGjelder, ISOStringToDate } from './dateUtils';
 
-const getAktivitetsFrieUkerForeldrepenger = (dekningsgrad: Dekningsgrad, startdatoUttak: string): number => {
+const getAktivitetsFrieUkerForeldrepengerWLB = (wlbReglerGjelder: boolean): number => {
+    return wlbReglerGjelder ? 8 : 0;
+};
+
+const getAktivitetsFrieUkerMorUfør = (dekningsgrad: Dekningsgrad, startdatoUttak: string) => {
     if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT) {
         return 15;
     } else {
@@ -12,18 +17,32 @@ const getAktivitetsFrieUkerForeldrepenger = (dekningsgrad: Dekningsgrad, startda
     }
 };
 
+const getAktivitetsFrieUkerForeldrepenger = (
+    dekningsgrad: Dekningsgrad,
+    startdatoUttak: string,
+    erMorUfør: boolean,
+    wlbReglerGjelder: boolean
+): number => {
+    if (erMorUfør) {
+        return getAktivitetsFrieUkerMorUfør(dekningsgrad, startdatoUttak);
+    }
+    return getAktivitetsFrieUkerForeldrepengerWLB(wlbReglerGjelder);
+};
+
 const opprettAktivitetsFriKonto = (
     kontoer: TilgjengeligStønadskonto[],
     dekningsgrad: Dekningsgrad,
-    startdatoUttak: string,
+    familiehendelsesDato: string,
     erMorUfør: boolean
 ): TilgjengeligStønadskonto[] => {
-    if (erMorUfør === false) {
+    const wlbReglerGjelder = andreAugust2022ReglerGjelder(ISOStringToDate(familiehendelsesDato)!);
+    if (erMorUfør === false && !wlbReglerGjelder) {
         return kontoer;
     }
 
     const nyeKontoer: TilgjengeligStønadskonto[] = [];
-    const aktivitetskravFrieDagerForeldrepenger = getAktivitetsFrieUkerForeldrepenger(dekningsgrad, startdatoUttak) * 5;
+    const aktivitetskravFrieDagerForeldrepenger =
+        getAktivitetsFrieUkerForeldrepenger(dekningsgrad, familiehendelsesDato, erMorUfør, wlbReglerGjelder) * 5;
 
     nyeKontoer.push({ ...kontoer[0], dager: kontoer[0].dager - aktivitetskravFrieDagerForeldrepenger });
     nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: aktivitetskravFrieDagerForeldrepenger });
@@ -34,7 +53,7 @@ const opprettAktivitetsFriKonto = (
 const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
     stønadskontoerDTO: TilgjengeligeStønadskontoerDTO,
     dekningsgrad: Dekningsgrad,
-    startdatoUttak: string,
+    familiehendelsesdato: string,
     erMorUfør: boolean
 ): TilgjengeligStønadskonto[] => {
     let tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
@@ -51,7 +70,7 @@ const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
     tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(
         tilgjengeligeStønadskontoer,
         dekningsgrad,
-        startdatoUttak,
+        familiehendelsesdato,
         erMorUfør
     );
 
