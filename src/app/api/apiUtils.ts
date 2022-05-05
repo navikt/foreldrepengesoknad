@@ -153,7 +153,11 @@ const konverterRolle = (rolle: Søkerrolle): SøkerrolleInnsending => {
     }
 };
 
-const changeClientonlyKontotype = (periode: Periode, annenForelderHarRettPåForeldrepenger: boolean) => {
+const changeClientonlyKontotype = (
+    periode: Periode,
+    annenForelderHarRettPåForeldrepenger: boolean,
+    morErUfør: boolean
+) => {
     if (isUttaksperiode(periode)) {
         if (periode.konto === StønadskontoType.Flerbarnsdager) {
             periode.konto = !annenForelderHarRettPåForeldrepenger
@@ -162,7 +166,9 @@ const changeClientonlyKontotype = (periode: Periode, annenForelderHarRettPåFore
         }
         if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
             periode.konto = StønadskontoType.Foreldrepenger;
-            periode.morsAktivitetIPerioden = MorsAktivitet.Uføre;
+            if (morErUfør) {
+                periode.morsAktivitetIPerioden = MorsAktivitet.Uføre;
+            }
         }
     }
     return periode;
@@ -199,7 +205,7 @@ const cleanUttaksplan = (
         .filter(skalPeriodeSendesInn)
         .map((periode) =>
             annenForelder && isAnnenForelderOppgitt(annenForelder)
-                ? changeClientonlyKontotype(periode, !!annenForelder.harRettPåForeldrepenger)
+                ? changeClientonlyKontotype(periode, !!annenForelder.harRettPåForeldrepenger, !!annenForelder.erUfør)
                 : periode
         )
         .map((periode) => (periode.type === Periodetype.Uttak ? cleanUttaksperiode(periode) : periode))
@@ -332,6 +338,7 @@ export const cleanEndringssøknad = (
         uttaksplan: cleanUttaksplan(
             endringerIUttaksplan,
             familiehendelsesdato,
+
             søknad.annenForelder,
             endringstidspunkt
         ),
