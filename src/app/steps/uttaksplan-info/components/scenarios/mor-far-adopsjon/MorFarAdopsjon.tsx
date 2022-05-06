@@ -122,6 +122,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                         morSinSisteUttaksdag: submissionValues.annenForeldersSisteDag,
                         farSinFørsteUttaksdag: submissionValues.søkersFørsteDag,
                     },
+                    bareFarMedmorHarRett: false,
                 })
             ),
         ];

@@ -119,6 +119,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                     uttaksplanSkjema: {
                         startdatoPermisjon: startDatoUttaksplan,
                     },
+                    bareFarMedmorHarRett: true,
                 })
             ),
         ];

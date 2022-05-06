@@ -142,6 +142,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                             : submissionValues.permisjonStartdato,
                         skalIkkeHaUttakFørTermin: submissionValues.skalIkkeHaUttakFørTermin,
                     },
+                    bareFarMedmorHarRett: false,
                 })
             ),
         ];
