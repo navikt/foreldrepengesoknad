@@ -96,6 +96,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                     uttaksplanSkjema: {
                         startdatoPermisjon: uttaksplanInfo.startdatoUttak,
                     },
+                    bareFarMedmorHarRett: false,
                 })
             ),
         ];

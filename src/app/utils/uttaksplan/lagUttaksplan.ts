@@ -21,6 +21,7 @@ export interface LagUttaksplanParams {
     erEnkelEndringssøknad: boolean;
     førsteUttaksdagEtterSeksUker: Date;
     søkerHarMidlertidigOmsorg: boolean;
+    bareFarMedmorHarRett: boolean;
 }
 
 export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
@@ -36,6 +37,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         erEnkelEndringssøknad,
         førsteUttaksdagEtterSeksUker,
         søkerHarMidlertidigOmsorg,
+        bareFarMedmorHarRett,
     } = params;
 
     if (uttaksplanSkjema.ønskerIkkeFlerePerioder || erEndringssøknad) {
@@ -100,7 +102,8 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 søkerErFarEllerMedmor,
                 tilgjengeligeStønadskontoer,
                 ISOStringToDate(startdatoPermisjon),
-                annenForelderErUfør
+                annenForelderErUfør,
+                bareFarMedmorHarRett
             );
 
             const førsteUttaksdagEtterSeksUker = Uttaksdagen(
