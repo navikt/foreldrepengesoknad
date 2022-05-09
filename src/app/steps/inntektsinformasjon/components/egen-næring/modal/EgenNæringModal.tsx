@@ -30,6 +30,7 @@ import {
 } from './validation/egenNæringValidation';
 import dayjs from 'dayjs';
 import { validateRequiredTextInputField } from 'app/utils/validationUtil';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 interface Props {
     isOpen: boolean;
@@ -151,6 +152,14 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                             navnPåNæringen: formValues.navnPåNæringen,
                                         }
                                     )}
+                                    validate={(value: YesOrNo) => {
+                                        if (value === YesOrNo.UNANSWERED) {
+                                            return intlUtils(
+                                                intl,
+                                                'valideringsfeil.inntektsinformasjon.egenNæring.registrertINorge'
+                                            );
+                                        }
+                                    }}
                                 />
                             </Block>
                             <OrgnummerEllerLand visibility={visibility} />
