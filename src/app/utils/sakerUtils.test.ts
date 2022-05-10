@@ -5,7 +5,7 @@ import Behandling, {
     BehandlingType,
 } from 'app/types/Behandling';
 import Sak, { FagsakStatus, SakType } from 'app/types/Sak';
-import { getSakForEndringssøknad } from './sakerUtils';
+import { getSakForEndringssøknad, getSisteForeldrepengeSak, sakHarBehandlinger } from './sakerUtils';
 
 export const engangssønadBehandligMock: Behandling = {
     opprettetTidspunkt: '2019-01-01',
@@ -87,13 +87,37 @@ const fpsakES: Sak = {
 
 const fpsakEndring: Sak = {
     type: SakType.FPSAK,
-    saksnummer: '234',
+    saksnummer: '2345678',
     opprettet: '2018-10-01',
     status: FagsakStatus.OPPRETTET,
     behandlinger: [endringssøknadBehandligMock],
 };
 
-const SakerMock = { fpsakSVP, fpsakES, fpsakFP, fpsakEndring, infotrygd };
+const fpsakUtenBehandlinger: Sak = {
+    type: SakType.FPSAK,
+    saksnummer: '234',
+    opprettet: '2020-10-01',
+    status: FagsakStatus.OPPRETTET,
+    behandlinger: undefined,
+};
+
+const fpsakMedTommeBehandlinger: Sak = {
+    type: SakType.FPSAK,
+    saksnummer: '234',
+    opprettet: '2021-10-01',
+    status: FagsakStatus.OPPRETTET,
+    behandlinger: [],
+};
+
+const SakerMock = {
+    fpsakSVP,
+    fpsakES,
+    fpsakFP,
+    fpsakEndring,
+    infotrygd,
+    fpsakUtenBehandlinger,
+    fpsakMedTommeBehandlinger,
+};
 export default SakerMock;
 
 describe('sakerUtils', () => {
@@ -167,6 +191,29 @@ describe('sakerUtils', () => {
                     },
                 ])
             ).toBeDefined();
+        });
+    });
+
+    describe('sakHarBehandlinger', () => {
+        it('skal returnere at sak ikke har behandlinger', () => {
+            expect(sakHarBehandlinger(fpsakUtenBehandlinger)).toEqual(false);
+        });
+        it('skal returnere at sak ikke har behandlinger', () => {
+            expect(sakHarBehandlinger(fpsakMedTommeBehandlinger)).toEqual(false);
+        });
+        it('skal returnere at sak har behandlinger', () => {
+            expect(sakHarBehandlinger(fpsakEndring)).toEqual(true);
+        });
+        it('skal filtere bort saker uten behandlinger og returnere undefined', () => {
+            expect(getSisteForeldrepengeSak([fpsakUtenBehandlinger, fpsakMedTommeBehandlinger])).toBeUndefined();
+        });
+        it('skal filtere bort saker uten behandlinger og returnere sak nr to', () => {
+            const sisteForeldrepengeSak = getSisteForeldrepengeSak([
+                fpsakUtenBehandlinger,
+                fpsakMedTommeBehandlinger,
+                fpsakEndring,
+            ]);
+            expect(sisteForeldrepengeSak!.saksnummer).toEqual('2345678');
         });
     });
 });
