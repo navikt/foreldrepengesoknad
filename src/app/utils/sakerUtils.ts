@@ -24,6 +24,10 @@ const gjelderSakForeldrepengesøknad = (sak: Sak): boolean => {
     return behandling ? behandling.type === BehandlingType.FORELDREPENGESØKNAD : true;
 };
 
+export const sakHarBehandlinger = (sak: Sak): boolean => {
+    return sak.behandlinger !== undefined && sak.behandlinger.length > 0;
+};
+
 const erAvslåttBehandling = (behandling: Behandling) => {
     return (
         behandling.status === BehandlingStatus.AVSLUTTET &&
@@ -91,12 +95,13 @@ export const skalKunneSøkeOmEndring = (sak: Sak): boolean => {
 export const getSakUnderBehandling = (saker: Sak[]): Sak | undefined => {
     return saker
         .filter(gjelderSakForeldrepengesøknad)
+        .filter(sakHarBehandlinger)
         .filter((sak) => !harEnAvsluttetBehandling(sak) && harSakUnderBehandling(sak))
         .sort(sakByDescendingOrder)[0];
 };
 
 export const getSisteForeldrepengeSak = (saker: Sak[]): Sak | undefined => {
-    return saker.filter(gjelderSakForeldrepengesøknad).sort(sakByDescendingOrder)[0];
+    return saker.filter(sakHarBehandlinger).filter(gjelderSakForeldrepengesøknad).sort(sakByDescendingOrder)[0];
 };
 
 export const getSakForEndringssøknad = (saker: Sak[]): Sak | undefined => {
