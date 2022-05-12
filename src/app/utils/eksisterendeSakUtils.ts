@@ -277,23 +277,23 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, søker
                 return {
                     type: BarnType.FØDT,
                     antallBarn: sak.antallBarn,
-                    fødselsdatoer: [new Date(sak.familiehendelseDato)],
-                    termindato: sak.termindato ? new Date(sak.termindato) : undefined,
+                    fødselsdatoer: [ISOStringToDate(sak.familiehendelseDato)!],
+                    termindato: sak.termindato ? ISOStringToDate(sak.termindato) : undefined,
                 };
             }
 
             return {
                 type: BarnType.UFØDT,
                 antallBarn: sak.antallBarn,
-                termindato: new Date(sak.familiehendelseDato),
+                termindato: ISOStringToDate(sak.familiehendelseDato)!,
                 terminbekreftelse: [],
             };
         case 'adopsjon':
             return {
                 type: BarnType.ADOPTERT_STEBARN,
-                adopsjonsdato: new Date(sak.familiehendelseDato),
+                adopsjonsdato: ISOStringToDate(sak.familiehendelseDato)!,
                 antallBarn: sak.antallBarn,
-                fødselsdatoer: [new Date(sak.familiehendelseDato)],
+                fødselsdatoer: [ISOStringToDate(sak.familiehendelseDato)!],
                 omsorgsovertakelse: [],
             };
         default:
