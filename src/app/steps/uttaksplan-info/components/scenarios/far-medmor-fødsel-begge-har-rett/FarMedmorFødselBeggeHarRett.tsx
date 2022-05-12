@@ -72,9 +72,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO,
-        familiehendelsesdato,
-        erMorUfør
+        tilgjengeligeStønadskontoer100DTO
     );
 
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);

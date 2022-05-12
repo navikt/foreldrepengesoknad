@@ -9,7 +9,6 @@ import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Forelder } from 'app/types/Forelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -70,7 +69,6 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     }
 
     const familiehendelsedato = getFamiliehendelsedato(barn);
-    const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const navnMor = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : '';
     const { grunnlag, uttaksplan } = eksisterendeSakAnnenPart;
     const morsPerioder = uttaksplan.filter((p) => isInfoPeriode(p) && p.forelder === Forelder.mor);
@@ -78,9 +76,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO,
-        familiehendelsedato,
-        erMorUfør
+        tilgjengeligeStønadskontoer100DTO
     );
 
     return (

@@ -1,33 +1,48 @@
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { MinsterettType } from 'uttaksplan/types/MinsterettType';
 import { getValgtStønadskontoFor80Og100Prosent } from './stønadskontoUtils';
-import MockDate from 'mockdate';
 
 describe('<stønadskontoUtils>', () => {
+    const minsteretter0 = {
+        [MinsterettType.farRundtFødsel]: 0,
+        [MinsterettType.generellMinsterett]: 0,
+    };
+
+    const minsteretter10_75 = {
+        [MinsterettType.farRundtFødsel]: 10,
+        [MinsterettType.generellMinsterett]: 75,
+    };
+
     const kontoer80 = {
         kontoer: {
             [StønadskontoType.Mødrekvote]: 65,
             [StønadskontoType.Fedrekvote]: 55,
         },
+        minsteretter: minsteretter0,
     } as TilgjengeligeStønadskontoerDTO;
+
     const kontoer100 = {
         kontoer: {
             [StønadskontoType.Mødrekvote]: 60,
             [StønadskontoType.Fedrekvote]: 50,
         },
+        minsteretter: minsteretter0,
+    } as TilgjengeligeStønadskontoerDTO;
+
+    const kontoer80_10_75 = {
+        kontoer: kontoer80.kontoer,
+        minsteretter: minsteretter10_75,
+    } as TilgjengeligeStønadskontoerDTO;
+
+    const kontoer100_10_75 = {
+        kontoer: kontoer100.kontoer,
+        minsteretter: minsteretter10_75,
     } as TilgjengeligeStønadskontoerDTO;
 
     it('skal filtrere bort flerbarnsdager og returnere dager for mødre- og fedre-kvote', () => {
-        const familiehendelsesdato = '2021-01-01';
-        const erMorUfør = false;
-
-        const valgteStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
-            kontoer80,
-            kontoer100,
-            familiehendelsesdato,
-            erMorUfør
-        );
+        const valgteStønadskontoer = getValgtStønadskontoFor80Og100Prosent(kontoer80, kontoer100);
 
         expect(valgteStønadskontoer[Dekningsgrad.HUNDRE_PROSENT]).toStrictEqual([
             {
@@ -51,16 +66,8 @@ describe('<stønadskontoUtils>', () => {
         ]);
     });
 
-    it('skal opprette aktivitetsfrikonto med 15 uker når mor er ufør', () => {
-        const familiehendelsesdato = '2021-01-01';
-        const erMorUfør = true;
-
-        const valgteStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
-            kontoer80,
-            kontoer100,
-            familiehendelsesdato,
-            erMorUfør
-        );
+    it('skal opprette aktivitetsfrikonto med 15 uker', () => {
+        const valgteStønadskontoer = getValgtStønadskontoFor80Og100Prosent(kontoer80_10_75, kontoer100_10_75);
 
         expect(valgteStønadskontoer[Dekningsgrad.HUNDRE_PROSENT]).toStrictEqual([
             {
@@ -75,70 +82,12 @@ describe('<stønadskontoUtils>', () => {
         expect(valgteStønadskontoer[Dekningsgrad.ÅTTI_PROSENT]).toStrictEqual([
             {
                 konto: StønadskontoType.Mødrekvote,
-                dager: -30,
+                dager: -10,
             },
             {
                 konto: StønadskontoType.AktivitetsfriKvote,
-                dager: 95,
+                dager: 75,
             },
         ]);
-    });
-
-    describe('stønadskontoUtils - etter  WLB', () => {
-        beforeAll(() => {
-            MockDate.set('2022-08-02');
-        });
-
-        afterAll(() => {
-            MockDate.reset();
-        });
-        it('skal opprette aktivitetsfrikonto på 8 uker når mor ikke ufør men WLB regler gjelder', () => {
-            const familiehendelsesdato = '2022-08-02';
-            const erMorUfør = false;
-
-            const valgteStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
-                kontoer80,
-                kontoer100,
-                familiehendelsesdato,
-                erMorUfør
-            );
-
-            expect(valgteStønadskontoer[Dekningsgrad.HUNDRE_PROSENT]).toContainEqual({
-                konto: StønadskontoType.AktivitetsfriKvote,
-                dager: 40,
-            });
-            expect(valgteStønadskontoer[Dekningsgrad.ÅTTI_PROSENT]).toContainEqual({
-                konto: StønadskontoType.AktivitetsfriKvote,
-                dager: 40,
-            });
-        });
-        it('skal ikke opprette noe aktivitetsfrikonto når mor ikke ufør og WLB regler ikke gjelder', () => {
-            const familiehendelsesdato = '2022-08-01';
-            const erMorUfør = false;
-
-            const valgteStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
-                kontoer80,
-                kontoer100,
-                familiehendelsesdato,
-                erMorUfør
-            );
-
-            expect(valgteStønadskontoer[Dekningsgrad.HUNDRE_PROSENT]).not.toContainEqual({
-                konto: StønadskontoType.AktivitetsfriKvote,
-                dager: 40,
-            });
-            expect(valgteStønadskontoer[Dekningsgrad.ÅTTI_PROSENT]).not.toContainEqual({
-                konto: StønadskontoType.AktivitetsfriKvote,
-                dager: 40,
-            });
-            expect(valgteStønadskontoer[Dekningsgrad.HUNDRE_PROSENT]).not.toContainEqual({
-                konto: StønadskontoType.AktivitetsfriKvote,
-                dager: 75,
-            });
-            expect(valgteStønadskontoer[Dekningsgrad.ÅTTI_PROSENT]).not.toContainEqual({
-                konto: StønadskontoType.AktivitetsfriKvote,
-                dager: 95,
-            });
-        });
     });
 });

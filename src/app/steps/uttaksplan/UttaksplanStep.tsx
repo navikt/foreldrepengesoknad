@@ -159,12 +159,7 @@ const UttaksplanStep = () => {
         );
     }
 
-    const stønadskontoer = getValgtStønadskontoFor80Og100Prosent(
-        stønadskontoer80,
-        stønadskontoer100,
-        familiehendelsesdato,
-        erMorUfør
-    );
+    const stønadskontoer = getValgtStønadskontoFor80Og100Prosent(stønadskontoer80, stønadskontoer100);
 
     const valgteStønadskontoer =
         dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80];
