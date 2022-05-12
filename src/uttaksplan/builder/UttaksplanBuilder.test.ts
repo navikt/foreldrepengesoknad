@@ -49,7 +49,7 @@ describe('Uttaksplanbuilder tester', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result = UttaksplanbuilderNew.leggTilPeriode(perioder, nyPeriode);
+        const result = UttaksplanbuilderNew(perioder).leggTilPeriode(nyPeriode);
 
         expect(result.length).toBe(4);
         expect(result[3]).toEqual(nyPeriode);
