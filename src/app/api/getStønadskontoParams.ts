@@ -3,7 +3,9 @@ import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenFo
 import Barn, { isAdoptertAnnetBarn, isAdoptertStebarn, isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { TilgjengeligeStønadskontoerParams } from './api';
 
@@ -38,7 +40,8 @@ const getStønadskontoParams = (
     søkersituasjon: Søkersituasjon
 ): TilgjengeligeStønadskontoerParams => {
     const erFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-
+    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
+    const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     return {
         antallBarn: barn.antallBarn.toString(),
         startdatoUttak: getFamiliehendelsedato(barn),
@@ -51,6 +54,9 @@ const getStønadskontoParams = (
         omsorgsovertakelsesdato:
             isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? dateToISOString(barn.adopsjonsdato) : undefined,
         termindato: isFødtBarn(barn) || isUfødtBarn(barn) ? dateToISOString(barn.termindato) : undefined,
+        minsterett: andreAugust2022ReglerGjelder(familiehendelsesdato!),
+        erMor: !søkerErFarEllerMedmor,
+        morHarUføretrygd: getErMorUfør(annenForelder, søkerErFarEllerMedmor),
     };
 };
 
