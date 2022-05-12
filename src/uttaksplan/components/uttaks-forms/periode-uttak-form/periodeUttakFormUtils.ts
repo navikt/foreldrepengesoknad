@@ -6,7 +6,7 @@ import { AttachmentType } from 'app/types/AttachmentType';
 import { Forelder } from 'app/types/Forelder';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { getMorsAktivitetSkjemanummer } from 'app/utils/morsAktivitetUtils';
+import { getMorsAktivitet, getMorsAktivitetSkjemanummer } from 'app/utils/morsAktivitetUtils';
 import { trimNumberValue } from 'app/utils/numberUtils';
 import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
@@ -279,9 +279,11 @@ export const mapPeriodeUttakFormToPeriode = (
         arbeidsformer: hasValue(values.arbeidsformer)
             ? getArbeidsform([values.arbeidsformer as Arbeidsform])
             : undefined,
-        morsAktivitetIPerioden: hasValue(values.aktivitetskravMor)
-            ? (values.aktivitetskravMor as MorsAktivitet)
-            : undefined,
+        morsAktivitetIPerioden: getMorsAktivitet(
+            values.aktivitetskravMor,
+            convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk)
+        ),
+
         erArbeidstaker: getErArbeidstaker(
             hasValue(values.arbeidsformer) ? getArbeidsform([values.arbeidsformer as Arbeidsform]) : []
         ),
