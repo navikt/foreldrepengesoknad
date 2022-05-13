@@ -15,7 +15,7 @@ import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Periode } from 'uttaksplan/types/Periode';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import isFeatureEnabled from './toggleUtils';
+import fn from './toggleUtils';
 import FeatureToggle from 'app/FeatureToggle';
 
 dayjs.extend(utc);
@@ -309,7 +309,7 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolea
     const andreAugust2022 = new Date('2022-08-02');
 
     //For testing av WLB regler i dev: WLB start-dato settes til 01.01.2022.
-    if (isFeatureEnabled(FeatureToggle.testWLBRegler)) {
+    if (fn.isFeatureEnabled(FeatureToggle.testWLBRegler)) {
         return dayjs(familiehendelsesdato).isSameOrAfter('2022-01-01');
     }
 
