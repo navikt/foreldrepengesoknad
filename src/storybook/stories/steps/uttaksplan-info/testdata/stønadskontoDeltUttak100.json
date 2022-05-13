@@ -4,5 +4,9 @@
         "FEDREKVOTE": 75,
         "FELLESPERIODE": 80,
         "FORELDREPENGER_FØR_FØDSEL": 15
+    },
+    "minsteretter": {
+        "farRundtFødsel": 0,
+        "generellMinsterett": 0
     }
 }
