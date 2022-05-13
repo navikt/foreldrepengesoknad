@@ -200,7 +200,12 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
             return result;
         }
 
-        if (isInfoPeriode(periode) || isOppholdsperiode(periode)) {
+        if (
+            isInfoPeriode(periode) ||
+            isHull(periode) ||
+            isPeriodeUtenUttak(periode) ||
+            isPeriodeUtenUttakUtsettelse(periode)
+        ) {
             const dagerIPerioden = Perioden(periode).getAntallUttaksdager();
 
             if (dagerIPerioden > uttaksdagerCurrent) {
