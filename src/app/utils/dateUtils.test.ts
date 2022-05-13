@@ -27,6 +27,7 @@ import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Periode, PeriodeHull, Periodetype, Utsettelsesperiode, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { guid } from 'nav-frontend-js-utils';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
+import fns from './toggleUtils';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();
@@ -464,44 +465,120 @@ describe('dateUtils', () => {
     });
 });
 
-describe('dateUtils - skal returnere at WLB regler ikke gjelder for dagens dato 1. august 2022', () => {
+const førsteAugust2022 = '2022-08-01T00:00:00.000Z';
+const førsteAugust2022Date = new Date(førsteAugust2022);
+const andreAugust2022 = '2022-08-02T00:00:00.000Z';
+const andreAugust2022Date = new Date(andreAugust2022);
+
+describe('dateUtils i prod - skal returnere at WLB regler ikke gjelder for dagens dato 1. august 2022', () => {
     beforeAll(() => {
-        MockDate.set('2022-08-01');
+        MockDate.set(førsteAugust2022);
     });
 
     afterAll(() => {
         MockDate.reset();
     });
 
-    it('skal returnere at WLB regler ikke gjelder med familiehendelsesdato før 2. august 2022', () => {
-        const gjelderWLB = andreAugust2022ReglerGjelder(new Date('2022-08-01'));
+    it('skal returnere at WLB regler i prod ikke gjelder med familiehendelsesdato før 2. august 2022', () => {
+        fns.isFeatureEnabled = jest.fn(() => false);
 
+        //Sjekk at dagens dato er riktig satt
+        expect(new Date()).toEqual(førsteAugust2022Date);
+
+        const gjelderWLB = andreAugust2022ReglerGjelder(førsteAugust2022Date);
         expect(gjelderWLB).toEqual(false);
     });
-    it('skal returnere at WLB regler ikke gjelder med familiehendelsesdato etter 2. august 2022', () => {
-        const gjelderWLB = andreAugust2022ReglerGjelder(new Date('2022-08-02'));
+    it('skal returnere at WLB regler i prod ikke gjelder med familiehendelsesdato etter 2. august 2022', () => {
+        fns.isFeatureEnabled = jest.fn(() => false);
+        expect(new Date()).toEqual(førsteAugust2022Date);
+        const gjelderWLB = andreAugust2022ReglerGjelder(andreAugust2022Date);
 
         expect(gjelderWLB).toEqual(false);
     });
 });
 
-describe('dateUtils - WLB regler  for dagens dato fom 2. august 2022', () => {
+describe('dateUtils i prod - WLB regler for dagens dato fom 2. august 2022', () => {
     beforeAll(() => {
-        MockDate.set('2022-08-02');
+        MockDate.set(andreAugust2022);
     });
 
     afterAll(() => {
         MockDate.reset();
     });
 
-    it('skal returnere at WLB regler ikke gjelder med familiehendelsesdato før 2. august 2022', () => {
-        const gjelderWLB = andreAugust2022ReglerGjelder(new Date('2022-08-01'));
+    it('skal returnere at WLB regler i prod ikke gjelder med familiehendelsesdato før 2. august 2022', () => {
+        fns.isFeatureEnabled = jest.fn(() => false);
 
+        //Sjekk at dagens dato er riktig satt
+        expect(new Date()).toEqual(andreAugust2022Date);
+
+        const gjelderWLB = andreAugust2022ReglerGjelder(førsteAugust2022Date);
         expect(gjelderWLB).toEqual(false);
     });
-    it('skal returnere at WLB regler gjelder med familiehendelsesdato etter 2. august 2022', () => {
-        const gjelderWLB = andreAugust2022ReglerGjelder(new Date('2022-08-02'));
+    it('skal returnere at WLB regler i prod gjelder med familiehendelsesdato etter 2. august 2022', () => {
+        fns.isFeatureEnabled = jest.fn(() => false);
+        expect(new Date()).toEqual(andreAugust2022Date);
 
+        const gjelderWLB = andreAugust2022ReglerGjelder(andreAugust2022Date);
+        expect(gjelderWLB).toEqual(true);
+    });
+});
+
+const trettiførsteDesember2021 = '2021-12-31T00:00:00.000Z';
+const trettiførsteDesember2021Date = new Date(trettiførsteDesember2021);
+const førsteJanuar2022 = '2022-01-01T00:00:00.000Z';
+const førsteJanuar2022Date = new Date(førsteJanuar2022);
+
+describe('dateUtils i dev - WLB regler i dev skal ikke sjekke på dagens dato. Test med dagens dato lik 31 desember 2021', () => {
+    beforeAll(() => {
+        MockDate.set(trettiførsteDesember2021);
+    });
+
+    afterAll(() => {
+        MockDate.reset();
+    });
+
+    it('skal returnere at WLB regler i dev ikke gjelder med familiehendelsesdato før 1. januar 2022', () => {
+        fns.isFeatureEnabled = jest.fn(() => true);
+
+        //Sjekk at dagens dato er riktig satt
+        expect(new Date()).toEqual(trettiførsteDesember2021Date);
+
+        const gjelderWLB = andreAugust2022ReglerGjelder(trettiførsteDesember2021Date);
+        expect(gjelderWLB).toEqual(false);
+    });
+    it('skal returnere at WLB regler i dev gjelder med familiehendelsesdato fom. 1. januar 2022', () => {
+        fns.isFeatureEnabled = jest.fn(() => true);
+        expect(new Date()).toEqual(trettiførsteDesember2021Date);
+
+        const gjelderWLB = andreAugust2022ReglerGjelder(førsteJanuar2022Date);
+        expect(gjelderWLB).toEqual(true);
+    });
+});
+
+describe('dateUtils i dev - WLB regler i dev skal ikke sjekke på dagens dato. Test med dagens dato lik 1. januar 2022', () => {
+    beforeAll(() => {
+        MockDate.set(førsteJanuar2022);
+    });
+
+    afterAll(() => {
+        MockDate.reset();
+    });
+
+    it('skal returnere at WLB regler i dev ikke gjelder med familiehendelsesdato før 1. januar 2022', () => {
+        fns.isFeatureEnabled = jest.fn(() => true);
+
+        //Sjekk at dagens dato er riktig satt
+        expect(new Date()).toEqual(førsteJanuar2022Date);
+
+        const gjelderWLB = andreAugust2022ReglerGjelder(trettiførsteDesember2021Date);
+        expect(gjelderWLB).toEqual(false);
+    });
+    it('skal returnere at WLB regler i dev gjelder med familiehendelsesdato etter 1. januar 2022', () => {
+        fns.isFeatureEnabled = jest.fn(() => true);
+        expect(new Date()).toEqual(førsteJanuar2022Date);
+
+        const gjelderWLB = andreAugust2022ReglerGjelder(førsteJanuar2022Date);
         expect(gjelderWLB).toEqual(true);
     });
 });
