@@ -5,5 +5,9 @@
         "FELLESPERIODE": 195,
         "FORELDREPENGER_FØR_FØDSEL": 15,
         "FLERBARNSDAGER": 105
+    },
+    "minsteretter": {
+        "farRundtFødsel": 0,
+        "generellMinsterett": 0
     }
 }
