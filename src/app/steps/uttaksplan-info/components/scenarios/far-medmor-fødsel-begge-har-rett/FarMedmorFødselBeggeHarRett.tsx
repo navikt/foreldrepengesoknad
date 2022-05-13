@@ -72,9 +72,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO,
-        familiehendelsesdato,
-        erMorUfør
+        tilgjengeligeStønadskontoer100DTO
     );
 
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
@@ -106,6 +104,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                         antallDagerFellesperiodeFarMedmor: parseInt(values.antallDagerFellesperiode || '0', 10),
                         antallUkerFellesperiodeFarMedmor: parseInt(values.antallUkerFellesperiode || '0', 10),
                     },
+                    bareFarMedmorHarRett: false,
                 })
             ),
         ];
