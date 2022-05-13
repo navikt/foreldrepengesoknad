@@ -129,7 +129,11 @@ const getVeilederTekst = (
 
 const renderOptions = (intl: IntlShape) => {
     return Object.keys(MorsAktivitet)
-        .filter((aktivitetsid) => MorsAktivitet[aktivitetsid] !== MorsAktivitet.Uføre)
+        .filter(
+            (aktivitetsid) =>
+                MorsAktivitet[aktivitetsid] !== MorsAktivitet.Uføre &&
+                MorsAktivitet[aktivitetsid] !== MorsAktivitet.UtenAktivitetsKrav
+        )
         .map((aktivitetsid) => (
             <option value={MorsAktivitet[aktivitetsid]} key={MorsAktivitet[aktivitetsid]}>
                 {intlUtils(intl, `uttaksplan.morsAktivitet.${aktivitetsid}`)}
