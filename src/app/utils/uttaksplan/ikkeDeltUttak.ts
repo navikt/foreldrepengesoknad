@@ -14,18 +14,34 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
     foreldrepengerKonto: TilgjengeligStønadskonto,
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined
+    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
+    bareFarMedmorHarRett: boolean
 ) => {
     const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const perioder: Uttaksperiode[] = [];
 
     if (erMorUfør !== true) {
+        let startDatoNestePeriode = førsteUttaksdag;
+        if (andreAugust2022ReglerGjelder(famDato) && !!bareFarMedmorHarRett) {
+            const aktivitetsFriPeriode: Uttaksperiode = {
+                id: guid(),
+                type: Periodetype.Uttak,
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.AktivitetsfriKvote,
+                tidsperiode: getTidsperiode(førsteUttaksdag, aktivitetsfriKvote!.dager),
+                vedlegg: [],
+                gradert: false,
+                harIkkeAktivitetskrav: true,
+            };
+            perioder.push(aktivitetsFriPeriode);
+            startDatoNestePeriode = Uttaksdagen(aktivitetsFriPeriode.tidsperiode.tom).neste();
+        }
         const periode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.farMedmor,
             konto: foreldrepengerKonto.konto,
-            tidsperiode: getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager),
+            tidsperiode: getTidsperiode(startDatoNestePeriode, foreldrepengerKonto.dager),
             vedlegg: [],
             gradert: false,
         };
@@ -90,7 +106,8 @@ const ikkeDeltUttakAdopsjon = (
     foreldrepengerKonto: TilgjengeligStønadskonto,
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined
+    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
+    bareFarMedmorHarRett: boolean
 ) => {
     if (!erFarEllerMedmor) {
         return ikkeDeltUttakAdopsjonMor(famDato, foreldrepengerKonto, startdatoPermisjon);
@@ -100,7 +117,8 @@ const ikkeDeltUttakAdopsjon = (
             foreldrepengerKonto,
             startdatoPermisjon,
             erMorUfør,
-            aktivitetsfriKvote
+            aktivitetsfriKvote,
+            bareFarMedmorHarRett
         );
     }
 };
@@ -201,7 +219,7 @@ const ikkeDeltUttakFødselFarMedmor = (
     const perioder: Periode[] = [];
 
     if (erMorUfør !== true) {
-        let starteDatoNestePeriode = startDato;
+        let startDatoNestePeriode = startDato;
         if (andreAugust2022ReglerGjelder(famDato) && !!bareFarMedmorHarRett) {
             const aktivitetsFriPeriode: Uttaksperiode = {
                 id: guid(),
@@ -214,7 +232,7 @@ const ikkeDeltUttakFødselFarMedmor = (
                 harIkkeAktivitetskrav: true,
             };
             perioder.push(aktivitetsFriPeriode);
-            starteDatoNestePeriode = Uttaksdagen(aktivitetsFriPeriode.tidsperiode.tom).neste();
+            startDatoNestePeriode = Uttaksdagen(aktivitetsFriPeriode.tidsperiode.tom).neste();
         }
 
         const periode: Uttaksperiode = {
@@ -222,7 +240,7 @@ const ikkeDeltUttakFødselFarMedmor = (
             type: Periodetype.Uttak,
             forelder: Forelder.farMedmor,
             konto: foreldrepengerKonto.konto,
-            tidsperiode: getTidsperiode(starteDatoNestePeriode, foreldrepengerKonto.dager),
+            tidsperiode: getTidsperiode(startDatoNestePeriode, foreldrepengerKonto.dager),
             vedlegg: [],
             gradert: false,
         };
@@ -311,7 +329,8 @@ export const ikkeDeltUttak = (
             foreldrepengerKonto!,
             startdatoPermisjon,
             erMorUfør,
-            aktivitetsfriKvote
+            aktivitetsfriKvote,
+            bareFarMedmorHarRett
         );
     }
 
