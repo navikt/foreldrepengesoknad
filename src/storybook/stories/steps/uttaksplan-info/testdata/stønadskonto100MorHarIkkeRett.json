@@ -1,5 +1,9 @@
 {
     "kontoer": {
         "FORELDREPENGER": 200
+    },
+    "minsteretter": {
+        "farRundtFødsel": 0,
+        "generellMinsterett": 0
     }
 }

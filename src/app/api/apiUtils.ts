@@ -32,7 +32,8 @@ import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { Attachment } from 'app/types/Attachment';
 import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
-import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 export interface AnnenForelderOppgittForInnsending extends Omit<AnnenForelder, 'erUfør'> {
     harMorUføretrygd?: boolean;
@@ -153,7 +154,13 @@ const konverterRolle = (rolle: Søkerrolle): SøkerrolleInnsending => {
     }
 };
 
-const changeClientonlyKontotype = (periode: Periode, annenForelderHarRettPåForeldrepenger: boolean) => {
+const changeClientonlyKontotype = (
+    periode: Periode,
+    annenForelderHarRettPåForeldrepenger: boolean,
+    morErUfør: boolean,
+    søkerErFarEllerMedmor: boolean,
+    familihendelsesdato: Date
+) => {
     if (isUttaksperiode(periode)) {
         if (periode.konto === StønadskontoType.Flerbarnsdager) {
             periode.konto = !annenForelderHarRettPåForeldrepenger
@@ -162,7 +169,17 @@ const changeClientonlyKontotype = (periode: Periode, annenForelderHarRettPåFore
         }
         if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
             periode.konto = StønadskontoType.Foreldrepenger;
-            periode.morsAktivitetIPerioden = MorsAktivitet.Uføre;
+            if (morErUfør) {
+                periode.morsAktivitetIPerioden = MorsAktivitet.Uføre;
+            }
+            if (
+                søkerErFarEllerMedmor &&
+                !annenForelderHarRettPåForeldrepenger &&
+                !morErUfør &&
+                andreAugust2022ReglerGjelder(familihendelsesdato)
+            ) {
+                periode.morsAktivitetIPerioden = MorsAktivitet.UtenAktivitetsKrav;
+            }
         }
     }
     return periode;
@@ -191,6 +208,7 @@ const changeGradertPeriode = (periode: Periode) => {
 const cleanUttaksplan = (
     uttaksplan: Periode[],
     familiehendelsesdato: Date,
+    søkerErFarEllerMedmor: boolean,
     annenForelder?: AnnenForelder,
     endringstidspunkt?: Date
 ): Periode[] => {
@@ -199,7 +217,13 @@ const cleanUttaksplan = (
         .filter(skalPeriodeSendesInn)
         .map((periode) =>
             annenForelder && isAnnenForelderOppgitt(annenForelder)
-                ? changeClientonlyKontotype(periode, !!annenForelder.harRettPåForeldrepenger)
+                ? changeClientonlyKontotype(
+                      periode,
+                      !!annenForelder.harRettPåForeldrepenger,
+                      !!annenForelder.erUfør,
+                      søkerErFarEllerMedmor,
+                      familiehendelsesdato
+                  )
                 : periode
         )
         .map((periode) => (periode.type === Periodetype.Uttak ? cleanUttaksperiode(periode) : periode))
@@ -255,7 +279,13 @@ export const cleanSøknad = (søknad: Søknad, familiehendelsesdato: Date): Søk
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
     const søkerInnsending = cleanSøker(søker, søknad.søkersituasjon);
     const barnInnsending = cleanBarn(barn);
-    const uttaksplanInnsending = cleanUttaksplan(uttaksplan, familiehendelsesdato, annenForelder);
+    const søkerErFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
+    const uttaksplanInnsending = cleanUttaksplan(
+        uttaksplan,
+        familiehendelsesdato,
+        søkerErFarEllerMedmor,
+        annenForelder
+    );
     const tilleggsopplysningerInnsending = cleanTilleggsopplysninger(søknad.tilleggsopplysninger);
     const cleanedSøknad: SøknadForInnsending = {
         søker: søkerInnsending,
@@ -325,6 +355,7 @@ export const cleanEndringssøknad = (
     familiehendelsesdato: Date,
     endringstidspunkt?: Date
 ): EndringssøknadForInnsending => {
+    const søkerErFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
     const cleanedSøknad: EndringssøknadForInnsending = {
         erEndringssøknad: true,
         saksnummer: søknad.saksnummer,
@@ -332,6 +363,7 @@ export const cleanEndringssøknad = (
         uttaksplan: cleanUttaksplan(
             endringerIUttaksplan,
             familiehendelsesdato,
+            søkerErFarEllerMedmor,
             søknad.annenForelder,
             endringstidspunkt
         ),

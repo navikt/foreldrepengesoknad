@@ -24,6 +24,9 @@ export interface TilgjengeligeStønadskontoerParams {
     morHarAleneomsorg: boolean | undefined;
     farHarAleneomsorg: boolean | undefined;
     startdatoUttak: string;
+    minsterett: boolean;
+    erMor: boolean;
+    morHarUføretrygd: boolean;
 }
 
 const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
@@ -148,6 +151,9 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams) => {
         morHarAleneomsorg,
         farHarAleneomsorg,
         startdatoUttak,
+        minsterett,
+        erMor,
+        morHarUføretrygd,
     } = params;
 
     const fpUttakServiceDateFormat = 'YYYYMMDD';
@@ -163,6 +169,9 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams) => {
         termindato: formaterStønadskontoParamsDatoer(termindato, fpUttakServiceDateFormat),
         omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(omsorgsovertakelsesdato, fpUttakServiceDateFormat),
         startdatoUttak: formaterStønadskontoParamsDatoer(startdatoUttak, fpUttakServiceDateFormat),
+        minsterett,
+        erMor,
+        morHarUføretrygd,
     };
 
     const { data, error } = useRequest<TilgjengeligeStønadskontoerDTO>(`${uttakBaseUrl}/konto`, {
