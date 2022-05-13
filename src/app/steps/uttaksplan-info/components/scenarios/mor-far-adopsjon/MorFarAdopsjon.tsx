@@ -75,6 +75,11 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         ? annenForelder.harRettPåForeldrepenger !== undefined
         : false;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const bareFarMedmorHarRett =
+        erFarEllerMedmor &&
+        isAnnenForelderOppgitt(annenForelder) &&
+        !søkerErAleneOmOmsorg &&
+        !annenForelder.harRettPåForeldrepenger;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
@@ -122,7 +127,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                         morSinSisteUttaksdag: submissionValues.annenForeldersSisteDag,
                         farSinFørsteUttaksdag: submissionValues.søkersFørsteDag,
                     },
-                    bareFarMedmorHarRett: false,
+                    bareFarMedmorHarRett: bareFarMedmorHarRett,
                 })
             ),
         ];
