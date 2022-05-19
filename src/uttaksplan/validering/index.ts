@@ -29,11 +29,15 @@ import { Regel, RegelAlvorlighet } from './utils/types/regelTypes';
 import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
 import { inneholderPerioderUtenAktivitetskrav } from './tester/inneholderPerioderUtenAktivitetskrav';
 import { inneholderUtsettelserUtenÅrsak } from './tester/inneholderUtsettelserUtenÅrsak';
+import { farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest } from './tester/farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest';
+import { farMedMorHarRettPåUttakRundtFødselTest } from './tester/farMedMorHarRettPåUttakRundtFødselTest';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
     'morHarSøktUgyldigUttakFørsteSeksUker' = 'morHarSøktUgyldigUttakFørsteSeksUker',
     'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker' = 'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker',
+    'farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel' = 'farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel',
+    'farMedmorHarSøktUttakRundtFødselUtenforGyldigPeriode' = 'farMedmorHarSøktUttakRundtFødselUtenforGyldigPeriode',
     'stønadskontoInneholderForMyeUttakKunSøker' = 'stønadskontoInneholderForMyeUttakKunSøker',
     'uttaksplanErBareOpphold' = 'uttaksplanErBareOpphold',
     'uttaksplanStarterMedOpphold' = 'uttaksplanStarterMedOpphold',
@@ -59,6 +63,7 @@ export enum UttaksplanRegelKey {
     'ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato' = 'ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato',
     'inneholderPerioderUtenAktivitetskrav' = 'inneholderPerioderUtenAktivitetskrav',
     'inneholderUtsettelserUtenÅrsak' = 'inneholderUtsettelserUtenÅrsak',
+    'farMedMorHarRettPåUttakRundtFødsel' = 'farMedMorHarRettPåUttakRundtFødsel',
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -83,6 +88,11 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest,
+    },
+    {
+        key: UttaksplanRegelKey.farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest,
     },
     {
         key: UttaksplanRegelKey.uttaksmengdeForFarMedmorErForHøy,
@@ -151,6 +161,12 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.inneholderSeneGraderteUttak,
         alvorlighet: RegelAlvorlighet.INFO,
         test: inneholderSeneGraderteUttakTest,
+        skjulesIPeriode: true,
+    },
+    {
+        key: UttaksplanRegelKey.farMedMorHarRettPåUttakRundtFødsel,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: farMedMorHarRettPåUttakRundtFødselTest,
         skjulesIPeriode: true,
     },
     {
