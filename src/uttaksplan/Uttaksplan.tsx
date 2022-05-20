@@ -11,7 +11,6 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import deletePeriode from './builder/deletePeriode';
 import { getUttaksstatusFunc } from './utils/uttaksstatus';
 import updatePeriode from './builder/updatePeriode';
-import addPeriode from './builder/addPeriode';
 import { Situasjon } from 'app/types/Situasjon';
 import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
 import { ISOStringToDate } from 'app/utils/dateUtils';
@@ -29,6 +28,7 @@ import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
+import UttaksplanbuilderNew from './builder/UttaksplanbuilderNew';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -182,29 +182,10 @@ const Uttaksplan: FunctionComponent<Props> = ({
     };
 
     const handleAddPeriode = (nyPeriode: Periode) => {
-        const addPeriodeResult = addPeriode({
-            getUttaksstatusFunc: getUttaksstatusFunc({
-                erDeltUttak,
-                erEndringssøknad,
-                harKomplettUttaksplan,
-                erFarEllerMedmor,
-                tilgjengeligeStønadskontoer: stønadskontoer,
-                uttaksplan,
-            }),
-            uttaksplan,
-            nyPeriode,
-            tilgjengeligeStønadskontoer: stønadskontoer,
-            familiehendelsesdato: familiehendelsesdatoDate!,
-            erFlerbarnssøknad,
-            erEndringsøknadUtenEkisterendeSak: false,
-            relevantStartDatoForUttak: relevantStartdato,
-            harMidlertidigOmsorg: false,
-            harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
-            erAdopsjon: situasjon === 'adopsjon',
-            opprinneligPlan,
-        });
+        const builder = UttaksplanbuilderNew(uttaksplan);
+        const resultat = builder.leggTilPeriode(nyPeriode);
 
-        handleOnPlanChange(addPeriodeResult.updatedPlan);
+        handleOnPlanChange(resultat);
     };
 
     const vedleggForSenEndring = []!; //TODO: handleBegrunnelseVedleggChange

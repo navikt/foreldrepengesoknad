@@ -1,6 +1,6 @@
 import { isForeldrepengerFørFødselUttaksperiode, isUtsettelsesperiode, Periode } from 'uttaksplan/types/Periode';
 import { leggTilPeriode } from './leggTilPeriode';
-import { resetTidsperioder } from './uttaksplanbuilderUtils';
+import { resetTidsperioder, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
 
 const oppdaterPeriode = () => null;
 
@@ -20,7 +20,7 @@ const UttaksplanbuilderNew = (perioder: Periode[]) => {
                 result = leggTilPeriode(result, fastPeriode);
             });
 
-            return result;
+            return slåSammenLikePerioder(result);
         },
         oppdaterPeriode,
         slettPeriode,

@@ -12,6 +12,7 @@ import {
     isUtsettelsesperiode,
     Periode,
 } from 'uttaksplan/types/Periode';
+import { getPeriodeHullEllerPeriodeUtenUttak, getTidsperiodeMellomPerioder } from './uttaksplanbuilderUtils';
 
 const splittPeriode = (berørtPeriode: Periode, nyPeriode: Periode): Periode[] => {
     const dagerIBerørtPeriode = Tidsperioden(berørtPeriode.tidsperiode).getAntallUttaksdager();
@@ -62,7 +63,7 @@ export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode): Periode
             return [
                 ...foregåendePerioder,
                 nyPeriode,
-                ...Periodene(påfølgendePerioder).forskyvPerioder(antallDagerINyPeriode),
+                ...Periodene([berørtPeriode, ...påfølgendePerioder]).forskyvPerioder(antallDagerINyPeriode),
             ];
         }
 
@@ -91,8 +92,34 @@ export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode): Periode
         ];
     } else {
         if (dayjs(nyPeriode.tidsperiode.fom).isBefore(perioder[0].tidsperiode.fom)) {
+            const tidsperiodeMellomNyPeriodeOgFørstePeriode = getTidsperiodeMellomPerioder(
+                nyPeriode.tidsperiode,
+                perioder[0].tidsperiode
+            );
+
+            if (tidsperiodeMellomNyPeriodeOgFørstePeriode) {
+                return [
+                    nyPeriode,
+                    getPeriodeHullEllerPeriodeUtenUttak(tidsperiodeMellomNyPeriodeOgFørstePeriode),
+                    ...perioder,
+                ];
+            }
+
             return [nyPeriode, ...perioder];
         } else {
+            const tidsperiodeMellomSistePeriodeOgNyPeriode = getTidsperiodeMellomPerioder(
+                perioder[perioder.length - 1].tidsperiode,
+                nyPeriode.tidsperiode
+            );
+
+            if (tidsperiodeMellomSistePeriodeOgNyPeriode) {
+                return [
+                    ...perioder,
+                    getPeriodeHullEllerPeriodeUtenUttak(tidsperiodeMellomSistePeriodeOgNyPeriode),
+                    nyPeriode,
+                ];
+            }
+
             return [...perioder, nyPeriode];
         }
     }

@@ -1,8 +1,11 @@
+import { TidsperiodeDate } from '@navikt/fp-common';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { getTidsperiode, isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { Periode } from 'uttaksplan/types/Periode';
+import { guid } from 'nav-frontend-js-utils';
+import { Periode, PeriodeHull, Periodetype, PeriodeUtenUttak } from 'uttaksplan/types/Periode';
+import { PeriodeHullÅrsak } from 'uttaksplan/types/PeriodeHullÅrsak';
 
 export const resetTidsperioder = (perioder: Periode[]): Periode[] => {
     let forrigePeriode: Periode;
@@ -54,4 +57,39 @@ export const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
     nyePerioder.push(forrigePeriode);
 
     return nyePerioder;
+};
+
+export const getPeriodeHullEllerPeriodeUtenUttak = (tidsperiode: TidsperiodeDate) => {
+    return getNyPeriodeUtenUttak(tidsperiode);
+};
+
+export const getPeriodeHull = (tidsperiode: TidsperiodeDate, årsak?: PeriodeHullÅrsak): PeriodeHull => ({
+    id: guid(),
+    type: Periodetype.Hull,
+    tidsperiode,
+    årsak,
+});
+
+export const getNyPeriodeUtenUttak = (tidsperiode: TidsperiodeDate): PeriodeUtenUttak => ({
+    id: guid(),
+    type: Periodetype.PeriodeUtenUttak,
+    tidsperiode,
+});
+
+export const getTidsperiodeMellomPerioder = (
+    tidsperiode1: TidsperiodeDate,
+    tidsperiode2: TidsperiodeDate
+): TidsperiodeDate | undefined => {
+    const tidsperiodeMellomPerioder: TidsperiodeDate = {
+        fom: Uttaksdagen(tidsperiode1.tom).neste(),
+        tom: Uttaksdagen(tidsperiode2.fom).forrige(),
+    };
+
+    const antallDagerIMellomrom = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
+
+    if (isValidTidsperiode(tidsperiodeMellomPerioder) && antallDagerIMellomrom > 0) {
+        return tidsperiodeMellomPerioder;
+    }
+
+    return undefined;
 };

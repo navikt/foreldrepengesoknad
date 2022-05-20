@@ -37,6 +37,7 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Situasjon } from 'app/types/Situasjon';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
+import { guid } from 'nav-frontend-js-utils';
 
 interface Props {
     periode: Periode;
@@ -313,7 +314,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                             htmlType="button"
                                             onClick={() => {
                                                 handleAddPeriode!(
-                                                    mapPeriodeUttakFormToPeriode(values, periode.id, periodetype)
+                                                    mapPeriodeUttakFormToPeriode(values, guid(), periodetype)
                                                 );
                                                 setNyPeriodeFormIsVisible!(false);
                                             }}

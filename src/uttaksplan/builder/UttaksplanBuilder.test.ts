@@ -2,6 +2,7 @@ import { Forelder } from 'app/types/Forelder';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import UttaksplanbuilderNew from './UttaksplanbuilderNew';
+import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 
 const perioder: Periode[] = [
     {
@@ -37,21 +38,41 @@ const perioder: Periode[] = [
 ];
 
 describe('Uttaksplanbuilder tester', () => {
-    it('Skal legge til perioden på slutten av perioder', () => {
+    it('Å legge til en utsettelse skal ikke forskyve en annen utsettelse', () => {
         const nyPeriode: Periode = {
             id: '4',
-            type: Periodetype.Uttak,
+            type: Periodetype.Utsettelse,
             tidsperiode: {
                 fom: new Date('2022-08-15'),
-                tom: new Date('2022-10-07'),
+                tom: new Date('2022-08-26'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            erArbeidstaker: true,
+            årsak: UtsettelseÅrsakType.Arbeid,
         };
 
         const result = UttaksplanbuilderNew(perioder).leggTilPeriode(nyPeriode);
 
         expect(result.length).toBe(4);
-        expect(result[3]).toEqual(nyPeriode);
+        expect(result[2]).toEqual(nyPeriode);
+
+        const nyPeriode2: Periode = {
+            id: '4',
+            type: Periodetype.Utsettelse,
+            tidsperiode: {
+                fom: new Date('2022-05-23'),
+                tom: new Date('2022-05-27'),
+            },
+            forelder: Forelder.mor,
+            erArbeidstaker: true,
+            årsak: UtsettelseÅrsakType.Arbeid,
+        };
+
+        const result2 = UttaksplanbuilderNew(result).leggTilPeriode(nyPeriode2);
+
+        expect(result2.length).toBe(7);
+        expect(result2[2]).toEqual(nyPeriode2);
+        expect(result2[4]).toEqual(nyPeriode);
+        expect(result2[4].tidsperiode).toEqual({ fom: new Date('2022-08-15'), tom: new Date('2022-08-26') });
     });
 });
