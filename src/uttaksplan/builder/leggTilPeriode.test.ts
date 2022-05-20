@@ -204,4 +204,22 @@ describe('Test av legg til periode i uttaksplan', () => {
         expect(result2.length).toEqual(6);
         expect(result2[2]).toEqual(nyPeriode2);
     });
+
+    it('Burde bare innehold ny periode om planen er tom', () => {
+        const nyPeriode: Periode = {
+            id: '4',
+            type: Periodetype.Uttak,
+            tidsperiode: {
+                fom: new Date('2022-07-11'),
+                tom: new Date('2022-07-22'),
+            },
+            forelder: Forelder.mor,
+            konto: StønadskontoType.Fellesperiode,
+        };
+
+        const result = leggTilPeriode([], nyPeriode);
+
+        expect(result.length).toEqual(1);
+        expect(result[0]).toEqual(nyPeriode);
+    });
 });

@@ -4,6 +4,7 @@ import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import dayjs from 'dayjs';
 import { guid } from 'nav-frontend-js-utils';
 import {
+    isForeldrepengerFørFødselUttaksperiode,
     isHull,
     isInfoPeriode,
     isPeriodeUtenUttak,
@@ -40,12 +41,16 @@ const splittPeriode = (berørtPeriode: Periode, nyPeriode: Periode): Periode[] =
 };
 
 export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode): Periode[] => {
+    if (perioder.length === 0) {
+        return [nyPeriode];
+    }
+
     const nyPeriodeFom = nyPeriode.tidsperiode.fom;
     const berørtPeriode = perioder.find((p) => Tidsperioden(p.tidsperiode).inneholderDato(nyPeriodeFom));
 
     if (berørtPeriode) {
-        if (isUtsettelsesperiode(berørtPeriode)) {
-            // Uttak som legges over utsettelse skal ikke tillates av validering. Ignore
+        if (isUtsettelsesperiode(berørtPeriode) || isForeldrepengerFørFødselUttaksperiode(berørtPeriode)) {
+            // Uttak som legges over utsettelse eller FFF skal ikke tillates av validering. Ignore
             return [...perioder];
         }
 
@@ -85,6 +90,10 @@ export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode): Periode
             ...Periodene(påfølgendePerioder).forskyvPerioder(antallDagerINyPeriode),
         ];
     } else {
-        return [...perioder, nyPeriode];
+        if (dayjs(nyPeriode.tidsperiode.fom).isBefore(perioder[0].tidsperiode.fom)) {
+            return [nyPeriode, ...perioder];
+        } else {
+            return [...perioder, nyPeriode];
+        }
     }
 };

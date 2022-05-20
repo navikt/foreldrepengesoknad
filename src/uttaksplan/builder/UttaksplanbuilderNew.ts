@@ -16,8 +16,8 @@ const UttaksplanbuilderNew = (perioder: Periode[]) => {
         leggTilPeriode: (nyPeriode: Periode) => {
             let result = leggTilPeriode(bevegeligePerioder, nyPeriode);
 
-            fastePerioder.forEach((fp) => {
-                result = leggTilPeriode(result, fp);
+            fastePerioder.forEach((fastPeriode) => {
+                result = leggTilPeriode(result, fastPeriode);
             });
 
             return result;
