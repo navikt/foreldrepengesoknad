@@ -21,7 +21,6 @@ import { Forelder } from 'app/types/Forelder';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { Saksgrunnlag } from 'app/types/Saksgrunnlag';
-import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
@@ -34,6 +33,7 @@ import {
 import { UtsettelseÅrsakTypeDTO } from 'app/types/UtsettelseÅrsakTypeDTO';
 import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
 import { finnOgSettInnHull } from 'uttaksplan/builder/UttaksplanBuilder';
+import { PeriodeResultatÅrsak } from 'uttaksplan/types/PeriodeResultatÅrsak';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;
@@ -176,6 +176,17 @@ const beregnSamtidigUttaksProsent = (
     return undefined;
 };
 
+export const getKontotypeBareFarHarRett = (periodeResultatÅrsak: string): StønadskontoType => {
+    if (
+        periodeResultatÅrsak !== PeriodeResultatÅrsak.BFHRMedAktivitetsKrav_2004 &&
+        periodeResultatÅrsak !== PeriodeResultatÅrsak.BFHRMedAktivitetsKrav_2033
+    ) {
+        return StønadskontoType.AktivitetsfriKvote;
+    } else {
+        return StønadskontoType.Foreldrepenger;
+    }
+};
+
 export const mapUttaksperiodeFromSaksperiode = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag,
@@ -184,6 +195,7 @@ export const mapUttaksperiodeFromSaksperiode = (
 ): Periode => {
     const gradert = saksperiode.graderingInnvilget !== undefined ? saksperiode.graderingInnvilget : false;
     const tidsperiodeDate = convertTidsperiodeToTidsperiodeDate(saksperiode.periode);
+    const erFarEllerMedmorOgKunSøkerHarRett = erFarEllerMedmor && !grunnlag.morHarRett;
 
     if (saksperiode.gjelderAnnenPart) {
         return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, erFarEllerMedmor, innvilgedePerioder);
@@ -207,8 +219,9 @@ export const mapUttaksperiodeFromSaksperiode = (
     );
 
     let konto;
-    if (saksperiode.morsAktivitet === MorsAktivitet.Uføre) {
-        konto = StønadskontoType.AktivitetsfriKvote;
+
+    if (erFarEllerMedmorOgKunSøkerHarRett) {
+        konto = getKontotypeBareFarHarRett(saksperiode.periodeResultatÅrsak);
     }
 
     const { termindato, fødselsdato, omsorgsovertakelsesdato } = grunnlag;
