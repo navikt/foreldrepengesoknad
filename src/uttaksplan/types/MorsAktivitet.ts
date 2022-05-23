@@ -7,5 +7,5 @@ export enum MorsAktivitet {
     Innlagt = 'INNLAGT',
     ArbeidOgUtdanning = 'ARBEID_OG_UTDANNING',
     Uføre = 'UFØRE',
-    UtenAktivitetsKrav = 'UTEN_AKTIVITETSKRAV',
+    IkkeOppgitt = 'IKKE_OPPGITT',
 }
