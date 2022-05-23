@@ -132,7 +132,7 @@ const renderOptions = (intl: IntlShape) => {
         .filter(
             (aktivitetsid) =>
                 MorsAktivitet[aktivitetsid] !== MorsAktivitet.Uføre &&
-                MorsAktivitet[aktivitetsid] !== MorsAktivitet.UtenAktivitetsKrav
+                MorsAktivitet[aktivitetsid] !== MorsAktivitet.IkkeOppgitt
         )
         .map((aktivitetsid) => (
             <option value={MorsAktivitet[aktivitetsid]} key={MorsAktivitet[aktivitetsid]}>
