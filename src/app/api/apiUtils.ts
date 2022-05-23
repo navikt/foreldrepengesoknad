@@ -178,7 +178,7 @@ const changeClientonlyKontotype = (
                 !morErUfør &&
                 andreAugust2022ReglerGjelder(familihendelsesdato)
             ) {
-                periode.morsAktivitetIPerioden = MorsAktivitet.UtenAktivitetsKrav;
+                periode.morsAktivitetIPerioden = MorsAktivitet.IkkeOppgitt;
             }
         }
     }
