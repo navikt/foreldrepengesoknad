@@ -33,7 +33,7 @@ const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet): strin
             return intlUtils(intl, 'oppsummering.morsAktivitet.Uføre');
         case MorsAktivitet.Utdanning:
             return intlUtils(intl, 'oppsummering.morsAktivitet.Utdanning');
-        case MorsAktivitet.UtenAktivitetsKrav:
+        case MorsAktivitet.IkkeOppgitt:
             return intlUtils(intl, 'oppsummering.morsAktivitet.UtenAktivitetsKrav');
         default:
             return assertUnreachable(aktivitet, 'Mor har ingen aktivitet');
