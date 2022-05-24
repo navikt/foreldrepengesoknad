@@ -26,6 +26,7 @@ import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { CheckboksPanelProps } from 'nav-frontend-skjema';
+import { guid } from 'nav-frontend-js-utils';
 interface Props {
     periode: Periode;
     familiehendelsesdato: Date;
@@ -234,11 +235,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                             htmlType="button"
                                             onClick={() => {
                                                 handleAddPeriode!(
-                                                    mapPeriodeUtsettelseFormToPeriode(
-                                                        values,
-                                                        periode.id,
-                                                        erFarEllerMedmor
-                                                    )
+                                                    mapPeriodeUtsettelseFormToPeriode(values, guid(), erFarEllerMedmor)
                                                 );
                                                 setNyPeriodeFormIsVisible!(false);
                                             }}
