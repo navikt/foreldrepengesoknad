@@ -26,6 +26,7 @@ import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { CheckboksPanelProps } from 'nav-frontend-skjema';
+import { getKunArbeidsforholdForValgtTidsperiode } from 'app/utils/arbeidsforholdUtils';
 interface Props {
     periode: Periode;
     familiehendelsesdato: Date;
@@ -74,6 +75,8 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     };
 
     const getArbeidUnderUtsettelseOptions = (arbeidsgivere: Arbeidsforhold[]): CheckboksPanelProps[] => {
+        const aktiveArbeidsforholdIPerioden = getKunArbeidsforholdForValgtTidsperiode(arbeidsgivere, tidsperiode);
+
         const defaultOptions: CheckboksPanelProps[] = [
             {
                 label: 'Selvstendig næringsdrivende',
@@ -86,8 +89,8 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
         ];
         const eksisterendeArbeidsforhold: CheckboksPanelProps[] = [];
 
-        if (arbeidsgivere.length > 0) {
-            arbeidsgivere.forEach((arb) =>
+        if (aktiveArbeidsforholdIPerioden.length > 0) {
+            aktiveArbeidsforholdIPerioden.forEach((arb) =>
                 eksisterendeArbeidsforhold.push({ label: `${arb.arbeidsgiverNavn}`, value: `${arb.arbeidsgiverId}` })
             );
         }

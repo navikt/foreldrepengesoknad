@@ -276,6 +276,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                         PeriodeUttakFormField.stillingsprosent
                                     )}
                                     arbeidsforhold={arbeidsforhold}
+                                    tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                 />
                             </Block>
                             <Block

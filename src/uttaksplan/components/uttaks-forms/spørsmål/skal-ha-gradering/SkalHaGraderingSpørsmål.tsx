@@ -1,6 +1,7 @@
-import { intlUtils, Block, UtvidetInformasjon, hasValue } from '@navikt/fp-common';
+import { intlUtils, Block, UtvidetInformasjon, hasValue, TidsperiodeDate } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { getKunArbeidsforholdForValgtTidsperiode } from 'app/utils/arbeidsforholdUtils';
 import { RadioPanelProps } from 'nav-frontend-skjema';
 import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
@@ -12,9 +13,15 @@ import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode
 interface Props {
     graderingsprosentVisible: boolean;
     arbeidsforhold: Arbeidsforhold[];
+    tidsperiode: TidsperiodeDate;
 }
 
-export const getArbeidsOptions = (arbeidsforhold: Arbeidsforhold[]): RadioPanelProps[] => {
+export const getArbeidsOptions = (
+    arbeidsforhold: Arbeidsforhold[],
+    tidsperiode: TidsperiodeDate
+): RadioPanelProps[] => {
+    const aktiveArbeidsforholdIPerioden = getKunArbeidsforholdForValgtTidsperiode(arbeidsforhold, tidsperiode);
+
     const defaultOptions: RadioPanelProps[] = [
         {
             label: 'Selvstendig næringsdrivende',
@@ -27,8 +34,8 @@ export const getArbeidsOptions = (arbeidsforhold: Arbeidsforhold[]): RadioPanelP
     ];
     const eksisterendeArbeidsforhold: RadioPanelProps[] = [];
 
-    if (arbeidsforhold.length > 0) {
-        arbeidsforhold.forEach((arb) =>
+    if (aktiveArbeidsforholdIPerioden.length > 0) {
+        aktiveArbeidsforholdIPerioden.forEach((arb) =>
             eksisterendeArbeidsforhold.push({ label: `${arb.arbeidsgiverNavn}`, value: `${arb.arbeidsgiverId}` })
         );
     }
@@ -36,7 +43,11 @@ export const getArbeidsOptions = (arbeidsforhold: Arbeidsforhold[]): RadioPanelP
     return [...eksisterendeArbeidsforhold, ...defaultOptions];
 };
 
-const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({ graderingsprosentVisible, arbeidsforhold }) => {
+const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({
+    graderingsprosentVisible,
+    arbeidsforhold,
+    tidsperiode,
+}) => {
     const intl = useIntl();
 
     return (
@@ -79,7 +90,7 @@ const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({ graderingsprosent
                         </UtvidetInformasjon>
                     }
                     useTwoColumns={true}
-                    radios={getArbeidsOptions(arbeidsforhold)}
+                    radios={getArbeidsOptions(arbeidsforhold, tidsperiode)}
                     validate={(value) => {
                         if (!hasValue(value)) {
                             return intlUtils(intl, 'uttaksplan.validering.arbeidsformer');

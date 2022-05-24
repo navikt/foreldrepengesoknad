@@ -425,3 +425,6 @@ export const getMorsSisteDag = (uttaksplanInfo: UttaksplanInfo | undefined): Dat
         return ISOStringToDate(uttaksplanInfo.morsSisteDag);
     }
 };
+
+export const dateIsBetween = (date: DateValue, fom: DateValue, tom: DateValue): boolean =>
+    dayjs(date).isBetween(fom, tom, 'day', '[]');
