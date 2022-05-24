@@ -21,6 +21,9 @@ const skalViseGradering = (regler: UttakSkjemaregler, values: PeriodeUttakFormDa
         return false;
     }
 
+    if (regler.graderingSkalBesvaresPgaWLBUttakRundtFødsel()) {
+        return true;
+    }
     if (
         values.konto === '' ||
         (regler.samtidigUttakSkalBesvares() && values.samtidigUttak === YesOrNo.UNANSWERED) ||
@@ -116,6 +119,12 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
     [PeriodeUttakFormField.erMorForSyk]: {
         isAnswered: ({ values }) => values.erMorForSyk !== YesOrNo.UNANSWERED,
         isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).erMorForSykSkalBesvares(),
+        visibilityFilter: ({ values }) => values.ønskerFlerbarnsdager !== YesOrNo.UNANSWERED || hasValue(values.konto),
+    },
+    [PeriodeUttakFormField.uttakRundtFødselÅrsak]: {
+        isAnswered: ({ values }) => hasValue(values.uttakRundtFødselÅrsak),
+        isIncluded: ({ values, regelProps }) =>
+            getUttakSkjemaregler(values, regelProps).uttakRundtFødselÅrsakSpørsmålSkalBesvares(),
         visibilityFilter: ({ values }) => values.ønskerFlerbarnsdager !== YesOrNo.UNANSWERED || hasValue(values.konto),
     },
     [PeriodeUttakFormField.samtidigUttak]: {

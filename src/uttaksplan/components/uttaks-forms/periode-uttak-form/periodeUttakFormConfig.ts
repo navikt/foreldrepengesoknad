@@ -1,6 +1,7 @@
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Attachment } from 'app/types/Attachment';
 import { Forelder } from 'app/types/Forelder';
+import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import { Arbeidsform } from 'uttaksplan/types/Periode';
@@ -20,6 +21,7 @@ export enum PeriodeUttakFormField {
     arbeidsformer = 'arbeidsformer',
     erMorForSyk = 'erMorForSyk',
     erMorForSykDokumentasjon = 'erMorForSykDokumentasjon',
+    uttakRundtFødselÅrsak = 'uttakRundtFødselÅrsak',
     samtidigUttakProsent = 'samtidigUttakProsent',
     hvemSkalTaUttak = 'hvemSkalTaUttak',
     ønskerFlerbarnsdager = 'ønskerFlerbarnsdager',
@@ -39,6 +41,7 @@ export interface PeriodeUttakFormData {
     [PeriodeUttakFormField.arbeidsformer]: Arbeidsform | '';
     [PeriodeUttakFormField.erMorForSyk]: YesOrNo;
     [PeriodeUttakFormField.erMorForSykDokumentasjon]: Attachment[];
+    [PeriodeUttakFormField.uttakRundtFødselÅrsak]: UttakRundtFødselÅrsak;
     [PeriodeUttakFormField.samtidigUttakProsent]: string;
     [PeriodeUttakFormField.hvemSkalTaUttak]: Forelder | '';
     [PeriodeUttakFormField.ønskerFlerbarnsdager]: YesOrNo;

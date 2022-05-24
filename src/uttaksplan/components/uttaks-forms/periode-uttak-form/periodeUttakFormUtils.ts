@@ -5,6 +5,7 @@ import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Forelder } from 'app/types/Forelder';
 import { Skjemanummer } from 'app/types/Skjemanummer';
+import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { getMorsAktivitet, getMorsAktivitetSkjemanummer } from 'app/utils/morsAktivitetUtils';
 import { trimNumberValue } from 'app/utils/numberUtils';
@@ -44,6 +45,7 @@ const getInitialValues = (erDeltUttak: boolean, forelder: Forelder, erMorUfør: 
         [PeriodeUttakFormField.arbeidsformer]: '',
         [PeriodeUttakFormField.erMorForSyk]: YesOrNo.UNANSWERED,
         [PeriodeUttakFormField.erMorForSykDokumentasjon]: [],
+        [PeriodeUttakFormField.uttakRundtFødselÅrsak]: UttakRundtFødselÅrsak.samtidigUttak,
         [PeriodeUttakFormField.samtidigUttakProsent]: '',
         [PeriodeUttakFormField.hvemSkalTaUttak]: hvemSkalTaUttak,
         [PeriodeUttakFormField.ønskerFlerbarnsdager]: YesOrNo.UNANSWERED,
@@ -75,6 +77,9 @@ export const cleanPeriodeUttakFormData = (
         erMorForSykDokumentasjon: visibility.isVisible(PeriodeUttakFormField.erMorForSyk)
             ? values.erMorForSykDokumentasjon
             : initialValues.erMorForSykDokumentasjon,
+        uttakRundtFødselÅrsak: visibility.isVisible(PeriodeUttakFormField.uttakRundtFødselÅrsak)
+            ? values.uttakRundtFødselÅrsak
+            : initialValues.uttakRundtFødselÅrsak,
         arbeidsformer: visibility.isVisible(PeriodeUttakFormField.arbeidsformer) ? values.arbeidsformer : '',
         konto: values.konto,
         overføringsdokumentasjon: visibility.isVisible(PeriodeUttakFormField.overføringsdokumentasjon)
@@ -103,6 +108,19 @@ export const cleanPeriodeUttakFormData = (
     return cleanedData;
 };
 
+const getInitialÅrsakForUttakRundtFødsel = (
+    erMorForSyk: boolean | undefined,
+    ønskerSamtidigUttak: boolean | undefined
+): UttakRundtFødselÅrsak | undefined => {
+    if (erMorForSyk) {
+        return UttakRundtFødselÅrsak.morErForSyk;
+    }
+    if (ønskerSamtidigUttak) {
+        return UttakRundtFødselÅrsak.samtidigUttak;
+    }
+    return undefined;
+};
+
 export const getPeriodeUttakFormInitialValues = (
     periode: Periode,
     erDeltUttak: boolean,
@@ -110,6 +128,7 @@ export const getPeriodeUttakFormInitialValues = (
     erMorUfør: boolean
 ): PeriodeUttakFormData => {
     const initialValues = getInitialValues(erDeltUttak, forelder, erMorUfør);
+
     if (periode !== undefined) {
         if (isUttaksperiode(periode)) {
             return {
@@ -131,6 +150,9 @@ export const getPeriodeUttakFormInitialValues = (
                 skalHaGradering: convertBooleanOrUndefinedToYesOrNo(periode.gradert),
                 stillingsprosent: periode.stillingsprosent || '',
                 ønskerFlerbarnsdager: convertBooleanOrUndefinedToYesOrNo(periode.ønskerFlerbarnsdager),
+                uttakRundtFødselÅrsak:
+                    getInitialÅrsakForUttakRundtFødsel(periode.erMorForSyk, periode.ønskerSamtidigUttak) ||
+                    initialValues.uttakRundtFødselÅrsak,
             };
         }
 
@@ -267,6 +289,23 @@ export const mapPeriodeUttakFormToPeriode = (
         values.erMorForSykDokumentasjon!
     );
 
+    const morErForSyk =
+        hasValue(values.uttakRundtFødselÅrsak) && values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.morErForSyk
+            ? true
+            : convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk);
+
+    const erSamtidigUttak =
+        hasValue(values.uttakRundtFødselÅrsak) && values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak
+            ? true
+            : convertYesOrNoOrUndefinedToBoolean(values.samtidigUttak);
+
+    const samtidigUttakProsentVerdi =
+        hasValue(values.uttakRundtFødselÅrsak) && values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak
+            ? '100' //TODO: Er dette riktig eller skal samtidig uttak kunne oppgis i prosent også?
+            : hasValue(values.samtidigUttakProsent)
+            ? trimNumberValue(values.samtidigUttakProsent!)
+            : undefined;
+
     const periode: Uttaksperiode = {
         id,
         forelder: values.hvemSkalTaUttak as Forelder,
@@ -287,16 +326,14 @@ export const mapPeriodeUttakFormToPeriode = (
         erArbeidstaker: getErArbeidstaker(
             hasValue(values.arbeidsformer) ? getArbeidsform([values.arbeidsformer as Arbeidsform]) : []
         ),
-        erMorForSyk: convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk),
+        erMorForSyk: morErForSyk,
         gradert: convertYesOrNoOrUndefinedToBoolean(values.skalHaGradering),
         harIkkeAktivitetskrav: values.konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
         orgnumre: getOrgnummer(hasValue(values.arbeidsformer) ? [values.arbeidsformer as Arbeidsform] : []),
         stillingsprosent: hasValue(values.stillingsprosent) ? trimNumberValue(values.stillingsprosent!) : undefined,
         ønskerFlerbarnsdager: convertYesOrNoOrUndefinedToBoolean(values.ønskerFlerbarnsdager),
-        ønskerSamtidigUttak: convertYesOrNoOrUndefinedToBoolean(values.samtidigUttak),
-        samtidigUttakProsent: hasValue(values.samtidigUttakProsent)
-            ? trimNumberValue(values.samtidigUttakProsent!)
-            : undefined,
+        ønskerSamtidigUttak: erSamtidigUttak,
+        samtidigUttakProsent: samtidigUttakProsentVerdi,
         vedlegg: skalVedleggPåkreves(
             values.aktivitetskravMor,
             convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk) || false

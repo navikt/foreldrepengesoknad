@@ -10,6 +10,7 @@ import React, { Dispatch, FunctionComponent, SetStateAction, useEffect, useState
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
+import UttakRundtFødselÅrsakSpørsmål from 'uttaksplan/components/uttaks-forms/spørsmål/uttak-rundt-fødsel-årsak/uttakRundtFødselÅrsakSpørsmål';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getVelgbareStønadskontotyper } from 'uttaksplan/utils/stønadskontoerUtils';
@@ -38,6 +39,7 @@ import { Situasjon } from 'app/types/Situasjon';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 import { guid } from 'nav-frontend-js-utils';
+import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 
 interface Props {
     periode: Periode;
@@ -158,6 +160,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                 const periodetype = getPeriodeType(values.hvemSkalTaUttak!, erFarEllerMedmor, values.konto!);
                 setPeriodeErGyldig(isValid);
 
+                const erSamtidigUttak =
+                    values.konto === StønadskontoType.Fedrekvote &&
+                    convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk) === false; //TODO har skal man sjekke på svare på det nye valget i stedet: samtidig uttak eller mor for syk.med mindre erMorForSyk settes i bakgrunnen
+
                 const visibility = periodeUttakFormQuestionsConfig.getVisbility({
                     values,
                     regelProps: {
@@ -169,6 +175,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         familiehendelsesdato,
                         periodetype,
                         situasjon,
+                        erSamtidigUttak,
                     },
                     stønadskontoer,
                 });
@@ -241,10 +248,21 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             >
                                 <FlerbarnsdagerSpørsmål fieldName={PeriodeUttakFormField.ønskerFlerbarnsdager} />
                             </Block>
-                            <Block visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
+                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
                                 <ErMorForSykSpørsmål
                                     fieldName={PeriodeUttakFormField.erMorForSyk}
                                     erMorForSyk={values.erMorForSyk}
+                                    navnMor={navnPåForeldre.mor}
+                                    vedlegg={values.erMorForSykDokumentasjon}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(PeriodeUttakFormField.uttakRundtFødselÅrsak)}
+                            >
+                                <UttakRundtFødselÅrsakSpørsmål
+                                    fieldName={PeriodeUttakFormField.uttakRundtFødselÅrsak}
+                                    uttakRundtFødselÅrsak={values.uttakRundtFødselÅrsak}
                                     navnMor={navnPåForeldre.mor}
                                     vedlegg={values.erMorForSykDokumentasjon}
                                 />

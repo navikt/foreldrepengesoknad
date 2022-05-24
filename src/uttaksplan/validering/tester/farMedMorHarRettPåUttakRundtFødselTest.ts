@@ -36,7 +36,7 @@ export const farMedMorHarRettPåUttakRundtFødselTest: RegelTest = (grunnlag: S�
             values: {
                 fraDato: formaterDatoKompakt(førsteUttaksdag2UkerFørFødsel),
                 tilDato: formaterDatoKompakt(sisteUttak6UkerEtterFødsel),
-                antallDager: dagerIgjenRundtFødsel,
+                antallDager: Math.round(dagerIgjenRundtFødsel * 10) / 10,
             },
         },
     };

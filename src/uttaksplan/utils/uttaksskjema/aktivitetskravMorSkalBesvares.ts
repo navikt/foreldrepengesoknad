@@ -1,5 +1,7 @@
+import { TidsperiodeDate } from '@navikt/fp-common';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 export const aktivitetskravMorSkalBesvares = (
     ønskerFlerbarnsdager: boolean | undefined,
@@ -10,14 +12,29 @@ export const aktivitetskravMorSkalBesvares = (
     søkerErMor: boolean,
     erAleneOmOmsorg: boolean,
     annenForelderKanIkkeOppgis: boolean,
-    søkerHarMidlertidigOmsorg: boolean
+    søkerHarMidlertidigOmsorg: boolean,
+    tidsperiode: TidsperiodeDate,
+    familiehendelsesdato: Date,
+    erFlerbarnssøknad: boolean
 ): boolean => {
     if (
         søkerErMor ||
         erAleneOmOmsorg ||
         periodetype !== Periodetype.Uttak ||
         annenForelderKanIkkeOppgis ||
-        søkerHarMidlertidigOmsorg
+        søkerHarMidlertidigOmsorg ||
+        uttakRundtFødselÅrsakSpørsmålSkalBesvares(
+            periodetype,
+            kontotype as StønadskontoType,
+            tidsperiode,
+            !søkerErMor,
+            erFlerbarnssøknad,
+            erAleneOmOmsorg,
+            annenForelderKanIkkeOppgis,
+            ønskerFlerbarnsdager,
+            søkerHarMidlertidigOmsorg,
+            familiehendelsesdato
+        )
     ) {
         return false;
     }
