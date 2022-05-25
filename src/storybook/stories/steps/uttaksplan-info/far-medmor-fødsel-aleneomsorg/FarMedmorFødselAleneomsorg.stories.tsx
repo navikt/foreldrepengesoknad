@@ -26,10 +26,10 @@ export default {
 };
 
 const Template: Story<UttaksplanInfoTestData> = (args) => {
-    const restMock = (apiMock: MockAdapter) => {
-        apiMock.onGet(UTTAKSPLAN_ANNEN_URL).replyOnce(200, {});
-        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
-        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
+    const restMock = async (apiMock: MockAdapter) => {
+        await apiMock.onGet(UTTAKSPLAN_ANNEN_URL).replyOnce(200, {});
+        await apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
+        await apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
     };
     return (
         <AxiosMock mock={restMock}>
