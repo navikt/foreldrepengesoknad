@@ -120,7 +120,10 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
             initialValues={getInitialFarMedmorFødselBeggeHarRettValues(lagretUttaksplanInfo, dekningsgrad)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
-                const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility(formValues);
+                const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility({
+                    ...formValues,
+                    familiehendelsesdato: familiehendelsesdatoDate!,
+                });
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];
                 const tilgjengeligeDager = valgtStønadskonto
@@ -174,12 +177,14 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                             padBottom="l"
                             visible={visibility.isVisible(FarMedmorFødselBeggeHarRettFormField.morsSisteDag)}
                         >
+                            (
                             <MorsSisteDagSpørsmål
                                 FormComponents={FarMedmorFødselBeggeHarRettFormComponents}
                                 fieldName={FarMedmorFødselBeggeHarRettFormField.morsSisteDag}
                                 navnMor={navnMor}
                                 familiehendelsesdato={familiehendelsesdato}
                             />
+                            )
                         </Block>
                         <Block
                             padBottom="l"

@@ -1,12 +1,17 @@
 import { hasValue } from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import {
     FarMedmorFødselBeggeHarRettFormData,
     FarMedmorFødselBeggeHarRettFormField,
 } from './farMedmorFødselBeggeHarRettFormConfig';
 
+interface FarMedmorFødselBeggeHarRettFormPayload extends FarMedmorFødselBeggeHarRettFormData {
+    familiehendelsesdato: Date;
+}
+
 const FarMedmorFødselBeggeHarRettFormConfig: QuestionConfig<
-    FarMedmorFødselBeggeHarRettFormData,
+    FarMedmorFødselBeggeHarRettFormPayload,
     FarMedmorFødselBeggeHarRettFormField
 > = {
     [FarMedmorFødselBeggeHarRettFormField.dekningsgrad]: {
@@ -14,12 +19,14 @@ const FarMedmorFødselBeggeHarRettFormConfig: QuestionConfig<
         isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
     },
     [FarMedmorFødselBeggeHarRettFormField.morsSisteDag]: {
-        isIncluded: () => true,
-        isAnswered: ({ morsSisteDag }) => hasValue(morsSisteDag),
+        isIncluded: ({ familiehendelsesdato }) => !andreAugust2022ReglerGjelder(familiehendelsesdato),
+        isAnswered: ({ morsSisteDag, familiehendelsesdato }) =>
+            andreAugust2022ReglerGjelder(familiehendelsesdato) || hasValue(morsSisteDag),
         visibilityFilter: ({ dekningsgrad }) => hasValue(dekningsgrad),
     },
     [FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag]: {
-        isIncluded: ({ morsSisteDag }) => hasValue(morsSisteDag),
+        isIncluded: ({ morsSisteDag, familiehendelsesdato }) =>
+            andreAugust2022ReglerGjelder(familiehendelsesdato) || hasValue(morsSisteDag),
         isAnswered: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
     },
     [FarMedmorFødselBeggeHarRettFormField.antallDagerFellesperiode]: {
@@ -33,7 +40,7 @@ const FarMedmorFødselBeggeHarRettFormConfig: QuestionConfig<
 };
 
 const farMedmorFødselBeggeHarRettQuestionsConfig = Questions<
-    FarMedmorFødselBeggeHarRettFormData,
+    FarMedmorFødselBeggeHarRettFormPayload,
     FarMedmorFødselBeggeHarRettFormField
 >(FarMedmorFødselBeggeHarRettFormConfig);
 

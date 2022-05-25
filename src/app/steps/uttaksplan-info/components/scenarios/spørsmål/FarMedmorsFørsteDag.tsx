@@ -3,7 +3,7 @@ import { dateToISOString, TypedFormComponents } from '@navikt/sif-common-formik/
 import LenkeKnapp from 'app/components/lenke-knapp/LenkeKnapp';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -46,24 +46,26 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
                     placeholder={'dd.mm.åååå'}
                 />
             </Block>
-            <LenkeKnapp
-                text={
-                    <FormattedMessage
-                        id="uttaksplaninfo.farSinFørsteUttaksdagSpørsmål.førsteUttaksdagEtterAnnenPart"
-                        values={{
-                            navn: navnMor,
-                            dato: formatDate(Uttaksdagen(morsSisteDag!).neste()),
-                        }}
-                    />
-                }
-                onClick={() => {
-                    const farSinFørsteUttaksdag: string | undefined = morsSisteDag
-                        ? dateToISOString(Uttaksdagen(morsSisteDag).neste())
-                        : undefined;
+            {!andreAugust2022ReglerGjelder(ISOStringToDate(familiehendelsesdato)!) && (
+                <LenkeKnapp
+                    text={
+                        <FormattedMessage
+                            id="uttaksplaninfo.farSinFørsteUttaksdagSpørsmål.førsteUttaksdagEtterAnnenPart"
+                            values={{
+                                navn: navnMor,
+                                dato: formatDate(Uttaksdagen(morsSisteDag!).neste()),
+                            }}
+                        />
+                    }
+                    onClick={() => {
+                        const farSinFørsteUttaksdag: string | undefined = morsSisteDag
+                            ? dateToISOString(Uttaksdagen(morsSisteDag).neste())
+                            : undefined;
 
-                    setFieldValue(fieldName, farSinFørsteUttaksdag);
-                }}
-            />
+                        setFieldValue(fieldName, farSinFørsteUttaksdag);
+                    }}
+                />
+            )}
         </>
     );
 };
