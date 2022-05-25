@@ -33,11 +33,20 @@ const getMorHarRett = (erFarMedmor: boolean, annenForelder: AnnenForelder) => {
     return false;
 };
 
+const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string) => {
+    if (isFødtBarn(barn) || isUfødtBarn(barn)) {
+        return termindatoSaksgrunnlag ? termindatoSaksgrunnlag : dateToISOString(barn.termindato);
+    }
+
+    return undefined;
+};
+
 const getStønadskontoParams = (
     dekningsgrad: Dekningsgrad,
     barn: Barn,
     annenForelder: AnnenForelder,
-    søkersituasjon: Søkersituasjon
+    søkersituasjon: Søkersituasjon,
+    oppgittTermindato?: string
 ): TilgjengeligeStønadskontoerParams => {
     const erFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
@@ -53,7 +62,7 @@ const getStønadskontoParams = (
         fødselsdato: isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined,
         omsorgsovertakelsesdato:
             isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? dateToISOString(barn.adopsjonsdato) : undefined,
-        termindato: isFødtBarn(barn) || isUfødtBarn(barn) ? dateToISOString(barn.termindato) : undefined,
+        termindato: getTermindatoSomSkalBrukes(barn, oppgittTermindato),
         minsterett: andreAugust2022ReglerGjelder(familiehendelsesdato!),
         erMor: !søkerErFarEllerMedmor,
         morHarUføretrygd: getErMorUfør(annenForelder, søkerErFarEllerMedmor),

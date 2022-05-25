@@ -49,10 +49,22 @@ const UttaksplanInfo = () => {
     }, [eksisterendeSak, dispatch]);
 
     const { tilgjengeligeStønadskontoerData: stønadskontoer100 } = Api.useGetUttakskontoer(
-        getStønadskontoParams(Dekningsgrad.HUNDRE_PROSENT, barn, annenForelder, søkersituasjon)
+        getStønadskontoParams(
+            Dekningsgrad.HUNDRE_PROSENT,
+            barn,
+            annenForelder,
+            søkersituasjon,
+            eksisterendeSak?.grunnlag.termindato
+        )
     );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
-        getStønadskontoParams(Dekningsgrad.ÅTTI_PROSENT, barn, annenForelder, søkersituasjon)
+        getStønadskontoParams(
+            Dekningsgrad.ÅTTI_PROSENT,
+            barn,
+            annenForelder,
+            søkersituasjon,
+            eksisterendeSak?.grunnlag.termindato
+        )
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
