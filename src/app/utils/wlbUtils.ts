@@ -6,6 +6,7 @@ import { isUttaksperiode, Periode, Periodetype } from 'uttaksplan/types/Periode'
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { andreAugust2022ReglerGjelder } from './dateUtils';
 import { TidsperiodeDate } from '@navikt/fp-common';
+import { finnAntallDagerÅTrekke } from 'app/steps/uttaksplan-info/utils/uttaksPlanStatus';
 
 export const ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL = 10;
 export const ANTALL_UTTAKSDAGER_TO_UKER = 10;
@@ -29,7 +30,9 @@ export const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: Date):
 
 export const getSisteUttaksdag6UkerEtterFødsel = (familiehendelsesdato: Date): Date => {
     const førsteUttaksdagEtterFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
-    return Uttaksdagen(førsteUttaksdagEtterFamiliehendelsesdato).leggTil(ANTALL_UTTAKSDAGER_SEKS_UKER);
+    return Uttaksdagen(
+        Uttaksdagen(førsteUttaksdagEtterFamiliehendelsesdato).leggTil(ANTALL_UTTAKSDAGER_SEKS_UKER)
+    ).forrige();
 };
 
 export const starterTidsperiodeEtter2UkerFørFødsel = (tidsperiode: any, familiehendelsesdato: Date): boolean => {
@@ -71,4 +74,12 @@ export const erFarMedmorSinWLBPeriodeRundtFødsel = (
         konto === StønadskontoType.Fedrekvote &&
         starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(tidsperiode, familiehendelsesdato)
     );
+};
+
+export const getLengdePåForeslåttWLBUttakFarMedmor = (familiehendelsesdato: Date, startDatoUttak: Date): number => {
+    const sisteUttaksDagFørFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
+    const antallUttaksdagerFraStartDato = finnAntallDagerÅTrekke({
+        tidsperiode: { fom: startDatoUttak, tom: sisteUttaksDagFørFødsel },
+    } as Periode);
+    return Math.min(antallUttaksdagerFraStartDato, ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL);
 };
