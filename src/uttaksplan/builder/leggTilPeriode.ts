@@ -41,7 +41,7 @@ const splittPeriode = (berørtPeriode: Periode, nyPeriode: Periode): Periode[] =
     return [førsteDel, nyPeriode, andreDel];
 };
 
-export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode): Periode[] => {
+export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode, familiehendelsesdato: Date): Periode[] => {
     if (perioder.length === 0) {
         return [nyPeriode];
     }
@@ -91,11 +91,23 @@ export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode): Periode
             ...Periodene(påfølgendePerioder).forskyvPerioder(antallDagerINyPeriode),
         ];
     } else {
-        if (dayjs(nyPeriode.tidsperiode.fom).isBefore(perioder[0].tidsperiode.fom)) {
+        const førstePeriode = perioder[0];
+        const sistePeriode = perioder[perioder.length - 1];
+        const nyPeriodeFom = dayjs(nyPeriode.tidsperiode.fom);
+        const nyPeriodeTom = dayjs(nyPeriode.tidsperiode.tom);
+
+        if (nyPeriodeFom.isBefore(førstePeriode.tidsperiode.fom)) {
             const tidsperiodeMellomNyPeriodeOgFørstePeriode = getTidsperiodeMellomPerioder(
                 nyPeriode.tidsperiode,
-                perioder[0].tidsperiode
+                førstePeriode.tidsperiode
             );
+
+            if (nyPeriodeTom.isSameOrAfter(førstePeriode.tidsperiode.fom)) {
+                if (nyPeriodeFom.isBefore(familiehendelsesdato)) {
+                    // Kan ikke overlappe perioder før fødsel
+                    return [...perioder];
+                }
+            }
 
             if (tidsperiodeMellomNyPeriodeOgFørstePeriode) {
                 return [
@@ -108,9 +120,17 @@ export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode): Periode
             return [nyPeriode, ...perioder];
         } else {
             const tidsperiodeMellomSistePeriodeOgNyPeriode = getTidsperiodeMellomPerioder(
-                perioder[perioder.length - 1].tidsperiode,
+                sistePeriode.tidsperiode,
                 nyPeriode.tidsperiode
             );
+
+            if (
+                nyPeriodeFom.isSameOrBefore(sistePeriode.tidsperiode.tom) &&
+                nyPeriodeFom.isBefore(familiehendelsesdato)
+            ) {
+                // Kan ikke overlappe perioder før fødsel
+                return [...perioder];
+            }
 
             if (tidsperiodeMellomSistePeriodeOgNyPeriode) {
                 return [

@@ -182,7 +182,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     };
 
     const handleAddPeriode = (nyPeriode: Periode) => {
-        const builder = UttaksplanbuilderNew(uttaksplan);
+        const builder = UttaksplanbuilderNew(uttaksplan, familiehendelsesdatoDate);
         const resultat = builder.leggTilPeriode(nyPeriode);
 
         handleOnPlanChange(resultat);

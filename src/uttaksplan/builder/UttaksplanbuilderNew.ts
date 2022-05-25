@@ -6,7 +6,7 @@ const oppdaterPeriode = () => null;
 
 const slettPeriode = () => null;
 
-const UttaksplanbuilderNew = (perioder: Periode[]) => {
+const UttaksplanbuilderNew = (perioder: Periode[], familiehendelsesdato: Date) => {
     const fastePerioder = perioder.filter((p) => isUtsettelsesperiode(p) || isForeldrepengerFørFødselUttaksperiode(p));
     const bevegeligePerioder = resetTidsperioder(
         perioder.filter((p) => !isUtsettelsesperiode(p) && !isForeldrepengerFørFødselUttaksperiode(p))
@@ -14,10 +14,10 @@ const UttaksplanbuilderNew = (perioder: Periode[]) => {
 
     return {
         leggTilPeriode: (nyPeriode: Periode) => {
-            let result = leggTilPeriode(bevegeligePerioder, nyPeriode);
+            let result = leggTilPeriode(bevegeligePerioder, nyPeriode, familiehendelsesdato);
 
             fastePerioder.forEach((fastPeriode) => {
-                result = leggTilPeriode(result, fastPeriode);
+                result = leggTilPeriode(result, fastPeriode, familiehendelsesdato);
             });
 
             return slåSammenLikePerioder(result);
