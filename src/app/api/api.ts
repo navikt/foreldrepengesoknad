@@ -73,7 +73,7 @@ const useGetEksisterendeSak = (saksnummer: string | undefined, fnr: string) => {
 };
 
 const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolean, annenPartFnr: string | undefined) => {
-    const { data, error, requestFinished } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplanannen', {
+    const { data, error, requestStatus } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplanannen', {
         fnr: søkerFnr,
         config: { params: { annenPart: annenPartFnr }, withCredentials: true },
         isSuspended: annenPartFnr !== undefined && erFarEllerMedmor ? false : true,
@@ -82,7 +82,7 @@ const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolea
     return {
         eksisterendeSakAnnenPartData: data,
         eksisterendeSakAnnenPartError: error,
-        eksisterendeSakAnnenPartRequestFinished: requestFinished,
+        eksisterendeSakAnnenPartRequestStatus: requestStatus,
     };
 };
 
@@ -139,7 +139,7 @@ const getStorageKvittering = (fnr: string): Promise<AxiosResponse<Kvittering>> =
     });
 };
 
-const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams) => {
+const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspended = false) => {
     const {
         antallBarn,
         farHarRett,
@@ -180,7 +180,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams) => {
             params: urlParams,
             withCredentials: false,
         },
-        isSuspended: false,
+        isSuspended,
     });
 
     return {

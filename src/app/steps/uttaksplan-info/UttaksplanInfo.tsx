@@ -16,6 +16,7 @@ import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepen
 import actionCreator from 'app/context/action/actionCreator';
 import { mapEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { RequestStatus } from 'app/types/RequestState';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -30,7 +31,7 @@ const UttaksplanInfo = () => {
 
     const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
 
-    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestFinished } = Api.useGetEksisterendeSakMedFnr(
+    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetEksisterendeSakMedFnr(
         søkerinfo.person.fnr,
         erFarEllerMedmor,
         registrertBarn?.annenForelder?.fnr
@@ -54,8 +55,9 @@ const UttaksplanInfo = () => {
             barn,
             annenForelder,
             søkersituasjon,
-            eksisterendeSak?.grunnlag.termindato
-        )
+            eksisterendeSakAnnenPartData?.grunnlag.termindato
+        ),
+        eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
@@ -63,8 +65,9 @@ const UttaksplanInfo = () => {
             barn,
             annenForelder,
             søkersituasjon,
-            eksisterendeSak?.grunnlag.termindato
-        )
+            eksisterendeSakAnnenPartData?.grunnlag.termindato
+        ),
+        eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
@@ -72,7 +75,7 @@ const UttaksplanInfo = () => {
     if (
         !stønadskontoer100 ||
         !stønadskontoer80 ||
-        (!!registrertBarn && erFarEllerMedmor && !eksisterendeSakAnnenPartRequestFinished)
+        (!!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED)
     ) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
