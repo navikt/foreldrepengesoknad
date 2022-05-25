@@ -57,7 +57,7 @@ const UttaksplanInfo = () => {
             søkersituasjon,
             eksisterendeSakAnnenPartData?.grunnlag.termindato
         ),
-        eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+        !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
@@ -67,7 +67,7 @@ const UttaksplanInfo = () => {
             søkersituasjon,
             eksisterendeSakAnnenPartData?.grunnlag.termindato
         ),
-        eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+        !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
