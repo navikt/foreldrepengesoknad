@@ -74,6 +74,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const { dekningsgrad } = søknad;
+    const dekningsgradGrunnlag = eksisterendeSak ? eksisterendeSak.grunnlag.dekningsgrad : undefined;
     const situasjon = getForeldreparSituasjon(
         person.kjønn,
         annenForelderKjønn,
@@ -133,7 +134,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                             id="eksisterendeSak.tekst.html"
                             values={{
                                 uker: <strong>{getVarighetString(uker * 5, intl)}</strong>,
-                                dekningsgrad: <strong>{dekningsgrad}</strong>,
+                                dekningsgrad: <strong>{dekningsgrad ?? dekningsgradGrunnlag}</strong>,
                                 navn: hvem,
                             }}
                         />
