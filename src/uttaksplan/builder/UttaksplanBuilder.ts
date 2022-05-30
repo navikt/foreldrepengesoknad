@@ -1136,20 +1136,20 @@ export function getFriperioderITidsperiode(tidsperiode: TidsperiodeDate): Tidspe
         return [];
     }
 
-    let fom: Date = dayjs(fridagerIPerioden[0].date).toDate();
+    let fom: Date = dayjs.utc(fridagerIPerioden[0].date).toDate();
     const antallFridager = fridagerIPerioden.length;
     fridagerIPerioden.forEach((fridag, idx: number) => {
         if (idx === antallFridager - 1 && fom) {
             friperioder.push({
                 fom,
-                tom: dayjs(fridagerIPerioden[idx].date).toDate(),
+                tom: dayjs.utc(fridagerIPerioden[idx].date).toDate(),
             });
         } else {
             const nextDate = dayjs(fridagerIPerioden[idx + 1].date).toDate();
             if (dayjs(fom).add(24, 'hours').isSame(nextDate, 'day') === false) {
                 friperioder.push({
                     fom,
-                    tom: dayjs(fridag.date).toDate(),
+                    tom: dayjs.utc(fridag.date).toDate(),
                 });
                 fom = nextDate;
             }
