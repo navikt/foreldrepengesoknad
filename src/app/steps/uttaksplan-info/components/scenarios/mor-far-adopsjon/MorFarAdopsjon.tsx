@@ -182,7 +182,6 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                     ...formValues,
                     harAnnenForeldreRettPåForeldrepenger,
                     erAleneOmOmsorg,
-                    familiehendelsesdato: familiehendelsesdatoDate!,
                 });
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];

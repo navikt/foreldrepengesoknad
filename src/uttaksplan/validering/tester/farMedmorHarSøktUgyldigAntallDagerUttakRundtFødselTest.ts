@@ -1,11 +1,12 @@
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
-import { andreAugust2022ReglerGjelder, formaterDatoKompakt } from 'app/utils/dateUtils';
+import { formaterDatoKompakt } from 'app/utils/dateUtils';
 import { Periode } from 'uttaksplan/types/Periode';
 import {
     getFarMedmorUttakRundtFødsel,
     getFørsteUttaksdag2UkerFørFødsel,
     getSisteUttaksdag6UkerEtterFødsel,
+    gjelderWLBReglerFarMedmorRundtFødsel,
 } from 'app/utils/wlbUtils';
 import { getSumUttaksdagerÅTrekkeIPeriodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL } from 'app/utils/wlbUtils';
@@ -18,9 +19,14 @@ const overskridelseUttakRundtFødselAntallDager = (perioderRundtFødsel: Periode
 export const farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest: RegelTest = (
     grunnlag: Søknadsinfo
 ): RegelTestresultat => {
-    const wlbReglerGjelder = andreAugust2022ReglerGjelder(grunnlag.familiehendelsesdato);
-
-    if (wlbReglerGjelder && grunnlag.søkerErFarEllerMedmor) {
+    if (
+        gjelderWLBReglerFarMedmorRundtFødsel(
+            grunnlag.familiehendelsesdato,
+            grunnlag.søkerErFarEllerMedmor,
+            grunnlag.morHarRett,
+            grunnlag.søkersituasjon.situasjon
+        )
+    ) {
         const perioderUttakRundtFødsel = getFarMedmorUttakRundtFødsel(grunnlag.perioder, grunnlag.familiehendelsesdato);
         const antallDagerForMye = overskridelseUttakRundtFødselAntallDager(perioderUttakRundtFødsel);
         return {

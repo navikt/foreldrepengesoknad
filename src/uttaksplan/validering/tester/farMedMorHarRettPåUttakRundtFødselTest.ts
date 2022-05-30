@@ -1,18 +1,24 @@
 import {
+    ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL,
     getFarMedmorUttakRundtFødsel,
     getFørsteUttaksdag2UkerFørFødsel,
     getSisteUttaksdag6UkerEtterFødsel,
+    gjelderWLBReglerFarMedmorRundtFødsel,
 } from 'app/utils/wlbUtils';
-import { RegelTestresultat } from '../utils/types/regelTypes';
+import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
-import { andreAugust2022ReglerGjelder, formaterDatoKompakt } from 'app/utils/dateUtils';
-import { RegelTest } from 'shared/types';
+import { formaterDatoKompakt } from 'app/utils/dateUtils';
 import { getSumUttaksdagerÅTrekkeIPeriodene } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL } from 'app/utils/wlbUtils';
 
 export const farMedMorHarRettPåUttakRundtFødselTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
-    const gjelderWLB = andreAugust2022ReglerGjelder(grunnlag.familiehendelsesdato);
-    if (!gjelderWLB || !grunnlag.søkerErFarEllerMedmor || (grunnlag.søkerErFarEllerMedmor && !grunnlag.morHarRett)) {
+    if (
+        !gjelderWLBReglerFarMedmorRundtFødsel(
+            grunnlag.familiehendelsesdato,
+            grunnlag.søkerErFarEllerMedmor,
+            grunnlag.morHarRett,
+            grunnlag.søkersituasjon.situasjon
+        )
+    ) {
         return {
             passerer: true,
         };

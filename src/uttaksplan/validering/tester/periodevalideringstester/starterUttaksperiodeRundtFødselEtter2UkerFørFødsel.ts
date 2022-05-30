@@ -2,16 +2,23 @@ import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
 import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
 import {
     getFørsteUttaksdag2UkerFørFødsel,
+    gjelderWLBReglerFarMedmorRundtFødsel,
     isUttaksperiodeFarMedmorPgaFødsel,
     starterTidsperiodeEtter2UkerFørFødsel,
 } from 'app/utils/wlbUtils';
-import { andreAugust2022ReglerGjelder, formaterDatoKompakt } from 'app/utils/dateUtils';
+import { formaterDatoKompakt } from 'app/utils/dateUtils';
 
 export const starterUttaksperiodeRundtFødselEtter2UkerFørFødsel: RegelTest = (
     grunnlag: Søknadsinfo
 ): RegelTestresultat => {
-    const wlbReglerGjelder = andreAugust2022ReglerGjelder(grunnlag.familiehendelsesdato);
-    if (!wlbReglerGjelder || !grunnlag.søkerErFarEllerMedmor) {
+    if (
+        !gjelderWLBReglerFarMedmorRundtFødsel(
+            grunnlag.familiehendelsesdato,
+            grunnlag.søkerErFarEllerMedmor,
+            grunnlag.morHarRett,
+            grunnlag.søkersituasjon.situasjon
+        )
+    ) {
         return {
             passerer: true,
         };

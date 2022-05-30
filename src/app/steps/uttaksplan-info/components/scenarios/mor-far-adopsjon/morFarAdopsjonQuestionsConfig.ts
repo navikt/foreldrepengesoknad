@@ -3,12 +3,10 @@ import { hasValue } from '@navikt/fp-common';
 import { MorFarAdopsjonFormData, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
-import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 
 interface MorFarAdopsjonQuestionsPayload extends MorFarAdopsjonFormData {
     harAnnenForeldreRettPåForeldrepenger: boolean | undefined;
     erAleneOmOmsorg: boolean | undefined;
-    familiehendelsesdato: Date;
 }
 
 const MorFarAdopsjonFormConfig: QuestionConfig<MorFarAdopsjonQuestionsPayload, MorFarAdopsjonFormField> = {
@@ -34,18 +32,14 @@ const MorFarAdopsjonFormConfig: QuestionConfig<MorFarAdopsjonQuestionsPayload, M
             harAnnenForelderSøktFP !== YesOrNo.YES,
     },
     [MorFarAdopsjonFormField.annenForeldersSisteDag]: {
-        isAnswered: ({ annenForeldersSisteDag, familiehendelsesdato }) =>
-            andreAugust2022ReglerGjelder(familiehendelsesdato) || hasValue(annenForeldersSisteDag),
-        isIncluded: ({ dekningsgrad, harAnnenForelderSøktFP, familiehendelsesdato }) =>
-            !andreAugust2022ReglerGjelder(familiehendelsesdato) &&
-            hasValue(dekningsgrad) &&
-            harAnnenForelderSøktFP === YesOrNo.YES,
+        isAnswered: ({ annenForeldersSisteDag }) => hasValue(annenForeldersSisteDag),
+        isIncluded: ({ dekningsgrad, harAnnenForelderSøktFP }) =>
+            hasValue(dekningsgrad) && harAnnenForelderSøktFP === YesOrNo.YES,
     },
     [MorFarAdopsjonFormField.søkersFørsteDag]: {
         isAnswered: ({ søkersFørsteDag }) => hasValue(søkersFørsteDag),
-        isIncluded: ({ annenForeldersSisteDag, harAnnenForelderSøktFP, familiehendelsesdato, dekningsgrad }) =>
-            (andreAugust2022ReglerGjelder(familiehendelsesdato) && hasValue(dekningsgrad)) ||
-            (hasValue(annenForeldersSisteDag) && harAnnenForelderSøktFP === YesOrNo.YES),
+        isIncluded: ({ annenForeldersSisteDag, harAnnenForelderSøktFP }) =>
+            hasValue(annenForeldersSisteDag) && harAnnenForelderSøktFP === YesOrNo.YES,
     },
     [MorFarAdopsjonFormField.antallDagerFellesperiode]: {
         isAnswered: ({ antallDagerFellesperiode }) => hasValue(antallDagerFellesperiode),

@@ -87,7 +87,8 @@ const deltUttakAdopsjonSøktSist = (
             morSinSisteUttaksdag,
             farSinFørsteUttaksdag,
             begrunnelseForUtsettelse,
-            familiehendelsesdato
+            familiehendelsesdato,
+            'adopsjon'
         );
     } else {
         const forslag = deltUttakFødselFarMedmor(
@@ -97,7 +98,8 @@ const deltUttakAdopsjonSøktSist = (
             morSinSisteUttaksdag,
             farSinFørsteUttaksdag,
             begrunnelseForUtsettelse,
-            familiehendelsesdato
+            familiehendelsesdato,
+            'adopsjon'
         ).map((periode) => {
             if (
                 isUttaksperiode(periode) &&
@@ -274,7 +276,8 @@ const deltUttakFødselFarMedmor = (
     morSinSisteUttaksdag: Date,
     farSinFørsteUttaksdag: Date,
     begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
+    situasjon = 'fødsel'
 ): Periode[] => {
     if (
         !andreAugust2022ReglerGjelder(familiehendelsesdato) &&
@@ -313,6 +316,7 @@ const deltUttakFødselFarMedmor = (
 
     if (fedrekvoteKonto !== undefined) {
         const erPeriodeWLBRundtFødsel =
+            situasjon === 'fødsel' &&
             andreAugust2022ReglerGjelder(familiehendelsesdato) &&
             starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
                 getTidsperiode(startDatoUttak, 1),

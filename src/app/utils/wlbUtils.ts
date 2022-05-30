@@ -7,9 +7,20 @@ import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { andreAugust2022ReglerGjelder } from './dateUtils';
 import { TidsperiodeDate } from '@navikt/fp-common';
 import { finnAntallDagerÅTrekke } from 'app/steps/uttaksplan-info/utils/uttaksPlanStatus';
+import { Situasjon } from 'app/types/Situasjon';
 
 export const ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL = 10;
 export const ANTALL_UTTAKSDAGER_TO_UKER = 10;
+
+export const gjelderWLBReglerFarMedmorRundtFødsel = (
+    familiehendelsesdato: Date,
+    søkerErFarEllerMedmor: boolean,
+    morHarRett: boolean,
+    situasjon: Situasjon
+) => {
+    const gjelderWLB = andreAugust2022ReglerGjelder(familiehendelsesdato);
+    return gjelderWLB && søkerErFarEllerMedmor && morHarRett && situasjon === 'fødsel';
+};
 
 export const isUttaksperiodeFarMedmorPgaFødsel = (periode: Periode): boolean => {
     return (
