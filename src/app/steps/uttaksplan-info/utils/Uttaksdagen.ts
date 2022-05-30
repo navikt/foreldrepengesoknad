@@ -35,7 +35,7 @@ export function erUttaksdag(dato: Date): boolean {
 }
 
 function getUttaksdagFørDato(dato: Date): Date {
-    return getUttaksdagTilOgMedDato(dayjs(dato).subtract(24, 'hours').toDate());
+    return getUttaksdagTilOgMedDato(dayjs.utc(dato).subtract(24, 'hours').toDate());
 }
 
 /**
@@ -45,9 +45,9 @@ function getUttaksdagFørDato(dato: Date): Date {
 function getUttaksdagTilOgMedDato(dato: Date): Date {
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs(dato).subtract(24, 'hours').toDate();
+            return dayjs.utc(dato).subtract(24, 'hours').toDate();
         case 7:
-            return dayjs(dato).subtract(48, 'hours').toDate();
+            return dayjs.utc(dato).subtract(48, 'hours').toDate();
         default:
             return dato;
     }
@@ -58,7 +58,7 @@ function getUttaksdagTilOgMedDato(dato: Date): Date {
  * @param termin
  */
 function getUttaksdagEtterDato(dato: Date): Date {
-    return getUttaksdagFraOgMedDato(dayjs(dato).add(24, 'hours').toDate());
+    return getUttaksdagFraOgMedDato(dayjs.utc(dato).add(24, 'hours').toDate());
 }
 
 /**
@@ -68,9 +68,9 @@ function getUttaksdagEtterDato(dato: Date): Date {
 function getUttaksdagFraOgMedDato(dato: Date): Date {
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs(dato).add(48, 'hours').toDate();
+            return dayjs.utc(dato).add(48, 'hours').toDate();
         case 7:
-            return dayjs(dato).add(24, 'hours').toDate();
+            return dayjs.utc(dato).add(24, 'hours').toDate();
         default:
             return dato;
     }
@@ -89,7 +89,8 @@ function leggUttaksdagerTilDato(dato: Date, uttaksdager: number): Date {
     let dagteller = 0;
     let uttaksdageteller = 0;
     while (uttaksdageteller <= uttaksdager) {
-        const tellerdato = dayjs(dato)
+        const tellerdato = dayjs
+            .utc(dato)
             .add(dagteller++ * 24, 'hours')
             .toDate();
         if (erUttaksdag(tellerdato)) {
@@ -113,7 +114,8 @@ function trekkUttaksdagerFraDato(dato: Date, uttaksdager: number): Date {
     let dagteller = 0;
     let uttaksdageteller = 0;
     while (uttaksdageteller < Math.abs(uttaksdager)) {
-        const tellerdato = dayjs(dato)
+        const tellerdato = dayjs
+            .utc(dato)
             .add(--dagteller * 24, 'hours')
             .toDate();
         if (erUttaksdag(tellerdato)) {
