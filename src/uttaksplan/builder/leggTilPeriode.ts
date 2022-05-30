@@ -75,6 +75,7 @@ export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode, familieh
             isPeriodeUtenUttak(berørtPeriode) ||
             isPeriodeUtenUttakUtsettelse(berørtPeriode)
         ) {
+            // Hvis berørt periode er overskrivbar, la forskyvPerioder ta seg av logikk for overskriving
             return [
                 ...foregåendePerioder,
                 berørtPeriodeSplittetPåNyPeriode[0],
