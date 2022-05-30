@@ -75,8 +75,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 antallUkerFellesperiodeFarMedmor,
                 morSinSisteUttaksdagDate,
                 ISOStringToDate(farSinFørsteUttaksdag),
-                begrunnelseForUtsettelse,
-                familiehendelsesdato
+                begrunnelseForUtsettelse
             );
             const dagEtterMorsSisteDag = morSinSisteUttaksdagDate
                 ? Uttaksdagen(morSinSisteUttaksdagDate).neste()

@@ -69,14 +69,14 @@ const deltUttakAdopsjonSøktFørst = (
 };
 
 const deltUttakAdopsjonSøktSist = (
+    familiehendelsesdato: Date,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     erFarEllerMedmor: boolean,
     antallDagerFellesperiodeFarMedmor: number | undefined,
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date,
     farSinFørsteUttaksdag: Date,
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
-    familiehendelsesdato: Date
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
 ) => {
     if (erFarEllerMedmor) {
         // Oppfører seg identisk som fødselsscenario
@@ -137,8 +137,7 @@ const deltUttakAdopsjon = (
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date | undefined,
     farSinFørsteUttaksdag: Date | undefined,
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
-    familiehendelsesdato: Date
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
 ) => {
     if (!harAnnenForelderSøktFP) {
         return deltUttakAdopsjonSøktFørst(
@@ -151,14 +150,14 @@ const deltUttakAdopsjon = (
         );
     } else {
         return deltUttakAdopsjonSøktSist(
+            famDato,
             tilgjengeligeStønadskontoer,
             erFarEllerMedmor,
             antallDagerFellesperiodeFarMedmor,
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag!,
             farSinFørsteUttaksdag!,
-            begrunnelseForUtsettelse,
-            familiehendelsesdato
+            begrunnelseForUtsettelse
         );
     }
 };
@@ -382,8 +381,7 @@ const deltUttakFødsel = (
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date | undefined,
     farSinFørsteUttaksdag: Date | undefined,
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
-    familiehendelsesdato: Date
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
 ) => {
     if (!erFarEllerMedmor) {
         return deltUttakFødselMor(famDato, tilgjengeligeStønadskontoer, startdatoPermisjon, fellesperiodeukerMor);
@@ -399,7 +397,7 @@ const deltUttakFødsel = (
             morSinSisteUttaksdag!,
             farSinFørsteUttaksdag!,
             begrunnelseForUtsettelse,
-            familiehendelsesdato
+            famDato
         );
     }
 };
@@ -416,8 +414,7 @@ export const deltUttak = (
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date | undefined,
     farSinFørsteUttaksdag: Date | undefined,
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
-    familiehendelsesdato: Date
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
 ) => {
     if (situasjon === 'adopsjon') {
         return deltUttakAdopsjon(
@@ -431,8 +428,7 @@ export const deltUttak = (
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag,
             farSinFørsteUttaksdag,
-            begrunnelseForUtsettelse,
-            familiehendelsesdato
+            begrunnelseForUtsettelse
         );
     }
 
@@ -447,8 +443,7 @@ export const deltUttak = (
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag,
             farSinFørsteUttaksdag,
-            begrunnelseForUtsettelse,
-            familiehendelsesdato
+            begrunnelseForUtsettelse
         );
     }
 

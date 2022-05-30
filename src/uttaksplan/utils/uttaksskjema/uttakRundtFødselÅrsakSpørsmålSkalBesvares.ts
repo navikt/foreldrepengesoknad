@@ -1,4 +1,5 @@
 import { TidsperiodeDate } from '@navikt/fp-common';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import { erFarMedmorSinWLBPeriodeRundtFødsel } from 'app/utils/wlbUtils';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
@@ -15,7 +16,12 @@ const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
     søkerHarMidlertidigOmsorg: boolean,
     familiehendelsesdato: Date
 ): boolean => {
-    if (erAleneOmOmsorg || annenForelderKanIkkeOppgis || søkerHarMidlertidigOmsorg) {
+    if (
+        erAleneOmOmsorg ||
+        annenForelderKanIkkeOppgis ||
+        søkerHarMidlertidigOmsorg ||
+        !andreAugust2022ReglerGjelder(familiehendelsesdato)
+    ) {
         return false;
     }
 
