@@ -2,6 +2,7 @@ import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenFo
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import dayjs from 'dayjs';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
+import { hasValue } from '@navikt/fp-common';
 
 export const aktivitetskravMorUtil = {
     skalBesvaresVedUtsettelse(søkerErFarEllerMedmor: boolean, annenForelder: AnnenForelder): boolean {
@@ -35,4 +36,17 @@ export const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet): Skj
         default:
             return Skjemanummer.ANNET;
     }
+};
+
+export const getMorsAktivitet = (
+    aktivitetskravMorValue: string | undefined,
+    erMorForSykValue: boolean | undefined
+): MorsAktivitet | undefined => {
+    if (hasValue(aktivitetskravMorValue)) {
+        return aktivitetskravMorValue as MorsAktivitet;
+    }
+    if (erMorForSykValue) {
+        return MorsAktivitet.TrengerHjelp;
+    }
+    return undefined;
 };

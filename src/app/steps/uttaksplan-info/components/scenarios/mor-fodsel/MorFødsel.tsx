@@ -105,9 +105,7 @@ const MorFødsel: FunctionComponent<Props> = ({
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO,
-        familiehendelsesdato,
-        erMorUfør
+        tilgjengeligeStønadskontoer100DTO
     );
 
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
@@ -142,6 +140,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                             : submissionValues.permisjonStartdato,
                         skalIkkeHaUttakFørTermin: submissionValues.skalIkkeHaUttakFørTermin,
                     },
+                    bareFarMedmorHarRett: false,
                 })
             ),
         ];

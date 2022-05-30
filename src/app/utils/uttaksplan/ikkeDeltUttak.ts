@@ -7,24 +7,41 @@ import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { guid } from 'nav-frontend-js-utils';
 import { isUttaksperiode, Periode, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { andreAugust2022ReglerGjelder } from '../dateUtils';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: Date,
     foreldrepengerKonto: TilgjengeligStønadskonto,
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined
+    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
+    bareFarMedmorHarRett: boolean
 ) => {
     const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const perioder: Uttaksperiode[] = [];
 
     if (erMorUfør !== true) {
+        let startDatoNestePeriode = førsteUttaksdag;
+        if (andreAugust2022ReglerGjelder(famDato) && !!bareFarMedmorHarRett) {
+            const aktivitetsFriPeriode: Uttaksperiode = {
+                id: guid(),
+                type: Periodetype.Uttak,
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.AktivitetsfriKvote,
+                tidsperiode: getTidsperiode(førsteUttaksdag, aktivitetsfriKvote!.dager),
+                vedlegg: [],
+                gradert: false,
+                harIkkeAktivitetskrav: true,
+            };
+            perioder.push(aktivitetsFriPeriode);
+            startDatoNestePeriode = Uttaksdagen(aktivitetsFriPeriode.tidsperiode.tom).neste();
+        }
         const periode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.farMedmor,
             konto: foreldrepengerKonto.konto,
-            tidsperiode: getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager),
+            tidsperiode: getTidsperiode(startDatoNestePeriode, foreldrepengerKonto.dager),
             vedlegg: [],
             gradert: false,
         };
@@ -89,7 +106,8 @@ const ikkeDeltUttakAdopsjon = (
     foreldrepengerKonto: TilgjengeligStønadskonto,
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined
+    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
+    bareFarMedmorHarRett: boolean
 ) => {
     if (!erFarEllerMedmor) {
         return ikkeDeltUttakAdopsjonMor(famDato, foreldrepengerKonto, startdatoPermisjon);
@@ -99,7 +117,8 @@ const ikkeDeltUttakAdopsjon = (
             foreldrepengerKonto,
             startdatoPermisjon,
             erMorUfør,
-            aktivitetsfriKvote
+            aktivitetsfriKvote,
+            bareFarMedmorHarRett
         );
     }
 };
@@ -192,19 +211,36 @@ const ikkeDeltUttakFødselFarMedmor = (
     foreldrepengerKonto: TilgjengeligStønadskonto,
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined
+    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
+    bareFarMedmorHarRett: boolean
 ) => {
     const startDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
 
     const perioder: Periode[] = [];
 
     if (erMorUfør !== true) {
+        let startDatoNestePeriode = startDato;
+        if (andreAugust2022ReglerGjelder(famDato) && !!bareFarMedmorHarRett) {
+            const aktivitetsFriPeriode: Uttaksperiode = {
+                id: guid(),
+                type: Periodetype.Uttak,
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.AktivitetsfriKvote,
+                tidsperiode: getTidsperiode(startDato, aktivitetsfriKvote!.dager),
+                vedlegg: [],
+                gradert: false,
+                harIkkeAktivitetskrav: true,
+            };
+            perioder.push(aktivitetsFriPeriode);
+            startDatoNestePeriode = Uttaksdagen(aktivitetsFriPeriode.tidsperiode.tom).neste();
+        }
+
         const periode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.farMedmor,
             konto: foreldrepengerKonto.konto,
-            tidsperiode: getTidsperiode(startDato, foreldrepengerKonto.dager),
+            tidsperiode: getTidsperiode(startDatoNestePeriode, foreldrepengerKonto.dager),
             vedlegg: [],
             gradert: false,
         };
@@ -250,7 +286,8 @@ const ikkeDeltUttakFødsel = (
     startdatoPermisjon: Date | undefined,
     foreldrePengerFørFødselKonto: TilgjengeligStønadskonto | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined
+    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
+    bareFarMedmorHarRett: boolean
 ) => {
     if (!erFarEllerMedmor) {
         return ikkeDeltUttakFødselMor(famDato, foreldrepengerKonto, startdatoPermisjon, foreldrePengerFørFødselKonto!);
@@ -260,7 +297,8 @@ const ikkeDeltUttakFødsel = (
             foreldrepengerKonto,
             startdatoPermisjon,
             erMorUfør,
-            aktivitetsfriKvote
+            aktivitetsfriKvote,
+            bareFarMedmorHarRett
         );
     }
 };
@@ -271,7 +309,8 @@ export const ikkeDeltUttak = (
     erFarEllerMedmor: boolean,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     startdatoPermisjon: Date | undefined,
-    erMorUfør: boolean | undefined
+    erMorUfør: boolean | undefined,
+    bareFarMedmorHarRett: boolean
 ) => {
     const foreldrepengerKonto = tilgjengeligeStønadskontoer.find(
         (konto) => konto.konto === StønadskontoType.Foreldrepenger
@@ -290,7 +329,8 @@ export const ikkeDeltUttak = (
             foreldrepengerKonto!,
             startdatoPermisjon,
             erMorUfør,
-            aktivitetsfriKvote
+            aktivitetsfriKvote,
+            bareFarMedmorHarRett
         );
     }
 
@@ -302,7 +342,8 @@ export const ikkeDeltUttak = (
             startdatoPermisjon,
             foreldrePengerFørFødselKonto,
             erMorUfør,
-            aktivitetsfriKvote
+            aktivitetsfriKvote,
+            bareFarMedmorHarRett
         );
     }
 

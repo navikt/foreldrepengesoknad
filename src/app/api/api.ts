@@ -24,6 +24,9 @@ export interface TilgjengeligeStønadskontoerParams {
     morHarAleneomsorg: boolean | undefined;
     farHarAleneomsorg: boolean | undefined;
     startdatoUttak: string;
+    minsterett: boolean;
+    erMor: boolean;
+    morHarUføretrygd: boolean;
 }
 
 const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
@@ -70,7 +73,7 @@ const useGetEksisterendeSak = (saksnummer: string | undefined, fnr: string) => {
 };
 
 const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolean, annenPartFnr: string | undefined) => {
-    const { data, error, requestFinished } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplanannen', {
+    const { data, error, requestStatus } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplanannen', {
         fnr: søkerFnr,
         config: { params: { annenPart: annenPartFnr }, withCredentials: true },
         isSuspended: annenPartFnr !== undefined && erFarEllerMedmor ? false : true,
@@ -79,7 +82,7 @@ const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolea
     return {
         eksisterendeSakAnnenPartData: data,
         eksisterendeSakAnnenPartError: error,
-        eksisterendeSakAnnenPartRequestFinished: requestFinished,
+        eksisterendeSakAnnenPartRequestStatus: requestStatus,
     };
 };
 
@@ -136,7 +139,7 @@ const getStorageKvittering = (fnr: string): Promise<AxiosResponse<Kvittering>> =
     });
 };
 
-const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams) => {
+const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspended = false) => {
     const {
         antallBarn,
         farHarRett,
@@ -148,6 +151,9 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams) => {
         morHarAleneomsorg,
         farHarAleneomsorg,
         startdatoUttak,
+        minsterett,
+        erMor,
+        morHarUføretrygd,
     } = params;
 
     const fpUttakServiceDateFormat = 'YYYYMMDD';
@@ -163,6 +169,9 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams) => {
         termindato: formaterStønadskontoParamsDatoer(termindato, fpUttakServiceDateFormat),
         omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(omsorgsovertakelsesdato, fpUttakServiceDateFormat),
         startdatoUttak: formaterStønadskontoParamsDatoer(startdatoUttak, fpUttakServiceDateFormat),
+        minsterett,
+        erMor,
+        morHarUføretrygd,
     };
 
     const { data, error } = useRequest<TilgjengeligeStønadskontoerDTO>(`${uttakBaseUrl}/konto`, {
@@ -171,7 +180,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams) => {
             params: urlParams,
             withCredentials: false,
         },
-        isSuspended: false,
+        isSuspended,
     });
 
     return {

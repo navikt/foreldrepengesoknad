@@ -4,8 +4,8 @@ import { Undertittel } from 'nav-frontend-typografi';
 import './søknadSendtTittel.less';
 
 const SøknadSendtTittel = () => (
-    <div className="søknadSendtTittel" role="main" aria-label="Foreldrepengeøksnaden">
-        <Undertittel>Foreldrepengeøksnaden</Undertittel>
+    <div className="søknadSendtTittel" role="main" aria-label="Foreldrepengesøknaden">
+        <Undertittel>Foreldrepengesøknaden</Undertittel>
     </div>
 );
 

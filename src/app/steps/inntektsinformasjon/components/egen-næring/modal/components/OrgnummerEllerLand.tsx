@@ -1,4 +1,4 @@
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block, hasValue, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
@@ -26,6 +26,11 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility }) => {
                     name={EgenNæringModalFormField.land}
                     label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.registrertILand')}
                     useAlpha3Code={false}
+                    validate={(value) => {
+                        if (!hasValue(value)) {
+                            return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.egenNæring.land');
+                        }
+                    }}
                 />
             </Block>
         </>

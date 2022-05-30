@@ -26,4 +26,5 @@ export interface SaksperiodeDTO {
     utbetalingsprosent: number;
     uttakArbeidType: string;
     utsettelsePeriodeType?: UtsettelseÅrsakTypeDTO;
+    periodeResultatÅrsak: string;
 }
