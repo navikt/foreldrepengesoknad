@@ -35,12 +35,12 @@ const Overføringsperiodedetaljer: React.FunctionComponent<Props> = ({
 }) => {
     const { vedlegg } = periode;
     const intl = useIntl();
-    const annenForelderNavn = getNavnPåAnnenForelder(navnPåForeldre, periode.konto);
+    const navnAnnenForelder = getNavnPåAnnenForelder(navnPåForeldre, periode.konto);
     return (
         <>
             <Feltoppsummering
                 feltnavn={intlUtils(intl, 'oppsummering.uttak.årsak')}
-                verdi={getÅrsakTekst(intl, periode, { annenForelderNavn })}
+                verdi={getÅrsakTekst(intl, periode, { navnAnnenForelder })}
             />
 
             {dokumentasjonBehøvesForOverføringsperiode(erFarEllerMedmor, periode) && periodeErNyEllerEndret && (
