@@ -10,7 +10,6 @@ import React, { Dispatch, FunctionComponent, SetStateAction, useEffect, useState
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
-import UttakRundtFødselÅrsakSpørsmål from 'uttaksplan/components/uttaks-forms/spørsmål/uttak-rundt-fødsel-årsak/uttakRundtFødselÅrsakSpørsmål';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getVelgbareStønadskontotyper } from 'uttaksplan/utils/stønadskontoerUtils';
@@ -18,6 +17,7 @@ import ErMorForSykSpørsmål from '../spørsmål/er-mor-for-syk/ErMorForSykSpør
 import FlerbarnsdagerSpørsmål from '../spørsmål/flerbarnsdager/FlerbarnsdagerSpørsmål';
 import HvemSkalHaUttakSpørsmål from '../spørsmål/hvem-skal-ha-uttak/HvemSkalHaUttakSpørsmål';
 import HvilkenKontoSpørsmål from '../spørsmål/hvilken-konto/HvilkenKontoSpørsmål';
+import UttakRundtFødselÅrsakSpørsmål from '../spørsmål/uttak-rundt-fødsel-årsak/UttakRundtFødselÅrsakSpørsmål';
 import OverføringsårsakSpørsmål from '../spørsmål/overføringsårsak/OverføringsårsakSpørsmål';
 import SamtidigUttakSpørsmål from '../spørsmål/samtidig-uttak/SamtidigUttakSpørsmål';
 import SkalHaGraderingSpørsmål from '../spørsmål/skal-ha-gradering/SkalHaGraderingSpørsmål';

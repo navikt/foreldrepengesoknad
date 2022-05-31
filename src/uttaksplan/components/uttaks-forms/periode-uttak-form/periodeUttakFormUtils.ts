@@ -45,7 +45,7 @@ const getInitialValues = (erDeltUttak: boolean, forelder: Forelder, erMorUfør: 
         [PeriodeUttakFormField.arbeidsformer]: '',
         [PeriodeUttakFormField.erMorForSyk]: YesOrNo.UNANSWERED,
         [PeriodeUttakFormField.erMorForSykDokumentasjon]: [],
-        [PeriodeUttakFormField.uttakRundtFødselÅrsak]: UttakRundtFødselÅrsak.samtidigUttak,
+        [PeriodeUttakFormField.uttakRundtFødselÅrsak]: '',
         [PeriodeUttakFormField.samtidigUttakProsent]: '',
         [PeriodeUttakFormField.hvemSkalTaUttak]: hvemSkalTaUttak,
         [PeriodeUttakFormField.ønskerFlerbarnsdager]: YesOrNo.UNANSWERED,

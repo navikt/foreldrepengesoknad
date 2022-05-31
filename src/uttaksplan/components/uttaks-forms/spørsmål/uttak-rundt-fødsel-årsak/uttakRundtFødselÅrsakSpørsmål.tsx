@@ -9,7 +9,7 @@ import MorErForSykDokumentasjonOpplastning from '../er-mor-for-syk-dokumentasjon
 
 interface Props {
     fieldName: PeriodeUttakFormField;
-    uttakRundtFødselÅrsak: UttakRundtFødselÅrsak;
+    uttakRundtFødselÅrsak: UttakRundtFødselÅrsak | '';
     vedlegg: Attachment[];
     navnMor: string;
 }
@@ -36,7 +36,7 @@ const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({
         <>
             <Block padBottom="l">
                 <PeriodeUttakFormComponents.RadioPanelGroup
-                    legend={intlUtils(intl, 'uttaksplan.hvemSkalHaUttak')}
+                    legend={intlUtils(intl, 'uttaksplan.uttakrundtFødseÅrsak.spørsmål')}
                     name={fieldName}
                     radios={radios}
                     useTwoColumns={true}

@@ -41,7 +41,7 @@ export interface PeriodeUttakFormData {
     [PeriodeUttakFormField.arbeidsformer]: Arbeidsform | '';
     [PeriodeUttakFormField.erMorForSyk]: YesOrNo;
     [PeriodeUttakFormField.erMorForSykDokumentasjon]: Attachment[];
-    [PeriodeUttakFormField.uttakRundtFødselÅrsak]: UttakRundtFødselÅrsak;
+    [PeriodeUttakFormField.uttakRundtFødselÅrsak]: UttakRundtFødselÅrsak | '';
     [PeriodeUttakFormField.samtidigUttakProsent]: string;
     [PeriodeUttakFormField.hvemSkalTaUttak]: Forelder | '';
     [PeriodeUttakFormField.ønskerFlerbarnsdager]: YesOrNo;
