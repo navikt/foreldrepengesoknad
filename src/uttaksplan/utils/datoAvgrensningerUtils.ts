@@ -6,7 +6,7 @@ import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/utt
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { DatepickerLimitations } from 'nav-datovelger';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { getFørsteUttaksdagPåEllerEtterFødsel, getSisteMuligeUttaksdag } from './uttaksdatoerUtils';
+import { getFørsteMuligeUttaksdag, getSisteMuligeUttaksdag } from './uttaksdatoerUtils';
 
 export interface DatoAvgrensninger {
     fra: Avgrensninger;
@@ -52,7 +52,7 @@ export const getDatoavgrensningerForStønadskonto = (
 };
 
 const getDatoavgrensningerForPeriodeUtenKonto = (familiehendelsesdato: Date, ugyldigeTidsperioder: Tidsperiode[]) => {
-    const minDato = getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato);
+    const minDato = getFørsteMuligeUttaksdag(familiehendelsesdato);
 
     return {
         fra: {

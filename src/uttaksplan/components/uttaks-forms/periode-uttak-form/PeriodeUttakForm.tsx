@@ -179,6 +179,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             <TidsperiodeForm
                                 tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                 familiehendelsesdato={familiehendelsesdato}
+                                periode={periode}
                                 onBekreft={(values) => {
                                     setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
                                     setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
